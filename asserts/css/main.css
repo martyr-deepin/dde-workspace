@@ -1,0 +1,35 @@
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    background: rgba(0, 0, 0, 0.0);
+}
+
+#toolbar {
+    background: rgba(255, 255, 0, 0.6);
+    height: 42px
+}
+
+#bottom {
+    background: rgba(0, 255, 0, 0.6);
+    position: absolute;
+    bottom: 0px;
+    height: 30px
+}
+
+#hwindow {
+    background: rgba(223, 240, 208, 0.9);
+    height:200px;
+    display: none;
+    position: absolute;
+    color: red;
+    left: 360px;
+    top: 50px;
+    -webkit-box-shadow: #03B3B3 13px 13px 13px;
+}
+#logo {
+    float: left;
+}
+div.btn {
+    margin-top: 3px;
+}
