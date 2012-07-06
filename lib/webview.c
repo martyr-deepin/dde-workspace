@@ -1,7 +1,8 @@
 #include "webview.h"
 #include "dcore.h"
+#include "LauncherInspectorWindow.h"
 
-GtkWidget* create_web_container()
+GtkWidget* create_web_container(bool above)
 {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -16,7 +17,11 @@ GtkWidget* create_web_container()
     gtk_widget_set_visual(window, visual);
 
     gtk_window_maximize(GTK_WINDOW(window));
-    gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
+    if (above)
+        gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
+    else
+        gtk_window_set_keep_below(GTK_WINDOW(window), TRUE);
+
     return window;
 }
 
@@ -51,24 +56,32 @@ static void add_ddesktop_class(WebKitWebView *web_view,
     init_ddesktop(jsContext, data);
 }
 
+
+static GtkWidget *inspectorInspectWebViewCb(WebKitWebInspector *inspector, WebKitWebView *webView, GtkWindow* window)
+{
+    GtkWidget *inspectorWindow = launcherInspectorWindowNew(inspector, window);
+    puts("hhhhhh:");
+    return GTK_WIDGET(launcherInspectorWindowGetWebView(LAUNCHER_INSPECTOR_WINDOW(inspectorWindow)));
+}
+
 static void
 d_webview_init(DWebView *dwebview)
 {
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "expose-event",
-            G_CALLBACK(_erase_background), NULL);
+    g_signal_connect(G_OBJECT(webview), "draw", G_CALLBACK(_erase_background), NULL);
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
+    g_signal_connect(webkit_web_view_get_inspector(webview),
+            "inspect-web-view", G_CALLBACK(inspectorInspectWebViewCb), NULL);
 }
 
 GType d_webview_get_type(void)
 {
     static GType type = 0;
     if (!type) {
-        printf("hhahah\n");
         static const GTypeInfo info = {
             sizeof(DWebViewClass),
             NULL,
@@ -97,5 +110,7 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
     /*return g_object_new(D_WEBVIEW_TYPE, "uri", uri, NULL);*/
     GtkWidget* webview = d_webview_new();
     webkit_web_view_open(WEBKIT_WEB_VIEW(webview), uri);
+    WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
+    g_object_set(G_OBJECT(setting), "enable-developer-extras", TRUE, NULL);
     return webview;
 }

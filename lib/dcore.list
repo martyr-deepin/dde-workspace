@@ -1,0 +1,10 @@
+[ [
+    name: get_desktop_icons,
+    args: [void],
+    return: string
+],[
+    name: modify_region, 
+    args: [int, int, int, int, int, int],
+    return: void
+]
+]

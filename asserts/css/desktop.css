@@ -1,0 +1,24 @@
+body {
+    background: url("../img/desktop_background.jpg");
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+
+.item {
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+    text-align: center;
+    font-size: small;
+    color: white;
+    text-shadow: 0px 3px 3px black;
+    /*display: list-item;*/
+}
+.item:hover {
+    background: rgba(100, 100, 0, 0.4);
+}
+.item_name:focus {
+    background: rgba(100, 100, 100, 0.4);
+}

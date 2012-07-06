@@ -1,4 +1,5 @@
 #include "dcore.h"
+#include "desktop_entry.h"
 #include <assert.h>
 #include <JavaScriptCore/JSStringRef.h>
 
@@ -105,11 +106,51 @@ static JSValueRef modify_region(JSContextRef context,
     return JSValueMakeNull(context);
 }
 
+static JSValueRef get_desktop_icons(JSContextRef context,
+        JSObjectRef function, JSObjectRef thisObject,
+        size_t argumentCount, const JSValueRef arguments[],
+        JSValueRef *exception)
+{
+    if (argumentCount != 0) {
+        puts("must 0 arguments\n");
+        return JSValueMakeNull(context);
+    }
+    gchar* icons = get_desktop_entries();
+    JSStringRef scriptJS = JSStringCreateWithUTF8CString(icons);
+    g_free(icons);
+
+    return JSEvaluateScript(context, scriptJS, NULL, NULL, 1, NULL);
+}
+
+static JSValueRef run_command(JSContextRef context,
+        JSObjectRef function, JSObjectRef thisObject,
+        size_t argumentCount, const JSValueRef arguments[],
+        JSValueRef *exception)
+{
+    if (argumentCount != 1) {
+        puts("must 1 arguments\n");
+        return JSValueMakeNull(context);
+    }
+    JSStringRef command = JSValueToStringCopy(context, arguments[0], NULL);
+
+    size_t size = JSStringGetMaximumUTF8CStringSize(command);
+    gchar* utf8 = g_new(gchar, size);
+    JSStringGetUTF8CString(command, utf8, size);
+
+    g_spawn_command_line_async(utf8, NULL);
+    JSStringRelease(command);
+
+    return JSValueMakeNull(context);
+}
+
 static const JSStaticFunction class_staticfuncs[] = {
     { "modify_region", modify_region, kJSPropertyAttributeReadOnly },
 
     /*{ "tray_add_cb", set_default_region, kJSPropertyAttributeReadOnly},
     { "tray_del_cb", set_default_region, kJSPropertyAttributeReadOnly},*/
+
+    { "get_desktop_icons", get_desktop_icons, kJSPropertyAttributeReadOnly },
+    { "run_command", run_command, kJSPropertyAttributeReadOnly },
 
     { NULL, NULL, 0}
 };

@@ -277,7 +277,7 @@ tray_manager_handle_dock_request (TrayManager       *manager,
   gtk_widget_set_double_buffered (socket, FALSE);
   g_signal_connect (socket, "realize",
                     G_CALLBACK (tray_manager_make_socket_transparent), NULL);
-  g_signal_connect (socket, "expose_event",
+  g_signal_connect (socket, "draw",
                     G_CALLBACK (tray_manager_socket_exposed), NULL);
   g_signal_connect_after (socket, "style_set",
                           G_CALLBACK (tray_manager_socket_style_set), NULL);
