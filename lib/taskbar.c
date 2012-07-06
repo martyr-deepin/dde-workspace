@@ -95,8 +95,9 @@ d_taskbar_init(DTaskbar *taskbar)
     priv->webview = d_webview_new();
     gtk_widget_set_parent(priv->webview, GTK_WIDGET(taskbar));
 
-    gchar* uri = (gchar*) "file:///home/snyh/src/deepin-desktop/taskbar.html";
-    webkit_web_view_open(WEBKIT_WEB_VIEW(priv->webview), uri);
+    char* path = get_html_path("taskbar.html");
+    webkit_web_view_open(WEBKIT_WEB_VIEW(priv->webview), path);
+    g_free(path);
     gtk_widget_show(priv->webview);
 }
 

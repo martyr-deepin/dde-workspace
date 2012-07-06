@@ -1,7 +1,7 @@
-desktop: desktop.c lib/dcore.c lib/webview.c lib/desktop_entry.c lib/LauncherInspectorWindow.c
+desktop: desktop.c lib/dcore.c lib/webview.c lib/desktop_entry.c lib/LauncherInspectorWindow.c lib/utils.c
 	gcc -o desktop $^ `pkg-config --libs --cflags gtk+-3.0 webkitgtk-3.0` -std=c99 -lX11 -g
 
-taskbar: taskbar.c lib/dcore.c lib/webview.c lib/marshal.c lib/taskbar.c lib/tray_manager.c
+taskbar: taskbar.c lib/dcore.c lib/webview.c lib/marshal.c lib/taskbar.c lib/tray_manager.c lib/utils.c lib/desktop_entry.c lib/LauncherInspectorWindow.c
 	gcc -o taskbar $^ `pkg-config --libs --cflags gtk+-3.0 webkitgtk-3.0` -std=c99 -lX11 -g
 
 tray: lib/testtray.c lib/tray_manager.c lib/marshal.c lib/taskbar.c lib/webview.c lib/dcore.c
