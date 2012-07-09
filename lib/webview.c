@@ -144,6 +144,6 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 {
     /*return g_object_new(D_WEBVIEW_TYPE, "uri", uri, NULL);*/
     GtkWidget* webview = d_webview_new();
-    webkit_web_view_open(WEBKIT_WEB_VIEW(webview), uri);
+    webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webview), uri);
     return webview;
 }
