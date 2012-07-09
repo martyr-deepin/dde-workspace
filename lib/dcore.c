@@ -106,7 +106,7 @@ static JSValueRef modify_region(JSContextRef context,
     return JSValueMakeNull(context);
 }
 
-static JSValueRef get_desktop_icons(JSContextRef context,
+static JSValueRef get_desktop_items(JSContextRef context,
         JSObjectRef function, JSObjectRef thisObject,
         size_t argumentCount, const JSValueRef arguments[],
         JSValueRef *exception)
@@ -120,6 +120,28 @@ static JSValueRef get_desktop_icons(JSContextRef context,
     g_free(icons);
 
     return JSEvaluateScript(context, scriptJS, NULL, NULL, 1, NULL);
+}
+
+static JSValueRef gen_id(JSContextRef context,
+        JSObjectRef function, JSObjectRef thisObject,
+        size_t argumentCount, const JSValueRef arguments[],
+        JSValueRef *exception)
+{
+    if (argumentCount != 1) {
+        puts("must 1 arguments\n");
+        return JSValueMakeNull(context);
+    }
+    JSStringRef value = JSValueToStringCopy(context, arguments[0], NULL);
+    size_t size = JSStringGetMaximumUTF8CStringSize(value);
+    gchar* utf8 = g_new(gchar, size);
+    JSStringGetUTF8CString(value, utf8, size);
+    gchar* md5 = g_compute_checksum_for_string(G_CHECKSUM_MD5, utf8, -1);
+    JSStringRelease(value);
+
+    JSStringRef js_md5 = JSStringCreateWithUTF8CString(md5);
+    g_free(md5);
+
+    return JSValueMakeString(context, js_md5);
 }
 
 static JSValueRef run_command(JSContextRef context,
@@ -149,8 +171,9 @@ static const JSStaticFunction class_staticfuncs[] = {
     /*{ "tray_add_cb", set_default_region, kJSPropertyAttributeReadOnly},
     { "tray_del_cb", set_default_region, kJSPropertyAttributeReadOnly},*/
 
-    { "get_desktop_icons", get_desktop_icons, kJSPropertyAttributeReadOnly },
+    { "get_desktop_items", get_desktop_items, kJSPropertyAttributeReadOnly },
     { "run_command", run_command, kJSPropertyAttributeReadOnly },
+    { "gen_id", gen_id, kJSPropertyAttributeReadOnly },
 
     { NULL, NULL, 0}
 };

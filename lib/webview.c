@@ -1,5 +1,6 @@
 #include "webview.h"
 #include "dcore.h"
+#include "utils.h"
 #include "LauncherInspectorWindow.h"
 
 GtkWidget* create_web_container(bool above)
@@ -32,7 +33,7 @@ static bool _erase_background(GtkWidget* widget,
 
     cr = gdk_cairo_create(gtk_widget_get_window(widget));
 
-    cairo_set_source_rgba(cr, 0, 0, 0, 0);
+    cairo_set_source_rgba(cr, 0, 0, 0, 1.0);
     cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
     cairo_paint(cr);
 
@@ -60,8 +61,28 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 static GtkWidget *inspectorInspectWebViewCb(WebKitWebInspector *inspector, WebKitWebView *webView, GtkWindow* window)
 {
     GtkWidget *inspectorWindow = launcherInspectorWindowNew(inspector, window);
-    puts("hhhhhh:");
     return GTK_WIDGET(launcherInspectorWindowGetWebView(LAUNCHER_INSPECTOR_WINDOW(inspectorWindow)));
+}
+
+static bool webview_key_release_cb(GtkWidget* webview, 
+        GdkEvent* event, gpointer data)
+{
+    GtkWidget* insp = NULL;
+    GdkEventKey *ev = (GdkEventKey*)event;
+    switch (ev->keyval) {
+        case GDK_KEY_F5: 
+            webkit_web_view_reload(WEBKIT_WEB_VIEW(webview));
+            break;
+        case GDK_KEY_F12:
+            insp = inspectorInspectWebViewCb(
+                    webkit_web_view_get_inspector(WEBKIT_WEB_VIEW(webview)),
+                    WEBKIT_WEB_VIEW(webview), 
+                    NULL);
+            gtk_widget_show(insp);
+            break;
+    }
+
+    return FALSE;
 }
 
 static void
@@ -74,8 +95,10 @@ d_webview_init(DWebView *dwebview)
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
-    g_signal_connect(webkit_web_view_get_inspector(webview),
+    g_signal_connect_after(webkit_web_view_get_inspector(webview),
             "inspect-web-view", G_CALLBACK(inspectorInspectWebViewCb), NULL);
+    g_signal_connect(webview, "key-release-event", G_CALLBACK(webview_key_release_cb), NULL);
+
 }
 
 GType d_webview_get_type(void)
@@ -100,9 +123,21 @@ GType d_webview_get_type(void)
 }
 
 
+
 GtkWidget* d_webview_new()
 {
-    return g_object_new(D_WEBVIEW_TYPE, NULL);
+    GtkWidget* webview = g_object_new(D_WEBVIEW_TYPE, NULL);
+    WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
+
+    char* config_path = get_config_path("deepin-desktop");
+    g_object_set(G_OBJECT(setting), 
+            /*"enable-default-context-menu", FALSE,*/
+            "enable-developer-extras", TRUE, 
+            "html5-local-storage-database-path", config_path,
+            NULL);
+    g_free(config_path);
+
+    return webview;
 }
 
 GtkWidget* d_webview_new_with_uri(const char* uri)
@@ -110,7 +145,5 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
     /*return g_object_new(D_WEBVIEW_TYPE, "uri", uri, NULL);*/
     GtkWidget* webview = d_webview_new();
     webkit_web_view_open(WEBKIT_WEB_VIEW(webview), uri);
-    WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
-    g_object_set(G_OBJECT(setting), "enable-developer-extras", TRUE, NULL);
     return webview;
 }

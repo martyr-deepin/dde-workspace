@@ -1,6 +1,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <stdio.h>
+#include <string.h>
 #define _JS_FUNC
 
 static const char* 
@@ -110,7 +111,7 @@ char* get_desktop_entries()
     gchar* base_dir = g_strconcat(g_environ_getenv(g_get_environ(), "HOME"),
             "/Desktop", NULL);
     GDir *dir =  g_dir_open(base_dir, 0, NULL);
-    gchar* filename = NULL;
+    const gchar* filename = NULL;
     gchar path[1000];
 
     while ((filename = g_dir_read_name(dir)) != NULL) {

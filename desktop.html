@@ -7,12 +7,12 @@
     <body>
 
         <script id="icontemp" type="text/x-jquery-tmpl">
-            <div class="item" exec="{{=exec}}">
+            <div id="{{=id}}" class="{{=class}}" exec="{{=exec}}">
                 <img src={{=icon}} width="48">
                 <div class="item_name">{{=name}}</div>
             </div>
         </script>
-        <div id="iconContainer"></div>
+        <div id="itemContainer"></div>
 
         <script type="text/javascript" src="asserts/js/jquery-1.7.1.min.js"></script> 
         <script type="text/javascript" src="asserts/js/jquery-ui.min.js"></script>

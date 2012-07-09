@@ -2,5 +2,6 @@
 #define __UTILS_H__
 
 char* get_html_path(const char* name);
+char* get_config_path(const char* name);
 
 #endif
