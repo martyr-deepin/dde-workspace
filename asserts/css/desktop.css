@@ -22,3 +22,7 @@ body {
 .item_name:focus {
     background: rgba(100, 100, 100, 0.4);
 }
+
+.ui-dialog {
+    background: rgba(100, 100, 100, 0.8);
+}

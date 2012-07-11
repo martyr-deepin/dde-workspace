@@ -163,12 +163,20 @@ render_item = function(item) {
 };
 
 $(function() {
-  var item, _i, _len, _ref, _results;
+  var item, _i, _len, _ref;
   _ref = DCore.get_desktop_items();
-  _results = [];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     item = _ref[_i];
-    _results.push(render_item(item));
+    render_item(item);
   }
-  return _results;
+  $("#dialog").dialog({
+    autoOpen: false,
+    show: "blind",
+    hide: "explode"
+  });
+  return $("#opener").click(function() {
+    $("#dialog").dialog("open");
+    DCore.make_popup("dialog");
+    return false;
+  });
 });

@@ -93,3 +93,13 @@ render_item = (item) ->
 
 $ ->
     render_item item for item in DCore.get_desktop_items()
+
+    $("#dialog").dialog
+        autoOpen: false
+        show: "blind"
+        hide: "explode"
+
+    $("#opener").click ->
+        $("#dialog").dialog "open"
+        DCore.make_popup("dialog")
+        return false

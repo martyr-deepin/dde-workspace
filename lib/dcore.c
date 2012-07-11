@@ -1,7 +1,11 @@
 #include "dcore.h"
 #include "desktop_entry.h"
+#include "forward_window.h"
 #include <assert.h>
 #include <JavaScriptCore/JSStringRef.h>
+#include <webkit/WebKitDOMDocument.h>
+
+
 
 enum RegionOP {
     REGION_OP_NEW = 0,
@@ -26,6 +30,7 @@ static void apply_region(struct DDesktopData* data)
     cairo_region_union(region, data->global_region);
     gdk_window_shape_combine_region(window, region, 0, 0);
 }
+
 
 static 
 void update_region(int type, const cairo_rectangle_int_t *rect, int op, JSObjectRef this)
@@ -165,6 +170,38 @@ static JSValueRef run_command(JSContextRef context,
     return JSValueMakeNull(context);
 }
 
+WebKitDOMElement* el;
+bool webview_changed(GtkWidget* widget, cairo_t *cr, gpointer data)
+{
+    DForwardWindow* popup = (DForwardWindow*)data;
+    g_assert(popup != NULL);
+    int x = webkit_dom_element_get_offset_left(el);
+    int y = webkit_dom_element_get_offset_top(el);
+    int width = webkit_dom_element_get_offset_width(el);
+    int height = webkit_dom_element_get_offset_height(el);
+    
+    d_forward_window_set_show_region(GTK_WIDGET(popup), x, y, width, height);
+    return FALSE;
+}
+
+static JSValueRef make_popup(JSContextRef context,
+        JSObjectRef function, JSObjectRef this,
+        size_t argumentCount, const JSValueRef arguments[],
+        JSValueRef *exception)
+{
+    struct DDesktopData *data = JSObjectGetPrivate(this);
+    WebKitDOMDocument *dom = webkit_web_view_get_dom_document((WebKitWebView*)data->webview);
+    JSStringRef id = JSValueToStringCopy(context, arguments[0], NULL);
+    el = webkit_dom_document_get_element_by_id(dom, "8aec5a2db19ae9713da1302f4298ba2e");
+
+    GtkWidget* popup = d_forward_window_new(gtk_widget_get_window(data->webview));
+    gtk_widget_show(popup);
+    d_forward_window_test(popup);
+    g_assert(data->webview != NULL);
+    g_signal_connect(data->webview, "draw", G_CALLBACK(webview_changed), popup);
+    return JSValueMakeNull(context);
+}
+
 static const JSStaticFunction class_staticfuncs[] = {
     { "modify_region", modify_region, kJSPropertyAttributeReadOnly },
 
@@ -174,6 +211,7 @@ static const JSStaticFunction class_staticfuncs[] = {
     { "get_desktop_items", get_desktop_items, kJSPropertyAttributeReadOnly },
     { "run_command", run_command, kJSPropertyAttributeReadOnly },
     { "gen_id", gen_id, kJSPropertyAttributeReadOnly },
+    { "make_popup", make_popup, kJSPropertyAttributeReadOnly },
 
     { NULL, NULL, 0}
 };
