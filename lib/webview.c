@@ -135,6 +135,7 @@ GtkWidget* d_webview_new()
             "enable-developer-extras", TRUE, 
             "html5-local-storage-database-path", config_path,
             NULL);
+    webkit_set_web_database_directory_path(config_path);
     g_free(config_path);
 
     return webview;
