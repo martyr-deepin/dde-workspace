@@ -1,9 +1,9 @@
 #include "forward_window.h"
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 
 void print_event(GdkEvent* event)
 {
-    printf("type code:%d\n", event->type);
     switch (event->type) {
         case GDK_EXPOSE:
             puts("GDK_EXPOSE\n");
@@ -11,6 +11,22 @@ void print_event(GdkEvent* event)
         case GDK_BUTTON_PRESS:
             puts("GDK_BUTTON_PRESS\n");
             break;
+        case GDK_MOTION_NOTIFY:
+            puts("GDK_MOTION_NOTIFY\n");
+            break;
+        case GDK_ENTER_NOTIFY:
+            puts("GDK_ENTER_NOTIFY\n");
+            break;
+        case GDK_LEAVE_NOTIFY:
+            puts("GDK_LEAVE_NOTIFY\n");
+            break;
+        case GDK_FOCUS_CHANGE:
+            puts("GDK_FOCUS_CHANGE\n");
+            break;
+        case GDK_BUTTON_RELEASE:
+            puts("GDK_BUTTON_RELEASE\n");
+            break;
+
     }
     GdkEventAny* any = (GdkEventAny*)event;
     /*printf("window:%p\n", any->window);*/
@@ -24,7 +40,10 @@ typedef struct _DForwardWindowPrivate DForwardWindowPrivate;
 
 struct _DForwardWindowPrivate {
     GdkWindow *origin_window;
-    cairo_surface_t *image_surface;
+    int x;
+    int y;
+    int width;
+    int height;
 };
 
 void d_forward_window_set_show_region(GtkWidget* widget, int x, int y, int width, int height)
@@ -35,6 +54,16 @@ void d_forward_window_set_show_region(GtkWidget* widget, int x, int y, int width
         cairo_region_t *region = cairo_region_create_rectangle(&rect);
         gdk_window_shape_combine_region(window, region , 0, 0);
     }
+}
+
+void d_forward_window_set_position(GtkWidget *widget, int x, int y, 
+        int width, int height)
+{
+    DForwardWindowPrivate *priv = GET_PRIVATE(widget);
+    priv->x = x;
+    priv->y = y;
+    priv->width = width;
+    priv->height = height;
 }
 
 static void
@@ -76,7 +105,7 @@ d_forward_window_realize(GtkWidget *widget)
     attributes.height = 0;
     attributes.window_type = GDK_WINDOW_TEMP;
     attributes.wclass = GDK_INPUT_OUTPUT;
-    attributes.override_redirect = TRUE;
+    /*attributes.override_redirect = TRUE;*/
     attributes.event_mask = GDK_ALL_EVENTS_MASK;
     attributes.visual = gdk_screen_get_rgba_visual(gdk_screen_get_default());
     attributes.type_hint = GDK_WINDOW_TYPE_HINT_POPUP_MENU;
@@ -94,10 +123,7 @@ d_forward_window_realize(GtkWidget *widget)
 static gboolean
 d_forward_window_draw(GtkWidget* fw, cairo_t *cr)
 {
-    puts("drawing...");
-    cairo_set_source_surface(cr, GET_PRIVATE(fw)->image_surface, 0, 0);
-    cairo_paint(cr);
-    return FALSE;
+    return TRUE;
 }
 
 static void
@@ -119,19 +145,50 @@ d_forward_window_class_init (DForwardWindowClass *class)
     GtkWidgetClass *widget_class = (GtkWidgetClass*)class;
 
     widget_class->realize = d_forward_window_realize;
-    widget_class->draw = d_forward_window_draw;
-    widget_class->size_allocate = d_forward_window_size_allocate;
+    /*widget_class->draw = d_forward_window_draw;*/
+    /*widget_class->size_allocate = d_forward_window_size_allocate;*/
 
     g_type_class_add_private(gobject_class, sizeof(DForwardWindowPrivate));
 
 }
 
+gint64 timestamp = 0;
 static gboolean
 d_forward_window_do_forward(GtkWidget *widget, GdkEvent* event, gpointer data)
 {
+    switch (event->type) {
+        case GDK_MOTION_NOTIFY:
+        case GDK_BUTTON_PRESS:
+        case GDK_2BUTTON_PRESS:
+        case GDK_3BUTTON_PRESS:
+        case GDK_BUTTON_RELEASE:
+        case GDK_KEY_PRESS:
+        case GDK_KEY_RELEASE:
+            break;
+        default:
+            return TRUE;
+
+    }
+
+    /*printf("%d\n", g_get_monotonic_time() - timestamp);*/
+    /*if (g_get_monotonic_time() - timestamp < 20000) {*/
+        /*puts("nnnn\n");*/
+        /*return FALSE;*/
+    /*}*/
+    /*timestamp = g_get_monotonic_time();*/
+
+    DForwardWindowPrivate *priv = GET_PRIVATE(widget);
     GdkEventAny *any = (GdkEventAny*)event;
-    any->window = g_object_ref(GET_PRIVATE(widget)->origin_window);
+    any->send_event = FALSE;
+    any->window = g_object_ref(priv->origin_window);
+
+    GdkEventMotion *e_b = (GdkEventMotion*)event;
+
+    e_b->x = e_b->x_root;
+    e_b->y = e_b->y_root - 27;
+
     gtk_main_do_event(event);
+
     return TRUE;
 }
 
@@ -140,14 +197,6 @@ d_forward_window_init (DForwardWindow* fw)
 {
     gtk_widget_set_has_window (GTK_WIDGET (fw), TRUE);
     gtk_widget_set_app_paintable (GTK_WIDGET(fw), TRUE);
-}
-
-void 
-d_forward_window_update_img(GtkWidget* widget, cairo_surface_t *img)
-{
-    GET_PRIVATE(widget)->image_surface = (img);
-    cairo_surface_mark_dirty(GET_PRIVATE(widget)->image_surface);
-    gtk_widget_queue_draw(widget);
 }
 
 GtkWidget*
@@ -161,20 +210,21 @@ d_forward_window_new(GdkWindow* origin_window)
 }
 
 
-void d_forward_window_test(GtkWidget* widget)
+gboolean d_forward_window_need_change(GtkWidget *widget, 
+        int x, int y, int width, int height)
 {
-    int size = 1280;
-    cairo_surface_t* img = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size, size);
-    unsigned char* data = cairo_image_surface_get_data(img);
-    for (int i=0; i<size*size*4; i++) {
-        if (i % 3 == 1)
-            data[i] = 0;
-        else
-            data[i] = 100;
-    }
-    d_forward_window_update_img(widget, img);
-
-    GtkAllocation alloc = {0, 30, 1280, 800};
-    gtk_widget_size_allocate(widget, &alloc);
-    d_forward_window_set_show_region(widget, 0, 0, 40, 40);
+    DForwardWindowPrivate *priv = GET_PRIVATE(widget);
+    if (priv->x != x || priv->y != y || 
+            priv->width != width || priv->height != height)
+        return TRUE;
+    else
+        return FALSE;
+}
+void d_forward_window_move(GtkWidget* widget,
+        int x, int y, int width, int height)
+{
+    if (width == -1 && height == -1)
+        XMoveWindow(gdk_x11_get_default_xdisplay(),
+                GDK_WINDOW_XID(gtk_widget_get_window(widget)),
+                x, y);
 }

@@ -20,7 +20,6 @@ Recordable =
             )
 
     create_table: ->
-        console.log "push.."
         fs = @fields().split(',').slice(1).join(' Int, ') + " Int"
         Recordable.db_tabls.push "CREATE TABLE #{@table()} (id REAL UNIQUE, #{fs});"
 

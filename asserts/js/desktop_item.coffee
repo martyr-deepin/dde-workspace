@@ -2,7 +2,7 @@ class Item extends Widget
     @included Recordable, ["id", "x", "y"]
 
     constructor: (@name, @icon, @exec) ->
-        @id = DCore.gen_id(@name + @icon + @exec)
+        @id = Desktop.Core.gen_id(@name + @icon + @exec)
         @itemTemp = "icontemp"
         @itemContainer = "itemContainer"
         @load()
@@ -16,12 +16,22 @@ class Item extends Widget
                 "icon" : @icon
                 "exec" : @exec
         )
+        #document.querySelector("#itemContainer").addEventListener('drop', 
+            #(e) ->
+                #echo "dropeed"
+        #)
+
+        #for item in document.querySelectorAll(".item")
+            #item.addEventListener('dragstart', (e) ->
+                ##echo e.dataTransfer.effectAllowed, false)
+                #)
+
         this._$()
             .draggable
                 stop: (event, ui) =>
                     this.save()
             .dblclick ->
-                DCore.run_command $(this)[0].getAttribute('exec')
+                Desktop.Core.run_command $(this)[0].getAttribute('exec')
 
 
 class DesktopEntry extends Item

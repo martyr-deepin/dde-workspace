@@ -16,7 +16,7 @@ render_item = (item) ->
 
 
 $ ->
-    render_item item for item in DCore.get_desktop_items()
+    render_item item for item in Desktop.Core.get_desktop_items()
 
     $("#dialog").dialog
         autoOpen: false
@@ -24,6 +24,6 @@ $ ->
         hide: "explode"
 
     $("#opener").click ->
+        Desktop.Core.make_popup("dialog")
         $("#dialog").dialog "open"
-        DCore.make_popup("dialog")
         return false

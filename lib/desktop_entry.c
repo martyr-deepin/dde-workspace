@@ -2,7 +2,6 @@
 #include <glib/gstdio.h>
 #include <stdio.h>
 #include <string.h>
-#define _JS_FUNC
 
 static const char* 
 XDG_PATH(const char* name)
@@ -103,7 +102,6 @@ gchar* parse_desktop_entry(const gchar* path)
     return result;
 }
 
-_JS_FUNC
 char* get_desktop_entries()
 {
     GString *content = g_string_new("[");

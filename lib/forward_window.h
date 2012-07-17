@@ -31,7 +31,12 @@ GtkWidget* d_forward_window_new(GdkWindow* origin_window);
 void d_forward_window_update_img(GtkWidget* widget, cairo_surface_t *img);
 void d_forward_window_set_show_region(GtkWidget* widget, int x, int y, int width, int height);
 
-void d_forward_window_test(GtkWidget* widget);
+void d_forward_window_set_position(GtkWidget *widget, int x, int y,
+        int width, int height);
+gboolean d_forward_window_need_change(GtkWidget *widget, 
+        int x, int y, int width, int height);
+void d_forward_window_move(GtkWidget* widget,
+        int x, int y, int width, int height);
 
 
 G_END_DECLS

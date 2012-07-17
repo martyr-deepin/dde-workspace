@@ -1,5 +1,5 @@
 #include "webview.h"
-#include "dcore.h"
+#include "ddesktop.h"
 #include "utils.h"
 #include "LauncherInspectorWindow.h"
 
