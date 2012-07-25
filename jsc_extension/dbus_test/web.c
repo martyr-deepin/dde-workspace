@@ -8,9 +8,8 @@ int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
 
-    GtkWidget *w = create_web_container(FALSE, FALSE);
-    char* path = get_html_path("desktop.html");
-    puts(path);
+    GtkWidget *w = create_web_container(TRUE, FALSE);
+    char* path = get_html_path("test.html");
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
 

@@ -5,6 +5,7 @@
 #include <webkit/WebKitDOMDocument.h>
 #include <webkit/WebKitDOMEventTarget.h>
 #include <cairo/cairo.h>
+#include <string.h>
 
 
 enum RegionOP {
@@ -119,13 +120,13 @@ bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer dat
 
     DForwardWindow* popup = (DForwardWindow*)data;
     int x, y, width, height;
-    d_dom_element_get_allocation(el, &x, &y, &width, &height);
+    /*d_dom_element_get_allocation(el, &x, &y, &width, &height);*/
 
     cairo_t *cr = gdk_cairo_create(gtk_widget_get_window((GtkWidget*)popup));
     /*cairo_translate(cr, 25, 0);*/
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
-    d_dom_element_render(cr, el);
+    /*d_dom_element_render(cr, el);*/
 
     /*if (!d_forward_window_need_change((GtkWidget*)popup, x, y, width, height))*/
         /*return FALSE;*/

@@ -62,6 +62,7 @@ static void launcher_inspector_window_class_init(LauncherInspectorWindowClass *k
 static void inspectedURIChanged(WebKitWebInspector *inspector, GParamSpec *paramSpec, LauncherInspectorWindow *inspectorWindow)
 {
     gchar *title = g_strdup_printf("Web Inspector - %s", webkit_web_inspector_get_inspected_uri(inspector));
+    printf("%s\n", title);
     gtk_window_set_title(GTK_WINDOW(inspectorWindow), title);
     g_free(title);
 }
@@ -78,8 +79,14 @@ static gboolean closeInspectorWindow(WebKitWebInspector *inspector, LauncherInsp
     return TRUE;
 }
 
+void print_event1(GtkWidget* widget, GdkEvent* event, gpointer data)
+{
+    puts("OK");
+}
+
 GtkWidget *launcherInspectorWindowNew(WebKitWebInspector *inspector, GtkWindow *parent)
 {
+    printf("insepctor:%p\n", inspector);
     LauncherInspectorWindow *inspectorWindow = LAUNCHER_INSPECTOR_WINDOW(g_object_new(LAUNCHER_TYPE_INSPECTOR_WINDOW, "type", GTK_WINDOW_TOPLEVEL, NULL));
     inspectorWindow->inspector = g_object_ref(inspector);
     inspectorWindow->webView = webkit_web_view_new();
@@ -92,6 +99,8 @@ GtkWidget *launcherInspectorWindowNew(WebKitWebInspector *inspector, GtkWindow *
 
     gtk_container_add(GTK_CONTAINER(inspectorWindow), scrolledWindow);
     gtk_widget_show(scrolledWindow);
+
+    printf("uri:%s\n", webkit_web_inspector_get_inspected_uri(inspector));
 
     g_signal_connect(inspector, "notify::inspected-uri", G_CALLBACK(inspectedURIChanged), inspectorWindow);
     g_signal_connect(inspector, "show-window", G_CALLBACK(showInspectorWindow), inspectorWindow);

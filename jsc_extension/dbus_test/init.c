@@ -4,7 +4,6 @@
 extern JSClassRef get_Desktop_class();
 extern JSClassRef get_DBus_class();
 extern JSClassRef get_DBus_Bus_class();
-extern JSClassRef get_Core_class();
 
 void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data)
 {
@@ -23,12 +22,6 @@ void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data)
     JSObjectSetProperty(context, class_DBus, str_DBus_Bus, class_DBus_Bus,
             kJSClassAttributeNone, NULL);
     JSStringRelease(str_DBus_Bus);
-
-    JSObjectRef class_Core = JSObjectMake(context, get_Core_class(), (void*)data);
-    JSStringRef str_Core = JSStringCreateWithUTF8CString("Core");
-    JSObjectSetProperty(context, class_Desktop, str_Core, class_Core,
-            kJSClassAttributeNone, NULL);
-    JSStringRelease(str_Core);
 
 
     JSStringRef str = JSStringCreateWithUTF8CString("Desktop");

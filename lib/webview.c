@@ -1,14 +1,14 @@
 #include "webview.h"
 #include "ddesktop.h"
 #include "utils.h"
-#include "LauncherInspectorWindow.h"
 
-GtkWidget* create_web_container(bool above)
+GtkWidget* create_web_container(bool normal, bool above)
 {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_window_set_decorated(GTK_WINDOW(window), false);
+    if (!normal)
+        gtk_window_set_decorated(GTK_WINDOW(window), false);
 
     GdkScreen *screen = gdk_screen_get_default();
     GdkVisual *visual = gdk_screen_get_rgba_visual(screen);
@@ -16,6 +16,11 @@ GtkWidget* create_web_container(bool above)
     if (!visual)
         visual = gdk_screen_get_system_visual(screen);
     gtk_widget_set_visual(window, visual);
+
+    if (normal) {
+        gtk_widget_set_size_request(window, 800, 600);
+        return window;
+    }
 
     gtk_window_maximize(GTK_WINDOW(window));
     if (above)
@@ -58,32 +63,43 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 }
 
 
-static GtkWidget *inspectorInspectWebViewCb(WebKitWebInspector *inspector, WebKitWebView *webView, GtkWindow* window)
+
+WebKitWebView* inspector_create(WebKitWebInspector *inspector,
+        WebKitWebView *web_view, gpointer user_data)
 {
-    GtkWidget *inspectorWindow = launcherInspectorWindowNew(inspector, window);
-    return GTK_WIDGET(launcherInspectorWindowGetWebView(LAUNCHER_INSPECTOR_WINDOW(inspectorWindow)));
+    GtkWidget* win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_widget_set_size_request(win, 800, 500);
+    GtkWidget* web = webkit_web_view_new();
+    gtk_container_add(GTK_CONTAINER(win), web);
+    gtk_widget_show_all(win);
+    return web;
+}
+void inspector_uri_change()
+{
+    puts("uri_change");
+}
+void inspector_show()
+{
+    puts("uri_show");
 }
 
 static bool webview_key_release_cb(GtkWidget* webview, 
         GdkEvent* event, gpointer data)
 {
-    GtkWidget* insp = NULL;
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
         case GDK_KEY_F5: 
             webkit_web_view_reload(WEBKIT_WEB_VIEW(webview));
             break;
         case GDK_KEY_F12:
-            insp = inspectorInspectWebViewCb(
-                    webkit_web_view_get_inspector(WEBKIT_WEB_VIEW(webview)),
-                    WEBKIT_WEB_VIEW(webview), 
-                    NULL);
-            gtk_widget_show(insp);
-            break;
+            {
+                break;
+            }
     }
 
     return FALSE;
 }
+
 
 static void
 d_webview_init(DWebView *dwebview)
@@ -91,13 +107,25 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "draw", G_CALLBACK(_erase_background), NULL);
+    g_signal_connect(G_OBJECT(webview), "draw", 
+            G_CALLBACK(_erase_background), NULL);
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
-    g_signal_connect_after(webkit_web_view_get_inspector(webview),
-            "inspect-web-view", G_CALLBACK(inspectorInspectWebViewCb), NULL);
-    g_signal_connect(webview, "key-release-event", G_CALLBACK(webview_key_release_cb), NULL);
+
+    g_signal_connect(webview, "key-release-event", 
+            G_CALLBACK(webview_key_release_cb), NULL);
+
+    WebKitWebInspector *inspector = webkit_web_view_get_inspector(
+            WEBKIT_WEB_VIEW(webview));
+    g_assert(inspector != NULL);
+    g_signal_connect_after(inspector, "inspect-web-view", 
+            G_CALLBACK(inspector_create), NULL);
+    /*g_signal_connect_after(inspector, "show-window", */
+            /*G_CALLBACK(inspector_show), NULL);*/
+    /*g_signal_connect_after(inspector, "notify::inspected-uri", */
+            /*G_CALLBACK(inspector_uri_change), NULL);*/
+
 
 }
 

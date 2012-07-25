@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
 
-    GtkWidget *w = create_web_container(TRUE);
+    GtkWidget *w = create_web_container(FALSE, TRUE);
     //GtkWidget *w = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     GtkWidget *tb = d_taskbar_new();
 

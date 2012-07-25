@@ -29,7 +29,7 @@ struct _DWebViewClass {
 };
 
 
-GtkWidget* create_web_container(bool above);
+GtkWidget* create_web_container(bool normal, bool above);
 GtkWidget* d_webview_new();
 GtkWidget* d_webview_new_with_uri();
 

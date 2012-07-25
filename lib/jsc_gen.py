@@ -1,8 +1,12 @@
 JSC_PATH = "jsc_extension/"
 modules = []
 
+
 def register(m):
+    if m.up_class.name != "Desktop" and modules.count(m.up_class) == 0:
+        modules.append(m.up_class)
     modules.append(m);
+
 def generate():
     temp = """
 #include "ddesktop.h"
@@ -12,22 +16,23 @@ extern JSClassRef get_Desktop_class();
 void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data)
 {
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
-    JSObjectRef class_desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
+    JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
 
     %(objs)s
 
     JSStringRef str = JSStringCreateWithUTF8CString("Desktop");
-    JSObjectSetProperty(context, global_obj, str, class_desktop,
+    JSObjectSetProperty(context, global_obj, str, class_Desktop,
             kJSClassAttributeNone, NULL);
     JSStringRelease(str);
 }
 """
     objs = ""
     objs_state = ""
+    modules.reverse()
     for m in modules:
         if m.name != "Desktop":
             objs += m.str_install()
-            objs_state += "extern JSClassRef get_%s_class();" % m.name
+            objs_state += "extern JSClassRef get_%s_class();\n" % m.name
     f = open(JSC_PATH + "init.c", "w")
     f.write(temp % {"objs": objs, "objs_state": objs_state })
     f.close()
@@ -131,13 +136,15 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 "params_init" : params_init,
                 "func_call" : self.func_call(),
                 "params_clear" : params_clear,
-                "value_return" : self.r_value.str(),
+                "value_return" : self.r_value.return_value(),
                 }
     temp_return = """
-    void* data = NULL;
-    data = JSObjectGetPrivate(thisObject);
+    JSData* data = g_new0(JSData, 1);
+    data->priv = JSObjectGetPrivate(thisObject);
+    data->ctx = context;
     %(return_value)s %(name)s (%(params)s);
     %(eval_after)s
+    g_free(data);
 """
     def func_call(self):
         params_str = []
@@ -145,18 +152,19 @@ static JSValueRef __%(name)s__ (JSContextRef context,
             params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
-                "return_value" : self.r_value.str_eval_before(),
-                "eval_after" : self.r_value.str_eval_after(),
+                "return_value" : self.r_value.eval_before(),
+                "eval_after" : self.r_value.eval_after(),
                 "name": self.name,
                 "params" : ', '.join(params_str)
                 }
     def str_def(self):
         return Function.temp_def % { "name" : self.name }
 
-class Module:
+class Class:
     temp_class_def = """
 #include <JavaScriptCore/JSContextRef.h>
 #include <JavaScriptCore/JSStringRef.h>
+#include "ddesktop.h"
 #include <glib.h>
 
 %(funcs_def)s
@@ -195,11 +203,32 @@ JSClassRef get_%(name)s_class()
 }
 """
 
-    def __init__(self, name, desc, *args):
+    def __init__(self, name, desc=None, *args):
         self.name = name
         self.description = desc
-        self.funcs = args
+        self.funcs = []
+        self.values = []
+        self.child_modules = []
+
+
+
+        for arg in args:
+            if isinstance(arg, Function):
+                self.funcs.append(arg)
+            elif isinstance(arg, Value):
+                self.values.append(arg)
+            elif isinstance(arg, Class):
+                arg.up_class = self
+                arg.name = arg.up_class.name + "_" + arg.name
+                self.child_modules.append(arg)
+
+        class PseudoMoudle:
+            name = "Desktop"
+        if not hasattr(self, "up_class"):
+            self.up_class = PseudoMoudle
+
         register(self)
+
 
     def str(self):
         funcs_def = ""
@@ -207,20 +236,26 @@ JSClassRef get_%(name)s_class()
         for f in self.funcs:
             funcs_def += f.str()
             funcs_state += f.str_def()
-        return Module.temp_class_def % {
+        contents = Class.temp_class_def % {
                 "name" : self.name,
                 "funcs_def" : funcs_def,
                 "funcs_state" : funcs_state
                 }
+
+        for m in self.child_modules:
+            contents += m.str()
+
+        return contents;
+
     def str_install(self):
         temp = """
     JSObjectRef class_%(name)s = JSObjectMake(context, get_%(name)s_class(), (void*)data);
     JSStringRef str_%(name)s = JSStringCreateWithUTF8CString("%(name)s");
-    JSObjectSetProperty(context, class_desktop, str_%(name)s, class_%(name)s,
+    JSObjectSetProperty(context, class_%(up_class)s, str_%(name)s, class_%(name)s,
             kJSClassAttributeNone, NULL);
     JSStringRelease(str_%(name)s);
 """
-        return temp % {"name" : self.name}
+        return temp % {"name" : self.name, "up_class" : self.up_class.name}
 
 class Return:
     def __init__(self, t):
@@ -259,11 +294,28 @@ class JSCode(Params):
     JSStringRef scriptJS = JSStringCreateWithUTF8CString(c_return);
     g_free(c_return);
     """
+
+class JSValue(Params):
+    def __init__(self, *args):
+        Params.__init__(self, *args)
+    def str_init(self):
+        return "JSValueRef p_%(pos)d = arguments[%(pos)d];\n" % {"pos":self.position}
+    def eval_before(self):
+        return "JSValueRef c_return = "
+    def eval_after(self):
+        return ""
+    def return_value(self):
+        return "return c_return;"
+
 class Data(Params):
     pass
 
 class Description:
     def __init__(self, t):
+        pass
+
+class Value:
+    def __init__(self, name):
         pass
 
 
@@ -272,7 +324,7 @@ for root, dirs, files in os.walk(JSC_PATH):
     for f in files:
         if f.endswith('.cfg'):
             path = os.path.join(root, f)
-            path2 = os.path.join(root,  "gen_" + f.rstrip(".cfg") + ".c")
+            path2 = os.path.join(root,  "gen/gen_" + f.rstrip(".cfg") + ".c")
             f = open(path)
             content = f.read()
             try :
@@ -280,6 +332,7 @@ for root, dirs, files in os.walk(JSC_PATH):
             except:
                 print "Warnings: format error. (%s)" % path
                 f.close()
+                raise
             else:
                 f = open(path2, "w")
                 f.write(m.str())
