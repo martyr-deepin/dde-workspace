@@ -58,6 +58,45 @@ JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
     }
 }
 
+bool dynamic_set (JSContextRef ctx, JSObjectRef object, 
+        JSStringRef propertyName, JSValueRef value, JSValueRef* exception)
+{
+}
+
+JSValueRef dynamic_get (JSContextRef ctx, 
+        JSObjectRef object, JSStringRef propertyName, JSValueRef* exception)
+{
+    struct DBusObjectInfo* obj_info = JSObjectGetPrivate(object);
+
+    char* prop_name = jsstring_to_cstr(ctx, propertyName);
+    struct Property *p = g_hash_table_lookup(obj_info->properties, prop_name);
+    g_free(prop_name);
+
+    DBusMessage* msg = dbus_message_new_method_call(
+            obj_info->server, 
+            obj_info->path, 
+            "org.freedesktop.DBus.Properties",
+            "Get");
+    g_assert(msg != NULL);
+
+    DBusMessageIter iter;
+    dbus_message_iter_init_append(msg, &iter);
+
+    JSStringRef iface = JSStringCreateWithUTF8CString(obj_info->iface);
+    if (!js_to_dbus(ctx, JSValueMakeString(ctx, iface), &iter, "s", exception)) {
+        dbus_message_unref(msg);
+        return NULL;
+    }
+    JSStringRelease(iface);
+
+    if (!js_to_dbus(ctx, JSValueMakeString(ctx, propertyName), &iter, "s", exception)) {
+        dbus_message_unref(msg);
+        return NULL;
+    }
+
+    return call_sync(ctx, obj_info->connection, msg, p->signature, exception);
+}
+
 static 
 JSValueRef dynamic_function(JSContextRef ctx,
                             JSObjectRef function,
@@ -138,27 +177,42 @@ JSObjectRef get_dynamic_object(
         return JSObjectMake(ctx, class, obj_info);
     }
 
-    GString *class_name = g_string_new(NULL);
-    g_string_printf(class_name, "%s_%s_%s", 
-            obj_info->server, obj_info->path, obj_info->iface);
 
-    guint num_of_func = g_hash_table_size(obj_info->methods);
     guint num_of_prop = g_hash_table_size(obj_info->properties);
     guint num_of_signals = g_hash_table_size(obj_info->signals);
 
-    num_of_prop = num_of_signals = 0;
+    // async_funs +  sync_funs + connect + emit + NULL
+    JSStaticFunction* static_funcs = g_new0(JSStaticFunction, 3);
 
-    JSStaticFunction* static_funcs = g_new0(JSStaticFunction, 
-            num_of_signals + num_of_func * 2 + 1);
     JSStaticValue* static_values = g_new0(JSStaticValue, num_of_prop + 1);
 
-    GList *names = g_hash_table_get_keys(obj_info->methods);
-    for (int i = 0; i < num_of_func; i++) {
-        static_funcs[i].name = g_list_nth_data(names, i); 
-        static_funcs[i].callAsFunction = dynamic_function;
-        static_funcs[i].attributes = kJSPropertyAttributeReadOnly;
+
+    static_funcs[0].name = "connect";
+    static_funcs[0].callAsFunction = dynamic_function;
+    static_funcs[0].attributes = kJSPropertyAttributeReadOnly;
+    static_funcs[1].name = "emit";
+    static_funcs[1].callAsFunction = dynamic_function;
+    static_funcs[1].attributes = kJSPropertyAttributeReadOnly;
+
+    GList *props = g_hash_table_get_keys(obj_info->properties);
+    for (int i = 0; i < num_of_prop; i++) {
+        const char *p_name = g_list_nth_data(props, i);
+        struct Property *prop = g_hash_table_lookup(obj_info->properties, p_name);
+
+        static_values[i].name = prop->name;
+        static_values[i].attributes = prop->access;
+
+        //default read write
+        if (prop->access == kJSPropertyAttributeNone)  {
+            static_values[i].setProperty = dynamic_set;
+        }
+
+        static_values[i].getProperty = dynamic_get;
     }
 
+    GString *class_name = g_string_new(NULL);
+    g_string_printf(class_name, "%s_%s_%s", 
+            obj_info->server, obj_info->path, obj_info->iface);
     JSClassDefinition class_def = {
         0,
         kJSClassAttributeNone,
@@ -181,5 +235,17 @@ JSObjectRef get_dynamic_object(
     g_string_free(class_name, FALSE);
 
     class = JSClassCreate(&class_def);
-    return JSObjectMake(ctx, class, obj_info);
+
+    JSObjectRef obj = JSObjectMake(ctx, class, obj_info);
+
+    guint num_of_func = g_hash_table_size(obj_info->methods);
+    GList *funcs = g_hash_table_get_keys(obj_info->methods);
+    for (int i = 0; i < num_of_func; i++) {
+        JSStringRef f_name = JSStringCreateWithUTF8CString(g_list_nth_data(funcs, i));
+        JSObjectSetProperty(ctx, obj, f_name, 
+                JSObjectMakeFunctionWithCallback(ctx, f_name, dynamic_function),
+                kJSPropertyAttributeReadOnly, NULL);
+        JSStringRelease(f_name);
+    }
+    return obj;
 }

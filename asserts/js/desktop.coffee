@@ -43,6 +43,6 @@ $ ->
         #"org.freedesktop.DBus.Introspectable")
     #intro.Introspect()
 
-    echo shell.Screenshot(true, true, 1, "/dev/shm/a.png")
+    echo shell.Screenshot(true, true, "/dev/shm/a.png")
 
 

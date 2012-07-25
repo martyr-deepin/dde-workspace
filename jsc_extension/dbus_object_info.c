@@ -5,6 +5,9 @@
 
 #include "dbus_object_info.h"
 
+
+
+
 struct DBusObjectInfo *c_obj_info;
 struct Method *c_method;
 struct Signal *c_signal;
@@ -58,7 +61,7 @@ void parse_property(const gchar **names, const gchar **values)
 
     while (*n_c) {
         if (g_strcmp0(*n_c, "type") == 0) {
-            c_property->signature = g_strdup(*v_c);
+            c_property->signature = g_slist_append(c_property->signature, g_strdup(*v_c));
         }
         if (g_strcmp0(*n_c, "name") == 0) {
             c_property->name = g_strdup(*v_c);
@@ -66,9 +69,9 @@ void parse_property(const gchar **names, const gchar **values)
 
         if (g_strcmp0(*n_c, "access") == 0) {
             if (g_strcmp0(*v_c, "read") == 0)
-                c_property->access = READ;
+                c_property->access = kJSPropertyAttributeReadOnly;
             else if (g_strcmp0(*v_c, "readwrite") == 0) 
-                c_property->access = READWRITE;
+                c_property->access = kJSPropertyAttributeNone;
             else
                 g_assert_not_reached();
         }

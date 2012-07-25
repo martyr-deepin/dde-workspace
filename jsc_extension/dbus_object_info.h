@@ -3,7 +3,7 @@
 #include <glib.h>
 #include <dbus/dbus.h>
 
-
+#include <JavaScriptCore/JSObjectRef.h>
 struct DBusObjectInfo {
     DBusConnection* connection;
     char* server;
@@ -32,8 +32,8 @@ enum Access {
 };
 struct Property {
     char* name;
-    char* signature;
-    enum Access access;
+    GSList* signature;
+    JSPropertyAttributes access;
 };
 
 struct DBusObjectInfo* 
