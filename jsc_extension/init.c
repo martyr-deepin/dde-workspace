@@ -1,12 +1,12 @@
 
-#include "ddesktop.h"
+#include "jsextension.h"
 #include <JavaScriptCore/JSStringRef.h>
 extern JSClassRef get_Desktop_class();
 extern JSClassRef get_DBus_class();
 extern JSClassRef get_DBus_Bus_class();
 extern JSClassRef get_Core_class();
 
-void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data)
+void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
 {
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);

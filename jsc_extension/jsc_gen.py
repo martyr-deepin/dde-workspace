@@ -1,4 +1,6 @@
-JSC_PATH = "jsc_extension/"
+#!/usr/bin/python2
+
+JSC_PATH = "./"
 modules = []
 
 
@@ -9,11 +11,11 @@ def register(m):
 
 def generate():
     temp = """
-#include "ddesktop.h"
+#include "jsextension.h"
 #include <JavaScriptCore/JSStringRef.h>
 extern JSClassRef get_Desktop_class();
 %(objs_state)s
-void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data)
+void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
 {
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
@@ -48,6 +50,19 @@ class Params:
         return ""
     def doc(self):
         pass
+
+class Property:
+    def __init__(self, *args):
+        self.properties = args
+    def str(self):
+        tmp = """
+JSValueRef %(set_func)s (JSContextRef ctx, JSObjectRef obj,
+                JSStringRef prop_name, JSValueRef* exception)
+{
+}
+"""
+        return tmp
+
 
 class Number(Params):
     temp = """
@@ -142,6 +157,7 @@ static JSValueRef __%(name)s__ (JSContextRef context,
     JSData* data = g_new0(JSData, 1);
     data->priv = JSObjectGetPrivate(thisObject);
     data->ctx = context;
+    data->exception = exception;
     %(return_value)s %(name)s (%(params)s);
     %(eval_after)s
     g_free(data);
@@ -164,7 +180,7 @@ class Class:
     temp_class_def = """
 #include <JavaScriptCore/JSContextRef.h>
 #include <JavaScriptCore/JSStringRef.h>
-#include "ddesktop.h"
+#include "jsextension.h"
 #include <glib.h>
 
 %(funcs_def)s

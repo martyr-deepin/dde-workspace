@@ -1,5 +1,5 @@
 #include "webview.h"
-#include "ddesktop.h"
+#include "jsextension.h"
 #include "utils.h"
 
 GtkWidget* create_web_container(bool normal, bool above)
@@ -59,7 +59,7 @@ static void add_ddesktop_class(WebKitWebView *web_view,
     data->webview = GTK_WIDGET(web_view);
     data->tmp_region = cairo_region_create();
     data->global_region = cairo_region_create();
-    init_ddesktop(jsContext, data);
+    init_js_extension(jsContext, data);
 }
 
 
@@ -72,7 +72,7 @@ WebKitWebView* inspector_create(WebKitWebInspector *inspector,
     GtkWidget* web = webkit_web_view_new();
     gtk_container_add(GTK_CONTAINER(win), web);
     gtk_widget_show_all(win);
-    return web;
+    return WEBKIT_WEB_VIEW(web);
 }
 void inspector_uri_change()
 {

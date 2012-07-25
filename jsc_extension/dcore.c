@@ -1,9 +1,11 @@
-#include "ddesktop.h"
+#include "jsextension.h"
 #include "desktop_entry.h"
 #include "forward_window.h"
 #include <assert.h>
+#include <webkit/webkitwebview.h>
 #include <webkit/WebKitDOMDocument.h>
 #include <webkit/WebKitDOMEventTarget.h>
+#include <webkit/WebKitDOMNodeList.h>
 #include <cairo/cairo.h>
 #include <string.h>
 
@@ -114,6 +116,7 @@ void run_command(const char* cmd)
 
 
 extern int d_dom_element_render(cairo_t* cr, WebKitDOMElement* el);
+
 WebKitDOMElement* el;
 bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer data)
 {
@@ -148,11 +151,11 @@ bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer dat
 void make_popup(const char* el_nouse, struct DDesktopData *data)
 {
     g_assert(data != NULL);
-    WebKitDOMDocument *dom = webkit_web_view_get_dom_document((WebKitWebView*)data->webview);
-    el =
-        webkit_dom_node_list_item(
-        webkit_dom_document_get_elements_by_class_name(dom, "ui-dialog"),
-        0);
+    WebKitWebView* webview = (WebKitWebView*)data->webview;
+    WebKitDOMDocument *dom = webkit_web_view_get_dom_document(webview);
+
+    el = (WebKitDOMElement*) webkit_dom_node_list_item(
+        webkit_dom_document_get_elements_by_class_name(dom, "ui-dialog"), 0);
 
 
     GtkWidget* popup = d_forward_window_new(gtk_widget_get_window(data->webview));

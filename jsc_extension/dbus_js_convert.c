@@ -1,6 +1,6 @@
 #include <dbus/dbus.h>
 #include "dbus_js_convert.h"
-#include "ddesktop.h"
+#include "jsextension.h"
 
 #define CASE_STRING \
     case DBUS_TYPE_STRING:\
@@ -133,7 +133,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
         case DBUS_TYPE_BOOLEAN:
             {
                 dbus_bool_t value = JSValueToBoolean(ctx, jsvalue);
-                if (!dbus_message_iter_append_basic(iter, type, &value)) { 
+                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) { 
                     g_warning("signatuer:%c error!", type); 
                     return FALSE; 
                 }  else {
@@ -148,7 +148,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return FALSE;
                 }
                 double value = JSValueToNumber(ctx, jsvalue, NULL);
-                if (!dbus_message_iter_append_basic(iter, type, &value)) { 
+                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) { 
                     g_warning("signatuer:%c error!", type); 
                     return FALSE; 
                 } else {
@@ -159,7 +159,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
             {
                 char* value = jsvalue_to_cstr(ctx, jsvalue);
                 if (value == NULL ||
-                        !dbus_message_iter_append_basic(iter, type, &value)) {
+                        !dbus_message_iter_append_basic(iter, type, (void*)&value)) {
                     g_free(value);
                     FILL_EXCEPTION(exception, "jsvalue is not an string or memory not enough!");
                     return FALSE; 
@@ -259,7 +259,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         CASE_STRING
                         {
                             char *value = jsstring_to_cstr(ctx, key_str);
-                            dbus_message_iter_append_basic(&dict_iter, key_type, &value);
+                            dbus_message_iter_append_basic(&dict_iter, key_type, (void*)&value);
                             g_free(value);
                             break;
                         }
@@ -267,7 +267,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         CASE_NUMBER
                         {
                             //TODO detect illegal number format
-                            JSValueRef excp = NULL;
+                            JSValueRef excp; 
                             double value = JSValueToNumber(ctx, 
                                     JSValueMakeString(ctx, key_str), &excp);
 
@@ -276,7 +276,8 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                                 return FALSE;
                             }
 
-                            dbus_message_iter_append_basic(&dict_iter, key_type, &value);
+                            dbus_message_iter_append_basic(&dict_iter, key_type,
+                                    (void*)&value);
                             break;
                         }
                         default:
@@ -342,7 +343,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 //TODO: detect the signature of the jsvalue
                 DBusMessageIter sub_iter;
                 DBusSignatureIter v_iter;
-                char *v_sig;
+                const char *v_sig;
                 dbus_signature_iter_recurse(&s_iter, &v_iter);
                 v_sig = jsvalue_to_signature(ctx, jsvalue);
 
@@ -351,7 +352,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return FALSE;
                 }
 
-                OPEN_CONTAINER(iter, DBUS_TYPE_VARIANT, v_sig, &sub_iter);
+                OPEN_CONTAINER(iter, DBUS_TYPE_VARIANT, (char*)v_sig, &sub_iter);
 
                 if (!js_to_dbus(ctx, jsvalue, &sub_iter, v_sig, exception)) {
                     FILL_EXCEPTION(exception, "Failed to append variant contents with signature");
@@ -382,7 +383,7 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
         CASE_STRING
             {
                 const char *value = NULL;
-                dbus_message_iter_get_basic(iter, &value);
+                dbus_message_iter_get_basic(iter, (void*)&value);
 
                 JSStringRef js_string = JSStringCreateWithUTF8CString(value);
                 jsvalue = JSValueMakeString(ctx, js_string);
@@ -392,22 +393,22 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
         CASE_NUMBER
             {
                 dbus_uint64_t value = 0;
-                dbus_message_iter_get_basic(iter, &value);
+                dbus_message_iter_get_basic(iter, (void*)&value);
                 jsvalue = JSValueMakeNumber(ctx, value);
                 break;
             }
         case DBUS_TYPE_DOUBLE:
             {
-                double value = 0;
-                dbus_message_iter_get_basic(iter, &value);
-                jsvalue = JSValueMakeNumber(ctx, value);
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                jsvalue = JSValueMakeNumber(ctx, value.dbl);
                 break;
             }
         case DBUS_TYPE_BOOLEAN:
             {
-                gboolean value = NULL;
+                DBusBasicValue value;
                 dbus_message_iter_get_basic(iter, &value);
-                jsvalue = JSValueMakeBoolean(ctx, value);
+                jsvalue = JSValueMakeBoolean(ctx, value.bool_val);
                 break;
             }
         case DBUS_TYPE_VARIANT:

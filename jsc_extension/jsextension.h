@@ -1,10 +1,10 @@
-#ifndef __DCORE_H___
-#define __DCORE_H___
+#ifndef __JS_EXTENSION__
+#define __JS_EXTENSION__
 #include <JavaScriptCore/JSContextRef.h>
 
 #define FILL_EXCEPTION(excp, str) do { \
         JSStringRef string = JSStringCreateWithUTF8CString(#str); \
-        JSStringRef exc_str = JSValueMakeString(ctx, string); \
+        JSValueRef exc_str = JSValueMakeString(ctx, string); \
         JSStringRelease(string); \
         *excp= JSValueToObject(ctx, exc_str, NULL); \
 } while (0)
@@ -18,9 +18,10 @@ struct DDesktopData {
 typedef struct JSData {
     void* priv;
     JSContextRef ctx;
+    JSValueRef* exception;
 } JSData;
 
-void init_ddesktop(JSGlobalContextRef context, struct DDesktopData* data);
+void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data);
 
 #endif
 

@@ -7,7 +7,7 @@
 #include "dbus_introspect.h"
 #include "dbus_object_info.h"
 #include "dbus_js_convert.h"
-#include "ddesktop.h"
+#include "jsextension.h"
 
 #include <stdio.h>
 
@@ -18,7 +18,7 @@ void pp(gpointer data, gpointer user_data)
 }
 
 JSValueRef call_sync(JSContextRef ctx, DBusConnection* con, 
-        DBusMessage *msg, GSList* sigs_out)
+        DBusMessage *msg, GSList* sigs_out, JSValueRef* exception)
 {
     char *sig  = g_slist_nth_data(sigs_out, 0);
 
@@ -31,8 +31,8 @@ JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
     //
     
     if (reply == NULL) {
-        g_warning("Faild call this function...");
-        return JSValueMakeUndefined(ctx);
+        FILL_EXCEPTION(exception, "dbus daemon faild call this function...");
+        return NULL;
     } else {
         if (dbus_message_get_type(reply) == DBUS_MESSAGE_TYPE_METHOD_RETURN) {
             DBusMessageIter iter;
@@ -109,7 +109,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
         }
     }
 
-    ret = call_sync(ctx, obj_info->connection, msg, sigs_out);
+    ret = call_sync(ctx, obj_info->connection, msg, sigs_out, exception);
 
     if (msg != NULL) {
         dbus_message_unref(msg);
@@ -130,7 +130,8 @@ JSObjectRef get_dynamic_object(
     struct DBusObjectInfo* obj_info =
         get_build_object_info(con, server, path, iface);
 
-    obj_info->connection = dbus_g_connection_get_connection(con);
+    if (obj_info == NULL) //can't build object info
+        return NULL;
 
     JSClassRef class = get_cache_class(obj_info);
     if (class != NULL) {

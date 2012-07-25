@@ -1,4 +1,5 @@
 #include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
 #include <string.h>
 #include <glib.h>
 
@@ -267,7 +268,7 @@ struct DBusObjectInfo* get_build_object_info(
     }
 
     c_obj_info = g_new(struct DBusObjectInfo, 1);
-    c_obj_info->connection = con;
+    c_obj_info->connection = dbus_g_connection_get_connection(con);
     c_obj_info->methods = g_hash_table_new_full(g_str_hash, g_str_equal,
             NULL, method_free);
     c_obj_info->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
@@ -278,7 +279,11 @@ struct DBusObjectInfo* get_build_object_info(
     c_obj_info->path = g_strdup(path);
     c_obj_info->iface = g_strdup(interface);
 
+    //TODO: c_obj_info add to spool
+
     char* info_xml  = fetch_object_info(con, server, path);
+    if (info_xml == NULL)
+        return NULL;
     build_object_info(info_xml, interface);
     g_free(info_xml);
     return c_obj_info;

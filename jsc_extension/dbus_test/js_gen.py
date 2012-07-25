@@ -9,8 +9,7 @@ def translate(value):
     return v
 
 temp = """
-var s = Desktop.DBus.session_bus()
-window.test = Desktop.DBus.get_object(s, "orz.test", "/orz/test", "orz.test")
+window.test = Desktop.DBus.session_object("orz.test", "/orz/test", "orz.test")
 %(methods)s
 """
 temp_func = """
