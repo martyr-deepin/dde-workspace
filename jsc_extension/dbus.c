@@ -1,4 +1,5 @@
 #include <dbus/dbus-glib.h>
+#include <dbus/dbus.h>
 #include <glib.h>
 #include <JavaScriptCore/JavaScript.h>
 
@@ -8,6 +9,7 @@
 static gboolean init = FALSE;
 static DBusGConnection* sys_con = NULL;
 static DBusGConnection* session_con = NULL;
+
 
 void dbus_init()
 {

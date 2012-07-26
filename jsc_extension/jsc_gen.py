@@ -15,8 +15,15 @@ def generate():
 #include <JavaScriptCore/JSStringRef.h>
 extern JSClassRef get_Desktop_class();
 %(objs_state)s
+JSGlobalContextRef global_ctx = NULL;
+
+JSGlobalContextRef get_global_context()
+{
+    return global_ctx;
+}
 void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
 {
+    global_ctx = context;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
 

@@ -115,8 +115,9 @@ void run_command(const char* cmd)
 }
 
 
-extern int d_dom_element_render(cairo_t* cr, WebKitDOMElement* el);
+#ifdef __DEEPIN_WEBKIT__
 
+extern int d_dom_element_render(cairo_t* cr, WebKitDOMElement* el);
 WebKitDOMElement* el;
 bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer data)
 {
@@ -124,6 +125,7 @@ bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer dat
     DForwardWindow* popup = (DForwardWindow*)data;
     int x, y, width, height;
     /*d_dom_element_get_allocation(el, &x, &y, &width, &height);*/
+
 
     cairo_t *cr = gdk_cairo_create(gtk_widget_get_window((GtkWidget*)popup));
     /*cairo_translate(cr, 25, 0);*/
@@ -154,7 +156,7 @@ void make_popup(const char* el_nouse, struct DDesktopData *data)
     WebKitWebView* webview = (WebKitWebView*)data->webview;
     WebKitDOMDocument *dom = webkit_web_view_get_dom_document(webview);
 
-    el = (WebKitDOMElement*) webkit_dom_node_list_item(
+    el = webkit_dom_node_list_item(
         webkit_dom_document_get_elements_by_class_name(dom, "ui-dialog"), 0);
 
 
@@ -166,3 +168,9 @@ void make_popup(const char* el_nouse, struct DDesktopData *data)
     g_assert(data->webview != NULL);
     g_signal_connect(data->webview, "draw", G_CALLBACK(webview_changed), popup);
 }
+#else
+void make_popup(const char* el_nouse, struct DDesktopData *data)
+{
+    g_warning("this feature need deepin webkit support!"); 
+}
+#endif

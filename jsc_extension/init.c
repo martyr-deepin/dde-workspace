@@ -3,11 +3,17 @@
 #include <JavaScriptCore/JSStringRef.h>
 extern JSClassRef get_Desktop_class();
 extern JSClassRef get_DBus_class();
-extern JSClassRef get_DBus_Bus_class();
 extern JSClassRef get_Core_class();
 
+JSGlobalContextRef global_ctx = NULL;
+
+JSGlobalContextRef get_global_context()
+{
+    return global_ctx;
+}
 void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
 {
+    global_ctx = context;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
 
@@ -17,12 +23,6 @@ void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
     JSObjectSetProperty(context, class_Desktop, str_DBus, class_DBus,
             kJSClassAttributeNone, NULL);
     JSStringRelease(str_DBus);
-
-    JSObjectRef class_DBus_Bus = JSObjectMake(context, get_DBus_Bus_class(), (void*)data);
-    JSStringRef str_DBus_Bus = JSStringCreateWithUTF8CString("DBus_Bus");
-    JSObjectSetProperty(context, class_DBus, str_DBus_Bus, class_DBus_Bus,
-            kJSClassAttributeNone, NULL);
-    JSStringRelease(str_DBus_Bus);
 
     JSObjectRef class_Core = JSObjectMake(context, get_Core_class(), (void*)data);
     JSStringRef str_Core = JSStringCreateWithUTF8CString("Core");

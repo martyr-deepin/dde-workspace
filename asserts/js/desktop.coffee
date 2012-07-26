@@ -27,22 +27,3 @@ $ ->
         Desktop.Core.make_popup("dialog")
         $("#dialog").dialog "open"
         return false
-
-$ ->
-    window.shell = Desktop.DBus.session_object("org.gnome.Shell", 
-        "/org/gnome/Shell", "org.gnome.Shell")
-    #echo shell.ListExtensions()
-
-    window.notify = Desktop.DBus.session_object("org.gnome.Magnifier",
-        "/org/freedesktop/Notifications",
-        "org.freedesktop.Notifications")
-    echo notify.CloseNotification(0)
-
-    #intro = Desktop.DBus.get_object(s,
-        #"org.gnome.Shell", "/org/gnome/Shell",
-        #"org.freedesktop.DBus.Introspectable")
-    #intro.Introspect()
-
-    echo shell.Screenshot(true, true, "/dev/shm/a.png")
-
-

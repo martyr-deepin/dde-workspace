@@ -211,6 +211,8 @@ void parse_end(GMarkupParseContext *context,
 
     if (state == S_SIGNAL && g_strcmp0(element_name, "signal") == 0) {
         state == S_PENDING;
+        c_signal->match_rule = g_strdup_printf("type=signal,interface=%s,member=%s",
+                iface_name, c_signal->name);
         g_hash_table_insert(c_obj_info->signals, 
                 c_signal->name, c_signal);
     }
