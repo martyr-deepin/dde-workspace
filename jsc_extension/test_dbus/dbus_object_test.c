@@ -2,17 +2,8 @@
 #include "dbus_object_info.h"
 #include <stdio.h>
 
-void info_free(struct DBusObjectInfo* info) 
-{
-    g_hash_table_unref(info->methods);
-    g_hash_table_unref(info->properties);
-    g_hash_table_unref(info->signals);
-    g_free(info->server);
-    g_free(info->path);
-    g_free(info->iface);
+#define NUM 10
 
-    g_free(info);
-}
 int main()
 {
 
@@ -22,14 +13,15 @@ int main()
     if (con == NULL) {
         g_warning("ERRROR");
     }
+    struct DBusObjectInfo info[NUM];
+    for (int i=0; i<NUM; i++) {
+        struct DBusObjectInfo* info =  build_object_info(con, 
+                "org.gnome.Shell",
+                "/org/gnome/Shell",
+                "org.gnome.Shell");
+        dbus_object_info_free(info);
+    }
 
-    struct DBusObjectInfo* info =  get_build_object_info(con, 
-            "org.gnome.Shell",
-            "/org/gnome/Shell",
-            "org.gnome.Shell");
     dbus_g_connection_unref(con);
-
-    info_free(info);
-
     return 0;
 }

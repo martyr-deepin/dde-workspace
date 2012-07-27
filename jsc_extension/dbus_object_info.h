@@ -2,10 +2,13 @@
 #define __DBUS_OBJECT_INFO__
 #include <glib.h>
 #include <dbus/dbus.h>
-
+#include <JavaScriptCore/JSBase.h>
 #include <JavaScriptCore/JSObjectRef.h>
+
 struct DBusObjectInfo {
     DBusConnection* connection;
+    JSClassRef klass;
+    JSObjectRef obj;
     char* server;
     char* path;
     char* iface;
@@ -26,18 +29,17 @@ struct Signal {
     GSList* signature;
 };
 
-enum Access {
-    READ,
-    READWRITE
-};
+#include <JavaScriptCore/JSObjectRef.h>
 struct Property {
     char* name;
     GSList* signature;
     JSPropertyAttributes access;
 };
 
+
 struct DBusObjectInfo* 
-get_build_object_info(DBusGConnection* con, const char *server,
+build_object_info(DBusGConnection* con, const char *server,
         const char* path, const char *interface);
+void dbus_object_info_free(struct DBusObjectInfo* info);
 
 #endif

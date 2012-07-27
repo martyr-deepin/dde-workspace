@@ -6,13 +6,11 @@
 #include "dbus_object_info.h"
 
 
+static struct DBusObjectInfo *c_obj_info;
+static struct Method *c_method;
+static struct Signal *c_signal;
+static struct Property *c_property;
 
-
-struct DBusObjectInfo *c_obj_info;
-struct Method *c_method;
-struct Signal *c_signal;
-struct Property *c_property;
-const char* iface_name;
 
 enum State {
     S_NONE,
@@ -23,14 +21,15 @@ enum State {
 } state = S_NONE;
 
 
+
 static 
 void method_free(gpointer data)
 {
-    //TODO: MEMEORY LEAK 
     struct Method* m = (struct Method*)data;
     g_free(m->name);
     g_slist_free_full(m->signature_in, g_free);
     g_slist_free_full(m->signature_out, g_free);
+    g_free(data);
 }
 
 static
@@ -39,6 +38,7 @@ void signal_free(gpointer data)
     struct Signal* s = (struct Signal*)data;
     g_free(s->name);
     g_slist_free_full(s->signature, g_free);
+    g_free(data);
 }
 
 
@@ -48,6 +48,7 @@ void property_free(gpointer data)
     struct Property* p = (struct Property*)data;
     g_free(p->name);
     g_slist_free_full(p->signature, g_free);
+    g_free(data);
 }
 
 
@@ -119,10 +120,10 @@ void parse_parms(const gchar **names, const gchar **values)
     g_assert(type != NULL);
     if (in)  {
         c_method->signature_in = 
-            g_slist_append((GSList*)c_method->signature_in, g_strdup(type));
+            g_slist_append(c_method->signature_in, g_strdup(type));
     } else {
         c_method->signature_out = 
-            g_slist_append((GSList*)c_method->signature_out, g_strdup(type));
+            g_slist_append(c_method->signature_out, g_strdup(type));
     }
 }
 
@@ -141,7 +142,7 @@ void parse_start(GMarkupParseContext* context,
     if (state == S_NONE && g_strcmp0(element_name, "interface") == 0) {
         while (*name_cursor) {
             if (g_strcmp0(*name_cursor, "name") == 0 &&
-                g_strcmp0(*value_cursor, iface_name) == 0) {
+                g_strcmp0(*value_cursor, c_obj_info->iface) == 0) {
                 state = S_PENDING;
                 return;
             }
@@ -213,7 +214,7 @@ void parse_end(GMarkupParseContext *context,
 }
 
 static
-void build_object_info(const char* xml, const char* interface)
+void build_current_object_info(const char* xml, const char* interface)
 {
     g_assert(xml != NULL);
     static GMarkupParser parser = {
@@ -223,67 +224,63 @@ void build_object_info(const char* xml, const char* interface)
         .passthrough = NULL,
         .error = NULL
     };
-    iface_name = interface;
 
     GMarkupParseContext *context = g_markup_parse_context_new(&parser, 0, NULL, NULL);
     if (g_markup_parse_context_parse(context, xml, strlen(xml), NULL) 
             == FALSE) {
         g_warning("introspect's xml content error!\n");
     }
-    iface_name = NULL;
     g_markup_parse_context_free(context);
 }
 
-char* fetch_object_info(DBusGConnection* con, 
-        const char* server, const char* path)
-{
-    char* info = NULL;
-    DBusGProxy *proxy = dbus_g_proxy_new_for_name(con,
-            server, path,
-            "org.freedesktop.DBus.Introspectable");
-    if (!dbus_g_proxy_call(proxy, "Introspect", NULL, G_TYPE_INVALID,
-            G_TYPE_STRING, &info, G_TYPE_INVALID)) {
-        g_warning("Error When fetcho introspectable infomation.");
-    }
-    g_object_unref(proxy);
-    return info;
-}
 
-struct DBusObjectInfo* get_cache_object_info()
-{
-    //TODO: cached
-     return NULL;
-}
-
-struct DBusObjectInfo* get_build_object_info(
+struct DBusObjectInfo* build_object_info(
         DBusGConnection* con,
         const char *server, const char* path,
         const char *interface)
 {
+    struct DBusObjectInfo *obj_info = g_new(struct DBusObjectInfo, 1);
+    c_obj_info = obj_info;
+    obj_info->connection = dbus_g_connection_get_connection(con);
+    obj_info->methods = g_hash_table_new_full(g_str_hash, g_str_equal,
+          NULL, method_free);
+    obj_info->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
+          NULL, property_free);
+    obj_info->signals = g_hash_table_new_full(g_str_hash, g_str_equal,
+          NULL, signal_free);
+    obj_info->server = g_strdup(server);
+    obj_info->path = g_strdup(path);
+    obj_info->iface = g_strdup(interface);
 
-    c_obj_info = get_cache_object_info(server, path, interface);
-    if (c_obj_info != NULL) {
-        return c_obj_info;
+
+    char* info_xml = NULL;
+    DBusGProxy *proxy = dbus_g_proxy_new_for_name(con,
+            server, path,
+            "org.freedesktop.DBus.Introspectable");
+    if (!dbus_g_proxy_call(proxy, "Introspect", NULL, G_TYPE_INVALID,
+            G_TYPE_STRING, &info_xml, G_TYPE_INVALID)) {
+        g_warning("Error When fetcho introspectable infomation.");
     }
+    g_object_unref(proxy);
 
-    c_obj_info = g_new(struct DBusObjectInfo, 1);
-    c_obj_info->connection = dbus_g_connection_get_connection(con);
-    c_obj_info->methods = g_hash_table_new_full(g_str_hash, g_str_equal,
-            NULL, method_free);
-    c_obj_info->properties = g_hash_table_new_full(g_str_hash, g_str_equal,
-            NULL, property_free);
-    c_obj_info->signals = g_hash_table_new_full(g_str_hash, g_str_equal,
-            NULL, signal_free);
-    c_obj_info->server = g_strdup(server);
-    c_obj_info->path = g_strdup(path);
-    c_obj_info->iface = g_strdup(interface);
-
-    //TODO: c_obj_info add to spool
-
-    char* info_xml  = fetch_object_info(con, server, path);
     if (info_xml == NULL) 
         return NULL;
-    build_object_info(info_xml, interface);
+
+    build_current_object_info(info_xml, interface);
     g_free(info_xml);
-    return c_obj_info;
+    c_obj_info = NULL;
+    return obj_info;
+}
+
+void dbus_object_info_free(struct DBusObjectInfo* info)
+{
+    /*JSClassRelease(info->klass);*/
+    //TOOD free jsobjec?
+    g_free(info->server);
+    g_free(info->path);
+    g_free(info->iface);
+    g_hash_table_unref(info->methods);
+    g_hash_table_unref(info->properties);
+    g_hash_table_unref(info->signals);
+    g_free(info);
 }

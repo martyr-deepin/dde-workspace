@@ -35,7 +35,7 @@ JSValueRef sys_object(
         }
         g_assert(sys_con != NULL);
     }
-    JSValueRef value = get_dynamic_object(js->ctx, sys_con,
+    JSValueRef value = get_dbus_object(js->ctx, sys_con,
             bus_name, object_path, interface);
     if (value == NULL) {
         JSContextRef ctx = js->ctx;
@@ -74,7 +74,7 @@ JSValueRef session_object(
         }
         g_assert(session_con != NULL);
     }
-    JSValueRef value = get_dynamic_object(js->ctx, session_con,
+    JSValueRef value = get_dbus_object(js->ctx, session_con,
             bus_name, object_path, interface);
     if (value == NULL) {
         JSContextRef ctx = js->ctx;

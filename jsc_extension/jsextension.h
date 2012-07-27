@@ -22,7 +22,11 @@ typedef struct JSData {
 } JSData;
 
 void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data);
+
+void destroy_js_extension();
+
 JSGlobalContextRef get_global_context();
+
 
 #endif
 

@@ -1,6 +1,6 @@
 C_FLAGS = `pkg-config --libs --cflags webkitgtk-3.0 dbus-glib-1 x11` -std=c99 -g
 
-DEEPIN_FLAGS = $(C_FLAGS) -D__DEEPIN_WEBKIT__=1
+DEEPIN_FLAGS = $(C_FLAGS) -D__DEEPIN_WEBKIT__=1 -D__DBUSBASIC_VALUE__=1
 
 all: jsc_extension desktop
 
