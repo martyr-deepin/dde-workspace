@@ -80,6 +80,8 @@ class Number(Params):
 
     def str_init(self):
         return Number.temp % { "pos": self.position }
+    def raw(self):
+        return "double "
 
 class String(Params):
     def __init__(self, *args):
@@ -97,6 +99,8 @@ class String(Params):
     JSStringRelease(value_%(pos)d);
 """
 
+    def raw(self):
+        return "char * "
 
     def str_init(self):
         return String.temp % {'pos': self.position}
@@ -120,6 +124,7 @@ class String(Params):
 
 class Function:
     temp = """
+extern %(raw_return)s %(name)s(%(raw_params)s);
 static JSValueRef __%(name)s__ (JSContextRef context,
                             JSObjectRef function,
                             JSObjectRef thisObject,
@@ -147,12 +152,17 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         i = 0
         params_init = ""
         params_clear = ""
+        raw_params = []
         for p in self.params:
             p.set_position(i)
             i += 1
             params_init += p.str_init()
             params_clear += p.str_clear()
+            raw_params.append(p.raw())
+        raw_params.append("JSData*")
         return Function.temp % {
+                "raw_return" : self.r_value.raw(),
+                "raw_params" : ', '.join(raw_params),
                 "name" : self.name,
                 "p_num" : i,
                 "params_init" : params_init,
@@ -296,6 +306,8 @@ class Return:
 class Null:
     def __call__(self):
         return self
+    def raw(self):
+        return "void"
     def return_value(self):
         return "return JSValueMakeNull(context);"
     def eval_before(self):
@@ -310,6 +322,8 @@ class JSCode(Params):
     JSStringRelease(scriptJS);
     return r;
 """
+    def raw(self):
+        return "char *";
     def eval_before(self):
         return "gchar* c_return = "
     def eval_after(self):
@@ -321,6 +335,8 @@ class JSCode(Params):
 class JSValue(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
+    def raw(self):
+        return "JSValueRef "
     def str_init(self):
         return "JSValueRef p_%(pos)d = arguments[%(pos)d];\n" % {"pos":self.position}
     def eval_before(self):

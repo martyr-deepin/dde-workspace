@@ -2,6 +2,7 @@
 #include <dbus/dbus-glib.h>
 #include <JavaScriptCore/JSObjectRef.h>
 #include <JavaScriptCore/JSStringRef.h>
+#include <string.h>
 #include <glib.h>
 
 #include "dbus_introspect.h"
@@ -19,7 +20,6 @@ struct SignalInfo {
     GSList* signatures;
     const char* path;
     const char* iface;
-    DBusGConnection* con;
     JSObjectRef callback;
     JSContextRef ctx;
 };
@@ -91,7 +91,6 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
     sig_info->signatures = sig->signature;
     sig_info->path = info->path;
     sig_info->iface = info->iface;
-    sig_info->con = dbus_g_connection_get_connection(info->connection);
     sig_info->callback = func;
     sig_info->ctx = get_global_context();
 

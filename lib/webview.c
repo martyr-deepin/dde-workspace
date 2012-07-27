@@ -38,8 +38,7 @@ static bool _erase_background(GtkWidget* widget,
 
     cr = gdk_cairo_create(gtk_widget_get_window(widget));
 
-    cairo_set_source_rgba(cr, 0, 0, 0, 1.0);
-    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
 
     cairo_destroy(cr);
@@ -107,8 +106,8 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "draw", 
-            G_CALLBACK(_erase_background), NULL);
+    //g_signal_connect(G_OBJECT(webview), "draw", 
+    //       G_CALLBACK(_erase_background), NULL);
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
