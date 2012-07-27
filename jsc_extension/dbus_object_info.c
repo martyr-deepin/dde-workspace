@@ -28,11 +28,9 @@ void method_free(gpointer data)
 {
     //TODO: MEMEORY LEAK 
     struct Method* m = (struct Method*)data;
-    /*g_free(m->name);*/
-    /*g_slist_free(m->signature_in);*/
-    /*g_slist_free(m->signature_out);*/
-    /*g_slist_free_full(m->signature_in, g_free);*/
-    /*g_slist_free_full(m->signature_out, g_free);*/
+    g_free(m->name);
+    g_slist_free_full(m->signature_in, g_free);
+    g_slist_free_full(m->signature_out, g_free);
 }
 
 static
@@ -49,7 +47,7 @@ void property_free(gpointer data)
 {
     struct Property* p = (struct Property*)data;
     g_free(p->name);
-    g_free(p->signature);
+    g_slist_free_full(p->signature, g_free);
 }
 
 
@@ -205,16 +203,12 @@ void parse_end(GMarkupParseContext *context,
     }
     if (state == S_PROPERTY && g_strcmp0(element_name, "property") == 0) {
         state == S_PENDING;
-        g_hash_table_insert(c_obj_info->properties, 
-                c_property->name, c_property);
+        g_hash_table_insert(c_obj_info->properties, c_property->name, c_property);
     }
 
     if (state == S_SIGNAL && g_strcmp0(element_name, "signal") == 0) {
         state == S_PENDING;
-        c_signal->match_rule = g_strdup_printf("type=signal,interface=%s,member=%s",
-                iface_name, c_signal->name);
-        g_hash_table_insert(c_obj_info->signals, 
-                c_signal->name, c_signal);
+        g_hash_table_insert(c_obj_info->signals, c_signal->name, c_signal);
     }
 }
 
@@ -249,7 +243,7 @@ char* fetch_object_info(DBusGConnection* con,
             "org.freedesktop.DBus.Introspectable");
     if (!dbus_g_proxy_call(proxy, "Introspect", NULL, G_TYPE_INVALID,
             G_TYPE_STRING, &info, G_TYPE_INVALID)) {
-        g_warning("ERROR WHEN CAAL");
+        g_warning("Error When fetcho introspectable infomation.");
     }
     g_object_unref(proxy);
     return info;
@@ -287,7 +281,7 @@ struct DBusObjectInfo* get_build_object_info(
     //TODO: c_obj_info add to spool
 
     char* info_xml  = fetch_object_info(con, server, path);
-    if (info_xml == NULL)
+    if (info_xml == NULL) 
         return NULL;
     build_object_info(info_xml, interface);
     g_free(info_xml);

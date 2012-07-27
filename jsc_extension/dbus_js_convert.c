@@ -2,6 +2,34 @@
 #include "dbus_js_convert.h"
 #include "jsextension.h"
 
+#ifndef __DBUSBASIC_VALUE__
+typedef struct
+{
+    dbus_uint32_t first32;  /**< first 32 bits in the 8 bytes (beware endian issues) */
+    dbus_uint32_t second32; /**< second 32 bits in the 8 bytes (beware endian issues) */
+} DBus8ByteStruct;
+
+typedef union
+{
+    unsigned char bytes[8]; /**< as 8 individual bytes */
+    dbus_int16_t  i16;   /**< as int16 */
+    dbus_uint16_t u16;   /**< as int16 */
+    dbus_int32_t  i32;   /**< as int32 */
+    dbus_uint32_t u32;   /**< as int32 */
+    dbus_bool_t   bool_val; /**< as boolean */
+#ifdef DBUS_HAVE_INT64
+    dbus_int64_t  i64;   /**< as int64 */
+    dbus_uint64_t u64;   /**< as int64 */
+#endif
+    DBus8ByteStruct eight; /**< as 8-byte struct */
+    double dbl;          /**< as double */
+    unsigned char byt;   /**< as byte */
+    char *str;           /**< as char* (string, object path or signature) */
+    int fd;              /**< as Unix file descriptor */
+} DBusBasicValue;
+#endif
+
+
 #define CASE_STRING \
     case DBUS_TYPE_STRING:\
     case DBUS_TYPE_OBJECT_PATH:\

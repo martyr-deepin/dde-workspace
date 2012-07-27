@@ -1,5 +1,4 @@
 shell = Desktop.DBus.session_object("org.gnome.Shell", "/org/gnome/Shell", "org.gnome.Shell");
-test = Desktop.DBus.session_object("org.snyh.test", "/org/snyh/test", "org.snyh.test");
 
 var b1 = document.getElementById("b1");
 b1.addEventListener("click", function() {
@@ -26,6 +25,12 @@ b2.addEventListener("click", function() {
     setTimeout(function(){shell.OverviewActive=false;}, 1000);
 });
 
+
+
+test = Desktop.DBus.session("org.snyh.test");
+test.connect("t_sig", function(a, b, c) {
+    console.log(a, b, c);
+});
 var b3 = document.getElementById("b3");
 b3.addEventListener("click", function() {
     test.es(1,
@@ -36,11 +41,4 @@ b3.addEventListener("click", function() {
             alert("function reply error");
         }
     );
-});
-
-
-test = Desktop.DBus.session_object("org.snyh.test",
-        "/org/snyh/test", "org.snyh.test");
-test.connect("t_sig", function(a, b, c) {
-    console.log(a, b, c);
 });

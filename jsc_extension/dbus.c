@@ -19,7 +19,7 @@ void dbus_init()
 }
 
 JSValueRef sys_object(
-        const char* server,
+        const char* bus_name,
         const char* object_path,
         const char* interface,
         JSData* js)
@@ -36,7 +36,7 @@ JSValueRef sys_object(
         g_assert(sys_con != NULL);
     }
     JSValueRef value = get_dynamic_object(js->ctx, sys_con,
-            server, object_path, interface);
+            bus_name, object_path, interface);
     if (value == NULL) {
         JSContextRef ctx = js->ctx;
         FILL_EXCEPTION((js->exception), "Can't dynamic build this dbus interface)");
@@ -44,8 +44,21 @@ JSValueRef sys_object(
     return value;
 }
 
+JSValueRef sys(const char* bus_name, JSData* js)
+{
+    char** segs = g_strsplit(bus_name, ".", -1);
+    char* r = g_strjoinv("/", segs);
+    g_strfreev(segs);
+    char* path = g_strdup_printf("/%s", r);
+    g_free(r);
+
+    JSValueRef obj = sys_object(bus_name, path, bus_name, js);
+    g_free(path);
+    return obj;
+}
+
 JSValueRef session_object(
-        const char* server,
+        const char* bus_name,
         const char* object_path,
         const char* interface,
         JSData* js)
@@ -62,10 +75,23 @@ JSValueRef session_object(
         g_assert(session_con != NULL);
     }
     JSValueRef value = get_dynamic_object(js->ctx, session_con,
-            server, object_path, interface);
+            bus_name, object_path, interface);
     if (value == NULL) {
         JSContextRef ctx = js->ctx;
         FILL_EXCEPTION((js->exception), "Can't dynamic build this dbus interface)");
     }
     return value;
+}
+
+JSValueRef session(const char* bus_name, JSData* js)
+{
+    char** segs = g_strsplit(bus_name, ".", -1);
+    char* r = g_strjoinv("/", segs);
+    g_strfreev(segs);
+    char* path = g_strdup_printf("/%s", r);
+    g_free(r);
+
+    JSValueRef obj = session_object(bus_name, path, bus_name, js);
+    g_free(path);
+    return obj;
 }

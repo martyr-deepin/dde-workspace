@@ -2,7 +2,7 @@ var DBus = Desktop.DBus;
 
 // First create your DBus Object with bus_name, path, interface
 var gshell = DBus.session_object("org.gnome.Shell", "/org/gnome/Shell", "org.gnome.Shell");
-//or use the simple function
+//or use the simple mode, only supply the interface name
 var gshell_simple  = DBus.session("org.gnome.Shell");
 
 // after this the gshell is a starnd JavaScript Object
@@ -37,4 +37,3 @@ gshell.disconnect(id);
 
 // and can emit the signal (is this need implementation?)
 gshell.emit("ExtensionStatusChanged", uuid, state, "");
-

@@ -24,7 +24,6 @@ struct Method {
 struct Signal {
     char* name;
     GSList* signature;
-    char* match_rule;
 };
 
 enum Access {
