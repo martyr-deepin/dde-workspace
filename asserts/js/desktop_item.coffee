@@ -38,4 +38,8 @@ class DesktopEntry extends Item
     
 class Folder extends Item
 
-class IconGroup extends Item
+class Group extends Item
+
+class NormalFile extends Item
+
+class DesktopApplet extends Item

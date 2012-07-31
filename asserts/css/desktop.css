@@ -4,11 +4,27 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
+.applet {
+    float:left;
+}
+.applet .handlebar:hover {
+    background: rgba(100, 0, 100, 0.8);
+}
+
+#grid {
+    position: absolute;
+    left:0px;
+    top:0px;
+    z-index: -1000;
+    height: 800px;
+    width: 1024px;
+    background: rgba(0, 1, 1, 0.4);
+}
 
 
 .item {
     width: 80px;
-    height: 80px;
+    /*height: 80px;*/
     margin: 10px;
     text-align: center;
     font-size: small;
@@ -16,11 +32,14 @@ body {
     text-shadow: 0px 3px 3px black;
     /*display: list-item;*/
 }
+
+.item img {
+    width: 48px;
+    height: 48px;
+}
+
 .item:hover {
     background: rgba(100, 100, 0, 0.4);
-}
-.item_name:focus {
-    background: rgba(100, 100, 100, 0.4);
 }
 
 .ui-dialog {

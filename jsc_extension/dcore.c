@@ -168,9 +168,12 @@ void make_popup(const char* el_nouse, struct DDesktopData *data)
     g_assert(data->webview != NULL);
     g_signal_connect(data->webview, "draw", G_CALLBACK(webview_changed), popup);
 }
+
 #else
+
 void make_popup(const char* el_nouse, struct DDesktopData *data)
 {
     g_warning("this feature need deepin webkit support!"); 
 }
+
 #endif

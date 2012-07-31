@@ -13,8 +13,8 @@ desktop: desktop.c jsc_extension/*.c jsc_extension/gen/*.c lib/webview.c  lib/ut
 	gcc -o desktop $^  -I./jsc_extension -L~/.lib $(DEEPIN_FLAGS)
 
 
-taskbar: taskbar.c lib/dcore.c lib/webview.c lib/marshal.c lib/taskbar.c lib/tray_manager.c lib/utils.c lib/desktop_entry.c lib/LauncherInspectorWindow.c
-	gcc -o taskbar $^ `pkg-config --libs --cflags gtk+-3.0 webkitgtk-3.0` -std=c99 -lX11 -g
+taskbar: taskbar.c jsc_extension/*.c jsc_extension/gen/*.c lib/webview.c lib/marshal.c lib/taskbar.c lib/tray_manager.c lib/utils.c 
+	gcc -o taskbar $^  -I./jsc_extension -L~/.lib $(DEEPIN_FLAGS)
 
 tray: lib/testtray.c lib/tray_manager.c lib/marshal.c lib/taskbar.c lib/webview.c lib/dcore.c
 	gcc -o tray $^ `pkg-config --libs --cflags gtk+-2.0 webkit-1.0` -lX11 -std=c99

@@ -11,7 +11,6 @@ int main(int argc, char* argv[])
 
     GtkWidget *w = create_web_container(FALSE, FALSE);
     char* path = get_html_path("desktop.html");
-    puts(path);
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
 

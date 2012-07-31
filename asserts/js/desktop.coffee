@@ -18,6 +18,8 @@ render_item = (item) ->
 $ ->
     render_item item for item in Desktop.Core.get_desktop_items()
 
+    $(".applet").draggable()
+
     $("#dialog").dialog
         autoOpen: false
         show: "blind"

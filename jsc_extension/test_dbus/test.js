@@ -27,18 +27,18 @@ b2.addEventListener("click", function() {
 
 
 
-test = Desktop.DBus.session("org.snyh.test");
-test.connect("t_sig", function(a, b, c) {
-    console.log(a, b, c);
-});
-var b3 = document.getElementById("b3");
-b3.addEventListener("click", function() {
-    test.es(1,
-        function(){
-            alert("funciton reply OK");
-        },
-        function() {
-            alert("function reply error");
-        }
-    );
-});
+//test = Desktop.DBus.session("org.snyh.test");
+//test.connect("t_sig", function(a, b, c) {
+    //console.log(a, b, c);
+//});
+//var b3 = document.getElementById("b3");
+//b3.addEventListener("click", function() {
+    //test.es(1,
+        //function(){
+            //alert("funciton reply OK");
+        //},
+        //function() {
+            //alert("function reply error");
+        //}
+    //);
+//});
