@@ -9,19 +9,13 @@
         *excp= JSValueToObject(ctx, exc_str, NULL); \
 } while (0)
 
-struct DDesktopData {
-    void* webview;
-    void* global_region;
-    void* tmp_region;
-};
-
 typedef struct JSData {
-    void* priv;
     JSContextRef ctx;
     JSValueRef* exception;
+    void* webview;
 } JSData;
 
-void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data);
+void init_js_extension(JSGlobalContextRef context, void* webview);
 
 void destroy_js_extension();
 

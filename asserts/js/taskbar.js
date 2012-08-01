@@ -1,27 +1,18 @@
-console.log("running..");
-try {
-    DCore;
-}  catch (err) {
-    console.log("no DCore");
-    DCore = new Object();
-    DCore.init_region = function() {}
-    DCore.modify_region = function() {}
-}
-
 DDesktop = new Object();
 
 DDesktop.init_region = function() {
-    DCore.modify_region(1, 0, 0, 0, 1280, $("#toolbar").height())
-    //DCore.modify_region(DCore.GLOBAL_REGION, DCore.REGION_OP_NEW, 0, 0, 1024, 30);
+    Desktop.Core.modify_region(1, 0, 0, 0, window.screen.availWidth, $("#toolbar").height());
+    Desktop.Core.modify_region(0, 0, 0, 0, 0, 0);
+    //Desktop.Core.modify_region(DCore.GLOBAL_REGION, DCore.REGION_OP_NEW, 0, 0, 1024, 30);
 }
 DDesktop.apply_region = function(x, y, w, h) {
-    DCore.modify_region(0, 1, x, y, w, h);
+    Desktop.Core.modify_region(0, 1, x, y, w, h);
 }
 DDesktop.clear_region = function() {
-    DCore.modify_region(0, 0, 0, 0, 0, 0);
+    Desktop.Core.modify_region(0, 0, 0, 0, 0, 0);
 }
 
-DDesktop.init_region()
+DDesktop.init_region();
 
 
 toggle = false;

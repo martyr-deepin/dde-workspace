@@ -324,7 +324,6 @@ tray_manager_handle_dock_request (TrayManager       *manager,
       gtk_widget_show(socket);
     }
   else {
-      puts("oh no.........\n");
     gtk_widget_destroy (socket);
   }
 }

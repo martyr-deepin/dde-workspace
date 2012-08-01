@@ -16,16 +16,22 @@ def generate():
 extern JSClassRef get_Desktop_class();
 %(objs_state)s
 JSGlobalContextRef global_ctx = NULL;
+void* __webview = NULL;
+void* get_global_webview()
+{
+    return __webview;
+}
 
 JSGlobalContextRef get_global_context()
 {
     return global_ctx;
 }
-void init_js_extension(JSGlobalContextRef context, struct DDesktopData* data)
+void init_js_extension(JSGlobalContextRef context, void* webview)
 {
     global_ctx = context;
+    __webview = webview;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
-    JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), (void*)data);
+    JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), NULL);
 
     %(objs)s
 
@@ -172,9 +178,9 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 }
     temp_return = """
     JSData* data = g_new0(JSData, 1);
-    data->priv = JSObjectGetPrivate(thisObject);
     data->ctx = context;
     data->exception = exception;
+    data->webview = get_global_webview();
     %(return_value)s %(name)s (%(params)s);
     %(eval_after)s
     g_free(data);
@@ -199,6 +205,8 @@ class Class:
 #include <JavaScriptCore/JSStringRef.h>
 #include "jsextension.h"
 #include <glib.h>
+
+extern void* get_global_webview();
 
 %(funcs_def)s
 
@@ -282,7 +290,7 @@ JSClassRef get_%(name)s_class()
 
     def str_install(self):
         temp = """
-    JSObjectRef class_%(name)s = JSObjectMake(context, get_%(name)s_class(), (void*)data);
+    JSObjectRef class_%(name)s = JSObjectMake(context, get_%(name)s_class(), NULL);
     JSStringRef str_%(name)s = JSStringCreateWithUTF8CString("%(name)s");
     JSObjectSetProperty(context, class_%(up_class)s, str_%(name)s, class_%(name)s,
             kJSClassAttributeNone, NULL);

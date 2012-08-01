@@ -99,7 +99,8 @@ char** list_theme(const char* theme)
 }
 
 /*
- * generate by gen_size
+ * TODO: write the gen_size.py
+ * generate by gen_size.py
  */
 char** list_size(int size)
 {

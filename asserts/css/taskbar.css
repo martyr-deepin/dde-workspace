@@ -2,7 +2,7 @@ body {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    background: rgba(0, 0, 0, 0.0);
+    background: rgba(0, 0, 0, 0);
 }
 
 #toolbar {
@@ -18,7 +18,7 @@ body {
 }
 
 #hwindow {
-    background: rgba(223, 240, 208, 0.9);
+    background: rgba(223, 240, 208, 0.8);
     height:200px;
     display: none;
     position: absolute;

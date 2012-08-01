@@ -22,31 +22,35 @@ enum RegionType {
     REGION_TMP = 0,
     REGION_GLOBAL,
 };
+cairo_region_t* tmp_region = NULL;
+cairo_region_t* global_region = NULL;
 
 
-static void apply_region(struct DDesktopData* data)
+static void apply_region(JSData* data)
 {
     GtkWidget* widget = data->webview;
     GdkWindow *window = gtk_widget_get_window(gtk_widget_get_toplevel(widget));
     cairo_region_t *region = cairo_region_create();
-    cairo_region_union(region, data->tmp_region);
-    cairo_region_union(region, data->global_region);
+    if (tmp_region != NULL)
+        cairo_region_union(region, tmp_region);
+    if (global_region != NULL)
+        cairo_region_union(region, global_region);
     gdk_window_shape_combine_region(window, region, 0, 0);
+    /*gdk_window_input_shape_combine_region(window, region, 0, 0);*/
 }
 
 
 static 
-void update_region(int type, const cairo_rectangle_int_t *rect, int op, struct DDesktopData *data)
+void update_region(int type, const cairo_rectangle_int_t *rect, int op, JSData *data)
 {
     if (op == REGION_OP_NEW && type == REGION_TMP) {
         //TODO: gobject auto free?
         /*data->tmp_region = gdk_region_rectangle(rect);*/
-        data->tmp_region = cairo_region_create_rectangle(rect);
+        tmp_region = cairo_region_create_rectangle(rect);
         apply_region(data);
         return;
     } else if (op == REGION_OP_NEW && type == REGION_GLOBAL) {
-        /*data->global_region = gdk_region_rectangle(rect);*/
-        data->global_region = cairo_region_create_rectangle(rect);
+        global_region = cairo_region_create_rectangle(rect);
         apply_region(data);
         return;
     }
@@ -55,8 +59,6 @@ void update_region(int type, const cairo_rectangle_int_t *rect, int op, struct D
     GdkRegion *global_region = data->global_region;
     GdkRegion *region = NULL;*/
 
-    cairo_region_t *tmp_region = data->tmp_region;
-    cairo_region_t *global_region = data->global_region;
     cairo_region_t *region = NULL;
 
     if (type == REGION_TMP)
@@ -85,17 +87,19 @@ void update_region(int type, const cairo_rectangle_int_t *rect, int op, struct D
             assert(!"this operation hasn't support!");
     }
     if (type == REGION_TMP)
-        data->tmp_region = region;
+        tmp_region = region;
     else
-        data->global_region = region;
+        global_region = region;
     apply_region(data);
 }
 
 
-void modify_region(int type, int x, int y, int width, int height, int op, struct DDesktopData *data)
+void modify_region(double type, double op, double x, double y, double width,
+        double height, JSData *data)
 {
-    cairo_rectangle_int_t rect = {x, y, width, height};
-    update_region(type, &rect, op, data);
+    g_assert(data != NULL);
+    cairo_rectangle_int_t rect = {(int)x, (int)y, (int)width, (int)height};
+    update_region((int)type, &rect, (int)op, data);
 }
 
 char* get_desktop_items()
@@ -150,7 +154,7 @@ bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer dat
     return FALSE;
 }
 
-void make_popup(const char* el_nouse, struct DDesktopData *data)
+void make_popup(const char* el_nouse, JSData *data)
 {
     g_assert(data != NULL);
     WebKitWebView* webview = (WebKitWebView*)data->webview;
@@ -171,7 +175,7 @@ void make_popup(const char* el_nouse, struct DDesktopData *data)
 
 #else
 
-void make_popup(const char* el_nouse, struct DDesktopData *data)
+void make_popup(const char* el_nouse, JSData *data)
 {
     g_warning("this feature need deepin webkit support!"); 
 }

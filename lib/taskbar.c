@@ -153,8 +153,8 @@ GtkWidget* d_taskbar_new()
     GtkWidget* taskbar = g_object_new(D_TASKBAR_TYPE, NULL);
     DTaskbarPrivate *priv = D_TASKBAR(taskbar)->priv;
 
-    g_signal_connect (priv->manager, "tray_icon_added", G_CALLBACK (tray_added), taskbar);
-    g_signal_connect (priv->manager, "tray_icon_removed", G_CALLBACK (tray_removed), NULL);
+    /*g_signal_connect (priv->manager, "tray_icon_added", G_CALLBACK (tray_added), taskbar);*/
+    /*g_signal_connect (priv->manager, "tray_icon_removed", G_CALLBACK (tray_removed), NULL);*/
     //g_signal_connect(taskbar, "size-allocate", G_CALLBACK(d1o_size_allocate), NULL);
     return taskbar;
 }

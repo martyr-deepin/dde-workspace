@@ -54,11 +54,7 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 {
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
 
-    struct DDesktopData* data = g_new0(struct DDesktopData, 1);
-    data->webview = GTK_WIDGET(web_view);
-    data->tmp_region = cairo_region_create();
-    data->global_region = cairo_region_create();
-    init_js_extension(jsContext, data);
+    init_js_extension(jsContext, (void*)web_view);
 }
 
 
