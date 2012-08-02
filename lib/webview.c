@@ -1,4 +1,4 @@
-#include "webview.h"
+#include "dwebview.h"
 #include "jsextension.h"
 #include "utils.h"
 
@@ -102,8 +102,9 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "draw", 
+    g_signal_connect(G_OBJECT(webview), "draw",
            G_CALLBACK(_erase_background), NULL);
+
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
