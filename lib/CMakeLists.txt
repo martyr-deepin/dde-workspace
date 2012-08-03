@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
 include_directories(${DWEBVIEW_INCLUDE_DIRS} "jsc_extension")
 
+execute_process(COMMAND "./jsc_extension//jsc_gen.py"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
 AUX_SOURCE_DIRECTORY(jsc_extension jsc_ext)
 AUX_SOURCE_DIRECTORY(jsc_extension/gen/ jsc_ext_gen)
 

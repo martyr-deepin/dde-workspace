@@ -1,6 +1,14 @@
 #!/usr/bin/python2
 
-JSC_PATH = "./"
+
+JSC_PATH = './jsc_extension/'
+
+try:
+    import os
+    os.mkdir(JSC_PATH + "./gen")
+except:
+    pass
+
 modules = []
 
 
@@ -48,7 +56,7 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
         if m.name != "Desktop":
             objs += m.str_install()
             objs_state += "extern JSClassRef get_%s_class();\n" % m.name
-    f = open(JSC_PATH + "init.c", "w")
+    f = open(JSC_PATH + "/init.c", "w")
     f.write(temp % {"objs": objs, "objs_state": objs_state })
     f.close()
 
