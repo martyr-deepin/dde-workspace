@@ -8,14 +8,12 @@ class Widget extends Module
         @id = id
 
     get_x: ->
-        node = @_$()[0]
-        return node.style.left
+        @get_position()[0]
     set_x: (x)->
         @set_position(x, -1)
 
     get_y: ->
-        node = @_$()[0]
-        return node.style.top
+        @get_position()[1]
     set_y: (y)->
         @set_position(-1, y)
 
@@ -27,12 +25,13 @@ class Widget extends Module
 
     get_position: ->
         node = @_$()[0]
-        [node.style.left, node.style.top]
+        return pixel_to_position(
+            node.style.left.replace("px", ""),
+            node.style.top.replace("px", "")
+        )
 
     set_position: (x, y) ->
         x = this.get_x() if x == -1
         y = this.get_y() if y == -1
         node = @_$()[0]
-        node.style.position = "fixed"
-        node.style.left = x
-        node.style.top = y
+        move_to_position(node, x, y)

@@ -2,10 +2,10 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link href="../common/css/bootstrap.css" rel="stylesheet">
+        <link href="../common/css/jquery.contextMenu.css" rel="stylesheet">
         <link href="asserts/css/desktop.css" rel="stylesheet">
     </head>
     <body>
-
         <!--all can display content should in the itemContainer,except the positioned element-->
         <div id="itemContainer">
 
@@ -19,50 +19,17 @@
         <canvas id="grid"></canvas>
 
         <script id="temp_item" type="text/x-jquery-tmpl">
-            <div draggable=true id="{{=id}}" class="{{=class}}" exec="{{=exec}}">
-                <img draggable=false src={{=icon}}>
+            <div draggable=true id="{{=id}}" class="{{=class}}" exec="{{=exec}}" path="{{=path}}">
+                <img draggable=false src="{{=icon}}">
                 <div class="item_name">{{=name}}</div>
             </div>
         </script>
         
-
-        <div id="popup">
-            <div id="dialog" title="test dialog">
-                <p> This is an animted dialog which is userful for displaying 
-                information.  中文测试
-                </p>
-            </div>
-        </div>
-
-
-        <ul id="itemmenu" class="contextMenu">
-            <li class="move">
-            <a href="#sort">Open</a>
-            </li>
-            <li class="move">
-            <a href="#sort">Delete</a>
-            </li>
-            <li class="move">
-            <a href="#move">Move</a>
-            </li>
-            <li class="move">
-            <a href="#sort">Property</a>
-            </li>
-        </ul>
-
-        <ul id="globalmenu" class="contextMenu">
-            <li class="sort">
-            <a href="#sort">Sort</a>
-            </li>
-            <li class="move">
-            <a href="#move">Add Widget</a>
-            </li>
-        </ul>
-
         <script type="text/javascript" src="../common/js/jquery-1.7.1.min.js"></script> 
-        <script type="text/javascript" src="../common/js/jquery-ui.min.js"></script>
+        <!--<script type="text/javascript" src="../common/js/jquery-ui.min.js"></script>-->
         <script type="text/javascript" src="../common/js/jsrender.js"></script>
-        <script type="text/javascript" src="../common/js/jquery.contextMenu.js"></script>
+        <script type="text/javascript" src="../common/js/jquery.contextMenu.js "></script>
+        <script type="text/javascript" src="../common/js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="../common/js/jquery.dnd.js"></script>
         <script type="text/javascript" src="asserts/js/desktop.js"> </script>
     </body>

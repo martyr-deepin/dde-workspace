@@ -191,15 +191,28 @@ char* lookup_icon_by_file(const char* path)
     return icon_path;
 }
 
-char* parse_normal_file(const char* path)
+
+const char* item_format = "{"
+    "type: \'%s\',"
+    "name: \'%s\',"
+    "icon: \'%s\',"
+    "exec: \'%s\',"
+    "path: \'%s\'"
+"},";
+
+char* parse_normal_file(const char* path, gboolean is_dir)
 {
     char* name = g_path_get_basename(path);
     char* icon = lookup_icon_by_file(path); 
-    const char* format = "{name:\'%s\', icon:\'%s\', exec:\' xdg-open %s\'},";
     char* ret = NULL;
-    ret = g_strdup_printf(format, name, icon, path);
+    char* exec = g_strdup_printf("xdg-open %s", path);
+    if (is_dir) 
+        ret = g_strdup_printf(item_format, "Dir", name, icon, exec, path);
+    else
+        ret = g_strdup_printf(item_format, "File", name, icon, exec, path);
     g_free(name);
     g_free(icon);
+    g_free(exec);
     return ret;
 }
 
@@ -220,14 +233,11 @@ char* parse_desktop_entry(const char* path)
     g_free(icon_name);
     g_free(type_name);
 
-
     char* name = g_key_file_get_value(de, group, "Name", NULL);
 
     char* exec = g_key_file_get_value(de, group, "Exec", NULL);
-    const char* format = "{name:\'%s\', icon:\'file://%s\', exec:\'%s\'},";
 
-    char* result = g_new(char, strlen(icon) + strlen(name) + strlen(exec) + strlen(format));
-    sprintf(result, format, name, icon, exec);
+    char* result = g_strdup_printf(item_format, "Entry", name, icon, exec, path);
 
     g_free(icon);
     g_free(name);
@@ -245,19 +255,18 @@ char* get_desktop_entries()
     const char* filename = NULL;
     char path[1000];
 
-    GStatBuf stat_buf;
     while ((filename = g_dir_read_name(dir)) != NULL) {
         g_sprintf(path, "%s/%s", base_dir, filename);
 
         if (g_str_has_suffix(filename, ".desktop")) {
-        // desktop entry file
             char* tmp = parse_desktop_entry(path);
             if (tmp != NULL) {
                 g_string_append(content, tmp);
                 g_free(tmp);
             }
         } else {
-            char* tmp = parse_normal_file(path);
+            gboolean is_dir = g_file_test(path, G_FILE_TEST_IS_DIR);
+            char* tmp = parse_normal_file(path, is_dir);
             if (tmp != NULL) {
                 g_string_append(content, tmp);
                 g_free(tmp);

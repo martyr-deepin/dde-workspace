@@ -47,7 +47,7 @@ body {
 }
 
 .item:hover {
-    background: rgba(100, 100, 0, 0.4);
+    /*background: rgba(100, 100, 0, 0.4);*/
 }
 
 .ui-dialog {
