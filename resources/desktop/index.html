@@ -6,24 +6,12 @@
         <link href="asserts/css/desktop.css" rel="stylesheet">
     </head>
     <body>
-        <!--all can display content should in the itemContainer,except the positioned element-->
-        <div id="itemContainer">
-
-            <div class="applet" draggable=true>
-                <div class="handlebar">Handle Bar</div>
-                <iframe src="../applets/clock/index.html" width="200px" height="200px" scrolling=no frameborder=no> </iframe>
-            </div>
-
-        </div>
-
         <canvas id="grid"></canvas>
+        <!--<div class="applet" draggable=true>-->
+            <!--<div class="handlebar">Handle Bar</div>-->
+            <!--<iframe src="../applets/clock/index.html" width="200px" height="200px" scrolling=no frameborder=no> </iframe>-->
+        <!--</div>-->
 
-        <script id="temp_item" type="text/x-jquery-tmpl">
-            <div draggable=true id="{{=id}}" class="{{=class}}" exec="{{=exec}}" path="{{=path}}">
-                <img draggable=false src="{{=icon}}">
-                <div class="item_name">{{=name}}</div>
-            </div>
-        </script>
         
         <script type="text/javascript" src="../common/js/jquery-1.7.1.min.js"></script> 
         <!--<script type="text/javascript" src="../common/js/jquery-ui.min.js"></script>-->

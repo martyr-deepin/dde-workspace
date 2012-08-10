@@ -4,8 +4,11 @@
 
 char* parse_desktop_entry(const char* path);
 char* get_desktop_entries();
-char* parse_normal_file(const char* path, gboolean is_dir);
+char* parse_normal_file(const char* path);
+void  move_to_desktop(const char* path);
 
+
+char* get_desktop_dir(gboolean update);
 
 char* get_icon_by_name(const char** name, int size);
 

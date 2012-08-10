@@ -1,45 +1,56 @@
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
-        @id = Desktop.Core.gen_id(@path)
-        @itemTemp = "temp_item"
-        @itemContainer = "itemContainer"
-        init_item_pos(@id)
+        @id = @path #Desktop.Core.gen_id(@path)
+        super
 
-    render : ->
-        item = $("##{@itemTemp}").render
-                "class" : "item"
-                "id" : @id
-                "name" : @name
-                "icon" : @icon
-                "exec" : @exec
-                "path" : @path
-        $("##{@itemContainer}").append item
+        el = @element
+        info = {x:0, y:0, width:1, height:1}
+        move_to_anywhere(this)
 
-        this._$()
-            .dblclick ->
-                Desktop.Core.run_command $(this)[0].getAttribute('exec')
+        el.draggable = true
+        el.innerHTML = "
+        <img draggable=false src=#{@icon}>
+            <div class=item_name>#{@name}</div>
+        </img>
+        "
+
+        @element.addEventListener('dblclick', ->
+                Desktop.Core.run_command exec
+        )
+        @init_drag?()
+        @init_drop?()
+
+    destroy: ->
+        info = load_position(this)
+        super
+        clear_occupy(info)
+
 
 class DesktopEntry extends Item
-    render : ->
-        super.render()
-        @_$().drag
-            "start": (evt) =>
+    init_drag: ->
+        el = @element
+        el.addEventListener('dragstart', (evt) =>
                 #evt.dataTransfer.setData("Text", @id)
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
                 evt.dataTransfer.effectAllowed = "move"
                 evt.dataTransfer.dropEffect = "move"
-            "end": (evt) =>
+        )
+        el.addEventListener('dragend', (evt) =>
                 if evt.dataTransfer.dropEffect == "move"
                     evt.preventDefault()
-                    node = evt.originalEvent.target
-                    pos = pixel_to_position(evt.originalEvent.x,
-                        evt.originalEvent.y)
+                    node = evt.target
+                    pos = pixel_to_position(evt.x,
+                        evt.y)
 
-                    move_to_position(node, pos[0], pos[1])
+                    info = localStorage.getObject(@path)
+                    info.x = pos[0]
+                    info.y = pos[1]
+                    move_to_position(this, info)
+
                 else if evt.dataTransfer.dropEffect == "link"
-                    node = evt.originalEvent.target
+                    node = evt.target
                     node.parentNode.removeChild(node)
-
+        )
     
 class Folder extends DesktopEntry
     icon_open: ->
@@ -48,8 +59,7 @@ class Folder extends DesktopEntry
          @_$().find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png"
 
 
-    render : ->
-        super.render()
+    init_drop1: ->
         @_$().drop
             drop: (evt) =>
                 evt.dataTransfer.getData("text/uri-list")
@@ -59,7 +69,6 @@ class Folder extends DesktopEntry
             over: (evt) =>
                 path = evt.dataTransfer.getData("text/uri-list")
                 if path == "file://#{@path}"
-                    echo "same"
                     evt.dataTransfer.dropEffect = "none"
                     evt.preventDefault()
                 else
@@ -75,16 +84,40 @@ class Folder extends DesktopEntry
             leave: (evt) =>
                 @icon_close()
 
+
 class NormalFile extends DesktopEntry
 
 class DesktopApplet extends Item
 
-create_item = (info) ->
-    switch info.type
-        when "Entry" then new DesktopEntry info.name, info.icon, info.exec, info.path
-        when "File" then new NormalFile info.name, info.icon, info.exec, info.path
-        when "Dir" then new Folder info.name, info.icon, info.exec, info.path
-        else echo "don't support type"
 
+$.contextMenu({
+    selector: ".Folder"
+    callback: (key, opt) ->
+        switch key
+            when "reload" then location.reload()
+            when "sort" then sort_item()
+            when "dele" then echo opt
+            when "preview" then echo "preview"
+    items: {
+        "sort": {name: "OpenFolder"}
+        "sepl":  "--------------"
+        "property": {name: "Property"}
+    }
+})
 
-
+$.contextMenu({
+    selector: ".DesktopEntry, .NormalFile, .Folder"
+    callback: (key, opt) ->
+        switch key
+            when "reload" then location.reload()
+            when "sort" then sort_item()
+            when "dele" then echo opt
+            when "preview" then echo "preview"
+    items: {
+        "preview": {name: "Preview"}
+        "dele": {name: "Delete"}
+        "sort": {name: "Sort Item"}
+        "sepl":  "-----DeskEntry---------",
+        "reload": {name: "Reload"}
+    }
+})

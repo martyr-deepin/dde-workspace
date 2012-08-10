@@ -20,6 +20,7 @@
 
 
 const char* DEFAULT_THEME = "gnome";
+const char* DESKTOP_NAME = "Desktop";
 
 
 // Icon Theme Specification
@@ -66,19 +67,25 @@ char** list_base()
     g_free(home);
 
 
-    char **dirs = g_strsplit(XDG_DATA_DIRS, ":", -1);
-    char **tmp = dirs;
-    while (*dirs != NULL) {
-        g_string_append_printf(str, ":%s/icons", *(dirs++));
+    const char* dir_str = XDG_DATA_DIRS;
+    if (dir_str != NULL) {
+        char **dirs = g_strsplit(dir_str, ":", -1);
+        char **tmp = dirs;
+        while (*tmp != NULL) {
+            g_string_append_printf(str, ":%s/icons", *(tmp++));
+        }
+        g_strfreev(dirs);
     }
-    g_strfreev(tmp);
 
-    dirs = g_strsplit(XDG_DATA_HOME, ":", -1);
-    tmp = dirs;
-    while (*dirs != NULL) {
-        g_string_append_printf(str, ":%s/icons", *(dirs++));
+    dir_str = XDG_DATA_HOME;
+    if (dir_str != NULL) {
+        char **dirs = g_strsplit(dir_str, ":", -1);
+        char **tmp = dirs;
+        while (*tmp != NULL) {
+            g_string_append_printf(str, ":%s/icons", *(tmp++));
+        }
+        g_strfreev(dirs);
     }
-    g_strfreev(tmp);
 
 
 
@@ -193,15 +200,17 @@ char* lookup_icon_by_file(const char* path)
 
 
 const char* item_format = "{"
-    "type: \'%s\',"
-    "name: \'%s\',"
-    "icon: \'%s\',"
-    "exec: \'%s\',"
-    "path: \'%s\'"
-"},";
+    "\"type\": \"%s\","
+    "\"name\": \"%s\","
+    "\"icon\": \"%s\","
+    "\"exec\": \"%s\","
+    "\"path\": \"%s\""
+"}";
 
-char* parse_normal_file(const char* path, gboolean is_dir)
+char* parse_normal_file(const char* path)
 {
+    gboolean is_dir = g_file_test(path, G_FILE_TEST_IS_DIR);
+
     char* name = g_path_get_basename(path);
     char* icon = lookup_icon_by_file(path); 
     char* ret = NULL;
@@ -249,8 +258,7 @@ char* get_desktop_entries()
 {
     GString *content = g_string_new("[");
 
-    char* base_dir = g_strconcat(g_environ_getenv(g_get_environ(), "HOME"),
-            "/Desktop", NULL);
+    char* base_dir = g_build_filename(GET_ENV("HOME"), DESKTOP_NAME, NULL);
     GDir *dir =  g_dir_open(base_dir, 0, NULL);
     const char* filename = NULL;
     char path[1000];
@@ -262,19 +270,20 @@ char* get_desktop_entries()
             char* tmp = parse_desktop_entry(path);
             if (tmp != NULL) {
                 g_string_append(content, tmp);
+                g_string_append_c(content, ',');
                 g_free(tmp);
             }
         } else {
-            gboolean is_dir = g_file_test(path, G_FILE_TEST_IS_DIR);
-            char* tmp = parse_normal_file(path, is_dir);
+            char* tmp = parse_normal_file(path);
             if (tmp != NULL) {
                 g_string_append(content, tmp);
+                g_string_append_c(content, ',');
                 g_free(tmp);
             }
         }
     }
     g_free(base_dir);
-    g_string_append(content, "]");
+    content = g_string_overwrite(content, content->len-1, "]");
     return content->str;
 }
 
@@ -294,4 +303,47 @@ char* lookup_icon(const char* theme,
     if (path == NULL)
         path = g_strdup("notfound");
     return path;
+}
+
+void move_to_desktop(const char* path)
+{
+    char* desktop_dir = get_desktop_dir(FALSE);
+    char* dir = g_path_get_dirname(path);
+
+    if (g_strcmp0(desktop_dir, dir) == 0) {
+        g_free(desktop_dir);
+        g_free(dir);
+        return;
+    } 
+
+    char* name = g_path_get_basename(path);
+    char* new_path = g_build_filename(desktop_dir, name, NULL);
+    int i= 1;
+    while (g_file_test(new_path, G_FILE_TEST_EXISTS)) {
+        g_free(new_path);
+        new_path = g_strdup_printf("%s/%s.(%d)", desktop_dir, name, i++);
+    }
+    g_free(name);
+
+
+    char *cmd = g_strdup_printf("mv \'%s\' \'%s\'", path, new_path);
+    g_printf("move to desktop: %s\n", cmd);
+    g_spawn_command_line_sync(cmd, NULL, NULL, NULL, NULL);
+    g_free(cmd);
+
+    g_free(new_path);
+    g_free(desktop_dir);
+    g_free(dir);
+}
+
+char* get_desktop_dir(gboolean update)
+{
+    static const char* dir = NULL;
+    if (update) {
+        /*xdg_use_dir_update();*/
+        /*g_free(dir);*/
+        // TODO:
+        dir = g_build_filename(GET_ENV("HOME"), "Desktop", NULL);
+    }
+    return g_strdup(dir);
 }

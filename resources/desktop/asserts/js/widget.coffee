@@ -1,37 +1,27 @@
 class Widget extends Module
-    _$: ->
-        $("##{@id}")
+    @object_table = {}
+    @look_up = (id) ->
+        @object_table[id]
 
-    get_id: ->
-        @id
-    set_id: (id) ->
-        @id = id
+    constructor: ->
+        #old_el = Widget.look_up(@id)
+        #if old_el?
+            #@element = old_el
+            #return
 
-    get_x: ->
-        @get_position()[0]
-    set_x: (x)->
-        @set_position(x, -1)
+        el = document.createElement('div')
+        el.setAttribute('class',  @constructor.name)
+        el.id = @id
+        document.body.appendChild(el)
+        @element = el
+        Widget.object_table[@id] = this
 
-    get_y: ->
-        @get_position()[1]
-    set_y: (y)->
-        @set_position(-1, y)
+    destroy: ->
+        document.body.removeChild(@element)
+        delete Widget.object_table[@id]
 
-    get_width: ->
-        @_$().outerWidth()
-
-    get_height: ->
-        @_$().outerHeight()
-
-    get_position: ->
-        node = @_$()[0]
-        return pixel_to_position(
-            node.style.left.replace("px", ""),
-            node.style.top.replace("px", "")
-        )
-
-    set_position: (x, y) ->
-        x = this.get_x() if x == -1
-        y = this.get_y() if y == -1
-        node = @_$()[0]
-        move_to_position(node, x, y)
+    move: (x, y) ->
+        style = @element.style
+        style.position = "fixed"
+        style.left = x
+        style.top = y

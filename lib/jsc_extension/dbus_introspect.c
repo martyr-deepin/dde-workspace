@@ -129,7 +129,7 @@ JSValueRef signal_connect(JSContextRef ctx,
                             JSValueRef *exception)
 {
     if (argumentCount != 2 ) {
-        FILL_EXCEPTION(exception, "connect must have two params");
+        FILL_EXCEPTION(ctx, exception, "connect must have two params");
         return NULL;
     }
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(this);
@@ -139,14 +139,14 @@ JSValueRef signal_connect(JSContextRef ctx,
     }
 
     if (!JSValueIsString(ctx, arguments[0])) {
-        FILL_EXCEPTION(exception, "the first params must the signal name");
+        FILL_EXCEPTION(ctx, exception, "the first params must the signal name");
         return NULL;
     }
 
     char* s_name = jsvalue_to_cstr(ctx, arguments[0]);
     struct Signal *signal = g_hash_table_lookup(obj_info->signals, s_name);
     if (signal == NULL) {
-        FILL_EXCEPTION(exception, "the interface hasn't this signal");
+        FILL_EXCEPTION(ctx, exception, "the interface hasn't this signal");
         return NULL;
     }
 
@@ -161,13 +161,13 @@ JSValueRef signal_connect(JSContextRef ctx,
 
     JSObjectRef callback = JSValueToObject(ctx, arguments[1], NULL);
     if (!JSObjectIsFunction(ctx, callback)) {
-        FILL_EXCEPTION(exception, "the params two must be an function!");
+        FILL_EXCEPTION(ctx, exception, "the params two must be an function!");
         return NULL;
     }
 
     int id = add_signal_callback(ctx, obj_info, signal, callback);
     if (id == -1) {
-        FILL_EXCEPTION(exception, "you have aleady watch the signal with this callback?");
+        FILL_EXCEPTION(ctx, exception, "you have aleady watch the signal with this callback?");
         return NULL;
     }
 
@@ -185,7 +185,7 @@ JSValueRef signal_disconnect(JSContextRef ctx,
 {
     /*obj_info;*/
     /*signal_id;*/
-    FILL_EXCEPTION(exception, "Not Implement signal dis_connect");
+    FILL_EXCEPTION(ctx, exception, "Not Implement signal dis_connect");
     return NULL;
 }
 static 
@@ -200,7 +200,7 @@ JSValueRef signal_emit(JSContextRef ctx,
     /*signal_name;*/
     /*signal_signature;*/
     /*arguments;*/
-    FILL_EXCEPTION(exception, "Not Implement signal emit");
+    FILL_EXCEPTION(ctx, exception, "Not Implement signal emit");
     return NULL;
 }
 
@@ -266,7 +266,7 @@ JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
     //
     
     if (reply == NULL) {
-        FILL_EXCEPTION(exception, "dbus daemon faild call this function...");
+        FILL_EXCEPTION(ctx, exception, "dbus daemon faild call this function...");
         return NULL;
     } else {
         if (dbus_message_get_type(reply) == DBUS_MESSAGE_TYPE_METHOD_RETURN) {
@@ -338,7 +338,7 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     if (call_sync(ctx, obj_info->connection, msg, tmp, exception) == NULL) {
         dbus_message_unref(msg);
         g_slist_free(tmp);
-        FILL_EXCEPTION(exception, "can't set this property");
+        FILL_EXCEPTION(ctx, exception, "can't set this property");
         return FALSE;
     } else {
         dbus_message_unref(msg);
@@ -417,27 +417,27 @@ JSValueRef dynamic_function(JSContextRef ctx,
         if (i == 1) {
             ok_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
             if (!JSObjectIsFunction(ctx, ok_callback)) {
-                FILL_EXCEPTION(exception, "the parmas's must be the ok callback");
+                FILL_EXCEPTION(ctx, exception, "the parmas's must be the ok callback");
                 return NULL;
             }
         } else if (i == 2) {
             error_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
             if (!JSObjectIsFunction(ctx, error_callback)) {
-                FILL_EXCEPTION(exception, "last parmas's must be the error callback");
+                FILL_EXCEPTION(ctx, exception, "last parmas's must be the error callback");
                 return NULL;
             }
             ok_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
             if (!JSObjectIsFunction(ctx, ok_callback)) {
-                FILL_EXCEPTION(exception, "the parmas's must be the ok callback");
+                FILL_EXCEPTION(ctx, exception, "the parmas's must be the ok callback");
                 return NULL;
             }
         } else if (i != 0) {
-            FILL_EXCEPTION(exception, "Signature didn't mached");
+            FILL_EXCEPTION(ctx, exception, "Signature didn't mached");
             return NULL;
         }
     } else {
         if (i != 0) {
-            FILL_EXCEPTION(exception, "Signature didn't mached");
+            FILL_EXCEPTION(ctx, exception, "Signature didn't mached");
             return NULL;
         }
     }

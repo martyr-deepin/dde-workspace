@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 
-
 JSC_PATH = './jsc_extension/'
 
 try:
@@ -334,7 +333,9 @@ class Null:
 class JSCode(Params):
     def return_value(self):
         return """
-    JSValueRef r = JSEvaluateScript(context, scriptJS, NULL, NULL, 1, NULL);
+    JSValueRef r = JSValueMakeFromJSONString(context, scriptJS);
+    if (r == NULL)
+        FILL_EXCEPTION(context, exception, "JSON Data Error");
     JSStringRelease(scriptJS);
     return r;
 """

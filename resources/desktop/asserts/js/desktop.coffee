@@ -9,17 +9,11 @@
 #)
 #--------------------------------------------------------------------------
 
+#back_info[info.path] = info for info in Desktop.Core.get_desktop_items()
+
 
 $ ->
-    create_item(info).render() for info in Desktop.Core.get_desktop_items()
+    load_desktop_entries()
 
     #$(".applet").draggable()
-
-    grid = document.querySelector("#grid")
-    grid.width = document.body.scrollWidth
-    grid.height = document.body.scrollHeight
-
-
-    ctx = grid.getContext('2d')
-    draw_grid(ctx)
 

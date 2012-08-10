@@ -127,29 +127,6 @@ gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass
   return JSValueIsInstanceOfConstructor(ctx, test, ctor, NULL);
 }
 
-char* jsstring_to_cstr(JSContextRef ctx, JSStringRef js_string)
-{
-  size_t len = JSStringGetMaximumUTF8CStringSize(js_string);
-  char *c_str = g_new(char, len);
-  JSStringGetUTF8CString(js_string, c_str, len);
-  return c_str;
-}
-
-char* jsvalue_to_cstr(JSContextRef ctx, JSValueRef jsvalue)
-{
-    if (!JSValueIsString(ctx, jsvalue))
-    {
-        g_warning("Convert an not JSStringRef to string!");
-        return NULL;
-    }
-    JSStringRef js_string = JSValueToStringCopy(ctx, jsvalue, NULL);
-    char* cstr = jsstring_to_cstr(ctx, js_string);
-    JSStringRelease(js_string);
-
-    return cstr;
-}
-
-
 gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
     DBusMessageIter *iter, const char* sig, JSValueRef* exception)
 {
@@ -172,7 +149,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
             CASE_NUMBER
             {
                 if (!JSValueIsNumber(ctx, jsvalue)) {
-                    FILL_EXCEPTION(exception, "jsvalue is not an number!");
+                    FILL_EXCEPTION(ctx, exception, "jsvalue is not an number!");
                     return FALSE;
                 }
                 double value = JSValueToNumber(ctx, jsvalue, NULL);
@@ -189,7 +166,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 if (value == NULL ||
                         !dbus_message_iter_append_basic(iter, type, (void*)&value)) {
                     g_free(value);
-                    FILL_EXCEPTION(exception, "jsvalue is not an string or memory not enough!");
+                    FILL_EXCEPTION(ctx, exception, "jsvalue is not an string or memory not enough!");
                     return FALSE; 
                 } else {
                     g_free(value);
@@ -200,7 +177,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
         case DBUS_TYPE_STRUCT:
             {
                 if (!jsvalue_instanceof(ctx, jsvalue, "Array")) {
-                    FILL_EXCEPTION(exception, "jsvalue should an array");
+                    FILL_EXCEPTION(ctx, exception, "jsvalue should an array");
                     return FALSE;
                 }
 
@@ -209,7 +186,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 int p_num = JSPropertyNameArrayGetCount(prop_names);
                 if (p_num == 0) {
                     JSPropertyNameArrayRelease(prop_names);
-                    FILL_EXCEPTION(exception, "Struct at least have one element!");
+                    FILL_EXCEPTION(ctx, exception, "Struct at least have one element!");
                     return FALSE;
                 }
 
@@ -227,7 +204,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
 
                     char *sig = dbus_signature_iter_get_signature(&sub_s_iter);
                     if (!js_to_dbus(ctx, value, &sub_iter, sig, exception)) {
-                        FILL_EXCEPTION(exception, "Failed append struct with sig:%sTODO");
+                        FILL_EXCEPTION(ctx, exception, "Failed append struct with sig:%sTODO");
                         dbus_free(sig);
                         return FALSE;
                     }
@@ -236,7 +213,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     if (i != p_num-1 && !dbus_signature_iter_next(&sub_s_iter)) {
                         JSPropertyNameArrayRelease(prop_names);
                         CLOSE_CONTAINER(iter, &sub_iter);
-                        FILL_EXCEPTION(exception, "to many params filled to struct");
+                        FILL_EXCEPTION(ctx, exception, "to many params filled to struct");
                         return FALSE;
                     }
                 }
@@ -244,7 +221,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 if (dbus_signature_iter_next(&sub_s_iter)) {
                     JSPropertyNameArrayRelease(prop_names);
                     CLOSE_CONTAINER(iter, &sub_iter);
-                    FILL_EXCEPTION(exception, "need more params by this struct");
+                    FILL_EXCEPTION(ctx, exception, "need more params by this struct");
                     return FALSE;
                 }
                 JSPropertyNameArrayRelease(prop_names);
@@ -300,7 +277,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                                     JSValueMakeString(ctx, key_str), &excp);
 
                             if (excp != NULL) {
-                                FILL_EXCEPTION(exception, "dict_entry's key must be an number to match the signature!");
+                                FILL_EXCEPTION(ctx, exception, "dict_entry's key must be an number to match the signature!");
                                 return FALSE;
                             }
 
@@ -310,7 +287,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         }
                         default:
                         {
-                            FILL_EXCEPTION(exception, "DICT_ENTRY's key must basic type, and you should not see this warning in javascript runtime");
+                            FILL_EXCEPTION(ctx, exception, "DICT_ENTRY's key must basic type, and you should not see this warning in javascript runtime");
                             dbus_free(val_sig);
                             JSPropertyNameArrayRelease(prop_names);
                             CLOSE_CONTAINER(iter, &sub_iter);
@@ -338,7 +315,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 DBusSignatureIter array_s_iter;
                 char *array_signature = NULL;
                 if (!jsvalue_instanceof(ctx, jsvalue, "Array")) {
-                    FILL_EXCEPTION(exception, "jsvalue is not an array type");
+                    FILL_EXCEPTION(ctx, exception, "jsvalue is not an array type");
                     return FALSE;
                 }
                 dbus_signature_iter_recurse(&s_iter, &array_s_iter);
@@ -376,14 +353,14 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 v_sig = jsvalue_to_signature(ctx, jsvalue);
 
                 if (v_sig == NULL) {
-                    FILL_EXCEPTION(exception, "Can't detect the variant type");
+                    FILL_EXCEPTION(ctx, exception, "Can't detect the variant type");
                     return FALSE;
                 }
 
                 OPEN_CONTAINER(iter, DBUS_TYPE_VARIANT, (char*)v_sig, &sub_iter);
 
                 if (!js_to_dbus(ctx, jsvalue, &sub_iter, v_sig, exception)) {
-                    FILL_EXCEPTION(exception, "Failed to append variant contents with signature");
+                    FILL_EXCEPTION(ctx, exception, "Failed to append variant contents with signature");
                     return FALSE;
                 }
 

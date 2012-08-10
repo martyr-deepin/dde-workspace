@@ -3,6 +3,7 @@
 #include <glib.h>
 #include <JavaScriptCore/JavaScript.h>
 
+
 #include "jsextension.h"
 #include "dbus_introspect.h"
 
@@ -38,8 +39,7 @@ JSValueRef sys_object(
     JSValueRef value = get_dbus_object(js->ctx, sys_con,
             bus_name, object_path, interface);
     if (value == NULL) {
-        JSContextRef ctx = js->ctx;
-        FILL_EXCEPTION((js->exception), "Can't dynamic build this dbus interface)");
+        FILL_EXCEPTION(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
     }
     return value;
 }
@@ -77,8 +77,7 @@ JSValueRef session_object(
     JSValueRef value = get_dbus_object(js->ctx, session_con,
             bus_name, object_path, interface);
     if (value == NULL) {
-        JSContextRef ctx = js->ctx;
-        FILL_EXCEPTION((js->exception), "Can't dynamic build this dbus interface)");
+        FILL_EXCEPTION(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
     }
     return value;
 }
