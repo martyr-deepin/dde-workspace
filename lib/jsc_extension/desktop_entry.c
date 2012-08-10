@@ -166,6 +166,25 @@ char* find_first_exists(char *base[], char *theme[], char* size[],
     return NULL;
 }
 
+static
+char* lookup_icon(const char* theme, 
+        const char* type, 
+        const char* name, 
+        const int size) 
+{
+    char **bases = list_base();
+    char **themes = list_theme(theme);
+    char **sizes = list_size(size);
+    static char *exts[] = { "png", "svg", "xpm", NULL};
+
+    char* path = find_first_exists(bases, themes, sizes, type_to_dir(type), name, exts);
+    g_strfreev(bases);
+    g_strfreev(themes);
+    if (path == NULL)
+        path = g_strdup("notfound");
+    return path;
+}
+
 
 char* lookup_icon_by_file(const char* path)
 {
@@ -207,6 +226,7 @@ const char* item_format = "{"
     "\"path\": \"%s\""
 "}";
 
+static
 char* parse_normal_file(const char* path)
 {
     gboolean is_dir = g_file_test(path, G_FILE_TEST_IS_DIR);
@@ -226,6 +246,7 @@ char* parse_normal_file(const char* path)
 }
 
 
+static
 char* parse_desktop_entry(const char* path)
 {
     //TODO: not all .desktop file has "Name" "Icon" "Exec" "Type" field
@@ -254,6 +275,16 @@ char* parse_desktop_entry(const char* path)
     return result;
 }
 
+char* parse_desktop_item(const char* path)
+{
+    if (g_str_has_suffix(path, ".desktop")) {
+        return parse_desktop_entry(path);
+    } else {
+        return parse_normal_file(path);
+    }
+}
+
+
 char* get_desktop_entries()
 {
     GString *content = g_string_new("[");
@@ -261,51 +292,23 @@ char* get_desktop_entries()
     char* base_dir = g_build_filename(GET_ENV("HOME"), DESKTOP_NAME, NULL);
     GDir *dir =  g_dir_open(base_dir, 0, NULL);
     const char* filename = NULL;
-    char path[1000];
 
+    char path[1000];
     while ((filename = g_dir_read_name(dir)) != NULL) {
         g_sprintf(path, "%s/%s", base_dir, filename);
 
-        if (g_str_has_suffix(filename, ".desktop")) {
-            char* tmp = parse_desktop_entry(path);
-            if (tmp != NULL) {
-                g_string_append(content, tmp);
-                g_string_append_c(content, ',');
-                g_free(tmp);
-            }
-        } else {
-            char* tmp = parse_normal_file(path);
-            if (tmp != NULL) {
-                g_string_append(content, tmp);
-                g_string_append_c(content, ',');
-                g_free(tmp);
-            }
-        }
+        char* info = parse_desktop_item(path);
+        g_string_append(content, info);
+        g_string_append_c(content, ',');
+        g_free(info);
     }
+
     g_free(base_dir);
     content = g_string_overwrite(content, content->len-1, "]");
     return content->str;
 }
 
-char* lookup_icon(const char* theme, 
-        const char* type, 
-        const char* name, 
-        const int size) 
-{
-    char **bases = list_base();
-    char **themes = list_theme(theme);
-    char **sizes = list_size(size);
-    static char *exts[] = { "png", "svg", "xpm", NULL};
-
-    char* path = find_first_exists(bases, themes, sizes, type_to_dir(type), name, exts);
-    g_strfreev(bases);
-    g_strfreev(themes);
-    if (path == NULL)
-        path = g_strdup("notfound");
-    return path;
-}
-
-void move_to_desktop(const char* path)
+char* move_to_desktop(const char* path)
 {
     char* desktop_dir = get_desktop_dir(FALSE);
     char* dir = g_path_get_dirname(path);
@@ -313,7 +316,7 @@ void move_to_desktop(const char* path)
     if (g_strcmp0(desktop_dir, dir) == 0) {
         g_free(desktop_dir);
         g_free(dir);
-        return;
+        return NULL;
     } 
 
     char* name = g_path_get_basename(path);
@@ -324,16 +327,15 @@ void move_to_desktop(const char* path)
         new_path = g_strdup_printf("%s/%s.(%d)", desktop_dir, name, i++);
     }
     g_free(name);
+    g_free(desktop_dir);
+    g_free(dir);
 
 
     char *cmd = g_strdup_printf("mv \'%s\' \'%s\'", path, new_path);
-    g_printf("move to desktop: %s\n", cmd);
     g_spawn_command_line_sync(cmd, NULL, NULL, NULL, NULL);
     g_free(cmd);
 
-    g_free(new_path);
-    g_free(desktop_dir);
-    g_free(dir);
+    return new_path;
 }
 
 char* get_desktop_dir(gboolean update)

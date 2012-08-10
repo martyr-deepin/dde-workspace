@@ -3,7 +3,8 @@
   var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i_height, i_width, load_desktop_entries, load_position, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item, _i,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Storage.prototype.setObject = function(key, value) {
     return this.setItem(key, JSON.stringify(value));
@@ -148,13 +149,19 @@
   };
 
   clear_occupy = function(info) {
-    var j, _j, _k, _ref, _ref1;
+    var j, _j, _ref, _results;
+    _results = [];
     for (i = _j = 0, _ref = info.width - 1; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
-      for (j = _k = 0, _ref1 = info.height - 1; 0 <= _ref1 ? _k <= _ref1 : _k >= _ref1; j = 0 <= _ref1 ? ++_k : --_k) {
-        o_table[info.x + i][info.y + j] = null;
-      }
+      _results.push((function() {
+        var _k, _ref1, _results1;
+        _results1 = [];
+        for (j = _k = 0, _ref1 = info.height - 1; 0 <= _ref1 ? _k <= _ref1 : _k >= _ref1; j = 0 <= _ref1 ? ++_k : --_k) {
+          _results1.push(o_table[info.x + i][info.y + j] = null);
+        }
+        return _results1;
+      })());
     }
-    return draw_grid();
+    return _results;
   };
 
   set_occupy = function(info) {
@@ -273,11 +280,20 @@
 
   $("body").drop({
     "drop": function(evt) {
-      var file, _j, _len, _ref;
+      var file, p_info, path, pos, _j, _len, _ref;
+      echo(evt);
       _ref = evt.originalEvent.dataTransfer.files;
       for (_j = 0, _len = _ref.length; _j < _len; _j++) {
         file = _ref[_j];
-        Desktop.Core.move_to_desktop(file.path);
+        pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y);
+        p_info = {
+          "x": pos[0],
+          "y": pos[1],
+          "width": 1,
+          "height": 1
+        };
+        path = Desktop.Core.move_to_desktop(file.path);
+        localStorage.setObject(path, p_info);
       }
       return evt.dataTransfer.dropEffect = "move";
     },
@@ -402,8 +418,9 @@
         height: 1
       };
       move_to_anywhere(this);
+      el.setAttribute("tabindex", 0);
       el.draggable = true;
-      el.innerHTML = "        <img draggable=false src=" + this.icon + ">            <div class=item_name>" + this.name + "</div>        </img>        ";
+      el.innerHTML = "        <img draggable=false src=" + this.icon + ">            <div contenteditable=true class=item_name>" + this.name + "</div>        </img>        ";
       this.element.addEventListener('dblclick', function() {
         return Desktop.Core.run_command(exec);
       });
@@ -418,8 +435,18 @@
     Item.prototype.destroy = function() {
       var info;
       info = load_position(this);
-      Item.__super__.destroy.apply(this, arguments);
-      return clear_occupy(info);
+      clear_occupy(info);
+      return Item.__super__.destroy.apply(this, arguments);
+    };
+
+    Item.prototype.init_keypress = function() {
+      document.designMode = 'On';
+      return this.element.addEventListener('keydown', function(evt) {
+        switch (evt.which) {
+          case 113:
+            return echo("Rename");
+        }
+      });
     };
 
     return Item;
@@ -440,7 +467,7 @@
       el = this.element;
       el.addEventListener('dragstart', function(evt) {
         evt.dataTransfer.setData("text/uri-list", "file://" + _this.path);
-        evt.dataTransfer.effectAllowed = "move";
+        evt.dataTransfer.effectAllowed = "all";
         return evt.dataTransfer.dropEffect = "move";
       });
       return el.addEventListener('dragend', function(evt) {
@@ -469,46 +496,50 @@
     __extends(Folder, _super);
 
     function Folder() {
+      this.init_drop = __bind(this.init_drop, this);
       return Folder.__super__.constructor.apply(this, arguments);
     }
 
     Folder.prototype.icon_open = function() {
-      return this._$().find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png";
+      return $(this.element).find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png";
     };
 
     Folder.prototype.icon_close = function() {
-      return this._$().find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png";
+      return $(this.element).find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png";
     };
 
-    Folder.prototype.init_drop1 = function() {
+    Folder.prototype.init_drop = function() {
       var _this = this;
-      return this._$().drop({
+      return $(this.element).drop({
         drop: function(evt) {
-          evt.dataTransfer.getData("text/uri-list");
+          var file;
+          file = evt.dataTransfer.getData("text/uri-list");
+          evt.preventDefault();
           _this.icon_close();
-          return evt.preventDefault();
+          return _this.move_in(file);
         },
         over: function(evt) {
           var path;
+          evt.preventDefault();
           path = evt.dataTransfer.getData("text/uri-list");
           if (path === ("file://" + _this.path)) {
-            evt.dataTransfer.dropEffect = "none";
-            evt.preventDefault();
+            return evt.dataTransfer.dropEffect = "none";
           } else {
             evt.dataTransfer.dropEffect = "link";
-            evt.preventDefault();
+            return _this.icon_open();
           }
-          _this.icon_open();
-          return echo("over");
         },
-        enter: function(evt) {
-          echo(_this.path);
-          return echo("enter");
-        },
+        enter: function(evt) {},
         leave: function(evt) {
           return _this.icon_close();
         }
       });
+    };
+
+    Folder.prototype.move_in = function(c_path) {
+      var p;
+      p = c_path.replace("file://", "");
+      return Desktop.Core.run_command("mv '" + p + "' '" + this.path + "'");
     };
 
     return Folder;
@@ -540,26 +571,47 @@
   })(Item);
 
   $.contextMenu({
-    selector: ".Folder",
+    selector: "body",
     callback: function(key, opt) {
       switch (key) {
+        case "cbg":
+          return Desktop.Core.run_command("gnome-control-center background");
         case "reload":
           return location.reload();
-        case "sort":
-          return sort_item();
-        case "dele":
-          return echo(opt);
-        case "preview":
-          return echo("preview");
+        case "sort1":
+          return sort_item_by_time();
+        case "sort2":
+          return sort_item_by_type();
+        case "sort3":
+          return sort_item_by_name();
+        default:
+          return echo("Nothing");
       }
     },
     items: {
-      "sort": {
-        name: "OpenFolder"
+      "cfile": {
+        name: "Create File"
       },
-      "sepl": "--------------",
-      "property": {
-        name: "Property"
+      "cdir": {
+        name: "Create Directory"
+      },
+      "sepl1": "----------",
+      "reload": {
+        name: "*Reload"
+      },
+      "sepl2": "----------",
+      "sort1": {
+        name: "Sort By Time"
+      },
+      "sort2": {
+        name: "Sort By Type"
+      },
+      "sort3": {
+        name: "Sort By Name"
+      },
+      "sepl3": "----------",
+      "cbg": {
+        name: "*ChangeBackground"
       }
     }
   });
@@ -567,30 +619,33 @@
   $.contextMenu({
     selector: ".DesktopEntry, .NormalFile, .Folder",
     callback: function(key, opt) {
+      var path;
       switch (key) {
         case "reload":
           return location.reload();
-        case "sort":
-          return sort_item();
-        case "dele":
-          return echo(opt);
+        case "del":
+          path = opt.$trigger[0].id;
+          return Desktop.Core.run_command("rm -rf -- '" + path + "'");
         case "preview":
           return echo("preview");
       }
     },
     items: {
-      "preview": {
+      "preve": {
         name: "Preview"
       },
-      "dele": {
-        name: "Delete"
-      },
       "sort": {
-        name: "Sort Item"
+        name: "Open"
       },
-      "sepl": "-----DeskEntry---------",
-      "reload": {
-        name: "Reload"
+      "rename": {
+        name: "Rename"
+      },
+      "del": {
+        name: "*Delete"
+      },
+      "sepl": "--------------",
+      "property": {
+        name: "Property"
       }
     }
   });

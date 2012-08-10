@@ -18,7 +18,6 @@ clear_occupy = (info) ->
     for i in [0..info.width-1]
         for j in [0..info.height-1]
             o_table[info.x+i][info.y+j] = null
-    draw_grid()
 
 set_occupy = (info) ->
     assert(info!=null, "set_occupy")
@@ -100,8 +99,12 @@ sort_item = ->
 
 $("body").drop
     "drop": (evt) ->
+        echo evt
         for file in evt.originalEvent.dataTransfer.files
-            Desktop.Core.move_to_desktop(file.path)
+            pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
+            p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
+            path = Desktop.Core.move_to_desktop(file.path)
+            localStorage.setObject(path, p_info)
         evt.dataTransfer.dropEffect = "move"
 
     "over": (evt) ->

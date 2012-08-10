@@ -115,6 +115,7 @@ char* gen_id(const char* seed)
 
 void run_command(const char* cmd)
 {
+    g_printf("run cmd: %s\n", cmd);
     g_spawn_command_line_async(cmd, NULL);
 }
 
