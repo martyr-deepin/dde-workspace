@@ -56,7 +56,7 @@ void item_notify(int action, const char* path, const char* old_path)
                 if (on_rename != NULL && JSObjectIsFunction(ctx, on_rename)) {
                     JSValueRef args[2];
                     args[0] = jsvalue_from_cstr(ctx, old_path);
-                    char* info = parse_normal_file(path);
+                    char* info = parse_desktop_item(path);
                     args[1] = json_from_cstr(ctx, info);
                     g_free(info);
                     JSObjectCallAsFunction(ctx, on_rename,
@@ -70,7 +70,7 @@ void item_notify(int action, const char* path, const char* old_path)
                 JSContextRef ctx = get_global_context();
                 if (on_update != NULL && JSObjectIsFunction(ctx, on_update)) {
                     JSValueRef args[1];
-                    char* info = parse_normal_file(path);
+                    char* info = parse_desktop_item(path);
                     args[0] = json_from_cstr(ctx, info);
                     g_free(info);
                     JSObjectCallAsFunction(ctx, on_update,

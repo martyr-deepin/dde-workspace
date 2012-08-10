@@ -69,14 +69,6 @@ WebKitWebView* inspector_create(WebKitWebInspector *inspector,
     gtk_widget_show_all(win);
     return WEBKIT_WEB_VIEW(web);
 }
-void inspector_uri_change()
-{
-    puts("uri_change");
-}
-void inspector_show()
-{
-    puts("uri_show");
-}
 
 static bool webview_key_release_cb(GtkWidget* webview, 
         GdkEvent* event, gpointer data)
@@ -88,6 +80,13 @@ static bool webview_key_release_cb(GtkWidget* webview,
             break;
         case GDK_KEY_F12:
             {
+                WebKitWebInspector *inspector = webkit_web_view_get_inspector(
+                        WEBKIT_WEB_VIEW(webview));
+                g_assert(inspector != NULL);
+                WebKitDOMNode *node = 
+                    (WebKitDOMNode*)webkit_web_view_get_dom_document(
+                            (WebKitWebView*)webview);
+                webkit_web_inspector_inspect_node(inspector, node);
                 break;
             }
     }
@@ -117,10 +116,6 @@ d_webview_init(DWebView *dwebview)
     g_assert(inspector != NULL);
     g_signal_connect_after(inspector, "inspect-web-view", 
             G_CALLBACK(inspector_create), NULL);
-    /*g_signal_connect_after(inspector, "show-window", */
-            /*G_CALLBACK(inspector_show), NULL);*/
-    /*g_signal_connect_after(inspector, "notify::inspected-uri", */
-            /*G_CALLBACK(inspector_uri_change), NULL);*/
 
 
 }
@@ -155,7 +150,7 @@ GtkWidget* d_webview_new()
 
     char* config_path = get_config_path("deepin-desktop");
     g_object_set(G_OBJECT(setting), 
-            /*"enable-default-context-menu", FALSE,*/
+            "enable-default-context-menu", FALSE,
             "enable-developer-extras", TRUE, 
             "html5-local-storage-database-path", config_path,
             NULL);

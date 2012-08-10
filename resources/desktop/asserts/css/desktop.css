@@ -1,8 +1,8 @@
 body {
     background: url("../img/desktop_background.jpg");
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
+    /*-webkit-touch-callout: none;*/
+    /*-webkit-user-select: none;*/
+    /*user-select: none;*/
     margin:0px;
     position:fixed;
     left: 0px;
@@ -48,13 +48,6 @@ body {
     width: 48px;
     height: 48px;
 }
-
-
-.ui-dialog {
-    background: rgba(100, 100, 100, 0.8);
-}
-
-
 
 
 /* Generic context menu styles */

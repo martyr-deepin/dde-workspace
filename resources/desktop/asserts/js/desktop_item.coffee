@@ -1,16 +1,17 @@
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
-        @id = @path #Desktop.Core.gen_id(@path)
+        @id = @path
         super
 
         el = @element
         info = {x:0, y:0, width:1, height:1}
         move_to_anywhere(this)
 
+        el.setAttribute("tabindex", 0)
         el.draggable = true
         el.innerHTML = "
         <img draggable=false src=#{@icon}>
-            <div class=item_name>#{@name}</div>
+            <div contenteditable=true class=item_name>#{@name}</div>
         </img>
         "
 
@@ -19,20 +20,28 @@ class Item extends Widget
         )
         @init_drag?()
         @init_drop?()
+        #@init_keypress?()
 
     destroy: ->
         info = load_position(this)
-        super
         clear_occupy(info)
+        super
+
+    init_keypress: ->
+        document.designMode = 'On'
+        @element.addEventListener('keydown', (evt)->
+            switch (evt.which)
+                when 113
+                    echo "Rename"
+        )
 
 
 class DesktopEntry extends Item
     init_drag: ->
         el = @element
         el.addEventListener('dragstart', (evt) =>
-                #evt.dataTransfer.setData("Text", @id)
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
-                evt.dataTransfer.effectAllowed = "move"
+                evt.dataTransfer.effectAllowed = "all"
                 evt.dataTransfer.dropEffect = "move"
         )
         el.addEventListener('dragend', (evt) =>
@@ -54,35 +63,35 @@ class DesktopEntry extends Item
     
 class Folder extends DesktopEntry
     icon_open: ->
-         @_$().find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png"
+        $(@element).find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png"
     icon_close: ->
-         @_$().find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png"
+        $(@element).find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png"
 
 
-    init_drop1: ->
-        @_$().drop
+    init_drop: =>
+        $(@element).drop
             drop: (evt) =>
-                evt.dataTransfer.getData("text/uri-list")
-                @icon_close()
+                file = evt.dataTransfer.getData("text/uri-list")
                 evt.preventDefault()
+                @icon_close()
+                @move_in(file)
 
             over: (evt) =>
+                evt.preventDefault()
                 path = evt.dataTransfer.getData("text/uri-list")
                 if path == "file://#{@path}"
                     evt.dataTransfer.dropEffect = "none"
-                    evt.preventDefault()
                 else
                     evt.dataTransfer.dropEffect = "link"
-                    evt.preventDefault()
-                @icon_open()
-                echo "over"
+                    @icon_open()
 
             enter: (evt) =>
-                echo @path
-                echo "enter"
 
             leave: (evt) =>
                 @icon_close()
+    move_in: (c_path) ->
+        p = c_path.replace("file://", "")
+        Desktop.Core.run_command("mv '#{p}' '#{@path}'")
 
 
 class NormalFile extends DesktopEntry
@@ -91,33 +100,47 @@ class DesktopApplet extends Item
 
 
 $.contextMenu({
-    selector: ".Folder"
+    selector: "body"
     callback: (key, opt) ->
-        switch key
+        switch(key)
+            when "cbg" then Desktop.Core.run_command("gnome-control-center background")
             when "reload" then location.reload()
-            when "sort" then sort_item()
-            when "dele" then echo opt
-            when "preview" then echo "preview"
+            when "sort1" then sort_item_by_time()
+            when "sort2" then sort_item_by_type()
+            when "sort3" then sort_item_by_name()
+            else echo "Nothing"
+
     items: {
-        "sort": {name: "OpenFolder"}
-        "sepl":  "--------------"
-        "property": {name: "Property"}
+        "cfile": {name:"Create File"}
+        "cdir": {name:"Create Directory"}
+        "sepl1" : "----------"
+        "reload": {name: "*Reload"}
+        "sepl2" : "----------"
+        "sort1": {name: "Sort By Time"}
+        "sort2": {name: "Sort By Type"}
+        "sort3": {name: "Sort By Name"}
+        "sepl3" : "----------"
+        "cbg": {name: "*ChangeBackground"}
     }
 })
+
 
 $.contextMenu({
     selector: ".DesktopEntry, .NormalFile, .Folder"
     callback: (key, opt) ->
         switch key
             when "reload" then location.reload()
-            when "sort" then sort_item()
-            when "dele" then echo opt
+            when "del"
+                path = opt.$trigger[0].id
+                Desktop.Core.run_command("rm -rf -- '#{path}'")
+                
             when "preview" then echo "preview"
     items: {
-        "preview": {name: "Preview"}
-        "dele": {name: "Delete"}
-        "sort": {name: "Sort Item"}
-        "sepl":  "-----DeskEntry---------",
-        "reload": {name: "Reload"}
+        "preve": {name: "Preview"}
+        "sort": {name: "Open"}
+        "rename": {name: "Rename"}
+        "del": {name: "*Delete"}
+        "sepl":  "--------------"
+        "property": {name: "Property"}
     }
 })
