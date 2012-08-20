@@ -19,7 +19,7 @@
 #define XDG_RUNTIME_DIR g_environ_getenv(g_get_environ(), "XDG_RUNTIME_DIR")
 
 
-const char* DEFAULT_THEME = "gnome";
+const char* DEFAULT_THEME = "Deepin";
 const char* DESKTOP_NAME = "Desktop";
 
 

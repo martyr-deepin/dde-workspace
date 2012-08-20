@@ -27,7 +27,9 @@ int main(int argc, char* argv[])
     g_free(path);
 
     gtk_widget_realize(w);
-    /*set_wmspec_desktop_hint(gtk_widget_get_window(w));*/
+    set_wmspec_desktop_hint(gtk_widget_get_window(w));
+
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
 
     gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
     gtk_widget_show_all(w);
