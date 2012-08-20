@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 
-add_definitions("-DRESOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/resources/\"")
+if (DEFINED DEVELOP)
+    SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources")
+else()
+    SET(RESOURCE_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-desktop/resources")
+endif()
+
+message("RESOURCE DIR ${RESOURCE_DIR}")
+add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
 
 find_package(PkgConfig)
 pkg_check_modules(WEBKIT REQUIRED webkitgtk-3.0)
