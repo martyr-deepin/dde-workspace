@@ -24,7 +24,7 @@ set_occupy = (info) ->
     for i in [0..info.width-1]
         for j in [0..info.height-1]
             o_table[info.x+i][info.y+j] = true
-    draw_grid()
+    #draw_grid()
 
 
 detect_occupy = (info) ->
