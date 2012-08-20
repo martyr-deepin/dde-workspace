@@ -16,6 +16,12 @@ static void set_wmspec_desktop_hint (GdkWindow *window)
             GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
 }
 
+void change_size(GdkScreen *screen, GtkWidget *w)
+{
+    gtk_widget_set_size_request(w, gdk_screen_get_width(screen),
+            gdk_screen_get_height(screen));
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -27,7 +33,17 @@ int main(int argc, char* argv[])
     g_free(path);
 
     gtk_widget_realize(w);
-    /*set_wmspec_desktop_hint(gtk_widget_get_window(w));*/
+
+    GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
+    gtk_widget_set_size_request(w, gdk_screen_get_width(screen),
+            gdk_screen_get_height(screen));
+
+    g_signal_connect(screen, "size-changed", G_CALLBACK(change_size), w);
+
+    set_wmspec_desktop_hint(gtk_widget_get_window(w));
+
+
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
 
     gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
     gtk_widget_show_all(w);

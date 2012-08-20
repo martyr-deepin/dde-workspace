@@ -17,16 +17,16 @@ GtkWidget* create_web_container(bool normal, bool above)
         visual = gdk_screen_get_system_visual(screen);
     gtk_widget_set_visual(window, visual);
 
-    if (normal) {
-        gtk_widget_set_size_request(window, 800, 600);
-        return window;
-    }
+    /*if (normal) {*/
+        /*gtk_widget_set_size_request(window, 800, 600);*/
+        /*return window;*/
+    /*}*/
 
-    gtk_window_maximize(GTK_WINDOW(window));
-    if (above)
-        gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);
-    else
-        gtk_window_set_keep_below(GTK_WINDOW(window), TRUE);
+    /*gtk_window_maximize(GTK_WINDOW(window));*/
+    /*if (above)*/
+        /*gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);*/
+    /*else*/
+        /*gtk_window_set_keep_below(GTK_WINDOW(window), TRUE);*/
 
     return window;
 }
@@ -101,8 +101,8 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "draw",
-           G_CALLBACK(_erase_background), NULL);
+    /*g_signal_connect(G_OBJECT(webview), "draw",*/
+           /*G_CALLBACK(_erase_background), NULL);*/
 
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
