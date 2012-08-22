@@ -10,7 +10,8 @@ message("RESOURCE DIR ${RESOURCE_DIR}")
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
 
 find_package(PkgConfig)
-pkg_check_modules(WEBKIT REQUIRED webkitgtk-3.0)
+pkg_check_modules(WEBKIT REQUIRED deepin-webkit-3.0)
+#pkg_check_modules(WEBKIT REQUIRED webkitgtk-3.0)
 pkg_check_modules(DBUS REQUIRED dbus-glib-1)
 
 set(CMAKE_C_FLAGS "-std=c99")

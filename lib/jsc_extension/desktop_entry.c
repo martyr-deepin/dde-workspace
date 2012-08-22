@@ -99,7 +99,7 @@ char** list_base()
 
 char** list_theme(const char* theme)
 {
-    char* tmp = g_strdup_printf("%s:oxygen:hicolor", theme);
+    char* tmp = g_strdup_printf("%s:Faenza:gnome:hicolor", theme);
     char** ret = g_strsplit(tmp, ":", -1);
     g_free(tmp);
     return ret;
