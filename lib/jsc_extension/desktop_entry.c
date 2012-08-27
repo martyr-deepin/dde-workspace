@@ -232,7 +232,7 @@ char* parse_normal_file(const char* path)
     gboolean is_dir = g_file_test(path, G_FILE_TEST_IS_DIR);
 
     char* name = g_path_get_basename(path);
-    char* icon = lookup_icon_by_file(path); 
+    char* icon = lookup_icon_by_file(path);
     char* ret = NULL;
     char* exec = g_strdup_printf("xdg-open %s", path);
     if (is_dir) 
@@ -259,9 +259,17 @@ char* parse_desktop_entry(const char* path)
 
     char* type_name = g_key_file_get_value(de, group, "Type", NULL);
     char* icon_name = g_key_file_get_value(de, group, "Icon", NULL);
-    char* icon = lookup_icon(DEFAULT_THEME, type_name, icon_name, 48);
-    g_free(icon_name);
+    char* icon = NULL;
+    if (g_path_is_absolute(icon_name)) {
+        icon = icon_name;
+        g_printf("abs path: %s\n", icon_name);
+    } else {
+        icon = lookup_icon(DEFAULT_THEME, type_name, icon_name, 48);
+        g_free(icon_name);
+        g_printf("not abs path: %s\n", icon_name);
+    }
     g_free(type_name);
+    g_assert(icon_name != NULL);
 
     char* name = g_key_file_get_value(de, group, "Name", NULL);
 
@@ -269,7 +277,8 @@ char* parse_desktop_entry(const char* path)
 
     char* result = g_strdup_printf(item_format, "Entry", name, icon, exec, path);
 
-    g_free(icon);
+    if (icon != icon_name)
+        g_free(icon);
     g_free(name);
     g_free(exec);
     return result;
