@@ -251,7 +251,9 @@ char* parse_normal_file(const char* path)
     char* name = g_path_get_basename(path);
     char* icon = lookup_icon_by_file(path);
     char* ret = NULL;
-    char* exec = g_strdup_printf("xdg-open %s", path);
+    char* quote_path = g_shell_quote(path);
+    char* exec = g_strdup_printf("xdg-open %s", quote_path);
+    g_free(quote_path);
     if (is_dir) 
         ret = g_strdup_printf(item_format, "Dir", name, icon, exec, path);
     else
