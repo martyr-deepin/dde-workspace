@@ -277,7 +277,14 @@ char* parse_desktop_entry(const char* path)
     } 
 
     char* type_name = g_key_file_get_value(de, group, "Type", NULL);
+    if (type_name == NULL) 
+        return NULL;
     char* icon_name = g_key_file_get_value(de, group, "Icon", NULL);
+    if (icon_name == NULL) {
+        g_free(type_name);
+        return NULL;
+    }
+
     char* icon = NULL;
     if (g_path_is_absolute(icon_name)) {
         icon = icon_name;
@@ -330,6 +337,8 @@ char* get_desktop_entries()
         g_sprintf(path, "%s/%s", base_dir, filename);
 
         char* info = parse_desktop_item(path);
+        if (info == NULL)
+            continue;
         g_string_append(content, info);
         g_string_append_c(content, ',');
         g_free(info);
