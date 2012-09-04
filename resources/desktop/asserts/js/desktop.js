@@ -484,11 +484,11 @@
     }
 
     Folder.prototype.icon_open = function() {
-      return $(this.element).find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png";
+      return $(this.element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
     };
 
     Folder.prototype.icon_close = function() {
-      return $(this.element).find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png";
+      return $(this.element).find("img")[0].src = Desktop.Core.get_folder_close_icon();
     };
 
     Folder.prototype.init_drop = function() {
@@ -559,8 +559,6 @@
       switch (key) {
         case "cbg":
           return Desktop.Core.run_command("gnome-control-center background");
-        case "reload":
-          return location.reload();
         case "sort1":
           return sort_item_by_time();
         case "sort2":
@@ -580,7 +578,7 @@
       },
       "sepl1": "----------",
       "reload": {
-        name: "*Reload"
+        name: "Reload"
       },
       "sepl2": "----------",
       "sort1": {
@@ -604,8 +602,6 @@
     callback: function(key, opt) {
       var path;
       switch (key) {
-        case "reload":
-          return location.reload();
         case "del":
           path = opt.$trigger[0].id;
           return Desktop.Core.run_command("rm -rf -- '" + path + "'");

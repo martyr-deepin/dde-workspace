@@ -63,9 +63,9 @@ class DesktopEntry extends Item
     
 class Folder extends DesktopEntry
     icon_open: ->
-        $(@element).find("img")[0].src = "/usr/share/icons/oxygen/48x48/status/folder-open.png"
+        $(@element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
     icon_close: ->
-        $(@element).find("img")[0].src = "/usr/share//icons/oxygen/48x48/mimetypes/inode-directory.png"
+        $(@element).find("img")[0].src = Desktop.Core.get_folder_close_icon();
 
 
     init_drop: =>
@@ -104,7 +104,6 @@ $.contextMenu({
     callback: (key, opt) ->
         switch(key)
             when "cbg" then Desktop.Core.run_command("gnome-control-center background")
-            when "reload" then location.reload()
             when "sort1" then sort_item_by_time()
             when "sort2" then sort_item_by_type()
             when "sort3" then sort_item_by_name()
@@ -114,7 +113,7 @@ $.contextMenu({
         "cfile": {name:"Create File"}
         "cdir": {name:"Create Directory"}
         "sepl1" : "----------"
-        "reload": {name: "*Reload"}
+        "reload": {name: "Reload"}
         "sepl2" : "----------"
         "sort1": {name: "Sort By Time"}
         "sort2": {name: "Sort By Type"}
@@ -129,7 +128,6 @@ $.contextMenu({
     selector: ".DesktopEntry, .NormalFile, .Folder"
     callback: (key, opt) ->
         switch key
-            when "reload" then location.reload()
             when "del"
                 path = opt.$trigger[0].id
                 Desktop.Core.run_command("rm -rf -- '#{path}'")

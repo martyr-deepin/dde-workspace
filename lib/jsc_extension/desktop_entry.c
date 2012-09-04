@@ -166,23 +166,40 @@ char* find_first_exists(char *base[], char *theme[], char* size[],
     return NULL;
 }
 
+#include <gtk/gtk.h>
 static
 char* lookup_icon(const char* theme, 
         const char* type, 
         const char* name, 
         const int size) 
 {
-    char **bases = list_base();
-    char **themes = list_theme(theme);
-    char **sizes = list_size(size);
-    static char *exts[] = { "png", "svg", "xpm", NULL};
+    GtkIconTheme* ithem = gtk_icon_theme_get_default();
+    GtkIconInfo* info = gtk_icon_theme_lookup_icon(ithem,
+            name, size, 1 << 3);
+    char* path = gtk_icon_info_get_filename(info);
 
-    char* path = find_first_exists(bases, themes, sizes, type_to_dir(type), name, exts);
-    g_strfreev(bases);
-    g_strfreev(themes);
-    if (path == NULL)
+    /*char **bases = list_base();*/
+    /*char **themes = list_theme(theme);*/
+    /*char **sizes = list_size(size);*/
+    /*static char *exts[] = { "png", "svg", "xpm", NULL};*/
+
+    /*char* path = find_first_exists(bases, themes, sizes, type_to_dir(type), name, exts);*/
+    /*g_strfreev(bases);*/
+    /*g_strfreev(themes);*/
+    if (path == NULL) {
+        printf("Lookup icon failed %s!\n", name);
         path = g_strdup("notfound");
+    }
     return path;
+}
+
+char* get_folder_open_icon()
+{
+    return lookup_icon(gtk_icon_theme_get_default(), NULL, "folder-open", 48);
+}
+char* get_folder_close_icon()
+{
+    return lookup_icon(gtk_icon_theme_get_default(), NULL, "folder-close", 48);
 }
 
 
@@ -304,6 +321,10 @@ char* get_desktop_entries()
 
     char path[1000];
     while ((filename = g_dir_read_name(dir)) != NULL) {
+
+        if (filename[0] == '.') 
+            continue;
+
         g_sprintf(path, "%s/%s", base_dir, filename);
 
         char* info = parse_desktop_item(path);

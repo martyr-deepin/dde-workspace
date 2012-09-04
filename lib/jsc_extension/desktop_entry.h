@@ -7,6 +7,8 @@ char* parse_desktop_item(const char* path);
 char* get_desktop_entries();
 
 char* move_to_desktop(const char* path);
+char* get_folder_open_icon();
+char* get_folder_close_icon();
 
 
 char* get_desktop_dir(gboolean update);

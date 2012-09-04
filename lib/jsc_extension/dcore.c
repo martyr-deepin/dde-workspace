@@ -1,6 +1,5 @@
 #include "jsextension.h"
 #include "desktop_entry.h"
-#include "forward_window.h"
 #include <assert.h>
 #include <webkit/webkitwebview.h>
 #include <webkit/WebKitDOMDocument.h>
@@ -118,67 +117,3 @@ void run_command(const char* cmd)
     g_printf("run cmd: %s\n", cmd);
     g_spawn_command_line_async(cmd, NULL);
 }
-
-
-#ifdef __DEEPIN_WEBKIT__
-
-extern int d_dom_element_render(cairo_t* cr, WebKitDOMElement* el);
-WebKitDOMElement* el;
-bool webview_changed(GtkWidget* widget, WebKitDOMMouseEvent *event, gpointer data)
-{
-
-    DForwardWindow* popup = (DForwardWindow*)data;
-    int x, y, width, height;
-    /*d_dom_element_get_allocation(el, &x, &y, &width, &height);*/
-
-
-    cairo_t *cr = gdk_cairo_create(gtk_widget_get_window((GtkWidget*)popup));
-    /*cairo_translate(cr, 25, 0);*/
-    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-    cairo_paint(cr);
-    /*d_dom_element_render(cr, el);*/
-
-    /*if (!d_forward_window_need_change((GtkWidget*)popup, x, y, width, height))*/
-        /*return FALSE;*/
-    d_forward_window_set_position((GtkWidget*)popup, x, y, width, height);
-
-    GtkAllocation alloc = {x, y+27, width, height};
-    static int t = 1;
-    if (t == 1) {
-        gdk_window_move_resize(gtk_widget_get_window(GTK_WIDGET(popup)),
-                x, y+27, width, height);
-        t++;
-    }
-    printf("element:(%d, %d)\n", x, y);
-    d_forward_window_move(GTK_WIDGET(popup), x, y+27, -1, -1);
-
-    return FALSE;
-}
-
-void make_popup(const char* el_nouse, JSData *data)
-{
-    g_assert(data != NULL);
-    WebKitWebView* webview = (WebKitWebView*)data->webview;
-    WebKitDOMDocument *dom = webkit_web_view_get_dom_document(webview);
-
-    el = webkit_dom_node_list_item(
-        webkit_dom_document_get_elements_by_class_name(dom, "ui-dialog"), 0);
-
-
-    GtkWidget* popup = d_forward_window_new(gtk_widget_get_window(data->webview));
-    gtk_widget_show(popup);
-    gtk_widget_set_app_paintable(popup, TRUE);
-    gtk_widget_set_double_buffered(popup, TRUE);
-    /*d_forward_window_test(popup);*/
-    g_assert(data->webview != NULL);
-    g_signal_connect(data->webview, "draw", G_CALLBACK(webview_changed), popup);
-}
-
-#else
-
-void make_popup(const char* el_nouse, JSData *data)
-{
-    g_warning("this feature need deepin webkit support!"); 
-}
-
-#endif
