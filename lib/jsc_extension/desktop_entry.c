@@ -300,6 +300,8 @@ char* parse_desktop_entry(const char* path)
     char* name = g_key_file_get_value(de, group, "Name", NULL);
 
     char* exec = g_key_file_get_value(de, group, "Exec", NULL);
+    if (!exec) 
+        exec = g_strdup("virtual exec");
 
     char* result = g_strdup_printf(item_format, "Entry", name, icon, exec, path);
 
