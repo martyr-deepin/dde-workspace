@@ -288,11 +288,11 @@ char* parse_desktop_entry(const char* path)
     char* icon = NULL;
     if (g_path_is_absolute(icon_name)) {
         icon = icon_name;
-        g_printf("abs path: %s\n", icon_name);
+        /*g_printf("abs path: %s\n", icon_name);*/
     } else {
         icon = lookup_icon(DEFAULT_THEME, type_name, icon_name, 48);
         g_free(icon_name);
-        g_printf("not abs path: %s\n", icon_name);
+        /*g_printf("not abs path: %s\n", icon_name);*/
     }
     g_free(type_name);
     g_assert(icon_name != NULL);

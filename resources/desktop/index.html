@@ -3,7 +3,37 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <link href="../common/css/bootstrap.css" rel="stylesheet">
         <link href="../common/css/jquery.contextMenu.css" rel="stylesheet">
+        <link href="../common/css/global.css" rel="stylesheet">
         <link href="asserts/css/desktop.css" rel="stylesheet">
+        <style>
+        #tt {
+            z-index: 10000;
+            position: fixed;
+            top: 100px;
+            right: 0px;
+            background: rgba(8, 41, 67, 0.7);
+            border-radius: 10px;
+            width: 515px;
+            padding: 5px 0 5px 5px;
+            //-webkit-transform:rotate(10deg);
+        }
+
+        #tt ul {
+            padding: 0px;
+            margin: 0px;
+            overflow: auto;
+            width: 505px;
+            height: 380px;
+        }
+        #tt .item {
+            list-style:none;
+            display: inline-block;
+            margin: 5px;
+        }
+        #tt .item div {
+            text-align: center;
+        }
+    </style>
     </head>
     <body>
         <canvas id="grid"></canvas>
@@ -12,12 +42,65 @@
             <!--<iframe src="../applets/clock/index.html" width="200px" height="200px" scrolling=no frameborder=no> </iframe>-->
         <!--</div>-->
 
+
+        <!--<div id="tt" style="display:none;">-->
+            <div id="tt">
+            <ul>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+                <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
+            </ul>
+            <div>
         
-        <script type="text/javascript" src="../common/js/jquery.js"></script> 
-        <script type="text/javascript" src="../common/js/jsrender.js"></script>
-        <script type="text/javascript" src="../common/js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="../common/js/jquery.contextMenu.js "></script>
-        <script type="text/javascript" src="../common/js/jquery.dnd.js"></script>
-        <script type="text/javascript" src="asserts/js/desktop.js"> </script>
+        <script src="../common/js/jquery.js"></script> 
+        <script src="../common/js/jsrender.js"></script>
+        <script src="../common/js/jquery-ui.min.js"></script>
+        <script src="../common/js/jquery.contextMenu.js "></script>
+        <script src="../common/js/jquery.dnd.js"></script>
+        <script src="asserts/js/desktop.js"> </script>
     </body>
 </html>

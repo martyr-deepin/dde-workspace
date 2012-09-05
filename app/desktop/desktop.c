@@ -48,6 +48,12 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
     gtk_widget_show_all(w);
 
+    GtkSettings *s = gtk_settings_get_default();
+    GValue name = G_VALUE_INIT;
+    g_value_init(&name, G_TYPE_STRING);
+    g_value_set_string(&name, "Deepin");
+    g_object_set_property(s, "gtk-icon-theme-name", &name);
+
     g_signal_connect (w , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     gtk_main();
     return 0;
