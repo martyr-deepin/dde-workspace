@@ -32,7 +32,11 @@ int main(int argc, char* argv[])
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
 
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
+    gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
+
     gtk_widget_realize(w);
+    gtk_widget_realize(webview);
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
     gtk_widget_set_size_request(w, gdk_screen_get_width(screen),
@@ -42,10 +46,11 @@ int main(int argc, char* argv[])
 
     set_wmspec_desktop_hint(gtk_widget_get_window(w));
 
+    GdkWindow* webkit_web_view_get_forward_window(GtkWidget*);
+    GdkWindow* fw = webkit_web_view_get_forward_window(webview);
+    gdk_window_stick(fw);
 
-    gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
 
-    gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
     gtk_widget_show_all(w);
 
     GtkSettings *s = gtk_settings_get_default();
