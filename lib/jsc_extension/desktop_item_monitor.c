@@ -1,5 +1,5 @@
 #include "jsextension.h"
-#include "desktop_entry.h"
+#include "../xdg_misc.h"
 #include <gio/gio.h>
 
 void install_monitor();
@@ -56,7 +56,7 @@ void item_notify(int action, const char* path, const char* old_path)
                 if (on_rename != NULL && JSObjectIsFunction(ctx, on_rename)) {
                     JSValueRef args[2];
                     args[0] = jsvalue_from_cstr(ctx, old_path);
-                    char* info = parse_desktop_item(path);
+                    char* info = get_entry_info(path);
                     args[1] = json_from_cstr(ctx, info);
                     g_free(info);
                     JSObjectCallAsFunction(ctx, on_rename,
@@ -70,7 +70,7 @@ void item_notify(int action, const char* path, const char* old_path)
                 JSContextRef ctx = get_global_context();
                 if (on_update != NULL && JSObjectIsFunction(ctx, on_update)) {
                     JSValueRef args[1];
-                    char* info = parse_desktop_item(path);
+                    char* info = get_entry_info(path);
                     args[0] = json_from_cstr(ctx, info);
                     g_free(info);
                     JSObjectCallAsFunction(ctx, on_update,
@@ -101,7 +101,6 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
             {
-                puts("MOVED\n");
                 char* old_path = g_file_get_path(file);
                 char* new_path = g_file_get_path(other);
                 item_notify(ITEM_RENAME, new_path, old_path);
@@ -111,7 +110,6 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
             }
         case G_FILE_MONITOR_EVENT_DELETED:
             {
-                puts("DELETED\n");
                 char* path = g_file_get_path(file);
                 if (g_strcmp0(path, get_desktop_dir(FALSE)) == 0) {
                     /*g_file_monitor_cancel(m);*/
@@ -125,7 +123,6 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
         case G_FILE_MONITOR_EVENT_CREATED:
         /*case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:*/
             {
-                puts("NEW\n");
                 char* path = g_file_get_path(file);
                 item_notify(ITEM_UPDATE, path, NULL);
                 g_free(path);

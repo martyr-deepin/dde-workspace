@@ -6,13 +6,8 @@
         <link href="../common/css/global.css" rel="stylesheet">
         <link href="asserts/css/desktop.css" rel="stylesheet">
         <style>
-            #t2{ 
-                position: fixed;
-                z-index: 100101;
-                width: 100px;
-                height: 100px;
-            }
             #tt {
+                display: none;
                 z-index: 10000;
                 position: fixed;
                 top: 100px;
@@ -39,9 +34,146 @@
             #tt .item div {
                 text-align: center;
             }
+            #tt .my-arrow {
+                border-color: rgba(8, 41, 67, 0.7) transparent transparent transparent;
+                border-style: solid;
+                border-width: 17px;
+                height:0;
+                width:0;
+                position:absolute;
+                bottom:-34px;
+                left:9px;
+            }
+        #rotate { 
+            z-index: 1001;
+            right:0px;
+            bottom:0px;
+            position: fixed;
+            margin: 0 auto;
+            width: 600px;
+            height: 400px;
+            /* Ensure that we're in 3D space */
+            -webkit-transform-style: preserve-3d;
+            /*
+            Make the whole set of rows use the x-axis spin animation
+            for a duration of 7 seconds, running infinitely and linearly
+            */
+            -webkit-animation-name: x-spin;
+            -webkit-animation-duration: 7s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+        }
+        .ring {
+            margin: 0 auto;
+            height: 110px;
+            width: 600px;
+            -webkit-transform-style: preserve-3d;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+        }
+
+        .ring > :nth-child(odd) {
+            background-color: #995C7F;
+        }
+
+        .ring > :nth-child(even) {
+            background-color: #835A99;
+        }
+
+        .poster {
+            position: absolute;
+            left: 250px;
+            width: 100px;
+            height: 100px;
+            opacity: 0.7;
+            color: rgba(0,0,0,0.9);
+            -webkit-border-radius: 10px;
+        }
+
+        .poster > p {
+            font-family: 'Georgia', serif;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 28px;
+        }
+
+        /*
+        Set up each row to have a different animation duration
+        and alternating y-axis rotation directions.
+        */
+        #ring-1 {
+            -webkit-animation-name: y-spin;
+            -webkit-animation-duration: 5s;
+        }
+
+        #ring-2 {
+            -webkit-animation-name: back-y-spin;
+            -webkit-animation-duration: 4s;
+        }
+
+        #ring-3 {
+            -webkit-animation-name: y-spin;
+            -webkit-animation-duration: 3s;
+        }
+
+        /*
+
+        Here we define each of the three individual animations that
+        we will be using to have our 3D rotation effect. The first
+        animation will perform a full rotation on the x-axis, we'll
+        use that on the whole set of objects. The second and third
+        animations will perform a full rotation on the y-axis in
+        opposite directions, alternating directions between rows.
+
+        Note that you currently have to specify an intermediate step
+        for rotations even when you are using individual transformation
+        constructs.
+
+        */
+        @-webkit-keyframes x-spin {
+            0%    { -webkit-transform: rotateX(0deg); }
+            50%   { -webkit-transform: rotateX(180deg); }
+            100%  { -webkit-transform: rotateX(360deg); }
+        }
+
+        @-webkit-keyframes y-spin {
+            0%    { -webkit-transform:
+                rotateY(0deg); }
+            50%   { -webkit-transform:
+                rotateY(180deg); }
+            100%  {
+                -webkit-transform:
+                rotateY(360deg); }
+        }
+
+        @-webkit-keyframes
+        back-y-spin
+        {
+            0%
+            {
+                -webkit-transform:
+                rotateY(360deg);
+            }
+            50%
+            {
+                -webkit-transform:
+                rotateY(180deg);
+            }
+            100%
+            {
+                -webkit-transform:
+                rotateY(0deg);
+            }
+        }
         </style>
     </head>
     <body>
+        <!--<div id="rotate">-->
+            <!--<div id="ring-1" class="ring"></div>-->
+            <!--<div id="ring-2" class="ring"></div>-->
+            <!--<div id="ring-3" class="ring"></div>-->
+        <!--</div>-->
         <canvas id="grid"></canvas>
         <!--<div class="applet" draggable=true>-->
             <!--<div class="handlebar">Handle Bar</div>-->
@@ -49,8 +181,6 @@
             <!--</div>-->
 
 
-        <!--<div id="tt" style="display:none;">-->
-                <div id="t2">12233223</div>
             <div id="tt">
                 <ul>
                     <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
@@ -101,7 +231,10 @@
                     <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
                     <li class="item"> <img src="file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png"> <div>扫雷 </div> </li>
                 </ul>
+                <span class="my-arrow"></span>
                 <div>
+
+
 
                 <script src="../common/js/jquery.js"></script> 
                 <script src="../common/js/jsrender.js"></script>
@@ -109,5 +242,39 @@
                 <script src="../common/js/jquery.contextMenu.js "></script>
                 <script src="../common/js/jquery.dnd.js"></script>
                 <script src="asserts/js/desktop.js"> </script>
+        <script type="text/javascript">
+
+            const POSTERS_PER_ROW = 12;
+            const RING_RADIUS = 200;
+
+function setup_posters (row)
+{
+    var posterAngle = 360 / POSTERS_PER_ROW;
+    for (var i = 0; i < POSTERS_PER_ROW; i ++) {
+        var poster = document.createElement('div');
+        poster.className = 'poster';
+        // compute and assign the transform for this poster
+        var transform = 'rotateY(' + (posterAngle * i) + 'deg) translateZ(' + RING_RADIUS + 'px)';
+        poster.style.webkitTransform = transform;
+        // setup the number to show inside the poster
+        var content = poster.appendChild(document.createElement('p'));
+        content.textContent = i;
+        // add the poster to the row
+        row.appendChild(poster);
+    }
+
+}
+
+function init ()
+{
+    setup_posters(document.getElementById('ring-1'));
+    setup_posters(document.getElementById('ring-2'));
+    setup_posters(document.getElementById('ring-3'));
+}
+
+// call init once the document is fully loaded
+window.addEventListener('load', init, false);
+
+</script>
             </body>
         </html>

@@ -1,5 +1,5 @@
 #include "jsextension.h"
-#include "desktop_entry.h"
+#include "../xdg_misc.h"
 #include <assert.h>
 #include <webkit/webkitwebview.h>
 #include <webkit/WebKitDOMDocument.h>
@@ -114,6 +114,6 @@ char* gen_id(const char* seed)
 
 void run_command(const char* cmd)
 {
-    g_printf("run cmd: %s\n", cmd);
+    /*g_printf("run cmd: %s\n", cmd);*/
     g_spawn_command_line_async(cmd, NULL);
 }

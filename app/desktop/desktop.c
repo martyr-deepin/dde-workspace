@@ -1,9 +1,10 @@
 #include <dwebview.h>
 #include <utils.h>
 #include <gtk/gtk.h>
-#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include <X11/X.h>
 #include <X11/Xatom.h>
+#include "xdg_misc.h"
 
 
 static void set_wmspec_desktop_hint (GdkWindow *window)
@@ -22,12 +23,19 @@ void change_size(GdkScreen *screen, GtkWidget *w)
             gdk_screen_get_height(screen));
 }
 
+gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
+{
+    return true;
+}
 
 int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
+    set_default_theme("Deepin");
 
     GtkWidget *w = create_web_container(FALSE, FALSE);
+    g_signal_connect(w, "delete-event", G_CALLBACK(prevent_exit), NULL);
+
     char* path = get_html_path("desktop");
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
@@ -53,11 +61,6 @@ int main(int argc, char* argv[])
 
     gtk_widget_show_all(w);
 
-    GtkSettings *s = gtk_settings_get_default();
-    GValue name = G_VALUE_INIT;
-    g_value_init(&name, G_TYPE_STRING);
-    g_value_set_string(&name, "Deepin");
-    g_object_set_property(s, "gtk-icon-theme-name", &name);
 
     g_signal_connect (w , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     gtk_main();

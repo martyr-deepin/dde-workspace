@@ -1,3 +1,9 @@
+m = new DeepinMenu()
+i1 = new DeepinMenuItem("Open")
+i2 = new DeepinMenuItem("Close")
+m.appendItem(i1)
+m.appendItem(i2)
+
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @id = @path
@@ -21,6 +27,8 @@ class Item extends Widget
         @init_drag?()
         @init_drop?()
         #@init_keypress?()
+        @element.contextMenu = m
+
 
     destroy: ->
         info = load_position(this)
@@ -97,48 +105,3 @@ class Folder extends DesktopEntry
 class NormalFile extends DesktopEntry
 
 class DesktopApplet extends Item
-
-
-$.contextMenu({
-    selector: "body"
-    callback: (key, opt) ->
-        switch(key)
-            when "cbg" then Desktop.Core.run_command("gnome-control-center background")
-            when "sort1" then sort_item_by_time()
-            when "sort2" then sort_item_by_type()
-            when "sort3" then sort_item_by_name()
-            else echo "Nothing"
-
-    items: {
-        "cfile": {name:"Create File"}
-        "cdir": {name:"Create Directory"}
-        "sepl1" : "----------"
-        "reload": {name: "Reload"}
-        "sepl2" : "----------"
-        "sort1": {name: "Sort By Time"}
-        "sort2": {name: "Sort By Type"}
-        "sort3": {name: "Sort By Name"}
-        "sepl3" : "----------"
-        "cbg": {name: "*ChangeBackground"}
-    }
-})
-
-
-$.contextMenu({
-    selector: ".DesktopEntry, .NormalFile, .Folder"
-    callback: (key, opt) ->
-        switch key
-            when "del"
-                path = opt.$trigger[0].id
-                Desktop.Core.run_command("rm -rf -- '#{path}'")
-                
-            when "preview" then echo "preview"
-    items: {
-        "preve": {name: "Preview"}
-        "sort": {name: "Open"}
-        "rename": {name: "Rename"}
-        "del": {name: "*Delete"}
-        "sepl":  "--------------"
-        "property": {name: "Property"}
-    }
-})

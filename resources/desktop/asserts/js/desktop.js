@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i_height, i_width, load_desktop_entries, load_position, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -297,15 +297,15 @@
   create_item = function(info, pos) {
     var w;
     w = null;
-    switch (info.type) {
-      case "Entry":
-        w = new DesktopEntry(info.name, info.icon, info.exec, info.path);
+    switch (info.Type) {
+      case "Application":
+        w = new DesktopEntry(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "File":
-        w = new NormalFile(info.name, info.icon, info.exec, info.path);
+        w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "Dir":
-        w = new Folder(info.name, info.icon, info.exec, info.path);
+        w = new Folder(info.Name, info.Icon, info.exec, info.Entrypath);
         break;
       default:
         echo("don't support type");
@@ -385,6 +385,16 @@
 
   })(Module);
 
+  m = new DeepinMenu();
+
+  i1 = new DeepinMenuItem("Open");
+
+  i2 = new DeepinMenuItem("Close");
+
+  m.appendItem(i1);
+
+  m.appendItem(i2);
+
   Item = (function(_super) {
 
     __extends(Item, _super);
@@ -413,6 +423,7 @@
       });
       if (typeof this.init_drag === "function") this.init_drag();
       if (typeof this.init_drop === "function") this.init_drop();
+      this.element.contextMenu = m;
     }
 
     Item.prototype.destroy = function() {
@@ -552,82 +563,6 @@
     return DesktopApplet;
 
   })(Item);
-
-  $.contextMenu({
-    selector: "body",
-    callback: function(key, opt) {
-      switch (key) {
-        case "cbg":
-          return Desktop.Core.run_command("gnome-control-center background");
-        case "sort1":
-          return sort_item_by_time();
-        case "sort2":
-          return sort_item_by_type();
-        case "sort3":
-          return sort_item_by_name();
-        default:
-          return echo("Nothing");
-      }
-    },
-    items: {
-      "cfile": {
-        name: "Create File"
-      },
-      "cdir": {
-        name: "Create Directory"
-      },
-      "sepl1": "----------",
-      "reload": {
-        name: "Reload"
-      },
-      "sepl2": "----------",
-      "sort1": {
-        name: "Sort By Time"
-      },
-      "sort2": {
-        name: "Sort By Type"
-      },
-      "sort3": {
-        name: "Sort By Name"
-      },
-      "sepl3": "----------",
-      "cbg": {
-        name: "*ChangeBackground"
-      }
-    }
-  });
-
-  $.contextMenu({
-    selector: ".DesktopEntry, .NormalFile, .Folder",
-    callback: function(key, opt) {
-      var path;
-      switch (key) {
-        case "del":
-          path = opt.$trigger[0].id;
-          return Desktop.Core.run_command("rm -rf -- '" + path + "'");
-        case "preview":
-          return echo("preview");
-      }
-    },
-    items: {
-      "preve": {
-        name: "Preview"
-      },
-      "sort": {
-        name: "Open"
-      },
-      "rename": {
-        name: "Rename"
-      },
-      "del": {
-        name: "*Delete"
-      },
-      "sepl": "--------------",
-      "property": {
-        name: "Property"
-      }
-    }
-  });
 
   $(function() {
     return load_desktop_entries();

@@ -16,4 +16,3 @@ $ ->
     load_desktop_entries()
 
     #$(".applet").draggable()
-

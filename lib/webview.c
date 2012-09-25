@@ -150,7 +150,7 @@ GtkWidget* d_webview_new()
 
     char* config_path = get_config_path("deepin-desktop");
     g_object_set(G_OBJECT(setting), 
-            "enable-default-context-menu", FALSE,
+            /*"enable-default-context-menu", FALSE,*/
             "enable-developer-extras", TRUE, 
             "html5-local-storage-database-path", config_path,
             NULL);

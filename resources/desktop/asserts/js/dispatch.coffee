@@ -1,10 +1,10 @@
 
 create_item = (info, pos) ->
     w = null
-    switch info.type
-        when "Entry" then w = new DesktopEntry info.name, info.icon, info.exec, info.path
-        when "File" then w = new NormalFile info.name, info.icon, info.exec, info.path
-        when "Dir" then w = new Folder info.name, info.icon, info.exec, info.path
+    switch info.Type
+        when "Application" then w = new DesktopEntry info.Name, info.Icon, info.Exec, info.EntryPath
+        when "File" then w = new NormalFile info.Name, info.Icon, info.Exec, info.EntryPath
+        when "Dir" then w = new Folder info.Name, info.Icon, info.exec, info.Entrypath
         else echo "don't support type"
     if pos?
         move_to_position(w, pos)

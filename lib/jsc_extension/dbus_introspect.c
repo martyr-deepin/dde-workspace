@@ -579,7 +579,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
         JSStringRelease(f_name);
 
 
-        char* tmp = g_strdup_printf("%s_sync", g_list_nth_data(funcs, i));
+        char* tmp = g_strdup_printf("%s_sync", (char*)g_list_nth_data(funcs, i));
         JSStringRef f_name_sync = JSStringCreateWithUTF8CString(tmp);
         g_free(tmp);
         JSObjectSetProperty(ctx, obj_info->obj, f_name_sync, 
