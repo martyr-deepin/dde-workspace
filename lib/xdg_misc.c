@@ -8,6 +8,13 @@
 #include "xdg_misc.h"
 
 static const char* GROUP = "Desktop Entry";
+static char DE_NAME[100] = "DEEPIN";
+
+void set_desktop_env_name(const char* name)
+{
+    size_t max_len = strlen(name) + 1;
+    memcpy(name, DE_NAME, max_len > 100 ? max_len : 100);
+}
 
 
 char* icon_name_to_path(const char* name, int size) 
@@ -45,10 +52,11 @@ char* get_dir_file_list(const char* path)
     if (i > 0)  {
         string = g_string_overwrite(string, string->len-1, "]");
         ret = string->str;
+        g_string_free(string, FALSE);
     } else {
         ret = g_strdup("[]");
-    }
-    g_string_free(string, FALSE);
+        g_string_free(string, TRUE);
+    } 
     g_dir_close(dir);
     return ret;
 }
@@ -117,6 +125,17 @@ BaseEntry* parse_normal_file(const char* path)
     return entry;
 }
 
+gboolean find_in(char** const array, const char* str)
+{
+    if (array == NULL) return FALSE;
+
+    char** tmp = array;
+    for(; *tmp != NULL; tmp++)
+        if (g_strcmp0(*tmp, str) == 0)
+            return TRUE;
+    return FALSE;
+}
+
 BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
 {
     BaseEntry* entry = NULL;
@@ -151,9 +170,21 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
     entry->icon = g_key_file_get_locale_string(de, GROUP, "Icon", NULL, NULL);
     entry->hidden = g_key_file_get_boolean(de, GROUP, "Hidden", NULL);
 
-    if (NULL != (entry->only_show_in = g_key_file_get_string_list(de, GROUP, "OnlyShowIn", NULL, NULL)))
-        entry->not_show_in = g_key_file_get_string_list(de, GROUP, "NotShowIn", NULL, NULL);
-
+    entry->only_show_in = g_key_file_get_string_list(de, GROUP, "OnlyShowIn", NULL, NULL);
+    entry->not_show_in = g_key_file_get_string_list(de, GROUP, "NotShowIn", NULL, NULL);
+    if (entry->only_show_in != NULL) {
+        if (!find_in(entry->only_show_in, DE_NAME)) {
+            desktop_entry_free(entry);
+            entry = NULL;
+            return entry;
+        }
+    } else if (entry->not_show_in != NULL) {
+        if (find_in(entry->not_show_in, DE_NAME)) {
+            desktop_entry_free(entry);
+            entry = NULL;
+            return entry;
+        }
+    }
     return entry;
 }
 
@@ -244,10 +275,11 @@ char* to_json_array(char** const strings)
     if (i > 0)  {
         string = g_string_overwrite(string, string->len-1, "]");
         ret = string->str;
+        g_string_free(string, FALSE);
     } else {
         ret = g_strdup(" ");
+        g_string_free(string, TRUE);
     }
-    g_string_free(string, FALSE);
     return ret;
 }
 
@@ -293,7 +325,7 @@ char* entry_info_to_json(BaseEntry* _entry)
             g_string_append_printf(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
         if (entry->exec)
             g_string_append_printf(string, "\"Exec\":\"%s\",\n", entry->exec);
-        if (entry->exec_flag != " ") 
+        if (entry->exec_flag != ' ') 
             g_string_append_printf(string, "\"ExecFlag\":\"%c\",\n", entry->exec_flag);
         if (entry->path)
             g_string_append_printf(string, "\"Path\":\"%s\",\n", entry->path);
@@ -419,40 +451,48 @@ char* get_desktop_dir(gboolean update)
 
 char* get_entries_by_func(const char* base_dir, ENTRY_CONDITION func)
 {
-    GDir *dir =  g_dir_open(base_dir, 0, NULL);
-    const char* filename = NULL;
+    char** str_dirs = g_strsplit(base_dir, ";", -1);
+    char** tmp = str_dirs;
 
-    g_assert(dir != NULL);
+    const char* filename = NULL;
+    char path[500];
 
     GString* content = g_string_new("[");
-    char path[500];
-    int i = 0;
-    while ((filename = g_dir_read_name(dir)) != NULL) {
-        g_sprintf(path, "%s/%s", base_dir, filename);
-        if (func != NULL && !func(path))
-            continue;
 
-        BaseEntry* entry = parse_one_entry(path);
-        if (entry == NULL)
+    for (; *tmp != NULL; tmp++) {
+        GDir *dir =  g_dir_open(*tmp, 0, NULL);
+        if (dir == NULL)
             continue;
-        i++;
-        char* info = entry_info_to_json(entry);
-        desktop_entry_free(entry);
+        while ((filename = g_dir_read_name(dir)) != NULL) {
+            g_sprintf(path, "%s/%s", *tmp, filename);
+            if (func != NULL && !func(path))
+                continue;
 
-        g_string_append(content, info);
-        g_string_append_c(content, ',');
-        g_free(info);
+            BaseEntry* entry = parse_one_entry(path);
+            if (entry == NULL)
+                continue;
+            char* info = entry_info_to_json(entry);
+            desktop_entry_free(entry);
+
+            g_string_append(content, info);
+            g_string_append_c(content, ',');
+            g_free(info);
+        }
+        g_dir_close(dir);
     }
-    g_dir_close(dir);
+    g_strfreev(str_dirs);
+
+
 
     char* ret = NULL;
-    if (i > 0) {
+    if (content->len > 2) {
         content = g_string_overwrite(content, content->len-1, "]");
         ret = content->str;
+        g_string_free(content, FALSE);
     } else {
         ret = g_strdup(" ");
+        g_string_free(content, TRUE);
     }
-    g_string_free(content, FALSE);
     return ret;
 }
 
@@ -480,8 +520,10 @@ gboolean no_dot_hidden_file(const char* path)
 
 char* get_application_entries()
 {
-    char* base_dir = "/usr/share/applications";
-    return get_entries_by_func(base_dir, only_desktop);
+    char* base_dir = g_strdup_printf("%s;%s/%s", "/usr/share/applications", g_get_home_dir(), ".local/share/applications");
+    char* ret = get_entries_by_func(base_dir, only_desktop);
+    g_free(base_dir);
+    return ret;
 }
 
  
@@ -535,7 +577,6 @@ char* move_to_desktop(const char* path)
     g_free(cmd);
 
     return new_path;
-
 }
 
 char* get_folder_open_icon() { return icon_name_to_path("folder-open", 48); }

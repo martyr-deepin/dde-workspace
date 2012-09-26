@@ -4,6 +4,8 @@
 
 // the really icon path is determined by theme
 void set_default_theme(const char* theme);
+// deal with the NotShowIn/OnlyShowIn filed. 
+void set_desktop_env_name(const char* name);
 
 // get all desktop entry under the dir of $XDG_DESKTOP_DIR
 // include the normal file and dir, exclude the dot hidden file.
@@ -12,7 +14,7 @@ char* get_desktop_entries();
 
 // get all system and user home's applications (eg, /usr/share/applications, ~/.local/share/applications)
 // also include the executable file in $PATH, and will try to detect the icon of the executable file.
-char* get_all_applications();
+char* get_application_entries();
 
 // move the "path" file to the $XDG_DESKTOP_DIR
 // will auto append suffix if there has the same name file in $XDG_DESKTOP_DIR,
@@ -24,9 +26,12 @@ char* get_entry_info(const char* path);
 
 typedef gboolean (*ENTRY_CONDITION)(const char*);
 char* get_entries_by_func(const char* base_dir, ENTRY_CONDITION func);
+
+// default ENTRY_CONDITION functions
 gboolean only_normal_dir(const char* path);
 gboolean only_desktop(const char* path);
 gboolean only_normal_file(const char* path);
+gboolean no_dot_hidden_file(const char* path);
 
 
 
