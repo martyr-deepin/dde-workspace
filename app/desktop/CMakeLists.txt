@@ -1,5 +1,5 @@
 SET(NAME "desktop")
-SET(SRC_LIST desktop.c)
+SET(SRC_LIST desktop.c X_misc.c)
 
 
 add_executable(${NAME} ${SRC_LIST})
