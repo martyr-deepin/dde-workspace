@@ -3,6 +3,7 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include "X_misc.h"
+#include "dwebview.h"
 
 void set_wmspec_desktop_hint (GdkWindow *window)
 {
@@ -12,10 +13,6 @@ void set_wmspec_desktop_hint (GdkWindow *window)
             gdk_atom_intern ("_NET_WM_WINDOW_TYPE", FALSE),
             gdk_x11_xatom_to_atom (XA_ATOM), 32,
             GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
-
-    int x, y, width, height;
-    get_workarea_size(0, 0, &x, &y, &width, &height);
-    printf("(%d, %d, %d, %d)\n", x, y, width, height);
 }
 
 void get_workarea_size(int screen_n, int desktop_n, 
@@ -59,7 +56,13 @@ static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpoin
     if (xevt->type == PropertyNotify && 
             XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
         g_message("GET _NET_WORKAREA change on rootwindow");
-        /*get_workarea_size(0);*/
+
+        int x, y, width, height;
+        get_workarea_size(0, 0, &x, &y, &width, &height);
+        char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}",
+                x, y, width, height);
+        js_post_message("workarea_changed", tmp);
+        g_free(tmp);
     }
     return GDK_FILTER_CONTINUE;
 }

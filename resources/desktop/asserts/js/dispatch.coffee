@@ -10,18 +10,17 @@ create_item = (info, pos) ->
         move_to_position(w, pos)
 
 
-Desktop.Core.install_monitor()
+#Desktop.Core.install_monitor()
+#TODO: adjust this change
 
 load_desktop_entries = ->
-    grid = document.querySelector("#grid")
-    grid.width = document.body.scrollWidth
-    grid.height = document.body.scrollHeight
     create_item(info) for info in Desktop.Core.get_desktop_items()
-    Desktop.Core.item_connect("update", do_item_update)
-    Desktop.Core.item_connect("delete", do_item_delete)
-    Desktop.Core.item_connect("rename", do_item_rename)
+    Desktop.Core.signal_connect("update", do_item_update)
+    Desktop.Core.signal_connect("delete", do_item_delete)
+    Desktop.Core.signal_connect("rename", do_item_rename)
 
 do_item_delete = (id) ->
+    echo "signal delete emit......"
     w = Widget.look_up(id)
     w.destroy()
 
@@ -34,3 +33,4 @@ do_item_rename = (id, info) ->
     w.destroy()
 
     create_item(info, pos)
+

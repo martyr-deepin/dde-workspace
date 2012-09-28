@@ -35,6 +35,7 @@ JSValueRef json_from_cstr(JSContextRef ctx, const char* data)
 {
     JSStringRef str = JSStringCreateWithUTF8CString(data);
     JSValueRef json = JSValueMakeFromJSONString(ctx, str);
+    printf("json error:%s\n", data);
     JSStringRelease(str);
     g_assert(json != NULL);
     return json;

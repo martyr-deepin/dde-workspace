@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -51,69 +51,6 @@
     return Module;
 
   })();
-
-  Recordable = {
-    db_tabls: [],
-    __init__: function(parms) {
-      this.prototype.get_fields = parms;
-      return this.prototype.create_table();
-    },
-    table: function() {
-      return "__d_" + this.constructor.name + "__";
-    },
-    fields: function() {
-      return this.get_fields.join();
-    },
-    fields_n: function() {
-      var i, _ref, _results;
-      _results = [];
-      for (i = 1, _ref = this.get_fields.length; 1 <= _ref ? i <= _ref : i >= _ref; 1 <= _ref ? i++ : i--) {
-        _results.push('?');
-      }
-      return _results;
-    },
-    save: function() {
-      var fn, i, values,
-        _this = this;
-      values = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.get_fields;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          _results.push(this["get_" + i]());
-        }
-        return _results;
-      }).call(this);
-      fn = this.fields_n();
-      return db_conn.transaction(function(tx) {
-        return tx.executeSql("replace into " + (_this.table()) + " (" + (_this.fields()) + ") values (" + fn + ");", values, function(result) {}, function(tx, error) {
-          return console.log(error);
-        });
-      });
-    },
-    create_table: function() {
-      var fs;
-      fs = this.fields().split(',').slice(1).join(' Int, ') + " Int";
-      return Recordable.db_tabls.push("CREATE TABLE " + (this.table()) + " (id REAL UNIQUE, " + fs + ");");
-    },
-    load: function() {
-      var _this = this;
-      return db_conn.transaction(function(tx) {
-        return tx.executeSql("select " + (_this.fields()) + " from " + (_this.table()) + " where id = ?", [_this.id], function(tx, r) {
-          var field, p, _i, _len, _ref, _results;
-          p = r.rows.item(0);
-          _ref = _this.get_fields;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            field = _ref[_i];
-            _results.push(_this["set_" + field](p[field]));
-          }
-          return _results;
-        }, function(tx, error) {});
-      });
-    }
-  };
 
   s_width = 1280;
 
@@ -313,25 +250,21 @@
     if (pos != null) return move_to_position(w, pos);
   };
 
-  Desktop.Core.install_monitor();
-
   load_desktop_entries = function() {
-    var grid, info, _i, _len, _ref;
-    grid = document.querySelector("#grid");
-    grid.width = document.body.scrollWidth;
-    grid.height = document.body.scrollHeight;
+    var info, _i, _len, _ref;
     _ref = Desktop.Core.get_desktop_items();
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       info = _ref[_i];
       create_item(info);
     }
-    Desktop.Core.item_connect("update", do_item_update);
-    Desktop.Core.item_connect("delete", do_item_delete);
-    return Desktop.Core.item_connect("rename", do_item_rename);
+    Desktop.Core.signal_connect("update", do_item_update);
+    Desktop.Core.signal_connect("delete", do_item_delete);
+    return Desktop.Core.signal_connect("rename", do_item_rename);
   };
 
   do_item_delete = function(id) {
     var w;
+    echo("signal delete emit......");
     w = Widget.look_up(id);
     return w.destroy();
   };
@@ -417,7 +350,7 @@
       move_to_anywhere(this);
       el.setAttribute("tabindex", 0);
       el.draggable = true;
-      el.innerHTML = "        <img draggable=false src=" + this.icon + ">            <div contenteditable=true class=item_name>" + this.name + "</div>        </img>        ";
+      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div contentEditable=true class=item_name>" + this.name + "</div>        ";
       this.element.addEventListener('dblclick', function() {
         return Desktop.Core.run_command(exec);
       });

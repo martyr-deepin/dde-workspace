@@ -33,6 +33,7 @@ GtkWidget* create_web_container(bool normal, bool above);
 GtkWidget* d_webview_new();
 GtkWidget* d_webview_new_with_uri();
 
+void js_post_message(const char* name, const char* message_json);
 
 G_END_DECLS
 

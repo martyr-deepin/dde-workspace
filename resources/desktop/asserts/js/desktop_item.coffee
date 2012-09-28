@@ -16,9 +16,8 @@ class Item extends Widget
         el.setAttribute("tabindex", 0)
         el.draggable = true
         el.innerHTML = "
-        <img draggable=false src=#{@icon}>
-            <div contenteditable=true class=item_name>#{@name}</div>
-        </img>
+        <img draggable=false src=#{@icon} />
+        <div contentEditable=true class=item_name>#{@name}</div>
         "
 
         @element.addEventListener('dblclick', ->
