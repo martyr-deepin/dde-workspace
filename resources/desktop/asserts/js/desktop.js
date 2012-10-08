@@ -64,14 +64,6 @@
 
   i_height = 84;
 
-  div_grid = document.createElement("div");
-
-  div_grid.setAttribute("id", "item_grid");
-
-  document.body.appendChild(div_grid);
-
-  div_grid.setAttribute("style", "width:" + s_width + "px;height:" + s_height + "px;left:" + s_x + "px;top:" + s_y + "px;");
-
   cols = Math.floor(s_width / i_width);
 
   rows = Math.floor(s_height / i_height);
@@ -83,7 +75,14 @@
   }
 
   update_gird_position = function(wa_x, wa_y, wa_width, wa_height) {
-    return div_grid.setAttribute("style", "width:" + wa_width + "px;height:" + wa_height + "px;left:" + wa_x + "px;top:" + wa_y + "px;");
+    s_x = wa_x;
+    s_y = wa_y;
+    s_width = wa_width;
+    s_height = wa_height;
+    div_grid.style.left = s_x;
+    div_grid.style.top = s_y;
+    div_grid.style.width = s_width;
+    return div_grid.style.height = s_height;
   };
 
   load_position = function(widget) {
@@ -135,10 +134,13 @@
   };
 
   pixel_to_position = function(x, y) {
-    var p_x, p_y;
-    p_x = Math.floor(x / i_width);
-    p_y = Math.floor(y / i_height);
-    return [p_x, p_y];
+    var index_x, index_y, p_x, p_y;
+    p_x = x - s_x;
+    p_y = y - s_y;
+    index_x = Math.floor(p_x / i_width);
+    index_y = Math.floor(p_y / i_height);
+    echo("" + index_x + "," + index_y);
+    return [index_x, index_y];
   };
 
   find_free_position = function(w, h) {
@@ -219,6 +221,14 @@
     }
     return _results;
   };
+
+  div_grid = document.createElement("div");
+
+  div_grid.setAttribute("id", "item_grid");
+
+  document.body.appendChild(div_grid);
+
+  update_gird_position(s_x, s_y, s_width, s_height);
 
   $("#item_grid").drop({
     "drop": function(evt) {
@@ -392,7 +402,7 @@
       el.addEventListener('dragstart', function(evt) {
         evt.dataTransfer.setData("text/uri-list", "file://" + _this.path);
         evt.dataTransfer.setData("text/plain", "" + _this.name);
-        return evt.dataTransfer.effectAllowed = "copy";
+        return evt.dataTransfer.effectAllowed = "all";
       });
       return el.addEventListener('dragend', function(evt) {
         var info, node, pos;
