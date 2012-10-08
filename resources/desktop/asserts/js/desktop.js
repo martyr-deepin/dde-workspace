@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -257,14 +257,15 @@
       info = _ref[_i];
       create_item(info);
     }
-    Desktop.Core.signal_connect("update", do_item_update);
-    Desktop.Core.signal_connect("delete", do_item_delete);
-    return Desktop.Core.signal_connect("rename", do_item_rename);
+    Desktop.Core.signal_connect("item_update", do_item_update);
+    Desktop.Core.signal_connect("item_delete", do_item_delete);
+    Desktop.Core.signal_connect("item_rename", do_item_rename);
+    Desktop.Core.signal_connect("workarea_changed", do_workarea_changed);
+    return Desktop.Core.notify_workarea_size();
   };
 
   do_item_delete = function(id) {
     var w;
-    echo("signal delete emit......");
     w = Widget.look_up(id);
     return w.destroy();
   };
@@ -273,12 +274,16 @@
     return create_item(info);
   };
 
-  do_item_rename = function(id, info) {
+  do_item_rename = function(data) {
     var pos, w;
-    w = Widget.look_up(id);
+    w = Widget.look_up(data.old_id);
     pos = load_position(w);
     w.destroy();
-    return create_item(info, pos);
+    return create_item(data.info, pos);
+  };
+
+  do_workarea_changed = function(allo) {
+    return echo(allo);
   };
 
   Widget = (function(_super) {
@@ -394,8 +399,8 @@
       el = this.element;
       el.addEventListener('dragstart', function(evt) {
         evt.dataTransfer.setData("text/uri-list", "file://" + _this.path);
-        evt.dataTransfer.effectAllowed = "all";
-        return evt.dataTransfer.dropEffect = "move";
+        evt.dataTransfer.setData("text/plain", "" + _this.name);
+        return evt.dataTransfer.effectAllowed = "copy";
       });
       return el.addEventListener('dragend', function(evt) {
         var info, node, pos;

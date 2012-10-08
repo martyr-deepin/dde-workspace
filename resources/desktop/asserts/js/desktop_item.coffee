@@ -48,8 +48,8 @@ class DesktopEntry extends Item
         el = @element
         el.addEventListener('dragstart', (evt) =>
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
-                evt.dataTransfer.effectAllowed = "all"
-                evt.dataTransfer.dropEffect = "move"
+                evt.dataTransfer.setData("text/plain", "#{@name}")
+                evt.dataTransfer.effectAllowed = "copy"
         )
         el.addEventListener('dragend', (evt) =>
                 if evt.dataTransfer.dropEffect == "move"

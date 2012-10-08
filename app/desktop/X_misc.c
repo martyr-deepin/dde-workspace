@@ -68,7 +68,6 @@ static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpoin
 }
 
 
-static
 void watch_workarea_changes(GtkWidget* widget)
 {
 
@@ -79,7 +78,6 @@ void watch_workarea_changes(GtkWidget* widget)
     gdk_window_add_filter(groot, watch_workarea, NULL);
 }
 
-static
 void unwatch_workarea_changes(GtkWidget* widget)
 {
     GdkScreen *gscreen = gtk_widget_get_screen(widget);

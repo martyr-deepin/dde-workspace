@@ -14,8 +14,13 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
             {
                 char* old_path = g_file_get_path(file);
                 char* new_path = g_file_get_path(other);
-                /*post_message("rename", new_path, old_path);*/
-                /*item_notify(ITEM_RENAME, new_path, old_path);*/
+                char* info = get_entry_info(new_path);
+
+                char* tmp = g_strdup_printf("{\"old_id\":\"%s\", \"info\":%s}", old_path, info);
+                js_post_message("item_rename", tmp);
+                g_free(tmp);
+
+                g_free(info);
                 g_free(old_path);
                 g_free(new_path);
                 break;
@@ -29,7 +34,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                 } else {
                     /*item_notify(ITEM_DELETE, path, NULL);*/
                     char* tmp = g_strdup_printf("\"%s\"", path);
-                    js_post_message("delete", tmp);
+                    js_post_message("item_delete", tmp);
                     g_free(tmp);
                 }
                 g_free(path);
@@ -39,7 +44,10 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
         /*case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:*/
             {
                 char* path = g_file_get_path(file);
-                /*item_notify(ITEM_UPDATE, path, NULL);*/
+                char* info = get_entry_info(path);
+                js_post_message("item_update", info);
+
+                g_free(info);
                 g_free(path);
                 break;
             }

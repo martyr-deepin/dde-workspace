@@ -51,6 +51,7 @@ int main(int argc, char* argv[])
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), w);
 
     set_wmspec_desktop_hint(gtk_widget_get_window(w));
+    watch_workarea_changes(w);
 
     GdkWindow* webkit_web_view_get_forward_window(GtkWidget*);
     GdkWindow* fw = webkit_web_view_get_forward_window(webview);
@@ -63,5 +64,6 @@ int main(int argc, char* argv[])
 
     g_signal_connect (w , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     gtk_main();
+    unwatch_workarea_changes(w);
     return 0;
 }
