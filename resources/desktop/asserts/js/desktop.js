@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, sort_item, update_gird_position,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, info, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, sort_item, update_gird_position, w, _i, _len, _ref,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -51,69 +51,6 @@
     return Module;
 
   })();
-
-  Recordable = {
-    db_tabls: [],
-    __init__: function(parms) {
-      this.prototype.get_fields = parms;
-      return this.prototype.create_table();
-    },
-    table: function() {
-      return "__d_" + this.constructor.name + "__";
-    },
-    fields: function() {
-      return this.get_fields.join();
-    },
-    fields_n: function() {
-      var i, _ref, _results;
-      _results = [];
-      for (i = 1, _ref = this.get_fields.length; 1 <= _ref ? i <= _ref : i >= _ref; 1 <= _ref ? i++ : i--) {
-        _results.push('?');
-      }
-      return _results;
-    },
-    save: function() {
-      var fn, i, values,
-        _this = this;
-      values = (function() {
-        var _i, _len, _ref, _results;
-        _ref = this.get_fields;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          _results.push(this["get_" + i]());
-        }
-        return _results;
-      }).call(this);
-      fn = this.fields_n();
-      return db_conn.transaction(function(tx) {
-        return tx.executeSql("replace into " + (_this.table()) + " (" + (_this.fields()) + ") values (" + fn + ");", values, function(result) {}, function(tx, error) {
-          return console.log(error);
-        });
-      });
-    },
-    create_table: function() {
-      var fs;
-      fs = this.fields().split(',').slice(1).join(' Int, ') + " Int";
-      return Recordable.db_tabls.push("CREATE TABLE " + (this.table()) + " (id REAL UNIQUE, " + fs + ");");
-    },
-    load: function() {
-      var _this = this;
-      return db_conn.transaction(function(tx) {
-        return tx.executeSql("select " + (_this.fields()) + " from " + (_this.table()) + " where id = ?", [_this.id], function(tx, r) {
-          var field, p, _i, _len, _ref, _results;
-          p = r.rows.item(0);
-          _ref = _this.get_fields;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            field = _ref[_i];
-            _results.push(_this["set_" + field](p[field]));
-          }
-          return _results;
-        }, function(tx, error) {});
-      });
-    }
-  };
 
   s_width = 1280;
 
@@ -310,39 +247,12 @@
     "leave": function(evt) {}
   });
 
-  create_item = function(info) {
-    var w;
-    w = null;
-    switch (info.Type) {
-      case "Application":
-        w = new DesktopEntry(info.Name, info.Icon, info.Exec, info.EntryPath);
-        break;
-      case "File":
-        w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
-        break;
-      case "Dir":
-        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
-        break;
-      default:
-        echo("don't support type");
-    }
-    div_grid.appendChild(w.element);
-    return w;
-  };
-
-  Desktop.Core.install_monitor();
-
-  load_desktop_entries = function() {
-    var info, w, _i, _len, _ref;
-    _ref = Desktop.Core.get_desktop_items();
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      info = _ref[_i];
-      w = create_item(info);
-      if (w != null) move_to_anywhere(w);
-    }
-    Desktop.Core.item_connect("update", do_item_update);
-    Desktop.Core.item_connect("delete", do_item_delete);
-    return Desktop.Core.item_connect("rename", do_item_rename);
+  connect_default_signals = function() {
+    Desktop.Core.signal_connect("item_update", do_item_update);
+    Desktop.Core.signal_connect("item_delete", do_item_delete);
+    Desktop.Core.signal_connect("item_rename", do_item_rename);
+    Desktop.Core.signal_connect("workarea_changed", do_workarea_changed);
+    return Desktop.Core.notify_workarea_size();
   };
 
   do_item_delete = function(id) {
@@ -357,13 +267,17 @@
     if (w != null) return move_to_anywhere(w);
   };
 
-  do_item_rename = function(id, info) {
-    var pos, w;
-    w = Widget.look_up(id);
-    pos = load_position(w);
+  do_item_rename = function(data) {
+    var w;
+    w = Widget.look_up(data.old_id);
     w.destroy();
-    w = create_item(info);
+    w = create_item(data.info);
     if (w != null) return move_to_anywhere(w);
+  };
+
+  do_workarea_changed = function(allo) {
+    echo("do_workarea_changed");
+    return update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8);
   };
 
   Widget = (function(_super) {
@@ -433,7 +347,7 @@
       };
       el.setAttribute("tabindex", 0);
       el.draggable = true;
-      el.innerHTML = "        <img draggable=false src=" + this.icon + ">            <div contenteditable=true class=item_name>" + this.name + "</div>        </img>        ";
+      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div contentEditable=true class=item_name>" + this.name + "</div>        ";
       this.element.addEventListener('dblclick', function() {
         return Desktop.Core.run_command(exec);
       });
@@ -477,8 +391,8 @@
       el = this.element;
       el.addEventListener('dragstart', function(evt) {
         evt.dataTransfer.setData("text/uri-list", "file://" + _this.path);
-        evt.dataTransfer.effectAllowed = "all";
-        return evt.dataTransfer.dropEffect = "move";
+        evt.dataTransfer.setData("text/plain", "" + _this.name);
+        return evt.dataTransfer.effectAllowed = "copy";
       });
       return el.addEventListener('dragend', function(evt) {
         var info, node, pos;
@@ -580,8 +494,33 @@
 
   })(Item);
 
-  $(function() {
-    return load_desktop_entries();
-  });
+  create_item = function(info) {
+    var w;
+    w = null;
+    switch (info.Type) {
+      case "Application":
+        w = new DesktopEntry(info.Name, info.Icon, info.Exec, info.EntryPath);
+        break;
+      case "File":
+        w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
+        break;
+      case "Dir":
+        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
+        break;
+      default:
+        echo("don't support type");
+    }
+    div_grid.appendChild(w.element);
+    return w;
+  };
+
+  connect_default_signals();
+
+  _ref = Desktop.Core.get_desktop_items();
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    info = _ref[_i];
+    w = create_item(info);
+    if (w != null) move_to_anywhere(w);
+  }
 
 }).call(this);

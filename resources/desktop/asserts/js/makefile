@@ -1,2 +1,2 @@
-all: utils.coffee module.coffee grid.coffee dispatch.coffee widget.coffee desktop_item.coffee desktop.coffee 
-	coffee -cj desktop.js $^ 
+all: utils.coffee module.coffee grid.coffee signals.coffee widget.coffee desktop_item.coffee dispatch.coffee
+	coffee -cj desktop.js $^

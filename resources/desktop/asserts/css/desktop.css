@@ -32,7 +32,7 @@ body {
 
 #item_grid {
     position:fixed;
-    background-color:rgba(0, 0, 0, 0.3);
+    background-color:rgba(22, 22, 22, 0.3);
     overflow:hidden;
 }
 

@@ -8,17 +8,22 @@ connect_default_signals = ->
 
 do_item_delete = (id) ->
     w = Widget.look_up(id)
-    w.destroy()
+    if w?
+        w.destroy()
 
 do_item_update = (info) ->
-    create_item(info)
+    w = create_item(info)
+    if w?
+        move_to_anywhere(w)
 
 do_item_rename = (data) ->
     w = Widget.look_up(data.old_id)
-    pos = load_position(w)
     w.destroy()
 
-    create_item(data.info, pos)
+    w = create_item(data.info)
+    if w?
+        move_to_anywhere(w)
 
 do_workarea_changed = (allo) ->
-    echo allo
+    echo "do_workarea_changed"
+    update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
