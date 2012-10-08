@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, set_occupy, sort_item,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Recordable, Widget, assert, clear_occupy, cols, create_item, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, load_desktop_entries, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, sort_item, update_gird_position,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -117,11 +117,23 @@
 
   s_width = 1280;
 
-  s_height = 746;
+  s_height = 546;
+
+  s_x = 0;
+
+  s_y = 100;
 
   i_width = 80;
 
-  i_height = 80;
+  i_height = 84;
+
+  div_grid = document.createElement("div");
+
+  div_grid.setAttribute("id", "item_grid");
+
+  document.body.appendChild(div_grid);
+
+  div_grid.setAttribute("style", "width:" + s_width + "px;height:" + s_height + "px;left:" + s_x + "px;top:" + s_y + "px;");
 
   cols = Math.floor(s_width / i_width);
 
@@ -132,6 +144,10 @@
   for (i = 0; 0 <= cols ? i <= cols : i >= cols; 0 <= cols ? i++ : i--) {
     o_table[i] = new Array(rows);
   }
+
+  update_gird_position = function(wa_x, wa_y, wa_width, wa_height) {
+    return div_grid.setAttribute("style", "width:" + wa_width + "px;height:" + wa_height + "px;left:" + wa_x + "px;top:" + wa_y + "px;");
+  };
 
   load_position = function(widget) {
     return localStorage.getObject(widget.path);
@@ -189,15 +205,15 @@
   };
 
   find_free_position = function(w, h) {
-    var i, info, j;
+    var i, info, j, _ref, _ref2;
     info = {
       x: 0,
       y: 0,
       width: w,
       height: h
     };
-    for (i = 0; 0 <= cols ? i <= cols : i >= cols; 0 <= cols ? i++ : i--) {
-      for (j = 0; 0 <= rows ? j <= rows : j >= rows; 0 <= rows ? j++ : j--) {
+    for (i = 0, _ref = cols - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+      for (j = 0, _ref2 = rows - 1; 0 <= _ref2 ? j <= _ref2 : j >= _ref2; 0 <= _ref2 ? j++ : j--) {
         if (!(o_table[i][j] != null)) {
           info.x = i;
           info.y = j;
@@ -267,7 +283,7 @@
     return _results;
   };
 
-  $("body").drop({
+  $("#item_grid").drop({
     "drop": function(evt) {
       var file, p_info, path, pos, _i, _len, _ref;
       echo(evt);
@@ -294,7 +310,7 @@
     "leave": function(evt) {}
   });
 
-  create_item = function(info, pos) {
+  create_item = function(info) {
     var w;
     w = null;
     switch (info.Type) {
@@ -305,25 +321,24 @@
         w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "Dir":
-        w = new Folder(info.Name, info.Icon, info.exec, info.Entrypath);
+        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
         break;
       default:
         echo("don't support type");
     }
-    if (pos != null) return move_to_position(w, pos);
+    div_grid.appendChild(w.element);
+    return w;
   };
 
   Desktop.Core.install_monitor();
 
   load_desktop_entries = function() {
-    var grid, info, _i, _len, _ref;
-    grid = document.querySelector("#grid");
-    grid.width = document.body.scrollWidth;
-    grid.height = document.body.scrollHeight;
+    var info, w, _i, _len, _ref;
     _ref = Desktop.Core.get_desktop_items();
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       info = _ref[_i];
-      create_item(info);
+      w = create_item(info);
+      if (w != null) move_to_anywhere(w);
     }
     Desktop.Core.item_connect("update", do_item_update);
     Desktop.Core.item_connect("delete", do_item_delete);
@@ -333,11 +348,13 @@
   do_item_delete = function(id) {
     var w;
     w = Widget.look_up(id);
-    return w.destroy();
+    if (w != null) return w.destroy();
   };
 
   do_item_update = function(info) {
-    return create_item(info);
+    var w;
+    w = create_item(info);
+    if (w != null) return move_to_anywhere(w);
   };
 
   do_item_rename = function(id, info) {
@@ -345,7 +362,8 @@
     w = Widget.look_up(id);
     pos = load_position(w);
     w.destroy();
-    return create_item(info, pos);
+    w = create_item(info);
+    if (w != null) return move_to_anywhere(w);
   };
 
   Widget = (function(_super) {
@@ -363,20 +381,19 @@
       el = document.createElement('div');
       el.setAttribute('class', this.constructor.name);
       el.id = this.id;
-      document.body.appendChild(el);
       this.element = el;
       Widget.object_table[this.id] = this;
     }
 
     Widget.prototype.destroy = function() {
-      document.body.removeChild(this.element);
+      this.element.parentElement.removeChild(this.element);
       return delete Widget.object_table[this.id];
     };
 
     Widget.prototype.move = function(x, y) {
       var style;
       style = this.element.style;
-      style.position = "fixed";
+      style.position = "absolute";
       style.left = x;
       return style.top = y;
     };
@@ -414,7 +431,6 @@
         width: 1,
         height: 1
       };
-      move_to_anywhere(this);
       el.setAttribute("tabindex", 0);
       el.draggable = true;
       el.innerHTML = "        <img draggable=false src=" + this.icon + ">            <div contenteditable=true class=item_name>" + this.name + "</div>        </img>        ";

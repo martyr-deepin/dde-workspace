@@ -1,13 +1,31 @@
+# workarea size
 s_width = 1280
-s_height = 746
+s_height = 546
+
+# workarea offset
+s_x = 0
+s_y = 100
+
+# item size
 i_width = 80
-i_height = 80
+i_height = 84
+
+div_grid = document.createElement("div")
+div_grid.setAttribute("id", "item_grid")
+document.body.appendChild(div_grid)
+div_grid.setAttribute("style", "width:#{s_width}px;height:#{s_height}px;left:#{s_x}px;top:#{s_y}px;")
+
 cols = Math.floor(s_width/i_width)
 rows = Math.floor(s_height/i_height)
 
 o_table = new Array()
 for i in [0..cols]
     o_table[i] = new Array(rows)
+
+
+# update the coordinate of the gird_div to fit the size of the workarea
+update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
+    div_grid.setAttribute("style", "width:#{wa_width}px;height:#{wa_height}px;left:#{wa_x}px;top:#{wa_y}px;")
 
 
 load_position = (widget) ->
@@ -18,6 +36,7 @@ clear_occupy = (info) ->
     for i in [0..info.width-1]
         for j in [0..info.height-1]
             o_table[info.x+i][info.y+j] = null
+
 
 set_occupy = (info) ->
     assert(info!=null, "set_occupy")
@@ -35,6 +54,7 @@ detect_occupy = (info) ->
                 return true
     return false
 
+
 pixel_to_position = (x, y) ->
     p_x = Math.floor(x / i_width)
     p_y = Math.floor(y / i_height)
@@ -43,13 +63,14 @@ pixel_to_position = (x, y) ->
 
 find_free_position = (w, h) ->
     info = {x:0, y:0, width:w, height:h}
-    for i in [0..cols]
-        for j in [0..rows]
+    for i in [0..cols - 1]
+        for j in [0..rows - 1]
             if not o_table[i][j]?
                 info.x = i
                 info.y = j
                 return info
     return null
+
 
 move_to_anywhere = (widget) ->
     info = localStorage.getObject(widget.path)
@@ -58,6 +79,7 @@ move_to_anywhere = (widget) ->
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
+
 
 move_to_position = (widget, info) ->
     old_info = localStorage.getObject(widget.path)
@@ -75,7 +97,6 @@ move_to_position = (widget, info) ->
             set_occupy(info)
     
 
-
 draw_grid = (ctx) ->
     grid = document.querySelector("#grid")
     ctx = grid.getContext('2d')
@@ -88,7 +109,6 @@ draw_grid = (ctx) ->
                 ctx.clearRect(i*i_width, j*i_height, i_width-5, i_height-5)
 
 
-
 sort_item = ->
     for item, i in $(".item")
         x = Math.floor (i / rows)
@@ -96,8 +116,7 @@ sort_item = ->
         echo "sort :(#{i}, #{x}, #{y})"
 
 
-
-$("body").drop
+$("#item_grid").drop
     "drop": (evt) ->
         echo evt
         for file in evt.originalEvent.dataTransfer.files
@@ -117,4 +136,3 @@ $("body").drop
 
     "leave": (evt) ->
         #evt.dataTransfer.dropEffect = "move"
-
