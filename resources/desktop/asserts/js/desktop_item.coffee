@@ -11,7 +11,6 @@ class Item extends Widget
 
         el = @element
         info = {x:0, y:0, width:1, height:1}
-        move_to_anywhere(this)
 
         el.setAttribute("tabindex", 0)
         el.draggable = true
@@ -67,7 +66,7 @@ class DesktopEntry extends Item
                     node = evt.target
                     node.parentNode.removeChild(node)
         )
-    
+
 class Folder extends DesktopEntry
     icon_open: ->
         $(@element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
