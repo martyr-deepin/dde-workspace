@@ -36,17 +36,20 @@ body {
     overflow:hidden;
 }
 
+.item_selected {
+    border-radius: 3px;
+    background-color: rgba(77, 77, 255, 0.8);
+}
+
 .Folder, .DesktopEntry, .NormalFile {
     width: 80px;
-    /*height: 80px;*/
-    margin: 10px;
+    padding: 3px 5px;
+    margin: 1px 1px;
     text-align: center;
     font-size: small;
     color: white;
     text-shadow: 0px 3px 3px black;
-
-}
-.Folder:hover {
+    outline: none;
 }
 
 .Folder img, .DesktopEntry img {
@@ -54,6 +57,11 @@ body {
     height: 48px;
 }
 
+.item_name {
+    max-height:36px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
 
 /* Generic context menu styles */
 .contextMenu {

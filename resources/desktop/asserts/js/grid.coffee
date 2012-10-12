@@ -1,21 +1,19 @@
 # workarea size
-s_width = 1280
-s_height = 546
+s_width = 0
+s_height = 0
 
 # workarea offset
 s_x = 0
-s_y = 100
+s_y = 0
 
 # item size
-i_width = 80
-i_height = 84
+i_width = 80 + 6 * 2
+i_height = 84 + 4 * 2
 
-cols = Math.floor(s_width/i_width)
-rows = Math.floor(s_height/i_height)
+cols = 0
+rows = 0
 
-o_table = new Array()
-for i in [0..cols]
-    o_table[i] = new Array(rows)
+o_table = null
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
@@ -28,6 +26,20 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.top = s_y
     div_grid.style.width = s_width
     div_grid.style.height = s_height
+
+    new_cols = Math.floor(s_width / i_width)
+    new_rows = Math.floor(s_height / i_height)
+
+    new_table = new Array()
+    for i in [0..new_cols]
+        new_table[i] = new Array(new_rows)
+        if i < cols
+            for n in [0..cols]
+                new_table[i][n] = o_table[i][n]
+
+    cols = new_cols
+    rows = new_rows
+    o_table = new_table
 
 load_position = (widget) ->
     localStorage.getObject(widget.path)
@@ -119,30 +131,30 @@ sort_item = ->
         y = Math.ceil (i % rows)
         echo "sort :(#{i}, #{x}, #{y})"
 
+init_grid_drop= ->
+    $("#item_grid").drop
+        "drop": (evt) ->
+            echo evt
+            for file in evt.originalEvent.dataTransfer.files
+                pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
+                p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
+                path = Desktop.Core.move_to_desktop(file.path)
+                localStorage.setObject(path, p_info)
+            evt.dataTransfer.dropEffect = "move"
+
+        "over": (evt) ->
+            #echo "over"
+            evt.dataTransfer.dropEffect = "move"
+            evt.preventDefault()
+
+        "enter": (evt) ->
+            #evt.dataTransfer.dropEffect = "move"
+
+        "leave": (evt) ->
+            #evt.dataTransfer.dropEffect = "move"
 
 div_grid = document.createElement("div")
 div_grid.setAttribute("id", "item_grid")
 document.body.appendChild(div_grid)
 update_gird_position(s_x, s_y, s_width, s_height)
-
-
-$("#item_grid").drop
-    "drop": (evt) ->
-        echo evt
-        for file in evt.originalEvent.dataTransfer.files
-            pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
-            p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
-            path = Desktop.Core.move_to_desktop(file.path)
-            localStorage.setObject(path, p_info)
-        evt.dataTransfer.dropEffect = "move"
-
-    "over": (evt) ->
-        #echo "over"
-        evt.dataTransfer.dropEffect = "move"
-        evt.preventDefault()
-
-    "enter": (evt) ->
-        #evt.dataTransfer.dropEffect = "move"
-
-    "leave": (evt) ->
-        #evt.dataTransfer.dropEffect = "move"
+init_grid_drop()
