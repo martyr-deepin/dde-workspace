@@ -1,6 +1,6 @@
 m = new DeepinMenu()
-i1 = new DeepinMenuItem("Open")
-i2 = new DeepinMenuItem("Close")
+i1 = new DeepinMenuItem(1, "Open")
+i2 = new DeepinMenuItem(2, "Close")
 m.appendItem(i1)
 m.appendItem(i2)
 
@@ -12,15 +12,18 @@ class Item extends Widget
         el = @element
         info = {x:0, y:0, width:1, height:1}
 
-        el.setAttribute("tabindex", 0)
+        #el.setAttribute("tabindex", 0)
         el.draggable = true
         el.innerHTML = "
         <img draggable=false src=#{@icon} />
-        <div contentEditable=true class=item_name>#{@name}</div>
+        <div class=item_name>#{@name}</div>
         "
 
         @element.addEventListener('dblclick', ->
                 Desktop.Core.run_command exec
+        )
+        @element.addEventListener('itemselected', (e) ->
+            alert "ID:#{e.id}  title: #{e.title}"
         )
         @init_drag?()
         @init_drop?()
@@ -48,14 +51,13 @@ class DesktopEntry extends Item
         el.addEventListener('dragstart', (evt) =>
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
                 evt.dataTransfer.setData("text/plain", "#{@name}")
-                evt.dataTransfer.effectAllowed = "copy"
+                evt.dataTransfer.effectAllowed = "all"
         )
         el.addEventListener('dragend', (evt) =>
                 if evt.dataTransfer.dropEffect == "move"
                     evt.preventDefault()
                     node = evt.target
-                    pos = pixel_to_position(evt.x,
-                        evt.y)
+                    pos = pixel_to_position(evt.x, evt.y)
 
                     info = localStorage.getObject(@path)
                     info.x = pos[0]
@@ -68,10 +70,10 @@ class DesktopEntry extends Item
         )
 
 class Folder extends DesktopEntry
-    icon_open: ->
-        $(@element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
-    icon_close: ->
-        $(@element).find("img")[0].src = Desktop.Core.get_folder_close_icon();
+    #icon_open: ->
+        #$(@element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
+    #icon_close: ->
+        #$(@element).find("img")[0].src = Desktop.Core.get_folder_close_icon();
 
 
     init_drop: =>
@@ -79,7 +81,7 @@ class Folder extends DesktopEntry
             drop: (evt) =>
                 file = evt.dataTransfer.getData("text/uri-list")
                 evt.preventDefault()
-                @icon_close()
+                #@icon_close()
                 @move_in(file)
 
             over: (evt) =>
@@ -89,12 +91,12 @@ class Folder extends DesktopEntry
                     evt.dataTransfer.dropEffect = "none"
                 else
                     evt.dataTransfer.dropEffect = "link"
-                    @icon_open()
+                    #@icon_open()
 
             enter: (evt) =>
 
             leave: (evt) =>
-                @icon_close()
+                #@icon_close()
     move_in: (c_path) ->
         p = c_path.replace("file://", "")
         Desktop.Core.run_command("mv '#{p}' '#{@path}'")

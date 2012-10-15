@@ -32,6 +32,7 @@ set(SRC_LIST
     utils.c
     webview.c
     xdg_misc.c
+    thumbnail.c
     ${jsc_ext}
     ${jsc_ext_gen}
     )

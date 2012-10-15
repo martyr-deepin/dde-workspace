@@ -19,5 +19,3 @@ char* get_config_path(const char* name)
 
     return g_string_free(path, FALSE);
 }
-
-

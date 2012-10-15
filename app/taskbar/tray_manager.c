@@ -561,6 +561,7 @@ tray_manager_unmanage (TrayManager *manager)
   g_assert (GDK_IS_WINDOW (gtk_widget_get_window(invisible)));
   
   display = gtk_widget_get_display (invisible);
+
   
   if (gdk_selection_owner_get_for_display (display, manager->selection_atom) ==
       gtk_widget_get_window(invisible))
@@ -609,6 +610,45 @@ tray_manager_set_orientation_property (TrayManager *manager)
 		   PropModeReplace,
 		   (guchar *) &data, 1);
 }
+static void
+tray_manager_set_visual_property(TrayManager* manager)
+{
+  GdkWindow  *window;
+  GdkDisplay *display;
+  Visual     *xvisual;
+  Atom        visual_atom;
+  gulong      data[1];
+
+  g_return_if_fail (manager->invisible != NULL);
+  window = gtk_widget_get_window (manager->invisible);
+  g_return_if_fail (window != NULL);
+
+  display = gtk_widget_get_display (manager->invisible);
+  visual_atom = gdk_x11_get_xatom_by_name_for_display (display,
+						       "_NET_SYSTEM_TRAY_VISUAL");
+
+  printf("\n\n======================================SELECTION ID:%d\n\n\n", GDK_WINDOW_XID(window));
+  if (gdk_screen_get_rgba_visual (manager->screen) != NULL &&
+      gdk_display_supports_composite (display)) {
+    xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_rgba_visual (manager->screen));
+  } else
+    {
+      /* We actually want the visual of the tray where the icons will
+       * be embedded. In almost all cases, this will be the same as the visual
+       * of the screen.
+       */
+      xvisual = GDK_VISUAL_XVISUAL (gdk_screen_get_system_visual (manager->screen));
+    }
+
+  data[0] = XVisualIDFromVisual (xvisual);
+
+  XChangeProperty (GDK_DISPLAY_XDISPLAY (display),
+                   GDK_WINDOW_XID (window),
+                   visual_atom,
+                   XA_VISUALID, 32,
+                   PropModeReplace,
+                   (guchar *) &data, 1);
+}
 
 static gboolean
 tray_manager_manage_screen_x11 (TrayManager *manager,
@@ -619,9 +659,12 @@ tray_manager_manage_screen_x11 (TrayManager *manager,
   GtkWidget  *invisible;
   char       *selection_atom_name;
   guint32     timestamp;
+  GdkWindow *window;
   
   g_return_val_if_fail (IS_TRAY_MANAGER (manager), FALSE);
   g_return_val_if_fail (manager->screen == NULL, FALSE);
+
+  manager->screen = screen;
 
   display = gdk_screen_get_display (screen);
   xscreen = GDK_SCREEN_XSCREEN (screen);
@@ -637,13 +680,18 @@ tray_manager_manage_screen_x11 (TrayManager *manager,
   manager->selection_atom = gdk_atom_intern (selection_atom_name, FALSE);
   g_free (selection_atom_name);
 
+  manager->invisible = invisible;
+  g_object_ref(G_OBJECT(manager->invisible));
+
   tray_manager_set_orientation_property (manager);
+  /*tray_manager_set_visual_property(manager);*/
   
-  timestamp = gdk_x11_get_server_time (gtk_widget_get_window(invisible));
+  window = gtk_widget_get_window(invisible);
+  timestamp = gdk_x11_get_server_time (window);
 
   /* Check if we could set the selection owner successfully */
   if (gdk_selection_owner_set_for_display (display,
-                                           gtk_widget_get_window(invisible),
+                                           window,
                                            manager->selection_atom,
                                            timestamp,
                                            TRUE))
@@ -661,7 +709,7 @@ tray_manager_manage_screen_x11 (TrayManager *manager,
       xev.data.l[0] = timestamp;
       xev.data.l[1] = gdk_x11_atom_to_xatom_for_display (display,
                                                          manager->selection_atom);
-      xev.data.l[2] = gdk_x11_window_get_xid(gtk_widget_get_window(invisible));
+      xev.data.l[2] = gdk_x11_window_get_xid(window);
       xev.data.l[3] = 0;	/* manager specific data */
       xev.data.l[4] = 0;	/* manager specific data */
 
@@ -669,21 +717,19 @@ tray_manager_manage_screen_x11 (TrayManager *manager,
 		  RootWindowOfScreen (xscreen),
 		  False, StructureNotifyMask, (XEvent *)&xev);
 
-      manager->invisible = invisible;
-      g_object_ref (G_OBJECT (manager->invisible));
-      
       opcode_atom = gdk_atom_intern ("_NET_SYSTEM_TRAY_OPCODE", FALSE);
       manager->opcode_atom = gdk_x11_atom_to_xatom_for_display (display,
                                                                 opcode_atom);
 
-      message_data_atom = gdk_atom_intern ("_NET_SYSTEM_TRAY_MESSAGE_DATA",
-                                           FALSE);
+      /*message_data_atom = gdk_atom_intern ("_NET_SYSTEM_TRAY_MESSAGE_DATA",*/
+                                           /*FALSE);*/
+      /*manager->message_data_atom = gdk_x11_atom_to_xatom_for_display (display,*/
+                                                                      /*message_data_atom);*/
 
       /* Add a window filter */
 
       /* This is for SYSTEM_TRAY_REQUEST_DOCK and SelectionClear */
-      gdk_window_add_filter (gtk_widget_get_window(invisible),
-                             tray_manager_window_filter, manager);
+      gdk_window_add_filter (window, tray_manager_window_filter, manager);
       /* This is for SYSTEM_TRAY_BEGIN_MESSAGE and SYSTEM_TRAY_CANCEL_MESSAGE */
       gdk_window_add_filter (NULL, tray_manager_handle_client_message_opcode, manager);
       /* This is for _NET_SYSTEM_TRAY_MESSAGE_DATA */
@@ -692,8 +738,11 @@ tray_manager_manage_screen_x11 (TrayManager *manager,
     }
   else
     {
+        g_assert_not_reached();
       gtk_widget_destroy (invisible);
- 
+      g_object_unref(invisible);
+      manager->invisible = NULL;
+      manager->screen = NULL;
       return FALSE;
     }
 }
@@ -706,11 +755,7 @@ tray_manager_manage_screen (TrayManager *manager,
   g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
   g_return_val_if_fail (manager->screen == NULL, FALSE);
 
-#ifdef GDK_WINDOWING_X11
   return tray_manager_manage_screen_x11 (manager, screen);
-#else
-  return FALSE;
-#endif
 }
 
 #ifdef GDK_WINDOWING_X11

@@ -116,11 +116,11 @@ BaseEntry* parse_normal_file(const char* path)
             file_entry->exec = g_strdup_printf("xdg-open %s", quote_path);
             g_free(quote_path);
         }
+        entry->icon = lookup_icon_by_file(path);
     }
 
     entry->name = g_path_get_basename(path);
     entry->entry_path = g_strdup(path);
-    entry->icon = lookup_icon_by_file(path);
 
     return entry;
 }
@@ -283,6 +283,35 @@ char* to_json_array(char** const strings)
     return ret;
 }
 
+static 
+char* get_dir_icon(const gchar* path)
+{
+    GDir *dir =  g_dir_open(path, 0, NULL);
+    g_assert(dir != NULL);
+
+    char* icons[4] = {NULL, NULL, NULL, NULL};
+    for (int i=0; i<4; i++) {
+        gchar* filename= g_dir_read_name(dir);
+        if (filename == NULL) break;
+
+        gchar* entry_path = g_strdup_printf("%s/%s", path, filename);
+        BaseEntry* entry = parse_one_entry(entry_path);
+        g_free(entry_path);
+
+
+        icons[i] = icon_name_to_path(entry->icon, 24);
+        printf("icon:%s\n", icons[i]);
+        desktop_entry_free(entry);
+    }
+    g_dir_close(dir);
+    char* data = generate_directory_icon(icons[0], icons[1], icons[2], icons[3]);
+    g_free(icons[0]);
+    g_free(icons[1]);
+    g_free(icons[2]);
+    g_free(icons[3]);
+    return data;
+}
+
 char* entry_info_to_json(BaseEntry* _entry) 
 {
     g_return_val_if_fail(_entry != NULL, NULL);
@@ -301,7 +330,12 @@ char* entry_info_to_json(BaseEntry* _entry)
         g_string_append_printf(string, "\"NoDisplay\":true,\n");
     if (_entry->comment)
         g_string_append_printf(string, "\"Comment\":\"%s\",\n", _entry->comment);
-    if (_entry->icon) {
+
+    if (g_strcmp0(_entry->type, "Dir") == 0) {
+        char* data_uri = get_dir_icon(_entry->entry_path);
+        g_string_append_printf(string, "\"Icon\":\"%s\",\n", data_uri);
+        g_free(data_uri);
+    } else if (_entry->icon) {
         char* icon_path = icon_name_to_path(_entry->icon, 48);
         g_string_append_printf(string, "\"Icon\":\"%s\",\n", icon_path);
         g_free(icon_path);
