@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, i, i1, i2, i_height, i_width, info, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, sort_item, update_gird_position, w, _i, _len, _ref,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gm, i1, i2, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -52,29 +52,38 @@
 
   })();
 
-  s_width = 1280;
+  s_width = 0;
 
-  s_height = 546;
+  s_height = 0;
 
   s_x = 0;
 
-  s_y = 100;
+  s_y = 0;
 
-  i_width = 80;
+  i_width = 80 + 6 * 2;
 
-  i_height = 84;
+  i_height = 84 + 4 * 2;
 
-  cols = Math.floor(s_width / i_width);
+  cols = 0;
 
-  rows = Math.floor(s_height / i_height);
+  rows = 0;
 
-  o_table = new Array();
+  o_table = null;
 
-  for (i = 0; 0 <= cols ? i <= cols : i >= cols; 0 <= cols ? i++ : i--) {
-    o_table[i] = new Array(rows);
-  }
+  div_grid = null;
+
+  gm = new DeepinMenu();
+
+  gi1 = new DeepinMenuItem(1, "Fresh");
+
+  gi2 = new DeepinMenuItem(2, "Properties");
+
+  gm.appendItem(gi1);
+
+  gm.appendItem(gi2);
 
   update_gird_position = function(wa_x, wa_y, wa_width, wa_height) {
+    var i, n, new_cols, new_rows, new_table;
     s_x = wa_x;
     s_y = wa_y;
     s_width = wa_width;
@@ -82,7 +91,21 @@
     div_grid.style.left = s_x;
     div_grid.style.top = s_y;
     div_grid.style.width = s_width;
-    return div_grid.style.height = s_height;
+    div_grid.style.height = s_height;
+    new_cols = Math.floor(s_width / i_width);
+    new_rows = Math.floor(s_height / i_height);
+    new_table = new Array();
+    for (i = 0; 0 <= new_cols ? i <= new_cols : i >= new_cols; 0 <= new_cols ? i++ : i--) {
+      new_table[i] = new Array(new_rows);
+      if (i < cols) {
+        for (n = 0; 0 <= cols ? n <= cols : n >= cols; 0 <= cols ? n++ : n--) {
+          new_table[i][n] = o_table[i][n];
+        }
+      }
+    }
+    cols = new_cols;
+    rows = new_rows;
+    return o_table = new_table;
   };
 
   load_position = function(widget) {
@@ -222,40 +245,43 @@
     return _results;
   };
 
-  div_grid = document.createElement("div");
+  init_grid_drop = function() {
+    return $("#item_grid").drop({
+      "drop": function(evt) {
+        var file, p_info, path, pos, _i, _len, _ref;
+        echo(evt);
+        _ref = evt.originalEvent.dataTransfer.files;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          file = _ref[_i];
+          pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y);
+          p_info = {
+            "x": pos[0],
+            "y": pos[1],
+            "width": 1,
+            "height": 1
+          };
+          path = Desktop.Core.move_to_desktop(file.path);
+          localStorage.setObject(path, p_info);
+        }
+        return evt.dataTransfer.dropEffect = "move";
+      },
+      "over": function(evt) {
+        evt.dataTransfer.dropEffect = "move";
+        return evt.preventDefault();
+      },
+      "enter": function(evt) {},
+      "leave": function(evt) {}
+    });
+  };
 
-  div_grid.setAttribute("id", "item_grid");
-
-  document.body.appendChild(div_grid);
-
-  update_gird_position(s_x, s_y, s_width, s_height);
-
-  $("#item_grid").drop({
-    "drop": function(evt) {
-      var file, p_info, path, pos, _i, _len, _ref;
-      echo(evt);
-      _ref = evt.originalEvent.dataTransfer.files;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        file = _ref[_i];
-        pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y);
-        p_info = {
-          "x": pos[0],
-          "y": pos[1],
-          "width": 1,
-          "height": 1
-        };
-        path = Desktop.Core.move_to_desktop(file.path);
-        localStorage.setObject(path, p_info);
-      }
-      return evt.dataTransfer.dropEffect = "move";
-    },
-    "over": function(evt) {
-      evt.dataTransfer.dropEffect = "move";
-      return evt.preventDefault();
-    },
-    "enter": function(evt) {},
-    "leave": function(evt) {}
-  });
+  create_item_grid = function() {
+    div_grid = document.createElement("div");
+    div_grid.setAttribute("id", "item_grid");
+    document.body.appendChild(div_grid);
+    update_gird_position(s_x, s_y, s_width, s_height);
+    init_grid_drop();
+    return div_grid.contextMenu = gm;
+  };
 
   connect_default_signals = function() {
     Desktop.Core.signal_connect("item_update", do_item_update);
@@ -330,18 +356,32 @@
 
   i1 = new DeepinMenuItem(1, "Open");
 
-  i2 = new DeepinMenuItem(2, "Close");
+  i2 = new DeepinMenuItem(2, "delete");
 
   m.appendItem(i1);
 
   m.appendItem(i2);
+
+  shorten_text = function(str, n) {
+    var i, mid, r, _ref;
+    r = /[^\x00-\xff]/g;
+    if (str.replace(r, "mm").length <= n) return str;
+    mid = Math.floor(n / 2);
+    n = n - 3;
+    for (i = mid, _ref = str.length - 1; mid <= _ref ? i <= _ref : i >= _ref; mid <= _ref ? i++ : i--) {
+      if (str.substr(0, i).replace(r, "mm").length >= n) {
+        return str.substr(0, i) + "...";
+      }
+    }
+    return str;
+  };
 
   Item = (function(_super) {
 
     __extends(Item, _super);
 
     function Item(name, icon, exec, path) {
-      var el, info;
+      var el, info, sub_item, _i, _len, _ref;
       this.name = name;
       this.icon = icon;
       this.exec = exec;
@@ -356,17 +396,41 @@
         height: 1
       };
       el.draggable = true;
-      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div class=item_name>" + this.name + "</div>        ";
+      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div class=item_name>" + (shorten_text(this.name, 20)) + "</div>        ";
+      _ref = el.childNodes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        sub_item = _ref[_i];
+        if (sub_item.className === "item_name") this.item_name = sub_item;
+      }
+      this.element.addEventListener('click', function() {
+        if (this.className.search(/item_selected/i) > -1) {
+          return this.className = this.className.replace(" item_selected", "");
+        } else {
+          return this.className += " item_selected";
+        }
+      });
       this.element.addEventListener('dblclick', function() {
         return Desktop.Core.run_command(exec);
       });
-      this.element.addEventListener('itemselected', function(e) {
-        return alert("ID:" + e.id + "  title: " + e.title);
+      this.element.addEventListener('itemselected', function(env) {
+        return echo("menu clicked:id=" + env.id + " title=" + env.title);
       });
       if (typeof this.init_drag === "function") this.init_drag();
       if (typeof this.init_drop === "function") this.init_drop();
       this.element.contextMenu = m;
     }
+
+    Item.prototype.item_focus = function() {
+      return this.element.className.replace(" item_selected", "");
+    };
+
+    Item.prototype.item_blur = function() {
+      return this.element.className += " item_selected";
+    };
+
+    Item.prototype.rename = function(new_name) {
+      return this.item_name.innerText = new_name;
+    };
 
     Item.prototype.destroy = function() {
       var info;
@@ -514,13 +578,26 @@
     return w;
   };
 
+  load_desktop_all_items = function() {
+    var info, w, _i, _len, _ref, _results;
+    _ref = Desktop.Core.get_desktop_items();
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      info = _ref[_i];
+      w = create_item(info);
+      if (w != null) {
+        _results.push(move_to_anywhere(w));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  create_item_grid();
+
   connect_default_signals();
 
-  _ref = Desktop.Core.get_desktop_items();
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    info = _ref[_i];
-    w = create_item(info);
-    if (w != null) move_to_anywhere(w);
-  }
+  load_desktop_all_items();
 
 }).call(this);

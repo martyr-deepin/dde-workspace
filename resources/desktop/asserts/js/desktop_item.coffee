@@ -1,8 +1,21 @@
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
-i2 = new DeepinMenuItem(2, "Close")
+i2 = new DeepinMenuItem(2, "delete")
 m.appendItem(i1)
 m.appendItem(i2)
+
+shorten_text= (str, n) ->
+    r = /[^\x00-\xff]/g
+    if str.replace(r, "mm").length <= n
+        return str
+
+    mid = Math.floor(n / 2)
+    n = n - 3
+    for i in [mid..(str.length - 1)]
+        if str.substr(0, i).replace(r, "mm").length >= n
+            return str.substr(0, i) + "..."
+
+    return str
 
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
@@ -16,20 +29,38 @@ class Item extends Widget
         el.draggable = true
         el.innerHTML = "
         <img draggable=false src=#{@icon} />
-        <div class=item_name>#{@name}</div>
+        <div class=item_name>#{shorten_text(@name, 20)}</div>
         "
 
-        @element.addEventListener('dblclick', ->
-                Desktop.Core.run_command exec
+        # search the div for store the name
+        @item_name = sub_item for sub_item in el.childNodes when sub_item.className == "item_name"
+
+        @element.addEventListener('click', ->
+            if this.className.search(/item_selected/i) > -1
+                this.className = this.className.replace(" item_selected", "")
+            else
+                this.className += " item_selected"
         )
-        @element.addEventListener('itemselected', (e) ->
-            alert "ID:#{e.id}  title: #{e.title}"
+
+        @element.addEventListener('dblclick', ->
+            Desktop.Core.run_command exec
+        )
+        @element.addEventListener('itemselected', (env) ->
+            echo "menu clicked:id=#{env.id} title=#{env.title}"
         )
         @init_drag?()
         @init_drop?()
         #@init_keypress?()
         @element.contextMenu = m
 
+    item_focus: ->
+        @element.className.replace(" item_selected", "")
+
+    item_blur: ->
+        @element.className += " item_selected"
+
+    rename: (new_name) ->
+        @item_name.innerText = new_name
 
     destroy: ->
         info = load_position(this)
