@@ -59,7 +59,8 @@ body {
 
 .item_name {
     max-height:36px;
-    word-wrap: break-word;
+    word-wrap:break-word;
+    word-break:break-all;
     overflow: hidden;
 }
 

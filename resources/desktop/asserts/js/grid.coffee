@@ -15,6 +15,14 @@ rows = 0
 
 o_table = null
 
+div_grid = null
+
+gm = new DeepinMenu()
+gi1 = new DeepinMenuItem(1, "Fresh")
+gi2 = new DeepinMenuItem(2, "Properties")
+gm.appendItem(gi1)
+gm.appendItem(gi2)
+
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     s_x = wa_x
@@ -131,7 +139,8 @@ sort_item = ->
         y = Math.ceil (i % rows)
         echo "sort :(#{i}, #{x}, #{y})"
 
-init_grid_drop= ->
+
+init_grid_drop = ->
     $("#item_grid").drop
         "drop": (evt) ->
             echo evt
@@ -153,8 +162,11 @@ init_grid_drop= ->
         "leave": (evt) ->
             #evt.dataTransfer.dropEffect = "move"
 
-div_grid = document.createElement("div")
-div_grid.setAttribute("id", "item_grid")
-document.body.appendChild(div_grid)
-update_gird_position(s_x, s_y, s_width, s_height)
-init_grid_drop()
+
+create_item_grid = ->
+    div_grid = document.createElement("div")
+    div_grid.setAttribute("id", "item_grid")
+    document.body.appendChild(div_grid)
+    update_gird_position(s_x, s_y, s_width, s_height)
+    init_grid_drop()
+    div_grid.contextMenu = gm

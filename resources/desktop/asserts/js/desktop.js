@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, i1, i2, i_height, i_width, info, init_grid_drop, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position, w, _i, _len, _ref,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gm, i1, i2, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -69,6 +69,18 @@
   rows = 0;
 
   o_table = null;
+
+  div_grid = null;
+
+  gm = new DeepinMenu();
+
+  gi1 = new DeepinMenuItem(1, "Fresh");
+
+  gi2 = new DeepinMenuItem(2, "Properties");
+
+  gm.appendItem(gi1);
+
+  gm.appendItem(gi2);
 
   update_gird_position = function(wa_x, wa_y, wa_width, wa_height) {
     var i, n, new_cols, new_rows, new_table;
@@ -262,15 +274,14 @@
     });
   };
 
-  div_grid = document.createElement("div");
-
-  div_grid.setAttribute("id", "item_grid");
-
-  document.body.appendChild(div_grid);
-
-  update_gird_position(s_x, s_y, s_width, s_height);
-
-  init_grid_drop();
+  create_item_grid = function() {
+    div_grid = document.createElement("div");
+    div_grid.setAttribute("id", "item_grid");
+    document.body.appendChild(div_grid);
+    update_gird_position(s_x, s_y, s_width, s_height);
+    init_grid_drop();
+    return div_grid.contextMenu = gm;
+  };
 
   connect_default_signals = function() {
     Desktop.Core.signal_connect("item_update", do_item_update);
@@ -359,7 +370,7 @@
     n = n - 3;
     for (i = mid, _ref = str.length - 1; mid <= _ref ? i <= _ref : i >= _ref; mid <= _ref ? i++ : i--) {
       if (str.substr(0, i).replace(r, "mm").length >= n) {
-        return str.substr(0, i - 1) + "...";
+        return str.substr(0, i) + "...";
       }
     }
     return str;
@@ -401,6 +412,9 @@
       });
       this.element.addEventListener('dblclick', function() {
         return Desktop.Core.run_command(exec);
+      });
+      this.element.addEventListener('itemselected', function(env) {
+        return echo("menu clicked:id=" + env.id + " title=" + env.title);
       });
       if (typeof this.init_drag === "function") this.init_drag();
       if (typeof this.init_drop === "function") this.init_drop();
@@ -577,13 +591,26 @@
     return w;
   };
 
+  load_desktop_all_items = function() {
+    var info, w, _i, _len, _ref, _results;
+    _ref = Desktop.Core.get_desktop_items();
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      info = _ref[_i];
+      w = create_item(info);
+      if (w != null) {
+        _results.push(move_to_anywhere(w));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  create_item_grid();
+
   connect_default_signals();
 
-  _ref = Desktop.Core.get_desktop_items();
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    info = _ref[_i];
-    w = create_item(info);
-    if (w != null) move_to_anywhere(w);
-  }
+  load_desktop_all_items();
 
 }).call(this);

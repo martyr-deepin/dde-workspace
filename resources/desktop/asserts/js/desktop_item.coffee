@@ -13,7 +13,7 @@ shorten_text= (str, n) ->
     n = n - 3
     for i in [mid..(str.length - 1)]
         if str.substr(0, i).replace(r, "mm").length >= n
-            return str.substr(0, i - 1) + "..."
+            return str.substr(0, i) + "..."
 
     return str
 
@@ -45,6 +45,11 @@ class Item extends Widget
         @element.addEventListener('dblclick', ->
             Desktop.Core.run_command exec
         )
+
+        @element.addEventListener('itemselected', (env) ->
+            echo "menu clicked:id=#{env.id} title=#{env.title}"
+        )
+
         @init_drag?()
         @init_drop?()
         #@init_keypress?()
