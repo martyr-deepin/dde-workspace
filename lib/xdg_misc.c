@@ -116,9 +116,9 @@ BaseEntry* parse_normal_file(const char* path)
             file_entry->exec = g_strdup_printf("xdg-open %s", quote_path);
             g_free(quote_path);
         }
-        entry->icon = lookup_icon_by_file(path);
     }
 
+    entry->icon = lookup_icon_by_file(path);
     entry->name = g_path_get_basename(path);
     entry->entry_path = g_strdup(path);
 
