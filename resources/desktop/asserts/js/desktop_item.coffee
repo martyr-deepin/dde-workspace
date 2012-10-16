@@ -101,8 +101,9 @@ class DesktopEntry extends Item
         )
 
 class Folder extends DesktopEntry
-    constructor : ->
+    constructor: (@name, @icon, @exec, @path, @files) ->
         super
+
         @div_pop = null
         @element.addEventListener('click', =>
             echo "folder selected, should show pop block"
@@ -117,15 +118,18 @@ class Folder extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
-        @div_pop.innerHTML = "<ul><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li></ul>"
+        str = ""
+        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>#{shorten_text(s, 20)}</div></li>" for s in @files
+        @div_pop.innerHTML = "<ul>#{str}</ul>"
         @div_pop.style.left = "#{@element.offsetLeft + @element.offsetWidth + 20}px"
         @div_pop.style.top = "#{@element.offsetTop}px"
 
-        m = 4
-        if n < 57
-            n = sqrt(m)
-            if m - n * n > 0
+        if @files.length < 57
+            n = Math.floor(Math.sqrt(@files.length))
+            if @files.length > n * n
                 n += 1
+        else
+            n = 8
         @div_pop.style.width = "#{n * 100}px"
 
 

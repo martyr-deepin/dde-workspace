@@ -137,7 +137,6 @@ body {
 
 #pop_grid {
     width:300px;
-    height:300px;
     top:100px;
     z-index: 51;
     left:200px;
@@ -145,7 +144,6 @@ body {
     /*background: none repeat scroll 0% 0% rgba(8, 41, 67, 0.7);*/
     background-color:#FFF;
     border-radius:6px;
-    text-align:center;
 }
 
 #pop_grid ul {
@@ -160,4 +158,12 @@ body {
     padding: 3px 5px;
     margin: 1px 1px;
     display: inline-block;
+    vertical-align:top;
+    text-align:center;
+}
+#pop_grid ul li div {
+    max-height:36px;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
 }

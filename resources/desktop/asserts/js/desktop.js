@@ -498,9 +498,14 @@
 
     __extends(Folder, _super);
 
-    function Folder() {
-      this.init_drop = __bind(this.init_drop, this);
+    function Folder(name, icon, exec, path, files) {
       var _this = this;
+      this.name = name;
+      this.icon = icon;
+      this.exec = exec;
+      this.path = path;
+      this.files = files;
+      this.init_drop = __bind(this.init_drop, this);
       Folder.__super__.constructor.apply(this, arguments);
       this.div_pop = null;
       this.element.addEventListener('click', function() {
@@ -510,7 +515,8 @@
     }
 
     Folder.prototype.show_pop_block = function() {
-      var _this = this;
+      var n, s, str, _i, _len, _ref,
+        _this = this;
       this.div_background = document.createElement("div");
       this.div_background.setAttribute("id", "pop_background");
       document.body.appendChild(this.div_background);
@@ -520,9 +526,22 @@
       this.div_pop = document.createElement("div");
       this.div_pop.setAttribute("id", "pop_grid");
       document.body.appendChild(this.div_pop);
-      this.div_pop.innerHTML = "<ul><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li><li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>扫雷</div></li></ul>";
+      str = "";
+      _ref = this.files;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>" + (shorten_text(s, 20)) + "</div></li>";
+      }
+      this.div_pop.innerHTML = "<ul>" + str + "</ul>";
       this.div_pop.style.left = "" + (this.element.offsetLeft + this.element.offsetWidth + 20) + "px";
-      return this.div_pop.style.top = "" + this.element.offsetTop + "px";
+      this.div_pop.style.top = "" + this.element.offsetTop + "px";
+      if (this.files.length < 57) {
+        n = Math.floor(Math.sqrt(this.files.length));
+        if (this.files.length > n * n) n += 1;
+      } else {
+        n = 8;
+      }
+      return this.div_pop.style.width = "" + (n * 100) + "px";
     };
 
     Folder.prototype.hide_pop_block = function() {
@@ -603,7 +622,7 @@
         w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "Dir":
-        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
+        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath, info.Files);
         break;
       default:
         echo("don't support type");
