@@ -1,10 +1,10 @@
 #!/usr/bin/python2
-
-JSC_PATH = './jsc_extension/'
+import sys
+JSC_PATH = sys.argv[1]
 
 try:
     import os
-    os.mkdir(JSC_PATH + "./gen")
+    os.mkdir(JSC_PATH + "/gen")
 except:
     pass
 
@@ -12,7 +12,7 @@ modules = []
 
 
 def register(m):
-    if m.up_class.name != "Desktop" and modules.count(m.up_class) == 0:
+    if m.up_class.name != "DCore" and modules.count(m.up_class) == 0:
         modules.append(m.up_class)
     modules.append(m);
 
@@ -20,7 +20,7 @@ def generate():
     temp = """
 #include "jsextension.h"
 #include <JavaScriptCore/JSStringRef.h>
-extern JSClassRef get_Desktop_class();
+extern JSClassRef get_DCore_class();
 %(objs_state)s
 JSGlobalContextRef global_ctx = NULL;
 void* __webview = NULL;
@@ -38,12 +38,12 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
     global_ctx = context;
     __webview = webview;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
-    JSObjectRef class_Desktop  = JSObjectMake(context, get_Desktop_class(), NULL);
+    JSObjectRef class_DCore = JSObjectMake(context, get_DCore_class(), NULL);
 
     %(objs)s
 
-    JSStringRef str = JSStringCreateWithUTF8CString("Desktop");
-    JSObjectSetProperty(context, global_obj, str, class_Desktop,
+    JSStringRef str = JSStringCreateWithUTF8CString("DCore");
+    JSObjectSetProperty(context, global_obj, str, class_DCore,
             kJSClassAttributeNone, NULL);
     JSStringRelease(str);
 }
@@ -52,7 +52,7 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
     objs_state = ""
     modules.reverse()
     for m in modules:
-        if m.name != "Desktop":
+        if m.name != "DCore":
             objs += m.str_install()
             objs_state += "extern JSClassRef get_%s_class();\n" % m.name
     f = open(JSC_PATH + "/init.c", "w")
@@ -277,7 +277,7 @@ JSClassRef get_%(name)s_class()
                 self.child_modules.append(arg)
 
         class PseudoMoudle:
-            name = "Desktop"
+            name = "DCore"
         if not hasattr(self, "up_class"):
             self.up_class = PseudoMoudle
 
@@ -400,4 +400,5 @@ for root, dirs, files in os.walk(JSC_PATH):
                 f.write(m.str())
                 f.close()
 
-generate()
+if len(sys.argv) != 3:
+    generate()

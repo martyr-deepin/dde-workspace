@@ -43,7 +43,7 @@ class Item extends Widget
         )
 
         @element.addEventListener('dblclick', ->
-            Desktop.Core.run_command exec
+            DCore.run_command exec
         )
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
@@ -160,7 +160,7 @@ class Folder extends DesktopEntry
     move_in: (c_path) ->
         echo "#{c_path}  #{@path}"
         p = c_path.replace("file://", "")
-        Desktop.Core.run_command("mv '#{p}' '#{@path}'")
+        DCore.run_command("mv '#{p}' '#{@path}'")
 
 
 class NormalFile extends DesktopEntry

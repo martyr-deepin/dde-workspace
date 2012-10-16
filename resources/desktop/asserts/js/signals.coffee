@@ -1,10 +1,10 @@
 connect_default_signals = ->
-    Desktop.Core.signal_connect("item_update", do_item_update)
-    Desktop.Core.signal_connect("item_delete", do_item_delete)
-    Desktop.Core.signal_connect("item_rename", do_item_rename)
+    DCore.signal_connect("item_update", do_item_update)
+    DCore.signal_connect("item_delete", do_item_delete)
+    DCore.signal_connect("item_rename", do_item_rename)
 
-    Desktop.Core.signal_connect("workarea_changed", do_workarea_changed)
-    Desktop.Core.notify_workarea_size()
+    DCore.signal_connect("workarea_changed", do_workarea_changed)
+    DCore.Desktop.notify_workarea_size()
 
 do_item_delete = (id) ->
     w = Widget.look_up(id)
