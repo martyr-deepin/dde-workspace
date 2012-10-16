@@ -260,7 +260,7 @@
             "width": 1,
             "height": 1
           };
-          path = Desktop.Core.move_to_desktop(file.path);
+          path = DCore.Desktop.move_to_desktop(file.path);
           localStorage.setObject(path, p_info);
         }
         return evt.dataTransfer.dropEffect = "move";
@@ -284,11 +284,11 @@
   };
 
   connect_default_signals = function() {
-    Desktop.Core.signal_connect("item_update", do_item_update);
-    Desktop.Core.signal_connect("item_delete", do_item_delete);
-    Desktop.Core.signal_connect("item_rename", do_item_rename);
-    Desktop.Core.signal_connect("workarea_changed", do_workarea_changed);
-    return Desktop.Core.notify_workarea_size();
+    DCore.signal_connect("item_update", do_item_update);
+    DCore.signal_connect("item_delete", do_item_delete);
+    DCore.signal_connect("item_rename", do_item_rename);
+    DCore.signal_connect("workarea_changed", do_workarea_changed);
+    return DCore.Desktop.notify_workarea_size();
   };
 
   do_item_delete = function(id) {
@@ -410,7 +410,7 @@
         }
       });
       this.element.addEventListener('dblclick', function() {
-        return Desktop.Core.run_command(exec);
+        return DCore.run_command(exec);
       });
       this.element.addEventListener('itemselected', function(env) {
         return echo("menu clicked:id=" + env.id + " title=" + env.title);
@@ -527,7 +527,7 @@
     Folder.prototype.move_in = function(c_path) {
       var p;
       p = c_path.replace("file://", "");
-      return Desktop.Core.run_command("mv '" + p + "' '" + this.path + "'");
+      return DCore.run_command("mv '" + p + "' '" + this.path + "'");
     };
 
     return Folder;
@@ -580,7 +580,7 @@
 
   load_desktop_all_items = function() {
     var info, w, _i, _len, _ref, _results;
-    _ref = Desktop.Core.get_desktop_items();
+    _ref = DCore.Desktop.get_desktop_items();
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       info = _ref[_i];

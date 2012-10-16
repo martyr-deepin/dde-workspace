@@ -14,7 +14,7 @@ create_item = (info) ->
     return w
 
 load_desktop_all_items = ->
-    for info in Desktop.Core.get_desktop_items()
+    for info in DCore.Desktop.get_desktop_items()
         w = create_item(info)
         if w?
             move_to_anywhere(w)

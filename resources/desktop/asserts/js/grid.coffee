@@ -147,7 +147,7 @@ init_grid_drop = ->
             for file in evt.originalEvent.dataTransfer.files
                 pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
                 p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
-                path = Desktop.Core.move_to_desktop(file.path)
+                path = DCore.Desktop.move_to_desktop(file.path)
                 localStorage.setObject(path, p_info)
             evt.dataTransfer.dropEffect = "move"
 

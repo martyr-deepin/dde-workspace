@@ -1,6 +1,6 @@
-add_subdirectory(dbus_test)
+#add_subdirectory(dbus_test)
 add_subdirectory(desktop)
-add_subdirectory(taskbar)
+#add_subdirectory(taskbar)
 add_subdirectory(launcher)
 
 install(
