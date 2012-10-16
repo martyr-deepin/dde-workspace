@@ -1,5 +1,6 @@
 create_item = (info) ->
     w = null
+    echo info
     switch info.Type
         when "Application"
             w = new DesktopEntry info.Name, info.Icon, info.Exec, info.EntryPath

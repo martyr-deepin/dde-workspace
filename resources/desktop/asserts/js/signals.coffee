@@ -9,6 +9,7 @@ connect_default_signals = ->
 do_item_delete = (id) ->
     w = Widget.look_up(id)
     if w?
+        echo id
         w.destroy()
 
 do_item_update = (info) ->
