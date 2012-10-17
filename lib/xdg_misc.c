@@ -7,6 +7,15 @@
 
 #include "xdg_misc.h"
 
+
+
+#define APPEND_STRING_WITH_ESCAPE(str, format, content) do { \
+    char* escaped = json_escape(content); \
+    g_string_append_printf(str, format, escaped); \
+    g_free(escaped); \
+} while (0) 
+
+
 static const char* GROUP = "Desktop Entry";
 static char DE_NAME[100] = "DEEPIN";
 
@@ -43,9 +52,7 @@ char* get_dir_file_list(const char* path)
     const char* child = NULL;
     int i = 0;
     while (NULL != (child = g_dir_read_name(dir))) {
-        char* escaped = g_strescape(child, NULL);
-        g_string_append_printf(string, "\"%s\",", escaped);
-        g_free(escaped);
+        APPEND_STRING_WITH_ESCAPE(string, "\"%s\",", child);
         i++;
     }
     char *ret = NULL;
@@ -143,6 +150,8 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
     char* type = g_key_file_get_value(de, GROUP, "Type", NULL);
     if (type == NULL)
         return NULL;
+    if (g_key_file_get_boolean(de, GROUP, "NoDisplay", NULL))
+        return NULL;
 
     if (g_strcmp0(type, "Application") == 0) {
         entry = (BaseEntry*)g_new0(ApplicationEntry, 1);
@@ -165,7 +174,6 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
         return NULL;
     }
     entry->generic_name = g_key_file_get_locale_string(de, GROUP, "GenericName", NULL, NULL);
-    entry->no_display = g_key_file_get_boolean(de, GROUP, "NoDisplay", NULL);
     entry->comment = g_key_file_get_locale_string(de, GROUP, "Comment", NULL, NULL);
     entry->icon = g_key_file_get_locale_string(de, GROUP, "Icon", NULL, NULL);
     entry->hidden = g_key_file_get_boolean(de, GROUP, "Hidden", NULL);
@@ -191,7 +199,9 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
 BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
 {
     entry->try_exec = g_key_file_get_string(de, GROUP, "TryExec", NULL);
+
     entry->exec = g_key_file_get_string(de, GROUP, "Exec", NULL);
+
     if (entry->exec == NULL) {
         g_warning("%s is Application Entry , so must have Exec field\n", entry->base.entry_path);
         desktop_entry_free((BaseEntry*)entry);
@@ -200,7 +210,7 @@ BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
         char* percentage = strrchr(entry->exec, '%');
         if (percentage != NULL && (percentage - entry->exec) < strlen(entry->exec) - 1) {
             entry->exec_flag = percentage[1];
-            *percentage = '\0';
+            /**percentage = '\0';*/
         } else {
             entry->exec_flag = ' ';
         }
@@ -266,7 +276,7 @@ char* to_json_array(char** const strings)
     GString* string = g_string_new("[");
     char** tmp = strings;
     while (*tmp != NULL) {
-        g_string_append_printf(string, "\"%s\",", *(tmp++));
+        APPEND_STRING_WITH_ESCAPE(string, "\"%s\",", *(tmp++));
         i++;
     }
 
@@ -277,9 +287,10 @@ char* to_json_array(char** const strings)
         ret = string->str;
         g_string_free(string, FALSE);
     } else {
-        ret = g_strdup(" ");
+        ret = g_strdup("[]");
         g_string_free(string, TRUE);
     }
+    g_assert (ret != NULL);
     return ret;
 }
 
@@ -291,7 +302,7 @@ char* get_dir_icon(const gchar* path)
 
     char* icons[4] = {NULL, NULL, NULL, NULL};
     for (int i=0; i<4; i++) {
-        gchar* filename= g_dir_read_name(dir);
+        const gchar* filename= g_dir_read_name(dir);
         if (filename == NULL) break;
 
         gchar* entry_path = g_strdup_printf("%s/%s", path, filename);
@@ -300,7 +311,6 @@ char* get_dir_icon(const gchar* path)
 
 
         icons[i] = icon_name_to_path(entry->icon, 24);
-        printf("icon:%s\n", icons[i]);
         desktop_entry_free(entry);
     }
     g_dir_close(dir);
@@ -317,58 +327,67 @@ char* entry_info_to_json(BaseEntry* _entry)
     g_return_val_if_fail(_entry != NULL, NULL);
     GString* string = g_string_new("{\n");
     if (_entry->entry_path)
-        g_string_append_printf(string, "\"EntryPath\":\"%s\",\n", _entry->entry_path);
+        APPEND_STRING_WITH_ESCAPE(string, "\"EntryPath\":\"%s\",\n", _entry->entry_path);
     if (_entry->type)
-        g_string_append_printf(string, "\"Type\":\"%s\",\n", _entry->type);
+        APPEND_STRING_WITH_ESCAPE(string, "\"Type\":\"%s\",\n", _entry->type);
     if (_entry->version)
-        g_string_append_printf(string, "\"Version\":\"%s\",\n", _entry->version);
+        APPEND_STRING_WITH_ESCAPE(string, "\"Version\":\"%s\",\n", _entry->version);
     if (_entry->name)
-        g_string_append_printf(string, "\"Name\":\"%s\",\n", _entry->name);
+        APPEND_STRING_WITH_ESCAPE(string, "\"Name\":\"%s\",\n", _entry->name);
     if (_entry->generic_name)
-        g_string_append_printf(string, "\"GenericName\":\"%s\",\n", _entry->generic_name);
-    if (_entry->no_display)
-        g_string_append_printf(string, "\"NoDisplay\":true,\n");
+        APPEND_STRING_WITH_ESCAPE(string, "\"GenericName\":\"%s\",\n", _entry->generic_name);
     if (_entry->comment)
-        g_string_append_printf(string, "\"Comment\":\"%s\",\n", _entry->comment);
+        APPEND_STRING_WITH_ESCAPE(string, "\"Comment\":\"%s\",\n", _entry->comment);
 
     if (g_strcmp0(_entry->type, "Dir") == 0) {
         char* data_uri = get_dir_icon(_entry->entry_path);
-        g_string_append_printf(string, "\"Icon\":\"%s\",\n", data_uri);
-        g_free(data_uri);
+        if (data_uri != NULL) {
+            APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", data_uri);
+            g_free(data_uri);
+        }
     } else if (_entry->icon) {
         char* icon_path = icon_name_to_path(_entry->icon, 48);
-        g_string_append_printf(string, "\"Icon\":\"%s\",\n", icon_path);
-        g_free(icon_path);
+        if (icon_path != NULL) {
+            APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", icon_path);
+            g_free(icon_path);
+        }
     }
     if (_entry->hidden)
-        g_string_append_printf(string, "\"Hidden\":true,\n");
+        g_string_append(string, "\"Hidden\":true,\n");
 
     if (_entry->only_show_in) {
         char* array = to_json_array(_entry->only_show_in);
-        g_string_append_printf(string, "\"OnlyShowIn\":%s,\n", array);
-        g_free(array);
+        if (array != NULL) {
+            g_string_append_printf(string, "\"OnlyShowIn\":%s,\n", array);
+            g_free(array);
+        }
     } else if (_entry->not_show_in) {
         char* array = to_json_array(_entry->not_show_in);
-        g_string_append_printf(string, "\"NotShowIn\":%s,\n", array);
-        g_free(array);
+        if (array != NULL) {
+            g_string_append_printf(string, "\"NotShowIn\":%s,\n", array);
+            g_free(array);
+        }
     }
 
     if (g_strcmp0(_entry->type, "Application") == 0) {
         ApplicationEntry* entry = (ApplicationEntry*) _entry;
         if (entry->try_exec)
-            g_string_append_printf(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
-        if (entry->exec)
-            g_string_append_printf(string, "\"Exec\":\"%s\",\n", entry->exec);
-        if (entry->exec_flag != ' ') 
+            APPEND_STRING_WITH_ESCAPE(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
+        if (entry->exec) {
+            APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+        }
+        if (entry->exec_flag != ' ')
             g_string_append_printf(string, "\"ExecFlag\":\"%c\",\n", entry->exec_flag);
         if (entry->path)
-            g_string_append_printf(string, "\"Path\":\"%s\",\n", entry->path);
+            APPEND_STRING_WITH_ESCAPE(string, "\"Path\":\"%s\",\n", entry->path);
         if (entry->terminal)
-            g_string_append_printf(string, "\"Terminal\":true,\n");
+            g_string_append(string, "\"Terminal\":true,\n");
         if (entry->actions) {
             char* array = to_json_array(entry->actions);
-            g_string_append_printf(string, "\"Actions\":%s,\n", array);
-            g_free(array);
+            if (array) {
+                g_string_append_printf(string, "\"Actions\":%s,\n", array);
+                g_free(array);
+            }
         }
         if (entry->mime_type) {
             char* array = to_json_array(entry->mime_type);
@@ -386,14 +405,14 @@ char* entry_info_to_json(BaseEntry* _entry)
             g_free(array);
         }
         if (entry->startup_notify)
-            g_string_append_printf(string, "\"StartupNotify\":true,\n");
+            g_string_append(string, "\"StartupNotify\":true,\n");
         if (entry->startup_wmclass)
-            g_string_append_printf(string, "\"StartupWMClass\":\"%s\",\n", entry->startup_wmclass);
+            APPEND_STRING_WITH_ESCAPE(string, "\"StartupWMClass\":\"%s\",\n", entry->startup_wmclass);
 
     } else if (g_strcmp0(_entry->type, "Link") == 0) {
         LinkEntry *entry = (LinkEntry*) _entry;
         if (entry->url)
-            g_string_append_printf(string, "\"URL\":\"%s\",\n", entry->url);
+            APPEND_STRING_WITH_ESCAPE(string, "\"URL\":\"%s\",\n", entry->url);
     } else if (g_strcmp0(_entry->type, "File") == 0) {
         FileEntry *entry = (FileEntry*) _entry;
         if (entry->exec)

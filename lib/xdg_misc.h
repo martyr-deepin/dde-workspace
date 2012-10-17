@@ -2,6 +2,7 @@
 #define __XDG_MISC_H__
 #include <glib.h>
 
+char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4);
 // the really icon path is determined by theme
 void set_default_theme(const char* theme);
 // deal with the NotShowIn/OnlyShowIn filed. 
