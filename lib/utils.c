@@ -29,8 +29,7 @@ char* json_escape (const char *source)
 
     g_return_val_if_fail (source != NULL, NULL);
 
-    p = (guchar *) source;
-    /* Each source byte needs maximally four destination chars (\777) */
+    p = (unsigned char *) source;
     q = dest = g_malloc (strlen (source) * 4 + 1);
 
     while (*p)
@@ -70,8 +69,9 @@ char* json_escape (const char *source)
                 *q++ = '"';
                 break;
         }
-        p++;
+        *q++ = *p++;
     }
     *q = 0;
+    puts(q);
     return dest;
 }
