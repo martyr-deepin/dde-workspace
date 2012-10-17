@@ -294,7 +294,10 @@
   do_item_delete = function(id) {
     var w;
     w = Widget.look_up(id);
-    if (w != null) return w.destroy();
+    if (w != null) {
+      echo(id);
+      return w.destroy();
+    }
   };
 
   do_item_update = function(info) {
@@ -356,7 +359,7 @@
 
   i1 = new DeepinMenuItem(1, "Open");
 
-  i2 = new DeepinMenuItem(2, "delete");
+  i2 = new DeepinMenuItem(2, "Delete");
 
   m.appendItem(i1);
 
@@ -495,24 +498,72 @@
 
     __extends(Folder, _super);
 
-    function Folder() {
+    function Folder(name, icon, exec, path, files) {
+      var _this = this;
+      this.name = name;
+      this.icon = icon;
+      this.exec = exec;
+      this.path = path;
+      this.files = files;
       this.init_drop = __bind(this.init_drop, this);
       Folder.__super__.constructor.apply(this, arguments);
+      this.div_pop = null;
+      this.element.addEventListener('click', function() {
+        echo("folder selected, should show pop block");
+        return _this.show_pop_block();
+      });
     }
+
+    Folder.prototype.show_pop_block = function() {
+      var n, s, str, _i, _len, _ref,
+        _this = this;
+      this.div_background = document.createElement("div");
+      this.div_background.setAttribute("id", "pop_background");
+      document.body.appendChild(this.div_background);
+      this.div_background.addEventListener('click', function() {
+        return _this.hide_pop_block();
+      });
+      this.div_pop = document.createElement("div");
+      this.div_pop.setAttribute("id", "pop_grid");
+      document.body.appendChild(this.div_pop);
+      str = "";
+      _ref = this.files;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>" + (shorten_text(s, 20)) + "</div></li>";
+      }
+      this.div_pop.innerHTML = "<ul>" + str + "</ul>";
+      this.div_pop.style.left = "" + (this.element.offsetLeft + this.element.offsetWidth + 20) + "px";
+      this.div_pop.style.top = "" + this.element.offsetTop + "px";
+      if (this.files.length < 57) {
+        n = Math.floor(Math.sqrt(this.files.length));
+        if (this.files.length > n * n) n += 1;
+      } else {
+        n = 8;
+      }
+      return this.div_pop.style.width = "" + (n * 100) + "px";
+    };
+
+    Folder.prototype.hide_pop_block = function() {
+      this.div_background.parentElement.removeChild(this.div_background);
+      this.div_pop.parentElement.removeChild(this.div_pop);
+      delete this.div_background;
+      return delete this.div_pop;
+    };
 
     Folder.prototype.init_drop = function() {
       var _this = this;
       return $(this.element).drop({
         drop: function(evt) {
           var file;
-          file = evt.dataTransfer.getData("text/uri-list");
+          file = decodeURI(evt.dataTransfer.getData("text/uri-list"));
           evt.preventDefault();
           return _this.move_in(file);
         },
         over: function(evt) {
           var path;
           evt.preventDefault();
-          path = evt.dataTransfer.getData("text/uri-list");
+          path = decodeURI(evt.dataTransfer.getData("text/uri-list"));
           if (path === ("file://" + _this.path)) {
             return evt.dataTransfer.dropEffect = "none";
           } else {
@@ -526,6 +577,7 @@
 
     Folder.prototype.move_in = function(c_path) {
       var p;
+      echo("" + c_path + "  " + this.path);
       p = c_path.replace("file://", "");
       return DCore.run_command("mv '" + p + "' '" + this.path + "'");
     };
@@ -561,6 +613,7 @@
   create_item = function(info) {
     var w;
     w = null;
+    echo(info);
     switch (info.Type) {
       case "Application":
         w = new DesktopEntry(info.Name, info.Icon, info.Exec, info.EntryPath);
@@ -569,7 +622,7 @@
         w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "Dir":
-        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
+        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath, info.Files);
         break;
       default:
         echo("don't support type");

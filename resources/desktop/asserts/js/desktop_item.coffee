@@ -1,6 +1,6 @@
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
-i2 = new DeepinMenuItem(2, "delete")
+i2 = new DeepinMenuItem(2, "Delete")
 m.appendItem(i1)
 m.appendItem(i2)
 
@@ -101,23 +101,55 @@ class DesktopEntry extends Item
         )
 
 class Folder extends DesktopEntry
-    #icon_open: ->
-        #$(@element).find("img")[0].src = Desktop.Core.get_folder_open_icon();
-    #icon_close: ->
-        #$(@element).find("img")[0].src = Desktop.Core.get_folder_close_icon();
+    constructor: (@name, @icon, @exec, @path, @files) ->
+        super
 
+        @div_pop = null
+        @element.addEventListener('click', =>
+            echo "folder selected, should show pop block"
+            @show_pop_block()
+        )
+
+    show_pop_block : ->
+        @div_background = document.createElement("div")
+        @div_background.setAttribute("id", "pop_background")
+        document.body.appendChild(@div_background)
+        @div_background.addEventListener('click', => @hide_pop_block())
+        @div_pop = document.createElement("div")
+        @div_pop.setAttribute("id", "pop_grid")
+        document.body.appendChild(@div_pop)
+        str = ""
+        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>#{shorten_text(s, 20)}</div></li>" for s in @files
+        @div_pop.innerHTML = "<ul>#{str}</ul>"
+        @div_pop.style.left = "#{@element.offsetLeft + @element.offsetWidth + 20}px"
+        @div_pop.style.top = "#{@element.offsetTop}px"
+
+        if @files.length < 57
+            n = Math.floor(Math.sqrt(@files.length))
+            if @files.length > n * n
+                n += 1
+        else
+            n = 8
+        @div_pop.style.width = "#{n * 100}px"
+
+
+    hide_pop_block : ->
+        @div_background.parentElement.removeChild(@div_background)
+        @div_pop.parentElement.removeChild(@div_pop)
+        delete @div_background
+        delete @div_pop
 
     init_drop: =>
         $(@element).drop
             drop: (evt) =>
-                file = evt.dataTransfer.getData("text/uri-list")
+                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 evt.preventDefault()
                 #@icon_close()
                 @move_in(file)
 
             over: (evt) =>
                 evt.preventDefault()
-                path = evt.dataTransfer.getData("text/uri-list")
+                path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 if path == "file://#{@path}"
                     evt.dataTransfer.dropEffect = "none"
                 else
@@ -128,7 +160,9 @@ class Folder extends DesktopEntry
 
             leave: (evt) =>
                 #@icon_close()
+
     move_in: (c_path) ->
+        echo "#{c_path}  #{@path}"
         p = c_path.replace("file://", "")
         DCore.run_command("mv '#{p}' '#{@path}'")
 

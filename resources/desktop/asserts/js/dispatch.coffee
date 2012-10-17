@@ -1,12 +1,13 @@
 create_item = (info) ->
     w = null
+    echo info
     switch info.Type
         when "Application"
             w = new DesktopEntry info.Name, info.Icon, info.Exec, info.EntryPath
         when "File"
             w = new NormalFile info.Name, info.Icon, info.Exec, info.EntryPath
         when "Dir"
-            w = new Folder info.Name, info.Icon, info.exec, info.EntryPath
+            w = new Folder info.Name, info.Icon, info.exec, info.EntryPath, info.Files
         else
             echo "don't support type"
 
