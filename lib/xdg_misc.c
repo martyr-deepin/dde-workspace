@@ -5,6 +5,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
+#include "pixbuf.h"
 #include "xdg_misc.h"
 
 
@@ -25,17 +26,39 @@ void set_desktop_env_name(const char* name)
     memcpy(DE_NAME, name, max_len > 100 ? max_len : 100);
 }
 
+char* check_xpm(const char* path)
+{
+    char* ext = strrchr(path, '.');
+    if (ext != NULL && 
+            (ext[1] == 'x' || ext[1] == 'X')  &&
+            (ext[2] == 'p' || ext[2] == 'P')  &&
+            (ext[3] == 'm' || ext[3] == 'M')
+       ) {
+        return get_data_uri_by_path(path);
+    } else {
+        return g_strdup(path);
+    }
+}
+
+
 
 char* icon_name_to_path(const char* name, int size) 
 {
-    if (name == NULL)
-        return NULL;
+    g_return_val_if_fail(name != NULL, NULL);
+
     if (g_path_is_absolute(name))
-        return g_strdup(name);
+        return check_xpm(name);
+
+    char* ext = strchr(name, '.');
+    if (ext != NULL) {
+        *ext = '\0'; //FIXME: Is it ok to changed it's value? The ext is an part of an gtk_icon_info's path field's allocated memroy.
+        g_warning("desktop's Icon name should an absoulte path or an basename without extension");
+    }
     GtkIconTheme* them = gtk_icon_theme_get_default(); //do not ref or unref it
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     if (info) {
-        char* ret = g_strdup(gtk_icon_info_get_filename(info));
+        const char* path = gtk_icon_info_get_filename(info);
+        char* ret = check_xpm(path);
         gtk_icon_info_free(info);
         return ret;
     } else {
@@ -631,6 +654,3 @@ char* move_to_desktop(const char* path)
 
     return new_path;
 }
-
-char* get_folder_open_icon() { return icon_name_to_path("folder-open", 48); }
-char* get_folder_close_icon() { return icon_name_to_path("folder-close", 48); }

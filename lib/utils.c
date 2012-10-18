@@ -68,10 +68,11 @@ char* json_escape (const char *source)
                 *q++ = '\\';
                 *q++ = '"';
                 break;
+            default:
+                *q++ = *p;
         }
-        *q++ = *p++;
+        p++;
     }
     *q = 0;
-    puts(q);
     return dest;
 }

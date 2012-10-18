@@ -13,7 +13,6 @@ const char* path = "/usr/share/applications;/usr/local/share/applications;";
 
 char* get_items()
 {
-    /*return get_entry_info("/dev/shm/xchat.desktop");*/
     return get_entries_by_func("/usr/share/applications;/usr/local/share/applications;/home/snyh/.local/share/applications", only_desktop);
 }
 
@@ -42,8 +41,8 @@ int main(int argc, char* argv[])
     /*gtk_widget_realize(webview);*/
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
-    gtk_widget_set_size_request(w, gdk_screen_get_width(screen),
-            gdk_screen_get_height(screen));
+    gtk_widget_set_size_request(w, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    printf("set_size_request: %d %d\n", gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 
     gtk_widget_show_all(w);
 

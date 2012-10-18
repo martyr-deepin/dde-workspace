@@ -2,7 +2,6 @@
 #define __XDG_MISC_H__
 #include <glib.h>
 
-char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4);
 // the really icon path is determined by theme
 void set_default_theme(const char* theme);
 // deal with the NotShowIn/OnlyShowIn filed. 
@@ -47,10 +46,6 @@ char* get_desktop_dir(gboolean update);
 
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
-
-char* get_folder_open_icon(); 
-char* get_folder_close_icon();
-
 
 
 typedef struct _BaseEntry {
