@@ -1,4 +1,5 @@
 #include "category.h"
+#include <stdlib.h>
 
 const char* cs[] = {
     "Games", 
@@ -10,6 +11,7 @@ const char* cs[] = {
     "Network",
     "Development",
 };
+
 #define ARRAY_LEN(a) (sizeof(a)/sizeof(a[0]))
 
 const char** get_category_list()
@@ -19,5 +21,5 @@ const char** get_category_list()
 
 int get_own_category(const char* path)
 {
-    return random() % ARRAY_LEN(cs);
+    return rand() % ARRAY_LEN(cs);
 }

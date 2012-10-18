@@ -4,10 +4,10 @@
 #include "xdg_misc.h"
 #include "X_misc.h"
 
+void install_monitor();
+
 
 //TODO: connect gtk_icon_theme changed.
-
-
 
 static
 void screen_change_size(GdkScreen *screen, GtkWidget *w)

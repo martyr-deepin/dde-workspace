@@ -38,7 +38,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     g_assert(buf != NULL);
 
     if (error != NULL) {
-        g_warning(error->message);
+        g_warning("%s\n", error->message);
         g_error_free(error);
         g_free(buf);
         return NULL;
@@ -64,7 +64,7 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
     g_assert(buf != NULL);
 
     if (error != NULL) {
-        g_warning(error->message);
+        g_warning("%s\n", error->message);
         g_error_free(error);
         g_free(buf);
         return NULL;
@@ -83,7 +83,7 @@ char* get_data_uri_by_path(const char* path)
     GError *error = NULL;
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(path, &error);
     if (error != NULL) {
-        g_warning(error->message);
+        g_warning("%s\n", error->message);
         g_error_free(error);
         return NULL;
     }

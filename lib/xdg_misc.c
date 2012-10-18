@@ -6,8 +6,8 @@
 #include <gtk/gtk.h>
 
 #include "pixbuf.h"
+#include "utils.h"
 #include "xdg_misc.h"
-
 
 
 #define APPEND_STRING_WITH_ESCAPE(str, format, content) do { \

@@ -1,5 +1,8 @@
 #include "xdg_misc.h"
 #include <gtk/gtk.h>
+#include "dwebview.h"
+#include "utils.h"
+#include "X_misc.h"
 
 #define FLAG_NAME
 #define FLAG_GENRICNAME
@@ -27,8 +30,7 @@ int main(int argc, char* argv[])
     set_default_theme("Deepin");
 
     GtkWidget *w = create_web_container(TRUE, FALSE);
-    gtk_window_set_decorated(w, FALSE);
-    /*gdk_window_set_decorations(w, GdkWMDecoration(0));*/
+    gtk_window_set_decorated(GTK_WINDOW(w), FALSE);
 
     char* path = get_html_path("launcher");
     GtkWidget *webview = d_webview_new_with_uri(path);
@@ -37,16 +39,19 @@ int main(int argc, char* argv[])
     gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
     gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
 
-    /*gtk_widget_realize(w);*/
-    /*gtk_widget_realize(webview);*/
+    gtk_widget_realize(w);
+
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
-    gtk_widget_set_size_request(w, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    gtk_window_resize(w, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
     printf("set_size_request: %d %d\n", gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 
     gtk_widget_show_all(w);
 
     g_signal_connect (w , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+    watch_workarea_changes(w);
     gtk_main();
+    unwatch_workarea_changes(w);
     return 0;
 }

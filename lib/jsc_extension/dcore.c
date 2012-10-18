@@ -1,4 +1,5 @@
 #include <glib.h>
+#include <string.h>
 
 char* gen_id(const char* seed)
 {

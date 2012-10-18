@@ -8,7 +8,7 @@ execute_process(
     COMMAND ${BIN_JSC_GEN} "jsc"
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-SET(SRC_LIST desktop.c X_misc.c desktop_item_monitor.c
+SET(SRC_LIST desktop.c desktop_item_monitor.c
     ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
