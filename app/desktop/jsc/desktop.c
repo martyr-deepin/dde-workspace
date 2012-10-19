@@ -1,6 +1,8 @@
 #include "jsextension.h"
 #include <glib.h>
 #include <string.h>
+#include "xdg_misc.h"
+#include "dwebview.h"
 
 char* get_desktop_items()
 {

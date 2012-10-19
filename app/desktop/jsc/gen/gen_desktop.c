@@ -62,78 +62,6 @@ static JSValueRef __get_desktop_items__ (JSContextRef context,
 
 }
 
-extern char *  get_folder_open_icon(JSData*);
-static JSValueRef __get_folder_open_icon__ (JSContextRef context,
-                            JSObjectRef function,
-                            JSObjectRef thisObject,
-                            size_t argumentCount,
-                            const JSValueRef arguments[],
-                            JSValueRef *exception)
-{
-    if (argumentCount != 0) {return JSValueMakeNull(context);}
-    
-    
-    JSData* data = g_new0(JSData, 1);
-    data->ctx = context;
-    data->exception = exception;
-    data->webview = get_global_webview();
-    gchar* c_return =  get_folder_open_icon (data);
-    
-
-    JSValueRef r = NULL;
-    if (c_return != NULL) {
-        JSStringRef str = JSStringCreateWithUTF8CString(c_return);
-        g_free(c_return);
-        r = JSValueMakeString(context, str);
-        JSStringRelease(str);
-    } else {
-        FILL_EXCEPTION(context, exception, "the return string is NULL");
-    }
-
-    g_free(data);
-
-    
-    
-    return r;
-
-}
-
-extern char *  get_folder_close_icon(JSData*);
-static JSValueRef __get_folder_close_icon__ (JSContextRef context,
-                            JSObjectRef function,
-                            JSObjectRef thisObject,
-                            size_t argumentCount,
-                            const JSValueRef arguments[],
-                            JSValueRef *exception)
-{
-    if (argumentCount != 0) {return JSValueMakeNull(context);}
-    
-    
-    JSData* data = g_new0(JSData, 1);
-    data->ctx = context;
-    data->exception = exception;
-    data->webview = get_global_webview();
-    gchar* c_return =  get_folder_close_icon (data);
-    
-
-    JSValueRef r = NULL;
-    if (c_return != NULL) {
-        JSStringRef str = JSStringCreateWithUTF8CString(c_return);
-        g_free(c_return);
-        r = JSValueMakeString(context, str);
-        JSStringRelease(str);
-    } else {
-        FILL_EXCEPTION(context, exception, "the return string is NULL");
-    }
-
-    g_free(data);
-
-    
-    
-    return r;
-
-}
-
 extern char *  move_to_desktop(char * , JSData*);
 static JSValueRef __move_to_desktop__ (JSContextRef context,
                             JSObjectRef function,
@@ -184,10 +112,6 @@ static const JSStaticFunction Desktop_class_staticfuncs[] = {
     { "notify_workarea_size", __notify_workarea_size__, kJSPropertyAttributeReadOnly },
 
     { "get_desktop_items", __get_desktop_items__, kJSPropertyAttributeReadOnly },
-
-    { "get_folder_open_icon", __get_folder_open_icon__, kJSPropertyAttributeReadOnly },
-
-    { "get_folder_close_icon", __get_folder_close_icon__, kJSPropertyAttributeReadOnly },
 
     { "move_to_desktop", __move_to_desktop__, kJSPropertyAttributeReadOnly },
 

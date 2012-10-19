@@ -1,3 +1,4 @@
+#include "pixbuf.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include "bg_pixbuf.c"
 
@@ -37,7 +38,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     g_assert(buf != NULL);
 
     if (error != NULL) {
-        g_warning(error->message);
+        g_warning("%s\n", error->message);
         g_error_free(error);
         g_free(buf);
         return NULL;
@@ -49,4 +50,43 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     g_free(base64);
 
     return data;
+}
+
+
+static 
+char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
+{
+    gchar* buf = NULL;
+    gsize size = 0;
+    GError *error = NULL;
+
+    gdk_pixbuf_save_to_buffer(pixbuf, &buf, &size, "png", &error, NULL);
+    g_assert(buf != NULL);
+
+    if (error != NULL) {
+        g_warning("%s\n", error->message);
+        g_error_free(error);
+        g_free(buf);
+        return NULL;
+    }
+
+    char* base64 = g_base64_encode(buf, size);
+    g_free(buf);
+    char* data = g_strdup_printf("data:image/png;base64,%s", base64);
+    g_free(base64);
+
+    return data;
+}
+
+char* get_data_uri_by_path(const char* path)
+{
+    GError *error = NULL;
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(path, &error);
+    if (error != NULL) {
+        g_warning("%s\n", error->message);
+        g_error_free(error);
+        return NULL;
+    }
+    return get_data_uri_by_pixbuf(pixbuf);
+
 }
