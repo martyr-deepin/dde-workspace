@@ -18,10 +18,12 @@ o_table = null
 div_grid = null
 
 gm = new DeepinMenu()
-gi1 = new DeepinMenuItem(1, "Fresh")
-gi2 = new DeepinMenuItem(2, "Properties")
+gi1 = new DeepinMenuItem(1, "New")
+gi2 = new DeepinMenuItem(2, "Reorder Icons")
+gi3 = new DeepinMenuItem(3, "Desktop Settings")
 gm.appendItem(gi1)
 gm.appendItem(gi2)
+gm.appendItem(gi3)
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->

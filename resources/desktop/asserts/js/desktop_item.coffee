@@ -1,10 +1,16 @@
+last_time = (new Date()).getTime()
+
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
 i2 = new DeepinMenuItem(2, "Delete")
+i3 = new DeepinMenuItem(3, "Rename")
+i4 = new DeepinMenuItem(4, "Properties")
 m.appendItem(i1)
 m.appendItem(i2)
+m.appendItem(i3)
+m.appendItem(i4)
 
-shorten_text= (str, n) ->
+shorten_text = (str, n) ->
     r = /[^\x00-\xff]/g
     if str.replace(r, "mm").length <= n
         return str
@@ -35,11 +41,16 @@ class Item extends Widget
         # search the div for store the name
         @item_name = sub_item for sub_item in el.childNodes when sub_item.className == "item_name"
 
-        @element.addEventListener('click', ->
+        @element.addEventListener('click', (e)->
+            echo (e)
+            n = (new Date()).getTime()
+            echo "#{n - last_time}"
             if this.className.search(/item_selected/i) > -1
-                this.className = this.className.replace(" item_selected", "")
+                if n - last_time > 200
+                    this.className = this.className.replace(" item_selected", "")
             else
                 this.className += " item_selected"
+            last_time = n
         )
 
         @element.addEventListener('dblclick', ->
@@ -119,19 +130,35 @@ class Folder extends DesktopEntry
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
         str = ""
-        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>#{shorten_text(s, 20)}</div></li>" for s in @files
+        str += "<li><img src=\"1.png\"><div>#{shorten_text(s, 20)}</div></li>" for s in @files
         @div_pop.innerHTML = "<ul>#{str}</ul>"
-        @div_pop.style.left = "#{@element.offsetLeft + @element.offsetWidth + 20}px"
-        @div_pop.style.top = "#{@element.offsetTop}px"
 
-        if @files.length < 57
-            n = Math.floor(Math.sqrt(@files.length))
-            if @files.length > n * n
-                n += 1
+        if @files.length <= 3
+            col = @files.length
+        else if @files.length <= 8
+            col = 4
+        else if @files.length <= 15
+            col = 5
         else
-            n = 8
-        @div_pop.style.width = "#{n * 100}px"
+            col = 6
+        @div_pop.style.width = "#{col * i_width + 20}px"
 
+        n = Math.ceil(@files.length / col)
+        if n > 4 then n = 4
+        n = n * i_height + 20
+        if @element.offsetTop > n
+            @div_pop.style.top = "#{@element.offsetTop - n}px"
+        else
+            @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 20}px"
+
+        n = (col * i_width) / 2 + 10
+        p = @element.offsetLeft + @element.offsetWidth / 2
+        if p < n
+            @div_pop.style.left = "0"
+        else if p + n > s_width
+            @div_pop.style.left = "#{s_width - 2 * n}px"
+        else
+            @div_pop.style.left = "#{p - n}px"
 
     hide_pop_block : ->
         @div_background.parentElement.removeChild(@div_background)

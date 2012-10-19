@@ -136,10 +136,7 @@ body {
 }
 
 #pop_grid {
-    width:300px;
-    top:100px;
     z-index: 51;
-    left:200px;
     position: fixed;
     /*background: none repeat scroll 0% 0% rgba(8, 41, 67, 0.7);*/
     background-color:#FFF;
@@ -147,9 +144,11 @@ body {
 }
 
 #pop_grid ul {
+    max-height:376px;
     margin:5px;
     background-color:rgba(0,0,0,0.5);
     list-style: none outside none;
+    overflow-y:auto;
 }
 
 #pop_grid ul li {
