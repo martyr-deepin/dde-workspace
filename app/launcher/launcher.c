@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
-    gtk_window_resize(w, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    gtk_window_resize(GTK_WINDOW(w), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
     printf("set_size_request: %d %d\n", gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 
     gtk_widget_show_all(w);

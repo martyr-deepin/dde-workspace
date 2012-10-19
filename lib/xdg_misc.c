@@ -418,8 +418,10 @@ char* entry_info_to_json(BaseEntry* _entry)
             g_free(array);
         }
         if (entry->categories) {
-            char* array = to_json_array(entry->categories);
+            /*char* array = to_json_array(entry->categories);*/
+            char* array = get_deepin_categories(_entry->entry_path, entry->categories);
             g_string_append_printf(string, "\"Categories\":%s,\n", array);
+            puts(array);
             g_free(array);
         }
         if (entry->keywords) {

@@ -10,7 +10,7 @@ execute_process(
     )
 
 
-set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c
+set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c
     ${JSC} ${JSC_GEN})
 
 add_library(dcom ${SRC_LIST})
