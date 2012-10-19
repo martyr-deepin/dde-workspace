@@ -112,12 +112,11 @@ class DesktopEntry extends Item
         )
 
 class Folder extends DesktopEntry
-    constructor: (@name, @icon, @exec, @path, @files) ->
+    constructor : ->
         super
 
         @div_pop = null
         @element.addEventListener('click', =>
-            echo "folder selected, should show pop block"
             @show_pop_block()
         )
 
@@ -129,21 +128,22 @@ class Folder extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
+        items = DCore.Desktop.get_items_by_dir(@element.id)
         str = ""
-        str += "<li><img src=\"1.png\"><div>#{shorten_text(s, 20)}</div></li>" for s in @files
+        str += "<li><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, 20)}</div></li>" for s in items
         @div_pop.innerHTML = "<ul>#{str}</ul>"
 
-        if @files.length <= 3
-            col = @files.length
-        else if @files.length <= 8
+        if items.length <= 3
+            col = items.length
+        else if items.length <= 8
             col = 4
-        else if @files.length <= 15
+        else if items.length <= 15
             col = 5
         else
             col = 6
         @div_pop.style.width = "#{col * i_width + 20}px"
 
-        n = Math.ceil(@files.length / col)
+        n = Math.ceil(items.length / col)
         if n > 4 then n = 4
         n = n * i_height + 20
         if @element.offsetTop > n

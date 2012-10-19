@@ -7,7 +7,7 @@ create_item = (info) ->
         when "File"
             w = new NormalFile info.Name, info.Icon, info.Exec, info.EntryPath
         when "Dir"
-            w = new Folder info.Name, info.Icon, info.exec, info.EntryPath, info.Files
+            w = new Folder info.Name, info.Icon, info.exec, info.EntryPath
         else
             echo "don't support type"
 

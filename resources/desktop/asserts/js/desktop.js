@@ -519,24 +519,18 @@
 
     __extends(Folder, _super);
 
-    function Folder(name, icon, exec, path, files) {
-      var _this = this;
-      this.name = name;
-      this.icon = icon;
-      this.exec = exec;
-      this.path = path;
-      this.files = files;
+    function Folder() {
       this.init_drop = __bind(this.init_drop, this);
+      var _this = this;
       Folder.__super__.constructor.apply(this, arguments);
       this.div_pop = null;
       this.element.addEventListener('click', function() {
-        echo("folder selected, should show pop block");
         return _this.show_pop_block();
       });
     }
 
     Folder.prototype.show_pop_block = function() {
-      var col, n, p, s, str, _i, _len, _ref,
+      var col, items, n, p, s, str, _i, _len,
         _this = this;
       this.div_background = document.createElement("div");
       this.div_background.setAttribute("id", "pop_background");
@@ -547,24 +541,24 @@
       this.div_pop = document.createElement("div");
       this.div_pop.setAttribute("id", "pop_grid");
       document.body.appendChild(this.div_pop);
+      items = DCore.Desktop.get_items_by_dir(this.element.id);
       str = "";
-      _ref = this.files;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        s = _ref[_i];
-        str += "<li><img src=\"1.png\"><div>" + (shorten_text(s, 20)) + "</div></li>";
+      for (_i = 0, _len = items.length; _i < _len; _i++) {
+        s = items[_i];
+        str += "<li><img src=\"" + s.Icon + "\"><div>" + (shorten_text(s.Name, 20)) + "</div></li>";
       }
       this.div_pop.innerHTML = "<ul>" + str + "</ul>";
-      if (this.files.length <= 3) {
-        col = this.files.length;
-      } else if (this.files.length <= 8) {
+      if (items.length <= 3) {
+        col = items.length;
+      } else if (items.length <= 8) {
         col = 4;
-      } else if (this.files.length <= 15) {
+      } else if (items.length <= 15) {
         col = 5;
       } else {
         col = 6;
       }
       this.div_pop.style.width = "" + (col * i_width + 20) + "px";
-      n = Math.ceil(this.files.length / col);
+      n = Math.ceil(items.length / col);
       if (n > 4) n = 4;
       n = n * i_height + 20;
       if (this.element.offsetTop > n) {
@@ -661,7 +655,7 @@
         w = new NormalFile(info.Name, info.Icon, info.Exec, info.EntryPath);
         break;
       case "Dir":
-        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath, info.Files);
+        w = new Folder(info.Name, info.Icon, info.exec, info.EntryPath);
         break;
       default:
         echo("don't support type");
