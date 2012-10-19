@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gm, i1, i2, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position,
+  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gi3, gm, i1, i2, i3, i4, i_height, i_width, init_grid_drop, last_time, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -74,13 +74,17 @@
 
   gm = new DeepinMenu();
 
-  gi1 = new DeepinMenuItem(1, "Fresh");
+  gi1 = new DeepinMenuItem(1, "New");
 
-  gi2 = new DeepinMenuItem(2, "Properties");
+  gi2 = new DeepinMenuItem(2, "Reorder Icons");
+
+  gi3 = new DeepinMenuItem(3, "Desktop Settings");
 
   gm.appendItem(gi1);
 
   gm.appendItem(gi2);
+
+  gm.appendItem(gi3);
 
   update_gird_position = function(wa_x, wa_y, wa_width, wa_height) {
     var i, n, new_cols, new_rows, new_table;
@@ -355,15 +359,25 @@
 
   })(Module);
 
+  last_time = (new Date()).getTime();
+
   m = new DeepinMenu();
 
   i1 = new DeepinMenuItem(1, "Open");
 
   i2 = new DeepinMenuItem(2, "Delete");
 
+  i3 = new DeepinMenuItem(3, "Rename");
+
+  i4 = new DeepinMenuItem(4, "Properties");
+
   m.appendItem(i1);
 
   m.appendItem(i2);
+
+  m.appendItem(i3);
+
+  m.appendItem(i4);
 
   shorten_text = function(str, n) {
     var i, mid, r, _ref;
@@ -405,12 +419,19 @@
         sub_item = _ref[_i];
         if (sub_item.className === "item_name") this.item_name = sub_item;
       }
-      this.element.addEventListener('click', function() {
+      this.element.addEventListener('click', function(e) {
+        var n;
+        echo(e);
+        n = (new Date()).getTime();
+        echo("" + (n - last_time));
         if (this.className.search(/item_selected/i) > -1) {
-          return this.className = this.className.replace(" item_selected", "");
+          if (n - last_time > 200) {
+            this.className = this.className.replace(" item_selected", "");
+          }
         } else {
-          return this.className += " item_selected";
+          this.className += " item_selected";
         }
+        return last_time = n;
       });
       this.element.addEventListener('dblclick', function() {
         return DCore.run_command(exec);
@@ -515,7 +536,7 @@
     }
 
     Folder.prototype.show_pop_block = function() {
-      var n, s, str, _i, _len, _ref,
+      var col, n, p, s, str, _i, _len, _ref,
         _this = this;
       this.div_background = document.createElement("div");
       this.div_background.setAttribute("id", "pop_background");
@@ -530,18 +551,36 @@
       _ref = this.files;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         s = _ref[_i];
-        str += "<li><img src=\"file:///usr/share/icons/Deepin/apps/48/deepin-media-player.png\"><div>" + (shorten_text(s, 20)) + "</div></li>";
+        str += "<li><img src=\"1.png\"><div>" + (shorten_text(s, 20)) + "</div></li>";
       }
       this.div_pop.innerHTML = "<ul>" + str + "</ul>";
-      this.div_pop.style.left = "" + (this.element.offsetLeft + this.element.offsetWidth + 20) + "px";
-      this.div_pop.style.top = "" + this.element.offsetTop + "px";
-      if (this.files.length < 57) {
-        n = Math.floor(Math.sqrt(this.files.length));
-        if (this.files.length > n * n) n += 1;
+      if (this.files.length <= 3) {
+        col = this.files.length;
+      } else if (this.files.length <= 8) {
+        col = 4;
+      } else if (this.files.length <= 15) {
+        col = 5;
       } else {
-        n = 8;
+        col = 6;
       }
-      return this.div_pop.style.width = "" + (n * 100) + "px";
+      this.div_pop.style.width = "" + (col * i_width + 20) + "px";
+      n = Math.ceil(this.files.length / col);
+      if (n > 4) n = 4;
+      n = n * i_height + 20;
+      if (this.element.offsetTop > n) {
+        this.div_pop.style.top = "" + (this.element.offsetTop - n) + "px";
+      } else {
+        this.div_pop.style.top = "" + (this.element.offsetTop + this.element.offsetHeight + 20) + "px";
+      }
+      n = (col * i_width) / 2 + 10;
+      p = this.element.offsetLeft + this.element.offsetWidth / 2;
+      if (p < n) {
+        return this.div_pop.style.left = "0";
+      } else if (p + n > s_width) {
+        return this.div_pop.style.left = "" + (s_width - 2 * n) + "px";
+      } else {
+        return this.div_pop.style.left = "" + (p - n) + "px";
+      }
     };
 
     Folder.prototype.hide_pop_block = function() {
