@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
+    set_desktop_env_name("GNOME");
 
     GtkWidget *w = create_web_container(TRUE, FALSE);
     gtk_window_set_decorated(GTK_WINDOW(w), FALSE);
@@ -54,4 +55,9 @@ int main(int argc, char* argv[])
     gtk_main();
     unwatch_workarea_changes(w);
     return 0;
+}
+
+void exit()
+{
+    gtk_main_quit();
 }
