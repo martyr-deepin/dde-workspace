@@ -26,7 +26,7 @@ GtkWidget* create_web_container(bool normal, bool above)
     /*if (above)*/
         /*gtk_window_set_keep_above(GTK_WINDOW(window), TRUE);*/
     /*else*/
-        /*gtk_window_set_keep_below(GTK_WINDOW(window), TRUE);*/
+        /*gtk_window_set_keep_below(GTK_WINDOW(window), FALSE);*/
 
     return window;
 }

@@ -18,7 +18,7 @@ create_item = (info) ->
         else
             exec = info.Exec
         DCore.run_command(exec)
-        DCore.Launcher.exit()
+        DCore.Launcher.exit_gui()
     el.addEventListener('click', el.click_cb)
     return el
 

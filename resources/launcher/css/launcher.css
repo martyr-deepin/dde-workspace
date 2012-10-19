@@ -1,8 +1,8 @@
 body {
     background: rgba(8, 41, 67, 1);
-    max-height: 900px;
     color: white;
     -webkit-user-select: none;
+    /*height: 600px;*/
 }
 
 #search {
@@ -19,7 +19,6 @@ body {
 
 #container {
     display: -webkit-box;
-    max-height: 850px;
 }
 
 #category {
@@ -43,7 +42,7 @@ body {
     -webkit-box-flex: 5;
     -webkit-box-sizing: border-box;
     overflow-y: scroll;
-    height: 850px;
+    /*max-height: -webkit-calc(600px - 50px);*/
     margin-right: 10%;
     width: 80%
     /*-webkit-column-count: 7;*/

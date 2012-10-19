@@ -1,9 +1,9 @@
 do_workarea_changed = (alloc)->
-    document.body.style.width = alloc.width
-    document.body.style.height = alloc.height
-
+    height = alloc.height
+    document.body.style.maxHeight = "#{height}px"
+    document.getElementById('grid').style.maxHeight = "#{height-50}px"
 DCore.signal_connect('workarea_changed', do_workarea_changed)
-
+DCore.Launcher.notify_workarea_size()
 
 
 create_category = (info) ->
@@ -30,3 +30,4 @@ for info in DCore.Launcher.get_categories()
 
 
 grid_load_category(0) #the All applications' ID is zero.
+

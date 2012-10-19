@@ -21,7 +21,7 @@ document.body.onkeypress = (e) ->
     switch e.which
         when 27
             if s_box.value == ""
-                DCore.Launcher.exit()
+                DCore.Launcher.exit_gui()
             else
                 s_box.value = ""
         when 8

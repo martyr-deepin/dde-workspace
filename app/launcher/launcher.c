@@ -24,40 +24,51 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
+GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");
 
-    GtkWidget *w = create_web_container(TRUE, FALSE);
-    gtk_window_set_decorated(GTK_WINDOW(w), FALSE);
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
 
     char* path = get_html_path("launcher");
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
 
-    gtk_window_set_skip_pager_hint(GTK_WINDOW(w), TRUE);
-    gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-    gtk_widget_realize(w);
+    gtk_widget_realize(container);
 
 
-    GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(w));
-    gtk_window_resize(GTK_WINDOW(w), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
-    printf("set_size_request: %d %d\n", gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    gtk_widget_show_all(w);
+    int x, y, width, height;
+    get_workarea_size(0, 0, &x, &y, &width, &height);
+    gtk_window_resize(GTK_WINDOW(container), width, height);
 
-    g_signal_connect (w , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-
-    watch_workarea_changes(w);
+    watch_workarea_changes(container);
+    gtk_widget_show_all(container);
     gtk_main();
-    unwatch_workarea_changes(w);
+    /*unwatch_workarea_changes(w);*/
     return 0;
 }
 
-void exit()
+void exit_gui()
 {
     gtk_main_quit();
+}
+
+void notify_workarea_size()
+{
+    int x, y, width, height;
+    get_workarea_size(0, 0, &x, &y, &width, &height);
+    char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
+    js_post_message("workarea_changed", tmp);
+    GtkAllocation alloc = {x, y, width, height};
+    gtk_widget_size_allocate(container, &alloc);
+    /*gtk_window_resize(GTK_WINDOW(container), width, height);*/
 }

@@ -29,7 +29,7 @@ void add_item_to_cateogry(const char* path, int cat_id)
     }
     GHashTable* c = categorys[cat_id];
     if (!g_hash_table_lookup(c, path)) {
-        g_hash_table_insert(c, g_strdup(path), 1);
+        g_hash_table_insert(c, g_strdup(path), GINT_TO_POINTER(1));
     }
 }
 
@@ -43,7 +43,7 @@ char* get_categories()
     return g_string_free(string, FALSE);
 }
 
-char* get_deepin_categories(const char* path, const char** xdg_categories)
+char* get_deepin_categories(const char* path, char** xdg_categories)
 {
     GString* string = g_string_new("[");
     for (int i=0; i< 3; i++) {
