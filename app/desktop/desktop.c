@@ -12,6 +12,11 @@ char* get_desktop_items()
     return get_desktop_entries();
 }
 
+char* get_items_by_dir(const char* path)
+{
+    return get_entries_by_func(path, no_dot_hidden_file);
+}
+
 void notify_workarea_size()
 {
     int x, y, width, height;
