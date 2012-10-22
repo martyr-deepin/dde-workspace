@@ -10,12 +10,16 @@ s_y = 0
 i_width = 80 + 6 * 2
 i_height = 84 + 4 * 2
 
+# gird size
 cols = 0
 rows = 0
 
+# grid html elememt
+div_grid = null
+
 o_table = null
 
-div_grid = null
+selected_item = new Array
 
 gm = new DeepinMenu()
 gi1 = new DeepinMenuItem(1, "New")
@@ -56,23 +60,23 @@ load_position = (widget) ->
 
 
 clear_occupy = (info) ->
-    for i in [0..info.width-1]
-        for j in [0..info.height-1]
+    for i in [0..info.width - 1] by 1
+        for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = null
 
 
 set_occupy = (info) ->
     assert(info!=null, "set_occupy")
-    for i in [0..info.width-1]
-        for j in [0..info.height-1]
+    for i in [0..info.width - 1] by 1
+        for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
     #draw_grid()
 
 
 detect_occupy = (info) ->
     assert(info!=null, "detect_occupy")
-    for i in [0..info.width-1]
-        for j in [0..info.height-1]
+    for i in [0..info.width - 1] by 1
+        for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
                 return true
     return false
@@ -116,7 +120,7 @@ move_to_position = (widget, info) ->
     if not detect_occupy(info)
             localStorage.setObject(widget.path, info)
 
-            widget.move(info.x*i_width, info.y*i_height)
+            widget.move(info.x * i_width, info.y * i_height)
 
             if old_info?
                 clear_occupy(old_info)
@@ -127,8 +131,8 @@ draw_grid = (ctx) ->
     grid = document.querySelector("#grid")
     ctx = grid.getContext('2d')
     ctx.fillStyle = 'rgba(0, 100, 0, 0.8)'
-    for i in [0..cols]
-        for j in [0..rows]
+    for i in [0..cols] by 1
+        for j in [0..rows] by 1
             if o_table[i][j]?
                 ctx.fillRect(i*i_width, j*i_height, i_width-5, i_height-5)
             else
@@ -163,6 +167,40 @@ init_grid_drop = ->
 
         "leave": (evt) ->
             #evt.dataTransfer.dropEffect = "move"
+
+update_selected_stats = (w, env) ->
+    if env.ctrlKey
+        if selected_item.length == 0
+            selected_item.push(w)
+            w.item_focus()
+        else
+            for i in [0...selected_item.length] by 1
+                if selected_item[i] == w
+                    selected_item.splice(i, 1)
+                    w.item_blur()
+                    return null
+            selected_item.push(w)
+            w.item_focus()
+    else if env.shiftkey
+        pass
+    else
+        if selected_item.length > 1
+            i.item_blur() for i in selected_item
+            selected_item.splice(0)
+            selected_item.push(w)
+            w.item_focus()
+        else if selected_item.length == 1
+            if selected_item[0] == w
+                selected_item.splice(0)
+                w.item_blur()
+            else
+                selected_item[0].item_blur()
+                selected_item.splice(0)
+                selected_item.push(w)
+                w.item_focus()
+        else
+            selected_item.push(w)
+            w.item_focus()
 
 
 create_item_grid = ->

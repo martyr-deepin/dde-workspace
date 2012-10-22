@@ -37,8 +37,9 @@ body {
 }
 
 .item_selected {
-    border-radius: 3px;
-    background-color: rgba(77, 77, 255, 0.8);
+    border-radius:3px;
+    background-color:rgba(77, 77, 255, 0.8);
+    z-index:1000;
 }
 
 .Folder, .DesktopEntry, .NormalFile {
@@ -58,7 +59,6 @@ body {
 }
 
 .item_name {
-    max-height:36px;
     word-wrap:break-word;
     word-break:break-all;
     overflow: hidden;

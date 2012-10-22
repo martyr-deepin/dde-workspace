@@ -1,4 +1,4 @@
-last_time = (new Date()).getTime()
+MAX_ITEM_TITLE = 20
 
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
@@ -35,27 +35,14 @@ class Item extends Widget
         el.draggable = true
         el.innerHTML = "
         <img draggable=false src=#{@icon} />
-        <div class=item_name>#{shorten_text(@name, 20)}</div>
+        <div class=item_name>#{shorten_text(@name, MAX_ITEM_TITLE)}</div>
         "
 
         # search the div for store the name
         @item_name = sub_item for sub_item in el.childNodes when sub_item.className == "item_name"
 
-        @element.addEventListener('click', (e)->
-            echo (e)
-            n = (new Date()).getTime()
-            echo "#{n - last_time}"
-            if this.className.search(/item_selected/i) > -1
-                if n - last_time > 200
-                    this.className = this.className.replace(" item_selected", "")
-            else
-                this.className += " item_selected"
-            last_time = n
-        )
-
-        @element.addEventListener('dblclick', ->
-            DCore.run_command exec
-        )
+        @element.addEventListener('click', (e) => update_selected_stats(this, e))
+        @element.addEventListener('dblclick', -> DCore.run_command exec)
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
         )
@@ -65,10 +52,12 @@ class Item extends Widget
         @element.contextMenu = m
 
     item_focus: ->
-        @element.className.replace(" item_selected", "")
+        @element.className += " item_selected"
+        @item_name.innerText = @name
 
     item_blur: ->
-        @element.className += " item_selected"
+        @element.className = @element.className.replace(" item_selected", "")
+        @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
     rename: (new_name) ->
         @item_name.innerText = new_name
@@ -120,17 +109,22 @@ class Folder extends DesktopEntry
             @show_pop_block()
         )
 
-    show_pop_block : ->
+    show_pop_block : =>
         @div_background = document.createElement("div")
         @div_background.setAttribute("id", "pop_background")
         document.body.appendChild(@div_background)
         @div_background.addEventListener('click', => @hide_pop_block())
+        @div_background.addEventListener('contextmenu', (env) =>
+            env.preventDefault
+            @hide_pop_block()
+            return false
+        )
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
         items = DCore.Desktop.get_items_by_dir(@element.id)
         str = ""
-        str += "<li><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, 20)}</div></li>" for s in items
+        str += "<li><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
         @div_pop.innerHTML = "<ul>#{str}</ul>"
 
         if items.length <= 3
@@ -160,7 +154,7 @@ class Folder extends DesktopEntry
         else
             @div_pop.style.left = "#{p - n}px"
 
-    hide_pop_block : ->
+    hide_pop_block : =>
         @div_background.parentElement.removeChild(@div_background)
         @div_pop.parentElement.removeChild(@div_pop)
         delete @div_background
@@ -169,8 +163,8 @@ class Folder extends DesktopEntry
     init_drop: =>
         $(@element).drop
             drop: (evt) =>
-                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 evt.preventDefault()
+                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 #@icon_close()
                 @move_in(file)
 

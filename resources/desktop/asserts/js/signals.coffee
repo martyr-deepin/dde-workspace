@@ -26,5 +26,5 @@ do_item_rename = (data) ->
         move_to_anywhere(w)
 
 do_workarea_changed = (allo) ->
-    echo "do_workarea_changed"
+    #echo "do_workarea_changed"
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)

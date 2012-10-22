@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gi3, gm, i1, i2, i3, i4, i_height, i_width, init_grid_drop, last_time, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, set_occupy, shorten_text, sort_item, update_gird_position,
+  var DesktopApplet, DesktopEntry, Folder, Item, MAX_ITEM_TITLE, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gi3, gm, i1, i2, i3, i4, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, selected_item, set_occupy, shorten_text, sort_item, update_gird_position, update_selected_stats,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -68,9 +68,11 @@
 
   rows = 0;
 
+  div_grid = null;
+
   o_table = null;
 
-  div_grid = null;
+  selected_item = new Array;
 
   gm = new DeepinMenu();
 
@@ -119,11 +121,11 @@
   clear_occupy = function(info) {
     var i, j, _ref, _results;
     _results = [];
-    for (i = 0, _ref = info.width - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+    for (i = 0, _ref = info.width - 1; i <= _ref; i += 1) {
       _results.push((function() {
         var _ref2, _results2;
         _results2 = [];
-        for (j = 0, _ref2 = info.height - 1; 0 <= _ref2 ? j <= _ref2 : j >= _ref2; 0 <= _ref2 ? j++ : j--) {
+        for (j = 0, _ref2 = info.height - 1; j <= _ref2; j += 1) {
           _results2.push(o_table[info.x + i][info.y + j] = null);
         }
         return _results2;
@@ -136,11 +138,11 @@
     var i, j, _ref, _results;
     assert(info !== null, "set_occupy");
     _results = [];
-    for (i = 0, _ref = info.width - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
+    for (i = 0, _ref = info.width - 1; i <= _ref; i += 1) {
       _results.push((function() {
         var _ref2, _results2;
         _results2 = [];
-        for (j = 0, _ref2 = info.height - 1; 0 <= _ref2 ? j <= _ref2 : j >= _ref2; 0 <= _ref2 ? j++ : j--) {
+        for (j = 0, _ref2 = info.height - 1; j <= _ref2; j += 1) {
           _results2.push(o_table[info.x + i][info.y + j] = true);
         }
         return _results2;
@@ -152,8 +154,8 @@
   detect_occupy = function(info) {
     var i, j, _ref, _ref2;
     assert(info !== null, "detect_occupy");
-    for (i = 0, _ref = info.width - 1; 0 <= _ref ? i <= _ref : i >= _ref; 0 <= _ref ? i++ : i--) {
-      for (j = 0, _ref2 = info.height - 1; 0 <= _ref2 ? j <= _ref2 : j >= _ref2; 0 <= _ref2 ? j++ : j--) {
+    for (i = 0, _ref = info.width - 1; i <= _ref; i += 1) {
+      for (j = 0, _ref2 = info.height - 1; j <= _ref2; j += 1) {
         if (o_table[info.x + i][info.y + j]) return true;
       }
     }
@@ -219,11 +221,11 @@
     ctx = grid.getContext('2d');
     ctx.fillStyle = 'rgba(0, 100, 0, 0.8)';
     _results = [];
-    for (i = 0; 0 <= cols ? i <= cols : i >= cols; 0 <= cols ? i++ : i--) {
+    for (i = 0; i <= cols; i += 1) {
       _results.push((function() {
         var _results2;
         _results2 = [];
-        for (j = 0; 0 <= rows ? j <= rows : j >= rows; 0 <= rows ? j++ : j--) {
+        for (j = 0; j <= rows; j += 1) {
           if (o_table[i][j] != null) {
             _results2.push(ctx.fillRect(i * i_width, j * i_height, i_width - 5, i_height - 5));
           } else {
@@ -278,6 +280,51 @@
     });
   };
 
+  update_selected_stats = function(w, env) {
+    var i, _i, _len, _ref;
+    if (env.ctrlKey) {
+      if (selected_item.length === 0) {
+        selected_item.push(w);
+        return w.item_focus();
+      } else {
+        for (i = 0, _ref = selected_item.length; i < _ref; i += 1) {
+          if (selected_item[i] === w) {
+            selected_item.splice(i, 1);
+            w.item_blur();
+            return null;
+          }
+        }
+        selected_item.push(w);
+        return w.item_focus();
+      }
+    } else if (env.shiftkey) {
+      return pass;
+    } else {
+      if (selected_item.length > 1) {
+        for (_i = 0, _len = selected_item.length; _i < _len; _i++) {
+          i = selected_item[_i];
+          i.item_blur();
+        }
+        selected_item.splice(0);
+        selected_item.push(w);
+        return w.item_focus();
+      } else if (selected_item.length === 1) {
+        if (selected_item[0] === w) {
+          selected_item.splice(0);
+          return w.item_blur();
+        } else {
+          selected_item[0].item_blur();
+          selected_item.splice(0);
+          selected_item.push(w);
+          return w.item_focus();
+        }
+      } else {
+        selected_item.push(w);
+        return w.item_focus();
+      }
+    }
+  };
+
   create_item_grid = function() {
     div_grid = document.createElement("div");
     div_grid.setAttribute("id", "item_grid");
@@ -319,7 +366,6 @@
   };
 
   do_workarea_changed = function(allo) {
-    echo("do_workarea_changed");
     return update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8);
   };
 
@@ -359,7 +405,7 @@
 
   })(Module);
 
-  last_time = (new Date()).getTime();
+  MAX_ITEM_TITLE = 20;
 
   m = new DeepinMenu();
 
@@ -398,7 +444,8 @@
     __extends(Item, _super);
 
     function Item(name, icon, exec, path) {
-      var el, info, sub_item, _i, _len, _ref;
+      var el, info, sub_item, _i, _len, _ref,
+        _this = this;
       this.name = name;
       this.icon = icon;
       this.exec = exec;
@@ -413,25 +460,14 @@
         height: 1
       };
       el.draggable = true;
-      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div class=item_name>" + (shorten_text(this.name, 20)) + "</div>        ";
+      el.innerHTML = "        <img draggable=false src=" + this.icon + " />        <div class=item_name>" + (shorten_text(this.name, MAX_ITEM_TITLE)) + "</div>        ";
       _ref = el.childNodes;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         sub_item = _ref[_i];
         if (sub_item.className === "item_name") this.item_name = sub_item;
       }
       this.element.addEventListener('click', function(e) {
-        var n;
-        echo(e);
-        n = (new Date()).getTime();
-        echo("" + (n - last_time));
-        if (this.className.search(/item_selected/i) > -1) {
-          if (n - last_time > 200) {
-            this.className = this.className.replace(" item_selected", "");
-          }
-        } else {
-          this.className += " item_selected";
-        }
-        return last_time = n;
+        return update_selected_stats(_this, e);
       });
       this.element.addEventListener('dblclick', function() {
         return DCore.run_command(exec);
@@ -445,11 +481,13 @@
     }
 
     Item.prototype.item_focus = function() {
-      return this.element.className.replace(" item_selected", "");
+      this.element.className += " item_selected";
+      return this.item_name.innerText = this.name;
     };
 
     Item.prototype.item_blur = function() {
-      return this.element.className += " item_selected";
+      this.element.className = this.element.className.replace(" item_selected", "");
+      return this.item_name.innerText = shorten_text(this.name, MAX_ITEM_TITLE);
     };
 
     Item.prototype.rename = function(new_name) {
@@ -521,6 +559,8 @@
 
     function Folder() {
       this.init_drop = __bind(this.init_drop, this);
+      this.hide_pop_block = __bind(this.hide_pop_block, this);
+      this.show_pop_block = __bind(this.show_pop_block, this);
       var _this = this;
       Folder.__super__.constructor.apply(this, arguments);
       this.div_pop = null;
@@ -538,6 +578,11 @@
       this.div_background.addEventListener('click', function() {
         return _this.hide_pop_block();
       });
+      this.div_background.addEventListener('contextmenu', function(env) {
+        env.preventDefault;
+        _this.hide_pop_block();
+        return false;
+      });
       this.div_pop = document.createElement("div");
       this.div_pop.setAttribute("id", "pop_grid");
       document.body.appendChild(this.div_pop);
@@ -545,7 +590,7 @@
       str = "";
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         s = items[_i];
-        str += "<li><img src=\"" + s.Icon + "\"><div>" + (shorten_text(s.Name, 20)) + "</div></li>";
+        str += "<li><img src=\"" + s.Icon + "\"><div>" + (shorten_text(s.Name, MAX_ITEM_TITLE)) + "</div></li>";
       }
       this.div_pop.innerHTML = "<ul>" + str + "</ul>";
       if (items.length <= 3) {
@@ -589,8 +634,8 @@
       return $(this.element).drop({
         drop: function(evt) {
           var file;
-          file = decodeURI(evt.dataTransfer.getData("text/uri-list"));
           evt.preventDefault();
+          file = decodeURI(evt.dataTransfer.getData("text/uri-list"));
           return _this.move_in(file);
         },
         over: function(evt) {
@@ -646,7 +691,6 @@
   create_item = function(info) {
     var w;
     w = null;
-    echo(info);
     switch (info.Type) {
       case "Application":
         w = new DesktopEntry(info.Name, info.Icon, info.Exec, info.EntryPath);
