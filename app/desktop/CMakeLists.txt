@@ -15,7 +15,7 @@ add_executable(${NAME} ${SRC_LIST})
 
 target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
 
-include_directories(${DWEBVIEW_INCLUDE_DIRS} /usr/include/X11/)
+include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

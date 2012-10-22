@@ -2,9 +2,6 @@
 #include "xdg_misc.h"
 #include <gio/gio.h>
 
-void install_monitor();
-GFileMonitor *monitor = NULL;
-
 void monitor_desktop_dir_cb(GFileMonitor *m, 
         GFile *file, GFile *other, GFileMonitorEvent t, 
         gpointer user_data)
@@ -55,14 +52,64 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
 
 }
 
+void monitor_dir_cb(GFileMonitor *m, 
+        GFile *file, GFile *other, GFileMonitorEvent t, 
+        gpointer path)
+{
+    switch (t) {
+        case G_FILE_MONITOR_EVENT_MOVED:
+        case G_FILE_MONITOR_EVENT_DELETED:
+        case G_FILE_MONITOR_EVENT_CREATED:
+        /*case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:*/
+            {
+                char* tmp = g_strdup_printf("{\"id\":\"%s\"}", (char*)path);
+                js_post_message("dir_changed", tmp);
+                break;
+            }
+    }
+}
+
+
+GHashTable *monitor_table = NULL;
+
+void begin_monitor_dir(const char* path, GCallback cb)
+{
+    if (!g_hash_table_contains(monitor_table, path)) {
+        GFile* dir = g_file_new_for_path(path);
+        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
+        char* key = g_strdup(path);
+        g_hash_table_insert(monitor_table, key, monitor);
+        g_signal_connect(monitor, "changed", cb, key);
+    } else {
+        g_warning("The %s has aleardy monitored! You many forget call the function of end_monitor_dir", path);
+    }
+}
+
+void end_monitor_dir(const char* path)
+{
+    g_hash_table_remove(monitor_table, path);
+}
+
+
 void install_monitor()
 {
-    if (monitor == NULL) {
-        GFile *dir = g_file_new_for_path(get_desktop_dir(TRUE));
-        monitor = g_file_monitor_directory(dir,
-                G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
-        g_signal_connect(monitor, "changed", 
-                G_CALLBACK(monitor_desktop_dir_cb), NULL);
+    if (monitor_table == NULL) {
+        monitor_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, (GDestroyNotify)g_file_monitor_cancel);
+
+        begin_monitor_dir(get_desktop_dir(TRUE), G_CALLBACK(monitor_desktop_dir_cb));
     }
+}
+
+
+
+//JS_EXPORT
+void monitor_dir(const char* path)
+{
+    begin_monitor_dir(path, G_CALLBACK(monitor_dir_cb));
+}
+//JS_EXPORT
+void cancel_monitor_dir(const char* path)
+{
+    end_monitor_dir(path);
 }
 
