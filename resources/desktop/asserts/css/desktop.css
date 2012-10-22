@@ -131,12 +131,12 @@ body {
     width:100%;
     height:100%;
     position: fixed;
-    z-index: 50;
+    z-index: 2000;
     background-color:rgba(0,0,0,0);
 }
 
 #pop_grid {
-    z-index: 51;
+    z-index: 2001;
     position: fixed;
     /*background: none repeat scroll 0% 0% rgba(8, 41, 67, 0.7);*/
     background-color:#FFF;
