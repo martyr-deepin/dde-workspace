@@ -59,6 +59,12 @@ load_position = (widget) ->
     localStorage.getObject(widget.path)
 
 
+update_position = (old_path, new_path) ->
+    o_p = localStorage.getObject(old_path)
+    localStorage.removeItem(old_path)
+    localStorage.setObject(new_path, o_p)
+
+
 clear_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -209,4 +215,8 @@ create_item_grid = ->
     document.body.appendChild(div_grid)
     update_gird_position(s_x, s_y, s_width, s_height)
     init_grid_drop()
+    $("#item_grid").bind("click", (e) =>
+        i.item_blur() for i in selected_item
+        selected_item.splice(0)
+    )
     div_grid.contextMenu = gm

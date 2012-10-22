@@ -21,6 +21,8 @@ do_item_rename = (data) ->
     w = Widget.look_up(data.old_id)
     w.destroy()
 
+    update_position(data.old_id, data.info.EntryPath)
+
     w = create_item(data.info)
     if w?
         move_to_anywhere(w)

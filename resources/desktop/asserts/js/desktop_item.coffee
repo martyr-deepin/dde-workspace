@@ -41,7 +41,10 @@ class Item extends Widget
         # search the div for store the name
         @item_name = sub_item for sub_item in el.childNodes when sub_item.className == "item_name"
 
-        @element.addEventListener('click', (e) => update_selected_stats(this, e))
+        @element.addEventListener('click', (e) =>
+            e.stopPropagation()
+            update_selected_stats(this, e)
+        )
         @element.addEventListener('dblclick', -> DCore.run_command exec)
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
@@ -110,28 +113,22 @@ class Folder extends DesktopEntry
         )
 
     show_pop_block : =>
-        @div_background = document.createElement("div")
-        @div_background.setAttribute("id", "pop_background")
-        document.body.appendChild(@div_background)
-        @div_background.addEventListener('click', => @hide_pop_block())
-        @div_background.addEventListener('contextmenu', (env) =>
-            env.preventDefault
-            @hide_pop_block()
-            return false
-        )
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
+
         items = DCore.Desktop.get_items_by_dir(@element.id)
         str = ""
-        str += "<li><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
+        str += "<li dragable=\"true\"><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
         @div_pop.innerHTML = "<ul>#{str}</ul>"
 
         if items.length <= 3
             col = items.length
-        else if items.length <= 8
+        else if items.length <= 6
+            col = 3
+        else if items.length <= 12
             col = 4
-        else if items.length <= 15
+        else if items.length <= 20
             col = 5
         else
             col = 6
@@ -155,9 +152,7 @@ class Folder extends DesktopEntry
             @div_pop.style.left = "#{p - n}px"
 
     hide_pop_block : =>
-        @div_background.parentElement.removeChild(@div_background)
         @div_pop.parentElement.removeChild(@div_pop)
-        delete @div_background
         delete @div_pop
 
     init_drop: =>
