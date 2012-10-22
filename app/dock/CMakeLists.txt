@@ -1,6 +1,6 @@
-SET(NAME "launcher")
+SET(NAME "dock")
 
-#add_subdirectory(libmenu)
+add_subdirectory(notification_area)
 
 execute_process(
     COMMAND ${BIN_JSC_GEN} "jsc"
@@ -10,14 +10,13 @@ AUX_SOURCE_DIRECTORY(jsc JSC)
 AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
 
 
-SET(SRC_LIST launcher.c ${JSC} ${JSC_GEN})
+include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
+SET(SRC_LIST dock.c ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
 target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
-
-include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

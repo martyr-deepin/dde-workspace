@@ -1,3 +1,4 @@
+#include "na-marshal.h"
 
 #include	<glib-object.h>
 
@@ -49,14 +50,14 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* VOID:OBJECT,OBJECT (lib/marshal.list:1) */
+/* VOID:OBJECT,OBJECT (na-marshal.list:1) */
 void
-_tray_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
-                                   GValue       *return_value G_GNUC_UNUSED,
-                                   guint         n_param_values,
-                                   const GValue *param_values,
-                                   gpointer      invocation_hint G_GNUC_UNUSED,
-                                   gpointer      marshal_data)
+_na_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
+                                 GValue       *return_value G_GNUC_UNUSED,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
+                                 gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_OBJECT) (gpointer     data1,
                                                     gpointer     arg_1,
@@ -86,14 +87,14 @@ _tray_marshal_VOID__OBJECT_OBJECT (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,STRING,LONG,LONG (lib/marshal.list:2) */
+/* VOID:OBJECT,STRING,LONG,LONG (na-marshal.list:2) */
 void
-_tray_marshal_VOID__OBJECT_STRING_LONG_LONG (GClosure     *closure,
-                                             GValue       *return_value G_GNUC_UNUSED,
-                                             guint         n_param_values,
-                                             const GValue *param_values,
-                                             gpointer      invocation_hint G_GNUC_UNUSED,
-                                             gpointer      marshal_data)
+_na_marshal_VOID__OBJECT_STRING_LONG_LONG (GClosure     *closure,
+                                           GValue       *return_value G_GNUC_UNUSED,
+                                           guint         n_param_values,
+                                           const GValue *param_values,
+                                           gpointer      invocation_hint G_GNUC_UNUSED,
+                                           gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_STRING_LONG_LONG) (gpointer     data1,
                                                               gpointer     arg_1,
@@ -127,14 +128,14 @@ _tray_marshal_VOID__OBJECT_STRING_LONG_LONG (GClosure     *closure,
             data2);
 }
 
-/* VOID:OBJECT,LONG (lib/marshal.list:3) */
+/* VOID:OBJECT,LONG (na-marshal.list:3) */
 void
-_tray_marshal_VOID__OBJECT_LONG (GClosure     *closure,
-                                 GValue       *return_value G_GNUC_UNUSED,
-                                 guint         n_param_values,
-                                 const GValue *param_values,
-                                 gpointer      invocation_hint G_GNUC_UNUSED,
-                                 gpointer      marshal_data)
+_na_marshal_VOID__OBJECT_LONG (GClosure     *closure,
+                               GValue       *return_value G_GNUC_UNUSED,
+                               guint         n_param_values,
+                               const GValue *param_values,
+                               gpointer      invocation_hint G_GNUC_UNUSED,
+                               gpointer      marshal_data)
 {
   typedef void (*GMarshalFunc_VOID__OBJECT_LONG) (gpointer     data1,
                                                   gpointer     arg_1,
