@@ -25,12 +25,8 @@
 
 #include "na-tray-manager.h"
 
-#if defined (GDK_WINDOWING_X11)
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
-#elif defined (GDK_WINDOWING_WIN32)
-#include <gdk/gdkwin32.h>
-#endif
 #include <gtk/gtk.h>
 
 #include "na-marshal.h"
@@ -148,7 +144,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  GTK_TYPE_SOCKET);
+		  G_TYPE_INT);
 
   manager_signals[TRAY_ICON_REMOVED] =
     g_signal_new ("tray_icon_removed",
@@ -158,7 +154,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  GTK_TYPE_SOCKET);
+		  G_TYPE_INT);
   manager_signals[MESSAGE_SENT] =
     g_signal_new ("message_sent",
 		  G_OBJECT_CLASS_TYPE (klass),
@@ -167,7 +163,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  NULL, NULL,
 		  _na_marshal_VOID__OBJECT_STRING_LONG_LONG,
 		  G_TYPE_NONE, 4,
-		  GTK_TYPE_SOCKET,
+		  G_TYPE_INT,
 		  G_TYPE_STRING,
 		  G_TYPE_LONG,
 		  G_TYPE_LONG);
@@ -179,7 +175,7 @@ na_tray_manager_class_init (NaTrayManagerClass *klass)
 		  NULL, NULL,
 		  _na_marshal_VOID__OBJECT_LONG,
 		  G_TYPE_NONE, 2,
-		  GTK_TYPE_SOCKET,
+		  G_TYPE_INT,
 		  G_TYPE_LONG);
   manager_signals[LOST_SELECTION] =
     g_signal_new ("lost_selection",
@@ -264,26 +260,11 @@ na_tray_manager_new (void)
 
 #ifdef GDK_WINDOWING_X11
 
-static gboolean
-na_tray_manager_plug_removed (GtkSocket       *socket,
-			      NaTrayManager   *manager)
-{
-  NaTrayChild *child = NA_TRAY_CHILD (socket);
-
-  g_hash_table_remove (manager->socket_table,
-                       GINT_TO_POINTER (child->icon_window));
-  g_signal_emit (manager, manager_signals[TRAY_ICON_REMOVED], 0, child);
-
-  /* This destroys the socket. */
-  return FALSE;
-}
-
 static void
 na_tray_manager_handle_dock_request (NaTrayManager       *manager,
 				     XClientMessageEvent *xevent)
 {
   Window icon_window = xevent->data.l[2];
-  GtkWidget *child;
 
   if (g_hash_table_lookup (manager->socket_table,
                            GINT_TO_POINTER (icon_window)))
@@ -292,37 +273,9 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
       return;
     }
 
-  child = na_tray_child_new (manager->screen, icon_window);
-  if (child == NULL) /* already gone or other error */
-    return;
+  if (icon_window == NULL) return;
 
-  g_signal_emit (manager, manager_signals[TRAY_ICON_ADDED], 0,
-		 child);
-
-  /* If the child wasn't attached, then destroy it */
-
-  if (!GTK_IS_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (child))))
-    {
-      gtk_widget_destroy (child);
-      return;
-    }
-
-  g_signal_connect (child, "plug_removed",
-		    G_CALLBACK (na_tray_manager_plug_removed), manager);
-
-  gtk_socket_add_id (GTK_SOCKET (child), icon_window);
-
-  if (!gtk_socket_get_plug_window (GTK_SOCKET (child)))
-    {
-      /* Embedding failed, we won't get a plug-removed signal */
-      /* This signal destroys the socket */
-      g_signal_emit (manager, manager_signals[TRAY_ICON_REMOVED], 0, child);
-      return;
-    }
-
-  g_hash_table_insert (manager->socket_table,
-                       GINT_TO_POINTER (icon_window), child);
-  gtk_widget_show (child);
+  g_signal_emit (manager, manager_signals[TRAY_ICON_ADDED], 0, icon_window);
 }
 
 static void
@@ -355,14 +308,8 @@ na_tray_manager_handle_message_data (NaTrayManager       *manager,
 
 	  if (msg->remaining_len == 0)
 	    {
-	      GtkSocket *socket;
-
-	      socket = g_hash_table_lookup (manager->socket_table,
-                                            GINT_TO_POINTER (msg->window));
-
-	      if (socket)
 		  g_signal_emit (manager, manager_signals[MESSAGE_SENT], 0,
-				 socket, msg->str, msg->id, msg->timeout);
+				 msg->window, msg->str, msg->id, msg->timeout);
 
 	      pending_message_free (msg);
 	      manager->messages = g_list_remove_link (manager->messages, p);
@@ -378,18 +325,12 @@ static void
 na_tray_manager_handle_begin_message (NaTrayManager       *manager,
 				      XClientMessageEvent *xevent)
 {
-  GtkSocket      *socket;
   GList          *p;
   PendingMessage *msg;
   long            timeout;
   long            len;
   long            id;
 
-  socket = g_hash_table_lookup (manager->socket_table,
-                                GINT_TO_POINTER (xevent->window));
-  /* we don't know about this tray icon, so ignore the message */
-  if (!socket)
-    return;
 
   timeout = xevent->data.l[2];
   len     = xevent->data.l[3];
@@ -414,7 +355,7 @@ na_tray_manager_handle_begin_message (NaTrayManager       *manager,
   if (len == 0)
     {
       g_signal_emit (manager, manager_signals[MESSAGE_SENT], 0,
-                     socket, "", id, timeout);
+                     xevent->window, "", id, timeout);
     }
   else
     {
@@ -436,7 +377,6 @@ na_tray_manager_handle_cancel_message (NaTrayManager       *manager,
 				       XClientMessageEvent *xevent)
 {
   GList     *p;
-  GtkSocket *socket;
   long       id;
 
   id = xevent->data.l[2];
@@ -455,15 +395,8 @@ na_tray_manager_handle_cancel_message (NaTrayManager       *manager,
 	  break;
 	}
     }
-
-  socket = g_hash_table_lookup (manager->socket_table,
-                                GINT_TO_POINTER (xevent->window));
-  
-  if (socket)
-    {
-      g_signal_emit (manager, manager_signals[MESSAGE_CANCELLED], 0,
-		     socket, xevent->data.l[2]);
-    }
+  g_signal_emit (manager, manager_signals[MESSAGE_CANCELLED], 0,
+          xevent->window, xevent->data.l[2]);
 }
 
 static GdkFilterReturn

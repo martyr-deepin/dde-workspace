@@ -12,11 +12,11 @@ AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-SET(SRC_LIST dock.c ${JSC} ${JSC_GEN})
+SET(SRC_LIST dock.c tray.c ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom tray ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

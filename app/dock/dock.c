@@ -1,8 +1,7 @@
-#include "xdg_misc.h"
-#include <gtk/gtk.h>
 #include "dwebview.h"
+#include "xdg_misc.h"
 #include "utils.h"
-#include "X_misc.h"
+#include "tray.h"
 
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
@@ -17,6 +16,7 @@ int main(int argc, char* argv[])
     char* path = get_html_path("dock");
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
+    g_signal_connect_after(webview, "draw", G_CALLBACK(draw_icons), NULL);
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
@@ -27,11 +27,11 @@ int main(int argc, char* argv[])
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_window_resize(GTK_WINDOW(container), 1440, 50);
+
+    tray_init(container);
+
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
 }
 
-void set_notify_area_allocation()
-{
-}
