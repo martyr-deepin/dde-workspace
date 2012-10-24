@@ -7,12 +7,14 @@ connect_default_signals = ->
     DCore.Desktop.notify_workarea_size()
 
 do_item_delete = (id) ->
+    echo id
     w = Widget.look_up(id)
     if w?
         echo id
         w.destroy()
 
 do_item_update = (info) ->
+    echo info
     w = create_item(info)
     if w?
         move_to_anywhere(w)

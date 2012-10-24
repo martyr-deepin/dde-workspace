@@ -131,9 +131,10 @@ class Folder extends DesktopEntry
         @fill_pop_block()
 
         DCore.signal_connect("dir_changed", @reflesh_pop_block)
+        DCore.Desktop.monitor_dir(@element.id)
 
     reflesh_pop_block : (id) =>
-        if id == @id then @fill_pop_block()
+        if id.id == @id then @fill_pop_block()
 
     fill_pop_block : =>
         items = DCore.Desktop.get_items_by_dir(@element.id)
@@ -172,9 +173,9 @@ class Folder extends DesktopEntry
 
         items = @div_pop.getElementsByTagName("li")
         for i in items
-            i.addEventListener('dragstart', (evt) =>
-                    evt.dataTransfer.setData("text/uri-list", "file://#{i.id}")
-                    evt.dataTransfer.setData("text/plain", "#{i.id}")
+            i.addEventListener('dragstart', (evt) ->
+                    evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
+                    evt.dataTransfer.setData("text/plain", "#{this.id}")
                     evt.dataTransfer.effectAllowed = "all"
             )
             i.addEventListener('dragend', (evt) =>

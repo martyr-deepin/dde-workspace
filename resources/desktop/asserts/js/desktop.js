@@ -1,5 +1,5 @@
 (function() {
-  var DesktopApplet, DesktopEntry, Folder, Item, MAX_ITEM_TITLE, Module, NormalFile, Widget, assert, clear_occupy, cols, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gi3, gm, i1, i2, i3, i4, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, selected_item, set_occupy, shorten_text, sort_item, update_gird_position, update_selected_stats,
+  var DesktopApplet, DesktopEntry, Folder, Item, MAX_ITEM_TITLE, Module, NormalFile, Widget, assert, cancel_all_selected_stats, clear_occupy, cols, compare_position, connect_default_signals, create_item, create_item_grid, detect_occupy, div_grid, do_item_delete, do_item_rename, do_item_update, do_workarea_changed, draw_grid, echo, find_free_position, gi1, gi2, gi3, gird_left_click, gm, grid_right_click, i1, i2, i3, i4, i5, i_height, i_width, init_grid_drop, load_desktop_all_items, load_position, m, move_to_anywhere, move_to_position, o_table, pixel_to_position, rows, s_height, s_width, s_x, s_y, selected_item, set_occupy, shorten_text, sort_item, update_gird_position, update_position, update_selected_stats,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -116,6 +116,29 @@
 
   load_position = function(widget) {
     return localStorage.getObject(widget.path);
+  };
+
+  update_position = function(old_path, new_path) {
+    var o_p;
+    o_p = localStorage.getObject(old_path);
+    localStorage.removeItem(old_path);
+    return localStorage.setObject(new_path, o_p);
+  };
+
+  compare_position = function(base, pos) {
+    if (pos.y < base.y) {
+      return -1;
+    } else if (pos.y >= base.y && pos.y <= base.y + base.height - 1) {
+      if (pos.x < base.x) {
+        return -1;
+      } else if (pos.x >= base.x && pos.x <= base.x + base.width - 1) {
+        return 0;
+      } else {
+        return 1;
+      }
+    } else {
+      return 1;
+    }
   };
 
   clear_occupy = function(info) {
@@ -255,7 +278,6 @@
     return $("#item_grid").drop({
       "drop": function(evt) {
         var file, p_info, path, pos, _i, _len, _ref;
-        echo(evt);
         _ref = evt.originalEvent.dataTransfer.files;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           file = _ref[_i];
@@ -281,7 +303,7 @@
   };
 
   update_selected_stats = function(w, env) {
-    var i, _i, _len, _ref;
+    var coord, end_pos, i, i_pos, key, ret, start_pos, val, _i, _j, _len, _len2, _ref, _ref2, _ref3, _ref4;
     if (env.ctrlKey) {
       if (selected_item.length === 0) {
         selected_item.push(w);
@@ -297,12 +319,60 @@
         selected_item.push(w);
         return w.item_focus();
       }
-    } else if (env.shiftkey) {
-      return pass;
+    } else if (env.shiftKey) {
+      if (selected_item.length > 1) {
+        _ref2 = selected_item.splice(0, selected_item.length - 1);
+        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+          i = _ref2[_i];
+          i.item_blur();
+        }
+      }
+      if (selected_item.length === 1) {
+        coord = pixel_to_position(env.x, env.y);
+        end_pos = {
+          "x": coord[0],
+          "y": coord[1],
+          "width": 1,
+          "height": 1
+        };
+        start_pos = load_position(selected_item[0]);
+        ret = compare_position(start_pos, end_pos);
+        if (ret < 0) {
+          _ref3 = Widget.object_table;
+          for (key in _ref3) {
+            val = _ref3[key];
+            i_pos = load_position(val);
+            if (compare_position(end_pos, i_pos) > 0 && compare_position(start_pos, i_pos) < 0) {
+              val.item_focus();
+              selected_item.unshift(val);
+            }
+          }
+          w.item_focus();
+          return selected_item.unshift(w);
+        } else if (ret === 0) {
+          selected_item[0].item_blur();
+          return selected_item.splice(0);
+        } else {
+          _ref4 = Widget.object_table;
+          for (key in _ref4) {
+            val = _ref4[key];
+            i_pos = load_position(val);
+            if (compare_position(start_pos, i_pos) > 0 && compare_position(end_pos, i_pos) < 0) {
+              val.item_focus();
+              selected_item.unshift(val);
+            }
+          }
+          w.item_focus();
+          return selected_item.unshift(w);
+        }
+      } else {
+        w.item_focus();
+        return selected_item.push(w);
+      }
     } else {
       if (selected_item.length > 1) {
-        for (_i = 0, _len = selected_item.length; _i < _len; _i++) {
-          i = selected_item[_i];
+        for (_j = 0, _len2 = selected_item.length; _j < _len2; _j++) {
+          i = selected_item[_j];
           i.item_blur();
         }
         selected_item.splice(0);
@@ -325,12 +395,35 @@
     }
   };
 
+  cancel_all_selected_stats = function() {
+    var i, _i, _len;
+    for (_i = 0, _len = selected_item.length; _i < _len; _i++) {
+      i = selected_item[_i];
+      i.item_blur();
+    }
+    return selected_item.splice(0);
+  };
+
+  gird_left_click = function(env) {
+    if (env.ctrlKey === false && env.shiftKey === false) {
+      return cancel_all_selected_stats();
+    }
+  };
+
+  grid_right_click = function(env) {
+    if (env.ctrlKey === false && env.shiftKey === false) {
+      return cancel_all_selected_stats();
+    }
+  };
+
   create_item_grid = function() {
     div_grid = document.createElement("div");
     div_grid.setAttribute("id", "item_grid");
     document.body.appendChild(div_grid);
     update_gird_position(s_x, s_y, s_width, s_height);
     init_grid_drop();
+    div_grid.addEventListener("click", gird_left_click);
+    div_grid.addEventListener("contextmenu", grid_right_click);
     return div_grid.contextMenu = gm;
   };
 
@@ -344,6 +437,7 @@
 
   do_item_delete = function(id) {
     var w;
+    echo(id);
     w = Widget.look_up(id);
     if (w != null) {
       echo(id);
@@ -353,6 +447,7 @@
 
   do_item_update = function(info) {
     var w;
+    echo(info);
     w = create_item(info);
     if (w != null) return move_to_anywhere(w);
   };
@@ -361,6 +456,7 @@
     var w;
     w = Widget.look_up(data.old_id);
     w.destroy();
+    update_position(data.old_id, data.info.EntryPath);
     w = create_item(data.info);
     if (w != null) return move_to_anywhere(w);
   };
@@ -411,11 +507,13 @@
 
   i1 = new DeepinMenuItem(1, "Open");
 
-  i2 = new DeepinMenuItem(2, "Delete");
+  i2 = new DeepinMenuItem(2, "Open with");
 
-  i3 = new DeepinMenuItem(3, "Rename");
+  i3 = new DeepinMenuItem(3, "Delete");
 
-  i4 = new DeepinMenuItem(4, "Properties");
+  i4 = new DeepinMenuItem(4, "Rename");
+
+  i5 = new DeepinMenuItem(5, "Properties");
 
   m.appendItem(i1);
 
@@ -424,6 +522,8 @@
   m.appendItem(i3);
 
   m.appendItem(i4);
+
+  m.appendItem(i5);
 
   shorten_text = function(str, n) {
     var i, mid, r, _ref;
@@ -450,6 +550,7 @@
       this.icon = icon;
       this.exec = exec;
       this.path = path;
+      this.selected = false;
       this.id = this.path;
       Item.__super__.constructor.apply(this, arguments);
       el = this.element;
@@ -467,6 +568,7 @@
         if (sub_item.className === "item_name") this.item_name = sub_item;
       }
       this.element.addEventListener('click', function(e) {
+        e.stopPropagation();
         return update_selected_stats(_this, e);
       });
       this.element.addEventListener('dblclick', function() {
@@ -481,11 +583,13 @@
     }
 
     Item.prototype.item_focus = function() {
+      this.selected = true;
       this.element.className += " item_selected";
       return this.item_name.innerText = this.name;
     };
 
     Item.prototype.item_blur = function() {
+      this.selected = false;
       this.element.className = this.element.className.replace(" item_selected", "");
       return this.item_name.innerText = shorten_text(this.name, MAX_ITEM_TITLE);
     };
@@ -560,6 +664,8 @@
     function Folder() {
       this.init_drop = __bind(this.init_drop, this);
       this.hide_pop_block = __bind(this.hide_pop_block, this);
+      this.fill_pop_block = __bind(this.fill_pop_block, this);
+      this.reflesh_pop_block = __bind(this.reflesh_pop_block, this);
       this.show_pop_block = __bind(this.show_pop_block, this);
       var _this = this;
       Folder.__super__.constructor.apply(this, arguments);
@@ -569,35 +675,43 @@
       });
     }
 
+    Folder.prototype.item_blur = function() {
+      Folder.__super__.item_blur.apply(this, arguments);
+      if (this.div_pop !== null) return this.hide_pop_block();
+    };
+
     Folder.prototype.show_pop_block = function() {
-      var col, items, n, p, s, str, _i, _len,
-        _this = this;
-      this.div_background = document.createElement("div");
-      this.div_background.setAttribute("id", "pop_background");
-      document.body.appendChild(this.div_background);
-      this.div_background.addEventListener('click', function() {
-        return _this.hide_pop_block();
-      });
-      this.div_background.addEventListener('contextmenu', function(env) {
-        env.preventDefault;
-        _this.hide_pop_block();
-        return false;
-      });
+      if (this.selected === false) return;
+      if (this.div_pop !== null) return;
       this.div_pop = document.createElement("div");
       this.div_pop.setAttribute("id", "pop_grid");
       document.body.appendChild(this.div_pop);
+      this.fill_pop_block();
+      DCore.signal_connect("dir_changed", this.reflesh_pop_block);
+      return DCore.Desktop.monitor_dir(this.element.id);
+    };
+
+    Folder.prototype.reflesh_pop_block = function(id) {
+      if (id.id === this.id) return this.fill_pop_block();
+    };
+
+    Folder.prototype.fill_pop_block = function() {
+      var col, i, items, n, p, s, str, _i, _j, _len, _len2, _results,
+        _this = this;
       items = DCore.Desktop.get_items_by_dir(this.element.id);
       str = "";
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         s = items[_i];
-        str += "<li><img src=\"" + s.Icon + "\"><div>" + (shorten_text(s.Name, MAX_ITEM_TITLE)) + "</div></li>";
+        str += "<li id=\"" + s.EntryPath + "\" dragable=\"true\"><img src=\"" + s.Icon + "\"><div>" + (shorten_text(s.Name, MAX_ITEM_TITLE)) + "</div></li>";
       }
       this.div_pop.innerHTML = "<ul>" + str + "</ul>";
       if (items.length <= 3) {
         col = items.length;
-      } else if (items.length <= 8) {
+      } else if (items.length <= 6) {
+        col = 3;
+      } else if (items.length <= 12) {
         col = 4;
-      } else if (items.length <= 15) {
+      } else if (items.length <= 20) {
         col = 5;
       } else {
         col = 6;
@@ -614,19 +728,40 @@
       n = (col * i_width) / 2 + 10;
       p = this.element.offsetLeft + this.element.offsetWidth / 2;
       if (p < n) {
-        return this.div_pop.style.left = "0";
+        this.div_pop.style.left = "0";
       } else if (p + n > s_width) {
-        return this.div_pop.style.left = "" + (s_width - 2 * n) + "px";
+        this.div_pop.style.left = "" + (s_width - 2 * n) + "px";
       } else {
-        return this.div_pop.style.left = "" + (p - n) + "px";
+        this.div_pop.style.left = "" + (p - n) + "px";
       }
+      items = this.div_pop.getElementsByTagName("li");
+      _results = [];
+      for (_j = 0, _len2 = items.length; _j < _len2; _j++) {
+        i = items[_j];
+        i.addEventListener('dragstart', function(evt) {
+          evt.dataTransfer.setData("text/uri-list", "file://" + this.id);
+          evt.dataTransfer.setData("text/plain", "" + this.id);
+          return evt.dataTransfer.effectAllowed = "all";
+        });
+        _results.push(i.addEventListener('dragend', function(evt) {
+          var node;
+          if (evt.dataTransfer.dropEffect === "move") {
+            evt.preventDefault();
+            return node = evt.target;
+          } else if (evt.dataTransfer.dropEffect === "link") {
+            node = evt.target;
+            return node.parentNode.removeChild(node);
+          }
+        }));
+      }
+      return _results;
     };
 
     Folder.prototype.hide_pop_block = function() {
-      this.div_background.parentElement.removeChild(this.div_background);
+      DCore.Desktop.cancel_monitor_dir(this.id);
       this.div_pop.parentElement.removeChild(this.div_pop);
-      delete this.div_background;
-      return delete this.div_pop;
+      delete this.div_pop;
+      return this.div_pop = null;
     };
 
     Folder.prototype.init_drop = function() {
@@ -640,6 +775,7 @@
         },
         over: function(evt) {
           var path;
+          echo(evt);
           evt.preventDefault();
           path = decodeURI(evt.dataTransfer.getData("text/uri-list"));
           if (path === ("file://" + _this.path)) {
@@ -655,7 +791,7 @@
 
     Folder.prototype.move_in = function(c_path) {
       var p;
-      echo("" + c_path + "  " + this.path);
+      echo("move to " + c_path + " from " + this.path);
       p = c_path.replace("file://", "");
       return DCore.run_command("mv '" + p + "' '" + this.path + "'");
     };
