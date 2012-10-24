@@ -5,6 +5,10 @@ GHashTable* signals = NULL;
 
 void js_post_message(const char* name, const char* msg_json)
 {
+    if (signals == NULL) {
+        g_warning("signals has not init!\n");
+        return;
+    }
     JSContextRef ctx = get_global_context();
     JSObjectRef cb = g_hash_table_lookup(signals, name);
     if (cb != NULL) {

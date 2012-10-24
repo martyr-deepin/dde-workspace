@@ -46,9 +46,7 @@ int main(int argc, char* argv[])
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    int x, y, width, height;
-    get_workarea_size(0, 0, &x, &y, &width, &height);
-    gtk_window_resize(GTK_WINDOW(container), width, height);
+    gtk_window_maximize(GTK_WINDOW(container));
 
     watch_workarea_changes(container);
     gtk_widget_show_all(container);

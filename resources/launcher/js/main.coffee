@@ -1,7 +1,7 @@
 do_workarea_changed = (alloc)->
     height = alloc.height
     document.body.style.maxHeight = "#{height}px"
-    document.getElementById('grid').style.maxHeight = "#{height-50}px"
+    document.getElementById('grid').style.maxHeight = "#{height-60}px"
 DCore.signal_connect('workarea_changed', do_workarea_changed)
 DCore.Launcher.notify_workarea_size()
 
