@@ -65,6 +65,20 @@ update_position = (old_path, new_path) ->
     localStorage.setObject(new_path, o_p)
 
 
+compare_position = (base, pos) ->
+    if pos.y < base.y
+        return -1
+    else if pos.y >= base.y and pos.y <= base.y + base.height - 1
+        if pos.x < base.x
+            return -1
+        else if pos.x >= base.x and pos.x <= base.x + base.width - 1
+            0
+        else
+            return 1
+    else
+        return 1
+
+
 clear_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -155,7 +169,6 @@ sort_item = ->
 init_grid_drop = ->
     $("#item_grid").drop
         "drop": (evt) ->
-            echo evt
             for file in evt.originalEvent.dataTransfer.files
                 pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
                 p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
@@ -164,7 +177,6 @@ init_grid_drop = ->
             evt.dataTransfer.dropEffect = "move"
 
         "over": (evt) ->
-            #echo "over"
             evt.dataTransfer.dropEffect = "move"
             evt.preventDefault()
 
@@ -173,6 +185,7 @@ init_grid_drop = ->
 
         "leave": (evt) ->
             #evt.dataTransfer.dropEffect = "move"
+
 
 update_selected_stats = (w, env) ->
     if env.ctrlKey
@@ -187,8 +200,40 @@ update_selected_stats = (w, env) ->
                     return null
             selected_item.push(w)
             w.item_focus()
-    else if env.shiftkey
-        pass
+
+    else if env.shiftKey
+        if selected_item.length > 1
+            i.item_blur() for i in selected_item.splice(0, selected_item.length - 1)
+
+        if selected_item.length == 1
+            coord = pixel_to_position(env.x, env.y)
+            end_pos = {"x": coord[0], "y": coord[1], "width": 1, "height": 1}
+            start_pos = load_position(selected_item[0])
+
+            ret = compare_position(start_pos, end_pos)
+            if ret < 0
+                for key, val of Widget.object_table
+                    i_pos = load_position(val)
+                    if compare_position(end_pos, i_pos) > 0 and compare_position(start_pos, i_pos) < 0
+                        val.item_focus()
+                        selected_item.unshift(val)
+                w.item_focus()
+                selected_item.unshift(w)
+            else if ret == 0
+                selected_item[0].item_blur()
+                selected_item.splice(0)
+            else
+                for key, val of Widget.object_table
+                    i_pos = load_position(val)
+                    if compare_position(start_pos, i_pos) > 0 and compare_position(end_pos, i_pos) < 0
+                        val.item_focus()
+                        selected_item.unshift(val)
+                w.item_focus()
+                selected_item.unshift(w)
+        else
+            w.item_focus()
+            selected_item.push(w)
+
     else
         if selected_item.length > 1
             i.item_blur() for i in selected_item
@@ -209,14 +254,27 @@ update_selected_stats = (w, env) ->
             w.item_focus()
 
 
+cancel_all_selected_stats = ->
+    i.item_blur() for i in selected_item
+    selected_item.splice(0)
+
+
+gird_left_click = (env) ->
+    if env.ctrlKey == false and env.shiftKey == false
+        cancel_all_selected_stats()
+
+
+grid_right_click = (env) ->
+    if env.ctrlKey == false and env.shiftKey == false
+        cancel_all_selected_stats()
+
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
     document.body.appendChild(div_grid)
     update_gird_position(s_x, s_y, s_width, s_height)
     init_grid_drop()
-    $("#item_grid").bind("click", (e) =>
-        i.item_blur() for i in selected_item
-        selected_item.splice(0)
-    )
+    div_grid.addEventListener("click", gird_left_click)
+    div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
