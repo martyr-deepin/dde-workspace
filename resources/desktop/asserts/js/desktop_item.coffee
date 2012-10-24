@@ -2,13 +2,15 @@ MAX_ITEM_TITLE = 20
 
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
-i2 = new DeepinMenuItem(2, "Delete")
-i3 = new DeepinMenuItem(3, "Rename")
-i4 = new DeepinMenuItem(4, "Properties")
+i2 = new DeepinMenuItem(2, "Open with")
+i3 = new DeepinMenuItem(3, "Delete")
+i4 = new DeepinMenuItem(4, "Rename")
+i5 = new DeepinMenuItem(5, "Properties")
 m.appendItem(i1)
 m.appendItem(i2)
 m.appendItem(i3)
 m.appendItem(i4)
+m.appendItem(i5)
 
 shorten_text = (str, n) ->
     r = /[^\x00-\xff]/g
@@ -25,6 +27,7 @@ shorten_text = (str, n) ->
 
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
+        @selected = false
         @id = @path
         super
 
@@ -55,10 +58,12 @@ class Item extends Widget
         @element.contextMenu = m
 
     item_focus: ->
+        @selected = true
         @element.className += " item_selected"
         @item_name.innerText = @name
 
     item_blur: ->
+        @selected = false
         @element.className = @element.className.replace(" item_selected", "")
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
@@ -112,14 +117,28 @@ class Folder extends DesktopEntry
             @show_pop_block()
         )
 
+    item_blur: ->
+        super
+        if @div_pop != null then @hide_pop_block()
+
     show_pop_block : =>
+        if @selected == false then return
+        if @div_pop != null then return
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
 
+        @fill_pop_block()
+
+        DCore.signal_connect("dir_changed", @reflesh_pop_block)
+
+    reflesh_pop_block : (id) =>
+        if id == @id then @fill_pop_block()
+
+    fill_pop_block : =>
         items = DCore.Desktop.get_items_by_dir(@element.id)
         str = ""
-        str += "<li dragable=\"true\"><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
+        str += "<li id=\"#{s.EntryPath}\" dragable=\"true\"><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
         @div_pop.innerHTML = "<ul>#{str}</ul>"
 
         if items.length <= 3
@@ -151,9 +170,39 @@ class Folder extends DesktopEntry
         else
             @div_pop.style.left = "#{p - n}px"
 
+        items = @div_pop.getElementsByTagName("li")
+        for i in items
+            i.addEventListener('dragstart', (evt) =>
+                    evt.dataTransfer.setData("text/uri-list", "file://#{i.id}")
+                    evt.dataTransfer.setData("text/plain", "#{i.id}")
+                    evt.dataTransfer.effectAllowed = "all"
+            )
+            i.addEventListener('dragend', (evt) =>
+                if evt.dataTransfer.dropEffect == "move"
+                    evt.preventDefault()
+                    node = evt.target
+                    #pos = pixel_to_position(evt.x, evt.y)
+
+                    #info = localStorage.getObject(@path)
+                    #info.x = pos[0]
+                    #info.y = pos[1]
+                    #move_to_position(this, info)
+
+                else if evt.dataTransfer.dropEffect == "link"
+                    node = evt.target
+                    node.parentNode.removeChild(node)
+            )
+
+        #div_grid.addEventListener("click", @hide_pop_block)
+        #div_grid.addEventListener("contextmenu", @hide_pop_block)
+
     hide_pop_block : =>
+        #div_grid.removeEventListener("click", @hide_pop_block)
+        #div_grid.removeEventListener("contextmenu", @hide_pop_block)
+        DCore.Desktop.cancel_monitor_dir(@id)
         @div_pop.parentElement.removeChild(@div_pop)
         delete @div_pop
+        @div_pop = null
 
     init_drop: =>
         $(@element).drop
@@ -164,6 +213,7 @@ class Folder extends DesktopEntry
                 @move_in(file)
 
             over: (evt) =>
+                echo evt
                 evt.preventDefault()
                 path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 if path == "file://#{@path}"
@@ -178,7 +228,7 @@ class Folder extends DesktopEntry
                 #@icon_close()
 
     move_in: (c_path) ->
-        echo "#{c_path}  #{@path}"
+        echo "move to #{c_path} from #{@path}"
         p = c_path.replace("file://", "")
         DCore.run_command("mv '#{p}' '#{@path}'")
 
