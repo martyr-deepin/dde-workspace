@@ -2,6 +2,7 @@
 #define __X_MISC_H__
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 void set_wmspec_desktop_hint(GdkWindow *window);
 void set_wmspec_dock_hint(GdkWindow *window);
 
@@ -20,5 +21,13 @@ void watch_workarea_changes(GtkWidget* widget);
 void unwatch_workarea_changes(GtkWidget* widget);
 
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
+
+
+void* get_window_property(Display* dsp, Window w, Atom pro, Atom type, gulong* items);
+
+#define X_FETCH_32(data, i) *((gulong*)data + i)
+#define X_FETCH_16(data, i) *((short*)data + i)
+#define X_FETCH_8(data, i) *((char*)data + i)
+
 
 #endif

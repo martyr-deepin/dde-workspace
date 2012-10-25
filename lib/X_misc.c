@@ -211,3 +211,24 @@ void set_struct_partial(GdkWindow* gdk_window, guint32 orientation, guint32 stru
             (guchar *) &struts, 12);
     gdk_error_trap_pop_ignored ();
 }
+
+
+void* get_window_property(Display* dsp, Window w, Atom pro, Atom type, gulong* items)
+{
+    Atom act_type;
+    int act_format;
+    gulong bytes_after;
+    guchar* p_data;
+
+    int result = XGetWindowProperty(dsp, w, pro,
+            0, G_MAXULONG, FALSE,
+            type, &act_type,
+            &act_format,
+            items,
+            &bytes_after,
+            (void*)&p_data);
+    g_assert(result == Success);
+    return p_data;
+}
+
+

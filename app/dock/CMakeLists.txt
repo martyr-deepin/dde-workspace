@@ -4,7 +4,8 @@ add_subdirectory(notification_area)
 
 execute_process(
     COMMAND ${BIN_JSC_GEN} "jsc"
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
 
 AUX_SOURCE_DIRECTORY(jsc JSC)
 AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
@@ -12,7 +13,7 @@ AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-SET(SRC_LIST dock.c tray.c ${JSC} ${JSC_GEN})
+SET(SRC_LIST dock.c tray.c tasklist.c ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 

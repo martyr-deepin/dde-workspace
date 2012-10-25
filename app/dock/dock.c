@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
 
     tray_init(container);
-
+    monitor_tasklist_and_activewindow();
 
 
     gtk_widget_realize(container);

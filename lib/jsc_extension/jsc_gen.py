@@ -96,6 +96,13 @@ class Number(Params):
     def raw(self):
         return "double "
 
+    def eval_before(self):
+        return "double ret = "
+    def eval_after(self):
+        return ""
+    def return_value(self):
+        return "return JSValueMakeNumber(context, ret);"
+
 class String(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
@@ -140,6 +147,10 @@ class String(Params):
         FILL_EXCEPTION(context, exception, "the return string is NULL");
     }
 """
+
+class Signal:
+    def __init__(self, *params):
+        pass
 
 class Function:
     temp = """

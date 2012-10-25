@@ -53,7 +53,6 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
 }
 
 
-static 
 char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
 {
     gchar* buf = NULL;
