@@ -8,6 +8,16 @@
 Atom ATOM_CLIENT_LIST;
 Atom ATOM_ACTIVE_WINDOW;
 Atom ATOM_NET_WM_ICON;
+Atom ATOM_WINDOW_TYPE;
+Atom ATOM_WINDOW_TYPE_NORMAL;
+void _init_atoms()
+{
+    ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
+    ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
+    ATOM_NET_WM_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
+    ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
+    ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
+}
 
 typedef struct {
     char* icon;
@@ -54,11 +64,25 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
+gboolean is_normal_window(Display* dsp, Window w)
+{
+    gulong items;
+    void* data = get_window_property(dsp, w, ATOM_WINDOW_TYPE, XA_ATOM, &items);
+    for (int i=0; i<items; i++) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
+            XFree(data);
+            return TRUE;
+        }
+    }
+    XFree(data);
+    return FALSE;
+}
+
 void client_list_changed(Display* dsp, Window* cs, size_t n)
 {
     for (int i=0; i<n; i++) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
-        if (c == NULL) {
+        if (c == NULL && is_normal_window(dsp, cs[i])) {
             c = create_client_from_window(dsp, cs[i]);
             g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
             js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
@@ -158,9 +182,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
 
 void monitor_tasklist_and_activewindow()
 {
-    ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
-    ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
-    ATOM_NET_WM_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
+    _init_atoms();
 
     _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free);
 
