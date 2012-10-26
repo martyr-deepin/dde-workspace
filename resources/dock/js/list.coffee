@@ -56,6 +56,4 @@ DCore.signal_connect("task_normal", (info) ->
     Widget.look_up(info.id).normal()
 )
 
-
-
 DCore.Dock.emit_update_task_list()

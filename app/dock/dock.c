@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 
 
     gtk_widget_realize(container);
-    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+    set_wmspec_dock_hint(gtk_widget_get_window(container));
     gtk_window_move(GTK_WINDOW(container), 0, 900-50);
     gtk_window_resize(GTK_WINDOW(container), 1440, 50);
     set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, 60, 0, 1440);
