@@ -34,3 +34,12 @@ body {
     margin-left: 10px;
     margin-right: 5px;
 }
+
+.Client {
+    float: left;
+    padding: 10px;
+}
+.Client img {
+    width: 32px;
+    height: 32px;
+}
