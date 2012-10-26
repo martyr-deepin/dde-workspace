@@ -102,6 +102,13 @@ class Number(Params):
         return ""
     def return_value(self):
         return "return JSValueMakeNumber(context, ret);"
+class Boolean(Params):
+    def __init__(self, *args):
+        Params.__init__(self, *args)
+    def str_init(self):
+        return "bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);" % {"pos": self.position}
+    def raw(self):
+        return "bool "
 
 class String(Params):
     def __init__(self, *args):
