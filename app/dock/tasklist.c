@@ -40,6 +40,7 @@ typedef struct {
     char* clss;
     int state;
     Window window;
+    GdkWindow* gdkwindow;
 } Client;
 
 GHashTable* _clients_table = NULL;
@@ -63,6 +64,7 @@ Client* create_client_from_window(Display* dsp, Window w)
     c->title = g_strdup(ch.res_name);
     c->clss = g_strdup(ch.res_class);
     c->window = w;
+    c->gdkwindow = win;
 
     XFree(ch.res_name);
     XFree(ch.res_class);
@@ -75,6 +77,9 @@ void client_free(Client* c)
     g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
+    gdk_window_remove_filter(c->gdkwindow, 
+            (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
+    g_object_unref(c->gdkwindow);
     g_free(c);
 }
 
@@ -295,4 +300,28 @@ void show_desktop(gboolean value)
 void minimize_window(double id)
 {
     XIconifyWindow(_dsp, (Window)id, 0);
+}
+
+char* fetch_window_preview(Window xid, int dest_width, int dest_height)
+{
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(_dsp, xid);
+    int width = gdk_window_get_width(win);
+    int height = gdk_window_get_height(win);
+    double scale = width / (double) height;
+    if (width > height) {
+        dest_height =  dest_width / scale;
+    } else {
+        dest_width = dest_height * scale;
+    }
+
+    GdkPixbuf* pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+    GdkPixbuf* preview = gdk_pixbuf_scale_simple(pixbuf, dest_width, dest_height, GDK_INTERP_BILINEAR);
+
+    char* ret = get_data_uri_by_pixbuf(preview);
+
+    g_object_unref(pixbuf);
+    g_object_unref(preview);
+    g_object_unref(win);
+
+    return ret;
 }
