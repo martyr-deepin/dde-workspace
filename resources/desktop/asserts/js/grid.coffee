@@ -21,6 +21,12 @@ o_table = null
 
 selected_item = new Array
 
+# dlclick dealer
+last_timestamp = 0
+to_blur = 0
+last_widget = null
+
+
 gm = new DeepinMenu()
 gi1 = new DeepinMenuItem(1, "New")
 gi2 = new DeepinMenuItem(2, "Reorder Icons")
@@ -187,19 +193,37 @@ init_grid_drop = ->
             #evt.dataTransfer.dropEffect = "move"
 
 
+set_item_selected = (w, top = false) ->
+    w.item_focus()
+    if top = true
+        selected_item.unshift(w)
+    else
+        selected_item.push(w)
+    return true
+
+
+cancel_item_selected = (w) ->
+    for i in [0...selected_item.length] by 1
+        if selected_item[i] == w
+            selected_item.splice(i, 1)
+            w.item_blur()
+            return true
+    return false
+
+
+cancel_item_selected_delay = ->
+    echo "on Timeout #{to_blur}"
+    to_blur = 0
+    cancel_item_selected(last_widget)
+
+
 update_selected_stats = (w, env) ->
     if env.ctrlKey
         if selected_item.length == 0
-            selected_item.push(w)
-            w.item_focus()
+            set_item_selected(w)
         else
-            for i in [0...selected_item.length] by 1
-                if selected_item[i] == w
-                    selected_item.splice(i, 1)
-                    w.item_blur()
-                    return null
-            selected_item.push(w)
-            w.item_focus()
+            if cancel_item_selected(w) == false
+                set_item_selected(w)
 
     else if env.shiftKey
         if selected_item.length > 1
@@ -215,44 +239,51 @@ update_selected_stats = (w, env) ->
                 for key, val of Widget.object_table
                     i_pos = load_position(val)
                     if compare_position(end_pos, i_pos) > 0 and compare_position(start_pos, i_pos) < 0
-                        val.item_focus()
-                        selected_item.unshift(val)
-                w.item_focus()
-                selected_item.unshift(w)
+                        set_item_selected(val, true)
+                    set_item_selected(w)
+
             else if ret == 0
-                selected_item[0].item_blur()
-                selected_item.splice(0)
+                cancel_item_selected(selected_item[0])
+
             else
                 for key, val of Widget.object_table
                     i_pos = load_position(val)
                     if compare_position(start_pos, i_pos) > 0 and compare_position(end_pos, i_pos) < 0
-                        val.item_focus()
-                        selected_item.unshift(val)
-                w.item_focus()
-                selected_item.unshift(w)
+                        set_item_selected(val, true)
+                set_item_selected(w)
+
         else
-            w.item_focus()
-            selected_item.push(w)
+            set_item_selected(w)
 
     else
-        if selected_item.length > 1
-            i.item_blur() for i in selected_item
-            selected_item.splice(0)
-            selected_item.push(w)
-            w.item_focus()
-        else if selected_item.length == 1
-            if selected_item[0] == w
-                selected_item.splice(0)
-                w.item_blur()
-            else
-                selected_item[0].item_blur()
-                selected_item.splice(0)
-                selected_item.push(w)
-                w.item_focus()
+        echo env.timeStamp - last_timestamp
+        if last_widget == w and env.timeStamp - last_timestamp < 200 and to_blur != 0
+            echo "clearTimeout #{to_blur}"
+            clearTimeout(to_blur)
+            to_blur = 0
         else
-            selected_item.push(w)
-            w.item_focus()
+            if selected_item.length > 1
+                cancel_all_selected_stats()
+                set_item_selected(w)
+                echo "selected_item.length > 1"
 
+            else if selected_item.length == 1
+                if w.selected == true
+                    if env.timeStamp - last_timestamp < 200
+                        echo "should be a dlclick, no blur"
+                    else
+                        to_blur = setTimeout(cancel_item_selected_delay, 200)
+                        echo "setTimeout #{to_blur}"
+                else
+                    cancel_all_selected_stats()
+                    set_item_selected(w)
+                    echo "cancel all, select w"
+            else
+                set_item_selected(w)
+                echo "select w"
+
+    last_widget = w
+    last_timestamp = env.timeStamp
 
 cancel_all_selected_stats = ->
     i.item_blur() for i in selected_item

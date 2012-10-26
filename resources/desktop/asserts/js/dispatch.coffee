@@ -14,8 +14,14 @@ create_item = (info) ->
     div_grid.appendChild(w.element)
     return w
 
+
 load_desktop_all_items = ->
     for info in DCore.Desktop.get_desktop_items()
         w = create_item(info)
         if w?
             move_to_anywhere(w)
+
+
+remove_desktop_all_items = ->
+    delete i for id, i of Widget.object_table
+    selected_item.splice(0)
