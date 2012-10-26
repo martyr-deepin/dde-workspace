@@ -9,12 +9,23 @@ class Client extends Widget
         @element.innerHTML = "
         <img src=#{@icon} title=#{@title}/>
         "
+        @element.addEventListener('click', @click)
         container.appendChild(@element)
     active: ->
-        @element.style.background = "rgba(100, 0, 0, 0.8)"
+        el = @element.children[0]
+        el.style.width = "48px"
+        el.style.height = "48px"
     deactive: ->
-        echo("deactive")
-        @element.style.background = "rgba(0, 0, 0, 0)"
+        el = @element.children[0]
+        el.style.width = "32px"
+        el.style.height = "32px"
+    withdraw: ->
+        @element.style.display = "None"
+    normal: ->
+        @element.style.display = "block"
+    click: (e) ->
+        DCore.Dock.set_active_window(@id)
+
 
 active_win = null
 change_active_window = (c) ->
@@ -24,21 +35,27 @@ change_active_window = (c) ->
     active_win.active()
 
 
-do_active_window_change = (info) ->
+DCore.signal_connect("active_window_changed", (info)->
     client = Widget.look_up(info.id)
     change_active_window(client)
+)
 
-do_task_added = (info) ->
+DCore.signal_connect("task_added", (info) ->
     new Client(info.id, info.icon, info.title)
+)
 
-do_task_removed = (info) ->
+DCore.signal_connect("task_removed", (info) ->
     Widget.look_up(info.id).destroy()
+)
 
-DCore.signal_connect("active_window_changed", do_active_window_change)
-DCore.signal_connect("task_added", do_task_added)
-DCore.signal_connect("task_removed", do_task_removed)
+DCore.signal_connect("task_withdraw", (info) ->
+    Widget.look_up(info.id).withdraw()
+)
+
+DCore.signal_connect("task_normal", (info) ->
+    Widget.look_up(info.id).normal()
+)
+
+
 
 DCore.Dock.emit_update_task_list()
-
-
-
