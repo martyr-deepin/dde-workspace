@@ -12,8 +12,11 @@ Atom ATOM_WINDOW_TYPE;
 Atom ATOM_WINDOW_TYPE_NORMAL;
 Atom ATOM_WINDOW_NAME;
 Atom ATOM_WINDOW_STATE;
+Atom ATOM_WINDOW_NET_STATE;
 Atom ATOM_CLOSE_WINDOW;
 Atom ATOM_SHOW_DESKTOP;
+Atom ATOM_ACTION_ADD;
+Atom ATOM_WINDOW_STATE_HIDDEN;
 Display* _dsp = NULL;
 void _init_atoms()
 {
@@ -24,8 +27,11 @@ void _init_atoms()
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
     ATOM_WINDOW_STATE = gdk_x11_get_xatom_by_name("WM_STATE");
+    ATOM_WINDOW_NET_STATE = gdk_x11_get_xatom_by_name("_NET_WM_STATE");
     ATOM_CLOSE_WINDOW = gdk_x11_get_xatom_by_name("_NET_CLOSE_WINDOW");
     ATOM_SHOW_DESKTOP = gdk_x11_get_xatom_by_name("_NET_SHOWING_DESKTOP");
+    ATOM_ACTION_ADD = gdk_x11_get_xatom_by_name("_NET_WM_STATE_ADD");
+    ATOM_WINDOW_STATE_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
 }
 
 typedef struct {
@@ -208,8 +214,6 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
         } else if (ev->atom == ATOM_WINDOW_STATE) {
             gulong items = 0;
             void* data = get_window_property(_dsp, win, ATOM_WINDOW_STATE, &items);
-            printf("items....%d\n", items);
-            g_assert(items == 2);
             int state = X_FETCH_32(data, 0);
             switch (state) {
                 case WithdrawnState:
@@ -278,15 +282,17 @@ void close_window(double id)
 }
 void show_desktop(gboolean value)
 {
-    printf("sdsdsdsds:%d\n", value);
+    Window root = GDK_ROOT_WINDOW();
     XClientMessageEvent event;
     event.type = ClientMessage;
     event.message_type = ATOM_SHOW_DESKTOP;
     event.format = 32;
+    event.window = root;
     event.data.l[0] = value;
-    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
+    XSendEvent(_dsp, root, False, 
             StructureNotifyMask, (XEvent*)&event);
 }
-void set_showing_desktop(gboolean value)
+void minimize_window(double id)
 {
+    XIconifyWindow(_dsp, (Window)id, 0);
 }

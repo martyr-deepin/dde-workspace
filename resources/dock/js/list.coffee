@@ -10,6 +10,7 @@ class Client extends Widget
         <img src=#{@icon} title=#{@title}/>
         "
         @element.addEventListener('click', @click)
+        @element.addEventListener('dblclick', @dbclick)
         container.appendChild(@element)
     active: ->
         el = @element.children[0]
@@ -25,6 +26,9 @@ class Client extends Widget
         @element.style.display = "block"
     click: (e) ->
         DCore.Dock.set_active_window(@id)
+    dbclick: (e) ->
+        DCore.Dock.minimize_window(@id)
+
 
 
 active_win = null
