@@ -1,7 +1,5 @@
 [Desktop Entry]
 Type=Application
-Encoding=UTF-8
 Name=DeepinDesktopEnvironment
 Exec=desktop
 NoDisplay=true
-X-GNOME-Provides=window-shell

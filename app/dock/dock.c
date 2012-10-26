@@ -3,6 +3,7 @@
 #include "xdg_misc.h"
 #include "utils.h"
 #include "tray.h"
+#include "tasklist.h"
 
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])

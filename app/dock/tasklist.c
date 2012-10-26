@@ -3,38 +3,68 @@
 #include <X11/Xatom.h>
 #include "X_misc.h"
 #include "pixbuf.h"
+#include "dwebview.h"
 
 Atom ATOM_CLIENT_LIST;
 Atom ATOM_ACTIVE_WINDOW;
 Atom ATOM_NET_WM_ICON;
 
-char* get_window_icon(Display *dsp, Window w);
+typedef struct {
+    char* icon;
+    char* title;
+    char* clss;
+    int state;
+    Window window;
+} Client;
 
-void print_window(Display* dsp, Window w)
+GHashTable* _clients_table = NULL;
+Window _active_client_id = 0;
+
+char* _get_window_icon(Display *dsp, Window w);
+Client* create_client_from_window(Display* dsp, Window w)
 {
     XClassHint ch;
-    XWMHints hits;
     XGetClassHint(dsp, w, &ch);
-    printf("%s(0x%x)  ", ch.res_name, (int)w);
-    get_window_icon(dsp, w);
+
+    Client* c = g_new(Client, 1);
+    c->icon = _get_window_icon(dsp, w);
+    c->title = g_strdup(ch.res_name);
+    c->clss = g_strdup(ch.res_class);
+    c->window = w;
+
     XFree(ch.res_name);
     XFree(ch.res_class);
+
+    return c;
 }
+void client_free(Client* c)
+{
+    g_free(c->icon);
+    g_free(c->title);
+    g_free(c->clss);
+    g_free(c);
+}
+
 
 void active_window_changed(Display* dsp, Window w)
 {
-    printf("Active Window changed: ");
-    print_window(dsp, w);
-    puts("\n");
+    if (_active_client_id != w) {
+        _active_client_id = w;
+        js_post_message("active_window_changed", "{\"id\": %d}", (int)w);
+    }
 }
 
 void client_list_changed(Display* dsp, Window* cs, size_t n)
 {
-    printf("Client List:");
     for (int i=0; i<n; i++) {
-        print_window(dsp, cs[i]);
+        Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
+        if (c == NULL) {
+            c = create_client_from_window(dsp, cs[i]);
+            g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
+            js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
+                    (int)cs[i], c->title, c->clss, c->icon);
+        }
     }
-    printf("\n");
 }
 
 void update_task_list(Display* display, Window root)
@@ -69,13 +99,12 @@ void* argb_to_rgba(gulong* data, size_t s)
         guchar r = (data[i] >> 16) & 0xff;
         guchar g = (data[i] >> 8) & 0xff;
         guchar b = data[i] & 0xff;
-
         img[i] = r | g << 8 | b << 16 | a << 24;
     }
     return img;
 }
 
-char* get_window_icon(Display *dsp, Window win)
+char* _get_window_icon(Display *dsp, Window win)
 {
     gulong items;
     void* data = get_window_property(dsp, win, ATOM_NET_WM_ICON, XA_CARDINAL, &items);
@@ -91,28 +120,28 @@ char* get_window_icon(Display *dsp, Window win)
     while (offset + 3 < items) {
         int width = X_FETCH_32(data, offset);
         int height = X_FETCH_32(data, offset+1);
+
         h = MAX(height, h);
         if (width > w) {
             w = width;
             p = data + offset;
         }
-        offset += 2 + width*height;
+        offset += 2;
+        offset += width*height;
     }
 
     void* img = argb_to_rgba(p, w*h);
-    XFree(data);
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
+    gdk_pixbuf_save(pixbuf, g_strdup_printf("%d.png", (int)win), "png", NULL, NULL);
+
     char* data_uri = get_data_uri_by_pixbuf(pixbuf);
     g_free(img);
 
+    XFree(data);
     return data_uri;
 }
 
-
-void set_showing_desktop(gboolean value)
-{
-}
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
@@ -133,6 +162,8 @@ void monitor_tasklist_and_activewindow()
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
     ATOM_NET_WM_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
 
+    _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free);
+
     GdkWindow* root = gdk_get_default_root_window();
     gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | gdk_window_get_events(root));
 
@@ -142,16 +173,29 @@ void monitor_tasklist_and_activewindow()
     update_task_list(GDK_DISPLAY_XDISPLAY(display), GDK_WINDOW_XID(root));
 }
 
+void clear_task_list()
+{
+    g_hash_table_remove_all(_clients_table);
+}
 
-double get_active_window()
+//JS_EXPORT
+void emit_update_active_window()
 {
 }
-char* get_task_list()
+void emit_update_task_list()
 {
+    clear_task_list();
+
+    GdkDisplay* display = gdk_display_get_default();
+    GdkWindow* root = gdk_get_default_root_window();
+    update_task_list(GDK_DISPLAY_XDISPLAY(display), GDK_WINDOW_XID(root));
 }
-void active_window(double id)
+void set_active_window(double id)
 {
 }
 void show_desktop()
+{
+}
+void set_showing_desktop(gboolean value)
 {
 }
