@@ -1,4 +1,5 @@
 container = document.getElementById('icon_list')
+preview = document.getElementById('preview')
 
 #for info in DCore.Dock.get_tasklist()
 
@@ -11,7 +12,11 @@ class Client extends Widget
         "
         @element.addEventListener('click', @click)
         @element.addEventListener('dblclick', @dbclick)
+        @element.addEventListener('mouseover', @over)
         container.appendChild(@element)
+    over: ->
+        data_uri = DCore.Dock.fetch_window_preview(@id, 300, 200)
+        preview.src = data_uri
     active: ->
         el = @element.children[0]
         el.style.width = "48px"

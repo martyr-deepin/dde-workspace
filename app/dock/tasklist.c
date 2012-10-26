@@ -304,7 +304,11 @@ void minimize_window(double id)
 
 char* fetch_window_preview(Window xid, int dest_width, int dest_height)
 {
-    GdkWindow* win = gdk_x11_window_foreign_new_for_display(_dsp, xid);
+    Client *c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(xid));
+    if (c == NULL)
+        return g_strdup("{}");
+    GdkWindow* win = c->gdkwindow;
+
     int width = gdk_window_get_width(win);
     int height = gdk_window_get_height(win);
     double scale = width / (double) height;
@@ -321,7 +325,6 @@ char* fetch_window_preview(Window xid, int dest_width, int dest_height)
 
     g_object_unref(pixbuf);
     g_object_unref(preview);
-    g_object_unref(win);
 
     return ret;
 }
