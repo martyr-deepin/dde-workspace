@@ -195,18 +195,13 @@ void monitor_tasklist_and_activewindow()
     update_task_list(GDK_DISPLAY_XDISPLAY(display), GDK_WINDOW_XID(root));
 }
 
-void clear_task_list()
-{
-    g_hash_table_remove_all(_clients_table);
-}
-
 //JS_EXPORT
 void emit_update_active_window()
 {
 }
 void emit_update_task_list()
 {
-    clear_task_list();
+    g_hash_table_remove_all(_clients_table);
 
     GdkDisplay* display = gdk_display_get_default();
     GdkWindow* root = gdk_get_default_root_window();

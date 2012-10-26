@@ -13,7 +13,7 @@ static GdkFilterReturn
 monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;
-    if (xev->type == GDK_SELECTION_CLEAR) {
+    if (xev->type == DestroyNotify) {
         g_hash_table_remove(icons, (GdkWindow*)data);
         char* msg = g_strdup_printf("{\"id\":%d}", GPOINTER_TO_INT(data));
         js_post_message("tray_icon_removed", msg);
