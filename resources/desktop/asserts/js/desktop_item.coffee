@@ -1,4 +1,5 @@
 MAX_ITEM_TITLE = 20
+DLCLICK_INTERVAL = 200
 
 m = new DeepinMenu()
 i1 = new DeepinMenuItem(1, "Open")
@@ -29,6 +30,7 @@ class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @selected = false
         @id = @path
+
         super
 
         el = @element
@@ -48,7 +50,7 @@ class Item extends Widget
             e.stopPropagation()
             update_selected_stats(this, e)
         )
-        @element.addEventListener('dblclick', -> DCore.run_command exec)
+        @element.addEventListener('dblclick', @item_exec)
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
         )
@@ -57,23 +59,29 @@ class Item extends Widget
         #@init_keypress?()
         @element.contextMenu = m
 
-    item_focus: ->
+
+    item_exec : (env) =>
+        if env.ctrlKey == true then return
+        DCore.run_command @exec
+
+
+    item_focus : ->
         @selected = true
         @element.className += " item_selected"
         @item_name.innerText = @name
 
-    item_blur: ->
+
+    item_blur : ->
         @selected = false
         @element.className = @element.className.replace(" item_selected", "")
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
-    rename: (new_name) ->
-        @item_name.innerText = new_name
 
     destroy: ->
         info = load_position(this)
         clear_occupy(info)
         super
+
 
     init_keypress: ->
         document.designMode = 'On'
@@ -108,6 +116,7 @@ class DesktopEntry extends Item
                     node.parentNode.removeChild(node)
         )
 
+
 class Folder extends DesktopEntry
     constructor : ->
         super
@@ -117,27 +126,44 @@ class Folder extends DesktopEntry
             @show_pop_block()
         )
 
+
     item_blur: ->
-        super
         if @div_pop != null then @hide_pop_block()
+        super
+
+
+    destroy: ->
+        if @div_pop != null then @hide_pop_block()
+        super
+
 
     show_pop_block : =>
         if @selected == false then return
         if @div_pop != null then return
+
+        items = DCore.Desktop.get_items_by_dir(@element.id)
+        if items.length == 0 then return
+
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
 
-        @fill_pop_block()
+        @fill_pop_block(items)
 
         DCore.signal_connect("dir_changed", @reflesh_pop_block)
         DCore.Desktop.monitor_dir(@element.id)
 
-    reflesh_pop_block : (id) =>
-        if id.id == @id then @fill_pop_block()
 
-    fill_pop_block : =>
-        items = DCore.Desktop.get_items_by_dir(@element.id)
+    reflesh_pop_block : (id) =>
+        if id.id == @id
+            items = DCore.Desktop.get_items_by_dir(@element.id)
+            if items.length == 0
+                @hide_pop_block()
+            else
+                @fill_pop_block(items)
+
+
+    fill_pop_block : (items) =>
         str = ""
         str += "<li id=\"#{s.EntryPath}\" dragable=\"true\"><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
         @div_pop.innerHTML = "<ul>#{str}</ul>"
@@ -179,23 +205,13 @@ class Folder extends DesktopEntry
                     evt.dataTransfer.effectAllowed = "all"
             )
             i.addEventListener('dragend', (evt) =>
-                if evt.dataTransfer.dropEffect == "move"
-                    evt.preventDefault()
-                    node = evt.target
-                    #pos = pixel_to_position(evt.x, evt.y)
-
-                    #info = localStorage.getObject(@path)
-                    #info.x = pos[0]
-                    #info.y = pos[1]
-                    #move_to_position(this, info)
-
-                else if evt.dataTransfer.dropEffect == "link"
-                    node = evt.target
-                    node.parentNode.removeChild(node)
+                remove_desktop_all_items()
+                load_desktop_all_items()
             )
 
         #div_grid.addEventListener("click", @hide_pop_block)
         #div_grid.addEventListener("contextmenu", @hide_pop_block)
+
 
     hide_pop_block : =>
         #div_grid.removeEventListener("click", @hide_pop_block)
@@ -204,6 +220,7 @@ class Folder extends DesktopEntry
         @div_pop.parentElement.removeChild(@div_pop)
         delete @div_pop
         @div_pop = null
+
 
     init_drop: =>
         $(@element).drop
@@ -228,6 +245,7 @@ class Folder extends DesktopEntry
             leave: (evt) =>
                 #@icon_close()
 
+
     move_in: (c_path) ->
         echo "move to #{c_path} from #{@path}"
         p = c_path.replace("file://", "")
@@ -235,5 +253,6 @@ class Folder extends DesktopEntry
 
 
 class NormalFile extends DesktopEntry
+
 
 class DesktopApplet extends Item

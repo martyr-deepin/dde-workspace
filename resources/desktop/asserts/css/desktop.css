@@ -152,6 +152,10 @@ body {
     vertical-align:top;
     text-align:center;
 }
+#pop_grid ul li img {
+    width:48px;
+    height:48px;
+}
 #pop_grid ul li div {
     max-height:36px;
     word-wrap:break-word;
