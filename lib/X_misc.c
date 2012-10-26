@@ -213,7 +213,7 @@ void set_struct_partial(GdkWindow* gdk_window, guint32 orientation, guint32 stru
 }
 
 
-void* get_window_property(Display* dsp, Window w, Atom pro, Atom type, gulong* items)
+void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
 {
     Atom act_type;
     int act_format;
@@ -222,7 +222,7 @@ void* get_window_property(Display* dsp, Window w, Atom pro, Atom type, gulong* i
 
     int result = XGetWindowProperty(dsp, w, pro,
             0, G_MAXULONG, FALSE,
-            type, &act_type,
+            AnyPropertyType, &act_type,
             &act_format,
             items,
             &bytes_after,

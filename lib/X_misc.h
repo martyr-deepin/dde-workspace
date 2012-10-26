@@ -23,7 +23,7 @@ void unwatch_workarea_changes(GtkWidget* widget);
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 
 
-void* get_window_property(Display* dsp, Window w, Atom pro, Atom type, gulong* items);
+void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items);
 
 #define X_FETCH_32(data, i) *((gulong*)data + i)
 #define X_FETCH_16(data, i) *((short*)data + i)
