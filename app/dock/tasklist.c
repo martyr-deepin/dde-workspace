@@ -302,9 +302,9 @@ void minimize_window(double id)
     XIconifyWindow(_dsp, (Window)id, 0);
 }
 
-char* fetch_window_preview(Window xid, int dest_width, int dest_height)
+char* fetch_window_preview(double xid, double dest_width, double dest_height)
 {
-    Client *c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(xid));
+    Client *c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
     if (c == NULL)
         return g_strdup("{}");
     GdkWindow* win = c->gdkwindow;
@@ -319,7 +319,9 @@ char* fetch_window_preview(Window xid, int dest_width, int dest_height)
     }
 
     GdkPixbuf* pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
+    g_assert(pixbuf != NULL);
     GdkPixbuf* preview = gdk_pixbuf_scale_simple(pixbuf, dest_width, dest_height, GDK_INTERP_BILINEAR);
+    g_assert(preview != NULL);
 
     char* ret = get_data_uri_by_pixbuf(preview);
 

@@ -15,8 +15,11 @@ class Client extends Widget
         @element.addEventListener('mouseover', @over)
         container.appendChild(@element)
     over: ->
-        data_uri = DCore.Dock.fetch_window_preview(@id, 300, 200)
-        preview.src = data_uri
+        setInterval( =>
+            data_uri = DCore.Dock.fetch_window_preview(@id, 300, 200)
+            preview.src = data_uri
+        200)
+
     active: ->
         el = @element.children[0]
         el.style.width = "48px"
