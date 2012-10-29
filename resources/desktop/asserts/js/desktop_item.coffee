@@ -164,9 +164,34 @@ class Folder extends DesktopEntry
 
 
     fill_pop_block : (items) =>
-        str = ""
-        str += "<li id=\"#{s.EntryPath}\" dragable=\"true\"><img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div></li>" for s in items
-        @div_pop.innerHTML = "<ul>#{str}</ul>"
+        ele_ul = document.createElement("ul")
+        @div_pop.appendChild(ele_ul)
+
+        for s in items
+            ele = document.createElement("li")
+            ele.setAttribute('id',  s.EntryPath)
+            ele.dragable = "true"
+            ele.innerHTML = "<img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div>"
+
+            ele.addEventListener('dragstart', (evt) ->
+                    evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
+                    evt.dataTransfer.setData("text/plain", "#{this.id}")
+                    evt.dataTransfer.effectAllowed = "all"
+            )
+            ele.addEventListener('dragend', (evt) ->
+                reflesh_desktop_new_items()
+            )
+            if s.Exec?
+                ele.setAttribute("title", s.Exec)
+                ele.addEventListener('dblclick', (env) ->
+                    DCore.run_command "#{this.title}"
+                )
+            else
+                ele.addEventListener('dblclick', (env) =>
+                    DCore.run_command "xdg-open '#{this.id}'"
+                )
+            ele_ul.appendChild(ele)
+
 
         if items.length <= 3
             col = items.length
@@ -196,17 +221,6 @@ class Folder extends DesktopEntry
             @div_pop.style.left = "#{s_width - 2 * n}px"
         else
             @div_pop.style.left = "#{p - n}px"
-
-        items = @div_pop.getElementsByTagName("li")
-        for i in items
-            i.addEventListener('dragstart', (evt) ->
-                    evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
-                    evt.dataTransfer.setData("text/plain", "#{this.id}")
-                    evt.dataTransfer.effectAllowed = "all"
-            )
-            i.addEventListener('dragend', (evt) =>
-                reflesh_desktop_new_items()
-            )
 
         #div_grid.addEventListener("click", @hide_pop_block)
         #div_grid.addEventListener("contextmenu", @hide_pop_block)
