@@ -185,7 +185,6 @@ char* _get_window_icon(Display *dsp, Window win)
     void* img = argb_to_rgba(p, w*h);
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
-    gdk_pixbuf_save(pixbuf, g_strdup_printf("%d.png", (int)win), "png", NULL, NULL);
 
     char* data_uri = get_data_uri_by_pixbuf(pixbuf);
     g_free(img);

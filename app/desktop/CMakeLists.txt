@@ -17,6 +17,10 @@ target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
+execute_process(
+    COMMAND make
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/asserts/js
+    )
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION bin
