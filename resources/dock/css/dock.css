@@ -7,26 +7,34 @@ body {
 
 
 #container {
+    position:relative;
+    /*top: 10px;*/
+    /*position: fixed;*/
+    /*bottom:0px;*/
     display: -webkit-box;
     min-height: 50px;
     max-height: 50px;
+    /*background: rgba(0, 20, 20, 0.8);*/
 }
 
 #icon_default {
-    background: rgba(40, 40, 40, 0.5);
+    /*background: rgba(40, 40, 40, 0.5);*/
 }
 #icon_list {
+    margin-left: 20px;
     -webkit-box-flex: 10;
     /*background: rgba(100, 0, 100, 0.8);*/
 }
 
 #notifyarea {
-    background: rgba(0, 100, 0, 0.3);
+    /*background: rgba(0, 100, 0, 0.3);*/
+    bottom:0px;
+    right: 0px;
 }
 
 .TrayIcon {
-    display: inline-block;
     float:right;
+    display: inline-block;
     /*background: rgba(130, 20, 0, 0.9);*/
     width: 24px;
     height: 24px;
@@ -37,9 +45,17 @@ body {
 
 .Client {
     float: left;
-    padding: 10px;
+    padding: 4px 5px 3px 5px;
+    margin: 2px 5px;
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 .Client img {
     width: 32px;
     height: 32px;
+}
+
+
+#preview {
+    position: fixed;
+    top:0px;
 }

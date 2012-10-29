@@ -12,7 +12,7 @@ class Client extends Widget
         "
         @element.addEventListener('click', @click)
         @element.addEventListener('dblclick', @dbclick)
-        @element.addEventListener('mouseover', @over)
+        #@element.addEventListener('mouseover', @over)
         container.appendChild(@element)
     over: ->
         setInterval( =>
@@ -21,13 +21,9 @@ class Client extends Widget
         200)
 
     active: ->
-        el = @element.children[0]
-        el.style.width = "48px"
-        el.style.height = "48px"
+        @element.style.background = "rgba(0, 100, 100, 1)"
     deactive: ->
-        el = @element.children[0]
-        el.style.width = "32px"
-        el.style.height = "32px"
+        @element.style.background = "rgba(0, 0, 0, 0)"
     withdraw: ->
         @element.style.display = "None"
     normal: ->

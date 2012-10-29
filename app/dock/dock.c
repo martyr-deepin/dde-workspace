@@ -5,6 +5,9 @@
 #include "tray.h"
 #include "tasklist.h"
 
+#define HEIGHT 50// + 200
+
+
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
@@ -24,17 +27,23 @@ int main(int argc, char* argv[])
 
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
 
 
     tray_init(container);
     monitor_tasklist_and_activewindow();
 
+    GdkScreen* screen = gdk_screen_get_default();
+    int s_width = gdk_screen_get_width(screen);
+    int s_height = gdk_screen_get_height(screen);
+    //TODO: when change resolution
 
     gtk_widget_realize(container);
-    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
-    gtk_window_move(GTK_WINDOW(container), 0, 900-60);
-    gtk_window_resize(GTK_WINDOW(container), 1440, 50);
-    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, 60, 0, 1440);
+    set_wmspec_dock_hint(gtk_widget_get_window(container));
+    gtk_window_move(GTK_WINDOW(container), 0, s_height-50);
+    gtk_window_resize(GTK_WINDOW(container), s_width, HEIGHT);
+    set_struct_partial(gtk_widget_get_window(container), 
+            ORIENTATION_BOTTOM, 55, 0, 1440);
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_window_set_keep_above(GTK_WINDOW(container), TRUE);
 
@@ -42,4 +51,3 @@ int main(int argc, char* argv[])
     gtk_main();
     return 0;
 }
-
