@@ -20,19 +20,10 @@ body {
     background: rgba(100, 0, 100, 0.8);
 }
 
-#grid {
-    position: absolute;
-    left:0px;
-    top:0px;
-    z-index: -1000;
-    height: 100%;
-    width: 100%;
-    background: rgba(0, 1, 1, 0.4);
-}
 
 #item_grid {
     position:fixed;
-    background-color:rgba(22, 22, 22, 0.3);
+    /*background-color:rgba(22, 22, 22, 0.3);*/
     overflow:hidden;
 }
 
