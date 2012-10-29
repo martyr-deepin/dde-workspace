@@ -17,7 +17,7 @@ class Widget extends Module
         Widget.object_table[@id] = this
 
     destroy: ->
-        @element.parentElement.removeChild(@element)
+        @element.parentElement?.removeChild(@element)
         delete Widget.object_table[@id]
 
     move: (x, y) ->

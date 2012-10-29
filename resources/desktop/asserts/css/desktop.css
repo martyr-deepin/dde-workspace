@@ -29,7 +29,8 @@ body {
 
 .item_selected {
     border-radius:3px;
-    background-color:rgba(77, 77, 255, 0.8);
+    border:1px solid rgba(255,255,255,0.5);
+    background-color:rgba(68, 132, 195, 0.5);
     z-index:10;
 }
 
@@ -121,16 +122,17 @@ body {
 #pop_grid {
     z-index:2000;
     position:fixed;
-    /*background: none repeat scroll 0% 0% rgba(8, 41, 67, 0.7);*/
-    background-color:#FFF;
+    background-color:rgba(0, 0, 0, 0.85);
+    border:6px solid rgba(0, 0, 0, 0.2);
     border-radius:6px;
 }
 
 #pop_grid ul {
     max-height:376px;
-    margin:5px;
-    background-color:rgba(0,0,0,0.5);
+    margin:0;
     list-style: none outside none;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:4px;
     overflow-y:auto;
 }
 
@@ -149,7 +151,9 @@ body {
 }
 #pop_grid ul li div {
     max-height:36px;
+    color:#FFF;
     word-wrap:break-word;
     word-break:break-all;
     overflow: hidden;
+
 }

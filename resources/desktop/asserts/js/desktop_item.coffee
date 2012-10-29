@@ -205,8 +205,7 @@ class Folder extends DesktopEntry
                     evt.dataTransfer.effectAllowed = "all"
             )
             i.addEventListener('dragend', (evt) =>
-                remove_desktop_all_items()
-                load_desktop_all_items()
+                reflesh_desktop_new_items()
             )
 
         #div_grid.addEventListener("click", @hide_pop_block)
@@ -231,7 +230,6 @@ class Folder extends DesktopEntry
                 @move_in(file)
 
             over: (evt) =>
-                echo evt
                 evt.preventDefault()
                 path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
                 if path == "file://#{@path}"

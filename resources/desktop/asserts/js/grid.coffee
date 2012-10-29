@@ -196,15 +196,15 @@ init_grid_drop = ->
 set_item_selected = (w, top = false) ->
     w.item_focus()
     if top = true
-        selected_item.unshift(w)
+        selected_item.unshift(w.id)
     else
-        selected_item.push(w)
+        selected_item.push(w.id)
     return true
 
 
 cancel_item_selected = (w) ->
     for i in [0...selected_item.length] by 1
-        if selected_item[i] == w
+        if selected_item[i] == w.id
             selected_item.splice(i, 1)
             w.item_blur()
             return true
@@ -227,12 +227,12 @@ update_selected_stats = (w, env) ->
 
     else if env.shiftKey
         if selected_item.length > 1
-            i.item_blur() for i in selected_item.splice(0, selected_item.length - 1)
+            Widget.look_up(i)?.item_blur() for i in selected_item.splice(0, selected_item.length - 1)
 
         if selected_item.length == 1
             coord = pixel_to_position(env.x, env.y)
             end_pos = {"x": coord[0], "y": coord[1], "width": 1, "height": 1}
-            start_pos = load_position(selected_item[0])
+            start_pos = load_position(Widget.look_up(elected_item[0]))
 
             ret = compare_position(start_pos, end_pos)
             if ret < 0
@@ -256,7 +256,6 @@ update_selected_stats = (w, env) ->
             set_item_selected(w)
 
     else
-        echo env.timeStamp - last_timestamp
         if last_widget == w and env.timeStamp - last_timestamp < 200 and to_blur != 0
             echo "clearTimeout #{to_blur}"
             clearTimeout(to_blur)
@@ -285,8 +284,9 @@ update_selected_stats = (w, env) ->
     last_widget = w
     last_timestamp = env.timeStamp
 
+
 cancel_all_selected_stats = ->
-    i.item_blur() for i in selected_item
+    Widget.look_up(i)?.item_blur() for i in selected_item
     selected_item.splice(0)
 
 
