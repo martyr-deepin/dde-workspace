@@ -569,7 +569,7 @@ char* get_entries_by_func(const char* base_dir, ENTRY_CONDITION func)
         ret = content->str;
         g_string_free(content, FALSE);
     } else {
-        ret = g_strdup(" ");
+        ret = g_strdup("[]");
         g_string_free(content, TRUE);
     }
     return ret;
