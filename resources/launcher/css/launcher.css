@@ -8,10 +8,11 @@ body {
 #search {
     height: 50px;
     padding-bottom: 10px;
+    text-align: center;
 }
 
 #s_box {
-    margin: 10px 0px 0px 510px;
+    margin: 10px auto;
     border: 2px solid black;
     width: 300px;
     border-radius: 10px;
@@ -83,4 +84,3 @@ body {
     width: 80px;
     color: transparent;
 }
-
