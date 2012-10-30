@@ -28,3 +28,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 add_subdirectory(lib)
 add_subdirectory(app)
+
+install(
+    FILES ${PROJECT_SOURCE_DIR}/deepin-desktop.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
+    )

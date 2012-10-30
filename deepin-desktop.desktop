@@ -3,3 +3,4 @@ Type=Application
 Name=DeepinDesktopEnvironment
 Exec=desktop
 NoDisplay=true
+X-GNOME-Provides=window-shell
