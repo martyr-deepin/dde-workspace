@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Deepin Dock
+Comment[zh_CN]=深度Dock
+Exec=dock
+NoDisplay=true

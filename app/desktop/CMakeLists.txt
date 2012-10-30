@@ -30,3 +30,8 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
     DESTINATION ${RESOURCE_DIR}
     )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-desktop.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
+    )

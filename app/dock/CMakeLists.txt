@@ -32,3 +32,8 @@ execute_process(
     COMMAND make
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
     )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-dock.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
+    )
