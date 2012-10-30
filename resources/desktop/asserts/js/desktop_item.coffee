@@ -121,9 +121,15 @@ class Folder extends DesktopEntry
     constructor : ->
         super
 
+        if not @exec?
+            @exec = "xdg-open '#{@id}'"
+
         @div_pop = null
         @element.addEventListener('click', =>
             @show_pop_block()
+        )
+        @element.addEventListener('dblclick', =>
+            @hide_pop_block()
         )
 
 
@@ -141,7 +147,7 @@ class Folder extends DesktopEntry
         if @selected == false then return
         if @div_pop != null then return
 
-        items = DCore.Desktop.get_items_by_dir(@element.id)
+        items = DCore.Desktop.get_items_by_dir(@id)
         if items.length == 0 then return
 
         @div_pop = document.createElement("div")
@@ -165,6 +171,7 @@ class Folder extends DesktopEntry
 
     fill_pop_block : (items) =>
         ele_ul = document.createElement("ul")
+        ele_ul.setAttribute("title", @id)
         @div_pop.appendChild(ele_ul)
 
         for s in items
@@ -185,10 +192,12 @@ class Folder extends DesktopEntry
                 ele.setAttribute("title", s.Exec)
                 ele.addEventListener('dblclick', (env) ->
                     DCore.run_command "#{this.title}"
+                    Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             else
-                ele.addEventListener('dblclick', (env) =>
+                ele.addEventListener('dblclick', (env) ->
                     DCore.run_command "xdg-open '#{this.id}'"
+                    Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             ele_ul.appendChild(ele)
 
