@@ -205,22 +205,36 @@ class Folder extends DesktopEntry
             col = 6
         @div_pop.style.width = "#{col * i_width + 20}px"
 
+        arrow = document.createElement("div")
+
         n = Math.ceil(items.length / col)
         if n > 4 then n = 4
         n = n * i_height + 20
         if @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop - n}px"
+            @div_pop.style.top = "#{@element.offsetTop - n - 16}px"
+            arrow_pos = true
         else
             @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 20}px"
+            arrow_pos = false
 
         n = (col * i_width) / 2 + 10
         p = @element.offsetLeft + @element.offsetWidth / 2
         if p < n
             @div_pop.style.left = "0"
+            arrow.style.left = "#{p}px"
         else if p + n > s_width
             @div_pop.style.left = "#{s_width - 2 * n}px"
+            arrow.style.right = "#{s_width - p}px"
         else
             @div_pop.style.left = "#{p - n}px"
+            arrow.style.left = "#{n}px"
+
+        if arrow_pos == true
+            arrow.setAttribute("id", "pop_downarrow")
+            @div_pop.appendChild(arrow)
+        else
+            arrow.setAttribute("id", "pop_uparrow")
+            @div_pop.insertBefore(arrow, @div_pop.firstChild)
 
         #div_grid.addEventListener("click", @hide_pop_block)
         #div_grid.addEventListener("contextmenu", @hide_pop_block)

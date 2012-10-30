@@ -1,6 +1,5 @@
 create_item = (info) ->
     w = null
-    #echo info
     switch info.Type
         when "Application"
             w = new DesktopEntry info.Name, info.Icon, info.Exec, info.EntryPath
@@ -22,6 +21,9 @@ load_desktop_all_items = ->
             move_to_anywhere(w)
 
 
-remove_desktop_all_items = ->
-    delete i for id, i of Widget.object_table
-    selected_item.splice(0)
+reflesh_desktop_new_items = ->
+    for info in DCore.Desktop.get_desktop_items()
+        if not Widget.look_up(info.EntryPath)?
+            w = create_item(info)
+            if w?
+                move_to_anywhere(w)
