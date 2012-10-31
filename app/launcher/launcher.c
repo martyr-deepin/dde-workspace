@@ -16,7 +16,7 @@ const char* path = "/usr/share/applications;/usr/local/share/applications;";
 
 char* get_items()
 {
-    return get_entries_by_func("/usr/share/applications;/usr/local/share/applications;/home/snyh/.local/share/applications", only_desktop);
+    return get_entries_by_func("/usr/share/applications;/usr/local/share/applications;~/.local/share/applications", only_desktop);
 }
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
