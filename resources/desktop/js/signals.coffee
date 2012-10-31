@@ -14,7 +14,7 @@ do_item_delete = (id) ->
         w.destroy()
 
 do_item_update = (info) ->
-    echo info
+    alert info
     w = create_item(info)
     if w?
         move_to_anywhere(w)

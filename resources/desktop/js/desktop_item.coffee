@@ -91,6 +91,12 @@ class Item extends Widget
                     echo "Rename"
         )
 
+    move: (x, y) ->
+        style = @element.style
+        style.position = "absolute"
+        style.left = x
+        style.top = y
+
 
 class DesktopEntry extends Item
     init_drag: ->

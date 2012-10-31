@@ -20,7 +20,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 execute_process(
     COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/asserts/js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
     )
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
