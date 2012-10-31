@@ -58,6 +58,16 @@ void monitor_dir_cb(GFileMonitor *m,
 {
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
+            {
+                char* new_path = g_file_get_path(other);
+                if (g_strcmp0(new_path, get_desktop_dir(FALSE)) == 0) {
+                    char* info = get_entry_info(new_path);
+                    js_post_message("item_update", info);
+                    g_free(info);
+                    break;
+                }
+                g_free(new_path);
+            }
         case G_FILE_MONITOR_EVENT_DELETED:
         case G_FILE_MONITOR_EVENT_CREATED:
         /*case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:*/
@@ -76,7 +86,7 @@ void begin_monitor_dir(const char* path, GCallback cb)
 {
     if (!g_hash_table_contains(monitor_table, path)) {
         GFile* dir = g_file_new_for_path(path);
-        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
+        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_NONE, NULL, NULL);
         char* key = g_strdup(path);
         g_hash_table_insert(monitor_table, key, monitor);
         g_signal_connect(monitor, "changed", cb, key);

@@ -3,6 +3,7 @@ body {
     color: white;
     /*padding-top:10px;*/
     max-height: 50px;
+    -webkit-user-select: none;
 }
 
 
@@ -59,3 +60,14 @@ body {
     position: fixed;
     top:0px;
 }
+
+#clock {
+    position: fixed;
+    right:10px;
+    top:0;
+    /*color: #164BA0; */
+    /*background-color: #D1D1D1; */
+    /*border: 1px solid #83AAD3; */
+    /*width: 100px;*/
+}
+
