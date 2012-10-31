@@ -162,6 +162,10 @@ class Folder extends DesktopEntry
 
     reflesh_pop_block : (id) =>
         if id.id == @id
+
+            for i in @div_pop.getElementsByTagName("ul")
+                i.parentElement.removeChild(i)
+
             items = DCore.Desktop.get_items_by_dir(@element.id)
             if items.length == 0
                 @hide_pop_block()
@@ -186,7 +190,7 @@ class Folder extends DesktopEntry
                     evt.dataTransfer.effectAllowed = "all"
             )
             ele.addEventListener('dragend', (evt) ->
-                reflesh_desktop_new_items()
+                #reflesh_desktop_new_items()
             )
             if s.Exec?
                 ele.setAttribute("title", s.Exec)

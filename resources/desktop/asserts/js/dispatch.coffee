@@ -27,3 +27,16 @@ reflesh_desktop_new_items = ->
             w = create_item(info)
             if w?
                 move_to_anywhere(w)
+    return
+
+reflesh_desktop_del_items = ->
+    items= DCore.Desktop.get_desktop_items()
+    for i, v of Widget.object_table
+        exists = false
+        for info in items
+            if info.EntryPath == i
+                exists = true
+                break
+        if exists == false
+            v.destroy()
+    return
