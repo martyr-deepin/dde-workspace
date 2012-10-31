@@ -218,14 +218,17 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
         } else if (ev->atom == ATOM_WINDOW_STATE) {
             gulong items = 0;
             void* data = get_window_property(_dsp, win, ATOM_WINDOW_STATE, &items);
-            int state = X_FETCH_32(data, 0);
-            switch (state) {
-                case WithdrawnState:
-                    js_post_message("task_withdraw", "{\"id\":%d}", (int)win);
-                    break;
-                case NormalState:
-                    js_post_message("task_normal", "{\"id\":%d}", (int)win);
-                    break;
+            if (data != NULL) {
+                int state = X_FETCH_32(data, 0);
+                XFree(data);
+                switch (state) {
+                    case WithdrawnState:
+                        js_post_message("task_withdraw", "{\"id\":%d}", (int)win);
+                        break;
+                    case NormalState:
+                        js_post_message("task_normal", "{\"id\":%d}", (int)win);
+                        break;
+                }
             }
 
         }
