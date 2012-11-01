@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
 
-    /*gdk_error_trap_push();*/
+    gdk_error_trap_push();
 
     tray_init(container);
     monitor_tasklist_and_activewindow();

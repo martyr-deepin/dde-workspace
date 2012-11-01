@@ -167,9 +167,7 @@ char* _get_window_icon(Display *dsp, Window win)
 {
     gulong items;
     gulong* data = get_window_property(dsp, win, ATOM_WINDOW_ICON, &items);
-
     if (data == NULL) {
-        /*g_warning("has no icons...\n");*/
         return NULL;
     }
 
