@@ -145,7 +145,7 @@ BaseEntry* parse_normal_file(const char* path)
             file_entry->exec = g_strdup(path);
         } else {
             char* quote_path = g_shell_quote(path);
-            file_entry->exec = g_strdup_printf("xdg-open %s", quote_path);
+            file_entry->exec = g_strdup_printf("gvfs-open %s", quote_path);
             g_free(quote_path);
         }
     }
@@ -337,6 +337,8 @@ char* get_dir_icon(const gchar* path)
         if (entry != NULL) {
             icons[i] = icon_name_to_path(entry->icon, 24);
             desktop_entry_free(entry);
+        } else {
+            i--;
         }
 
     }

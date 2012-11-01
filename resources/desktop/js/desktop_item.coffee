@@ -128,7 +128,7 @@ class Folder extends DesktopEntry
         super
 
         if not @exec?
-            @exec = "xdg-open '#{@id}'"
+            @exec = "gvfs-open '#{@id}'"
 
         @div_pop = null
         @element.addEventListener('click', =>
@@ -206,7 +206,7 @@ class Folder extends DesktopEntry
                 )
             else
                 ele.addEventListener('dblclick', (env) ->
-                    DCore.run_command "xdg-open '#{this.id}'"
+                    DCore.run_command "gvfs-open '#{this.id}'"
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             ele_ul.appendChild(ele)
