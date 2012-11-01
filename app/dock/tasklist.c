@@ -96,6 +96,8 @@ gboolean is_normal_window(Display* dsp, Window w)
 {
     gulong items;
     void* data = get_window_property(dsp, w, ATOM_WINDOW_TYPE, &items);
+    if (data == NULL)
+        return FALSE;
     for (int i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
@@ -123,6 +125,9 @@ void update_task_list(Display* display, Window root)
 {
     gulong items;
     void* data = get_window_property(display, root, ATOM_CLIENT_LIST, &items);
+    if (data == NULL)
+        return;
+
     Window *cs = g_new(Window, items);
     for (int i=0; i<items; i++) {
         cs[i] = X_FETCH_32(data, i);
@@ -137,6 +142,8 @@ void update_active_window(Display* display, Window root)
 {
     gulong items;
     void* data = get_window_property(display, root, ATOM_ACTIVE_WINDOW, &items);
+    if (data == NULL)
+        return;
     Window aw = X_FETCH_32(data, 0);
     active_window_changed(display, aw);
     XFree(data);

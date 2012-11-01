@@ -218,7 +218,7 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
     Atom act_type;
     int act_format;
     gulong bytes_after;
-    guchar* p_data;
+    guchar* p_data = NULL;
 
     int result = XGetWindowProperty(dsp, w, pro,
             0, G_MAXULONG, FALSE,
@@ -227,7 +227,7 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
             items,
             &bytes_after,
             (void*)&p_data);
-    g_assert(result == Success);
+    /*g_warning("get_window_property error... %d %d\n", w, pro);*/
     return p_data;
 }
 
