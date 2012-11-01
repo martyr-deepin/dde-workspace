@@ -134,7 +134,7 @@ BaseEntry* parse_normal_file(const char* path)
         entry = (BaseEntry*)dir_entry;
 
         entry->type = g_strdup("Dir");
-        dir_entry->files = get_dir_file_list(path);
+        /*dir_entry->files = get_dir_file_list(path);*/
     } else {
         file_entry = g_new0(FileEntry, 1);
 
@@ -334,9 +334,11 @@ char* get_dir_icon(const gchar* path)
         BaseEntry* entry = parse_one_entry(entry_path);
         g_free(entry_path);
 
+        if (entry != NULL) {
+            icons[i] = icon_name_to_path(entry->icon, 24);
+            desktop_entry_free(entry);
+        }
 
-        icons[i] = icon_name_to_path(entry->icon, 24);
-        desktop_entry_free(entry);
     }
     g_dir_close(dir);
     char* data = generate_directory_icon(icons[0], icons[1], icons[2], icons[3]);
@@ -626,6 +628,7 @@ char* get_entry_info(const char* path)
         desktop_entry_free(entry);
         return ret;
     }
+    return NULL;
 }
 
 char* move_to_desktop(const char* path)

@@ -9,6 +9,10 @@ void js_post_message(const char* name, const char* format, ...)
         g_warning("signals has not init!\n");
         return;
     }
+    if (format == NULL) {
+        g_warning("There're something wrong. js_post_message should not post an null string. (ignore this post message)\n");
+        return;
+    }
 
     va_list args;
     va_start(args, format);

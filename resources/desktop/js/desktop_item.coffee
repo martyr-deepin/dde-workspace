@@ -163,7 +163,7 @@ class Folder extends DesktopEntry
         @fill_pop_block(items)
 
         DCore.signal_connect("dir_changed", @reflesh_pop_block)
-        DCore.Desktop.monitor_dir(@element.id)
+        #DCore.Desktop.monitor_dir(@element.id)
 
 
     reflesh_pop_block : (id) =>
@@ -262,7 +262,7 @@ class Folder extends DesktopEntry
     hide_pop_block : =>
         #div_grid.removeEventListener("click", @hide_pop_block)
         #div_grid.removeEventListener("contextmenu", @hide_pop_block)
-        DCore.Desktop.cancel_monitor_dir(@id)
+        #DCore.Desktop.cancel_monitor_dir(@id)
         @div_pop.parentElement.removeChild(@div_pop)
         delete @div_pop
         @div_pop = null

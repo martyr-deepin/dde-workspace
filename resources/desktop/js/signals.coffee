@@ -7,21 +7,17 @@ connect_default_signals = ->
     DCore.Desktop.notify_workarea_size()
 
 do_item_delete = (id) ->
-    echo id
-    w = Widget.look_up(id)
-    if w?
-        echo id
-        w.destroy()
+    w = Widget.look_up(id)?.destroy()
 
 do_item_update = (info) ->
-    alert info
+    echo info
+    Widget.look_up(info.EntryPath)?.destroy()
     w = create_item(info)
     if w?
         move_to_anywhere(w)
 
 do_item_rename = (data) ->
-    w = Widget.look_up(data.old_id)
-    w.destroy()
+    w = Widget.look_up(data.old_id)?.destroy()
 
     update_position(data.old_id, data.info.EntryPath)
 
@@ -30,5 +26,4 @@ do_item_rename = (data) ->
         move_to_anywhere(w)
 
 do_workarea_changed = (allo) ->
-    #echo "do_workarea_changed"
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
