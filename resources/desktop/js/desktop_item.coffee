@@ -269,26 +269,26 @@ class Folder extends DesktopEntry
 
 
     init_drop: =>
-        $(@element).drop
-            drop: (evt) =>
-                evt.preventDefault()
-                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-                #@icon_close()
-                @move_in(file)
-
-            over: (evt) =>
-                evt.preventDefault()
-                path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-                if path == "file://#{@path}"
-                    evt.dataTransfer.dropEffect = "none"
-                else
-                    evt.dataTransfer.dropEffect = "link"
-                    #@icon_open()
-
-            enter: (evt) =>
-
-            leave: (evt) =>
-                #@icon_close()
+        @element.addEventListener("drop", (evt) =>
+            evt.preventDefault()
+            file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
+            #@icon_close()
+            @move_in(file)
+        )
+        @element.addEventListener("dragover", (evt) =>
+            evt.preventDefault()
+            path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
+            if path == "file://#{@path}"
+                evt.dataTransfer.dropEffect = "none"
+            else
+                evt.dataTransfer.dropEffect = "link"
+                #@icon_open()
+        )
+        @element.addEventListener("dragenter", (evt) =>
+        )
+        @element.addEventListener("dragleave", (evt) =>
+            #@icon_close()
+        )
 
 
     move_in: (c_path) ->

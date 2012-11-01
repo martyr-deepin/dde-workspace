@@ -173,24 +173,25 @@ sort_item = ->
 
 
 init_grid_drop = ->
-    $("#item_grid").drop
-        "drop": (evt) ->
-            for file in evt.originalEvent.dataTransfer.files
-                pos = pixel_to_position(evt.originalEvent.x, evt.originalEvent.y)
-                p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
-                path = DCore.Desktop.move_to_desktop(file.path)
-                localStorage.setObject(path, p_info)
-            evt.dataTransfer.dropEffect = "move"
-
-        "over": (evt) ->
-            evt.dataTransfer.dropEffect = "move"
-            evt.preventDefault()
-
-        "enter": (evt) ->
-            #evt.dataTransfer.dropEffect = "move"
-
-        "leave": (evt) ->
-            #evt.dataTransfer.dropEffect = "move"
+    div_grid.addEventListener("drop", (evt) =>
+        for file in evt.dataTransfer.files
+            pos = pixel_to_position(evt.x, evt.y)
+            p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
+            path = DCore.Desktop.move_to_desktop(file.path)
+            localStorage.setObject(path, p_info)
+        evt.dataTransfer.dropEffect = "all"
+    )
+    div_grid.addEventListener("dragover", (evt) =>
+        evt.dataTransfer.dropEffect = "all"
+        evt.preventDefault()
+        return false
+    )
+    div_grid.addEventListener("dragenter", (evt) =>
+        #evt.dataTransfer.dropEffect = "move"
+    )
+    div_grid.addEventListener("dragleave", (evt) =>
+        #evt.dataTransfer.dropEffect = "move"
+    )
 
 
 set_item_selected = (w, top = false) ->
