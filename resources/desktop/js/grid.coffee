@@ -179,10 +179,10 @@ init_grid_drop = ->
             p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
             path = DCore.Desktop.move_to_desktop(file.path)
             localStorage.setObject(path, p_info)
-        evt.dataTransfer.dropEffect = "all"
+        evt.dataTransfer.dropEffect = "move"
     )
     div_grid.addEventListener("dragover", (evt) =>
-        evt.dataTransfer.dropEffect = "all"
+        evt.dataTransfer.dropEffect = "move"
         evt.preventDefault()
         return false
     )

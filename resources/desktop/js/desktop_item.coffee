@@ -40,11 +40,14 @@ class Item extends Widget
         el.draggable = true
         el.innerHTML = "
         <img draggable=false src=#{@icon} />
-        <div class=item_name>#{shorten_text(@name, MAX_ITEM_TITLE)}</div>
+        <div class=\"item_name\">#{shorten_text(@name, MAX_ITEM_TITLE)}</div>
         "
 
+        # search the img for store the icon
+        @item_icon = i for i in el.getElementsByTagName("img")
+
         # search the div for store the name
-        @item_name = sub_item for sub_item in el.childNodes when sub_item.className == "item_name"
+        @item_name = i for i in el.childNodes when i.className == "item_name"
 
         @element.addEventListener('click', (e) =>
             e.stopPropagation()
@@ -58,6 +61,10 @@ class Item extends Widget
         @init_drop?()
         #@init_keypress?()
         @element.contextMenu = m
+
+
+    item_update : (icon) =>
+        @item_icon.src = "#{icon}"
 
 
     item_exec : (env) =>
@@ -131,12 +138,18 @@ class Folder extends DesktopEntry
             @exec = "gvfs-open '#{@id}'"
 
         @div_pop = null
+        @show_pop = false
         @element.addEventListener('click', =>
             @show_pop_block()
         )
         @element.addEventListener('dblclick', =>
             @hide_pop_block()
         )
+
+
+    item_update : (icon) ->
+        super
+        if @show_pop == true then @reflesh_pop_block()
 
 
     item_blur: ->
@@ -160,23 +173,24 @@ class Folder extends DesktopEntry
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
 
+        @show_pop = true
+
         @fill_pop_block(items)
 
-        DCore.signal_connect("dir_changed", @reflesh_pop_block)
-        #DCore.Desktop.monitor_dir(@element.id)
 
+    reflesh_pop_block : =>
+        for i in @div_pop.getElementsByTagName("ul")
+            i.parentElement.removeChild(i)
 
-    reflesh_pop_block : (id) =>
-        if id.id == @id
-
-            for i in @div_pop.getElementsByTagName("ul")
+        for i in @div_pop.getElementsByTagName("div")
+            if i.id == "pop_downarrow" or i.id == "pop_uparrow"
                 i.parentElement.removeChild(i)
 
-            items = DCore.Desktop.get_items_by_dir(@element.id)
-            if items.length == 0
-                @hide_pop_block()
-            else
-                @fill_pop_block(items)
+        items = DCore.Desktop.get_items_by_dir(@element.id)
+        if items.length == 0
+            @hide_pop_block()
+        else
+            @fill_pop_block(items)
 
 
     fill_pop_block : (items) =>
@@ -255,17 +269,12 @@ class Folder extends DesktopEntry
             arrow.setAttribute("id", "pop_uparrow")
             @div_pop.insertBefore(arrow, @div_pop.firstChild)
 
-        #div_grid.addEventListener("click", @hide_pop_block)
-        #div_grid.addEventListener("contextmenu", @hide_pop_block)
-
 
     hide_pop_block : =>
-        #div_grid.removeEventListener("click", @hide_pop_block)
-        #div_grid.removeEventListener("contextmenu", @hide_pop_block)
-        #DCore.Desktop.cancel_monitor_dir(@id)
         @div_pop.parentElement.removeChild(@div_pop)
         delete @div_pop
         @div_pop = null
+        @show_pop = false
 
 
     init_drop: =>
