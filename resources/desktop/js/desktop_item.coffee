@@ -57,6 +57,11 @@ class Item extends Widget
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
         )
+        @element.addEventListener('contextmenu', (env) =>
+            env.stopPropagation()
+            if @selected == false then update_selected_stats(this, env)
+            return true
+        )
         @init_drag?()
         @init_drop?()
         #@init_keypress?()
@@ -112,6 +117,7 @@ class DesktopEntry extends Item
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
                 evt.dataTransfer.setData("text/plain", "#{@name}")
                 evt.dataTransfer.effectAllowed = "all"
+                @on_drag_start?()
         )
         el.addEventListener('dragend', (evt) =>
                 if evt.dataTransfer.dropEffect == "move"
@@ -123,10 +129,12 @@ class DesktopEntry extends Item
                     info.x = pos[0]
                     info.y = pos[1]
                     move_to_position(this, info)
+                    @on_drag_end?()
 
                 else if evt.dataTransfer.dropEffect == "link"
-                    node = evt.target
-                    node.parentNode.removeChild(node)
+                    #node = evt.target
+                    #node.parentNode.removeChild(node)
+                    return
         )
 
 
@@ -152,12 +160,22 @@ class Folder extends DesktopEntry
         if @show_pop == true then @reflesh_pop_block()
 
 
-    item_blur: ->
+    item_blur : ->
         if @div_pop != null then @hide_pop_block()
         super
 
 
-    destroy: ->
+    on_drag_start : =>
+        if @show_pop == true
+            @hide_pop_block()
+            @show_pop = true
+
+
+    on_drag_end : =>
+        if @show_pop == true then @show_pop_block()
+
+
+    destroy : ->
         if @div_pop != null then @hide_pop_block()
         super
 
