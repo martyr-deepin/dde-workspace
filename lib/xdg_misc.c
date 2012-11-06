@@ -641,7 +641,7 @@ char* move_to_desktop(const char* path)
     if (g_strcmp0(desktop_dir, dir) == 0) {
         g_free(desktop_dir);
         g_free(dir);
-        return NULL;
+        return g_strdup("");
     } 
 
     char* name = g_path_get_basename(path);
