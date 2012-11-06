@@ -3,8 +3,15 @@ document.getElementById("icon_desktop").addEventListener('click', (e) ->
     show = !show
     DCore.Dock.show_desktop(show)
 )
+document.getElementById("icon_desktop").addEventListener('mouseover', (e) ->
+    preview_close_window()
+)
+
 document.getElementById("icon_launcher").addEventListener('click', (e) ->
     DCore.run_command("launcher")
+)
+document.getElementById("icon_launcher").addEventListener('mouseover', (e) ->
+    preview_close_window()
 )
 
 format_two_bit = (s) ->

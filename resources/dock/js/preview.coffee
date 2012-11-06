@@ -3,6 +3,7 @@ ctx = preview.getContext('2d')
 document.body.addEventListener('mouseout', ->
 )
 
+
 current_id = 0
 interval_id = 0
 hide_timeout_id = 0
@@ -39,3 +40,10 @@ preview_active = (id, offset) ->
         update_preview()
         interval_id = setInterval(update_preview, 600)
         DCore.Dock.show_temp_region(offset, 0, 300, 200)
+
+preview_close_window = ->
+    preview_disactive(80)
+
+
+
+DCore.signal_connect("leave-notify", preview_close_window)

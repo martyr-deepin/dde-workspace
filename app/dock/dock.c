@@ -12,6 +12,11 @@ void close_show_temp();
 void show_temp_region(double x, double y, double width, double height);
 cairo_rectangle_int_t base_rect = {0, HEIGHT - 50, 0, 50/* the width will change*/};
 
+gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
+{
+    js_post_message("leave-notify", NULL);
+}
+
 
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
@@ -33,6 +38,8 @@ int main(int argc, char* argv[])
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
+    g_signal_connect (webview, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+
 
     tray_init(container);
     monitor_tasklist_and_activewindow();
