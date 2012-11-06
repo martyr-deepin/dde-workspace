@@ -49,13 +49,21 @@ class Item extends Widget
         # search the div for store the name
         @item_name = i for i in el.childNodes when i.className == "item_name"
 
+        @element.addEventListener('mousedown', (e) =>
+            update_selected_stats(this, e)
+            e.stopPropagation()
+        )
         @element.addEventListener('click', (e) =>
             e.stopPropagation()
-            update_selected_stats(this, e)
         )
         @element.addEventListener('dblclick', @item_exec)
         @element.addEventListener('itemselected', (env) ->
             echo "menu clicked:id=#{env.id} title=#{env.title}"
+        )
+        @element.addEventListener('contextmenu', (env) =>
+            env.stopPropagation()
+            if @selected == false then update_selected_stats(this, env)
+            return true
         )
         @init_drag?()
         @init_drop?()
@@ -72,15 +80,21 @@ class Item extends Widget
         DCore.run_command @exec
 
 
-    item_focus : ->
+    item_selected : ->
         @selected = true
         @element.className += " item_selected"
+
+
+    item_normal : ->
+        @selected = false
+        @element.className = @element.className.replace(" item_selected", "")
+
+
+    item_focus : ->
         @item_name.innerText = @name
 
 
     item_blur : ->
-        @selected = false
-        @element.className = @element.className.replace(" item_selected", "")
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
 
@@ -112,6 +126,7 @@ class DesktopEntry extends Item
                 evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
                 evt.dataTransfer.setData("text/plain", "#{@name}")
                 evt.dataTransfer.effectAllowed = "all"
+                @on_drag_start?()
         )
         el.addEventListener('dragend', (evt) =>
                 if evt.dataTransfer.dropEffect == "move"
@@ -123,10 +138,12 @@ class DesktopEntry extends Item
                     info.x = pos[0]
                     info.y = pos[1]
                     move_to_position(this, info)
+                    @on_drag_end?()
 
                 else if evt.dataTransfer.dropEffect == "link"
-                    node = evt.target
-                    node.parentNode.removeChild(node)
+                    #node = evt.target
+                    #node.parentNode.removeChild(node)
+                    return
         )
 
 
@@ -139,9 +156,6 @@ class Folder extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
-        @element.addEventListener('click', =>
-            @show_pop_block()
-        )
         @element.addEventListener('dblclick', =>
             @hide_pop_block()
         )
@@ -152,12 +166,27 @@ class Folder extends DesktopEntry
         if @show_pop == true then @reflesh_pop_block()
 
 
-    item_blur: ->
+    item_focus : ->
+        super
+        @show_pop_block()
+
+
+    item_blur : ->
         if @div_pop != null then @hide_pop_block()
         super
 
 
-    destroy: ->
+    on_drag_start : =>
+        if @show_pop == true
+            @hide_pop_block()
+            @show_pop = true
+
+
+    on_drag_end : =>
+        if @show_pop == true then @show_pop_block()
+
+
+    destroy : ->
         if @div_pop != null then @hide_pop_block()
         super
 

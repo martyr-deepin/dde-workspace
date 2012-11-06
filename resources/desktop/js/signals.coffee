@@ -14,7 +14,7 @@ do_item_delete = (id) ->
 do_item_update = (info) ->
     w = Widget.look_up(info.EntryPath)
     if w?
-        w.item_update(info.Icon)
+        w.item_update?(info.Icon)
     else
         w = create_item(info)
         if w?

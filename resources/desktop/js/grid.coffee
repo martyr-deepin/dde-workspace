@@ -195,19 +195,19 @@ init_grid_drop = ->
 
 
 set_item_selected = (w, top = false) ->
-    w.item_focus()
+    w.item_selected()
     if top = true
         selected_item.unshift(w.id)
     else
         selected_item.push(w.id)
-    return true
+    return
 
 
 cancel_item_selected = (w) ->
     for i in [0...selected_item.length] by 1
         if selected_item[i] == w.id
             selected_item.splice(i, 1)
-            w.item_blur()
+            w.item_normal()
             return true
     return false
 
@@ -216,19 +216,34 @@ cancel_item_selected_delay = ->
     echo "on Timeout #{to_blur}"
     to_blur = 0
     cancel_item_selected(last_widget)
+    last_widget.item_blur()
+    last_widget = null
+    return
+
+
+cancel_all_selected_stats = ->
+    Widget.look_up(i)?.item_normal() for i in selected_item
+    selected_item.splice(0)
+    return
 
 
 update_selected_stats = (w, env) ->
     if env.ctrlKey
         if selected_item.length == 0
             set_item_selected(w)
+            w.item_focus()
         else
-            if cancel_item_selected(w) == false
+            if cancel_item_selected(w)
+                last_widget?.item_blur()
+                last_widget = null
+            else
                 set_item_selected(w)
+                last_widget?.item_blur()
+                w.item_focus()
 
     else if env.shiftKey
         if selected_item.length > 1
-            Widget.look_up(i)?.item_blur() for i in selected_item.splice(0, selected_item.length - 1)
+            Widget.look_up(i)?.item_normal() for i in selected_item.splice(0, selected_item.length - 1)
 
         if selected_item.length == 1
             coord = pixel_to_position(env.x, env.y)
@@ -241,20 +256,28 @@ update_selected_stats = (w, env) ->
                     i_pos = load_position(val)
                     if compare_position(end_pos, i_pos) > 0 and compare_position(start_pos, i_pos) < 0
                         set_item_selected(val, true)
+
                     set_item_selected(w)
+                    last_widget?.item_blur()
+                    w.item_focus()
 
             else if ret == 0
                 cancel_item_selected(selected_item[0])
+                last_widget?.item_blur()
 
             else
                 for key, val of Widget.object_table
                     i_pos = load_position(val)
                     if compare_position(start_pos, i_pos) > 0 and compare_position(end_pos, i_pos) < 0
                         set_item_selected(val, true)
+
                 set_item_selected(w)
+                last_widget?.item_blur()
+                w.item_focus()
 
         else
             set_item_selected(w)
+            w.item_focus()
 
     else
         if last_widget == w and env.timeStamp - last_timestamp < 200 and to_blur != 0
@@ -265,7 +288,8 @@ update_selected_stats = (w, env) ->
             if selected_item.length > 1
                 cancel_all_selected_stats()
                 set_item_selected(w)
-                echo "selected_item.length > 1"
+                last_widget?.item_blur()
+                w.item_focus()
 
             else if selected_item.length == 1
                 if w.selected == true
@@ -277,28 +301,31 @@ update_selected_stats = (w, env) ->
                 else
                     cancel_all_selected_stats()
                     set_item_selected(w)
-                    echo "cancel all, select w"
+                    last_widget?.item_blur()
+                    w.item_focus()
             else
                 set_item_selected(w)
-                echo "select w"
+                last_widget?.item_blur()
+                w.item_focus()
 
     last_widget = w
     last_timestamp = env.timeStamp
 
 
-cancel_all_selected_stats = ->
-    Widget.look_up(i)?.item_blur() for i in selected_item
-    selected_item.splice(0)
-
-
 gird_left_click = (env) ->
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
+        if last_widget?
+            last_widget.item_blur()
+            last_widget = null
 
 
 grid_right_click = (env) ->
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
+        if last_widget?
+            last_widget.item_blur()
+            last_widget = null
 
 
 create_item_grid = ->
