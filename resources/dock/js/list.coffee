@@ -1,25 +1,16 @@
 container = document.getElementById('icon_list')
-preview = document.getElementById('preview')
-
-#for info in DCore.Dock.get_tasklist()
-
 
 class Client extends Widget
     constructor: (@id, @icon, @title)->
         super
-        @element.innerHTML = "
-        <img src=#{@icon} title=#{@title}/>
-        "
+        @update_content @title, @icon
+
+        container.appendChild(@element)
+
         @element.addEventListener('click', @click)
         @element.addEventListener('dblclick', @dbclick)
-        #@element.addEventListener('mouseover', @over)
-        container.appendChild(@element)
-    over: ->
-        setInterval( =>
-            data_uri = DCore.Dock.fetch_window_preview(@id, 300, 200)
-            preview.src = data_uri
-        200)
 
+        @element.addEventListener('mouseover', @over)
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
     deactive: ->
@@ -32,7 +23,15 @@ class Client extends Widget
         DCore.Dock.set_active_window(@id)
     dbclick: (e) ->
         DCore.Dock.minimize_window(@id)
-
+    over: (e) =>
+        offset = @element.offsetLeft - 150
+        if offset < 0
+            offset = 0
+        preview_active(@id, offset)
+    update_content: (title, icon) ->
+        @element.innerHTML = "
+        <img src=#{icon} title=\"#{title}\"/>
+        "
 
 
 active_win = null
@@ -49,7 +48,12 @@ DCore.signal_connect("active_window_changed", (info)->
 )
 
 DCore.signal_connect("task_added", (info) ->
-    new Client(info.id, info.icon, info.title)
+    echo "task_added...."
+    w = Widget.look_up(info.id)
+    if w
+        w.update_content(info.title, info.icon)
+    else
+        new Client(info.id, info.icon, info.title)
 )
 
 DCore.signal_connect("task_removed", (info) ->
