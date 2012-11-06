@@ -123,27 +123,28 @@ class DesktopEntry extends Item
     init_drag: ->
         el = @element
         el.addEventListener('dragstart', (evt) =>
-                evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
-                evt.dataTransfer.setData("text/plain", "#{@name}")
-                evt.dataTransfer.effectAllowed = "all"
-                @on_drag_start?()
+            update_selected_stats(this, evt)
+            evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
+            evt.dataTransfer.setData("text/plain", "#{@name}")
+            evt.dataTransfer.effectAllowed = "all"
+            @on_drag_start?()
         )
         el.addEventListener('dragend', (evt) =>
-                if evt.dataTransfer.dropEffect == "move"
-                    evt.preventDefault()
-                    node = evt.target
-                    pos = pixel_to_position(evt.x, evt.y)
+            if evt.dataTransfer.dropEffect == "move"
+                evt.preventDefault()
+                node = evt.target
+                pos = pixel_to_position(evt.x, evt.y)
 
-                    info = localStorage.getObject(@path)
-                    info.x = pos[0]
-                    info.y = pos[1]
-                    move_to_position(this, info)
-                    @on_drag_end?()
+                info = localStorage.getObject(@path)
+                info.x = pos[0]
+                info.y = pos[1]
+                move_to_position(this, info)
+                @on_drag_end?()
 
-                else if evt.dataTransfer.dropEffect == "link"
-                    #node = evt.target
-                    #node.parentNode.removeChild(node)
-                    return
+            else if evt.dataTransfer.dropEffect == "link"
+                #node = evt.target
+                #node.parentNode.removeChild(node)
+                return
         )
 
 
@@ -309,23 +310,34 @@ class Folder extends DesktopEntry
     init_drop: =>
         @element.addEventListener("drop", (evt) =>
             evt.preventDefault()
+            evt.stopPropagation()
             file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
             #@icon_close()
             @move_in(file)
         )
         @element.addEventListener("dragover", (evt) =>
             evt.preventDefault()
+            evt.stopPropagation()
             path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-            if path == "file://#{@path}"
+            if @path == path.substring(7)
                 evt.dataTransfer.dropEffect = "none"
             else
                 evt.dataTransfer.dropEffect = "link"
-                #@icon_open()
         )
         @element.addEventListener("dragenter", (evt) =>
+            evt.preventDefault()
+            evt.stopPropagation()
+            if @selected == false
+                @item_selected()
+                @selected = false
         )
         @element.addEventListener("dragleave", (evt) =>
+            evt.preventDefault()
+            evt.stopPropagation()
             #@icon_close()
+            if @selected == false
+                @item_normal()
+                @selected = false
         )
 
 
