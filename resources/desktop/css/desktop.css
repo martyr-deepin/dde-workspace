@@ -41,7 +41,7 @@ body {
     text-align: center;
     font-size: small;
     color: white;
-    text-shadow: 0px 3px 3px black;
+    text-shadow: 2px 0 3px #6e6e6e, 0 2px 3px #6e6e6e, -2px 0 3px #6e6e6e, 0 -2px 3px #6e6e6e;
     outline: none;
 }
 
@@ -154,8 +154,8 @@ body {
     color:#FFF;
     word-wrap:break-word;
     word-break:break-all;
+    text-shadow: 2px 0 3px #6e6e6e, 0 2px 3px #6e6e6e, -2px 0 3px #6e6e6e, 0 -2px 3px #6e6e6e;
     overflow: hidden;
-
 }
 #pop_uparrow {
     width:0;
