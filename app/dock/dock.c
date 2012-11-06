@@ -4,8 +4,13 @@
 #include "utils.h"
 #include "tray.h"
 #include "tasklist.h"
+#include <cairo.h>
 
 #define HEIGHT (50 + 200)
+
+void close_show_temp();
+void show_temp_region(double x, double y, double width, double height);
+cairo_rectangle_int_t base_rect = {0, HEIGHT - 50, 0, 50/* the width will change*/};
 
 
 GtkWidget* container = NULL;
@@ -35,18 +40,38 @@ int main(int argc, char* argv[])
     GdkScreen* screen = gdk_screen_get_default();
     int s_width = gdk_screen_get_width(screen);
     int s_height = gdk_screen_get_height(screen);
+    base_rect.width = s_width;
     //TODO: when change resolution
 
     gtk_widget_realize(container);
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, 55, 0, s_width);
-    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+    set_wmspec_dock_hint(gtk_widget_get_window(container));
     gtk_window_resize(GTK_WINDOW(container), s_width, HEIGHT);
     gtk_window_move(GTK_WINDOW(container), 0, s_height - HEIGHT);
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_window_set_keep_above(GTK_WINDOW(container), TRUE);
 
+    /*show_temp_region(0, 0, 300, 200);*/
+    close_show_temp();
+
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
+}
+
+
+void show_temp_region(double x, double y, double width, double height)
+{
+    cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
+    cairo_rectangle_int_t tmp = {(int)x, (int)y, (int)width, (int)height};
+    cairo_region_union_rectangle(region, &tmp);
+    gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
+    cairo_region_destroy(region);
+}
+void close_show_temp()
+{
+    cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
+    gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
+    cairo_region_destroy(region);
 }

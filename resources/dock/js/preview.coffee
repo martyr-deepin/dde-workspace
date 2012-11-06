@@ -26,6 +26,7 @@ preview_disactive = (timeout) ->
     hide_timeout_id = setTimeout(->
                     clearInterval(interval_id)
                     ctx.clearRect(0, 0, 300, 200)
+                    DCore.Dock.close_show_temp()
                 timeout)
 
 preview_active = (id, offset) ->
@@ -37,3 +38,4 @@ preview_active = (id, offset) ->
         preview_disactive(3000)
         update_preview()
         interval_id = setInterval(update_preview, 600)
+        DCore.Dock.show_temp_region(offset, 0, 300, 200)

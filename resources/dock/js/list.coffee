@@ -1,5 +1,6 @@
 container = document.getElementById('icon_list')
 
+
 class Client extends Widget
     constructor: (@id, @icon, @title)->
         super
@@ -48,7 +49,6 @@ DCore.signal_connect("active_window_changed", (info)->
 )
 
 DCore.signal_connect("task_added", (info) ->
-    echo "task_added...."
     w = Widget.look_up(info.id)
     if w
         w.update_content(info.title, info.icon)
