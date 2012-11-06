@@ -49,9 +49,12 @@ class Item extends Widget
         # search the div for store the name
         @item_name = i for i in el.childNodes when i.className == "item_name"
 
+        @element.addEventListener('mousedown', (e) =>
+            update_selected_stats(this, e)
+            e.stopPropagation()
+        )
         @element.addEventListener('click', (e) =>
             e.stopPropagation()
-            update_selected_stats(this, e)
         )
         @element.addEventListener('dblclick', @item_exec)
         @element.addEventListener('itemselected', (env) ->
@@ -77,15 +80,21 @@ class Item extends Widget
         DCore.run_command @exec
 
 
-    item_focus : ->
+    item_selected : ->
         @selected = true
         @element.className += " item_selected"
+
+
+    item_normal : ->
+        @selected = false
+        @element.className = @element.className.replace(" item_selected", "")
+
+
+    item_focus : ->
         @item_name.innerText = @name
 
 
     item_blur : ->
-        @selected = false
-        @element.className = @element.className.replace(" item_selected", "")
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
 
@@ -147,9 +156,6 @@ class Folder extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
-        @element.addEventListener('click', =>
-            @show_pop_block()
-        )
         @element.addEventListener('dblclick', =>
             @hide_pop_block()
         )
@@ -158,6 +164,11 @@ class Folder extends DesktopEntry
     item_update : (icon) ->
         super
         if @show_pop == true then @reflesh_pop_block()
+
+
+    item_focus : ->
+        super
+        @show_pop_block()
 
 
     item_blur : ->
