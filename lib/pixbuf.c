@@ -76,6 +76,48 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
 
     return data;
 }
+char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf)
+{
+    guchar* buf = NULL;
+    gsize size = 0;
+
+    int width = gdk_pixbuf_get_width(pixbuf);
+    int height = gdk_pixbuf_get_height(pixbuf);
+    int stride = gdk_pixbuf_get_rowstride(pixbuf);
+    int pix_bit = stride / width;
+
+    int offset = 0;
+    buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
+
+    g_assert(buf != NULL);
+    GString* string = g_string_sized_new(height * stride + 10);
+    g_string_append_c(string, '[');
+
+    if (pix_bit == 4) {
+        for (int i=0; i<height; i++) 
+            for (int j=0; j<width; j++) {
+                offset = i * stride + j*4;
+                g_string_append_printf(string, "%d,%d,%d,%d,", 
+                        buf[offset],
+                        buf[offset+1],
+                        buf[offset+2],
+                        buf[offset+3]
+                        );
+            }
+    } else if (pix_bit == 3) {
+        for (int i=0; i<height; i++) 
+            for (int j=0; j<width; j++) {
+                offset = i * stride + j*3;
+                g_string_append_printf(string, "%d,%d,%d,255,", 
+                        buf[offset],
+                        buf[offset+1],
+                        buf[offset+2]);
+            }
+    }
+
+    g_string_overwrite(string, string->len-1, "]");
+    return g_string_free(string, FALSE);
+}
 
 char* get_data_uri_by_path(const char* path)
 {

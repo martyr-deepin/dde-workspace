@@ -1,5 +1,5 @@
 body {
-    background: rgba(10, 10, 10, 0.3);
+    background: rgba(10, 10, 10, 0.5);
     color: white;
     /*padding-top:10px;*/
     max-height: 50px;
@@ -8,14 +8,13 @@ body {
 
 
 #container {
-    position:relative;
-    /*top: 10px;*/
-    /*position: fixed;*/
-    /*bottom:0px;*/
+    position:fixed;
+    bottom: 0px;
     display: -webkit-box;
     min-height: 50px;
     max-height: 50px;
-    /*background: rgba(0, 20, 20, 0.8);*/
+    width: 100%;
+    background: rgba(0, 20, 20, 0.8);
 }
 
 #icon_default {
@@ -28,7 +27,8 @@ body {
 }
 
 #notifyarea {
-    /*background: rgba(0, 100, 0, 0.3);*/
+    /*position: absolute;*/
+    background: rgba(0, 100, 0, 0.3);
     bottom:0px;
     right: 0px;
 }
@@ -56,15 +56,18 @@ body {
 }
 
 
-#preview {
+#preview_box {
     position: fixed;
-    top:0px;
+    width: 300px;
+    height: 200px;
+    background: black;
+    background: rgba(100, 100, 0, 0.0);
 }
 
 #clock {
-    position: fixed;
+    position: absolute;
     right:10px;
-    top:0;
+    /*top:0;*/
     /*color: #164BA0; */
     /*background-color: #D1D1D1; */
     /*border: 1px solid #83AAD3; */

@@ -152,7 +152,10 @@ GtkWidget* d_webview_new()
     g_object_set(G_OBJECT(setting), 
             /*"enable-default-context-menu", FALSE,*/
             "enable-developer-extras", TRUE, 
-            "html5-local-storage-database-path", config_path,
+            /*"html5-local-storage-database-path", config_path,*/
+            "enable-plugins", FALSE,
+            "javascript-can-access-clipboard",
+
             NULL);
     webkit_set_web_database_directory_path(config_path);
     g_free(config_path);

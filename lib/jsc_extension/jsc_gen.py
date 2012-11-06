@@ -361,6 +361,7 @@ class JSCode(Params):
     if (r == NULL)
         FILL_EXCEPTION(context, exception, "JSON Data Error");
     JSStringRelease(scriptJS);
+    JSGarbageCollect(context); //JSC1.8 can't auto free this json object. 
     return r;
 """
     def raw(self):

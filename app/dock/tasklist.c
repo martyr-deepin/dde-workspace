@@ -11,6 +11,7 @@ Atom ATOM_WINDOW_ICON;
 Atom ATOM_WINDOW_TYPE;
 Atom ATOM_WINDOW_TYPE_NORMAL;
 Atom ATOM_WINDOW_NAME;
+Atom ATOM_WINDOW_CLASS;
 Atom ATOM_WINDOW_STATE;
 Atom ATOM_WINDOW_NET_STATE;
 Atom ATOM_CLOSE_WINDOW;
@@ -49,41 +50,32 @@ Window _active_client_id = 0;
 static 
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
 
-char* _get_window_icon(Display *dsp, Window w);
-Client* create_client_from_window(Display* dsp, Window w)
+void _update_window_icon(Client *c);
+void _update_window_title(Client *c); 
+void _update_window_class(Client *c);
+
+Client* create_client_from_window(Window w)
 {
-    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(dsp), w);
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
     gdk_window_set_events(win, GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
-    XClassHint ch;
-    XGetClassHint(dsp, w, &ch);
-
     Client* c = g_new(Client, 1);
-    c->icon = _get_window_icon(dsp, w);
-    c->title = g_strdup(ch.res_name);
-    c->clss = g_strdup(ch.res_class);
     c->window = w;
     c->gdkwindow = win;
 
-    XFree(ch.res_name);
-    XFree(ch.res_class);
+    _update_window_icon(c);
+    _update_window_title(c);
+    _update_window_class(c);
 
     return c;
 }
-void client_free(Client* c)
+
+void _update_client_info(Client *c)
 {
-    js_post_message("task_removed", "{\"id\": %d}", (int)c->window);
-    g_free(c->icon);
-    g_free(c->title);
-    g_free(c->clss);
-    gdk_window_remove_filter(c->gdkwindow, 
-            (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
-    g_object_unref(c->gdkwindow);
-    g_free(c);
+    js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
+            (int)c->window, c->title, c->clss, c->icon);
 }
-
-
 void active_window_changed(Display* dsp, Window w)
 {
     if (_active_client_id != w) {
@@ -92,10 +84,25 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
-gboolean is_normal_window(Display* dsp, Window w)
+
+void client_free(Client* c)
+{
+    js_post_message("task_removed", "{\"id\": %d}", (int)c->window);
+    gdk_window_remove_filter(c->gdkwindow,
+            (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
+    g_object_unref(c->gdkwindow);
+    g_free(c->icon);
+    g_free(c->title);
+    g_free(c->clss);
+    g_free(c);
+}
+
+
+
+gboolean is_normal_window(Window w)
 {
     gulong items;
-    void* data = get_window_property(dsp, w, ATOM_WINDOW_TYPE, &items);
+    void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
     if (data == NULL)
         return FALSE;
     for (int i=0; i<items; i++) {
@@ -108,23 +115,22 @@ gboolean is_normal_window(Display* dsp, Window w)
     return FALSE;
 }
 
-void client_list_changed(Display* dsp, Window* cs, size_t n)
+void client_list_changed(Window* cs, size_t n)
 {
     for (int i=0; i<n; i++) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
-        if (c == NULL && is_normal_window(dsp, cs[i])) {
-            c = create_client_from_window(dsp, cs[i]);
+        if (c == NULL && is_normal_window(cs[i])) {
+            c = create_client_from_window(cs[i]);
             g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
-            js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
-                    (int)cs[i], c->title, c->clss, c->icon);
+            _update_client_info(c);
         }
     }
 }
 
-void update_task_list(Display* display, Window root)
+void update_task_list(Window root)
 {
     gulong items;
-    void* data = get_window_property(display, root, ATOM_CLIENT_LIST, &items);
+    void* data = get_window_property(_dsp, root, ATOM_CLIENT_LIST, &items);
     if (data == NULL)
         return;
 
@@ -134,7 +140,7 @@ void update_task_list(Display* display, Window root)
     }
     XFree(data);
 
-    client_list_changed(display, cs, items);
+    client_list_changed(cs, items);
     g_free(cs);
 }
 
@@ -163,12 +169,13 @@ void* argb_to_rgba(gulong* data, size_t s)
     return img;
 }
 
-char* _get_window_icon(Display *dsp, Window win)
+void _update_window_icon(Client* c)
 {
     gulong items;
-    gulong* data = get_window_property(dsp, win, ATOM_WINDOW_ICON, &items);
+    gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
-        return NULL;
+        c->icon = NULL;
+        return;
     }
 
     int w=0, h=0;
@@ -190,12 +197,49 @@ char* _get_window_icon(Display *dsp, Window win)
     void* img = argb_to_rgba(p, w*h);
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
+    c->icon = get_data_uri_by_pixbuf(pixbuf);
+    g_object_unref(pixbuf);
 
-    char* data_uri = get_data_uri_by_pixbuf(pixbuf);
     g_free(img);
-
+    
     XFree(data);
-    return data_uri;
+}
+
+void _update_window_title(Client* c)
+{
+    long item;
+    char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
+    if (name != NULL)
+        c->title = g_strdup(name);
+    else
+        c->title = g_strdup("Unknow Name");
+    XFree(name);
+}
+
+void _update_window_class(Client* c)
+{
+    XClassHint ch;
+    XGetClassHint(_dsp, c->window, &ch);
+    c->clss = g_strdup(ch.res_class);
+    XFree(ch.res_name);
+    XFree(ch.res_class);
+}
+void _update_window_state(Client* c)
+{
+    gulong items = 0;
+    void* data = get_window_property(_dsp, c->window, ATOM_WINDOW_STATE, &items);
+    if (data != NULL) {
+        int state = X_FETCH_32(data, 0);
+        XFree(data);
+        switch (state) {
+            case WithdrawnState:
+                js_post_message("task_withdraw", "{\"id\":%d}", (int)c->window);
+                break;
+            case NormalState:
+                js_post_message("task_normal", "{\"id\":%d}", (int)c->window);
+                break;
+        }
+    }
 }
 
 
@@ -204,12 +248,13 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
     if (((XEvent*)xevent)->type == PropertyNotify) {
         XPropertyEvent* ev = xevent;
         if (ev->atom == ATOM_CLIENT_LIST) {
-            update_task_list(ev->display, ev->window);
+            update_task_list(ev->window);
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             update_active_window(ev->display, ev->window);
         }
     } 
 }
+
 
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
@@ -218,24 +263,18 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
         g_hash_table_remove(_clients_table, GINT_TO_POINTER(win));
     } else if (xev->type == PropertyNotify) {
         XPropertyEvent* ev = xevent;
-        if (ev->atom == ATOM_WINDOW_ICON) {
-        } else if (ev->atom == ATOM_WINDOW_NAME) {
-        } else if (ev->atom == ATOM_WINDOW_STATE) {
-            gulong items = 0;
-            void* data = get_window_property(_dsp, win, ATOM_WINDOW_STATE, &items);
-            if (data != NULL) {
-                int state = X_FETCH_32(data, 0);
-                XFree(data);
-                switch (state) {
-                    case WithdrawnState:
-                        js_post_message("task_withdraw", "{\"id\":%d}", (int)win);
-                        break;
-                    case NormalState:
-                        js_post_message("task_normal", "{\"id\":%d}", (int)win);
-                        break;
-                }
+        Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(win));
+        if (c != NULL) {
+            if (ev->atom == ATOM_WINDOW_ICON) {
+                _update_window_icon(c);
+                _update_client_info(c);
+            } else if (ev->atom == ATOM_WINDOW_NAME) {
+                _update_window_title(c);
+                _update_client_info(c);
+            } else if (ev->atom == ATOM_WINDOW_STATE) {
+                _update_window_state(c);
+                _update_client_info(c);
             }
-
         }
     }
     return GDK_FILTER_CONTINUE;
@@ -254,8 +293,7 @@ void monitor_tasklist_and_activewindow()
 
     gdk_window_add_filter(root, monitor_root_change, NULL);
 
-    GdkDisplay* display = gdk_display_get_default();
-    update_task_list(GDK_DISPLAY_XDISPLAY(display), GDK_WINDOW_XID(root));
+    update_task_list(GDK_WINDOW_XID(root));
 }
 
 //JS_EXPORT
@@ -267,9 +305,8 @@ void emit_update_task_list()
 {
     g_hash_table_remove_all(_clients_table);
 
-    GdkDisplay* display = gdk_display_get_default();
     GdkWindow* root = gdk_get_default_root_window();
-    update_task_list(GDK_DISPLAY_XDISPLAY(display), GDK_WINDOW_XID(root));
+    update_task_list(GDK_WINDOW_XID(root));
 }
 void set_active_window(double id)
 {
@@ -330,10 +367,20 @@ char* fetch_window_preview(double xid, double dest_width, double dest_height)
     GdkPixbuf* preview = gdk_pixbuf_scale_simple(pixbuf, dest_width, dest_height, GDK_INTERP_BILINEAR);
     g_assert(preview != NULL);
 
-    char* ret = get_data_uri_by_pixbuf(preview);
+    char* data = pixbuf_to_canvas_data(preview);
+    char* ret = g_strdup_printf("{\"width\":%d, \"height\":%d, \"data\":%s}", 
+            (int)dest_width, (int)dest_height, data);
+
+    g_free(data);
+
 
     g_object_unref(pixbuf);
     g_object_unref(preview);
 
     return ret;
+}
+
+double test_get_n()
+{
+    return (double)g_hash_table_size(_clients_table);
 }

@@ -220,6 +220,7 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
     gulong bytes_after;
     guchar* p_data = NULL;
 
+    gdk_error_trap_push();
     int result = XGetWindowProperty(dsp, w, pro,
             0, G_MAXULONG, FALSE,
             AnyPropertyType, &act_type,
@@ -227,8 +228,14 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
             items,
             &bytes_after,
             (void*)&p_data);
-    /*g_warning("get_window_property error... %d %d\n", w, pro);*/
-    return p_data;
+    int err = gdk_error_trap_pop();
+
+    if (err != Success || result != Success) {
+        g_warning("get_window_property error... %d %d\n", w, pro);
+        return NULL;
+    } else {
+        return p_data;
+    }
 }
 
 
