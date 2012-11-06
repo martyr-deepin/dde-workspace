@@ -9,24 +9,24 @@ void js_post_message(const char* name, const char* format, ...)
         g_warning("signals has not init!\n");
         return;
     }
-    if (format == NULL) {
-        g_warning("There're something wrong. js_post_message should not post an null string. (ignore this post message)\n");
-        return;
-    }
-
-    va_list args;
-    va_start(args, format);
-    char* json_str = g_strdup_vprintf(format, args);
-    va_end(args);
-
 
     JSContextRef ctx = get_global_context();
     JSObjectRef cb = g_hash_table_lookup(signals, name);
+
     if (cb != NULL) {
-        JSValueRef args[1];
-        args[0] = json_from_cstr(ctx, json_str);
-        g_free(json_str);
-        JSObjectCallAsFunction(ctx, cb, NULL, 1, args, NULL);
+        if (format == NULL) {
+            JSObjectCallAsFunction(ctx, cb, NULL, 0, NULL, NULL);
+        } else {
+            va_list args;
+            va_start(args, format);
+            char* json_str = g_strdup_vprintf(format, args);
+            va_end(args);
+
+            JSValueRef js_args[1];
+            js_args[0] = json_from_cstr(ctx, json_str);
+            g_free(json_str);
+            JSObjectCallAsFunction(ctx, cb, NULL, 1, js_args, NULL);
+        }
     } else {
         g_warning("signal %s has not connected!\n", name);
     }
