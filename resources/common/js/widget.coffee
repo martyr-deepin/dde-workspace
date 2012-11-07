@@ -51,7 +51,14 @@ _events = [
     'DOMNodeInserted',
     'DOMNodeRemoved',
     'DOMSubtreeModified',
-    'textInput'
+    'textInput',
+    'dragstart',
+    'dragend',
+    'dragover',
+    'drop',
+    'dragenter',
+    'dragleave',
+    'itemselected',
 ]
 
 
