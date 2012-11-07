@@ -187,6 +187,7 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.dataTransfer.dropEffect = "move"
         evt.preventDefault()
+        echo("grid dragover #{evt.dataTransfer.dropEffect}")
         return false
     )
     div_grid.addEventListener("dragenter", (evt) =>
@@ -316,6 +317,7 @@ update_selected_stats = (w, env) ->
 
 
 gird_left_click = (env) ->
+    echo("gird_left_click")
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
         if last_widget?
@@ -324,6 +326,7 @@ gird_left_click = (env) ->
 
 
 grid_right_click = (env) ->
+    echo("grid_right_click")
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
         if last_widget?
@@ -340,3 +343,11 @@ create_item_grid = ->
     div_grid.addEventListener("click", gird_left_click)
     div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
+
+class ItemGrid
+    contructor : (parentElement) ->
+        @_parent_element = parentElement
+        @_workarea_width = 0
+        @_workarea_height = 0
+        @_offset_x = 0
+        @_offset_y = 0

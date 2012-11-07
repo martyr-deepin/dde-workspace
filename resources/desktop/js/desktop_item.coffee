@@ -305,9 +305,10 @@ class Folder extends DesktopEntry
 
 
     hide_pop_block : =>
-        @div_pop.parentElement.removeChild(@div_pop)
-        delete @div_pop
-        @div_pop = null
+        if @div_pop?
+            @div_pop.parentElement?.removeChild(@div_pop)
+            delete @div_pop
+            @div_pop = null
         @show_pop = false
 
 
@@ -315,9 +316,10 @@ class Folder extends DesktopEntry
         @element.addEventListener("drop", (evt) =>
             evt.preventDefault()
             evt.stopPropagation()
-            file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-            #@icon_close()
-            @move_in(file)
+            if evt.dataTransfer.dropEffect == "link"
+                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
+                #@icon_close()
+                @move_in(file)
         )
         @element.addEventListener("dragover", (evt) =>
             evt.preventDefault()
@@ -327,6 +329,8 @@ class Folder extends DesktopEntry
                 evt.dataTransfer.dropEffect = "none"
             else
                 evt.dataTransfer.dropEffect = "link"
+
+            echo("item dragover #{evt.dataTransfer.dropEffect}")
         )
         @element.addEventListener("dragenter", (evt) =>
             evt.preventDefault()
