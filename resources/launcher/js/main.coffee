@@ -1,7 +1,7 @@
 do_workarea_changed = (alloc)->
     height = alloc.height
     document.body.style.maxHeight = "#{height}px"
-    document.getElementById('grid').style.maxHeight = "#{height-60}px"
+    $('#grid').style.maxHeight = "#{height-60}px"
 DCore.signal_connect('workarea_changed', do_workarea_changed)
 DCore.Launcher.notify_workarea_size()
 
@@ -21,7 +21,7 @@ create_category = (info) ->
 
 
 append_to_category = (cat) ->
-    document.getElementById('category').appendChild(cat)
+    $('#category').appendChild(cat)
 
 for info in DCore.Launcher.get_categories()
     c = create_category(info)

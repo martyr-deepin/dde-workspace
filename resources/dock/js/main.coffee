@@ -1,16 +1,16 @@
 show = false
-document.getElementById("icon_desktop").addEventListener('click', (e) ->
+$("#icon_desktop").addEventListener('click', (e) ->
     show = !show
     DCore.Dock.show_desktop(show)
 )
-document.getElementById("icon_desktop").addEventListener('mouseover', (e) ->
+$("#icon_desktop").addEventListener('mouseover', (e) ->
     preview_close_window()
 )
 
-document.getElementById("icon_launcher").addEventListener('click', (e) ->
+$("#icon_launcher").addEventListener('click', (e) ->
     DCore.run_command("launcher")
 )
-document.getElementById("icon_launcher").addEventListener('mouseover', (e) ->
+$("#icon_launcher").addEventListener('mouseover', (e) ->
     preview_close_window()
 )
 
@@ -34,7 +34,7 @@ get_time_str = ->
     n = DCore.Dock.test_get_n()
     return "#{hours}:#{min}:#{sec} #{m} #{n}"
 
-c = document.getElementById("clock")
+c = $("#clock")
 setInterval( ->
     c.innerText = get_time_str()
     return true

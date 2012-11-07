@@ -1,7 +1,7 @@
 basename = (path)->
     path.replace(/\\/g,'/').replace(/.*\//,)
     
-s_box = document.getElementById('s_box')
+s_box = $('#s_box')
 
 search = ->
     ret = []
@@ -27,7 +27,7 @@ document.body.onkeypress = (e) ->
         when 8
             s_box.value = s_box.value.substr(0, s_box.value.length-1)
         when 13
-            document.getElementById('grid').children[0].click_cb()
+            $('#grid').children[0].click_cb()
         else
             s_box.value += String.fromCharCode(e.which)
     search()

@@ -1,4 +1,4 @@
-na = document.getElementById('notifyarea')
+na = $("#notifyarea")
 tray_icons = {}
 update_icons = ->
     for k, v of tray_icons

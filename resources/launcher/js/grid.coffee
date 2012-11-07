@@ -32,7 +32,7 @@ grid_show_items = (items) ->
     for i in items
         grid.appendChild(applications[i])
 
-grid = document.getElementById('grid')
+grid = $('#grid')
 grid_load_category = (cat_id) ->
     if cat_id == 0
         grid.innerHTML = ""
