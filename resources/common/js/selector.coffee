@@ -1,8 +1,8 @@
 #Copyright (c) 2011 ~ 2012 Deepin, Inc.
 #              2011 ~ 2012 snyh
 #
-#Author:      Cole <phcourage@gmail.com>
-#Maintainer:  Cole <phcourage@gmail.com>
+#Author:      snyh <snyh@snyh.org>
+#Maintainer:  snyh <snyh@snyh.org>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -17,7 +17,12 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-create_item_grid()
+$ = (q, o) ->
+    return [] if typeof(q) != 'string' or q == ''
+    switch q.charAt(0)
+        when '#' then return document.getElementById(q.substr(1))
+        when '.' then return document.querySelectorAll(q.substr(1))
+        else
+            return document.getElementByTagName(q)
+    
 
-connect_default_signals()
-load_desktop_all_items()

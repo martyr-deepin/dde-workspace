@@ -1,3 +1,23 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *
+ * Author:      snyh <snyh@snyh.org>
+ * Maintainer:  snyh <snyh@snyh.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include "dwebview.h"
 #include "X_misc.h"
 #include "xdg_misc.h"
@@ -53,7 +73,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, 55, 0, s_width);
-    set_wmspec_dock_hint(gtk_widget_get_window(container));
+    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
     gtk_window_resize(GTK_WINDOW(container), s_width, HEIGHT);
     gtk_window_move(GTK_WINDOW(container), 0, s_height - HEIGHT);
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);

@@ -1,5 +1,23 @@
-container = document.getElementById('icon_list')
+#Copyright (c) 2011 ~ 2012 Deepin, Inc.
+#              2011 ~ 2012 snyh
+#
+#Author:      snyh <snyh@snyh.org>
+#Maintainer:  snyh <snyh@snyh.org>
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+container = $('#icon_list')
 
 class Client extends Widget
     constructor: (@id, @icon, @title)->
@@ -8,10 +26,6 @@ class Client extends Widget
 
         container.appendChild(@element)
 
-        @element.addEventListener('click', @click)
-        @element.addEventListener('dblclick', @dbclick)
-
-        @element.addEventListener('mouseover', @over)
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
     deactive: ->
@@ -20,15 +34,22 @@ class Client extends Widget
         @element.style.display = "None"
     normal: ->
         @element.style.display = "block"
-    click: (e) ->
+    do_click: (e) ->
         DCore.Dock.set_active_window(@id)
-    dbclick: (e) ->
+    do_dblclick: (e) ->
         DCore.Dock.minimize_window(@id)
-    over: (e) =>
+    do_mouseover: (e) ->
         offset = @element.offsetLeft - 150
         if offset < 0
             offset = 0
-        preview_active(@id, offset)
+        if preview_delay_id != 0
+            clearTimeout(preview_delay_id)
+            preview_active(@id, offset)
+        else
+            preview_delay_id = setTimeout( ->
+                    preview_active(@id, offset)
+                900)
+
     update_content: (title, icon) ->
         @element.innerHTML = "
         <img src=#{icon} title=\"#{title}\"/>
