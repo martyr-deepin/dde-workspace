@@ -69,13 +69,17 @@ class Item extends Widget
 
         # search the div for store the name
         @item_name = i for i in el.childNodes when i.className == "item_name"
-
-        @element.addEventListener('mousedown', (e) =>
-            update_selected_stats(this, e)
-            e.stopPropagation()
+        @element.addEventListener('mousedown', (env) =>
+            echo("mouse down")
+            env.stopPropagation()
+            if env.button == 0
+                update_selected_stats(this, env)
+            false
         )
         @element.addEventListener('click', (e) =>
+            echo("item click")
             e.stopPropagation()
+            false
         )
         @element.addEventListener('dblclick', @item_exec)
         @element.addEventListener('itemselected', (env) ->
@@ -84,7 +88,7 @@ class Item extends Widget
         @element.addEventListener('contextmenu', (env) =>
             env.stopPropagation()
             if @selected == false then update_selected_stats(this, env)
-            return true
+            true
         )
         @init_drag?()
         @init_drop?()
