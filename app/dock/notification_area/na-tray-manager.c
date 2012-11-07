@@ -273,7 +273,7 @@ na_tray_manager_handle_dock_request (NaTrayManager       *manager,
       return;
     }
 
-  if (icon_window == NULL) return;
+  if (icon_window == 0) return;
 
   g_signal_emit (manager, manager_signals[TRAY_ICON_ADDED], 0, icon_window);
 }

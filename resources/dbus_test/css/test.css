@@ -1,0 +1,22 @@
+body {
+    background: white;
+}
+
+#container {
+    display: -webkit-box;
+}
+
+#list {
+    -webkit-flex-box: 1;
+    background: rgba(100, 0, 20, 0.5);
+    height: 500px;
+    /*width: 600px;*/
+    overflow: auto;
+}
+#infos {
+    -webkit-flex-box: 10;
+    background: rgba(0, 100, 20, 0.5);
+    height: 500px;
+    width: 600px;
+    overflow: auto;
+}
