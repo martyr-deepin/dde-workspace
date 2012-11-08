@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 preview_current_id = 0
+preview_show_delay_id = 0
 _interval_id = 0
 _hide_timeout_id = 0
 
@@ -25,6 +26,7 @@ _hide_timeout_id = 0
 
 preview_disactive = (timeout) ->
     clearTimeout(_hide_timeout_id)
+    clearTimeout(preview_show_delay_id)
     _hide_timeout_id = setTimeout(->
                     clearInterval(_interval_id)
                     _ctx.clearRect(0, 0, 300, 200)

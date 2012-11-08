@@ -84,12 +84,10 @@ body {
 }
 
 
-#preview_box {
+#preview {
     position: fixed;
     width: 300px;
     height: 200px;
-    background: black;
-    background: rgba(100, 100, 0, 0.0);
 }
 
 #clock {

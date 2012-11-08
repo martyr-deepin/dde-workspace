@@ -45,9 +45,9 @@ class Client extends Widget
 
         if preview_current_id == 0
             preview_current_id = @id
-            setTimeout( =>
+            preview_show_delay_id = setTimeout( =>
                 preview_active(@id, offset)
-            300)
+            500)
         else if preview_current_id != @id
             preview_current_id = @id
             preview_active(@id, offset)
