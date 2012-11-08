@@ -56,11 +56,11 @@ body {
     text-align: center;
     font-size: small;
     color: white;
-    text-shadow: 2px 0 3px #6e6e6e, 0 2px 3px #6e6e6e, -2px 0 3px #6e6e6e, 0 -2px 3px #6e6e6e;
+    text-shadow: 1px 0 1px #6e6e6e, 0 1px 1px #6e6e6e, -1px 0 1px #6e6e6e, 0 -1px 1px #6e6e6e;
     outline: none;
 }
 
-.Folder img, .DesktopEntry img {
+.Folder img, .DesktopEntry img, .NormalFile img {
     width: 48px;
     height: 48px;
 }
@@ -106,7 +106,7 @@ body {
     color:#FFF;
     word-wrap:break-word;
     word-break:break-all;
-    text-shadow: 2px 0 3px #6e6e6e, 0 2px 3px #6e6e6e, -2px 0 3px #6e6e6e, 0 -2px 3px #6e6e6e;
+    text-shadow: 1px 0 1px #6e6e6e, 0 1px 1px #6e6e6e, -1px 0 1px #6e6e6e, 0 -1px 1px #6e6e6e;
     overflow: hidden;
 }
 #pop_uparrow {
