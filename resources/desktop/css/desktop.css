@@ -43,6 +43,7 @@ body {
 }
 
 .item_selected {
+    margin:0 !important;
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.5);

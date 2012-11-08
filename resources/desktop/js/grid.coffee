@@ -225,10 +225,10 @@ set_item_selected = (w, top = false) ->
         else
             selected_item.push(w.id)
 
-    if last_widget != w
-        last_widget?.item_blur()
-        last_widget = w
-        w.item_focus()
+        if last_widget != w
+            last_widget?.item_blur()
+            last_widget = w
+            w.item_focus()
 
     return
 
@@ -240,11 +240,12 @@ cancel_item_selected = (w) ->
             selected_item.splice(i, 1)
             w.item_normal()
             ret = true
-            break
 
-    if last_widget == w
-        w.item_blur()
-        last_widget == null
+            if last_widget == w
+                w.item_blur()
+                last_widget = null
+
+            break
 
     return ret
 
@@ -274,7 +275,7 @@ update_selected_stats = (w, env) ->
         if selected_item.length == 1
             coord = pixel_to_position(env.x, env.y)
             end_pos = {"x": coord[0], "y": coord[1], "width": 1, "height": 1}
-            start_pos = load_position(Widget.look_up(elected_item[0]))
+            start_pos = load_position(Widget.look_up(selected_item[0]))
 
             ret = compare_position(start_pos, end_pos)
             if ret < 0
@@ -297,8 +298,6 @@ update_selected_stats = (w, env) ->
         if selected_item.length > 0
             cancel_all_selected_stats()
         set_item_selected(w)
-
-    last_widget = w
 
 
 gird_left_click = (env) ->
