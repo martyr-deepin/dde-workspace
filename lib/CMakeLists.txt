@@ -10,8 +10,12 @@ execute_process(
 AUX_SOURCE_DIRECTORY(jsc_extension JSC)
 AUX_SOURCE_DIRECTORY(jsc_extension/gen/ JSC_GEN)
 
+
+
 set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c
     ${JSC} ${JSC_GEN})
 
 add_library(dcom ${SRC_LIST})
 target_link_libraries(dcom ${DWEBVIEW_LIBRAIRES})
+
+add_subdirectory(dbus)

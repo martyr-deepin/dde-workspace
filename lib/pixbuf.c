@@ -99,7 +99,7 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
 char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf)
 {
     guchar* buf = NULL;
-    gsize size = 0;
+    int size = 0;
 
     int width = gdk_pixbuf_get_width(pixbuf);
     int height = gdk_pixbuf_get_height(pixbuf);

@@ -26,7 +26,7 @@ endif()
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DBUS_INCLUDE_DIRS})
-target_link_libraries(${NAME} dcom ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

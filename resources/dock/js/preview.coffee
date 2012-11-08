@@ -17,24 +17,26 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-_current_id = 0
+preview_current_id = 0
+preview_show_delay_id = 0
 _interval_id = 0
 _hide_timeout_id = 0
 
 #gloabl variable and function
-preview_delay_id = 0
 
 preview_disactive = (timeout) ->
     clearTimeout(_hide_timeout_id)
+    clearTimeout(preview_show_delay_id)
     _hide_timeout_id = setTimeout(->
                     clearInterval(_interval_id)
                     _ctx.clearRect(0, 0, 300, 200)
                     DCore.Dock.close_show_temp()
+                    preview_current_id = 0
                 timeout)
 
 preview_active = (id, offset) ->
             _preview.style.left = offset+"px"
-            _current_id = id
+            preview_current_id = id
             clearInterval(_interval_id)
             _ctx.clearRect(0, 0, 300, 200)
 
@@ -55,7 +57,7 @@ _ctx = _preview.getContext('2d')
 
 
 _update_preview = ->
-    s = DCore.Dock.fetch_window_preview(_current_id, 300, 200)
+    s = DCore.Dock.fetch_window_preview(preview_current_id, 300, 200)
     img = _ctx.getImageData(0, 0, s.width, s.height)
     for v,i in s.data
         img.data[i] = v

@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, 55, 0, s_width);
-    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+    set_wmspec_dock_hint(gtk_widget_get_window(container));
     gtk_window_resize(GTK_WINDOW(container), s_width, HEIGHT);
     gtk_window_move(GTK_WINDOW(container), 0, s_height - HEIGHT);
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);

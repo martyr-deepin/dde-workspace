@@ -42,13 +42,16 @@ class Client extends Widget
         offset = @element.offsetLeft - 150
         if offset < 0
             offset = 0
-        if preview_delay_id != 0
-            clearTimeout(preview_delay_id)
+
+        if preview_current_id == 0
+            preview_current_id = @id
+            preview_show_delay_id = setTimeout( =>
+                preview_active(@id, offset)
+            500)
+        else if preview_current_id != @id
+            preview_current_id = @id
             preview_active(@id, offset)
-        else
-            preview_delay_id = setTimeout( ->
-                    preview_active(@id, offset)
-                900)
+
 
     update_content: (title, icon) ->
         @element.innerHTML = "
