@@ -69,50 +69,48 @@ class Item extends Widget
 
         # search the div for store the name
         @item_name = i for i in el.childNodes when i.className == "item_name"
-        @element.addEventListener('mousedown', (env) =>
-            echo("mouse down")
-            env.stopPropagation()
-            if env.button == 0
-                update_selected_stats(this, env)
-            false
-        )
-        @element.addEventListener('click', (e) =>
-            echo("item click")
-            e.stopPropagation()
-            false
-        )
-        @element.addEventListener('dblclick', @item_exec)
-        @element.addEventListener('itemselected', (env) ->
-            echo "menu clicked:id=#{env.id} title=#{env.title}"
-        )
-        @element.addEventListener('contextmenu', (env) =>
-            env.stopPropagation()
-            if @selected == false then update_selected_stats(this, env)
-            true
-        )
-        @init_drag?()
-        @init_drop?()
-        #@init_keypress?()
+
         @element.contextMenu = m
+
+
+    do_mousedown : (env) =>
+        env.stopPropagation()
+        if env.button == 0 then update_selected_stats(this, env)
+        false
+
+
+    do_click : (env) =>
+        env.stopPropagation()
+        false
+
+
+    do_dblclick : (env) =>
+        if env.ctrlKey == true then return
+        DCore.run_command @exec
+
+
+    do_contextmenu : (env) =>
+        env.stopPropagation()
+        if @selected == false then update_selected_stats(this, env)
+        true
+
+
+    do_itemselected : (env) =>
+        echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
     item_update : (icon) =>
         @item_icon.src = "#{icon}"
 
 
-    item_exec : (env) =>
-        if env.ctrlKey == true then return
-        DCore.run_command @exec
-
-
     item_selected : ->
         @selected = true
-        @element.className += " item_selected"
+        @show_selected_box()
 
 
     item_normal : ->
         @selected = false
-        @element.className = @element.className.replace(" item_selected", "")
+        @hide_selected_box()
 
 
     item_focus : ->
@@ -121,6 +119,14 @@ class Item extends Widget
 
     item_blur : ->
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
+
+
+    show_selected_box : =>
+        @element.className += " item_selected"
+
+
+    hide_selected_box : =>
+        @element.className = @element.className.replace(/\ item_selected/g, "")
 
 
     destroy: ->
@@ -145,32 +151,34 @@ class Item extends Widget
 
 
 class DesktopEntry extends Item
-    init_drag: ->
-        el = @element
-        el.addEventListener('dragstart', (evt) =>
-            update_selected_stats(this, evt)
-            evt.dataTransfer.setData("text/uri-list", "file://#{@path}")
-            evt.dataTransfer.setData("text/plain", "#{@name}")
-            evt.dataTransfer.effectAllowed = "all"
-            @on_drag_start?()
-        )
-        el.addEventListener('dragend', (evt) =>
-            if evt.dataTransfer.dropEffect == "move"
-                evt.preventDefault()
-                node = evt.target
-                pos = pixel_to_position(evt.x, evt.y)
+    constructor : ->
+        super
 
-                info = localStorage.getObject(@path)
-                info.x = pos[0]
-                info.y = pos[1]
-                move_to_position(this, info)
-                @on_drag_end?()
+    do_dragstart : (env) =>
+        env.stopPropagation()
+        env.dataTransfer.setData("text/uri-list", "file://#{@path}")
+        env.dataTransfer.setData("text/plain", "#{@name}")
+        env.dataTransfer.effectAllowed = "all"
+        false
 
-            else if evt.dataTransfer.dropEffect == "link"
-                #node = evt.target
-                #node.parentNode.removeChild(node)
-                return
-        )
+
+    do_dragend : (env) =>
+        env.stopPropagation()
+        env.preventDefault()
+        if env.dataTransfer.dropEffect == "move"
+            node = env.target
+            pos = pixel_to_position(env.x, env.y)
+
+            info = localStorage.getObject(@path)
+            info.x = pos[0]
+            info.y = pos[1]
+            move_to_position(this, info)
+            return
+
+        else if env.dataTransfer.dropEffect == "link"
+            #node = env.target
+            #node.parentNode.removeChild(node)
+            return
 
 
 class Folder extends DesktopEntry
@@ -182,14 +190,79 @@ class Folder extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
-        @element.addEventListener('dblclick', =>
+        @in_count = 0
+
+
+    do_dblclick : (env) =>
+        @hide_pop_block()
+        super
+
+
+    do_dragstart : (env) =>
+        if @show_pop == true
             @hide_pop_block()
-        )
+            @show_pop = true
+        super
+
+
+    do_dragend : (env) =>
+        if @show_pop == true then @show_pop_block()
+        super
+
+
+    do_drop : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        if env.dataTransfer.dropEffect == "link"
+            file = decodeURI(env.dataTransfer.getData("text/uri-list"))
+            #@icon_close()
+            @move_in(file)
+
+        if @selected == false
+            @item_normal()
+            @in_count = 0
+
+        echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
+
+    do_dragover : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        path = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        if @path == path.substring(7)
+            env.dataTransfer.dropEffect = "none"
+        else
+            env.dataTransfer.dropEffect = "link"
+
+        echo("item dragover #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
+
+
+    do_dragenter : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        if @selected == false
+            if @in_count == 0
+                @show_selected_box()
+            ++@in_count
+
+        echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
+
+
+    do_dragleave : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        #@icon_close()
+
+        if @selected == false
+            --@in_count
+            if @in_count == 0
+                @hide_selected_box()
+
+        echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     item_update : (icon) ->
-        super
         if @show_pop == true then @reflesh_pop_block()
+        super
 
 
     item_focus : ->
@@ -200,16 +273,6 @@ class Folder extends DesktopEntry
     item_blur : ->
         if @div_pop != null then @hide_pop_block()
         super
-
-
-    on_drag_start : =>
-        if @show_pop == true
-            @hide_pop_block()
-            @show_pop = true
-
-
-    on_drag_end : =>
-        if @show_pop == true then @show_pop_block()
 
 
     destroy : ->
@@ -331,43 +394,6 @@ class Folder extends DesktopEntry
             delete @div_pop
             @div_pop = null
         @show_pop = false
-
-
-    init_drop: =>
-        @element.addEventListener("drop", (evt) =>
-            evt.preventDefault()
-            evt.stopPropagation()
-            if evt.dataTransfer.dropEffect == "link"
-                file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-                #@icon_close()
-                @move_in(file)
-        )
-        @element.addEventListener("dragover", (evt) =>
-            evt.preventDefault()
-            evt.stopPropagation()
-            path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-            if @path == path.substring(7)
-                evt.dataTransfer.dropEffect = "none"
-            else
-                evt.dataTransfer.dropEffect = "link"
-
-            echo("item dragover #{evt.dataTransfer.dropEffect}")
-        )
-        @element.addEventListener("dragenter", (evt) =>
-            evt.preventDefault()
-            evt.stopPropagation()
-            if @selected == false
-                @item_selected()
-                @selected = false
-        )
-        @element.addEventListener("dragleave", (evt) =>
-            evt.preventDefault()
-            evt.stopPropagation()
-            #@icon_close()
-            if @selected == false
-                @item_normal()
-                @selected = false
-        )
 
 
     move_in: (c_path) ->
