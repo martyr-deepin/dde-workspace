@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
+
 if (DEFINED DEVELOP)
     SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources")
 else()
@@ -28,3 +29,5 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 add_subdirectory(lib)
 add_subdirectory(app)
+add_subdirectory(po)
+

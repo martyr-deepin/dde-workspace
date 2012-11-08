@@ -23,6 +23,7 @@
 #include <gtk/gtk.h>
 #include "xdg_misc.h"
 #include "X_misc.h"
+#include "i18n.h"
 
 void install_monitor();
 
@@ -65,6 +66,7 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 
 int main(int argc, char* argv[])
 {
+    init_i18n();
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
 

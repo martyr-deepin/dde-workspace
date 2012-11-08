@@ -23,14 +23,8 @@
 #include "dwebview.h"
 #include "utils.h"
 #include "X_misc.h"
+#include "i18n.h"
 
-#define FLAG_NAME
-#define FLAG_GENRICNAME
-#define FLAG_COMMENT
-#define FLAG_ICON
-#define FLAG_EXEC
-#define FLAG_EXEC_FLAG
-#define FLAG_CATEGORY
 
 const char* path = "/usr/share/applications;/usr/local/share/applications;";
 
@@ -47,6 +41,7 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
+    init_i18n();
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");

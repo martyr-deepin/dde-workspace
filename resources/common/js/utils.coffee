@@ -29,3 +29,6 @@ echo = (log) ->
 assert = (value, msg) ->
     if not value
         throw new Error(msg)
+
+_ = (s)->
+    DCore.gettext(s)

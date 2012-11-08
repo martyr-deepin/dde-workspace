@@ -24,6 +24,7 @@
 #include "utils.h"
 #include "tray.h"
 #include "tasklist.h"
+#include "i18n.h"
 #include <cairo.h>
 
 #define HEIGHT (50 + 200)
@@ -41,6 +42,7 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
+    init_i18n();
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");

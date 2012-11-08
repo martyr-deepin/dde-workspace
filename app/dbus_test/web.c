@@ -2,10 +2,12 @@
 #include <dwebview.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include "i18n.h"
 
 
 int main(int argc, char* argv[])
 {
+    init_i18n();
     gtk_init(&argc, &argv);
 
     GtkWidget *w = create_web_container(TRUE, FALSE);

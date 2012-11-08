@@ -163,11 +163,25 @@ class String(Params):
         return "gchar* c_return = "
     def eval_after(self):
         return """
-
     JSValueRef r = NULL;
     if (c_return != NULL) {
         JSStringRef str = JSStringCreateWithUTF8CString(c_return);
         g_free(c_return);
+        r = JSValueMakeString(context, str);
+        JSStringRelease(str);
+    } else {
+        FILL_EXCEPTION(context, exception, "the return string is NULL");
+    }
+"""
+
+class CString(String):
+    def eval_before(self):
+        return "const char* c_return = "
+    def eval_after(self):
+        return """
+    JSValueRef r = NULL;
+    if (c_return != NULL) {
+        JSStringRef str = JSStringCreateWithUTF8CString(c_return);
         r = JSValueMakeString(context, str);
         JSStringRelease(str);
     } else {
