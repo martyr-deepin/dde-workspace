@@ -21,78 +21,141 @@
 #include "category.h"
 #include <stdlib.h>
 #include <glib.h>
+#include "sqlite3.h"
 
-const char* cs[] = {
-    "Games", 
-    "Application",
-    "Utility",
-    "System",
-    "Settings",
-    "Office",
-    "Network",
-    "Development",
-};
-
-#define ARRAY_LEN(a) (sizeof(a)/sizeof(a[0]))
-
-GHashTable* categorys[8] = { NULL };
-
-const char** get_category_list()
-{
-    return cs;
-}
-
-void add_item_to_cateogry(const char* path, int cat_id)
-{
-    if (categorys[cat_id] == NULL) {
-        categorys[cat_id] = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-    }
-    GHashTable* c = categorys[cat_id];
-    if (!g_hash_table_lookup(c, path)) {
-        g_hash_table_insert(c, g_strdup(path), GINT_TO_POINTER(1));
-    }
-}
-
-char* get_categories()
-{
-    GString* string = g_string_new("[");
-    for (int i=0; i< ARRAY_LEN(cs); i++) {
-        g_string_append_printf(string, "{\"ID\":%d, \"Name\":\"%s\"},", i, cs[i]);
-    }
-    g_string_overwrite(string, string->len-1, "]");
-    return g_string_free(string, FALSE);
-}
-
-char* get_deepin_categories(const char* path, char** xdg_categories)
-{
-    GString* string = g_string_new("[");
-    for (int i=0; i< 3; i++) {
-        int c = rand() % ARRAY_LEN(cs);
-        g_string_append_printf(string, "%d,", c);
-        add_item_to_cateogry(path, c);
-    }
-    g_string_overwrite(string, string->len-1, "]");
-    return g_string_free(string, FALSE);
-}
 
 void gen_item_info(char* path, GString* string)
 {
     g_string_append_printf(string, "\"%s\",", path);
 }
+char* get_deepin_categories(const char* path, char** xdg_categories)
+{
+    return g_strdup("[1]");
+}
 
+
+void add_item_to_cateogry(const char* path, int cat_id)
+{
+    /*if (categorys[cat_id] == NULL) {*/
+        /*categorys[cat_id] = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);*/
+    /*}*/
+    /*GHashTable* c = categorys[cat_id];*/
+    /*if (!g_hash_table_lookup(c, path)) {*/
+        /*g_hash_table_insert(c, g_strdup(path), GINT_TO_POINTER(1));*/
+    /*}*/
+}
+
+//JS_EXPORT
 char* get_items_by_category(double _id)
 {
-    int id = (int)_id;
-    g_assert(id < 8);
-    GHashTable* c = categorys[id];
-    if (c != NULL) {
-        GList* items = g_hash_table_get_keys(c);
-        GString *string = g_string_new("[");
-        g_list_foreach(items, (GFunc)gen_item_info, string);
-        g_string_overwrite(string, string->len-1, "]");
-        g_list_free(items);
-        return g_string_free(string, FALSE);
+    return g_strdup("[]");
+    /*int id = (int)_id;*/
+    /*GHashTable* c = categorys[id];*/
+    /*if (c != NULL) {*/
+        /*GList* items = g_hash_table_get_keys(c);*/
+        /*GString *string = g_string_new("[");*/
+        /*g_list_foreach(items, (GFunc)gen_item_info, string);*/
+        /*g_string_overwrite(string, string->len-1, "]");*/
+        /*g_list_free(items);*/
+        /*return g_string_free(string, FALSE);*/
+    /*} else {*/
+        /*return g_strdup("[]");*/
+    /*}*/
+}
+
+
+
+const char* _gen_category_info_str(GArray* infos)
+{
+    if (infos == NULL) {
+        return "["
+        "{\"ID\": 0,"
+        " \"Name\": \"Internet\""
+        "},"
+        "{\"ID\": 1,"
+        " \"Name\": \"Media\""
+        "},"
+        "{\"ID\": 2,"
+        " \"Name\": \"Game\""
+        "},"
+        "{\"ID\": 3,"
+        " \"Name\": \"Graphics\""
+        "},"
+        "{\"ID\": 4,"
+        " \"Name\": \"Office\""
+        "},"
+        "{\"ID\": 5,"
+        " \"Name\": \"Industry\""
+        "},"
+        "{\"ID\": 6,"
+        " \"Name\": \"Education\""
+        "},"
+        "{\"ID\": 7,"
+        " \"Name\": \"Development\""
+        "},"
+        "{\"ID\": 8,"
+        " \"Name\": \"Wine\""
+        "},"
+        "{\"ID\": 9,"
+        " \"Name\": \"General\""
+        "},"
+        "{\"ID\": 10,"
+        " \"Name\": \"Other\""
+        "}]";
     } else {
-        return g_strdup("[]");
+        static GString* info_str = NULL;
+        if (info_str == NULL) {
+            info_str = g_string_new("[");
+            for (int i=0; i<infos->len; i++) {
+                char* v = g_array_index(infos, char*, i);
+                g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, v);
+            }
+            g_string_overwrite(info_str, info_str->len - 1, "]");
+            g_array_free(infos, FALSE); //TODO: why can't free element memory?
+        }
+        return info_str->str;
     }
 }
+
+
+int _fill_category_info(GArray* infos, int argc, char** argv, char** colname)
+{
+    char* value = g_strdup(argv[1]);
+    g_array_append_val(infos, value);
+    return 0;
+}
+gboolean _load_category_info(const char* db_path, GArray* category_infos)
+{
+    const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
+    sqlite3 *db = NULL;
+    if (SQLITE_OK == sqlite3_open_v2(db_path, &db, SQLITE_OPEN_READONLY, NULL)) {
+        g_assert(db != NULL);
+        char* error = NULL;
+        sqlite3_exec(db, sql_category_info, _fill_category_info, category_infos, &error);
+        if (error != NULL) {
+            g_warning("load_category_info failed %s\n", error);
+            sqlite3_free(error);
+            sqlite3_close(db);
+            return FALSE;
+        }
+        sqlite3_close(db);
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+//JS_EXPORT
+char* get_categories()
+{
+    static GArray* category_infos = NULL;
+    if (category_infos == NULL) {
+        category_infos = g_array_new(FALSE, FALSE, sizeof(char*));
+        g_array_set_clear_func(category_infos, g_free);
+        if (!_load_category_info(DESKTOP_DB_PATH, category_infos)) {
+            g_array_free(category_infos, FALSE);
+            category_infos = NULL;
+        }
+    }
+    return g_strdup(_gen_category_info_str(category_infos));
+}
+
