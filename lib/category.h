@@ -21,7 +21,9 @@
 #ifndef _CATEGORY_H_
 #define _CATEGORY_H_
 
+#include <glib.h>
 const char** get_category_list();
-char* get_deepin_categories(const char* path, char** xdg_categories);
+char* get_deepin_categories(char** xdg_categories);
+const GPtrArray* get_all_categories_array();
 
 #endif

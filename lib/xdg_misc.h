@@ -94,6 +94,9 @@ typedef struct _BaseEntry {
 // parse the "path" file to the BaseEntry struct.
 // this function will also parse the normal file and normal dir.
 BaseEntry* parse_one_entry(const char* path);
+BaseEntry* parse_desktop_entry(const char* path);
+BaseEntry* parse_normal_file(const char* path);
+char* entry_info_to_json(BaseEntry* _entry);
 
 void desktop_entry_free(BaseEntry* entry);
 
@@ -129,7 +132,7 @@ typedef struct _ApplicationEntry {
      * Categories in which the entry should be shown in a menu (for possible values see t
      * he Desktop Menu Specification).
      */
-    char** categories;
+    char* categories;
 
     char** keywords;
 

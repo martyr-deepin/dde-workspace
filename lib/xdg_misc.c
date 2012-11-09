@@ -142,7 +142,6 @@ char* lookup_icon_by_file(const char* path)
 }
 
 
-static
 BaseEntry* parse_normal_file(const char* path)
 {
     DirectoryEntry* dir_entry = NULL;
@@ -264,7 +263,12 @@ BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
     entry->terminal = g_key_file_get_boolean(de, GROUP, "Terminal", NULL);
     entry->actions = g_key_file_get_string_list(de, GROUP, "Actions", NULL, NULL); 
     entry->mime_type = g_key_file_get_string_list(de, GROUP, "MimeType", NULL, NULL);
-    entry->categories = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);
+    //TOOD direct use deepin_categories
+    char** cs = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);
+    if (cs != NULL) {
+        entry->categories = get_deepin_categories(cs);
+        g_strfreev(cs);
+    }
     entry->keywords = g_key_file_get_locale_string_list(de, GROUP, "Keywords", NULL, NULL, NULL);
     entry->startup_notify = g_key_file_get_boolean(de, GROUP, "StartupNotify", NULL);
     entry->startup_wmclass = g_key_file_get_string(de, GROUP, "StartupWMClass", NULL);
@@ -287,7 +291,6 @@ BaseEntry* parse_directory_entry(GKeyFile* de, DirectoryEntry* entry)
     return (BaseEntry*)entry;
 }
 
-static
 BaseEntry* parse_desktop_entry(const char* path)
 {
     GKeyFile *de = g_key_file_new();
@@ -444,10 +447,11 @@ char* entry_info_to_json(BaseEntry* _entry)
             g_free(array);
         }
         if (entry->categories) {
-            /*char* array = to_json_array(entry->categories);*/
-            char* array = get_deepin_categories(_entry->entry_path, entry->categories);
+            char* cs = g_strsplit(entry->categories, ";", -1);
+            char* array = to_json_array(cs);
             g_string_append_printf(string, "\"Categories\":%s,\n", array);
             g_free(array);
+            g_strfreev(cs);
         }
         if (entry->keywords) {
             char* array = to_json_array(entry->keywords);
@@ -519,9 +523,10 @@ void desktop_entry_free(BaseEntry* entry)
             g_free(((ApplicationEntry*)entry)->try_exec);
             g_free(((ApplicationEntry*)entry)->exec);
             g_free(((ApplicationEntry*)entry)->path); 
+            g_free(((ApplicationEntry*)entry)->categories);
+
             g_strfreev(((ApplicationEntry*)entry)->actions);
             g_strfreev(((ApplicationEntry*)entry)->mime_type); 
-            g_strfreev(((ApplicationEntry*)entry)->categories);
             g_strfreev(((ApplicationEntry*)entry)->keywords);
             g_free(((ApplicationEntry*)entry)->startup_wmclass);
         } else if (g_strcmp0(entry->type, "Link") == 0) {

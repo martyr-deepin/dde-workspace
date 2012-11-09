@@ -53,7 +53,7 @@ grid_show_items = (items) ->
 
 grid = $('#grid')
 grid_load_category = (cat_id) ->
-    if cat_id == 0
+    if cat_id == -1
         grid.innerHTML = ""
         for own key, value of applications
             grid.appendChild(value)

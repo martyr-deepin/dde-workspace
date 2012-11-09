@@ -42,11 +42,14 @@ create_category = (info) ->
 append_to_category = (cat) ->
     $('#category').appendChild(cat)
 
+append_to_category  create_category(
+    "ID" : -1
+    "Name": _("All")
+)
+
 for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)
 
 
-
-grid_load_category(0) #the All applications' ID is zero.
-
+grid_load_category(-1) #the All applications' ID is zero.
