@@ -51,6 +51,7 @@ class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @selected = false
         @id = @path
+        @in_count = 0
 
         super
 
@@ -73,6 +74,14 @@ class Item extends Widget
         @element.contextMenu = m
 
 
+    do_mouseover : (env) =>
+        @show_hover_box()
+
+
+    do_mouseout : (env) =>
+        @hide_hover_box()
+
+
     do_mousedown : (env) =>
         env.stopPropagation()
         if env.button == 0 then update_selected_stats(this, env)
@@ -93,6 +102,31 @@ class Item extends Widget
         env.stopPropagation()
         if @selected == false then update_selected_stats(this, env)
         true
+
+
+    do_drop : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        if @selected == false
+            @item_normal()
+            @in_count = 0
+
+
+    do_dragenter : (env) =>
+        env.stopPropagation()
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+
+    do_dragleave : (env) =>
+        env.stopPropagation()
+        if @selected == false
+            --@in_count
+            if @in_count == 0
+                @hide_hover_box()
 
 
     do_itemselected : (env) =>
@@ -127,6 +161,14 @@ class Item extends Widget
 
     hide_selected_box : =>
         @element.className = @element.className.replace(/\ item_selected/g, "")
+
+
+    show_hover_box : =>
+        @element.className += " item_hover"
+
+
+    hide_hover_box : =>
+        @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
     destroy: ->
@@ -190,7 +232,6 @@ class Folder extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
-        @in_count = 0
 
 
     do_dblclick : (env) =>
@@ -211,22 +252,18 @@ class Folder extends DesktopEntry
 
 
     do_drop : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
+        super
+
         if env.dataTransfer.dropEffect == "link"
             file = decodeURI(env.dataTransfer.getData("text/uri-list"))
             #@icon_close()
             @move_in(file)
 
-        if @selected == false
-            @item_normal()
-            @in_count = 0
-
         echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
 
     do_dragover : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
+        super
+
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
             env.dataTransfer.dropEffect = "none"
@@ -237,25 +274,15 @@ class Folder extends DesktopEntry
 
 
     do_dragenter : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
-        if @selected == false
-            if @in_count == 0
-                @show_selected_box()
-            ++@in_count
+        super
 
         echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     do_dragleave : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
-        #@icon_close()
+        super
 
-        if @selected == false
-            --@in_count
-            if @in_count == 0
-                @hide_selected_box()
+        #@icon_close()
 
         echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 

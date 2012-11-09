@@ -75,7 +75,7 @@ class Widget extends Module
         Widget.object_table[@id] = this
 
         #there has an strange bug when use indexof instead search,
-        # the key value will always be "construcotr" without any other thing
+        # the key value will always be "constructor" without any other thing
         for k,v of this.constructor.prototype when k.search("do_") == 0
             key = k.substr(3)
             if key in _events
