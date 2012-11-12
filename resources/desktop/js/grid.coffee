@@ -41,7 +41,7 @@ o_table = null
 
 selected_item = new Array
 
-last_widget = null
+last_widget = ""
 
 
 gm = new DeepinMenu()
@@ -225,9 +225,9 @@ set_item_selected = (w, top = false) ->
         else
             selected_item.push(w.id)
 
-        if last_widget != w
-            last_widget?.item_blur()
-            last_widget = w
+        if last_widget != w.id
+            if last_widget then Widget.look_up(last_widget)?.item_blur()
+            last_widget = w.id
             w.item_focus()
 
     return
@@ -241,9 +241,9 @@ cancel_item_selected = (w) ->
             w.item_normal()
             ret = true
 
-            if last_widget == w
+            if last_widget == w.id
                 w.item_blur()
-                last_widget = null
+                last_widget = ""
 
             break
 
@@ -254,9 +254,9 @@ cancel_all_selected_stats = ->
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
 
-    if last_widget?
-        last_widget.item_blur()
-        last_widget = null
+    if last_widget
+        Widget.look_up(last_widget)?.item_blur()
+        last_widget = ""
 
     return
 

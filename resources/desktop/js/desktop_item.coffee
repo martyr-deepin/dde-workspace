@@ -247,8 +247,9 @@ class Folder extends DesktopEntry
 
 
     do_dragend : (env) =>
-        if @show_pop == true then @show_pop_block()
         super
+        if @show_pop == true then @show_pop_block()
+        return
 
 
     do_drop : (env) =>
@@ -262,8 +263,6 @@ class Folder extends DesktopEntry
         echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
 
     do_dragover : (env) =>
-        super
-
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
             env.dataTransfer.dropEffect = "none"
