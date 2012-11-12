@@ -254,10 +254,10 @@ class Folder extends DesktopEntry
     do_drop : (env) =>
         super
 
-        if env.dataTransfer.dropEffect == "link"
-            file = decodeURI(env.dataTransfer.getData("text/uri-list"))
-            #@icon_close()
-            @move_in(file)
+        #if env.dataTransfer.dropEffect == "link"
+        file = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        #@icon_close()
+        @move_in(file)
 
         echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
 
