@@ -81,6 +81,8 @@ DCore.signal_connect("task_added", (info) ->
 )
 
 DCore.signal_connect("task_removed", (info) ->
+    if info.id == preview_current_id
+        preview_disactive()
     Widget.look_up(info.id).destroy()
 )
 

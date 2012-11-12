@@ -52,6 +52,10 @@ preview_close_window = ->
 #moudle local stub
 
 _preview = $('#preview')
+_preview.addEventListener('click', (e)->
+        DCore.Dock.set_active_window(preview_current_id)
+)
+    
 _ctx = _preview.getContext('2d')
 
 
