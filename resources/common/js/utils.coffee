@@ -32,3 +32,16 @@ assert = (value, msg) ->
 
 _ = (s)->
     DCore.gettext(s)
+
+
+build_menu = (info) ->
+    m = new DeepinMenu
+    for t, v of info
+        if typeof v == "object"
+            sm = build_menu(v)
+            i = new DeepinMenuItem(1, 0, t, sm)
+        else
+            i = new DeepinMenuItem(0, v, t, null)
+
+        m.appendItem(i)
+    return m
