@@ -447,7 +447,7 @@ char* entry_info_to_json(BaseEntry* _entry)
             g_free(array);
         }
         if (entry->categories) {
-            char* cs = g_strsplit(entry->categories, ";", -1);
+            char** cs = g_strsplit(entry->categories, ";", -1);
             char* array = to_json_array(cs);
             g_string_append_printf(string, "\"Categories\":%s,\n", array);
             g_free(array);

@@ -99,9 +99,6 @@ void append_to_category(const char* path, char** cs)
     }
     while (*cs != NULL) {
         gpointer id = GINT_TO_POINTER((int)g_strtod(*cs, NULL));
-        if (id == 0) {
-            printf("action %s\n", *cs);
-        }
         GPtrArray* l = g_hash_table_lookup(_category_table, id);
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);

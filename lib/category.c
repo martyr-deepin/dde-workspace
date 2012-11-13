@@ -23,6 +23,8 @@
 #include <glib.h>
 #include "sqlite3.h"
 
+typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
+
 int _fill_category_info_id(GHashTable* infos, int argc, char** argv, char** colname)
 {
     g_assert(argc == 2);
@@ -38,9 +40,9 @@ int find_category_id(char* s)
         _c_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
         const char* sql = "select x_category_name, first_category_index from category;";
         sqlite3 *db = NULL;
-        if (SQLITE_OK == sqlite3_open_v2("category.db", &db, SQLITE_OPEN_READONLY, NULL)) {
+        if (SQLITE_OK == sqlite3_open_v2(CATEGORY_DB_PATH, &db, SQLITE_OPEN_READONLY, NULL)) {
             char* error = NULL;
-            sqlite3_exec(db, sql, _fill_category_info_id, _c_info, &error);
+            sqlite3_exec(db, sql, (SQLEXEC_CB)_fill_category_info_id, _c_info, &error);
             if (error != NULL) {
                 g_warning("fetch category info failed %s\n", error);
                 sqlite3_free(error);
@@ -76,12 +78,11 @@ int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
     return 0;
 }
 
-typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
-void _load_category_info(const char* db_path, GPtrArray* category_infos)
+void _load_category_info(GPtrArray* category_infos)
 {
     const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
     sqlite3 *db = NULL;
-    if (SQLITE_OK == sqlite3_open_v2(db_path, &db, SQLITE_OPEN_READONLY, NULL)) {
+    if (SQLITE_OK == sqlite3_open_v2(CATEGORY_DB_PATH, &db, SQLITE_OPEN_READONLY, NULL)) {
         g_assert(db != NULL);
         char* error = NULL;
         sqlite3_exec(db, sql_category_info, (SQLEXEC_CB)_fill_category_info, category_infos, &error);
@@ -110,7 +111,7 @@ const GPtrArray* get_all_categories_array()
     static GPtrArray* category_infos = NULL;
     if (category_infos == NULL) {
         category_infos = g_ptr_array_new_with_free_func(g_free);
-        _load_category_info(DESKTOP_DB_PATH, category_infos);
+        _load_category_info(category_infos);
     }
     return category_infos;
 }
