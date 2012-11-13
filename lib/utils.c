@@ -24,6 +24,29 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <sys/socket.h>
+#include <sys/un.h>
+
+gboolean is_application_running(const char* path)
+{
+    int server_sockfd;
+    socklen_t server_len;
+    struct sockaddr_un server_addr;
+
+    server_addr.sun_path[0] = '\0';
+    strcpy(server_addr.sun_path+1, path);
+    server_addr.sun_family = AF_UNIX;
+    server_len = 1 + strlen(path) + offsetof(struct sockaddr_un, sun_path);
+
+    server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+
+    if (0 == bind(server_sockfd, (struct sockaddr *)&server_addr, server_len)) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+}
+
 char* get_html_path(const char* name)
 {
     GString *path = g_string_new("file://");

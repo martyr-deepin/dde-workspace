@@ -24,6 +24,7 @@
 #include "utils.h"
 #include "X_misc.h"
 #include "i18n.h"
+#include "category.h"
 
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
@@ -34,13 +35,19 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
+    if (is_application_running("launcher.app.deepin")) {
+        g_warning("anther instance of application launcher is running...\n");
+        return 0;
+    }
+
     init_i18n();
     gtk_init(&argc, &argv);
-    set_default_theme("Deepin");
-    set_desktop_env_name("GNOME");
-
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+    gtk_widget_realize(container);
+
+    set_default_theme("Deepin");
+    set_desktop_env_name("GNOME");
 
     char* path = get_html_path("launcher");
     GtkWidget *webview = d_webview_new_with_uri(path);
@@ -48,8 +55,6 @@ int main(int argc, char* argv[])
 
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
-    gtk_widget_realize(container);
 
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
@@ -94,6 +99,9 @@ void append_to_category(const char* path, char** cs)
     }
     while (*cs != NULL) {
         gpointer id = GINT_TO_POINTER((int)g_strtod(*cs, NULL));
+        if (id == 0) {
+            printf("action %s\n", *cs);
+        }
         GPtrArray* l = g_hash_table_lookup(_category_table, id);
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
@@ -101,8 +109,6 @@ void append_to_category(const char* path, char** cs)
         }
         g_ptr_array_add(l, g_strdup(path));
 
-        if (id == 0)
-            printf("append %s to %d(%s)\n", path, id, *cs);
 
         cs++;
     }
@@ -201,7 +207,7 @@ char* get_categories()
     GString* info_str = NULL;
     info_str = g_string_new("[");
 
-    GPtrArray* infos = get_all_categories_array();
+    const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
         return g_strdup("["
         "{\"ID\": 0,"
@@ -240,7 +246,7 @@ char* get_categories()
     }
     for (int i=0; i<infos->len; i++) {
         if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i)))
-            g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, g_ptr_array_index(infos, i));
+            g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, (char*)g_ptr_array_index(infos, i));
     }
 
     g_string_overwrite(info_str, info_str->len - 1, "]");
