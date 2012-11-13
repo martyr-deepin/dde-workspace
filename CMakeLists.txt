@@ -8,7 +8,7 @@ else()
 endif()
 
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
-add_definitions("-DDESKTOP_DB_PATH=\"desktop.db\"")
+add_definitions("-DCATEGORY_DB_PATH=\"category.db\"")
 
 find_package(PkgConfig)
 pkg_check_modules(WEBKIT REQUIRED deepin-webkit-3.0)

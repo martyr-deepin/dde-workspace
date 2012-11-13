@@ -273,6 +273,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
             update_active_window(ev->display, ev->window);
         }
     } 
+    return GDK_FILTER_CONTINUE;
 }
 
 
