@@ -1,0 +1,20 @@
+#!/usr/bin/python2
+
+base_dir = "../resources/"
+scan_dir = ["desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
+
+import glob
+import os
+
+files = []
+for i in scan_dir:
+    tmp = glob.glob(base_dir + i)
+    files = files + tmp
+
+
+
+
+cmd= "xgettext -L python -j -o zh_CN.po " + " ".join(files)
+
+os.system(cmd)
+

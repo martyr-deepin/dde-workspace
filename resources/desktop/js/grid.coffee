@@ -30,6 +30,10 @@ s_y = 0
 i_width = 80 + 6 * 2
 i_height = 84 + 4 * 2
 
+#grid block size for items
+grid_item_width = 0
+grid_item_height = 0
+
 # gird size
 cols = 0
 rows = 0
@@ -39,18 +43,30 @@ div_grid = null
 
 o_table = null
 
+all_item = new Array
 selected_item = new Array
 
 last_widget = ""
 
+gm = build_menu
+    "New" :
+        "folder" : 3
+        "text file" : 4
+    "Reorder Icons" : 1
+    "Desktop Settings" : 2
 
-gm = new DeepinMenu()
-gi1 = new DeepinMenuItem(1, "New")
-gi2 = new DeepinMenuItem(2, "Reorder Icons")
-gi3 = new DeepinMenuItem(3, "Desktop Settings")
-gm.appendItem(gi1)
-gm.appendItem(gi2)
-gm.appendItem(gi3)
+
+# calc the best row and col number for desktop
+calc_row_and_cols = (wa_width, wa_height) ->
+    n_cols = Math.floor(wa_width / i_width)
+    n_rows = Math.floor(wa_height / i_height)
+    xx = wa_width % i_width
+    yy = wa_height % i_height
+    gi_width = i_width + Math.floor(xx / n_cols)
+    gi_height = i_height + Math.floor(yy / n_rows)
+
+    return [n_cols, n_rows, gi_width, gi_height]
+
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
@@ -64,8 +80,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.width = s_width
     div_grid.style.height = s_height
 
-    new_cols = Math.floor(s_width / i_width)
-    new_rows = Math.floor(s_height / i_height)
+    [new_cols, new_rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
     new_table = new Array()
     for i in [0..new_cols]
@@ -77,6 +92,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     cols = new_cols
     rows = new_rows
     o_table = new_table
+
 
 load_position = (widget) ->
     localStorage.getObject(widget.path)
@@ -128,8 +144,8 @@ detect_occupy = (info) ->
 pixel_to_position = (x, y) ->
     p_x = x - s_x
     p_y = y - s_y
-    index_x = Math.floor(p_x / i_width)
-    index_y = Math.floor(p_y / i_height)
+    index_x = Math.floor(p_x / grid_item_width)
+    index_y = Math.floor(p_y / grid_item_height)
     echo "#{index_x},#{index_y}"
     return [index_x, index_y]
 
@@ -163,7 +179,7 @@ move_to_position = (widget, info) ->
     if not detect_occupy(info)
             localStorage.setObject(widget.path, info)
 
-            widget.move(info.x * i_width, info.y * i_height)
+            widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
             if old_info?
                 clear_occupy(old_info)
@@ -202,18 +218,21 @@ init_grid_drop = ->
         evt.dataTransfer.dropEffect = "move"
     )
     div_grid.addEventListener("dragover", (evt) =>
-        evt.dataTransfer.dropEffect = "move"
         evt.preventDefault()
+        evt.stopPropagation()
         echo("grid dragover #{evt.dataTransfer.dropEffect}")
-        return false
+        evt.dataTransfer.dropEffect = "move"
+        return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragenter")
+        echo("grid dragenter #{evt.dataTransfer.dropEffect}")
     )
     div_grid.addEventListener("dragleave", (evt) =>
+        evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragleave")
+        echo("grid dragleave #{evt.dataTransfer.dropEffect}")
     )
 
 
@@ -279,14 +298,16 @@ update_selected_stats = (w, env) ->
 
             ret = compare_position(start_pos, end_pos)
             if ret < 0
-                for key, val of Widget.object_table
+                for key in all_item
+                    val = Widget.look_up(key)
                     i_pos = load_position(val)
                     if compare_position(end_pos, i_pos) > 0 and compare_position(start_pos, i_pos) <= 0
                         set_item_selected(val, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
             else
-                for key, val of Widget.object_table
+                for key in all_item
+                    val = Widget.look_up(key)
                     i_pos = load_position(val)
                     if compare_position(start_pos, i_pos) >= 0 and compare_position(end_pos, i_pos) < 0
                         set_item_selected(val, true)
