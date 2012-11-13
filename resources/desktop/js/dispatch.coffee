@@ -29,13 +29,15 @@ create_item = (info) ->
         else
             echo "don't support type"
 
-    div_grid.appendChild(w.element)
+    if w? then div_grid.appendChild(w.element)
     return w
 
 
 load_desktop_all_items = ->
+    all_item.splice(0)
     for info in DCore.Desktop.get_desktop_items()
         w = create_item(info)
+        all_item.push(w.id)
         if w?
             move_to_anywhere(w)
 
