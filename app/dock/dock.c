@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
 
+    gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
+
     char* path = get_html_path("dock");
     GtkWidget *webview = d_webview_new_with_uri(path);
     g_free(path);
