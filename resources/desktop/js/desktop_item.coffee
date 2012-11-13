@@ -22,17 +22,12 @@
 MAX_ITEM_TITLE = 20
 DLCLICK_INTERVAL = 200
 
-m = new DeepinMenu()
-i1 = new DeepinMenuItem(1, "Open")
-i2 = new DeepinMenuItem(2, "Open with")
-i3 = new DeepinMenuItem(3, "Delete")
-i4 = new DeepinMenuItem(4, "Rename")
-i5 = new DeepinMenuItem(5, "Properties")
-m.appendItem(i1)
-m.appendItem(i2)
-m.appendItem(i3)
-m.appendItem(i4)
-m.appendItem(i5)
+m = build_menu
+    "Open" : 1
+    "Open with" : 2
+    "Delete" : 3
+    "Rename" : 4
+    "Properties" : 5
 
 shorten_text = (str, n) ->
     r = /[^\x00-\xff]/g
@@ -234,22 +229,23 @@ class Folder extends DesktopEntry
         @show_pop = false
 
 
+    do_click : (env) =>
+        super
+        if env.shiftKey == false && env.ctrlKey == false
+            if @show_pop == false
+                @show_pop_block()
+
+
     do_dblclick : (env) =>
-        @hide_pop_block()
+        if @show_pop == true
+            @hide_pop_block()
         super
 
 
     do_dragstart : (env) =>
         if @show_pop == true
             @hide_pop_block()
-            @show_pop = true
         super
-
-
-    do_dragend : (env) =>
-        super
-        if @show_pop == true then @show_pop_block()
-        return
 
 
     do_drop : (env) =>
@@ -269,13 +265,13 @@ class Folder extends DesktopEntry
         else
             env.dataTransfer.dropEffect = "link"
 
-        echo("item dragover #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
+        #echo("item dragover #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
 
 
     do_dragenter : (env) =>
         super
 
-        echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
+        #echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     do_dragleave : (env) =>
@@ -283,17 +279,12 @@ class Folder extends DesktopEntry
 
         #@icon_close()
 
-        echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
+        #echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     item_update : (icon) ->
         if @show_pop == true then @reflesh_pop_block()
         super
-
-
-    item_focus : ->
-        super
-        @show_pop_block()
 
 
     item_blur : ->
@@ -394,8 +385,8 @@ class Folder extends DesktopEntry
             @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 20}px"
             arrow_pos = false
 
-        n = (col * i_width) / 2 + 10
-        p = @element.offsetLeft + @element.offsetWidth / 2
+        n = (col * i_width) / 2
+        p = @element.offsetLeft + @element.offsetWidth / 2 - 10
         if p < n
             @div_pop.style.left = "0"
             arrow.style.left = "#{p}px"

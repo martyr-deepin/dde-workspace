@@ -43,14 +43,12 @@ selected_item = new Array
 
 last_widget = ""
 
-
-gm = new DeepinMenu()
-gi1 = new DeepinMenuItem(1, "New")
-gi2 = new DeepinMenuItem(2, "Reorder Icons")
-gi3 = new DeepinMenuItem(3, "Desktop Settings")
-gm.appendItem(gi1)
-gm.appendItem(gi2)
-gm.appendItem(gi3)
+gm = build_menu
+    "New" :
+        "folder" : 3
+        "text file" : 4
+    "Reorder Icons" : 1
+    "Desktop Settings" : 2
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
@@ -202,18 +200,21 @@ init_grid_drop = ->
         evt.dataTransfer.dropEffect = "move"
     )
     div_grid.addEventListener("dragover", (evt) =>
-        evt.dataTransfer.dropEffect = "move"
         evt.preventDefault()
+        evt.stopPropagation()
         echo("grid dragover #{evt.dataTransfer.dropEffect}")
-        return false
+        evt.dataTransfer.dropEffect = "move"
+        return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragenter")
+        echo("grid dragenter #{evt.dataTransfer.dropEffect}")
     )
     div_grid.addEventListener("dragleave", (evt) =>
+        evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragleave")
+        echo("grid dragleave #{evt.dataTransfer.dropEffect}")
     )
 
 
@@ -319,7 +320,7 @@ create_item_grid = ->
     update_gird_position(s_x, s_y, s_width, s_height)
     init_grid_drop()
     div_grid.addEventListener("click", gird_left_click)
-    div_grid.addEventListener("contextmenu", grid_right_click)
+    #div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
 
 class ItemGrid
