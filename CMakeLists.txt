@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 
-if (DEFINED DEVELOP)
+if (DEVELOP)
     SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources")
 else()
     SET(RESOURCE_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-desktop/resources")
@@ -30,5 +30,4 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 add_subdirectory(lib)
 add_subdirectory(app)
-#add_subdirectory(po)
-
+add_subdirectory(po)

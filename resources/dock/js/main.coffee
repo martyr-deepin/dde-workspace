@@ -43,10 +43,10 @@ get_time_str = ->
     today = new Date()
     hours = today.getHours()
     if hours > 12
-        m = "PM"
+        m = _("PM")
         hours = hours - 12
     else
-        m = "AM"
+        m = _("AM")
     hours = format_two_bit hours
     min = format_two_bit today.getMinutes()
     sec = format_two_bit today.getSeconds()
