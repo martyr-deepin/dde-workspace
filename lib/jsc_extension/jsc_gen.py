@@ -392,8 +392,11 @@ class JSCode(Params):
     def return_value(self):
         return """
     JSValueRef r = JSValueMakeFromJSONString(context, scriptJS);
-    if (r == NULL)
+    if (r == NULL) {
         FILL_EXCEPTION(context, exception, "JSON Data Error");
+        g_error("\\n %s \\n This should not appear, please report to the author with the error message", c_return);
+    }
+    g_free(c_return);
     JSStringRelease(scriptJS);
     JSGarbageCollect(context); //JSC1.8 can't auto free this json object. 
     return r;
@@ -405,7 +408,6 @@ class JSCode(Params):
     def eval_after(self):
         return """
     JSStringRef scriptJS = JSStringCreateWithUTF8CString(c_return);
-    g_free(c_return);
     """
 
 class JSValue(Params):

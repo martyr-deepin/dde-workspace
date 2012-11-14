@@ -163,9 +163,10 @@ BaseEntry* parse_normal_file(const char* path)
         if (g_file_test(path, G_FILE_TEST_IS_EXECUTABLE)) {
             file_entry->exec = g_strdup(path);
         } else {
-            char* quote_path = g_shell_quote(path);
-            file_entry->exec = g_strdup_printf("gvfs-open %s", quote_path);
-            g_free(quote_path);
+            /*char* quote_path = g_shell_quote(path);*/
+            /*file_entry->exec = g_strdup_printf("gvfs-open %s", quote_path);*/
+            /*g_free(quote_path);*/
+            file_entry->exec = g_strdup_printf("gvfs-open %s", path);
         }
     }
 
