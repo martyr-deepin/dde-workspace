@@ -20,7 +20,8 @@
  **/
 
 body {
-    background: url("../img/desktop_background.jpg");
+    /*background: url("../img/desktop_background.jpg");*/
+    background: rgba(0, 100, 100, 0.0);
     /*-webkit-touch-callout: none;*/
     /*-webkit-user-select: none;*/
     /*user-select: none;*/

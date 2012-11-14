@@ -51,18 +51,11 @@ GtkWidget* create_web_container(bool normal, bool above)
     return window;
 }
 
-bool erase_background(GtkWidget* widget, 
-        GdkEventExpose *e, gpointer data)
+gboolean erase_background(GtkWidget* widget, 
+        cairo_t *cr, gpointer data)
 { 
-    cairo_t *cr;
-
-    cr = gdk_cairo_create(gtk_widget_get_window(widget));
-
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
-
-    cairo_destroy(cr);
-
     return FALSE;
 }
 

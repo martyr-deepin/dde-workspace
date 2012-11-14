@@ -52,7 +52,7 @@ struct _DWebViewClass {
 GtkWidget* create_web_container(bool normal, bool above);
 GtkWidget* d_webview_new();
 GtkWidget* d_webview_new_with_uri();
-bool erase_background(GtkWidget* widget, GdkEventExpose *e, gpointer data);
+gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data);
 
 void js_post_message(const char* name, const char* format, ...);
 
