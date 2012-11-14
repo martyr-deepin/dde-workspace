@@ -28,6 +28,10 @@ connect_default_signals = ->
 
 do_item_delete = (id) ->
     Widget.look_up(id)?.destroy()
+    for i in all_item
+        if i == id
+            all_item.splice(i, 1)
+            break
 
 
 do_item_update = (info) ->
@@ -38,16 +42,22 @@ do_item_update = (info) ->
         w = create_item(info)
         if w?
             move_to_anywhere(w)
+            all_item.push(w.id)
 
 
 do_item_rename = (data) ->
     Widget.look_up(data.old_id)?.destroy()
+    for i in all_item
+        if i == id
+            all_item.splice(i, 1)
+            break
 
     update_position(data.old_id, data.info.EntryPath)
 
     w = create_item(data.info)
     if w?
         move_to_anywhere(w)
+        all_item.push(w.id)
 
 
 do_workarea_changed = (allo) ->
