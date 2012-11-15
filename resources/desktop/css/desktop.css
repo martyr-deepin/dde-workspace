@@ -124,19 +124,17 @@ body {
 #pop_uparrow {
     width:0;
     height:0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 14px solid rgba(0,0,0,0.9);
+    border: 10px solid transparent;
+    border-bottom-color:rgba(0,0,0,0.9);
     position:absolute;
-    top:-20px;
+    top:-26px;
 }
 
 #pop_downarrow {
     width:0;
     height:0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 14px solid rgba(0,0,0,0.9);
+    border: 10px solid transparent;
+    border-top-color: rgba(0,0,0,0.9);
     position:absolute;
-    bottom:-20px;
+    bottom:-26px;
 }
