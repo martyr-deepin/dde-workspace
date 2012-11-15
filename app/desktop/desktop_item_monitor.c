@@ -20,6 +20,7 @@
  **/
 #include "dwebview.h"
 #include "xdg_misc.h"
+#include "utils.h"
 #include <gio/gio.h>
 #include <glib/gprintf.h>
 

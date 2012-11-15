@@ -375,12 +375,12 @@ class Folder extends DesktopEntry
             if s.Exec?
                 ele.setAttribute("title", s.Exec)
                 ele.addEventListener('dblclick', (env) ->
-                    DCore.run_command "#{this.title}"
+                    DCore.run_command this.title
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             else
                 ele.addEventListener('dblclick', (env) ->
-                    DCore.run_command "gvfs-open #{this.id}"
+                    DCore.run_command1 "gvfs-open", this.id
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             ele_ul.appendChild(ele)
@@ -441,7 +441,7 @@ class Folder extends DesktopEntry
     move_in: (c_path) ->
         echo "move to #{c_path} from #{@path}"
         p = c_path.replace("file://", "")
-        DCore.run_command("mv #{p} #{@path}")
+        DCore.run_command2("mv", p, @path)
 
 
 class NormalFile extends DesktopEntry

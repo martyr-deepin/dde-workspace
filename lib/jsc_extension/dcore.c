@@ -29,8 +29,26 @@ char* gen_id(const char* seed)
 
 void run_command(const char* cmd)
 {
-    char* quoted_cmd = shell_escape(cmd);
-    g_printf("raw %s \n run cmd: %s\n", cmd, quoted_cmd);
-    g_spawn_command_line_async(quoted_cmd, NULL);
-    g_free(quoted_cmd);
+    g_spawn_command_line_async(cmd, NULL);
+}
+
+void run_command1(const char* cmd, const char* p1)
+{
+    char* e_p = shell_escape(p1);
+    char* e_cmd = g_strdup_printf("%s %s\n", cmd, e_p);
+    g_free(e_p);
+
+    g_spawn_command_line_async(e_cmd, NULL);
+    g_free(e_cmd);
+}
+void run_command2(const char* cmd, const char* p1, const char* p2)
+{
+    char* e_p1 = shell_escape(p1);
+    char* e_p2 = shell_escape(p2);
+    char* e_cmd = g_strdup_printf("%s %s %s\n", cmd, e_p1, e_p2);
+    g_free(e_p1);
+    g_free(e_p2);
+
+    g_spawn_command_line_async(e_cmd, NULL);
+    g_free(e_cmd);
 }

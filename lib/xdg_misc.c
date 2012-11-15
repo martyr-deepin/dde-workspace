@@ -163,7 +163,9 @@ BaseEntry* parse_normal_file(const char* path)
         if (g_file_test(path, G_FILE_TEST_IS_EXECUTABLE)) {
             file_entry->exec = g_strdup(path);
         } else {
-            file_entry->exec = g_strdup_printf("gvfs-open %s", path);
+            char* e_path = shell_escape(path);
+            file_entry->exec = g_strdup_printf("gvfs-open %s", e_path);
+            g_free(e_path);
         }
     }
 
@@ -679,15 +681,6 @@ char* move_to_desktop(const char* path)
     g_free(desktop_dir);
     g_free(dir);
 
-    char *cmd = g_strdup_printf("mv %s %s", path, new_path);
-    char* e_cmd = shell_escape(cmd);
-    g_spawn_command_line_sync(e_cmd, NULL, NULL, NULL, NULL);
-    g_free(cmd);
-    g_free(e_cmd);
-
-    /*char* e_json = json_escape(new_path);*/
-    /*printf("raw %s\n e: %s\n", new_path, e_json);*/
-    /*g_free(new_path);*/
-    /*return e_json;*/
+    run_command2("mv", path, new_path);
     return new_path;
 }

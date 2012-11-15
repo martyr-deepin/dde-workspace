@@ -86,6 +86,11 @@ char* shell_escape(const char* source)
                 *q++ = '\\';
                 *q++ = '\\';
                 break;
+            case ' ':
+                *q++ = '\\';
+                *q++ = ' ';
+                break;
+
             default:
                 *q++ = *p;
         }
