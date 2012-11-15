@@ -229,19 +229,19 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        echo("grid dragover #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragover #{evt.dataTransfer.dropEffect}")
         evt.dataTransfer.dropEffect = "move"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragenter #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragenter #{evt.dataTransfer.dropEffect}")
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragleave #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragleave #{evt.dataTransfer.dropEffect}")
     )
 
 
@@ -384,9 +384,6 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @start_point = env
-            @element.style.width = "0"
-            @element.style.height = "0"
-            @element.style.visibility = "visible"
         false
 
 
@@ -394,12 +391,13 @@ class Mouse_Select_Area_box
         env.preventDefault()
         sl = Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x)
         st = Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y)
-        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width)
-        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height)
+        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width - sl)
+        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height - st)
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
         @element.style.height = "#{sh}px"
+        @element.style.visibility = "visible"
         false
 
 

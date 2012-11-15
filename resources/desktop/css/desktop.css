@@ -50,7 +50,6 @@ body {
     text-align: center;
     font-size: small;
     color: white;
-    /*text-shadow: 1px 0 1px #6e6e6e, 0 1px 1px #6e6e6e, -1px 0 1px #6e6e6e, 0 -1px 1px #6e6e6e;*/
     text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
     outline: none;
 }
@@ -109,6 +108,12 @@ body {
     vertical-align:top;
     text-align:center;
 }
+#pop_grid ul li:hover {
+    padding: 2px 4px !important;
+    border-radius:3px;
+    border:1px solid rgba(255,255,255,0.5);
+    background-color:rgba(68, 132, 195, 0.3);
+}
 #pop_grid ul li img {
     width:48px;
     height:48px;
@@ -124,19 +129,17 @@ body {
 #pop_uparrow {
     width:0;
     height:0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 14px solid rgba(0,0,0,0.9);
+    border: 10px solid transparent;
+    border-bottom-color:rgba(0,0,0,0.9);
     position:absolute;
-    top:-20px;
+    top:-26px;
 }
 
 #pop_downarrow {
     width:0;
     height:0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 14px solid rgba(0,0,0,0.9);
+    border: 10px solid transparent;
+    border-top-color: rgba(0,0,0,0.9);
     position:absolute;
-    bottom:-20px;
+    bottom:-26px;
 }

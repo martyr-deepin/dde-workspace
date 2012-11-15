@@ -212,9 +212,6 @@ class Item extends Widget
 
 
 class DesktopEntry extends Item
-    constructor : ->
-        super
-
     do_dragstart : (env) =>
         env.stopPropagation()
         env.dataTransfer.setData("text/uri-list", "file://#{@path}")
@@ -360,9 +357,13 @@ class Folder extends DesktopEntry
         for s in items
             ele = document.createElement("li")
             ele.setAttribute('id',  s.EntryPath)
-            ele.dragable = "true"
+            ele.draggable = true
             ele.innerHTML = "<img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div>"
 
+            ele.addEventListener('mousedown', (env) ->
+                env.stopPropagation()
+                false
+            )
             ele.addEventListener('dragstart', (evt) ->
                     evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
                     evt.dataTransfer.setData("text/plain", "#{this.id}")
