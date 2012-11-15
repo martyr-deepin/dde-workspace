@@ -63,6 +63,38 @@ char* get_config_path(const char* name)
     return g_string_free(path, FALSE);
 }
 
+char* shell_escape(const char* source)
+{
+    const unsigned char *p;
+    char *dest;
+    char *q;
+
+    g_return_val_if_fail (source != NULL, NULL);
+
+    p = (unsigned char *) source;
+    q = dest = g_malloc (strlen (source) * 4 + 1);
+
+    while (*p)
+    {
+        switch (*p)
+        {
+            case '\'':
+                *q++ = '\\';
+                *q++ = '\'';
+                break;
+            case '\\':
+                *q++ = '\\';
+                *q++ = '\\';
+                break;
+            default:
+                *q++ = *p;
+        }
+        p++;
+    }
+    *q = 0;
+    return dest;
+}
+
 
 char* json_escape (const char *source)
 {
@@ -118,4 +150,17 @@ char* json_escape (const char *source)
     }
     *q = 0;
     return dest;
+}
+
+void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name)
+{
+    char* log_file_path = g_strdup_printf("/tmp/%s.log", app_name);
+    FILE *logfile = fopen(log_file_path, "a");
+    g_free(log_file_path);
+    if (logfile == NULL) {
+    }
+    fprintf(logfile, "%s\n", message);
+    fclose(logfile);
+
+    g_log_default_handler(log_domain, log_level, message, NULL);
 }

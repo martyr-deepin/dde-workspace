@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
 {
     init_i18n();
     gtk_init(&argc, &argv);
+
+    g_log_set_default_handler((GLogFunc)log_to_file, "dock");
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");
 
