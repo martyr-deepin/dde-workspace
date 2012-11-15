@@ -163,9 +163,7 @@ BaseEntry* parse_normal_file(const char* path)
         if (g_file_test(path, G_FILE_TEST_IS_EXECUTABLE)) {
             file_entry->exec = g_strdup(path);
         } else {
-            char* quote_path = g_shell_quote(path);
-            file_entry->exec = g_strdup_printf("gvfs-open %s", quote_path);
-            g_free(quote_path);
+            file_entry->exec = g_strdup_printf("gvfs-open %s", path);
         }
     }
 
@@ -469,8 +467,9 @@ char* entry_info_to_json(BaseEntry* _entry)
             APPEND_STRING_WITH_ESCAPE(string, "\"URL\":\"%s\",\n", entry->url);
     } else if (g_strcmp0(_entry->type, "File") == 0) {
         FileEntry *entry = (FileEntry*) _entry;
-        if (entry->exec)
-            g_string_append_printf(string, "\"Exec\":\"%s\",\n", entry->exec);
+        if (entry->exec) {
+            APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+        }
     } else if (g_strcmp0(_entry->type, "Dir") == 0) {
         DirectoryEntry *entry = (DirectoryEntry*) _entry;
         if (entry->files)

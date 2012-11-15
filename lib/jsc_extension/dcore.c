@@ -20,6 +20,7 @@
  **/
 #include <glib.h>
 #include <string.h>
+#include "utils.h"
 
 char* gen_id(const char* seed)
 {
@@ -28,6 +29,8 @@ char* gen_id(const char* seed)
 
 void run_command(const char* cmd)
 {
-    /*g_printf("run cmd: %s\n", cmd);*/
-    g_spawn_command_line_async(cmd, NULL);
+    char* quoted_cmd = shell_escape(cmd);
+    g_printf("raw %s \n run cmd: %s\n", cmd, quoted_cmd);
+    g_spawn_command_line_async(quoted_cmd, NULL);
+    g_free(quoted_cmd);
 }

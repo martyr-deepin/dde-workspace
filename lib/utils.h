@@ -21,9 +21,13 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#include <glib.h>
+
 char* get_html_path(const char* name);
 char* get_config_path(const char* name);
 char* json_escape (const char *source);
+char* shell_escape(const char* source);
 int is_application_running(const char* path);
+void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
 
 #endif
