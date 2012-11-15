@@ -384,9 +384,6 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @start_point = env
-            @element.style.width = "0"
-            @element.style.height = "0"
-            @element.style.visibility = "visible"
         false
 
 
@@ -400,6 +397,7 @@ class Mouse_Select_Area_box
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
         @element.style.height = "#{sh}px"
+        @element.style.visibility = "visible"
         false
 
 
