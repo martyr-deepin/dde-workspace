@@ -229,19 +229,19 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        echo("grid dragover #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragover #{evt.dataTransfer.dropEffect}")
         evt.dataTransfer.dropEffect = "move"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragenter #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragenter #{evt.dataTransfer.dropEffect}")
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
-        echo("grid dragleave #{evt.dataTransfer.dropEffect}")
+        #echo("grid dragleave #{evt.dataTransfer.dropEffect}")
     )
 
 

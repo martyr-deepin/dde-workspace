@@ -50,7 +50,6 @@ body {
     text-align: center;
     font-size: small;
     color: white;
-    /*text-shadow: 1px 0 1px #6e6e6e, 0 1px 1px #6e6e6e, -1px 0 1px #6e6e6e, 0 -1px 1px #6e6e6e;*/
     text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
     outline: none;
 }
@@ -108,6 +107,12 @@ body {
     display: inline-block;
     vertical-align:top;
     text-align:center;
+}
+#pop_grid ul li:hover {
+    padding: 2px 4px !important;
+    border-radius:3px;
+    border:1px solid rgba(255,255,255,0.5);
+    background-color:rgba(68, 132, 195, 0.3);
 }
 #pop_grid ul li img {
     width:48px;
