@@ -39,15 +39,24 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
             {
                 char* old_path = g_file_get_path(file);
                 char* new_path = g_file_get_path(other);
+
                 char* info = get_entry_info(new_path);
 
-                char* tmp = g_strdup_printf("{\"old_id\":\"%s\", \"info\":%s}", old_path, info);
+                char* e_old_path = json_escape(old_path);
+                char* e_new_path = json_escape(new_path);
+
+                g_free(old_path);
+                g_free(new_path);
+
+                char* tmp = g_strdup_printf("{\"old_id\":\"%s\", \"info\":%s}", e_old_path, e_new_path);
+
+                g_free(e_old_path);
+                g_free(e_new_path);
+
                 js_post_message("item_rename", tmp);
                 g_free(tmp);
 
                 g_free(info);
-                g_free(old_path);
-                g_free(new_path);
                 break;
             }
         case G_FILE_MONITOR_EVENT_DELETED:
@@ -62,8 +71,11 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
                     g_free(desktop);
                 } else {
-                    char* tmp = g_strdup_printf("\"%s\"", path);
+                    char* e_path = json_escape(path);
+                    char* tmp = g_strdup_printf("{\"id\":\"%s\"}", e_path);
+                    g_free(e_path);
                     js_post_message("item_delete", tmp);
+                    printf("item_delete %s\n", tmp);
                     g_free(tmp);
                 }
                 g_free(path);

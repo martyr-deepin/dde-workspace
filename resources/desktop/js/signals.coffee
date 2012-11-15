@@ -26,7 +26,8 @@ connect_default_signals = ->
     DCore.Desktop.notify_workarea_size()
 
 
-do_item_delete = (id) ->
+do_item_delete = (info) ->
+    id = info.id
     Widget.look_up(id)?.destroy()
     for i in all_item
         if i == id

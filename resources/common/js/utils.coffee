@@ -37,7 +37,6 @@ build_menu = (info) ->
     m = new DeepinMenu
     for v in info
         if v.length == 0
-            echo "normal sep"
             i = new DeepinMenuItem(2, 0, 0, 0)
         else if typeof v[0] == "number"
             i = new DeepinMenuItem(0, v[0], v[1], null)

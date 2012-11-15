@@ -679,10 +679,15 @@ char* move_to_desktop(const char* path)
     g_free(desktop_dir);
     g_free(dir);
 
-
-    char *cmd = g_strdup_printf("mv \'%s\' \'%s\'", path, new_path);
-    g_spawn_command_line_sync(cmd, NULL, NULL, NULL, NULL);
+    char *cmd = g_strdup_printf("mv %s %s", path, new_path);
+    char* e_cmd = shell_escape(cmd);
+    g_spawn_command_line_sync(e_cmd, NULL, NULL, NULL, NULL);
     g_free(cmd);
+    g_free(e_cmd);
 
+    /*char* e_json = json_escape(new_path);*/
+    /*printf("raw %s\n e: %s\n", new_path, e_json);*/
+    /*g_free(new_path);*/
+    /*return e_json;*/
     return new_path;
 }
