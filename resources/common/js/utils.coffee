@@ -46,3 +46,6 @@ build_menu = (info) ->
             i = new DeepinMenuItem(1, 0, v[0], sm)
         m.appendItem(i)
     return m
+
+#disable default body drop event
+document.body.ondrop = (e) -> e.preventDefault()

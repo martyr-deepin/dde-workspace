@@ -116,6 +116,7 @@ int main(int argc, char* argv[])
     init_i18n();
     gtk_init(&argc, &argv);
     set_default_theme("Deepin");
+    set_desktop_env_name("GNOME");
 
     /*GtkWidget *w = create_web_container(FALSE, FALSE);*/
     container = create_web_container(FALSE, FALSE);
