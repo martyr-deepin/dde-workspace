@@ -67,9 +67,6 @@ int main(int argc, char* argv[])
     g_signal_connect (webview, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
 
 
-    tray_init(container);
-    monitor_tasklist_and_activewindow();
-
     GdkScreen* screen = gdk_screen_get_default();
     int s_width = gdk_screen_get_width(screen);
     int s_height = gdk_screen_get_height(screen);
@@ -89,6 +86,11 @@ int main(int argc, char* argv[])
     close_show_temp();
 
     gtk_widget_show_all(container);
+
+    // this should at the lastest because of use container's window
+    tray_init(container);
+    monitor_tasklist_and_activewindow();
+
     gtk_main();
     return 0;
 }
