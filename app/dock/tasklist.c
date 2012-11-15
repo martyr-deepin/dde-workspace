@@ -291,8 +291,9 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(win));
         if (c != NULL) {
             if (ev->atom == ATOM_WINDOW_ICON) {
-                _update_window_icon(c);
-                _update_client_info(c);
+                // we didn't update window_icon now because of hasn't decide how handle the same class applications' icon
+                /*_update_window_icon(c);*/
+                /*_update_client_info(c);*/
             } else if (ev->atom == ATOM_WINDOW_NAME) {
                 _update_window_title(c);
                 _update_client_info(c);

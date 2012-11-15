@@ -19,12 +19,23 @@
 
 container = $('#icon_list')
 
+app_group_leader = {}
+
 class Client extends Widget
-    constructor: (@id, @icon, @title)->
+    constructor: (@id, @icon, @title, @clss)->
         super
         @update_content @title, @icon
 
+        app_group_leader[@clss] = @
+
         container.appendChild(@element)
+
+        @pw_id = "PW" + @id
+
+    update_content: (title, icon) ->
+        @element.innerHTML = "
+        <img src=#{icon} />
+        "
 
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
@@ -39,24 +50,12 @@ class Client extends Widget
     do_dblclick: (e) ->
         DCore.Dock.minimize_window(@id)
     do_mouseover: (e) ->
-        offset = @element.offsetLeft - 150
-        if offset < 0
-            offset = 0
-
-        if preview_current_id == 0
-            preview_current_id = @id
-            preview_show_delay_id = setTimeout( =>
-                preview_active(@id, offset)
-            500)
-        else if preview_current_id != @id
-            preview_current_id = @id
-            preview_active(@id, offset)
+        pw = Widget.look_up(@pw_id)
+        if not pw
+            pw = new PreviewWindow(@pw_id, @id, @title, 300, 200)
+            preview_container.active(pw, @element.offsetLeft - 150)
 
 
-    update_content: (title, icon) ->
-        @element.innerHTML = "
-        <img src=#{icon} title=\"#{title}\"/>
-        "
 
 
 active_win = null
@@ -77,13 +76,12 @@ DCore.signal_connect("task_added", (info) ->
     if w
         w.update_content(info.title, info.icon)
     else
-        new Client(info.id, info.icon, info.title)
+        new Client(info.id, info.icon, info.title, info.clss)
 )
 
 DCore.signal_connect("task_removed", (info) ->
-    if info.id == preview_current_id
-        preview_disactive()
-    Widget.look_up(info.id).destroy()
+    Widget.look_up("PW"+info.id)?.destroy()
+    Widget.look_up(info.id)?.destroy()
 )
 
 DCore.signal_connect("task_withdraw", (info) ->

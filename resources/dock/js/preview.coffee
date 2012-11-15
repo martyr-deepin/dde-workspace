@@ -22,56 +22,87 @@ preview_show_delay_id = 0
 _interval_id = 0
 _hide_timeout_id = 0
 
-#gloabl variable and function
+class PWContainer extends Widget
+    constructor: (@id)->
+        super
+        document.body.appendChild(@element)
+        @curren_active = null
 
-preview_disactive = (timeout) ->
-    clearTimeout(_hide_timeout_id)
-    clearTimeout(preview_show_delay_id)
-    _hide_timeout_id = setTimeout(->
-                    clearInterval(_interval_id)
-                    _ctx.clearRect(0, 0, 300, 200)
-                    DCore.Dock.close_show_temp()
-                    preview_current_id = 0
-                timeout)
+    push: (child) ->
+        @element.appendChild(child.element)
+    pop: (pw) ->
 
-preview_active = (id, offset) ->
-            _preview.style.left = offset+"px"
-            preview_current_id = id
-            clearInterval(_interval_id)
-            _ctx.clearRect(0, 0, 300, 200)
+    close_all: ->
+        @curren_active?.disactive()
+        DCore.Dock.close_show_temp()
 
-            preview_disactive(3000)
-            _update_preview()
-            _interval_id = setInterval(_update_preview, 600)
-            DCore.Dock.show_temp_region(offset, 0, 300, 200)
-
-preview_close_window = ->
-    preview_disactive(80)
+    active: (pw, offset) ->
+        @curren_active?.disactive()
+        @curren_active = pw
+        pw.active(offset)
+        DCore.Dock.show_temp_region(offset, 0, 300, 200)
 
 
-#moudle local stub
+preview_container = new PWContainer("pwcontainer")
 
-_preview = $('#preview')
-_preview.addEventListener('click', (e)->
+class PreviewWindow extends Widget
+    constructor: (@id, @w_id, @title, @width, @height)->
+        super
+        @element.innerHTML = "
+        <canvas id=c#{@id} width=#{@width}px height=#{@height}px></canvas>
+        <div class=PWTitle>#{@title}</div>
+        <div class=PWClose>X</div>
+        "
+        preview_container.push(@)
+
+
+        @ctx = $("#c#{@id}").getContext('2d')
+
+    do_click: (e)->
         DCore.Dock.set_active_window(preview_current_id)
-)
-    
-_ctx = _preview.getContext('2d')
+
+    do_mouseover: (e)->
+        clearTimeout(_hide_timeout_id)
+
+    do_mouseout: (e)->
+        setTimeout(=>
+            @disactive()
+        ,1000)
+
+    update_content: ->
+        s = DCore.Dock.fetch_window_preview(@w_id, 300, 200)
+        img = @ctx.getImageData(0, 0, s.width, s.height)
+        for v,i in s.data
+            img.data[i] = v
+        @ctx.putImageData(img, 0, 0)
+
+    clear_content: ->
+        @ctx.clearRect(0, 0, @width, @height)
+
+    active: (offset) ->
+        @update_content()
+        @element.style.left = offset + "px"
+
+        #clearInterval(_interval_id)
+
+        #preview_disactive(3000)
+        #_interval_id = setInterval(_update_preview, 600)
+        #DCore.Dock.show_temp_region(offset, 0, 300, 200)
+
+    disactive: (timeout)->
+        @destroy()
+        #clearTimeout(_hide_timeout_id)
+        #clearTimeout(preview_show_delay_id)
+        #_hide_timeout_id = setTimeout(->
+                        #clearInterval(_interval_id)
+                        #_ctx.clearRect(0, 0, 300, 200)
+                        #DCore.Dock.close_show_temp()
+                        #preview_current_id = 0
+                    #timeout)
 
 
 
-_update_preview = ->
-    s = DCore.Dock.fetch_window_preview(preview_current_id, 300, 200)
-    img = _ctx.getImageData(0, 0, s.width, s.height)
-    for v,i in s.data
-        img.data[i] = v
-    _ctx.putImageData(img, 0, 0)
+preview_close_all = ->
+    preview_container.close_all()
 
-_preview.addEventListener('mouseover', ->
-    clearTimeout(_hide_timeout_id)
-)
-_preview.addEventListener('mouseout', ->
-    preview_disactive(1000)
-)
-
-DCore.signal_connect("leave-notify", preview_close_window)
+DCore.signal_connect("leave-notify", preview_close_all)
