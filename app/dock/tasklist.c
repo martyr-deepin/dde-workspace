@@ -93,8 +93,12 @@ Client* create_client_from_window(Window w)
 
 void _update_client_info(Client *c)
 {
+    char* e_title = json_escape(c->title);
+    char* e_clss = json_escape(c->clss);
     js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
-            (int)c->window, c->title, c->clss, c->icon);
+            (int)c->window, e_title, e_clss, c->icon);
+    g_free(e_title);
+    g_free(e_clss);
 }
 void active_window_changed(Display* dsp, Window w)
 {
