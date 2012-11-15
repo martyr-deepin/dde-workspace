@@ -22,12 +22,36 @@
 MAX_ITEM_TITLE = 20
 DLCLICK_INTERVAL = 200
 
-m = build_menu
-    "Open" : 1
-    "Open with" : 2
-    "Delete" : 3
-    "Rename" : 4
-    "Properties" : 5
+m = build_menu([
+    [1, _("Open")],
+    [_("Open with"), [
+            [35, "emaces"],
+            [36, "geany"],
+            [37, "vim"]
+        ]
+    ],
+    [],
+    [2, _("cut")],
+    [3, _("copy")],
+    [],
+    [4, _("create link")],
+    [5, _("Rename")],
+    [_("copy to"), [
+            [41, _("another desktop")],
+            [42, _("home")],
+            [43, _("desktop")]
+        ]
+    ],
+    [_("move to"), [
+            [51, _("another desktop")],
+            [52, _("home")],
+            [53, _("desktop")]
+        ]
+    ],
+    [6, _("Delete")],
+    [],
+    [7, _("Properties")]
+])
 
 shorten_text = (str, n) ->
     r = /[^\x00-\xff]/g

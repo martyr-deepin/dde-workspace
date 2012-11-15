@@ -23,8 +23,8 @@ s_width = 0
 s_height = 0
 
 # workarea offset
-s_x = 0
-s_y = 0
+s_offset_x = 0
+s_offset_y = 0
 
 # item size
 i_width = 80 + 6 * 2
@@ -48,13 +48,22 @@ selected_item = new Array
 
 last_widget = ""
 
-gm = build_menu
-    "New" :
-        "folder" : 3
-        "text file" : 4
-    "Reorder Icons" : 1
-    "Desktop Settings" : 2
-
+gm = build_menu([
+    [_("arrange icons"), [
+            [31, _("by name")],
+            [32, _("by last modified time")]
+        ]
+    ],
+    [_("New"), [
+            [41, _("folder")],
+            [42, _("text file")]
+        ]
+    ],
+    [3, _("open terminal here")],
+    [4, _("paste")],
+    [5, _("wallpaper")],
+    [6, _("Desktop Settings")]
+])
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
@@ -70,13 +79,13 @@ calc_row_and_cols = (wa_width, wa_height) ->
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
-    s_x = wa_x
-    s_y = wa_y
+    s_offset_x = wa_x
+    s_offset_y = wa_y
     s_width = wa_width
     s_height = wa_height
 
-    div_grid.style.left = s_x
-    div_grid.style.top = s_y
+    div_grid.style.left = s_offset_x
+    div_grid.style.top = s_offset_y
     div_grid.style.width = s_width
     div_grid.style.height = s_height
 
@@ -142,8 +151,8 @@ detect_occupy = (info) ->
 
 
 pixel_to_position = (x, y) ->
-    p_x = x - s_x
-    p_y = y - s_y
+    p_x = x - s_offset_x
+    p_y = y - s_offset_y
     index_x = Math.floor(p_x / grid_item_width)
     index_y = Math.floor(p_y / grid_item_height)
     echo "#{index_x},#{index_y}"
@@ -333,20 +342,74 @@ grid_right_click = (env) ->
         cancel_all_selected_stats()
 
 
+sel = null
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
     document.body.appendChild(div_grid)
-    update_gird_position(s_x, s_y, s_width, s_height)
+    update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     init_grid_drop()
     div_grid.addEventListener("click", gird_left_click)
     div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
+    sel = new Mouse_Select_Area_box(div_grid.parentElement)
+
 
 class ItemGrid
-    contructor : (parentElement) ->
+    constructor : (parentElement) ->
         @_parent_element = parentElement
         @_workarea_width = 0
         @_workarea_height = 0
         @_offset_x = 0
         @_offset_y = 0
+
+
+class Mouse_Select_Area_box
+    constructor : (parentElemnt) ->
+        @parent_element = parentElemnt
+        @element = document.createElement("div")
+        @element.setAttribute("id", "mouse_select_area_box")
+        @element.style.border = "1px solid #eee"
+        @element.style.backgroundColor = "rgba(255,255,255,0.5)"
+        @element.style.zIndex = "30"
+        @element.style.position = "absolute"
+        @element.style.visibility = "hidden"
+        @parent_element.appendChild(@element)
+        @parent_element.addEventListener("mousedown", @mousedown_event)
+
+
+    mousedown_event : (env) =>
+        env.preventDefault()
+        if env.button == 0
+            @parent_element.addEventListener("mousemove", @mousemove_event)
+            @parent_element.addEventListener("mouseup", @mouseup_event)
+            @start_point = env
+            @element.style.width = "0"
+            @element.style.height = "0"
+            @element.style.visibility = "visible"
+        false
+
+
+    mousemove_event : (env) =>
+        env.preventDefault()
+        sl = Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x)
+        st = Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y)
+        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width)
+        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height)
+        @element.style.left = "#{sl}px"
+        @element.style.top = "#{st}px"
+        @element.style.width = "#{sw}px"
+        @element.style.height = "#{sh}px"
+        false
+
+
+    mouseup_event : (env) =>
+        env.preventDefault()
+        @parent_element.removeEventListener("mousemove", @mousemove_event)
+        @parent_element.removeEventListener("mouseup", @mouseup_event)
+        @element.style.visibility = "hidden"
+        false
+
+
+    destory : =>
+        @parent_element.removeChild(@element)
