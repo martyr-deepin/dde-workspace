@@ -394,8 +394,8 @@ class Mouse_Select_Area_box
         env.preventDefault()
         sl = Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x)
         st = Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y)
-        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width)
-        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height)
+        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width - sl)
+        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height - st)
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
