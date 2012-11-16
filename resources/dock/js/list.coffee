@@ -19,28 +19,70 @@
 
 container = $('#icon_list')
 
-app_group_leader = {}
-
-class Client extends Widget
-    constructor: (@id, @icon, @title, @clss)->
+class ClientGroup extends Widget
+    constructor: (@id)->
         super
-        @update_content @title, @icon
 
-        app_group_leader[@clss] = @
-
+        @clients = []
         container.appendChild(@element)
 
-        @pw_id = "PW" + @id
+        @el_title = document.createElement("div")
+        @el_title.setAttribute("class", "ClientNumber")
+        @element.appendChild(@el_title)
 
-    update_content: (title, icon) ->
-        @element.innerHTML = "
-        <img src=#{icon} />
-        "
+    add_client: (c)->
+        if @clients.length == 0
+            @current_leader = c
+            @element.appendChild(@current_leader.element)
+
+        @clients.push(c)
+
+        @el_title.innerText = @clients.length
+
+    remove_client: (c)->
+        c1 = @clients.remove(c)
+        if c1 == @current_leader
+            @current_leader= @clients[0]
+            if @current_leader_
+                @element.appendChild(@current_leader.element)
+        c1?.destroy()
+        
+        n = @clients.length
+        if n == 0
+            @destroy()
+        else
+            @el_title.innerText = n
+
+    do_mouseover: (e) ->
+        preview_container.show_group(@, 150)
+
+    do_mouseout: (e) ->
+        if e.relatedTarget == @element.parentNode
+            preview_container.close_all()
+            echo "OK>..."
+        else
+            "ignore mouse out"
 
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
     deactive: ->
         @element.style.background = "rgba(0, 0, 0, 0)"
+
+
+
+class Client extends Widget
+    constructor: (@id, @icon, @title, @leader)->
+        super
+
+        @update_content @title, @icon
+        @pw_id = "PW" + @id
+
+        @leader.add_client(@)
+
+    update_content: (title, icon) ->
+        @element.innerHTML = "
+        <img src=#{icon} />
+        "
     withdraw: ->
         @element.style.display = "None"
     normal: ->
@@ -49,39 +91,36 @@ class Client extends Widget
         DCore.Dock.set_active_window(@id)
     do_dblclick: (e) ->
         DCore.Dock.minimize_window(@id)
-    do_mouseover: (e) ->
-        pw = Widget.look_up(@pw_id)
-        if not pw
-            pw = new PreviewWindow(@pw_id, @id, @title, 300, 200)
-            preview_container.active(pw, @element.offsetLeft - 150)
+    destroy: ->
+        Widget.look_up(@pw_id)?.destroy()
+        super
 
 
 
 
-active_win = null
-change_active_window = (c) ->
-    if active_win?
-        active_win.deactive()
-    active_win = c
-    active_win.active()
-
-
+active_group = null
 DCore.signal_connect("active_window_changed", (info)->
     client = Widget.look_up(info.id)
-    change_active_window(client)
+    if active_group?
+        active_group.deactive()
+    active_group = client.leader
+    active_group.active()
 )
 
 DCore.signal_connect("task_added", (info) ->
-    w = Widget.look_up(info.id)
-    if w
-        w.update_content(info.title, info.icon)
+    c = Widget.look_up(info.id)
+
+    if c
+        c.update_content(info.title, info.icon)
     else
-        new Client(info.id, info.icon, info.title, info.clss)
+        leader = Widget.look_up("le_"+info.clss)
+        if not leader
+            leader = new ClientGroup("le_"+info.clss)
+        new Client(info.id, info.icon, info.title, leader)
 )
 
 DCore.signal_connect("task_removed", (info) ->
-    Widget.look_up("PW"+info.id)?.destroy()
-    Widget.look_up(info.id)?.destroy()
+    Widget.look_up("le_"+info.clss)?.remove_client(Widget.look_up(info.id))
 )
 
 DCore.signal_connect("task_withdraw", (info) ->

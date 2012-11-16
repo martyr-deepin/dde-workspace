@@ -17,30 +17,47 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-preview_current_id = 0
-preview_show_delay_id = 0
-_interval_id = 0
-_hide_timeout_id = 0
 
 class PWContainer extends Widget
     constructor: (@id)->
         super
         document.body.appendChild(@element)
-        @curren_active = null
+        @current_group = null
 
     push: (child) ->
         @element.appendChild(child.element)
     pop: (pw) ->
 
     close_all: ->
-        @curren_active?.disactive()
+        @current_group = null
+        @current_shows?.forEach((c)-> c.destroy())
         DCore.Dock.close_show_temp()
 
-    active: (pw, offset) ->
-        @curren_active?.disactive()
-        @curren_active = pw
-        pw.active(offset)
-        DCore.Dock.show_temp_region(offset, 0, 300, 200)
+    update: ->
+        for pw in @current_shows
+            pw.update_content()
+
+    show_group: (group, offset)->
+        if @current_group == group
+            return
+        else if @current_group != null
+            echo "show_group2"
+            @current_shows?.forEach((c)-> c.destroy())
+
+        @current_group = group
+        @current_shows = []
+        group.clients.forEach( (c)=>
+            pw = new PreviewWindow(c.pw_id, c.id, c.title, 200, 100)
+            @current_shows.push(pw)
+        )
+
+        if @element.clientWidth == screen.width
+            @element.style.left = 0
+            DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+        else
+            @element.style.left = offset + "px"
+            DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+        @update()
 
 
 preview_container = new PWContainer("pwcontainer")
@@ -55,54 +72,16 @@ class PreviewWindow extends Widget
         "
         preview_container.push(@)
 
-
         @ctx = $("#c#{@id}").getContext('2d')
 
     do_click: (e)->
-        DCore.Dock.set_active_window(preview_current_id)
-
-    do_mouseover: (e)->
-        clearTimeout(_hide_timeout_id)
-
-    do_mouseout: (e)->
-        setTimeout(=>
-            @disactive()
-        ,1000)
+        DCore.Dock.set_active_window(@w_id)
 
     update_content: ->
-        s = DCore.Dock.fetch_window_preview(@w_id, 300, 200)
-        img = @ctx.getImageData(0, 0, s.width, s.height)
-        for v,i in s.data
-            img.data[i] = v
-        @ctx.putImageData(img, 0, 0)
+        s = DCore.Dock.fetch_window_preview(@w_id, 200, 100)
+        #img = @ctx.getImageData(0, 0, s.width, s.height)
+        #for v,i in s.data
+            #img.data[i] = v
+        #@ctx.putImageData(img, 0, 0)
 
-    clear_content: ->
-        @ctx.clearRect(0, 0, @width, @height)
-
-    active: (offset) ->
-        @update_content()
-        @element.style.left = offset + "px"
-
-        #clearInterval(_interval_id)
-
-        #preview_disactive(3000)
-        #_interval_id = setInterval(_update_preview, 600)
-        #DCore.Dock.show_temp_region(offset, 0, 300, 200)
-
-    disactive: (timeout)->
-        @destroy()
-        #clearTimeout(_hide_timeout_id)
-        #clearTimeout(preview_show_delay_id)
-        #_hide_timeout_id = setTimeout(->
-                        #clearInterval(_interval_id)
-                        #_ctx.clearRect(0, 0, 300, 200)
-                        #DCore.Dock.close_show_temp()
-                        #preview_current_id = 0
-                    #timeout)
-
-
-
-preview_close_all = ->
-    preview_container.close_all()
-
-DCore.signal_connect("leave-notify", preview_close_all)
+DCore.signal_connect("leave-notify", preview_container.close_all)

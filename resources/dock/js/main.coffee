@@ -23,14 +23,14 @@ $("#icon_desktop").addEventListener('click', (e) ->
     DCore.Dock.show_desktop(show)
 )
 $("#icon_desktop").addEventListener('mouseover', (e) ->
-    preview_close_all()
+    preview_container.close_all()
 )
 
 $("#icon_launcher").addEventListener('click', (e) ->
     DCore.run_command("launcher")
 )
 $("#icon_launcher").addEventListener('mouseover', (e) ->
-    preview_close_all()
+    preview_container.close_all()
 )
 
 format_two_bit = (s) ->

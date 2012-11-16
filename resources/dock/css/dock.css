@@ -72,7 +72,8 @@ body {
     margin-right: 5px;
 }
 
-.Client {
+.ClientGroup {
+    position:relative;
     float: left;
     padding: 4px 5px 3px 5px;
     margin: 2px 5px;
@@ -82,17 +83,23 @@ body {
     width: 32px;
     height: 32px;
 }
+.ClientNumber {
+    position: absolute;
+    background: red;
+    top: 0px;
+}
 
 .PWContainer {
     position: fixed;
-    top:0px;
+    bottom:50px;
+    background: rgba(100, 100, 0, 0.4)
 }
 .PreviewWindow {
-    position: absolute;
-    top:0px;
-    background: rbg(200, 0, 0);
-    width: 300px;
-    height: 200px;
+    margin: 3px;
+    position: relative;
+    background: rgba(100, 100, 100, 0.4);
+    width: 200px;
+    height: 100px;
     float: left;
 }
 .PWTitle {
