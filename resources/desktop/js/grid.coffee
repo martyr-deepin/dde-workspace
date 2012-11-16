@@ -113,18 +113,28 @@ update_position = (old_path, new_path) ->
     localStorage.setObject(new_path, o_p)
 
 
-compare_position = (base, pos) ->
+compare_pos_left_top = (base, pos) ->
     if pos.y < base.y
-        return -1
+        -1
     else if pos.y >= base.y and pos.y <= base.y + base.height - 1
         if pos.x < base.x
-            return -1
+            -1
         else if pos.x >= base.x and pos.x <= base.x + base.width - 1
             0
         else
-            return 1
+            1
     else
-        return 1
+        1
+
+
+compare_pos_rect = (base1, base2, pos) ->
+    if base1.x <= pos.x <= base2.x and base1.y <= pos.y <= base2.y
+        ret = true
+    else
+        ret = false
+
+    echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
+    ret
 
 
 clear_occupy = (info) ->
@@ -150,13 +160,15 @@ detect_occupy = (info) ->
     return false
 
 
-pixel_to_position = (x, y) ->
-    p_x = x - s_offset_x
-    p_y = y - s_offset_y
-    index_x = Math.floor(p_x / grid_item_width)
-    index_y = Math.floor(p_y / grid_item_height)
-    echo "#{index_x},#{index_y}"
+pixel_to_coord = (x, y) ->
+    index_x = Math.floor(x / grid_item_width)
+    index_y = Math.floor(y / grid_item_height)
+    #echo "#{index_x},#{index_y}"
     return [index_x, index_y]
+
+
+coord_to_pos = (coord, size) ->
+    {x : coord[0], y : coord[1], width : size[0], height : size[1]}
 
 
 find_free_position = (w, h) ->
@@ -217,12 +229,11 @@ sort_item = ->
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         for file in evt.dataTransfer.files
-            pos = pixel_to_position(evt.x, evt.y)
-            p_info = {"x": pos[0], "y": pos[1], "width": 1, "height": 1}
+            pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
 
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
-                localStorage.setObject(path, p_info)
+                localStorage.setObject(path, pos)
 
         evt.dataTransfer.dropEffect = "move"
     )
@@ -263,17 +274,15 @@ set_item_selected = (w, top = false) ->
 
 cancel_item_selected = (w) ->
     ret = false
-    for i in [0...selected_item.length] by 1
-        if selected_item[i] == w.id
-            selected_item.splice(i, 1)
-            w.item_normal()
-            ret = true
+    i = selected_item.indexOf(w.id)
+    if i >= 0
+        selected_item.splice(i, 1)
+        w.item_normal()
+        ret = true
 
-            if last_widget == w.id
-                w.item_blur()
-                last_widget = ""
-
-            break
+        if last_widget == w.id
+            w.item_blur()
+            last_widget = ""
 
     return ret
 
@@ -301,16 +310,15 @@ update_selected_stats = (w, env) ->
             set_item_selected(last_one)
 
         if selected_item.length == 1
-            coord = pixel_to_position(env.x, env.y)
-            end_pos = {"x": coord[0], "y": coord[1], "width": 1, "height": 1}
+            end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
             start_pos = load_position(Widget.look_up(selected_item[0]))
 
-            ret = compare_position(start_pos, end_pos)
+            ret = compare_pos_left_top(start_pos, end_pos)
             if ret < 0
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val)
-                    if compare_position(end_pos, i_pos) > 0 and compare_position(start_pos, i_pos) <= 0
+                    if compare_pos_left_top(end_pos, i_pos) > 0 and compare_pos_left_top(start_pos, i_pos) <= 0
                         set_item_selected(val, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
@@ -318,7 +326,7 @@ update_selected_stats = (w, env) ->
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val)
-                    if compare_position(start_pos, i_pos) >= 0 and compare_position(end_pos, i_pos) < 0
+                    if compare_pos_left_top(start_pos, i_pos) >= 0 and compare_pos_left_top(end_pos, i_pos) < 0
                         set_item_selected(val, true)
 
         else
@@ -370,12 +378,13 @@ class Mouse_Select_Area_box
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
         @element.style.border = "1px solid #eee"
-        @element.style.backgroundColor = "rgba(255,255,255,0.5)"
+        @element.style.backgroundColor = "rgba(167,167,167,0.5)"
         @element.style.zIndex = "30"
         @element.style.position = "absolute"
         @element.style.visibility = "hidden"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
+        @last_effect_item = new Array
 
 
     mousedown_event : (env) =>
@@ -384,7 +393,9 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @start_point = env
-        false
+            @start_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
+            @last_pos = @start_pos
+        return
 
 
     mousemove_event : (env) =>
@@ -398,7 +409,72 @@ class Mouse_Select_Area_box
         @element.style.width = "#{sw}px"
         @element.style.height = "#{sh}px"
         @element.style.visibility = "visible"
-        false
+
+        new_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
+        if compare_pos_left_top(@last_pos, new_pos) != 0
+            if compare_pos_left_top(@start_pos, @last_pos) < 0
+                pos_a = @last_pos
+                pos_b = @start_pos
+            else
+                pos_a = @start_pos
+                pos_b = @last_pos
+
+            effect_item = new Array
+            for i in all_item
+                w = Widget.look_up(i)
+                if not w? then continue
+                item_pos = load_position(w)
+                if compare_pos_rect(pos_a, pos_b, item_pos) == true
+                    effect_item.push(i)
+
+            echo effect_item.length
+
+            temp_list = effect_item.concat()
+            sel_list = @last_effect_item.concat()
+            if temp_list.length > 0 and sel_list.length > 0
+                for i in [temp_list.length - 1 ... -1] by -1
+                    for n in [sel_list.length - 1 ... -1] by -1
+                        if temp_list[i] == sel_list[n]
+                            temp_list.splice(i, 1)
+                            sel_list.splice(n, 1)
+                            break
+
+            # all items in temp_list are new item included
+            # all items in sel_list are items excluded
+
+            if env.ctrlKey == true
+                for i in temp_list
+                    w = Widget.look_up(i)
+                    if not w? then continue
+                    else if w.selected == false then set_item_selected(w)
+                    else cancel_item_selected(w)
+                for i in sel_list
+                    w = Widget.look_up(i)
+                    if not w? then continue
+                    else if w.selected == false then set_item_selected(w)
+                    else cancel_item_selected(w)
+
+            else if env.shiftKey == true
+                for i in temp_list
+                    w = Widget.look_up(i)
+                    if not w? then continue
+                    if w.selected == false then set_item_selected(w)
+
+            else
+                for i in temp_list
+                    w = Widget.look_up(i)
+                    if not w? then continue
+                    if w.selected == false then set_item_selected(w)
+                for i in sel_list
+                    w = Widget.look_up(i)
+                    if not w? then continue
+                    if w.selected == true then cancel_item_selected(w)
+
+            @last_pos = new_pos
+            @last_effect_item = effect_item
+            echo "#{@last_effect_item.length}"
+
+        return
 
 
     mouseup_event : (env) =>
@@ -406,7 +482,8 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
         @element.style.visibility = "hidden"
-        false
+        @last_effect_item.splice(0)
+        return
 
 
     destory : =>

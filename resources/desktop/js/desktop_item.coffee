@@ -225,18 +225,18 @@ class DesktopEntry extends Item
         env.preventDefault()
         if env.dataTransfer.dropEffect == "move"
             node = env.target
-            pos = pixel_to_position(env.x, env.y)
+            pos = pixel_to_coord(env.x, env.y)
 
             info = localStorage.getObject(@path)
             info.x = pos[0]
             info.y = pos[1]
             move_to_position(this, info)
-            return
 
-        else if env.dataTransfer.dropEffect == "link"
+        #else if env.dataTransfer.dropEffect == "link"
             #node = env.target
             #node.parentNode.removeChild(node)
-            return
+
+        return
 
 
 class Folder extends DesktopEntry
