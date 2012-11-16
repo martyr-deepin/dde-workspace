@@ -93,12 +93,8 @@ Client* create_client_from_window(Window w)
 
 void _update_client_info(Client *c)
 {
-    char* e_title = json_escape(c->title);
-    char* e_clss = json_escape(c->clss);
     js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
-            (int)c->window, e_title, e_clss, c->icon);
-    g_free(e_title);
-    g_free(e_clss);
+            (int)c->window, c->title, c->clss, c->icon);
 }
 void active_window_changed(Display* dsp, Window w)
 {
@@ -111,7 +107,7 @@ void active_window_changed(Display* dsp, Window w)
 
 void client_free(Client* c)
 {
-    js_post_message("task_removed", "{\"id\": %d}", (int)c->window);
+    js_post_message("task_removed", "{\"id\": %d, \"clss\":\"%s\"}", (int)c->window, c->clss);
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
     g_object_unref(c->gdkwindow);
@@ -234,7 +230,7 @@ void _update_window_title(Client* c)
     long item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
-        c->title = g_strdup(name);
+        c->title = json_escape(name);
     else
         c->title = g_strdup("Unknow Name");
     XFree(name);
@@ -244,7 +240,7 @@ void _update_window_class(Client* c)
 {
     XClassHint ch;
     XGetClassHint(_dsp, c->window, &ch);
-    c->clss = g_strdup(ch.res_class);
+    c->clss = json_escape(ch.res_class);
     XFree(ch.res_name);
     XFree(ch.res_class);
 }
