@@ -33,6 +33,9 @@ assert = (value, msg) ->
 _ = (s)->
     DCore.gettext(s)
 
+Array.prototype.remove = (el)->
+    this.splice(this.indexOf(el), 1)[0]
+
 build_menu = (info) ->
     m = new DeepinMenu
     for v in info

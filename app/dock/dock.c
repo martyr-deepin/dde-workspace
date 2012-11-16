@@ -27,11 +27,11 @@
 #include "i18n.h"
 #include <cairo.h>
 
-#define HEIGHT (50 + 200)
+#define HEIGHT (50)
 
 void close_show_temp();
 void show_temp_region(double x, double y, double width, double height);
-cairo_rectangle_int_t base_rect = {0, HEIGHT - 50, 0, 50/* the width will change*/};
+cairo_rectangle_int_t base_rect = {0, 50, 0, 50/* the width will change*/};
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
@@ -71,14 +71,15 @@ int main(int argc, char* argv[])
     int s_width = gdk_screen_get_width(screen);
     int s_height = gdk_screen_get_height(screen);
     base_rect.width = s_width;
+    base_rect.y = s_height - HEIGHT;
     //TODO: when change resolution
 
     gtk_widget_realize(container);
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, 55, 0, s_width);
-    set_wmspec_dock_hint(gtk_widget_get_window(container));
-    gtk_window_resize(GTK_WINDOW(container), s_width, HEIGHT);
-    gtk_window_move(GTK_WINDOW(container), 0, s_height - HEIGHT);
+    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+    gtk_window_resize(GTK_WINDOW(container), s_width, s_height);
+    gtk_window_move(GTK_WINDOW(container), 0, 0);
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_window_set_keep_above(GTK_WINDOW(container), TRUE);
 
