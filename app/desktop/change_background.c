@@ -53,6 +53,9 @@ static int	root_height;
 
 //
 static gboolean	initialized = FALSE;
+
+//global timeout_id to track in process timeoutout
+static guint	timeout_id = 0;
 //
 
 /*
@@ -170,7 +173,13 @@ static void crossfade_start(xfade_data_t* fade_data)
 	GSource* source = g_timeout_source_new(fade_data->interval*MSEC_PER_SEC);
 
 	g_source_set_callback(source, (GSourceFunc) on_tick, fade_data, (GDestroyNotify)on_finished);
-	g_source_attach(source, g_main_context_default());
+
+	timeout_id = g_source_attach(source, g_main_context_default());
+}
+static void crossfade_stop()
+{
+	g_source_remove(timeout_id);
+	timeout_id = 0;
 }
 /*
  * 	get previous background pixmap id.
@@ -287,6 +296,8 @@ static void set_bg_props(GdkPixbuf* pb)
 		
 		printf("we've setup fade_data\n");
 
+		if(timeout_id!=0)
+			crossfade_stop();
 		crossfade_start(fade_data);
 		// free fade_data in on_finished
 		// reuse pixman. no need to change background xproperty.
