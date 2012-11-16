@@ -403,12 +403,12 @@ class Folder extends DesktopEntry
         n = Math.ceil(items.length / col)
         if n > 4 then n = 4
         n = n * i_height + 20
-        if @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop - n - 16}px"
-            arrow_pos = true
-        else
+        if s_height - @element.offsetTop > n
             @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 20}px"
             arrow_pos = false
+        else
+            @div_pop.style.top = "#{@element.offsetTop - n - 16}px"
+            arrow_pos = true
 
         n = (col * i_width) / 2
         p = @element.offsetLeft + @element.offsetWidth / 2 - 10
