@@ -193,6 +193,25 @@ class Signal:
     def __init__(self, *params):
         pass
 
+class CustomFunc:
+    def __init__(self, name):
+        self.name = name
+    def str_def(self):
+        print "huhu"
+        return """
+    { "%(name)s", %(name)s, kJSPropertyAttributeReadOnly },
+""" % { "name" : self.name }
+    def str(self):
+        return """
+extern JSValueRef %(name)s(JSContextRef context,
+                        JSObjectRef function,
+                        JSObjectRef thisObject,
+                        size_t argumentCount,
+                        const JSValueRef arguments[],
+                        JSValueRef *exception);
+""" % { "name" : self.name }
+
+
 class Function:
     temp = """
 extern %(raw_return)s %(name)s(%(raw_params)s);
@@ -319,7 +338,7 @@ JSClassRef get_%(name)s_class()
 
 
         for arg in args:
-            if isinstance(arg, Function):
+            if isinstance(arg, Function) or isinstance(arg, CustomFunc):
                 self.funcs.append(arg)
             elif isinstance(arg, Value):
                 self.values.append(arg)
@@ -410,7 +429,7 @@ class JSCode(Params):
     JSStringRef scriptJS = JSStringCreateWithUTF8CString(c_return);
     """
 
-class JSValue(Params):
+class JSValueRef(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
     def raw(self):

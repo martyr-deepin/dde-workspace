@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+
 #include <dwebview.h>
 #include <utils.h>
 #include <gtk/gtk.h>
@@ -145,7 +146,6 @@ int main(int argc, char* argv[])
     set_wmspec_desktop_hint(gtk_widget_get_window(container));
     watch_workarea_changes(container);
 
-    GdkWindow* webkit_web_view_get_forward_window(GtkWidget*);
     GdkWindow* fw = webkit_web_view_get_forward_window(webview);
     gdk_window_stick(fw);
 

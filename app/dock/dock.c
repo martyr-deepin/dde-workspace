@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#include "dwebview.h"
+#include <dwebview.h>
 #include "X_misc.h"
 #include "xdg_misc.h"
 #include "utils.h"
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect (webview, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    g_signal_connect (container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
 
 
     GdkScreen* screen = gdk_screen_get_default();
