@@ -23,21 +23,50 @@ class PWContainer extends Widget
         super
         document.body.appendChild(@element)
         @current_group = null
-        @show_interval_id = null
+        @current_shows = []
 
-    push: (child) ->
+        @update_id = null
+        @hide_id = null
+
+    do_mouseover: ->
+        clearTimeout(@hide_id)
+
+    do_mouseout: ->
+        @remove_all(2500)
+
+    add: (child) ->
         @element.appendChild(child.element)
 
-    pop: (pw) ->
+        @current_shows.push(child)
 
-    close_all: ->
-        @current_group = null
-        @current_shows?.forEach((c)-> c.destroy())
-        DCore.Dock.close_show_temp()
-        clearInterval(@show_interval_id)
+    remove: (pw) ->
+        if @current_shows.length == 1
+            @remove_all()
+        else
+            @current_shows.remove(pw)
+            pw?.destroy()
+
+    remove_all: (timeout)->
+        __remove_all = =>
+            DCore.Dock.close_show_temp()
+            clearInterval(@update_id)
+            @current_group = null
+            for i in @current_shows
+                i.destroy()
+            @current_shows = []
+
+        if @current_shows.length == 0
+            __remove_all()
+        else if timeout?
+            @hide_id = setTimeout(__remove_all, timeout)
+        else
+            __remove_all()
+
 
     update: ->
-        @show_interval_id = setInterval(=>
+        for pw in @current_shows
+            pw.update_content()
+        @update_id = setInterval(=>
             for pw in @current_shows
                 pw.update_content()
         , 200)
@@ -46,13 +75,13 @@ class PWContainer extends Widget
         if @current_group == group
             return
         else if @current_group != null
-            @current_shows?.forEach((c)-> c.destroy())
+            @remove_all()
+
+        clearTimeout(@hide_id)
 
         @current_group = group
-        @current_shows = []
         group.clients.forEach( (c)=>
             pw = new PreviewWindow(c.pw_id, c.id, c.title, 200, 100)
-            @current_shows.push(pw)
         )
 
         if @element.clientWidth == screen.width
@@ -64,19 +93,25 @@ class PWContainer extends Widget
         @update()
 
 
-preview_container = new PWContainer("pwcontainer")
+Preview_container = new PWContainer("pwcontainer")
 
 class PreviewWindow extends Widget
     constructor: (@id, @w_id, @title, @width, @height)->
         super
         @element.innerHTML = "
-        <canvas id=c#{@id} width=#{@width}px height=#{@height}px></canvas>
-        <div class=PWTitle>#{@title}</div>
+        <canvas class=PWCanvas id=c#{@id} width=#{@width}px height=#{@height}px></canvas>
+        <div class=PWTitle title='#{@title}'>#{@title}</div>
         <div class=PWClose>X</div>
         "
-        preview_container.push(@)
+
+        Preview_container.add(@)
 
         @canvas = $("#c#{@id}")
+
+        $(@element, ".PWClose").addEventListener('click', (e)=>
+            DCore.Dock.close_window(@w_id)
+            e.stopPropagation()
+        )
 
     do_click: (e)->
         DCore.Dock.set_active_window(@w_id)
@@ -84,4 +119,6 @@ class PreviewWindow extends Widget
     update_content: ->
         DCore.Dock.draw_window_preview(@canvas, @w_id, 200, 100)
 
-DCore.signal_connect("leave-notify", preview_container.close_all)
+DCore.signal_connect("leave-notify", ->
+    Preview_container.remove_all(1000)
+)

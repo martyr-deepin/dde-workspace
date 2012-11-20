@@ -92,20 +92,30 @@ body {
 .PWContainer {
     position: fixed;
     bottom:50px;
-    background: rgba(100, 100, 0, 0.4)
 }
+
 .PreviewWindow {
-    margin: 3px;
+    float: left;
     position: relative;
-    background: rgba(100, 100, 100, 0.4);
+}
+
+.PWCanvas {
+    background: rgba(80, 50, 50, 0.8);
     width: 200px;
     height: 100px;
-    float: left;
+
+    margin-top: 15px;
+    margin-bottom: 20px;
+    margin-left: 10px;
 }
+.PWCanvas:last-of-type {
+    margin-right: 10px;
+}
+
 .PWTitle {
     position: absolute;
     bottom:0px;
-    width: 300px;
+    width: 200px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -116,6 +126,9 @@ body {
     position: absolute;
     top:0px;
     right:0px
+}
+.PWClose:hover {
+    cursor: pointer;
 }
 
 

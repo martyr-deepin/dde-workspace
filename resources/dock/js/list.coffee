@@ -41,9 +41,10 @@ class ClientGroup extends Widget
 
     remove_client: (c)->
         c1 = @clients.remove(c)
+
         if c1 == @current_leader
-            @current_leader= @clients[0]
-            if @current_leader_
+            @current_leader = @clients[0]
+            if @current_leader
                 @element.appendChild(@current_leader.element)
         c1?.destroy()
         
@@ -54,11 +55,11 @@ class ClientGroup extends Widget
             @el_title.innerText = n
 
     do_mouseover: (e) ->
-        preview_container.show_group(@, 150)
+        Preview_container.show_group(@, 150)
 
     do_mouseout: (e) ->
         if e.relatedTarget == @element.parentNode
-            preview_container.close_all()
+            Preview_container.remove_all(1000)
 
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
@@ -89,7 +90,9 @@ class Client extends Widget
     do_dblclick: (e) ->
         DCore.Dock.minimize_window(@id)
     destroy: ->
-        Widget.look_up(@pw_id)?.destroy()
+        pw = Widget.look_up(@pw_id)
+        if pw?
+            Preview_container.remove(pw)
         super
 
 
