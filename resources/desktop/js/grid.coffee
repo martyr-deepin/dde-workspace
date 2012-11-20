@@ -412,12 +412,12 @@ class Mouse_Select_Area_box
 
         new_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
         if compare_pos_left_top(@last_pos, new_pos) != 0
-            if compare_pos_left_top(@start_pos, @last_pos) < 0
-                pos_a = @last_pos
+            if compare_pos_left_top(@start_pos, new_pos) < 0
+                pos_a = new_pos
                 pos_b = @start_pos
             else
                 pos_a = @start_pos
-                pos_b = @last_pos
+                pos_b = new_pos
 
             effect_item = new Array
             for i in all_item
@@ -472,7 +472,6 @@ class Mouse_Select_Area_box
 
             @last_pos = new_pos
             @last_effect_item = effect_item
-            echo "#{@last_effect_item.length}"
 
         return
 
