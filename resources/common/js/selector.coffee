@@ -18,11 +18,17 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 $ = (q, o) ->
-    return [] if typeof(q) != 'string' or q == ''
-    switch q.charAt(0)
-        when '#' then return document.getElementById(q.substr(1))
-        when '.' then return document.querySelectorAll(q.substr(1))
+    if typeof(q) != 'string'
+        div = q
+        selector = o
+    else
+        div = document
+        selector = q
+
+    switch selector.charAt(0)
+        when '#' then return div.getElementById(selector.substr(1))
+        when '.' then return div.querySelector(selector)
         else
-            return document.getElementByTagName(q)
+            return div.getElementByTagName(selector)
     
 
