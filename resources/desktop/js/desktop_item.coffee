@@ -204,6 +204,7 @@ class Item extends Widget
                     echo "Rename"
         )
 
+
     move: (x, y) ->
         style = @element.style
         style.position = "absolute"
