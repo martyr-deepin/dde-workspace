@@ -23,25 +23,29 @@ class PWContainer extends Widget
         super
         document.body.appendChild(@element)
         @current_group = null
+        @show_interval_id = null
 
     push: (child) ->
         @element.appendChild(child.element)
+
     pop: (pw) ->
 
     close_all: ->
         @current_group = null
         @current_shows?.forEach((c)-> c.destroy())
         DCore.Dock.close_show_temp()
+        clearInterval(@show_interval_id)
 
     update: ->
-        for pw in @current_shows
-            pw.update_content()
+        @show_interval_id = setInterval(=>
+            for pw in @current_shows
+                pw.update_content()
+        , 200)
 
     show_group: (group, offset)->
         if @current_group == group
             return
         else if @current_group != null
-            echo "show_group2"
             @current_shows?.forEach((c)-> c.destroy())
 
         @current_group = group
@@ -72,16 +76,12 @@ class PreviewWindow extends Widget
         "
         preview_container.push(@)
 
-        @ctx = $("#c#{@id}").getContext('2d')
+        @canvas = $("#c#{@id}")
 
     do_click: (e)->
         DCore.Dock.set_active_window(@w_id)
 
     update_content: ->
-        s = DCore.Dock.fetch_window_preview(@w_id, 200, 100)
-        #img = @ctx.getImageData(0, 0, s.width, s.height)
-        #for v,i in s.data
-            #img.data[i] = v
-        #@ctx.putImageData(img, 0, 0)
+        DCore.Dock.draw_window_preview(@canvas, @w_id, 200, 100)
 
 DCore.signal_connect("leave-notify", preview_container.close_all)

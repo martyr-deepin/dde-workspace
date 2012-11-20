@@ -21,9 +21,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
+#include <dwebview.h>
 #include "X_misc.h"
 #include "pixbuf.h"
-#include "dwebview.h"
+#include "utils.h"
 
 Atom ATOM_CLIENT_LIST;
 Atom ATOM_ACTIVE_WINDOW;
@@ -368,38 +369,35 @@ void minimize_window(double id)
     XIconifyWindow(_dsp, (Window)id, 0);
 }
 
-char* fetch_window_preview(double xid, double dest_width, double dest_height)
+void draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
 {
-    Client *c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
+    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
     if (c == NULL)
-        return g_strdup("{}");
+        return;
     GdkWindow* win = c->gdkwindow;
 
     int width = gdk_window_get_width(win);
     int height = gdk_window_get_height(win);
     double scale = width / (double) height;
+
     if (width > height) {
         dest_height =  dest_width / scale;
     } else {
         dest_width = dest_height * scale;
     }
 
-    GdkPixbuf* pixbuf = gdk_pixbuf_get_from_window(win, 0, 0, width, height);
-    g_assert(pixbuf != NULL);
-    GdkPixbuf* preview = gdk_pixbuf_scale_simple(pixbuf, dest_width, dest_height, GDK_INTERP_BILINEAR);
-    g_assert(preview != NULL);
+    double s1 = dest_width / width;
+    double s2 = dest_height / height;
 
-    char* data = pixbuf_to_canvas_data(preview);
-    char* ret = g_strdup_printf("{\"width\":%d, \"height\":%d, \"data\":%s}", 
-            (int)dest_width, (int)dest_height, data);
+    cairo_save(cr);
+    cairo_scale(cr, dest_width / width, dest_height / height);
+    gdk_cairo_set_source_window(cr, win, 0, 0);
+    cairo_paint(cr);
+    cairo_restore(cr);
 
-    g_free(data);
-
-
-    g_object_unref(pixbuf);
-    g_object_unref(preview);
-
-    return ret;
+    canvas_custom_draw_did(cr, NULL);
 }
 
 double test_get_n()

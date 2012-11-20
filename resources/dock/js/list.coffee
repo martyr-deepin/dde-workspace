@@ -59,9 +59,6 @@ class ClientGroup extends Widget
     do_mouseout: (e) ->
         if e.relatedTarget == @element.parentNode
             preview_container.close_all()
-            echo "OK>..."
-        else
-            "ignore mouse out"
 
     active: ->
         @element.style.background = "rgba(0, 100, 100, 1)"
