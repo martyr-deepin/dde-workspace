@@ -305,9 +305,10 @@ update_selected_stats = (w, env) ->
 
     else if env.shiftKey
         if selected_item.length > 1
-            last_one = selected_item[selected_item.length - 1]
+            last_one_id = selected_item[selected_item.length - 1]
             cancel_all_selected_stats()
-            set_item_selected(last_one)
+            last_one = Widget.look_up(last_one_id)
+            if last_one? then set_item_selected(last_one)
 
         if selected_item.length == 1
             end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
@@ -318,7 +319,7 @@ update_selected_stats = (w, env) ->
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val)
-                    if compare_pos_left_top(end_pos, i_pos) > 0 and compare_pos_left_top(start_pos, i_pos) <= 0
+                    if compare_pos_left_top(end_pos, i_pos) >= 0 and compare_pos_left_top(start_pos, i_pos) < 0
                         set_item_selected(val, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
@@ -326,7 +327,7 @@ update_selected_stats = (w, env) ->
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val)
-                    if compare_pos_left_top(start_pos, i_pos) >= 0 and compare_pos_left_top(end_pos, i_pos) < 0
+                    if compare_pos_left_top(start_pos, i_pos) > 0 and compare_pos_left_top(end_pos, i_pos) <= 0
                         set_item_selected(val, true)
 
         else
