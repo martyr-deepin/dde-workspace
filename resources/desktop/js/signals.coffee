@@ -27,12 +27,9 @@ connect_default_signals = ->
 
 
 do_item_delete = (info) ->
-    id = info.id
-    Widget.look_up(id)?.destroy()
-    for i in all_item
-        if i == id
-            all_item.splice(i, 1)
-            break
+    Widget.look_up(info.id)?.destroy()
+    all_item.remove(info.id)
+    discard_position(info.id)
 
 
 do_item_update = (info) ->
@@ -48,10 +45,7 @@ do_item_update = (info) ->
 
 do_item_rename = (data) ->
     Widget.look_up(data.old_id)?.destroy()
-    for i in all_item
-        if i == id
-            all_item.splice(i, 1)
-            break
+    all_item.remove(info.id)
 
     update_position(data.old_id, data.info.EntryPath)
 

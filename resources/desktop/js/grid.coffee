@@ -103,14 +103,18 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     o_table = new_table
 
 
-load_position = (widget) ->
-    localStorage.getObject(widget.path)
+load_position = (path) ->
+    localStorage.getObject(path)
 
 
 update_position = (old_path, new_path) ->
     o_p = localStorage.getObject(old_path)
     localStorage.removeItem(old_path)
     localStorage.setObject(new_path, o_p)
+
+
+discard_position = (path) ->
+    localStorage.removeItem(path)
 
 
 compare_pos_left_top = (base, pos) ->
@@ -189,6 +193,8 @@ move_to_anywhere = (widget) ->
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
+
+    echo "#{widget.path} move to #{info.x},#{info.y}"
 
 
 move_to_position = (widget, info) ->
@@ -312,13 +318,13 @@ update_selected_stats = (w, env) ->
 
         if selected_item.length == 1
             end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
-            start_pos = load_position(Widget.look_up(selected_item[0]))
+            start_pos = load_position(Widget.look_up(selected_item[0]).path)
 
             ret = compare_pos_left_top(start_pos, end_pos)
             if ret < 0
                 for key in all_item
                     val = Widget.look_up(key)
-                    i_pos = load_position(val)
+                    i_pos = load_position(val.path)
                     if compare_pos_left_top(end_pos, i_pos) >= 0 and compare_pos_left_top(start_pos, i_pos) < 0
                         set_item_selected(val, true)
             else if ret == 0
@@ -326,7 +332,7 @@ update_selected_stats = (w, env) ->
             else
                 for key in all_item
                     val = Widget.look_up(key)
-                    i_pos = load_position(val)
+                    i_pos = load_position(val.path)
                     if compare_pos_left_top(start_pos, i_pos) > 0 and compare_pos_left_top(end_pos, i_pos) <= 0
                         set_item_selected(val, true)
 
@@ -337,6 +343,8 @@ update_selected_stats = (w, env) ->
         if selected_item.length > 0
             cancel_all_selected_stats()
         set_item_selected(w)
+
+    return
 
 
 gird_left_click = (env) ->
@@ -424,7 +432,7 @@ class Mouse_Select_Area_box
             for i in all_item
                 w = Widget.look_up(i)
                 if not w? then continue
-                item_pos = load_position(w)
+                item_pos = load_position(w.path)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 
