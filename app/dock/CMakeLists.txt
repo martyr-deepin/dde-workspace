@@ -17,7 +17,7 @@ SET(SRC_LIST dock.c tray.c tasklist.c ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dbus tray ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

@@ -33,7 +33,7 @@ gboolean is_application_running(const char* path)
     socklen_t server_len;
     struct sockaddr_un server_addr;
 
-    server_addr.sun_path[0] = '\0';
+    server_addr.sun_path[0] = '\0'; //make it be an name unix socket
     strcpy(server_addr.sun_path+1, path);
     server_addr.sun_family = AF_UNIX;
     server_len = 1 + strlen(path) + offsetof(struct sockaddr_un, sun_path);
@@ -45,22 +45,6 @@ gboolean is_application_running(const char* path)
     } else {
         return TRUE;
     }
-}
-
-char* get_html_path(const char* name)
-{
-    GString *path = g_string_new("file://");
-    g_string_append_printf(path, "%s/%s/index.html", RESOURCE_DIR, name);
-    return g_string_free(path, FALSE);
-}
-char* get_config_path(const char* name)
-{
-    GString *path = g_string_new(g_environ_getenv(g_get_environ(), "HOME"));
-    g_string_append_printf(path, "/.config/%s", name);
-
-    g_mkdir_with_parents(path->str, S_IRWXU);
-
-    return g_string_free(path, FALSE);
 }
 
 char* shell_escape(const char* source)
@@ -168,4 +152,35 @@ void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar*
     fclose(logfile);
 
     g_log_default_handler(log_domain, log_level, message, NULL);
+}
+
+char* gen_id(const char* seed)
+{
+    return g_compute_checksum_for_string(G_CHECKSUM_MD5, seed, strlen(seed));
+}
+
+void run_command(const char* cmd)
+{
+    g_spawn_command_line_async(cmd, NULL);
+}
+
+void run_command1(const char* cmd, const char* p1)
+{
+    char* e_p = shell_escape(p1);
+    char* e_cmd = g_strdup_printf("%s %s\n", cmd, e_p);
+    g_free(e_p);
+
+    g_spawn_command_line_async(e_cmd, NULL);
+    g_free(e_cmd);
+}
+void run_command2(const char* cmd, const char* p1, const char* p2)
+{
+    char* e_p1 = shell_escape(p1);
+    char* e_p2 = shell_escape(p2);
+    char* e_cmd = g_strdup_printf("%s %s %s\n", cmd, e_p1, e_p2);
+    g_free(e_p1);
+    g_free(e_p2);
+
+    g_spawn_command_line_async(e_cmd, NULL);
+    g_free(e_cmd);
 }

@@ -23,11 +23,16 @@
 
 #include <glib.h>
 
-char* get_html_path(const char* name);
-char* get_config_path(const char* name);
+#define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
+
 char* json_escape (const char *source);
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
+
+char* gen_id(const char* seed);
+void run_command(const char* cmd);
+void run_command2(const char* cmd, const char* p1, const char* p2);
+void run_command1(const char* cmd, const char* p1);
 
 #endif

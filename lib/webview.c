@@ -161,17 +161,18 @@ GtkWidget* d_webview_new()
     GtkWidget* webview = g_object_new(D_WEBVIEW_TYPE, NULL);
     WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
 
-    char* config_path = get_config_path("deepin-desktop");
+    char* cfg_path = g_build_filename(g_get_user_config_dir(), 
+            "deepin-desktop", NULL);
     g_object_set(G_OBJECT(setting), 
             /*"enable-default-context-menu", FALSE,*/
             "enable-developer-extras", TRUE, 
-            /*"html5-local-storage-database-path", config_path,*/
+            /*"html5-local-storage-database-path", cfg_path,*/
             "enable-plugins", FALSE,
             "javascript-can-access-clipboard",
 
             NULL);
-    webkit_set_web_database_directory_path(config_path);
-    g_free(config_path);
+    webkit_set_web_database_directory_path(cfg_path);
+    g_free(cfg_path);
 
     return webview;
 }

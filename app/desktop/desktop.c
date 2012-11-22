@@ -123,9 +123,7 @@ int main(int argc, char* argv[])
     container = create_web_container(FALSE, FALSE);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
-    char* path = get_html_path("desktop");
-    GtkWidget *webview = d_webview_new_with_uri(path);
-    g_free(path);
+    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
     gdk_error_trap_push();
 
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);

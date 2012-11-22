@@ -49,9 +49,7 @@ int main(int argc, char* argv[])
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");
 
-    char* path = get_html_path("launcher");
-    GtkWidget *webview = d_webview_new_with_uri(path);
-    g_free(path);
+    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
@@ -192,7 +190,7 @@ const char* _gen_category_info_str(GPtrArray* infos)
                 g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, v);
             }
             g_string_overwrite(info_str, info_str->len - 1, "]");
-            g_ptr_array_free(infos, TRUE); //TODO: why can't free element memory?
+            g_ptr_array_free(infos, TRUE); 
         }
         return info_str->str;
     }

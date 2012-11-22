@@ -38,6 +38,26 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
     js_post_message("leave-notify", NULL);
 }
 
+void set_dock_size(GdkScreen* screen, GtkWidget* container)
+{
+    int s_width = gdk_screen_get_width(screen);
+    int s_height = gdk_screen_get_height(screen);
+
+    base_rect.width = s_width;
+    base_rect.y = s_height - HEIGHT;
+
+    GdkWindow* gdkw = gtk_widget_get_window(container);
+
+    gdk_window_move_resize(gdkw, 0, 0, s_width, s_height);
+
+    GdkRectangle rect = {0, 0, s_width, s_height};
+    gtk_widget_size_allocate(container, &rect);
+
+    set_struct_partial(gdkw, ORIENTATION_BOTTOM, 55, 0, s_width);
+    printf("%d %d\n", s_width, s_height);
+    /*js_post_message("screen_size_changed", NULL);*/
+}
+
 
 GtkWidget* container = NULL;
 int main(int argc, char* argv[])
@@ -54,39 +74,31 @@ int main(int argc, char* argv[])
 
     gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
 
-    char* path = get_html_path("dock");
-    GtkWidget *webview = d_webview_new_with_uri(path);
-    g_free(path);
+    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
+
     g_signal_connect_after(webview, "draw", G_CALLBACK(draw_tray_icons), NULL);
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
 
-    g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-    g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect (container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
 
 
     GdkScreen* screen = gdk_screen_get_default();
-    int s_width = gdk_screen_get_width(screen);
-    int s_height = gdk_screen_get_height(screen);
-    base_rect.width = s_width;
-    base_rect.y = s_height - HEIGHT;
-    //TODO: when change resolution
+    g_signal_connect(screen, "size-changed", G_CALLBACK(set_dock_size), webview);
 
     gtk_widget_realize(container);
-    set_struct_partial(gtk_widget_get_window(container),
-            ORIENTATION_BOTTOM, 55, 0, s_width);
-    set_wmspec_dock_hint(gtk_widget_get_window(container));
-    gtk_window_resize(GTK_WINDOW(container), s_width, s_height);
-    gtk_window_move(GTK_WINDOW(container), 0, 0);
-    gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
-    gtk_window_set_keep_above(GTK_WINDOW(container), TRUE);
+    gtk_widget_realize(webview);
+    gtk_widget_show_all(container);
 
-    /*show_temp_region(0, 0, 300, 200);*/
+    set_dock_size(screen, webview);
+
+    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+
     close_show_temp();
 
-    gtk_widget_show_all(container);
 
     // this should at the lastest because of use container's window
     tray_init(container);

@@ -11,9 +11,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
 
     GtkWidget *w = create_web_container(TRUE, FALSE);
-    char* path = get_html_path("dbus_test");
-    GtkWidget *webview = d_webview_new_with_uri(path);
-    g_free(path);
+    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("dbus_test"));
 
     gtk_container_add(GTK_CONTAINER(w), GTK_WIDGET(webview));
     gtk_widget_show_all(w);
