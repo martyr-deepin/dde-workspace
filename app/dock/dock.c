@@ -38,7 +38,8 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
     js_post_message("leave-notify", NULL);
 }
 
-void set_dock_size(GdkScreen* screen, GtkWidget* container)
+GtkWidget* container = NULL;
+void set_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
     int s_width = gdk_screen_get_width(screen);
     int s_height = gdk_screen_get_height(screen);
@@ -46,20 +47,20 @@ void set_dock_size(GdkScreen* screen, GtkWidget* container)
     base_rect.width = s_width;
     base_rect.y = s_height - HEIGHT;
 
-    GdkWindow* gdkw = gtk_widget_get_window(container);
+    GdkWindow* gdkw = gtk_widget_get_window(webview);
 
     gdk_window_move_resize(gdkw, 0, 0, s_width, s_height);
 
     GdkRectangle rect = {0, 0, s_width, s_height};
-    gtk_widget_size_allocate(container, &rect);
+    gtk_widget_size_allocate(webview, &rect);
+    set_struct_partial(gtk_widget_get_window(container),
+            ORIENTATION_BOTTOM, 55, 0, s_width
+            );
 
-    set_struct_partial(gdkw, ORIENTATION_BOTTOM, 55, 0, s_width);
-    printf("%d %d\n", s_width, s_height);
     /*js_post_message("screen_size_changed", NULL);*/
 }
 
 
-GtkWidget* container = NULL;
 int main(int argc, char* argv[])
 {
     init_i18n();
@@ -94,8 +95,7 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
 
     set_dock_size(screen, webview);
-
-    /*set_wmspec_dock_hint(gtk_widget_get_window(container));*/
+    set_wmspec_dock_hint(gtk_widget_get_window(container));
 
     close_show_temp();
 
@@ -117,6 +117,7 @@ void show_temp_region(double x, double y, double width, double height)
     gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
     cairo_region_destroy(region);
 }
+
 void close_show_temp()
 {
     cairo_region_t *region = cairo_region_create_rectangle(&base_rect);

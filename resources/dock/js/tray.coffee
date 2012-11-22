@@ -30,7 +30,7 @@ class TrayIconWrap extends Widget
 
     update: ->
         x = @element.offsetLeft + @element.clientLeft
-        y = @element.offsetTop + @element.clientTop + 200
+        y = @element.offsetTop + @element.clientTop + screen.height - $("#container").clientHeight
         DCore.Dock.set_tray_icon_position(@id, x, y)
 
 
