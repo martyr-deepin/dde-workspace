@@ -50,8 +50,7 @@ get_time_str = ->
     hours = format_two_bit hours
     min = format_two_bit today.getMinutes()
     sec = format_two_bit today.getSeconds()
-    n = DCore.Dock.test_get_n()
-    return "#{hours}:#{min}:#{sec} #{m} #{n}"
+    return "#{hours}:#{min}:#{sec} #{m}"
 
 c = $("#clock")
 setInterval( ->
@@ -60,3 +59,6 @@ setInterval( ->
 , 1000
 )
 
+board.width = 1440
+board.height = 30
+DCore.Dock.draw_board(board)

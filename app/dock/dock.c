@@ -27,11 +27,11 @@
 #include "i18n.h"
 #include <cairo.h>
 
-#define HEIGHT (50)
+#define HEIGHT (60)
 
 void close_show_temp();
 void show_temp_region(double x, double y, double width, double height);
-cairo_rectangle_int_t base_rect = {0, 50, 0, 50/* the width will change*/};
+cairo_rectangle_int_t base_rect = {0, 0, 0, HEIGHT/* the width will change*/};
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {

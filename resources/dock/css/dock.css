@@ -19,31 +19,30 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 body {
-    background: rgba(10, 10, 10, 0.5);
-    color: white;
-    /*padding-top:10px;*/
-    max-height: 50px;
     -webkit-user-select: none;
 }
-
 
 #container {
     position:fixed;
     bottom: 0px;
     display: -webkit-box;
-    min-height: 50px;
-    max-height: 50px;
+    min-height: 60px;
+    max-height: 60px;
     width: 100%;
-    background: rgba(0, 20, 20, 0.8);
+
 }
 
-#icon_default {
-    /*background: rgba(40, 40, 40, 0.5);*/
+#board {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    min-height: 30px;
+    max-height: 30px;
 }
+
 #icon_list {
-    margin-left: 20px;
+    clear: both;
     -webkit-box-flex: 10;
-    /*background: rgba(100, 0, 100, 0.8);*/
 }
 
 #notifyarea {
@@ -53,32 +52,49 @@ body {
     right: 0px;
 }
 
+
+.CustomTrayIcon img {
+    width: 16px;
+    height: 16px;
+}
+.CustomTrayIcon {
+    float: right;
+    display: inline-block;
+    margin: 37px 4px 7px 4px;
+}
 .TrayIconWrap {
     float:right;
     display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+    margin: 37px 4px 7px 4px;
 }
-.CustomTrayIcon {
-    float:right;
+#clock {
+    height: 16px;
+    line-height: 15px;
+    float: left;
     display: inline-block;
-    width: 24px;
-    height: 24px;
-    margin-top: 20px;
-    margin-left: 10px;
-    margin-right: 5px;
+    margin: 37px 4px 7px 4px;
+    color: black;
+}
+
+
+#icon_default img {
+    margin: 0 10px 8px 10px;
+    width: 48px;
+    height: 48px;
 }
 
 .ClientGroup {
     position:relative;
     float: left;
-    padding: 4px 5px 3px 5px;
-    margin: 2px 5px;
+    width: 48px;
+    height: 48px;
+    background: rgba(10, 10, 100, 0.4);
+    margin: 0 10px 8px 10px;
     -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
+
 .Client img {
     width: 32px;
     height: 32px;
@@ -130,15 +146,3 @@ body {
 .PWClose:hover {
     cursor: pointer;
 }
-
-
-#clock {
-    position: absolute;
-    right:10px;
-    /*top:0;*/
-    /*color: #164BA0; */
-    /*background-color: #D1D1D1; */
-    /*border: 1px solid #83AAD3; */
-    /*width: 100px;*/
-}
-

@@ -22,8 +22,8 @@
 #include "X_misc.h"
 #include "dwebview.h"
 
-#define DEFAULT_WIDTH 24
-#define DEFAULT_INTERVAL 30
+#define DEFAULT_WIDTH 16
+#define DEFAULT_INTERVAL 24
 GHashTable* icons = NULL;
 
 static void
