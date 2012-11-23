@@ -71,6 +71,7 @@ class Item extends Widget
         @selected = false
         @id = @path
         @in_count = 0
+        @in_rename = false
 
         super
 
@@ -109,12 +110,13 @@ class Item extends Widget
 
     do_click : (env) =>
         env.stopPropagation()
+        @item_name.addEventListener("click", @item_rename)
         false
 
 
     do_dblclick : (env) =>
         if env.ctrlKey == true then return
-        DCore.run_command @exec
+        @item_exec()
 
 
     do_contextmenu : (env) =>
@@ -156,6 +158,10 @@ class Item extends Widget
         @item_icon.src = "#{icon}"
 
 
+    item_exec : () =>
+        DCore.run_command @exec
+
+
     item_selected : ->
         @selected = true
         @show_selected_box()
@@ -171,6 +177,8 @@ class Item extends Widget
 
 
     item_blur : ->
+        if @in_rename then @item_complete_rename()
+
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
 
@@ -190,19 +198,59 @@ class Item extends Widget
         @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
+    item_rename : (env) =>
+        if @selected == false then return
+        env.stopPropagation()
+        if @in_rename == false
+            @element.draggable = false
+            @item_name.contentEditable = "true"
+            @item_name.style.webkitUserSelect = "text"
+            @item_name.style.cursor = "text"
+            @item_name.style.backgroundColor = "#FFF"
+            @item_name.style.webkitUserModify = "read-write-plaintext-only"
+            @item_name.focus()
+            @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("dblclick", @event_stoppropagation)
+            @item_name.addEventListener("keypress", @event_stoppropagation)
+
+            @in_rename = true
+
+
+    event_stoppropagation : (env) =>
+        env.stopPropagation()
+
+
+    item_rename_keypress : (env) =>
+        env.stopPropagation()
+        if env.keyCode == 13        # enter
+            env.preventDefault()
+            @item_complete_rename(true)
+        else if env.keyCode == 27   # esc
+            env.preventDefault()
+            @item_complete_rename(false)
+
+
+    item_complete_rename : (modify = true) =>
+        @element.draggable = true
+        @item_name.contentEditable = "false"
+        @item_name.style.cursor = ""
+        @item_name.style.backgroundColor = ""
+        @item_name.style.webkitUserSelect = ""
+        @item_name.style.webkitUserModify = ""
+        @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("dblclick", @event_stoppropagation)
+        @item_name.removeEventListener("keypress", @item_rename_keypress)
+        if modify == true and @item_name.innerText.length > 0 and @name != @item_name.innerText
+            #DCore.Desktop.item_rename(@id, @item_name.innerText)
+            alert("#{@id}, #{@item_name.innerText}")
+
+        @in_rename = false
+
+
     destroy: ->
-        info = load_position(this)
+        info = load_position(this.path)
         clear_occupy(info)
         super
-
-
-    init_keypress: ->
-        document.designMode = 'On'
-        @element.addEventListener('keydown', (evt)->
-            switch (evt.which)
-                when 113
-                    echo "Rename"
-        )
 
 
     move: (x, y) ->
@@ -218,7 +266,7 @@ class DesktopEntry extends Item
         env.dataTransfer.setData("text/uri-list", "file://#{@path}")
         env.dataTransfer.setData("text/plain", "#{@name}")
         env.dataTransfer.effectAllowed = "all"
-        false
+        return
 
 
     do_dragend : (env) =>
@@ -240,12 +288,18 @@ class DesktopEntry extends Item
         return
 
 
+    do_itemselected : (env) =>
+        #echo "menu clicked:id=#{env.id} title=#{env.title}"
+        switch env.id
+            when 1 then @item_exec()
+
+
 class Folder extends DesktopEntry
     constructor : ->
         super
 
         if not @exec?
-            @exec = "gvfs-open '#{@id}'"
+            @exec = "gvfs-open \"#{@id}\""
 
         @div_pop = null
         @show_pop = false
@@ -278,7 +332,6 @@ class Folder extends DesktopEntry
         #@icon_close()
         @move_in(file)
 
-        echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
 
     do_dragover : (env) =>
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
@@ -287,21 +340,15 @@ class Folder extends DesktopEntry
         else
             env.dataTransfer.dropEffect = "link"
 
-        #echo("item dragover #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
-
 
     do_dragenter : (env) =>
         super
-
-        #echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     do_dragleave : (env) =>
         super
 
         #@icon_close()
-
-        #echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     item_update : (icon) ->
@@ -329,6 +376,7 @@ class Folder extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
+        @div_pop.addEventListener("mousedown", @event_stoppropagation)
 
         @show_pop = true
 
@@ -397,7 +445,7 @@ class Folder extends DesktopEntry
             col = 5
         else
             col = 6
-        @div_pop.style.width = "#{col * i_width + 20}px"
+        @div_pop.style.width = "#{col * i_width + 10}px"
 
         arrow = document.createElement("div")
 
@@ -448,4 +496,8 @@ class Folder extends DesktopEntry
 class NormalFile extends DesktopEntry
 
 
+class Application extends Item
+
+
 class DesktopApplet extends Item
+
