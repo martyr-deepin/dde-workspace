@@ -62,9 +62,9 @@ class ClientGroup extends Widget
             Preview_container.remove_all(1000)
 
     active: ->
-        @element.style.background = "rgba(0, 100, 100, 1)"
+        #@element.style.background = "rgba(0, 100, 100, 1)"
     deactive: ->
-        @element.style.background = "rgba(0, 0, 0, 0)"
+        #@element.style.background = "rgba(0, 0, 0, 0)"
 
 
 
@@ -76,6 +76,11 @@ class Client extends Widget
         @pw_id = "PW" + @id
 
         @leader.add_client(@)
+
+        p = new WebKitPoint(@element.clientWidth, 0)
+        p = webkitConvertPointFromNodeToPage(@element, p)
+        DCore.Dock.set_dock_width(p.x)
+        DCore.Dock.close_show_temp() #TODO: should consider the preview window
 
     update_content: (title, icon) ->
         @element.innerHTML = "
