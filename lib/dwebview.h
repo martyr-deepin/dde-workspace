@@ -62,6 +62,10 @@ extern void canvas_custom_draw_did(cairo_t *cr, const cairo_rectangle_t* rect);
 extern cairo_t* fetch_cairo_from_html_canvas(JSContextRef ctx, JSValueRef v);
 GdkWindow* webkit_web_view_get_forward_window(GtkWidget*);
 
+
+// auto reload when resource file has changed
+void monitor_resource_file(const char* app, GtkWidget* webview);
+
 G_END_DECLS
 
 

@@ -184,3 +184,27 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webview), uri);
     return webview;
 }
+
+static
+void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
+{
+    printf("reload...\n");
+    webkit_web_view_reload(webview);
+}
+void monitor_resource_file(const char* app, GtkWidget* webview)
+{
+    char* p_js= g_build_filename(RESOURCE_DIR, app, "js", NULL);
+    char* p_css = g_build_filename(RESOURCE_DIR, app, "css", NULL);
+    GFile* f_js = g_file_new_for_path(p_js);
+    GFile* f_css = g_file_new_for_path(p_css);
+
+    g_free(p_js);
+    g_free(p_css);
+
+    GFileMonitor* m_js = g_file_monitor_directory(f_js,  G_FILE_MONITOR_NONE, NULL, NULL);
+    GFileMonitor* m_css = g_file_monitor_directory(f_css,  G_FILE_MONITOR_NONE, NULL, NULL);
+    g_file_monitor_set_rate_limit(m_js, 200);
+    g_file_monitor_set_rate_limit(m_css, 200);
+    g_signal_connect(m_js, "changed", G_CALLBACK(reload_webview), webview);
+    g_signal_connect(m_css, "changed", G_CALLBACK(reload_webview), webview);
+}
