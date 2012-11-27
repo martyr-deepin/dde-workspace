@@ -27,11 +27,14 @@
 #include "i18n.h"
 #include <cairo.h>
 
-#define HEIGHT (60)
+#define DOCK_HEIGHT (60)
+#define BOARD_HEIGHT (30)
 
 void close_show_temp();
 void show_temp_region(double x, double y, double width, double height);
-cairo_rectangle_int_t base_rect = {0, 0, 0, HEIGHT/* the width will change*/};
+void set_dock_width(double width);
+cairo_rectangle_int_t base_rect = {0, 0, 0, BOARD_HEIGHT/* the width will change*/};
+cairo_rectangle_int_t dock_rect = {0, 0, 0, DOCK_HEIGHT - BOARD_HEIGHT};
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
@@ -45,7 +48,9 @@ void set_dock_size(GdkScreen* screen, GtkWidget* webview)
     int s_height = gdk_screen_get_height(screen);
 
     base_rect.width = s_width;
-    base_rect.y = s_height - HEIGHT;
+    base_rect.y = s_height - BOARD_HEIGHT;
+    dock_rect.y = s_height - DOCK_HEIGHT;
+    set_dock_width(s_width);
 
     GdkWindow* gdkw = gtk_widget_get_window(webview);
 
@@ -54,10 +59,24 @@ void set_dock_size(GdkScreen* screen, GtkWidget* webview)
     GdkRectangle rect = {0, 0, s_width, s_height};
     gtk_widget_size_allocate(webview, &rect);
     set_struct_partial(gtk_widget_get_window(container),
-            ORIENTATION_BOTTOM, 55, 0, s_width
+            ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, s_width
             );
 
     /*js_post_message("screen_size_changed", NULL);*/
+}
+
+void hide_dock()
+{
+    GdkWindow* w = gtk_widget_get_window(container);
+    gdk_window_hide(w);
+    set_struct_partial(w, ORIENTATION_BOTTOM, 0, 0, 0);
+}
+
+void show_dock()
+{
+    GdkWindow* w = gtk_widget_get_window(container);
+    gdk_window_show(w);
+    set_struct_partial(w, ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, 1440); 
 }
 
 
@@ -104,14 +123,24 @@ int main(int argc, char* argv[])
     tray_init(container);
     monitor_tasklist_and_activewindow();
 
+
+    monitor_resource_file("dock", webview);
+
     gtk_main();
     return 0;
 }
 
 
+void set_dock_width(double width)
+{
+    dock_rect.width = (int)width;
+}
+
 void show_temp_region(double x, double y, double width, double height)
 {
     cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
+    cairo_region_union_rectangle(region, &dock_rect);
+
     cairo_rectangle_int_t tmp = {(int)x, (int)y, (int)width, (int)height};
     cairo_region_union_rectangle(region, &tmp);
     gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
@@ -120,7 +149,10 @@ void show_temp_region(double x, double y, double width, double height)
 
 void close_show_temp()
 {
+    int width = 400;
     cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
+    cairo_region_union_rectangle(region, &dock_rect);
+
     gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
     cairo_region_destroy(region);
 }

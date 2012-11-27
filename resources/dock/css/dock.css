@@ -83,6 +83,7 @@ body {
     margin: 0 10px 8px 10px;
     width: 48px;
     height: 48px;
+    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .ClientGroup {
@@ -90,12 +91,14 @@ body {
     float: left;
     width: 48px;
     height: 48px;
-    background: rgba(10, 10, 100, 0.4);
+    /*background: rgba(10, 10, 100, 0.4);*/
     margin: 0 10px 8px 10px;
-    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    background: url("../img/board1.png");
+    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .Client img {
+    padding: 8px;
     width: 32px;
     height: 32px;
 }
@@ -106,8 +109,9 @@ body {
 }
 
 .PWContainer {
+    background: rgba(0, 100, 30, 0.5);
     position: fixed;
-    bottom:50px;
+    bottom:60px;
 }
 
 .PreviewWindow {
@@ -136,6 +140,7 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-align: center;
+    color: white;
 }
 .PWClose {
     color: red;

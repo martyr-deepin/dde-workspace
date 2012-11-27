@@ -50,7 +50,7 @@ get_time_str = ->
     hours = format_two_bit hours
     min = format_two_bit today.getMinutes()
     sec = format_two_bit today.getSeconds()
-    return "#{hours}:#{min}:#{sec} #{m}"
+    return "#{hours}:#{min}"
 
 c = $("#clock")
 setInterval( ->
