@@ -66,11 +66,23 @@ shorten_text = (str, n) ->
 
     return str
 
+
+cleanup_filename = (str) ->
+    new_str = str.replace(/\n|\//g, "")
+    if new_str == "." or new_str == ".."
+        ""
+    else
+        new_str
+
+
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @selected = false
         @id = @path
-        @in_count = 0
+        @in_rename = false
+
+        @clicked = false
+        @delay_rename = -1
 
         super
 
@@ -109,43 +121,36 @@ class Item extends Widget
 
     do_click : (env) =>
         env.stopPropagation()
+        if @clicked == false
+            @clicked = true
+        else
+            if env.srcElement.className == "item_name"
+                if @delay_rename == -1 then @delay_rename = setTimeout(() =>
+                        @item_rename()
+                    , 200);
+            else
+                if @in_rename then @item_complete_rename(true)
+
+        echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
 
 
     do_dblclick : (env) =>
+        echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
+
+        if @delay_rename != -1
+            clearTimeout(@delay_rename)
+            @delay_rename = -1
+        if @in_rename then @item_complete_rename(false)
+
         if env.ctrlKey == true then return
-        DCore.run_command @exec
+        @item_exec()
 
 
     do_contextmenu : (env) =>
         env.stopPropagation()
         if @selected == false then update_selected_stats(this, env)
         true
-
-
-    do_drop : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
-        if @selected == false
-            @item_normal()
-            @in_count = 0
-
-
-    do_dragenter : (env) =>
-        env.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-
-    do_dragleave : (env) =>
-        env.stopPropagation()
-        if @selected == false
-            --@in_count
-            if @in_count == 0
-                @hide_hover_box()
 
 
     do_itemselected : (env) =>
@@ -156,6 +161,10 @@ class Item extends Widget
         @item_icon.src = "#{icon}"
 
 
+    item_exec : () =>
+        DCore.run_command @exec
+
+
     item_selected : ->
         @selected = true
         @show_selected_box()
@@ -163,6 +172,7 @@ class Item extends Widget
 
     item_normal : ->
         @selected = false
+        @clicked = false
         @hide_selected_box()
 
 
@@ -171,6 +181,11 @@ class Item extends Widget
 
 
     item_blur : ->
+        if @delay_rename != -1
+            clearTimeout(@delay_rename)
+            @delay_rename = -1
+        if @in_rename then @item_complete_rename()
+
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
 
 
@@ -190,19 +205,70 @@ class Item extends Widget
         @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
+    item_rename : =>
+        echo "item_rename"
+        @delay_rename = -1
+        if @selected == false then return
+        if @in_rename == false
+            @element.draggable = false
+            @item_name.contentEditable = "true"
+            @item_name.style.webkitUserSelect = "text"
+            @item_name.style.cursor = "text"
+            @item_name.style.backgroundColor = "#FFF"
+            @item_name.style.webkitUserModify = "read-write-plaintext-only"
+            @item_name.focus()
+            @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("dblclick", @event_stoppropagation)
+            @item_name.addEventListener("keypress", @item_rename_keypress)
+
+            @in_rename = true
+
+
+    event_stoppropagation : (env) =>
+        env.stopPropagation()
+
+
+    item_rename_keypress : (env) =>
+        env.stopPropagation()
+        switch env.keyCode
+            when 13   # enter
+                env.preventDefault()
+                @item_complete_rename(true)
+            when 27   # esc
+                env.preventDefault()
+                @item_complete_rename(false)
+            when 47   # /
+                env.preventDefault()
+        return
+
+    item_complete_rename : (modify = true) =>
+        @element.draggable = true
+        @item_name.contentEditable = "false"
+        @item_name.style.cursor = ""
+        @item_name.style.backgroundColor = ""
+        @item_name.style.webkitUserSelect = ""
+        @item_name.style.webkitUserModify = ""
+        @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("dblclick", @event_stoppropagation)
+        @item_name.removeEventListener("keypress", @item_rename_keypress)
+
+        new_name = cleanup_filename(@item_name.innerText)
+        if modify == true and new_name.length > 0 and new_name != @name
+            #DCore.Desktop.item_rename(@id, new_name)
+            alert("#{@id}, #{new_name}")
+
+        if @delay_rename > 0
+            clearTimeout(@delay_rename)
+            @delay_rename = 0
+
+        @in_rename = false
+        @item_focus()
+
+
     destroy: ->
-        info = load_position(this)
+        info = load_position(this.path)
         clear_occupy(info)
         super
-
-
-    init_keypress: ->
-        document.designMode = 'On'
-        @element.addEventListener('keydown', (evt)->
-            switch (evt.which)
-                when 113
-                    echo "Rename"
-        )
 
 
     move: (x, y) ->
@@ -213,12 +279,18 @@ class Item extends Widget
 
 
 class DesktopEntry extends Item
+    constructor : ->
+        @in_count = 0
+
+        super
+
+
     do_dragstart : (env) =>
         env.stopPropagation()
         env.dataTransfer.setData("text/uri-list", "file://#{@path}")
         env.dataTransfer.setData("text/plain", "#{@name}")
         env.dataTransfer.effectAllowed = "all"
-        false
+        return
 
 
     do_dragend : (env) =>
@@ -240,12 +312,48 @@ class DesktopEntry extends Item
         return
 
 
+    do_drop : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        if @selected == false
+            @hide_hover_box()
+            @in_count = 0
+
+
+    do_dragenter : (env) =>
+        env.stopPropagation()
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+
+    do_dragover : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+
+
+    do_dragleave : (env) =>
+        env.stopPropagation()
+        if @selected == false
+            --@in_count
+            if @in_count == 0
+                @hide_hover_box()
+
+
+    do_itemselected : (env) =>
+        #echo "menu clicked:id=#{env.id} title=#{env.title}"
+        switch env.id
+            when 1 then @item_exec()
+
+
 class Folder extends DesktopEntry
     constructor : ->
         super
 
         if not @exec?
-            @exec = "gvfs-open '#{@id}'"
+            @exec = "gvfs-open \"#{@id}\""
 
         @div_pop = null
         @show_pop = false
@@ -278,30 +386,36 @@ class Folder extends DesktopEntry
         #@icon_close()
         @move_in(file)
 
-        echo("item drop #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
+        echo "do_drop #{env.dataTransfer.dropEffect}"
+
 
     do_dragover : (env) =>
+        super
+
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
             env.dataTransfer.dropEffect = "none"
         else
             env.dataTransfer.dropEffect = "link"
 
-        #echo("item dragover #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}")
-
+        echo "do_dragover #{env.dataTransfer.dropEffect}"
 
     do_dragenter : (env) =>
         super
 
-        #echo("item dragenter #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
+        path = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        if @path == path.substring(7)
+            env.dataTransfer.dropEffect = "none"
+        else
+            env.dataTransfer.dropEffect = "link"
+
+        echo "do_dragenter #{env.dataTransfer.dropEffect}"
 
 
     do_dragleave : (env) =>
         super
 
         #@icon_close()
-
-        #echo("item dragleave #{env.dataTransfer.effectAllowed}|#{env.dataTransfer.dropEffect}|#{env.srcElement.localName}|#{env.srcElement.className}|#{@in_count}")
 
 
     item_update : (icon) ->
@@ -329,6 +443,7 @@ class Folder extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
+        @div_pop.addEventListener("mousedown", @event_stoppropagation)
 
         @show_pop = true
 
@@ -397,7 +512,7 @@ class Folder extends DesktopEntry
             col = 5
         else
             col = 6
-        @div_pop.style.width = "#{col * i_width + 20}px"
+        @div_pop.style.width = "#{col * i_width + 10}px"
 
         arrow = document.createElement("div")
 
@@ -448,4 +563,8 @@ class Folder extends DesktopEntry
 class NormalFile extends DesktopEntry
 
 
+class Application extends Item
+
+
 class DesktopApplet extends Item
+

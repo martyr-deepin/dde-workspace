@@ -43,7 +43,7 @@ body {
     overflow:hidden;
 }
 
-.Folder, .DesktopEntry, .NormalFile {
+.Folder, .DesktopEntry, .NormalFile, .Application {
     width: 80px;
     padding: 3px 5px;
     margin: 1px 1px;
@@ -54,7 +54,7 @@ body {
     outline: none;
 }
 
-.Folder img, .DesktopEntry img, .NormalFile img {
+.Folder img, .DesktopEntry img, .NormalFile img, .Application img {
     width: 48px;
     height: 48px;
 }
@@ -63,6 +63,7 @@ body {
     word-wrap:break-word;
     word-break:break-all;
     overflow: hidden;
+    outline: 0;
 }
 
 .item_hover {
