@@ -25,6 +25,7 @@
 #include "tray.h"
 #include "tasklist.h"
 #include "i18n.h"
+#include "dock_config.h"
 #include <cairo.h>
 
 #define DOCK_HEIGHT (60)
@@ -123,13 +124,14 @@ int main(int argc, char* argv[])
     tray_init(container);
     monitor_tasklist_and_activewindow();
 
+    init_config();
+
 
     monitor_resource_file("dock", webview);
 
     gtk_main();
     return 0;
 }
-
 
 void set_dock_width(double width)
 {
@@ -155,4 +157,18 @@ void close_show_temp()
 
     gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
     cairo_region_destroy(region);
+}
+
+void update_dock_color()
+{
+    /*if (GD.is_webview_loaded)*/
+        js_post_message("dock_color_changed", NULL);
+}
+
+void update_dock_show()
+{
+    if (GD.config.show)
+        show_dock();
+    else
+        hide_dock();
 }

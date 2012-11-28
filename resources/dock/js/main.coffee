@@ -62,3 +62,5 @@ setInterval( ->
 board.width = 1440
 board.height = 30
 DCore.Dock.draw_board(board)
+
+DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))

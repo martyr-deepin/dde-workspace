@@ -1,10 +1,18 @@
 #include "dwebview.h"
+#include "dock_config.h"
+
 #include <math.h>
 
 //c99 didn't define M_PI and so on.
 #ifndef M_PI_2
 #define M_PI_2 1.57079632679489661923 
 #endif
+
+#define TO_DOUBLE(c) ( (c) / 255.0)
+#define GET_R(c) TO_DOUBLE(c >> 24)
+#define GET_G(c) TO_DOUBLE(c >> 16 & 0xff)
+#define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
+#define GET_A(c) ((c & 0xff) / 100.0)
 
 void draw_board(JSValueRef canvas, JSData* data)
 {
@@ -14,7 +22,12 @@ void draw_board(JSValueRef canvas, JSData* data)
     int h = 30;
 
     cairo_save(cr);
-    cairo_set_source_rgba(cr, 0.8470588235294118,  0.9490196078431372, 1, 0.8);
+    cairo_set_source_rgba(cr, 
+            GET_R(GD.config.color),
+            GET_G(GD.config.color),
+            GET_B(GD.config.color),
+            GET_A(GD.config.color)
+            );
     cairo_paint(cr);
 
     cairo_set_line_width(cr, 1);
