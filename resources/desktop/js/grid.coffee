@@ -188,7 +188,7 @@ find_free_position = (w, h) ->
 
 move_to_anywhere = (widget) ->
     info = localStorage.getObject(widget.path)
-    if info?
+    if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
         info = find_free_position(1, 1)
@@ -293,11 +293,11 @@ cancel_item_selected = (w) ->
     return ret
 
 
-cancel_all_selected_stats = ->
+cancel_all_selected_stats = (clear_last = true) ->
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
 
-    if last_widget
+    if clear_last and last_widget
         Widget.look_up(last_widget)?.item_blur()
         last_widget = ""
 
@@ -306,15 +306,15 @@ cancel_all_selected_stats = ->
 
 update_selected_stats = (w, env) ->
     if env.ctrlKey
-        if not cancel_item_selected(w)
-            set_item_selected(w)
+        if w.selected == true then cancel_item_selected(w)
+        else set_item_selected(w)
 
     else if env.shiftKey
         if selected_item.length > 1
             last_one_id = selected_item[selected_item.length - 1]
-            cancel_all_selected_stats()
-            last_one = Widget.look_up(last_one_id)
-            if last_one? then set_item_selected(last_one)
+            selected_item.splice(selected_item.length - 1, 1)
+            cancel_all_selected_stats(false)
+            selected_item.push(last_one_id)
 
         if selected_item.length == 1
             end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
@@ -340,9 +340,16 @@ update_selected_stats = (w, env) ->
             set_item_selected(w)
 
     else
-        if selected_item.length > 0
-            cancel_all_selected_stats()
-        set_item_selected(w)
+        n = selected_item.indexOf(w.id)
+        if n >= 0 then selected_item.splice(n, 1)
+
+        cancel_all_selected_stats(false)
+
+        if n >= 0
+            selected_item.push(w.id)
+            last_widget = w.id
+        else
+            set_item_selected(w)
 
     return
 

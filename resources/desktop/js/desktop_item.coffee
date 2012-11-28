@@ -66,12 +66,24 @@ shorten_text = (str, n) ->
 
     return str
 
+
+cleanup_filename = (str) ->
+    new_str = str.replace(/\n|\//g, "")
+    if new_str == "." or new_str == ".."
+        ""
+    else
+        new_str
+
+
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @selected = false
         @id = @path
         @in_count = 0
         @in_rename = false
+
+        @clicked = false
+        @delay_rename = 0
 
         super
 
@@ -110,11 +122,24 @@ class Item extends Widget
 
     do_click : (env) =>
         env.stopPropagation()
-        @item_name.addEventListener("click", @item_rename)
+        if @clicked == false
+            @clicked = true
+        else
+            if env.srcElement.className == "item_name"
+                @delay_rename = setTimeout(() =>
+                        @item_rename()
+                    , 200);
+            else
+                if @in_rename then @item_complete_rename(true)
         false
 
 
     do_dblclick : (env) =>
+        if @delay_rename > 0
+            clearTimeout(@delay_rename)
+            @delay_rename = 0
+        if @in_rename then @item_complete_rename(false)
+
         if env.ctrlKey == true then return
         @item_exec()
 
@@ -169,6 +194,7 @@ class Item extends Widget
 
     item_normal : ->
         @selected = false
+        @clicked = false
         @hide_selected_box()
 
 
@@ -198,9 +224,9 @@ class Item extends Widget
         @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
-    item_rename : (env) =>
+    item_rename : =>
+        @delay_rename = 0
         if @selected == false then return
-        env.stopPropagation()
         if @in_rename == false
             @element.draggable = false
             @item_name.contentEditable = "true"
@@ -211,7 +237,7 @@ class Item extends Widget
             @item_name.focus()
             @item_name.addEventListener("mousedown", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
-            @item_name.addEventListener("keypress", @event_stoppropagation)
+            @item_name.addEventListener("keypress", @item_rename_keypress)
 
             @in_rename = true
 
@@ -222,13 +248,16 @@ class Item extends Widget
 
     item_rename_keypress : (env) =>
         env.stopPropagation()
-        if env.keyCode == 13        # enter
-            env.preventDefault()
-            @item_complete_rename(true)
-        else if env.keyCode == 27   # esc
-            env.preventDefault()
-            @item_complete_rename(false)
-
+        switch env.keyCode
+            when 13   # enter
+                env.preventDefault()
+                @item_complete_rename(true)
+            when 27   # esc
+                env.preventDefault()
+                @item_complete_rename(false)
+            when 47   # /
+                env.preventDefault()
+        return
 
     item_complete_rename : (modify = true) =>
         @element.draggable = true
@@ -240,11 +269,18 @@ class Item extends Widget
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
-        if modify == true and @item_name.innerText.length > 0 and @name != @item_name.innerText
-            #DCore.Desktop.item_rename(@id, @item_name.innerText)
-            alert("#{@id}, #{@item_name.innerText}")
+
+        new_name = cleanup_filename(@item_name.innerText)
+        if modify == true and new_name.length > 0 and new_name != @name
+            #DCore.Desktop.item_rename(@id, new_name)
+            alert("#{@id}, #{new_name}")
+
+        if @delay_rename > 0
+            clearTimeout(@delay_rename)
+            @delay_rename = 0
 
         @in_rename = false
+        @item_focus()
 
 
     destroy: ->
