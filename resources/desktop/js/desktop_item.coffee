@@ -79,11 +79,10 @@ class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
         @selected = false
         @id = @path
-        @in_count = 0
         @in_rename = false
 
         @clicked = false
-        @delay_rename = 0
+        @delay_rename = -1
 
         super
 
@@ -126,18 +125,22 @@ class Item extends Widget
             @clicked = true
         else
             if env.srcElement.className == "item_name"
-                @delay_rename = setTimeout(() =>
+                if @delay_rename == -1 then @delay_rename = setTimeout(() =>
                         @item_rename()
                     , 200);
             else
                 if @in_rename then @item_complete_rename(true)
+
+        echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
 
 
     do_dblclick : (env) =>
-        if @delay_rename > 0
+        echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
+
+        if @delay_rename != -1
             clearTimeout(@delay_rename)
-            @delay_rename = 0
+            @delay_rename = -1
         if @in_rename then @item_complete_rename(false)
 
         if env.ctrlKey == true then return
@@ -148,31 +151,6 @@ class Item extends Widget
         env.stopPropagation()
         if @selected == false then update_selected_stats(this, env)
         true
-
-
-    do_drop : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
-        if @selected == false
-            @item_normal()
-            @in_count = 0
-
-
-    do_dragenter : (env) =>
-        env.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-
-    do_dragleave : (env) =>
-        env.stopPropagation()
-        if @selected == false
-            --@in_count
-            if @in_count == 0
-                @hide_hover_box()
 
 
     do_itemselected : (env) =>
@@ -203,6 +181,9 @@ class Item extends Widget
 
 
     item_blur : ->
+        if @delay_rename != -1
+            clearTimeout(@delay_rename)
+            @delay_rename = -1
         if @in_rename then @item_complete_rename()
 
         @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
@@ -225,7 +206,8 @@ class Item extends Widget
 
 
     item_rename : =>
-        @delay_rename = 0
+        echo "item_rename"
+        @delay_rename = -1
         if @selected == false then return
         if @in_rename == false
             @element.draggable = false
@@ -297,6 +279,12 @@ class Item extends Widget
 
 
 class DesktopEntry extends Item
+    constructor : ->
+        @in_count = 0
+
+        super
+
+
     do_dragstart : (env) =>
         env.stopPropagation()
         env.dataTransfer.setData("text/uri-list", "file://#{@path}")
@@ -322,6 +310,36 @@ class DesktopEntry extends Item
             #node.parentNode.removeChild(node)
 
         return
+
+
+    do_drop : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+        if @selected == false
+            @hide_hover_box()
+            @in_count = 0
+
+
+    do_dragenter : (env) =>
+        env.stopPropagation()
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+
+    do_dragover : (env) =>
+        env.preventDefault()
+        env.stopPropagation()
+
+
+    do_dragleave : (env) =>
+        env.stopPropagation()
+        if @selected == false
+            --@in_count
+            if @in_count == 0
+                @hide_hover_box()
 
 
     do_itemselected : (env) =>
@@ -368,17 +386,30 @@ class Folder extends DesktopEntry
         #@icon_close()
         @move_in(file)
 
+        echo "do_drop #{env.dataTransfer.dropEffect}"
+
 
     do_dragover : (env) =>
+        super
+
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
             env.dataTransfer.dropEffect = "none"
         else
             env.dataTransfer.dropEffect = "link"
 
+        echo "do_dragover #{env.dataTransfer.dropEffect}"
 
     do_dragenter : (env) =>
         super
+
+        path = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        if @path == path.substring(7)
+            env.dataTransfer.dropEffect = "none"
+        else
+            env.dataTransfer.dropEffect = "link"
+
+        echo "do_dragenter #{env.dataTransfer.dropEffect}"
 
 
     do_dragleave : (env) =>
