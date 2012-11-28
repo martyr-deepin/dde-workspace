@@ -55,10 +55,12 @@ _events = [
     'dragstart',
     'dragend',
     'dragover',
+    'drag',
     'drop',
     'dragenter',
     'dragleave',
     'itemselected',
+    'webkitTransitionEnd'
 ]
 
 

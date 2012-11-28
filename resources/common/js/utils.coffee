@@ -51,5 +51,17 @@ build_menu = (info) ->
         m.appendItem(i)
     return m
 
+get_page_xy = (el, x, y) ->
+    p = webkitConvertPointFromNodeToPage(el, new WebKitPoint(x, y))
+
+find_drag_target = (el)->
+    p = el
+    if p.draggable
+        return p
+    while p = el.parentNode
+        if p.draggable
+            return p
+    return null
+
 #disable default body drop event
 document.body.ondrop = (e) -> e.preventDefault()
