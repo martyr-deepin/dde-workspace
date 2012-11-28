@@ -53,6 +53,9 @@ gboolean only_desktop(const char* path);
 gboolean only_normal_file(const char* path);
 gboolean no_dot_hidden_file(const char* path);
 
+// change the desktop file 's current locale name to "name"
+gboolean change_desktop_entry_name(const char* path, const char* name);
+
 
 
 /*---------------------------------

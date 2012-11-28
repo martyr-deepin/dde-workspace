@@ -684,3 +684,33 @@ char* move_to_desktop(const char* path)
     run_command2("mv", path, new_path);
     return new_path;
 }
+
+gboolean change_desktop_entry_name(const char* path, const char* name)
+{
+    GKeyFile *de = g_key_file_new();
+    if (!g_key_file_load_from_file(de, path,
+                G_KEY_FILE_KEEP_COMMENTS | G_KEY_FILE_KEEP_TRANSLATIONS, NULL)) {
+        return FALSE;
+    } else {
+        const char* locale = *g_get_language_names();
+        if (locale && !g_str_has_prefix(locale, "en"))
+            g_key_file_set_locale_string(de, GROUP, "Name", locale, name);
+        else
+            g_key_file_set_string(de, GROUP, "Name", name);
+
+        int size;
+        char* content = g_key_file_to_data(de, &size, NULL);
+        g_key_file_free(de);
+
+        FILE* f = fopen(path, "w");
+        if (f == NULL) {
+            g_free(content);
+            return FALSE;
+        }
+
+        fwrite(content, sizeof(char), size, f);
+        fclose(f);
+        g_free(content);
+        return TRUE;
+    }
+}
