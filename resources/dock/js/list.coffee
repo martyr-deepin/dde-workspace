@@ -17,14 +17,38 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-container = $('#icon_list')
+class AppList extends Widget
+    constructor: (@id) ->
+        super
+        $("#container").insertBefore(@element, $("#notifyarea"))
+
+    append: (c) ->
+        @element.appendChild(c.element)
+
+    do_drop: (e)->
+        file = e.dataTransfer.getData("text/uri-list").substring(7)
+        echo "dock:#{file}"
+
+    try_dock_app: (e) ->
+        path = e.dataTransfer.getData("text/uri-list")
+        t = path.substring(path.length-8, path.length)
+        if t == ".desktop"
+            #show_dock_indicator()
+            echo "try dock:#{path}"
+
+    do_dragover: (e) ->
+        e.dataTransfer.dropEffect="link"
+        @try_dock_app(e)
+
+
+app_list = new AppList("app_list")
 
 class ClientGroup extends Widget
     constructor: (@id)->
         super
 
         @clients = []
-        container.appendChild(@element)
+        app_list.append(@)
 
         @el_title = document.createElement("div")
         @el_title.setAttribute("class", "ClientNumber")
@@ -34,6 +58,9 @@ class ClientGroup extends Widget
         if @clients.length == 0
             @current_leader = c
             @element.appendChild(@current_leader.element)
+            p = get_page_xy(@element, @element.clientWidth, 0)
+            DCore.Dock.set_dock_width(p.x) #TODO: reduce the space when Destory.
+            DCore.Dock.close_show_temp() #TODO: should consider the preview window
 
         @clients.push(c)
 
@@ -67,24 +94,20 @@ class ClientGroup extends Widget
         #@element.style.background = "rgba(0, 0, 0, 0)"
 
 
-
 class Client extends Widget
     constructor: (@id, @icon, @title, @leader)->
         super
 
         @update_content @title, @icon
+        @element.draggable=true
         @pw_id = "PW" + @id
 
         @leader.add_client(@)
 
-        p = new WebKitPoint(@element.clientWidth, 0)
-        p = webkitConvertPointFromNodeToPage(@element, p)
-        DCore.Dock.set_dock_width(p.x)
-        DCore.Dock.close_show_temp() #TODO: should consider the preview window
 
     update_content: (title, icon) ->
         @element.innerHTML = "
-        <img src=#{icon} />
+        <img draggable=false src=#{icon} />
         "
     withdraw: ->
         @element.style.display = "None"
@@ -94,6 +117,24 @@ class Client extends Widget
         DCore.Dock.set_active_window(@id)
     do_dblclick: (e) ->
         DCore.Dock.minimize_window(@id)
+
+    do_dragstart: (e)->
+        Preview_container.remove_all()
+        e.dataTransfer.setData("item-id", @element.id)
+        e.dataTransfer.effectAllowed = "move"
+        e.stopPropagation()
+
+    do_dragover: (e) ->
+        e.preventDefault()
+        sid = e.dataTransfer.getData("item-id")
+        if not sid
+            return
+        did = @element.id
+        if sid != did
+            swap_element(Widget.look_up(sid).leader.element, Widget.look_up(did).leader.element)
+
+        e.stopPropagation()
+
     destroy: ->
         pw = Widget.look_up(@pw_id)
         if pw?

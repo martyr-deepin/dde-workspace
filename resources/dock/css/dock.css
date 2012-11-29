@@ -40,7 +40,7 @@ body {
     max-height: 30px;
 }
 
-#icon_list {
+.AppList {
     clear: both;
     -webkit-box-flex: 10;
 }
@@ -63,7 +63,7 @@ body {
     margin: 37px 4px 7px 4px;
 }
 .TrayIconWrap {
-    float:right;
+    float:left;
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -91,16 +91,21 @@ body {
     float: left;
     width: 48px;
     height: 48px;
-    /*background: rgba(10, 10, 100, 0.4);*/
     margin: 0 10px 8px 10px;
-    background: url("../img/board1.png");
+
+    /*background: rgba(10, 10, 100, 0.4);*/
+    /*background: url("../img/board1.png");*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));*/
+
     -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .Client img {
-    padding: 8px;
-    width: 32px;
-    height: 32px;
+    /*margin: 8px;*/
+    /*width: 32px;*/
+    /*height: 32px;*/
+    width: 48px;
+    height: 48px;
 }
 .ClientNumber {
     position: absolute;

@@ -25,8 +25,9 @@ class PWContainer extends Widget
         @current_group = null
         @current_shows = []
 
-        @update_id = null
+        @update_id = -1
         @hide_id = null
+        @show_id = null
 
     do_mouseover: ->
         clearTimeout(@hide_id)
@@ -50,11 +51,13 @@ class PWContainer extends Widget
         __remove_all = =>
             DCore.Dock.close_show_temp()
             clearInterval(@update_id)
+            @update_id = -1
             @current_group = null
             for i in @current_shows
                 i.destroy()
             @current_shows = []
 
+        clearTimeout(@show_id)
         if @current_shows.length == 0
             __remove_all()
         else if timeout?
@@ -72,25 +75,29 @@ class PWContainer extends Widget
         , 200)
 
     show_group: (group, offset)->
-        if @current_group == group
-            return
+        _show_group_ = =>
+            clearTimeout(@hide_id)
+
+            @current_group = group
+            group.clients.forEach( (c)=>
+                pw = new PreviewWindow(c.pw_id, c.id, c.title, 200, 100)
+            )
+
+            if @element.clientWidth == screen.width
+                @element.style.left = 0
+                DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+            else
+                @element.style.left = offset + "px"
+                DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+            @update()
+
+        if @current_group == null or (@current_group == group and @update_id == -1)
+            @show_id = setTimeout(=>
+                _show_group_(group, offset)
+            , 1000)
         else if @current_group != null
             @remove_all()
-
-        clearTimeout(@hide_id)
-
-        @current_group = group
-        group.clients.forEach( (c)=>
-            pw = new PreviewWindow(c.pw_id, c.id, c.title, 200, 100)
-        )
-
-        if @element.clientWidth == screen.width
-            @element.style.left = 0
-            DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
-        else
-            @element.style.left = offset + "px"
-            DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
-        @update()
+            _show_group_(group, offset)
 
 
 Preview_container = new PWContainer("pwcontainer")

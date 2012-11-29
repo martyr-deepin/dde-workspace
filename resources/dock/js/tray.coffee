@@ -29,17 +29,17 @@ class TrayIconWrap extends Widget
         na.appendChild(@element)
 
     update: ->
-        x = @element.offsetLeft + @element.clientLeft
-        y = @element.offsetTop + @element.clientTop + screen.height - $("#container").clientHeight
-        DCore.Dock.set_tray_icon_position(@id, x, y)
+        p = get_page_xy(@element)
+        DCore.Dock.set_tray_icon_position(@id, p.x, p.y)
 
 
 for info in DCore.Dock.get_tray_icon_list()
     icon = new TrayIconWrap(info.id, info.class, info.name)
     tray_icons[info.id] = icon
     #We can't update icon position at this momenet because the div element's layout hasn't done.
-update_icons()
 
+setTimeout(update_icons, 500)
+    
 do_tray_icon_added = (info) ->
     icon = new TrayIconWrap(info.id, info.class, info.name)
     tray_icons[info.id] = icon
