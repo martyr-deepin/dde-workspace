@@ -62,3 +62,14 @@ JSValueRef json_from_cstr(JSContextRef ctx, const char* data)
     }
     return json;
 }
+
+gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass)
+{
+  JSStringRef property = JSStringCreateWithUTF8CString(klass);
+  JSObjectRef ctor = JSValueToObject(ctx,
+                         JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx),
+                             property, NULL),
+                         NULL);
+  JSStringRelease(property);
+  return JSValueIsInstanceOfConstructor(ctx, test, ctor, NULL);
+}

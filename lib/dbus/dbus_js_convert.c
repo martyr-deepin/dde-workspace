@@ -116,17 +116,6 @@ const char* jsvalue_to_signature(JSContextRef ctx, JSValueRef jsvalue)
   return NULL;
 }
 
-gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass)
-{
-  JSStringRef property = JSStringCreateWithUTF8CString(klass);
-  JSObjectRef ctor = JSValueToObject(ctx,
-                         JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx),
-                             property, NULL),
-                         NULL);
-  JSStringRelease(property);
-  return JSValueIsInstanceOfConstructor(ctx, test, ctor, NULL);
-}
-
 gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
     DBusMessageIter *iter, const char* sig, JSValueRef* exception)
 {
