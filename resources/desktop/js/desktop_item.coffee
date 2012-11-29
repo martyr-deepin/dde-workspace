@@ -153,10 +153,6 @@ class Item extends Widget
         true
 
 
-    do_itemselected : (env) =>
-        echo "menu clicked:id=#{env.id} title=#{env.title}"
-
-
     item_update : (icon) =>
         @item_icon.src = "#{icon}"
 
@@ -346,6 +342,9 @@ class DesktopEntry extends Item
         #echo "menu clicked:id=#{env.id} title=#{env.title}"
         switch env.id
             when 1 then @item_exec()
+            when 5 then @item_rename()
+            when 6
+                delete_selected_items()
 
 
 class Folder extends DesktopEntry
@@ -381,6 +380,8 @@ class Folder extends DesktopEntry
     do_drop : (env) =>
         super
 
+        echo env
+
         #if env.dataTransfer.dropEffect == "link"
         file = decodeURI(env.dataTransfer.getData("text/uri-list"))
         #@icon_close()
@@ -391,7 +392,7 @@ class Folder extends DesktopEntry
 
     do_dragover : (env) =>
         super
-
+        env.preventDefault()
         path = decodeURI(env.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
             env.dataTransfer.dropEffect = "none"
@@ -563,7 +564,7 @@ class Folder extends DesktopEntry
 class NormalFile extends DesktopEntry
 
 
-class Application extends Item
+class Application extends DesktopEntry
 
 
 class DesktopApplet extends Item

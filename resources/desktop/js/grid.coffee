@@ -354,6 +354,12 @@ update_selected_stats = (w, env) ->
     return
 
 
+delete_selected_items = ->
+    tmp = []
+    tmp.push(i) for i in selected_item
+    DCore.Desktop.item_delete(tmp)
+
+
 gird_left_click = (env) ->
     #echo("gird_left_click")
     if env.ctrlKey == false and env.shiftKey == false
