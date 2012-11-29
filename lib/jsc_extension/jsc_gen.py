@@ -90,6 +90,8 @@ class Params:
         return ""
     def doc(self):
         pass
+    def is_array(self):
+        return False
 
 class Property:
     def __init__(self, *args):
@@ -122,6 +124,7 @@ class Number(Params):
         return ""
     def return_value(self):
         return "return JSValueMakeNumber(context, ret);"
+
 class Boolean(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
@@ -130,20 +133,55 @@ class Boolean(Params):
     def raw(self):
         return "bool "
 
+class AString(Params):
+    def __init__(self, *args):
+        Params.__init__(self, *args)
+
+    def is_array(self):
+        return True
+
+    def raw(self):
+        return "char **, int"
+
+    def str_init(self):
+        temp = """
+    char** p_%(pos)d_a = NULL;
+    int p_%(pos)d_n = 0;
+    if (jsvalue_instanceof(context, arguments[%(pos)d], "Array")) {
+        JSPropertyNameArrayRef prop_names = JSObjectCopyPropertyNames(context, (JSObjectRef)arguments[%(pos)d]);
+
+        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names) - 1; 
+
+        p_%(pos)d_a = g_new0(char*, p_%(pos)d_n);
+        for (int i=0; i<p_%(pos)d_n; i++) {
+            JSValueRef value = JSObjectGetPropertyAtIndex(context, (JSObjectRef)arguments[%(pos)d], i, NULL);
+            p_%(pos)d_a[i] = %(element_alloc)s(context, value);
+        }
+
+        JSPropertyNameArrayRelease(prop_names);
+    }
+    """
+        return temp % {'pos': self.position, 'element_alloc': "jsvalue_to_cstr"}
+
+    def str_clear(self):
+        temp_clear = """
+    for (int i=0; i<p_%(pos)d_n; i++) {
+        g_free(p_%(pos)d_a[i]);
+    }
+    g_free(p_%(pos)d_a);
+    """
+        return temp_clear % {'pos': self.position}
+
 class String(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
 
     temp = """
-    JSStringRef value_%(pos)d = JSValueToStringCopy(context, arguments[%(pos)d], NULL);
-    size_t size_%(pos)d = JSStringGetMaximumUTF8CStringSize(value_%(pos)d);
-    gchar* p_%(pos)d = g_new(gchar, size_%(pos)d);
-    JSStringGetUTF8CString(value_%(pos)d, p_%(pos)d, size_%(pos)d);
+    gchar* p_%(pos)d = jsvalue_to_cstr(context, arguments[%(pos)d]);
 """
 
     temp_clear = """
     g_free(p_%(pos)d);
-    JSStringRelease(value_%(pos)d);
 """
 
     def raw(self):
@@ -249,6 +287,7 @@ static JSValueRef __%(name)s__ (JSContextRef context,
             params_init += p.str_init()
             params_clear += p.str_clear()
             raw_params.append(p.raw())
+
         raw_params.append("JSData*")
         return Function.temp % {
                 "raw_return" : self.r_value.raw(),
@@ -265,14 +304,19 @@ static JSValueRef __%(name)s__ (JSContextRef context,
     data->ctx = context;
     data->exception = exception;
     data->webview = get_global_webview();
-    %(return_value)s %(name)s (%(params)s);
+
+   %(return_value)s %(name)s (%(params)s);
+
     %(eval_after)s
     g_free(data);
 """
     def func_call(self):
         params_str = []
         for p in self.params:
-            params_str.append("p_%d" % p.position)
+            if p.is_array():
+                params_str.append("p_%d_a, p_%d_n" % (p.position, p.position))
+            else:
+                params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
                 "return_value" : self.r_value.eval_before(),

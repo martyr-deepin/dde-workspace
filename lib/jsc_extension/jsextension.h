@@ -21,6 +21,7 @@
 #ifndef __JS_EXTENSION__
 #define __JS_EXTENSION__
 #include <JavaScriptCore/JavaScript.h>
+#include <glib.h>
 
 typedef struct JSData {
     JSContextRef ctx;
@@ -47,6 +48,7 @@ JSValueRef jsvalue_from_cstr(JSContextRef, const char* str);
 JSValueRef json_from_cstr(JSContextRef, const char* data);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
+gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
 
 
 #endif
