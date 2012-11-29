@@ -17,6 +17,8 @@ void item_delete(const char** target, int n)
             GTK_BUTTONS_OK_CANCEL,
             _("do you want to delete following %d file(s) ?"),
             n);
+    gtk_window_set_title(GTK_WINDOW(dialog), _("confirm"));
+
     if (n == 1)
         gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog),
                 "%s", target[0]);

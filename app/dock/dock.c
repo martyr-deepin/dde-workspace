@@ -40,6 +40,7 @@ cairo_rectangle_int_t dock_rect = {0, 0, 0, DOCK_HEIGHT - BOARD_HEIGHT};
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
     js_post_message("leave-notify", NULL);
+    return FALSE;
 }
 
 GtkWidget* container = NULL;
