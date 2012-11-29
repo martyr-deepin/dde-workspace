@@ -150,7 +150,7 @@ class AString(Params):
     if (jsvalue_instanceof(context, arguments[%(pos)d], "Array")) {
         JSPropertyNameArrayRef prop_names = JSObjectCopyPropertyNames(context, (JSObjectRef)arguments[%(pos)d]);
 
-        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names);
+        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names) - 1; 
 
         p_%(pos)d_a = g_new0(char*, p_%(pos)d_n);
         for (int i=0; i<p_%(pos)d_n; i++) {
