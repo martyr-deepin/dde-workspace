@@ -188,7 +188,6 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 static
 void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
 {
-    printf("reload...\n");
     webkit_web_view_reload(webview);
 }
 void monitor_resource_file(const char* app, GtkWidget* webview)

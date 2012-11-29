@@ -17,6 +17,25 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class Indicator extends Widget
+    constructor: (@id)->
+        super
+        document.body.appendChild(@element)
+        @element.style.top = "840px"
+        @hide()
+    show: (x)->
+        @last_x = x
+        @element.style.display = "block"
+        @element.style.left = "#{x}px"
+
+    hide: ->
+        @element.style.display = "none"
+
+indicator = new Indicator("indicator")
+
+class Launcher extends Widget
+    constructor: (@id)->
+
 class AppList extends Widget
     constructor: (@id) ->
         super
@@ -26,19 +45,33 @@ class AppList extends Widget
         @element.appendChild(c.element)
 
     do_drop: (e)->
+        indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
         echo "dock:#{file}"
 
-    try_dock_app: (e) ->
+    show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list")
         t = path.substring(path.length-8, path.length)
         if t == ".desktop"
-            #show_dock_indicator()
-            echo "try dock:#{path}"
+            lcg = $(".ClientGroup:last-of-type")
+            fcg = $(".ClientGroup:first-of-type")
+            lp = get_page_xy(lcg, lcg.clientWidth, 0)
+            fp = get_page_xy(fcg, 0, 0)
+            if e.pageX > lp.x
+                x = lp.x
+            else if e.pageX < fp.x
+                x = fp.x
+            else
+                x = e.pageX
+            indicator.show(x)
 
     do_dragover: (e) ->
         e.dataTransfer.dropEffect="link"
-        @try_dock_app(e)
+        @show_try_dock_app(e)
+
+    do_dragleave: (e)->
+        if e.target == @element
+            indicator.hide()
 
 
 app_list = new AppList("app_list")
@@ -59,7 +92,7 @@ class ClientGroup extends Widget
             @current_leader = c
             @element.appendChild(@current_leader.element)
             p = get_page_xy(@element, @element.clientWidth, 0)
-            DCore.Dock.set_dock_width(p.x) #TODO: reduce the space when Destory.
+            DCore.Dock.set_dock_width(p.x + 15) #TODO: reduce the space when Destory.
             DCore.Dock.close_show_temp() #TODO: should consider the preview window
 
         @clients.push(c)

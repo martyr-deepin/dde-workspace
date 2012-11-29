@@ -93,19 +93,15 @@ body {
     height: 48px;
     margin: 0 10px 8px 10px;
 
-    /*background: rgba(10, 10, 100, 0.4);*/
-    /*background: url("../img/board1.png");*/
-    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));*/
+    background: url("../img/1_r2_c14.png");
 
     -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .Client img {
-    /*margin: 8px;*/
-    /*width: 32px;*/
-    /*height: 32px;*/
-    width: 48px;
-    height: 48px;
+    margin: 8px;
+    width: 32px;
+    height: 32px;
 }
 .ClientNumber {
     position: absolute;
@@ -155,4 +151,11 @@ body {
 }
 .PWClose:hover {
     cursor: pointer;
+}
+
+.Indicator {
+    position: fixed;
+    background: url("../img/indicator.png");
+    width: 14px;
+    height: 17px;
 }

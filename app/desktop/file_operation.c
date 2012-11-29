@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include "i18n.h"
+#include "utils.h"
 
 void item_rename(const char* old, const char* new)
 {
