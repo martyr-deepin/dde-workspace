@@ -184,3 +184,10 @@ void run_command2(const char* cmd, const char* p1, const char* p2)
     g_spawn_command_line_async(e_cmd, NULL);
     g_free(e_cmd);
 }
+
+#include "i18n.h"
+void init_i18n()
+{
+    setlocale(LC_MESSAGES, "");
+    textdomain("DDE");
+}
