@@ -698,8 +698,8 @@ gboolean change_desktop_entry_name(const char* path, const char* name)
         else
             g_key_file_set_string(de, GROUP, "Name", name);
 
-        int size;
-        char* content = g_key_file_to_data(de, &size, NULL);
+        gsize size;
+        gchar* content = g_key_file_to_data(de, &size, NULL);
         g_key_file_free(de);
 
         FILE* f = fopen(path, "w");

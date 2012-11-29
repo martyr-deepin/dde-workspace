@@ -31,3 +31,8 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 add_subdirectory(lib)
 add_subdirectory(app)
 add_subdirectory(po)
+
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/schema
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas
+)
