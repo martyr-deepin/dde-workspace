@@ -28,7 +28,6 @@
 #include <cairo/cairo-xlib.h>
 
 void install_monitor();
-void install_background_handler(); // desktop_change_background.c
 
 char* get_desktop_items()
 {
@@ -148,7 +147,6 @@ int main(int argc, char* argv[])
     gdk_window_stick(fw);
 
     install_monitor();
-    install_background_handler();
 
     ATOM_ROOT_PIXMAP = gdk_x11_get_xatom_by_name("_XROOTPMAP_ID");
     GdkWindow* root = gdk_get_default_root_window();

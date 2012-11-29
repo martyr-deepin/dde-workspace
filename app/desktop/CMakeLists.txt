@@ -9,7 +9,7 @@ AUX_SOURCE_DIRECTORY(jsc JSC)
 AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
 
 
-SET(SRC_LIST desktop.c desktop_item_monitor.c change_background.c file_operation.c
+SET(SRC_LIST desktop.c desktop_item_monitor.c file_operation.c
     ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
