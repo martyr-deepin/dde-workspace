@@ -6,10 +6,6 @@
 
 #define _(STRING) gettext(STRING)
 
-void init_i18n()
-{
-    setlocale(LC_MESSAGES, "");
-    textdomain("DDE");
-}
+void init_i18n();
 
 #endif
