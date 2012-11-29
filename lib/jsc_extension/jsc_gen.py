@@ -36,48 +36,6 @@ def register(m):
         modules.append(m.up_class)
     modules.append(m);
 
-def generate():
-    temp = """
-#include "jsextension.h"
-#include <JavaScriptCore/JSStringRef.h>
-extern JSClassRef get_DCore_class();
-%(objs_state)s
-JSGlobalContextRef global_ctx = NULL;
-void* __webview = NULL;
-void* get_global_webview()
-{
-    return __webview;
-}
-
-JSGlobalContextRef get_global_context()
-{
-    return global_ctx;
-}
-void init_js_extension(JSGlobalContextRef context, void* webview)
-{
-    global_ctx = context;
-    __webview = webview;
-    JSObjectRef global_obj = JSContextGetGlobalObject(context);
-    JSObjectRef class_DCore = JSObjectMake(context, get_DCore_class(), NULL);
-
-    %(objs)s
-
-    JSStringRef str = JSStringCreateWithUTF8CString("DCore");
-    JSObjectSetProperty(context, global_obj, str, class_DCore,
-            kJSClassAttributeNone, NULL);
-    JSStringRelease(str);
-}
-"""
-    objs = ""
-    objs_state = ""
-    modules.reverse()
-    for m in modules:
-        if m.name != "DCore":
-            objs += m.str_install()
-            objs_state += "extern JSClassRef get_%s_class();\n" % m.name
-    f = open(JSC_PATH + "/init.c", "w")
-    f.write(temp % {"objs": objs, "objs_state": objs_state })
-    f.close()
 
 
 class Params:
@@ -86,12 +44,37 @@ class Params:
         self.description = description
     def set_position(self, pos):
         self.position = pos
-    def str_clear(self):
+    def in_after(self):
         return ""
     def doc(self):
         pass
     def is_array(self):
         return False
+
+class Array(Params):
+    temp = """
+    %(type)s* p_%(pos)d_a = NULL;
+    int p_%(pos)d_n = 0;
+
+    if (jsvalue_instanceof(context, arguments[%(pos)d], "Array")) {
+
+        JSPropertyNameArrayRef prop_names = JSObjectCopyPropertyNames(context, (JSObjectRef)arguments[%(pos)d]);
+        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names) - 1;
+        JSPropertyNameArrayRelease(prop_names);
+
+        p_%(pos)d_a = g_new0(%(type)s, p_%(pos)d_n);
+
+        for (int i=0; i<p_%(pos)d_n; i++) {
+            JSValueRef value = JSObjectGetPropertyAtIndex(context, (JSObjectRef)arguments[%(pos)d], i, NULL);
+            p_%(pos)d_a[i] = %(element_alloc)s;
+        }
+
+    }
+"""
+    def __init__(self, *args):
+        Params.__init__(self, *args)
+    def is_array(self):
+        return True
 
 class Property:
     def __init__(self, *args):
@@ -113,14 +96,14 @@ class Number(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
 
-    def str_init(self):
+    def in_before(self):
         return Number.temp % { "pos": self.position }
-    def raw(self):
+    def type(self):
         return "double "
 
-    def eval_before(self):
+    def out_before(self):
         return "double ret = "
-    def eval_after(self):
+    def out_after(self):
         return ""
     def return_value(self):
         return "return JSValueMakeNumber(context, ret);"
@@ -128,42 +111,43 @@ class Number(Params):
 class Boolean(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
-    def str_init(self):
-        return "bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);" % {"pos": self.position}
-    def raw(self):
+    def in_before(self):
+        return """
+    bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);
+"""  % {"pos": self.position}
+    def type(self):
         return "bool "
-
-class AString(Params):
+class ABoolean(Array):
     def __init__(self, *args):
-        Params.__init__(self, *args)
+        Array.__init__(self, *args)
+    def type(self):
+        return "gboolean*, int"
+    def in_before(self):
+        return Array.temp % {'type': 'gboolean', 'pos': self.position, 'element_alloc': "JSValueToBoolean(context, value)"}
+    def in_after(self):
+        return "g_free(p_%(pos)d_a);" % {'pos': self.position}
 
-    def is_array(self):
-        return True
+class ANumber(Array):
+    def __init__(self, *args):
+        Array.__init__(self, *args)
+    def type(self):
+        return "double*, int"
+    def in_before(self):
+        return Array.temp % {'type': 'double', 'pos': self.position, 'element_alloc': "JSValueToNumber(context, value, NULL)"}
+    def in_after(self):
+        return "g_free(p_%(pos)d_a);" % {'pos': self.position}
 
-    def raw(self):
+class AString(Array):
+    def __init__(self, *args):
+        Array.__init__(self, *args)
+
+    def type(self):
         return "char **, int"
 
-    def str_init(self):
-        temp = """
-    char** p_%(pos)d_a = NULL;
-    int p_%(pos)d_n = 0;
-    if (jsvalue_instanceof(context, arguments[%(pos)d], "Array")) {
-        JSPropertyNameArrayRef prop_names = JSObjectCopyPropertyNames(context, (JSObjectRef)arguments[%(pos)d]);
+    def in_before(self):
+        return Array.temp % {'type': 'char*', 'pos': self.position, 'element_alloc': "jsvalue_to_cstr(context, value)"}
 
-        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names) - 1; 
-
-        p_%(pos)d_a = g_new0(char*, p_%(pos)d_n);
-        for (int i=0; i<p_%(pos)d_n; i++) {
-            JSValueRef value = JSObjectGetPropertyAtIndex(context, (JSObjectRef)arguments[%(pos)d], i, NULL);
-            p_%(pos)d_a[i] = %(element_alloc)s(context, value);
-        }
-
-        JSPropertyNameArrayRelease(prop_names);
-    }
-    """
-        return temp % {'pos': self.position, 'element_alloc': "jsvalue_to_cstr"}
-
-    def str_clear(self):
+    def in_after(self):
         temp_clear = """
     for (int i=0; i<p_%(pos)d_n; i++) {
         g_free(p_%(pos)d_a[i]);
@@ -176,52 +160,46 @@ class String(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
 
-    temp = """
-    gchar* p_%(pos)d = jsvalue_to_cstr(context, arguments[%(pos)d]);
-"""
-
-    temp_clear = """
-    g_free(p_%(pos)d);
-"""
-
-    def raw(self):
+    def type(self):
         return "char * "
 
-    def str_init(self):
-        return String.temp % {'pos': self.position}
+    def in_before(self):
+        temp = """
+    gchar* p_%(pos)d = jsvalue_to_cstr(context, arguments[%(pos)d]);
+"""
+        return temp % {'pos': self.position}
 
-    def str_clear(self):
-        return String.temp_clear % {'pos': self.position}
+    def in_after(self):
+        temp = """
+    g_free(p_%(pos)d);
+"""
+        return temp % {'pos': self.position}
 
     def return_value(self):
         return """
     return r;
 """
-    def eval_before(self):
+    def out_before(self):
         return "gchar* c_return = "
-    def eval_after(self):
+    def out_after(self):
         return """
     JSValueRef r = NULL;
     if (c_return != NULL) {
-        JSStringRef str = JSStringCreateWithUTF8CString(c_return);
+        r = jsvalue_from_cstr(context, c_return);
         g_free(c_return);
-        r = JSValueMakeString(context, str);
-        JSStringRelease(str);
     } else {
         FILL_EXCEPTION(context, exception, "the return string is NULL");
     }
 """
 
 class CString(String):
-    def eval_before(self):
+    def out_before(self):
         return "const char* c_return = "
-    def eval_after(self):
+    def out_after(self):
         return """
     JSValueRef r = NULL;
     if (c_return != NULL) {
-        JSStringRef str = JSStringCreateWithUTF8CString(c_return);
-        r = JSValueMakeString(context, str);
-        JSStringRelease(str);
+        r = jsvalue_from_cstr(context, c_return);
     } else {
         FILL_EXCEPTION(context, exception, "the return string is NULL");
     }
@@ -284,13 +262,13 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         for p in self.params:
             p.set_position(i)
             i += 1
-            params_init += p.str_init()
-            params_clear += p.str_clear()
-            raw_params.append(p.raw())
+            params_init += p.in_before()
+            params_clear += p.in_after()
+            raw_params.append(p.type())
 
         raw_params.append("JSData*")
         return Function.temp % {
-                "raw_return" : self.r_value.raw(),
+                "raw_return" : self.r_value.type(),
                 "raw_params" : ', '.join(raw_params),
                 "name" : self.name,
                 "p_num" : i,
@@ -304,11 +282,9 @@ static JSValueRef __%(name)s__ (JSContextRef context,
     data->ctx = context;
     data->exception = exception;
     data->webview = get_global_webview();
-
    %(return_value)s %(name)s (%(params)s);
-
-    %(eval_after)s
     g_free(data);
+    %(out_after)s
 """
     def func_call(self):
         params_str = []
@@ -319,8 +295,8 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
-                "return_value" : self.r_value.eval_before(),
-                "eval_after" : self.r_value.eval_after(),
+                "return_value" : self.r_value.out_before(),
+                "out_after" : self.r_value.out_after(),
                 "name": self.name,
                 "params" : ', '.join(params_str)
                 }
@@ -434,55 +410,62 @@ class Return:
             self.type = t()
     def str(self):
         return self.type.return_value()
-    def str_eval_before(self):
-        return self.type.eval_before()
-    def str_eval_after(self):
-        return self.type.eval_after()
+    def str_out_before(self):
+        return self.type.out_before()
+    def str_out_after(self):
+        return self.type.out_after()
 
 class Null:
     def __call__(self):
         return self
-    def raw(self):
+    def type(self):
         return "void"
     def return_value(self):
         return "return JSValueMakeNull(context);"
-    def eval_before(self):
+    def out_before(self):
         return ""
-    def eval_after(self):
+    def out_after(self):
         return ""
 
 class JSCode(Params):
     def return_value(self):
         return """
-    JSValueRef r = JSValueMakeFromJSONString(context, scriptJS);
-    if (r == NULL) {
-        FILL_EXCEPTION(context, exception, "JSON Data Error");
-        g_error("\\n %s \\n This should not appear, please report to the author with the error message", c_return);
-    }
-    g_free(c_return);
-    JSStringRelease(scriptJS);
-    JSGarbageCollect(context); //JSC1.8 can't auto free this json object. 
     return r;
 """
-    def raw(self):
+    def type(self):
         return "char *";
-    def eval_before(self):
+
+    def out_before(self):
         return "gchar* c_return = "
-    def eval_after(self):
+    def out_after(self):
         return """
-    JSStringRef scriptJS = JSStringCreateWithUTF8CString(c_return);
+    JSValueRef r = json_from_cstr(context, c_return);
+    g_free(c_return);
+    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    """
+
+class CJSCode(JSCode):
+    def type(self):
+        return "const char*";
+    def out_before(self):
+        return "const gchar* c_return = "
+    def out_after(self):
+        return """
+    JSValueRef r = json_from_cstr(context, c_return);
+    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
     """
 
 class JSValueRef(Params):
     def __init__(self, *args):
         Params.__init__(self, *args)
-    def raw(self):
+    def type(self):
         return "JSValueRef "
-    def str_init(self):
+    def in_before(self):
         return "JSValueRef p_%(pos)d = arguments[%(pos)d];\n" % {"pos":self.position}
-    def eval_before(self):
+
+    def out_before(self):
         return "JSValueRef c_return = "
-    def eval_after(self):
+    def out_after(self):
         return ""
     def return_value(self):
         return "return c_return;"
@@ -498,25 +481,71 @@ class Value:
     def __init__(self, name):
         pass
 
+def gen_init_c():
+    temp = """
+#include "jsextension.h"
+#include <JavaScriptCore/JSStringRef.h>
+extern JSClassRef get_DCore_class();
+%(objs_state)s
+JSGlobalContextRef global_ctx = NULL;
+void* __webview = NULL;
+void* get_global_webview()
+{
+    return __webview;
+}
 
-import os
-for root, dirs, files in os.walk(JSC_PATH):
-    for f in files:
-        if f.endswith('.cfg'):
-            path = os.path.join(root, f)
-            path2 = os.path.join(root,  "gen/gen_" + f.rstrip(".cfg") + ".c")
-            f = open(path)
-            content = f.read()
-            try :
-                m = eval(content)
-            except:
-                print "Warnings: format error. (%s)" % path
-                f.close()
-                raise
-            else:
-                f = open(path2, "w")
-                f.write(m.str())
-                f.close()
+JSGlobalContextRef get_global_context()
+{
+    return global_ctx;
+}
+void init_js_extension(JSGlobalContextRef context, void* webview)
+{
+    global_ctx = context;
+    __webview = webview;
+    JSObjectRef global_obj = JSContextGetGlobalObject(context);
+    JSObjectRef class_DCore = JSObjectMake(context, get_DCore_class(), NULL);
+
+    %(objs)s
+
+    JSStringRef str = JSStringCreateWithUTF8CString("DCore");
+    JSObjectSetProperty(context, global_obj, str, class_DCore,
+            kJSClassAttributeNone, NULL);
+    JSStringRelease(str);
+}
+"""
+    objs = ""
+    objs_state = ""
+    modules.reverse()
+    for m in modules:
+        if m.name != "DCore":
+            objs += m.str_install()
+            objs_state += "extern JSClassRef get_%s_class();\n" % m.name
+    f = open(JSC_PATH + "/init.c", "w")
+    f.write(temp % {"objs": objs, "objs_state": objs_state })
+    f.close()
+
+def gen_module_c():
+    import os
+    for root, dirs, files in os.walk(JSC_PATH):
+        for f in files:
+            if f.endswith('.cfg'):
+                path = os.path.join(root, f)
+                path2 = os.path.join(root,  "gen/gen_" + f.rstrip(".cfg") + ".c")
+                f = open(path)
+                content = f.read()
+                try :
+                    m = eval(content)
+                except:
+                    print "Warnings: format error. (%s)" % path
+                    f.close()
+                    raise
+                else:
+                    f = open(path2, "w")
+                    f.write(m.str())
+                    f.close()
+
+
+gen_module_c()
 
 if len(sys.argv) != 3:
-    generate()
+    gen_init_c()
