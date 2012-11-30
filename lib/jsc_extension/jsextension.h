@@ -50,6 +50,7 @@ char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
 
+void js_post_message(const char* name, const char* format, ...);
 
 #endif
 

@@ -55,7 +55,6 @@ GtkWidget* d_webview_new();
 GtkWidget* d_webview_new_with_uri();
 gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data);
 
-void js_post_message(const char* name, const char* format, ...);
 
 // custom webkit's function
 extern void canvas_custom_draw_did(cairo_t *cr, const cairo_rectangle_t* rect);
