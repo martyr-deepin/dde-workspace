@@ -13,7 +13,7 @@ AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-SET(SRC_LIST dock.c dock_config.c tray.c tasklist.c draw.c ${JSC} ${JSC_GEN})
+SET(SRC_LIST dock.c dock_config.c tray.c tasklist.c draw.c launcher.c ${JSC} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 

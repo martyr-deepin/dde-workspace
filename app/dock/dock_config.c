@@ -25,6 +25,7 @@
 struct _GlobalData GD;
 void update_dock_show();
 void update_dock_color();
+void update_dock_apps();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
@@ -35,9 +36,9 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data)
         GD.config.color = g_settings_get_uint(s, key);
         update_dock_color();
     } else if (g_strcmp0(key, "apps") == 0) {
-        /*g_strfreev(GD.config.apps);*/
-        /*GD.config.apps = g_settings_get_strv(s, key);*/
-        /*update_dock_apps();*/
+        g_strfreev(GD.config.apps);
+        GD.config.apps = g_settings_get_strv(s, key);
+        update_dock_apps();
     }
 }
 
