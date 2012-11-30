@@ -240,25 +240,33 @@ init_grid_drop = ->
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
                 localStorage.setObject(path, pos)
-
-        evt.dataTransfer.dropEffect = "move"
     )
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        #echo("grid dragover #{evt.dataTransfer.dropEffect}")
-        if evt.shiftKey == "true"
+        
+        if evt.shiftKey == true
             evt.dataTransfer.dropEffect = "copy"
-        else if evt.ctrlKey == "true"
+        else if evt.ctrlKey == true
             evt.dataTransfer.dropEffect = "link"
         else
             evt.dataTransfer.dropEffect = "move"
+        
+        echo("grid dragover #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
-        #evt.dataTransfer.dropEffect = "move"
-        #echo("grid dragenter #{evt.dataTransfer.dropEffect}")
+        
+        if evt.shiftKey == true
+            evt.dataTransfer.dropEffect = "copy"
+        else if evt.ctrlKey == true
+            evt.dataTransfer.dropEffect = "link"
+        else
+            evt.dataTransfer.dropEffect = "move"
+        
+        echo("grid dragenter #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
+        return
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
@@ -365,14 +373,12 @@ delete_selected_items = ->
     DCore.Desktop.item_delete(tmp)
 
 
-gird_left_click = (env) ->
-    #echo("gird_left_click")
+gird_left_mousedown = (env) ->
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
 
 
 grid_right_click = (env) ->
-    #echo("grid_right_click")
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
 
@@ -384,7 +390,7 @@ create_item_grid = ->
     document.body.appendChild(div_grid)
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     init_grid_drop()
-    div_grid.addEventListener("click", gird_left_click)
+    div_grid.addEventListener("mousedown", gird_left_mousedown)
     div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
