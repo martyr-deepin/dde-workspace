@@ -33,9 +33,6 @@ class Indicator extends Widget
 
 indicator = new Indicator("indicator")
 
-class Launcher extends Widget
-    constructor: (@id)->
-
 class AppList extends Widget
     constructor: (@id) ->
         super
@@ -47,7 +44,7 @@ class AppList extends Widget
     do_drop: (e)->
         indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
-        echo "dock:#{file}"
+        DCore.Dock.request_dock(file)
 
     show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list")
@@ -76,81 +73,11 @@ class AppList extends Widget
 
 app_list = new AppList("app_list")
 
-class ClientGroup extends Widget
-    constructor: (@id)->
+class AppItem extends Widget
+    constructor: (@id, @icon)->
         super
-
-        @clients = []
-        app_list.append(@)
-
-        @el_title = document.createElement("div")
-        @el_title.setAttribute("class", "ClientNumber")
-        @element.appendChild(@el_title)
-
-    add_client: (c)->
-        if @clients.length == 0
-            @current_leader = c
-            @element.appendChild(@current_leader.element)
-            p = get_page_xy(@element, @element.clientWidth, 0)
-            DCore.Dock.set_dock_width(p.x + 15) #TODO: reduce the space when Destory.
-            DCore.Dock.close_show_temp() #TODO: should consider the preview window
-
-        @clients.push(c)
-
-        @el_title.innerText = @clients.length
-
-    remove_client: (c)->
-        c1 = @clients.remove(c)
-
-        if c1 == @current_leader
-            @current_leader = @clients[0]
-            if @current_leader
-                @element.appendChild(@current_leader.element)
-        c1?.destroy()
-        
-        n = @clients.length
-        if n == 0
-            @destroy()
-        else
-            @el_title.innerText = n
-
-    do_mouseover: (e) ->
-        Preview_container.show_group(@, 150)
-
-    do_mouseout: (e) ->
-        if e.relatedTarget == @element.parentNode
-            Preview_container.remove_all(1000)
-
-    active: ->
-        #@element.style.background = "rgba(0, 100, 100, 1)"
-    deactive: ->
-        #@element.style.background = "rgba(0, 0, 0, 0)"
-
-
-class Client extends Widget
-    constructor: (@id, @icon, @title, @leader)->
-        super
-
-        @update_content @title, @icon
         @element.draggable=true
-        @pw_id = "PW" + @id
-
-        @leader.add_client(@)
-
-
-    update_content: (title, icon) ->
-        @element.innerHTML = "
-        <img draggable=false src=#{icon} />
-        "
-    withdraw: ->
-        @element.style.display = "None"
-    normal: ->
-        @element.style.display = "block"
-    do_click: (e) ->
-        DCore.Dock.set_active_window(@id)
-    do_dblclick: (e) ->
-        DCore.Dock.minimize_window(@id)
-
+        app_list.append(@)
     do_dragstart: (e)->
         Preview_container.remove_all()
         e.dataTransfer.setData("item-id", @element.id)
@@ -164,16 +91,78 @@ class Client extends Widget
             return
         did = @element.id
         if sid != did
-            swap_element(Widget.look_up(sid).leader.element, Widget.look_up(did).leader.element)
+            swap_element(Widget.look_up(sid).element, Widget.look_up(did).element)
 
         e.stopPropagation()
 
-    destroy: ->
-        pw = Widget.look_up(@pw_id)
-        if pw?
-            Preview_container.remove(pw)
-        super
 
+class Launcher extends AppItem
+    constructor: (@id, @icon, @exec, @exe_name)->
+        super
+        @element.innerHTML = "
+        <img src=#{@icon}>
+        "
+    do_click: (e)->
+        DCore.run_command(@exec)
+        @destroy()
+
+class ClientGroup extends AppItem
+    constructor: (@id, @exe_name)->
+        super
+        @clients = []
+
+        @remove_launcher()
+
+        @client_infos = {}
+        @leader = null
+        @count = document.createElement("div")
+        @count.setAttribute("class", "ClientGroupNumber")
+
+    remove_launcher: ->
+        echo "echo try remove launcher #{@exe_name}"
+
+    add_client: (id, icon, title)->
+        if @clients.indexOf(id) == -1
+            @clients.push id
+            @count.innerText = "#{@clients.length}"
+
+        @client_infos[id] =
+            "id": id
+            "icon": icon
+            "title": title
+
+        if @leader != id
+            @set_leader(id, icon)
+
+
+    remove_client: (id) ->
+        delete @client_infos[id]
+        @clients.remove(id)
+        @count.innerText = "#{@clients.length}"
+
+        if @clients.length == 0
+            @destroy()
+        else if @leader == id
+            le = @clients[0]
+            set_leader(le, @client_infos[le].icon)
+
+    set_leader: (id, icon)->
+        @leader = id
+        @element.innerHTML = "
+        <img draggable=false src=#{icon} />
+        "
+        @element.appendChild(@count)
+
+    destroy: ->
+        #info = DCore.Dock.launcher_info(@exe_name)
+        info = launcher_info(@exe_name)
+        if info
+            l = Widget.look_up(info.id)
+            if not l
+                l = new Launcher(info.EntryPath, info.Icon, info.Exec)
+            #swap_element(@, l)
+
+        super
 
 
 
@@ -186,20 +175,42 @@ DCore.signal_connect("active_window_changed", (info)->
     active_group.active()
 )
 
-DCore.signal_connect("task_added", (info) ->
+_infos = {}
+launcher_info = (k)->
+    _infos[k]
+DCore.signal_connect("launcher_added", (info) ->
+    e_n = info.Exec.split("/").pop()
+    if _infos[e_n]
+        return
+    _infos[e_n] = info
     c = Widget.look_up(info.id)
-
     if c
-        c.update_content(info.title, info.icon)
+        echo "have.."
     else
-        leader = Widget.look_up("le_"+info.clss)
-        if not leader
-            leader = new ClientGroup("le_"+info.clss)
-        new Client(info.id, info.icon, info.title, leader)
+        new Launcher(info.EntryPath, info.Icon, info.Exec)
+)
+
+DCore.signal_connect("task_added", (info) ->
+    leader = Widget.look_up("le_" + info.clss)
+
+    if not leader
+        leader = new ClientGroup("le_"+info.clss, info.exe_name)
+
+    if info.icon == "null"
+        alert("aaa")
+    leader.add_client(info.id, info.icon, info.title)
+
+    #if c
+        #c.update_content(info.title, info.icon)
+    #else
+        #leader = Widget.look_up("le_"+info.clss)
+        #if not leader
+            #leader = new ClientGroup("le_"+info.clss)
+        #new Client(info.id, info.icon, info.title, info.exe_name, leader)
 )
 
 DCore.signal_connect("task_removed", (info) ->
-    Widget.look_up("le_"+info.clss)?.remove_client(Widget.look_up(info.id))
+    Widget.look_up("le_"+info.clss)?.remove_client(info.id)
 )
 
 DCore.signal_connect("task_withdraw", (info) ->
@@ -210,4 +221,4 @@ DCore.signal_connect("task_normal", (info) ->
     Widget.look_up(info.id).normal()
 )
 
-DCore.Dock.emit_update_task_list()
+DCore.Dock.emit_webview_ok()

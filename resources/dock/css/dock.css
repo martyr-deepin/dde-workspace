@@ -97,16 +97,24 @@ body {
 
     -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
-
-.Client img {
+.ClientGroup img {
     margin: 8px;
     width: 32px;
     height: 32px;
 }
-.ClientNumber {
+
+.ClientGroupNumber {
     position: absolute;
     background: red;
     top: 0px;
+}
+.Launcher {
+    position:relative;
+    float: left;
+    width: 48px;
+    height: 48px;
+    margin: 0 10px 8px 10px;
+    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .PWContainer {
