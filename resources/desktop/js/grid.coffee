@@ -137,7 +137,7 @@ compare_pos_rect = (base1, base2, pos) ->
     else
         ret = false
 
-    echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
+    #echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
     ret
 
 
@@ -247,7 +247,12 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         #echo("grid dragover #{evt.dataTransfer.dropEffect}")
-        evt.dataTransfer.dropEffect = "move"
+        if evt.shiftKey == "true"
+            evt.dataTransfer.dropEffect = "copy"
+        else if evt.ctrlKey == "true"
+            evt.dataTransfer.dropEffect = "link"
+        else
+            evt.dataTransfer.dropEffect = "move"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
@@ -422,8 +427,8 @@ class Mouse_Select_Area_box
 
     mousemove_event : (env) =>
         env.preventDefault()
-        sl = Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x)
-        st = Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y)
+        sl = Math.min(Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x), s_offset_x + s_width)
+        st = Math.min(Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height - st)
         @element.style.left = "#{sl}px"
@@ -448,8 +453,6 @@ class Mouse_Select_Area_box
                 item_pos = load_position(w.path)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
-
-            echo effect_item.length
 
             temp_list = effect_item.concat()
             sel_list = @last_effect_item.concat()
