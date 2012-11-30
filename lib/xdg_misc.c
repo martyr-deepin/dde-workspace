@@ -402,6 +402,9 @@ char* entry_info_to_json(BaseEntry* _entry)
         if (icon_path != NULL) {
             APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", icon_path);
             g_free(icon_path);
+        } else {
+            g_string_append(string, "\"Icon\":\"not_found.png\",\n");
+            g_free(icon_path);
         }
     }
     if (_entry->hidden)

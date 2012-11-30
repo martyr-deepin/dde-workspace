@@ -34,5 +34,6 @@ char* gen_id(const char* seed);
 void run_command(const char* cmd);
 void run_command2(const char* cmd, const char* p1, const char* p2);
 void run_command1(const char* cmd, const char* p1);
+char* get_name_by_pid(int pid);
 
 #endif

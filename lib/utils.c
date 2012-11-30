@@ -191,3 +191,32 @@ void init_i18n()
     setlocale(LC_MESSAGES, "");
     textdomain("DDE");
 }
+
+
+#include <unistd.h>
+#include <fcntl.h>
+char* get_name_by_pid(int pid)
+{
+#define LEN 1024
+    char content[LEN];
+
+    char* path = g_strdup_printf("/proc/%d/cmdline", pid);
+    int fd = open(path, O_RDONLY);
+    g_free(path);
+
+    if (fd == -1) {
+        return NULL;
+    } else {
+        read(fd, content, LEN);
+        close(fd);
+    }
+    for (int i=0; i<LEN; i++) {
+        if (content[i] == ' ') {
+            content[i] = '\0';
+            break;
+        }
+    }
+
+
+    return g_path_get_basename(content);
+}
