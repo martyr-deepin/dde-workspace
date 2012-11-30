@@ -26,6 +26,7 @@
 #include "tasklist.h"
 #include "i18n.h"
 #include "dock_config.h"
+#include "launcher.h"
 #include <cairo.h>
 
 #define DOCK_HEIGHT (60)
@@ -113,22 +114,15 @@ int main(int argc, char* argv[])
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
+    gtk_window_move(GTK_WINDOW(container), 0, 0);
     gtk_widget_show_all(container);
 
     set_dock_size(screen, webview);
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
     close_show_temp();
-
-
-    // this should at the lastest because of use container's window
-    tray_init(container);
-    monitor_tasklist_and_activewindow();
-
-    init_config();
-
-
     monitor_resource_file("dock", webview);
+
 
     gtk_main();
     return 0;
@@ -152,7 +146,6 @@ void show_temp_region(double x, double y, double width, double height)
 
 void close_show_temp()
 {
-    int width = 400;
     cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
     cairo_region_union_rectangle(region, &dock_rect);
 
@@ -172,4 +165,16 @@ void update_dock_show()
         show_dock();
     else
         hide_dock();
+}
+void emit_webview_ok()
+{
+    static gboolean inited = FALSE;
+    if (!inited) {
+        inited = TRUE;
+        init_config();
+        tray_init(container);
+        init_task_list();
+    }
+    GdkWindow* root = gdk_get_default_root_window();
+    update_task_list(GDK_WINDOW_XID(root));
 }
