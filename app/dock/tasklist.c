@@ -34,6 +34,7 @@ Atom ATOM_WINDOW_TYPE_NORMAL;
 Atom ATOM_WINDOW_NAME;
 Atom ATOM_WINDOW_CLASS;
 Atom ATOM_WINDOW_STATE;
+Atom ATOM_WINDOW_PID;
 Atom ATOM_WINDOW_NET_STATE;
 Atom ATOM_CLOSE_WINDOW;
 Atom ATOM_SHOW_DESKTOP;
@@ -49,6 +50,7 @@ void _init_atoms()
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
     ATOM_WINDOW_STATE = gdk_x11_get_xatom_by_name("WM_STATE");
+    ATOM_WINDOW_PID = gdk_x11_get_xatom_by_name("_NET_WM_PID");
     ATOM_WINDOW_NET_STATE = gdk_x11_get_xatom_by_name("_NET_WM_STATE");
     ATOM_CLOSE_WINDOW = gdk_x11_get_xatom_by_name("_NET_CLOSE_WINDOW");
     ATOM_SHOW_DESKTOP = gdk_x11_get_xatom_by_name("_NET_SHOWING_DESKTOP");
@@ -60,6 +62,7 @@ typedef struct {
     char* icon;
     char* title;
     char* clss;
+    char* exe_name;
     int state;
     Window window;
     GdkWindow* gdkwindow;
@@ -74,6 +77,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 void _update_window_icon(Client *c);
 void _update_window_title(Client *c); 
 void _update_window_class(Client *c);
+void _set_window_exec(Client *c);
 
 Client* create_client_from_window(Window w)
 {
@@ -85,6 +89,8 @@ Client* create_client_from_window(Window w)
     c->window = w;
     c->gdkwindow = win;
 
+    _set_window_exec(c);
+
     _update_window_icon(c);
     _update_window_title(c);
     _update_window_class(c);
@@ -94,8 +100,9 @@ Client* create_client_from_window(Window w)
 
 void _update_client_info(Client *c)
 {
-    js_post_message("task_added", "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\"}",
-            (int)c->window, c->title, c->clss, c->icon);
+    js_post_message("task_added", 
+            "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\", \"exe_name\":\"%s\"}",
+            (int)c->window, c->title, c->clss, c->icon, c->exe_name);
 }
 void active_window_changed(Display* dsp, Window w)
 {
@@ -115,6 +122,7 @@ void client_free(Client* c)
     g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
+    g_free(c->exe_name);
     g_free(c);
 }
 
@@ -195,7 +203,7 @@ void _update_window_icon(Client* c)
     gulong items;
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
-        c->icon = NULL;
+        c->icon = g_strdup("img/not_found.png");
         return;
     }
 
@@ -236,6 +244,19 @@ void _update_window_title(Client* c)
     else
         c->title = g_strdup("Unknow Name");
     XFree(name);
+
+}
+
+void _set_window_exec(Client* c)
+{
+    long item;
+    long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+    if (s_pid != NULL) {
+        c->exe_name = get_name_by_pid(*s_pid);
+        XFree(s_pid);
+    } else {
+        c->exe_name = NULL;
+    }
 }
 
 void _update_window_class(Client* c)
@@ -305,7 +326,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 }
 
 
-void monitor_tasklist_and_activewindow()
+void init_task_list()
 {
     _dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     _init_atoms();
@@ -317,21 +338,12 @@ void monitor_tasklist_and_activewindow()
 
     gdk_window_add_filter(root, monitor_root_change, NULL);
 
+    g_hash_table_remove_all(_clients_table);
+
     update_task_list(GDK_WINDOW_XID(root));
 }
 
 //JS_EXPORT
-void emit_update_active_window()
-{
-    //TODO: need this?
-}
-void emit_update_task_list()
-{
-    g_hash_table_remove_all(_clients_table);
-
-    GdkWindow* root = gdk_get_default_root_window();
-    update_task_list(GDK_WINDOW_XID(root));
-}
 void set_active_window(double id)
 {
     XClientMessageEvent event;

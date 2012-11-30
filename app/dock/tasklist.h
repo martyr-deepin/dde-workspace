@@ -21,6 +21,6 @@
 #ifndef __TASKLIST_ACTIVE_WINDOW_H
 #define __TASKLIST_ACTIVE_WINDOW_H
 
-void monitor_tasklist_and_activewindow();
+void init_task_list();
 
 #endif
