@@ -137,7 +137,7 @@ compare_pos_rect = (base1, base2, pos) ->
     else
         ret = false
 
-    echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
+    #echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
     ret
 
 
@@ -240,20 +240,33 @@ init_grid_drop = ->
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
                 localStorage.setObject(path, pos)
-
-        evt.dataTransfer.dropEffect = "move"
     )
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        #echo("grid dragover #{evt.dataTransfer.dropEffect}")
-        evt.dataTransfer.dropEffect = "move"
+        
+        if evt.shiftKey == true
+            evt.dataTransfer.dropEffect = "copy"
+        else if evt.ctrlKey == true
+            evt.dataTransfer.dropEffect = "link"
+        else
+            evt.dataTransfer.dropEffect = "move"
+        
+        echo("grid dragover #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
-        #evt.dataTransfer.dropEffect = "move"
-        #echo("grid dragenter #{evt.dataTransfer.dropEffect}")
+        
+        if evt.shiftKey == true
+            evt.dataTransfer.dropEffect = "copy"
+        else if evt.ctrlKey == true
+            evt.dataTransfer.dropEffect = "link"
+        else
+            evt.dataTransfer.dropEffect = "move"
+        
+        echo("grid dragenter #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
+        return
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
@@ -360,14 +373,12 @@ delete_selected_items = ->
     DCore.Desktop.item_delete(tmp)
 
 
-gird_left_click = (env) ->
-    #echo("gird_left_click")
+gird_left_mousedown = (env) ->
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
 
 
 grid_right_click = (env) ->
-    #echo("grid_right_click")
     if env.ctrlKey == false and env.shiftKey == false
         cancel_all_selected_stats()
 
@@ -379,7 +390,7 @@ create_item_grid = ->
     document.body.appendChild(div_grid)
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     init_grid_drop()
-    div_grid.addEventListener("click", gird_left_click)
+    div_grid.addEventListener("mousedown", gird_left_mousedown)
     div_grid.addEventListener("contextmenu", grid_right_click)
     div_grid.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
@@ -422,8 +433,8 @@ class Mouse_Select_Area_box
 
     mousemove_event : (env) =>
         env.preventDefault()
-        sl = Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x)
-        st = Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y)
+        sl = Math.min(Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x), s_offset_x + s_width)
+        st = Math.min(Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height - st)
         @element.style.left = "#{sl}px"
@@ -448,8 +459,6 @@ class Mouse_Select_Area_box
                 item_pos = load_position(w.path)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
-
-            echo effect_item.length
 
             temp_list = effect_item.concat()
             sel_list = @last_effect_item.concat()
