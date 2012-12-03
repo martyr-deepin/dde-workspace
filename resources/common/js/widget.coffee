@@ -81,7 +81,13 @@ class Widget extends Module
         for k,v of this.constructor.prototype when k.search("do_") == 0
             key = k.substr(3)
             if key in _events
-                @element.addEventListener(key, v.bind(this))
+                if key == "contextmenu"
+                    f_menu = v.bind(this)
+                    @element.addEventListener(key, =>
+                        @element.contextMenu = build_menu(f_menu())
+                    )
+                else
+                    @element.addEventListener(key, v.bind(this))
             else
                 echo "found the do_ prefix but the name #{key} is not an dom events"
 
