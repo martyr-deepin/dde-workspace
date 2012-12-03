@@ -51,3 +51,8 @@ void run_terminal()
     g_free(path);
     free(full_param);
 }
+
+void run_deepin_settings(const char* mod)
+{
+    run_command1("deepin-system-settings", mod);
+}

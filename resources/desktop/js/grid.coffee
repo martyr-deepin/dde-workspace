@@ -61,8 +61,8 @@ gm = build_menu([
     ],
     [3, _("open terminal here")],
     [4, _("paste")],
-    [5, _("wallpaper")],
-    [6, _("Desktop Settings")]
+    [5, _("Personal")],
+    [6, _("Display Settings")]
 ])
 
 # calc the best row and col number for desktop
@@ -386,7 +386,10 @@ grid_right_click = (env) ->
 grid_do_itemselected = (env) ->
     switch env.id
         when 3 then DCore.Desktop.run_terminal()
+        when 5 then DCore.Desktop.run_deepin_settings("personal")
+        when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function"
+
 
 sel = null
 create_item_grid = ->

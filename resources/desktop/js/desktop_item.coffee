@@ -148,9 +148,8 @@ class Item extends Widget
 
 
     do_contextmenu : (env) =>
-        env.stopPropagation()
+#        env.stopPropagation()
         if @selected == false then update_selected_stats(this, env)
-        true
 
 
     item_update : (icon) =>
