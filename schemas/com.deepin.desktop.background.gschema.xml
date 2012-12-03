@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-  <schema path="/com.deepin/desktop/background/" id="com.deepin.desktop.background" gettext-domain="DDE">
+    <schema path="/com/deepin/desktop/background/" id="com.deepin.desktop.background" gettext-domain="DDE">
     <key type="b" name="active">
       <default>true</default>
       <summary>Activation of this plugin</summary>
