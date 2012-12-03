@@ -244,27 +244,27 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        
+
         if evt.shiftKey == true
             evt.dataTransfer.dropEffect = "copy"
         else if evt.ctrlKey == true
             evt.dataTransfer.dropEffect = "link"
         else
             evt.dataTransfer.dropEffect = "move"
-        
+
         echo("grid dragover #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
-        
+
         if evt.shiftKey == true
             evt.dataTransfer.dropEffect = "copy"
         else if evt.ctrlKey == true
             evt.dataTransfer.dropEffect = "link"
         else
             evt.dataTransfer.dropEffect = "move"
-        
+
         echo("grid dragenter #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
         return
     )
@@ -383,6 +383,11 @@ grid_right_click = (env) ->
         cancel_all_selected_stats()
 
 
+grid_do_itemselected = (env) ->
+    switch env.id
+        when 3 then DCore.Desktop.run_terminal()
+        else echo "not implemented function"
+
 sel = null
 create_item_grid = ->
     div_grid = document.createElement("div")
@@ -392,6 +397,7 @@ create_item_grid = ->
     init_grid_drop()
     div_grid.addEventListener("mousedown", gird_left_mousedown)
     div_grid.addEventListener("contextmenu", grid_right_click)
+    div_grid.addEventListener("itemselected", grid_do_itemselected)
     div_grid.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
