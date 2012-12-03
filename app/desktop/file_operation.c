@@ -1,6 +1,9 @@
 #include <gtk/gtk.h>
+#include <stdlib.h>
+#include <string.h>
 #include "i18n.h"
 #include "utils.h"
+#include "xdg_misc.h"
 
 void item_rename(const char* old, const char* new)
 {
@@ -37,4 +40,14 @@ void item_delete(const char** target, int n)
     gtk_widget_destroy (dialog);
 
     //run_command2("rm", target);
+}
+
+void run_terminal()
+{
+    char* path = get_desktop_dir(0);
+    char* full_param = (char*)malloc(strlen(path) + 24);
+    sprintf(full_param, "--working-directory=%s", path);
+    run_command1("gnome-terminal", full_param);
+    g_free(path);
+    free(full_param);
 }
