@@ -22,36 +22,6 @@
 MAX_ITEM_TITLE = 20
 DLCLICK_INTERVAL = 200
 
-m = build_menu([
-    [1, _("Open")],
-    [_("Open with"), [
-            [35, "emaces"],
-            [36, "geany"],
-            [37, "vim"]
-        ]
-    ],
-    [],
-    [2, _("cut")],
-    [3, _("copy")],
-    [],
-    [4, _("create link")],
-    [5, _("Rename")],
-    [_("copy to"), [
-            [41, _("another desktop")],
-            [42, _("home")],
-            [43, _("desktop")]
-        ]
-    ],
-    [_("move to"), [
-            [51, _("another desktop")],
-            [52, _("home")],
-            [53, _("desktop")]
-        ]
-    ],
-    [6, _("Delete")],
-    [],
-    [7, _("Properties")]
-])
 
 shorten_text = (str, n) ->
     r = /[^\x00-\xff]/g
@@ -102,8 +72,6 @@ class Item extends Widget
         # search the div for store the name
         @item_name = i for i in el.childNodes when i.className == "item_name"
 
-        @element.contextMenu = m
-
 
     do_mouseover : (env) =>
         @show_hover_box()
@@ -147,9 +115,39 @@ class Item extends Widget
         @item_exec()
 
 
-    do_contextmenu : (env) =>
+    do_contextmenu : () ->
 #        env.stopPropagation()
-        if @selected == false then update_selected_stats(this, env)
+#        if @selected == false then update_selected_stats(this, env)
+        [
+            [1, _("Open")],
+#            [_("Open with"), [
+#                    [35, "emaces"],
+#                    [36, "geany"],
+#                    [37, "vim"]
+#                ]
+#            ],
+            [],
+            [2, _("cut")],
+            [3, _("copy")],
+            [],
+#            [4, _("create link")],
+            [5, _("Rename")],
+#            [_("copy to"), [
+#                    [41, _("another desktop")],
+#                    [42, _("home")],
+#                    [43, _("desktop")]
+#                ]
+#           ],
+#            [_("move to"), [
+#                    [51, _("another desktop")],
+#                    [52, _("home")],
+#                    [53, _("desktop")]
+#                ]
+#            ],
+            [6, _("Delete")],
+            [],
+            [7, _("Properties")]
+        ]
 
 
     item_update : (icon) =>
@@ -338,12 +336,11 @@ class DesktopEntry extends Item
 
 
     do_itemselected : (env) =>
-        #echo "menu clicked:id=#{env.id} title=#{env.title}"
         switch env.id
             when 1 then @item_exec()
             when 5 then @item_rename()
-            when 6
-                delete_selected_items()
+            when 6 then delete_selected_items()
+            else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
 class Folder extends DesktopEntry
