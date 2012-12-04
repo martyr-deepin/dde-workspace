@@ -165,9 +165,9 @@ detect_occupy = (info) ->
 
 
 pixel_to_coord = (x, y) ->
-    index_x = Math.floor(x / grid_item_width)
-    index_y = Math.floor(y / grid_item_height)
-    #echo "#{index_x},#{index_y}"
+    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
+    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
+    echo "#{index_x},#{index_y}"
     return [index_x, index_y]
 
 
@@ -213,23 +213,19 @@ move_to_position = (widget, info) ->
             set_occupy(info)
 
 
-draw_grid = (ctx) ->
-    grid = document.querySelector("#grid")
-    ctx = grid.getContext('2d')
-    ctx.fillStyle = 'rgba(0, 100, 0, 0.8)'
-    for i in [0..cols] by 1
-        for j in [0..rows] by 1
-            if o_table[i][j]?
-                ctx.fillRect(i*i_width, j*i_height, i_width-5, i_height-5)
-            else
-                ctx.clearRect(i*i_width, j*i_height, i_width-5, i_height-5)
+sort_item_by_name = ->
+    item_ordered_list = all_item.concat()
+    item_ordered_list.sort()
 
+    for i in [0 ... cols]
+        for j in [0 .. rows]
+            o_table[i][j] = null
 
-sort_item = ->
-    for item, i in $(".item")
-        x = Math.floor (i / rows)
-        y = Math.ceil (i % rows)
-        echo "sort :(#{i}, #{x}, #{y})"
+    for i in item_ordered_list
+        w = Widget.look_up(i)
+        if w?
+            discard_position(w.id)
+            move_to_anywhere(w)
 
 
 init_grid_drop = ->
@@ -385,6 +381,7 @@ grid_right_click = (env) ->
 
 grid_do_itemselected = (env) ->
     switch env.id
+        when 31 then sort_item_by_name()
         when 3 then DCore.Desktop.run_terminal()
         when 5 then DCore.Desktop.run_deepin_settings("personal")
         when 6 then DCore.Desktop.run_deepin_settings("display")
