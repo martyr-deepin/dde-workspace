@@ -23,6 +23,8 @@
 #include <JavaScriptCore/JavaScript.h>
 #include <glib.h>
 
+#define JS_EXPORT_API
+
 typedef struct JSData {
     JSContextRef ctx;
     JSValueRef* exception;

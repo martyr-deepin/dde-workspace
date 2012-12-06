@@ -439,9 +439,14 @@ class JSCode(Params):
         return "gchar* c_return = "
     def out_after(self):
         return """
-    JSValueRef r = json_from_cstr(context, c_return);
-    g_free(c_return);
-    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    JSValueRef r = NULL;
+    if (c_return == NULL) {
+        r = JSValueMakeNull(context);
+    } else {
+        r = json_from_cstr(context, c_return);
+        g_free(c_return);
+        JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    }
     """
 
 class CJSCode(JSCode):
@@ -451,8 +456,13 @@ class CJSCode(JSCode):
         return "const gchar* c_return = "
     def out_after(self):
         return """
-    JSValueRef r = json_from_cstr(context, c_return);
-    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    JSValueRef r = NULL;
+    if (c_return == NULL) {
+        r = JSValueMakeNull(context);
+    } else {
+        r = json_from_cstr(context, c_return);
+        JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    }
     """
 
 class JSValueRef(Params):
