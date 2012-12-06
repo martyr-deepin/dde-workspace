@@ -22,12 +22,12 @@
       <description>The unit is second, if less or equal to zero, do not change the background; if more than 0, change the background after background-duration time</description>
     </key>
     <key type="i" name="cross-fade-manual-interval">
-      <default>50</default>
+      <default>1000</default>
       <summary>Manual switch two backgrounds duration</summary>
       <description>The unit is millisecond, two backgrounds switching duration</description>
     </key>
     <key type="i" name="cross-fade-auto-interval">
-      <default>300</default>
+      <default>10000</default>
       <summary>Auto change background animation two frames duration</summary>
       <description>The unit is millisecond, change background animation two frames duration</description>
     </key>
