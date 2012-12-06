@@ -31,6 +31,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 add_subdirectory(lib)
 add_subdirectory(app)
 add_subdirectory(po)
+add_subdirectory(test)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/schemas
