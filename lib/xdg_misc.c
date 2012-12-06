@@ -703,17 +703,14 @@ gboolean change_desktop_entry_name(const char* path, const char* name)
 
         gsize size;
         gchar* content = g_key_file_to_data(de, &size, NULL);
-        g_key_file_free(de);
-
-        FILE* f = fopen(path, "w");
-        if (f == NULL) {
+        if (write_to_file(path, content, size)) {
+            g_key_file_free(de);
+            g_free(content);
+            return TRUE;
+        } else {
+            g_key_file_free(de);
             g_free(content);
             return FALSE;
         }
-
-        fwrite(content, sizeof(char), size, f);
-        fclose(f);
-        g_free(content);
-        return TRUE;
     }
 }
