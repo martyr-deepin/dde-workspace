@@ -83,7 +83,8 @@ class Widget extends Module
             if key in _events
                 if key == "contextmenu"
                     f_menu = v.bind(this)
-                    @element.addEventListener(key, =>
+                    @element.addEventListener(key, (e) =>
+                        e.stopPropagation()
                         @element.contextMenu = build_menu(f_menu())
                     )
                 else

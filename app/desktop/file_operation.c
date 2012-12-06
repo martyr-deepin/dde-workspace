@@ -45,9 +45,13 @@ void item_delete(const char** target, int n)
 void run_terminal()
 {
     char* path = get_desktop_dir(0);
-    char* full_param = (char*)malloc(strlen(path) + 24);
-    sprintf(full_param, "--working-directory=%s", path);
+    char* full_param = g_strdup_printf("--working-directory=%s", path);
     run_command1("gnome-terminal", full_param);
     g_free(path);
-    free(full_param);
+    g_free(full_param);
+}
+
+void run_deepin_settings(const char* mod)
+{
+    run_command1("deepin-system-settings", mod);
 }
