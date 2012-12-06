@@ -44,7 +44,8 @@ class AppList extends Widget
     do_drop: (e)->
         indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
-        DCore.Dock.request_dock(file)
+        if file.length > 9  # strlen("x.desktop") == 9
+            DCore.Dock.request_dock(file.trim())
 
     show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list")
@@ -78,6 +79,7 @@ class AppItem extends Widget
         super
         @element.draggable=true
         app_list.append(@)
+
     do_dragstart: (e)->
         Preview_container.remove_all()
         e.dataTransfer.setData("item-id", @element.id)
@@ -96,8 +98,11 @@ class AppItem extends Widget
         e.stopPropagation()
 
 
+
+
+
 class Launcher extends AppItem
-    constructor: (@id, @icon, @exec, @exe_name)->
+    constructor: (@id, @icon, @exec, @app_id)->
         super
         @element.innerHTML = "
         <img src=#{@icon}>
@@ -106,8 +111,16 @@ class Launcher extends AppItem
         DCore.run_command(@exec)
         @destroy()
 
+    do_itemselected: (e)->
+        alert e.title
+    do_contextmenu: (e)->
+        [
+            [1, _("Run")],
+            [2, _("RemoveMe")],
+        ]
+
 class ClientGroup extends AppItem
-    constructor: (@id, @exe_name)->
+    constructor: (@id, @app_id)->
         super
         @clients = []
 
@@ -119,7 +132,7 @@ class ClientGroup extends AppItem
         @count.setAttribute("class", "ClientGroupNumber")
 
     remove_launcher: ->
-        echo "echo try remove launcher #{@exe_name}"
+        echo "echo try remove launcher #{@app_id}"
 
     add_client: (id, icon, title)->
         if @clients.indexOf(id) == -1
@@ -154,15 +167,23 @@ class ClientGroup extends AppItem
         @element.appendChild(@count)
 
     destroy: ->
-        #info = DCore.Dock.launcher_info(@exe_name)
-        info = launcher_info(@exe_name)
-        if info
-            l = Widget.look_up(info.id)
-            if not l
-                l = new Launcher(info.EntryPath, info.Icon, info.Exec)
-            #swap_element(@, l)
-
+        DCore.Dock.try_post_launcher_info(@app_id)
+        #info = DCore.Dock.launcher_info(@app_id)
+        #echo info
+        #if info
+            #l = Widget.look_up(info.EntryPath)
+            #if not l
+                #l = new Launcher(info.EntryPath, info.Icon, info.Exec)
+            ##swap_element(@, l)
         super
+
+    do_contextmenu: (e)->
+        [
+            [1, _("OpenNew")],
+            [2, _("DockMe")],
+        ]
+    do_itemselected: (e)->
+        alert(@app_id)
 
 
 
@@ -175,26 +196,20 @@ DCore.signal_connect("active_window_changed", (info)->
     active_group.active()
 )
 
-_infos = {}
-launcher_info = (k)->
-    _infos[k]
 DCore.signal_connect("launcher_added", (info) ->
-    e_n = info.Exec.split("/").pop()
-    if _infos[e_n]
-        return
-    _infos[e_n] = info
-    c = Widget.look_up(info.id)
+    c = Widget.look_up(info.Id)
     if c
         echo "have.."
     else
-        new Launcher(info.EntryPath, info.Icon, info.Exec)
+        new Launcher(info.Id, info.Icon, info.Exec)
 )
+
 
 DCore.signal_connect("task_added", (info) ->
     leader = Widget.look_up("le_" + info.clss)
 
     if not leader
-        leader = new ClientGroup("le_"+info.clss, info.exe_name)
+        leader = new ClientGroup("le_"+info.clss, info.app_id)
 
     if info.icon == "null"
         alert("aaa")
@@ -206,7 +221,7 @@ DCore.signal_connect("task_added", (info) ->
         #leader = Widget.look_up("le_"+info.clss)
         #if not leader
             #leader = new ClientGroup("le_"+info.clss)
-        #new Client(info.id, info.icon, info.title, info.exe_name, leader)
+        #new Client(info.id, info.icon, info.title, info.app_id, leader)
 )
 
 DCore.signal_connect("task_removed", (info) ->
