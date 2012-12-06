@@ -22,10 +22,11 @@
 #ifndef _DOCK_CONFIG_H__
 #define _DOCK_CONFIG_H__
 
+#define APP_NAME "dock"
+
 struct _DockConfig {
     gboolean show;
     guint32 color;
-    gchar** apps;
     int position; //hasn't use
 };
 

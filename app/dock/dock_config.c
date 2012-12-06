@@ -20,12 +20,13 @@
  **/
 #include <gtk/gtk.h>
 #include "dock_config.h"
+
 #define SCHEMA_ID "com.deepin.dde.dock"
+
 
 struct _GlobalData GD;
 void update_dock_show();
 void update_dock_color();
-void update_dock_apps();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
@@ -35,10 +36,6 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data)
     } else if (g_strcmp0(key, "color") == 0) {
         GD.config.color = g_settings_get_uint(s, key);
         update_dock_color();
-    } else if (g_strcmp0(key, "apps") == 0) {
-        g_strfreev(GD.config.apps);
-        GD.config.apps = g_settings_get_strv(s, key);
-        update_dock_apps();
     }
 }
 
@@ -46,7 +43,6 @@ void init_config()
 {
     GD.config.show = TRUE;
     GD.config.color = 0;
-    GD.config.apps = NULL;
     GD.is_webview_loaded = FALSE;
 
     GSettings* s = g_settings_new(SCHEMA_ID);

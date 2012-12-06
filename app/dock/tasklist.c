@@ -62,7 +62,7 @@ typedef struct {
     char* icon;
     char* title;
     char* clss;
-    char* exe_name;
+    char* app_id; /*current is executabe file's name*/
     int state;
     Window window;
     GdkWindow* gdkwindow;
@@ -101,8 +101,8 @@ Client* create_client_from_window(Window w)
 void _update_client_info(Client *c)
 {
     js_post_message("task_added", 
-            "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\", \"exe_name\":\"%s\"}",
-            (int)c->window, c->title, c->clss, c->icon, c->exe_name);
+            "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\", \"app_id\":\"%s\"}",
+            (int)c->window, c->title, c->clss, c->icon, c->app_id);
 }
 void active_window_changed(Display* dsp, Window w)
 {
@@ -122,7 +122,7 @@ void client_free(Client* c)
     g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
-    g_free(c->exe_name);
+    g_free(c->app_id);
     g_free(c);
 }
 
@@ -252,10 +252,10 @@ void _set_window_exec(Client* c)
     long item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
     if (s_pid != NULL) {
-        c->exe_name = get_name_by_pid(*s_pid);
+        c->app_id = get_name_by_pid(*s_pid);
         XFree(s_pid);
     } else {
-        c->exe_name = NULL;
+        c->app_id = NULL;
     }
 }
 

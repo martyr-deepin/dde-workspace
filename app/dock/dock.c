@@ -174,6 +174,7 @@ void emit_webview_ok()
         init_config();
         tray_init(container);
         init_task_list();
+        init_launchers();
     }
     GdkWindow* root = gdk_get_default_root_window();
     update_task_list(GDK_WINDOW_XID(root));
