@@ -26,6 +26,7 @@
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
 
 char* json_escape (const char *source);
+char* json_escape_with_swap (char **source);
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
@@ -35,5 +36,11 @@ void run_command(const char* cmd);
 void run_command2(const char* cmd, const char* p1, const char* p2);
 void run_command1(const char* cmd, const char* p1);
 char* get_name_by_pid(int pid);
+
+gboolean write_to_file(const char* path, const char* content, size_t size/* if 0 will use strlen(content)*/);
+
+GKeyFile* load_app_config(const char* name);
+
+void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
 
 #endif
