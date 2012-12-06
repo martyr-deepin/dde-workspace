@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-13 17:07+0800\n"
+"POT-Creation-Date: 2012-11-22 16:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,3 +29,98 @@ msgstr "下午"
 #: ../resources/dock/js/main.coffee:49
 msgid "AM"
 msgstr "上午"
+
+#: ../resources/desktop/js/grid.coffee:52
+msgid "arrange icons"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:53
+msgid "by name"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:54
+msgid "by last modified time"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:57
+msgid "New"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:58
+msgid "folder"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:59
+msgid "text file"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:62
+msgid "open terminal here"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:63
+msgid "paste"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:64
+msgid "wallpaper"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:65
+msgid "Desktop Settings"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:26
+msgid "Open"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:27
+msgid "Open with"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:34
+msgid "cut"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:35
+msgid "copy"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:37
+msgid "create link"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:38
+msgid "Rename"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:39
+msgid "copy to"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:40
+#: ../resources/desktop/js/desktop_item.coffee:46
+msgid "another desktop"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:41
+#: ../resources/desktop/js/desktop_item.coffee:47
+msgid "home"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:42
+#: ../resources/desktop/js/desktop_item.coffee:48
+msgid "desktop"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:45
+msgid "move to"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:51
+msgid "Delete"
+msgstr ""
+
+#: ../resources/desktop/js/desktop_item.coffee:53
+msgid "Properties"
+msgstr ""
