@@ -11,10 +11,10 @@
       <summary>Priority to use for this plugin</summary>
       <description>Priority to use for this plugin in gnome-settings-daemon startup queue</description>
     </key>
-    <key type="s" name="picture-uri">
+    <key type="s" name="picture-uris">
       <default>'file:///usr/share/backgrounds/default_background.jpg'</default>
-      <summary>Picture URI</summary>
-      <description>URI to use for the background images. Not that the backend only supports local (file://) URIs.</description>
+      <summary>Picture URIs</summary>
+      <description>URIs to use for the background images. Not that the backend only supports local (file://) URIs.</description>
     </key>
     <key type="i" name="background-duration">
       <default>0</default>
