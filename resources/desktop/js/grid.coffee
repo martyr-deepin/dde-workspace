@@ -132,13 +132,14 @@ compare_pos_left_top = (base, pos) ->
 
 
 compare_pos_rect = (base1, base2, pos) ->
-    if base1.x <= pos.x <= base2.x and base1.y <= pos.y <= base2.y
-        ret = true
+    top_left = Math.min(base1.x, base2.x)
+    top_right = Math.max(base1.x, base2.x)
+    bottom_left = Math.min(base1.y, base2.y)
+    bottom_right = Math.max(base1.y, base2.y)
+    if top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
+        true
     else
-        ret = false
-
-    #echo "x:#{base1.x}-#{base2.x} y:#{base1.y}-#{base2.y} pos:#{pos.x},#{pos.y} #{ret}"
-    ret
+        false
 
 
 clear_occupy = (info) ->
@@ -383,7 +384,7 @@ grid_do_itemselected = (env) ->
     switch env.id
         when 31 then sort_item_by_name()
         when 3 then DCore.Desktop.run_terminal()
-        when 5 then DCore.Desktop.run_deepin_settings("personal")
+        when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function"
 
