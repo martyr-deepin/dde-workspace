@@ -132,7 +132,7 @@ class ClientGroup extends AppItem
         @count.setAttribute("class", "ClientGroupNumber")
 
     remove_launcher: ->
-        echo "echo try remove launcher #{@app_id}"
+        Widget.look_up(@app_id)?.destroy()
 
     add_client: (id, icon, title)->
         if @clients.indexOf(id) == -1
@@ -168,13 +168,6 @@ class ClientGroup extends AppItem
 
     destroy: ->
         DCore.Dock.try_post_launcher_info(@app_id)
-        #info = DCore.Dock.launcher_info(@app_id)
-        #echo info
-        #if info
-            #l = Widget.look_up(info.EntryPath)
-            #if not l
-                #l = new Launcher(info.EntryPath, info.Icon, info.Exec)
-            ##swap_element(@, l)
         super
 
     do_contextmenu: (e)->

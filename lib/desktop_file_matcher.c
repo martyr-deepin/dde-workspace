@@ -1,3 +1,23 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *
+ * Author:      snyh <snyh@snyh.org>
+ * Maintainer:  snyh <snyh@snyh.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include "desktop_file_matcher.h"
 #include <glib.h>
 
@@ -100,7 +120,7 @@ char* find_desktop_path_in_white_list(char* name, char* args)
     }
 }
 
-char* get_desktop_file_name_by_pid(int pid)
+char* get_app_id_by_pid(int pid)
 {
     if (!is_init) {
         _init();
@@ -115,7 +135,7 @@ char* get_desktop_file_name_by_pid(int pid)
     if (g_file_get_contents(path, &cmd_line, &size, NULL)) {
         GPtrArray* tmp = g_ptr_array_new();
         int pre_pos = 0;
-        for (gsize i=0; i<size-1; i++) {
+        for (gsize i=0; i<size; i++) {
             if (cmd_line[i] == '\0') {
                 g_ptr_array_add(tmp, cmd_line+pre_pos);
                 pre_pos = i+1;

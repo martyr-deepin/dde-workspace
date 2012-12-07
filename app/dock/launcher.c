@@ -23,7 +23,7 @@
 #include "utils.h"
 #include "launcher.h"
 #include "dock_config.h"
-#include "set.h"
+#include "desktop_file_matcher.h"
 #include <string.h>
 
 #define APPS_INI "dock/apps.ini"
@@ -58,17 +58,25 @@ void post_app_info(const char* app_id)
 static
 char* get_app_id(ApplicationEntry* entry)
 {
-    char* exec = g_strdup(entry->exec);
-    for (int i=0; i<strlen(exec); i++) {
-        if (exec[i] == ' ') {
-            exec[i] = '\0';
-            break;
+    char* basename = g_path_get_basename(entry->base.entry_path);
+    basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
+    if (is_app_in_white_list(basename)) {
+        return basename;
+    } else {
+        g_free(basename);
+
+        char* exec = g_strdup(entry->exec);
+        for (int i=0; i<strlen(exec); i++) {
+            if (exec[i] == ' ') {
+                exec[i] = '\0';
+                break;
+            }
         }
+        char* exec_name = g_path_get_basename(exec);
+        g_free(exec);
+
+        return exec_name;
     }
-    char* exec_name = g_path_get_basename(exec);
-    g_free(exec);
-    
-    return exec_name;
 }
 
 void update_dock_apps()

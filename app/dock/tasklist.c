@@ -25,6 +25,7 @@
 #include "X_misc.h"
 #include "pixbuf.h"
 #include "utils.h"
+#include "desktop_file_matcher.h"
 
 Atom ATOM_CLIENT_LIST;
 Atom ATOM_ACTIVE_WINDOW;
@@ -252,7 +253,7 @@ void _set_window_exec(Client* c)
     long item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
     if (s_pid != NULL) {
-        c->app_id = get_name_by_pid(*s_pid);
+        c->app_id = get_app_id_by_pid(*s_pid);
         XFree(s_pid);
     } else {
         c->app_id = NULL;
