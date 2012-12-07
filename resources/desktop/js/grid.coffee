@@ -383,7 +383,7 @@ grid_do_itemselected = (env) ->
     switch env.id
         when 31 then sort_item_by_name()
         when 3 then DCore.Desktop.run_terminal()
-        when 5 then DCore.Desktop.run_deepin_settings("personal")
+        when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function"
 
