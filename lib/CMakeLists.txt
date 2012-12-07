@@ -12,7 +12,7 @@ AUX_SOURCE_DIRECTORY(jsc_extension/gen/ JSC_GEN)
 
 
 
-set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c set.c
+set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c set.c desktop_file_matcher.c
     ${JSC} ${JSC_GEN})
 
 add_library(dcom ${SRC_LIST})
