@@ -50,6 +50,11 @@ JSValueRef jsvalue_from_cstr(JSContextRef, const char* str);
 JSValueRef json_from_cstr(JSContextRef, const char* data);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
+
+void* jsvalue_to_object(JSContextRef, JSValueRef);
+typedef void (*UnRefFunc)(void*);
+JSObjectRef create_native_object(JSContextRef ctx, void* obj, UnRefFunc unref);
+
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
 
 void js_post_message(const char* name, const char* format, ...);

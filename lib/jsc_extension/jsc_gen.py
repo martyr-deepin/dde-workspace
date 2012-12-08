@@ -51,6 +51,11 @@ class Params:
     def is_array(self):
         return False
 
+    def out_before(self):
+        return ""
+    def out_after(self):
+        return ""
+
 class Array(Params):
     temp = """
     %(type)s* p_%(pos)d_a = NULL;
@@ -71,8 +76,6 @@ class Array(Params):
 
     }
 """
-    def __init__(self, *args):
-        Params.__init__(self, *args)
     def is_array(self):
         return True
 
@@ -88,14 +91,27 @@ JSValueRef %(set_func)s (JSContextRef ctx, JSObjectRef obj,
 """
         return tmp
 
+class Object(Params):
+    def type(self):
+        return "void* "
+    def out_before(self, name=None, desc=None, native_type=None, unref=None):
+        Params.__init__(self, name, desc)
+        self.unref = unref or "g_object_unref"
+        return " void* ret = "
+    def return_value(self):
+        return "return create_native_object(context, ret, %s);" % self.unref
+
+    def in_before(self):
+        return """
+    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
+    void* p_%(pos)d = jsvalue_to_object(context, arguments[%(pos)d]);
+""" % { "pos": self.position }
+
 
 class Number(Params):
     temp = """
     double p_%(pos)d = JSValueToNumber(context, arguments[%(pos)d], NULL);
 """
-    def __init__(self, *args):
-        Params.__init__(self, *args)
-
     def in_before(self):
         return Number.temp % { "pos": self.position }
     def type(self):
@@ -103,14 +119,10 @@ class Number(Params):
 
     def out_before(self):
         return "double ret = "
-    def out_after(self):
-        return ""
     def return_value(self):
         return "return JSValueMakeNumber(context, ret);"
 
 class Boolean(Params):
-    def __init__(self, *args):
-        Params.__init__(self, *args)
     def in_before(self):
         return """
     bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);
@@ -118,8 +130,6 @@ class Boolean(Params):
     def type(self):
         return "bool "
 class ABoolean(Array):
-    def __init__(self, *args):
-        Array.__init__(self, *args)
     def type(self):
         return "gboolean*, int"
     def in_before(self):
@@ -128,8 +138,6 @@ class ABoolean(Array):
         return "g_free(p_%(pos)d_a);" % {'pos': self.position}
 
 class ANumber(Array):
-    def __init__(self, *args):
-        Array.__init__(self, *args)
     def type(self):
         return "double*, int"
     def in_before(self):
@@ -137,10 +145,8 @@ class ANumber(Array):
     def in_after(self):
         return "g_free(p_%(pos)d_a);" % {'pos': self.position}
 
-class AString(Array):
-    def __init__(self, *args):
-        Array.__init__(self, *args)
 
+class AString(Array):
     def type(self):
         return "char **, int"
 
@@ -157,9 +163,6 @@ class AString(Array):
         return temp_clear % {'pos': self.position}
 
 class String(Params):
-    def __init__(self, *args):
-        Params.__init__(self, *args)
-
     def type(self):
         return "char * "
 
@@ -309,6 +312,7 @@ class Class:
 #include <JavaScriptCore/JSStringRef.h>
 #include "jsextension.h"
 #include <glib.h>
+#include <glib-object.h>
 
 extern void* get_global_webview();
 
@@ -402,30 +406,13 @@ JSClassRef get_%(name)s_class()
 """
         return temp % {"name" : self.name, "up_class" : self.up_class.name}
 
-class Return:
-    def __init__(self, t):
-        if hasattr(t, "__class__"):
-            self.type = t
-        else:
-            self.type = t()
-    def str(self):
-        return self.type.return_value()
-    def str_out_before(self):
-        return self.type.out_before()
-    def str_out_after(self):
-        return self.type.out_after()
-
-class Null:
+class Null(Params):
     def __call__(self):
         return self
     def type(self):
         return "void"
     def return_value(self):
         return "return JSValueMakeNull(context);"
-    def out_before(self):
-        return ""
-    def out_after(self):
-        return ""
 
 class JSCode(Params):
     def return_value(self):
@@ -466,8 +453,6 @@ class CJSCode(JSCode):
     """
 
 class JSValueRef(Params):
-    def __init__(self, *args):
-        Params.__init__(self, *args)
     def type(self):
         return "JSValueRef "
     def in_before(self):
