@@ -31,13 +31,18 @@
 
 #include "category.h"
 
-
 #define APPEND_STRING_WITH_ESCAPE(str, format, content) do { \
     char* escaped = json_escape(content); \
     g_string_append_printf(str, format, escaped); \
     g_free(escaped); \
 } while (0) 
 
+#define APPEND_JSON(str, k,v) g_string_append_printf(str, "\"%s\":\"%s\",\n", k, v)
+#define APPEND_JSON_WITH_ESCAPE(str, k, v) do { \
+    char* escaped = json_escape(v); \
+    APPEND_JSON(str, k, escaped); \
+    g_free(escaped); \
+} while (0) 
 
 static const char* GROUP = "Desktop Entry";
 static char DE_NAME[100] = "DEEPIN";
@@ -215,33 +220,13 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
         desktop_entry_free(entry);
         return NULL;
     }
-    entry->generic_name = g_key_file_get_locale_string(de, GROUP, "GenericName", NULL, NULL);
-    entry->comment = g_key_file_get_locale_string(de, GROUP, "Comment", NULL, NULL);
     entry->icon = g_key_file_get_locale_string(de, GROUP, "Icon", NULL, NULL);
-    entry->hidden = g_key_file_get_boolean(de, GROUP, "Hidden", NULL);
 
-    entry->only_show_in = g_key_file_get_string_list(de, GROUP, "OnlyShowIn", NULL, NULL);
-    entry->not_show_in = g_key_file_get_string_list(de, GROUP, "NotShowIn", NULL, NULL);
-    if (entry->only_show_in != NULL) {
-        if (!find_in(entry->only_show_in, DE_NAME)) {
-            desktop_entry_free(entry);
-            entry = NULL;
-            return entry;
-        }
-    } else if (entry->not_show_in != NULL) {
-        if (find_in(entry->not_show_in, DE_NAME)) {
-            desktop_entry_free(entry);
-            entry = NULL;
-            return entry;
-        }
-    }
     return entry;
 }
 
 BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
 {
-    entry->try_exec = g_key_file_get_string(de, GROUP, "TryExec", NULL);
-
     entry->exec = g_key_file_get_string(de, GROUP, "Exec", NULL);
 
     if (entry->exec == NULL) {
@@ -257,17 +242,11 @@ BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
             entry->exec_flag = ' ';
         }
     }
-    entry->path = g_key_file_get_string(de, GROUP, "Path", NULL);
-    entry->terminal = g_key_file_get_boolean(de, GROUP, "Terminal", NULL);
-    //TOOD direct use deepin_categories
     char** cs = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);
     if (cs != NULL) {
         entry->categories = get_deepin_categories(cs);
         g_strfreev(cs);
     }
-    entry->keywords = g_key_file_get_locale_string_list(de, GROUP, "Keywords", NULL, NULL, NULL);
-    entry->startup_notify = g_key_file_get_boolean(de, GROUP, "StartupNotify", NULL);
-    entry->startup_wmclass = g_key_file_get_string(de, GROUP, "StartupWMClass", NULL);
     return (BaseEntry*)entry;
 }
 
@@ -372,45 +351,29 @@ char* get_dir_icon(const gchar* path)
     return data;
 }
 
+
+
+char* app_info_to_json(GAppInfo* app_info)
+{
+}
+
 char* entry_info_to_json(BaseEntry* _entry) 
 {
     g_return_val_if_fail(_entry != NULL, NULL);
     GString* string = g_string_new("{\n");
     if (_entry->entry_path)
-        APPEND_STRING_WITH_ESCAPE(string, "\"EntryPath\":\"%s\",\n", _entry->entry_path);
+        APPEND_JSON_WITH_ESCAPE(string, "EntryPath", _entry->entry_path);
     if (_entry->name)
-        APPEND_STRING_WITH_ESCAPE(string, "\"Name\":\"%s\",\n", _entry->name);
-    if (_entry->generic_name)
-        APPEND_STRING_WITH_ESCAPE(string, "\"GenericName\":\"%s\",\n", _entry->generic_name);
-    if (_entry->comment)
-        APPEND_STRING_WITH_ESCAPE(string, "\"Comment\":\"%s\",\n", _entry->comment);
-
+        APPEND_JSON_WITH_ESCAPE(string, "Name", _entry->name);
     if (_entry->type)
         g_string_append_printf(string, "\"Type\":\"%d\",\n", _entry->type);
-    if (_entry->hidden)
-        g_string_append(string, "\"Hidden\":true,\n");
-
-    if (_entry->only_show_in) {
-        char* array = to_json_array(_entry->only_show_in);
-        if (array != NULL) {
-            g_string_append_printf(string, "\"OnlyShowIn\":%s,\n", array);
-            g_free(array);
-        }
-    } else if (_entry->not_show_in) {
-        char* array = to_json_array(_entry->not_show_in);
-        if (array != NULL) {
-            g_string_append_printf(string, "\"NotShowIn\":%s,\n", array);
-            g_free(array);
-        }
-    }
-
     switch (_entry->type) {
         case DirEntryType:
             {
                 g_string_append(string, "\"Type\":\"Dir\",\n");
                 char* data_uri = get_dir_icon(_entry->entry_path);
                 if (data_uri != NULL) {
-                    APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", data_uri);
+                    APPEND_JSON_WITH_ESCAPE(string, "Icon", data_uri);
                     g_free(data_uri);
                 }
                 DirectoryEntry *entry = (DirectoryEntry*) _entry;
@@ -423,7 +386,7 @@ char* entry_info_to_json(BaseEntry* _entry)
                 g_string_append(string, "\"Type\":\"File\",\n");
                 FileEntry *entry = (FileEntry*) _entry;
                 if (entry->exec) {
-                    APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+                    APPEND_JSON_WITH_ESCAPE(string, "Exec", entry->exec);
                 }
             }
             break;
@@ -432,36 +395,18 @@ char* entry_info_to_json(BaseEntry* _entry)
                 g_string_append(string, "\"Type\":\"Link\",\n");
                 LinkEntry *entry = (LinkEntry*) _entry;
                 if (entry->url)
-                    APPEND_STRING_WITH_ESCAPE(string, "\"URL\":\"%s\",\n", entry->url);
+                    APPEND_JSON_WITH_ESCAPE(string, "URL", entry->url);
             }
             break;
         case AppEntryType:
             {
                 g_string_append(string, "\"Type\":\"Application\",\n");
                 ApplicationEntry* entry = (ApplicationEntry*) _entry;
-                if (entry->try_exec)
-                    APPEND_STRING_WITH_ESCAPE(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
                 if (entry->exec) {
-                    APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+                    APPEND_JSON_WITH_ESCAPE(string, "Exec", entry->exec);
                 }
                 if (entry->exec_flag != ' ')
                     g_string_append_printf(string, "\"ExecFlag\":\"%c\",\n", entry->exec_flag);
-                if (entry->path)
-                    APPEND_STRING_WITH_ESCAPE(string, "\"Path\":\"%s\",\n", entry->path);
-                if (entry->terminal)
-                    g_string_append(string, "\"Terminal\":true,\n");
-                if (entry->actions) {
-                    char* array = to_json_array(entry->actions);
-                    if (array) {
-                        g_string_append_printf(string, "\"Actions\":%s,\n", array);
-                        g_free(array);
-                    }
-                }
-                if (entry->mime_type) {
-                    char* array = to_json_array(entry->mime_type);
-                    g_string_append_printf(string, "\"MimeType\":%s,\n", array);
-                    g_free(array);
-                }
                 if (entry->categories) {
                     char** cs = g_strsplit(entry->categories, ";", -1);
                     char* array = to_json_array(cs);
@@ -469,22 +414,13 @@ char* entry_info_to_json(BaseEntry* _entry)
                     g_free(array);
                     g_strfreev(cs);
                 }
-                if (entry->keywords) {
-                    char* array = to_json_array(entry->keywords);
-                    g_string_append_printf(string, "\"Keywords\":%s,\n", array);
-                    g_free(array);
-                }
-                if (entry->startup_notify)
-                    g_string_append(string, "\"StartupNotify\":true,\n");
-                if (entry->startup_wmclass)
-                    APPEND_STRING_WITH_ESCAPE(string, "\"StartupWMClass\":\"%s\",\n", entry->startup_wmclass);
                 break;
             }
     }
 
     char* icon_path = icon_name_to_path(_entry->icon, 48);
     if (icon_path != NULL) {
-        APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", icon_path);
+        APPEND_JSON_WITH_ESCAPE(string, "Icon", icon_path);
         g_free(icon_path);
     } else {
         g_string_append(string, "\"Icon\":\"not_found.png\",\n");
@@ -528,24 +464,13 @@ void desktop_entry_free(BaseEntry* entry)
     if (entry != NULL) {
         g_free(entry->entry_path);
         g_free(entry->name);
-        g_free(entry->generic_name);
-        g_free(entry->comment);
         g_free(entry->icon);
-        g_strfreev(entry->only_show_in);
-        g_strfreev(entry->not_show_in);
 
         switch(entry->type) {
             case AppEntryType:
                 {
-                    g_free(((ApplicationEntry*)entry)->try_exec);
                     g_free(((ApplicationEntry*)entry)->exec);
-                    g_free(((ApplicationEntry*)entry)->path); 
                     g_free(((ApplicationEntry*)entry)->categories);
-
-                    g_strfreev(((ApplicationEntry*)entry)->actions);
-                    g_strfreev(((ApplicationEntry*)entry)->mime_type); 
-                    g_strfreev(((ApplicationEntry*)entry)->keywords);
-                    g_free(((ApplicationEntry*)entry)->startup_wmclass);
                     break;
                 }
             case LinkEntryType:
