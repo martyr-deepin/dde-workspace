@@ -70,11 +70,16 @@ char* get_desktop_dir(gboolean update);
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
 
+enum EntryType {
+    AppEntryType,
+    FileEntryType,
+    DirEntryType,
+    LinkEntryType,
+};
 
 typedef struct _BaseEntry {
     char* entry_path;
-    char* type;
-    char* version;
+    enum EntryType type;
 
     char* name;  //localestring
 
@@ -162,11 +167,6 @@ typedef struct _LinkEntry {
     char* url;
 } LinkEntry;
 
-// didn't know what the "Directory" type meanings specified by xdg.
-typedef struct _XDGDirectoryEntry {
-    struct _BaseEntry base;
-} XDGDirectoryEntry;
-
 typedef struct _FileEntry {
     struct _BaseEntry base;
 
@@ -175,7 +175,6 @@ typedef struct _FileEntry {
 
 typedef struct _DirectoryEntry {
     struct _BaseEntry base;
-
     char* files;
 } DirectoryEntry;
 

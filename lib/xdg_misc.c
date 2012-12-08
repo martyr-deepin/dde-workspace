@@ -152,13 +152,13 @@ BaseEntry* parse_normal_file(const char* path)
         dir_entry = g_new0(DirectoryEntry, 1);
         entry = (BaseEntry*)dir_entry;
 
-        entry->type = g_strdup("Dir");
+        entry->type = DirEntryType;
         /*dir_entry->files = get_dir_file_list(path);*/
     } else {
         file_entry = g_new0(FileEntry, 1);
 
         entry = (BaseEntry*)file_entry;
-        entry->type = g_strdup("File");
+        entry->type = FileEntryType; 
 
         if (g_file_test(path, G_FILE_TEST_IS_EXECUTABLE)) {
             file_entry->exec = g_strdup(path);
@@ -199,18 +199,16 @@ BaseEntry* parse_base_entry(GKeyFile* de, const char* path)
 
     if (g_strcmp0(type, "Application") == 0) {
         entry = (BaseEntry*)g_new0(ApplicationEntry, 1);
+        entry->type = AppEntryType;
     } else if (g_strcmp0(type, "Link") == 0) {
         entry = (BaseEntry*)g_new0(LinkEntry, 1);
-    } else if (g_strcmp0(type, "Directory") == 0) {
-        entry = (BaseEntry*)g_new0(DirectoryEntry, 1);
+        entry->type = LinkEntryType;
     } else {
         g_warning("Not yet support the desktop entry of type : %s\n", type);
         return NULL;
     }
 
     entry->entry_path = g_strdup(path);
-    entry->type = type;
-    entry->version = g_key_file_get_value(de, GROUP, "Version", NULL);
     entry->name = g_key_file_get_locale_string(de, GROUP, "Name", NULL, NULL); 
     if (entry->name == NULL) {
         g_warning("%s must have Name field\n", path);
@@ -261,8 +259,6 @@ BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
     }
     entry->path = g_key_file_get_string(de, GROUP, "Path", NULL);
     entry->terminal = g_key_file_get_boolean(de, GROUP, "Terminal", NULL);
-    entry->actions = g_key_file_get_string_list(de, GROUP, "Actions", NULL, NULL); 
-    entry->mime_type = g_key_file_get_string_list(de, GROUP, "MimeType", NULL, NULL);
     //TOOD direct use deepin_categories
     char** cs = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);
     if (cs != NULL) {
@@ -304,14 +300,16 @@ BaseEntry* parse_desktop_entry(const char* path)
     BaseEntry* entry = parse_base_entry(de, path);
 
     if (entry != NULL) {
-        if (g_strcmp0(entry->type, "Application") == 0) {
-            parse_application_entry(de, (ApplicationEntry*)entry);
-        } else if (g_strcmp0(entry->type, "Link") == 0) {
-            parse_link_entry(de, (LinkEntry*)entry);
-        } else if (g_strcmp0(entry->type, "Directory") == 0) {
-            parse_directory_entry(de, (DirectoryEntry*)entry);
-        } else {
-            g_warning("Entry file %s with Type %s is not support\n", entry->entry_path, entry->type);
+        switch(entry->type) {
+            case AppEntryType:
+                parse_application_entry(de, (ApplicationEntry*)entry);
+                break;
+            case LinkEntryType:
+                parse_link_entry(de, (LinkEntry*)entry);
+                break;
+            case DirEntryType:
+                parse_directory_entry(de, (DirectoryEntry*)entry);
+                break;
         }
     }
 
@@ -380,10 +378,6 @@ char* entry_info_to_json(BaseEntry* _entry)
     GString* string = g_string_new("{\n");
     if (_entry->entry_path)
         APPEND_STRING_WITH_ESCAPE(string, "\"EntryPath\":\"%s\",\n", _entry->entry_path);
-    if (_entry->type)
-        APPEND_STRING_WITH_ESCAPE(string, "\"Type\":\"%s\",\n", _entry->type);
-    if (_entry->version)
-        APPEND_STRING_WITH_ESCAPE(string, "\"Version\":\"%s\",\n", _entry->version);
     if (_entry->name)
         APPEND_STRING_WITH_ESCAPE(string, "\"Name\":\"%s\",\n", _entry->name);
     if (_entry->generic_name)
@@ -391,22 +385,8 @@ char* entry_info_to_json(BaseEntry* _entry)
     if (_entry->comment)
         APPEND_STRING_WITH_ESCAPE(string, "\"Comment\":\"%s\",\n", _entry->comment);
 
-    if (g_strcmp0(_entry->type, "Dir") == 0) {
-        char* data_uri = get_dir_icon(_entry->entry_path);
-        if (data_uri != NULL) {
-            APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", data_uri);
-            g_free(data_uri);
-        }
-    } else if (_entry->icon) {
-        char* icon_path = icon_name_to_path(_entry->icon, 48);
-        if (icon_path != NULL) {
-            APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", icon_path);
-            g_free(icon_path);
-        } else {
-            g_string_append(string, "\"Icon\":\"not_found.png\",\n");
-            g_free(icon_path);
-        }
-    }
+    if (_entry->type)
+        g_string_append_printf(string, "\"Type\":\"%d\",\n", _entry->type);
     if (_entry->hidden)
         g_string_append(string, "\"Hidden\":true,\n");
 
@@ -424,62 +404,94 @@ char* entry_info_to_json(BaseEntry* _entry)
         }
     }
 
-    if (g_strcmp0(_entry->type, "Application") == 0) {
-        ApplicationEntry* entry = (ApplicationEntry*) _entry;
-        if (entry->try_exec)
-            APPEND_STRING_WITH_ESCAPE(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
-        if (entry->exec) {
-            APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
-        }
-        if (entry->exec_flag != ' ')
-            g_string_append_printf(string, "\"ExecFlag\":\"%c\",\n", entry->exec_flag);
-        if (entry->path)
-            APPEND_STRING_WITH_ESCAPE(string, "\"Path\":\"%s\",\n", entry->path);
-        if (entry->terminal)
-            g_string_append(string, "\"Terminal\":true,\n");
-        if (entry->actions) {
-            char* array = to_json_array(entry->actions);
-            if (array) {
-                g_string_append_printf(string, "\"Actions\":%s,\n", array);
-                g_free(array);
+    switch (_entry->type) {
+        case DirEntryType:
+            {
+                g_string_append(string, "\"Type\":\"Dir\",\n");
+                char* data_uri = get_dir_icon(_entry->entry_path);
+                if (data_uri != NULL) {
+                    APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", data_uri);
+                    g_free(data_uri);
+                }
+                DirectoryEntry *entry = (DirectoryEntry*) _entry;
+                if (entry->files)
+                    g_string_append_printf(string, "\"Files\":%s,\n", entry->files);
             }
-        }
-        if (entry->mime_type) {
-            char* array = to_json_array(entry->mime_type);
-            g_string_append_printf(string, "\"MimeType\":%s,\n", array);
-            g_free(array);
-        }
-        if (entry->categories) {
-            char** cs = g_strsplit(entry->categories, ";", -1);
-            char* array = to_json_array(cs);
-            g_string_append_printf(string, "\"Categories\":%s,\n", array);
-            g_free(array);
-            g_strfreev(cs);
-        }
-        if (entry->keywords) {
-            char* array = to_json_array(entry->keywords);
-            g_string_append_printf(string, "\"Keywords\":%s,\n", array);
-            g_free(array);
-        }
-        if (entry->startup_notify)
-            g_string_append(string, "\"StartupNotify\":true,\n");
-        if (entry->startup_wmclass)
-            APPEND_STRING_WITH_ESCAPE(string, "\"StartupWMClass\":\"%s\",\n", entry->startup_wmclass);
-
-    } else if (g_strcmp0(_entry->type, "Link") == 0) {
-        LinkEntry *entry = (LinkEntry*) _entry;
-        if (entry->url)
-            APPEND_STRING_WITH_ESCAPE(string, "\"URL\":\"%s\",\n", entry->url);
-    } else if (g_strcmp0(_entry->type, "File") == 0) {
-        FileEntry *entry = (FileEntry*) _entry;
-        if (entry->exec) {
-            APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
-        }
-    } else if (g_strcmp0(_entry->type, "Dir") == 0) {
-        DirectoryEntry *entry = (DirectoryEntry*) _entry;
-        if (entry->files)
-            g_string_append_printf(string, "\"Files\":%s,\n", entry->files);
+            break;
+        case FileEntryType:
+            {
+                g_string_append(string, "\"Type\":\"File\",\n");
+                FileEntry *entry = (FileEntry*) _entry;
+                if (entry->exec) {
+                    APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+                }
+            }
+            break;
+        case LinkEntryType:
+            {
+                g_string_append(string, "\"Type\":\"Link\",\n");
+                LinkEntry *entry = (LinkEntry*) _entry;
+                if (entry->url)
+                    APPEND_STRING_WITH_ESCAPE(string, "\"URL\":\"%s\",\n", entry->url);
+            }
+            break;
+        case AppEntryType:
+            {
+                g_string_append(string, "\"Type\":\"Application\",\n");
+                ApplicationEntry* entry = (ApplicationEntry*) _entry;
+                if (entry->try_exec)
+                    APPEND_STRING_WITH_ESCAPE(string, "\"TryExec\":\"%s\",\n", entry->try_exec);
+                if (entry->exec) {
+                    APPEND_STRING_WITH_ESCAPE(string, "\"Exec\":\"%s\",\n", entry->exec);
+                }
+                if (entry->exec_flag != ' ')
+                    g_string_append_printf(string, "\"ExecFlag\":\"%c\",\n", entry->exec_flag);
+                if (entry->path)
+                    APPEND_STRING_WITH_ESCAPE(string, "\"Path\":\"%s\",\n", entry->path);
+                if (entry->terminal)
+                    g_string_append(string, "\"Terminal\":true,\n");
+                if (entry->actions) {
+                    char* array = to_json_array(entry->actions);
+                    if (array) {
+                        g_string_append_printf(string, "\"Actions\":%s,\n", array);
+                        g_free(array);
+                    }
+                }
+                if (entry->mime_type) {
+                    char* array = to_json_array(entry->mime_type);
+                    g_string_append_printf(string, "\"MimeType\":%s,\n", array);
+                    g_free(array);
+                }
+                if (entry->categories) {
+                    char** cs = g_strsplit(entry->categories, ";", -1);
+                    char* array = to_json_array(cs);
+                    g_string_append_printf(string, "\"Categories\":%s,\n", array);
+                    g_free(array);
+                    g_strfreev(cs);
+                }
+                if (entry->keywords) {
+                    char* array = to_json_array(entry->keywords);
+                    g_string_append_printf(string, "\"Keywords\":%s,\n", array);
+                    g_free(array);
+                }
+                if (entry->startup_notify)
+                    g_string_append(string, "\"StartupNotify\":true,\n");
+                if (entry->startup_wmclass)
+                    APPEND_STRING_WITH_ESCAPE(string, "\"StartupWMClass\":\"%s\",\n", entry->startup_wmclass);
+                break;
+            }
     }
+
+    char* icon_path = icon_name_to_path(_entry->icon, 48);
+    if (icon_path != NULL) {
+        APPEND_STRING_WITH_ESCAPE(string, "\"Icon\":\"%s\",\n", icon_path);
+        g_free(icon_path);
+    } else {
+        g_string_append(string, "\"Icon\":\"not_found.png\",\n");
+        g_free(icon_path);
+    }
+
+
     if (string->len > 2) {
         string = g_string_overwrite(string, string->len-2, "\n}\0");
     }
@@ -515,7 +527,6 @@ void desktop_entry_free(BaseEntry* entry)
 {
     if (entry != NULL) {
         g_free(entry->entry_path);
-        g_free(entry->version);
         g_free(entry->name);
         g_free(entry->generic_name);
         g_free(entry->comment);
@@ -523,27 +534,32 @@ void desktop_entry_free(BaseEntry* entry)
         g_strfreev(entry->only_show_in);
         g_strfreev(entry->not_show_in);
 
-        if (g_strcmp0(entry->type, "Application") == 0) {
-            g_free(((ApplicationEntry*)entry)->try_exec);
-            g_free(((ApplicationEntry*)entry)->exec);
-            g_free(((ApplicationEntry*)entry)->path); 
-            g_free(((ApplicationEntry*)entry)->categories);
+        switch(entry->type) {
+            case AppEntryType:
+                {
+                    g_free(((ApplicationEntry*)entry)->try_exec);
+                    g_free(((ApplicationEntry*)entry)->exec);
+                    g_free(((ApplicationEntry*)entry)->path); 
+                    g_free(((ApplicationEntry*)entry)->categories);
 
-            g_strfreev(((ApplicationEntry*)entry)->actions);
-            g_strfreev(((ApplicationEntry*)entry)->mime_type); 
-            g_strfreev(((ApplicationEntry*)entry)->keywords);
-            g_free(((ApplicationEntry*)entry)->startup_wmclass);
-        } else if (g_strcmp0(entry->type, "Link") == 0) {
-            g_free(((LinkEntry*)entry)->url);
-        } else if (g_strcmp0(entry->type, "File") == 0) {
-            g_free(((FileEntry*)entry)->exec);
-        } else if (g_strcmp0(entry->type, "Dir") == 0) {
-            g_free(((DirectoryEntry*)entry)->files);
-        } else {
-            g_assert_not_reached();
+                    g_strfreev(((ApplicationEntry*)entry)->actions);
+                    g_strfreev(((ApplicationEntry*)entry)->mime_type); 
+                    g_strfreev(((ApplicationEntry*)entry)->keywords);
+                    g_free(((ApplicationEntry*)entry)->startup_wmclass);
+                    break;
+                }
+            case LinkEntryType:
+                g_free(((LinkEntry*)entry)->url);
+                break;
+            case FileEntryType:
+                g_free(((FileEntry*)entry)->exec);
+                break;
+            case DirEntryType:
+                g_free(((DirectoryEntry*)entry)->files);
+                break;
+            default:
+                g_assert_not_reached();
         }
-
-        g_free(entry->type);
     }
     g_free(entry);
 }

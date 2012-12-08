@@ -120,7 +120,7 @@ JS_EXPORT_API
 void request_dock(const char* path)
 {
     BaseEntry* entry =  parse_desktop_entry(path);
-    if (entry != NULL && g_strcmp0(entry->type, "Application") == 0) {
+    if (entry != NULL && entry->type == AppEntryType) {
         write_app_info((ApplicationEntry*)entry);
 
         char* app_id = get_app_id((ApplicationEntry*)entry);
