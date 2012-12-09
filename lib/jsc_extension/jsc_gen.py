@@ -95,12 +95,12 @@ class Object(Params):
         self.unref = unref or "g_object_unref"
         return " void* ret = "
     def return_value(self):
-        return "return create_native_object(context, ret, %s);" % self.unref
+        return "return create_nobject(context, ret, %s);" % self.unref
 
     def in_before(self):
         return """
     JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
-    void* p_%(pos)d = jsvalue_to_object(context, arguments[%(pos)d]);
+    void* p_%(pos)d = jsvalue_to_nobject(context, arguments[%(pos)d]);
 """ % { "pos": self.position }
 
 
@@ -124,7 +124,12 @@ class Boolean(Params):
     bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);
 """  % {"pos": self.position}
     def type(self):
-        return "bool "
+        return "gboolean "
+    def out_before(self):
+        return "gboolean ret = "
+    def return_value(self):
+        return "return  JSValueMakeBoolean(context, ret);"
+
 class ABoolean(Array):
     def type(self):
         return "gboolean*, int"
