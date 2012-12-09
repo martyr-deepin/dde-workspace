@@ -1,13 +1,8 @@
 set(NAME "dbus_test")
 
-execute_process(
-    COMMAND ${BIN_JSC_GEN} "jsc"
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-AUX_SOURCE_DIRECTORY(jsc JSC)
-AUX_SOURCE_DIRECTORY(jsc/gen/ JSC_GEN)
-
-SET(SRC_LIST web.c ${JSC} ${JSC_GEN})
+GEN_JSC_SOURCE("jsc" JSC_GEN)
+SET(SRC_LIST web.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
