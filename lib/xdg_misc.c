@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <gtk/gtk.h>
+#include <gio/gdesktopappinfo.h>
 
 #include "pixbuf.h"
 #include "utils.h"
@@ -51,6 +52,7 @@ void set_desktop_env_name(const char* name)
 {
     size_t max_len = strlen(name) + 1;
     memcpy(DE_NAME, name, max_len > 100 ? max_len : 100);
+    g_desktop_app_info_set_desktop_env(name);
 }
 
 char* check_xpm(const char* path)
@@ -79,7 +81,7 @@ char* icon_name_to_path(const char* name, int size)
     char* ext = strchr(name, '.');
     if (ext != NULL) {
         *ext = '\0'; //FIXME: Is it ok to changed it's value? The ext is an part of an gtk_icon_info's path field's allocated memroy.
-        g_warning("desktop's Icon name should an absoulte path or an basename without extension");
+        g_debug("desktop's Icon name should an absoulte path or an basename without extension");
     }
     GtkIconTheme* them = gtk_icon_theme_get_default(); //do not ref or unref it
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
@@ -242,11 +244,11 @@ BaseEntry* parse_application_entry(GKeyFile* de, ApplicationEntry* entry)
             entry->exec_flag = ' ';
         }
     }
-    char** cs = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);
-    if (cs != NULL) {
-        entry->categories = get_deepin_categories(cs);
-        g_strfreev(cs);
-    }
+    /*char** cs = g_key_file_get_string_list(de, GROUP, "Categories", NULL, NULL);*/
+    /*if (cs != NULL) {*/
+        /*entry->categories = get_deepin_categories(cs);*/
+        /*g_strfreev(cs);*/
+    /*}*/
     return (BaseEntry*)entry;
 }
 
@@ -654,4 +656,10 @@ gboolean change_desktop_entry_name(const char* path, const char* name)
             return FALSE;
         }
     }
+}
+
+
+const char* get_entry_name(GAppInfo* info)
+{
+    return g_app_info_get_display_name(info);
 }

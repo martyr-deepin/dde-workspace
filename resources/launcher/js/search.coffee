@@ -29,7 +29,7 @@ search = ->
     for k of applications
         if key == ""
             ret.push(k)
-        else if basename(k).toLowerCase().indexOf(key) >0
+        else if basename(k).toLowerCase().indexOf(key) >= 0
             ret.push(k)
     grid_show_items(ret)
     return ret

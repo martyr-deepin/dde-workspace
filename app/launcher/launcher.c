@@ -25,6 +25,7 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
+#include <gio/gdesktopappinfo.h>
 
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
@@ -82,12 +83,14 @@ void notify_workarea_size()
     /*gtk_window_resize(GTK_WINDOW(container), width, height);*/
 }
 
-GHashTable* _category_table = NULL;
-void append_to_category(const char* path, char** cs)
+static GHashTable* _category_table = NULL;
+
+static
+void append_to_category(const char* path, int* cs)
 {
     if (cs == NULL) //TODO add to default other category
     {
-        printf("%s hasn't categories info\n", path);
+        g_debug("%s hasn't categories info\n", path);
         return;
     }
 
@@ -96,7 +99,7 @@ void append_to_category(const char* path, char** cs)
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
     while (*cs != NULL) {
-        gpointer id = GINT_TO_POINTER((int)g_strtod(*cs, NULL));
+        gpointer id = GINT_TO_POINTER(*cs);
         GPtrArray* l = g_hash_table_lookup(_category_table, id);
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
@@ -104,44 +107,8 @@ void append_to_category(const char* path, char** cs)
         }
         g_ptr_array_add(l, g_strdup(path));
 
-
         cs++;
     }
-}
-
-
-#include <glib/gprintf.h>
-void parse_items(GString *str, const char* root)
-{
-    GDir *dir = g_dir_open(root, 0, NULL);
-    if (dir == NULL)
-        return;
-
-    const char *filename = NULL;
-    char path[500];
-    while ((filename = g_dir_read_name(dir)) != NULL) {
-        if (!only_desktop(filename))
-            continue;
-        g_sprintf(path, "%s/%s", root, filename);
-        BaseEntry* entry = parse_desktop_entry(path);
-        if (entry == NULL)
-            continue;
-
-        char* c = ((ApplicationEntry*)entry)->categories;
-        char** cs = g_strsplit(c, ";", -1);
-        append_to_category(entry->entry_path, cs);
-        g_strfreev(cs);
-
-        // append to category entry
-
-        char* info = entry_info_to_json(entry);
-        g_string_append(str, info);
-        g_string_append_c(str, ',');
-        g_free(info);
-
-        desktop_entry_free(entry);
-    }
-    g_dir_close(dir);
 }
 
 void fill_cat(char* path, GString* content)
@@ -162,43 +129,55 @@ char* get_items_by_category(double _id)
     return g_string_free(content, FALSE);
 }
 
-//JS_EXPORT
-char* get_items()
+static
+void record_category_info(const char* id, GDesktopAppInfo* info)
 {
-    static GString* content = NULL;
-    if (content == NULL) {
-        content = g_string_new("[");
-        //TODO use g_get_user_data_dir()
-        parse_items(content, "/usr/share/applications");
-        parse_items(content, "/usr/local/share/applications");
-        parse_items(content, "~/.local/share/applications");
-        g_string_overwrite(content, content->len-1, "]");
-    }
-    return g_strdup(content->str);
+   int* cs = get_deepin_categories(g_desktop_app_info_get_categories(info));
+   append_to_category(id, cs);
+   g_free(cs);
+   /*printf("%s get %s\n", id, c);*/
 }
 
-
-const char* _gen_category_info_str(GPtrArray* infos)
+//JS_EXPORT
+JSObjectRef get_items()
 {
-    if (infos == NULL) {
-    } else {
-        static GString* info_str = NULL;
-        if (info_str == NULL) {
-            info_str = g_string_new("[");
-            for (int i=0; i<infos->len; i++) {
-                char* v = g_ptr_array_index(infos, i);
-                g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, v);
-            }
-            g_string_overwrite(info_str, info_str->len - 1, "]");
-            g_ptr_array_free(infos, TRUE); 
+    JSObjectRef json = json_array_create();
+
+    GList* app_infos = g_app_info_get_all();
+    GList* iter = app_infos;
+    for (gsize i=0; iter != NULL; i++, iter = g_list_next(iter)) {
+        GAppInfo* info = iter->data;
+        record_category_info(g_app_info_get_id(info), G_DESKTOP_APP_INFO(info));
+
+        JSObjectRef item = json_create();
+        json_append_nobject(item, "Core", info, g_object_unref);
+        json_append_string(item, "ID", g_app_info_get_id(info));
+        json_append_string(item, "Name", g_app_info_get_display_name(info));
+
+        GIcon* icon = g_app_info_get_icon(info);
+        if (icon != NULL) {
+            char* icon_str = g_icon_to_string(icon);
+            char* icon_path = icon_name_to_path(icon_str, 48);
+            json_append_string(item, "Icon", icon_path);
+            g_free(icon_path);
+            g_free(icon_str);
+            g_object_unref(icon);
+        } else {
+            json_append_string(item, "Icon", "");
         }
-        return info_str->str;
+
+        json_array_append(json, i, item);
     }
+
+    g_list_free(app_infos); //the element of GAppInfo should free by JSRunTime not here!
+
+    return json;
 }
 
 //JS_EXPORT
 char* get_categories()
 {
+    /*return g_strdup("[]");*/
     GString* info_str = NULL;
     info_str = g_string_new("[");
 
@@ -244,6 +223,11 @@ char* get_categories()
             g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, (char*)g_ptr_array_index(infos, i));
     }
 
-    g_string_overwrite(info_str, info_str->len - 1, "]");
-    return info_str->str;
+    if (info_str->len > 1) {
+        g_string_overwrite(info_str, info_str->len - 1, "]");
+        return g_string_free(info_str, FALSE);
+    } else {
+        g_string_free(info_str, TRUE);
+        return g_strdup("[]");
+    }
 }

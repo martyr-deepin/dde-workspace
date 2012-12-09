@@ -38,16 +38,13 @@ void post_app_info(const char* app_id)
     g_free(icon);
     char* name = g_key_file_get_string(k_apps, app_id, "Name", NULL);
 
-    js_post_message("launcher_added",
-            "{\"Id\": \"%s\","
-            "\"Icon\": \"%s\","
-            "\"Exec\": \"%s\","
-            "\"Name\": \"%s\"}",
-            app_id,
-            json_escape_with_swap(&icon_path),
-            json_escape_with_swap(&exec),
-            json_escape_with_swap(&name)
-            );
+    JSObjectRef json = json_create();
+    json_append_string(json, "Id", app_id);
+    json_append_string(json, "Icon", json_escape_with_swap(&icon_path));
+    json_append_string(json, "Exec", json_escape_with_swap(&exec));
+    json_append_string(json, "Name", json_escape_with_swap(&name));
+    
+    js_post_message_json("launcher_added", json);
 
     g_free(exec);
     g_free(icon_path);
@@ -137,6 +134,7 @@ void request_undock(const char* app_id)
 {
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
+
     js_post_message("launcher_deleted", "{\"Id\": \"%s\"}", app_id);
 }
 

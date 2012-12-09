@@ -23,7 +23,7 @@
 
 #include <glib.h>
 const char** get_category_list();
-char* get_deepin_categories(char** xdg_categories);
+int* get_deepin_categories(const char* c);
 const GPtrArray* get_all_categories_array();
 
 #endif

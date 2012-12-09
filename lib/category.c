@@ -61,15 +61,28 @@ int find_category_id(char* s)
     return id;
 }
 
-char* get_deepin_categories(char** cs)
+int* get_deepin_categories(const char* c)
 {
+    if (c == NULL) return NULL;
+
+    char** cs = g_strsplit(c, ";", -1);
     g_assert(cs != NULL);
-    GString* content = g_string_new("");
-    while (*cs != NULL) {
-        g_string_append_printf(content, "%d;", find_category_id(*cs));
-        cs++;
+    gsize len = g_strv_length(cs);
+    int *ret = g_new(int, len+1);
+    for (gsize i=0; i<len; i++) {
+        ret[i] = find_category_id(cs[i]);
     }
-    return g_string_free(content, FALSE);
+    g_strfreev(cs);
+
+    ret[len] = NULL;
+    return ret;
+
+    /*GString* content = g_string_new("");*/
+    /*while (*cs != NULL) {*/
+        /*g_string_append_printf(content, "%d;", find_category_id(*cs));*/
+        /*cs++;*/
+    /*}*/
+    /*return g_string_free(content, FALSE);*/
 }
 
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)

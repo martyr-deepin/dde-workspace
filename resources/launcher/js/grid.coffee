@@ -23,26 +23,22 @@ category_infos = []
 create_item = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'item')
-    el.id = info.EntryPath
+    el.id = info.ID
     el.innerHTML = "
     <img draggable=false src=#{info.Icon} />
     <div class=item_name> #{info.Name}</div>
     <div class=item_comment>#{info.Comment}</div>
     "
+
     el.click_cb = (e) ->
         el.style.cursor = "wait"
-        flag = info.Exec.indexOf("%")
-        if (flag > 0)
-            exec = info.Exec.substr(0, flag)
-        else
-            exec = info.Exec
-        DCore.run_command(exec)
+        DCore.Launchable.launch(info.Core)
         DCore.Launcher.exit_gui()
     el.addEventListener('click', el.click_cb)
     return el
 
 for info in DCore.Launcher.get_items()
-    applications[info.EntryPath] = create_item(info)
+    applications[info.ID] = create_item(info)
 # load the Desktop Entry's infomations.
 
 #export function
