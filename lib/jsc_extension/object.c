@@ -7,10 +7,17 @@ struct _ObjectData {
 };
 
 static
+void object_init(JSContextRef ctx, JSObjectRef object)
+{
+    struct _ObjectData* data = JSObjectGetPrivate(object);
+    g_object_ref(data->core);
+}
+static
 void object_finlize(JSObjectRef object)
 {
     struct _ObjectData* data = JSObjectGetPrivate(object);
     g_assert(data != NULL);
+    printf("unref %p \n", data->core);
     if (data->unref != NULL)
         data->unref(data->core);
 }
@@ -29,6 +36,7 @@ JSClassRef obj_class()
             NULL, //static value
             NULL, //static function
 
+            //object_init, 
             NULL,
             object_finlize,
             NULL,
@@ -57,7 +65,7 @@ void* object_to_core(JSObjectRef object)
     return data->core;
 }
 
-JSObjectRef create_native_object(JSContextRef ctx, void* obj, UnRefFunc unref)
+JSObjectRef create_nobject(JSContextRef ctx, void* obj, UnRefFunc unref)
 {
     struct _ObjectData* data = g_new(struct _ObjectData, 1);
     data->id = (long)obj;
@@ -66,7 +74,7 @@ JSObjectRef create_native_object(JSContextRef ctx, void* obj, UnRefFunc unref)
     return JSObjectMake(ctx, obj_class(), data);
 }
 
-void* jsvalue_to_object(JSContextRef ctx, JSValueRef value)
+void* jsvalue_to_nobject(JSContextRef ctx, JSValueRef value)
 {
     JSObjectRef obj = JSValueToObject(ctx, value, NULL);
     void* core = object_to_core(obj);
