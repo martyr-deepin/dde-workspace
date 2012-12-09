@@ -11,7 +11,8 @@ void object_finlize(JSObjectRef object)
 {
     struct _ObjectData* data = JSObjectGetPrivate(object);
     g_assert(data != NULL);
-    data->unref(data->core);
+    if (data->unref != NULL)
+        data->unref(data->core);
 }
 
 static

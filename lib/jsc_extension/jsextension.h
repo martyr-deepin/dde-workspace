@@ -47,7 +47,7 @@ void destroy_js_extension();
 JSGlobalContextRef get_global_context();
 
 JSValueRef jsvalue_from_cstr(JSContextRef, const char* str);
-JSValueRef json_from_cstr(JSContextRef, const char* data);
+JSValueRef json_from_cstr(JSContextRef, const char* json_str);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
 
@@ -58,6 +58,14 @@ JSObjectRef create_native_object(JSContextRef ctx, void* obj, UnRefFunc unref);
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
 
 void js_post_message(const char* name, const char* format, ...);
+void js_post_message_json(const char* name, JSValueRef json);
+
+JSObjectRef json_create();
+void json_append_string(JSObjectRef json, const char* key, const char* value);
+void json_append_number(JSObjectRef json, const char* key, double value);
+void json_append_object(JSObjectRef json, const char* key, void* value, UnRefFunc func);
+
+
 
 #endif
 
