@@ -25,6 +25,7 @@
 #include "dock_config.h"
 #include "desktop_file_matcher.h"
 #include <string.h>
+#include <gio/gdesktopappinfo.h>
 
 #define APPS_INI "dock/apps.ini"
 static GKeyFile* k_apps = NULL;
@@ -32,47 +33,59 @@ static GKeyFile* k_apps = NULL;
 static
 void post_app_info(const char* app_id)
 {
-    char* exec = g_key_file_get_string(k_apps, app_id, "Exec", NULL);
-    char* icon = g_key_file_get_string(k_apps, app_id, "Icon", NULL);
-    char* icon_path = icon_name_to_path(icon, 48);
-    g_free(icon);
-    char* name = g_key_file_get_string(k_apps, app_id, "Name", NULL);
+    char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
+    GAppInfo* info = NULL;
+    if (path != NULL) {
+        info = g_desktop_app_info_new_from_filename(path);
+        g_free(path);
+    } else {
+        char* cmdline = g_key_file_get_string(k_apps, app_id, "CmdLine", NULL);
+        char* name = g_key_file_get_string(k_apps, app_id, "Name", NULL);
+        if (g_key_file_get_boolean(k_apps, app_id, "Terminal", NULL))
+            info = g_app_info_create_from_commandline(cmdline, name, G_APP_INFO_CREATE_NEEDS_TERMINAL, NULL);
+        else
+            info = g_app_info_create_from_commandline(cmdline, name, G_APP_INFO_CREATE_NONE, NULL);
+        g_free(name);
+        g_free(cmdline);
+    }
+
 
     JSObjectRef json = json_create();
+    json_append_nobject(json, "Core", info, g_object_unref);
     json_append_string(json, "Id", app_id);
-    json_append_string(json, "Icon", json_escape_with_swap(&icon_path));
-    json_append_string(json, "Exec", json_escape_with_swap(&exec));
-    json_append_string(json, "Name", json_escape_with_swap(&name));
-    
-    js_post_message_json("launcher_added", json);
+    json_append_string(json, "Name", g_app_info_get_display_name(info));
 
-    g_free(exec);
+    char* icon_name = NULL;
+    GIcon* icon = g_app_info_get_icon(info);
+    if (icon != NULL) {
+        icon_name = g_icon_to_string(icon);
+        g_object_unref(icon);
+    } else {
+        icon_name = g_key_file_get_string(k_apps, app_id, "Icon", NULL);
+    }
+    char* icon_path = icon_name_to_path(icon_name, 48);
+    g_free(icon_name);
+    json_append_string(json, "Icon", icon_path);
     g_free(icon_path);
-    g_free(name);
+
+    js_post_message_json("launcher_added", json);
+    /*g_object_unref(info);*/
+
+    return;
 }
 
 
 static
-char* get_app_id(ApplicationEntry* entry)
+char* get_app_id(GDesktopAppInfo* info)
 {
-    char* basename = g_path_get_basename(entry->base.entry_path);
+    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         return basename;
     } else {
         g_free(basename);
 
-        char* exec = g_strdup(entry->exec);
-        for (int i=0; i<strlen(exec); i++) {
-            if (exec[i] == ' ') {
-                exec[i] = '\0';
-                break;
-            }
-        }
-        char* exec_name = g_path_get_basename(exec);
-        g_free(exec);
-
-        return exec_name;
+        return g_strdup(g_app_info_get_executable(G_APP_INFO(info)));
     }
 }
 
@@ -94,18 +107,61 @@ void init_launchers()
     }
 }
 
-static
-void write_app_info(ApplicationEntry* entry)
+static 
+int get_need_terminal(GDesktopAppInfo* info)
 {
-    g_assert(k_apps != NULL);
+    //copy from gio source code.
+    struct _GDesktopAppInfo
+    {
+        GObject parent_instance;
 
-    char* app_id = get_app_id(entry);
+        char *desktop_id;
+        char *filename;
 
-    g_key_file_set_string(k_apps, app_id, "Exec", entry->exec);
+        char *name;
+        char *generic_name;
+        char *fullname;
+        char *comment;
+        char *icon_name;
+        GIcon *icon;
+        char **keywords;
+        char **only_show_in;
+        char **not_show_in;
+        char *try_exec;
+        char *exec;
+        char *binary;
+        char *path;
+        char *categories;
 
-    g_key_file_set_string(k_apps, app_id, "Icon", entry->base.icon);
+        guint nodisplay       : 1;
+        guint hidden          : 1;
+        guint terminal        : 1;
+        guint startup_notify  : 1;
+        guint no_fuse         : 1;
+        /* FIXME: what about StartupWMClass ? */
+    };
+    return ((struct _GDesktopAppInfo*)info)->terminal;
+}
 
-    g_key_file_set_string(k_apps, app_id, "Name", entry->base.name);
+static
+void write_app_info(GDesktopAppInfo* info)
+{
+    char* app_id = get_app_id(info);
+
+    g_key_file_set_string(k_apps, app_id, "CmdLine", g_app_info_get_commandline(G_APP_INFO(info)));
+
+    GIcon* icon = g_app_info_get_icon(G_APP_INFO(info));
+    if (icon != NULL) {
+        char* icon_name = g_icon_to_string(icon);
+        g_key_file_set_string(k_apps, app_id, "Icon", icon_name);
+        g_free(icon_name);
+        g_object_unref(icon);
+    }
+
+    g_key_file_set_string(k_apps, app_id, "Name", g_app_info_get_display_name(G_APP_INFO(info)));
+
+    g_key_file_set_string(k_apps, app_id, "Path", g_desktop_app_info_get_filename(info));
+    g_key_file_set_boolean(k_apps, app_id, "Terminal", get_need_terminal(info));
 
     g_free(app_id);
 
@@ -116,18 +172,18 @@ void write_app_info(ApplicationEntry* entry)
 JS_EXPORT_API
 void request_dock(const char* path)
 {
-    BaseEntry* entry =  parse_desktop_entry(path);
-    if (entry != NULL && entry->type == AppEntryType) {
-        write_app_info((ApplicationEntry*)entry);
-
-        char* app_id = get_app_id((ApplicationEntry*)entry);
+    GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(path);
+    if (info != NULL) {
+        char* app_id = get_app_id(info);
+        write_app_info(info);
         post_app_info(app_id);
         g_free(app_id);
     } else {
-        g_warning("request dock %s is invalide %p\n", path, entry);
+        g_warning("request dock %s is invalide\n", path);
     }
-    desktop_entry_free(entry);
+    g_object_unref(info);
 }
+
 
 JS_EXPORT_API
 void request_undock(const char* app_id)
@@ -144,6 +200,6 @@ void try_post_launcher_info(const char* app_id)
     if (g_key_file_has_group(k_apps, app_id)) {
         post_app_info(app_id);
     } else {
-        printf("try find %s failed \n", app_id);
+        g_debug("try find %s failed \n", app_id);
     }
 }

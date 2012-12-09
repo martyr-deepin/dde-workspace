@@ -36,8 +36,8 @@ JSClassRef obj_class()
             NULL, //static value
             NULL, //static function
 
-            //object_init, 
-            NULL,
+            object_init, 
+            /*NULL,*/
             object_finlize,
             NULL,
             NULL,
