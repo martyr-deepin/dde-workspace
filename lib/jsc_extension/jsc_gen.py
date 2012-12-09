@@ -20,13 +20,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 import sys
-JSC_PATH = sys.argv[1]
-
-try:
-    import os
-    os.mkdir(JSC_PATH + "/gen")
-except:
-    pass
+import os
+CFG_FILES = sys.argv[1]
+OUTPUT_DIR = os.path.curdir
 
 modules = []
 
@@ -515,17 +511,16 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
         if m.name != "DCore":
             objs += m.str_install()
             objs_state += "extern JSClassRef get_%s_class();\n" % m.name
-    f = open(JSC_PATH + "/init.c", "w")
+    f = open(OUTPUT_DIR + "/init.c", "w")
     f.write(temp % {"objs": objs, "objs_state": objs_state })
     f.close()
 
 def gen_module_c():
-    import os
-    for root, dirs, files in os.walk(JSC_PATH):
+    for root, dirs, files in os.walk(CFG_FILES):
         for f in files:
             if f.endswith('.cfg'):
                 path = os.path.join(root, f)
-                path2 = os.path.join(root,  "gen/gen_" + f.rstrip(".cfg") + ".c")
+                path2 = os.path.join(OUTPUT_DIR,  "gen_" + f.rstrip(".cfg") + ".c")
                 f = open(path)
                 content = f.read()
                 try :
