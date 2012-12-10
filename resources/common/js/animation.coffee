@@ -1,5 +1,7 @@
-apply_rotate = (el)->
-    el.style.webkitAnimation = "rotate 0.5s cubic-bezier(0, 0, 0.35, -1)"
-    el.addEventListener('webkitAnimationEnd', ->
-        this.style.webkitAnimationEnd = ""
-    , false)
+apply_animation = (el, name, duration, timefunc)->
+    el.style.webkitAnimationName = name
+    el.style.webkitAnimationDuration = duration
+    el.style.webkitAnimationTimingFunction = timefunc
+
+apply_rotate = (el, time)->
+    apply_animation(el, "rotate", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")

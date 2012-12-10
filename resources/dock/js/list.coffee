@@ -136,7 +136,7 @@ class ClientGroup extends AppItem
         l = Widget.look_up(@app_id)
         if l?
             swap_element(@element, l.element)
-            apply_rotate(@element)
+            apply_rotate(@element, 0.2)
             l.destroy()
 
     add_client: (id, icon, title)->
@@ -177,7 +177,7 @@ class ClientGroup extends AppItem
         if info
             l = new Launcher(info.Id, info.Icon, info.Core)
             swap_element(l.element, @element)
-            apply_rotate(l.element)
+            apply_rotate(l.element, 0.5)
         super
 
     do_contextmenu: (e)->
