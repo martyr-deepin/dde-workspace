@@ -99,7 +99,6 @@ class Object(Params):
 
     def in_before(self):
         return """
-    JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
     void* p_%(pos)d = jsvalue_to_nobject(context, arguments[%(pos)d]);
 """ % { "pos": self.position }
 
@@ -433,7 +432,6 @@ class JSCode(Params):
     } else {
         r = json_from_cstr(context, c_return);
         g_free(c_return);
-        JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
     }
     """
 
@@ -449,7 +447,6 @@ class CJSCode(JSCode):
         r = JSValueMakeNull(context);
     } else {
         r = json_from_cstr(context, c_return);
-        JSGarbageCollect(context); //JSC1.8 can't auto free this json object.
     }
     """
 
