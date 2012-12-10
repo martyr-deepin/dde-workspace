@@ -91,6 +91,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
     [new_cols, new_rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
+    #TODO: reflesh desktop items when workarea has changed
     new_table = new Array()
     for i in [0..new_cols]
         new_table[i] = new Array(new_rows)
@@ -104,20 +105,27 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (path) ->
-    localStorage.getObject(path)
+    pos = localStorage.getObject(path)
+    if pos == null then return null
+
+    if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
+    if cols > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
+    pos
 
 
 update_position = (old_path, new_path) ->
-    o_p = localStorage.getObject(old_path)
+    o_p = load_position(old_path)
     localStorage.removeItem(old_path)
     localStorage.setObject(new_path, o_p)
+    return
 
 
 discard_position = (path) ->
     localStorage.removeItem(path)
+    return
 
 
-compare_pos_left_top = (base, pos) ->
+compare_pos_top_left = (base, pos) ->
     if pos.y < base.y
         -1
     else if pos.y >= base.y and pos.y <= base.y + base.height - 1
@@ -137,9 +145,12 @@ compare_pos_rect = (base1, base2, pos) ->
     bottom_left = Math.min(base1.y, base2.y)
     bottom_right = Math.max(base1.y, base2.y)
     if top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
-        true
+        ret = true
     else
-        false
+        ret = false
+
+    echo "compare_pos_rect#{top_left}-#{pos.x}-#{top_right},#{bottom_left}-#{pos.y}-#{bottom_right},#{ret}"
+    return ret
 
 
 clear_occupy = (info) ->
@@ -168,7 +179,7 @@ detect_occupy = (info) ->
 pixel_to_coord = (x, y) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    echo "#{index_x},#{index_y}"
+    #echo "#{index_x},#{index_y}"
     return [index_x, index_y]
 
 
@@ -188,30 +199,42 @@ find_free_position = (w, h) ->
 
 
 move_to_anywhere = (widget) ->
-    info = localStorage.getObject(widget.path)
+    info = load_position(widget.path)
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
 
-    echo "#{widget.path} move to #{info.x},#{info.y}"
+    #echo "#{widget.path} move to #{info.x},#{info.y}"
+    return
+
+
+move_to_somewhere = (widget, pos) ->
+    if not detect_occupy(pos)
+        move_to_position(widget, pos)
+    else
+        old_pos = load_position(widget.path)
+        if not old_pos?
+            pos = find_free_position(1, 1)
+            move_to_position(widget, pos)
+
+    return
 
 
 move_to_position = (widget, info) ->
-    old_info = localStorage.getObject(widget.path)
+    old_info = load_position(widget.path)
 
-    if not info?
-        info = localStorage.getObject(widget.path)
+    if not info? then return
 
-    if not detect_occupy(info)
-            localStorage.setObject(widget.path, info)
+    localStorage.setObject(widget.path, info)
 
-            widget.move(info.x * grid_item_width, info.y * grid_item_height)
+    widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
-            if old_info?
-                clear_occupy(old_info)
-            set_occupy(info)
+    if old_info? then clear_occupy(old_info)
+    set_occupy(info)
+
+    return
 
 
 sort_item_by_name = ->
@@ -272,6 +295,38 @@ init_grid_drop = ->
     )
 
 
+sort_list_by_pos_top_left = (i1, i2) ->
+    pos_1 = load_position(i1)
+    pos_2 = load_position(i2)
+    return compare_pos_top_left(pos_1, pos_2)
+
+
+update_selected_pos = (w, env) ->
+    old_pos = load_position(w.id)
+    new_pos = coord_to_pos(pixel_to_coord(env.x, env.y), [1, 1])
+    coord_x_shift = new_pos.x - old_pos.x
+    coord_y_shift = new_pos.y - old_pos.y
+
+    if coord_x_shift == 0 and coord_y_shift == 0 then return
+
+    ordered_list = selected_item.concat()
+    ordered_list.sort(sort_list_by_pos_top_left)
+    if coord_x_shift < 0 or coord_y_shift < 0 then ordered_list.reverse()
+
+    for i in ordered_list
+        w = Widget.look_up(i)
+        if not w? then continue
+
+        old_pos = load_position(w.id)
+        new_pos = coord_to_pos([old_pos.x + coord_x_shift, old_pos.y + coord_y_shift], [1, 1])
+
+        if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
+
+        move_to_somewhere(w, new_pos)
+
+    return
+
+
 set_item_selected = (w, top = false) ->
     if w.selected == false
         w.item_selected()
@@ -316,10 +371,14 @@ cancel_all_selected_stats = (clear_last = true) ->
 
 update_selected_stats = (w, env) ->
     if env.ctrlKey
+        if env.type == "click" then return
+
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
 
     else if env.shiftKey
+        if env.type == "click" then return
+
         if selected_item.length > 1
             last_one_id = selected_item[selected_item.length - 1]
             selected_item.splice(selected_item.length - 1, 1)
@@ -330,12 +389,12 @@ update_selected_stats = (w, env) ->
             end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
             start_pos = load_position(Widget.look_up(selected_item[0]).path)
 
-            ret = compare_pos_left_top(start_pos, end_pos)
+            ret = compare_pos_top_left(start_pos, end_pos)
             if ret < 0
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val.path)
-                    if compare_pos_left_top(end_pos, i_pos) >= 0 and compare_pos_left_top(start_pos, i_pos) < 0
+                    if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                         set_item_selected(val, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
@@ -343,7 +402,7 @@ update_selected_stats = (w, env) ->
                 for key in all_item
                     val = Widget.look_up(key)
                     i_pos = load_position(val.path)
-                    if compare_pos_left_top(start_pos, i_pos) > 0 and compare_pos_left_top(end_pos, i_pos) <= 0
+                    if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                         set_item_selected(val, true)
 
         else
@@ -351,15 +410,23 @@ update_selected_stats = (w, env) ->
 
     else
         n = selected_item.indexOf(w.id)
-        if n >= 0 then selected_item.splice(n, 1)
 
-        cancel_all_selected_stats(false)
+        if env.type == "mousedown"
+            if n >= 0 then return
 
-        if n >= 0
+            cancel_all_selected_stats(false)
+
+            set_item_selected(w)
+
+        else if env.type == "click"
+            if n < 0 then return
+
+            selected_item.splice(n, 1)
+
+            cancel_all_selected_stats(false)
+
             selected_item.push(w.id)
             last_widget = w.id
-        else
-            set_item_selected(w)
 
     return
 
@@ -451,8 +518,9 @@ class Mouse_Select_Area_box
         @element.style.visibility = "visible"
 
         new_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
-        if compare_pos_left_top(@last_pos, new_pos) != 0
-            if compare_pos_left_top(@start_pos, new_pos) < 0
+        if compare_pos_top_left(@last_pos, new_pos) != 0
+            echo "---------------------------------------------"
+            if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos
                 pos_b = @start_pos
             else

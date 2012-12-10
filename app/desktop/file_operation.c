@@ -5,18 +5,19 @@
 #include "utils.h"
 #include "xdg_misc.h"
 
-void item_rename(const char* old, const char* new)
+void item_rename(const char* old_name, const char* new_name)
 {
-    if (g_file_test(old, G_FILE_TEST_IS_DIR) == FALSE)
+    printf("item_rename[%s],[%s]\n", old_name, new_name);
+    if (g_file_test(old_name, G_FILE_TEST_IS_DIR) == FALSE)
     {
-        int n = strlen(old);
-        if (n > 8 && g_ascii_strcasecmp(old + n - 8, ".desktop") == 0)
+        int n = strlen(old_name);
+        if (n > 8 && g_ascii_strcasecmp(old_name + n - 8, ".desktop") == 0)
         {
-            change_desktop_entry_name(old, new);
+            change_desktop_entry_name(old_name, new_name);
             return;
         }
     }
-    run_command2("mv", old, new);
+    run_command2("mv", old_name, new_name);
 }
 
 void item_delete(const char** target, int n)
