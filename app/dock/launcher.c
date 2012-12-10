@@ -76,7 +76,7 @@ void post_app_info(const char* app_id)
 static
 char* get_app_id(GDesktopAppInfo* info)
 {
-    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
+    char* basename = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         return basename;
@@ -194,6 +194,7 @@ void request_undock(const char* app_id)
 JS_EXPORT_API
 void try_post_launcher_info(const char* app_id)
 {
+    printf("try post launcher info\n");
     if (g_key_file_has_group(k_apps, app_id)) {
         post_app_info(app_id);
     } else {

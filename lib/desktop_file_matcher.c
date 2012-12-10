@@ -68,11 +68,16 @@ void get_exec_name_args(char** cmdline, char** name, char** args)
     gsize name_pos = 0;
     gsize length = g_strv_length(cmdline);
     for (; name_pos < length; name_pos++) {
-        if (g_regex_match(prefix_regex, cmdline[name_pos], 0, NULL)) {
+        char* basename = g_path_get_basename(cmdline[name_pos]);
+        if (g_regex_match(prefix_regex, basename, 0, NULL)) {
             while (cmdline[name_pos+1][0] == '-')
                 name_pos++;
             name_pos++;
+
+            g_free(basename);
             break;
+        } else {
+            g_free(basename);
         }
     }
 
@@ -161,6 +166,7 @@ char* get_app_id_by_pid(int pid)
         g_free(exec_name);
         g_free(exec_args);
     }
+    printf("find app_id: %s\n", result);
     g_free(path);
     return result;
 }
