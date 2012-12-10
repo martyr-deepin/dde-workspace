@@ -18,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+@import url("../../common/css/animation.css");
+
 body {
     -webkit-user-select: none;
 }
@@ -108,6 +110,7 @@ body {
     background: red;
     top: 0px;
 }
+
 .Launcher {
     position:relative;
     float: left;
