@@ -109,11 +109,11 @@ class Launcher extends AppItem
         "
     do_click: (e)->
         DCore.Launchable.launch(@core)
-        #DCore.run_command(@exec)
-        @destroy()
 
     do_itemselected: (e)->
-        alert e.title
+        switch e.id
+            when 1 then DCore.Launchable.launch(@core)
+            when 2 then DCore.Dock.request_undock(@id)
     do_contextmenu: (e)->
         [
             [1, _("Run")],
@@ -125,15 +125,19 @@ class ClientGroup extends AppItem
         super
         @clients = []
 
-        @remove_launcher()
-
         @client_infos = {}
         @leader = null
         @count = document.createElement("div")
         @count.setAttribute("class", "ClientGroupNumber")
 
-    remove_launcher: ->
-        Widget.look_up(@app_id)?.destroy()
+        @try_swap_launcher()
+
+    try_swap_launcher: ->
+        l = Widget.look_up(@app_id)
+        if l?
+            swap_element(@element, l.element)
+            apply_rotate(@element)
+            l.destroy()
 
     add_client: (id, icon, title)->
         if @clients.indexOf(id) == -1
@@ -159,6 +163,7 @@ class ClientGroup extends AppItem
         else if @leader == id
             le = @clients[0]
             set_leader(le, @client_infos[le].icon)
+        echo "remove client"
 
     set_leader: (id, icon)->
         @leader = id
@@ -168,7 +173,11 @@ class ClientGroup extends AppItem
         @element.appendChild(@count)
 
     destroy: ->
-        DCore.Dock.try_post_launcher_info(@app_id)
+        info = DCore.Dock.get_launcher_info(@app_id)
+        if info
+            l = new Launcher(info.Id, info.Icon, info.Core)
+            swap_element(l.element, @element)
+            apply_rotate(l.element)
         super
 
     do_contextmenu: (e)->
@@ -193,9 +202,12 @@ DCore.signal_connect("active_window_changed", (info)->
 DCore.signal_connect("launcher_added", (info) ->
     c = Widget.look_up(info.Id)
     if c
-        echo "have.."
+        echo "have..#{info.Id}"
     else
         new Launcher(info.Id, info.Icon, info.Core)
+)
+DCore.signal_connect("launcher_removed", (info) ->
+    Widget.look_up(info.Id)?.destroy()
 )
 
 
@@ -208,14 +220,6 @@ DCore.signal_connect("task_added", (info) ->
     if info.icon == "null"
         alert("aaa")
     leader.add_client(info.id, info.icon, info.title)
-
-    #if c
-        #c.update_content(info.title, info.icon)
-    #else
-        #leader = Widget.look_up("le_"+info.clss)
-        #if not leader
-            #leader = new ClientGroup("le_"+info.clss)
-        #new Client(info.id, info.icon, info.title, info.app_id, leader)
 )
 
 DCore.signal_connect("task_removed", (info) ->

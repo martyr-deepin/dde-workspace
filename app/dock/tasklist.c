@@ -101,9 +101,13 @@ Client* create_client_from_window(Window w)
 
 void _update_client_info(Client *c)
 {
-    js_post_message("task_added", 
-            "{\"id\":%d, \"title\":\"%s\", \"clss\":\"%s\", \"icon\":\"%s\", \"app_id\":\"%s\"}",
-            (int)c->window, c->title, c->clss, c->icon, c->app_id);
+    JSObjectRef json = json_create();
+    json_append_number(json, "id", c->window);
+    json_append_string(json, "title", c->title);
+    json_append_string(json, "clss", c->clss);
+    json_append_string(json, "icon", c->icon);
+    json_append_string(json, "app_id", c->app_id);
+    js_post_message_json("task_added", json);
 }
 void active_window_changed(Display* dsp, Window w)
 {
@@ -116,7 +120,11 @@ void active_window_changed(Display* dsp, Window w)
 
 void client_free(Client* c)
 {
-    js_post_message("task_removed", "{\"id\": %d, \"clss\":\"%s\"}", (int)c->window, c->clss);
+    JSObjectRef json = json_create();
+    json_append_number(json, "id", c->window);
+    json_append_string(json, "clss", c->clss);
+    js_post_message_json("task_removed", json);
+
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
     g_object_unref(c->gdkwindow);
@@ -131,6 +139,18 @@ void client_free(Client* c)
 
 gboolean is_normal_window(Window w)
 {
+    XClassHint ch;
+    if (XGetClassHint(_dsp, w, &ch)) {
+        if (g_strcmp0(ch.res_name, "explorer.exe") == 0 && g_strcmp0(ch.res_class, "Wine") == 0) {
+            XFree(ch.res_name);
+            XFree(ch.res_class);
+            return FALSE;
+        } else {
+            XFree(ch.res_name);
+            XFree(ch.res_class);
+        }
+    }
+
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
     if (data == NULL)
@@ -241,7 +261,8 @@ void _update_window_title(Client* c)
     long item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
-        c->title = json_escape(name);
+        /*c->title = json_escape(name);*/
+        c->title = g_strdup(name);
     else
         c->title = g_strdup("Unknow Name");
     XFree(name);
@@ -263,10 +284,13 @@ void _set_window_exec(Client* c)
 void _update_window_class(Client* c)
 {
     XClassHint ch;
-    XGetClassHint(_dsp, c->window, &ch);
-    c->clss = json_escape(ch.res_class);
-    XFree(ch.res_name);
-    XFree(ch.res_class);
+    if (XGetClassHint(_dsp, c->window, &ch)) {
+        c->clss = g_strdup(ch.res_class);
+        XFree(ch.res_name);
+        XFree(ch.res_class);
+    } else {
+        c->clss = NULL;
+    }
 }
 void _update_window_state(Client* c)
 {

@@ -30,13 +30,13 @@
 #define APPS_INI "dock/apps.ini"
 static GKeyFile* k_apps = NULL;
 
-static
-void post_app_info(const char* app_id)
+static 
+JSValueRef build_app_info(const char* app_id)
 {
     char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
     GAppInfo* info = NULL;
     if (path != NULL) {
-        info = g_desktop_app_info_new_from_filename(path);
+        info = G_APP_INFO(g_desktop_app_info_new_from_filename(path));
         g_free(path);
     } else {
         char* cmdline = g_key_file_get_string(k_apps, app_id, "CmdLine", NULL);
@@ -66,17 +66,14 @@ void post_app_info(const char* app_id)
     g_free(icon_name);
     json_append_string(json, "Icon", icon_path);
     g_free(icon_path);
-
-    js_post_message_json("launcher_added", json);
-
-    return;
+    return json;
 }
 
 
 static
 char* get_app_id(GDesktopAppInfo* info)
 {
-    char* basename = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
+    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         return basename;
@@ -92,7 +89,7 @@ void update_dock_apps()
     gsize size = 0;
     char** groups = g_key_file_get_groups(k_apps, &size);
     for (gsize i=0; i<size; i++) {
-        post_app_info(groups[i]);
+        js_post_message_json("launcher_added", build_app_info(groups[i]));
     }
     g_strfreev(groups);
 }
@@ -173,7 +170,7 @@ void request_dock(const char* path)
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);
-        post_app_info(app_id);
+        js_post_message_json("launcher_added", build_app_info(app_id));
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);
@@ -185,19 +182,20 @@ void request_dock(const char* path)
 JS_EXPORT_API
 void request_undock(const char* app_id)
 {
+    printf("request undock %s\n", app_id);
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
 
-    js_post_message("launcher_deleted", "{\"Id\": \"%s\"}", app_id);
+    js_post_message("launcher_removed", "{\"Id\": \"%s\"}", app_id);
 }
 
 JS_EXPORT_API
-void try_post_launcher_info(const char* app_id)
+JSValueRef get_launcher_info(const char* app_id)
 {
-    printf("try post launcher info\n");
     if (g_key_file_has_group(k_apps, app_id)) {
-        post_app_info(app_id);
+        return build_app_info(app_id);
     } else {
         g_debug("try find %s failed \n", app_id);
+        return jsvalue_null();
     }
 }
