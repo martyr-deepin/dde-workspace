@@ -59,7 +59,6 @@ void post_app_info(const char* app_id)
     GIcon* icon = g_app_info_get_icon(info);
     if (icon != NULL) {
         icon_name = g_icon_to_string(icon);
-        g_object_unref(icon);
     } else {
         icon_name = g_key_file_get_string(k_apps, app_id, "Icon", NULL);
     }
@@ -69,7 +68,6 @@ void post_app_info(const char* app_id)
     g_free(icon_path);
 
     js_post_message_json("launcher_added", json);
-    /*g_object_unref(info);*/
 
     return;
 }
@@ -155,7 +153,6 @@ void write_app_info(GDesktopAppInfo* info)
         char* icon_name = g_icon_to_string(icon);
         g_key_file_set_string(k_apps, app_id, "Icon", icon_name);
         g_free(icon_name);
-        g_object_unref(icon);
     }
 
     g_key_file_set_string(k_apps, app_id, "Name", g_app_info_get_display_name(G_APP_INFO(info)));

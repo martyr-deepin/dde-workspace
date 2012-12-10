@@ -88,8 +88,8 @@ static GHashTable* _category_table = NULL;
 static
 void append_to_category(const char* path, int* cs)
 {
-    if (cs == NULL) //TODO add to default other category
-    {
+    if (cs == NULL) {
+        //TODO add to default other category 
         g_debug("%s hasn't categories info\n", path);
         return;
     }
@@ -98,7 +98,8 @@ void append_to_category(const char* path, int* cs)
         //TODO new_with_full
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
-    while (*cs != NULL) {
+    
+    while (*cs != CATEGORY_END_TAG) {
         gpointer id = GINT_TO_POINTER(*cs);
         GPtrArray* l = g_hash_table_lookup(_category_table, id);
         if (l == NULL) {
@@ -161,7 +162,6 @@ JSObjectRef get_items()
             json_append_string(item, "Icon", icon_path);
             g_free(icon_path);
             g_free(icon_str);
-            g_object_unref(icon);
         } else {
             json_append_string(item, "Icon", "");
         }
