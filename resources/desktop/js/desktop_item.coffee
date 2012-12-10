@@ -87,17 +87,27 @@ class Item extends Widget
         false
 
 
+#    do_mouseup : (env) =>
+#        env.stopPropagation()
+#        if env.button == 0 then update_selected_stats(this, env)
+#        false
+
+
     do_click : (env) =>
         env.stopPropagation()
         if @clicked == false
             @clicked = true
+            update_selected_stats(this, env)
         else
             if env.srcElement.className == "item_name"
                 if @delay_rename == -1 then @delay_rename = setTimeout(() =>
                         @item_rename()
                     , 200);
             else
-                if @in_rename then @item_complete_rename(true)
+                if @in_rename
+                    @item_complete_rename(true)
+                else
+                    update_selected_stats(this, env)
 
         echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
@@ -247,8 +257,7 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @name
-            #DCore.Desktop.item_rename(@id, new_name)
-            alert("#{@id}, #{new_name}")
+            DCore.Desktop.item_rename(@id, new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -290,13 +299,7 @@ class DesktopEntry extends Item
         env.stopPropagation()
         env.preventDefault()
         if env.dataTransfer.dropEffect == "move"
-            node = env.target
-            pos = pixel_to_coord(env.x, env.y)
-
-            info = localStorage.getObject(@path)
-            info.x = pos[0]
-            info.y = pos[1]
-            move_to_position(this, info)
+            update_selected_pos(this, env)
 
         #else if env.dataTransfer.dropEffect == "link"
             #node = env.target
