@@ -51,18 +51,6 @@ char* jsvalue_to_cstr(JSContextRef ctx, JSValueRef jsvalue)
     return cstr;
 }
 
-JSValueRef json_from_cstr(JSContextRef ctx, const char* data)
-{
-    JSStringRef str = JSStringCreateWithUTF8CString(data);
-    JSValueRef json = JSValueMakeFromJSONString(ctx, str);
-    JSStringRelease(str);
-    if (json == NULL) {
-        g_error("This should not appear, please report to the author with the error message: \n  %s \n", data);
-        g_assert(json != NULL);
-    }
-    return json;
-}
-
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass)
 {
   JSStringRef property = JSStringCreateWithUTF8CString(klass);

@@ -102,13 +102,14 @@ class AppItem extends Widget
 
 
 class Launcher extends AppItem
-    constructor: (@id, @icon, @exec, @app_id)->
+    constructor: (@id, @icon, @core)->
         super
         @element.innerHTML = "
         <img src=#{@icon}>
         "
     do_click: (e)->
-        DCore.run_command(@exec)
+        DCore.Launchable.launch(@core)
+        #DCore.run_command(@exec)
         @destroy()
 
     do_itemselected: (e)->
@@ -194,7 +195,7 @@ DCore.signal_connect("launcher_added", (info) ->
     if c
         echo "have.."
     else
-        new Launcher(info.Id, info.Icon, info.Exec)
+        new Launcher(info.Id, info.Icon, info.Core)
 )
 
 

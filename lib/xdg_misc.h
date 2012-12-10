@@ -70,28 +70,20 @@ char* get_desktop_dir(gboolean update);
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
 
+enum EntryType {
+    AppEntryType,
+    FileEntryType,
+    DirEntryType,
+    LinkEntryType,
+};
 
 typedef struct _BaseEntry {
     char* entry_path;
-    char* type;
-    char* version;
+    enum EntryType type;
 
     char* name;  //localestring
 
-    char* generic_name; //localestring
-    gboolean no_display;
-    char* comment; //localestring
     char* icon; //localestring
-    gboolean hidden;
-    char** only_show_in;
-    char** not_show_in;
-
-
-    /*
-     * A list of strings which may be used in addition to other metadata to describe this entry. This can
-     * be useful e.g. to facilitate searching through entries. The values are not meant for display, 
-     * and should not be redundant with the values of Name or GenericName.
-     */
 } BaseEntry;
 
 // parse the "path" file to the BaseEntry struct.
@@ -105,78 +97,24 @@ void desktop_entry_free(BaseEntry* entry);
 
 typedef struct _ApplicationEntry {
     struct _BaseEntry base;
-
-    char* try_exec;
     char* exec;
     char exec_flag;
-
-    /*
-     * If entry is of type Application, the working directory to run the program in.
-     */
-    char* path; 
-
-    /* 
-     * Whether the program runs in a terminal window.
-     */
-    gboolean terminal; 
-
-    /* Identifiers for application actions. This can be used to tell the application to make a 
-     * specific action, different from the default behavior. The Application actions section describes
-     * how actions work.
-     */
-    char** actions;
-
-    /*
-     * The MIME type(s) supported by this application.
-     */
-    char** mime_type; 
-
-    /*
-     * Categories in which the entry should be shown in a menu (for possible values see t
-     * he Desktop Menu Specification).
-     */
     char* categories;
-
-    char** keywords;
-
-    /*
-     * If true, it is KNOWN that the application will send a "remove" message when started with the DESKTOP_STARTUP_ID environment variable set. If false, it is KNOWN that the application does not work with startup notification at all (does not shown any window, breaks even when using StartupWMClass, etc.). If absent, a reasonable handling is up to implementations (assuming false, using StartupWMClass, etc.). (See the Startup Notification Protocol Specification for more
-     * details).
-     */
-    gboolean startup_notify;
-
-    /*
-     * If specified, it is known that the application will map at least one window with the given string 
-     * as its WM class or WM name hint (see the Startup Notification Protocol Specification for more details).
-     */
-    char* startup_wmclass;
-
 } ApplicationEntry ;
-
-typedef struct _LinkEntry {
-    struct _BaseEntry base;
-
-    /*
-     * If entry is Link type, the URL to access.
-     */
-    char* url;
-} LinkEntry;
-
-// didn't know what the "Directory" type meanings specified by xdg.
-typedef struct _XDGDirectoryEntry {
-    struct _BaseEntry base;
-} XDGDirectoryEntry;
 
 typedef struct _FileEntry {
     struct _BaseEntry base;
-
     char* exec;
 } FileEntry;
 
 typedef struct _DirectoryEntry {
     struct _BaseEntry base;
-
     char* files;
 } DirectoryEntry;
+
+typedef struct _LinkEntry {
+    struct _BaseEntry base;
+    char* url;
+} LinkEntry;
 
 #endif

@@ -101,7 +101,9 @@ void get_exec_name_args(char** cmdline, char** name, char** args)
 static
 char* find_desktop_path_in_white_list(char* name, char* args)
 {
-    if (g_key_file_has_group(white_list, name)) {
+    if (args == NULL)
+        return g_strdup(name);
+    else if (g_key_file_has_group(white_list, name)) {
         gsize size = 0;
         char** keys = g_key_file_get_keys(white_list, name, &size, NULL);
         for (gsize i=0; i<size; i++) {
