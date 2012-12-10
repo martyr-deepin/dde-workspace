@@ -28,14 +28,14 @@ void json_append_number(JSObjectRef json, const char* key, double value)
     json_append_value(json, key, JSValueMakeNumber(ctx, value));
 }
 
-void json_append_nobject(JSObjectRef json, const char* key, void* value, UnRefFunc func)
+void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjFreeFunc free)
 {
     JSContextRef ctx = get_global_context();
-    JSObjectRef js_value = create_nobject(ctx, value, func);
+    JSObjectRef js_value = create_nobject(ctx, value, free);
     json_append_value(json, key, js_value);
 }
 
-void json_append_nobject_a(JSObjectRef json, const char* key, void* values[], gsize size, UnRefFunc func)
+void json_append_nobject_a(JSObjectRef json, const char* key, void* values[], gsize size, NObjFreeFunc func)
 {
     JSContextRef ctx = get_global_context();
 

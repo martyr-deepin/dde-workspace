@@ -51,8 +51,10 @@ JSValueRef json_from_cstr(JSContextRef, const char* json_str);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
 
-typedef void (*UnRefFunc)(void*);
-JSObjectRef create_nobject(JSContextRef ctx, void* obj, UnRefFunc unref);
+typedef void (*NObjFreeFunc)(void*);
+
+JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjFreeFunc func);
+
 void* jsvalue_to_nobject(JSContextRef, JSValueRef);
 
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
@@ -64,7 +66,7 @@ JSObjectRef json_create();
 void json_append_value(JSObjectRef json, const char* key, JSValueRef value);
 void json_append_string(JSObjectRef json, const char* key, const char* value);
 void json_append_number(JSObjectRef json, const char* key, double value);
-void json_append_nobject(JSObjectRef json, const char* key, void* value, UnRefFunc func);
+void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjFreeFunc func);
 
 JSObjectRef json_array_create();
 void json_array_append(JSObjectRef json, gsize i, JSValueRef value);

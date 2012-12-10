@@ -1,25 +1,25 @@
 #include "jsextension.h"
+#include <glib-object.h>
 
 struct _ObjectData {
     long id;
     void* core;
-    UnRefFunc unref;
+    NObjFreeFunc free;
 };
 
-static
-void object_init(JSContextRef ctx, JSObjectRef object)
-{
-    struct _ObjectData* data = JSObjectGetPrivate(object);
-    g_object_ref(data->core);
-}
+/*static*/
+/*void object_init(JSContextRef ctx, JSObjectRef object)*/
+/*{*/
+/*}*/
+
 static
 void object_finlize(JSObjectRef object)
 {
     struct _ObjectData* data = JSObjectGetPrivate(object);
     g_assert(data != NULL);
-    printf("unref %p \n", data->core);
-    if (data->unref != NULL)
-        data->unref(data->core);
+    if (data->free)
+        data->free(data->core);
+    g_free(data);
 }
 
 static
@@ -36,8 +36,7 @@ JSClassRef obj_class()
             NULL, //static value
             NULL, //static function
 
-            object_init, 
-            /*NULL,*/
+            NULL, //object_init, 
             object_finlize,
             NULL,
             NULL,
@@ -65,13 +64,14 @@ void* object_to_core(JSObjectRef object)
     return data->core;
 }
 
-JSObjectRef create_nobject(JSContextRef ctx, void* obj, UnRefFunc unref)
+JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjFreeFunc func)
 {
     struct _ObjectData* data = g_new(struct _ObjectData, 1);
     data->id = (long)obj;
     data->core = obj;
-    data->unref = unref;
-    return JSObjectMake(ctx, obj_class(), data);
+    data->free = func;
+    JSObjectRef r = JSObjectMake(ctx, obj_class(), data);
+    return r;
 }
 
 void* jsvalue_to_nobject(JSContextRef ctx, JSValueRef value)
