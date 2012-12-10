@@ -22,6 +22,9 @@
 #define _CATEGORY_H_
 
 #include <glib.h>
+
+#define CATEGORY_END_TAG -100
+
 const char** get_category_list();
 int* get_deepin_categories(const char* c);
 const GPtrArray* get_all_categories_array();

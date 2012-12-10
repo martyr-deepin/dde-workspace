@@ -73,8 +73,8 @@ int* get_deepin_categories(const char* c)
         ret[i] = find_category_id(cs[i]);
     }
     g_strfreev(cs);
+    ret[len] = CATEGORY_END_TAG;
 
-    ret[len] = NULL;
     return ret;
 
     /*GString* content = g_string_new("");*/
