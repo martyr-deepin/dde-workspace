@@ -45,6 +45,10 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
 {
     GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), child);
+    if (icon == NULL) {
+        g_debug("icon id:%d = 0 (invalide)\n", (int)child);
+        return;
+    }
 
     gint x = g_hash_table_size(icons) * DEFAULT_INTERVAL;
     gint y = 0;
@@ -62,7 +66,6 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     tray_icon_to_info(icon, xy, string);
     string->str[string->len-1] = '\0';
     js_post_message("tray_icon_added", string->str);
-    puts(string->str);
     g_string_free(string, TRUE);
 }
 void tray_init(GtkWidget* container)
