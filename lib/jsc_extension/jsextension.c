@@ -29,6 +29,11 @@ JSValueRef jsvalue_from_cstr(JSContextRef ctx, const char* str)
     return r;
 }
 
+JSValueRef jsvalue_null()
+{
+    return JSValueMakeNull(get_global_context());
+}
+
 char* jsstring_to_cstr(JSContextRef ctx, JSStringRef js_string)
 {
   size_t len = JSStringGetMaximumUTF8CStringSize(js_string);

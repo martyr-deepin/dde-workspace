@@ -46,6 +46,8 @@ void destroy_js_extension();
 
 JSGlobalContextRef get_global_context();
 
+JSValueRef jsvalue_null();
+
 JSValueRef jsvalue_from_cstr(JSContextRef, const char* str);
 JSValueRef json_from_cstr(JSContextRef, const char* json_str);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
