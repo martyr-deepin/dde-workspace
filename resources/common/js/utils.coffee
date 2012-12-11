@@ -72,3 +72,9 @@ swap_element = (c1, c2) ->
 
 #disable default body drop event
 document.body.ondrop = (e) -> e.preventDefault()
+
+run_post = (f, self)->
+    f2 = f.bind(self or this)
+    setTimeout(f2, 0)
+
+

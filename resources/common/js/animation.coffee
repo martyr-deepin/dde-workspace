@@ -5,3 +5,6 @@ apply_animation = (el, name, duration, timefunc)->
 
 apply_rotate = (el, time)->
     apply_animation(el, "rotate", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")
+    setTimeout(->
+        el.style.webkitAnimation = ""
+    , time * 1000)
