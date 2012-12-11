@@ -22,5 +22,6 @@
 #define __TASKLIST_ACTIVE_WINDOW_H
 
 void init_task_list();
+gboolean is_has_client(const char* app_id);
 
 #endif

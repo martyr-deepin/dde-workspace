@@ -23,7 +23,6 @@ class PWContainer extends Widget
         super
         document.body.appendChild(@element)
         @current_group = null
-        @current_shows = []
 
         @update_id = -1
         @hide_id = null
@@ -32,20 +31,13 @@ class PWContainer extends Widget
     do_mouseover: ->
         clearTimeout(@hide_id)
 
-    do_mouseout: ->
-        @remove_all(2500)
-
-    add: (child) ->
-        @element.appendChild(child.element)
-
-        @current_shows.push(child)
-
-    remove: (pw) ->
-        if @current_shows.length == 1
-            @remove_all()
-        else
-            @current_shows.remove(pw)
-            pw?.destroy()
+    _update: ->
+        for pw in @element.children
+            Widget.look_up(pw.id)?.update_content()
+        @update_id = setInterval(=>
+            for pw in @element.children
+                Widget.look_up(pw.id)?.update_content()
+        , 200)
 
     remove_all: (timeout)->
         __remove_all = =>
@@ -53,51 +45,54 @@ class PWContainer extends Widget
             clearInterval(@update_id)
             @update_id = -1
             @current_group = null
-            for i in @current_shows
-                i.destroy()
-            @current_shows = []
+
+            #echo "after remove ....  #{@element.children.length}"
 
         clearTimeout(@show_id)
-        if @current_shows.length == 0
-            __remove_all()
-        else if timeout?
+        if timeout?
             @hide_id = setTimeout(__remove_all, timeout)
         else
             __remove_all()
 
 
-    update: ->
-        for pw in @current_shows
-            pw.update_content()
-        @update_id = setInterval(=>
-            for pw in @current_shows
-                pw.update_content()
-        , 200)
-
-    show_group: (group, offset)->
+    show_group: (group)->
         _show_group_ = =>
             clearTimeout(@hide_id)
 
             @current_group = group
-            group.clients.forEach( (c)=>
-                pw = new PreviewWindow(c.pw_id, c.id, c.title, 200, 100)
+            group.clients.forEach( (id)=>
+                info = group.client_infos[id]
+                if not Widget.look_up("pw"+id)
+                    pw = new PreviewWindow("pw"+id, id, info.title, 200, 100)
+                    @element.appendChild(pw.element)
             )
 
             if @element.clientWidth == screen.width
                 @element.style.left = 0
                 DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
             else
-                @element.style.left = offset + "px"
-                DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
-            @update()
+                run_post(->
+                    offset = group.element.offsetLeft - @element.clientWidth / 2 + group.element.clientWidth / 2
+                    @element.style.left = offset + "px"
+                    #echo "1 offset:#{offset}"
+                , @)
+                run_post(->
+                    offset = @element.offsetLeft
+                    DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+                    #echo "2 offset:#{offset}"
+                , @)
+            @_update()
 
-        if @current_group == null or (@current_group == group and @update_id == -1)
+        if @current_group == null
             @show_id = setTimeout(=>
-                _show_group_(group, offset)
+                _show_group_(group)
             , 1000)
+        else if @current_group == group
+            clearTimeout(@hide_id)
         else if @current_group != null
             @remove_all()
-            _show_group_(group, offset)
+            echo "remove all.. and show"
+            _show_group_(group)
 
 
 Preview_container = new PWContainer("pwcontainer")
@@ -111,20 +106,18 @@ class PreviewWindow extends Widget
         <div class=PWClose>X</div>
         "
 
-        Preview_container.add(@)
-
-        @canvas = $("#c#{@id}")
 
         $(@element, ".PWClose").addEventListener('click', (e)=>
             DCore.Dock.close_window(@w_id)
             e.stopPropagation()
+            @destroy()
         )
 
     do_click: (e)->
         DCore.Dock.set_active_window(@w_id)
 
     update_content: ->
-        DCore.Dock.draw_window_preview(@canvas, @w_id, 200, 100)
+        DCore.Dock.draw_window_preview($("#c#{@id}"), @w_id, 200, 100)
 
 DCore.signal_connect("leave-notify", ->
     Preview_container.remove_all(1000)

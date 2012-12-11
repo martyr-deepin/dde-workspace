@@ -23,9 +23,17 @@
 #include "utils.h"
 #include "launcher.h"
 #include "dock_config.h"
+#include "tasklist.h"
 #include "desktop_file_matcher.h"
+
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
+
+/* * app_id is 
+ * 1. the desktop file name in whitelist
+ * 2. the normal desktop file name
+ * 3. the executable file name
+ * */
 
 #define APPS_INI "dock/apps.ini"
 static GKeyFile* k_apps = NULL;
@@ -62,10 +70,15 @@ JSValueRef build_app_info(const char* app_id)
     } else {
         icon_name = g_key_file_get_string(k_apps, app_id, "Icon", NULL);
     }
-    char* icon_path = icon_name_to_path(icon_name, 48);
+
+    if (g_str_has_prefix(icon_name, "data:image")) {
+        json_append_string(json, "Icon", icon_name);
+    } else {
+        char* icon_path = icon_name_to_path(icon_name, 48);
+        json_append_string(json, "Icon", icon_path);
+        g_free(icon_path);
+    }
     g_free(icon_name);
-    json_append_string(json, "Icon", icon_path);
-    g_free(icon_path);
     return json;
 }
 
@@ -80,7 +93,7 @@ char* get_app_id(GDesktopAppInfo* info)
     } else {
         g_free(basename);
 
-        return g_strdup(g_app_info_get_executable(G_APP_INFO(info)));
+        return g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
     }
 }
 
@@ -170,7 +183,8 @@ void request_dock(const char* path)
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);
-        js_post_message_json("launcher_added", build_app_info(app_id));
+        if (!is_has_client(app_id))
+            js_post_message_json("launcher_added", build_app_info(app_id));
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);
@@ -198,4 +212,50 @@ JSValueRef get_launcher_info(const char* app_id)
         g_debug("try find %s failed \n", app_id);
         return jsvalue_null();
     }
+}
+
+JS_EXPORT_API
+gboolean launch_by_app_id(const char* app_id)
+{
+    GAppInfo* info = NULL;
+    gboolean ret = FALSE;
+    if (g_key_file_has_group(k_apps, app_id)) {
+        char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
+        if (path != NULL) {
+            info = G_APP_INFO(g_desktop_app_info_new_from_filename(path));
+            g_free(path);
+        } else {
+            char* cmdline = g_key_file_get_string(k_apps, app_id, "CmdLine", NULL);
+            char* name = g_key_file_get_string(k_apps, app_id, "Name", NULL);
+            if (g_key_file_get_boolean(k_apps, app_id, "Terminal", NULL))
+                info = g_app_info_create_from_commandline(cmdline, name, G_APP_INFO_CREATE_NEEDS_TERMINAL, NULL);
+            else
+                info = g_app_info_create_from_commandline(cmdline, name, G_APP_INFO_CREATE_NONE, NULL);
+            g_free(cmdline);
+            g_free(name);
+        }
+    } else {
+        info = g_app_info_create_from_commandline(app_id, NULL, G_APP_INFO_CREATE_NONE, NULL);
+    }
+    ret = g_app_info_launch(info, NULL, NULL, NULL);
+    g_object_unref(info);
+    return ret;
+
+}
+
+gboolean is_has_app_info(const char* app_id)
+{
+    return g_key_file_has_group(k_apps, app_id);
+}
+
+gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
+{
+    g_key_file_set_string(k_apps, name, "Name", name);
+    g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
+    g_key_file_set_string(k_apps, name, "Icon", icon);
+
+    save_app_config(k_apps, APPS_INI);
+
+    if (!is_has_client(name))
+        js_post_message_json("launcher_added", build_app_info(name));
 }

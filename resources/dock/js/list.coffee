@@ -71,6 +71,10 @@ class AppList extends Widget
         if e.target == @element
             indicator.hide()
 
+    do_mouseover: (e)->
+        if e.target == @element
+            Preview_container.remove_all(1000)
+
 
 app_list = new AppList("app_list")
 
@@ -117,6 +121,7 @@ class Launcher extends AppItem
     do_contextmenu: (e)->
         [
             [1, _("Run")],
+            [],
             [2, _("RemoveMe")],
         ]
 
@@ -143,6 +148,7 @@ class ClientGroup extends AppItem
         if @clients.indexOf(id) == -1
             @clients.push id
             @count.innerText = "#{@clients.length}"
+            apply_rotate(@element, 0.3)
 
         @client_infos[id] =
             "id": id
@@ -162,8 +168,8 @@ class ClientGroup extends AppItem
             @destroy()
         else if @leader == id
             le = @clients[0]
-            set_leader(le, @client_infos[le].icon)
-        echo "remove client"
+            icon = @client_infos[le].icon
+            @set_leader(le, icon)
 
     set_leader: (id, icon)->
         @leader = id
@@ -183,10 +189,24 @@ class ClientGroup extends AppItem
     do_contextmenu: (e)->
         [
             [1, _("OpenNew")],
-            [2, _("DockMe")],
+            [2, _("Close")],
+            [],
+            [3, _("DockMe")],
         ]
-    do_itemselected: (e)->
-        alert(@app_id)
+
+    do_itemselected: (e)=>
+        Preview_container.remove_all()
+        switch e.id
+            when 1 then DCore.Dock.launch_by_app_id(@app_id)
+            when 2
+                DCore.Dock.close_window(@leader)
+            when 3 then DCore.Dock.request_dock_by_client_id(@leader)
+
+    do_click: (e)->
+        DCore.Dock.set_active_window(@leader)
+
+    do_mouseover: (e)->
+        #Preview_container.show_group(@)
 
 
 

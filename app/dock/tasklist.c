@@ -18,14 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#include <gtk/gtk.h>
-#include <gdk/gdkx.h>
-#include <X11/Xatom.h>
-#include <dwebview.h>
 #include "X_misc.h"
 #include "pixbuf.h"
 #include "utils.h"
 #include "desktop_file_matcher.h"
+#include "launcher.h"
+
+#include <gtk/gtk.h>
+#include <gdk/gdkx.h>
+#include <X11/Xatom.h>
+#include <dwebview.h>
+#include <string.h>
+
 
 Atom ATOM_CLIENT_LIST;
 Atom ATOM_ACTIVE_WINDOW;
@@ -409,6 +413,10 @@ void minimize_window(double id)
 
 void draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
 {
+    if (JSValueIsNull(data->ctx, canvas)) {
+        g_debug("draw_window_preview with null canvas!");
+        return;
+    }
     cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
 
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
@@ -441,4 +449,42 @@ void draw_window_preview(JSValueRef canvas, double xid, double dest_width, doubl
 double test_get_n()
 {
     return (double)g_hash_table_size(_clients_table);
+}
+
+
+JS_EXPORT_API
+gboolean request_dock_by_client_id(double id)
+{
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
+    printf("try dock xid %f\n", id);
+    g_assert(c != NULL);
+    if (is_has_app_info(c->app_id)) {
+        // already has this app info
+        return FALSE;
+    } else {
+        char* name =  g_strdup(c->app_id);
+        for (gsize i=0; i<strlen(name); i++) {
+            if (name[i] == ' ') {
+                name[i] = '\0';
+                break;
+            }
+        }
+        request_by_info(name, c->app_id, c->icon);
+        g_free(name);
+    }
+}
+
+static 
+gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
+{
+    return g_strcmp0(c->app_id, app_id) == 0;
+}
+
+gboolean is_has_client(const char* app_id)
+{
+    //TODO: change this O(n*n) find method.
+    if (g_hash_table_find(_clients_table, (GHRFunc)_find_app_id, (gpointer)app_id) != NULL)
+        return TRUE;
+    else
+        return FALSE;
 }
