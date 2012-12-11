@@ -28,7 +28,6 @@ static GRegex* prefix_regex = NULL;
 static GRegex* suffix_regex = NULL;
 static GHashTable* white_apps = NULL;
 static gboolean is_init = FALSE;
-#define WHITE_LIST_INI "app_white_list.ini"
 
 static
 void _init()

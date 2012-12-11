@@ -16,13 +16,16 @@ macro(GEN_JSC_SOURCE_WITH_NO_INIT CFG_DIR JSC_GEN)
 endmacro()
 
 if (DEVELOP)
-    SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources")
+    SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+    add_definitions("-DWHITE_LIST_INI=\"../app_white_list.ini\"")
+    add_definitions("-DCATEGORY_DB_PATH=\"../category.db\"")
 else()
-    SET(RESOURCE_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-desktop/resources")
+    SET(RESOURCE_DIR "${CMAKE_INSTALL_PREFIX}/share/deepin-desktop/resources/")
+    add_definitions("-DWHITE_LIST_INI=\"${RESOURCE_DIR}/app_white_list.ini\"")
+    add_definitions("-DCATEGORY_DB_PATH=\"${RESOURCE_DIR}/category.db\"")
 endif()
 
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
-add_definitions("-DCATEGORY_DB_PATH=\"category.db\"")
 
 find_package(PkgConfig)
 pkg_check_modules(WEBKIT REQUIRED deepin-webkit-3.0)
@@ -51,3 +54,7 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/schemas
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0
 )
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/app_white_list.ini ${CMAKE_CURRENT_SOURCE_DIR}/category.db
+    DESTINATION ${RESOURCE_DIR}
+    )
