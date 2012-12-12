@@ -17,22 +17,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-show = false
-$("#icon_desktop").addEventListener('click', (e) ->
-    show = !show
-    DCore.Dock.show_desktop(show)
-)
-$("#icon_desktop").addEventListener('mouseover', (e) ->
-    Preview_container.remove_all()
-)
-
-$("#icon_launcher").addEventListener('click', (e) ->
-    DCore.run_command("launcher")
-)
-$("#icon_launcher").addEventListener('mouseover', (e) ->
-    Preview_container.remove_all()
-)
-
 format_two_bit = (s) ->
     if s < 9
         return "0#{s}"
@@ -59,7 +43,7 @@ setInterval( ->
 , 1000
 )
 
-board.width = 1440
+board.width = screen.width
 board.height = 30
 DCore.Dock.draw_board(board)
 

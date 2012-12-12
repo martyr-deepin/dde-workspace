@@ -22,6 +22,7 @@ void draw_board(JSValueRef canvas, JSData* data)
     int h = 30;
 
     cairo_save(cr);
+    cairo_set_line_width(cr, 1);
     cairo_set_source_rgba(cr, 
             GET_R(GD.config.color),
             GET_G(GD.config.color),
@@ -30,14 +31,12 @@ void draw_board(JSValueRef canvas, JSData* data)
             );
     cairo_paint(cr);
 
-    cairo_set_line_width(cr, 1);
-
     cairo_set_source_rgba(cr, 0, 0, 0, 0.6);
-    cairo_rectangle(cr, 0, 0, w, 1);
+    cairo_rectangle(cr, 0, 0, w, 0);
     cairo_stroke(cr);
 
     cairo_set_source_rgba(cr, 1, 1, 1, 0.7);
-    cairo_rectangle(cr, 0, 1, w, 1);
+    cairo_rectangle(cr, 0, 1, w, 0);
     cairo_stroke(cr);
 
     cairo_set_source_rgba(cr, 0, 0, 0, 0.05);
@@ -61,6 +60,6 @@ void draw_board(JSValueRef canvas, JSData* data)
     canvas_custom_draw_did(cr, NULL);
 }
 
-void gen_client_icon()
+void draw_app_icon(JSValueRef canvas, double id, double number, JSData* data)
 {
 }

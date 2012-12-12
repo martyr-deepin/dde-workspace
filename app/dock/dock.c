@@ -170,10 +170,10 @@ void emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
+        tray_init(container);
         inited = TRUE;
         init_config();
         init_launchers();
-        tray_init(container);
         init_task_list();
     }
     /*GdkWindow* root = gdk_get_default_root_window();*/
