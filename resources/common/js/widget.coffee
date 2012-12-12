@@ -95,3 +95,6 @@ class Widget extends Module
     destroy: ->
         @element.parentElement?.removeChild(@element)
         delete Widget.object_table[@id]
+
+    add_css_class: (name)->
+        @element.classList.add(name)
