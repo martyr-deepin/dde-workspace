@@ -33,10 +33,41 @@ class Indicator extends Widget
 
 indicator = new Indicator("indicator")
 
+class ShowDesktop extends Widget
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @show = false
+        @element.innerHTML="
+        <img class=AppItemImg src=img/desktop.png draggable=false title='show/hide desktop'/>
+        "
+
+    do_click: (e)->
+        @show = !@show
+        DCore.Dock.show_desktop(@show)
+
+class LauncherItem extends Widget
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @element.innerHTML="
+        <img class=AppItemImg src=img/launcher.png draggable=false title='launcher'/>
+        "
+
+    do_click: (e)->
+        @show = !@show
+        DCore.run_command("launcher")
+
+
+
 class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").insertBefore(@element, $("#notifyarea"))
+        @show_desktop = new ShowDesktop("show_desktop")
+        @show_launcher = new LauncherItem("show_launcher")
+        @element.appendChild(@show_desktop.element)
+        @element.appendChild(@show_launcher.element)
 
     append: (c) ->
         @element.appendChild(c.element)
@@ -48,11 +79,11 @@ class AppList extends Widget
             DCore.Dock.request_dock(file.trim())
 
     show_try_dock_app: (e) ->
-        path = e.dataTransfer.getData("text/uri-list")
-        t = path.substring(path.length-8, path.length)
+        path = e.dataTransfer.getData("text/uri-list").trim()
+        t = path.substring(path.length-8)
         if t == ".desktop"
-            lcg = $(".ClientGroup:last-of-type")
-            fcg = $(".ClientGroup:first-of-type")
+            lcg = $(".ClientGroup:last-of-type", @element)
+            fcg = $(".ClientGroup:first-of-type", @element)
             lp = get_page_xy(lcg, lcg.clientWidth, 0)
             fp = get_page_xy(fcg, 0, 0)
             if e.pageX > lp.x
@@ -81,7 +112,7 @@ app_list = new AppList("app_list")
 class AppItem extends Widget
     constructor: (@id, @icon)->
         super
-        @element.draggable=true
+        @add_css_class("AppItem")
         app_list.append(@)
 
     do_dragstart: (e)->
@@ -102,14 +133,11 @@ class AppItem extends Widget
         e.stopPropagation()
 
 
-
-
-
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
         @element.innerHTML = "
-        <img src=#{@icon}>
+        <img class=AppItemImg src=#{@icon}>
         "
     do_click: (e)->
         DCore.Launchable.launch(@core)
@@ -128,14 +156,51 @@ class Launcher extends AppItem
 class ClientGroup extends AppItem
     constructor: (@id, @app_id)->
         super
-        @clients = []
+        @try_swap_launcher()
 
+        @clients = []
         @client_infos = {}
-        @leader = null
+
         @count = document.createElement("div")
         @count.setAttribute("class", "ClientGroupNumber")
+        @element.appendChild(@count)
 
-        @try_swap_launcher()
+        @img = document.createElement("img")
+        @img.setAttribute("class", "AppItemImg")
+        @element.appendChild(@img)
+
+        @indicate = document.createElement("img")
+        @indicate.setAttribute("class", "OpenIndicate")
+        @element.appendChild(@indicate)
+
+        @leader = null
+
+        @b1 = document.createElement("img")
+        @b1.setAttribute("class", "AppItemBoard")
+        @b1.src = "img/1_r2_c14.png"
+        @element.appendChild(@b1)
+
+        #@b2 = document.createElement("img")
+        #@b2.setAttribute("class", "AppItemBoard2")
+        #@b2.src = "img/1_r2_c14.png"
+        #@element.appendChild(@b2)
+
+        #@b2 = document.createElement("img")
+        #@b2.setAttribute("class", "AppItemBoard3")
+        #@b2.src = "img/1_r2_c14.png"
+        #@element.appendChild(@b2)
+
+        @to_normal_status()
+
+
+    to_active_status : ->
+        @indicate.src = "img/s_app_active.png"
+        #offset = @element.offsetLeft - (@indicate.clientWidth - @element.clientWidth) / 2
+        #@indicate.style.left = offset + "px"
+    to_normal_status : ->
+        @indicate.src = "img/s_app_open.png"
+        #offset = @element.offsetLeft - (@indicate.clientWidth - @element.clientWidth) / 2
+        #@indicate.style.left = offset + "px"
 
     try_swap_launcher: ->
         l = Widget.look_up(@app_id)
@@ -148,7 +213,7 @@ class ClientGroup extends AppItem
         if @clients.indexOf(id) == -1
             @clients.push id
             @count.innerText = "#{@clients.length}"
-            apply_rotate(@element, 0.3)
+            apply_rotate(@element, 1)
 
         @client_infos[id] =
             "id": id
@@ -173,10 +238,7 @@ class ClientGroup extends AppItem
 
     set_leader: (id, icon)->
         @leader = id
-        @element.innerHTML = "
-        <img draggable=false src=#{icon} />
-        "
-        @element.appendChild(@count)
+        @img.src=icon
 
     destroy: ->
         info = DCore.Dock.get_launcher_info(@app_id)
@@ -212,11 +274,11 @@ class ClientGroup extends AppItem
 
 active_group = null
 DCore.signal_connect("active_window_changed", (info)->
-    client = Widget.look_up(info.id)
+    echo "active window changed"
     if active_group?
-        active_group.deactive()
-    active_group = client.leader
-    active_group.active()
+        active_group.to_normal_status()
+    active_group = Widget.look_up("le_"+info.clss)
+    active_group?.to_active_status()
 )
 
 DCore.signal_connect("launcher_added", (info) ->

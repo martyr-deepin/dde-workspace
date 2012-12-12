@@ -117,7 +117,13 @@ void active_window_changed(Display* dsp, Window w)
 {
     if (_active_client_id != w) {
         _active_client_id = w;
-        js_post_message("active_window_changed", "{\"id\": %d}", (int)w);
+        Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)w));
+        if (c != NULL) {
+            JSObjectRef json = json_create();
+            json_append_number(json, "id", (int)w);
+            json_append_string(json, "clss", c->clss);
+            js_post_message_json("active_window_changed", json);
+        }
     }
 }
 
@@ -223,6 +229,9 @@ void* argb_to_rgba(gulong* data, size_t s)
     return img;
 }
 
+GdkPixbuf get_client_icon(Client* c)
+{
+}
 void _update_window_icon(Client* c)
 {
     gulong items;
@@ -370,6 +379,7 @@ void init_task_list()
     g_hash_table_remove_all(_clients_table);
 
     update_task_list(GDK_WINDOW_XID(root));
+    update_active_window(_dsp, GDK_WINDOW_XID(root));
 }
 
 //JS_EXPORT
