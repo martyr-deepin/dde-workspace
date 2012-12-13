@@ -55,6 +55,8 @@ last_widget = ""
 drag_canvas = null
 # store the image element to set to the drag image
 drag_image = null
+# store the left top point of drag image start point
+drag_start = {x : 0, y: 0}
 
 # store the area selection box for grid
 sel = null
@@ -336,6 +338,7 @@ drag_update_selected_pos = (w, evt) ->
 
         move_to_somewhere(w, new_pos)
 
+    update_selected_item_drag_image()
     return
 
 
@@ -368,7 +371,10 @@ item_dragstart_handler = (widget, evt) ->
     evt.dataTransfer.effectAllowed = "all"
 
     #TODO: set mouse background image when begin to drag
-    evt.dataTransfer.setDragImage(drag_image, 20, 20)
+    x = evt.x - drag_start.x * i_width
+    y = evt.y - drag_start.y * i_height
+    echo "setDragImage #{drag_start.x},#{drag_start.y}"
+    evt.dataTransfer.setDragImage(drag_image, x, y)
 
 
 set_item_selected = (w, top = false) ->
@@ -481,27 +487,30 @@ update_selected_stats = (w, evt) ->
 update_selected_item_drag_image = ->
     if selected_item.length == 0 then return
 
-    echo "---------\nupdate_selected_item_drag_image #{selected_item.length}"
-
     pos = load_position(selected_item[0])
-    top_left = {x : pos.x, y : pos.y}
-    bottom_right = {x : pos.x, y : pos.y}
+    top_left = {x : (cols - 1), y : (rows - 1)}
+    bottom_right = {x : 0, y : 0}
 
     for i in selected_item
         pos = load_position(i)
         if top_left.x > pos.x then top_left.x = pos.x
-        if bottom_right.x < pos.x then top_left.x = pos.x
+        if bottom_right.x < pos.x then bottom_right.x = pos.x
 
         if top_left.y > pos.y then top_left.y = pos.y
-        if bottom_right.y < pos.y then top_left.y = pos.y
+        if bottom_right.y < pos.y then bottom_right.y = pos.y
 
     if top_left.x > bottom_right.x then top_left.x = bottom_right.x
     if top_left.y > bottom_right.y then top_left.y = bottom_right.y
 
-    if drag_canvas? then delete drag_canvas
-    drag_canvas = document.createElement("canvas")
+    #if drag_canvas? then delete drag_canvas
+    #drag_canvas = document.createElement("canvas")
     drag_canvas.width = (bottom_right.x - top_left.x + 1) * i_width
     drag_canvas.height = (bottom_right.y - top_left.y + 1) * i_height
+    #drag_canvas.width = s_width
+    #drag_canvas.height = s_height
+
+    #echo "----------------------------"
+    #echo "update_selected_item_drag_image #{selected_item.length} [#{drag_canvas.width},#{drag_canvas.height}]"
 
     context = drag_canvas.getContext('2d')
 
@@ -516,10 +525,22 @@ update_selected_item_drag_image = ->
         start_x = pos.x * i_width
         start_y = pos.y * i_height
 
-        context.drawImage(w.item_icon, start_x, start_y)
-        echo "drawImage #{w.name} #{start_x}, #{start_y}"
+        # draw icon
+        context.drawImage(w.item_icon, start_x + 22, start_y)
+        # draw text
+        context.shadowOffsetX = 1
+        context.shadowOffsetY = 1
+        context.shadowColor = "rgba(0, 0, 0, 1.0)"
+        context.shadowBlur = 1.5
+        context.font = "bold small san-serif"
+        context.fillStyle = "rgba(255, 255, 255, 1.0)"
+        context.textAlign = "center"
+        context.fillText(w.name, start_x + 46, start_y + 64, 92)
+
 
     drag_image.src = drag_canvas.toDataURL()
+    drag_start.x = top_left.x
+    drag_start.y = top_left.y
 
 
 delete_selected_items = ->
@@ -563,6 +584,7 @@ create_item_grid = ->
     div_grid.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
+    drag_canvas = document.createElement("canvas")
     drag_image = document.createElement("img")
     #FIXME test propose only
     document.body.appendChild(drag_image)
