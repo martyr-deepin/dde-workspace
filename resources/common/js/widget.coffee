@@ -22,6 +22,8 @@ _events = [
     'change',
     'click',
     'contextmenu',
+    'buildmenu',
+    'rightclick',
     'copy',
     'cut',
     'dblclick',
@@ -78,19 +80,29 @@ class Widget extends Module
 
         #there has an strange bug when use indexof instead search,
         # the key value will always be "constructor" without any other thing
+        f_menu = null
+        f_rclick = null
+
         for k,v of this.constructor.prototype when k.search("do_") == 0
             key = k.substr(3)
             if key in _events
-                if key == "contextmenu"
+                if key == "rightclick"
+                    f_rclick = v.bind(this)
+                else if key == "buildmenu"
                     f_menu = v.bind(this)
-                    @element.addEventListener(key, (e) =>
-                        e.stopPropagation()
-                        @element.contextMenu = build_menu(f_menu())
-                    )
+                else if key == "contextmenu"
+                    "nothing should do"
                 else
                     @element.addEventListener(key, v.bind(this))
             else
                 echo "found the do_ prefix but the name #{key} is not an dom events"
+
+        @element.addEventListener("contextmenu", (e) =>
+            if f_menu
+                @element.contextMenu = build_menu(f_menu())
+            if f_rclick
+                f_rclick(e)
+        )
 
     destroy: ->
         @element.parentElement?.removeChild(@element)

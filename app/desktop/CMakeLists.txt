@@ -7,7 +7,7 @@ SET(SRC_LIST desktop.c desktop_item_monitor.c file_operation.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

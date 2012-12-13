@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-22 16:01+0800\n"
+"POT-Creation-Date: 2012-12-11 09:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,6 +71,8 @@ msgid "Desktop Settings"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:26
+#: ../resources/desktop/js/desktop_item.coffee:132
+#: ../resources/desktop/js/desktop_item.coffee:126
 msgid "Open"
 msgstr ""
 
@@ -79,10 +81,14 @@ msgid "Open with"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:34
+#: ../resources/desktop/js/desktop_item.coffee:140
+#: ../resources/desktop/js/desktop_item.coffee:134
 msgid "cut"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:35
+#: ../resources/desktop/js/desktop_item.coffee:141
+#: ../resources/desktop/js/desktop_item.coffee:135
 msgid "copy"
 msgstr ""
 
@@ -91,6 +97,8 @@ msgid "create link"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:38
+#: ../resources/desktop/js/desktop_item.coffee:144
+#: ../resources/desktop/js/desktop_item.coffee:138
 msgid "Rename"
 msgstr ""
 
@@ -118,9 +126,37 @@ msgid "move to"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:51
+#: ../resources/desktop/js/desktop_item.coffee:157
+#: ../resources/desktop/js/desktop_item.coffee:151
 msgid "Delete"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:53
+#: ../resources/desktop/js/desktop_item.coffee:159
+#: ../resources/desktop/js/desktop_item.coffee:153
 msgid "Properties"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:64
+msgid "Personal"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:65
+msgid "Display Settings"
+msgstr ""
+
+#: ../resources/dock/js/list.coffee:119
+msgid "Run"
+msgstr ""
+
+#: ../resources/dock/js/list.coffee:120
+msgid "RemoveMe"
+msgstr ""
+
+#: ../resources/dock/js/list.coffee:176 ../resources/dock/js/list.coffee:185
+msgid "OpenNew"
+msgstr ""
+
+#: ../resources/dock/js/list.coffee:177 ../resources/dock/js/list.coffee:186
+msgid "DockMe"
 msgstr ""

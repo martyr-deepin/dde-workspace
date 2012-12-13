@@ -166,6 +166,7 @@ void update_dock_show()
     else
         hide_dock();
 }
+
 void emit_webview_ok()
 {
     static gboolean inited = FALSE;
@@ -175,7 +176,8 @@ void emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
+    } else {
+        update_dock_apps();
+        update_task_list();
     }
-    /*GdkWindow* root = gdk_get_default_root_window();*/
-    /*update_task_list(GDK_WINDOW_XID(root));*/
 }
