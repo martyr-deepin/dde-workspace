@@ -196,7 +196,6 @@ void request_dock(const char* path)
 JS_EXPORT_API
 void request_undock(const char* app_id)
 {
-    printf("request undock %s\n", app_id);
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
 

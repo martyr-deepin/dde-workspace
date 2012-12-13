@@ -84,6 +84,8 @@ void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _set_window_exec(Client *c);
 
+void _update_task_list(Window root);
+
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
@@ -187,12 +189,20 @@ void client_list_changed(Window* cs, size_t n)
     }
 }
 
-void update_task_list(Window root)
+void update_task_list()
+{
+    g_hash_table_remove_all(_clients_table);
+    GdkWindow* root = gdk_get_default_root_window();
+    _update_task_list(GDK_WINDOW_XID(root));
+}
+
+void _update_task_list(Window root)
 {
     gulong items;
     void* data = get_window_property(_dsp, root, ATOM_CLIENT_LIST, &items);
-    if (data == NULL)
+    if (data == NULL) {
         return;
+    }
 
     Window *cs = g_new(Window, items);
     for (int i=0; i<items; i++) {
@@ -329,7 +339,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
     if (((XEvent*)xevent)->type == PropertyNotify) {
         XPropertyEvent* ev = xevent;
         if (ev->atom == ATOM_CLIENT_LIST) {
-            update_task_list(ev->window);
+            _update_task_list(ev->window);
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             update_active_window(ev->display, ev->window);
         }
@@ -376,9 +386,8 @@ void init_task_list()
 
     gdk_window_add_filter(root, monitor_root_change, NULL);
 
-    g_hash_table_remove_all(_clients_table);
 
-    update_task_list(GDK_WINDOW_XID(root));
+    update_task_list();
     update_active_window(_dsp, GDK_WINDOW_XID(root));
 }
 
@@ -466,7 +475,6 @@ JS_EXPORT_API
 gboolean request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
-    printf("try dock xid %f\n", id);
     g_assert(c != NULL);
     if (is_has_app_info(c->app_id)) {
         // already has this app info
