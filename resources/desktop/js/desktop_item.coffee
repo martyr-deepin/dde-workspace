@@ -44,6 +44,7 @@ cleanup_filename = (str) ->
     else
         new_str
 
+s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
 
 class Item extends Widget
     constructor: (@name, @icon, @exec, @path) ->
@@ -343,6 +344,7 @@ class DesktopEntry extends Item
             when 1 then @item_exec()
             when 5 then @item_rename()
             when 6 then delete_selected_items()
+            when 7 then s_nautilus.ShowItemProperties_sync(["file://#{@path}"], '')
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
