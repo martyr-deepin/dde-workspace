@@ -59,24 +59,15 @@ gboolean erase_background(GtkWidget* widget,
     return FALSE;
 }
 
-gboolean invoke_js_garbage(JSContextRef ctx)
-{
-    // seems JSC1.8 can't auto free garbage???
-    g_debug("invoke js garbage collecte\n");
-    JSGarbageCollect(ctx);
-    return TRUE;
-}
-
 static void add_ddesktop_class(WebKitWebView *web_view,
         WebKitWebFrame *frame, 
         gpointer context, 
         gpointer arg3, 
         gpointer user_data)
 {
-    JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
 
+    JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
-    g_timeout_add_seconds(5, (GSourceFunc)invoke_js_garbage, jsContext);
 }
 
 

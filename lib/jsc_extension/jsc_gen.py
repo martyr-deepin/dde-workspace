@@ -491,8 +491,16 @@ JSGlobalContextRef get_global_context()
 {
     return global_ctx;
 }
+gboolean invoke_js_garbage()
+{
+    g_debug("invoke js garbage collecte\\n");
+    JSGarbageCollect(global_ctx);
+    return TRUE;
+}
 void init_js_extension(JSGlobalContextRef context, void* webview)
 {
+    if (global_ctx == NULL)
+        g_timeout_add_seconds(5, (GSourceFunc)invoke_js_garbage, NULL);
     global_ctx = context;
     __webview = webview;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);

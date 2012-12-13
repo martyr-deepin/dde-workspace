@@ -229,7 +229,7 @@ void* argb_to_rgba(gulong* data, size_t s)
     return img;
 }
 
-GdkPixbuf get_client_icon(Client* c)
+GdkPixbuf* get_client_icon(Client* c)
 {
 }
 void _update_window_icon(Client* c)
