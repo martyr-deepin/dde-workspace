@@ -40,6 +40,7 @@ body {
     width: 100%;
     min-height: 30px;
     max-height: 30px;
+    z-index: -1000;
 }
 
 .AppList {
@@ -94,22 +95,7 @@ body {
 }
 
 .AppItemBoard {
-    z-index: -10;
     position: absolute;
-    top: 0px;
-    left: 0px;
-}
-.AppItemBoard2 {
-    z-index: -11;
-    position: absolute;
-    top: -2px;
-    left: 3px;
-}
-.AppItemBoard3 {
-    z-index: -12;
-    position: absolute;
-    top: -4px;
-    left: 6px;
 }
 
 .AppItemImg {
