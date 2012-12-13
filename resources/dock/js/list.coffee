@@ -146,7 +146,7 @@ class Launcher extends AppItem
         switch e.id
             when 1 then DCore.Launchable.launch(@core)
             when 2 then DCore.Dock.request_undock(@id)
-    do_contextmenu: (e)->
+    do_buildmenu: (e)->
         [
             [1, _("Run")],
             [],
@@ -248,13 +248,17 @@ class ClientGroup extends AppItem
             apply_rotate(l.element, 0.5)
         super
 
-    do_contextmenu: (e)->
+    do_buildmenu: ->
         [
             [1, _("OpenNew")],
             [2, _("Close")],
             [],
             [3, _("DockMe")],
         ]
+
+    do_rightclick: (e)->
+        echo "right click"
+        echo e
 
     do_itemselected: (e)=>
         Preview_container.remove_all()
@@ -274,7 +278,6 @@ class ClientGroup extends AppItem
 
 active_group = null
 DCore.signal_connect("active_window_changed", (info)->
-    echo "active window changed"
     if active_group?
         active_group.to_normal_status()
     active_group = Widget.look_up("le_"+info.clss)
