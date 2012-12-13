@@ -29,6 +29,6 @@ $ = (q, o) ->
         when '#' then return div.getElementById(selector.substr(1))
         when '.' then return div.querySelector(selector)
         else
-            return div.getElementByTagName(selector)
+            return div.getElementsByTagName(selector)
     
 
