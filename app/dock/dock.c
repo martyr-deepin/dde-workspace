@@ -49,23 +49,18 @@ void set_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
     int s_width = gdk_screen_get_width(screen);
     int s_height = gdk_screen_get_height(screen);
+    gtk_window_resize(GTK_WINDOW(container), s_width, s_height);
 
     base_rect.width = s_width;
     base_rect.y = s_height - BOARD_HEIGHT;
     dock_rect.y = s_height - DOCK_HEIGHT;
-    set_dock_width(s_width);
-
-    GdkWindow* gdkw = gtk_widget_get_window(webview);
-
-    gdk_window_move_resize(gdkw, 0, 0, s_width, s_height);
-
-    GdkRectangle rect = {0, 0, s_width, s_height};
-    gtk_widget_size_allocate(webview, &rect);
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, s_width
             );
 
-    /*js_post_message("screen_size_changed", NULL);*/
+    set_dock_width(s_width);
+
+    webkit_web_view_reload(WEBKIT_WEB_VIEW(webview));
 }
 
 void hide_dock()

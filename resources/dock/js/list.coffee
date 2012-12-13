@@ -82,8 +82,8 @@ class AppList extends Widget
         path = e.dataTransfer.getData("text/uri-list").trim()
         t = path.substring(path.length-8)
         if t == ".desktop"
-            lcg = $(".ClientGroup:last-of-type", @element)
-            fcg = $(".ClientGroup:first-of-type", @element)
+            lcg = $(".AppItem:last-of-type", @element)
+            fcg = $(".AppItem:nth-of-type(3)", @element)
             lp = get_page_xy(lcg, lcg.clientWidth, 0)
             fp = get_page_xy(fcg, 0, 0)
             if e.pageX > lp.x
@@ -120,6 +120,10 @@ class AppItem extends Widget
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
         e.stopPropagation()
+        @element.style.opacity = "0.5"
+
+    do_dragend: (e)->
+        @element.style.opacity = "1"
 
     do_dragover: (e) ->
         e.preventDefault()
@@ -163,7 +167,7 @@ class ClientGroup extends AppItem
 
         @count = document.createElement("div")
         @count.setAttribute("class", "ClientGroupNumber")
-        @element.appendChild(@count)
+        #@element.appendChild(@count)
 
         @img = document.createElement("img")
         @img.setAttribute("class", "AppItemImg")
@@ -171,36 +175,61 @@ class ClientGroup extends AppItem
 
         @indicate = document.createElement("img")
         @indicate.setAttribute("class", "OpenIndicate")
+        @indicate.draggable = false
         @element.appendChild(@indicate)
 
         @leader = null
 
+        @board_img_path = "img/1_r2_c14.png"
         @b1 = document.createElement("img")
+        @b1.draggable = false
+        @b1.src = @board_img_path
         @b1.setAttribute("class", "AppItemBoard")
-        @b1.src = "img/1_r2_c14.png"
+        @b1.style.zIndex = -8
+
+        @b2 = document.createElement("img")
+        @b2.draggable = false
+        @b2.src = @board_img_path
+        @b2.setAttribute("class", "AppItemBoard")
+        @b2.style.zIndex = -9
+
+        @b3 = document.createElement("img")
+        @b3.draggable = false
+        @b2.src = @board_img_path
+        @b3.src = "img/1_r2_c14.png"
+        @b3.setAttribute("class", "AppItemBoard")
+        @b3.style.zIndex = -10
+
         @element.appendChild(@b1)
-
-        #@b2 = document.createElement("img")
-        #@b2.setAttribute("class", "AppItemBoard2")
-        #@b2.src = "img/1_r2_c14.png"
-        #@element.appendChild(@b2)
-
-        #@b2 = document.createElement("img")
-        #@b2.setAttribute("class", "AppItemBoard3")
-        #@b2.src = "img/1_r2_c14.png"
-        #@element.appendChild(@b2)
+        @element.appendChild(@b2)
+        @element.appendChild(@b3)
 
         @to_normal_status()
 
+    set_left_top: (el, left, top)->
+        el.style.display = "block"
+        el.style.left = left + "px"
+        el.style.top = top + "px"
+
+    handle_clients_change: ->
+        switch @clients.length
+            when 1
+                @set_left_top(@b1, 0, 0)
+                @b2.style.display = "none"
+                @b3.style.display = "none"
+            when 2
+                @set_left_top(@b1, 0, 1)
+                @set_left_top(@b2, 3, -1)
+                @b3.style.display = "none"
+            else
+                @set_left_top(@b1, 0, 1)
+                @set_left_top(@b2, 3, 0)
+                @set_left_top(@b3, 6, -1)
 
     to_active_status : ->
         @indicate.src = "img/s_app_active.png"
-        #offset = @element.offsetLeft - (@indicate.clientWidth - @element.clientWidth) / 2
-        #@indicate.style.left = offset + "px"
     to_normal_status : ->
         @indicate.src = "img/s_app_open.png"
-        #offset = @element.offsetLeft - (@indicate.clientWidth - @element.clientWidth) / 2
-        #@indicate.style.left = offset + "px"
 
     try_swap_launcher: ->
         l = Widget.look_up(@app_id)
@@ -222,6 +251,7 @@ class ClientGroup extends AppItem
 
         if @leader != id
             @set_leader(id, icon)
+        @handle_clients_change()
 
 
     remove_client: (id) ->
@@ -235,6 +265,8 @@ class ClientGroup extends AppItem
             le = @clients[0]
             icon = @client_infos[le].icon
             @set_leader(le, icon)
+
+        @handle_clients_change()
 
     set_leader: (id, icon)->
         @leader = id
@@ -255,10 +287,6 @@ class ClientGroup extends AppItem
             [],
             [3, _("DockMe")],
         ]
-
-    do_rightclick: (e)->
-        echo "right click"
-        echo e
 
     do_itemselected: (e)=>
         Preview_container.remove_all()
