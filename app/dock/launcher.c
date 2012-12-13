@@ -71,14 +71,16 @@ JSValueRef build_app_info(const char* app_id)
         icon_name = g_key_file_get_string(k_apps, app_id, "Icon", NULL);
     }
 
-    if (g_str_has_prefix(icon_name, "data:image")) {
-        json_append_string(json, "Icon", icon_name);
-    } else {
-        char* icon_path = icon_name_to_path(icon_name, 48);
-        json_append_string(json, "Icon", icon_path);
-        g_free(icon_path);
+    if (icon_name != NULL) {
+        if (g_str_has_prefix(icon_name, "data:image")) {
+            json_append_string(json, "Icon", icon_name);
+        } else {
+            char* icon_path = icon_name_to_path(icon_name, 48);
+            json_append_string(json, "Icon", icon_path);
+            g_free(icon_path);
+        }
+        g_free(icon_name);
     }
-    g_free(icon_name);
     return json;
 }
 

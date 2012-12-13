@@ -45,7 +45,17 @@ body {
 
 .AppList {
     clear: both;
-    -webkit-box-flex: 10;
+    display: -webkit-box;
+    -webkit-box-flex: 1;
+}
+.AppItem {
+    position:relative;
+    float: left;
+    margin: 4px 10px 8px 8px;
+    max-width: 48px;
+    max-height: 48px;
+    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    -webkit-box-flex: 1;
 }
 
 #notifyarea {
@@ -53,6 +63,7 @@ body {
     /*background: rgba(0, 100, 0, 0.3);*/
     bottom:0px;
     right: 0px;
+    -webkit-box-flex: 0;
 }
 
 
@@ -82,14 +93,6 @@ body {
     color: black;
 }
 
-.AppItem {
-    position:relative;
-    float: left;
-    margin: 4px 10px 8px 8px;
-    width: 48px;
-    height: 48px;
-    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
-}
 .Launcher {
     background: url("../img/1_r2_c14.png");
 }
@@ -170,4 +173,3 @@ body {
     width: 14px;
     height: 17px;
 }
-

@@ -85,6 +85,7 @@ void _update_window_class(Client *c);
 void _set_window_exec(Client *c);
 
 void _update_task_list(Window root);
+void update_active_window(Display* display, Window root);
 
 Client* create_client_from_window(Window w)
 {
@@ -194,6 +195,7 @@ void update_task_list()
     g_hash_table_remove_all(_clients_table);
     GdkWindow* root = gdk_get_default_root_window();
     _update_task_list(GDK_WINDOW_XID(root));
+    update_active_window(_dsp, GDK_WINDOW_XID(root));
 }
 
 void _update_task_list(Window root)

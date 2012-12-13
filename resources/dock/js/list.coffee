@@ -133,7 +133,6 @@ class AppItem extends Widget
         did = @element.id
         if sid != did
             swap_element(Widget.look_up(sid).element, Widget.look_up(did).element)
-            e.dataTransfer.effectAllowed = "none"
 
         e.stopPropagation()
 
@@ -176,22 +175,27 @@ class ClientGroup extends AppItem
 
         @indicate = document.createElement("img")
         @indicate.setAttribute("class", "OpenIndicate")
+        @indicate.draggable = false
         @element.appendChild(@indicate)
 
         @leader = null
 
         @board_img_path = "img/1_r2_c14.png"
         @b1 = document.createElement("img")
+        @b1.draggable = false
         @b1.src = @board_img_path
         @b1.setAttribute("class", "AppItemBoard")
         @b1.style.zIndex = -8
 
         @b2 = document.createElement("img")
+        @b2.draggable = false
         @b2.src = @board_img_path
         @b2.setAttribute("class", "AppItemBoard")
         @b2.style.zIndex = -9
 
         @b3 = document.createElement("img")
+        @b3.draggable = false
+        @b2.src = @board_img_path
         @b3.src = "img/1_r2_c14.png"
         @b3.setAttribute("class", "AppItemBoard")
         @b3.style.zIndex = -10
