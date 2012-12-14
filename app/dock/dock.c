@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
     monitor_resource_file("dock", webview);
-    gdk_window_set_debug_updates(TRUE);
+    /*gdk_window_set_debug_updates(TRUE);*/
 
     gtk_main();
     return 0;
