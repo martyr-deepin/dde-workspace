@@ -102,19 +102,16 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.width = s_width
     div_grid.style.height = s_height
 
-    [new_cols, new_rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
+    [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
     #TODO: reflesh desktop items when workarea has changed
-    new_table = new Array()
-    for i in [0..new_cols]
-        new_table[i] = new Array(new_rows)
-        if i < cols
-            for n in [0..cols]
-                new_table[i][n] = o_table[i][n]
+    o_table = new Array()
+    for i in [0..cols]
+        o_table[i] = new Array(rows)
 
-    cols = new_cols
-    rows = new_rows
-    o_table = new_table
+    for i in all_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
 
 
 load_position = (path) ->
