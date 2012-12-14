@@ -18,6 +18,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 $ = (q, o) ->
+    return $s(q,o)?[0]
+
+$s = (q, o) ->
     if typeof(q) != 'string'
         div = q
         selector = o
@@ -26,9 +29,7 @@ $ = (q, o) ->
         selector = q
 
     switch selector.charAt(0)
-        when '#' then return div.getElementById(selector.substr(1))
-        when '.' then return div.querySelector(selector)
+        when '#' then return [div.getElementById(selector.substr(1))]
+        when '.' then return div.getElementsByClassName(selector.substr(1))
         else
-            return div.getElementByTagName(selector)
-    
-
+            return div.getElementsByTagName(selector)

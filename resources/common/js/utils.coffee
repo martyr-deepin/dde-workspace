@@ -77,4 +77,15 @@ run_post = (f, self)->
     f2 = f.bind(self or this)
     setTimeout(f2, 0)
 
+create_element = (type, clss, parent)->
+    el = document.createElement(type)
+    el.setAttribute("class", clss)
+    if parent
+        parent.appendChild(el)
+    return el
 
+create_img = (clss, src, parent)->
+    el = create_element('img', clss, parent)
+    el.src = src
+    el.draggable = false
+    return el
