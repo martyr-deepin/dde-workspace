@@ -27,16 +27,12 @@
 #include "i18n.h"
 #include "dock_config.h"
 #include "launcher.h"
+#include "region.h"
 #include <cairo.h>
 
 #define DOCK_HEIGHT (60)
-#define BOARD_HEIGHT (30)
-
-void close_show_temp();
-void show_temp_region(double x, double y, double width, double height);
-void set_dock_width(double width);
-cairo_rectangle_int_t base_rect = {0, 0, 0, BOARD_HEIGHT/* the width will change*/};
-cairo_rectangle_int_t dock_rect = {0, 0, 0, DOCK_HEIGHT - BOARD_HEIGHT};
+int _screen_width = 0;
+int _screen_height = 0;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
@@ -45,38 +41,24 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 }
 
 GtkWidget* container = NULL;
-void set_dock_size(GdkScreen* screen, GtkWidget* webview)
+void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
-    int s_width = gdk_screen_get_width(screen);
-    int s_height = gdk_screen_get_height(screen);
-    gtk_window_resize(GTK_WINDOW(container), s_width, s_height);
+    _screen_width = gdk_screen_get_width(screen);
+    _screen_height = gdk_screen_get_height(screen);
+    gtk_window_move(GTK_WINDOW(container), 0, 0);
+    gtk_window_resize(GTK_WINDOW(container), _screen_width, _screen_height);
 
-    base_rect.width = s_width;
-    base_rect.y = s_height - BOARD_HEIGHT;
-    dock_rect.y = s_height - DOCK_HEIGHT;
+    gdk_window_move_resize(gtk_widget_get_window(webview), 0 ,0, _screen_width, _screen_height);
+    /*gtk_widget_set_size_request(webview, s_width, s_height);*/
+
     set_struct_partial(gtk_widget_get_window(container),
-            ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, s_width
+            ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, _screen_width
             );
 
-    set_dock_width(s_width);
+    init_region(gtk_widget_get_window(container), 0, _screen_height - 60, _screen_width, 60);
 
-    webkit_web_view_reload(WEBKIT_WEB_VIEW(webview));
+    webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
 }
-
-void hide_dock()
-{
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_window_hide(w);
-    set_struct_partial(w, ORIENTATION_BOTTOM, 0, 0, 0);
-}
-
-void show_dock()
-{
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_window_show(w);
-    set_struct_partial(w, ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, 1440); 
-}
-
 
 int main(int argc, char* argv[])
 {
@@ -105,47 +87,22 @@ int main(int argc, char* argv[])
 
 
     GdkScreen* screen = gdk_screen_get_default();
-    g_signal_connect(screen, "size-changed", G_CALLBACK(set_dock_size), webview);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(update_dock_size), webview);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
     gtk_window_move(GTK_WINDOW(container), 0, 0);
     gtk_widget_show_all(container);
+    update_dock_size(screen, webview);
+    printf("webview:%d \n", GDK_WINDOW_XID(gtk_widget_get_window(webview)));
 
-    set_dock_size(screen, webview);
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
-    close_show_temp();
     monitor_resource_file("dock", webview);
-
+    gdk_window_set_debug_updates(TRUE);
 
     gtk_main();
     return 0;
-}
-
-void set_dock_width(double width)
-{
-    dock_rect.width = (int)width;
-}
-
-void show_temp_region(double x, double y, double width, double height)
-{
-    cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
-    cairo_region_union_rectangle(region, &dock_rect);
-
-    cairo_rectangle_int_t tmp = {(int)x, (int)y, (int)width, (int)height};
-    cairo_region_union_rectangle(region, &tmp);
-    gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
-    cairo_region_destroy(region);
-}
-
-void close_show_temp()
-{
-    cairo_region_t *region = cairo_region_create_rectangle(&base_rect);
-    cairo_region_union_rectangle(region, &dock_rect);
-
-    gdk_window_shape_combine_region(gtk_widget_get_window(container), region, 0, 0);
-    cairo_region_destroy(region);
 }
 
 void update_dock_color()
@@ -156,10 +113,15 @@ void update_dock_color()
 
 void update_dock_show()
 {
-    if (GD.config.show)
-        show_dock();
-    else
-        hide_dock();
+    GdkWindow* w = gtk_widget_get_window(container);
+    if (GD.config.show) {
+        set_struct_partial(w, ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, _screen_width); 
+        js_post_message("in_normal_mode", NULL);
+    } else {
+        set_struct_partial(w, ORIENTATION_BOTTOM, 30, 0, _screen_width);
+        js_post_message("in_mini_mode", NULL);
+        release_region(0, 0, _screen_width, 30);
+    }
 }
 
 void emit_webview_ok()
