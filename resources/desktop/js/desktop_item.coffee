@@ -377,38 +377,39 @@ class Folder extends DesktopEntry
     do_drop : (evt) =>
         super
 
-        echo evt
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        for file in files
+            i = decodeURI(file)
+            @move_in(i)
 
-        #if evt.dataTransfer.dropEffect == "link"
-        file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-        #@icon_close()
-        @move_in(file)
-
-        echo "do_drop #{evt.dataTransfer.dropEffect}"
+        return
 
 
     do_dragover : (evt) =>
         super
-        evt.preventDefault()
-        path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-        if @path == path.substring(7)
+
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(@id) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        return
 
 
     do_dragenter : (evt) =>
         super
 
-        path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
-        if @path == path.substring(7)
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(@id) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        return
 
 
     do_dragleave : (evt) =>
@@ -480,11 +481,12 @@ class Folder extends DesktopEntry
                 false
             )
             ele.addEventListener('dragstart', (evt) ->
-                    evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
-                    evt.dataTransfer.setData("text/plain", "#{this.id}")
-                    evt.dataTransfer.effectAllowed = "all"
+                evt.stopPropagation()
+                evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
+                evt.dataTransfer.effectAllowed = "moveCopy"
             )
             ele.addEventListener('dragend', (evt) ->
+                evt.stopPropagation()
                 #reflesh_desktop_new_items()
             )
             if s.Exec?
@@ -495,7 +497,7 @@ class Folder extends DesktopEntry
                 )
             else
                 ele.addEventListener('dblclick', (evt) ->
-                    DCore.run_command1 "gvfs-open", this.id
+                    DCore.run_command1("gvfs-open", this.id)
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             ele_ul.appendChild(ele)
@@ -567,7 +569,10 @@ class Application extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        echo "123456"
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        echo file for file in files
+
         if not evt.fromElement? then return
 
 

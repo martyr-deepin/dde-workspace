@@ -102,19 +102,16 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.width = s_width
     div_grid.style.height = s_height
 
-    [new_cols, new_rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
+    [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
     #TODO: reflesh desktop items when workarea has changed
-    new_table = new Array()
-    for i in [0..new_cols]
-        new_table[i] = new Array(new_rows)
-        if i < cols
-            for n in [0..cols]
-                new_table[i][n] = o_table[i][n]
+    o_table = new Array()
+    for i in [0..cols]
+        o_table[i] = new Array(rows)
 
-    cols = new_cols
-    rows = new_rows
-    o_table = new_table
+    for i in all_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
 
 
 load_position = (path) ->
@@ -268,44 +265,32 @@ sort_desktop_item_by_name = ->
 
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
+        evt.preventDefault()
+        evt.stopPropagation()
         for file in evt.dataTransfer.files
             pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
 
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
                 localStorage.setObject(path, pos)
+        return
     )
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-
-        if evt.shiftKey == true
-            evt.dataTransfer.dropEffect = "copy"
-        else if evt.ctrlKey == true
-            evt.dataTransfer.dropEffect = "link"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        echo("grid dragover #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
+        evt.dataTransfer.dropEffect = "move"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
         evt.stopPropagation()
-
-        if evt.shiftKey == true
-            evt.dataTransfer.dropEffect = "copy"
-        else if evt.ctrlKey == true
-            evt.dataTransfer.dropEffect = "link"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        echo("grid dragenter #{evt.dataTransfer.dropEffect} shift:#{evt.shiftKey} ctrl:#{evt.ctrlKey}")
+        evt.dataTransfer.dropEffect = "move"
         return
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
         #evt.dataTransfer.dropEffect = "move"
         #echo("grid dragleave #{evt.dataTransfer.dropEffect}")
+        return
     )
 
 
@@ -365,10 +350,11 @@ paste_from_clipboard = ->
 
 
 item_dragstart_handler = (widget, evt) ->
-    all_selected_items = ""
-    all_selected_items += i + ";" for i in selected_item
-    evt.dataTransfer.setData("deepin_id_list", all_selected_items)
-    evt.dataTransfer.effectAllowed = "all"
+    if selected_item.length > 0
+        all_selected_items = selected_item[0]
+        all_selected_items += "\n" + i for i in [1 ... selected_item.length] by 1
+        evt.dataTransfer.setData("text/deepin_id_list", all_selected_items)
+        evt.dataTransfer.effectAllowed = "moveCopy"
 
     #TODO: set mouse background image when begin to drag
     x = evt.x - drag_start.x * i_width
@@ -551,8 +537,7 @@ update_selected_item_drag_image = ->
 
 
     drag_image.src = drag_canvas.toDataURL()
-    drag_start.x = top_left.x
-    drag_start.y = top_left.y
+    [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
 
 delete_selected_items = ->
