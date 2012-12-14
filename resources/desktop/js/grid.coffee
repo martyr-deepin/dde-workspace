@@ -390,7 +390,6 @@ set_item_selected = (w, top = false) ->
             last_widget = w.id
             w.item_focus()
 
-    update_selected_item_drag_image()
     return
 
 
@@ -406,7 +405,6 @@ cancel_item_selected = (w) ->
             w.item_blur()
             last_widget = ""
 
-    update_selected_item_drag_image()
     return ret
 
 
@@ -418,73 +416,68 @@ cancel_all_selected_stats = (clear_last = true) ->
         Widget.look_up(last_widget)?.item_blur()
         last_widget = ""
 
-    update_selected_item_drag_image()
     return
 
 
 update_selected_stats = (w, evt) ->
     if evt.ctrlKey
-        if evt.type == "click" then return
-
-        if w.selected == true then cancel_item_selected(w)
-        else set_item_selected(w)
+        if evt.type == "mousedown"
+            if w.selected == true then cancel_item_selected(w)
+            else set_item_selected(w)
 
     else if evt.shiftKey
-        if evt.type == "click" then return
+        if evt.type == "mousedown"
+            if selected_item.length > 1
+                last_one_id = selected_item[selected_item.length - 1]
+                selected_item.splice(selected_item.length - 1, 1)
+                cancel_all_selected_stats(false)
+                selected_item.push(last_one_id)
 
-        if selected_item.length > 1
-            last_one_id = selected_item[selected_item.length - 1]
-            selected_item.splice(selected_item.length - 1, 1)
-            cancel_all_selected_stats(false)
-            selected_item.push(last_one_id)
+            if selected_item.length == 1
+                end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
+                start_pos = load_position(Widget.look_up(selected_item[0]).path)
 
-        if selected_item.length == 1
-            end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-            start_pos = load_position(Widget.look_up(selected_item[0]).path)
+                ret = compare_pos_top_left(start_pos, end_pos)
+                if ret < 0
+                    for key in all_item
+                        val = Widget.look_up(key)
+                        i_pos = load_position(val.path)
+                        if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
+                            set_item_selected(val, true)
+                else if ret == 0
+                    cancel_item_selected(selected_item[0])
+                else
+                    for key in all_item
+                        val = Widget.look_up(key)
+                        i_pos = load_position(val.path)
+                        if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
+                            set_item_selected(val, true)
 
-            ret = compare_pos_top_left(start_pos, end_pos)
-            if ret < 0
-                for key in all_item
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.path)
-                    if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
-                        set_item_selected(val, true)
-            else if ret == 0
-                cancel_item_selected(selected_item[0])
             else
-                for key in all_item
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.path)
-                    if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
-                        set_item_selected(val, true)
-
-        else
-            set_item_selected(w)
+                set_item_selected(w)
 
     else
         n = selected_item.indexOf(w.id)
 
         if evt.type == "mousedown"
-            if n >= 0 then return
-
-            cancel_all_selected_stats(false)
-
-            set_item_selected(w)
+            if n < 0
+                cancel_all_selected_stats(false)
+                set_item_selected(w)
 
         else if evt.type == "click"
-            if n < 0 then return
+            if n >= 0
+                selected_item.splice(n, 1)
+                cancel_all_selected_stats(false)
+                selected_item.push(w.id)
+                last_widget = w.id
 
-            selected_item.splice(n, 1)
-
-            cancel_all_selected_stats(false)
-
-            selected_item.push(w.id)
-            last_widget = w.id
-
+    update_selected_item_drag_image()
     return
 
 
 update_selected_item_drag_image = ->
+    drag_draw_delay_timer = -1
+
     if selected_item.length == 0 then return
 
     pos = load_position(selected_item[0])
@@ -509,9 +502,6 @@ update_selected_item_drag_image = ->
     #drag_canvas.width = s_width
     #drag_canvas.height = s_height
 
-    #echo "----------------------------"
-    #echo "update_selected_item_drag_image #{selected_item.length} [#{drag_canvas.width},#{drag_canvas.height}]"
-
     context = drag_canvas.getContext('2d')
 
     for i in selected_item
@@ -526,6 +516,7 @@ update_selected_item_drag_image = ->
         start_y = pos.y * i_height
 
         # draw icon
+        context.shadowColor = "rgba(0, 0, 0, 0)"
         context.drawImage(w.item_icon, start_x + 22, start_y)
         # draw text
         context.shadowOffsetX = 1
@@ -535,7 +526,28 @@ update_selected_item_drag_image = ->
         context.font = "bold small san-serif"
         context.fillStyle = "rgba(255, 255, 255, 1.0)"
         context.textAlign = "center"
-        context.fillText(w.name, start_x + 46, start_y + 64, 92)
+        rest_text = w.element.innerText
+        line_number = 0
+        while rest_text.length > 0
+            if rest_text.length < 10 then n = rest_text.length
+            else n = 10
+            m = context.measureText(rest_text.substr(0, n)).width
+            if m == 90
+                pass
+            else if m > 90
+                --n
+                while n > 0 and context.measureText(rest_text.substr(0, n)).width > 90
+                    --n
+            else
+                ++n
+                while n <= rest_text.length and context.measureText(rest_text.substr(0, n)).width < 90
+                    ++n
+
+            line_text = rest_text.substr(0, n)
+            rest_text = rest_text.substr(n)
+
+            context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
+            ++line_number
 
 
     drag_image.src = drag_canvas.toDataURL()
@@ -552,11 +564,13 @@ delete_selected_items = ->
 gird_left_mousedown = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+        update_selected_item_drag_image()
 
 
 grid_right_click = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+        update_selected_item_drag_image()
 
 
 grid_do_itemselected = (evt) ->
@@ -586,8 +600,8 @@ create_item_grid = ->
 
     drag_canvas = document.createElement("canvas")
     drag_image = document.createElement("img")
-    #FIXME test propose only
-    document.body.appendChild(drag_image)
+    #FIXME: test propose only
+    #document.body.appendChild(drag_image)
 
 
 class ItemGrid
@@ -697,6 +711,8 @@ class Mouse_Select_Area_box
 
             @last_pos = new_pos
             @last_effect_item = effect_item
+
+            if temp_list.length > 0 or sel_list.length > 0 then update_selected_item_drag_image()
 
         return
 

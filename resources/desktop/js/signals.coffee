@@ -33,6 +33,8 @@ do_item_delete = (info) ->
         all_item.remove(info.id)
         w.destroy()
 
+    update_selected_item_drag_image()
+
 
 do_item_update = (info) ->
     w = Widget.look_up(info.EntryPath)
@@ -58,6 +60,8 @@ do_item_rename = (data) ->
     if w?
         move_to_anywhere(w)
         all_item.push(w.id)
+
+    update_selected_item_drag_image()
 
 
 do_workarea_changed = (allo) ->

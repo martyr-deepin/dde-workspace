@@ -104,12 +104,12 @@ class Item extends Widget
                 else
                     update_selected_stats(this, evt)
 
-        echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
+        #echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
 
 
     do_dblclick : (evt) =>
-        echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
+        #echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
 
         if @delay_rename != -1
             clearTimeout(@delay_rename)
