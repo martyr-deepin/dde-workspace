@@ -27,9 +27,13 @@ connect_default_signals = ->
 
 
 do_item_delete = (info) ->
-    Widget.look_up(info.id)?.destroy()
-    all_item.remove(info.id)
-    discard_position(info.id)
+    w = Widget.look_up(info.id)
+    if w?
+        cancel_item_selected(w)
+        all_item.remove(info.id)
+        w.destroy()
+
+    update_selected_item_drag_image()
 
 
 do_item_update = (info) ->
@@ -44,8 +48,11 @@ do_item_update = (info) ->
 
 
 do_item_rename = (data) ->
-    Widget.look_up(data.old_id)?.destroy()
-    all_item.remove(info.id)
+    w = Widget.look_up(data.old_id)
+    if w?
+        cancel_item_selected(w)
+        all_item.remove(info.id)
+        w.destroy()
 
     update_position(data.old_id, data.info.EntryPath)
 
@@ -53,6 +60,8 @@ do_item_rename = (data) ->
     if w?
         move_to_anywhere(w)
         all_item.push(w.id)
+
+    update_selected_item_drag_image()
 
 
 do_workarea_changed = (allo) ->

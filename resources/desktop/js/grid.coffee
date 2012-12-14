@@ -38,15 +38,28 @@ grid_item_height = 0
 cols = 0
 rows = 0
 
-# grid html elememt
+# grid html element
 div_grid = null
 
 o_table = null
 
+# all items on desktop
 all_item = new Array
+# all selected items on desktop
 selected_item = new Array
 
+# the last widget which been operated last time
 last_widget = ""
+
+# store the buffer canvas
+drag_canvas = null
+# store the image element to set to the drag image
+drag_image = null
+# store the left top point of drag image start point
+drag_start = {x : 0, y: 0}
+
+# store the area selection box for grid
+sel = null
 
 gm = build_menu([
     [_("arrange icons"), [
@@ -145,12 +158,9 @@ compare_pos_rect = (base1, base2, pos) ->
     bottom_left = Math.min(base1.y, base2.y)
     bottom_right = Math.max(base1.y, base2.y)
     if top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
-        ret = true
+        true
     else
-        ret = false
-
-    echo "compare_pos_rect#{top_left}-#{pos.x}-#{top_right},#{bottom_left}-#{pos.y}-#{bottom_right},#{ret}"
-    return ret
+        false
 
 
 clear_occupy = (info) ->
@@ -206,7 +216,7 @@ move_to_anywhere = (widget) ->
         info = find_free_position(1, 1)
         move_to_position(widget, info)
 
-    #echo "#{widget.path} move to #{info.x},#{info.y}"
+    #echo "#{widget.name} move to #{info.x},#{info.y}"
     return
 
 
@@ -237,7 +247,7 @@ move_to_position = (widget, info) ->
     return
 
 
-sort_item_by_name = ->
+sort_desktop_item_by_name = ->
     item_ordered_list = all_item.concat()
     item_ordered_list.sort()
 
@@ -250,6 +260,10 @@ sort_item_by_name = ->
         if w?
             discard_position(w.id)
             move_to_anywhere(w)
+    return
+
+
+#TODO: sort_desktop_item_by_last_modified_time
 
 
 init_grid_drop = ->
@@ -301,9 +315,9 @@ sort_list_by_pos_top_left = (i1, i2) ->
     return compare_pos_top_left(pos_1, pos_2)
 
 
-update_selected_pos = (w, env) ->
+drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
-    new_pos = coord_to_pos(pixel_to_coord(env.x, env.y), [1, 1])
+    new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
     coord_x_shift = new_pos.x - old_pos.x
     coord_y_shift = new_pos.y - old_pos.y
 
@@ -324,7 +338,43 @@ update_selected_pos = (w, env) ->
 
         move_to_somewhere(w, new_pos)
 
+    update_selected_item_drag_image()
     return
+
+
+#TODO: copy selected items to clipboard
+selected_copy_to_clipboard = ->
+    tmp_list = []
+    tmp_list.push i for i in selected_item
+    #DCore.Desktop.copy_selected_to_clipboard(tmp_list)
+    alert("复制到剪贴板,共#{tmp_list.length}")
+
+
+#TODO: cut selected items to clipboard
+selected_cut_to_clipboard = ->
+    tmp_list = []
+    tmp_list.push i for i in selected_item
+    #DCore.Desktop.cut_selected_to_clipboard(tmp_list)
+    alert("剪切到剪贴板,共#{tmp_list.length}")
+
+
+#TODO: paste file from clipborad to folder
+paste_from_clipboard = ->
+    #DCore.Desktop.paste_from_clipboard()
+    alert("从剪贴板粘贴,共#{tmp_list.length}")
+
+
+item_dragstart_handler = (widget, evt) ->
+    all_selected_items = ""
+    all_selected_items += i + ";" for i in selected_item
+    evt.dataTransfer.setData("deepin_id_list", all_selected_items)
+    evt.dataTransfer.effectAllowed = "all"
+
+    #TODO: set mouse background image when begin to drag
+    x = evt.x - drag_start.x * i_width
+    y = evt.y - drag_start.y * i_height
+    echo "setDragImage #{drag_start.x},#{drag_start.y}"
+    evt.dataTransfer.setDragImage(drag_image, x, y)
 
 
 set_item_selected = (w, top = false) ->
@@ -369,66 +419,140 @@ cancel_all_selected_stats = (clear_last = true) ->
     return
 
 
-update_selected_stats = (w, env) ->
-    if env.ctrlKey
-        if env.type == "click" then return
+update_selected_stats = (w, evt) ->
+    if evt.ctrlKey
+        if evt.type == "mousedown"
+            if w.selected == true then cancel_item_selected(w)
+            else set_item_selected(w)
 
-        if w.selected == true then cancel_item_selected(w)
-        else set_item_selected(w)
+    else if evt.shiftKey
+        if evt.type == "mousedown"
+            if selected_item.length > 1
+                last_one_id = selected_item[selected_item.length - 1]
+                selected_item.splice(selected_item.length - 1, 1)
+                cancel_all_selected_stats(false)
+                selected_item.push(last_one_id)
 
-    else if env.shiftKey
-        if env.type == "click" then return
+            if selected_item.length == 1
+                end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
+                start_pos = load_position(Widget.look_up(selected_item[0]).path)
 
-        if selected_item.length > 1
-            last_one_id = selected_item[selected_item.length - 1]
-            selected_item.splice(selected_item.length - 1, 1)
-            cancel_all_selected_stats(false)
-            selected_item.push(last_one_id)
+                ret = compare_pos_top_left(start_pos, end_pos)
+                if ret < 0
+                    for key in all_item
+                        val = Widget.look_up(key)
+                        i_pos = load_position(val.path)
+                        if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
+                            set_item_selected(val, true)
+                else if ret == 0
+                    cancel_item_selected(selected_item[0])
+                else
+                    for key in all_item
+                        val = Widget.look_up(key)
+                        i_pos = load_position(val.path)
+                        if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
+                            set_item_selected(val, true)
 
-        if selected_item.length == 1
-            end_pos = coord_to_pos(pixel_to_coord(env.clientX, env.clientY), [1, 1])
-            start_pos = load_position(Widget.look_up(selected_item[0]).path)
-
-            ret = compare_pos_top_left(start_pos, end_pos)
-            if ret < 0
-                for key in all_item
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.path)
-                    if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
-                        set_item_selected(val, true)
-            else if ret == 0
-                cancel_item_selected(selected_item[0])
             else
-                for key in all_item
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.path)
-                    if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
-                        set_item_selected(val, true)
-
-        else
-            set_item_selected(w)
+                set_item_selected(w)
 
     else
         n = selected_item.indexOf(w.id)
 
-        if env.type == "mousedown"
-            if n >= 0 then return
+        if evt.type == "mousedown"
+            if n < 0
+                cancel_all_selected_stats(false)
+                set_item_selected(w)
 
-            cancel_all_selected_stats(false)
+        else if evt.type == "click"
+            if n >= 0
+                selected_item.splice(n, 1)
+                cancel_all_selected_stats(false)
+                selected_item.push(w.id)
+                last_widget = w.id
 
-            set_item_selected(w)
-
-        else if env.type == "click"
-            if n < 0 then return
-
-            selected_item.splice(n, 1)
-
-            cancel_all_selected_stats(false)
-
-            selected_item.push(w.id)
-            last_widget = w.id
-
+    update_selected_item_drag_image()
     return
+
+
+update_selected_item_drag_image = ->
+    drag_draw_delay_timer = -1
+
+    if selected_item.length == 0 then return
+
+    pos = load_position(selected_item[0])
+    top_left = {x : (cols - 1), y : (rows - 1)}
+    bottom_right = {x : 0, y : 0}
+
+    for i in selected_item
+        pos = load_position(i)
+        if top_left.x > pos.x then top_left.x = pos.x
+        if bottom_right.x < pos.x then bottom_right.x = pos.x
+
+        if top_left.y > pos.y then top_left.y = pos.y
+        if bottom_right.y < pos.y then bottom_right.y = pos.y
+
+    if top_left.x > bottom_right.x then top_left.x = bottom_right.x
+    if top_left.y > bottom_right.y then top_left.y = bottom_right.y
+
+    #if drag_canvas? then delete drag_canvas
+    #drag_canvas = document.createElement("canvas")
+    drag_canvas.width = (bottom_right.x - top_left.x + 1) * i_width
+    drag_canvas.height = (bottom_right.y - top_left.y + 1) * i_height
+    #drag_canvas.width = s_width
+    #drag_canvas.height = s_height
+
+    context = drag_canvas.getContext('2d')
+
+    for i in selected_item
+        w = Widget.look_up(i)
+        if not w? then continue
+
+        pos = load_position(i)
+        pos.x -= top_left.x
+        pos.y -= top_left.y
+
+        start_x = pos.x * i_width
+        start_y = pos.y * i_height
+
+        # draw icon
+        context.shadowColor = "rgba(0, 0, 0, 0)"
+        context.drawImage(w.item_icon, start_x + 22, start_y)
+        # draw text
+        context.shadowOffsetX = 1
+        context.shadowOffsetY = 1
+        context.shadowColor = "rgba(0, 0, 0, 1.0)"
+        context.shadowBlur = 1.5
+        context.font = "bold small san-serif"
+        context.fillStyle = "rgba(255, 255, 255, 1.0)"
+        context.textAlign = "center"
+        rest_text = w.element.innerText
+        line_number = 0
+        while rest_text.length > 0
+            if rest_text.length < 10 then n = rest_text.length
+            else n = 10
+            m = context.measureText(rest_text.substr(0, n)).width
+            if m == 90
+                pass
+            else if m > 90
+                --n
+                while n > 0 and context.measureText(rest_text.substr(0, n)).width > 90
+                    --n
+            else
+                ++n
+                while n <= rest_text.length and context.measureText(rest_text.substr(0, n)).width < 90
+                    ++n
+
+            line_text = rest_text.substr(0, n)
+            rest_text = rest_text.substr(n)
+
+            context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
+            ++line_number
+
+
+    drag_image.src = drag_canvas.toDataURL()
+    drag_start.x = top_left.x
+    drag_start.y = top_left.y
 
 
 delete_selected_items = ->
@@ -437,26 +561,31 @@ delete_selected_items = ->
     DCore.Desktop.item_delete(tmp)
 
 
-gird_left_mousedown = (env) ->
-    if env.ctrlKey == false and env.shiftKey == false
+gird_left_mousedown = (evt) ->
+    if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+        update_selected_item_drag_image()
 
 
-grid_right_click = (env) ->
-    if env.ctrlKey == false and env.shiftKey == false
+grid_right_click = (evt) ->
+    if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+        update_selected_item_drag_image()
 
 
-grid_do_itemselected = (env) ->
-    switch env.id
-        when 31 then sort_item_by_name()
+grid_do_itemselected = (evt) ->
+    switch evt.id
+        when 31 then sort_desktop_item_by_name()
         when 3 then DCore.Desktop.run_terminal()
+        when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
-        else echo "not implemented function"
+        else echo "not implemented function #{evt.id},#{evt.title}"
 
 
-sel = null
+#TODO: create new folder and text file
+
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -468,6 +597,11 @@ create_item_grid = ->
     div_grid.addEventListener("itemselected", grid_do_itemselected)
     div_grid.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
+
+    drag_canvas = document.createElement("canvas")
+    drag_image = document.createElement("img")
+    #FIXME: test propose only
+    #document.body.appendChild(drag_image)
 
 
 class ItemGrid
@@ -494,32 +628,31 @@ class Mouse_Select_Area_box
         @last_effect_item = new Array
 
 
-    mousedown_event : (env) =>
-        env.preventDefault()
-        if env.button == 0
+    mousedown_event : (evt) =>
+        evt.preventDefault()
+        if evt.button == 0
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
-            @start_point = env
-            @start_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
+            @start_point = evt
+            @start_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
             @last_pos = @start_pos
         return
 
 
-    mousemove_event : (env) =>
-        env.preventDefault()
-        sl = Math.min(Math.max(Math.min(@start_point.clientX, env.clientX), s_offset_x), s_offset_x + s_width)
-        st = Math.min(Math.max(Math.min(@start_point.clientY, env.clientY), s_offset_y), s_offset_y + s_height)
-        sw = Math.min(Math.abs(env.clientX - @start_point.clientX), s_width - sl)
-        sh = Math.min(Math.abs(env.clientY - @start_point.clientY), s_height - st)
+    mousemove_event : (evt) =>
+        evt.preventDefault()
+        sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
+        st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
+        sw = Math.min(Math.abs(evt.clientX - @start_point.clientX), s_width - sl)
+        sh = Math.min(Math.abs(evt.clientY - @start_point.clientY), s_height - st)
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
         @element.style.height = "#{sh}px"
         @element.style.visibility = "visible"
 
-        new_pos = coord_to_pos(pixel_to_coord(env.clientX - s_offset_x, env.clientY - s_offset_y), [1, 1])
+        new_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
         if compare_pos_top_left(@last_pos, new_pos) != 0
-            echo "---------------------------------------------"
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos
                 pos_b = @start_pos
@@ -548,7 +681,7 @@ class Mouse_Select_Area_box
             # all items in temp_list are new item included
             # all items in sel_list are items excluded
 
-            if env.ctrlKey == true
+            if evt.ctrlKey == true
                 for i in temp_list
                     w = Widget.look_up(i)
                     if not w? then continue
@@ -560,7 +693,7 @@ class Mouse_Select_Area_box
                     else if w.selected == false then set_item_selected(w)
                     else cancel_item_selected(w)
 
-            else if env.shiftKey == true
+            else if evt.shiftKey == true
                 for i in temp_list
                     w = Widget.look_up(i)
                     if not w? then continue
@@ -579,11 +712,13 @@ class Mouse_Select_Area_box
             @last_pos = new_pos
             @last_effect_item = effect_item
 
+            if temp_list.length > 0 or sel_list.length > 0 then update_selected_item_drag_image()
+
         return
 
 
-    mouseup_event : (env) =>
-        env.preventDefault()
+    mouseup_event : (evt) =>
+        evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
         @element.style.visibility = "hidden"

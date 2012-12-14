@@ -62,45 +62,39 @@ class Item extends Widget
 
         #el.setAttribute("tabindex", 0)
         el.draggable = true
-        el.innerHTML = "
-        <img draggable=false src=#{@icon} />
-        <div class=\"item_name\">#{shorten_text(@name, MAX_ITEM_TITLE)}</div>
-        "
 
-        # search the img for store the icon
-        @item_icon = i for i in el.getElementsByTagName("img")
+        @item_icon = document.createElement("img")
+        @item_icon.src = @icon
+        @item_icon.draggable = false
+        el.appendChild(@item_icon)
 
-        # search the div for store the name
-        @item_name = i for i in el.childNodes when i.className == "item_name"
+        @item_name = document.createElement("div")
+        @item_name.className = "item_name"
+        @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
+        el.appendChild(@item_name)
 
 
-    do_mouseover : (env) =>
+    do_mouseover : (evt) =>
         @show_hover_box()
 
 
-    do_mouseout : (env) =>
+    do_mouseout : (evt) =>
         @hide_hover_box()
 
 
-    do_mousedown : (env) =>
-        env.stopPropagation()
-        if env.button == 0 then update_selected_stats(this, env)
+    do_mousedown : (evt) =>
+        evt.stopPropagation()
+        if evt.button == 0 then update_selected_stats(this, evt)
         false
 
 
-#    do_mouseup : (env) =>
-#        env.stopPropagation()
-#        if env.button == 0 then update_selected_stats(this, env)
-#        false
-
-
-    do_click : (env) =>
-        env.stopPropagation()
+    do_click : (evt) =>
+        evt.stopPropagation()
         if @clicked == false
             @clicked = true
-            update_selected_stats(this, env)
+            update_selected_stats(this, evt)
         else
-            if env.srcElement.className == "item_name"
+            if evt.srcElement.className == "item_name"
                 if @delay_rename == -1 then @delay_rename = setTimeout(() =>
                         @item_rename()
                     , 200);
@@ -108,57 +102,22 @@ class Item extends Widget
                 if @in_rename
                     @item_complete_rename(true)
                 else
-                    update_selected_stats(this, env)
+                    update_selected_stats(this, evt)
 
-        echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
+        #echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
 
 
-    do_dblclick : (env) =>
-        echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
+    do_dblclick : (evt) =>
+        #echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
 
         if @delay_rename != -1
             clearTimeout(@delay_rename)
             @delay_rename = -1
         if @in_rename then @item_complete_rename(false)
 
-        if env.ctrlKey == true then return
+        if evt.ctrlKey == true then return
         @item_exec()
-
-
-    do_contextmenu : () ->
-#        env.stopPropagation()
-#        if @selected == false then update_selected_stats(this, env)
-        [
-            [1, _("Open")],
-#            [_("Open with"), [
-#                    [35, "emaces"],
-#                    [36, "geany"],
-#                    [37, "vim"]
-#                ]
-#            ],
-            [],
-            [2, _("cut")],
-            [3, _("copy")],
-            [],
-#            [4, _("create link")],
-            [5, _("Rename")],
-#            [_("copy to"), [
-#                    [41, _("another desktop")],
-#                    [42, _("home")],
-#                    [43, _("desktop")]
-#                ]
-#           ],
-#            [_("move to"), [
-#                    [51, _("another desktop")],
-#                    [52, _("home")],
-#                    [53, _("desktop")]
-#                ]
-#            ],
-            [6, _("Delete")],
-            [],
-            [7, _("Properties")]
-        ]
 
 
     item_update : (icon) =>
@@ -226,23 +185,24 @@ class Item extends Widget
             @item_name.addEventListener("keypress", @item_rename_keypress)
 
             @in_rename = true
+        return
 
 
-    event_stoppropagation : (env) =>
-        env.stopPropagation()
+    event_stoppropagation : (evt) =>
+        evt.stopPropagation()
 
 
-    item_rename_keypress : (env) =>
-        env.stopPropagation()
-        switch env.keyCode
+    item_rename_keypress : (evt) =>
+        evt.stopPropagation()
+        switch evt.keyCode
             when 13   # enter
-                env.preventDefault()
+                evt.preventDefault()
                 @item_complete_rename(true)
             when 27   # esc
-                env.preventDefault()
+                evt.preventDefault()
                 @item_complete_rename(false)
             when 47   # /
-                env.preventDefault()
+                evt.preventDefault()
         return
 
     item_complete_rename : (modify = true) =>
@@ -288,37 +248,37 @@ class DesktopEntry extends Item
         super
 
 
-    do_dragstart : (env) =>
-        env.stopPropagation()
-        env.dataTransfer.setData("text/uri-list", "file://#{@path}")
-        env.dataTransfer.setData("text/plain", "#{@name}")
-        env.dataTransfer.effectAllowed = "all"
+    do_dragstart : (evt) =>
+        evt.stopPropagation()
+
+        item_dragstart_handler(this, evt)
+
         return
 
 
-    do_dragend : (env) =>
-        env.stopPropagation()
-        env.preventDefault()
-        if env.dataTransfer.dropEffect == "move"
-            update_selected_pos(this, env)
+    do_dragend : (evt) =>
+        evt.stopPropagation()
+        evt.preventDefault()
+        if evt.dataTransfer.dropEffect == "move"
+            drag_update_selected_pos(this, evt)
 
-        #else if env.dataTransfer.dropEffect == "link"
-            #node = env.target
+        #else if evt.dataTransfer.dropEffect == "link"
+            #node = evt.target
             #node.parentNode.removeChild(node)
 
         return
 
 
-    do_drop : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
+    do_drop : (evt) =>
+        evt.preventDefault()
+        evt.stopPropagation()
         if @selected == false
             @hide_hover_box()
             @in_count = 0
 
 
-    do_dragenter : (env) =>
-        env.stopPropagation()
+    do_dragenter : (evt) =>
+        evt.stopPropagation()
 
         if @selected == false
             ++@in_count
@@ -326,22 +286,58 @@ class DesktopEntry extends Item
                 @show_hover_box()
 
 
-    do_dragover : (env) =>
-        env.preventDefault()
-        env.stopPropagation()
+    do_dragover : (evt) =>
+        evt.preventDefault()
+        evt.stopPropagation()
 
 
-    do_dragleave : (env) =>
-        env.stopPropagation()
+    do_dragleave : (evt) =>
+        evt.stopPropagation()
         if @selected == false
             --@in_count
             if @in_count == 0
                 @hide_hover_box()
 
 
-    do_itemselected : (env) =>
-        switch env.id
+    do_contextmenu : () ->
+        if @selected == false then update_selected_stats(this, evt)
+        [
+            [1, _("Open")],
+#            [_("Open with"), [
+#                    [35, "emaces"],
+#                    [36, "geany"],
+#                    [37, "vim"]
+#                ]
+#            ],
+            [],
+            [2, _("cut")],
+            [3, _("copy")],
+            [],
+#            [4, _("create link")],
+            [5, _("Rename")],
+#            [_("copy to"), [
+#                    [41, _("another desktop")],
+#                    [42, _("home")],
+#                    [43, _("desktop")]
+#                ]
+#           ],
+#            [_("move to"), [
+#                    [51, _("another desktop")],
+#                    [52, _("home")],
+#                    [53, _("desktop")]
+#                ]
+#            ],
+            [6, _("Delete")],
+            [],
+            [7, _("Properties")]
+        ]
+
+
+    do_itemselected : (evt) =>
+        switch evt.id
             when 1 then @item_exec()
+            when 2 then selected_cut_to_clipboard()
+            when 3 then selected_copy_to_clipboard()
             when 5 then @item_rename()
             when 6 then delete_selected_items()
             when 7 then s_nautilus.ShowItemProperties_sync(["file://#{@path}"], '')
@@ -359,62 +355,63 @@ class Folder extends DesktopEntry
         @show_pop = false
 
 
-    do_click : (env) =>
+    do_click : (evt) =>
         super
-        if env.shiftKey == false && env.ctrlKey == false
+        if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
 
 
-    do_dblclick : (env) =>
+    do_dblclick : (evt) =>
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_dragstart : (env) =>
+    do_dragstart : (evt) =>
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_drop : (env) =>
+    do_drop : (evt) =>
         super
 
-        echo env
+        echo evt
 
-        #if env.dataTransfer.dropEffect == "link"
-        file = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        #if evt.dataTransfer.dropEffect == "link"
+        file = decodeURI(evt.dataTransfer.getData("text/uri-list"))
         #@icon_close()
         @move_in(file)
 
-        echo "do_drop #{env.dataTransfer.dropEffect}"
+        echo "do_drop #{evt.dataTransfer.dropEffect}"
 
 
-    do_dragover : (env) =>
+    do_dragover : (evt) =>
         super
-        env.preventDefault()
-        path = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        evt.preventDefault()
+        path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
-            env.dataTransfer.dropEffect = "none"
+            evt.dataTransfer.dropEffect = "none"
         else
-            env.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragover #{env.dataTransfer.dropEffect}"
+        echo "do_dragover #{evt.dataTransfer.dropEffect}"
 
-    do_dragenter : (env) =>
+
+    do_dragenter : (evt) =>
         super
 
-        path = decodeURI(env.dataTransfer.getData("text/uri-list"))
+        path = decodeURI(evt.dataTransfer.getData("text/uri-list"))
         if @path == path.substring(7)
-            env.dataTransfer.dropEffect = "none"
+            evt.dataTransfer.dropEffect = "none"
         else
-            env.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragenter #{env.dataTransfer.dropEffect}"
+        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
 
 
-    do_dragleave : (env) =>
+    do_dragleave : (evt) =>
         super
 
         #@icon_close()
@@ -478,8 +475,8 @@ class Folder extends DesktopEntry
             ele.draggable = true
             ele.innerHTML = "<img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div>"
 
-            ele.addEventListener('mousedown', (env) ->
-                env.stopPropagation()
+            ele.addEventListener('mousedown', (evt) ->
+                evt.stopPropagation()
                 false
             )
             ele.addEventListener('dragstart', (evt) ->
@@ -492,12 +489,12 @@ class Folder extends DesktopEntry
             )
             if s.Exec?
                 ele.setAttribute("title", s.Exec)
-                ele.addEventListener('dblclick', (env) ->
+                ele.addEventListener('dblclick', (evt) ->
                     DCore.run_command this.title
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
             else
-                ele.addEventListener('dblclick', (env) ->
+                ele.addEventListener('dblclick', (evt) ->
                     DCore.run_command1 "gvfs-open", this.id
                     Widget.look_up(this.parentElement.title)?.hide_pop_block()
                 )
@@ -566,7 +563,12 @@ class NormalFile extends DesktopEntry
 
 
 class Application extends DesktopEntry
+#TODO: if drag target.constructor.name = "Application" then DCore.Desktop.merge_files(itself, target)
+    do_drop : (evt) ->
+        super
+
+        echo "123456"
+        if not evt.fromElement? then return
 
 
 class DesktopApplet extends Item
-
