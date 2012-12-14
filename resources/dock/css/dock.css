@@ -48,15 +48,34 @@ body {
     display: -webkit-box;
     -webkit-box-flex: 1;
 }
+
 .AppItem {
     position:relative;
-    float: left;
-    margin: 4px 10px 8px 8px;
-    max-width: 48px;
-    max-height: 48px;
-    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    max-width: 68px;
+    max-height: 60px;
     -webkit-box-flex: 1;
 }
+.AppItemImg {
+    position:absolute;
+    max-width: 32px;
+    max-height: 32px;
+    left: 26.47058823529412%;
+}
+
+.AppItemBoard {
+    position: absolute;
+    left: 14.70588235294117%;
+    max-height: 48px;
+}
+
+.OpenIndicate {
+    position: absolute;
+    left: 2.9411764705882353%;
+    max-width:66px;
+    max-height:52px;
+    z-index: -100;
+}
+
 
 #notifyarea {
     /*position: absolute;*/
@@ -93,35 +112,11 @@ body {
     color: black;
 }
 
-.Launcher {
-    background: url("../img/1_r2_c14.png");
-}
-
-.AppItemBoard {
-    position: absolute;
-}
-
-.AppItemImg {
-    margin: 7px 8px 9px 8px;
-    width: 32px;
-    height: 32px;
-}
-.OpenIndicate {
-    position: relative;
-    float:left;
-    min-width:66px;
-    height:52px;
-    z-index: -100;
-    top : -45px;
-    left: -9px;
-}
-
 .ClientGroupNumber {
     position: absolute;
     background: red;
     top: 0px;
 }
-
 
 .PWContainer {
     background: rgba(0, 100, 30, 0.5);

@@ -17,6 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+calc_app_item_size = ->
+    apps = $s(".AppItem")
+    w = apps[0].offsetWidth
+    for i in apps
+        Widget.look_up(i.id).change_size(w)
+
+window.c = calc_app_item_size
+
 class Indicator extends Widget
     constructor: (@id)->
         super
@@ -45,6 +53,7 @@ class ShowDesktop extends Widget
     do_click: (e)->
         @show = !@show
         DCore.Dock.show_desktop(@show)
+    change_size: ->
 
 class LauncherItem extends Widget
     constructor: (@id)->
@@ -58,6 +67,7 @@ class LauncherItem extends Widget
         @show = !@show
         DCore.run_command("launcher")
 
+    change_size: ->
 
 
 class AppList extends Widget
@@ -68,9 +78,11 @@ class AppList extends Widget
         @show_launcher = new LauncherItem("show_launcher")
         @element.appendChild(@show_desktop.element)
         @element.appendChild(@show_launcher.element)
+        setTimeout(c, 200)
 
     append: (c) ->
         @element.appendChild(c.element)
+        run_post(calc_app_item_size)
 
     do_drop: (e)->
         indicator.hide()
@@ -113,7 +125,30 @@ class AppItem extends Widget
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
+
+        @img = create_element('img', "AppItemImg", @element)
+        @img.src = @icon
         app_list.append(@)
+
+    destroy: ->
+        super
+        run_post(calc_app_item_size)
+
+    change_size: (w) ->
+        board_size = (48.0 / 68 ) * w
+
+        board_top = 60 - 8 - board_size
+        @set_board_size(board_size, board_top)
+
+        @img.style.height = board_size * (32.0 / 48)
+        @img.style.width = board_size * (32.0 / 48)
+        img_margin = board_size * 7 / 48.0
+        @img.style.top = img_margin + board_top
+
+    set_board_size: (size, top)->
+        @board.style.top = top
+        @board.style.width = size
+        @board.style.height = size
 
     do_dragstart: (e)->
         Preview_container.remove_all()
@@ -137,12 +172,15 @@ class AppItem extends Widget
         e.stopPropagation()
 
 
+
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @element.innerHTML = "
-        <img class=AppItemImg src=#{@icon}>
-        "
+        @board_img_path = "img/1_r2_c14.png"
+        @board = create_img("AppItemBoard", @board_img_path, @element)
+        @board.style.zIndex = -8
+        
+
     do_click: (e)->
         DCore.Launchable.launch(@core)
 
@@ -154,11 +192,11 @@ class Launcher extends AppItem
         [
             [1, _("Run")],
             [],
-            [2, _("RemoveMe")],
+            [2, _("UnDock")],
         ]
 
 class ClientGroup extends AppItem
-    constructor: (@id, @app_id)->
+    constructor: (@id, @icon, @app_id)->
         super
         @try_swap_launcher()
 
@@ -169,62 +207,68 @@ class ClientGroup extends AppItem
         @count.setAttribute("class", "ClientGroupNumber")
         #@element.appendChild(@count)
 
-        @img = document.createElement("img")
-        @img.setAttribute("class", "AppItemImg")
-        @element.appendChild(@img)
-
-        @indicate = document.createElement("img")
-        @indicate.setAttribute("class", "OpenIndicate")
-        @indicate.draggable = false
-        @element.appendChild(@indicate)
+        @indicate = create_img("OpenIndicate", "", @element)
 
         @leader = null
 
         @board_img_path = "img/1_r2_c14.png"
-        @b1 = document.createElement("img")
-        @b1.draggable = false
-        @b1.src = @board_img_path
-        @b1.setAttribute("class", "AppItemBoard")
-        @b1.style.zIndex = -8
 
-        @b2 = document.createElement("img")
-        @b2.draggable = false
-        @b2.src = @board_img_path
-        @b2.setAttribute("class", "AppItemBoard")
-        @b2.style.zIndex = -9
+        @board = create_img("AppItemBoard", @board_img_path, @element)
+        @board.style.zIndex = -8
 
-        @b3 = document.createElement("img")
-        @b3.draggable = false
-        @b2.src = @board_img_path
-        @b3.src = "img/1_r2_c14.png"
-        @b3.setAttribute("class", "AppItemBoard")
-        @b3.style.zIndex = -10
+        @board2 = create_img("AppItemBoard", @board_img_path, @element)
+        @board2.style.zIndex = -9
 
-        @element.appendChild(@b1)
-        @element.appendChild(@b2)
-        @element.appendChild(@b3)
+        @board3 = create_img("AppItemBoard", @board_img_path, @element)
+        @board3.style.zIndex = -10
 
         @to_normal_status()
 
-    set_left_top: (el, left, top)->
-        el.style.display = "block"
-        el.style.left = left + "px"
-        el.style.top = top + "px"
+    set_board_size: (size, marginTop)->
+        super
+
+        @_board_margin_top = marginTop
+
+        @handle_clients_change()
+
+        @board2.style.width = size
+        @board2.style.height = size
+        @board2.style.left = "19.117647058823528%"
+
+        @board3.style.width = size
+        @board3.style.height = size
+        @board3.style.left = "23.529411764705882%"
+
+        w = 66.0 * size / 48
+        h = w * 52 / 66
+        t = 60 - h
+        @indicate.style.width = w
+        @indicate.style.height = h
+        @indicate.style.top = t
+
 
     handle_clients_change: ->
         switch @clients.length
             when 1
-                @set_left_top(@b1, 0, 0)
-                @b2.style.display = "none"
-                @b3.style.display = "none"
+                @board.style.display = "block"
+                @board2.style.display = "none"
+                @board3.style.display = "none"
+                @board.style.top = @_board_margin_top
             when 2
-                @set_left_top(@b1, 0, 1)
-                @set_left_top(@b2, 3, -1)
-                @b3.style.display = "none"
+                @board.style.display = "block"
+                @board2.style.display = "block"
+                @board3.style.display = "none"
+
+                @board.style.top = @_board_margin_top + 1
+                @board2.style.top = @_board_margin_top - 1
             else
-                @set_left_top(@b1, 0, 1)
-                @set_left_top(@b2, 3, 0)
-                @set_left_top(@b3, 6, -1)
+                @board.style.display = "block"
+                @board2.style.display = "block"
+                @board3.style.display = "block"
+
+                @board.style.top = @_board_margin_top + 1
+                @board2.style.top = @_board_margin_top
+                @board3.style.top = @_board_margin_top - 1
 
     to_active_status : ->
         @indicate.src = "img/s_app_active.png"
@@ -292,8 +336,7 @@ class ClientGroup extends AppItem
         Preview_container.remove_all()
         switch e.id
             when 1 then DCore.Dock.launch_by_app_id(@app_id)
-            when 2
-                DCore.Dock.close_window(@leader)
+            when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
 
     do_click: (e)->
@@ -319,19 +362,17 @@ DCore.signal_connect("launcher_added", (info) ->
     else
         new Launcher(info.Id, info.Icon, info.Core)
 )
+
 DCore.signal_connect("launcher_removed", (info) ->
     Widget.look_up(info.Id)?.destroy()
 )
-
 
 DCore.signal_connect("task_added", (info) ->
     leader = Widget.look_up("le_" + info.clss)
 
     if not leader
-        leader = new ClientGroup("le_"+info.clss, info.app_id)
+        leader = new ClientGroup("le_"+info.clss, info.icon, info.app_id)
 
-    if info.icon == "null"
-        alert("aaa")
     leader.add_client(info.id, info.icon, info.title)
 )
 
@@ -348,3 +389,5 @@ DCore.signal_connect("task_normal", (info) ->
 )
 
 DCore.Dock.emit_webview_ok()
+
+setTimeout(calc_app_item_size, 100)
