@@ -60,6 +60,9 @@ int main(int argc, char* argv[])
 
     gtk_window_maximize(GTK_WINDOW(container));
 
+    gtk_widget_realize(container);
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(gtk_widget_get_window(container), &rgba);
     watch_workarea_changes(container);
     gtk_widget_show_all(container);
     gtk_main();
