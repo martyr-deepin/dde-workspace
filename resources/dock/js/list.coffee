@@ -93,7 +93,7 @@ class AppList extends Widget
 app_list = new AppList("app_list")
 
 
-_is_normal_mode = 0
+_is_normal_mode = 1
 get_mode_size = ->
     if _is_normal_mode
         return 0
@@ -296,10 +296,11 @@ class ClientGroup extends AppItem
 
     withdraw: (id)->
         #TODO: should change the leader if the @clients has many element
-        @element.style.display = "none"
+        #echo "with draw"
+        #@element.style.display = "none"
     normal: (id)->
         #TODO: should change the leader if the @clients has many element
-        @element.style.display = "block"
+        #@element.style.display = "block"
 
 
     add_client: (id, icon, title)->
@@ -350,6 +351,7 @@ class ClientGroup extends AppItem
             [2, _("Close")],
             [],
             [3, _("DockMe")],
+            [4, _("PreView")]
         ]
 
     do_itemselected: (e)=>
@@ -358,6 +360,7 @@ class ClientGroup extends AppItem
             when 1 then DCore.Dock.launch_by_app_id(@app_id)
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
+            #when 4 then Preview_container.show_group(@)
 
     do_click: (e)->
         DCore.Dock.set_active_window(@leader)
@@ -425,6 +428,4 @@ DCore.signal_connect("in_normal_mode", ->
 DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
-setTimeout(calc_app_item_size, 300)
-setTimeout(calc_app_item_size, 500)
 setTimeout(calc_app_item_size, 1000)

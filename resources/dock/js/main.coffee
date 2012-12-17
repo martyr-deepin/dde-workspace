@@ -18,7 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 format_two_bit = (s) ->
-    if s < 9
+    if s < 10
         return "0#{s}"
     else
         return s
@@ -37,6 +37,7 @@ get_time_str = ->
     return "#{hours}:#{min}"
 
 c = $("#clock")
+c.innerText = get_time_str()
 setInterval( ->
     c.innerText = get_time_str()
     return true
