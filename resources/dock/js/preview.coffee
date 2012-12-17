@@ -41,7 +41,7 @@ class PWContainer extends Widget
 
     remove_all: (timeout)->
         __remove_all = =>
-            DCore.Dock.close_show_temp()
+            #DCore.Dock.close_show_temp()
             clearInterval(@update_id)
             @update_id = -1
             @current_group = null
@@ -69,7 +69,7 @@ class PWContainer extends Widget
 
             if @element.clientWidth == screen.width
                 @element.style.left = 0
-                DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+                #DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
             else
                 run_post(->
                     offset = group.element.offsetLeft - @element.clientWidth / 2 + group.element.clientWidth / 2

@@ -23,6 +23,12 @@ calc_app_item_size = ->
     for i in apps
         Widget.look_up(i.id).change_size(w)
 
+    last = apps[apps.length-1]
+
+    DCore.Dock.require_region(0, 0, screen.width, 30)
+    offset = get_page_xy(last, 0, 0).x + last.clientWidth
+    DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
+
 window.c = calc_app_item_size
 
 class Indicator extends Widget
@@ -41,43 +47,10 @@ class Indicator extends Widget
 
 indicator = new Indicator("indicator")
 
-class ShowDesktop extends Widget
-    constructor: (@id)->
-        super
-        @add_css_class("AppItem")
-        @show = false
-        @element.innerHTML="
-        <img class=AppItemImg src=img/desktop.png draggable=false title='show/hide desktop'/>
-        "
-
-    do_click: (e)->
-        @show = !@show
-        DCore.Dock.show_desktop(@show)
-    change_size: ->
-
-class LauncherItem extends Widget
-    constructor: (@id)->
-        super
-        @add_css_class("AppItem")
-        @element.innerHTML="
-        <img class=AppItemImg src=img/launcher.png draggable=false title='launcher'/>
-        "
-
-    do_click: (e)->
-        @show = !@show
-        DCore.run_command("launcher")
-
-    change_size: ->
-
-
 class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").insertBefore(@element, $("#notifyarea"))
-        @show_desktop = new ShowDesktop("show_desktop")
-        @show_launcher = new LauncherItem("show_launcher")
-        @element.appendChild(@show_desktop.element)
-        @element.appendChild(@show_launcher.element)
         setTimeout(c, 200)
 
     append: (c) ->
@@ -117,9 +90,21 @@ class AppList extends Widget
     do_mouseover: (e)->
         if e.target == @element
             Preview_container.remove_all(1000)
-
-
 app_list = new AppList("app_list")
+
+
+_is_normal_mode = 0
+get_mode_size = ->
+    if _is_normal_mode
+        return 0
+    else
+        return 26
+get_mode_board_size = ->
+    if _is_normal_mode
+        return 0
+    else
+        return 26
+
 
 class AppItem extends Widget
     constructor: (@id, @icon)->
@@ -143,10 +128,11 @@ class AppItem extends Widget
         @img.style.height = board_size * (32.0 / 48)
         @img.style.width = board_size * (32.0 / 48)
         img_margin = board_size * 7 / 48.0
-        @img.style.top = img_margin + board_top
+
+        @img.style.top = img_margin + board_top + get_mode_size()
 
     set_board_size: (size, top)->
-        @board.style.top = top
+        @board.style.top = top + get_mode_board_size()
         @board.style.width = size
         @board.style.height = size
 
@@ -195,6 +181,28 @@ class Launcher extends AppItem
             [2, _("UnDock")],
         ]
 
+class ShowDesktop extends Launcher
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @show = false
+        @img.src = "img/desktop.png"
+
+    do_click: (e)->
+        @show = !@show
+        DCore.Dock.show_desktop(@show)
+
+class LauncherItem extends Launcher
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @img.src = "img/launcher.png"
+
+    do_click: (e)->
+        @show = !@show
+        DCore.run_command("launcher")
+
+
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id)->
         super
@@ -227,7 +235,7 @@ class ClientGroup extends AppItem
     set_board_size: (size, marginTop)->
         super
 
-        @_board_margin_top = marginTop
+        @_board_margin_top = marginTop + get_mode_board_size()
 
         @handle_clients_change()
 
@@ -347,6 +355,12 @@ class ClientGroup extends AppItem
 
 
 
+show_desktop = new ShowDesktop("show_desktop")
+show_launcher = new LauncherItem("show_launcher")
+app_list.element.appendChild(show_desktop.element)
+app_list.element.appendChild(show_launcher.element)
+
+
 active_group = null
 DCore.signal_connect("active_window_changed", (info)->
     if active_group?
@@ -388,6 +402,20 @@ DCore.signal_connect("task_normal", (info) ->
     Widget.look_up(info.id).normal()
 )
 
+DCore.signal_connect("in_mini_mode", ->
+    _is_normal_mode = 0
+    run_post(calc_app_item_size())
+    echo "in_mini.."
+)
+
+DCore.signal_connect("in_normal_mode", ->
+    _is_normal_mode = 1
+    run_post(calc_app_item_size())
+    echo "in_normal.."
+)
+
 DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
+
+
