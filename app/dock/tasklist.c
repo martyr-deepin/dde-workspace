@@ -130,6 +130,8 @@ void active_window_changed(Display* dsp, Window w)
             json_append_number(json, "id", (int)w);
             json_append_string(json, "clss", c->clss);
             js_post_message_json("active_window_changed", json);
+        } else {
+            g_warning("0x%x get focus..\n", (int)w);
         }
     }
 }
@@ -424,7 +426,7 @@ void init_task_list()
 }
 
 //JS_EXPORT
-void set_active_window(double id)
+void active_window(double id)
 {
     XClientMessageEvent event;
     event.type = ClientMessage;
@@ -434,6 +436,7 @@ void set_active_window(double id)
     event.data.l[0] = 2; // we are a pager?
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
+    printf("active window %d\n", (int)id);
 }
 void close_window(double id)
 {
@@ -457,7 +460,7 @@ void show_desktop(gboolean value)
     XSendEvent(_dsp, root, False, 
             StructureNotifyMask, (XEvent*)&event);
 }
-void minimize_window(double id)
+void iconify_window(double id)
 {
     XIconifyWindow(_dsp, (Window)id, 0);
 }
