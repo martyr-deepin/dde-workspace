@@ -191,6 +191,8 @@ class ShowDesktop extends Launcher
     do_click: (e)->
         @show = !@show
         DCore.Dock.show_desktop(@show)
+    do_buildmenu: ->
+        []
 
 class LauncherItem extends Launcher
     constructor: (@id)->
@@ -201,6 +203,8 @@ class LauncherItem extends Launcher
     do_click: (e)->
         @show = !@show
         DCore.run_command("launcher")
+    do_buildmenu: ->
+        []
 
 
 class ClientGroup extends AppItem
@@ -290,6 +294,14 @@ class ClientGroup extends AppItem
             apply_rotate(@element, 0.2)
             l.destroy()
 
+    withdraw: (id)->
+        #TODO: should change the leader if the @clients has many element
+        @element.style.display = "none"
+    normal: (id)->
+        #TODO: should change the leader if the @clients has many element
+        @element.style.display = "block"
+
+
     add_client: (id, icon, title)->
         if @clients.indexOf(id) == -1
             @clients.push id
@@ -353,8 +365,6 @@ class ClientGroup extends AppItem
     do_mouseover: (e)->
         #Preview_container.show_group(@)
 
-
-
 show_desktop = new ShowDesktop("show_desktop")
 show_launcher = new LauncherItem("show_launcher")
 app_list.element.appendChild(show_desktop.element)
@@ -395,27 +405,26 @@ DCore.signal_connect("task_removed", (info) ->
 )
 
 DCore.signal_connect("task_withdraw", (info) ->
-    Widget.look_up(info.id).withdraw()
+    Widget.look_up("le_" + info.clss).withdraw(info.id)
 )
 
 DCore.signal_connect("task_normal", (info) ->
-    Widget.look_up(info.id).normal()
+    Widget.look_up("le_" + info.clss).normal(info.id)
 )
 
 DCore.signal_connect("in_mini_mode", ->
     _is_normal_mode = 0
     run_post(calc_app_item_size())
-    echo "in_mini.."
 )
 
 DCore.signal_connect("in_normal_mode", ->
     _is_normal_mode = 1
     run_post(calc_app_item_size())
-    echo "in_normal.."
 )
 
 DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
-
-
+setTimeout(calc_app_item_size, 300)
+setTimeout(calc_app_item_size, 500)
+setTimeout(calc_app_item_size, 1000)
