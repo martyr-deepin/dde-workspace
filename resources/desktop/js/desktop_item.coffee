@@ -108,7 +108,11 @@ class Item extends Widget
         false
 
 
-    do_dblclick : (evt) =>
+    do_rightclick : (evt) ->
+        if @selected == false then update_selected_stats(this, evt)
+
+
+    do_dblclick : (evt) ->
         #echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
 
         if @delay_rename != -1
@@ -299,8 +303,7 @@ class DesktopEntry extends Item
                 @hide_hover_box()
 
 
-    do_contextmenu : () ->
-        if @selected == false then update_selected_stats(this, evt)
+    do_buildmenu : () ->
         [
             [1, _("Open")],
 #            [_("Open with"), [
