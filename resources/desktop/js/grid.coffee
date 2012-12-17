@@ -366,7 +366,7 @@ item_dragstart_handler = (widget, evt) ->
 set_item_selected = (w, top = false) ->
     if w.selected == false
         w.item_selected()
-        if top = true
+        if top == true
             selected_item.unshift(w.id)
         else
             selected_item.push(w.id)
@@ -407,12 +407,12 @@ cancel_all_selected_stats = (clear_last = true) ->
 
 update_selected_stats = (w, evt) ->
     if evt.ctrlKey
-        if evt.type == "mousedown"
+        if evt.type == "mousedown" or evt.type == "contextmenu"
             if w.selected == true then cancel_item_selected(w)
             else set_item_selected(w)
 
     else if evt.shiftKey
-        if evt.type == "mousedown"
+        if evt.type == "mousedown" or evt.type == "contextmenu"
             if selected_item.length > 1
                 last_one_id = selected_item[selected_item.length - 1]
                 selected_item.splice(selected_item.length - 1, 1)
@@ -445,7 +445,7 @@ update_selected_stats = (w, evt) ->
     else
         n = selected_item.indexOf(w.id)
 
-        if evt.type == "mousedown"
+        if evt.type == "mousedown" or evt.type == "contextmenu"
             if n < 0
                 cancel_all_selected_stats(false)
                 set_item_selected(w)

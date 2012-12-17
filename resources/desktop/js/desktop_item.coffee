@@ -109,6 +109,7 @@ class Item extends Widget
 
 
     do_rightclick : (evt) ->
+        evt.stopPropagation()
         if @selected == false then update_selected_stats(this, evt)
 
 
