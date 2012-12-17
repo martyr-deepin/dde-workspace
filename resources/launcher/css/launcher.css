@@ -25,6 +25,14 @@ body {
     /*height: 600px;*/
 }
 
+#close {
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 50px;
+    color: red;
+}
+
 #search {
     height: 50px;
     padding-bottom: 10px;

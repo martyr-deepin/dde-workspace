@@ -47,6 +47,10 @@ append_to_category  create_category(
     "Name": _("All")
 )
 
+$("#close").addEventListener("click", ->
+    DCore.Launcher.exit_gui()
+)
+
 for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)

@@ -34,6 +34,12 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 }
 
 GtkWidget* container = NULL;
+
+void _make_maximize()
+{
+
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -45,28 +51,26 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_widget_realize(container);
+    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");
 
+    gtk_window_fullscreen(GTK_WINDOW(container));
+
     GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
-    gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    gtk_window_maximize(GTK_WINDOW(container));
-
     gtk_widget_realize(container);
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(gtk_widget_get_window(container), &rgba);
-    watch_workarea_changes(container);
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
+
     gtk_widget_show_all(container);
     gtk_main();
-    /*unwatch_workarea_changes(w);*/
     return 0;
 }
 
@@ -77,13 +81,12 @@ void exit_gui()
 
 void notify_workarea_size()
 {
-    int x, y, width, height;
-    get_workarea_size(0, 0, &x, &y, &width, &height);
-    char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
-    js_post_message("workarea_changed", tmp);
-    GtkAllocation alloc = {x, y, width, height};
-    gtk_widget_size_allocate(container, &alloc);
-    /*gtk_window_resize(GTK_WINDOW(container), width, height);*/
+    GdkScreen* screen = gdk_screen_get_default();
+    js_post_message("workarea_changed",
+            "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}", 
+            gdk_screen_get_width(screen),
+            gdk_screen_get_height(screen)
+            );
 }
 
 static GHashTable* _category_table = NULL;
@@ -148,9 +151,16 @@ JSObjectRef get_items()
     JSObjectRef json = json_array_create();
 
     GList* app_infos = g_app_info_get_all();
+
     GList* iter = app_infos;
-    for (gsize i=0; iter != NULL; i++, iter = g_list_next(iter)) {
+    for (gsize i=0, skip=0; iter != NULL; i++, iter = g_list_next(iter)) {
+
         GAppInfo* info = iter->data;
+        if (!g_app_info_should_show(info)) {
+            skip++;
+            continue;
+        }
+
         record_category_info(g_app_info_get_id(info), G_DESKTOP_APP_INFO(info));
 
         JSObjectRef item = json_create();
@@ -169,7 +179,7 @@ JSObjectRef get_items()
             json_append_string(item, "Icon", "");
         }
 
-        json_array_append(json, i, item);
+        json_array_append(json, i - skip, item);
     }
 
     g_list_free(app_infos); //the element of GAppInfo should free by JSRunTime not here!
