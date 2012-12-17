@@ -104,7 +104,6 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
-    #TODO: reflesh desktop items when workarea has changed
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
@@ -352,7 +351,7 @@ paste_from_clipboard = ->
 item_dragstart_handler = (widget, evt) ->
     if selected_item.length > 0
         all_selected_items = selected_item[0]
-        all_selected_items += "\n" + i for i in [1 ... selected_item.length] by 1
+        all_selected_items += "\n" + selected_item[i] for i in [1 ... selected_item.length] by 1
         evt.dataTransfer.setData("text/deepin_id_list", all_selected_items)
         evt.dataTransfer.effectAllowed = "moveCopy"
 
@@ -577,10 +576,10 @@ create_item_grid = ->
     document.body.appendChild(div_grid)
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     init_grid_drop()
-    div_grid.addEventListener("mousedown", gird_left_mousedown)
-    div_grid.addEventListener("contextmenu", grid_right_click)
-    div_grid.addEventListener("itemselected", grid_do_itemselected)
-    div_grid.contextMenu = gm
+    div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
+    div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
+    div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
+    div_grid.parentElement.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
@@ -599,8 +598,8 @@ class ItemGrid
 
 
 class Mouse_Select_Area_box
-    constructor : (parentElemnt) ->
-        @parent_element = parentElemnt
+    constructor : (parentElement) ->
+        @parent_element = parentElement
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
         @element.style.border = "1px solid #eee"

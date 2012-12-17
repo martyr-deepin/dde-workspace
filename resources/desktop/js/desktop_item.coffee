@@ -290,10 +290,30 @@ class DesktopEntry extends Item
             if @in_count == 1
                 @show_hover_box()
 
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(@id) >= 0
+            evt.dataTransfer.dropEffect = "none"
+        else
+            evt.dataTransfer.dropEffect = "link"
+
+        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        return
+
 
     do_dragover : (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
+
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(@id) >= 0
+            evt.dataTransfer.dropEffect = "none"
+        else
+            evt.dataTransfer.dropEffect = "link"
+
+        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        return
 
 
     do_dragleave : (evt) =>
@@ -389,37 +409,38 @@ class Folder extends DesktopEntry
 
         return
 
+    do_dragenter : (evt) =>
+        evt.stopPropagation()
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(@id) >= 0
+            evt.dataTransfer.dropEffect = "none"
+        else
+            evt.dataTransfer.dropEffect = "move"
+
+        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        return
+
 
     do_dragover : (evt) =>
-        super
+        evt.preventDefault()
+        evt.stopPropagation()
 
         all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
         files = all_selected_items.split("\n")
         if files.indexOf(@id) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
-            evt.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "move"
 
+        echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
-
-
-    do_dragenter : (evt) =>
-        super
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "link"
-
-        return
-
-
-    do_dragleave : (evt) =>
-        super
-
-        #@icon_close()
 
 
     item_update : (icon) ->
@@ -517,8 +538,10 @@ class Folder extends DesktopEntry
             col = 5
         else
             col = 6
-        @div_pop.style.width = "#{col * i_width + 10}px"
-
+        if items.length > 24
+            @div_pop.style.width = "#{col * i_width + 10}px"
+        else
+            @div_pop.style.width = "#{col * i_width + 2}px"
         arrow = document.createElement("div")
 
         n = Math.ceil(items.length / col)
@@ -565,19 +588,36 @@ class Folder extends DesktopEntry
         DCore.run_command2("mv", p, @path)
 
 
-class NormalFile extends DesktopEntry
-
-
 class Application extends DesktopEntry
 #TODO: if drag target.constructor.name = "Application" then DCore.Desktop.merge_files(itself, target)
     do_drop : (evt) ->
         super
 
+        tmp_list = []
+        all_are_apps = true
         all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
         files = all_selected_items.split("\n")
-        echo file for file in files
+        for f in files
+            w = Widget.look_up(f)
+            if w?
+                if w.constructor.name != "Application"
+                    all_are_apps = false
 
-        if not evt.fromElement? then return
+                tmp_list.push(f)
+
+        if all_are_apps == true
+            tmp_list.push(@path)
+            alert("we should merge files here")
+        else
+            alert("we should run app to open these files")
+
+        return
+
+
+class NormalFile extends DesktopEntry
 
 
 class DesktopApplet extends Item
+
+
+#TODO: desktop applet like "my computer" and "profile", etc
