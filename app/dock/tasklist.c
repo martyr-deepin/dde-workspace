@@ -45,6 +45,7 @@ Atom ATOM_CLOSE_WINDOW;
 Atom ATOM_SHOW_DESKTOP;
 Atom ATOM_ACTION_ADD;
 Atom ATOM_WINDOW_STATE_HIDDEN;
+Atom ATOM_WINDOW_MAXIMIZED_VERT;
 Display* _dsp = NULL;
 void _init_atoms()
 {
@@ -61,6 +62,7 @@ void _init_atoms()
     ATOM_SHOW_DESKTOP = gdk_x11_get_xatom_by_name("_NET_SHOWING_DESKTOP");
     ATOM_ACTION_ADD = gdk_x11_get_xatom_by_name("_NET_WM_STATE_ADD");
     ATOM_WINDOW_STATE_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
+    ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
 }
 
 typedef struct {
@@ -69,6 +71,7 @@ typedef struct {
     char* clss;
     char* app_id; /*current is executabe file's name*/
     int state;
+    gboolean is_maximized;
     Window window;
     GdkWindow* gdkwindow;
 } Client;
@@ -96,6 +99,7 @@ Client* create_client_from_window(Window w)
     Client* c = g_new(Client, 1);
     c->window = w;
     c->gdkwindow = win;
+    c->is_maximized = FALSE;
 
     _set_window_exec(c);
 
@@ -317,6 +321,17 @@ void _update_window_class(Client* c)
         c->clss = NULL;
     }
 }
+
+void _update_has_maximized_window(Client* c)
+{
+    if (gdk_window_get_state(c->gdkwindow) == GDK_WINDOW_STATE_MAXIMIZED) {
+        c->is_maximized = TRUE;
+        g_assert_not_reached();
+    } else {
+        c->is_maximized = FALSE;
+    }
+}
+
 void _update_window_state(Client* c)
 {
     gulong items = 0;
@@ -326,11 +341,24 @@ void _update_window_state(Client* c)
         XFree(data);
         switch (state) {
             case WithdrawnState:
-                js_post_message("task_withdraw", "{\"id\":%d}", (int)c->window);
-                break;
+                {
+                    JSObjectRef json = json_create();
+                    json_append_number(json, "id", (int)c->window);
+                    json_append_string(json, "clss", c->clss);
+                    js_post_message_json("task_withdraw", json);
+                    break;
+                }
+                /*js_post_message("task_withdraw", "{\"id\":%d, \"clss\":}", (int)c->window);*/
             case NormalState:
-                js_post_message("task_normal", "{\"id\":%d}", (int)c->window);
-                break;
+                {
+                    JSObjectRef json = json_create();
+                    json_append_number(json, "id", (int)c->window);
+                    json_append_string(json, "clss", c->clss);
+                    js_post_message_json("task_normal", json);
+                    break;
+                }
+                /*js_post_message("task_normal", "{\"id\":%d}", (int)c->window);*/
+                /*break;*/
         }
     }
 }
@@ -344,7 +372,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
             _update_task_list(ev->window);
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             update_active_window(ev->display, ev->window);
-        }
+        } 
     } 
     return GDK_FILTER_CONTINUE;
 }
@@ -369,6 +397,8 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
             } else if (ev->atom == ATOM_WINDOW_STATE) {
                 _update_window_state(c);
                 _update_client_info(c);
+            } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
+                /*_update_has_maximized_window(c);*/
             }
         }
     }
