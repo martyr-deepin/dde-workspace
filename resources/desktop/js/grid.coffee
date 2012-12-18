@@ -331,7 +331,7 @@ selected_copy_to_clipboard = ->
     tmp_list = []
     tmp_list.push i for i in selected_item
     #DCore.Desktop.copy_selected_to_clipboard(tmp_list)
-    alert("复制到剪贴板,共#{tmp_list.length}")
+    alert("copy #{tmp_list.length} file(s) to clipboard")
 
 
 #TODO: cut selected items to clipboard
@@ -339,13 +339,13 @@ selected_cut_to_clipboard = ->
     tmp_list = []
     tmp_list.push i for i in selected_item
     #DCore.Desktop.cut_selected_to_clipboard(tmp_list)
-    alert("剪切到剪贴板,共#{tmp_list.length}")
+    alert("cut #{tmp_list.length} file(s) to clipboard")
 
 
 #TODO: paste file from clipborad to folder
 paste_from_clipboard = ->
     #DCore.Desktop.paste_from_clipboard()
-    alert("从剪贴板粘贴,共#{tmp_list.length}")
+    alert("paste file(s) from clipboard")
 
 
 item_dragstart_handler = (widget, evt) ->
@@ -355,7 +355,6 @@ item_dragstart_handler = (widget, evt) ->
         evt.dataTransfer.setData("text/deepin_id_list", all_selected_items)
         evt.dataTransfer.effectAllowed = "moveCopy"
 
-    #TODO: set mouse background image when begin to drag
     x = evt.x - drag_start.x * i_width
     y = evt.y - drag_start.y * i_height
     echo "setDragImage #{drag_start.x},#{drag_start.y}"
@@ -584,7 +583,7 @@ create_item_grid = ->
 
     drag_canvas = document.createElement("canvas")
     drag_image = document.createElement("img")
-    #FIXME: test propose only
+#FIXME: test propose only, should disable on public release
     #document.body.appendChild(drag_image)
 
 
