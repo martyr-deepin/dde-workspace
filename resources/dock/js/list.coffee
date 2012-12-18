@@ -19,6 +19,8 @@
 
 calc_app_item_size = ->
     apps = $s(".AppItem")
+    if apps.length == 0
+        return
     w = apps[0].offsetWidth
     for i in apps
         Widget.look_up(i.id).change_size(w)
@@ -28,6 +30,7 @@ calc_app_item_size = ->
     DCore.Dock.require_region(0, 0, screen.width, 30)
     offset = get_page_xy(last, 0, 0).x + last.clientWidth
     DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
+    DCore.Dock.change_workarea_height(w * (60.0-8) / 68 + 8)
 
 active_group = null
 

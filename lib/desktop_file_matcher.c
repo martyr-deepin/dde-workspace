@@ -155,7 +155,7 @@ char* get_app_id_by_pid(int pid)
     char* cmd_line = NULL;
     char* path = g_strdup_printf("/proc/%d/cmdline", pid);
     gsize size=0;
-    if (g_file_get_contents(path, &cmd_line, &size, NULL)) {
+    if (g_file_get_contents(path, &cmd_line, &size, NULL) && size > 0) {
         GPtrArray* tmp = g_ptr_array_new();
         int pre_pos = 0;
         for (gsize i=0; i<size; i++) {
