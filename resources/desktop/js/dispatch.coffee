@@ -33,8 +33,13 @@ create_item = (info) ->
     return w
 
 
-load_desktop_all_items = ->
+clear_desktop_items = ->
+    Widget.look_up(i)?.destroy() for i in all_item
     all_item.splice(0)
+
+
+load_desktop_all_items = ->
+    clear_desktop_items()
     for info in DCore.Desktop.get_desktop_items()
         w = create_item(info)
         all_item.push(w.id)
