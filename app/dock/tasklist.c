@@ -118,7 +118,7 @@ void _update_client_info(Client *c)
     json_append_string(json, "clss", c->clss);
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
-    js_post_message_json("task_added", json);
+    js_post_message_json("task_updated", json);
 }
 void active_window_changed(Display* dsp, Window w)
 {

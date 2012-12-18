@@ -212,7 +212,8 @@ class ClientGroup extends AppItem
         super
         @try_swap_launcher()
 
-        @clients = []
+        @n_clients = []
+        @w_clients = []
         @client_infos = {}
 
         @indicate = create_img("OpenIndicate", "", @element)
@@ -257,7 +258,7 @@ class ClientGroup extends AppItem
 
 
     handle_clients_change: ->
-        switch @clients.length
+        switch @n_clients.length
             when 1
                 @board.style.display = "block"
                 @board2.style.display = "none"
@@ -297,53 +298,65 @@ class ClientGroup extends AppItem
             apply_rotate(@element, 0.2)
             l.destroy()
 
-    withdraw: (id)->
-        #TODO: should change the leader if the @clients has many element
-        #echo "with draw"
-        #@element.style.display = "none"
-    normal: (id)->
-        #TODO: should change the leader if the @clients has many element
-        #@element.style.display = "block"
+    withdraw_child: (id)->
+        @w_clients.push(id)
+        @remove_client(id, true)
 
+    normal_child: (id)->
+        info = @client_infos[id]
+        @w_clients.remove(id)
+        @add_client(info.id)
 
-    add_client: (id, icon, title)->
-        if @clients.indexOf(id) == -1
-            #TODO: new leader should insert at index 1
-            @clients.push id
-            apply_rotate(@element, 1)
-
+    update_client: (id, icon, title)->
+        in_withdraw = id in @w_clients
         @client_infos[id] =
             "id": id
             "icon": icon
             "title": title
+        if not in_withdraw
+            @add_client(id)
 
-        if @leader != id
-            @leader = id
-            @update_leader()
+    add_client: (id)->
+        if @n_clients.indexOf(id) == -1
+            #TODO: new leader should insert at index 1
+            @n_clients.remove(id)
+            @n_clients.push id
+            apply_rotate(@element, 1)
 
-        @handle_clients_change()
+            if @leader != id
+                @leader = id
+                @update_leader()
+
+            @handle_clients_change()
+        @element.style.display = "block"
 
 
-    remove_client: (id) ->
-        delete @client_infos[id]
-        @clients.remove(id)
+    remove_client: (id, save_info=false) ->
+        if not save_info
+            delete @client_infos[id]
 
-        if @clients.length == 0
-            @destroy()
+        @n_clients.remove(id)
+
+        if @n_clients.length == 0
+            if @w_clients.length == 0
+                @destroy()
+            else
+                @element.style.display = "none"
         else if @leader == id
             @next_leader()
 
         @handle_clients_change()
 
     next_leader: ->
-        @clients.push(@clients.shift())
-        @leader = @clients[0]
+        @n_clients.push(@n_clients.shift())
+        @leader = @n_clients[0]
         @update_leader()
         
     update_leader: ->
         @img.src = @client_infos[@leader].icon
 
     destroy: ->
+        @element.style.display = "block"
         info = DCore.Dock.get_launcher_info(@app_id)
         if info
             l = new Launcher(info.Id, info.Icon, info.Core)
@@ -357,7 +370,7 @@ class ClientGroup extends AppItem
             [2, _("Close")],
             [],
             [3, _("DockMe")],
-            [4, _("PreView")]
+            [4, _("PreView(Not yet)")]
         ]
 
     do_itemselected: (e)=>
@@ -369,14 +382,14 @@ class ClientGroup extends AppItem
             #when 4 then Preview_container.show_group(@)
 
     do_click: (e)->
-        if @clients.length == 1 and active_group == @
+        if @n_clients.length == 1 and active_group == @
             if @in_iconfiy
                 @to_active_status(@leader)
             else
                 @in_iconfiy = true
                 DCore.Dock.iconify_window(@leader)
                 @to_normal_status()
-        else if @clients.length > 1 and active_group == @
+        else if @n_clients.length > 1 and active_group == @
             @next_leader()
             @to_active_status(@leader)
         else
@@ -408,13 +421,13 @@ DCore.signal_connect("launcher_removed", (info) ->
     Widget.look_up(info.Id)?.destroy()
 )
 
-DCore.signal_connect("task_added", (info) ->
+DCore.signal_connect("task_updated", (info) ->
     leader = Widget.look_up("le_" + info.clss)
 
     if not leader
         leader = new ClientGroup("le_"+info.clss, info.icon, info.app_id)
 
-    leader.add_client(info.id, info.icon, info.title)
+    leader.update_client(info.id, info.icon, info.title)
 )
 
 DCore.signal_connect("task_removed", (info) ->
@@ -422,11 +435,11 @@ DCore.signal_connect("task_removed", (info) ->
 )
 
 DCore.signal_connect("task_withdraw", (info) ->
-    Widget.look_up("le_" + info.clss).withdraw(info.id)
+    Widget.look_up("le_" + info.clss).withdraw_child(info.id)
 )
 
 DCore.signal_connect("task_normal", (info) ->
-    Widget.look_up("le_" + info.clss).normal(info.id)
+    Widget.look_up("le_" + info.clss).normal_child(info.id)
 )
 
 DCore.signal_connect("in_mini_mode", ->
