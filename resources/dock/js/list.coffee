@@ -29,7 +29,7 @@ calc_app_item_size = ->
     offset = get_page_xy(last, 0, 0).x + last.clientWidth
     DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
 
-window.c = calc_app_item_size
+active_group = null
 
 class Indicator extends Widget
     constructor: (@id)->
@@ -215,12 +215,9 @@ class ClientGroup extends AppItem
         @clients = []
         @client_infos = {}
 
-        @count = document.createElement("div")
-        @count.setAttribute("class", "ClientGroupNumber")
-        #@element.appendChild(@count)
-
         @indicate = create_img("OpenIndicate", "", @element)
 
+        @in_iconfiy = false
         @leader = null
 
         @board_img_path = "img/1_r2_c14.png"
@@ -282,8 +279,14 @@ class ClientGroup extends AppItem
                 @board2.style.top = @_board_margin_top
                 @board3.style.top = @_board_margin_top - 1
 
-    to_active_status : ->
+    to_active_status : (id)->
+        @in_iconfiy = false
+        active_group?.to_normal_status()
         @indicate.src = "img/s_app_active.png"
+        @leader = id
+        DCore.Dock.active_window(@leader)
+        active_group = @
+
     to_normal_status : ->
         @indicate.src = "img/s_app_open.png"
 
@@ -305,8 +308,8 @@ class ClientGroup extends AppItem
 
     add_client: (id, icon, title)->
         if @clients.indexOf(id) == -1
+            #TODO: new leader should insert at index 1
             @clients.push id
-            @count.innerText = "#{@clients.length}"
             apply_rotate(@element, 1)
 
         @client_infos[id] =
@@ -315,27 +318,30 @@ class ClientGroup extends AppItem
             "title": title
 
         if @leader != id
-            @set_leader(id, icon)
+            @leader = id
+            @update_leader()
+
         @handle_clients_change()
 
 
     remove_client: (id) ->
         delete @client_infos[id]
         @clients.remove(id)
-        @count.innerText = "#{@clients.length}"
 
         if @clients.length == 0
             @destroy()
         else if @leader == id
-            le = @clients[0]
-            icon = @client_infos[le].icon
-            @set_leader(le, icon)
+            @next_leader()
 
         @handle_clients_change()
 
-    set_leader: (id, icon)->
-        @leader = id
-        @img.src=icon
+    next_leader: ->
+        @clients.push(@clients.shift())
+        @leader = @clients[0]
+        @update_leader()
+        
+    update_leader: ->
+        @img.src = @client_infos[@leader].icon
 
     destroy: ->
         info = DCore.Dock.get_launcher_info(@app_id)
@@ -363,7 +369,18 @@ class ClientGroup extends AppItem
             #when 4 then Preview_container.show_group(@)
 
     do_click: (e)->
-        DCore.Dock.set_active_window(@leader)
+        if @clients.length == 1 and active_group == @
+            if @in_iconfiy
+                @to_active_status(@leader)
+            else
+                @in_iconfiy = true
+                DCore.Dock.iconify_window(@leader)
+                @to_normal_status()
+        else if @clients.length > 1 and active_group == @
+            @next_leader()
+            @to_active_status(@leader)
+        else
+            @to_active_status(@leader)
 
     do_mouseover: (e)->
         #Preview_container.show_group(@)
@@ -374,12 +391,9 @@ app_list.element.appendChild(show_desktop.element)
 app_list.element.appendChild(show_launcher.element)
 
 
-active_group = null
 DCore.signal_connect("active_window_changed", (info)->
-    if active_group?
-        active_group.to_normal_status()
     active_group = Widget.look_up("le_"+info.clss)
-    active_group?.to_active_status()
+    active_group?.to_active_status(info.id)
 )
 
 DCore.signal_connect("launcher_added", (info) ->

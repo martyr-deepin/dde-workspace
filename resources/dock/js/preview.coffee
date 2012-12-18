@@ -37,16 +37,14 @@ class PWContainer extends Widget
         @update_id = setInterval(=>
             for pw in @element.children
                 Widget.look_up(pw.id)?.update_content()
-        , 200)
+        , 500)
 
     remove_all: (timeout)->
         __remove_all = =>
-            #DCore.Dock.close_show_temp()
+            DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
             clearInterval(@update_id)
             @update_id = -1
             @current_group = null
-
-            #echo "after remove ....  #{@element.children.length}"
 
         clearTimeout(@show_id)
         if timeout?
@@ -69,7 +67,7 @@ class PWContainer extends Widget
 
             if @element.clientWidth == screen.width
                 @element.style.left = 0
-                #DCore.Dock.show_temp_region(0, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+                DCore.Dock.require_region(0, -@element.clientHeight, @element.clientWidth, @element.clientHeight)
             else
                 run_post(->
                     offset = group.element.offsetLeft - @element.clientWidth / 2 + group.element.clientWidth / 2
@@ -78,7 +76,7 @@ class PWContainer extends Widget
                 , @)
                 run_post(->
                     offset = @element.offsetLeft
-                    DCore.Dock.show_temp_region(offset, @element.offsetTop, @element.clientWidth, @element.clientHeight)
+                    DCore.Dock.require_region(offset, -@element.clientHeight, @element.clientWidth, @element.clientHeight)
                     #echo "2 offset:#{offset}"
                 , @)
             @_update()
