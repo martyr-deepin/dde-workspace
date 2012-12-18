@@ -47,8 +47,18 @@ grid_show_items = (items) ->
     for i in items
         grid.appendChild(applications[i])
 
+show_grid_selected = (id)->
+    cns = $s(".category_name")
+    for c in cns
+        if `id == c.getAttribute("cat_id")`
+            c.setAttribute("class", "category_name category_selected")
+        else
+            c.setAttribute("class", "category_name")
+        
+
 grid = $('#grid')
 grid_load_category = (cat_id) ->
+    show_grid_selected(cat_id)
     if cat_id == -1
         grid.innerHTML = ""
         for own key, value of applications

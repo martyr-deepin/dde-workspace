@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
+    /*monitor_resource_file("launcher", webview);*/
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
