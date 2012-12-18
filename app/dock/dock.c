@@ -138,3 +138,9 @@ void emit_webview_ok()
         update_task_list();
     }
 }
+
+void change_workarea_height(double height)
+{
+    if (height < 30) height = 30;
+    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, height, 0, _screen_width); 
+}
