@@ -370,7 +370,7 @@ class ClientGroup extends AppItem
             [2, _("Close")],
             [],
             [3, _("DockMe")],
-            [4, _("PreView")]
+            [4, _("PreView(Not yet)")]
         ]
 
     do_itemselected: (e)=>
