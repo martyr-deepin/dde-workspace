@@ -131,7 +131,7 @@ void active_window_changed(Display* dsp, Window w)
             json_append_string(json, "clss", c->clss);
             js_post_message_json("active_window_changed", json);
         } else {
-            g_warning("0x%x get focus..\n", (int)w);
+            /*g_warning("0x%x get focus..\n", (int)w);*/
         }
     }
 }
@@ -436,7 +436,6 @@ void active_window(double id)
     event.data.l[0] = 2; // we are a pager?
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
-    printf("active window %d\n", (int)id);
 }
 void close_window(double id)
 {

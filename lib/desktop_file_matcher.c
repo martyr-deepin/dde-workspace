@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include "desktop_file_matcher.h"
+#include <string.h>
 #include <glib.h>
 
 /*MEMORY_TESTED*/
@@ -34,27 +35,40 @@ void _init()
 {
     white_apps = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
     white_list = g_key_file_new();
-    g_key_file_load_from_file(white_list, WHITE_LIST_INI, G_KEY_FILE_NONE, NULL);
 
-    char* str = g_key_file_get_string(white_list, "DEEPIN_PREFIX", "skip_prefix", NULL);
-    prefix_regex = g_regex_new(str, G_REGEX_OPTIMIZE, 0, NULL);
-    g_free(str);
+    if (g_key_file_load_from_file(white_list, WHITE_LIST_INI, G_KEY_FILE_NONE, NULL)) {
+        char* str = g_key_file_get_string(white_list, "DEEPIN_PREFIX", "skip_prefix", NULL);
+        prefix_regex = g_regex_new(str, G_REGEX_OPTIMIZE, 0, NULL);
+        g_free(str);
 
-    str = g_key_file_get_string(white_list, "DEEPIN_PREFIX", "skip_suffix", NULL);
-    suffix_regex = g_regex_new(str, G_REGEX_OPTIMIZE, 0, NULL);
-    g_free(str);
+        str = g_key_file_get_string(white_list, "DEEPIN_PREFIX", "skip_suffix", NULL);
+        suffix_regex = g_regex_new(str, G_REGEX_OPTIMIZE, 0, NULL);
+        g_free(str);
 
-    gsize size;
-    char** groups = g_key_file_get_groups(white_list, &size);
-    for (gsize i=0; i<size; i++) {
-        if (g_strcmp0(groups[i], "DEEPIN_PREFIX") == 0)
-            continue;
+        gsize size;
+        char** groups = g_key_file_get_groups(white_list, &size);
+        for (gsize i=0; i<size; i++) {
+            if (g_strcmp0(groups[i], "DEEPIN_PREFIX") == 0)
+                continue;
 
-        gsize key_len;
-        char** keys = g_key_file_get_keys(white_list, groups[i], &key_len, NULL);
-        for (gsize j=0; j<key_len; j++) {
-            g_hash_table_insert(white_apps, g_key_file_get_string(white_list, groups[i], keys[j], NULL), NULL);
+            gsize key_len;
+            char** keys = g_key_file_get_keys(white_list, groups[i], &key_len, NULL);
+            for (gsize j=0; j<key_len; j++) {
+                g_hash_table_insert(white_apps, g_key_file_get_string(white_list, groups[i], keys[j], NULL), NULL);
+            }
         }
+    } else {
+        g_warning("Can't find app_white_list.ini file, use fallback config!");
+
+        prefix_regex = g_regex_new(
+                "skip_prefix=(^gksu(do)?$)|(^sudo$)|(^java$)|(^mono$)|(^ruby$)|(^padsp$)|(^aoss$)|(^python(\\d.\\d)?$)|(^(ba)?sh$)",
+                G_REGEX_OPTIMIZE, 0, NULL
+                );
+
+        suffix_regex = g_regex_new(
+                "((-|.)bin$)|(.py$)",
+                G_REGEX_OPTIMIZE, 0, NULL
+                );
     }
     is_init = TRUE;
 }

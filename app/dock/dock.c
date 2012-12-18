@@ -94,8 +94,8 @@ int main(int argc, char* argv[])
     gtk_window_move(GTK_WINDOW(container), 0, 0);
     gtk_widget_show_all(container);
     update_dock_size(screen, webview);
-    printf("webview:%d \n", GDK_WINDOW_XID(gtk_widget_get_window(webview)));
 
+    gdk_window_set_accept_focus(gtk_widget_get_window(webview), FALSE);
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
     monitor_resource_file("dock", webview);
