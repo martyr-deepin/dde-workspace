@@ -28,20 +28,20 @@ void json_append_number(JSObjectRef json, const char* key, double value)
     json_append_value(json, key, JSValueMakeNumber(ctx, value));
 }
 
-void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjFreeFunc free)
+void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjectRef ref, NObjectUnref unref)
 {
     JSContextRef ctx = get_global_context();
-    JSObjectRef js_value = create_nobject(ctx, value, free);
+    JSObjectRef js_value = create_nobject(ctx, value, ref, unref);
     json_append_value(json, key, js_value);
 }
 
-void json_append_nobject_a(JSObjectRef json, const char* key, void* values[], gsize size, NObjFreeFunc func)
+void json_append_nobject_a(JSObjectRef json, const char* key, void* values[], gsize size, NObjectRef ref, NObjectUnref unref)
 {
     JSContextRef ctx = get_global_context();
 
     JSObjectRef js_value = json_array_create();
     for (gsize i=0; i<size; i++) {
-        JSObjectRef item = create_nobject(ctx, values[i], func);
+        JSObjectRef item = create_nobject(ctx, values[i], ref, unref);
         json_array_append(js_value, i, item);
     }
 

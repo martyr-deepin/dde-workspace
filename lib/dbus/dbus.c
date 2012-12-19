@@ -39,7 +39,7 @@ JSValueRef sys_object(
     JSValueRef value = get_dbus_object(js->ctx, sys_con,
             bus_name, object_path, interface);
     if (value == NULL) {
-        FILL_EXCEPTION(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
+        js_fill_exception(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
     }
     return value;
 }
@@ -77,7 +77,7 @@ JSValueRef session_object(
     JSValueRef value = get_dbus_object(js->ctx, session_con,
             bus_name, object_path, interface);
     if (value == NULL) {
-        FILL_EXCEPTION(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
+        js_fill_exception(js->ctx, js->exception, "Can't dynamic build this dbus interface)");
     }
     return value;
 }

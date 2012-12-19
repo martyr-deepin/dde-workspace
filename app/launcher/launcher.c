@@ -165,7 +165,7 @@ JSObjectRef get_items()
         record_category_info(g_app_info_get_id(info), G_DESKTOP_APP_INFO(info));
 
         JSObjectRef item = json_create();
-        json_append_nobject(item, "Core", info, g_object_unref);
+        json_append_nobject(item, "Core", info, g_object_ref, g_object_unref);
         json_append_string(item, "ID", g_app_info_get_id(info));
         json_append_string(item, "Name", g_app_info_get_display_name(info));
 
@@ -179,6 +179,7 @@ JSObjectRef get_items()
         } else {
             json_append_string(item, "Icon", "");
         }
+        g_object_unref(info);
 
         json_array_append(json, i - skip, item);
     }

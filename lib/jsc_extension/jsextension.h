@@ -37,12 +37,7 @@ void destroy_js_extension();
 
 /*  utils function *  */
 
-#define FILL_EXCEPTION(ctx, excp, str) do { \
-        JSStringRef string = JSStringCreateWithUTF8CString(#str); \
-        JSValueRef exc_str = JSValueMakeString(ctx, string); \
-        JSStringRelease(string); \
-        *excp= JSValueToObject(ctx, exc_str, NULL); \
-} while (0)
+void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, ...);
 
 JSGlobalContextRef get_global_context();
 
@@ -53,9 +48,9 @@ JSValueRef json_from_cstr(JSContextRef, const char* json_str);
 char* jsvalue_to_cstr(JSContextRef, JSValueRef);
 char* jsstring_to_cstr(JSContextRef, JSStringRef);
 
-typedef void (*NObjFreeFunc)(void*);
-
-JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjFreeFunc func);
+typedef void* (*NObjectRef)(void*);
+typedef void (*NObjectUnref)(void*);
+JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref);
 
 void* jsvalue_to_nobject(JSContextRef, JSValueRef);
 
@@ -68,7 +63,7 @@ JSObjectRef json_create();
 void json_append_value(JSObjectRef json, const char* key, JSValueRef value);
 void json_append_string(JSObjectRef json, const char* key, const char* value);
 void json_append_number(JSObjectRef json, const char* key, double value);
-void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjFreeFunc func);
+void json_append_nobject(JSObjectRef json, const char* key, void* value, NObjectRef ref, NObjectUnref unref);
 
 JSObjectRef json_array_create();
 void json_array_append(JSObjectRef json, gsize i, JSValueRef value);

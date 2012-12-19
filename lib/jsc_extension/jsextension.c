@@ -21,6 +21,22 @@
 #include "jsextension.h"
 #include <glib.h>
 
+void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, ...)
+{
+    va_list args;
+    va_start (args, format);
+    char* str = g_strdup_vprintf(format, args);
+    va_end(args);
+
+    JSStringRef string = JSStringCreateWithUTF8CString(str);
+    JSValueRef exc_str = JSValueMakeString(ctx, string);
+    JSStringRelease(string);
+    g_free(str);
+
+    *excp= JSValueToObject(ctx, exc_str, NULL);
+}
+
+
 JSValueRef jsvalue_from_cstr(JSContextRef ctx, const char* str)
 {
     JSStringRef jsstr = JSStringCreateWithUTF8CString(str);

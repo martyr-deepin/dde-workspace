@@ -46,10 +46,7 @@ class Params:
         pass
     def is_array(self):
         return False
-
-    def out_before(self):
-        return ""
-    def out_after(self):
+    def fetch_c_return(self):
         return ""
 
 class Array(Params):
@@ -90,16 +87,22 @@ JSValueRef %(set_func)s (JSContextRef ctx, JSObjectRef obj,
 class Object(Params):
     def type(self):
         return "void* "
-    def out_before(self, name=None, desc=None, native_type=None, unref=None):
+    def __init__(self, name=None, desc=None, ref=None, unref=None):
         Params.__init__(self, name, desc)
+        self.ref = ref or "g_object_ref"
         self.unref = unref or "g_object_unref"
-        return " void* ret = "
-    def return_value(self):
-        return "return create_nobject(context, ret, %s);" % self.unref
+    def fetch_c_return(self):
+        return "void* c_return = "
+    def convert_return_value(self):
+        return "r = create_nobject(context, ret, %s, %s);" % (self.ref, self.unref)
 
     def in_before(self):
         return """
     void* p_%(pos)d = jsvalue_to_nobject(context, arguments[%(pos)d]);
+    if (p_%(pos)d == NULL) {
+        _has_fatal_error =TRUE;
+        js_fill_exception(context, exception, "the p_%(pos)d is not an DeepinNativeObject");
+    }
 """ % { "pos": self.position }
 
 
@@ -112,10 +115,10 @@ class Number(Params):
     def type(self):
         return "double "
 
-    def out_before(self):
-        return "double ret = "
-    def return_value(self):
-        return "return JSValueMakeNumber(context, ret);"
+    def fetch_c_return(self):
+        return "double c_return = "
+    def convert_return_value(self):
+        return "r = JSValueMakeNumber(context, c_return);"
 
 class Boolean(Params):
     def in_before(self):
@@ -124,10 +127,10 @@ class Boolean(Params):
 """  % {"pos": self.position}
     def type(self):
         return "gboolean "
-    def out_before(self):
-        return "gboolean ret = "
-    def return_value(self):
-        return "return  JSValueMakeBoolean(context, ret);"
+    def fetch_c_return(self):
+        return "gboolean c_return = "
+    def convert_return_value(self):
+        return "r = JSValueMakeBoolean(context, c_return);";
 
 class ABoolean(Array):
     def type(self):
@@ -178,34 +181,31 @@ class String(Params):
 """
         return temp % {'pos': self.position}
 
-    def return_value(self):
-        return """
-    return r;
-"""
-    def out_before(self):
+    def fetch_c_return(self):
         return "gchar* c_return = "
-    def out_after(self):
+
+    def convert_return_value(self):
         return """
-    JSValueRef r = NULL;
-    if (c_return != NULL) {
-        r = jsvalue_from_cstr(context, c_return);
-        g_free(c_return);
-    } else {
-        FILL_EXCEPTION(context, exception, "the return string is NULL");
-    }
+        if (c_return != NULL) {
+            r = jsvalue_from_cstr(context, c_return);
+            g_free(c_return);
+        } else {
+            _has_fatal_error = TRUE;
+            js_fill_exception(context, exception, "the return string is NULL");
+        }
 """
 
 class CString(String):
-    def out_before(self):
+    def fetch_c_return(self):
         return "const char* c_return = "
-    def out_after(self):
+    def convert_return_value(self):
         return """
-    JSValueRef r = NULL;
-    if (c_return != NULL) {
-        r = jsvalue_from_cstr(context, c_return);
-    } else {
-        FILL_EXCEPTION(context, exception, "the return string is NULL");
-    }
+        if (c_return != NULL) {
+            r = jsvalue_from_cstr(context, c_return);
+        } else {
+            _has_fatal_error = TRUE;
+            js_fill_exception(context, exception, "the return string is NULL");
+        }
 """
 
 class Signal:
@@ -241,11 +241,19 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
-    if (argumentCount != %(p_num)d) {return JSValueMakeNull(context);}
+    gboolean _has_fatal_error = FALSE;
+    JSValueRef r = NULL;
+    if (argumentCount != %(p_num)d) {
+        js_fill_exception(context, exception,
+            "the %(name)s except %(p_num)d paramters but passed in %%d", argumentCount);
+        return NULL;
+    }
     %(params_init)s
-    %(func_call)s
+    if (!_has_fatal_error) {
+        %(func_call)s
+    }
     %(params_clear)s
-    %(value_return)s
+    return r;
 }
 """
 
@@ -278,16 +286,18 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 "params_init" : params_init,
                 "func_call" : self.func_call(),
                 "params_clear" : params_clear,
-                "value_return" : self.r_value.return_value(),
                 }
+
     temp_return = """
-    JSData* data = g_new0(JSData, 1);
-    data->ctx = context;
-    data->exception = exception;
-    data->webview = get_global_webview();
-   %(return_value)s %(name)s (%(params)s);
-    g_free(data);
-    %(out_after)s
+        JSData* data = g_new0(JSData, 1);
+        data->ctx = context;
+        data->exception = exception;
+        data->webview = get_global_webview();
+
+        %(store_c_return)s %(name)s (%(params)s);
+        %(convert_c_to_js)s
+
+        g_free(data);
 """
     def func_call(self):
         params_str = []
@@ -298,8 +308,8 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
-                "return_value" : self.r_value.out_before(),
-                "out_after" : self.r_value.out_after(),
+                "store_c_return" : self.r_value.fetch_c_return(),
+                "convert_c_to_js" : self.r_value.convert_return_value(),
                 "name": self.name,
                 "params" : ', '.join(params_str)
                 }
@@ -411,8 +421,8 @@ class Null(Params):
         return self
     def type(self):
         return "void"
-    def return_value(self):
-        return "return JSValueMakeNull(context);"
+    def convert_return_value(self):
+        return "r = JSValueMakeNull(context);"
 
 class JSCode(Params):
     def return_value(self):
@@ -422,33 +432,32 @@ class JSCode(Params):
     def type(self):
         return "char *";
 
-    def out_before(self):
+    def fetch_c_return(self):
         return "gchar* c_return = "
-    def out_after(self):
+    def convert_return_value(self):
+        #TODO: should return JSValueNull or raise Exception?
         return """
-    JSValueRef r = NULL;
-    if (c_return == NULL) {
-        r = JSValueMakeNull(context);
-    } else {
-        r = json_from_cstr(context, c_return);
-        g_free(c_return);
-    }
-    """
-
+        if (c_return == NULL) {
+            r = JSValueMakeNull(context);
+        } else {
+            r = json_from_cstr(context, c_return);
+            g_free(c_return);
+        }
+"""
 class CJSCode(JSCode):
     def type(self):
         return "const char*";
-    def out_before(self):
+    def fetch_c_return(self):
         return "const gchar* c_return = "
-    def out_after(self):
+    def convert_return_value(self):
+        #TODO: should return JSValueNull or raise Exception?
         return """
-    JSValueRef r = NULL;
-    if (c_return == NULL) {
-        r = JSValueMakeNull(context);
-    } else {
-        r = json_from_cstr(context, c_return);
-    }
-    """
+        if (c_return == NULL) {
+            r = JSValueMakeNull(context);
+        } else {
+            r = json_from_cstr(context, c_return);
+        }
+"""
 
 class JSValueRef(Params):
     def type(self):
@@ -456,12 +465,10 @@ class JSValueRef(Params):
     def in_before(self):
         return "JSValueRef p_%(pos)d = arguments[%(pos)d];\n" % {"pos":self.position}
 
-    def out_before(self):
+    def fetch_c_return(self):
         return "JSValueRef c_return = "
-    def out_after(self):
-        return ""
-    def return_value(self):
-        return "return c_return;"
+    def convert_return_value(self):
+        return "r = c_return;"
 
 class Data(Params):
     pass

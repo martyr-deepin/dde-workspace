@@ -59,7 +59,7 @@ JSValueRef build_app_info(const char* app_id)
 
 
     JSObjectRef json = json_create();
-    json_append_nobject(json, "Core", info, g_object_unref);
+    json_append_nobject(json, "Core", info, g_object_ref, g_object_unref);
     json_append_string(json, "Id", app_id);
     json_append_string(json, "Name", g_app_info_get_display_name(info));
 
@@ -81,6 +81,7 @@ JSValueRef build_app_info(const char* app_id)
         }
         g_free(icon_name);
     }
+    g_object_unref(info);
     return json;
 }
 
