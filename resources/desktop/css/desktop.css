@@ -66,6 +66,19 @@ body {
     outline: 0;
 }
 
+.item_renaming {
+    width:100%;
+    cursor: text;
+    color:black;
+    text-shadow:none;
+    word-wrap:break-word;
+    word-break:break-all;
+    background-color:#FFF;
+    outline: 0;
+    -webkit-userselect:text;
+    -webkit-usermodify:read-write-plaintext-only;
+}
+
 .item_hover {
     padding: 2px 4px !important;
     border-radius:3px;
@@ -143,4 +156,9 @@ body {
     border-top-color: rgba(0,0,0,0.9);
     position:absolute;
     bottom:-26px;
+}
+
+/* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
+#WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
+    display: none;
 }

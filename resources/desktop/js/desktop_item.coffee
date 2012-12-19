@@ -179,12 +179,10 @@ class Item extends Widget
         if @in_rename == false
             @element.draggable = false
             @item_name.contentEditable = "true"
-            @item_name.style.webkitUserSelect = "text"
-            @item_name.style.cursor = "text"
-            @item_name.style.backgroundColor = "#FFF"
-            @item_name.style.webkitUserModify = "read-write-plaintext-only"
+            @item_name.className = "item_renaming"
             @item_name.focus()
             @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
 
@@ -212,11 +210,9 @@ class Item extends Widget
     item_complete_rename : (modify = true) =>
         @element.draggable = true
         @item_name.contentEditable = "false"
-        @item_name.style.cursor = ""
-        @item_name.style.backgroundColor = ""
-        @item_name.style.webkitUserSelect = ""
-        @item_name.style.webkitUserModify = ""
+        @item_name.className = "item_name"
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
