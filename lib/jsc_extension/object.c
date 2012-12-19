@@ -6,6 +6,7 @@ struct _ObjectData {
     void* core;
     NObjectRef ref;
     NObjectUnref unref;
+    int count;
 };
 
 static
@@ -14,8 +15,10 @@ void object_init(JSContextRef ctx, JSObjectRef object)
     struct _ObjectData* data = JSObjectGetPrivate(object);
     g_assert(data != NULL);
     if (data->ref) {
+        data->count++;
         data->ref(data->core);
     }
+    /*printf("obj %p count:%d\n", data->core, data->count);*/
 }
 
 static
@@ -25,6 +28,7 @@ void object_finlize(JSObjectRef object)
     g_assert(data != NULL);
     if (data->unref)
         data->unref(data->core);
+    /*printf("obj %p count:%d\n", data->core, data->count);*/
     g_free(data);
 }
 
@@ -60,6 +64,25 @@ JSClassRef obj_class()
 }
 
 
+JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
+{
+    struct _ObjectData* data = g_new(struct _ObjectData, 1);
+    data->id = (long)obj;
+    data->core = obj;
+    data->ref = ref;
+    data->unref = unref;
+    data->count = 0;
+    JSObjectRef r = JSObjectMake(ctx, obj_class(), data);
+    return r;
+}
+
+JSObjectRef create_nobject_and_own(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
+{
+    JSObjectRef r = create_nobject(ctx, obj, ref, unref);
+    if (unref)
+        unref(obj);
+    return r;
+}
 
 static
 void* object_to_core(JSObjectRef object)
@@ -68,17 +91,6 @@ void* object_to_core(JSObjectRef object)
     if (data == NULL)
         return NULL;
     return data->core;
-}
-
-JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
-{
-    struct _ObjectData* data = g_new(struct _ObjectData, 1);
-    data->id = (long)obj;
-    data->core = obj;
-    data->ref = ref;
-    data->unref = unref;
-    JSObjectRef r = JSObjectMake(ctx, obj_class(), data);
-    return r;
 }
 
 void* jsvalue_to_nobject(JSContextRef ctx, JSValueRef value)

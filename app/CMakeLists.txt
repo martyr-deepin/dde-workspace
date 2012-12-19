@@ -2,7 +2,7 @@
 add_subdirectory(desktop)
 add_subdirectory(launcher)
 add_subdirectory(dock)
-#add_subdirectory(test_menu)
+add_subdirectory(memory_test)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/common

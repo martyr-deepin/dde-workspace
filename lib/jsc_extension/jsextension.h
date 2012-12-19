@@ -31,6 +31,11 @@ typedef struct JSData {
     void* webview;
 } JSData;
 
+typedef struct _ArrayContainer {
+    void* data;
+    size_t num;
+} ArrayContainer;
+
 void init_js_extension(JSGlobalContextRef context, void* webview);
 void destroy_js_extension();
 
@@ -50,7 +55,11 @@ char* jsstring_to_cstr(JSContextRef, JSStringRef);
 
 typedef void* (*NObjectRef)(void*);
 typedef void (*NObjectUnref)(void*);
+/* c code should use this method and unref obj if you own one reference to obj*/
 JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref);
+
+/* decrement the reference of obj, mainly used by jsc_gen.py when return an new create Pointer */
+JSObjectRef create_nobject_and_own(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref);
 
 void* jsvalue_to_nobject(JSContextRef, JSValueRef);
 
