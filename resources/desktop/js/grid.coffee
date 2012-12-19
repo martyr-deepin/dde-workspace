@@ -62,6 +62,9 @@ drag_start = {x : 0, y: 0}
 # store the area selection box for grid
 sel = null
 
+# DBus handler for invoke nautilus filemanager
+s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
+
 gm = build_menu([
     [_("arrange icons"), [
             [31, _("by name")],
@@ -114,13 +117,17 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
         if w? then move_to_anywhere(w)
 
 
-load_position = (path) ->
-    pos = localStorage.getObject(path)
+load_position = (item) ->
+    pos = localStorage.getObject(item)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if cols > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
     pos
+
+
+save_position = (item, pos) ->
+    localStorage.setObject(item, pos)
 
 
 update_position = (old_path, new_path) ->
@@ -234,7 +241,7 @@ move_to_position = (widget, info) ->
 
     if not info? then return
 
-    localStorage.setObject(widget.path, info)
+    save_position(widget.path, info)
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
@@ -272,7 +279,7 @@ init_grid_drop = ->
 
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
-                localStorage.setObject(path, pos)
+                save_position(path, pos)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -545,10 +552,20 @@ window.w = ->
         update_selected_item_drag_image()
 
 
+open_selected_items = ->
+    Widget.look_up(i)?.item_exec() for i in selected_item
+
+
 delete_selected_items = ->
     tmp = []
     tmp.push(i) for i in selected_item
     DCore.Desktop.item_delete(tmp)
+
+
+show_selected_items_Properties = ->
+    tmp = []
+    tmp.push("file://#{i}") for i in selected_item
+    s_nautilus.ShowItemProperties_sync(tmp, '')
 
 
 gird_left_mousedown = (evt) ->
