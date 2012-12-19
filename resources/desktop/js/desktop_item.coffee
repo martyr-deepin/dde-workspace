@@ -358,7 +358,7 @@ class DesktopEntry extends Item
 
     do_itemselected : (evt) =>
         switch evt.id
-            when 1 then @item_exec()
+            when 1 then open_selected_items()
             when 2 then selected_cut_to_clipboard()
             when 3 then selected_copy_to_clipboard()
             when 5 then @item_rename()

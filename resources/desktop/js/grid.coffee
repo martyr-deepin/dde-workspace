@@ -545,6 +545,10 @@ update_selected_item_drag_image = ->
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
 
+open_selected_items = ->
+    Widget.look_up(i)?.item_exec() for i in selected_item
+
+
 delete_selected_items = ->
     tmp = []
     tmp.push(i) for i in selected_item
