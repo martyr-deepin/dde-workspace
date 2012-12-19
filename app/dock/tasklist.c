@@ -118,7 +118,7 @@ void _update_client_info(Client *c)
     json_append_string(json, "clss", c->clss);
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
-    js_post_message_json("task_updated", json);
+    js_post_message("task_updated", json);
 }
 void active_window_changed(Display* dsp, Window w)
 {
@@ -129,7 +129,7 @@ void active_window_changed(Display* dsp, Window w)
             JSObjectRef json = json_create();
             json_append_number(json, "id", (int)w);
             json_append_string(json, "clss", c->clss);
-            js_post_message_json("active_window_changed", json);
+            js_post_message("active_window_changed", json);
         } else {
             /*g_warning("0x%x get focus..\n", (int)w);*/
         }
@@ -142,7 +142,7 @@ void client_free(Client* c)
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
     json_append_string(json, "clss", c->clss);
-    js_post_message_json("task_removed", json);
+    js_post_message("task_removed", json);
 
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
@@ -347,7 +347,7 @@ void _update_window_state(Client* c)
                     JSObjectRef json = json_create();
                     json_append_number(json, "id", (int)c->window);
                     json_append_string(json, "clss", c->clss);
-                    js_post_message_json("task_withdraw", json);
+                    js_post_message("task_withdraw", json);
                     break;
                 }
                 /*js_post_message("task_withdraw", "{\"id\":%d, \"clss\":}", (int)c->window);*/
@@ -356,7 +356,7 @@ void _update_window_state(Client* c)
                     JSObjectRef json = json_create();
                     json_append_number(json, "id", (int)c->window);
                     json_append_string(json, "clss", c->clss);
-                    js_post_message_json("task_normal", json);
+                    js_post_message("task_normal", json);
                     break;
                 }
                 /*js_post_message("task_normal", "{\"id\":%d}", (int)c->window);*/

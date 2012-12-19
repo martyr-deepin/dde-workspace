@@ -23,7 +23,7 @@
 
 static GHashTable* signals = NULL;
 
-void js_post_message_json(const char* name, JSValueRef json)
+void js_post_message(const char* name, JSValueRef json)
 {
     if (signals == NULL) {
         g_warning("signals %s has not init!\n", name);
@@ -43,18 +43,18 @@ void js_post_message_json(const char* name, JSValueRef json)
     }
 }
 
-void js_post_message(const char* name, const char* format, ...)
+void js_post_message_simply(const char* name, const char* format, ...)
 {
     JSContextRef ctx = get_global_context();
     if (format == NULL) {
-        js_post_message_json(name, JSValueMakeNull(ctx));
+        js_post_message(name, JSValueMakeNull(ctx));
     } else {
         va_list args;
         va_start(args, format);
         char* json_str = g_strdup_vprintf(format, args);
         va_end(args);
 
-        js_post_message_json(name, json_from_cstr(ctx, json_str));
+        js_post_message(name, json_from_cstr(ctx, json_str));
     }
 }
 

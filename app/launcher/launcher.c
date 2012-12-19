@@ -85,7 +85,7 @@ JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
     GdkScreen* screen = gdk_screen_get_default();
-    js_post_message("workarea_changed",
+    js_post_message_simply("workarea_changed",
             "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}", 
             gdk_screen_get_width(screen),
             gdk_screen_get_height(screen)

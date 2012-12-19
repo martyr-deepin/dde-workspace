@@ -36,7 +36,7 @@ int _screen_height = 0;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
-    js_post_message("leave-notify", NULL);
+    js_post_message_simply("leave-notify", NULL);
     return FALSE;
 }
 
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 void update_dock_color()
 {
     /*if (GD.is_webview_loaded)*/
-        js_post_message("dock_color_changed", NULL);
+        js_post_message_simply("dock_color_changed", NULL);
 }
 
 void update_dock_show()
@@ -116,10 +116,10 @@ void update_dock_show()
     GdkWindow* w = gtk_widget_get_window(container);
     if (GD.config.show) {
         set_struct_partial(w, ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, _screen_width); 
-        js_post_message("in_normal_mode", NULL);
+        js_post_message_simply("in_normal_mode", NULL);
     } else {
         set_struct_partial(w, ORIENTATION_BOTTOM, 30, 0, _screen_width);
-        js_post_message("in_mini_mode", NULL);
+        js_post_message_simply("in_mini_mode", NULL);
         dock_release_region(0, 0, _screen_width, 30);
     }
 }

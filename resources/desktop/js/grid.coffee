@@ -29,6 +29,7 @@ s_offset_y = 0
 # item size
 i_width = 80 + 6 * 2
 i_height = 84 + 4 * 2
+context = null
 
 #grid block size for items
 grid_item_width = 0
@@ -486,7 +487,9 @@ update_selected_item_drag_image = ->
     #drag_canvas.width = s_width
     #drag_canvas.height = s_height
 
-    context = drag_canvas.getContext('2d')
+    if not context
+        alert("sd")
+        context = drag_canvas.getContext('2d')
 
     for i in selected_item
         w = Widget.look_up(i)
@@ -534,8 +537,12 @@ update_selected_item_drag_image = ->
             ++line_number
 
 
-    drag_image.src = drag_canvas.toDataURL()
+    #drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
+
+window.w = ->
+    for i in [0...100]
+        update_selected_item_drag_image()
 
 
 delete_selected_items = ->

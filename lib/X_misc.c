@@ -91,7 +91,7 @@ static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpoin
         get_workarea_size(0, 0, &x, &y, &width, &height);
         char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}",
                 x, y, width, height);
-        js_post_message("workarea_changed", tmp);
+        js_post_message_simply("workarea_changed", tmp);
         g_free(tmp);
     }
     return GDK_FILTER_CONTINUE;

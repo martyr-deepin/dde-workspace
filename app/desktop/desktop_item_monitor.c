@@ -57,7 +57,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                 g_free(e_old_path);
                 g_free(e_new_path);
 
-                js_post_message("item_rename", tmp);
+                js_post_message_simply("item_rename", tmp);
                 g_free(tmp);
 
                 g_free(info);
@@ -78,7 +78,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     char* e_path = json_escape(path);
                     char* tmp = g_strdup_printf("{\"id\":\"%s\"}", e_path);
                     g_free(e_path);
-                    js_post_message("item_delete", tmp);
+                    js_post_message_simply("item_delete", tmp);
                     printf("item_delete %s\n", tmp);
                     g_free(tmp);
                 }
@@ -95,7 +95,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
 
                 char* info = get_entry_info(path);
                 if (info != NULL) {
-                    js_post_message("item_update", info);
+                    js_post_message_simply("item_update", info);
                     g_free(info);
                 }
 
@@ -116,7 +116,7 @@ void monitor_dir_cb(GFileMonitor *m,
                 if (g_strcmp0(new_path, get_desktop_dir(FALSE)) == 0) {
                     char* info = get_entry_info(new_path);
                     if (info != NULL) {
-                        js_post_message("item_update", info);
+                        js_post_message_simply("item_update", info);
                         g_free(info);
                     }
                     break;
@@ -132,7 +132,7 @@ void monitor_dir_cb(GFileMonitor *m,
                 } else {
                     char* info = get_entry_info(path);
                     if (info != NULL) {
-                        js_post_message("item_update", info);
+                        js_post_message_simply("item_update", info);
                         g_free(info);
                     }
                 }
@@ -144,13 +144,13 @@ void monitor_dir_cb(GFileMonitor *m,
             {
                 char* info = get_entry_info(path);
                 if (info != NULL) {
-                    js_post_message("item_update", info);
+                    js_post_message_simply("item_update", info);
                     g_free(info);
                 }
                 break;
 
                 /*char* tmp = g_strdup_printf("{\"id\":\"%s\"}", (char*)path);*/
-                /*js_post_message("dir_changed", tmp);*/
+                /*js_post_message_simply("dir_changed", tmp);*/
                 /*break;*/
             }
     }

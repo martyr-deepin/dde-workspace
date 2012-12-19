@@ -105,7 +105,7 @@ void update_dock_apps()
     gsize size = 0;
     char** groups = g_key_file_get_groups(k_apps, &size);
     for (gsize i=0; i<size; i++) {
-        js_post_message_json("launcher_added", build_app_info(groups[i]));
+        js_post_message("launcher_added", build_app_info(groups[i]));
     }
     g_strfreev(groups);
 }
@@ -187,7 +187,7 @@ void dock_request_dock(const char* path)
         char* app_id = get_app_id(info);
         write_app_info(info);
         if (!is_has_client(app_id))
-            js_post_message_json("launcher_added", build_app_info(app_id));
+            js_post_message("launcher_added", build_app_info(app_id));
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);
@@ -202,7 +202,7 @@ void dock_request_undock(const char* app_id)
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
 
-    js_post_message("launcher_removed", "{\"Id\": \"%s\"}", app_id);
+    js_post_message_simply("launcher_removed", "{\"Id\": \"%s\"}", app_id);
 }
 
 JS_EXPORT_API
@@ -259,5 +259,5 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
     save_app_config(k_apps, APPS_INI);
 
     if (!is_has_client(name))
-        js_post_message_json("launcher_added", build_app_info(name));
+        js_post_message("launcher_added", build_app_info(name));
 }

@@ -36,7 +36,7 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
     if (xev->type == DestroyNotify) {
         g_hash_table_remove(icons, (GdkWindow*)data);
         char* msg = g_strdup_printf("{\"id\":%d}", GPOINTER_TO_INT(data));
-        js_post_message("tray_icon_removed", msg);
+        js_post_message_simply("tray_icon_removed", msg);
         g_free(msg);
     }
     return GDK_FILTER_CONTINUE;
@@ -65,7 +65,7 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     GString* string = g_string_new("");
     tray_icon_to_info(icon, xy, string);
     string->str[string->len-1] = '\0';
-    js_post_message("tray_icon_added", string->str);
+    js_post_message_simply("tray_icon_added", string->str);
     g_string_free(string, TRUE);
 }
 void tray_init(GtkWidget* container)
