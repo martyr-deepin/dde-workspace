@@ -1,5 +1,6 @@
-#include <gtk/gtk.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include "i18n.h"
 #include "utils.h"
@@ -13,11 +14,16 @@ void item_rename(const char* old_name, const char* new_name)
         int n = strlen(old_name);
         if (n > 8 && g_ascii_strcasecmp(old_name + n - 8, ".desktop") == 0)
         {
-            change_desktop_entry_name(old_name, new_name);
-            return;
+            if (change_desktop_entry_name(old_name, new_name))
+                return;
         }
     }
-    run_command2("mv", old_name, new_name);
+    gchar* base_path = g_path_get_dirname(old_name);
+    gchar* new_path = g_build_filename(base_path, new_name, NULL);
+    printf("item_rename normal file[%s],[%s]\n", base_path, new_path);
+    g_rename(old_name, new_path);
+    g_free(base_path);
+    g_free(new_path);
 }
 
 void item_delete(const char** target, int n)
