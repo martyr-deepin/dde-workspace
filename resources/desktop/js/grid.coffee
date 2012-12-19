@@ -545,6 +545,21 @@ update_selected_item_drag_image = ->
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
 
+build_selected_items_menu = ->
+    menu = []
+    menu.push([1, _("Open")])
+    menu.push([])
+    menu.push([3, _("cut")])
+    menu.push([4, _("copy")])
+    menu.push([])
+    if selected_item.length > 1 then menu.push([6, "-" + _("Rename")])
+    else menu.push([6, _("Rename")])
+    menu.push([9, _("Delete")])
+    menu.push([])
+    menu.push([10, _("Properties")])
+    menu
+
+
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 

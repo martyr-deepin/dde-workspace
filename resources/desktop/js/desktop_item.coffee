@@ -324,46 +324,17 @@ class DesktopEntry extends Item
 
 
     do_buildmenu : () ->
-        [
-            [1, _("Open")],
-#            [_("Open with"), [
-#                    [35, "emaces"],
-#                    [36, "geany"],
-#                    [37, "vim"]
-#                ]
-#            ],
-            [],
-            [2, _("cut")],
-            [3, _("copy")],
-            [],
-#            [4, _("create link")],
-            [5, _("Rename")],
-#            [_("copy to"), [
-#                    [41, _("another desktop")],
-#                    [42, _("home")],
-#                    [43, _("desktop")]
-#                ]
-#           ],
-#            [_("move to"), [
-#                    [51, _("another desktop")],
-#                    [52, _("home")],
-#                    [53, _("desktop")]
-#                ]
-#            ],
-            [6, _("Delete")],
-            [],
-            [7, _("Properties")]
-        ]
+        build_selected_items_menu()
 
 
     do_itemselected : (evt) =>
         switch evt.id
             when 1 then open_selected_items()
-            when 2 then selected_cut_to_clipboard()
-            when 3 then selected_copy_to_clipboard()
-            when 5 then @item_rename()
-            when 6 then delete_selected_items()
-            when 7 then show_selected_items_Properties()
+            when 3 then selected_cut_to_clipboard()
+            when 4 then selected_copy_to_clipboard()
+            when 6 then @item_rename()
+            when 9 then delete_selected_items()
+            when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
