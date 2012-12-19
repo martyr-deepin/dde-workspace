@@ -161,19 +161,19 @@ void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar*
 }
 
 JS_EXPORT_API
-char* gen_id(const char* seed)
+char* dcore_gen_id(const char* seed)
 {
     return g_compute_checksum_for_string(G_CHECKSUM_MD5, seed, strlen(seed));
 }
 
 JS_EXPORT_API
-void run_command(const char* cmd)
+void dcore_run_command(const char* cmd)
 {
     g_spawn_command_line_async(cmd, NULL);
 }
 
 JS_EXPORT_API
-void run_command1(const char* cmd, const char* p1)
+void dcore_run_command1(const char* cmd, const char* p1)
 {
     char* e_p = shell_escape(p1);
     char* e_cmd = g_strdup_printf("%s %s\n", cmd, e_p);
@@ -183,7 +183,7 @@ void run_command1(const char* cmd, const char* p1)
     g_free(e_cmd);
 }
 JS_EXPORT_API
-void run_command2(const char* cmd, const char* p1, const char* p2)
+void dcore_run_command2(const char* cmd, const char* p1, const char* p2)
 {
     char* e_p1 = shell_escape(p1);
     char* e_p2 = shell_escape(p2);
@@ -200,6 +200,11 @@ void init_i18n()
 {
     setlocale(LC_MESSAGES, "");
     textdomain("DDE");
+}
+
+const char* dcore_gettext(const char* c)
+{
+    return gettext(c);
 }
 
 

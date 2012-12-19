@@ -31,10 +31,11 @@ char* shell_escape(const char* source);
 int is_application_running(const char* path);
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
 
-char* gen_id(const char* seed);
-void run_command(const char* cmd);
-void run_command2(const char* cmd, const char* p1, const char* p2);
-void run_command1(const char* cmd, const char* p1);
+char* dcore_gen_id(const char* seed);
+void dcore_run_command(const char* cmd);
+void dcore_run_command2(const char* cmd, const char* p1, const char* p2);
+void dcore_run_command1(const char* cmd, const char* p1);
+
 char* get_name_by_pid(int pid);
 
 gboolean write_to_file(const char* path, const char* content, size_t size/* if 0 will use strlen(content)*/);

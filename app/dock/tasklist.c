@@ -425,8 +425,8 @@ void init_task_list()
     update_active_window(_dsp, GDK_WINDOW_XID(root));
 }
 
-//JS_EXPORT
-void active_window(double id)
+JS_EXPORT_API
+void dock_active_window(double id)
 {
     XClientMessageEvent event;
     event.type = ClientMessage;
@@ -437,7 +437,9 @@ void active_window(double id)
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
 }
-void close_window(double id)
+
+JS_EXPORT_API
+void dock_close_window(double id)
 {
     XClientMessageEvent event;
     event.type = ClientMessage;
@@ -447,7 +449,9 @@ void close_window(double id)
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
 }
-void show_desktop(gboolean value)
+
+JS_EXPORT_API
+void dock_show_desktop(gboolean value)
 {
     Window root = GDK_ROOT_WINDOW();
     XClientMessageEvent event;
@@ -459,12 +463,15 @@ void show_desktop(gboolean value)
     XSendEvent(_dsp, root, False, 
             StructureNotifyMask, (XEvent*)&event);
 }
-void iconify_window(double id)
+
+JS_EXPORT_API
+void dock_iconify_window(double id)
 {
     XIconifyWindow(_dsp, (Window)id, 0);
 }
 
-void draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
+JS_EXPORT_API
+void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
 {
     if (JSValueIsNull(data->ctx, canvas)) {
         g_debug("draw_window_preview with null canvas!");
@@ -506,7 +513,7 @@ double test_get_n()
 
 
 JS_EXPORT_API
-gboolean request_dock_by_client_id(double id)
+gboolean dock_request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
     g_assert(c != NULL);

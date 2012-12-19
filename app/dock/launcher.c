@@ -180,7 +180,7 @@ void write_app_info(GDesktopAppInfo* info)
 
 
 JS_EXPORT_API
-void request_dock(const char* path)
+void dock_request_dock(const char* path)
 {
     GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(path);
     if (info != NULL) {
@@ -197,7 +197,7 @@ void request_dock(const char* path)
 
 
 JS_EXPORT_API
-void request_undock(const char* app_id)
+void dock_request_undock(const char* app_id)
 {
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
@@ -206,7 +206,7 @@ void request_undock(const char* app_id)
 }
 
 JS_EXPORT_API
-JSValueRef get_launcher_info(const char* app_id)
+JSValueRef dock_get_launcher_info(const char* app_id)
 {
     if (g_key_file_has_group(k_apps, app_id)) {
         return build_app_info(app_id);
@@ -217,7 +217,7 @@ JSValueRef get_launcher_info(const char* app_id)
 }
 
 JS_EXPORT_API
-gboolean launch_by_app_id(const char* app_id)
+gboolean dock_launch_by_app_id(const char* app_id)
 {
     GAppInfo* info = NULL;
     gboolean ret = FALSE;

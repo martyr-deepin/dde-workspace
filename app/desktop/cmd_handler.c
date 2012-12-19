@@ -5,8 +5,10 @@
 #include "i18n.h"
 #include "utils.h"
 #include "xdg_misc.h"
+#include "jsextension.h"
 
-void item_rename(const char* old_name, const char* new_name)
+JS_EXPORT_API
+void desktop_item_rename(const char* old_name, const char* new_name)
 {
     printf("item_rename[%s],[%s]\n", old_name, new_name);
     if (g_file_test(old_name, G_FILE_TEST_IS_DIR) == FALSE)
@@ -26,7 +28,8 @@ void item_rename(const char* old_name, const char* new_name)
     g_free(new_path);
 }
 
-void item_delete(const char** target, int n)
+JS_EXPORT_API
+void desktop_item_delete(const char** target, int n)
 {
     printf("%d\n", n);
     if (n <= 0) return;
@@ -60,23 +63,23 @@ void item_delete(const char** target, int n)
     {
         case GTK_RESPONSE_OK:
             for (int i = 0; i < n; ++i)
-                run_command2("rm", "-r -f", target[i]);
+                dcore_run_command2("rm", "-r -f", target[i]);
             break;
         default:
             break;
     }
 }
 
-void run_terminal()
+void desktop_run_terminal()
 {
     gchar* path = get_desktop_dir(0);
     gchar* full_param = g_strdup_printf("--working-directory=%s", path);
-    run_command1("gnome-terminal", full_param);
+    dcore_run_command1("gnome-terminal", full_param);
     g_free(path);
     g_free(full_param);
 }
 
-void run_deepin_settings(const char* mod)
+void desktop_run_deepin_settings(const char* mod)
 {
-    run_command1("deepin-system-settings", mod);
+    dcore_run_command1("deepin-system-settings", mod);
 }

@@ -605,7 +605,8 @@ char* get_entry_info(const char* path)
     return NULL;
 }
 
-char* move_to_desktop(const char* path)
+//JS_EXPORT_API
+char* desktop_move_to_desktop(const char* path)
 {
     char* desktop_dir = get_desktop_dir(FALSE);
     char* dir = g_path_get_dirname(path);
@@ -627,7 +628,7 @@ char* move_to_desktop(const char* path)
     g_free(desktop_dir);
     g_free(dir);
 
-    run_command2("mv", path, new_path);
+    dcore_run_command2("mv", path, new_path);
     return new_path;
 }
 

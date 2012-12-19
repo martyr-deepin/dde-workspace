@@ -81,8 +81,8 @@ void tray_init(GtkWidget* container)
 }
 
 
-//JS_EXPORT
-void set_tray_icon_position(double _icon, double _x, double _y)
+JS_EXPORT_API
+void dock_set_tray_icon_position(double _icon, double _x, double _y)
 {
     GdkWindow* icon = (GdkWindow*)GINT_TO_POINTER((gint)_icon);
     if (g_hash_table_contains(icons, icon)) {
@@ -113,8 +113,9 @@ tray_icon_to_info(GdkWindow* icon, gint xy, GString* string)
     g_free(res_class);
     g_free(res_name);
 }
-//JS_EXPORT
-char* get_tray_icon_list()
+
+JS_EXPORT_API
+char* dock_get_tray_icon_list()
 {
     GString* string = g_string_new("[");
     g_hash_table_foreach(icons, (GHFunc)tray_icon_to_info, string);

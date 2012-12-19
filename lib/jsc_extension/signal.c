@@ -64,7 +64,8 @@ void unprotect(gpointer data)
     JSValueUnprotect(ctx, (JSValueRef)data);
 }
 
-void signal_connect(const char* type, JSValueRef value, JSData* js)
+JS_EXPORT_API
+void dcore_signal_connect(const char* type, JSValueRef value, JSData* js)
 {
     if (signals == NULL) {
         signals = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, unprotect);

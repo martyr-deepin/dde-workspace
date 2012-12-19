@@ -24,8 +24,11 @@
 #include <gio/gio.h>
 #include <glib/gprintf.h>
 
-void cancel_monitor_dir(const char* path);
-void monitor_dir(const char* path);
+JS_EXPORT_API
+void desktop_cancel_monitor_dir(const char* path);
+JS_EXPORT_API
+void desktop_monitor_dir(const char* path);
+
 void begin_monitor_dir(const char* path, GCallback cb);
 void end_monitor_dir(const char* path);
 
@@ -67,7 +70,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                 g_hash_table_remove(monitor_table, path); //if the path is not an monitored dir, the remove operation will no effect.
 
                 if (g_strcmp0(path, get_desktop_dir(FALSE)) == 0) {
-                    cancel_monitor_dir(path);
+                    desktop_cancel_monitor_dir(path);
                     char* desktop = get_desktop_dir(TRUE);
                     begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
                     g_free(desktop);
@@ -87,7 +90,7 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
             {
                 char* path = g_file_get_path(file);
                 if (g_file_test(path, G_FILE_TEST_IS_DIR)) {
-                    monitor_dir(path);
+                    desktop_monitor_dir(path);
                 }
 
                 char* info = get_entry_info(path);
@@ -125,7 +128,7 @@ void monitor_dir_cb(GFileMonitor *m,
                 char* _path = g_file_get_path(file);
                 if (g_strcmp0(_path, path) == 0) {
                     g_free(path);
-                    cancel_monitor_dir(_path);
+                    desktop_cancel_monitor_dir(_path);
                 } else {
                     char* info = get_entry_info(path);
                     if (info != NULL) {
@@ -175,11 +178,13 @@ void end_monitor_dir(const char* path)
 }
 
 
-void monitor_dir(const char* path)
+JS_EXPORT_API
+void desktop_monitor_dir(const char* path)
 {
     begin_monitor_dir(path, G_CALLBACK(monitor_dir_cb));
 }
-void cancel_monitor_dir(const char* path)
+JS_EXPORT_API
+void desktop_cancel_monitor_dir(const char* path)
 {
     end_monitor_dir(path);
 }
@@ -201,7 +206,7 @@ void install_monitor()
             while ((filename = g_dir_read_name(dir)) != NULL) {
                 g_sprintf(path, "%s/%s", desktop, filename);
                 if (g_file_test(path, G_FILE_TEST_IS_DIR)) {
-                    monitor_dir(path);
+                    desktop_monitor_dir(path);
                 }
             }
             g_dir_close(dir);

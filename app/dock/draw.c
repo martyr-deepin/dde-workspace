@@ -14,7 +14,8 @@
 #define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
 #define GET_A(c) ((c & 0xff) / 100.0)
 
-void draw_board(JSValueRef canvas, JSData* data)
+JS_EXPORT_API
+void dock_draw_board(JSValueRef canvas, JSData* data)
 {
     cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
 

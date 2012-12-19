@@ -75,12 +75,14 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void exit_gui()
+JS_EXPORT_API
+void launcher_exit_gui()
 {
     gtk_main_quit();
 }
 
-void notify_workarea_size()
+JS_EXPORT_API
+void launcher_notify_workarea_size()
 {
     GdkScreen* screen = gdk_screen_get_default();
     js_post_message("workarea_changed",
@@ -124,8 +126,8 @@ void fill_cat(char* path, GString* content)
     g_string_append_printf(content, "\"%s\",", path);
 }
 
-//JS_EXPORT
-char* get_items_by_category(double _id)
+JS_EXPORT_API
+char* launcher_get_items_by_category(double _id)
 {
     int id = _id;
     GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
@@ -146,8 +148,8 @@ void record_category_info(const char* id, GDesktopAppInfo* info)
    /*printf("%s get %s\n", id, c);*/
 }
 
-//JS_EXPORT
-JSObjectRef get_items()
+JS_EXPORT_API
+JSObjectRef launcher_get_items()
 {
     JSObjectRef json = json_array_create();
 
@@ -189,8 +191,8 @@ JSObjectRef get_items()
     return json;
 }
 
-//JS_EXPORT
-char* get_categories()
+JS_EXPORT_API
+char* launcher_get_categories()
 {
     /*return g_strdup("[]");*/
     GString* info_str = NULL;

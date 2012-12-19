@@ -39,7 +39,7 @@ char* get_application_entries();
 // move the "path" file to the $XDG_DESKTOP_DIR
 // will auto append suffix if there has the same name file in $XDG_DESKTOP_DIR,
 // but will do nothing if the "path" file is already in $XDG_DESKTOP_DIR
-char* move_to_desktop(const char* path);
+char* desktop_move_to_desktop(const char* path);
 
 char* get_entry_info(const char* path);
 

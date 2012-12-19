@@ -120,11 +120,12 @@ void update_dock_show()
     } else {
         set_struct_partial(w, ORIENTATION_BOTTOM, 30, 0, _screen_width);
         js_post_message("in_mini_mode", NULL);
-        release_region(0, 0, _screen_width, 30);
+        dock_release_region(0, 0, _screen_width, 30);
     }
 }
 
-void emit_webview_ok()
+JS_EXPORT_API
+void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
@@ -139,7 +140,8 @@ void emit_webview_ok()
     }
 }
 
-void change_workarea_height(double height)
+JS_EXPORT_API
+void dock_change_workarea_height(double height)
 {
     if (height < 30) height = 30;
     set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, height, 0, _screen_width); 

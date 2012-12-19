@@ -107,11 +107,11 @@ class Object(Params):
 
 
 class Number(Params):
-    temp = """
-    double p_%(pos)d = JSValueToNumber(context, arguments[%(pos)d], NULL);
-"""
     def in_before(self):
-        return Number.temp % { "pos": self.position }
+        return """
+    double p_%(pos)d = JSValueToNumber(context, arguments[%(pos)d], NULL);
+""" % { "pos": self.position }
+
     def type(self):
         return "double "
 
@@ -125,6 +125,7 @@ class Boolean(Params):
         return """
     bool p_%(pos)d = JSValueToBoolean(context, arguments[%(pos)d]);
 """  % {"pos": self.position}
+
     def type(self):
         return "gboolean "
     def fetch_c_return(self):
@@ -162,7 +163,7 @@ class AString(Array):
         g_free(p_%(pos)d_a[i]);
     }
     g_free(p_%(pos)d_a);
-    """
+"""
         return temp_clear % {'pos': self.position}
 
 class String(Params):
@@ -215,6 +216,8 @@ class Signal:
 class CustomFunc:
     def __init__(self, name):
         self.name = name
+    def set_module_name(self, name):
+        self.module_name = name.lower()
     def str_def(self):
         print "huhu"
         return """
@@ -233,7 +236,7 @@ extern JSValueRef %(name)s(JSContextRef context,
 
 class Function:
     temp = """
-extern %(raw_return)s %(name)s(%(raw_params)s);
+extern %(raw_return)s %(module_name)s_%(name)s(%(raw_params)s);
 static JSValueRef __%(name)s__ (JSContextRef context,
                             JSObjectRef function,
                             JSObjectRef thisObject,
@@ -257,14 +260,13 @@ static JSValueRef __%(name)s__ (JSContextRef context,
 }
 """
 
-    temp_def = """
-    { "%(name)s", __%(name)s__, kJSPropertyAttributeReadOnly },
-"""
-
     def __init__(self, name, r_value, *params):
         self.params = params
         self.name = name
         self.r_value = r_value
+    def set_module_name(self, name):
+        self.module_name = name.lower()
+
     def str(self):
         i = 0
         params_init = ""
@@ -281,6 +283,7 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         return Function.temp % {
                 "raw_return" : self.r_value.type(),
                 "raw_params" : ', '.join(raw_params),
+                "module_name": self.module_name,
                 "name" : self.name,
                 "p_num" : i,
                 "params_init" : params_init,
@@ -294,7 +297,7 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         data->exception = exception;
         data->webview = get_global_webview();
 
-        %(store_c_return)s %(name)s (%(params)s);
+        %(store_c_return)s %(module_name)s_%(name)s (%(params)s);
         %(convert_c_to_js)s
 
         g_free(data);
@@ -308,13 +311,16 @@ static JSValueRef __%(name)s__ (JSContextRef context,
                 params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
+                "module_name": self.module_name,
                 "store_c_return" : self.r_value.fetch_c_return(),
                 "convert_c_to_js" : self.r_value.convert_return_value(),
                 "name": self.name,
                 "params" : ', '.join(params_str)
                 }
     def str_def(self):
-        return Function.temp_def % { "name" : self.name }
+        return """
+{ "%(name)s", __%(name)s__, kJSPropertyAttributeReadOnly },
+""" % { "name": self.name}
 
 class Class:
     temp_class_def = """
@@ -373,6 +379,7 @@ JSClassRef get_%(name)s_class()
 
         for arg in args:
             if isinstance(arg, Function) or isinstance(arg, CustomFunc):
+                arg.set_module_name(self.name)
                 self.funcs.append(arg)
             elif isinstance(arg, Value):
                 self.values.append(arg)

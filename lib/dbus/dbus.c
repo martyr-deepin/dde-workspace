@@ -19,7 +19,8 @@ void dbus_init()
     init = TRUE;
 }
 
-JSValueRef sys_object(
+JS_EXPORT_API
+JSValueRef dbus_sys_object(
         const char* bus_name,
         const char* object_path,
         const char* interface,
@@ -44,7 +45,8 @@ JSValueRef sys_object(
     return value;
 }
 
-JSValueRef sys(const char* bus_name, JSData* js)
+JS_EXPORT_API
+JSValueRef dbus_sys(const char* bus_name, JSData* js)
 {
     char** segs = g_strsplit(bus_name, ".", -1);
     char* r = g_strjoinv("/", segs);
@@ -52,12 +54,14 @@ JSValueRef sys(const char* bus_name, JSData* js)
     char* path = g_strdup_printf("/%s", r);
     g_free(r);
 
-    JSValueRef obj = sys_object(bus_name, path, bus_name, js);
+    JSValueRef obj = dbus_sys_object(bus_name, path, bus_name, js);
     g_free(path);
     return obj;
 }
 
-JSValueRef session_object(
+
+JS_EXPORT_API
+JSValueRef dbus_session_object(
         const char* bus_name,
         const char* object_path,
         const char* interface,
@@ -82,7 +86,8 @@ JSValueRef session_object(
     return value;
 }
 
-JSValueRef session(const char* bus_name, JSData* js)
+JS_EXPORT_API
+JSValueRef dbus_session(const char* bus_name, JSData* js)
 {
     char** segs = g_strsplit(bus_name, ".", -1);
     char* r = g_strjoinv("/", segs);
@@ -90,7 +95,7 @@ JSValueRef session(const char* bus_name, JSData* js)
     char* path = g_strdup_printf("/%s", r);
     g_free(r);
 
-    JSValueRef obj = session_object(bus_name, path, bus_name, js);
+    JSValueRef obj = dbus_session_object(bus_name, path, bus_name, js);
     g_free(path);
     return obj;
 }

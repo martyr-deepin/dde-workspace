@@ -29,17 +29,20 @@
 
 void install_monitor();
 
-char* get_desktop_items()
+JS_EXPORT_API
+char* desktop_get_desktop_items()
 {
     return get_desktop_entries();
 }
 
-char* get_items_by_dir(const char* path)
+JS_EXPORT_API
+char* desktop_get_items_by_dir(const char* path)
 {
     return get_entries_by_func(path, no_dot_hidden_file);
 }
 
-void notify_workarea_size()
+JS_EXPORT_API
+void desktop_notify_workarea_size()
 {
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
