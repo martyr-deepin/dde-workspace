@@ -71,7 +71,9 @@ char* dentry_get_icon(Entry* e)
         g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
-        ret = lookup_icon_by_gicon(icon);
+        char* icon_str = g_icon_to_string(icon);
+        ret = icon_name_to_path(icon_str, 48);
+        g_free(icon_str);
     TEST_END
 
 
