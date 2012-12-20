@@ -618,7 +618,9 @@ delete_selected_items = ->
 
 show_selected_items_Properties = ->
     tmp = []
-    tmp.push("file://#{i}") for i in selected_item
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp.push("file://#{w.get_path()}")
     s_nautilus.ShowItemProperties_sync(tmp, '')
 
 
