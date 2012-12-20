@@ -6,9 +6,7 @@
 JS_EXPORT_API
 char* dfile_get_basename(GFile* f)
 {
-    /*return g_strdup("");*/
-    /*printf("get_file %p %s\n", f, g_file_get_basename(f));*/
-    g_assert(f != NULL);
+    g_assert(G_IS_FILE(f));
     return g_file_get_basename(f);
 }
 
@@ -41,12 +39,8 @@ ArrayContainer dfile_list_files(GFile* f)
 
     ArrayContainer ac;
     ac.num = array->len;
-    GFile** data = g_new(GFile*, ac.num);
-    for (size_t i=0; i<ac.num; i++) {
-        data[i] = g_ptr_array_index(array, i);
-    }
-    ac.data = data;
-    g_ptr_array_free(array, TRUE);
+    ac.data = array->pdata;
+    g_ptr_array_free(array, FALSE);
 
     return ac;
 }
