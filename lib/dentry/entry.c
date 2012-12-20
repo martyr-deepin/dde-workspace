@@ -71,9 +71,11 @@ char* dentry_get_icon(Entry* e)
         g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
-        char* icon_str = g_icon_to_string(icon);
-        ret = icon_name_to_path(icon_str, 48);
-        g_free(icon_str);
+        if (icon != NULL) {
+            char* icon_str = g_icon_to_string(icon);
+            ret = icon_name_to_path(icon_str, 48);
+            g_free(icon_str);
+        }
     TEST_END
 
 
@@ -116,21 +118,26 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 }
 
 
+
 JS_EXPORT_API
 ArrayContainer dentry_list_files(GFile* f)
 {
     g_assert(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY);
 
-    char* path = g_file_get_path(f);
-    GDir* dir = g_dir_open(path, 0, NULL);
-    g_free(path);
+    char* dir_path = g_file_get_path(f);
+    GDir* dir = g_dir_open(dir_path, 0, NULL);
     const char* child_name = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
     for (int i=0; NULL != (child_name = g_dir_read_name(dir)); i++) {
         GFile* child = g_file_get_child(f, child_name);
         g_ptr_array_add(array, child);
+
+        char* path = g_build_filename(dir_path, child_name, NULL);
+        g_ptr_array_add(array, dentry_create_by_path(path));
+        g_free(path);
     }
     g_dir_close(dir);
+    g_free(dir_path);
 
     ArrayContainer ac;
     ac.num = array->len;
@@ -149,4 +156,26 @@ Entry* dentry_create_by_path(const char* path)
     } 
 
     return g_file_new_for_path(path);
+}
+
+static
+GFile* _get_gfile_from_gapp(GDesktopAppInfo* info)
+{
+    return g_file_new_for_path(g_desktop_app_info_get_filename(info));
+}
+
+JS_EXPORT_API
+double dentry_get_mtime(Entry* e)
+{
+    GFile* file = NULL;
+    TEST_GFILE(e, f)
+        file = f;
+    TEST_GAPP(e, app)
+        if (G_IS_DESKTOP_APP_INFO(app))
+            file = _get_gfile_from_gapp((GDesktopAppInfo*)app);
+    TEST_END
+
+    if (file != NULL) {
+        /*GFileInfo* info = g_file_query_info(file, */
+    }
 }
