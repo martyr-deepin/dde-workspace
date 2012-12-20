@@ -99,10 +99,21 @@ JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
     TEST_GFILE(e, f)
-        char* path = g_file_get_path(f);
-        dcore_run_command1("gvfs-open", path);
-        g_free(path);
-        return TRUE;
+        GFileInfo* info = g_file_query_info(f, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+        if (info != NULL) {
+            const char* content_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+            GAppInfo *app  = g_app_info_get_default_for_type(content_type, FALSE);
+            GList* list = g_list_append(NULL, f);
+            g_app_info_launch(app, list, NULL, NULL);
+            g_list_free(list);
+            g_object_unref(app);
+            g_object_unref(info);
+        } else {
+            char* path = g_file_get_path(f);
+            dcore_run_command1("gvfs-open", path);
+            g_free(path);
+            return TRUE;
+        }
     TEST_GAPP(e, app)
         GFile** files = fs.data;
         GList* list = NULL;
