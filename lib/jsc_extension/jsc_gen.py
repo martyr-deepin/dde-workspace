@@ -532,7 +532,6 @@ JSGlobalContextRef get_global_context()
 }
 gboolean invoke_js_garbage()
 {
-    g_debug("invoke js garbage collecte\\n");
     JSGarbageCollect(global_ctx);
     return TRUE;
 }
