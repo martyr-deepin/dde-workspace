@@ -25,6 +25,7 @@
 #include "xdg_misc.h"
 #include "X_misc.h"
 #include "i18n.h"
+#include "dentry/entry.h"
 #include <cairo/cairo-xlib.h>
 
 void install_monitor();
@@ -33,6 +34,29 @@ JS_EXPORT_API
 char* desktop_get_desktop_items()
 {
     return get_desktop_entries();
+}
+
+JS_EXPORT_API
+JSObjectRef desktop_get_desktop_entries()
+{
+    JSObjectRef array = json_array_create();
+    char* desktop_path = get_desktop_dir(FALSE);
+    printf("desktop path %s\n", desktop_path);
+    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+
+    const char* file_name = NULL;
+    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+        if (file_name[0] == '.') continue;
+
+        char* path = g_build_filename(desktop_path, file_name, NULL);
+        Entry* e = dentry_create_by_path(path);
+        g_free(path);
+        json_array_append_nobject(array, i++, e, g_object_ref, g_object_unref);
+        g_object_unref(e);
+    }
+    g_dir_close(dir);
+    g_free(desktop_path);
+    return array;
 }
 
 JS_EXPORT_API

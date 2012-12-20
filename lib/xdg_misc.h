@@ -21,6 +21,7 @@
 #ifndef __XDG_MISC_H__
 #define __XDG_MISC_H__
 #include <glib.h>
+#include <gio/gio.h>
 
 // the really icon path is determined by theme
 void set_default_theme(const char* theme);
@@ -69,6 +70,7 @@ char* get_desktop_dir(gboolean update);
 
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
+char* lookup_icon_by_gicon(GIcon* icon);
 
 enum EntryType {
     AppEntryType,

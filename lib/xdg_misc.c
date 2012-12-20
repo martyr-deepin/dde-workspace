@@ -120,6 +120,25 @@ char* get_dir_file_list(const char* path)
     return ret;
 }
 
+char* lookup_icon_by_gicon(GIcon* icon)
+{
+    char* icon_path = NULL;
+
+    char* icon_infos = g_icon_to_string(icon);
+    char** types = g_strsplit(icon_infos, " ", -1);
+    g_free(icon_infos);
+
+    char** tmp = types;
+    if (*tmp != NULL) tmp++;
+
+    while (*tmp != NULL && icon_path == NULL) {
+        icon_path = icon_name_to_path(*(tmp++), 48);
+    }
+
+    g_strfreev(types);
+
+    return icon_path;
+}
 
 char* lookup_icon_by_file(const char* path)
 {
@@ -497,7 +516,7 @@ char* get_desktop_dir(gboolean update)
     if (update || dir == NULL) {
         if (dir != NULL)
             g_free(dir);
-        const char* cmd = "bash -c 'source ~/.config/user-dirs.dirs && echo $XDG_DESKTOP_DIR'";
+        const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_DESKTOP_DIR'";
         g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
         g_strchomp(dir);
     }

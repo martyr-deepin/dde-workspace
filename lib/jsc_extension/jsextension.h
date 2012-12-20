@@ -76,6 +76,7 @@ void json_append_nobject(JSObjectRef json, const char* key, void* value, NObject
 
 JSObjectRef json_array_create();
 void json_array_append(JSObjectRef json, gsize i, JSValueRef value);
+void json_array_append_nobject(JSObjectRef json, gsize i, void* value, NObjectRef ref, NObjectUnref unref);
 
 
 
