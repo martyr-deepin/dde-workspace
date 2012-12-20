@@ -32,7 +32,7 @@ create_item = (info) ->
 
     el.click_cb = (e) ->
         el.style.cursor = "wait"
-        DCore.Launchable.launch(info.Core)
+        DCore.DEntry.launch(info.Core, [])
         DCore.Launcher.exit_gui()
     el.addEventListener('click', el.click_cb)
     return el
