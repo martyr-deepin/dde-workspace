@@ -178,12 +178,10 @@ class Item extends Widget
         if @in_rename == false
             @element.draggable = false
             @item_name.contentEditable = "true"
-            @item_name.style.webkitUserSelect = "text"
-            @item_name.style.cursor = "text"
-            @item_name.style.backgroundColor = "#FFF"
-            @item_name.style.webkitUserModify = "read-write-plaintext-only"
+            @item_name.className = "item_renaming"
             @item_name.focus()
             @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
 
@@ -211,11 +209,9 @@ class Item extends Widget
     item_complete_rename : (modify = true) =>
         @element.draggable = true
         @item_name.contentEditable = "false"
-        @item_name.style.cursor = ""
-        @item_name.style.backgroundColor = ""
-        @item_name.style.webkitUserSelect = ""
-        @item_name.style.webkitUserModify = ""
+        @item_name.className = "item_name"
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
@@ -323,111 +319,83 @@ class DesktopEntry extends Item
 
 
     do_buildmenu : () ->
-        [
-            [1, _("Open")],
-#            [_("Open with"), [
-#                    [35, "emaces"],
-#                    [36, "geany"],
-#                    [37, "vim"]
-#                ]
-#            ],
-            [],
-            [2, _("cut")],
-            [3, _("copy")],
-            [],
-#            [4, _("create link")],
-            [5, _("Rename")],
-#            [_("copy to"), [
-#                    [41, _("another desktop")],
-#                    [42, _("home")],
-#                    [43, _("desktop")]
-#                ]
-#           ],
-#            [_("move to"), [
-#                    [51, _("another desktop")],
-#                    [52, _("home")],
-#                    [53, _("desktop")]
-#                ]
-#            ],
-            [6, _("Delete")],
-            [],
-            [7, _("Properties")]
-        ]
+        build_selected_items_menu()
 
 
     do_itemselected : (evt) =>
         switch evt.id
             when 1 then open_selected_items()
-            when 2 then selected_cut_to_clipboard()
-            when 3 then selected_copy_to_clipboard()
-            when 5 then @item_rename()
-            when 6 then delete_selected_items()
-            when 7 then show_selected_items_Properties()
+            when 3 then selected_cut_to_clipboard()
+            when 4 then selected_copy_to_clipboard()
+            when 6 then @item_rename()
+            when 9 then delete_selected_items()
+            when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
+#class Folder extends DesktopEntry
+#    constructor : ->
+#        super
+#
+#       if not @exec?
+#           @exec = "gvfs-open \"#{@id}\""
+#
+#    do_drop : (evt) =>
+#        super
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        for f in files
+#            w = Widget.look_up(f)
+#            if w? and w.constructor.name != "AppLauncher"
+#                @move_in(w.path)
+#
+#        return
+#
+#
+#    do_dragenter : (evt) =>
+#        evt.stopPropagation()
+#
+#        if @selected == false
+#            ++@in_count
+#            if @in_count == 1
+#                @show_hover_box()
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        if files.indexOf(@id) >= 0
+#            evt.dataTransfer.dropEffect = "none"
+#        else
+#            evt.dataTransfer.dropEffect = "move"
+#
+#        #FIXME: test propose only, should disable on public release
+#        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+#        return
+#
+#
+#    do_dragover : (evt) =>
+#        evt.preventDefault()
+#        evt.stopPropagation()
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        if files.indexOf(@id) >= 0
+#            evt.dataTransfer.dropEffect = "none"
+#        else
+#            evt.dataTransfer.dropEffect = "move"
+#
+#        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+#        return
+#
+#
+#    move_in: (c_path) ->
+#        echo "move to #{c_path} from #{@path}"
+#        p = c_path.replace("file://", "")
+#        DCore.run_command2("mv", p, @path)
+
+
+#class AppLauncher extends DesktopEntry
 class Folder extends DesktopEntry
-    constructor : ->
-        super
-
-        if not @exec?
-            @exec = "gvfs-open \"#{@id}\""
-
-    do_drop : (evt) =>
-        super
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        for f in files
-            w = Widget.look_up(f)
-            if w? and w.constructor.name != "AppLauncher"
-                @move_in(w.path)
-
-        return
-
-
-    do_dragenter : (evt) =>
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) =>
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        echo "do_dragover #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    move_in: (c_path) ->
-        echo "move to #{c_path} from #{@path}"
-        p = c_path.replace("file://", "")
-        DCore.run_command2("mv", p, @path)
-
-
-class AppLauncher extends DesktopEntry
     constructor : ->
         super
 
@@ -662,10 +630,10 @@ class Application extends DesktopEntry
                 if w.constructor.name != "Application"
                     all_are_apps = false
 
-                tmp_list.push(w.path)
+                tmp_list.push(f)
 
         if all_are_apps == true
-            tmp_list.push(@path)
+            tmp_list.push(@id)
             alert("we should merge files here")
         else
             alert("we should run app to open these files")
