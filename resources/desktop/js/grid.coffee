@@ -107,9 +107,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
-    o_table = new Array()
-    for i in [0..cols]
-        o_table[i] = new Array(rows)
+    init_occupy_table()
 
     for i in all_item
         w = Widget.look_up(i)
@@ -164,6 +162,12 @@ compare_pos_rect = (base1, base2, pos) ->
         true
     else
         false
+
+
+init_occupy_table = ->
+    o_table = new Array()
+    for i in [0..cols]
+        o_table[i] = new Array(rows)
 
 
 clear_occupy = (info) ->
@@ -579,13 +583,11 @@ show_selected_items_Properties = ->
 gird_left_mousedown = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
-        update_selected_item_drag_image()
 
 
 grid_right_click = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
-        update_selected_item_drag_image()
 
 
 grid_do_itemselected = (evt) ->
