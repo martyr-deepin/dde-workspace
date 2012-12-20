@@ -169,13 +169,30 @@ double dentry_get_mtime(Entry* e)
 {
     GFile* file = NULL;
     TEST_GFILE(e, f)
-        file = f;
+        file = g_file_dup(f);
     TEST_GAPP(e, app)
         if (G_IS_DESKTOP_APP_INFO(app))
             file = _get_gfile_from_gapp((GDesktopAppInfo*)app);
     TEST_END
 
+    guint64 time = 0;
     if (file != NULL) {
-        /*GFileInfo* info = g_file_query_info(file, */
+        GFileInfo* info = g_file_query_info(file, G_FILE_ATTRIBUTE_TIME_CHANGED, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+        time = g_file_info_get_attribute_uint64(info, G_FILE_ATTRIBUTE_TIME_CHANGED);
+        g_object_unref(info);
+        g_object_unref(file);
     }
+    return time;
+}
+
+JS_EXPORT_API
+gboolean dentry_set_name(Entry* e, const char* name)
+{
+    TEST_GFILE(e, f)
+        g_object_unref(g_file_set_display_name(e, name, NULL, NULL));
+        return TRUE;
+    TEST_GAPP(e, app)
+        const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
+        return change_desktop_entry_name(path, name);
+    TEST_END
 }
