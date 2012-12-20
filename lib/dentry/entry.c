@@ -94,16 +94,23 @@ char* dentry_get_id(Entry* e)
 }
 
 JS_EXPORT_API
-gboolean dentry_launch(Entry* e, ArrayContainer fs)
+gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
-//TODO:  parse fs
     TEST_GFILE(e, f)
         char* path = g_file_get_path(f);
         dcore_run_command1("gvfs-open", path);
         g_free(path);
         return TRUE;
     TEST_GAPP(e, app)
-        return g_app_info_launch(app, NULL, NULL, NULL);
+        GFile** files = fs.data;
+        GList* list = NULL;
+        for (size_t i=0; i<fs.num; i++) {
+            if (G_IS_FILE(files[i]))
+                list = g_list_append(list, files[i]);
+        }
+        gboolean ret = g_app_info_launch(app, list, NULL, NULL);
+        g_list_free(list);
+        return ret;
     TEST_END
     return FALSE;
 }
