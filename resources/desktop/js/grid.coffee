@@ -499,7 +499,6 @@ update_selected_item_drag_image = ->
     #drag_canvas.height = s_height
 
     if not context
-        alert("sd")
         context = drag_canvas.getContext('2d')
 
     for i in selected_item
