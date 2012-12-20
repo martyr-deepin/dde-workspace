@@ -17,15 +17,24 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-create_item = (info) ->
+FILE_TYPE_APP = 0
+FILE_TYPE_FILE = 1
+FILE_TYPE_DIR = 2
+
+create_item = (entry) ->
     w = null
-    switch info.Type
-        when "Application"
-            w = new Application info.Name, info.Icon, info.Exec, info.EntryPath
-        when "File"
-            w = new NormalFile info.Name, info.Icon, info.Exec, info.EntryPath
-        when "Dir"
-            w = new Folder info.Name, info.Icon, info.exec, info.EntryPath
+    Id = DCore.DEntry.get_id(entry)
+    Type = DCore.DEntry.get_type(entry)
+    Name = DCore.DEntry.get_name(entry)
+    Icon = DCore.DEntry.get_icon(entry)
+    Path = DCore.DEntry.get_path(entry)
+    switch Type
+        when FILE_TYPE_APP
+            w = new Application(Id, Name, Icon, Path)
+        when FILE_TYPE_FILE
+            w = new NormalFile(Id, Name, Icon, Path)
+        when FILE_TYPE_DIR
+                w = new Folder(Id, Name, Icon, Path)
         else
             echo "don't support type"
 
@@ -40,8 +49,8 @@ clear_desktop_items = ->
 
 load_desktop_all_items = ->
     clear_desktop_items()
-    for info in DCore.Desktop.get_desktop_items()
-        w = create_item(info)
-        all_item.push(w.id)
+    for e in DCore.Desktop.get_desktop_entries()
+        w = create_item(e)
         if w?
+            all_item.push(w.id)
             move_to_anywhere(w)
