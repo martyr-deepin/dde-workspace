@@ -25,16 +25,13 @@ create_item = (entry) ->
     w = null
     Id = DCore.DEntry.get_id(entry)
     Type = DCore.DEntry.get_type(entry)
-    Name = DCore.DEntry.get_name(entry)
-    Icon = DCore.DEntry.get_icon(entry)
-    Path = DCore.DEntry.get_path(entry)
     switch Type
         when FILE_TYPE_APP
-            w = new Application(Id, Name, Icon, Path)
+            w = new Application(entry)
         when FILE_TYPE_FILE
-            w = new NormalFile(Id, Name, Icon, Path)
+            w = new NormalFile(entry)
         when FILE_TYPE_DIR
-                w = new Folder(Id, Name, Icon, Path)
+                w = new Folder(entry)
         else
             echo "don't support type"
 

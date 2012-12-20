@@ -225,7 +225,6 @@ move_to_anywhere = (widget) ->
         info = find_free_position(1, 1)
         move_to_position(widget, info)
 
-    #echo "#{widget.name} move to #{info.x},#{info.y}"
     return
 
 
