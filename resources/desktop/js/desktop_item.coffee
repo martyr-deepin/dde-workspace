@@ -46,9 +46,8 @@ cleanup_filename = (str) ->
 
 
 class Item extends Widget
-    constructor: (@name, @icon, @exec, @path) ->
+    constructor: (@id, @name, @icon, @path) ->
         @selected = false
-        @id = @path
         @in_rename = false
 
         @clicked = false
@@ -233,7 +232,7 @@ class Item extends Widget
 
 
     destroy: ->
-        info = load_position(this.path)
+        info = load_position(@id)
         clear_occupy(info)
         super
 

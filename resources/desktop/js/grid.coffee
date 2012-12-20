@@ -118,7 +118,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (item) ->
-    pos = localStorage.getObject(item)
+    pos = localStorage.getObject("id:" + item)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -127,18 +127,19 @@ load_position = (item) ->
 
 
 save_position = (item, pos) ->
-    localStorage.setObject(item, pos)
-
-
-update_position = (old_path, new_path) ->
-    o_p = load_position(old_path)
-    localStorage.removeItem(old_path)
-    localStorage.setObject(new_path, o_p)
+    localStorage.setObject("id:" + item, pos)
     return
 
 
-discard_position = (path) ->
-    localStorage.removeItem(path)
+discard_position = (item) ->
+    localStorage.removeItem("id:" + item)
+    return
+
+
+update_position = (old_id, new_id) ->
+    o_p = load_position(old_id)
+    discard_position(old_id)
+    save_position(new_id, o_p)
     return
 
 
@@ -213,7 +214,7 @@ find_free_position = (w, h) ->
 
 
 move_to_anywhere = (widget) ->
-    info = load_position(widget.path)
+    info = load_position(widget.id)
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
@@ -228,7 +229,7 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        old_pos = load_position(widget.path)
+        old_pos = load_position(widget.id)
         if not old_pos?
             pos = find_free_position(1, 1)
             move_to_position(widget, pos)
@@ -237,11 +238,11 @@ move_to_somewhere = (widget, pos) ->
 
 
 move_to_position = (widget, info) ->
-    old_info = load_position(widget.path)
+    old_info = load_position(widget.id)
 
     if not info? then return
 
-    save_position(widget.path, info)
+    save_position(widget.id, info)
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
@@ -427,13 +428,13 @@ update_selected_stats = (w, evt) ->
 
             if selected_item.length == 1
                 end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-                start_pos = load_position(Widget.look_up(selected_item[0]).path)
+                start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
                 ret = compare_pos_top_left(start_pos, end_pos)
                 if ret < 0
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                             set_item_selected(val, true)
                 else if ret == 0
@@ -441,7 +442,7 @@ update_selected_stats = (w, evt) ->
                 else
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                             set_item_selected(val, true)
 
@@ -495,7 +496,6 @@ update_selected_item_drag_image = ->
     #drag_canvas.height = s_height
 
     if not context
-        alert("sd")
         context = drag_canvas.getContext('2d')
 
     for i in selected_item
@@ -671,7 +671,7 @@ class Mouse_Select_Area_box
             for i in all_item
                 w = Widget.look_up(i)
                 if not w? then continue
-                item_pos = load_position(w.path)
+                item_pos = load_position(w.id)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 
