@@ -74,6 +74,18 @@ class Item extends Widget
         el.appendChild(@item_name)
 
 
+    get_name : ->
+        DCore.DEntry.get_name(@entry)
+
+
+    get_path : ->
+        DCore.DEntry.get_path(@entry)
+
+
+    get_mtime : ->
+        DCore.DEntry.get_mtime(@entry)
+
+
     do_mouseover : (evt) =>
         @show_hover_box()
 
@@ -208,6 +220,7 @@ class Item extends Widget
                 evt.preventDefault()
         return
 
+
     item_complete_rename : (modify = true) =>
         @element.draggable = true
         @item_name.contentEditable = "false"
@@ -218,8 +231,8 @@ class Item extends Widget
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
-        if modify == true and new_name.length > 0 and new_name != DCore.DEntry.get_name(@entry)
-            DCore.Desktop.item_rename(@id, new_name)
+        if modify == true and new_name.length > 0 and new_name != @get_name()
+            DCore.DEntry.set_name(@entry, new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -392,7 +405,7 @@ class DesktopEntry extends Item
 #
 #    move_in: (c_path) ->
 #        p = c_path.replace("file://", "")
-#        DCore.run_command2("mv", p, DCore.DEntry.get_path(@entry))
+#        DCore.run_command2("mv", p, @get_path())
 
 
 #class AppLauncher extends DesktopEntry
@@ -622,7 +635,7 @@ class Folder extends DesktopEntry
 
     move_in: (c_path) ->
         p = c_path.replace("file://", "")
-        DCore.run_command2("mv", p, DCore.DEntry.get_path(@entry))
+        DCore.run_command2("mv", p, @get_path())
 
 
 class Application extends DesktopEntry

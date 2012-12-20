@@ -67,17 +67,18 @@ s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
 
 gm = build_menu([
     [_("arrange icons"), [
-            [31, _("by name")],
-            [32, _("by last modified time")]
+            [11, _("by name")],
+            [12, _("by last modified time")]
         ]
     ],
     [_("New"), [
-            [41, _("folder")],
-            [42, _("text file")]
+            [21, _("folder")],
+            [22, _("text file")]
         ]
     ],
     [3, _("open terminal here")],
     [4, _("paste")],
+    [],
     [5, _("Personal")],
     [6, _("Display Settings")]
 ])
@@ -172,6 +173,12 @@ init_occupy_table = ->
         o_table[i] = new Array(rows)
 
 
+clear_occupy_table = ->
+    for i in [0 ... cols]
+        for j in [0 ... rows]
+            o_table[i][j] = null
+
+
 clear_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -255,13 +262,21 @@ move_to_position = (widget, info) ->
     return
 
 
-sort_desktop_item_by_name = ->
-    item_ordered_list = all_item.concat()
-    item_ordered_list.sort()
+sort_list_by_name_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_name().localeCompare(w2.get_name())
 
-    for i in [0 ... cols]
-        for j in [0 .. rows]
-            o_table[i][j] = null
+
+menu_sort_desktop_item_by_name = ->
+    item_ordered_list = all_item.concat()
+    item_ordered_list.sort(sort_list_by_name_from_id)
+
+    clear_occupy_table()
 
     for i in item_ordered_list
         w = Widget.look_up(i)
@@ -271,7 +286,28 @@ sort_desktop_item_by_name = ->
     return
 
 
-#TODO: sort_desktop_item_by_last_modified_time
+sort_list_by_mtime_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_mtime() - w2.get_mtime()
+
+
+menu_sort_desktop_item_by_mtime = ->
+    item_ordered_list = all_item.concat()
+    item_ordered_list.sort(sort_list_by_mtime_from_id)
+
+    clear_occupy_table()
+
+    for i in item_ordered_list
+        w = Widget.look_up(i)
+        if w?
+            discard_position(w.id)
+            move_to_anywhere(w)
+    return
 
 
 init_grid_drop = ->
@@ -598,7 +634,8 @@ grid_right_click = (evt) ->
 
 grid_do_itemselected = (evt) ->
     switch evt.id
-        when 31 then sort_desktop_item_by_name()
+        when 11 then menu_sort_desktop_item_by_name()
+        when 12 then menu_sort_desktop_item_by_mtime()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
