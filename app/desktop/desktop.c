@@ -31,17 +31,10 @@
 void install_monitor();
 
 JS_EXPORT_API
-char* desktop_get_desktop_items()
-{
-    return get_desktop_entries();
-}
-
-JS_EXPORT_API
 JSObjectRef desktop_get_desktop_entries()
 {
     JSObjectRef array = json_array_create();
     char* desktop_path = get_desktop_dir(FALSE);
-    printf("desktop path %s\n", desktop_path);
     GDir* dir = g_dir_open(desktop_path, 0, NULL);
 
     const char* file_name = NULL;
@@ -57,12 +50,6 @@ JSObjectRef desktop_get_desktop_entries()
     g_dir_close(dir);
     g_free(desktop_path);
     return array;
-}
-
-JS_EXPORT_API
-char* desktop_get_items_by_dir(const char* path)
-{
-    return get_entries_by_func(path, no_dot_hidden_file);
 }
 
 JS_EXPORT_API
