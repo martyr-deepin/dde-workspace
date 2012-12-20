@@ -172,11 +172,11 @@ class Launcher extends AppItem
         
 
     do_click: (e)->
-        DCore.Launchable.launch(@core)
+        DCore.DEntry.launch(@core, [])
 
     do_itemselected: (e)->
         switch e.id
-            when 1 then DCore.Launchable.launch(@core)
+            when 1 then DCore.DEntry.launch(@core, [])
             when 2 then DCore.Dock.request_undock(@id)
     do_buildmenu: (e)->
         [
