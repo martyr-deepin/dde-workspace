@@ -334,68 +334,69 @@ class DesktopEntry extends Item
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
+#class Folder extends DesktopEntry
+#    constructor : ->
+#        super
+#
+#       if not @exec?
+#           @exec = "gvfs-open \"#{@id}\""
+#
+#    do_drop : (evt) =>
+#        super
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        for f in files
+#            w = Widget.look_up(f)
+#            if w? and w.constructor.name != "AppLauncher"
+#                @move_in(w.path)
+#
+#        return
+#
+#
+#    do_dragenter : (evt) =>
+#        evt.stopPropagation()
+#
+#        if @selected == false
+#            ++@in_count
+#            if @in_count == 1
+#                @show_hover_box()
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        if files.indexOf(@id) >= 0
+#            evt.dataTransfer.dropEffect = "none"
+#        else
+#            evt.dataTransfer.dropEffect = "move"
+#
+#        #FIXME: test propose only, should disable on public release
+#        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+#        return
+#
+#
+#    do_dragover : (evt) =>
+#        evt.preventDefault()
+#        evt.stopPropagation()
+#
+#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+#        files = all_selected_items.split("\n")
+#        if files.indexOf(@id) >= 0
+#            evt.dataTransfer.dropEffect = "none"
+#        else
+#            evt.dataTransfer.dropEffect = "move"
+#
+#        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+#        return
+#
+#
+#    move_in: (c_path) ->
+#        echo "move to #{c_path} from #{@path}"
+#        p = c_path.replace("file://", "")
+#        DCore.run_command2("mv", p, @path)
+
+
+#class AppLauncher extends DesktopEntry
 class Folder extends DesktopEntry
-    constructor : ->
-        super
-
-        if not @exec?
-            @exec = "gvfs-open \"#{@id}\""
-
-    do_drop : (evt) =>
-        super
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        for f in files
-            w = Widget.look_up(f)
-            if w? and w.constructor.name != "AppLauncher"
-                @move_in(w.path)
-
-        return
-
-
-    do_dragenter : (evt) =>
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) =>
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        echo "do_dragover #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    move_in: (c_path) ->
-        echo "move to #{c_path} from #{@path}"
-        p = c_path.replace("file://", "")
-        DCore.run_command2("mv", p, @path)
-
-
-class AppLauncher extends DesktopEntry
     constructor : ->
         super
 
@@ -630,10 +631,10 @@ class Application extends DesktopEntry
                 if w.constructor.name != "Application"
                     all_are_apps = false
 
-                tmp_list.push(w.path)
+                tmp_list.push(f)
 
         if all_are_apps == true
-            tmp_list.push(@path)
+            tmp_list.push(@id)
             alert("we should merge files here")
         else
             alert("we should run app to open these files")
