@@ -41,26 +41,10 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
             {
-                char* old_path = g_file_get_path(file);
-                char* new_path = g_file_get_path(other);
-
-                char* info = get_entry_info(new_path);
-
-                char* e_old_path = json_escape(old_path);
-                char* e_new_path = json_escape(new_path);
-
-                g_free(old_path);
-                g_free(new_path);
-
-                char* tmp = g_strdup_printf("{\"old_id\":\"%s\", \"info\":%s}", e_old_path, e_new_path);
-
-                g_free(e_old_path);
-                g_free(e_new_path);
-
-                js_post_message_simply("item_rename", tmp);
-                g_free(tmp);
-
-                g_free(info);
+                JSObjectRef json = json_create();
+                json_append_nobject(json, "old", file, g_object_ref, g_object_unref);
+                json_append_nobject(json, "new", other, g_object_ref, g_object_unref);
+                js_post_message("item_rename", json);
                 break;
             }
         case G_FILE_MONITOR_EVENT_DELETED:
@@ -75,12 +59,9 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
                     g_free(desktop);
                 } else {
-                    char* e_path = json_escape(path);
-                    char* tmp = g_strdup_printf("{\"id\":\"%s\"}", e_path);
-                    g_free(e_path);
-                    js_post_message_simply("item_delete", tmp);
-                    printf("item_delete %s\n", tmp);
-                    g_free(tmp);
+                    JSObjectRef json = json_create();
+                    json_append_nobject(json, "entry", file, g_object_ref, g_object_unref);
+                    js_post_message("item_delete", json);
                 }
                 g_free(path);
                 break;
@@ -93,11 +74,9 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     desktop_monitor_dir(path);
                 }
 
-                char* info = get_entry_info(path);
-                if (info != NULL) {
-                    js_post_message_simply("item_update", info);
-                    g_free(info);
-                }
+                JSObjectRef json = json_create();
+                json_append_nobject(json, "id", file, g_object_ref, g_object_unref);
+                js_post_message("item_update", json);
 
                 g_free(path);
                 break;
