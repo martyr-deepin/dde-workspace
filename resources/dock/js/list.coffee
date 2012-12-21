@@ -65,7 +65,7 @@ class AppList extends Widget
         indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
         if file.length > 9  # strlen("x.desktop") == 9
-            DCore.Dock.request_dock(file.trim())
+            DCore.Dock.request_dock(decodeURI(file.trim()))
 
     show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list").trim()
