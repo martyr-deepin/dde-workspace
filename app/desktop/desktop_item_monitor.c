@@ -141,7 +141,7 @@ void begin_monitor_dir(const char* path, GCallback cb)
 {
     if (!g_hash_table_contains(monitor_table, path)) {
         GFile* dir = g_file_new_for_path(path);
-        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_NONE, NULL, NULL);
+        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
         /*g_file_monitor_set_rate_limit(monitor, 200);*/
         char* key = g_strdup(path);
         g_hash_table_insert(monitor_table, key, monitor);
