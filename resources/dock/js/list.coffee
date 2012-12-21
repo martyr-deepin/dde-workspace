@@ -65,7 +65,7 @@ class AppList extends Widget
         indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
         if file.length > 9  # strlen("x.desktop") == 9
-            DCore.Dock.request_dock(file.trim())
+            DCore.Dock.request_dock(decodeURI(file.trim()))
 
     show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list").trim()
@@ -409,6 +409,7 @@ app_list.element.appendChild(show_launcher.element)
 
 
 DCore.signal_connect("active_window_changed", (info)->
+    active_group?.to_normal_status()
     active_group = Widget.look_up("le_"+info.clss)
     active_group?.to_active_status(info.id)
 )

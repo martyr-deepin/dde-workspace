@@ -45,8 +45,14 @@ JSValueRef build_app_info(const char* app_id)
     GAppInfo* info = NULL;
     if (path != NULL) {
         info = G_APP_INFO(g_desktop_app_info_new_from_filename(path));
+        if (info == NULL) {
+            // if the path is invalid then info will be none, e.g. the path save in ini file is remove on filesystem.
+            g_key_file_remove_key(k_apps, app_id, "Path", NULL);
+        }
         g_free(path);
-    } else {
+    }
+
+    if (info == NULL) {
         char* cmdline = g_key_file_get_string(k_apps, app_id, "CmdLine", NULL);
         char* name = g_key_file_get_string(k_apps, app_id, "Name", NULL);
         if (g_key_file_get_boolean(k_apps, app_id, "Terminal", NULL))
@@ -56,7 +62,6 @@ JSValueRef build_app_info(const char* app_id)
         g_free(name);
         g_free(cmdline);
     }
-
 
     JSObjectRef json = json_create();
     json_append_nobject(json, "Core", info, g_object_ref, g_object_unref);

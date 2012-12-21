@@ -63,6 +63,7 @@ JSClassRef obj_class()
 
 JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
 {
+    g_assert(obj != NULL);
     struct _ObjectData* data = g_new(struct _ObjectData, 1);
     data->id = (long)obj;
     data->core = obj;
