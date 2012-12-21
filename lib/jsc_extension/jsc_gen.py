@@ -566,7 +566,7 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
 def gen_module_c():
     for root, dirs, files in os.walk(CFG_FILES):
         for f in files:
-            if f.endswith('.cfg'):
+            if f.endswith('.cfg') and f[0] != '.':
                 path = os.path.join(root, f)
                 path2 = os.path.join(OUTPUT_DIR,  "gen_" + f.rstrip(".cfg") + ".c")
                 f = open(path)
