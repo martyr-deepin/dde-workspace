@@ -54,15 +54,24 @@ double dentry_get_type(Entry* e)
     TEST_GFILE(e, f)
         switch (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL)) {
             case G_FILE_TYPE_DIRECTORY:
-                return 2;
+                {
+                    char* path = g_file_get_basename(f);
+                    if (g_str_has_prefix(path, DEEPIN_RICH_DIR)) {
+                        g_free(path);
+                        return 3;
+                    } else {
+                        g_free(path);
+                        return 2;
+                    }
+                }
             case G_FILE_TYPE_REGULAR:
                 return 1;
             default:
                 {
-                char* path = g_file_get_path(f);
-                g_warning("Did't know file type %s", path);
-                g_free(path);
-                return -1;
+                    char* path = g_file_get_path(f);
+                    g_warning("Did't know file type %s", path);
+                    g_free(path);
+                    return -1;
                 }
         }
     TEST_GAPP(e, app)
@@ -229,6 +238,7 @@ JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
+        //TODO: check ERROR
         g_object_unref(g_file_set_display_name(e, name, NULL, NULL));
         return TRUE;
     TEST_GAPP(e, app)
