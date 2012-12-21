@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "" "">
+<HTML lang="en"><HEAD><META content="IE=10.000" http-equiv="X-UA-Compatible">
+<META charset="utf-8">		 
+<TITLE>User Login</TITLE>
+<LINK href="css/loading.css" rel="stylesheet">
+<LINK href="css/time.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/pullup.css" />							 
+<LINK href="css/roundabout2.css" rel="stylesheet">
+<META name="GENERATOR" content="MSHTML 10.00.9200.16442">
+    <script language="javascript" type="text/javascript">
+        /***
+        *功能：隐藏和显示div
+        *参数divDisplay：html标签id
+        ***/
+        function click_a(divDisplay)
+        {
+            if(document.getElementById(divDisplay).style.display != "block")
+            {
+                document.getElementById(divDisplay).style.display = "block";
+            }
+            else
+            {
+                document.getElementById(divDisplay).style.display = "none";
+            }
+        }
+    </script>
+</HEAD>	 
+<BODY style="margin:0; padding:0;">
+<div class="time">
+    <div id="Timer" onmousedown="return false;"></div>
+</div>
+<!------------------------------------------------------------------------------------------>
+<div class="ver" onmousedown="return false;"></div>
+<!------------------------------------------------------------------------------------------>
+<div id="nav">
+	<div class="st_btn" onClick="return click_a('sd')" style="cursor:pointer;">&nbsp;</div>
+		<div class="off" onClick="document.getElementById('sd').style.display='none'">&nbsp;</div>
+        <div id="sd" style="display:none;" class="menu"><ul>
+			<li><a href="#">Restart</a></li>
+			<li><a href="#">Dormancy</a></li>
+			<li><a href="#">Shutdown</a></li>
+		</ul></div>
+</div>
+<div id="nav1">Choose desktop environment</div>
+<div id="nav2">
+	<div class="st_btn" onClick="return click_a('dt')" style="cursor:pointer;">&nbsp;</div>
+		<div class="desktop" onClick="document.getElementById('dt').style.display='none'"><img src="images/deepin.png"></div>
+        <div id="dt" style="display:none;" class="menu"><ul>
+			<li><img src="images/deepin.png"><a href="#">Deepin</a></li>
+			<li><img src="images/gnome.png"><a href="#">Gnome</a></li>
+		</ul></div>
+</div>
+<!------------------------------------------------------------------------------------------>
+<DIV id="feature">
+<DIV class="page">
+<UL id="sample-roundabout">
+  <LI id="u01" class="img-example">
+  <DIV class="wrapper">
+  <p><a onClick="document.getElementById('ld').className='loading0';document.getElementById('name').style.display='block';return click_a('psw');" style="cursor:pointer;"><IMG src="images/img01.jpg"></a></P>
+  <p id="name">Alice Charlotte</p>
+  
+  <div id="psw" style=" display:none">
+  <input name="" type="password" class="lock">
+  <a onclick="document.getElementById('psw').style.display='none';document.getElementById('ld').className='loading1';document.getElementById('name').style.display='none'" class="btn_login">User Login</a>
+  </div>
+  
+  <div id="ld" class="loading0">
+    <div class="ball"></div>
+    <div class="ball1"></div>
+    <span>Welcome !</span>
+  </div>
+  
+  </DIV>
+  </LI>
+  <LI id="u02" class="img-example">
+  <DIV class="wrapper">
+  <p><a onClick="document.getElementById('psw').style.display='none';document.getElementById('ld').className='loading0';document.getElementById('name').style.display='block'" style="cursor:pointer;"><IMG src="images/img02.jpg"></a></P>
+  <p>Abigail</p>
+  </DIV>
+  </LI>
+  <LI id="u03" class="img-example">
+  <DIV class="wrapper">
+  <p><a onClick="document.getElementById('psw').style.display='none';document.getElementById('ld').className='loading0';document.getElementById('name').style.display='block'" style="cursor:pointer;"><IMG src="images/img04.jpg"></a></P>
+  <p>Abigail</p>
+  </DIV>
+  </LI>
+  <LI id="u04" class="img-example">
+  <DIV class="wrapper">
+  <p><a onClick="document.getElementById('psw').style.display='none';document.getElementById('ld').className='loading0';document.getElementById('name').style.display='block'" style="cursor:pointer;"><IMG src="images/img05.jpg"></a></P>
+  <p>Abigail</p>
+  </DIV>
+  </LI>
+  <LI id="u05" class="img-example">
+  <DIV class="wrapper">
+  <p><a onClick="document.getElementById('psw').style.display='none';document.getElementById('ld').className='loading0';document.getElementById('name').style.display='block'" style="cursor:pointer;"><IMG src="images/guest.jpg"></a></P>
+  <p>Guest</p>
+  </DIV>
+  </LI>
+  </UL>
+</DIV></DIV>
+
+<script src="js/noselect.js"type="text/javascript"></script>
+<SCRIPT src="js/jquery.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/time.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.easing.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.event.drag.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.event.drop.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.roundabout2.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.ba-bbq.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/jquery.smooth-scroll.js" type="text/javascript"></SCRIPT>
+<SCRIPT src="js/roundabout.js" type="text/javascript"></SCRIPT>
+<script type="text/javascript">
+$(document).keypress(function(e){
+        if(e.shiftKey && e.which==13) {  
+                 alert("Open the hide user mode");
+				 $("#sample-roundabout").html('<li class="img-example roundabout-moveable-item roundabout-in-focus" id="u01" style="position: absolute; left: 191px; top: 44px; width: 186px; height: 208px;"><div class="wrapper"><p><a style="cursor:pointer;"><img src="images/huser.jpg"></a></p><p id="name">Hide User</p><div id="psw" style="display:block;height:100px;"><p><input class="user" type="text" style="font-size:12px;font-family:Arial;" value=""></p><input name="" type="password" class="lock"><a onclick="document.getElementById("psw").style.display="none";" class="btn_login">User Login</a></div><div id="ld2" class="loading0"><div class="ball"></div><div class="ball1"></div><span>Welcome !</span></div></li>');
+
+        }    
+})
+</script>
