@@ -71,7 +71,7 @@ class Item extends Widget
 
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
         el.appendChild(@item_name)
 
 
@@ -144,8 +144,9 @@ class Item extends Widget
 
     item_update : () =>
         @item_icon.src = @get_icon()
-        if @focused then @item_name.innerText = @get_name(@entry)
-        else @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
+        if @in_rename == false
+            if @focused then @item_name.innerText = @get_name()
+            else @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
 
 
     item_exec : =>
@@ -164,7 +165,7 @@ class Item extends Widget
 
 
     item_focus : ->
-        @item_name.innerText = @get_name(@entry)
+        @item_name.innerText = @get_name()
         @focused = true
 
 
@@ -174,7 +175,7 @@ class Item extends Widget
             @delay_rename = -1
         if @in_rename then @item_complete_rename()
 
-        @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
         @focused = false
 
 
@@ -662,14 +663,13 @@ class Application extends DesktopEntry
                 if w.constructor.name != "Application"
                     all_are_apps = false
 
-                tmp_list.push(f)
+                tmp_list.push(w.get_path())
 
         if all_are_apps == true
-            tmp_list.push(@id)
+            tmp_list.push(@get_path())
             alert("we should merge files here")
         else
-            alert("we should run app to open these files")
-
+            DCore.DEntry.launch(@entry, tmp_list)
         return
 
 

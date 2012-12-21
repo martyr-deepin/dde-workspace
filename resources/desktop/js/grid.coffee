@@ -318,6 +318,29 @@ menu_sort_desktop_item_by_mtime = ->
     return
 
 
+create_entry_to_new_item = (entry) ->
+    w = Widget.look_up(DCore.DEntry.get_id(entry))
+    if not w? then w = create_item(entry)
+
+    cancel_all_selected_stats()
+    move_to_anywhere(w)
+    all_item.push(w.id)
+    set_item_selected(w)
+    w.item_rename()
+
+
+menu_create_new_folder = ->
+#FIXME: create may fail, add try/catch
+    entry = DCore.Desktop.new_directory()
+    create_entry_to_new_item(entry)
+
+
+menu_create_new_file = ->
+#FIXME: create may fail, add try/catch
+    entry = DCore.Desktop.new_file()
+    create_entry_to_new_item(entry)
+
+
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
@@ -625,6 +648,7 @@ show_selected_items_Properties = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
+#TODO: should tell user we fail to call
     s_nautilus?.ShowItemProperties_sync(tmp, '')
 
 
@@ -642,14 +666,13 @@ grid_do_itemselected = (evt) ->
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
+        when 21 then menu_create_new_folder()
+        when 22 then menu_create_new_file()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function #{evt.id},#{evt.title}"
-
-
-#TODO: create new folder and text file
 
 
 create_item_grid = ->
