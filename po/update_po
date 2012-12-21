@@ -3,6 +3,8 @@
 base_dir = "../resources/"
 scan_dir = ["desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
 
+other_files = ["../app/desktop/desktop.c"]
+
 import glob
 import os
 
@@ -15,6 +17,7 @@ for i in scan_dir:
 
 
 cmd= "xgettext -L python -j -o zh_CN.po " + " ".join(files)
-
 os.system(cmd)
 
+cmd = "xgettext -k_ -j -o zh_CN.po " + " ".join(other_files)
+os.system(cmd)

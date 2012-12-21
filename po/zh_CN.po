@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 10:28+0800\n"
+"POT-Creation-Date: 2012-12-21 15:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,6 +91,7 @@ msgstr "桌面设置"
 #: ../resources/desktop/js/desktop_item.coffee:126
 #: ../resources/desktop/js/desktop_item.coffee:329
 #: ../resources/desktop/js/grid.coffee:560
+#: ../resources/desktop/js/grid.coffee:597
 msgid "Open"
 msgstr "打开"
 
@@ -103,6 +104,7 @@ msgstr "使用其他程序打开"
 #: ../resources/desktop/js/desktop_item.coffee:134
 #: ../resources/desktop/js/desktop_item.coffee:337
 #: ../resources/desktop/js/grid.coffee:562
+#: ../resources/desktop/js/grid.coffee:599
 msgid "cut"
 msgstr "剪贴"
 
@@ -111,6 +113,7 @@ msgstr "剪贴"
 #: ../resources/desktop/js/desktop_item.coffee:135
 #: ../resources/desktop/js/desktop_item.coffee:338
 #: ../resources/desktop/js/grid.coffee:563
+#: ../resources/desktop/js/grid.coffee:600
 msgid "copy"
 msgstr "复制"
 
@@ -124,6 +127,8 @@ msgstr "创建链接"
 #: ../resources/desktop/js/desktop_item.coffee:341
 #: ../resources/desktop/js/grid.coffee:565
 #: ../resources/desktop/js/grid.coffee:566
+#: ../resources/desktop/js/grid.coffee:602
+#: ../resources/desktop/js/grid.coffee:603
 msgid "Rename"
 msgstr "重命名"
 
@@ -155,6 +160,7 @@ msgstr "移动到"
 #: ../resources/desktop/js/desktop_item.coffee:151
 #: ../resources/desktop/js/desktop_item.coffee:354
 #: ../resources/desktop/js/grid.coffee:567
+#: ../resources/desktop/js/grid.coffee:604
 msgid "Delete"
 msgstr "删除"
 
@@ -163,18 +169,21 @@ msgstr "删除"
 #: ../resources/desktop/js/desktop_item.coffee:153
 #: ../resources/desktop/js/desktop_item.coffee:356
 #: ../resources/desktop/js/grid.coffee:569
+#: ../resources/desktop/js/grid.coffee:606
 msgid "Properties"
 msgstr "属性"
 
 #: ../resources/desktop/js/grid.coffee:64
 #: ../resources/desktop/js/grid.coffee:77
 #: ../resources/desktop/js/grid.coffee:81
+#: ../resources/desktop/js/grid.coffee:82
 msgid "Personal"
 msgstr "个性化"
 
 #: ../resources/desktop/js/grid.coffee:65
 #: ../resources/desktop/js/grid.coffee:78
 #: ../resources/desktop/js/grid.coffee:82
+#: ../resources/desktop/js/grid.coffee:83
 msgid "Display Settings"
 msgstr "显示设置"
 
@@ -204,3 +213,11 @@ msgstr "关闭"
 #: ../resources/dock/js/list.coffee:373 ../resources/dock/js/list.coffee:377
 msgid "PreView(Not yet)"
 msgstr "预览(未开启)"
+
+#: ../app/desktop/desktop.c:78
+msgid "NewFile"
+msgstr "新文件"
+
+#: ../app/desktop/desktop.c:89
+msgid "NewDirectory"
+msgstr "新目录"

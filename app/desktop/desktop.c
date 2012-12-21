@@ -38,7 +38,7 @@ JSObjectRef desktop_get_desktop_entries()
     GDir* dir = g_dir_open(desktop_path, 0, NULL);
 
     const char* file_name = NULL;
-    for (int i=1; NULL != (file_name = g_dir_read_name(dir));) {
+    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
         if (file_name[0] == '.') continue;
 
         char* path = g_build_filename(desktop_path, file_name, NULL);
