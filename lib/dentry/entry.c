@@ -1,3 +1,26 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *               2011 ~ 2012 hooke 
+ *
+ * Author:      snyh <snyh@snyh.org>
+ *              hooke
+ * Maintainer:  snyh <snyh@snyh.org>
+ *              hooke
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include "entry.h"
 #include <glib.h>
 #include "jsextension.h"
@@ -15,6 +38,15 @@
     GAppInfo* app = e;
 
 #define TEST_END } else { g_assert_not_reached();}
+
+JS_EXPORT_API
+Entry* dentry_get_desktop()
+{
+    char* path = get_desktop_dir(FALSE);
+    Entry* ret = dentry_create_by_path(path);
+    g_free(path);
+    return ret;
+}
 
 JS_EXPORT_API
 double dentry_get_type(Entry* e)
@@ -203,4 +235,29 @@ gboolean dentry_set_name(Entry* e, const char* name)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
         return change_desktop_entry_name(path, name);
     TEST_END
+}
+
+void dentry_delete(ArrayContainer fs)
+{
+    // array of GFile and GAppInfo  use 
+    // if (G_IS_APP_INFO(f)) f = _get_gfile_from_gapp();  
+    // to get the GFile object
+    // rember to g_object_unref(f) if f is APP_INFO
+}
+
+void dentry_trash(ArrayContainer fs)
+{
+}
+
+
+void dentry_copy(ArrayContainer fs)
+{
+}
+
+void dentry_cut(ArrayContainer fs)
+{
+}
+
+void dentry_paste(GFile* dest)
+{
 }
