@@ -29,6 +29,7 @@
 #include <gio/gdesktopappinfo.h>
 #include "utils.h"
 #include "xdg_misc.h"
+#include "fileops.h"
 
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
@@ -237,12 +238,28 @@ gboolean dentry_set_name(Entry* e, const char* name)
     TEST_END
 }
 
+static void _normalize_array_container(ArrayContainer* pfs)
+{
+    size_t i;
+    for(i=0; i<pfs->num;i++)
+    {
+	TEST_GFILE(pfs->data[i], pfs->data[i])
+	TEST_GAPP(pfs->data[i], pfs->data[i])
+		GDesktopAppInfo* tmp=pfs->data[i];
+		pfs->data[i]=_get_gfile_from_gapp(pfs->data[i]);
+		g_object_unref(tmp):
+	END
+    }
+}
+void dentry_move(ArrayContainer fs, GFile* dest)
+{
+    _normalize_array_container(&fs);
+    dfile_move(fs.data,dest);
+}
 void dentry_delete(ArrayContainer fs)
 {
-    // array of GFile and GAppInfo  use 
-    // if (G_IS_APP_INFO(f)) f = _get_gfile_from_gapp();  
-    // to get the GFile object
-    // rember to g_object_unref(f) if f is APP_INFO
+    _normalize_array_container(&fs);
+    dfile_delete(fs.data);
 }
 
 void dentry_trash(ArrayContainer fs)
