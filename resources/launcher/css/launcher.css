@@ -71,7 +71,7 @@ body {
     font-size: 22px;
 }
 .category_selected {
-    background: rgba(8,41,67, 0.8);
+    background: rgba(8,41,67, .8);
 }
 
 .category_name:hover {
@@ -86,8 +86,9 @@ body {
     overflow-y: scroll;
     margin-right: 20px;
 }
-.item:first-child {
-    background: rgba(0, 100, 0, 0.2);
+
+.item_selected {
+    background: rgba(0, 100, 0, 0.8);
 }
 
 .item {

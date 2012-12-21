@@ -46,6 +46,9 @@ grid_show_items = (items) ->
     grid.innerHTML = ""
     for i in items
         grid.appendChild(applications[i])
+    setTimeout(->
+            update_selected($(".item"))
+    , 200)
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -63,6 +66,7 @@ grid_load_category = (cat_id) ->
         grid.innerHTML = ""
         for own key, value of applications
             grid.appendChild(value)
+        update_selected($s(".item")[0])
         return
 
     if category_infos[cat_id]

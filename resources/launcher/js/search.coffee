@@ -22,6 +22,20 @@ basename = (path)->
     
 s_box = $('#s_box')
 
+item_selected = null
+update_selected = (el)->
+    item_selected?.setAttribute("class", "item")
+    item_selected = el
+    item_selected?.setAttribute("class", "item item_selected")
+selected_next = ->
+    n = item_selected.nextElementSibling
+    if n
+        update_selected(n)
+selected_prev = ->
+    n = item_selected.previousElementSibling
+    if n
+        update_selected(n)
+
 search = ->
     ret = []
     key = s_box.value.toLowerCase()
@@ -37,16 +51,26 @@ search = ->
 s_box.addEventListener('input', s_box.blur())
 
 document.body.onkeypress = (e) ->
-    switch e.which
-        when 27
-            if s_box.value == ""
-                DCore.Launcher.exit_gui()
+    if e.ctrlKey
+        switch e.which
+            when 102 #f
+                selected_next()
+            when 98 #b
+                selected_prev()
             else
-                s_box.value = ""
-        when 8
-            s_box.value = s_box.value.substr(0, s_box.value.length-1)
-        when 13
-            $('#grid').children[0].click_cb()
-        else
-            s_box.value += String.fromCharCode(e.which)
-    search()
+                s_box.value += String.fromCharCode(e.which)
+    else
+        switch e.which
+            when 27
+                if s_box.value == ""
+                    DCore.Launcher.exit_gui()
+                else
+                    s_box.value = ""
+            when 8
+                s_box.value = s_box.value.substr(0, s_box.value.length-1)
+            when 13
+                item_selected?.click_cb()
+                #$('#grid').children[0].click_cb()
+            else
+                s_box.value += String.fromCharCode(e.which)
+        search()
