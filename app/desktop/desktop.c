@@ -38,7 +38,7 @@ JSObjectRef desktop_get_desktop_entries()
     GDir* dir = g_dir_open(desktop_path, 0, NULL);
 
     const char* file_name = NULL;
-    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+    for (int i=1; NULL != (file_name = g_dir_read_name(dir));) {
         if (file_name[0] == '.') continue;
 
         char* path = g_build_filename(desktop_path, file_name, NULL);
@@ -50,6 +50,46 @@ JSObjectRef desktop_get_desktop_entries()
     g_dir_close(dir);
     g_free(desktop_path);
     return array;
+}
+
+static 
+GFile* _get_useable_file(const char* basename)
+{
+    char* destkop_path = get_desktop_dir(FALSE);
+    GFile* dir = g_file_new_for_path(destkop_path);
+
+    char* name = g_strdup(basename);
+    GFile* child = g_file_get_child(dir, name);
+    for (int i=0; g_file_query_exists(child, NULL); i++) {
+        g_object_unref(child);
+        g_free(name);
+        name = g_strdup_printf("%s(%d)", basename, i);
+        child = g_file_get_child(dir, name);
+    }
+
+    g_object_unref(dir);
+    g_free(destkop_path);
+    return child;
+}
+
+JS_EXPORT_API
+GFile* desktop_new_file()
+{
+    GFile* file = _get_useable_file(_("NewFile"));
+    char* path = g_file_get_path(file);
+    g_file_set_contents(path, "", 0, NULL);
+    //TODO: detect create status..
+    g_free(path);
+    return file;
+}
+
+JS_EXPORT_API
+GFile* desktop_new_directory()
+{
+    GFile* dir = _get_useable_file(_("NewDirectory"));
+    g_file_make_directory(dir, NULL, NULL);
+    //TODO: detect create status..
+    return dir;
 }
 
 JS_EXPORT_API
