@@ -571,7 +571,6 @@ update_selected_item_drag_image = ->
             else n = 10
             m = context.measureText(rest_text.substr(0, n)).width
             if m == 90
-                pass
             else if m > 90
                 --n
                 while n > 0 and context.measureText(rest_text.substr(0, n)).width > 90
@@ -587,8 +586,8 @@ update_selected_item_drag_image = ->
             context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
             ++line_number
 
-
-    #drag_image.src = drag_canvas.toDataURL()
+    #FIXME: low preformance on converting and case large memory usage because webkit cache the all old copies
+    drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
 

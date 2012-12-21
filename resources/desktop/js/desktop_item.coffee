@@ -50,6 +50,7 @@ class Item extends Widget
         @id = DCore.DEntry.get_id(@entry)
 
         @selected = false
+        @focused = false
         @in_rename = false
 
         @clicked = false
@@ -70,12 +71,16 @@ class Item extends Widget
 
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = shorten_text(DCore.DEntry.get_name(@entry), MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
         el.appendChild(@item_name)
 
 
     get_name : ->
         DCore.DEntry.get_name(@entry)
+
+
+    get_icon : ->
+        DCore.DEntry.get_icon(@entry)
 
 
     get_path : ->
@@ -137,8 +142,10 @@ class Item extends Widget
         @item_exec()
 
 
-    item_update : (icon) =>
-        @item_icon.src = "#{icon}"
+    item_update : () =>
+        @item_icon.src = @get_icon()
+        if @focused then @item_name.innerText = @get_name(@entry)
+        else @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
 
 
     item_exec : =>
@@ -157,7 +164,8 @@ class Item extends Widget
 
 
     item_focus : ->
-        @item_name.innerText = DCore.DEntry.get_name(@entry)
+        @item_name.innerText = @get_name(@entry)
+        @focused = true
 
 
     item_blur : ->
@@ -166,7 +174,8 @@ class Item extends Widget
             @delay_rename = -1
         if @in_rename then @item_complete_rename()
 
-        @item_name.innerText = shorten_text(DCore.DEntry.get_name(@entry), MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(@get_name(@entry), MAX_ITEM_TITLE)
+        @focused = false
 
 
     show_selected_box : =>
@@ -484,7 +493,7 @@ class Folder extends DesktopEntry
         return
 
 
-    item_update : (icon) ->
+    item_update : () ->
         if @show_pop == true then @reflesh_pop_block()
         super
 
