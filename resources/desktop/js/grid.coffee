@@ -167,6 +167,10 @@ compare_pos_rect = (base1, base2, pos) ->
         false
 
 
+calc_pos_to_pos_distance = (base, pos) ->
+    Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
+
+
 init_occupy_table = ->
     o_table = new Array()
     for i in [0..cols]
@@ -341,12 +345,6 @@ init_grid_drop = ->
     )
 
 
-sort_list_by_pos_top_left = (i1, i2) ->
-    pos_1 = load_position(i1)
-    pos_2 = load_position(i2)
-    return compare_pos_top_left(pos_1, pos_2)
-
-
 drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
     new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
@@ -355,9 +353,16 @@ drag_update_selected_pos = (w, evt) ->
 
     if coord_x_shift == 0 and coord_y_shift == 0 then return
 
-    ordered_list = selected_item.concat()
-    ordered_list.sort(sort_list_by_pos_top_left)
-    if coord_x_shift < 0 or coord_y_shift < 0 then ordered_list.reverse()
+    ordered_list = new Array()
+    distance_list = new Array()
+    for i in selected_item
+        pos = load_position(i)
+        dis = calc_pos_to_pos_distance(new_pos, pos)
+        for j in [0 ... distance_list.length]
+            if dis < distance_list[j]
+                break
+        ordered_list.splice(j, 0, i)
+        distance_list.splice(j, 0, dis)
 
     for i in ordered_list
         w = Widget.look_up(i)
@@ -585,10 +590,6 @@ update_selected_item_drag_image = ->
 
     #drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
-
-window.w = ->
-    for i in [0...100]
-        update_selected_item_drag_image()
 
 
 build_selected_items_menu = ->
