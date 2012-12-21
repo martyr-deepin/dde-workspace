@@ -140,9 +140,6 @@ ArrayContainer dentry_list_files(GFile* f)
     const char* child_name = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
     for (int i=0; NULL != (child_name = g_dir_read_name(dir)); i++) {
-        GFile* child = g_file_get_child(f, child_name);
-        g_ptr_array_add(array, child);
-
         char* path = g_build_filename(dir_path, child_name, NULL);
         g_ptr_array_add(array, dentry_create_by_path(path));
         g_free(path);
