@@ -19,8 +19,14 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <gtk/gtk.h>
 #include <lightdm.h>
 #include "jsextension.h"
+#include "dwebview.h"
+#include "i18n.h"
+#include "utils.h"
+
+GtkWidget* container = NULL;
 
 /* GREETER */
 
@@ -222,6 +228,23 @@ gboolean greeter_shutdown()
 
 int main(int argc, char **argv)
 {
-    printf("Hello Greeter!\n");
+    init_i18n();
+    gtk_init(&argc, &argv);
+
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+    gtk_window_fullscreen(GTK_WINDOW(container));
+
+    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("greeter"));
+
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+
+    g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
+    gtk_widget_realize(container);
+
+    gtk_widget_show_all(container);
+
+    gtk_main();
     return 0;
 }
