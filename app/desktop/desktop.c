@@ -29,6 +29,8 @@
 #include <cairo/cairo-xlib.h>
 
 void install_monitor();
+static
+GFile* _get_useable_file(const char* basename);
 
 JS_EXPORT_API
 JSObjectRef desktop_get_desktop_entries()
@@ -51,6 +53,72 @@ JSObjectRef desktop_get_desktop_entries()
     g_free(desktop_path);
     return array;
 }
+
+JS_EXPORT_API
+char* desktop_get_rich_dir_name(GFile* dir)
+{
+    char* name = g_file_get_basename(dir);
+    char* ret = g_strdup(name+DEEPIN_RICH_DIR_LEN);
+    g_free(name);
+    return ret;
+}
+
+JS_EXPORT_API
+void desktop_set_rich_dir_name(GFile* dir, const char* name)
+{
+    char* new_name = g_build_filename(DEEPIN_RICH_DIR, name, NULL);
+    dentry_set_name(dir, new_name);
+    g_free(new_name);
+}
+
+JS_EXPORT_API
+char* desktop_get_rich_dir_id(GFile* dir)
+{
+    return dentry_get_id(dir);
+}
+
+JS_EXPORT_API
+JSObjectRef desktop_list_rich_dir(GFile* dir)
+{
+    return dentry_list_files(dir);
+}
+
+JS_EXPORT_API
+char* deskto_get_rich_dir_icon(GFile* dir)
+{
+    /*char* icons[4] = {NULL, NULL, NULL, NULL};*/
+    /*char* bad_icons[4] = {NULL, NULL, NULL, NULL};*/
+
+    /*char* dir_path = g_file_get_path(dir);*/
+    /*const char* child_name = NULL;*/
+    /*for (int i=0, j=0; NULL != (child_name = g_dir_read_name(dir)); i++, j++) {*/
+        /*if (g_str_has_suffix(chid_name, ".desktop")) {*/
+            /*char* path = g_build_filename(dir_path, child_name, NULL);*/
+            /*Entry* entry = dentry_create_by_path(path);*/
+            /*icons[i] = dentry_get_icon(entry);*/
+        /*} else {*/
+        /*}*/
+        /*char* path = g_build_filename(dir_path, child_name, NULL);*/
+        /*g_ptr_array_add(array, dentry_create_by_path(path));*/
+        /*g_free(path);*/
+    /*}*/
+    /*g_dir_close(dir);*/
+    /*g_free(dir_path);*/
+
+    /*char* ret = generate_directory_icon(i1, i2, i3, i4);*/
+    /*return ret;*/
+}
+
+JS_EXPORT_API
+JSObjectRef desktop_create_rich_dir(GAppInfo* a1, GAppInfo* a2)
+{
+    GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
+    g_file_make_directory(dir, NULL, NULL);
+    dentry_move(a1, dir);
+    dentry_move(a2, dir);
+    return dir;
+}
+
 
 static 
 GFile* _get_useable_file(const char* basename)

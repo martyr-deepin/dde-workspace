@@ -1,3 +1,26 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *               2011 ~ 2012 hooke 
+ *
+ * Author:      snyh <snyh@snyh.org>
+ *              hooke
+ * Maintainer:  snyh <snyh@snyh.org>
+ *              hooke
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include "entry.h"
 #include <glib.h>
 #include "jsextension.h"
@@ -6,7 +29,9 @@
 #include <gio/gdesktopappinfo.h>
 #include "utils.h"
 #include "xdg_misc.h"
+#include "fileops.h"
 
+static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
     GFile* f = e;
@@ -17,20 +42,38 @@
 #define TEST_END } else { g_assert_not_reached();}
 
 JS_EXPORT_API
+Entry* dentry_get_desktop()
+{
+    char* path = get_desktop_dir(FALSE);
+    Entry* ret = dentry_create_by_path(path);
+    g_free(path);
+    return ret;
+}
+
+JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
         switch (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL)) {
             case G_FILE_TYPE_DIRECTORY:
-                return 2;
+                {
+                    char* path = g_file_get_basename(f);
+                    if (g_str_has_prefix(path, DEEPIN_RICH_DIR)) {
+                        g_free(path);
+                        return 3;
+                    } else {
+                        g_free(path);
+                        return 2;
+                    }
+                }
             case G_FILE_TYPE_REGULAR:
                 return 1;
             default:
                 {
-                char* path = g_file_get_path(f);
-                g_warning("Did't know file type %s", path);
-                g_free(path);
-                return -1;
+                    char* path = g_file_get_path(f);
+                    g_warning("Did't know file type %s", path);
+                    g_free(path);
+                    return -1;
                 }
         }
     TEST_GAPP(e, app)
@@ -197,10 +240,50 @@ JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
+        //TODO: check ERROR
         g_object_unref(g_file_set_display_name(e, name, NULL, NULL));
         return TRUE;
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
         return change_desktop_entry_name(path, name);
     TEST_END
+}
+
+static void _normalize_array_container(ArrayContainer* pfs)
+{
+    GFile** array = pfs->data;
+
+    for(size_t i=0; i<pfs->num; i++) {
+        if (G_IS_DESKTOP_APP_INFO(array[i])) {
+            array[i] = _get_gfile_from_gapp(((GDesktopAppInfo*)array[i]));
+            g_object_unref(array[i]);
+        } 
+    }
+}
+void dentry_move(ArrayContainer fs, GFile* dest)
+{
+    _normalize_array_container(&fs);
+    dfile_move(fs.data, fs.num, dest);
+}
+void dentry_delete(ArrayContainer fs)
+{
+    _normalize_array_container(&fs);
+    dfile_delete(fs.data, fs.num);
+}
+
+void dentry_trash(ArrayContainer fs)
+{
+}
+
+
+void dentry_copy(ArrayContainer fs)
+{
+}
+
+void dentry_cut(ArrayContainer fs)
+{
+}
+
+void dentry_paste(GFile* dest)
+{
 }
