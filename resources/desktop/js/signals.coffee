@@ -26,40 +26,46 @@ connect_default_signals = ->
     DCore.Desktop.notify_workarea_size()
 
 
-do_item_delete = (info) ->
-    w = Widget.look_up(info.id)
+do_item_delete = (entry) ->
+    id = DCore.DEntry.get_id(entry)
+    w = Widget.look_up(id)
     if w?
         cancel_item_selected(w)
-        all_item.remove(info.id)
+        all_item.remove(id)
         w.destroy()
 
     update_selected_item_drag_image()
 
 
-do_item_update = (info) ->
-    w = Widget.look_up(info.EntryPath)
+do_item_update = (entry) ->
+    id = DCore.DEntry.get_id(entry.id)
+    w = Widget.look_up(id)
     if w?
-        w.item_update?(info.Icon)
+        w.item_update?()
     else
-        w = create_item(info)
+        w = create_item(entry.id)
         if w?
             move_to_anywhere(w)
             all_item.push(w.id)
 
 
 do_item_rename = (data) ->
-    w = Widget.look_up(data.old_id)
+    sel = false
+    old_id = DCore.DEntry.get_id(data.old)
+    new_id = DCore.DEntry.get_id(data.new)
+    w = Widget.look_up(old_id)
     if w?
-        cancel_item_selected(w)
-        all_item.remove(info.id)
+        sel = cancel_item_selected(w)
+        all_item.remove(old_id)
         w.destroy()
 
-    update_position(data.old_id, data.info.EntryPath)
+    update_position(old_id, new_id)
 
-    w = create_item(data.info)
+    w = create_item(data.new)
     if w?
         move_to_anywhere(w)
         all_item.push(w.id)
+        if sel then set_item_selected(w)
 
     update_selected_item_drag_image()
 
