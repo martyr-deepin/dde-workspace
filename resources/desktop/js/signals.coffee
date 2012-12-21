@@ -26,8 +26,8 @@ connect_default_signals = ->
     DCore.Desktop.notify_workarea_size()
 
 
-do_item_delete = (entry) ->
-    id = DCore.DEntry.get_id(entry)
+do_item_delete = (data) ->
+    id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
         cancel_item_selected(w)
@@ -37,13 +37,13 @@ do_item_delete = (entry) ->
     update_selected_item_drag_image()
 
 
-do_item_update = (entry) ->
-    id = DCore.DEntry.get_id(entry.id)
+do_item_update = (data) ->
+    id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
         w.item_update?()
     else
-        w = create_item(entry.id)
+        w = create_item(data.entry)
         if w?
             move_to_anywhere(w)
             all_item.push(w.id)
