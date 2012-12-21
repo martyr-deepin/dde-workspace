@@ -63,8 +63,6 @@ JSValueRef build_app_info(const char* app_id)
         g_free(cmdline);
     }
 
-    /*g_assert(info != NULL);*/
-
     JSObjectRef json = json_create();
     json_append_nobject(json, "Core", info, g_object_ref, g_object_unref);
     json_append_string(json, "Id", app_id);

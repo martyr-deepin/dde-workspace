@@ -409,6 +409,7 @@ app_list.element.appendChild(show_launcher.element)
 
 
 DCore.signal_connect("active_window_changed", (info)->
+    active_group?.to_normal_status()
     active_group = Widget.look_up("le_"+info.clss)
     active_group?.to_active_status(info.id)
 )
