@@ -1,9 +1,8 @@
 #ifndef _FILEOPS_H_
 #define _FILEOPS_H_
 
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
-
+#include <glib.h>
+#include <gio/gio.h>
 
 
 typedef gboolean (*GFileProcessingFunc) (GFile* file, gpointer data);

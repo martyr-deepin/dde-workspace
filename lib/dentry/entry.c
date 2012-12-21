@@ -31,6 +31,7 @@
 #include "xdg_misc.h"
 #include "fileops.h"
 
+static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
     GFile* f = e;
@@ -250,26 +251,24 @@ gboolean dentry_set_name(Entry* e, const char* name)
 
 static void _normalize_array_container(ArrayContainer* pfs)
 {
-    size_t i;
-    for(i=0; i<pfs->num;i++)
-    {
-	TEST_GFILE(pfs->data[i], pfs->data[i])
-	TEST_GAPP(pfs->data[i], pfs->data[i])
-		GDesktopAppInfo* tmp=pfs->data[i];
-		pfs->data[i]=_get_gfile_from_gapp(pfs->data[i]);
-		g_object_unref(tmp):
-	END
+    GFile** array = pfs->data;
+
+    for(size_t i=0; i<pfs->num; i++) {
+        if (G_IS_DESKTOP_APP_INFO(array[i])) {
+            array[i] = _get_gfile_from_gapp(((GDesktopAppInfo*)array[i]));
+            g_object_unref(array[i]);
+        } 
     }
 }
 void dentry_move(ArrayContainer fs, GFile* dest)
 {
     _normalize_array_container(&fs);
-    dfile_move(fs.data,dest);
+    dfile_move(fs.data, fs.num, dest);
 }
 void dentry_delete(ArrayContainer fs)
 {
     _normalize_array_container(&fs);
-    dfile_delete(fs.data);
+    dfile_delete(fs.data, fs.num);
 }
 
 void dentry_trash(ArrayContainer fs)

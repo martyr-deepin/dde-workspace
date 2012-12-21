@@ -4,9 +4,8 @@
  *	so we need to implement one.
  */
 #include "fileops.h"
+#include <glib/gstdio.h>
 
-
-static FileOpsFlags fileops;
 
 static gboolean _dummy_func		(GFile* file, gpointer data);
 
@@ -215,7 +214,7 @@ dfile_move (GFile* file_list[], guint num, GFile* dest_dir)
 	{
 	    return;
 	}
-	char* src_basename= g_path_get_basename (src_dir);
+	char* src_basename= g_path_get_basename (src_name);
 	char* move_dest_name = g_build_filename (dest_name, "/", src_basename, NULL);
 	GFile* move_dest_file = g_file_new_for_path (move_dest_name);
 	
@@ -242,32 +241,31 @@ dfile_copy (GFile* file_list[], guint num, GFile* dest_dir)
 {
     g_debug ("fileops_copy: Begin copying files");
     int i;
-    for (i = 0; i < num; i++)
-    {
-	GFile* src_dir = file_list[i];
-	char* src_name = g_file_get_path (src_dir);
-	char* dest_name = g_file_get_path (dest_dir);
-	g_debug ("fileops_copy: file %d: %s to dest: %s", i, src_name, dest_name);
+    for (i = 0; i < num; i++) {
+        GFile* src_dir = file_list[i];
+        char* src_name = g_file_get_path (src_dir);
+        char* dest_name = g_file_get_path (dest_dir);
+        g_debug ("fileops_copy: file %d: %s to dest: %s", i, src_name, dest_name);
 
-	//make sure dest_dir is a directory before proceeding.
-	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
-	if (type != G_FILE_TYPE_DIRECTORY)
-	{
-	    return FALSE;
-	}
-	char* src_basename = g_path_get_basename (src_dir);
-	char* copy_dest_name = g_build_filename (dest_name, "/", src_basename, NULL);
-	GFile* copy_dest_file = g_file_new_for_path (copy_dest_name);
-	
-	g_free (src_name);
-	g_free (dest_name);
+        //make sure dest_dir is a directory before proceeding.
+        GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        if (type != G_FILE_TYPE_DIRECTORY)
+        {
+            return;
+        }
+        char* src_basename = g_path_get_basename (src_name);
+        char* copy_dest_name = g_build_filename (dest_name, "/", src_basename, NULL);
+        GFile* copy_dest_file = g_file_new_for_path (copy_dest_name);
 
-	g_free (src_basename);
-	g_free (copy_dest_name);
+        g_free (src_name);
+        g_free (dest_name);
 
-	traverse_directory (dir, _copy_files_async, _dummy_func, copy_dest_file);
+        g_free (src_basename);
+        g_free (copy_dest_name);
 
-	g_object_unref (copy_dest_file);
+        traverse_directory (src_dir, _copy_files_async, _dummy_func, copy_dest_file);
+
+        g_object_unref (copy_dest_file);
     }
     g_debug ("fileops_copy: End copying files");
 }
