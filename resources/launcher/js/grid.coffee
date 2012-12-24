@@ -29,6 +29,7 @@ create_item = (info) ->
     <div class=item_name> #{info.Name}</div>
     <div class=item_comment>#{info.Comment}</div>
     "
+    el.setAttribute('title', info.Name)
 
     el.click_cb = (e) ->
         el.style.cursor = "wait"
