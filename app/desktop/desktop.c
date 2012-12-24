@@ -156,10 +156,10 @@ JS_EXPORT_API
 GFile* desktop_new_file()
 {
     GFile* file = _get_useable_file(_("NewFile"));
-    char* path = g_file_get_path(file);
-    g_file_set_contents(path, "", 0, NULL);
-    //TODO: detect create status..
-    g_free(path);
+    GFileOutputStream* stream = 
+        g_file_create(file, G_FILE_CREATE_NONE, NULL, NULL);
+    if (stream)
+        g_object_unref(stream);
     return file;
 }
 
