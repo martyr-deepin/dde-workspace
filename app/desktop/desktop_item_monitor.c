@@ -24,13 +24,20 @@
 #include <gio/gio.h>
 #include <glib/gprintf.h>
 
+GFile* _desktop = NULL;
+
 JS_EXPORT_API
 void desktop_cancel_monitor_dir(const char* path);
-JS_EXPORT_API
-void desktop_monitor_dir(const char* path);
 
+JS_EXPORT_API
 void begin_monitor_dir(const char* path, GCallback cb);
 void end_monitor_dir(const char* path);
+
+static
+void monitor_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEvent t, const char* _path);
+
+static
+void monitor_desktop_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEvent t, gpointer user_data);
 
 GHashTable *monitor_table = NULL;
 
@@ -53,11 +60,13 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
 
                 g_hash_table_remove(monitor_table, path); //if the path is not an monitored dir, the remove operation will no effect.
 
-                if (g_strcmp0(path, get_desktop_dir(FALSE)) == 0) {
-                    desktop_cancel_monitor_dir(path);
-                    char* desktop = get_desktop_dir(TRUE);
-                    begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
-                    g_free(desktop);
+                if (g_file_equal(file, _desktop)) {
+                    g_assert_not_reached();
+                    /*desktop_cancel_monitor_dir(path);*/
+                    /*g_object_unref(_desktop);*/
+                    /*char* desktop = get_desktop_dir(TRUE);*/
+                    /*[>begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));<]*/
+                    /*g_free(desktop);*/
                 } else {
                     JSObjectRef json = json_create();
                     json_append_nobject(json, "entry", file, g_object_ref, g_object_unref);
@@ -67,11 +76,10 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                 break;
             }
         case G_FILE_MONITOR_EVENT_CREATED:
-        case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
             {
                 char* path = g_file_get_path(file);
                 if (g_file_test(path, G_FILE_TEST_IS_DIR)) {
-                    desktop_monitor_dir(path);
+                    begin_monitor_dir(path, G_CALLBACK(monitor_dir_cb));
                 }
 
                 JSObjectRef json = json_create();
@@ -84,8 +92,13 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
     }
 }
 
-void monitor_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEvent t)
+void monitor_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEvent t, const char* _path)
 {
+    char* p = g_file_get_path(file);
+    if (g_strcmp0(p, _path) == 0)
+        return;
+
+
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
             {
@@ -97,22 +110,9 @@ void monitor_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEven
                     js_post_message("item_update", json);
                 }
                 g_free(new_path);
-            }
-        case G_FILE_MONITOR_EVENT_DELETED:
-            {
-                GFile* dir = g_file_get_parent(file);
-                if (!g_file_equal(dir, file)) {
-                    JSObjectRef json = json_create();
-                    json_append_nobject(json, "entry", dir, g_object_ref, g_object_unref);
-                    js_post_message("item_update", json);
-                } else {
-                    char* path = g_file_get_path(dir);
-                    desktop_cancel_monitor_dir(path);
-                    g_free(path);
-                }
-                g_object_unref(dir);
                 break;
             }
+        case G_FILE_MONITOR_EVENT_DELETED:
         case G_FILE_MONITOR_EVENT_CREATED:
         case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
             {
@@ -134,10 +134,11 @@ void begin_monitor_dir(const char* path, GCallback cb)
     if (!g_hash_table_contains(monitor_table, path)) {
         GFile* dir = g_file_new_for_path(path);
         GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
-        /*g_file_monitor_set_rate_limit(monitor, 200);*/
+        g_file_monitor_set_rate_limit(monitor, 0);
         char* key = g_strdup(path);
         g_hash_table_insert(monitor_table, key, monitor);
         g_signal_connect(monitor, "changed", cb, key);
+        g_object_unref(dir);
     } else {
         g_warning("The %s has aleardy monitored! You many forget call the function of end_monitor_dir", path);
     }
@@ -150,14 +151,19 @@ void end_monitor_dir(const char* path)
 
 
 JS_EXPORT_API
-void desktop_monitor_dir(const char* path)
-{
-    begin_monitor_dir(path, G_CALLBACK(monitor_dir_cb));
-}
-JS_EXPORT_API
 void desktop_cancel_monitor_dir(const char* path)
 {
     end_monitor_dir(path);
+}
+
+void begin_monitor_desktop()
+{
+    GFileMonitor* monitor = g_file_monitor_directory(_desktop,
+            G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
+    g_file_monitor_set_rate_limit(monitor, 0);
+
+    g_hash_table_insert(monitor_table, g_file_get_path(_desktop), monitor);
+    g_signal_connect(monitor, "changed", G_CALLBACK(monitor_desktop_dir_cb), NULL);
 }
 
 
@@ -166,10 +172,14 @@ void install_monitor()
 {
     if (monitor_table == NULL) {
         monitor_table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, (GDestroyNotify)g_object_unref);
-        char* desktop = get_desktop_dir(TRUE);
-        begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
 
+        char* desktop_path = get_desktop_dir(TRUE);
+        _desktop = g_file_new_for_path(desktop_path);
+        g_free(desktop_path);
 
+        begin_monitor_desktop();
+
+        char* desktop = g_file_get_path(_desktop);
         GDir *dir =  g_dir_open(desktop, 0, NULL);
         if (dir != NULL) {
             const char* filename = NULL;
@@ -177,7 +187,7 @@ void install_monitor()
             while ((filename = g_dir_read_name(dir)) != NULL) {
                 g_sprintf(path, "%s/%s", desktop, filename);
                 if (g_file_test(path, G_FILE_TEST_IS_DIR)) {
-                    desktop_monitor_dir(path);
+                    begin_monitor_dir(path, G_CALLBACK(monitor_dir_cb));
                 }
             }
             g_dir_close(dir);
