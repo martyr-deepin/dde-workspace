@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include "xdg_misc.h"
 #include "X_misc.h"
+#include "pixbuf.h"
 #include "i18n.h"
 #include "dentry/entry.h"
 #include <cairo/cairo-xlib.h>
@@ -66,57 +67,68 @@ char* desktop_get_rich_dir_name(GFile* dir)
 JS_EXPORT_API
 void desktop_set_rich_dir_name(GFile* dir, const char* name)
 {
-    char* new_name = g_build_filename(DEEPIN_RICH_DIR, name, NULL);
+    char* new_name = g_strconcat(DEEPIN_RICH_DIR, name, NULL);
     dentry_set_name(dir, new_name);
     g_free(new_name);
 }
 
 JS_EXPORT_API
-char* desktop_get_rich_dir_id(GFile* dir)
+char* desktop_get_rich_dir_icon(GFile* _dir)
 {
-    return dentry_get_id(dir);
+    char* icons[4] = {NULL, NULL, NULL, NULL};
+    char* bad_icons[4] = {NULL, NULL, NULL, NULL};
+
+    char* dir_path = g_file_get_path(_dir);
+    GDir* dir = g_dir_open(dir_path, 0, NULL);
+    const char* child_name = NULL;
+    int i=0, j=0;
+    for (; NULL != (child_name = g_dir_read_name(dir));) {
+        if (g_str_has_suffix(child_name, ".desktop")) {
+            char* path = g_build_filename(dir_path, child_name, NULL);
+            Entry* entry = dentry_create_by_path(path);
+            icons[i++] = dentry_get_icon(entry);
+            g_object_unref(entry);
+            g_free(path);
+        } else if (j<4) {
+            char* path = g_build_filename(dir_path, child_name, NULL);
+            Entry* entry = dentry_create_by_path(path);
+            bad_icons[j++] = dentry_get_icon(entry);
+            g_object_unref(entry);
+            g_free(path);
+        }
+
+        if (i >= 4) break;
+    }
+    g_dir_close(dir);
+    g_free(dir_path);
+    int z = 0;
+    char* ret = generate_directory_icon(
+            icons[0] ? icons[0] : bad_icons[z++], 
+            icons[1] ? icons[1] : bad_icons[z++], 
+            icons[2] ? icons[2] : bad_icons[z++], 
+            icons[3] ? icons[3] : bad_icons[z++]);
+    for (int i=0; i<4; i++) {
+        g_free(icons[i]);
+        g_free(bad_icons[i]);
+    }
+    return ret;
 }
 
 JS_EXPORT_API
-JSObjectRef desktop_list_rich_dir(GFile* dir)
-{
-    return dentry_list_files(dir);
-}
-
-JS_EXPORT_API
-char* deskto_get_rich_dir_icon(GFile* dir)
-{
-    /*char* icons[4] = {NULL, NULL, NULL, NULL};*/
-    /*char* bad_icons[4] = {NULL, NULL, NULL, NULL};*/
-
-    /*char* dir_path = g_file_get_path(dir);*/
-    /*const char* child_name = NULL;*/
-    /*for (int i=0, j=0; NULL != (child_name = g_dir_read_name(dir)); i++, j++) {*/
-        /*if (g_str_has_suffix(chid_name, ".desktop")) {*/
-            /*char* path = g_build_filename(dir_path, child_name, NULL);*/
-            /*Entry* entry = dentry_create_by_path(path);*/
-            /*icons[i] = dentry_get_icon(entry);*/
-        /*} else {*/
-        /*}*/
-        /*char* path = g_build_filename(dir_path, child_name, NULL);*/
-        /*g_ptr_array_add(array, dentry_create_by_path(path));*/
-        /*g_free(path);*/
-    /*}*/
-    /*g_dir_close(dir);*/
-    /*g_free(dir_path);*/
-
-    /*char* ret = generate_directory_icon(i1, i2, i3, i4);*/
-    /*return ret;*/
-}
-
-JS_EXPORT_API
-JSObjectRef desktop_create_rich_dir(GAppInfo* a1, GAppInfo* a2)
+void desktop_create_rich_dir(GAppInfo* a1, GAppInfo* a2)
 {
     GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
     g_file_make_directory(dir, NULL, NULL);
-    dentry_move(a1, dir);
-    dentry_move(a2, dir);
-    return dir;
+
+    ArrayContainer fs;
+    fs.num = 2;
+    GAppInfo** data = g_new(GAppInfo*, 2);
+    data[0] = a1;
+    data[1] = a2;
+    fs.data = data;
+    dentry_move(fs, dir);
+
+    g_free(data);
 }
 
 

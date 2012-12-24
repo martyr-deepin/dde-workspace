@@ -205,7 +205,6 @@ Entry* dentry_create_by_path(const char* path)
         Entry* e = g_desktop_app_info_new_from_filename(path);
         if (e != NULL) return e;
     } 
-
     return g_file_new_for_path(path);
 }
 
@@ -241,7 +240,14 @@ gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
         //TODO: check ERROR
-        g_object_unref(g_file_set_display_name(e, name, NULL, NULL));
+        GError* err = NULL;
+        GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
+        if (err) {
+            g_debug("dentry_set_name: %s %s\n", name, err->message);
+            g_error_free(err);
+        } else {
+            g_object_unref(new_file);
+        }
         return TRUE;
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
@@ -255,8 +261,9 @@ static void _normalize_array_container(ArrayContainer* pfs)
 
     for(size_t i=0; i<pfs->num; i++) {
         if (G_IS_DESKTOP_APP_INFO(array[i])) {
+            GAppInfo* tmp = (GAppInfo*)array[i];
             array[i] = _get_gfile_from_gapp(((GDesktopAppInfo*)array[i]));
-            g_object_unref(array[i]);
+            g_object_unref(tmp);
         } 
     }
 }
