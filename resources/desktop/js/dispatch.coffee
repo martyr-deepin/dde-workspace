@@ -20,6 +20,7 @@
 FILE_TYPE_APP = 0
 FILE_TYPE_FILE = 1
 FILE_TYPE_DIR = 2
+FILE_TYPE_RICH_DIR = 3
 
 create_item = (entry) ->
     w = null
@@ -31,7 +32,9 @@ create_item = (entry) ->
         when FILE_TYPE_FILE
             w = new NormalFile(entry)
         when FILE_TYPE_DIR
-                w = new Folder(entry)
+            w = new Folder(entry)
+        when FILE_TYPE_RICH_DIR
+            w = RichDir(entry)
         else
             echo "don't support type"
 

@@ -54,8 +54,6 @@ last_widget = ""
 
 # store the buffer canvas
 drag_canvas = null
-# store the image element to set to the drag image
-drag_image = null
 # store the left top point of drag image start point
 drag_start = {x : 0, y: 0}
 
@@ -280,9 +278,19 @@ sort_list_by_name_from_id = (id1, id2) ->
         return w1.get_name().localeCompare(w2.get_name())
 
 
-menu_sort_desktop_item_by_name = ->
+sort_list_by_mtime_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_mtime() - w2.get_mtime()
+
+
+sort_desktop_item_by_func = (func) ->
     item_ordered_list = all_item.concat()
-    item_ordered_list.sort(sort_list_by_name_from_id)
+    item_ordered_list.sort(func)
 
     clear_occupy_table()
 
@@ -294,27 +302,15 @@ menu_sort_desktop_item_by_name = ->
     return
 
 
-sort_list_by_mtime_from_id = (id1, id2) ->
-    w1 = Widget.look_up(id1)
-    w2 = Widget.look_up(id2)
-    if not w1? or not w2?
-        echo("we get error here[sort_list_by_name_from_id]")
-        return w1.localeCompare(w2)
-    else
-        return w1.get_mtime() - w2.get_mtime()
+menu_sort_desktop_item_by_name = ->
+    sort_desktop_item_by_func(sort_list_by_name_from_id)
+
+    return
 
 
 menu_sort_desktop_item_by_mtime = ->
-    item_ordered_list = all_item.concat()
-    item_ordered_list.sort(sort_list_by_mtime_from_id)
+    sort_desktop_item_by_func(sort_list_by_mtime_from_id)
 
-    clear_occupy_table()
-
-    for i in item_ordered_list
-        w = Widget.look_up(i)
-        if w?
-            discard_position(w.id)
-            move_to_anywhere(w)
     return
 
 
@@ -430,15 +426,16 @@ paste_from_clipboard = ->
 
 item_dragstart_handler = (widget, evt) ->
     if selected_item.length > 0
-        all_selected_items = selected_item[0]
-        all_selected_items += "\n" + selected_item[i] for i in [1 ... selected_item.length] by 1
-        evt.dataTransfer.setData("text/deepin_id_list", all_selected_items)
-        evt.dataTransfer.effectAllowed = "moveCopy"
+        all_selected_items = ""
+        for i in [0 ... selected_item.length] by 1
+            w = Widget.look_up(selected_item[i])
+            if w? then all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
+        evt.dataTransfer.setData("text/uri-list", all_selected_items)
+        evt.dataTransfer.effectAllowed = "all"
 
     x = evt.x - drag_start.x * i_width
     y = evt.y - drag_start.y * i_height
-    echo "setDragImage #{drag_start.x},#{drag_start.y}"
-    evt.dataTransfer.setDragImage(drag_image, x, y)
+    evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
 
 set_item_selected = (w, top = false) ->
@@ -613,8 +610,6 @@ update_selected_item_drag_image = ->
             context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
             ++line_number
 
-    #FIXME: low preformance on converting and case large memory usage because webkit cache the all old copies
-    drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
 
@@ -639,8 +634,10 @@ open_selected_items = ->
 
 delete_selected_items = ->
     tmp = []
-    tmp.push(i) for i in selected_item
-    DCore.Desktop.item_delete(tmp)
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp.push(w.entry)
+    DCore.DEntry.delete(tmp)
 
 
 show_selected_items_Properties = ->

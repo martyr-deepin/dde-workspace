@@ -43,7 +43,7 @@ body {
     overflow:hidden;
 }
 
-.Folder, .DesktopEntry, .NormalFile, .Application {
+.DesktopEntry, .Folder, .NormalFile, .Application, RichDir {
     width: 80px;
     padding: 3px 5px;
     margin: 1px 1px;
@@ -54,7 +54,7 @@ body {
     outline: none;
 }
 
-.Folder img, .DesktopEntry img, .NormalFile img, .Application img {
+.DesktopEntry img, .Folder img, .NormalFile img, .Application img, RichDir img {
     width: 48px;
     height: 48px;
 }
