@@ -200,14 +200,14 @@
 	
 .btn_login:hover{background:#F60;}
 	
-.ver{ background: url(../images/ver.png) no-repeat; width:340px; height:50px; position:absolute; bottom:22px; left:50%; margin-left:-170px;}	
+.Ver{ background: url(../images/ver.png) no-repeat; width:340px; height:50px; position:absolute; bottom:22px; left:50%; margin-left:-170px;}	
 	
 /* time.css */
-.time{
+.Time{
 	width:350px; height:200px; position:absolute; padding-left:30px; bottom:0; left:0;
 }
 
-.time01{ 
+.Time01{ 
     font-size:120px;
 	color: #fff; 
 	display: block; 
@@ -219,7 +219,7 @@
 	text-shadow:0 0 2px #333;  
 }
 
-.time02{  
+.Time02{  
 	padding-left:10px;
     font-size:30px;
 	color: #fff; 

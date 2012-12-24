@@ -1,5 +1,5 @@
 (function() {
-  var $, $s, Module, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, date, day, day_list, echo, find_drag_target, format_two_bit, get_date_str, get_page_xy, get_time_str, hibernate, mon, now, restart, run_post, show_hibernate, show_restart, show_shutdown, show_suspend, shutdown, suspend, swap_element, year, _, _events,
+  var $, $s, Module, Time, Time_container, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, date, day, day_list, echo, find_drag_target, format_two_bit, get_date_str, get_page_xy, get_time_str, hibernate, mon, now, restart, run_post, show_hibernate, show_restart, show_shutdown, show_suspend, shutdown, suspend, swap_element, year, _, _events,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -246,8 +246,8 @@
   };
 
   get_date_str = function() {
-    var mon_list;
-    return mon_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var month_list;
+    return month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   };
 
   day_list = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -256,13 +256,54 @@
 
   day = day_list[now.getDay()];
 
-  mon = mon_list[now.getMonth()];
+  mon = month_list[now.getMonth()];
 
   date = now.getDate();
 
   year = now.getFullYear();
 
   return "" + day + ", " + mon + " " + date + ", " + year;
+
+  Time = (function(_super) {
+
+    __extends(Time, _super);
+
+    function Time(id) {
+      this.id = id;
+      Time.__super__.constructor.apply(this, arguments);
+      document.body.appendChild(this.element);
+    }
+
+    return Time;
+
+  })(Widget);
+
+  this.time = get_time_str();
+
+  this.date = get_date_str();
+
+  this.element.innerHTML = ("		<div class=Time01>" + this.time + "</div>		<div class=TIme02>" + this.date + "</div>		")({
+    hide: function() {
+      return this.element.style.display = "none";
+    }
+  });
+
+  Time_container = new Time("time");
+
+  Ver = (function(_super) {
+
+    __extends(Ver, _super);
+
+    function Ver(id) {
+      this.id = id;
+      Ver.__super__.constructor.apply(this, arguments);
+    }
+
+    document.body.appendChild(Ver.element);
+
+    return Ver;
+
+  })(Widget);
 
   show_suspend = function() {
     return Greeter.get_can_suspend();

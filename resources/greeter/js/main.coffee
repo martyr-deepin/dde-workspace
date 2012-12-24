@@ -24,25 +24,25 @@ format_two_bit = (s) ->
         return s
 
 get_time_str = ->
+
 	today = new Date()
 	hours = format_two_bit today.getHours()
 	min = format_two_bit today.getMinutes()
 	return "#{hours}:#{min}"
 
 get_date_str = ->
-    mon_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+    month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 	day_list = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+
 	now = new Date()
 
 	day = day_list[now.getDay()]
-	mon = mon_list[now.getMonth()]
+	mon = month_list[now.getMonth()]
 	date = now.getDate()
 	year = now.getFullYear()
 
 	return "#{day}, #{mon} #{date}, #{year}"
-
-
-
 
 show_suspend = ->
     return Greeter.get_can_suspend()
@@ -67,4 +67,29 @@ restart = ->
 
 shutdown = ->
     return Greeter.shutdown()	 	 		  	  		  	  	  	 	 	   	   	   
+
+
+class Time extends Widget
+    constructor: (@id)->
+        super
+        document.body.appendChild(@element)
+		@time = get_time_str()
+		@date = get_date_str()
+		@element.innerHTML = "
+		<div class=Time01>#{@time}</div>
+		<div class=TIme02>#{@date}</div>
+		"
+    hide: ->
+        @element.style.display = "none"
+
+Time_container = new Time("time")
+
+class Ver extends Widget
+    constructor: (@id)->
+        super
+	    document.body.appendChild(@element)
+
+
+
+
 
