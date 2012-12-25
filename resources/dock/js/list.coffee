@@ -26,12 +26,14 @@ calc_app_item_size = ->
         Widget.look_up(i.id).change_size(w)
 
     last = apps[apps.length-1]
-
-    DCore.Dock.require_region(0, 0, screen.width, 30)
-    offset = get_page_xy(last, 0, 0).x + last.clientWidth
-    DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
-    height = w * (60-8) / 68 + 8
-    DCore.Dock.change_workarea_height(height)
+    if last
+        DCore.Dock.require_region(0, 0, screen.width, 30)
+        offset = get_page_xy(last, 0, 0).x + last.clientWidth
+        DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
+        height = w * (60-8) / 68 + 8
+        DCore.Dock.change_workarea_height(height)
+    else
+        echo "can't find last app #{apps.length}"
 
 active_group = null
 
