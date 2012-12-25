@@ -67,24 +67,6 @@ catch e
     echo "error when init nautilus dbus interface[#{e}]"
     s_nautilus = null
 
-gm = build_menu([
-    [_("arrange icons"), [
-            [11, _("by name")],
-            [12, _("by last modified time")]
-        ]
-    ],
-    [_("New"), [
-            [21, _("folder")],
-            [22, _("text file")]
-        ]
-    ],
-    [3, _("open terminal here")],
-    [4, _("paste")],
-    [],
-    [5, _("Personal")],
-    [6, _("Display Settings")]
-])
-
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
     n_cols = Math.floor(wa_width / i_width)
@@ -657,13 +639,38 @@ show_selected_items_Properties = ->
 
 
 gird_left_mousedown = (evt) ->
+    evt.stopPropagation()
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
 
 grid_right_click = (evt) ->
+    evt.stopPropagation()
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+
+    menus = []
+    menus.push([_("arrange icons"), [
+                [11, _("by name")],
+                [12, _("by last modified time")]
+            ]
+        ])
+    menus.push([_("New"), [
+                [21, _("folder")],
+                [22, _("text file")]
+            ]
+        ])
+    menus.push([3, _("open terminal here")])
+    if DCore.DEntry.can_paste()
+        menus.push([4, _("paste")])
+    else
+        menus.push([4, "-" + _("paste")])
+    menus.push([])
+    menus.push([5, _("Personal")])
+    menus.push([6, _("Display Settings")])
+
+    div_grid.parentElement.contextMenu = build_menu(menus)
+    return
 
 
 grid_do_itemselected = (evt) ->
@@ -688,7 +695,6 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
     div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
-    div_grid.parentElement.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
