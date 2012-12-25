@@ -36,6 +36,32 @@ selected_prev = ->
     if n
         update_selected(n)
 
+selected_down = ->
+    n = item_selected
+    for i in [0..get_item_row_count()-1]
+        n = n.nextElementSibling
+    if n
+        update_selected(n)
+
+selected_up = ->
+    n = item_selected
+    for i in [0..get_item_row_count()-1]
+        n = n.previousElementSibling
+    if n
+        update_selected(n)
+
+
+get_item_row_count = ->
+    count = 0
+    items = $s('.item')
+    first_value = items[0].offsetTop
+    for i in items
+        if i.offsetTop != first_value
+            break
+        else
+            count++
+    return count
+
 search = ->
     ret = []
     key = s_box.value.toLowerCase()
@@ -56,14 +82,23 @@ document.body.onkeydown = (e)->
             selected_next()
         when 37 #b
             selected_prev()
+        when 40 #n
+            selected_down()
+        when 38 #p
+            selected_up()
 
 document.body.onkeypress = (e) ->
     if e.ctrlKey
+        echo e.which
         switch e.which
+            when 112 #p
+                selected_up()
             when 102 #f
                 selected_next()
             when 98 #b
                 selected_prev()
+            when 110 #n
+                selected_down()
             else
                 s_box.value += String.fromCharCode(e.which)
     else
