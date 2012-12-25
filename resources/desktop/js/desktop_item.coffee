@@ -386,8 +386,9 @@ class Folder extends DesktopEntry
         files = all_selected_items.split("\n")
 
         for f in files
-            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
-            if e? then continue
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR
                 @move_in(e)
 
@@ -435,6 +436,14 @@ class Folder extends DesktopEntry
 
 
 class RichDir extends DesktopEntry
+    #get_name : ->
+    #    DCore.Desktop.get_rich_dir_name(@entry)
+
+
+    get_icon : ->
+        DCore.Desktop.get_rich_dir_icon(@entry)
+
+
     constructor : ->
         super
 
@@ -443,14 +452,6 @@ class RichDir extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
-
-
-    get_name : ->
-        DCore.Desktop.get_rich_dir_name(@entry)
-
-
-    get_icon : ->
-        DCore.Desktop.get_rich_dir_icon(@entry)
 
 
     do_click : (evt) =>
@@ -477,9 +478,10 @@ class RichDir extends DesktopEntry
 
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        for file in files
-            e = DCore.DEntry.create_by_path(decodeURI(file).substr(7))
-            if e? and file.length > 0 then @move_in(e)
+        for f in files
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if e? then @move_in(e)
 
         return
 
@@ -686,15 +688,16 @@ class Application extends DesktopEntry
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
         for f in files
-            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
-            if e? then continue
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_APP
                 all_are_apps = false
 
-            tmp_list.push(f)
+            tmp_list.push(e)
 
         if all_are_apps == true
-            tmp_list.push(@get_path())
+            tmp_list.push(@entry)
             DCore.Desktop.create_rich_dir(tmp_list)
         else
             DCore.DEntry.launch(@entry, tmp_list)
