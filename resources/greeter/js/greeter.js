@@ -1,5 +1,5 @@
 (function() {
-  var $, $s, Module, Time, Time_container, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, date, day, day_list, echo, find_drag_target, format_two_bit, get_date_str, get_page_xy, get_time_str, hibernate, mon, now, restart, run_post, show_hibernate, show_restart, show_shutdown, show_suspend, shutdown, suspend, swap_element, year, _, _events,
+  var $, $s, Module, Time, Time_container, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, date, day, day_list, echo, find_drag_target, format_two_bit, get_date_str, get_page_xy, get_time_str, hibernate, mon, now, restart, run_post, show_hibernate, show_restart, show_shutdown, show_suspend, shutdown, suspend, swap_element, ver_container, year, _, _events,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
@@ -264,6 +264,38 @@
 
   return "" + day + ", " + mon + " " + date + ", " + year;
 
+  show_suspend = function() {
+    return Greeter.get_can_suspend();
+  };
+
+  show_hibernate = function() {
+    return Greeter.get_can_hibernate();
+  };
+
+  show_restart = function() {
+    return Greeter.get_can_restart();
+  };
+
+  show_shutdown = function() {
+    return Greeter.get_can_shutdown();
+  };
+
+  suspend = function() {
+    return Greeter.suspend();
+  };
+
+  hibernate = function() {
+    return Greeter.hibernate();
+  };
+
+  restart = function() {
+    return Greeter.restart();
+  };
+
+  shutdown = function() {
+    return Greeter.shutdown();
+  };
+
   Time = (function(_super) {
 
     __extends(Time, _super);
@@ -271,6 +303,7 @@
     function Time(id) {
       this.id = id;
       Time.__super__.constructor.apply(this, arguments);
+      this.add_css_class("Time");
       document.body.appendChild(this.element);
     }
 
@@ -305,36 +338,6 @@
 
   })(Widget);
 
-  show_suspend = function() {
-    return Greeter.get_can_suspend();
-  };
-
-  show_hibernate = function() {
-    return Greeter.get_can_hibernate();
-  };
-
-  show_restart = function() {
-    return Greeter.get_can_restart();
-  };
-
-  show_shutdown = function() {
-    return Greeter.get_can_shutdown();
-  };
-
-  suspend = function() {
-    return Greeter.suspend();
-  };
-
-  hibernate = function() {
-    return Greeter.hibernate();
-  };
-
-  restart = function() {
-    return Greeter.restart();
-  };
-
-  shutdown = function() {
-    return Greeter.shutdown();
-  };
+  ver_container = new Ver("deepin");
 
 }).call(this);

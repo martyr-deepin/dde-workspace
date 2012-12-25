@@ -30,13 +30,12 @@ get_time_str = ->
 	min = format_two_bit today.getMinutes()
 	return "#{hours}:#{min}"
 
-get_date_str = ->
 
-    month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-	day_list = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+get_date_str = ->
+	month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    day_list = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 
 	now = new Date()
-
 	day = day_list[now.getDay()]
 	mon = month_list[now.getMonth()]
 	date = now.getDate()
@@ -72,6 +71,8 @@ shutdown = ->
 class Time extends Widget
     constructor: (@id)->
         super
+        @add_css_class("Time")
+
         document.body.appendChild(@element)
 		@time = get_time_str()
 		@date = get_date_str()
@@ -89,7 +90,7 @@ class Ver extends Widget
         super
 	    document.body.appendChild(@element)
 
-
+ver_container = new Ver("deepin")
 
 
 
