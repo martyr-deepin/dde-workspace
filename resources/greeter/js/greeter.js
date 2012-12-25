@@ -1,8 +1,9 @@
 (function() {
-  var $, $s, Module, Time, Time_container, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, date, day, day_list, echo, find_drag_target, format_two_bit, get_date_str, get_page_xy, get_time_str, hibernate, mon, now, restart, run_post, show_hibernate, show_restart, show_shutdown, show_suspend, shutdown, suspend, swap_element, ver_container, year, _, _events,
+  var $, $s, DEText, MenuContainer, Module, Time, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, de_container, detext_container, echo, find_drag_target, format_two_bit, get_date_str, get_de_info, get_page_xy, get_power_info, get_time_str, hibernate, power_container, restart, run_post, shutdown, suspend, swap_element, time_container, ver_container, _, _events,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Storage.prototype.setObject = function(key, value) {
     return this.setItem(key, JSON.stringify(value));
@@ -238,62 +239,58 @@
   };
 
   get_time_str = function() {
-    var hours, min, today;
-    today = new Date();
-    hours = format_two_bit(today.getHours());
-    min = format_two_bit(today.getMinutes());
+    var hours, min;
+    hours = format_two_bit(new Date().getHours());
+    min = format_two_bit(new Date().getMinutes());
     return "" + hours + ":" + min;
   };
 
   get_date_str = function() {
-    var month_list;
-    return month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var date, day, day_list, mon, month_list, year;
+    month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    day_list = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    day = day_list[new Date().getDay()];
+    mon = month_list[new Date().getMonth()];
+    date = new Date().getDate();
+    year = new Date().getFullYear();
+    return "" + day + ", " + mon + " " + date + ", " + year;
   };
 
-  day_list = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-  now = new Date();
-
-  day = day_list[now.getDay()];
-
-  mon = month_list[now.getMonth()];
-
-  date = now.getDate();
-
-  year = now.getFullYear();
-
-  return "" + day + ", " + mon + " " + date + ", " + year;
-
-  show_suspend = function() {
-    return Greeter.get_can_suspend();
-  };
-
-  show_hibernate = function() {
-    return Greeter.get_can_hibernate();
-  };
-
-  show_restart = function() {
-    return Greeter.get_can_restart();
-  };
-
-  show_shutdown = function() {
-    return Greeter.get_can_shutdown();
+  get_power_info = function() {
+    var power_info;
+    echo("get power info");
+    power_info = {};
+    if (DCore.Greeter.get_can_suspend()) power_info["suspend"] = suspend;
+    if (DCore.Greeter.get_can_hibernate()) power_info["hibernate"] = hibernate;
+    if (DCore.Greeter.get_can_restart()) power_info["restart"] = restart;
+    if (DCore.Greeter.get_can_shutdown()) power_info["shutdown"] = shutdown;
+    return power_info;
   };
 
   suspend = function() {
-    return Greeter.suspend();
+    return echo("suspend");
   };
 
   hibernate = function() {
-    return Greeter.hibernate();
+    return echo("hibernate");
   };
 
   restart = function() {
-    return Greeter.restart();
+    return echo("restart");
   };
 
   shutdown = function() {
-    return Greeter.shutdown();
+    return echo("shutdown");
+  };
+
+  get_de_info = function() {
+    var de_info;
+    echo("get desktop environment info");
+    de_info = {
+      "gnome": "gnome",
+      "deepin": "deepin"
+    };
+    return de_info;
   };
 
   Time = (function(_super) {
@@ -301,27 +298,29 @@
     __extends(Time, _super);
 
     function Time(id) {
+      var _this = this;
       this.id = id;
       Time.__super__.constructor.apply(this, arguments);
-      this.add_css_class("Time");
       document.body.appendChild(this.element);
+      this.time_div = create_element("div", "Time01", this.element);
+      this.date_div = create_element("div", "Time02", this.element);
+      this.update();
+      setInterval(function() {
+        return _this.update();
+      }, 1000);
     }
+
+    Time.prototype.update = function() {
+      this.time_div.innerText = get_time_str();
+      this.date_div.innerText = get_date_str();
+      return true;
+    };
 
     return Time;
 
   })(Widget);
 
-  this.time = get_time_str();
-
-  this.date = get_date_str();
-
-  this.element.innerHTML = ("		<div class=Time01>" + this.time + "</div>		<div class=TIme02>" + this.date + "</div>		")({
-    hide: function() {
-      return this.element.style.display = "none";
-    }
-  });
-
-  Time_container = new Time("time");
+  time_container = new Time("time");
 
   Ver = (function(_super) {
 
@@ -330,14 +329,74 @@
     function Ver(id) {
       this.id = id;
       Ver.__super__.constructor.apply(this, arguments);
+      document.body.appendChild(this.element);
     }
-
-    document.body.appendChild(Ver.element);
 
     return Ver;
 
   })(Widget);
 
   ver_container = new Ver("deepin");
+
+  DEText = (function(_super) {
+
+    __extends(DEText, _super);
+
+    function DEText(id) {
+      this.id = id;
+      DEText.__super__.constructor.apply(this, arguments);
+      document.body.appendChild(this.element);
+      this.element.innerText = "Choose Desktop Environment";
+    }
+
+    return DEText;
+
+  })(Widget);
+
+  detext_container = new DEText("detext");
+
+  MenuContainer = (function(_super) {
+
+    __extends(MenuContainer, _super);
+
+    function MenuContainer(id, items) {
+      this.id = id;
+      this.items = items;
+      this.on_menu_click = __bind(this.on_menu_click, this);
+      MenuContainer.__super__.constructor.apply(this, arguments);
+      document.body.appendChild(this.element);
+      this.control_div = create_element("div", "MenuControl", this.element);
+      this.switch_div = create_element("div", "MenuSwitch", this.control_div);
+      this.menu_div = create_element("div", "Menu", this.control_div);
+      this.create_menu_items();
+    }
+
+    MenuContainer.prototype.create_menu_items = function() {
+      var key, menu_li, value, _ref, _results;
+      this.menu_ul = create_element("ul", " ", this.menu_div);
+      _ref = this.items;
+      _results = [];
+      for (key in _ref) {
+        value = _ref[key];
+        menu_li = create_element("li", " ", this.menu_ul);
+        menu_li.innerText = key;
+        _results.push(menu_li.addEventListener("click", this.on_menu_click));
+      }
+      return _results;
+    };
+
+    MenuContainer.prototype.on_menu_click = function(event) {
+      var key;
+      key = event.srcElement.innerText;
+      return this.items[key]();
+    };
+
+    return MenuContainer;
+
+  })(Widget);
+
+  de_container = new MenuContainer("desktop", get_de_info());
+
+  power_container = new MenuContainer("power", get_power_info());
 
 }).call(this);
