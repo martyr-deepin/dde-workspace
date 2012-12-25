@@ -91,21 +91,21 @@ class Item extends Widget
         DCore.DEntry.get_mtime(@entry)
 
 
-    do_mouseover : (evt) =>
+    do_mouseover : (evt) ->
         @show_hover_box()
 
 
-    do_mouseout : (evt) =>
+    do_mouseout : (evt) ->
         @hide_hover_box()
 
 
-    do_mousedown : (evt) =>
+    do_mousedown : (evt) ->
         evt.stopPropagation()
         if evt.button == 0 then update_selected_stats(this, evt)
         false
 
 
-    do_click : (evt) =>
+    do_click : (evt) ->
         evt.stopPropagation()
         if @clicked == false
             @clicked = true
@@ -253,7 +253,7 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
-            on_rename(new_name)
+            @on_rename(new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -436,14 +436,6 @@ class Folder extends DesktopEntry
 
 
 class RichDir extends DesktopEntry
-    #get_name : ->
-    #    DCore.Desktop.get_rich_dir_name(@entry)
-
-
-    get_icon : ->
-        DCore.Desktop.get_rich_dir_icon(@entry)
-
-
     constructor : ->
         super
 
@@ -454,26 +446,34 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
 
-    do_click : (evt) =>
+    get_name : ->
+        DCore.Desktop.get_rich_dir_name(@entry)
+
+
+    get_icon : ->
+        DCore.Desktop.get_rich_dir_icon(@entry)
+
+
+    do_click : (evt) ->
         super
         if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
 
 
-    do_dblclick : (evt) =>
+    do_dblclick : (evt) ->
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_dragstart : (evt) =>
+    do_dragstart : (evt) ->
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_drop : (evt) =>
+    do_drop : (evt) ->
         super
 
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
@@ -486,7 +486,7 @@ class RichDir extends DesktopEntry
         return
 
 
-    do_dragenter : (evt) =>
+    do_dragenter : (evt) ->
         evt.stopPropagation()
 
         if @selected == false
@@ -506,7 +506,7 @@ class RichDir extends DesktopEntry
         return
 
 
-    do_dragover : (evt) =>
+    do_dragover : (evt) ->
         evt.preventDefault()
         evt.stopPropagation()
 
