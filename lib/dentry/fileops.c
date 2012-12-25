@@ -3,8 +3,9 @@
  *	traversing the filesystem hierachy. 
  *	so we need to implement one.
  */
-#include "fileops.h"
 #include <glib/gstdio.h>
+
+#include "fileops.h"
 
 
 static gboolean _dummy_func		(GFile* file, gpointer data);
@@ -150,9 +151,9 @@ post_processing:
  *	post_hook = _delete_files_async
  */
 void
-dfile_delete (GFile* file_list[], guint num)
+fileops_delete (GFile* file_list[], guint num)
 {
-    g_debug ("dfile_delete: Begin deleting files");
+    g_debug ("fileops_delete: Begin deleting files");
     int i;
     for (i = 0; i < num; i++)
     {
@@ -162,7 +163,7 @@ dfile_delete (GFile* file_list[], guint num)
 	g_free (filename);
 	traverse_directory (dir, _dummy_func, _delete_files_async, NULL);
     }
-    g_debug ("dfile_delete: End deleting files");
+    g_debug ("fileops_delete: End deleting files");
 }
 /*
  *	@file_list : files(or directories) to trash.
@@ -172,20 +173,20 @@ dfile_delete (GFile* file_list[], guint num)
  *	      recursively trash files.
  */
 void
-dfile_trash (GFile* file_list[], guint num)
+fileops_trash (GFile* file_list[], guint num)
 {
-    g_debug ("dfile_trash: Begin trashing files");
+    g_debug ("fileops_trash: Begin trashing files");
     int i;
     for (i = 0; i < num; i++)
     {
 	GFile* dir = file_list[i];
 	char* filename = g_file_get_path (dir);
-	g_debug ("dfile_trash: file %d: %s", i, filename);
+	g_debug ("fileops_trash: file %d: %s", i, filename);
 	g_free (filename);
 	_trash_files_async (dir, NULL);
 	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
     }
-    g_debug ("dfileops_trash: End trashing files");
+    g_debug ("fileops_trash: End trashing files");
 }
 /*
  *	@file_list : files(or directories) to move.
@@ -197,16 +198,16 @@ dfile_trash (GFile* file_list[], guint num)
  *	      recursively trash files.
  */
 void
-dfile_move (GFile* file_list[], guint num, GFile* dest_dir)
+fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 {
-    g_debug ("dfile_move: Begin moving files");
+    g_debug ("fileops_move: Begin moving files");
     int i;
     for (i = 0; i < num; i++)
     {
 	GFile* src_dir = file_list[i];
 	char* src_name = g_file_get_path (src_dir);
 	char* dest_name = g_file_get_path (dest_dir);
-	g_debug ("dfile_move: file %d: %s to dest: %s", i, src_name, dest_name);
+	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_name, dest_name);
 
 	//make sure dest_dir is a directory before proceeding.
 	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
@@ -228,7 +229,7 @@ dfile_move (GFile* file_list[], guint num, GFile* dest_dir)
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
-    g_debug ("dfile_move: End moving files");
+    g_debug ("fileops_move: End moving files");
 }
 /*
  *	@file_list : files(or directories) to trash.
@@ -237,7 +238,7 @@ dfile_move (GFile* file_list[], guint num, GFile* dest_dir)
  *	post_hook = NULL
  */
 void
-dfile_copy (GFile* file_list[], guint num, GFile* dest_dir)
+fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 {
     g_debug ("fileops_copy: Begin copying files");
     int i;

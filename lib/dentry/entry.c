@@ -30,6 +30,7 @@
 #include "utils.h"
 #include "xdg_misc.h"
 #include "fileops.h"
+#include "fileops_clipboard.h"
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
@@ -244,6 +245,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
             g_debug("dentry_set_name: %s %s\n", name, err->message);
+	    //TODO: change to a dialog
             g_error_free(err);
         } else {
             g_object_unref(new_file);
@@ -267,30 +269,42 @@ static void _normalize_array_container(ArrayContainer* pfs)
         } 
     }
 }
+
 void dentry_move(ArrayContainer fs, GFile* dest)
 {
     _normalize_array_container(&fs);
-    dfile_move(fs.data, fs.num, dest);
+    fileops_move(fs.data, fs.num, dest);
 }
 void dentry_delete(ArrayContainer fs)
 {
     _normalize_array_container(&fs);
-    dfile_delete(fs.data, fs.num);
+    fileops_delete(fs.data, fs.num);
 }
-
 void dentry_trash(ArrayContainer fs)
 {
+    _normalize_array_container (&fs);
+    fileops_trash (fs.data, fs.num);
 }
-
 
 void dentry_copy(ArrayContainer fs)
 {
+    _normalize_array_container (&fs);
+    init_fileops_clipboard (fs.data,fs.num, FALSE);
 }
 
 void dentry_cut(ArrayContainer fs)
 {
+    _normalize_array_container (&fs);
+    init_fileops_clipboard (fs.data, fs.num, TRUE);
 }
 
-void dentry_paste(GFile* dest)
+void dentry_paste(GFile* dest_dir)
 {
+    fileops_paste (dest_dir);
+}
+
+JS_EXPORT_API
+gboolean dentry_can_paste ()
+{
+    return ! is_clipboard_empty();
 }
