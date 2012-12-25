@@ -195,6 +195,10 @@ class Item extends Widget
         @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
+    on_rename : (new_name) ->
+        DCore.DEntry.set_name(@entry, new_name)
+
+
     item_rename : =>
         echo "item_rename"
         @delay_rename = -1
@@ -203,11 +207,18 @@ class Item extends Widget
             @element.draggable = false
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
-            @item_name.focus()
             @item_name.addEventListener("mousedown", @event_stoppropagation)
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
+            @item_name.focus()
+            #TODO: set caret pos to end or select all text when begin editing
+            #ws = window.getSelection()
+            #ws.removeAllRanges()
+            #range = document.createRange()
+            #range.setStart(@item_name.childNodes[0], 0)
+            #range.setEnd(@item_name.childNodes[0], @item_name.innerText.length)
+            #ws.addRange(range)
 
             @in_rename = true
         return
@@ -242,7 +253,7 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
-            DCore.DEntry.set_name(@entry, new_name)
+            on_rename(new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -309,14 +320,15 @@ class DesktopEntry extends Item
             if @in_count == 1
                 @show_hover_box()
 
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
+        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        #FIXME: test propose only, should disable on public release
+        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -324,14 +336,15 @@ class DesktopEntry extends Item
         evt.preventDefault()
         evt.stopPropagation()
 
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
+        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "link"
 
-        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        #FIXME: test propose only, should disable on public release
+        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -358,68 +371,70 @@ class DesktopEntry extends Item
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
-#class Folder extends DesktopEntry
-#    constructor : ->
-#        super
-#
-#       if not @exec?
-#           @exec = "gvfs-open \"#{@id}\""
-#
-#    do_drop : (evt) =>
-#        super
-#
-#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-#        files = all_selected_items.split("\n")
-#        for f in files
-#            w = Widget.look_up(f)
-#            if w? and w.constructor.name != "AppLauncher"
-#                @move_in(w.path)
-#
-#        return
-#
-#
-#    do_dragenter : (evt) =>
-#        evt.stopPropagation()
-#
-#        if @selected == false
-#            ++@in_count
-#            if @in_count == 1
-#                @show_hover_box()
-#
-#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-#        files = all_selected_items.split("\n")
-#        if files.indexOf(@id) >= 0
-#            evt.dataTransfer.dropEffect = "none"
-#        else
-#            evt.dataTransfer.dropEffect = "move"
-#
-#        #FIXME: test propose only, should disable on public release
-#        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-#        return
-#
-#
-#    do_dragover : (evt) =>
-#        evt.preventDefault()
-#        evt.stopPropagation()
-#
-#        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
-#        files = all_selected_items.split("\n")
-#        if files.indexOf(@id) >= 0
-#            evt.dataTransfer.dropEffect = "none"
-#        else
-#            evt.dataTransfer.dropEffect = "move"
-#
-#        echo "do_dragover #{evt.dataTransfer.dropEffect}"
-#        return
-#
-#
-#    move_in: (c_path) ->
-#        p = c_path.replace("file://", "")
-#        DCore.run_command2("mv", p, @get_path())
-
-
-#class AppLauncher extends DesktopEntry
 class Folder extends DesktopEntry
+    constructor : ->
+        super
+
+       if not @exec?
+           @exec = "gvfs-open \"#{@id}\""
+
+
+    do_drop : (evt) =>
+        super
+
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
+        files = all_selected_items.split("\n")
+
+        for f in files
+            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
+            if e? then continue
+            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR
+                @move_in(e)
+
+        return
+
+
+    do_dragenter : (evt) =>
+        evt.stopPropagation()
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
+        files = all_selected_items.split("\n")
+        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
+            evt.dataTransfer.dropEffect = "none"
+        else
+            evt.dataTransfer.dropEffect = "move"
+
+        #FIXME: test propose only, should disable on public release
+        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        return
+
+
+    do_dragover : (evt) =>
+        evt.preventDefault()
+        evt.stopPropagation()
+
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
+        files = all_selected_items.split("\n")
+        enc_path = encodeURI("file://" + @get_path())
+        if files.indexOf(enc_path) >= 0
+            evt.dataTransfer.dropEffect = "none"
+        else
+            evt.dataTransfer.dropEffect = "move"
+
+        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        return
+
+
+    move_in: (move_entry) ->
+        DCore.DEntry.move(@entry, move_entry)
+
+
+class RichDir extends DesktopEntry
     constructor : ->
         super
 
@@ -428,6 +443,14 @@ class Folder extends DesktopEntry
 
         @div_pop = null
         @show_pop = false
+
+
+    get_name : ->
+        DCore.Desktop.get_rich_dir_name(@entry)
+
+
+    get_icon : ->
+        DCore.Desktop.get_rich_dir_icon(@entry)
 
 
     do_click : (evt) =>
@@ -452,13 +475,14 @@ class Folder extends DesktopEntry
     do_drop : (evt) =>
         super
 
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
         for file in files
-            i = decodeURI(file)
-            @move_in(i)
+            e = DCore.DEntry.create_by_path(decodeURI(file).substr(7))
+            if e? and file.length > 0 then @move_in(e)
 
         return
+
 
     do_dragenter : (evt) =>
         evt.stopPropagation()
@@ -468,14 +492,15 @@ class Folder extends DesktopEntry
             if @in_count == 1
                 @show_hover_box()
 
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
+        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "move"
 
-        echo "do_dragenter #{evt.dataTransfer.dropEffect}"
+        #FIXME: test propose only, should disable on public release
+        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -483,14 +508,14 @@ class Folder extends DesktopEntry
         evt.preventDefault()
         evt.stopPropagation()
 
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        if files.indexOf(@id) >= 0
+        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
             evt.dataTransfer.dropEffect = "none"
         else
             evt.dataTransfer.dropEffect = "move"
 
-        echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -502,6 +527,10 @@ class Folder extends DesktopEntry
     item_blur : ->
         if @div_pop != null then @hide_pop_block()
         super
+
+
+    on_rename : (new_name) ->
+        DCore.Desktop.set_rich_dir_name(@entry, new_name)
 
 
     destroy : ->
@@ -573,7 +602,7 @@ class Folder extends DesktopEntry
             )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
-                evt.dataTransfer.setData("text/uri-list", "file://#{this.id}")
+                evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(this.id)}")
                 evt.dataTransfer.effectAllowed = "moveCopy"
             )
             ele.addEventListener('dragend', (evt) ->
@@ -643,9 +672,8 @@ class Folder extends DesktopEntry
         @show_pop = false
 
 
-    move_in: (c_path) ->
-        p = c_path.replace("file://", "")
-        DCore.run_command2("mv", p, @get_path())
+    move_in: (move_entry) ->
+        DCore.DEntry.move(@entry, move_entry)
 
 
 class Application extends DesktopEntry
@@ -655,19 +683,19 @@ class Application extends DesktopEntry
 
         tmp_list = []
         all_are_apps = true
-        all_selected_items = evt.dataTransfer.getData("text/deepin_id_list")
+        all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
         for f in files
-            w = Widget.look_up(f)
-            if w?
-                if w.constructor.name != "Application"
-                    all_are_apps = false
+            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
+            if e? then continue
+            if DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                all_are_apps = false
 
-                tmp_list.push(w.get_path())
+            tmp_list.push(f)
 
         if all_are_apps == true
             tmp_list.push(@get_path())
-            alert("we should merge files here")
+            DCore.Desktop.create_rich_dir(tmp_list)
         else
             DCore.DEntry.launch(@entry, tmp_list)
         return
@@ -679,4 +707,4 @@ class NormalFile extends DesktopEntry
 class DesktopApplet extends Item
 
 
-#TODO: desktop applet like "my computer" and "profile", etc
+#TODO: desktop applet like "computer" and "profile", etc
