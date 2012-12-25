@@ -122,6 +122,11 @@ void desktop_create_rich_dir(ArrayContainer fs)
     dentry_move(fs, dir);
 }
 
+JS_EXPORT_API
+char* desktop_get_desktop_path()
+{
+    return get_desktop_dir(FALSE);
+}
 
 static 
 GFile* _get_useable_file(const char* basename)
