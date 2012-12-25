@@ -34,7 +34,7 @@ create_item = (entry) ->
         when FILE_TYPE_DIR
             w = new Folder(entry)
         when FILE_TYPE_RICH_DIR
-            w = RichDir(entry)
+            w = new RichDir(entry)
         else
             echo "don't support type"
 

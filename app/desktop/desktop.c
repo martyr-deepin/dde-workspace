@@ -42,7 +42,7 @@ JSObjectRef desktop_get_desktop_entries()
 
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
-        if (file_name[0] == '.') continue;
+        if (file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR)) continue;
 
         char* path = g_build_filename(desktop_path, file_name, NULL);
         Entry* e = dentry_create_by_path(path);
@@ -115,20 +115,11 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 }
 
 JS_EXPORT_API
-void desktop_create_rich_dir(GAppInfo* a1, GAppInfo* a2)
+void desktop_create_rich_dir(ArrayContainer fs)
 {
     GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
     g_file_make_directory(dir, NULL, NULL);
-
-    ArrayContainer fs;
-    fs.num = 2;
-    GAppInfo** data = g_new(GAppInfo*, 2);
-    data[0] = a1;
-    data[1] = a2;
-    fs.data = data;
     dentry_move(fs, dir);
-
-    g_free(data);
 }
 
 
