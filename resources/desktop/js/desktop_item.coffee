@@ -91,21 +91,21 @@ class Item extends Widget
         DCore.DEntry.get_mtime(@entry)
 
 
-    do_mouseover : (evt) =>
+    do_mouseover : (evt) ->
         @show_hover_box()
 
 
-    do_mouseout : (evt) =>
+    do_mouseout : (evt) ->
         @hide_hover_box()
 
 
-    do_mousedown : (evt) =>
+    do_mousedown : (evt) ->
         evt.stopPropagation()
         if evt.button == 0 then update_selected_stats(this, evt)
         false
 
 
-    do_click : (evt) =>
+    do_click : (evt) ->
         evt.stopPropagation()
         if @clicked == false
             @clicked = true
@@ -253,7 +253,7 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
-            on_rename(new_name)
+            @on_rename(new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -386,8 +386,9 @@ class Folder extends DesktopEntry
         files = all_selected_items.split("\n")
 
         for f in files
-            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
-            if e? then continue
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR
                 @move_in(e)
 
@@ -453,38 +454,39 @@ class RichDir extends DesktopEntry
         DCore.Desktop.get_rich_dir_icon(@entry)
 
 
-    do_click : (evt) =>
+    do_click : (evt) ->
         super
         if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
 
 
-    do_dblclick : (evt) =>
+    do_dblclick : (evt) ->
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_dragstart : (evt) =>
+    do_dragstart : (evt) ->
         if @show_pop == true
             @hide_pop_block()
         super
 
 
-    do_drop : (evt) =>
+    do_drop : (evt) ->
         super
 
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
-        for file in files
-            e = DCore.DEntry.create_by_path(decodeURI(file).substr(7))
-            if e? and file.length > 0 then @move_in(e)
+        for f in files
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if e? then @move_in(e)
 
         return
 
 
-    do_dragenter : (evt) =>
+    do_dragenter : (evt) ->
         evt.stopPropagation()
 
         if @selected == false
@@ -504,7 +506,7 @@ class RichDir extends DesktopEntry
         return
 
 
-    do_dragover : (evt) =>
+    do_dragover : (evt) ->
         evt.preventDefault()
         evt.stopPropagation()
 
@@ -686,15 +688,16 @@ class Application extends DesktopEntry
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
         for f in files
-            e = DCore.DEntry.create_by_path(decodeURI(f).substr(7))
-            if e? then continue
+            if f.length == 0 then continue
+            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+            if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_APP
                 all_are_apps = false
 
-            tmp_list.push(f)
+            tmp_list.push(e)
 
         if all_are_apps == true
-            tmp_list.push(@get_path())
+            tmp_list.push(@entry)
             DCore.Desktop.create_rich_dir(tmp_list)
         else
             DCore.DEntry.launch(@entry, tmp_list)
