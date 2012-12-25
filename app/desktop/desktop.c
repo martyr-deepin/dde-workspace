@@ -115,20 +115,11 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 }
 
 JS_EXPORT_API
-void desktop_create_rich_dir(GAppInfo* a1, GAppInfo* a2)
+void desktop_create_rich_dir(ArrayContainer fs)
 {
     GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
     g_file_make_directory(dir, NULL, NULL);
-
-    ArrayContainer fs;
-    fs.num = 2;
-    GAppInfo** data = g_new(GAppInfo*, 2);
-    data[0] = a1;
-    data[1] = a2;
-    fs.data = data;
     dentry_move(fs, dir);
-
-    g_free(data);
 }
 
 

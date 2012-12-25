@@ -51,7 +51,6 @@ search = ->
 s_box.addEventListener('input', s_box.blur())
 
 document.body.onkeydown = (e)->
-    echo e.which
     switch e.which
         when 39 #f
             selected_next()
