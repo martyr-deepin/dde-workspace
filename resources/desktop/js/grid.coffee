@@ -405,23 +405,27 @@ drag_update_selected_pos = (w, evt) ->
 #TODO: copy selected items to clipboard
 selected_copy_to_clipboard = ->
     tmp_list = []
-    tmp_list.push i for i in selected_item
-    #DCore.Desktop.copy_selected_to_clipboard(tmp_list)
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp_list.push(w.entry)
+    DCore.DEntry.copy(tmp_list)
     alert("copy #{tmp_list.length} file(s) to clipboard")
 
 
 #TODO: cut selected items to clipboard
 selected_cut_to_clipboard = ->
     tmp_list = []
-    tmp_list.push i for i in selected_item
-    #DCore.Desktop.cut_selected_to_clipboard(tmp_list)
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp_list.push(w.entry)
+    DCore.DEntry.cut(tmp_list)
     alert("cut #{tmp_list.length} file(s) to clipboard")
 
 
 #TODO: paste file from clipborad to folder
 paste_from_clipboard = ->
-    #DCore.Desktop.paste_from_clipboard()
-    alert("paste file(s) from clipboard")
+    e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
+    DCore.DEntry.paste(e)
 
 
 item_dragstart_handler = (widget, evt) ->
@@ -632,12 +636,15 @@ open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
 
-delete_selected_items = ->
+delete_selected_items = (real_delete) ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push(w.entry)
-    DCore.DEntry.delete(tmp)
+    if real_delete
+        DCore.DEntry.delete(tmp)
+    else
+        DCore.DEntry.trash(tmp)
 
 
 show_selected_items_Properties = ->

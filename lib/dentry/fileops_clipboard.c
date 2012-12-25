@@ -9,7 +9,7 @@
  */
 
 static GtkClipboard*		fileops_clipboard ;
-static FileOpsClipboardInfo*	clipboard_info;	
+static FileOpsClipboardInfo	clipboard_info;	//we're not using pointers here
 static GdkAtom		copied_files_atom;	
 
 static void _clipboard_owner_change_cb	(GtkClipboard*		clipboard,
@@ -25,13 +25,14 @@ static void _clear_clipboard_callback	(GtkClipboard *clipboard,
 static char*__convert_file_list_to_string (FileOpsClipboardInfo *info,
 			       		   gboolean format_for_text,
                                		   gsize *len);
+//NOTE: @info itself is not freed.Yep, some inconsistency here.
 static void __free_clipboard_info	(FileOpsClipboardInfo* info);
 
 gboolean
 is_clipboard_empty ()
 {
     //TODO: we may not own the clipboard now
-    if (clipboard_info -> num)
+    if (clipboard_info.num)
 	return FALSE;
     return TRUE;
 }
@@ -43,17 +44,17 @@ fileops_paste (GFile* dest_dir)
 {
     //TODO: we may not own the clipboard now
     //cut : move files
-    if (clipboard_info->cut)	
+    if (clipboard_info.cut)	
     {
-	fileops_move (clipboard_info->file_list, clipboard_info->num, dest_dir);
+	fileops_move (clipboard_info.file_list, clipboard_info.num, dest_dir);
 
 	gtk_clipboard_clear (fileops_clipboard);
-	__free_clipboard_info (clipboard_info);
+	__free_clipboard_info (&clipboard_info);
     }
     //copy: copy files
     else
     {
-	fileops_copy (clipboard_info->file_list, clipboard_info->num, dest_dir);
+	fileops_copy (clipboard_info.file_list, clipboard_info.num, dest_dir);
     }
 }
 /*
@@ -70,15 +71,16 @@ fileops_paste (GFile* dest_dir)
 void 
 init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
 {
+    g_debug ("init_fileops_clipboard:begin");
     //set clipboard_info
-    clipboard_info->file_list = g_malloc (num * sizeof (GFile*));
+    clipboard_info.file_list = (GFile**)g_malloc (num * sizeof (GFile*));
     int i;
     for (i = 0; i < num; i++)
     {
-	clipboard_info->file_list[i] = g_object_ref (file_list[i]);
+	clipboard_info.file_list[i] = g_object_ref (file_list[i]);
     }
-    clipboard_info->num = num;
-    clipboard_info->cut = cut;
+    clipboard_info.num = num;
+    clipboard_info.cut = cut;
 
     GtkTargetList*  target_list;
     GtkTargetEntry* targets;
@@ -104,6 +106,7 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
 				 _get_clipboard_callback, _clear_clipboard_callback,
 				 NULL);
     gtk_target_table_free (targets, n_targets);
+    g_debug ("init_fileops_clipboard:end");
 }
 
 
@@ -118,9 +121,11 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 			    GdkEventOwnerChange*	event,
 			    gpointer		        callback_data)
 {
+	g_debug ("_clipboard_owner_change_cb: begin");
 	//TODO: shall we clear up clipboard data?
-	gtk_clipboard_clear (fileops_clipboard);
-	__free_clipboard_info (clipboard_info);
+	//gtk_clipboard_clear (fileops_clipboard);
+//	__free_clipboard_info (&clipboard_info);
+	g_debug ("_clipboard_owner_change_cb: end");
 }
 
 static void 
@@ -129,7 +134,7 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
 			 guint			info,
 			 gpointer               user_data)
 {
-
+	g_debug ("_get_clipboard_callback: begin");
 	GdkAtom target;
 	target = gtk_selection_data_get_target (selection_data);
 
@@ -137,12 +142,12 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
         if (gtk_targets_include_uri (&target, 1)) 
 	{
 		char **uris;
-		uris = g_malloc ((clipboard_info->num + 1) * sizeof (char *));
+		uris = g_malloc ((clipboard_info.num + 1) * sizeof (char *));
 
 		int i = 0;
-		for (i = 0; i < clipboard_info->num; i++)
+		for (i = 0; i < clipboard_info.num; i++)
 	       	{
-			uris[i] = g_file_get_uri (clipboard_info->file_list[i]);
+			uris[i] = g_file_get_uri (clipboard_info.file_list[i]);
 			i++;
 		}
 		uris[i] = NULL;
@@ -155,7 +160,7 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
        	{
                 char *str;
                 gsize len;
-                str = __convert_file_list_to_string (clipboard_info, TRUE, &len);
+                str = __convert_file_list_to_string (&clipboard_info, TRUE, &len);
 
                 gtk_selection_data_set_text (selection_data, str, len);
                 g_free (str);
@@ -165,20 +170,23 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
 	{
                 char *str;
                 gsize len;
-                str = __convert_file_list_to_string (clipboard_info, FALSE, &len);
+                str = __convert_file_list_to_string (&clipboard_info, FALSE, &len);
 
                 gtk_selection_data_set (selection_data, copied_files_atom, 8, str, len);
                 g_free (str);
         }
+	g_debug ("_get_clipboard_callback: end");
 }
 static void 
 _clear_clipboard_callback (GtkClipboard *clipboard,
 			   gpointer      user_data)
 {
+	g_debug ("_clear_clipboard_callback: begin");
 	//gtk_clipboard_clear (clipboard);
 	//TODO: notify others, 
 	gtk_clipboard_clear (fileops_clipboard);
-	__free_clipboard_info (clipboard_info);
+	__free_clipboard_info (&clipboard_info);
+	g_debug ("_clear_clipboard_callback: end");
 }
 /*
  * 	@format_for_text : TRUE: (<parse_name> '\n')* <parse_name>
@@ -189,6 +197,7 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 			       gboolean format_for_text,
                                gsize *len)
 {
+	g_debug ("__convert_file_list_to_string: begin");
 	GString *uris;
 	if (format_for_text)
 		uris = g_string_new (NULL);
@@ -198,9 +207,9 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 	char *uri, *tmp;
 	GFile *f;
         guint i;
-        for (i = 0; i < clipboard_info->num; i++) 
+        for (i = 0; i < info->num; i++) 
 	{
-		uri = g_file_get_uri (clipboard_info->file_list[i]);
+		uri = g_file_get_uri (info->file_list[i]);
 
 		if (format_for_text)
 	       	{
@@ -218,7 +227,7 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 				g_string_append (uris, uri);
 			}
 			/* skip newline for last element */
-			if (i + 1 < clipboard_info->num)
+			if (i + 1 < info->num)
 		       	{
 				g_string_append_c (uris, '\n');
 			}
@@ -233,6 +242,8 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 	}
 
         *len = uris->len;
+	
+	g_debug ("__convert_file_list_to_string: begin");
 	return g_string_free (uris, FALSE);
 }
 static void 

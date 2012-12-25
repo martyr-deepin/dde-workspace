@@ -366,7 +366,7 @@ class DesktopEntry extends Item
             when 3 then selected_cut_to_clipboard()
             when 4 then selected_copy_to_clipboard()
             when 6 then @item_rename()
-            when 9 then delete_selected_items()
+            when 9 then delete_selected_items(evt.shiftKey == true)
             when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
@@ -432,7 +432,7 @@ class Folder extends DesktopEntry
 
 
     move_in: (move_entry) ->
-        DCore.DEntry.move(@entry, move_entry)
+        DCore.DEntry.move(move_entry, @entry)
 
 
 class RichDir extends DesktopEntry
@@ -481,7 +481,8 @@ class RichDir extends DesktopEntry
         for f in files
             if f.length == 0 then continue
             e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
-            if e? then @move_in(e)
+            if not e? then continue
+            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then @move_in(e)
 
         return
 
@@ -675,11 +676,10 @@ class RichDir extends DesktopEntry
 
 
     move_in: (move_entry) ->
-        DCore.DEntry.move(@entry, move_entry)
+        DCore.DEntry.move(move_entry, @entry)
 
 
 class Application extends DesktopEntry
-#TODO: if drag target.constructor.name = "Application" then DCore.Desktop.merge_files(itself, target)
     do_drop : (evt) ->
         super
 
