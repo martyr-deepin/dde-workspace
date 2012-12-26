@@ -1,4 +1,6 @@
 @import url(menu.css);
+@import url(user.css);
+
 body{
 	overflow:hidden;
 	width:100%;
