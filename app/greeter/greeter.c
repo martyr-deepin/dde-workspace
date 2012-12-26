@@ -127,10 +127,35 @@ gboolean greeter_start_session(LightDMGreeter *greeter, const gchar *session)
 }
 
 /* SESSION */
-
-GList* greeter_get_sessions()
+/* return list of session name */
+JS_EXPORT_API
+ArrayContainer greeter_get_sessions()
 {
-    return lightdm_get_sessions();
+    GList *sessions = NULL;
+    const gchar *name = NULL;
+    LightDMSession *session = NULL;
+    GPtrArray *names = g_ptr_array_new();
+
+    sessions = lightdm_get_sessions();
+    g_assert(sessions);
+
+    for(int i=0; i < g_list_length(sessions); i++){
+        session = (LightDMSession *)g_list_nth_data(sessions, i);
+        g_assert(session);
+
+        name = lightdm_session_get_name(session);
+        g_ptr_array_add(names, (gpointer)g_strdup(name));
+
+    }
+    g_object_unref(session);
+    g_list_free(sessions);
+
+    ArrayContainer ac;
+    ac.num = names->len;
+    ac.data = names->pdata;
+    g_ptr_array_free(names, FALSE);
+
+    return ac;
 }
 
 const gchar* greeter_get_session_key(LightDMSession *session)
@@ -186,46 +211,54 @@ gint greeter_get_user_count(LightDMUserList *user_list)
 }
 
 /* POWER */
-
+JS_EXPORT_API
 gboolean greeter_get_can_suspend()
 {
     return lightdm_get_can_suspend();
 }
 
+JS_EXPORT_API
 gboolean greeter_get_can_hibernate()
 {
     return lightdm_get_can_hibernate();
 }
 
+JS_EXPORT_API
 gboolean greeter_get_can_restart()
 {
     return lightdm_get_can_restart();
 }
 
+JS_EXPORT_API
 gboolean greeter_get_can_shutdown()
 {
     return lightdm_get_can_shutdown();
 }
 
+JS_EXPORT_API
 gboolean greeter_suspend()
 {
     return lightdm_suspend(NULL);
 }
 
+JS_EXPORT_API
 gboolean greeter_hibernate()
 {
     return lightdm_hibernate(NULL);
 }
 
+JS_EXPORT_API
 gboolean greeter_restart()
 {
     return lightdm_restart(NULL);
 }
 
+JS_EXPORT_API
 gboolean greeter_shutdown()
 {
     return lightdm_shutdown(NULL);
 }
+
 
 int main(int argc, char **argv)
 {
