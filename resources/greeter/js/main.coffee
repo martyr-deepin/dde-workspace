@@ -101,6 +101,7 @@ class Ver extends Widget
 
 ver_container = new Ver("deepin")
 
+
 class DEText extends Widget
         constructor: (@id)->
                 super
@@ -108,30 +109,22 @@ class DEText extends Widget
                 @element.innerText = """
                         Choose Desktop Environment
                 """
+
 detext_container = new DEText("detext")
 
-class MenuContainer extends Widget
-        constructor: (@id, @items) ->
-                super
-                document.body.appendChild(@element)
-                @control_div = create_element("div", "MenuControl", @element)
-                @switch_div = create_element("div", "MenuSwitch", @control_div)
-                @menu_div = create_element("div", "Menu", @control_div)
 
-                @create_menu_items()
+de_menu_cb = (id, title)->
+    alert("clicked #{id} #{title}")
 
-        create_menu_items: () ->
-                @menu_ul = create_element("ul", " ", @menu_div)
-                for key, value of @items
-                        menu_li = create_element("li", " ", @menu_ul)
-                        menu_li.innerText = key
-                        menu_li.addEventListener("click", @on_menu_click)
+power_menu_cb = de_menu_cb
 
-        on_menu_click: (event) =>
-                key = event.srcElement.innerText                
-                @items[key]()
+de_menu = new ComboBox("desktop", de_menu_cb)
+de_menu.insert(1, "deepin", "images/deepin.png")
+de_menu.insert(2, "gnome", "images/gnome.png")
 
-de_container = new MenuContainer("desktop",  get_de_info())
+power_menu = new ComboBox("power", power_menu_cb)
+power_menu.insert(1, "power", "images/control-power.png")
 
-power_container = new MenuContainer("power", get_power_info())
-                        
+
+$("#bottom_buttons").appendChild(de_menu.element)
+$("#bottom_buttons").appendChild(power_menu.element)

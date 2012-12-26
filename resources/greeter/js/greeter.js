@@ -1,9 +1,8 @@
 (function() {
-  var $, $s, DEText, MenuContainer, Module, Time, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, de_container, detext_container, echo, find_drag_target, format_two_bit, get_date_str, get_de_info, get_page_xy, get_power_info, get_time_str, hibernate, power_container, restart, run_post, shutdown, suspend, swap_element, time_container, ver_container, _, _events,
+  var $, $s, ComboBox, DEText, Menu, Module, Time, Ver, Widget, apply_animation, apply_rotate, assert, build_menu, create_element, create_img, de_menu, de_menu_cb, detext_container, echo, find_drag_target, format_two_bit, get_date_str, get_de_info, get_page_xy, get_power_info, get_time_str, hibernate, power_menu, power_menu_cb, restart, run_post, shutdown, suspend, swap_element, time_container, ver_container, _, _events, _global_menu_container,
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __hasProp = Object.prototype.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
-    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   Storage.prototype.setObject = function(key, value) {
     return this.setItem(key, JSON.stringify(value));
@@ -230,6 +229,86 @@
     }
   };
 
+  _global_menu_container = create_element("div", "", document.body);
+
+  _global_menu_container.id = "global_menu_container";
+
+  _global_menu_container.addEventListener("click", function(e) {
+    _global_menu_container.style.display = "none";
+    return _global_menu_container.removeChild(_global_menu_container.children[0]);
+  });
+
+  Menu = (function(_super) {
+
+    __extends(Menu, _super);
+
+    function Menu(id) {
+      this.id = id;
+      Menu.__super__.constructor.apply(this, arguments);
+      this.items = [];
+    }
+
+    Menu.prototype.insert = function(id, title, img) {
+      var item, _id, _title,
+        _this = this;
+      this.id = id;
+      this.title = title;
+      this.img = img;
+      _id = this.id;
+      _title = this.title;
+      item = create_element("div", "menuitem", this.element);
+      item.addEventListener("click", function(e) {
+        return _this.cb(_id, _title);
+      });
+      create_img("menuimg", this.img, item);
+      title = create_element("div", "menutitle", item);
+      title.innerText = this.title;
+      return this.items[this.id] = item;
+    };
+
+    Menu.prototype.set_callback = function(cb) {
+      return this.cb = cb;
+    };
+
+    Menu.prototype.show = function(e) {
+      _global_menu_container.appendChild(this.element);
+      _global_menu_container.style.display = "block";
+      this.element.style.left = e.screenX;
+      return this.element.style.top = e.screenY;
+    };
+
+    return Menu;
+
+  })(Widget);
+
+  ComboBox = (function(_super) {
+
+    __extends(ComboBox, _super);
+
+    function ComboBox(id, on_click_cb) {
+      this.id = id;
+      this.on_click_cb = on_click_cb;
+      ComboBox.__super__.constructor.apply(this, arguments);
+      this.show_item = create_element("div", "ShowItem", this.element);
+      this.current_img = create_img("", "", this.show_item);
+      this["switch"] = create_element("div", "Switcher", this.element);
+      this.menu = new Menu(this.id + "_menu");
+      this.menu.set_callback(this.on_click_cb);
+    }
+
+    ComboBox.prototype.insert = function(id, title, img) {
+      this.current_img.src = img;
+      return this.menu.insert(id, title, img);
+    };
+
+    ComboBox.prototype.do_click = function(e) {
+      if (e.target === this["switch"]) return this.menu.show(e);
+    };
+
+    return ComboBox;
+
+  })(Widget);
+
   format_two_bit = function(s) {
     if (s < 10) {
       return "0" + s;
@@ -355,48 +434,24 @@
 
   detext_container = new DEText("detext");
 
-  MenuContainer = (function(_super) {
+  de_menu_cb = function(id, title) {
+    return alert("clicked " + id + " " + title);
+  };
 
-    __extends(MenuContainer, _super);
+  power_menu_cb = de_menu_cb;
 
-    function MenuContainer(id, items) {
-      this.id = id;
-      this.items = items;
-      this.on_menu_click = __bind(this.on_menu_click, this);
-      MenuContainer.__super__.constructor.apply(this, arguments);
-      document.body.appendChild(this.element);
-      this.control_div = create_element("div", "MenuControl", this.element);
-      this.switch_div = create_element("div", "MenuSwitch", this.control_div);
-      this.menu_div = create_element("div", "Menu", this.control_div);
-      this.create_menu_items();
-    }
+  de_menu = new ComboBox("desktop", de_menu_cb);
 
-    MenuContainer.prototype.create_menu_items = function() {
-      var key, menu_li, value, _ref, _results;
-      this.menu_ul = create_element("ul", " ", this.menu_div);
-      _ref = this.items;
-      _results = [];
-      for (key in _ref) {
-        value = _ref[key];
-        menu_li = create_element("li", " ", this.menu_ul);
-        menu_li.innerText = key;
-        _results.push(menu_li.addEventListener("click", this.on_menu_click));
-      }
-      return _results;
-    };
+  de_menu.insert(1, "deepin", "images/deepin.png");
 
-    MenuContainer.prototype.on_menu_click = function(event) {
-      var key;
-      key = event.srcElement.innerText;
-      return this.items[key]();
-    };
+  de_menu.insert(2, "gnome", "images/gnome.png");
 
-    return MenuContainer;
+  power_menu = new ComboBox("power", power_menu_cb);
 
-  })(Widget);
+  power_menu.insert(1, "power", "images/control-power.png");
 
-  de_container = new MenuContainer("desktop", get_de_info());
+  $("#bottom_buttons").appendChild(de_menu.element);
 
-  power_container = new MenuContainer("power", get_power_info());
+  $("#bottom_buttons").appendChild(power_menu.element);
 
 }).call(this);

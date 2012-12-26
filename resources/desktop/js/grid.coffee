@@ -63,7 +63,11 @@ drag_start = {x : 0, y: 0}
 sel = null
 
 # DBus handler for invoke nautilus filemanager
-s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
+try
+    s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
+catch e
+    echo "error when init nautilus DBus interface(#{e})"
+    s_nautilus = null
 
 gm = build_menu([
     [_("arrange icons"), [
@@ -619,10 +623,15 @@ delete_selected_items = ->
 
 show_selected_items_Properties = ->
     tmp = []
+<<<<<<< HEAD
+    tmp.push("file://#{i}") for i in selected_item
+    s_nautilus?.ShowItemProperties_sync(tmp, '')
+=======
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
     s_nautilus.ShowItemProperties_sync(tmp, '')
+>>>>>>> e4cf40684caf716d0dac6e85834e94e4cac9ae00
 
 
 gird_left_mousedown = (evt) ->
