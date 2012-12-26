@@ -50,27 +50,41 @@ class Params:
         return ""
 
 class Array(Params):
-    temp = """
-    %(type)s* p_%(pos)d_a = NULL;
-    int p_%(pos)d_n = 0;
-
+    temp_in = """
+    ArrayContainer p_%(pos)d;
     if (jsvalue_instanceof(context, arguments[%(pos)d], "Array")) {
 
         JSPropertyNameArrayRef prop_names = JSObjectCopyPropertyNames(context, (JSObjectRef)arguments[%(pos)d]);
-        p_%(pos)d_n = JSPropertyNameArrayGetCount(prop_names) - 1;
+        p_%(pos)d.num = JSPropertyNameArrayGetCount(prop_names) - 1;
         JSPropertyNameArrayRelease(prop_names);
 
-        p_%(pos)d_a = g_new0(%(type)s, p_%(pos)d_n);
+        %(element_type)s* _array = g_new0(%(element_type)s, p_%(pos)d.num);
 
-        for (int i=0; i<p_%(pos)d_n; i++) {
+        for (int i=0; i<p_%(pos)d.num; i++) {
             JSValueRef value = JSObjectGetPropertyAtIndex(context, (JSObjectRef)arguments[%(pos)d], i, NULL);
-            p_%(pos)d_a[i] = %(element_alloc)s;
+            _array[i] = %(element_alloc)s;
         }
-
+        p_%(pos)d.data = (void*)_array;
     }
+"""
+    temp_out = """
+        JSValueRef *args = g_new(JSValueRef, ac.num);
+        %(element_type)s* c_array = ac.data;
+        for (size_t i=0; i<ac.num; i++) {
+            %(element_type)s value = c_array[i];
+            args[i] = %(fetch_js_value)s;
+        }
+        g_free(ac.data);
+        r = JSObjectMakeArray(context, ac.num, args, NULL);
+        g_free(args);
 """
     def is_array(self):
         return True
+    def type(self):
+        return "ArrayContainer"
+    def fetch_c_return(self):
+        return "ArrayContainer ac = "
+
 
 class Property:
     def __init__(self, *args):
@@ -94,7 +108,7 @@ class Object(Params):
     def fetch_c_return(self):
         return "void* c_return = "
     def convert_return_value(self):
-        return "r = create_nobject(context, ret, %s, %s);" % (self.ref, self.unref)
+        return "r = create_nobject_and_own(context, c_return, %s, %s);" % (self.ref, self.unref)
 
     def in_before(self):
         return """
@@ -104,7 +118,6 @@ class Object(Params):
         js_fill_exception(context, exception, "the p_%(pos)d is not an DeepinNativeObject");
     }
 """ % { "pos": self.position }
-
 
 class Number(Params):
     def in_before(self):
@@ -134,37 +147,49 @@ class Boolean(Params):
         return "r = JSValueMakeBoolean(context, c_return);";
 
 class ABoolean(Array):
-    def type(self):
-        return "gboolean*, int"
     def in_before(self):
-        return Array.temp % {'type': 'gboolean', 'pos': self.position, 'element_alloc': "JSValueToBoolean(context, value)"}
+        return Array.temp_in % {'element_type': 'gboolean', 'pos': self.position, 'element_alloc': "JSValueToBoolean(context, value)"}
     def in_after(self):
-        return "g_free(p_%(pos)d_a);" % {'pos': self.position}
+        return """
+    g_free(p_%(pos)d.data);
+""" % {'pos': self.position}
 
 class ANumber(Array):
-    def type(self):
-        return "double*, int"
     def in_before(self):
-        return Array.temp % {'type': 'double', 'pos': self.position, 'element_alloc': "JSValueToNumber(context, value, NULL)"}
+        return Array.temp_in % {'element_type': 'double', 'pos': self.position, 'element_alloc': "JSValueToNumber(context, value, NULL)"}
     def in_after(self):
-        return "g_free(p_%(pos)d_a);" % {'pos': self.position}
+        return """
+    g_free(p_%(pos)d.data);
+""" % {'pos': self.position}
 
 
 class AString(Array):
-    def type(self):
-        return "char **, int"
-
     def in_before(self):
-        return Array.temp % {'type': 'char*', 'pos': self.position, 'element_alloc': "jsvalue_to_cstr(context, value)"}
+        return Array.temp_in % {'element_type': 'char*', 'pos': self.position, 'element_alloc': "jsvalue_to_cstr(context, value)"}
 
     def in_after(self):
         temp_clear = """
-    for (int i=0; i<p_%(pos)d_n; i++) {
-        g_free(p_%(pos)d_a[i]);
+    char** to_free_%(pos)d = p_%(pos)d.data;
+    for (int i=0; i<p_%(pos)d.num; i++) {
+        g_free(to_free_%(pos)d[i]);
     }
-    g_free(p_%(pos)d_a);
+    g_free(p_%(pos)d.data);
 """
         return temp_clear % {'pos': self.position}
+
+    def convert_return_value(self):
+        return Array.temp_out % {'fetch_js_value': "jsvalue_from_cstr(context, value)", 'element_type': "char*"}
+
+class AObject(Array):
+    def __init__(self, name=None, desc=None, ref=None, unref=None):
+        Array.__init__(self, name, desc)
+        self.ref = ref or "g_object_ref"
+        self.unref = unref or "g_object_unref"
+    def in_before(self):
+        return Array.temp_in % {'element_type': 'void*', 'pos': self.position, 'element_alloc': "jsvalue_to_nobject(context, value)"}
+    def convert_return_value(self):
+        return Array.temp_out % {
+                'fetch_js_value': "create_nobject_and_own(context, value, %s, %s)" % (self.ref, self.unref), "element_type": "JSObjectRef" }
 
 class String(Params):
     def type(self):
@@ -256,7 +281,10 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         %(func_call)s
     }
     %(params_clear)s
-    return r;
+    if (_has_fatal_error)
+        return NULL;
+    else
+        return r;
 }
 """
 
@@ -305,10 +333,7 @@ static JSValueRef __%(name)s__ (JSContextRef context,
     def func_call(self):
         params_str = []
         for p in self.params:
-            if p.is_array():
-                params_str.append("p_%d_a, p_%d_n" % (p.position, p.position))
-            else:
-                params_str.append("p_%d" % p.position)
+            params_str.append("p_%d" % p.position)
         params_str.append("data");
         return Function.temp_return % {
                 "module_name": self.module_name,
@@ -507,7 +532,6 @@ JSGlobalContextRef get_global_context()
 }
 gboolean invoke_js_garbage()
 {
-    g_debug("invoke js garbage collecte\\n");
     JSGarbageCollect(global_ctx);
     return TRUE;
 }
@@ -542,7 +566,7 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
 def gen_module_c():
     for root, dirs, files in os.walk(CFG_FILES):
         for f in files:
-            if f.endswith('.cfg'):
+            if f.endswith('.cfg') and f[0] != '.':
                 path = os.path.join(root, f)
                 path2 = os.path.join(OUTPUT_DIR,  "gen_" + f.rstrip(".cfg") + ".c")
                 f = open(path)

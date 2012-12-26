@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<SCRIPT src="js/jquery.js" type="text/javascript"></SCRIPT>
+<SCRIPT type="text/javascript">
+  //关键字通用函数
+  function keyword(classname,str){
+          var keywordtext=str;
+           var classname="."+classname;
+          $(classname).val(keywordtext);
+          $(classname).focus(function(){
+               if($(classname).val()==keywordtext){
+                         $(classname).val(''); 
+               }        
+          })
+        $(classname).blur(function(){
+              if($(classname).val()==''){
+                    $(classname).val(keywordtext); 
+               }      
+          })
+    }   
+</SCRIPT>
+</head>
+
+<body>
+<input type="text"  name="" value="" class="user"/>
+<script>keyword("user","123123");</script>
+</body>
+</html>

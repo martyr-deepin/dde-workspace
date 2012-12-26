@@ -29,9 +29,9 @@ calc_app_item_size = ->
 
     DCore.Dock.require_region(0, 0, screen.width, 30)
     offset = get_page_xy(last, 0, 0).x + last.clientWidth
-    echo "calc_app_item_size #{w}"
     DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
-    DCore.Dock.change_workarea_height(w * (60.0-8) / 68 + 8)
+    height = w * (60-8) / 68 + 8
+    DCore.Dock.change_workarea_height(height)
 
 active_group = null
 
@@ -65,7 +65,7 @@ class AppList extends Widget
         indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
         if file.length > 9  # strlen("x.desktop") == 9
-            DCore.Dock.request_dock(file.trim())
+            DCore.Dock.request_dock(decodeURI(file.trim()))
 
     show_try_dock_app: (e) ->
         path = e.dataTransfer.getData("text/uri-list").trim()
@@ -172,11 +172,11 @@ class Launcher extends AppItem
         
 
     do_click: (e)->
-        DCore.Launchable.launch(@core)
+        DCore.DEntry.launch(@core, [])
 
     do_itemselected: (e)->
         switch e.id
-            when 1 then DCore.Launchable.launch(@core)
+            when 1 then DCore.DEntry.launch(@core, [])
             when 2 then DCore.Dock.request_undock(@id)
     do_buildmenu: (e)->
         [
@@ -409,6 +409,7 @@ app_list.element.appendChild(show_launcher.element)
 
 
 DCore.signal_connect("active_window_changed", (info)->
+    active_group?.to_normal_status()
     active_group = Widget.look_up("le_"+info.clss)
     active_group?.to_active_status(info.id)
 )

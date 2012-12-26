@@ -46,9 +46,10 @@ cleanup_filename = (str) ->
 
 
 class Item extends Widget
-    constructor: (@name, @icon, @exec, @path) ->
+    constructor: (@entry) ->
+        @id = DCore.DEntry.get_id(@entry)
+
         @selected = false
-        @id = @path
         @in_rename = false
 
         @clicked = false
@@ -63,14 +64,26 @@ class Item extends Widget
         el.draggable = true
 
         @item_icon = document.createElement("img")
-        @item_icon.src = @icon
+        @item_icon.src = DCore.DEntry.get_icon(@entry)
         @item_icon.draggable = false
         el.appendChild(@item_icon)
 
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(DCore.DEntry.get_name(@entry), MAX_ITEM_TITLE)
         el.appendChild(@item_name)
+
+
+    get_name : ->
+        DCore.DEntry.get_name(@entry)
+
+
+    get_path : ->
+        DCore.DEntry.get_path(@entry)
+
+
+    get_mtime : ->
+        DCore.DEntry.get_mtime(@entry)
 
 
     do_mouseover : (evt) =>
@@ -128,8 +141,8 @@ class Item extends Widget
         @item_icon.src = "#{icon}"
 
 
-    item_exec : () =>
-        DCore.run_command @exec
+    item_exec : =>
+        DCore.DEntry.launch(@entry, [])
 
 
     item_selected : ->
@@ -144,7 +157,7 @@ class Item extends Widget
 
 
     item_focus : ->
-        @item_name.innerText = @name
+        @item_name.innerText = DCore.DEntry.get_name(@entry)
 
 
     item_blur : ->
@@ -153,7 +166,7 @@ class Item extends Widget
             @delay_rename = -1
         if @in_rename then @item_complete_rename()
 
-        @item_name.innerText = shorten_text(@name, MAX_ITEM_TITLE)
+        @item_name.innerText = shorten_text(DCore.DEntry.get_name(@entry), MAX_ITEM_TITLE)
 
 
     show_selected_box : =>
@@ -207,6 +220,7 @@ class Item extends Widget
                 evt.preventDefault()
         return
 
+
     item_complete_rename : (modify = true) =>
         @element.draggable = true
         @item_name.contentEditable = "false"
@@ -217,8 +231,8 @@ class Item extends Widget
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
-        if modify == true and new_name.length > 0 and new_name != @name
-            DCore.Desktop.item_rename(@id, new_name)
+        if modify == true and new_name.length > 0 and new_name != @get_name()
+            DCore.DEntry.set_name(@entry, new_name)
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
@@ -229,7 +243,7 @@ class Item extends Widget
 
 
     destroy: ->
-        info = load_position(this.path)
+        info = load_position(@id)
         clear_occupy(info)
         super
 
@@ -390,9 +404,8 @@ class DesktopEntry extends Item
 #
 #
 #    move_in: (c_path) ->
-#        echo "move to #{c_path} from #{@path}"
 #        p = c_path.replace("file://", "")
-#        DCore.run_command2("mv", p, @path)
+#        DCore.run_command2("mv", p, @get_path())
 
 
 #class AppLauncher extends DesktopEntry
@@ -490,8 +503,12 @@ class Folder extends DesktopEntry
         if @selected == false then return
         if @div_pop != null then return
 
-        items = DCore.Desktop.get_items_by_dir(@path)
-        if items.length == 0 then return
+        @sub_items = {}
+        @sub_items_count = 0
+        for e in DCore.DEntry.list_files(@entry)
+            @sub_items[DCore.DEntry.get_id(e)] = e
+            ++@sub_items_count
+        if @sub_items_count == 0 then return
 
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
@@ -500,7 +517,7 @@ class Folder extends DesktopEntry
 
         @show_pop = true
 
-        @fill_pop_block(items)
+        @fill_pop_block()
 
 
     reflesh_pop_block : =>
@@ -511,27 +528,38 @@ class Folder extends DesktopEntry
             if i.id == "pop_downarrow" or i.id == "pop_uparrow"
                 i.parentElement.removeChild(i)
 
-        items = DCore.Desktop.get_items_by_dir(@element.id)
-        if items.length == 0
+        @sub_items = {}
+        @sub_items_count = 0
+        for e in DCore.DEntry.list_files(@entry)
+            @sub_items[DCore.DEntry.get_id(e)] = e
+            ++@sub_items_count
+        if @sub_items_count == 0
             @hide_pop_block()
         else
-            @fill_pop_block(items)
+            @fill_pop_block()
 
 
-    fill_pop_block : (items) =>
+    fill_pop_block : () =>
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("title", @id)
         @div_pop.appendChild(ele_ul)
 
-        for s in items
+        for i, e of @sub_items
             ele = document.createElement("li")
-            ele.setAttribute('id',  s.EntryPath)
+            ele.setAttribute('id', i)
             ele.draggable = true
-            ele.innerHTML = "<img src=\"#{s.Icon}\"><div>#{shorten_text(s.Name, MAX_ITEM_TITLE)}</div>"
+            s = document.createElement("img")
+            s.src = DCore.DEntry.get_icon(e)
+            ele.appendChild(s)
+            s = document.createElement("div")
+            s.innerText = shorten_text(DCore.DEntry.get_name(e), MAX_ITEM_TITLE)
+            ele.appendChild(s)
 
             ele.addEventListener('mousedown', (evt) ->
                 evt.stopPropagation()
-                false
+            )
+            ele.addEventListener('click', (evt) ->
+                evt.stopPropagation()
             )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
@@ -540,39 +568,33 @@ class Folder extends DesktopEntry
             )
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
-                #reflesh_desktop_new_items()
             )
-            if s.Exec?
-                ele.setAttribute("title", s.Exec)
-                ele.addEventListener('dblclick', (evt) ->
-                    DCore.run_command this.title
-                    Widget.look_up(this.parentElement.title)?.hide_pop_block()
-                )
-            else
-                ele.addEventListener('dblclick', (evt) ->
-                    DCore.run_command1("gvfs-open", this.id)
-                    Widget.look_up(this.parentElement.title)?.hide_pop_block()
-                )
+            ele.addEventListener('dblclick', (evt) ->
+                w = Widget.look_up(this.parentElement.title)
+                if w? then e = w.sub_items[this.id]
+                if e? then DCore.DEntry.launch(e, [])
+                if w? then w.hide_pop_block()
+            )
             ele_ul.appendChild(ele)
 
 
-        if items.length <= 3
-            col = items.length
-        else if items.length <= 6
+        if @sub_items_count <= 3
+            col = @sub_items_count
+        else if @sub_items_count <= 6
             col = 3
-        else if items.length <= 12
+        else if @sub_items_count <= 12
             col = 4
-        else if items.length <= 20
+        else if @sub_items_count <= 20
             col = 5
         else
             col = 6
-        if items.length > 24
+        if @sub_items_count > 24
             @div_pop.style.width = "#{col * i_width + 10}px" # 8px for scrollbar
         else
             @div_pop.style.width = "#{col * i_width + 2}px" # 2px for border
         arrow = document.createElement("div")
 
-        n = Math.ceil(items.length / col)
+        n = Math.ceil(@sub_items_count / col)
         if n > 4 then n = 4
         n = n * i_height + 20
         if s_height - @element.offsetTop > n
@@ -604,6 +626,7 @@ class Folder extends DesktopEntry
 
     hide_pop_block : =>
         if @div_pop?
+            @sub_items = {}
             @div_pop.parentElement?.removeChild(@div_pop)
             delete @div_pop
             @div_pop = null
@@ -611,9 +634,8 @@ class Folder extends DesktopEntry
 
 
     move_in: (c_path) ->
-        echo "move to #{c_path} from #{@path}"
         p = c_path.replace("file://", "")
-        DCore.run_command2("mv", p, @path)
+        DCore.run_command2("mv", p, @get_path())
 
 
 class Application extends DesktopEntry

@@ -25,6 +25,7 @@ void object_finlize(JSObjectRef object)
     g_assert(data != NULL);
     if (data->unref)
         data->unref(data->core);
+    data->core = NULL;
     g_free(data);
 }
 
@@ -60,18 +61,9 @@ JSClassRef obj_class()
 }
 
 
-
-static
-void* object_to_core(JSObjectRef object)
-{
-    struct _ObjectData* data = JSObjectGetPrivate(object);
-    if (data == NULL)
-        return NULL;
-    return data->core;
-}
-
 JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
 {
+    g_assert(obj != NULL);
     struct _ObjectData* data = g_new(struct _ObjectData, 1);
     data->id = (long)obj;
     data->core = obj;
@@ -81,12 +73,26 @@ JSObjectRef create_nobject(JSContextRef ctx, void* obj, NObjectRef ref, NObjectU
     return r;
 }
 
+JSObjectRef create_nobject_and_own(JSContextRef ctx, void* obj, NObjectRef ref, NObjectUnref unref)
+{
+    JSObjectRef r = create_nobject(ctx, obj, ref, unref);
+    if (unref) unref(obj);
+    return r;
+}
+
+static
+void* object_to_core(JSObjectRef object)
+{
+    struct _ObjectData* data = JSObjectGetPrivate(object);
+    g_assert(data != NULL);
+    return data->core;
+}
+
 void* jsvalue_to_nobject(JSContextRef ctx, JSValueRef value)
 {
     if (JSValueIsObjectOfClass(ctx, value, obj_class())) {
         JSObjectRef obj = JSValueToObject(ctx, value, NULL);
         void* core = object_to_core(obj);
-        g_assert(core != NULL);
         return core;
     } else {
         g_warning("This JSValueRef is not an DeepinObject!!");

@@ -71,17 +71,18 @@ catch e
 
 gm = build_menu([
     [_("arrange icons"), [
-            [31, _("by name")],
-            [32, _("by last modified time")]
+            [11, _("by name")],
+            [12, _("by last modified time")]
         ]
     ],
     [_("New"), [
-            [41, _("folder")],
-            [42, _("text file")]
+            [21, _("folder")],
+            [22, _("text file")]
         ]
     ],
     [3, _("open terminal here")],
     [4, _("paste")],
+    [],
     [5, _("Personal")],
     [6, _("Display Settings")]
 ])
@@ -120,7 +121,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (item) ->
-    pos = localStorage.getObject(item)
+    pos = localStorage.getObject("id:" + item)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -129,18 +130,19 @@ load_position = (item) ->
 
 
 save_position = (item, pos) ->
-    localStorage.setObject(item, pos)
-
-
-update_position = (old_path, new_path) ->
-    o_p = load_position(old_path)
-    localStorage.removeItem(old_path)
-    localStorage.setObject(new_path, o_p)
+    localStorage.setObject("id:" + item, pos)
     return
 
 
-discard_position = (path) ->
-    localStorage.removeItem(path)
+discard_position = (item) ->
+    localStorage.removeItem("id:" + item)
+    return
+
+
+update_position = (old_id, new_id) ->
+    o_p = load_position(old_id)
+    discard_position(old_id)
+    save_position(new_id, o_p)
     return
 
 
@@ -169,10 +171,20 @@ compare_pos_rect = (base1, base2, pos) ->
         false
 
 
+calc_pos_to_pos_distance = (base, pos) ->
+    Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
+
+
 init_occupy_table = ->
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
+
+
+clear_occupy_table = ->
+    for i in [0 ... cols]
+        for j in [0 ... rows]
+            o_table[i][j] = null
 
 
 clear_occupy = (info) ->
@@ -221,14 +233,13 @@ find_free_position = (w, h) ->
 
 
 move_to_anywhere = (widget) ->
-    info = load_position(widget.path)
+    info = load_position(widget.id)
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
 
-    #echo "#{widget.name} move to #{info.x},#{info.y}"
     return
 
 
@@ -236,7 +247,7 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        old_pos = load_position(widget.path)
+        old_pos = load_position(widget.id)
         if not old_pos?
             pos = find_free_position(1, 1)
             move_to_position(widget, pos)
@@ -245,11 +256,11 @@ move_to_somewhere = (widget, pos) ->
 
 
 move_to_position = (widget, info) ->
-    old_info = load_position(widget.path)
+    old_info = load_position(widget.id)
 
     if not info? then return
 
-    save_position(widget.path, info)
+    save_position(widget.id, info)
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
@@ -259,13 +270,21 @@ move_to_position = (widget, info) ->
     return
 
 
-sort_desktop_item_by_name = ->
-    item_ordered_list = all_item.concat()
-    item_ordered_list.sort()
+sort_list_by_name_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_name().localeCompare(w2.get_name())
 
-    for i in [0 ... cols]
-        for j in [0 .. rows]
-            o_table[i][j] = null
+
+menu_sort_desktop_item_by_name = ->
+    item_ordered_list = all_item.concat()
+    item_ordered_list.sort(sort_list_by_name_from_id)
+
+    clear_occupy_table()
 
     for i in item_ordered_list
         w = Widget.look_up(i)
@@ -275,7 +294,28 @@ sort_desktop_item_by_name = ->
     return
 
 
-#TODO: sort_desktop_item_by_last_modified_time
+sort_list_by_mtime_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_mtime() - w2.get_mtime()
+
+
+menu_sort_desktop_item_by_mtime = ->
+    item_ordered_list = all_item.concat()
+    item_ordered_list.sort(sort_list_by_mtime_from_id)
+
+    clear_occupy_table()
+
+    for i in item_ordered_list
+        w = Widget.look_up(i)
+        if w?
+            discard_position(w.id)
+            move_to_anywhere(w)
+    return
 
 
 init_grid_drop = ->
@@ -309,12 +349,6 @@ init_grid_drop = ->
     )
 
 
-sort_list_by_pos_top_left = (i1, i2) ->
-    pos_1 = load_position(i1)
-    pos_2 = load_position(i2)
-    return compare_pos_top_left(pos_1, pos_2)
-
-
 drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
     new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
@@ -323,9 +357,16 @@ drag_update_selected_pos = (w, evt) ->
 
     if coord_x_shift == 0 and coord_y_shift == 0 then return
 
-    ordered_list = selected_item.concat()
-    ordered_list.sort(sort_list_by_pos_top_left)
-    if coord_x_shift < 0 or coord_y_shift < 0 then ordered_list.reverse()
+    ordered_list = new Array()
+    distance_list = new Array()
+    for i in selected_item
+        pos = load_position(i)
+        dis = calc_pos_to_pos_distance(new_pos, pos)
+        for j in [0 ... distance_list.length]
+            if dis < distance_list[j]
+                break
+        ordered_list.splice(j, 0, i)
+        distance_list.splice(j, 0, dis)
 
     for i in ordered_list
         w = Widget.look_up(i)
@@ -435,13 +476,13 @@ update_selected_stats = (w, evt) ->
 
             if selected_item.length == 1
                 end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-                start_pos = load_position(Widget.look_up(selected_item[0]).path)
+                start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
                 ret = compare_pos_top_left(start_pos, end_pos)
                 if ret < 0
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                             set_item_selected(val, true)
                 else if ret == 0
@@ -449,7 +490,7 @@ update_selected_stats = (w, evt) ->
                 else
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                             set_item_selected(val, true)
 
@@ -554,10 +595,6 @@ update_selected_item_drag_image = ->
     #drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
 
-window.w = ->
-    for i in [0...100]
-        update_selected_item_drag_image()
-
 
 build_selected_items_menu = ->
     menu = []
@@ -586,8 +623,15 @@ delete_selected_items = ->
 
 show_selected_items_Properties = ->
     tmp = []
+<<<<<<< HEAD
     tmp.push("file://#{i}") for i in selected_item
     s_nautilus?.ShowItemProperties_sync(tmp, '')
+=======
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp.push("file://#{w.get_path()}")
+    s_nautilus.ShowItemProperties_sync(tmp, '')
+>>>>>>> e4cf40684caf716d0dac6e85834e94e4cac9ae00
 
 
 gird_left_mousedown = (evt) ->
@@ -602,7 +646,8 @@ grid_right_click = (evt) ->
 
 grid_do_itemselected = (evt) ->
     switch evt.id
-        when 31 then sort_desktop_item_by_name()
+        when 11 then menu_sort_desktop_item_by_name()
+        when 12 then menu_sort_desktop_item_by_mtime()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
@@ -691,7 +736,7 @@ class Mouse_Select_Area_box
             for i in all_item
                 w = Widget.look_up(i)
                 if not w? then continue
-                item_pos = load_position(w.path)
+                item_pos = load_position(w.id)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 

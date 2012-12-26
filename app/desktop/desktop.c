@@ -25,20 +25,71 @@
 #include "xdg_misc.h"
 #include "X_misc.h"
 #include "i18n.h"
+#include "dentry/entry.h"
 #include <cairo/cairo-xlib.h>
 
 void install_monitor();
 
 JS_EXPORT_API
-char* desktop_get_desktop_items()
+JSObjectRef desktop_get_desktop_entries()
 {
-    return get_desktop_entries();
+    JSObjectRef array = json_array_create();
+    char* desktop_path = get_desktop_dir(FALSE);
+    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+
+    const char* file_name = NULL;
+    for (int i=1; NULL != (file_name = g_dir_read_name(dir));) {
+        if (file_name[0] == '.') continue;
+
+        char* path = g_build_filename(desktop_path, file_name, NULL);
+        Entry* e = dentry_create_by_path(path);
+        g_free(path);
+        json_array_append_nobject(array, i++, e, g_object_ref, g_object_unref);
+        g_object_unref(e);
+    }
+    g_dir_close(dir);
+    g_free(desktop_path);
+    return array;
+}
+
+static 
+GFile* _get_useable_file(const char* basename)
+{
+    char* destkop_path = get_desktop_dir(FALSE);
+    GFile* dir = g_file_new_for_path(destkop_path);
+
+    char* name = g_strdup(basename);
+    GFile* child = g_file_get_child(dir, name);
+    for (int i=0; g_file_query_exists(child, NULL); i++) {
+        g_object_unref(child);
+        g_free(name);
+        name = g_strdup_printf("%s(%d)", basename, i);
+        child = g_file_get_child(dir, name);
+    }
+
+    g_object_unref(dir);
+    g_free(destkop_path);
+    return child;
 }
 
 JS_EXPORT_API
-char* desktop_get_items_by_dir(const char* path)
+GFile* desktop_new_file()
 {
-    return get_entries_by_func(path, no_dot_hidden_file);
+    GFile* file = _get_useable_file(_("NewFile"));
+    char* path = g_file_get_path(file);
+    g_file_set_contents(path, "", 0, NULL);
+    //TODO: detect create status..
+    g_free(path);
+    return file;
+}
+
+JS_EXPORT_API
+GFile* desktop_new_directory()
+{
+    GFile* dir = _get_useable_file(_("NewDirectory"));
+    g_file_make_directory(dir, NULL, NULL);
+    //TODO: detect create status..
+    return dir;
 }
 
 JS_EXPORT_API

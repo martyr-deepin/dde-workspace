@@ -41,26 +41,10 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
             {
-                char* old_path = g_file_get_path(file);
-                char* new_path = g_file_get_path(other);
-
-                char* info = get_entry_info(new_path);
-
-                char* e_old_path = json_escape(old_path);
-                char* e_new_path = json_escape(new_path);
-
-                g_free(old_path);
-                g_free(new_path);
-
-                char* tmp = g_strdup_printf("{\"old_id\":\"%s\", \"info\":%s}", e_old_path, e_new_path);
-
-                g_free(e_old_path);
-                g_free(e_new_path);
-
-                js_post_message_simply("item_rename", tmp);
-                g_free(tmp);
-
-                g_free(info);
+                JSObjectRef json = json_create();
+                json_append_nobject(json, "old", file, g_object_ref, g_object_unref);
+                json_append_nobject(json, "new", other, g_object_ref, g_object_unref);
+                js_post_message("item_rename", json);
                 break;
             }
         case G_FILE_MONITOR_EVENT_DELETED:
@@ -75,12 +59,9 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     begin_monitor_dir(desktop, G_CALLBACK(monitor_desktop_dir_cb));
                     g_free(desktop);
                 } else {
-                    char* e_path = json_escape(path);
-                    char* tmp = g_strdup_printf("{\"id\":\"%s\"}", e_path);
-                    g_free(e_path);
-                    js_post_message_simply("item_delete", tmp);
-                    printf("item_delete %s\n", tmp);
-                    g_free(tmp);
+                    JSObjectRef json = json_create();
+                    json_append_nobject(json, "entry", file, g_object_ref, g_object_unref);
+                    js_post_message("item_delete", json);
                 }
                 g_free(path);
                 break;
@@ -93,11 +74,9 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
                     desktop_monitor_dir(path);
                 }
 
-                char* info = get_entry_info(path);
-                if (info != NULL) {
-                    js_post_message_simply("item_update", info);
-                    g_free(info);
-                }
+                JSObjectRef json = json_create();
+                json_append_nobject(json, "entry", file, g_object_ref, g_object_unref);
+                js_post_message("item_update", json);
 
                 g_free(path);
                 break;
@@ -105,53 +84,45 @@ void monitor_desktop_dir_cb(GFileMonitor *m,
     }
 }
 
-void monitor_dir_cb(GFileMonitor *m, 
-        GFile *file, GFile *other, GFileMonitorEvent t, 
-        gpointer path)
+void monitor_dir_cb(GFileMonitor *m, GFile *file, GFile *other, GFileMonitorEvent t)
 {
     switch (t) {
         case G_FILE_MONITOR_EVENT_MOVED:
             {
+                // TODO:desktop's monitor can't receive this moved event, because event is consumptioned.
                 char* new_path = g_file_get_path(other);
                 if (g_strcmp0(new_path, get_desktop_dir(FALSE)) == 0) {
-                    char* info = get_entry_info(new_path);
-                    if (info != NULL) {
-                        js_post_message_simply("item_update", info);
-                        g_free(info);
-                    }
-                    break;
+                    JSObjectRef json = json_create();
+                    json_append_nobject(json, "entry", other, g_object_ref, g_object_unref);
+                    js_post_message("item_update", json);
                 }
                 g_free(new_path);
             }
         case G_FILE_MONITOR_EVENT_DELETED:
             {
-                char* _path = g_file_get_path(file);
-                if (g_strcmp0(_path, path) == 0) {
-                    g_free(path);
-                    desktop_cancel_monitor_dir(_path);
+                GFile* dir = g_file_get_parent(file);
+                if (!g_file_equal(dir, file)) {
+                    JSObjectRef json = json_create();
+                    json_append_nobject(json, "entry", dir, g_object_ref, g_object_unref);
+                    js_post_message("item_update", json);
                 } else {
-                    char* info = get_entry_info(path);
-                    if (info != NULL) {
-                        js_post_message_simply("item_update", info);
-                        g_free(info);
-                    }
+                    char* path = g_file_get_path(dir);
+                    desktop_cancel_monitor_dir(path);
+                    g_free(path);
                 }
-                g_free(_path);
+                g_object_unref(dir);
                 break;
             }
         case G_FILE_MONITOR_EVENT_CREATED:
         case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
             {
-                char* info = get_entry_info(path);
-                if (info != NULL) {
-                    js_post_message_simply("item_update", info);
-                    g_free(info);
-                }
+                // update the directory' content on desktop.
+                JSObjectRef json = json_create();
+                GFile* dir = g_file_get_parent(file);
+                json_append_nobject(json, "entry", dir, g_object_ref, g_object_unref);
+                g_object_unref(dir);
+                js_post_message("item_update", json);
                 break;
-
-                /*char* tmp = g_strdup_printf("{\"id\":\"%s\"}", (char*)path);*/
-                /*js_post_message_simply("dir_changed", tmp);*/
-                /*break;*/
             }
     }
 }
@@ -162,7 +133,7 @@ void begin_monitor_dir(const char* path, GCallback cb)
 {
     if (!g_hash_table_contains(monitor_table, path)) {
         GFile* dir = g_file_new_for_path(path);
-        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_NONE, NULL, NULL);
+        GFileMonitor* monitor = g_file_monitor_directory(dir, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
         /*g_file_monitor_set_rate_limit(monitor, 200);*/
         char* key = g_strdup(path);
         g_hash_table_insert(monitor_table, key, monitor);

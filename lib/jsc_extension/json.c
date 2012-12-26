@@ -58,6 +58,12 @@ void json_array_append(JSObjectRef json, gsize i, JSValueRef value)
     JSContextRef ctx = get_global_context();
     JSObjectSetPropertyAtIndex(ctx, json, i, value, NULL);
 }
+void json_array_append_nobject(JSObjectRef json, gsize i, void* value, NObjectRef ref, NObjectUnref unref)
+{
+    JSContextRef ctx = get_global_context();
+    JSObjectRef js_value = create_nobject(ctx, value, ref, unref);
+    json_array_append(json, i, js_value);
+}
 
 JSValueRef json_from_cstr(JSContextRef ctx, const char* json_str)
 {
