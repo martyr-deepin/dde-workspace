@@ -65,7 +65,7 @@ class Item extends Widget
         el.draggable = true
 
         @item_icon = document.createElement("img")
-        @item_icon.src = DCore.DEntry.get_icon(@entry)
+        @item_icon.src = @get_icon()
         @item_icon.draggable = false
         el.appendChild(@item_icon)
 
@@ -372,13 +372,6 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
-    constructor : ->
-        super
-
-       if not @exec?
-           @exec = "gvfs-open \"#{@id}\""
-
-
     do_drop : (evt) =>
         super
 
@@ -438,9 +431,6 @@ class Folder extends DesktopEntry
 class RichDir extends DesktopEntry
     constructor : ->
         super
-
-        if not @exec?
-            @exec = "gvfs-open \"#{@id}\""
 
         @div_pop = null
         @show_pop = false
