@@ -65,8 +65,7 @@ de_menu_cb = (id, title)->
     
 de_menu = new ComboBox("desktop", de_menu_cb)
 for session in get_de_info()
-    # de_menu.insert(session, session, "images/deepin.png")
-    de_menu.insert(session, session, " ")
+    de_menu.insert(session, session, "images/deepin.png")
     
 $("#bottom_buttons").appendChild(de_menu.element)
 

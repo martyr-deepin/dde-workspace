@@ -25,6 +25,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 
+#define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
 
 GtkWidget* container = NULL;
@@ -127,51 +128,151 @@ gboolean greeter_start_session(LightDMGreeter *greeter, const gchar *session)
 }
 
 /* SESSION */
-/* return list of session name */
-JS_EXPORT_API
-ArrayContainer greeter_get_sessions()
+
+/* get session icon from xsession desktop file */
+static gchar* get_icon_path(const gchar *key)
 {
-    GList *sessions = NULL;
-    const gchar *name = NULL;
+    gchar *icon_path = NULL, *file_path = NULL, *domain = NULL;
+    GKeyFile *key_file = NULL;
     LightDMSession *session = NULL;
-    GPtrArray *names = g_ptr_array_new();
+
+    file_path = g_strdup_printf("%s%s%s", XSESSIONS_DIR, key, ".desktop");
+
+    if(!(g_file_test(file_path, G_FILE_TEST_EXISTS))){
+        g_free(file_path);
+        return NULL;
+    }
+
+    key_file = g_key_file_new();
+
+    if(!(g_key_file_load_from_file(key_file, file_path, G_KEY_FILE_NONE, NULL))){
+        g_free(file_path);
+        g_key_file_free(key_file);
+        return NULL;
+    }
+
+    if (g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) ||
+        g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL)){
+        g_free(file_path);
+        g_key_file_free(key_file);
+        return NULL;
+    }
+
+#ifdef G_KEY_FILE_DESKTOP_KEY_GETTEXT_DOMAIN
+    domain = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_GETTEXT_DOMAIN, NULL);
+#else
+    domain = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GNOME-Gettext-Domain", NULL);
+#endif
+
+    icon_path = g_key_file_get_local_string(key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, domain, NULL);
+
+    g_free(file_path);
+    g_key_file_free(key_file);
+    g_free(domain);
+
+    return icon_path;
+}
+
+static LightDMSession *find_session_by_key(const gchar *key)
+{
+    LightDMSession *session = NULL;
+    GList *sessions = NULL;
 
     sessions = lightdm_get_sessions();
     g_assert(sessions);
 
-    for(int i=0; i < g_list_length(sessions); i++){
+    for(int i = 0; i < g_list_length(sessions); i++){
+        session = (LightDMSession *)g_list_nth_data(sessions, i);
+    
+        if((g_strcmp(g_strdup(key), g_strdup(lightdm_session_get_key(session)))) == 0){
+            g_list_free(sessions);
+            return session;
+        }else{
+            continue;
+        }
+    }
+    g_list_free(sessions);
+
+    g_object_unref(session);
+    return NULL;
+}
+
+/* return list of session key */
+JS_EXPORT_API
+ArrayContainer greeter_get_sessions()
+{
+    GList *sessions = NULL;
+    const gchar *key = NULL;
+    LightDMSession *session = NULL;
+    GPtrArray *keys = g_ptr_array_new();
+
+    sessions = lightdm_get_sessions();
+    g_assert(sessions);
+
+    for(int i = 0; i < g_list_length(sessions); i++){
         session = (LightDMSession *)g_list_nth_data(sessions, i);
         g_assert(session);
 
-        name = lightdm_session_get_name(session);
-        g_ptr_array_add(names, (gpointer)g_strdup(name));
-
+        key = lightdm_session_get_key(session);
+        g_ptr_array_add(keys, (gpointer)g_strdup(key));
     }
+
     g_object_unref(session);
     g_list_free(sessions);
 
     ArrayContainer ac;
-    ac.num = names->len;
-    ac.data = names->pdata;
-    g_ptr_array_free(names, FALSE);
+    ac.num = keys->len;
+    ac.data = keys->pdata;
+    g_ptr_array_free(keys, FALSE);
 
     return ac;
 }
 
-const gchar* greeter_get_session_key(LightDMSession *session)
+/* get session name according to session key */
+JS_EXPORT_API
+const gchar* greeter_get_session_name(const gchar *key)
 {
-    return lightdm_session_get_key(session);
+    const gchar *name = NULL;
+    LightDMSession *session = NULL;
+
+    session = find_session_by_key(key);
+    if(session == NULL){
+        name = g_strdup(key);
+    }else{
+        name = lightdm_session_get_comment(session);
+    }
+
+    g_object_unref(session);
+
+    return name;
 }
 
-const gchar* greeter_get_session_name(LightDMSession *session)
+/* get session comment according to session key */
+JS_EXPORT_API
+const gchar* greeter_get_session_comment(const gchar *key)
 {
-    return lightdm_session_get_name(session);
+    const gchar *comment = NULL;
+    LightDMSession *session = NULL;
+
+    session = find_session_by_key(key);
+    if(session == NULL){
+        comment = g_strdup(key);
+    }else{
+        comment = lightdm_session_get_comment(session);
+    }
+
+    g_object_unref(session);
+
+    return comment;
 }
 
-const gchar* greeter_get_session_comment(LightDMSession *session)
+/* get session icon according to session key */
+JS_EXPORT_API
+const gchar* greeter_get_session_icon(const gchar *key)
 {
-    return lightdm_session_get_comment(session);
+    return "icon";
 }
+
 
 /* USER  */
 
