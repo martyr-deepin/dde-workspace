@@ -54,8 +54,6 @@ last_widget = ""
 
 # store the buffer canvas
 drag_canvas = null
-# store the image element to set to the drag image
-drag_image = null
 # store the left top point of drag image start point
 drag_start = {x : 0, y: 0}
 
@@ -104,7 +102,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (item) ->
-    pos = localStorage.getObject(item)
+    pos = localStorage.getObject("id:" + item)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -113,18 +111,19 @@ load_position = (item) ->
 
 
 save_position = (item, pos) ->
-    localStorage.setObject(item, pos)
-
-
-update_position = (old_path, new_path) ->
-    o_p = load_position(old_path)
-    localStorage.removeItem(old_path)
-    localStorage.setObject(new_path, o_p)
+    localStorage.setObject("id:" + item, pos)
     return
 
 
 discard_position = (path) ->
-    localStorage.removeItem(path)
+    localStorage.removeItem("id:" + path)
+    return
+
+
+update_position = (old_path, new_path) ->
+    o_p = load_position(old_path)
+    discard_position(old_id)
+    save_position(new_id, o_p)
     return
 
 
@@ -153,10 +152,20 @@ compare_pos_rect = (base1, base2, pos) ->
         false
 
 
+calc_pos_to_pos_distance = (base, pos) ->
+    Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
+
+
 init_occupy_table = ->
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
+
+
+clear_occupy_table = ->
+    for i in [0 ... cols]
+        for j in [0 ... rows]
+            o_table[i][j] = null
 
 
 clear_occupy = (info) ->
@@ -170,7 +179,6 @@ set_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
-    #draw_grid()
 
 
 detect_occupy = (info) ->
@@ -185,7 +193,6 @@ detect_occupy = (info) ->
 pixel_to_coord = (x, y) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    #echo "#{index_x},#{index_y}"
     return [index_x, index_y]
 
 
@@ -205,14 +212,12 @@ find_free_position = (w, h) ->
 
 
 move_to_anywhere = (widget) ->
-    info = load_position(widget.path)
+    info = load_position(widget.id)
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
-
-    #echo "#{widget.name} move to #{info.x},#{info.y}"
     return
 
 
@@ -220,20 +225,19 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        old_pos = load_position(widget.path)
+        old_pos = load_position(widget.id)
         if not old_pos?
             pos = find_free_position(1, 1)
             move_to_position(widget, pos)
-
     return
 
 
 move_to_position = (widget, info) ->
-    old_info = load_position(widget.path)
+    old_info = load_position(widget.id)
 
     if not info? then return
 
-    save_position(widget.path, info)
+    save_position(widget.id, info)
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
@@ -243,9 +247,29 @@ move_to_position = (widget, info) ->
     return
 
 
-sort_desktop_item_by_name = ->
+sort_list_by_name_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_name().localeCompare(w2.get_name())
+
+
+sort_list_by_mtime_from_id = (id1, id2) ->
+    w1 = Widget.look_up(id1)
+    w2 = Widget.look_up(id2)
+    if not w1? or not w2?
+        echo("we get error here[sort_list_by_name_from_id]")
+        return w1.localeCompare(w2)
+    else
+        return w1.get_mtime() - w2.get_mtime()
+
+
+sort_desktop_item_by_func = (func) ->
     item_ordered_list = all_item.concat()
-    item_ordered_list.sort()
+    item_ordered_list.sort(func)
 
     for i in [0 ... cols]
         for j in [0 .. rows]
@@ -259,17 +283,44 @@ sort_desktop_item_by_name = ->
     return
 
 
-#TODO: sort_desktop_item_by_last_modified_time
+menu_sort_desktop_item_by_name = ->
+    sort_desktop_item_by_func(sort_list_by_name_from_id)
+    return
+
+
+menu_sort_desktop_item_by_mtime = ->
+    sort_desktop_item_by_func(sort_list_by_mtime_from_id)
+    return
+
+
+create_entry_to_new_item = (entry) ->
+    w = Widget.look_up(DCore.DEntry.get_id(entry))
+    if not w? then w = create_item(entry)
+
+    cancel_all_selected_stats()
+    move_to_anywhere(w)
+    all_item.push(w.id)
+    set_item_selected(w)
+    w.item_rename()
+
+
+menu_create_new_folder = ->
+    entry = DCore.Desktop.new_directory()
+    create_entry_to_new_item(entry)
+
+
+menu_create_new_file = ->
+    entry = DCore.Desktop.new_file()
+    create_entry_to_new_item(entry)
 
 
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
+        pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
         for file in evt.dataTransfer.files
-            pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-
-            path = DCore.Desktop.move_to_desktop(file.path)
+            path = DCore.Desktop.move_to_desktop(file)
             if path.length > 1
                 save_position(path, pos)
         return
@@ -293,12 +344,6 @@ init_grid_drop = ->
     )
 
 
-sort_list_by_pos_top_left = (i1, i2) ->
-    pos_1 = load_position(i1)
-    pos_2 = load_position(i2)
-    return compare_pos_top_left(pos_1, pos_2)
-
-
 drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
     new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
@@ -307,9 +352,16 @@ drag_update_selected_pos = (w, evt) ->
 
     if coord_x_shift == 0 and coord_y_shift == 0 then return
 
-    ordered_list = selected_item.concat()
-    ordered_list.sort(sort_list_by_pos_top_left)
-    if coord_x_shift < 0 or coord_y_shift < 0 then ordered_list.reverse()
+    ordered_list = new Array()
+    distance_list = new Array()
+    for i in selected_item
+        pos = load_position(i)
+        dis = calc_pos_to_pos_distance(new_pos, pos)
+        for j in [0 ... distance_list.length]
+            if dis < distance_list[j]
+                break
+    ordered_list.splice(j, 0, i)
+    distance_list.splice(j, 0, dis)
 
     for i in ordered_list
         w = Widget.look_up(i)
@@ -326,39 +378,40 @@ drag_update_selected_pos = (w, evt) ->
     return
 
 
-#TODO: copy selected items to clipboard
 selected_copy_to_clipboard = ->
     tmp_list = []
-    tmp_list.push i for i in selected_item
-    #DCore.Desktop.copy_selected_to_clipboard(tmp_list)
-    alert("copy #{tmp_list.length} file(s) to clipboard")
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp_list.push(w.entry)
+    DCore.DEntry.copy(tmp_list)
 
 
-#TODO: cut selected items to clipboard
 selected_cut_to_clipboard = ->
     tmp_list = []
-    tmp_list.push i for i in selected_item
-    #DCore.Desktop.cut_selected_to_clipboard(tmp_list)
-    alert("cut #{tmp_list.length} file(s) to clipboard")
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp_list.push(w.entry)
+    DCore.DEntry.cut(tmp_list)
 
 
-#TODO: paste file from clipborad to folder
 paste_from_clipboard = ->
-    #DCore.Desktop.paste_from_clipboard()
-    alert("paste file(s) from clipboard")
+    e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
+    DCore.DEntry.paste(e)
 
 
 item_dragstart_handler = (widget, evt) ->
     if selected_item.length > 0
-        all_selected_items = selected_item[0]
-        all_selected_items += "\n" + selected_item[i] for i in [1 ... selected_item.length] by 1
-        evt.dataTransfer.setData("text/deepin_id_list", all_selected_items)
-        evt.dataTransfer.effectAllowed = "moveCopy"
+        all_selected_items = ""
+        for i in [0 ... selected_item.length] by 1
+            w = Widget.look_up(selected_item[i])
+            if w? then all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
+        evt.dataTransfer.setData("text/uri-list", all_selected_items)
+        evt.dataTransfer.effectAllowed = "all"
 
     x = evt.x - drag_start.x * i_width
     y = evt.y - drag_start.y * i_height
-    echo "setDragImage #{drag_start.x},#{drag_start.y}"
-    evt.dataTransfer.setDragImage(drag_image, x, y)
+    evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
+    return
 
 
 set_item_selected = (w, top = false) ->
@@ -373,7 +426,6 @@ set_item_selected = (w, top = false) ->
             if last_widget then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
             w.item_focus()
-
     return
 
 
@@ -419,13 +471,13 @@ update_selected_stats = (w, evt) ->
 
             if selected_item.length == 1
                 end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-                start_pos = load_position(Widget.look_up(selected_item[0]).path)
+                start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
                 ret = compare_pos_top_left(start_pos, end_pos)
                 if ret < 0
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                             set_item_selected(val, true)
                 else if ret == 0
@@ -433,7 +485,7 @@ update_selected_stats = (w, evt) ->
                 else
                     for key in all_item
                         val = Widget.look_up(key)
-                        i_pos = load_position(val.path)
+                        i_pos = load_position(val.id)
                         if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                             set_item_selected(val, true)
 
@@ -518,7 +570,6 @@ update_selected_item_drag_image = ->
             else n = 10
             m = context.measureText(rest_text.substr(0, n)).width
             if m == 90
-                pass
             else if m > 90
                 --n
                 while n > 0 and context.measureText(rest_text.substr(0, n)).width > 90
@@ -534,13 +585,8 @@ update_selected_item_drag_image = ->
             context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
             ++line_number
 
-
-    #drag_image.src = drag_canvas.toDataURL()
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
-
-window.w = ->
-    for i in [0...100]
-        update_selected_item_drag_image()
+    return
 
 
 build_selected_items_menu = ->
@@ -562,24 +608,34 @@ open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
 
-delete_selected_items = ->
+delete_selected_items = (real_delete) ->
     tmp = []
-    tmp.push(i) for i in selected_item
-    DCore.Desktop.item_delete(tmp)
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp.push(w.entry)
+
+    if real_delete then DCore.DEntry.delete(tmp)
+    else DCore.DEntry.trash(tmp)
 
 
 show_selected_items_Properties = ->
     tmp = []
-    tmp.push("file://#{i}") for i in selected_item
+    for i in selected_item
+        w = Widget.look_up(i)
+        if w? then tmp.push("file://#{w.get_path()}")
+
+    #TODO: should tell user we fail to call
     s_nautilus?.ShowItemProperties_sync(tmp, '')
 
 
 gird_left_mousedown = (evt) ->
+    evt.stopPropagation()
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
 
 grid_right_click = (evt) ->
+    evt.stopPropagation()
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
@@ -607,15 +663,15 @@ grid_right_click = (evt) ->
 
 grid_do_itemselected = (evt) ->
     switch evt.id
-        when 31 then sort_desktop_item_by_name()
+        when 11 then menu_sort_desktop_item_by_name()
+        when 12 then menu_sort_desktop_item_by_mtime()
+        when 21 then menu_create_new_folder()
+        when 22 then menu_create_new_file()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function #{evt.id},#{evt.title}"
-
-
-#TODO: create new folder and text file
 
 
 create_item_grid = ->
@@ -627,13 +683,9 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
     div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
-    div_grid.parentElement.contextMenu = gm
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
-    drag_image = document.createElement("img")
-#FIXME: test propose only, should disable on public release
-    #document.body.appendChild(drag_image)
 
 
 class ItemGrid
@@ -696,7 +748,7 @@ class Mouse_Select_Area_box
             for i in all_item
                 w = Widget.look_up(i)
                 if not w? then continue
-                item_pos = load_position(w.path)
+                item_pos = load_position(w.id)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 
