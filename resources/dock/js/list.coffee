@@ -28,7 +28,10 @@ calc_app_item_size = ->
     last = apps[apps.length-1]
     if last
         DCore.Dock.require_region(0, 0, screen.width, 30)
-        offset = get_page_xy(last, 0, 0).x + last.clientWidth
+        p = get_page_xy(last, 0, 0)
+        offset = p.x + last.clientWidth
+        if offset == 0
+            echo "last.clientWidth: #{last.clientWidth} get_page_xy:#{p.x}, #{p.y}"
         DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
         height = w * (60-8) / 68 + 8
         DCore.Dock.change_workarea_height(height)
