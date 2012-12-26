@@ -20,6 +20,14 @@
 applications = {}
 category_infos = []
 
+try_set_title = (el, text, width)->
+    setTimeout(->
+        height = calc_text_size(text, width)
+        echo "#{text} #{height}"
+        if height > 36
+            el.setAttribute('title', text)
+    , 200)
+
 create_item = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'item')
@@ -29,7 +37,8 @@ create_item = (info) ->
     <div class=item_name> #{info.Name}</div>
     <div class=item_comment>#{info.Comment}</div>
     "
-    el.setAttribute('title', info.Name)
+
+    try_set_title(el, info.Name, 80)
 
     el.click_cb = (e) ->
         el.style.cursor = "wait"
@@ -47,9 +56,6 @@ grid_show_items = (items) ->
     grid.innerHTML = ""
     for i in items
         grid.appendChild(applications[i])
-    setTimeout(->
-            update_selected($(".item"))
-    , 200)
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -67,7 +73,6 @@ grid_load_category = (cat_id) ->
         grid.innerHTML = ""
         for own key, value of applications
             grid.appendChild(value)
-        update_selected($s(".item")[0])
         return
 
     if category_infos[cat_id]
@@ -77,3 +82,4 @@ grid_load_category = (cat_id) ->
         category_infos[cat_id] = info
 
     grid_show_items(info)
+    update_selected(null)

@@ -38,6 +38,7 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
+    echo DCore.DEntry.get_name(data.entry)
     id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-21 15:00+0800\n"
+"POT-Creation-Date: 2012-12-26 10:43+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,48 +33,65 @@ msgstr "上午"
 #: ../resources/desktop/js/grid.coffee:52
 #: ../resources/desktop/js/grid.coffee:65
 #: ../resources/desktop/js/grid.coffee:69
+#: ../resources/desktop/js/grid.coffee:71
+#: ../resources/desktop/js/grid.coffee:653
 msgid "arrange icons"
 msgstr "排列图标"
 
 #: ../resources/desktop/js/grid.coffee:53
 #: ../resources/desktop/js/grid.coffee:66
 #: ../resources/desktop/js/grid.coffee:70
+#: ../resources/desktop/js/grid.coffee:72
+#: ../resources/desktop/js/grid.coffee:654
 msgid "by name"
 msgstr "按名称"
 
 #: ../resources/desktop/js/grid.coffee:54
 #: ../resources/desktop/js/grid.coffee:67
 #: ../resources/desktop/js/grid.coffee:71
+#: ../resources/desktop/js/grid.coffee:73
+#: ../resources/desktop/js/grid.coffee:655
 msgid "by last modified time"
 msgstr "按修改时间"
 
 #: ../resources/desktop/js/grid.coffee:57
 #: ../resources/desktop/js/grid.coffee:70
 #: ../resources/desktop/js/grid.coffee:74
+#: ../resources/desktop/js/grid.coffee:76
+#: ../resources/desktop/js/grid.coffee:658
 msgid "New"
 msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:58
 #: ../resources/desktop/js/grid.coffee:71
 #: ../resources/desktop/js/grid.coffee:75
+#: ../resources/desktop/js/grid.coffee:77
+#: ../resources/desktop/js/grid.coffee:659
 msgid "folder"
 msgstr "文件夹"
 
 #: ../resources/desktop/js/grid.coffee:59
 #: ../resources/desktop/js/grid.coffee:72
 #: ../resources/desktop/js/grid.coffee:76
+#: ../resources/desktop/js/grid.coffee:78
+#: ../resources/desktop/js/grid.coffee:660
 msgid "text file"
 msgstr "文本文件"
 
 #: ../resources/desktop/js/grid.coffee:62
 #: ../resources/desktop/js/grid.coffee:75
 #: ../resources/desktop/js/grid.coffee:79
+#: ../resources/desktop/js/grid.coffee:81
+#: ../resources/desktop/js/grid.coffee:663
 msgid "open terminal here"
 msgstr "开启终端"
 
 #: ../resources/desktop/js/grid.coffee:63
 #: ../resources/desktop/js/grid.coffee:76
 #: ../resources/desktop/js/grid.coffee:80
+#: ../resources/desktop/js/grid.coffee:82
+#: ../resources/desktop/js/grid.coffee:664
+#: ../resources/desktop/js/grid.coffee:665
 msgid "paste"
 msgstr "粘贴"
 
@@ -92,6 +109,8 @@ msgstr "桌面设置"
 #: ../resources/desktop/js/desktop_item.coffee:329
 #: ../resources/desktop/js/grid.coffee:560
 #: ../resources/desktop/js/grid.coffee:597
+#: ../resources/desktop/js/grid.coffee:622
+#: ../resources/desktop/js/grid.coffee:604
 msgid "Open"
 msgstr "打开"
 
@@ -105,6 +124,8 @@ msgstr "使用其他程序打开"
 #: ../resources/desktop/js/desktop_item.coffee:337
 #: ../resources/desktop/js/grid.coffee:562
 #: ../resources/desktop/js/grid.coffee:599
+#: ../resources/desktop/js/grid.coffee:624
+#: ../resources/desktop/js/grid.coffee:606
 msgid "cut"
 msgstr "剪贴"
 
@@ -114,6 +135,8 @@ msgstr "剪贴"
 #: ../resources/desktop/js/desktop_item.coffee:338
 #: ../resources/desktop/js/grid.coffee:563
 #: ../resources/desktop/js/grid.coffee:600
+#: ../resources/desktop/js/grid.coffee:625
+#: ../resources/desktop/js/grid.coffee:607
 msgid "copy"
 msgstr "复制"
 
@@ -129,6 +152,10 @@ msgstr "创建链接"
 #: ../resources/desktop/js/grid.coffee:566
 #: ../resources/desktop/js/grid.coffee:602
 #: ../resources/desktop/js/grid.coffee:603
+#: ../resources/desktop/js/grid.coffee:627
+#: ../resources/desktop/js/grid.coffee:628
+#: ../resources/desktop/js/grid.coffee:609
+#: ../resources/desktop/js/grid.coffee:610
 msgid "Rename"
 msgstr "重命名"
 
@@ -161,6 +188,8 @@ msgstr "移动到"
 #: ../resources/desktop/js/desktop_item.coffee:354
 #: ../resources/desktop/js/grid.coffee:567
 #: ../resources/desktop/js/grid.coffee:604
+#: ../resources/desktop/js/grid.coffee:629
+#: ../resources/desktop/js/grid.coffee:611
 msgid "Delete"
 msgstr "删除"
 
@@ -170,6 +199,8 @@ msgstr "删除"
 #: ../resources/desktop/js/desktop_item.coffee:356
 #: ../resources/desktop/js/grid.coffee:569
 #: ../resources/desktop/js/grid.coffee:606
+#: ../resources/desktop/js/grid.coffee:631
+#: ../resources/desktop/js/grid.coffee:613
 msgid "Properties"
 msgstr "属性"
 
@@ -177,6 +208,8 @@ msgstr "属性"
 #: ../resources/desktop/js/grid.coffee:77
 #: ../resources/desktop/js/grid.coffee:81
 #: ../resources/desktop/js/grid.coffee:82
+#: ../resources/desktop/js/grid.coffee:84
+#: ../resources/desktop/js/grid.coffee:667
 msgid "Personal"
 msgstr "个性化"
 
@@ -184,40 +217,51 @@ msgstr "个性化"
 #: ../resources/desktop/js/grid.coffee:78
 #: ../resources/desktop/js/grid.coffee:82
 #: ../resources/desktop/js/grid.coffee:83
+#: ../resources/desktop/js/grid.coffee:85
+#: ../resources/desktop/js/grid.coffee:668
 msgid "Display Settings"
 msgstr "显示设置"
 
 #: ../resources/dock/js/list.coffee:119 ../resources/dock/js/list.coffee:179
-#: ../resources/dock/js/list.coffee:183
+#: ../resources/dock/js/list.coffee:183 ../resources/dock/js/list.coffee:185
 msgid "Run"
 msgstr "运行"
 
 #: ../resources/dock/js/list.coffee:176 ../resources/dock/js/list.coffee:185
 #: ../resources/dock/js/list.coffee:369 ../resources/dock/js/list.coffee:373
+#: ../resources/dock/js/list.coffee:375
 msgid "OpenNew"
 msgstr "新开"
 
 #: ../resources/dock/js/list.coffee:177 ../resources/dock/js/list.coffee:186
 #: ../resources/dock/js/list.coffee:372 ../resources/dock/js/list.coffee:376
+#: ../resources/dock/js/list.coffee:378
 msgid "DockMe"
 msgstr "驻留"
 
 #: ../resources/dock/js/list.coffee:181 ../resources/dock/js/list.coffee:185
+#: ../resources/dock/js/list.coffee:187
 msgid "UnDock"
 msgstr "移除驻留"
 
 #: ../resources/dock/js/list.coffee:370 ../resources/dock/js/list.coffee:374
+#: ../resources/dock/js/list.coffee:376
 msgid "Close"
 msgstr "关闭"
 
 #: ../resources/dock/js/list.coffee:373 ../resources/dock/js/list.coffee:377
+#: ../resources/dock/js/list.coffee:379
 msgid "PreView(Not yet)"
 msgstr "预览(未开启)"
 
-#: ../app/desktop/desktop.c:78
+#: ../app/desktop/desktop.c:78 ../app/desktop/desktop.c:154
 msgid "NewFile"
 msgstr "新文件"
 
-#: ../app/desktop/desktop.c:89
+#: ../app/desktop/desktop.c:89 ../app/desktop/desktop.c:165
 msgid "NewDirectory"
 msgstr "新目录"
+
+#: ../app/desktop/desktop.c:120
+msgid "RichDir"
+msgstr ""
