@@ -54,60 +54,10 @@ setInterval( ->
         return true
     , 1000)
 
-#for desktop environment area
-get_de_info = ->
-    echo "get desktop environment info"
-    de_info = DCore.Greeter.get_sessions() 
-    return de_info
-
-de_menu_cb = (id, title)->
-    alert("clicked #{id} #{title}")
-    
-de_menu = new ComboBox("desktop", de_menu_cb)
-for session in get_de_info()
-    # de_menu.insert(session, session, "images/deepin.png")
-    de_menu.insert(session, session, " ")
-    
-$("#bottom_buttons").appendChild(de_menu.element)
-
-#for power area
-get_power_info = ->
-    power_info = {}
-
-    if DCore.Greeter.get_can_suspend()
-        power_info["suspend"] = suspend_cb
-    if DCore.Greeter.get_can_hibernate()
-        power_info["hibernate"] = hibernate_cb
-    if DCore.Greeter.get_can_restart()
-        power_info["restart"] = restart_cb
-    if DCore.Greeter.get_can_shutdown()
-        power_info["shutdown"] = shutdown_cb
-
-    return power_info
-
-suspend_cb = ->
-    alert "suspend"
-    # return DCore.Greeter.suspend()
-
-hibernate_cb = ->
-    alert "hibernate"
-    # return DCore.Greeter.hibernate()
-
-restart_cb = ->
-    alert "restart"
-    # return DCore.Greeter.restart()
-
-shutdown_cb = ->
-    alert "shutdown"
-    # return DCore.Greeter.shutdown()
-
-power_dict = get_power_info()    
 power_menu_cb = (id, title)->
-    power_dict[title]()
+    alert("clicked #{id} #{title}")
 
 power_menu = new ComboBox("power", power_menu_cb)
-for key, value of power_dict
-    power_menu.insert(key, key, "images/control-power.png")
+power_menu.insert(1, "power", "images/control-power.png")
 
 $("#bottom_buttons").appendChild(power_menu.element)
-
