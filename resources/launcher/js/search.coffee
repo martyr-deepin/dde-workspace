@@ -107,7 +107,6 @@ document.body.onkeydown = (e)->
 
 document.body.onkeypress = (e) ->
     if e.ctrlKey
-        echo e.which
         switch e.which
             when 112 #p
                 selected_up()
