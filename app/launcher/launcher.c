@@ -40,6 +40,13 @@ void _make_maximize()
 
 }
 
+gboolean clear_bg(GtkWidget* w, cairo_t* cr)
+{
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    return FALSE;
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -62,6 +69,7 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
+    g_signal_connect(webview, "draw", G_CALLBACK(clear_bg), NULL);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);

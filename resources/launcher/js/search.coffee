@@ -23,20 +23,34 @@ basename = (path)->
 s_box = $('#s_box')
 
 item_selected = null
+
 update_selected = (el)->
     item_selected?.setAttribute("class", "item")
     item_selected = el
     item_selected?.setAttribute("class", "item item_selected")
+
 selected_next = ->
+    if not item_selected
+        item_selected = $(".item")
+        update_selected(item_selected)
+        return
     n = item_selected.nextElementSibling
     if n
         update_selected(n)
 selected_prev = ->
+    if not item_selected
+        item_selected = $(".item")
+        update_selected(item_selected)
+        return
     n = item_selected.previousElementSibling
     if n
         update_selected(n)
 
 selected_down = ->
+    if not item_selected
+        item_selected = $(".item")
+        update_selected(item_selected)
+        return
     n = item_selected
     for i in [0..get_item_row_count()-1]
         n = n.nextElementSibling
@@ -44,6 +58,10 @@ selected_down = ->
         update_selected(n)
 
 selected_up = ->
+    if not item_selected
+        item_selected = $(".item")
+        update_selected(item_selected)
+        return
     n = item_selected
     for i in [0..get_item_row_count()-1]
         n = n.previousElementSibling
