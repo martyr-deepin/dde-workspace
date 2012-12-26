@@ -84,10 +84,10 @@ search = ->
     ret = []
     key = s_box.value.toLowerCase()
 
-    for k of applications
+    for k,v of applications
         if key == ""
             ret.push(k)
-        else if basename(k).toLowerCase().indexOf(key) >= 0
+        else if DCore.Launcher.is_contain_key(v.core, key)
             ret.push(k)
     grid_show_items(ret)
     return ret
@@ -129,9 +129,14 @@ document.body.onkeypress = (e) ->
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
             when 13
                 if item_selected
-                    item_selected.click_cb()
+                    Widget.look_up(item_selected.id).do_click()
                 else
-                    $(".item").click_cb()
+                    Widget.look_up($(".item").id)?.do_click()
             else
                 s_box.value += String.fromCharCode(e.which)
         search()
+
+DCore.signal_connect("im_commit", (info)->
+    s_box.value += info.Content
+    search()
+)
