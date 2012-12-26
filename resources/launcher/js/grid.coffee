@@ -23,8 +23,7 @@ category_infos = []
 try_set_title = (el, text, width)->
     setTimeout(->
         height = calc_text_size(text, width)
-        echo "#{text} #{height}"
-        if height > 36
+        if height > 38
             el.setAttribute('title', text)
     , 200)
 
