@@ -89,3 +89,4 @@ create_img = (clss, src, parent)->
     el.src = src
     el.draggable = false
     return el
+

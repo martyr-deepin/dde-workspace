@@ -44,6 +44,7 @@ setInterval( ->
 , 1000
 )
 
+
 board.width = screen.width
 board.height = 30
 DCore.Dock.draw_board(board)
