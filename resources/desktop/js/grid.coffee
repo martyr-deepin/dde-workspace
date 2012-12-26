@@ -661,10 +661,8 @@ grid_right_click = (evt) ->
             ]
         ])
     menus.push([3, _("open terminal here")])
-    if DCore.DEntry.can_paste()
-        menus.push([4, _("paste")])
-    else
-        menus.push([4, "-" + _("paste")])
+    if DCore.DEntry.can_paste() then menus.push([4, _("paste")])
+    else menus.push([4, "-" + _("paste")])
     menus.push([])
     menus.push([5, _("Personal")])
     menus.push([6, _("Display Settings")])
