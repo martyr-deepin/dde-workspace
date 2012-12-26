@@ -30,21 +30,16 @@
     border-right:1px solid #999;
     -webkit-box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
 }
+
 .ShowItem img{
     border:#fff 1px solid;
 }
+
 .ShowItem:hover{
     background: rgba(0,0,0,0.8);
     cursor:pointer;
     border: solid 1px #000;
 }
-
-
-
-
-
-
-
 
 #global_menu_container {
     display: none;
@@ -77,13 +72,16 @@
 	height:22px;
     line-height:22px;
 }
+
 .MenuItem:hover {
     background:rgba(0,0,0,0.8);
 }
+
 .MenuImg {
     border: white 1px solid;
     margin: 2px 0 0 0px;
 }
+
 .MenuTitle:hover {
 	color:#00B7E5;
 }

@@ -8,18 +8,24 @@ body{
     background: url(../images/1440x900.jpg) center no-repeat
 }
 
-.Ver{ 
+#Version{ 
 	background: url(../images/ver.png) no-repeat; 
-	width:340px; height:50px; position:absolute; 
-	bottom:22px; left:50%; margin-left:-170px;
+	width:340px; 
+	height:50px; 
+	position:absolute; 
+	bottom:22px; 
+	left:50%; 
+	margin-left:-170px;
 	-webkit-user-select:none;
 }
 	
-/* time.css */
 .Time{
-	width:350px; height:200px; 
-	position:absolute; padding-left:30px; 
-	bottom:0; left:0;
+	width:350px; 
+	height:200px; 
+	position:absolute; 
+	padding-left:30px; 
+	bottom:0; 
+	left:0;
 	-webkit-user-select:none;
 }
 
@@ -46,224 +52,23 @@ body{
 	text-shadow:0 0 2px #333;  
 }
 
-/* pullup.css */
-.DEText {
-	padding:0; margin:0 170px 0 0; 
-	text-align:right; list-style:none; 
-	height:32px; width:300px; 
-    z-index:500; 
-    bottom:20px; 
-	right:0;line-height: 30px; 
-	color:#fff; text-shadow:0 0 2px #333; 
-	-webkit-user-select:none;
+#Detext{
+	padding:0;
+	margin:0 5px 0 0;
+	text-align:right;
+	list-style:none;
+	height:32px;
+	width:300px;
+    bottom:20px;
+	line-height: 30px;
+	color:#fff;
+	text-shadow:0 0 2px #333;
 }
 
 #bottom_buttons {
     position: fixed;
-    bottom: 120px;
+    bottom: 40px;
     right: 20px;
     display: -webkit-box;
 }
 
-/* loading.css */
-
-.loading1{
-	display:block;
-	margin-left:-20px; margin-top:-1.0em; 
-	width:168px; height:81px;
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
-	padding:30px 10px 0 10px;text-align:center;
-	box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
-    -webkit-border-radius: 3px;    /*Webkit browsers */
-    border-radius:3px;             /*W3C syntax */
-	}
-
-.loading1 span{ 
-	color:#00b7e5; font-size:16px; display:block; 
-	margin-top:-10px;opacity:.9; 
-	text-shadow:0 0 10px #00b7e5,
-                0 0 20px #00b7e5,
-                0 0 30px #00b7e5,
-                0 0 40px #00b7e5,
-                0 0 70px #00b7e5,
-                0 0 80px #00b7e5,
-                0 0 100px #00b7e5,
-                0 0 150px #00b7e5;
-}
-	
-.loading0{
-	display:none;
-}
-
-.ball {
-	background-color: rgba(0,0,0,0);
-	border:3px solid rgba(0,183,229,0.9);
-	opacity:.9;
-	border-top:3px solid rgba(0,0,0,0);
-	border-left:3px solid rgba(0,0,0,0);
-	border-radius:25px;
-	box-shadow: 0 0 35px #2187e7;
-	width:25px;
-	height:25px;
-	margin:0 auto;
-	-webkit-animation:spin 1.5s infinite linear;
-}
-
-.ball1 {
-	background-color: rgba(0,0,0,0);
-	border:3px solid rgba(0,183,229,0.9);
-	opacity:.9;
-	border-top:3px solid rgba(0,0,0,0);
-	border-left:3px solid rgba(0,0,0,0);
-	border-radius:25px;
-	box-shadow: 0 0 15px #2187e7; 
-	width:15px;
-	height:15px;
-	margin:0 auto;
-	position:relative;
-	top:-25px;
-	-webkit-animation:spinoff 1.5s infinite linear;
-}
-
-@-webkit-keyframes spin {
-	0% { -webkit-transform:rotate(0deg); }
-	100% { -webkit-transform:rotate(360deg); }
-}
-
-@-webkit-keyframes spinoff {
-	0% { -webkit-transform:rotate(0deg); }
-	100% { -webkit-transform:rotate(-360deg); }
-}
-
-
-/* roundabout2.css */
-@font-face {
-	font-weight: normal;
-	font-style: normal;
-}
-
-*,html,body,li,div,a,input{
-	font-family: Arial;
-}
-
-.UserContainer {
-	background: url(../images/1440x900.jpg) center no-repeat;  
-    background-size:cover; width:100%; height:100%;
-}
-
-.userpage {
-	width:820px; height:400px; 
-	margin:-200px 0 0 -420px; position:absolute; 
-	top:46%; left:50%;
-}
-
-.ulroundabout {
-	list-style: none; margin: 0px auto; 
-	padding: 0px; top:0; width: 70%; 
-	height: 20em;  opacity: 0;
-}
-
-.ulroundabout li {
-	height: 13em;cursor: pointer; 
-	box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
-	background: rgba(255,255,255,0.8);
-	border: 1px solid rgba(0,0,0,0.2);
-    -webkit-border-radius: 3px;    /*Webkit browsers */
-    border-radius:3px;             /*W3C syntax */
-}
-
-.ulroundabout li.roundabout-in-focus {
-	cursor: auto; background: rgba(60,60,60,1.0);
-}
-
-.liwrapper {
-	padding: 1.2em;
-}
-
-.liwrapper h2 {
-	text-align: center; color: rgb(255, 255, 255) !important;
-	line-height: 1.1; padding-bottom: 8px;
-	font-size: 1.75em; margin-bottom: 0px;
-}
-
-.liwrapper h3 {
-	text-align: center; color: rgb(255, 255, 255) !important;
-	line-height: 1.1; padding-top: 0px;
-	font-size: 1.5em; margin-top: 0px;
-}
-
-.liwrapper p {
-	width: auto; text-align: center; color: rgba(0,0,0,0.3) !important; 
-	font-size: 1em; margin-top: 0em; margin-bottom:0.5em;
-}
-
-.liwrapper img {
-	width: 9em; height: 9em;
-	border: 2px solid rgba(0,0,0,0.2);
-	opacity:0.5;
-}
-
-#sample-roundabout li.roundabout-in-focus .wrapper img{
-	opacity:1.0;border: 3px solid #fff;
-}
-
-#sample-roundabout li.roundabout-in-focus .wrapper p {
-	color: rgba(255, 255, 255,1) !important;
-}
-
-#sample-roundabout li.roundabout-in-focus #psw{ 
-	margin-left:-20px; margin-top:-0.8em;
-	width:168px; height:60px;display:none;
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
-	padding:10px;text-align:center;
-	box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
-    -webkit-border-radius: 3px;    /*Webkit browsers */
-    border-radius:3px;             /*W3C syntax */
-}
-	
-#sample-roundabout li.roundabout-in-focus input {
-	width:160px; font-size:12px; color:#666;
-	height:28px;margin:0px auto;
-	border:2px solid #F60;
-    -webkit-border-radius: 3px;    /*Webkit browsers */
-    border-radius:3px;             /*W3C syntax */
-}
-
-.lock{
-	background:#fff url(../images/lock.png) no-repeat 3px 3px; 
-	text-indent:20px;
-}
-
-.lock-exclamation{ 
-	background:#fff url(../images/lock-exclamation.png) no-repeat 3px 3px;
-	text-indent:20px;
-}
-
-.lock-unlock{ 
-	background:#fff url(../images/lock-unlock.png) no-repeat 3px 3px; 
-	text-indent:20px;
-}
-
-.user{ 
-	background:#fff url(../images/user.png) no-repeat 3px 3px; 
-	text-indent:20px;
-}
-
-.btn_login{
-	width:150px; font-size:16px; 
-	color:#fff; height:16px;
-	cursor:pointer;
-	margin:8px auto;
-	text-align:center;
-	padding:4px;
-	line-height:14px;
-	display:block;
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9e5c), to(#F60));
-	border:1px solid #F60;
-    -webkit-border-radius: 3px;    /*Webkit browsers */
-    border-radius:3px;             /*W3C syntax */
-}
-	
-.btn_login:hover{
-	background:#F60;
-}

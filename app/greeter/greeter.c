@@ -246,6 +246,7 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(container);
 
+    monitor_resource_file("greeter", webview);
     gtk_main();
     return 0;
 }

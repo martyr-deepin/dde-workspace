@@ -24,31 +24,86 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include <crypt.h>
+#ifdef SHADOW_PWD
+#include <shadow.h>
+#endif
+#include <pwd.h>
+#include <unistd.h>
+#include <errno.h>
 
-#define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
+#define LOCK_HTML_PATH "file://"RESOURCE_DIR"/lock/lock.html"
 
 GtkWidget* lock_container = NULL;
+struct passwd *pw = NULL;
+
+gboolean lock_is_locked()
+{
+    return TRUE;
+}
+
+gboolean lock_try_lock()
+{
+    lock_container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
+    gtk_window_fullscreen(GTK_WINDOW(lock_container));
+
+    GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
+    gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
+
+    gtk_widget_realize(lock_container);
+    gtk_widget_show_all(lock_container);
+
+    return 0;
+}
+
+gboolean lock_try_unlock(char *s)
+{
+    gboolean unlock = 0;
+    /* unlock = !(strcmp(crypt(s, pw->pw_passwd), pw->pw_passwd)); */
+    if(unlock != 0){
+        gtk_main_quit();
+    }
+
+    return unlock;
+}
+
+gboolean lock_shutdown()
+{
+    return TRUE;
+}
+
+gboolean lock_restart()
+{
+    return TRUE;
+}
+
 
 int main(int argc, char **argv)
 {
     init_i18n();
     gtk_init(&argc, &argv);
 
-    lock_container = create_web_container(FALSE, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
-    gtk_window_fullscreen(GTK_WINDOW(lock_container));
+#ifdef SHADOW_PWD
+    struct spwd *sp;
+#endif
 
-    GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
+    pw = getpwuid(getuid());
+    if(!pw){
+        perror("password entry for uid not found");
+    }
 
-    gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
+#ifdef SHADOW_PWD
+    sp = getspnam(pw->pw_name);
+    if (sp)
+        pw->pw_passwd = sp->sp_pwdp;
+    endspent();
+#endif
+
+
 
     g_signal_connect (lock_container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-
-    dcore_run_command("xtrlock");
-
-    gtk_widget_realize(lock_container);
-
-    gtk_widget_show_all(lock_container);
+    lock_try_lock();
 
     gtk_main();
     return 0;

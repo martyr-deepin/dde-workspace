@@ -1,0 +1,29 @@
+.UserInfo {
+    width: 186px;
+    background: rgba(60, 60, 60, 1.0);
+    text-align: center;
+    border-radius: 5px;
+    padding: 20px 0px 20px 0px;
+}
+
+.UserImg {
+    width: 150px;
+    height: 150px;
+    border: 3px solid white;
+    margin-bottom: 10px;
+}
+.UserName {
+    margin-top: 10px;
+    color: white;
+    font-family: Arial;
+    width: 150px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.roundabout {
+    position:fixed;
+    top: 400px;
+    left: 400px;
+}
+

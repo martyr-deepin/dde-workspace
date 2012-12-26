@@ -1,11 +1,9 @@
-
 _global_menu_container = create_element("div", "", document.body)
 _global_menu_container.id = "global_menu_container"
 _global_menu_container.addEventListener("click", (e)->
     _global_menu_container.style.display = "none"
     _global_menu_container.removeChild(_global_menu_container.children[0])
 )
-    
 
 class Menu extends Widget
     constructor: (@id)->
@@ -27,29 +25,44 @@ class Menu extends Widget
     set_callback: (cb)->
         @cb = cb
 
-    show: (e)->
-        _global_menu_container.appendChild(@element)
-        _global_menu_container.style.display = "block"
-        #TODO: calc the postion
-        @element.style.left = e.screenX
-        @element.style.top = e.screenY
+    show: (x, y)->
+        @try_append()
+        
+        @element.style.left = x
+        @element.style.top = y
 
+    try_append: ->
+        if not @element.parent
+            _global_menu_container.appendChild(@element)
+            _global_menu_container.style.display = "block"
 
+    get_allocation: ->
+        @try_append()
+
+        width = @element.clientWidth
+        height = @element.clientHeight
+
+        "width":width
+        "height":height
+ 
 class ComboBox extends Widget
-        constructor: (@id, @on_click_cb) ->
-                super
-                @show_item = create_element("div", "ShowItem", @element)
-                @current_img = create_img("", "", @show_item)
-                @switch = create_element("div", "Switcher", @element)
-                @menu = new Menu(@id+"_menu")
-                @menu.set_callback(@on_click_cb)
+    constructor: (@id, @on_click_cb) ->
+        super
+        @show_item = create_element("div", "ShowItem", @element)
+        @current_img = create_img("", "", @show_item)
+        @switch = create_element("div", "Switcher", @element)
+        @menu = new Menu(@id+"_menu")
+        @menu.set_callback(@on_click_cb)
 
-        insert: (id, title, img)->
-            @current_img.src = img
-            @menu.insert(id, title, img)
+    insert: (id, title, img)->
+        @current_img.src = img
+        @menu.insert(id, title, img)
 
-        do_click: (e)->
-            if e.target == @switch
-                @menu.show(e)
+    do_click: (e)->
+        if e.target == @switch
+            p = get_page_xy(e.target, 0, 0)
+            alloc = @menu.get_allocation()
+            x = p.x - alloc.width/2
+            y = p.y - alloc.height
 
-
+            @menu.show(x, y)
