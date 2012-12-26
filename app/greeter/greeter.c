@@ -24,6 +24,7 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
+#include <glib.h>
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -130,30 +131,27 @@ gboolean greeter_start_session(LightDMGreeter *greeter, const gchar *session)
 /* SESSION */
 
 /* get session icon from xsession desktop file */
-static gchar* get_icon_path(const gchar *key)
+static const gchar* get_icon_path(const gchar *key)
 {
-    gchar *icon_path = NULL, *file_path = NULL, *domain = NULL;
+    const gchar *icon_path = NULL, *file_path = NULL, *domain = NULL;
     GKeyFile *key_file = NULL;
     LightDMSession *session = NULL;
 
     file_path = g_strdup_printf("%s%s%s", XSESSIONS_DIR, key, ".desktop");
 
     if(!(g_file_test(file_path, G_FILE_TEST_EXISTS))){
-        g_free(file_path);
         return NULL;
     }
 
     key_file = g_key_file_new();
 
     if(!(g_key_file_load_from_file(key_file, file_path, G_KEY_FILE_NONE, NULL))){
-        g_free(file_path);
         g_key_file_free(key_file);
         return NULL;
     }
 
     if (g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) ||
         g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL)){
-        g_free(file_path);
         g_key_file_free(key_file);
         return NULL;
     }
@@ -164,12 +162,9 @@ static gchar* get_icon_path(const gchar *key)
     domain = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GNOME-Gettext-Domain", NULL);
 #endif
 
-    icon_path = g_key_file_get_local_string(key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, domain, NULL);
+    icon_path = g_key_file_get_locale_string(key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, domain, NULL);
 
-    g_free(file_path);
     g_key_file_free(key_file);
-    g_free(domain);
-
     return icon_path;
 }
 
@@ -184,7 +179,7 @@ static LightDMSession *find_session_by_key(const gchar *key)
     for(int i = 0; i < g_list_length(sessions); i++){
         session = (LightDMSession *)g_list_nth_data(sessions, i);
     
-        if((g_strcmp(g_strdup(key), g_strdup(lightdm_session_get_key(session)))) == 0){
+        if((g_strcmp0(g_strdup(key), g_strdup(lightdm_session_get_key(session)))) == 0){
             g_list_free(sessions);
             return session;
         }else{
