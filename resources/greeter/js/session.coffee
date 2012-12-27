@@ -18,17 +18,18 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 de_menu_cb = (id, title)->
-    alert("clicked #{id} #{title}")
+    de_menu.set_current(id)
+    # alert de_menu.get_current()
     
 de_menu = new ComboBox("desktop", de_menu_cb)
 sessions = DCore.Greeter.get_sessions()
 for session in sessions
-    de_menu.insert(session, session, "images/deepin.png")
+    id = session
+    icon = DCore.Greeter.get_session_icon(session)
+    icon_path ="images/#{icon}"
+    de_menu.insert(id, session, icon_path)
 
 default_session = DCore.Greeter.get_default_session()
-echo "default session"
-echo default_session    
-    
-# de_menu.set_current(default_session)
     
 $("#bottom_buttons").appendChild(de_menu.element)
+de_menu.set_current(default_session)

@@ -311,7 +311,27 @@ const gchar* greeter_get_session_comment(const gchar *key)
 JS_EXPORT_API
 const gchar* greeter_get_session_icon(const gchar *key)
 {
-    return "icon";
+    const gchar* icon = NULL;
+    const gchar* session = NULL;
+
+    session = g_strdup(g_ascii_strdown(key, -1));
+    g_assert(session);
+
+    if(g_str_has_prefix(session, "gnome")){
+        icon = g_strdup("gnome.png");
+    }else if(g_str_has_prefix(session, "deepin")){
+        icon = g_strdup("deepin.png");
+    }else if(g_str_has_prefix(session, "kde")){
+        icon = g_strdup("kde.png");
+    }else if(g_str_has_prefix(session, "ubuntu")){
+        icon = g_strdup("ubuntu.png");
+    }else if(g_str_has_prefix(session, "xfce")){
+        icon = g_strdup("ununtu.png");
+    }else{
+        icon = g_strdup("unknown.png");
+    }
+
+    return icon;
 }
 
 /* USER  */
@@ -455,6 +475,26 @@ gboolean greeter_shutdown()
     return lightdm_shutdown(NULL);
 }
 
+const gchar* get_ui_select_session()
+{
+    return "gnome";
+}
+
+static void authentication_complete_cb()
+{
+    const gchar *session = NULL;
+
+    if(lightdm_greeter_get_is_authenticated(greeter)){
+        session = get_ui_select_session();
+        g_assert(session);
+
+        lightdm_greeter_start_session_sync(greeter, session, NULL);
+        gtk_main_quit();
+        
+    }else{
+        printf("clear the password had input\n");
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -464,10 +504,12 @@ int main(int argc, char **argv)
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
-    gtk_window_maximize(container);
+    gtk_window_maximize(GTK_WINDOW(container));
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);
+
+    g_signal_connect (greeter, "authentication-complete", G_CALLBACK (authentication_complete_cb), NULL);
 
     GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
 
@@ -476,10 +518,10 @@ int main(int argc, char **argv)
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
-
     gtk_widget_show_all(container);
 
     monitor_resource_file("greeter", webview);
+
     gtk_main();
     return 0;
 }
