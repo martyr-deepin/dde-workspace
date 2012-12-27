@@ -190,14 +190,10 @@ detect_occupy = (info) ->
     return false
 
 
-pixel_to_coord = (x, y) ->
+pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    return [index_x, index_y]
-
-
-coord_to_pos = (coord, size) ->
-    {x : coord[0], y : coord[1], width : size[0], height : size[1]}
+    return {x : index_x, y : index_y, width : w, height : h}
 
 
 find_free_position = (w, h) ->
@@ -318,7 +314,7 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
+        pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         for file in evt.dataTransfer.files
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
@@ -346,7 +342,7 @@ init_grid_drop = ->
 
 drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
-    new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
+    new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
     coord_x_shift = new_pos.x - old_pos.x
     coord_y_shift = new_pos.y - old_pos.y
 
@@ -368,7 +364,7 @@ drag_update_selected_pos = (w, evt) ->
         if not w? then continue
 
         old_pos = load_position(w.id)
-        new_pos = coord_to_pos([old_pos.x + coord_x_shift, old_pos.y + coord_y_shift], [1, 1])
+        new_pos = pixel_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
 
         if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
@@ -470,7 +466,7 @@ update_selected_stats = (w, evt) ->
                 selected_item.push(last_one_id)
 
             if selected_item.length == 1
-                end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
+                end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
                 start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
                 ret = compare_pos_top_left(start_pos, end_pos)
@@ -718,7 +714,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @start_point = evt
-            @start_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
+            @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             @last_pos = @start_pos
         return
 
@@ -735,7 +731,7 @@ class Mouse_Select_Area_box
         @element.style.height = "#{sh}px"
         @element.style.visibility = "visible"
 
-        new_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
+        new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos

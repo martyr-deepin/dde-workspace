@@ -127,12 +127,13 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
-        if @selected == false then update_selected_stats(this, evt)
+        if @selected == false
+            update_selected_stats(this, evt)
+        else if @in_rename == true
+            @item_complete_rename(false)
 
 
     do_dblclick : (evt) ->
-        #echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
-
         if @delay_rename != -1
             clearTimeout(@delay_rename)
             @delay_rename = -1
@@ -299,16 +300,12 @@ class DesktopEntry extends Item
         if evt.dataTransfer.dropEffect == "move"
             drag_update_selected_pos(this, evt)
 
-        #else if evt.dataTransfer.dropEffect == "link"
-            #node = evt.target
-            #node.parentNode.removeChild(node)
-
         return
 
 
     do_drop : (evt) =>
-        evt.preventDefault()
         evt.stopPropagation()
+        evt.preventDefault()
         if @selected == false
             @hide_hover_box()
             @in_count = 0
@@ -322,15 +319,17 @@ class DesktopEntry extends Item
             if @in_count == 1
                 @show_hover_box()
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
+        found_self = false
+        for file in evt.dataTransfer.files
+            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
+                found_self = true
+                break
+
+        if found_self == true
             evt.dataTransfer.dropEffect = "none"
         else
-            evt.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "move"
 
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -338,15 +337,17 @@ class DesktopEntry extends Item
         evt.preventDefault()
         evt.stopPropagation()
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
+        found_self = false
+        for file in evt.dataTransfer.files
+            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
+                found_self = true
+                break
+
+        if found_self == true
             evt.dataTransfer.dropEffect = "none"
         else
-            evt.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "move"
 
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -356,6 +357,8 @@ class DesktopEntry extends Item
             --@in_count
             if @in_count == 0
                 @hide_hover_box()
+
+        return
 
 
     do_buildmenu : () ->
@@ -377,53 +380,13 @@ class Folder extends DesktopEntry
     do_drop : (evt) =>
         super
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-
         tmp_list = []
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
-        return
-
-
-    do_dragenter : (evt) =>
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) =>
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        enc_path = encodeURI("file://" + @get_path())
-        if files.indexOf(enc_path) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -465,51 +428,13 @@ class RichDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
         tmp_list = []
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
             if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
-        return
-
-
-    do_dragenter : (evt) ->
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) ->
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -590,12 +515,15 @@ class RichDir extends DesktopEntry
 
             ele.addEventListener('mousedown', (evt) ->
                 evt.stopPropagation()
+                return
             )
             ele.addEventListener('click', (evt) ->
                 evt.stopPropagation()
+                return
             )
             ele.addEventListener('contextmenu', (evt) ->
                 evt.stopPropagation()
+                return
             )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
@@ -681,13 +609,10 @@ class Application extends DesktopEntry
 
         tmp_list = []
         all_are_apps = true
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file).replace(/^file:\/\//i, ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) != FILE_TYPE_APP
+            if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
                 all_are_apps = false
 
             tmp_list.push(e)
