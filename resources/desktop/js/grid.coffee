@@ -193,7 +193,11 @@ detect_occupy = (info) ->
 pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    return {x : index_x, y : index_y, width : w, height : h}
+    coord_to_pos(index_x, index_y, w, h)
+
+
+coord_to_pos = (pos_x, pos_y, w, h) ->
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 find_free_position = (w, h) ->
@@ -364,7 +368,7 @@ drag_update_selected_pos = (w, evt) ->
         if not w? then continue
 
         old_pos = load_position(w.id)
-        new_pos = pixel_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
+        new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
 
         if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
