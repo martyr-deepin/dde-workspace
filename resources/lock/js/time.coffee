@@ -17,7 +17,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-#for time area
 format_two_bit = (s) ->
     if s < 10
         return "0#{s}"
@@ -53,11 +52,3 @@ setInterval( ->
         time.innerText = get_time_str()
         return true
     , 1000)
-
-power_menu_cb = (id, title)->
-    alert("clicked #{id} #{title}")
-
-power_menu = new ComboBox("power", power_menu_cb)
-power_menu.insert(1, "power", "images/control-power.png")
-
-$("#bottom_buttons").appendChild(power_menu.element)
