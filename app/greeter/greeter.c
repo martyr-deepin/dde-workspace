@@ -33,13 +33,21 @@ GtkWidget* container = NULL;
 
 LightDMGreeter *greeter = NULL;
 
+static const gchar* get_first_user();
+static const gchar* get_first_session();
+static LightDMSession* find_session_by_key(const gchar *key);
+
 /* GREETER */
 
 JS_EXPORT_API
 const gchar* greeter_get_default_user()
 {
     const gchar* user = NULL;
+
     user = g_strdup(lightdm_greeter_get_select_user_hint(greeter));
+    if(user == NULL){
+        user = get_first_user();
+    }
     return user;
 }
 
@@ -47,7 +55,12 @@ JS_EXPORT_API
 const gchar* greeter_get_default_session()
 {
     const gchar* session = NULL;
+
     session = g_strdup(lightdm_greeter_get_default_session_hint(greeter));
+    if(session == NULL){
+        session = get_first_session();
+    }
+
     return session;
 }
 
@@ -222,6 +235,25 @@ ArrayContainer greeter_get_sessions()
     return sessions_ac;
 }
 
+static const gchar* get_first_session()
+{
+    const gchar* name = NULL;
+    GList *sessions = NULL;
+    const gchar *key = NULL;
+    LightDMSession *session = NULL;
+    GPtrArray *keys = g_ptr_array_new();
+
+    sessions = lightdm_get_sessions();
+    g_assert(sessions);
+
+    session = (LightDMSession *)g_list_nth_data(sessions, 0);
+    g_assert(session);
+
+    name = g_strdup(lightdm_session_get_key(session));
+
+    return name;
+}
+
 /* get session name according to session key */
 JS_EXPORT_API
 const gchar* greeter_get_session_name(const gchar *key)
@@ -296,6 +328,28 @@ ArrayContainer greeter_get_users()
     g_ptr_array_free(names, FALSE);
 
     return users_ac;
+}
+
+static const gchar* get_first_user()
+{
+    LightDMUserList *user_list = NULL;
+    GList *users = NULL;
+    LightDMUser *user = NULL;
+    const gchar *name = NULL;
+    GPtrArray *names = g_ptr_array_new();
+
+    user_list = lightdm_user_list_get_instance();
+    g_assert(user_list);
+
+    users = lightdm_user_list_get_users(user_list);
+    g_assert(users);
+
+    user = (LightDMUser *)g_list_nth_data(users, 0);
+    g_assert(user);
+
+    name = g_strdup(lightdm_user_get_name(user));
+
+    return name;
 }
 
 JS_EXPORT_API

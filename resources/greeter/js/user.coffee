@@ -74,6 +74,9 @@ for user in users
     roundabout.appendChild(u.li)
 
 # default_user = DCore.Greeter.get_default_user()    
+# echo "default user"
+# echo default_user    
+    
 # first = new UserInfo(default_user, default_user, "images/img01.jpg")
 # first.focus()    
     
