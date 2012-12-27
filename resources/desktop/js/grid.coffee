@@ -101,8 +101,8 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
         if w? then move_to_anywhere(w)
 
 
-load_position = (item) ->
-    pos = localStorage.getObject("id:" + item)
+load_position = (id) ->
+    pos = localStorage.getObject("id:" + id)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -110,18 +110,18 @@ load_position = (item) ->
     pos
 
 
-save_position = (item, pos) ->
-    localStorage.setObject("id:" + item, pos)
+save_position = (id, pos) ->
+    localStorage.setObject("id:" + id, pos)
     return
 
 
-discard_position = (path) ->
-    localStorage.removeItem("id:" + path)
+discard_position = (id) ->
+    localStorage.removeItem("id:" + id)
     return
 
 
-update_position = (old_path, new_path) ->
-    o_p = load_position(old_path)
+update_position = (old_id, new_id) ->
+    o_p = load_position(old_id)
     discard_position(old_id)
     save_position(new_id, o_p)
     return
@@ -320,7 +320,7 @@ init_grid_drop = ->
         evt.stopPropagation()
         pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
         for file in evt.dataTransfer.files
-            path = DCore.Desktop.move_to_desktop(file)
+            path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
                 save_position(path, pos)
         return
@@ -360,8 +360,8 @@ drag_update_selected_pos = (w, evt) ->
         for j in [0 ... distance_list.length]
             if dis < distance_list[j]
                 break
-    ordered_list.splice(j, 0, i)
-    distance_list.splice(j, 0, dis)
+        ordered_list.splice(j, 0, i)
+        distance_list.splice(j, 0, dis)
 
     for i in ordered_list
         w = Widget.look_up(i)

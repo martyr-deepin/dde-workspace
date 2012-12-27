@@ -210,6 +210,7 @@ class Item extends Widget
             @item_name.addEventListener("mousedown", @event_stoppropagation)
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
+            @item_name.addEventListener("contextmenu", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
             #TODO: set caret pos to end or select all text when begin editing
@@ -249,6 +250,7 @@ class Item extends Widget
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
         @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
+        @item_name.removeEventListener("contextmenu", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
@@ -385,7 +387,7 @@ class Folder extends DesktopEntry
             if not e? then continue
             if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
 
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
 
@@ -472,7 +474,7 @@ class RichDir extends DesktopEntry
             if not e? then continue
             if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
 
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
 
@@ -592,15 +594,24 @@ class RichDir extends DesktopEntry
             ele.addEventListener('click', (evt) ->
                 evt.stopPropagation()
             )
+            ele.addEventListener('contextmenu', (evt) ->
+                evt.stopPropagation()
+            )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
-                evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(this.id)}")
-                evt.dataTransfer.effectAllowed = "moveCopy"
+                w = Widget.look_up(this.parentElement.title)
+                if w? then e = w.sub_items[this.id]
+                if e?
+                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(e))}")
+                    evt.dataTransfer.effectAllowed = "moveCopy"
+                else
+                    evt.dataTransfer.effectAllowed = "none"
             )
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
             )
             ele.addEventListener('dblclick', (evt) ->
+                evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.title)
                 if w? then e = w.sub_items[this.id]
                 if e? then DCore.DEntry.launch(e, [])
