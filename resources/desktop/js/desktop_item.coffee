@@ -214,13 +214,13 @@ class Item extends Widget
             @item_name.addEventListener("contextmenu", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
-            #TODO: set caret pos to end or select all text when begin editing
-            #ws = window.getSelection()
-            #ws.removeAllRanges()
-            #range = document.createRange()
-            #range.setStart(@item_name.childNodes[0], 0)
-            #range.setEnd(@item_name.childNodes[0], @item_name.innerText.length)
-            #ws.addRange(range)
+
+            ws = window.getSelection()
+            ws.removeAllRanges()
+            range = document.createRange()
+            range.setStart(@item_name.childNodes[0], 0)
+            range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
+            ws.addRange(range)
 
             @in_rename = true
         return

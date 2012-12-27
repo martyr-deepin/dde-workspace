@@ -624,8 +624,11 @@ show_selected_items_Properties = ->
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
 
-    #TODO: should tell user we fail to call
-    s_nautilus?.ShowItemProperties_sync(tmp, '')
+    #FIXME: we have an error here
+    try
+        s_nautilus?.ShowItemProperties_sync(tmp, "")
+    catch e
+        echo "error(e)"
 
 
 gird_left_mousedown = (evt) ->
@@ -688,13 +691,13 @@ create_item_grid = ->
     drag_canvas = document.createElement("canvas")
 
 
-class ItemGrid
-    constructor : (parentElement) ->
-        @_parent_element = parentElement
-        @_workarea_width = 0
-        @_workarea_height = 0
-        @_offset_x = 0
-        @_offset_y = 0
+#class ItemGrid
+#    constructor : (parentElement) ->
+#        @_parent_element = parentElement
+#        @_workarea_width = 0
+#        @_workarea_height = 0
+#        @_offset_x = 0
+#        @_offset_y = 0
 
 
 class Mouse_Select_Area_box
