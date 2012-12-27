@@ -99,6 +99,12 @@ gboolean greeter_get_guest_autologin()
 }
 
 JS_EXPORT_API
+void greeter_authenticate_guest()
+{
+    lightdm_greeter_authenticate_as_guest(greeter);
+}
+
+JS_EXPORT_API
 gboolean greeter_hide_users()
 {
     return lightdm_greeter_get_hide_users_hint(greeter);
@@ -122,11 +128,6 @@ void greeter_authenticate(const char *username)
     lightdm_greeter_authenticate(greeter, username);
 }
 
-JS_EXPORT_API
-void greeter_authenticate_guest()
-{
-    lightdm_greeter_authenticate_as_guest(greeter);
-}
 
 JS_EXPORT_API
 void greeter_respond(const gchar *response)
@@ -398,6 +399,9 @@ const gchar* greeter_get_user_session(const gchar* name)
     g_assert(user);
 
     session = g_strdup(lightdm_user_get_session(user)); 
+    if(session == NULL){
+        session = get_first_session();
+    }
 
     return session;
 }
@@ -460,6 +464,7 @@ int main(int argc, char **argv)
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
+    gtk_window_maximize(container);
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);

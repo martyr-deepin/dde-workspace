@@ -79,6 +79,9 @@ for user in users
     
 # first = new UserInfo(default_user, default_user, "images/img01.jpg")
 # first.focus()    
+
+echo "support guest"
+echo DCore.Greeter.support_guest()    
     
 # u = new UserInfo(1000, "Alice Charlotte", "images/img01.jpg")
 # u2 = new UserInfo(1001, "Snyh", "images/guest.jpg")
