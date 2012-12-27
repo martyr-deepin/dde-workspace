@@ -10,6 +10,7 @@
 }
 
 .UserInfo {
+	cursor:default;
     float: left;
     width: 186px;
     background: rgba(255,255,255,.5);

@@ -20,6 +20,7 @@ body{
 }
 	
 .Time{
+	cursor:default;
 	width:350px; 
 	height:200px; 
 	position:absolute; 
@@ -29,6 +30,7 @@ body{
 }
 
 .Time01{ 
+	cursor:default;
     font-size:120px;
 	color: #fff; 
 	display: block; 
@@ -41,6 +43,7 @@ body{
 }
 
 .Time02{  
+	cursor:default;
 	padding-left:10px;
     font-size:30px;
 	color: #fff; 
@@ -52,6 +55,7 @@ body{
 }
 
 #Detext{
+	cursor:default;
 	padding:0;
 	margin:0 5px 0 0;
 	text-align:right;
