@@ -64,84 +64,98 @@ const gchar* greeter_get_default_session()
     return session;
 }
 
-gboolean greeter_connect_lightdm(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_start_session(const gchar *session)
 {
-    return lightdm_greeter_connect_sync(greeter, NULL);
+    if(lightdm_greeter_get_is_authenticated(greeter)){
+        return lightdm_greeter_start_session_sync(greeter, session, NULL);
+    }else{
+        return FALSE;
+    }
 }
 
-gboolean greeter_support_guest(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_support_guest()
 {
     return lightdm_greeter_get_has_guest_account_hint(greeter);
 }
 
-gboolean greeter_hide_users(LightDMGreeter *greeter)
-{
-    return lightdm_greeter_get_hide_users_hint(greeter);
-}
-
-gboolean greeter_get_guest_default(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_get_guest_default()
 {
     return lightdm_greeter_get_select_guest_hint(greeter);
 }
 
-const gchar* greeter_get_autologin_user(LightDMGreeter *greeter)
+JS_EXPORT_API
+const gchar* greeter_get_autologin_user()
 {
     return lightdm_greeter_get_autologin_user_hint(greeter);
 }
 
-gboolean greeter_get_guest_autologin(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_get_guest_autologin()
 {
     return lightdm_greeter_get_autologin_guest_hint(greeter);
 }
 
-gint greeter_get_autologin_timeout(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_hide_users()
+{
+    return lightdm_greeter_get_hide_users_hint(greeter);
+}
+
+JS_EXPORT_API
+gint greeter_get_autologin_timeout()
 {
     return lightdm_greeter_get_autologin_timeout_hint(greeter);
 }
 
-void greeter_cancel_autologin(LightDMGreeter *greeter)
+JS_EXPORT_API
+void greeter_cancel_autologin()
 {
     lightdm_greeter_cancel_autologin(greeter);
 }
 
-void greeter_authenticate(LightDMGreeter *greeter, const char *username)
+JS_EXPORT_API
+void greeter_authenticate(const char *username)
 {
     lightdm_greeter_authenticate(greeter, username);
 }
 
-void greeter_authenticate_guest(LightDMGreeter *greeter)
+JS_EXPORT_API
+void greeter_authenticate_guest()
 {
     lightdm_greeter_authenticate_as_guest(greeter);
 }
 
-void greeter_respond(LightDMGreeter *greeter, const gchar *response)
+JS_EXPORT_API
+void greeter_respond(const gchar *response)
 {
     lightdm_greeter_respond(greeter, response);
 }
 
-void greeter_cancel_authentication(LightDMGreeter *greeter)
+JS_EXPORT_API
+void greeter_cancel_authentication()
 {
     lightdm_greeter_cancel_authentication(greeter);
 }
 
-gboolean greeter_in_authentication(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_in_authentication()
 {
     return lightdm_greeter_get_in_authentication(greeter);
 }
 
-gboolean greeter_is_authenticated(LightDMGreeter *greeter)
+JS_EXPORT_API
+gboolean greeter_is_authenticated()
 {
     return lightdm_greeter_get_is_authenticated(greeter);
 }
 
-const gchar* greeter_get_authentication_user(LightDMGreeter *greeter)
+JS_EXPORT_API
+const gchar* greeter_get_authentication_user()
 {
     return lightdm_greeter_get_authentication_user(greeter);
-}
-
-gboolean greeter_start_session(LightDMGreeter *greeter, const gchar *session)
-{
-    return lightdm_greeter_start_session_sync(greeter, session, NULL);
 }
 
 /* SESSION */
