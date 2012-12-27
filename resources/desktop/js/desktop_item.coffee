@@ -378,13 +378,14 @@ class Folder extends DesktopEntry
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
 
+        tmp_list = []
         for f in files
             if f.length == 0 then continue
             e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR
-                @move_in(e)
+            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
 
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list)
         return
 
 
@@ -422,10 +423,6 @@ class Folder extends DesktopEntry
 
         #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
-
-
-    move_in: (move_entry) ->
-        DCore.DEntry.move(move_entry, @entry)
 
 
 class RichDir extends DesktopEntry
@@ -468,12 +465,14 @@ class RichDir extends DesktopEntry
 
         all_selected_items = evt.dataTransfer.getData("text/uri-list")
         files = all_selected_items.split("\n")
+        tmp_list = []
         for f in files
             if f.length == 0 then continue
             e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then @move_in(e)
+            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
 
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list)
         return
 
 
@@ -663,10 +662,6 @@ class RichDir extends DesktopEntry
             delete @div_pop
             @div_pop = null
         @show_pop = false
-
-
-    move_in: (move_entry) ->
-        DCore.DEntry.move(move_entry, @entry)
 
 
 class Application extends DesktopEntry
