@@ -31,11 +31,24 @@
 
 GtkWidget* container = NULL;
 
+LightDMGreeter *greeter = NULL;
+
 /* GREETER */
 
-LightDMGreeter* greeter_new()
+JS_EXPORT_API
+const gchar* greeter_get_default_user()
 {
-    return lightdm_greeter_new();
+    const gchar* user = NULL;
+    user = g_strdup(lightdm_greeter_get_select_user_hint(greeter));
+    return user;
+}
+
+JS_EXPORT_API
+const gchar* greeter_get_default_session()
+{
+    const gchar* session = NULL;
+    session = g_strdup(lightdm_greeter_get_default_session_hint(greeter));
+    return session;
 }
 
 gboolean greeter_connect_lightdm(LightDMGreeter *greeter)
@@ -43,19 +56,9 @@ gboolean greeter_connect_lightdm(LightDMGreeter *greeter)
     return lightdm_greeter_connect_sync(greeter, NULL);
 }
 
-const gchar* greeter_get_default_session(LightDMGreeter *greeter)
-{
-    return lightdm_greeter_get_default_session_hint(greeter);
-}
-
 gboolean greeter_support_guest(LightDMGreeter *greeter)
 {
     return lightdm_greeter_get_has_guest_account_hint(greeter);
-}
-
-const gchar* greeter_get_default_user(LightDMGreeter *greeter)
-{
-    return lightdm_greeter_get_select_user_hint(greeter);
 }
 
 gboolean greeter_hide_users(LightDMGreeter *greeter)
@@ -211,12 +214,12 @@ ArrayContainer greeter_get_sessions()
         g_ptr_array_add(keys, g_strdup(key));
     }
 
-    ArrayContainer ac;
-    ac.num = keys->len;
-    ac.data = keys->pdata;
+    ArrayContainer sessions_ac;
+    sessions_ac.num = keys->len;
+    sessions_ac.data = keys->pdata;
     g_ptr_array_free(keys, FALSE);
 
-    return ac;
+    return sessions_ac;
 }
 
 /* get session name according to session key */
@@ -264,42 +267,71 @@ const gchar* greeter_get_session_icon(const gchar *key)
     return "icon";
 }
 
-
 /* USER  */
-
-const gchar* greeter_get_user_name(LightDMUser *user)
+JS_EXPORT_API
+ArrayContainer greeter_get_users()
 {
-    return lightdm_user_get_name(user);
+    LightDMUserList *user_list = NULL;
+    GList *users = NULL;
+    LightDMUser *user = NULL;
+    const gchar *name = NULL;
+    GPtrArray *names = g_ptr_array_new();
+
+    user_list = lightdm_user_list_get_instance();
+    g_assert(user_list);
+
+    users = lightdm_user_list_get_users(user_list);
+    g_assert(users);
+
+    for(int i = 0; i < g_list_length(users); i++){
+        user = (LightDMUser *)g_list_nth_data(users, i);
+        g_assert(user);
+        name = lightdm_user_get_name(user);
+        g_ptr_array_add(names, g_strdup(name));
+    }
+
+    ArrayContainer users_ac;
+    users_ac.num = names->len;
+    users_ac.data = names->pdata;
+    g_ptr_array_free(names, FALSE);
+
+    return users_ac;
 }
 
-gboolean greeter_get_user_logged(LightDMUser *user)
+JS_EXPORT_API
+const gchar* greeter_get_user_image(const gchar* name)
 {
-    return lightdm_user_get_logged_in(user);
+    const gchar* image = NULL;
+    LightDMUserList *user_list = NULL;
+    LightDMUser *user = NULL;
+
+    user_list = lightdm_user_list_get_instance();
+    g_assert(user_list);
+
+    user = lightdm_user_list_get_user_by_name(user_list, name);
+    g_assert(user);
+
+    image = g_strdup(lightdm_user_get_image(user)); 
+
+    return image;
 }
 
-const gchar* greeter_get_user_image(LightDMUser *user)
+JS_EXPORT_API
+const gchar* greeter_get_user_session(const gchar* name)
 {
-    return lightdm_user_get_image(user);
-}
+    const gchar* session = NULL;
+    LightDMUserList *user_list = NULL;
+    LightDMUser *user = NULL;
 
-const gchar* greeter_get_user_session(LightDMUser *user)
-{
-    return lightdm_user_get_session(user);
-}
+    user_list = lightdm_user_list_get_instance();
+    g_assert(user_list);
 
-GList* greeter_get_users(LightDMUserList *user_list)
-{
-    return lightdm_user_list_get_users(user_list);
-}
+    user = lightdm_user_list_get_user_by_name(user_list, name);
+    g_assert(user);
 
-LightDMUser* greeter_get_user_by_name(LightDMUserList *user_list, const gchar *username)
-{
-    return lightdm_user_list_get_user_by_name(user_list, username);
-}
+    session = g_strdup(lightdm_user_get_session(user)); 
 
-gint greeter_get_user_count(LightDMUserList *user_list)
-{
-    return lightdm_user_list_get_length(user_list);
+    return session;
 }
 
 /* POWER */
@@ -360,6 +392,9 @@ int main(int argc, char **argv)
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
+
+    greeter = lightdm_greeter_new();
+    g_assert(greeter);
 
     GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
 

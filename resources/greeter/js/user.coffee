@@ -68,32 +68,29 @@ class UserInfo extends Widget
 
 
 # below code should use c-backend to fetch data 
-u = new UserInfo(1000, "Alice Charlotte", "images/img01.jpg")
-u2 = new UserInfo(1001, "Snyh", "images/guest.jpg")
-u3 = new UserInfo(1001, "Snyh", "images/img04.jpg")
-u4 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u5 = new UserInfo(1001, "Snyh", "images/img03.jpg")
+users = DCore.Greeter.get_users()
+for user in users
+    u = new UserInfo(user, user, "images/img01.jpg")
+    roundabout.appendChild(u.li)
 
-u6 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u7 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u8 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u8 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u9 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-u10 = new UserInfo(1001, "Snyh", "images/img02.jpg")
+# default_user = DCore.Greeter.get_default_user()    
+# first = new UserInfo(default_user, default_user, "images/img01.jpg")
+# first.focus()    
+    
+# u = new UserInfo(1000, "Alice Charlotte", "images/img01.jpg")
+# u2 = new UserInfo(1001, "Snyh", "images/guest.jpg")
+# u3 = new UserInfo(1001, "Snyh", "images/img04.jpg")
+# u4 = new UserInfo(1001, "Snyh", "images/img02.jpg")
+# u5 = new UserInfo(1001, "Snyh", "images/img03.jpg")
 
-roundabout.appendChild(u.li)
-u.focus()
+# roundabout.appendChild(u.li)
+# u.focus()
 
-roundabout.appendChild(u2.li)
-roundabout.appendChild(u3.li)
-roundabout.appendChild(u4.li)
-roundabout.appendChild(u5.li)
+# roundabout.appendChild(u2.li)
+# roundabout.appendChild(u3.li)
+# roundabout.appendChild(u4.li)
+# roundabout.appendChild(u5.li)
 
-roundabout.appendChild(u6.li)
-roundabout.appendChild(u7.li)
-roundabout.appendChild(u8.li)
-roundabout.appendChild(u9.li)
-roundabout.appendChild(u10.li)
 # end this
 
 if roundabout.children.length == 2
