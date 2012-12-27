@@ -66,9 +66,15 @@ de_menu_cb = (id, title)->
 de_menu = new ComboBox("desktop", de_menu_cb)
 for session in get_de_info()
     de_menu.insert(session, session, "images/deepin.png")
+
+# default_session = DCore.Greeter.get_default_session()
+# if default_session
+#     de_menu.set_current(default_session)
+    
     
 $("#bottom_buttons").appendChild(de_menu.element)
 
+    
 #for power area
 get_power_info = ->
     power_info = {}

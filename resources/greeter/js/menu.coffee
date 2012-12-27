@@ -6,10 +6,11 @@ _global_menu_container.addEventListener("click", (e)->
 )
 
 class Menu extends Widget
-    constructor: (@id)->
+    constructor: (@id) ->
         super
-        @items = []
-        
+        @current = @id
+        @items = {}
+    
     insert: (@id, @title, @img)->
         _id = @id
         _title = @title
@@ -20,8 +21,11 @@ class Menu extends Widget
         create_img("menuimg", @img, item)
         title = create_element("div", "menutitle", item)
         title.innerText = @title
-        @items[@id] = item
 
+        _img = @img
+        @items[_id] = [_title, _img] 
+        @current = @id
+    
     set_callback: (cb)->
         @cb = cb
 
@@ -53,7 +57,7 @@ class ComboBox extends Widget
         @switch = create_element("div", "Switcher", @element)
         @menu = new Menu(@id+"_menu")
         @menu.set_callback(@on_click_cb)
-
+    
     insert: (id, title, img)->
         @current_img.src = img
         @menu.insert(id, title, img)
@@ -66,3 +70,11 @@ class ComboBox extends Widget
             y = p.y - alloc.height
 
             @menu.show(x, y)
+
+    get_current: ->
+        return @menu.current
+
+    set_current: (id)->
+        _img = @menu.items[id][1]
+        @current_img.src = _img
+        @menu.current = id
