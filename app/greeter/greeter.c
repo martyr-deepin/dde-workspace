@@ -168,27 +168,27 @@ static const gchar* get_icon_path(const gchar *key)
     return icon_path;
 }
 
-static LightDMSession *find_session_by_key(const gchar *key)
+static LightDMSession* find_session_by_key(const gchar *key)
 {
     LightDMSession *session = NULL;
     GList *sessions = NULL;
+    const gchar *session_key = NULL;
 
     sessions = lightdm_get_sessions();
     g_assert(sessions);
 
     for(int i = 0; i < g_list_length(sessions); i++){
         session = (LightDMSession *)g_list_nth_data(sessions, i);
-    
-        if((g_strcmp0(g_strdup(key), g_strdup(lightdm_session_get_key(session)))) == 0){
-            g_list_free(sessions);
+        g_assert(session);
+        session_key = lightdm_session_get_key(session);
+
+        if((g_strcmp0(key, g_strdup(session_key))) == 0){
             return session;
         }else{
             continue;
         }
     }
-    g_list_free(sessions);
 
-    g_object_unref(session);
     return NULL;
 }
 
@@ -207,13 +207,9 @@ ArrayContainer greeter_get_sessions()
     for(int i = 0; i < g_list_length(sessions); i++){
         session = (LightDMSession *)g_list_nth_data(sessions, i);
         g_assert(session);
-
         key = lightdm_session_get_key(session);
-        g_ptr_array_add(keys, (gpointer)g_strdup(key));
+        g_ptr_array_add(keys, g_strdup(key));
     }
-
-    g_object_unref(session);
-    g_list_free(sessions);
 
     ArrayContainer ac;
     ac.num = keys->len;
@@ -231,13 +227,13 @@ const gchar* greeter_get_session_name(const gchar *key)
     LightDMSession *session = NULL;
 
     session = find_session_by_key(key);
+    g_assert(session);
+
     if(session == NULL){
         name = g_strdup(key);
     }else{
-        name = lightdm_session_get_comment(session);
+        name = g_strdup(lightdm_session_get_comment(session));
     }
-
-    g_object_unref(session);
 
     return name;
 }
@@ -250,13 +246,13 @@ const gchar* greeter_get_session_comment(const gchar *key)
     LightDMSession *session = NULL;
 
     session = find_session_by_key(key);
+    g_assert(session);
+
     if(session == NULL){
         comment = g_strdup(key);
     }else{
-        comment = lightdm_session_get_comment(session);
+        comment = g_strdup(lightdm_session_get_comment(session));
     }
-
-    g_object_unref(session);
 
     return comment;
 }

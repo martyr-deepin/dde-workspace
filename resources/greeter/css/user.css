@@ -17,11 +17,13 @@
     border-radius: 5px;
     padding: 20px 0px 20px 0px;
     color: rgba(0, 0, 0, 0.3);
+	opacity:0.8;
 }
 
 .UserInfoSelected {
     background: rgba(60, 60, 60, 1.0);
     color: white;
+	opacity:1;
 }
 
 

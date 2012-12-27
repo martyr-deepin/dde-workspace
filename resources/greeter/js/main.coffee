@@ -57,7 +57,7 @@ setInterval( ->
 #for desktop environment area
 get_de_info = ->
     echo "get desktop environment info"
-    de_info = DCore.Greeter.get_sessions() 
+    de_info = DCore.Greeter.get_sessions()
     return de_info
 
 de_menu_cb = (id, title)->

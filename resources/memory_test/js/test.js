@@ -1,5 +1,5 @@
 (function() {
-  var $, $s, assert, build_menu, create_element, create_img, echo, file_test, find_drag_target, get_page_xy, icon_test, list_test, run, run_post, swap_element, _;
+  var $, $s, assert, build_menu, create_element, create_img, echo, file_test, find_drag_target, get_page_xy, icon_test, list_session, list_test, run, run_post, swap_element, _;
 
   Storage.prototype.setObject = function(key, value) {
     return this.setItem(key, JSON.stringify(value));
@@ -160,6 +160,10 @@
     return echo(DCore.DEntry.get_name(a));
   };
 
-  run(icon_test, 1);
+  list_session = function() {
+    return DCore.Greeter.get_sessions();
+  };
+
+  run(list_session);
 
 }).call(this);
