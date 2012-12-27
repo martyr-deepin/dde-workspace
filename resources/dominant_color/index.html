@@ -1,31 +1,58 @@
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Domiant color calc</title>
-	<link href="css/smoothness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
-	<script src="js/jquery-1.8.3.js"></script>
-	<script src="js/jquery-ui-1.9.2.custom.js"></script>
-    <style>
-        #slider {
-            width: 500px;
-        }
-    </style>
-	<script>
-	$(function() {
-		$( "#slider" ).slider({
-			range: true,
-            values: [ 0, 100],
-            change: function(e, ui) {
-                show.innerText = ui.values[0] / 100 + " ~~ " + ui.values[1]/100;
-            }
-		});
-	});
-	</script>
+    <head>
+        <meta charset="utf-8">
+        <title>Domiant color calc</title>
+        <link href="css/smoothness/jquery-ui-1.9.2.custom.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    <body>
+        <div id="main">
+            <div id="title">
+                <div>(饱和度,亮度):</div>
+                <span>(+, +)</span>
+                <span>(+, -)</span>
+                <span>(-, +)</span>
+                <span>(-, -)</span>
+            </div>
 
-</head>
-<body>
-    <div id="slider"></div>
-    <div id="show">0</div>
+            <div id="show">
+            </div>
 
-</body>
+
+            <div id="config">
+                <div id="c_s">
+                    <div>
+                        <div class="entry">饱和度<span id="s_value"></span></div>
+                        <div id="s_slider"></div>
+                    </div>
+                    <select>
+                        <option id="method1">正比</option>
+                        <option id="method2">反比</option>
+                    </select>
+                </div>
+                <div id="c_b">
+                    <div>
+                        <div class="entry">亮度<span id="b_value"></span></div>
+                        <div id="b_slider"></div>
+                        <select>
+                            <option id="method1">正比</option>
+                            <option id="method2">反比</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="color_info">
+                    <b>dominant color</b><div id="d_color" class="color_board"></div>
+                    <b>calcuate color</b><div id="b_color" class="color_board"></div>
+                </div>
+            </div>
+        </div>
+        <div id="icon_show">12</div>
+
+
+
+        <script src="js/jquery-1.8.3.js"></script>
+        <script src="js/jquery-ui-1.9.2.custom.js"></script>
+        <script src="js/main.js"></script>
+    </body>
 </html>

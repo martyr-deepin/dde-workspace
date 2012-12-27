@@ -25,11 +25,17 @@
 #include "category.h"
 #include "utils.h"
 
+gboolean clear_bg(GtkWidget* w, cairo_t* cr)
+{
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    return FALSE;
+}
 int main(int argc, char* argv[])
 {
     init_i18n();
     gtk_init(&argc, &argv);
-    GtkWidget* container = create_web_container(FALSE, TRUE);
+    GtkWidget* container = create_web_container(TRUE, TRUE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     set_default_theme("Deepin");
@@ -41,6 +47,9 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect(webview, "draw", G_CALLBACK(clear_bg), NULL);
+
+    monitor_resource_file("dominant_color", webview);
 
     gtk_widget_show_all(container);
     gtk_main();
