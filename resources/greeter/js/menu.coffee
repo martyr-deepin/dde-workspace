@@ -78,3 +78,5 @@ class ComboBox extends Widget
         _img = @menu.items[id][1]
         @current_img.src = _img
         @menu.current = id
+
+debug = $("#Debug")

@@ -67,10 +67,10 @@ class UserInfo extends Widget
         @element.appendChild(loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
-        echo "authenticate"
-        echo @id
-        echo password
-        echo _session
+        debug.innerText += "authenticate"
+        debug.innerText += @id
+        debug.innerText += password
+        debug.innerText += _session
     
         DCore.Greeter.login(@id, password, _session)
 
