@@ -169,6 +169,15 @@ class AppItem extends Widget
 
         e.stopPropagation()
 
+    do_drop: (e) ->
+        tmp_list = []
+        for file in e.dataTransfer.files
+            path = decodeURI(file.path)
+            entry = DCore.DEntry.create_by_path(path)
+            tmp_list.push(entry)
+        switch this.constructor.name
+            when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
+            when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
 
 
 class Launcher extends AppItem
@@ -388,7 +397,7 @@ class ClientGroup extends AppItem
     do_itemselected: (e)=>
         Preview_container.remove_all()
         switch e.id
-            when 1 then DCore.Dock.launch_by_app_id(@app_id)
+            when 1 then DCore.Dock.launch_by_app_id(@app_id, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
             #when 4 then Preview_container.show_group(@)

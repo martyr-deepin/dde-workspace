@@ -222,7 +222,7 @@ JSValueRef dock_get_launcher_info(const char* app_id)
 }
 
 JS_EXPORT_API
-gboolean dock_launch_by_app_id(const char* app_id)
+gboolean dock_launch_by_app_id(const char* app_id, ArrayContainer fs)
 {
     GAppInfo* info = NULL;
     gboolean ret = FALSE;
@@ -244,10 +244,17 @@ gboolean dock_launch_by_app_id(const char* app_id)
     } else {
         info = g_app_info_create_from_commandline(app_id, NULL, G_APP_INFO_CREATE_NONE, NULL);
     }
-    ret = g_app_info_launch(info, NULL, NULL, NULL);
+
+    GFile** files = fs.data;
+    GList* list = NULL;
+    for (size_t i=0; i<fs.num; i++) {
+        if (G_IS_FILE(files[i]))
+            list = g_list_append(list, files[i]);
+    }
+    ret = g_app_info_launch(info, list, NULL, NULL);
+    g_list_free(list);
     g_object_unref(info);
     return ret;
-
 }
 
 gboolean is_has_app_info(const char* app_id)
