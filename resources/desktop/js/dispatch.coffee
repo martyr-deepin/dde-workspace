@@ -49,6 +49,11 @@ clear_desktop_items = ->
 
 load_desktop_all_items = ->
     clear_desktop_items()
+
+    for i in speical_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
+
     for e in DCore.Desktop.get_desktop_entries()
         w = create_item(e)
         if w?

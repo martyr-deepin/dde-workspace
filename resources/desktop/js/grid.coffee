@@ -41,11 +41,13 @@ rows = 0
 
 # grid html element
 div_grid = null
-
+# grid occupy table
 o_table = null
 
 # all file items on desktop
 all_item = new Array
+# speical items on desktop
+speical_item = new Array
 # all selected items on desktop
 selected_item = new Array
 # the last widget which been operated last time
@@ -273,6 +275,10 @@ sort_desktop_item_by_func = (func) ->
     for i in [0 ... cols]
         for j in [0 .. rows]
             o_table[i][j] = null
+
+    for i in speical_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
 
     for i in item_ordered_list
         w = Widget.look_up(i)
@@ -718,6 +724,17 @@ grid_do_keyup_to_shrotcut = (evt) ->
         evt.preventDefault()
 
 
+init_speical_desktop_items = ->
+    item = new ProfileVDir(null)
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+    item = new trashVDir(null)
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -731,6 +748,8 @@ create_item_grid = ->
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
+
+    init_speical_desktop_items()
 
 
 #class ItemGrid
