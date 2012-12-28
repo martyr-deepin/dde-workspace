@@ -24,12 +24,14 @@ calc_app_item_size = ->
 
     w = apps[0].offsetWidth
     last = apps[apps.length-1]
-    if last
+    if last and last.clientWidth != 0
+        #TODO: the logic is mess.
+        # when the last apps is in withdraw status, the clientWidth will be zero!
+        #while last.clientWidth == 0
+            #last = last.previousElementSibling
         DCore.Dock.require_region(0, 0, screen.width, 30)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        if offset == 0
-            alert("w:#{w} apps.length: #{apps.length} clientWidth: #{last.clientWidth}")
         DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
         height = w * (60-8) / 68 + 8
         DCore.Dock.change_workarea_height(height)
@@ -167,6 +169,15 @@ class AppItem extends Widget
 
         e.stopPropagation()
 
+    do_drop: (e) ->
+        tmp_list = []
+        for file in e.dataTransfer.files
+            path = decodeURI(file.path)
+            entry = DCore.DEntry.create_by_path(path)
+            tmp_list.push(entry)
+        switch this.constructor.name
+            when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
+            when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
 
 
 class Launcher extends AppItem
@@ -386,7 +397,7 @@ class ClientGroup extends AppItem
     do_itemselected: (e)=>
         Preview_container.remove_all()
         switch e.id
-            when 1 then DCore.Dock.launch_by_app_id(@app_id)
+            when 1 then DCore.Dock.launch_by_app_id(@app_id, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
             #when 4 then Preview_container.show_group(@)
@@ -467,3 +478,6 @@ DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
 setTimeout(calc_app_item_size, 1000)
+setTimeout(calc_app_item_size, 1800)
+setTimeout(calc_app_item_size, 2800)
+setTimeout(calc_app_item_size, 4000)
