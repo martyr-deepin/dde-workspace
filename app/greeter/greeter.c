@@ -471,7 +471,12 @@ int main(int argc, char **argv)
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
-    gtk_window_maximize(GTK_WINDOW(container));
+
+    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
+    gint width = gdk_screen_get_width(screen);
+    gint height = gdk_screen_get_height(screen);     
+
+    gtk_window_set_default_size(GTK_WINDOW(container), width, height);
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);

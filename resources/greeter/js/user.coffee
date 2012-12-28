@@ -66,7 +66,7 @@ class UserInfo extends Widget
         loading = new Loading("loading")
         @element.appendChild(loading.element)
 
-        _session = de_menu.menu.items[de_menu.get_current()]
+        _session = de_menu.menu.items[de_menu.get_current()][0]
         echo "authenticate"
         echo @id
         echo password
