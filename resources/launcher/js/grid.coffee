@@ -20,36 +20,36 @@
 applications = {}
 category_infos = []
 
-create_item = (info) ->
-    el = document.createElement('div')
-    el.setAttribute('class', 'item')
-    el.id = info.ID
-    el.innerHTML = "
-    <img draggable=false src=#{info.Icon} />
-    <div class=item_name> #{info.Name}</div>
-    <div class=item_comment>#{info.Comment}</div>
-    "
-    el.setAttribute('title', info.Name)
+try_set_title = (el, text, width)->
+    setTimeout(->
+        height = calc_text_size(text, width)
+        if height > 38
+            el.setAttribute('title', text)
+    , 200)
 
-    el.click_cb = (e) ->
-        el.style.cursor = "wait"
-        DCore.DEntry.launch(info.Core, [])
+class Item extends Widget
+    constructor: (@id, @core)->
+        super
+        create_img("", DCore.DEntry.get_icon(@core), @element)
+        @name = create_element("div", "item_name", @element)
+        @name.innerText = DCore.DEntry.get_name(@core)
+        try_set_title(@element, DCore.DEntry.get_name(@core), 80)
+
+    do_click : (e)->
+        @element.style.cursor = "wait"
+        DCore.DEntry.launch(@core, [])
         DCore.Launcher.exit_gui()
-    el.addEventListener('click', el.click_cb)
-    return el
 
-for info in DCore.Launcher.get_items()
-    applications[info.ID] = create_item(info)
+for core in DCore.Launcher.get_items()
+    id = DCore.DEntry.get_id(core)
+    applications[id] = new Item(id, core)
 # load the Desktop Entry's infomations.
 
 #export function
 grid_show_items = (items) ->
     grid.innerHTML = ""
     for i in items
-        grid.appendChild(applications[i])
-    setTimeout(->
-            update_selected($(".item"))
-    , 200)
+        grid.appendChild(applications[i].element)
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -66,8 +66,7 @@ grid_load_category = (cat_id) ->
     if cat_id == -1
         grid.innerHTML = ""
         for own key, value of applications
-            grid.appendChild(value)
-        update_selected($s(".item")[0])
+            grid.appendChild(value.element)
         return
 
     if category_infos[cat_id]
@@ -77,3 +76,4 @@ grid_load_category = (cat_id) ->
         category_infos[cat_id] = info
 
     grid_show_items(info)
+    update_selected(null)

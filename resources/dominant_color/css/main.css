@@ -1,0 +1,114 @@
+#slider {
+    margin: 10px;
+}
+
+.color_board {
+    width: 50px;
+    height: 50px;
+    background: red;
+}
+
+.entry {
+    min-width: 100px;
+    margin-bottom: 5px;
+}
+
+#c_s {
+    margin-bottom: 15px;
+}
+
+#c_b {
+    margin-bottom: 15px;
+}
+
+#show {
+    margin-top:40px;
+    -webkit-box-flex: 1;
+}
+.ShowContainer {
+    display: -webkit-box;
+}
+.ShowItem {
+    /*background: red;*/
+    margin: 5px;
+    width: 80px;
+    height: 80px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+.ShowItem img {
+    max-width: 48px;
+    max-height: 48px;
+}
+.ColorInfo {
+    font-size: 10px;
+    /*background: red;*/
+    min-width: 65px;
+    color: white;
+    height: 20px;
+}
+
+
+#config {
+    width: 200px;
+    padding: 15px;
+    border-left: 1px dashed black;
+}
+
+#main {
+    display: -webkit-box;
+    -webkit-box-flex: 1;
+}
+
+#icon_show {
+    background: blue;
+    height: 80px;
+}
+
+#title {
+    position: fixed;
+}
+#title span {
+    text-align: center;
+    width: 80px;
+    display: inline-block;
+}
+
+body {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    width: 600px;
+    height: 450px;
+    background: rgba(50, 100, 80, 0.8);
+    padding: 0px;
+    margin: 0px;
+}
+
+.close:hover {
+    background: rgba(100, 0, 0, 0.5);
+}
+.close {
+    cursor: default;
+    padding: 5px;
+    margin-top: 10px;
+    text-align:center;
+    height: 1em;
+    width: 1em;
+    color: red;
+}
+
+.DragZone{
+    background-size: 80px 80px;
+    background-repeat: no-repeat;
+    background-clip: content-box;
+    text-align: center;
+    border: 1px dashed white;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+.AddMask {
+    float: left;
+}

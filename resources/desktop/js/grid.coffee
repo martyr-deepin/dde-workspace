@@ -64,8 +64,9 @@ sel = null
 try
     s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
 catch e
-    echo "error when init nautilus dbus interface[#{e}]"
+    echo "error when init nautilus DBus interface(#{e})"
     s_nautilus = null
+
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
@@ -100,8 +101,8 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
         if w? then move_to_anywhere(w)
 
 
-load_position = (item) ->
-    pos = localStorage.getObject("id:" + item)
+load_position = (id) ->
+    pos = localStorage.getObject("id:" + id)
     if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -109,13 +110,13 @@ load_position = (item) ->
     pos
 
 
-save_position = (item, pos) ->
-    localStorage.setObject("id:" + item, pos)
+save_position = (id, pos) ->
+    localStorage.setObject("id:" + id, pos)
     return
 
 
-discard_position = (item) ->
-    localStorage.removeItem("id:" + item)
+discard_position = (id) ->
+    localStorage.removeItem("id:" + id)
     return
 
 
@@ -178,7 +179,6 @@ set_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
-    #draw_grid()
 
 
 detect_occupy = (info) ->
@@ -190,15 +190,14 @@ detect_occupy = (info) ->
     return false
 
 
-pixel_to_coord = (x, y) ->
+pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    #echo "#{index_x},#{index_y}"
-    return [index_x, index_y]
+    coord_to_pos(index_x, index_y, w, h)
 
 
-coord_to_pos = (coord, size) ->
-    {x : coord[0], y : coord[1], width : size[0], height : size[1]}
+coord_to_pos = (pos_x, pos_y, w, h) ->
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 find_free_position = (w, h) ->
@@ -219,7 +218,6 @@ move_to_anywhere = (widget) ->
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
-
     return
 
 
@@ -231,7 +229,6 @@ move_to_somewhere = (widget, pos) ->
         if not old_pos?
             pos = find_free_position(1, 1)
             move_to_position(widget, pos)
-
     return
 
 
@@ -274,7 +271,9 @@ sort_desktop_item_by_func = (func) ->
     item_ordered_list = all_item.concat()
     item_ordered_list.sort(func)
 
-    clear_occupy_table()
+    for i in [0 ... cols]
+        for j in [0 .. rows]
+            o_table[i][j] = null
 
     for i in item_ordered_list
         w = Widget.look_up(i)
@@ -286,13 +285,11 @@ sort_desktop_item_by_func = (func) ->
 
 menu_sort_desktop_item_by_name = ->
     sort_desktop_item_by_func(sort_list_by_name_from_id)
-
     return
 
 
 menu_sort_desktop_item_by_mtime = ->
     sort_desktop_item_by_func(sort_list_by_mtime_from_id)
-
     return
 
 
@@ -308,13 +305,11 @@ create_entry_to_new_item = (entry) ->
 
 
 menu_create_new_folder = ->
-#FIXME: create may fail, add try/catch
     entry = DCore.Desktop.new_directory()
     create_entry_to_new_item(entry)
 
 
 menu_create_new_file = ->
-#FIXME: create may fail, add try/catch
     entry = DCore.Desktop.new_file()
     create_entry_to_new_item(entry)
 
@@ -323,9 +318,8 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
+        pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         for file in evt.dataTransfer.files
-            pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
-
             path = DCore.Desktop.move_to_desktop(file.path)
             if path.length > 1
                 save_position(path, pos)
@@ -352,7 +346,7 @@ init_grid_drop = ->
 
 drag_update_selected_pos = (w, evt) ->
     old_pos = load_position(w.id)
-    new_pos = coord_to_pos(pixel_to_coord(evt.x, evt.y), [1, 1])
+    new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
     coord_x_shift = new_pos.x - old_pos.x
     coord_y_shift = new_pos.y - old_pos.y
 
@@ -374,7 +368,7 @@ drag_update_selected_pos = (w, evt) ->
         if not w? then continue
 
         old_pos = load_position(w.id)
-        new_pos = coord_to_pos([old_pos.x + coord_x_shift, old_pos.y + coord_y_shift], [1, 1])
+        new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
 
         if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
@@ -384,27 +378,22 @@ drag_update_selected_pos = (w, evt) ->
     return
 
 
-#TODO: copy selected items to clipboard
 selected_copy_to_clipboard = ->
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp_list.push(w.entry)
     DCore.DEntry.copy(tmp_list)
-    alert("copy #{tmp_list.length} file(s) to clipboard")
 
 
-#TODO: cut selected items to clipboard
 selected_cut_to_clipboard = ->
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp_list.push(w.entry)
     DCore.DEntry.cut(tmp_list)
-    alert("cut #{tmp_list.length} file(s) to clipboard")
 
 
-#TODO: paste file from clipborad to folder
 paste_from_clipboard = ->
     e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
     DCore.DEntry.paste(e)
@@ -422,6 +411,7 @@ item_dragstart_handler = (widget, evt) ->
     x = evt.x - drag_start.x * i_width
     y = evt.y - drag_start.y * i_height
     evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
+    return
 
 
 set_item_selected = (w, top = false) ->
@@ -436,7 +426,6 @@ set_item_selected = (w, top = false) ->
             if last_widget then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
             w.item_focus()
-
     return
 
 
@@ -481,7 +470,7 @@ update_selected_stats = (w, evt) ->
                 selected_item.push(last_one_id)
 
             if selected_item.length == 1
-                end_pos = coord_to_pos(pixel_to_coord(evt.clientX, evt.clientY), [1, 1])
+                end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
                 start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
                 ret = compare_pos_top_left(start_pos, end_pos)
@@ -597,6 +586,7 @@ update_selected_item_drag_image = ->
             ++line_number
 
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
+    return
 
 
 build_selected_items_menu = ->
@@ -623,10 +613,9 @@ delete_selected_items = (real_delete) ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push(w.entry)
-    if real_delete
-        DCore.DEntry.delete(tmp)
-    else
-        DCore.DEntry.trash(tmp)
+
+    if real_delete then DCore.DEntry.delete(tmp)
+    else DCore.DEntry.trash(tmp)
 
 
 show_selected_items_Properties = ->
@@ -634,8 +623,12 @@ show_selected_items_Properties = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
-#TODO: should tell user we fail to call
-    s_nautilus?.ShowItemProperties_sync(tmp, '')
+
+    #FIXME: we have an error here
+    try
+        s_nautilus?.ShowItemProperties_sync(tmp, "")
+    catch e
+        echo "error(e)"
 
 
 gird_left_mousedown = (evt) ->
@@ -661,10 +654,8 @@ grid_right_click = (evt) ->
             ]
         ])
     menus.push([3, _("open terminal here")])
-    if DCore.DEntry.can_paste()
-        menus.push([4, _("paste")])
-    else
-        menus.push([4, "-" + _("paste")])
+    if DCore.DEntry.can_paste() then menus.push([4, _("paste")])
+    else menus.push([4, "-" + _("paste")])
     menus.push([])
     menus.push([5, _("Personal")])
     menus.push([6, _("Display Settings")])
@@ -698,18 +689,15 @@ create_item_grid = ->
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
-    drag_image = document.createElement("img")
-#FIXME: test propose only, should disable on public release
-    #document.body.appendChild(drag_image)
 
 
-class ItemGrid
-    constructor : (parentElement) ->
-        @_parent_element = parentElement
-        @_workarea_width = 0
-        @_workarea_height = 0
-        @_offset_x = 0
-        @_offset_y = 0
+#class ItemGrid
+#    constructor : (parentElement) ->
+#        @_parent_element = parentElement
+#        @_workarea_width = 0
+#        @_workarea_height = 0
+#        @_offset_x = 0
+#        @_offset_y = 0
 
 
 class Mouse_Select_Area_box
@@ -733,7 +721,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @start_point = evt
-            @start_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
+            @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             @last_pos = @start_pos
         return
 
@@ -750,7 +738,7 @@ class Mouse_Select_Area_box
         @element.style.height = "#{sh}px"
         @element.style.visibility = "visible"
 
-        new_pos = coord_to_pos(pixel_to_coord(evt.clientX - s_offset_x, evt.clientY - s_offset_y), [1, 1])
+        new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos

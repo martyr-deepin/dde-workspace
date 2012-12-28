@@ -40,6 +40,20 @@ void _make_maximize()
 
 }
 
+gboolean clear_bg(GtkWidget* w, cairo_t* cr)
+{
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    return FALSE;
+}
+
+void do_im_commit(GtkIMContext *context, gchar* str)
+{
+    JSObjectRef json = json_create();
+    json_append_string(json, "Content", str);
+    js_post_message("im_commit", json);
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -62,12 +76,20 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
+    g_signal_connect(webview, "draw", G_CALLBACK(clear_bg), NULL);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
+
+    GtkIMContext* im_context = gtk_im_multicontext_new();
+    gtk_im_context_set_client_window(im_context, gdkwindow);
+    GdkRectangle area = {0, 1700, 100, 30};
+    gtk_im_context_set_cursor_location(im_context, &area);
+    gtk_im_context_focus_in(im_context);
+    g_signal_connect(im_context, "commit", G_CALLBACK(do_im_commit), NULL); 
 
     /*monitor_resource_file("launcher", webview);*/
     gtk_widget_show_all(container);
@@ -151,8 +173,8 @@ void record_category_info(const char* id, GDesktopAppInfo* info)
 JS_EXPORT_API
 JSObjectRef launcher_get_items()
 {
-    JSObjectRef json = json_array_create();
 
+    JSObjectRef items = json_array_create();
     GList* app_infos = g_app_info_get_all();
 
     GList* iter = app_infos;
@@ -166,29 +188,54 @@ JSObjectRef launcher_get_items()
 
         record_category_info(g_app_info_get_id(info), G_DESKTOP_APP_INFO(info));
 
-        JSObjectRef item = json_create();
-        json_append_nobject(item, "Core", info, g_object_ref, g_object_unref);
-        json_append_string(item, "ID", g_app_info_get_id(info));
-        json_append_string(item, "Name", g_app_info_get_display_name(info));
+        json_array_append_nobject(items, i - skip, 
+                info, g_object_ref, g_object_unref);
 
-        GIcon* icon = g_app_info_get_icon(info);
-        if (icon != NULL) {
-            char* icon_str = g_icon_to_string(icon);
-            char* icon_path = icon_name_to_path(icon_str, 48);
-            json_append_string(item, "Icon", icon_path);
-            g_free(icon_path);
-            g_free(icon_str);
-        } else {
-            json_append_string(item, "Icon", "");
-        }
         g_object_unref(info);
-
-        json_array_append(json, i - skip, item);
     }
 
     g_list_free(app_infos); //the element of GAppInfo should free by JSRunTime not here!
 
-    return json;
+    return items;
+}
+
+JS_EXPORT_API
+gboolean launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
+{
+    const char* path = g_desktop_app_info_get_filename(info);
+    if (g_strrstr(path, key))
+        return TRUE;
+
+    const char* name = g_app_info_get_name((GAppInfo*)info);
+    if (name && g_strrstr(name, key))
+        return TRUE;
+
+    const char* dname = g_app_info_get_display_name((GAppInfo*)info);
+    if (dname && g_strrstr(dname, key))
+        return TRUE;
+
+    const char* desc = g_app_info_get_description((GAppInfo*)info);
+    if (desc && g_strrstr(desc, key))
+        return TRUE;
+
+    const char* exec = g_app_info_get_executable((GAppInfo*)info);
+    if (exec && g_strrstr(exec, key))
+        return TRUE;
+
+    const char* gname = g_desktop_app_info_get_generic_name(info);
+    if (gname && g_strrstr(gname, key))
+        return TRUE;
+
+    const char* const* keys = g_desktop_app_info_get_keywords(info);
+    if (keys != NULL) {
+        size_t n = g_strv_length((char**)keys);
+        for (size_t i=0; i<n; i++) {
+            if (g_strrstr(keys[i], key))
+                return TRUE;
+        }
+    }
+
+    return FALSE;
 }
 
 JS_EXPORT_API
@@ -248,3 +295,5 @@ char* launcher_get_categories()
         return g_strdup("[]");
     }
 }
+
+

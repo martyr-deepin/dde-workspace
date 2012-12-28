@@ -19,7 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 body {
-    background: rgba(8, 41, 67, 0.95);
+    background: rgba(6, 63, 107, 0.95);
     color: white;
     -webkit-user-select: none;
     overflow-y: hidden;
@@ -113,11 +113,12 @@ body {
 }
 
 .item_name {
-    height: 3em;
-    line-height: 1.5em;
-    text-overflow: ellipsis;
-    /*white-space: nowrap;*/
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .item img:hover {

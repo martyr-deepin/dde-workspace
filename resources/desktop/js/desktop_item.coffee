@@ -65,7 +65,7 @@ class Item extends Widget
         el.draggable = true
 
         @item_icon = document.createElement("img")
-        @item_icon.src = DCore.DEntry.get_icon(@entry)
+        @item_icon.src = @get_icon()
         @item_icon.draggable = false
         el.appendChild(@item_icon)
 
@@ -127,12 +127,13 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
-        if @selected == false then update_selected_stats(this, evt)
+        if @selected == false
+            update_selected_stats(this, evt)
+        else if @in_rename == true
+            @item_complete_rename(false)
 
 
     do_dblclick : (evt) ->
-        #echo "do_dblclick #{@clicked} #{@in_rename} #{@delay_rename}"
-
         if @delay_rename != -1
             clearTimeout(@delay_rename)
             @delay_rename = -1
@@ -210,15 +211,16 @@ class Item extends Widget
             @item_name.addEventListener("mousedown", @event_stoppropagation)
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
+            @item_name.addEventListener("contextmenu", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
-            #TODO: set caret pos to end or select all text when begin editing
-            #ws = window.getSelection()
-            #ws.removeAllRanges()
-            #range = document.createRange()
-            #range.setStart(@item_name.childNodes[0], 0)
-            #range.setEnd(@item_name.childNodes[0], @item_name.innerText.length)
-            #ws.addRange(range)
+
+            ws = window.getSelection()
+            ws.removeAllRanges()
+            range = document.createRange()
+            range.setStart(@item_name.childNodes[0], 0)
+            range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
+            ws.addRange(range)
 
             @in_rename = true
         return
@@ -249,6 +251,7 @@ class Item extends Widget
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
         @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
+        @item_name.removeEventListener("contextmenu", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
@@ -297,16 +300,12 @@ class DesktopEntry extends Item
         if evt.dataTransfer.dropEffect == "move"
             drag_update_selected_pos(this, evt)
 
-        #else if evt.dataTransfer.dropEffect == "link"
-            #node = evt.target
-            #node.parentNode.removeChild(node)
-
         return
 
 
     do_drop : (evt) =>
-        evt.preventDefault()
         evt.stopPropagation()
+        evt.preventDefault()
         if @selected == false
             @hide_hover_box()
             @in_count = 0
@@ -320,15 +319,17 @@ class DesktopEntry extends Item
             if @in_count == 1
                 @show_hover_box()
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
+        found_self = false
+        for file in evt.dataTransfer.files
+            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
+                found_self = true
+                break
+
+        if found_self == true
             evt.dataTransfer.dropEffect = "none"
         else
-            evt.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "move"
 
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -336,15 +337,17 @@ class DesktopEntry extends Item
         evt.preventDefault()
         evt.stopPropagation()
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
+        found_self = false
+        for file in evt.dataTransfer.files
+            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
+                found_self = true
+                break
+
+        if found_self == true
             evt.dataTransfer.dropEffect = "none"
         else
-            evt.dataTransfer.dropEffect = "link"
+            evt.dataTransfer.dropEffect = "move"
 
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
         return
 
 
@@ -354,6 +357,8 @@ class DesktopEntry extends Item
             --@in_count
             if @in_count == 0
                 @hide_hover_box()
+
+        return
 
 
     do_buildmenu : () ->
@@ -372,75 +377,22 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
-    constructor : ->
-        super
-
-       if not @exec?
-           @exec = "gvfs-open \"#{@id}\""
-
-
     do_drop : (evt) =>
         super
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR
-                @move_in(e)
+            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
 
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
-
-
-    do_dragenter : (evt) =>
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) =>
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        enc_path = encodeURI("file://" + @get_path())
-        if files.indexOf(enc_path) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    move_in: (move_entry) ->
-        DCore.DEntry.move(move_entry, @entry)
 
 
 class RichDir extends DesktopEntry
     constructor : ->
         super
-
-        if not @exec?
-            @exec = "gvfs-open \"#{@id}\""
 
         @div_pop = null
         @show_pop = false
@@ -476,49 +428,13 @@ class RichDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then @move_in(e)
+            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
 
-        return
-
-
-    do_dragenter : (evt) ->
-        evt.stopPropagation()
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @show_hover_box()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #FIXME: test propose only, should disable on public release
-        #echo "do_dragenter #{evt.dataTransfer.dropEffect}"
-        return
-
-
-    do_dragover : (evt) ->
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        if files.indexOf(encodeURI("file://" + @get_path())) >= 0
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
-        #echo "do_dragover #{evt.dataTransfer.dropEffect}"
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
 
@@ -599,19 +515,31 @@ class RichDir extends DesktopEntry
 
             ele.addEventListener('mousedown', (evt) ->
                 evt.stopPropagation()
+                return
             )
             ele.addEventListener('click', (evt) ->
                 evt.stopPropagation()
+                return
+            )
+            ele.addEventListener('contextmenu', (evt) ->
+                evt.stopPropagation()
+                return
             )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
-                evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(this.id)}")
-                evt.dataTransfer.effectAllowed = "moveCopy"
+                w = Widget.look_up(this.parentElement.title)
+                if w? then e = w.sub_items[this.id]
+                if e?
+                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(e))}")
+                    evt.dataTransfer.effectAllowed = "moveCopy"
+                else
+                    evt.dataTransfer.effectAllowed = "none"
             )
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
             )
             ele.addEventListener('dblclick', (evt) ->
+                evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.title)
                 if w? then e = w.sub_items[this.id]
                 if e? then DCore.DEntry.launch(e, [])
@@ -675,23 +603,16 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
 
-    move_in: (move_entry) ->
-        DCore.DEntry.move(move_entry, @entry)
-
-
 class Application extends DesktopEntry
     do_drop : (evt) ->
         super
 
         tmp_list = []
         all_are_apps = true
-        all_selected_items = evt.dataTransfer.getData("text/uri-list")
-        files = all_selected_items.split("\n")
-        for f in files
-            if f.length == 0 then continue
-            e = DCore.DEntry.create_by_path(decodeURI(f).replace("file://", ""))
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file).replace(/^file:\/\//i, ""))
             if not e? then continue
-            if DCore.DEntry.get_type(e) != FILE_TYPE_APP
+            if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
                 all_are_apps = false
 
             tmp_list.push(e)
