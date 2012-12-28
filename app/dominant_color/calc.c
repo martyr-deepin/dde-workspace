@@ -64,13 +64,7 @@ void hsv2rgb(double h, double s, double v, double* r, double*g, double *b)
     }
 }
 
-void clamp(double* s, double* v)
-{
-    /**s = 0.15 + 0.1 * (*s);*/
-    /**v = 0.15 + 0.1 * (*v);*/
-}
-
-void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
+void calc(guchar* data, guint length, int skip, double *r, double *g, double *b, ClampFunc func)
 {
     long long a_r = 0;
     long long a_g = 0;
@@ -83,11 +77,11 @@ void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
     long count = length / skip;
     double h, s, v;
     rgb2hsv(a_r / count, a_g / count, a_b / count, &h, &s, &v);
-    clamp(&s, &v);
+    func(&s, &v);
     hsv2rgb(h, s, v, r, g, b);
 }
 
-void calc_dominant_color_by_path(const char* path, double *r, double *g, double *b)
+void calc_dominant_color_by_path(const char* path, double *r, double *g, double *b, ClampFunc func)
 {
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(path, NULL);
     if (path != NULL) {
@@ -95,11 +89,30 @@ void calc_dominant_color_by_path(const char* path, double *r, double *g, double 
         int stride = gdk_pixbuf_get_rowstride(pixbuf);
         guint size = 0;
         guchar* buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
-        calc(buf, size, stride / width, r, g, b);
+        calc(buf, size, stride / width, r, g, b, func);
         g_object_unref(pixbuf);
     } else {
         *r = 0;
         *g = 0;
         *b = 0;
     }
+}
+
+void draw_board(cairo_t* cr, cairo_surface_t* img, cairo_surface_t* mask, double r, double g, double b)
+{
+
+    cairo_save(cr);
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    cairo_restore(cr);
+
+    cairo_save(cr);
+    cairo_set_source_rgb(cr, r, g, b);
+    cairo_mask_surface(cr, mask, 0, 0);
+    cairo_clip(cr);
+    cairo_paint(cr);
+    cairo_restore(cr);
+
+    cairo_set_source_surface(cr, img, 5, 5);
+    cairo_paint(cr);
 }
