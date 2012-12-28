@@ -72,7 +72,7 @@ class UserInfo extends Widget
         echo password
         echo _session
     
-        DCore.Greeter.authenticate(@id, password, _session)
+        DCore.Greeter.login(@id, password, _session)
 
 # below code should use c-backend to fetch data 
 users = DCore.Greeter.get_users()

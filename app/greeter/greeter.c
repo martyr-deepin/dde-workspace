@@ -65,15 +65,30 @@ const gchar* greeter_get_default_session()
 }
 
 JS_EXPORT_API
-void greeter_authenticate(const gchar *username, const gchar *password, const gchar *session)
+void greeter_login(const gchar *username, const gchar *password, const gchar *session)
 {
-    lightdm_greeter_authenticate(greeter, username);
-    lightdm_greeter_respond(greeter, password);
-
     if(lightdm_greeter_get_is_authenticated(greeter)){
         lightdm_greeter_start_session_sync(greeter, session, NULL);
-    }else{       
-        printf("authenticate failed\n");
+
+    }else if(lightdm_greeter_get_in_authentication(greeter)){
+        lightdm_greeter_respond(greeter, password);
+
+        if(lightdm_greeter_get_is_authenticated(greeter)){
+            lightdm_greeter_start_session_sync(greeter, session, NULL);
+        }
+
+    }else{
+        if(g_strcmp0(username, "*other") == 0){
+            lightdm_greeter_authenticate(greeter, NULL);
+
+        }else if(g_strcmp0(username, "*guest") == 0){
+            lightdm_greeter_authenticate_as_guest(greeter);
+
+        }else{
+            lightdm_greeter_authenticate(greeter, username);
+        }
+
+        greeter_login(username, password, session);
     }
 }
 
@@ -442,27 +457,6 @@ gboolean greeter_shutdown()
     return lightdm_shutdown(NULL);
 }
 
-/* const gchar* get_ui_select_session() */
-/* { */
-/*     return "gnome"; */
-/* } */
-
-/* static void authentication_complete_cb() */
-/* { */
-/*     const gchar *session = NULL; */
-
-/*     if(lightdm_greeter_get_is_authenticated(greeter)){ */
-/*         session = get_ui_select_session(); */
-/*         g_assert(session); */
-
-/*         lightdm_greeter_start_session_sync(greeter, session, NULL); */
-/*         gtk_main_quit(); */
-        
-/*     }else{ */
-/*         printf("clear the password had input\n"); */
-/*     } */
-/* } */
-
 int main(int argc, char **argv)
 {
     init_i18n();
@@ -482,22 +476,23 @@ int main(int argc, char **argv)
 
     gtk_window_set_default_size(GTK_WINDOW(container), width, height);
 
-    GdkCursor *cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
-    GdkWindow *gdk_window = gtk_widget_get_window(container);
-    gdk_window_set_cursor(gdk_window, cursor);
+    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        printf("connect greeter failed!\n");
+        printf("greeter connect failed\n");
+        return -1;
+    }else{
+        printf("greeter connect succeed\n");
     }
 
-    g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_widget_show_all(container);
 
-    monitor_resource_file("greeter", webview);
+    /* monitor_resource_file("greeter", webview); */
 
     gtk_main();
     return 0;
