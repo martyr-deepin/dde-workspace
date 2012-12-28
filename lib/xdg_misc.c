@@ -80,8 +80,10 @@ char* icon_name_to_path(const char* name, int size)
 
     char* ext = strchr(name, '.');
     if (ext != NULL) {
-        *ext = '\0'; //FIXME: Is it ok to changed it's value? The ext is an part of an gtk_icon_info's path field's allocated memroy.
-        g_debug("desktop's Icon name should an absoulte path or an basename without extension");
+        if (g_ascii_strcasecmp(ext+1, "png") == 0 || g_ascii_strcasecmp(ext+1, "svg") == 0 || g_ascii_strcasecmp(ext+1, "jpg") == 0) {
+            *ext = '\0'; //FIXME: Is it ok to changed it's value? The ext is an part of an gtk_icon_info's path field's allocated memroy.
+            g_debug("desktop's Icon name should an absoulte path or an basename without extension");
+        }
     }
     GtkIconTheme* them = gtk_icon_theme_get_default(); //do not ref or unref it
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
