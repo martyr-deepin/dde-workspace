@@ -24,12 +24,14 @@ calc_app_item_size = ->
 
     w = apps[0].offsetWidth
     last = apps[apps.length-1]
-    if last
+    if last and last.clientWidth != 0
+        #TODO: the logic is mess.
+        # when the last apps is in withdraw status, the clientWidth will be zero!
+        #while last.clientWidth == 0
+            #last = last.previousElementSibling
         DCore.Dock.require_region(0, 0, screen.width, 30)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        if offset == 0
-            alert("w:#{w} apps.length: #{apps.length} clientWidth: #{last.clientWidth}")
         DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
         height = w * (60-8) / 68 + 8
         DCore.Dock.change_workarea_height(height)
