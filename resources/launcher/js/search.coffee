@@ -53,7 +53,8 @@ selected_down = ->
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]
-        n = n.nextElementSibling
+        if n
+            n = n.nextElementSibling
     if n
         update_selected(n)
     grid.scrollTop += 50
@@ -65,7 +66,8 @@ selected_up = ->
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]
-        n = n.previousElementSibling
+        if n
+            n = n.previousElementSibling
     if n
         update_selected(n)
     grid.scrollTop -= 50
