@@ -6,6 +6,7 @@
 #include <glib/gstdio.h>
 
 #include "fileops.h"
+#include "fileops_error_reporting.h"
 
 
 static gboolean _dummy_func		(GFile* file, gpointer data);
@@ -94,7 +95,7 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
 	GFile* dest_file = NULL;
 	if (data != NULL)
 	{
-	    GFile* dest_file = (GFile*) data;
+	    dest_file = (GFile*) data;
 
 	    char* _parent_name = g_file_get_path (dest_file);
 	    char* _dest_name = g_build_filename (_parent_name,"/", _file_name, NULL);
@@ -105,6 +106,7 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
 	    g_free (_parent_name);
 	    g_free (_dest_name);
 	}
+
 	//TODO:
 	traverse_directory (src_file, pre_hook, post_hook, dest_file);
 	
@@ -313,7 +315,6 @@ _trash_files_async (GFile* file, gpointer data)
     g_free (name);
 }
 /*
- *	@dest is a directory.	
  */
 static gboolean
 _move_files_async (GFile* file, gpointer data)
@@ -328,7 +329,10 @@ _move_files_async (GFile* file, gpointer data)
 		 &error);
     if (error != NULL)
     {
-	g_error ("%s", error->message);
+//TEST:
+fileops_move_copy_error_show_dialog ("move", error, file, dest, NULL);
+
+	g_debug ("ERROR: %s", error->message);
 	g_error_free (error);
     }
 
