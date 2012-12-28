@@ -47,7 +47,7 @@ cleanup_filename = (str) ->
 
 class Item extends Widget
     constructor: (@entry) ->
-        @id = DCore.DEntry.get_id(@entry)
+        @id = @get_id()
 
         @selected = false
         @focused = false
@@ -73,6 +73,10 @@ class Item extends Widget
         @item_name.className = "item_name"
         @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
         el.appendChild(@item_name)
+
+
+    get_id : ->
+        DCore.DEntry.get_id(@entry)
 
 
     get_name : ->
@@ -121,7 +125,6 @@ class Item extends Widget
                 else
                     update_selected_stats(this, evt)
 
-        #echo "do_click #{@clicked} #{@in_rename} #{@delay_rename}"
         false
 
 
@@ -632,3 +635,53 @@ class DesktopApplet extends Item
 
 
 #TODO: desktop applet like "computer" and "profile", etc
+class ProfileVDir extends DesktopEntry
+    get_id : ->
+        "Profile_Virtual_Dir"
+
+
+    get_name : ->
+        _("My Profile")
+
+
+    get_icon : ->
+        "file:///usr/share/icons/Faenza/apps/48/xfce4-backdrop.png"
+
+
+    get_path : ->
+        "~"
+
+
+    item_rename : ->
+        return
+
+
+    item_exec : ->
+#TODO: open user profile dir
+        alert "open profile dir(not work yet)"
+
+
+class trashVDir extends DesktopEntry
+    get_id : ->
+        "trash_Virtual_Dir"
+
+
+    get_name : ->
+        _("Trash Bin")
+
+
+    get_icon : ->
+        "file:///usr/share/icons/Deepin/status/48/gnome-fs-trash-full.png"
+
+
+    get_path : ->
+        "~"
+
+
+    item_rename : ->
+        return
+
+
+    item_exec : ->
+#TODO: open user profile dir
+        alert "open trash bin(not work yet)"

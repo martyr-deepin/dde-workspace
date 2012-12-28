@@ -41,11 +41,13 @@ rows = 0
 
 # grid html element
 div_grid = null
-
+# grid occupy table
 o_table = null
 
 # all file items on desktop
 all_item = new Array
+# speical items on desktop
+speical_item = new Array
 # all selected items on desktop
 selected_item = new Array
 # the last widget which been operated last time
@@ -93,11 +95,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
 
-    init_occupy_table()
-
-    for i in all_item
-        w = Widget.look_up(i)
-        if w? then move_to_anywhere(w)
+    place_desktop_items()
 
 
 load_position = (id) ->
@@ -124,6 +122,18 @@ update_position = (old_id, new_id) ->
     discard_position(old_id)
     save_position(new_id, o_p)
     return
+
+
+place_desktop_items = ->
+    init_occupy_table()
+
+    for i in speical_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
+
+    for i in all_item
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
 
 
 compare_pos_top_left = (base, pos) ->
@@ -273,6 +283,12 @@ sort_desktop_item_by_func = (func) ->
     for i in [0 ... cols]
         for j in [0 .. rows]
             o_table[i][j] = null
+
+    for i in speical_item
+        w = Widget.look_up(i)
+        if w?
+            discard_position(w.id)
+            move_to_anywhere(w)
 
     for i in item_ordered_list
         w = Widget.look_up(i)
@@ -474,7 +490,7 @@ update_selected_stats = (w, evt) ->
 
                 ret = compare_pos_top_left(start_pos, end_pos)
                 if ret < 0
-                    for key in all_item
+                    for key in speical_item.concat(all_item)
                         val = Widget.look_up(key)
                         i_pos = load_position(val.id)
                         if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
@@ -482,7 +498,7 @@ update_selected_stats = (w, evt) ->
                 else if ret == 0
                     cancel_item_selected(selected_item[0])
                 else
-                    for key in all_item
+                    for key in speical_item.concat(all_item)
                         val = Widget.look_up(key)
                         i_pos = load_position(val.id)
                         if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
@@ -718,6 +734,17 @@ grid_do_keyup_to_shrotcut = (evt) ->
         evt.preventDefault()
 
 
+init_speical_desktop_items = ->
+    item = new ProfileVDir(null)
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+    item = new trashVDir(null)
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -731,6 +758,8 @@ create_item_grid = ->
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
+
+    init_speical_desktop_items()
 
 
 #class ItemGrid
@@ -790,7 +819,7 @@ class Mouse_Select_Area_box
                 pos_b = new_pos
 
             effect_item = new Array
-            for i in all_item
+            for i in speical_item.concat(all_item)
                 w = Widget.look_up(i)
                 if not w? then continue
                 item_pos = load_position(w.id)
