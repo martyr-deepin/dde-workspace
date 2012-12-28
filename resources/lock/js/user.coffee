@@ -65,6 +65,8 @@ class UserInfo extends Widget
         loading = new Loading("loading")
         @element.appendChild(loading.element)
 
+        echo DCore.Lock.try_unlock(password)
+    
 user = DCore.Lock.get_username()    
     
 u = new UserInfo(user, user, "images/img01.jpg")

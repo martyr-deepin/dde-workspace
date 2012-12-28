@@ -36,6 +36,7 @@
 
 GtkWidget* lock_container = NULL;
 struct passwd *pw = NULL;
+gboolean is_locked = FALSE;
 
 JS_EXPORT_API
 const gchar* lock_get_username()
@@ -48,13 +49,19 @@ const gchar* lock_get_username()
     return username;
 }
 
+JS_EXPORT_API
 gboolean lock_is_locked()
 {
-    return TRUE;
+    return is_locked;
 }
 
-gboolean lock_try_lock()
+JS_EXPORT_API
+void lock_try_lock()
 {
+    if(is_locked){
+        return;
+    }
+    
     lock_container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(lock_container));
@@ -63,37 +70,30 @@ gboolean lock_try_lock()
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
 
     gtk_widget_realize(lock_container);
+
+    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(lock_container));
+    gint width = gdk_screen_get_width(screen);
+    gint height = gdk_screen_get_height(screen);     
+
+    gtk_window_set_default_size(GTK_WINDOW(lock_container), width, height);
+
+    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
+
     gtk_widget_show_all(lock_container);
 
-    return 0;
+    is_locked = TRUE;
+
+    return ;
 }
 
-gboolean lock_try_unlock(char *s)
+JS_EXPORT_API
+gboolean lock_try_unlock(const gchar *password)
 {
     gboolean unlock = 0;
-    /* unlock = !(strcmp(crypt(s, pw->pw_passwd), pw->pw_passwd)); */
-    if(unlock != 0){
-        gtk_main_quit();
+
+    if(!is_locked){
+        return TRUE;
     }
-
-    return unlock;
-}
-
-gboolean lock_shutdown()
-{
-    return TRUE;
-}
-
-gboolean lock_restart()
-{
-    return TRUE;
-}
-
-
-int main(int argc, char **argv)
-{
-    init_i18n();
-    gtk_init(&argc, &argv);
 
 #ifdef SHADOW_PWD
     struct spwd *sp;
@@ -111,7 +111,23 @@ int main(int argc, char **argv)
     endspent();
 #endif
 
+    unlock = !(g_strcmp0(crypt(g_strdup(password), pw->pw_passwd), pw->pw_passwd));
+    if(unlock != 0){
+        gtk_main_quit();
+    }
+
+    is_locked = FALSE;
+
+    return unlock;
+}
+
+int main(int argc, char **argv)
+{
+    init_i18n();
+    gtk_init(&argc, &argv);
+
     g_signal_connect (lock_container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+
     lock_try_lock();
 
     gtk_main();

@@ -6,7 +6,7 @@ SET(SRC_LIST lock.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} crypt)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
