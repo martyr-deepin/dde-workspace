@@ -2,10 +2,10 @@ find_package(Gettext REQUIRED)
 
 file(GLOB PO_FILES *.po)
 
-execute_process(
-    COMMAND python update_po
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-)
+#execute_process(
+    #COMMAND python update_po
+    #WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#)
 
 foreach(f ${PO_FILES})
     GET_FILENAME_COMPONENT(f_we ${f} NAME_WE)
