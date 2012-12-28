@@ -2,7 +2,7 @@
 add_subdirectory(desktop)
 add_subdirectory(launcher)
 add_subdirectory(dock)
-add_subdirectory(memory_test)
+# add_subdirectory(memory_test)
 add_subdirectory(greeter)
 add_subdirectory(lock)
 

@@ -482,10 +482,9 @@ int main(int argc, char **argv)
     g_assert(greeter);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        printf("greeter connect failed\n");
-        return -1;
+        js_post_message_simply("debug", "%s", "lightdm_greeter_connect_sync failed");
     }else{
-        printf("greeter connect succeed\n");
+        js_post_message_simply("debug", "%s", "lightdm_greeter_connect_sync succeed");
     }
 
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);

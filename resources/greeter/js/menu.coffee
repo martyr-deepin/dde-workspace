@@ -80,3 +80,7 @@ class ComboBox extends Widget
         @menu.current = id
 
 debug = $("#Debug")
+
+DCore.signal_connect("debug", (msg) ->
+    info = create_element("div", "", debug)
+    info.innerText = msg)
