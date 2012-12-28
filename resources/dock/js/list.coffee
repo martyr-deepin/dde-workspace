@@ -478,3 +478,6 @@ DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
 setTimeout(calc_app_item_size, 1000)
+setTimeout(calc_app_item_size, 1800)
+setTimeout(calc_app_item_size, 2800)
+setTimeout(calc_app_item_size, 4000)
