@@ -623,15 +623,14 @@ delete_selected_items = ->
 
 show_selected_items_Properties = ->
     tmp = []
-<<<<<<< HEAD
+
     tmp.push("file://#{i}") for i in selected_item
     s_nautilus?.ShowItemProperties_sync(tmp, '')
-=======
+
     for i in selected_item
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
     s_nautilus.ShowItemProperties_sync(tmp, '')
->>>>>>> e4cf40684caf716d0dac6e85834e94e4cac9ae00
 
 
 gird_left_mousedown = (evt) ->

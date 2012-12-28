@@ -11,7 +11,7 @@ class LoginEntry extends Widget
         )
 
         @login = create_element("button", "LoginButton", @element)
-        @login.innerText = "User Login"
+        @login.innerText = "UnLock"
         @login.addEventListener("click", =>
             @on_active(@password.value)
         )
@@ -65,41 +65,7 @@ class UserInfo extends Widget
         loading = new Loading("loading")
         @element.appendChild(loading.element)
 
-
-
-# below code should use c-backend to fetch data 
-# users = DCore.Greeter.get_users()
-# for user in users
-#     u = new UserInfo(user, user, "images/img01.jpg")
-#     roundabout.appendChild(u.li)
-
-# default_user = DCore.Greeter.get_default_user()    
-# echo "default user"
-# echo default_user    
+user = DCore.Lock.get_username()    
     
-# first = new UserInfo(default_user, default_user, "images/img01.jpg")
-# first.focus()    
-
-# u = new UserInfo(1000, "Alice Charlotte", "images/img01.jpg")
-# u2 = new UserInfo(1001, "Snyh", "images/guest.jpg")
-# u3 = new UserInfo(1001, "Snyh", "images/img04.jpg")
-# u4 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-# u5 = new UserInfo(1001, "Snyh", "images/img03.jpg")
-
-# roundabout.appendChild(u.li)
-# u.focus()
-
-# roundabout.appendChild(u2.li)
-# roundabout.appendChild(u3.li)
-# roundabout.appendChild(u4.li)
-# roundabout.appendChild(u5.li)
-
-# end this
-
-if roundabout.children.length == 2
-    roundabout.style.width = "0"
-
-run_post(->
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-)
+u = new UserInfo(user, user, "images/img01.jpg")
+$("#User").appendChild(u.li)

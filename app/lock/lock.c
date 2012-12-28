@@ -37,6 +37,17 @@
 GtkWidget* lock_container = NULL;
 struct passwd *pw = NULL;
 
+JS_EXPORT_API
+const gchar* lock_get_username()
+{
+    const gchar *username = NULL;
+
+    pw = getpwuid(getuid());
+    username = g_strdup(pw->pw_name);
+
+    return username;
+}
+
 gboolean lock_is_locked()
 {
     return TRUE;
@@ -99,8 +110,6 @@ int main(int argc, char **argv)
         pw->pw_passwd = sp->sp_pwdp;
     endspent();
 #endif
-
-
 
     g_signal_connect (lock_container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     lock_try_lock();

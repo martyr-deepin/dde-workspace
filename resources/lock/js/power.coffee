@@ -17,15 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-consolekit_obj = DCore.DBus.sys_object("org.freedesktop.Consolekit","/org/freedesktop/Consolekit/Manager","org.freedesktop.Consolekit.Manager")
+consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit","/org/freedesktop/ConsoleKit/Manager","org.freedesktop.ConsoleKit.Manager")
 
 can_restart = ->
-    consolekit_obj.CanRestart()
+    consolekit_obj.CanRestart_sync()
 
 can_shutdown = ->
-    consolekit_obj.CanStop()
-    
-    
+    consolekit_obj.CanStop_sync()
+
 get_power_info = ->
     power_info = {}
 
@@ -38,13 +37,14 @@ get_power_info = ->
 
 restart_cb = ->
     alert "restart"
-    # consolekit_obj.Restart()
+    # consolekit_obj.Restart_sync()
 
 shutdown_cb = ->
     alert "shutdown"
-    # consolekit_obj.Stop()
+    # consolekit_obj.Stop_sync()
 
 power_dict = get_power_info()    
+    
 power_menu_cb = (id, title)->
     power_dict[title]()
 

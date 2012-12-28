@@ -6,9 +6,7 @@
     </head>
     <body>
 
-        <ul id="roundabout">
-        </ul>
-
+        <div id="User"></div>
 
         <div id="Time" class="Time">
              <div id="time" class="Time01"></div>
@@ -19,22 +17,7 @@
 
         <div id="bottom_buttons"></div>
 
-        <script src="js/jquery.js"></script>
-        <script src="js/jquery.roundabout2.js"></script>
-        <script src="js/jquery.easing.js"></script>
         <script src="js/lock.js"> </script>
-        <script>
-            $("#roundabout").roundabout({
-                    tilt: 0.6,
-                    minScale: 0.5,
-                    minOpacity: 1,
-                    duration: 200,
-                    easing: 'easeOutQuad',
-                    enableDrag: true,
-                    dropEasing: 'easeOutBounce'
-                }, function() {
-                    $(this).fadeTo(300, 1);
-            });
-        </script>
+
     </body>
 </html>

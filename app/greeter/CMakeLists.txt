@@ -2,6 +2,7 @@ SET(NAME "greeter")
 
 GEN_JSC_SOURCE("jsc" JSC_GEN)
 
+pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 
 SET(SRC_LIST greeter.c ${JSC_GEN})
 
