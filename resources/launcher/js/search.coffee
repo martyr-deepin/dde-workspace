@@ -56,6 +56,7 @@ selected_down = ->
         n = n.nextElementSibling
     if n
         update_selected(n)
+    grid.scrollTop += 50
 
 selected_up = ->
     if not item_selected
@@ -67,6 +68,7 @@ selected_up = ->
         n = n.previousElementSibling
     if n
         update_selected(n)
+    grid.scrollTop -= 50
 
 
 get_item_row_count = ->
