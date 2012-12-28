@@ -181,6 +181,11 @@ gboolean _inotify_poll()
                     }
 
                 } else {
+                    if (event->mask & IN_MOVED_TO) {
+                        GFile* f = g_file_get_child(_desktop_file, event->name);
+                        handle_delete(f);
+                        g_object_unref(f);
+                    }
                     handle_update(p);
                 }
             }
