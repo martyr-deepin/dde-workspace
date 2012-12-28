@@ -472,6 +472,10 @@ int main(int argc, char **argv)
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
 
+    GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+    gtk_widget_realize(container);
+
     GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
     gint width = gdk_screen_get_width(screen);
     gint height = gdk_screen_get_height(screen);     
@@ -479,21 +483,18 @@ int main(int argc, char **argv)
     gtk_window_set_default_size(GTK_WINDOW(container), width, height);
 
     GdkCursor *cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
-    GdkWindow *dwindow = gtk_widget_get_window(container);
-    gdk_window_set_cursor(dwindow ,cursor);
+    GdkWindow *gdk_window = gtk_widget_get_window(container);
+    gdk_window_set_cursor(gdk_window, cursor);
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
-    /* g_signal_connect (greeter, "authentication-complete", G_CALLBACK (authentication_complete_cb), NULL); */
-
-    GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
-
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+    if(!lightdm_greeter_connect_sync(greeter, NULL)){
+        printf("connect greeter failed!\n");
+    }
 
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    gtk_widget_realize(container);
     gtk_widget_show_all(container);
 
     monitor_resource_file("greeter", webview);
