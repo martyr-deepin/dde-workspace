@@ -44,11 +44,10 @@ div_grid = null
 
 o_table = null
 
-# all items on desktop
+# all file items on desktop
 all_item = new Array
 # all selected items on desktop
 selected_item = new Array
-
 # the last widget which been operated last time
 last_widget = ""
 
@@ -531,12 +530,8 @@ update_selected_item_drag_image = ->
     if top_left.x > bottom_right.x then top_left.x = bottom_right.x
     if top_left.y > bottom_right.y then top_left.y = bottom_right.y
 
-    #if drag_canvas? then delete drag_canvas
-    #drag_canvas = document.createElement("canvas")
     drag_canvas.width = (bottom_right.x - top_left.x + 1) * i_width
     drag_canvas.height = (bottom_right.y - top_left.y + 1) * i_height
-    #drag_canvas.width = s_width
-    #drag_canvas.height = s_height
 
     if not context
         context = drag_canvas.getContext('2d')
@@ -624,7 +619,7 @@ show_selected_items_Properties = ->
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{w.get_path()}")
 
-    #FIXME: we have an error here
+    #FIXME: we get an error here when call the nautilus DBus interface
     try
         s_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
@@ -677,6 +672,52 @@ grid_do_itemselected = (evt) ->
         else echo "not implemented function #{evt.id},#{evt.title}"
 
 
+grid_do_keyup_to_shrotcut = (evt) ->
+    msg_disposed = false
+    if evt.keyCode == 65         # CTRL+A
+        if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
+            echo "select all items on desktop"
+            msg_disposed = true
+
+    else if evt.keyCode == 88    # CTRL+X
+        if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
+            selected_cut_to_clipboard()
+            msg_disposed = true
+
+    else if evt.keyCode == 67    # CTRL+C
+        if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
+            selected_copy_to_clipboard()
+            msg_disposed = true
+
+    else if evt.keyCode == 86    # CTRL+V
+        if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
+            paste_from_clipboard()
+            msg_disposed = true
+
+    else if evt.keyCode == 127   # Delete
+        if evt.ctrlKey == false and evt.altKey == false
+            delete_selected_items(evt.shiftKey == true)
+            msg_disposed = true
+
+    else if evt.keyCode == 113   # F2
+        if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
+            if selected_item.length == 1
+                w = Widget.look_up(selected_item[0])
+                if w? then w.item_rename()
+            msg_disposed = true
+
+    else if evt.keyCode == 13    # Enter
+        if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
+            if selected_item.length > 0
+                w = Widget.look_up(last_widget)
+                if w? then w.item_exec()
+            msg_disposed = true
+
+    if msg_disposed == true
+        evt.stopPropagation()
+        evt.preventDefault()
+
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -686,6 +727,7 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
     div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
+    div_grid.parentElement.addEventListener("keyup", grid_do_keyup_to_shrotcut)
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
