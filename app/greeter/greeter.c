@@ -478,6 +478,10 @@ int main(int argc, char **argv)
 
     gtk_window_set_default_size(GTK_WINDOW(container), width, height);
 
+    GdkCursor *cursor = gdk_cursor_new(GDK_TOP_LEFT_ARROW);
+    GdkWindow *dwindow = gtk_widget_get_window(container);
+    gdk_window_set_cursor(dwindow ,cursor);
+
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
