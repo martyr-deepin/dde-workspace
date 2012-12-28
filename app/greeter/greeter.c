@@ -65,12 +65,15 @@ const gchar* greeter_get_default_session()
 }
 
 JS_EXPORT_API
-gboolean greeter_start_session(const gchar *session)
+void greeter_authenticate(const gchar *username, const gchar *password, const gchar *session)
 {
+    lightdm_greeter_authenticate(greeter, username);
+    lightdm_greeter_respond(greeter, password);
+
     if(lightdm_greeter_get_is_authenticated(greeter)){
-        return lightdm_greeter_start_session_sync(greeter, session, NULL);
-    }else{
-        return FALSE;
+        lightdm_greeter_start_session_sync(greeter, session, NULL);
+    }else{       
+        printf("authenticate failed\n");
     }
 }
 
@@ -122,42 +125,6 @@ void greeter_cancel_autologin()
     lightdm_greeter_cancel_autologin(greeter);
 }
 
-JS_EXPORT_API
-void greeter_authenticate(const char *username)
-{
-    lightdm_greeter_authenticate(greeter, username);
-}
-
-
-JS_EXPORT_API
-void greeter_respond(const gchar *response)
-{
-    lightdm_greeter_respond(greeter, response);
-}
-
-JS_EXPORT_API
-void greeter_cancel_authentication()
-{
-    lightdm_greeter_cancel_authentication(greeter);
-}
-
-JS_EXPORT_API
-gboolean greeter_in_authentication()
-{
-    return lightdm_greeter_get_in_authentication(greeter);
-}
-
-JS_EXPORT_API
-gboolean greeter_is_authenticated()
-{
-    return lightdm_greeter_get_is_authenticated(greeter);
-}
-
-JS_EXPORT_API
-const gchar* greeter_get_authentication_user()
-{
-    return lightdm_greeter_get_authentication_user(greeter);
-}
 
 /* SESSION */
 
@@ -475,26 +442,26 @@ gboolean greeter_shutdown()
     return lightdm_shutdown(NULL);
 }
 
-const gchar* get_ui_select_session()
-{
-    return "gnome";
-}
+/* const gchar* get_ui_select_session() */
+/* { */
+/*     return "gnome"; */
+/* } */
 
-static void authentication_complete_cb()
-{
-    const gchar *session = NULL;
+/* static void authentication_complete_cb() */
+/* { */
+/*     const gchar *session = NULL; */
 
-    if(lightdm_greeter_get_is_authenticated(greeter)){
-        session = get_ui_select_session();
-        g_assert(session);
+/*     if(lightdm_greeter_get_is_authenticated(greeter)){ */
+/*         session = get_ui_select_session(); */
+/*         g_assert(session); */
 
-        lightdm_greeter_start_session_sync(greeter, session, NULL);
-        gtk_main_quit();
+/*         lightdm_greeter_start_session_sync(greeter, session, NULL); */
+/*         gtk_main_quit(); */
         
-    }else{
-        printf("clear the password had input\n");
-    }
-}
+/*     }else{ */
+/*         printf("clear the password had input\n"); */
+/*     } */
+/* } */
 
 int main(int argc, char **argv)
 {
@@ -509,7 +476,7 @@ int main(int argc, char **argv)
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
-    g_signal_connect (greeter, "authentication-complete", G_CALLBACK (authentication_complete_cb), NULL);
+    /* g_signal_connect (greeter, "authentication-complete", G_CALLBACK (authentication_complete_cb), NULL); */
 
     GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
 

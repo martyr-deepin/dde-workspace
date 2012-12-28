@@ -17,7 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-consolekit_obj = DCore.DBus.sys_obj("org.freedesktop.Consolekit","/org/freedesktop/Consolekit/Manager","org.freedesktop.Consolekit.Manager")
+consolekit_obj = DCore.DBus.sys_object("org.freedesktop.Consolekit","/org/freedesktop/Consolekit/Manager","org.freedesktop.Consolekit.Manager")
 
 can_restart = ->
     consolekit_obj.CanRestart()

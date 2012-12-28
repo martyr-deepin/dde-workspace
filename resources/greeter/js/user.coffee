@@ -61,11 +61,18 @@ class UserInfo extends Widget
             @focus()
 
     on_verify: (password)->
+        echo "login clicked"
         @login.destroy()
         loading = new Loading("loading")
         @element.appendChild(loading.element)
 
-
+        _session = de_menu.menu.items[de_menu.get_current()]
+        echo "authenticate"
+        echo @id
+        echo password
+        echo _session
+    
+        DCore.Greeter.authenticate(@id, password, _session)
 
 # below code should use c-backend to fetch data 
 users = DCore.Greeter.get_users()
