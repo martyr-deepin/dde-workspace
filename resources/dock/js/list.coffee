@@ -21,22 +21,23 @@ calc_app_item_size = ->
     apps = $s(".AppItem")
     if apps.length == 0
         return
-    w = apps[0].offsetWidth
-    for i in apps
-        Widget.look_up(i.id).change_size(w)
 
+    w = apps[0].offsetWidth
     last = apps[apps.length-1]
     if last
         DCore.Dock.require_region(0, 0, screen.width, 30)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
         if offset == 0
-            echo "last.clientWidth: #{last.clientWidth} get_page_xy:#{p.x}, #{p.y}"
+            alert("w:#{w} apps.length: #{apps.length} clientWidth: #{last.clientWidth}")
         DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
         height = w * (60-8) / 68 + 8
         DCore.Dock.change_workarea_height(height)
     else
         echo "can't find last app #{apps.length}"
+
+    for i in apps
+        Widget.look_up(i.id).change_size(w)
 
 active_group = null
 
