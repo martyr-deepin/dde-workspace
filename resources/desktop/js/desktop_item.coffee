@@ -634,7 +634,6 @@ class NormalFile extends DesktopEntry
 class DesktopApplet extends Item
 
 
-#TODO: desktop applet like "computer" and "profile", etc
 class HomeVDir extends DesktopEntry
     get_id : ->
         "Home_Virtual_Dir"
@@ -682,5 +681,4 @@ class trashVDir extends DesktopEntry
 
 
     item_exec : ->
-#TODO: open user profile dir
-        alert "open trash bin(not work yet)"
+        DCore.Desktop.open_trash_can()
