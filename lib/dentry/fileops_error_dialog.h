@@ -58,4 +58,4 @@ enum
 
 typedef struct _FileOpsFileConflictDialogDetails FileOpsFileConflictDialogDetails;
 
-GtkDialog* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, GFile* dest);
+GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, GFile* dest);
