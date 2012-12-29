@@ -115,11 +115,12 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 }
 
 JS_EXPORT_API
-void desktop_create_rich_dir(ArrayContainer fs)
+gboolean desktop_create_rich_dir(ArrayContainer fs)
 {
     GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir);
+    return TRUE;
 }
 
 JS_EXPORT_API

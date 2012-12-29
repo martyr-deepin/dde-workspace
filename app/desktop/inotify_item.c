@@ -72,7 +72,7 @@ void install_monitor()
         int flags = fcntl(_inotify_fd, F_GETFL, 0);
         fcntl(_inotify_fd, F_SETFL, flags | O_NONBLOCK);
         _monitor_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)g_object_unref);
-        g_idle_add((GSourceFunc)_inotify_poll, NULL);
+        g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
 
         char* desktop_path = get_desktop_dir(TRUE);
         _desktop_file = g_file_new_for_path(desktop_path);
@@ -189,7 +189,6 @@ gboolean _inotify_poll()
                 if (g_file_equal(p, _desktop_file)) {
                     /* BEGIN MVOE EVENT HANDLE */
                     if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
-                        printf("1event :%d %s\n", event->mask, event->name);
                         move_out_event = event;
                         old = g_file_get_child(p, event->name);
                         continue;
@@ -199,7 +198,6 @@ gboolean _inotify_poll()
                         g_object_unref(f);
                         continue;
                     } else if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
-                        printf("2event :%d %s\n", event->mask, event->name);
                         move_out_event = NULL;
                         GFile* f = g_file_get_child(p, event->name);
 
