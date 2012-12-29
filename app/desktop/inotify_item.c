@@ -72,7 +72,7 @@ void install_monitor()
         int flags = fcntl(_inotify_fd, F_GETFL, 0);
         fcntl(_inotify_fd, F_SETFL, flags | O_NONBLOCK);
         _monitor_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)g_object_unref);
-        g_idle_add((GSourceFunc)_inotify_poll, NULL);
+        g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
 
         char* desktop_path = get_desktop_dir(TRUE);
         _desktop_file = g_file_new_for_path(desktop_path);
