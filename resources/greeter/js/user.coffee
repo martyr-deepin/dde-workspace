@@ -44,7 +44,7 @@ class UserInfo extends Widget
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
         @login = null
-        @loadding?.destroy()
+        @loading?.destroy()
         @loading = null
 
     show_login: ->
