@@ -189,7 +189,6 @@ gboolean _inotify_poll()
                 if (g_file_equal(p, _desktop_file)) {
                     /* BEGIN MVOE EVENT HANDLE */
                     if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
-                        printf("1event :%d %s\n", event->mask, event->name);
                         move_out_event = event;
                         old = g_file_get_child(p, event->name);
                         continue;
@@ -199,7 +198,6 @@ gboolean _inotify_poll()
                         g_object_unref(f);
                         continue;
                     } else if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
-                        printf("2event :%d %s\n", event->mask, event->name);
                         move_out_event = NULL;
                         GFile* f = g_file_get_child(p, event->name);
 
