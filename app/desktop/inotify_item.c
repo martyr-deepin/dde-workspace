@@ -32,7 +32,28 @@ static void _add_monitor_directory(GFile*);
 
 GHashTable* _monitor_table = NULL;
 GFile* _desktop_file = NULL;
+GFile* _trash_can = NULL;
 int _inotify_fd = -1;
+
+GFile* desktop_get_trash_entry()
+{
+    // g_assert(_trash_can != NULL);
+    g_object_ref(_trash_can);
+}
+double desktop_get_trash_count()
+{
+    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
+    g_object_unref(info);
+    return count;
+}
+void trash_changed()
+{
+    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
+    g_object_unref(info);
+    js_post_message_simply("trash_count_changed", "{\"value\":\"%d\"}", count);
+}
 
 static
 void _add_monitor_directory(GFile* f)
@@ -55,6 +76,9 @@ void install_monitor()
 
         char* desktop_path = get_desktop_dir(TRUE);
         _desktop_file = g_file_new_for_path(desktop_path);
+        _trash_can = g_file_new_for_uri("trash:///");
+        GFileMonitor* m = g_file_monitor(_trash_can, G_FILE_MONITOR_NONE, NULL, NULL);
+        g_signal_connect(m, "changed", G_CALLBACK(trash_changed), NULL);
 
         _add_monitor_directory(_desktop_file);
 
