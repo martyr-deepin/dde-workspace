@@ -58,8 +58,9 @@ for key, value of power_dict
 $("#bottom_buttons").appendChild(power_menu.element)
 
 #debug code begin    
-power_div = create_element("div", " ", $("#Debug")
-power_div.innerText = "POWERS"
+powers_div = create_element("div", " ", $("#Debug"))
+powers_div.innerText = "POWER:"
 for key, value of power_dict
-    power_div.innerText += key
+    power_div = create_element("div", " ", powers_div)
+    power_div.innerText = key
 #debug code end    

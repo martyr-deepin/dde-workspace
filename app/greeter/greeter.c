@@ -68,6 +68,8 @@ JS_EXPORT_API
 void greeter_login(const gchar *username, const gchar *password, const gchar *session)
 {
     if(!lightdm_greeter_get_is_authenticated(greeter) && lightdm_greeter_get_in_authentication(greeter)){
+        js_post_message_simply("status", " \"status\":\"%s\" ", "not authenticated");
+
         if(g_strcmp0(username, "*other") == 0){
             lightdm_greeter_authenticate(greeter, NULL);
 
@@ -81,9 +83,13 @@ void greeter_login(const gchar *username, const gchar *password, const gchar *se
         greeter_login(username, password, session);
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
+        js_post_message_simply("status", " \"status\":\"%s\" ", "in authentication");
+
         lightdm_greeter_respond(greeter, password);
         greeter_login(username, password, session);
     }
+
+    js_post_message_simply("status", " \"status\":\"%s\" ", "had authenticated");
 
     lightdm_greeter_start_session_sync(greeter, session, NULL);
 }

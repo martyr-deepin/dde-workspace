@@ -89,15 +89,23 @@ for user in users
     u = new UserInfo(user, user, "images/img01.jpg")
     roundabout.appendChild(u.li)
 
-users[0].focus()
-
 #debug code begin    
-users_div = create_element("div", " ", $("#Debug")
-users_div.innerText = "USERS"
+users_div = create_element("div", " ", $("#Debug"))
+users_div.innerText = "USERS:"
 for user in users
-    users_div.innerText += user
+    user_div = create_element("div", " ", users_div)
+    user_div.innerText = user
 #debug code end        
-    
+
+DCore.signal_connect("connect", (msg) ->
+    connect_div = create_element("div", " ", $("#Debug"))
+    connect_div.innerText = "Connect:" + msg.connect
+)
+
+DCore.signal_connect("status", (msg) ->
+    connect_div = create_element("div", " ", $("#Debug"))
+    connect_div.innerText = "Authentication status:" + msg.status
+)
 # default_user = DCore.Greeter.get_default_user()    
 # echo "default user"
 # echo default_user    
