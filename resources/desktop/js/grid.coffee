@@ -735,7 +735,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
 
 
 init_speical_desktop_items = ->
-    item = new ProfileVDir(null)
+    item = new HomeVDir(null)
     if item?
         div_grid.appendChild(item.element)
         speical_item.push(item.get_id())
