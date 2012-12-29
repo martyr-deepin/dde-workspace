@@ -164,11 +164,13 @@ gboolean _inotify_poll()
                 if (g_file_equal(p, _desktop_file)) {
                     /* BEGIN MVOE EVENT HANDLE */
                     if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
+                    printf("event :%d %s\n", event->mask, event->name);
                         move_out_event = event;
                         old = g_file_get_child(p, event->name);
                         continue;
                     }
                     if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
+                        move_out_event = NULL;
                         GFile* f = g_file_get_child(p, event->name);
 
                         handle_rename(old, f);
@@ -177,7 +179,6 @@ gboolean _inotify_poll()
                         old = NULL;
                         continue;
                     }
-                    move_out_event = NULL;
                     /* END MVOE EVENT HANDLE */
 
                     if (event->mask & IN_DELETE) {
@@ -203,6 +204,10 @@ gboolean _inotify_poll()
                     handle_update(p);
                 }
             }
+        }
+        if (move_out_event != NULL) {
+            handle_delete(old);
+            move_out_event == NULL;
         }
         return TRUE;
     } else {
