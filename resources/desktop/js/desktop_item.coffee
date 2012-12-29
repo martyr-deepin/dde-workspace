@@ -200,6 +200,11 @@ class Item extends Widget
         @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
+    on_event_stoppropagation : (evt) =>
+        evt.stopPropagation()
+        return
+
+
     on_rename : (new_name) ->
         DCore.DEntry.set_name(@entry, new_name)
 
@@ -212,14 +217,14 @@ class Item extends Widget
             @element.draggable = false
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
-            @item_name.addEventListener("mousedown", @on_item_name_stoppropagation)
-            @item_name.addEventListener("mouseup", @on_item_name_stoppropagation)
-            @item_name.addEventListener("click", @on_item_name_stoppropagation)
-            @item_name.addEventListener("dblclick", @on_item_name_stoppropagation)
-            @item_name.addEventListener("contextmenu", @on_item_name_stoppropagation)
-            @item_name.addEventListener("keydown", @on_item_name_stoppropagation)
-            @item_name.addEventListener("keypress", @item_rename_keypress)
-            @item_name.addEventListener("keyup", @on_item_name_keyup)
+            @item_name.addEventListener("mousedown", @on_event_stoppropagation)
+            @item_name.addEventListener("mouseup", @on_event_stoppropagation)
+            @item_name.addEventListener("click", @on_event_stoppropagation)
+            @item_name.addEventListener("dblclick", @on_event_stoppropagation)
+            @item_name.addEventListener("contextmenu", @on_event_stoppropagation)
+            @item_name.addEventListener("keydown", @on_event_stoppropagation)
+            @item_name.addEventListener("keypress", @on_item_rename_keypress)
+            @item_name.addEventListener("keyup", @on_item_rename_keyup)
             @item_name.focus()
 
             ws = window.getSelection()
@@ -233,12 +238,7 @@ class Item extends Widget
         return
 
 
-    on_item_name_stoppropagation : (evt) =>
-        evt.stopPropagation()
-        return
-
-
-    item_rename_keypress : (evt) =>
+    on_item_rename_keypress : (evt) =>
         evt.stopPropagation()
         switch evt.keyCode
             when 13   # enter
@@ -252,7 +252,7 @@ class Item extends Widget
         return
 
 
-    on_item_name_keyup : (evt) =>
+    on_item_rename_keyup : (evt) =>
         evt.stopPropagation()
         if @in_rename == false then @item_complete_rename_remove_events()
         return
@@ -276,14 +276,14 @@ class Item extends Widget
 
 
     item_complete_rename_remove_events : ->
-        @item_name.removeEventListener("mousedown", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("mouseup", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("click", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("dblclick", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("contextmenu", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("keydown", @on_item_name_stoppropagation)
-        @item_name.removeEventListener("keypress", @item_rename_keypress)
-        @item_name.removeEventListener("keyup", @on_item_name_keyup)
+        @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
+        @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
+        @item_name.removeEventListener("click", @on_event_stoppropagation)
+        @item_name.removeEventListener("dblclick", @on_event_stoppropagation)
+        @item_name.removeEventListener("contextmenu", @on_event_stoppropagation)
+        @item_name.removeEventListener("keydown", @on_event_stoppropagation)
+        @item_name.removeEventListener("keypress", @on_item_rename_keypress)
+        @item_name.removeEventListener("keyup", @on_item_rename_keyup)
 
 
     destroy: ->
@@ -381,7 +381,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_buildmenu : () ->
+    do_buildmenu : ->
         build_selected_items_menu()
 
 
@@ -493,7 +493,10 @@ class RichDir extends DesktopEntry
         @div_pop = document.createElement("div")
         @div_pop.setAttribute("id", "pop_grid")
         document.body.appendChild(@div_pop)
-        @div_pop.addEventListener("mousedown", @event_stoppropagation)
+        @div_pop.addEventListener("mousedown", @on_event_stoppropagation)
+        @div_pop.addEventListener("click", @on_event_stoppropagation)
+        @div_pop.addEventListener("contextmenu", @on_event_stoppropagation)
+        @div_pop.addEventListener("keyup", @on_event_stoppropagation)
 
         @show_pop = true
 
@@ -520,9 +523,9 @@ class RichDir extends DesktopEntry
             @fill_pop_block()
 
 
-    fill_pop_block : () =>
+    fill_pop_block : =>
         ele_ul = document.createElement("ul")
-        ele_ul.setAttribute("title", @id)
+        ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
 
         for i, e of @sub_items
@@ -536,21 +539,9 @@ class RichDir extends DesktopEntry
             s.innerText = shorten_text(DCore.DEntry.get_name(e), MAX_ITEM_TITLE)
             ele.appendChild(s)
 
-            ele.addEventListener('mousedown', (evt) ->
-                evt.stopPropagation()
-                return
-            )
-            ele.addEventListener('click', (evt) ->
-                evt.stopPropagation()
-                return
-            )
-            ele.addEventListener('contextmenu', (evt) ->
-                evt.stopPropagation()
-                return
-            )
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
-                w = Widget.look_up(this.parentElement.title)
+                w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 if e?
                     evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(e))}")
@@ -563,13 +554,13 @@ class RichDir extends DesktopEntry
             )
             ele.addEventListener('dblclick', (evt) ->
                 evt.stopPropagation()
-                w = Widget.look_up(this.parentElement.title)
+                w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 if e? then DCore.DEntry.launch(e, [])
                 if w? then w.hide_pop_block()
             )
-            ele_ul.appendChild(ele)
 
+            ele_ul.appendChild(ele)
 
         if @sub_items_count <= 3
             col = @sub_items_count
@@ -654,7 +645,54 @@ class NormalFile extends DesktopEntry
 class DesktopApplet extends Item
 
 
+class ComputerVDir extends DesktopEntry
+    constructor : ->
+        entry = DCore.Desktop.get_computer_entry()
+        super(entry)
+
+
+    get_id : ->
+        "Computer_Virtual_Dir"
+
+
+    get_name : ->
+        _("Computer")
+
+
+    get_icon : ->
+        "img/computer.png"
+
+
+    get_path : ->
+        ""
+
+    item_rename : ->
+        return
+
+
+    do_buildmenu : ->
+        [
+            [1, _("open")],
+            [2, _("open in terminal")],
+            [],
+            [3, _("properties")]
+        ]
+
+
+    do_itemselected : (evt) ->
+        switch evt.id
+            when 1 then @item_exec()
+            when 2 then DCore.Desktop.run_terminal()
+            when 3 then DCore.Desktop.run_deepin_settings("system_information")
+            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+
+
 class HomeVDir extends DesktopEntry
+    constructor : ->
+        entry = DCore.Desktop.get_home_entry()
+        super(entry)
+
+
     get_id : ->
         "Home_Virtual_Dir"
 
@@ -668,19 +706,37 @@ class HomeVDir extends DesktopEntry
 
 
     get_path : ->
-        "~"
+        ""
 
     item_rename : ->
         return
 
 
-    item_exec : ->
-        DCore.Desktop.open_home_dir()
+    do_buildmenu : () ->
+        [
+            [1, _("open")],
+            [2, _("open in terminal")],
+            [],
+            [3, _("properties")]
+        ]
+
+    do_itemselected : (evt) ->
+        switch evt.id
+            when 1 then @item_exec()
+            when 2 then DCore.Desktop.run_terminal()
+# show home dir properties
+            when 3 then alert("show home dir properties")
+            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
-class trashVDir extends DesktopEntry
+class TrashVDir extends DesktopEntry
+    constructor : ->
+        entry = DCore.Desktop.get_trash_entry()
+        super(entry)
+
+
     get_id : ->
-        "trash_Virtual_Dir"
+        "Trash_Virtual_Dir"
 
 
     get_name : ->
@@ -688,13 +744,44 @@ class trashVDir extends DesktopEntry
 
 
     get_icon : ->
-        "img/trash.png"
+        if DCore.Desktop.get_trash_count() > 0
+            "img/trash.png"
+        else
+            "img/trash_empty.png"
+
 
     get_path : ->
-        "~"
+        ""
+
+
+    do_drop : (evt) ->
+        super
+
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+            if not e? then continue
+            tmp_list.push(e)
+
+        if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
+        return
+
+
     item_rename : ->
         return
 
 
-    item_exec : ->
-        DCore.Desktop.open_trash_can()
+    do_buildmenu : () ->
+        [
+            [1, _("open")],
+            [],
+            [2, _("clean up")]
+        ]
+
+
+    do_itemselected : (evt) ->
+        switch evt.id
+            when 1 then @item_exec()
+# clean up trash bin
+            when 2 then alert "clean up trash bin"
+            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"

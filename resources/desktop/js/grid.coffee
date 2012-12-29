@@ -415,17 +415,26 @@ paste_from_clipboard = ->
 
 
 item_dragstart_handler = (widget, evt) ->
+    all_selected_items = ""
     if selected_item.length > 0
-        all_selected_items = ""
         for i in [0 ... selected_item.length] by 1
             w = Widget.look_up(selected_item[i])
-            if w? then all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
+            if not w? then continue
+            path = w.get_path()
+            if path.length > 0
+                all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
+
+    if all_selected_items.length > 0
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         evt.dataTransfer.effectAllowed = "all"
 
-    x = evt.x - drag_start.x * i_width
-    y = evt.y - drag_start.y * i_height
-    evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
+        x = evt.x - drag_start.x * i_width
+        y = evt.y - drag_start.y * i_height
+        evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
+
+    else
+        evt.dataTransfer.effectAllowed = "none"
+
     return
 
 
@@ -698,21 +707,25 @@ grid_do_keyup_to_shrotcut = (evt) ->
     else if evt.keyCode == 88    # CTRL+X
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_cut_to_clipboard()
+            echo "selected_cut_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 67    # CTRL+C
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_copy_to_clipboard()
+            echo "selected_copy_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 86    # CTRL+V
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             paste_from_clipboard()
+            echo "paste_from_clipboard"
             msg_disposed = true
 
-    else if evt.keyCode == 127   # Delete
+    else if evt.keyCode == 46   # Delete
         if evt.ctrlKey == false and evt.altKey == false
             delete_selected_items(evt.shiftKey == true)
+            echo "delete_selected_items #{evt.shiftKey == true}"
             msg_disposed = true
 
     else if evt.keyCode == 113   # F2
@@ -720,6 +733,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length == 1
                 w = Widget.look_up(selected_item[0])
                 if w? then w.item_rename()
+            echo "rename"
             msg_disposed = true
 
     else if evt.keyCode == 13    # Enter
@@ -727,6 +741,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length > 0
                 w = Widget.look_up(last_widget)
                 if w? then w.item_exec()
+            echo "open"
             msg_disposed = true
 
     if msg_disposed == true
@@ -735,11 +750,17 @@ grid_do_keyup_to_shrotcut = (evt) ->
 
 
 init_speical_desktop_items = ->
-    item = new HomeVDir(null)
+    item = new ComputerVDir
     if item?
         div_grid.appendChild(item.element)
         speical_item.push(item.get_id())
-    item = new trashVDir(null)
+
+    item = new HomeVDir
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+
+    item = new TrashVDir
     if item?
         div_grid.appendChild(item.element)
         speical_item.push(item.get_id())
