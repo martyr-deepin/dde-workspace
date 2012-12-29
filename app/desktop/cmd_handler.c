@@ -30,10 +30,17 @@ void desktop_open_trash_can()
     g_object_unref(file);
 }
 
-void desktop_open_home_dir()
+/*
+ * Entry* desktop_get_trash_entry()
+ * this function is defined in inotify_item.c because we will monitor the trash status 
+ * */
+
+Entry* desktop_get_home_entry()
 {
-    GFile* file = g_file_new_for_path(g_get_home_dir());
-    ArrayContainer fs = {0, 0};
-    dentry_launch(file, fs);
-    g_object_unref(file);
+    return g_file_new_for_path(g_get_home_dir());
+}
+
+Entry* desktop_get_computer_entry()
+{
+    return g_file_new_for_uri("computer:///");
 }

@@ -36,6 +36,7 @@ class Item extends Widget
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
 
     do_click : (e)->
+        e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         DCore.Launcher.exit_gui()

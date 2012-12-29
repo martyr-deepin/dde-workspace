@@ -186,7 +186,9 @@ JSObjectRef launcher_get_items()
             continue;
         }
 
-        record_category_info(g_app_info_get_id(info), G_DESKTOP_APP_INFO(info));
+        char* id = dentry_get_id(info);
+        record_category_info(id, G_DESKTOP_APP_INFO(info));
+        g_free(id);
 
         json_array_append_nobject(items, i - skip, 
                 info, g_object_ref, g_object_unref);

@@ -56,7 +56,7 @@ class Item extends Widget
         @clicked = false
         @delay_rename = -1
 
-        super
+        super(@id)
 
         el = @element
         info = {x:0, y:0, width:1, height:1}
@@ -128,15 +128,8 @@ class Item extends Widget
         false
 
 
-    do_rightclick : (evt) ->
-        evt.stopPropagation()
-        if @selected == false
-            update_selected_stats(this, evt)
-        else if @in_rename == true
-            @item_complete_rename(false)
-
-
     do_dblclick : (evt) ->
+        evt.stopPropagation()
         if @delay_rename != -1
             clearTimeout(@delay_rename)
             @delay_rename = -1
@@ -144,6 +137,14 @@ class Item extends Widget
 
         if evt.ctrlKey == true then return
         @item_exec()
+
+
+    do_rightclick : (evt) ->
+        evt.stopPropagation()
+        if @selected == false
+            update_selected_stats(this, evt)
+        else if @in_rename == true
+            @item_complete_rename(false)
 
 
     item_update : () =>
@@ -212,9 +213,12 @@ class Item extends Widget
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
             @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("mouseup", @event_stoppropagation)
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("contextmenu", @event_stoppropagation)
+            @item_name.addEventListener("keydown", @item_rename_keypress)
+            @item_name.addEventListener("keyup", @item_rename_keypress)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
 
@@ -252,9 +256,12 @@ class Item extends Widget
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("mouseup", @event_stoppropagation)
         @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("contextmenu", @event_stoppropagation)
+        @item_name.removeEventListener("keydown", @item_rename_keypress)
+        @item_name.removeEventListener("keyup", @item_rename_keypress)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
@@ -394,7 +401,7 @@ class Folder extends DesktopEntry
 
 
 class RichDir extends DesktopEntry
-    constructor : ->
+    constructor : (entry)->
         super
 
         @div_pop = null
@@ -417,9 +424,7 @@ class RichDir extends DesktopEntry
 
 
     do_dblclick : (evt) ->
-        if @show_pop == true
-            @hide_pop_block()
-        super
+        evt.stopPropagation()
 
 
     do_dragstart : (evt) ->
@@ -496,6 +501,7 @@ class RichDir extends DesktopEntry
             ++@sub_items_count
         if @sub_items_count == 0
             @hide_pop_block()
+            DCore.DEntry.delete([@entry])
         else
             @fill_pop_block()
 
@@ -644,12 +650,11 @@ class HomeVDir extends DesktopEntry
 
 
     get_icon : ->
-        "file:///usr/share/icons/Faenza/apps/48/xfce4-backdrop.png"
+        "img/home_dir.png"
 
 
     get_path : ->
         "~"
-
 
     item_rename : ->
         return
@@ -669,13 +674,10 @@ class trashVDir extends DesktopEntry
 
 
     get_icon : ->
-        "file:///usr/share/icons/Deepin/status/48/gnome-fs-trash-full.png"
-
+        "img/trash.png"
 
     get_path : ->
         "~"
-
-
     item_rename : ->
         return
 
