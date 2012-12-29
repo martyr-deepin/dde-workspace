@@ -776,14 +776,14 @@ class TrashVDir extends DesktopEntry
     do_buildmenu : () ->
         menus = []
         menus.push([1, _("open")])
-        menus.push([])
-        count = DCore.Desktop.get_trash_count()
-        if count > 1
-            menus.push([2, _("clean up") + " #{count} " + _("files")])
-        else if count == 1
-            menus.push([2, _("clean up") + " #{count} " + _("file")])
-        else
-            menus.push([2, "-" + _("clean up")])
+#        menus.push([])
+#        count = DCore.Desktop.get_trash_count()
+#        if count > 1
+#            menus.push([2, _("clean up") + " #{count} " + _("files")])
+#        else if count == 1
+#            menus.push([2, _("clean up") + " #{count} " + _("file")])
+#        else
+#            menus.push([2, "-" + _("clean up")])
         menus
 
 
