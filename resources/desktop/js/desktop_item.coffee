@@ -217,8 +217,8 @@ class Item extends Widget
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("contextmenu", @event_stoppropagation)
-            @item_name.addEventListener("keydown", @item_rename_keypress)
-            @item_name.addEventListener("keyup", @item_rename_keypress)
+            @item_name.addEventListener("keydown", @event_stoppropagation)
+            @item_name.addEventListener("keyup", @event_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
 
@@ -235,6 +235,7 @@ class Item extends Widget
 
     event_stoppropagation : (evt) =>
         evt.stopPropagation()
+        return
 
 
     item_rename_keypress : (evt) =>
@@ -260,8 +261,8 @@ class Item extends Widget
         @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("contextmenu", @event_stoppropagation)
-        @item_name.removeEventListener("keydown", @item_rename_keypress)
-        @item_name.removeEventListener("keyup", @item_rename_keypress)
+        @item_name.removeEventListener("keydown", @event_stoppropagation)
+        @item_name.removeEventListener("keyup", @event_stoppropagation)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
@@ -446,9 +447,13 @@ class RichDir extends DesktopEntry
         return
 
 
-    item_update : () ->
+    item_update : ->
         if @show_pop == true then @reflesh_pop_block()
         super
+
+
+    item_exec : ->
+        if @show_pop == false then @show_pop_block()
 
 
     item_blur : ->
