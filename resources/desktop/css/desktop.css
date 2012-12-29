@@ -43,7 +43,7 @@ body {
     overflow:hidden;
 }
 
-.DesktopEntry, .Folder, .NormalFile, .Application, .RichDir, .ProfileVDir, .trashVDir {
+.DesktopEntry, .Folder, .NormalFile, .Application, .RichDir, .HomeVDir, .trashVDir {
     width: 80px;
     padding: 3px 5px;
     margin: 1px 1px;
@@ -54,7 +54,7 @@ body {
     outline: none;
 }
 
-.DesktopEntry img, .Folder img, .NormalFile img, .Application img, .RichDir img, .ProfileVDir img, .trashVDir img {
+.DesktopEntry img, .Folder img, .NormalFile img, .Application img, .RichDir img, .HomeVDir img, .trashVDir img {
     width: 48px;
     height: 48px;
 }
