@@ -400,6 +400,8 @@ class RichDir extends DesktopEntry
         @div_pop = null
         @show_pop = false
 
+        if DCore.DEntry.list_files(@entry).length == 0 then DCore.DEntry.delete([@entry])
+
 
     get_name : ->
         DCore.Desktop.get_rich_dir_name(@entry)
@@ -496,7 +498,6 @@ class RichDir extends DesktopEntry
             ++@sub_items_count
         if @sub_items_count == 0
             @hide_pop_block()
-            alert "目录空了,现在移除"
             DCore.DEntry.delete([@entry])
         else
             @fill_pop_block()
