@@ -642,7 +642,7 @@ show_selected_items_Properties = ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? then tmp.push("file://#{w.get_path()}")
+        if w? then tmp.push("file://#{encodeURI(w.get_path())}")
 
     #FIXME: we get an error here when call the nautilus DBus interface
     try

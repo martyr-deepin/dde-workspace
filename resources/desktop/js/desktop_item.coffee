@@ -724,8 +724,10 @@ class HomeVDir extends DesktopEntry
         switch evt.id
             when 1 then @item_exec()
             when 2 then DCore.Desktop.run_terminal()
-# show home dir properties
-            when 3 then alert("show home dir properties")
+            when 3
+                try
+                    s_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
+                catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
@@ -772,11 +774,17 @@ class TrashVDir extends DesktopEntry
 
 
     do_buildmenu : () ->
-        [
-            [1, _("open")],
-            [],
-            [2, _("clean up")]
-        ]
+        menus = []
+        menus.push([1, _("open")])
+        menus.push([])
+        count = DCore.Desktop.get_trash_count()
+        if count > 1
+            menus.push([2, _("clean up") + " #{count} " + _("files")])
+        else if count == 1
+            menus.push([2, _("clean up") + " #{count} " + _("file")])
+        else
+            menus.push([2, "-" + _("clean up")])
+        menus
 
 
     do_itemselected : (evt) ->
