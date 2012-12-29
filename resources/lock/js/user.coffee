@@ -16,7 +16,8 @@ class LoginEntry extends Widget
             @on_active(@password.value)
         )
         @login.index = 1
-
+        @password.focus()
+    
 class Loading extends Widget
     constructor: (@id)->
         super
@@ -44,7 +45,7 @@ class UserInfo extends Widget
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
         @login = null
-        @loadding?.destroy()
+        @loading?.destroy()
         @loading = null
 
     show_login: ->
@@ -59,15 +60,24 @@ class UserInfo extends Widget
             @show_login()
         else
             @focus()
-
+    
     on_verify: (password)->
         @login.destroy()
-        loading = new Loading("loading")
-        @element.appendChild(loading.element)
-
-        echo DCore.Lock.try_unlock(password)
+        @loading = new Loading("loading")
+        @element.appendChild(@loading.element)
+        DCore.Lock.try_unlock(password)
     
+    unlock_check: (msg) ->
+        if msg.status == "succeed"
+            DCore.Lock.unlock_succeed()
+        else
+            @blur()
+            
 user = DCore.Lock.get_username()    
     
 u = new UserInfo(user, user, "images/img01.jpg")
 $("#User").appendChild(u.li)
+DCore.signal_connect("unlock", (msg)->
+    u.unlock_check(msg)
+)
+    
