@@ -4,6 +4,7 @@
 #include <string.h>
 #include "i18n.h"
 #include "utils.h"
+#include "dentry/entry.h"
 #include "xdg_misc.h"
 #include "jsextension.h"
 
@@ -19,4 +20,20 @@ void desktop_run_terminal()
 void desktop_run_deepin_settings(const char* mod)
 {
     dcore_run_command1("deepin-system-settings", mod);
+}
+
+void desktop_open_trash_can()
+{
+    GFile* file = g_file_new_for_uri("trash:///");
+    ArrayContainer fs = {0, 0};
+    dentry_launch(file, fs);
+    g_object_unref(file);
+}
+
+void desktop_open_home_dir()
+{
+    GFile* file = g_file_new_for_path(g_get_home_dir());
+    ArrayContainer fs = {0, 0};
+    dentry_launch(file, fs);
+    g_object_unref(file);
 }

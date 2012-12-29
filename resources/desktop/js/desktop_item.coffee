@@ -613,7 +613,7 @@ class Application extends DesktopEntry
         tmp_list = []
         all_are_apps = true
         for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file).replace(/^file:\/\//i, ""))
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
             if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
                 all_are_apps = false
@@ -634,14 +634,13 @@ class NormalFile extends DesktopEntry
 class DesktopApplet extends Item
 
 
-#TODO: desktop applet like "computer" and "profile", etc
-class ProfileVDir extends DesktopEntry
+class HomeVDir extends DesktopEntry
     get_id : ->
-        "Profile_Virtual_Dir"
+        "Home_Virtual_Dir"
 
 
     get_name : ->
-        _("My Profile")
+        _("Home")
 
 
     get_icon : ->
@@ -657,8 +656,7 @@ class ProfileVDir extends DesktopEntry
 
 
     item_exec : ->
-#TODO: open user profile dir
-        alert "open profile dir(not work yet)"
+        DCore.Desktop.open_home_dir()
 
 
 class trashVDir extends DesktopEntry
@@ -683,5 +681,4 @@ class trashVDir extends DesktopEntry
 
 
     item_exec : ->
-#TODO: open user profile dir
-        alert "open trash bin(not work yet)"
+        DCore.Desktop.open_trash_can()

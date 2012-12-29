@@ -170,6 +170,10 @@ class AppItem extends Widget
         e.stopPropagation()
 
     do_drop: (e) ->
+        e.preventDefault()
+        e.stopPropagation()
+        if e.dataTransfer.getData("item-id")
+            return
         tmp_list = []
         for file in e.dataTransfer.files
             path = decodeURI(file.path)
