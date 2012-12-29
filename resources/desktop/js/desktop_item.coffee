@@ -212,9 +212,12 @@ class Item extends Widget
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
             @item_name.addEventListener("mousedown", @event_stoppropagation)
+            @item_name.addEventListener("mouseup", @event_stoppropagation)
             @item_name.addEventListener("click", @event_stoppropagation)
             @item_name.addEventListener("dblclick", @event_stoppropagation)
             @item_name.addEventListener("contextmenu", @event_stoppropagation)
+            @item_name.addEventListener("keydown", @item_rename_keypress)
+            @item_name.addEventListener("keyup", @item_rename_keypress)
             @item_name.addEventListener("keypress", @item_rename_keypress)
             @item_name.focus()
 
@@ -252,9 +255,12 @@ class Item extends Widget
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
         @item_name.removeEventListener("mousedown", @event_stoppropagation)
+        @item_name.removeEventListener("mouseup", @event_stoppropagation)
         @item_name.removeEventListener("click", @event_stoppropagation)
         @item_name.removeEventListener("dblclick", @event_stoppropagation)
         @item_name.removeEventListener("contextmenu", @event_stoppropagation)
+        @item_name.removeEventListener("keydown", @item_rename_keypress)
+        @item_name.removeEventListener("keyup", @item_rename_keypress)
         @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
