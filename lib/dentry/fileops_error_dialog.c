@@ -50,7 +50,7 @@ static char * eel_filename_get_extension_offset (const char *filename);
 static FileOpsFileConflictDialogDetails details;
 static GtkDialog *dialog;
 
-void show_conflict_dialog (GtkWindow* parent, GFile* src, GFile* dest)
+GtkDialog* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, GFile* dest)
 {
     g_debug ("show_conflict_dialog");
     //details from parameters
@@ -149,7 +149,7 @@ void show_conflict_dialog (GtkWindow* parent, GFile* src, GFile* dest)
 
     _setup_dialog_labels (src, dest, dialog); 
 
-    gtk_widget_show (GTK_WIDGET (dialog));
+    return dialog;
 }
 
 static void

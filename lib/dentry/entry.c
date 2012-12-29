@@ -82,6 +82,11 @@ double dentry_get_type(Entry* e)
     TEST_END
 }
 
+//TODO:
+JS_EXPORT_API
+JSObjectRef dentry_get_flags (Entry* e)
+{
+}
 JS_EXPORT_API
 char* dentry_get_name(Entry* e)
 {

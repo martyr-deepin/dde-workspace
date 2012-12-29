@@ -11,12 +11,11 @@
 
 static gboolean _dummy_func		(GFile* file, gpointer data);
 
-static void	_init_file_ops		(void);
-
 static gboolean _delete_files_async	(GFile* file, gpointer data);
 static gboolean _trash_files_async	(GFile* file, gpointer data);
 static gboolean _move_files_async	(GFile* file, gpointer data);
 static gboolean _copy_files_async	(GFile* file, gpointer data);
+
 
 /*
  *	@dir	: file or directory to traverse 
@@ -41,6 +40,14 @@ static gboolean _copy_files_async	(GFile* file, gpointer data);
  *
  *	TODO: change "standard::*" to the attributes we actually needed.
  */
+//data used by Traverse Directory (TD)
+typedef struct _TDData TDData;
+struct _TDData
+{
+    GFile*	 dest_file;
+    GCancellable* cancellable;
+};
+
 gboolean
 traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFunc post_hook, gpointer data)
 {
@@ -95,7 +102,7 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
 	GFile* dest_file = NULL;
 	if (data != NULL)
 	{
-	    dest_file = (GFile*) data;
+	    dest_file = ((TDData*)data)->dest_file;
 
 	    char* _parent_name = g_file_get_path (dest_file);
 	    char* _dest_name = g_build_filename (_parent_name,"/", _file_name, NULL);
@@ -156,6 +163,8 @@ void
 fileops_delete (GFile* file_list[], guint num)
 {
     g_debug ("fileops_delete: Begin deleting files");
+    GCancellable* delete_cancellable = g_cancellable_new ();
+    TDData* data = g_malloc0 (sizeof (TDData));
     int i;
     for (i = 0; i < num; i++)
     {
@@ -163,8 +172,13 @@ fileops_delete (GFile* file_list[], guint num)
 	char* filename = g_file_get_path (dir);
 	g_debug ("dfile_delete: file %d: %s", i, filename);
 	g_free (filename);
-	traverse_directory (dir, _dummy_func, _delete_files_async, NULL);
+
+	data->dest_file = NULL;
+	data->cancellable = delete_cancellable;
+	traverse_directory (dir, _dummy_func, _delete_files_async, data);
     }
+    g_object_unref (data->cancellable);
+    g_free (data);
     g_debug ("fileops_delete: End deleting files");
 }
 /*
@@ -178,6 +192,8 @@ void
 fileops_trash (GFile* file_list[], guint num)
 {
     g_debug ("fileops_trash: Begin trashing files");
+    GCancellable* trash_cancellable = g_cancellable_new ();
+    TDData* data = g_malloc0 (sizeof (TDData));
     int i;
     for (i = 0; i < num; i++)
     {
@@ -185,9 +201,11 @@ fileops_trash (GFile* file_list[], guint num)
 	char* filename = g_file_get_path (dir);
 	g_debug ("fileops_trash: file %d: %s", i, filename);
 	g_free (filename);
-	_trash_files_async (dir, NULL);
+	_trash_files_async (dir, data);
 	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
     }
+    g_object_unref (data->cancellable);
+    g_free (data);
     g_debug ("fileops_trash: End trashing files");
 }
 /*
@@ -203,6 +221,8 @@ void
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 {
     g_debug ("fileops_move: Begin moving files");
+    GCancellable* move_cancellable = g_cancellable_new ();
+    TDData* data = g_malloc0 (sizeof (TDData));
     int i;
     for (i = 0; i < num; i++)
     {
@@ -227,10 +247,13 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 	g_free (src_basename);
 	g_free (move_dest_name);
 
-	_move_files_async (src_dir, move_dest_file);
+	data->dest_file = move_dest_file;
+	_move_files_async (src_dir, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
+    g_object_unref (data->cancellable);
+    g_free (data);
     g_debug ("fileops_move: End moving files");
 }
 /*
@@ -243,8 +266,11 @@ void
 fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 {
     g_debug ("fileops_copy: Begin copying files");
+    GCancellable* copy_cancellable = g_cancellable_new ();
+    TDData* data = g_malloc0 (sizeof (TDData));
     int i;
-    for (i = 0; i < num; i++) {
+    for (i = 0; i < num; i++) 
+    {
         GFile* src_dir = file_list[i];
         char* src_name = g_file_get_path (src_dir);
         char* dest_name = g_file_get_path (dest_dir);
@@ -266,10 +292,13 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
         g_free (src_basename);
         g_free (copy_dest_name);
 
-        traverse_directory (src_dir, _copy_files_async, _dummy_func, copy_dest_file);
+	data->dest_file = copy_dest_file;
+        traverse_directory (src_dir, _copy_files_async, _dummy_func, data);
 
         g_object_unref (copy_dest_file);
     }
+    g_object_unref (data->cancellable);
+    g_free (data);
     g_debug ("fileops_copy: End copying files");
 }
 // internal functions 
@@ -284,30 +313,42 @@ _dummy_func (GFile* file, gpointer data)
 static gboolean
 _delete_files_async (GFile* file, gpointer data)
 {
-    GError* error = NULL;
-    GCancellable* _delete_cancellable = g_cancellable_new ();
+    TDData* _data = (TDData*) data;
 
+    GError* error = NULL;
+    GCancellable* _delete_cancellable = NULL;
+
+    _delete_cancellable = _data->cancellable;
     g_file_delete (file, _delete_cancellable, &error);
     if (error != NULL)
     {
 	//show error dialog
 	g_cancellable_cancel (_delete_cancellable);
-	g_error ("%s\n", error->message);
+	g_warning ("%s\n", error->message);
+	//fileops_delete_trash_error_show_dialog ("delete", error, file, NULL);
 	g_error_free (error);
     }
+#if 1
     char* name = g_file_get_path (file);
     g_debug ("_delete_files_async: delete : %s", name);
     g_free (name);
+#endif
 }
 
 static gboolean
 _trash_files_async (GFile* file, gpointer data)
 {
+    TDData* _data = (TDData*) data;
+
     GError* error = NULL;
-    g_file_trash (file, NULL, &error);
+    GCancellable* _trash_cancellable = NULL;
+
+    _trash_cancellable = _data->cancellable;
+    g_file_trash (file, _trash_cancellable, &error);
     if (error != NULL)
     {
-	g_error ("%s\n", error->message);
+	g_cancellable_cancel (_trash_cancellable);
+	g_warning ("%s\n", error->message);
 	g_error_free (error);
     }
     char* name = g_file_get_path (file);
@@ -319,16 +360,24 @@ _trash_files_async (GFile* file, gpointer data)
 static gboolean
 _move_files_async (GFile* file, gpointer data)
 {
+    TDData* _data = (TDData*) data;
+
     GError* error = NULL;
-    GFile* dest = (GFile*) data;
+    GCancellable* _move_cancellable = NULL;
+    GFile* dest = NULL;
+
+    _move_cancellable = _data->cancellable;
+    dest = _data->dest_file;
     g_file_move (file, dest,
 	         G_FILE_COPY_NOFOLLOW_SYMLINKS,
-		 NULL,
+		 _move_cancellable,
 		 NULL,
 		 NULL,
 		 &error);
     if (error != NULL)
     {
+	g_cancellable_cancel (_move_cancellable);
+	g_warning ("%s\n", error->message);
 //TEST:
 fileops_move_copy_error_show_dialog ("move", error, file, dest, NULL);
 
@@ -348,8 +397,14 @@ fileops_move_copy_error_show_dialog ("move", error, file, dest, NULL);
 static gboolean
 _copy_files_async (GFile* file, gpointer data)
 {
+    TDData* _data = (TDData*) data;
+
     GError* error = NULL;
-    GFile* dest = (GFile*) data;
+    GCancellable* _copy_cancellable = NULL;
+    GFile* dest = NULL;
+
+    _copy_cancellable = _data->cancellable;
+    dest = _data->dest_file;
     
     //because @dest doesn't exist, we should check @file instead.
     GFileType type = g_file_query_file_type (file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
@@ -368,14 +423,17 @@ _copy_files_async (GFile* file, gpointer data)
     else
     {
 	g_file_copy (file, dest,
-		       G_FILE_COPY_NOFOLLOW_SYMLINKS,
-		       G_PRIORITY_DEFAULT,
-		       NULL,
-		       NULL,
-		       &error);
+		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
+		     _copy_cancellable,
+		     NULL,
+		     NULL,
+		     &error);
 	if (error != NULL)
 	{
-	    g_error ("%s", error->message);
+	    g_cancellable_cancel (_copy_cancellable);
+//TEST:
+fileops_move_copy_error_show_dialog ("copy", error, file, dest, NULL);
+	    g_warning ("%s\n", error->message);
 	    g_error_free (error);
 	}
 
