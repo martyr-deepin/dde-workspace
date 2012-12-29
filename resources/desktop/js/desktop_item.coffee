@@ -128,15 +128,8 @@ class Item extends Widget
         false
 
 
-    do_rightclick : (evt) ->
-        evt.stopPropagation()
-        if @selected == false
-            update_selected_stats(this, evt)
-        else if @in_rename == true
-            @item_complete_rename(false)
-
-
     do_dblclick : (evt) ->
+        evt.stopPropagation()
         if @delay_rename != -1
             clearTimeout(@delay_rename)
             @delay_rename = -1
@@ -144,6 +137,14 @@ class Item extends Widget
 
         if evt.ctrlKey == true then return
         @item_exec()
+
+
+    do_rightclick : (evt) ->
+        evt.stopPropagation()
+        if @selected == false
+            update_selected_stats(this, evt)
+        else if @in_rename == true
+            @item_complete_rename(false)
 
 
     item_update : () =>
@@ -423,9 +424,7 @@ class RichDir extends DesktopEntry
 
 
     do_dblclick : (evt) ->
-        if @show_pop == true
-            @hide_pop_block()
-        super
+        evt.stopPropagation()
 
 
     do_dragstart : (evt) ->
