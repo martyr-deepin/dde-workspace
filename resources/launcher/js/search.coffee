@@ -96,7 +96,7 @@ search = ->
     grid_show_items(ret)
     return ret
 
-$("#search").addEventListener('click', (e)-> 
+$("#search").addEventListener('click', (e)->
     if e.target == s_box
         e.stopPropagation()
 )

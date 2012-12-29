@@ -40,6 +40,9 @@ class Item extends Widget
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         DCore.Launcher.exit_gui()
+    do_mouseover: (e)->
+        #$("#close").setAttribute("class", "close_hover")
+
 
 for core in DCore.Launcher.get_items()
     id = DCore.DEntry.get_id(core)

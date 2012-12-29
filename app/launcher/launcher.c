@@ -21,6 +21,7 @@
 #include "xdg_misc.h"
 #include <gtk/gtk.h>
 #include "dwebview.h"
+#include "dentry/entry.h"
 #include "utils.h"
 #include "X_misc.h"
 #include "i18n.h"
@@ -77,6 +78,7 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(webview, "draw", G_CALLBACK(clear_bg), NULL);
+    g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);

@@ -129,7 +129,7 @@ body {
     text-overflow: ellipsis;
 }
 
-.item img:hover {
+.item:hover {
     -webkit-transform: rotate(-7deg);
 }
 
