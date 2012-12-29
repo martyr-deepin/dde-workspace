@@ -68,7 +68,7 @@ JS_EXPORT_API
 void greeter_login(const gchar *username, const gchar *password, const gchar *session)
 {
     if(!lightdm_greeter_get_is_authenticated(greeter) && lightdm_greeter_get_in_authentication(greeter)){
-        js_post_message_simply("status", " \"status\":\"%s\" ", "not authenticated");
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated");
 
         if(g_strcmp0(username, "*other") == 0){
             lightdm_greeter_authenticate(greeter, NULL);
@@ -83,15 +83,18 @@ void greeter_login(const gchar *username, const gchar *password, const gchar *se
         greeter_login(username, password, session);
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
-        js_post_message_simply("status", " \"status\":\"%s\" ", "in authentication");
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "in authentication");
 
         lightdm_greeter_respond(greeter, password);
+        js_post_message_simply("respond", "{\"password\":\"%s\"}", g_strdup(password));
         greeter_login(username, password, session);
     }
 
-    js_post_message_simply("status", " \"status\":\"%s\" ", "had authenticated");
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "had authenticated");
 
     lightdm_greeter_start_session_sync(greeter, session, NULL);
+
+    js_post_message_simply("start-session", "{\"session\":\"%s\"}", g_strdup(session));
 }
 
 JS_EXPORT_API
@@ -484,9 +487,9 @@ int main(int argc, char **argv)
     g_assert(greeter);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        js_post_message_simply("connect", " \"connect\":\"%s\" ", "failed");
+        js_post_message_simply("connect", "{\"connect\":\"%s\"}", "failed");
     }else{
-        js_post_message_simply("connect", " \"connect\":\"%s\" ", "succeed");
+        js_post_message_simply("connect", "{\"connect\":\"%s\"}", "succeed");
     }
 
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);

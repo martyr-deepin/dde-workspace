@@ -95,7 +95,6 @@ users_div.innerText = "USERS:"
 for user in users
     user_div = create_element("div", " ", users_div)
     user_div.innerText = user
-#debug code end        
 
 DCore.signal_connect("connect", (msg) ->
     connect_div = create_element("div", " ", $("#Debug"))
@@ -103,9 +102,25 @@ DCore.signal_connect("connect", (msg) ->
 )
 
 DCore.signal_connect("status", (msg) ->
-    connect_div = create_element("div", " ", $("#Debug"))
-    connect_div.innerText = "Authentication status:" + msg.status
+    status_div = create_element("div", " ", $("#Debug"))
+    status_div.innerText = "Authentication status:" + msg.status
 )
+
+DCore.signal_connect("respond", (msg) ->
+    respond_div = create_element("div", " ", $("#Debug"))
+    respond_div.innerText = "Respond MSG:" + msg.password
+)
+
+DCore.signal_connect("start-session", (msg) ->
+    start_div = create_element("div", " ", $("#Debug"))
+    start_div.innerText = "Start Session:" + msg.session
+)
+
+
+
+#debug code end        
+
+
 # default_user = DCore.Greeter.get_default_user()    
 # echo "default user"
 # echo default_user    
