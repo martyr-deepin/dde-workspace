@@ -61,6 +61,9 @@ drag_start = {x : 0, y: 0}
 # store the area selection box for grid
 sel = null
 
+# we need to ingore keyup event when rename files
+ingore_keyup_counts = 0
+
 # DBus handler for invoke nautilus filemanager
 try
     s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
@@ -698,7 +701,12 @@ grid_do_itemselected = (evt) ->
 
 grid_do_keyup_to_shrotcut = (evt) ->
     msg_disposed = false
-    if evt.keyCode == 65         # CTRL+A
+    if ingore_keyup_counts > 0
+        --ingore_keyup_counts
+        echo "ingore once"
+        msg_disposed = true
+
+    else if evt.keyCode == 65         # CTRL+A
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             echo "select all items on desktop"
             msg_disposed = true

@@ -254,7 +254,6 @@ class Item extends Widget
 
     on_item_rename_keyup : (evt) =>
         evt.stopPropagation()
-        if @in_rename == false then @item_complete_rename_remove_events()
         return
 
 
@@ -265,17 +264,13 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
-            @on_rename(new_name)
+            if @on_rename(new_name)
+                ++ingore_keyup_counts
 
         if @delay_rename > 0
             clearTimeout(@delay_rename)
             @delay_rename = 0
 
-        @in_rename = false
-        @item_focus()
-
-
-    item_complete_rename_remove_events : ->
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
         @item_name.removeEventListener("click", @on_event_stoppropagation)
@@ -284,6 +279,9 @@ class Item extends Widget
         @item_name.removeEventListener("keydown", @on_event_stoppropagation)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
+
+        @in_rename = false
+        @item_focus()
 
 
     destroy: ->
