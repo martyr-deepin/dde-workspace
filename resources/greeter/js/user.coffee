@@ -69,7 +69,7 @@ class UserInfo extends Widget
         DCore.Greeter.login(@id, password, _session)
 
         #debug code begin
-        div_auth = create_element("div", "", $("#debug"))
+        div_auth = create_element("div", "", $("#Debug"))
         div_auth.innerText += "authenticate"
 
         div_id = create_element("div", "", div_auth)
@@ -89,7 +89,14 @@ for user in users
     u = new UserInfo(user, user, "images/img01.jpg")
     roundabout.appendChild(u.li)
 
-users[0].focus()   
+users[0].focus()
+
+#debug code begin    
+users_div = create_element("div", " ", $("#Debug")
+users_div.innerText = "USERS"
+for user in users
+    users_div.innerText += user
+#debug code end        
     
 # default_user = DCore.Greeter.get_default_user()    
 # echo "default user"
