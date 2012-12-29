@@ -34,7 +34,8 @@ create_item = (entry) ->
         when FILE_TYPE_DIR
             w = new Folder(entry)
         when FILE_TYPE_RICH_DIR
-            w = new RichDir(entry)
+            if DCore.DEntry.list_files(entry).length == 0 then DCore.DEntry.delete([@entry])
+            else w = new RichDir(entry)
         else
             echo "don't support type"
 

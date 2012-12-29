@@ -56,7 +56,7 @@ class Item extends Widget
         @clicked = false
         @delay_rename = -1
 
-        super
+        super(@id)
 
         el = @element
         info = {x:0, y:0, width:1, height:1}
@@ -394,13 +394,11 @@ class Folder extends DesktopEntry
 
 
 class RichDir extends DesktopEntry
-    constructor : ->
+    constructor : (entry)->
         super
 
         @div_pop = null
         @show_pop = false
-
-        if DCore.DEntry.list_files(@entry).length == 0 then DCore.DEntry.delete([@entry])
 
 
     get_name : ->
