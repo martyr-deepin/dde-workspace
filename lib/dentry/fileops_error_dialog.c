@@ -16,12 +16,7 @@ struct _FileOpsFileConflictDialogDetails
 	GFile *source;
 	GFile *destination;
 	GFile *dest_dir;
-
 	gchar *conflict_name;
-	//NautilusFileListHandle *handle;
-	//gulong src_handler_id;
-	//gulong dest_handler_id;
-
 	/* UI objects */
 	GtkWidget *titles_vbox;
 	GtkWidget *first_hbox;
@@ -49,7 +44,9 @@ static char * eel_filename_get_extension_offset (const char *filename);
 static FileOpsFileConflictDialogDetails details;
 static GtkWidget *dialog;
 
-GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, GFile* dest)
+//TODO: add a callback so we can retrieve the renamed name.
+GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, 
+	                                      GFile* dest, char* file_name)
 {
     g_debug ("show_conflict_dialog");
     //details from parameters

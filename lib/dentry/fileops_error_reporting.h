@@ -6,12 +6,17 @@
 #include <gtk/gtk.h>
 #include "enums.h"
 
-//#define 
+typedef struct _FileOpsResponse FileOpsResponse;
+struct _FileOpsResponse
+{
+    gint   response_id;
+    char*  file_name;  //this is the renamed name
+};
 
 //FileOpsResponse fileops_error_show_dialog (GError* error);
-FileOpsResponse fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
+FileOpsResponse* fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
 							GFile* file, GtkWindow* parent);
-FileOpsResponse fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error, 
+FileOpsResponse* fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error, 
 	                                             GFile* src, GFile* dest, GtkWindow* parent);
 
 #endif

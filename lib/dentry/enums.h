@@ -21,14 +21,6 @@ enum _FileOpsStatus
     FILE_OPS_STATUS_CANCELLED = 0,
     FILE_OPS_STATUS_SUCCESS   = 1
 };
-// fileops_error_dialog.c
-//user response to errors.
-typedef enum _FileOpsResponse	FileOpsResponse;
-enum _FileOpsResponse
-{
-    FILE_OPS_RESPONSE_CANCEL   = 0,
-    FILE_OPS_RESPONSE_CONTINUE = 1
-};
 // fileops_clipboard.c
 typedef enum _FileOpsClipboard	FileOpsClipboard;
 enum _FileOpsClipboard
@@ -36,5 +28,11 @@ enum _FileOpsClipboard
     FILE_OPS_CLIPBOARD_CUT =0, 
     FILE_OPS_CLIPBOARD_COPY = 1
 };
-
+//fileops_error_dialog.c
+enum
+{
+    CONFLICT_RESPONSE_SKIP = 1,
+    CONFLICT_RESPONSE_REPLACE = 2,
+    CONFLICT_RESPONSE_RENAME = 3,
+};
 #endif

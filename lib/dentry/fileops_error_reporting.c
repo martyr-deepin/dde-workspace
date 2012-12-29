@@ -2,20 +2,21 @@
 
 #include "enums.h"
 #include "fileops_error_dialog.h"
+#include "fileops_error_reporting.h"
 
 /*
  *	because we use dialog in applications which manages desktop.
  *	@parent is always NULL.
  */
-static FileOpsResponse  _show_simple_error_message_dialog		(const char *fileops_str,
+static FileOpsResponse*  _show_simple_error_message_dialog		(const char *fileops_str,
 									 const char *error_message,
 									 GFile* file,
 									 GtkWindow* parent);
-static FileOpsResponse	_show_skip_cancel_all_dialog			(const char *fileops_str,
+static FileOpsResponse*	_show_skip_cancel_all_dialog			(const char *fileops_str,
 									 const char *error_message,
 									 GFile *file,
 									 GtkWindow* parent);
-static FileOpsResponse	_show_skip_cancel_replace_rename_all_dialog	(const char *fileops_str,
+static FileOpsResponse*	_show_skip_cancel_replace_rename_all_dialog	(const char *fileops_str,
 									 const char *error_message,
 									 GFile *src, 
 									 GFile *dest,
@@ -27,11 +28,11 @@ static FileOpsResponse	_show_skip_cancel_replace_rename_all_dialog	(const char *
  *	@error:
  *	@file: file to delete or trash.
  */
-FileOpsResponse
+FileOpsResponse*
 fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
 					GFile* file, GtkWindow* parent)
 {
-    FileOpsResponse ret;
+    FileOpsResponse* ret;
     switch (error->code)
     {
 	case G_IO_ERROR_PERMISSION_DENIED: 
@@ -61,17 +62,17 @@ fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error,
  *	@src : source file 
  *	@dest: destinatin file.
  */
-FileOpsResponse
+FileOpsResponse*
 fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error, 
 	                             GFile* src, GFile* dest, GtkWindow* parent)
 {
-    FileOpsResponse ret = FILE_OPS_RESPONSE_CANCEL;
+    FileOpsResponse* ret = NULL;
     switch (error->code)
     {
 	case G_IO_ERROR_EXISTS:      //move, copy
 	    //TODO: message dialog.
 	    //      overwrite, replace, rename, //all overwrite, replace all, rename all.
-	    _show_skip_cancel_replace_rename_all_dialog (fileops_str, error->message, src, dest, parent);
+	    ret = _show_skip_cancel_replace_rename_all_dialog (fileops_str, error->message, src, dest, parent);
 	    break;
 	case G_IO_ERROR_NOT_DIRECTORY: //move, copy destination
 	    /*
@@ -111,7 +112,7 @@ fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
  *	after calling this, we stop all operations.
  *	TODO:
  */
-static FileOpsResponse  
+static FileOpsResponse*
 _show_simple_error_message_dialog (const char* fileops_str, const char *error_message,
 				   GFile *file, GtkWindow* parent)
 {
@@ -120,40 +121,38 @@ _show_simple_error_message_dialog (const char* fileops_str, const char *error_me
 	//just show error_message and return.
     }
     //file != NULL:
-    return FILE_OPS_RESPONSE_CANCEL;
+    return NULL;
 }
 /*
  *	permission denied, what we do now?
  *	TODO:
  */
-static FileOpsResponse	
+static FileOpsResponse*	
 _show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message, 
 			      GFile* file, GtkWindow* parent)
 {
     
-    return FILE_OPS_RESPONSE_CANCEL;
+    return NULL;
 }
 /*
  *
  */
-static FileOpsResponse	
+static FileOpsResponse*
 _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char *error_message,
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
     GtkWidget* dialog;
-    dialog = fileops_error_conflict_dialog_new (parent, src, dest);
-    gint result = gtk_dialog_run (GTK_DIALOG (dialog));
-    switch (result)
-    {
-	default:
-	    break;
-    }
-    gtk_widget_destroy (dialog);
- //   FILE_OPS_RESPONSE_CANCEL   = 0,
-  //  FILE_OPS_RESPONSE_CONTINUE = 1;
+    char* file_name;
+    gint  result;
 
-   // "error: file exists";
-    //rename
-    //all
-    //cancel, skip, replace
+    dialog = fileops_error_conflict_dialog_new (parent, src, dest, file_name);
+    result = gtk_dialog_run (GTK_DIALOG (dialog));
+
+    gtk_widget_destroy (dialog);
+
+    FileOpsResponse* response = g_malloc0 (sizeof (FileOpsResponse));
+    response->response_id = result;
+    response->file_name = file_name;
+
+    return response;
 }

@@ -47,110 +47,148 @@ struct _TDData
     GFile*	 dest_file;
     GCancellable* cancellable;
 };
-
-gboolean
-traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFunc post_hook, gpointer data)
+//deep copy
+static TDData* new_td_data ()
 {
-    GError* error = NULL;
-    GFileEnumerator* dir_enumerator;
+    TDData* new_tddata = NULL;
+    new_tddata = g_malloc0 (sizeof (TDData));
+    return new_tddata;
+}
+static void* free_td_data (TDData* tddata)
+{
+    g_object_unref (tddata->dest_file);
+    g_free (tddata);
+}
 
-    dir_enumerator = g_file_enumerate_children (dir, 
+// src ---> data->dest
+// we make use of 'goto' to minimize duplicated 'g_free*' statement
+gboolean
+traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFunc post_hook, gpointer data)
+{
+    gboolean retval = TRUE;
+
+    GError* error = NULL;
+    GFileEnumerator* src_enumerator = NULL;
+
+    src_enumerator = g_file_enumerate_children (src, 
 					       "standard::*",
 					       G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 					       NULL,
 					       &error);
     if (error != NULL)
     {
+	//src_enumerator must be NULL, nothing to free.
 	switch (error->code)
 	{
 	    case G_IO_ERROR_NOT_FOUND:
 		//TODO: showup a message box and quit.
 		break;
 	    case G_IO_ERROR_NOT_DIRECTORY:
-		//TODO:we're using a file.
-		pre_hook  (dir, data);
-		post_hook (dir, data);   //
-
-		g_error_free (error);
-		return TRUE;
+		//TODO:we're using a file. 
+		if (pre_hook (src, data) == FALSE ||
+		    post_hook (src, data) == FALSE)
+		{
+		    g_error_free (error);
+		    return FALSE;
+		}
+		else
+		{
+		    g_error_free (error);
+		    return TRUE;
+		}
 	    default:
 		break;
 	}
-	g_warning ("error : %s", error->message);
+	g_warning ("traverse_directory 1: %s", error->message);
 	g_error_free (error);
+
+	return TRUE;
     }
 
     //here, we must be in a directory.
     //check if it's a symbolic link
-    if (pre_hook (dir, data) == FALSE)
-	goto post_processing;		//create dir if not exist.
-    
-    char* abs_cur_dir_path = NULL;
-    abs_cur_dir_path = g_file_get_path (dir);
-    g_debug ("traverse_directory: chdir to : %s", abs_cur_dir_path);
-    g_chdir (abs_cur_dir_path);
+    if (pre_hook (src, data) == FALSE) //src_enumerator must be freed
+    {
+	retval = FALSE;
+	goto post_processing;
+    }
+#if 1    
+    char* src_uri = NULL;
+    src_uri = g_file_get_uri (src);
+    g_debug ("traverse_directory: chdir to : %s", src_uri);
+#endif
 
     GFileInfo* file_info = NULL;
-    while ((file_info = g_file_enumerator_next_file (dir_enumerator, NULL, &error)) != NULL)
+    while ((file_info = g_file_enumerator_next_file (src_enumerator, NULL, &error)) != NULL)
     {
 	//this should not be freed with g_free(). it'll be freed when we call g_object_unref
 	//on file_info
-	const char* _file_name = g_file_info_get_name (file_info);
-	g_debug ("traverse_directory: %s", _file_name);
+#if 1
+	const char* src_child_name = g_file_info_get_name (file_info);
+	g_debug ("traverse_directory: %s", src_child_name);
+#endif 
 
-	GFile* src_file = g_file_new_for_path (_file_name); 
-	GFile* dest_file = NULL;
-	if (data != NULL)
-	{
-	    dest_file = ((TDData*)data)->dest_file;
+	TDData* tddata = NULL;
+	GFile* src_child_file = NULL; 
+	GFile* dest_dir = NULL;   //corresponding to src 
+	GFile* dest_child_file = NULL;  //corresponding to src_child_file.
+	    
+	tddata = new_td_data ();
+	src_child_file = g_file_get_child (src, src_child_name);
+	dest_dir = ((TDData*)data)->dest_file;
 
-	    char* _parent_name = g_file_get_path (dest_file);
-	    char* _dest_name = g_build_filename (_parent_name,"/", _file_name, NULL);
+	if (dest_dir != NULL)
+	    dest_child_file = g_file_get_child (dest_dir, src_child_name);
+#if 1
+	char* dest_child_file_uri = g_file_get_uri (dest_child_file);
+	g_debug ("dest_child_file_uri: %s", dest_child_file_uri);
+	g_free (dest_child_file_uri);
+#endif
 
-	    dest_file = g_file_new_for_path(_dest_name);
-	    g_debug ("traverse_directory: dest file: %s", _dest_name);
-	
-	    g_free (_parent_name);
-	    g_free (_dest_name);
-	}
-
+	tddata->dest_file = dest_child_file;
+	tddata->cancellable = ((TDData*)data)->cancellable;
 	//TODO:
-	traverse_directory (src_file, pre_hook, post_hook, dest_file);
-	
-	g_object_unref (src_file);
-	if (dest_file != NULL)
-	    g_object_unref (dest_file);
+	//get out the loop recursively when operation is cancelled.
+	retval = traverse_directory (src_child_file, pre_hook, post_hook, tddata);
+
+	g_object_unref (src_child_file);
+	free_td_data (tddata);
+
 	g_object_unref (file_info);
 	file_info = NULL;
+
+	if (retval == FALSE)
+	    goto post_processing;
     }
     //checking errors
     if (error != NULL)
     {
-	g_warning ("traverse_directory: %s", abs_cur_dir_path);
-	g_warning ("error : %s", error->message);
+	g_warning ("traverse_directory 2: %s", error->message);
 	g_error_free (error);
     }
 
-    //close enumerator.
-    g_file_enumerator_close (dir_enumerator, NULL, &error);
-    g_object_unref (dir_enumerator);
-    //checking errors
-    if (error != NULL)
-    {
-	g_warning ("error : %s", error->message);
-	g_error_free (error);
-    }
+#if 1
     //change to parent directory.
-    g_debug ("traverse_directory: come out: %s", abs_cur_dir_path);
-    g_free (abs_cur_dir_path);
-    g_chdir ("..");
+    g_debug ("traverse_directory: come out: %s", src_uri);
+    g_free (src_uri);
+#endif  
 
 post_processing:
-    //after processing child node. processing this directory.
-    if (post_hook (dir, data) == FALSE)
-	return TRUE;
+    //close enumerator.
+    g_file_enumerator_close (src_enumerator, NULL, &error);
+    g_object_unref (src_enumerator);
+    //checking errors
+    if (error != NULL)
+    {
+	g_warning ("traverse_directory 3: %s", error->message);
+	g_error_free (error);
+    }
 
-    return TRUE;
+    //after processing child node. processing this directory.
+    if (post_hook (src, data) == FALSE)
+	return FALSE;
+
+    return retval;
 }
 
 /*
@@ -168,14 +206,16 @@ fileops_delete (GFile* file_list[], guint num)
     int i;
     for (i = 0; i < num; i++)
     {
-	GFile* dir = file_list[i];
-	char* filename = g_file_get_path (dir);
-	g_debug ("dfile_delete: file %d: %s", i, filename);
-	g_free (filename);
-
+	GFile* src = file_list[i];
+#if 1
+	char* src_uri = g_file_get_uri (src);
+	g_debug ("fileops_delete: file %d: %s", i, src_uri);
+	g_free (src_uri);
+#endif
 	data->dest_file = NULL;
 	data->cancellable = delete_cancellable;
-	traverse_directory (dir, _dummy_func, _delete_files_async, data);
+
+	traverse_directory (src, _dummy_func, _delete_files_async, data);
     }
     g_object_unref (data->cancellable);
     g_free (data);
@@ -197,11 +237,16 @@ fileops_trash (GFile* file_list[], guint num)
     int i;
     for (i = 0; i < num; i++)
     {
-	GFile* dir = file_list[i];
-	char* filename = g_file_get_path (dir);
-	g_debug ("fileops_trash: file %d: %s", i, filename);
-	g_free (filename);
-	_trash_files_async (dir, data);
+	GFile* src = file_list[i];
+#if 1
+	char* src_uri = g_file_get_uri (src);
+	g_debug ("fileops_trash: file %d: %s", i, src_uri);
+	g_free (src_uri);
+#endif
+	data->dest_file = NULL;
+	data->cancellable = trash_cancellable;
+
+	_trash_files_async (src, data);
 	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
     }
     g_object_unref (data->cancellable);
@@ -226,29 +271,28 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
     int i;
     for (i = 0; i < num; i++)
     {
-	GFile* src_dir = file_list[i];
-	char* src_name = g_file_get_path (src_dir);
-	char* dest_name = g_file_get_path (dest_dir);
-	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_name, dest_name);
-
+	GFile* src = file_list[i];
+#if 1
+	char* src_uri = g_file_get_uri (src);
+	char* dest_dir_uri = g_file_get_uri (dest_dir);
+	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
+	g_free (src_uri);
+	g_free (dest_dir_uri);
+#endif
 	//make sure dest_dir is a directory before proceeding.
 	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
 	if (type != G_FILE_TYPE_DIRECTORY)
 	{
+	    //TODO: symbolic links
 	    return;
 	}
-	char* src_basename= g_path_get_basename (src_name);
-	char* move_dest_name = g_build_filename (dest_name, "/", src_basename, NULL);
-	GFile* move_dest_file = g_file_new_for_path (move_dest_name);
-	
-	g_free (src_name);
-	g_free (dest_name);
-
+	char* src_basename= g_file_get_basename (src);
+	GFile* move_dest_file = g_file_get_child (dest_dir, src_basename);
 	g_free (src_basename);
-	g_free (move_dest_name);
 
 	data->dest_file = move_dest_file;
-	_move_files_async (src_dir, data);
+
+	_move_files_async (src, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
@@ -271,29 +315,30 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
     int i;
     for (i = 0; i < num; i++) 
     {
-        GFile* src_dir = file_list[i];
-        char* src_name = g_file_get_path (src_dir);
-        char* dest_name = g_file_get_path (dest_dir);
-        g_debug ("fileops_copy: file %d: %s to dest: %s", i, src_name, dest_name);
+        GFile* src = file_list[i];
+#if 1
+        char* src_uri= g_file_get_uri (src);
+        char* dest_dir_uri = g_file_get_uri (dest_dir);
+        g_debug ("fileops_copy: file %d: %s to dest_dir: %s", i, src_uri, dest_dir_uri);
+        g_free (src_uri);
+        g_free (dest_dir_uri);
+#endif
 
         //make sure dest_dir is a directory before proceeding.
         GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
         if (type != G_FILE_TYPE_DIRECTORY)
         {
+	    //TODO: how to handle symbolic links
             return;
         }
-        char* src_basename = g_path_get_basename (src_name);
-        char* copy_dest_name = g_build_filename (dest_name, "/", src_basename, NULL);
-        GFile* copy_dest_file = g_file_new_for_path (copy_dest_name);
 
-        g_free (src_name);
-        g_free (dest_name);
-
+        char* src_basename = g_file_get_basename (src);
+        GFile* copy_dest_file = g_file_get_child (dest_dir, src_basename);
         g_free (src_basename);
-        g_free (copy_dest_name);
 
 	data->dest_file = copy_dest_file;
-        traverse_directory (src_dir, _copy_files_async, _dummy_func, data);
+
+        traverse_directory (src, _copy_files_async, _dummy_func, data);
 
         g_object_unref (copy_dest_file);
     }
@@ -303,6 +348,14 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 }
 // internal functions 
 // TODO : setup a dialog, support Cancelling and show progress bar.
+//
+// hook function return value:
+// TRUE: continue operation 
+//       CONFLICT_RESPONSE_SKIP
+//       CONFLICT_RESPONSE_RENAME
+//	 CONFLICT_RESPONSE_REPLACE
+// FALSE: get out of traverse_directory.
+//        GTK_RESPONSE_CANCEL
 
 static gboolean 
 _dummy_func (GFile* file, gpointer data)
@@ -313,6 +366,8 @@ _dummy_func (GFile* file, gpointer data)
 static gboolean
 _delete_files_async (GFile* file, gpointer data)
 {
+    gboolean retval = TRUE;
+
     TDData* _data = (TDData*) data;
 
     GError* error = NULL;
@@ -320,24 +375,29 @@ _delete_files_async (GFile* file, gpointer data)
 
     _delete_cancellable = _data->cancellable;
     g_file_delete (file, _delete_cancellable, &error);
+
     if (error != NULL)
     {
 	//show error dialog
 	g_cancellable_cancel (_delete_cancellable);
-	g_warning ("%s\n", error->message);
+	g_warning ("_delete_files_async: %s", error->message);
 	//fileops_delete_trash_error_show_dialog ("delete", error, file, NULL);
 	g_error_free (error);
     }
 #if 1
-    char* name = g_file_get_path (file);
-    g_debug ("_delete_files_async: delete : %s", name);
-    g_free (name);
+    char* file_uri = g_file_get_uri (file);
+    g_debug ("_delete_files_async: delete : %s", file_uri);
+    g_free (file_uri);
 #endif
+
+    return retval;
 }
 
 static gboolean
 _trash_files_async (GFile* file, gpointer data)
 {
+    gboolean retval = TRUE;
+
     TDData* _data = (TDData*) data;
 
     GError* error = NULL;
@@ -345,21 +405,28 @@ _trash_files_async (GFile* file, gpointer data)
 
     _trash_cancellable = _data->cancellable;
     g_file_trash (file, _trash_cancellable, &error);
+
     if (error != NULL)
     {
 	g_cancellable_cancel (_trash_cancellable);
-	g_warning ("%s\n", error->message);
+	g_warning ("_trash_files_async: %s", error->message);
 	g_error_free (error);
     }
-    char* name = g_file_get_path (file);
-    g_debug ("_trash_files_async: trash : %s", name);
-    g_free (name);
+#if 1
+    char* file_uri = g_file_get_uri (file);
+    g_debug ("_trash_files_async: trash : %s", file_uri);
+    g_free (file_uri);
+#endif
+
+    return retval;
 }
 /*
  */
 static gboolean
-_move_files_async (GFile* file, gpointer data)
+_move_files_async (GFile* src, gpointer data)
 {
+    gboolean retval;
+
     TDData* _data = (TDData*) data;
 
     GError* error = NULL;
@@ -368,7 +435,7 @@ _move_files_async (GFile* file, gpointer data)
 
     _move_cancellable = _data->cancellable;
     dest = _data->dest_file;
-    g_file_move (file, dest,
+    g_file_move (src, dest,
 	         G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		 _move_cancellable,
 		 NULL,
@@ -377,26 +444,59 @@ _move_files_async (GFile* file, gpointer data)
     if (error != NULL)
     {
 	g_cancellable_cancel (_move_cancellable);
-	g_warning ("%s\n", error->message);
-//TEST:
-fileops_move_copy_error_show_dialog ("move", error, file, dest, NULL);
+	g_warning ("_move_files_async: %s", error->message);
+	//TEST:
+	FileOpsResponse* response;
+	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
 
-	g_debug ("ERROR: %s", error->message);
+	switch (response->response_id)
+	{
+	    case GTK_RESPONSE_CANCEL:
+		//cancel all operations
+		g_debug ("response : Cancel");
+		retval = FALSE;
+		break;
+	    
+	    case CONFLICT_RESPONSE_SKIP:
+	        //skip, imediately return.
+	        g_debug ("response : Skip");
+		retval = TRUE;
+	        break;
+	    case CONFLICT_RESPONSE_RENAME:
+		//rename, redo operations
+		g_debug ("response : Rename");
+		retval = TRUE;
+	        break;
+	    case CONFLICT_RESPONSE_REPLACE:
+	        //first delete and redo operations
+	        g_debug ("response : Replace");
+		retval = TRUE;
+	        break;
+	    default:
+		retval = FALSE;
+	        break;
+	}
+
 	g_error_free (error);
     }
+#if 1
+    char* src_uri = g_file_get_uri (src);
+    char* dest_uri = g_file_get_uri (dest);
+    g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
+    g_free (src_uri);
+    g_free (dest_uri);
+#endif
 
-    char* name = g_file_get_path (file);
-    char* dest_name = g_file_get_path (dest);
-    g_debug ("_move_files_async: move %s to %s", name, dest_name);
-    g_free (name);
-    g_free (dest_name);
+    return retval;
 }
 /*
  *  
  */
 static gboolean
-_copy_files_async (GFile* file, gpointer data)
+_copy_files_async (GFile* src, gpointer data)
 {
+    gboolean retval;
+
     TDData* _data = (TDData*) data;
 
     GError* error = NULL;
@@ -406,8 +506,8 @@ _copy_files_async (GFile* file, gpointer data)
     _copy_cancellable = _data->cancellable;
     dest = _data->dest_file;
     
-    //because @dest doesn't exist, we should check @file instead.
-    GFileType type = g_file_query_file_type (file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+    //because @dest doesn't exist, we should check @src instead.
+    GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_DIRECTORY)
     {
 	//TODO: change permissions
@@ -416,13 +516,13 @@ _copy_files_async (GFile* file, gpointer data)
 	{
 	    g_debug ("_copy_files_async: %s", error->message);
 	}
-	char* dir_name = g_file_get_path (dest);
-	g_debug ("_copy_files_async: mkdir : %s", dir_name);
-	g_free (dir_name);
+	char* dest_uri = g_file_get_uri (dest);
+	g_debug ("_copy_files_async: mkdir : %s", dest_uri);
+	g_free (dest_uri);
     }
     else
     {
-	g_file_copy (file, dest,
+	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		     _copy_cancellable,
 		     NULL,
@@ -431,16 +531,49 @@ _copy_files_async (GFile* file, gpointer data)
 	if (error != NULL)
 	{
 	    g_cancellable_cancel (_copy_cancellable);
-//TEST:
-fileops_move_copy_error_show_dialog ("copy", error, file, dest, NULL);
-	    g_warning ("%s\n", error->message);
+	    g_warning ("_copy_files_async: %s", error->message);
+	    //TEST:
+	    FileOpsResponse* response;
+	    response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
+
+	    switch (response->response_id)
+	    {
+		case GTK_RESPONSE_CANCEL:
+		    //cancel all operations
+		    g_debug ("response : Cancel");
+		    retval = FALSE;
+		    break;
+
+		case CONFLICT_RESPONSE_SKIP:
+	            //skip, imediately return.
+	            g_debug ("response : Skip");
+		    retval = TRUE;
+	            break;
+		case CONFLICT_RESPONSE_RENAME:
+		    //rename, redo operations
+		    g_debug ("response : Rename");
+		    retval = TRUE;
+	            break;
+	        case CONFLICT_RESPONSE_REPLACE:
+	            //first delete and redo operations
+	            g_debug ("response : Replace");
+		    retval = TRUE;
+	            break;
+	        default:
+		    retval = FALSE;
+	            break;
+	    }
+
 	    g_error_free (error);
 	}
-
-	char* name = g_file_get_path (file);
-	char* dest_name = g_file_get_path (dest);
-	g_debug ("_copy_files_async: copy %s to %s", name, dest_name);
-	g_free (name);
-	g_free (dest_name);
+#if 1
+	char* src_uri = g_file_get_uri (src);
+	char* dest_uri = g_file_get_uri (dest);
+	g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
+	g_free (src_uri);
+	g_free (dest_uri);
+#endif
     }
+
+    return retval;
 }
