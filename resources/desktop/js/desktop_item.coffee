@@ -496,6 +496,8 @@ class RichDir extends DesktopEntry
             ++@sub_items_count
         if @sub_items_count == 0
             @hide_pop_block()
+            alert "目录空了,现在移除"
+            DCore.DEntry.delete([@entry])
         else
             @fill_pop_block()
 
