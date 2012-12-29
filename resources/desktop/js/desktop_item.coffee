@@ -650,12 +650,11 @@ class HomeVDir extends DesktopEntry
 
 
     get_icon : ->
-        "file:///usr/share/icons/Faenza/apps/48/xfce4-backdrop.png"
+        "img/home_dir.png"
 
 
     get_path : ->
         "~"
-
 
     item_rename : ->
         return
@@ -675,13 +674,10 @@ class trashVDir extends DesktopEntry
 
 
     get_icon : ->
-        "file:///usr/share/icons/Deepin/status/48/gnome-fs-trash-full.png"
-
+        "img/trash.png"
 
     get_path : ->
         "~"
-
-
     item_rename : ->
         return
 
