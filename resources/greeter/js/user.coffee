@@ -61,18 +61,27 @@ class UserInfo extends Widget
             @focus()
 
     on_verify: (password)->
-        echo "login clicked"
         @login.destroy()
         loading = new Loading("loading")
         @element.appendChild(loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
-        debug.innerText += "authenticate"
-        debug.innerText += @id
-        debug.innerText += password
-        debug.innerText += _session
-    
         DCore.Greeter.login(@id, password, _session)
+
+        #debug code begin
+        div_auth = create_element("div", "", $("#debug"))
+        div_auth.innerText += "authenticate"
+
+        div_id = create_element("div", "", div_auth)
+        div_id.innerText = @id
+
+        div_password = create_element("div", "", div_auth)
+        div_password.innerText = password
+
+        div_session = create_element("div", "", div_auth)
+        div_session.innerText = _session
+        #debug code end
+    
 
 # below code should use c-backend to fetch data 
 users = DCore.Greeter.get_users()
@@ -80,6 +89,8 @@ for user in users
     u = new UserInfo(user, user, "images/img01.jpg")
     roundabout.appendChild(u.li)
 
+users[0].focus()   
+    
 # default_user = DCore.Greeter.get_default_user()    
 # echo "default user"
 # echo default_user    
