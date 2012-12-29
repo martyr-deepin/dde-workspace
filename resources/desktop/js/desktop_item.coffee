@@ -118,7 +118,7 @@ class Item extends Widget
             if evt.srcElement.className == "item_name"
                 if @delay_rename == -1 then @delay_rename = setTimeout(() =>
                         @item_rename()
-                    , 200);
+                    , 200)
             else
                 if @in_rename
                     @item_complete_rename(true)

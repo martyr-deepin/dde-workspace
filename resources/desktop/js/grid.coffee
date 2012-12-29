@@ -424,7 +424,6 @@ item_dragstart_handler = (widget, evt) ->
             if path.length > 0
                 all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
 
-    if all_selected_items.length > 0
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         evt.dataTransfer.effectAllowed = "all"
 
