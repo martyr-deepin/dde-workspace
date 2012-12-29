@@ -152,6 +152,7 @@ gboolean _inotify_poll()
         char buffer[EVENT_BUF_LEN];
         int length = read(_inotify_fd, buffer, EVENT_BUF_LEN); 
 
+        GList* move_out_files = NULL;
         struct inotify_event *move_out_event = NULL;
         GFile* old = NULL;
 
@@ -164,12 +165,17 @@ gboolean _inotify_poll()
                 if (g_file_equal(p, _desktop_file)) {
                     /* BEGIN MVOE EVENT HANDLE */
                     if ((event->mask & IN_MOVED_FROM) && (move_out_event == NULL)) {
-                    printf("event :%d %s\n", event->mask, event->name);
+                        printf("1event :%d %s\n", event->mask, event->name);
                         move_out_event = event;
                         old = g_file_get_child(p, event->name);
                         continue;
-                    }
-                    if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
+                    } else if ((event->mask & IN_MOVED_FROM) && (move_out_event != NULL)) {
+                        GFile* f = g_file_get_child(_desktop_file, event->name);
+                        handle_delete(f);
+                        g_object_unref(f);
+                        continue;
+                    } else if ((event->mask & IN_MOVED_TO) && (move_out_event != NULL)) {
+                        printf("2event :%d %s\n", event->mask, event->name);
                         move_out_event = NULL;
                         GFile* f = g_file_get_child(p, event->name);
 
@@ -178,14 +184,12 @@ gboolean _inotify_poll()
                         g_object_unref(old);
                         old = NULL;
                         continue;
-                    }
                     /* END MVOE EVENT HANDLE */
-
-                    if (event->mask & IN_DELETE) {
+                    } else if (event->mask & IN_DELETE) {
                         GFile* f = g_file_get_child(p, event->name);
                         handle_delete(f);
                         g_object_unref(f);
-                    } if (event->mask & IN_CREATE) {
+                    } else if (event->mask & IN_CREATE) {
                         GFile* f = g_file_get_child(p, event->name);
                         handle_new(f);
                         g_object_unref(f);
