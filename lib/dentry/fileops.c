@@ -76,7 +76,7 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
 	    default:
 		break;
 	}
-	g_error ("error : %s", error->message);
+	g_warning ("error : %s", error->message);
 	g_error_free (error);
     }
 
@@ -126,8 +126,8 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
     //checking errors
     if (error != NULL)
     {
-	g_error ("traverse_directory: %s", abs_cur_dir_path);
-	g_error ("error : %s", error->message);
+	g_warning ("traverse_directory: %s", abs_cur_dir_path);
+	g_warning ("error : %s", error->message);
 	g_error_free (error);
     }
 
@@ -137,7 +137,7 @@ traverse_directory (GFile* dir, GFileProcessingFunc pre_hook, GFileProcessingFun
     //checking errors
     if (error != NULL)
     {
-	g_error ("error : %s", error->message);
+	g_warning ("error : %s", error->message);
 	g_error_free (error);
     }
     //change to parent directory.

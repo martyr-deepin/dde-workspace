@@ -140,10 +140,15 @@ static FileOpsResponse
 _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char *error_message,
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
-    
-    GtkDialog* dialog = fileops_error_conflict_dialog_new (parent, src, dest);
-    gtk_widget_show (GTK_WIDGET (dialog));
-
+    GtkWidget* dialog;
+    dialog = fileops_error_conflict_dialog_new (parent, src, dest);
+    gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+    switch (result)
+    {
+	default:
+	    break;
+    }
+    gtk_widget_destroy (dialog);
  //   FILE_OPS_RESPONSE_CANCEL   = 0,
   //  FILE_OPS_RESPONSE_CONTINUE = 1;
 
