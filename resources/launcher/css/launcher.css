@@ -25,7 +25,7 @@ body {
     overflow-y: hidden;
 }
 
-#close {
+.close {
     background: url("../img/btn_close0.png");
     cursor: pointer;
     position: fixed;
@@ -36,8 +36,16 @@ body {
     right: 10px;
     color: red;
 }
-#close:hover {
+.close:hover {
     background: url("../img/btn_close.png");
+    cursor: pointer;
+    position: fixed;
+    width: 30px;
+    height: 30px;
+
+    top: 20px;
+    right: 10px;
+    color: red;
 }
 
 #search {

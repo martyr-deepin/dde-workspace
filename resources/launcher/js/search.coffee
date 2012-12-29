@@ -96,6 +96,10 @@ search = ->
     grid_show_items(ret)
     return ret
 
+$("#search").addEventListener('click', (e)-> 
+    if e.target == s_box
+        e.stopPropagation()
+)
 s_box.addEventListener('input', s_box.blur())
 
 document.body.onkeydown = (e)->

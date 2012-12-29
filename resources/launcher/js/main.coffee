@@ -33,6 +33,7 @@ create_category = (info) ->
     <div>#{info.Name}</div>
     "
     el.addEventListener('click', (e) ->
+        e.stopPropagation()
         grid_load_category(info.ID)
     )
     return el
@@ -47,9 +48,23 @@ append_to_category  create_category(
     "Name": _("All")
 )
 
-$("#close").addEventListener("click", ->
+$("body").addEventListener("click", ->
     DCore.Launcher.exit_gui()
 )
+
+#_active = false
+#active_close_status = ->
+    #if _active
+        #$("#close").setAttribute("class", "close_hover")
+    #else
+        #$("#close").setAttribute("class", "close")
+    #_active = !_active
+
+$("#close").setAttribute("class", "close")
+
+#$("body").addEventListener("mouseover", (e)->
+    #active_close_status()
+#)
 
 for info in DCore.Launcher.get_categories()
     c = create_category(info)
