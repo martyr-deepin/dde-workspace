@@ -212,14 +212,14 @@ class Item extends Widget
             @element.draggable = false
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
-            @item_name.addEventListener("mousedown", @event_stoppropagation)
-            @item_name.addEventListener("mouseup", @event_stoppropagation)
-            @item_name.addEventListener("click", @event_stoppropagation)
-            @item_name.addEventListener("dblclick", @event_stoppropagation)
-            @item_name.addEventListener("contextmenu", @event_stoppropagation)
-            @item_name.addEventListener("keydown", @event_stoppropagation)
-            @item_name.addEventListener("keyup", @event_stoppropagation)
+            @item_name.addEventListener("mousedown", @on_item_name_stoppropagation)
+            @item_name.addEventListener("mouseup", @on_item_name_stoppropagation)
+            @item_name.addEventListener("click", @on_item_name_stoppropagation)
+            @item_name.addEventListener("dblclick", @on_item_name_stoppropagation)
+            @item_name.addEventListener("contextmenu", @on_item_name_stoppropagation)
+            @item_name.addEventListener("keydown", @on_item_name_stoppropagation)
             @item_name.addEventListener("keypress", @item_rename_keypress)
+            @item_name.addEventListener("keyup", @on_item_name_keyup)
             @item_name.focus()
 
             ws = window.getSelection()
@@ -233,7 +233,7 @@ class Item extends Widget
         return
 
 
-    event_stoppropagation : (evt) =>
+    on_item_name_stoppropagation : (evt) =>
         evt.stopPropagation()
         return
 
@@ -252,18 +252,16 @@ class Item extends Widget
         return
 
 
+    on_item_name_keyup : (evt) =>
+        evt.stopPropagation()
+        if @in_rename == false then @item_complete_rename_remove_events()
+        return
+
+
     item_complete_rename : (modify = true) =>
         @element.draggable = true
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
-        @item_name.removeEventListener("mousedown", @event_stoppropagation)
-        @item_name.removeEventListener("mouseup", @event_stoppropagation)
-        @item_name.removeEventListener("click", @event_stoppropagation)
-        @item_name.removeEventListener("dblclick", @event_stoppropagation)
-        @item_name.removeEventListener("contextmenu", @event_stoppropagation)
-        @item_name.removeEventListener("keydown", @event_stoppropagation)
-        @item_name.removeEventListener("keyup", @event_stoppropagation)
-        @item_name.removeEventListener("keypress", @item_rename_keypress)
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
@@ -275,6 +273,17 @@ class Item extends Widget
 
         @in_rename = false
         @item_focus()
+
+
+    item_complete_rename_remove_events : ->
+        @item_name.removeEventListener("mousedown", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("mouseup", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("click", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("dblclick", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("contextmenu", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("keydown", @on_item_name_stoppropagation)
+        @item_name.removeEventListener("keypress", @item_rename_keypress)
+        @item_name.removeEventListener("keyup", @on_item_name_keyup)
 
 
     destroy: ->
