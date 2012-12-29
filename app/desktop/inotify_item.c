@@ -20,6 +20,7 @@
  **/
 #include "dwebview.h"
 #include "xdg_misc.h"
+#include "dentry/entry.h"
 #include "utils.h"
 #include <gio/gio.h>
 #include <sys/inotify.h>
@@ -79,10 +80,17 @@ void handle_rename(GFile* old_f, GFile* new_f)
     _add_monitor_directory(new_f);
     _remove_monitor_directory(old_f);
 
+
+    char* path = g_file_get_path(new_f);
+    Entry* entry = dentry_create_by_path(path);
+    g_free(path);
+
     JSObjectRef json = json_create();
     json_append_nobject(json, "old", old_f, g_object_ref, g_object_unref);
-    json_append_nobject(json, "new", new_f, g_object_ref, g_object_unref);
+    json_append_nobject(json, "new", entry, g_object_ref, g_object_unref);
     js_post_message("item_rename", json);
+
+    g_object_unref(entry);
 }
 
 void handle_delete(GFile* f)
@@ -95,9 +103,15 @@ void handle_delete(GFile* f)
 
 void handle_update(GFile* f)
 {
+    char* path = g_file_get_path(f);
+    Entry* entry = dentry_create_by_path(path);
+    g_free(path);
+
     JSObjectRef json = json_create();
-    json_append_nobject(json, "entry", f, g_object_ref, g_object_unref);
+    json_append_nobject(json, "entry", entry, g_object_ref, g_object_unref);
     js_post_message("item_update", json);
+
+    g_object_unref(entry);
 }
 
 void handle_new(GFile* f)
