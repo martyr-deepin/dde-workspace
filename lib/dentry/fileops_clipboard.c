@@ -135,6 +135,8 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
 {
     g_debug ("init_fileops_clipboard:begin");
     //set clipboard_info
+    __free_clipboard_info (&clipboard_info);
+
     clipboard_info.file_list = (GFile**)g_malloc (num * sizeof (GFile*));
     int i;
     for (i = 0; i < num; i++)
