@@ -109,7 +109,6 @@ fileops_paste (GFile* dest_dir)
     {
 	fileops_move (real_info->file_list, real_info->num, dest_dir);
 
-//	gtk_clipboard_clear (fileops_clipboard);
 	__free_clipboard_info (real_info);
     }
     else
@@ -150,6 +149,9 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
     if (copied_files_atom == GDK_NONE)
 	copied_files_atom = gdk_atom_intern ("x-special/gnome-copied-files", FALSE);
 
+    if (is_clipboard_owner)
+	return;
+
     //TODO: request clipboard data before take ownership
     //      so we can interoperate with nautilus.
     fileops_clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
@@ -185,26 +187,17 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 			    GdkEventOwnerChange*	event,
 			    gpointer		        callback_data)
 {
-	g_debug ("_clipboard_owner_change_cb: begin");
-	switch (event->reason)
+	if (is_clipboard_owner)
 	{
-	    case GDK_OWNER_CHANGE_NEW_OWNER:
-		g_debug ("GDK_OWNER_CHANGE_NEW_OWNER");
-		break;
-	    case GDK_OWNER_CHANGE_DESTROY:
-		g_debug ("GDK_OWNER_CHANGE_DESTROY");
-		break;
-	    case GDK_OWNER_CHANGE_CLOSE:
-		g_debug ("GDK_OWNER_CHANGE_CLOSE");
-		break;
+	    g_debug (" we lost clipboard ownership");
+	    is_clipboard_owner = FALSE;
+	    __free_clipboard_info (&clipboard_info);
 	}
-	if (gtk_clipboard_get_owner (clipboard) == NULL)
-	    g_debug ("owner not set");
-	//TODO: shall we clear up clipboard data?
-	//gtk_clipboard_clear (fileops_clipboard);
-	if (clipboard_info.num)
-		__free_clipboard_info (&clipboard_info);
-	g_debug ("_clipboard_owner_change_cb: end");
+	else
+	{
+	    g_debug (" we gain clipboard ownership");
+	    is_clipboard_owner = TRUE;
+	}
 }
 
 static void 
@@ -372,6 +365,8 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 {
     g_debug ("__clipboard_contents_received_callback: begin");
     FileOpsClipboardInfo* _info = (FileOpsClipboardInfo*) info;
+
+    __free_clipboard_info (info);
 
     _info->num = 0;
     _info->cut = FALSE;
