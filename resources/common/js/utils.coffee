@@ -41,11 +41,15 @@ Array.prototype.remove = (el)->
 build_menu = (info) ->
     m = new DeepinMenu
     for v in info
-        if v.length == 0
+        if v.length == 0  #separater item
             i = new DeepinMenuItem(2, 0, 0, 0)
-        else if typeof v[0] == "number"
+        else if typeof v[0] == "number"  #normal item
             i = new DeepinMenuItem(0, v[0], v[1], null)
-        else
+            if v.length > 2 and v[2] == false
+                i.enabled = false
+            else
+                i.enabled = true
+        else  #sub menu item
             sm = build_menu(v[1])
             i = new DeepinMenuItem(1, 0, v[0], sm)
         m.appendItem(i)

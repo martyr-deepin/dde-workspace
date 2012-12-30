@@ -405,6 +405,8 @@ selected_copy_to_clipboard = ->
 
 
 selected_cut_to_clipboard = ->
+    for i in $s(".DesktopEntry")
+        Widget.look_up(i.id)?.to_normal_status()
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -620,8 +622,7 @@ build_selected_items_menu = ->
     menu.push([3, _("cut")])
     menu.push([4, _("copy")])
     menu.push([])
-    if selected_item.length > 1 then menu.push([6, "-" + _("Rename")])
-    else menu.push([6, _("Rename")])
+    menu.push([6, _("Rename"), selected_item.length <= 1])
     menu.push([9, _("Delete")])
     menu.push([])
     menu.push([10, _("Properties")])
@@ -678,8 +679,11 @@ grid_right_click = (evt) ->
             ]
         ])
     menus.push([3, _("open terminal here")])
-    if DCore.DEntry.can_paste() then menus.push([4, _("paste")])
-    else menus.push([4, "-" + _("paste")])
+    menus.push([4, _("paste"), DCore.DEntry.can_paste()])
+    #if DCore.DEntry.can_paste()
+        #menus.push([4, _("paste")])
+    #else
+        #menus.push([4, _("paste"), false])
     menus.push([])
     menus.push([5, _("Personal")])
     menus.push([6, _("Display Settings")])
