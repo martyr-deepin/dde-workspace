@@ -60,7 +60,7 @@ is_clipboard_empty ()
     //TODO: we may not own the clipboard now
     if (is_clipboard_owner)
     {
-	g_debug ("we're the owner of clipboard");
+	g_debug ("is_clipboard_empty: we're the owner of clipboard");
 	if (clipboard_info.num)
 	    return FALSE;
 
@@ -68,7 +68,7 @@ is_clipboard_empty ()
     }
     else
     {
-	g_debug ("we're not the owner of clipboard");
+	g_debug ("is_clipboard_empty: we're not the owner of clipboard");
 	if (__request_clipboard_contents (&clipboard_info_tmp))
 	{
 	    //valid clipboard data;
@@ -92,12 +92,12 @@ fileops_paste (GFile* dest_dir)
 
     if (is_clipboard_owner)
     {
-	g_debug ("we use our clipboard info");
+	g_debug ("fileops_paste: we use our clipboard info");
 	real_info = &clipboard_info;
     }
     else
     {
-	g_debug ("we use other clipboard_info");
+	g_debug ("fileops_paste: we use other clipboard_info");
 	if (__request_clipboard_contents (&clipboard_info_tmp))
 	    real_info = &clipboard_info_tmp;
     }
@@ -154,8 +154,12 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
 
     //TODO: request clipboard data before take ownership
     //      so we can interoperate with nautilus.
-    fileops_clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    g_signal_connect (fileops_clipboard, "owner-change", G_CALLBACK (_clipboard_owner_change_cb), NULL);
+    if (fileops_clipboard == NULL)
+    {
+	fileops_clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+	g_signal_connect (fileops_clipboard, "owner-change", 
+		          G_CALLBACK (_clipboard_owner_change_cb), NULL);
+    }
 
     target_list = gtk_target_list_new (NULL, 0);
     gtk_target_list_add (target_list, copied_files_atom, 0, 0);
@@ -189,13 +193,14 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 {
 	if (is_clipboard_owner)
 	{
-	    g_debug (" we lost clipboard ownership");
+	    g_debug ("_clipboard_owner_change_cb: we lost clipboard ownership");
 	    is_clipboard_owner = FALSE;
 	    __free_clipboard_info (&clipboard_info);
 	}
 	else
 	{
-	    g_debug (" we gain clipboard ownership");
+	    g_debug ("_clipboard_owner_change_cb:  we gain clipboard ownership");
+           // gtk_clipboard_clear (fileops_clipboard);
 	    is_clipboard_owner = TRUE;
 	}
 }
@@ -256,8 +261,7 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
 	g_debug ("_clear_clipboard_callback: begin");
 	//gtk_clipboard_clear (clipboard);
 	//TODO: notify others, 
-	gtk_clipboard_clear (fileops_clipboard);
-	__free_clipboard_info (&clipboard_info);
+//	__free_clipboard_info (&clipboard_info);
 	g_debug ("_clear_clipboard_callback: end");
 }
 /*
@@ -321,13 +325,22 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 static void 
 __free_clipboard_info	(FileOpsClipboardInfo* info)
 {
+    g_debug ("free clipboard info : begin");
+    if (info->file_list == NULL)
+    {
+	g_debug ("already freed");
+	return;
+    }
+
     int i;
     for (i = 0; i < info->num; i++)
     {
 	g_object_unref (info->file_list[i]);
     }
     g_free (info->file_list);
+    info->file_list = NULL;
     info->num = 0;
+    g_debug ("free clipboard info : end");
 }
 #if 0
 static gboolean 
