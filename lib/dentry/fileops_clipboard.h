@@ -11,7 +11,6 @@ struct _FileOpsClipboardInfo
 	GFile**   file_list;	    // list of GFiles
 	guint	  num;
 	gboolean  cut;       //TRUE, cut; FALSE, copy
-	gboolean  valid;     // is this info still valid
 };
 
 void fileops_paste	    (GFile* dest_dir);

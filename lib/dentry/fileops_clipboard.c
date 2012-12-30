@@ -9,10 +9,22 @@
  * 	      how can we get notified?
  */
 
-static GtkClipboard*		fileops_clipboard ;
-static FileOpsClipboardInfo	clipboard_info;	//we're not using pointers here
-static FileOpsClipboardInfo	clipboard_info_tmp; // used to store data requested from another owner.
-static GdkAtom		copied_files_atom;	
+static GtkClipboard*		fileops_clipboard = NULL;
+static gboolean			is_clipboard_owner = FALSE;
+//we're not using pointers here
+static FileOpsClipboardInfo	clipboard_info = {
+                                .file_list = NULL,
+				.num       = 0,
+				.cut       = FALSE,
+				};
+// used to store data requested from another owner.
+static FileOpsClipboardInfo	clipboard_info_tmp = { 
+                                .file_list = NULL,
+				.num       = 0,
+				.cut       = FALSE,
+				};	
+static GdkAtom			copied_files_atom = GDK_NONE;	
+static GdkWindow*		window; //the window receives owner-change event
 
 static void _clipboard_owner_change_cb	(GtkClipboard*		clipboard,
 					 GdkEventOwnerChange*	event,
@@ -31,13 +43,13 @@ static char*__convert_file_list_to_string (FileOpsClipboardInfo *info,
 //NOTE: @info itself is not freed.Yep, some inconsistency here.
 static void __free_clipboard_info	(FileOpsClipboardInfo* info);
 //check if we're current the owner of the clipboard.
-static gboolean __is_owner_of_clipboard	();
+//static gboolean __is_owner_of_clipboard	();
 //return true if valid clipboard, otherwise, FALSE
 static gboolean __request_clipboard_contents (FileOpsClipboardInfo* info);
 //get clipboard data from others.
 static void __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 						    GtkSelectionData *selection_data,
-						    gpointer          data);
+						    gpointer          info);
 
 gboolean
 is_clipboard_empty ()
@@ -45,11 +57,12 @@ is_clipboard_empty ()
     if (copied_files_atom == GDK_NONE)
 	copied_files_atom = gdk_atom_intern ("x-special/gnome-copied-files", FALSE);
     //TODO: we may not own the clipboard now
-    if (__is_owner_of_clipboard ())
+    if (is_clipboard_owner)
     {
 	g_debug ("we're the owner of clipboard");
 	if (clipboard_info.num)
 	    return FALSE;
+
 	return TRUE;
     }
     else
@@ -76,7 +89,7 @@ fileops_paste (GFile* dest_dir)
     //use clipboard_info or clipboard_info_tmp
     FileOpsClipboardInfo* real_info = NULL;
 
-    if (__is_owner_of_clipboard ())
+    if (is_clipboard_owner)
     {
 	g_debug ("we use our clipboard info");
 	real_info = &clipboard_info;
@@ -147,13 +160,15 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
     gtk_target_list_add_text_targets (target_list, 0);
 
     targets = gtk_target_table_new_from_list (target_list, &n_targets);
-    gtk_target_list_unref (target_list);
 
     gtk_clipboard_set_with_data (fileops_clipboard,
 				 targets, n_targets,
 				 _get_clipboard_callback, _clear_clipboard_callback,
 				 NULL);
+
+    gtk_target_list_unref (target_list);
     gtk_target_table_free (targets, n_targets);
+
     g_debug ("init_fileops_clipboard:end");
 }
 
@@ -170,9 +185,23 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 			    gpointer		        callback_data)
 {
 	g_debug ("_clipboard_owner_change_cb: begin");
+	switch (event->reason)
+	{
+	    case GDK_OWNER_CHANGE_NEW_OWNER:
+		g_debug ("GDK_OWNER_CHANGE_NEW_OWNER");
+		break;
+	    case GDK_OWNER_CHANGE_DESTROY:
+		g_debug ("GDK_OWNER_CHANGE_DESTROY");
+		break;
+	    case GDK_OWNER_CHANGE_CLOSE:
+		g_debug ("GDK_OWNER_CHANGE_CLOSE");
+		break;
+	}
+	if (gtk_clipboard_get_owner (clipboard) == NULL)
+	    g_debug ("owner not set");
 	//TODO: shall we clear up clipboard data?
 	//gtk_clipboard_clear (fileops_clipboard);
-	if (clipboard_info.valid)
+	if (clipboard_info.num)
 		__free_clipboard_info (&clipboard_info);
 	g_debug ("_clipboard_owner_change_cb: end");
 }
@@ -305,8 +334,8 @@ __free_clipboard_info	(FileOpsClipboardInfo* info)
     }
     g_free (info->file_list);
     info->num = 0;
-    info->valid = FALSE;
 }
+#if 0
 static gboolean 
 __is_owner_of_clipboard	()
 {
@@ -315,6 +344,7 @@ __is_owner_of_clipboard	()
       return FALSE; 
    return TRUE;
 }
+#endif
 /*
  *	get data from clipboard ownered by others.
  */
@@ -332,56 +362,61 @@ __request_clipboard_contents (FileOpsClipboardInfo* info)
 				                      copied_files_atom);
     __clipboard_contents_received_callback (NULL, selection_data, info);
     g_debug ("__request_clipboard_contents: end");
-    return info->valid;
+    return info->num ? TRUE : FALSE;
 }
 static void
 __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 				        GtkSelectionData *selection_data,
-				        gpointer          data)
+				        gpointer          info)
 {
     g_debug ("__clipboard_contents_received_callback: begin");
-    FileOpsClipboardInfo* info = (FileOpsClipboardInfo*) data;
+    FileOpsClipboardInfo* _info = (FileOpsClipboardInfo*) info;
 
-    info->num = 0;
-    info->valid = FALSE;
-    info->cut = FALSE;
+    _info->num = 0;
+    _info->cut = FALSE;
 
-    if (gtk_selection_data_get_data_type (selection_data) != copied_files_atom
-	|| gtk_selection_data_get_length (selection_data) <= 0) 
+    if (selection_data == NULL)
 	return;
-    else 
+
+    if (gtk_selection_data_get_data_type (selection_data) != copied_files_atom)
+	return;
+
+    int _len = gtk_selection_data_get_length (selection_data);
+    if (_len <= 0)
+	return;
+
+    guchar *data;
+	
+    data = (guchar *) gtk_selection_data_get_data (selection_data);
+    data[_len] = '\0';
+
+    char **lines;
+    lines = g_strsplit (data, "\n", 0);
+
+    //fill FileOpsClipboardInfo* info
+    if (lines[0] == NULL) 
+	return;
+
+    if (strcmp (lines[0], "cut") == 0) 
+	_info->cut = TRUE;
+    else if (strcmp (lines[0], "copy") != 0) 
+	return;
+
+    int i;
+    //get the number of files
+    for (i = 1; lines[i] != NULL; i++) 
+	_info->num ++;
+    //FIXME: avoid another loop
+    _info->file_list = g_malloc (_info->num * sizeof (GFile*));
+    g_debug ("operation: %s", lines[0]);
+    for (i = 1; lines[i] != NULL; i++) 
     {
-	guchar *data;
-	data = (guchar *) gtk_selection_data_get_data (selection_data);
-	data[gtk_selection_data_get_length (selection_data)] = '\0';
-
-	char **lines;
-	lines = g_strsplit (data, "\n", 0);
-
-	//fill FileOpsClipboardInfo* info
-	if (lines[0] == NULL) 
-	    return;
-
-	if (strcmp (lines[0], "cut") == 0) 
-	    info->cut = TRUE;
-       	else if (strcmp (lines[0], "copy") != 0) 
-	    return;
-	int i;
-	//get the number of files
-	for (i = 1; lines[i] != NULL; i++) 
-	    info->num ++;
-	//FIXME: avoid another loop
-	info->file_list = g_malloc (info->num * sizeof (GFile*));
-	g_debug ("operation: %s", lines[0]);
-	for (i = 1; lines[i] != NULL; i++) 
-	{
-	    g_debug ("%d file: %s", i, lines[i]);
-	    //NOTE: i-1
-	    info->file_list[i-1] = g_file_new_for_uri (lines[i]);
-	}
-
-	info->valid = TRUE;
-	g_strfreev (lines);
+	g_debug ("%d file: %s", i, lines[i]);
+	//NOTE: i-1
+	_info->file_list[i-1] = g_file_new_for_uri (lines[i]);
     }
+
+    g_strfreev (lines);
+    
     g_debug ("__clipboard_contents_received_callback: end");
 }

@@ -338,7 +338,10 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 
 	data->dest_file = copy_dest_file;
 
-        traverse_directory (src, _copy_files_async, _dummy_func, data);
+	if (g_file_is_native (src))
+	    traverse_directory (src, _copy_files_async, _dummy_func, data);
+	else
+	    _copy_files_async (src,data);
 
         g_object_unref (copy_dest_file);
     }
