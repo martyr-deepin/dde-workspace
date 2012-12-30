@@ -4,7 +4,10 @@
 
 #include "fileops.h"
 #include "fileops_clipboard.h"
+#include "jsextension.h"
 
+
+//js_post_message_simply ("cut-completed", NULL);
 /*
  * 	TODO: if we cut or copy files in nautilus, 
  * 	      how can we get notified?
@@ -340,6 +343,7 @@ __free_clipboard_info	(FileOpsClipboardInfo* info)
     g_free (info->file_list);
     info->file_list = NULL;
     info->num = 0;
+    js_post_message_simply ("cut-completed", NULL);
     g_debug ("free clipboard info : end");
 }
 #if 0
