@@ -459,7 +459,7 @@ _move_files_async (GFile* src, gpointer data)
 		 &error);
     if (error != NULL)
     {
-	g_cancellable_cancel (_move_cancellable);
+//	g_cancellable_cancel (_move_cancellable);
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
 	FileOpsResponse* response;
@@ -546,7 +546,7 @@ _copy_files_async (GFile* src, gpointer data)
 		     &error);
 	if (error != NULL)
 	{
-	    g_cancellable_cancel (_copy_cancellable);
+	//    g_cancellable_cancel (_copy_cancellable);
 	    g_warning ("_copy_files_async: %s", error->message);
 	    //TEST:
 	    FileOpsResponse* response;
