@@ -95,9 +95,9 @@ body {
 }
 
 #pop_grid {
-    z-index:20;
+    z-index:20000;
     position:fixed;
-    background: rgba(6, 63, 107, 0.95);
+    background: rgba(6, 63, 107, 0.85);
     border:6px solid rgba(0, 0, 0, 0.2);
     border-radius:6px;
 }
