@@ -310,6 +310,7 @@ class ClientGroup extends AppItem
         @add_client(info.id)
 
     update_client: (id, icon, title)->
+        @img.src = icon if id == @leader
         in_withdraw = id in @w_clients
         @client_infos[id] =
             "id": id
