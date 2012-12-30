@@ -302,7 +302,12 @@ class DesktopEntry extends Item
         @in_count = 0
 
         super
+        @add_css_class("DesktopEntry")
 
+    to_cut_status: ->
+        @element.style.opacity = "0.5"
+    to_normal_status: ->
+        @element.style.opacity = "1"
 
     do_dragstart : (evt) =>
         evt.stopPropagation()

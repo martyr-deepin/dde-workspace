@@ -408,7 +408,9 @@ selected_cut_to_clipboard = ->
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? then tmp_list.push(w.entry)
+        if w
+            w.to_cut_status()
+            tmp_list.push(w.entry)
     DCore.DEntry.cut(tmp_list)
 
 
