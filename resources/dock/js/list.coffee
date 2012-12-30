@@ -127,6 +127,8 @@ class AppItem extends Widget
         @img.src = @icon
         app_list.append(@)
 
+    is_fixed_pos: false
+        
     destroy: ->
         super
         run_post(calc_app_item_size)
@@ -150,6 +152,7 @@ class AppItem extends Widget
 
     do_dragstart: (e)->
         Preview_container.remove_all()
+        return if @is_fixed_pos
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
         e.stopPropagation()
@@ -160,6 +163,7 @@ class AppItem extends Widget
 
     do_dragover: (e) ->
         e.preventDefault()
+        return if @is_fixed_pos
         sid = e.dataTransfer.getData("item-id")
         if not sid
             return
@@ -205,33 +209,6 @@ class Launcher extends AppItem
             [],
             [2, _("UnDock")],
         ]
-
-class ShowDesktop extends Launcher
-    constructor: (@id)->
-        super
-        @add_css_class("AppItem")
-        @show = false
-        @img.src = "img/desktop.png"
-
-    do_click: (e)->
-        @show = !@show
-        DCore.Dock.show_desktop(@show)
-    do_buildmenu: ->
-        []
-
-class LauncherItem extends Launcher
-    constructor: (@id)->
-        super
-        @add_css_class("AppItem")
-        @img.src = "img/launcher.png"
-
-    do_click: (e)->
-        @show = !@show
-        DCore.run_command("launcher")
-    do_buildmenu: ->
-        []
-
-
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id)->
         super
@@ -422,6 +399,37 @@ class ClientGroup extends AppItem
 
     do_mouseover: (e)->
         #Preview_container.show_group(@)
+
+
+class ShowDesktop extends Launcher
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @show = false
+        @img.src = "img/desktop.png"
+        @img.setAttribute("draggable", "false")
+
+    do_click: (e)->
+        @show = !@show
+        DCore.Dock.show_desktop(@show)
+    do_buildmenu: ->
+        []
+    is_fixed_pos: true
+
+class LauncherItem extends Launcher
+    constructor: (@id)->
+        super
+        @add_css_class("AppItem")
+        @img.src = "img/launcher.png"
+        @img.setAttribute("draggable", "false")
+
+    do_click: (e)->
+        @show = !@show
+        DCore.run_command("launcher")
+    do_buildmenu: ->
+        []
+    is_fixed_pos: true
+
 
 show_desktop = new ShowDesktop("show_desktop")
 show_launcher = new LauncherItem("show_launcher")

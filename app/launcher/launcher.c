@@ -86,6 +86,8 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
+    gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
+
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
     GdkRectangle area = {0, 1700, 100, 30};
