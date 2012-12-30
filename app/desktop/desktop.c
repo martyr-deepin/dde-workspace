@@ -242,6 +242,11 @@ gboolean draw_back(GtkWidget* widget, cairo_t* cr, gpointer user_data)
     return FALSE;
 }
 
+void send_lost_focus()
+{
+    js_post_message_simply("lost_focus", NULL);
+}
+
 int main(int argc, char* argv[])
 {
     init_i18n();
@@ -264,6 +269,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
     g_signal_connect (webview, "draw", G_CALLBACK(draw_back), NULL);
+    g_signal_connect(webview, "focus-out-event", G_CALLBACK(send_lost_focus), NULL);
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     gtk_widget_set_size_request(container, gdk_screen_get_width(screen),
