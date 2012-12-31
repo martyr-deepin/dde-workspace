@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/com/deepin/dde/datetime/" id="com.deepin.dde.datetime" gettext-domain="DDE">
+    <key type="b" name="active">
+      <default>true</default>
+      <summary>Activation of this plugin</summary>
+      <description>Whether this plugin would be activated by gnome-settings-daemon or not</description>
+    </key>
+    <key type="i" name="priority">
+      <default>1</default>
+      <summary>Priority to use for this plugin</summary>
+      <description>Priority to use for this plugin in gnome-settings-daemon startup queue</description>
+    </key>
+    <key type="b" name="is-24hour">
+      <default>true</default>
+      <summary>Is 24 Hour Display</summary>
+      <description>Is 24 Hour Display</description>
+    </key>
+    <key type="b" name="is-auto-set">
+      <default>true</default>
+      <summary>Is Auto Set DateTime</summary>
+      <description>Is Auto Set DateTime</description>
+    </key>
+  </schema>
+</schemalist>
