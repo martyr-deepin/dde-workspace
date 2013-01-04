@@ -66,7 +66,7 @@ class UserInfo extends Widget
         @element.appendChild(loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
-        DCore.Greeter.login(@id, password, _session)
+        # DCore.Greeter.login(@id, password, _session)
 
         #debug code begin
         div_auth = create_element("div", "", $("#Debug"))
