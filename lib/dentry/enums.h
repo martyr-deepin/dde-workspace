@@ -29,6 +29,9 @@ enum _FileOpsClipboard
     FILE_OPS_CLIPBOARD_COPY = 1
 };
 //fileops_error_dialog.c
+//NOTE:
+//we need to handle file replace and
+//directory merge in CONFLICT_RESPONSE_REPLACE
 enum
 {
     CONFLICT_RESPONSE_SKIP = 1,

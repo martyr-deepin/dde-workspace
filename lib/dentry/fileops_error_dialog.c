@@ -12,22 +12,23 @@
 
 struct _FileOpsFileConflictDialogDetails
 {
-	/* conflicting objects */
-	GFile *source;
-	GFile *destination;
-	GFile *dest_dir;
-	gchar *conflict_name;
-	/* UI objects */
-	GtkWidget *titles_vbox;
-	GtkWidget *first_hbox;
-	GtkWidget *second_hbox;
-	GtkWidget *expander;
-	GtkWidget *entry;
-	GtkWidget *checkbox;
-	GtkWidget *rename_button;
-	GtkWidget *replace_button;
-	GtkWidget *dest_image;
-	GtkWidget *src_image;
+    FileOpsResponse* response;
+    /* conflicting objects */
+    GFile *source;
+    GFile *destination;
+    GFile *dest_dir;
+    gchar *conflict_name;
+    /* UI objects */
+    GtkWidget *titles_vbox;
+    GtkWidget *first_hbox;
+    GtkWidget *second_hbox;
+    GtkWidget *expander;
+    GtkWidget *entry;
+    GtkWidget *checkbox;
+    GtkWidget *rename_button;
+    GtkWidget *replace_button;
+    GtkWidget *dest_image;
+    GtkWidget *src_image;
 };
 
 static void _expander_activated_cb (GtkExpander *w, GtkWidget *dialog);
@@ -46,15 +47,17 @@ static GtkWidget *dialog;
 
 //TODO: add a callback so we can retrieve the renamed name.
 GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, 
-	                                      GFile* dest, char* file_name)
+	                                      GFile* dest, FileOpsResponse* response)
 {
+    details.response = response;
+
     g_debug ("show_conflict_dialog");
     //details from parameters
     GtkWidget *hbox, *vbox, *vbox2, *alignment;
     GtkWidget *widget, *dialog_area;
 
     dialog = gtk_dialog_new ();
-    gtk_widget_set_name (GTK_WIDGET (dialog), _("File conflict"));
+    gtk_window_set_title (GTK_WINDOW (dialog), _("File conflict"));
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
     gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
 
@@ -394,6 +397,9 @@ _expander_activated_cb (GtkExpander *w, GtkWidget *dialog)
 static void
 _entry_text_changed_cb (GtkEditable *entry, GtkWidget *dialog)
 {
+    FileOpsResponse* response = details.response;
+    response->file_name = g_strdup (gtk_entry_get_text (GTK_ENTRY (entry)));
+
     if (g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)), "") != 0 &&
 	g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (entry)),  details.conflict_name) != 0)
     {
@@ -431,6 +437,9 @@ _reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
 static void
 _checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog)
 {
+    FileOpsResponse* response = details.response;
+    response->apply_to_all = gtk_toggle_button_get_active (t);
+
     gtk_widget_set_sensitive (details.expander,
 	                      !gtk_toggle_button_get_active (t));
     gtk_widget_set_sensitive (details.rename_button,

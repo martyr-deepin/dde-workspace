@@ -142,17 +142,22 @@ _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
     GtkWidget* dialog;
-    char* file_name;
-    gint  result;
+    FileOpsResponse* response;
 
-    dialog = fileops_error_conflict_dialog_new (parent, src, dest, file_name);
-    result = gtk_dialog_run (GTK_DIALOG (dialog));
+    response = g_malloc0 (sizeof (FileOpsResponse));
+    //get file_name and boolean apply_to_all here
+    dialog = fileops_error_conflict_dialog_new (parent, src, dest, response);
+
+    response->response_id = gtk_dialog_run (GTK_DIALOG (dialog));
 
     gtk_widget_destroy (dialog);
 
-    FileOpsResponse* response = g_malloc0 (sizeof (FileOpsResponse));
-    response->response_id = result;
-    response->file_name = file_name;
 
     return response;
+}
+void 
+free_fileops_response (FileOpsResponse* response)
+{
+    g_free (response->file_name);
+    g_free (response);
 }

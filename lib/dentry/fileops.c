@@ -441,7 +441,7 @@ _trash_files_async (GFile* file, gpointer data)
 static gboolean
 _move_files_async (GFile* src, gpointer data)
 {
-    gboolean retval;
+    gboolean retval = TRUE;
 
     TDData* _data = (TDData*) data;
 
@@ -457,6 +457,7 @@ _move_files_async (GFile* src, gpointer data)
 		 NULL,
 		 NULL,
 		 &error);
+    GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (error != NULL)
     {
 //	g_cancellable_cancel (_move_cancellable);
@@ -481,10 +482,33 @@ _move_files_async (GFile* src, gpointer data)
 	    case CONFLICT_RESPONSE_RENAME:
 		//rename, redo operations
 		g_debug ("response : Rename");
-		retval = TRUE;
+
+		GFile* dest_parent = g_file_get_parent (dest);
+		GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+	        g_object_unref (dest_parent);
+
+		g_object_unref (dest);
+		_data->dest_file = new_dest;
+
+	        retval = _move_files_async (src, _data);
+
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
-	        //first delete and redo operations
+	        if (type == G_FILE_TYPE_DIRECTORY)
+		{
+		    //Merge:
+		    retval = TRUE;
+		}
+		else
+		{
+		    //replace
+                    retval = _delete_files_async (dest, _data);
+		    if (retval = TRUE)
+		    {
+			retval = _move_files_async (src, _data);
+		    }
+		}
+
 	        g_debug ("response : Replace");
 		retval = TRUE;
 	        break;
@@ -493,14 +517,18 @@ _move_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
+	free_fileops_response (response);
 	g_error_free (error);
     }
 #if 1
-    char* src_uri = g_file_get_uri (src);
-    char* dest_uri = g_file_get_uri (dest);
-    g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
-    g_free (src_uri);
-    g_free (dest_uri);
+    else 
+    {
+	char* src_uri = g_file_get_uri (src);
+	char* dest_uri = g_file_get_uri (dest);
+	g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
+	g_free (src_uri);
+	g_free (dest_uri);
+    }
 #endif
 
     return retval;
@@ -511,7 +539,7 @@ _move_files_async (GFile* src, gpointer data)
 static gboolean
 _copy_files_async (GFile* src, gpointer data)
 {
-    gboolean retval;
+    gboolean retval = TRUE;
 
     TDData* _data = (TDData*) data;
 
@@ -528,13 +556,11 @@ _copy_files_async (GFile* src, gpointer data)
     {
 	//TODO: change permissions
 	g_file_make_directory (dest, NULL, &error);
-	if (error != NULL)
-	{
-	    g_debug ("_copy_files_async: %s", error->message);
-	}
+#if 1
 	char* dest_uri = g_file_get_uri (dest);
 	g_debug ("_copy_files_async: mkdir : %s", dest_uri);
 	g_free (dest_uri);
+#endif
     }
     else
     {
@@ -544,52 +570,78 @@ _copy_files_async (GFile* src, gpointer data)
 		     NULL,
 		     NULL,
 		     &error);
-	if (error != NULL)
-	{
+    }
+    //error handling
+    if (error != NULL)
+    {
 	//    g_cancellable_cancel (_copy_cancellable);
-	    g_warning ("_copy_files_async: %s", error->message);
-	    //TEST:
-	    FileOpsResponse* response;
-	    response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
+	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
+	//TEST:
+	FileOpsResponse* response;
+	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
 
-	    switch (response->response_id)
-	    {
-		case GTK_RESPONSE_CANCEL:
-		    //cancel all operations
-		    g_debug ("response : Cancel");
-		    retval = FALSE;
-		    break;
+	switch (response->response_id)
+	{
+	    case GTK_RESPONSE_CANCEL:
+		//cancel all operations
+		g_debug ("response : Cancel");
+		retval = FALSE;
+		break;
 
-		case CONFLICT_RESPONSE_SKIP:
-	            //skip, imediately return.
-	            g_debug ("response : Skip");
-		    retval = TRUE;
-	            break;
-		case CONFLICT_RESPONSE_RENAME:
-		    //rename, redo operations
-		    g_debug ("response : Rename");
-		    retval = TRUE;
-	            break;
-	        case CONFLICT_RESPONSE_REPLACE:
-	            //first delete and redo operations
-	            g_debug ("response : Replace");
-		    retval = TRUE;
-	            break;
-	        default:
-		    retval = FALSE;
-	            break;
-	    }
+	    case CONFLICT_RESPONSE_SKIP:
+		//skip, imediately return.
+	        g_debug ("response : Skip");
+		retval = TRUE;
+	        break;
+	    case CONFLICT_RESPONSE_RENAME:
+		//rename, redo operations
+		g_debug ("response : Rename to %s", response->file_name);
 
-	    g_error_free (error);
+		GFile* dest_parent = g_file_get_parent (dest);
+		GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+	        g_object_unref (dest_parent);
+
+		g_object_unref (dest);
+		_data->dest_file = new_dest;
+
+	        retval = _copy_files_async (src, _data);
+	        break;
+	    case CONFLICT_RESPONSE_REPLACE:
+	        if (type == G_FILE_TYPE_DIRECTORY)
+		{
+		    //Merge:
+		    retval = TRUE;
+		}
+		else
+		{
+		    //replace
+                    retval = _delete_files_async (dest, _data);
+		    if (retval = TRUE)
+		    {
+			retval = _copy_files_async (src, _data);
+		    }
+		}
+
+		g_debug ("response : Replace");
+	        break;
+	    default:
+		retval = FALSE;
+	        break;
 	}
+
+	free_fileops_response (response);
+	g_error_free (error);
+    }
 #if 1
+    else
+    {
 	char* src_uri = g_file_get_uri (src);
 	char* dest_uri = g_file_get_uri (dest);
 	g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
 	g_free (src_uri);
 	g_free (dest_uri);
-#endif
     }
+#endif
 
     return retval;
 }
