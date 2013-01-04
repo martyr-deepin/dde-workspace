@@ -46,7 +46,7 @@ cleanup_filename = (str) ->
 
 
 class Item extends Widget
-    constructor: (@entry) ->
+    constructor: (@entry, @modifiable = true) ->
         @id = @get_id()
 
         @selected = false
@@ -184,6 +184,14 @@ class Item extends Widget
         @focused = false
 
 
+    to_cut_status: ->
+        @element.style.opacity = "0.5"
+
+
+    to_normal_status: ->
+        @element.style.opacity = "1"
+
+
     show_selected_box : =>
         @element.className += " item_selected"
 
@@ -304,10 +312,6 @@ class DesktopEntry extends Item
         super
         @add_css_class("DesktopEntry")
 
-    to_cut_status: ->
-        @element.style.opacity = "0.5"
-    to_normal_status: ->
-        @element.style.opacity = "1"
 
     do_dragstart : (evt) =>
         evt.stopPropagation()
@@ -385,7 +389,17 @@ class DesktopEntry extends Item
 
 
     do_buildmenu : ->
-        build_selected_items_menu()
+        menu = []
+        menu.push([1, _("Open")])
+        menu.push([])
+        menu.push([3, _("cut")])
+        menu.push([4, _("copy")])
+        menu.push([])
+        menu.push([6, _("Rename"), not is_selected_multiple_items()])
+        menu.push([9, _("Delete")])
+        menu.push([])
+        menu.push([10, _("Properties")])
+        menu
 
 
     do_itemselected : (evt) =>
@@ -434,15 +448,21 @@ class RichDir extends DesktopEntry
         if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
+            else
+                @hide_pop_block()
 
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
 
 
+    do_rightclick : (evt) ->
+        if @show_pop == true then @hide_pop_block()
+        super
+
+
     do_dragstart : (evt) ->
-        if @show_pop == true
-            @hide_pop_block()
+        if @show_pop == true then @hide_pop_block()
         super
 
 
@@ -457,6 +477,15 @@ class RichDir extends DesktopEntry
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
+
+
+    do_buildmenu : ->
+        menus = []
+        menus.push([1, _("Open")])
+        menus.push([])
+        menus.push([6, _("Rename"), not is_selected_multiple_items()])
+        menus.push([9, _("Delete")])
+        menus
 
 
     item_update : ->
@@ -651,7 +680,7 @@ class DesktopApplet extends Item
 class ComputerVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_computer_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -693,7 +722,7 @@ class ComputerVDir extends DesktopEntry
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -715,7 +744,7 @@ class HomeVDir extends DesktopEntry
         return
 
 
-    do_buildmenu : () ->
+    do_buildmenu : ->
         [
             [1, _("open")],
             [2, _("open in terminal")],
@@ -737,7 +766,7 @@ class HomeVDir extends DesktopEntry
 class TrashVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_trash_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -776,23 +805,22 @@ class TrashVDir extends DesktopEntry
         return
 
 
-    do_buildmenu : () ->
+    do_buildmenu : ->
         menus = []
         menus.push([1, _("open")])
-#        menus.push([])
-#        count = DCore.Desktop.get_trash_count()
-#        if count > 1
-#            menus.push([2, _("clean up") + " #{count} " + _("files")])
-#        else if count == 1
-#            menus.push([2, _("clean up") + " #{count} " + _("file")])
-#        else
-#            menus.push([2, "-" + _("clean up")])
+        menus.push([])
+        count = DCore.Desktop.get_trash_count()
+        if count > 1
+            menus.push([3, _("clean up") + " #{count} " + _("files")])
+        else if count == 1
+            menus.push([3, _("clean up") + " #{count} " + _("file")])
+        else
+            menus.push([3, _("clean up"), false])
         menus
 
 
     do_itemselected : (evt) ->
         switch evt.id
             when 1 then @item_exec()
-# clean up trash bin
-            when 2 then alert "clean up trash bin"
+            when 3 then DCore.Desktop.empty_trash()
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"

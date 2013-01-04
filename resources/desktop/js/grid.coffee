@@ -400,17 +400,20 @@ selected_copy_to_clipboard = ->
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? then tmp_list.push(w.entry)
+        if w? and w.modifiable == true
+            tmp_list.push(w.entry)
     DCore.DEntry.copy(tmp_list)
 
 
 selected_cut_to_clipboard = ->
-    for i in $s(".DesktopEntry")
-        Widget.look_up(i.id)?.to_normal_status()
+    for i in all_item
+        w = Widget.look_up(i)
+        if w? and w.modifiable == true then w.to_normal_status()
+
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w
+        if w? and w.modifiable == true
             w.to_cut_status()
             tmp_list.push(w.entry)
     DCore.DEntry.cut(tmp_list)
@@ -426,7 +429,7 @@ item_dragstart_handler = (widget, evt) ->
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
             w = Widget.look_up(selected_item[i])
-            if not w? then continue
+            if not w? or w.modifiable == false then continue
             path = w.get_path()
             if path.length > 0
                 all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
@@ -615,18 +618,9 @@ update_selected_item_drag_image = ->
     return
 
 
-build_selected_items_menu = ->
-    menu = []
-    menu.push([1, _("Open")])
-    menu.push([])
-    menu.push([3, _("cut")])
-    menu.push([4, _("copy")])
-    menu.push([])
-    menu.push([6, _("Rename"), selected_item.length <= 1])
-    menu.push([9, _("Delete")])
-    menu.push([])
-    menu.push([10, _("Properties")])
-    menu
+is_selected_multiple_items = ->
+    selected_item.length > 1
+
 
 
 open_selected_items = ->
@@ -637,7 +631,7 @@ delete_selected_items = (real_delete) ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? then tmp.push(w.entry)
+        if w? and w.modifiable == true then tmp.push(w.entry)
 
     if real_delete then DCore.DEntry.delete(tmp)
     else DCore.DEntry.trash(tmp)
@@ -649,7 +643,7 @@ show_selected_items_Properties = ->
         w = Widget.look_up(i)
         if w? then tmp.push("file://#{encodeURI(w.get_path())}")
 
-    #FIXME: we get an error here when call the nautilus DBus interface
+    #XXX: we get an error here when call the nautilus DBus interface
     try
         s_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
