@@ -54,7 +54,7 @@ class Item extends Widget
         @in_rename = false
 
         @clicked = false
-        @delay_rename = -1
+        @delay_rename_tid = -1
 
         super(@id)
 
@@ -116,7 +116,7 @@ class Item extends Widget
             update_selected_stats(this, evt)
         else
             if evt.srcElement.className == "item_name"
-                if @delay_rename == -1 then @delay_rename = setTimeout(@item_rename, 400)
+                if @delay_rename_tid == -1 then @delay_rename_tid = setTimeout(@item_rename, 600)
             else
                 if @in_rename
                     @item_complete_rename(true)
@@ -128,9 +128,7 @@ class Item extends Widget
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
-        if @delay_rename != -1
-            clearTimeout(@delay_rename)
-            @delay_rename = -1
+        if @delay_rename_tid != -1 then @clear_delay_rename()
         if @in_rename then @item_complete_rename(false)
 
         if evt.ctrlKey == true then return
@@ -173,9 +171,7 @@ class Item extends Widget
 
 
     item_blur : ->
-        if @delay_rename != -1
-            clearTimeout(@delay_rename)
-            @delay_rename = -1
+        if @delay_rename_tid != -1 then @clear_delay_rename()
         if @in_rename then @item_complete_rename()
 
         @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
@@ -217,7 +213,7 @@ class Item extends Widget
 
     item_rename : =>
         echo "item_rename"
-        @delay_rename = -1
+        @delay_rename_tid = -1
         if @selected == false then return
         if @in_rename == false
             @element.draggable = false
@@ -242,6 +238,11 @@ class Item extends Widget
 
             @in_rename = true
         return
+
+
+    clear_delay_rename : =>
+        clearTimeout(@delay_rename_tid)
+        @delay_rename_tid = -1
 
 
     on_item_rename_keypress : (evt) =>
@@ -273,9 +274,9 @@ class Item extends Widget
             if @on_rename(new_name)
                 ++ingore_keyup_counts
 
-        if @delay_rename > 0
-            clearTimeout(@delay_rename)
-            @delay_rename = 0
+        if @delay_rename_tid > 0
+            clearTimeout(@delay_rename_tid)
+            @delay_rename_tid = 0
 
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
