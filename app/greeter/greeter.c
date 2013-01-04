@@ -124,12 +124,15 @@ void greeter_login_clicked(const gchar *password)
     selected_session = get_selected_session();
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
         start_session(selected_session);
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
         lightdm_greeter_respond(greeter, password);
 
     }else{
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start auth");
         greeter_start_authentication(selected_user);
     }
 }
@@ -144,6 +147,7 @@ static void start_session(const gchar *session)
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
 
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
         greeter_start_authentication(g_strdup(get_selected_user()));
     }
 }
@@ -158,9 +162,11 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
         start_session(g_strdup(get_selected_session()));
 
     }else{
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
         greeter_start_authentication(get_selected_user());
     }
 }

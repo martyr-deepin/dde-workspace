@@ -32,19 +32,15 @@ get_power_info = ->
     return power_info
 
 suspend_cb = ->
-    alert "suspend"
     DCore.Greeter.suspend()
 
 hibernate_cb = ->
-    alert "hibernate"
     DCore.Greeter.hibernate()
 
 restart_cb = ->
-    alert "restart"
     DCore.Greeter.restart()
 
 shutdown_cb = ->
-    alert "shutdown"
     DCore.Greeter.shutdown()
 
 power_dict = get_power_info()    
@@ -56,11 +52,3 @@ for key, value of power_dict
     power_menu.insert(key, key, "images/control-power.png")
 
 $("#bottom_buttons").appendChild(power_menu.element)
-
-#debug code begin    
-# powers_div = create_element("div", " ", $("#Debug"))
-# powers_div.innerText = "POWER:"
-# for key, value of power_dict
-#     power_div = create_element("div", " ", powers_div)
-#     power_div.innerText = key
-#debug code end    
