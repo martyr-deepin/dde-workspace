@@ -143,13 +143,14 @@ static void start_authentication(const gchar *username)
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-
+    printf("show prompt cb\n");
     prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 }
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
+    printf("authentication complete cb\n");
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
@@ -550,24 +551,21 @@ int main(int argc, char **argv)
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
-    if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        printf("failed\n");
-        /* js_post_message_simply("connect_sync", "{\"connect\":\"%s\"}", "failed"); */
-    }else{
-        printf("succeed\n");
-        /* js_post_message_simply("connect_sync", "{\"connect\":\"%s\"}", "succeed"); */
-    }
-
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
     g_signal_connect (greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
 
-    start_authentication(get_selected_user());
+    if(!lightdm_greeter_connect_sync(greeter, NULL)){
+        printf("failed\n");
+    }else{
+        printf("succeed\n");
+    }
+
+    lightdm_greeter_authenticate(greeter, NULL);
 
     gtk_widget_show_all(container);
 
     /* monitor_resource_file("greeter", webview); */
-
     gtk_main();
     return 0;
 }
