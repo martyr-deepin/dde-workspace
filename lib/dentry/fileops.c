@@ -497,6 +497,7 @@ _move_files_async (GFile* src, gpointer data)
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
+		    retval = TRUE;
 		}
 		else
 		{
@@ -609,6 +610,7 @@ _copy_files_async (GFile* src, gpointer data)
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
+		    retval = TRUE;
 		}
 		else
 		{
