@@ -24,14 +24,15 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
+#include "utils.h"
 #include <glib.h>
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
 
 GtkWidget* container = NULL;
-
 LightDMGreeter *greeter = NULL;
+static gboolean cancelling = FALSE, prompted = FALSE;
 
 static const gchar* get_first_user();
 static const gchar* get_first_session();
@@ -96,6 +97,28 @@ void greeter_login(const gchar *username, const gchar *password, const gchar *se
 
     js_post_message_simply("start-session", "{\"session\":\"%s\"}", g_strdup(session));
 }
+
+static void start_authentication(const gchar *username)
+{
+    if(strcmp(username, "*other") == 0){
+        lightdm_greeter_authenticate(greeter, NULL);
+
+    }else if(strcmp(username, "*guest") == 0){
+        lightdm_greeter_authenticate_as_guest(greeter);
+
+    }else{
+        lightdm_greeter_authenticate(greeter, username);
+
+    }
+}
+
+static void start_session(const gchar *session)
+{
+    if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
+        start_authentication(lightdm_greeter_get_authentication_user(greeter));
+    }
+}
+
 
 JS_EXPORT_API
 gboolean greeter_support_guest()
@@ -476,10 +499,7 @@ int main(int argc, char **argv)
     gtk_widget_realize(container);
 
     GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
-    gint width = gdk_screen_get_width(screen);
-    gint height = gdk_screen_get_height(screen);     
-
-    gtk_window_set_default_size(GTK_WINDOW(container), width, height);
+    gtk_window_set_default_size(GTK_WINDOW(container), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
@@ -487,9 +507,11 @@ int main(int argc, char **argv)
     g_assert(greeter);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        js_post_message_simply("connect", "{\"connect\":\"%s\"}", "failed");
+        printf("failed\n");
+        /* js_post_message_simply("connect_sync", "{\"connect\":\"%s\"}", "failed"); */
     }else{
-        js_post_message_simply("connect", "{\"connect\":\"%s\"}", "succeed");
+        printf("succeed\n");
+        /* js_post_message_simply("connect_sync", "{\"connect\":\"%s\"}", "succeed"); */
     }
 
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);

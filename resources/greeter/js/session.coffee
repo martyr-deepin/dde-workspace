@@ -35,9 +35,9 @@ $("#bottom_buttons").appendChild(de_menu.element)
 de_menu.set_current(default_session)
 
 #debug code begin    
-sessions_div = create_element("div", " ", $("#Debug"))
-sessions_div.innerText = "SESSIONS:    "
-for session in sessions
-    session_div = create_element("div", " ", sessions_div)
-    session_div.innerText = session
+# sessions_div = create_element("div", " ", $("#Debug"))
+# sessions_div.innerText = "SESSIONS:    "
+# for session in sessions
+#     session_div = create_element("div", " ", sessions_div)
+#     session_div.innerText = session
 #debug code end    

@@ -66,7 +66,7 @@ class UserInfo extends Widget
         @element.appendChild(loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
-        # DCore.Greeter.login(@id, password, _session)
+        DCore.Greeter.login(@id, password, _session)
 
         #debug code begin
         div_auth = create_element("div", "", $("#Debug"))
@@ -96,7 +96,7 @@ for user in users
     user_div = create_element("div", " ", users_div)
     user_div.innerText = user
 
-DCore.signal_connect("connect", (msg) ->
+DCore.signal_connect("connect_sync", (msg) ->
     connect_div = create_element("div", " ", $("#Debug"))
     connect_div.innerText = "Connect:" + msg.connect
 )
