@@ -448,15 +448,21 @@ class RichDir extends DesktopEntry
         if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
+            else
+                @hide_pop_block()
 
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
 
 
+    do_rightclick : (evt) ->
+        if @show_pop == true then @hide_pop_block()
+        super
+
+
     do_dragstart : (evt) ->
-        if @show_pop == true
-            @hide_pop_block()
+        if @show_pop == true then @hide_pop_block()
         super
 
 
@@ -474,7 +480,12 @@ class RichDir extends DesktopEntry
 
 
     do_buildmenu : ->
-
+        menus = []
+        menus.push([1, _("Open")])
+        menus.push([])
+        menus.push([6, _("Rename"), not is_selected_multiple_items()])
+        menus.push([9, _("Delete")])
+        menus
 
 
     item_update : ->
@@ -797,20 +808,19 @@ class TrashVDir extends DesktopEntry
     do_buildmenu : ->
         menus = []
         menus.push([1, _("open")])
-#        menus.push([])
-#        count = DCore.Desktop.get_trash_count()
-#        if count > 1
-#            menus.push([2, _("clean up") + " #{count} " + _("files")])
-#        else if count == 1
-#            menus.push([2, _("clean up") + " #{count} " + _("file")])
-#        else
-#            menus.push([2, _("clean up"), false])
+        menus.push([])
+        count = DCore.Desktop.get_trash_count()
+        if count > 1
+            menus.push([3, _("clean up") + " #{count} " + _("files")])
+        else if count == 1
+            menus.push([3, _("clean up") + " #{count} " + _("file")])
+        else
+            menus.push([3, _("clean up"), false])
         menus
 
 
     do_itemselected : (evt) ->
         switch evt.id
             when 1 then @item_exec()
-# TODO:clean up trash bin
-            when 2 then alert "clean up trash bin"
+            when 3 then DCore.Desktop.empty_trash()
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
