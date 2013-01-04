@@ -89,12 +89,20 @@ static gchar* get_selected_session()
 JS_EXPORT_API
 void greeter_login(const gchar *username, const gchar *password, const gchar *session)
 {
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
     selected_user = g_strdup(username);
     selected_session = g_strdup(session);
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
 
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "respond");
     lightdm_greeter_respond(greeter, password);
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "respond");
+
+    if(lightdm_greeter_get_is_authenticated(greeter)){
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "had authenticated");
+        lightdm_greeter_start_session_sync(greeter, get_selected_session(), NULL);
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session");
+    }else{
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated");
+    }
 
     /* if(!lightdm_greeter_get_is_authenticated(greeter) && lightdm_greeter_get_in_authentication(greeter)){ */
     /*     js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated"); */
@@ -143,6 +151,23 @@ static void start_authentication(const gchar *username)
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+    gtk_window_fullscreen(GTK_WINDOW(container));
+
+    webview = d_webview_new_with_uri(GREETER_HTML_PATH);
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+    gtk_widget_realize(container);
+
+    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
+    gtk_window_set_default_size(GTK_WINDOW(container), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
+
+    g_signal_connect(container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    gtk_widget_show_all(container);
+
+
     printf("show prompt cb\n");
     prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
@@ -535,25 +560,10 @@ int main(int argc, char **argv)
     init_i18n();
     gtk_init(&argc, &argv);
 
-    container = create_web_container(FALSE, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_window_fullscreen(GTK_WINDOW(container));
-
-    webview = d_webview_new_with_uri(GREETER_HTML_PATH);
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-    gtk_widget_realize(container);
-
-    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
-    gtk_window_set_default_size(GTK_WINDOW(container), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
-
-    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
-
     greeter = lightdm_greeter_new();
     g_assert(greeter);
-
-    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect (greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
-    g_signal_connect (greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
+    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         printf("failed\n");
@@ -561,9 +571,8 @@ int main(int argc, char **argv)
         printf("succeed\n");
     }
 
-    lightdm_greeter_authenticate(greeter, NULL);
+    lightdm_greeter_authenticate(greeter, "yilang");
 
-    gtk_widget_show_all(container);
 
     /* monitor_resource_file("greeter", webview); */
     gtk_main();

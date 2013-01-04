@@ -69,17 +69,17 @@ class UserInfo extends Widget
         DCore.Greeter.login(@id, password, _session)
 
         #debug code begin
-        div_auth = create_element("div", "", $("#Debug"))
-        div_auth.innerText += "authenticate"
+        # div_auth = create_element("div", "", $("#Debug"))
+        # div_auth.innerText += "authenticate"
 
-        div_id = create_element("div", "", div_auth)
-        div_id.innerText = @id
+        # div_id = create_element("div", "", div_auth)
+        # div_id.innerText = @id
 
-        div_password = create_element("div", "", div_auth)
-        div_password.innerText = password
+        # div_password = create_element("div", "", div_auth)
+        # div_password.innerText = password
 
-        div_session = create_element("div", "", div_auth)
-        div_session.innerText = _session
+        # div_session = create_element("div", "", div_auth)
+        # div_session.innerText = _session
         #debug code end
     
 
@@ -96,10 +96,10 @@ for user in users
     user_div = create_element("div", " ", users_div)
     user_div.innerText = user
 
-DCore.signal_connect("connect_sync", (msg) ->
-    connect_div = create_element("div", " ", $("#Debug"))
-    connect_div.innerText = "Connect:" + msg.connect
-)
+# DCore.signal_connect("connect_sync", (msg) ->
+#     connect_div = create_element("div", " ", $("#Debug"))
+#     connect_div.innerText = "Connect:" + msg.connect
+# )
 
 DCore.signal_connect("status", (msg) ->
     status_div = create_element("div", " ", $("#Debug"))
@@ -115,9 +115,6 @@ DCore.signal_connect("start-session", (msg) ->
     start_div = create_element("div", " ", $("#Debug"))
     start_div.innerText = "Start Session:" + msg.session
 )
-
-
-
 #debug code end        
 
 
