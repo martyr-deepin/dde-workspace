@@ -14,7 +14,7 @@ static void show_prompt_cb(LightDMGreeter *greeter, const char *text, LightDMPro
 {
     gtk_widget_show_all(login_win);
     gtk_entry_set_text(GTK_ENTRY(user_entry), "");
-    gtk_button_set_label(GTK_BUTTON(login_button), "Hello");
+    gtk_button_set_label(GTK_BUTTON(login_button), "Login");
 }
 
 static void authentication_complete_cb(LightDMGreeter *greeter)

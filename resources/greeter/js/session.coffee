@@ -19,6 +19,7 @@
 
 de_menu_cb = (id, title)->
     de_menu.set_current(id)
+    DCore.Greeter.set_selected_session(id)
     # alert de_menu.get_current()
     
 de_menu = new ComboBox("desktop", de_menu_cb)

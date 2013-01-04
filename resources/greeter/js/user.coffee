@@ -39,7 +39,8 @@ class UserInfo extends Widget
         _current_user?.blur()
         _current_user = @
         @add_css_class("UserInfoSelected")
-
+        DCore.Greeter.set_selected_user(@id)
+    
     blur: ->
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
@@ -66,7 +67,7 @@ class UserInfo extends Widget
         @element.appendChild(loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
-        DCore.Greeter.login(@id, password, _session)
+        DCore.Greeter.login_clicked(password)
 
         #debug code begin
         # div_auth = create_element("div", "", $("#Debug"))

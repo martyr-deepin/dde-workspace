@@ -88,18 +88,30 @@ static gchar* get_selected_session()
 }
 
 JS_EXPORT_API
-void greeter_login(const gchar *username, const gchar *password, const gchar *session)
+void greeter_set_selected_user(const gchar *username)
+{
+    selected_user = g_strdup(username);
+}
+
+JS_EXPORT_API
+void greeter_set_selected_session(const gchar *session)
+{
+    selected_session = g_strdup(session);
+}
+
+JS_EXPORT_API
+void greeter_login_clicked(const gchar *password)
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
-    selected_user = g_strdup(username);
-    selected_session = g_strdup(session);
+    selected_user = get_selected_user();
+    selected_session = get_selected_session();
 
     lightdm_greeter_respond(greeter, password);
     js_post_message_simply("status", "{\"status\":\"%s\"}", "respond");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         js_post_message_simply("status", "{\"status\":\"%s\"}", "had authenticated");
-        lightdm_greeter_start_session_sync(greeter, get_selected_session(), NULL);
+        lightdm_greeter_start_session_sync(greeter, selected_session, NULL);
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session");
     }else{
         js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated");
