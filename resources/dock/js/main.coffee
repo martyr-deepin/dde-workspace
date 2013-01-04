@@ -49,11 +49,3 @@ board.height = 30
 DCore.Dock.draw_board(board)
 
 DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
-
-
-t = (x)->
-    for i in [0..10000]
-        setTimeout(->
-            DCore.Dock.launch_by_app_id("test_1", [])
-        , 100)
-setTimeout(t, 1000)

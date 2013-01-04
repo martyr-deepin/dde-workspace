@@ -24,7 +24,7 @@
 
 #define DEFAULT_WIDTH 16
 #define DEFAULT_INTERVAL 24
-GHashTable* icons = NULL;
+static GHashTable* _icons = NULL;
 
 static void
 tray_icon_to_info(GdkWindow* icon, gint xy, GString* string);
@@ -34,7 +34,7 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
-        g_hash_table_remove(icons, (GdkWindow*)data);
+        g_hash_table_remove(_icons, (GdkWindow*)data);
         char* msg = g_strdup_printf("{\"id\":%d}", GPOINTER_TO_INT(data));
         js_post_message_simply("tray_icon_removed", msg);
         g_free(msg);
@@ -50,11 +50,11 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
         return;
     }
 
-    gint x = g_hash_table_size(icons) * DEFAULT_INTERVAL;
+    gint x = g_hash_table_size(_icons) * DEFAULT_INTERVAL;
     gint y = 0;
 
     gint xy = y + (x  << 16);
-    g_hash_table_insert(icons, icon, GINT_TO_POINTER(xy)); 
+    g_hash_table_insert(_icons, icon, GINT_TO_POINTER(xy)); 
 
     gdk_window_reparent(icon, gtk_widget_get_window(container), x, y);
     gdk_window_set_events(icon, GDK_VISIBILITY_NOTIFY_MASK); //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
@@ -75,7 +75,7 @@ void tray_init(GtkWidget* container)
     tray_manager = na_tray_manager_new();
     na_tray_manager_manage_screen(tray_manager, screen);
 
-    icons = g_hash_table_new(g_direct_hash, g_direct_equal);
+    _icons = g_hash_table_new(g_direct_hash, g_direct_equal);
 
     g_signal_connect(tray_manager, "tray_icon_added", G_CALLBACK(tray_icon_added), container);
 }
@@ -85,11 +85,11 @@ JS_EXPORT_API
 void dock_set_tray_icon_position(double _icon, double _x, double _y)
 {
     GdkWindow* icon = (GdkWindow*)GINT_TO_POINTER((gint)_icon);
-    if (g_hash_table_contains(icons, icon)) {
+    if (g_hash_table_contains(_icons, icon)) {
         int x = (int) _x;
         int y = (int) _y;
         int xy = y + (x  << 16);
-        g_hash_table_insert(icons, icon, GINT_TO_POINTER(xy));
+        g_hash_table_insert(_icons, icon, GINT_TO_POINTER(xy));
         gdk_window_move(icon, x, y);
         gdk_window_show(icon);
 
@@ -118,7 +118,7 @@ JS_EXPORT_API
 char* dock_get_tray_icon_list()
 {
     GString* string = g_string_new("[");
-    g_hash_table_foreach(icons, (GHFunc)tray_icon_to_info, string);
+    g_hash_table_foreach(_icons, (GHFunc)tray_icon_to_info, string);
     if (string->len > 2) {
         g_string_overwrite(string, string->len-1, "]");
         return g_string_free(string, FALSE);
@@ -144,6 +144,6 @@ draw_tray_icon(GdkWindow* icon, gint xy, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr, gpointer data)
 {
-    g_hash_table_foreach(icons, (GHFunc)draw_tray_icon, cr);
+    g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
     return TRUE;
 }
