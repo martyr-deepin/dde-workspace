@@ -20,7 +20,7 @@ static void show_prompt_cb(LightDMGreeter *greeter, const char *text, LightDMPro
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
     if (lightdm_greeter_get_is_authenticated(greeter))
-        lightdm_greeter_start_session_sync(greeter, "xfce4", NULL);
+        lightdm_greeter_start_session_sync(greeter, "xfce", NULL);
     exit(EXIT_FAILURE);
 }
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     if (!lightdm_greeter_connect_sync(greeter, NULL))
         exit(EXIT_FAILURE);
 
-    lightdm_greeter_authenticate(greeter, NULL);
+    lightdm_greeter_authenticate(greeter, "yilang");
 
     gtk_main();
     return 0;

@@ -26,6 +26,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include <glib.h>
+#include <stdlib.h>
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -151,6 +152,7 @@ static void start_authentication(const gchar *username)
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    gtk_widget_show_all(container);
     printf("show prompt cb\n");
     prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
@@ -560,19 +562,16 @@ int main(int argc, char **argv)
 	gtk_window_move(GTK_WINDOW(container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri(GREETER_HTML_PATH);
-    /* g_signal_connect(G_OBJECT(webview), "window-object-cleared", G_CALLBACK(window_object_cleared_cb), greeter); */
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-    /* gtk_widget_realize(container); */
+    gtk_widget_realize(container);
 
     g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
 
-    gtk_widget_show_all(container);
+    /* gtk_widget_show_all(container); */
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        printf("failed\n");
-    }else{
-        printf("succeed\n");
+        exit(EXIT_FAILURE);
     }
 
     lightdm_greeter_authenticate(greeter, "yilang");
