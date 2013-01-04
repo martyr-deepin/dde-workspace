@@ -441,7 +441,7 @@ _trash_files_async (GFile* file, gpointer data)
 static gboolean
 _move_files_async (GFile* src, gpointer data)
 {
-    gboolean retval;
+    gboolean retval = TRUE;
 
     TDData* _data = (TDData*) data;
 
@@ -481,7 +481,16 @@ _move_files_async (GFile* src, gpointer data)
 	    case CONFLICT_RESPONSE_RENAME:
 		//rename, redo operations
 		g_debug ("response : Rename");
-		retval = TRUE;
+
+		GFile* dest_parent = g_file_get_parent (dest);
+		GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+	        g_object_unref (dest_parent);
+
+		g_object_unref (dest);
+		_data->dest_file = new_dest;
+
+	        retval = _move_files_async (src, _data);
+
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 	        //first delete and redo operations
@@ -493,14 +502,18 @@ _move_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
+	free_fileops_response (response);
 	g_error_free (error);
     }
 #if 1
-    char* src_uri = g_file_get_uri (src);
-    char* dest_uri = g_file_get_uri (dest);
-    g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
-    g_free (src_uri);
-    g_free (dest_uri);
+    else 
+    {
+	char* src_uri = g_file_get_uri (src);
+	char* dest_uri = g_file_get_uri (dest);
+	g_debug ("_move_files_async: move %s to %s", src_uri, dest_uri);
+	g_free (src_uri);
+	g_free (dest_uri);
+    }
 #endif
 
     return retval;
@@ -511,7 +524,7 @@ _move_files_async (GFile* src, gpointer data)
 static gboolean
 _copy_files_async (GFile* src, gpointer data)
 {
-    gboolean retval;
+    gboolean retval = TRUE;
 
     TDData* _data = (TDData*) data;
 
@@ -568,7 +581,15 @@ _copy_files_async (GFile* src, gpointer data)
 	    case CONFLICT_RESPONSE_RENAME:
 		//rename, redo operations
 		g_debug ("response : Rename to %s", response->file_name);
-		retval = TRUE;
+
+		GFile* dest_parent = g_file_get_parent (dest);
+		GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+	        g_object_unref (dest_parent);
+
+		g_object_unref (dest);
+		_data->dest_file = new_dest;
+
+	        retval = _copy_files_async (src, _data);
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 		//Merge also in this 
@@ -581,14 +602,18 @@ _copy_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
+	free_fileops_response (response);
 	g_error_free (error);
     }
 #if 1
-    char* src_uri = g_file_get_uri (src);
-    char* dest_uri = g_file_get_uri (dest);
-    g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
-    g_free (src_uri);
-    g_free (dest_uri);
+    else
+    {
+	char* src_uri = g_file_get_uri (src);
+	char* dest_uri = g_file_get_uri (dest);
+	g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
+	g_free (src_uri);
+	g_free (dest_uri);
+    }
 #endif
 
     return retval;
