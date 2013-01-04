@@ -89,9 +89,9 @@ users = DCore.Greeter.get_users()
 for user in users
     u = new UserInfo(user, user, "images/img01.jpg")
     roundabout.appendChild(u.li)
-
-default_user = DCore.Greeter.get_default_user()
-DCore.Greeter.start_authentication(default_user)    
+    if user == DCore.Greeter.get_default_user()
+        u.focus()
+        DCore.Greeter.start_authentication(user)
     
 #debug code begin    
 users_div = create_element("div", " ", $("#Debug"))
