@@ -117,6 +117,7 @@ JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
+
     selected_user = get_selected_user();
     selected_session = get_selected_session();
 
@@ -150,12 +151,10 @@ static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPr
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
-    printf("authentication complete cb\n");
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         start_session(g_strdup(get_selected_session()));
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session succeed");
 
     }else{
         greeter_start_authentication(get_selected_user());
@@ -371,14 +370,19 @@ const gchar* greeter_get_session_icon(const gchar *key)
 
     if(g_str_has_prefix(session, "gnome")){
         icon = g_strdup("gnome.png");
+
     }else if(g_str_has_prefix(session, "deepin")){
         icon = g_strdup("deepin.png");
+
     }else if(g_str_has_prefix(session, "kde")){
         icon = g_strdup("kde.png");
+
     }else if(g_str_has_prefix(session, "ubuntu")){
         icon = g_strdup("ubuntu.png");
+
     }else if(g_str_has_prefix(session, "xfce")){
         icon = g_strdup("ununtu.png");
+
     }else{
         icon = g_strdup("unknown.png");
     }
@@ -560,8 +564,6 @@ int main(int argc, char **argv)
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);
     }
-
-    lightdm_greeter_authenticate(greeter, "yilang");
 
     /* monitor_resource_file("greeter", webview); */
     gtk_main();

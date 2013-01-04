@@ -110,15 +110,15 @@ DCore.signal_connect("status", (msg) ->
     status_div.innerText = "Authentication status:" + msg.status
 )
 
-DCore.signal_connect("respond", (msg) ->
-    respond_div = create_element("div", " ", $("#Debug"))
-    respond_div.innerText = "Respond MSG:" + msg.password
-)
+# DCore.signal_connect("respond", (msg) ->
+#     respond_div = create_element("div", " ", $("#Debug"))
+#     respond_div.innerText = "Respond MSG:" + msg.password
+# )
 
-DCore.signal_connect("start-session", (msg) ->
-    start_div = create_element("div", " ", $("#Debug"))
-    start_div.innerText = "Start Session:" + msg.session
-)
+# DCore.signal_connect("start-session", (msg) ->
+#     start_div = create_element("div", " ", $("#Debug"))
+#     start_div.innerText = "Start Session:" + msg.session
+# )
 #debug code end        
 
 
