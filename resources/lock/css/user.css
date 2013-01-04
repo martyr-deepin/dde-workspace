@@ -1,11 +1,10 @@
 #User{
     position:fixed;
     list-style: none;
-    top: 30%;
+    top: 28%;
     text-align: center;
-
     /* below values will be overwrite on runtime */
-    left: 40%; 
+    left: 43%; 
     width: 574px;
 }
 
@@ -26,7 +25,6 @@
 	opacity:1;
 }
 
-
 .UserImg {
     width: 150px;
     height: 150px;
@@ -41,10 +39,10 @@
     font-size: 16px;
     text-align: center;
 }
+
 .Password {
     background:#fff url(../images/lock.png) no-repeat 3px 3px; 
     padding-left:20px;
-
     margin: 8px 0px;
     width:160px;
     font-size:12px;
@@ -53,9 +51,11 @@
     border:2px solid #F60;
     border-radius:3px;
 }
+
 .LoginButton:hover {
     background: #F60;
 }
+
 .LoginButton:focus{
     background: #F60;
 }

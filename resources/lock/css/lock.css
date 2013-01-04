@@ -54,21 +54,6 @@ body{
 	text-shadow:0 0 2px #333;  
 }
 
-#Detext{
-	cursor:default;
-	padding:0;
-	margin:0 5px 0 0;
-	text-align:right;
-	list-style:none;
-	height:32px;
-	width:300px;
-    bottom:20px;
-	line-height: 30px;
-	color:#fff;
-	text-shadow:0 0 2px #333;
-	-webkit-user-select:none;
-}
-
 #bottom_buttons {
     position: fixed;
     bottom: 40px;

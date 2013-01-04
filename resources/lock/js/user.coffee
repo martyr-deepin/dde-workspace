@@ -47,6 +47,7 @@ class UserInfo extends Widget
         @login = null
         @loading?.destroy()
         @loading = null
+        @active = false
 
     show_login: ->
         if false
@@ -54,9 +55,11 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (p)=>@on_verify(p))
             @element.appendChild(@login.element)
-
+            @active = true
+    
     do_click: (e)->
-        if _current_user == @
+        # if _current_user == @
+        if @active == false
             @show_login()
         else
             @focus()
@@ -71,8 +74,8 @@ class UserInfo extends Widget
         if msg.status == "succeed"
             DCore.Lock.unlock_succeed()
         else
-            @blur()
-            
+            @focus()
+    
 user = DCore.Lock.get_username()    
     
 u = new UserInfo(user, user, "images/img01.jpg")
@@ -80,4 +83,3 @@ $("#User").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
-    
