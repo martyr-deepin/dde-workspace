@@ -90,6 +90,9 @@ for user in users
     u = new UserInfo(user, user, "images/img01.jpg")
     roundabout.appendChild(u.li)
 
+default_user = DCore.Greeter.get_default_user()
+DCore.Greeter.start_authentication(default_user)    
+    
 #debug code begin    
 users_div = create_element("div", " ", $("#Debug"))
 users_div.innerText = "USERS:"
@@ -119,12 +122,6 @@ DCore.signal_connect("start-session", (msg) ->
 #debug code end        
 
 
-# default_user = DCore.Greeter.get_default_user()    
-# echo "default user"
-# echo default_user    
-    
-# first = new UserInfo(default_user, default_user, "images/img01.jpg")
-# first.focus()    
 
 # echo "support guest"
 # echo DCore.Greeter.support_guest()    

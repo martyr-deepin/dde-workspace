@@ -40,7 +40,7 @@ gchar *selected_user = NULL, *selected_session = NULL;
 static const gchar* get_first_user();
 static const gchar* get_first_session();
 static LightDMSession* find_session_by_key(const gchar *key);
-static void start_authentication(const gchar *username);
+static void start_session(const gchar *session);
 
 /* GREETER */
 
@@ -100,56 +100,7 @@ void greeter_set_selected_session(const gchar *session)
 }
 
 JS_EXPORT_API
-void greeter_login_clicked(const gchar *password)
-{
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
-    selected_user = get_selected_user();
-    selected_session = get_selected_session();
-
-    lightdm_greeter_respond(greeter, password);
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "respond");
-
-    if(lightdm_greeter_get_is_authenticated(greeter)){
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "had authenticated");
-        lightdm_greeter_start_session_sync(greeter, selected_session, NULL);
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session");
-    }else{
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated");
-    }
-
-    /* if(!lightdm_greeter_get_is_authenticated(greeter) && lightdm_greeter_get_in_authentication(greeter)){ */
-    /*     js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated"); */
-
-    /*     if(g_strcmp0(username, "*other") == 0){ */
-    /*         lightdm_greeter_authenticate(greeter, NULL); */
-
-    /*     }else if(g_strcmp0(username, "*guest") == 0){ */
-    /*         lightdm_greeter_authenticate_as_guest(greeter); */
-
-    /*     }else{ */
-    /*         lightdm_greeter_authenticate(greeter, username); */
-    /*     } */
-
-    /*     greeter_login(username, password, session); */
-
-    /* }else if(lightdm_greeter_get_in_authentication(greeter)){ */
-    /*     js_post_message_simply("status", "{\"status\":\"%s\"}", "in authentication"); */
-
-    /*     lightdm_greeter_respond(greeter, password); */
-    /*     js_post_message_simply("respond", "{\"password\":\"%s\"}", g_strdup(password)); */
-    /*     greeter_login(username, password, session); */
-    /* } */
-
-    /* js_post_message_simply("status", "{\"status\":\"%s\"}", "had authenticated"); */
-
-    /* lightdm_greeter_start_session_sync(greeter, session, NULL); */
-
-    /* js_post_message_simply("start-session", "{\"session\":\"%s\"}", g_strdup(session)); */
-    
-    /* gtk_main_quit(); */
-}
-
-static void start_authentication(const gchar *username)
+void greeter_start_authentication(const gchar *username)
 {
     if(g_strcmp0(username, g_strdup("*other")) == 0){
         lightdm_greeter_authenticate(greeter, NULL);
@@ -162,11 +113,38 @@ static void start_authentication(const gchar *username)
     }
 }
 
+JS_EXPORT_API
+void greeter_login_clicked(const gchar *password)
+{
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
+    selected_user = get_selected_user();
+    selected_session = get_selected_session();
+
+    if(lightdm_greeter_get_is_authenticated(greeter)){
+        start_session(selected_session);
+
+    }else if(lightdm_greeter_get_in_authentication(greeter)){
+        lightdm_greeter_respond(greeter, password);
+
+    }else{
+        greeter_start_authentication(selected_user);
+    }
+}
+
+static void cancel_authentication()
+{
+    ;
+}
+
+static void start_session(const gchar *session)
+{
+    if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
+        greeter_start_authentication(g_strdup(get_selected_user()));
+    }
+}
+
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-    gtk_widget_show_all(container);
-    printf("show prompt cb\n");
-    prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 }
 
@@ -176,14 +154,11 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
-        if(!lightdm_greeter_start_session_sync(greeter, get_selected_session(), NULL)){
-            start_authentication(get_selected_user());
-        }
-
+        start_session(g_strdup(get_selected_session()));
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session succeed");
 
     }else{
-        start_authentication(get_selected_user());
+        greeter_start_authentication(get_selected_user());
     }
 }
 
@@ -580,7 +555,7 @@ int main(int argc, char **argv)
     g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
 
-    /* gtk_widget_show_all(container); */
+    gtk_widget_show_all(container);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);
