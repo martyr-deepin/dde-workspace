@@ -151,23 +151,6 @@ static void start_authentication(const gchar *username)
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-    container = create_web_container(FALSE, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_window_fullscreen(GTK_WINDOW(container));
-
-    webview = d_webview_new_with_uri(GREETER_HTML_PATH);
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-    gtk_widget_realize(container);
-
-    GdkScreen *screen = gtk_window_get_screen(GTK_WINDOW(container));
-    gtk_window_set_default_size(GTK_WINDOW(container), gdk_screen_get_width(screen), gdk_screen_get_height(screen));
-    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
-
-    g_signal_connect(container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
-    gtk_widget_show_all(container);
-
-
     printf("show prompt cb\n");
     prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
@@ -557,13 +540,34 @@ gboolean greeter_shutdown()
 
 int main(int argc, char **argv)
 {
+    GdkScreen *screen;
+    GdkRectangle geometry;
+
     init_i18n();
     gtk_init(&argc, &argv);
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);
+
+    gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
+
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+
+    screen = gtk_window_get_screen(GTK_WINDOW(container));
+    gdk_screen_get_monitor_geometry(screen, gdk_screen_get_primary_monitor(screen), &geometry);
+    gtk_window_set_default_size(GTK_WINDOW(container), geometry.width, geometry.height);
+	gtk_window_move(GTK_WINDOW(container), geometry.x, geometry.y);
+
+    webview = d_webview_new_with_uri(GREETER_HTML_PATH);
+    /* g_signal_connect(G_OBJECT(webview), "window-object-cleared", G_CALLBACK(window_object_cleared_cb), greeter); */
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+    /* gtk_widget_realize(container); */
+
     g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+
+    gtk_widget_show_all(container);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         printf("failed\n");
@@ -572,7 +576,6 @@ int main(int argc, char **argv)
     }
 
     lightdm_greeter_authenticate(greeter, "yilang");
-
 
     /* monitor_resource_file("greeter", webview); */
     gtk_main();
