@@ -457,6 +457,7 @@ _move_files_async (GFile* src, gpointer data)
 		 NULL,
 		 NULL,
 		 &error);
+    GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (error != NULL)
     {
 //	g_cancellable_cancel (_move_cancellable);
@@ -493,7 +494,20 @@ _move_files_async (GFile* src, gpointer data)
 
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
-	        //first delete and redo operations
+	        if (type == G_FILE_TYPE_DIRECTORY)
+		{
+		    //Merge:
+		}
+		else
+		{
+		    //replace
+                    retval = _delete_files_async (dest, _data);
+		    if (retval = TRUE)
+		    {
+			retval = _move_files_async (src, _data);
+		    }
+		}
+
 	        g_debug ("response : Replace");
 		retval = TRUE;
 	        break;
@@ -560,7 +574,7 @@ _copy_files_async (GFile* src, gpointer data)
     if (error != NULL)
     {
 	//    g_cancellable_cancel (_copy_cancellable);
-	g_warning ("_copy_files_async: %s", error->message);
+	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
 	//TEST:
 	FileOpsResponse* response;
 	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
@@ -592,10 +606,21 @@ _copy_files_async (GFile* src, gpointer data)
 	        retval = _copy_files_async (src, _data);
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
-		//Merge also in this 
-	        //first delete and redo operations
-	        g_debug ("response : Replace");
-		retval = TRUE;
+	        if (type == G_FILE_TYPE_DIRECTORY)
+		{
+		    //Merge:
+		}
+		else
+		{
+		    //replace
+                    retval = _delete_files_async (dest, _data);
+		    if (retval = TRUE)
+		    {
+			retval = _copy_files_async (src, _data);
+		    }
+		}
+
+		g_debug ("response : Replace");
 	        break;
 	    default:
 		retval = FALSE;
