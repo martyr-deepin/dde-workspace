@@ -31,6 +31,7 @@
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
 
 GtkWidget* container = NULL;
+GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
 static gboolean cancelling = FALSE, prompted = FALSE;
 gchar *selected_user = NULL, *selected_session = NULL;
@@ -38,6 +39,7 @@ gchar *selected_user = NULL, *selected_session = NULL;
 static const gchar* get_first_user();
 static const gchar* get_first_session();
 static LightDMSession* find_session_by_key(const gchar *key);
+static void start_authentication(const gchar *username);
 
 /* GREETER */
 
@@ -89,6 +91,10 @@ void greeter_login(const gchar *username, const gchar *password, const gchar *se
 {
     selected_user = g_strdup(username);
     selected_session = g_strdup(session);
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
+
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "respond");
+    lightdm_greeter_respond(greeter, password);
 
     /* if(!lightdm_greeter_get_is_authenticated(greeter) && lightdm_greeter_get_in_authentication(greeter)){ */
     /*     js_post_message_simply("status", "{\"status\":\"%s\"}", "not authenticated"); */
@@ -132,31 +138,27 @@ static void start_authentication(const gchar *username)
 
     }else{
         lightdm_greeter_authenticate(greeter, username);
-
-    }
-}
-
-static void start_session(const gchar *session)
-{
-    if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
-        start_authentication(lightdm_greeter_get_authentication_user(greeter));
     }
 }
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+
     prompted = TRUE;
-    
-    /* gtk_widget_show(container); */
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 }
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
-    gtk_widget_hide(container);
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
+
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(!lightdm_greeter_start_session_sync(greeter, get_selected_session(), NULL)){
             start_authentication(get_selected_user());
         }
+
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session succeed");
+
     }else{
         start_authentication(get_selected_user());
     }
@@ -536,7 +538,7 @@ int main(int argc, char **argv)
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(container));
 
-    GtkWidget *webview = d_webview_new_with_uri(GREETER_HTML_PATH);
+    webview = d_webview_new_with_uri(GREETER_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
 
@@ -558,7 +560,9 @@ int main(int argc, char **argv)
 
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
-    g_signal_connect (greeter, "authentication-complete",G_CALLBACK (authentication_complete_cb), NULL);
+    g_signal_connect (greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+
+    start_authentication(get_selected_user());
 
     gtk_widget_show_all(container);
 
