@@ -70,17 +70,17 @@ class UserInfo extends Widget
         DCore.Greeter.login_clicked(password)
 
         #debug code begin
-        # div_auth = create_element("div", "", $("#Debug"))
-        # div_auth.innerText += "authenticate"
+        div_auth = create_element("div", "", $("#Debug"))
+        div_auth.innerText += "authenticate"
 
-        # div_id = create_element("div", "", div_auth)
-        # div_id.innerText = @id
+        div_id = create_element("div", "", div_auth)
+        div_id.innerText = @id
 
-        # div_password = create_element("div", "", div_auth)
-        # div_password.innerText = password
+        div_password = create_element("div", "", div_auth)
+        div_password.innerText = password
 
-        # div_session = create_element("div", "", div_auth)
-        # div_session.innerText = _session
+        div_session = create_element("div", "", div_auth)
+        div_session.innerText = _session
         #debug code end
     
 
@@ -100,47 +100,11 @@ for user in users
     user_div = create_element("div", " ", users_div)
     user_div.innerText = user
 
-# DCore.signal_connect("connect_sync", (msg) ->
-#     connect_div = create_element("div", " ", $("#Debug"))
-#     connect_div.innerText = "Connect:" + msg.connect
-# )
-
 DCore.signal_connect("status", (msg) ->
     status_div = create_element("div", " ", $("#Debug"))
-    status_div.innerText = "Authentication status:" + msg.status
+    status_div.innerText = "status:" + msg.status
 )
-
-# DCore.signal_connect("respond", (msg) ->
-#     respond_div = create_element("div", " ", $("#Debug"))
-#     respond_div.innerText = "Respond MSG:" + msg.password
-# )
-
-# DCore.signal_connect("start-session", (msg) ->
-#     start_div = create_element("div", " ", $("#Debug"))
-#     start_div.innerText = "Start Session:" + msg.session
-# )
 #debug code end        
-
-
-
-# echo "support guest"
-# echo DCore.Greeter.support_guest()    
-    
-# u = new UserInfo(1000, "Alice Charlotte", "images/img01.jpg")
-# u2 = new UserInfo(1001, "Snyh", "images/guest.jpg")
-# u3 = new UserInfo(1001, "Snyh", "images/img04.jpg")
-# u4 = new UserInfo(1001, "Snyh", "images/img02.jpg")
-# u5 = new UserInfo(1001, "Snyh", "images/img03.jpg")
-
-# roundabout.appendChild(u.li)
-# u.focus()
-
-# roundabout.appendChild(u2.li)
-# roundabout.appendChild(u3.li)
-# roundabout.appendChild(u4.li)
-# roundabout.appendChild(u5.li)
-
-# end this
 
 if roundabout.children.length == 2
     roundabout.style.width = "0"

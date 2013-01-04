@@ -102,6 +102,8 @@ void greeter_set_selected_session(const gchar *session)
 JS_EXPORT_API
 void greeter_start_authentication(const gchar *username)
 {
+    js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
+
     if(g_strcmp0(username, g_strdup("*other")) == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 
@@ -139,6 +141,8 @@ static void cancel_authentication()
 
 static void start_session(const gchar *session)
 {
+    js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
+
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         greeter_start_authentication(g_strdup(get_selected_user()));
     }
