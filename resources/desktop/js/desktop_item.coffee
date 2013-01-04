@@ -46,7 +46,7 @@ cleanup_filename = (str) ->
 
 
 class Item extends Widget
-    constructor: (@entry) ->
+    constructor: (@entry, @modifiable = true) ->
         @id = @get_id()
 
         @selected = false
@@ -54,7 +54,7 @@ class Item extends Widget
         @in_rename = false
 
         @clicked = false
-        @delay_rename = -1
+        @delay_rename_tid = -1
 
         super(@id)
 
@@ -116,9 +116,7 @@ class Item extends Widget
             update_selected_stats(this, evt)
         else
             if evt.srcElement.className == "item_name"
-                if @delay_rename == -1 then @delay_rename = setTimeout(() =>
-                        @item_rename()
-                    , 200)
+                if @delay_rename_tid == -1 then @delay_rename_tid = setTimeout(@item_rename, 600)
             else
                 if @in_rename
                     @item_complete_rename(true)
@@ -130,9 +128,7 @@ class Item extends Widget
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
-        if @delay_rename != -1
-            clearTimeout(@delay_rename)
-            @delay_rename = -1
+        if @delay_rename_tid != -1 then @clear_delay_rename()
         if @in_rename then @item_complete_rename(false)
 
         if evt.ctrlKey == true then return
@@ -175,13 +171,19 @@ class Item extends Widget
 
 
     item_blur : ->
-        if @delay_rename != -1
-            clearTimeout(@delay_rename)
-            @delay_rename = -1
+        if @delay_rename_tid != -1 then @clear_delay_rename()
         if @in_rename then @item_complete_rename()
 
         @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
         @focused = false
+
+
+    to_cut_status: ->
+        @element.style.opacity = "0.5"
+
+
+    to_normal_status: ->
+        @element.style.opacity = "1"
 
 
     show_selected_box : =>
@@ -211,7 +213,7 @@ class Item extends Widget
 
     item_rename : =>
         echo "item_rename"
-        @delay_rename = -1
+        @delay_rename_tid = -1
         if @selected == false then return
         if @in_rename == false
             @element.draggable = false
@@ -236,6 +238,11 @@ class Item extends Widget
 
             @in_rename = true
         return
+
+
+    clear_delay_rename : =>
+        clearTimeout(@delay_rename_tid)
+        @delay_rename_tid = -1
 
 
     on_item_rename_keypress : (evt) =>
@@ -267,9 +274,9 @@ class Item extends Widget
             if @on_rename(new_name)
                 ++ingore_keyup_counts
 
-        if @delay_rename > 0
-            clearTimeout(@delay_rename)
-            @delay_rename = 0
+        if @delay_rename_tid > 0
+            clearTimeout(@delay_rename_tid)
+            @delay_rename_tid = 0
 
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
@@ -304,10 +311,6 @@ class DesktopEntry extends Item
         super
         @add_css_class("DesktopEntry")
 
-    to_cut_status: ->
-        @element.style.opacity = "0.5"
-    to_normal_status: ->
-        @element.style.opacity = "1"
 
     do_dragstart : (evt) =>
         evt.stopPropagation()
@@ -385,7 +388,17 @@ class DesktopEntry extends Item
 
 
     do_buildmenu : ->
-        build_selected_items_menu()
+        menu = []
+        menu.push([1, _("Open")])
+        menu.push([])
+        menu.push([3, _("cut")])
+        menu.push([4, _("copy")])
+        menu.push([])
+        menu.push([6, _("Rename"), not is_selected_multiple_items()])
+        menu.push([9, _("Delete")])
+        menu.push([])
+        menu.push([10, _("Properties")])
+        menu
 
 
     do_itemselected : (evt) =>
@@ -434,15 +447,21 @@ class RichDir extends DesktopEntry
         if evt.shiftKey == false && evt.ctrlKey == false
             if @show_pop == false
                 @show_pop_block()
+            else
+                @hide_pop_block()
 
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
 
 
+    do_rightclick : (evt) ->
+        if @show_pop == true then @hide_pop_block()
+        super
+
+
     do_dragstart : (evt) ->
-        if @show_pop == true
-            @hide_pop_block()
+        if @show_pop == true then @hide_pop_block()
         super
 
 
@@ -457,6 +476,15 @@ class RichDir extends DesktopEntry
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
+
+
+    do_buildmenu : ->
+        menus = []
+        menus.push([1, _("Open")])
+        menus.push([])
+        menus.push([6, _("Rename"), not is_selected_multiple_items()])
+        menus.push([9, _("Delete")])
+        menus
 
 
     item_update : ->
@@ -651,7 +679,7 @@ class DesktopApplet extends Item
 class ComputerVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_computer_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -693,7 +721,7 @@ class ComputerVDir extends DesktopEntry
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -715,7 +743,7 @@ class HomeVDir extends DesktopEntry
         return
 
 
-    do_buildmenu : () ->
+    do_buildmenu : ->
         [
             [1, _("open")],
             [2, _("open in terminal")],
@@ -737,7 +765,7 @@ class HomeVDir extends DesktopEntry
 class TrashVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_trash_entry()
-        super(entry)
+        super(entry, false)
 
 
     get_id : ->
@@ -776,23 +804,22 @@ class TrashVDir extends DesktopEntry
         return
 
 
-    do_buildmenu : () ->
+    do_buildmenu : ->
         menus = []
         menus.push([1, _("open")])
-#        menus.push([])
-#        count = DCore.Desktop.get_trash_count()
-#        if count > 1
-#            menus.push([2, _("clean up") + " #{count} " + _("files")])
-#        else if count == 1
-#            menus.push([2, _("clean up") + " #{count} " + _("file")])
-#        else
-#            menus.push([2, "-" + _("clean up")])
+        menus.push([])
+        count = DCore.Desktop.get_trash_count()
+        if count > 1
+            menus.push([3, _("clean up") + " #{count} " + _("files")])
+        else if count == 1
+            menus.push([3, _("clean up") + " #{count} " + _("file")])
+        else
+            menus.push([3, _("clean up"), false])
         menus
 
 
     do_itemselected : (evt) ->
         switch evt.id
             when 1 then @item_exec()
-# clean up trash bin
-            when 2 then alert "clean up trash bin"
+            when 3 then DCore.Desktop.empty_trash()
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"

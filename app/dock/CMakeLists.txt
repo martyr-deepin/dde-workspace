@@ -6,7 +6,7 @@ GEN_JSC_SOURCE("jsc" JSC_GEN)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-SET(SRC_LIST dock.c dock_config.c tray.c tasklist.c draw.c launcher.c region.c  ${JSC_GEN})
+SET(SRC_LIST dock.c dock_config.c tray.c dominant_color.c tasklist.c draw.c launcher.c region.c  ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 

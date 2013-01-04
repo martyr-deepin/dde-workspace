@@ -29,6 +29,8 @@
 #include <X11/Xatom.h>
 #include <dwebview.h>
 #include <string.h>
+#include "dominant_color.h"
+#include <math.h>
 
 
 Atom ATOM_CLIENT_LIST;
@@ -68,7 +70,6 @@ void _init_atoms()
 }
 
 typedef struct {
-    char* icon;
     char* title;
     char* clss;
     char* app_id; /*current is executabe file's name*/
@@ -76,6 +77,11 @@ typedef struct {
     gboolean is_maximized;
     Window window;
     GdkWindow* gdkwindow;
+
+    char* icon;
+    double r;
+    double g;
+    double b;
 } Client;
 
 GHashTable* _clients_table = NULL;
@@ -119,6 +125,9 @@ void _update_client_info(Client *c)
     json_append_string(json, "title", c->title);
     json_append_string(json, "clss", c->clss);
     json_append_string(json, "icon", c->icon);
+    json_append_number(json, "r", floor(c->r * 256));
+    json_append_number(json, "g", floor(c->g * 256));
+    json_append_number(json, "b", floor(c->b * 256));
     json_append_string(json, "app_id", c->app_id);
     js_post_message("task_updated", json);
 }
@@ -297,6 +306,8 @@ void _update_window_icon(Client* c)
     void* img = argb_to_rgba(p, w*h);
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
+    calc_dominant_color_by_pixbuf(pixbuf, &(c->r), &(c->g), &(c->b));
+
     c->icon = get_data_uri_by_pixbuf(pixbuf);
     g_object_unref(pixbuf);
 

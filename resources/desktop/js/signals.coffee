@@ -22,10 +22,8 @@ connect_default_signals = ->
     DCore.signal_connect("item_delete", do_item_delete)
     DCore.signal_connect("item_rename", do_item_rename)
     DCore.signal_connect("trash_count_changed", do_trash_update)
-    DCore.signal_connect("cut_completed", ->
-        for i in $s(".DesktopEntry")
-            Widget.look_up(i.id)?.to_normal_status()
-    )
+    DCore.signal_connect("cut_completed", do_cut_completed)
+    DCore.signal_connect("lost_focus", do_desktop_lost_focus)
 
     DCore.signal_connect("workarea_changed", do_workarea_changed)
     DCore.Desktop.notify_workarea_size()
@@ -43,7 +41,6 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
-    echo DCore.DEntry.get_name(data.entry)
     id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
@@ -80,6 +77,18 @@ do_trash_update = ->
     w = Widget.look_up("Trash_Virtual_Dir")
     if w?
         w.item_update()
+
+
+do_cut_completed = ->
+    echo "do_desktop_lost_focus"
+    for i in all_item
+        w = Widget.look_up(i)
+        if w? and w.modifiable == true then w.to_normal_status()
+
+
+do_desktop_lost_focus = ->
+    echo "do_desktop_lost_focus"
+    if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
 
 
 do_workarea_changed = (allo) ->

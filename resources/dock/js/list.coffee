@@ -29,11 +29,13 @@ calc_app_item_size = ->
         # when the last apps is in withdraw status, the clientWidth will be zero!
         #while last.clientWidth == 0
             #last = last.previousElementSibling
-        DCore.Dock.require_region(0, 0, screen.width, 30)
+        DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        DCore.Dock.release_region(offset + 68, 0, screen.width - offset, 30)
-        height = w * (60-8) / 68 + 8
+        DCore.Dock.release_region(offset + BOARD_WIDTH, 0, screen.width - offset, 30)
+
+        h = w * (BOARD_HEIGHT / BOARD_WIDTH)
+        height = h * (BOARD_HEIGHT - BOARD_MARGIN_BOTTOM) / BOARD_HEIGHT + BOARD_MARGIN_BOTTOM
         DCore.Dock.change_workarea_height(height)
     else
         echo "can't find last app #{apps.length}"
@@ -123,9 +125,22 @@ class AppItem extends Widget
         super
         @add_css_class("AppItem")
 
+        @board = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
+        @board.style.left = BOARD_IMG1_LEFT
+        @board.style.zIndex = -8
+
         @img = create_element('img', "AppItemImg", @element)
         @img.src = @icon
+        @img.style.left = APP_IMG_LEFT
         app_list.append(@)
+
+        @img.onload = =>
+            @update_board_color()
+
+    update_board_color: ->
+        color = DCore.Dock.calc_dominant_color_by_path(@img.src.substring(7))
+        @board_rgb = "rgb(#{color.r}, #{color.g}, #{color.b})"
+        @board.style.backgroundColor = @board_rgb
 
     is_fixed_pos: false
         
@@ -134,21 +149,22 @@ class AppItem extends Widget
         run_post(calc_app_item_size)
 
     change_size: (w) ->
-        board_size = (48.0 / 68 ) * w
+        board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
+        board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
 
-        board_top = 60 - 8 - board_size
-        @set_board_size(board_size, board_top)
+        board_margin_top = BOARD_HEIGHT - board_height - BOARD_MARGIN_BOTTOM
+        @set_board_size(board_width, board_height, board_margin_top)
 
-        @img.style.height = board_size * (32.0 / 48)
-        @img.style.width = board_size * (32.0 / 48)
-        img_margin = board_size * 7 / 48.0
+        @img.style.height = board_height * (APP_IMG_HEIGHT / BOARD_IMG_HEIGHT)
+        @img.style.width = board_width * (APP_IMG_WIDTH / BOARD_IMG_WIDTH)
+        img_margin = board_height * (BOARD_IMG_HEIGHT - APP_IMG_HEIGHT) * 0.5 / BOARD_IMG_HEIGHT
 
-        @img.style.top = img_margin + board_top + get_mode_size()
+        @img.style.top = img_margin + board_margin_top + get_mode_size()
 
-    set_board_size: (size, top)->
+    set_board_size: (width, height, top)->
         @board.style.top = top + get_mode_board_size()
-        @board.style.width = size
-        @board.style.height = size
+        @board.style.width = width
+        @board.style.height = height
 
     do_dragstart: (e)->
         Preview_container.remove_all()
@@ -191,10 +207,6 @@ class AppItem extends Widget
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @board_img_path = "img/1_r2_c14.png"
-        @board = create_img("AppItemBoard", @board_img_path, @element)
-        @board.style.zIndex = -8
-        
 
     do_click: (e)->
         DCore.DEntry.launch(@core, [])
@@ -223,37 +235,37 @@ class ClientGroup extends AppItem
         @in_iconfiy = false
         @leader = null
 
-        @board_img_path = "img/1_r2_c14.png"
-
-        @board = create_img("AppItemBoard", @board_img_path, @element)
-        @board.style.zIndex = -8
-
-        @board2 = create_img("AppItemBoard", @board_img_path, @element)
+        @board2 = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
         @board2.style.zIndex = -9
 
-        @board3 = create_img("AppItemBoard", @board_img_path, @element)
+        @board3 = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
         @board3.style.zIndex = -10
 
         @to_normal_status()
 
-    set_board_size: (size, marginTop)->
+    update_board_color: ->
+        @board.style.backgroundColor = @board_rgb
+        @board2.style.backgroundColor = @board_rgb
+        @board3.style.backgroundColor = @board_rgb
+
+    set_board_size: (width, height, marginTop)->
         super
 
         @_board_margin_top = marginTop + get_mode_board_size()
 
         @handle_clients_change()
 
-        @board2.style.width = size
-        @board2.style.height = size
-        @board2.style.left = "19.117647058823528%"
+        @board2.style.width = width
+        @board2.style.height = height
+        @board2.style.left = BOARD_IMG2_LEFT
 
-        @board3.style.width = size
-        @board3.style.height = size
-        @board3.style.left = "23.529411764705882%"
+        @board3.style.width = width
+        @board3.style.height = height
+        @board3.style.left = BOARD_IMG3_LEFT
 
-        w = 66.0 * size / 48
-        h = w * 52 / 66
-        t = 60 - h
+        w = BOARD_WIDTH * width / BOARD_IMG_WIDTH
+        h = w * 52 / BOARD_WIDTH
+        t = BOARD_HEIGHT - h
         @indicate.style.width = w
         @indicate.style.height = h
         @indicate.style.top = t
@@ -278,9 +290,9 @@ class ClientGroup extends AppItem
                 @board2.style.display = "block"
                 @board3.style.display = "block"
 
-                @board.style.top = @_board_margin_top + 1
+                @board.style.top = @_board_margin_top + 2
                 @board2.style.top = @_board_margin_top
-                @board3.style.top = @_board_margin_top - 1
+                @board3.style.top = @_board_margin_top - 2
 
     to_active_status : (id)->
         @in_iconfiy = false
@@ -309,7 +321,8 @@ class ClientGroup extends AppItem
         @w_clients.remove(id)
         @add_client(info.id)
 
-    update_client: (id, icon, title)->
+    update_client: (id, icon, rgb, title)->
+        @board_rgb = rgb
         @img.src = icon if id == @leader
         in_withdraw = id in @w_clients
         @client_infos[id] =
@@ -462,7 +475,8 @@ DCore.signal_connect("task_updated", (info) ->
     if not leader
         leader = new ClientGroup("le_"+info.clss, info.icon, info.app_id)
 
-    leader.update_client(info.id, info.icon, info.title)
+    rgb = "rgb(#{info.r}, #{info.g}, #{info.b})"
+    leader.update_client(info.id, info.icon, rgb, info.title)
 )
 
 DCore.signal_connect("task_removed", (info) ->

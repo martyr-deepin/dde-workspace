@@ -57,14 +57,13 @@ body {
 }
 .AppItemImg {
     position:absolute;
-    max-width: 32px;
-    max-height: 32px;
-    left: 26.47058823529412%;
+    max-width: 36px;
+    max-height: 36px;
 }
 
 .AppItemBoard {
+    -webkit-mask-box-image: url("../img/mask.png") stretch stretch;
     position: absolute;
-    left: 14.70588235294117%;
     max-height: 48px;
     /* TODO: this offset value should changed in calc_app_size */
     -webkit-box-reflect: below -1px -webkit-linear-gradient(top, transparent, transparent 10%, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1));
