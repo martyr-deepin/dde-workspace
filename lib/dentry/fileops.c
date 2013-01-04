@@ -528,13 +528,11 @@ _copy_files_async (GFile* src, gpointer data)
     {
 	//TODO: change permissions
 	g_file_make_directory (dest, NULL, &error);
-	if (error != NULL)
-	{
-	    g_debug ("_copy_files_async: %s", error->message);
-	}
+#if 1
 	char* dest_uri = g_file_get_uri (dest);
 	g_debug ("_copy_files_async: mkdir : %s", dest_uri);
 	g_free (dest_uri);
+#endif
     }
     else
     {
@@ -544,52 +542,54 @@ _copy_files_async (GFile* src, gpointer data)
 		     NULL,
 		     NULL,
 		     &error);
-	if (error != NULL)
-	{
-	//    g_cancellable_cancel (_copy_cancellable);
-	    g_warning ("_copy_files_async: %s", error->message);
-	    //TEST:
-	    FileOpsResponse* response;
-	    response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
-
-	    switch (response->response_id)
-	    {
-		case GTK_RESPONSE_CANCEL:
-		    //cancel all operations
-		    g_debug ("response : Cancel");
-		    retval = FALSE;
-		    break;
-
-		case CONFLICT_RESPONSE_SKIP:
-	            //skip, imediately return.
-	            g_debug ("response : Skip");
-		    retval = TRUE;
-	            break;
-		case CONFLICT_RESPONSE_RENAME:
-		    //rename, redo operations
-		    g_debug ("response : Rename");
-		    retval = TRUE;
-	            break;
-	        case CONFLICT_RESPONSE_REPLACE:
-	            //first delete and redo operations
-	            g_debug ("response : Replace");
-		    retval = TRUE;
-	            break;
-	        default:
-		    retval = FALSE;
-	            break;
-	    }
-
-	    g_error_free (error);
-	}
-#if 1
-	char* src_uri = g_file_get_uri (src);
-	char* dest_uri = g_file_get_uri (dest);
-	g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
-	g_free (src_uri);
-	g_free (dest_uri);
-#endif
     }
+    //error handling
+    if (error != NULL)
+    {
+	//    g_cancellable_cancel (_copy_cancellable);
+	g_warning ("_copy_files_async: %s", error->message);
+	//TEST:
+	FileOpsResponse* response;
+	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
+
+	switch (response->response_id)
+	{
+	    case GTK_RESPONSE_CANCEL:
+		//cancel all operations
+		g_debug ("response : Cancel");
+		retval = FALSE;
+		break;
+
+	    case CONFLICT_RESPONSE_SKIP:
+		//skip, imediately return.
+	        g_debug ("response : Skip");
+		retval = TRUE;
+	        break;
+	    case CONFLICT_RESPONSE_RENAME:
+		//rename, redo operations
+		g_debug ("response : Rename to %s", response->file_name);
+		retval = TRUE;
+	        break;
+	    case CONFLICT_RESPONSE_REPLACE:
+		//Merge also in this 
+	        //first delete and redo operations
+	        g_debug ("response : Replace");
+		retval = TRUE;
+	        break;
+	    default:
+		retval = FALSE;
+	        break;
+	}
+
+	g_error_free (error);
+    }
+#if 1
+    char* src_uri = g_file_get_uri (src);
+    char* dest_uri = g_file_get_uri (dest);
+    g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
+    g_free (src_uri);
+    g_free (dest_uri);
+#endif
 
     return retval;
 }
