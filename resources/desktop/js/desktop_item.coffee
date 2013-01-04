@@ -116,9 +116,7 @@ class Item extends Widget
             update_selected_stats(this, evt)
         else
             if evt.srcElement.className == "item_name"
-                if @delay_rename == -1 then @delay_rename = setTimeout(() =>
-                        @item_rename()
-                    , 200)
+                if @delay_rename == -1 then @delay_rename = setTimeout(@item_rename, 400)
             else
                 if @in_rename
                     @item_complete_rename(true)
