@@ -251,6 +251,7 @@ class Item extends Widget
             when 13   # enter
                 evt.preventDefault()
                 @item_complete_rename(true)
+                ++ingore_keyup_counts
             when 27   # esc
                 evt.preventDefault()
                 @item_complete_rename(false)
@@ -271,8 +272,7 @@ class Item extends Widget
 
         new_name = cleanup_filename(@item_name.innerText)
         if modify == true and new_name.length > 0 and new_name != @get_name()
-            if @on_rename(new_name)
-                ++ingore_keyup_counts
+            @on_rename(new_name)
 
         if @delay_rename_tid > 0
             clearTimeout(@delay_rename_tid)
@@ -291,7 +291,7 @@ class Item extends Widget
         @item_focus()
 
 
-    destroy: ->
+    destroy : ->
         info = load_position(@id)
         clear_occupy(info)
         super
@@ -494,6 +494,11 @@ class RichDir extends DesktopEntry
 
     item_exec : ->
         if @show_pop == false then @show_pop_block()
+
+
+    item_normal : ->
+        if @div_pop != null then @hide_pop_block()
+        super
 
 
     item_blur : ->
