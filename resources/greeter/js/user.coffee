@@ -40,7 +40,7 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
         DCore.Greeter.set_selected_user(@id)
-	DCore.Greeter.start_authentication(@id)
+        DCore.Greeter.start_authentication(@id)
     
     blur: ->
         @element.setAttribute("class", "UserInfo")
