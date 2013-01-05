@@ -1,0 +1,51 @@
+.PWContainer {
+    background: rgba(157, 193, 209, 0.8);
+    position: fixed;
+    bottom:60px;
+    display: -webkit-box;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.PreviewWindow {
+    max-width: 230px;
+    max-height: 160px;
+    margin: 5px;
+    position: relative;
+    background: rgb(204, 223, 231);
+}
+
+.PWCanvas {
+    width: 200px;
+    height: 100px;
+
+    margin-top: 15px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+.PWCanvas:last-of-type {
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.PWTitle {
+    text-shadow: black 1px 1px 1px;
+    position: absolute;
+    top:0px;
+    width: 200px;
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    color: white;
+}
+.PWClose {
+    color: red;
+    position: absolute;
+    top:0px;
+    right:0px
+}
+.PWClose:hover {
+    cursor: pointer;
+}
+
