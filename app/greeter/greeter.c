@@ -538,25 +538,25 @@ gboolean greeter_get_can_shutdown()
 }
 
 JS_EXPORT_API
-gboolean greeter_suspend()
+gboolean greeter_run_suspend()
 {
     return lightdm_suspend(NULL);
 }
 
 JS_EXPORT_API
-gboolean greeter_hibernate()
+gboolean greeter_run_hibernate()
 {
     return lightdm_hibernate(NULL);
 }
 
 JS_EXPORT_API
-gboolean greeter_restart()
+gboolean greeter_run_restart()
 {
     return lightdm_restart(NULL);
 }
 
 JS_EXPORT_API
-gboolean greeter_shutdown()
+gboolean greeter_run_shutdown()
 {
     return lightdm_shutdown(NULL);
 }
