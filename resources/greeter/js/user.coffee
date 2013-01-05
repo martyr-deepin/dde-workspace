@@ -40,8 +40,9 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
         DCore.Greeter.set_selected_user(@id)
-        if not DCore.Greeter.in_authentication()
-            DCore.Greeter.start_authentication(user)
+	if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+	DCore.Greeter.start_authentication(user)
     
     blur: ->
         @element.setAttribute("class", "UserInfo")
@@ -67,8 +68,8 @@ class UserInfo extends Widget
 
     on_verify: (password)->
         @login.destroy()
-        loading = new Loading("loading")
-        @element.appendChild(loading.element)
+        @loading = new Loading("loading")
+        @element.appendChild(@loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
         DCore.Greeter.login_clicked(password)
