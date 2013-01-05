@@ -541,6 +541,7 @@ JS_EXPORT_API
 gboolean greeter_run_suspend()
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "suspend clicked");
+    js_post_message_simply("status", "{\"status\":\"%s\"}", getuid());
     return lightdm_suspend(NULL);
 }
 
@@ -548,6 +549,7 @@ JS_EXPORT_API
 gboolean greeter_run_hibernate()
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "hibernate clicked");
+    js_post_message_simply("status", "{\"status\":\"%s\"}", getuid());
     return lightdm_hibernate(NULL);
 }
 
@@ -555,6 +557,7 @@ JS_EXPORT_API
 gboolean greeter_run_restart()
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "restart clicked");
+    js_post_message_simply("status", "{\"status\":\"%s\"}", getuid());
     return lightdm_restart(NULL);
 }
 
@@ -562,6 +565,7 @@ JS_EXPORT_API
 gboolean greeter_run_shutdown()
 {
     js_post_message_simply("status", "{\"status\":\"%s\"}", "shutdown clicked");
+    js_post_message_simply("status", "{\"status\":\"%s\"}", getuid());
     return lightdm_shutdown(NULL);
 }
 
