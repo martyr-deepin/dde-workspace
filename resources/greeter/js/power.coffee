@@ -32,15 +32,19 @@ get_power_info = ->
     return power_info
 
 suspend_cb = ->
+    alert "suspend"
     DCore.Greeter.suspend()
 
 hibernate_cb = ->
+    alert "hibernate"
     DCore.Greeter.hibernate()
 
 restart_cb = ->
+    alert "restart"
     DCore.Greeter.restart()
 
 shutdown_cb = ->
+    alert "shutdown"
     DCore.Greeter.shutdown()
 
 power_dict = get_power_info()    

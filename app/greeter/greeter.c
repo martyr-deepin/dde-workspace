@@ -102,6 +102,9 @@ void greeter_set_selected_session(const gchar *session)
 JS_EXPORT_API
 void greeter_start_authentication(const gchar *username)
 {
+    cancelling = FALSE;
+    prompted = FALSE;
+
     js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
 
     if(g_strcmp0(username, g_strdup("*other")) == 0){
@@ -163,6 +166,7 @@ static void start_session(const gchar *session)
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    prompted = TRUE;
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 }
 
@@ -175,12 +179,15 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
     }
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
-        start_session(g_strdup(get_selected_session()));
-
+        if(prompted){
+            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
+            start_session(g_strdup(get_selected_session()));
+        }
     }else{
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
-        greeter_start_authentication(get_selected_user());
+        if(prompted){
+            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
+            greeter_start_authentication(get_selected_user());
+        }
     }
 }
 
