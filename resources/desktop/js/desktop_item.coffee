@@ -61,6 +61,12 @@ class Item extends Widget
         el.appendChild(@item_name)
 
 
+    destroy : ->
+        info = load_position(@id)
+        clear_occupy(info)
+        super
+
+
     get_id : ->
         DCore.DEntry.get_id(@entry)
 
@@ -129,6 +135,46 @@ class Item extends Widget
             @item_complete_rename(false)
 
 
+    display_full_name : ->
+        @element.className += " full_name"
+
+
+    display_short_name : ->
+        @element.className = @element.className.replace(/\ full_name/g, "")
+
+
+    display_selected : ->
+        @selected = true
+        @show_selected_box()
+
+
+    display_normal : ->
+        @selected = false
+        @clicked = false
+        @hide_selected_box()
+
+
+    display_focus : ->
+        @focused = true
+        @display_full_name()
+
+
+    display_blur : ->
+        if @delay_rename_tid != -1 then @clear_delay_rename()
+        if @in_rename then @item_complete_rename()
+
+        @focused = false
+        @display_short_name()
+
+
+    display_cut : ->
+        @element.style.opacity = "0.5"
+
+
+    display_not_cut : ->
+        @element.style.opacity = "1"
+
+
     item_update : () =>
         @item_icon.src = @get_icon()
         if @in_rename == false
@@ -137,36 +183,6 @@ class Item extends Widget
 
     item_exec : =>
         DCore.DEntry.launch(@entry, [])
-
-
-    item_selected : ->
-        @selected = true
-        @show_selected_box()
-
-
-    item_normal : ->
-        @selected = false
-        @clicked = false
-        @hide_selected_box()
-
-
-    item_focus : ->
-        @focused = true
-
-
-    item_blur : ->
-        if @delay_rename_tid != -1 then @clear_delay_rename()
-        if @in_rename then @item_complete_rename()
-
-        @focused = false
-
-
-    to_cut_status: ->
-        @element.style.opacity = "0.5"
-
-
-    to_normal_status: ->
-        @element.style.opacity = "1"
 
 
     show_selected_box : =>
@@ -272,12 +288,6 @@ class Item extends Widget
 
         @in_rename = false
         @item_name.innerText = @get_name()
-
-
-    destroy : ->
-        info = load_position(@id)
-        clear_occupy(info)
-        super
 
 
     move: (x, y) ->
@@ -417,6 +427,11 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
 
+    destroy : ->
+        if @div_pop != null then @hide_pop_block()
+        super
+
+
     get_name : ->
         DCore.Desktop.get_rich_dir_name(@entry)
 
@@ -470,6 +485,16 @@ class RichDir extends DesktopEntry
         menus
 
 
+    display_normal : ->
+        if @div_pop != null then @hide_pop_block()
+        super
+
+
+    display_blur : ->
+        if @div_pop != null then @hide_pop_block()
+        super
+
+
     item_update : ->
         if @show_pop == true then @reflesh_pop_block()
         super
@@ -479,23 +504,8 @@ class RichDir extends DesktopEntry
         if @show_pop == false then @show_pop_block()
 
 
-    item_normal : ->
-        if @div_pop != null then @hide_pop_block()
-        super
-
-
-    item_blur : ->
-        if @div_pop != null then @hide_pop_block()
-        super
-
-
     on_rename : (new_name) ->
         DCore.Desktop.set_rich_dir_name(@entry, new_name)
-
-
-    destroy : ->
-        if @div_pop != null then @hide_pop_block()
-        super
 
 
     show_pop_block : =>
@@ -520,6 +530,8 @@ class RichDir extends DesktopEntry
         @show_pop = true
 
         @fill_pop_block()
+
+        @display_short_name()
 
 
     reflesh_pop_block : =>
@@ -602,9 +614,9 @@ class RichDir extends DesktopEntry
 
         n = Math.ceil(@sub_items_count / col)
         if n > 4 then n = 4
-        n = n * i_height + 20
+        n = n * i_height + 40
         if s_height - @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 16}px"
+            @div_pop.style.top = "#{@element.offsetTop + i_height + 16}px"
             arrow_pos = false
         else
             @div_pop.style.top = "#{@element.offsetTop - n}px"
@@ -637,6 +649,8 @@ class RichDir extends DesktopEntry
             delete @div_pop
             @div_pop = null
         @show_pop = false
+
+        @display_full_name()
 
 
 class Application extends DesktopEntry

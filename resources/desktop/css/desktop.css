@@ -90,6 +90,9 @@ body {
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.7);
     z-index:10;
+}
+
+.full_name {
     -webkit-line-clamp:99;
 }
 
