@@ -576,10 +576,17 @@ gboolean greeter_run_shutdown()
     return lightdm_shutdown(NULL);
 }
 
+static void sigterm_cb(int signum)
+{
+    exit(0);
+}
+
 int main(int argc, char **argv)
 {
     GdkScreen *screen;
     GdkRectangle geometry;
+
+    signal(SIGTERM, sigterm_cb);
 
     init_i18n();
     gtk_init(&argc, &argv);
