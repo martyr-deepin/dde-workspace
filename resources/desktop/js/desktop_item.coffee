@@ -692,6 +692,26 @@ class ComputerVDir extends DesktopEntry
         return
 
 
+    do_dragenter : (evt) ->
+        evt.stopPropagation()
+        evt.dataTransfer.dropEffect = "none"
+
+        if @selected == false
+            ++@in_count
+            if @in_count == 1
+                @show_hover_box()
+
+
+    do_dragover : (evt) ->
+        evt.stopPropagation()
+        evt.dataTransfer.dropEffect = "none"
+
+
+    do_drop : (evt) ->
+        evt.stopPropagation()
+        evt.dataTransfer.dropEffect = "none"
+
+
     do_buildmenu : ->
         [
             [1, _("open")],
@@ -729,6 +749,19 @@ class HomeVDir extends DesktopEntry
 
     get_path : ->
         ""
+
+    do_drop : (evt) ->
+        super
+
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+            if not e? then continue
+            tmp_list.push(e)
+
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        return
+
 
     item_rename : ->
         return
