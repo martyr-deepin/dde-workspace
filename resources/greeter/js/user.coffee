@@ -82,7 +82,6 @@ class UserInfo extends Widget
         div_session = create_element("div", "", div_auth)
         div_session.innerText = _session
         #debug code end
-    
 
 # below code should use c-backend to fetch data 
 users = DCore.Greeter.get_users()
@@ -92,19 +91,6 @@ for user in users
     if user == DCore.Greeter.get_default_user()
         u.focus()
         DCore.Greeter.start_authentication(user)
-    
-#debug code begin    
-users_div = create_element("div", " ", $("#Debug"))
-users_div.innerText = "USERS:"
-for user in users
-    user_div = create_element("div", " ", users_div)
-    user_div.innerText = user
-
-DCore.signal_connect("status", (msg) ->
-    status_div = create_element("div", " ", $("#Debug"))
-    status_div.innerText = "status:" + msg.status
-)
-#debug code end        
 
 if roundabout.children.length == 2
     roundabout.style.width = "0"

@@ -79,8 +79,8 @@ class ComboBox extends Widget
         @current_img.src = _img
         @menu.current = id
 
-debug = $("#Debug")
-
-DCore.signal_connect("debug", (msg) ->
-    info = create_element("div", "", debug)
-    info.innerText = msg)
+DCore.signal_connect("status", (msg) ->
+    status_div = create_element("div", " ", $("#Debug"))
+    status_div.innerText = "status:" + msg.status
+)
+    
