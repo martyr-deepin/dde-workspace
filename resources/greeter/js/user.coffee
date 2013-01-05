@@ -16,6 +16,7 @@ class LoginEntry extends Widget
             @on_active(@password.value)
         )
         @login.index = 1
+        @password.focus()
 
 class Loading extends Widget
     constructor: (@id)->

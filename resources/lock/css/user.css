@@ -9,20 +9,20 @@
 }
 
 .UserInfo {
-	cursor:default;
+    cursor:default;
     float: left;
-    width: 186px;
+    width: 185px;
     background: rgba(255,255,255,.5);
     border-radius: 5px;
     padding: 20px 0px 20px 0px;
     color: rgba(0, 0, 0, 0.3);
-	opacity:0.8;
+    opacity:0.8;
 }
 
 .UserInfoSelected {
     background: rgba(60, 60, 60, 1.0);
     color: white;
-	opacity:1;
+    opacity:1;
 }
 
 .UserImg {
