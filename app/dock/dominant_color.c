@@ -1,6 +1,8 @@
+#include "dominant_color.h"
+#include "dock_config.h"
+
 #include <math.h>
 #include <glib.h>
-#include "dominant_color.h"
 
 void rgb2hsv(int r, int g, int b, double *h, double* s, double* v)
 {
@@ -131,9 +133,9 @@ JSValueRef dock_calc_dominant_color_by_path(const char* path)
         calc_dominant_color_by_pixbuf(pixbuf, &r, &g, &b);
         g_object_unref(pixbuf);
     } else {
-        r = 0.71875;
-        g = 0.8046875;
-        b = 0.87109375;
+        r = DEFAULT_COLOR_R;
+        g = DEFAULT_COLOR_G;
+        b = DEFAULT_COLOR_B;
     }
     JSObjectRef json = json_create();
     json_append_number(json, "r", floor(r * 256));

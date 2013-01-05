@@ -19,7 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 body {
-    background: rgba(6, 63, 107, 0.95);
+    /*background: rgba(6, 63, 107, 0.95);*/
+    background: rgba(0, 0, 0, 0.97);
     color: white;
     -webkit-user-select: none;
     overflow-y: hidden;
@@ -74,6 +75,7 @@ body {
 }
 
 #category {
+    margin-top: 25px;
     max-width: 180px;
     min-width: 180px;
 }
@@ -105,6 +107,7 @@ body {
 }
 
 .item {
+    margin: 10px;
     cursor: default;
     float: left;
     width: 80px;

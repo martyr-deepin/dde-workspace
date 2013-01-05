@@ -41,4 +41,9 @@ extern struct _GlobalData GD;
 
 void init_config();
 
+#define NOT_FOUND_IMG_PATH "img/not_found.png"
+#define DEFAULT_COLOR_R 0.71875
+#define DEFAULT_COLOR_G 0.8046875
+#define DEFAULT_COLOR_B 0.87109375
+
 #endif
