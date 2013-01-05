@@ -56,3 +56,9 @@ for key, value of power_dict
     power_menu.insert(key, key, "images/control-power.png")
 
 $("#bottom_buttons").appendChild(power_menu.element)
+
+DCore.signal_connect("power", (msg) ->
+    status_div = create_element("div", " ", $("#Debug"))
+    status_div.innerText = "status:" + msg.status
+)
+    
