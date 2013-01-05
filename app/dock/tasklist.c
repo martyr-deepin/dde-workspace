@@ -23,13 +23,14 @@
 #include "utils.h"
 #include "desktop_file_matcher.h"
 #include "launcher.h"
+#include "dock_config.h"
+#include "dominant_color.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 #include <dwebview.h>
 #include <string.h>
-#include "dominant_color.h"
 #include <math.h>
 
 
@@ -274,15 +275,22 @@ void* argb_to_rgba(gulong* data, size_t s)
     return img;
 }
 
-GdkPixbuf* get_client_icon(Client* c)
-{
-}
 void _update_window_icon(Client* c)
 {
     gulong items;
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
-        c->icon = g_strdup("img/not_found.png");
+        c->icon = g_strdup(NOT_FOUND_IMG_PATH);
+        GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(c->icon, NULL);
+        //TODO: the NOT_FOUND_IMG_PATH is an relative path, so it can't create an valid GdkPixbuf!!
+        if (pixbuf) {
+            calc_dominant_color_by_pixbuf(pixbuf, &(c->r), &(c->g), &(c->b));
+            g_object_unref(pixbuf);
+        } else {
+            c->r = DEFAULT_COLOR_R;
+            c->g = DEFAULT_COLOR_G;
+            c->b = DEFAULT_COLOR_B;
+        }
         return;
     }
 
