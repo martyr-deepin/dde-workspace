@@ -40,6 +40,8 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
         DCore.Greeter.set_selected_user(@id)
+        if not DCore.Greeter.in_authentication()
+            DCore.Greeter.start_authentication(user)
     
     blur: ->
         @element.setAttribute("class", "UserInfo")
@@ -47,7 +49,9 @@ class UserInfo extends Widget
         @login = null
         @loading?.destroy()
         @loading = null
-
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+    
     show_login: ->
         if false
             @login()
@@ -90,7 +94,7 @@ for user in users
     roundabout.appendChild(u.li)
     if user == DCore.Greeter.get_default_user()
         u.focus()
-        DCore.Greeter.start_authentication(user)
+        # DCore.Greeter.start_authentication(user)
 
 if roundabout.children.length == 2
     roundabout.style.width = "0"

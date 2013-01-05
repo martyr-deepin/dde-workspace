@@ -100,6 +100,12 @@ void greeter_set_selected_session(const gchar *session)
 }
 
 JS_EXPORT_API
+gboolean greeter_in_authentication()
+{
+    return lightdm_greeter_get_in_authentication(greeter);
+}
+
+JS_EXPORT_API
 void greeter_start_authentication(const gchar *username)
 {
     cancelling = FALSE;
@@ -115,6 +121,21 @@ void greeter_start_authentication(const gchar *username)
 
     }else{
         lightdm_greeter_authenticate(greeter, username);
+    }
+}
+
+JS_EXPORT_API
+void greeter_cancel_authentication()
+{
+    cancelling = FALSE;
+    if(lightdm_greeter_get_in_authentication(greeter)){
+        cancelling = TRUE;
+        lightdm_greeter_cancel_authentication(greeter);
+        return ;
+    }
+
+    if(lightdm_greeter_get_hide_users_hint(greeter)){
+        greeter_start_authentication(g_strdup("*other"));
     }
 }
 
@@ -140,20 +161,6 @@ void greeter_login_clicked(const gchar *password)
     }
 }
 
-static void cancel_authentication()
-{
-    cancelling = FALSE;
-    if(lightdm_greeter_get_in_authentication(greeter)){
-        cancelling = TRUE;
-        lightdm_greeter_cancel_authentication(greeter);
-        return ;
-    }
-
-    if(lightdm_greeter_get_hide_users_hint(greeter)){
-        greeter_start_authentication("*other");
-    }
-}
-
 static void start_session(const gchar *session)
 {
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
@@ -175,7 +182,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 
     if(cancelling){
-        cancel_authentication();
+        greeter_cancel_authentication();
     }
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
