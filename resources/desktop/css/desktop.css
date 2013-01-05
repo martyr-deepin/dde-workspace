@@ -2,8 +2,8 @@
  * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 snyh
  *
- * Author:      snyh <snyh@snyh.org>
- * Maintainer:  Cole <phcourage@gmail.com>
+ * Author:       snyh <snyh@snyh.org>
+ * Maintainer:   Cole <phcourage@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +20,11 @@
  **/
 
 body {
-    /*background: url("../img/desktop_background.jpg");*/
-    background: rgba(0, 100, 100, 0.0);
-    /*-webkit-touch-callout: none;*/
-    /*-webkit-user-select: none;*/
-    /*user-select: none;*/
+    background:rgba(0, 100, 100, 0.0);
     margin:0px;
     position:fixed;
-    left: 0px;
-    top: 0px;
+    left:0px;
+    top:0px;
     width:100%;
     height:100%;
 }
@@ -36,94 +32,101 @@ body {
     overflow:hidden;
 }
 
-
 #item_grid {
     position:fixed;
-    /*background-color:rgba(22, 22, 22, 0.3);*/
     overflow:hidden;
 }
 
 .DesktopEntry {
-    width: 80px;
-    padding: 3px 5px;
-    margin: 1px 1px;
-    text-align: center;
-    font-size: small;
-    color: white;
-    text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-    outline: none;
+    width:80px;
+    padding:3px 5px;
+    margin:1px 1px;
+    outline:none;
+    text-align:center;
+    font-size:small;
+    color:white;
+    text-shadow:1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
+    word-wrap:break-word;
+    word-break:break-all;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .DesktopEntry img {
-    width: 48px;
-    height: 48px;
+    width:48px;
+    height:48px;
 }
 
-.item_name {
-    word-wrap:break-word;
-    word-break:break-all;
-    overflow: hidden;
-    outline: 0;
+.DesktopEntry .item_name {
+    outline:none;
 }
 
-.item_renaming {
+.DesktopEntry .item_renaming {
     width:100%;
-    cursor: text;
+    cursor:text;
     color:black;
     text-shadow:none;
     word-wrap:break-word;
     word-break:break-all;
     background-color:#FFF;
-    outline: 0;
+    outline:none;
     -webkit-userselect:text;
     -webkit-usermodify:read-write-plaintext-only;
 }
 
 .item_hover {
-    padding: 2px 4px !important;
+    padding:2px 4px !important;
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
 }
 
 .item_selected {
-    padding: 2px 4px !important;
+    padding:2px 4px !important;
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.7);
     z-index:10;
+    -webkit-line-clamp:99;
 }
 
 #pop_grid {
     z-index:20000;
     position:fixed;
-    background: rgba(6, 63, 107, 0.85);
-    border:6px solid rgba(0, 0, 0, 0.2);
-    border-radius:6px;
+    background:rgba(0,0,0,0.8);
+    box-shadow:0px 4px 8px rgba(4,4,4,0.5);
+    border:1px solid rgba(0,0,0,0.05);
+    border-radius:4px;
 }
 
 #pop_grid ul {
     max-height:376px;
     margin:0;
-    font-size: small;
-    list-style: none outside none;
-    border:1px solid rgba(255,255,255,0.5);
-    -webkit-padding-start: 0;
-    border-radius:4px;
+    padding:10px;
+    font-size:small;
+    list-style:none outside none;
+    box-shadow:0px 4px 16px rgba(0,0,0,0.4);
+    border-top:1px solid rgba(255,255,255,0.6);
+    border-left:1px solid rgba(255,255,255,0.3);
+    border-right:1px solid rgba(255,255,255,0.3);
+    border-radius:3px;
     overflow-y:auto;
 }
 
 #pop_grid ul li {
     width:80px;
     height:86px;
-    padding: 3px 5px;
-    margin: 1px 1px;
-    display: inline-block;
+    padding:3px 5px;
+    margin:1px 1px;
+    display:inline-block;
     vertical-align:top;
     text-align:center;
 }
 #pop_grid ul li:hover {
-    padding: 2px 4px !important;
+    padding:2px 4px !important;
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
@@ -133,32 +136,33 @@ body {
     height:48px;
 }
 #pop_grid ul li div {
-    max-height:36px;
+    max-width:90px;
     color:#FFF;
     word-wrap:break-word;
     word-break:break-all;
-    text-shadow: 1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-    overflow: hidden;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 #pop_uparrow {
-    width:0;
-    height:0;
-    border: 10px solid transparent;
-    border-bottom-color:rgba(0,0,0,0.9);
+    width:9px;
+    height:5px;
     position:absolute;
-    top:-26px;
+    top:-6px;
+    background-image:url("../img/arrow_top.png")
 }
 
 #pop_downarrow {
-    width:0;
-    height:0;
-    border: 10px solid transparent;
-    border-top-color: rgba(0,0,0,0.9);
+    width:9px;
+    height:5px;
+    background-image:url("../img/arrow_bottom.png");
     position:absolute;
-    bottom:-26px;
+    bottom:-6px;
 }
 
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
 #WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
-    display: none;
+    display:none;
 }

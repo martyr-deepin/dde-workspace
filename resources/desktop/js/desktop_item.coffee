@@ -23,20 +23,6 @@ MAX_ITEM_TITLE = 20
 DLCLICK_INTERVAL = 200
 
 
-shorten_text = (str, n) ->
-    r = /[^\x00-\xff]/g
-    if str.replace(r, "mm").length <= n
-        return str
-
-    mid = Math.floor(n / 2)
-    n = n - 3
-    for i in [mid..(str.length - 1)]
-        if str.substr(0, i).replace(r, "mm").length >= n
-            return str.substr(0, i) + "..."
-
-    return str
-
-
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -71,7 +57,7 @@ class Item extends Widget
 
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
+        @item_name.innerText = @get_name()
         el.appendChild(@item_name)
 
 
@@ -146,8 +132,7 @@ class Item extends Widget
     item_update : () =>
         @item_icon.src = @get_icon()
         if @in_rename == false
-            if @focused then @item_name.innerText = @get_name()
-            else @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
+            @item_name.innerText = @get_name()
 
 
     item_exec : =>
@@ -166,7 +151,6 @@ class Item extends Widget
 
 
     item_focus : ->
-        @item_name.innerText = @get_name()
         @focused = true
 
 
@@ -174,7 +158,6 @@ class Item extends Widget
         if @delay_rename_tid != -1 then @clear_delay_rename()
         if @in_rename then @item_complete_rename()
 
-        @item_name.innerText = shorten_text(@get_name(), MAX_ITEM_TITLE)
         @focused = false
 
 
@@ -288,7 +271,7 @@ class Item extends Widget
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
 
         @in_rename = false
-        @item_focus()
+        @item_name.innerText = @get_name()
 
 
     destroy : ->
@@ -567,12 +550,13 @@ class RichDir extends DesktopEntry
         for i, e of @sub_items
             ele = document.createElement("li")
             ele.setAttribute('id', i)
+            ele.setAttribute('title', DCore.DEntry.get_name(e))
             ele.draggable = true
             s = document.createElement("img")
             s.src = DCore.DEntry.get_icon(e)
             ele.appendChild(s)
             s = document.createElement("div")
-            s.innerText = shorten_text(DCore.DEntry.get_name(e), MAX_ITEM_TITLE)
+            s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
 
             ele.addEventListener('dragstart', (evt) ->
@@ -608,24 +592,26 @@ class RichDir extends DesktopEntry
             col = 5
         else
             col = 6
+
+        # 20px for ul padding, 2px for border, 8px for scrollbar
         if @sub_items_count > 24
-            @div_pop.style.width = "#{col * i_width + 10}px" # 8px for scrollbar
+            @div_pop.style.width = "#{col * i_width + 30}px"
         else
-            @div_pop.style.width = "#{col * i_width + 2}px" # 2px for border
+            @div_pop.style.width = "#{col * i_width + 22}px"
         arrow = document.createElement("div")
 
         n = Math.ceil(@sub_items_count / col)
         if n > 4 then n = 4
         n = n * i_height + 20
         if s_height - @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 20}px"
+            @div_pop.style.top = "#{@element.offsetTop + @element.offsetHeight + 16}px"
             arrow_pos = false
         else
-            @div_pop.style.top = "#{@element.offsetTop - n - 16}px"
+            @div_pop.style.top = "#{@element.offsetTop - n}px"
             arrow_pos = true
 
         n = (col * i_width) / 2
-        p = @element.offsetLeft + @element.offsetWidth / 2 - 10
+        p = @element.offsetLeft + @element.offsetWidth / 2
         if p < n
             @div_pop.style.left = "0"
             arrow.style.left = "#{p}px"
