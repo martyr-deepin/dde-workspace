@@ -101,6 +101,8 @@ int main(int argc, char* argv[])
     monitor_resource_file("dock", webview);
     /*gdk_window_set_debug_updates(TRUE);*/
 
+
+    dock_setup_dbus_service ();
     gtk_main();
     return 0;
 }
