@@ -36,10 +36,10 @@ class Item extends Widget
         @id = @get_id()
 
         @selected = false
-        @focused = false
-        @in_rename = false
+        @has_focus = false
+        @clicked_before = false
 
-        @clicked = false
+        @in_rename = false
         @delay_rename_tid = -1
 
         super(@id)
@@ -103,8 +103,8 @@ class Item extends Widget
 
     do_click : (evt) ->
         evt.stopPropagation()
-        if @clicked == false
-            @clicked = true
+        if @clicked_before == false
+            @clicked_before = true
             update_selected_stats(this, evt)
         else
             if evt.srcElement.className == "item_name"
@@ -120,7 +120,7 @@ class Item extends Widget
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
-        if @delay_rename_tid != -1 then @clear_delay_rename()
+        @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
 
         if evt.ctrlKey == true then return
@@ -136,10 +136,12 @@ class Item extends Widget
 
 
     display_full_name : ->
+        echo "display_full_name"
         @element.className += " full_name"
 
 
     display_short_name : ->
+        echo "display_short_name"
         @element.className = @element.className.replace(/\ full_name/g, "")
 
 
@@ -150,20 +152,23 @@ class Item extends Widget
 
     display_normal : ->
         @selected = false
-        @clicked = false
+        @clicked_before = false
+
+        @clear_delay_rename_timer()
+        if @in_rename then @item_complete_rename(false)
         @hide_selected_box()
 
 
     display_focus : ->
-        @focused = true
+        @has_focus = true
         @display_full_name()
 
 
     display_blur : ->
-        if @delay_rename_tid != -1 then @clear_delay_rename()
-        if @in_rename then @item_complete_rename()
+        @clear_delay_rename_timer()
+        if @in_rename then @item_complete_rename(false)
 
-        @focused = false
+        @has_focus = false
         @display_short_name()
 
 
@@ -206,15 +211,22 @@ class Item extends Widget
         return
 
 
+    on_event_preventdefault : (evt) =>
+        evt.stopPropagation()
+        evt.preventDefault()
+        return
+
+
     on_rename : (new_name) ->
         DCore.DEntry.set_name(@entry, new_name)
 
 
     item_rename : =>
-        echo "item_rename"
-        @delay_rename_tid = -1
+        if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
+            echo "item_rename"
+            @display_full_name()
             @element.draggable = false
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
@@ -222,7 +234,7 @@ class Item extends Widget
             @item_name.addEventListener("mouseup", @on_event_stoppropagation)
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
-            @item_name.addEventListener("contextmenu", @on_event_stoppropagation)
+            @item_name.addEventListener("contextmenu", @on_event_preventdefault)
             @item_name.addEventListener("keydown", @on_event_stoppropagation)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
@@ -239,9 +251,11 @@ class Item extends Widget
         return
 
 
-    clear_delay_rename : =>
+    clear_delay_rename_timer : =>
+        if @delay_rename_tid == -1 then return
         clearTimeout(@delay_rename_tid)
         @delay_rename_tid = -1
+        return
 
 
     on_item_rename_keypress : (evt) =>
@@ -265,29 +279,29 @@ class Item extends Widget
 
 
     item_complete_rename : (modify = true) =>
+        echo "item_complete_rename"
+        if modify == true
+            new_name = cleanup_filename(@item_name.innerText)
+            if new_name.length > 0 and new_name != @get_name()
+                @on_rename(new_name)
+
         @element.draggable = true
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
-
-        new_name = cleanup_filename(@item_name.innerText)
-        if modify == true and new_name.length > 0 and new_name != @get_name()
-            @on_rename(new_name)
-
-        if @delay_rename_tid > 0
-            clearTimeout(@delay_rename_tid)
-            @delay_rename_tid = 0
-
+        @item_name.innerText = @get_name()
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
         @item_name.removeEventListener("click", @on_event_stoppropagation)
         @item_name.removeEventListener("dblclick", @on_event_stoppropagation)
-        @item_name.removeEventListener("contextmenu", @on_event_stoppropagation)
+        @item_name.removeEventListener("contextmenu", @on_event_preventdefault)
         @item_name.removeEventListener("keydown", @on_event_stoppropagation)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
 
+        @clear_delay_rename_timer()
         @in_rename = false
-        @item_name.innerText = @get_name()
+
+        return
 
 
     move: (x, y) ->
@@ -308,6 +322,7 @@ class DesktopEntry extends Item
     do_dragstart : (evt) =>
         evt.stopPropagation()
 
+        @item_complete_rename(false)
         item_dragstart_handler(this, evt)
 
         return
@@ -451,6 +466,8 @@ class RichDir extends DesktopEntry
 
     do_dblclick : (evt) ->
         evt.stopPropagation()
+        @clear_delay_rename_timer()
+        if @in_rename then @item_complete_rename(false)
 
 
     do_rightclick : (evt) ->
@@ -616,7 +633,7 @@ class RichDir extends DesktopEntry
         if n > 4 then n = 4
         n = n * i_height + 40
         if s_height - @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop + i_height + 16}px"
+            @div_pop.style.top = "#{@element.offsetTop + Math.min(i_height, @element.offsetHeight) + 16}px"
             arrow_pos = false
         else
             @div_pop.style.top = "#{@element.offsetTop - n}px"
