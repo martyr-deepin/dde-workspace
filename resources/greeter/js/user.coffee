@@ -52,15 +52,19 @@ class UserInfo extends Widget
         @name = create_element("span", "UserName", @element)
         @name.innerText = name
         @active = false
-
+        
+        if DCore.Greeter.is_hide_users()
+            _current_user = @
+        
     focus: ->
         _current_user?.blur()
         _current_user = @
         @add_css_class("UserInfoSelected")
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.start_authentication("*other")
-        DCore.Greeter.set_selected_user(@id)
-        DCore.Greeter.start_authentication(@id)
+        else
+            DCore.Greeter.set_selected_user(@id)
+            DCore.Greeter.start_authentication(@id)
     
     blur: ->
         @element.setAttribute("class", "UserInfo")
