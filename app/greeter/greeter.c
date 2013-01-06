@@ -216,39 +216,17 @@ gboolean greeter_is_guest_default()
     return lightdm_greeter_get_select_guest_hint(greeter);
 }
 
-JS_EXPORT_API
-gboolean greeter_is_guest_autologin()
+static void autologin_timer_expired_cb(LightDMGreeter *greeter)
 {
-    return lightdm_greeter_get_autologin_guest_hint(greeter);
-}
+    if(lightdm_greeter_get_autologin_guest_hint(greeter)){
+        start_authentication("guest"); 
 
-JS_EXPORT_API
-const gchar* greeter_get_autologin_user()
-{
-    return lightdm_greeter_get_autologin_user_hint(greeter);
+    }else if(lightdm_greeter_get_autologin_user_hint(greeter)){
+        start_authentication(lightdm_greeter_get_autologin_user_hint(greeter));
+    }
 }
-
-JS_EXPORT_API
-void greeter_authenticate_guest()
-{
-    lightdm_greeter_authenticate_as_guest(greeter);
-}
-
-JS_EXPORT_API
-gint greeter_get_autologin_timeout()
-{
-    return lightdm_greeter_get_autologin_timeout_hint(greeter);
-}
-
-JS_EXPORT_API
-void greeter_cancel_autologin()
-{
-    lightdm_greeter_cancel_autologin(greeter);
-}
-
 
 /* SESSION */
-
 /* get session icon from xsession desktop file */
 static const gchar* get_icon_path(const gchar *key)
 {
@@ -610,6 +588,7 @@ int main(int argc, char **argv)
 
     g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
     gtk_widget_show_all(container);
 
