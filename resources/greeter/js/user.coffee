@@ -53,9 +53,6 @@ class UserInfo extends Widget
         @name.innerText = name
         @active = false
         
-        if DCore.Greeter.is_hide_users()
-            _current_user = @
-        
     focus: ->
         _current_user?.blur()
         _current_user = @
@@ -83,10 +80,15 @@ class UserInfo extends Widget
             @element.appendChild(@login.element)
 
     do_click: (e)->
-        if _current_user == @
+        if DCore.Greeter.is_hide_users()
+            if not _current_user == @
+                @focus()
             @show_login()
         else
-            @focus()
+            if _current_user == @
+                @show_login()
+            else
+                @focus()
 
     on_verify: (username, password)->
         @login.destroy()
