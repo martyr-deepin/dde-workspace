@@ -2,7 +2,7 @@ class LoginEntry extends Widget
     constructor: (@id, @on_active)->
         super
         if DCore.Greeter.is_hide_users()
-            @account = create_element("input", " ", @element)
+            @account = create_element("input", "Account", @element)
             
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
@@ -92,7 +92,7 @@ class UserInfo extends Widget
 
 # below code should use c-backend to fetch data 
 if DCore.Greeter.is_hide_users()
-    u = new UserInfo("", "", "images/img01.jpg")
+    u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
     roundabout.appendChild(u.li)
 else
     users = DCore.Greeter.get_users()
