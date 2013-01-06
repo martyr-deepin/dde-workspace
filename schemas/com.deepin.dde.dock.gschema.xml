@@ -8,14 +8,9 @@
         </key>
         <key type="u" name="color">
             <range min="0" max="0xffffff64" />
-            <default>0xd8f2ff50</default>
+            <default>0x27292c46</default>
             <summary>dock color</summary>
             <description>the dock board color value contain in an guint32 with format RGBA</description>
-        </key>
-        <key type="as" name="apps">
-            <default>[]</default>
-            <summary>applications which will be docked on dock.</summary>
-            <description>applications(desktop file path) which will be docked on dock.</description>
         </key>
     </schema>
 </schemalist>

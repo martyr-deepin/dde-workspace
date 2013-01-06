@@ -73,12 +73,16 @@ void calc(guchar* data, guint length, int skip, double *r, double *g, double *b,
     long long a_r = 0;
     long long a_g = 0;
     long long a_b = 0;
+    long count = length / skip;
     for (guint i=0; i<length; i += skip) {
+        if (data[i+3] < 125) {
+            count --;
+            continue;
+        }
         a_r += data[i];
         a_g += data[i+1];
         a_b += data[i+2];
     }
-    long count = length / skip;
     double h, s, v;
     rgb2hsv(a_r / count, a_g / count, a_b / count, &h, &s, &v);
     func(&s, &v);
