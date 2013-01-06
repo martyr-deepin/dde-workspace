@@ -4,6 +4,12 @@
     -webkit-box-flex: 1;
 }
 
+.GoodItemImg {
+    margin: 6px 10px 6px 10px;
+    max-width: 68px;
+    max-height: 60px;
+}
+
 .AppItem {
     position:relative;
     max-width: 68px;
