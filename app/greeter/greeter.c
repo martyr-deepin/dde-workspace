@@ -219,10 +219,10 @@ gboolean greeter_is_guest_default()
 static void autologin_timer_expired_cb(LightDMGreeter *greeter)
 {
     if(lightdm_greeter_get_autologin_guest_hint(greeter)){
-        start_authentication("guest"); 
+        greeter_start_authentication("guest"); 
 
     }else if(lightdm_greeter_get_autologin_user_hint(greeter)){
-        start_authentication(lightdm_greeter_get_autologin_user_hint(greeter));
+        greeter_start_authentication(lightdm_greeter_get_autologin_user_hint(greeter));
     }
 }
 
