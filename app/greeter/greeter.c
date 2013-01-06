@@ -590,11 +590,11 @@ int main(int argc, char **argv)
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
     g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
-    gtk_widget_show_all(container);
-
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);
     }
+
+    gtk_widget_show_all(container);
 
     /* monitor_resource_file("greeter", webview); */
     gtk_main();
