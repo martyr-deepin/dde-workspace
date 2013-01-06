@@ -116,7 +116,7 @@ void greeter_start_authentication(const gchar *username)
     if(g_strcmp0(username, g_strdup("*other")) == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 
-    }else if(g_strcmp0(username, g_strdup("*guest")) == 0){
+    }else if(g_strcmp0(username, g_strdup("guest")) == 0){
         lightdm_greeter_authenticate_as_guest(greeter);
 
     }else{
