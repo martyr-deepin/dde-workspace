@@ -41,7 +41,12 @@ class PWContainer extends Widget
 
     remove_all: (timeout)->
         __remove_all = =>
-            DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
+            #DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
+            echo "begin remove all"
+            for i in $s(".PreviewWindow")
+                run_post(->
+                    Widget.look_up(i.id)?.destroy()
+                )
             clearInterval(@update_id)
             @update_id = -1
             @current_group = null
@@ -54,11 +59,11 @@ class PWContainer extends Widget
 
 
     show_group: (group)->
-        _show_group_ = =>
+        _show_group_ = (group)=>
             clearTimeout(@hide_id)
 
             @current_group = group
-            group.clients.forEach( (id)=>
+            group.n_clients.forEach( (id)=>
                 info = group.client_infos[id]
                 if not Widget.look_up("pw"+id)
                     pw = new PreviewWindow("pw"+id, id, info.title, 200, 100)
@@ -98,12 +103,14 @@ Preview_container = new PWContainer("pwcontainer")
 class PreviewWindow extends Widget
     constructor: (@id, @w_id, @title, @width, @height)->
         super
+
         @element.innerHTML = "
         <canvas class=PWCanvas id=c#{@id} width=#{@width}px height=#{@height}px></canvas>
         <div class=PWTitle title='#{@title}'>#{@title}</div>
         <div class=PWClose>X</div>
         "
 
+        echo "Create: #{@id}"
 
         $(@element, ".PWClose").addEventListener('click', (e)=>
             DCore.Dock.close_window(@w_id)
@@ -116,6 +123,7 @@ class PreviewWindow extends Widget
 
     update_content: ->
         DCore.Dock.draw_window_preview($("#c#{@id}"), @w_id, 200, 100)
+
 
 DCore.signal_connect("leave-notify", ->
     Preview_container.remove_all(1000)

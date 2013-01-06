@@ -14,6 +14,7 @@
     position:absolute;
     max-width: 36px;
     max-height: 36px;
+    -webkit-box-reflect: below 3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .AppItemBoard {
@@ -21,7 +22,6 @@
     position: absolute;
     max-height: 48px;
     /* TODO: this offset value should changed in calc_app_size */
-    -webkit-box-reflect: below -1px -webkit-linear-gradient(top, transparent, transparent 10%, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.1));
 }
 
 .OpenIndicate {

@@ -10,7 +10,7 @@ SET(SRC_LIST dock.c dock_config.c tray.c dominant_color.c tasklist.c draw.c laun
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dbus tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

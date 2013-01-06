@@ -1,5 +1,11 @@
+
 //get a list of GVolumes
+#include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
+
+
+#include "fileops_confirm_trash.h"
 
 static GList *	_get_trash_dirs_for_mount	(GMount *mount);
 static gboolean _empty_trash_job		(GIOSchedulerJob *io_job,
@@ -10,7 +16,36 @@ static void	_delete_trash_file		(GFile *file,
 						 gboolean del_file,
 						 gboolean del_children);
 
-void desktop_empty_trash ()
+void fileops_confirm_trash ()
+{
+    GtkWidget* dialog;
+    int result;
+
+    dialog = gtk_message_dialog_new (NULL, 
+				     GTK_DIALOG_MODAL,
+	                             GTK_MESSAGE_WARNING, 
+				     GTK_BUTTONS_CANCEL,
+				     NULL);
+    gtk_window_set_title (GTK_WINDOW (dialog), _("Empty Trash"));
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+    g_object_set (dialog,
+	          "text", _("Empty all items from Trash?"),
+		  "secondary-text", _("All items in the Trash will be permanently deleted."),
+		  NULL);
+
+    gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Empty _Trash"), 
+			    GTK_RESPONSE_OK, NULL);
+
+    result = gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+
+    if (result == GTK_RESPONSE_OK)
+	fileops_empty_trash ();
+
+
+}
+
+void fileops_empty_trash ()
 {
     GList* trash_list = NULL;
 
