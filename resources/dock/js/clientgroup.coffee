@@ -26,28 +26,21 @@ class ClientGroup extends AppItem
         @board2.style.backgroundColor = @board_rgb
         @board3.style.backgroundColor = @board_rgb
 
-    set_board_size: (width, height, marginTop)->
-        super
+    change_size: (w) ->
+        board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
+        board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
 
-        @_board_margin_top = marginTop + get_mode_board_size()
+        board_margin_top = BOARD_HEIGHT - board_height - BOARD_MARGIN_BOTTOM
+        @img.style.width = board_width
+        @img.style.height = board_height
+        @img.style.marginTop = board_margin_top
 
-        @handle_clients_change()
-
-        @board2.style.width = width
-        @board2.style.height = height
-        @board2.style.left = BOARD_IMG2_LEFT
-
-        @board3.style.width = width
-        @board3.style.height = height
-        @board3.style.left = BOARD_IMG3_LEFT
-
-        w = BOARD_WIDTH * width / BOARD_IMG_WIDTH
-        h = w * 52 / BOARD_WIDTH
+        w = BOARD_WIDTH * board_width / BOARD_IMG_WIDTH
+        h = w * 60 / BOARD_WIDTH
         t = BOARD_HEIGHT - h
-        @indicate.style.width = w
-        @indicate.style.height = h
-        @indicate.style.top = t
-
+        #@indicate.style.width = w
+        #@indicate.style.height = h
+        #@indicate.style.top = t
 
     handle_clients_change: ->
         switch @n_clients.length

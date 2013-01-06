@@ -66,12 +66,10 @@ DCore.signal_connect("task_normal", (info) ->
 )
 
 DCore.signal_connect("in_mini_mode", ->
-    _is_normal_mode = 0
     run_post(calc_app_item_size())
 )
 
 DCore.signal_connect("in_normal_mode", ->
-    _is_normal_mode = 1
     run_post(calc_app_item_size())
 )
 

@@ -86,53 +86,32 @@ class AppList extends Widget
     do_mouseover: (e)->
         if e.target == @element
             Preview_container.remove_all(1000)
+
 app_list = new AppList("app_list")
+
 
 class AppItem extends Widget
     constructor: (@id, @icon)->
         super
-        @add_css_class("AppItem")
-
-        @board = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
-        @board.style.left = BOARD_IMG1_LEFT
-        @board.style.zIndex = -8
-
-        @img = create_element('img', "AppItemImg", @element)
-        @img.src = @icon
-        @img.style.left = APP_IMG_LEFT
         app_list.append(@)
+        @add_css_class("AppItem")
+        @img = create_element('img', "", @element)
+        @img.setAttribute("class", "AppItemImg")
+        @img.src = @icon
 
-        @img.onload = =>
-            @update_board_color()
-
-    update_board_color: ->
-        color = DCore.Dock.calc_dominant_color_by_path(@img.src.substring(7))
-        @board_rgb = "rgb(#{color.r}, #{color.g}, #{color.b})"
-        @board.style.backgroundColor = @board_rgb
-
-    is_fixed_pos: false
-        
     destroy: ->
         super
-        run_post(calc_app_item_size)
+        calc_app_item_size()
 
     change_size: (w) ->
+        echo "change size"
         board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
         board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
 
         board_margin_top = BOARD_HEIGHT - board_height - BOARD_MARGIN_BOTTOM
-        @set_board_size(board_width, board_height, board_margin_top)
-
-        @img.style.height = board_height * (APP_IMG_HEIGHT / BOARD_IMG_HEIGHT)
-        @img.style.width = board_width * (APP_IMG_WIDTH / BOARD_IMG_WIDTH)
-        img_margin = board_height * (BOARD_IMG_HEIGHT - APP_IMG_HEIGHT) * 0.5 / BOARD_IMG_HEIGHT
-
-        @img.style.top = img_margin + board_margin_top + get_mode_size()
-
-    set_board_size: (width, height, top)->
-        @board.style.top = top + get_mode_board_size()
-        @board.style.width = width
-        @board.style.height = height
+        @img.style.width = board_width
+        @img.style.height = board_height
+        @img.style.marginTop = board_margin_top
 
     do_dragstart: (e)->
         Preview_container.remove_all()
@@ -170,31 +149,3 @@ class AppItem extends Widget
         switch this.constructor.name
             when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
             when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
-
-
-_is_normal_mode = 1
-get_mode_size = ->
-    if _is_normal_mode
-        return 0
-    else
-        return 26
-get_mode_board_size = ->
-    if _is_normal_mode
-        return 0
-    else
-        return 26
-
-class Item extends Widget
-    constructor: (@id)->
-        app_list.append(@)
-
-class Launcher1 extends Item
-class ClientGroup1 extends Item
-
-class BadItem extends Widget
-
-class GoodItem extends Widget
-    constructor: (@id, @icon)->
-        super
-        @img = create_element('img', "", @element)
-        @img.src = @icon
