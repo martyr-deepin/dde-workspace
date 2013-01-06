@@ -262,7 +262,7 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
     g_debug ("_clear_clipboard_callback: begin");
 	//gtk_clipboard_clear (clipboard);
 	//TODO: notify others, 
-//	__free_clipboard_info (&clipboard_info);
+    __free_clipboard_info (&clipboard_info);
     js_post_message_simply ("cut_completed", NULL);
     g_debug ("_clear_clipboard_callback: end");
 }

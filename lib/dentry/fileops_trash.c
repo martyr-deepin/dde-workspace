@@ -5,7 +5,7 @@
 #include <gtk/gtk.h>
 
 
-#include "fileops_confirm_trash.h"
+#include "fileops_trash.h"
 
 static GList *	_get_trash_dirs_for_mount	(GMount *mount);
 static gboolean _empty_trash_job		(GIOSchedulerJob *io_job,
@@ -23,15 +23,15 @@ GFile* fileops_get_trash_entry()
     if (trash_can == NULL)
         trash_can = g_file_new_for_uri("trash:///");
     else 
-	g_object_ref(_trash_can);
+	g_object_ref(trash_can);
 
-    return _trash_can;
+    return trash_can;
 }
 double fileops_get_trash_count()
 {
     GFile* _trash_can = fileops_get_trash_entry ();
     GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
+    double count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
     g_object_unref(info);
     return count;
 }
