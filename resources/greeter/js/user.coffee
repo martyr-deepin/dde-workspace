@@ -3,7 +3,8 @@ class LoginEntry extends Widget
         super
         if DCore.Greeter.is_hide_users()
             @account = create_element("input", "Account", @element)
-            @password.addEventListener("keydown", (e)=>
+            @account.setAttribute("autofocus", "true")
+            @account.addEventListener("keydown", (e)=>
                 if e.which == 13
                     @password.focus()
             )
@@ -118,6 +119,7 @@ class UserInfo extends Widget
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
     roundabout.appendChild(u.li)
+    u.focus()
 else
     users = DCore.Greeter.get_users()
     for user in users
