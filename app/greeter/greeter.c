@@ -30,6 +30,7 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
+#define DEBUG 
 
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
@@ -110,9 +111,9 @@ void greeter_start_authentication(const gchar *username)
 {
     cancelling = FALSE;
     prompted = FALSE;
-
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
-
+#endif
     if(g_strcmp0(username, g_strdup("*other")) == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 
@@ -142,31 +143,41 @@ void greeter_cancel_authentication()
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
+#if DEBUG    
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
-
+#endif    
     selected_user = get_selected_user();
     selected_session = get_selected_session();
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
+#endif
         start_session(selected_session);
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
+#endif
         lightdm_greeter_respond(greeter, password);
 
     }else{
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start auth");
+#endif
         greeter_start_authentication(selected_user);
     }
 }
 
 static void start_session(const gchar *session)
 {
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
-
+#endif
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
+#endif
         greeter_start_authentication(g_strdup(get_selected_user()));
     }
 }
@@ -174,12 +185,16 @@ static void start_session(const gchar *session)
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
+#endif
 }
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
+#endif
 
     if(cancelling){
         greeter_cancel_authentication();
@@ -187,12 +202,16 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
+#if DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
+#endif
             start_session(g_strdup(get_selected_session()));
         }
     }else{
         if(prompted){
+#if DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
+#endif
             greeter_start_authentication(get_selected_user());
         }
     }
@@ -525,32 +544,40 @@ gboolean greeter_get_can_shutdown()
 JS_EXPORT_API
 gboolean greeter_run_suspend()
 {
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "suspend clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
+#endif
     return lightdm_suspend(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_hibernate()
 {
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "hibernate clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
+#endif
     return lightdm_hibernate(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_restart()
 {
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "restart clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
+#endif
     return lightdm_restart(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_shutdown()
 {
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "shutdown clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
+#endif
     return lightdm_shutdown(NULL);
 }
 
