@@ -16,6 +16,26 @@ static void	_delete_trash_file		(GFile *file,
 						 gboolean del_file,
 						 gboolean del_children);
 
+static GFile* trash_can = NULL;
+GFile* fileops_get_trash_entry()
+{
+    // g_assert(_trash_can != NULL);
+    if (trash_can == NULL)
+        trash_can = g_file_new_for_uri("trash:///");
+    else 
+	g_object_ref(_trash_can);
+
+    return _trash_can;
+}
+double fileops_get_trash_count()
+{
+    GFile* _trash_can = fileops_get_trash_entry ();
+    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
+    g_object_unref(info);
+    return count;
+}
+
 void fileops_confirm_trash ()
 {
     GtkWidget* dialog;

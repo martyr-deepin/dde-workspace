@@ -31,7 +31,7 @@
 #include "xdg_misc.h"
 #include "fileops.h"
 #include "fileops_clipboard.h"
-#include "fileops_confirm_trash.h"
+#include "fileops_trash.h"
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
@@ -344,4 +344,14 @@ gboolean dentry_can_paste ()
 void dentry_confirm_trash()
 {
     fileops_confirm_trash();
+}
+
+GFile* dentry_get_trash_entry()
+{
+    return fileops_get_trash_entry ();
+}
+
+double dentry_get_trash_count()
+{
+    return fileops_get_trash_count ();
 }
