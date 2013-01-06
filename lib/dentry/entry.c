@@ -32,6 +32,7 @@
 #include "fileops.h"
 #include "fileops_clipboard.h"
 #include "fileops_trash.h"
+#include "fileops_delete.h"
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
@@ -294,7 +295,7 @@ void dentry_move(ArrayContainer fs, GFile* dest)
 void dentry_delete(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_delete(_fs.data, _fs.num);
+    fileops_confirm_delete(_fs.data, _fs.num);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
