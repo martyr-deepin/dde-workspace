@@ -136,13 +136,13 @@ class Item extends Widget
 
 
     display_full_name : ->
-        echo "display_full_name"
         @element.className += " full_name"
+        return
 
 
     display_short_name : ->
-        echo "display_short_name"
         @element.className = @element.className.replace(/\ full_name/g, "")
+        return
 
 
     display_selected : ->
@@ -819,7 +819,7 @@ class HomeVDir extends DesktopEntry
 
 class TrashVDir extends DesktopEntry
     constructor : ->
-        entry = DCore.Desktop.get_trash_entry()
+        entry = DCore.DEntry.get_trash_entry()
         super(entry, false)
 
 
@@ -832,7 +832,7 @@ class TrashVDir extends DesktopEntry
 
 
     get_icon : ->
-        if DCore.Desktop.get_trash_count() > 0
+        if DCore.DEntry.get_trash_count() > 0
             "img/trash.png"
         else
             "img/trash_empty.png"
@@ -863,7 +863,7 @@ class TrashVDir extends DesktopEntry
         menus = []
         menus.push([1, _("open")])
         menus.push([])
-        count = DCore.Desktop.get_trash_count()
+        count = DCore.DEntry.get_trash_count()
         if count > 1
             menus.push([3, _("clean up") + " #{count} " + _("files")])
         else if count == 1
@@ -876,5 +876,5 @@ class TrashVDir extends DesktopEntry
     do_itemselected : (evt) ->
         switch evt.id
             when 1 then @item_exec()
-            when 3 then DCore.Desktop.empty_trash()
+            when 3 then DCore.DEntry.confirm_trash()
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"

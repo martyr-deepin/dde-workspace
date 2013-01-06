@@ -815,17 +815,27 @@ class Mouse_Select_Area_box
 
 
     mousedown_event : (evt) =>
+        echo "mousedown_event #{evt.type}"
+        evt.stopPropagation()
         evt.preventDefault()
         if evt.button == 0
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
+            @parent_element.addEventListener("contextmenu", @contextmenu_event)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             @last_pos = @start_pos
         return
 
 
+    contextmenu_event : (evt) ->
+        evt.stopPropagation()
+        evt.preventDefault()
+        return
+
+
     mousemove_event : (evt) =>
+        evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
@@ -904,9 +914,11 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
+        echo "mouseup_event #{evt.type}"
         evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
+        @parent_element.removeEventListener("contextmenu", @contextmenu_event)
         @element.style.visibility = "hidden"
         @last_effect_item.splice(0)
         return
