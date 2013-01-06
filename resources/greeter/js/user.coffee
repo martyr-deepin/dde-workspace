@@ -130,6 +130,11 @@ else
         if user == DCore.Greeter.get_default_user()
             u.focus()
             # DCore.Greeter.start_authentication(user)
+    if DCore.Greeter.is_support_guest()
+        u = new UserInfo("guest", "guest", "images/guest.jpg")
+        roundabout.appendChild(u.li)
+        if DCore.Greeter.is_guest_default()
+            u.focus()
 
 if roundabout.children.length == 2
     roundabout.style.width = "0"

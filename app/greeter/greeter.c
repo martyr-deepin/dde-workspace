@@ -205,27 +205,27 @@ gboolean greeter_is_hide_users()
 }
 	
 JS_EXPORT_API
-gboolean greeter_support_guest()
+gboolean greeter_is_support_guest()
 {
     return lightdm_greeter_get_has_guest_account_hint(greeter);
 }
 
 JS_EXPORT_API
-gboolean greeter_get_guest_default()
+gboolean greeter_is_guest_default()
 {
     return lightdm_greeter_get_select_guest_hint(greeter);
+}
+
+JS_EXPORT_API
+gboolean greeter_is_guest_autologin()
+{
+    return lightdm_greeter_get_autologin_guest_hint(greeter);
 }
 
 JS_EXPORT_API
 const gchar* greeter_get_autologin_user()
 {
     return lightdm_greeter_get_autologin_user_hint(greeter);
-}
-
-JS_EXPORT_API
-gboolean greeter_get_guest_autologin()
-{
-    return lightdm_greeter_get_autologin_guest_hint(greeter);
 }
 
 JS_EXPORT_API
