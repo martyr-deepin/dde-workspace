@@ -31,6 +31,7 @@
 #include "xdg_misc.h"
 #include "fileops.h"
 #include "fileops_clipboard.h"
+#include "fileops_confirm_trash.h"
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
@@ -338,4 +339,9 @@ JS_EXPORT_API
 gboolean dentry_can_paste ()
 {
     return ! is_clipboard_empty();
+}
+
+void dentry_confirm_trash()
+{
+    fileops_confirm_trash();
 }

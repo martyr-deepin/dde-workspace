@@ -6,7 +6,7 @@ GEN_JSC_SOURCE_WITH_NO_INIT("jsc_extension" JSC_GEN)
 
 AUX_SOURCE_DIRECTORY(jsc_extension JSC_LIB)
 
-set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c set.c desktop_file_matcher.c dentry/entry.c dentry/fileops.c dentry/fileops_clipboard.c dentry/fileops_error_dialog.c dentry/fileops_error_reporting.c
+set(SRC_LIST utils.c webview.c xdg_misc.c pixbuf.c X_misc.c category.c set.c desktop_file_matcher.c dentry/entry.c dentry/fileops.c dentry/fileops_clipboard.c dentry/fileops_error_dialog.c dentry/fileops_error_reporting.c dentry/fileops_confirm_trash.c
     ${JSC_LIB}
     ${JSC_GEN})
 
