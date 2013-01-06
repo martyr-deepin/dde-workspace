@@ -47,7 +47,7 @@ shutdown_cb = ->
     alert "shutdown"
     DCore.Greeter.run_shutdown()
 
-power_dict = get_power_info()    
+power_dict = get_power_info()
 power_menu_cb = (id, title)->
     power_dict[title]()
 
