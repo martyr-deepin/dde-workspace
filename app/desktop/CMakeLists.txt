@@ -3,11 +3,11 @@ SET(NAME "desktop")
 
 GEN_JSC_SOURCE("jsc" JSC_GEN)
 
-SET(SRC_LIST desktop.c background.c inotify_item.c cmd_handler.c trash.c ${JSC_GEN})
+SET(SRC_LIST desktop.c background.c inotify_item.c cmd_handler.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

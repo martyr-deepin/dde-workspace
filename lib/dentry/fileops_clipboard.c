@@ -263,6 +263,7 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
 	//gtk_clipboard_clear (clipboard);
 	//TODO: notify others, 
 //	__free_clipboard_info (&clipboard_info);
+    js_post_message_simply ("cut_completed", NULL);
     g_debug ("_clear_clipboard_callback: end");
 }
 /*
@@ -340,7 +341,7 @@ __free_clipboard_info	(FileOpsClipboardInfo* info)
     g_free (info->file_list);
     info->file_list = NULL;
     info->num = 0;
-    js_post_message_simply ("cut_completed", NULL);
+  //  js_post_message_simply ("cut_completed", NULL);
 }
 #if 0
 static gboolean 

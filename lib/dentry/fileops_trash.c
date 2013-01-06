@@ -1,5 +1,11 @@
+
 //get a list of GVolumes
+#include <glib/gi18n.h>
 #include <gio/gio.h>
+#include <gtk/gtk.h>
+
+
+#include "fileops_confirm_trash.h"
 
 static GList *	_get_trash_dirs_for_mount	(GMount *mount);
 static gboolean _empty_trash_job		(GIOSchedulerJob *io_job,
@@ -10,7 +16,56 @@ static void	_delete_trash_file		(GFile *file,
 						 gboolean del_file,
 						 gboolean del_children);
 
-void desktop_empty_trash ()
+static GFile* trash_can = NULL;
+GFile* fileops_get_trash_entry()
+{
+    // g_assert(_trash_can != NULL);
+    if (trash_can == NULL)
+        trash_can = g_file_new_for_uri("trash:///");
+    else 
+	g_object_ref(_trash_can);
+
+    return _trash_can;
+}
+double fileops_get_trash_count()
+{
+    GFile* _trash_can = fileops_get_trash_entry ();
+    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
+    g_object_unref(info);
+    return count;
+}
+
+void fileops_confirm_trash ()
+{
+    GtkWidget* dialog;
+    int result;
+
+    dialog = gtk_message_dialog_new (NULL, 
+				     GTK_DIALOG_MODAL,
+	                             GTK_MESSAGE_WARNING, 
+				     GTK_BUTTONS_CANCEL,
+				     NULL);
+    gtk_window_set_title (GTK_WINDOW (dialog), _("Empty Trash"));
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+    g_object_set (dialog,
+	          "text", _("Empty all items from Trash?"),
+		  "secondary-text", _("All items in the Trash will be permanently deleted."),
+		  NULL);
+
+    gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Empty _Trash"), 
+			    GTK_RESPONSE_OK, NULL);
+
+    result = gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+
+    if (result == GTK_RESPONSE_OK)
+	fileops_empty_trash ();
+
+
+}
+
+void fileops_empty_trash ()
 {
     GList* trash_list = NULL;
 

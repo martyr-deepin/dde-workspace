@@ -144,6 +144,8 @@ draw_tray_icon(GdkWindow* icon, gint xy, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr, gpointer data)
 {
+    /*cairo_set_source_rgba(cr, 0, 0.8, 0, 0.2);*/
+    /*cairo_paint(cr);*/
     g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
     return TRUE;
 }

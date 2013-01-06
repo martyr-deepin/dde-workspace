@@ -30,23 +30,12 @@ static gboolean _inotify_poll();
 static void _remove_monitor_directory(GFile*);
 static void _add_monitor_directory(GFile*);
 
-GHashTable* _monitor_table = NULL;
-GFile* _desktop_file = NULL;
-GFile* _trash_can = NULL;
-int _inotify_fd = -1;
+static GHashTable* _monitor_table = NULL;
+static GFile* _desktop_file = NULL;
+static GFile* _trash_can = NULL;
+static int _inotify_fd = -1;
 
-GFile* desktop_get_trash_entry()
-{
-    // g_assert(_trash_can != NULL);
-    g_object_ref(_trash_can);
-}
-double desktop_get_trash_count()
-{
-    GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
-    int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
-    g_object_unref(info);
-    return count;
-}
+
 void trash_changed()
 {
     GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);

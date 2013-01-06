@@ -7,7 +7,7 @@ SET(SRC_LIST main.c test.c calc.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
