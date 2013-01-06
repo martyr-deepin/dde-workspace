@@ -1,6 +1,9 @@
 class LoginEntry extends Widget
     constructor: (@id, @on_active)->
         super
+        if DCore.Greeter.is_hide_users()
+            @account = create_element("input", " ", @element)
+            
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
         @password.setAttribute("autofocus", "true")
@@ -89,7 +92,8 @@ class UserInfo extends Widget
 
 # below code should use c-backend to fetch data 
 if DCore.Greeter.is_hide_users()
-    alert "hide users"
+    u = new UserInfo("", "", "images/img01.jpg")
+    roundabout.appendChild(u.li)
 else
     users = DCore.Greeter.get_users()
     for user in users
@@ -99,10 +103,10 @@ else
             u.focus()
             # DCore.Greeter.start_authentication(user)
 
-    if roundabout.children.length == 2
-        roundabout.style.width = "0"
+if roundabout.children.length == 2
+    roundabout.style.width = "0"
 
-    run_post(->
-        l = (screen.width  - roundabout.clientWidth) / 2
-        roundabout.style.left = "#{l}px"
-    )
+run_post(->
+    l = (screen.width  - roundabout.clientWidth) / 2
+    roundabout.style.left = "#{l}px"
+)
