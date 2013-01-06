@@ -3,6 +3,10 @@ class LoginEntry extends Widget
         super
         if DCore.Greeter.is_hide_users()
             @account = create_element("input", "Account", @element)
+            @password.addEventListener("keydown", (e)=>
+                if e.which == 13
+                    @password.focus()
+            )
             
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
@@ -10,16 +14,26 @@ class LoginEntry extends Widget
         @password.index = 0
         @password.addEventListener("keydown", (e)=>
             if e.which == 13
-                @on_active(@password.value)
+                if DCore.Greeter.is_hide_users()
+                    @on_active(@account.value, @password.value)
+                else
+                    @on_active(@id, @password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = "User Login"
         @login.addEventListener("click", =>
-            @on_active(@password.value)
+            if DCore.Greeter.is_hide_users()
+                @on_active(@account.value, @password.value)
+            else
+                @on_active(@id, @password.value)
         )
         @login.index = 1
-        @password.focus()
+   
+        if DCore.Greeter.is_hide_users()
+            @account.focus()
+        else
+            @password.focus()
 
 class Loading extends Widget
     constructor: (@id)->
@@ -61,7 +75,7 @@ class UserInfo extends Widget
         if false
             @login()
         else if not @login
-            @login = new LoginEntry("login", (p)=>@on_verify(p))
+            @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
 
     do_click: (e)->
@@ -70,12 +84,14 @@ class UserInfo extends Widget
         else
             @focus()
 
-    on_verify: (password)->
+    on_verify: (username, password)->
         @login.destroy()
         @loading = new Loading("loading")
         @element.appendChild(@loading.element)
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
+        if DCore.Greeter.is_hide_users()
+            DCore.Greeter.login_clicked(username)
         DCore.Greeter.login_clicked(password)
 
         #debug code begin
