@@ -199,6 +199,12 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 }
 
 JS_EXPORT_API
+gboolean greeter_is_hide_users()
+{
+    return lightdm_greeter_get_hide_users_hint(greeter);
+}
+	
+JS_EXPORT_API
 gboolean greeter_support_guest()
 {
     return lightdm_greeter_get_has_guest_account_hint(greeter);
@@ -226,12 +232,6 @@ JS_EXPORT_API
 void greeter_authenticate_guest()
 {
     lightdm_greeter_authenticate_as_guest(greeter);
-}
-
-JS_EXPORT_API
-gboolean greeter_hide_users()
-{
-    return lightdm_greeter_get_hide_users_hint(greeter);
 }
 
 JS_EXPORT_API

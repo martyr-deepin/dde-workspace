@@ -88,18 +88,21 @@ class UserInfo extends Widget
         #debug code end
 
 # below code should use c-backend to fetch data 
-users = DCore.Greeter.get_users()
-for user in users
-    u = new UserInfo(user, user, "images/img01.jpg")
-    roundabout.appendChild(u.li)
-    if user == DCore.Greeter.get_default_user()
-        u.focus()
-        # DCore.Greeter.start_authentication(user)
+if DCore.Greeter.is_hide_users()
+    alert "hide users"
+else
+    users = DCore.Greeter.get_users()
+    for user in users
+        u = new UserInfo(user, user, "images/img01.jpg")
+        roundabout.appendChild(u.li)
+        if user == DCore.Greeter.get_default_user()
+            u.focus()
+            # DCore.Greeter.start_authentication(user)
 
-if roundabout.children.length == 2
-    roundabout.style.width = "0"
+    if roundabout.children.length == 2
+        roundabout.style.width = "0"
 
-run_post(->
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-)
+    run_post(->
+        l = (screen.width  - roundabout.clientWidth) / 2
+        roundabout.style.left = "#{l}px"
+    )
