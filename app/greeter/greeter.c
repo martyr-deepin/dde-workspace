@@ -111,7 +111,7 @@ void greeter_start_authentication(const gchar *username)
 {
     cancelling = FALSE;
     prompted = FALSE;
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
 #endif
     if(g_strcmp0(username, g_strdup("*other")) == 0){
@@ -143,26 +143,26 @@ void greeter_cancel_authentication()
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
-#if DEBUG    
+#ifdef DEBUG    
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
 #endif    
     selected_user = get_selected_user();
     selected_session = get_selected_session();
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
-#if DEBUG
+#ifdef DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
 #endif
         start_session(selected_session);
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
-#if DEBUG
+#ifdef DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
 #endif
         lightdm_greeter_respond(greeter, password);
 
     }else{
-#if DEBUG
+#ifdef DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start auth");
 #endif
         greeter_start_authentication(selected_user);
@@ -171,11 +171,11 @@ void greeter_login_clicked(const gchar *password)
 
 static void start_session(const gchar *session)
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
 #endif
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
-#if DEBUG
+#ifdef DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
         greeter_start_authentication(g_strdup(get_selected_user()));
@@ -185,14 +185,14 @@ static void start_session(const gchar *session)
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 #endif
 }
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 #endif
 
@@ -202,14 +202,14 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
-#if DEBUG
+#ifdef DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
 #endif
             start_session(g_strdup(get_selected_session()));
         }
     }else{
         if(prompted){
-#if DEBUG
+#ifdef DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
 #endif
             greeter_start_authentication(get_selected_user());
@@ -544,7 +544,7 @@ gboolean greeter_get_can_shutdown()
 JS_EXPORT_API
 gboolean greeter_run_suspend()
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "suspend clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
@@ -554,7 +554,7 @@ gboolean greeter_run_suspend()
 JS_EXPORT_API
 gboolean greeter_run_hibernate()
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "hibernate clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
@@ -564,7 +564,7 @@ gboolean greeter_run_hibernate()
 JS_EXPORT_API
 gboolean greeter_run_restart()
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "restart clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
@@ -574,7 +574,7 @@ gboolean greeter_run_restart()
 JS_EXPORT_API
 gboolean greeter_run_shutdown()
 {
-#if DEBUG
+#ifdef DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "shutdown clicked");
     js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
