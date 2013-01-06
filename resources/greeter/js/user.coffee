@@ -89,6 +89,8 @@ class UserInfo extends Widget
         else
             if _current_user == @
                 @show_login()
+                if @name.innerText == "guest"
+                    @login.password.style.display="none"
             else
                 @focus()
 
