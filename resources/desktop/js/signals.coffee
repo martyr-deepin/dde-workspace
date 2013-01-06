@@ -88,7 +88,11 @@ do_cut_completed = ->
 
 do_desktop_lost_focus = ->
     echo "do_desktop_lost_focus"
-    #if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+    if last_widget.length > 0
+        w = Widget.look_up(last_widget)
+        if w?
+            w.display_blur()
+            if w.in_rename == true then w.item_complete_rename(false)
 
 
 do_workarea_changed = (allo) ->

@@ -73,8 +73,8 @@ body {
     word-break:break-all;
     background-color:#FFF;
     outline:none;
-    -webkit-userselect:text;
-    -webkit-usermodify:read-write-plaintext-only;
+    -webkit-user-select:text;
+    -webkit-user-modify:read-write-plaintext-only;
 }
 
 .item_hover {
