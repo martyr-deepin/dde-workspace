@@ -8,11 +8,12 @@ class LoginEntry extends Widget
                 if e.which == 13
                     @password.focus()
             )
+            @account.index = 0
             
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
         @password.setAttribute("autofocus", "true")
-        @password.index = 0
+        @password.index = 1
         @password.addEventListener("keydown", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()
@@ -29,7 +30,7 @@ class LoginEntry extends Widget
             else
                 @on_active(@id, @password.value)
         )
-        @login.index = 1
+        @login.index = 2
    
         if DCore.Greeter.is_hide_users()
             @account.focus()
@@ -98,6 +99,7 @@ class UserInfo extends Widget
 
         _session = de_menu.menu.items[de_menu.get_current()][0]
         if DCore.Greeter.is_hide_users()
+            DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
         DCore.Greeter.login_clicked(password)
 

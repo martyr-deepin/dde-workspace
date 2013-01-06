@@ -418,7 +418,7 @@ const gchar* greeter_get_session_icon(const gchar *key)
         icon = g_strdup("ubuntu.png");
 
     }else if(g_str_has_prefix(session, "xfce")){
-        icon = g_strdup("ununtu.png");
+        icon = g_strdup("ubuntu.png");
 
     }else{
         icon = g_strdup("unknown.png");
