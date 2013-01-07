@@ -57,7 +57,7 @@ selected_down = ->
             n = n.nextElementSibling
     if n
         update_selected(n)
-    grid.scrollTop += 50
+    grid.scrollTop += SCROLL_STEP_LEN
 
 selected_up = ->
     if not item_selected
@@ -70,7 +70,7 @@ selected_up = ->
             n = n.previousElementSibling
     if n
         update_selected(n)
-    grid.scrollTop -= 50
+    grid.scrollTop -= SCROLL_STEP_LEN
 
 
 get_item_row_count = ->
@@ -100,6 +100,7 @@ $("#search").addEventListener('click', (e)->
     if e.target == s_box
         e.stopPropagation()
 )
+
 s_box.addEventListener('input', s_box.blur())
 
 document.body.onkeydown = (e)->
