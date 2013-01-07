@@ -652,7 +652,7 @@ show_selected_items_Properties = ->
 
 gird_left_mousedown = (evt) ->
     evt.stopPropagation()
-    if evt.ctrlKey == false and evt.shiftKey == false
+    if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
 
@@ -674,10 +674,6 @@ grid_right_click = (evt) ->
         ])
     menus.push([3, _("open terminal here")])
     menus.push([4, _("paste"), DCore.DEntry.can_paste()])
-    #if DCore.DEntry.can_paste()
-        #menus.push([4, _("paste")])
-    #else
-        #menus.push([4, _("paste"), false])
     menus.push([])
     menus.push([5, _("Personal")])
     menus.push([6, _("Display Settings")])
@@ -815,13 +811,11 @@ class Mouse_Select_Area_box
 
 
     mousedown_event : (evt) =>
-        echo "mousedown_event #{evt.type}"
         evt.stopPropagation()
-        evt.preventDefault()
         if evt.button == 0
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
-            @parent_element.addEventListener("contextmenu", @contextmenu_event)
+            @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             @last_pos = @start_pos
@@ -914,11 +908,10 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
-        echo "mouseup_event #{evt.type}"
         evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
-        @parent_element.removeEventListener("contextmenu", @contextmenu_event)
+        @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.visibility = "hidden"
         @last_effect_item.splice(0)
         return
