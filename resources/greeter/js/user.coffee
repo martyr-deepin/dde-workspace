@@ -84,40 +84,22 @@ class UserInfo extends Widget
             @login_displayed = true
 
     do_click: (e)->
-        if DCore.Greeter.is_hide_users()
-            if not _current_user == @
-                @focus()
-
-            @show_login()
-            if e.target.parentElement == @login.element
-                echo "login div clicked"
+        if _current_user == @
+            if not @login
+                @show_login()
             else
-                if @login_displayed
-                    @login.style.display = "none"
-                    @login_displayed = false
+                if e.target.parentElement == @login.element
+                    echo "login pwd clicked"
                 else
-                    @login.style.display = "block"
-                    @login_displayed = true
+                    if @login_displayed
+                        @blur()
+                        @focus()
+                        @login_displayed = false
+    
+            if @name.innerText == "guest"
+                @login.password.style.display="none"
         else
-            if _current_user == @
-                if not @login
-                    @show_login()
-                else
-                    if e.target.parentElement == @login.element
-                        @login.style.display = "block"
-                        @login_displayed = true
-                    else
-                        if @login_displayed
-                            @login.style.display = "none"
-                            @login_displayed = false
-                        else
-                            @login.style.display = "block"
-                            @login_displayed = true
-        
-                if @name.innerText == "guest"
-                    @login.password.style.display="none"
-            else
-                @focus()
+            @focus()
 
     on_verify: (username, password)->
         @login.destroy()
