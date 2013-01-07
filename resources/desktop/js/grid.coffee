@@ -798,6 +798,7 @@ create_item_grid = ->
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
         @parent_element = parentElement
+        @last_effect_item = new Array
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
         @element.style.border = "1px solid #eee"
@@ -807,7 +808,6 @@ class Mouse_Select_Area_box
         @element.style.visibility = "hidden"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
-        @last_effect_item = new Array
 
 
     mousedown_event : (evt) =>
