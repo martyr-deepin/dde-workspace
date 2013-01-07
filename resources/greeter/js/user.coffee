@@ -100,17 +100,20 @@ class UserInfo extends Widget
                     @login_displayed = true
         else
             if _current_user == @
-                @show_login()
-                if e.target.parentElement == @login.element
-                    echo "login div clicked"
+                if not @login
+                    @show_login()
                 else
-                    if @login_displayed
-                        @login.style.display = "none"
-                        @login_displayed = false
-                    else
+                    if e.target.parentElement == @login.element
                         @login.style.display = "block"
                         @login_displayed = true
-
+                    else
+                        if @login_displayed
+                            @login.style.display = "none"
+                            @login_displayed = false
+                        else
+                            @login.style.display = "block"
+                            @login_displayed = true
+        
                 if @name.innerText == "guest"
                     @login.password.style.display="none"
             else
