@@ -35,6 +35,7 @@ class UserInfo extends Widget
         @name = create_element("span", "UserName", @element)
         @name.innerText = name
         @active = false
+        @login_displayed = false
 
     focus: ->
         _current_user?.blur()
@@ -54,10 +55,20 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (p)=>@on_verify(p))
             @element.appendChild(@login.element)
+            @login_displayed = true
     
     do_click: (e)->
         if _current_user == @
-            @show_login()
+            if not @login
+                @show_login()
+            else
+                if e.target.parentElement == @login.element
+                    echo "login pwd clicked"
+                else
+                    if @login_displayed
+                        @blur()
+                        @focus()
+                        @login_displayed = false
         else
             @focus()
     
