@@ -48,10 +48,6 @@ shutdown_cb = ->
     DCore.Greeter.run_shutdown()
 
 power_dict = get_power_info()
-power_menu_cb = (id, title)->
-    power_dict[title]()
-
-power_menu = new ComboBox("power", power_menu_cb)
 for key, value of power_dict
     power_menu.insert(key, key, "images/control-power.png")
 

@@ -83,3 +83,14 @@ class ComboBox extends Widget
 #    status_div.innerText = "status:" + msg.status
 #)
     
+de_menu_cb = (id, title)->
+    de_menu.set_current(id)
+    DCore.Greeter.set_selected_session(id)
+    
+de_menu = new ComboBox("desktop", de_menu_cb)
+
+power_dict = {}
+power_menu_cb = (id, title)->
+    power_dict[title]()
+
+power_menu = new ComboBox("power", power_menu_cb)

@@ -17,11 +17,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-de_menu_cb = (id, title)->
-    de_menu.set_current(id)
-    DCore.Greeter.set_selected_session(id)
-    
-de_menu = new ComboBox("desktop", de_menu_cb)
 sessions = DCore.Greeter.get_sessions()
 for session in sessions
     id = session
