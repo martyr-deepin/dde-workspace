@@ -50,7 +50,7 @@ const gchar* greeter_get_default_user()
 {
     const gchar* user = NULL;
 
-    user = g_strdup(lightdm_greeter_get_select_user_hint(greeter));
+    user = lightdm_greeter_get_select_user_hint(greeter);
     if(user == NULL){
         user = get_first_user();
     }
@@ -62,7 +62,7 @@ const gchar* greeter_get_default_session()
 {
     const gchar* session = NULL;
 
-    session = g_strdup(lightdm_greeter_get_default_session_hint(greeter));
+    session = lightdm_greeter_get_default_session_hint(greeter);
     if(session == NULL){
         session = get_first_session();
     }
@@ -91,12 +91,20 @@ static gchar* get_selected_session()
 JS_EXPORT_API
 void greeter_set_selected_user(const gchar *username)
 {
+    if(selected_user != NULL){
+        g_free(selected_user);
+        selected_user = NULL;
+    }
     selected_user = g_strdup(username);
 }
 
 JS_EXPORT_API
 void greeter_set_selected_session(const gchar *session)
 {
+    if(selected_session != NULL){
+        g_free(selected_session);
+        selected_session = NULL;
+    }
     selected_session = g_strdup(session);
 }
 
@@ -114,10 +122,10 @@ void greeter_start_authentication(const gchar *username)
 #ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
 #endif
-    if(g_strcmp0(username, g_strdup("*other")) == 0){
+    if(g_strcmp0(username, "*other") == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 
-    }else if(g_strcmp0(username, g_strdup("guest")) == 0){
+    }else if(g_strcmp0(username, "guest") == 0){
         lightdm_greeter_authenticate_as_guest(greeter);
 
     }else{
@@ -136,7 +144,7 @@ void greeter_cancel_authentication()
     }
 
     if(lightdm_greeter_get_hide_users_hint(greeter)){
-        greeter_start_authentication(g_strdup("*other"));
+        greeter_start_authentication("*other");
     }
 }
 
@@ -167,6 +175,10 @@ void greeter_login_clicked(const gchar *password)
 #endif
         greeter_start_authentication(selected_user);
     }
+    g_free(selected_user);
+    selected_user = NULL;
+    g_free(selected_session);
+    selected_session = NULL;
 }
 
 static void start_session(const gchar *session)
@@ -178,7 +190,7 @@ static void start_session(const gchar *session)
 #ifdef DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
-        greeter_start_authentication(g_strdup(get_selected_user()));
+        greeter_start_authentication(get_selected_user());
     }
 }
 
@@ -205,7 +217,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 #ifdef DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
 #endif
-            start_session(g_strdup(get_selected_session()));
+            start_session(get_selected_session());
         }
     }else{
         if(prompted){
@@ -349,7 +361,7 @@ static const gchar* get_first_session()
     session = (LightDMSession *)g_list_nth_data(sessions, 0);
     g_assert(session);
 
-    name = g_strdup(lightdm_session_get_key(session));
+    name = lightdm_session_get_key(session);
 
     return name;
 }
@@ -365,9 +377,9 @@ const gchar* greeter_get_session_name(const gchar *key)
     g_assert(session);
 
     if(session == NULL){
-        name = g_strdup(key);
+        name = key;
     }else{
-        name = g_strdup(lightdm_session_get_comment(session));
+        name = lightdm_session_get_comment(session);
     }
 
     return name;
@@ -384,9 +396,9 @@ const gchar* greeter_get_session_comment(const gchar *key)
     g_assert(session);
 
     if(session == NULL){
-        comment = g_strdup(key);
+        comment = key;
     }else{
-        comment = g_strdup(lightdm_session_get_comment(session));
+        comment = lightdm_session_get_comment(session);
     }
 
     return comment;
@@ -403,22 +415,22 @@ const gchar* greeter_get_session_icon(const gchar *key)
     g_assert(session);
 
     if(g_str_has_prefix(session, "gnome")){
-        icon = g_strdup("gnome.png");
+        icon = "gnome.png";
 
     }else if(g_str_has_prefix(session, "deepin")){
-        icon = g_strdup("deepin.png");
+        icon = "deepin.png";
 
     }else if(g_str_has_prefix(session, "kde")){
-        icon = g_strdup("kde.png");
+        icon = "kde.png";
 
     }else if(g_str_has_prefix(session, "ubuntu")){
-        icon = g_strdup("ubuntu.png");
+        icon = "ubuntu.png";
 
     }else if(g_str_has_prefix(session, "xfce")){
-        icon = g_strdup("ubuntu.png");
+        icon = "ubuntu.png";
 
     }else{
-        icon = g_strdup("unknown.png");
+        icon = "unknown.png";
     }
 
     return icon;
@@ -472,7 +484,7 @@ static const gchar* get_first_user()
     user = (LightDMUser *)g_list_nth_data(users, 0);
     g_assert(user);
 
-    name = g_strdup(lightdm_user_get_name(user));
+    name = lightdm_user_get_name(user);
 
     return name;
 }
@@ -490,7 +502,7 @@ const gchar* greeter_get_user_image(const gchar* name)
     user = lightdm_user_list_get_user_by_name(user_list, name);
     g_assert(user);
 
-    image = g_strdup(lightdm_user_get_image(user)); 
+    image = lightdm_user_get_image(user); 
 
     return image;
 }

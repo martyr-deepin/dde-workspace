@@ -45,7 +45,7 @@ const gchar* lock_get_username()
     const gchar *username = NULL;
 
     pw = getpwuid(getuid());
-    username = g_strdup(pw->pw_name);
+    username = pw->pw_name;
 
     return username;
 }
@@ -119,8 +119,8 @@ gboolean lock_try_unlock(const gchar *password)
         return FALSE;
     }
 
-    const gchar *username = g_strdup(lock_get_username());
-    const gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, g_strdup(password));
+    gchar *username = g_strdup(lock_get_username());
+    gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, password);
 
     g_spawn_command_line_sync(command, NULL, NULL, &exit_status, NULL);
 
@@ -131,6 +131,9 @@ gboolean lock_try_unlock(const gchar *password)
         js_post_message_simply("unlock", "{\"status\":\"%s\"}", "failed");
         is_locked = TRUE;
     }
+
+    g_free(username);
+    g_free(command);
 
     return is_locked;
 }
