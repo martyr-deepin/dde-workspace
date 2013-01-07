@@ -11,6 +11,11 @@
       <summary>Priority to use for this plugin</summary>
       <description>Priority to use for this plugin in gnome-settings-daemon startup queue</description>
     </key>
+    <key type="s" name="current-picture">
+      <default>'file:///usr/share/backgrounds/default_background.jpg'</default>
+      <summary>Current picture URI</summary>
+      <description>Current picture being rendered on the screen</description>
+    </key>
     <key type="s" name="picture-uris">
       <default>'file:///usr/share/backgrounds/default_background.jpg'</default>
       <summary>Picture URIs</summary>
