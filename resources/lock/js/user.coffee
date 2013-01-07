@@ -1,3 +1,15 @@
+
+apply_animation = (el, name, duration, timefunc)->
+    el.style.webkitAnimationName = name
+    el.style.webkitAnimationDuration = duration
+    el.style.webkitAnimationTimingFunction = timefunc
+
+apply_refuse_rotate = (el, time)->
+    apply_animation(el, "Refuse", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")
+    setTimeout(->
+        el.style.webkitAnimation = ""
+    , time * 1000)
+
 class LoginEntry extends Widget
     constructor: (@id, @on_active)->
         super
@@ -83,7 +95,13 @@ class UserInfo extends Widget
             DCore.Lock.unlock_succeed()
         else
             @focus()
+            apply_refuse_rotate(@element, 0)
+            apply_refuse_rotate(@element, 0.25)
+            apply_refuse_rotate(@element, 0.50)
+            apply_refuse_rotate(@element, 0.75)
+            apply_refuse_rotate(@element, 1)
     
+
 user = DCore.Lock.get_username()    
     
 u = new UserInfo(user, user, "images/img01.jpg")

@@ -133,6 +133,10 @@
     -webkit-animation:spinoff 1.5s infinite linear;
 }
 
+.Refuse{
+    -webkit-animation:refuse 1.5s infinite linear;
+}
+
 @-webkit-keyframes spin {
     0% { -webkit-transform:rotate(0deg); }
    100% { -webkit-transform:rotate(360deg); }
@@ -141,4 +145,12 @@
 @-webkit-keyframes spinoff {
     0% { -webkit-transform:rotate(0deg); }
     100% { -webkit-transform:rotate(-360deg); }
+}
+
+@-webkit-keyframes refuse{
+    0% {-webkit-transform:rotate(0deg);}
+   25% {-webkit-transform:rotate(-10deg);}
+   50% {-webkit-transform:rotate(0deg);}
+   75% {-webkit-transform:rotate(10deg);}
+   100% {-webkit-transform:rotate(0deg);}
 }
