@@ -54,7 +54,8 @@ class UserInfo extends Widget
         @name = create_element("span", "UserName", @element)
         @name.innerText = name
         @active = false
-        
+        @login_displayed = false 
+
     focus: ->
         _current_user?.blur()
         _current_user = @
@@ -80,15 +81,36 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
+            @login_displayed = true
 
     do_click: (e)->
         if DCore.Greeter.is_hide_users()
             if not _current_user == @
                 @focus()
+
             @show_login()
+            if e.target.parentElement == @login.element
+                echo "login div clicked"
+            else
+                if @login_displayed
+                    @login.style.display = "none"
+                    @login_displayed = false
+                else
+                    @login.style.display = "block"
+                    @login_displayed = true
         else
             if _current_user == @
                 @show_login()
+                if e.target.parentElement == @login.element
+                    echo "login div clicked"
+                else
+                    if @login_displayed
+                        @login.style.display = "none"
+                        @login_displayed = false
+                    else
+                        @login.style.display = "block"
+                        @login_displayed = true
+
                 if @name.innerText == "guest"
                     @login.password.style.display="none"
             else

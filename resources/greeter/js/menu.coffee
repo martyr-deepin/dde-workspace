@@ -26,8 +26,7 @@ class Menu extends Widget
         @items[_id] = [_title, _img] 
         @current = @id
     
-    set_callback: (cb)->
-        @cb = cb
+    set_callback: (@cb)->
 
     show: (x, y)->
         @try_append()
