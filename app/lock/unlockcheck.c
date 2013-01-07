@@ -25,7 +25,8 @@
 #include <shadow.h>
 #include <unistd.h>
 #include <errno.h>
- 
+#include <crypt.h>
+
 #define _XOPEN_SOURCE
 #define _GNU_SOURCE
 

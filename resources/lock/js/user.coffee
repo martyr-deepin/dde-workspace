@@ -77,7 +77,7 @@ class UserInfo extends Widget
         @loading = new Loading("loading")
         @element.appendChild(@loading.element)
         DCore.Lock.try_unlock(password)
-    
+
     unlock_check: (msg) ->
         if msg.status == "succeed"
             DCore.Lock.unlock_succeed()
@@ -87,6 +87,7 @@ class UserInfo extends Widget
 user = DCore.Lock.get_username()    
     
 u = new UserInfo(user, user, "images/img01.jpg")
+u.focus()
 $("#User").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)

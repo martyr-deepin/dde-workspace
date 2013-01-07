@@ -90,9 +90,17 @@ void lock_try_lock()
 
     gdk_window_set_cursor(gdk_window, gdk_cursor_new(GDK_LEFT_PTR));
 
-    gdk_keyboard_grab(gdk_window, TRUE, GDK_CURRENT_TIME);
-    /* GdkDevice *device = gtk_get_current_event_device(); */
-    /* gdk_device_grab(device, gdk_window, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); */
+   /* gdk_keyboard_grab(gdk_window, TRUE, GDK_CURRENT_TIME);*/
+    GdkDisplay *display = gdk_display_get_default();
+    g_assert(display);
+    
+    GdkDeviceManager *device_manager = gdk_display_get_device_manager(display);
+    g_assert(device_manager);
+    
+    GdkDevice *device = gdk_device_manager_get_client_pointer(device_manager);
+    g_assert(device);
+
+    gdk_device_grab(device, gdk_window, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); 
 
     gtk_widget_show_all(lock_container);
 
