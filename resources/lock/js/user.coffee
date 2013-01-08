@@ -1,11 +1,25 @@
-
-apply_animation = (el, name, duration, timefunc)->
-    el.style.webkitAnimationName = name
-    el.style.webkitAnimationDuration = duration
-    el.style.webkitAnimationTimingFunction = timefunc
+#Copyright (c) 2011 ~ 2012 Deepin, Inc.
+#              2011 ~ 2012 yilang
+#
+#Author:      LongWei <yilang2007lw@gmail.com>
+#                     <snyh@snyh.org>
+#Maintainer:  LongWei <yilang2007lw@gmail.com>
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 apply_refuse_rotate = (el, time)->
-    apply_animation(el, "Refuse", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")
+    apply_animation(el, "refuse", "#{time}s", "linear")
     setTimeout(->
         el.style.webkitAnimation = ""
     , time * 1000)
@@ -95,14 +109,9 @@ class UserInfo extends Widget
             DCore.Lock.unlock_succeed()
         else
             @focus()
-            apply_refuse_rotate(@element, 0)
-            apply_refuse_rotate(@element, 0.25)
-            apply_refuse_rotate(@element, 0.50)
-            apply_refuse_rotate(@element, 0.75)
             apply_refuse_rotate(@element, 1)
-    
 
-user = DCore.Lock.get_username()    
+user = DCore.Lock.get_username()
     
 u = new UserInfo(user, user, "images/img01.jpg")
 u.focus()
