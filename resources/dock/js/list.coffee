@@ -503,8 +503,14 @@ DCore.signal_connect("in_normal_mode", ->
 
 DCore.Dock.emit_webview_ok()
 
-setTimeout(calc_app_item_size, 100)
-setTimeout(calc_app_item_size, 1000)
-setTimeout(calc_app_item_size, 1800)
-setTimeout(calc_app_item_size, 2800)
-setTimeout(calc_app_item_size, 4000)
+init_app_item_size = ->
+    apps = $s(".AppItem")
+    w = apps[0].offsetWidth
+    for i in apps
+        Widget.look_up(i.id).change_size(w)
+    DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
+setTimeout(init_app_item_size, 100)
+setTimeout(init_app_item_size, 1000)
+setTimeout(init_app_item_size, 1800)
+setTimeout(init_app_item_size, 2800)
+setTimeout(init_app_item_size, 4000)

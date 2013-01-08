@@ -3,18 +3,17 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 
-Pixmap ROOT_PIXMAP = 0;
 Atom ATOM_ROOT_PIXMAP = 0;
 
 GdkWindow* get_background_window();
-void update_root_pixmap()
+gboolean update_root_pixmap()
 {
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     long items = 0;
     void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ROOT_PIXMAP,
             &items);
     if (data != NULL) {
-        ROOT_PIXMAP = X_FETCH_32(data, 0);
+        Pixmap ROOT_PIXMAP = X_FETCH_32(data, 0);
 
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
         GdkScreen *screen = gdk_screen_get_default();
@@ -29,9 +28,13 @@ void update_root_pixmap()
         cairo_paint(_background_cairo);
         cairo_surface_destroy(surface);
         cairo_destroy(_background_cairo);
+    } else {
+        cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
+        cairo_set_source_rgba(_background_cairo, 0, 0, 0, 0);
+        cairo_paint(_background_cairo);
+        cairo_destroy(_background_cairo);
     }
-    else
-        ROOT_PIXMAP = 0;
+    return FALSE;
 }
 
 GdkFilterReturn monitor_root_change(GdkXEvent *xevent, GdkEvent *event, gpointer data)
@@ -60,6 +63,8 @@ GdkWindow* get_background_window()
         attributes.event_mask = GDK_EXPOSURE_MASK;
 
         _background_window = gdk_window_new(NULL, &attributes, 0);
+        GdkRGBA rgba = {0, 0, 0, 0};
+        gdk_window_set_background_rgba(_background_window, &rgba);
 
         set_wmspec_desktop_hint(_background_window);
         gdk_window_move_resize(_background_window, 0, 0, 
@@ -67,7 +72,7 @@ GdkWindow* get_background_window()
                 gdk_window_get_height(root)
                 );
         gdk_window_show(_background_window);
-        update_root_pixmap();
+        g_idle_add(update_root_pixmap, NULL);
     }
     return _background_window;
 }

@@ -3,3 +3,24 @@
     50% { -webkit-transform: rotate(7deg); }
     100% { -webkit-transform: rotate(0deg); }
 }
+
+@-webkit-keyframes flash {
+    0% { 
+        box-shadow: 0px 0px 16px #01a6e8;
+    }
+    20% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
+    40% { 
+        box-shadow: 0px 0px 16px #01a6e8;
+    }
+    60% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
+    80% { 
+        box-shadow: 0px 0px 16px #01a6e8;
+    }
+    100% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
+}

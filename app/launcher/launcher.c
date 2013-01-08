@@ -27,6 +27,7 @@
 #include "i18n.h"
 #include "category.h"
 #include <gio/gdesktopappinfo.h>
+#define DOCK_HEIGHT 30
 
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
@@ -55,6 +56,19 @@ void do_im_commit(GtkIMContext *context, gchar* str)
     js_post_message("im_commit", json);
 }
 
+void update_size(GdkScreen *screen, GtkWidget* conntainer)
+{
+    gtk_widget_set_size_request(container, gdk_screen_get_width(screen), gdk_screen_get_height(screen) - DOCK_HEIGHT);
+}
+
+void on_realize(GtkWidget* container)
+{
+
+    GdkScreen* screen = gdk_screen_get_default();
+    update_size(screen, container);
+    g_signal_connect(screen, "changed", G_CALLBACK(update_size), container);
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -71,15 +85,14 @@ int main(int argc, char* argv[])
     set_default_theme("Deepin");
     set_desktop_env_name("GNOME");
 
-    gtk_window_fullscreen(GTK_WINDOW(container));
-
     GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
+    g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(clear_bg), NULL);
-    g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    /*g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);*/
+    g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
@@ -95,7 +108,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(do_im_commit), NULL); 
 
-    /*monitor_resource_file("launcher", webview);*/
+    monitor_resource_file("launcher", webview);
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
@@ -301,5 +314,3 @@ char* launcher_get_categories()
         return g_strdup("[]");
     }
 }
-
-
