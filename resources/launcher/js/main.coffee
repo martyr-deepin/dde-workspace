@@ -50,32 +50,32 @@ append_to_category  create_category(
 
 $("body").addEventListener("click", (e)->
     e.stopPropagation()
-    if e.target != $('#category')
+    if e.target != $("#category")
         DCore.Launcher.exit_gui()
 )
 $("#close").setAttribute("class", "close")
 
-#$("#grid").addEventListener("mousemove", (e)->
-    #e.stopPropagation()
-    #if e.target == grid and e.x >= grid.clientWidth
-        #$("#close").setAttribute("class", "close")
-    #else
-        #$("#close").setAttribute("class", "close_hover")
-#)
-#$("#category").addEventListener("mouseover", (e)->
-    #e.stopPropagation()
-    #$("#close").setAttribute("class", "close")
-#)
-#$("#search").addEventListener('mouseover', (e)->
-    #e.stopPropagation()
-    #if e.target == s_box
-        #$("#close").setAttribute("class", "close")
-    #else
-        #$("#close").setAttribute("class", "close_hover")
-#)
-#$("#container").addEventListener('mouseover', (e)->
-    #$("#close").setAttribute("class", "close_hover")
-#)
+$("#grid").addEventListener("mouseout", (e)->
+    if e.target == grid and e.x >= grid.clientWidth
+        $("#close").setAttribute("class", "close")
+    else
+        $("#close").setAttribute("class", "close_hover")
+    e.stopPropagation()
+)
+$("#category").addEventListener("mouseover", (e)->
+    e.stopPropagation()
+    $("#close").setAttribute("class", "close")
+)
+$("#search").addEventListener('mouseover', (e)->
+    e.stopPropagation()
+    if e.target == s_box
+        $("#close").setAttribute("class", "close")
+    else
+        $("#close").setAttribute("class", "close_hover")
+)
+$("#container").addEventListener('mouseover', (e)->
+    $("#close").setAttribute("class", "close_hover")
+)
 
 
 for info in DCore.Launcher.get_categories()

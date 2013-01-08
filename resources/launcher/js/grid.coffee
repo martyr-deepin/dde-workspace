@@ -27,12 +27,15 @@ try_set_title = (el, text, width)->
             el.setAttribute('title', text)
     , 200)
 
+s_dock = DCore.DBus.session("com.deepin.dde.dock")
+window.t = s_dock
 class Item extends Widget
     constructor: (@id, @core)->
         super
-        create_img("", DCore.DEntry.get_icon(@core), @element)
+        @img = create_img("", DCore.DEntry.get_icon(@core), @element)
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
+        @element.draggable = true
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
 
     do_click : (e)->
@@ -42,6 +45,25 @@ class Item extends Widget
         DCore.Launcher.exit_gui()
     do_mouseover: (e)->
         #$("#close").setAttribute("class", "close_hover")
+
+    do_dragstart: (e)->
+        e.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(@core))}")
+        e.dataTransfer.setDragImage(@img, 20, 20)
+        e.dataTransfer.effectAllowed = "all"
+
+    do_buildmenu: (e)->
+        [
+            [1, _("Open")],
+            [],
+            [2, _("SendToDesktop")],
+            [3, _("ToDock")],
+        ]
+    do_itemselected: (e)=>
+        switch e.id
+            when 1 then DCore.DEntry.launch(@core, [])
+            when 2 then apply_flash(@img, 2)
+            when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_path(@core))
+
 
 
 for core in DCore.Launcher.get_items()
@@ -81,3 +103,7 @@ grid_load_category = (cat_id) ->
 
     grid_show_items(info)
     update_selected(null)
+
+#grid.onscroll = (e)->
+    #echo e
+    #grid.scrollTop -= 132
