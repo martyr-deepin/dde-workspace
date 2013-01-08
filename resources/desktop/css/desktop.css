@@ -72,7 +72,7 @@ body {
     word-wrap:break-word;
     word-break:break-all;
     background-color:#FFF;
-    outline:none;
+    outline: 1px solid #000;
     -webkit-user-select:text;
     -webkit-user-modify:read-write-plaintext-only;
 }
