@@ -39,8 +39,10 @@ body {
 
 .DesktopEntry {
     width:80px;
-    padding:3px 5px;
+    padding:2px 4px;
     margin:1px 1px;
+    border:1px solid rgba(0,0,0,0);
+    border-radius:3px;
     outline:none;
     text-align:center;
     font-size:small;
@@ -78,15 +80,11 @@ body {
 }
 
 .item_hover {
-    padding:2px 4px !important;
-    border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
 }
 
 .item_selected {
-    padding:2px 4px !important;
-    border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.7);
     z-index:10;
@@ -122,7 +120,7 @@ body {
     border-top:1px solid rgba(255,255,255,0.6);
 }
 .pop_grid_ul_down {
-    border-bottom:1px solid rgba(255,255,255,0.6);
+    border-bottom:1px solid rgba(255,255,255,0.3);
 }
 #pop_grid ul li {
     width:80px;
