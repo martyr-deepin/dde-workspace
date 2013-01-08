@@ -29,7 +29,7 @@ class LoginEntry extends Widget
         super
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        @password.setAttribute("autofocus", "true")
+        #@password.setAttribute("autofocus", "true")
         @password.index = 0
         @password.addEventListener("keydown", (e)=>
             if e.which == 13
@@ -81,6 +81,7 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (p)=>@on_verify(p))
             @element.appendChild(@login.element)
+            @login.password.focus()
             @login_displayed = true
     
     do_click: (e)->
@@ -92,7 +93,6 @@ class UserInfo extends Widget
                     echo "login pwd clicked"
                 else
                     if @login_displayed
-                        @blur()
                         @focus()
                         @login_displayed = false
         else
@@ -109,7 +109,17 @@ class UserInfo extends Widget
             DCore.Lock.unlock_succeed()
         else
             @focus()
-            apply_refuse_rotate(@element, 1)
+            @show_login()
+            @login.password.setAttribute("type", "text")
+            @login.password.style.color = "red"
+            @login.password.value = msg.status
+            @login.password.blur()
+            @login.password.addEventListener("focus", (e)=>
+                @login.password.setAttribute("type", "password")
+                @login.password.style.color = "black"
+                @login.password.value = ""
+            )
+            apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
     
