@@ -37,7 +37,7 @@ class Item extends Widget
 
         @selected = false
         @has_focus = false
-        @clicked_before = false
+        @clicked_before = 0
 
         @in_rename = false
         @delay_rename_tid = -1
@@ -88,34 +88,35 @@ class Item extends Widget
 
 
     do_mouseover : (evt) ->
-        @show_hover_box()
+        @display_hover()
+        return
 
 
     do_mouseout : (evt) ->
-        @hide_hover_box()
+        @display_not_hover()
+        return
 
 
     do_mousedown : (evt) ->
         evt.stopPropagation()
-        if evt.button == 0 then update_selected_stats(this, evt)
-        false
+        if evt.button == 0 and @clicked_before == 0 and not @selected
+            @clicked_before = 1
+            update_selected_stats(this, evt)
+        return
 
 
     do_click : (evt) ->
         evt.stopPropagation()
-        if @clicked_before == false
-            @clicked_before = true
-            update_selected_stats(this, evt)
+        if @clicked_before == 1
+            @clicked_before = 2
         else
-            if evt.srcElement.className == "item_name"
-                if @delay_rename_tid == -1 then @delay_rename_tid = setTimeout(@item_rename, 600)
+            if is_selected_multiple_items()
+                update_selected_stats(this, evt)
             else
-                if @in_rename
-                    @item_complete_rename(true)
+                if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
+                    @delay_rename_tid = setTimeout(@item_rename, 600)
                 else
-                    update_selected_stats(this, evt)
-
-        false
+                    @clear_delay_rename_timer()
 
 
     do_dblclick : (evt) ->
@@ -123,8 +124,8 @@ class Item extends Widget
         @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
 
-        if evt.ctrlKey == true then return
-        @item_exec()
+        if not evt.ctrlKey then @item_exec()
+        return
 
 
     do_rightclick : (evt) ->
@@ -133,6 +134,7 @@ class Item extends Widget
             update_selected_stats(this, evt)
         else if @in_rename == true
             @item_complete_rename(false)
+        return
 
 
     display_full_name : ->
@@ -145,31 +147,20 @@ class Item extends Widget
         return
 
 
-    display_selected : ->
-        @selected = true
-        @show_selected_box()
+    display_selected : =>
+        @element.className += " item_selected"
 
 
-    display_normal : ->
-        @selected = false
-        @clicked_before = false
-
-        @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
-        @hide_selected_box()
+    display_not_selected : =>
+        @element.className = @element.className.replace(/\ item_selected/g, "")
 
 
-    display_focus : ->
-        @has_focus = true
-        @display_full_name()
+    display_hover : =>
+        @element.className += " item_hover"
 
 
-    display_blur : ->
-        @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
-
-        @has_focus = false
-        @display_short_name()
+    display_not_hover : =>
+        @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
     display_cut : ->
@@ -178,32 +169,6 @@ class Item extends Widget
 
     display_not_cut : ->
         @element.style.opacity = "1"
-
-
-    item_update : () =>
-        @item_icon.src = @get_icon()
-        if @in_rename == false
-            @item_name.innerText = @get_name()
-
-
-    item_exec : =>
-        DCore.DEntry.launch(@entry, [])
-
-
-    show_selected_box : =>
-        @element.className += " item_selected"
-
-
-    hide_selected_box : =>
-        @element.className = @element.className.replace(/\ item_selected/g, "")
-
-
-    show_hover_box : =>
-        @element.className += " item_hover"
-
-
-    hide_hover_box : =>
-        @element.className = @element.className.replace(/\ item_hover/g, "")
 
 
     on_event_stoppropagation : (evt) =>
@@ -221,12 +186,56 @@ class Item extends Widget
         DCore.DEntry.set_name(@entry, new_name)
 
 
+    item_focus : ->
+        @has_focus = true
+        @display_full_name()
+        echo "item_focus #{@has_focus}"
+        return
+
+
+    item_blur : ->
+        @clear_delay_rename_timer()
+        if @in_rename then @item_complete_rename(false)
+
+        @display_short_name()
+        @has_focus = false
+        echo "item_blur #{@has_focus}"
+        return
+
+
+    item_selected : ->
+        @display_selected()
+        @selected = true
+        return
+
+
+    item_normal : ->
+        @clear_delay_rename_timer()
+        if @in_rename then @item_complete_rename(false)
+        @display_not_selected()
+
+        @selected = false
+        @clicked_before = 0
+        return
+
+
+    item_update : () =>
+        @item_icon.src = @get_icon()
+        if @in_rename == false
+            @item_name.innerText = @get_name()
+        return
+
+
+    item_exec : =>
+        DCore.DEntry.launch(@entry, [])
+
+
     item_rename : =>
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
-            echo "item_rename"
             @display_full_name()
+            @display_not_selected()
             @element.draggable = false
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
@@ -279,7 +288,6 @@ class Item extends Widget
 
 
     item_complete_rename : (modify = true) =>
-        echo "item_complete_rename"
         if modify == true
             new_name = cleanup_filename(@item_name.innerText)
             if new_name.length > 0 and new_name != @get_name()
@@ -297,6 +305,8 @@ class Item extends Widget
         @item_name.removeEventListener("keydown", @on_event_stoppropagation)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
+
+        @display_selected()
 
         @clear_delay_rename_timer()
         @in_rename = false
@@ -341,7 +351,7 @@ class DesktopEntry extends Item
         evt.stopPropagation()
         evt.preventDefault()
         if @selected == false
-            @hide_hover_box()
+            @display_not_hover()
             @in_count = 0
 
 
@@ -351,7 +361,7 @@ class DesktopEntry extends Item
         if @selected == false
             ++@in_count
             if @in_count == 1
-                @show_hover_box()
+                @display_hover()
 
         found_self = false
         for file in evt.dataTransfer.files
@@ -390,7 +400,7 @@ class DesktopEntry extends Item
         if @selected == false
             --@in_count
             if @in_count == 0
-                @hide_hover_box()
+                @display_not_hover()
 
         return
 
@@ -436,7 +446,7 @@ class Folder extends DesktopEntry
 
 class RichDir extends DesktopEntry
     constructor : (entry)->
-        super
+        super(entry, false)
 
         @div_pop = null
         @show_pop = false
@@ -456,12 +466,22 @@ class RichDir extends DesktopEntry
 
 
     do_click : (evt) ->
-        super
-        if evt.shiftKey == false && evt.ctrlKey == false
-            if @show_pop == false
-                @show_pop_block()
+        evt.stopPropagation()
+        if @clicked_before == 1
+            @clicked_before = 2
+            if @show_pop == false then @show_pop_block()
+        else
+            if is_selected_multiple_items()
+                update_selected_stats(this, evt)
             else
-                @hide_pop_block()
+                if @show_pop == false
+                    @show_pop_block()
+                else
+                    @hide_pop_block()
+                    if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
+                        @delay_rename_tid = setTimeout(@item_rename, 600)
+                    else
+                        @clear_delay_rename_timer()
 
 
     do_dblclick : (evt) ->
@@ -502,12 +522,12 @@ class RichDir extends DesktopEntry
         menus
 
 
-    display_normal : ->
+    item_normal : ->
         if @div_pop != null then @hide_pop_block()
         super
 
 
-    display_blur : ->
+    item_blur : ->
         if @div_pop != null then @hide_pop_block()
         super
 
@@ -519,6 +539,11 @@ class RichDir extends DesktopEntry
 
     item_exec : ->
         if @show_pop == false then @show_pop_block()
+
+
+    item_rename : =>
+        if @show_pop == true then @hide_pop_block()
+        super
 
 
     on_rename : (new_name) ->
@@ -546,9 +571,10 @@ class RichDir extends DesktopEntry
 
         @show_pop = true
 
-        @fill_pop_block()
-
+        @display_not_selected()
         @display_short_name()
+
+        @fill_pop_block()
 
 
     reflesh_pop_block : =>
@@ -652,9 +678,11 @@ class RichDir extends DesktopEntry
             arrow.style.left = "#{n}px"
 
         if arrow_pos == true
+            ele_ul.className = "pop_grid_ul_up"
             arrow.setAttribute("id", "pop_downarrow")
             @div_pop.appendChild(arrow)
         else
+            ele_ul.className = "pop_grid_ul_down"
             arrow.setAttribute("id", "pop_uparrow")
             @div_pop.insertBefore(arrow, @div_pop.firstChild)
 
@@ -667,6 +695,7 @@ class RichDir extends DesktopEntry
             @div_pop = null
         @show_pop = false
 
+        @display_selected()
         @display_full_name()
 
 
@@ -730,7 +759,7 @@ class ComputerVDir extends DesktopEntry
         if @selected == false
             ++@in_count
             if @in_count == 1
-                @show_hover_box()
+                @display_hover()
 
 
     do_dragover : (evt) ->
@@ -754,7 +783,7 @@ class ComputerVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then @item_exec()
+            when 1 then open_selected_items()
             when 2 then DCore.Desktop.run_terminal()
             when 3 then DCore.Desktop.run_deepin_settings("system_information")
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
@@ -806,12 +835,14 @@ class HomeVDir extends DesktopEntry
             [3, _("properties")]
         ]
 
+
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then @item_exec()
+            when 1 then open_selected_items()
             when 2 then DCore.Desktop.run_terminal()
             when 3
                 try
+                    #XXX: we get an error here when call the nautilus DBus interface
                     s_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
@@ -875,6 +906,6 @@ class TrashVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then @item_exec()
+            when 1 then open_selected_items()
             when 3 then DCore.DEntry.confirm_trash()
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"

@@ -404,10 +404,6 @@ selected_copy_to_clipboard = ->
 
 
 selected_cut_to_clipboard = ->
-    for i in all_item
-        w = Widget.look_up(i)
-        if w? and w.modifiable == true then w.display_not_cut()
-
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -447,16 +443,16 @@ item_dragstart_handler = (widget, evt) ->
 
 set_item_selected = (w, top = false) ->
     if w.selected == false
-        w.display_selected()
+        w.item_selected()
         if top == true
             selected_item.unshift(w.id)
         else
             selected_item.push(w.id)
 
         if last_widget != w.id
-            if last_widget then Widget.look_up(last_widget)?.display_blur()
+            if last_widget then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
-            w.display_focus()
+            w.item_focus()
     return
 
 
@@ -472,22 +468,22 @@ cancel_item_selected = (w) ->
     i = selected_item.indexOf(w.id)
     if i >= 0
         selected_item.splice(i, 1)
-        w.display_normal()
+        w.item_normal()
         ret = true
 
         if last_widget == w.id
-            w.display_blur()
+            w.item_blur()
             last_widget = ""
 
     return ret
 
 
 cancel_all_selected_stats = (clear_last = true) ->
-    Widget.look_up(i)?.display_normal() for i in selected_item
+    Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
 
     if clear_last and last_widget
-        Widget.look_up(last_widget)?.display_blur()
+        Widget.look_up(last_widget)?.item_blur()
         last_widget = ""
 
     return
@@ -495,12 +491,12 @@ cancel_all_selected_stats = (clear_last = true) ->
 
 update_selected_stats = (w, evt) ->
     if evt.ctrlKey
-        if evt.type == "mousedown" or evt.type == "contextmenu"
+        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
             if w.selected == true then cancel_item_selected(w)
             else set_item_selected(w)
 
     else if evt.shiftKey
-        if evt.type == "mousedown" or evt.type == "contextmenu"
+        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
             if selected_item.length > 1
                 last_one_id = selected_item[selected_item.length - 1]
                 selected_item.splice(selected_item.length - 1, 1)
@@ -651,7 +647,6 @@ show_selected_items_Properties = ->
     try
         s_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
-        echo "error(e)"
 
 
 gird_left_mousedown = (evt) ->

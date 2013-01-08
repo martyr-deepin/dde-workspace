@@ -296,25 +296,39 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
 {
     g_debug ("_clear_clipboard_callback: begin");
     
-    if (clipboard_info_prev.num != 0 && 
-	clipboard_info_prev.cut == TRUE)
-    {
-	GList* file_list;
-	GList* l;
-	int i = 0;
-	file_list = __set_diff_clipboard_info (&clipboard_info, &clipboard_info_prev);
-	JSObjectRef json = json_array_create();
-	for (l = file_list; l != NULL; l = l->next)
-	{
-	    json_array_append_nobject (json, i, l->data, g_object_ref, g_object_unref);
-            g_debug ("send file: %d : %s", i, g_file_get_uri (l->data));
-	    i++;
-	}
-	g_list_free_full (file_list, g_object_unref);
+    GList* file_list = NULL;
 
-	js_post_message ("cut_completed", json);
-	__clear_clipboard_info (&clipboard_info_prev);
+    g_debug ("prev: num = %d; operation = %s", clipboard_info_prev.num, clipboard_info_prev.cut?"cut":"copy");
+    if (clipboard_info_prev.cut == FALSE)
+    {
+	if (clipboard_info.cut == TRUE)
+	{
+	    for (int i = 0; i < clipboard_info.num; i++)
+	    {
+		file_list = g_list_append (file_list, g_object_ref (clipboard_info.file_list[i]));
+	    }
+	}
     }
+    //clipboard_info_prev.cut == TRUE)
+    else if (clipboard_info_prev.num != 0) 
+    {
+	file_list = __set_diff_clipboard_info (&clipboard_info, &clipboard_info_prev);
+    }
+    // send message.
+    int i = 0;
+    GList* l = NULL;
+    JSObjectRef json = json_array_create();
+    for (l = file_list; l != NULL; l = l->next)
+    {
+	json_array_append_nobject (json, i, l->data, g_object_ref, g_object_unref);
+        g_debug ("send file: %d : %s", i, g_file_get_uri (l->data));
+	i++;
+    }
+    js_post_message ("cut_completed", json);
+    //
+    g_list_free_full (file_list, g_object_unref);
+    __clear_clipboard_info (&clipboard_info_prev);
+
     g_debug ("_clear_clipboard_callback: end");
 }
 /*
