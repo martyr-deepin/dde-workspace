@@ -49,7 +49,7 @@ static char*__convert_file_list_to_string (FileOpsClipboardInfo *info,
 			       		   gboolean format_for_text,
                                		   gsize *len);
 //NOTE: @info itself is not freed.Yep, some inconsistency here.
-static void __free_clipboard_info	(FileOpsClipboardInfo* info);
+static void __clear_clipboard_info	(FileOpsClipboardInfo* info);
 //@info: input, @dest: output
 static void __copy_clipboard_info	(FileOpsClipboardInfo* info, FileOpsClipboardInfo* dest);
 //
@@ -71,7 +71,7 @@ is_clipboard_empty ()
 
     //cleanup  tmp clipboard info
     g_debug ("free tmp clipboard info");
-    __free_clipboard_info (&clipboard_info_tmp);
+    __clear_clipboard_info (&clipboard_info_tmp);
 
     if (__request_clipboard_contents (&clipboard_info_tmp))
     {
@@ -97,7 +97,7 @@ fileops_paste (GFile* dest_dir)
 
     //cleanup  tmp clipboard info
     g_debug ("free tmp clipboard info");
-    __free_clipboard_info (&clipboard_info_tmp);
+    __clear_clipboard_info (&clipboard_info_tmp);
 
     if (__request_clipboard_contents (&clipboard_info_tmp))
 	real_info = &clipboard_info_tmp;
@@ -108,15 +108,25 @@ fileops_paste (GFile* dest_dir)
     if (real_info->cut)	
     {
 	fileops_move (real_info->file_list, real_info->num, dest_dir);
-	
+        //post messages event paste cancelled or failed.
+	JSObjectRef json = json_array_create();
+	for (int i = 0; i < real_info->num; i++)
+	{
+	    json_array_append_nobject (json, i, real_info->file_list[i], 
+                                       g_object_ref, g_object_unref);
+            g_debug ("send file: %d : %s", i, g_file_get_uri (real_info->file_list[i]));
+	}
+	js_post_message ("cut_completed", json);
+
         gtk_clipboard_clear (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD));
 
         g_debug ("free tmp clipboard info");
-	__free_clipboard_info (&clipboard_info_tmp);
+	__clear_clipboard_info (&clipboard_info_tmp);
 	//though maybe we're not the clipboard owner, we still 
 	//free clipboard_info here to avoid possible memory leak
         g_debug ("free clipboard info");
-	__free_clipboard_info (&clipboard_info);
+	__clear_clipboard_info (&clipboard_info);
+	
     }
     else
     {
@@ -144,23 +154,23 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
     g_debug ("init_fileops_clipboard:begin");
 
     //set prev clipboard_info
-    __free_clipboard_info (&clipboard_info_prev);
+    __clear_clipboard_info (&clipboard_info_prev);
     __copy_clipboard_info (&clipboard_info, &clipboard_info_prev);
     
     int j=0;
     for (j = 0; j < clipboard_info_prev.num; j++)
     {
-	g_debug ("init_fileops_clipboard: file_list[%d] = %s", j, g_file_get_uri (clipboard_info_prev.file_list[j]));
+	g_debug ("init_fileops prev: file_list[%d] = %s", j, g_file_get_uri (clipboard_info_prev.file_list[j]));
     }
     //we're the clipboard owner, cleanup clipboard_info
-    __free_clipboard_info (&clipboard_info);
+    __clear_clipboard_info (&clipboard_info);
 
     clipboard_info.file_list = (GFile**)g_malloc (num * sizeof (GFile*));
     int i;
     for (i = 0; i < num; i++)
     {
 	clipboard_info.file_list[i] = g_object_ref (file_list[i]);
-	g_debug ("init_fileops_clipboard: file_list[%d] = %s", i, g_file_get_uri (file_list[i]));
+	g_debug ("init_fileops %s: file_list[%d] = %s", cut? "cut": "paste", i, g_file_get_uri (file_list[i]));
     }
     clipboard_info.num = num;
     clipboard_info.cut = cut;
@@ -214,7 +224,7 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 	{
 	    g_debug ("_clipboard_owner_change_cb: we lost clipboard ownership");
 	    is_clipboard_owner = FALSE;
-	    __free_clipboard_info (&clipboard_info);
+	    __clear_clipboard_info (&clipboard_info);
 	}
 	else
 	{
@@ -224,7 +234,7 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 	}
 #endif
 	g_debug ("clipboard owner change");
-	//__free_clipboard_info (&clipboard_info);
+	//__clear_clipboard_info (&clipboard_info);
 }
 
 static void 
@@ -297,12 +307,13 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
 	for (l = file_list; l != NULL; l = l->next)
 	{
 	    json_array_append_nobject (json, i, l->data, g_object_ref, g_object_unref);
+            g_debug ("send file: %d : %s", i, g_file_get_uri (l->data));
 	    i++;
 	}
 	g_list_free_full (file_list, g_object_unref);
 
 	js_post_message ("cut_completed", json);
-	__free_clipboard_info (&clipboard_info_prev);
+	__clear_clipboard_info (&clipboard_info_prev);
     }
     g_debug ("_clear_clipboard_callback: end");
 }
@@ -402,7 +413,7 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
     g_debug ("__clipboard_contents_received_callback: begin");
     FileOpsClipboardInfo* _info = (FileOpsClipboardInfo*) info;
 
-    __free_clipboard_info (info);
+    __clear_clipboard_info (info);
 
     _info->num = 0;
     _info->cut = FALSE;
@@ -468,6 +479,13 @@ __set_diff_clipboard_info (FileOpsClipboardInfo* A, FileOpsClipboardInfo* B)
 
     GList* file_list = NULL;
 
+#if 0
+    g_debug ("__set_diff: A op : %s", A->cut?"cut":"paste");
+    for (int i=0; i<A->num; i++)
+    {
+	g_debug ("A: %d : %s", i, g_file_get_uri (A->file_list[i]));
+    }
+#endif 
     //send all files in B
     if (A->cut != B->cut)
     {
@@ -480,14 +498,20 @@ __set_diff_clipboard_info (FileOpsClipboardInfo* A, FileOpsClipboardInfo* B)
     else
     {
 	for (int i = 0; i < B->num; i++)
-	for (int j = 0; j < A->num; j++)
 	{
-	    if (!g_file_equal (B->file_list[i], A->file_list[j]))
+	    gboolean is_in_A = FALSE;
+	    for (int j = 0; j < A->num; j++)
 	    {
-		//we duplicate a file here. because we use a lot of 
-		//redundant __free_clipboard_info to minimizing memory leak.
+	    	if (g_file_equal (B->file_list[i], A->file_list[j]))
+	    	{
+		    is_in_A = TRUE;
+		    break;
+		}
+	    }
+	    if (!is_in_A)
+	    {
 		GFile* dup_file = g_file_dup (B->file_list[i]);
-		file_list = g_list_append (file_list, dup_file);
+            	file_list = g_list_append (file_list, dup_file);
 	    }
 	}
     }
@@ -504,7 +528,7 @@ __set_diff_clipboard_info (FileOpsClipboardInfo* A, FileOpsClipboardInfo* B)
 static void 
 __copy_clipboard_info (FileOpsClipboardInfo* info, FileOpsClipboardInfo* dest)
 {
-    __free_clipboard_info (dest);
+    __clear_clipboard_info (dest);
     if (info->file_list == NULL || info->num == 0)
     {
 	dest->file_list = NULL;
@@ -527,11 +551,10 @@ __copy_clipboard_info (FileOpsClipboardInfo* info, FileOpsClipboardInfo* dest)
  *	so we won't free @info here (just free its fields).
  */
 static void 
-__free_clipboard_info	(FileOpsClipboardInfo* info)
+__clear_clipboard_info	(FileOpsClipboardInfo* info)
 {
     if (info->file_list == NULL)
     {
-	g_debug (" %d already freed", info);
 	return;
     }
 
