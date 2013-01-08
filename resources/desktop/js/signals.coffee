@@ -79,14 +79,15 @@ do_trash_update = ->
         w.item_update()
 
 
-do_cut_completed = ->
-    for i in all_item
-        w = Widget.look_up(i)
+do_cut_completed = (items) ->
+    for e in items
+        echo DCore.DEntry.get_name(e)
+        w = Widget.look_up(DCore.DEntry.get_id(e))
         if w? and w.modifiable == true then w.display_not_cut()
 
 
 do_desktop_lost_focus = ->
-    if last_widget.length > 0 then Widget.look_up(last_widget)?.display_blur()
+    if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
 
 
 do_workarea_changed = (allo) ->
