@@ -207,6 +207,7 @@ class AppItem extends Widget
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
+        apply_flash(@img, 1) if not IN_INIT
 
     do_click: (e)->
         DCore.DEntry.launch(@core, [])
@@ -377,7 +378,7 @@ class ClientGroup extends AppItem
         if info
             l = new Launcher(info.Id, info.Icon, info.Core)
             swap_element(l.element, @element)
-            apply_rotate(l.element, 0.5)
+            #apply_rotate(l.element, 0.5)
         super
 
     do_buildmenu: ->
@@ -462,7 +463,7 @@ DCore.signal_connect("launcher_added", (info) ->
     if c
         echo "have..#{info.Id}"
     else
-        new Launcher(info.Id, info.Icon, info.Core)
+        l = new Launcher(info.Id, info.Icon, info.Core)
 )
 
 DCore.signal_connect("launcher_removed", (info) ->
@@ -514,3 +515,6 @@ setTimeout(init_app_item_size, 1000)
 setTimeout(init_app_item_size, 1800)
 setTimeout(init_app_item_size, 2800)
 setTimeout(init_app_item_size, 4000)
+setTimeout(->
+    IN_INIT = false
+, 2000)
