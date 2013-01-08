@@ -342,7 +342,7 @@ void dentry_clipboard_cut(ArrayContainer fs)
     g_free(_fs.data);
 }
 
-void dentry_paste(GFile* dest_dir)
+void dentry_clipboard_paste(GFile* dest_dir)
 {
     fileops_paste (dest_dir);
 }
