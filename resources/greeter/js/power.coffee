@@ -49,8 +49,10 @@ shutdown_cb = ->
 
 power_dict = get_power_info()
 for key, value of power_dict
-    power_menu.insert(key, key, "images/control-power.png")
+    # power_menu.insert(key, key, "images/control-power.png")
+    power_menu.insert_noimg(key, key)
 
+power_menu.current_img.src = "images/control-power.png"
 $("#bottom_buttons").appendChild(power_menu.element)
 
 DCore.signal_connect("power", (msg) ->

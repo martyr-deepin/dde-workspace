@@ -30,7 +30,7 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
-#define DEBUG 
+#define DEBUG 0 
 
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
@@ -75,7 +75,8 @@ static gchar* get_selected_user()
     if(selected_user != NULL){
         return selected_user;
     }else{
-        return g_strdup(greeter_get_default_user());
+        selected_user = g_strdup(greeter_get_default_user());
+        return selected_user;
     }
 }
 
@@ -84,7 +85,8 @@ static gchar* get_selected_session()
     if(selected_session != NULL){
         return selected_session;
     }else{
-        return g_strdup(greeter_get_default_session());
+        selected_session = g_strdup(greeter_get_default_session());
+        return selected_session; 
     }
 }
 
@@ -112,6 +114,18 @@ JS_EXPORT_API
 gboolean greeter_in_authentication()
 {
     return lightdm_greeter_get_in_authentication(greeter);
+}
+
+JS_EXPORT_API
+const gchar* greeter_get_authentication_user()
+{
+    return lightdm_greeter_get_authentication_user(greeter);
+}
+
+JS_EXPORT_API
+gboolean greeter_is_authenticated()
+{
+    return lightdm_greeter_get_is_authenticated(greeter);
 }
 
 JS_EXPORT_API
@@ -202,6 +216,13 @@ static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPr
 #endif
 }
 
+static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type) 
+{
+    if(type == LIGHTDM_MESSAGE_TYPE_ERROR){
+        js_post_message_simply("message", "{\"error\":\"%s\"}", text);
+    }
+}
+
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
 #ifdef DEBUG
@@ -224,6 +245,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 #ifdef DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
 #endif
+            js_post_message_simply("auth", "{\"error\":\"%s\"}", "Password Error!");
             greeter_start_authentication(get_selected_user());
         }
     }
@@ -626,6 +648,7 @@ int main(int argc, char **argv)
     gtk_widget_realize(container);
 
     g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
+    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
     g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 

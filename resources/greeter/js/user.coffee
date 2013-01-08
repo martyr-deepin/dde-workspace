@@ -1,3 +1,29 @@
+#Copyright (c) 2011 ~ 2012 Deepin, Inc.
+#              2011 ~ 2012 yilang
+#
+#Author:      LongWei <yilang2007lw@gmail.com>
+#                     <snyh@snyh.org>
+#Maintainer:  LongWei <yilang2007lw@gmail.com>
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, see <http://www.gnu.org/licenses/>.
+    
+apply_refuse_rotate = (el, time)->
+    apply_animation(el, "refuse", "#{time}s", "linear")
+    setTimeout(->
+        el.style.webkitAnimation = ""
+    , time * 1000)
+
 class LoginEntry extends Widget
     constructor: (@id, @on_active)->
         super
@@ -12,8 +38,10 @@ class LoginEntry extends Widget
             
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        @password.setAttribute("autofocus", "true")
+        #@password.setAttribute("autofocus", "true")
+        @password.focus()
         @password.index = 1
+
         @password.addEventListener("keydown", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()
@@ -60,6 +88,8 @@ class UserInfo extends Widget
         _current_user?.blur()
         _current_user = @
         @add_css_class("UserInfoSelected")
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.start_authentication("*other")
         else
@@ -81,6 +111,7 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
+            @login.password.focus()
             @login_displayed = true
 
     do_click: (e)->
@@ -92,7 +123,6 @@ class UserInfo extends Widget
                     echo "login pwd clicked"
                 else
                     if @login_displayed
-                        @blur()
                         @focus()
                         @login_displayed = false
     
@@ -138,12 +168,31 @@ else
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
             u.focus()
-            # DCore.Greeter.start_authentication(user)
     if DCore.Greeter.is_support_guest()
         u = new UserInfo("guest", "guest", "images/guest.jpg")
         roundabout.appendChild(u.li)
         if DCore.Greeter.is_guest_default()
             u.focus()
+
+DCore.signal_connect("message", (msg) ->
+    echo msg.error
+)
+
+DCore.signal_connect("auth", (msg) ->
+    user = _current_user
+    user.focus()
+    user.show_login()
+    user.login.password.setAttribute("type", "text")
+    user.login.password.style.color = "red"
+    user.login.password.value = msg.error
+    user.login.password.blur()
+    user.login.password.addEventListener("focus", (e)=>
+        user.login.password.setAttribute("type", "password")
+        user.login.password.style.color ="black"
+        user.login.password.value = ""
+    )
+    apply_refuse_rotate(user.element, 0.5)
+)
 
 if roundabout.children.length == 2
     roundabout.style.width = "0"

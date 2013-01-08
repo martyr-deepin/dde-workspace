@@ -1,4 +1,5 @@
 .ComboBox {
+    cursor:pointer;
     margin:0 20px 0 0;
     display: -webkit-box;
 }
@@ -32,7 +33,8 @@
 }
 
 .ShowItem img{
-    border:#fff 1px solid;
+    ;
+   /* border:#fff 1px solid;*/
 }
 
 .ShowItem:hover{
@@ -62,9 +64,10 @@
 }
 
 .MenuItem {
-    cursor:default;
+    cursor:pointer;
     display:-webkit-box;
     font-size:12px;
+    padding:0 8px 0 0;
     color:#333;
     text-indent:10px;
     height:22px;
@@ -72,10 +75,13 @@
 }
 
 .MenuItem:hover {
+	color:#00B7E5;
     background:rgba(0,0,0,0.8);
 }
 
 .MenuImg {
+    width:16px;
+    heigth:16px;
     border: white 1px solid;
     margin: 2px 0 0 0px;
 }
