@@ -508,8 +508,9 @@ init_app_item_size = ->
     w = apps[0].offsetWidth
     for i in apps
         Widget.look_up(i.id).change_size(w)
-setTimeout(calc_app_item_size, 100)
-setTimeout(calc_app_item_size, 1000)
-setTimeout(calc_app_item_size, 1800)
-setTimeout(calc_app_item_size, 2800)
-setTimeout(calc_app_item_size, 4000)
+    DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
+setTimeout(init_app_item_size, 100)
+setTimeout(init_app_item_size, 1000)
+setTimeout(init_app_item_size, 1800)
+setTimeout(init_app_item_size, 2800)
+setTimeout(init_app_item_size, 4000)
