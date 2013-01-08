@@ -112,13 +112,18 @@ body {
     font-size:small;
     list-style:none outside none;
     box-shadow:0px 4px 16px rgba(0,0,0,0.4);
-    border-top:1px solid rgba(255,255,255,0.6);
     border-left:1px solid rgba(255,255,255,0.3);
     border-right:1px solid rgba(255,255,255,0.3);
     border-radius:3px;
     overflow-y:auto;
 }
 
+.pop_grid_ul_up {
+    border-top:1px solid rgba(255,255,255,0.6);
+}
+.pop_grid_ul_down {
+    border-bottom:1px solid rgba(255,255,255,0.6);
+}
 #pop_grid ul li {
     width:80px;
     height:86px;

@@ -678,9 +678,11 @@ class RichDir extends DesktopEntry
             arrow.style.left = "#{n}px"
 
         if arrow_pos == true
+            ele_ul.className = "pop_grid_ul_up"
             arrow.setAttribute("id", "pop_downarrow")
             @div_pop.appendChild(arrow)
         else
+            ele_ul.className = "pop_grid_ul_down"
             arrow.setAttribute("id", "pop_uparrow")
             @div_pop.insertBefore(arrow, @div_pop.firstChild)
 
