@@ -61,7 +61,7 @@ class Item extends Widget
     do_itemselected: (e)=>
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
-            when 2 then apply_flash(@img, 2)
+            when 2 then DCore.DEntry.copy([@core], DCore.Launcher.get_desktop_entry())
             when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_path(@core))
 
 
