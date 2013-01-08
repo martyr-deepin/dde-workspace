@@ -356,8 +356,6 @@ init_grid_drop = ->
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
-        #evt.dataTransfer.dropEffect = "move"
-        #echo("grid dragleave #{evt.dataTransfer.dropEffect}")
         return
     )
 
@@ -460,6 +458,13 @@ set_item_selected = (w, top = false) ->
             last_widget = w.id
             w.display_focus()
     return
+
+
+set_all_item_selected = ->
+    for i in speical_item.concat(all_item)
+        if selected_item.indexOf(i) >= 0 then continue
+        w = Widget.look_up(i)
+        if w? then set_item_selected(w)
 
 
 cancel_item_selected = (w) ->
@@ -622,7 +627,6 @@ is_selected_multiple_items = ->
     selected_item.length > 1
 
 
-
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
@@ -699,36 +703,31 @@ grid_do_keyup_to_shrotcut = (evt) ->
     msg_disposed = false
     if ingore_keyup_counts > 0
         --ingore_keyup_counts
-        echo "ingore once"
         msg_disposed = true
 
     else if evt.keyCode == 65         # CTRL+A
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
-            echo "select all items on desktop"
+            set_all_item_selected()
             msg_disposed = true
 
     else if evt.keyCode == 88    # CTRL+X
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_cut_to_clipboard()
-            echo "selected_cut_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 67    # CTRL+C
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_copy_to_clipboard()
-            echo "selected_copy_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 86    # CTRL+V
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             paste_from_clipboard()
-            echo "paste_from_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 46   # Delete
         if evt.ctrlKey == false and evt.altKey == false
             delete_selected_items(evt.shiftKey == true)
-            echo "delete_selected_items #{evt.shiftKey == true}"
             msg_disposed = true
 
     else if evt.keyCode == 113   # F2
@@ -736,7 +735,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length == 1
                 w = Widget.look_up(selected_item[0])
                 if w? then w.item_rename()
-            echo "rename"
             msg_disposed = true
 
     else if evt.keyCode == 13    # Enter
@@ -744,7 +742,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length > 0
                 w = Widget.look_up(last_widget)
                 if w? then w.item_exec()
-            echo "open"
             msg_disposed = true
 
     if msg_disposed == true
