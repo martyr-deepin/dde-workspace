@@ -292,6 +292,16 @@ void dentry_move(ArrayContainer fs, GFile* dest)
     }
     g_free(_fs.data);
 }
+void dentry_copy (ArrayContainer src, GFile* dest)
+{
+    ArrayContainer _fs = _normalize_array_container(fs);
+    fileops_copy (_fs.data, _fs.num, dest);
+    for (size_t i=0; i<_fs.num; i++) {
+        g_object_unref(((GObject**)_fs.data)[i]);
+    }
+    g_free(_fs.data);
+}
+
 void dentry_delete(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -311,7 +321,8 @@ void dentry_trash(ArrayContainer fs)
     g_free(_fs.data);
 }
 
-void dentry_copy(ArrayContainer fs)
+
+void dentry_clipboard_copy(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     init_fileops_clipboard (_fs.data, _fs.num, FALSE);
@@ -321,7 +332,7 @@ void dentry_copy(ArrayContainer fs)
     g_free(_fs.data);
 }
 
-void dentry_cut(ArrayContainer fs)
+void dentry_clipboard_cut(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     init_fileops_clipboard (_fs.data, _fs.num, TRUE);
