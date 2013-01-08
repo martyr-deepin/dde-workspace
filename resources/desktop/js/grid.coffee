@@ -400,7 +400,7 @@ selected_copy_to_clipboard = ->
         w = Widget.look_up(i)
         if w? and w.modifiable == true
             tmp_list.push(w.entry)
-    DCore.DEntry.copy(tmp_list)
+    DCore.DEntry.clipboard_copy(tmp_list)
 
 
 selected_cut_to_clipboard = ->
@@ -414,12 +414,12 @@ selected_cut_to_clipboard = ->
         if w? and w.modifiable == true
             tmp_list.push(w.entry)
             w.display_cut()
-    DCore.DEntry.cut(tmp_list)
+    DCore.DEntry.clipboard_cut(tmp_list)
 
 
 paste_from_clipboard = ->
     e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
-    DCore.DEntry.paste(e)
+    DCore.DEntry.clipboard_paste(e)
 
 
 item_dragstart_handler = (widget, evt) ->
