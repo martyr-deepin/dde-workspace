@@ -292,7 +292,7 @@ void dentry_move(ArrayContainer fs, GFile* dest)
     }
     g_free(_fs.data);
 }
-void dentry_copy (ArrayContainer src, GFile* dest)
+void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     fileops_copy (_fs.data, _fs.num, dest);
