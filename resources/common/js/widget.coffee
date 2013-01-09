@@ -110,3 +110,5 @@ class Widget extends Module
 
     add_css_class: (name)->
         @element.classList.add(name)
+    remove_css_class: (name)->
+        @element.classList.remove(name)
