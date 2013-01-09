@@ -22,6 +22,7 @@
 #define __UTILS_H__
 
 #include <glib.h>
+#include <stdlib.h>
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
 
@@ -43,5 +44,7 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
 GKeyFile* load_app_config(const char* name);
 
 void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
+
+int reparent_to_init();
 
 #endif

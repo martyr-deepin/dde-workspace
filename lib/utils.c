@@ -24,6 +24,8 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -282,5 +284,18 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
         return TRUE;
     } else {
         return FALSE;
+    }
+}
+// reparent to init process.
+int reparent_to_init ()
+{
+    switch (fork())
+    {
+	case -1: 
+	    return EXIT_FAILURE;
+	case 0:
+	    return EXIT_SUCCESS;
+	default:
+	    _exit(EXIT_SUCCESS);
     }
 }
