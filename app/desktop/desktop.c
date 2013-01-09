@@ -202,6 +202,10 @@ void send_lost_focus()
 
 int main(int argc, char* argv[])
 {
+    if (reparent_to_init() == EXIT_FAILURE)
+    {
+	g_critical ("reparent to init process failed");
+    }
     init_i18n();
     gtk_init(&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
