@@ -356,8 +356,6 @@ init_grid_drop = ->
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
-        #evt.dataTransfer.dropEffect = "move"
-        #echo("grid dragleave #{evt.dataTransfer.dropEffect}")
         return
     )
 
@@ -402,26 +400,22 @@ selected_copy_to_clipboard = ->
         w = Widget.look_up(i)
         if w? and w.modifiable == true
             tmp_list.push(w.entry)
-    DCore.DEntry.copy(tmp_list)
+    DCore.DEntry.clipboard_copy(tmp_list)
 
 
 selected_cut_to_clipboard = ->
-    for i in all_item
-        w = Widget.look_up(i)
-        if w? and w.modifiable == true then w.display_not_cut()
-
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
             tmp_list.push(w.entry)
             w.display_cut()
-    DCore.DEntry.cut(tmp_list)
+    DCore.DEntry.clipboard_cut(tmp_list)
 
 
 paste_from_clipboard = ->
     e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
-    DCore.DEntry.paste(e)
+    DCore.DEntry.clipboard_paste(e)
 
 
 item_dragstart_handler = (widget, evt) ->
@@ -449,17 +443,24 @@ item_dragstart_handler = (widget, evt) ->
 
 set_item_selected = (w, top = false) ->
     if w.selected == false
-        w.display_selected()
+        w.item_selected()
         if top == true
             selected_item.unshift(w.id)
         else
             selected_item.push(w.id)
 
         if last_widget != w.id
-            if last_widget then Widget.look_up(last_widget)?.display_blur()
+            if last_widget then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
-            w.display_focus()
+            w.item_focus()
     return
+
+
+set_all_item_selected = ->
+    for i in speical_item.concat(all_item)
+        if selected_item.indexOf(i) >= 0 then continue
+        w = Widget.look_up(i)
+        if w? then set_item_selected(w)
 
 
 cancel_item_selected = (w) ->
@@ -467,22 +468,22 @@ cancel_item_selected = (w) ->
     i = selected_item.indexOf(w.id)
     if i >= 0
         selected_item.splice(i, 1)
-        w.display_normal()
+        w.item_normal()
         ret = true
 
         if last_widget == w.id
-            w.display_blur()
+            w.item_blur()
             last_widget = ""
 
     return ret
 
 
 cancel_all_selected_stats = (clear_last = true) ->
-    Widget.look_up(i)?.display_normal() for i in selected_item
+    Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
 
     if clear_last and last_widget
-        Widget.look_up(last_widget)?.display_blur()
+        Widget.look_up(last_widget)?.item_blur()
         last_widget = ""
 
     return
@@ -490,12 +491,12 @@ cancel_all_selected_stats = (clear_last = true) ->
 
 update_selected_stats = (w, evt) ->
     if evt.ctrlKey
-        if evt.type == "mousedown" or evt.type == "contextmenu"
+        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
             if w.selected == true then cancel_item_selected(w)
             else set_item_selected(w)
 
     else if evt.shiftKey
-        if evt.type == "mousedown" or evt.type == "contextmenu"
+        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
             if selected_item.length > 1
                 last_one_id = selected_item[selected_item.length - 1]
                 selected_item.splice(selected_item.length - 1, 1)
@@ -622,7 +623,6 @@ is_selected_multiple_items = ->
     selected_item.length > 1
 
 
-
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
@@ -647,12 +647,11 @@ show_selected_items_Properties = ->
     try
         s_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
-        echo "error(e)"
 
 
 gird_left_mousedown = (evt) ->
     evt.stopPropagation()
-    if evt.ctrlKey == false and evt.shiftKey == false
+    if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
 
@@ -674,10 +673,6 @@ grid_right_click = (evt) ->
         ])
     menus.push([3, _("open terminal here")])
     menus.push([4, _("paste"), DCore.DEntry.can_paste()])
-    #if DCore.DEntry.can_paste()
-        #menus.push([4, _("paste")])
-    #else
-        #menus.push([4, _("paste"), false])
     menus.push([])
     menus.push([5, _("Personal")])
     menus.push([6, _("Display Settings")])
@@ -703,36 +698,31 @@ grid_do_keyup_to_shrotcut = (evt) ->
     msg_disposed = false
     if ingore_keyup_counts > 0
         --ingore_keyup_counts
-        echo "ingore once"
         msg_disposed = true
 
     else if evt.keyCode == 65         # CTRL+A
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
-            echo "select all items on desktop"
+            set_all_item_selected()
             msg_disposed = true
 
     else if evt.keyCode == 88    # CTRL+X
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_cut_to_clipboard()
-            echo "selected_cut_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 67    # CTRL+C
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             selected_copy_to_clipboard()
-            echo "selected_copy_to_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 86    # CTRL+V
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             paste_from_clipboard()
-            echo "paste_from_clipboard"
             msg_disposed = true
 
     else if evt.keyCode == 46   # Delete
         if evt.ctrlKey == false and evt.altKey == false
             delete_selected_items(evt.shiftKey == true)
-            echo "delete_selected_items #{evt.shiftKey == true}"
             msg_disposed = true
 
     else if evt.keyCode == 113   # F2
@@ -740,7 +730,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length == 1
                 w = Widget.look_up(selected_item[0])
                 if w? then w.item_rename()
-            echo "rename"
             msg_disposed = true
 
     else if evt.keyCode == 13    # Enter
@@ -748,7 +737,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length > 0
                 w = Widget.look_up(last_widget)
                 if w? then w.item_exec()
-            echo "open"
             msg_disposed = true
 
     if msg_disposed == true
@@ -802,6 +790,7 @@ create_item_grid = ->
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
         @parent_element = parentElement
+        @last_effect_item = new Array
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
         @element.style.border = "1px solid #eee"
@@ -811,21 +800,28 @@ class Mouse_Select_Area_box
         @element.style.visibility = "hidden"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
-        @last_effect_item = new Array
 
 
     mousedown_event : (evt) =>
-        evt.preventDefault()
+        evt.stopPropagation()
         if evt.button == 0
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
+            @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             @last_pos = @start_pos
         return
 
 
+    contextmenu_event : (evt) ->
+        evt.stopPropagation()
+        evt.preventDefault()
+        return
+
+
     mousemove_event : (evt) =>
+        evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
@@ -907,6 +903,7 @@ class Mouse_Select_Area_box
         evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
+        @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.visibility = "hidden"
         @last_effect_item.splice(0)
         return

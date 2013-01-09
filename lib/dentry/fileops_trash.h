@@ -6,4 +6,7 @@
 void fileops_confirm_trash ();
 
 void fileops_empty_trash ();
+
+GFile* fileops_get_trash_entry();
+double fileops_get_trash_count();
 #endif

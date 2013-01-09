@@ -8,8 +8,12 @@ DOCK_HEIGHT = 30.0
 
 BOARD_IMG_PATH = "img/board.png"
 
+<<<<<<< HEAD
 BOARD_IMG_MARGIN_BOTTOM = 6.0
 
 
 #below should not modify
 BOARD_IMG_MARGIN_LEFT = "#{((BOARD_WIDTH - BOARD_IMG_WIDTH) / 2) / BOARD_WIDTH  * 100}%"
+=======
+IN_INIT = true
+>>>>>>> 93ee9134b6e89abf5dd4e63a2f6eb358cc35c58d

@@ -39,8 +39,10 @@ body {
 
 .DesktopEntry {
     width:80px;
-    padding:3px 5px;
+    padding:2px 4px;
     margin:1px 1px;
+    border:1px solid rgba(0,0,0,0);
+    border-radius:3px;
     outline:none;
     text-align:center;
     font-size:small;
@@ -72,21 +74,17 @@ body {
     word-wrap:break-word;
     word-break:break-all;
     background-color:#FFF;
-    outline:none;
-    -webkit-userselect:text;
-    -webkit-usermodify:read-write-plaintext-only;
+    outline: 1px solid #000;
+    -webkit-user-select:text;
+    -webkit-user-modify:read-write-plaintext-only;
 }
 
 .item_hover {
-    padding:2px 4px !important;
-    border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
 }
 
 .item_selected {
-    padding:2px 4px !important;
-    border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.7);
     z-index:10;
@@ -112,13 +110,18 @@ body {
     font-size:small;
     list-style:none outside none;
     box-shadow:0px 4px 16px rgba(0,0,0,0.4);
-    border-top:1px solid rgba(255,255,255,0.6);
     border-left:1px solid rgba(255,255,255,0.3);
     border-right:1px solid rgba(255,255,255,0.3);
     border-radius:3px;
     overflow-y:auto;
 }
 
+.pop_grid_ul_up {
+    border-top:1px solid rgba(255,255,255,0.6);
+}
+.pop_grid_ul_down {
+    border-bottom:1px solid rgba(255,255,255,0.3);
+}
 #pop_grid ul li {
     width:80px;
     height:86px;
