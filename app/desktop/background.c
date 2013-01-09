@@ -30,7 +30,7 @@ gboolean update_root_pixmap()
         cairo_destroy(_background_cairo);
     } else {
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
-        cairo_set_source_rgba(_background_cairo, 0, 0, 0, 0);
+        cairo_set_source_rgba(_background_cairo, 1, 1, 1, 0.2);
         cairo_paint(_background_cairo);
         cairo_destroy(_background_cairo);
     }
@@ -73,6 +73,10 @@ GdkWindow* get_background_window()
                 );
         gdk_window_show(_background_window);
         g_idle_add(update_root_pixmap, NULL);
+        g_timeout_add(300, update_root_pixmap, NULL);
+        g_timeout_add(600, update_root_pixmap, NULL);
+        g_timeout_add(1000, update_root_pixmap, NULL);
+        g_timeout_add(2500, update_root_pixmap, NULL);
     }
     return _background_window;
 }
