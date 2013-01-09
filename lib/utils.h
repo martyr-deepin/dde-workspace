@@ -46,5 +46,6 @@ GKeyFile* load_app_config(const char* name);
 void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
 
 int reparent_to_init();
+void parse_cmd_line (int* argc, char*** argv);
 
 #endif

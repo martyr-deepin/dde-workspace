@@ -299,3 +299,41 @@ int reparent_to_init ()
 	    _exit(EXIT_SUCCESS);
     }
 }
+void parse_cmd_line (int* argc, char*** argv)
+{
+    gboolean should_reparent = FALSE;
+    int i=0;
+    for (;i<(*argc);i++)
+    {
+	if(!g_strcmp0 ((*argv)[i], "-f"))
+	{
+	    should_reparent=TRUE;
+	    break;
+	}
+    }
+    if (i<(*argc))
+    {
+	for (;i<(*argc)-1;i++)
+	{
+	    (*argv)[i]=(*argv)[i+1];
+	}
+	(*argv)[(*argc)-1]=NULL;
+	(*argc)=(*argc)-1;
+    }
+    if (should_reparent)
+    {
+	//close stdin, stdout, stderr 
+	//redirect them to /dev/null
+	int fd;
+	close(STDIN_FILENO);
+	fd=open("/dev/null", O_RDWR);
+	//FIXME: shall we exit?
+	if(fd!=STDIN_FILENO)
+	    return;
+	if(dup2(STDIN_FILENO, STDOUT_FILENO)!=STDOUT_FILENO)
+	    return;
+	if(dup2(STDIN_FILENO, STDERR_FILENO)!=STDERR_FILENO)
+	    return;
+	reparent_to_init();
+    }
+}
