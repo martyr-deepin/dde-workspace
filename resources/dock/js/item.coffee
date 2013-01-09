@@ -35,7 +35,7 @@ calc_app_item_size = ->
         DCore.Dock.release_region(offset + BOARD_WIDTH, 0, screen.width - offset, 30)
 
         h = w * (BOARD_HEIGHT / BOARD_WIDTH)
-        height = h * (BOARD_HEIGHT - BOARD_MARGIN_BOTTOM) / BOARD_HEIGHT + BOARD_MARGIN_BOTTOM
+        height = h * (BOARD_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / BOARD_HEIGHT + BOARD_IMG_MARGIN_BOTTOM
         DCore.Dock.change_workarea_height(height)
     else
         echo "can't find last app #{apps.length}"
@@ -98,20 +98,23 @@ class AppItem extends Widget
         @img = create_element('img', "", @element)
         @img.setAttribute("class", "AppItemImg")
         @img.src = @icon
+        @src1 = @icon
+        @src2 = @icon+"?"
 
     destroy: ->
         super
         calc_app_item_size()
 
     change_size: (w) ->
-        echo "change size"
-        board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
+        board_width = (BOARD_IMG_HEIGHT / BOARD_WIDTH) * w
         board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
 
-        board_margin_top = BOARD_HEIGHT - board_height - BOARD_MARGIN_BOTTOM
+        board_margin_top = BOARD_HEIGHT - board_height - BOARD_IMG_MARGIN_BOTTOM
+        @img.style.marginTop = board_margin_top
+        @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT
+
         @img.style.width = board_width
         @img.style.height = board_height
-        @img.style.marginTop = board_margin_top
 
     do_dragstart: (e)->
         Preview_container.remove_all()
@@ -123,6 +126,11 @@ class AppItem extends Widget
 
     do_dragend: (e)->
         @element.style.opacity = "1"
+        #@img.style.opacity = "0.4"
+        if @img.src == @src1
+            @img.src = @src2
+        else
+            @img.src = @src1
 
     do_dragover: (e) ->
         e.preventDefault()

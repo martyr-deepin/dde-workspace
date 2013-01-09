@@ -30,7 +30,7 @@ class ClientGroup extends AppItem
         board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
         board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
 
-        board_margin_top = BOARD_HEIGHT - board_height - BOARD_MARGIN_BOTTOM
+        board_margin_top = BOARD_HEIGHT - board_height - BOARD_IMG_MARGIN_BOTTOM
         @img.style.width = board_width
         @img.style.height = board_height
         @img.style.marginTop = board_margin_top

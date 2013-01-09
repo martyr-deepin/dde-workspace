@@ -25,6 +25,7 @@
 #include "launcher.h"
 #include "dock_config.h"
 #include "dominant_color.h"
+#include "handle_icon.h"
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -313,10 +314,15 @@ void _update_window_icon(Client* c)
 
     void* img = argb_to_rgba(p, w*h);
 
-    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
-    calc_dominant_color_by_pixbuf(pixbuf, &(c->r), &(c->g), &(c->b));
 
-    c->icon = get_data_uri_by_pixbuf(pixbuf);
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
+    GdkPixbuf* tmp = gdk_pixbuf_scale_simple(pixbuf, IMG_WIDTH, IMG_HEIGHT, GDK_INTERP_HYPER);
+    g_object_unref(pixbuf);
+    pixbuf= tmp;
+
+
+    char* handle_icon(GdkPixbuf* icon);
+    c->icon = handle_icon(pixbuf);
     g_object_unref(pixbuf);
 
     g_free(img);

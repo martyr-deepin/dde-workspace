@@ -16,7 +16,7 @@
 }
 
 .AppItemImg {
-    margin: 6px 10px 6px 10px; /*this value will be dynamic calcute.*/
+    border-raidus: 6px;
     max-width: 48px;
     max-height: 48px;
     -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
@@ -25,7 +25,7 @@
 .OpenIndicate {
     position: absolute;
     bottom: 0px;
-    left: 2.9411764705882353%;
+    left: 2.9411764705882353%; /* TODO calc it*/
     max-width:66px;
     max-height:52px;
     z-index: -100;
