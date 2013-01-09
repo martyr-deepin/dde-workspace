@@ -34,7 +34,6 @@ body {
 
 #item_grid {
     position:fixed;
-    overflow:hidden;
 }
 
 .DesktopEntry {
@@ -57,11 +56,27 @@ body {
     text-overflow:ellipsis;
 }
 
-.DesktopEntry img {
+.DesktopEntry .item_icon {
     width:48px;
     height:48px;
 }
 
+.DesktopEntry .item_attrib {
+    position:absolute;
+    top:21px;
+    right:24px;
+    width:40px;
+    height:12px;
+    list-style:none;
+}
+
+.DesktopEntry .item_attrib li{
+    float:right;
+    padding-left:1px;
+    width:12px;
+    height:12px;
+    display:inline-block;
+}
 .DesktopEntry .item_name {
     outline:none;
 }
@@ -108,7 +123,7 @@ body {
     margin:0;
     padding:10px;
     font-size:small;
-    list-style:none outside none;
+    list-style:none;
     box-shadow:0px 4px 16px rgba(0,0,0,0.4);
     border-left:1px solid rgba(255,255,255,0.3);
     border-right:1px solid rgba(255,255,255,0.3);

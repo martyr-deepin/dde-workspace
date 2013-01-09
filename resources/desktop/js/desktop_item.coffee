@@ -51,14 +51,19 @@ class Item extends Widget
         el.draggable = true
 
         @item_icon = document.createElement("img")
-        @item_icon.src = @get_icon()
+        @item_icon.className = "item_icon"
         @item_icon.draggable = false
         el.appendChild(@item_icon)
 
+        @item_attrib = document.createElement("ul")
+        @item_attrib.className = "item_attrib"
+        el.appendChild(@item_attrib)
+
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = @get_name()
         el.appendChild(@item_name)
+
+        @item_update()
 
 
     destroy : ->
@@ -219,10 +224,23 @@ class Item extends Widget
         return
 
 
-    item_update : () =>
+    item_update : ->
         @item_icon.src = @get_icon()
+
         if @in_rename == false
             @item_name.innerText = @get_name()
+
+        for i in @item_attrib.getElementsByTagName("li")
+            @item_attrib.removeChild(i)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/lock.png\" />"
+        @item_attrib.appendChild(ele)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/link.png\" />"
+        @item_attrib.appendChild(ele)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/invalid.png\" />"
+        @item_attrib.appendChild(ele)
         return
 
 
@@ -532,7 +550,7 @@ class RichDir extends DesktopEntry
         super
 
 
-    item_update : ->
+    item_update : =>
         if @show_pop == true then @reflesh_pop_block()
         super
 
@@ -783,10 +801,14 @@ class ComputerVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 2 then DCore.Desktop.run_terminal()
-            when 3 then DCore.Desktop.run_deepin_settings("system_information")
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            when 1
+                @item_exec()
+            when 2
+                DCore.Desktop.run_terminal()
+            when 3
+                DCore.Desktop.run_deepin_settings("system_information")
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
 class HomeVDir extends DesktopEntry
@@ -838,8 +860,10 @@ class HomeVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 2 then DCore.Desktop.run_terminal()
+            when 1
+                @item_exec()
+            when 2
+                DCore.Desktop.run_terminal()
             when 3
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
@@ -906,6 +930,9 @@ class TrashVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 3 then DCore.DEntry.confirm_trash()
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            when 1
+                @item_exec()
+            when 3
+                DCore.DEntry.confirm_trash()
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"
