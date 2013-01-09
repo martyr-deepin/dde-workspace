@@ -149,3 +149,6 @@ DCore.signal_connect("im_commit", (info)->
     s_box.value += info.Content
     search()
 )
+
+cursor = create_element("span", "cursor", document.body)
+cursor.innerText = "|"
