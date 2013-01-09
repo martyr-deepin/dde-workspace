@@ -301,13 +301,13 @@ int reparent_to_init ()
 }
 void parse_cmd_line (int* argc, char*** argv)
 {
-    gboolean should_reparent = FALSE;
+    gboolean should_reparent = TRUE;
     int i=0;
     for (;i<(*argc);i++)
     {
 	if(!g_strcmp0 ((*argv)[i], "-f"))
 	{
-	    should_reparent=TRUE;
+	    should_reparent=FALSE;
 	    break;
 	}
     }
