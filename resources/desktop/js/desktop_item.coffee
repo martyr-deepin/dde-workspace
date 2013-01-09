@@ -449,6 +449,10 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
+    get_icon : ->
+        DCore.get_theme_icon("folder", 48)
+
+
     do_drop : (evt) =>
         super
 
@@ -760,7 +764,7 @@ class ComputerVDir extends DesktopEntry
 
 
     get_icon : ->
-        "img/computer.png"
+        DCore.get_theme_icon("computer", 48)
 
 
     get_path : ->
@@ -826,7 +830,7 @@ class HomeVDir extends DesktopEntry
 
 
     get_icon : ->
-        "img/home_dir.png"
+        DCore.get_theme_icon("user-home", 48)
 
 
     get_path : ->
@@ -888,9 +892,9 @@ class TrashVDir extends DesktopEntry
 
     get_icon : ->
         if DCore.DEntry.get_trash_count() > 0
-            "img/trash.png"
+            DCore.get_theme_icon("user-trash-full", 48)
         else
-            "img/trash_empty.png"
+            DCore.get_theme_icon("user-trash", 48)
 
 
     get_path : ->
