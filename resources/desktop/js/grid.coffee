@@ -26,11 +26,6 @@ s_height = 0
 s_offset_x = 0
 s_offset_y = 0
 
-# item size
-i_width = 80 + 6 * 2
-i_height = 84 + 4 * 2
-context = null
-
 #grid block size for items
 grid_item_width = 0
 grid_item_height = 0
@@ -55,6 +50,8 @@ last_widget = ""
 
 # store the buffer canvas
 drag_canvas = null
+# store the context of the buffer canvas
+drag_context = null
 # store the left top point of drag image start point
 drag_start = {x : 0, y: 0}
 
@@ -64,24 +61,17 @@ sel = null
 # we need to ingore keyup event when rename files
 ingore_keyup_counts = 0
 
-# DBus handler for invoke nautilus filemanager
-try
-    s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
-catch e
-    echo "error when init nautilus DBus interface(#{e})"
-    s_nautilus = null
-
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    n_cols = Math.floor(wa_width / i_width)
-    n_rows = Math.floor(wa_height / i_height)
-    xx = wa_width % i_width
-    yy = wa_height % i_height
-    gi_width = i_width + Math.floor(xx / n_cols)
-    gi_height = i_height + Math.floor(yy / n_rows)
+    n_cols = Math.floor(wa_width / _ITEM_WIDTH_)
+    n_rows = Math.floor(wa_height / _ITEM_HEIGHT_)
+    xx = wa_width % _ITEM_WIDTH_
+    yy = wa_height % _ITEM_HEIGHT_
+    g_ITEM_WIDTH_ = _ITEM_WIDTH_ + Math.floor(xx / n_cols)
+    g_ITEM_HEIGHT_ = _ITEM_HEIGHT_ + Math.floor(yy / n_rows)
 
-    return [n_cols, n_rows, gi_width, gi_height]
+    return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
 
 
 # update the coordinate of the gird_div to fit the size of the workarea
@@ -102,6 +92,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (id) ->
+    if typeof(id) != "string" then echo "error load_position #{id}"
     pos = localStorage.getObject("id:" + id)
     if pos == null then return null
 
@@ -166,6 +157,30 @@ compare_pos_rect = (base1, base2, pos) ->
 
 calc_pos_to_pos_distance = (base, pos) ->
     Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
+
+
+find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
+    items = speical_item.concat(all_item)
+    pos = load_position(start_item.id)
+    while true
+        if x_delta != 0
+            pos.x += x_delta
+            if x_delta > 0 and pos.x > cols then break
+            else if x_delta < 0 and pos.x < 0 then break
+        if y_delta != 0
+            pos.y += y_delta
+            if y_delta > 0 and pos.y > rows then break
+            else if y_delta < 0 and pos.y < 0 then break
+
+        if detect_occupy(pos) == false then continue
+
+        for i in items
+            w = Widget.look_up(i)
+            if not w? then continue
+            find_pos = load_position(w.id)
+            if (find_pos.x <= pos.x <= find_pos.x + find_pos.width - 1) and (find_pos.y <= pos.y <= find_pos.y + find_pos.height - 1)
+                return w
+    null
 
 
 init_occupy_table = ->
@@ -431,8 +446,8 @@ item_dragstart_handler = (widget, evt) ->
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         evt.dataTransfer.effectAllowed = "all"
 
-        x = evt.x - drag_start.x * i_width
-        y = evt.y - drag_start.y * i_height
+        x = evt.x - drag_start.x * _ITEM_WIDTH_
+        y = evt.y - drag_start.y * _ITEM_HEIGHT_
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
@@ -464,81 +479,71 @@ set_all_item_selected = ->
 
 
 cancel_item_selected = (w) ->
-    ret = false
     i = selected_item.indexOf(w.id)
-    if i >= 0
-        selected_item.splice(i, 1)
-        w.item_normal()
-        ret = true
+    if i < 0 then return false
+    selected_item.splice(i, 1)
+    w.item_normal()
 
-        if last_widget == w.id
-            w.item_blur()
-            last_widget = ""
-
-    return ret
+    if last_widget != w.id
+        if last_widget then Widget.look_up(last_widget)?.item_blur()
+        last_widget = w.id
+        w.item_focus()
+    return true
 
 
 cancel_all_selected_stats = (clear_last = true) ->
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
-
-    if clear_last and last_widget
-        Widget.look_up(last_widget)?.item_blur()
-        last_widget = ""
-
     return
 
 
 update_selected_stats = (w, evt) ->
     if evt.ctrlKey
-        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
-            if w.selected == true then cancel_item_selected(w)
-            else set_item_selected(w)
+        if w.selected == true then cancel_item_selected(w)
+        else set_item_selected(w)
 
     else if evt.shiftKey
-        if evt.type == "mousedown" or evt.type == "click" or evt.type == "contextmenu"
-            if selected_item.length > 1
-                last_one_id = selected_item[selected_item.length - 1]
-                selected_item.splice(selected_item.length - 1, 1)
-                cancel_all_selected_stats(false)
-                selected_item.push(last_one_id)
+        if selected_item.length > 1
+            last_one_id = selected_item[selected_item.length - 1]
+            selected_item.splice(selected_item.length - 1, 1)
+            cancel_all_selected_stats()
+            selected_item.push(last_one_id)
 
-            if selected_item.length == 1
-                end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-                start_pos = load_position(Widget.look_up(selected_item[0]).id)
+        if selected_item.length == 1
+            end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+            start_pos = load_position(Widget.look_up(selected_item[0]).id)
 
-                ret = compare_pos_top_left(start_pos, end_pos)
-                if ret < 0
-                    for key in speical_item.concat(all_item)
-                        val = Widget.look_up(key)
-                        i_pos = load_position(val.id)
-                        if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
-                            set_item_selected(val, true)
-                else if ret == 0
-                    cancel_item_selected(selected_item[0])
-                else
-                    for key in speical_item.concat(all_item)
-                        val = Widget.look_up(key)
-                        i_pos = load_position(val.id)
-                        if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
-                            set_item_selected(val, true)
-
+            ret = compare_pos_top_left(start_pos, end_pos)
+            if ret < 0
+                for key in speical_item.concat(all_item)
+                    val = Widget.look_up(key)
+                    i_pos = load_position(val.id)
+                    if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
+                        set_item_selected(val, true)
+            else if ret == 0
+                cancel_item_selected(selected_item[0])
             else
-                set_item_selected(w)
+                for key in speical_item.concat(all_item)
+                    val = Widget.look_up(key)
+                    i_pos = load_position(val.id)
+                    if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
+                        set_item_selected(val, true)
+
+        else
+            set_item_selected(w)
 
     else
         n = selected_item.indexOf(w.id)
+        if n < 0
+            cancel_all_selected_stats()
+            set_item_selected(w)
 
-        if evt.type == "mousedown" or evt.type == "contextmenu"
-            if n < 0
-                cancel_all_selected_stats(false)
-                set_item_selected(w)
-
-        else if evt.type == "click"
-            if n >= 0
-                selected_item.splice(n, 1)
-                cancel_all_selected_stats(false)
-                selected_item.push(w.id)
+        if n >= 0
+            selected_item.splice(n, 1)
+            cancel_all_selected_stats()
+            selected_item.push(w.id)
+            if last_widget != w.id
+                w.item_blur() if (w = Widget.look_up(last_widget))?
                 last_widget = w.id
 
     update_selected_item_drag_image()
@@ -565,11 +570,8 @@ update_selected_item_drag_image = ->
     if top_left.x > bottom_right.x then top_left.x = bottom_right.x
     if top_left.y > bottom_right.y then top_left.y = bottom_right.y
 
-    drag_canvas.width = (bottom_right.x - top_left.x + 1) * i_width
-    drag_canvas.height = (bottom_right.y - top_left.y + 1) * i_height
-
-    if not context
-        context = drag_canvas.getContext('2d')
+    drag_canvas.width = (bottom_right.x - top_left.x + 1) * _ITEM_WIDTH_
+    drag_canvas.height = (bottom_right.y - top_left.y + 1) * _ITEM_HEIGHT_
 
     for i in selected_item
         w = Widget.look_up(i)
@@ -579,40 +581,40 @@ update_selected_item_drag_image = ->
         pos.x -= top_left.x
         pos.y -= top_left.y
 
-        start_x = pos.x * i_width
-        start_y = pos.y * i_height
+        start_x = pos.x * _ITEM_WIDTH_
+        start_y = pos.y * _ITEM_HEIGHT_
 
         # draw icon
-        context.shadowColor = "rgba(0, 0, 0, 0)"
-        context.drawImage(w.item_icon, start_x + 22, start_y)
+        drag_context.shadowColor = "rgba(0, 0, 0, 0)"
+        drag_context.drawImage(w.item_icon, start_x + 22, start_y)
         # draw text
-        context.shadowOffsetX = 1
-        context.shadowOffsetY = 1
-        context.shadowColor = "rgba(0, 0, 0, 1.0)"
-        context.shadowBlur = 1.5
-        context.font = "bold small san-serif"
-        context.fillStyle = "rgba(255, 255, 255, 1.0)"
-        context.textAlign = "center"
+        drag_context.shadowOffsetX = 1
+        drag_context.shadowOffsetY = 1
+        drag_context.shadowColor = "rgba(0, 0, 0, 1.0)"
+        drag_context.shadowBlur = 1.5
+        drag_context.font = "bold small san-serif"
+        drag_context.fillStyle = "rgba(255, 255, 255, 1.0)"
+        drag_context.textAlign = "center"
         rest_text = w.element.innerText
         line_number = 0
         while rest_text.length > 0
             if rest_text.length < 10 then n = rest_text.length
             else n = 10
-            m = context.measureText(rest_text.substr(0, n)).width
+            m = drag_context.measureText(rest_text.substr(0, n)).width
             if m == 90
             else if m > 90
                 --n
-                while n > 0 and context.measureText(rest_text.substr(0, n)).width > 90
+                while n > 0 and drag_context.measureText(rest_text.substr(0, n)).width > 90
                     --n
             else
                 ++n
-                while n <= rest_text.length and context.measureText(rest_text.substr(0, n)).width < 90
+                while n <= rest_text.length and drag_context.measureText(rest_text.substr(0, n)).width < 90
                     ++n
 
             line_text = rest_text.substr(0, n)
             rest_text = rest_text.substr(n)
 
-            context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
+            drag_context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
             ++line_number
 
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
@@ -653,6 +655,7 @@ gird_left_mousedown = (evt) ->
     evt.stopPropagation()
     if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+        Widget.look_up(last_widget)?.item_blur() if last_widget.length > 0
 
 
 grid_right_click = (evt) ->
@@ -694,13 +697,70 @@ grid_do_itemselected = (evt) ->
         else echo "not implemented function #{evt.id},#{evt.title}"
 
 
+grid_do_keydown_to_shortcut = (evt) ->
+    if evt.keyCode >= 37 and evt.keyCode <= 40
+        evt.stopPropagation()
+        evt.preventDefault()
+
+        if last_widget.length == 0 or not (w = Widget.look_up(last_widget))?
+            w = Widget.look_up(_ITEM_ID_COMPUTER_)
+
+        w_f = null
+        if evt.keyCode == 37         # left arrow
+            w_f = find_item_by_coord_delta(w, -1, 0)
+        else if evt.keyCode == 38    # up arrow
+            w_f = find_item_by_coord_delta(w, 0, -1)
+        else if evt.keyCode == 39    # right arrow
+            w_f = find_item_by_coord_delta(w, 1, 0)
+        else if evt.keyCode == 40    # down arrow
+            w_f = find_item_by_coord_delta(w, 0, 1)
+        if not w_f? then return
+
+        if evt.ctrlKey == true
+            w.item_blur()
+            w_f.item_focus()
+            last_widget = w_f.id
+
+        else if evt.shiftKey == true
+            if selected_item.length > 1
+                start_item = selected_item[0]
+                selected_item.splice(0, 1)
+                cancel_all_selected_stats()
+                selected_item.push(start_item)
+
+            if selected_item.length == 1
+                start_pos = load_position(selected_item[0])
+                end_pos = load_position(w_f.id)
+                if compare_pos_top_left(start_pos, end_pos) < 0
+                    pos_a = start_pos
+                    pos_b = end_pos
+                else
+                    pos_b = start_pos
+                    pos_a = end_pos
+                for i in speical_item.concat(all_item)
+                    if not (w_i = Widget.look_up(i))? then continue
+                    item_pos = load_position(w_i.id)
+                    if compare_pos_rect(pos_a, pos_b, item_pos) == true
+                        set_item_selected(w_i) if not w_i.selected
+
+                if last_widget != w_f.id
+                    w.item_blur() if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
+                    last_widget = w_f.id
+            else
+                w_f.itemselected()
+        else
+            cancel_all_selected_stats()
+            set_item_selected(w_f)
+    return
+
+
 grid_do_keyup_to_shrotcut = (evt) ->
     msg_disposed = false
     if ingore_keyup_counts > 0
         --ingore_keyup_counts
         msg_disposed = true
 
-    else if evt.keyCode == 65         # CTRL+A
+    else if evt.keyCode == 65    # CTRL+A
         if evt.ctrlKey == true and evt.shiftKey == false and evt.altKey == false
             set_all_item_selected()
             msg_disposed = true
@@ -720,7 +780,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
             paste_from_clipboard()
             msg_disposed = true
 
-    else if evt.keyCode == 46   # Delete
+    else if evt.keyCode == 46    # Delete
         if evt.ctrlKey == false and evt.altKey == false
             delete_selected_items(evt.shiftKey == true)
             msg_disposed = true
@@ -737,6 +797,16 @@ grid_do_keyup_to_shrotcut = (evt) ->
             if selected_item.length > 0
                 w = Widget.look_up(last_widget)
                 if w? then w.item_exec()
+            msg_disposed = true
+
+    else if evt.keyCode == 32    # space
+        if evt.ctrlKey == true
+            if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
+                if w.selected == false
+                    set_item_selected(w)
+                    w.item_focus() if not w.has_focus
+                else
+                    cancel_item_selected(w)
             msg_disposed = true
 
     if msg_disposed == true
@@ -770,10 +840,12 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
     div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
+    div_grid.parentElement.addEventListener("keydown", grid_do_keydown_to_shortcut)
     div_grid.parentElement.addEventListener("keyup", grid_do_keyup_to_shrotcut)
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")
+    drag_context = drag_canvas.getContext('2d')
 
     init_speical_desktop_items()
 
@@ -793,10 +865,6 @@ class Mouse_Select_Area_box
         @last_effect_item = new Array
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
-        @element.style.border = "1px solid #eee"
-        @element.style.backgroundColor = "rgba(167,167,167,0.5)"
-        @element.style.zIndex = "30"
-        @element.style.position = "absolute"
         @element.style.visibility = "hidden"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
