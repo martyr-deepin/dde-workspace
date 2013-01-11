@@ -1,0 +1,8 @@
+.gitignore
+build/
+resources/desktop/js/desktop.js
+resources/dock/js/dock.js
+resources/dominant_color/js/main.js
+resources/launcher/js/launcher.js
+resources/lock/js/lock.js
+resources/memory_test/js/test.js
