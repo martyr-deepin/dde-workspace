@@ -116,8 +116,9 @@ class ComboBox extends Widget
         @menu.current = id
 
 DCore.signal_connect("status", (msg) ->
-    status_div = create_element("div", " ", $("#Debug"))
-    status_div.innerText = "status:" + msg.status
+    echo msg.status
+    #    status_div = create_element("div", " ", $("#Debug"))
+    #status_div.innerText = "status:" + msg.status
 )
     
 de_menu_cb = (id, title)->

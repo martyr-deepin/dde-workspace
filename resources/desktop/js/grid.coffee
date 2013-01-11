@@ -872,6 +872,7 @@ class Mouse_Select_Area_box
 
     mousedown_event : (evt) =>
         evt.stopPropagation()
+        evt.preventDefault()
         if evt.button == 0
             @parent_element.addEventListener("mousemove", @mousemove_event)
             @parent_element.addEventListener("mouseup", @mouseup_event)
@@ -968,6 +969,7 @@ class Mouse_Select_Area_box
 
 
     mouseup_event : (evt) =>
+        evt.stopPropagation()
         evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
