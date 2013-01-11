@@ -20,13 +20,11 @@
  **/
 @import url("../../common/css/animation.css");
 body {
-    background: rgba(0, 0, 0, 0.97);
-    color: white;
     -webkit-user-select: none;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
     overflow-y: hidden;
-    /*background: url("/usr/share/backgrounds/default_background.jpg");*/
-    
-    -webkit-filter: blur(2px);
+    -webkit-animation: linear-show 1s ease-out;
 }
 
 .close {

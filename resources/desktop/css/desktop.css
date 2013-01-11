@@ -82,13 +82,13 @@ body {
 
 .DesktopEntry .item_renaming {
     width:100%;
-    cursor:text;
     color:black;
     text-shadow:none;
     word-wrap:break-word;
     word-break:break-all;
     background-color:#FFF;
     outline:#000 solid 1px;
+    cursor:text;
     -webkit-user-select:text;
     -webkit-user-modify:read-write-plaintext-only;
 }
@@ -189,7 +189,7 @@ body {
 #mouse_select_area_box {
     position:absolute;
     border:1px solid #eee;
-    backgroundcolor:rgba(167,167,167,0.5);
+    background-color:rgba(167,167,167,0.5);
     z-index:30;
 }
 
