@@ -33,27 +33,24 @@
 #include <pwd.h>
 #include <glib.h>
 
-#define LOCK_HTML_PATH "file://"RESOURCE_DIR"/lock/lock.html"
+#define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 GtkWidget* lock_container = NULL;
 struct passwd *pw = NULL;
-gboolean is_locked = FALSE;
 
 JS_EXPORT_API
 const gchar* lock_get_username()
 {
     const gchar *username = NULL;
 
+    if(pw != NULL){
+        pw = NULL;
+    }
+
     pw = getpwuid(getuid());
     username = pw->pw_name;
 
     return username;
-}
-
-JS_EXPORT_API
-gboolean lock_is_locked()
-{
-    return is_locked;
 }
 
 JS_EXPORT_API
@@ -66,11 +63,8 @@ void lock_unlock_succeed()
 JS_EXPORT_API
 gboolean lock_try_unlock(const gchar *password)
 {
+    gboolean is_locked;
     gint exit_status;
-
-    if(!is_locked){
-        return FALSE;
-    }
 
     gchar *username = g_strdup(lock_get_username());
     gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, password);
@@ -86,12 +80,13 @@ gboolean lock_try_unlock(const gchar *password)
     }
 
     g_free(username);
+    username = NULL;
+
     g_free(command);
+    command = NULL;
 
     return is_locked;
 }
-
-
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 {
@@ -110,16 +105,16 @@ int main(int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
-    /*g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);*/
+    g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);
     
     gtk_widget_realize(lock_container);
-
+    GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(gtk_widget_get_window(lock_container), &rgba);
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
 
+    gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
 
-    GdkWindow *gdk_window = gdk_get_default_root_window();
-    gdk_window_set_cursor(gdk_window, gdk_cursor_new(GDK_LEFT_PTR));
+    gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
     GdkDisplay *display = gdk_display_get_default();
     g_assert(display);
@@ -129,7 +124,7 @@ int main(int argc, char **argv)
     GdkDevice *device = gdk_device_manager_get_client_pointer(device_manager);
     g_assert(device);
 
-    gdk_device_grab(device, gdk_window, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); 
+    gdk_device_grab(device, gdkwindow, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); 
 
     gtk_widget_show_all(lock_container);
 

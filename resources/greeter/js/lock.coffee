@@ -125,7 +125,7 @@ user = DCore.Lock.get_username()
     
 u = new UserInfo(user, user, "images/img01.jpg")
 u.focus()
-$("#User").appendChild(u.li)
+$("#roundabout").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
