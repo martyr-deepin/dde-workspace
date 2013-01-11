@@ -21,6 +21,10 @@ install(
     DESTINATION bin
     )
 install(
+    PROGRAMS ${PROJECT_BINARY_DIR}/unlockcheck}
+    DESTINATION bin
+    )
+install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
     DESTINATION ${RESOURCE_DIR}
     )
