@@ -586,7 +586,7 @@ update_selected_item_drag_image = ->
 
         # draw icon
         drag_context.shadowColor = "rgba(0, 0, 0, 0)"
-        drag_context.drawImage(w.item_icon, start_x + 22, start_y)
+        drag_context.drawImage(w.item_icon, start_x + 22, start_y, 48, 48)
         # draw text
         drag_context.shadowOffsetX = 1
         drag_context.shadowOffsetY = 1
