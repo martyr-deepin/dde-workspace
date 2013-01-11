@@ -24,6 +24,8 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -282,5 +284,56 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
         return TRUE;
     } else {
         return FALSE;
+    }
+}
+// reparent to init process.
+int reparent_to_init ()
+{
+    switch (fork())
+    {
+	case -1: 
+	    return EXIT_FAILURE;
+	case 0:
+	    return EXIT_SUCCESS;
+	default:
+	    _exit(EXIT_SUCCESS);
+    }
+}
+void parse_cmd_line (int* argc, char*** argv)
+{
+    gboolean should_reparent = TRUE;
+    int i=0;
+    for (;i<(*argc);i++)
+    {
+	if(!g_strcmp0 ((*argv)[i], "-f"))
+	{
+	    should_reparent=FALSE;
+	    break;
+	}
+    }
+    if (i<(*argc))
+    {
+	for (;i<(*argc)-1;i++)
+	{
+	    (*argv)[i]=(*argv)[i+1];
+	}
+	(*argv)[(*argc)-1]=NULL;
+	(*argc)=(*argc)-1;
+    }
+    if (should_reparent)
+    {
+	//close stdin, stdout, stderr 
+	//redirect them to /dev/null
+	int fd;
+	close(STDIN_FILENO);
+	fd=open("/dev/null", O_RDWR);
+	//FIXME: shall we exit?
+	if(fd!=STDIN_FILENO)
+	    return;
+	if(dup2(STDIN_FILENO, STDOUT_FILENO)!=STDOUT_FILENO)
+	    return;
+	if(dup2(STDIN_FILENO, STDERR_FILENO)!=STDERR_FILENO)
+	    return;
+	reparent_to_init();
     }
 }

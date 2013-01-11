@@ -19,10 +19,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-MAX_ITEM_TITLE = 20
-DLCLICK_INTERVAL = 200
-
-
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -51,14 +47,19 @@ class Item extends Widget
         el.draggable = true
 
         @item_icon = document.createElement("img")
-        @item_icon.src = @get_icon()
+        @item_icon.className = "item_icon"
         @item_icon.draggable = false
         el.appendChild(@item_icon)
 
+        @item_attrib = document.createElement("ul")
+        @item_attrib.className = "item_attrib"
+        el.appendChild(@item_attrib)
+
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
-        @item_name.innerText = @get_name()
         el.appendChild(@item_name)
+
+        @item_update()
 
 
     destroy : ->
@@ -114,7 +115,7 @@ class Item extends Widget
                 update_selected_stats(this, evt)
             else
                 if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
-                    @delay_rename_tid = setTimeout(@item_rename, 600)
+                    @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
                 else
                     @clear_delay_rename_timer()
 
@@ -138,37 +139,51 @@ class Item extends Widget
 
 
     display_full_name : ->
-        @element.className += " full_name"
+        @add_css_class("full_name")
         return
 
 
     display_short_name : ->
-        @element.className = @element.className.replace(/\ full_name/g, "")
+        @remove_css_class("full_name")
         return
 
 
     display_selected : =>
-        @element.className += " item_selected"
+        @add_css_class("item_selected")
 
 
     display_not_selected : =>
-        @element.className = @element.className.replace(/\ item_selected/g, "")
+        @remove_css_class("item_selected")
+        return
+
+
+    display_focus : =>
+        @add_css_class("item_focus")
+        return
+
+
+    display_not_focus : =>
+        @remove_css_class("item_focus")
+        return
 
 
     display_hover : =>
-        @element.className += " item_hover"
+        @add_css_class("item_hover")
 
 
     display_not_hover : =>
-        @element.className = @element.className.replace(/\ item_hover/g, "")
+        @remove_css_class("item_hover")
+        return
 
 
     display_cut : ->
         @element.style.opacity = "0.5"
+        return
 
 
     display_not_cut : ->
         @element.style.opacity = "1"
+        return
 
 
     on_event_stoppropagation : (evt) =>
@@ -189,7 +204,7 @@ class Item extends Widget
     item_focus : ->
         @has_focus = true
         @display_full_name()
-        echo "item_focus #{@has_focus}"
+        @display_focus()
         return
 
 
@@ -199,7 +214,7 @@ class Item extends Widget
 
         @display_short_name()
         @has_focus = false
-        echo "item_blur #{@has_focus}"
+        @display_not_focus()
         return
 
 
@@ -219,10 +234,23 @@ class Item extends Widget
         return
 
 
-    item_update : () =>
+    item_update : ->
         @item_icon.src = @get_icon()
+
         if @in_rename == false
             @item_name.innerText = @get_name()
+
+        for i in @item_attrib.getElementsByTagName("li")
+            @item_attrib.removeChild(i)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/lock.png\" draggable=\"false\" />"
+        @item_attrib.appendChild(ele)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/link.png\" draggable=\"false\" />"
+        @item_attrib.appendChild(ele)
+        ele = document.createElement("li")
+        ele.innerHTML = "<img src=\"img/invalid.png\" draggable=\"false\" />"
+        @item_attrib.appendChild(ele)
         return
 
 
@@ -431,6 +459,10 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
+    get_icon : ->
+        DCore.get_theme_icon("folder", 48)
+
+
     do_drop : (evt) =>
         super
 
@@ -479,7 +511,7 @@ class RichDir extends DesktopEntry
                 else
                     @hide_pop_block()
                     if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
-                        @delay_rename_tid = setTimeout(@item_rename, 600)
+                        @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
                     else
                         @clear_delay_rename_timer()
 
@@ -532,7 +564,7 @@ class RichDir extends DesktopEntry
         super
 
 
-    item_update : ->
+    item_update : =>
         if @show_pop == true then @reflesh_pop_block()
         super
 
@@ -650,22 +682,22 @@ class RichDir extends DesktopEntry
 
         # 20px for ul padding, 2px for border, 8px for scrollbar
         if @sub_items_count > 24
-            @div_pop.style.width = "#{col * i_width + 30}px"
+            @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 30}px"
         else
-            @div_pop.style.width = "#{col * i_width + 22}px"
+            @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 22}px"
         arrow = document.createElement("div")
 
         n = Math.ceil(@sub_items_count / col)
         if n > 4 then n = 4
-        n = n * i_height + 40
+        n = n * _ITEM_HEIGHT_ + 40
         if s_height - @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop + Math.min(i_height, @element.offsetHeight) + 16}px"
+            @div_pop.style.top = "#{@element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 16}px"
             arrow_pos = false
         else
             @div_pop.style.top = "#{@element.offsetTop - n}px"
             arrow_pos = true
 
-        n = (col * i_width) / 2
+        n = (col * _ITEM_WIDTH_) / 2
         p = @element.offsetLeft + @element.offsetWidth / 2
         if p < n
             @div_pop.style.left = "0"
@@ -734,7 +766,7 @@ class ComputerVDir extends DesktopEntry
 
 
     get_id : ->
-        "Computer_Virtual_Dir"
+        _ITEM_ID_COMPUTER_
 
 
     get_name : ->
@@ -742,7 +774,7 @@ class ComputerVDir extends DesktopEntry
 
 
     get_icon : ->
-        "img/computer.png"
+        DCore.get_theme_icon("computer", 48)
 
 
     get_path : ->
@@ -783,10 +815,14 @@ class ComputerVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 2 then DCore.Desktop.run_terminal()
-            when 3 then DCore.Desktop.run_deepin_settings("system_information")
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            when 1
+                @item_exec()
+            when 2
+                DCore.Desktop.run_terminal()
+            when 3
+                DCore.Desktop.run_deepin_settings("system_information")
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
 class HomeVDir extends DesktopEntry
@@ -796,7 +832,7 @@ class HomeVDir extends DesktopEntry
 
 
     get_id : ->
-        "Home_Virtual_Dir"
+        _ITEM_ID_USER_HOME_
 
 
     get_name : ->
@@ -804,7 +840,7 @@ class HomeVDir extends DesktopEntry
 
 
     get_icon : ->
-        "img/home_dir.png"
+        DCore.get_theme_icon("user-home", 48)
 
 
     get_path : ->
@@ -838,8 +874,10 @@ class HomeVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 2 then DCore.Desktop.run_terminal()
+            when 1
+                @item_exec()
+            when 2
+                DCore.Desktop.run_terminal()
             when 3
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
@@ -855,7 +893,7 @@ class TrashVDir extends DesktopEntry
 
 
     get_id : ->
-        "Trash_Virtual_Dir"
+        _ITEM_ID_TRASH_BIN_
 
 
     get_name : ->
@@ -864,9 +902,9 @@ class TrashVDir extends DesktopEntry
 
     get_icon : ->
         if DCore.DEntry.get_trash_count() > 0
-            "img/trash.png"
+            DCore.get_theme_icon("user-trash-full", 48)
         else
-            "img/trash_empty.png"
+            DCore.get_theme_icon("user-trash", 48)
 
 
     get_path : ->
@@ -906,6 +944,9 @@ class TrashVDir extends DesktopEntry
 
     do_itemselected : (evt) ->
         switch evt.id
-            when 1 then open_selected_items()
-            when 3 then DCore.DEntry.confirm_trash()
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            when 1
+                @item_exec()
+            when 3
+                DCore.DEntry.confirm_trash()
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"

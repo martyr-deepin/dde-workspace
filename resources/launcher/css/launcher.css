@@ -188,3 +188,22 @@ body {
 ::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(255, 255, 255, 0.2);
 }
+
+
+@-webkit-keyframes tcursor {
+    0% { opacity: 0.0;}
+    100% { opacity: 1; }
+}
+.cursor {
+    display: none;
+    position: fixed;
+    left: 600px;
+    top: 29px;
+    color: black;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: tcursor;
+    -webkit-animation-duration: 0.8s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}

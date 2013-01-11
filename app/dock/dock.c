@@ -62,6 +62,8 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
 int main(int argc, char* argv[])
 {
+    //remove  option -f 
+    parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
 

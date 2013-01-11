@@ -27,8 +27,11 @@ try_set_title = (el, text, width)->
             el.setAttribute('title', text)
     , 200)
 
-s_dock = DCore.DBus.session("com.deepin.dde.dock")
-window.t = s_dock
+try
+    s_dock = DCore.DBus.session("com.deepin.dde.dock")
+catch error
+    s_dock = null
+
 class Item extends Widget
     constructor: (@id, @core)->
         super
@@ -56,12 +59,12 @@ class Item extends Widget
             [1, _("Open")],
             [],
             [2, _("SendToDesktop")],
-            [3, _("ToDock")],
+            [3, _("ToDock"), s_dock!=null],
         ]
     do_itemselected: (e)=>
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
-            when 2 then apply_flash(@img, 2)
+            when 2 then DCore.DEntry.copy([@core], DCore.Launcher.get_desktop_entry())
             when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_path(@core))
 
 

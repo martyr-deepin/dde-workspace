@@ -34,16 +34,14 @@ body {
 
 #item_grid {
     position:fixed;
-    overflow:hidden;
 }
 
 .DesktopEntry {
     width:80px;
     padding:2px 4px;
     margin:1px 1px;
-    border:1px solid rgba(0,0,0,0);
+    border:1px solid transparent;
     border-radius:3px;
-    outline:none;
     text-align:center;
     font-size:small;
     color:white;
@@ -53,15 +51,31 @@ body {
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
-    overflow:hidden;
     text-overflow:ellipsis;
+    overflow:hidden;
 }
 
-.DesktopEntry img {
+.DesktopEntry .item_icon {
     width:48px;
     height:48px;
 }
 
+.DesktopEntry .item_attrib {
+    position:absolute;
+    top:21px;
+    right:24px;
+    width:48px;
+    height:12px;
+    list-style:none;
+}
+
+.DesktopEntry .item_attrib li{
+    float:right;
+    padding-left:2px;
+    width:12px;
+    height:12px;
+    display:inline-block;
+}
 .DesktopEntry .item_name {
     outline:none;
 }
@@ -74,7 +88,7 @@ body {
     word-wrap:break-word;
     word-break:break-all;
     background-color:#FFF;
-    outline: 1px solid #000;
+    outline:#000 solid 1px;
     -webkit-user-select:text;
     -webkit-user-modify:read-write-plaintext-only;
 }
@@ -84,10 +98,14 @@ body {
     background-color:rgba(68, 132, 195, 0.3);
 }
 
+.item_focus {
+    outline:#777 solid 1px;
+    z-index:10;
+}
+
 .item_selected {
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.7);
-    z-index:10;
 }
 
 .full_name {
@@ -108,7 +126,7 @@ body {
     margin:0;
     padding:10px;
     font-size:small;
-    list-style:none outside none;
+    list-style:none;
     box-shadow:0px 4px 16px rgba(0,0,0,0.4);
     border-left:1px solid rgba(255,255,255,0.3);
     border-right:1px solid rgba(255,255,255,0.3);
@@ -166,6 +184,13 @@ body {
     background-image:url("../img/arrow_bottom.png");
     position:absolute;
     bottom:-6px;
+}
+
+#mouse_select_area_box {
+    position:absolute;
+    border:1px solid #eee;
+    backgroundcolor:rgba(167,167,167,0.5);
+    z-index:30;
 }
 
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */

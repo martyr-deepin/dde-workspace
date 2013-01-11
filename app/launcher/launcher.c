@@ -314,3 +314,11 @@ char* launcher_get_categories()
         return g_strdup("[]");
     }
 }
+
+GFile* launcher_get_desktop_entry()
+{
+    char* desktop = get_desktop_dir(FALSE);
+    GFile* r = g_file_new_for_path(desktop);
+    g_free(desktop);
+    return r;
+}

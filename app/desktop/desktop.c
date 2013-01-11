@@ -199,9 +199,15 @@ void send_lost_focus()
 {
     js_post_message_simply("lost_focus", NULL);
 }
+void send_get_focus()
+{
+    js_post_message_simply("get_focus", NULL);
+}
 
 int main(int argc, char* argv[])
 {
+    //remove  option -f 
+    parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
@@ -221,6 +227,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(webview);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect(webview, "focus-out-event", G_CALLBACK(send_lost_focus), NULL);
+    g_signal_connect(webview, "focus-in-event", G_CALLBACK(send_get_focus), NULL);
 
     GdkWindow* get_background_window();
     GdkWindow* background = get_background_window();
