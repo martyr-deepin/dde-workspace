@@ -9,61 +9,41 @@ class ClientGroup extends AppItem
         @client_infos = {}
 
         @indicate = create_img("OpenIndicate", "", @element)
+        @indicate.style.left = INDICATER_IMG_MARGIN_LEFT
 
         @in_iconfiy = false
         @leader = null
 
-        @board2 = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
-        @board2.style.zIndex = -9
+        @img2 = create_img("AppItemImg", "", @element)
+        @img3 = create_img("AppItemImg", "", @element)
 
-        @board3 = create_img("AppItemBoard", BOARD_IMG_PATH, @element)
-        @board3.style.zIndex = -10
+        @img2.style.marginLeft = BOARD_IMG2_MARGIN_LEFT
+        @img3.style.marginLeft = BOARD_IMG3_MARGIN_LEFT
 
         @to_normal_status()
-
-    update_board_color: ->
-        @board.style.backgroundColor = @board_rgb
-        @board2.style.backgroundColor = @board_rgb
-        @board3.style.backgroundColor = @board_rgb
-
-    change_size: (w) ->
-        board_width = (BOARD_IMG_WIDTH / BOARD_WIDTH) * w
-        board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
-
-        board_margin_top = BOARD_HEIGHT - board_height - BOARD_IMG_MARGIN_BOTTOM
-        @img.style.width = board_width
-        @img.style.height = board_height
-        @img.style.marginTop = board_margin_top
-
-        w = BOARD_WIDTH * board_width / BOARD_IMG_WIDTH
-        h = w * 60 / BOARD_WIDTH
-        t = BOARD_HEIGHT - h
-        #@indicate.style.width = w
-        #@indicate.style.height = h
-        #@indicate.style.top = t
 
     handle_clients_change: ->
         switch @n_clients.length
             when 1
-                @board.style.display = "block"
-                @board2.style.display = "none"
-                @board3.style.display = "none"
-                @board.style.top = @_board_margin_top
+                @img.style.display = "block"
+                @img2.style.display = "none"
+                @img3.style.display = "none"
+                @img.style.marginTop = @_img_margin_top
             when 2
-                @board.style.display = "block"
-                @board2.style.display = "block"
-                @board3.style.display = "none"
+                @img.style.display = "block"
+                @img2.style.display = "block"
+                @img3.style.display = "none"
 
-                @board.style.top = @_board_margin_top + 1
-                @board2.style.top = @_board_margin_top - 1
+                @img.style.marginTop = Number(@_img_margin_top) - 1
+                @img2.style.marginTop = Number(@_img_margin_top) + 1
             else
-                @board.style.display = "block"
-                @board2.style.display = "block"
-                @board3.style.display = "block"
+                @img.style.display = "block"
+                @img2.style.display = "block"
+                @img3.style.display = "block"
 
-                @board.style.top = @_board_margin_top + 2
-                @board2.style.top = @_board_margin_top
-                @board3.style.top = @_board_margin_top - 2
+                @img.style.marginTop = Number(@_img_margin_top) - 2
+                @img2.style.marginTop = @_img_margin_top
+                @img3.style.marginTop = Number(@_img_margin_top) + 2
 
     to_active_status : (id)->
         @in_iconfiy = false
@@ -76,13 +56,6 @@ class ClientGroup extends AppItem
     to_normal_status : ->
         @indicate.src = "img/s_app_open.png"
 
-    try_swap_launcher: ->
-        l = Widget.look_up(@app_id)
-        if l?
-            swap_element(@element, l.element)
-            apply_rotate(@element, 0.2)
-            l.destroy()
-
     withdraw_child: (id)->
         @w_clients.push(id)
         @remove_client(id, true)
@@ -92,8 +65,7 @@ class ClientGroup extends AppItem
         @w_clients.remove(id)
         @add_client(info.id)
 
-    update_client: (id, icon, rgb, title)->
-        @board_rgb = rgb
+    update_client: (id, icon, title)->
         @img.src = icon if id == @leader
         in_withdraw = id in @w_clients
         @client_infos[id] =
@@ -108,7 +80,7 @@ class ClientGroup extends AppItem
             #TODO: new leader should insert at index 1
             @n_clients.remove(id)
             @n_clients.push id
-            apply_rotate(@element, 1)
+            apply_rotate(@img, 1)
 
             if @leader != id
                 @leader = id
@@ -138,17 +110,28 @@ class ClientGroup extends AppItem
         @n_clients.push(@n_clients.shift())
         @leader = @n_clients[0]
         @update_leader()
-        
+
     update_leader: ->
         @img.src = @client_infos[@leader].icon
+        try
+            @img2.src = @client_infos[@n_clients[1]].icon
+            @img3.src = @client_infos[@n_clients[2]].icon
+
+    try_swap_launcher: ->
+        l = Widget.look_up(@app_id)
+        if l?
+            swap_element(@element, l.element)
+            apply_rotate(@img, 0.2)
+            l.destroy()
+
+    try_build_launcher: ->
+        info = DCore.Dock.get_launcher_info(@app_id.toLowerCase())
+        if info
+            new Launcher(info.Id, info.Icon, info.Core)
 
     destroy: ->
         @element.style.display = "block"
-        info = DCore.Dock.get_launcher_info(@app_id)
-        if info
-            l = new Launcher(info.Id, info.Icon, info.Core)
-            swap_element(l.element, @element)
-            apply_rotate(l.element, 0.5)
+        @try_build_launcher()
         super
 
     do_buildmenu: ->
@@ -184,4 +167,3 @@ class ClientGroup extends AppItem
 
     do_mouseover: (e)->
         #Preview_container.show_group(@)
-

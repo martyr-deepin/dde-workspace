@@ -27,15 +27,13 @@ DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
 
 DCore.signal_connect("active_window_changed", (info)->
     active_group?.to_normal_status()
-    active_group = Widget.look_up("le_"+info.clss)
+    active_group = Widget.look_up("le_"+info.app_id)
     active_group?.to_active_status(info.id)
 )
 
 DCore.signal_connect("launcher_added", (info) ->
     c = Widget.look_up(info.Id)
-    if c
-        echo "have..#{info.Id}"
-    else
+    if not c
         new Launcher(info.Id, info.Icon, info.Core)
 )
 
@@ -44,25 +42,24 @@ DCore.signal_connect("launcher_removed", (info) ->
 )
 
 DCore.signal_connect("task_updated", (info) ->
-    leader = Widget.look_up("le_" + info.clss)
+    leader = Widget.look_up("le_" + info.app_id)
 
     if not leader
-        leader = new ClientGroup("le_"+info.clss, info.icon, info.app_id)
+        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id)
 
-    rgb = "rgb(#{info.r}, #{info.g}, #{info.b})"
-    leader.update_client(info.id, info.icon, rgb, info.title)
+    leader.update_client(info.id, info.icon, info.title)
 )
 
 DCore.signal_connect("task_removed", (info) ->
-    Widget.look_up("le_"+info.clss)?.remove_client(info.id)
+    Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
 )
 
 DCore.signal_connect("task_withdraw", (info) ->
-    Widget.look_up("le_" + info.clss).withdraw_child(info.id)
+    Widget.look_up("le_" + info.app_id).withdraw_child(info.id)
 )
 
 DCore.signal_connect("task_normal", (info) ->
-    Widget.look_up("le_" + info.clss).normal_child(info.id)
+    Widget.look_up("le_" + info.app_id).normal_child(info.id)
 )
 
 DCore.signal_connect("in_mini_mode", ->
@@ -76,10 +73,10 @@ DCore.signal_connect("in_normal_mode", ->
 DCore.Dock.emit_webview_ok()
 
 setTimeout(calc_app_item_size, 100)
-setTimeout(calc_app_item_size, 1000)
-setTimeout(calc_app_item_size, 1800)
-setTimeout(calc_app_item_size, 2800)
-setTimeout(calc_app_item_size, 4000)
+#setTimeout(calc_app_item_size, 1000)
+#setTimeout(calc_app_item_size, 1800)
+#setTimeout(calc_app_item_size, 2800)
+#setTimeout(calc_app_item_size, 4000)
 
 format_two_bit = (s) ->
     if s < 10

@@ -32,10 +32,10 @@ calc_app_item_size = ->
         DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        DCore.Dock.release_region(offset + BOARD_WIDTH, 0, screen.width - offset, 30)
+        DCore.Dock.release_region(offset + ITEM_WIDTH, 0, screen.width - offset, 30)
 
-        h = w * (BOARD_HEIGHT / BOARD_WIDTH)
-        height = h * (BOARD_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / BOARD_HEIGHT + BOARD_IMG_MARGIN_BOTTOM
+        h = w * (ITEM_HEIGHT / ITEM_WIDTH)
+        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM
         DCore.Dock.change_workarea_height(height)
     else
         echo "can't find last app #{apps.length}"
@@ -95,26 +95,29 @@ class AppItem extends Widget
         super
         app_list.append(@)
         @add_css_class("AppItem")
-        @img = create_element('img', "", @element)
-        @img.setAttribute("class", "AppItemImg")
-        @img.src = @icon
-        @src1 = @icon
-        @src2 = @icon+"?"
+        @img = create_img("AppItemImg", @icon, @element)
 
     destroy: ->
         super
         calc_app_item_size()
 
-    change_size: (w) ->
-        board_width = (BOARD_IMG_HEIGHT / BOARD_WIDTH) * w
-        board_height = board_width * (BOARD_IMG_HEIGHT / BOARD_IMG_WIDTH)
+    change_size: (item_width) ->
+        icon_width = (ICON_HEIGHT / ITEM_WIDTH) * item_width
+        icon_height = icon_width * (ICON_HEIGHT / ICON_WIDTH)
 
-        board_margin_top = BOARD_HEIGHT - board_height - BOARD_IMG_MARGIN_BOTTOM
-        @img.style.marginTop = board_margin_top
+        @_img_margin_top = ITEM_HEIGHT - icon_height - BOARD_IMG_MARGIN_BOTTOM
+
+        @img.style.marginTop = @_img_margin_top
         @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT
+        @img.style.width = icon_width
+        @img.style.height = icon_height
 
-        @img.style.width = board_width
-        @img.style.height = board_height
+        if @indicate
+            w = INDICATER_WIDTH / ITEM_WIDTH * item_width
+            h = w * INDICATER_HEIGHT / INDICATER_WIDTH
+            @indicate.style.width = w
+            @indicate.style.height = h
+            @indicate.style.top = ITEM_HEIGHT - h
 
     do_dragstart: (e)->
         Preview_container.remove_all()
@@ -126,11 +129,6 @@ class AppItem extends Widget
 
     do_dragend: (e)->
         @element.style.opacity = "1"
-        #@img.style.opacity = "0.4"
-        if @img.src == @src1
-            @img.src = @src2
-        else
-            @img.src = @src1
 
     do_dragover: (e) ->
         e.preventDefault()

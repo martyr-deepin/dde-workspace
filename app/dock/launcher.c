@@ -24,7 +24,8 @@
 #include "launcher.h"
 #include "dock_config.h"
 #include "tasklist.h"
-#include "desktop_file_matcher.h"
+#include "xid2aid.h"
+#include "handle_icon.h"
 
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
@@ -77,14 +78,24 @@ JSValueRef build_app_info(const char* app_id)
     }
 
     if (icon_name != NULL) {
+
         if (g_str_has_prefix(icon_name, "data:image")) {
             json_append_string(json, "Icon", icon_name);
         } else {
             char* icon_path = icon_name_to_path(icon_name, 48);
-            json_append_string(json, "Icon", icon_path);
+            if (is_deepin_icon(icon_path)) {
+                json_append_string(json, "Icon", icon_path);
+            } else {
+                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_size(icon_path, IMG_WIDTH, IMG_HEIGHT, NULL);
+                char* icon_data = handle_icon(pixbuf);
+                g_object_unref(pixbuf);
+                json_append_string(json, "Icon", icon_data);
+                g_free(icon_data);
+            }
             g_free(icon_path);
         }
         g_free(icon_name);
+
     }
     g_object_unref(info);
     return json;

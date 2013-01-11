@@ -16,6 +16,7 @@
 }
 
 .AppItemImg {
+    position: absolute;
     border-raidus: 6px;
     max-width: 48px;
     max-height: 48px;
@@ -24,8 +25,6 @@
 
 .OpenIndicate {
     position: absolute;
-    bottom: 0px;
-    left: 2.9411764705882353%; /* TODO calc it*/
     max-width:66px;
     max-height:52px;
     z-index: -100;

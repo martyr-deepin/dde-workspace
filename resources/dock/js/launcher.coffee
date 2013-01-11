@@ -1,6 +1,13 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
+        @try_swap_clientgroup()
+
+    try_swap_clientgroup: ->
+        group = Widget.look_up("le"+@id)
+        if group?
+            swap_element(@element, group.element)
+            group.destroy()
 
     do_click: (e)->
         DCore.DEntry.launch(@core, [])

@@ -1,6 +1,9 @@
 #include <gtk/gtk.h>
+#include <string.h>
 #include "dominant_color.h"
+#include "xid2aid.h"
 #include "handle_icon.h"
+#include "xdg_misc.h"
 
 #define BOARD_PATH RESOURCE_DIR"/dock/img/board.png"
 #define BOARD_MASK_PATH RESOURCE_DIR"/dock/img/mask.png"
@@ -44,8 +47,8 @@ size_t __data_size = 0;
 cairo_status_t write_func(void* store, unsigned char* data, unsigned int length)
 {
     __data_size = length + __data_size;
-    __data_base64 = g_renew(guchar*, __data_base64, __data_size);
-    memmove(__data_base64 + __data_size - length, data, length);
+    __data_base64 = g_renew(guchar, __data_base64, __data_size);
+    memmove((void*)(__data_base64 + __data_size - length), (void*)data, (size_t)length);
     return CAIRO_STATUS_SUCCESS;
 }
 
@@ -53,7 +56,7 @@ char* get_data_uri_by_surface(cairo_surface_t* surface)
 {
     __data_base64 = NULL;
     __data_size = 0;
-    cairo_surface_write_to_png_stream(surface, write_func, NULL);
+    cairo_surface_write_to_png_stream(surface, (cairo_write_func_t)write_func, NULL);
     guchar* base64 = g_base64_encode(__data_base64, __data_size);
     g_free(__data_base64);
 
@@ -61,4 +64,39 @@ char* get_data_uri_by_surface(cairo_surface_t* surface)
     g_free(base64);
 
     return ret;
+}
+
+
+gboolean is_deepin_icon(const char* path)
+{
+    return g_str_has_prefix(path, "/usr/share/icons/GoodIcons/");
+}
+
+char* try_get_deepin_icon(const char* app_id)
+{
+    if (is_deepin_app_id(app_id)) {
+        switch (get_deepin_app_id_operator(app_id)) {
+            case ICON_OPERATOR_USE_ICONNAME:
+                {
+                    char* icon_name =  get_deepin_app_id_value(app_id);
+                    char* icon_path = icon_name_to_path(icon_name, 48);
+                    printf("find icon path %s -> %s\n", icon_name, icon_path);
+                    g_free(icon_name);
+                    return icon_path;
+                }
+            case ICON_OPERATOR_USE_RUNTIME:
+                return NULL;
+            case ICON_OPERATOR_USE_PATH:
+                g_warning("Hasn't support set path Icon Handler\n");
+                break;
+            case ICON_OPERATOR_SET_DOMINANTCOLOR:
+                g_warning("Hasn't support set dominantcolor Icon Handler\n");
+                break;
+            default:
+                g_warning("Hasn't support unknow Icon Handler\n");
+
+        }
+    } else {
+        return NULL;
+    }
 }

@@ -21,7 +21,7 @@
 #include "X_misc.h"
 #include "pixbuf.h"
 #include "utils.h"
-#include "desktop_file_matcher.h"
+#include "xid2aid.h"
 #include "launcher.h"
 #include "dock_config.h"
 #include "dominant_color.h"
@@ -72,18 +72,18 @@ void _init_atoms()
 }
 
 typedef struct {
-    char* title;
-    char* clss;
+    char* title; /* _NET_WM_NAME */
+    char* clss; /* WMClass */
     char* app_id; /*current is executabe file's name*/
+    char* exec;
     int state;
     gboolean is_maximized;
+
     Window window;
     GdkWindow* gdkwindow;
 
     char* icon;
-    double r;
-    double g;
-    double b;
+    gboolean need_update_icon;
 } Client;
 
 GHashTable* _clients_table = NULL;
@@ -95,7 +95,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 void _update_window_icon(Client *c);
 void _update_window_title(Client *c); 
 void _update_window_class(Client *c);
-void _set_window_exec(Client *c);
+void _update_window_appid(Client *c);
 
 void _update_task_list(Window root);
 void update_active_window(Display* display, Window root);
@@ -110,12 +110,20 @@ Client* create_client_from_window(Window w)
     c->window = w;
     c->gdkwindow = win;
     c->is_maximized = FALSE;
+    c->app_id = NULL;
 
-    _set_window_exec(c);
 
-    _update_window_icon(c);
     _update_window_title(c);
     _update_window_class(c);
+    _update_window_appid(c);
+
+    c->need_update_icon = FALSE;
+    c->icon = try_get_deepin_icon(c->app_id);
+
+    if (c->icon == NULL) {
+        c->need_update_icon = TRUE;
+        _update_window_icon(c);
+    }
 
     return c;
 }
@@ -125,12 +133,9 @@ void _update_client_info(Client *c)
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
     json_append_string(json, "title", c->title);
-    json_append_string(json, "clss", c->clss);
     json_append_string(json, "icon", c->icon);
-    json_append_number(json, "r", floor(c->r * 256));
-    json_append_number(json, "g", floor(c->g * 256));
-    json_append_number(json, "b", floor(c->b * 256));
     json_append_string(json, "app_id", c->app_id);
+    g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
 void active_window_changed(Display* dsp, Window w)
@@ -141,7 +146,7 @@ void active_window_changed(Display* dsp, Window w)
         if (c != NULL) {
             JSObjectRef json = json_create();
             json_append_number(json, "id", (int)w);
-            json_append_string(json, "clss", c->clss);
+            json_append_string(json, "app_id", c->app_id);
             js_post_message("active_window_changed", json);
         } else {
             /*g_warning("0x%x get focus..\n", (int)w);*/
@@ -154,7 +159,7 @@ void client_free(Client* c)
 {
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
-    json_append_string(json, "clss", c->clss);
+    json_append_string(json, "app_id", c->app_id);
     js_post_message("task_removed", json);
 
     gdk_window_remove_filter(c->gdkwindow,
@@ -199,9 +204,9 @@ gboolean is_normal_window(Window w)
 
     if (is_skip_taskbar(w)) return FALSE;
     gulong items;
+
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
-    if (data == NULL)
-        return FALSE;
+    if (data == NULL) return TRUE; //The sdl program like blender, wesnoth didn't set this ATOM
     for (int i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
@@ -282,16 +287,6 @@ void _update_window_icon(Client* c)
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
         c->icon = g_strdup(NOT_FOUND_IMG_PATH);
-        GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(c->icon, NULL);
-        //TODO: the NOT_FOUND_IMG_PATH is an relative path, so it can't create an valid GdkPixbuf!!
-        if (pixbuf) {
-            calc_dominant_color_by_pixbuf(pixbuf, &(c->r), &(c->g), &(c->b));
-            g_object_unref(pixbuf);
-        } else {
-            c->r = DEFAULT_COLOR_R;
-            c->g = DEFAULT_COLOR_G;
-            c->b = DEFAULT_COLOR_B;
-        }
         return;
     }
 
@@ -335,7 +330,6 @@ void _update_window_title(Client* c)
     long item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
-        /*c->title = json_escape(name);*/
         c->title = g_strdup(name);
     else
         c->title = g_strdup("Unknow Name");
@@ -343,16 +337,36 @@ void _update_window_title(Client* c)
 
 }
 
-void _set_window_exec(Client* c)
+void _update_window_appid(Client* c)
 {
+    char* app_id = NULL;
     long item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
     if (s_pid != NULL) {
-        c->app_id = get_app_id_by_pid(*s_pid);
+        char* exec_name = NULL;
+        char* exec_args = NULL;
+        get_pid_info(*s_pid, &exec_name, &exec_args);
+        if (exec_name != NULL) {
+            app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
+            if (app_id == NULL)
+                app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
+            if (app_id == NULL && exec_args != NULL)
+                app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
+            if (app_id == NULL)
+                app_id = g_strdup(exec_name);
+        } else {
+            app_id = g_strdup(c->clss);
+        }
         XFree(s_pid);
+        g_free(exec_name);
+        g_free(exec_args);
     } else {
-        c->app_id = NULL;
+        //if there is no ATOM_WINDOW_PID use WMCLASS 
+        app_id = g_strdup(c->clss);
     }
+
+    g_free(c->app_id);
+    c->app_id = app_id;
 }
 
 void _update_window_class(Client* c)
@@ -396,7 +410,7 @@ void _update_window_state(Client* c)
                 {
                     JSObjectRef json = json_create();
                     json_append_number(json, "id", (int)c->window);
-                    json_append_string(json, "clss", c->clss);
+                    json_append_string(json, "app_id", c->app_id);
                     js_post_message("task_withdraw", json);
                     break;
                 }
@@ -405,7 +419,7 @@ void _update_window_state(Client* c)
                 {
                     JSObjectRef json = json_create();
                     json_append_number(json, "id", (int)c->window);
-                    json_append_string(json, "clss", c->clss);
+                    json_append_string(json, "app_id", c->app_id);
                     js_post_message("task_normal", json);
                     break;
                 }
@@ -439,13 +453,13 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
         XPropertyEvent* ev = xevent;
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(win));
         if (c != NULL) {
-            if (ev->atom == ATOM_WINDOW_ICON) {
+            if (ev->atom == ATOM_WINDOW_ICON && c->need_update_icon) {
                 // we didn't update window_icon now because of hasn't decide how handle the same class applications' icon
                 _update_window_icon(c);
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NAME) {
                 _update_window_title(c);
-                _update_client_info(c);
+                _update_window_class(c);
             } else if (ev->atom == ATOM_WINDOW_STATE) {
                 _update_window_state(c);
                 _update_client_info(c);
@@ -555,12 +569,6 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 
     canvas_custom_draw_did(cr, NULL);
 }
-
-double test_get_n()
-{
-    return (double)g_hash_table_size(_clients_table);
-}
-
 
 JS_EXPORT_API
 gboolean dock_request_dock_by_client_id(double id)
