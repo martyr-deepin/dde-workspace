@@ -94,7 +94,6 @@ create_img = (clss, src, parent)->
     el.draggable = false
     return el
 
-
 calc_text_size = (txt, width)->
     tmp = create_element('div', 'hidden_calc_text', document.body)
     tmp.innerText = txt

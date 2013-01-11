@@ -9,9 +9,6 @@ file_test = ->
     echo DCore.DEntry.get_basename(a)
     echo DCore.DEntry.get_id(a)
 
-
-
-
 list_test = (path)->
     #path = "/usr/bin"
     path = "/usr/share"
@@ -35,6 +32,13 @@ icon_test = ->
     echo DCore.DEntry.get_path(a)
     echo DCore.DEntry.get_name(a)
 
+    
+    
+list_session = ->
+    DCore.Greeter.get_sessions()
+    # DCore.Greeter.test()
+    
 #run(file_test)
 #run(list_test)
-run(icon_test, 1)
+# run(icon_test, 1)
+run(list_session)
