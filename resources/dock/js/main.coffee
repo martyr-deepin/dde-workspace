@@ -20,6 +20,7 @@
 
 board.width = screen.width
 board.height = DOCK_HEIGHT
+IN_INIT = true
 DCore.Dock.draw_board(board)
 
 DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
@@ -110,3 +111,6 @@ setTimeout(init_app_item_size, 1800)
 setTimeout(init_app_item_size, 2800)
 setTimeout(init_app_item_size, 4000)
 DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
+setTimeout(->
+    IN_INIT = false
+, 1000)
