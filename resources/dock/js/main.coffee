@@ -17,6 +17,61 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+board.width = screen.width
+board.height = DOCK_HEIGHT
+DCore.Dock.draw_board(board)
+
+DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
+
+
+DCore.signal_connect("active_window_changed", (info)->
+    active_group?.to_normal_status()
+    active_group = Widget.look_up("le_"+info.app_id)
+    active_group?.to_active_status(info.id)
+)
+
+DCore.signal_connect("launcher_added", (info) ->
+    c = Widget.look_up(info.Id)
+    if not c
+        new Launcher(info.Id, info.Icon, info.Core)
+)
+
+DCore.signal_connect("launcher_removed", (info) ->
+    Widget.look_up(info.Id)?.destroy()
+)
+
+DCore.signal_connect("task_updated", (info) ->
+    leader = Widget.look_up("le_" + info.app_id)
+
+    if not leader
+        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id)
+
+    leader.update_client(info.id, info.icon, info.title)
+)
+
+DCore.signal_connect("task_removed", (info) ->
+    Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
+)
+
+DCore.signal_connect("task_withdraw", (info) ->
+    Widget.look_up("le_" + info.app_id).withdraw_child(info.id)
+)
+
+DCore.signal_connect("task_normal", (info) ->
+    Widget.look_up("le_" + info.app_id).normal_child(info.id)
+)
+
+DCore.signal_connect("in_mini_mode", ->
+    run_post(calc_app_item_size())
+)
+
+DCore.signal_connect("in_normal_mode", ->
+    run_post(calc_app_item_size())
+)
+
+DCore.Dock.emit_webview_ok()
+
 format_two_bit = (s) ->
     if s < 10
         return "0#{s}"
@@ -44,9 +99,14 @@ setInterval( ->
 , 1000
 )
 
-
-board.width = screen.width
-board.height = 30
-DCore.Dock.draw_board(board)
-
-DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
+init_app_item_size = ->
+    apps = $s(".AppItem")
+    w = apps[0].offsetWidth
+    for i in apps
+        Widget.look_up(i.id).change_size(w)
+setTimeout(init_app_item_size, 100)
+setTimeout(init_app_item_size, 1000)
+setTimeout(init_app_item_size, 1800)
+setTimeout(init_app_item_size, 2800)
+setTimeout(init_app_item_size, 4000)
+DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)

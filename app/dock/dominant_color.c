@@ -68,31 +68,33 @@ void hsv2rgb(double h, double s, double v, double* r, double*g, double *b)
 
 typedef void (*ClampFunc)(double*, double*);
 
-void calc(guchar* data, guint length, int skip, double *r, double *g, double *b, ClampFunc func)
+void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
 {
     long long a_r = 0;
     long long a_g = 0;
     long long a_b = 0;
-    long count = length / skip;
+    long count = 0;
     for (guint i=0; i<length; i += skip) {
-        if (data[i+3] < 125) {
-            count --;
+        if (skip == 4 && data[i+3] < 125) {
             continue;
         }
         a_r += data[i];
         a_g += data[i+1];
         a_b += data[i+2];
+        count++;
     }
     double h, s, v;
     rgb2hsv(a_r / count, a_g / count, a_b / count, &h, &s, &v);
-    func(&s, &v);
-    hsv2rgb(h, s, v, r, g, b);
+    if (s < 0.05)
+        hsv2rgb(200/360.0, 0.5, 0.8, r, g, b);
+    else
+        hsv2rgb(h, 0.5, 0.8, r, g, b);
 }
 
-static double _sb = 0.15;
-static double _sr = 0.1;
+static double _sb = 0.5;
+static double _sr = 0.0000001;
 static double _vb = 0.8;
-static double _vr = 0.1;
+static double _vr = 0.0000001;
 static void _clamp1(double* s, double *v)
 {
     *s = _sb + _sr * (*s);
@@ -117,11 +119,9 @@ static void _clamp4(double* s, double *v)
 void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, double *b)
 {
     g_assert(pixbuf != NULL);
-    int width = gdk_pixbuf_get_width(pixbuf);
-    int stride = gdk_pixbuf_get_rowstride(pixbuf);
     guint size = 0;
     guchar* buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
-    calc(buf, size, stride / width, r, g, b, _clamp2);
+    calc(buf, size, gdk_pixbuf_get_n_channels(pixbuf), r, g, b);
 }
 
 #include "jsextension.h"

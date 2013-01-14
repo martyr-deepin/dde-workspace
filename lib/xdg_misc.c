@@ -479,7 +479,7 @@ BaseEntry* parse_one_entry(const char* path)
 void set_default_theme(const char* theme)
 {
     GtkSettings* setting = gtk_settings_get_default();
-    g_object_set(setting, "gtk-icon-theme-name", "Deepin", NULL);
+    g_object_set(setting, "gtk-icon-theme-name", theme, NULL);
 }
 
 void desktop_entry_free(BaseEntry* entry)

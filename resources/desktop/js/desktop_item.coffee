@@ -156,6 +156,8 @@ class Item extends Widget
         @remove_css_class("item_selected")
         return
 
+    display_not_selected : =>
+        @element.className = @element.className.replace(/\ item_selected/g, "")
 
     display_focus : =>
         @add_css_class("item_focus")
@@ -217,12 +219,20 @@ class Item extends Widget
         @display_not_focus()
         return
 
+        @display_short_name()
+        @has_focus = false
+        echo "item_blur #{@has_focus}"
+        return
 
     item_selected : ->
         @display_selected()
         @selected = true
         return
 
+    item_selected : ->
+        @display_selected()
+        @selected = true
+        return
 
     item_normal : ->
         @clear_delay_rename_timer()

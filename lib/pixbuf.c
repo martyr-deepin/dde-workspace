@@ -91,7 +91,7 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
 
     char* base64 = g_base64_encode(buf, size);
     g_free(buf);
-    char* data = g_strdup_printf("data:image/png;base64,%s", base64);
+    char* data = g_strconcat("data:image/png;base64,", base64, NULL);
     g_free(base64);
 
     return data;

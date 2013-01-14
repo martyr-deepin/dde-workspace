@@ -47,5 +47,6 @@ void save_app_config(GKeyFile*, const char* name); /*careful, this function didn
 
 int reparent_to_init();
 void parse_cmd_line (int* argc, char*** argv);
+char* to_lower_inplace(char* str);
 
 #endif
