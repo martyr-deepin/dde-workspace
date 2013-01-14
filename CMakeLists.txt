@@ -17,12 +17,10 @@ endmacro()
 
 if (DEVELOP)
     SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/")
-    add_definitions("-DWHITE_LIST_INI=\"../app_white_list.ini\"")
-    add_definitions("-DCATEGORY_DB_PATH=\"../category.db\"")
+    add_definitions("-DDATA_DIR=\"../data\"")
 else()
     SET(RESOURCE_DIR "${CMAKE_INSTALL_PREFIX}/share/dde/resources/")
-    add_definitions("-DWHITE_LIST_INI=\"${RESOURCE_DIR}/app_white_list.ini\"")
-    add_definitions("-DCATEGORY_DB_PATH=\"${RESOURCE_DIR}/category.db\"")
+    add_definitions("-DDATA_DIR=\"${CMAKE_INSTALL_PREFIX}/share/dde/data\"")
 endif()
 
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
@@ -55,6 +53,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_PREFIX}/share/glib-2.0
 )
 install(
-    FILES ${CMAKE_CURRENT_SOURCE_DIR}/app_white_list.ini ${CMAKE_CURRENT_SOURCE_DIR}/category.db
-    DESTINATION ${RESOURCE_DIR}
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/dde
     )

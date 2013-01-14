@@ -328,7 +328,6 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
     //
     g_list_free_full (file_list, g_object_unref);
     __clear_clipboard_info (&clipboard_info_prev);
-
     g_debug ("_clear_clipboard_callback: end");
 }
 /*
