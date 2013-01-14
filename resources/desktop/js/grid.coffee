@@ -464,12 +464,11 @@ set_item_selected = (w, change_focus = true, add_top = false) ->
         else
             selected_item.push(w.id)
 
-        if change_focus and last_widget != w.id
-            if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
-            last_widget = w.id
-            w.item_focus()
-        else if not w.has_focus
-            w.item_focus()
+        if change_focus
+            if last_widget != w.id
+                if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+                last_widget = w.id
+            if not w.has_focus then w.item_focus()
     return
 
 
@@ -487,7 +486,7 @@ cancel_item_selected = (w, change_focus = true) ->
     w.item_normal()
 
     if change_focus and last_widget != w.id
-        if last_widget then Widget.look_up(last_widget)?.item_blur()
+        if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
         last_widget = w.id
         w.item_focus()
     return true
@@ -545,7 +544,7 @@ update_selected_stats = (w, evt) ->
             cancel_all_selected_stats()
             selected_item.push(w.id)
             if last_widget != w.id
-                w.item_blur() if (w = Widget.look_up(last_widget))?
+                if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
                 last_widget = w.id
 
     update_selected_item_drag_image()
@@ -657,7 +656,7 @@ gird_left_mousedown = (evt) ->
     evt.stopPropagation()
     if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
-        Widget.look_up(last_widget)?.item_blur() if last_widget.length > 0
+        if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
 
 
 grid_right_click = (evt) ->
@@ -798,8 +797,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
     else if evt.keyCode == 13    # Enter
         if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
             if selected_item.length > 0
-                w = Widget.look_up(last_widget)
-                if w? then w.item_exec()
+                Widget.look_up(last_widget)?.item_exec()
             msg_disposed = true
 
     else if evt.keyCode == 32    # space
