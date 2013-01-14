@@ -24,11 +24,11 @@
 
 /*MEMORY_TESTED*/
 
-#define FILTER_ARGS_PATH "filter_arg.ini"
-#define FILTER_WMNAME_PATH "filter_wmname.ini"
-#define FILTER_WMCLASS_PATH "filter_wmclass.ini"
-#define PROCESS_REGEX_PATH "process_regex.ini"
-#define DEEPIN_ICONS_PATH "deepin_icons.ini"
+#define FILTER_ARGS_PATH DATA_DIR"/filter_arg.ini"
+#define FILTER_WMNAME_PATH DATA_DIR"/filter_wmname.ini"
+#define FILTER_WMCLASS_PATH DATA_DIR"/filter_wmclass.ini"
+#define PROCESS_REGEX_PATH DATA_DIR"/process_regex.ini"
+#define DEEPIN_ICONS_PATH DATA_DIR"/deepin_icons.ini"
 
 static GKeyFile* filter_args = NULL;
 static GKeyFile* filter_wmname = NULL;
