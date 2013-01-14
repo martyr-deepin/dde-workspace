@@ -44,4 +44,6 @@ GKeyFile* load_app_config(const char* name);
 
 void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
 
+char* to_lower_inplace(char* str);
+
 #endif

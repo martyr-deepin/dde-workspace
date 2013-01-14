@@ -366,7 +366,7 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
-    c->app_id = app_id;
+    c->app_id = to_lower_inplace(app_id);
 }
 
 void _update_window_class(Client* c)

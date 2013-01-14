@@ -69,14 +69,14 @@ _events = [
 class Widget extends Module
     @object_table = {}
     @look_up = (id) ->
-        @object_table[id.toLowerCase()]
+        @object_table[id]
 
     constructor: ->
         el = document.createElement('div')
         el.setAttribute('class',  @constructor.name)
         el.id = @id
         @element = el
-        Widget.object_table[@id.toLowerCase()] = this
+        Widget.object_table[@id] = this
 
         #there has an strange bug when use indexof instead search,
         # the key value will always be "constructor" without any other thing
@@ -106,7 +106,9 @@ class Widget extends Module
 
     destroy: ->
         @element.parentElement?.removeChild(@element)
-        delete Widget.object_table[@id.toLowerCase()]
+        delete Widget.object_table[@id]
 
     add_css_class: (name)->
         @element.classList.add(name)
+
+window.t = Widget

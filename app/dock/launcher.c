@@ -105,15 +105,17 @@ JSValueRef build_app_info(const char* app_id)
 static
 char* get_app_id(GDesktopAppInfo* info)
 {
+    char* app_id = NULL;
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
-        return basename;
+        app_id = basename;
     } else {
         g_free(basename);
 
-        return g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
+        app_id = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
     }
+    return to_lower_inplace(app_id);
 }
 
 void update_dock_apps()

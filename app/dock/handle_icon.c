@@ -4,6 +4,7 @@
 #include "xid2aid.h"
 #include "handle_icon.h"
 #include "xdg_misc.h"
+#include "utils.h"
 
 #define BOARD_PATH RESOURCE_DIR"/dock/img/board.png"
 #define BOARD_MASK_PATH RESOURCE_DIR"/dock/img/mask.png"
@@ -72,8 +73,10 @@ gboolean is_deepin_icon(const char* path)
     return g_str_has_prefix(path, "/usr/share/icons/GoodIcons/");
 }
 
-char* try_get_deepin_icon(const char* app_id)
+char* try_get_deepin_icon(const char* _app_id)
 {
+    char* app_id = g_strdup(_app_id);
+    to_lower_inplace(app_id);
     if (is_deepin_app_id(app_id)) {
         switch (get_deepin_app_id_operator(app_id)) {
             case ICON_OPERATOR_USE_ICONNAME:
@@ -82,14 +85,18 @@ char* try_get_deepin_icon(const char* app_id)
                     char* icon_path = icon_name_to_path(icon_name, 48);
                     printf("find icon path %s -> %s\n", icon_name, icon_path);
                     g_free(icon_name);
+                    g_free(app_id);
                     return icon_path;
                 }
             case ICON_OPERATOR_USE_RUNTIME:
+                g_free(app_id);
                 return NULL;
             case ICON_OPERATOR_USE_PATH:
+                g_free(app_id);
                 g_warning("Hasn't support set path Icon Handler\n");
                 break;
             case ICON_OPERATOR_SET_DOMINANTCOLOR:
+                g_free(app_id);
                 g_warning("Hasn't support set dominantcolor Icon Handler\n");
                 break;
             default:
@@ -97,6 +104,7 @@ char* try_get_deepin_icon(const char* app_id)
 
         }
     } else {
+        g_free(app_id);
         return NULL;
     }
 }
