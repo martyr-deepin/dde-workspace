@@ -96,6 +96,7 @@ class AppItem extends Widget
         app_list.append(@)
         @add_css_class("AppItem")
         @img = create_img("AppItemImg", @icon, @element)
+        @element.draggable=true
 
     destroy: ->
         super

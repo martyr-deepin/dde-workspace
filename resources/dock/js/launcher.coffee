@@ -1,10 +1,10 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @try_swap_clientgroup()
+        @element.setAttribute("title", "APPID:#{@id}")
 
     try_swap_clientgroup: ->
-        group = Widget.look_up("le"+@id)
+        group = Widget.look_up("le_"+@id)
         if group?
             swap_element(@element, group.element)
             group.destroy()

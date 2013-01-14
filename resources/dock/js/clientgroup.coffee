@@ -3,6 +3,7 @@ class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id)->
         super
         @try_swap_launcher()
+        @element.setAttribute("title", "ID:#{@id} APPID:#{@app_id}")
 
         @n_clients = []
         @w_clients = []
@@ -61,8 +62,8 @@ class ClientGroup extends AppItem
         @remove_client(id, true)
 
     normal_child: (id)->
-        info = @client_infos[id]
         @w_clients.remove(id)
+        info = @client_infos[id]
         @add_client(info.id)
 
     update_client: (id, icon, title)->
@@ -90,9 +91,10 @@ class ClientGroup extends AppItem
         @element.style.display = "block"
 
 
-    remove_client: (id, save_info=false) ->
-        if not save_info
+    remove_client: (id, used_internal=false) ->
+        if not used_internal
             delete @client_infos[id]
+            @w_clients.remove(id)
 
         @n_clients.remove(id)
 
@@ -125,9 +127,10 @@ class ClientGroup extends AppItem
             l.destroy()
 
     try_build_launcher: ->
-        info = DCore.Dock.get_launcher_info(@app_id.toLowerCase())
+        info = DCore.Dock.get_launcher_info(@app_id)
         if info
-            new Launcher(info.Id, info.Icon, info.Core)
+            l = new Launcher(info.Id, info.Icon, info.Core)
+            swap_element(@element, l.element)
 
     destroy: ->
         @element.style.display = "block"
