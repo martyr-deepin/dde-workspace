@@ -103,6 +103,9 @@ void update_active_window(Display* display, Window root);
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
+    if (win == NULL)
+        return NULL;
+    g_assert(win != NULL);
     gdk_window_set_events(win, GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
@@ -157,19 +160,19 @@ void active_window_changed(Display* dsp, Window w)
 
 void client_free(Client* c)
 {
+    gdk_window_remove_filter(c->gdkwindow,
+            (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
+    g_object_unref(c->gdkwindow);
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
     json_append_string(json, "app_id", c->app_id);
     js_post_message("task_removed", json);
-
-    gdk_window_remove_filter(c->gdkwindow,
-            (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
-    g_object_unref(c->gdkwindow);
     g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
     g_free(c->app_id);
     g_free(c);
+
 }
 
 
@@ -222,8 +225,9 @@ void client_list_changed(Window* cs, size_t n)
 {
     for (int i=0; i<n; i++) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
-        if (c == NULL && is_normal_window(cs[i])) {
-            c = create_client_from_window(cs[i]);
+        if (c == NULL && is_normal_window(cs[i]) && (c = create_client_from_window(cs[i]))) {
+            //client maybe create failed!!
+            //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
             g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
             _update_client_info(c);
         }
@@ -366,6 +370,10 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
+    if (app_id == NULL)
+    {
+        printf("trap..\n");
+    }
     g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
 }

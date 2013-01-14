@@ -20,11 +20,9 @@
 
 board.width = screen.width
 board.height = DOCK_HEIGHT
-IN_INIT = true
 DCore.Dock.draw_board(board)
 
 DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
-
 
 DCore.signal_connect("active_window_changed", (info)->
     active_group?.to_normal_status()
@@ -110,7 +108,8 @@ setTimeout(init_app_item_size, 1000)
 setTimeout(init_app_item_size, 1800)
 setTimeout(init_app_item_size, 2800)
 setTimeout(init_app_item_size, 4000)
-DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
 setTimeout(->
+    DCore.Dock.require_region(0, 0, screen.width, ITEM_HEIGHT)
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT)
     IN_INIT = false
-, 1000)
+, 200)
