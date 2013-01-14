@@ -34,14 +34,14 @@ class TrayIconWrap extends Widget
 
 
 for info in DCore.Dock.get_tray_icon_list()
-    icon = new TrayIconWrap(info.id, info.class, info.name)
+    icon = new TrayIconWrap(info.id, info.clss, info.name)
     tray_icons[info.id] = icon
     #We can't update icon position at this momenet because the div element's layout hasn't done.
 
 setTimeout(update_icons, 500)
     
 do_tray_icon_added = (info) ->
-    icon = new TrayIconWrap(info.id, info.class, info.name)
+    icon = new TrayIconWrap(info.id, info.clss, info.name)
     tray_icons[info.id] = icon
     setTimeout(update_icons, 30)
 
@@ -55,7 +55,8 @@ DCore.signal_connect('tray_icon_added', do_tray_icon_added)
 DCore.signal_connect('tray_icon_removed', do_tray_icon_removed)
 
 
-s_manager = DCore.DBus.session("org.gnome.SessionManager")
+try
+    s_manager = DCore.DBus.session("org.gnome.SessionManager")
 
 class CustomTrayIcon extends Widget
     constructor: (@id, @title, @icon, @cb) ->
@@ -69,6 +70,6 @@ class CustomTrayIcon extends Widget
         @cb()
 
 shutdown_icon = new CustomTrayIcon("shutdown", "ShutDown",
-    "file:///usr/share/icons//Faenza-Darker/actions/48/gnome-logout.png", -> s_manager.Shutdown_sync())
+    "file:///usr/share/icons//Faenza-Darker/actions/48/gnome-logout.png", -> s_manager?.Shutdown_sync())
 logout_icon = new CustomTrayIcon("logout", "Logout",
-    "img/log_out_48.png", -> s_manager.Logout_sync(1))
+    "img/log_out_48.png", -> s_manager?.Logout_sync(1))

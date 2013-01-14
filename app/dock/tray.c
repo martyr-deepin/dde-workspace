@@ -26,8 +26,7 @@
 #define DEFAULT_INTERVAL 24
 static GHashTable* _icons = NULL;
 
-static void
-tray_icon_to_info(GdkWindow* icon, gint xy, GString* string);
+static JSObjectRef tray_icon_to_json(GdkWindow* icon);
 
 static GdkFilterReturn
 monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
@@ -35,9 +34,9 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         g_hash_table_remove(_icons, (GdkWindow*)data);
-        char* msg = g_strdup_printf("{\"id\":%d}", GPOINTER_TO_INT(data));
-        js_post_message_simply("tray_icon_removed", msg);
-        g_free(msg);
+        JSObjectRef json = json_create();
+        json_append_number(json, "id", GPOINTER_TO_INT(data));
+        js_post_message("tray_icon_removed", json);
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -61,13 +60,9 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     gdk_window_add_filter(icon, monitor_remove, icon);
     gdk_window_set_composited(icon, TRUE);
     gdk_window_move_resize(icon, -100, -100, DEFAULT_WIDTH, DEFAULT_WIDTH);
-
-    GString* string = g_string_new("");
-    tray_icon_to_info(icon, xy, string);
-    string->str[string->len-1] = '\0';
-    js_post_message_simply("tray_icon_added", string->str);
-    g_string_free(string, TRUE);
+    js_post_message("tray_icon_added", tray_icon_to_json(icon));
 }
+
 void tray_init(GtkWidget* container)
 {
     GdkScreen* screen = gdk_screen_get_default();
@@ -103,29 +98,37 @@ void dock_set_tray_icon_position(double _icon, double _x, double _y)
 }
 
 
-static void
-tray_icon_to_info(GdkWindow* icon, gint xy, GString* string)
+static JSObjectRef
+tray_icon_to_json(GdkWindow* icon)
 {
     char* res_class = NULL;
     char* res_name = NULL;
     get_wmclass(icon, &res_class, &res_name);
-    g_string_append_printf(string, "{\"id\":%d, \"clss\":\"%s\",\"name\":\"%s\"},", GPOINTER_TO_INT(icon), res_class, res_name);
+
+    JSObjectRef json = json_create();
+
+    json_append_number(json, "id", GPOINTER_TO_INT(icon));
+    json_append_string(json, "clss", res_class);
+    json_append_string(json, "name", res_name);
+    js_post_message("tray_icon_added", json);
+
     g_free(res_class);
     g_free(res_name);
+    return json;
 }
 
 JS_EXPORT_API
-char* dock_get_tray_icon_list()
+JSObjectRef dock_get_tray_icon_list()
 {
-    GString* string = g_string_new("[");
-    g_hash_table_foreach(_icons, (GHFunc)tray_icon_to_info, string);
-    if (string->len > 2) {
-        g_string_overwrite(string, string->len-1, "]");
-        return g_string_free(string, FALSE);
-    } else {
-        g_string_free(string, TRUE);
-        return g_strdup("[]");
+    JSObjectRef array = json_array_create();
+    GHashTableIter iter;
+    gpointer key;
+    g_hash_table_iter_init(&iter, _icons);
+    int index = 0;
+    while (g_hash_table_iter_next(&iter, &key, NULL)) {
+        json_array_append(array, index++, tray_icon_to_json((GdkWindow*)key));
     }
+    return array;
 }
 
 
@@ -144,8 +147,8 @@ draw_tray_icon(GdkWindow* icon, gint xy, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr, gpointer data)
 {
-    /*cairo_set_source_rgba(cr, 0, 0.8, 0, 0.2);*/
-    /*cairo_paint(cr);*/
+    cairo_set_source_rgba(cr, 0, 0.8, 0, 0.2);
+    cairo_paint(cr);
     g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
     return TRUE;
 }
