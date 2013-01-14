@@ -54,7 +54,6 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     do_drop: (e)->
-        indicator.hide()
         file = e.dataTransfer.getData("text/uri-list").substring(7)
         if file.length > 9  # strlen("x.desktop") == 9
             DCore.Dock.request_dock(decodeURI(file.trim()))
@@ -73,15 +72,10 @@ class AppList extends Widget
                 x = fp.x
             else
                 x = e.pageX
-            indicator.show(x)
 
     do_dragover: (e) ->
         e.dataTransfer.dropEffect="link"
         @show_try_dock_app(e)
-
-    do_dragleave: (e)->
-        if e.target == @element
-            indicator.hide()
 
     do_mouseover: (e)->
         if e.target == @element

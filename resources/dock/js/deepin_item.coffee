@@ -15,7 +15,7 @@ class LauncherItem extends AppItem
     do_buildmenu: ->
         []
 
-show_desktop = new ShowDesktop("show_desktop", "img/desktop.png")
 show_launcher = new LauncherItem("show_launcher", "img/launcher.png")
-app_list.append(show_desktop)
 app_list.append(show_launcher)
+show_desktop = new ShowDesktop("show_desktop", "img/desktop.png")
+app_list.append(show_desktop)
