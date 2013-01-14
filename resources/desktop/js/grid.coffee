@@ -465,8 +465,10 @@ set_item_selected = (w, change_focus = true, add_top = false) ->
             selected_item.push(w.id)
 
         if change_focus and last_widget != w.id
-            if last_widget then Widget.look_up(last_widget)?.item_blur()
+            if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
+            w.item_focus()
+        else if not w.has_focus
             w.item_focus()
     return
 
