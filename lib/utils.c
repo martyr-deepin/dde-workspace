@@ -287,6 +287,7 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
 
 char* to_lower_inplace(char* str)
 {
+    g_assert(str != NULL);
     for (size_t i=0; i<strlen(str); i++)
         str[i] = g_ascii_tolower(str[i]);
     return str;

@@ -366,6 +366,7 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
+    g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
 }
 

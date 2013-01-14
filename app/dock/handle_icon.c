@@ -83,7 +83,6 @@ char* try_get_deepin_icon(const char* _app_id)
                 {
                     char* icon_name =  get_deepin_app_id_value(app_id);
                     char* icon_path = icon_name_to_path(icon_name, 48);
-                    printf("find icon path %s -> %s\n", icon_name, icon_path);
                     g_free(icon_name);
                     g_free(app_id);
                     return icon_path;
