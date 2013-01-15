@@ -143,17 +143,17 @@ class UserInfo extends Widget
         DCore.Greeter.login_clicked(password)
 
         #debug code begin
-        div_auth = create_element("div", "", $("#Debug"))
-        div_auth.innerText += "authenticate"
+        #div_auth = create_element("div", "", $("#Debug"))
+        #div_auth.innerText += "authenticate"
 
-        div_id = create_element("div", "", div_auth)
-        div_id.innerText = @id
+        #div_id = create_element("div", "", div_auth)
+        #div_id.innerText = @id
 
-        div_password = create_element("div", "", div_auth)
-        div_password.innerText = password
+        #div_password = create_element("div", "", div_auth)
+        #div_password.innerText = password
 
-        div_session = create_element("div", "", div_auth)
-        div_session.innerText = _session
+        #div_session = create_element("div", "", div_auth)
+        #div_session.innerText = _session
         #debug code end
 
 # below code should use c-backend to fetch data
