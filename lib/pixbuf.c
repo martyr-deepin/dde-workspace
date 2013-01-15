@@ -36,17 +36,17 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     }
     if (p2 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p2, 17, -1, TRUE, NULL);
-        write_to_canvas(bg, icon, 6+17, 6);
+        write_to_canvas(bg, icon, 6+17 + 1, 6);
         g_object_unref(icon);
     }
     if (p3 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p3, 17, -1, TRUE, NULL);
-        write_to_canvas(bg, icon, 6, 6+17);
+        write_to_canvas(bg, icon, 6, 6+17 + 1);
         g_object_unref(icon);
     }
     if (p4 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p4, 17, -1, TRUE, NULL);
-        write_to_canvas(bg, icon, 6+17, 6+17);
+        write_to_canvas(bg, icon, 6+17 + 1, 6+17 + 1);
         g_object_unref(icon);
     }
 

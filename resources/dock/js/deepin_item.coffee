@@ -1,5 +1,11 @@
-class ShowDesktop extends AppItem
-    is_fixed: true
+class FixedItem extends AppItem
+    constructor: (@id, @icon)->
+        super
+        @element.draggable=false
+    is_fixed_pos: true
+
+
+class ShowDesktop extends FixedItem
     do_click: (e)->
         @show = false if not @show
         @show = !@show
@@ -7,8 +13,7 @@ class ShowDesktop extends AppItem
     do_buildmenu: ->
         []
 
-class LauncherItem extends AppItem
-    is_fixed: true
+class LauncherItem extends FixedItem
     do_click: (e)->
         @show = !@show
         DCore.run_command("launcher")
