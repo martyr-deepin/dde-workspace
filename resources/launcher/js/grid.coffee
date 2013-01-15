@@ -31,7 +31,6 @@ try
     s_dock = DCore.DBus.session("com.deepin.dde.dock")
 catch error
     s_dock = null
-
 class Item extends Widget
     constructor: (@id, @core)->
         super

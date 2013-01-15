@@ -156,6 +156,8 @@ class Item extends Widget
         @remove_css_class("item_selected")
         return
 
+    display_not_selected : =>
+        @element.className = @element.className.replace(/\ item_selected/g, "")
 
     display_focus : =>
         @add_css_class("item_focus")
@@ -217,12 +219,20 @@ class Item extends Widget
         @display_not_focus()
         return
 
+        @display_short_name()
+        @has_focus = false
+        echo "item_blur #{@has_focus}"
+        return
 
     item_selected : ->
         @display_selected()
         @selected = true
         return
 
+    item_selected : ->
+        @display_selected()
+        @selected = true
+        return
 
     item_normal : ->
         @clear_delay_rename_timer()
@@ -682,34 +692,36 @@ class RichDir extends DesktopEntry
 
         # 20px for ul padding, 2px for border, 8px for scrollbar
         if @sub_items_count > 24
-            @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 30}px"
+            pop_width = col * _ITEM_WIDTH_ + 30
         else
-            @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 22}px"
-        arrow = document.createElement("div")
+            pop_width = col * _ITEM_WIDTH_ + 22
+        @div_pop.style.width = "#{pop_width}px"
 
         n = Math.ceil(@sub_items_count / col)
         if n > 4 then n = 4
-        n = n * _ITEM_HEIGHT_ + 40
+        n = n * _ITEM_HEIGHT_ + 24
         if s_height - @element.offsetTop > n
-            @div_pop.style.top = "#{@element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 16}px"
-            arrow_pos = false
+            pop_top = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 12
+            arrow_pos_at_bottom = false
         else
-            @div_pop.style.top = "#{@element.offsetTop - n}px"
-            arrow_pos = true
+            pop_top = @element.offsetTop - n - 12
+            arrow_pos_at_bottom = true
+        @div_pop.style.top = "#{pop_top}px"
 
-        n = (col * _ITEM_WIDTH_) / 2
+        n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
+        arrow = document.createElement("div")
         if p < n
-            @div_pop.style.left = "0"
-            arrow.style.left = "#{p}px"
+            @div_pop.style.left = "#{s_offset_x}px"
+            arrow.style.left = "#{p - 4}px"
         else if p + n > s_width
             @div_pop.style.left = "#{s_width - 2 * n}px"
-            arrow.style.right = "#{s_width - p}px"
+            arrow.style.right = "#{s_width - p - 10}px"
         else
             @div_pop.style.left = "#{p - n}px"
-            arrow.style.left = "#{n}px"
+            arrow.style.left = "#{n - 2}px"
 
-        if arrow_pos == true
+        if arrow_pos_at_bottom == true
             ele_ul.className = "pop_grid_ul_up"
             arrow.setAttribute("id", "pop_downarrow")
             @div_pop.appendChild(arrow)

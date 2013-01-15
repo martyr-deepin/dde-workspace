@@ -42,7 +42,6 @@ class PWContainer extends Widget
     remove_all: (timeout)->
         __remove_all = =>
             #DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
-            echo "begin remove all"
             for i in $s(".PreviewWindow")
                 run_post(->
                     Widget.look_up(i.id)?.destroy()
@@ -94,7 +93,6 @@ class PWContainer extends Widget
             clearTimeout(@hide_id)
         else if @current_group != null
             @remove_all()
-            echo "remove all.. and show"
             _show_group_(group)
 
 
@@ -109,8 +107,6 @@ class PreviewWindow extends Widget
         <div class=PWTitle title='#{@title}'>#{@title}</div>
         <div class=PWClose>X</div>
         "
-
-        echo "Create: #{@id}"
 
         $(@element, ".PWClose").addEventListener('click', (e)=>
             DCore.Dock.close_window(@w_id)

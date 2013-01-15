@@ -12,16 +12,14 @@ target_link_libraries(unlockcheck crypt)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-#execute_process(
-#    COMMAND make
-#    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/greeter/js
-#    )
-
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
+    PROGRAMS ${PROJECT_BINARY_DIR}/lock
     DESTINATION bin
     )
-
+install(
+    PROGRAMS ${PROJECT_BINARY_DIR}/unlockcheck
+    DESTINATION bin
+    )
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/greeter
     DESTINATION ${RESOURCE_DIR}

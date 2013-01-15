@@ -456,17 +456,19 @@ item_dragstart_handler = (widget, evt) ->
     return
 
 
-set_item_selected = (w, top = false) ->
+set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
         w.item_selected()
-        if top == true
+        if add_top == true
             selected_item.unshift(w.id)
         else
             selected_item.push(w.id)
 
-        if last_widget != w.id
-            if last_widget then Widget.look_up(last_widget)?.item_blur()
+        if change_focus and last_widget != w.id
+            if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
             last_widget = w.id
+            w.item_focus()
+        else if not w.has_focus
             w.item_focus()
     return
 
@@ -475,16 +477,16 @@ set_all_item_selected = ->
     for i in speical_item.concat(all_item)
         if selected_item.indexOf(i) >= 0 then continue
         w = Widget.look_up(i)
-        if w? then set_item_selected(w)
+        if w? then set_item_selected(w, false)
 
 
-cancel_item_selected = (w) ->
+cancel_item_selected = (w, change_focus = true) ->
     i = selected_item.indexOf(w.id)
     if i < 0 then return false
     selected_item.splice(i, 1)
     w.item_normal()
 
-    if last_widget != w.id
+    if change_focus and last_widget != w.id
         if last_widget then Widget.look_up(last_widget)?.item_blur()
         last_widget = w.id
         w.item_focus()
@@ -519,7 +521,7 @@ update_selected_stats = (w, evt) ->
                     val = Widget.look_up(key)
                     i_pos = load_position(val.id)
                     if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
-                        set_item_selected(val, true)
+                        set_item_selected(val, true, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
             else
@@ -527,7 +529,7 @@ update_selected_stats = (w, evt) ->
                     val = Widget.look_up(key)
                     i_pos = load_position(val.id)
                     if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
-                        set_item_selected(val, true)
+                        set_item_selected(val, true, true)
 
         else
             set_item_selected(w)
@@ -695,6 +697,7 @@ grid_do_itemselected = (evt) ->
         when 5 then DCore.Desktop.run_deepin_settings("individuation")
         when 6 then DCore.Desktop.run_deepin_settings("display")
         else echo "not implemented function #{evt.id},#{evt.title}"
+    return
 
 
 grid_do_keydown_to_shortcut = (evt) ->
@@ -922,6 +925,7 @@ class Mouse_Select_Area_box
             temp_list = effect_item.concat()
             sel_list = @last_effect_item.concat()
             if temp_list.length > 0 and sel_list.length > 0
+                w.item_blur() if (w = Widget.look_up(last_widget))? and w.has_focus
                 for i in [temp_list.length - 1 ... -1] by -1
                     for n in [sel_list.length - 1 ... -1] by -1
                         if temp_list[i] == sel_list[n]
@@ -936,35 +940,34 @@ class Mouse_Select_Area_box
                 for i in temp_list
                     w = Widget.look_up(i)
                     if not w? then continue
-                    else if w.selected == false then set_item_selected(w)
-                    else cancel_item_selected(w)
+                    else if w.selected == false then set_item_selected(w, false)
+                    else cancel_item_selected(w, false)
                 for i in sel_list
                     w = Widget.look_up(i)
                     if not w? then continue
-                    else if w.selected == false then set_item_selected(w)
-                    else cancel_item_selected(w)
+                    else if w.selected == false then set_item_selected(w, false)
+                    else cancel_item_selected(w, false)
 
             else if evt.shiftKey == true
                 for i in temp_list
                     w = Widget.look_up(i)
                     if not w? then continue
-                    if w.selected == false then set_item_selected(w)
+                    if w.selected == false then set_item_selected(w, false)
 
             else
                 for i in temp_list
                     w = Widget.look_up(i)
                     if not w? then continue
-                    if w.selected == false then set_item_selected(w)
+                    if w.selected == false then set_item_selected(w, false)
                 for i in sel_list
                     w = Widget.look_up(i)
                     if not w? then continue
-                    if w.selected == true then cancel_item_selected(w)
+                    if w.selected == true then cancel_item_selected(w, false)
 
             @last_pos = new_pos
             @last_effect_item = effect_item
 
             if temp_list.length > 0 or sel_list.length > 0 then update_selected_item_drag_image()
-
         return
 
 

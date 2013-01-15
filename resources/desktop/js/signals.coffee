@@ -24,6 +24,7 @@ connect_default_signals = ->
     DCore.signal_connect("trash_count_changed", do_trash_update)
     DCore.signal_connect("cut_completed", do_cut_completed)
     DCore.signal_connect("lost_focus", do_desktop_lost_focus)
+    DCore.signal_connect("get_focus", do_desktop_get_focus)
 
     DCore.signal_connect("workarea_changed", do_workarea_changed)
     DCore.Desktop.notify_workarea_size()
@@ -87,7 +88,11 @@ do_cut_completed = (items) ->
 
 
 do_desktop_lost_focus = ->
-    if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+    #if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+
+
+do_desktop_get_focus = ->
+    echo "do_desktop_get_focus"
 
 
 do_workarea_changed = (allo) ->
