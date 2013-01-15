@@ -30,7 +30,7 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
-#define DEBUG 0 
+#define DEBUG 0
 
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
@@ -86,7 +86,10 @@ static gchar* get_selected_session()
         return selected_session;
     }else{
         selected_session = g_strdup(greeter_get_default_session());
-        return selected_session; 
+#ifdef DEBUG
+        js_post_message_simply("status", "{\"status\":\"set_selected_session-%s\"}", selected_session);
+#endif
+        return selected_session;
     }
 }
 
@@ -108,6 +111,9 @@ void greeter_set_selected_session(const gchar *session)
         selected_session = NULL;
     }
     selected_session = g_strdup(session);
+#ifdef DEBUG
+    js_post_message_simply("status", "{\"status\":\"set_selected_session-%s\"}", selected_session);
+#endif
 }
 
 JS_EXPORT_API
@@ -165,9 +171,9 @@ void greeter_cancel_authentication()
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
-#ifdef DEBUG    
+#ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
-#endif    
+#endif
     selected_user = get_selected_user();
     selected_session = get_selected_session();
 
@@ -176,6 +182,10 @@ void greeter_login_clicked(const gchar *password)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
 #endif
         start_session(selected_session);
+        g_free(selected_user);
+        selected_user = NULL;
+        g_free(selected_session);
+        selected_session = NULL;
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
 #ifdef DEBUG
@@ -189,10 +199,9 @@ void greeter_login_clicked(const gchar *password)
 #endif
         greeter_start_authentication(selected_user);
     }
-    g_free(selected_user);
-    selected_user = NULL;
-    g_free(selected_session);
-    selected_session = NULL;
+#ifdef DEBUG
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clean resources");
+#endif
 }
 
 static void start_session(const gchar *session)
@@ -216,7 +225,7 @@ static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPr
 #endif
 }
 
-static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type) 
+static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type)
 {
     if(type == LIGHTDM_MESSAGE_TYPE_ERROR){
         js_post_message_simply("message", "{\"error\":\"%s\"}", text);
@@ -239,6 +248,10 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
 #endif
             start_session(get_selected_session());
+            g_free(selected_user);
+            selected_user = NULL;
+            g_free(selected_session);
+            selected_session = NULL;
         }
     }else{
         if(prompted){
@@ -256,7 +269,7 @@ gboolean greeter_is_hide_users()
 {
     return lightdm_greeter_get_hide_users_hint(greeter);
 }
-	
+
 JS_EXPORT_API
 gboolean greeter_is_support_guest()
 {
@@ -272,7 +285,7 @@ gboolean greeter_is_guest_default()
 static void autologin_timer_expired_cb(LightDMGreeter *greeter)
 {
     if(lightdm_greeter_get_autologin_guest_hint(greeter)){
-        greeter_start_authentication("guest"); 
+        greeter_start_authentication("guest");
 
     }else if(lightdm_greeter_get_autologin_user_hint(greeter)){
         greeter_start_authentication(lightdm_greeter_get_autologin_user_hint(greeter));
@@ -524,7 +537,7 @@ const gchar* greeter_get_user_image(const gchar* name)
     user = lightdm_user_list_get_user_by_name(user_list, name);
     g_assert(user);
 
-    image = lightdm_user_get_image(user); 
+    image = lightdm_user_get_image(user);
 
     return image;
 }
@@ -542,7 +555,7 @@ const gchar* greeter_get_user_session(const gchar* name)
     user = lightdm_user_list_get_user_by_name(user_list, name);
     g_assert(user);
 
-    session = g_strdup(lightdm_user_get_session(user)); 
+    session = g_strdup(lightdm_user_get_session(user));
     if(session == NULL){
         session = get_first_session();
     }
@@ -641,13 +654,13 @@ int main(int argc, char **argv)
     screen = gtk_window_get_screen(GTK_WINDOW(container));
     gdk_screen_get_monitor_geometry(screen, gdk_screen_get_primary_monitor(screen), &geometry);
     gtk_window_set_default_size(GTK_WINDOW(container), geometry.width, geometry.height);
-	gtk_window_move(GTK_WINDOW(container), geometry.x, geometry.y);
+    gtk_window_move(GTK_WINDOW(container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri(GREETER_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
 
-    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);  
+    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
     g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
     g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
