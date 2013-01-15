@@ -118,7 +118,6 @@ class ComboBox extends Widget
                 break
         return ret
 
-
     set_current: (id)->
         find = @menu.items[id]
         if not find?
@@ -129,9 +128,9 @@ class ComboBox extends Widget
 
 
 DCore.signal_connect("status", (msg) ->
-    echo msg.status
-    #status_div = create_element("div", " ", $("#Debug"))
-    #status_div.innerText = "status:" + msg.status
+    #echo msg.status
+    status_div = create_element("div", " ", $("#Debug"))
+    status_div.innerText = "status:" + msg.status
 )
 
 de_menu_cb = (id, title)->

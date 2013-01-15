@@ -455,7 +455,9 @@
   })(Widget);
 
   DCore.signal_connect("status", function(msg) {
-    return echo(msg.status);
+    var status_div;
+    status_div = create_element("div", " ", $("#Debug"));
+    return status_div.innerText = "status:" + msg.status;
   });
 
   de_menu_cb = function(id, title) {
