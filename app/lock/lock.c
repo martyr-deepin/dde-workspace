@@ -110,6 +110,7 @@ int main(int argc, char **argv)
     
     gtk_widget_realize(lock_container);
     GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
+
     GdkWindow *gdk_root_window = gtk_widget_get_root_window(lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
     gtk_widget_show_all(lock_container);
     GRAB_DEVICE(NULL);
 
+    gdk_window_stick(gdkwindow);
     gtk_main();
     return 0;
 }
