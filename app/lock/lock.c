@@ -25,6 +25,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include "X_misc.h"
 
 #include <stdio.h>
 #include <errno.h>
@@ -117,17 +118,8 @@ int main(int argc, char **argv)
 
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-    GdkDisplay *display = gdk_display_get_default();
-    g_assert(display);
-    GdkDeviceManager *device_manager = gdk_display_get_device_manager(display);
-    g_assert(device_manager);
-    
-    GdkDevice *device = gdk_device_manager_get_client_pointer(device_manager);
-    g_assert(device);
-
-    gdk_device_grab(device, gdk_root_window, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); 
-
     gtk_widget_show_all(lock_container);
+    GRAB_DEVICE(NULL);
 
     gtk_main();
     return 0;
