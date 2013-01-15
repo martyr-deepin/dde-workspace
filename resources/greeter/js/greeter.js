@@ -674,11 +674,10 @@
     };
 
     UserInfo.prototype.on_verify = function(username, password) {
-      var _session;
       this.login.destroy();
       this.loading = new Loading("loading");
       this.element.appendChild(this.loading.element);
-      _session = de_menu.menu.items[de_menu.get_current()][0];
+      DCore.Greeter.set_selected_session(de_menu.menu.items[de_menu.get_current()][0]);
       if (DCore.Greeter.is_hide_users()) {
         DCore.Greeter.set_selected_user(username);
         DCore.Greeter.login_clicked(username);

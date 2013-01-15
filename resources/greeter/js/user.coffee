@@ -135,8 +135,8 @@ class UserInfo extends Widget
         @login.destroy()
         @loading = new Loading("loading")
         @element.appendChild(@loading.element)
-
-        _session = de_menu.menu.items[de_menu.get_current()][0]
+        #        _session = de_menu.menu.items[de_menu.get_current()][0]
+        DCore.Greeter.set_selected_session(de_menu.menu.items[de_menu.get_current()][0])
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
