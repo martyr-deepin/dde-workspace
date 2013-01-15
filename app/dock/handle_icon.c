@@ -27,13 +27,13 @@ char* handle_icon(GdkPixbuf* icon)
     cairo_t* cr  = cairo_create(surface);
 
     cairo_set_source_rgb(cr, r, g, b);
-    cairo_mask_surface(cr, _board_mask, 0, 0);
+    cairo_mask_surface(cr, _board_mask, 0, BOARD_OFFSET);
     /*cairo_paint(cr);*/
 
-    gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT, MARGIN_TOP);
+    gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT, MARGIN_TOP-1);
     cairo_paint(cr);
 
-    cairo_set_source_surface(cr, _board, 0, 0);
+    cairo_set_source_surface(cr, _board, 0, BOARD_OFFSET);
     cairo_paint(cr);
 
     guchar* data = get_data_uri_by_surface(surface);
