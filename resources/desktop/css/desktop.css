@@ -99,7 +99,7 @@ body {
 }
 
 .item_focus {
-    outline:#777 solid 1px;
+    box-shadow: 0px 0px 1px 1px #777;
     z-index:10;
 }
 

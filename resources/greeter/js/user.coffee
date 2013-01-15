@@ -17,7 +17,7 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
 apply_refuse_rotate = (el, time)->
     apply_animation(el, "refuse", "#{time}s", "linear")
     setTimeout(->
@@ -35,7 +35,7 @@ class LoginEntry extends Widget
                     @password.focus()
             )
             @account.index = 0
-            
+
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
         #@password.setAttribute("autofocus", "true")
@@ -59,7 +59,7 @@ class LoginEntry extends Widget
                 @on_active(@id, @password.value)
         )
         @login.index = 2
-   
+
         if DCore.Greeter.is_hide_users()
             @account.focus()
         else
@@ -82,7 +82,7 @@ class UserInfo extends Widget
         @name = create_element("span", "UserName", @element)
         @name.innerText = name
         @active = false
-        @login_displayed = false 
+        @login_displayed = false
 
     focus: ->
         _current_user?.blur()
@@ -95,7 +95,7 @@ class UserInfo extends Widget
         else
             DCore.Greeter.set_selected_user(@id)
             DCore.Greeter.start_authentication(@id)
-    
+
     blur: ->
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
@@ -104,7 +104,7 @@ class UserInfo extends Widget
         @loading = null
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
-    
+
     show_login: ->
         if false
             @login()
@@ -125,7 +125,7 @@ class UserInfo extends Widget
                     if @login_displayed
                         @focus()
                         @login_displayed = false
-    
+
             if @name.innerText == "guest"
                 @login.password.style.display="none"
         else
@@ -136,7 +136,7 @@ class UserInfo extends Widget
         @loading = new Loading("loading")
         @element.appendChild(@loading.element)
 
-        _session = de_menu.menu.items[de_menu.get_current()][0]
+        DCore.Greeter.set_selected_session(de_menu.get_useable_current()[0])
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
@@ -156,7 +156,7 @@ class UserInfo extends Widget
         #div_session.innerText = _session
         #debug code end
 
-# below code should use c-backend to fetch data 
+# below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
     roundabout.appendChild(u.li)

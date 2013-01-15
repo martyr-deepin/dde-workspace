@@ -17,7 +17,7 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
 _global_menu_container = create_element("div", "", document.body)
 _global_menu_container.id = "global_menu_container"
 _global_menu_container.addEventListener("click", (e)->
@@ -30,7 +30,7 @@ class Menu extends Widget
         super
         @current = @id
         @items = {}
-    
+
     insert: (@id, @title, @img)->
         _id = @id
         _title = @title
@@ -43,7 +43,7 @@ class Menu extends Widget
         title.innerText = @title
 
         _img = @img
-        @items[_id] = [_title, _img] 
+        @items[_id] = [_title, _img]
         @current = @id
 
     insert_noimg: (@id, @title)->
@@ -56,14 +56,14 @@ class Menu extends Widget
         title = create_element("div", "menutitle", item)
         title.innerText = @title
 
-        @items[_id] = [_title] 
+        @items[_id] = [_title]
         @current = @id
 
     set_callback: (@cb)->
 
     show: (x, y)->
         @try_append()
-        
+
         @element.style.left = x
         @element.style.top = y
 
@@ -80,7 +80,7 @@ class Menu extends Widget
 
         "width":width
         "height":height
- 
+
 class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
@@ -89,7 +89,7 @@ class ComboBox extends Widget
         @switch = create_element("div", "Switcher", @element)
         @menu = new Menu(@id+"_menu")
         @menu.set_callback(@on_click_cb)
-    
+
     insert: (id, title, img)->
         @current_img.src = img
         @menu.insert(id, title, img)
@@ -110,21 +110,34 @@ class ComboBox extends Widget
     get_current: ->
         return @menu.current
 
+    get_useable_current : ->
+        ret = @menu.items[@menu.current]
+        if not ret?
+            for key, val of @menu.items
+                ret = val
+                break
+        return ret
+
+
     set_current: (id)->
-        _img = @menu.items[id][1]
-        @current_img.src = _img
-        @menu.current = id
+        find = @menu.items[id]
+        if not find?
+            find = @get_useable_current()
+        @menu.current = find[0]
+        @current_img.src = find[1]
+        find[0]
+
 
 DCore.signal_connect("status", (msg) ->
     echo msg.status
-    #    status_div = create_element("div", " ", $("#Debug"))
+    #status_div = create_element("div", " ", $("#Debug"))
     #status_div.innerText = "status:" + msg.status
 )
-    
+
 de_menu_cb = (id, title)->
-    de_menu.set_current(id)
+    id = de_menu.set_current(id)
     DCore.Greeter.set_selected_session(id)
-    
+
 de_menu = new ComboBox("desktop", de_menu_cb)
 
 power_dict = {}
