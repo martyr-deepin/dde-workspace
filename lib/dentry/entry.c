@@ -302,7 +302,7 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
     g_free(_fs.data);
 }
 
-void dentry_delete(ArrayContainer fs, gboolean show_dialog)
+void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     fileops_confirm_delete(_fs.data, _fs.num, show_dialog);
