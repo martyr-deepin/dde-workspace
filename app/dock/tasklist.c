@@ -290,7 +290,7 @@ void _update_window_icon(Client* c)
     gulong items;
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
-        c->icon = g_strdup(NOT_FOUND_IMG_PATH);
+        c->icon = NULL;
         return;
     }
 
