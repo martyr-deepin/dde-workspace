@@ -126,8 +126,14 @@ class UserInfo extends Widget
             apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
-    
-u = new UserInfo(user, user, "images/img01.jpg")
+
+user_path = DCore.DBus.sys_object("org.freedesktop.Accounts","/org/freedesktop/Accounts","org.freedesktop.Accounts").FindUserByName_sync(user)
+user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").IconFile
+
+if not user_image
+    user_image = "images/img01.jpg"
+
+u = new UserInfo(user, user, user_image) 
 u.focus()
 $("#lockroundabout").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
