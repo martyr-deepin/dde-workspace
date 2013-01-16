@@ -20,7 +20,11 @@ class LauncherItem extends FixedItem
     do_buildmenu: ->
         []
 
-show_launcher = new LauncherItem("show_launcher", "img/launcher.png")
+try
+    icon_launcher = DCore.get_theme_icon("start-here", 48)
+    icon_desktop = DCore.get_theme_icon("show_desktop", 48)
+
+show_launcher = new LauncherItem("show_launcher", icon_launcher)
 app_list.append(show_launcher)
-show_desktop = new ShowDesktop("show_desktop", "img/desktop.png")
+show_desktop = new ShowDesktop("show_desktop", icon_desktop)
 app_list.append(show_desktop)

@@ -83,13 +83,14 @@ class AppList extends Widget
 
 app_list = new AppList("app_list")
 
-
 class AppItem extends Widget
     is_fixed_pos: false
     constructor: (@id, @icon)->
         super
         app_list.append(@)
         @add_css_class("AppItem")
+        if not @icon
+            @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
         @element.draggable=true
 
