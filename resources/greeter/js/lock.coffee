@@ -130,7 +130,7 @@ user = DCore.Lock.get_username()
 user_path = DCore.DBus.sys_object("org.freedesktop.Accounts","/org/freedesktop/Accounts","org.freedesktop.Accounts").FindUserByName_sync(user)
 user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").IconFile
 
-if not user_image
+if not user_image? or not user_image.length
     user_image = "images/img01.jpg"
 
 u = new UserInfo(user, user, user_image) 

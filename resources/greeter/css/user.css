@@ -13,15 +13,15 @@
     list-style:none;
     top:30%;
     left:50%;
-    margin-left: -93px;
+    margin-left: -92px;
     text-align: center;
-    width: 186px;
+    width: 184px;
 }
 
 .UserInfo {
     cursor:pointer;
     float: left;
-    width: 186px;
+    width: 184px;
     background: rgba(255,255,255,.5);
     border-radius: 5px;
     padding: 20px 0px 20px 0px;
