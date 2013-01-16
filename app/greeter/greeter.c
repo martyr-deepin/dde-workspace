@@ -37,6 +37,7 @@ GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
 static gboolean cancelling = FALSE, prompted = FALSE;
 gchar *selected_user = NULL, *selected_session = NULL;
+static gint response_count = 0;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -60,7 +61,6 @@ gboolean greeter_is_hide_users();
 gboolean greeter_is_support_guest();
 gboolean greeter_is_guest_default();
 static void autologin_timer_expired_cb(LightDMGreeter *greeter);
-static const gchar* get_icon_path(const gchar *key);
 static LightDMSession* find_session_by_key(const gchar *key);
 ArrayContainer greeter_get_sessions();
 static const gchar* get_first_session();
@@ -291,6 +291,7 @@ void greeter_login_clicked(const gchar *password)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
 #endif
         lightdm_greeter_respond(greeter, password);
+        response_count = response_count + 1;
 
     }else{
 #ifdef DEBUG
@@ -298,9 +299,6 @@ void greeter_login_clicked(const gchar *password)
 #endif
         greeter_start_authentication(selected_user);
     }
-#ifdef DEBUG
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clean resources");
-#endif
 }
 
 static void start_session(const gchar *session)
@@ -324,6 +322,9 @@ static void start_session(const gchar *session)
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
+    if(response_count == 1){
+        js_post_message_simply("prompt", "{\"status\":\"%s\"}", "expect response");
+    }
 #ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 #endif
@@ -344,6 +345,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(cancelling){
         greeter_cancel_authentication();
+        return ;
     }
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
@@ -398,44 +400,6 @@ static void autologin_timer_expired_cb(LightDMGreeter *greeter)
 }
 
 /* SESSION */
-/* get session icon from xsession desktop file */
-static const gchar* get_icon_path(const gchar *key)
-{
-    const gchar *icon_path = NULL, *file_path = NULL, *domain = NULL;
-    GKeyFile *key_file = NULL;
-    LightDMSession *session = NULL;
-
-    file_path = g_strdup_printf("%s%s%s", XSESSIONS_DIR, key, ".desktop");
-
-    if(!(g_file_test(file_path, G_FILE_TEST_EXISTS))){
-        return NULL;
-    }
-
-    key_file = g_key_file_new();
-
-    if(!(g_key_file_load_from_file(key_file, file_path, G_KEY_FILE_NONE, NULL))){
-        g_key_file_free(key_file);
-        return NULL;
-    }
-
-    if (g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) ||
-        g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL)){
-        g_key_file_free(key_file);
-        return NULL;
-    }
-
-#ifdef G_KEY_FILE_DESKTOP_KEY_GETTEXT_DOMAIN
-    domain = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_GETTEXT_DOMAIN, NULL);
-#else
-    domain = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GNOME-Gettext-Domain", NULL);
-#endif
-
-    icon_path = g_key_file_get_locale_string(key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_ICON, domain, NULL);
-
-    g_key_file_free(key_file);
-    return icon_path;
-}
-
 static LightDMSession* find_session_by_key(const gchar *key)
 {
     LightDMSession *session = NULL;
@@ -643,8 +607,11 @@ const gchar* greeter_get_user_image(const gchar* name)
     g_assert(user);
 
     image = lightdm_user_get_image(user);
-
-    return image;
+    if(g_file_test(image, G_FILE_TEST_EXISTS)){
+        return image;
+    }else{
+        return "nonexists";
+    }
 }
 
 JS_EXPORT_API

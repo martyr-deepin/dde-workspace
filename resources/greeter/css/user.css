@@ -8,10 +8,20 @@
     width: 574px;
 }
 
+#lockroundabout {
+    position:absolute;
+    list-style:none;
+    top:30%;
+    left:50%;
+    margin-left: -92px;
+    text-align: center;
+    width: 184px;
+}
+
 .UserInfo {
     cursor:pointer;
     float: left;
-    width: 185px;
+    width: 184px;
     background: rgba(255,255,255,.5);
     border-radius: 5px;
     padding: 20px 0px 20px 0px;
