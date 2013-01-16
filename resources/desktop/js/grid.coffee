@@ -352,10 +352,11 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        tmp = []
-        for file in evt.dataTransfer.files
-            tmp.push(f) if (f = DCore.DEntry.create_by_path(file.path))?
-        if tmp.length then DCore.DEntry.move(tmp, g_desktop_entry)
+        if evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) != _DND_DESKTOP_MARK_
+            tmp = []
+            for file in evt.dataTransfer.files
+                tmp.push(f) if (f = DCore.DEntry.create_by_path(file.path))?
+            if tmp.length then DCore.DEntry.move(tmp, g_desktop_entry)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -443,6 +444,7 @@ item_dragstart_handler = (widget, evt) ->
                 all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
+        evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)
         evt.dataTransfer.effectAllowed = "all"
 
         x = evt.x - drag_start.x * _ITEM_WIDTH_
