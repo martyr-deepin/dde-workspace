@@ -123,27 +123,3 @@ void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, doub
     guchar* buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
     calc(buf, size, gdk_pixbuf_get_n_channels(pixbuf), r, g, b);
 }
-
-#include "jsextension.h"
-#include <string.h>
-JSValueRef dock_calc_dominant_color_by_path(const char* path)
-{
-    g_assert(path != NULL);
-    GdkPixbuf* pixbuf = NULL;
-    pixbuf = gdk_pixbuf_new_from_file(path, NULL);
-
-    double r, g, b;
-    if (pixbuf != NULL) {
-        calc_dominant_color_by_pixbuf(pixbuf, &r, &g, &b);
-        g_object_unref(pixbuf);
-    } else {
-        r = DEFAULT_COLOR_R;
-        g = DEFAULT_COLOR_G;
-        b = DEFAULT_COLOR_B;
-    }
-    JSObjectRef json = json_create();
-    json_append_number(json, "r", floor(r * 256));
-    json_append_number(json, "g", floor(g * 256));
-    json_append_number(json, "b", floor(b * 256));
-    return json;
-}

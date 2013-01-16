@@ -25,6 +25,7 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
+#include "X_misc.h"
 
 #include <stdio.h>
 #include <errno.h>
@@ -101,7 +102,7 @@ int main(int argc, char **argv)
     lock_container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
     gtk_window_fullscreen(GTK_WINDOW(lock_container));
-
+    gtk_window_set_keep_above(GTK_WINDOW(lock_container), TRUE);
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
@@ -109,6 +110,7 @@ int main(int argc, char **argv)
     
     gtk_widget_realize(lock_container);
     GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
+
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
@@ -116,18 +118,10 @@ int main(int argc, char **argv)
 
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-    GdkDisplay *display = gdk_display_get_default();
-    g_assert(display);
-    GdkDeviceManager *device_manager = gdk_display_get_device_manager(display);
-    g_assert(device_manager);
-    
-    GdkDevice *device = gdk_device_manager_get_client_pointer(device_manager);
-    g_assert(device);
-
-    gdk_device_grab(device, gdkwindow, GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME); 
-
     gtk_widget_show_all(lock_container);
+    GRAB_DEVICE(NULL);
 
+    gdk_window_stick(gdkwindow);
     gtk_main();
     return 0;
 }

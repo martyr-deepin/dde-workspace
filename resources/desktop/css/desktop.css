@@ -56,8 +56,8 @@ body {
 }
 
 .DesktopEntry .item_icon {
-    width:48px;
-    height:48px;
+    max-width:48px;
+    max-height:48px;
 }
 
 .DesktopEntry .item_attrib {
@@ -99,7 +99,7 @@ body {
 }
 
 .item_focus {
-    outline:#777 solid 1px;
+    box-shadow: 0px 0px 1px 1px #777;
     z-index:10;
 }
 
@@ -156,8 +156,8 @@ body {
     background-color:rgba(68, 132, 195, 0.3);
 }
 #pop_grid ul li img {
-    width:48px;
-    height:48px;
+    max-width:48px;
+    max-height:48px;
 }
 #pop_grid ul li div {
     max-width:90px;

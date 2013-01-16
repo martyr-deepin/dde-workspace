@@ -29,17 +29,22 @@ class LoginEntry extends Widget
         super
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        #@password.setAttribute("autofocus", "true")
         @password.index = 0
-        @password.addEventListener("keydown", (e)=>
+        @password.addEventListener("keyup", (e)=>
             if e.which == 13
-                @on_active(@password.value)
+                if not @password.value
+                    @password.focus()
+                else
+                    @on_active(@password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = "UnLock"
         @login.addEventListener("click", =>
-            @on_active(@password.value)
+            if not @password.value
+                @password.focus()
+            else
+                @on_active(@password.value)
         )
         @login.index = 1
         @password.focus()
@@ -89,7 +94,7 @@ class UserInfo extends Widget
             if not @login
                 @show_login()
             else
-                if e.target.parentElement == @login.element
+                if e.target.parentElement.className == @login.element.className
                     echo "login pwd clicked"
                 else
                     if @login_displayed
@@ -99,10 +104,13 @@ class UserInfo extends Widget
             @focus()
     
     on_verify: (password)->
-        @login.destroy()
-        @loading = new Loading("loading")
-        @element.appendChild(@loading.element)
-        DCore.Lock.try_unlock(password)
+        if not password
+            @login.password.focus()
+        else
+            @login.destroy()
+            @loading = new Loading("loading")
+            @element.appendChild(@loading.element)
+            DCore.Lock.try_unlock(password)
 
     unlock_check: (msg) ->
         if msg.status == "succeed"
@@ -119,13 +127,21 @@ class UserInfo extends Widget
                 @login.password.style.color = "black"
                 @login.password.value = ""
             )
+
             apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
-    
-u = new UserInfo(user, user, "images/img01.jpg")
+
+user_path = DCore.DBus.sys_object("org.freedesktop.Accounts","/org/freedesktop/Accounts","org.freedesktop.Accounts").FindUserByName_sync(user)
+user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").IconFile
+
+if not user_image? or not user_image.length
+    user_image = "images/img01.jpg"
+
+u = new UserInfo(user, user, user_image) 
 u.focus()
-$("#roundabout").appendChild(u.li)
+$("#lockroundabout").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
+

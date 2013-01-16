@@ -68,6 +68,7 @@ class ClientGroup extends AppItem
 
     update_client: (id, icon, title)->
         @img.src = icon if id == @leader
+        icon = NOT_FOUND_ICON if not icon
         in_withdraw = id in @w_clients
         @client_infos[id] =
             "id": id

@@ -17,7 +17,7 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
 apply_refuse_rotate = (el, time)->
     apply_animation(el, "refuse", "#{time}s", "linear")
     setTimeout(->
@@ -30,36 +30,51 @@ class LoginEntry extends Widget
         if DCore.Greeter.is_hide_users()
             @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
-            @account.addEventListener("keydown", (e)=>
+            @account.addEventListener("keyup", (e)=>
                 if e.which == 13
-                    @password.focus()
+                    if not @account.value
+                        @account.focus()
+                    else
+                        @password.focus()
             )
             @account.index = 0
-            
+
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        #@password.setAttribute("autofocus", "true")
-        @password.focus()
         @password.index = 1
 
-        @password.addEventListener("keydown", (e)=>
+        @password.addEventListener("keyup", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()
-                    @on_active(@account.value, @password.value)
+                    if not @account.value
+                        @account.focus()
+                    else if not @password.value
+                        @password.focus()
+                    else
+                        @on_active(@account.value, @password.value)
                 else
-                    @on_active(@id, @password.value)
+                    if not @password.value
+                        @password.focus()
+                    else
+                        @on_active(@id, @password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = "User Login"
         @login.addEventListener("click", =>
             if DCore.Greeter.is_hide_users()
-                @on_active(@account.value, @password.value)
+                if not @account.value
+                    @account.focus()
+                else if not @password.value
+                    @password.focus()
+                else
+                    @on_active(@account.value, @password.value)
             else
-                @on_active(@id, @password.value)
+                if not @password.value
+                    @on_active(@id, @password.value)
         )
         @login.index = 2
-   
+
         if DCore.Greeter.is_hide_users()
             @account.focus()
         else
@@ -82,7 +97,7 @@ class UserInfo extends Widget
         @name = create_element("span", "UserName", @element)
         @name.innerText = name
         @active = false
-        @login_displayed = false 
+        @login_displayed = false
 
     focus: ->
         _current_user?.blur()
@@ -95,7 +110,7 @@ class UserInfo extends Widget
         else
             DCore.Greeter.set_selected_user(@id)
             DCore.Greeter.start_authentication(@id)
-    
+
     blur: ->
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
@@ -104,14 +119,17 @@ class UserInfo extends Widget
         @loading = null
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
-    
+
     show_login: ->
         if false
             @login()
         else if not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
-            @login.password.focus()
+            if DCore.Greeter.is_hide_users()
+                @login.account.focus()
+            else
+                @login.password.focus()
             @login_displayed = true
 
     do_click: (e)->
@@ -119,13 +137,13 @@ class UserInfo extends Widget
             if not @login
                 @show_login()
             else
-                if e.target.parentElement == @login.element
+                if e.target.parentElement.className == @login.element.className
                     echo "login pwd clicked"
                 else
                     if @login_displayed
                         @focus()
                         @login_displayed = false
-    
+
             if @name.innerText == "guest"
                 @login.password.style.display="none"
         else
@@ -136,27 +154,30 @@ class UserInfo extends Widget
         @loading = new Loading("loading")
         @element.appendChild(@loading.element)
 
-        _session = de_menu.menu.items[de_menu.get_current()][0]
+        DCore.Greeter.set_selected_session(de_menu.get_useable_current()[0])
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
-        DCore.Greeter.login_clicked(password)
-
+            DCore.signal_connect("prompt", (msg)->
+                DCore.Greeter.login_clicked(password)
+            )
+        else
+            DCore.Greeter.login_clicked(password)
         #debug code begin
         #div_auth = create_element("div", "", $("#Debug"))
         #div_auth.innerText += "authenticate"
 
         #div_id = create_element("div", "", div_auth)
-        #div_id.innerText = @id
+        #div_id.innerText = username
 
         #div_password = create_element("div", "", div_auth)
         #div_password.innerText = password
 
         #div_session = create_element("div", "", div_auth)
-        #div_session.innerText = _session
+        #div_session.innerText = de_menu.get_useable_current()[0]
         #debug code end
 
-# below code should use c-backend to fetch data 
+# below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
     roundabout.appendChild(u.li)
@@ -164,7 +185,13 @@ if DCore.Greeter.is_hide_users()
 else
     users = DCore.Greeter.get_users()
     for user in users
-        u = new UserInfo(user, user, "images/img01.jpg")
+        user_image = DCore.Greeter.get_user_image(user)
+        echo user_image
+        if not user_image? or user_image == "nonexists"
+            user_image = "images/img01.jpg"
+
+        echo user_image
+        u = new UserInfo(user, user, user_image) 
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
             u.focus()
@@ -182,19 +209,32 @@ DCore.signal_connect("auth", (msg) ->
     user = _current_user
     user.focus()
     user.show_login()
-    user.login.password.setAttribute("type", "text")
-    user.login.password.style.color = "red"
-    user.login.password.value = msg.error
-    user.login.password.blur()
-    user.login.password.addEventListener("focus", (e)=>
-        user.login.password.setAttribute("type", "password")
-        user.login.password.style.color ="black"
-        user.login.password.value = ""
-    )
+    if DCore.Greeter.is_hide_users()
+        user.login.account.style.color = "red"
+        user.login.account.value = msg.error
+        user.login.account.blur()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+        user.login.account.addEventListener("focus", (e)=>
+            user.login.account.style.color = "black"
+            user.login.account.value = ""
+            DCore.Greeter.start_authentication("*other")
+        )
+    else
+        user.login.password.setAttribute("type", "text")
+        user.login.password.style.color = "red"
+        user.login.password.value = msg.error
+        user.login.password.blur()
+        user.login.password.addEventListener("focus", (e)=>
+            user.login.password.setAttribute("type", "password")
+            user.login.password.style.color ="black"
+            user.login.password.value = ""
+        )
+
     apply_refuse_rotate(user.element, 0.5)
 )
 
-if roundabout.children.length == 2
+if roundabout.children.length <= 2
     roundabout.style.width = "0"
 
 run_post(->

@@ -21,11 +21,12 @@
 #include <glib.h>
 #include <string.h>
 #include "utils.h"
+#include "xdg_misc.h"
 
 //TODO run_command support variable arguments
 
 
 char* dcore_get_theme_icon(const char* name, double size)
 {
-    return icon_name_to_path(name, size);
+    return icon_name_to_path_with_check_xpm(name, size);
 }

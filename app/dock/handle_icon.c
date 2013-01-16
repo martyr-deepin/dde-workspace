@@ -14,6 +14,9 @@ cairo_surface_t* _board_mask = NULL;
 
 char* handle_icon(GdkPixbuf* icon)
 {
+    int left_offset = (IMG_WIDTH - gdk_pixbuf_get_width(icon)) / 2;
+    int top_offset = (IMG_HEIGHT - gdk_pixbuf_get_height(icon)) / 2;
+
     if (_board== NULL) {
         _board = cairo_image_surface_create_from_png(BOARD_PATH);
         _board_mask = cairo_image_surface_create_from_png(BOARD_MASK_PATH);
@@ -27,13 +30,13 @@ char* handle_icon(GdkPixbuf* icon)
     cairo_t* cr  = cairo_create(surface);
 
     cairo_set_source_rgb(cr, r, g, b);
-    cairo_mask_surface(cr, _board_mask, 0, 0);
+    cairo_mask_surface(cr, _board_mask, 0, BOARD_OFFSET);
     /*cairo_paint(cr);*/
 
-    gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT, MARGIN_TOP);
+    gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT + left_offset, MARGIN_TOP-1 + top_offset);
     cairo_paint(cr);
 
-    cairo_set_source_surface(cr, _board, 0, 0);
+    cairo_set_source_surface(cr, _board, 0, BOARD_OFFSET);
     cairo_paint(cr);
 
     guchar* data = get_data_uri_by_surface(surface);

@@ -352,10 +352,11 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        for file in evt.dataTransfer.files
-            path = DCore.Desktop.move_to_desktop(file.path)
-            if path.length > 1
-                save_position(path, pos)
+        if evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) != _DND_DESKTOP_MARK_
+            tmp = []
+            for file in evt.dataTransfer.files
+                tmp.push(f) if (f = DCore.DEntry.create_by_path(file.path))?
+            if tmp.length then DCore.DEntry.move(tmp, g_desktop_entry)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -429,8 +430,7 @@ selected_cut_to_clipboard = ->
 
 
 paste_from_clipboard = ->
-    e = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
-    DCore.DEntry.clipboard_paste(e)
+    DCore.DEntry.clipboard_paste(g_desktop_entry)
 
 
 item_dragstart_handler = (widget, evt) ->
@@ -444,6 +444,7 @@ item_dragstart_handler = (widget, evt) ->
                 all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
+        evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)
         evt.dataTransfer.effectAllowed = "all"
 
         x = evt.x - drag_start.x * _ITEM_WIDTH_
@@ -636,7 +637,7 @@ delete_selected_items = (real_delete) ->
         w = Widget.look_up(i)
         if w? and w.modifiable == true then tmp.push(w.entry)
 
-    if real_delete then DCore.DEntry.delete(tmp)
+    if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)
 
 
@@ -648,7 +649,7 @@ show_selected_items_Properties = ->
 
     #XXX: we get an error here when call the nautilus DBus interface
     try
-        s_nautilus?.ShowItemProperties_sync(tmp, "")
+        g_dbus_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
 
 

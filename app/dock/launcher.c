@@ -78,7 +78,6 @@ JSValueRef build_app_info(const char* app_id)
     }
 
     if (icon_name != NULL) {
-
         if (g_str_has_prefix(icon_name, "data:image")) {
             json_append_string(json, "Icon", icon_name);
         } else {
@@ -86,11 +85,15 @@ JSValueRef build_app_info(const char* app_id)
             if (is_deepin_icon(icon_path)) {
                 json_append_string(json, "Icon", icon_path);
             } else {
-                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_size(icon_path, IMG_WIDTH, IMG_HEIGHT, NULL);
-                char* icon_data = handle_icon(pixbuf);
-                g_object_unref(pixbuf);
-                json_append_string(json, "Icon", icon_data);
-                g_free(icon_data);
+                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
+                if (pixbuf == NULL) {
+                    json_append_string(json, "Icon", NULL);
+                } else {
+                    char* icon_data = handle_icon(pixbuf);
+                    g_object_unref(pixbuf);
+                    json_append_string(json, "Icon", icon_data);
+                    g_free(icon_data);
+                }
             }
             g_free(icon_path);
         }

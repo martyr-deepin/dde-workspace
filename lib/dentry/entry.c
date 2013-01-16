@@ -34,6 +34,8 @@
 #include "fileops_trash.h"
 #include "fileops_delete.h"
 
+ArrayContainer EMPTY_CONTAINER = {0, 0};
+
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
@@ -42,7 +44,7 @@ static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 #define TEST_GAPP(e, app) } else if (G_IS_APP_INFO(e)) { \
     GAppInfo* app = e;
 
-#define TEST_END } else { g_assert_not_reached();}
+#define TEST_END } else { g_warn_if_reached();}
 
 JS_EXPORT_API
 Entry* dentry_get_desktop()
@@ -124,7 +126,7 @@ char* dentry_get_icon(Entry* e)
         GIcon *icon = g_app_info_get_icon(app);
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
-            ret = icon_name_to_path(icon_str, 48);
+            ret = icon_name_to_path_with_check_xpm(icon_str, 48);
             g_free(icon_str);
         }
     TEST_END
@@ -184,7 +186,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 JS_EXPORT_API
 ArrayContainer dentry_list_files(GFile* f)
 {
-    g_assert(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY);
+    g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
 
     char* dir_path = g_file_get_path(f);
     GDir* dir = g_dir_open(dir_path, 0, NULL);
@@ -302,10 +304,10 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
     g_free(_fs.data);
 }
 
-void dentry_delete(ArrayContainer fs)
+void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_confirm_delete(_fs.data, _fs.num);
+    fileops_confirm_delete(_fs.data, _fs.num, show_dialog);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
