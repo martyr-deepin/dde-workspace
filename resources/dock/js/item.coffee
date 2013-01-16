@@ -85,6 +85,7 @@ app_list = new AppList("app_list")
 
 
 class AppItem extends Widget
+    is_fixed_pos: false
     constructor: (@id, @icon)->
         super
         app_list.append(@)
