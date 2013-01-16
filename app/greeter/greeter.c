@@ -260,6 +260,7 @@ JS_EXPORT_API
 void greeter_cancel_authentication()
 {
     cancelling = FALSE;
+    response_count = 0;
     if(lightdm_greeter_get_in_authentication(greeter)){
         cancelling = TRUE;
         lightdm_greeter_cancel_authentication(greeter);

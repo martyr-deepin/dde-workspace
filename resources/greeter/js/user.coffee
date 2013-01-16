@@ -213,9 +213,12 @@ DCore.signal_connect("auth", (msg) ->
         user.login.account.style.color = "red"
         user.login.account.value = msg.error
         user.login.account.blur()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
         user.login.account.addEventListener("focus", (e)=>
             user.login.account.style.color = "black"
             user.login.account.value = ""
+            DCore.Greeter.start_authentication("*other")
         )
     else
         user.login.password.setAttribute("type", "text")
