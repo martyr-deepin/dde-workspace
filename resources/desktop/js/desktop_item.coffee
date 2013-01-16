@@ -250,8 +250,9 @@ class Item extends Widget
         if @in_rename == false
             @item_name.innerText = @get_name()
 
-        for i in @item_attrib.getElementsByTagName("li")
-            @item_attrib.removeChild(i)
+        li_list = @item_attrib.getElementsByTagName("li")
+        for i in [(li_list.length - 1) ... -1] by -1
+            @item_attrib.removeChild(li_list[i])
         ele = document.createElement("li")
         ele.innerHTML = "<img src=\"img/lock.png\" draggable=\"false\" />"
         @item_attrib.appendChild(ele)
@@ -575,8 +576,22 @@ class RichDir extends DesktopEntry
 
 
     item_update : =>
-        if @show_pop == true then @reflesh_pop_block()
-        super
+        list = DCore.DEntry.list_files(@entry)
+        if list.length <= 1
+            if @show_pop == true
+                @hide_pop_block()
+                if list.length then DCore.DEntry.move(list, g_desktop_entry)
+            DCore.DEntry.delete_files([@entry], false)
+        else
+            if @show_pop == true
+                @sub_items = {}
+                @sub_items_count = 0
+                for e in list
+                    @sub_items[DCore.DEntry.get_id(e)] = e
+                    ++@sub_items_count
+                @reflesh_pop_block()
+            super
+        return
 
 
     item_exec : ->
@@ -626,17 +641,7 @@ class RichDir extends DesktopEntry
         for i in @div_pop.getElementsByTagName("div")
             if i.id == "pop_downarrow" or i.id == "pop_uparrow"
                 i.parentElement.removeChild(i)
-
-        @sub_items = {}
-        @sub_items_count = 0
-        for e in DCore.DEntry.list_files(@entry)
-            @sub_items[DCore.DEntry.get_id(e)] = e
-            ++@sub_items_count
-        if @sub_items_count == 0
-            @hide_pop_block()
-            DCore.DEntry.delete([@entry])
-        else
-            @fill_pop_block()
+        @fill_pop_block()
 
 
     fill_pop_block : =>
@@ -893,7 +898,7 @@ class HomeVDir extends DesktopEntry
             when 3
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
-                    s_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
+                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 

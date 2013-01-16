@@ -31,10 +31,12 @@ _ITEM_ID_USER_HOME_ = "Home_Virtual_Dir"
 # id string for "trash bin" item
 _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
 
+# store the entry for desktop
+g_desktop_entry = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
 
 # DBus handler for invoke nautilus filemanager
 try
-    s_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
+    g_dbus_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
 catch e
     echo "error when init nautilus DBus interface(#{e})"
-    s_nautilus = null
+    g_dbus_nautilus = null
