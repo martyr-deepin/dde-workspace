@@ -44,7 +44,7 @@ static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 #define TEST_GAPP(e, app) } else if (G_IS_APP_INFO(e)) { \
     GAppInfo* app = e;
 
-#define TEST_END } else { g_assert_not_reached();}
+#define TEST_END } else { g_warn_if_reached();}
 
 JS_EXPORT_API
 Entry* dentry_get_desktop()
