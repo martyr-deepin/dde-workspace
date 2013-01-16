@@ -455,9 +455,7 @@
   })(Widget);
 
   DCore.signal_connect("status", function(msg) {
-    var status_div;
-    status_div = create_element("div", " ", $("#Debug"));
-    return status_div.innerText = "status:" + msg.status;
+    return echo(msg.status);
   });
 
   de_menu_cb = function(id, title) {
@@ -564,7 +562,6 @@
       }
       this.password = create_element("input", "Password", this.element);
       this.password.setAttribute("type", "password");
-      this.password.focus();
       this.password.index = 1;
       this.password.addEventListener("keydown", function(e) {
         if (e.which === 13) {
@@ -692,6 +689,7 @@
     };
 
     UserInfo.prototype.on_verify = function(username, password) {
+      var div_auth, div_id, div_password, div_session;
       this.login.destroy();
       this.loading = new Loading("loading");
       this.element.appendChild(this.loading.element);
@@ -700,7 +698,18 @@
         DCore.Greeter.set_selected_user(username);
         DCore.Greeter.login_clicked(username);
       }
-      return DCore.Greeter.login_clicked(password);
+      while (1) {
+        if (DCore.Greeter.expect_response()) break;
+      }
+      DCore.Greeter.login_clicked(password);
+      div_auth = create_element("div", "", $("#Debug"));
+      div_auth.innerText += "authenticate";
+      div_id = create_element("div", "", div_auth);
+      div_id.innerText = username;
+      div_password = create_element("div", "", div_auth);
+      div_password.innerText = password;
+      div_session = create_element("div", "", div_auth);
+      return div_session.innerText = de_menu.get_useable_current()[0];
     };
 
     return UserInfo;
@@ -747,7 +756,7 @@
     return apply_refuse_rotate(user.element, 0.5);
   });
 
-  if (roundabout.children.length === 2) roundabout.style.width = "0";
+  if (roundabout.children.length <= 2) roundabout.style.width = "0";
 
   run_post(function() {
     var l;

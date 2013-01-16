@@ -39,7 +39,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
         #@password.setAttribute("autofocus", "true")
-        @password.focus()
+        #@password.focus()
         @password.index = 1
 
         @password.addEventListener("keydown", (e)=>
@@ -140,20 +140,23 @@ class UserInfo extends Widget
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
+        while 1
+            if DCore.Greeter.expect_response()
+                break
         DCore.Greeter.login_clicked(password)
 
         #debug code begin
-        #div_auth = create_element("div", "", $("#Debug"))
-        #div_auth.innerText += "authenticate"
+        div_auth = create_element("div", "", $("#Debug"))
+        div_auth.innerText += "authenticate"
 
-        #div_id = create_element("div", "", div_auth)
-        #div_id.innerText = @id
+        div_id = create_element("div", "", div_auth)
+        div_id.innerText = username
 
-        #div_password = create_element("div", "", div_auth)
-        #div_password.innerText = password
+        div_password = create_element("div", "", div_auth)
+        div_password.innerText = password
 
-        #div_session = create_element("div", "", div_auth)
-        #div_session.innerText = _session
+        div_session = create_element("div", "", div_auth)
+        div_session.innerText = de_menu.get_useable_current()[0]
         #debug code end
 
 # below code should use c-backend to fetch data
@@ -194,7 +197,7 @@ DCore.signal_connect("auth", (msg) ->
     apply_refuse_rotate(user.element, 0.5)
 )
 
-if roundabout.children.length == 2
+if roundabout.children.length <= 2
     roundabout.style.width = "0"
 
 run_post(->

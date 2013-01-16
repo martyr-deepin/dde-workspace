@@ -318,7 +318,7 @@
       this.password = create_element("input", "Password", this.element);
       this.password.setAttribute("type", "password");
       this.password.index = 0;
-      this.password.addEventListener("keydown", function(e) {
+      this.password.addEventListener("keyup", function(e) {
         if (e.which === 13) return _this.on_active(_this.password.value);
       });
       this.login = create_element("button", "LoginButton", this.element);
@@ -402,7 +402,7 @@
         if (!this.login) {
           return this.show_login();
         } else {
-          if (e.target.parentElement === this.login.element) {
+          if (e.target.parentElement.className === this.login.element.className) {
             return echo("login pwd clicked");
           } else {
             if (this.login_displayed) {
@@ -417,10 +417,14 @@
     };
 
     UserInfo.prototype.on_verify = function(password) {
-      this.login.destroy();
-      this.loading = new Loading("loading");
-      this.element.appendChild(this.loading.element);
-      return DCore.Lock.try_unlock(password);
+      if (!password) {
+        return this.login.password.focus();
+      } else {
+        this.login.destroy();
+        this.loading = new Loading("loading");
+        this.element.appendChild(this.loading.element);
+        return DCore.Lock.try_unlock(password);
+      }
     };
 
     UserInfo.prototype.unlock_check = function(msg) {
@@ -453,7 +457,7 @@
 
   u.focus();
 
-  $("#roundabout").appendChild(u.li);
+  $("#lockroundabout").appendChild(u.li);
 
   DCore.signal_connect("unlock", function(msg) {
     return u.unlock_check(msg);

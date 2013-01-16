@@ -31,7 +31,7 @@ class LoginEntry extends Widget
         @password.setAttribute("type", "password")
         #@password.setAttribute("autofocus", "true")
         @password.index = 0
-        @password.addEventListener("keydown", (e)=>
+        @password.addEventListener("keyup", (e)=>
             if e.which == 13
                 @on_active(@password.value)
         )
@@ -89,7 +89,7 @@ class UserInfo extends Widget
             if not @login
                 @show_login()
             else
-                if e.target.parentElement == @login.element
+                if e.target.parentElement.className == @login.element.className
                     echo "login pwd clicked"
                 else
                     if @login_displayed
@@ -99,10 +99,13 @@ class UserInfo extends Widget
             @focus()
     
     on_verify: (password)->
-        @login.destroy()
-        @loading = new Loading("loading")
-        @element.appendChild(@loading.element)
-        DCore.Lock.try_unlock(password)
+        if not password
+            @login.password.focus()
+        else
+            @login.destroy()
+            @loading = new Loading("loading")
+            @element.appendChild(@loading.element)
+            DCore.Lock.try_unlock(password)
 
     unlock_check: (msg) ->
         if msg.status == "succeed"
@@ -119,13 +122,15 @@ class UserInfo extends Widget
                 @login.password.style.color = "black"
                 @login.password.value = ""
             )
+
             apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
     
 u = new UserInfo(user, user, "images/img01.jpg")
 u.focus()
-$("#roundabout").appendChild(u.li)
+$("#lockroundabout").appendChild(u.li)
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
+

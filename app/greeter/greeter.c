@@ -37,6 +37,7 @@ GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
 static gboolean cancelling = FALSE, prompted = FALSE;
 gchar *selected_user = NULL, *selected_session = NULL;
+static gboolean expect_response = FALSE;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -51,6 +52,7 @@ const gchar* greeter_get_authentication_user();
 gboolean greeter_is_authenticated();
 void greeter_start_authentication(const gchar *username);
 void greeter_cancel_authentication();
+gboolean greeter_expect_response();
 void greeter_login_clicked(const gchar *password);
 static void start_session(const gchar *session);
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type);
@@ -270,6 +272,11 @@ void greeter_cancel_authentication()
         greeter_start_authentication("*other");
     }
 }
+JS_EXPORT_API
+gboolean greeter_expect_response()
+{
+    return expect_response;
+}
 
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
@@ -291,6 +298,7 @@ void greeter_login_clicked(const gchar *password)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
 #endif
         lightdm_greeter_respond(greeter, password);
+        expect_response = FALSE;
 
     }else{
 #ifdef DEBUG
@@ -298,9 +306,6 @@ void greeter_login_clicked(const gchar *password)
 #endif
         greeter_start_authentication(selected_user);
     }
-#ifdef DEBUG
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clean resources");
-#endif
 }
 
 static void start_session(const gchar *session)
@@ -324,6 +329,7 @@ static void start_session(const gchar *session)
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
+    expect_response = TRUE;
 #ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 #endif
@@ -344,6 +350,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(cancelling){
         greeter_cancel_authentication();
+        return ;
     }
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
