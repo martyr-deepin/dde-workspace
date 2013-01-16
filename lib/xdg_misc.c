@@ -69,14 +69,20 @@ char* check_xpm(const char* path)
     }
 }
 
+char* icon_name_to_path_with_check_xpm(const char* name, int size) 
+{
+    char* path = icon_name_to_path(name, size);
+    char* ret = check_xpm(path);
+    g_free(path);
+    return ret;
+}
 
 
 char* icon_name_to_path(const char* name, int size) 
 {
-    g_return_val_if_fail(name != NULL, NULL);
-
     if (g_path_is_absolute(name))
-        return check_xpm(name);
+        return g_strdup(name);
+    g_return_val_if_fail(name != NULL, NULL);
 
     char* ext = strchr(name, '.');
     if (ext != NULL) {
@@ -88,10 +94,9 @@ char* icon_name_to_path(const char* name, int size)
     GtkIconTheme* them = gtk_icon_theme_get_default(); //do not ref or unref it
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     if (info) {
-        const char* path = gtk_icon_info_get_filename(info);
-        char* ret = check_xpm(path);
+        char* path = g_strdup(gtk_icon_info_get_filename(info));
         gtk_icon_info_free(info);
-        return ret;
+        return path;
     } else {
         return NULL;
     }
