@@ -29,17 +29,22 @@ class LoginEntry extends Widget
         super
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        #@password.setAttribute("autofocus", "true")
         @password.index = 0
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
-                @on_active(@password.value)
+                if not @password.value
+                    @password.focus()
+                else
+                    @on_active(@password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = "UnLock"
         @login.addEventListener("click", =>
-            @on_active(@password.value)
+            if not @password.value
+                @password.focus()
+            else
+                @on_active(@password.value)
         )
         @login.index = 1
         @password.focus()

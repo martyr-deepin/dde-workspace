@@ -30,33 +30,48 @@ class LoginEntry extends Widget
         if DCore.Greeter.is_hide_users()
             @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
-            @account.addEventListener("keydown", (e)=>
+            @account.addEventListener("keyup", (e)=>
                 if e.which == 13
-                    @password.focus()
+                    if not @account.value
+                        @account.focus()
+                    else
+                        @password.focus()
             )
             @account.index = 0
 
         @password = create_element("input", "Password", @element)
         @password.setAttribute("type", "password")
-        #@password.setAttribute("autofocus", "true")
-        #@password.focus()
         @password.index = 1
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()
-                    @on_active(@account.value, @password.value)
+                    if not @account.value
+                        @account.focus()
+                    else if not @password.value
+                        @password.focus()
+                    else
+                        @on_active(@account.value, @password.value)
                 else
-                    @on_active(@id, @password.value)
+                    if not @password.value
+                        @password.focus()
+                    else
+                        @on_active(@id, @password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = "User Login"
         @login.addEventListener("click", =>
             if DCore.Greeter.is_hide_users()
-                @on_active(@account.value, @password.value)
+                if not @account.value
+                    @account.focus()
+                else if not @password.value
+                    @password.focus()
+                else
+                    @on_active(@account.value, @password.value)
             else
-                @on_active(@id, @password.value)
+                if not @password.value
+                    @on_active(@id, @password.value)
         )
         @login.index = 2
 
@@ -111,7 +126,10 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
-            @login.password.focus()
+            if DCore.Greeter.is_hide_users()
+                @login.account.focus()
+            else
+                @login.password.focus()
             @login_displayed = true
 
     do_click: (e)->
@@ -191,15 +209,25 @@ DCore.signal_connect("auth", (msg) ->
     user = _current_user
     user.focus()
     user.show_login()
-    user.login.password.setAttribute("type", "text")
-    user.login.password.style.color = "red"
-    user.login.password.value = msg.error
-    user.login.password.blur()
-    user.login.password.addEventListener("focus", (e)=>
-        user.login.password.setAttribute("type", "password")
-        user.login.password.style.color ="black"
-        user.login.password.value = ""
-    )
+    if DCore.Greeter.is_hide_users()
+        user.login.account.style.color = "red"
+        user.login.account.value = msg.error
+        user.login.account.blur()
+        user.login.account.addEventListener("focus", (e)=>
+            user.login.account.style.color = "black"
+            user.login.account.value = ""
+        )
+    else
+        user.login.password.setAttribute("type", "text")
+        user.login.password.style.color = "red"
+        user.login.password.value = msg.error
+        user.login.password.blur()
+        user.login.password.addEventListener("focus", (e)=>
+            user.login.password.setAttribute("type", "password")
+            user.login.password.style.color ="black"
+            user.login.password.value = ""
+        )
+
     apply_refuse_rotate(user.element, 0.5)
 )
 
