@@ -427,11 +427,27 @@
       return this.menu.current;
     };
 
+    ComboBox.prototype.get_useable_current = function() {
+      var key, ret, val, _ref;
+      ret = this.menu.items[this.menu.current];
+      if (!(ret != null)) {
+        _ref = this.menu.items;
+        for (key in _ref) {
+          val = _ref[key];
+          ret = val;
+          break;
+        }
+      }
+      return ret;
+    };
+
     ComboBox.prototype.set_current = function(id) {
-      var _img;
-      _img = this.menu.items[id][1];
-      this.current_img.src = _img;
-      return this.menu.current = id;
+      var find;
+      find = this.menu.items[id];
+      if (!(find != null)) find = this.get_useable_current();
+      this.menu.current = find[0];
+      this.current_img.src = find[1];
+      return find[0];
     };
 
     return ComboBox;
@@ -439,11 +455,13 @@
   })(Widget);
 
   DCore.signal_connect("status", function(msg) {
-    return echo(msg.status);
+    var status_div;
+    status_div = create_element("div", " ", $("#Debug"));
+    return status_div.innerText = "status:" + msg.status;
   });
 
   de_menu_cb = function(id, title) {
-    de_menu.set_current(id);
+    id = de_menu.set_current(id);
     return DCore.Greeter.set_selected_session(id);
   };
 
@@ -677,7 +695,7 @@
       this.login.destroy();
       this.loading = new Loading("loading");
       this.element.appendChild(this.loading.element);
-      DCore.Greeter.set_selected_session(de_menu.menu.items[de_menu.get_current()][0]);
+      DCore.Greeter.set_selected_session(de_menu.get_useable_current()[0]);
       if (DCore.Greeter.is_hide_users()) {
         DCore.Greeter.set_selected_user(username);
         DCore.Greeter.login_clicked(username);
