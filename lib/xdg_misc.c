@@ -57,6 +57,8 @@ void set_desktop_env_name(const char* name)
 
 char* check_xpm(const char* path)
 {
+    if (path == NULL)
+        return NULL;
     char* ext = strrchr(path, '.');
     if (ext != NULL && 
             (ext[1] == 'x' || ext[1] == 'X')  &&
@@ -629,33 +631,6 @@ char* get_entry_info(const char* path)
         return ret;
     }
     return NULL;
-}
-
-//JS_EXPORT_API
-char* desktop_move_to_desktop(const char* path)
-{
-    char* desktop_dir = get_desktop_dir(FALSE);
-    char* dir = g_path_get_dirname(path);
-
-    if (g_strcmp0(desktop_dir, dir) == 0) {
-        g_free(desktop_dir);
-        g_free(dir);
-        return g_strdup("");
-    } 
-
-    char* name = g_path_get_basename(path);
-    char* new_path = g_build_filename(desktop_dir, name, NULL);
-    int i= 1;
-    while (g_file_test(new_path, G_FILE_TEST_EXISTS)) {
-        g_free(new_path);
-        new_path = g_strdup_printf("%s/%s.(%d)", desktop_dir, name, i++);
-    }
-    g_free(name);
-    g_free(desktop_dir);
-    g_free(dir);
-
-    dcore_run_command2("mv", path, new_path);
-    return new_path;
 }
 
 gboolean change_desktop_entry_name(const char* path, const char* name)
