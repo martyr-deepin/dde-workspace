@@ -70,6 +70,7 @@ char* get_desktop_dir(gboolean update);
 
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
+char* icon_name_to_path_with_check_xpm(const char* name, int size);
 char* lookup_icon_by_gicon(GIcon* icon);
 
 enum EntryType {

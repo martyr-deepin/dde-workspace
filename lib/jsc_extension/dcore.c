@@ -21,6 +21,7 @@
 #include <glib.h>
 #include <string.h>
 #include "utils.h"
+#include "xdg_misc.h"
 
 //TODO run_command support variable arguments
 
