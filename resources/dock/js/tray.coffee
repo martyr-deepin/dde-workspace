@@ -24,9 +24,10 @@ update_icons = ->
         v.update()
 
 class TrayIconWrap extends Widget
-    constructor: (@id, @clss, @name) ->
+    constructor: (@id, @clss, @name, @width) ->
         super
         na.appendChild(@element)
+        @element.style.width = @width
 
     update: ->
         p = get_page_xy(@element)
@@ -41,9 +42,10 @@ for info in DCore.Dock.get_tray_icon_list()
 setTimeout(update_icons, 500)
     
 do_tray_icon_added = (info) ->
-    icon = new TrayIconWrap(info.id, info.clss, info.name)
-    tray_icons[info.id] = icon
-    setTimeout(update_icons, 30)
+    if not Widget.look_up(info.id)
+        icon = new TrayIconWrap(info.id, info.clss, info.name, info.width)
+        tray_icons[info.id] = icon
+        setTimeout(update_icons, 30)
 
 do_tray_icon_removed = (info) ->
     icon = Widget.look_up(info.id)

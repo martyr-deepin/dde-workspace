@@ -302,10 +302,10 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
     g_free(_fs.data);
 }
 
-void dentry_delete(ArrayContainer fs)
+void dentry_delete(ArrayContainer fs, gboolean show_dialog)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_confirm_delete(_fs.data, _fs.num);
+    fileops_confirm_delete(_fs.data, _fs.num, show_dialog);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
