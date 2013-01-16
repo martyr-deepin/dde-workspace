@@ -17,6 +17,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+# const string for desktop internal DND operation
+_DND_DATA_TYPE_NAME_ = "text/operate-type"
+_DND_DESKTOP_MARK_ = "desktop_internal"
+
 # item real size on grid
 _ITEM_WIDTH_ = 80 + 6 * 2
 _ITEM_HEIGHT_ = 84 + 4 * 2
