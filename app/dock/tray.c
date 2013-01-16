@@ -22,7 +22,7 @@
 #include "X_misc.h"
 #include "dwebview.h"
 
-#define DEFAULT_WIDTH 16
+#define DEFAULT_HEIGHT 16
 #define DEFAULT_INTERVAL 24
 static GHashTable* _icons = NULL;
 
@@ -59,7 +59,8 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     gdk_window_set_events(icon, GDK_VISIBILITY_NOTIFY_MASK); //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
     gdk_window_add_filter(icon, monitor_remove, icon);
     gdk_window_set_composited(icon, TRUE);
-    gdk_window_move_resize(icon, -100, -100, DEFAULT_WIDTH, DEFAULT_WIDTH);
+    int width = gdk_window_get_width(icon) * 1.0 / gdk_window_get_height(icon) * DEFAULT_HEIGHT;
+    gdk_window_resize(icon, width, DEFAULT_HEIGHT);
     js_post_message("tray_icon_added", tray_icon_to_json(icon));
 }
 
@@ -110,6 +111,7 @@ tray_icon_to_json(GdkWindow* icon)
     json_append_number(json, "id", GPOINTER_TO_INT(icon));
     json_append_string(json, "clss", res_class);
     json_append_string(json, "name", res_name);
+    json_append_number(json, "width", gdk_window_get_width(icon));
     js_post_message("tray_icon_added", json);
 
     g_free(res_class);

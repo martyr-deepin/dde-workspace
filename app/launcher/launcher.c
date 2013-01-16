@@ -41,11 +41,14 @@ void _make_maximize()
 {
 
 }
-#define BG_PATH "/var/cache/background/gaussian.png"
+
 gboolean draw_bg(GtkWidget* w, cairo_t* cr)
 {
-    cairo_surface_t* _background = cairo_image_surface_create_from_png(BG_PATH);
-    if (cairo_surface_status(_background) != CAIRO_STATUS_FILE_NOT_FOUND) {
+    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+    cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
+    g_free(bg_path);
+
+    if (cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
         cairo_set_source_surface(cr, _background, 0, 0);
         cairo_paint(cr);
     } else {
@@ -98,7 +101,7 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(draw_bg), NULL);
-    /*g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);*/
+    g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);

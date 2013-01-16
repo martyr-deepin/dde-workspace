@@ -20,7 +20,7 @@
 .TrayIconWrap {
     float:left;
     display: inline-block;
-    width: 16px;
+    /*width: 16px;*/
     height: 16px;
     margin: 37px 4px 7px 4px;
 }
@@ -31,8 +31,5 @@
     float: left;
     display: inline-block;
     margin: 37px 4px 7px 4px;
-    color: black;
+    color: white;
 }
-
-
-

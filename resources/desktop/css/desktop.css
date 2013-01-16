@@ -56,8 +56,8 @@ body {
 }
 
 .DesktopEntry .item_icon {
-    width:48px;
-    height:48px;
+    max-width:48px;
+    max-height:48px;
 }
 
 .DesktopEntry .item_attrib {
@@ -156,8 +156,8 @@ body {
     background-color:rgba(68, 132, 195, 0.3);
 }
 #pop_grid ul li img {
-    width:48px;
-    height:48px;
+    max-width:48px;
+    max-height:48px;
 }
 #pop_grid ul li div {
     max-width:90px;
