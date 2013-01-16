@@ -42,7 +42,7 @@ class LoginEntry extends Widget
         #@password.focus()
         @password.index = 1
 
-        @password.addEventListener("keydown", (e)=>
+        @password.addEventListener("keyup", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()
                     @on_active(@account.value, @password.value)
@@ -119,7 +119,7 @@ class UserInfo extends Widget
             if not @login
                 @show_login()
             else
-                if e.target.parentElement == @login.element
+                if e.target.parentElement.className == @login.element.className
                     echo "login pwd clicked"
                 else
                     if @login_displayed
@@ -140,23 +140,23 @@ class UserInfo extends Widget
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
             DCore.Greeter.login_clicked(username)
-        while 1
-            if DCore.Greeter.expect_response()
-                break
-        DCore.Greeter.login_clicked(password)
-
+            DCore.signal_connect("prompt", (msg)->
+                DCore.Greeter.login_clicked(password)
+            )
+        else
+            DCore.Greeter.login_clicked(password)
         #debug code begin
-        div_auth = create_element("div", "", $("#Debug"))
-        div_auth.innerText += "authenticate"
+        #div_auth = create_element("div", "", $("#Debug"))
+        #div_auth.innerText += "authenticate"
 
-        div_id = create_element("div", "", div_auth)
-        div_id.innerText = username
+        #div_id = create_element("div", "", div_auth)
+        #div_id.innerText = username
 
-        div_password = create_element("div", "", div_auth)
-        div_password.innerText = password
+        #div_password = create_element("div", "", div_auth)
+        #div_password.innerText = password
 
-        div_session = create_element("div", "", div_auth)
-        div_session.innerText = de_menu.get_useable_current()[0]
+        #div_session = create_element("div", "", div_auth)
+        #div_session.innerText = de_menu.get_useable_current()[0]
         #debug code end
 
 # below code should use c-backend to fetch data
@@ -167,7 +167,13 @@ if DCore.Greeter.is_hide_users()
 else
     users = DCore.Greeter.get_users()
     for user in users
-        u = new UserInfo(user, user, "images/img01.jpg")
+        user_image = DCore.Greeter.get_user_image(user)
+        echo user_image
+        if not user_image? or user_image == "nonexists"
+            user_image = "images/img01.jpg"
+
+        echo user_image
+        u = new UserInfo(user, user, user_image) 
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
             u.focus()
