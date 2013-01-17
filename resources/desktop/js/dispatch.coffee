@@ -36,7 +36,7 @@ create_item = (entry) ->
         when FILE_TYPE_RICH_DIR
             list = DCore.DEntry.list_files(entry)
             if list.length <= 1
-                if list.length then DCore.Desktop.move(list, g_desktop_entry)
+                if list.length then DCore.DEntry.move(list, g_desktop_entry)
                 DCore.DEntry.delete_files([entry], false)
             else
                 w = new RichDir(entry)

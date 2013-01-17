@@ -362,52 +362,23 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        evt.dataTransfer.dropEffect = "move"
+        if not _IS_DND_INTERLNAL_(evt)
+            evt.dataTransfer.dropEffect = "move"
+        else
+            evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
-        evt.stopPropagation()
-        evt.dataTransfer.dropEffect = "move"
+        if not _IS_DND_INTERLNAL_(evt)
+            evt.dataTransfer.dropEffect = "move"
+        else
+            evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragleave", (evt) =>
         evt.stopPropagation()
         return
     )
-
-
-drag_update_selected_pos = (w, evt) ->
-    old_pos = load_position(w.id)
-    new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-    coord_x_shift = new_pos.x - old_pos.x
-    coord_y_shift = new_pos.y - old_pos.y
-
-    if coord_x_shift == 0 and coord_y_shift == 0 then return
-
-    ordered_list = new Array()
-    distance_list = new Array()
-    for i in selected_item
-        pos = load_position(i)
-        dis = calc_pos_to_pos_distance(new_pos, pos)
-        for j in [0 ... distance_list.length]
-            if dis < distance_list[j]
-                break
-        ordered_list.splice(j, 0, i)
-        distance_list.splice(j, 0, dis)
-
-    for i in ordered_list
-        w = Widget.look_up(i)
-        if not w? then continue
-
-        old_pos = load_position(w.id)
-        new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
-
-        if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-
-        move_to_somewhere(w, new_pos)
-
-    update_selected_item_drag_image()
-    return
 
 
 selected_copy_to_clipboard = ->
@@ -444,7 +415,7 @@ item_dragstart_handler = (widget, evt) ->
                 all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
-        evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)
+        _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
         x = evt.x - drag_start.x * _ITEM_WIDTH_
@@ -454,6 +425,41 @@ item_dragstart_handler = (widget, evt) ->
     else
         evt.dataTransfer.effectAllowed = "none"
 
+    return
+
+
+item_dragend_handler = (w, evt) ->
+    if evt.dataTransfer.dropEffect == "link"
+        old_pos = load_position(w.id)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+        coord_x_shift = new_pos.x - old_pos.x
+        coord_y_shift = new_pos.y - old_pos.y
+
+        if coord_x_shift == 0 and coord_y_shift == 0 then return
+
+        ordered_list = new Array()
+        distance_list = new Array()
+        for i in selected_item
+            pos = load_position(i)
+            dis = calc_pos_to_pos_distance(new_pos, pos)
+            for j in [0 ... distance_list.length]
+                if dis < distance_list[j]
+                    break
+            ordered_list.splice(j, 0, i)
+            distance_list.splice(j, 0, dis)
+
+        for i in ordered_list
+            w = Widget.look_up(i)
+            if not w? then continue
+
+            old_pos = load_position(w.id)
+            new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
+
+            if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
+
+            move_to_somewhere(w, new_pos)
+
+        update_selected_item_drag_image()
     return
 
 
@@ -627,6 +633,10 @@ is_selected_multiple_items = ->
     selected_item.length > 1
 
 
+is_item_been_selected = (id) ->
+    selected_item.indexOf(id) > -1
+
+
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
@@ -750,7 +760,7 @@ grid_do_keydown_to_shortcut = (evt) ->
                     w.item_blur() if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
                     last_widget = w_f.id
             else
-                w_f.itemselected()
+                w_f.item_selected()
         else
             cancel_all_selected_stats()
             set_item_selected(w_f)

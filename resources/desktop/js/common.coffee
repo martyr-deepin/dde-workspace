@@ -17,26 +17,44 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-# const string for desktop internal DND operation
+# const strings and functions for desktop internal DND operation
 _DND_DATA_TYPE_NAME_ = "text/operate-type"
 _DND_DESKTOP_MARK_ = "desktop_internal"
+
+_SET_DND_INTERNAL_FLAG_ = (evt) ->
+    evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)
+
+
+_IS_DND_INTERLNAL_ = (evt) ->
+    evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) == _DND_DESKTOP_MARK_
+
 
 # item real size on grid
 _ITEM_WIDTH_ = 80 + 6 * 2
 _ITEM_HEIGHT_ = 84 + 4 * 2
 
+
 # delay interval time before renaming item
 _RENAME_TIME_DELAY_ = 600
 
+
 # id string for "computer" item
-_ITEM_ID_COMPUTER_ = "Computer_Virtual_Dir"
+_ITEM_ID_COMPUTER_  = "Computer_Virtual_Dir"
 # id string for "home" item
 _ITEM_ID_USER_HOME_ = "Home_Virtual_Dir"
 # id string for "trash bin" item
 _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
 
+
+# icon name for file attributes
+_FAI_READ_ONLY_  = "emblem-readonly.png"
+_FAT_SYM_LINK_   = "emblem-symbolic-link.png"
+_FAT_UNREADABLE_ = "emblem-unreadable.png"
+
+
 # store the entry for desktop
 g_desktop_entry = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
+
 
 # DBus handler for invoke nautilus filemanager
 try
