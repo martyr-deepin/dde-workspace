@@ -68,8 +68,8 @@ DCore.signal_connect("in_mini_mode", ->
 DCore.signal_connect("in_normal_mode", ->
     run_post(calc_app_item_size())
 )
-
 DCore.Dock.emit_webview_ok()
+show_desktop.show(DCore.Dock.get_desktop_status())
 
 format_two_bit = (s) ->
     if s < 10

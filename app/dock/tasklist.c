@@ -217,16 +217,17 @@ gboolean is_normal_window(Window w)
 {
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
-        gboolean ret = FALSE;
+        gboolean need_return = FALSE;
         if (g_strcmp0(ch.res_name, "explorer.exe") == 0 && g_strcmp0(ch.res_class, "Wine") == 0) {
-            ret = FALSE;
-        } else  if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
+            need_return = TRUE;
+        } else if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
             start_monitor_launcher_window(w);
-            ret = FALSE;
+            need_return = TRUE;
         }
         XFree(ch.res_name);
         XFree(ch.res_class);
-        return ret;
+        if (need_return)
+            return FALSE;
     }
 
     if (is_skip_taskbar(w)) return FALSE;
@@ -467,7 +468,9 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
             _update_task_list(ev->window);
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             update_active_window(ev->display, ev->window);
-        } 
+        } else if (ev->atom == ATOM_SHOW_DESKTOP) {
+            js_post_message_simply("desktop_status_changed", NULL);
+        }
     } 
     return GDK_FILTER_CONTINUE;
 }
@@ -541,6 +544,17 @@ void dock_close_window(double id)
     event.format = 32;
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
+}
+
+JS_EXPORT_API
+gboolean dock_get_desktop_status()
+{
+    gulong items;
+    void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_SHOW_DESKTOP, &items);
+    if (data == NULL) return FALSE;
+    long value = *(long*)data;
+    XFree(data);
+    return value;
 }
 
 JS_EXPORT_API
