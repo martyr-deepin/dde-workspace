@@ -18,18 +18,26 @@ class ClientGroup extends AppItem
         @img2 = create_img("AppItemImg", "", @element)
         @img3 = create_img("AppItemImg", "", @element)
 
-        @img2.style.marginLeft = BOARD_IMG2_MARGIN_LEFT
-        @img3.style.marginLeft = BOARD_IMG3_MARGIN_LEFT
-
         @to_normal_status()
 
+    change_size: ->
+        super
+        #TODO: why @n_clients maybe invalid !!!!!!!!!!!!
+        if @n_clients
+            @handle_clients_change()
+
     handle_clients_change: ->
+        if not @_img_margin_top
+            @_img_margin_top = 6
+        #echo "#{@n_clients.length} Img_Margin_top #{Number(@_img_margin_top)}"
         switch @n_clients.length
             when 1
                 @img.style.display = "block"
                 @img2.style.display = "none"
                 @img3.style.display = "none"
                 @img.style.marginTop = @_img_margin_top
+
+                @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT
             when 2
                 @img.style.display = "block"
                 @img2.style.display = "block"
@@ -37,6 +45,9 @@ class ClientGroup extends AppItem
 
                 @img.style.marginTop = Number(@_img_margin_top) - 1
                 @img2.style.marginTop = Number(@_img_margin_top) + 1
+
+                @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT_TWO_RIGHT
+                @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT_TWO_LEFT
             else
                 @img.style.display = "block"
                 @img2.style.display = "block"
@@ -45,6 +56,10 @@ class ClientGroup extends AppItem
                 @img.style.marginTop = Number(@_img_margin_top) - 2
                 @img2.style.marginTop = @_img_margin_top
                 @img3.style.marginTop = Number(@_img_margin_top) + 2
+
+                @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_RIGHT
+                @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT
+                @img3.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_LEFT
 
     to_active_status : (id)->
         @in_iconfiy = false

@@ -149,6 +149,7 @@ class AppItem extends Widget
             path = decodeURI(file.path)
             entry = DCore.DEntry.create_by_path(path)
             tmp_list.push(entry)
-        switch this.constructor.name
-            when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
-            when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
+        if tmp_list.length > 0
+            switch this.constructor.name
+                when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
+                when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
