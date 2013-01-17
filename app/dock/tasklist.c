@@ -116,6 +116,7 @@ Client* create_client_from_window(Window w)
     c->app_id = NULL;
 
 
+
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
@@ -191,18 +192,43 @@ gboolean is_skip_taskbar(Window w)
     return FALSE;
 }
 
+static
+GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
+{
+    XEvent* xev = xevent;
+    if (xev->type == DestroyNotify) {
+        js_post_message_simply("launcher_destroy", NULL);
+        printf("launcher destroy\n");
+    }
+    return GDK_FILTER_CONTINUE;
+}
+void start_monitor_launcher_window(Window w)
+{
+    printf("launcher start\n");
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
+    if (win == NULL)
+        return;
+    js_post_message_simply("launcher_running", NULL);
+
+    g_assert(win != NULL);
+    gdk_window_set_events(win, GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
+    gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
+}
+
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
+        gboolean ret = FALSE;
         if (g_strcmp0(ch.res_name, "explorer.exe") == 0 && g_strcmp0(ch.res_class, "Wine") == 0) {
-            XFree(ch.res_name);
-            XFree(ch.res_class);
-            return FALSE;
-        } else {
-            XFree(ch.res_name);
-            XFree(ch.res_class);
+            ret = FALSE;
+        } else  if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
+            start_monitor_launcher_window(w);
+            ret = FALSE;
         }
+        XFree(ch.res_name);
+        XFree(ch.res_class);
+        return ret;
     }
 
     if (is_skip_taskbar(w)) return FALSE;

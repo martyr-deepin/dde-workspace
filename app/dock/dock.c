@@ -150,3 +150,13 @@ void dock_change_workarea_height(double height)
     if (height < 30) height = 30;
     set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, height, 0, _screen_width); 
 }
+
+JS_EXPORT_API
+void dock_toggle_launcher(gboolean show)
+{
+    if (show) {
+        dcore_run_command("launcher");
+    } else {
+        dcore_run_command("killall launcher");
+    }
+}
