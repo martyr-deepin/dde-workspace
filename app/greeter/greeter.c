@@ -70,6 +70,7 @@ const gchar* greeter_get_session_icon(const gchar *key);
 ArrayContainer greeter_get_users();
 static const gchar* get_first_user();
 const gchar* greeter_get_user_image(const gchar* name);
+const gchar* greeter_get_user_background(const gchar*name);
 const gchar* greeter_get_user_session(const gchar* name);
 gboolean greeter_get_can_suspend();
 gboolean greeter_get_can_hibernate();
@@ -613,6 +614,27 @@ const gchar* greeter_get_user_image(const gchar* name)
     }else{
         return "nonexists";
     }
+}
+
+JS_EXPORT_API
+const gchar* greeter_get_user_background(const gchar* name)
+{
+    const gchar* background = NULL;
+    LightDMUserList *user_list = NULL;
+    LightDMUser *user = NULL;
+
+    user_list = lightdm_user_list_get_instance();
+    g_assert(user_list);
+
+    user = lightdm_user_list_get_user_by_name(user_list, name);
+    g_assert(user);
+
+    background = lightdm_user_get_background(user);
+    if((g_file_test(background, G_FILE_TEST_EXISTS))){
+        return background;
+    }
+
+    return NULL;
 }
 
 JS_EXPORT_API

@@ -24,7 +24,7 @@ class FixedItem extends AppItem
 
 class ShowDesktop extends FixedItem
     do_click: (e)->
-        DCore.Dock.show_desktop(@toggle)
+        DCore.Dock.show_desktop(@toggle())
     do_buildmenu: ->
         []
 
