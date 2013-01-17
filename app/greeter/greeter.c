@@ -86,6 +86,8 @@ static void sigterm_cb(int signum);
 static gboolean is_user_valid(const gchar *username)
 {
     gboolean ret = FALSE;
+    if((username == NULL) || (username == ""))
+	return ret;
 
     LightDMUserList *user_list = NULL;
     GList *users = NULL;
@@ -116,6 +118,8 @@ static gboolean is_user_valid(const gchar *username)
 static gboolean is_session_valid(const gchar *session)
 {
     gboolean ret = FALSE;
+    if((session == NULL) || (session == ""))
+	return ret;
 
     GList *sessions = NULL;
     LightDMSession *psession = NULL;
@@ -200,6 +204,8 @@ static gchar* get_selected_session()
 JS_EXPORT_API
 void greeter_set_selected_user(const gchar *username)
 {
+    g_return_if_fail(username != NULL);
+
     if(selected_user != NULL){
         g_free(selected_user);
         selected_user = NULL;
@@ -210,6 +216,8 @@ void greeter_set_selected_user(const gchar *username)
 JS_EXPORT_API
 void greeter_set_selected_session(const gchar *session)
 {
+    g_return_if_fail(session != NULL);
+
     if(selected_session != NULL){
         g_free(selected_session);
         selected_session = NULL;
@@ -305,6 +313,8 @@ void greeter_login_clicked(const gchar *password)
 
 static void start_session(const gchar *session)
 {
+    g_return_if_fail(is_session_valid(session));
+
 #ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
 #endif
@@ -598,6 +608,8 @@ static const gchar* get_first_user()
 JS_EXPORT_API
 const gchar* greeter_get_user_image(const gchar* name)
 {
+    g_return_val_if_fail(is_user_valid(name), "nonexists");
+
     const gchar* image = NULL;
     LightDMUserList *user_list = NULL;
     LightDMUser *user = NULL;
@@ -619,6 +631,8 @@ const gchar* greeter_get_user_image(const gchar* name)
 JS_EXPORT_API
 const gchar* greeter_get_user_background(const gchar* name)
 {
+    g_return_val_if_fail(is_user_valid(name), "nonexists");
+
     const gchar* background = NULL;
     LightDMUserList *user_list = NULL;
     LightDMUser *user = NULL;
@@ -633,13 +647,14 @@ const gchar* greeter_get_user_background(const gchar* name)
     if((g_file_test(background, G_FILE_TEST_EXISTS))){
         return background;
     }
-
-    return NULL;
+	return "nonexists";
 }
 
 JS_EXPORT_API
 const gchar* greeter_get_user_session(const gchar* name)
 {
+    g_return_val_if_fail(is_user_valid(name), "nonexists");
+
     const gchar* session = NULL;
     LightDMUserList *user_list = NULL;
     LightDMUser *user = NULL;

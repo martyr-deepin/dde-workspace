@@ -102,8 +102,14 @@ class UserInfo extends Widget
         @name.innerText = name
         @active = false
         @login_displayed = false
-        user_bg = DCore.Greeter.get_user_background(@name.innerText)
-        if not user_bg?
+	echo "name"
+	echo @name.innerText
+
+	try
+            user_bg = DCore.Greeter.get_user_background(@name.innerText)
+        catch error
+            user_bg = _default_bg_src
+	if user_bg == "nonexists"
             user_bg = _default_bg_src
         @background = create_img("Background", user_bg)
 
@@ -112,10 +118,9 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
 
-        if @background.src != _current_bg.src
-            document.body.removeChild(_current_bg)
-            _current_bg = @background
-            document.body.appendChild(_current_bg)
+        document.body.appendChild(@background)
+        document.body.removeChild(_current_bg)
+        _current_bg = @background
 
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
@@ -193,22 +198,26 @@ class UserInfo extends Widget
 
 # below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
-    u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
+    u = new UserInfo("Hide user", " ", "images/img01.jpg")
     roundabout.appendChild(u.li)
     u.focus()
 else
     users = DCore.Greeter.get_users()
     for user in users
-        user_image = DCore.Greeter.get_user_image(user)
-        echo user_image
+        echo user
+        try
+            user_image = DCore.Greeter.get_user_image(user)
+        catch error
+            user_image = "images/img01.jpg"
+
         if not user_image? or user_image == "nonexists"
             user_image = "images/img01.jpg"
 
-        echo user_image
         u = new UserInfo(user, user, user_image) 
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
             u.focus()
+
     if DCore.Greeter.is_support_guest()
         u = new UserInfo("guest", "guest", "images/guest.jpg")
         roundabout.appendChild(u.li)
