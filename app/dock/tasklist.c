@@ -116,6 +116,7 @@ Client* create_client_from_window(Window w)
     c->app_id = NULL;
 
 
+
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
@@ -191,18 +192,42 @@ gboolean is_skip_taskbar(Window w)
     return FALSE;
 }
 
+static
+GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
+{
+    XEvent* xev = xevent;
+    if (xev->type == DestroyNotify) {
+        js_post_message_simply("launcher_destroy", NULL);
+    }
+    return GDK_FILTER_CONTINUE;
+}
+void start_monitor_launcher_window(Window w)
+{
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
+    if (win == NULL)
+        return;
+    js_post_message_simply("launcher_running", NULL);
+
+    g_assert(win != NULL);
+    gdk_window_set_events(win, GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
+    gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
+}
+
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
+        gboolean need_return = FALSE;
         if (g_strcmp0(ch.res_name, "explorer.exe") == 0 && g_strcmp0(ch.res_class, "Wine") == 0) {
-            XFree(ch.res_name);
-            XFree(ch.res_class);
-            return FALSE;
-        } else {
-            XFree(ch.res_name);
-            XFree(ch.res_class);
+            need_return = TRUE;
+        } else if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
+            start_monitor_launcher_window(w);
+            need_return = TRUE;
         }
+        XFree(ch.res_name);
+        XFree(ch.res_class);
+        if (need_return)
+            return FALSE;
     }
 
     if (is_skip_taskbar(w)) return FALSE;
@@ -370,10 +395,6 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
-    if (app_id == NULL)
-    {
-        printf("trap..\n");
-    }
     g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
 }
@@ -447,7 +468,9 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
             _update_task_list(ev->window);
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             update_active_window(ev->display, ev->window);
-        } 
+        } else if (ev->atom == ATOM_SHOW_DESKTOP) {
+            js_post_message_simply("desktop_status_changed", NULL);
+        }
     } 
     return GDK_FILTER_CONTINUE;
 }
@@ -521,6 +544,17 @@ void dock_close_window(double id)
     event.format = 32;
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
+}
+
+JS_EXPORT_API
+gboolean dock_get_desktop_status()
+{
+    gulong items;
+    void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_SHOW_DESKTOP, &items);
+    if (data == NULL) return FALSE;
+    long value = *(long*)data;
+    XFree(data);
+    return value;
 }
 
 JS_EXPORT_API

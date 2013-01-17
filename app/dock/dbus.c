@@ -8,6 +8,7 @@
 
 //forward declaration
 void dock_request_dock(const char* path);
+void dock_show_desktop(gboolean value);
 
 const char* _dock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
@@ -15,6 +16,10 @@ const char* _dock_dbus_iface_xml =
 "	<interface name=\""DOCK_DBUS_IFACE"\">\n"
 "		<method name=\"RequestDock\">\n"
 "			<arg name=\"path\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"		</method>\n"
+"		<method name=\"ShowDesktop\">\n"
+"			<arg name=\"value\" type=\"b\" direction=\"in\">\n"
 "			</arg>\n"
 "		</method>\n"
 "	</interface>\n"
@@ -153,29 +158,29 @@ _bus_method_call (GDBusConnection * connection,
     GVariant * retval = NULL;
     GError * error = NULL;
 
-    if (g_strcmp0 (method, "RequestDock") == 0)
-    {
-	const gchar * path;
-	g_variant_get (params, "(&s)", &path);
-
-    dock_request_dock(path);
-    } 
-    else 
-    {
-	g_warning ("Calling method '%s' on dock and it's unknown", method);
+    if (g_strcmp0 (method, "RequestDock") == 0) {
+        const gchar * path;
+        g_variant_get (params, "(&s)", &path);
+        dock_request_dock(path);
+    } else if (g_strcmp0(method, "ShowDesktop") == 0) {
+        gboolean value;
+        g_variant_get(params, "(b)", &value);
+        dock_show_desktop(value);
+    } else {
+        g_warning ("Calling method '%s' on dock and it's unknown", method);
     }
 
     if (error != NULL)
     {
-	g_dbus_method_invocation_return_dbus_error (invocation,
-		                                    "com.deepin.dde.dock.Error", 
-						    error->message);
-	g_error_free (error);
+        g_dbus_method_invocation_return_dbus_error (invocation,
+                "com.deepin.dde.dock.Error", 
+                error->message);
+        g_error_free (error);
     } 
     else
     {
-	g_dbus_method_invocation_return_value (invocation, retval);
+        g_dbus_method_invocation_return_value (invocation, retval);
     }
-    
+
     return;
 }

@@ -87,6 +87,10 @@ class Loading extends Widget
         create_element("div", "ball1", @element)
         create_element("span", "", @element).innerText = "Welcome !"
 
+_default_bg_src = "/usr/share/backgrounds/1440x900.jpg"
+_current_bg = create_img("Background", _default_bg_src)
+document.body.appendChild(_current_bg)
+
 _current_user = null
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
@@ -98,11 +102,21 @@ class UserInfo extends Widget
         @name.innerText = name
         @active = false
         @login_displayed = false
+        user_bg = DCore.Greeter.get_user_background(@name.innerText)
+        if not user_bg?
+            user_bg = _default_bg_src
+        @background = create_img("Background", user_bg)
 
     focus: ->
         _current_user?.blur()
         _current_user = @
         @add_css_class("UserInfoSelected")
+
+        if @background.src != _current_bg.src
+            document.body.removeChild(_current_bg)
+            _current_bg = @background
+            document.body.appendChild(_current_bg)
+
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
         if DCore.Greeter.is_hide_users()

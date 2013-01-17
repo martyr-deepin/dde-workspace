@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
     set_desktop_env_name("GNOME");
-    set_default_theme("GoodIcons");
+    set_default_theme("Deepin");
 
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
@@ -149,4 +149,14 @@ void dock_change_workarea_height(double height)
 {
     if (height < 30) height = 30;
     set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, height, 0, _screen_width); 
+}
+
+JS_EXPORT_API
+void dock_toggle_launcher(gboolean show)
+{
+    if (show) {
+        dcore_run_command("launcher");
+    } else {
+        dcore_run_command("killall launcher");
+    }
 }
