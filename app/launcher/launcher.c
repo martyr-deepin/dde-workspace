@@ -76,7 +76,7 @@ void on_realize(GtkWidget* container)
 
     GdkScreen* screen = gdk_screen_get_default();
     update_size(screen, container);
-    g_signal_connect(screen, "changed", G_CALLBACK(update_size), container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
 int main(int argc, char* argv[])
