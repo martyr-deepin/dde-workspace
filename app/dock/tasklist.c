@@ -198,13 +198,11 @@ GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Win
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_message_simply("launcher_destroy", NULL);
-        printf("launcher destroy\n");
     }
     return GDK_FILTER_CONTINUE;
 }
 void start_monitor_launcher_window(Window w)
 {
-    printf("launcher start\n");
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
     if (win == NULL)
         return;
@@ -396,10 +394,6 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
-    if (app_id == NULL)
-    {
-        printf("trap..\n");
-    }
     g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
 }
