@@ -37,6 +37,7 @@
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
+static ArrayContainer _normalize_array_container(ArrayContainer pfs);
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
     GFile* f = e;
@@ -168,14 +169,21 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             return TRUE;
         }
     TEST_GAPP(e, app)
-        GFile** files = fs.data;
+        ArrayContainer _fs = _normalize_array_container(fs);
+
+        GFile** files = _fs.data;
         GList* list = NULL;
         for (size_t i=0; i<fs.num; i++) {
-            if (G_IS_FILE(files[i]))
-                list = g_list_append(list, files[i]);
+            list = g_list_append(list, files[i]);
         }
         gboolean ret = g_app_info_launch(app, list, NULL, NULL);
         g_list_free(list);
+
+        for (size_t i=0; i<_fs.num; i++) {
+            g_object_unref(((GObject**)_fs.data)[i]);
+        }
+        g_free(_fs.data);
+
         return ret;
     TEST_END
     return FALSE;

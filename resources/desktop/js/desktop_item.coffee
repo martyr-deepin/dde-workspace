@@ -261,13 +261,13 @@ class Item extends Widget
         for i in [(li_list.length - 1) ... -1] by -1
             @item_attrib.removeChild(li_list[i])
         ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"img/lock.png\" draggable=\"false\" />"
+        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
         @item_attrib.appendChild(ele)
         ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"img/link.png\" draggable=\"false\" />"
+        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
         @item_attrib.appendChild(ele)
         ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"img/invalid.png\" draggable=\"false\" />"
+        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
         @item_attrib.appendChild(ele)
         return
 
@@ -387,8 +387,8 @@ class DesktopEntry extends Item
     do_dragend : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
-        if evt.dataTransfer.dropEffect == "move"
-            drag_update_selected_pos(this, evt)
+
+        item_dragend_handler(this, evt)
 
         return
 
@@ -396,30 +396,19 @@ class DesktopEntry extends Item
     do_drop : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
-        if @selected == false
+        if not is_item_been_selected(@id)
             @display_not_hover()
-            @in_count = 0
+        @in_count = 0
 
 
     do_dragenter : (evt) =>
         evt.stopPropagation()
 
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @display_hover()
+        ++@in_count
+        if @in_count == 1 and @selected == false
+            @display_hover()
 
-        found_self = false
-        for file in evt.dataTransfer.files
-            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
-                found_self = true
-                break
-
-        if found_self == true
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
+        evt.dataTransfer.dropEffect = "none"
         return
 
 
@@ -427,27 +416,15 @@ class DesktopEntry extends Item
         evt.preventDefault()
         evt.stopPropagation()
 
-        found_self = false
-        for file in evt.dataTransfer.files
-            if decodeURI(file.path).replace(/^file:\/\//i, "") == @get_path()
-                found_self = true
-                break
-
-        if found_self == true
-            evt.dataTransfer.dropEffect = "none"
-        else
-            evt.dataTransfer.dropEffect = "move"
-
+        evt.dataTransfer.dropEffect = "none"
         return
 
 
     do_dragleave : (evt) =>
         evt.stopPropagation()
-        if @selected == false
-            --@in_count
-            if @in_count == 0
-                @display_not_hover()
-
+        --@in_count if @in_count >= 0
+        if @in_count == 0 and @selected == false
+            @display_not_hover()
         return
 
 
@@ -491,6 +468,32 @@ class Folder extends DesktopEntry
             if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        return
+
+
+    do_dragenter : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+
+        if @in_count > 0
+            evt.preventDefault()
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -560,6 +563,31 @@ class RichDir extends DesktopEntry
             if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
 
         if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        return
+
+    do_dragenter : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+
+        if @in_count > 0
+            evt.preventDefault()
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -777,6 +805,31 @@ class Application extends DesktopEntry
         return
 
 
+    do_dragenter : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+        if @in_count > 0
+            evt.preventDefault()
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+                evt.dataTransfer.dropEffect = "move"
+        return
+
+
 class NormalFile extends DesktopEntry
 
 
@@ -806,26 +859,6 @@ class ComputerVDir extends DesktopEntry
 
     item_rename : ->
         return
-
-
-    do_dragenter : (evt) ->
-        evt.stopPropagation()
-        evt.dataTransfer.dropEffect = "none"
-
-        if @selected == false
-            ++@in_count
-            if @in_count == 1
-                @display_hover()
-
-
-    do_dragover : (evt) ->
-        evt.stopPropagation()
-        evt.dataTransfer.dropEffect = "none"
-
-
-    do_drop : (evt) ->
-        evt.stopPropagation()
-        evt.dataTransfer.dropEffect = "none"
 
 
     do_buildmenu : ->
@@ -873,13 +906,37 @@ class HomeVDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            tmp_list.push(e)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        return
 
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+    do_dragenter : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+        if @in_count > 0
+            evt.preventDefault()
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -938,13 +995,39 @@ class TrashVDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            tmp_list.push(e)
+        if is_item_been_selected(@id) == false
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                tmp_list.push(e)
 
-        if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
+            if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
+        return
+
+
+    do_dragenter : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+        if @in_count > 0
+            evt.preventDefault()
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 

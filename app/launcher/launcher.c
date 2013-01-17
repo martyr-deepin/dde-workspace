@@ -68,7 +68,7 @@ void do_im_commit(GtkIMContext *context, gchar* str)
 
 void update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
-    gtk_widget_set_size_request(container, gdk_screen_get_width(screen), gdk_screen_get_height(screen) - DOCK_HEIGHT);
+    gtk_widget_set_size_request(container, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 }
 
 void on_realize(GtkWidget* container)
@@ -76,7 +76,7 @@ void on_realize(GtkWidget* container)
 
     GdkScreen* screen = gdk_screen_get_default();
     update_size(screen, container);
-    g_signal_connect(screen, "changed", G_CALLBACK(update_size), container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
 int main(int argc, char* argv[])
