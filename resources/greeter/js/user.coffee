@@ -71,6 +71,8 @@ class LoginEntry extends Widget
                     @on_active(@account.value, @password.value)
             else
                 if not @password.value
+                    @password.focus()
+                else
                     @on_active(@id, @password.value)
         )
         @login.index = 2
@@ -98,12 +100,16 @@ class UserInfo extends Widget
         @li = create_element("li", "")
         @li.appendChild(@element)
         @img = create_img("UserImg", img_src, @element)
-        @name = create_element("span", "UserName", @element)
+        @name = create_element("div", "UserName", @element)
         @name.innerText = name
         @active = false
         @login_displayed = false
-        user_bg = DCore.Greeter.get_user_background(@name.innerText)
-        if not user_bg?
+
+        try
+            user_bg = DCore.Greeter.get_user_background(@id)
+        catch error
+            user_bg = _default_bg_src
+        if user_bg == "nonexists"
             user_bg = _default_bg_src
         @background = create_img("Background", user_bg)
 
@@ -112,10 +118,10 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
 
-        if @background.src != _current_bg.src
+        if not DCore.Greeter.is_hide_users()
+            document.body.appendChild(@background)
             document.body.removeChild(_current_bg)
             _current_bg = @background
-            document.body.appendChild(_current_bg)
 
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
@@ -141,10 +147,12 @@ class UserInfo extends Widget
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
             if DCore.Greeter.is_hide_users()
+                @element.style.paddingBottom = "0px"
                 @login.account.focus()
             else
                 @login.password.focus()
             @login_displayed = true
+            @add_css_class("foo")
 
     do_click: (e)->
         if _current_user == @
@@ -193,22 +201,26 @@ class UserInfo extends Widget
 
 # below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
-    u = new UserInfo("Hide user", "Hide user", "images/img01.jpg")
+    u = new UserInfo("*other", "", "images/huser.jpg")
     roundabout.appendChild(u.li)
+    Widget.look_up("*other").element.style.paddingBottom = "5px"
     u.focus()
 else
     users = DCore.Greeter.get_users()
+    echo users
     for user in users
-        user_image = DCore.Greeter.get_user_image(user)
-        echo user_image
+        try
+            user_image = DCore.Greeter.get_user_image(user)
+        catch error
+            user_image = "images/guest.jpg"
         if not user_image? or user_image == "nonexists"
-            user_image = "images/img01.jpg"
+            user_image = "images/guest.jpg"
 
-        echo user_image
         u = new UserInfo(user, user, user_image) 
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
             u.focus()
+
     if DCore.Greeter.is_support_guest()
         u = new UserInfo("guest", "guest", "images/guest.jpg")
         roundabout.appendChild(u.li)

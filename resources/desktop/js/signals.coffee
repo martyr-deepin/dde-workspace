@@ -17,6 +17,11 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+# remember the last widget which been operated last time whether has focus
+last_widget_has_focus = false
+
+
 connect_default_signals = ->
     DCore.signal_connect("item_update", do_item_update)
     DCore.signal_connect("item_delete", do_item_delete)
@@ -82,17 +87,23 @@ do_trash_update = ->
 
 do_cut_completed = (items) ->
     for e in items
-        echo DCore.DEntry.get_name(e)
         w = Widget.look_up(DCore.DEntry.get_id(e))
         if w? and w.modifiable == true then w.display_not_cut()
 
 
 do_desktop_lost_focus = ->
-    if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+    if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
+        if w.has_focus
+            last_widget_has_focus = true
+            w.item_blur()
+        else
+            last_widget_has_focus = false
 
 
 do_desktop_get_focus = ->
-    echo "do_desktop_get_focus"
+    if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
+        w.item_focus()
+        last_widget_has_focus == false
 
 
 do_workarea_changed = (allo) ->

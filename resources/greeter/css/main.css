@@ -1,30 +1,44 @@
 @import url(menu.css);
 @import url(user.css);
+@import url("../../common/css/animation.css");
 
 body{
     cursor:default;
     overflow:hidden;
     width:100%;
     height:100%;
+    font-family:Arial;
     #background: url(../images/1440x900.jpg) center no-repeat;
     -webkit-user-select:none;
 }
 
 .Background{
-    position:fixed;
+    background-size:cover;
+    height:100%;
+    width:100%;
+    overflow:hidden;
     z-index:-10000;
     top: 0;
     left: 0;
+    -webkit-animation:linear-show 2s ease-out;
 }
 
 #Version{ 
-    background: url(../images/ver.png) no-repeat; 
-    width:340px; 
+    #background: url(../images/ver.png) no-repeat; 
+    font-size:24px;
+    text-shadow:0 0 2px #333;
+    color: white;
+    width:440px; 
     height:50px; 
     position:absolute; 
     bottom:22px; 
     left:50%; 
-    margin-left:-170px;
+    text-align:center;
+    margin-left:-220px;
+}
+
+#Version sup{ 
+    font-size:12px;
 }
 
 #Debug{
@@ -32,24 +46,24 @@ body{
     position:absolute;
     right:20px;
 }
-	
-.Time{
+
+.Time {
     cursor:default;
     width:350px; 
-    height:200px; 
+    height:217px; 
     position:absolute; 
-    padding-left:30px; 
     bottom:0; 
     left:0;
+    padding-left:30px; 
 }
 
 .Time01{ 
+    left: 0px;
     cursor:default;
     font-size:120px;
     color: #fff; 
     display: block; 
     line-height: 150px; 
-    list-style-type: none; 
     display: inline-block; 
     height:130px;
     color:#fff;
@@ -68,12 +82,24 @@ body{
     text-shadow:0 0 2px #333;  
 }
 
+@-webkit-keyframes linear-showtime {
+    from { opacity: 0.3;}
+    to { opacity: 1; }
+}
+
+.timecolon{
+    display:inline-block;
+    line-height: 50px;
+    padding-bottom: 25px;
+    -webkit-animation:linear-showtime 1.1s infinite linear;
+}
+
 #Detext{
     cursor:default;
     padding:0;
     margin:0 5px 0 0;
+    font-size: 18px;
     text-align:right;
-    list-style:none;
     height:32px;
     width:300px;
     bottom:20px;
@@ -84,8 +110,8 @@ body{
 }
 
 #bottom_buttons {
-    position: fixed;
-    bottom: 40px;
+    position: absolute;
+    bottom: 43px;
     right: 20px;
     display: -webkit-box;
 }

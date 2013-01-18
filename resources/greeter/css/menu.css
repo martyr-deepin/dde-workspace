@@ -24,7 +24,8 @@
     font-size:14px;
     display:block;
     padding:5px 5px 4px 5px;
-    border: solid 1px rgba(255,255,255,0.6); rgba(255,255,255,0.3) no-repeat;
+    border: solid 1px rgba(255,255,255,0.6);
+    border-right: none;
     -webkit-border-radius:3px 0 0 3px;
     text-align:center;
     width:20px;
@@ -33,14 +34,14 @@
 }
 
 .ShowItem img{
-    ;
-   /* border:#fff 1px solid;*/
+   height:16px;
+   width: 16px;
+   margin-top:2px;
 }
 
 .ShowItem:hover{
     background: rgba(0,0,0,0.8);
     cursor:pointer;
-    border: solid 1px #000;
 }
 
 #global_menu_container {
@@ -75,7 +76,7 @@
 }
 
 .MenuItem:hover {
-	color:#00B7E5;
+    color:#00B7E5;
     background:rgba(0,0,0,0.8);
 }
 
@@ -87,5 +88,5 @@
 }
 
 .MenuTitle:hover {
-	color:#00B7E5;
+    color:#00B7E5;
 }
