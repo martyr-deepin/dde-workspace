@@ -1,5 +1,6 @@
 @import url(menu.css);
 @import url(user.css);
+@import url("../../common/css/animation.css");
 
 body{
     cursor:default;
@@ -11,10 +12,13 @@ body{
 }
 
 .Background{
+    width:100%;
+    height:100%;
     position:fixed;
     z-index:-10000;
     top: 0;
     left: 0;
+    -webkit-animation:linear-shadow 1s ease-out;
 }
 
 #Version{ 
@@ -32,7 +36,7 @@ body{
     position:absolute;
     right:20px;
 }
-	
+
 .Time{
     cursor:default;
     width:350px; 
