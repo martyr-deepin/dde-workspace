@@ -102,15 +102,12 @@ class UserInfo extends Widget
         @name.innerText = name
         @active = false
         @login_displayed = false
-        echo @id
-    	echo "name"
-    	echo @name.innerText
 
-    	try
+        try
             user_bg = DCore.Greeter.get_user_background(@name.innerText)
         catch error
             user_bg = _default_bg_src
-    	if user_bg == "nonexists"
+        if user_bg == "nonexists"
             user_bg = _default_bg_src
         @background = create_img("Background", user_bg)
 
@@ -213,25 +210,11 @@ else
         if not user_image? or user_image == "nonexists"
             user_image = "images/img01.jpg"
 
-        echo "user in users"
-        echo user
-        echo user_image
-
-        echo "new user"
-        echo user
-        echo user
-        echo user_image
-        echo "BEGIN"
         u = new UserInfo(user, user, user_image) 
-        echo "new user info"
-        echo u
         roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
-            echo "default"
-            echo user
             u.focus()
-        echo "END"
-            
+
     if DCore.Greeter.is_support_guest()
         u = new UserInfo("guest", "guest", "images/guest.jpg")
         roundabout.appendChild(u.li)
