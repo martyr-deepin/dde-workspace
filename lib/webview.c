@@ -159,16 +159,15 @@ GtkWidget* d_webview_new()
     GtkWidget* webview = g_object_new(D_WEBVIEW_TYPE, NULL);
     WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
 
-    char* cfg_path = g_build_filename(g_get_user_config_dir(), 
-            "deepin-desktop", NULL);
-    g_object_set(G_OBJECT(setting), 
+    g_object_set(G_OBJECT(setting),
             /*"enable-default-context-menu", FALSE,*/
-            "enable-developer-extras", TRUE, 
+            "enable-developer-extras", TRUE,
             /*"html5-local-storage-database-path", cfg_path,*/
             "enable-plugins", FALSE,
-            "javascript-can-access-clipboard",
-
+            "javascript-can-access-clipboard", TRUE,
             NULL);
+
+    char* cfg_path = g_build_filename(g_get_user_config_dir(), "deepin-desktop", NULL);
     webkit_set_web_database_directory_path(cfg_path);
     g_free(cfg_path);
 
@@ -188,6 +187,7 @@ void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et,
 {
     webkit_web_view_reload(webview);
 }
+
 void monitor_resource_file(const char* app, GtkWidget* webview)
 {
     char* p_js= g_build_filename(RESOURCE_DIR, app, "js", NULL);
