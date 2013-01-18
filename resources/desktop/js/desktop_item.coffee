@@ -833,6 +833,23 @@ class Application extends DesktopEntry
 class NormalFile extends DesktopEntry
 
 
+class InvalidLink extends DesktopEntry
+    get_icon : ->
+        get_theme_icon_safe("invalid-link", 48)
+
+
+    do_buildmenu : ->
+        [9, _("Delete")]
+
+
+    item_exec : ->
+        return
+
+
+    item_rename : ->
+        return
+
+
 class DesktopApplet extends Item
 
 

@@ -21,6 +21,7 @@ FILE_TYPE_APP = 0
 FILE_TYPE_FILE = 1
 FILE_TYPE_DIR = 2
 FILE_TYPE_RICH_DIR = 3
+FILE_TYPE_INVALID_LINK = 4
 
 create_item = (entry) ->
     w = null
@@ -40,6 +41,8 @@ create_item = (entry) ->
                 DCore.DEntry.delete_files([entry], false)
             else
                 w = new RichDir(entry)
+        when FILE_TYPE_INVALID_LINK
+            w = new InvalidLink(entry)
         else
             echo "don't support type"
 
