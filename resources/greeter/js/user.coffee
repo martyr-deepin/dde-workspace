@@ -100,13 +100,13 @@ class UserInfo extends Widget
         @li = create_element("li", "")
         @li.appendChild(@element)
         @img = create_img("UserImg", img_src, @element)
-        @name = create_element("span", "UserName", @element)
+        @name = create_element("div", "UserName", @element)
         @name.innerText = name
         @active = false
         @login_displayed = false
 
         try
-            user_bg = DCore.Greeter.get_user_background(@name.innerText)
+            user_bg = DCore.Greeter.get_user_background(@id)
         catch error
             user_bg = _default_bg_src
         if user_bg == "nonexists"
@@ -118,9 +118,10 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
 
-        document.body.appendChild(@background)
-        document.body.removeChild(_current_bg)
-        _current_bg = @background
+        if not DCore.Greeter.is_hide_users()
+            document.body.appendChild(@background)
+            document.body.removeChild(_current_bg)
+            _current_bg = @background
 
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
@@ -146,10 +147,12 @@ class UserInfo extends Widget
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
             if DCore.Greeter.is_hide_users()
+                @element.style.paddingBottom = "0px"
                 @login.account.focus()
             else
                 @login.password.focus()
             @login_displayed = true
+            @add_css_class("foo")
 
     do_click: (e)->
         if _current_user == @
@@ -198,8 +201,9 @@ class UserInfo extends Widget
 
 # below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
-    u = new UserInfo("Hide user", " ", "images/img01.jpg")
+    u = new UserInfo("*other", "", "images/huser.jpg")
     roundabout.appendChild(u.li)
+    Widget.look_up("*other").element.style.paddingBottom = "5px"
     u.focus()
 else
     users = DCore.Greeter.get_users()
@@ -208,9 +212,9 @@ else
         try
             user_image = DCore.Greeter.get_user_image(user)
         catch error
-            user_image = "images/img01.jpg"
+            user_image = "images/guest.jpg"
         if not user_image? or user_image == "nonexists"
-            user_image = "images/img01.jpg"
+            user_image = "images/guest.jpg"
 
         u = new UserInfo(user, user, user_image) 
         roundabout.appendChild(u.li)
