@@ -51,7 +51,7 @@
 }
 
 .Account {
-    background:#fff url(../images/user.png) no-repeat 3px 3px; 
+    background:#fff url(../images/user.png) no-repeat 3px 3px;
     padding-left:20px;
     margin: 0 0 8px 0px;
     width:160px;
@@ -63,7 +63,7 @@
 }
 
 .Password {
-    background:#fff url(../images/lock.png) no-repeat 3px 3px; 
+    background:#fff url(../images/lock.png) no-repeat 3px 3px;
     padding-left:20px;
     margin: 0 0 8px 0px;
     width:160px;
@@ -107,7 +107,7 @@
     width: 150px;
     height: 81px;
     /*background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));*/
-    padding: 10px 5px 0px 0px;
+    padding: 10px 5px 10px 0px;
     margin: auto;
     text-align:center;
     box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
