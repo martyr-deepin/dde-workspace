@@ -337,7 +337,8 @@ class Item extends Widget
         if modify == true
             new_name = cleanup_filename(@item_name.innerText)
             if new_name.length > 0 and new_name != @get_name()
-                @on_rename(new_name)
+                if not @on_rename(new_name)
+                    return
 
         @element.draggable = true
         @item_name.contentEditable = "false"
