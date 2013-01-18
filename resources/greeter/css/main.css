@@ -18,7 +18,7 @@ body{
     z-index:-10000;
     top: 0;
     left: 0;
-    -webkit-animation:linear-shadow 1s ease-out;
+    -webkit-animation:linear-show 2s ease-out;
 }
 
 #Version{ 

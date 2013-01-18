@@ -71,6 +71,8 @@ class LoginEntry extends Widget
                     @on_active(@account.value, @password.value)
             else
                 if not @password.value
+                    @password.focus()
+                else
                     @on_active(@id, @password.value)
         )
         @login.index = 2
