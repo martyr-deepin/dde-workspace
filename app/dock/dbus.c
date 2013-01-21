@@ -2,13 +2,14 @@
 #include <gio/gio.h>
 #include "dbus.h"
 
-#define	DOCK_DBUS_NAME		"com.deepin.dde.dock"
-#define DOCK_DBUS_OBJ		"/com/deepin/dde/dock"
-#define DOCK_DBUS_IFACE		"com.deepin.dde.dock"
+#define DOCK_DBUS_NAME     "com.deepin.dde.dock"
+#define DOCK_DBUS_OBJ       "/com/deepin/dde/dock"
+#define DOCK_DBUS_IFACE     "com.deepin.dde.dock"
 
 //forward declaration
 void dock_request_dock(const char* path);
 void dock_show_desktop(gboolean value);
+gboolean launcher_should_exit(int launcher_xid);
 
 const char* _dock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
@@ -22,6 +23,10 @@ const char* _dock_dbus_iface_xml =
 "			<arg name=\"value\" type=\"b\" direction=\"in\">\n"
 "			</arg>\n"
 "		</method>\n"
+"       <method name=\"LauncherShouldExit\">\n"
+"           <arg name=\"l_xid\" type=\"i\" direction=\"in\"></arg>\n"
+"           <arg name=\"value\" type=\"b\" direction=\"out\"></arg>\n"
+"       </method>\n"
 "	</interface>\n"
 "</node>\n"
 ;
@@ -148,8 +153,8 @@ _on_name_lost (GDBusConnection * connection,
  */
 
 static void
-_bus_method_call (GDBusConnection * connection, 
-	         const gchar * sender, const gchar * object_path, const gchar * interface,
+_bus_method_call (GDBusConnection * connection,
+                 const gchar * sender, const gchar * object_path, const gchar * interface,
                  const gchar * method, GVariant * params,
                  GDBusMethodInvocation * invocation, gpointer user_data)
 {
@@ -166,19 +171,21 @@ _bus_method_call (GDBusConnection * connection,
         gboolean value;
         g_variant_get(params, "(b)", &value);
         dock_show_desktop(value);
+    } else if (g_strcmp0(method, "LauncherShouldExit") == 0) {
+        gint lxid = 0;
+        g_variant_get(params, "(i)", &lxid);
+        GVariant* v = g_variant_new_boolean(launcher_should_exit(lxid));
+        retval = g_variant_new_tuple(&v, 1);
     } else {
         g_warning ("Calling method '%s' on dock and it's unknown", method);
     }
 
-    if (error != NULL)
-    {
+    if (error != NULL) {
         g_dbus_method_invocation_return_dbus_error (invocation,
                 "com.deepin.dde.dock.Error", 
                 error->message);
         g_error_free (error);
-    } 
-    else
-    {
+    } else {
         g_dbus_method_invocation_return_value (invocation, retval);
     }
 
