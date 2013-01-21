@@ -298,12 +298,28 @@ JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
-        //TODO: check ERROR
         GError* err = NULL;
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
-            g_debug("dentry_set_name: %s %s\n", name, err->message);
-	    //TODO: change to a dialog
+	    
+	    GtkWidget* dialog;
+	    dialog = gtk_message_dialog_new (NULL, 
+					     GTK_DIALOG_MODAL,
+					     GTK_MESSAGE_WARNING, 
+					     GTK_BUTTONS_OK,
+					     NULL);
+	    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	    char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this"
+						     "folder. Please use a different name."),
+						   name);
+
+	    g_object_set (dialog,
+	          "text", _("The Item could not be renamed"),
+		  "secondary-text", secondary_text,
+		  NULL);
+	    gtk_dialog_run (GTK_DIALOG (dialog));
+	    gtk_widget_destroy (dialog);
+	    g_free(secondary_text);
             g_error_free(err);
         } else {
             g_object_unref(new_file);
