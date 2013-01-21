@@ -163,8 +163,10 @@ class Item extends Widget
         @remove_css_class("item_selected")
         return
 
+
     display_not_selected : =>
         @element.className = @element.className.replace(/\ item_selected/g, "")
+
 
     display_focus : =>
         @add_css_class("item_focus")
@@ -222,14 +224,10 @@ class Item extends Widget
         if @in_rename then @item_complete_rename(false)
 
         @display_short_name()
-        @has_focus = false
         @display_not_focus()
+        @has_focus = false
         return
 
-        @display_short_name()
-        @has_focus = false
-        echo "item_blur #{@has_focus}"
-        return
 
     item_selected : ->
         @display_selected()
@@ -260,15 +258,23 @@ class Item extends Widget
         li_list = @item_attrib.getElementsByTagName("li")
         for i in [(li_list.length - 1) ... -1] by -1
             @item_attrib.removeChild(li_list[i])
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
+
+        if @modifiable == false then return
+
+        flags = DCore.DEntry.get_flags(@entry)
+        echo "#{@get_name()} #{flags.read_only} #{flags.symbolic_link} #{flags.unreadable}"
+        if flags.read_only? and flags.read_only == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
+        if flags.symbolic_link? and flags.symbolic_link == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
+        if flags.unreadable? and flags.unreadable == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
         return
 
 
