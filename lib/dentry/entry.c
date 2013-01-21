@@ -126,8 +126,8 @@ JSObjectRef dentry_get_flags (Entry* e)
 	is_read_only = g_file_info_get_attribute_boolean(info, "access::can-write");
 	is_symlink = g_file_info_get_is_symlink(info);
 	g_object_unref(info);
-	json_append_number(json, "read-only", is_read_only);
-	json_append_number(json, "symbolic-link", is_symlink);
+	json_append_number(json, "read_only", is_read_only);
+	json_append_number(json, "symbolic_link", is_symlink);
 	json_append_number(json, "unreadable", is_unreadable);
     }
     
