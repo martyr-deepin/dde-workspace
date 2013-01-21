@@ -208,7 +208,7 @@ void dock_request_dock(const char* path)
         char* app_id = get_app_id(info);
         write_app_info(info);
         if (!is_has_client(app_id))
-            js_post_message("launcher_added", build_app_info(app_id));
+            js_post_message("dock_request", build_app_info(app_id));
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);

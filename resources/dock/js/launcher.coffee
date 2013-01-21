@@ -1,7 +1,6 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        apply_flash(@img, 1) if not IN_INIT
         @element.setAttribute("title", "APPID:#{@id}")
 
 

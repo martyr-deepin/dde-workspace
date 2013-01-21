@@ -58,24 +58,8 @@ class AppList extends Widget
         if file.length > 9  # strlen("x.desktop") == 9
             DCore.Dock.request_dock(decodeURI(file.trim()))
 
-    show_try_dock_app: (e) ->
-        path = e.dataTransfer.getData("text/uri-list").trim()
-        t = path.substring(path.length-8)
-        if t == ".desktop"
-            lcg = $(".AppItem:last-of-type", @element)
-            fcg = $(".AppItem:nth-of-type(3)", @element)
-            lp = get_page_xy(lcg, lcg.clientWidth, 0)
-            fp = get_page_xy(fcg, 0, 0)
-            if e.pageX > lp.x
-                x = lp.x
-            else if e.pageX < fp.x
-                x = fp.x
-            else
-                x = e.pageX
-
     do_dragover: (e) ->
         e.dataTransfer.dropEffect="link"
-        @show_try_dock_app(e)
 
     do_mouseover: (e)->
         if e.target == @element
