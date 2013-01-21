@@ -173,6 +173,7 @@ class UserInfo extends Widget
 
             if @name.innerText == "guest"
                 @login.password.style.display="none"
+                @login.password.value = "guest"
         else
             @focus()
 
