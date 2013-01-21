@@ -101,3 +101,8 @@ calc_text_size = (txt, width)->
     h = tmp.clientHeight
     document.body.removeChild(tmp)
     return h
+
+clamp = (value, min, max)->
+    return min if value < min
+    return max if value > max
+    return max
