@@ -21,6 +21,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <gtk/gtk.h>
+#include <glib/gi18n.h>
 #include "entry.h"
 #include <glib.h>
 #include "jsextension.h"
@@ -61,6 +63,8 @@ double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
         switch (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL)) {
+            case G_FILE_TYPE_REGULAR:
+                return 1;
             case G_FILE_TYPE_DIRECTORY:
                 {
                     char* path = g_file_get_basename(f);
@@ -72,8 +76,23 @@ double dentry_get_type(Entry* e)
                         return 2;
                     }
                 }
-            case G_FILE_TYPE_REGULAR:
-                return 1;
+	    case G_FILE_TYPE_SYMBOLIC_LINK:
+		{
+                    char* src = g_file_get_path(f);
+		    char* target = g_file_read_link (src, NULL);
+		    g_free (src);
+		    if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
+		    {
+			GFile* target_gfile = g_file_new_for_path(target);
+			g_free(target);
+			double retval = dentry_get_type(target_gfile);
+			g_object_unref(target_gfile);
+		    }
+		    return 4;
+		}
+	    //the remaining file type values.
+	    case G_FILE_TYPE_SPECIAL:
+	    case G_FILE_TYPE_MOUNTABLE:
             default:
                 {
                     char* path = g_file_get_path(f);
@@ -91,6 +110,30 @@ double dentry_get_type(Entry* e)
 JS_EXPORT_API
 JSObjectRef dentry_get_flags (Entry* e)
 {
+    JSObjectRef json = json_array_create();
+    GFile* f;
+    if (G_IS_FILE(e)) 
+	f = e;
+    GFileInfo* info = g_file_query_info (f,
+					 "standard::*,access::*", 
+					 G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+					 NULL,
+					 NULL);
+    if (info != NULL)
+    {
+	gboolean is_read_only = FALSE;
+	gboolean is_symlink = FALSE;
+	gboolean is_unreadable = FALSE;
+	is_unreadable = !g_file_info_get_attribute_boolean(info, "access::can-read");
+	is_read_only = !g_file_info_get_attribute_boolean(info, "access::can-write");
+	is_symlink = g_file_info_get_is_symlink(info);
+	g_object_unref(info);
+	json_append_number(json, "read_only", is_read_only);
+	json_append_number(json, "symbolic_link", is_symlink);
+	json_append_number(json, "unreadable", is_unreadable);
+    }
+    
+    return json;
 }
 JS_EXPORT_API
 char* dentry_get_name(Entry* e)
@@ -257,17 +300,34 @@ JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
-        //TODO: check ERROR
         GError* err = NULL;
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
-            g_debug("dentry_set_name: %s %s\n", name, err->message);
-	    //TODO: change to a dialog
+	    
+	    GtkWidget* dialog;
+	    dialog = gtk_message_dialog_new (NULL, 
+					     GTK_DIALOG_MODAL,
+					     GTK_MESSAGE_WARNING, 
+					     GTK_BUTTONS_OK,
+					     NULL);
+	    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	    char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this"
+						     "folder. Please use a different name."),
+						   name);
+
+	    g_object_set (dialog,
+	          "text", _("The Item could not be renamed"),
+		  "secondary-text", secondary_text,
+		  NULL);
+	    gtk_dialog_run (GTK_DIALOG (dialog));
+	    gtk_widget_destroy (dialog);
+	    g_free(secondary_text);
             g_error_free(err);
+            return FALSE;
         } else {
             g_object_unref(new_file);
+            return TRUE;
         }
-        return TRUE;
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
         return change_desktop_entry_name(path, name);

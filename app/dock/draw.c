@@ -5,7 +5,7 @@
 
 //c99 didn't define M_PI and so on.
 #ifndef M_PI_2
-#define M_PI_2 1.57079632679489661923 
+#define M_PI_2 1.57079632679489661923
 #endif
 
 #define TO_DOUBLE(c) ( (c) / 255.0)
@@ -23,8 +23,7 @@ void dock_draw_board(JSValueRef canvas, JSData* data)
     int h = 30;
 
     cairo_save(cr);
-    cairo_set_line_width(cr, 1);
-    cairo_set_source_rgba(cr, 
+    cairo_set_source_rgba(cr,
             GET_R(GD.config.color),
             GET_G(GD.config.color),
             GET_B(GD.config.color),
@@ -32,31 +31,35 @@ void dock_draw_board(JSValueRef canvas, JSData* data)
             );
     cairo_paint(cr);
 
-    cairo_set_source_rgba(cr, 0, 0, 0, 0.6);
-    cairo_rectangle(cr, 0, 0, w, 0);
+    cairo_set_line_width(cr, 1);
+    cairo_set_source_rgba(cr, 0, 0, 0, 0.3);
+    cairo_move_to(cr, 0, 0.5);
+    cairo_line_to(cr, w, 0.5);
     cairo_stroke(cr);
 
-    cairo_set_source_rgba(cr, 1, 1, 1, 0.7);
-    cairo_rectangle(cr, 0, 1, w, 0);
+    cairo_set_source_rgba(cr, 1, 1, 1, 0.2);
+    cairo_move_to(cr, 0, 1.5);
+    cairo_line_to(cr, w, 1.5);
     cairo_stroke(cr);
 
-    cairo_set_source_rgba(cr, 0, 0, 0, 0.05);
 
-    int l = h-4-3;
-    int b = w/2;
-    double r = (b*b+l*l) / (2.0 * l);
-    double e = asin(b / r);
+    /*cairo_set_source_rgba(cr, 0, 0, 0, 0.05);*/
 
-    cairo_move_to(cr, w, 3);
-    cairo_arc(cr, b, l-r , r, M_PI_2-e, M_PI_2+e);
+    /*int l = h-4-3;*/
+    /*int b = w/2;*/
+    /*double r = (b*b+l*l) / (2.0 * l);*/
+    /*double e = asin(b / r);*/
 
-    cairo_line_to(cr, 0, h);
-    cairo_line_to(cr, w, h);
-    cairo_line_to(cr, w, 3);
-    cairo_close_path(cr);
-    cairo_clip(cr);
-    cairo_paint(cr);
-    cairo_restore(cr);
+    /*cairo_move_to(cr, w, 3);*/
+    /*cairo_arc(cr, b, l-r , r, M_PI_2-e, M_PI_2+e);*/
+
+    /*cairo_line_to(cr, 0, h);*/
+    /*cairo_line_to(cr, w, h);*/
+    /*cairo_line_to(cr, w, 3);*/
+    /*cairo_close_path(cr);*/
+    /*cairo_clip(cr);*/
+    /*cairo_paint(cr);*/
+    /*cairo_restore(cr);*/
 
     canvas_custom_draw_did(cr, NULL);
 }

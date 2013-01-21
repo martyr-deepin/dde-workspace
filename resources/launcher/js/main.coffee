@@ -22,6 +22,10 @@ do_workarea_changed = (alloc)->
     document.body.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
 DCore.signal_connect('workarea_changed', do_workarea_changed)
+DCore.signal_connect("lost_focus", (info)->
+    if s_dock.LauncherShouldExit_sync(info.xid)
+        DCore.Launcher.exit_gui()
+)
 DCore.Launcher.notify_workarea_size()
 
 

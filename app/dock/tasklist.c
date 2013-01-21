@@ -26,6 +26,7 @@
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
+extern Window get_dock_window();
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
@@ -89,7 +90,7 @@ typedef struct {
 GHashTable* _clients_table = NULL;
 Window _active_client_id = 0;
 
-static 
+static
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
 
 void _update_window_icon(Client *c);
@@ -142,6 +143,13 @@ void _update_client_info(Client *c)
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
+
+gboolean launcher_should_exit(int launcher_xid)
+{
+    printf("LXID:%d ACTIVE:%d DOC:%d\n", launcher_xid, _active_client_id, get_dock_window());
+    return _active_client_id != get_dock_window() && _active_client_id != launcher_xid;
+}
+
 void active_window_changed(Display* dsp, Window w)
 {
     if (_active_client_id != w) {
@@ -471,7 +479,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
         } else if (ev->atom == ATOM_SHOW_DESKTOP) {
             js_post_message_simply("desktop_status_changed", NULL);
         }
-    } 
+    }
     return GDK_FILTER_CONTINUE;
 }
 

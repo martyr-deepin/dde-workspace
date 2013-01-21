@@ -7,7 +7,7 @@
             <description>Show or Hide the dock</description>
         </key>
         <key type="u" name="color">
-            <range min="0" max="0xffffff64" />
+            <range min="0" max="0xc7ced132" />
             <default>0x27292c46</default>
             <summary>dock color</summary>
             <description>the dock board color value contain in an guint32 with format RGBA</description>

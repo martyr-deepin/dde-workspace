@@ -3,7 +3,7 @@ class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id)->
         super
         @try_swap_launcher()
-        @element.setAttribute("title", "ID:#{@id} APPID:#{@app_id}")
+        #@element.setAttribute("title", "ID:#{@id} APPID:#{@app_id}")
 
         @n_clients = []
         @w_clients = []
@@ -159,7 +159,7 @@ class ClientGroup extends AppItem
             [2, _("Close")],
             [],
             [3, _("DockMe")],
-            [4, _("PreView(Not yet)")]
+            #[4, _("PreView"), false]
         ]
 
     do_itemselected: (e)=>

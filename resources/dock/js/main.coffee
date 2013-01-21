@@ -35,6 +35,19 @@ DCore.signal_connect("launcher_added", (info) ->
     if not c
         new Launcher(info.Id, info.Icon, info.Core)
 )
+DCore.signal_connect("dock_request", (info) ->
+    c = Widget.look_up(info.Id)
+    if not c
+        l = new Launcher(info.Id, info.Icon, info.Core)
+        apply_flash(l.img, 1)
+    else
+        apply_rotate(c.element, 0.3)
+        #group = Widget.look_up("le_"+info.Id)
+        #if group
+            #apply_flash(group.element, 0.3)
+        #else
+            #echo "not found group...#{info.Id}"
+)
 
 DCore.signal_connect("launcher_removed", (info) ->
     Widget.look_up(info.Id)?.destroy()

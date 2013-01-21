@@ -163,8 +163,10 @@ class Item extends Widget
         @remove_css_class("item_selected")
         return
 
+
     display_not_selected : =>
         @element.className = @element.className.replace(/\ item_selected/g, "")
+
 
     display_focus : =>
         @add_css_class("item_focus")
@@ -222,14 +224,10 @@ class Item extends Widget
         if @in_rename then @item_complete_rename(false)
 
         @display_short_name()
-        @has_focus = false
         @display_not_focus()
+        @has_focus = false
         return
 
-        @display_short_name()
-        @has_focus = false
-        echo "item_blur #{@has_focus}"
-        return
 
     item_selected : ->
         @display_selected()
@@ -260,15 +258,23 @@ class Item extends Widget
         li_list = @item_attrib.getElementsByTagName("li")
         for i in [(li_list.length - 1) ... -1] by -1
             @item_attrib.removeChild(li_list[i])
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
-        ele = document.createElement("li")
-        ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
-        @item_attrib.appendChild(ele)
+
+        if @modifiable == false then return
+
+        flags = DCore.DEntry.get_flags(@entry)
+        echo "#{@get_name()} #{flags.read_only} #{flags.symbolic_link} #{flags.unreadable}"
+        if flags.read_only? and flags.read_only == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
+        if flags.symbolic_link? and flags.symbolic_link == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
+        if flags.unreadable? and flags.unreadable == 1
+            ele = document.createElement("li")
+            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
+            @item_attrib.appendChild(ele)
         return
 
 
@@ -337,7 +343,8 @@ class Item extends Widget
         if modify == true
             new_name = cleanup_filename(@item_name.innerText)
             if new_name.length > 0 and new_name != @get_name()
-                @on_rename(new_name)
+                if not @on_rename(new_name)
+                    return
 
         @element.draggable = true
         @item_name.contentEditable = "false"
@@ -432,8 +439,8 @@ class DesktopEntry extends Item
         menu = []
         menu.push([1, _("Open")])
         menu.push([])
-        menu.push([3, _("cut")])
-        menu.push([4, _("copy")])
+        menu.push([3, _("Cut")])
+        menu.push([4, _("Copy")])
         menu.push([])
         menu.push([6, _("Rename"), not is_selected_multiple_items()])
         menu.push([9, _("Delete")])
@@ -839,11 +846,18 @@ class InvalidLink extends DesktopEntry
 
 
     do_buildmenu : ->
-        [9, _("Delete")]
+        [
+            [9, _("Delete")]
+        ]
 
 
     item_exec : ->
         return
+
+
+    item_update : ->
+        @item_icon.src = @get_icon()
+        @item_name.innerText = @get_name()
 
 
     item_rename : ->
@@ -880,10 +894,9 @@ class ComputerVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("open")],
-            [2, _("open in terminal")],
+            [1, _("Open")],
             [],
-            [3, _("properties")]
+            [2, _("Properties")]
         ]
 
 
@@ -892,8 +905,6 @@ class ComputerVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                DCore.Desktop.run_terminal()
-            when 3
                 DCore.Desktop.run_deepin_settings("system_information")
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
@@ -963,10 +974,9 @@ class HomeVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("open")],
-            [2, _("open in terminal")],
+            [1, _("Open")],
             [],
-            [3, _("properties")]
+            [2, _("Properties")]
         ]
 
 
@@ -975,8 +985,6 @@ class HomeVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                DCore.Desktop.run_terminal()
-            when 3
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
                     g_dbus_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
@@ -1054,15 +1062,15 @@ class TrashVDir extends DesktopEntry
 
     do_buildmenu : ->
         menus = []
-        menus.push([1, _("open")])
+        menus.push([1, _("Open")])
         menus.push([])
         count = DCore.DEntry.get_trash_count()
         if count > 1
-            menus.push([3, _("clean up") + " #{count} " + _("files")])
+            menus.push([3, _("Clean up") + " #{count} " + _("files")])
         else if count == 1
-            menus.push([3, _("clean up") + " #{count} " + _("file")])
+            menus.push([3, _("Clean up") + " #{count} " + _("file")])
         else
-            menus.push([3, _("clean up"), false])
+            menus.push([3, _("Clean up"), false])
         menus
 
 

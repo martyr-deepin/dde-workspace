@@ -79,6 +79,13 @@ void on_realize(GtkWidget* container)
     g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
+gboolean do_lost_focus(GtkWidget  *widget, GdkEventAny *event)
+{
+    JSObjectRef json = json_create();
+    json_append_number(json, "xid", (double)GDK_WINDOW_XID(event->window));
+    js_post_message("lost_focus", json);
+}
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -93,7 +100,8 @@ int main(int argc, char* argv[])
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     set_default_theme("Deepin");
-    set_desktop_env_name("GNOME");
+
+    set_desktop_env_name("Deepin");
 
     GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
@@ -101,7 +109,7 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(draw_bg), NULL);
-    g_signal_connect(webview, "focus-out-event", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(webview, "focus-out-event", G_CALLBACK(do_lost_focus), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
@@ -156,7 +164,7 @@ void append_to_category(const char* path, int* cs)
         //TODO new_with_full
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
-    
+
     while (*cs != CATEGORY_END_TAG) {
         gpointer id = GINT_TO_POINTER(*cs);
         GPtrArray* l = g_hash_table_lookup(_category_table, id);

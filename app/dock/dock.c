@@ -41,6 +41,11 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 }
 
 GtkWidget* container = NULL;
+Window get_dock_window()
+{
+    g_assert(container != NULL);
+    return GDK_WINDOW_XID(gtk_widget_get_window(container));
+}
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
     _screen_width = gdk_screen_get_width(screen);
