@@ -321,10 +321,11 @@ gboolean dentry_set_name(Entry* e, const char* name)
 	    gtk_widget_destroy (dialog);
 	    g_free(secondary_text);
             g_error_free(err);
+            return FALSE;
         } else {
             g_object_unref(new_file);
+            return TRUE;
         }
-        return TRUE;
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
         return change_desktop_entry_name(path, name);
