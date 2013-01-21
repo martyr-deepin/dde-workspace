@@ -102,8 +102,8 @@ class ComboBox extends Widget
             p = get_page_xy(e.target, 0, 0)
             alloc = @menu.get_allocation()
             # x = p.x - alloc.width/2
-            x = p.x - alloc.width + @switch.offsetWidth
-            y = p.y - alloc.height
+            x = p.x - alloc.width + @switch.offsetWidth - 3
+            y = p.y - alloc.height - 3
 
             @menu.show(x, y)
 
@@ -144,3 +144,4 @@ power_menu_cb = (id, title)->
     power_dict[title]()
 
 power_menu = new ComboBox("power", power_menu_cb)
+power_menu.show_item.style.background = "rgba(255,255,255, 0.3)"

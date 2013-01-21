@@ -57,6 +57,7 @@ class Loading extends Widget
         create_element("span", "", @element).innerText = "Welcome !"
 
 _current_user = null
+
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
         super
@@ -88,6 +89,7 @@ class UserInfo extends Widget
             @element.appendChild(@login.element)
             @login.password.focus()
             @login_displayed = true
+            @add_css_class("foo")
     
     do_click: (e)->
         if _current_user == @
@@ -137,6 +139,12 @@ user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.f
 
 if not user_image? or not user_image.length
     user_image = "images/img01.jpg"
+
+user_background = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").BackgroundFile
+if not user_background? or not user_background.length
+    user_background = "/usr/share/backgrounds/1440x900.jpg"
+background_img = create_img("Background",user_background) 
+document.body.appendChild(background_img)
 
 u = new UserInfo(user, user, user_image) 
 u.focus()

@@ -28,6 +28,12 @@ get_time_str = ->
     min = format_two_bit new Date().getMinutes()
     return "#{hours}:#{min}"
 
+get_hours = ->
+    return format_two_bit new Date().getHours()
+
+get_min = ->
+    return format_two_bit new Date().getMinutes()
+
 get_date_str = ->
     month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
     day_list = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
@@ -41,14 +47,22 @@ get_date_str = ->
 
 time = $("#time")
 date = $("#date")
-time.innerText = get_time_str()
+#time.innerText = get_time_str()
+hours = create_element("span", "", time)
+hours.innerText = get_hours()
+colon = create_element("span", "timecolon", time)
+colon.innerText = ":"
+min = create_element("span", "", time)
+min.innerText = get_min()
+
 date.innerText = get_date_str()
 setInterval( ->
-        time.innerText = get_time_str()
+        hours.innerText = get_hours()
+        min.innerText = get_min()
         return true
     , 1000)
 
 setInterval( ->
-        time.innerText = get_time_str()
+        date.innerText = get_date_str()
         return true
     , 1000)

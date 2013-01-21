@@ -73,15 +73,16 @@ class PWContainer extends Widget
                 @element.style.left = 0
                 DCore.Dock.require_region(0, -@element.clientHeight, @element.clientWidth, @element.clientHeight)
             else
-                run_post(->
+                run_post(=>
                     offset = group.element.offsetLeft - @element.clientWidth / 2 + group.element.clientWidth / 2
-                    @element.style.left = offset + "px"
-                    #echo "1 offset:#{offset}"
+                    @element.style.left = clamp(offset, 0, screen.width/2) + "px"
+                    echo "1 offset:#{offset} clamp:#{clamp(offset, 0, screen.width/2)}"
                 , @)
-                run_post(->
+
+                run_post(=>
                     offset = @element.offsetLeft
                     DCore.Dock.require_region(offset, -@element.clientHeight, @element.clientWidth, @element.clientHeight)
-                    #echo "2 offset:#{offset}"
+                    echo "2 offset:#{offset}"
                 , @)
             @_update()
 
