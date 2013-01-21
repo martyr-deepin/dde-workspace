@@ -20,6 +20,9 @@
  **/
 
 #include <gtk/gtk.h>
+#include <cairo-xlib.h>
+#include <gdk/gdkx.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <lightdm.h>
 #include "jsextension.h"
 #include "dwebview.h"
@@ -30,7 +33,7 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
-#define DEBUG 0
+#define DEBUG 1
 
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
@@ -81,6 +84,8 @@ gboolean greeter_run_hibernate();
 gboolean greeter_run_restart();
 gboolean greeter_run_shutdown();
 static void sigterm_cb(int signum);
+static cairo_surface_t * create_root_surface(GdkScreen *screen);
+void greeter_update_background();
 
 /* GREETER */
 static gboolean is_user_valid(const gchar *username)
@@ -314,6 +319,8 @@ void greeter_login_clicked(const gchar *password)
 static void start_session(const gchar *session)
 {
     g_return_if_fail(is_session_valid(session));
+
+    greeter_update_background();
 
 #ifdef DEBUG
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
@@ -743,6 +750,98 @@ static void sigterm_cb(int signum)
     exit(0);
 }
 
+static cairo_surface_t * create_root_surface (GdkScreen *screen)
+{
+    gint number, width, height;
+    Display *display;
+    Pixmap pixmap;
+    cairo_surface_t *surface;
+
+    number = gdk_screen_get_number (screen);
+    width = gdk_screen_get_width (screen);
+    height = gdk_screen_get_height (screen);
+
+    /* Open a new connection so with Retain Permanent so the pixmap remains when the greeter quits */
+    gdk_flush ();
+    display = XOpenDisplay (gdk_display_get_name (gdk_screen_get_display (screen)));
+    if (!display)
+    {
+        g_warning ("Failed to create root pixmap");
+        return NULL;
+    }
+    XSetCloseDownMode (display, RetainPermanent);
+    pixmap = XCreatePixmap (display, RootWindow (display, number), width, height, DefaultDepth (display, number));
+    XCloseDisplay (display);
+
+    /* Convert into a Cairo surface */
+    surface = cairo_xlib_surface_create (GDK_SCREEN_XDISPLAY (screen),
+                                         pixmap,
+                                         GDK_VISUAL_XVISUAL (gdk_screen_get_system_visual (screen)),
+                                         width, height);
+
+    /* Use this pixmap for the background */
+    XSetWindowBackgroundPixmap (GDK_SCREEN_XDISPLAY (screen),
+                                RootWindow (GDK_SCREEN_XDISPLAY (screen), number),
+                                cairo_xlib_surface_get_drawable (surface));
+
+
+    return surface;  
+}
+
+void greeter_update_background()
+{
+    GdkPixbuf *background_pixbuf = NULL;
+    GdkRGBA background_color;
+    GdkRectangle monitor_geometry;
+
+    selected_user = get_selected_user();
+    const gchar *bg_path = greeter_get_user_background(selected_user);
+    if(g_strcmp0(bg_path, "nonexists") == 0){
+        bg_path = "/usr/share/backgrounds/1440x900.jpg";
+    }
+    
+    if (!gdk_rgba_parse (&background_color, bg_path)){
+        background_pixbuf = gdk_pixbuf_new_from_file (bg_path, NULL);
+        if (!background_pixbuf)
+           g_warning ("Failed to load background: %s", bg_path);
+    }
+
+    for (int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
+    {
+        GdkScreen *screen;
+        cairo_surface_t *surface;
+        cairo_t *c;
+        int monitor;
+
+        screen = gdk_display_get_screen (gdk_display_get_default (), i);
+        surface = create_root_surface (screen);
+        c = cairo_create (surface);
+
+        for (monitor = 0; monitor < gdk_screen_get_n_monitors (screen); monitor++)
+        {
+            gdk_screen_get_monitor_geometry (screen, monitor, &monitor_geometry);
+
+            if (background_pixbuf)
+            {
+                GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple (background_pixbuf, monitor_geometry.width, monitor_geometry.height, GDK_INTERP_BILINEAR);
+                gdk_cairo_set_source_pixbuf (c, pixbuf, monitor_geometry.x, monitor_geometry.y);
+                g_object_unref (pixbuf);
+            }
+            else
+                gdk_cairo_set_source_rgba (c, &background_color);
+            cairo_paint (c);
+        }
+
+        cairo_destroy (c);
+
+        /* Refresh background */
+        gdk_flush ();
+        XClearWindow (GDK_SCREEN_XDISPLAY (screen), RootWindow (GDK_SCREEN_XDISPLAY (screen), i));
+    }
+    if (background_pixbuf)
+        g_object_unref (background_pixbuf);
+}
+
 int main(int argc, char **argv)
 {
     GdkScreen *screen;
@@ -781,7 +880,7 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(container);
 
-    monitor_resource_file("greeter", webview);
+ //   monitor_resource_file("greeter", webview);
     gtk_main();
     return 0;
 }
