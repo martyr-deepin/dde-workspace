@@ -439,8 +439,8 @@ class DesktopEntry extends Item
         menu = []
         menu.push([1, _("Open")])
         menu.push([])
-        menu.push([3, _("cut")])
-        menu.push([4, _("copy")])
+        menu.push([3, _("Cut")])
+        menu.push([4, _("Copy")])
         menu.push([])
         menu.push([6, _("Rename"), not is_selected_multiple_items()])
         menu.push([9, _("Delete")])
@@ -846,11 +846,18 @@ class InvalidLink extends DesktopEntry
 
 
     do_buildmenu : ->
-        [9, _("Delete")]
+        [
+            [9, _("Delete")]
+        ]
 
 
     item_exec : ->
         return
+
+
+    item_update : ->
+        @item_icon.src = @get_icon()
+        @item_name.innerText = @get_name()
 
 
     item_rename : ->
@@ -887,10 +894,9 @@ class ComputerVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("open")],
-            [2, _("open in terminal")],
+            [1, _("Open")],
             [],
-            [3, _("properties")]
+            [2, _("Properties")]
         ]
 
 
@@ -899,8 +905,6 @@ class ComputerVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                DCore.Desktop.run_terminal()
-            when 3
                 DCore.Desktop.run_deepin_settings("system_information")
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
@@ -970,10 +974,9 @@ class HomeVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("open")],
-            [2, _("open in terminal")],
+            [1, _("Open")],
             [],
-            [3, _("properties")]
+            [2, _("Properties")]
         ]
 
 
@@ -982,8 +985,6 @@ class HomeVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                DCore.Desktop.run_terminal()
-            when 3
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
                     g_dbus_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
@@ -1061,15 +1062,15 @@ class TrashVDir extends DesktopEntry
 
     do_buildmenu : ->
         menus = []
-        menus.push([1, _("open")])
+        menus.push([1, _("Open")])
         menus.push([])
         count = DCore.DEntry.get_trash_count()
         if count > 1
-            menus.push([3, _("clean up") + " #{count} " + _("files")])
+            menus.push([3, _("Clean up") + " #{count} " + _("files")])
         else if count == 1
-            menus.push([3, _("clean up") + " #{count} " + _("file")])
+            menus.push([3, _("Clean up") + " #{count} " + _("file")])
         else
-            menus.push([3, _("clean up"), false])
+            menus.push([3, _("Clean up"), false])
         menus
 
 
