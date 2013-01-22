@@ -22,9 +22,18 @@
 #include "jsextension.h"
 #include "utils.h"
 
+void remove_resize_grip(GtkWidget* w)
+{
+    GtkCssProvider* provider = gtk_css_provider_get_default();
+    gboolean v = gtk_css_provider_load_from_data(provider, "*{-GtkWindow-resize-grip-height:0;}", -1, NULL);
+    GtkStyleContext *ctx = gtk_widget_get_style_context(w);
+    gtk_style_context_add_provider(ctx, provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+}
+
 GtkWidget* create_web_container(bool normal, bool above)
 {
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    remove_resize_grip(window);
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     if (!normal)
