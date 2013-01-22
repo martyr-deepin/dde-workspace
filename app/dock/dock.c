@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
     gdk_window_set_accept_focus(gtk_widget_get_window(webview), FALSE);
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
-    monitor_resource_file("dock", webview);
+    /*monitor_resource_file("dock", webview);*/
     /*gdk_window_set_debug_updates(TRUE);*/
 
 
