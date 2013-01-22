@@ -30,7 +30,7 @@ gboolean update_root_pixmap()
         cairo_destroy(_background_cairo);
     } else {
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
-        cairo_set_source_rgba(_background_cairo, 1, 1, 1, 0.2);
+        cairo_set_source_rgb(_background_cairo, 1, 1, 1);
         cairo_paint(_background_cairo);
         cairo_destroy(_background_cairo);
     }

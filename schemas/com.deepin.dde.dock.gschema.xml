@@ -8,7 +8,7 @@
         </key>
         <key type="u" name="color">
             <range min="0" max="0xffffff64" />
-            <default>0xc7ced132</default>
+            <default>0xbcbcbc32</default>
             <summary>dock color</summary>
             <description>the dock board color value contain in an guint32 with format RGBA</description>
         </key>
