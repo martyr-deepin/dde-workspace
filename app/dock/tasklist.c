@@ -89,6 +89,7 @@ typedef struct {
 
 GHashTable* _clients_table = NULL;
 Window _active_client_id = 0;
+Window _launcher_id = 0;
 
 static
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
@@ -144,10 +145,9 @@ void _update_client_info(Client *c)
     js_post_message("task_updated", json);
 }
 
-gboolean launcher_should_exit(int launcher_xid)
+gboolean launcher_should_exit()
 {
-    printf("LXID:%d ACTIVE:%d DOC:%d\n", launcher_xid, _active_client_id, get_dock_window());
-    return _active_client_id != get_dock_window() && _active_client_id != launcher_xid;
+    return _active_client_id != get_dock_window() && _active_client_id != _launcher_id;
 }
 
 void active_window_changed(Display* dsp, Window w)
@@ -163,6 +163,9 @@ void active_window_changed(Display* dsp, Window w)
         } else {
             /*g_warning("0x%x get focus..\n", (int)w);*/
         }
+    }
+    if (_launcher_id != 0 && launcher_should_exit()) {
+        close_launcher_window();
     }
 }
 
@@ -206,11 +209,13 @@ GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Win
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_message_simply("launcher_destroy", NULL);
+        _launcher_id = 0;
     }
     return GDK_FILTER_CONTINUE;
 }
 void start_monitor_launcher_window(Window w)
 {
+    _launcher_id = w;
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
     if (win == NULL)
         return;
@@ -542,6 +547,7 @@ void dock_active_window(double id)
             StructureNotifyMask, (XEvent*)&event);
 }
 
+
 JS_EXPORT_API
 void dock_close_window(double id)
 {
@@ -552,6 +558,10 @@ void dock_close_window(double id)
     event.format = 32;
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
+}
+void close_launcher_window()
+{
+    dock_close_window(_launcher_id);
 }
 
 JS_EXPORT_API

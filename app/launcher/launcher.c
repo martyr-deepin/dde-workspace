@@ -79,13 +79,6 @@ void on_realize(GtkWidget* container)
     g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
-gboolean do_lost_focus(GtkWidget  *widget, GdkEventAny *event)
-{
-    JSObjectRef json = json_create();
-    json_append_number(json, "xid", (double)GDK_WINDOW_XID(event->window));
-    js_post_message("lost_focus", json);
-}
-
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -109,7 +102,6 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(draw_bg), NULL);
-    g_signal_connect(webview, "focus-out-event", G_CALLBACK(do_lost_focus), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
@@ -126,7 +118,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(do_im_commit), NULL); 
 
-    monitor_resource_file("launcher", webview);
+    /*monitor_resource_file("launcher", webview);*/
     gtk_widget_show_all(container);
     gtk_main();
     return 0;

@@ -112,27 +112,31 @@ JSObjectRef dentry_get_flags (Entry* e)
 {
     JSObjectRef json = json_array_create();
     GFile* f;
-    if (G_IS_FILE(e)) 
-	f = e;
+    if (G_IS_FILE(e)) {
+        f = e;
+        return json;
+    }
+
     GFileInfo* info = g_file_query_info (f,
-					 "standard::*,access::*", 
-					 G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-					 NULL,
-					 NULL);
+            "standard::*,access::*", 
+            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+            NULL,
+            NULL);
+
     if (info != NULL)
     {
-	gboolean is_read_only = FALSE;
-	gboolean is_symlink = FALSE;
-	gboolean is_unreadable = FALSE;
-	is_unreadable = !g_file_info_get_attribute_boolean(info, "access::can-read");
-	is_read_only = !g_file_info_get_attribute_boolean(info, "access::can-write");
-	is_symlink = g_file_info_get_is_symlink(info);
-	g_object_unref(info);
-	json_append_number(json, "read_only", is_read_only);
-	json_append_number(json, "symbolic_link", is_symlink);
-	json_append_number(json, "unreadable", is_unreadable);
+        gboolean is_read_only = FALSE;
+        gboolean is_symlink = FALSE;
+        gboolean is_unreadable = FALSE;
+        is_unreadable = !g_file_info_get_attribute_boolean(info, "access::can-read");
+        is_read_only = !g_file_info_get_attribute_boolean(info, "access::can-write");
+        is_symlink = g_file_info_get_is_symlink(info);
+        g_object_unref(info);
+        json_append_number(json, "read_only", is_read_only);
+        json_append_number(json, "symbolic_link", is_symlink);
+        json_append_number(json, "unreadable", is_unreadable);
     }
-    
+
     return json;
 }
 JS_EXPORT_API

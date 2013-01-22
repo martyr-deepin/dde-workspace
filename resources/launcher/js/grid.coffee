@@ -86,7 +86,6 @@ show_grid_selected = (id)->
             c.setAttribute("class", "category_name category_selected")
         else
             c.setAttribute("class", "category_name")
-        
 
 grid = $('#grid')
 grid_load_category = (cat_id) ->
@@ -105,7 +104,3 @@ grid_load_category = (cat_id) ->
 
     grid_show_items(info)
     update_selected(null)
-
-#grid.onscroll = (e)->
-    #echo e
-    #grid.scrollTop -= 132
