@@ -211,7 +211,7 @@ body {
 #mouse_select_area_box {
     position:absolute;
     border:1px solid #eee;
-    background-color:rgba(167,167,167,0.5);
+    background-color:rgba(68, 132, 195, 0.3);
     z-index:30;
 }
 
