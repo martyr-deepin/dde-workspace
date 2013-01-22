@@ -4,6 +4,7 @@
  *	so we need to implement one.
  */
 #include <glib/gstdio.h>
+#include <glib/gi18n.h>
 
 #include "fileops.h"
 #include "fileops_error_reporting.h"
@@ -464,8 +465,10 @@ _move_files_async (GFile* src, gpointer data)
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
 	FileOpsResponse* response;
-	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
+	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
 
+	g_warning ("after dialog shows up: response: %d", response->response_id);
+	if(response != NULL)
 	switch (response->response_id)
 	{
 	    case GTK_RESPONSE_CANCEL:
@@ -519,6 +522,7 @@ _move_files_async (GFile* src, gpointer data)
 
 	free_fileops_response (response);
 	g_error_free (error);
+	g_debug ("move_async: error handling end");
     }
 #if 1
     else 
@@ -578,8 +582,9 @@ _copy_files_async (GFile* src, gpointer data)
 	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
 	//TEST:
 	FileOpsResponse* response;
-	response = fileops_move_copy_error_show_dialog ("copy", error, src, dest, NULL);
+	response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
 
+	if(response != NULL)
 	switch (response->response_id)
 	{
 	    case GTK_RESPONSE_CANCEL:

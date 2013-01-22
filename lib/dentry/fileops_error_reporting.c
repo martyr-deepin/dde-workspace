@@ -1,4 +1,6 @@
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
+
 
 #include "enums.h"
 #include "fileops_error_dialog.h"
@@ -69,6 +71,28 @@ fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error,
     FileOpsResponse* ret = NULL;
     switch (error->code)
     {
+	case G_IO_ERROR_NOT_FOUND:
+	    {
+		GtkWidget* dialog;
+	        dialog = gtk_message_dialog_new (NULL, 
+					     GTK_DIALOG_MODAL,
+					     GTK_MESSAGE_WARNING, 
+					     GTK_BUTTONS_OK,
+					     NULL);
+	        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+		char* primary_text = g_strdup_printf (_("Error while %s files"), fileops_str);
+	        char* secondary_text = g_strdup (error->message);
+
+		g_object_set (dialog,
+	          "text", primary_text,
+		  "secondary-text", secondary_text,
+		  NULL);
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+		g_free(secondary_text);
+		g_free(primary_text);
+	    }
+	    break;
 	case G_IO_ERROR_EXISTS:      //move, copy
 	    //TODO: message dialog.
 	    //      overwrite, replace, rename, //all overwrite, replace all, rename all.
