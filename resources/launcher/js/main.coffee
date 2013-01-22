@@ -29,6 +29,7 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.Launcher.notify_workarea_size()
 
 
+_select_timeout_id = 0
 create_category = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'category_name')
@@ -40,9 +41,11 @@ create_category = (info) ->
         e.stopPropagation()
         grid_load_category(info.ID)
     )
+    el.addEventListener('mouseover', (e)->
+        e.stopPropagation()
+        grid_load_category(info.ID)
+    )
     return el
-
-
 
 append_to_category = (cat) ->
     $('#category').appendChild(cat)
@@ -57,34 +60,9 @@ $("body").addEventListener("click", (e)->
     if e.target != $("#category")
         DCore.Launcher.exit_gui()
 )
-$("#close").setAttribute("class", "close")
-
-$("#grid").addEventListener("mouseout", (e)->
-    if e.target == grid and e.x >= grid.clientWidth
-        $("#close").setAttribute("class", "close")
-    else
-        $("#close").setAttribute("class", "close_hover")
-    e.stopPropagation()
-)
-$("#category").addEventListener("mouseover", (e)->
-    e.stopPropagation()
-    $("#close").setAttribute("class", "close")
-)
-$("#search").addEventListener('mouseover', (e)->
-    e.stopPropagation()
-    if e.target == s_box
-        $("#close").setAttribute("class", "close")
-    else
-        $("#close").setAttribute("class", "close_hover")
-)
-$("#container").addEventListener('mouseover', (e)->
-    $("#close").setAttribute("class", "close_hover")
-)
-
 
 for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)
-
 
 grid_load_category(-1) #the All applications' ID is zero.
