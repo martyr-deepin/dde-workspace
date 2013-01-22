@@ -165,7 +165,7 @@ void active_window_changed(Display* dsp, Window w)
         }
     }
     if (_launcher_id != 0 && launcher_should_exit()) {
-        system("killall launcher");
+        close_launcher_window();
     }
 }
 
@@ -547,6 +547,7 @@ void dock_active_window(double id)
             StructureNotifyMask, (XEvent*)&event);
 }
 
+
 JS_EXPORT_API
 void dock_close_window(double id)
 {
@@ -557,6 +558,10 @@ void dock_close_window(double id)
     event.format = 32;
     XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
             StructureNotifyMask, (XEvent*)&event);
+}
+void close_launcher_window()
+{
+    dock_close_window(_launcher_id);
 }
 
 JS_EXPORT_API

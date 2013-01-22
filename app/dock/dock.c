@@ -162,6 +162,6 @@ void dock_toggle_launcher(gboolean show)
     if (show) {
         dcore_run_command("launcher");
     } else {
-        dcore_run_command("killall launcher");
+        close_launcher_window();
     }
 }
