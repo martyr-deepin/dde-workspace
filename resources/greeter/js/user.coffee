@@ -105,10 +105,14 @@ class UserInfo extends Widget
         @active = false
         @login_displayed = false
 
-        try
-            user_bg = DCore.Greeter.get_user_background(@id)
-        catch error
+        if @id == "guest"
             user_bg = _default_bg_src
+        else
+            try
+                user_bg = DCore.Greeter.get_user_background(@id)
+            catch error
+                user_bg = _default_bg_src
+
         if user_bg == "nonexists"
             user_bg = _default_bg_src
         @background = create_img("Background", user_bg)
@@ -119,9 +123,10 @@ class UserInfo extends Widget
         @add_css_class("UserInfoSelected")
 
         if not DCore.Greeter.is_hide_users()
-            document.body.appendChild(@background)
-            document.body.removeChild(_current_bg)
-            _current_bg = @background
+            if @background.src != _current_bg.src
+                document.body.appendChild(@background)
+                document.body.removeChild(_current_bg)
+                _current_bg = @background
 
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
@@ -168,6 +173,7 @@ class UserInfo extends Widget
 
             if @name.innerText == "guest"
                 @login.password.style.display="none"
+                @login.password.value = "guest"
         else
             @focus()
 
