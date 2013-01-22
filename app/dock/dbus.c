@@ -9,7 +9,7 @@
 //forward declaration
 void dock_request_dock(const char* path);
 void dock_show_desktop(gboolean value);
-gboolean launcher_should_exit(int launcher_xid);
+gboolean launcher_should_exit();
 
 const char* _dock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
@@ -24,7 +24,6 @@ const char* _dock_dbus_iface_xml =
 "			</arg>\n"
 "		</method>\n"
 "       <method name=\"LauncherShouldExit\">\n"
-"           <arg name=\"l_xid\" type=\"i\" direction=\"in\"></arg>\n"
 "           <arg name=\"value\" type=\"b\" direction=\"out\"></arg>\n"
 "       </method>\n"
 "	</interface>\n"
@@ -172,9 +171,7 @@ _bus_method_call (GDBusConnection * connection,
         g_variant_get(params, "(b)", &value);
         dock_show_desktop(value);
     } else if (g_strcmp0(method, "LauncherShouldExit") == 0) {
-        gint lxid = 0;
-        g_variant_get(params, "(i)", &lxid);
-        GVariant* v = g_variant_new_boolean(launcher_should_exit(lxid));
+        GVariant* v = g_variant_new_boolean(launcher_should_exit());
         retval = g_variant_new_tuple(&v, 1);
     } else {
         g_warning ("Calling method '%s' on dock and it's unknown", method);

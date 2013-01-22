@@ -79,11 +79,12 @@ void on_realize(GtkWidget* container)
     g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
+gboolean launcher_should_exit();
 gboolean do_lost_focus(GtkWidget  *widget, GdkEventAny *event)
 {
-    JSObjectRef json = json_create();
-    json_append_number(json, "xid", (double)GDK_WINDOW_XID(event->window));
-    /*js_post_message("lost_focus", json);*/
+    if (launcher_should_exit()) {
+        gtk_main_quit();
+    }
 }
 
 int main(int argc, char* argv[])

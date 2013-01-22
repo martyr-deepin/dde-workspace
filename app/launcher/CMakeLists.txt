@@ -3,7 +3,7 @@ SET(NAME "launcher")
 GEN_JSC_SOURCE("jsc" JSC_GEN)
 
 
-SET(SRC_LIST launcher.c ${JSC_GEN})
+SET(SRC_LIST launcher.c dbus.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
