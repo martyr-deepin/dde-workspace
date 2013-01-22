@@ -79,14 +79,6 @@ void on_realize(GtkWidget* container)
     g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
 }
 
-gboolean launcher_should_exit();
-gboolean do_lost_focus(GtkWidget  *widget, GdkEventAny *event)
-{
-    if (launcher_should_exit()) {
-        gtk_main_quit();
-    }
-}
-
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
@@ -110,7 +102,6 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(draw_bg), NULL);
-    g_signal_connect(webview, "focus-out-event", G_CALLBACK(do_lost_focus), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);

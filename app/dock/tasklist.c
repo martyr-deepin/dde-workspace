@@ -164,6 +164,9 @@ void active_window_changed(Display* dsp, Window w)
             /*g_warning("0x%x get focus..\n", (int)w);*/
         }
     }
+    if (_launcher_id != 0 && launcher_should_exit()) {
+        system("killall launcher");
+    }
 }
 
 
@@ -206,6 +209,7 @@ GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Win
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_message_simply("launcher_destroy", NULL);
+        _launcher_id = 0;
     }
     return GDK_FILTER_CONTINUE;
 }
