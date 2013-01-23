@@ -17,24 +17,32 @@ gboolean update_root_pixmap()
 
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
         g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         GdkScreen *screen = gdk_screen_get_default();
+        g_assert(screen);
         int s_width = gdk_screen_get_width(screen);
         int s_height = gdk_screen_get_height(screen);
+        g_assert(s_width > 800 && s_height > 600);
         GdkVisual *visual = gdk_screen_get_system_visual (screen);
+        g_assert(visual);
         cairo_surface_t* surface = cairo_xlib_surface_create(_dsp, ROOT_PIXMAP, GDK_VISUAL_XVISUAL(visual), s_width, s_height);
         g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         g_assert(surface != NULL);
         g_assert(_background_cairo != NULL);
 
         cairo_set_source_surface(_background_cairo, surface, 0, 0);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_paint(_background_cairo);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_surface_destroy(surface);
         cairo_destroy(_background_cairo);
     } else {
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
         g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_set_source_rgb(_background_cairo, 1, 1, 1);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_paint(_background_cairo);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_destroy(_background_cairo);
     }
     return FALSE;
