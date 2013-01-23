@@ -623,6 +623,7 @@ class RichDir extends DesktopEntry
             if @show_pop == true
                 @hide_pop_block()
                 if list.length then DCore.DEntry.move(list, g_desktop_entry)
+            discard_position(DCore.DEntry.get_id(entry))
             DCore.DEntry.delete_files([@entry], false)
         else
             if @show_pop == true
