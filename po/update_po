@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 base_dir = "../resources/"
-scan_dir = ["desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
+scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
 
 other_files = ["../app/desktop/desktop.c"]
 
