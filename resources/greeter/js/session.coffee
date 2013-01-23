@@ -37,3 +37,4 @@ default_session = DCore.Greeter.get_default_session()
     
 $("#bottom_buttons").appendChild(de_menu.element)
 de_menu.set_current(default_session)
+DCore.Greeter.set_selected_session(default_session)

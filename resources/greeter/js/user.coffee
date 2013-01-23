@@ -122,18 +122,24 @@ class UserInfo extends Widget
         _current_user = @
         @add_css_class("UserInfoSelected")
 
-        if not DCore.Greeter.is_hide_users()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+
+        if DCore.Greeter.is_hide_users()
+            DCore.Greeter.start_authentication("*other")
+        else
             if @background.src != _current_bg.src
                 document.body.appendChild(@background)
                 document.body.removeChild(_current_bg)
                 _current_bg = @background
 
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-        if DCore.Greeter.is_hide_users()
-            DCore.Greeter.start_authentication("*other")
-        else
             DCore.Greeter.set_selected_user(@id)
+            if @id != "guest"
+                session = DCore.Greeter.get_user_session(@id)
+                if session?
+                    de_menu.set_current(session)
+                    DCore.Greeter.set_selected_session(session)
+
             DCore.Greeter.start_authentication(@id)
 
     blur: ->
