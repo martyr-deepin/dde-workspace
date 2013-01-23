@@ -47,7 +47,6 @@ class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").insertBefore(@element, $("#notifyarea"))
-        setTimeout(c, 200)
 
     append: (c) ->
         @element.appendChild(c.element)

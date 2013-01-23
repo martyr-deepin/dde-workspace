@@ -84,33 +84,6 @@ DCore.signal_connect("in_normal_mode", ->
 DCore.Dock.emit_webview_ok()
 show_desktop.show(DCore.Dock.get_desktop_status())
 
-format_two_bit = (s) ->
-    if s < 10
-        return "0#{s}"
-    else
-        return s
-
-get_time_str = ->
-    today = new Date()
-    hours = today.getHours()
-    if hours > 12
-        m = _("PM")
-        hours = hours - 12
-    else
-        m = _("AM")
-    hours = format_two_bit hours
-    min = format_two_bit today.getMinutes()
-    sec = format_two_bit today.getSeconds()
-    return "#{hours}:#{min}"
-
-c = $("#clock")
-c.innerText = get_time_str()
-setInterval( ->
-    c.innerText = get_time_str()
-    return true
-, 1000
-)
-
 init_app_item_size = ->
     apps = $s(".AppItem")
     w = apps[0].offsetWidth

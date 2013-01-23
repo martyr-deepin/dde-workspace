@@ -65,6 +65,13 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
 }
 
+//TODO: REMOVE
+void remove_me_run_tray_icon()
+{
+    GAppInfo* app = g_app_info_create_from_commandline("python /usr/share/deepin-system-tray/src/trayicon.py", "DeepinTrayIcon", G_APP_INFO_CREATE_NONE, NULL);
+    g_app_info_launch(app, NULL, NULL, NULL);
+    g_object_unref(app);
+}
 int main(int argc, char* argv[])
 {
     //remove  option -f 
@@ -143,6 +150,7 @@ void dock_emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
+        remove_me_run_tray_icon();
     } else {
         update_dock_apps();
         update_task_list();
