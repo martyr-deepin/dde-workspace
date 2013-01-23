@@ -39,7 +39,7 @@ class LoginEntry extends Widget
         )
 
         @login = create_element("button", "LoginButton", @element)
-        @login.innerText = _("UnLock")
+        @login.innerText = _("Unlock")
         @login.addEventListener("click", =>
             if not @password.value
                 @password.focus()
@@ -54,7 +54,7 @@ class Loading extends Widget
         super
         create_element("div", "ball", @element)
         create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome !")
+        create_element("span", "", @element).innerText = _("Welcome")
 
 _current_user = null
 

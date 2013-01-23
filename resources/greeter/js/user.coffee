@@ -60,7 +60,7 @@ class LoginEntry extends Widget
         )
 
         @login = create_element("button", "LoginButton", @element)
-        @login.innerText = "User Login"
+        @login.innerText = _("Log In")
         @login.addEventListener("click", =>
             if DCore.Greeter.is_hide_users()
                 if not @account.value
@@ -87,7 +87,7 @@ class Loading extends Widget
         super
         create_element("div", "ball", @element)
         create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = "Welcome !"
+        create_element("span", "", @element).innerText = _("Welcome")
 
 _default_bg_src = "/usr/share/backgrounds/1440x900.jpg"
 _current_bg = create_img("Background", _default_bg_src)
