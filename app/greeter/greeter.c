@@ -502,7 +502,7 @@ const gchar* greeter_get_session_name(const gchar *key)
     if(session == NULL){
         name = key;
     }else{
-        name = lightdm_session_get_comment(session);
+        name = lightdm_session_get_name(session);
     }
 
     return name;

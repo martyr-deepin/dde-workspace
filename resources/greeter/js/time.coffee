@@ -51,8 +51,8 @@ date = $("#date")
 hours = create_element("span", "", time)
 hours.innerText = get_hours()
 
-#colon = create_element("span", "timecolon", time)
-colon = create_element("span", "", time)
+colon = create_element("span", "timecolon", time)
+#colon = create_element("span", "", time)
 colon.innerText = ":"
 
 min = create_element("span", "", time)

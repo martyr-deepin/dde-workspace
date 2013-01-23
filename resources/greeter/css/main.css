@@ -83,15 +83,16 @@ body{
 }
 
 @-webkit-keyframes linear-showtime {
-    from { opacity: 0.3;}
-    to { opacity: 1; }
+    0% { opacity: 0.3;}
+    50% { opacity: 1; }
+    100% { opacity: 0.3;}
 }
 
 .timecolon{
     display:inline-block;
     line-height: 50px;
     padding-bottom: 25px;
-    -webkit-animation:linear-showtime 1.1s infinite linear;
+    -webkit-animation:linear-showtime 1s infinite linear;
 }
 
 .Detext{
