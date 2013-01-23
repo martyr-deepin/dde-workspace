@@ -21,7 +21,6 @@
 @import url("../../common/css/animation.css");
 @import url("preview.css");
 @import url("list.css");
-@import url("trayicon.css");
 
 body {
     -webkit-user-select: none;
@@ -44,4 +43,11 @@ body {
     min-height: 30px;
     max-height: 30px;
     z-index: -1000;
+}
+
+#notifyarea {
+    /*background: rgba(0, 100, 0, 0.3);*/
+    bottom:0px;
+    right: 0px;
+    -webkit-box-flex: 0;
 }

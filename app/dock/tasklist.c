@@ -26,6 +26,7 @@
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"
+#include "tasklist.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
