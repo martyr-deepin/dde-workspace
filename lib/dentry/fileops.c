@@ -378,6 +378,22 @@ _dummy_func (GFile* file, gpointer data)
 {
     return TRUE;
 }
+//NOTE: src: source file
+//      dest: destination file (not destination directory)
+static gboolean
+_cmp_files (GFile* src, GFile* dest)
+{
+    gboolean retval;
+
+    GFile* dest_dir = g_file_get_parent (dest);
+    char* src_uri = g_file_get_uri (src);
+    char* dest_uri = g_file_get_uri (dest_dir);
+    retval = g_strcmp0 (src_uri, dest_uri);
+    g_free (src_uri);
+    g_free (dest_uri);
+    g_object_unref (dest_dir);
+    return retval;
+}
 
 static gboolean
 _delete_files_async (GFile* file, gpointer data)
@@ -452,6 +468,8 @@ _move_files_async (GFile* src, gpointer data)
 
     _move_cancellable = _data->cancellable;
     dest = _data->dest_file;
+    if (!_cmp_files (src, dest)) //src==dest
+	return FALSE;
     g_file_move (src, dest,
 	         G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		 _move_cancellable,
@@ -568,6 +586,8 @@ _copy_files_async (GFile* src, gpointer data)
     }
     else
     {
+	if (!_cmp_files (src, dest)) //src==dest
+	    return FALSE;
 	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		     _copy_cancellable,
