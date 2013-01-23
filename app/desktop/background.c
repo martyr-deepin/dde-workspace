@@ -16,11 +16,13 @@ gboolean update_root_pixmap()
         Pixmap ROOT_PIXMAP = X_FETCH_32(data, 0);
 
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         GdkScreen *screen = gdk_screen_get_default();
         int s_width = gdk_screen_get_width(screen);
         int s_height = gdk_screen_get_height(screen);
         GdkVisual *visual = gdk_screen_get_system_visual (screen);
         cairo_surface_t* surface = cairo_xlib_surface_create(_dsp, ROOT_PIXMAP, GDK_VISUAL_XVISUAL(visual), s_width, s_height);
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         g_assert(surface != NULL);
         g_assert(_background_cairo != NULL);
 
@@ -30,6 +32,7 @@ gboolean update_root_pixmap()
         cairo_destroy(_background_cairo);
     } else {
         cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
+        g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         cairo_set_source_rgb(_background_cairo, 1, 1, 1);
         cairo_paint(_background_cairo);
         cairo_destroy(_background_cairo);
