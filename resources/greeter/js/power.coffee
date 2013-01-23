@@ -32,19 +32,15 @@ get_power_info = ->
     return power_info
 
 suspend_cb = ->
-    alert "suspend"
     DCore.Greeter.run_suspend()
 
 hibernate_cb = ->
-    alert "hibernate"
     DCore.Greeter.run_hibernate()
 
 restart_cb = ->
-    alert "restart"
     DCore.Greeter.run_restart()
 
 shutdown_cb = ->
-    alert "shutdown"
     DCore.Greeter.run_shutdown()
 
 power_dict = get_power_info()
@@ -59,4 +55,3 @@ DCore.signal_connect("power", (msg) ->
     status_div = create_element("div", " ", $("#Debug"))
     status_div.innerText = "status:" + msg.status
 )
-    

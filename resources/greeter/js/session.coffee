@@ -17,6 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+$("#Version").innerHTML = "
+            <span> #{_("Deepin Linux")}<sup>#{_("Alpha")}</sup></span> 
+            <span> #{_("Professional Edition")}</span>
+            "
+
+detext = create_element("div", "Detext", $("#bottom_buttons"))
+detext.innerText = _("Session")
+
 sessions = DCore.Greeter.get_sessions()
 for session in sessions
     id = session
