@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-26 10:43+0800\n"
+"POT-Creation-Date: 2013-01-23 19:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,251 +17,239 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/launcher/js/launcher.js:131
-#: ../resources/launcher/js/main.coffee:47
-msgid "All"
-msgstr "所有"
+#: ../resources/greeter/js/user.coffee:63
+msgid "Log In"
+msgstr ""
 
-#: ../resources/dock/js/main.coffee:46 ../resources/dock/js/main.coffee:30
-msgid "PM"
-msgstr "下午"
+#: ../resources/greeter/js/user.coffee:90
+#: ../resources/greeter/js/lock.coffee:57
+msgid "Welcome"
+msgstr ""
 
-#: ../resources/dock/js/main.coffee:49 ../resources/dock/js/main.coffee:33
-msgid "AM"
-msgstr "上午"
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jan"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:52
-#: ../resources/desktop/js/grid.coffee:65
-#: ../resources/desktop/js/grid.coffee:69
-#: ../resources/desktop/js/grid.coffee:71
-#: ../resources/desktop/js/grid.coffee:653
-msgid "arrange icons"
-msgstr "排列图标"
+#: ../resources/greeter/js/time.coffee:38
+msgid "Feb"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:53
-#: ../resources/desktop/js/grid.coffee:66
-#: ../resources/desktop/js/grid.coffee:70
-#: ../resources/desktop/js/grid.coffee:72
-#: ../resources/desktop/js/grid.coffee:654
-msgid "by name"
-msgstr "按名称"
+#: ../resources/greeter/js/time.coffee:38
+msgid "Mar"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:54
-#: ../resources/desktop/js/grid.coffee:67
-#: ../resources/desktop/js/grid.coffee:71
-#: ../resources/desktop/js/grid.coffee:73
-#: ../resources/desktop/js/grid.coffee:655
-msgid "by last modified time"
-msgstr "按修改时间"
+#: ../resources/greeter/js/time.coffee:38
+msgid "Apr"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:57
-#: ../resources/desktop/js/grid.coffee:70
-#: ../resources/desktop/js/grid.coffee:74
-#: ../resources/desktop/js/grid.coffee:76
-#: ../resources/desktop/js/grid.coffee:658
+#: ../resources/greeter/js/time.coffee:38
+msgid "May"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Jul"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Aug"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Sep"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Oct"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Nov"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:38
+msgid "Dec"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Mon"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Tue"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Wed"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Thu"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Fri"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:39
+msgid "Sat"
+msgstr ""
+
+#: ../resources/greeter/js/lock.coffee:42
+msgid "Unlock"
+msgstr ""
+
+#: ../resources/greeter/js/session.coffee:26
+msgid "Session"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:679
+msgid "Sort by"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:680
+msgid "Name"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:681
+msgid "Last modified time"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:684
 msgid "New"
-msgstr "新建"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:58
-#: ../resources/desktop/js/grid.coffee:71
-#: ../resources/desktop/js/grid.coffee:75
-#: ../resources/desktop/js/grid.coffee:77
-#: ../resources/desktop/js/grid.coffee:659
-msgid "folder"
-msgstr "文件夹"
+#: ../resources/desktop/js/grid.coffee:685
+msgid "Folder"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:59
-#: ../resources/desktop/js/grid.coffee:72
-#: ../resources/desktop/js/grid.coffee:76
-#: ../resources/desktop/js/grid.coffee:78
-#: ../resources/desktop/js/grid.coffee:660
-msgid "text file"
-msgstr "文本文件"
+#: ../resources/desktop/js/grid.coffee:686
+msgid "Text document"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:62
-#: ../resources/desktop/js/grid.coffee:75
-#: ../resources/desktop/js/grid.coffee:79
-#: ../resources/desktop/js/grid.coffee:81
-#: ../resources/desktop/js/grid.coffee:663
-msgid "open terminal here"
-msgstr "开启终端"
+#: ../resources/desktop/js/grid.coffee:689
+msgid "Open terminal here"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:63
-#: ../resources/desktop/js/grid.coffee:76
-#: ../resources/desktop/js/grid.coffee:80
-#: ../resources/desktop/js/grid.coffee:82
-#: ../resources/desktop/js/grid.coffee:664
-#: ../resources/desktop/js/grid.coffee:665
-msgid "paste"
-msgstr "粘贴"
+#: ../resources/desktop/js/grid.coffee:690
+msgid "Paste"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:64
-msgid "wallpaper"
-msgstr "壁纸"
+#: ../resources/desktop/js/grid.coffee:692
+msgid "Personalize"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:65
-msgid "Desktop Settings"
-msgstr "桌面设置"
+#: ../resources/desktop/js/grid.coffee:693
+msgid "Display settings"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:26
-#: ../resources/desktop/js/desktop_item.coffee:132
-#: ../resources/desktop/js/desktop_item.coffee:126
-#: ../resources/desktop/js/desktop_item.coffee:329
-#: ../resources/desktop/js/grid.coffee:560
-#: ../resources/desktop/js/grid.coffee:597
-#: ../resources/desktop/js/grid.coffee:622
-#: ../resources/desktop/js/grid.coffee:604
+#: ../resources/desktop/js/desktop_item.coffee:440
+#: ../resources/desktop/js/desktop_item.coffee:603
+#: ../resources/desktop/js/desktop_item.coffee:913
+#: ../resources/desktop/js/desktop_item.coffee:993
+#: ../resources/desktop/js/desktop_item.coffee:1081
+#: ../resources/launcher/js/grid.coffee:58
 msgid "Open"
-msgstr "打开"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:27
-msgid "Open with"
-msgstr "使用其他程序打开"
+#: ../resources/desktop/js/desktop_item.coffee:442
+msgid "Cut"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:34
-#: ../resources/desktop/js/desktop_item.coffee:140
-#: ../resources/desktop/js/desktop_item.coffee:134
-#: ../resources/desktop/js/desktop_item.coffee:337
-#: ../resources/desktop/js/grid.coffee:562
-#: ../resources/desktop/js/grid.coffee:599
-#: ../resources/desktop/js/grid.coffee:624
-#: ../resources/desktop/js/grid.coffee:606
-msgid "cut"
-msgstr "剪贴"
+#: ../resources/desktop/js/desktop_item.coffee:443
+msgid "Copy"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:35
-#: ../resources/desktop/js/desktop_item.coffee:141
-#: ../resources/desktop/js/desktop_item.coffee:135
-#: ../resources/desktop/js/desktop_item.coffee:338
-#: ../resources/desktop/js/grid.coffee:563
-#: ../resources/desktop/js/grid.coffee:600
-#: ../resources/desktop/js/grid.coffee:625
-#: ../resources/desktop/js/grid.coffee:607
-msgid "copy"
-msgstr "复制"
-
-#: ../resources/desktop/js/desktop_item.coffee:37
-msgid "create link"
-msgstr "创建链接"
-
-#: ../resources/desktop/js/desktop_item.coffee:38
-#: ../resources/desktop/js/desktop_item.coffee:144
-#: ../resources/desktop/js/desktop_item.coffee:138
-#: ../resources/desktop/js/desktop_item.coffee:341
-#: ../resources/desktop/js/grid.coffee:565
-#: ../resources/desktop/js/grid.coffee:566
-#: ../resources/desktop/js/grid.coffee:602
-#: ../resources/desktop/js/grid.coffee:603
-#: ../resources/desktop/js/grid.coffee:627
-#: ../resources/desktop/js/grid.coffee:628
-#: ../resources/desktop/js/grid.coffee:609
-#: ../resources/desktop/js/grid.coffee:610
+#: ../resources/desktop/js/desktop_item.coffee:445
+#: ../resources/desktop/js/desktop_item.coffee:605
 msgid "Rename"
-msgstr "重命名"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:39
-msgid "copy to"
-msgstr "拷贝到"
-
-#: ../resources/desktop/js/desktop_item.coffee:40
-#: ../resources/desktop/js/desktop_item.coffee:46
-msgid "another desktop"
-msgstr "其他桌面"
-
-#: ../resources/desktop/js/desktop_item.coffee:41
-#: ../resources/desktop/js/desktop_item.coffee:47
-msgid "home"
-msgstr "家"
-
-#: ../resources/desktop/js/desktop_item.coffee:42
-#: ../resources/desktop/js/desktop_item.coffee:48
-msgid "desktop"
-msgstr "桌面"
-
-#: ../resources/desktop/js/desktop_item.coffee:45
-msgid "move to"
-msgstr "移动到"
-
-#: ../resources/desktop/js/desktop_item.coffee:51
-#: ../resources/desktop/js/desktop_item.coffee:157
-#: ../resources/desktop/js/desktop_item.coffee:151
-#: ../resources/desktop/js/desktop_item.coffee:354
-#: ../resources/desktop/js/grid.coffee:567
-#: ../resources/desktop/js/grid.coffee:604
-#: ../resources/desktop/js/grid.coffee:629
-#: ../resources/desktop/js/grid.coffee:611
+#: ../resources/desktop/js/desktop_item.coffee:446
+#: ../resources/desktop/js/desktop_item.coffee:606
+#: ../resources/desktop/js/desktop_item.coffee:866
 msgid "Delete"
-msgstr "删除"
+msgstr ""
 
-#: ../resources/desktop/js/desktop_item.coffee:53
-#: ../resources/desktop/js/desktop_item.coffee:159
-#: ../resources/desktop/js/desktop_item.coffee:153
-#: ../resources/desktop/js/desktop_item.coffee:356
-#: ../resources/desktop/js/grid.coffee:569
-#: ../resources/desktop/js/grid.coffee:606
-#: ../resources/desktop/js/grid.coffee:631
-#: ../resources/desktop/js/grid.coffee:613
+#: ../resources/desktop/js/desktop_item.coffee:448
+#: ../resources/desktop/js/desktop_item.coffee:915
+#: ../resources/desktop/js/desktop_item.coffee:995
 msgid "Properties"
-msgstr "属性"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:64
-#: ../resources/desktop/js/grid.coffee:77
-#: ../resources/desktop/js/grid.coffee:81
-#: ../resources/desktop/js/grid.coffee:82
-#: ../resources/desktop/js/grid.coffee:84
-#: ../resources/desktop/js/grid.coffee:667
-msgid "Personal"
-msgstr "个性化"
+#: ../resources/desktop/js/desktop_item.coffee:897
+msgid "Computer"
+msgstr ""
 
-#: ../resources/desktop/js/grid.coffee:65
-#: ../resources/desktop/js/grid.coffee:78
-#: ../resources/desktop/js/grid.coffee:82
-#: ../resources/desktop/js/grid.coffee:83
-#: ../resources/desktop/js/grid.coffee:85
-#: ../resources/desktop/js/grid.coffee:668
-msgid "Display Settings"
-msgstr "显示设置"
+#: ../resources/desktop/js/desktop_item.coffee:940
+msgid "Home"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:119 ../resources/dock/js/list.coffee:179
-#: ../resources/dock/js/list.coffee:183 ../resources/dock/js/list.coffee:185
-msgid "Run"
-msgstr "运行"
+#: ../resources/desktop/js/desktop_item.coffee:1022
+msgid "Trash Bin"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:176 ../resources/dock/js/list.coffee:185
-#: ../resources/dock/js/list.coffee:369 ../resources/dock/js/list.coffee:373
-#: ../resources/dock/js/list.coffee:375
-msgid "OpenNew"
-msgstr "新开"
+#: ../resources/desktop/js/desktop_item.coffee:1085
+#: ../resources/desktop/js/desktop_item.coffee:1087
+#: ../resources/desktop/js/desktop_item.coffee:1089
+msgid "Clean up"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:177 ../resources/dock/js/list.coffee:186
-#: ../resources/dock/js/list.coffee:372 ../resources/dock/js/list.coffee:376
-#: ../resources/dock/js/list.coffee:378
-msgid "DockMe"
-msgstr "驻留"
+#: ../resources/desktop/js/desktop_item.coffee:1085
+msgid "items"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:181 ../resources/dock/js/list.coffee:185
-#: ../resources/dock/js/list.coffee:187
-msgid "UnDock"
-msgstr "移除驻留"
+#: ../resources/desktop/js/desktop_item.coffee:1087
+msgid "item"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:370 ../resources/dock/js/list.coffee:374
-#: ../resources/dock/js/list.coffee:376
+#: ../resources/dock/js/clientgroup.coffee:158
+msgid "New instance"
+msgstr ""
+
+#: ../resources/dock/js/clientgroup.coffee:159
 msgid "Close"
-msgstr "关闭"
+msgstr ""
 
-#: ../resources/dock/js/list.coffee:373 ../resources/dock/js/list.coffee:377
-#: ../resources/dock/js/list.coffee:379
-msgid "PreView(Not yet)"
-msgstr "预览(未开启)"
+#: ../resources/dock/js/clientgroup.coffee:161
+msgid "Dock me"
+msgstr ""
 
-#: ../app/desktop/desktop.c:78 ../app/desktop/desktop.c:154
-msgid "NewFile"
-msgstr "新文件"
+#: ../resources/dock/js/launcher.coffee:22
+msgid "Run"
+msgstr ""
 
-#: ../app/desktop/desktop.c:89 ../app/desktop/desktop.c:165
-msgid "NewDirectory"
-msgstr "新目录"
+#: ../resources/dock/js/launcher.coffee:24
+msgid "UnDock"
+msgstr ""
 
-#: ../app/desktop/desktop.c:120
-msgid "RichDir"
+#: ../resources/launcher/js/main.coffee:55
+msgid "All"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:60
+msgid "Send to desktop"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:61
+msgid "Send to dock"
+msgstr ""
+
+#: ../app/desktop/desktop.c:121
+msgid "Rich directory"
+msgstr ""
+
+#: ../app/desktop/desktop.c:158
+msgid "New file"
+msgstr ""
+
+#: ../app/desktop/desktop.c:169
+msgid "New directory"
 msgstr ""

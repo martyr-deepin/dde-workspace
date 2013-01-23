@@ -1082,9 +1082,9 @@ class TrashVDir extends DesktopEntry
         menus.push([])
         count = DCore.DEntry.get_trash_count()
         if count > 1
-            menus.push([3, _("Clean up") + " #{count} " + _("files")])
+            menus.push([3, _("Clean up") + " #{count} " + _("items")])
         else if count == 1
-            menus.push([3, _("Clean up") + " #{count} " + _("file")])
+            menus.push([3, _("Clean up") + " #{count} " + _("item")])
         else
             menus.push([3, _("Clean up"), false])
         menus

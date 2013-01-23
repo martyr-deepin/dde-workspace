@@ -155,10 +155,10 @@ class ClientGroup extends AppItem
 
     do_buildmenu: ->
         [
-            [1, _("OpenNew")],
+            [1, _("New instance")],
             [2, _("Close")],
             [],
-            [3, _("DockMe")],
+            [3, _("Dock me")],
             #[4, _("PreView"), false]
         ]
 

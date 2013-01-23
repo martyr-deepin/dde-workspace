@@ -118,7 +118,9 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 JS_EXPORT_API
 gboolean desktop_create_rich_dir(ArrayContainer fs)
 {
-    GFile* dir = _get_useable_file(_(DEEPIN_RICH_DIR"RichDir"));
+    char* temp_name = g_build_filename(DEEPIN_RICH_DIR, _("Rich directory"), NULL);
+    GFile* dir = _get_useable_file(temp_name);
+    g_free(temp_name);
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir);
     return TRUE;
@@ -153,7 +155,7 @@ GFile* _get_useable_file(const char* basename)
 JS_EXPORT_API
 GFile* desktop_new_file()
 {
-    GFile* file = _get_useable_file(_("NewFile"));
+    GFile* file = _get_useable_file(_("New file"));
     GFileOutputStream* stream = 
         g_file_create(file, G_FILE_CREATE_NONE, NULL, NULL);
     if (stream)
@@ -164,7 +166,7 @@ GFile* desktop_new_file()
 JS_EXPORT_API
 GFile* desktop_new_directory()
 {
-    GFile* dir = _get_useable_file(_("NewDirectory"));
+    GFile* dir = _get_useable_file(_("New directory"));
     g_file_make_directory(dir, NULL, NULL);
     //TODO: detect create status..
     return dir;
