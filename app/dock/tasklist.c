@@ -53,9 +53,11 @@ Atom ATOM_ACTION_ADD;
 Atom ATOM_WINDOW_STATE_HIDDEN;
 Atom ATOM_WINDOW_MAXIMIZED_VERT;
 Atom ATOM_WINDOW_SKIP_TASKBAR;
+Atom ATOM_XEMBED_INFO;
 Display* _dsp = NULL;
 void _init_atoms()
 {
+    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
@@ -227,6 +229,18 @@ void start_monitor_launcher_window(Window w)
     gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
 }
 
+gboolean not_tray_icon(Window w)
+{
+    gulong items;
+    void* data = get_window_property(_dsp, w, ATOM_XEMBED_INFO, &items);
+    if (data == NULL) {
+        return TRUE;
+    } else {
+        g_free(data);
+        return FALSE;
+    }
+}
+
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
@@ -248,7 +262,11 @@ gboolean is_normal_window(Window w)
     gulong items;
 
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
-    if (data == NULL) return TRUE; //The sdl program like blender, wesnoth didn't set this ATOM
+
+    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
+
+    if (data == NULL && not_tray_icon(w)) return FALSE;
+
     for (int i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
