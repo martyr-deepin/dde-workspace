@@ -112,10 +112,10 @@ JSObjectRef dentry_get_flags (Entry* e)
 {
     JSObjectRef json = json_array_create();
     GFile* f;
-    if (G_IS_FILE(e)) {
-        f = e;
+    if (!G_IS_FILE(e)) {
         return json;
     }
+    f = e;
 
     GFileInfo* info = g_file_query_info (f,
             "standard::*,access::*", 
