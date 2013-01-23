@@ -59,6 +59,15 @@ Entry* dentry_get_desktop()
 }
 
 JS_EXPORT_API
+gboolean dentry_is_native(Entry* e)
+{
+   
+    if (!G_IS_FILE(e)) {
+    	return g_file_is_native (G_FILE(e));
+    }
+    return TRUE;
+}
+JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
