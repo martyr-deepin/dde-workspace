@@ -468,7 +468,7 @@ _move_files_async (GFile* src, gpointer data)
 
     _move_cancellable = _data->cancellable;
     dest = _data->dest_file;
-    if (!_cmp_files (src, dest)) //src==dest
+    if (!_cmp_files (src, dest)) //src==dest_dir
 	return FALSE;
     g_file_move (src, dest,
 	         G_FILE_COPY_NOFOLLOW_SYMLINKS,
@@ -485,8 +485,8 @@ _move_files_async (GFile* src, gpointer data)
 	FileOpsResponse* response;
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
 
-	g_warning ("after dialog shows up: response: %d", response->response_id);
 	if(response != NULL)
+        {
 	switch (response->response_id)
 	{
 	    case GTK_RESPONSE_CANCEL:
@@ -539,6 +539,7 @@ _move_files_async (GFile* src, gpointer data)
 	}
 
 	free_fileops_response (response);
+        }
 	g_error_free (error);
 	g_debug ("move_async: error handling end");
     }
@@ -605,6 +606,7 @@ _copy_files_async (GFile* src, gpointer data)
 	response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
 
 	if(response != NULL)
+	{
 	switch (response->response_id)
 	{
 	    case GTK_RESPONSE_CANCEL:
@@ -655,6 +657,7 @@ _copy_files_async (GFile* src, gpointer data)
 	}
 
 	free_fileops_response (response);
+	}
 	g_error_free (error);
     }
 #if 1
