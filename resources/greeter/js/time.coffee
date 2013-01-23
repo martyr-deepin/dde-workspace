@@ -35,8 +35,8 @@ get_min = ->
     return format_two_bit new Date().getMinutes()
 
 get_date_str = ->
-    month_list = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-    day_list = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+    month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
+    day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
 
     day = day_list[new Date().getDay()]
     mon = month_list[new Date().getMonth()]
@@ -50,8 +50,11 @@ date = $("#date")
 #time.innerText = get_time_str()
 hours = create_element("span", "", time)
 hours.innerText = get_hours()
-colon = create_element("span", "timecolon", time)
+
+#colon = create_element("span", "timecolon", time)
+colon = create_element("span", "", time)
 colon.innerText = ":"
+
 min = create_element("span", "", time)
 min.innerText = get_min()
 

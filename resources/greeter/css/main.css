@@ -94,7 +94,7 @@ body{
     -webkit-animation:linear-showtime 1.1s infinite linear;
 }
 
-#Detext{
+.Detext{
     cursor:default;
     padding:0;
     margin:0 5px 0 0;
