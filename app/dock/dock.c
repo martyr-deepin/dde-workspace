@@ -28,6 +28,7 @@
 #include "dock_config.h"
 #include "launcher.h"
 #include "region.h"
+#include "dbus.h"
 #include <cairo.h>
 
 #define DOCK_HEIGHT (60)
@@ -116,7 +117,7 @@ int main(int argc, char* argv[])
     /*gdk_window_set_debug_updates(TRUE);*/
 
 
-    dock_setup_dbus_service ();
+    dock_setup_dbus_service();
     gtk_main();
     return 0;
 }

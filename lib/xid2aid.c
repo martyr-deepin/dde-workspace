@@ -239,7 +239,6 @@ gboolean is_deepin_app_id(const char* app_id)
     if (deepin_icons == NULL) {
         deepin_icons = g_key_file_new();
         if (!g_key_file_load_from_file(deepin_icons, DEEPIN_ICONS_PATH, G_KEY_FILE_NONE, NULL)) {
-            printf("can't build deepin icons list\n");
             g_key_file_free(deepin_icons);
             deepin_icons = NULL;
             return FALSE;

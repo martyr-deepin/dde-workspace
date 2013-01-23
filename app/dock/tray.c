@@ -38,7 +38,7 @@ static void accumulate_na_width(GdkWindow* icon, gpointer width)
     _na_width += gdk_window_get_width(icon) + DEFAULT_INTERVAL;
     gdk_window_flush(icon);
     gint _na_base_x = _s_width - _na_width - DEFAULT_INTERVAL;
-    gdk_window_move_resize(icon, _na_base_x, _s_height - 23, width, DEFAULT_HEIGHT);
+    gdk_window_move_resize(icon, _na_base_x, _s_height - 23, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
 }
 
 static void update_notify_area_width()
@@ -59,27 +59,19 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
             _deepin_tray == NULL;
             _deepin_tray_width = 0;
         }
-        printf("remove try icon %p \n", data);
         update_notify_area_width();
     } else if (xev->type == ConfigureNotify) {
         int width = GPOINTER_TO_INT(g_hash_table_lookup(_icons, data));
-        printf("update2 %d to %d\n", GDK_WINDOW_XID(data), gdk_window_get_width(data));
         int new_width = ((XConfigureEvent*)xev)->width;
         if (width != new_width) {
             if (data == _deepin_tray) {
                 if (_deepin_tray_width != new_width) {
-                    printf("deepin tray icon mvoe resize:%d %d %d %d\n", 
-                            _s_width - new_width,
-                            _s_height - 23,
-                            new_width,
-                            DEFAULT_HEIGHT);
                     gdk_window_move_resize(_deepin_tray, _s_width - new_width - DEFAULT_INTERVAL, _s_height - 23, new_width, DEFAULT_HEIGHT);
                     _deepin_tray_width = new_width;
                     update_notify_area_width();
                 }
             } else {
-                g_hash_table_insert(_icons, data, gdk_window_get_width(data));
-                printf("update %d to %d\n", GDK_WINDOW_XID(data), GINT_TO_POINTER(width));
+                g_hash_table_insert(_icons, data, GINT_TO_POINTER(gdk_window_get_width(data)));
                 update_notify_area_width();
             }
         }
@@ -95,7 +87,6 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
         return;
     }
 
-    printf("%d add tray icon \n", child);
     gdk_window_reparent(icon, gtk_widget_get_window(container), 0, 870);
     gdk_window_set_events(icon, GDK_VISIBILITY_NOTIFY_MASK); //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
     gdk_window_add_filter(icon, monitor_remove, icon);
@@ -110,7 +101,6 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     get_wmclass(icon, &re_class, NULL);
     if (g_strcmp0(re_class, DEEPIN_TRAY_ICON) == 0) {
         if (_deepin_tray == NULL) {
-            printf("reClass%s\n", re_class);
             _deepin_tray = icon;
             _deepin_tray_width = gdk_window_get_width(icon);
         }
