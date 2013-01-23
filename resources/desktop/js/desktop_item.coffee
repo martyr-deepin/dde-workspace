@@ -623,6 +623,7 @@ class RichDir extends DesktopEntry
             if @show_pop == true
                 @hide_pop_block()
                 if list.length then DCore.DEntry.move(list, g_desktop_entry)
+            discard_position(DCore.DEntry.get_id(entry))
             DCore.DEntry.delete_files([@entry], false)
         else
             if @show_pop == true
@@ -681,7 +682,7 @@ class RichDir extends DesktopEntry
             i.parentElement.removeChild(i)
 
         for i in @div_pop.getElementsByTagName("div")
-            if i.id == "pop_downarrow" or i.id == "pop_uparrow"
+            if i.id.substr(0, 10) == "pop_arrow_"
                 i.parentElement.removeChild(i)
         @fill_pop_block()
 
@@ -757,25 +758,40 @@ class RichDir extends DesktopEntry
 
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
-        arrow = document.createElement("div")
+        arrow_outter = document.createElement("div")
+        arrow_mid = document.createElement("div")
+        arrow_inner = document.createElement("div")
         if p < n
-            @div_pop.style.left = "#{s_offset_x}px"
-            arrow.style.left = "#{p - 4}px"
+            @div_pop.style.left      = "#{s_offset_x}px"
+            arrow_outter.style.left  = "#{p - 8}px"
+            arrow_mid.style.left     = "#{p - 8}px"
+            arrow_inner.style.left   = "#{p - 7}px"
         else if p + n > s_width
-            @div_pop.style.left = "#{s_width - 2 * n}px"
-            arrow.style.right = "#{s_width - p - 10}px"
+            @div_pop.style.left      = "#{s_width - 2 * n}px"
+            arrow_outter.style.right = "#{s_width - p - 14}px"
+            arrow_mid.style.right    = "#{s_width - p - 14}px"
+            arrow_inner.style.right  = "#{s_width - p - 13}px"
         else
-            @div_pop.style.left = "#{p - n}px"
-            arrow.style.left = "#{n - 2}px"
+            @div_pop.style.left      = "#{p - n}px"
+            arrow_outter.style.left  = "#{n - 3}px"
+            arrow_mid.style.left     = "#{n - 3}px"
+            arrow_inner.style.left   = "#{n - 2}px"
 
         if arrow_pos_at_bottom == true
-            ele_ul.className = "pop_grid_ul_up"
-            arrow.setAttribute("id", "pop_downarrow")
-            @div_pop.appendChild(arrow)
+            arrow_outter.setAttribute("id", "pop_arrow_up_outter")
+            arrow_mid.setAttribute("id", "pop_arrow_up_mid")
+            arrow_inner.setAttribute("id", "pop_arrow_up_inner")
+            @div_pop.appendChild(arrow_outter)
+            @div_pop.appendChild(arrow_mid)
+            @div_pop.appendChild(arrow_inner)
         else
-            ele_ul.className = "pop_grid_ul_down"
-            arrow.setAttribute("id", "pop_uparrow")
-            @div_pop.insertBefore(arrow, @div_pop.firstChild)
+            arrow_outter.setAttribute("id", "pop_arrow_down_outter")
+            arrow_mid.setAttribute("id", "pop_arrow_down_mid")
+            arrow_inner.setAttribute("id", "pop_arrow_down_inner")
+            @div_pop.insertBefore(arrow_outter, ele_ul)
+            @div_pop.insertBefore(arrow_mid, ele_ul)
+            @div_pop.insertBefore(arrow_inner, ele_ul)
+
 
 
     hide_pop_block : =>

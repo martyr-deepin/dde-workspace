@@ -352,7 +352,7 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        if evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) != _DND_DESKTOP_MARK_
+        if not _IS_DND_INTERLNAL_(evt)
             tmp = []
             for file in evt.dataTransfer.files
                 tmp.push(f) if (f = DCore.DEntry.create_by_path(file.path))?
