@@ -59,6 +59,15 @@ Entry* dentry_get_desktop()
 }
 
 JS_EXPORT_API
+gboolean dentry_is_native(Entry* e)
+{
+   
+    if (!G_IS_FILE(e)) {
+    	return g_file_is_native (G_FILE(e));
+    }
+    return TRUE;
+}
+JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
@@ -191,9 +200,14 @@ char* dentry_get_icon(Entry* e)
 JS_EXPORT_API
 char* dentry_get_id(Entry* e)
 {
-    char* path = dentry_get_path(e);
-    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, path, strlen(path));
-    g_free(path);
+    char* uri = NULL;
+    TEST_GFILE(e, f)
+        uri = g_file_get_uri(f);
+    TEST_GAPP(e, app)
+        uri = g_strdup(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
+    TEST_END
+    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, uri, strlen(uri));
+    g_free(uri);
     return id;
 }
 
