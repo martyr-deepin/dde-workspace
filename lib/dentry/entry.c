@@ -87,6 +87,7 @@ double dentry_get_type(Entry* e)
 			g_free(target);
 			double retval = dentry_get_type(target_gfile);
 			g_object_unref(target_gfile);
+			return retval;
 		    }
 		    return 4;
 		}
