@@ -34,7 +34,7 @@ FileOpsResponse*
 fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
 					GFile* file, GtkWindow* parent)
 {
-    FileOpsResponse* ret;
+    FileOpsResponse* ret = NULL;
     switch (error->code)
     {
 	case G_IO_ERROR_PERMISSION_DENIED: 
@@ -155,7 +155,24 @@ static FileOpsResponse*
 _show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message, 
 			      GFile* file, GtkWindow* parent)
 {
-    
+    GtkWidget* dialog;
+    dialog = gtk_message_dialog_new (NULL, 
+				     GTK_DIALOG_MODAL,
+			             GTK_MESSAGE_WARNING, 
+				     GTK_BUTTONS_OK,
+			             NULL);
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+    char* primary_text = g_strdup_printf (_("Error while %s files"), fileops_str);
+    char* secondary_text = g_strdup (error_message);
+
+    g_object_set (dialog,
+	          "text", primary_text,
+		  "secondary-text", secondary_text,
+		  NULL);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    g_free(secondary_text);
+    g_free(primary_text);
     return NULL;
 }
 /*

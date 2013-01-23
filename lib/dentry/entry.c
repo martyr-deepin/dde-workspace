@@ -87,6 +87,7 @@ double dentry_get_type(Entry* e)
 			g_free(target);
 			double retval = dentry_get_type(target_gfile);
 			g_object_unref(target_gfile);
+			return retval;
 		    }
 		    return 4;
 		}
@@ -112,10 +113,10 @@ JSObjectRef dentry_get_flags (Entry* e)
 {
     JSObjectRef json = json_array_create();
     GFile* f;
-    if (G_IS_FILE(e)) {
-        f = e;
+    if (!G_IS_FILE(e)) {
         return json;
     }
+    f = e;
 
     GFileInfo* info = g_file_query_info (f,
             "standard::*,access::*", 
