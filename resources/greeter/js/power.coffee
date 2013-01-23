@@ -16,32 +16,93 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-    
+
+upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
+consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
+
 get_power_info = ->
     power_info = {}
 
-    if DCore.Greeter.get_can_suspend()
+    if upower_obj.SuspendAllowed_sync()
         power_info["suspend"] = suspend_cb
-    if DCore.Greeter.get_can_hibernate()
+    if upower_obj.HibernateAllowed_sync()
         power_info["hibernate"] = hibernate_cb
-    if DCore.Greeter.get_can_restart()
+    if consolekit_obj.CanRestart_sync()
         power_info["restart"] = restart_cb
-    if DCore.Greeter.get_can_shutdown()
+    if consolekit_obj.CanStop_sync()
         power_info["shutdown"] = shutdown_cb
 
     return power_info
 
+#get_power_info = ->
+#    power_info = {}
+#
+#    if DCore.Greeter.get_can_suspend()
+#        power_info["suspend"] = suspend_cb
+#    if DCore.Greeter.get_can_hibernate()
+#        power_info["hibernate"] = hibernate_cb
+#    if DCore.Greeter.get_can_restart()
+#        power_info["restart"] = restart_cb
+#    if DCore.Greeter.get_can_shutdown()
+#        power_info["shutdown"] = shutdown_cb
+#
+#    return power_info
+
 suspend_cb = ->
-    DCore.Greeter.run_suspend()
+    if not upower_obj.SuspendAllowed_sync()
+        echo "suspend not allowed"
+        return
+
+    try
+        echo "suspend"
+        upower_obj.Suspend_sync()
+    catch error
+        echo "suspend failed"
+        echo error
+
+    #DCore.Greeter.run_suspend()
 
 hibernate_cb = ->
-    DCore.Greeter.run_hibernate()
+    if not upower_obj.HibernateAllowed_sync()
+        echo "hibernate not allowed"
+        return 
+
+    try
+        echo "hibernate"
+        upower_obj.Hibernate_sync()
+    catch error
+        echo "hibernate failed"
+        echo error
+
+    #DCore.Greeter.run_hibernate()
 
 restart_cb = ->
-    DCore.Greeter.run_restart()
+    if not consolekit_obj.CanRestart_sync()
+        echo "restart not allowed"
+        return 
+
+    try
+        echo "restart"
+        consolekit_obj.Restart_sync()
+    catch error
+        echo "restart failed"
+        echo error
+
+    #DCore.Greeter.run_restart()
 
 shutdown_cb = ->
-    DCore.Greeter.run_shutdown()
+    if not consolekit_obj.CanStop_sync()
+        echo "shutdown not allowed"
+        return 
+
+    try
+        echo "shutdown"
+        consolekit_obj.Stop_sync()
+    catch error
+        echo "shutdown failed"
+        echo error
+
+    #DCore.Greeter.run_shutdown()
 
 power_dict = get_power_info()
 for key, value of power_dict
