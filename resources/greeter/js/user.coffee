@@ -137,8 +137,9 @@ class UserInfo extends Widget
             if @id != "guest"
                 session = DCore.Greeter.get_user_session(@id)
                 if session?
-                    de_menu.set_current(session)
-                    DCore.Greeter.set_selected_session(session)
+                    if session != "nonexists"
+                        de_menu.set_current(session)
+                        DCore.Greeter.set_selected_session(session)
 
             DCore.Greeter.start_authentication(@id)
 
