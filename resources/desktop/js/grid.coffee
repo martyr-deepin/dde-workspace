@@ -102,16 +102,20 @@ load_position = (id) ->
 
 
 save_position = (id, pos) ->
+    assert("string" == typeof(id), "[save_position]accept not string")
     localStorage.setObject("id:" + id, pos)
     return
 
 
 discard_position = (id) ->
+    assert("string" == typeof(id), "[discard_position]accept not string")
     localStorage.removeItem("id:" + id)
     return
 
 
 update_position = (old_id, new_id) ->
+    assert("string" == typeof(old_id), "[update_position]accept not string old_id")
+    assert("string" == typeof(new_id), "[update_position]accept not string new_id")
     o_p = load_position(old_id)
     discard_position(old_id)
     save_position(new_id, o_p)
@@ -202,14 +206,14 @@ clear_occupy = (info) ->
 
 
 set_occupy = (info) ->
-    assert(info!=null, "set_occupy")
+    assert(info!=null, "[set_occupy] accept null")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
 
 
 detect_occupy = (info) ->
-    assert(info!=null, "detect_occupy")
+    assert(info!=null, "[detect_occupy]accept null")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
@@ -642,6 +646,7 @@ is_selected_multiple_items = ->
 
 
 is_item_been_selected = (id) ->
+    assert("string" == typeof(id), "[is_item_been_selected]accept not string")
     selected_item.indexOf(id) > -1
 
 
