@@ -3,7 +3,12 @@
 base_dir = "../resources/"
 scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
 
-other_files = ["../app/desktop/desktop.c", "../app/lock/lock.c", "../app/greeter/greeter.c"]
+other_files = [
+"../app/desktop/*.c",
+"../app/lock/*.c",
+"../app/greeter/*.c",
+"../lib/dentry/*.c"
+]
 
 import glob
 import os
@@ -12,12 +17,14 @@ files = []
 for i in scan_dir:
     tmp = glob.glob(base_dir + i)
     files = files + tmp
-
-
-
-
 cmd= "xgettext -L python -j -o zh_CN.po " + " ".join(files)
 os.system(cmd)
 
+
+
+files = []
+for i in other_files:
+    tmp = glob.glob(base_dir + i)
+    files = files + tmp
 cmd = "xgettext -k_ -j -o zh_CN.po " + " ".join(other_files)
 os.system(cmd)

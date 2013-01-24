@@ -17,7 +17,7 @@
       <description>Is 24 Hour Display</description>
     </key>
     <key type="b" name="is-auto-set">
-      <default>true</default>
+      <default>false</default>
       <summary>Is Auto Set DateTime</summary>
       <description>Is Auto Set DateTime</description>
     </key>
