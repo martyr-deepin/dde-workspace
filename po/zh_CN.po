@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-24 16:22+0800\n"
+"POT-Creation-Date: 2013-01-24 17:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -195,6 +195,7 @@ msgstr "显示设置"
 #: ../resources/desktop/js/desktop_item.coffee:918
 #: ../resources/desktop/js/desktop_item.coffee:998
 #: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:604
 msgid "Open"
 msgstr "打开"
 
@@ -216,6 +217,7 @@ msgstr "复制"
 #: ../resources/desktop/js/desktop_item.coffee:614
 #: ../resources/desktop/js/desktop_item.coffee:441
 #: ../resources/desktop/js/desktop_item.coffee:601
+#: ../resources/desktop/js/desktop_item.coffee:606
 msgid "Rename"
 msgstr "重命名"
 
@@ -229,6 +231,7 @@ msgstr "重命名"
 #: ../resources/desktop/js/desktop_item.coffee:442
 #: ../resources/desktop/js/desktop_item.coffee:602
 #: ../resources/desktop/js/desktop_item.coffee:871
+#: ../resources/desktop/js/desktop_item.coffee:607
 msgid "Delete"
 msgstr "删除"
 
