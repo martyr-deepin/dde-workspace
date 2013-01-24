@@ -301,150 +301,150 @@ msgstr "新建目录"
 #, c-format
 msgid ""
 "The name \"%s\" is already used in thisfolder. Please use a different name."
-msgstr ""
+msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
 
 #: ../lib/dentry/entry.c:338
 msgid "The Item could not be renamed"
-msgstr ""
+msgstr "该项无法重命名"
 
 #: ../lib/dentry/fileops.c:488
 msgid "move"
-msgstr ""
+msgstr "移动"
 
 #: ../lib/dentry/fileops.c:608
 msgid "copy"
-msgstr ""
+msgstr "复制"
 
 #: ../lib/dentry/fileops_delete.c:19
 msgid "Delete File"
-msgstr ""
+msgstr "删除文件"
 
 #: ../lib/dentry/fileops_delete.c:22
 msgid "Are you sure you want to permanently delete the files?"
-msgstr ""
+msgstr "您确定要永久删除文件吗？"
 
 #: ../lib/dentry/fileops_delete.c:23
 msgid "If you delete an item, it will be permanently lost"
-msgstr ""
+msgstr "如果您要删除某项，它将永久丢失"
 
 #: ../lib/dentry/fileops_error_dialog.c:60
 msgid "File conflict"
-msgstr ""
+msgstr "文件冲突"
 
 #: ../lib/dentry/fileops_error_dialog.c:104
 msgid "_Select a new name for the destination"
-msgstr ""
+msgstr "为目标选择新的名称(_S)"
 
 #: ../lib/dentry/fileops_error_dialog.c:115
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: ../lib/dentry/fileops_error_dialog.c:124
 msgid "Apply this action to all files"
-msgstr ""
+msgstr "将该动作应用到全部文件"
 
 #: ../lib/dentry/fileops_error_dialog.c:131
 msgid "_Skip"
-msgstr ""
+msgstr "跳过(_S)"
 
 #: ../lib/dentry/fileops_error_dialog.c:134
 msgid "Re_name"
-msgstr ""
+msgstr "重命名(_N)"
 
 #: ../lib/dentry/fileops_error_dialog.c:139
 msgid "Replace"
-msgstr ""
+msgstr "替换"
 
 #: ../lib/dentry/fileops_error_dialog.c:210
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr ""
+msgstr "合并文件夹“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:212
 msgid ""
 "Merging will ask for confirmation before replacing any files in the folder "
 "that conflict with the files being copied."
-msgstr ""
+msgstr "合并将会在替换冲突文件时请求确认。"
 
 #: ../lib/dentry/fileops_error_dialog.c:216
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中有相同名称的一个较旧文件夹已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中有相同名称的一个较新文件夹已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中有相同名称的一个文件夹已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:230
 msgid "Replacing it will remove all files in thefolder."
-msgstr ""
+msgstr "替换将移除文件夹中的所有文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr ""
+msgstr "替换文件夹“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:234
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中已存在相同文件名的文件夹。"
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr ""
+msgstr "替换文件“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:241
 msgid "Replacing it will overwrite its content."
-msgstr ""
+msgstr "替换将覆盖它的内容。"
 
 #: ../lib/dentry/fileops_error_dialog.c:243
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中已存在较旧的相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:247
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中已存在更新的相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr ""
+msgstr "在“%s”中已存在相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:322
 msgid "Original file"
-msgstr ""
+msgstr "原始文件"
 
 #: ../lib/dentry/fileops_error_dialog.c:323
 #: ../lib/dentry/fileops_error_dialog.c:351
 msgid "Size:"
-msgstr ""
+msgstr "大小："
 
 #: ../lib/dentry/fileops_error_dialog.c:327
 #: ../lib/dentry/fileops_error_dialog.c:355
 msgid "Type:"
-msgstr ""
+msgstr "类型："
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 #: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Last modified:"
-msgstr ""
+msgstr "最近更改："
 
 #: ../lib/dentry/fileops_error_dialog.c:350
 msgid "Replace with"
-msgstr ""
+msgstr "替换为"
 
 #: ../lib/dentry/fileops_error_dialog.c:376
 msgid "Merge"
-msgstr ""
+msgstr "合并"
 
 #: ../lib/dentry/fileops_error_reporting.c:83
 #: ../lib/dentry/fileops_error_reporting.c:165
@@ -454,16 +454,16 @@ msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:50
 msgid "Empty Trash"
-msgstr ""
+msgstr "清空回收站"
 
 #: ../lib/dentry/fileops_trash.c:53
 msgid "Empty all items from Trash?"
-msgstr ""
+msgstr "清空回收站中的全部项目吗？"
 
 #: ../lib/dentry/fileops_trash.c:54
 msgid "All items in the Trash will be permanently deleted."
-msgstr ""
+msgstr "回收站中的全部条目将被永久删除。"
 
 #: ../lib/dentry/fileops_trash.c:57
 msgid "Empty _Trash"
-msgstr ""
+msgstr "清空回收站(_T)"
