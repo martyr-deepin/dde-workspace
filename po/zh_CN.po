@@ -34,6 +34,22 @@ msgstr ""
 msgid "Welcome"
 msgstr ""
 
+#: ../resources/greeter/js/power.coffee:112
+msgid "suspend"
+msgstr "挂起"
+
+#: ../resources/greeter/js/power.coffee:114
+msgid "hibernate"
+msgstr "休眠"
+
+#: ../resources/greeter/js/power.coffee:116
+msgid "shutdown"
+msgstr "关机"
+
+#: ../resources/greeter/js/power.coffee:118
+msgid "restart"
+msgstr "重启"
+
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jan"
 msgstr ""
