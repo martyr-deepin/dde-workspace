@@ -17,6 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../app/greeter/greeter.c:395
+msgid "Invalid Username/Password"
+msgstr "错误的用户名或密码"
+
+#: ../app/greeter/lock.c:79
+msgid "Invalid Password"
+msgstr "密码错误"
+
 #: ../resources/greeter/js/user.coffee:63
 msgid "Log In"
 msgstr ""
@@ -193,7 +201,7 @@ msgid "Home"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:1022
-msgid "Trash Bin"
+msgid "Trash"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:1085

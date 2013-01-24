@@ -18,8 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 $("#Version").innerHTML = "
-            <span> #{_("Deepin Linux")}<sup>#{_("Alpha")}</sup></span> 
-            <span> #{_("Professional Edition")}</span>
+            <span> #{_("Linux Deepin")}<sup>#{_("Alpha")}</sup></span> 
             "
 
 detext = create_element("div", "Detext", $("#bottom_buttons"))

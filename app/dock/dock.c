@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
 
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
-    set_desktop_env_name("GNOME");
+    set_desktop_env_name("Deepin");
     set_default_theme("Deepin");
 
     container = create_web_container(FALSE, TRUE);

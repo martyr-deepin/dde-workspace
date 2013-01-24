@@ -221,16 +221,16 @@ else
     users = DCore.Greeter.get_users()
     echo users
     for user in users
-        try
-            user_image = DCore.Greeter.get_user_image(user)
-        catch error
-            user_image = "images/guest.jpg"
-        if not user_image? or user_image == "nonexists"
-            user_image = "images/guest.jpg"
-
-        u = new UserInfo(user, user, user_image) 
-        roundabout.appendChild(u.li)
         if user == DCore.Greeter.get_default_user()
+            try
+                user_image = DCore.Greeter.get_user_image(user)
+            catch error
+                user_image = "images/guest.jpg"
+            if not user_image? or user_image == "nonexists"
+                user_image = "images/guest.jpg"
+    
+            u = new UserInfo(user, user, user_image) 
+            roundabout.appendChild(u.li)
             u.focus()
 
     if DCore.Greeter.is_support_guest()
@@ -238,6 +238,20 @@ else
         roundabout.appendChild(u.li)
         if DCore.Greeter.is_guest_default()
             u.focus()
+
+    for user in users
+        if user == DCore.Greeter.get_default_user()
+            echo "already append default user"
+        else
+            try
+                user_image = DCore.Greeter.get_user_image(user)
+            catch error
+                user_image = "images/guest.jpg"
+            if not user_image? or user_image == "nonexists"
+                user_image = "images/guest.jpg"
+    
+            u = new UserInfo(user, user, user_image) 
+            roundabout.appendChild(u.li)
 
 DCore.signal_connect("message", (msg) ->
     echo msg.error

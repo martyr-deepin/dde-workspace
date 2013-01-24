@@ -118,7 +118,8 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 JS_EXPORT_API
 gboolean desktop_create_rich_dir(ArrayContainer fs)
 {
-    char* temp_name = g_build_filename(DEEPIN_RICH_DIR, _("Rich directory"), NULL);
+    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("Rich directory"), NULL);
+    g_debug ("create_rich_dir: %s", temp_name);
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);
     g_file_make_directory(dir, NULL, NULL);
@@ -214,7 +215,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
     set_default_theme("Deepin");
-    set_desktop_env_name("GNOME");
+    set_desktop_env_name("Deepin");
 
     container = create_web_container(FALSE, FALSE);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
@@ -231,29 +232,42 @@ int main(int argc, char* argv[])
     g_signal_connect(webview, "focus-out-event", G_CALLBACK(send_lost_focus), NULL);
     g_signal_connect(webview, "focus-in-event", G_CALLBACK(send_get_focus), NULL);
 
-    GdkWindow* get_background_window();
-    GdkWindow* background = get_background_window();
-    /*gdk_window_restack(background, gtk_widget_get_window(container), FALSE);*/
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     gtk_widget_set_size_request(container, gdk_screen_get_width(screen),
             gdk_screen_get_height(screen));
 
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), container);
-    g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
 
     set_wmspec_desktop_hint(gtk_widget_get_window(container));
 
     GdkWindow* fw = webkit_web_view_get_forward_window(webview);
     gdk_window_stick(fw);
 
-    install_monitor();
-
     gtk_widget_show_all(container);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    watch_workarea_changes(container);
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
+}
+
+GdkWindow* get_background_window();
+
+static gboolean __init__ = FALSE;
+
+JS_EXPORT_API
+void desktop_emit_webview_ok()
+{
+    if (!__init__) {
+        __init__ = TRUE;
+        install_monitor();
+        watch_workarea_changes(container);
+
+        GdkWindow* background = get_background_window();
+        gdk_window_restack(background, gtk_widget_get_window(container), FALSE);
+
+        GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
+        g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
+    }
 }

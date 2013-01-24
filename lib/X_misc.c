@@ -252,7 +252,7 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
     int err = gdk_error_trap_pop();
 
     if (err != Success || result != Success) {
-        g_warning("get_window_property error... %d %d\n", (int)w, (int)pro);
+        g_warning("get_window_property error... %d %s\n", (int)w, gdk_x11_get_xatom_name(pro));
         return NULL;
     } else {
         return p_data;
