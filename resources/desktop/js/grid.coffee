@@ -366,9 +366,9 @@ init_grid_drop = ->
                     else
                         tmp_copy.push(f)
             if tmp_move.length
-                DCore.DEntry.move(tmp, g_desktop_entry)
+                DCore.DEntry.move(tmp_move, g_desktop_entry)
             if tmp_copy.length
-                DCore.DEntry.copy(tmp, g_desktop_entry)
+                DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -424,7 +424,7 @@ item_dragstart_handler = (widget, evt) ->
             if not w? or w.modifiable == false then continue
             path = w.get_path()
             if path.length > 0
-                all_selected_items += "file://" + w.get_path() + "\n"
+                all_selected_items += path + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         _SET_DND_INTERNAL_FLAG_(evt)
@@ -667,8 +667,7 @@ delete_selected_items = (real_delete) ->
 show_selected_items_Properties = ->
     tmp = []
     for i in selected_item
-        w = Widget.look_up(i)
-        if w? then tmp.push("file://#{w.get_path()}")
+        if (w = Widget.look_up(i))? then tmp.push(w.get_path())
 
     #XXX: we get an error here when call the nautilus DBus interface
     try

@@ -62,7 +62,7 @@ JS_EXPORT_API
 gboolean dentry_is_native(Entry* e)
 {
 
-    if (!G_IS_FILE(e)) {
+    if (G_IS_FILE(e)) {
         return g_file_is_native (G_FILE(e));
     }
     return TRUE;
