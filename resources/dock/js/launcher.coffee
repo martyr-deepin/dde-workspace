@@ -21,6 +21,6 @@ class Launcher extends AppItem
         [
             [1, _("Run")],
             [],
-            [2, _("UnDock")],
+            [2, _("Undock")],
         ]
 
