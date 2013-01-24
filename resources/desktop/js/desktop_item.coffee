@@ -85,7 +85,7 @@ class Item extends Widget
 
 
     get_path : ->
-        DCore.DEntry.get_path(@entry)
+        DCore.DEntry.get_uri(@entry)
 
 
     get_mtime : ->
@@ -706,7 +706,7 @@ class RichDir extends DesktopEntry
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 if e?
-                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(e))}")
+                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_uri(e))}")
                     evt.dataTransfer.effectAllowed = "moveCopy"
                 else
                     evt.dataTransfer.effectAllowed = "none"
@@ -1007,7 +1007,7 @@ class HomeVDir extends DesktopEntry
             when 2
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
+                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{DCore.DEntry.get_uri(@entry)}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
