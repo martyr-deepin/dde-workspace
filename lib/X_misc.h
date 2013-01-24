@@ -45,6 +45,8 @@ void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 
 void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items);
 
+gboolean has_atom_property(Display* dsp, Window w, Atom prop);
+
 #define X_FETCH_32(data, i) *((gulong*)data + i)
 #define X_FETCH_16(data, i) *((short*)data + i)
 #define X_FETCH_8(data, i) *((char*)data + i)

@@ -216,8 +216,7 @@ class String(Params):
             r = jsvalue_from_cstr(context, c_return);
             g_free(c_return);
         } else {
-            _has_fatal_error = TRUE;
-            js_fill_exception(context, exception, "the return string is NULL");
+            r = JSValueMakeNull(context);
         }
 """
 

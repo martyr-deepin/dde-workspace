@@ -116,9 +116,9 @@ discard_position = (id) ->
 update_position = (old_id, new_id) ->
     assert("string" == typeof(old_id), "[update_position]accept not string old_id")
     assert("string" == typeof(new_id), "[update_position]accept not string new_id")
-    o_p = load_position(old_id)
-    discard_position(old_id)
-    save_position(new_id, o_p)
+    if (o_p = load_position(old_id))?
+        discard_position(old_id)
+        save_position(new_id, o_p)
     return
 
 
@@ -366,9 +366,9 @@ init_grid_drop = ->
                     else
                         tmp_copy.push(f)
             if tmp_move.length
-                DCore.DEntry.move(tmp, g_desktop_entry)
+                DCore.DEntry.move(tmp_move, g_desktop_entry)
             if tmp_copy.length
-                DCore.DEntry.copy(tmp, g_desktop_entry)
+                DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -424,7 +424,7 @@ item_dragstart_handler = (widget, evt) ->
             if not w? or w.modifiable == false then continue
             path = w.get_path()
             if path.length > 0
-                all_selected_items += "file://" + encodeURI(w.get_path()) + "\n"
+                all_selected_items += path + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         _SET_DND_INTERNAL_FLAG_(evt)
@@ -452,7 +452,7 @@ item_dragend_handler = (w, evt) ->
         ordered_list = new Array()
         distance_list = new Array()
         for i in selected_item
-            pos = load_position(i)
+            if not (pos = load_position(i))? then continue
             dis = calc_pos_to_pos_distance(new_pos, pos)
             for j in [0 ... distance_list.length]
                 if dis < distance_list[j]
@@ -580,7 +580,8 @@ update_selected_item_drag_image = ->
     bottom_right = {x : 0, y : 0}
 
     for i in selected_item
-        pos = load_position(i)
+        if not (pos = load_position(i))? then continue
+
         if top_left.x > pos.x then top_left.x = pos.x
         if bottom_right.x < pos.x then bottom_right.x = pos.x
 
@@ -667,8 +668,7 @@ delete_selected_items = (real_delete) ->
 show_selected_items_Properties = ->
     tmp = []
     for i in selected_item
-        w = Widget.look_up(i)
-        if w? then tmp.push("file://#{encodeURI(w.get_path())}")
+        if (w = Widget.look_up(i))? then tmp.push(w.get_path())
 
     #XXX: we get an error here when call the nautilus DBus interface
     try

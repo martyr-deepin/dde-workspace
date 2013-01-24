@@ -37,7 +37,7 @@ void desktop_open_trash_can()
 
 Entry* desktop_get_home_entry()
 {
-    return g_file_new_for_path(g_get_home_dir());
+    return g_file_new_for_commandline_arg(g_get_home_dir());
 }
 
 Entry* desktop_get_computer_entry()

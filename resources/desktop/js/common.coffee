@@ -47,9 +47,9 @@ _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
 
 
 # icon name for file attributes
-_FAI_READ_ONLY_  = "emblem-readonly.png"
-_FAT_SYM_LINK_   = "emblem-symbolic-link.png"
-_FAT_UNREADABLE_ = "emblem-unreadable.png"
+_FAI_READ_ONLY_  = "emblem-readonly"
+_FAT_SYM_LINK_   = "emblem-symbolic-link"
+_FAT_UNREADABLE_ = "emblem-unreadable"
 
 
 # store the entry for desktop

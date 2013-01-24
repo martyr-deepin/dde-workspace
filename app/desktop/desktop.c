@@ -30,6 +30,7 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 
+GdkWindow* get_background_window();
 void install_monitor();
 static
 GFile* _get_useable_file(const char* basename);
@@ -247,12 +248,12 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
+    get_background_window();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
 }
 
-GdkWindow* get_background_window();
 
 static gboolean __init__ = FALSE;
 
