@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-24 15:24+0800\n"
+"POT-Creation-Date: 2013-01-24 16:22+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,51 +121,61 @@ msgstr "会话"
 
 #: ../resources/desktop/js/grid.coffee:679
 #: ../resources/desktop/js/grid.coffee:692
+#: ../resources/desktop/js/grid.coffee:691
 msgid "Sort by"
 msgstr "排序方式"
 
 #: ../resources/desktop/js/grid.coffee:680
 #: ../resources/desktop/js/grid.coffee:693
+#: ../resources/desktop/js/grid.coffee:692
 msgid "Name"
 msgstr "名称"
 
 #: ../resources/desktop/js/grid.coffee:681
 #: ../resources/desktop/js/grid.coffee:694
+#: ../resources/desktop/js/grid.coffee:693
 msgid "Last modified time"
 msgstr "最近修改时间"
 
 #: ../resources/desktop/js/grid.coffee:684
 #: ../resources/desktop/js/grid.coffee:697
+#: ../resources/desktop/js/grid.coffee:696
 msgid "New"
 msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:685
 #: ../resources/desktop/js/grid.coffee:698
+#: ../resources/desktop/js/grid.coffee:697
 msgid "Folder"
 msgstr "文件夹"
 
 #: ../resources/desktop/js/grid.coffee:686
 #: ../resources/desktop/js/grid.coffee:699
+#: ../resources/desktop/js/grid.coffee:698
 msgid "Text document"
 msgstr "文本文档"
 
 #: ../resources/desktop/js/grid.coffee:689
 #: ../resources/desktop/js/grid.coffee:702
+#: ../resources/desktop/js/grid.coffee:701
 msgid "Open terminal here"
 msgstr "在此打开终端"
 
 #: ../resources/desktop/js/grid.coffee:690
 #: ../resources/desktop/js/grid.coffee:703
+#: ../resources/desktop/js/grid.coffee:702
 msgid "Paste"
 msgstr "粘贴"
 
 #: ../resources/desktop/js/grid.coffee:692
 #: ../resources/desktop/js/grid.coffee:705
+#: ../resources/desktop/js/grid.coffee:704
 msgid "Personalize"
 msgstr "个性化"
 
 #: ../resources/desktop/js/grid.coffee:693
 #: ../resources/desktop/js/grid.coffee:706
+#: ../resources/desktop/js/grid.coffee:705
 msgid "Display settings"
 msgstr "显示设置"
 
@@ -180,16 +190,23 @@ msgstr "显示设置"
 #: ../resources/desktop/js/desktop_item.coffee:924
 #: ../resources/desktop/js/desktop_item.coffee:1004
 #: ../resources/desktop/js/desktop_item.coffee:1092
+#: ../resources/desktop/js/desktop_item.coffee:436
+#: ../resources/desktop/js/desktop_item.coffee:599
+#: ../resources/desktop/js/desktop_item.coffee:918
+#: ../resources/desktop/js/desktop_item.coffee:998
+#: ../resources/desktop/js/desktop_item.coffee:1086
 msgid "Open"
 msgstr "打开"
 
 #: ../resources/desktop/js/desktop_item.coffee:442
 #: ../resources/desktop/js/desktop_item.coffee:446
+#: ../resources/desktop/js/desktop_item.coffee:438
 msgid "Cut"
 msgstr "剪切"
 
 #: ../resources/desktop/js/desktop_item.coffee:443
 #: ../resources/desktop/js/desktop_item.coffee:447
+#: ../resources/desktop/js/desktop_item.coffee:439
 msgid "Copy"
 msgstr "复制"
 
@@ -197,6 +214,8 @@ msgstr "复制"
 #: ../resources/desktop/js/desktop_item.coffee:605
 #: ../resources/desktop/js/desktop_item.coffee:449
 #: ../resources/desktop/js/desktop_item.coffee:614
+#: ../resources/desktop/js/desktop_item.coffee:441
+#: ../resources/desktop/js/desktop_item.coffee:601
 msgid "Rename"
 msgstr "重命名"
 
@@ -207,6 +226,9 @@ msgstr "重命名"
 #: ../resources/desktop/js/desktop_item.coffee:615
 #: ../resources/desktop/js/desktop_item.coffee:877
 #: ../lib/dentry/fileops_delete.c:26
+#: ../resources/desktop/js/desktop_item.coffee:442
+#: ../resources/desktop/js/desktop_item.coffee:602
+#: ../resources/desktop/js/desktop_item.coffee:871
 msgid "Delete"
 msgstr "删除"
 
@@ -216,21 +238,27 @@ msgstr "删除"
 #: ../resources/desktop/js/desktop_item.coffee:452
 #: ../resources/desktop/js/desktop_item.coffee:926
 #: ../resources/desktop/js/desktop_item.coffee:1006
+#: ../resources/desktop/js/desktop_item.coffee:444
+#: ../resources/desktop/js/desktop_item.coffee:920
+#: ../resources/desktop/js/desktop_item.coffee:1000
 msgid "Properties"
 msgstr "属性"
 
 #: ../resources/desktop/js/desktop_item.coffee:897
 #: ../resources/desktop/js/desktop_item.coffee:908
+#: ../resources/desktop/js/desktop_item.coffee:902
 msgid "Computer"
 msgstr "计算机"
 
 #: ../resources/desktop/js/desktop_item.coffee:940
 #: ../resources/desktop/js/desktop_item.coffee:951
+#: ../resources/desktop/js/desktop_item.coffee:945
 msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/desktop_item.coffee:1022
 #: ../resources/desktop/js/desktop_item.coffee:1033
+#: ../resources/desktop/js/desktop_item.coffee:1027
 msgid "Trash"
 msgstr "回收站"
 
@@ -240,16 +268,21 @@ msgstr "回收站"
 #: ../resources/desktop/js/desktop_item.coffee:1096
 #: ../resources/desktop/js/desktop_item.coffee:1098
 #: ../resources/desktop/js/desktop_item.coffee:1100
+#: ../resources/desktop/js/desktop_item.coffee:1090
+#: ../resources/desktop/js/desktop_item.coffee:1092
+#: ../resources/desktop/js/desktop_item.coffee:1094
 msgid "Clean up"
 msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
 #: ../resources/desktop/js/desktop_item.coffee:1096
+#: ../resources/desktop/js/desktop_item.coffee:1090
 msgid "items"
 msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1087
 #: ../resources/desktop/js/desktop_item.coffee:1098
+#: ../resources/desktop/js/desktop_item.coffee:1092
 msgid "item"
 msgstr "项"
 
@@ -303,7 +336,7 @@ msgid ""
 "The name \"%s\" is already used in thisfolder. Please use a different name."
 msgstr ""
 
-#: ../lib/dentry/entry.c:338
+#: ../lib/dentry/entry.c:338 ../lib/dentry/entry.c:335
 msgid "The Item could not be renamed"
 msgstr ""
 
@@ -466,4 +499,14 @@ msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:57
 msgid "Empty _Trash"
+msgstr ""
+
+#: ../lib/dentry/entry.c:330
+#, c-format
+msgid ""
+"The name \"%s\" is already used in this folder. Please use a different name."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:230
+msgid "Replacing it will remove all files in the folder."
 msgstr ""
