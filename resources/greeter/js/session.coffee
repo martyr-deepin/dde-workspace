@@ -28,11 +28,13 @@ detext.innerText = _("Session")
 sessions = DCore.Greeter.get_sessions()
 for session in sessions
     id = session
+    name = DCore.Greeter.get_session_name(id)
     icon = DCore.Greeter.get_session_icon(session)
     icon_path ="images/#{icon}"
-    de_menu.insert(id, session, icon_path)
+    de_menu.insert(id, name, icon_path)
 
 default_session = DCore.Greeter.get_default_session()
     
 $("#bottom_buttons").appendChild(de_menu.element)
 de_menu.set_current(default_session)
+DCore.Greeter.set_selected_session(default_session)

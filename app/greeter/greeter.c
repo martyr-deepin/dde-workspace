@@ -502,7 +502,7 @@ const gchar* greeter_get_session_name(const gchar *key)
     if(session == NULL){
         name = key;
     }else{
-        name = lightdm_session_get_comment(session);
+        name = lightdm_session_get_name(session);
     }
 
     return name;
@@ -660,7 +660,7 @@ const gchar* greeter_get_user_background(const gchar* name)
 JS_EXPORT_API
 const gchar* greeter_get_user_session(const gchar* name)
 {
-    g_return_val_if_fail(is_user_valid(name), "nonexists");
+    g_return_val_if_fail(is_user_valid(name), NULL);
 
     const gchar* session = NULL;
     LightDMUserList *user_list = NULL;
@@ -672,10 +672,7 @@ const gchar* greeter_get_user_session(const gchar* name)
     user = lightdm_user_list_get_user_by_name(user_list, name);
     g_assert(user);
 
-    session = g_strdup(lightdm_user_get_session(user));
-    if(session == NULL){
-        session = get_first_session();
-    }
+    session = lightdm_user_get_session(user);
 
     return session;
 }

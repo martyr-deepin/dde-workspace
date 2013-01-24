@@ -57,8 +57,8 @@ class Item extends Widget
         [
             [1, _("Open")],
             [],
-            [2, _("SendToDesktop")],
-            [3, _("ToDock"), s_dock!=null],
+            [2, _("Send to desktop")],
+            [3, _("Send to dock"), s_dock!=null],
         ]
     do_itemselected: (e)=>
         switch e.id

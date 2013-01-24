@@ -43,7 +43,7 @@ class Menu extends Widget
         title.innerText = @title
 
         _img = @img
-        @items[_id] = [_title, _img]
+        @items[_id] = [_id, _title, _img]
         @current = @id
 
     insert_noimg: (@id, @title)->
@@ -56,7 +56,7 @@ class Menu extends Widget
         title = create_element("div", "menutitle", item)
         title.innerText = @title
 
-        @items[_id] = [_title]
+        @items[_id] = [_id, _title]
         @current = @id
 
     set_callback: (@cb)->
@@ -101,7 +101,6 @@ class ComboBox extends Widget
         if e.target == @switch
             p = get_page_xy(e.target, 0, 0)
             alloc = @menu.get_allocation()
-            # x = p.x - alloc.width/2
             x = p.x - alloc.width + @switch.offsetWidth - 3
             y = p.y - alloc.height - 3
 
@@ -123,7 +122,7 @@ class ComboBox extends Widget
         if not find?
             find = @get_useable_current()
         @menu.current = find[0]
-        @current_img.src = find[1]
+        @current_img.src = find[2]
         find[0]
 
 
