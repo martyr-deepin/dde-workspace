@@ -3,7 +3,7 @@
 base_dir = "../resources/"
 scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
 
-other_files = ["../app/desktop/desktop.c"]
+other_files = ["../app/desktop/desktop.c", "../app/lock/lock.c", "../app/greeter/greeter.c"]
 
 import glob
 import os

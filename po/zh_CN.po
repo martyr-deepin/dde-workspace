@@ -1,154 +1,161 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Hongwu Li <lihongwu@linuxdeepin.com>, 2013.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-23 19:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Hongwu Li <lihongwu@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../app/greeter/greeter.c:395
+msgid "Invalid Username/Password"
+msgstr "用户名或密码错误"
+
+#: ../app/greeter/lock.c:79
+msgid "Invalid Password"
+msgstr "密码错误"
+
 #: ../resources/greeter/js/user.coffee:63
 msgid "Log In"
-msgstr ""
+msgstr "登陆"
 
 #: ../resources/greeter/js/user.coffee:90
 #: ../resources/greeter/js/lock.coffee:57
 msgid "Welcome"
-msgstr ""
+msgstr "欢迎"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jan"
-msgstr ""
+msgstr "一月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Feb"
-msgstr ""
+msgstr "二月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Mar"
-msgstr ""
+msgstr "三月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Apr"
-msgstr ""
+msgstr "四月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "May"
-msgstr ""
+msgstr "五月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jun"
-msgstr ""
+msgstr "六月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jul"
-msgstr ""
+msgstr "七月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Aug"
-msgstr ""
+msgstr "八月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Sep"
-msgstr ""
+msgstr "九月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Oct"
-msgstr ""
+msgstr "十月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Nov"
-msgstr ""
+msgstr "十一月"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Dec"
-msgstr ""
+msgstr "十二月"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sun"
-msgstr ""
+msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Mon"
-msgstr ""
+msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Tue"
-msgstr ""
+msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Wed"
-msgstr ""
+msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Thu"
-msgstr ""
+msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Fri"
-msgstr ""
+msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sat"
-msgstr ""
+msgstr "星期六"
 
 #: ../resources/greeter/js/lock.coffee:42
 msgid "Unlock"
-msgstr ""
+msgstr "解锁"
 
 #: ../resources/greeter/js/session.coffee:26
 msgid "Session"
-msgstr ""
+msgstr "会话"
 
 #: ../resources/desktop/js/grid.coffee:679
 msgid "Sort by"
-msgstr ""
+msgstr "排序方式"
 
 #: ../resources/desktop/js/grid.coffee:680
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: ../resources/desktop/js/grid.coffee:681
 msgid "Last modified time"
-msgstr ""
+msgstr "最近修改时间"
 
 #: ../resources/desktop/js/grid.coffee:684
 msgid "New"
-msgstr ""
+msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:685
 msgid "Folder"
-msgstr ""
+msgstr "文件夹"
 
 #: ../resources/desktop/js/grid.coffee:686
 msgid "Text document"
-msgstr ""
+msgstr "文本文档"
 
 #: ../resources/desktop/js/grid.coffee:689
 msgid "Open terminal here"
-msgstr ""
+msgstr "在此打开终端"
 
 #: ../resources/desktop/js/grid.coffee:690
 msgid "Paste"
-msgstr ""
+msgstr "粘贴"
 
 #: ../resources/desktop/js/grid.coffee:692
 msgid "Personalize"
-msgstr ""
+msgstr "个性化"
 
 #: ../resources/desktop/js/grid.coffee:693
 msgid "Display settings"
-msgstr ""
+msgstr "显示设置"
 
 #: ../resources/desktop/js/desktop_item.coffee:440
 #: ../resources/desktop/js/desktop_item.coffee:603
@@ -157,99 +164,99 @@ msgstr ""
 #: ../resources/desktop/js/desktop_item.coffee:1081
 #: ../resources/launcher/js/grid.coffee:58
 msgid "Open"
-msgstr ""
+msgstr "打开"
 
 #: ../resources/desktop/js/desktop_item.coffee:442
 msgid "Cut"
-msgstr ""
+msgstr "剪切"
 
 #: ../resources/desktop/js/desktop_item.coffee:443
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: ../resources/desktop/js/desktop_item.coffee:445
 #: ../resources/desktop/js/desktop_item.coffee:605
 msgid "Rename"
-msgstr ""
+msgstr "重命名"
 
 #: ../resources/desktop/js/desktop_item.coffee:446
 #: ../resources/desktop/js/desktop_item.coffee:606
 #: ../resources/desktop/js/desktop_item.coffee:866
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: ../resources/desktop/js/desktop_item.coffee:448
 #: ../resources/desktop/js/desktop_item.coffee:915
 #: ../resources/desktop/js/desktop_item.coffee:995
 msgid "Properties"
-msgstr ""
+msgstr "属性"
 
 #: ../resources/desktop/js/desktop_item.coffee:897
 msgid "Computer"
-msgstr ""
+msgstr "计算机"
 
 #: ../resources/desktop/js/desktop_item.coffee:940
 msgid "Home"
-msgstr ""
+msgstr "主文件夹"
 
 #: ../resources/desktop/js/desktop_item.coffee:1022
-msgid "Trash Bin"
-msgstr ""
+msgid "Trash"
+msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
 #: ../resources/desktop/js/desktop_item.coffee:1087
 #: ../resources/desktop/js/desktop_item.coffee:1089
 msgid "Clean up"
-msgstr ""
+msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
 msgid "items"
-msgstr ""
+msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1087
 msgid "item"
-msgstr ""
+msgstr "项"
 
 #: ../resources/dock/js/clientgroup.coffee:158
 msgid "New instance"
-msgstr ""
+msgstr "打开新实例"
 
 #: ../resources/dock/js/clientgroup.coffee:159
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #: ../resources/dock/js/clientgroup.coffee:161
 msgid "Dock me"
-msgstr ""
+msgstr "驻留"
 
 #: ../resources/dock/js/launcher.coffee:22
 msgid "Run"
-msgstr ""
+msgstr "运行"
 
 #: ../resources/dock/js/launcher.coffee:24
-msgid "UnDock"
-msgstr ""
+msgid "Undock"
+msgstr "移除驻留"
 
 #: ../resources/launcher/js/main.coffee:55
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: ../resources/launcher/js/grid.coffee:60
 msgid "Send to desktop"
-msgstr ""
+msgstr "发送到桌面"
 
 #: ../resources/launcher/js/grid.coffee:61
 msgid "Send to dock"
-msgstr ""
+msgstr "添加到 Dock"
 
 #: ../app/desktop/desktop.c:121
 msgid "Rich directory"
-msgstr ""
+msgstr "应用程序启动组"
 
 #: ../app/desktop/desktop.c:158
 msgid "New file"
-msgstr ""
+msgstr "新建文件"
 
 #: ../app/desktop/desktop.c:169
 msgid "New directory"
-msgstr ""
+msgstr "新建目录"
