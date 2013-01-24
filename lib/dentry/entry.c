@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 snyh
- *               2011 ~ 2012 hooke 
+ *               2011 ~ 2012 hooke
  *
  * Author:      snyh <snyh@snyh.org>
  *              hooke
@@ -61,9 +61,9 @@ Entry* dentry_get_desktop()
 JS_EXPORT_API
 gboolean dentry_is_native(Entry* e)
 {
-   
+
     if (!G_IS_FILE(e)) {
-    	return g_file_is_native (G_FILE(e));
+        return g_file_is_native (G_FILE(e));
     }
     return TRUE;
 }
@@ -85,24 +85,26 @@ double dentry_get_type(Entry* e)
                         return 2;
                     }
                 }
-	    case G_FILE_TYPE_SYMBOLIC_LINK:
-		{
+        case G_FILE_TYPE_SYMBOLIC_LINK:
+        {
                     char* src = g_file_get_path(f);
-		    char* target = g_file_read_link (src, NULL);
-		    g_free (src);
-		    if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
-		    {
-			GFile* target_gfile = g_file_new_for_path(target);
-			g_free(target);
-			double retval = dentry_get_type(target_gfile);
-			g_object_unref(target_gfile);
-			return retval;
-		    }
-		    return 4;
-		}
-	    //the remaining file type values.
-	    case G_FILE_TYPE_SPECIAL:
-	    case G_FILE_TYPE_MOUNTABLE:
+            char* target = g_file_read_link (src, NULL);
+            g_free (src);
+            if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
+            {
+            GFile* target_gfile = g_file_new_for_path(target);
+            g_free(target);
+            double retval = dentry_get_type(target_gfile);
+            g_object_unref(target_gfile);
+            if (retval == -1)
+                retval = 4;
+            return retval;
+            }
+            return 4;
+        }
+        //the remaining file type values.
+        case G_FILE_TYPE_SPECIAL:
+        case G_FILE_TYPE_MOUNTABLE:
             default:
                 {
                     char* path = g_file_get_path(f);
@@ -128,7 +130,7 @@ JSObjectRef dentry_get_flags (Entry* e)
     f = e;
 
     GFileInfo* info = g_file_query_info (f,
-            "standard::*,access::*", 
+            "standard::*,access::*",
             G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
             NULL,
             NULL);
@@ -284,7 +286,7 @@ Entry* dentry_create_by_path(const char* path)
     if (g_str_has_suffix(path, ".desktop")) {
         Entry* e = g_desktop_app_info_new_from_filename(path);
         if (e != NULL) return e;
-    } 
+    }
     return g_file_new_for_path(path);
 }
 
@@ -322,25 +324,25 @@ gboolean dentry_set_name(Entry* e, const char* name)
         GError* err = NULL;
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
-	    
-	    GtkWidget* dialog;
-	    dialog = gtk_message_dialog_new (NULL, 
-					     GTK_DIALOG_MODAL,
-					     GTK_MESSAGE_WARNING, 
-					     GTK_BUTTONS_OK,
-					     NULL);
-	    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-	    char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this"
-						     "folder. Please use a different name."),
-						   name);
 
-	    g_object_set (dialog,
-	          "text", _("The Item could not be renamed"),
-		  "secondary-text", secondary_text,
-		  NULL);
-	    gtk_dialog_run (GTK_DIALOG (dialog));
-	    gtk_widget_destroy (dialog);
-	    g_free(secondary_text);
+        GtkWidget* dialog;
+        dialog = gtk_message_dialog_new (NULL,
+                         GTK_DIALOG_MODAL,
+                         GTK_MESSAGE_WARNING,
+                         GTK_BUTTONS_OK,
+                         NULL);
+        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+        char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this"
+                             "folder. Please use a different name."),
+                           name);
+
+        g_object_set (dialog,
+              "text", _("The Item could not be renamed"),
+          "secondary-text", secondary_text,
+          NULL);
+        gtk_dialog_run (GTK_DIALOG (dialog));
+        gtk_widget_destroy (dialog);
+        g_free(secondary_text);
             g_error_free(err);
             return FALSE;
         } else {
