@@ -27,14 +27,6 @@ cleanup_filename = (str) ->
         new_str
 
 
-get_theme_icon_safe = (name, size) ->
-    try
-        icon = DCore.get_theme_icon(name, size)
-    catch e
-        icon = null
-    icon
-
-
 _GET_ENTRY_FROM_PATH_ = (path) ->
     DCore.DEntry.create_by_path(decodeURI(path).replace(/^file:\/\//i, ""))
 
@@ -93,7 +85,7 @@ class Item extends Widget
 
 
     get_path : ->
-        DCore.DEntry.get_path(@entry)
+        DCore.DEntry.get_uri(@entry)
 
 
     get_mtime : ->
@@ -269,15 +261,15 @@ class Item extends Widget
         flags = DCore.DEntry.get_flags(@entry)
         if flags.read_only? and flags.read_only == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.symbolic_link? and flags.symbolic_link == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.unreadable? and flags.unreadable == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         return
 
@@ -466,19 +458,19 @@ class DesktopEntry extends Item
 
 class Folder extends DesktopEntry
     get_icon : ->
-        get_theme_icon_safe("folder", 48)
+        DCore.get_theme_icon("folder", 48)
 
 
     do_drop : (evt) =>
         super
 
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            if DCore.DEntry.get_type(e) != FILE_TYPE_RICH_DIR then tmp_list.push(e)
-
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        if evt.dataTransfer.dropEffect == "move"
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
 
@@ -486,12 +478,7 @@ class Folder extends DesktopEntry
         super
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            if evt.dataTransfer.files == 1 and (e = _GET_ENTRY_FROM_PATH_(evt.dataTransfer.files[0]))? and not e.modifiable
-                evt.dataTransfer.dropEffect = "none"
-            else
-                evt.dataTransfer.dropEffect = "move"
-        else
-            evt.dataTransfer.dropEffect = "none"
+            evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -572,13 +559,13 @@ class RichDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        if evt.dataTransfer.dropEffect == "move"
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
     do_dragenter : (evt) ->
@@ -719,7 +706,7 @@ class RichDir extends DesktopEntry
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 if e?
-                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(e))}")
+                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_uri(e))}")
                     evt.dataTransfer.effectAllowed = "moveCopy"
                 else
                     evt.dataTransfer.effectAllowed = "none"
@@ -818,6 +805,12 @@ class RichDir extends DesktopEntry
 
 
 class Application extends DesktopEntry
+    get_icon : ->
+        if (icon = DCore.DEntry.get_icon(@entry)) == null
+            icon = DCore.get_theme_icon("invalid_app", 48)
+        icon
+
+
     do_drop : (evt) ->
         super
 
@@ -869,7 +862,7 @@ class NormalFile extends DesktopEntry
 
 class InvalidLink extends DesktopEntry
     get_icon : ->
-        get_theme_icon_safe("invalid-link", 48)
+        DCore.get_theme_icon("invalid-link", 48)
 
 
     do_buildmenu : ->
@@ -909,7 +902,7 @@ class ComputerVDir extends DesktopEntry
 
 
     get_icon : ->
-        get_theme_icon_safe("computer", 48)
+        DCore.get_theme_icon("computer", 48)
 
 
     get_path : ->
@@ -952,7 +945,7 @@ class HomeVDir extends DesktopEntry
 
 
     get_icon : ->
-        get_theme_icon_safe("user-home", 48)
+        DCore.get_theme_icon("user-home", 48)
 
 
     get_path : ->
@@ -1014,7 +1007,7 @@ class HomeVDir extends DesktopEntry
             when 2
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{encodeURI(DCore.DEntry.get_path(@entry))}"], "")
+                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{DCore.DEntry.get_uri(@entry)}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
@@ -1035,9 +1028,9 @@ class TrashVDir extends DesktopEntry
 
     get_icon : ->
         if DCore.DEntry.get_trash_count() > 0
-            get_theme_icon_safe("user-trash-full", 48)
+            DCore.get_theme_icon("user-trash-full", 48)
         else
-            get_theme_icon_safe("user-trash", 48)
+            DCore.get_theme_icon("user-trash", 48)
 
 
     get_path : ->
