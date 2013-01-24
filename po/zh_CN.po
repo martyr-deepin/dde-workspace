@@ -201,7 +201,7 @@ msgid "Home"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:1022
-msgid "Trash Bin"
+msgid "Trash"
 msgstr ""
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
