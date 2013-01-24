@@ -116,9 +116,9 @@ discard_position = (id) ->
 update_position = (old_id, new_id) ->
     assert("string" == typeof(old_id), "[update_position]accept not string old_id")
     assert("string" == typeof(new_id), "[update_position]accept not string new_id")
-    o_p = load_position(old_id)
-    discard_position(old_id)
-    save_position(new_id, o_p)
+    if (o_p = load_position(old_id))?
+        discard_position(old_id)
+        save_position(new_id, o_p)
     return
 
 
@@ -452,7 +452,7 @@ item_dragend_handler = (w, evt) ->
         ordered_list = new Array()
         distance_list = new Array()
         for i in selected_item
-            pos = load_position(i)
+            if not (pos = load_position(i))? then continue
             dis = calc_pos_to_pos_distance(new_pos, pos)
             for j in [0 ... distance_list.length]
                 if dis < distance_list[j]
@@ -580,7 +580,8 @@ update_selected_item_drag_image = ->
     bottom_right = {x : 0, y : 0}
 
     for i in selected_item
-        pos = load_position(i)
+        if not (pos = load_position(i))? then continue
+
         if top_left.x > pos.x then top_left.x = pos.x
         if bottom_right.x < pos.x then bottom_right.x = pos.x
 
