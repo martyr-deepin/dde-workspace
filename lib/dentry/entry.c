@@ -92,7 +92,7 @@ double dentry_get_type(Entry* e)
 		    g_free (src);
 		    if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
 		    {
-			GFile* target_gfile = g_file_new_for_path(target);
+			GFile* target_gfile = g_file_new_for_commandline_arg(target);
 			g_free(target);
 			double retval = dentry_get_type(target_gfile);
 			g_object_unref(target_gfile);
@@ -160,12 +160,12 @@ char* dentry_get_name(Entry* e)
 }
 
 JS_EXPORT_API
-char* dentry_get_path(Entry* e)
+char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
-        return g_file_get_path(f);
+        return g_file_get_uri(f);
     TEST_GAPP(e, app)
-        return g_strdup(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
+        return g_strdup_printf("file://%s", g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
     TEST_END
 }
 
@@ -200,12 +200,7 @@ char* dentry_get_icon(Entry* e)
 JS_EXPORT_API
 char* dentry_get_id(Entry* e)
 {
-    char* uri = NULL;
-    TEST_GFILE(e, f)
-        uri = g_file_get_uri(f);
-    TEST_GAPP(e, app)
-        uri = g_strdup(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
-    TEST_END
+    char* uri = dentry_get_uri(e);
     char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, uri, strlen(uri));
     g_free(uri);
     return id;
@@ -285,13 +280,13 @@ Entry* dentry_create_by_path(const char* path)
         Entry* e = g_desktop_app_info_new_from_filename(path);
         if (e != NULL) return e;
     } 
-    return g_file_new_for_path(path);
+    return g_file_new_for_commandline_arg(path);
 }
 
 static
 GFile* _get_gfile_from_gapp(GDesktopAppInfo* info)
 {
-    return g_file_new_for_path(g_desktop_app_info_get_filename(info));
+    return g_file_new_for_commandline_arg(g_desktop_app_info_get_filename(info));
 }
 
 JS_EXPORT_API

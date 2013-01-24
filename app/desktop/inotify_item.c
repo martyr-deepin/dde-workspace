@@ -64,7 +64,7 @@ void install_monitor()
         g_timeout_add(50, (GSourceFunc)_inotify_poll, NULL);
 
         char* desktop_path = get_desktop_dir(TRUE);
-        _desktop_file = g_file_new_for_path(desktop_path);
+        _desktop_file = g_file_new_for_commandline_arg(desktop_path);
         _trash_can = g_file_new_for_uri("trash:///");
         GFileMonitor* m = g_file_monitor(_trash_can, G_FILE_MONITOR_NONE, NULL, NULL);
         g_signal_connect(m, "changed", G_CALLBACK(trash_changed), NULL);
