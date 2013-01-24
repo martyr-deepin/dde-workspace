@@ -227,7 +227,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 	} 
 	else 
 	{
-	    message_extra = _("Replacing it will remove all files in the"
+	    message_extra = _("Replacing it will remove all files in the "
 		              "folder.");
 	    primary_text = g_strdup_printf (_("Replace folder \"%s\"?"), 
 		                            dest_name);
