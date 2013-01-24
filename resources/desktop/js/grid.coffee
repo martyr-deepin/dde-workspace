@@ -353,10 +353,18 @@ init_grid_drop = ->
         evt.stopPropagation()
         pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         if not _IS_DND_INTERLNAL_(evt)
-            tmp = []
+            tmp_copy = []
+            tmp_move = []
             for file in evt.dataTransfer.files
-                tmp.push(f) if (f = DCore.DEntry.create_by_path(file.path))?
-            if tmp.length then DCore.DEntry.move(tmp, g_desktop_entry)
+                if (f = DCore.DEntry.create_by_path(file.path))?
+                    if DCore.DEntry.is_native(f)
+                        tmp_move.push(f)
+                    else
+                        tmp_copy.push(f)
+            if tmp_move.length
+                DCore.DEntry.move(tmp, g_desktop_entry)
+            if tmp_copy.length
+                DCore.DEntry.copy(tmp, g_desktop_entry)
         return
     )
     div_grid.addEventListener("dragover", (evt) =>

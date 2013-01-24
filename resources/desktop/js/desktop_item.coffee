@@ -672,6 +672,7 @@ class RichDir extends DesktopEntry
         @show_pop = true
 
         @display_not_selected()
+        @display_not_focus()
         @display_short_name()
 
         @fill_pop_block()
@@ -803,6 +804,7 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
+        @display_focus()
         @display_full_name()
 
 
