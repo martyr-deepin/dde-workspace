@@ -260,3 +260,14 @@ void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items)
 }
 
 
+gboolean has_atom_property(Display* dsp, Window w, Atom prop)
+{
+    gulong items;
+    void* data = get_window_property(dsp, w, prop, &items);
+    if (data == NULL) {
+        return FALSE;
+    } else {
+        g_free(data);
+        return TRUE;
+    }
+}

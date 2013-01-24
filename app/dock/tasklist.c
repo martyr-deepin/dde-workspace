@@ -229,18 +229,6 @@ void start_monitor_launcher_window(Window w)
     gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
 }
 
-gboolean not_tray_icon(Window w)
-{
-    gulong items;
-    void* data = get_window_property(_dsp, w, ATOM_XEMBED_INFO, &items);
-    if (data == NULL) {
-        return TRUE;
-    } else {
-        g_free(data);
-        return FALSE;
-    }
-}
-
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
@@ -259,13 +247,13 @@ gboolean is_normal_window(Window w)
     }
 
     if (is_skip_taskbar(w)) return FALSE;
-    gulong items;
 
+    gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
 
-    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
+    if (data == NULL && !has_atom_property(_dsp, w, ATOM_WINDOW_PID)) return TRUE;
 
-    if (data == NULL && not_tray_icon(w)) return FALSE;
+    if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
