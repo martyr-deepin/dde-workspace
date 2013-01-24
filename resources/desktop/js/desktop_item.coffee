@@ -34,6 +34,11 @@ get_theme_icon_safe = (name, size) ->
         icon = null
     icon
 
+
+_GET_ENTRY_FROM_PATH_ = (path) ->
+    DCore.DEntry.create_by_path(decodeURI(path).replace(/^file:\/\//i, ""))
+
+
 class Item extends Widget
     constructor: (@entry, @modifiable = true) ->
         @id = @get_id()
@@ -262,7 +267,6 @@ class Item extends Widget
         if @modifiable == false then return
 
         flags = DCore.DEntry.get_flags(@entry)
-        echo "#{@get_name()} #{flags.read_only} #{flags.symbolic_link} #{flags.unreadable}"
         if flags.read_only? and flags.read_only == 1
             ele = document.createElement("li")
             ele.innerHTML = "<img src=\"#{get_theme_icon_safe(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
@@ -481,15 +485,20 @@ class Folder extends DesktopEntry
     do_dragenter : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
-            evt.dataTransfer.dropEffect = "move"
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+            if evt.dataTransfer.files == 1 and (e = _GET_ENTRY_FROM_PATH_(evt.dataTransfer.files[0]))? and not e.modifiable
+                evt.dataTransfer.dropEffect = "none"
+            else
+                evt.dataTransfer.dropEffect = "move"
+        else
+            evt.dataTransfer.dropEffect = "none"
         return
 
 
     do_dragover : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -499,7 +508,7 @@ class Folder extends DesktopEntry
 
         if @in_count > 0
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
         return
 
@@ -575,7 +584,7 @@ class RichDir extends DesktopEntry
     do_dragenter : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -583,7 +592,7 @@ class RichDir extends DesktopEntry
     do_dragover : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -593,7 +602,7 @@ class RichDir extends DesktopEntry
 
         if @in_count > 0
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
         return
 
@@ -672,6 +681,7 @@ class RichDir extends DesktopEntry
         @show_pop = true
 
         @display_not_selected()
+        @display_not_focus()
         @display_short_name()
 
         @fill_pop_block()
@@ -803,6 +813,7 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
+        @display_focus()
         @display_full_name()
 
 
@@ -831,7 +842,7 @@ class Application extends DesktopEntry
     do_dragenter : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -839,7 +850,7 @@ class Application extends DesktopEntry
     do_dragover : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -848,7 +859,7 @@ class Application extends DesktopEntry
         super
         if @in_count > 0
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
         return
 
@@ -950,7 +961,7 @@ class HomeVDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             tmp_list = []
             for file in evt.dataTransfer.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -962,7 +973,7 @@ class HomeVDir extends DesktopEntry
     do_dragenter : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -970,7 +981,7 @@ class HomeVDir extends DesktopEntry
     do_dragover : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -979,7 +990,7 @@ class HomeVDir extends DesktopEntry
         super
         if @in_count > 0
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
         return
 
@@ -1050,7 +1061,7 @@ class TrashVDir extends DesktopEntry
     do_dragenter : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -1058,7 +1069,7 @@ class TrashVDir extends DesktopEntry
     do_dragover : (evt) ->
         super
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
         return
 
@@ -1067,7 +1078,7 @@ class TrashVDir extends DesktopEntry
         super
         if @in_count > 0
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@)
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
         return
 
