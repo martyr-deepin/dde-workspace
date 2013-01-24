@@ -392,7 +392,7 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 #ifdef DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
 #endif
-            js_post_message_simply("auth", "{\"error\":\"%s\"}", "Password Error!");
+            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
             greeter_start_authentication(get_selected_user());
         }
     }
