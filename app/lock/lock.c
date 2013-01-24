@@ -76,7 +76,7 @@ gboolean lock_try_unlock(const gchar *password)
         js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
         is_locked = FALSE;
     }else{
-        js_post_message_simply("unlock", "{\"status\":\"%s\"}", "failed");
+        js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
         is_locked = TRUE;
     }
 
