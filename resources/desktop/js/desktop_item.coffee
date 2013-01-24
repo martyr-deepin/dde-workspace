@@ -680,12 +680,14 @@ class RichDir extends DesktopEntry
 
 
     reflesh_pop_block : =>
-        for i in @div_pop.getElementsByTagName("ul")
-            i.parentElement.removeChild(i)
+        tmp = @div_pop.getElementsByTagName("ul")
+        for i in [(tmp.length - 1) ... -1] by -1
+            tmp[i].parentElement.removeChild(tmp[i])
 
-        for i in @div_pop.getElementsByTagName("div")
-            if i.id.substr(0, 10) == "pop_arrow_"
-                i.parentElement.removeChild(i)
+        tmp = @div_pop.getElementsByTagName("div")
+        for i in [(tmp.length - 1) ... -1] by -1
+            if tmp[i].id.substr(0, 10) == "pop_arrow_"
+                tmp[i].parentElement.removeChild(tmp[i])
         @fill_pop_block()
 
 
