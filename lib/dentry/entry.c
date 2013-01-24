@@ -193,7 +193,7 @@ char* dentry_get_icon(Entry* e)
     if (ret != NULL) {
         return ret;
     } else {
-        return g_strdup("not_found.png");
+        return NULL; //g_strdup("not_found.png");
     }
 }
 

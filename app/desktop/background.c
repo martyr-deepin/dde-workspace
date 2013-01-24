@@ -68,11 +68,9 @@ GdkWindow* get_background_window()
         attributes.event_mask = GDK_EXPOSURE_MASK;
 
         _background_window = gdk_window_new(NULL, &attributes, 0);
-        GdkRGBA rgba = {0, 0, 0, 0};
-        gdk_window_set_background_rgba(_background_window, &rgba);
-
         set_wmspec_desktop_hint(_background_window);
-        gdk_window_move_resize(_background_window, 0, 0, 
+
+        gdk_window_move_resize(_background_window, 0, 0,
                 gdk_window_get_width(root),
                 gdk_window_get_height(root)
                 );
