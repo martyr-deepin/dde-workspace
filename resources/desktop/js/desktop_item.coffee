@@ -67,8 +67,7 @@ class Item extends Widget
 
 
     destroy : ->
-        info = load_position(@id)
-        clear_occupy(info)
+        if (info = load_position(@id))? then clear_occupy(info)
         super
 
 
@@ -416,8 +415,9 @@ class DesktopEntry extends Item
 
 
     do_dragover : (evt) =>
-        evt.preventDefault()
         evt.stopPropagation()
+        evt.preventDefault()
+        echo "preventDefault"
 
         evt.dataTransfer.dropEffect = "none"
         return
@@ -559,13 +559,12 @@ class RichDir extends DesktopEntry
     do_drop : (evt) ->
         super
 
-        if evt.dataTransfer.dropEffect == "move"
-            tmp_list = []
-            for file in evt.dataTransfer.files
-                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                if not e? then continue
-                if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+            if not e? then continue
+            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
         return
 
     do_dragenter : (evt) ->
@@ -573,6 +572,8 @@ class RichDir extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -581,6 +582,8 @@ class RichDir extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -591,6 +594,8 @@ class RichDir extends DesktopEntry
             evt.preventDefault()
             if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
+
+        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -619,7 +624,7 @@ class RichDir extends DesktopEntry
             if @show_pop == true
                 @hide_pop_block()
                 if list.length then DCore.DEntry.move(list, g_desktop_entry)
-            discard_position(DCore.DEntry.get_id(entry))
+            discard_position(@id)
             DCore.DEntry.delete_files([@entry], false)
         else
             if @show_pop == true
@@ -706,10 +711,11 @@ class RichDir extends DesktopEntry
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
                 if e?
-                    evt.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_uri(e))}")
-                    evt.dataTransfer.effectAllowed = "moveCopy"
+                    evt.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(e))
+                    evt.dataTransfer.effectAllowed = "all"
                 else
                     evt.dataTransfer.effectAllowed = "none"
+                return
             )
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
@@ -826,6 +832,7 @@ class Application extends DesktopEntry
 
         if all_are_apps == true
             tmp_list.push(@entry)
+            discard_position(DCore.DEntry.get_id(i)) for i in tmp_list
             DCore.Desktop.create_rich_dir(tmp_list)
         else
             DCore.DEntry.launch(@entry, tmp_list)
@@ -1007,7 +1014,7 @@ class HomeVDir extends DesktopEntry
             when 2
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["file://#{DCore.DEntry.get_uri(@entry)}"], "")
+                    g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@entry)}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 

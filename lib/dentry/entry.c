@@ -62,7 +62,7 @@ JS_EXPORT_API
 gboolean dentry_is_native(Entry* e)
 {
 
-    if (!G_IS_FILE(e)) {
+    if (G_IS_FILE(e)) {
         return g_file_is_native (G_FILE(e));
     }
     return TRUE;
@@ -327,7 +327,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
                          GTK_BUTTONS_OK,
                          NULL);
         gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-        char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this"
+        char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this "
                              "folder. Please use a different name."),
                            name);
 
