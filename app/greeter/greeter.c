@@ -329,6 +329,7 @@ static void start_session(const gchar *session)
 {
     g_return_if_fail(is_session_valid(session));
 
+    set_last_user(get_selected_user());
     greeter_update_background();
 
 #ifdef DEBUG
