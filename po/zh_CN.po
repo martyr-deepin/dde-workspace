@@ -1,15 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Hongwu Li <lihongwu@linuxdeepin.com>, 2013.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 19:19+0800\n"
+"POT-Creation-Date: 2013-01-24 15:24+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Hongwu Li <lihongwu@linuxdeepin.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +21,7 @@ msgstr ""
 msgid "Invalid Username/Password"
 msgstr "用户名或密码错误"
 
-#: ../app/greeter/lock.c:79
+#: ../app/greeter/lock.c:79 ../app/lock/lock.c:79
 msgid "Invalid Password"
 msgstr "密码错误"
 
@@ -114,46 +115,57 @@ msgid "Unlock"
 msgstr "解锁"
 
 #: ../resources/greeter/js/session.coffee:26
+#: ../resources/greeter/js/session.coffee:25
 msgid "Session"
 msgstr "会话"
 
 #: ../resources/desktop/js/grid.coffee:679
+#: ../resources/desktop/js/grid.coffee:692
 msgid "Sort by"
 msgstr "排序方式"
 
 #: ../resources/desktop/js/grid.coffee:680
+#: ../resources/desktop/js/grid.coffee:693
 msgid "Name"
 msgstr "名称"
 
 #: ../resources/desktop/js/grid.coffee:681
+#: ../resources/desktop/js/grid.coffee:694
 msgid "Last modified time"
 msgstr "最近修改时间"
 
 #: ../resources/desktop/js/grid.coffee:684
+#: ../resources/desktop/js/grid.coffee:697
 msgid "New"
 msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:685
+#: ../resources/desktop/js/grid.coffee:698
 msgid "Folder"
 msgstr "文件夹"
 
 #: ../resources/desktop/js/grid.coffee:686
+#: ../resources/desktop/js/grid.coffee:699
 msgid "Text document"
 msgstr "文本文档"
 
 #: ../resources/desktop/js/grid.coffee:689
+#: ../resources/desktop/js/grid.coffee:702
 msgid "Open terminal here"
 msgstr "在此打开终端"
 
 #: ../resources/desktop/js/grid.coffee:690
+#: ../resources/desktop/js/grid.coffee:703
 msgid "Paste"
 msgstr "粘贴"
 
 #: ../resources/desktop/js/grid.coffee:692
+#: ../resources/desktop/js/grid.coffee:705
 msgid "Personalize"
 msgstr "个性化"
 
 #: ../resources/desktop/js/grid.coffee:693
+#: ../resources/desktop/js/grid.coffee:706
 msgid "Display settings"
 msgstr "显示设置"
 
@@ -163,57 +175,81 @@ msgstr "显示设置"
 #: ../resources/desktop/js/desktop_item.coffee:993
 #: ../resources/desktop/js/desktop_item.coffee:1081
 #: ../resources/launcher/js/grid.coffee:58
+#: ../resources/desktop/js/desktop_item.coffee:444
+#: ../resources/desktop/js/desktop_item.coffee:612
+#: ../resources/desktop/js/desktop_item.coffee:924
+#: ../resources/desktop/js/desktop_item.coffee:1004
+#: ../resources/desktop/js/desktop_item.coffee:1092
 msgid "Open"
 msgstr "打开"
 
 #: ../resources/desktop/js/desktop_item.coffee:442
+#: ../resources/desktop/js/desktop_item.coffee:446
 msgid "Cut"
 msgstr "剪切"
 
 #: ../resources/desktop/js/desktop_item.coffee:443
+#: ../resources/desktop/js/desktop_item.coffee:447
 msgid "Copy"
 msgstr "复制"
 
 #: ../resources/desktop/js/desktop_item.coffee:445
 #: ../resources/desktop/js/desktop_item.coffee:605
+#: ../resources/desktop/js/desktop_item.coffee:449
+#: ../resources/desktop/js/desktop_item.coffee:614
 msgid "Rename"
 msgstr "重命名"
 
 #: ../resources/desktop/js/desktop_item.coffee:446
 #: ../resources/desktop/js/desktop_item.coffee:606
 #: ../resources/desktop/js/desktop_item.coffee:866
+#: ../resources/desktop/js/desktop_item.coffee:450
+#: ../resources/desktop/js/desktop_item.coffee:615
+#: ../resources/desktop/js/desktop_item.coffee:877
+#: ../lib/dentry/fileops_delete.c:26
 msgid "Delete"
 msgstr "删除"
 
 #: ../resources/desktop/js/desktop_item.coffee:448
 #: ../resources/desktop/js/desktop_item.coffee:915
 #: ../resources/desktop/js/desktop_item.coffee:995
+#: ../resources/desktop/js/desktop_item.coffee:452
+#: ../resources/desktop/js/desktop_item.coffee:926
+#: ../resources/desktop/js/desktop_item.coffee:1006
 msgid "Properties"
 msgstr "属性"
 
 #: ../resources/desktop/js/desktop_item.coffee:897
+#: ../resources/desktop/js/desktop_item.coffee:908
 msgid "Computer"
 msgstr "计算机"
 
 #: ../resources/desktop/js/desktop_item.coffee:940
+#: ../resources/desktop/js/desktop_item.coffee:951
 msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/desktop_item.coffee:1022
+#: ../resources/desktop/js/desktop_item.coffee:1033
 msgid "Trash"
 msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
 #: ../resources/desktop/js/desktop_item.coffee:1087
 #: ../resources/desktop/js/desktop_item.coffee:1089
+#: ../resources/desktop/js/desktop_item.coffee:1096
+#: ../resources/desktop/js/desktop_item.coffee:1098
+#: ../resources/desktop/js/desktop_item.coffee:1100
 msgid "Clean up"
 msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1085
+#: ../resources/desktop/js/desktop_item.coffee:1096
 msgid "items"
 msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1087
+#: ../resources/desktop/js/desktop_item.coffee:1098
 msgid "item"
 msgstr "项"
 
@@ -249,14 +285,185 @@ msgstr "发送到桌面"
 msgid "Send to dock"
 msgstr "添加到 Dock"
 
-#: ../app/desktop/desktop.c:121
+#: ../app/desktop/desktop.c:121 ../app/desktop/desktop.c:122
 msgid "Rich directory"
 msgstr "应用程序启动组"
 
-#: ../app/desktop/desktop.c:158
+#: ../app/desktop/desktop.c:158 ../app/desktop/desktop.c:160
 msgid "New file"
 msgstr "新建文件"
 
-#: ../app/desktop/desktop.c:169
+#: ../app/desktop/desktop.c:169 ../app/desktop/desktop.c:171
 msgid "New directory"
 msgstr "新建目录"
+
+#: ../lib/dentry/entry.c:333
+#, c-format
+msgid ""
+"The name \"%s\" is already used in thisfolder. Please use a different name."
+msgstr ""
+
+#: ../lib/dentry/entry.c:338
+msgid "The Item could not be renamed"
+msgstr ""
+
+#: ../lib/dentry/fileops.c:488
+msgid "move"
+msgstr ""
+
+#: ../lib/dentry/fileops.c:608
+msgid "copy"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:19
+msgid "Delete File"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:22
+msgid "Are you sure you want to permanently delete the files?"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:23
+msgid "If you delete an item, it will be permanently lost"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:60
+msgid "File conflict"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:104
+msgid "_Select a new name for the destination"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:115
+msgid "Reset"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:124
+msgid "Apply this action to all files"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:131
+msgid "_Skip"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:134
+msgid "Re_name"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:139
+msgid "Replace"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:210
+#, c-format
+msgid "Merge folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:212
+msgid ""
+"Merging will ask for confirmation before replacing any files in the folder "
+"that conflict with the files being copied."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:216
+#, c-format
+msgid "An older folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:220
+#, c-format
+msgid "A newer folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:224
+#, c-format
+msgid "Another folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:230
+msgid "Replacing it will remove all files in thefolder."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:232
+#, c-format
+msgid "Replace folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:234
+#, c-format
+msgid "A folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:240
+#, c-format
+msgid "Replace file \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:241
+msgid "Replacing it will overwrite its content."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:243
+#, c-format
+msgid "An older file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:247
+#, c-format
+msgid "A newer file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:251
+#, c-format
+msgid "Another file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:322
+msgid "Original file"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:323
+#: ../lib/dentry/fileops_error_dialog.c:351
+msgid "Size:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:327
+#: ../lib/dentry/fileops_error_dialog.c:355
+msgid "Type:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:331
+#: ../lib/dentry/fileops_error_dialog.c:359
+msgid "Last modified:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:350
+msgid "Replace with"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:376
+msgid "Merge"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_reporting.c:83
+#: ../lib/dentry/fileops_error_reporting.c:165
+#, c-format
+msgid "Error while %s files"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:50
+msgid "Empty Trash"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:53
+msgid "Empty all items from Trash?"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:54
+msgid "All items in the Trash will be permanently deleted."
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:57
+msgid "Empty _Trash"
+msgstr ""
