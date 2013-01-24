@@ -293,6 +293,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 	if (type != G_FILE_TYPE_DIRECTORY)
 	{
 	    //TODO: symbolic links
+	    g_debug ("dest type is not directory");
 	    return;
 	}
 	char* src_basename= g_file_get_basename (src);
@@ -458,6 +459,7 @@ _trash_files_async (GFile* file, gpointer data)
 static gboolean
 _move_files_async (GFile* src, gpointer data)
 {
+    g_debug ("begin _move_files_async");
     gboolean retval = TRUE;
 
     TDData* _data = (TDData*) data;
