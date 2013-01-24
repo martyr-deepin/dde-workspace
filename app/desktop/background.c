@@ -26,9 +26,15 @@ gboolean update_root_pixmap()
         GdkVisual *visual = gdk_screen_get_system_visual (screen);
         g_assert(visual);
         cairo_surface_t* surface = cairo_xlib_surface_create(_dsp, ROOT_PIXMAP, GDK_VISUAL_XVISUAL(visual), s_width, s_height);
+        g_message("create background surface %d\n", ROOT_PIXMAP);
         g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
         g_assert(surface != NULL);
         g_assert(_background_cairo != NULL);
+
+        //
+        cairo_set_source_rgb(_background_cairo, 1, 1, 1);
+        cairo_paint(_background_cairo);
+        //
 
         cairo_set_source_surface(_background_cairo, surface, 0, 0);
         g_assert(cairo_status(_background_cairo) == CAIRO_STATUS_SUCCESS);
