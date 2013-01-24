@@ -1023,7 +1023,7 @@ class TrashVDir extends DesktopEntry
 
 
     get_name : ->
-        _("Trash Bin")
+        _("Trash")
 
 
     get_icon : ->
