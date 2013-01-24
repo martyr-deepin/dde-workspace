@@ -38,6 +38,8 @@
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
+GKeyFile *greeter_keyfile;
+static gchar* greeter_file = NULL;
 static gboolean cancelling = FALSE, prompted = FALSE;
 gchar *selected_user = NULL, *selected_session = NULL;
 static gint response_count = 0;
@@ -71,6 +73,8 @@ const gchar* greeter_get_session_name(const gchar *key);
 const gchar* greeter_get_session_comment(const gchar *key);
 const gchar* greeter_get_session_icon(const gchar *key);
 ArrayContainer greeter_get_users();
+static const gchar* get_last_user();
+static void set_last_user(const gchar *name);
 static const gchar* get_first_user();
 const gchar* greeter_get_user_image(const gchar* name);
 const gchar* greeter_get_user_background(const gchar*name);
@@ -85,7 +89,7 @@ gboolean greeter_run_restart();
 gboolean greeter_run_shutdown();
 static void sigterm_cb(int signum);
 static cairo_surface_t * create_root_surface(GdkScreen *screen);
-void greeter_update_background();
+static void greeter_update_background();
 
 /* GREETER */
 static gboolean is_user_valid(const gchar *username)
@@ -154,7 +158,12 @@ const gchar* greeter_get_default_user()
 {
     const gchar* user = NULL;
 
-    user = lightdm_greeter_get_select_user_hint(greeter);
+    user = get_last_user();
+    js_post_message_simply("status", "{\"status\":\"last_user-%s\"}", user);
+
+    if(user == NULL){
+        user = lightdm_greeter_get_select_user_hint(greeter);
+    }
     if(user != NULL){
         if(is_user_valid(user)){
             return user; 
@@ -320,6 +329,7 @@ static void start_session(const gchar *session)
 {
     g_return_if_fail(is_session_valid(session));
 
+    set_last_user(get_selected_user());
     greeter_update_background();
 
 #ifdef DEBUG
@@ -331,6 +341,9 @@ static void start_session(const gchar *session)
 #endif
         greeter_start_authentication(get_selected_user());
     }else{
+        g_free(greeter_file);
+        greeter_file = NULL;
+        g_key_file_free(greeter_keyfile);
         g_free(selected_user);
         selected_user = NULL;
         g_free(selected_session);
@@ -612,6 +625,22 @@ static const gchar* get_first_user()
     return name;
 }
 
+static const gchar* get_last_user()
+{
+    return g_key_file_get_value(greeter_keyfile, "deepin-greeter", "last-user", NULL);
+}
+
+static void set_last_user(const gchar* name){
+    gchar *data;
+    gsize length;
+    g_return_if_fail(name);
+
+    g_key_file_set_value(greeter_keyfile, "deepin-greeter", "last-user", name);
+    data = g_key_file_to_data(greeter_keyfile, &length, NULL);
+    g_file_set_contents(greeter_file, data, length, NULL);
+    g_free(data);
+}
+
 JS_EXPORT_API
 const gchar* greeter_get_user_image(const gchar* name)
 {
@@ -785,7 +814,7 @@ static cairo_surface_t * create_root_surface (GdkScreen *screen)
     return surface;  
 }
 
-void greeter_update_background()
+static void greeter_update_background()
 {
     GdkPixbuf *background_pixbuf = NULL;
     GdkRGBA background_color;
@@ -848,6 +877,17 @@ int main(int argc, char **argv)
 
     init_i18n();
     gtk_init(&argc, &argv);
+
+    gchar *greeter_dir = g_build_filename(g_get_user_cache_dir(), "lightdm", NULL);
+    if(g_mkdir_with_parents(greeter_dir, 0755) < 0){
+        greeter_dir = "/var/cache/lightdm";
+    }
+    
+    greeter_file = g_build_filename(greeter_dir, "deepin-greeter", NULL);
+    g_free(greeter_dir);
+
+    greeter_keyfile = g_key_file_new();
+    g_key_file_load_from_file(greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
 
     greeter = lightdm_greeter_new();
     g_assert(greeter);
