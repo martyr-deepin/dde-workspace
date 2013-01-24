@@ -214,7 +214,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
     set_default_theme("Deepin");
-    set_desktop_env_name("GNOME");
+    set_desktop_env_name("Deepin");
 
     container = create_web_container(FALSE, FALSE);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
