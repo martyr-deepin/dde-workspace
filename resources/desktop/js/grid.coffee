@@ -94,7 +94,9 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 load_position = (id) ->
     if typeof(id) != "string" then echo "error load_position #{id}"
     pos = localStorage.getObject("id:" + id)
-    if pos == null then return null
+    if pos == null
+        echo "[load_position]failed to get id:#{id}"
+        return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if cols > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
@@ -292,7 +294,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_name_from_id]")
+        echo("we get error here[sort_list_by_mtime_from_id]")
         return w1.localeCompare(w2)
     else
         return w1.get_mtime() - w2.get_mtime()
@@ -580,7 +582,7 @@ update_selected_item_drag_image = ->
     bottom_right = {x : 0, y : 0}
 
     for i in selected_item
-        if not (pos = load_position(i))? then continue
+        pos = load_position(i)
 
         if top_left.x > pos.x then top_left.x = pos.x
         if bottom_right.x < pos.x then bottom_right.x = pos.x

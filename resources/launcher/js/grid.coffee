@@ -49,7 +49,7 @@ class Item extends Widget
         #$("#close").setAttribute("class", "close_hover")
 
     do_dragstart: (e)->
-        e.dataTransfer.setData("text/uri-list", "file://#{encodeURI(DCore.DEntry.get_path(@core))}")
+        e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
@@ -64,7 +64,7 @@ class Item extends Widget
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then DCore.DEntry.copy([@core], DCore.Launcher.get_desktop_entry())
-            when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_path(@core))
+            when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
 
 
 
