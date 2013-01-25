@@ -417,7 +417,6 @@ class DesktopEntry extends Item
     do_dragover : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
-        echo "preventDefault"
 
         evt.dataTransfer.dropEffect = "none"
         return
@@ -624,7 +623,6 @@ class RichDir extends DesktopEntry
             if @show_pop == true
                 @hide_pop_block()
                 if list.length then DCore.DEntry.move(list, g_desktop_entry)
-            discard_position(@id)
             DCore.DEntry.delete_files([@entry], false)
         else
             if @show_pop == true
@@ -834,7 +832,6 @@ class Application extends DesktopEntry
 
         if all_are_apps == true
             tmp_list.push(@entry)
-            discard_position(DCore.DEntry.get_id(i)) for i in tmp_list
             DCore.Desktop.create_rich_dir(tmp_list)
         else
             DCore.DEntry.launch(@entry, tmp_list)
