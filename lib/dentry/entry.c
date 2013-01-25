@@ -168,7 +168,7 @@ char* dentry_get_uri(Entry* e)
         return g_file_get_uri(f);
     TEST_GAPP(e, app)
         char* encode = g_uri_escape_string(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)),
-                    NULL, FALSE);
+                    "/", FALSE);
         char* uri = g_strdup_printf("file://%s", encode);
         g_free(encode);
         return uri;
