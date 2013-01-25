@@ -226,9 +226,12 @@ else
             try
                 user_image = DCore.Greeter.get_user_image(user)
             catch error
-                user_image = "images/guest.jpg"
+                echo "get user image failed"
             if not user_image? or user_image == "nonexists"
-                user_image = "images/guest.jpg"
+                try
+                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+                catch error
+                    user_image = "images/guest.jpg"
     
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
@@ -247,10 +250,13 @@ else
             try
                 user_image = DCore.Greeter.get_user_image(user)
             catch error
-                user_image = "images/guest.jpg"
+                echo "get user image failed"
             if not user_image? or user_image == "nonexists"
-                user_image = "images/guest.jpg"
-    
+                try
+                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+                catch error
+                    user_image = "images/guest.jpg"
+
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
 
