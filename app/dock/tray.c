@@ -54,10 +54,11 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
-        g_hash_table_remove(_icons, data);
         if (_deepin_tray == data) {
-            _deepin_tray == NULL;
+            _deepin_tray = NULL;
             _deepin_tray_width = 0;
+        } else {
+            g_hash_table_remove(_icons, data);
         }
         update_notify_area_width();
     } else if (xev->type == ConfigureNotify) {
