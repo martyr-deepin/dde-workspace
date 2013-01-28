@@ -55,6 +55,7 @@ void js_post_message_simply(const char* name, const char* format, ...)
         va_end(args);
 
         js_post_message(name, json_from_cstr(ctx, json_str));
+        g_free(json_str);
     }
 }
 
