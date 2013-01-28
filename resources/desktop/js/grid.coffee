@@ -469,7 +469,7 @@ item_dragend_handler = (w, evt) ->
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
-            move_to_somewhere(w, new_pos)
+            if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
 
         update_selected_item_drag_image()
     return
