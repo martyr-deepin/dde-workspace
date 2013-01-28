@@ -80,7 +80,8 @@ class Item extends Widget
 
 
     get_icon : ->
-        DCore.DEntry.get_icon(@entry)
+        if (icon = DCore.DEntry.get_icon(@entry)) == null then icon = DCore.get_theme_icon("unknown", 48)
+        icon
 
 
     get_path : ->
@@ -463,13 +464,13 @@ class Folder extends DesktopEntry
     do_drop : (evt) =>
         super
 
-        if evt.dataTransfer.dropEffect == "move"
-            tmp_list = []
-            for file in evt.dataTransfer.files
-                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                if not e? then continue
-                tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        tmp_list = []
+        for file in evt.dataTransfer.files
+            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+            if not e? then continue
+            tmp_list.push(e)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+
         return
 
 
