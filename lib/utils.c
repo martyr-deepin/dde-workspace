@@ -255,6 +255,7 @@ void save_app_config(GKeyFile* key, const char* name)
     gchar* content = g_key_file_to_data(key, &size, NULL);
     write_to_file(path, content, size);
     g_free(content);
+    g_free(path);
 }
 
 gboolean write_to_file(const char* path, const char* content, size_t size/* if 0 will use strlen(content)*/)
