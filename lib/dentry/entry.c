@@ -207,7 +207,9 @@ JS_EXPORT_API
 char* dentry_get_id(Entry* e)
 {
     char* uri = dentry_get_uri(e);
-    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, uri, strlen(uri));
+    char* name = g_path_get_basename(uri);
+    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, name, strlen(name));
+    g_free(name);
     g_free(uri);
     return id;
 }
