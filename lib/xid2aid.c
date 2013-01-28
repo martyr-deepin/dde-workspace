@@ -211,18 +211,22 @@ void get_pid_info(int pid, char** exec_name, char** exec_args)
         for (gsize i=0; i<len; i++) {
             name_args[i] = g_utf8_casefold(g_ptr_array_index(tmp, i), -1);
         }
-        name_args[len] = NULL;
-
         g_ptr_array_free(tmp, TRUE);
-        g_free(cmd_line);
+        name_args[len] = NULL;
 
         _get_exec_name_args(name_args, exec_name, exec_args);
 
+        for (gsize i=0; i<len; i++) {
+            g_free(name_args[i]);
+        }
+        g_free(name_args);
+
     } else {
-        g_free(path);
         *exec_name = NULL;
         *exec_args = NULL;
     }
+    g_free(path);
+    g_free(cmd_line);
 }
 
 gboolean is_app_in_white_list(const char* name)
