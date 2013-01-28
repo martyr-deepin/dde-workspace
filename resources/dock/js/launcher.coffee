@@ -1,7 +1,7 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @element.setAttribute("title", "APPID:#{@id}")
+        @element.setAttribute("title", @id)
 
 
     try_swap_clientgroup: ->

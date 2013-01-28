@@ -26,32 +26,123 @@
 #include "i18n.h"
 #include "utils.h"
 #include "X_misc.h"
-
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <gio/gio.h>
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
-#include <glib.h>
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 GtkWidget* lock_container = NULL;
 struct passwd *pw = NULL;
+static const gchar *username = NULL;
 
-JS_EXPORT_API
-const gchar* lock_get_username()
+static void init_user()
 {
-    const gchar *username = NULL;
-
     if(pw != NULL){
         pw = NULL;
     }
 
     pw = getpwuid(getuid());
     username = pw->pw_name;
+}
 
+JS_EXPORT_API
+const gchar* lock_get_username()
+{
     return username;
+}
+
+JS_EXPORT_API
+const gchar* lock_get_icon()
+{
+    GDBusProxy *account_proxy = NULL;
+    GError * error = NULL;
+
+    account_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            "/org/freedesktop/Accounts",
+            "org.freedesktop.Accounts",
+            NULL, 
+            &error);
+
+    if(error != NULL){
+        g_debug("connect org.freedesktop.Accounts failed");
+        g_error_free(error);
+    }
+
+    error = NULL;
+    GVariant * user_path_var = NULL;
+    user_path_var = g_dbus_proxy_call_sync(account_proxy, 
+           "FindUserByName",
+            g_variant_new("(s)", username),
+            G_DBUS_CALL_FLAGS_NONE,
+            -1, 
+            NULL,
+            &error);
+
+    if(error != NULL){
+        g_debug("find user by name failed");
+        g_error_free(error);
+    }
+
+    error = NULL;
+    char *user_path = NULL;
+    g_variant_get(user_path_var, "(o)", &user_path);
+
+    g_variant_unref(user_path_var);
+    g_object_unref(account_proxy);
+
+    GDBusProxy *user_proxy = NULL;
+    user_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            user_path,
+            "org.freedesktop.DBus.Properties",
+            NULL,
+            &error);
+
+    if(error != NULL){
+        g_debug("connect org.freedesktop.Accounts failed");
+        g_error_free(error);
+    }
+
+    error = NULL;
+    g_free(user_path);
+
+    GVariant *user_icon_var = NULL;
+    user_icon_var = g_dbus_proxy_call_sync(user_proxy,
+            "Get",
+            g_variant_new("(ss)", "org.freedesktop.Accounts.User", "IconFile"),
+            G_DBUS_CALL_FLAGS_NONE,
+            -1, 
+            NULL,
+            &error);
+
+    if(error != NULL){
+        g_debug("get user icon failed");
+        g_error_free(error);
+    }
+
+    error = NULL;
+    const gchar *user_icon = NULL;
+    g_variant_get(user_icon_var, "(v)", &user_icon);
+
+    g_variant_unref(user_icon_var);
+    g_object_unref(user_proxy);
+
+    if(g_file_test(user_icon, G_FILE_TEST_EXISTS)){
+        return user_icon;
+    }else{
+        return "nonexists";
+    }
 }
 
 JS_EXPORT_API
@@ -67,7 +158,6 @@ gboolean lock_try_unlock(const gchar *password)
     gboolean is_locked;
     gint exit_status;
 
-    gchar *username = g_strdup(lock_get_username());
     gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, password);
 
     g_spawn_command_line_sync(command, NULL, NULL, &exit_status, NULL);
@@ -79,9 +169,6 @@ gboolean lock_try_unlock(const gchar *password)
         js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
         is_locked = TRUE;
     }
-
-    g_free(username);
-    username = NULL;
 
     g_free(command);
     command = NULL;
@@ -98,6 +185,8 @@ int main(int argc, char **argv)
 {
     init_i18n();
     gtk_init(&argc, &argv);
+
+    init_user();
 
     lock_container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
