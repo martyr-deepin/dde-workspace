@@ -135,10 +135,14 @@ class UserInfo extends Widget
 user = DCore.Lock.get_username()
 
 user_path = DCore.DBus.sys_object("org.freedesktop.Accounts","/org/freedesktop/Accounts","org.freedesktop.Accounts").FindUserByName_sync(user)
-user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").IconFile
+#user_image = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").IconFile
+user_image = DCore.Lock.get_icon()
 
-if not user_image? or not user_image.length
-    user_image = "images/img01.jpg"
+if not user_image? or user_image == "nonexists"
+    try
+        user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+    catch error
+        user_image = "images/img01.jpg"
 
 user_background = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").BackgroundFile
 if not user_background? or not user_background.length
