@@ -258,10 +258,8 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        old_pos = load_position(widget.id)
-        if not old_pos?
-            pos = find_free_position(1, 1)
-            move_to_position(widget, pos)
+        pos = find_free_position(1, 1)
+        move_to_position(widget, pos)
     return
 
 

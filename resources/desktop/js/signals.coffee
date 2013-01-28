@@ -54,8 +54,9 @@ do_item_update = (data) ->
     else
         w = create_item(data.entry)
         if w?
-            move_to_anywhere(w)
             all_item.push(w.id)
+            move_to_anywhere(w)
+
 
 
 do_item_rename = (data) ->
