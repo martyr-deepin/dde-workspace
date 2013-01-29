@@ -40,9 +40,9 @@ GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
 GKeyFile *greeter_keyfile;
 static gchar* greeter_file = NULL;
-static gboolean cancelling = FALSE, prompted = FALSE;
-gchar *selected_user = NULL, *selected_session = NULL;
+static gchar *selected_user = NULL, *selected_session = NULL;
 static gint response_count = 0;
+static gboolean cancelling = FALSE, prompted = FALSE;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -95,8 +95,9 @@ static void greeter_update_background();
 static gboolean is_user_valid(const gchar *username)
 {
     gboolean ret = FALSE;
-    if((username == NULL) || (username == ""))
-	return ret;
+    if((username == NULL) || (username == "")){
+	    return ret;
+    }
 
     LightDMUserList *user_list = NULL;
     GList *users = NULL;
@@ -127,8 +128,9 @@ static gboolean is_user_valid(const gchar *username)
 static gboolean is_session_valid(const gchar *session)
 {
     gboolean ret = FALSE;
-    if((session == NULL) || (session == ""))
-	return ret;
+    if((session == NULL) || (session == "")){
+	    return ret;
+    }
 
     GList *sessions = NULL;
     LightDMSession *psession = NULL;
@@ -159,7 +161,9 @@ const gchar* greeter_get_default_user()
     const gchar* user = NULL;
 
     user = get_last_user();
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"last_user-%s\"}", user);
+#endif
 
     if(user == NULL){
         user = lightdm_greeter_get_select_user_hint(greeter);
@@ -167,12 +171,10 @@ const gchar* greeter_get_default_user()
     if(user != NULL){
         if(is_user_valid(user)){
             return user; 
-        }else{
-            return get_first_user();
         }
-    }else{
-        return get_first_user();
     }
+    
+    return get_first_user();
 }
 
 JS_EXPORT_API
@@ -184,35 +186,28 @@ const gchar* greeter_get_default_session()
     if(session != NULL){
         if(is_session_valid(session)){
             return session; 
-        }else{
-            return get_first_session();
         }
-    }else{
-        return get_first_session();
     }
+
+    return get_first_session();
 }
 
 static gchar* get_selected_user()
 {
-    if(selected_user != NULL){
-        return selected_user;
-    }else{
+    if(selected_user == NULL){
         greeter_set_selected_user(greeter_get_default_user());
-        return selected_user;
     }
+
+    return selected_user;
 }
 
 static gchar* get_selected_session()
 {
-    if(selected_session != NULL){
-        return selected_session;
-    }else{
+    if(selected_session == NULL){
         greeter_set_selected_session(greeter_get_default_session());
-#ifdef DEBUG
-        js_post_message_simply("status", "{\"status\":\"set_selected_session-%s\"}", selected_session);
-#endif
-        return selected_session;
     }
+
+    return selected_session;
 }
 
 JS_EXPORT_API
@@ -224,6 +219,7 @@ void greeter_set_selected_user(const gchar *username)
         g_free(selected_user);
         selected_user = NULL;
     }
+
     selected_user = g_strdup(username);
 }
 
@@ -236,10 +232,8 @@ void greeter_set_selected_session(const gchar *session)
         g_free(selected_session);
         selected_session = NULL;
     }
+
     selected_session = g_strdup(session);
-#ifdef DEBUG
-    js_post_message_simply("status", "{\"status\":\"set_selected_session-%s\"}", selected_session);
-#endif
 }
 
 JS_EXPORT_API
@@ -265,9 +259,11 @@ void greeter_start_authentication(const gchar *username)
 {
     cancelling = FALSE;
     prompted = FALSE;
-#ifdef DEBUG
+
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
 #endif
+
     if(g_strcmp0(username, "*other") == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 
@@ -284,6 +280,7 @@ void greeter_cancel_authentication()
 {
     cancelling = FALSE;
     response_count = 0;
+
     if(lightdm_greeter_get_in_authentication(greeter)){
         cancelling = TRUE;
         lightdm_greeter_cancel_authentication(greeter);
@@ -298,30 +295,28 @@ void greeter_cancel_authentication()
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
 #endif
-    selected_user = get_selected_user();
-    selected_session = get_selected_session();
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
-#ifdef DEBUG
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
 #endif
-        start_session(selected_session);
+        start_session(get_selected_session());
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
-#ifdef DEBUG
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
 #endif
         lightdm_greeter_respond(greeter, password);
         response_count = response_count + 1;
 
     }else{
-#ifdef DEBUG
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start auth");
 #endif
-        greeter_start_authentication(selected_user);
+        greeter_start_authentication(get_selected_user());
     }
 }
 
@@ -332,11 +327,12 @@ static void start_session(const gchar *session)
     set_last_user(get_selected_user());
     greeter_update_background();
 
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
 #endif
+
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
-#ifdef DEBUG
+#if DEBUG
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
         greeter_start_authentication(get_selected_user());
@@ -357,7 +353,8 @@ static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPr
     if(response_count == 1){
         js_post_message_simply("prompt", "{\"status\":\"%s\"}", "expect response");
     }
-#ifdef DEBUG
+
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
 #endif
 }
@@ -371,7 +368,7 @@ static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMM
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
 #endif
 
@@ -382,15 +379,16 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
-#ifdef DEBUG
+#if DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
 #endif
             start_session(get_selected_session());
         }
+
     }else{
         if(prompted){
-#ifdef DEBUG
-            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, re start auth");
+#if DEBUG
+            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, restart auth");
 #endif
             js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
             greeter_start_authentication(get_selected_user());
@@ -485,11 +483,9 @@ ArrayContainer greeter_get_sessions()
 
 static const gchar* get_first_session()
 {
-    const gchar* name = NULL;
-    GList *sessions = NULL;
     const gchar *key = NULL;
+    GList *sessions = NULL;
     LightDMSession *session = NULL;
-    GPtrArray *keys = g_ptr_array_new();
 
     sessions = lightdm_get_sessions();
     g_assert(sessions);
@@ -497,9 +493,9 @@ static const gchar* get_first_session()
     session = (LightDMSession *)g_list_nth_data(sessions, 0);
     g_assert(session);
 
-    name = lightdm_session_get_key(session);
+    key = lightdm_session_get_key(session);
 
-    return name;
+    return key;
 }
 
 /* get session name according to session key */
@@ -605,10 +601,10 @@ ArrayContainer greeter_get_users()
 
 static const gchar* get_first_user()
 {
+    const gchar *name = NULL;
     LightDMUserList *user_list = NULL;
     GList *users = NULL;
     LightDMUser *user = NULL;
-    const gchar *name = NULL;
     GPtrArray *names = g_ptr_array_new();
 
     user_list = lightdm_user_list_get_instance();
@@ -630,14 +626,17 @@ static const gchar* get_last_user()
     return g_key_file_get_value(greeter_keyfile, "deepin-greeter", "last-user", NULL);
 }
 
-static void set_last_user(const gchar* name){
+static void set_last_user(const gchar* name)
+{
+    g_return_if_fail(name);
+
     gchar *data;
     gsize length;
-    g_return_if_fail(name);
 
     g_key_file_set_value(greeter_keyfile, "deepin-greeter", "last-user", name);
     data = g_key_file_to_data(greeter_keyfile, &length, NULL);
     g_file_set_contents(greeter_file, data, length, NULL);
+
     g_free(data);
 }
 
@@ -657,11 +656,11 @@ const gchar* greeter_get_user_image(const gchar* name)
     g_assert(user);
 
     image = lightdm_user_get_image(user);
-    if(g_file_test(image, G_FILE_TEST_EXISTS)){
-        return image;
-    }else{
-        return "nonexists";
+    if(!(g_file_test(image, G_FILE_TEST_EXISTS))){
+        image = "nonexists";
     }
+
+    return image;
 }
 
 JS_EXPORT_API
@@ -680,10 +679,11 @@ const gchar* greeter_get_user_background(const gchar* name)
     g_assert(user);
 
     background = lightdm_user_get_background(user);
-    if((g_file_test(background, G_FILE_TEST_EXISTS))){
-        return background;
+    if(!(g_file_test(background, G_FILE_TEST_EXISTS))){
+        background = "nonexists";
     }
-	return "nonexists";
+
+    return background;
 }
 
 JS_EXPORT_API
@@ -703,7 +703,7 @@ const gchar* greeter_get_user_session(const gchar* name)
 
     session = lightdm_user_get_session(user);
     if(session == NULL){
-	session = "nonexists";
+	    session = "nonexists";
     }
 
     return session;
@@ -737,9 +737,8 @@ gboolean greeter_get_can_shutdown()
 JS_EXPORT_API
 gboolean greeter_run_suspend()
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "suspend clicked");
-    js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
     return lightdm_suspend(NULL);
 }
@@ -747,9 +746,8 @@ gboolean greeter_run_suspend()
 JS_EXPORT_API
 gboolean greeter_run_hibernate()
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "hibernate clicked");
-    js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
     return lightdm_hibernate(NULL);
 }
@@ -757,9 +755,8 @@ gboolean greeter_run_hibernate()
 JS_EXPORT_API
 gboolean greeter_run_restart()
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "restart clicked");
-    js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
     return lightdm_restart(NULL);
 }
@@ -767,9 +764,8 @@ gboolean greeter_run_restart()
 JS_EXPORT_API
 gboolean greeter_run_shutdown()
 {
-#ifdef DEBUG
+#if DEBUG
     js_post_message_simply("power", "{\"status\":\"%s\"}", "shutdown clicked");
-    js_post_message_simply("power", "{\"status\":\"%s\"}", getuid());
 #endif
     return lightdm_shutdown(NULL);
 }
@@ -779,39 +775,39 @@ static void sigterm_cb(int signum)
     gtk_main_quit();
 }
 
-static cairo_surface_t * create_root_surface (GdkScreen *screen)
+static cairo_surface_t * create_root_surface(GdkScreen *screen)
 {
     gint number, width, height;
     Display *display;
     Pixmap pixmap;
     cairo_surface_t *surface;
 
-    number = gdk_screen_get_number (screen);
-    width = gdk_screen_get_width (screen);
-    height = gdk_screen_get_height (screen);
+    number = gdk_screen_get_number(screen);
+    width = gdk_screen_get_width(screen);
+    height = gdk_screen_get_height(screen);
 
     /* Open a new connection so with Retain Permanent so the pixmap remains when the greeter quits */
-    gdk_flush ();
-    display = XOpenDisplay (gdk_display_get_name (gdk_screen_get_display (screen)));
-    if (!display)
+    gdk_flush();
+    display = XOpenDisplay(gdk_display_get_name(gdk_screen_get_display(screen)));
+    if(!display)
     {
-        g_warning ("Failed to create root pixmap");
+        g_warning("Failed to create root pixmap");
         return NULL;
     }
-    XSetCloseDownMode (display, RetainPermanent);
-    pixmap = XCreatePixmap (display, RootWindow (display, number), width, height, DefaultDepth (display, number));
-    XCloseDisplay (display);
+    XSetCloseDownMode(display, RetainPermanent);
+    pixmap = XCreatePixmap(display, RootWindow(display, number), width, height, DefaultDepth(display, number));
+    XCloseDisplay(display);
 
     /* Convert into a Cairo surface */
-    surface = cairo_xlib_surface_create (GDK_SCREEN_XDISPLAY (screen),
+    surface = cairo_xlib_surface_create(GDK_SCREEN_XDISPLAY(screen),
                                          pixmap,
-                                         GDK_VISUAL_XVISUAL (gdk_screen_get_system_visual (screen)),
+                                         GDK_VISUAL_XVISUAL(gdk_screen_get_system_visual(screen)),
                                          width, height);
 
     /* Use this pixmap for the background */
-    XSetWindowBackgroundPixmap (GDK_SCREEN_XDISPLAY (screen),
-                                RootWindow (GDK_SCREEN_XDISPLAY (screen), number),
-                                cairo_xlib_surface_get_drawable (surface));
+    XSetWindowBackgroundPixmap(GDK_SCREEN_XDISPLAY(screen),
+                                RootWindow(GDK_SCREEN_XDISPLAY(screen), number),
+                                cairo_xlib_surface_get_drawable(surface));
 
 
     return surface;  
@@ -823,8 +819,7 @@ static void greeter_update_background()
     GdkRGBA background_color;
     GdkRectangle monitor_geometry;
 
-    selected_user = get_selected_user();
-    const gchar *bg_path = greeter_get_user_background(selected_user);
+    const gchar *bg_path = greeter_get_user_background(get_selected_user());
     if(g_strcmp0(bg_path, "nonexists") == 0){
         bg_path = "/usr/share/backgrounds/1440x900.jpg";
     }
@@ -835,40 +830,46 @@ static void greeter_update_background()
            g_warning ("Failed to load background: %s", bg_path);
     }
 
-    for (int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
+    for(int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
     {
         GdkScreen *screen;
         cairo_surface_t *surface;
         cairo_t *c;
         int monitor;
 
-        screen = gdk_display_get_screen (gdk_display_get_default (), i);
-        surface = create_root_surface (screen);
-        c = cairo_create (surface);
+        screen = gdk_display_get_screen(gdk_display_get_default(), i);
+        surface = create_root_surface(screen);
+        c = cairo_create(surface);
 
-        for (monitor = 0; monitor < gdk_screen_get_n_monitors (screen); monitor++)
+        for(monitor = 0; monitor < gdk_screen_get_n_monitors(screen); monitor++)
         {
-            gdk_screen_get_monitor_geometry (screen, monitor, &monitor_geometry);
+            gdk_screen_get_monitor_geometry(screen, monitor, &monitor_geometry);
 
-            if (background_pixbuf)
+            if(background_pixbuf)
             {
-                GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple (background_pixbuf, monitor_geometry.width, monitor_geometry.height, GDK_INTERP_BILINEAR);
-                gdk_cairo_set_source_pixbuf (c, pixbuf, monitor_geometry.x, monitor_geometry.y);
-                g_object_unref (pixbuf);
+                GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple(background_pixbuf,
+                                                            monitor_geometry.width, 
+                                                            monitor_geometry.height,
+                                                            GDK_INTERP_BILINEAR);
+
+                gdk_cairo_set_source_pixbuf(c, pixbuf, monitor_geometry.x, monitor_geometry.y);
+                g_object_unref(pixbuf);
+            }else{
+                gdk_cairo_set_source_rgba(c, &background_color);
             }
-            else
-                gdk_cairo_set_source_rgba (c, &background_color);
-            cairo_paint (c);
+
+            cairo_paint(c);
         }
 
-        cairo_destroy (c);
+        cairo_destroy(c);
 
         /* Refresh background */
-        gdk_flush ();
-        XClearWindow (GDK_SCREEN_XDISPLAY (screen), RootWindow (GDK_SCREEN_XDISPLAY (screen), i));
+        gdk_flush();
+        XClearWindow(GDK_SCREEN_XDISPLAY(screen), RootWindow(GDK_SCREEN_XDISPLAY(screen), i));
     }
-    if (background_pixbuf)
-        g_object_unref (background_pixbuf);
+    if(background_pixbuf){
+        g_object_unref(background_pixbuf);
+    }
 }
 
 int main(int argc, char **argv)
