@@ -120,6 +120,8 @@ class Item extends Widget
             else
                 if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                     @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
+                else if @in_rename
+                    @item_complete_rename(true)
                 else
                     @clear_delay_rename_timer()
 
@@ -531,11 +533,17 @@ class RichDir extends DesktopEntry
                 update_selected_stats(this, evt)
             else
                 if @show_pop == false
-                    @show_pop_block()
+                    if @in_rename
+                        @item_complete_rename(true)
+                    else
+                        @clear_delay_rename_timer()
+                        @show_pop_block()
                 else
                     @hide_pop_block()
                     if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                         @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
+                    else if @in_rename
+                        @item_complete_rename(true)
                     else
                         @clear_delay_rename_timer()
 
