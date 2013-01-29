@@ -323,18 +323,24 @@ class Item extends Widget
             when 35 # 'End' key
                 evt.preventDefault()
                 ws = window.getSelection()
-                ws.removeAllRanges()
                 range = document.createRange()
-                range.setStart(@item_name.childNodes[0], @item_name.childNodes[0].length)
+                if evt.shiftKey == true
+                    range.setStart(@item_name.childNodes[0], ws.getRangeAt().startOffset)
+                else
+                    range.setStart(@item_name.childNodes[0], @item_name.childNodes[0].length)
                 range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
+                ws.removeAllRanges()
                 ws.addRange(range)
             when 36 # 'Home' key
                 evt.preventDefault()
                 ws = window.getSelection()
-                ws.removeAllRanges()
                 range = document.createRange()
+                if evt.shiftKey == true
+                    range.setEnd(@item_name.childNodes[0], ws.getRangeAt().endOffset)
+                else
+                    range.setEnd(@item_name.childNodes[0], 0)
                 range.setStart(@item_name.childNodes[0], 0)
-                range.setEnd(@item_name.childNodes[0], 0)
+                ws.removeAllRanges()
                 ws.addRange(range)
         return
 
