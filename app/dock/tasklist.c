@@ -114,11 +114,12 @@ Client* create_client_from_window(Window w)
     gdk_window_set_events(win, GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
-    Client* c = g_new(Client, 1);
+    Client* c = g_new0(Client, 1);
     c->window = w;
     c->gdkwindow = win;
     c->is_maximized = FALSE;
     c->app_id = NULL;
+    c->exec = NULL;
 
 
 
@@ -172,22 +173,22 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
-
 void client_free(Client* c)
 {
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
-    g_object_unref(c->gdkwindow);
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
     json_append_string(json, "app_id", c->app_id);
     js_post_message("task_removed", json);
-    g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
     g_free(c->app_id);
-    g_free(c);
+    g_free(c->exec);
+    g_object_unref(c->gdkwindow);
+    g_free(c->icon);
 
+    g_free(c);
 }
 
 
@@ -366,16 +367,17 @@ void _update_window_icon(Client* c)
 
 
     char* handle_icon(GdkPixbuf* icon);
+    g_free(c->icon);
     c->icon = handle_icon(pixbuf);
     g_object_unref(pixbuf);
 
     g_free(img);
-    
     XFree(data);
 }
 
 void _update_window_title(Client* c)
 {
+    g_free(c->title);
     long item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
@@ -421,6 +423,7 @@ void _update_window_appid(Client* c)
 
 void _update_window_class(Client* c)
 {
+    g_free(c->clss);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
         c->clss = g_strdup(ch.res_class);
