@@ -5,13 +5,15 @@ apply_animation = (el, name, duration, timefunc)->
 
 apply_rotate = (el, time)->
     apply_animation(el, "rotate", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")
-    setTimeout(->
+    id = setTimeout(->
         el.style.webkitAnimation = ""
+        clearTimeout(id)
     , time * 1000)
 
 apply_flash = (el, time)->
     apply_animation(el, "flash", "#{time}s", "cubic-bezier(0, 0, 0.35, -1)")
-    setTimeout(->
+    id = setTimeout(->
         el.style.webkitAnimation = ""
+        clearTimeout(id)
     , time * 1000)
 
