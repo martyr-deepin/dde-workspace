@@ -42,6 +42,7 @@ do_item_delete = (data) ->
         cancel_item_selected(w)
         all_item.remove(id)
         w.destroy()
+        discard_position(w.id)
 
     update_selected_item_drag_image()
 
@@ -56,7 +57,6 @@ do_item_update = (data) ->
         if w?
             all_item.push(w.id)
             move_to_anywhere(w)
-
 
 
 do_item_rename = (data) ->
@@ -90,6 +90,7 @@ do_cut_completed = (items) ->
     for e in items
         w = Widget.look_up(DCore.DEntry.get_id(e))
         if w? and w.modifiable == true then w.display_not_cut()
+        return
 
 
 do_desktop_lost_focus = ->

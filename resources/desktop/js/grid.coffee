@@ -104,13 +104,14 @@ load_position = (id) ->
 
 
 save_position = (id, pos) ->
-    assert("string" == typeof(id), "[save_position]accept not string")
+    assert("string" == typeof(id), "[save_position]id not string")
+    assert(pos != null, "[save_position]pos null")
     localStorage.setObject("id:" + id, pos)
     return
 
 
 discard_position = (id) ->
-    assert("string" == typeof(id), "[discard_position]accept not string")
+    assert("string" == typeof(id), "[discard_position]id not string")
     localStorage.removeItem("id:" + id)
     return
 
@@ -356,15 +357,25 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        if not _IS_DND_INTERLNAL_(evt)
+        if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
-            for file in evt.dataTransfer.files
-                if (f = DCore.DEntry.create_by_path(file.path))?
-                    if DCore.DEntry.is_native(f)
-                        tmp_move.push(f)
+            w = Math.sqrt(evt.dataTransfer.files.length) + 1
+            for i in [0 ... evt.dataTransfer.files.length]
+                file = evt.dataTransfer.files[i]
+                if (f_e = DCore.DEntry.create_by_path(file.path))?
+                    if DCore.DEntry.is_native(f_e)
+                        tmp_move.push(f_e)
                     else
-                        tmp_copy.push(f)
+                        tmp_copy.push(f_e)
+
+                    # make items as much nearer as possible to the pos that user drag on
+                    p = {x : 0, y : 0, width : 1, height : 1}
+                    p.x = pos.x + (i % w)
+                    p.y = pos.y + Math.floor(i / w)
+                    if p.x >= cols or p.y >= rows then continue
+                    save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
+
             if tmp_move.length
                 DCore.DEntry.move(tmp_move, g_desktop_entry)
             if tmp_copy.length
@@ -430,8 +441,8 @@ item_dragstart_handler = (widget, evt) ->
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        x = evt.x - drag_start.x * _ITEM_WIDTH_
-        y = evt.y - drag_start.y * _ITEM_HEIGHT_
+        x = evt.x - drag_start.x * grid_item_width
+        y = evt.y - drag_start.y * grid_item_height
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
@@ -605,9 +616,11 @@ update_selected_item_drag_image = ->
         start_x = pos.x * _ITEM_WIDTH_
         start_y = pos.y * _ITEM_HEIGHT_
 
+
         # draw icon
-        drag_context.shadowColor = "rgba(0, 0, 0, 0)"
-        drag_context.drawImage(w.item_icon, start_x + 22, start_y, 48, 48)
+        if w.item_icon.src.length
+            drag_context.shadowColor = "rgba(0, 0, 0, 0)"
+            drag_context.drawImage(w.item_icon, start_x + 22, start_y, 48, 48)
         # draw text
         drag_context.shadowOffsetX = 1
         drag_context.shadowOffsetY = 1
