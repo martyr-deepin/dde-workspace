@@ -17,7 +17,7 @@ enum APPID_ICON_OPERATOR {
 
 char* find_app_id(const char* exec_name, const char* key, int filter);
 void get_pid_info(int pid, char** exec_name, char** exec_args);
-char* get_exe(int pid);
+char* get_exe(const char* app_id, int pid);
 gboolean is_app_in_white_list(const char* name);
 
 gboolean is_deepin_app_id(const char* app_id);
