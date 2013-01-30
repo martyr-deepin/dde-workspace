@@ -408,6 +408,7 @@ void _update_window_appid(Client* c)
         } else {
             app_id = g_strdup(c->clss);
         }
+        c->exec = get_exe(*s_pid);
         XFree(s_pid);
         g_free(exec_name);
         g_free(exec_args);
@@ -419,6 +420,7 @@ void _update_window_appid(Client* c)
     g_free(c->app_id);
     g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
+
 }
 
 void _update_window_class(Client* c)
@@ -650,15 +652,7 @@ gboolean dock_request_dock_by_client_id(double id)
         // already has this app info
         return FALSE;
     } else {
-        char* name =  g_strdup(c->app_id);
-        for (gsize i=0; i<strlen(name); i++) {
-            if (name[i] == ' ') {
-                name[i] = '\0';
-                break;
-            }
-        }
-        request_by_info(name, c->app_id, c->icon);
-        g_free(name);
+        request_by_info(c->app_id, c->exec, c->icon);
     }
 }
 
