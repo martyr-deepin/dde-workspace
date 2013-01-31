@@ -17,6 +17,9 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+s_box.setAttribute("placeholder", _("Type to search..."))
+
+
 do_workarea_changed = (alloc)->
     height = alloc.height
     document.body.style.maxHeight = "#{height}px"
