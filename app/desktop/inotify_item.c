@@ -171,8 +171,8 @@ gboolean _inotify_poll()
 
         for (int i=0; i<length; ) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
-            if (event->name[0] == '.') continue;
             i += EVENT_SIZE+event->len;
+            if (event->name[0] == '.' && !g_str_has_prefix(event->name, DEEPIN_RICH_DIR)) continue;
             if (event->len) {
                 printf ("%s changed 0x%x\n", event->name, event->mask);
                 GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
