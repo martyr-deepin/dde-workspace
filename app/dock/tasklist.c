@@ -126,6 +126,10 @@ Client* create_client_from_window(Window w)
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    if (c->app_id == NULL) {
+        client_free(c);
+        return NULL;
+    }
 
     c->need_update_icon = FALSE;
     c->icon = try_get_deepin_icon(c->app_id);
@@ -418,11 +422,13 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
-    g_assert(app_id != NULL);
-    c->app_id = to_lower_inplace(app_id);
+    if (app_id != NULL) {
+        c->app_id = to_lower_inplace(app_id);
 
-    if (s_pid != NULL)
-        c->exec = get_exe(app_id, *s_pid);
+        if (s_pid != NULL)
+            c->exec = get_exe(app_id, *s_pid);
+    }
+
     XFree(s_pid);
 }
 
