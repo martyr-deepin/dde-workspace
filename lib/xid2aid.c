@@ -88,7 +88,7 @@ void _init()
     }
     g_key_file_free(process_regex);
 
-    // load and filters and build white_list
+    // load filters and build white_list
     _build_filter_info(filter_args = g_key_file_new(), FILTER_ARGS_PATH);
     _build_filter_info(filter_wmclass = g_key_file_new(), FILTER_WMCLASS_PATH);
     _build_filter_info(filter_wmname = g_key_file_new(), FILTER_WMNAME_PATH);
@@ -107,16 +107,18 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
 
     gsize name_pos = 0;
     for (; name_pos < length; name_pos++) {
-        char* basename = g_path_get_basename(cmdline[name_pos]);
-        if (g_regex_match(prefix_regex, basename, 0, NULL)) {
-            while (basename[0] == '-')
+        if (cmdline[name_pos] != NULL) {
+            char* basename = g_path_get_basename(cmdline[name_pos]);
+            if (g_regex_match(prefix_regex, basename, 0, NULL)) {
+                while (basename[0] == '-')
+                    name_pos++;
                 name_pos++;
-            name_pos++;
 
-            g_free(basename);
-            break;
-        } else {
-            g_free(basename);
+                g_free(basename);
+                break;
+            } else {
+                g_free(basename);
+            }
         }
     }
 
@@ -202,8 +204,9 @@ void get_pid_info(int pid, char** exec_name, char** exec_args)
         gsize j = 0;
         name_args[j] = cmd_line;
         for (gsize i=1; i<size && j<1024; i++) {
-            if (cmd_line[i] == 0)
-                name_args[++j] = cmd_line + i;
+            if (cmd_line[i] == 0) {
+                name_args[++j] = cmd_line + i + 1;
+            }
         }
         name_args[j ? : j+1] = NULL;
 
@@ -212,7 +215,7 @@ void get_pid_info(int pid, char** exec_name, char** exec_args)
         g_free(name_args);
 
     } else {
-        *exec_name = get_exe(pid);
+        *exec_name = get_exe(NULL, pid);
         *exec_args = NULL;
     }
     g_free(path);
@@ -241,11 +244,13 @@ gboolean is_deepin_app_id(const char* app_id)
     return g_key_file_has_group(deepin_icons, app_id);
 
 }
+
 int get_deepin_app_id_operator(const char* app_id)
 {
     g_assert(deepin_icons != NULL);
     return g_key_file_get_integer(deepin_icons, app_id, "operator", NULL);
 }
+
 char* get_deepin_app_id_value(const char* app_id)
 {
     g_assert(deepin_icons != NULL);
@@ -253,7 +258,7 @@ char* get_deepin_app_id_value(const char* app_id)
 }
 
 
-char* get_exe(int pid)
+char* get_exe(const char* app_id, int pid)
 {
     char buf[8095] = {0};
     char* path = g_strdup_printf("/proc/%d/exe", pid);

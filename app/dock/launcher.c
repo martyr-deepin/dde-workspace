@@ -238,7 +238,7 @@ JSValueRef dock_get_launcher_info(const char* app_id)
 }
 
 JS_EXPORT_API
-gboolean dock_launch_by_app_id(const char* app_id, ArrayContainer fs)
+gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs)
 {
     GAppInfo* info = NULL;
     gboolean ret = FALSE;
@@ -258,7 +258,7 @@ gboolean dock_launch_by_app_id(const char* app_id, ArrayContainer fs)
             g_free(name);
         }
     } else {
-        info = g_app_info_create_from_commandline(app_id, NULL, G_APP_INFO_CREATE_NONE, NULL);
+        info = g_app_info_create_from_commandline(exec, NULL, G_APP_INFO_CREATE_NONE, NULL);
     }
 
     GFile** files = fs.data;
@@ -273,19 +273,27 @@ gboolean dock_launch_by_app_id(const char* app_id, ArrayContainer fs)
     return ret;
 }
 
-gboolean is_has_app_info(const char* app_id)
+JS_EXPORT_API
+gboolean dock_has_launcher(const char* app_id)
 {
     return g_key_file_has_group(k_apps, app_id);
 }
 
 gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
 {
-    g_key_file_set_string(k_apps, name, "Name", name);
-    g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
-    g_key_file_set_string(k_apps, name, "Icon", icon);
+    char* id = g_strconcat(name, ".desktop", NULL);
+    GDesktopAppInfo* info = g_desktop_app_info_new(id);
+    g_free(id);
+    if (info != NULL) {
+        dock_request_dock(g_desktop_app_info_get_filename(info));
+    } else {
+        g_key_file_set_string(k_apps, name, "Name", name);
+        g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
+        g_key_file_set_string(k_apps, name, "Icon", icon);
 
-    save_app_config(k_apps, APPS_INI);
+        save_app_config(k_apps, APPS_INI);
 
-    if (!is_has_client(name))
-        js_post_message("launcher_added", build_app_info(name));
+        if (!is_has_client(name))
+            js_post_message("launcher_added", build_app_info(name));
+    }
 }

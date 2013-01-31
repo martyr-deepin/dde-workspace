@@ -1,6 +1,6 @@
 active_group = null
 class ClientGroup extends AppItem
-    constructor: (@id, @icon, @app_id)->
+    constructor: (@id, @icon, @app_id, @exec)->
         super
         @try_swap_launcher()
         @element.setAttribute("title", @app_id)
@@ -158,14 +158,14 @@ class ClientGroup extends AppItem
             [1, _("New instance")],
             [2, _("Close")],
             [],
-            [3, _("Dock me")],
+            [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
             #[4, _("PreView"), false]
         ]
 
     do_itemselected: (e)=>
         Preview_container.remove_all()
         switch e.id
-            when 1 then DCore.Dock.launch_by_app_id(@app_id, [])
+            when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
             #when 4 then Preview_container.show_group(@)

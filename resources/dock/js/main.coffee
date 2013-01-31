@@ -57,7 +57,7 @@ DCore.signal_connect("task_updated", (info) ->
     leader = Widget.look_up("le_" + info.app_id)
 
     if not leader
-        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id)
+        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id, info.exec)
 
     leader.update_client(info.id, info.icon, info.title)
 )

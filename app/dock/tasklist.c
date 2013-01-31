@@ -79,7 +79,7 @@ typedef struct {
     char* title; /* _NET_WM_NAME */
     char* clss; /* WMClass */
     char* app_id; /*current is executabe file's name*/
-    char* exec;
+    char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
     gboolean is_maximized;
 
@@ -145,6 +145,7 @@ void _update_client_info(Client *c)
     json_append_string(json, "title", c->title);
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
+    json_append_string(json, "exec", c->exec);
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
@@ -257,14 +258,15 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
+        Atom t = (Atom)X_FETCH_32(data, i);
+        if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
-            return TRUE;
+            return FALSE;
         }
     }
     XFree(data);
 
-    return FALSE;
+    return TRUE;
 }
 
 void client_list_changed(Window* cs, size_t n)
@@ -408,8 +410,6 @@ void _update_window_appid(Client* c)
         } else {
             app_id = g_strdup(c->clss);
         }
-        c->exec = get_exe(*s_pid);
-        XFree(s_pid);
         g_free(exec_name);
         g_free(exec_args);
     } else {
@@ -421,6 +421,9 @@ void _update_window_appid(Client* c)
     g_assert(app_id != NULL);
     c->app_id = to_lower_inplace(app_id);
 
+    if (s_pid != NULL)
+        c->exec = get_exe(app_id, *s_pid);
+    XFree(s_pid);
 }
 
 void _update_window_class(Client* c)
@@ -648,7 +651,7 @@ gboolean dock_request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
     g_assert(c != NULL);
-    if (is_has_app_info(c->app_id)) {
+    if (dock_has_launcher(c->app_id)) {
         // already has this app info
         return FALSE;
     } else {
