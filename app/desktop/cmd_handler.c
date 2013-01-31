@@ -8,13 +8,44 @@
 #include "xdg_misc.h"
 #include "jsextension.h"
 
+#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"
+#define TERMINAL_KEY_EXEC  "exec"
+#define TERMINAL_KEY_EXEC_ARG "exec-arg"
+
+static GSettings* terminal_gsettings = NULL;
 void desktop_run_terminal()
 {
+    if (terminal_gsettings == NULL)
+        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
+
+    char* exec_val = g_settings_get_string(terminal_gsettings,
+                                            TERMINAL_KEY_EXEC);
+    //char* exec_arg_val = g_settings_get_string (terminal_gsettings,
+    //                                        TERMINAL_KEY_EXEC_ARG);
+    GError* error = NULL;
+
     gchar* path = get_desktop_dir(0);
-    gchar* full_param = g_strdup_printf("--working-directory=%s", path);
-    dcore_run_command1("gnome-terminal", full_param);
+    gchar* cmd_line = g_strdup_printf("%s --working-directory=%s", exec_val, path);
+
+    GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
+                                                           G_APP_INFO_CREATE_NONE,
+                                                           &error);
+    if (error!=NULL)
+    {
+        g_debug("desktop_run_terminal error: %s", error->message);
+	g_error_free(error);
+    }
+    error = NULL;
+    g_app_info_launch (appinfo, NULL, NULL, &error);
+    if (error!=NULL)
+    {
+        g_debug("desktop_run_terminal error: %s", error->message);
+	g_error_free(error);
+    }
+    
+    g_app_info_delete (appinfo);
     g_free(path);
-    g_free(full_param);
+    g_free(cmd_line);
 }
 
 void desktop_run_deepin_settings(const char* mod)
