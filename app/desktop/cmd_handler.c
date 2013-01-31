@@ -27,6 +27,7 @@ void desktop_run_terminal()
     gchar* path = get_desktop_dir(0);
     gchar* cmd_line = g_strdup_printf("%s --working-directory=%s", exec_val, path);
     g_free(path);
+    g_free(exec_val);
 
     GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
                                                            G_APP_INFO_CREATE_NONE,
