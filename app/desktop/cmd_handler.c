@@ -26,31 +26,52 @@ void desktop_run_terminal()
 
     gchar* path = get_desktop_dir(0);
     gchar* cmd_line = g_strdup_printf("%s --working-directory=%s", exec_val, path);
+    g_free(path);
 
     GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
                                                            G_APP_INFO_CREATE_NONE,
                                                            &error);
+    g_free(cmd_line);
     if (error!=NULL)
     {
         g_debug("desktop_run_terminal error: %s", error->message);
 	g_error_free(error);
     }
     error = NULL;
-    g_app_info_launch (appinfo, NULL, NULL, &error);
+    g_app_info_launch(appinfo, NULL, NULL, &error);
     if (error!=NULL)
     {
         g_debug("desktop_run_terminal error: %s", error->message);
 	g_error_free(error);
     }
     
-    g_app_info_delete (appinfo);
-    g_free(path);
-    g_free(cmd_line);
+    g_object_unref(appinfo);
 }
 
 void desktop_run_deepin_settings(const char* mod)
 {
-    dcore_run_command1("deepin-system-settings", mod);
+    char* e_p=shell_escape(mod);
+    char* cmd_line=g_strdup_printf("deepin-system-settings %s\n", e_p);
+    g_free(e_p);
+
+    GError* error=NULL;
+    GAppInfo* appinfo=g_app_info_create_from_commandline(cmd_line, NULL,
+                                                           G_APP_INFO_CREATE_NONE,
+                                                           &error);
+    g_free (cmd_line);
+    if (error!=NULL)
+    {
+        g_debug("desktop_run_deepin_settings error: %s", error->message);
+	g_error_free(error);
+    }
+    error = NULL;
+    g_app_info_launch(appinfo, NULL, NULL, &error);
+    if (error!=NULL)
+    {
+        g_debug("desktop_run_deepin_settings error: %s", error->message);
+	g_error_free(error);
+    }
+    g_object_unref(appinfo);
 }
 
 void desktop_open_trash_can()
