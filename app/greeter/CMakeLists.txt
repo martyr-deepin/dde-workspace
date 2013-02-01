@@ -8,7 +8,11 @@ SET(SRC_LIST greeter.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
+add_executable(dlock dlock.c)
+
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES})
+
+target_link_libraries(dlock ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS})
 
