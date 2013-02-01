@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../resources/greeter/js/user.coffee:63
 msgid "Log In"
-msgstr "登陆"
+msgstr "登录"
 
 #: ../resources/greeter/js/user.coffee:90
 #: ../resources/greeter/js/lock.coffee:57
