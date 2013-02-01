@@ -82,6 +82,9 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 
 void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
 {
+    Display* dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    XSetWindowBackgroundPixmap(dsp, child, None);
+
     GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), child);
     if (icon == NULL) {
         g_debug("icon id:%d = 0 (invalide)\n", (int)child);

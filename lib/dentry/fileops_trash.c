@@ -22,8 +22,7 @@ GFile* fileops_get_trash_entry()
     // g_assert(_trash_can != NULL);
     if (trash_can == NULL)
         trash_can = g_file_new_for_uri("trash:///");
-    else 
-	g_object_ref(trash_can);
+    g_object_ref(trash_can);
 
     return trash_can;
 }

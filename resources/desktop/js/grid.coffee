@@ -61,6 +61,8 @@ sel = null
 # we need to ingore keyup event when rename files
 ingore_keyup_counts = 0
 
+# store the pos the user pop the context menu
+rightclick_pos = {clientX : 0, clientY : 0}
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
@@ -95,7 +97,6 @@ load_position = (id) ->
     if typeof(id) != "string" then echo "error load_position #{id}"
     pos = localStorage.getObject("id:" + id)
     if pos == null
-        echo "[load_position]failed to get id:#{id}"
         return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
@@ -336,18 +337,19 @@ create_entry_to_new_item = (entry) ->
     if not w? then w = create_item(entry)
 
     cancel_all_selected_stats()
-    move_to_anywhere(w)
+    pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1, 1)
+    move_to_somewhere(w, pos)
     all_item.push(w.id)
     set_item_selected(w)
     w.item_rename()
 
 
-menu_create_new_folder = ->
+menu_create_new_folder = () ->
     entry = DCore.Desktop.new_directory()
     create_entry_to_new_item(entry)
 
 
-menu_create_new_file = ->
+menu_create_new_file = () ->
     entry = DCore.Desktop.new_file()
     create_entry_to_new_item(entry)
 
@@ -441,8 +443,9 @@ item_dragstart_handler = (widget, evt) ->
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        x = evt.x - drag_start.x * grid_item_width
-        y = evt.y - drag_start.y * grid_item_height
+        pos = load_position(widget.id)
+        x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
+        y = (pos.y - drag_start.y) * grid_item_height + (_ITEM_HEIGHT_ / 2)
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
@@ -698,6 +701,8 @@ gird_left_mousedown = (evt) ->
 
 grid_right_click = (evt) ->
     evt.stopPropagation()
+    rightclick_pos.clientX = evt.clientX
+    rightclick_pos.clientY = evt.clientY
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 

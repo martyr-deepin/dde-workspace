@@ -79,7 +79,7 @@ typedef struct {
     char* title; /* _NET_WM_NAME */
     char* clss; /* WMClass */
     char* app_id; /*current is executabe file's name*/
-    char* exec;
+    char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
     gboolean is_maximized;
 
@@ -114,17 +114,22 @@ Client* create_client_from_window(Window w)
     gdk_window_set_events(win, GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
-    Client* c = g_new(Client, 1);
+    Client* c = g_new0(Client, 1);
     c->window = w;
     c->gdkwindow = win;
     c->is_maximized = FALSE;
     c->app_id = NULL;
+    c->exec = NULL;
 
 
 
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    if (c->app_id == NULL) {
+        client_free(c);
+        return NULL;
+    }
 
     c->need_update_icon = FALSE;
     c->icon = try_get_deepin_icon(c->app_id);
@@ -144,6 +149,7 @@ void _update_client_info(Client *c)
     json_append_string(json, "title", c->title);
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
+    json_append_string(json, "exec", c->exec);
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
@@ -172,22 +178,22 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
-
 void client_free(Client* c)
 {
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
-    g_object_unref(c->gdkwindow);
     JSObjectRef json = json_create();
     json_append_number(json, "id", c->window);
     json_append_string(json, "app_id", c->app_id);
     js_post_message("task_removed", json);
-    g_free(c->icon);
     g_free(c->title);
     g_free(c->clss);
     g_free(c->app_id);
-    g_free(c);
+    g_free(c->exec);
+    g_object_unref(c->gdkwindow);
+    g_free(c->icon);
 
+    g_free(c);
 }
 
 
@@ -256,14 +262,15 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_TYPE_NORMAL) {
+        Atom t = (Atom)X_FETCH_32(data, i);
+        if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
-            return TRUE;
+            return FALSE;
         }
     }
     XFree(data);
 
-    return FALSE;
+    return TRUE;
 }
 
 void client_list_changed(Window* cs, size_t n)
@@ -366,16 +373,17 @@ void _update_window_icon(Client* c)
 
 
     char* handle_icon(GdkPixbuf* icon);
+    g_free(c->icon);
     c->icon = handle_icon(pixbuf);
     g_object_unref(pixbuf);
 
     g_free(img);
-    
     XFree(data);
 }
 
 void _update_window_title(Client* c)
 {
+    g_free(c->title);
     long item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
@@ -406,7 +414,6 @@ void _update_window_appid(Client* c)
         } else {
             app_id = g_strdup(c->clss);
         }
-        XFree(s_pid);
         g_free(exec_name);
         g_free(exec_args);
     } else {
@@ -415,12 +422,19 @@ void _update_window_appid(Client* c)
     }
 
     g_free(c->app_id);
-    g_assert(app_id != NULL);
-    c->app_id = to_lower_inplace(app_id);
+    if (app_id != NULL) {
+        c->app_id = to_lower_inplace(app_id);
+
+        if (s_pid != NULL)
+            c->exec = get_exe(app_id, *s_pid);
+    }
+
+    XFree(s_pid);
 }
 
 void _update_window_class(Client* c)
 {
+    g_free(c->clss);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
         c->clss = g_strdup(ch.res_class);
@@ -643,19 +657,11 @@ gboolean dock_request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
     g_assert(c != NULL);
-    if (is_has_app_info(c->app_id)) {
+    if (dock_has_launcher(c->app_id)) {
         // already has this app info
         return FALSE;
     } else {
-        char* name =  g_strdup(c->app_id);
-        for (gsize i=0; i<strlen(name); i++) {
-            if (name[i] == ' ') {
-                name[i] = '\0';
-                break;
-            }
-        }
-        request_by_info(name, c->app_id, c->icon);
-        g_free(name);
+        request_by_info(c->app_id, c->exec, c->icon);
     }
 }
 

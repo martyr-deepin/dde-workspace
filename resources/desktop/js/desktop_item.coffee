@@ -120,6 +120,8 @@ class Item extends Widget
             else
                 if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                     @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
+                else if @in_rename
+                    @item_complete_rename(true)
                 else
                     @clear_delay_rename_timer()
 
@@ -292,7 +294,7 @@ class Item extends Widget
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
             @item_name.addEventListener("contextmenu", @on_event_preventdefault)
-            @item_name.addEventListener("keydown", @on_event_stoppropagation)
+            @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
             @item_name.focus()
@@ -312,6 +314,34 @@ class Item extends Widget
         if @delay_rename_tid == -1 then return
         clearTimeout(@delay_rename_tid)
         @delay_rename_tid = -1
+        return
+
+
+    on_item_rename_keydown : (evt) =>
+        evt.stopPropagation()
+        switch evt.keyCode
+            when 35 # 'End' key
+                evt.preventDefault()
+                ws = window.getSelection()
+                range = document.createRange()
+                if evt.shiftKey == true
+                    range.setStart(@item_name.childNodes[0], ws.getRangeAt().startOffset)
+                else
+                    range.setStart(@item_name.childNodes[0], @item_name.childNodes[0].length)
+                range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
+                ws.removeAllRanges()
+                ws.addRange(range)
+            when 36 # 'Home' key
+                evt.preventDefault()
+                ws = window.getSelection()
+                range = document.createRange()
+                if evt.shiftKey == true
+                    range.setEnd(@item_name.childNodes[0], ws.getRangeAt().endOffset)
+                else
+                    range.setEnd(@item_name.childNodes[0], 0)
+                range.setStart(@item_name.childNodes[0], 0)
+                ws.removeAllRanges()
+                ws.addRange(range)
         return
 
 
@@ -351,7 +381,7 @@ class Item extends Widget
         @item_name.removeEventListener("click", @on_event_stoppropagation)
         @item_name.removeEventListener("dblclick", @on_event_stoppropagation)
         @item_name.removeEventListener("contextmenu", @on_event_preventdefault)
-        @item_name.removeEventListener("keydown", @on_event_stoppropagation)
+        @item_name.removeEventListener("keydown", @on_item_rename_keydown)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
 
@@ -531,11 +561,17 @@ class RichDir extends DesktopEntry
                 update_selected_stats(this, evt)
             else
                 if @show_pop == false
-                    @show_pop_block()
+                    if @in_rename
+                        @item_complete_rename(true)
+                    else
+                        @clear_delay_rename_timer()
+                        @show_pop_block()
                 else
                     @hide_pop_block()
                     if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                         @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
+                    else if @in_rename
+                        @item_complete_rename(true)
                     else
                         @clear_delay_rename_timer()
 
@@ -1023,6 +1059,8 @@ class TrashVDir extends DesktopEntry
     constructor : ->
         entry = DCore.DEntry.get_trash_entry()
         super(entry, false)
+
+    setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
 
 
     get_id : ->

@@ -63,6 +63,9 @@ GdkWindow* get_background_window()
         gdk_window_add_filter(_background_window, monitor_background_expose, _background_window);
 
         GdkWindowAttr attributes;
+
+        attributes.width = 0;
+        attributes.height = 0;
         attributes.window_type = GDK_WINDOW_CHILD;
         attributes.wclass = GDK_INPUT_OUTPUT;
         attributes.event_mask = GDK_EXPOSURE_MASK;

@@ -21,6 +21,7 @@
 #include "xid2aid.h"
 #include <string.h>
 #include <glib.h>
+#include <unistd.h>
 
 /*MEMORY_TESTED*/
 
@@ -87,7 +88,7 @@ void _init()
     }
     g_key_file_free(process_regex);
 
-    // load and filters and build white_list
+    // load filters and build white_list
     _build_filter_info(filter_args = g_key_file_new(), FILTER_ARGS_PATH);
     _build_filter_info(filter_wmclass = g_key_file_new(), FILTER_WMCLASS_PATH);
     _build_filter_info(filter_wmname = g_key_file_new(), FILTER_WMNAME_PATH);
@@ -99,23 +100,25 @@ void _init()
 }
 
 static
-void _get_exec_name_args(char** cmdline, char** name, char** args)
+void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
 {
+    g_assert(length != 0);
     *args = NULL;
 
     gsize name_pos = 0;
-    gsize length = g_strv_length(cmdline);
     for (; name_pos < length; name_pos++) {
-        char* basename = g_path_get_basename(cmdline[name_pos]);
-        if (g_regex_match(prefix_regex, basename, 0, NULL)) {
-            while (basename[0] == '-')
+        if (cmdline[name_pos] != NULL) {
+            char* basename = g_path_get_basename(cmdline[name_pos]);
+            if (g_regex_match(prefix_regex, basename, 0, NULL)) {
+                while (basename[0] == '-')
+                    name_pos++;
                 name_pos++;
-            name_pos++;
 
-            g_free(basename);
-            break;
-        } else {
-            g_free(basename);
+                g_free(basename);
+                break;
+            } else {
+                g_free(basename);
+            }
         }
     }
 
@@ -197,32 +200,26 @@ void get_pid_info(int pid, char** exec_name, char** exec_args)
 
     gsize size=0;
     if (g_file_get_contents(path, &cmd_line, &size, NULL) && size > 0) {
-        GPtrArray* tmp = g_ptr_array_new();
-        int pre_pos = 0;
-        for (gsize i=0; i<size; i++) {
-            if (cmd_line[i] == '\0') {
-                g_ptr_array_add(tmp, cmd_line+pre_pos);
-                pre_pos = i+1;
+        char** name_args = g_new(char*, 1024);
+        gsize j = 0;
+        name_args[j] = cmd_line;
+        for (gsize i=1; i<size && j<1024; i++) {
+            if (cmd_line[i] == 0) {
+                name_args[++j] = cmd_line + i + 1;
             }
         }
+        name_args[j ? : j+1] = NULL;
 
-        int len = tmp->len;
-        char** name_args = g_new(char*, len+1);
-        for (gsize i=0; i<len; i++) {
-            name_args[i] = g_utf8_casefold(g_ptr_array_index(tmp, i), -1);
-        }
-        name_args[len] = NULL;
+        _get_exec_name_args(name_args, j+1, exec_name, exec_args);
 
-        g_ptr_array_free(tmp, TRUE);
-        g_free(cmd_line);
-
-        _get_exec_name_args(name_args, exec_name, exec_args);
+        g_free(name_args);
 
     } else {
-        g_free(path);
-        *exec_name = NULL;
+        *exec_name = get_exe(NULL, pid);
         *exec_args = NULL;
     }
+    g_free(path);
+    g_free(cmd_line);
 }
 
 gboolean is_app_in_white_list(const char* name)
@@ -247,13 +244,29 @@ gboolean is_deepin_app_id(const char* app_id)
     return g_key_file_has_group(deepin_icons, app_id);
 
 }
+
 int get_deepin_app_id_operator(const char* app_id)
 {
     g_assert(deepin_icons != NULL);
     return g_key_file_get_integer(deepin_icons, app_id, "operator", NULL);
 }
+
 char* get_deepin_app_id_value(const char* app_id)
 {
     g_assert(deepin_icons != NULL);
     return g_key_file_get_string(deepin_icons, app_id, "value", NULL);
+}
+
+
+char* get_exe(const char* app_id, int pid)
+{
+    char buf[8095] = {0};
+    char* path = g_strdup_printf("/proc/%d/exe", pid);
+    gsize len = readlink(path, buf, 8095);
+    if (len > 8095) {
+        g_debug("PID:%d's exe is to long!", pid);
+        buf[8095] = 0;
+    }
+    g_free(path);
+    return g_strdup(buf);
 }

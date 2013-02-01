@@ -6,9 +6,11 @@ GEN_JSC_SOURCE("jsc" JSC_GEN)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
+SET(TEST_SRC "../../test/${NAME}_test.c" "../../test/test.c")
 SET(SRC_LIST dock.c dock_config.c tray.c handle_icon.c dominant_color.c tasklist.c draw.c launcher.c region.c dbus.c ${JSC_GEN})
 
-add_executable(${NAME} ${SRC_LIST})
+add_executable(${NAME} ${SRC_LIST} ${TEST_SRC})
+
 
 target_link_libraries(${NAME} dcom dentry dbus tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
