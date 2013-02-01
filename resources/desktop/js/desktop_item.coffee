@@ -1060,6 +1060,8 @@ class TrashVDir extends DesktopEntry
         entry = DCore.DEntry.get_trash_entry()
         super(entry, false)
 
+    setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
+
 
     get_id : ->
         _ITEM_ID_TRASH_BIN_

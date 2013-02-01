@@ -443,8 +443,9 @@ item_dragstart_handler = (widget, evt) ->
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        x = evt.x - drag_start.x * grid_item_width
-        y = evt.y - drag_start.y * grid_item_height
+        pos = load_position(widget.id)
+        x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
+        y = (pos.y - drag_start.y) * grid_item_height + (_ITEM_HEIGHT_ / 2)
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
