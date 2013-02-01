@@ -450,6 +450,7 @@ void dentry_confirm_trash()
     fileops_confirm_trash();
 }
 
+JS_EXPORT_API
 GFile* dentry_get_trash_entry()
 {
     return fileops_get_trash_entry ();

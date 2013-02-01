@@ -174,7 +174,6 @@ gboolean _inotify_poll()
             i += EVENT_SIZE+event->len;
             if (event->name[0] == '.' && !g_str_has_prefix(event->name, DEEPIN_RICH_DIR)) continue;
             if (event->len) {
-                printf ("%s changed 0x%x\n", event->name, event->mask);
                 GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
 
                 if (g_file_equal(p, _desktop_file)) {
