@@ -64,6 +64,7 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
     } else if (xev->type == ConfigureNotify) {
         int width = GPOINTER_TO_INT(g_hash_table_lookup(_icons, data));
         int new_width = ((XConfigureEvent*)xev)->width;
+        int new_height = ((XConfigureEvent*)xev)->height;
         if (width != new_width) {
             if (data == _deepin_tray) {
                 if (_deepin_tray_width != new_width) {
@@ -72,6 +73,7 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                     update_notify_area_width();
                 }
             } else {
+                gdk_window_resize(data, new_width, new_height);
                 g_hash_table_insert(_icons, data, GINT_TO_POINTER(gdk_window_get_width(data)));
                 update_notify_area_width();
             }
