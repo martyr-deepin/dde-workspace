@@ -25,14 +25,10 @@ calc_app_item_size = ->
     w = apps[0].offsetWidth
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
-        #TODO: the logic is mess.
-        # when the last apps is in withdraw status, the clientWidth will be zero!
-        #while last.clientWidth == 0
-            #last = last.previousElementSibling
         DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        DCore.Dock.release_region(offset + ITEM_WIDTH, 0, screen.width - offset, 30)
+        DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM

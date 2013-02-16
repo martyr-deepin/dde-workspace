@@ -66,14 +66,6 @@ DCore.signal_connect("task_removed", (info) ->
     Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
 )
 
-DCore.signal_connect("task_withdraw", (info) ->
-    Widget.look_up("le_" + info.app_id).withdraw_child(info.id)
-)
-
-DCore.signal_connect("task_normal", (info) ->
-    Widget.look_up("le_" + info.app_id).normal_child(info.id)
-)
-
 DCore.signal_connect("in_mini_mode", ->
     run_post(calc_app_item_size())
 )

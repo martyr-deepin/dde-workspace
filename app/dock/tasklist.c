@@ -44,7 +44,6 @@ Atom ATOM_WINDOW_TYPE;
 Atom ATOM_WINDOW_TYPE_NORMAL;
 Atom ATOM_WINDOW_NAME;
 Atom ATOM_WINDOW_CLASS;
-Atom ATOM_WINDOW_STATE;
 Atom ATOM_WINDOW_PID;
 Atom ATOM_WINDOW_NET_STATE;
 Atom ATOM_CLOSE_WINDOW;
@@ -64,7 +63,6 @@ void _init_atoms()
     ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
-    ATOM_WINDOW_STATE = gdk_x11_get_xatom_by_name("WM_STATE");
     ATOM_WINDOW_PID = gdk_x11_get_xatom_by_name("_NET_WM_PID");
     ATOM_WINDOW_NET_STATE = gdk_x11_get_xatom_by_name("_NET_WM_STATE");
     ATOM_CLOSE_WINDOW = gdk_x11_get_xatom_by_name("_NET_CLOSE_WINDOW");
@@ -104,6 +102,7 @@ void _update_window_appid(Client *c);
 
 void _update_task_list(Window root);
 void update_active_window(Display* display, Window root);
+void client_free(Client* c);
 
 Client* create_client_from_window(Window w)
 {
@@ -273,17 +272,29 @@ gboolean is_normal_window(Window w)
     return TRUE;
 }
 
+static void _destroy_client(gpointer id)
+{
+    g_hash_table_remove(_clients_table, id);
+}
 void client_list_changed(Window* cs, size_t n)
 {
+    GList* destroying_clients = g_hash_table_get_keys(_clients_table);
     for (int i=0; i<n; i++) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
-        if (c == NULL && is_normal_window(cs[i]) && (c = create_client_from_window(cs[i]))) {
-            //client maybe create failed!!
-            //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
-            g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
-            _update_client_info(c);
+
+        if (is_normal_window(cs[i])) {
+            if (c == NULL && (c = create_client_from_window(cs[i]))) {
+                //client maybe create failed!!
+                //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
+                g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
+                _update_client_info(c);
+            }
+
+            if (c != NULL)
+                destroying_clients = g_list_remove(destroying_clients, GINT_TO_POINTER(cs[i]));
         }
     }
+    g_list_free_full(destroying_clients, (GDestroyNotify)_destroy_client);
 }
 
 void update_task_list()
@@ -462,37 +473,6 @@ void _update_has_maximized_window(Client* c)
     }
 }
 
-void _update_window_state(Client* c)
-{
-    gulong items = 0;
-    void* data = get_window_property(_dsp, c->window, ATOM_WINDOW_STATE, &items);
-    if (data != NULL) {
-        int state = X_FETCH_32(data, 0);
-        XFree(data);
-        switch (state) {
-            case WithdrawnState:
-                {
-                    JSObjectRef json = json_create();
-                    json_append_number(json, "id", (int)c->window);
-                    json_append_string(json, "app_id", c->app_id);
-                    js_post_message("task_withdraw", json);
-                    break;
-                }
-                /*js_post_message("task_withdraw", "{\"id\":%d, \"clss\":}", (int)c->window);*/
-            case NormalState:
-                {
-                    JSObjectRef json = json_create();
-                    json_append_number(json, "id", (int)c->window);
-                    json_append_string(json, "app_id", c->app_id);
-                    js_post_message("task_normal", json);
-                    break;
-                }
-                /*js_post_message("task_normal", "{\"id\":%d}", (int)c->window);*/
-                /*break;*/
-        }
-    }
-}
-
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
@@ -526,9 +506,6 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
             } else if (ev->atom == ATOM_WINDOW_NAME) {
                 _update_window_title(c);
                 _update_window_class(c);
-            } else if (ev->atom == ATOM_WINDOW_STATE) {
-                _update_window_state(c);
-                _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
             }

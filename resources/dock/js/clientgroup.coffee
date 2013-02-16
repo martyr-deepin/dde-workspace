@@ -6,7 +6,6 @@ class ClientGroup extends AppItem
         @element.setAttribute("title", @app_id)
 
         @n_clients = []
-        @w_clients = []
         @client_infos = {}
 
         @indicate = create_img("OpenIndicate", "", @element)
@@ -72,25 +71,14 @@ class ClientGroup extends AppItem
     to_normal_status : ->
         @indicate.src = "img/s_app_open.png"
 
-    withdraw_child: (id)->
-        @w_clients.push(id)
-        @remove_client(id, true)
-
-    normal_child: (id)->
-        @w_clients.remove(id)
-        info = @client_infos[id]
-        @add_client(info.id)
-
     update_client: (id, icon, title)->
         @img.src = icon if id == @leader
         icon = NOT_FOUND_ICON if not icon
-        in_withdraw = id in @w_clients
         @client_infos[id] =
             "id": id
             "icon": icon
             "title": title
-        if not in_withdraw
-            @add_client(id)
+        @add_client(id)
 
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
@@ -110,15 +98,11 @@ class ClientGroup extends AppItem
     remove_client: (id, used_internal=false) ->
         if not used_internal
             delete @client_infos[id]
-            @w_clients.remove(id)
 
         @n_clients.remove(id)
 
         if @n_clients.length == 0
-            if @w_clients.length == 0
-                @destroy()
-            else
-                @element.style.display = "none"
+            @destroy()
         else if @leader == id
             @next_leader()
 
