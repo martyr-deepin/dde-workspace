@@ -52,6 +52,7 @@ do_item_update = (data) ->
     id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
+        w.entry = data.entry
         w.item_update?()
     else
         w = create_item(data.entry)
