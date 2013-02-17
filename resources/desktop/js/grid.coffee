@@ -857,23 +857,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
         evt.preventDefault()
 
 
-init_speical_desktop_items = ->
-    item = new ComputerVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-    item = new HomeVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-    item = new TrashVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -889,17 +872,6 @@ create_item_grid = ->
 
     drag_canvas = document.createElement("canvas")
     drag_context = drag_canvas.getContext('2d')
-
-    init_speical_desktop_items()
-
-
-#class ItemGrid
-#    constructor : (parentElement) ->
-#        @_parent_element = parentElement
-#        @_workarea_width = 0
-#        @_workarea_height = 0
-#        @_offset_x = 0
-#        @_offset_y = 0
 
 
 class Mouse_Select_Area_box

@@ -51,6 +51,36 @@ create_item = (entry) ->
     return w
 
 
+clear_speical_desktop_items = ->
+    Widget.look_up(i)?.destroy() for i in speical_item
+    speical_item.splice(0)
+    return
+
+
+load_speical_desktop_items = ->
+    clear_speical_desktop_items()
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
+        item = new ComputerVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)
+        item = new HomeVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
+        item = new TrashVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+
+    return
+
+
 clear_desktop_items = ->
     Widget.look_up(i)?.destroy() for i in all_item
     all_item.splice(0)
@@ -64,5 +94,4 @@ load_desktop_all_items = ->
         w = create_item(e)
         if w? then all_item.push(w.id)
 
-    place_desktop_items()
     return

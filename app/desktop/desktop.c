@@ -183,6 +183,32 @@ void desktop_notify_workarea_size()
     js_post_message_simply("workarea_changed", tmp);
 }
 
+#define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
+static GSettings* desktop_gsettings = NULL;
+
+static void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
+{
+    js_post_message_simply ("desktop_config_changed", NULL);
+}
+
+JS_EXPORT_API
+gboolean desktop_get_config_boolean(const char* key_name)
+{
+    if (desktop_gsettings == NULL)
+    {
+        desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
+        g_signal_connect (desktop_gsettings, "changed::show-home-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+    }
+
+    gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
+    
+    return retval;
+}
 
 //TODO: connect gtk_icon_theme changed.
 

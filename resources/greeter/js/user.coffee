@@ -43,6 +43,15 @@ class LoginEntry extends Widget
         @password.setAttribute("type", "password")
         @password.index = 1
 
+        #@password.addEventListener("keydonw", (e)=>
+        #    is_shift = e.shiftKey || (e.which == 16) || false
+        #    if e.which >= 65 and e.which <= 90 and not is_shift
+        #        pass
+        #    else if e.which >=97 and e.which <= 122 and is_shift
+        #        pass
+        #    else
+        #        pass
+
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
                 if DCore.Greeter.is_hide_users()

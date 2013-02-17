@@ -51,9 +51,18 @@ _FAI_READ_ONLY_  = "emblem-readonly"
 _FAT_SYM_LINK_   = "emblem-symbolic-link"
 _FAT_UNREADABLE_ = "emblem-unreadable"
 
-
 # store the entry for desktop
 g_desktop_entry = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
+
+
+# const names to get configs
+_CFG_SHOW_COMPUTER_ICON_ = "show-computer-icon"
+_CFG_SHOW_HOME_ICON_ = "show-home-icon"
+_CFG_SHOW_TRASH_BIN_ICON_ = "show-trash-icon"
+
+# wrapper func to get configs
+_GET_CFG_BOOL_ = (val) ->
+    DCore.Desktop.get_config_boolean(val)
 
 
 # DBus handler for invoke nautilus filemanager
