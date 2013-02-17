@@ -96,7 +96,29 @@ int main(int argc, char **argv)
         gchar *user_name = g_variant_dup_string(username_prop_var, NULL);
 
         if(g_strcmp0(username, user_name) == 0){
-            g_dbus_proxy_call_sync(session_proxy,
+            GVariant *seat_prop_var = NULL;
+            seat_prop_var = g_dbus_proxy_get_cached_property(session_proxy, "Seat");
+            gsize seat_length;
+            gchar *seat_path = g_variant_dup_string(seat_prop_var, &seat_length);
+
+            GDBusProxy *seat_proxy = NULL;
+
+            seat_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                        G_DBUS_PROXY_FLAGS_NONE,
+                        NULL,
+                        "org.freedesktop.DisplayManager",
+                        seat_path,
+                        "org.freedesktop.DisplayManager.Seat",
+                        NULL,
+                        &error);
+
+            if(error != NULL){
+                g_debug("connect seat proxy failed");
+                g_clear_error(&error);
+            }
+
+            error = NULL;
+            g_dbus_proxy_call_sync(seat_proxy,
                         "Lock",
                         g_variant_new("()"),
                         G_DBUS_CALL_FLAGS_NONE,
@@ -110,6 +132,10 @@ int main(int argc, char **argv)
             }
 
             error = NULL;
+            g_free(seat_path);
+            g_variant_unref(seat_prop_var);
+            g_object_unref(seat_proxy);
+
             g_free(user_name);
             g_variant_unref(username_prop_var);
             g_object_unref(session_proxy);
