@@ -10,9 +10,12 @@
     max-height: 60px;
     -webkit-box-flex: 1;
 }
-
 .AppItemBoard {
     display: none;
+}
+
+.ReflectImg {
+    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .AppItemImg {
@@ -20,7 +23,6 @@
     border-radius: 6px;
     max-width: 48px;
     max-height: 48px;
-    -webkit-box-reflect: below -3px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
 }
 
 .OpenIndicate {

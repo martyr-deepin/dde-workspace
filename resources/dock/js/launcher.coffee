@@ -1,7 +1,7 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @element.setAttribute("title", @id)
+        @img.setAttribute("title", DCore.DEntry.get_name(@core))
 
 
     try_swap_clientgroup: ->

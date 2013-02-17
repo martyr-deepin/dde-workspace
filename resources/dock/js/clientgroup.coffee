@@ -3,7 +3,6 @@ class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
         super
         @try_swap_launcher()
-        @element.setAttribute("title", @app_id)
 
         @n_clients = []
         @client_infos = {}
@@ -72,13 +71,13 @@ class ClientGroup extends AppItem
         @indicate.src = "img/s_app_open.png"
 
     update_client: (id, icon, title)->
-        @img.src = icon if id == @leader
         icon = NOT_FOUND_ICON if not icon
         @client_infos[id] =
             "id": id
             "icon": icon
             "title": title
         @add_client(id)
+        @update_leader()
 
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
@@ -115,6 +114,7 @@ class ClientGroup extends AppItem
 
     update_leader: ->
         @img.src = @client_infos[@leader].icon
+        @img.setAttribute("title", @client_infos[@leader].title)
         try
             @img2.src = @client_infos[@n_clients[1]].icon
             @img3.src = @client_infos[@n_clients[2]].icon
