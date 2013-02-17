@@ -43,7 +43,7 @@ class LoginEntry extends Widget
         @password.setAttribute("type", "password")
         @password.index = 1
 
-        #@password.addEventListener("keydonw", (e)=>
+        #@password.addEventListener("keydown", (e)=>
         #    is_shift = e.shiftKey || (e.which == 16) || false
         #    if e.which >= 65 and e.which <= 90 and not is_shift
         #        pass
@@ -51,6 +51,7 @@ class LoginEntry extends Widget
         #        pass
         #    else
         #        pass
+        #)
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
@@ -111,7 +112,7 @@ class UserInfo extends Widget
         @img = create_img("UserImg", img_src, @element)
         @name = create_element("div", "UserName", @element)
         @name.innerText = name
-        @active = false
+        #@active = false
         @login_displayed = false
 
         if @id == "guest"
@@ -151,6 +152,12 @@ class UserInfo extends Widget
                         DCore.Greeter.set_selected_session(session)
 
             DCore.Greeter.start_authentication(@id)
+
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == 13 and not @login_displayed
+                if _current_user == @
+                    @show_login()
+        )
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
