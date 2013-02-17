@@ -186,27 +186,26 @@ void desktop_notify_workarea_size()
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 static GSettings* desktop_gsettings = NULL;
 
-static void desktop_icon_visibility_changed(GSettings* settings, char* key, gpointer usr_data)
+static void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    js_post_message_simply ("icon_visibility_changed", NULL);
+    js_post_message_simply ("desktop_config_changed", NULL);
 }
-//icon_name should be in lower case
+
 JS_EXPORT_API
-gboolean desktop_is_icon_visible(const char* icon_name)
+gboolean desktop_get_config_boolean(const char* key_name)
 {
     if (desktop_gsettings == NULL)
     {
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
         g_signal_connect (desktop_gsettings, "changed::show-home-icon",
-                          G_CALLBACK(desktop_icon_visibility_changed), NULL);
+                          G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
-                          G_CALLBACK(desktop_icon_visibility_changed), NULL);
+                          G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
-                          G_CALLBACK(desktop_icon_visibility_changed), NULL);
+                          G_CALLBACK(desktop_config_changed), NULL);
     }
-    char* key_name = g_strconcat("show-", icon_name, "-icon", NULL);
+
     gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
-    g_free (key_name);
     
     return retval;
 }
