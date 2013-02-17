@@ -38,8 +38,9 @@
 
 #define APPS_INI "dock/apps.ini"
 static GKeyFile* k_apps = NULL;
+static GList* _apps_position = NULL;
 
-static 
+static
 JSValueRef build_app_info(const char* app_id)
 {
     char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
@@ -124,11 +125,24 @@ char* get_app_id(GDesktopAppInfo* info)
 void update_dock_apps()
 {
     gsize size = 0;
-    char** groups = g_key_file_get_groups(k_apps, &size);
-    for (gsize i=0; i<size; i++) {
-        js_post_message("launcher_added", build_app_info(groups[i]));
+    GError* err = NULL;
+    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position", &size, &err);
+    g_assert(list != NULL);
+
+    if (_apps_position != NULL) {
+        g_list_free_full(_apps_position, g_free);
+        _apps_position = NULL;
     }
-    g_strfreev(groups);
+
+    for (gsize i=0; i<size; i++) {
+        printf("launcher added %s\n", list[i]);
+        js_post_message("launcher_added", build_app_info(list[i]));
+        _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
+    }
+
+    _apps_position = g_list_reverse(_apps_position);
+
+    g_strfreev(list);
 }
 
 void init_launchers()
@@ -176,6 +190,36 @@ int get_need_terminal(GDesktopAppInfo* info)
 }
 
 static
+void _save_apps_position()
+{
+    gsize size = g_list_length(_apps_position);
+    GList* _tmp_list = _apps_position;
+
+    const gchar**list = g_new(char*, size);
+    for (size_t i=0; i<size; i++) {
+        list[i] = _tmp_list->data;
+        _tmp_list = g_list_next(_tmp_list);
+    }
+    g_key_file_set_string_list(k_apps, "__Config__", "Position", list, size);
+    g_free(list);
+}
+
+JS_EXPORT_API
+void dock_swap_apps_position(const char* id1, const char* id2)
+{
+    GList* l1 = g_list_find_custom(_apps_position, id1, (GCompareFunc)g_strcmp0);
+    GList* l2 = g_list_find_custom(_apps_position, id2, (GCompareFunc)g_strcmp0);
+    if (l1 == NULL || l2 == NULL)
+        return;
+
+    gpointer tmp = l1->data;
+    l1->data = l2->data;
+    l2->data = tmp;
+    _save_apps_position();
+    save_app_config(k_apps, APPS_INI);
+}
+
+static
 void write_app_info(GDesktopAppInfo* info)
 {
     char* app_id = get_app_id(info);
@@ -194,8 +238,14 @@ void write_app_info(GDesktopAppInfo* info)
     g_key_file_set_string(k_apps, app_id, "Path", g_desktop_app_info_get_filename(info));
     g_key_file_set_boolean(k_apps, app_id, "Terminal", get_need_terminal(info));
 
+    GList* pos = g_list_find_custom(_apps_position, app_id, (GCompareFunc)g_strcmp0);
+    if (pos == NULL) {
+        _apps_position = g_list_append(_apps_position, g_strdup(app_id));
+    }
+
     g_free(app_id);
 
+    _save_apps_position();
     save_app_config(k_apps, APPS_INI);
 }
 
@@ -207,15 +257,13 @@ void dock_request_dock(const char* path)
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);
-        if (!is_has_client(app_id))
-            js_post_message("dock_request", build_app_info(app_id));
+        js_post_message("dock_request", build_app_info(app_id));
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);
     }
     g_object_unref(info);
 }
-
 
 JS_EXPORT_API
 void dock_request_undock(const char* app_id)
@@ -296,4 +344,5 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
         if (!is_has_client(name))
             js_post_message("launcher_added", build_app_info(name));
     }
+    return TRUE;
 }

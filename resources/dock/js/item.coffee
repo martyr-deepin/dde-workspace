@@ -70,6 +70,7 @@ class AppItem extends Widget
         if not @icon
             @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
+        @img.classList.add("ReflectImg")
         @element.draggable=true
         app_list.append(@)
 
@@ -114,7 +115,18 @@ class AppItem extends Widget
             return
         did = @element.id
         if sid != did
-            swap_element(Widget.look_up(sid).element, Widget.look_up(did).element)
+            w_s = Widget.look_up(sid)
+            w_d = Widget.look_up(did)
+            swap_element(w_s.element, w_d.element)
+            if w_s.app_id
+                id_s = w_s.app_id
+            else
+                id_s = w_s.id
+            if w_d.app_id
+                id_d = w_d.app_id
+            else
+                id_d = w_d.id
+            DCore.Dock.swap_apps_position(id_s, id_d)
 
         e.stopPropagation()
 
