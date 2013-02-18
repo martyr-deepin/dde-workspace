@@ -284,7 +284,7 @@ sort_list_by_name_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_name_from_id]")
+        echo "we get error here[sort_list_by_name_from_id]"
         return w1.localeCompare(w2)
     else
         return w1.get_name().localeCompare(w2.get_name())
@@ -294,7 +294,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_mtime_from_id]")
+        echo "we get error here[sort_list_by_mtime_from_id]"
         return w1.localeCompare(w2)
     else
         return w1.get_mtime() - w2.get_mtime()
@@ -411,7 +411,7 @@ selected_copy_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
     DCore.DEntry.clipboard_copy(tmp_list)
 
 
@@ -420,7 +420,7 @@ selected_cut_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
             w.display_cut()
     DCore.DEntry.clipboard_cut(tmp_list)
 
@@ -675,7 +675,7 @@ delete_selected_items = (real_delete) ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? and w.modifiable == true then tmp.push(w.entry)
+        if w? and w.modifiable == true then tmp.push(w.get_entry())
 
     if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)

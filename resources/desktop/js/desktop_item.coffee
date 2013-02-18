@@ -32,7 +32,7 @@ _GET_ENTRY_FROM_PATH_ = (path) ->
 
 
 class Item extends Widget
-    constructor: (@entry, @modifiable = true) ->
+    constructor: (@_entry, @modifiable = true) ->
         @id = @get_id()
 
         @selected = false
@@ -71,25 +71,33 @@ class Item extends Widget
         super
 
 
+    get_entry : ->
+        @_entry
+
+
+    set_entry : (entry) ->
+        @_entry = entry
+
+
     get_id : ->
-        DCore.DEntry.get_id(@entry)
+        DCore.DEntry.get_id(@_entry)
 
 
     get_name : ->
-        DCore.DEntry.get_name(@entry)
+        DCore.DEntry.get_name(@_entry)
 
 
     get_icon : ->
-        if (icon = DCore.DEntry.get_icon(@entry)) == null then icon = DCore.get_theme_icon("unknown", 48)
+        if (icon = DCore.DEntry.get_icon(@_entry)) == null then icon = DCore.get_theme_icon("unknown", 48)
         icon
 
 
     get_path : ->
-        DCore.DEntry.get_uri(@entry)
+        DCore.DEntry.get_uri(@_entry)
 
 
     get_mtime : ->
-        DCore.DEntry.get_mtime(@entry)
+        DCore.DEntry.get_mtime(@_entry)
 
 
     do_mouseover : (evt) ->
@@ -208,7 +216,7 @@ class Item extends Widget
 
 
     on_rename : (new_name) ->
-        DCore.DEntry.set_name(@entry, new_name)
+        DCore.DEntry.set_name(@_entry, new_name)
 
 
     item_focus : ->
@@ -260,7 +268,7 @@ class Item extends Widget
 
         if @modifiable == false then return
 
-        flags = DCore.DEntry.get_flags(@entry)
+        flags = DCore.DEntry.get_flags(@_entry)
         if flags.read_only? and flags.read_only == 1
             ele = document.createElement("li")
             ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
@@ -277,7 +285,7 @@ class Item extends Widget
 
 
     item_exec : =>
-        DCore.DEntry.launch(@entry, [])
+        DCore.DEntry.launch(@_entry, [])
 
 
     item_rename : =>
@@ -499,7 +507,7 @@ class Folder extends DesktopEntry
             e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
             tmp_list.push(e)
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
 
         return
 
@@ -544,11 +552,11 @@ class RichDir extends DesktopEntry
 
 
     get_name : ->
-        DCore.Desktop.get_rich_dir_name(@entry)
+        DCore.Desktop.get_rich_dir_name(@_entry)
 
 
     get_icon : ->
-        DCore.Desktop.get_rich_dir_icon(@entry)
+        DCore.Desktop.get_rich_dir_icon(@_entry)
 
 
     do_click : (evt) ->
@@ -600,7 +608,7 @@ class RichDir extends DesktopEntry
             e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
             if not e? then continue
             if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
 
     do_dragenter : (evt) ->
@@ -609,7 +617,6 @@ class RichDir extends DesktopEntry
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
 
-        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -619,7 +626,6 @@ class RichDir extends DesktopEntry
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
 
-        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -631,7 +637,6 @@ class RichDir extends DesktopEntry
             if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
 
-        echo evt.dataTransfer.dropEffect
         return
 
 
@@ -655,12 +660,12 @@ class RichDir extends DesktopEntry
 
 
     item_update : =>
-        list = DCore.DEntry.list_files(@entry)
+        list = DCore.DEntry.list_files(@_entry)
         if list.length <= 1
             if @show_pop == true
                 @hide_pop_block()
                 if list.length then DCore.DEntry.move(list, g_desktop_entry)
-            DCore.DEntry.delete_files([@entry], false)
+            DCore.DEntry.delete_files([@_entry], false)
         else
             if @show_pop == true
                 @sub_items = {}
@@ -683,7 +688,7 @@ class RichDir extends DesktopEntry
 
 
     on_rename : (new_name) ->
-        DCore.Desktop.set_rich_dir_name(@entry, new_name)
+        DCore.Desktop.set_rich_dir_name(@_entry, new_name)
 
 
     show_pop_block : =>
@@ -692,7 +697,7 @@ class RichDir extends DesktopEntry
 
         @sub_items = {}
         @sub_items_count = 0
-        for e in DCore.DEntry.list_files(@entry)
+        for e in DCore.DEntry.list_files(@_entry)
             @sub_items[DCore.DEntry.get_id(e)] = e
             ++@sub_items_count
         if @sub_items_count == 0 then return
@@ -849,7 +854,7 @@ class RichDir extends DesktopEntry
 
 class Application extends DesktopEntry
     get_icon : ->
-        if (icon = DCore.DEntry.get_icon(@entry)) == null
+        if (icon = DCore.DEntry.get_icon(@_entry)) == null
             icon = DCore.get_theme_icon("invalid_app", 48)
         icon
 
@@ -868,10 +873,10 @@ class Application extends DesktopEntry
             tmp_list.push(e)
 
         if all_are_apps == true
-            tmp_list.push(@entry)
+            tmp_list.push(@_entry)
             DCore.Desktop.create_rich_dir(tmp_list)
         else
-            DCore.DEntry.launch(@entry, tmp_list)
+            DCore.DEntry.launch(@_entry, tmp_list)
         return
 
 
@@ -1003,7 +1008,7 @@ class HomeVDir extends DesktopEntry
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
 
     do_dragenter : (evt) ->
@@ -1050,7 +1055,7 @@ class HomeVDir extends DesktopEntry
             when 2
                 try
                     #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@entry)}"], "")
+                    g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@_entry)}"], "")
                 catch e
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
