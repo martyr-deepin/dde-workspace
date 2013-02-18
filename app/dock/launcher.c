@@ -43,6 +43,7 @@ static GList* _apps_position = NULL;
 static
 JSValueRef build_app_info(const char* app_id)
 {
+    g_return_val_if_fail(g_key_file_has_group(k_apps, app_id), jsvalue_null());
     char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
     GAppInfo* info = NULL;
     if (path != NULL) {
@@ -135,7 +136,6 @@ void update_dock_apps()
     }
 
     for (gsize i=0; i<size; i++) {
-        printf("launcher added %s\n", list[i]);
         js_post_message("launcher_added", build_app_info(list[i]));
         _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
     }
