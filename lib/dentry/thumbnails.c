@@ -4,7 +4,7 @@
 #include <libgnome-desktop/gnome-desktop-thumbnail.h>
 
 static GnomeDesktopThumbnailFactory *
-get_thumbnail_factory (void)
+get_thumbnail_factory ()
 {
     static GnomeDesktopThumbnailFactory *thumbnail_factory = NULL;
 
@@ -14,15 +14,19 @@ get_thumbnail_factory (void)
 
     return thumbnail_factory;
 }
+
 /*
- *      check whether thumbnails can be generated for @file
+ *      syncronously create thumbnails. shall we move to a threaded 
+ *      implementation?
  */
-static gboolean
-gfile_can_thumbnail (GFile *file)
+char*
+gfile_lookup_thumbnail (GFile* file)
 {
+    char* thumbnail_path = NULL;
+
     GnomeDesktopThumbnailFactory *factory;
-    gboolean res;
-    char *uri;
+    gboolean can_thumbnail;
+    char* uri;
     GFileInfo* info;
     time_t mtime;
     const char* content_type;
@@ -40,68 +44,45 @@ gfile_can_thumbnail (GFile *file)
     g_object_unref (info);
 	
     factory = get_thumbnail_factory ();
-    res = gnome_desktop_thumbnail_factory_can_thumbnail (factory,
+    //1' check if we can thumbnail
+    can_thumbnail = gnome_desktop_thumbnail_factory_can_thumbnail (factory,
                                                          uri,
                                                          mime_type,
                                                          mtime);
-    g_debug ("%s can thumbnail(mime: %s): %d", uri, mime_type,res);
+    g_debug ("%s can thumbnail(mime: %s): %d", uri, mime_type, can_thumbnail);
+    if (can_thumbnail == FALSE)
+    {
+	g_free (uri);
+	g_free (mime_type);
+	return NULL;
+    }
+    //2' lookup existing thumbnail
+    thumbnail_path = gnome_desktop_thumbnail_factory_lookup (factory, uri, mtime);
+    g_debug ("uri: %s\nthumbnail_path: %s\n", uri, thumbnail_path);
+
+    //3' create thumbnail if not exist
+    if (thumbnail_path == NULL)
+    {
+        //try to create thumbnails
+        GdkPixbuf *pixbuf;
+        pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (factory, uri, mime_type);
+
+        if (pixbuf) 
+        {
+            gnome_desktop_thumbnail_factory_save_thumbnail (factory, pixbuf, uri, mtime);
+            g_object_unref (pixbuf);
+        } 
+        else 
+        {
+            gnome_desktop_thumbnail_factory_create_failed_thumbnail (factory, uri, mtime);
+        }
+        thumbnail_path = gnome_desktop_thumbnail_factory_lookup (factory, uri, mtime);
+    }
     g_free (uri);
     g_free (mime_type);
 
-    return res;
-}
-
-/*
- *      create thumbnail
- *      return : success: the created thumbnail 
- *               failure: NULL
- */
-static char* 
-gfile_create_thumbnail (GFile* file)
-{
-    char* thumbnail_path = NULL;
+    g_debug ("thumbnail_path: %s", thumbnail_path);
 
     return thumbnail_path;
-}
-
-/*
- *      syncronously create thumbnails. shall we move to a threaded 
- *      implementation?
- */
-char*
-gfile_lookup_thumbnail (GFile* file)
-{
-    if (gfile_can_thumbnail (file) == FALSE)
-        return NULL;
-    /* 
-     * gnome_desktop_thumbnail_path_for_uri (uri, GNOME_DESKTOP_THUMBNAIL_SIZE_NORMAL);
-     * gnome_desktop_thumbnail_factory_lookup (thumbnail_factory, uri, mtime);
-     */
-     GnomeDesktopThumbnailFactory *factory;
-     char *uri;
-     GFileInfo* info;
-     time_t mtime;
-
-     char* thumbnail_path = NULL;
-		
-     uri = g_file_get_uri (file);
-
-     info = g_file_query_info (file, "time::modified",
-                               G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-                               NULL, NULL);
-     mtime = g_file_info_get_attribute_uint64(info, "time::modified");
-     g_object_unref (info);
-
-     factory = get_thumbnail_factory ();
-
-     thumbnail_path = gnome_desktop_thumbnail_factory_lookup (factory, uri, mtime);
-     g_debug ("uri: %s\nthumbnail_path: %s\n", uri, thumbnail_path);
-
-     if (thumbnail_path == NULL)
-     {
-         thumbnail_path = gfile_create_thumbnail (file);
-     }
-
-     return thumbnail_path;
 }
 
