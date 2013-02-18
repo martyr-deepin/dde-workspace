@@ -181,10 +181,6 @@ char* dentry_get_icon(Entry* e)
 {
     char* ret = NULL;
     TEST_GFILE(e, f)
-        //use thumbnail if possible.
-        ret = gfile_lookup_thumbnail (f);
-        if (ret != NULL)
-            return ret;
         GFileInfo *info = g_file_query_info(f, "standard::icon", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
             GIcon* icon = g_file_info_get_icon(info);
@@ -206,6 +202,26 @@ char* dentry_get_icon(Entry* e)
     } else {
         return NULL; //g_strdup("not_found.png");
     }
+}
+JS_EXPORT_API
+gboolean dentry_can_thumbnail(Entry* e)
+{
+    TEST_GFILE(e, f)
+        return gfile_can_thumbnail (f);
+    TEST_GAPP(e, app)
+        return FALSE;
+    TEST_END
+}
+
+JS_EXPORT_API
+char* dentry_get_thumbnail(Entry* e)
+{
+    g_assert (G_IS_FILE(e));
+    char* ret = NULL;
+    GFile* f = e;
+    //use thumbnail if possible.
+    ret = gfile_lookup_thumbnail (f);
+    return ret;
 }
 
 JS_EXPORT_API
