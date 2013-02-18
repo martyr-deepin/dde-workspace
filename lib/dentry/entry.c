@@ -35,6 +35,7 @@
 #include "fileops_clipboard.h"
 #include "fileops_trash.h"
 #include "fileops_delete.h"
+#include "thumbnails.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
@@ -180,6 +181,10 @@ char* dentry_get_icon(Entry* e)
 {
     char* ret = NULL;
     TEST_GFILE(e, f)
+        //use thumbnail if possible.
+        ret = gfile_lookup_thumbnail (f);
+        if (ret != NULL)
+            return ret;
         GFileInfo *info = g_file_query_info(f, "standard::icon", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
             GIcon* icon = g_file_info_get_icon(info);
