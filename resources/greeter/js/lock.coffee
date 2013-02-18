@@ -38,6 +38,21 @@ class LoginEntry extends Widget
                     @on_active(@password.value)
         )
 
+        @password.addEventListener("keydown", (e)=>
+            keycode = e.KeyCode || e.which
+            is_shift = e.shiftKey || (keycode == 16) || false
+
+            echo keycode
+            echo is_shift
+
+            if keycode >= 65 and keycode <= 90 and not is_shift
+                echo "capslock active and not shift"
+            else if keycode >=97 and keycode <= 122 and is_shift
+                echo "capslock active and shift"
+            else
+                echo "capslock inactive"
+        )
+
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = _("Unlock")
         @login.addEventListener("click", =>

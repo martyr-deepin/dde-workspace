@@ -30,8 +30,9 @@ connect_default_signals = ->
     DCore.signal_connect("cut_completed", do_cut_completed)
     DCore.signal_connect("lost_focus", do_desktop_lost_focus)
     DCore.signal_connect("get_focus", do_desktop_get_focus)
-
+    DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
+
     DCore.Desktop.notify_workarea_size()
 
 
@@ -51,6 +52,7 @@ do_item_update = (data) ->
     id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
+        w.set_entry(data.entry)
         w.item_update?()
     else
         w = create_item(data.entry)
@@ -106,6 +108,11 @@ do_desktop_get_focus = ->
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
         last_widget_has_focus == false
+
+
+do_desktop_config_changed = ->
+    load_speical_desktop_items()
+    place_desktop_items()
 
 
 do_workarea_changed = (allo) ->

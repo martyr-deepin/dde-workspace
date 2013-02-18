@@ -772,7 +772,7 @@ gboolean greeter_run_shutdown()
 
 static void sigterm_cb(int signum)
 {
-    gtk_main_quit();
+    exit(0);
 }
 
 static cairo_surface_t * create_root_surface(GdkScreen *screen)

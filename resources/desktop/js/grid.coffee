@@ -284,7 +284,7 @@ sort_list_by_name_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_name_from_id]")
+        echo "we get error here[sort_list_by_name_from_id]"
         return w1.localeCompare(w2)
     else
         return w1.get_name().localeCompare(w2.get_name())
@@ -294,7 +294,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_mtime_from_id]")
+        echo "we get error here[sort_list_by_mtime_from_id]"
         return w1.localeCompare(w2)
     else
         return w1.get_mtime() - w2.get_mtime()
@@ -411,7 +411,7 @@ selected_copy_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
     DCore.DEntry.clipboard_copy(tmp_list)
 
 
@@ -420,7 +420,7 @@ selected_cut_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
             w.display_cut()
     DCore.DEntry.clipboard_cut(tmp_list)
 
@@ -675,7 +675,7 @@ delete_selected_items = (real_delete) ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? and w.modifiable == true then tmp.push(w.entry)
+        if w? and w.modifiable == true then tmp.push(w.get_entry())
 
     if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)
@@ -857,23 +857,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
         evt.preventDefault()
 
 
-init_speical_desktop_items = ->
-    item = new ComputerVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-    item = new HomeVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-    item = new TrashVDir
-    if item?
-        div_grid.appendChild(item.element)
-        speical_item.push(item.get_id())
-
-
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -889,17 +872,6 @@ create_item_grid = ->
 
     drag_canvas = document.createElement("canvas")
     drag_context = drag_canvas.getContext('2d')
-
-    init_speical_desktop_items()
-
-
-#class ItemGrid
-#    constructor : (parentElement) ->
-#        @_parent_element = parentElement
-#        @_workarea_width = 0
-#        @_workarea_height = 0
-#        @_offset_x = 0
-#        @_offset_y = 0
 
 
 class Mouse_Select_Area_box
