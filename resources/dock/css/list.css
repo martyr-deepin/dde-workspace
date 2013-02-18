@@ -2,6 +2,7 @@
     clear: both;
     display: -webkit-box;
     -webkit-box-flex: 1;
+    padding-right: 25px;
 }
 
 .AppItem {
