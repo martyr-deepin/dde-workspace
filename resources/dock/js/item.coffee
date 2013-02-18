@@ -89,6 +89,13 @@ class AppItem extends Widget
         @img.style.width = icon_width
         @img.style.height = icon_height
 
+        if @img2
+            @img2.style.width = icon_width
+            @img2.style.height = icon_height
+        if @img3
+            @img3.style.width = icon_width
+            @img3.style.height = icon_height
+
         if @indicate
             w = INDICATER_WIDTH / ITEM_WIDTH * item_width
             h = w * INDICATER_HEIGHT / INDICATER_WIDTH
