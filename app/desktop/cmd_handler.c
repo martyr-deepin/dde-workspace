@@ -8,45 +8,12 @@
 #include "xdg_misc.h"
 #include "jsextension.h"
 
-#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"
-#define TERMINAL_KEY_EXEC  "exec"
-#define TERMINAL_KEY_EXEC_ARG "exec-arg"
-
-static GSettings* terminal_gsettings = NULL;
+//FIXME: implemented in lib/dentry/mime_actions.c
+//       move to a suitable place?
+void desktop_run_in_terminal(char* executable);
 void desktop_run_terminal()
 {
-    if (terminal_gsettings == NULL)
-        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
-
-    char* exec_val = g_settings_get_string(terminal_gsettings,
-                                            TERMINAL_KEY_EXEC);
-    //char* exec_arg_val = g_settings_get_string (terminal_gsettings,
-    //                                        TERMINAL_KEY_EXEC_ARG);
-    GError* error = NULL;
-
-    gchar* path = get_desktop_dir(0);
-    gchar* cmd_line = g_strdup_printf("%s --working-directory=%s", exec_val, path);
-    g_free(path);
-    g_free(exec_val);
-
-    GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
-                                                           G_APP_INFO_CREATE_NONE,
-                                                           &error);
-    g_free(cmd_line);
-    if (error!=NULL)
-    {
-        g_debug("desktop_run_terminal error: %s", error->message);
-	g_error_free(error);
-    }
-    error = NULL;
-    g_app_info_launch(appinfo, NULL, NULL, &error);
-    if (error!=NULL)
-    {
-        g_debug("desktop_run_terminal error: %s", error->message);
-	g_error_free(error);
-    }
-    
-    g_object_unref(appinfo);
+    desktop_run_in_terminal (NULL);
 }
 
 void desktop_run_deepin_settings(const char* mod)
@@ -63,14 +30,14 @@ void desktop_run_deepin_settings(const char* mod)
     if (error!=NULL)
     {
         g_debug("desktop_run_deepin_settings error: %s", error->message);
-	g_error_free(error);
+        g_error_free(error);
     }
     error = NULL;
     g_app_info_launch(appinfo, NULL, NULL, &error);
     if (error!=NULL)
     {
         g_debug("desktop_run_deepin_settings error: %s", error->message);
-	g_error_free(error);
+        g_error_free(error);
     }
     g_object_unref(appinfo);
 }
