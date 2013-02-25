@@ -105,4 +105,4 @@ calc_text_size = (txt, width)->
 clamp = (value, min, max)->
     return min if value < min
     return max if value > max
-    return max
+    return value
