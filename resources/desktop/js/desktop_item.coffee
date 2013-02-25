@@ -659,7 +659,6 @@ class RichDir extends DesktopEntry
         menus.push([1, _("Open")])
         menus.push([])
         menus.push([6, _("Rename"), not is_selected_multiple_items()])
-        menus.push([9, _("Delete")])
         menus
 
 
