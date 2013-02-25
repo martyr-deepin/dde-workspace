@@ -300,27 +300,39 @@ int reparent_to_init ()
 	    _exit(EXIT_SUCCESS);
     }
 }
-void parse_cmd_line (int* argc, char*** argv)
+static void _consolidate_cmd_line (int subargc, char*** subargv_ptr)
 {
+    //recursively consolidate
+}
+void parse_cmd_line (int* argc_ptr, char*** argv_ptr)
+{
+    char*** subargv_ptr = argv_ptr;
+    int     subargc     = (*argc_ptr);
+
     gboolean should_reparent = TRUE;
+    gboolean enable_debug = FALSE;
     int i=0;
-    for (;i<(*argc);i++)
+    for (;i<(*argc_ptr);i++)
     {
-	if(!g_strcmp0 ((*argv)[i], "-f"))
+	if(!g_strcmp0 ((*argv_ptr)[i], "-f"))
 	{
 	    should_reparent=FALSE;
-	    break;
+            //(*argv_ptr)[i]=NULL;
+	    //(*argc_ptr)--;
+            continue;
 	}
-    }
-    if (i<(*argc))
-    {
-	for (;i<(*argc)-1;i++)
+	if(!g_strcmp0 ((*argv_ptr)[i], "-d"))
 	{
-	    (*argv)[i]=(*argv)[i+1];
+            enable_debug = TRUE;
+            //(*argv_ptr)[i]=NULL;
+	    //(*argc_ptr)--;
+            continue;
 	}
-	(*argv)[(*argc)-1]=NULL;
-	(*argc)=(*argc)-1;
     }
+    //uncomment previous comments
+    //consolidate *argv, remove NULL slots.
+    _consolidate_cmd_line(subargc, subargv_ptr);
+
     if (should_reparent)
     {
 	//close stdin, stdout, stderr 
@@ -336,6 +348,10 @@ void parse_cmd_line (int* argc, char*** argv)
 	if(dup2(STDIN_FILENO, STDERR_FILENO)!=STDERR_FILENO)
 	    return;
 	reparent_to_init();
+    }
+    if (enable_debug)
+    {
+	g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
     }
 }
 

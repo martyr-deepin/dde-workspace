@@ -25,7 +25,6 @@ FILE_TYPE_INVALID_LINK = 4
 
 create_item = (entry) ->
     w = null
-    Id = DCore.DEntry.get_id(entry)
     Type = DCore.DEntry.get_type(entry)
     switch Type
         when FILE_TYPE_APP
@@ -92,6 +91,6 @@ load_desktop_all_items = ->
 
     for e in DCore.Desktop.get_desktop_entries()
         w = create_item(e)
-        if w? then all_item.push(w.id)
+        if w? then all_item.push(w.get_id())
 
     return
