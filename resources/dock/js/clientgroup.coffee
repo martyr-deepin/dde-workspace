@@ -114,10 +114,12 @@ class ClientGroup extends AppItem
 
     update_leader: ->
         @img.src = @client_infos[@leader].icon
-        @img.setAttribute("title", @client_infos[@leader].title)
+        #@img.setAttribute("title", @client_infos[@leader].title)
         try
             @img2.src = @client_infos[@n_clients[1]].icon
+            #@img2.setAttribute("title", @client_infos[@n_clients[1]].title)
             @img3.src = @client_infos[@n_clients[2]].icon
+            #@img3.setAttribute("title", @client_infos[@n_clients[2]].title)
 
     try_swap_launcher: ->
         l = Widget.look_up(@app_id)
@@ -143,7 +145,6 @@ class ClientGroup extends AppItem
             [2, _("Close")],
             [],
             [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
-            #[4, _("PreView"), false]
         ]
 
     do_itemselected: (e)=>
@@ -152,7 +153,6 @@ class ClientGroup extends AppItem
             when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then DCore.Dock.request_dock_by_client_id(@leader)
-            #when 4 then Preview_container.show_group(@)
 
     do_click: (e)->
         if @n_clients.length == 1 and active_group == @
@@ -169,4 +169,4 @@ class ClientGroup extends AppItem
             @to_active_status(@leader)
 
     do_mouseover: (e)->
-        #Preview_container.show_group(@)
+        Preview_show(@)

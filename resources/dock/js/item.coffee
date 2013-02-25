@@ -58,7 +58,7 @@ class AppList extends Widget
 
     do_mouseover: (e)->
         if e.target == @element
-            Preview_container.remove_all(1000)
+            Preview_close()
 
 app_list = new AppList("app_list")
 
@@ -104,7 +104,7 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT - h
 
     do_dragstart: (e)->
-        Preview_container.remove_all()
+        Preview_close()
         return if @is_fixed_pos
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"

@@ -10,7 +10,9 @@
     max-width: 68px;
     max-height: 60px;
     -webkit-box-flex: 1;
+    pointer-events: none;
 }
+
 .AppItemBoard {
     display: none;
 }
@@ -24,6 +26,9 @@
     border-radius: 6px;
     max-width: 48px;
     max-height: 48px;
+}
+.AppItemImg:first-child {
+    pointer-events: auto;
 }
 
 .OpenIndicate {
