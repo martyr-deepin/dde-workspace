@@ -43,7 +43,7 @@ do_item_delete = (data) ->
         cancel_item_selected(w)
         all_item.remove(id)
         w.destroy()
-        discard_position(w.id)
+        discard_position(w.get_id())
 
     update_selected_item_drag_image()
 
@@ -57,7 +57,7 @@ do_item_update = (data) ->
     else
         w = create_item(data.entry)
         if w?
-            all_item.push(w.id)
+            all_item.push(w.get_id())
             move_to_anywhere(w)
 
 
@@ -76,7 +76,7 @@ do_item_rename = (data) ->
     w = create_item(data.new)
     if w?
         move_to_anywhere(w)
-        all_item.push(w.id)
+        all_item.push(w.get_id())
         if sel then set_item_selected(w)
 
     update_selected_item_drag_image()
