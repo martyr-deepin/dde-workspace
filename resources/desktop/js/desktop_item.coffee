@@ -678,8 +678,12 @@ class RichDir extends DesktopEntry
         if list.length <= 1
             if @show_pop == true
                 @hide_pop_block()
-                if list.length then DCore.DEntry.move(list, g_desktop_entry)
+            if list.length
+                DCore.DEntry.move(list, g_desktop_entry)
+                if (pos = load_position(DCore.DEntry.get_id(@_entry)))?
+                    save_position(DCore.DEntry.get_id(list[0]), pos)
             DCore.DEntry.delete_files([@_entry], false)
+            delete_item(@)
         else
             if @show_pop == true
                 @sub_items = {}
@@ -888,7 +892,15 @@ class Application extends DesktopEntry
 
         if all_are_apps == true
             tmp_list.push(@_entry)
-            DCore.Desktop.create_rich_dir(tmp_list)
+            pos = load_position(@id)
+            if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
+                (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
+                id = DCore.DEntry.get_id(new_entry)
+                if (w = Widget.look_up(id))?
+                    move_to_somewhere(w, pos)
+                else
+                    save_position(id, pos)
+                    echo "save_position #{id}"
         else
             DCore.DEntry.launch(@_entry, tmp_list)
         return

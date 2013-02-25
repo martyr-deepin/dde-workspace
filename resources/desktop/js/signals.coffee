@@ -38,14 +38,10 @@ connect_default_signals = ->
 
 do_item_delete = (data) ->
     id = DCore.DEntry.get_id(data.entry)
-    w = Widget.look_up(id)
-    if w?
-        cancel_item_selected(w)
-        all_item.remove(id)
-        w.destroy()
-        discard_position(w.get_id())
+    if (w = Widget.look_up(id))?
+        delete_item(w)
 
-    update_selected_item_drag_image()
+        update_selected_item_drag_image()
 
 
 do_item_update = (data) ->
