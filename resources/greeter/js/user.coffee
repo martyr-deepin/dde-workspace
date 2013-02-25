@@ -166,10 +166,10 @@ class UserInfo extends Widget
                     @show_login()
             else if e.which == 37
                 echo "prev"
-                jquery("#roundabout").roundabout("animateToPreviousChild")
+                jQuery("#roundabout").roundabout("animateToPreviousChild")
             else if e.which == 39
                 echo "next"
-                jquery("#roundabout").roundabout("animateToNextChild")
+                jQuery("#roundabout").roundabout("animateToNextChild")
             else
                 echo "pass"
         )
