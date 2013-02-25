@@ -506,6 +506,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
             } else if (ev->atom == ATOM_WINDOW_NAME) {
                 _update_window_title(c);
                 _update_window_class(c);
+                _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
             }

@@ -2,9 +2,10 @@ class FixedItem extends AppItem
     is_fixed_pos: true
     __show: false
 
-    constructor: (@id, @icon)->
+    constructor: (@id, @icon, title)->
         super
         @element.draggable=false
+        @img.setAttribute("title", title)
 
         @indicate = create_img("OpenIndicate", "img/s_app_open.png", @element)
         @indicate.style.left = INDICATER_IMG_MARGIN_LEFT
@@ -33,10 +34,10 @@ try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
     icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
-show_launcher = new LauncherItem("show_launcher", icon_launcher)
+show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
 app_list.append(show_launcher)
 
-show_desktop = new ShowDesktop("show_desktop", icon_desktop)
+show_desktop = new ShowDesktop("show_desktop", icon_desktop, _("Show/Hiden Desktop"))
 app_list.append(show_desktop)
 
 DCore.signal_connect("launcher_running", ->

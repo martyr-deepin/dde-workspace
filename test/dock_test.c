@@ -38,8 +38,14 @@ int TEST_MAX_MEMORY= 100000;
 extern GHashTable* _clients_table;
 void dock_test()
 {
+    return;
     int xid = 0x2800006;
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+
+    Test({
+            GdkWindow* root = gdk_get_default_root_window();
+            _update_task_list(GDK_WINDOW_XID(root));
+    }, "update task list");
 
     Test({
             Client* c = create_client_from_window(xid);
