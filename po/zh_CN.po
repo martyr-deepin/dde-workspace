@@ -313,6 +313,10 @@ msgstr "密码错误"
 msgid "Invalid Username/Password"
 msgstr "用户名/密码错误"
 
+#: ../app/greeter/greeter.c:890
+msgid "%a,%b%d,%Y"
+msgstr "%Y,%B%D,%A"
+
 #: ../lib/dentry/entry.c:330 ../lib/dentry/entry.c:336
 #, c-format
 msgid ""

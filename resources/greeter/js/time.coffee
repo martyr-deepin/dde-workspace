@@ -45,6 +45,9 @@ get_date_str = ->
 
     return "#{day}, #{mon} #{date}, #{year}"
 
+get_c_date_str = ->
+    return DCore.Greeter.get_date()
+
 time = $("#time")
 date = $("#date")
 #time.innerText = get_time_str()
@@ -58,7 +61,9 @@ colon.innerText = ":"
 min = create_element("span", "", time)
 min.innerText = get_min()
 
-date.innerText = get_date_str()
+#date.innerText = get_date_str()
+date.innerText = get_c_date_str()
+
 setInterval( ->
         hours.innerText = get_hours()
         min.innerText = get_min()
@@ -66,6 +71,6 @@ setInterval( ->
     , 1000)
 
 setInterval( ->
-        date.innerText = get_date_str()
+        date.innerText = get_c_date_str()
         return true
     , 1000)

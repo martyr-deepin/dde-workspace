@@ -43,6 +43,7 @@ static gchar* greeter_file = NULL;
 static gchar *selected_user = NULL, *selected_session = NULL;
 static gint response_count = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
+gchar *date_str = NULL;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -90,6 +91,7 @@ gboolean greeter_run_shutdown();
 static void sigterm_cb(int signum);
 static cairo_surface_t * create_root_surface(GdkScreen *screen);
 static void greeter_update_background();
+gchar* greeter_get_date();
 
 /* GREETER */
 static gboolean is_user_valid(const gchar *username)
@@ -870,6 +872,32 @@ static void greeter_update_background()
     if(background_pixbuf){
         g_object_unref(background_pixbuf);
     }
+}
+
+gchar * 
+greeter_get_date()
+{
+    char outstr[200];
+    time_t t;
+    struct tm *tmp;
+
+    if(date_str != NULL){
+        date_str == NULL;
+    }
+
+    setlocale(LC_ALL, "");
+    t = time(NULL);
+    tmp = localtime(&t);
+    if (tmp == NULL) {
+        perror("localtime");
+    }
+
+    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
+            fprintf(stderr, "strftime returned 0");
+    }
+
+    date_str = g_strdup(outstr);
+    return date_str;
 }
 
 int main(int argc, char **argv)
