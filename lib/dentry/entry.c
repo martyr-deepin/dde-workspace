@@ -36,6 +36,7 @@
 #include "fileops_trash.h"
 #include "fileops_delete.h"
 #include "thumbnails.h"
+#include "mime_actions.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
@@ -239,14 +240,11 @@ JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
     TEST_GFILE(e, f)
-        GFileInfo* info = g_file_query_info(f, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, G_FILE_QUERY_INFO_NONE, NULL, NULL);
+        GFileInfo* info = g_file_query_info(f, "standard::content-type,access::can-execute", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
             const char* content_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
-            GAppInfo *app  = g_app_info_get_default_for_type(content_type, FALSE);
-            GList* list = g_list_append(NULL, f);
-            g_app_info_launch(app, list, NULL, NULL);
-            g_list_free(list);
-            g_object_unref(app);
+            gboolean is_executable = g_file_info_get_attribute_boolean(info, "access::can-execute");
+            activate_file (f, content_type, is_executable);
             g_object_unref(info);
         } else {
             char* path = g_file_get_path(f);
