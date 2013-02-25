@@ -164,6 +164,14 @@ class UserInfo extends Widget
             if e.which == 13 and not @login_displayed
                 if _current_user == @
                     @show_login()
+            else if e.which == 37
+                echo "prev"
+                jquery("#roundabout").roundabout("animateToPreviousChild")
+            else if e.which == 39
+                echo "next"
+                jquery("#roundabout").roundabout("animateToNextChild")
+            else
+                echo "pass"
         )
 
     blur: ->
@@ -325,3 +333,4 @@ run_post(->
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
 )
+
