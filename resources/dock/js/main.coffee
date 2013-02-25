@@ -36,17 +36,16 @@ DCore.signal_connect("launcher_added", (info) ->
         new Launcher(info.Id, info.Icon, info.Core)
 )
 DCore.signal_connect("dock_request", (info) ->
-    c = Widget.look_up(info.Id)
-    if not c
-        l = new Launcher(info.Id, info.Icon, info.Core)
-        apply_flash(l.img, 1)
+    group = Widget.look_up("le_"+info.Id)
+    if group
+        apply_flash(group.img, 0.3)
     else
-        apply_rotate(c.element, 0.3)
-        #group = Widget.look_up("le_"+info.Id)
-        #if group
-            #apply_flash(group.element, 0.3)
-        #else
-            #echo "not found group...#{info.Id}"
+        c = Widget.look_up(info.Id)
+        if not c
+            l = new Launcher(info.Id, info.Icon, info.Core)
+            apply_flash(l.img, 1)
+        else
+            apply_rotate(c.element, 0.3)
 )
 
 DCore.signal_connect("launcher_removed", (info) ->
@@ -91,3 +90,8 @@ setTimeout(init_app_item_size, 1000)
 setTimeout(init_app_item_size, 1800)
 setTimeout(init_app_item_size, 2800)
 setTimeout(init_app_item_size, 4000)
+
+setTimeout(->
+    DCore.Dock.test("1")
+, 3000)
+

@@ -58,7 +58,7 @@ class AppList extends Widget
 
     do_mouseover: (e)->
         if e.target == @element
-            Preview_container.remove_all(1000)
+            Preview_close()
 
 app_list = new AppList("app_list")
 
@@ -70,6 +70,7 @@ class AppItem extends Widget
         if not @icon
             @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
+        @img.classList.add("ReflectImg")
         @element.draggable=true
         app_list.append(@)
 
@@ -88,6 +89,13 @@ class AppItem extends Widget
         @img.style.width = icon_width
         @img.style.height = icon_height
 
+        if @img2
+            @img2.style.width = icon_width
+            @img2.style.height = icon_height
+        if @img3
+            @img3.style.width = icon_width
+            @img3.style.height = icon_height
+
         if @indicate
             w = INDICATER_WIDTH / ITEM_WIDTH * item_width
             h = w * INDICATER_HEIGHT / INDICATER_WIDTH
@@ -96,7 +104,7 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT - h
 
     do_dragstart: (e)->
-        Preview_container.remove_all()
+        Preview_close()
         return if @is_fixed_pos
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
@@ -114,7 +122,18 @@ class AppItem extends Widget
             return
         did = @element.id
         if sid != did
-            swap_element(Widget.look_up(sid).element, Widget.look_up(did).element)
+            w_s = Widget.look_up(sid)
+            w_d = Widget.look_up(did)
+            swap_element(w_s.element, w_d.element)
+            if w_s.app_id
+                id_s = w_s.app_id
+            else
+                id_s = w_s.id
+            if w_d.app_id
+                id_d = w_d.app_id
+            else
+                id_d = w_d.id
+            DCore.Dock.swap_apps_position(id_s, id_d)
 
         e.stopPropagation()
 
