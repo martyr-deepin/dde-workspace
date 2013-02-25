@@ -59,8 +59,18 @@ body {
 }
 
 .DesktopEntry .item_icon {
+    padding:0 16px;
+    width:48px;
+    height:48px;
+    vertical-align:middle;
+    display: table-cell;
+}
+.DesktopEntry .item_icon img {
     max-width:48px;
     max-height:48px;
+}
+.DesktopEntry .item_icon .previewshadow {
+    box-shadow:1px 1px 1px #000;
 }
 
 .DesktopEntry .item_attrib {

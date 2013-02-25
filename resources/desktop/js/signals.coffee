@@ -38,26 +38,22 @@ connect_default_signals = ->
 
 do_item_delete = (data) ->
     id = DCore.DEntry.get_id(data.entry)
-    w = Widget.look_up(id)
-    if w?
-        cancel_item_selected(w)
-        all_item.remove(id)
-        w.destroy()
-        discard_position(w.id)
+    if (w = Widget.look_up(id))?
+        delete_item(w)
 
-    update_selected_item_drag_image()
+        update_selected_item_drag_image()
 
 
 do_item_update = (data) ->
     id = DCore.DEntry.get_id(data.entry)
     w = Widget.look_up(id)
     if w?
-        w.entry = data.entry
+        w.set_entry(data.entry)
         w.item_update?()
     else
         w = create_item(data.entry)
         if w?
-            all_item.push(w.id)
+            all_item.push(w.get_id())
             move_to_anywhere(w)
 
 
@@ -76,7 +72,7 @@ do_item_rename = (data) ->
     w = create_item(data.new)
     if w?
         move_to_anywhere(w)
-        all_item.push(w.id)
+        all_item.push(w.get_id())
         if sel then set_item_selected(w)
 
     update_selected_item_drag_image()

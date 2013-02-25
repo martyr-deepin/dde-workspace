@@ -117,7 +117,7 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 }
 
 JS_EXPORT_API
-gboolean desktop_create_rich_dir(ArrayContainer fs)
+GFile* desktop_create_rich_dir(ArrayContainer fs)
 {
     char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("Rich directory"), NULL);
     g_debug ("create_rich_dir: %s", temp_name);
@@ -125,7 +125,7 @@ gboolean desktop_create_rich_dir(ArrayContainer fs)
     g_free(temp_name);
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir);
-    return TRUE;
+    return dir;
 }
 
 JS_EXPORT_API

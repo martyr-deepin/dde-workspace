@@ -169,7 +169,7 @@ calc_pos_to_pos_distance = (base, pos) ->
 
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     items = speical_item.concat(all_item)
-    pos = load_position(start_item.id)
+    pos = load_position(start_item.get_id())
     while true
         if x_delta != 0
             pos.x += x_delta
@@ -185,7 +185,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
-            find_pos = load_position(w.id)
+            find_pos = load_position(w.get_id())
             if (find_pos.x <= pos.x <= find_pos.x + find_pos.width - 1) and (find_pos.y <= pos.y <= find_pos.y + find_pos.height - 1)
                 return w
     null
@@ -247,7 +247,7 @@ find_free_position = (w, h) ->
 
 
 move_to_anywhere = (widget) ->
-    info = load_position(widget.id)
+    info = load_position(widget.get_id())
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
     else
@@ -266,11 +266,11 @@ move_to_somewhere = (widget, pos) ->
 
 
 move_to_position = (widget, info) ->
-    old_info = load_position(widget.id)
+    old_info = load_position(widget.get_id())
 
     if not info? then return
 
-    save_position(widget.id, info)
+    save_position(widget.get_id(), info)
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
@@ -284,8 +284,8 @@ sort_list_by_name_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_name_from_id]")
-        return w1.localeCompare(w2)
+        echo "we get error here[sort_list_by_name_from_id]"
+        return id1.localeCompare(id2)
     else
         return w1.get_name().localeCompare(w2.get_name())
 
@@ -294,7 +294,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
-        echo("we get error here[sort_list_by_mtime_from_id]")
+        echo "we get error here[sort_list_by_mtime_from_id]"
         return w1.localeCompare(w2)
     else
         return w1.get_mtime() - w2.get_mtime()
@@ -311,13 +311,13 @@ sort_desktop_item_by_func = (func) ->
     for i in speical_item
         w = Widget.look_up(i)
         if w?
-            discard_position(w.id)
+            discard_position(w.get_id())
             move_to_anywhere(w)
 
     for i in item_ordered_list
         w = Widget.look_up(i)
         if w?
-            discard_position(w.id)
+            discard_position(w.get_id())
             move_to_anywhere(w)
     return
 
@@ -339,7 +339,7 @@ create_entry_to_new_item = (entry) ->
     cancel_all_selected_stats()
     pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1, 1)
     move_to_somewhere(w, pos)
-    all_item.push(w.id)
+    all_item.push(w.get_id())
     set_item_selected(w)
     w.item_rename()
 
@@ -411,7 +411,7 @@ selected_copy_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
     DCore.DEntry.clipboard_copy(tmp_list)
 
 
@@ -420,7 +420,7 @@ selected_cut_to_clipboard = ->
     for i in selected_item
         w = Widget.look_up(i)
         if w? and w.modifiable == true
-            tmp_list.push(w.entry)
+            tmp_list.push(w.get_entry())
             w.display_cut()
     DCore.DEntry.clipboard_cut(tmp_list)
 
@@ -443,7 +443,7 @@ item_dragstart_handler = (widget, evt) ->
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        pos = load_position(widget.id)
+        pos = load_position(widget.get_id())
         x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
         y = (pos.y - drag_start.y) * grid_item_height + (_ITEM_HEIGHT_ / 2)
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
@@ -456,7 +456,7 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     if evt.dataTransfer.dropEffect == "link"
-        old_pos = load_position(w.id)
+        old_pos = load_position(w.get_id())
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         coord_x_shift = new_pos.x - old_pos.x
         coord_y_shift = new_pos.y - old_pos.y
@@ -478,7 +478,7 @@ item_dragend_handler = (w, evt) ->
             w = Widget.look_up(i)
             if not w? then continue
 
-            old_pos = load_position(w.id)
+            old_pos = load_position(w.get_id())
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
@@ -493,14 +493,14 @@ set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
         w.item_selected()
         if add_top == true
-            selected_item.unshift(w.id)
+            selected_item.unshift(w.get_id())
         else
-            selected_item.push(w.id)
+            selected_item.push(w.get_id())
 
         if change_focus
-            if last_widget != w.id
+            if last_widget != w.get_id()
                 if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
-                last_widget = w.id
+                last_widget = w.get_id()
             if not w.has_focus then w.item_focus()
     return
 
@@ -513,14 +513,14 @@ set_all_item_selected = ->
 
 
 cancel_item_selected = (w, change_focus = true) ->
-    i = selected_item.indexOf(w.id)
+    i = selected_item.indexOf(w.get_id())
     if i < 0 then return false
     selected_item.splice(i, 1)
     w.item_normal()
 
-    if change_focus and last_widget != w.id
+    if change_focus and last_widget != w.get_id()
         if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
-        last_widget = w.id
+        last_widget = w.get_id()
         w.item_focus()
     return true
 
@@ -545,13 +545,13 @@ update_selected_stats = (w, evt) ->
 
         if selected_item.length == 1
             end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-            start_pos = load_position(Widget.look_up(selected_item[0]).id)
+            start_pos = load_position(Widget.look_up(selected_item[0]).get_id())
 
             ret = compare_pos_top_left(start_pos, end_pos)
             if ret < 0
                 for key in speical_item.concat(all_item)
                     val = Widget.look_up(key)
-                    i_pos = load_position(val.id)
+                    i_pos = load_position(val.get_id())
                     if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                         set_item_selected(val, true, true)
             else if ret == 0
@@ -559,7 +559,7 @@ update_selected_stats = (w, evt) ->
             else
                 for key in speical_item.concat(all_item)
                     val = Widget.look_up(key)
-                    i_pos = load_position(val.id)
+                    i_pos = load_position(val.get_id())
                     if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                         set_item_selected(val, true, true)
 
@@ -567,7 +567,7 @@ update_selected_stats = (w, evt) ->
             set_item_selected(w)
 
     else
-        n = selected_item.indexOf(w.id)
+        n = selected_item.indexOf(w.get_id())
         if n < 0
             cancel_all_selected_stats()
             set_item_selected(w)
@@ -575,10 +575,10 @@ update_selected_stats = (w, evt) ->
         if n >= 0
             selected_item.splice(n, 1)
             cancel_all_selected_stats()
-            selected_item.push(w.id)
-            if last_widget != w.id
+            selected_item.push(w.get_id())
+            if last_widget != w.get_id()
                 if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
-                last_widget = w.id
+                last_widget = w.get_id()
 
     update_selected_item_drag_image()
     return
@@ -675,7 +675,7 @@ delete_selected_items = (real_delete) ->
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
-        if w? and w.modifiable == true then tmp.push(w.entry)
+        if w? and w.modifiable == true then tmp.push(w.get_entry())
 
     if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)
@@ -763,7 +763,7 @@ grid_do_keydown_to_shortcut = (evt) ->
         if evt.ctrlKey == true
             w.item_blur()
             w_f.item_focus()
-            last_widget = w_f.id
+            last_widget = w_f.get_id()
 
         else if evt.shiftKey == true
             if selected_item.length > 1
@@ -774,7 +774,7 @@ grid_do_keydown_to_shortcut = (evt) ->
 
             if selected_item.length == 1
                 start_pos = load_position(selected_item[0])
-                end_pos = load_position(w_f.id)
+                end_pos = load_position(w_f.get_id())
                 if compare_pos_top_left(start_pos, end_pos) < 0
                     pos_a = start_pos
                     pos_b = end_pos
@@ -783,13 +783,13 @@ grid_do_keydown_to_shortcut = (evt) ->
                     pos_a = end_pos
                 for i in speical_item.concat(all_item)
                     if not (w_i = Widget.look_up(i))? then continue
-                    item_pos = load_position(w_i.id)
+                    item_pos = load_position(w_i.get_id())
                     if compare_pos_rect(pos_a, pos_b, item_pos) == true
                         set_item_selected(w_i) if not w_i.selected
 
-                if last_widget != w_f.id
+                if last_widget != w_f.get_id()
                     w.item_blur() if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
-                    last_widget = w_f.id
+                    last_widget = w_f.get_id()
             else
                 w_f.item_selected()
         else
@@ -930,7 +930,7 @@ class Mouse_Select_Area_box
             for i in speical_item.concat(all_item)
                 w = Widget.look_up(i)
                 if not w? then continue
-                item_pos = load_position(w.id)
+                item_pos = load_position(w.get_id())
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 

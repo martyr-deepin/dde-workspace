@@ -35,7 +35,6 @@
     opacity:1;
 }
 
-
 .UserImg {
     width: 150px;
     height: 150px;
@@ -63,15 +62,30 @@
 }
 
 .Password {
-    background:#fff url(../images/lock.png) no-repeat 3px 3px;
+    background:transparent url(../images/lock.png) no-repeat 3px 3px;
+    margin:0 auto; 
     padding-left:20px;
-    margin: 0 0 8px 0px;
-    width:160px;
+    width:158px;
     font-size:12px;
     color:#666;
     height:28px;
     border:2px solid #F60;
     border-radius:3px;
+}
+
+.PasswordStyle {
+    -webkit-text-security:disc !important;
+}
+
+.CapsWarning {
+    background:#fff;
+    margin: 0 0px 8px 13px;
+    width:156px;
+    border-radius:3px;
+}
+
+.CapsWarningBackground {
+    background:#fff url(../images/exclamation.png) no-repeat 137px 5px;
 }
 
 .LoginEntry{
@@ -89,11 +103,11 @@
 }
 
 .LoginButton {
-    width:160px; 
+    width:158px; 
     font-size:16px;
     color:#fff;
     cursor: pointer;
-    margin-top: 0px;
+    margin: 0 auto;
     text-align: center;
     padding:6px;
     line-height:14px;

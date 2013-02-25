@@ -25,7 +25,6 @@ FILE_TYPE_INVALID_LINK = 4
 
 create_item = (entry) ->
     w = null
-    Id = DCore.DEntry.get_id(entry)
     Type = DCore.DEntry.get_type(entry)
     switch Type
         when FILE_TYPE_APP
@@ -37,8 +36,11 @@ create_item = (entry) ->
         when FILE_TYPE_RICH_DIR
             list = DCore.DEntry.list_files(entry)
             if list.length <= 1
+                if list.length
+                    DCore.DEntry.move(list, g_desktop_entry)
+                    if (pos = load_position(DCore.DEntry.get_id(entry)))?
+                        save_position(DCore.DEntry.get_id(list[0]), pos)
                 discard_position(DCore.DEntry.get_id(entry))
-                if list.length then DCore.DEntry.move(list, g_desktop_entry)
                 DCore.DEntry.delete_files([entry], false)
             else
                 w = new RichDir(entry)
@@ -49,6 +51,13 @@ create_item = (entry) ->
 
     if w? then div_grid.appendChild(w.element)
     return w
+
+
+delete_item = (w) ->
+    cancel_item_selected(w)
+    all_item.remove(w.get_id())
+    w.destroy()
+    discard_position(w.get_id())
 
 
 clear_speical_desktop_items = ->
@@ -92,6 +101,6 @@ load_desktop_all_items = ->
 
     for e in DCore.Desktop.get_desktop_entries()
         w = create_item(e)
-        if w? then all_item.push(w.id)
+        if w? then all_item.push(w.get_id())
 
     return

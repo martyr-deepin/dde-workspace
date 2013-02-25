@@ -27,8 +27,9 @@ apply_refuse_rotate = (el, time)->
 class LoginEntry extends Widget
     constructor: (@id, @on_active)->
         super
-        @password = create_element("input", "Password", @element)
-        @password.setAttribute("type", "password")
+        @warning = create_element("div", "CapsWarning", @element)
+        @password = create_element("input", "Password", @warning)
+        @password.classList.add("PasswordStyle")
         @password.index = 0
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
@@ -38,19 +39,19 @@ class LoginEntry extends Widget
                     @on_active(@password.value)
         )
 
-        @password.addEventListener("keydown", (e)=>
+        @password.addEventListener("keypress", (e)=>
             keycode = e.KeyCode || e.which
             is_shift = e.shiftKey || (keycode == 16) || false
 
-            echo keycode
-            echo is_shift
-
             if keycode >= 65 and keycode <= 90 and not is_shift
                 echo "capslock active and not shift"
+                @password.classList.add("CapsWarningBackground")
             else if keycode >=97 and keycode <= 122 and is_shift
                 echo "capslock active and shift"
+                @password.classList.add("CapsWarningBackground")
             else
                 echo "capslock inactive"
+                @password.classList.remove("CapsWarningBackground")
         )
 
         @login = create_element("button", "LoginButton", @element)
@@ -135,12 +136,14 @@ class UserInfo extends Widget
         else
             @focus()
             @show_login()
-            @login.password.setAttribute("type", "text")
+            @login.password.classList.remove("PasswordStyle")
+            #@login.password.setAttribute("type", "text")
             @login.password.style.color = "red"
             @login.password.value = msg.status
             @login.password.blur()
             @login.password.addEventListener("focus", (e)=>
-                @login.password.setAttribute("type", "password")
+                @login.password.classList.add("PasswordStyle")
+                #@login.password.setAttribute("type", "password")
                 @login.password.style.color = "black"
                 @login.password.value = ""
             )
