@@ -70,7 +70,7 @@ body {
     max-height:48px;
 }
 .DesktopEntry .item_icon .previewshadow {
-    text-shadow:1px 0 1px #000;
+    box-shadow:1px 1px 1px #000;
 }
 
 .DesktopEntry .item_attrib {
