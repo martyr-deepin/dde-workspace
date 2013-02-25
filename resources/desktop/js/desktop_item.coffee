@@ -33,7 +33,7 @@ _GET_ENTRY_FROM_PATH_ = (path) ->
 
 class Item extends Widget
     constructor: (@_entry, @modifiable = true) ->
-        @id = @get_id()
+        @set_id()
 
         @selected = false
         @has_focus = false
@@ -50,10 +50,13 @@ class Item extends Widget
         #el.setAttribute("tabindex", 0)
         el.draggable = true
 
+        icon_box = document.createElement("div")
+        icon_box.className = "item_icon"
+        icon_box.draggable = false
+        el.appendChild(icon_box)
         @item_icon = document.createElement("img")
-        @item_icon.className = "item_icon"
         @item_icon.draggable = false
-        el.appendChild(@item_icon)
+        icon_box.appendChild(@item_icon)
 
         @item_attrib = document.createElement("ul")
         @item_attrib.className = "item_attrib"
@@ -71,16 +74,20 @@ class Item extends Widget
         super
 
 
-    get_entry : ->
-        @_entry
-
-
     set_entry : (entry) ->
         @_entry = entry
 
 
+    get_entry : ->
+        @_entry
+
+
+    set_id : ->
+        @id = DCore.DEntry.get_id(@_entry)
+
+
     get_id : ->
-        DCore.DEntry.get_id(@_entry)
+        @id
 
 
     get_name : ->
@@ -88,7 +95,10 @@ class Item extends Widget
 
 
     get_icon : ->
-        if (icon = DCore.DEntry.get_icon(@_entry)) == null then icon = DCore.get_theme_icon("unknown", 48)
+        if DCore.DEntry.can_thumbnail(@_entry) and (icon = DCore.DEntry.get_thumbnail(@_entry)) != null
+        else if (icon = DCore.DEntry.get_icon(@_entry)) != null
+        else
+            icon = DCore.get_theme_icon("unknown", 48)
         icon
 
 
@@ -941,8 +951,8 @@ class ComputerVDir extends DesktopEntry
         super(entry, false)
 
 
-    get_id : ->
-        _ITEM_ID_COMPUTER_
+    set_id : ->
+        @id = _ITEM_ID_COMPUTER_
 
 
     get_name : ->
@@ -984,8 +994,8 @@ class HomeVDir extends DesktopEntry
         super(entry, false)
 
 
-    get_id : ->
-        _ITEM_ID_USER_HOME_
+    set_id : ->
+        @id = _ITEM_ID_USER_HOME_
 
 
     get_name : ->
@@ -1068,8 +1078,8 @@ class TrashVDir extends DesktopEntry
     setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
 
 
-    get_id : ->
-        _ITEM_ID_TRASH_BIN_
+    set_id : ->
+        @id = _ITEM_ID_TRASH_BIN_
 
 
     get_name : ->
