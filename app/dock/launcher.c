@@ -128,23 +128,25 @@ void update_dock_apps()
     gsize size = 0;
     GError* err = NULL;
     char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position", &size, &err);
-    g_assert(list != NULL);
+    if (list != NULL) {
+        g_assert(list != NULL);
 
-    if (_apps_position != NULL) {
-        g_list_free_full(_apps_position, g_free);
-        _apps_position = NULL;
-    }
-
-    for (gsize i=0; i<size; i++) {
-        if (g_key_file_has_group(k_apps, list[i])) {
-            js_post_message("launcher_added", build_app_info(list[i]));
-            _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
+        if (_apps_position != NULL) {
+            g_list_free_full(_apps_position, g_free);
+            _apps_position = NULL;
         }
+
+        for (gsize i=0; i<size; i++) {
+            if (g_key_file_has_group(k_apps, list[i])) {
+                js_post_message("launcher_added", build_app_info(list[i]));
+                _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
+            }
+        }
+
+        _apps_position = g_list_reverse(_apps_position);
+
+        g_strfreev(list);
     }
-
-    _apps_position = g_list_reverse(_apps_position);
-
-    g_strfreev(list);
 }
 
 void init_launchers()
