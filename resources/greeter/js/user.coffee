@@ -39,19 +39,12 @@ class LoginEntry extends Widget
             )
             @account.index = 0
 
-        @password = create_element("input", "Password", @element)
-        @password.setAttribute("type", "password")
-        @password.index = 1
+        @warning = create_element("div", "CapsWarning", @element)
 
-        #@password.addEventListener("keydown", (e)=>
-        #    is_shift = e.shiftKey || (e.which == 16) || false
-        #    if e.which >= 65 and e.which <= 90 and not is_shift
-        #        pass
-        #    else if e.which >=97 and e.which <= 122 and is_shift
-        #        pass
-        #    else
-        #        pass
-        #)
+        @password = create_element("input", "Password", @warning)
+        @password.classList.add("PasswordStyle")
+        @password.setAttribute("maxlength", 16)
+        @password.index = 1
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
@@ -67,6 +60,21 @@ class LoginEntry extends Widget
                         @password.focus()
                     else
                         @on_active(@id, @password.value)
+        )
+
+        @password.addEventListener("keypress", (e)=>
+            keycode = e.KeyCode || e.which
+            is_shift = e.shiftKey || (keycode == 16) || false
+
+            if keycode >= 65 and keycode <= 90 and not is_shift
+                echo "capslock active and not shift"
+                @warning.classList.add("CapsWarningBackground")
+            else if keycode >=97 and keycode <= 122 and is_shift
+                echo "capslock active and shift"
+                @warning.classList.add("CapsWarningBackground")
+            else
+                echo "capslock inactive"
+                @warning.classList.remove("CapsWarningBackground")
         )
 
         @login = create_element("button", "LoginButton", @element)
@@ -112,7 +120,6 @@ class UserInfo extends Widget
         @img = create_img("UserImg", img_src, @element)
         @name = create_element("div", "UserName", @element)
         @name.innerText = name
-        #@active = false
         @login_displayed = false
 
         if @id == "guest"
@@ -187,7 +194,7 @@ class UserInfo extends Widget
             if not @login
                 @show_login()
             else
-                if e.target.parentElement.className == @login.element.className
+                if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
                     echo "login pwd clicked"
                 else
                     if @login_displayed
@@ -296,12 +303,14 @@ DCore.signal_connect("auth", (msg) ->
             DCore.Greeter.start_authentication("*other")
         )
     else
-        user.login.password.setAttribute("type", "text")
+        user.login.password.classList.remove("PasswordStyle")
+        #user.login.password.setAttribute("type", "text")
         user.login.password.style.color = "red"
         user.login.password.value = msg.error
         user.login.password.blur()
         user.login.password.addEventListener("focus", (e)=>
-            user.login.password.setAttribute("type", "password")
+            user.login.password.classList.add("PasswordStyle")
+            #user.login.password.setAttribute("type", "password")
             user.login.password.style.color ="black"
             user.login.password.value = ""
         )
