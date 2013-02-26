@@ -870,6 +870,11 @@ class RichDir extends DesktopEntry
 
 
 class Application extends DesktopEntry
+    constructor : ->
+        super
+        @show_luncher_box = false
+
+
     set_icon : ->
         if (icon = DCore.DEntry.get_icon(@_entry)) == null
             icon = DCore.get_theme_icon("invalid_app", 48)
@@ -902,6 +907,12 @@ class Application extends DesktopEntry
                     echo "save_position #{id}"
         else
             DCore.DEntry.launch(@_entry, tmp_list)
+
+        if @show_luncher_box == true
+                @show_luncher_box = false
+                @set_icon()
+                @item_name.style.opacity = 1
+
         return
 
 
@@ -910,6 +921,19 @@ class Application extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+            if @show_luncher_box == false
+                all_are_apps = true
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                        all_are_apps = false
+                        break
+                if all_are_apps
+                    @show_luncher_box = true
+                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                    @item_name.style.opacity = 0
         return
 
 
@@ -918,6 +942,19 @@ class Application extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+            if @show_luncher_box == false
+                all_are_apps = true
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                        all_are_apps = false
+                        break
+                if all_are_apps
+                    @show_luncher_box = true
+                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                    @item_name.style.opacity = 0
         return
 
 
@@ -927,6 +964,11 @@ class Application extends DesktopEntry
             evt.preventDefault()
             if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
                 evt.dataTransfer.dropEffect = "move"
+        else
+            if @show_luncher_box == true
+                @show_luncher_box = false
+                @set_icon()
+                @item_name.style.opacity = 1
         return
 
 
