@@ -1,11 +1,26 @@
+.Wrap {
+    width:800px;
+    height:400px;
+    position:absolute;
+    top:35%;
+    left:40%;
+
+}
+
 #roundabout {
     position:fixed;
     list-style: none;
-    top: 35%;
-    text-align: center;
+    margin:0 auto;
+    width:70%;
+    top:0px;
+    padding:0;
+    height:30em;
+    /* top: 35%;*/
+   /* text-align: center;*/
     /* below values will be overwrite on runtime */
-    left: 40%;
+    /* left: 40%;
     width: 574px;
+    */
 }
 
 #lockroundabout {
@@ -18,26 +33,59 @@
     width: 184px;
 }
 
+#roundabout li {
+    width: 200px;
+    height: 15em;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+    border-radius: 5px;
+}
+
+#roundabout li.roundabout-in-focus {
+    cursor: auto; 
+    background: rgba(60,60,60,1.0);
+}
+
 .UserInfo {
+    padding: 1.2em;
+    /*
     cursor:pointer;
     float: left;
-    width:85%;
     background: rgba(255,255,255,.5);
     border-radius: 5px;
    /* padding: 15px  15px 0px 10px;*/
     color: rgba(0, 0, 0, 0.3);
     opacity:inherit;
+    */
 }
 
 .UserInfoSelected {
+    /*
     background: #333;
     color: white;
     opacity:1;
+    */
+}
+
+.UserBase {
+    width: auto;
+    margin-top: 4em;
+    margin-bottom: 0.5em;
+    text-align:center;
 }
 
 .UserImg {
+    width:9em;
+    height:9em;
+    border: 2px solid rgba(0,0,0,0.2);
+    opacity:inherit;
+    /*
+    width:120px;
+    height:120px;
     border: 3px solid white;
     opacity:inherit;
+    */
 }
 
 .UserName {
