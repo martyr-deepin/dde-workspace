@@ -415,8 +415,10 @@ void _update_window_appid(Client* c)
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
+	    g_assert (c->title !=NULL);
+	    //g_assert (c->clss !=NULL);
             app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL)
+            if (app_id == NULL && c->clss != NULL)
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
             if (app_id == NULL && exec_args != NULL)
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
