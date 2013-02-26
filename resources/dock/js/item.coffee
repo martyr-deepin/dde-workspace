@@ -105,6 +105,7 @@ class AppItem extends Widget
     do_dragstart: (e)->
         Preview_close()
         return if @is_fixed_pos
+        e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
         e.stopPropagation()
