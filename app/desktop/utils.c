@@ -65,8 +65,12 @@ Entry* desktop_get_computer_entry()
 {
     return g_file_new_for_uri("computer:///");
 }
-char* desktop_get_transient_icon (const char* p1, const char* p2, 
-                                  const char* p3, const char* p4)
+char* desktop_get_transient_icon (GFile* p1) 
 {
-    return generate_directory_icon(p1, p2, p3, p4);
+    char* ticon_path = NULL;
+    char* p1_path = g_file_get_path (p1);
+    ticon_path = generate_directory_icon(p1_path, NULL, NULL, NULL);
+    g_free (p1_path);
+    
+    return ticon_path;
 }
