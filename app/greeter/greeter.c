@@ -43,7 +43,7 @@ static gchar* greeter_file = NULL;
 static gchar *selected_user = NULL, *selected_session = NULL;
 static gint response_count = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
-gchar *date_str = NULL;
+static gchar *date_str = NULL;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -882,6 +882,7 @@ greeter_get_date()
     struct tm *tmp;
 
     if(date_str != NULL){
+        g_free(date_str);
         date_str == NULL;
     }
 
