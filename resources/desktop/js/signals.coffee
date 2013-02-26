@@ -46,11 +46,11 @@ do_item_delete = (data) ->
 
 do_item_update = (data) ->
     id = DCore.DEntry.get_id(data.entry)
-    w = Widget.look_up(id)
-    if w?
+    if (w = Widget.look_up(id))?
         w.set_entry(data.entry)
         w.item_update?()
     else
+        echo "do_item_update create_item"
         w = create_item(data.entry)
         if w?
             all_item.push(w.get_id())
@@ -61,13 +61,17 @@ do_item_rename = (data) ->
     sel = false
     old_id = DCore.DEntry.get_id(data.old)
     new_id = DCore.DEntry.get_id(data.new)
-    w = Widget.look_up(old_id)
-    if w?
+    update_position(old_id, new_id)
+
+    if (w = Widget.look_up(old_id))?
         sel = cancel_item_selected(w)
         all_item.remove(old_id)
         w.destroy()
 
-    update_position(old_id, new_id)
+    if (w = Widget.look_up(new_id))?
+        cancel_item_selected(w)
+        all_item.remove(new_id)
+        w.destroy()
 
     w = create_item(data.new)
     if w?
