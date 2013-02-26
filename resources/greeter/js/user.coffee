@@ -345,6 +345,7 @@ document.body.addEventListener("keydown", (e)=>
         else
             _id = roundabout.children[_current_index].children[0].getAttribute("id")
             Widget.look_up(_id)?.focus()
+            _current_user.show_login()
 
     else
         echo "pass"

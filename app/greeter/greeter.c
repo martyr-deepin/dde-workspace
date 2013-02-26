@@ -882,7 +882,6 @@ greeter_get_date()
     struct tm *tmp;
 
     if(date_str != NULL){
-        g_free(date_str);
         date_str == NULL;
     }
 
