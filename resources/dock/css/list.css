@@ -13,7 +13,7 @@
     pointer-events: none;
 }
 .AppItem:hover {
-    top: -1px;
+    -webkit-transform: scale(1.1);
 }
 
 .AppItemBoard {
