@@ -164,14 +164,6 @@ class UserInfo extends Widget
             if e.which == 13 and not @login_displayed
                 if _current_user == @
                     @show_login()
-            else if e.which == 37
-                echo "prev"
-                jQuery("#roundabout").roundabout("animateToPreviousChild")
-            else if e.which == 39
-                echo "next"
-                jQuery("#roundabout").roundabout("animateToNextChild")
-            else
-                echo "pass"
         )
 
     blur: ->
@@ -324,6 +316,31 @@ DCore.signal_connect("auth", (msg) ->
         )
 
     apply_refuse_rotate(user.element, 0.5)
+)
+
+document.body.addEventListener("keydown", (e)=>
+    _current_index = jQuery("#roundabout").roundabout("getNearestChild")
+    _counts = roundabout.childElementCount
+
+    if e.which == 37
+        echo "prev"
+        if _current_index == 0
+            _id = roundabout.children[_counts - 1].children[0].getAttribute("id")
+        else
+            _id = roundabout.children[_current_index - 1].children[0].getAttribute("id")
+        jQuery("#roundabout").roundabout("animateToPreviousChild")
+        Widget.look_up(_id)?.focus()
+        
+    else if e.which == 39
+        echo "next"
+        if _current_index == _counts - 1
+            _id = roundabout.children[0].children[0].getAttribute("id")
+        else
+            _id = roundabout.children[_current_index + 1].children[0].getAttribute("id")
+        jQuery("#roundabout").roundabout("animateToNextChild")
+        Widget.look_up(_id)?.focus()
+    else
+        echo "pass"
 )
 
 if roundabout.children.length <= 2

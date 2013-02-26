@@ -26,7 +26,7 @@
     border-radius: 5px;
     padding: 15px 0px 0px 0px;
     color: rgba(0, 0, 0, 0.3);
-    /* opacity:0.8;*/
+    opacity:inherit;
 }
 
 .UserInfoSelected {
@@ -39,6 +39,7 @@
     width: 150px;
     height: 150px;
     border: 3px solid white;
+    opacity:inherit;
 }
 
 .UserName {
@@ -47,6 +48,7 @@
     width: 150px;
     font-size: 16px;
     text-align: center;
+    opacity:inherit;
 }
 
 .Account {
