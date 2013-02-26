@@ -29,6 +29,7 @@
 static gboolean _inotify_poll();
 static void _remove_monitor_directory(GFile*);
 static void _add_monitor_directory(GFile*);
+void handle_delete(GFile* f);
 
 static GHashTable* _monitor_table = NULL;
 static GFile* _desktop_file = NULL;
@@ -90,9 +91,10 @@ void install_monitor()
 
 void handle_rename(GFile* old_f, GFile* new_f)
 {
+    handle_delete(new_f);
+
     _add_monitor_directory(new_f);
     _remove_monitor_directory(old_f);
-
 
     char* path = g_file_get_path(new_f);
     Entry* entry = dentry_create_by_path(path);

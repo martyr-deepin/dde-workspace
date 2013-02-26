@@ -5,6 +5,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "dentry/entry.h"
+#include "pixbuf.h"
 #include "xdg_misc.h"
 #include "jsextension.h"
 
@@ -63,4 +64,9 @@ Entry* desktop_get_home_entry()
 Entry* desktop_get_computer_entry()
 {
     return g_file_new_for_uri("computer:///");
+}
+char* desktop_get_transient_icon (const char* p1, const char* p2, 
+                                  const char* p3, const char* p4)
+{
+    return generate_directory_icon(p1, p2, p3, p4);
 }

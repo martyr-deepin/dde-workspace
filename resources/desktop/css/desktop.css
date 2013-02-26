@@ -64,6 +64,7 @@ body {
     height:48px;
     vertical-align:middle;
     display: table-cell;
+    pointer-events:none;
 }
 .DesktopEntry .item_icon img {
     max-width:48px;
@@ -80,6 +81,7 @@ body {
     width:48px;
     height:12px;
     list-style:none;
+    pointer-events:none;
 }
 
 .DesktopEntry .item_attrib li{
