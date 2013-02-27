@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
-        <key type="b" name="show">
-            <default>true</default>
-            <summary>show or hide the dock</summary>
-            <description>Show or Hide the dock</description>
+        <key type="b" name="audo-hiden">
+            <default>false</default>
+            <summary>active auto hiden mode</summary>
+            <description>let the dock enter the auto hiden mode</description>
+        </key>
+        <key type="u" name="init-icon-size">
+            <range min="16" max="48" />
+            <default>48</default>
+            <summary>the icon size</summary>
+            <description>the init size of the icon height on the dock board</description> 
         </key>
         <key type="u" name="color">
             <range min="0" max="0xffffff64" />

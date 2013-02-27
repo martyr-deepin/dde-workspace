@@ -11,6 +11,7 @@ class Launcher extends AppItem
             group.destroy()
 
     do_click: (e)->
+        apply_flash(@img, 1)
         DCore.DEntry.launch(@core, [])
 
     do_itemselected: (e)->
@@ -23,4 +24,10 @@ class Launcher extends AppItem
             [],
             [2, _("Undock")],
         ]
+    destroy_with_animation: ->
+        @img.classList.remove("ReflectImg")
+        apply_animation(@element, "rotateOut", 500)
+        setTimeout(=>
+            @destroy()
+        ,500)
 

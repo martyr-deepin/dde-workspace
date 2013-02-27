@@ -25,10 +25,9 @@ calc_app_item_size = ->
     w = apps[0].offsetWidth
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
-        DCore.Dock.require_region(0, 0, screen.width, DOCK_HEIGHT)
         p = get_page_xy(last, 0, 0)
         offset = p.x + last.clientWidth
-        DCore.Dock.release_region(offset, 0, screen.width - offset, 30)
+        DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM
@@ -106,6 +105,7 @@ class AppItem extends Widget
     do_dragstart: (e)->
         Preview_close()
         return if @is_fixed_pos
+        e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
         e.dataTransfer.setData("item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
         e.stopPropagation()
