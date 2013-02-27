@@ -49,7 +49,7 @@ DCore.signal_connect("dock_request", (info) ->
 )
 
 DCore.signal_connect("launcher_removed", (info) ->
-    Widget.look_up(info.Id)?.destroy()
+    Widget.look_up(info.Id)?.destroy_with_animation()
 )
 
 DCore.signal_connect("task_updated", (info) ->

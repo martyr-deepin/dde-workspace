@@ -120,6 +120,8 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
                 g_free(basename);
             }
         }
+        break;
+        //TODO: Should break after handle first position?
     }
 
     int diff = length - name_pos;

@@ -16,5 +16,10 @@
             <summary>show or hide the Computer icon</summary>
             <description>Show or hide the Computer icon on the desktop</description>
         </key>
+        <key type="b" name="show-dsc-icon">
+            <default>true</default>
+            <summary>show or hide Deepin Software Center icon</summary>
+            <description>Show or hide Deepin Software Center icon on the desktop</description>
+        </key>
     </schema>
 </schemalist>

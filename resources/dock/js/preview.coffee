@@ -40,10 +40,8 @@ class PWContainer extends Widget
         n = @_current_group.n_clients.length
         @child_width = clamp(screen.width / n, 0, 230)
         @child_height = @child_width / 2
-        offset = (screen.width - @child_width * n)/2
-        x = get_page_xy(@_current_group.element, 0, 0).x - (@child_width * n - @_current_group.element.clientWidth) /2
-        x = 0 if x < 0
-        offset = clamp(offset, 0, x)
+        center_position = get_page_xy(@_current_group.element, 0, 0).x - (@child_width*n - @_current_group.element.clientWidth) / 2
+        offset = clamp(center_position, 0, screen.width - @child_width * n)
 
         if @element.clientWidth == screen.width
             @element.style.left = 0

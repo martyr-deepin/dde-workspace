@@ -12,6 +12,9 @@
     -webkit-box-flex: 1;
     pointer-events: none;
 }
+.AppItem:hover {
+    -webkit-transform: scale(1.1);
+}
 
 .AppItemBoard {
     display: none;
