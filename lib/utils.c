@@ -324,6 +324,7 @@ void parse_cmd_line (int* argc_ptr, char*** argv_ptr)
 	if(!g_strcmp0 ((*argv_ptr)[i], "-d"))
 	{
             enable_debug = TRUE;
+	    should_reparent=FALSE;
             //(*argv_ptr)[i]=NULL;
 	    //(*argc_ptr)--;
             continue;

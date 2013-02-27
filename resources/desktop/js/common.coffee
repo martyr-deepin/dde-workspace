@@ -44,6 +44,8 @@ _ITEM_ID_COMPUTER_  = "Computer_Virtual_Dir"
 _ITEM_ID_USER_HOME_ = "Home_Virtual_Dir"
 # id string for "trash bin" item
 _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
+# id string for "Deepin Software Center" item
+_ITEM_ID_DSC_ = "DSC_Virtual_Button"
 
 
 # icon name for file attributes
@@ -59,6 +61,7 @@ g_desktop_entry = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
 _CFG_SHOW_COMPUTER_ICON_ = "show-computer-icon"
 _CFG_SHOW_HOME_ICON_ = "show-home-icon"
 _CFG_SHOW_TRASH_BIN_ICON_ = "show-trash-icon"
+_CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 
 # wrapper func to get configs
 _GET_CFG_BOOL_ = (val) ->

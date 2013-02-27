@@ -424,8 +424,6 @@ class Item extends Widget
 
 class DesktopEntry extends Item
     constructor : ->
-        @in_count = 0
-
         super
         @add_css_class("DesktopEntry")
 
@@ -453,17 +451,17 @@ class DesktopEntry extends Item
         evt.preventDefault()
         if not is_item_been_selected(@id)
             @display_not_hover()
-        @in_count = 0
+        @item_name.style.pointerEvents = "auto"
 
 
     do_dragenter : (evt) =>
         evt.stopPropagation()
 
-        ++@in_count
-        if @in_count == 1 and @selected == false
+        if @selected == false
             @display_hover()
 
         evt.dataTransfer.dropEffect = "none"
+        @item_name.style.pointerEvents = "none"
         return
 
 
@@ -472,14 +470,15 @@ class DesktopEntry extends Item
         evt.preventDefault()
 
         evt.dataTransfer.dropEffect = "none"
+        @item_name.style.pointerEvents = "none"
         return
 
 
     do_dragleave : (evt) =>
         evt.stopPropagation()
-        --@in_count if @in_count >= 0
-        if @in_count == 0 and @selected == false
+        if @selected == false
             @display_not_hover()
+        @item_name.style.pointerEvents = "auto"
         return
 
 
@@ -544,11 +543,9 @@ class Folder extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-
-        if @in_count > 0
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-                evt.dataTransfer.dropEffect = "move"
+            evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -646,10 +643,9 @@ class RichDir extends DesktopEntry
     do_dragleave : (evt) ->
         super
 
-        if @in_count > 0
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-                evt.dataTransfer.dropEffect = "move"
+            evt.dataTransfer.dropEffect = "move"
 
         return
 
@@ -870,6 +866,11 @@ class RichDir extends DesktopEntry
 
 
 class Application extends DesktopEntry
+    constructor : ->
+        super
+        @show_luncher_box = false
+
+
     set_icon : ->
         if (icon = DCore.DEntry.get_icon(@_entry)) == null
             icon = DCore.get_theme_icon("invalid_app", 48)
@@ -902,6 +903,12 @@ class Application extends DesktopEntry
                     echo "save_position #{id}"
         else
             DCore.DEntry.launch(@_entry, tmp_list)
+
+        if @show_luncher_box == true
+                @show_luncher_box = false
+                @set_icon()
+                @item_name.style.opacity = 1
+
         return
 
 
@@ -910,6 +917,19 @@ class Application extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+            if @show_luncher_box == false
+                all_are_apps = true
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                        all_are_apps = false
+                        break
+                if all_are_apps
+                    @show_luncher_box = true
+                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                    @item_name.style.opacity = 0
         return
 
 
@@ -918,15 +938,32 @@ class Application extends DesktopEntry
 
         if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.dataTransfer.dropEffect = "move"
+
+            if @show_luncher_box == false
+                all_are_apps = true
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                        all_are_apps = false
+                        break
+                if all_are_apps
+                    @show_luncher_box = true
+                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                    @item_name.style.opacity = 0
         return
 
 
     do_dragleave : (evt) ->
         super
-        if @in_count > 0
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-                evt.dataTransfer.dropEffect = "move"
+            evt.dataTransfer.dropEffect = "move"
+
+        if @show_luncher_box == true
+            @show_luncher_box = false
+            @set_icon()
+            @item_name.style.opacity = 1
         return
 
 
@@ -1054,10 +1091,9 @@ class HomeVDir extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-        if @in_count > 0
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-                evt.dataTransfer.dropEffect = "move"
+            evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -1145,10 +1181,9 @@ class TrashVDir extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-        if @in_count > 0
+        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
             evt.preventDefault()
-            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-                evt.dataTransfer.dropEffect = "move"
+            evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -1178,3 +1213,33 @@ class TrashVDir extends DesktopEntry
                 DCore.DEntry.confirm_trash()
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+
+
+class DeepinSoftwareCenter extends DesktopEntry
+    constructor : ->
+        super(null, false)
+
+    set_id : ->
+        @id = _ITEM_ID_DSC_
+
+
+    get_name : ->
+        _("Deepin Software Center")
+
+
+    set_icon : ->
+        icon = DCore.get_theme_icon("deepin-software-center", 48)
+        @item_icon.src = icon
+
+
+    get_path : ->
+        ""
+
+
+    do_buildmenu : ->
+        menus = []
+        menus.push([1, _("Open")])
+
+
+    item_exec : ->
+        DCore.DEntry.run_deepin_software_center()

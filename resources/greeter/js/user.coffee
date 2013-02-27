@@ -160,12 +160,6 @@ class UserInfo extends Widget
 
             DCore.Greeter.start_authentication(@id)
 
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == 13 and not @login_displayed
-                if _current_user == @
-                    @show_login()
-        )
-
     blur: ->
         @element.setAttribute("class", "UserInfo")
         @login?.destroy()
@@ -319,7 +313,11 @@ DCore.signal_connect("auth", (msg) ->
 )
 
 document.body.addEventListener("keydown", (e)=>
-    _current_index = jQuery("#roundabout").roundabout("getNearestChild")
+    try
+        _current_index = jQuery("#roundabout").roundabout("getChildInFocus")
+    catch error
+        _current_index = jQuery("#roundabout").roundabout("getNearestChild")
+
     _counts = roundabout.childElementCount
 
     if e.which == 37
@@ -339,6 +337,16 @@ document.body.addEventListener("keydown", (e)=>
             _id = roundabout.children[_current_index + 1].children[0].getAttribute("id")
         jQuery("#roundabout").roundabout("animateToNextChild")
         Widget.look_up(_id)?.focus()
+
+    else if e.which == 13 
+        if _current_user?.
+            if not _current_user.login_displayed
+                _current_user.show_login()
+        else
+            _id = roundabout.children[_current_index].children[0].getAttribute("id")
+            Widget.look_up(_id)?.focus()
+            _current_user.show_login()
+
     else
         echo "pass"
 )

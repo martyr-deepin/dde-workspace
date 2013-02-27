@@ -21,10 +21,10 @@
 .UserInfo {
     cursor:pointer;
     float: left;
-    width: 184px;
+    width:85%;
     background: rgba(255,255,255,.5);
     border-radius: 5px;
-    padding: 15px 0px 0px 0px;
+   /* padding: 15px  15px 0px 10px;*/
     color: rgba(0, 0, 0, 0.3);
     opacity:inherit;
 }
@@ -36,8 +36,6 @@
 }
 
 .UserImg {
-    width: 150px;
-    height: 150px;
     border: 3px solid white;
     opacity:inherit;
 }
@@ -45,17 +43,15 @@
 .UserName {
     margin: 10px auto;
     font-family: Arial;
-    width: 150px;
+    width: 100%;
     font-size: 16px;
     text-align: center;
-    opacity:inherit;
+    opacity:0.5;
 }
 
 .Account {
     background:#fff url(../images/user.png) no-repeat 3px 3px;
-    padding-left:20px;
     margin: 0 0 8px 0px;
-    width:160px;
     font-size:12px;
     color:#666;
     height:28px;
@@ -65,9 +61,9 @@
 
 .Password {
     background:transparent url(../images/lock.png) no-repeat 3px 3px;
-    margin:0 auto; 
-    padding-left:20px;
+    margin:0 auto;
     width:158px;
+    padding-left:20px;
     font-size:12px;
     color:#666;
     height:28px;
@@ -81,7 +77,7 @@
 
 .CapsWarning {
     background:#fff;
-    margin: 0 0px 8px 13px;
+    margin: 0 0px 8px 9px;
     width:156px;
     border-radius:3px;
 }
@@ -91,6 +87,7 @@
 }
 
 .LoginEntry{
+    width:100%;
     background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
     padding-bottom:10px;
     border-radius:5px;
