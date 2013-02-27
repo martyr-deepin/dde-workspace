@@ -889,7 +889,7 @@ class Application extends DesktopEntry
         super
 
         tmp_list = []
-        if (all_are_apps = (evt.dataTransfer.files > 0))
+        if (all_are_apps = (evt.dataTransfer.files.length > 0))
             for file in evt.dataTransfer.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
@@ -927,7 +927,7 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_luncher_box == false
-                if (all_are_apps = (file in evt.dataTransfer.files > 0))
+                if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                         if not e? then continue
@@ -948,7 +948,7 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_luncher_box == false
-                if (all_are_apps = (file in evt.dataTransfer.files > 0))
+                if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                         if not e? then continue
