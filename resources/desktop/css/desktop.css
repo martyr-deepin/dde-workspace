@@ -19,6 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+@import url("../../common/css/animation.css");
+
 ::-webkit-scrollbar {
     width: 4px;
 }
