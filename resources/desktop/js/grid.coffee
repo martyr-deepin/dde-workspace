@@ -445,7 +445,7 @@ item_dragstart_handler = (widget, evt) ->
 
         pos = load_position(widget.get_id())
         x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
-        y = (pos.y - drag_start.y) * grid_item_height + (_ITEM_HEIGHT_ / 2)
+        y = (pos.y - drag_start.y) * grid_item_height + 26
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
