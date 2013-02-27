@@ -299,13 +299,11 @@ DCore.signal_connect("auth", (msg) ->
         )
     else
         user.login.password.classList.remove("PasswordStyle")
-        #user.login.password.setAttribute("type", "text")
         user.login.password.style.color = "red"
         user.login.password.value = msg.error
         user.login.password.blur()
         user.login.password.addEventListener("focus", (e)=>
             user.login.password.classList.add("PasswordStyle")
-            #user.login.password.setAttribute("type", "password")
             user.login.password.style.color ="black"
             user.login.password.value = ""
         )
@@ -327,26 +325,38 @@ document.body.addEventListener("keydown", (e)=>
             _id = roundabout.children[_counts - 1].children[0].getAttribute("id")
         else
             _id = roundabout.children[_current_index - 1].children[0].getAttribute("id")
-        jQuery("#roundabout").roundabout("animateToPreviousChild")
-        Widget.look_up(_id)?.focus()
-        
+        if Widget.look_up(_id)?
+            jQuery("#roundabout").roundabout("animateToPreviousChild")
+            Widget.look_up(_id).focus()
+        else if _current_user?
+            _current_user.focus()
+
     else if e.which == 39
         echo "next"
         if _current_index == _counts - 1
             _id = roundabout.children[0].children[0].getAttribute("id")
         else
             _id = roundabout.children[_current_index + 1].children[0].getAttribute("id")
-        jQuery("#roundabout").roundabout("animateToNextChild")
-        Widget.look_up(_id)?.focus()
+        if Widget.look_up(_id)?
+            jQuery("#roundabout").roundabout("animateToNextChild")
+            Widget.look_up(_id)?.focus()
+        else if _current_user?
+            _current_user.focus()
 
     else if e.which == 13 
-        if _current_user?.
-            if not _current_user.login_displayed
-                _current_user.show_login()
-        else
+        echo "enter"
+        if _current_user? and not _current_user.login_displayed
+            _current_user.show_login()
+        else if not _current_user?
             _id = roundabout.children[_current_index].children[0].getAttribute("id")
             Widget.look_up(_id)?.focus()
-            _current_user.show_login()
+            Widget.look_up(_id)?.show_login()
+
+    else if e.which == 27
+        echo "esc"
+        if _current_user? and _current_user.login_displayed
+            _current_user.blur()
+            _current_user.focus()
 
     else
         echo "pass"
@@ -354,6 +364,7 @@ document.body.addEventListener("keydown", (e)=>
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
+    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
 
 run_post(->
     l = (screen.width  - roundabout.clientWidth) / 2
