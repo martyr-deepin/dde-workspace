@@ -25,6 +25,7 @@ void update_root_pixmap()
         gdk_window_hide(w);
         gdk_window_set_background_pattern(w, pt);
         gdk_window_show(w);
+        gdk_window_lower(w);
 
         cairo_surface_destroy(surface);
     }
