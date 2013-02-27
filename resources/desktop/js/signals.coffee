@@ -49,12 +49,10 @@ do_item_update = (data) ->
     if (w = Widget.look_up(id))?
         w.set_entry(data.entry)
         w.item_update?()
-    else
-        echo "do_item_update create_item"
-        w = create_item(data.entry)
-        if w?
-            all_item.push(w.get_id())
-            move_to_anywhere(w)
+    else if (w = create_item(data.entry))?
+        all_item.push(w.get_id())
+        move_to_anywhere(w)
+    if w? then apply_flash(w.element, 1)
 
 
 do_item_rename = (data) ->
