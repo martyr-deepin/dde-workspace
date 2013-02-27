@@ -276,6 +276,10 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
+
     get_background_window();
     gtk_main();
     unwatch_workarea_changes(container);

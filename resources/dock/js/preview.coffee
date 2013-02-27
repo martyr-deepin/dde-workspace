@@ -116,6 +116,9 @@ Preview_close = ->
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_container.remove_all()
         , 1000)
+Preview_close_now = ->
+    __clear_timeout()
+    Preview_container.remove_all()
 
 
 class PreviewWindow extends Widget
