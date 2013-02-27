@@ -117,8 +117,9 @@ class UserInfo extends Widget
         super
         @li = create_element("li", "")
         @li.appendChild(@element)
-        @img = create_img("UserImg", img_src, @element)
-        @name = create_element("div", "UserName", @element)
+        @userbase = create_element("div", "UserBase", @element)
+        @img = create_img("UserImg", img_src, @userbase)
+        @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
 
