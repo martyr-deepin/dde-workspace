@@ -15,22 +15,19 @@ void update_root_pixmap()
     if (data != NULL) {
         Pixmap ROOT_PIXMAP = X_FETCH_32(data, 0);
 
-        cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
+        GdkWindow* w = get_background_window();
         GdkScreen *screen = gdk_screen_get_default();
         int s_width = gdk_screen_get_width(screen);
         int s_height = gdk_screen_get_height(screen);
         GdkVisual *visual = gdk_screen_get_system_visual (screen);
         cairo_surface_t* surface = cairo_xlib_surface_create(_dsp, ROOT_PIXMAP, GDK_VISUAL_XVISUAL(visual), s_width, s_height);
+        cairo_pattern_t* pt = cairo_pattern_create_for_surface(surface);
+        gdk_window_hide(w);
+        gdk_window_set_background_pattern(w, pt);
+        gdk_window_show(w);
+        gdk_window_lower(w);
 
-        cairo_set_source_surface(_background_cairo, surface, 0, 0);
-        cairo_paint(_background_cairo);
         cairo_surface_destroy(surface);
-        cairo_destroy(_background_cairo);
-    } else {
-        cairo_t* _background_cairo = gdk_cairo_create(get_background_window());
-        cairo_set_source_rgb(_background_cairo, 1, 1, 1);
-        cairo_paint(_background_cairo);
-        cairo_destroy(_background_cairo);
     }
 }
 
@@ -44,13 +41,6 @@ GdkFilterReturn monitor_root_change(GdkXEvent *xevent, GdkEvent *event, gpointer
     }
     return GDK_FILTER_CONTINUE;
 }
-GdkFilterReturn monitor_background_expose(GdkXEvent *xevent, GdkEvent *event, gpointer data)
-{
-    if (((XEvent*)xevent)->type == Expose) {
-            update_root_pixmap();
-    }
-    return GDK_FILTER_CONTINUE;
-}
 
 static GdkWindow* _background_window = NULL;
 GdkWindow* get_background_window()
@@ -60,7 +50,6 @@ GdkWindow* get_background_window()
         GdkWindow* root = gdk_get_default_root_window();
         gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | gdk_window_get_events(root));
         gdk_window_add_filter(root, monitor_root_change, NULL);
-        gdk_window_add_filter(_background_window, monitor_background_expose, _background_window);
 
         GdkWindowAttr attributes;
 
@@ -73,6 +62,7 @@ GdkWindow* get_background_window()
         _background_window = gdk_window_new(NULL, &attributes, 0);
         set_wmspec_desktop_hint(_background_window);
 
+        update_root_pixmap();
         gdk_window_move_resize(_background_window, 0, 0,
                 gdk_window_get_width(root),
                 gdk_window_get_height(root)

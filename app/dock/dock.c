@@ -116,6 +116,9 @@ int main(int argc, char* argv[])
     /*monitor_resource_file("dock", webview);*/
     /*gdk_window_set_debug_updates(TRUE);*/
 
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     dock_setup_dbus_service();
     gtk_main();

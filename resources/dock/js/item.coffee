@@ -103,7 +103,7 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT - h
 
     do_dragstart: (e)->
-        Preview_close()
+        Preview_close_now()
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
         e.dataTransfer.setData("item-id", @element.id)

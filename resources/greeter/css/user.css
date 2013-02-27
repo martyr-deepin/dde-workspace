@@ -1,11 +1,11 @@
 #roundabout {
     position:fixed;
     list-style: none;
-    top: 35%;
-    text-align: center;
-    /* below values will be overwrite on runtime */
-    left: 40%;
-    width: 574px;
+    margin:0 auto;
+    width:50%;
+    top: 15%;
+    padding:0;
+    height:30em;
 }
 
 #lockroundabout {
@@ -18,13 +18,21 @@
     width: 184px;
 }
 
-.UserInfo {
-    cursor:pointer;
-    float: left;
-    width:85%;
-    background: rgba(255,255,255,.5);
+#roundabout li {
+    width: 14em;
+    height: 16.5em;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.2);
     border-radius: 5px;
-   /* padding: 15px  15px 0px 10px;*/
+}
+
+#roundabout li.roundabout-in-focus {
+    cursor: auto; 
+    background: none;
+    border: none;
+}
+
+.UserInfo {
     color: rgba(0, 0, 0, 0.3);
     opacity:inherit;
 }
@@ -33,25 +41,40 @@
     background: #333;
     color: white;
     opacity:1;
+    border: 1px solid rgba(0,0,0,1);
+    border-radius: 5px;
+}
+
+.UserInfoSelected .UserName {
+    color: white;
+}
+
+.UserBase {
+    width: auto;
+    height: auto;
+    padding-top: 1em;
+    text-align:center;
 }
 
 .UserImg {
-    border: 3px solid white;
+    width: 12em;
+    height:12em;
+    border: 2px solid rgba(255,255,255,0.8);
     opacity:inherit;
 }
 
 .UserName {
-    margin: 10px auto;
+    margin: 0.6em auto;
     font-family: Arial;
+    color: black;
     width: 100%;
-    font-size: 16px;
+    font-size: 1.2em;
     text-align: center;
-    opacity:0.5;
 }
 
 .Account {
     background:#fff url(../images/user.png) no-repeat 3px 3px;
-    margin: 0 0 8px 0px;
+    margin: 0 0 0.5em 0;
     font-size:12px;
     color:#666;
     height:28px;
@@ -61,7 +84,6 @@
 
 .Password {
     background:transparent url(../images/lock.png) no-repeat 3px 3px;
-    margin:0 auto;
     width:158px;
     padding-left:20px;
     font-size:12px;
@@ -77,7 +99,7 @@
 
 .CapsWarning {
     background:#fff;
-    margin: 0 0px 8px 9px;
+    margin: 0 0px 8px 0.9em;
     width:156px;
     border-radius:3px;
 }
@@ -89,15 +111,11 @@
 .LoginEntry{
     width:100%;
     background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
-    padding-bottom:10px;
     border-radius:5px;
+    padding-bottom: 10px;
 }
 
-.LoginButton:hover {
-    background: #F60;
-}
-
-.LoginButton:focus{
+.LoginButton:hover, .LoginButton:focus{
     background: #F60;
 }
 
@@ -106,7 +124,7 @@
     font-size:16px;
     color:#fff;
     cursor: pointer;
-    margin: 0 auto;
+    margin-left: 0.7em;
     text-align: center;
     padding:6px;
     line-height:14px;
@@ -117,10 +135,9 @@
 
 .Loading {
     display: block;
-    width: 150px;
-    height: 81px;
-    /*background: -webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));*/
-    padding: 10px 5px 10px 0px;
+    width: auto;
+    padding: 0px 5px 10px 0px;
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
     margin: auto;
     text-align:center;
     border-radius:3px;
@@ -129,6 +146,8 @@
 .Loading span{ 
     color:#00b7e5; 
     font-size:16px;
+    margin-top: -5px;
+    margin-bottom: 4px;
     display:block;
     opacity: 0.9; 
     text-shadow: 0 0 10px #00b7e5,
@@ -148,11 +167,9 @@
     border-top:3px solid rgba(0,0,0,0);
     border-left:3px solid rgba(0,0,0,0);
     border-radius:25px;
-    box-shadow: 0 0 35px #2187e7;
     width:25px;
     height:25px;
     margin:0 auto;
-    -moz-animation:spin 1.5s infinite linear;
     -webkit-animation:spin 1.5s infinite linear;
 }
 
@@ -163,13 +180,11 @@
     border-top:3px solid rgba(0,0,0,0);
     border-left:3px solid rgba(0,0,0,0);
     border-radius:25px;
-    box-shadow: 0 0 15px #2187e7; 
     width:15px;
     height:15px;
     margin:0 auto;
     position:relative;
     top:-25px;
-    -moz-animation:spinoff 1.5s infinite linear;
     -webkit-animation:spinoff 1.5s infinite linear;
 }
 

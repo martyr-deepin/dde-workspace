@@ -935,6 +935,7 @@ int main(int argc, char **argv)
     gtk_window_move(GTK_WINDOW(container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri(GREETER_HTML_PATH);
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
 
@@ -946,6 +947,10 @@ int main(int argc, char **argv)
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);
     }
+
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     gtk_widget_show_all(container);
 
