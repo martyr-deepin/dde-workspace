@@ -74,8 +74,10 @@
 
 .Account {
     background:#fff url(../images/user.png) no-repeat 3px 3px;
-    margin: 0 0 0.5em 0;
+    width:158px;
+    margin: 0 0 0.5em 0.95em;
     font-size:12px;
+    padding-left:20px;
     color:#666;
     height:28px;
     border:2px solid #F60;
@@ -135,9 +137,9 @@
 
 .Loading {
     display: block;
-    width: 150px;
-    height: 81px;
-    padding: 10px 5px 10px 0px;
+    width: auto;
+    padding: 0px 5px 10px 0px;
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
     margin: auto;
     text-align:center;
     border-radius:3px;
@@ -146,6 +148,8 @@
 .Loading span{ 
     color:#00b7e5; 
     font-size:16px;
+    margin-top: -5px;
+    margin-bottom: 4px;
     display:block;
     opacity: 0.9; 
     text-shadow: 0 0 10px #00b7e5,

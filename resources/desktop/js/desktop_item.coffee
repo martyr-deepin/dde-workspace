@@ -691,6 +691,14 @@ class RichDir extends DesktopEntry
         return
 
 
+    item_hint : ->
+        apply_animation(@item_icon, "item_flash", "1s", "cubic-bezier(0, 0, 0.35, -1)")
+        id = setTimeout(=>
+            @item_icon.style.webkitAnimation = ""
+            clearTimeout(id)
+        , 1000)
+
+
     item_exec : ->
         if @show_pop == false then @show_pop_block()
 
@@ -881,28 +889,28 @@ class Application extends DesktopEntry
         super
 
         tmp_list = []
-        all_are_apps = true
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                all_are_apps = false
+        if (all_are_apps = (evt.dataTransfer.files.length > 0))
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                    all_are_apps = false
 
-            tmp_list.push(e)
+                tmp_list.push(e)
 
-        if all_are_apps == true
-            tmp_list.push(@_entry)
-            pos = load_position(@id)
-            if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
-                (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
-                id = DCore.DEntry.get_id(new_entry)
-                if (w = Widget.look_up(id))?
-                    move_to_somewhere(w, pos)
-                else
-                    save_position(id, pos)
-                    echo "save_position #{id}"
-        else
-            DCore.DEntry.launch(@_entry, tmp_list)
+            if all_are_apps == true
+                tmp_list.push(@_entry)
+                pos = load_position(@id)
+                if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
+                    (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
+                    id = DCore.DEntry.get_id(new_entry)
+                    if (w = Widget.look_up(id))?
+                        move_to_somewhere(w, pos)
+                    else
+                        save_position(id, pos)
+                        echo "save_position #{id}"
+            else
+                DCore.DEntry.launch(@_entry, tmp_list)
 
         if @show_luncher_box == true
                 @show_luncher_box = false
@@ -919,17 +927,17 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_luncher_box == false
-                all_are_apps = true
-                for file in evt.dataTransfer.files
-                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                    if not e? then continue
-                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                        all_are_apps = false
-                        break
-                if all_are_apps
-                    @show_luncher_box = true
-                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                    @item_name.style.opacity = 0
+                if (all_are_apps = (evt.dataTransfer.files.length > 0))
+                    for file in evt.dataTransfer.files
+                        e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                        if not e? then continue
+                        if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                            all_are_apps = false
+                            break
+                    if all_are_apps
+                        @show_luncher_box = true
+                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                        @item_name.style.opacity = 0
         return
 
 
@@ -940,17 +948,17 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_luncher_box == false
-                all_are_apps = true
-                for file in evt.dataTransfer.files
-                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                    if not e? then continue
-                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                        all_are_apps = false
-                        break
-                if all_are_apps
-                    @show_luncher_box = true
-                    @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                    @item_name.style.opacity = 0
+                if (all_are_apps = (evt.dataTransfer.files.length > 0))
+                    for file in evt.dataTransfer.files
+                        e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                        if not e? then continue
+                        if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                            all_are_apps = false
+                            break
+                    if all_are_apps
+                        @show_luncher_box = true
+                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                        @item_name.style.opacity = 0
         return
 
 
@@ -1237,8 +1245,11 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     do_buildmenu : ->
-        menus = []
-        menus.push([1, _("Open")])
+        menus = [[1, _("Open")]]
+
+
+    item_rename : ->
+        return
 
 
     item_exec : ->
