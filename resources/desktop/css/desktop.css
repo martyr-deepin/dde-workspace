@@ -71,6 +71,7 @@ body {
 .DesktopEntry .item_icon img {
     max-width:48px;
     max-height:48px;
+    border-radius:5px;
 }
 .DesktopEntry .item_icon .previewshadow {
     box-shadow:0px 0px 3px 1px #000;
@@ -94,7 +95,9 @@ body {
     display:inline-block;
 }
 .DesktopEntry .item_name {
+    border-radius:2px;
     outline:none;
+    overflow:hidden;
 }
 
 .DesktopEntry .item_renaming {
@@ -232,4 +235,25 @@ body {
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
 #WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
     display:none;
+}
+
+@-webkit-keyframes item_flash {
+    0% {
+        box-shadow: 0px 0px 5px #01a6e8;
+    }
+    20% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
+    40% {
+        box-shadow: 0px 0px 5px #01a6e8;
+    }
+    60% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
+    80% {
+        box-shadow: 0px 0px 5px #01a6e8;
+    }
+    100% {
+        box-shadow: 0px 0px 0px #01a6e8;
+    }
 }

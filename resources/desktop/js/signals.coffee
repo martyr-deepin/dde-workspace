@@ -52,7 +52,8 @@ do_item_update = (data) ->
     else if (w = create_item(data.entry))?
         all_item.push(w.get_id())
         move_to_anywhere(w)
-    if w? then apply_flash(w.element, 1)
+
+    if w? then w.item_hint?()
 
 
 do_item_rename = (data) ->
