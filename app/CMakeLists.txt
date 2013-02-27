@@ -4,7 +4,6 @@ add_subdirectory(launcher)
 add_subdirectory(dock)
 add_subdirectory(memory_test)
 add_subdirectory(dominant_color)
-add_subdirectory(lock)
 add_subdirectory(greeter)
 
 install(

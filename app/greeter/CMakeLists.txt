@@ -25,6 +25,10 @@ install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION bin
     )
+install(
+    PROGRAMS ${PROJECT_BINARY_DIR}/dlock
+    DESTINATION bin
+    )
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
