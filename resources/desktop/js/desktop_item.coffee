@@ -1242,4 +1242,4 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     item_exec : ->
-        DCore.DEntry.run_deepin_software_center()
+        DCore.Desktop.run_deepin_software_center()
