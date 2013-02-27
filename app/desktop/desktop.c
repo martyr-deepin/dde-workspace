@@ -203,6 +203,8 @@ gboolean desktop_get_config_boolean(const char* key_name)
                           G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
                           G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
     }
 
     gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
