@@ -1237,8 +1237,11 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     do_buildmenu : ->
-        menus = []
-        menus.push([1, _("Open")])
+        menus = [[1, _("Open")]]
+
+
+    item_rename : ->
+        return
 
 
     item_exec : ->
