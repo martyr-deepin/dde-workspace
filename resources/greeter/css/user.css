@@ -74,8 +74,10 @@
 
 .Account {
     background:#fff url(../images/user.png) no-repeat 3px 3px;
-    margin: 0 0 0.5em 0;
+    width:158px;
+    margin: 0 0 0.5em 0.95em;
     font-size:12px;
+    padding-left:20px;
     color:#666;
     height:28px;
     border:2px solid #F60;

@@ -74,3 +74,4 @@ setInterval( ->
         date.innerText = get_c_date_str()
         return true
     , 1000)
+
