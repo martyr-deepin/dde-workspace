@@ -352,7 +352,6 @@ msgstr "密码错误"
 msgid "Invalid Username/Password"
 msgstr "用户名/密码错误"
 
-#: ../app/greeter/greeter.c:890 ../app/greeter/greeter.c:896
 #: ../app/greeter/greeter.c:895
 msgid "%a,%b%d,%Y"
 msgstr "%Y年%b%d日 %A"
