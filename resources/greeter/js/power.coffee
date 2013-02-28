@@ -123,6 +123,19 @@ for key, value of power_dict
 power_menu.current_img.src = "images/control-power.png"
 $("#bottom_buttons").appendChild(power_menu.element)
 
+power_menu.show_item.addEventListener("click", (e) =>
+    if not consolekit_obj.CanStop_sync()
+        echo "shutdown not allowed"
+        return 
+
+    try
+        echo "shutdown"
+        consolekit_obj.Stop_sync()
+    catch error
+        echo "shutdown failed"
+        echo error
+)
+
 DCore.signal_connect("power", (msg) ->
     status_div = create_element("div", " ", $("#Debug"))
     status_div.innerText = "status:" + msg.status
