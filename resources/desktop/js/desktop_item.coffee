@@ -838,10 +838,10 @@ class RichDir extends DesktopEntry
             arrow_mid.style.right    = "#{s_width - p - 14}px"
             arrow_inner.style.right  = "#{s_width - p - 13}px"
         else
-            @div_pop.style.left      = "#{p - n}px"
-            arrow_outter.style.left  = "#{n - 3}px"
-            arrow_mid.style.left     = "#{n - 3}px"
-            arrow_inner.style.left   = "#{n - 2}px"
+            @div_pop.style.left      = "#{p - n + 6}px"
+            arrow_outter.style.left  = "#{n - 9}px"
+            arrow_mid.style.left     = "#{n - 9}px"
+            arrow_inner.style.left   = "#{n - 8}px"
 
         if arrow_pos_at_bottom == true
             arrow_outter.setAttribute("id", "pop_arrow_up_outter")
