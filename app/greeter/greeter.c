@@ -43,7 +43,6 @@ static gchar* greeter_file = NULL;
 static gchar *selected_user = NULL, *selected_session = NULL;
 static gint response_count = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
-static gchar *date_str = NULL;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -97,7 +96,7 @@ gchar* greeter_get_date();
 static gboolean is_user_valid(const gchar *username)
 {
     gboolean ret = FALSE;
-    if((username == NULL) || (username == "")){
+    if((username == NULL)){
 	    return ret;
     }
 
@@ -130,7 +129,7 @@ static gboolean is_user_valid(const gchar *username)
 static gboolean is_session_valid(const gchar *session)
 {
     gboolean ret = FALSE;
-    if((session == NULL) || (session == "")){
+    if((session == NULL)){
 	    return ret;
     }
 
@@ -607,7 +606,6 @@ static const gchar* get_first_user()
     LightDMUserList *user_list = NULL;
     GList *users = NULL;
     LightDMUser *user = NULL;
-    GPtrArray *names = g_ptr_array_new();
 
     user_list = lightdm_user_list_get_instance();
     g_assert(user_list);
@@ -874,16 +872,12 @@ static void greeter_update_background()
     }
 }
 
-gchar * 
-greeter_get_date()
+JS_EXPORT_API
+gchar * greeter_get_date()
 {
     char outstr[200];
     time_t t;
     struct tm *tmp;
-
-    if(date_str != NULL){
-        date_str == NULL;
-    }
 
     setlocale(LC_ALL, "");
     t = time(NULL);
@@ -896,8 +890,7 @@ greeter_get_date()
             fprintf(stderr, "strftime returned 0");
     }
 
-    date_str = g_strdup(outstr);
-    return date_str;
+    return g_strdup(outstr);
 }
 
 int main(int argc, char **argv)

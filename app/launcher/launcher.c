@@ -42,6 +42,22 @@ void _make_maximize()
 
 }
 
+void set_launcher_background(GdkWindow* win)
+{
+    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+    cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
+    g_free(bg_path);
+
+    if (cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
+        cairo_pattern_t* pt = cairo_pattern_create_for_surface(_background);
+        gdk_window_hide(win);
+        gdk_window_set_background_pattern(win, pt);
+        gdk_window_show(win);
+    } else {
+        g_assert_not_reached();
+    }
+    cairo_surface_destroy(_background);
+}
 gboolean draw_bg(GtkWidget* w, cairo_t* cr)
 {
     char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
@@ -101,12 +117,14 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
-    g_signal_connect(webview, "draw", G_CALLBACK(draw_bg), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
+    gtk_widget_realize(webview);
+    set_launcher_background(gtk_widget_get_window(webview));
+
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);

@@ -22,7 +22,10 @@ void update_root_pixmap()
         GdkVisual *visual = gdk_screen_get_system_visual (screen);
         cairo_surface_t* surface = cairo_xlib_surface_create(_dsp, ROOT_PIXMAP, GDK_VISUAL_XVISUAL(visual), s_width, s_height);
         cairo_pattern_t* pt = cairo_pattern_create_for_surface(surface);
+        gdk_window_hide(w);
         gdk_window_set_background_pattern(w, pt);
+        gdk_window_show(w);
+        gdk_window_lower(w);
 
         cairo_surface_destroy(surface);
     }

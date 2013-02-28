@@ -137,10 +137,10 @@ de_menu_cb = (id, title)->
     DCore.Greeter.set_selected_session(id)
 
 de_menu = new ComboBox("desktop", de_menu_cb)
+#de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
 
 power_dict = {}
 power_menu_cb = (id, title)->
     power_dict[id]()
 
 power_menu = new ComboBox("power", power_menu_cb)
-power_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
