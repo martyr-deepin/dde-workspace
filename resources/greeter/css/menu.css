@@ -5,7 +5,7 @@
 }
 
 .Switcher:hover {
-    background: url(../images/control-up.png) center no-repeat rgba(0, 0, 0, 0.8);
+    background: url(../images/control-up.png) center no-repeat rgba(255,255,255,0.8);
 }
 
 .Switcher {
@@ -30,7 +30,7 @@
     text-align:center;
     width:20px;
     -webkit-box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.1);
 }
 
 .ShowItem img{
@@ -85,8 +85,8 @@
 }
 
 .MenuItem:hover {
-    color:#00B7E5;
-    background:rgba(0,0,0,0.8);
+    background: rgba(0,183,238, 0.5);
+    color:black;
 }
 
 .MenuImg {
@@ -97,5 +97,5 @@
 }
 
 .MenuTitle:hover {
-    color:#00B7E5;
+    color:black;
 }
