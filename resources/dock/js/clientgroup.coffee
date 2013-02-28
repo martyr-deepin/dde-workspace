@@ -18,7 +18,7 @@ class ClientGroup extends AppItem
 
         @to_normal_status()
 
-    change_size: ->
+    update_scale: ->
         super
         #TODO: why @n_clients maybe invalid !!!!!!!!!!!!
         if @n_clients
@@ -26,8 +26,7 @@ class ClientGroup extends AppItem
 
     handle_clients_change: ->
         if not @_img_margin_top
-            @_img_margin_top = 6
-        #echo "#{@n_clients.length} Img_Margin_top #{Number(@_img_margin_top)}"
+            @_img_margin_top = 6 * ICON_SCALE
         switch @n_clients.length
             when 1
                 @img.style.display = "block"
@@ -35,14 +34,13 @@ class ClientGroup extends AppItem
                 @img3.style.display = "none"
                 @img.style.marginTop = @_img_margin_top
 
-                @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT
             when 2
                 @img.style.display = "block"
                 @img2.style.display = "block"
                 @img3.style.display = "none"
 
-                @img.style.marginTop = Number(@_img_margin_top) - 1
-                @img2.style.marginTop = Number(@_img_margin_top) + 1
+                @img.style.marginTop = Number(@_img_margin_top) - 1 * ICON_SCALE
+                @img2.style.marginTop = Number(@_img_margin_top) + 1 * ICON_SCALE
 
                 @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT_TWO_RIGHT
                 @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT_TWO_LEFT
@@ -51,9 +49,9 @@ class ClientGroup extends AppItem
                 @img2.style.display = "block"
                 @img3.style.display = "block"
 
-                @img.style.marginTop = Number(@_img_margin_top) - 2
+                @img.style.marginTop = Number(@_img_margin_top) - 2 * ICON_SCALE
                 @img2.style.marginTop = @_img_margin_top
-                @img3.style.marginTop = Number(@_img_margin_top) + 2
+                @img3.style.marginTop = Number(@_img_margin_top) + 2 * ICON_SCALE
 
                 @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_RIGHT
                 @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT

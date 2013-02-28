@@ -135,7 +135,7 @@ body {
 #pop_grid {
     z-index:20000;
     position:fixed;
-    background-color:rgba(255,255,255,0.2);
+    background:rgba(0,0,0,0.6) url(../img/preview_background.png);
     border: 1px solid rgba(0, 0, 0, 0.4);
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
@@ -198,7 +198,8 @@ body {
 #pop_arrow_up_inner {
     bottom:-5px;
     position:absolute;
-    border-top: 6px solid rgba(0,0,0,0.73);
+    bord-image:url(../img/preview_background.png);
+    border-top: 6px solid rgba(0,0,0,0.9);
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }
@@ -220,7 +221,8 @@ body {
 #pop_arrow_down_inner {
     top:-5px;
     position:absolute;
-    border-bottom: 6px solid rgba(0,0,0,0.73);
+    bord-image:url(../img/preview_background.png);
+    border-bottom: 6px solid rgba(0,0,0,0.9);
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }

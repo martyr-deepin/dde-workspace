@@ -17,12 +17,19 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-calc_app_item_size = ->
-    apps = $s(".AppItem")
-    if apps.length == 0
-        return
 
-    w = apps[0].offsetWidth
+calc_app_item_size = ->
+    return if IN_INIT
+    apps = $s(".AppItem")
+    return if apps.length = 0
+
+    list = $("#app_list")
+    w = clamp((list.clientWidth - 26) / list.children.length, 34, ITEM_WIDTH * MAX_SCALE)
+    ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
+
+    for i in apps
+        Widget.look_up(i.id)?.update_scale()
+
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
         p = get_page_xy(last, 0, 0)
@@ -30,13 +37,14 @@ calc_app_item_size = ->
         DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
-        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM
+        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
         DCore.Dock.change_workarea_height(height)
     else
         echo "can't find last app #{apps.length}"
 
-    for i in apps
-        Widget.look_up(i.id).change_size(w)
+document.body.onresize = ->
+    calc_app_item_size()
+
 
 class AppList extends Widget
     constructor: (@id) ->
@@ -66,6 +74,7 @@ class AppItem extends Widget
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
+
         if not @icon
             @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
@@ -77,11 +86,14 @@ class AppItem extends Widget
         super
         calc_app_item_size()
 
-    change_size: (item_width) ->
-        icon_width = (ICON_HEIGHT / ITEM_WIDTH) * item_width
-        icon_height = icon_width * (ICON_HEIGHT / ICON_WIDTH)
+    update_scale: () ->
+        @element.style.maxWidth = ITEM_WIDTH * ICON_SCALE
+        $("#container").style.minHeight = ITEM_HEIGHT * ICON_SCALE
 
-        @_img_margin_top = ITEM_HEIGHT - icon_height - BOARD_IMG_MARGIN_BOTTOM
+        icon_width = ICON_WIDTH * ICON_SCALE
+        icon_height = ICON_HEIGHT * ICON_SCALE
+
+        @_img_margin_top = ITEM_HEIGHT * ICON_SCALE- icon_height - BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
 
         @img.style.marginTop = @_img_margin_top
         @img.style.marginLeft = BOARD_IMG_MARGIN_LEFT
@@ -96,11 +108,10 @@ class AppItem extends Widget
             @img3.style.height = icon_height
 
         if @indicate
-            w = INDICATER_WIDTH / ITEM_WIDTH * item_width
-            h = w * INDICATER_HEIGHT / INDICATER_WIDTH
-            @indicate.style.width = w
+            h = INDICATER_HEIGHT * ICON_SCALE
+            @indicate.style.width = INDICATER_WIDTH * ICON_SCALE
             @indicate.style.height = h
-            @indicate.style.top = ITEM_HEIGHT - h
+            @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
     do_dragstart: (e)->
         Preview_close_now()

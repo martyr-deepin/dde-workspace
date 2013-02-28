@@ -6,11 +6,10 @@
             <summary>active auto hiden mode</summary>
             <description>let the dock enter the auto hiden mode</description>
         </key>
-        <key type="u" name="init-icon-size">
-            <range min="16" max="48" />
-            <default>48</default>
-            <summary>the icon size</summary>
-            <description>the init size of the icon height on the dock board</description> 
+        <key type="b" name="mini-model">
+            <default>false</default>
+            <summary>the mini icon model</summary>
+            <description>let the dock enter the mini icon model to save worksapce.</description> 
         </key>
         <key type="u" name="color">
             <range min="0" max="0xffffff64" />
