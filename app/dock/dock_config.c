@@ -25,14 +25,14 @@
 
 
 struct _GlobalData GD;
-void update_dock_show();
+void update_dock_show_model();
 void update_dock_color();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
-    if (g_strcmp0(key, "show") == 0) {
-        /*GD.config.show = g_settings_get_boolean(s, key);*/
-        /*update_dock_show();*/
+    if (g_strcmp0(key, "mini-model") == 0) {
+        GD.config.mini_model = g_settings_get_boolean(s, key);
+        update_dock_show_model();
     } else if (g_strcmp0(key, "color") == 0) {
         GD.config.color = g_settings_get_uint(s, key);
         update_dock_color();
@@ -41,13 +41,12 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 
 void init_config()
 {
-    GD.config.show = TRUE;
     GD.config.color = 0;
     GD.is_webview_loaded = FALSE;
 
     GSettings* s = g_settings_new(SCHEMA_ID);
     g_signal_connect(s, "changed", G_CALLBACK(setting_changed), NULL);
-    /*g_signal_emit_by_name(s, "changed", "show", NULL);*/
+    g_signal_emit_by_name(s, "changed", "mini-model", NULL);
     g_signal_emit_by_name(s, "changed", "color", NULL);
     /*g_signal_emit_by_name(s, "changed", "apps", NULL);*/
 }

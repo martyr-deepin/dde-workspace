@@ -35,7 +35,7 @@ static gint _deepin_tray_width = 0;
 static void accumulate_na_width(GdkWindow* icon, gpointer width)
 {
     g_assert(icon != _deepin_tray);
-    _na_width += gdk_window_get_width(icon) + DEFAULT_INTERVAL;
+    _na_width += gdk_window_get_width(icon) + 2 * DEFAULT_INTERVAL;
     gdk_window_flush(icon);
     gint _na_base_x = _s_width - _na_width - DEFAULT_INTERVAL;
     gdk_window_move_resize(icon, _na_base_x, _s_height - 23, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
@@ -43,14 +43,14 @@ static void accumulate_na_width(GdkWindow* icon, gpointer width)
 
 static void update_notify_area_width()
 {
-    _na_width = _deepin_tray_width;
+    _na_width = _deepin_tray_width - DEFAULT_INTERVAL;
     g_hash_table_foreach(_icons, (GHFunc)accumulate_na_width, NULL);
     js_post_message_simply("tray_icon_area_changed", "{\"width\":%d}", _na_width + 2 *DEFAULT_INTERVAL);
 }
 
 
 static GdkFilterReturn
-monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
+monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
@@ -78,6 +78,10 @@ monitor_remove(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                 update_notify_area_width();
             }
         }
+    } else if (xev->type == LeaveNotify) {
+        printf("%p leave \n", data);
+    } else if (xev->type == EnterNotify) {
+        printf("%p enter\n", data);
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -94,12 +98,12 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     }
 
     gdk_window_reparent(icon, gtk_widget_get_window(container), 0, 870);
-    gdk_window_set_events(icon, GDK_VISIBILITY_NOTIFY_MASK); //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
-    gdk_window_add_filter(icon, monitor_remove, icon);
+    //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
+    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK); 
+    gdk_window_add_filter(icon, monitor_icon_event, icon);
     gdk_window_set_composited(icon, TRUE);
 
     int width = gdk_window_get_width(icon) * 1.0 / gdk_window_get_height(icon) * DEFAULT_HEIGHT;
-    gint _na_base_x = _s_width - _na_width - 20;
     gdk_window_resize(icon, width, DEFAULT_HEIGHT);
     gdk_window_show(icon);
 
@@ -115,7 +119,6 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     }
     g_free(re_class);
     update_notify_area_width();
-
 }
 
 
@@ -150,6 +153,8 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
 {
+    cairo_set_source_rgba(cr, 0, 1, 0, .3);
+    /*cairo_paint(cr);*/
     if (_icons != NULL) {
         g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
         if (_deepin_tray)

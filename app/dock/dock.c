@@ -31,7 +31,7 @@
 #include "dbus.h"
 #include <cairo.h>
 
-#define DOCK_HEIGHT (60)
+int _dock_height = 60;
 int _screen_width = 0;
 int _screen_height = 0;
 
@@ -58,10 +58,10 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     /*gtk_widget_set_size_request(webview, s_width, s_height);*/
 
     set_struct_partial(gtk_widget_get_window(container),
-            ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, _screen_width
+            ORIENTATION_BOTTOM, _dock_height, 0, _screen_width
             );
 
-    init_region(gtk_widget_get_window(container), 0, _screen_height - 60, _screen_width, 60);
+    init_region(gtk_widget_get_window(container), 0, _screen_height - _dock_height, _screen_width, _dock_height);
 
     webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
 }
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
     gdk_window_set_accept_focus(gtk_widget_get_window(webview), FALSE);
     set_wmspec_dock_hint(gtk_widget_get_window(container));
 
-    /*monitor_resource_file("dock", webview);*/
+    monitor_resource_file("dock", webview);
     /*gdk_window_set_debug_updates(TRUE);*/
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
@@ -131,16 +131,12 @@ void update_dock_color()
         js_post_message_simply("dock_color_changed", NULL);
 }
 
-void update_dock_show()
+void update_dock_show_model()
 {
-    GdkWindow* w = gtk_widget_get_window(container);
-    if (GD.config.show) {
-        set_struct_partial(w, ORIENTATION_BOTTOM, DOCK_HEIGHT, 0, _screen_width); 
-        js_post_message_simply("in_normal_mode", NULL);
-    } else {
-        set_struct_partial(w, ORIENTATION_BOTTOM, 30, 0, _screen_width);
+    if (GD.config.mini_model) {
         js_post_message_simply("in_mini_mode", NULL);
-        dock_release_region(0, 0, _screen_width, 30);
+    } else {
+        js_post_message_simply("in_normal_mode", NULL);
     }
 }
 
@@ -155,9 +151,11 @@ void dock_emit_webview_ok()
         init_launchers();
         init_task_list();
         remove_me_run_tray_icon();
+        update_dock_show_model();
     } else {
         update_dock_apps();
         update_task_list();
+        update_dock_show_model();
     }
 }
 
@@ -165,7 +163,8 @@ JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
     if (height < 30) height = 30;
-    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, height, 0, _screen_width); 
+    _dock_height = height;
+    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, _dock_height, 0, _screen_width); 
 }
 
 JS_EXPORT_API
