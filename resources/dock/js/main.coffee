@@ -66,7 +66,6 @@ DCore.signal_connect("task_removed", (info) ->
 )
 
 DCore.signal_connect("in_mini_mode", ->
-    alert("ERRRRRRRRRRRRRRRRR")
     MAX_SCALE = 0.5
     calc_app_item_size()
 )

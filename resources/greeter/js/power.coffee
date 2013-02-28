@@ -60,7 +60,10 @@ suspend_cb = ->
         echo "suspend failed"
         echo error
 
-    #DCore.Greeter.run_suspend()
+        try 
+            DCore.Greeter.run_suspend()
+        catch error
+            echo error
 
 hibernate_cb = ->
     if not upower_obj.HibernateAllowed_sync()
@@ -74,7 +77,10 @@ hibernate_cb = ->
         echo "hibernate failed"
         echo error
 
-    #DCore.Greeter.run_hibernate()
+        try
+            DCore.Greeter.run_hibernate()
+        catch error
+            echo error
 
 restart_cb = ->
     if not consolekit_obj.CanRestart_sync()
@@ -88,7 +94,10 @@ restart_cb = ->
         echo "restart failed"
         echo error
 
-    #DCore.Greeter.run_restart()
+        try
+            DCore.Greeter.run_restart()
+        catch error
+            echo error
 
 shutdown_cb = ->
     if not consolekit_obj.CanStop_sync()
@@ -102,7 +111,10 @@ shutdown_cb = ->
         echo "shutdown failed"
         echo error
 
-    #DCore.Greeter.run_shutdown()
+        try
+            DCore.Greeter.run_shutdown()
+        catch error
+            echo error
 
 power_dict = get_power_info()
 for key, value of power_dict
@@ -122,6 +134,10 @@ for key, value of power_dict
 
 power_menu.current_img.src = "images/control-power.png"
 $("#bottom_buttons").appendChild(power_menu.element)
+
+power_menu.show_item.addEventListener("click", (e) =>
+    power_dict["shutdown"]()
+)
 
 DCore.signal_connect("power", (msg) ->
     status_div = create_element("div", " ", $("#Debug"))

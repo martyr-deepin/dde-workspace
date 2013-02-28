@@ -654,8 +654,17 @@ class RichDir extends DesktopEntry
         menus = []
         menus.push([1, _("Open")])
         menus.push([])
-        menus.push([6, _("Rename"), not is_selected_multiple_items()])
+        menus.push([3, _("Rename"), not is_selected_multiple_items()])
+        menus.push([])
+        menus.push([5, _("Dismiss")])
         menus
+
+    do_itemselected : (evt) =>
+        switch evt.id
+            when 1 then open_selected_items()
+            when 3 then @item_rename()
+            when 5 then @item_dismiss()
+            else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
     item_normal : ->
@@ -706,6 +715,13 @@ class RichDir extends DesktopEntry
     item_rename : =>
         if @show_pop == true then @hide_pop_block()
         super
+
+
+    item_dismiss : =>
+        if (pos = load_position(@id))?
+            clear_occupy(pos)
+        DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
+        DCore.DEntry.delete_files([@_entry], false)
 
 
     on_rename : (new_name) ->
@@ -838,10 +854,10 @@ class RichDir extends DesktopEntry
             arrow_mid.style.right    = "#{s_width - p - 14}px"
             arrow_inner.style.right  = "#{s_width - p - 13}px"
         else
-            @div_pop.style.left      = "#{p - n}px"
-            arrow_outter.style.left  = "#{n - 3}px"
-            arrow_mid.style.left     = "#{n - 3}px"
-            arrow_inner.style.left   = "#{n - 2}px"
+            @div_pop.style.left      = "#{p - n + 6}px"
+            arrow_outter.style.left  = "#{n - 9}px"
+            arrow_mid.style.left     = "#{n - 9}px"
+            arrow_inner.style.left   = "#{n - 8}px"
 
         if arrow_pos_at_bottom == true
             arrow_outter.setAttribute("id", "pop_arrow_up_outter")
