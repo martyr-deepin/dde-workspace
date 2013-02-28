@@ -25,7 +25,8 @@
 #define APP_NAME "dock"
 
 struct _DockConfig {
-    gboolean show;
+    gboolean auto_hiden;
+    gboolean mini_model;
     guint32 color;
     int position; //hasn't use
 };

@@ -1,3 +1,4 @@
+MAX_SCALE = 1
 ITEM_HEIGHT = 60.0
 ITEM_WIDTH = 68.0
 
@@ -31,3 +32,5 @@ try
     NOT_FOUND_ICON = DCore.get_theme_icon("invalid-dock_app", 48)
 catch e
     NOT_FOUND_ICON = "img/not_found.png"
+
+ICON_SCALE = MAX_SCALE  #this will be modify on runtime

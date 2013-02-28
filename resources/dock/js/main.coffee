@@ -66,32 +66,24 @@ DCore.signal_connect("task_removed", (info) ->
 )
 
 DCore.signal_connect("in_mini_mode", ->
-    run_post(calc_app_item_size())
+    alert("ERRRRRRRRRRRRRRRRR")
+    MAX_SCALE = 0.5
+    calc_app_item_size()
 )
 
 DCore.signal_connect("in_normal_mode", ->
-    run_post(calc_app_item_size())
+    MAX_SCALE = 1
+    calc_app_item_size()
 )
 DCore.Dock.emit_webview_ok()
 show_desktop.show(DCore.Dock.get_desktop_status())
 
-init_app_item_size = ->
-    apps = $s(".AppItem")
-    w = apps[0].offsetWidth
-    for i in apps
-        Widget.look_up(i.id).change_size(w)
 setTimeout(->
-    DCore.Dock.require_region(0, 0, screen.width, ITEM_HEIGHT)
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT)
     IN_INIT = false
-, 200)
-setTimeout(init_app_item_size, 100)
-setTimeout(init_app_item_size, 1000)
-setTimeout(init_app_item_size, 1800)
-setTimeout(init_app_item_size, 2800)
-setTimeout(init_app_item_size, 4000)
+    calc_app_item_size()
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE)
+, 100)
 
 setTimeout(->
     DCore.Dock.test("1")
 , 3000)
-
