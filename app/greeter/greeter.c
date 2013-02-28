@@ -345,6 +345,7 @@ static void start_session(const gchar *session)
         selected_user = NULL;
         g_free(selected_session);
         selected_session = NULL;
+        gtk_main_quit();
     }
 }
 
