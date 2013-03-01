@@ -191,7 +191,5 @@ DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
 
-run_post(->
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-)
+roundabout.style.top = 500px;
+roundabout.style.left = screen.width / 2 - roundabout.clientWidth

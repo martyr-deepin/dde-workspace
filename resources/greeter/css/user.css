@@ -8,16 +8,6 @@
     height:30em;
 }
 
-#lockroundabout {
-    position:absolute;
-    list-style:none;
-    top:30%;
-    left:50%;
-    margin-left: -92px;
-    text-align: center;
-    width: 184px;
-}
-
 #roundabout li {
     width: 14em;
     height: 16.5em;
