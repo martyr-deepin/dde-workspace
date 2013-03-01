@@ -102,9 +102,7 @@ activate_file (GFile* file, const char* content_type, gboolean is_executable)
         g_content_type_can_be_executable (content_type))
     {
         //1. an executable text file. or an shell script
-        if (g_str_has_prefix (content_type, "text") ||
-	    g_str_equal (content_type, "application/x-shellscript")||
-	    g_str_equal (content_type, "application/x-perl"))
+        if (g_content_type_is_a (content_type, "text/plain")) 
         {
             GtkWidget* dialog;
             int response;
