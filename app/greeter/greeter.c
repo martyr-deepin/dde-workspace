@@ -337,7 +337,34 @@ static void start_session(const gchar *session)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
         greeter_start_authentication(get_selected_user());
+
     }else{
+        gchar *user_lock_path = g_strdup_printf("%s%s", selected_user, ".dlock.app.deepin");
+
+        if(is_application_running(user_lock_path)){
+            gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/.config/dlockpid");
+
+            if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+                g_warning("lockpid file should exists when locked!\n");
+
+            }else{
+                gchar *contents = NULL;
+                gsize length;
+
+                if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
+                    g_print("lockpid file contents:%s\n", contents);
+                    /* kill(g_ascii_stroull(contents), SIGKILL); */
+
+                }else{
+                    g_warning("get lockpid file contents failed\n");
+                }
+
+                g_free(contents);
+            }
+            g_free(lockpid_file);
+        }
+        g_free(user_lock_path);
+
         g_free(greeter_file);
         greeter_file = NULL;
         g_key_file_free(greeter_keyfile);
