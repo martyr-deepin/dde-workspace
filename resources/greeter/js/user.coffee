@@ -65,13 +65,13 @@ class LoginEntry extends Widget
             is_shift = e.shiftKey || (keycode == 16) || false
 
             if keycode >= 65 and keycode <= 90 and not is_shift
-                echo "capslock active and not shift"
+                #echo "capslock active and not shift"
                 @warning.classList.add("CapsWarningBackground")
             else if keycode >=97 and keycode <= 122 and is_shift
-                echo "capslock active and shift"
+                #echo "capslock active and shift"
                 @warning.classList.add("CapsWarningBackground")
             else
-                echo "capslock inactive"
+                #echo "capslock inactive"
                 @warning.classList.remove("CapsWarningBackground")
         )
 
@@ -324,7 +324,7 @@ document.body.addEventListener("keydown", (e)=>
     _counts = roundabout.childElementCount
 
     if e.which == 37
-        echo "prev"
+        #echo "prev"
         if _current_index == 0
             _id = roundabout.children[_counts - 1].children[0].getAttribute("id")
         else
@@ -340,7 +340,7 @@ document.body.addEventListener("keydown", (e)=>
             _current_user.focus()
 
     else if e.which == 39 
-        echo "next"
+        #echo "next"
         if _current_index == _counts - 1
             _id = roundabout.children[0].children[0].getAttribute("id")
         else
@@ -356,7 +356,7 @@ document.body.addEventListener("keydown", (e)=>
             _current_user.focus()
 
     else if e.which == 13 
-        echo "enter"
+        #echo "enter"
         if _current_user? and not _current_user.login_displayed
             _current_user.show_login()
         else if not _current_user?
@@ -365,7 +365,7 @@ document.body.addEventListener("keydown", (e)=>
             Widget.look_up(_id)?.show_login()
 
     else if e.which == 27
-        echo "esc"
+        #echo "esc"
         if _current_user? and _current_user.login_displayed
             _current_user.blur()
             _current_user.focus()

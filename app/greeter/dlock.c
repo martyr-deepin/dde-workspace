@@ -254,9 +254,9 @@ int main(int argc, char **argv)
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
     gtk_widget_show_all(lock_container);
-    //GRAB_DEVICE(NULL);
+    GRAB_DEVICE(NULL);
 
-    //gdk_window_stick(gdkwindow);
+    gdk_window_stick(gdkwindow);
     gtk_main();
     return 0;
 }

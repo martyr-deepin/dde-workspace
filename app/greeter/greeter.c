@@ -343,10 +343,13 @@ static void start_session(const gchar *session)
         greeter_start_authentication(get_selected_user());
 
     }else{
+#if DEBUG
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session finish");
+#endif
         gchar *user_lock_path = g_strdup_printf("%s%s", selected_user, ".dlock.app.deepin");
 
 #if DEBUG
-            js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
+        js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
 #endif
 
         if(is_application_running(user_lock_path)){

@@ -45,13 +45,13 @@ class LoginEntry extends Widget
             is_shift = e.shiftKey || (keycode == 16) || false
 
             if keycode >= 65 and keycode <= 90 and not is_shift
-                echo "capslock active and not shift"
+                #echo "capslock active and not shift"
                 @warning.classList.add("CapsWarningBackground")
             else if keycode >=97 and keycode <= 122 and is_shift
-                echo "capslock active and shift"
+                #echo "capslock active and shift"
                 @warning.classList.add("CapsWarningBackground")
             else
-                echo "capslock inactive"
+                #echo "capslock inactive"
                 @warning.classList.remove("CapsWarningBackground")
         )
 
@@ -79,7 +79,7 @@ class SwitchUser extends Widget
     constructor: (@id)->
         super
         @switch = create_element("button", "LoginButton", @element)
-        @switch.innertText = "Switch User"
+        @switch.innertText = _("Switch User")
         @switch.addEventListener("click", =>
             DCore.Lock.switch_user()
         )
