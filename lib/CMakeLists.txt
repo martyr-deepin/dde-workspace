@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 
-GEN_JSC_SOURCE_WITH_NO_INIT("jsc_extension" JSC_GEN)
+GEN_JSC_SOURCE_WITH_NO_INIT(JSC_GEN "jsc_extension")
 
 AUX_SOURCE_DIRECTORY(jsc_extension JSC_LIB)
 

@@ -1,7 +1,7 @@
 SET(NAME "desktop")
 
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 SET(SRC_LIST desktop.c background.c inotify_item.c utils.c ${JSC_GEN})
 

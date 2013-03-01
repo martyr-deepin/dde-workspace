@@ -1,7 +1,7 @@
 SET(NAME "dominant_color")
 
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 SET(SRC_LIST main.c test.c calc.c ${JSC_GEN})
 

@@ -1,6 +1,6 @@
 SET(NAME "memory_test")
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 SET(SRC_LIST main.c test.c ${JSC_GEN})
 
