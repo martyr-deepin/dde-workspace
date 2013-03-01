@@ -135,7 +135,7 @@ body {
 #pop_grid {
     z-index:20000;
     position:fixed;
-    background:rgba(0,0,0,0.6) url(../img/preview_background.png);
+    background:url(../img/preview_background.png);
     border: 1px solid rgba(0, 0, 0, 0.4);
     border-radius: 6px 6px 6px 6px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
@@ -191,7 +191,7 @@ body {
 #pop_arrow_up_mid {
     bottom: -6px;
     position: absolute;
-    border-top: 7px solid rgba(255,255,255, 0.8);
+    border-top: 7px solid rgba(255,255,255, 0.4);
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
 }
@@ -214,7 +214,7 @@ body {
 #pop_arrow_down_mid {
     top:-6px;
     position:absolute;
-    border-bottom: 7px solid rgba(255,255,255,0.8);
+    border-bottom: 7px solid rgba(255,255,255,0.4);
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
 }
