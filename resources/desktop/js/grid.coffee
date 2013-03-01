@@ -990,7 +990,7 @@ class Mouse_Select_Area_box
         @element.style.visibility = "hidden"
         @last_effect_item.splice(0)
 
-        if @selected_item.length > 0 then update_selected_item_drag_image()
+        if selected_item.length > 0 then update_selected_item_drag_image()
         return
 
 
