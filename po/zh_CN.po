@@ -334,7 +334,7 @@ msgstr "添加到 Dock"
 
 #: ../app/desktop/desktop.c:122
 msgid "Rich directory"
-msgstr "应用程序启动组"
+msgstr "程序启动组"
 
 #: ../app/desktop/desktop.c:160
 msgid "New file"
