@@ -161,6 +161,9 @@ body {
     vertical-align:top;
     text-align:center;
 }
+#pop_grid ul .auto_height {
+    height:auto;
+}
 #pop_grid ul li:hover {
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);

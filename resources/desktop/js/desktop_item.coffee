@@ -781,11 +781,29 @@ class RichDir extends DesktopEntry
         ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
 
+        # calc columns
+        if @sub_items_count <= 3
+            col = @sub_items_count
+        else if @sub_items_count <= 6
+            col = 3
+        else if @sub_items_count <= 12
+            col = 4
+        else if @sub_items_count <= 20
+            col = 5
+        else
+            col = 6
+
+        # calc rows
+        if (row = Math.ceil(@sub_items_count / col)) > 4 then row = 4
+
         for i, e of @sub_items
             ele = document.createElement("li")
             ele.setAttribute('id', i)
             ele.setAttribute('title', DCore.DEntry.get_name(e))
             ele.draggable = true
+
+            if row == 1 then ele.className = "auto_height"
+
             sb = document.createElement("div")
             sb.className = "item_icon"
             ele.appendChild(sb)
@@ -829,17 +847,6 @@ class RichDir extends DesktopEntry
 
             ele_ul.appendChild(ele)
 
-        if @sub_items_count <= 3
-            col = @sub_items_count
-        else if @sub_items_count <= 6
-            col = 3
-        else if @sub_items_count <= 12
-            col = 4
-        else if @sub_items_count <= 20
-            col = 5
-        else
-            col = 6
-
         # 20px for ul padding, 2px for border, 8px for scrollbar
         if @sub_items_count > 24
             pop_width = col * _ITEM_WIDTH_ + 30
@@ -847,9 +854,7 @@ class RichDir extends DesktopEntry
             pop_width = col * _ITEM_WIDTH_ + 22
         @div_pop.style.width = "#{pop_width}px"
 
-        n = Math.ceil(@sub_items_count / col)
-        if n > 4 then n = 4
-        n = n * _ITEM_HEIGHT_ + 24
+        n = row * _ITEM_HEIGHT_ + 24
         if s_height - @element.offsetTop > n
             pop_top = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 12
             arrow_pos_at_bottom = false
