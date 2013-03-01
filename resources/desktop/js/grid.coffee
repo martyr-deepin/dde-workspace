@@ -978,8 +978,6 @@ class Mouse_Select_Area_box
 
             @last_pos = new_pos
             @last_effect_item = effect_item
-
-            if temp_list.length > 0 or sel_list.length > 0 then update_selected_item_drag_image()
         return
 
 
@@ -991,6 +989,8 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.visibility = "hidden"
         @last_effect_item.splice(0)
+
+        if selected_item.length > 0 then update_selected_item_drag_image()
         return
 
 

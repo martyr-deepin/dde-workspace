@@ -2,7 +2,7 @@ SET(NAME "dock")
 
 add_subdirectory(notification_area)
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

@@ -1,7 +1,6 @@
 SET(NAME "launcher")
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
-
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 SET(SRC_LIST launcher.c ${JSC_GEN})
 

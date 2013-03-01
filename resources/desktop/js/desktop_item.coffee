@@ -728,6 +728,12 @@ class RichDir extends DesktopEntry
         DCore.Desktop.set_rich_dir_name(@_entry, new_name)
 
 
+    on_drag_event_none : (evt) ->
+        evt.stopPropagation()
+        evt.dataTransfer.dropEffect = "none"
+        return
+
+
     show_pop_block : =>
         if @selected == false then return
         if @div_pop != null then return
@@ -746,6 +752,8 @@ class RichDir extends DesktopEntry
         @div_pop.addEventListener("click", @on_event_stoppropagation)
         @div_pop.addEventListener("contextmenu", @on_event_stoppropagation)
         @div_pop.addEventListener("keyup", @on_event_stoppropagation)
+        @div_pop.addEventListener("dragenter", @on_drag_event_none)
+        @div_pop.addEventListener("dragover", @on_drag_event_none)
 
         @show_pop = true
 
@@ -778,10 +786,14 @@ class RichDir extends DesktopEntry
             ele.setAttribute('id', i)
             ele.setAttribute('title', DCore.DEntry.get_name(e))
             ele.draggable = true
+            sb = document.createElement("div")
+            sb.className = "item_icon"
+            ele.appendChild(sb)
             s = document.createElement("img")
             s.src = DCore.DEntry.get_icon(e)
-            ele.appendChild(s)
+            sb.appendChild(s)
             s = document.createElement("div")
+            s.className = "item_name"
             s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
 
@@ -798,6 +810,14 @@ class RichDir extends DesktopEntry
             )
             ele.addEventListener('dragend', (evt) ->
                 evt.stopPropagation()
+            )
+            ele.addEventListener('dragenter', (evt) ->
+                evt.stopPropagation()
+                evt.dataTransfer.dropEffect = "none"
+            )
+            ele.addEventListener('dragover', (evt) ->
+                evt.stopPropagation()
+                evt.dataTransfer.dropEffect = "none"
             )
             ele.addEventListener('dblclick', (evt) ->
                 evt.stopPropagation()

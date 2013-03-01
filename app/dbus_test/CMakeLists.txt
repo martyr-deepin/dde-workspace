@@ -1,7 +1,7 @@
 set(NAME "dbus_test")
 
 
-GEN_JSC_SOURCE("jsc" JSC_GEN)
+GEN_JSC_SOURCE(JSC_GEN "jsc")
 SET(SRC_LIST web.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})

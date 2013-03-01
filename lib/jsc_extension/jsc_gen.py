@@ -21,9 +21,6 @@
 
 import sys
 import os
-CFG_FILES = sys.argv[1]
-OUTPUT_DIR = os.path.curdir
-
 modules = []
 
 
@@ -243,7 +240,6 @@ class CustomFunc:
     def set_module_name(self, name):
         self.module_name = name.lower()
     def str_def(self):
-        print "huhu"
         return """
     { "%(name)s", %(name)s, kJSPropertyAttributeReadOnly },
 """ % { "name" : self.name }
@@ -512,7 +508,7 @@ class Value:
     def __init__(self, name):
         pass
 
-def gen_init_c():
+def gen_init_c(output_path, init_name):
     temp = """
 #include "jsextension.h"
 #include <JavaScriptCore/JSStringRef.h>
@@ -558,16 +554,18 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
         if m.name != "DCore":
             objs += m.str_install()
             objs_state += "extern JSClassRef get_%s_class();\n" % m.name
-    f = open(OUTPUT_DIR + "/init.c", "w")
+    f = open(output_path+ "/" + init_name, "w")
     f.write(temp % {"objs": objs, "objs_state": objs_state })
     f.close()
 
-def gen_module_c():
-    for root, dirs, files in os.walk(CFG_FILES):
+def gen_module_c(output_path, cfg_dir, cfg_list=None):
+    for root, dirs, files in os.walk(cfg_dir):
         for f in files:
             if f.endswith('.cfg') and f[0] != '.':
+                if len(cfg_list) != 0 and not f in cfg_list:
+                    continue
                 path = os.path.join(root, f)
-                path2 = os.path.join(OUTPUT_DIR,  "gen_" + f.rstrip(".cfg") + ".c")
+                path2 = os.path.join(output_path,  "_gen_" + f.rstrip(".cfg") + ".c")
                 f = open(path)
                 content = f.read()
                 try :
@@ -581,8 +579,20 @@ def gen_module_c():
                     f.write(m.str())
                     f.close()
 
+if __name__ == "__main__":
+    from optparse import OptionParser
+    parser = OptionParser()
+    parser.add_option("-I", "--no-init", default=False, dest="NO_INIT", help="not generate the init.c file")
+    parser.add_option("-i", "--init-name", dest="INIT_NAME", default="init.c", help="set the init module's name")
+    parser.add_option("-s", "--source-dir", dest="CFG_DIR", help="the source directory of cfg files")
+    parser.add_option("-d", "--dest-dir", dest="DEST", help="the directory to store the generate c source file")
+    (options, cfg_list) = parser.parse_args()
 
-gen_module_c()
-
-if len(sys.argv) != 3:
-    gen_init_c()
+    output_path = options.DEST or os.path.curdir
+    try:
+        os.mkdir(output_path)
+    except:
+        pass
+    gen_module_c(output_path, options.CFG_DIR, cfg_list)
+    if not options.NO_INIT:
+        gen_init_c(output_path, options.INIT_NAME)
