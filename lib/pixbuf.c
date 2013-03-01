@@ -24,15 +24,14 @@
 
 char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4)
 {
-#define write_to_canvas(dest, src, x, y) gdk_pixbuf_composite(src, dest, x, y, 17, 17, x, y, 1, 1, GDK_INTERP_HYPER, 255);
+#define write_to_canvas(dest, src, x, y) gdk_pixbuf_composite(src, dest, x+1, y+1, 17-2, 17-2, x, y, 1, 1, GDK_INTERP_HYPER, 255);
     GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, NULL);
 
-    /*GdkPixbuf* bg = gdk_pixbuf_new_from_file("./4.png", NULL);*/
     g_assert(bg !=NULL);
     if (p1 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p1, 17, -1, TRUE, NULL);
         if (icon) {
-            write_to_canvas(bg, icon, 6, 6);
+            write_to_canvas(bg, icon, 6+1, 6);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon: %s fail\n", p1);
@@ -50,7 +49,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     if (p3 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p3, 17, -1, TRUE, NULL);
         if (icon) {
-            write_to_canvas(bg, icon, 6, 6+17 + 1);
+            write_to_canvas(bg, icon, 6+1, 6+17);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon: %s fail\n", p3);
@@ -59,7 +58,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     if (p4 != NULL) {
         GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p4, 17, -1, TRUE, NULL);
         if (icon) {
-            write_to_canvas(bg, icon, 6+17 + 1, 6+17 + 1);
+            write_to_canvas(bg, icon, 6+17 + 1, 6+17);
             g_object_unref(icon);
         } else {
             g_debug("generate_directory_icon icon: %s fail\n", p4);
