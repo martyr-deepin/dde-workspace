@@ -22,9 +22,45 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include "bg_pixbuf.c"
 
+static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
+{
+    int width, height, rowstride, n_channels;
+    guchar *pixels, *p;
+    guchar alpha;
+
+    alpha = (guchar) (fa * 255);
+    n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+
+    g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
+    g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
+    g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+    g_assert (n_channels == 4);
+
+    width = gdk_pixbuf_get_width (pixbuf);
+    height = gdk_pixbuf_get_height (pixbuf);
+
+    rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+    pixels = gdk_pixbuf_get_pixels (pixbuf);
+
+    //the outline of the icon are stripped.
+    //so the for corner coordinates are (1, 1), (1, 15), (15, 1), (15, 15)
+    //p = pixels + y * rowstride + x * n_channels;
+    p = pixels + 1 * rowstride + 1 * n_channels;
+    p[3] = alpha;
+    p = pixels + 15 * rowstride + 1 * n_channels;
+    p[3] = alpha;
+    p = pixels + 1 * rowstride + 15 * n_channels;
+    p[3] = alpha;
+    p = pixels + 15 * rowstride + 15 * n_channels;
+    p[3] = alpha;
+}
+
 char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4)
 {
-#define write_to_canvas(dest, src, x, y) gdk_pixbuf_composite(src, dest, x+1, y+1, 17-2, 17-2, x, y, 1, 1, GDK_INTERP_HYPER, 255);
+#define write_to_canvas(dest, src, x, y) \
+    change_corner_alpha (src, 0.1); \
+    gdk_pixbuf_composite(src, dest, x+1, y+1, 17-2, 17-2, x, y, 1, 1, GDK_INTERP_HYPER, 255);
+
     GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, NULL);
 
     g_assert(bg !=NULL);
