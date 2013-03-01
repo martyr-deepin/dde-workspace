@@ -30,6 +30,10 @@
 #include "utils.h"
 #include <glib.h>
 #include <stdlib.h>
+#include <glib/gstdio.h>
+#include <glib/gprintf.h>
+#include <sys/types.h>
+#include <signal.h>
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -337,7 +341,56 @@ static void start_session(const gchar *session)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
         greeter_start_authentication(get_selected_user());
+
     }else{
+        gchar *user_lock_path = g_strdup_printf("%s%s", selected_user, ".dlock.app.deepin");
+
+#if DEBUG
+            js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
+#endif
+
+        if(is_application_running(user_lock_path)){
+#if DEBUG
+            js_post_message_simply("status", "{\"status\":\"%s\"}", "user had locked");
+#endif
+            gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
+#if DEBUG
+            js_post_message_simply("status", "{\"status\":\"pid file:%s\"}", lockpid_file);
+#endif
+            if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+#if DEBUG
+                js_post_message_simply("status", "{\"status\":\"%s\"}", "pid file doesn't exists");
+#endif
+                g_warning("lockpid file should exists when locked!\n");
+
+            }else{
+                gchar *contents = NULL;
+                gsize length;
+
+                if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
+#if DEBUG
+                js_post_message_simply("status", "{\"status\":\"pid:%s\"}", contents);
+#endif
+                    if( kill((pid_t)g_ascii_strtod(contents, NULL), SIGKILL) == 0){
+                        g_remove(lockpid_file);
+                    }else{
+#if DEBUG
+                        js_post_message_simply("status", "{\"status\":\"%s\"}", "kill user lock failed");
+#endif
+                    }
+                }else{
+                    g_warning("get lockpid file contents failed\n");
+#if DEBUG
+                    js_post_message_simply("status", "{\"status\":\"%s\"}", "get pid contents failed");
+#endif
+                }
+
+                g_free(contents);
+            }
+            g_free(lockpid_file);
+        }
+        g_free(user_lock_path);
+
         g_free(greeter_file);
         greeter_file = NULL;
         g_key_file_free(greeter_keyfile);
