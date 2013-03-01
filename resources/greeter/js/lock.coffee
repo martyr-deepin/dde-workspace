@@ -45,13 +45,13 @@ class LoginEntry extends Widget
             is_shift = e.shiftKey || (keycode == 16) || false
 
             if keycode >= 65 and keycode <= 90 and not is_shift
-                echo "capslock active and not shift"
+                #echo "capslock active and not shift"
                 @warning.classList.add("CapsWarningBackground")
             else if keycode >=97 and keycode <= 122 and is_shift
-                echo "capslock active and shift"
+                #echo "capslock active and shift"
                 @warning.classList.add("CapsWarningBackground")
             else
-                echo "capslock inactive"
+                #echo "capslock inactive"
                 @warning.classList.remove("CapsWarningBackground")
         )
 
@@ -78,8 +78,8 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
-        @switch = create_element("button", "LoginButton", @element)
-        @switch.innertText = "Switch User"
+        @switch = create_element("button", "SwitchToGreeter", @element)
+        @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             DCore.Lock.switch_user()
         )
@@ -91,8 +91,9 @@ class UserInfo extends Widget
         super
         @li = create_element("li", "")
         @li.appendChild(@element)
-        @img = create_img("UserImg", img_src, @element)
-        @name = create_element("span", "UserName", @element)
+        @userbase = create_element("div", "UserBase", @element)
+        @img = create_img("UserImg", img_src, @userbase)
+        @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
 
@@ -178,15 +179,17 @@ if not user_background? or not user_background.length
 background_img = create_img("Background",user_background) 
 document.body.appendChild(background_img)
 
-u = new UserInfo(user, user, user_image) 
-u.focus()
-u.show_login()
-$("#lockroundabout").appendChild(u.li)
-
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
+
+u = new UserInfo(user, user, user_image) 
+roundabout.appendChild(u.li)
+u.focus()
+u.show_login()
 
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
 
+roundabout.style.top = 500px;
+roundabout.style.left = screen.width / 2 - roundabout.clientWidth

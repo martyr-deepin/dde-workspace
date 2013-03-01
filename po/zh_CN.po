@@ -126,6 +126,10 @@ msgstr "星期六"
 msgid "Unlock"
 msgstr "解锁"
 
+#: ../resources/greeter/js/lock.coffee:82
+msgid "Switch User"
+msgstr "切换用户"
+
 #: ../resources/greeter/js/session.coffee:25
 msgid "Session"
 msgstr "会话"
