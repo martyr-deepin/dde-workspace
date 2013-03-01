@@ -32,25 +32,16 @@
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 GtkWidget* lock_container = NULL;
-struct passwd *pw = NULL;
 static const gchar *username = NULL;
 static gchar* lockpid_file = NULL;
-
-static void init_user()
-{
-    if(pw != NULL){
-        pw = NULL;
-    }
-
-    pw = getpwuid(getuid());
-    username = pw->pw_name;
-}
 
 JS_EXPORT_API
 const gchar* lock_get_username()
@@ -185,6 +176,27 @@ void lock_switch_user()
     g_spawn_command_line_async("switchtogreeter", NULL);
 }
 
+JS_EXPORT_API
+gchar * lock_get_date()
+{
+    char outstr[200];
+    time_t t;
+    struct tm *tmp;
+
+    setlocale(LC_ALL, "");
+    t = time(NULL);
+    tmp = localtime(&t);
+    if (tmp == NULL) {
+        perror("localtime");
+    }
+
+    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
+            fprintf(stderr, "strftime returned 0");
+    }
+
+    return g_strdup(outstr);
+}
+
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 {
     return TRUE;
@@ -195,7 +207,6 @@ int main(int argc, char **argv)
     init_i18n();
     gtk_init(&argc, &argv);
 
-    /* init_user(); */
     username = g_get_user_name();
 
     gchar *user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
@@ -208,15 +219,18 @@ int main(int argc, char **argv)
 
     g_free(user_lock_path);
 
-    lockpid_file = g_build_filename(g_get_user_config_dir(), "dlockpid", NULL);
-    if(g_mkdir_with_parents(lockpid_file, 0755) < 0){
+    lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_warning("remove old pid info before lock"); 
+        g_remove(lockpid_file);
+    }
+
+    if(g_creat(lockpid_file, O_RDWR) == -1){
         g_warning("touch lockpid_file failed\n");
     }
     
     gchar *contents = g_strdup_printf("%d", getpid());
-    gsize length = sizeof(contents);
-
-    g_file_set_contents(lockpid_file, contents, length, NULL);
+    g_file_set_contents(lockpid_file, contents, -1, NULL);
 
     g_free(contents);
 

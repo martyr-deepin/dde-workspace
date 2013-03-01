@@ -75,6 +75,15 @@ class Loading extends Widget
         create_element("div", "ball1", @element)
         create_element("span", "", @element).innerText = _("Welcome")
 
+class SwitchUser extends Widget
+    constructor: (@id)->
+        super
+        @switch = create_element("button", "LoginButton", @element)
+        @switch.innertText = "Switch User"
+        @switch.addEventListener("click", =>
+            DCore.Lock.switch_user()
+        )
+
 _current_user = null
 
 class UserInfo extends Widget
@@ -171,7 +180,12 @@ document.body.appendChild(background_img)
 
 u = new UserInfo(user, user, user_image) 
 u.focus()
+u.show_login()
 $("#lockroundabout").appendChild(u.li)
+
+s = new SwitchUser("switchuser")
+$("#bottom_buttons").appendChild(s.element)
+
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )

@@ -46,7 +46,10 @@ get_date_str = ->
     return "#{day}, #{mon} #{date}, #{year}"
 
 get_c_date_str = ->
-    return DCore.Greeter.get_date()
+    try
+        return DCore.Greeter.get_date()
+    catch error
+        return DCore.Lock.get_date()
 
 time = $("#time")
 date = $("#date")
