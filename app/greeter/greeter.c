@@ -351,7 +351,6 @@ static void start_session(const gchar *session)
 #if DEBUG
         js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
 #endif
-
         if(is_application_running(user_lock_path)){
 #if DEBUG
             js_post_message_simply("status", "{\"status\":\"%s\"}", "user had locked");
@@ -829,6 +828,9 @@ gboolean greeter_run_shutdown()
 
 static void sigterm_cb(int signum)
 {
+#if DEBUG
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "sigterm cb");
+#endif
     exit(0);
 }
 
