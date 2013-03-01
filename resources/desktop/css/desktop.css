@@ -154,23 +154,31 @@ body {
 #pop_grid ul li {
     width:80px;
     height:86px;
-    padding:3px 5px;
+    padding:2px 4px;
+    border:1px solid rgba(0,0,0,0);
     margin:1px 1px;
     display:inline-block;
     vertical-align:top;
     text-align:center;
 }
 #pop_grid ul li:hover {
-    padding:2px 4px !important;
     border-radius:3px;
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
 }
-#pop_grid ul li img {
+#pop_grid ul li .item_icon {
+    padding:0 16px;
+    width:48px;
+    height:48px;
+    vertical-align:middle;
+    display: table-cell;
+    pointer-events:none;
+}
+#pop_grid ul li .item_icon img {
     max-width:48px;
     max-height:48px;
 }
-#pop_grid ul li div {
+#pop_grid ul li .item_name {
     max-width:90px;
     color:#FFF;
     word-wrap:break-word;
@@ -180,6 +188,7 @@ body {
     -webkit-line-clamp:2;
     overflow:hidden;
     text-overflow:ellipsis;
+    pointer-events:none;
 }
 #pop_arrow_up_outter {
     bottom: -7px;
