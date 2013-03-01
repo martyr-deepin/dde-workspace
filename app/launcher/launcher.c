@@ -30,19 +30,11 @@
 #define DOCK_HEIGHT 30
 
 
-gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
-{
-    return TRUE;
-}
-
+static
 GtkWidget* container = NULL;
 
-void _make_maximize()
-{
-
-}
-
-void set_launcher_background(GdkWindow* win)
+static
+void _set_launcher_background(GdkWindow* win)
 {
     char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
     cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
@@ -58,41 +50,27 @@ void set_launcher_background(GdkWindow* win)
     }
     cairo_surface_destroy(_background);
 }
-gboolean draw_bg(GtkWidget* w, cairo_t* cr)
-{
-    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
-    cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
-    g_free(bg_path);
 
-    if (cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
-        cairo_set_source_surface(cr, _background, 0, 0);
-        cairo_paint(cr);
-    } else {
-        cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
-        cairo_paint(cr);
-    }
-    cairo_surface_destroy(_background);
-    return FALSE;
-}
-
-void do_im_commit(GtkIMContext *context, gchar* str)
+static
+void _do_im_commit(GtkIMContext *context, gchar* str)
 {
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
 }
 
-void update_size(GdkScreen *screen, GtkWidget* conntainer)
+static
+void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
     gtk_widget_set_size_request(container, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
 }
 
-void on_realize(GtkWidget* container)
+static
+void _on_realize(GtkWidget* container)
 {
-
     GdkScreen* screen = gdk_screen_get_default();
-    update_size(screen, container);
-    g_signal_connect(screen, "size-changed", G_CALLBACK(update_size), container);
+    _update_size(screen, container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
 }
 
 int main(int argc, char* argv[])
@@ -109,19 +87,19 @@ int main(int argc, char* argv[])
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     set_default_theme("Deepin");
-
     set_desktop_env_name("Deepin");
 
     GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-    g_signal_connect(container, "realize", G_CALLBACK(on_realize), NULL);
+    g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
-    set_launcher_background(gtk_widget_get_window(webview));
+
+    _set_launcher_background(gtk_widget_get_window(webview));
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
@@ -134,7 +112,7 @@ int main(int argc, char* argv[])
     GdkRectangle area = {0, 1700, 100, 30};
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
-    g_signal_connect(im_context, "commit", G_CALLBACK(do_im_commit), NULL); 
+    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL); 
 
     /*monitor_resource_file("launcher", webview);*/
     gtk_widget_show_all(container);
@@ -162,7 +140,7 @@ void launcher_notify_workarea_size()
 static GHashTable* _category_table = NULL;
 
 static
-void append_to_category(const char* path, int* cs)
+void _append_to_category(const char* path, int* cs)
 {
     if (cs == NULL) {
         //TODO add to default other category 
@@ -188,11 +166,11 @@ void append_to_category(const char* path, int* cs)
     }
 }
 
-void fill_cat(char* path, GString* content)
+static
+void _fill_cat(char* path, GString* content)
 {
     g_string_append_printf(content, "\"%s\",", path);
 }
-
 JS_EXPORT_API
 char* launcher_get_items_by_category(double _id)
 {
@@ -201,24 +179,22 @@ char* launcher_get_items_by_category(double _id)
     if (l == NULL)
         return g_strdup("[]");
     GString* content = g_string_new("[");
-    g_ptr_array_foreach(l, (GFunc)fill_cat, content);
+    g_ptr_array_foreach(l, (GFunc)_fill_cat, content);
     g_string_overwrite(content, content->len-1, "]");
     return g_string_free(content, FALSE);
 }
 
 static
-void record_category_info(const char* id, GDesktopAppInfo* info)
+void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
    int* cs = get_deepin_categories(g_desktop_app_info_get_categories(info));
-   append_to_category(id, cs);
+   _append_to_category(id, cs);
    g_free(cs);
-   /*printf("%s get %s\n", id, c);*/
 }
 
 JS_EXPORT_API
 JSObjectRef launcher_get_items()
 {
-
     JSObjectRef items = json_array_create();
     GList* app_infos = g_app_info_get_all();
 
@@ -232,7 +208,7 @@ JSObjectRef launcher_get_items()
         }
 
         char* id = dentry_get_id(info);
-        record_category_info(id, G_DESKTOP_APP_INFO(info));
+        _record_category_info(id, G_DESKTOP_APP_INFO(info));
         g_free(id);
 
         json_array_append_nobject(items, i - skip, 
@@ -343,6 +319,7 @@ char* launcher_get_categories()
     }
 }
 
+JS_EXPORT_API
 GFile* launcher_get_desktop_entry()
 {
     char* desktop = get_desktop_dir(FALSE);
