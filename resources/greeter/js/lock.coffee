@@ -78,8 +78,8 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
-        @switch = create_element("button", "LoginButton", @element)
-        @switch.innertText = _("Switch User")
+        @switch = create_element("button", "SwitchToGreeter", @element)
+        @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             DCore.Lock.switch_user()
         )
@@ -91,8 +91,9 @@ class UserInfo extends Widget
         super
         @li = create_element("li", "")
         @li.appendChild(@element)
-        @img = create_img("UserImg", img_src, @element)
-        @name = create_element("span", "UserName", @element)
+        @userbase = create_element("div", "UserBase", @element)
+        @img = create_img("UserImg", img_src, @userbase)
+        @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
 
@@ -178,15 +179,19 @@ if not user_background? or not user_background.length
 background_img = create_img("Background",user_background) 
 document.body.appendChild(background_img)
 
-u = new UserInfo(user, user, user_image) 
-u.focus()
-u.show_login()
-$("#lockroundabout").appendChild(u.li)
-
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
+
+u = new UserInfo(user, user, user_image) 
+roundabout.appendChild(u.li)
+u.focus()
+u.show_login()
 
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
 
+run_post(->
+    l = (screen.width  - roundabout.clientWidth) / 2
+    roundabout.style.left = "#{l}px"
+)
