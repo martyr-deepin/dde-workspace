@@ -63,6 +63,7 @@ void greeter_start_authentication(const gchar *username);
 void greeter_cancel_authentication();
 void greeter_login_clicked(const gchar *password);
 static void start_session(const gchar *session);
+static void clean_before_exit();
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type);
 static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type);
 static void authentication_complete_cb(LightDMGreeter *greeter);
@@ -341,67 +342,57 @@ static void start_session(const gchar *session)
         js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
 #endif
         greeter_start_authentication(get_selected_user());
-
-    }else{
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session finish");
-#endif
-        gchar *user_lock_path = g_strdup_printf("%s%s", selected_user, ".dlock.app.deepin");
-
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
-#endif
-        if(is_application_running(user_lock_path)){
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"%s\"}", "user had locked");
-#endif
-            gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"pid file:%s\"}", lockpid_file);
-#endif
-            if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-#if DEBUG
-                js_post_message_simply("status", "{\"status\":\"%s\"}", "pid file doesn't exists");
-#endif
-                g_warning("lockpid file should exists when locked!\n");
-
-            }else{
-                gchar *contents = NULL;
-                gsize length;
-
-                if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
-#if DEBUG
-                js_post_message_simply("status", "{\"status\":\"pid:%s\"}", contents);
-#endif
-                    if( kill((pid_t)g_ascii_strtod(contents, NULL), SIGKILL) == 0){
-                        g_remove(lockpid_file);
-                    }else{
-#if DEBUG
-                        js_post_message_simply("status", "{\"status\":\"%s\"}", "kill user lock failed");
-#endif
-                    }
-                }else{
-                    g_warning("get lockpid file contents failed\n");
-#if DEBUG
-                    js_post_message_simply("status", "{\"status\":\"%s\"}", "get pid contents failed");
-#endif
-                }
-
-                g_free(contents);
-            }
-            g_free(lockpid_file);
-        }
-        g_free(user_lock_path);
-
-        g_free(greeter_file);
-        greeter_file = NULL;
-        g_key_file_free(greeter_keyfile);
-        g_free(selected_user);
-        selected_user = NULL;
-        g_free(selected_session);
-        selected_session = NULL;
-        gtk_main_quit();
     }
+}
+
+static void clean_before_exit()
+{
+#if DEBUG
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "start session finish");
+#endif
+    gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
+    
+    if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+#if DEBUG
+        js_post_message_simply("status", "{\"status\":\"%s\"}", "user hadn't locked");
+#endif
+    }else{
+        gchar *contents = NULL;
+        gsize length;
+
+        if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
+#if DEBUG
+            js_post_message_simply("status", "{\"status\":\"pid:%d\"}", strtol(contents, NULL, 10));
+#endif
+            if(kill( (pid_t)strtol(contents, NULL, 10), SIGTERM) == 0){
+#if DEBUG
+                js_post_message_simply("status", "{\"status\":\"%s\"}", "kill user lock succeed");
+#endif
+            }else{
+#if DEBUG
+                js_post_message_simply("status", "{\"status\":\"%s\"}", "kill user lock failed");
+#endif
+            }
+
+        }else{
+            g_warning("get lockpid file contents failed\n");
+        }
+
+        g_free(contents);
+    }
+
+    g_free(lockpid_file);
+
+    g_free(greeter_file);
+    greeter_file = NULL;
+    g_key_file_free(greeter_keyfile);        
+    g_free(selected_user);
+    selected_user = NULL;
+    g_free(selected_session);
+    selected_session = NULL;
+#if DEBUG
+    js_post_message_simply("status", "{\"status\":\"%s\"}", "clean finish");
+#endif
 }
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
@@ -831,6 +822,7 @@ static void sigterm_cb(int signum)
 #if DEBUG
     js_post_message_simply("status", "{\"status\":\"%s\"}", "sigterm cb");
 #endif
+    clean_before_exit();    
     exit(0);
 }
 
@@ -976,6 +968,11 @@ int main(int argc, char **argv)
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
+    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
+    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
+    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
+
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
     container = create_web_container(FALSE, TRUE);
@@ -990,11 +987,6 @@ int main(int argc, char **argv)
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
-
-    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
-    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
-    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
-    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);

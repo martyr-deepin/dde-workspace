@@ -31,6 +31,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
+        @password.setAttribute("autofocus", true);
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13

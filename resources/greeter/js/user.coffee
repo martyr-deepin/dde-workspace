@@ -92,6 +92,7 @@ class LoginEntry extends Widget
                     @on_active(@id, @password.value)
         )
 
+        @element.setAttribute("autofocus", true)
         if DCore.Greeter.is_hide_users()
             @account.index = 0
             @password.index = 1
