@@ -25,17 +25,21 @@
 
 
 struct _GlobalData GD;
-void update_dock_show_model();
+void update_dock_show_mode();
 void update_dock_color();
+void update_dock_hide_mode();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
-    if (g_strcmp0(key, "mini-model") == 0) {
-        GD.config.mini_model = g_settings_get_boolean(s, key);
-        update_dock_show_model();
-    } else if (g_strcmp0(key, "color") == 0) {
+    if (g_strcmp0(key, "active-mini-mode") == 0) {
+        GD.config.mini_mode = g_settings_get_boolean(s, key);
+        update_dock_show_mode();
+    } else if (g_strcmp0(key, "background-color") == 0) {
         GD.config.color = g_settings_get_uint(s, key);
         update_dock_color();
+    } else if (g_strcmp0(key, "hide-mode") == 0) {
+        GD.config.hide_mode = g_settings_get_enum(s, key);
+        update_dock_hide_mode();
     }
 }
 
@@ -46,7 +50,7 @@ void init_config()
 
     GSettings* s = g_settings_new(SCHEMA_ID);
     g_signal_connect(s, "changed", G_CALLBACK(setting_changed), NULL);
-    g_signal_emit_by_name(s, "changed", "mini-model", NULL);
-    g_signal_emit_by_name(s, "changed", "color", NULL);
-    /*g_signal_emit_by_name(s, "changed", "apps", NULL);*/
+    g_signal_emit_by_name(s, "changed", "active-mini-mode", NULL);
+    g_signal_emit_by_name(s, "changed", "background-color", NULL);
+    g_signal_emit_by_name(s, "changed", "hide-mode", NULL);
 }
