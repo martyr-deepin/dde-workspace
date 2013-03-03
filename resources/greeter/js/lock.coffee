@@ -180,6 +180,9 @@ if not user_background? or not user_background.length
 background_img = create_img("Background",user_background) 
 document.body.appendChild(background_img)
 
+roundabout.style.top =  "60p"; 
+roundabout.style.left = screen.width / 2 - roundabout.clientWidth
+
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
 
@@ -191,6 +194,3 @@ u.show_login()
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
-
-roundabout.style.top =  screen.height /3 ;
-roundabout.style.left = screen.width / 2 - roundabout.clientWidth
