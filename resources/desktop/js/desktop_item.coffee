@@ -574,7 +574,7 @@ class RichDir extends DesktopEntry
         evt.stopPropagation()
         if @clicked_before == 1
             @clicked_before = 2
-            if @show_pop == false then @show_pop_block()
+            if @show_pop == false and evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
         else
             if is_selected_multiple_items()
                 update_selected_stats(this, evt)
@@ -584,7 +584,7 @@ class RichDir extends DesktopEntry
                         @item_complete_rename(true)
                     else
                         @clear_delay_rename_timer()
-                        @show_pop_block()
+                        if evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
                 else
                     @hide_pop_block()
                     if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
@@ -662,7 +662,7 @@ class RichDir extends DesktopEntry
 
     do_itemselected : (evt) =>
         switch evt.id
-            when 1 then open_selected_items()
+            when 1 then @item_exec()
             when 3 then @item_rename()
             when 5 then @item_dismiss()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
