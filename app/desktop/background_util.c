@@ -95,68 +95,6 @@ typedef struct _xfade_data
 } xfade_data_t;
 
 /*
- *	start gaussina helper in the background
- */
-#if 1
-static void
-start_gaussian_helper (const char* _picture_path)
-{
-    //g_mkdir_with_parents (BG_GAUSSIAN_PICT_DIR, 0755);
-
-#if 0
-    //use symlink.
-    //link file @_picture_path to /var/cache/background/gaussian.png"
-    unlink (BG_GAUSSIAN_PICT_PATH);
-    if (symlink (_picture_path, BG_GAUSSIAN_PICT_PATH))
-    {
-	g_debug ("start_gaussian_helper: symlink failed");
-    }
-#endif 
-    //LIBEXECDIR is a CPP macro. see Makefile.am
-
-    g_print ("_picture_path: %s\n", _picture_path);
-    if (!g_strcmp0 (prev_picture, _picture_path))
-    {
-	//no need to generate pictures.
-	if (prev_picture!=NULL)
-	{
-	   g_print ("start_gaussian_helper: alread started for this picture: %s\n", prev_picture);
-	}
-	return ;
-    }
-    else
-    {
-	g_free (prev_picture);
-	prev_picture = NULL;
-	prev_picture = g_strdup (_picture_path);
-    }
-
-    char* command;
-    command = g_strdup_printf (LIBEXECDIR "/gsd-background-helper "
-			       "%lf %lu %s",
-			       BG_GAUSSIAN_SIGMA, BG_GAUSSIAN_NSTEPS, _picture_path);
-#if 0
-    //for testing locally.
-    command = g_strdup_printf ("./gsd-background-helper "
-			       "%lf %lu %s",
-			       BG_GAUSSIAN_SIGMA, BG_GAUSSIAN_NSTEPS, _picture_path);
-#endif
-    g_debug ("command : %s", command);
-
-    GError *error = NULL;
-    gboolean ret;
-    ret = g_spawn_command_line_async (command, &error);
-    if (ret == FALSE) 
-    {
-	g_debug ("Failed to launch '%s': %s", command, error->message);
-	g_error_free (error);
-    }
-
-    g_debug ("gsd-background-helper started");
-    g_free (command);
-}
-#endif
-/*
  *	change root window x properties.
  *	TODO: change set_bg_props or _change_bg_xproperties 
  *	      to a better name.
@@ -532,7 +470,6 @@ on_bg_duration_tick (gpointer user_data)
     const char* next_picture = get_next_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture);
     g_debug ("on_bg_duration_tick: end set string");
-    start_gaussian_helper (next_picture);
     g_debug ("on_bg_duration_tick: end helper");
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture);
@@ -588,7 +525,6 @@ setup_crossfade_timer ()
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
     g_debug ("setup_crossfade_timer: end set string");
-    start_gaussian_helper (current_picture);
     g_debug ("setup_crossfade_timer: end helper");
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (current_picture);
@@ -696,9 +632,6 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-    g_debug ("bg_settings_picture_uris_changed: end set string");
-    start_gaussian_helper (current_picture);
-    g_debug ("bg_settings_picture_uris_changed: end helper");
 #if 0
     GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
     g_assert (pb != NULL);
@@ -908,9 +841,6 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-    g_debug ("screen_size_changed_cb: end set string");
-    start_gaussian_helper (current_picture);
-    g_debug ("screen_size_changed_cb: end helper");
 
     GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
 
@@ -1003,7 +933,6 @@ initial_setup (GSettings *settings)
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-    start_gaussian_helper (current_picture);
 
     GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
 
@@ -1036,7 +965,7 @@ initial_setup (GSettings *settings)
 }
 
 DEEPIN_EXPORT void
-bg_util_init (GsdBackgroundManager* manager)
+bg_util_init ()
 {
     display = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
@@ -1053,25 +982,16 @@ bg_util_init (GsdBackgroundManager* manager)
 
     gdk_screen = gdk_screen_get_default();
 
-    manager->priv->settings = g_settings_new (BG_SCHEMA_ID);
+    Settings = g_settings_new (BG_SCHEMA_ID);
 
-    Settings = manager->priv->settings;
-
-    g_signal_connect (manager->priv->settings, "changed::picture-uris",
-		      G_CALLBACK (bg_settings_picture_uris_changed), NULL);
     g_signal_connect (manager->priv->settings, "changed::background-duration",
-		      G_CALLBACK (bg_settings_bg_duration_changed), NULL);
+                      G_CALLBACK (bg_settings_bg_duration_changed), NULL);
     g_signal_connect (manager->priv->settings, "changed::cross-fade-manual-interval",
-		      G_CALLBACK (bg_settings_xfade_manual_interval_changed), NULL);
+                      G_CALLBACK (bg_settings_xfade_manual_interval_changed), NULL);
     g_signal_connect (manager->priv->settings, "changed::cross-fade-auto-interval",
-		      G_CALLBACK (bg_settings_xfade_auto_interval_changed), NULL);
+                      G_CALLBACK (bg_settings_xfade_auto_interval_changed), NULL);
     g_signal_connect (manager->priv->settings, "changed::cross-fade-auto-mode",
-		      G_CALLBACK (bg_settings_xfade_auto_mode_changed), NULL);
-    g_signal_connect (manager->priv->settings, "changed::draw-mode",
-		      G_CALLBACK (bg_settings_draw_mode_changed), NULL);
-    //serialize access to current_picture.
-    g_signal_connect (manager->priv->settings, "changed::current-picture",
-		      G_CALLBACK (bg_settings_current_picture_changed), NULL);
+                      G_CALLBACK (bg_settings_xfade_auto_mode_changed), NULL);
 
     initial_setup (manager->priv->settings);
 }
