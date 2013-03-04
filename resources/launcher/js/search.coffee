@@ -92,12 +92,15 @@ search = ->
 
     for k,v of applications
         if key == ""
-            ret.push(new bind(k, 0))
-        else if (weight = DCore.Launcher.is_contain_key(v.core, key))
-            ret.push(new bind(k, weight))
+            ret.push(k)
+        else if DCore.Launcher.is_contain_key(v.core, key)
+            ret.push(k)
+    #         ret.push(new bind(k, 0))
+    #     else if (weight = DCore.Launcher.is_contain_key(v.core, key))
+    #         ret.push(new bind(k, weight))
 
-    ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
-    ret = (item.val for item in ret)
+    # ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
+    # ret = (item.val for item in ret)
 
     grid_show_items(ret)
     return ret

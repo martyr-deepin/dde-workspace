@@ -225,100 +225,92 @@ JSObjectRef launcher_get_items()
 }
 
 JS_EXPORT_API
-gint launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
+gboolean launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 {
+    /* const double step = 0.1; */
+    /* double weight = 0.0; */
     const char* path = g_desktop_app_info_get_filename(info);
     if (g_strrstr(path, key))
-        return 7;
+        /* weight += step; */
+        return TRUE;
 
     const char* name = g_app_info_get_name((GAppInfo*)info);
     if (name && g_strrstr(name, key))
-        return 6;
+        /* weight += step; */
+        return TRUE;
 
     const char* dname = g_app_info_get_display_name((GAppInfo*)info);
     if (dname && g_strrstr(dname, key))
-        return 5;
+        /* weight += step; */
+        return TRUE;
 
     const char* desc = g_app_info_get_description((GAppInfo*)info);
     if (desc && g_strrstr(desc, key))
-        return 4;
+        /* weight += step; */
+        return TRUE;
 
     const char* exec = g_app_info_get_executable((GAppInfo*)info);
     if (exec && g_strrstr(exec, key))
-        return 3;
+        /* weight += step; */
+        return TRUE;
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
     if (gname && g_strrstr(gname, key))
-        return 2;
+        /* weight += step; */
+        return TRUE;
 
     const char* const* keys = g_desktop_app_info_get_keywords(info);
     if (keys != NULL) {
         size_t n = g_strv_length((char**)keys);
         for (size_t i=0; i<n; i++) {
             if (g_strrstr(keys[i], key))
-                return 1;
+                /* weight += step; */
+                /* return weight; */
+                return TRUE;
         }
     }
 
-    return 0;
+    return FALSE;
+}
+
+static
+void print(gpointer data, gpointer user_data)
+{
+    printf("%s\n", (const char*)data);
 }
 
 JS_EXPORT_API
-char* launcher_get_categories()
+JSObjectRef launcher_get_categories()
 {
-    /*return g_strdup("[]");*/
-    GString* info_str = NULL;
-    info_str = g_string_new("[");
+    JSContextRef cxt = get_global_context();
+    JSObjectRef categories = json_array_create();
 
     const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
-        return g_strdup("["
-        "{\"ID\": 0,"
-        " \"Name\": \"Internet\""
-        "},"
-        "{\"ID\": 1,"
-        " \"Name\": \"Media\""
-        "},"
-        "{\"ID\": 2,"
-        " \"Name\": \"Game\""
-        "},"
-        "{\"ID\": 3,"
-        " \"Name\": \"Graphics\""
-        "},"
-        "{\"ID\": 4,"
-        " \"Name\": \"Office\""
-        "},"
-        "{\"ID\": 5,"
-        " \"Name\": \"Industry\""
-        "},"
-        "{\"ID\": 6,"
-        " \"Name\": \"Education\""
-        "},"
-        "{\"ID\": 7,"
-        " \"Name\": \"Development\""
-        "},"
-        "{\"ID\": 8,"
-        " \"Name\": \"Wine\""
-        "},"
-        "{\"ID\": 9,"
-        " \"Name\": \"General\""
-        "},"
-        "{\"ID\": 10,"
-        " \"Name\": \"Other\""
-        "}]");
-    }
-    for (int i=0; i<infos->len; i++) {
-        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i)))
-            g_string_append_printf(info_str, "{\"ID\":%d, \"Name\":\"%s\"},", i, (char*)g_ptr_array_index(infos, i));
+        const char* names[] = {"Internet", "Media", "Game", "Graphics", "Office",
+            "Industry", "Education", "Development", "Wine", "General", "Other"};
+        const int category_num = sizeof(names) / sizeof(const char*);
+
+        for (int i = 0; i < category_num; ++i) {
+            JSObjectRef item = json_create();
+            json_append_number(item, "ID", i);
+            json_append_string(item, "Name", names[i]);
+            json_array_append(categories, i, item);
+        }
+        return categories;
     }
 
-    if (info_str->len > 1) {
-        g_string_overwrite(info_str, info_str->len - 1, "]");
-        return g_string_free(info_str, FALSE);
-    } else {
-        g_string_free(info_str, TRUE);
-        return g_strdup("[]");
+    for (int i=0, j = 0; i < infos->len; i++) {
+        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
+            const char* category_name = (const char*)g_ptr_array_index(infos, i);
+            JSObjectRef item = json_create();
+            json_append_number(item, "ID", i);
+            json_append_string(item, "Name", category_name);
+            json_array_append(categories, j++, item);
+        }
     }
+
+    return categories;
 }
 
 JS_EXPORT_API
