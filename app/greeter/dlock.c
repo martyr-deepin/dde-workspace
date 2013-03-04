@@ -41,7 +41,18 @@
 
 GtkWidget* lock_container = NULL;
 static const gchar *username = NULL;
+static const gchar *user_realname = NULL;
+static const gchar *user_icon = NULL;
+
 static gchar* lockpid_file = NULL;
+static gchar* user_path = NULL;
+static GDBusProxy *account_proxy = NULL;
+static GDBusProxy *user_proxy = NULL;
+static GVariant *user_realname_var = NULL;
+static GVariant *user_icon_var = NULL;
+static GVariant *user_path_var = NULL;
+GError *error = NULL;
+
 static void sigterm_cb(int signum);
 
 JS_EXPORT_API
@@ -53,83 +64,11 @@ const gchar* lock_get_username()
 JS_EXPORT_API
 const gchar* lock_get_icon()
 {
-    GDBusProxy *account_proxy = NULL;
-    GError * error = NULL;
-
-    account_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-            G_DBUS_PROXY_FLAGS_NONE,
-            NULL,
-            "org.freedesktop.Accounts",
-            "/org/freedesktop/Accounts",
-            "org.freedesktop.Accounts",
-            NULL, 
-            &error);
-
-    if(error != NULL){
-        g_debug("connect org.freedesktop.Accounts failed");
-        g_error_free(error);
-    }
-
-    error = NULL;
-    GVariant * user_path_var = NULL;
-    user_path_var = g_dbus_proxy_call_sync(account_proxy, 
-           "FindUserByName",
-            g_variant_new("(s)", username),
-            G_DBUS_CALL_FLAGS_NONE,
-            -1, 
-            NULL,
-            &error);
-
-    if(error != NULL){
-        g_debug("find user by name failed");
-        g_error_free(error);
-    }
-
-    error = NULL;
-    char *user_path = NULL;
-    g_variant_get(user_path_var, "(o)", &user_path);
-
-    g_variant_unref(user_path_var);
-    g_object_unref(account_proxy);
-
-    GDBusProxy *user_proxy = NULL;
-    user_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
-            G_DBUS_PROXY_FLAGS_NONE,
-            NULL,
-            "org.freedesktop.Accounts",
-            user_path,
-            "org.freedesktop.DBus.Properties",
-            NULL,
-            &error);
-
-    if(error != NULL){
-        g_debug("connect org.freedesktop.Accounts failed");
-        g_error_free(error);
-    }
-
-    error = NULL;
-    g_free(user_path);
-
-    GVariant *user_icon_var = NULL;
-    user_icon_var = g_dbus_proxy_call_sync(user_proxy,
-            "Get",
-            g_variant_new("(ss)", "org.freedesktop.Accounts.User", "IconFile"),
-            G_DBUS_CALL_FLAGS_NONE,
-            -1, 
-            NULL,
-            &error);
-
-    if(error != NULL){
-        g_debug("get user icon failed");
-        g_error_free(error);
-    }
-
-    error = NULL;
-    const gchar *user_icon = NULL;
-    g_variant_get(user_icon_var, "(v)", &user_icon);
-
-    g_variant_unref(user_icon_var);
-    g_object_unref(user_proxy);
+    g_assert(user_proxy != NULL);
+    user_icon_var = g_dbus_proxy_get_cached_property(user_proxy, "IconFile"); 
+    g_assert(user_icon_var != NULL);
+    
+    user_icon = g_variant_get_string(user_icon_var, NULL);
 
     if(g_file_test(user_icon, G_FILE_TEST_EXISTS)){
         return user_icon;
@@ -145,16 +84,15 @@ void lock_unlock_succeed()
         g_remove(lockpid_file);
     }
     g_free(lockpid_file);
-    gtk_main_quit();
-}
 
-static void sigterm_cb(int signum)
-{
-    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        g_remove(lockpid_file);
-    }
-    g_free(lockpid_file);
-    gtk_main_quit();
+    g_variant_unref(user_realname_var);
+    g_variant_unref(user_icon_var);
+    g_object_unref(user_proxy);
+
+    g_free(user_path);
+    g_variant_unref(user_path_var);
+    g_object_unref(account_proxy);
+    exit(0);
 }
 
 /* return False if unlock succeed */
@@ -214,28 +152,104 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
+static void sigterm_cb(int signum)
+{
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_remove(lockpid_file);
+    }
+    g_free(lockpid_file);
+
+    g_variant_unref(user_realname_var);
+    g_variant_unref(user_icon_var);
+    g_object_unref(user_proxy);
+
+    g_free(user_path);
+    g_variant_unref(user_path_var);
+    g_object_unref(account_proxy);
+    exit(0);
+}
+
 int main(int argc, char **argv)
 {
     init_i18n();
     gtk_init(&argc, &argv);
-
     signal(SIGTERM, sigterm_cb);
 
     username = g_get_user_name();
 
     gchar *user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
-
     if(is_application_running(user_lock_path)){
         g_warning("another instance of dlock is running by current user...\n");
         g_free(user_lock_path);
         return 0;
     }
-
     g_free(user_lock_path);
+
+    account_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            "/org/freedesktop/Accounts",
+            "org.freedesktop.Accounts",
+            NULL, 
+            &error);
+
+    if(error != NULL){
+        g_debug("connect org.freedesktop.Accounts failed");
+        g_clear_error(&error);
+    }
+
+    user_path_var = g_dbus_proxy_call_sync(account_proxy, 
+           "FindUserByName",
+            g_variant_new("(s)", username),
+            G_DBUS_CALL_FLAGS_NONE,
+            -1, 
+            NULL,
+            &error);
+
+    if(error != NULL){
+        g_debug("find user by name failed");
+        g_clear_error(&error);
+    }
+    
+    g_variant_get(user_path_var, "(o)", &user_path);
+
+    user_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            user_path,
+            "org.freedesktop.Accounts.User",
+            NULL,
+            &error);
+
+    if(error != NULL){
+        g_debug("connect org.freedesktop.Accounts failed");
+        g_clear_error(&error);
+    }
+
+    g_assert(user_proxy != NULL);
+    user_realname_var = g_dbus_proxy_get_cached_property(user_proxy, "RealName");
+
+    g_assert(user_realname_var != NULL);
+    user_realname = g_variant_get_string(user_realname_var, NULL);
+
+    if(g_str_has_prefix(username, "guest")){
+        if(g_ascii_strncasecmp("Guest", user_realname, 5) == 0){
+            g_warning("realname is guest, cann't lock");
+            g_variant_unref(user_realname_var);
+            g_object_unref(user_proxy);
+
+            g_free(user_path);
+            g_variant_unref(user_path_var);
+            g_object_unref(account_proxy);
+            exit(0);
+        }
+    }
 
     lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        g_warning("remove old pid info before lock"); 
+        g_debug("remove old pid info before lock"); 
         g_remove(lockpid_file);
     }
 
@@ -262,15 +276,13 @@ int main(int argc, char **argv)
 
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
-
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-
     gtk_widget_show_all(lock_container);
+    
     GRAB_DEVICE(NULL);
-
     gdk_window_stick(gdkwindow);
+
     gtk_main();
     return 0;
 }
