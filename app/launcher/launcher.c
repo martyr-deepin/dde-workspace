@@ -76,7 +76,7 @@ void _on_realize(GtkWidget* container)
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
-        g_warning("anther instance of application launcher is running...\n");
+        g_warning("another instance of application launcher is running...\n");
         return 0;
     }
 
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
-    g_signal_connect (container, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -223,42 +223,42 @@ JSObjectRef launcher_get_items()
 }
 
 JS_EXPORT_API
-gboolean launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
+gint launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 {
     const char* path = g_desktop_app_info_get_filename(info);
     if (g_strrstr(path, key))
-        return TRUE;
+        return 7;
 
     const char* name = g_app_info_get_name((GAppInfo*)info);
     if (name && g_strrstr(name, key))
-        return TRUE;
+        return 6;
 
     const char* dname = g_app_info_get_display_name((GAppInfo*)info);
     if (dname && g_strrstr(dname, key))
-        return TRUE;
+        return 5;
 
     const char* desc = g_app_info_get_description((GAppInfo*)info);
     if (desc && g_strrstr(desc, key))
-        return TRUE;
+        return 4;
 
     const char* exec = g_app_info_get_executable((GAppInfo*)info);
     if (exec && g_strrstr(exec, key))
-        return TRUE;
+        return 3;
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
     if (gname && g_strrstr(gname, key))
-        return TRUE;
+        return 2;
 
     const char* const* keys = g_desktop_app_info_get_keywords(info);
     if (keys != NULL) {
         size_t n = g_strv_length((char**)keys);
         for (size_t i=0; i<n; i++) {
             if (g_strrstr(keys[i], key))
-                return TRUE;
+                return 1;
         }
     }
 
-    return FALSE;
+    return 0;
 }
 
 JS_EXPORT_API
@@ -327,3 +327,4 @@ GFile* launcher_get_desktop_entry()
     g_free(desktop);
     return r;
 }
+
