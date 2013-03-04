@@ -80,47 +80,59 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
 
     GdkPixbuf *bg = gdk_pixbuf_new_from_inline(-1, dir_bg_4, TRUE, NULL);
 
+    GError* error = NULL;
     g_assert(bg !=NULL);
     if (p1 != NULL) {
-        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p1, 17, -1, TRUE, NULL);
-        if (icon) {
+        error = NULL;
+        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p1, 17, -1, TRUE, &error);
+        if (error==NULL) {
             write_to_canvas(bg, icon, 6+1, 6);
             g_object_unref(icon);
         } else {
-            g_debug("generate_directory_icon icon: %s fail\n", p1);
+            g_debug("generate_directory_icon: %s", error->message);
+            g_debug("generate_directory_icon icon 1: %s fail\n", p1);
+            g_error_free (error);
         }
     }
     if (p2 != NULL) {
-        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p2, 17, -1, TRUE, NULL);
-        if (icon) {
+        error = NULL;
+        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p2, 17, -1, TRUE, &error);
+        if (error==NULL) {
             write_to_canvas(bg, icon, 6+17 + 1, 6);
             g_object_unref(icon);
         } else {
-            g_debug("generate_directory_icon icon: %s fail\n", p2);
+            g_debug("generate_directory_icon icon 2: %s fail\n", p2);
+            g_debug("generate_directory_icon: %s", error->message);
+            g_error_free (error);
         }
     }
     if (p3 != NULL) {
-        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p3, 17, -1, TRUE, NULL);
-        if (icon) {
+        error = NULL;
+        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p3, 17, -1, TRUE, &error);
+        if (error==NULL) {
             write_to_canvas(bg, icon, 6+1, 6+17);
             g_object_unref(icon);
         } else {
-            g_debug("generate_directory_icon icon: %s fail\n", p3);
+            g_debug("generate_directory_icon icon 3: %s fail\n", p3);
+            g_debug("generate_directory_icon 3: %s", error->message);
+            g_error_free (error);
         }
     }
     if (p4 != NULL) {
-        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p4, 17, -1, TRUE, NULL);
-        if (icon) {
+        error = NULL;
+        GdkPixbuf* icon = gdk_pixbuf_new_from_file_at_scale(p4, 17, -1, TRUE, &error);
+        if (error==NULL) {
             write_to_canvas(bg, icon, 6+17 + 1, 6+17);
             g_object_unref(icon);
         } else {
-            g_debug("generate_directory_icon icon: %s fail\n", p4);
+            g_debug("generate_directory_icon icon 4: %s fail\n", p4);
+            g_debug("generate_directory_icon: %s", error->message);
+            g_error_free (error);
         }
     }
 
     gchar* buf = NULL;
     gsize size = 0;
-    GError *error = NULL;
 
     gdk_pixbuf_save_to_buffer(bg, &buf, &size, "png", &error, NULL);
     g_assert(buf != NULL);
