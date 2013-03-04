@@ -85,7 +85,9 @@ void lock_unlock_succeed()
     }
     g_free(lockpid_file);
 
-    g_variant_unref(user_realname_var);
+    if(user_realname_var != NULL){
+        g_variant_unref(user_realname_var);
+    }
     g_variant_unref(user_icon_var);
     g_object_unref(user_proxy);
 
@@ -159,7 +161,9 @@ static void sigterm_cb(int signum)
     }
     g_free(lockpid_file);
 
-    g_variant_unref(user_realname_var);
+    if(user_realname_var != NULL){
+        g_variant_unref(user_realname_var);
+    }
     g_variant_unref(user_icon_var);
     g_object_unref(user_proxy);
 
@@ -228,13 +232,13 @@ int main(int argc, char **argv)
         g_clear_error(&error);
     }
 
-    g_assert(user_proxy != NULL);
-    user_realname_var = g_dbus_proxy_get_cached_property(user_proxy, "RealName");
-
-    g_assert(user_realname_var != NULL);
-    user_realname = g_variant_get_string(user_realname_var, NULL);
-
     if(g_str_has_prefix(username, "guest")){
+        g_assert(user_proxy != NULL);
+        user_realname_var = g_dbus_proxy_get_cached_property(user_proxy, "RealName");
+
+        g_assert(user_realname_var != NULL);
+        user_realname = g_variant_get_string(user_realname_var, NULL);
+
         if(g_ascii_strncasecmp("Guest", user_realname, 5) == 0){
             g_warning("realname is guest, cann't lock");
             g_variant_unref(user_realname_var);
