@@ -42,6 +42,7 @@
 GtkWidget* lock_container = NULL;
 static const gchar *username = NULL;
 static gchar* lockpid_file = NULL;
+static void sigterm_cb(int signum);
 
 JS_EXPORT_API
 const gchar* lock_get_username()
@@ -140,7 +141,18 @@ const gchar* lock_get_icon()
 JS_EXPORT_API
 void lock_unlock_succeed()
 {
-    g_remove(lockpid_file);
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_remove(lockpid_file);
+    }
+    g_free(lockpid_file);
+    gtk_main_quit();
+}
+
+static void sigterm_cb(int signum)
+{
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_remove(lockpid_file);
+    }
     g_free(lockpid_file);
     gtk_main_quit();
 }
@@ -206,6 +218,8 @@ int main(int argc, char **argv)
 {
     init_i18n();
     gtk_init(&argc, &argv);
+
+    signal(SIGTERM, sigterm_cb);
 
     username = g_get_user_name();
 

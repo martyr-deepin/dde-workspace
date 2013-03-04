@@ -477,15 +477,23 @@ void _update_has_maximized_window(Client* c)
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
-    if (((XEvent*)xevent)->type == PropertyNotify) {
-        XPropertyEvent* ev = xevent;
-        if (ev->atom == ATOM_CLIENT_LIST) {
-            _update_task_list(ev->window);
-        } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
-            update_active_window(ev->display, ev->window);
-        } else if (ev->atom == ATOM_SHOW_DESKTOP) {
-            js_post_message_simply("desktop_status_changed", NULL);
-        }
+    int type = ((XEvent*)xevent)->type;
+    switch (((XEvent*)xevent)->type) {
+        case PropertyNotify: {
+                                 XPropertyEvent* ev = xevent;
+                                 if (ev->atom == ATOM_CLIENT_LIST) {
+                                     _update_task_list(ev->window);
+                                 } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
+                                     update_active_window(ev->display, ev->window);
+                                 } else if (ev->atom == ATOM_SHOW_DESKTOP) {
+                                     js_post_message_simply("desktop_status_changed", NULL);
+                                 }
+                                 break;
+                             }
+        case MotionNotify: {
+                               /*printf("Motion......%p\n", xevent);*/
+                               /*break;*/
+                           }
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -525,6 +533,7 @@ void init_task_list()
     _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free);
 
     GdkWindow* root = gdk_get_default_root_window();
+    /*gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | GDK_POINTER_MOTION_MASK | gdk_window_get_events(root));*/
     gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | gdk_window_get_events(root));
 
     gdk_window_add_filter(root, monitor_root_change, NULL);

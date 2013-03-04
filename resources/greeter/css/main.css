@@ -45,6 +45,7 @@ body{
     width:300px;
     position:absolute;
     right:20px;
+    color:red;
 }
 
 .Time {
@@ -115,18 +116,4 @@ body{
     bottom: 43px;
     right: 20px;
     display: -webkit-box;
-}
-
-.SwitchToGreeter {
-    width:158px; 
-    font-size:16px;
-    color:black;
-    cursor: pointer;
-    margin-left: 0.7em;
-    text-align: center;
-    padding:6px;
-    line-height:14px;
-    background: rgba(255,25
-    border:1px solid #F60;
-    border-radius:3px;  
 }

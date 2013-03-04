@@ -55,7 +55,6 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     gtk_window_resize(GTK_WINDOW(container), _screen_width, _screen_height);
 
     gdk_window_move_resize(gtk_widget_get_window(webview), 0 ,0, _screen_width, _screen_height);
-    /*gtk_widget_set_size_request(webview, s_width, s_height);*/
 
     set_struct_partial(gtk_widget_get_window(container),
             ORIENTATION_BOTTOM, _dock_height, 0, _screen_width
@@ -131,9 +130,9 @@ void update_dock_color()
         js_post_message_simply("dock_color_changed", NULL);
 }
 
-void update_dock_show_model()
+void update_dock_show_mode()
 {
-    if (GD.config.mini_model) {
+    if (GD.config.mini_mode) {
         js_post_message_simply("in_mini_mode", NULL);
     } else {
         js_post_message_simply("in_normal_mode", NULL);
@@ -151,11 +150,11 @@ void dock_emit_webview_ok()
         init_launchers();
         init_task_list();
         remove_me_run_tray_icon();
-        update_dock_show_model();
+        update_dock_show_mode();
     } else {
         update_dock_apps();
         update_task_list();
-        update_dock_show_model();
+        update_dock_show_mode();
     }
 }
 
@@ -164,7 +163,7 @@ void dock_change_workarea_height(double height)
 {
     if (height < 30) height = 30;
     _dock_height = height;
-    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, _dock_height, 0, _screen_width); 
+    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, _dock_height, 0, _screen_width);
 }
 
 JS_EXPORT_API
@@ -175,4 +174,25 @@ void dock_toggle_launcher(gboolean show)
     } else {
         close_launcher_window();
     }
+}
+
+void dock_toggle_show(int mode)
+{
+    static gboolean __is_show__ = TRUE;
+    switch (mode) {
+        case -1: __is_show__ = !__is_show__; break;
+        case 0: __is_show__ = FALSE; break;
+        case 1: __is_show__ = TRUE; break;
+        default: g_assert_not_reached();
+    }
+    if (__is_show__) {
+        gdk_window_show(gtk_widget_get_window(container));
+    } else {
+        gdk_window_hide(gtk_widget_get_window(container));
+    }
+}
+
+void update_dock_hide_mode()
+{
+    printf("hide-mode:%d\n", GD.config.hide_mode);
 }

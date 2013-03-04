@@ -31,6 +31,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
+        @password.setAttribute("autofocus", true)
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
@@ -78,7 +79,7 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
-        @switch = create_element("button", "SwitchToGreeter", @element)
+        @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             DCore.Lock.switch_user()
@@ -179,6 +180,9 @@ if not user_background? or not user_background.length
 background_img = create_img("Background",user_background) 
 document.body.appendChild(background_img)
 
+roundabout.style.top = (screen.height - roundabout.clientHeight) / 2 
+roundabout.style.left = screen.width / 2 - roundabout.clientWidth
+
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
 
@@ -190,6 +194,3 @@ u.show_login()
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
-
-roundabout.style.top = 500px;
-roundabout.style.left = screen.width / 2 - roundabout.clientWidth

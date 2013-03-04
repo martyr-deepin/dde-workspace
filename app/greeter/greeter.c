@@ -37,7 +37,12 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
-#define DEBUG 1
+    
+#ifdef DEBUG
+#define DBG(fmt, info...) js_post_message_simply("status", "{\"status\": \"" fmt "\"}", info) 
+#else
+#define DBG(fmt...)
+#endif
 
 GtkWidget* container = NULL;
 GtkWidget* webview = NULL;
@@ -63,6 +68,7 @@ void greeter_start_authentication(const gchar *username);
 void greeter_cancel_authentication();
 void greeter_login_clicked(const gchar *password);
 static void start_session(const gchar *session);
+static void clean_before_exit();
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type);
 static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type);
 static void authentication_complete_cb(LightDMGreeter *greeter);
@@ -166,9 +172,8 @@ const gchar* greeter_get_default_user()
     const gchar* user = NULL;
 
     user = get_last_user();
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"last_user-%s\"}", user);
-#endif
+
+    DBG("last-user:%s", user);
 
     if(user == NULL){
         user = lightdm_greeter_get_select_user_hint(greeter);
@@ -265,9 +270,7 @@ void greeter_start_authentication(const gchar *username)
     cancelling = FALSE;
     prompted = FALSE;
 
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"auth user %s\"}", username);
-#endif
+    DBG("auth-user:%s", username);
 
     if(g_strcmp0(username, "*other") == 0){
         lightdm_greeter_authenticate(greeter, NULL);
@@ -300,27 +303,22 @@ void greeter_cancel_authentication()
 JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked");
-#endif
+    DBG("%s", "login clicked");
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start_session");
-#endif
+        DBG("%s", "login clicked, start session");
+
         start_session(get_selected_session());
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, respond");
-#endif
+        DBG("%s", "login clicked, respond");
+
         lightdm_greeter_respond(greeter, password);
         response_count = response_count + 1;
 
     }else{
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "login clicked, start auth");
-#endif
+        DBG("%s", "login clicked, start auth");
+
         greeter_start_authentication(get_selected_user());
     }
 }
@@ -332,77 +330,56 @@ static void start_session(const gchar *session)
     set_last_user(get_selected_user());
     greeter_update_background();
 
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"start session %s\"}", session);
-#endif
+    DBG("%s", "start session");
 
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session failed");
-#endif
+        DBG("%s", "start session failed");
+
         greeter_start_authentication(get_selected_user());
+    }
+}
+
+static void clean_before_exit()
+{
+    DBG("%s", "start session finish");
+
+    gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
+    
+    if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        DBG("%s", "user hadn't locked");
 
     }else{
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"%s\"}", "start session finish");
-#endif
-        gchar *user_lock_path = g_strdup_printf("%s%s", selected_user, ".dlock.app.deepin");
+        gchar *contents = NULL;
+        gsize length;
 
-#if DEBUG
-        js_post_message_simply("status", "{\"status\":\"path:%s\"}", user_lock_path);
-#endif
+        if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
+            DBG("pid:%d", strtol(contents, NULL, 10));
 
-        if(is_application_running(user_lock_path)){
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"%s\"}", "user had locked");
-#endif
-            gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"pid file:%s\"}", lockpid_file);
-#endif
-            if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-#if DEBUG
-                js_post_message_simply("status", "{\"status\":\"%s\"}", "pid file doesn't exists");
-#endif
-                g_warning("lockpid file should exists when locked!\n");
+            if(kill( (pid_t)strtol(contents, NULL, 10), SIGTERM) == 0){
+                DBG("%s", "kill user lock succeed");
 
             }else{
-                gchar *contents = NULL;
-                gsize length;
-
-                if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
-#if DEBUG
-                js_post_message_simply("status", "{\"status\":\"pid:%s\"}", contents);
-#endif
-                    if( kill((pid_t)g_ascii_strtod(contents, NULL), SIGKILL) == 0){
-                        g_remove(lockpid_file);
-                    }else{
-#if DEBUG
-                        js_post_message_simply("status", "{\"status\":\"%s\"}", "kill user lock failed");
-#endif
-                    }
-                }else{
-                    g_warning("get lockpid file contents failed\n");
-#if DEBUG
-                    js_post_message_simply("status", "{\"status\":\"%s\"}", "get pid contents failed");
-#endif
-                }
-
-                g_free(contents);
+                DBG("%s", "kill user lock failed");
             }
-            g_free(lockpid_file);
-        }
-        g_free(user_lock_path);
 
-        g_free(greeter_file);
-        greeter_file = NULL;
-        g_key_file_free(greeter_keyfile);
-        g_free(selected_user);
-        selected_user = NULL;
-        g_free(selected_session);
-        selected_session = NULL;
-        gtk_main_quit();
+        }else{
+            DBG("%s", "get dlockpid file contents failed");
+        }
+
+        g_free(contents);
     }
+
+    g_free(lockpid_file);
+
+    g_free(greeter_file);
+    greeter_file = NULL;
+    g_key_file_free(greeter_keyfile);        
+    g_free(selected_user);
+    selected_user = NULL;
+    g_free(selected_session);
+    selected_session = NULL;
+
+    DBG("%s", "clean finish");
 }
 
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
@@ -412,9 +389,7 @@ static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPr
         js_post_message_simply("prompt", "{\"status\":\"%s\"}", "expect response");
     }
 
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "show prompt cb");
-#endif
+    DBG("%s", "show prompt cb");
 }
 
 static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type)
@@ -426,9 +401,7 @@ static void show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMM
 
 static void authentication_complete_cb(LightDMGreeter *greeter)
 {
-#if DEBUG
-    js_post_message_simply("status", "{\"status\":\"%s\"}", "authentication complete cb");
-#endif
+    DBG("%s", "auth complete cb");
 
     if(cancelling){
         greeter_cancel_authentication();
@@ -437,17 +410,15 @@ static void authentication_complete_cb(LightDMGreeter *greeter)
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, start session");
-#endif
+            DBG("%s", "auth complete, start session");
+
             start_session(get_selected_session());
         }
 
     }else{
         if(prompted){
-#if DEBUG
-            js_post_message_simply("status", "{\"status\":\"%s\"}", "auth complete, restart auth");
-#endif
+            DBG("%s", "auth complete, restart auth");
+
             js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
             greeter_start_authentication(get_selected_user());
         }
@@ -794,41 +765,35 @@ gboolean greeter_get_can_shutdown()
 JS_EXPORT_API
 gboolean greeter_run_suspend()
 {
-#if DEBUG
-    js_post_message_simply("power", "{\"status\":\"%s\"}", "suspend clicked");
-#endif
+    DBG("%s", "suspend clicked");
     return lightdm_suspend(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_hibernate()
 {
-#if DEBUG
-    js_post_message_simply("power", "{\"status\":\"%s\"}", "hibernate clicked");
-#endif
+    DBG("%s", "hibernate clicked");
     return lightdm_hibernate(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_restart()
 {
-#if DEBUG
-    js_post_message_simply("power", "{\"status\":\"%s\"}", "restart clicked");
-#endif
+    DBG("%s", "restart clicked");
     return lightdm_restart(NULL);
 }
 
 JS_EXPORT_API
 gboolean greeter_run_shutdown()
 {
-#if DEBUG
-    js_post_message_simply("power", "{\"status\":\"%s\"}", "shutdown clicked");
-#endif
+    DBG("%s", "shutdown clicked");
     return lightdm_shutdown(NULL);
 }
 
 static void sigterm_cb(int signum)
 {
+    DBG("%s", "sigterm cb");
+    clean_before_exit();    
     exit(0);
 }
 
@@ -974,6 +939,11 @@ int main(int argc, char **argv)
     greeter = lightdm_greeter_new();
     g_assert(greeter);
 
+    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
+    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
+    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
+
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
     container = create_web_container(FALSE, TRUE);
@@ -988,11 +958,6 @@ int main(int argc, char **argv)
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
-
-    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
-    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
-    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
-    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
     if(!lightdm_greeter_connect_sync(greeter, NULL)){
         exit(EXIT_FAILURE);

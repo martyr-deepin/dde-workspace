@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
+      <enum id="com.deepin.dde.dock.HideMode">
+        <value value="0" nick="nohide"/>
+        <value value="1" nick="autohide"/>
+        <value value="2" nick="alwayshide"/>
+      </enum>
+
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
-        <key type="b" name="audo-hiden">
-            <default>false</default>
-            <summary>active auto hiden mode</summary>
-            <description>let the dock enter the auto hiden mode</description>
+        <key name="hide-mode" enum="com.deepin.dde.dock.HideMode">
+            <default>'nohide'</default>
+            <summary>the hide mode</summary>
+            <description>let the dock enter the auto hide mode</description>
         </key>
-        <key type="b" name="mini-model">
+        <key type="b" name="active-mini-mode">
             <default>false</default>
-            <summary>the mini icon model</summary>
-            <description>let the dock enter the mini icon model to save worksapce.</description> 
+            <summary>the mini icon mode</summary>
+            <description>let the dock enter the mini icon mode to save worksapce.</description> 
         </key>
-        <key type="u" name="color">
+        <key type="u" name="background-color">
             <range min="0" max="0xffffff64" />
             <default>0xbcbcbc32</default>
             <summary>dock color</summary>
