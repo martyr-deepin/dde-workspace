@@ -31,7 +31,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
-        @password.setAttribute("autofocus", true);
+        @password.setAttribute("autofocus", true)
 
         @password.addEventListener("keyup", (e)=>
             if e.which == 13
@@ -79,7 +79,7 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
-        @switch = create_element("button", "SwitchToGreeter", @element)
+        @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             DCore.Lock.switch_user()
