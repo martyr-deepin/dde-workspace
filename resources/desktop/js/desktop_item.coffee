@@ -574,7 +574,7 @@ class RichDir extends DesktopEntry
         evt.stopPropagation()
         if @clicked_before == 1
             @clicked_before = 2
-            if @show_pop == false then @show_pop_block()
+            if @show_pop == false and evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
         else
             if is_selected_multiple_items()
                 update_selected_stats(this, evt)
@@ -584,7 +584,7 @@ class RichDir extends DesktopEntry
                         @item_complete_rename(true)
                     else
                         @clear_delay_rename_timer()
-                        @show_pop_block()
+                        if evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
                 else
                     @hide_pop_block()
                     if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
@@ -659,9 +659,10 @@ class RichDir extends DesktopEntry
         menus.push([5, _("Dismiss")])
         menus
 
+
     do_itemselected : (evt) =>
         switch evt.id
-            when 1 then open_selected_items()
+            when 1 then @item_exec()
             when 3 then @item_rename()
             when 5 then @item_dismiss()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
@@ -824,6 +825,8 @@ class RichDir extends DesktopEntry
                     evt.dataTransfer.effectAllowed = "all"
                 else
                     evt.dataTransfer.effectAllowed = "none"
+
+                if (img = this.getElementsByTagName("img"))? then evt.dataTransfer.setDragImage(img[0], 24, 24)
                 return
             )
             ele.addEventListener('dragend', (evt) ->
@@ -854,12 +857,12 @@ class RichDir extends DesktopEntry
             pop_width = col * _ITEM_WIDTH_ + 22
         @div_pop.style.width = "#{pop_width}px"
 
-        n = row * _ITEM_HEIGHT_ + 24
+        n = @div_pop.offsetHeight
         if s_height - @element.offsetTop > n
-            pop_top = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 12
+            pop_top = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 14
             arrow_pos_at_bottom = false
         else
-            pop_top = @element.offsetTop - n - 12
+            pop_top = @element.offsetTop - n - 6
             arrow_pos_at_bottom = true
         @div_pop.style.top = "#{pop_top}px"
 
