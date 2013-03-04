@@ -166,22 +166,24 @@ void _append_to_category(const char* path, int* cs)
     }
 }
 
-static
-void _fill_cat(char* path, GString* content)
-{
-    g_string_append_printf(content, "\"%s\",", path);
-}
 JS_EXPORT_API
-char* launcher_get_items_by_category(double _id)
+JSObjectRef launcher_get_items_by_category(double _id)
 {
+    JSObjectRef items = json_array_create();
+
     int id = _id;
     GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
-    if (l == NULL)
-        return g_strdup("[]");
-    GString* content = g_string_new("[");
-    g_ptr_array_foreach(l, (GFunc)_fill_cat, content);
-    g_string_overwrite(content, content->len-1, "]");
-    return g_string_free(content, FALSE);
+    if (l == NULL) {
+        return items;
+    }
+
+    JSContextRef cxt = get_global_context();
+    for (int i = 0; i < l->len; ++i) {
+        const char* path = g_ptr_array_index(l, i);
+        json_array_append(items, i, jsvalue_from_cstr(cxt, path));
+    }
+
+    return items;
 }
 
 static
