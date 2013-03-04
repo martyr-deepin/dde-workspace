@@ -33,8 +33,6 @@ static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
 
     g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
     g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
-    g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-    g_assert (n_channels == 4);
 
     width = gdk_pixbuf_get_width (pixbuf);
     height = gdk_pixbuf_get_height (pixbuf);
@@ -45,14 +43,33 @@ static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
     //the outline of the icon are stripped.
     //so the for corner coordinates are (1, 1), (1, 15), (15, 1), (15, 15)
     //p = pixels + y * rowstride + x * n_channels;
-    p = pixels + 1 * rowstride + 1 * n_channels;
-    p[3] = alpha;
-    p = pixels + 15 * rowstride + 1 * n_channels;
-    p[3] = alpha;
-    p = pixels + 1 * rowstride + 15 * n_channels;
-    p[3] = alpha;
-    p = pixels + 15 * rowstride + 15 * n_channels;
-    p[3] = alpha;
+    if (G_LIKELY(gdk_pixbuf_get_has_alpha (pixbuf)&&(n_channels == 4)))
+    {
+        p = pixels + 1 * rowstride + 1 * n_channels;
+        p[3] = alpha;
+        p = pixels + 15 * rowstride + 1 * n_channels;
+        p[3] = alpha;
+        p = pixels + 1 * rowstride + 15 * n_channels;
+        p[3] = alpha;
+        p = pixels + 15 * rowstride + 15 * n_channels;
+        p[3] = alpha;
+    }
+    else
+    {
+        int i;
+        p = pixels + 1 * rowstride + 1 * n_channels;
+        for (i=0;i<3; i++)
+            p[i] = p[i] * fa;
+        p = pixels + 15 * rowstride + 1 * n_channels;
+        for (i=0;i<3; i++)
+            p[i] = p[i] * fa;
+        p = pixels + 1 * rowstride + 15 * n_channels;
+        for (i=0;i<3; i++)
+            p[i] = p[i] * fa;
+        p = pixels + 15 * rowstride + 15 * n_channels;
+        for (i=0;i<3; i++)
+            p[i] = p[i] * fa;
+    }
 }
 
 char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4)
