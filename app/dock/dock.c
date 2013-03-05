@@ -29,23 +29,37 @@
 #include "launcher.h"
 #include "region.h"
 #include "dbus.h"
+#include "dock_hide.h"
 #include <cairo.h>
 
+void dock_change_workarea_height(double height);
 int _dock_height = 60;
-int _screen_width = 0;
-int _screen_height = 0;
+static int _screen_width = 0;
+static int _screen_height = 0;
+static gboolean _is_dock_showing = TRUE;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
+    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
+        dock_delay_hide(1000);
+    }
     js_post_message_simply("leave-notify", NULL);
+    return FALSE;
+}
+gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
+{
+    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
+        dock_delay_show(300);
+    }
     return FALSE;
 }
 
 GtkWidget* container = NULL;
+GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 Window get_dock_window()
 {
     g_assert(container != NULL);
-    return GDK_WINDOW_XID(gtk_widget_get_window(container));
+    return GDK_WINDOW_XID(DOCK_GDK_WINDOW());
 }
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
@@ -54,13 +68,20 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     gtk_window_move(GTK_WINDOW(container), 0, 0);
     gtk_window_resize(GTK_WINDOW(container), _screen_width, _screen_height);
 
+    /*WebKitWebWindowFeatures *fe = webkit_web_view_get_window_features(webview);*/
+    /*GValue v_w = G_VALUE_INIT;*/
+    /*GValue v_h = G_VALUE_INIT;*/
+    /*g_value_init(&v_w, G_TYPE_INT);*/
+    /*g_value_init(&v_h, G_TYPE_INT);*/
+    /*g_value_set_int(&v_w, _screen_width);*/
+    /*g_value_set_int(&v_h, _screen_height);*/
+    /*g_object_set_property(fe, "width", &v_w);*/
+    /*g_object_set_property(fe, "height", &v_h);*/
     gdk_window_move_resize(gtk_widget_get_window(webview), 0 ,0, _screen_width, _screen_height);
 
-    set_struct_partial(gtk_widget_get_window(container),
-            ORIENTATION_BOTTOM, _dock_height, 0, _screen_width
-            );
+    dock_change_workarea_height(_dock_height);
 
-    init_region(gtk_widget_get_window(container), 0, _screen_height - _dock_height, _screen_width, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, _screen_height - _dock_height, _screen_width, _dock_height);
 
     webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
 }
@@ -78,6 +99,7 @@ int main(int argc, char* argv[])
     parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
+
 
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
     set_desktop_env_name("Deepin");
@@ -97,6 +119,7 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
 
 
@@ -110,14 +133,13 @@ int main(int argc, char* argv[])
     update_dock_size(screen, webview);
 
     gdk_window_set_accept_focus(gtk_widget_get_window(webview), FALSE);
-    set_wmspec_dock_hint(gtk_widget_get_window(container));
+    set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
     monitor_resource_file("dock", webview);
     /*gdk_window_set_debug_updates(TRUE);*/
 
-    GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(gdkwindow, &rgba);
+    gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
     dock_setup_dbus_service();
     gtk_main();
@@ -156,14 +178,32 @@ void dock_emit_webview_ok()
         update_task_list();
         update_dock_show_mode();
     }
+    GD.is_webview_loaded = TRUE;
+    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
+        dock_hide_now();
+        _is_dock_showing = FALSE;
+    } else {
+        _is_dock_showing = TRUE;
+    }
+}
+
+void _change_workarea_height(int height)
+{
+    if (GD.is_webview_loaded && GD.config.hide_mode != ALWAYS_HIDE_MODE ) {
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, _screen_width);
+    } else {
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, _screen_width);
+    }
 }
 
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
-    if (height < 30) height = 30;
-    _dock_height = height;
-    set_struct_partial(gtk_widget_get_window(container), ORIENTATION_BOTTOM, _dock_height, 0, _screen_width);
+    if (height < 30)
+        _dock_height = 30;
+    else
+        _dock_height = height;
+    _change_workarea_height(height);
 }
 
 JS_EXPORT_API
@@ -176,23 +216,25 @@ void dock_toggle_launcher(gboolean show)
     }
 }
 
+//TODO: reset the show status according to show mode.
 void dock_toggle_show(int mode)
 {
-    static gboolean __is_show__ = TRUE;
     switch (mode) {
-        case -1: __is_show__ = !__is_show__; break;
-        case 0: __is_show__ = FALSE; break;
-        case 1: __is_show__ = TRUE; break;
+        case -1: _is_dock_showing = !_is_dock_showing; break;
+        case 0: _is_dock_showing = FALSE; break;
+        case 1: _is_dock_showing = TRUE; break;
         default: g_assert_not_reached();
     }
-    if (__is_show__) {
-        gdk_window_show(gtk_widget_get_window(container));
-    } else {
-        gdk_window_hide(gtk_widget_get_window(container));
+    if (_is_dock_showing != mode) {
+        if (_is_dock_showing) {
+            dock_show_now();
+        } else {
+            dock_hide_now();
+        }
     }
 }
 
 void update_dock_hide_mode()
 {
-    printf("hide-mode:%d\n", GD.config.hide_mode);
+    dock_change_workarea_height(_dock_height);
 }
