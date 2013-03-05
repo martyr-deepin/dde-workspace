@@ -83,7 +83,6 @@ int main(int argc, char **argv)
             g_clear_error(&error);
         }
 
-        error = NULL;
         GVariant *username_prop_var = NULL;
         username_prop_var = g_dbus_proxy_get_cached_property(session_proxy, "UserName");
 
@@ -92,7 +91,6 @@ int main(int argc, char **argv)
             g_clear_error(&error);
         }
 
-        error = NULL;
         gchar *user_name = g_variant_dup_string(username_prop_var, NULL);
 
         if(g_strcmp0(username, user_name) == 0){
@@ -117,7 +115,6 @@ int main(int argc, char **argv)
                 g_clear_error(&error);
             }
 
-            error = NULL;
             g_dbus_proxy_call_sync(seat_proxy,
                         "SwitchToGreeter",
                         g_variant_new("()"),
@@ -131,7 +128,6 @@ int main(int argc, char **argv)
                 g_clear_error(&error);
             }
 
-            error = NULL;
             g_free(seat_path);
             g_variant_unref(seat_prop_var);
             g_object_unref(seat_proxy);

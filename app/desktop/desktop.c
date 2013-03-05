@@ -49,7 +49,7 @@ JSObjectRef desktop_get_desktop_entries()
         char* path = g_build_filename(desktop_path, file_name, NULL);
         Entry* e = dentry_create_by_path(path);
         g_free(path);
-        json_array_append_nobject(array, i++, e, g_object_ref, g_object_unref);
+        json_array_insert_nobject(array, i++, e, g_object_ref, g_object_unref);
         g_object_unref(e);
     }
     g_dir_close(dir);
@@ -305,3 +305,4 @@ void desktop_emit_webview_ok()
         g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
     }
 }
+

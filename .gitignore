@@ -9,3 +9,4 @@ resources/memory_test/js/test.js
 resources/greeter/js/greeter.js
 resources/greeter/js/lock.js
 resources/greeter/js/time.js
+*.swp

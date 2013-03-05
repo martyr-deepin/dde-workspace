@@ -180,17 +180,25 @@ if not user_background? or not user_background.length
 background_img = create_img("Background",user_background) 
 document.body.appendChild(background_img)
 
-roundabout.style.top = (screen.height - roundabout.clientHeight) / 2 
-roundabout.style.left = screen.width / 2 - roundabout.clientWidth
-
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
 
 u = new UserInfo(user, user, user_image) 
 roundabout.appendChild(u.li)
+
 u.focus()
 u.show_login()
 
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
+
+if roundabout.children.length <= 2
+    roundabout.style.width = "0"
+    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+
+run_post(->
+    l = (screen.width  - roundabout.clientWidth) / 2
+    roundabout.style.left = "#{l}px"
+)
+

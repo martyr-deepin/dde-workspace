@@ -8,7 +8,7 @@
 
 
 /*
- * 	TODO: if we cut or copy files in nautilus, 
+ * 	TODO: if we cut or copy files in nautilus,
  * 	      how can we get notified?
  */
 
@@ -26,13 +26,13 @@ static FileOpsClipboardInfo	clipboard_info_prev = {
 				.cut	   = FALSE, // this boolean is a useful indicator
 				};
 // used to store data requested from another owner.
-static FileOpsClipboardInfo	clipboard_info_tmp = { 
+static FileOpsClipboardInfo	clipboard_info_tmp = {
                                 .file_list = NULL,
 				.num       = 0,
 				.cut       = FALSE,
-				};	
+				};
 
-static GdkAtom			copied_files_atom = GDK_NONE;	
+static GdkAtom			copied_files_atom = GDK_NONE;
 
 static void _clipboard_owner_change_cb	(GtkClipboard*		clipboard,
 					 GdkEventOwnerChange*	event,
@@ -85,7 +85,7 @@ is_clipboard_empty ()
 
 //TODO: multiple copy, single cut.
 //  or  single copy, single cut.
-void 
+void
 fileops_paste (GFile* dest_dir)
 {
     if (copied_files_atom == GDK_NONE)
@@ -105,14 +105,14 @@ fileops_paste (GFile* dest_dir)
     if (real_info == NULL || real_info->num == 0)
 	return;
 
-    if (real_info->cut)	
+    if (real_info->cut)
     {
 	fileops_move (real_info->file_list, real_info->num, dest_dir);
         //post messages event paste cancelled or failed.
 	JSObjectRef json = json_array_create();
 	for (int i = 0; i < real_info->num; i++)
 	{
-	    json_array_append_nobject (json, i, real_info->file_list[i], 
+	    json_array_insert_nobject (json, i, real_info->file_list[i],
                                        g_object_ref, g_object_unref);
             g_debug ("send file: %d : %s", i, g_file_get_uri (real_info->file_list[i]));
 	}
@@ -122,11 +122,11 @@ fileops_paste (GFile* dest_dir)
 
         g_debug ("free tmp clipboard info");
 	__clear_clipboard_info (&clipboard_info_tmp);
-	//though maybe we're not the clipboard owner, we still 
+	//though maybe we're not the clipboard owner, we still
 	//free clipboard_info here to avoid possible memory leak
         g_debug ("free clipboard info");
 	__clear_clipboard_info (&clipboard_info);
-	
+
     }
     else
     {
@@ -146,9 +146,9 @@ fileops_paste (GFile* dest_dir)
  * 	      clipboard
  * 	      1. this is the only way we can set clipboard_info.
  * 	      2. this is the only way we can set clipboard_info_prev.
- * 	      
+ *
  */
-void 
+void
 init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
 {
     g_debug ("init_fileops_clipboard:begin");
@@ -156,7 +156,7 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
     //set prev clipboard_info
     __clear_clipboard_info (&clipboard_info_prev);
     __copy_clipboard_info (&clipboard_info, &clipboard_info_prev);
-    
+
     int j=0;
     for (j = 0; j < clipboard_info_prev.num; j++)
     {
@@ -187,7 +187,7 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
     if (fileops_clipboard == NULL)
     {
 	fileops_clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-	g_signal_connect (fileops_clipboard, "owner-change", 
+	g_signal_connect (fileops_clipboard, "owner-change",
 		          G_CALLBACK (_clipboard_owner_change_cb), NULL);
     }
 
@@ -214,7 +214,7 @@ init_fileops_clipboard (GFile* file_list[], guint num, gboolean cut)
  *	this is not a reliable event.
  *	we cannot use this to differentiate between ourselves and
  */
-static void 
+static void
 _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 			    GdkEventOwnerChange*	event,
 			    gpointer		        callback_data)
@@ -237,7 +237,7 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 	//__clear_clipboard_info (&clipboard_info);
 }
 
-static void 
+static void
 _get_clipboard_callback	(GtkClipboard*		clipboard,
 			 GtkSelectionData*	selection_data,
 			 guint			info,
@@ -248,7 +248,7 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
     target = gtk_selection_data_get_target (selection_data);
 
     // set to a URI string
-    if (gtk_targets_include_uri (&target, 1)) 
+    if (gtk_targets_include_uri (&target, 1))
     {
 	char **uris;
 	uris = g_malloc ((clipboard_info.num + 1) * sizeof (char *));
@@ -273,9 +273,9 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
 
 	gtk_selection_data_set_text (selection_data, str, len);
 	g_free (str);
-    } 
+    }
     //NOTE: cut or copy
-    else if (target == copied_files_atom) 
+    else if (target == copied_files_atom)
     {
 	char *str;
 	gsize len;
@@ -290,12 +290,12 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
  *	clear clipboard_info_prev,
  *	keep clipboard_info
  */
-static void 
+static void
 _clear_clipboard_callback (GtkClipboard *clipboard,
 			   gpointer      user_data)
 {
     g_debug ("_clear_clipboard_callback: begin");
-    
+
     GList* file_list = NULL;
 
     g_debug ("prev: num = %d; operation = %s", clipboard_info_prev.num, clipboard_info_prev.cut?"cut":"copy");
@@ -310,7 +310,7 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
 	}
     }
     //clipboard_info_prev.cut == TRUE)
-    else if (clipboard_info_prev.num != 0) 
+    else if (clipboard_info_prev.num != 0)
     {
 	file_list = __set_diff_clipboard_info (&clipboard_info, &clipboard_info_prev);
     }
@@ -320,7 +320,7 @@ _clear_clipboard_callback (GtkClipboard *clipboard,
     JSObjectRef json = json_array_create();
     for (l = file_list; l != NULL; l = l->next)
     {
-	json_array_append_nobject (json, i, l->data, g_object_ref, g_object_unref);
+	json_array_insert_nobject (json, i, l->data, g_object_ref, g_object_unref);
         g_debug ("send file: %d : %s", i, g_file_get_uri (l->data));
 	i++;
     }
@@ -344,13 +344,13 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
     GString *uris;
     if (format_for_text)
 	uris = g_string_new (NULL);
-    else 
+    else
 	uris = g_string_new (info->cut ? "cut" : "copy");
-	
+
     char *uri, *tmp;
     GFile *f;
     guint i;
-    for (i = 0; i < info->num; i++) 
+    for (i = 0; i < info->num; i++)
     {
 	uri = g_file_get_uri (info->file_list[i]);
 
@@ -359,12 +359,12 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 	    f = g_file_new_for_uri (uri);
 	    tmp = g_file_get_parse_name (f);
 	    g_object_unref (f);
-	    
+
 	    if (tmp != NULL)
 	    {
 		g_string_append (uris, tmp);
 		g_free (tmp);
-	    } 
+	    }
 	    else
 	    {
 		g_string_append (uris, uri);
@@ -374,8 +374,8 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
 	    {
 		g_string_append_c (uris, '\n');
 	    }
-	} 
-	else 
+	}
+	else
 	{
 	    g_string_append_c (uris, '\n');
 	    g_string_append (uris, uri);
@@ -390,12 +390,12 @@ __convert_file_list_to_string (FileOpsClipboardInfo *info,
     return g_string_free (uris, FALSE);
 }
 #if 0
-static gboolean 
+static gboolean
 __is_owner_of_clipboard	()
 {
-   if ((fileops_clipboard == NULL) || 
+   if ((fileops_clipboard == NULL) ||
        (gtk_clipboard_get_owner (fileops_clipboard) == NULL))
-      return FALSE; 
+      return FALSE;
    return TRUE;
 }
 #endif
@@ -410,7 +410,7 @@ __request_clipboard_contents (FileOpsClipboardInfo* info)
     //				    copied_files_atom,
     //				    __clipboard_contents_received_callback,
     //				    info);
-    // Use synchronous version 
+    // Use synchronous version
     GtkSelectionData * selection_data;
     selection_data = gtk_clipboard_wait_for_contents (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
 				                      copied_files_atom);
@@ -442,7 +442,7 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 	return;
 
     guchar *data;
-	
+
     data = (guchar *) gtk_selection_data_get_data (selection_data);
     data[_len] = '\0';
 
@@ -450,22 +450,22 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
     lines = g_strsplit (data, "\n", 0);
 
     //fill FileOpsClipboardInfo* info
-    if (lines[0] == NULL) 
+    if (lines[0] == NULL)
 	return;
 
-    if (strcmp (lines[0], "cut") == 0) 
+    if (strcmp (lines[0], "cut") == 0)
 	_info->cut = TRUE;
-    else if (strcmp (lines[0], "copy") != 0) 
+    else if (strcmp (lines[0], "copy") != 0)
 	return;
 
     int i;
     //get the number of files
-    for (i = 1; lines[i] != NULL; i++) 
+    for (i = 1; lines[i] != NULL; i++)
 	_info->num ++;
     //FIXME: avoid another loop
     _info->file_list = g_malloc (_info->num * sizeof (GFile*));
     g_debug ("operation: %s; num: %d", lines[0], _info->num);
-    for (i = 1; lines[i] != NULL; i++) 
+    for (i = 1; lines[i] != NULL; i++)
     {
 	g_debug ("%d file: %s", i, lines[i]);
 	//NOTE: i-1
@@ -473,14 +473,14 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
     }
 
     g_strfreev (lines);
-    
+
     g_debug ("__clipboard_contents_received_callback: end");
 }
 /*
  *	computes the relative complement of A in B.
  *	we view FileOpsClipboardInfo's file_list as a set.
  *	return B-A = {x in B| x not in A}.
- *	@A : the current clipboard_info 
+ *	@A : the current clipboard_info
  *	@B : the previous clipboard_info
  *	@return B-A: the set of files we need to un-fade on the desktop.
  */
@@ -498,7 +498,7 @@ __set_diff_clipboard_info (FileOpsClipboardInfo* A, FileOpsClipboardInfo* B)
     {
 	g_debug ("A: %d : %s", i, g_file_get_uri (A->file_list[i]));
     }
-#endif 
+#endif
     //send all files in B
     if (A->cut != B->cut)
     {
@@ -532,13 +532,13 @@ __set_diff_clipboard_info (FileOpsClipboardInfo* A, FileOpsClipboardInfo* B)
 }
 /*
  *	NOTE: we assume that both @info and @dest
- *	      are  pointers to static storage. so 
- *	      they cann't be freed and there's no 
+ *	      are  pointers to static storage. so
+ *	      they cann't be freed and there's no
  *	      need to malloc* memory for them.
  *
  *	@info: input, @dest: output
  */
-static void 
+static void
 __copy_clipboard_info (FileOpsClipboardInfo* info, FileOpsClipboardInfo* dest)
 {
     __clear_clipboard_info (dest);
@@ -563,7 +563,7 @@ __copy_clipboard_info (FileOpsClipboardInfo* info, FileOpsClipboardInfo* dest)
  *	because we use static variables instead of pointers
  *	so we won't free @info here (just free its fields).
  */
-static void 
+static void
 __clear_clipboard_info	(FileOpsClipboardInfo* info)
 {
     if (info->file_list == NULL)
@@ -581,5 +581,6 @@ __clear_clipboard_info	(FileOpsClipboardInfo* info)
     g_free (info->file_list);
     info->file_list = NULL;
     info->num = 0;
-    
+
 }
+
