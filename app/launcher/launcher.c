@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
     GdkRectangle area = {0, 1700, 100, 30};
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
-    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL); 
+    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     /*monitor_resource_file("launcher", webview);*/
     gtk_widget_show_all(container);
@@ -131,7 +131,7 @@ void launcher_notify_workarea_size()
 {
     GdkScreen* screen = gdk_screen_get_default();
     js_post_message_simply("workarea_changed",
-            "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}", 
+            "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
             gdk_screen_get_width(screen),
             gdk_screen_get_height(screen)
             );
@@ -143,7 +143,7 @@ static
 void _append_to_category(const char* path, int* cs)
 {
     if (cs == NULL) {
-        //TODO add to default other category 
+        //TODO add to default other category
         g_debug("%s hasn't categories info\n", path);
         return;
     }
@@ -180,7 +180,7 @@ JSObjectRef launcher_get_items_by_category(double _id)
     JSContextRef cxt = get_global_context();
     for (int i = 0; i < l->len; ++i) {
         const char* path = g_ptr_array_index(l, i);
-        json_array_append(items, i, jsvalue_from_cstr(cxt, path));
+        json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
     }
 
     return items;
@@ -213,7 +213,7 @@ JSObjectRef launcher_get_items()
         _record_category_info(id, G_DESKTOP_APP_INFO(info));
         g_free(id);
 
-        json_array_append_nobject(items, i - skip, 
+        json_array_insert_nobject(items, i - skip,
                 info, g_object_ref, g_object_unref);
 
         g_object_unref(info);
@@ -301,7 +301,7 @@ JSObjectRef launcher_get_categories()
             JSObjectRef item = json_create();
             json_append_number(item, "ID", i);
             json_append_string(item, "Name", names[i]);
-            json_array_append(categories, i, item);
+            json_array_insert(categories, i, item);
         }
         return categories;
     }
@@ -312,7 +312,7 @@ JSObjectRef launcher_get_categories()
             JSObjectRef item = json_create();
             json_append_number(item, "ID", i);
             json_append_string(item, "Name", category_name);
-            json_array_append(categories, j++, item);
+            json_array_insert(categories, j++, item);
         }
     }
 

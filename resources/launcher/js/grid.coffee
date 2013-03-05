@@ -69,7 +69,8 @@ class Item extends Widget
 
 _all_items = DCore.Launcher.get_items()
 _all_items.sort((lhs, rhs) ->
-    lhs_name, rhs_name = DCore.DEntry.get_name(lhs), DCore.DEntry.get_name(rhs)
+    lhs_name = DCore.DEntry.get_name(lhs)
+    rhs_name = DCore.DEntry.get_name(rhs)
 
     if lhs_name > rhs_name
         1

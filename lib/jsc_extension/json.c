@@ -42,7 +42,7 @@ void json_append_nobject_a(JSObjectRef json, const char* key, void* values[], gs
     JSObjectRef js_value = json_array_create();
     for (gsize i=0; i<size; i++) {
         JSObjectRef item = create_nobject(ctx, values[i], ref, unref);
-        json_array_append(js_value, i, item);
+        json_array_insert(js_value, i, item);
     }
 
     json_append_value(json, key, js_value);
@@ -53,16 +53,16 @@ JSObjectRef json_array_create()
     JSContextRef ctx = get_global_context();
     return JSObjectMakeArray(ctx, 0, NULL, NULL);
 }
-void json_array_append(JSObjectRef json, gsize i, JSValueRef value)
+void json_array_insert(JSObjectRef json, gsize i, JSValueRef value)
 {
     JSContextRef ctx = get_global_context();
     JSObjectSetPropertyAtIndex(ctx, json, i, value, NULL);
 }
-void json_array_append_nobject(JSObjectRef json, gsize i, void* value, NObjectRef ref, NObjectUnref unref)
+void json_array_insert_nobject(JSObjectRef json, gsize i, void* value, NObjectRef ref, NObjectUnref unref)
 {
     JSContextRef ctx = get_global_context();
     JSObjectRef js_value = create_nobject(ctx, value, ref, unref);
-    json_array_append(json, i, js_value);
+    json_array_insert(json, i, js_value);
 }
 
 JSValueRef json_from_cstr(JSContextRef ctx, const char* json_str)
@@ -76,3 +76,4 @@ JSValueRef json_from_cstr(JSContextRef ctx, const char* json_str)
     }
     return json;
 }
+
