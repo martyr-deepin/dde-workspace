@@ -225,52 +225,58 @@ JSObjectRef launcher_get_items()
 }
 
 JS_EXPORT_API
-gboolean launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
+double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 {
-    /* const double step = 0.1; */
-    /* double weight = 0.0; */
+    double weight = 0.0;
+
+    /* desktop file information */
     const char* path = g_desktop_app_info_get_filename(info);
-    if (g_strrstr(path, key))
-        /* weight += step; */
-        return TRUE;
-
-    const char* name = g_app_info_get_name((GAppInfo*)info);
-    if (name && g_strrstr(name, key))
-        /* weight += step; */
-        return TRUE;
-
-    const char* dname = g_app_info_get_display_name((GAppInfo*)info);
-    if (dname && g_strrstr(dname, key))
-        /* weight += step; */
-        return TRUE;
-
-    const char* desc = g_app_info_get_description((GAppInfo*)info);
-    if (desc && g_strrstr(desc, key))
-        /* weight += step; */
-        return TRUE;
-
-    const char* exec = g_app_info_get_executable((GAppInfo*)info);
-    if (exec && g_strrstr(exec, key))
-        /* weight += step; */
-        return TRUE;
+    if (g_strrstr(path, key)) {
+        weight += 0.3;
+    }
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
-    if (gname && g_strrstr(gname, key))
-        /* weight += step; */
-        return TRUE;
+    if (gname && g_strrstr(gname, key)) {
+        weight += 0.01;
+    }
 
     const char* const* keys = g_desktop_app_info_get_keywords(info);
     if (keys != NULL) {
         size_t n = g_strv_length((char**)keys);
         for (size_t i=0; i<n; i++) {
-            if (g_strrstr(keys[i], key))
-                /* weight += step; */
-                /* return weight; */
-                return TRUE;
+            if (g_strrstr(keys[i], key)) {
+                weight += 0.1;
+            }
         }
     }
 
-    return FALSE;
+    const char* categories = g_desktop_app_info_get_categories(info);
+    if (categories && g_strrstr(categories, key)) {
+        weight += 0.01;
+    }
+
+    /* application information */
+    const char* name = g_app_info_get_name((GAppInfo*)info);
+    if (name && g_strrstr(name, key)) {
+        weight += 0.1;
+    }
+
+    const char* dname = g_app_info_get_display_name((GAppInfo*)info);
+    if (dname && g_strrstr(dname, key)) {
+        weight += 0.05;
+    }
+
+    const char* desc = g_app_info_get_description((GAppInfo*)info);
+    if (desc && g_strrstr(desc, key)) {
+        weight += 0.01;
+    }
+
+    const char* exec = g_app_info_get_executable((GAppInfo*)info);
+    if (exec && g_strrstr(exec, key)) {
+        weight += 0.05;
+    }
+
+    return weight;
 }
 
 static
