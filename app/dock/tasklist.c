@@ -27,6 +27,7 @@
 #include "dominant_color.h"
 #include "handle_icon.h"
 #include "tasklist.h"
+#include "dock_hide.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -471,14 +472,19 @@ void _update_window_net_state(Client* c)
     //TODO: update other info
 }
 
-void _update_has_maximized_window(Client* c)
+gboolean _is_maximized_window(Window win)
 {
-    if (gdk_window_get_state(c->gdkwindow) == GDK_WINDOW_STATE_MAXIMIZED) {
-        c->is_maximized = TRUE;
-        g_assert_not_reached();
-    } else {
-        c->is_maximized = FALSE;
+    long items;
+    long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
+
+    for (int i=0; i<items; i++) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_MAXIMIZED_VERT) {
+            XFree(data);
+            return TRUE;
+        }
     }
+    XFree(data);
+    return FALSE;
 }
 
 
@@ -525,6 +531,17 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
+
+                if (win == _active_client_id && GD.config.hide_mode == AUTO_HIDE_MODE) {
+                    if (_is_maximized_window(win)) {
+                        dock_hide_now();
+                    } else {
+                        dock_show_now();
+                    }
+                } else {
+                    printf("%d is not active win:%d\n", win, _active_client_id);
+                }
+
             }
         }
     }
