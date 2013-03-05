@@ -67,8 +67,18 @@ class Item extends Widget
             when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
 
 
+_all_items = DCore.Launcher.get_items()
+_all_items.sort((lhs, rhs) ->
+    lhs_name, rhs_name = DCore.DEntry.get_name(lhs), DCore.DEntry.get_name(rhs)
 
-for core in DCore.Launcher.get_items()
+    if lhs_name > rhs_name
+        1
+    else if lhs_name == rhs_name
+        0
+    else
+        -1
+)
+for core in _all_items
     id = DCore.DEntry.get_id(core)
     applications[id] = new Item(id, core)
 # load the Desktop Entry's infomations.
@@ -99,7 +109,7 @@ grid_load_category = (cat_id) ->
     if category_infos[cat_id]
         info = category_infos[cat_id]
     else
-        info = DCore.Launcher.get_items_by_category(cat_id)
+        info = DCore.Launcher.get_items_by_category(cat_id).sort()
         category_infos[cat_id] = info
 
     grid_show_items(info)
