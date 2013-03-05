@@ -75,7 +75,8 @@ void _init_atoms()
 
 typedef struct {
     char* title; /* _NET_WM_NAME */
-    char* clss; /* WMClass */
+    char* instance_name;  /*WMClass first field */
+    char* clss; /* WMClass second field*/
     char* app_id; /*current is executabe file's name*/
     char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
@@ -187,6 +188,7 @@ void client_free(Client* c)
     js_post_message("task_removed", json);
     g_free(c->title);
     g_free(c->clss);
+    g_free(c->instance_name);
     g_free(c->app_id);
     g_free(c->exec);
     g_object_unref(c->gdkwindow);
@@ -417,7 +419,9 @@ void _update_window_appid(Client* c)
         if (exec_name != NULL) {
             g_assert(c->title != NULL);
             app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL & c->clss != NULL)
+            if (app_id == NULL && c->instance_name != NULL)
+                app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
+            if (app_id == NULL && c->clss != NULL)
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
             if (app_id == NULL && exec_args != NULL)
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
@@ -447,13 +451,16 @@ void _update_window_appid(Client* c)
 void _update_window_class(Client* c)
 {
     g_free(c->clss);
+    g_free(c->instance_name);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
+        c->instance_name = g_strdup(ch.res_name);
         c->clss = g_strdup(ch.res_class);
         XFree(ch.res_name);
         XFree(ch.res_class);
     } else {
         c->clss = NULL;
+        c->instance_name = NULL;
     }
 }
 
