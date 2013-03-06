@@ -27,6 +27,7 @@
 #include "dominant_color.h"
 #include "handle_icon.h"
 #include "tasklist.h"
+#include "dock_hide.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -75,7 +76,8 @@ void _init_atoms()
 
 typedef struct {
     char* title; /* _NET_WM_NAME */
-    char* clss; /* WMClass */
+    char* instance_name;  /*WMClass first field */
+    char* clss; /* WMClass second field*/
     char* app_id; /*current is executabe file's name*/
     char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
@@ -187,6 +189,7 @@ void client_free(Client* c)
     js_post_message("task_removed", json);
     g_free(c->title);
     g_free(c->clss);
+    g_free(c->instance_name);
     g_free(c->app_id);
     g_free(c->exec);
     g_object_unref(c->gdkwindow);
@@ -261,7 +264,6 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        Atom t = (Atom)X_FETCH_32(data, i);
         if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
             return FALSE;
@@ -395,7 +397,7 @@ void _update_window_icon(Client* c)
 void _update_window_title(Client* c)
 {
     g_free(c->title);
-    long item;
+    gulong item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
         c->title = g_strdup(name);
@@ -408,7 +410,7 @@ void _update_window_title(Client* c)
 void _update_window_appid(Client* c)
 {
     char* app_id = NULL;
-    long item;
+    gulong item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
     if (s_pid != NULL) {
         char* exec_name = NULL;
@@ -417,7 +419,9 @@ void _update_window_appid(Client* c)
         if (exec_name != NULL) {
             g_assert(c->title != NULL);
             app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL & c->clss != NULL)
+            if (app_id == NULL && c->instance_name != NULL)
+                app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
+            if (app_id == NULL && c->clss != NULL)
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
             if (app_id == NULL && exec_args != NULL)
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
@@ -447,13 +451,16 @@ void _update_window_appid(Client* c)
 void _update_window_class(Client* c)
 {
     g_free(c->clss);
+    g_free(c->instance_name);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
+        c->instance_name = g_strdup(ch.res_name);
         c->clss = g_strdup(ch.res_class);
         XFree(ch.res_name);
         XFree(ch.res_class);
     } else {
         c->clss = NULL;
+        c->instance_name = NULL;
     }
 }
 
@@ -464,20 +471,29 @@ void _update_window_net_state(Client* c)
     //TODO: update other info
 }
 
-void _update_has_maximized_window(Client* c)
+gboolean _is_maximized_window(Window win)
 {
-    if (gdk_window_get_state(c->gdkwindow) == GDK_WINDOW_STATE_MAXIMIZED) {
-        c->is_maximized = TRUE;
-        g_assert_not_reached();
-    } else {
-        c->is_maximized = FALSE;
+    gulong items;
+    long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
+
+    for (int i=0; i<items; i++) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_MAXIMIZED_VERT) {
+            XFree(data);
+            return TRUE;
+        }
     }
+    XFree(data);
+    return FALSE;
+}
+
+gboolean active_window_is_maximized_window()
+{
+    return _is_maximized_window(_active_client_id);
 }
 
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
-    int type = ((XEvent*)xevent)->type;
     switch (((XEvent*)xevent)->type) {
         case PropertyNotify: {
                                  XPropertyEvent* ev = xevent;
@@ -518,6 +534,14 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
+
+                if (win == _active_client_id && GD.config.hide_mode == AUTO_HIDE_MODE) {
+                    if (_is_maximized_window(win)) {
+                        dock_delay_hide(500);
+                    } else {
+                        dock_delay_show(500);
+                    }
+                }
             }
         }
     }
@@ -628,9 +652,6 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
         dest_width = dest_height * scale;
     }
 
-    double s1 = dest_width / width;
-    double s2 = dest_height / height;
-
     cairo_save(cr);
     cairo_scale(cr, dest_width / width, dest_height / height);
     gdk_cairo_set_source_window(cr, win, 0, 0);
@@ -650,10 +671,11 @@ gboolean dock_request_dock_by_client_id(double id)
         return FALSE;
     } else {
         request_by_info(c->app_id, c->exec, c->icon);
+        return TRUE;
     }
 }
 
-static 
+static
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;

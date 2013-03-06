@@ -68,4 +68,4 @@ for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)
 
-grid_load_category(-1) #the All applications' ID is zero.
+grid_load_category(-1) #the All applications' ID is -1.

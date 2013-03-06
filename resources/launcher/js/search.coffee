@@ -90,9 +90,19 @@ search = ->
 
     for k,v of applications
         if key == ""
-            ret.push(k)
-        else if DCore.Launcher.is_contain_key(v.core, key)
-            ret.push(k)
+            ret.push(
+                "value": k
+                "weight": 0
+            )
+        else if (weight = DCore.Launcher.is_contain_key(v.core, key))
+            ret.push(
+                "value": k
+                "weight": weight
+            )
+
+    ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
+    ret = (item.value for item in ret)
+
     grid_show_items(ret)
     return ret
 
