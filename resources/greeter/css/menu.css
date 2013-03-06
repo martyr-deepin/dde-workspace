@@ -39,17 +39,12 @@
    margin-top:2px;
 }
 
-#power .ShowItem:hover {
-    background: rgba(0,0,0,0.8);
-}
-
 #desktop .ShowItem:hover {
     cursor:default;
 }
 
-.ShowItem:hover{
-    /* background: rgba(0,0,0,0.8);*/
-    /* cursor:pointer;*/
+#power .ShowItem:hover {
+    background: rgba(255,255,255,0.8);
 }
 
 #global_menu_container {

@@ -34,8 +34,8 @@
 
 void dock_change_workarea_height(double height);
 int _dock_height = 60;
-static int _screen_width = 0;
-static int _screen_height = 0;
+int _screen_width = 0;
+int _screen_height = 0;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
