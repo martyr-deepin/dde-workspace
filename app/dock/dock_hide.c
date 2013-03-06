@@ -1,4 +1,5 @@
 #include "dock_hide.h"
+#include "region.h"
 #include <gtk/gtk.h>
 
 extern int _dock_height;
@@ -45,12 +46,18 @@ static void enter_show()
     set_state(StateShow);
     _change_workarea_height(_dock_height);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
+    dock_region_restore();
 }
 static void enter_hide()
 {
+    dock_region_save();
+
     set_state(StateHidden);
     _change_workarea_height(0);
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-4);
+    gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-3);
+
+    extern int _screen_width;
+    dock_require_region(0, 0, _screen_width, 3);
 }
 
 #define SHOW_HIDE_ANIMATION_STEP 6
