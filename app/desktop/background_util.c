@@ -58,9 +58,10 @@ static gulong	gsettings_xfade_manual_interval;
 static BgXFadeAutoMode	gsettings_xfade_auto_mode;
 static BgDrawMode	gsettings_draw_mode;
 
-static const gchar* bg_props[2] = {"_XROOTPMAP_ID","ESETROOT_PMAP_ID"};
+//static const gchar* bg_props[2] = {"_XROOTPMAP_ID","ESETROOT_PMAP_ID"};
+static const gchar* bg_props[1] = {"_XROOTPMAP_ID"};
 static Atom bg1_atom;  
-static Atom bg2_atom;
+//static Atom bg2_atom;
 static Atom pixmap_atom; 
 
 static Display* display;
@@ -110,8 +111,8 @@ _update_rootpmap (Pixmap pm)
     gdk_error_trap_push ();
     XChangeProperty (display, root, bg1_atom, pixmap_atom,
 		     32, PropModeReplace, (unsigned char*)&pm, 1);
-    XChangeProperty (display, root, bg2_atom, pixmap_atom,
-		     32, PropModeReplace, (unsigned char*)&pm, 1);
+    //XChangeProperty (display, root, bg2_atom, pixmap_atom,
+    //		       32, PropModeReplace, (unsigned char*)&pm, 1);
     XFlush (display);
     gdk_error_trap_pop_ignored ();
 }
@@ -133,10 +134,6 @@ draw_background (xfade_data_t* fade_data)
     cairo_set_source_surface (cr, fade_data->fading_surface, 0, 0);
     cairo_paint (cr);
     cairo_destroy (cr);
-#if 0
-    if(fade_data->alpha >= ALPHA_THRESHOLD)
-	_change_bg_xproperties (fade_data->pixmap);
-#endif
 }
         	
 /*
@@ -418,9 +415,6 @@ on_bg_duration_tick (gpointer user_data)
 
     const char* next_picture = get_next_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture);
-    //g_debug ("on_bg_duration_tick: end set string");
-    //start_gaussian_helper (next_picture);
-    //g_debug ("on_bg_duration_tick: end helper");
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture);
 
@@ -474,9 +468,6 @@ setup_crossfade_timer ()
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-    //g_debug ("setup_crossfade_timer: end set string");
-    //start_gaussian_helper (current_picture);
-    //g_debug ("setup_crossfade_timer: end helper");
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (current_picture);
 
@@ -492,6 +483,7 @@ setup_crossfade_timer ()
     manual_timeout_id = g_source_attach (source, g_main_context_default());
     g_debug ("timeout_id : %d", manual_timeout_id);
 }
+
 /*
  */
 static void 
@@ -583,9 +575,6 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-    //g_debug ("bg_settings_picture_uris_changed: end set string");
-    //start_gaussian_helper (current_picture);
-    //g_debug ("bg_settings_picture_uris_changed: end helper");
 #if 0
     GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
     g_assert (pb != NULL);
@@ -667,11 +656,12 @@ bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer u
 	return;
 
     gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
-
+#if 0
     if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
 	g_debug ("XFADE_AUTO_MODE_RANDOM");
     else if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_SEQUENTIAL)
 	g_debug ("XFADE_AUTO_MODE_SEQUENTIAL");
+#endif
 
     remove_timers ();
 
@@ -932,7 +922,7 @@ bg_util_init (GdkWindow* bg_window)
     display = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
     bg1_atom = gdk_x11_get_xatom_by_name(bg_props[0]);
-    bg2_atom = gdk_x11_get_xatom_by_name(bg_props[1]);
+    //bg2_atom = gdk_x11_get_xatom_by_name(bg_props[1]);
     pixmap_atom = gdk_x11_get_xatom_by_name("PIXMAP");
 
     root = DefaultRootWindow(display);

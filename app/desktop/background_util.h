@@ -5,9 +5,6 @@
 
 #define DEEPIN_EXPORT
 
-#define BG_GAUSSIAN_SIGMA	10.0  //double
-#define BG_GAUSSIAN_NSTEPS	10UL  //long
-
 // all schema related information.
 #define	BG_SCHEMA_ID		"com.deepin.dde.background"
 
