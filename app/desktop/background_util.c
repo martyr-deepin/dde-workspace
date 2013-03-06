@@ -130,6 +130,7 @@ draw_background (xfade_data_t* fade_data)
     cairo_paint_with_alpha (cr, fade_data->alpha);
     cairo_destroy (cr);
     //draw the pixmap on background window
+    g_debug ("draw background:");
     cr = gdk_cairo_create (background_window);
     cairo_set_source_surface (cr, fade_data->fading_surface, 0, 0);
     cairo_paint (cr);
@@ -904,6 +905,10 @@ initial_setup (GSettings *settings)
     fade_data->alpha = 1.0;     
 
     draw_background (fade_data);
+    cairo_pattern_t* pattern;
+    pattern = cairo_pattern_create_for_surface (fade_data->fading_surface);
+    gdk_window_set_background_pattern (background_window, pattern);
+    cairo_pattern_destroy (pattern);
     free_fade_data (fade_data);
 
     if (gsettings_background_duration && picture_num > 1)

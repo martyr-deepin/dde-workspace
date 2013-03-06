@@ -447,37 +447,40 @@ class DesktopEntry extends Item
 
 
     do_drop : (evt) =>
-        evt.stopPropagation()
-        evt.preventDefault()
-        if not is_item_been_selected(@id)
+        if not @selected
+            evt.stopPropagation()
+            evt.preventDefault()
             @display_not_hover()
+
         @item_name.style.pointerEvents = "auto"
 
 
     do_dragenter : (evt) =>
-        evt.stopPropagation()
-
-        if @selected == false
+        if not @selected
+            evt.stopPropagation()
             @display_hover()
+            evt.dataTransfer.dropEffect = "none"
 
-        evt.dataTransfer.dropEffect = "none"
         @item_name.style.pointerEvents = "none"
         return
 
 
     do_dragover : (evt) =>
-        evt.stopPropagation()
-        evt.preventDefault()
+        if not @selected
+            evt.stopPropagation()
+            evt.preventDefault()
+            evt.dataTransfer.dropEffect = "none"
 
-        evt.dataTransfer.dropEffect = "none"
         @item_name.style.pointerEvents = "none"
         return
 
 
     do_dragleave : (evt) =>
         evt.stopPropagation()
-        if @selected == false
+        evt.preventDefault()
+        if not @selected
             @display_not_hover()
+
         @item_name.style.pointerEvents = "auto"
         return
 
@@ -514,38 +517,38 @@ class Folder extends DesktopEntry
 
     do_drop : (evt) =>
         super
-
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            tmp_list.push(e)
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
-
+        if not @selected
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
 
 
     do_dragenter : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragover : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragleave : (evt) ->
         super
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.preventDefault()
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.preventDefault()
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -613,40 +616,37 @@ class RichDir extends DesktopEntry
 
     do_drop : (evt) ->
         super
-
-        tmp_list = []
-        for file in evt.dataTransfer.files
-            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-            if not e? then continue
-            if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-        if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+        if not @selected
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                if not e? then continue
+                if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
 
     do_dragenter : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
-
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragover : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
-
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragleave : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.preventDefault()
-            evt.dataTransfer.dropEffect = "move"
-
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.preventDefault()
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -931,91 +931,92 @@ class Application extends DesktopEntry
 
     do_drop : (evt) ->
         super
+        if not @selected
+            tmp_list = []
+            if (all_are_apps = (evt.dataTransfer.files.length > 0))
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                        all_are_apps = false
 
-        tmp_list = []
-        if (all_are_apps = (evt.dataTransfer.files.length > 0))
-            for file in evt.dataTransfer.files
-                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                if not e? then continue
-                if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                    all_are_apps = false
+                    tmp_list.push(e)
 
-                tmp_list.push(e)
+                if all_are_apps == true
+                    tmp_list.push(@_entry)
+                    pos = load_position(@id)
+                    if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
+                        (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
+                        id = DCore.DEntry.get_id(new_entry)
+                        if (w = Widget.look_up(id))?
+                            move_to_somewhere(w, pos)
+                        else
+                            save_position(id, pos)
+                            echo "save_position #{id}"
+                else
+                    DCore.DEntry.launch(@_entry, tmp_list)
 
-            if all_are_apps == true
-                tmp_list.push(@_entry)
-                pos = load_position(@id)
-                if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
-                    (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
-                    id = DCore.DEntry.get_id(new_entry)
-                    if (w = Widget.look_up(id))?
-                        move_to_somewhere(w, pos)
-                    else
-                        save_position(id, pos)
-                        echo "save_position #{id}"
-            else
-                DCore.DEntry.launch(@_entry, tmp_list)
-
-        if @show_luncher_box == true
-                @show_luncher_box = false
-                @set_icon()
-                @item_name.style.opacity = 1
+            if @show_luncher_box == true
+                    @show_luncher_box = false
+                    @set_icon()
+                    @item_name.style.opacity = 1
 
         return
 
 
     do_dragenter : (evt) ->
         super
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
-
-            if @show_luncher_box == false
-                if (all_are_apps = (evt.dataTransfer.files.length > 0))
-                    for file in evt.dataTransfer.files
-                        e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                        if not e? then continue
-                        if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                            all_are_apps = false
-                            break
-                    if all_are_apps
-                        @show_luncher_box = true
-                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                        @item_name.style.opacity = 0
+                if @show_luncher_box == false
+                    if (all_are_apps = (evt.dataTransfer.files.length > 0))
+                        for file in evt.dataTransfer.files
+                            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                            if not e? then continue
+                            if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                                all_are_apps = false
+                                break
+                        if all_are_apps
+                            @show_luncher_box = true
+                            @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                            @item_name.style.opacity = 0
         return
 
 
     do_dragover : (evt) ->
         super
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
 
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
-
-            if @show_luncher_box == false
-                if (all_are_apps = (evt.dataTransfer.files.length > 0))
-                    for file in evt.dataTransfer.files
-                        e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                        if not e? then continue
-                        if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
-                            all_are_apps = false
-                            break
-                    if all_are_apps
-                        @show_luncher_box = true
-                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                        @item_name.style.opacity = 0
+                if @show_luncher_box == false
+                    if (all_are_apps = (evt.dataTransfer.files.length > 0))
+                        for file in evt.dataTransfer.files
+                            e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                            if not e? then continue
+                            if all_are_apps == true and DCore.DEntry.get_type(e) != FILE_TYPE_APP
+                                all_are_apps = false
+                                break
+                        if all_are_apps
+                            @show_luncher_box = true
+                            @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
+                            @item_name.style.opacity = 0
         return
 
 
     do_dragleave : (evt) ->
         super
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.preventDefault()
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.preventDefault()
+                evt.dataTransfer.dropEffect = "move"
 
-        if @show_luncher_box == true
-            @show_luncher_box = false
-            @set_icon()
-            @item_name.style.opacity = 1
+            if @show_luncher_box == true
+                @show_luncher_box = false
+                @set_icon()
+                @item_name.style.opacity = 1
         return
 
 
@@ -1115,37 +1116,38 @@ class HomeVDir extends DesktopEntry
 
     do_drop : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            tmp_list = []
-            for file in evt.dataTransfer.files
-                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                if not e? then continue
-                tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                tmp_list = []
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    tmp_list.push(e)
+                if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
 
     do_dragenter : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragover : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragleave : (evt) ->
         super
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.preventDefault()
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.preventDefault()
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
@@ -1203,39 +1205,40 @@ class TrashVDir extends DesktopEntry
 
     do_drop : (evt) ->
         super
+        if not @selected
+            if is_item_been_selected(@id) == false
+                tmp_list = []
+                for file in evt.dataTransfer.files
+                    e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
+                    if not e? then continue
+                    tmp_list.push(e)
 
-        if is_item_been_selected(@id) == false
-            tmp_list = []
-            for file in evt.dataTransfer.files
-                e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
-                if not e? then continue
-                tmp_list.push(e)
-
-            if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
+                if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
         return
 
 
     do_dragenter : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragover : (evt) ->
         super
-
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
     do_dragleave : (evt) ->
         super
-        if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
-            evt.preventDefault()
-            evt.dataTransfer.dropEffect = "move"
+        if not @selected
+            if not _IS_DND_INTERLNAL_(evt) or not is_item_been_selected(@id)
+                evt.preventDefault()
+                evt.dataTransfer.dropEffect = "move"
         return
 
 
