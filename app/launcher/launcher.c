@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
-    /*monitor_resource_file("launcher", webview);*/
+    /* monitor_resource_file("launcher", webview); */
     gtk_widget_show_all(container);
     gtk_main();
     return 0;

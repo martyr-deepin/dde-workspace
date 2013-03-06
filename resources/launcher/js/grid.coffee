@@ -65,8 +65,13 @@ class Item extends Widget
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then DCore.DEntry.copy([@core], DCore.Launcher.get_desktop_entry())
             when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+    hide: =>
+        @element.style.display = "none"
+    show: =>
+        @element.style.display = "block"
 
 
+# get all applications and sort them by name
 _all_items = DCore.Launcher.get_items()
 _all_items.sort((lhs, rhs) ->
     lhs_name = DCore.DEntry.get_name(lhs)
@@ -86,9 +91,17 @@ for core in _all_items
 
 #export function
 grid_show_items = (items) ->
-    grid.innerHTML = ""
-    for i in items
-        grid.appendChild(applications[i].element)
+    for own key, value of applications
+        value.hide()
+
+    child_nodes = grid.childNodes
+    for id in items
+        for child in child_nodes
+            if child.id == id
+                item_to_be_showed = grid.removeChild(child)
+                break
+        grid.appendChild(item_to_be_showed)
+        applications[id].show()
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -101,17 +114,18 @@ show_grid_selected = (id)->
 grid = $('#grid')
 grid_load_category = (cat_id) ->
     show_grid_selected(cat_id)
-    if cat_id == -1
-        grid.innerHTML = ""
-        for own key, value of applications
-            grid.appendChild(value.element)
-        return
 
-    if category_infos[cat_id]
-        info = category_infos[cat_id]
-    else
-        info = DCore.Launcher.get_items_by_category(cat_id).sort()
-        category_infos[cat_id] = info
+    if not category_infos[cat_id]
+        if cat_id == -1
+            grid.innerHTML = ""
+            category_infos[cat_id] = []
+            for own key, value of applications
+                grid.appendChild(value.element)
+                category_infos[cat_id].push(key)
+        else
+            info = DCore.Launcher.get_items_by_category(cat_id).sort()
+            category_infos[cat_id] = info
 
-    grid_show_items(info)
+    grid_show_items(category_infos[cat_id])
     update_selected(null)
+

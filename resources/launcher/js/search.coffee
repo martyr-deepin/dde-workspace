@@ -162,3 +162,4 @@ DCore.signal_connect("im_commit", (info)->
 
 cursor = create_element("span", "cursor", document.body)
 cursor.innerText = "|"
+
