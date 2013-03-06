@@ -24,9 +24,10 @@
 
 #define APP_NAME "dock"
 
+enum {NO_HIDE_MODE=0, AUTO_HIDE_MODE=1, ALWAYS_HIDE_MODE=2} HideMode;
 struct _DockConfig {
-    gboolean auto_hiden;
-    gboolean mini_model;
+    int hide_mode;
+    gboolean mini_mode;
     guint32 color;
     int position; //hasn't use
 };

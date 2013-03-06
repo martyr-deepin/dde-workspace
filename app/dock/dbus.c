@@ -9,6 +9,7 @@
 //forward declaration
 void dock_request_dock(const char* path);
 void dock_show_desktop(gboolean value);
+void dock_toggle_show();
 gboolean launcher_should_exit();
 
 const char* _dock_dbus_iface_xml =
@@ -23,16 +24,15 @@ const char* _dock_dbus_iface_xml =
 "			<arg name=\"value\" type=\"b\" direction=\"in\">\n"
 "			</arg>\n"
 "		</method>\n"
-"       <method name=\"LauncherShouldExit\">\n"
-"           <arg name=\"value\" type=\"b\" direction=\"out\"></arg>\n"
+"       <method name=\"ToggleShow\">\n"
 "       </method>\n"
 "	</interface>\n"
 "</node>\n"
 ;
-static guint	dock_service_owner_id;
-static guint	dock_service_reg_id;        //used for unregister an object path
-static guint    retry_reg_timeout_id;   //timer used for retrying dbus name registration.
-static GDBusConnection* dock_connection;  
+static guint dock_service_owner_id;
+static guint dock_service_reg_id;        //used for unregister an object path
+static guint retry_reg_timeout_id;   //timer used for retrying dbus name registration.
+static GDBusConnection* dock_connection;
 
 //internal functions
 static gboolean _retry_registration (gpointer user_data);
@@ -47,9 +47,9 @@ static void _bus_method_call (GDBusConnection * connection, const gchar * sender
 static GDBusNodeInfo *      node_info = NULL;
 static GDBusInterfaceInfo * interface_info = NULL;
 static GDBusInterfaceVTable interface_table = { 
-           method_call:   _bus_method_call,
-	   get_property:   NULL, /* No properties */
-	   set_property:   NULL  /* No properties */
+    method_call:   _bus_method_call,
+    get_property:   NULL, /* No properties */
+    set_property:   NULL  /* No properties */
 };
 //
 void 
@@ -59,19 +59,19 @@ dock_setup_dbus_service ()
     node_info = g_dbus_node_info_new_for_xml (_dock_dbus_iface_xml, &error);
     if (error != NULL)
     {
-	g_critical ("Unable to parse interface xml: %s", error->message);
-	g_error_free (error);
+        g_critical ("Unable to parse interface xml: %s", error->message);
+        g_error_free (error);
     }
-    
+
     interface_info = g_dbus_node_info_lookup_interface (node_info, DOCK_DBUS_IFACE);
     if (interface_info == NULL)
     {
-	g_critical ("Unable to find interface '"DOCK_DBUS_IFACE"'");
+        g_critical ("Unable to find interface '"DOCK_DBUS_IFACE"'");
     }
 
     dock_service_owner_id = 0;
-    dock_service_reg_id = 0;   
-    retry_reg_timeout_id = 0;  
+    dock_service_reg_id = 0;
+    retry_reg_timeout_id = 0;
 
     _retry_registration (NULL);
 }
@@ -81,20 +81,20 @@ _retry_registration (gpointer user_data)
 {
 
     dock_service_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION, 
-					    DOCK_DBUS_NAME, 
-					    G_BUS_NAME_OWNER_FLAGS_NONE,
-					    dock_service_reg_id ? NULL : _on_bus_acquired, 
-					    _on_name_acquired, 
-					    _on_name_lost,
-					    NULL, 
-					    NULL);
+            DOCK_DBUS_NAME, 
+            G_BUS_NAME_OWNER_FLAGS_NONE,
+            dock_service_reg_id ? NULL : _on_bus_acquired, 
+            _on_name_acquired, 
+            _on_name_lost,
+            NULL, 
+            NULL);
     return TRUE;
 }
 
 static void 
-_on_bus_acquired (GDBusConnection * connection, 
-	          const gchar * name, 
-		  gpointer user_data)
+_on_bus_acquired (GDBusConnection * connection,
+        const gchar * name,
+        gpointer user_data)
 {
     g_debug ("on_bus_acquired");
 
@@ -103,46 +103,46 @@ _on_bus_acquired (GDBusConnection * connection,
     //register object.
     GError* error = NULL;
     dock_service_reg_id = g_dbus_connection_register_object (connection,
-							      DOCK_DBUS_OBJ,
-							      interface_info, 
-							      &interface_table,
-							      user_data, 
-							      NULL, 
-							      &error);
+            DOCK_DBUS_OBJ,
+            interface_info, 
+            &interface_table,
+            user_data, 
+            NULL, 
+            &error);
 
     if (error != NULL) 
     {
-	g_critical ("Unable to register the object to DBus: %s", error->message);
-	g_error_free (error);
-	g_bus_unown_name (dock_service_owner_id);
-	dock_service_owner_id = 0;
-	retry_reg_timeout_id = g_timeout_add_seconds(1, _retry_registration, NULL);
-	return;
+        g_critical ("Unable to register the object to DBus: %s", error->message);
+        g_error_free (error);
+        g_bus_unown_name (dock_service_owner_id);
+        dock_service_owner_id = 0;
+        retry_reg_timeout_id = g_timeout_add_seconds(1, _retry_registration, NULL);
+        return;
     }
 
-    return;	
+    return;
 }
 
-static void 
+static void
 _on_name_acquired (GDBusConnection * connection, 
-	           const gchar * name, 
-		   gpointer user_data)
+        const gchar * name, 
+        gpointer user_data)
 {
     g_debug ("Dbus name acquired");
 }
 
-static void 
+static void
 _on_name_lost (GDBusConnection * connection, 
-	       const gchar * name, 
-	       gpointer user_data)
+        const gchar * name, 
+        gpointer user_data)
 {
     if (connection == NULL) 
     {
-	g_critical("Unable to get a connection to DBus");
+        g_critical("Unable to get a connection to DBus");
     }
     else
     {
-	g_critical("Unable to claim the name %s", DOCK_DBUS_NAME);
+        g_critical("Unable to claim the name %s", DOCK_DBUS_NAME);
     }
 
     dock_service_owner_id = 0;
@@ -170,9 +170,8 @@ _bus_method_call (GDBusConnection * connection,
         gboolean value;
         g_variant_get(params, "(b)", &value);
         dock_show_desktop(value);
-    } else if (g_strcmp0(method, "LauncherShouldExit") == 0) {
-        GVariant* v = g_variant_new_boolean(launcher_should_exit());
-        retval = g_variant_new_tuple(&v, 1);
+    } else if (g_strcmp0(method, "ToggleShow") == 0) {
+        dock_toggle_show();
     } else {
         g_warning ("Calling method '%s' on dock and it's unknown", method);
     }

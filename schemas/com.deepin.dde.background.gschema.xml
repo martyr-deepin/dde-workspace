@@ -34,6 +34,16 @@
       <summary>Picture URIs</summary>
       <description>Background image URIs delimited by semicolons. Note that the backend only supports local (file://) URIs.</description>
     </key>
+    <key type="s" name="login-picture-uri">
+      <default>'file:///usr/share/backgrounds/default_background.jpg'</default>
+      <summary>Login Picture URI</summary>
+      <description>Login Picture URI</description>
+    </key>
+    <key type="s" name="lock-picture-uri">                                             
+      <default>'file:///usr/share/backgrounds/default_background.jpg'</default>    
+      <summary>Lock Picture URI</summary>                                            
+      <description>Lock Picture URI</description>                                 
+    </key>
     <key name="cross-fade-auto-mode" enum="com.deepin.dde.background.xfade-auto-mode">
       <default>"Sequential"</default>
       <summary>How pictures are chosen to draw</summary>

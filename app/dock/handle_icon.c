@@ -39,7 +39,7 @@ char* handle_icon(GdkPixbuf* icon)
     cairo_set_source_surface(cr, _board, 0, BOARD_OFFSET);
     cairo_paint(cr);
 
-    guchar* data = get_data_uri_by_surface(surface);
+    char* data = get_data_uri_by_surface(surface);
 
     cairo_surface_destroy(surface);
     cairo_destroy(cr);
@@ -61,7 +61,7 @@ char* get_data_uri_by_surface(cairo_surface_t* surface)
     __data_base64 = NULL;
     __data_size = 0;
     cairo_surface_write_to_png_stream(surface, (cairo_write_func_t)write_func, NULL);
-    guchar* base64 = g_base64_encode(__data_base64, __data_size);
+    gchar* base64 = g_base64_encode(__data_base64, __data_size);
     g_free(__data_base64);
 
     char* ret = g_strconcat("data:image/png;base64,", base64, NULL);
@@ -107,6 +107,6 @@ char* try_get_deepin_icon(const char* _app_id)
         }
     } else {
         g_free(app_id);
-        return NULL;
     }
+    return NULL;
 }

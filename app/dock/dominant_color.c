@@ -91,31 +91,6 @@ void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
         hsv2rgb(h, 0.5, 0.8, r, g, b);
 }
 
-static double _sb = 0.5;
-static double _sr = 0.0000001;
-static double _vb = 0.8;
-static double _vr = 0.0000001;
-static void _clamp1(double* s, double *v)
-{
-    *s = _sb + _sr * (*s);
-    *v = _vb + _vr * (*v);
-}
-static void _clamp2(double* s, double *v)
-{
-    *s = _sb - _sr * (*s);
-    *v = _vb + _vr * (*v);
-}
-static void _clamp3(double* s, double *v)
-{
-    *s = _sb + _sr * (*s);
-    *v = _vb - _vr * (*v);
-}
-static void _clamp4(double* s, double *v)
-{
-    *s = _sb - _sr * (*s);
-    *v = _vb - _vr * (*v);
-}
-
 void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, double *b)
 {
     g_assert(pixbuf != NULL);

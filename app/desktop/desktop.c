@@ -49,7 +49,7 @@ JSObjectRef desktop_get_desktop_entries()
         char* path = g_build_filename(desktop_path, file_name, NULL);
         Entry* e = dentry_create_by_path(path);
         g_free(path);
-        json_array_append_nobject(array, i++, e, g_object_ref, g_object_unref);
+        json_array_insert_nobject(array, i++, e, g_object_ref, g_object_unref);
         g_object_unref(e);
     }
     g_dir_close(dir);
@@ -74,6 +74,7 @@ void desktop_set_rich_dir_name(GFile* dir, const char* name)
     g_free(new_name);
 }
 
+char* dentry_get_icon_path(Entry* e);
 JS_EXPORT_API
 char* desktop_get_rich_dir_icon(GFile* _dir)
 {
@@ -88,13 +89,13 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
         if (g_str_has_suffix(child_name, ".desktop")) {
             char* path = g_build_filename(dir_path, child_name, NULL);
             Entry* entry = dentry_create_by_path(path);
-            icons[i++] = dentry_get_icon(entry);
+            icons[i++] = dentry_get_icon_path(entry);
             g_object_unref(entry);
             g_free(path);
         } else if (j<4) {
             char* path = g_build_filename(dir_path, child_name, NULL);
             Entry* entry = dentry_create_by_path(path);
-            bad_icons[j++] = dentry_get_icon(entry);
+            bad_icons[j++] = dentry_get_icon_path(entry);
             g_object_unref(entry);
             g_free(path);
         }
@@ -304,3 +305,4 @@ void desktop_emit_webview_ok()
         g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
     }
 }
+

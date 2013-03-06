@@ -20,6 +20,22 @@
 
         <div id="bottom_buttons"></div>
 
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery.roundabout.js"></script>
+        <script src="js/jquery.easing.js"></script>
+        <script src="js/jquery.smooth-scroll.js"></script>
         <script src="js/lock.js"> </script>
+        <script>
+            $("#roundabout").roundabout({
+                    tilt: 0.6,
+                    minScale: 0.5,
+                    duration: 200,
+                    easing: 'easeOutQuad',
+                    enableDrag: true,
+                    dropEasing: 'easeOutBounce'
+                }, function() {
+                    $(this).fadeTo(300, 1);
+            });
+        </script>
     </body>
 </html>

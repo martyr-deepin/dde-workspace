@@ -125,6 +125,24 @@
     border-radius:3px;  
 }
 
+.SwitchGreeter:hover, .SwitchGreeter:focus {
+    background: rgba(255,255,255,0.8);
+    color:#000;
+}
+
+.SwitchGreeter {
+    background: rgba(255,255,255,0.3);
+    border: solid 1px rgba(255,255,255,0.6); 
+    text-align: center;
+    font-size:14px;
+    line-height: 14px;
+    color: #333;
+    text-shadow: 0px 0px 3px rgba(0,0,0,0.4);
+    padding: 5px 20px;
+    border-radius: 3px;
+    box-shadow: 0px 4px 16px rgba(0,0,0,0.4);
+}
+
 .Loading {
     display: block;
     width: auto;
