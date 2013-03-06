@@ -3,7 +3,7 @@ SET(NAME "desktop")
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
-SET(SRC_LIST desktop.c background.c inotify_item.c utils.c ${JSC_GEN})
+SET(SRC_LIST desktop.c background.c background_util.c background_util.h inotify_item.c utils.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
