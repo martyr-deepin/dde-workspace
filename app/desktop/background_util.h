@@ -2,8 +2,6 @@
 #define _DEEPIN_BACKGROUND_H_
 
 #include <gio/gio.h>
-#include "gsd-background-manager.h"
-#include "gsd-background-manager-private.h"
 
 #define DEEPIN_EXPORT
 

@@ -30,7 +30,8 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 
-GdkWindow* get_background_window();
+void setup_background_window();
+GdkWindow* get_background_window ();
 void install_monitor();
 static
 GFile* _get_useable_file(const char* basename);
@@ -281,7 +282,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    setup_get_background_window();
+    setup_background_window();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;

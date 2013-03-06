@@ -7,6 +7,7 @@
 
 static GdkWindow* _background_window = NULL;
 
+
 void setup_background_window()
 {
     GdkWindowAttr attributes;
@@ -19,13 +20,16 @@ void setup_background_window()
     _background_window = gdk_window_new(NULL, &attributes, 0);
     set_wmspec_desktop_hint(_background_window);
 
-    gdk_window_move_resize(_background_window, 0, 0,
-                           gdk_window_get_width(root),
-                           gdk_window_get_height(root));
 
     bg_util_init (_background_window);
     bg_util_connect_screen_signals (_background_window);
 
     //gdk_window_show(_background_window);
     gdk_window_show_unraised(_background_window);
+}
+GdkWindow* get_background_window ()
+{
+    if (_background_window == NULL)
+	setup_background_window ();
+    return _background_window;
 }

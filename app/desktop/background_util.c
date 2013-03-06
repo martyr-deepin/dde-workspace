@@ -942,10 +942,11 @@ bg_util_init (GdkWindow* bg_window)
     root_width = DisplayWidth(display, default_screen);
     root_height = DisplayHeight(display, default_screen);
 
+    gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
+
     gdk_screen = gdk_screen_get_default();
 
     Settings = g_settings_new (BG_SCHEMA_ID);
-
     g_signal_connect (Settings, "changed::picture-uris",
 		      G_CALLBACK (bg_settings_picture_uris_changed), NULL);
     g_signal_connect (Settings, "changed::background-duration",
