@@ -2,8 +2,13 @@
 #define _DEEPIN_BACKGROUND_H_
 
 #include <gio/gio.h>
+#include "gsd-background-manager.h"
+#include "gsd-background-manager-private.h"
 
 #define DEEPIN_EXPORT
+
+#define BG_GAUSSIAN_SIGMA	10.0  //double
+#define BG_GAUSSIAN_NSTEPS	10UL  //long
 
 // all schema related information.
 #define	BG_SCHEMA_ID		"com.deepin.dde.background"
@@ -34,9 +39,10 @@ enum BgDrawMode
     DRAW_MODE_TILING = 2
 };
 
-extern void bg_util_init ();
+//exporting functions for gsd-background-manager.c
+extern void bg_util_init (GdkWindow* bg_window);
 
-extern void bg_util_connect_screen_signals ();
-extern void bg_util_disconnect_screen_signals ();
+extern void bg_util_connect_screen_signals (GdkWindow* bg_window);
+extern void bg_util_disconnect_screen_signals (GdkWindow* bg_window);
 
 #endif

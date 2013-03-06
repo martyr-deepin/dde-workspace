@@ -280,7 +280,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    get_background_window();
+    setup_get_background_window();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
