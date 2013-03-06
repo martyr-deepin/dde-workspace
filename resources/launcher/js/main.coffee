@@ -42,11 +42,13 @@ create_category = (info) ->
     "
     el.addEventListener('click', (e) ->
         e.stopPropagation()
-        grid_load_category(info.ID)
+        if s_box.value == ""
+            grid_load_category(info.ID)
     )
     el.addEventListener('mouseover', (e)->
         e.stopPropagation()
-        grid_load_category(info.ID)
+        if s_box.value == ""
+            grid_load_category(info.ID)
     )
     return el
 

@@ -69,6 +69,8 @@ class Item extends Widget
         @element.style.display = "none"
     show: =>
         @element.style.display = "block"
+    is_shown: =>
+        @element.style.display == "block"
 
 
 # get all applications and sort them by name
@@ -90,17 +92,21 @@ for core in _all_items
 # load the Desktop Entry's infomations.
 
 #export function
-grid_show_items = (items) ->
+grid_show_items = (items, is_category) ->
     for own key, value of applications
-        value.hide()
+        if value.is_shown()
+            value.hide()
+
+    if is_category
+        for i in items
+            if not applications[i].is_shown()
+                applications[i].show()
+        return
 
     child_nodes = grid.childNodes
     for id in items
-        for child in child_nodes
-            if child.id == id
-                item_to_be_showed = grid.removeChild(child)
-                break
-        grid.appendChild(item_to_be_showed)
+        item_to_be_shown = grid.removeChild($("#"+id))
+        grid.appendChild(item_to_be_shown)
         applications[id].show()
 
 show_grid_selected = (id)->
@@ -126,6 +132,6 @@ grid_load_category = (cat_id) ->
             info = DCore.Launcher.get_items_by_category(cat_id).sort()
             category_infos[cat_id] = info
 
-    grid_show_items(category_infos[cat_id])
+    grid_show_items(category_infos[cat_id], true)
     update_selected(null)
 

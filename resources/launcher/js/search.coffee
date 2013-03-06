@@ -103,7 +103,7 @@ search = ->
     ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
     ret = (item.value for item in ret)
 
-    grid_show_items(ret)
+    grid_show_items(ret, false)
     return ret
 
 $("#search").addEventListener('click', (e)->
