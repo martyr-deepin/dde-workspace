@@ -69,8 +69,6 @@ class Item extends Widget
         @element.style.display = "none"
     show: =>
         @element.style.display = "block"
-    is_shown: =>
-        @element.style.display == "block"
 
 
 # get all applications and sort them by name
@@ -94,20 +92,18 @@ for core in _all_items
 #export function
 grid_show_items = (items, is_category) ->
     for own key, value of applications
-        if value.is_shown()
-            value.hide()
+        value.hide()
 
     if is_category
-        for i in items
-            if not applications[i].is_shown()
-                applications[i].show()
+        for id in items
+            run_post(applications[id].show)
         return
 
     child_nodes = grid.childNodes
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
-        applications[id].show()
+        run_post(applications[id].show)
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -123,11 +119,12 @@ grid_load_category = (cat_id) ->
 
     if not category_infos[cat_id]
         if cat_id == -1
-            grid.innerHTML = ""
+            frag = document.createDocumentFragment()
             category_infos[cat_id] = []
             for own key, value of applications
-                grid.appendChild(value.element)
+                frag.appendChild(value.element)
                 category_infos[cat_id].push(key)
+            grid.appendChild(frag)
         else
             info = DCore.Launcher.get_items_by_category(cat_id).sort()
             category_infos[cat_id] = info

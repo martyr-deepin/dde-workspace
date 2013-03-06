@@ -33,6 +33,7 @@ DCore.Launcher.notify_workarea_size()
 
 
 _select_timeout_id = 0
+_select_category_id = 0
 create_category = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'category_name')
@@ -47,8 +48,16 @@ create_category = (info) ->
     )
     el.addEventListener('mouseover', (e)->
         e.stopPropagation()
-        if s_box.value == ""
-            grid_load_category(info.ID)
+        if s_box.value == "" and this.id != _select_category_id
+            _select_timeout_id = setTimeout(
+                ->
+                    grid_load_category(info.ID)
+                    _select_category_id = info.ID
+                , 200)
+    )
+    el.addEventListener('mouseout', (e)->
+        if _select_timeout_id != 0
+            clearTimeout(_select_timeout_id)
     )
     return el
 

@@ -142,6 +142,7 @@ document.body.onkeypress = (e) ->
             when 27
                 if s_box.value == ""
                     DCore.Launcher.exit_gui()
+                    return  # avoid search function to be called
                 else
                     s_box.value = ""
             when 8
