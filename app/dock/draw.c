@@ -20,7 +20,6 @@ void dock_draw_board(JSValueRef canvas, JSData* data)
     cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
 
     int w = gdk_screen_get_width(gdk_screen_get_default());
-    int h = 30;
 
     cairo_save(cr);
     cairo_set_source_rgba(cr,

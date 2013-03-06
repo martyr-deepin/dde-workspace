@@ -9,7 +9,7 @@
 //forward declaration
 void dock_request_dock(const char* path);
 void dock_show_desktop(gboolean value);
-void dock_toggle_show(int model);
+void dock_toggle_show();
 gboolean launcher_should_exit();
 
 const char* _dock_dbus_iface_xml =
@@ -171,7 +171,7 @@ _bus_method_call (GDBusConnection * connection,
         g_variant_get(params, "(b)", &value);
         dock_show_desktop(value);
     } else if (g_strcmp0(method, "ToggleShow") == 0) {
-        dock_toggle_show(-1);
+        dock_toggle_show();
     } else {
         g_warning ("Calling method '%s' on dock and it's unknown", method);
     }

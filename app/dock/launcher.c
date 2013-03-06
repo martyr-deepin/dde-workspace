@@ -199,7 +199,7 @@ void _save_apps_position()
     gsize size = g_list_length(_apps_position);
     GList* _tmp_list = _apps_position;
 
-    const gchar**list = g_new(char*, size);
+    const gchar**list = (const gchar**)g_new(char*, size);
     for (size_t i=0; i<size; i++) {
         list[i] = _tmp_list->data;
         _tmp_list = g_list_next(_tmp_list);

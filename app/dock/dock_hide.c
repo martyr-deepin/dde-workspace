@@ -3,7 +3,11 @@
 
 extern int _dock_height;
 extern void _change_workarea_height(int height);
+extern void update_dock_hide_mode();
 extern GdkWindow* DOCK_GDK_WINDOW();
+
+
+static void _cancel_detect_hide_mode();
 
 enum Event {
     TriggerShow,
@@ -11,7 +15,7 @@ enum Event {
     ShowNow,
     HideNow,
 };
-void handle_event(enum Event ev);
+static void handle_event(enum Event ev);
 
 enum State {
     StateShow,
@@ -20,7 +24,15 @@ enum State {
     StateHidding,
 } CURRENT_STATE = StateShow;
 
-void set_state(enum State new_state)
+gboolean dock_is_hidden()
+{
+    if (CURRENT_STATE == StateHidding)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+static void set_state(enum State new_state)
 {
     /*char* StateStr[] = { "StateShow", "StateShowing", "StateHidden", "StateHidding"};*/
     /*printf("from %s to %s\n", StateStr[CURRENT_STATE], StateStr[new_state]);*/
@@ -28,17 +40,26 @@ void set_state(enum State new_state)
 }
 
 
-void enter_show()
+static guint _detect_hide_mode_id = 0;
+static void _cancel_detect_hide_mode()
+{
+    if (_detect_hide_mode_id != 0) g_source_remove(_detect_hide_mode_id);
+}
+static void enter_show()
 {
     set_state(StateShow);
     _change_workarea_height(_dock_height);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
+    _cancel_detect_hide_mode();
+    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)update_dock_hide_mode, NULL);
 }
-void enter_hide()
+static void enter_hide()
 {
     set_state(StateHidden);
     _change_workarea_height(0);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-4);
+    _cancel_detect_hide_mode();
+    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)update_dock_hide_mode, NULL);
 }
 
 #define SHOW_HIDE_ANIMATION_STEP 6
@@ -48,7 +69,7 @@ static gboolean do_show_animation(int data);
 static guint _animation_show_id = 0;
 static guint _animation_hide_id = 0;
 
-void enter_hidding()
+static void enter_hidding()
 {
     set_state(StateHidding);
     if (_animation_show_id != 0)
@@ -56,7 +77,7 @@ void enter_hidding()
     _animation_show_id = 0;
     do_hide_animation(_dock_height);
 }
-void enter_showing()
+static void enter_showing()
 {
     set_state(StateShowing);
     if (_animation_hide_id != 0)
@@ -65,9 +86,9 @@ void enter_showing()
     do_show_animation(0);
 }
 
-
-void handle_event(enum Event ev)
+static void handle_event(enum Event ev)
 {
+    _cancel_detect_hide_mode();
     switch (CURRENT_STATE) {
         case StateShow: {
                             switch (ev) {
@@ -134,8 +155,7 @@ void handle_event(enum Event ev)
 
 
 
-static
-gboolean do_show_animation(int current_height)
+static gboolean do_show_animation(int current_height)
 {
     if (CURRENT_STATE != StateShowing) return FALSE;
 
@@ -149,8 +169,8 @@ gboolean do_show_animation(int current_height)
     }
     return FALSE;
 }
-static
-gboolean do_hide_animation(int current_height)
+
+static gboolean do_hide_animation(int current_height)
 {
     if (CURRENT_STATE != StateHidding) return FALSE;
 
@@ -166,23 +186,26 @@ gboolean do_hide_animation(int current_height)
 }
 
 
-static
-gboolean do_hide_dock()
+static gboolean do_hide_dock()
 {
     handle_event(TriggerHide);
     return FALSE;
 }
-static
-gboolean do_show_dock()
+static gboolean do_show_dock()
 {
     handle_event(TriggerShow);
     return FALSE;
 }
 static guint animation_id = 0;
+
 void dock_delay_show(int delay)
 {
-    if (animation_id != 0) g_source_remove(animation_id);
-    animation_id = g_timeout_add(delay, do_show_dock, NULL);
+    if (CURRENT_STATE == StateHidding) {
+        do_show_dock();
+    } else {
+        if (animation_id != 0) g_source_remove(animation_id);
+        animation_id = g_timeout_add(delay, do_show_dock, NULL);
+    }
 }
 void dock_delay_hide(int delay)
 {
@@ -197,4 +220,13 @@ void dock_show_now()
 void dock_hide_now()
 {
     handle_event(TriggerHide);
+}
+
+void dock_toggle_show()
+{
+    if (CURRENT_STATE == StateHidden || CURRENT_STATE == StateHidding) {
+        handle_event(TriggerShow);
+    } else if (CURRENT_STATE == StateShow || CURRENT_STATE == StateShowing) {
+        handle_event(TriggerHide);
+    }
 }

@@ -25,5 +25,6 @@ void init_task_list();
 gboolean is_has_client(const char* app_id);
 void update_task_list();
 void close_launcher_window();
+gboolean active_window_is_maximized_window();
 
 #endif

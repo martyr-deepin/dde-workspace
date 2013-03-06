@@ -264,7 +264,6 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        Atom t = (Atom)X_FETCH_32(data, i);
         if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
             XFree(data);
             return FALSE;
@@ -398,7 +397,7 @@ void _update_window_icon(Client* c)
 void _update_window_title(Client* c)
 {
     g_free(c->title);
-    long item;
+    gulong item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
         c->title = g_strdup(name);
@@ -411,7 +410,7 @@ void _update_window_title(Client* c)
 void _update_window_appid(Client* c)
 {
     char* app_id = NULL;
-    long item;
+    gulong item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
     if (s_pid != NULL) {
         char* exec_name = NULL;
@@ -474,7 +473,7 @@ void _update_window_net_state(Client* c)
 
 gboolean _is_maximized_window(Window win)
 {
-    long items;
+    gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
 
     for (int i=0; i<items; i++) {
@@ -487,10 +486,14 @@ gboolean _is_maximized_window(Window win)
     return FALSE;
 }
 
+gboolean active_window_is_maximized_window()
+{
+    return _is_maximized_window(_active_client_id);
+}
+
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
-    int type = ((XEvent*)xevent)->type;
     switch (((XEvent*)xevent)->type) {
         case PropertyNotify: {
                                  XPropertyEvent* ev = xevent;
@@ -534,14 +537,11 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 
                 if (win == _active_client_id && GD.config.hide_mode == AUTO_HIDE_MODE) {
                     if (_is_maximized_window(win)) {
-                        dock_hide_now();
+                        dock_delay_hide(500);
                     } else {
-                        dock_show_now();
+                        dock_delay_show(500);
                     }
-                } else {
-                    printf("%d is not active win:%d\n", win, _active_client_id);
                 }
-
             }
         }
     }
@@ -652,9 +652,6 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
         dest_width = dest_height * scale;
     }
 
-    double s1 = dest_width / width;
-    double s2 = dest_height / height;
-
     cairo_save(cr);
     cairo_scale(cr, dest_width / width, dest_height / height);
     gdk_cairo_set_source_window(cr, win, 0, 0);
@@ -674,10 +671,11 @@ gboolean dock_request_dock_by_client_id(double id)
         return FALSE;
     } else {
         request_by_info(c->app_id, c->exec, c->icon);
+        return TRUE;
     }
 }
 
-static 
+static
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;

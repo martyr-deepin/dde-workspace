@@ -36,7 +36,6 @@ void dock_change_workarea_height(double height);
 int _dock_height = 60;
 static int _screen_width = 0;
 static int _screen_height = 0;
-static gboolean _is_dock_showing = TRUE;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
@@ -48,7 +47,7 @@ gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 }
 gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
-    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
+    if (GD.config.hide_mode != NO_HIDE_MODE) {
         dock_delay_show(300);
     }
     return FALSE;
@@ -181,15 +180,13 @@ void dock_emit_webview_ok()
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
         dock_hide_now();
-        _is_dock_showing = FALSE;
     } else {
-        _is_dock_showing = TRUE;
     }
 }
 
 void _change_workarea_height(int height)
 {
-    if (GD.is_webview_loaded && GD.config.hide_mode != ALWAYS_HIDE_MODE ) {
+    if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
         set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, _screen_width);
     } else {
         set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, _screen_width);
@@ -216,25 +213,26 @@ void dock_toggle_launcher(gboolean show)
     }
 }
 
-//TODO: reset the show status according to show mode.
-void dock_toggle_show(int mode)
-{
-    switch (mode) {
-        case -1: _is_dock_showing = !_is_dock_showing; break;
-        case 0: _is_dock_showing = FALSE; break;
-        case 1: _is_dock_showing = TRUE; break;
-        default: g_assert_not_reached();
-    }
-    if (_is_dock_showing != mode) {
-        if (_is_dock_showing) {
-            dock_show_now();
-        } else {
-            dock_hide_now();
-        }
-    }
-}
 
 void update_dock_hide_mode()
 {
+    if (!GD.is_webview_loaded) return;
     dock_change_workarea_height(_dock_height);
+    switch (GD.config.hide_mode) {
+        case ALWAYS_HIDE_MODE: {
+                                   dock_hide_now();
+                                   break;
+                               }
+        case AUTO_HIDE_MODE: {
+                                 if (active_window_is_maximized_window())
+                                     dock_hide_now();
+                                 else
+                                     dock_show_now();
+                                 break;
+                             }
+        case NO_HIDE_MODE: {
+                               dock_show_now();
+                               break;
+                           }
+    }
 }
