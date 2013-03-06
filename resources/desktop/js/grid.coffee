@@ -463,16 +463,33 @@ item_dragend_handler = (w, evt) ->
 
         if coord_x_shift == 0 and coord_y_shift == 0 then return
 
+        far_pos = {x : 0, y : 0, width : 1, height : 1}
+
+        if coord_x_shift == 0
+            far_pos.x = new_pos.x
+        else if coord_y_shift == 0
+            far_pos.y = new_pos.y
+        else
+            k = (new_pos.y - old_pos.y) / (new_pos.x - old_pos.x)
+            b = (old_pos.y * new_pos.x - old_pos.x * new_pos.y) / (new_pos.x - old_pos.x)
+            if k < 0
+                far_pos.x = (0 - b) / k
+            else
+                far_pos.y = b
+
         ordered_list = new Array()
         distance_list = new Array()
         for i in selected_item
             if not (pos = load_position(i))? then continue
-            dis = calc_pos_to_pos_distance(new_pos, pos)
+            dis = calc_pos_to_pos_distance(far_pos, pos)
             for j in [0 ... distance_list.length]
                 if dis < distance_list[j]
                     break
             ordered_list.splice(j, 0, i)
             distance_list.splice(j, 0, dis)
+
+        if (coord_x_shift <= 0 and coord_y_shift > 0) or (coord_x_shift > 0 and coord_y_shift >= 0)
+            ordered_list.reverse()
 
         for i in ordered_list
             w = Widget.look_up(i)

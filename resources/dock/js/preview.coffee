@@ -144,12 +144,8 @@ Preview_close_now = ->
 
 _current_active_pw_window = null
 Preview_active_window_changed = (w_id) ->
-    if _current_active_pw_window == null
-        echo "1_current_active_pw_window == null"
     _current_active_pw_window?.to_normal()
     _current_active_pw_window = Widget.look_up("pw#{w_id}")
-    if _current_active_pw_window == null
-        echo "2_current_active_pw_window == null"
     _current_active_pw_window?.to_active()
 
 class PreviewWindow extends Widget
@@ -194,8 +190,4 @@ class PreviewWindow extends Widget
 
 DCore.signal_connect("leave-notify", ->
     Preview_close()
-)
-
-DCore.signal_connect("active_window_changed", (info)->
-    echo "Active changed"
 )
