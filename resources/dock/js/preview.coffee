@@ -57,7 +57,7 @@ class PWContainer extends Widget
         @_update_id = setInterval(=>
             for pw in @element.children
                 Widget.look_up(pw.id)?.update_content()
-        , 200)
+        , 500)
 
     _calc_size: ->
         n = @_current_group.n_clients.length
@@ -108,7 +108,6 @@ class PWContainer extends Widget
 
     remove: (pw)->
         # used by other
-        @arrow.hide()
         pw?.destroy
         @_calc_size()
 
