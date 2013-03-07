@@ -39,24 +39,23 @@ extern Window get_dock_window();
 #include <math.h>
 
 
-Atom ATOM_CLIENT_LIST;
-Atom ATOM_ACTIVE_WINDOW;
-Atom ATOM_WINDOW_ICON;
-Atom ATOM_WINDOW_TYPE;
-Atom ATOM_WINDOW_TYPE_NORMAL;
-Atom ATOM_WINDOW_NAME;
-Atom ATOM_WINDOW_CLASS;
-Atom ATOM_WINDOW_PID;
-Atom ATOM_WINDOW_NET_STATE;
-Atom ATOM_CLOSE_WINDOW;
-Atom ATOM_SHOW_DESKTOP;
-Atom ATOM_ACTION_ADD;
-Atom ATOM_WINDOW_STATE_HIDDEN;
-Atom ATOM_WINDOW_MAXIMIZED_VERT;
-Atom ATOM_WINDOW_SKIP_TASKBAR;
-Atom ATOM_XEMBED_INFO;
-Display* _dsp = NULL;
-void _init_atoms()
+static Atom ATOM_CLIENT_LIST;
+static Atom ATOM_ACTIVE_WINDOW;
+static Atom ATOM_WINDOW_ICON;
+static Atom ATOM_WINDOW_TYPE;
+static Atom ATOM_WINDOW_TYPE_NORMAL;
+static Atom ATOM_WINDOW_NAME;
+static Atom ATOM_WINDOW_PID;
+static Atom ATOM_WINDOW_NET_STATE;
+static Atom ATOM_CLOSE_WINDOW;
+static Atom ATOM_SHOW_DESKTOP;
+static Atom ATOM_ACTION_ADD;
+static Atom ATOM_WINDOW_STATE_HIDDEN;
+static Atom ATOM_WINDOW_MAXIMIZED_VERT;
+static Atom ATOM_WINDOW_SKIP_TASKBAR;
+static Atom ATOM_XEMBED_INFO;
+static Display* _dsp = NULL;
+static void _init_atoms()
 {
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
@@ -91,9 +90,9 @@ typedef struct {
     gboolean need_update_icon;
 } Client;
 
-GHashTable* _clients_table = NULL;
-Window _active_client_id = 0;
-Window _launcher_id = 0;
+static GHashTable* _clients_table = NULL;
+static Window _active_client_id = 0;
+static Window _launcher_id = 0;
 
 static
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
@@ -104,9 +103,8 @@ void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
 void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
-
-void _update_task_list(Window root);
-void update_active_window(Display* display, Window root);
+static void _update_task_list(Window root);
+static void update_active_window(Display* display, Window root);
 void client_free(Client* c);
 
 Client* create_client_from_window(Window w)
@@ -472,11 +470,7 @@ void _update_window_net_state(Client* c)
     if (is_skip_taskbar(c->window)) {
         g_hash_table_remove(_clients_table, GINT_TO_POINTER(c->window));
     } else {
-        if (_is_maximized_window(c->window)) {
-            c->is_overlay_dock = TRUE;
-        } else {
-            _update_is_overlay_client(c);
-        }
+        _update_is_overlay_client(c);
     }
     dock_update_hide_mode();
 }
@@ -543,28 +537,25 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     } else if (xev->type == ConfigureNotify) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(win));
         _update_is_overlay_client(c);
-        //TODO: There should be only update hide mode when all client's overlay realy changed
-        dock_update_hide_mode();
     }
     return GDK_FILTER_CONTINUE;
 }
 void _update_is_overlay_client(Client* c)
 {
+    gboolean is_overlay = FALSE;
     if (_is_maximized_window(c->window)) {
-        c->is_overlay_dock = TRUE;
+        is_overlay = TRUE;
     } else {
         cairo_region_t* r = gdk_window_get_visible_region(c->gdkwindow);
         int x, y;
-        gdk_window_flush(c->gdkwindow);
         gdk_window_get_origin(c->gdkwindow, &x, &y);
         cairo_region_translate(r, x, y);
-
-        if (dock_region_overlay(r)) {
-            c->is_overlay_dock = TRUE;
-        } else {
-            c->is_overlay_dock = FALSE;
-        }
+        is_overlay = dock_region_overlay(r);
         cairo_region_destroy(r);
+    }
+    if (c->is_overlay_dock != is_overlay) {
+        c->is_overlay_dock = is_overlay;
+        dock_update_hide_mode();
     }
 }
 
@@ -717,8 +708,4 @@ gboolean is_has_client(const char* app_id)
         return TRUE;
     else
         return FALSE;
-}
-
-cairo_region_t* dock_get_clients_region()
-{
 }

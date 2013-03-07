@@ -53,14 +53,32 @@ void dock_set_region_origin(double x, double y)
     _base_rect.y = y;
 }
 
-gboolean dock_region_overlay(const cairo_region_t* r)
+void show_region(cairo_region_t* r)
 {
-    int n = cairo_region_num_rectangles(_region);
+    int n = cairo_region_num_rectangles(r);
     for (int i=0; i<n; i++) {
         cairo_rectangle_int_t tmp;
-        cairo_region_get_rectangle(_region, i, &tmp);
-        if (cairo_region_contains_rectangle(r, &tmp) != CAIRO_REGION_OVERLAP_OUT)
-            return TRUE;
+        cairo_region_get_rectangle(r, i, &tmp);
+        printf("%d(%d %d %d %d)\n", i, tmp.x, tmp.y, tmp.width, tmp.height);
     }
+    printf("\n");
+}
+
+gboolean dock_region_overlay(const cairo_region_t* r)
+{
+    cairo_region_t* region = cairo_region_copy(_region);
+    cairo_region_intersect_rectangle(region, &_base_rect);
+    int n = cairo_region_num_rectangles(region);
+    /*show_region(region);*/
+
+    for (int i=0; i<n; i++) {
+        cairo_rectangle_int_t tmp;
+        cairo_region_get_rectangle(region, i, &tmp);
+        if (cairo_region_contains_rectangle(r, &tmp) != CAIRO_REGION_OVERLAP_OUT) {
+            cairo_region_destroy(region);
+            return TRUE;
+        }
+    }
+    cairo_region_destroy(region);
     return FALSE;
 }
