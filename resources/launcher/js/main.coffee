@@ -49,12 +49,13 @@ create_category = (info) ->
     )
     el.addEventListener('mouseover', (e)->
         e.stopPropagation()
-        if s_box.value == "" and info.ID != _select_category_id
+        if info.ID != _select_category_id
+            s_box.value = "" if s_box.value != ""
             _select_timeout_id = setTimeout(
                 ->
                     grid_load_category(info.ID)
                     _select_category_id = info.ID
-                , 200)
+                , 50)
     )
     el.addEventListener('mouseout', (e)->
         if _select_timeout_id != 0
