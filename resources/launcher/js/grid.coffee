@@ -38,6 +38,7 @@ class Item extends Widget
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true
+        @element.style.display = "none"
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
 
     do_click : (e)->
@@ -95,19 +96,32 @@ update_items = (items) ->
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
 
+update_scroll_bar = (items) ->
+    `const item_width = 120`
+    `const item_height = 112`
+    `const lines = parseInt(item_width * items.length / grid.clientWidth) + 1`
+
+    if lines * item_height >= grid.clientHeight
+        grid.style.overflowY = "scroll"
+    else
+        grid.style.overflowY = "hidden"
+
 #export function
 grid_show_items = (items, is_category) ->
+    update_scroll_bar(items)
+
+    for own key, value of applications
+        if key not in items
+            value.hide()
+
     if not is_category
         update_items(items)
 
     `const num_shown_once = 10`
     count = 0
     for id in items
-        setTimeout(applications[id].show, 1 + parseInt(count++ / num_shown_once))
-
-    for own key, value of applications
-        if key not in items
-            value.hide()
+        group_num = parseInt(count++ / num_shown_once)
+        setTimeout(applications[id].show, 4 + group_num)
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
