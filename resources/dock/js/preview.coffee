@@ -26,24 +26,24 @@ class Arrow extends Widget
         arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
     move_to: (left)->
         @element.style.left = left + "px"
-        @show()
-    show: ->
-        @element.style.display = "block"
-    hide: ->
-        @element.style.display = "none"
 
 
 class PWContainer extends Widget
     constructor: (@id)->
         super
         @border = create_element("div", "PWBorder", document.body)
+        @hide()
         @border.appendChild(@element)
         @is_showing = false
         @_current_group = null
         @_update_id = -1
         @arrow = new Arrow("PreviewArrow")
-        @arrow.hide()
         @border.appendChild(@arrow.element)
+
+    hide: ->
+        @border.style.display = "none"
+    show: ->
+        @border.style.display = "block"
 
     append: (el)->
         @element.appendChild(el)
@@ -76,7 +76,7 @@ class PWContainer extends Widget
 
 
     remove_all: ->
-        @arrow.hide()
+        @hide()
         DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
         clearInterval(@_update_id)
         tmp = []
@@ -94,6 +94,8 @@ class PWContainer extends Widget
         return if @_current_group == group
         @remove_all()
         @_current_group = group
+        return if @_current_group.n_clients.length == 0
+        @show()
         group.n_clients.forEach( (id)=>
             info = group.client_infos[id]
             if not Widget.look_up("pw"+id)
