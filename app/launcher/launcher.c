@@ -139,6 +139,14 @@ void launcher_notify_workarea_size()
 
 static GHashTable* _category_table = NULL;
 
+static gboolean _is_exist = FALSE;
+
+static
+void _handler(gpointer data, gpointer user_data)
+{
+    _is_exist = g_strcmp0((const char*)data, (const char*)user_data) == 0;
+}
+
 static
 void _append_to_category(const char* path, int* cs)
 {
@@ -153,14 +161,22 @@ void _append_to_category(const char* path, int* cs)
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
 
+    GPtrArray* l = NULL;
+
     while (*cs != CATEGORY_END_TAG) {
         gpointer id = GINT_TO_POINTER(*cs);
-        GPtrArray* l = g_hash_table_lookup(_category_table, id);
+        l = g_hash_table_lookup(_category_table, id);
+        _is_exist = FALSE;
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
             g_hash_table_insert(_category_table, id, l);
+            _is_exist = TRUE;
+        } else {
+            g_ptr_array_foreach(l, _handler, (gpointer)path);
         }
-        g_ptr_array_add(l, g_strdup(path));
+
+        if (!_is_exist)
+            g_ptr_array_add(l, g_strdup(path));
 
         cs++;
     }
