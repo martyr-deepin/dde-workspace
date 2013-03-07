@@ -181,6 +181,11 @@ void desktop_notify_workarea_size()
 {
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
+    //reserve the bottom (60 x width) area even dock is not show
+    int root_height = gdk_screen_get_height (gdk_screen_get_default ());
+    if (height + 60 > root_height)
+	height = root_height - 60;
+
     char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
     js_post_message_simply("workarea_changed", tmp);
 }
