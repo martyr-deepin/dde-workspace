@@ -24,7 +24,6 @@ body {
     background: rgba(0, 0, 0, 0.15);
     color: white;
     overflow-y: hidden;
-    -webkit-animation: linear-show 1s ease-out;
 }
 
 .close {

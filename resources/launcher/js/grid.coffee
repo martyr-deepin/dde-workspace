@@ -89,21 +89,25 @@ for core in _all_items
     applications[id] = new Item(id, core)
 # load the Desktop Entry's infomations.
 
-#export function
-grid_show_items = (items, is_category) ->
-    for own key, value of applications
-        value.hide()
-
-    if is_category
-        for id in items
-            run_post(applications[id].show)
-        return
-
+update_items = (items) ->
     child_nodes = grid.childNodes
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
-        run_post(applications[id].show)
+
+#export function
+grid_show_items = (items, is_category) ->
+    if not is_category
+        update_items(items)
+
+    `const num_shown_once = 10`
+    count = 0
+    for id in items
+        setTimeout(applications[id].show, 1 + parseInt(count++ / num_shown_once))
+
+    for own key, value of applications
+        if key not in items
+            value.hide()
 
 show_grid_selected = (id)->
     cns = $s(".category_name")

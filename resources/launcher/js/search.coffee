@@ -142,9 +142,11 @@ document.body.onkeypress = (e) ->
             when 27
                 if s_box.value == ""
                     DCore.Launcher.exit_gui()
-                    return  # avoid search function to be called
                 else
                     s_box.value = ""
+                    update_items(category_infos[_all_category_id])
+                    grid_load_category(_select_category_id)
+                return  # avoid to invoke search function
             when 8
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
             when 13
