@@ -7,5 +7,7 @@ void dock_show_now();
 void dock_hide_now();
 
 void dock_toggle_show();
+void dock_update_hide_mode();
 
+void init_dock_guard_window();
 #endif

@@ -27,7 +27,7 @@
 struct _GlobalData GD;
 void update_dock_size_mode();
 void update_dock_color();
-void update_dock_hide_mode();
+void dock_update_hide_mode();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
@@ -39,7 +39,7 @@ void setting_changed(GSettings* s, gchar* key, gpointer user_data)
         update_dock_color();
     } else if (g_strcmp0(key, "hide-mode") == 0) {
         GD.config.hide_mode = g_settings_get_enum(s, key);
-        update_dock_hide_mode();
+        dock_update_hide_mode();
     }
 }
 

@@ -28,6 +28,7 @@
 #include "handle_icon.h"
 #include "tasklist.h"
 #include "dock_hide.h"
+#include "region.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -81,7 +82,7 @@ typedef struct {
     char* app_id; /*current is executabe file's name*/
     char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
-    gboolean is_maximized;
+    gboolean is_overlay_dock;
 
     Window window;
     GdkWindow* gdkwindow;
@@ -98,9 +99,11 @@ static
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
 
 void _update_window_icon(Client *c);
-void _update_window_title(Client *c); 
+void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
+void _update_is_overlay_client(Client* c);
+static gboolean _is_maximized_window(Window win);
 
 void _update_task_list(Window root);
 void update_active_window(Display* display, Window root);
@@ -112,13 +115,13 @@ Client* create_client_from_window(Window w)
     if (win == NULL)
         return NULL;
     g_assert(win != NULL);
-    gdk_window_set_events(win, GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
+    gdk_window_set_events(win, GDK_STRUCTURE_MASK | GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
     Client* c = g_new0(Client, 1);
     c->window = w;
     c->gdkwindow = win;
-    c->is_maximized = FALSE;
+    c->is_overlay_dock = FALSE;
     c->app_id = NULL;
     c->exec = NULL;
 
@@ -466,12 +469,19 @@ void _update_window_class(Client* c)
 
 void _update_window_net_state(Client* c)
 {
-    if (is_skip_taskbar(c->window))
+    if (is_skip_taskbar(c->window)) {
         g_hash_table_remove(_clients_table, GINT_TO_POINTER(c->window));
-    //TODO: update other info
+    } else {
+        if (_is_maximized_window(c->window)) {
+            c->is_overlay_dock = TRUE;
+        } else {
+            _update_is_overlay_client(c);
+        }
+    }
+    dock_update_hide_mode();
 }
 
-gboolean _is_maximized_window(Window win)
+static gboolean _is_maximized_window(Window win)
 {
     gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
@@ -485,12 +495,6 @@ gboolean _is_maximized_window(Window win)
     XFree(data);
     return FALSE;
 }
-
-gboolean active_window_is_maximized_window()
-{
-    return _is_maximized_window(_active_client_id);
-}
-
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
@@ -534,18 +538,44 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
-
-                if (win == _active_client_id && GD.config.hide_mode == AUTO_HIDE_MODE) {
-                    if (_is_maximized_window(win)) {
-                        dock_delay_hide(500);
-                    } else {
-                        dock_delay_show(500);
-                    }
-                }
             }
         }
+    } else if (xev->type == ConfigureNotify) {
+        Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(win));
+        _update_is_overlay_client(c);
+        //TODO: There should be only update hide mode when all client's overlay realy changed
+        dock_update_hide_mode();
     }
     return GDK_FILTER_CONTINUE;
+}
+void _update_is_overlay_client(Client* c)
+{
+    if (_is_maximized_window(c->window)) {
+        c->is_overlay_dock = TRUE;
+    } else {
+        cairo_region_t* r = gdk_window_get_visible_region(c->gdkwindow);
+        int x, y;
+        gdk_window_flush(c->gdkwindow);
+        gdk_window_get_origin(c->gdkwindow, &x, &y);
+        cairo_region_translate(r, x, y);
+
+        if (dock_region_overlay(r)) {
+            c->is_overlay_dock = TRUE;
+        } else {
+            c->is_overlay_dock = FALSE;
+        }
+        cairo_region_destroy(r);
+    }
+}
+
+static
+gboolean _find_overlay_window(gpointer key, Client* c)
+{
+    return c->is_overlay_dock;
+}
+gboolean dock_has_overlay_client()
+{
+    return g_hash_table_find(_clients_table, (GHRFunc)_find_overlay_window, NULL) != NULL;
 }
 
 
@@ -557,7 +587,6 @@ void init_task_list()
     _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free);
 
     GdkWindow* root = gdk_get_default_root_window();
-    /*gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | GDK_POINTER_MOTION_MASK | gdk_window_get_events(root));*/
     gdk_window_set_events(root, GDK_PROPERTY_CHANGE_MASK | gdk_window_get_events(root));
 
     gdk_window_add_filter(root, monitor_root_change, NULL);
@@ -688,4 +717,8 @@ gboolean is_has_client(const char* app_id)
         return TRUE;
     else
         return FALSE;
+}
+
+cairo_region_t* dock_get_clients_region()
+{
 }

@@ -36,13 +36,14 @@ void dock_change_workarea_height(double height);
 int _dock_height = 60;
 int _screen_width = 0;
 int _screen_height = 0;
+GdkWindow* get_dock_guard_window();
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
-        dock_delay_hide(1000);
-    else if (GD.config.hide_mode == AUTO_HIDE_MODE && active_window_is_maximized_window())
-        dock_delay_hide(1000);
+        dock_delay_hide(500);
+    else if (GD.config.hide_mode == AUTO_HIDE_MODE)
+        dock_update_hide_mode();
     js_post_message_simply("leave-notify", NULL);
     return FALSE;
 }
@@ -173,6 +174,7 @@ void dock_emit_webview_ok()
         init_task_list();
         remove_me_run_tray_icon();
         update_dock_size_mode();
+        init_dock_guard_window();
     } else {
         update_dock_apps();
         update_task_list();
@@ -211,29 +213,5 @@ void dock_toggle_launcher(gboolean show)
         dcore_run_command("launcher");
     } else {
         close_launcher_window();
-    }
-}
-
-
-void update_dock_hide_mode()
-{
-    if (!GD.is_webview_loaded) return;
-    dock_change_workarea_height(_dock_height);
-    switch (GD.config.hide_mode) {
-        case ALWAYS_HIDE_MODE: {
-                                   dock_hide_now();
-                                   break;
-                               }
-        case AUTO_HIDE_MODE: {
-                                 if (active_window_is_maximized_window())
-                                     dock_hide_now();
-                                 else
-                                     dock_show_now();
-                                 break;
-                             }
-        case NO_HIDE_MODE: {
-                               dock_show_now();
-                               break;
-                           }
     }
 }
