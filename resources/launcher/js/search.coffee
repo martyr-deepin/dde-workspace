@@ -103,7 +103,7 @@ search = ->
     ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
     ret = (item.value for item in ret)
 
-    grid_show_items(ret)
+    grid_show_items(ret, false)
     return ret
 
 $("#search").addEventListener('click', (e)->
@@ -144,6 +144,9 @@ document.body.onkeypress = (e) ->
                     DCore.Launcher.exit_gui()
                 else
                     s_box.value = ""
+                    update_items(category_infos[_all_application_category_id])
+                    grid_load_category(_select_category_id)
+                return  # avoid to invoke search function
             when 8
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
             when 13
@@ -162,3 +165,4 @@ DCore.signal_connect("im_commit", (info)->
 
 cursor = create_element("span", "cursor", document.body)
 cursor.innerText = "|"
+
