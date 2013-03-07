@@ -34,9 +34,13 @@
 }
 
 .ShowItem img{
-   height:16px;
-   width: 16px;
-   margin-top:2px;
+    height:16px;
+    width: 16px;
+    margin-top:2px;
+}
+
+#desktop img, #desktop_menu img{
+    border:solid 1px rgba(0,0,0,0.3);
 }
 
 #desktop .ShowItem:hover {
@@ -86,8 +90,7 @@
 
 .MenuImg {
     width:16px;
-    heigth:16px;
-    border: white 1px solid;
+    height:16px;
     margin: 2px 0 0 0px;
 }
 

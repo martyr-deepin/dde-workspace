@@ -252,19 +252,16 @@ class Item extends Widget
 
     item_selected : ->
         @display_selected()
+        @item_name.style.pointerEvents = "auto"
         @selected = true
         return
 
-    item_selected : ->
-        @display_selected()
-        @selected = true
-        return
 
     item_normal : ->
         @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
         @display_not_selected()
-
+        @item_name.style.pointerEvents = "none"
         @selected = false
         @clicked_before = 0
         return
@@ -451,8 +448,7 @@ class DesktopEntry extends Item
             evt.stopPropagation()
             evt.preventDefault()
             @display_not_hover()
-
-        @item_name.style.pointerEvents = "auto"
+        return
 
 
     do_dragenter : (evt) =>
@@ -460,8 +456,6 @@ class DesktopEntry extends Item
             evt.stopPropagation()
             @display_hover()
             evt.dataTransfer.dropEffect = "none"
-
-        @item_name.style.pointerEvents = "none"
         return
 
 
@@ -470,8 +464,6 @@ class DesktopEntry extends Item
             evt.stopPropagation()
             evt.preventDefault()
             evt.dataTransfer.dropEffect = "none"
-
-        @item_name.style.pointerEvents = "none"
         return
 
 
@@ -480,8 +472,6 @@ class DesktopEntry extends Item
         evt.preventDefault()
         if not @selected
             @display_not_hover()
-
-        @item_name.style.pointerEvents = "auto"
         return
 
 
