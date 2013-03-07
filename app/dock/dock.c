@@ -39,9 +39,10 @@ int _screen_height = 0;
 
 gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
-    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
+    if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
         dock_delay_hide(1000);
-    }
+    else if (GD.config.hide_mode == AUTO_HIDE_MODE && active_window_is_maximized_window())
+        dock_delay_hide(1000);
     js_post_message_simply("leave-notify", NULL);
     return FALSE;
 }
@@ -151,7 +152,7 @@ void update_dock_color()
         js_post_message_simply("dock_color_changed", NULL);
 }
 
-void update_dock_show_mode()
+void update_dock_size_mode()
 {
     if (GD.config.mini_mode) {
         js_post_message_simply("in_mini_mode", NULL);
@@ -171,11 +172,11 @@ void dock_emit_webview_ok()
         init_launchers();
         init_task_list();
         remove_me_run_tray_icon();
-        update_dock_show_mode();
+        update_dock_size_mode();
     } else {
         update_dock_apps();
         update_task_list();
-        update_dock_show_mode();
+        update_dock_size_mode();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {

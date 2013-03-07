@@ -7,8 +7,6 @@ extern void _change_workarea_height(int height);
 extern void update_dock_hide_mode();
 extern GdkWindow* DOCK_GDK_WINDOW();
 
-
-
 enum Event {
     TriggerShow,
     TriggerHide,
