@@ -101,7 +101,7 @@ void _update_window_icon(Client *c);
 void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
-void _update_is_overlay_client(Client* c);
+static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
 static void _update_task_list(Window root);
 static void update_active_window(Display* display, Window root);
@@ -546,12 +546,10 @@ void _update_is_overlay_client(Client* c)
     if (_is_maximized_window(c->window)) {
         is_overlay = TRUE;
     } else {
-        cairo_region_t* r = gdk_window_get_visible_region(c->gdkwindow);
-        int x, y;
-        gdk_window_get_origin(c->gdkwindow, &x, &y);
-        cairo_region_translate(r, x, y);
-        is_overlay = dock_region_overlay(r);
-        cairo_region_destroy(r);
+        cairo_rectangle_int_t tmp;
+        gdk_window_get_geometry(c->gdkwindow, &(tmp.x), &(tmp.y), &(tmp.width), &(tmp.height));
+        gdk_window_get_origin(c->gdkwindow, &(tmp.x), &(tmp.y));
+        is_overlay = dock_region_overlay(&tmp);
     }
     if (c->is_overlay_dock != is_overlay) {
         c->is_overlay_dock = is_overlay;
