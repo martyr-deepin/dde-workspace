@@ -170,7 +170,6 @@ void _append_to_category(const char* path, int* cs)
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
             g_hash_table_insert(_category_table, id, l);
-            _is_exist = TRUE;
         } else {
             g_ptr_array_foreach(l, _handler, (gpointer)path);
         }
