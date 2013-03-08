@@ -70,6 +70,26 @@ class Item extends Widget
         @element.style.display = "none"
     show: =>
         @element.style.display = "block"
+    is_shown: =>
+        @element.style.display == "block"
+    selecte: =>
+        @element.setAttribute("class", "item item_selected")
+    unselecte: =>
+        @element.setAttribute("class", "item")
+    next_shown: =>
+        next_sibling_id = @element.nextElementSibling?.id
+        if next_sibling_id
+            n = applications[next_sibling_id]
+            if n.is_shown() then n else n.next_shown()
+        else
+            null
+    prev_shown: =>
+        prev_sibling_id = @element.previousElementSibling?.id
+        if prev_sibling_id
+            n = applications[prev_sibling_id]
+            if n.is_shown() then n else n.prev_shown()
+        else
+            null
 
 
 # get all applications and sort them by name
@@ -96,18 +116,19 @@ update_items = (items) ->
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
 
+`const ITEM_WIDTH = 122`
+`const ITEM_HEIGHT = 132`
 update_scroll_bar = (items) ->
-    `const item_width = 120`
-    `const item_height = 112`
-    `const lines = parseInt(item_width * items.length / grid.clientWidth) + 1`
+    lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
 
-    if lines * item_height >= grid.clientHeight
+    if lines * ITEM_HEIGHT >= grid.clientHeight
         grid.style.overflowY = "scroll"
     else
         grid.style.overflowY = "hidden"
 
 #export function
 grid_show_items = (items, is_category) ->
+    item_selected = null
     update_scroll_bar(items)
 
     for own key, value of applications
@@ -117,10 +138,10 @@ grid_show_items = (items, is_category) ->
     if not is_category
         update_items(items)
 
-    `const num_shown_once = 10`
+    `const NUM_SHOWN_ONCE = 10`
     count = 0
     for id in items
-        group_num = parseInt(count++ / num_shown_once)
+        group_num = parseInt(count++ / NUM_SHOWN_ONCE)
         setTimeout(applications[id].show, 4 + group_num)
 
 show_grid_selected = (id)->
