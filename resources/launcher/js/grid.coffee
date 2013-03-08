@@ -90,6 +90,8 @@ class Item extends Widget
             if n.is_shown() then n else n.prev_shown()
         else
             null
+    scroll_to_view: =>
+        @element.scrollIntoViewIfNeeded()
 
 
 # get all applications and sort them by name

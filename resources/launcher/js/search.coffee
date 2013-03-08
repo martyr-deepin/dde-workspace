@@ -43,6 +43,7 @@ selected_next = ->
         return
     n = item_selected.next_shown()
     if n
+        n.scroll_to_view()
         update_selected(n)
 selected_prev = ->
     if not item_selected
@@ -51,6 +52,7 @@ selected_prev = ->
         return
     n = item_selected.prev_shown()
     if n
+        n.scroll_to_view()
         update_selected(n)
 
 selected_down = ->
@@ -61,8 +63,10 @@ selected_down = ->
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
+            n.scroll_to_view()
             n = n.next_shown()
     if n
+        n.scroll_to_view()
         update_selected(n)
     grid.scrollTop += SCROLL_STEP_LEN
 
@@ -74,8 +78,10 @@ selected_up = ->
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
+            n.scroll_to_view()
             n = n.prev_shown()
     if n
+        n.scroll_to_view()
         update_selected(n)
     grid.scrollTop -= SCROLL_STEP_LEN
 
