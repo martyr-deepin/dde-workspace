@@ -72,9 +72,9 @@ class Item extends Widget
         @element.style.display = "block"
     is_shown: =>
         @element.style.display == "block"
-    selecte: =>
+    select: =>
         @element.setAttribute("class", "item item_selected")
-    unselecte: =>
+    unselect: =>
         @element.setAttribute("class", "item")
     next_shown: =>
         next_sibling_id = @element.nextElementSibling?.id
@@ -128,6 +128,7 @@ update_scroll_bar = (items) ->
 
 #export function
 grid_show_items = (items, is_category) ->
+    item_selected?.unselect()
     item_selected = null
     update_scroll_bar(items)
 

@@ -25,9 +25,9 @@ s_box = $('#s_box')
 item_selected = null
 
 update_selected = (el)->
-    item_selected?.unselecte()
+    item_selected?.unselect()
     item_selected = el
-    item_selected?.selecte()
+    item_selected?.select()
 
 get_first_shown = ->
     first_item = applications[$(".item").id]
@@ -83,7 +83,6 @@ get_item_row_count = ->
     parseInt(grid.clientWidth / ITEM_WIDTH)
 
 search = ->
-    item_selected = null
     ret = []
     key = s_box.value.toLowerCase()
 
