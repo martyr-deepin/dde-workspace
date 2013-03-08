@@ -924,6 +924,7 @@ int main(int argc, char **argv)
     GdkRectangle geometry;
 
     signal(SIGTERM, sigterm_cb);
+    signal(SIGKILL, sigterm_cb);
 
     init_i18n();
     gtk_init(&argc, &argv);
