@@ -139,7 +139,7 @@ document.body.onkeypress = (e) ->
                 s_box.value += String.fromCharCode(e.which)
     else
         switch e.which
-            when 27
+            when 27 # ESC
                 if s_box.value == ""
                     DCore.Launcher.exit_gui()
                 else
@@ -147,9 +147,9 @@ document.body.onkeypress = (e) ->
                     update_items(category_infos[_all_application_category_id])
                     grid_load_category(_select_category_id)
                 return  # avoid to invoke search function
-            when 8
+            when 8 # Backspace
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
-            when 13
+            when 13 # Enter
                 if item_selected
                     Widget.look_up(item_selected.id).do_click()
                 else

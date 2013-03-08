@@ -55,7 +55,7 @@ create_category = (info) ->
                 ->
                     grid_load_category(info.ID)
                     _select_category_id = info.ID
-                , 50)
+                , 25)
     )
     el.addEventListener('mouseout', (e)->
         if _select_timeout_id != 0
