@@ -28,27 +28,42 @@
 #include "category.h"
 #include <gio/gdesktopappinfo.h>
 #define DOCK_HEIGHT 30
+#define SCHEMA_ID "com.deepin.dde.background"
+#define CURRENT_PCITURE "current-picture"
 
 
 static
 GtkWidget* container = NULL;
 
 static
-void _set_launcher_background(GdkWindow* win)
+gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
-    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+    gboolean stat;
     cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
-    g_free(bg_path);
-
-    if (cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
+    if (stat = cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
         cairo_pattern_t* pt = cairo_pattern_create_for_surface(_background);
         gdk_window_hide(win);
         gdk_window_set_background_pattern(win, pt);
         gdk_window_show(win);
-    } else {
-        g_assert_not_reached();
     }
     cairo_surface_destroy(_background);
+
+    return stat;
+}
+
+static
+void _set_launcher_background(GdkWindow* win)
+{
+    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+
+    if (!_set_launcher_background_aux(win, bg_path)) {
+        g_free(bg_path);
+        GSettings* s = g_settings_new(SCHEMA_ID);
+        bg_path = g_settings_get_string(s, CURRENT_PCITURE);
+        _set_launcher_background_aux(win, bg_path);
+    }
+
+    g_free(bg_path);
 }
 
 static
