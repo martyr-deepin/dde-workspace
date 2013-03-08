@@ -25,66 +25,65 @@ s_box = $('#s_box')
 item_selected = null
 
 update_selected = (el)->
-    item_selected?.setAttribute("class", "item")
+    item_selected?.unselecte()
     item_selected = el
-    item_selected?.setAttribute("class", "item item_selected")
+    item_selected?.selecte()
+
+get_first_shown = ->
+    first_item = applications[$(".item").id]
+    if first_item.is_shown()
+        first_item
+    else
+        first_item.next_shown()
 
 selected_next = ->
     if not item_selected
-        item_selected = $(".item")
+        item_selected = get_first_shown()
         update_selected(item_selected)
         return
-    n = item_selected.nextElementSibling
+    n = item_selected.next_shown()
     if n
         update_selected(n)
 selected_prev = ->
     if not item_selected
-        item_selected = $(".item")
+        item_selected = get_first_shown()
         update_selected(item_selected)
         return
-    n = item_selected.previousElementSibling
+    n = item_selected.prev_shown()
     if n
         update_selected(n)
 
 selected_down = ->
     if not item_selected
-        item_selected = $(".item")
+        item_selected = get_first_shown()
         update_selected(item_selected)
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
-            n = n.nextElementSibling
+            n = n.next_shown()
     if n
         update_selected(n)
     grid.scrollTop += SCROLL_STEP_LEN
 
 selected_up = ->
     if not item_selected
-        item_selected = $(".item")
+        item_selected = get_first_shown()
         update_selected(item_selected)
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
-            n = n.previousElementSibling
+            n = n.prev_shown()
     if n
         update_selected(n)
     grid.scrollTop -= SCROLL_STEP_LEN
 
-
 get_item_row_count = ->
-    count = 0
-    items = $s('.item')
-    first_value = items[0].offsetTop
-    for i in items
-        if i.offsetTop != first_value
-            break
-        else
-            count++
-    return count
+    parseInt(grid.clientWidth / ITEM_WIDTH)
 
 search = ->
+    item_selected = null
     ret = []
     key = s_box.value.toLowerCase()
 
@@ -151,9 +150,9 @@ document.body.onkeypress = (e) ->
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
             when 13 # Enter
                 if item_selected
-                    Widget.look_up(item_selected.id).do_click()
+                    item_selected.do_click()
                 else
-                    Widget.look_up($(".item").id)?.do_click()
+                    get_first_shown()?.do_click()
             else
                 s_box.value += String.fromCharCode(e.which)
         search()
