@@ -588,7 +588,10 @@ const gchar* greeter_get_session_icon(const gchar *key)
         icon = "ubuntu.png";
 
     }else if(g_str_has_prefix(session, "xfce")){
-        icon = "ubuntu.png";
+        icon = "xfce.png";
+
+    }else if(g_str_has_prefix(session, "cde")){
+        icon = "cde.png";
 
     }else{
         icon = "unknown.png";
@@ -921,6 +924,7 @@ int main(int argc, char **argv)
     GdkRectangle geometry;
 
     signal(SIGTERM, sigterm_cb);
+    signal(SIGKILL, sigterm_cb);
 
     init_i18n();
     gtk_init(&argc, &argv);
