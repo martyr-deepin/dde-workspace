@@ -1227,33 +1227,27 @@ class TrashVDir extends DesktopEntry
 
 
     do_dragenter : (evt) ->
-        echo "do_dragenter in #{evt.dataTransfer.dropEffect}"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
-        echo "do_dragenter out #{evt.dataTransfer.dropEffect}"
         return
 
 
     do_dragover : (evt) ->
-        echo "do_dragover in #{evt.dataTransfer.dropEffect}"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
-        echo "do_dragover out in #{evt.dataTransfer.dropEffect}"
         return
 
 
     do_dragleave : (evt) ->
-        echo "do_dragleave in #{evt.dataTransfer.dropEffect}"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.preventDefault()
             evt.dataTransfer.dropEffect = "move"
-        echo "do_dragleave out #{evt.dataTransfer.dropEffect}"
         return
 
 
