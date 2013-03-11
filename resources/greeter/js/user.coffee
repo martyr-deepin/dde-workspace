@@ -186,6 +186,11 @@ class UserInfo extends Widget
                 @login.account.focus()
             else
                 @login.password.focus()
+
+            if @name.innerText == "guest"
+                @login.password.style.display = "none"
+                @login.password.value = "guest"
+
             @login_displayed = true
             @add_css_class("foo")
 
@@ -201,9 +206,6 @@ class UserInfo extends Widget
                         @focus()
                         @login_displayed = false
 
-            if @name.innerText == "guest"
-                @login.password.style.display="none"
-                @login.password.value = "guest"
         else
             @focus()
 
