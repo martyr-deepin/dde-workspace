@@ -679,11 +679,6 @@ is_selected_multiple_items = ->
     selected_item.length > 1
 
 
-is_item_been_selected = (id) ->
-    assert("string" == typeof(id), "[is_item_been_selected]accept not string")
-    selected_item.indexOf(id) > -1
-
-
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
 
