@@ -39,6 +39,7 @@ extern Window get_dock_window();
 #include <math.h>
 
 
+static Atom ATOM_WINDOW_HIDDEN;
 static Atom ATOM_CLIENT_LIST;
 static Atom ATOM_ACTIVE_WINDOW;
 static Atom ATOM_WINDOW_ICON;
@@ -57,6 +58,7 @@ static Atom ATOM_XEMBED_INFO;
 static Display* _dsp = NULL;
 static void _init_atoms()
 {
+    ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
@@ -82,6 +84,7 @@ typedef struct {
     char* exec; /* /proc/pid/cmdline or /proc/pid/exe */
     int state;
     gboolean is_overlay_dock;
+    gboolean is_hidden;
 
     Window window;
     GdkWindow* gdkwindow;
@@ -120,6 +123,7 @@ Client* create_client_from_window(Window w)
     c->window = w;
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
+    c->is_hidden = TRUE;
     c->app_id = NULL;
     c->exec = NULL;
 
@@ -200,6 +204,20 @@ void client_free(Client* c)
 }
 
 
+static gboolean _is_hidden(Window w)
+{
+    gulong items;
+    void* data = get_window_property(_dsp, w, ATOM_WINDOW_NET_STATE, &items);
+    if (data == NULL) return FALSE;
+    for (int i=0; i<items; i++) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_HIDDEN) {
+            XFree(data);
+            return TRUE;
+        }
+    }
+    XFree(data);
+    return FALSE;
+}
 gboolean is_skip_taskbar(Window w)
 {
     gulong items;
@@ -470,6 +488,7 @@ void _update_window_net_state(Client* c)
     if (is_skip_taskbar(c->window)) {
         g_hash_table_remove(_clients_table, GINT_TO_POINTER(c->window));
     } else {
+        c->is_hidden = _is_hidden(c->window);
         _update_is_overlay_client(c);
     }
     dock_update_hide_mode();
@@ -543,7 +562,9 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 void _update_is_overlay_client(Client* c)
 {
     gboolean is_overlay = FALSE;
-    if (_is_maximized_window(c->window)) {
+    if (c->is_hidden) {
+        is_overlay = FALSE;
+    } else if (_is_maximized_window(c->window)) {
         is_overlay = TRUE;
     } else {
         cairo_rectangle_int_t tmp;
