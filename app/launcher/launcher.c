@@ -38,17 +38,52 @@ GtkWidget* container = NULL;
 static
 gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
-    gboolean stat;
-    cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
-    if (stat = cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
-        cairo_pattern_t* pt = cairo_pattern_create_for_surface(_background);
-        gdk_window_hide(win);
-        gdk_window_set_background_pattern(win, pt);
-        gdk_window_show(win);
-    }
-    cairo_surface_destroy(_background);
+    GError* error = NULL;
+    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file(bg_path, &error);
 
-    return stat;
+    if (_background_image == NULL) {
+        fprintf(stderr, "[ERROR] create pixbuf from file fail!\n");
+        return FALSE;
+    }
+
+    GdkScreen* screen = gdk_screen_get_default();
+    cairo_surface_t* img_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                                              gdk_screen_get_width(screen),
+                                                              gdk_screen_get_height(screen));
+
+
+    if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
+        fprintf(stderr, "[ERROR] create cairo surface fail!\n");
+        return FALSE;
+    }
+
+    cairo_t* cr = cairo_create(img_surface);
+
+    if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
+        fprintf(stderr, "[ERROR] create cairo fail!\n");
+        return FALSE;
+    }
+
+    gdk_cairo_set_source_pixbuf(cr, _background_image, 0, 0);
+    cairo_paint(cr);
+    g_object_unref(_background_image);
+
+    cairo_pattern_t* pt = cairo_pattern_create_for_surface(img_surface);
+
+    if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
+        fprintf(stderr, "[ERROR] create cairo pattern fail!\n");
+        return FALSE;
+    }
+
+    gdk_window_hide(win);
+    gdk_window_set_background_pattern(win, pt);
+    gdk_window_show(win);
+
+    cairo_pattern_destroy(pt);
+    cairo_surface_destroy(img_surface);
+    cairo_destroy(cr);
+
+    return TRUE;
 }
 
 static
