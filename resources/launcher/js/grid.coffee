@@ -35,6 +35,14 @@ class Item extends Widget
     constructor: (@id, @core)->
         super
         @img = create_img("", DCore.DEntry.get_icon(@core), @element)
+        @img.onload = ->
+            if @width == @height
+                @style.height = '48px'
+                @style.width = '48px'
+            else if @width > @height
+                @style.maxWidth = '48px'
+            else
+                @style.maxHeight = '48px'
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true
