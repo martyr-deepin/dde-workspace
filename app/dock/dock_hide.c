@@ -2,6 +2,7 @@
 #include "region.h"
 #include "dock_config.h"
 #include "tasklist.h"
+#include "X_misc.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
@@ -268,6 +269,7 @@ GdkWindow* get_dock_guard_window()
 
         guard_window =  gdk_window_new(NULL, &attributes, 0);
         GdkRGBA rgba = { 0, 0, 0, .1 };
+        set_wmspec_dock_hint(guard_window);
         gdk_window_set_background_rgba(guard_window, &rgba);
 
         gdk_window_show_unraised(guard_window);
