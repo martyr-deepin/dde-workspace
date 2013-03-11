@@ -33,8 +33,6 @@ connect_default_signals = ->
     DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
 
-    DCore.Desktop.notify_workarea_size()
-
 
 do_item_delete = (data) ->
     id = DCore.DEntry.get_id(data.entry)

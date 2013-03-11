@@ -69,8 +69,6 @@ body {
     pointer-events:none;
 }
 .DesktopEntry .item_icon img {
-    max-width:48px;
-    max-height:48px;
     border-radius:5px;
 }
 .DesktopEntry .item_icon .previewshadow {
@@ -98,6 +96,7 @@ body {
     border-radius:2px;
     outline:none;
     overflow:hidden;
+    pointer-events:none;
 }
 
 .DesktopEntry .item_renaming {

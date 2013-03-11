@@ -1,13 +1,16 @@
 #include "dock_hide.h"
 #include "region.h"
+#include "dock_config.h"
+#include "tasklist.h"
+#include "X_misc.h"
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 
 extern int _dock_height;
 extern void _change_workarea_height(int height);
-extern void update_dock_hide_mode();
 extern GdkWindow* DOCK_GDK_WINDOW();
 
-
+#define GUARD_WINDOW_HEIGHT 1
 
 enum Event {
     TriggerShow,
@@ -41,26 +44,25 @@ static void set_state(enum State new_state)
 }
 
 
+extern int _screen_width;
 static void enter_show()
 {
+    g_assert(CURRENT_STATE != StateShow);
+
     set_state(StateShow);
     _change_workarea_height(_dock_height);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
-    dock_region_restore();
 }
 static void enter_hide()
 {
-    dock_region_save();
+    g_assert(CURRENT_STATE != StateHidden);
 
     set_state(StateHidden);
     _change_workarea_height(0);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-3);
-
-    extern int _screen_width;
-    dock_require_region(0, 0, _screen_width, 3);
 }
 
-#define SHOW_HIDE_ANIMATION_STEP 6
+#define SHOW_HIDE_ANIMATION_STEP 10
 #define SHOW_HIDE_ANIMATION_INTERVAL 40
 static gboolean do_hide_animation(int data);
 static gboolean do_show_animation(int data);
@@ -248,5 +250,74 @@ void dock_toggle_show()
     } else if (CURRENT_STATE == StateShow || CURRENT_STATE == StateShowing) {
         handle_event(TriggerHide);
     }
-    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)update_dock_hide_mode, NULL);
+    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)dock_update_hide_mode, NULL);
+}
+
+
+GdkWindow* get_dock_guard_window()
+{
+    static GdkWindow* guard_window = NULL;
+    if (guard_window == NULL) {
+        GdkWindowAttr attributes;
+        attributes.width = _screen_width;
+        attributes.height = GUARD_WINDOW_HEIGHT;
+        attributes.window_type = GDK_WINDOW_TEMP;
+        attributes.wclass = GDK_INPUT_OUTPUT;
+        /*attributes.wclass = GDK_INPUT_ONLY;*/
+        attributes.event_mask = GDK_ENTER_NOTIFY_MASK;
+        /*attributes.event_mask = GDK_ALL_EVENTS_MASK;*/
+
+        guard_window =  gdk_window_new(NULL, &attributes, 0);
+        GdkRGBA rgba = { 0, 0, 0, .1 };
+        set_wmspec_dock_hint(guard_window);
+        gdk_window_set_background_rgba(guard_window, &rgba);
+
+        gdk_window_show_unraised(guard_window);
+    }
+    return guard_window;
+}
+static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent, 
+        GdkEvent* event, gpointer data)
+{
+    XEvent* xev = xevent;
+    XGenericEvent* e = xevent;
+
+
+    if (xev->type == GenericEvent && e->evtype == EnterNotify) {
+        if (GD.config.hide_mode != NO_HIDE_MODE)
+            dock_delay_show(50);
+    }
+    return GDK_FILTER_CONTINUE;
+}
+
+void init_dock_guard_window()
+{
+    GdkWindow* win = get_dock_guard_window();
+    gdk_window_add_filter(win, _monitor_guard_window, NULL);
+    extern int _screen_height;
+    gdk_window_move(win, 0, _screen_height - GUARD_WINDOW_HEIGHT);
+}
+
+void dock_update_hide_mode()
+{
+    if (!GD.is_webview_loaded) return;
+
+    switch (GD.config.hide_mode) {
+        case ALWAYS_HIDE_MODE: {
+                                   dock_hide_now();
+                                   break;
+                               }
+        case AUTO_HIDE_MODE: {
+                                 if (dock_has_overlay_client()) {
+                                     dock_delay_hide(50);
+                                 } else {
+                                     dock_delay_show(50);
+                                 }
+                                 break;
+                             }
+        case NO_HIDE_MODE: {
+                               dock_show_now();
+                               break;
+                           }
+    }
 }

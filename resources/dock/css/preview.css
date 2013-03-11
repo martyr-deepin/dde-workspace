@@ -1,54 +1,89 @@
-.PWContainer {
-    border-radius: 2px;
-    background: rgba(157, 193, 209, 0.8);
+.PWBorder{
+    box-shadow: 0px 0px 5px black;
     position: fixed;
     bottom:60px;
+    border: 1px solid rgba(0, 0,0, 0.9);
+    border-radius: 6px;
+    background: url("../img/preview_background.png");
+}
+.PWContainer {
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.7);
     display: -webkit-box;
-    border: 1px solid rgba(0, 0, 0, 0.4);
+    padding: 5px 6px;
 }
 
 .PreviewWindow {
-    border-radius: 3px;
+    box-sizing: border-box;
     max-width: 230px;
     max-height: 160px;
-    margin: 5px;
-    position: relative;
-    background: rgb(204, 223, 231);
+    padding: 2px 18px 15px 18px;
+    border: solid 1px rgba(255, 255, 255, 0.0);
+    position:relative;
+}
+
+.PreviewWindowActived {
+    background: rgba(255, 255, 255, 0.4);
+    border: solid 1px rgba(255, 255, 255, 0.5);
 }
 
 .PWCanvas {
-    width: 200px;
-    height: 100px;
-
-    margin-top: 15px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-.PWCanvas:last-of-type {
-    margin-top: 20px;
-    margin-right: 10px;
+    width: 190px;
+    height: 110px;
+    border: solid 1px rgba(255, 255, 255, 0.8);
 }
 
 .PWTitle {
-    position: absolute;
-    text-shadow: black 1px 1px 1px;
-    top:0px;
-    width: 200px;
     height: 20px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     text-align: center;
     color: white;
-    padding: 1px 5px;
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.4), 0px 1px 3px rgba(0,0,0,0.4), 1px 0px 3px rgba(0,0,0,0.4), -0px 0px 3px rgba(0,0,0,0.4);
+
+    margin-left: -5px;
+    margin-bottom: 10px;
 }
 .PWClose {
-    color: red;
+    background: url("../img/close.png") no-repeat;
+    width: 21px;
+    height: 16px;
+    border-radius: 2px;
     position: absolute;
-    top:0px;
-    right:0px
+    top: 2px;
+    right: 2px;
 }
 .PWClose:hover {
+    background: url("../img/close_hover.png") no-repeat;
     cursor: pointer;
 }
 
+.Arrow {
+    position: absolute;
+    bottom: -0px;
+}
+
+.pop_arrow_up_outer {
+    border-top: 7px solid rgba(0, 0, 0, 0.64);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+
+    position: absolute;
+    bottom: -7px;
+}
+.pop_arrow_up_mid {
+    position: absolute;
+    bottom: -6px;
+    border-top: 7px solid rgba(255,255,255, 0.4);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+}
+.pop_arrow_up_inner {
+    position:absolute;
+    bottom:-5px;
+    border-top: 6px solid rgba(0,0,0,0.77);
+    border-left: 7px solid transparent;
+    border-right: 6px solid transparent;
+}

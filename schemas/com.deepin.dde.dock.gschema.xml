@@ -5,8 +5,18 @@
         <value value="1" nick="autohide"/>
         <value value="2" nick="keephidden"/>
       </enum>
+      <enum id="com.deepin.dde.dock.PreviewMode">
+        <value value="0" nick="realtime"/>
+        <value value="1" nick="slower"/>
+        <value value="2" nick="no"/>
+      </enum>
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
+        <key name="preview-mode" enum="com.deepin.dde.dock.PreviewMode">
+            <default>'realtime'</default>
+            <summary>the priview mode</summary>
+            <description>The value will influence dock's preview window update frequency.</description>
+        </key>
         <key name="hide-mode" enum="com.deepin.dde.dock.HiddenMode">
             <default>'default'</default>
             <summary>the hideen mode</summary>

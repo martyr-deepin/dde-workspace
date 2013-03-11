@@ -28,27 +28,42 @@
 #include "category.h"
 #include <gio/gdesktopappinfo.h>
 #define DOCK_HEIGHT 30
+#define SCHEMA_ID "com.deepin.dde.background"
+#define CURRENT_PCITURE "current-picture"
 
 
 static
 GtkWidget* container = NULL;
 
 static
-void _set_launcher_background(GdkWindow* win)
+gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
-    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+    gboolean stat;
     cairo_surface_t* _background = cairo_image_surface_create_from_png(bg_path);
-    g_free(bg_path);
-
-    if (cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
+    if (stat = cairo_surface_status(_background) == CAIRO_STATUS_SUCCESS) {
         cairo_pattern_t* pt = cairo_pattern_create_for_surface(_background);
         gdk_window_hide(win);
         gdk_window_set_background_pattern(win, pt);
         gdk_window_show(win);
-    } else {
-        g_assert_not_reached();
     }
     cairo_surface_destroy(_background);
+
+    return stat;
+}
+
+static
+void _set_launcher_background(GdkWindow* win)
+{
+    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
+
+    if (!_set_launcher_background_aux(win, bg_path)) {
+        g_free(bg_path);
+        GSettings* s = g_settings_new(SCHEMA_ID);
+        bg_path = g_settings_get_string(s, CURRENT_PCITURE);
+        _set_launcher_background_aux(win, bg_path);
+    }
+
+    g_free(bg_path);
 }
 
 static
@@ -114,7 +129,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
-    /*monitor_resource_file("launcher", webview);*/
+    /* monitor_resource_file("launcher", webview); */
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
@@ -139,6 +154,14 @@ void launcher_notify_workarea_size()
 
 static GHashTable* _category_table = NULL;
 
+static gboolean _is_exist = FALSE;
+
+static
+void _handler(gpointer data, gpointer user_data)
+{
+    _is_exist = g_strcmp0((const char*)data, (const char*)user_data) == 0;
+}
+
 static
 void _append_to_category(const char* path, int* cs)
 {
@@ -153,14 +176,21 @@ void _append_to_category(const char* path, int* cs)
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
     }
 
+    GPtrArray* l = NULL;
+
     while (*cs != CATEGORY_END_TAG) {
         gpointer id = GINT_TO_POINTER(*cs);
-        GPtrArray* l = g_hash_table_lookup(_category_table, id);
+        l = g_hash_table_lookup(_category_table, id);
+        _is_exist = FALSE;
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
             g_hash_table_insert(_category_table, id, l);
+        } else {
+            g_ptr_array_foreach(l, _handler, (gpointer)path);
         }
-        g_ptr_array_add(l, g_strdup(path));
+
+        if (!_is_exist)
+            g_ptr_array_add(l, g_strdup(path));
 
         cs++;
     }

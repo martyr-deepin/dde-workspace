@@ -307,6 +307,12 @@ DCore.signal_connect("auth", (msg) ->
             user.login.password.value = ""
         )
 
+        document.body.addEventListener("keydown", (e) =>
+            if user? and user.login_displayed
+                if e.which == 13
+                    user.login.password.focus()
+        )
+
     apply_refuse_rotate(user.element, 0.5)
 )
 

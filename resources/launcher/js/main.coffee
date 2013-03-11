@@ -32,7 +32,9 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.Launcher.notify_workarea_size()
 
 
+`const _all_application_category_id = -1`
 _select_timeout_id = 0
+_select_category_id = _all_application_category_id
 create_category = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'category_name')
@@ -42,11 +44,22 @@ create_category = (info) ->
     "
     el.addEventListener('click', (e) ->
         e.stopPropagation()
-        grid_load_category(info.ID)
+        if s_box.value == ""
+            grid_load_category(info.ID)
     )
     el.addEventListener('mouseover', (e)->
         e.stopPropagation()
-        grid_load_category(info.ID)
+        if info.ID != _select_category_id
+            s_box.value = "" if s_box.value != ""
+            _select_timeout_id = setTimeout(
+                ->
+                    grid_load_category(info.ID)
+                    _select_category_id = info.ID
+                , 25)
+    )
+    el.addEventListener('mouseout', (e)->
+        if _select_timeout_id != 0
+            clearTimeout(_select_timeout_id)
     )
     return el
 
@@ -68,4 +81,4 @@ for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)
 
-grid_load_category(-1) #the All applications' ID is -1.
+grid_load_category(_all_application_category_id) #the All applications' ID is -1.

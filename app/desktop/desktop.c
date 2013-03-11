@@ -30,7 +30,16 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 
-GdkWindow* get_background_window();
+#define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
+
+#define DOCK_SCHEMA_ID "com.deepin.dde.dock"
+#define DOCK_HIDE_MODE "hide-mode"
+
+static GSettings* dock_gsettings = NULL;
+static GSettings* desktop_gsettings = NULL;
+
+void setup_background_window();
+GdkWindow* get_background_window ();
 void install_monitor();
 static
 GFile* _get_useable_file(const char* basename);
@@ -175,17 +184,33 @@ GFile* desktop_new_directory()
     return dir;
 }
 
-JS_EXPORT_API
-void desktop_notify_workarea_size()
+static void update_workarea_size(GSettings* dock_gsettings)
 {
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
+
+    char* hide_mode = g_settings_get_string (dock_gsettings, DOCK_HIDE_MODE);
+    if (!g_strcmp0 (hide_mode, "autohide"))
+    {
+        //reserve the bottom (60 x width) area even dock is not show
+        int root_height = gdk_screen_get_height (gdk_screen_get_default ());
+        if (y + height + 60 > root_height)
+            height = root_height - 60 -y;
+    }
+    g_free (hide_mode);
+
     char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
     js_post_message_simply("workarea_changed", tmp);
 }
 
-#define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
-static GSettings* desktop_gsettings = NULL;
+static void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
+{
+    if (!g_strcmp0 (key, DOCK_HIDE_MODE))
+        return;
+
+    update_workarea_size (settings);
+}
+
 
 static void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
@@ -195,21 +220,8 @@ static void desktop_config_changed(GSettings* settings, char* key, gpointer usr_
 JS_EXPORT_API
 gboolean desktop_get_config_boolean(const char* key_name)
 {
-    if (desktop_gsettings == NULL)
-    {
-        desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
-        g_signal_connect (desktop_gsettings, "changed::show-home-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-        g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
-                          G_CALLBACK(desktop_config_changed), NULL);
-    }
-
     gboolean retval = g_settings_get_boolean(desktop_gsettings, key_name);
-    
+
     return retval;
 }
 
@@ -281,7 +293,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    get_background_window();
+    setup_background_window();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
@@ -303,6 +315,21 @@ void desktop_emit_webview_ok()
 
         GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
         g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
+        //desktop, dock GSettings
+        dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);
+        g_signal_connect (desktop_gsettings, "changed::hide_mode",
+                          G_CALLBACK(dock_config_changed), NULL);
+
+        desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
+        g_signal_connect (desktop_gsettings, "changed::show-home-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-trash-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-computer-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
+                          G_CALLBACK(desktop_config_changed), NULL);
     }
+    update_workarea_size (dock_gsettings);
 }
 

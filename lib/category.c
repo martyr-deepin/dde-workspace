@@ -133,3 +133,4 @@ const GPtrArray* get_all_categories_array()
     }
     return category_infos;
 }
+

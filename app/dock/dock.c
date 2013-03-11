@@ -36,13 +36,17 @@ void dock_change_workarea_height(double height);
 int _dock_height = 60;
 int _screen_width = 0;
 int _screen_height = 0;
+GdkWindow* get_dock_guard_window();
 
-gboolean leave_notify(GtkWidget* w, GdkEvent* e, gpointer u)
+gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
-        dock_delay_hide(1000);
+    if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL) {
+        if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
+            dock_delay_hide(500);
+        else if (GD.config.hide_mode == AUTO_HIDE_MODE)
+            dock_update_hide_mode();
+        js_post_message_simply("leave-notify", NULL);
     }
-    js_post_message_simply("leave-notify", NULL);
     return FALSE;
 }
 gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
@@ -151,7 +155,7 @@ void update_dock_color()
         js_post_message_simply("dock_color_changed", NULL);
 }
 
-void update_dock_show_mode()
+void update_dock_size_mode()
 {
     if (GD.config.mini_mode) {
         js_post_message_simply("in_mini_mode", NULL);
@@ -171,11 +175,12 @@ void dock_emit_webview_ok()
         init_launchers();
         init_task_list();
         remove_me_run_tray_icon();
-        update_dock_show_mode();
+        update_dock_size_mode();
+        init_dock_guard_window();
     } else {
         update_dock_apps();
         update_task_list();
-        update_dock_show_mode();
+        update_dock_size_mode();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
@@ -210,29 +215,5 @@ void dock_toggle_launcher(gboolean show)
         dcore_run_command("launcher");
     } else {
         close_launcher_window();
-    }
-}
-
-
-void update_dock_hide_mode()
-{
-    if (!GD.is_webview_loaded) return;
-    dock_change_workarea_height(_dock_height);
-    switch (GD.config.hide_mode) {
-        case ALWAYS_HIDE_MODE: {
-                                   dock_hide_now();
-                                   break;
-                               }
-        case AUTO_HIDE_MODE: {
-                                 if (active_window_is_maximized_window())
-                                     dock_hide_now();
-                                 else
-                                     dock_show_now();
-                                 break;
-                             }
-        case NO_HIDE_MODE: {
-                               dock_show_now();
-                               break;
-                           }
     }
 }
