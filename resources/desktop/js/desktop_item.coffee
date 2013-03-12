@@ -901,37 +901,37 @@ class RichDir extends DesktopEntry
 
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
-        arrow_outter = document.createElement("div")
+        arrow_outer = document.createElement("div")
         arrow_mid = document.createElement("div")
         arrow_inner = document.createElement("div")
         if p < n
             @div_pop.style.left      = "#{s_offset_x}px"
-            arrow_outter.style.left  = "#{p - 8}px"
+            arrow_outer.style.left  = "#{p - 8}px"
             arrow_mid.style.left     = "#{p - 8}px"
             arrow_inner.style.left   = "#{p - 7}px"
         else if p + n > s_width
             @div_pop.style.left      = "#{s_width - 2 * n}px"
-            arrow_outter.style.right = "#{s_width - p - 14}px"
+            arrow_outer.style.right = "#{s_width - p - 14}px"
             arrow_mid.style.right    = "#{s_width - p - 14}px"
             arrow_inner.style.right  = "#{s_width - p - 13}px"
         else
             @div_pop.style.left      = "#{p - n + 6}px"
-            arrow_outter.style.left  = "#{n - 9}px"
+            arrow_outer.style.left  = "#{n - 9}px"
             arrow_mid.style.left     = "#{n - 9}px"
             arrow_inner.style.left   = "#{n - 8}px"
 
         if arrow_pos_at_bottom == true
-            arrow_outter.setAttribute("id", "pop_arrow_up_outter")
+            arrow_outer.setAttribute("id", "pop_arrow_up_outer")
             arrow_mid.setAttribute("id", "pop_arrow_up_mid")
             arrow_inner.setAttribute("id", "pop_arrow_up_inner")
-            @div_pop.appendChild(arrow_outter)
+            @div_pop.appendChild(arrow_outer)
             @div_pop.appendChild(arrow_mid)
             @div_pop.appendChild(arrow_inner)
         else
-            arrow_outter.setAttribute("id", "pop_arrow_down_outter")
+            arrow_outer.setAttribute("id", "pop_arrow_down_outer")
             arrow_mid.setAttribute("id", "pop_arrow_down_mid")
             arrow_inner.setAttribute("id", "pop_arrow_down_inner")
-            @div_pop.insertBefore(arrow_outter, ele_ul)
+            @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
 
@@ -953,8 +953,8 @@ class RichDir extends DesktopEntry
 class Application extends DesktopEntry
     constructor : ->
         super
-        @show_luncher_box = false
-
+        @show_launcher_box = false
+        @l
 
     set_icon : ->
         if (icon = DCore.DEntry.get_icon(@_entry)) == null
@@ -990,8 +990,8 @@ class Application extends DesktopEntry
                 else
                     DCore.DEntry.launch(@_entry, tmp_list)
 
-            if @show_luncher_box == true
-                @show_luncher_box = false
+            if @show_launcher_box == true
+                @show_launcher_box = false
                 @set_icon()
                 @item_name.style.opacity = 1
         return
@@ -1003,7 +1003,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_luncher_box == false
+            if @show_launcher_box == false
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1012,7 +1012,7 @@ class Application extends DesktopEntry
                             all_are_apps = false
                             break
                     if all_are_apps
-                        @show_luncher_box = true
+                        @show_launcher_box = true
                         @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
                         @item_name.style.opacity = 0
         return
@@ -1024,7 +1024,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_luncher_box == false
+            if @show_launcher_box == false
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1033,7 +1033,7 @@ class Application extends DesktopEntry
                             all_are_apps = false
                             break
                     if all_are_apps
-                        @show_luncher_box = true
+                        @show_launcher_box = true
                         @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
                         @item_name.style.opacity = 0
         return
@@ -1046,8 +1046,8 @@ class Application extends DesktopEntry
             evt.preventDefault()
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_luncher_box == true
-                @show_luncher_box = false
+            if @show_launcher_box == true
+                @show_launcher_box = false
                 @set_icon()
                 @item_name.style.opacity = 1
         return
