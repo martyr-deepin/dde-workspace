@@ -43,6 +43,8 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     if (_background_image == NULL) {
         fprintf(stderr, "[ERROR] create pixbuf from file fail!\n");
+        g_debug("%s\n", error->message);
+        g_error_free(error);
         return FALSE;
     }
 
