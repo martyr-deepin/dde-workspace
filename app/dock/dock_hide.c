@@ -229,10 +229,20 @@ void dock_show_now()
     _cancel_detect_hide_mode();
     handle_event(TriggerShow);
 }
+void dock_show_real_now()
+{
+    _cancel_detect_hide_mode();
+    handle_event(ShowNow);
+}
 void dock_hide_now()
 {
     _cancel_detect_hide_mode();
     handle_event(TriggerHide);
+}
+void dock_hide_real_now()
+{
+    _cancel_detect_hide_mode();
+    handle_event(HideNow);
 }
 
 static guint _detect_hide_mode_id = 0;
@@ -284,7 +294,9 @@ static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
 
 
     if (xev->type == GenericEvent && e->evtype == EnterNotify) {
-        if (GD.config.hide_mode != NO_HIDE_MODE)
+        if (GD.config.hide_mode == AUTO_HIDE_MODE)
+            dock_show_real_now();
+        else if (GD.config.hide_mode != NO_HIDE_MODE)
             dock_delay_show(50);
     }
     return GDK_FILTER_CONTINUE;
@@ -301,13 +313,14 @@ void init_dock_guard_window()
 void dock_update_hide_mode()
 {
     if (!GD.is_webview_loaded) return;
+    _change_workarea_height(_dock_height);
 
     switch (GD.config.hide_mode) {
         case ALWAYS_HIDE_MODE: {
                                    dock_hide_now();
                                    break;
                                }
-        case AUTO_HIDE_MODE: {
+        case INTELLIGENT_HIDE_MODE: {
                                  if (dock_has_overlay_client()) {
                                      dock_delay_hide(50);
                                  } else {
@@ -315,6 +328,14 @@ void dock_update_hide_mode()
                                  }
                                  break;
                              }
+        case AUTO_HIDE_MODE: {
+                                        if (dock_has_maximize_client()) {
+                                            dock_hide_real_now();
+                                        } else {
+                                            dock_show_real_now();
+                                        }
+                                        break;
+                                    }
         case NO_HIDE_MODE: {
                                dock_show_now();
                                break;

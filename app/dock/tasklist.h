@@ -26,5 +26,6 @@ gboolean is_has_client(const char* app_id);
 void update_task_list();
 void close_launcher_window();
 gboolean dock_has_overlay_client();
+gboolean dock_has_maximize_client();
 
 #endif

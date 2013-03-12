@@ -2,8 +2,9 @@
 <schemalist>
       <enum id="com.deepin.dde.dock.HiddenMode">
         <value value="0" nick="default"/>
-        <value value="1" nick="autohide"/>
+        <value value="1" nick="intelligent"/>
         <value value="2" nick="keephidden"/>
+        <value value="3" nick="autohide"/>
       </enum>
       <enum id="com.deepin.dde.dock.PreviewMode">
         <value value="0" nick="realtime"/>
