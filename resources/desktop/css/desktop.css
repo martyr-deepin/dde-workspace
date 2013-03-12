@@ -192,7 +192,7 @@ body {
     text-overflow:ellipsis;
     pointer-events:none;
 }
-#pop_arrow_up_outter {
+#pop_arrow_up_outer {
     bottom: -7px;
     position: absolute;
     border-top: 7px solid rgba(0,0,0,0.64);
@@ -214,7 +214,7 @@ body {
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }
-#pop_arrow_down_outter {
+#pop_arrow_down_outer {
     top:-7px;
     position:absolute;
     border-bottom: 7px solid rgba(0, 0, 0, 0.64);
