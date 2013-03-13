@@ -88,6 +88,10 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                     gdk_window_move_resize(_deepin_tray,
                             _s_width - _deepin_tray_width- DEFAULT_INTERVAL, 
                             NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
+                    gdk_window_move_resize(_fcitx_tray,
+                            _s_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
+                            NA_BASE_Y,
+                            _fcitx_tray_width, DEFAULT_HEIGHT);
                     update_notify_area_width();
                 }
             } else if (data == _fcitx_tray) {
@@ -208,13 +212,13 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
             cairo_paint(cr);
         } else {
             if (cairo_surface_status(left) == CAIRO_STATUS_SUCCESS) {
-                cairo_set_source_surface(cr, left, x - 3, y - 3);
+                cairo_set_source_surface(cr, left, x - 4, y - 3);
                 cairo_paint(cr);
             }
             gdk_cairo_set_source_window(cr, icon, x, y);
             cairo_paint(cr);
             if (cairo_surface_status(right) == CAIRO_STATUS_SUCCESS) {
-                cairo_set_source_surface(cr, right, x + gdk_window_get_width(icon) + 3, y - 3);
+                cairo_set_source_surface(cr, right, x + gdk_window_get_width(icon) + 2, y - 3);
                 cairo_paint(cr);
             }
         }

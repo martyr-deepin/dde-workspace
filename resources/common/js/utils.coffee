@@ -83,7 +83,7 @@ run_post = (f, self)->
 
 create_element = (type, clss, parent)->
     el = document.createElement(type)
-    el.setAttribute("class", clss)
+    el.setAttribute("class", clss) if clss
     if parent
         parent.appendChild(el)
     return el

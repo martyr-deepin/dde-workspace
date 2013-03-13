@@ -45,7 +45,6 @@ calc_app_item_size = ->
 document.body.onresize = ->
     calc_app_item_size()
 
-
 class AppList extends Widget
     constructor: (@id) ->
         super
@@ -114,6 +113,9 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
     do_dragstart: (e)->
+        ITEM_HEIGHT = 60.0
+        
+        DCore.Dock.require_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
         Preview_close_now()
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
@@ -123,6 +125,9 @@ class AppItem extends Widget
         @element.style.opacity = "0.5"
 
     do_dragend: (e)->
+        setTimeout(=>
+            DCore.Dock.release_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
+        ,500)
         @element.style.opacity = "1"
 
     do_dragover: (e) ->
@@ -162,3 +167,22 @@ class AppItem extends Widget
             switch this.constructor.name
                 when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
                 when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
+
+
+document.body.addEventListener("drop", (e)->
+    s_id = e.dataTransfer.getData("item-id")
+    s_widget = Widget.look_up(s_id)
+    if s_widget and s_widget.constructor.name == "Launcher"
+        s_widget.element.style.position = "fixed"
+        s_widget.element.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
+        s_widget.element.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
+        s_widget.destroy_with_animation()
+        setTimeout(=>
+            DCore.Dock.request_undock(s_id)
+        ,500)
+)
+document.body.addEventListener("dragover", (e)->
+    s_id = e.dataTransfer.getData("item-id")
+    if Widget.look_up(s_id)?.constructor.name == "Launcher"
+        e.preventDefault()
+)

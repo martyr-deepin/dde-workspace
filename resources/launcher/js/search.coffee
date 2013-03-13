@@ -90,7 +90,7 @@ get_item_row_count = ->
 
 search = ->
     ret = []
-    key = s_box.value.toLowerCase()
+    key = s_box.value.toLowerCase().trim()
 
     for k,v of applications
         if key == ""

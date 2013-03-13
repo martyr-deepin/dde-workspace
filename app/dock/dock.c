@@ -43,15 +43,19 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
             dock_delay_hide(500);
-        else if (GD.config.hide_mode == AUTO_HIDE_MODE)
+        else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE)
             dock_update_hide_mode();
+        else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client())
+            dock_hide_real_now();
         js_post_message_simply("leave-notify", NULL);
     }
     return FALSE;
 }
 gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 {
-    if (GD.config.hide_mode != NO_HIDE_MODE) {
+    if (GD.config.hide_mode == AUTO_HIDE_MODE) {
+        dock_show_real_now();
+    } else if (GD.config.hide_mode != NO_HIDE_MODE) {
         dock_delay_show(300);
     }
     return FALSE;

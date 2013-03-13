@@ -85,6 +85,7 @@ typedef struct {
     int state;
     gboolean is_overlay_dock;
     gboolean is_hidden;
+    gboolean is_maximize;
 
     Window window;
     GdkWindow* gdkwindow;
@@ -559,14 +560,27 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     }
     return GDK_FILTER_CONTINUE;
 }
+
+static
+gboolean _find_maximize_client(gpointer key, Client* c)
+{
+    return !c->is_hidden && c->is_maximize;
+}
+gboolean dock_has_maximize_client()
+{
+    return g_hash_table_find(_clients_table, (GHRFunc)_find_maximize_client, NULL) != NULL;
+}
+
 void _update_is_overlay_client(Client* c)
 {
     gboolean is_overlay = FALSE;
     if (c->is_hidden) {
         is_overlay = FALSE;
     } else if (_is_maximized_window(c->window)) {
+        c->is_maximize = TRUE;
         is_overlay = TRUE;
     } else {
+        c->is_maximize = FALSE;
         cairo_rectangle_int_t tmp;
         gdk_window_get_geometry(c->gdkwindow, &(tmp.x), &(tmp.y), &(tmp.width), &(tmp.height));
         gdk_window_get_origin(c->gdkwindow, &(tmp.x), &(tmp.y));
