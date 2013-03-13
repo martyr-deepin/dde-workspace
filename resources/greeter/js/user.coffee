@@ -323,6 +323,20 @@ class UserInfo extends Widget
         apply_refuse_rotate(@element, 0.5)
 
 # below code should use c-backend to fetch data
+
+get_user_image = (user) ->
+    echo "get_user_image"
+    try
+        user_image = DCore.Greeter.get_user_image(user)
+    catch error
+        echo "get user image failed"
+    if not user_image? or user_image == "nonexists"
+        try
+            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+        catch error
+            user_image = "images/guest.jpg"
+    return user_image
+
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("*other", "", "images/huser.jpg")
     roundabout.appendChild(u.li)
@@ -333,16 +347,7 @@ else
     echo users
     for user in users
         if user == DCore.Greeter.get_default_user()
-            try
-                user_image = DCore.Greeter.get_user_image(user)
-            catch error
-                echo "get user image failed"
-            if not user_image? or user_image == "nonexists"
-                try
-                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-                catch error
-                    user_image = "images/guest.jpg"
-    
+            user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
             u.focus()
@@ -357,16 +362,7 @@ else
         if user == DCore.Greeter.get_default_user()
             echo "already append default user"
         else
-            try
-                user_image = DCore.Greeter.get_user_image(user)
-            catch error
-                echo "get user image failed"
-            if not user_image? or user_image == "nonexists"
-                try
-                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-                catch error
-                    user_image = "images/guest.jpg"
-
+            user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
 
