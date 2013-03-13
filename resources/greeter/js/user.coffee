@@ -320,45 +320,73 @@ DCore.signal_connect("auth", (msg) ->
     apply_refuse_rotate(user.element, 0.5)
 )
 
+_counts = roundabout.childElementCount
+
+animate_prev = (_current_index) ->
+    if _current_index == 0
+        _new_index = _counts - 1
+        _id = roundabout.children[_counts - 1]?.children[0]?.getAttribute("id")
+    else
+        _new_index = _current_index - 1
+        _id = roundabout.children[_current_index - 1]?.children[0]?.getAttribute("id")
+    if Widget.look_up(_id)?
+        setTimeout( ->
+                Widget.look_up(_id).focus()
+                return true
+            ,200)
+            #jQuery("#roundabout").roundabout("animateToPreviousChild")
+        jQuery("#roundabout").roundabout("animateToChild", _new_index)
+
+    else if _current_user?
+        _current_user.focus()
+
+animate_next = (_current_index) ->
+    if _current_index == _counts - 1
+        _new_index = 0
+        _id = roundabout.children[0]?.children[0]?.getAttribute("id")
+    else
+        _new_index = _current_index + 1
+        _id = roundabout.children[_current_index + 1]?.children[0]?.getAttribute("id")
+    if Widget.look_up(_id)?
+        setTimeout( ->
+                Widget.look_up(_id)?.focus()
+                return true
+            , 200)
+            #jQuery("#roundabout").roundabout("animateToNextChild")
+        jQuery("#roundabout").roundabout("animateToChild", _new_index)
+        
+    else if _current_user?
+        _current_user.focus()
+    
+
+document.body.addEventListener("mousewheel", (e) =>
+    try
+        _current_index = jQuery("#roundabout").roundabout("getChildInFocus")
+    catch error
+        _current_index = jQuery("#roundabout").roundabout("getNearestChild")
+
+    if e.wheelDelta > 100
+        #echo "scroll to prev"
+        animate_prev(_current_index)
+
+    if e.wheelDelta < -100
+        #echo "scroll to next"
+        animate_next(_current_index)
+)
+
 document.body.addEventListener("keydown", (e)=>
     try
         _current_index = jQuery("#roundabout").roundabout("getChildInFocus")
     catch error
         _current_index = jQuery("#roundabout").roundabout("getNearestChild")
 
-    _counts = roundabout.childElementCount
-
     if e.which == 37
         #echo "prev"
-        if _current_index == 0
-            _id = roundabout.children[_counts - 1]?.children[0]?.getAttribute("id")
-        else
-            _id = roundabout.children[_current_index - 1]?.children[0]?.getAttribute("id")
-        if Widget.look_up(_id)?
-            jQuery("#roundabout").roundabout("animateToPreviousChild")
-            setTimeout( ->
-                    Widget.look_up(_id).focus()
-                    return true
-                ,200)
-
-        else if _current_user?
-            _current_user.focus()
+        animate_prev(_current_index)
 
     else if e.which == 39 
         #echo "next"
-        if _current_index == _counts - 1
-            _id = roundabout.children[0]?.children[0]?.getAttribute("id")
-        else
-            _id = roundabout.children[_current_index + 1]?.children[0]?.getAttribute("id")
-        if Widget.look_up(_id)?
-            jQuery("#roundabout").roundabout("animateToNextChild")
-            setTimeout( ->
-                    Widget.look_up(_id)?.focus()
-                    return true
-                , 200)
-            
-        else if _current_user?
-            _current_user.focus()
+        animate_next(_current_index)
 
     else if e.which == 13 
         #echo "enter"
