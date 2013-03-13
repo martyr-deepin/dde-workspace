@@ -69,7 +69,12 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
-        canvas_cantext.drawImage(icon, start_x + 22, start_y, icon.width, icon.height)
+        canvas_cantext.drawImage(
+            icon,
+            start_x + (_ITEM_WIDTH_ - icon.width) / 2,
+            start_y,
+            icon.width,
+            icon.height)
     # draw text
     canvas_cantext.shadowOffsetX = 1
     canvas_cantext.shadowOffsetY = 1

@@ -844,7 +844,6 @@ class RichDir extends DesktopEntry
         # calc rows
         if (row = Math.ceil(@sub_items_count / col)) > 4 then row = 4
 
-        @sub_item_icons = {}
         for i, e of @sub_items
             ele = document.createElement("li")
             ele.setAttribute('id', i)
@@ -864,12 +863,6 @@ class RichDir extends DesktopEntry
             s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
 
-            s = document.createElement("img")
-            s.src = DCore.DEntry.get_icon(e)
-            s.style.maxWidth = "48px"
-            s.style.maxHeight = "48px"
-            @sub_item_icons[i] = s
-
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
@@ -882,7 +875,7 @@ class RichDir extends DesktopEntry
 
                 richdir_drag_canvas.width = _ITEM_WIDTH_
                 richdir_drag_canvas.height = _ITEM_HEIGHT_
-                draw_icon_on_canvas(richdir_drag_context, 0, 0, w.sub_item_icons[this.id], this.innerText)
+                draw_icon_on_canvas(richdir_drag_context, 0, 0, @getElementsByTagName("img")[0], this.innerText)
                 evt.dataTransfer.setDragCanvas(richdir_drag_canvas, 48, 24)
                 return
             )
@@ -964,7 +957,6 @@ class RichDir extends DesktopEntry
     hide_pop_block : =>
         if @div_pop?
             @sub_items = {}
-            @sub_item_icons = {}
             @div_pop.parentElement?.removeChild(@div_pop)
             delete @div_pop
             @div_pop = null
