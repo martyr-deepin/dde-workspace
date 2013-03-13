@@ -19,7 +19,7 @@
 
 basename = (path)->
     path.replace(/\\/g,'/').replace(/.*\//,)
-    
+
 s_box = $('#s_box')
 
 item_selected = null

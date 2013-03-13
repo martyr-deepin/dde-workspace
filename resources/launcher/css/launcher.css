@@ -161,6 +161,13 @@ body {
     border-radius: 6px;
     -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
     margin-bottom: 10px;
+    max-height: 48px;
+    max-width: 48px;
+}
+
+.square_img {
+    width: 48px;
+    height: 48px;
 }
 
 .item_comment {
