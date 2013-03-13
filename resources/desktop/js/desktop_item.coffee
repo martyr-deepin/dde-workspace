@@ -883,7 +883,7 @@ class RichDir extends DesktopEntry
                 richdir_drag_canvas.width = _ITEM_WIDTH_
                 richdir_drag_canvas.height = _ITEM_HEIGHT_
                 draw_icon_on_canvas(richdir_drag_context, 0, 0, w.sub_item_icons[this.id], this.innerText)
-                evt.dataTransfer.setDragCanvas(richdir_drag_canvas, 24, 24)
+                evt.dataTransfer.setDragCanvas(richdir_drag_canvas, 48, 24)
                 return
             )
             ele.addEventListener('dragend', (evt) ->
