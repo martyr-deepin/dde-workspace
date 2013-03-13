@@ -158,6 +158,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
+    gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
 
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
