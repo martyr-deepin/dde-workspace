@@ -285,6 +285,43 @@ class UserInfo extends Widget
 
         #debug code end
 
+    verify_failed: (msg) ->
+        @focus()
+        @show_login()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+
+        if DCore.Greeter.is_hide_users()
+            @login.account.style.color = "red"
+            @login.account.value = msg
+            @login.account.blur()
+            @login.account.addEventListener("focus", (e)=>
+                @login.account.style.color = "black"
+                @login.account.value = ""
+                DCore.Greeter.start_authentication("*other")
+            )
+            document.body.addEventListener("keydown", (e) =>
+                if e.which == 13 and @login_displayed
+                    @login.account.focus()
+            )
+        else
+            @login.password.classList.remove("PasswordStyle")
+            @login.password.style.color = "red"
+            @login.password.value = msg
+            @login.password.blur()
+            @login.password.addEventListener("focus", (e)=>
+                @login.password.classList.add("PasswordStyle")
+                @login.password.style.color ="black"
+                @login.password.value = ""
+            )
+    
+            document.body.addEventListener("keydown", (e) =>
+                if e.which == 13 and @login_displayed
+                    @login.password.focus()
+            )
+    
+        apply_refuse_rotate(@element, 0.5)
+
 # below code should use c-backend to fetch data
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("*other", "", "images/huser.jpg")
@@ -338,42 +375,10 @@ DCore.signal_connect("message", (msg) ->
 )
 
 DCore.signal_connect("auth", (msg) ->
-    user = _current_user
-    user.focus()
-    user.show_login()
-    if DCore.Greeter.is_hide_users()
-        user.login.account.style.color = "red"
-        user.login.account.value = msg.error
-        user.login.account.blur()
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-        user.login.account.addEventListener("focus", (e)=>
-            user.login.account.style.color = "black"
-            user.login.account.value = ""
-            DCore.Greeter.start_authentication("*other")
-        )
-    else
-        user.login.password.classList.remove("PasswordStyle")
-        user.login.password.style.color = "red"
-        user.login.password.value = msg.error
-        user.login.password.blur()
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-        user.login.password.addEventListener("focus", (e)=>
-            user.login.password.classList.add("PasswordStyle")
-            user.login.password.style.color ="black"
-            user.login.password.value = ""
-        )
-
-        document.body.addEventListener("keydown", (e) =>
-            if user? and user.login_displayed
-                if e.which == 13
-                    user.login.password.focus()
-        )
-
-    apply_refuse_rotate(user.element, 0.5)
+    _current_user?.verify_failed(msg.error)
 )
 
+####the _counts must put before any animate of roundabout####
 _counts = roundabout.childElementCount
 
 document.body.addEventListener("mousewheel", (e) =>
@@ -424,4 +429,3 @@ jQuery("#roundabout").drag("start", (ev, dd) ->
 jQuery("#roundabout").drag("end", (ev, dd) ->
     _current_user?.animate_near()
 )
-
