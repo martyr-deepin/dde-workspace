@@ -19,6 +19,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+richdir_drag_canvas = document.createElement("canvas")
+richdir_drag_context = richdir_drag_canvas.getContext('2d')
+
+
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -840,6 +844,7 @@ class RichDir extends DesktopEntry
         # calc rows
         if (row = Math.ceil(@sub_items_count / col)) > 4 then row = 4
 
+        @sub_item_icons = {}
         for i, e of @sub_items
             ele = document.createElement("li")
             ele.setAttribute('id', i)
@@ -859,6 +864,12 @@ class RichDir extends DesktopEntry
             s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
 
+            s = document.createElement("img")
+            s.src = DCore.DEntry.get_icon(e)
+            s.style.maxWidth = "48px"
+            s.style.maxHeight = "48px"
+            @sub_item_icons[i] = s
+
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
@@ -869,7 +880,10 @@ class RichDir extends DesktopEntry
                 else
                     evt.dataTransfer.effectAllowed = "none"
 
-                if (img = this.getElementsByTagName("img"))? then evt.dataTransfer.setDragImage(img[0], 24, 24)
+                richdir_drag_canvas.width = _ITEM_WIDTH_
+                richdir_drag_canvas.height = _ITEM_HEIGHT_
+                draw_icon_on_canvas(richdir_drag_context, 0, 0, w.sub_item_icons[this.id], this.innerText)
+                evt.dataTransfer.setDragCanvas(richdir_drag_canvas, 24, 24)
                 return
             )
             ele.addEventListener('dragend', (evt) ->
@@ -950,6 +964,7 @@ class RichDir extends DesktopEntry
     hide_pop_block : =>
         if @div_pop?
             @sub_items = {}
+            @sub_item_icons = {}
             @div_pop.parentElement?.removeChild(@div_pop)
             delete @div_pop
             @div_pop = null
