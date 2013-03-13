@@ -37,12 +37,7 @@ class Item extends Widget
         @img = create_img("", DCore.DEntry.get_icon(@core), @element)
         @img.onload = =>
             if @img.width == @img.height
-                @img.style.height = '48px'
-                @img.style.width = '48px'
-            else if @img.width > @img.height
-                @img.style.maxWidth = '48px'
-            else
-                @img.style.maxHeight = '48px'
+                @img.className = 'square_img'
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true
