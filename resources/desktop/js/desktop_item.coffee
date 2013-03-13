@@ -57,6 +57,29 @@ class Item extends Widget
         @item_icon = document.createElement("img")
         @item_icon.draggable = false
         icon_box.appendChild(@item_icon)
+        @item_icon.addEventListener("load", ->
+            @style.width = ""
+            @style.height = ""
+            @style.maxWidth = ""
+            @style.maxHeight = ""
+            @style.minWidth = ""
+            @style.minHeight = ""
+
+            if @width == @height
+                @style.width = "48px"
+                @style.height = "48px"
+            else if @width > @height
+                if @width >= 48
+                    @style.maxWidth = "48px"
+                else
+                    @style.minWidth = "48px"
+            else
+                if @height >= 48
+                    @style.maxHeight = "48px"
+                else
+                    @style.minHeight = "48px"
+        )
+
 
         @item_attrib = document.createElement("ul")
         @item_attrib.className = "item_attrib"
@@ -95,12 +118,6 @@ class Item extends Widget
 
 
     set_icon : (src = null) ->
-        @item_icon.style.width = ""
-        @item_icon.style.height = ""
-        @item_icon.style.maxWidth = ""
-        @item_icon.style.maxHeight = ""
-        @item_icon.style.minWidth = ""
-        @item_icon.style.minHeight = ""
         if src == null
             if DCore.DEntry.can_thumbnail(@_entry) and (icon = DCore.DEntry.get_thumbnail(@_entry)) != null
                 @item_icon.className = "previewshadow"
@@ -109,24 +126,9 @@ class Item extends Widget
             else
                 icon = DCore.get_theme_icon("unknown", 48)
                 @item_icon.className = ""
-            @item_icon.src = icon
         else
-            @item_icon.src = src
-        @item_icon.addEventListener("load", ->
-            if @width == @height
-                @style.width = "48px"
-                @style.height = "48px"
-            else if @width > @height
-                if @width >= 48
-                    @style.maxWidth = "48px"
-                else
-                    @style.minWidth = "48px"
-            else
-                if @height >= 48
-                    @style.maxHeight = "48px"
-                else
-                    @style.minHeight = "48px"
-        )
+            icon = src
+        @item_icon.src = icon
         return
 
 
@@ -545,8 +547,12 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
-    set_icon : ->
-        super(DCore.get_theme_icon("folder", 48))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.get_theme_icon("folder", 48)
+        else
+            icon = src
+        super(icon)
 
 
     do_drop : (evt) =>
@@ -602,8 +608,12 @@ class RichDir extends DesktopEntry
         DCore.Desktop.get_rich_dir_name(@_entry)
 
 
-    set_icon : ->
-        super(DCore.Desktop.get_rich_dir_icon(@_entry))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.Desktop.get_rich_dir_icon(@_entry)
+        else
+            icon = src
+        super(icon)
 
 
     do_click : (evt) ->
@@ -954,11 +964,15 @@ class Application extends DesktopEntry
     constructor : ->
         super
         @show_launcher_box = false
-        @l
+        @animate_background = null
 
-    set_icon : ->
-        if (icon = DCore.DEntry.get_icon(@_entry)) == null
-            icon = DCore.get_theme_icon("invalid_app", 48)
+
+    set_icon : (src = null) ->
+        if src == null
+            if (icon = DCore.DEntry.get_icon(@_entry)) == null
+                icon = DCore.get_theme_icon("invalid_app", 48)
+        else
+            icon = src
         super(icon)
 
 
@@ -992,8 +1006,7 @@ class Application extends DesktopEntry
 
             if @show_launcher_box == true
                 @show_launcher_box = false
-                @set_icon()
-                @item_name.style.opacity = 1
+                @animate_combining_cancel()
         return
 
 
@@ -1013,8 +1026,7 @@ class Application extends DesktopEntry
                             break
                     if all_are_apps
                         @show_launcher_box = true
-                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                        @item_name.style.opacity = 0
+                        @animate_combining()
         return
 
 
@@ -1034,8 +1046,7 @@ class Application extends DesktopEntry
                             break
                     if all_are_apps
                         @show_launcher_box = true
-                        @item_icon.src = DCore.Desktop.get_transient_icon(@_entry)
-                        @item_name.style.opacity = 0
+                        @animate_combining()
         return
 
 
@@ -1048,17 +1059,63 @@ class Application extends DesktopEntry
 
             if @show_launcher_box == true
                 @show_launcher_box = false
-                @set_icon()
-                @item_name.style.opacity = 1
+                @animate_combining_cancel()
         return
+
+
+    animate_combining : =>
+        @animate_background = document.createElement("div")
+        @animate_background.style.position = "absolute"
+        @animate_background.style.pointerEvents = "none"
+        @animate_background.style.width = "48px"
+        @animate_background.style.height = "48px"
+        @animate_background.style.top = "2px"
+        @animate_background.style.left = "20px"
+        @animate_background.style.background = "url(img/richdir_background.png)"
+        @element.insertBefore(@animate_background, @item_icon.parentElement)
+        img_item = document.createElement("img")
+        img_item.style.width = "#{@item_icon.offsetWidth * 4 / 5}px"
+        img_item.style.height = "#{@item_icon.offsetHeight * 4 / 5}px"
+        img_item.style.top = "0"
+        img_item.style.left = "0"
+        img_item.style.position = "absolute"
+        img_item.style.webkitTransition = "width 0.2s, height 0.2s"
+        img_item.src = @item_icon.src
+        @animate_background.appendChild(img_item)
+        img_item.addEventListener("load", =>
+            img_item.style.width = "20px"
+            img_item.style.height = "20px"
+            img_item.style.top = "5px"
+            img_item.style.left = "6px"
+            setTimeout(=>
+                    @animate_background.parentElement.removeChild(@animate_background)
+                    @animate_background = null
+                , 101
+            )
+            return
+        )
+        @item_name.style.opacity = 0
+        @set_icon(DCore.Desktop.get_transient_icon(@_entry))
+
+
+    animate_combining_cancel : =>
+        if @animate_background
+            @animate_background.parentElement.removeChild(@animate_background)
+            @animate_background = null
+        @set_icon()
+        @item_name.style.opacity = 1
 
 
 class NormalFile extends DesktopEntry
 
 
 class InvalidLink extends DesktopEntry
-    set_icon : ->
-        super(DCore.get_theme_icon("invalid-link", 48))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.get_theme_icon("invalid-link", 48)
+        else
+            icon = src
+        super(icon)
 
 
     do_buildmenu : ->
@@ -1097,8 +1154,12 @@ class ComputerVDir extends DesktopEntry
         _("Computer")
 
 
-    set_icon : ->
-        super(DCore.get_theme_icon("computer", 48))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.get_theme_icon("computer", 48)
+        else
+            icon = src
+        super(icon)
 
 
     get_path : ->
@@ -1140,8 +1201,12 @@ class HomeVDir extends DesktopEntry
         _("Home")
 
 
-    set_icon : ->
-        super(DCore.get_theme_icon("deepin-user-home", 48))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.get_theme_icon("deepin-user-home", 48)
+        else
+            icon = src
+        super(icon)
 
 
     get_path : ->
@@ -1224,11 +1289,14 @@ class TrashVDir extends DesktopEntry
         _("Trash")
 
 
-    set_icon : ->
-        if DCore.DEntry.get_trash_count() > 0
-            icon = DCore.get_theme_icon("user-trash-full", 48)
+    set_icon : (src = null) ->
+        if src == null
+            if DCore.DEntry.get_trash_count() > 0
+                icon = DCore.get_theme_icon("user-trash-full", 48)
+            else
+                icon = DCore.get_theme_icon("user-trash", 48)
         else
-            icon = DCore.get_theme_icon("user-trash", 48)
+            icon = src
         super(icon)
 
 
@@ -1315,8 +1383,12 @@ class DeepinSoftwareCenter extends DesktopEntry
         _("Deepin Software Center")
 
 
-    set_icon : ->
-        super(DCore.get_theme_icon("deepin-software-center", 48))
+    set_icon : (src = null) ->
+        if src == null
+            icon = DCore.get_theme_icon("deepin-software-center", 48)
+        else
+            icon = src
+        super(icon)
 
 
     get_path : ->
