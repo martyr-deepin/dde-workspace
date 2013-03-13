@@ -172,6 +172,7 @@ class UserInfo extends Widget
         @login = null
         @loading?.destroy()
         @loading = null
+        @login_displayed = false
         if DCore.Greeter.in_authentication()
             DCore.Greeter.cancel_authentication()
 
@@ -192,6 +193,7 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
             @login_displayed = true
+            @add_css_class("UserInfoSelected")
             @add_css_class("foo")
 
     do_click: (e)->
@@ -301,6 +303,8 @@ DCore.signal_connect("auth", (msg) ->
         user.login.password.style.color = "red"
         user.login.password.value = msg.error
         user.login.password.blur()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
         user.login.password.addEventListener("focus", (e)=>
             user.login.password.classList.add("PasswordStyle")
             user.login.password.style.color ="black"
@@ -327,9 +331,9 @@ document.body.addEventListener("keydown", (e)=>
     if e.which == 37
         #echo "prev"
         if _current_index == 0
-            _id = roundabout.children[_counts - 1].children[0].getAttribute("id")
+            _id = roundabout.children[_counts - 1]?.children[0]?.getAttribute("id")
         else
-            _id = roundabout.children[_current_index - 1].children[0].getAttribute("id")
+            _id = roundabout.children[_current_index - 1]?.children[0]?.getAttribute("id")
         if Widget.look_up(_id)?
             jQuery("#roundabout").roundabout("animateToPreviousChild")
             setTimeout( ->
@@ -343,9 +347,9 @@ document.body.addEventListener("keydown", (e)=>
     else if e.which == 39 
         #echo "next"
         if _current_index == _counts - 1
-            _id = roundabout.children[0].children[0].getAttribute("id")
+            _id = roundabout.children[0]?.children[0]?.getAttribute("id")
         else
-            _id = roundabout.children[_current_index + 1].children[0].getAttribute("id")
+            _id = roundabout.children[_current_index + 1]?.children[0]?.getAttribute("id")
         if Widget.look_up(_id)?
             jQuery("#roundabout").roundabout("animateToNextChild")
             setTimeout( ->
@@ -358,10 +362,11 @@ document.body.addEventListener("keydown", (e)=>
 
     else if e.which == 13 
         #echo "enter"
-        if _current_user? and not _current_user.login_displayed
-            _current_user.show_login()
+        if _current_user? 
+            if not _current_user.login_displayed
+                _current_user.show_login()
         else if not _current_user?
-            _id = roundabout.children[_current_index].children[0].getAttribute("id")
+            _id = roundabout.children[_current_index]?.children[0]?.getAttribute("id")
             Widget.look_up(_id)?.focus()
             Widget.look_up(_id)?.show_login()
 
@@ -381,3 +386,19 @@ run_post(->
     roundabout.style.left = "#{l}px"
 )
 
+jQuery("#roundabout").drag("start", (ev, dd) ->
+    if _current_user?
+        _current_user.blur()
+, {distance:100} 
+)
+
+jQuery("#roundabout").drag("end", (ev, dd) ->
+    if _current_user?
+        _current_user.blur()
+
+    _near_index = jQuery("#roundabout").roundabout("getNearestChild")
+    jQuery("#roundabout").roundabout("animateToChild", _near_index) 
+    _near_id = roundabout.children[_near_index]?.children[0]?.getAttribute("id")
+    if Widget.look_up(_near_id)?
+        Widget.look_up(_near_id).focus()
+)
