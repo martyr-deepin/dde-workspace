@@ -24,6 +24,7 @@ DCore.Dock.draw_board(board)
 
 DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
 
+
 _current_active_window = null
 get_active_window = ->
     return _current_active_window
@@ -33,9 +34,10 @@ DCore.signal_connect("active_window_changed", (info)->
     active_group = Widget.look_up("le_"+info.app_id)
     active_group?.to_active_status(info.id)
 
-    if _current_active_window != info.id
-        _current_active_window = info.id
-        Preview_active_window_changed(info.id)
+    Preview_active_window_changed(info.id)
+    if info.id == null
+        alert("ERRRRRRRRRRRRR")
+    _current_active_window = info.id
 )
 
 DCore.signal_connect("launcher_added", (info) ->
@@ -68,6 +70,9 @@ DCore.signal_connect("task_updated", (info) ->
 
     leader.update_client(info.id, info.icon, info.title)
 )
+DCore.signal_connect("dock_hidden", ->
+    Preview_close_now()
+)
 
 DCore.signal_connect("task_removed", (info) ->
     Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
@@ -82,8 +87,6 @@ DCore.signal_connect("in_normal_mode", ->
     MAX_SCALE = 1
     calc_app_item_size()
 )
-DCore.Dock.emit_webview_ok()
-show_desktop.show(DCore.Dock.get_desktop_status())
 
 setTimeout(->
     IN_INIT = false
@@ -94,3 +97,7 @@ setTimeout(->
 setTimeout(->
     DCore.Dock.test("1")
 , 3000)
+
+DCore.Dock.emit_webview_ok()
+
+show_desktop.show(DCore.Dock.get_desktop_status())
