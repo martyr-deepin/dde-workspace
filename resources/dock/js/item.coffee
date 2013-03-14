@@ -119,7 +119,7 @@ class AppItem extends Widget
         Preview_close_now()
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
-        e.dataTransfer.setData("item-id", @element.id)
+        e.dataTransfer.setData("deepin-item-id", @element.id)
         e.dataTransfer.effectAllowed = "move"
         e.stopPropagation()
         @element.style.opacity = "0.5"
@@ -133,7 +133,7 @@ class AppItem extends Widget
     do_dragover: (e) ->
         e.preventDefault()
         return if @is_fixed_pos
-        sid = e.dataTransfer.getData("item-id")
+        sid = e.dataTransfer.getData("deepin-item-id")
         if not sid
             return
         did = @element.id
@@ -156,7 +156,7 @@ class AppItem extends Widget
     do_drop: (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if e.dataTransfer.getData("item-id")
+        if e.dataTransfer.getData("deepin-item-id")
             return
         tmp_list = []
         for file in e.dataTransfer.files
@@ -170,7 +170,7 @@ class AppItem extends Widget
 
 
 document.body.addEventListener("drop", (e)->
-    s_id = e.dataTransfer.getData("item-id")
+    s_id = e.dataTransfer.getData("deepin-item-id")
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.constructor.name == "Launcher"
         s_widget.element.style.position = "fixed"
@@ -182,7 +182,7 @@ document.body.addEventListener("drop", (e)->
         ,500)
 )
 document.body.addEventListener("dragover", (e)->
-    s_id = e.dataTransfer.getData("item-id")
+    s_id = e.dataTransfer.getData("deepin-item-id")
     if Widget.look_up(s_id)?.constructor.name == "Launcher"
         e.preventDefault()
 )

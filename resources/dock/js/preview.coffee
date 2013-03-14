@@ -32,86 +32,122 @@ class PWContainer extends Widget
     constructor: (@id)->
         super
         @border = create_element("div", "PWBorder", document.body)
-        @hide()
+        @element.style.maxWidth = screen.width - 30
         @border.appendChild(@element)
         @is_showing = false
         @_current_group = null
         @_update_id = -1
         @arrow = new Arrow("PreviewArrow")
         @border.appendChild(@arrow.element)
+        @_current_pws = {}
 
     hide: ->
-        @border.style.display = "none"
+        @is_showing = false
+        @border.style.opacity = 0
     show: ->
-        @border.style.display = "block"
-
-    append: (el)->
-        @element.appendChild(el)
-        @_calc_size()
+        @is_showing = true
+        @border.style.opacity = 1
 
     _update: ->
-        @is_showing = true
         clearInterval(@_update_id)
-        for pw in @element.children
-            Widget.look_up(pw.id)?.update_content()
+        setTimeout(=>
+            @_update_once()
+            @_calc_size()
+            @show()
+        , 5)
         @_update_id = setInterval(=>
-            for pw in @element.children
-                Widget.look_up(pw.id)?.update_content()
+            @_update_once()
         , 500)
 
+    _update_once: ->
+        for k, v of @_current_pws
+            @_current_pws[k] = true
+
+        @_current_group.n_clients.forEach((w_id)=>
+            @_current_pws[w_id] = false
+            info = @_current_group.client_infos[w_id]
+            pw = info.pw_window
+            if pw == null
+                pw = new PreviewWindow("pw"+info.id, info.id, info.title, PREVIEW_WINDOW_WIDTH * @scale, PREVIEW_WINDOW_HEIGHT * @scale)
+                @_current_group.client_infos[w_id].pw_window = pw
+                @append(pw)
+            setTimeout(->
+                pw.update_content()
+            , 10)
+        )
+
+        for k, v of @_current_pws
+            if v == true
+                Widget.look_up("pw"+k)?.destroy()
+                @_current_group.client_infos[k]?.pw_window = null
+                delete @_current_pws[k]
+
     _calc_size: ->
+        return if @_current_group == null
         n = @_current_group.n_clients.length
-        @child_width = clamp(screen.width / n, 0, 230)
-        @child_height = @child_width / 2
-        center_position = get_page_xy(@_current_group.element, 0, 0).x - (@child_width*n - @_current_group.element.clientWidth) / 2
-        @arrow.move_to(get_page_xy(@_current_group.element, 0, 0).x - get_page_xy(@element, 0, 0).x + @_current_group.element.clientWidth / 2)
-        offset = clamp(center_position, 0, screen.width - @child_width * n)
+        pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
+        new_scale = pw_width / PREVIEW_WINDOW_WIDTH
+        @scale = new_scale
+
+        group_element = @_current_group.element
+        x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2
+        @x = x
+
+        center_position = x - (pw_width * n / 2)
+        offset = clamp(center_position, 5, screen.width - @pw* n)
+        #@element.style.width = PREVIEW_WINDOW_WIDTH * @scale * n
+        #@element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
+        @arrow.move_to(x.toFixed() - offset - 3) # 3 is the half length of arrow width
 
         if @element.clientWidth == screen.width
             @border.style.left = 0
-            DCore.Dock.require_region(0, -@element.clientHeight, @element.clientWidth + 20, @element.clientHeight + 20)
         else
-            @border.style.left = offset + "px"
-            DCore.Dock.require_region(offset, -@element.clientHeight-10, @element.clientWidth + 20, @element.clientHeight + 20)
+            @border.style.left = offset
 
+        #@region_height = PREVIEW_WINDOW_HEIGHT + 5 * PREVIEW_BORDER_LENGTH
+        @region_height = screen.height - DOCK_HEIGHT
+        #@region_width = n * pw_width + 5 * PREVIEW_BORDER_LENGTH
+        @region_width = screen.width
+        #@region_x = offset - 5
+        @region_x = 0
+        @region_y = -@region_height
+        DCore.Dock.require_region(@region_x, @region_y, @region_width, @region_height)
+
+    append: (pw)->
+        @_current_pws[pw.id] = true
+        @element.appendChild(pw.element)
+
+    remove: (pw)->
+        delete @_current_pws[pw.id]
+
+    close: ->
+        @remove_all()
+        DCore.Dock.release_region(0, @region_y, screen.width, @region_height)
 
     remove_all: ->
         @hide()
-        DCore.Dock.release_region(0, -@element.clientHeight, screen.width, @element.clientHeight)
         clearInterval(@_update_id)
-        tmp = []
-        for i in $s(".PreviewWindow")
-            tmp.push(Widget.look_up(i.id))
-        tmp.forEach( (pw)->
-            pw?.destroy()
-        )
         @_update_id = -1
+
+
+        if @_current_group
+            for w_id in @_current_group.n_clients
+                info = @_current_group.client_infos[w_id]
+                info.pw_window?.delay_destroy()
+                info.pw_window = null
+
         @_current_group = null
-        @is_showing = false
 
 
     show_group: (group)->
         return if @_current_group == group
         @remove_all()
         @_current_group = group
-        return if @_current_group.n_clients.length == 0
-        @show()
-        group.n_clients.forEach( (id)=>
-            info = group.client_infos[id]
-            if not Widget.look_up("pw"+id)
-                pw = new PreviewWindow("pw"+id, id, info.title, 200, 100)
-                @append(pw.element)
-        )
-        @_calc_size()
         @_update()
 
     do_mouseover: ->
         __clear_timeout()
 
-    remove: (pw)->
-        # used by other
-        pw?.destroy
-        @_calc_size()
 
 
 Preview_container = new PWContainer("pwcontainer")
@@ -133,15 +169,18 @@ Preview_show = (group) ->
             Preview_container.show_group(group)
         , 1000)
 
+Preview_close_now = ->
+    __clear_timeout()
+    Preview_container.hide()
+    setTimeout(->
+        Preview_container.close()
+    , 300)
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
-            Preview_container.remove_all()
-        , 1000)
-Preview_close_now = ->
-    __clear_timeout()
-    Preview_container.remove_all()
+            Preview_close_now()
+        , 1500)
 
 _current_active_pw_window = null
 Preview_active_window_changed = (w_id) ->
@@ -152,43 +191,74 @@ Preview_active_window_changed = (w_id) ->
 class PreviewWindow extends Widget
     constructor: (@id, @w_id, @title_str, @width, @height)->
         super
-
         @title = create_element("div", "PWTitle", @element)
         @title.setAttribute("title", @title_str)
         @title.innerText = @title_str
 
-        @canvas = create_element("canvas", "PWCanvas", @element)
-        @canvas.setAttribute("width", 190)
-        @canvas.setAttribute("height", 110)
+        @canvas_container = create_element("div", "PWCanvas", @element)
+        @canvas = create_element("canvas", "", @canvas_container)
 
+        @update_size()
 
-        @close_button = create_element("div", "PWClose", @element)
+        @close_button = create_element("div", "PWClose", @canvas_container)
         @close_button.addEventListener('click', (e)=>
-            DCore.Dock.close_window(@w_id)
             e.stopPropagation()
-            @destroy()
+            DCore.Dock.close_window(@w_id)
         )
 
         if get_active_window() == @w_id
             @to_active()
         else
             @to_normal()
+
+        Preview_container.append(@)
+        Preview_container._calc_size()
+
+    delay_destroy: ->
+        setTimeout(=>
+            @destroy()
+        , 100)
+
+    destroy: ->
+        super
+        Preview_container.remove(@)
+        Preview_container._calc_size()
+
+    update_size: ->
+        @scale = Preview_container.scale
+        @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
+        @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
+        @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
+        @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
+        @canvas.setAttribute("width", @canvas_width)
+        @canvas.setAttribute("height", @canvas_height)
+        @canvas_container.style.width = @canvas_width
+        @canvas_container.style.height = @canvas_height
+
     to_active: ->
-        @close_button.style.display = "block"
+        _current_active_pw_window = @
         @add_css_class("PreviewWindowActived")
     to_normal: ->
-        @close_button.style.display = "none"
         @remove_css_class("PreviewWindowActived")
 
-    do_mouseover: (e)->
-        DCore.Dock.active_window(@w_id)
     do_click: (e)->
-        Preview_close_now()
+        DCore.Dock.active_window(@w_id)
 
     update_content: ->
-        DCore.Dock.draw_window_preview(@canvas, @w_id, 200, 100)
+        if @scale != Preview_container.scale
+            @update_size()
+        DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
 
 
 DCore.signal_connect("leave-notify", ->
     Preview_close()
+)
+
+document.body.addEventListener("click", (e)->
+    return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
+    Preview_close_now()
+)
+document.body.addEventListener("mouseover", (e)->
+    if (e.target == document.body)
+        Preview_close()
 )
