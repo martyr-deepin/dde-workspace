@@ -66,9 +66,11 @@ class PWContainer extends Widget
         @_current_group.n_clients.forEach((w_id)=>
             info = @_current_group.client_infos[w_id]
             pw = info.pw_window
+            echo "inof #{w_id} window "
+            echo info.pw_window
             if pw == null
-                pw = new PreviewWindow("pw"+info.id, info.id, info.title, PREVIEW_WINDOW_WIDTH * @scale, PREVIEW_WINDOW_HEIGHT * @scale)
-                @_current_group.client_infos[w_id].pw_window = pw
+                pw = new PreviewWindow("pw"+info.id, info.id, info.title, @_current_group)
+
             setTimeout(->
                 pw.update_content()
             , 10)
@@ -78,8 +80,7 @@ class PWContainer extends Widget
         for k, v of @_current_pws
             if v == true
                 Widget.look_up("pw"+k)?.destroy()
-                @_current_group.client_infos[k]?.pw_window = null
-                delete @_current_pws[k]
+        echo "n:#{$s(".PreviewWindow").length}"
 
     _calc_size: ->
         return if @_current_group == null
@@ -121,28 +122,15 @@ class PWContainer extends Widget
         delete @_current_pws[pw.w_id]
 
     close: ->
-        @remove_all()
+        Object.keys(@_current_pws).forEach((w_id)->
+            Widget.look_up("pw"+w_id)?.destroy()
+        )
         DCore.Dock.release_region(0, @region_y, screen.width, @region_height)
         @is_showing = false
 
-    remove_all: ->
-        @hide()
-        clearInterval(@_update_id)
-        @_update_id = -1
-
-
-        if @_current_group
-            for w_id in @_current_group.n_clients
-                info = @_current_group.client_infos[w_id]
-                info.pw_window?.delay_destroy()
-                info.pw_window = null
-
-        @_current_group = null
-
-
     show_group: (group)->
         return if @_current_group == group
-        @remove_all()
+        @hide()
         @_current_group = group
         @_update()
 
@@ -191,7 +179,7 @@ Preview_active_window_changed = (w_id) ->
     _current_active_pw_window?.to_active()
 
 class PreviewWindow extends Widget
-    constructor: (@id, @w_id, @title_str, @width, @height)->
+    constructor: (@id, @w_id, @title_str, @group)->
         super
         @title = create_element("div", "PWTitle", @element)
         @title.setAttribute("title", @title_str)
@@ -215,6 +203,8 @@ class PreviewWindow extends Widget
 
         Preview_container.append(@)
         Preview_container._calc_size()
+        echo "create PW WINDOW #{@id}"
+        @group.client_infos[@w_id].pw_window = @
 
     delay_destroy: ->
         setTimeout(=>
@@ -223,6 +213,7 @@ class PreviewWindow extends Widget
 
     destroy: ->
         super
+        @group.client_infos[@w_id].pw_window = null
         Preview_container.remove(@)
         Preview_container._calc_size()
 
