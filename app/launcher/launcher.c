@@ -50,9 +50,10 @@ static
 gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
     GError* error = NULL;
-    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_size(bg_path,
+    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_scale(bg_path,
                                                                     screen_width,
                                                                     screen_height,
+                                                                    FALSE,
                                                                     &error);
 
     if (_background_image == NULL) {

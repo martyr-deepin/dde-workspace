@@ -105,6 +105,7 @@ void _update_window_icon(Client *c);
 void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
+void _update_window_net_state(Client* c);
 static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
 static void _update_task_list(Window root);
@@ -124,15 +125,18 @@ Client* create_client_from_window(Window w)
     c->window = w;
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
-    c->is_hidden = TRUE;
+    c->is_hidden = FALSE;
     c->app_id = NULL;
     c->exec = NULL;
+    c->is_maximize = FALSE;
 
 
 
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    _update_window_net_state(c);
+    _update_is_overlay_client(c);
     if (c->app_id == NULL) {
         client_free(c);
         return NULL;
@@ -694,17 +698,18 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 
     int width = gdk_window_get_width(win);
     int height = gdk_window_get_height(win);
-    double scale = width / (double) height;
-
-    if (width > height) {
-        dest_height =  dest_width / scale;
-    } else {
-        dest_width = dest_height * scale;
-    }
 
     cairo_save(cr);
-    cairo_scale(cr, dest_width / width, dest_height / height);
-    gdk_cairo_set_source_window(cr, win, 0, 0);
+    double scale = 0;
+    if (width > height) {
+        scale = dest_width/width;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
+    } else {
+        scale = dest_height/height;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
+    }
     cairo_paint(cr);
     cairo_restore(cr);
 
