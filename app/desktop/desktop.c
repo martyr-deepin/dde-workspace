@@ -45,6 +45,9 @@ static GSettings* desktop_gsettings = NULL;
 void setup_background_window();
 GdkWindow* get_background_window ();
 void install_monitor();
+void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
+void unwatch_workarea_changes(GtkWidget* widget);
+
 static
 GFile* _get_useable_file(const char* basename);
 
@@ -205,7 +208,9 @@ static void update_workarea_size(GSettings* dock_gsettings)
     }
 
     char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
+    g_debug ("%s", tmp);
     js_post_message_simply("workarea_changed", tmp);
+    g_free (tmp);
 }
 
 static void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
@@ -254,6 +259,9 @@ void send_get_focus()
 {
     js_post_message_simply("get_focus", NULL);
 }
+
+
+
 
 int main(int argc, char* argv[])
 {
@@ -305,6 +313,35 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
+{
+    XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
+
+    if (xevt->type == PropertyNotify && 
+            XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
+        g_message("GET _NET_WORKAREA change on rootwindow");
+	GSettings* dock_gsettings = user_data;
+	update_workarea_size (dock_gsettings);
+    }
+    return GDK_FILTER_CONTINUE;
+}
+
+void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings)
+{
+
+    GdkScreen *gscreen = gtk_widget_get_screen(widget);
+    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
+    gdk_window_set_events(groot, gdk_window_get_events(groot) | GDK_PROPERTY_CHANGE_MASK);
+    //TODO: remove this filter when unrealize
+    gdk_window_add_filter(groot, watch_workarea, dock_gsettings);
+}
+
+void unwatch_workarea_changes(GtkWidget* widget)
+{
+    GdkScreen *gscreen = gtk_widget_get_screen(widget);
+    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
+    gdk_window_remove_filter(groot, watch_workarea, NULL);
+}
 
 static gboolean __init__ = FALSE;
 
@@ -314,7 +351,6 @@ void desktop_emit_webview_ok()
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();
-        watch_workarea_changes(container);
 
         GdkWindow* background = get_background_window();
         gdk_window_restack(background, gtk_widget_get_window(container), FALSE);
@@ -335,6 +371,8 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
                           G_CALLBACK(desktop_config_changed), NULL);
+
+        watch_workarea_changes(container, dock_gsettings);
     }
     update_workarea_size (dock_gsettings);
 }

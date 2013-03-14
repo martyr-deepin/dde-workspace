@@ -36,10 +36,6 @@ void set_struct_partial(GdkWindow* window, guint32 orientation, guint32 strut, g
 
 void get_workarea_size(int screen_n, int desktop_n, int* x, int* y, int* width, int* height);
 
-void watch_workarea_changes(GtkWidget* widget);
-
-void unwatch_workarea_changes(GtkWidget* widget);
-
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 
 
