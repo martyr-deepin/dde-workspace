@@ -110,6 +110,7 @@ class UserInfo extends Widget
         @login = null
         @loading?.destroy()
         @loading = null
+        @login_displayed = false
 
     show_login: ->
         if false
@@ -120,6 +121,11 @@ class UserInfo extends Widget
             @login.password.focus()
             @login_displayed = true
             @add_css_class("foo")
+
+    hide_login: ->
+        if @login and @login_displayed
+            @blur()
+            @focus()
     
     do_click: (e)->
         if _current_user == @
@@ -129,9 +135,7 @@ class UserInfo extends Widget
                 if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
                     echo "login pwd clicked"
                 else
-                    if @login_displayed
-                        @focus()
-                        @login_displayed = false
+                    @hide_login()
         else
             @focus()
     
@@ -160,6 +164,11 @@ class UserInfo extends Widget
                 @login.password.value = ""
             )
 
+            document.body.addEventListener("keydown", (e) =>
+                if e.which == 13 and  @login_displayed
+                    @login.password.focus()
+
+            )
             apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
@@ -188,9 +197,11 @@ $("#bottom_buttons").appendChild(s.element)
 
 u = new UserInfo(user, user, user_image) 
 roundabout.appendChild(u.li)
+_current_user = u
 
 u.focus()
 u.show_login()
+u.login.password.focus()
 
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)

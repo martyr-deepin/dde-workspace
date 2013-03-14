@@ -117,7 +117,6 @@ document.body.appendChild(_current_bg)
 _current_user = null
 userinfo_list = []
 _drag_flag = false
-_AUTH_TIMEOUT_ID = -1
 
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
@@ -153,13 +152,7 @@ class UserInfo extends Widget
         @add_css_class("UserInfoSelected")
 
         if DCore.Greeter.is_hide_users()
-            echo "hide user"
-            clearTimeout(_AUTH_TIMEOUT_ID)
-            _AUTH_TIMEOUT_ID = -1
-
-            _AUTH_TIMEOUT_ID = setTimeout( ->
-                DCore.Greeter.start_authentication("*other")
-            ,200)
+            DCore.Greeter.start_authentication("*other")
         else
             if @background.src != _current_bg.src
                 document.body.appendChild(@background)
@@ -173,12 +166,7 @@ class UserInfo extends Widget
                     de_menu.set_current(session)
                     DCore.Greeter.set_selected_session(session)
                         
-            clearTimeout(_AUTH_TIMEOUT_ID)
-            _AUTH_TIMEOUT_ID = -1
-
-            _AUTH_TIMEOUT_ID = setTimeout( ->
-                DCore.Greeter.start_authentication(@id)
-            ,200)
+            DCore.Greeter.start_authentication(@id)
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
