@@ -88,7 +88,7 @@ selected_up = ->
 get_item_row_count = ->
     parseInt(grid.clientWidth / ITEM_WIDTH)
 
-search = ->
+do_search = ->
     ret = []
     key = s_box.value.toLowerCase().trim()
 
@@ -109,6 +109,11 @@ search = ->
 
     grid_show_items(ret, false)
     return ret
+
+search_id = null
+search = ->
+    clearTimeout(search_id)
+    search_id = setTimeout(do_search, 20)
 
 $("#search").addEventListener('click', (e)->
     if e.target == s_box
