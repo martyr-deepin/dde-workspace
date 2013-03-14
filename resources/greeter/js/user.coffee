@@ -117,6 +117,7 @@ document.body.appendChild(_current_bg)
 _current_user = null
 userinfo_list = []
 _drag_flag = false
+_AUTH_TIMEOUT_ID = -1
 
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
@@ -151,11 +152,14 @@ class UserInfo extends Widget
         @element.focus()
         @add_css_class("UserInfoSelected")
 
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-
         if DCore.Greeter.is_hide_users()
-            DCore.Greeter.start_authentication("*other")
+            echo "hide user"
+            clearTimeout(_AUTH_TIMEOUT_ID)
+            _AUTH_TIMEOUT_ID = -1
+
+            _AUTH_TIMEOUT_ID = setTimeout(
+                DCore.Greeter.start_authentication("*other")
+            ,200)
         else
             if @background.src != _current_bg.src
                 document.body.appendChild(@background)
@@ -165,12 +169,16 @@ class UserInfo extends Widget
             DCore.Greeter.set_selected_user(@id)
             if @id != "guest"
                 session = DCore.Greeter.get_user_session(@id)
-                if session?
-                    if session != "nonexists"
-                        de_menu.set_current(session)
-                        DCore.Greeter.set_selected_session(session)
+                if session? and session != "nonexists"
+                    de_menu.set_current(session)
+                    DCore.Greeter.set_selected_session(session)
+                        
+            clearTimeout(_AUTH_TIMEOUT_ID)
+            _AUTH_TIMEOUT_ID = -1
 
-            DCore.Greeter.start_authentication(@id)
+            _AUTH_TIMEOUT_ID = setTimeout(
+                DCore.Greeter.start_authentication(@id)
+            ,200)
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
@@ -179,8 +187,6 @@ class UserInfo extends Widget
         @loading?.destroy()
         @loading = null
         @login_displayed = false
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
 
     show_login: ->
         if false
@@ -282,14 +288,11 @@ class UserInfo extends Widget
         #debug code begin
         #div_auth = create_element("div", "", $("#Debug"))
         #div_auth.innerText += "authenticate"
-
         #debug code end
 
     verify_failed: (msg) ->
         @focus()
         @show_login()
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
 
         if DCore.Greeter.is_hide_users()
             @login.account.style.color = "red"
@@ -322,8 +325,7 @@ class UserInfo extends Widget
     
         apply_refuse_rotate(@element, 0.5)
 
-# below code should use c-backend to fetch data
-
+######get user icon from dbus ############
 get_user_image = (user) ->
     echo "get_user_image"
     try
@@ -332,11 +334,15 @@ get_user_image = (user) ->
         echo "get user image failed"
     if not user_image? or user_image == "nonexists"
         try
-            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+            user_image = DCore.DBus.sys_object("com.deepin.passwdservice",
+                                                "/", 
+                                                "com.deepin.passwdservice"
+                                            ).get_user_fake_icon_sync(user)
         catch error
             user_image = "images/guest.jpg"
     return user_image
 
+#######add all user(include guest) to roundabout############
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("*other", "", "images/huser.jpg")
     roundabout.appendChild(u.li)
@@ -376,16 +382,27 @@ DCore.signal_connect("auth", (msg) ->
 
 ####the _counts must put before any animate of roundabout####
 _counts = roundabout.childElementCount
+_ANIMATE_TIMEOUT_ID = -1
 
 document.body.addEventListener("mousewheel", (e) =>
 
-    if e.wheelDelta > 100
+    if e.wheelDelta >= 120
         #echo "scroll to prev"
-        _current_user?.animate_prev()
+        clearTimeout(_ANIMATE_TIMEOUT_ID)
+        _ANIMATE_TIMEOUT_ID = -1
+        _ANIMATE_TIMEOUT_ID = setTimeout(
+            _current_user?.animate_prev()
+        , 5000)
 
-    if e.wheelDelta < -100
+    if e.wheelDelta <= -120
         #echo "scroll to next"
-        _current_user?.animate_next()
+        clearTimeout(_ANIMATE_TIMEOUT_ID)
+        _ANIMATE_TIMEOUT_ID = -1
+        echo "clear old timeout"
+        _ANIMATE_TIMEOUT_ID = setTimeout(
+            echo "old timout really cleared"
+            _current_user?.animate_next()
+        , 10000)
 )
 
 document.body.addEventListener("keydown", (e)=>
