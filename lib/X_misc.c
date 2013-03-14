@@ -78,44 +78,6 @@ void get_workarea_size(int screen_n, int desktop_n,
     XFree(data_p);
 }
 
-
-static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
-{
-    XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
-
-    if (xevt->type == PropertyNotify && 
-            XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
-        g_message("GET _NET_WORKAREA change on rootwindow");
-
-        int x, y, width, height;
-        get_workarea_size(0, 0, &x, &y, &width, &height);
-        char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}",
-                x, y, width, height);
-        js_post_message_simply("workarea_changed", tmp);
-        g_free(tmp);
-    }
-    return GDK_FILTER_CONTINUE;
-}
-
-
-void watch_workarea_changes(GtkWidget* widget)
-{
-
-    GdkScreen *gscreen = gtk_widget_get_screen(widget);
-    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
-    gdk_window_set_events(groot, gdk_window_get_events(groot) | GDK_PROPERTY_CHANGE_MASK);
-    //TODO: remove this filter when unrealize
-    gdk_window_add_filter(groot, watch_workarea, NULL);
-}
-
-void unwatch_workarea_changes(GtkWidget* widget)
-{
-    GdkScreen *gscreen = gtk_widget_get_screen(widget);
-    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
-    gdk_window_remove_filter(groot, watch_workarea, NULL);
-}
-
-
 /* from libwnck/xutils.c, comes as LGPLv2+ */
 static char *
 latin1_to_utf8 (const char *latin1)

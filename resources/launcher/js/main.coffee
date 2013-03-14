@@ -39,13 +39,9 @@ create_category = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'category_name')
     el.setAttribute('cat_id', info.ID)
-    el.innerHTML = "
-    <div>#{info.Name}</div>
-    "
+    el.innerText = info.Name
     el.addEventListener('click', (e) ->
         e.stopPropagation()
-        if s_box.value == ""
-            grid_load_category(info.ID)
     )
     el.addEventListener('mouseover', (e)->
         e.stopPropagation()

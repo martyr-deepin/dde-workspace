@@ -59,7 +59,6 @@ static Display* _dsp = NULL;
 static void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
-    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
@@ -74,6 +73,7 @@ static void _init_atoms()
     ATOM_WINDOW_STATE_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
     ATOM_WINDOW_SKIP_TASKBAR = gdk_x11_get_xatom_by_name("_NET_WM_STATE_SKIP_TASKBAR");
+    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
 }
 
 typedef struct {
@@ -176,8 +176,6 @@ void active_window_changed(Display* dsp, Window w)
             json_append_number(json, "id", (int)w);
             json_append_string(json, "app_id", c->app_id);
             js_post_message("active_window_changed", json);
-        } else {
-            g_warning("0x%x get focus..\n", (int)w);
         }
     }
     if (_launcher_id != 0 && launcher_should_exit()) {

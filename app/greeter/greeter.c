@@ -272,6 +272,15 @@ void greeter_start_authentication(const gchar *username)
 
     DBG("auth-user:%s", username);
 
+    if(lightdm_greeter_get_in_authentication(greeter)){
+        if(g_strcmp0(username, lightdm_greeter_get_authentication_user(greeter)) == 0){
+            DBG("user:%s already in auth", username);
+            return ;
+        }else{
+            lightdm_greeter_cancel_authentication(greeter);
+        }
+    }
+
     if(g_strcmp0(username, "*other") == 0){
         lightdm_greeter_authenticate(greeter, NULL);
 

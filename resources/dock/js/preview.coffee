@@ -123,6 +123,7 @@ class PWContainer extends Widget
     close: ->
         @remove_all()
         DCore.Dock.release_region(0, @region_y, screen.width, @region_height)
+        @is_showing = false
 
     remove_all: ->
         @hide()
@@ -171,6 +172,7 @@ Preview_show = (group) ->
 
 Preview_close_now = ->
     __clear_timeout()
+    return if Preview_container.is_showing == false
     Preview_container.hide()
     setTimeout(->
         Preview_container.close()
@@ -258,6 +260,11 @@ document.body.addEventListener("click", (e)->
     return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
     Preview_close_now()
 )
+document.body.addEventListener("contextmenu", (e)->
+    return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
+    Preview_close_now()
+)
+
 document.body.addEventListener("mouseover", (e)->
     if (e.target == document.body)
         Preview_close()

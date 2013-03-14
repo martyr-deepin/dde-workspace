@@ -113,8 +113,6 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
     do_dragstart: (e)->
-        ITEM_HEIGHT = 60.0
-        
         DCore.Dock.require_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
         Preview_close_now()
         return if @is_fixed_pos

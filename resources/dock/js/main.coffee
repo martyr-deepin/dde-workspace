@@ -24,7 +24,8 @@ DCore.Dock.draw_board(board)
 
 DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
 
-_current_active_window = DCore.Dock.get_active_window()
+
+_current_active_window = null
 get_active_window = ->
     return _current_active_window
 
@@ -86,7 +87,6 @@ DCore.signal_connect("in_normal_mode", ->
     MAX_SCALE = 1
     calc_app_item_size()
 )
-show_desktop.show(DCore.Dock.get_desktop_status())
 
 setTimeout(->
     IN_INIT = false
@@ -99,3 +99,5 @@ setTimeout(->
 , 3000)
 
 DCore.Dock.emit_webview_ok()
+
+show_desktop.show(DCore.Dock.get_desktop_status())

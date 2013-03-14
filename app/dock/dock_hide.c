@@ -3,6 +3,7 @@
 #include "dock_config.h"
 #include "tasklist.h"
 #include "X_misc.h"
+#include "jsextension.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
