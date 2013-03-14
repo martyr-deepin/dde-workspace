@@ -34,6 +34,10 @@
 
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
 #define DOCK_HIDE_MODE "hide-mode"
+#define HIDE_MODE_DEFAULT 0
+#define HIDE_MODE_INTELLIGENT 1
+#define HIDE_MODE_KEEPHIDDEN 2
+#define HIDE_MODE_AUTOHIDDEN 3
 
 static GSettings* dock_gsettings = NULL;
 static GSettings* desktop_gsettings = NULL;
@@ -41,6 +45,9 @@ static GSettings* desktop_gsettings = NULL;
 void setup_background_window();
 GdkWindow* get_background_window ();
 void install_monitor();
+void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
+void unwatch_workarea_changes(GtkWidget* widget);
+
 static
 GFile* _get_useable_file(const char* basename);
 
@@ -189,25 +196,29 @@ static void update_workarea_size(GSettings* dock_gsettings)
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
 
-    char* hide_mode = g_settings_get_string (dock_gsettings, DOCK_HIDE_MODE);
-    if (!g_strcmp0 (hide_mode, "autohide"))
+    int  hide_mode = g_settings_get_enum (dock_gsettings, DOCK_HIDE_MODE);
+    g_debug ("hide mode: %d", hide_mode);
+    if ((hide_mode==HIDE_MODE_AUTOHIDDEN)||
+	(hide_mode==HIDE_MODE_INTELLIGENT))
     {
         //reserve the bottom (60 x width) area even dock is not show
         int root_height = gdk_screen_get_height (gdk_screen_get_default ());
         if (y + height + 60 > root_height)
             height = root_height - 60 -y;
     }
-    g_free (hide_mode);
 
     char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
+    g_debug ("%s", tmp);
     js_post_message_simply("workarea_changed", tmp);
+    g_free (tmp);
 }
 
 static void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    if (!g_strcmp0 (key, DOCK_HIDE_MODE))
+    if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
 
+    g_debug ("dock config changed");
     update_workarea_size (settings);
 }
 
@@ -248,6 +259,9 @@ void send_get_focus()
 {
     js_post_message_simply("get_focus", NULL);
 }
+
+
+
 
 int main(int argc, char* argv[])
 {
@@ -299,6 +313,35 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
+{
+    XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
+
+    if (xevt->type == PropertyNotify && 
+            XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
+        g_message("GET _NET_WORKAREA change on rootwindow");
+	GSettings* dock_gsettings = user_data;
+	update_workarea_size (dock_gsettings);
+    }
+    return GDK_FILTER_CONTINUE;
+}
+
+void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings)
+{
+
+    GdkScreen *gscreen = gtk_widget_get_screen(widget);
+    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
+    gdk_window_set_events(groot, gdk_window_get_events(groot) | GDK_PROPERTY_CHANGE_MASK);
+    //TODO: remove this filter when unrealize
+    gdk_window_add_filter(groot, watch_workarea, dock_gsettings);
+}
+
+void unwatch_workarea_changes(GtkWidget* widget)
+{
+    GdkScreen *gscreen = gtk_widget_get_screen(widget);
+    GdkWindow *groot = gdk_screen_get_root_window(gscreen);
+    gdk_window_remove_filter(groot, watch_workarea, NULL);
+}
 
 static gboolean __init__ = FALSE;
 
@@ -308,7 +351,6 @@ void desktop_emit_webview_ok()
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();
-        watch_workarea_changes(container);
 
         GdkWindow* background = get_background_window();
         gdk_window_restack(background, gtk_widget_get_window(container), FALSE);
@@ -317,7 +359,7 @@ void desktop_emit_webview_ok()
         g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
         //desktop, dock GSettings
         dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);
-        g_signal_connect (desktop_gsettings, "changed::hide_mode",
+        g_signal_connect (dock_gsettings, "changed::hide-mode",
                           G_CALLBACK(dock_config_changed), NULL);
 
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
@@ -329,6 +371,8 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
                           G_CALLBACK(desktop_config_changed), NULL);
+
+        watch_workarea_changes(container, dock_gsettings);
     }
     update_workarea_size (dock_gsettings);
 }
