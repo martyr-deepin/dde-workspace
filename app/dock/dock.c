@@ -173,11 +173,11 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
-        tray_init(container);
         inited = TRUE;
         init_config();
         init_launchers();
         init_task_list();
+        tray_init(container);
         remove_me_run_tray_icon();
         update_dock_size_mode();
         init_dock_guard_window();
