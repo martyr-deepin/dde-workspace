@@ -907,12 +907,12 @@ class RichDir extends DesktopEntry
             pop_width = col * _ITEM_WIDTH_ + 22
         @div_pop.style.width = "#{pop_width}px"
 
-        n = @div_pop.offsetHeight
-        if s_height - @element.offsetTop > n
-            pop_top = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight) + 14
+        n = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight)
+        if s_height - n > @div_pop.offsetHeight
+            pop_top = n + 14
             arrow_pos_at_bottom = false
         else
-            pop_top = @element.offsetTop - n - 6
+            pop_top = @element.offsetTop - @div_pop.offsetHeight - 6
             arrow_pos_at_bottom = true
         @div_pop.style.top = "#{pop_top}px"
 
