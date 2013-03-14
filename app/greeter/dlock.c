@@ -39,6 +39,24 @@
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
+#define DLOCK_ALL_EVENTS_MASK (GDK_EXPOSURE_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_MOTION_MASK|  \
+                           GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | \
+                           GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK |         \
+                           GDK_LEAVE_NOTIFY_MASK | GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK |GDK_PROPERTY_CHANGE_MASK |        \
+                           GDK_VISIBILITY_NOTIFY_MASK | GDK_PROXIMITY_IN_MASK | GDK_PROXIMITY_OUT_MASK | GDK_SUBSTRUCTURE_MASK | \
+                           GDK_SCROLL_MASK | GDK_TOUCH_MASK |GDK_SMOOTH_SCROLL_MASK                                              \
+                        )
+
+#define DLOCK_EVENTS_MASK (GDK_EXPOSURE_MASK | GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_MOTION_MASK|  \
+                           GDK_BUTTON1_MOTION_MASK | GDK_BUTTON2_MOTION_MASK | GDK_BUTTON3_MOTION_MASK | GDK_BUTTON_PRESS_MASK | \
+                           GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_ENTER_NOTIFY_MASK |         \
+                           GDK_FOCUS_CHANGE_MASK | GDK_STRUCTURE_MASK |GDK_PROPERTY_CHANGE_MASK |        \
+                           GDK_VISIBILITY_NOTIFY_MASK | GDK_PROXIMITY_IN_MASK | GDK_PROXIMITY_OUT_MASK | GDK_SUBSTRUCTURE_MASK | \
+                           GDK_SCROLL_MASK | GDK_TOUCH_MASK |GDK_SMOOTH_SCROLL_MASK                                              \
+                        )
+
+#define DLOCK_GRAB_DEVICE(w) (gdk_device_grab(gdk_device_manager_get_client_pointer(gdk_display_get_device_manager(gdk_display_get_default())), w? w:gdk_get_default_root_window(), GDK_OWNERSHIP_WINDOW, TRUE, DLOCK_EVENTS_MASK, NULL, GDK_CURRENT_TIME))
+
 GtkWidget* lock_container = NULL;
 static const gchar *username = NULL;
 static const gchar *user_realname = NULL;
@@ -284,7 +302,7 @@ int main(int argc, char **argv)
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
     gtk_widget_show_all(lock_container);
     
-    GRAB_DEVICE(NULL);
+    DLOCK_GRAB_DEVICE(NULL);
     gdk_window_stick(gdkwindow);
 
     gtk_main();
