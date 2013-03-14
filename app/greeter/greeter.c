@@ -61,7 +61,6 @@ static gchar* get_selected_user();
 static gchar* get_selected_session();
 void greeter_set_selected_user(const gchar *username);
 void greeter_set_selected_session(const gchar *session);
-gboolean greeter_in_authentication();
 const gchar* greeter_get_authentication_user();
 gboolean greeter_is_authenticated();
 void greeter_start_authentication(const gchar *username);
@@ -247,12 +246,6 @@ void greeter_set_selected_session(const gchar *session)
 }
 
 JS_EXPORT_API
-gboolean greeter_in_authentication()
-{
-    return lightdm_greeter_get_in_authentication(greeter);
-}
-
-JS_EXPORT_API
 const gchar* greeter_get_authentication_user()
 {
     return lightdm_greeter_get_authentication_user(greeter);
@@ -292,7 +285,6 @@ void greeter_start_authentication(const gchar *username)
     }
 }
 
-JS_EXPORT_API
 void greeter_cancel_authentication()
 {
     cancelling = FALSE;
