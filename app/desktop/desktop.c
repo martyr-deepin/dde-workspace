@@ -34,6 +34,10 @@
 
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
 #define DOCK_HIDE_MODE "hide-mode"
+#define HIDE_MODE_DEFAULT 0
+#define HIDE_MODE_INTELLIGENT 1
+#define HIDE_MODE_KEEPHIDDEN 2
+#define HIDE_MODE_AUTOHIDDEN 3
 
 static GSettings* dock_gsettings = NULL;
 static GSettings* desktop_gsettings = NULL;
@@ -189,15 +193,16 @@ static void update_workarea_size(GSettings* dock_gsettings)
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
 
-    char* hide_mode = g_settings_get_string (dock_gsettings, DOCK_HIDE_MODE);
-    if (!g_strcmp0 (hide_mode, "autohide"))
+    int  hide_mode = g_settings_get_enum (dock_gsettings, DOCK_HIDE_MODE);
+    g_debug ("hide mode: %d", hide_mode);
+    if ((hide_mode==HIDE_MODE_AUTOHIDDEN)||
+	(hide_mode==HIDE_MODE_INTELLIGENT))
     {
         //reserve the bottom (60 x width) area even dock is not show
         int root_height = gdk_screen_get_height (gdk_screen_get_default ());
         if (y + height + 60 > root_height)
             height = root_height - 60 -y;
     }
-    g_free (hide_mode);
 
     char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
     js_post_message_simply("workarea_changed", tmp);
@@ -205,9 +210,10 @@ static void update_workarea_size(GSettings* dock_gsettings)
 
 static void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    if (!g_strcmp0 (key, DOCK_HIDE_MODE))
+    if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
 
+    g_debug ("dock config changed");
     update_workarea_size (settings);
 }
 
@@ -317,7 +323,7 @@ void desktop_emit_webview_ok()
         g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
         //desktop, dock GSettings
         dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);
-        g_signal_connect (desktop_gsettings, "changed::hide_mode",
+        g_signal_connect (dock_gsettings, "changed::hide-mode",
                           G_CALLBACK(dock_config_changed), NULL);
 
         desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
