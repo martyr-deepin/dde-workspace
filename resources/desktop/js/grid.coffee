@@ -64,6 +64,48 @@ ingore_keyup_counts = 0
 # store the pos the user pop the context menu
 rightclick_pos = {clientX : 0, clientY : 0}
 
+#draw icon and title to canvas surface
+draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
+    # draw icon
+    if icon.src.length
+        canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
+        canvas_cantext.drawImage(
+            icon,
+            start_x + (_ITEM_WIDTH_ - icon.width) / 2,
+            start_y,
+            icon.width,
+            icon.height)
+    # draw text
+    canvas_cantext.shadowOffsetX = 1
+    canvas_cantext.shadowOffsetY = 1
+    canvas_cantext.shadowColor = "rgba(0, 0, 0, 1.0)"
+    canvas_cantext.shadowBlur = 1.5
+    canvas_cantext.font = "bold small san-serif"
+    canvas_cantext.fillStyle = "rgba(255, 255, 255, 1.0)"
+    canvas_cantext.textAlign = "center"
+    rest_text = title
+    line_number = 0
+    while rest_text.length > 0
+        if rest_text.length < 10 then n = rest_text.length
+        else n = 10
+        m = canvas_cantext.measureText(rest_text.substr(0, n)).width
+        if m == 90
+        else if m > 90
+            --n
+            while n > 0 and canvas_cantext.measureText(rest_text.substr(0, n)).width > 90
+                --n
+        else
+            ++n
+            while n <= rest_text.length and canvas_cantext.measureText(rest_text.substr(0, n)).width < 90
+                ++n
+
+        line_text = rest_text.substr(0, n)
+        rest_text = rest_text.substr(n)
+
+        canvas_cantext.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
+        ++line_number
+
+
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
     n_cols = Math.floor(wa_width / _ITEM_WIDTH_)
@@ -636,40 +678,7 @@ update_selected_item_drag_image = ->
         start_x = pos.x * _ITEM_WIDTH_
         start_y = pos.y * _ITEM_HEIGHT_
 
-
-        # draw icon
-        if w.item_icon.src.length
-            drag_context.shadowColor = "rgba(0, 0, 0, 0)"
-            drag_context.drawImage(w.item_icon, start_x + 22, start_y, w.item_icon.width, w.item_icon.height)
-        # draw text
-        drag_context.shadowOffsetX = 1
-        drag_context.shadowOffsetY = 1
-        drag_context.shadowColor = "rgba(0, 0, 0, 1.0)"
-        drag_context.shadowBlur = 1.5
-        drag_context.font = "bold small san-serif"
-        drag_context.fillStyle = "rgba(255, 255, 255, 1.0)"
-        drag_context.textAlign = "center"
-        rest_text = w.element.innerText
-        line_number = 0
-        while rest_text.length > 0
-            if rest_text.length < 10 then n = rest_text.length
-            else n = 10
-            m = drag_context.measureText(rest_text.substr(0, n)).width
-            if m == 90
-            else if m > 90
-                --n
-                while n > 0 and drag_context.measureText(rest_text.substr(0, n)).width > 90
-                    --n
-            else
-                ++n
-                while n <= rest_text.length and drag_context.measureText(rest_text.substr(0, n)).width < 90
-                    ++n
-
-            line_text = rest_text.substr(0, n)
-            rest_text = rest_text.substr(n)
-
-            drag_context.fillText(line_text, start_x + 46, start_y + 64 + line_number * 14, 90)
-            ++line_number
+        draw_icon_on_canvas(drag_context, start_x, start_y, w.item_icon, w.item_name.innerText)
 
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
     return

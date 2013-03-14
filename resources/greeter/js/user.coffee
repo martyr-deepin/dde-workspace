@@ -115,6 +115,9 @@ _current_bg = create_img("Background", _default_bg_src)
 document.body.appendChild(_current_bg)
 
 _current_user = null
+userinfo_list = []
+_drag_flag = false
+
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
         super
@@ -125,6 +128,8 @@ class UserInfo extends Widget
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
+        @index = roundabout.childElementCount
+        userinfo_list.push(@)
 
         if @id == "guest"
             user_bg = _default_bg_src
@@ -142,6 +147,7 @@ class UserInfo extends Widget
     focus: ->
         _current_user?.blur()
         _current_user = @
+        $("#roundabout").focus()
         @element.focus()
         @add_css_class("UserInfoSelected")
 
@@ -179,7 +185,10 @@ class UserInfo extends Widget
     show_login: ->
         if false
             @login()
-        else if not @login
+        else if _drag_flag
+            echo "in drag"
+
+        else if _current_user == @ and not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
             if DCore.Greeter.is_hide_users()
@@ -196,20 +205,65 @@ class UserInfo extends Widget
             @add_css_class("UserInfoSelected")
             @add_css_class("foo")
 
+    hide_login: ->
+        if @login and @login_displayed
+            @blur()
+            @focus()
+
     do_click: (e)->
         if _current_user == @
-            if not @login
+            if not @login and not @in_drag
                 @show_login()
             else
                 if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
                     echo "login pwd clicked"
                 else
-                    if @login_displayed
-                        @focus()
-                        @login_displayed = false
-
+                    @hide_login()
         else
             @focus()
+
+    animate_prev: ->
+        echo "animate prev"
+        if @index is 0
+            prev_index = _counts - 1 
+        else
+            prev_index = @index - 1
+
+        setTimeout( ->
+                userinfo_list[prev_index].focus()
+                return true
+            ,200)
+        jQuery("#roundabout").roundabout("animateToChild", prev_index)
+
+    animate_next: ->
+        echo "animate next"
+        if @index is _counts - 1
+            next_index = 0
+        else
+            next_index = @index + 1
+
+        setTimeout( ->
+                userinfo_list[next_index].focus()
+                return true
+            ,200)
+        jQuery("#roundabout").roundabout("animateToChild", next_index)
+
+    animate_near: ->
+        echo "animate near"
+        try
+            near_index = jQuery("#roundabout").roundabout("getNearestChild")
+        catch error
+            echo "getNeareastChild error"
+
+        if near_index is false
+            near_index = @index
+
+        setTimeout( ->
+                userinfo_list[near_index].focus()
+                _drag_flag = false
+                return true
+            ,200)
+        jQuery("#roundabout").roundabout("animateToChild", near_index)
 
     on_verify: (username, password)->
         @login.destroy()
@@ -231,7 +285,58 @@ class UserInfo extends Widget
 
         #debug code end
 
+    verify_failed: (msg) ->
+        @focus()
+        @show_login()
+        if DCore.Greeter.in_authentication()
+            DCore.Greeter.cancel_authentication()
+
+        if DCore.Greeter.is_hide_users()
+            @login.account.style.color = "red"
+            @login.account.value = msg
+            @login.account.blur()
+            @login.account.addEventListener("focus", (e)=>
+                @login.account.style.color = "black"
+                @login.account.value = ""
+                DCore.Greeter.start_authentication("*other")
+            )
+            document.body.addEventListener("keydown", (e) =>
+                if e.which == 13 and @login_displayed
+                    @login.account.focus()
+            )
+        else
+            @login.password.classList.remove("PasswordStyle")
+            @login.password.style.color = "red"
+            @login.password.value = msg
+            @login.password.blur()
+            @login.password.addEventListener("focus", (e)=>
+                @login.password.classList.add("PasswordStyle")
+                @login.password.style.color ="black"
+                @login.password.value = ""
+            )
+    
+            document.body.addEventListener("keydown", (e) =>
+                if e.which == 13 and @login_displayed
+                    @login.password.focus()
+            )
+    
+        apply_refuse_rotate(@element, 0.5)
+
 # below code should use c-backend to fetch data
+
+get_user_image = (user) ->
+    echo "get_user_image"
+    try
+        user_image = DCore.Greeter.get_user_image(user)
+    catch error
+        echo "get user image failed"
+    if not user_image? or user_image == "nonexists"
+        try
+            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+        catch error
+            user_image = "images/guest.jpg"
+    return user_image
+
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("*other", "", "images/huser.jpg")
     roundabout.appendChild(u.li)
@@ -242,16 +347,7 @@ else
     echo users
     for user in users
         if user == DCore.Greeter.get_default_user()
-            try
-                user_image = DCore.Greeter.get_user_image(user)
-            catch error
-                echo "get user image failed"
-            if not user_image? or user_image == "nonexists"
-                try
-                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-                catch error
-                    user_image = "images/guest.jpg"
-    
+            user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
             u.focus()
@@ -266,16 +362,7 @@ else
         if user == DCore.Greeter.get_default_user()
             echo "already append default user"
         else
-            try
-                user_image = DCore.Greeter.get_user_image(user)
-            catch error
-                echo "get user image failed"
-            if not user_image? or user_image == "nonexists"
-                try
-                    user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-                catch error
-                    user_image = "images/guest.jpg"
-
+            user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image) 
             roundabout.appendChild(u.li)
 
@@ -284,125 +371,40 @@ DCore.signal_connect("message", (msg) ->
 )
 
 DCore.signal_connect("auth", (msg) ->
-    user = _current_user
-    user.focus()
-    user.show_login()
-    if DCore.Greeter.is_hide_users()
-        user.login.account.style.color = "red"
-        user.login.account.value = msg.error
-        user.login.account.blur()
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-        user.login.account.addEventListener("focus", (e)=>
-            user.login.account.style.color = "black"
-            user.login.account.value = ""
-            DCore.Greeter.start_authentication("*other")
-        )
-    else
-        user.login.password.classList.remove("PasswordStyle")
-        user.login.password.style.color = "red"
-        user.login.password.value = msg.error
-        user.login.password.blur()
-        if DCore.Greeter.in_authentication()
-            DCore.Greeter.cancel_authentication()
-        user.login.password.addEventListener("focus", (e)=>
-            user.login.password.classList.add("PasswordStyle")
-            user.login.password.style.color ="black"
-            user.login.password.value = ""
-        )
-
-        document.body.addEventListener("keydown", (e) =>
-            if user? and user.login_displayed
-                if e.which == 13
-                    user.login.password.focus()
-        )
-
-    apply_refuse_rotate(user.element, 0.5)
+    _current_user?.verify_failed(msg.error)
 )
 
+####the _counts must put before any animate of roundabout####
 _counts = roundabout.childElementCount
 
-animate_prev = (_current_index) ->
-    if _current_index == 0
-        _new_index = _counts - 1
-        _id = roundabout.children[_counts - 1]?.children[0]?.getAttribute("id")
-    else
-        _new_index = _current_index - 1
-        _id = roundabout.children[_current_index - 1]?.children[0]?.getAttribute("id")
-    if Widget.look_up(_id)?
-        setTimeout( ->
-                Widget.look_up(_id).focus()
-                return true
-            ,200)
-            #jQuery("#roundabout").roundabout("animateToPreviousChild")
-        jQuery("#roundabout").roundabout("animateToChild", _new_index)
-
-    else if _current_user?
-        _current_user.focus()
-
-animate_next = (_current_index) ->
-    if _current_index == _counts - 1
-        _new_index = 0
-        _id = roundabout.children[0]?.children[0]?.getAttribute("id")
-    else
-        _new_index = _current_index + 1
-        _id = roundabout.children[_current_index + 1]?.children[0]?.getAttribute("id")
-    if Widget.look_up(_id)?
-        setTimeout( ->
-                Widget.look_up(_id)?.focus()
-                return true
-            , 200)
-            #jQuery("#roundabout").roundabout("animateToNextChild")
-        jQuery("#roundabout").roundabout("animateToChild", _new_index)
-        
-    else if _current_user?
-        _current_user.focus()
-    
-
 document.body.addEventListener("mousewheel", (e) =>
-    try
-        _current_index = jQuery("#roundabout").roundabout("getChildInFocus")
-    catch error
-        _current_index = jQuery("#roundabout").roundabout("getNearestChild")
 
     if e.wheelDelta > 100
         #echo "scroll to prev"
-        animate_prev(_current_index)
+        _current_user?.animate_prev()
 
     if e.wheelDelta < -100
         #echo "scroll to next"
-        animate_next(_current_index)
+        _current_user?.animate_next()
 )
 
 document.body.addEventListener("keydown", (e)=>
-    try
-        _current_index = jQuery("#roundabout").roundabout("getChildInFocus")
-    catch error
-        _current_index = jQuery("#roundabout").roundabout("getNearestChild")
 
     if e.which == 37
         #echo "prev"
-        animate_prev(_current_index)
+        _current_user?.animate_prev()
 
     else if e.which == 39 
         #echo "next"
-        animate_next(_current_index)
+        _current_user?.animate_next()
 
     else if e.which == 13 
         #echo "enter"
-        if _current_user? 
-            if not _current_user.login_displayed
-                _current_user.show_login()
-        else if not _current_user?
-            _id = roundabout.children[_current_index]?.children[0]?.getAttribute("id")
-            Widget.look_up(_id)?.focus()
-            Widget.look_up(_id)?.show_login()
+        _current_user?.show_login()
 
     else if e.which == 27
         #echo "esc"
-        if _current_user? and _current_user.login_displayed
-            _current_user.blur()
-            _current_user.focus()
+        _current_user?.hide_login()
 )
 
 if roundabout.children.length <= 2
@@ -415,18 +417,11 @@ run_post(->
 )
 
 jQuery("#roundabout").drag("start", (ev, dd) ->
-    if _current_user?
-        _current_user.blur()
+    _current_user?.hide_login()
+    _drag_flag = true
 , {distance:100} 
 )
 
 jQuery("#roundabout").drag("end", (ev, dd) ->
-    if _current_user?
-        _current_user.blur()
-
-    _near_index = jQuery("#roundabout").roundabout("getNearestChild")
-    jQuery("#roundabout").roundabout("animateToChild", _near_index) 
-    _near_id = roundabout.children[_near_index]?.children[0]?.getAttribute("id")
-    if Widget.look_up(_near_id)?
-        Widget.look_up(_near_id).focus()
+    _current_user?.animate_near()
 )
