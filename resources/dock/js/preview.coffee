@@ -64,16 +64,15 @@ class PWContainer extends Widget
             @_current_pws[k] = true
 
         @_current_group.n_clients.forEach((w_id)=>
-            @_current_pws[w_id] = false
             info = @_current_group.client_infos[w_id]
             pw = info.pw_window
             if pw == null
                 pw = new PreviewWindow("pw"+info.id, info.id, info.title, PREVIEW_WINDOW_WIDTH * @scale, PREVIEW_WINDOW_HEIGHT * @scale)
                 @_current_group.client_infos[w_id].pw_window = pw
-                @append(pw)
             setTimeout(->
                 pw.update_content()
             , 10)
+            @_current_pws[w_id] = false
         )
 
         for k, v of @_current_pws
@@ -114,11 +113,12 @@ class PWContainer extends Widget
         DCore.Dock.require_region(@region_x, @region_y, @region_width, @region_height)
 
     append: (pw)->
-        @_current_pws[pw.id] = true
+        @_current_pws[pw.w_id] = true
         @element.appendChild(pw.element)
 
     remove: (pw)->
-        delete @_current_pws[pw.id]
+        assert(not Widget.look_up(pw.id))
+        delete @_current_pws[pw.w_id]
 
     close: ->
         @remove_all()
