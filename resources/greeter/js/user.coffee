@@ -157,7 +157,7 @@ class UserInfo extends Widget
             clearTimeout(_AUTH_TIMEOUT_ID)
             _AUTH_TIMEOUT_ID = -1
 
-            _AUTH_TIMEOUT_ID = setTimeout(
+            _AUTH_TIMEOUT_ID = setTimeout( ->
                 DCore.Greeter.start_authentication("*other")
             ,200)
         else
@@ -176,7 +176,7 @@ class UserInfo extends Widget
             clearTimeout(_AUTH_TIMEOUT_ID)
             _AUTH_TIMEOUT_ID = -1
 
-            _AUTH_TIMEOUT_ID = setTimeout(
+            _AUTH_TIMEOUT_ID = setTimeout( ->
                 DCore.Greeter.start_authentication(@id)
             ,200)
 
@@ -385,24 +385,20 @@ _counts = roundabout.childElementCount
 _ANIMATE_TIMEOUT_ID = -1
 
 document.body.addEventListener("mousewheel", (e) =>
+    clearTimeout(_ANIMATE_TIMEOUT_ID)
+    _ANIMATE_TIMEOUT_ID = -1
 
     if e.wheelDelta >= 120
         #echo "scroll to prev"
-        clearTimeout(_ANIMATE_TIMEOUT_ID)
-        _ANIMATE_TIMEOUT_ID = -1
-        _ANIMATE_TIMEOUT_ID = setTimeout(
+        _ANIMATE_TIMEOUT_ID = setTimeout( -> 
             _current_user?.animate_prev()
-        , 5000)
+        , 200)
 
     if e.wheelDelta <= -120
         #echo "scroll to next"
-        clearTimeout(_ANIMATE_TIMEOUT_ID)
-        _ANIMATE_TIMEOUT_ID = -1
-        echo "clear old timeout"
-        _ANIMATE_TIMEOUT_ID = setTimeout(
-            echo "old timout really cleared"
+        _ANIMATE_TIMEOUT_ID = setTimeout( ->
             _current_user?.animate_next()
-        , 10000)
+        ,200)
 )
 
 document.body.addEventListener("keydown", (e)=>
