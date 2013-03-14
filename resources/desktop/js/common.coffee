@@ -47,6 +47,17 @@ _ITEM_ID_TRASH_BIN_ = "Trash_Virtual_Dir"
 # id string for "Deepin Software Center" item
 _ITEM_ID_DSC_ = "DSC_Virtual_Button"
 
+# id string for "computer" icon
+_ICON_ID_COMPUTER_  = "computer"
+# id string for "home" icon
+_ICON_ID_USER_HOME_ = "deepin-user-home"
+# id string for "trash bin" normal icon
+_ICON_ID_TRASH_BIN_FULL_ = "user-trash-full"
+# id string for "trash bin" empty icon
+_ICON_ID_TRASH_BIN_ = "user-trash"
+# id string for "Deepin Software Center" icon
+_ICON_ID_DSC_ = "deepin-software-center"
+
 
 # icon name for file attributes
 _FAI_READ_ONLY_  = "emblem-readonly"

@@ -17,6 +17,7 @@ class ClientGroup extends AppItem
         @img3 = create_img("AppItemImg", "", @element)
 
         @to_normal_status()
+        @pw_window = null
 
     update_scale: ->
         super
@@ -74,6 +75,7 @@ class ClientGroup extends AppItem
             "id": id
             "icon": icon
             "title": title
+            "pw_window": null
         @add_client(id)
         @update_leader()
 
@@ -97,6 +99,8 @@ class ClientGroup extends AppItem
             delete @client_infos[id]
 
         @n_clients.remove(id)
+        @client_infos[id]?.pw_window?.destroy()
+
 
         if @n_clients.length == 0
             @destroy()

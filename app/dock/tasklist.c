@@ -59,7 +59,6 @@ static Display* _dsp = NULL;
 static void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
-    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
@@ -74,6 +73,7 @@ static void _init_atoms()
     ATOM_WINDOW_STATE_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
     ATOM_WINDOW_SKIP_TASKBAR = gdk_x11_get_xatom_by_name("_NET_WM_STATE_SKIP_TASKBAR");
+    ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
 }
 
 typedef struct {
@@ -108,8 +108,8 @@ void _update_window_appid(Client *c);
 static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
 static void _update_task_list(Window root);
-static void update_active_window(Display* display, Window root);
 void client_free(Client* c);
+double dock_get_active_window();
 
 Client* create_client_from_window(Window w)
 {
@@ -176,8 +176,6 @@ void active_window_changed(Display* dsp, Window w)
             json_append_number(json, "id", (int)w);
             json_append_string(json, "app_id", c->app_id);
             js_post_message("active_window_changed", json);
-        } else {
-            /*g_warning("0x%x get focus..\n", (int)w);*/
         }
     }
     if (_launcher_id != 0 && launcher_should_exit()) {
@@ -324,7 +322,7 @@ void update_task_list()
     g_hash_table_remove_all(_clients_table);
     GdkWindow* root = gdk_get_default_root_window();
     _update_task_list(GDK_WINDOW_XID(root));
-    update_active_window(_dsp, GDK_WINDOW_XID(root));
+    active_window_changed(_dsp, (Window)dock_get_active_window());
 }
 
 void _update_task_list(Window root)
@@ -345,18 +343,19 @@ void _update_task_list(Window root)
     g_free(cs);
 }
 
-void update_active_window(Display* display, Window root)
+JS_EXPORT_API
+double dock_get_active_window()
 {
     gulong items;
-    void* data = get_window_property(display, root, ATOM_ACTIVE_WINDOW, &items);
+    void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &items);
     if (data == NULL)
-        return;
+        return 0;
     Window aw = X_FETCH_32(data, 0);
-    active_window_changed(display, aw);
     XFree(data);
+    return aw;
 }
 
-static 
+static
 void* argb_to_rgba(gulong* data, size_t s)
 {
     guint32* img = g_new(guint32, s);
@@ -500,13 +499,15 @@ static gboolean _is_maximized_window(Window win)
     gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
 
-    for (int i=0; i<items; i++) {
-        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_MAXIMIZED_VERT) {
-            XFree(data);
-            return TRUE;
+    if (data != NULL) {
+        for (int i=0; i<items; i++) {
+            if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_MAXIMIZED_VERT) {
+                XFree(data);
+                return TRUE;
+            }
         }
+        XFree(data);
     }
-    XFree(data);
     return FALSE;
 }
 
@@ -518,16 +519,12 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
                                  if (ev->atom == ATOM_CLIENT_LIST) {
                                      _update_task_list(ev->window);
                                  } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
-                                     update_active_window(ev->display, ev->window);
+                                     active_window_changed(_dsp, (Window)dock_get_active_window());
                                  } else if (ev->atom == ATOM_SHOW_DESKTOP) {
                                      js_post_message_simply("desktop_status_changed", NULL);
                                  }
                                  break;
                              }
-        case MotionNotify: {
-                               /*printf("Motion......%p\n", xevent);*/
-                               /*break;*/
-                           }
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -617,7 +614,7 @@ void init_task_list()
 
 
     update_task_list();
-    update_active_window(_dsp, GDK_WINDOW_XID(root));
+    active_window_changed(_dsp, (Window)dock_get_active_window());
 }
 
 JS_EXPORT_API
@@ -697,17 +694,18 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
 
     int width = gdk_window_get_width(win);
     int height = gdk_window_get_height(win);
-    double scale = width / (double) height;
-
-    if (width > height) {
-        dest_height =  dest_width / scale;
-    } else {
-        dest_width = dest_height * scale;
-    }
 
     cairo_save(cr);
-    cairo_scale(cr, dest_width / width, dest_height / height);
-    gdk_cairo_set_source_window(cr, win, 0, 0);
+    double scale = 0;
+    if (width > height) {
+        scale = dest_width/width;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0, 0.5*(dest_height/scale-height));
+    } else {
+        scale = dest_height/height;
+        cairo_scale(cr, scale, scale);
+        gdk_cairo_set_source_window(cr, win, 0.5*(dest_width/scale-width), 0);
+    }
     cairo_paint(cr);
     cairo_restore(cr);
 
@@ -718,7 +716,8 @@ JS_EXPORT_API
 gboolean dock_request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
-    g_assert(c != NULL);
+    g_return_val_if_fail(FALSE, c != NULL);
+
     if (dock_has_launcher(c->app_id)) {
         // already has this app info
         return FALSE;

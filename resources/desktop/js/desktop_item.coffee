@@ -1163,7 +1163,7 @@ class ComputerVDir extends DesktopEntry
 
     set_icon : (src = null) ->
         if src == null
-            icon = DCore.get_theme_icon("computer", 48)
+            icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, 48)
         else
             icon = src
         super(icon)
@@ -1210,7 +1210,7 @@ class HomeVDir extends DesktopEntry
 
     set_icon : (src = null) ->
         if src == null
-            icon = DCore.get_theme_icon("deepin-user-home", 48)
+            icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, 48)
         else
             icon = src
         super(icon)
@@ -1299,9 +1299,9 @@ class TrashVDir extends DesktopEntry
     set_icon : (src = null) ->
         if src == null
             if DCore.DEntry.get_trash_count() > 0
-                icon = DCore.get_theme_icon("user-trash-full", 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, 48)
             else
-                icon = DCore.get_theme_icon("user-trash", 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_, 48)
         else
             icon = src
         super(icon)
@@ -1392,7 +1392,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
     set_icon : (src = null) ->
         if src == null
-            icon = DCore.get_theme_icon("deepin-software-center", 48)
+            icon = DCore.get_theme_icon(_ICON_ID_DSC_, 48)
         else
             icon = src
         super(icon)
