@@ -35,11 +35,25 @@
 static
 GtkWidget* container = NULL;
 
+static GdkScreen* screen = NULL;
+static int screen_width;
+static int screen_height;
+
+static void get_screen_info()
+{
+    screen = gdk_screen_get_default();
+    screen_width = gdk_screen_get_width(screen);
+    screen_height = gdk_screen_get_height(screen);
+}
+
 static
 gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
     GError* error = NULL;
-    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file(bg_path, &error);
+    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_size(bg_path,
+                                                                    screen_width,
+                                                                    screen_height,
+                                                                    &error);
 
     if (_background_image == NULL) {
         fprintf(stderr, "[ERROR] create pixbuf from file fail!\n");
@@ -48,10 +62,9 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
         return FALSE;
     }
 
-    GdkScreen* screen = gdk_screen_get_default();
     cairo_surface_t* img_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                                              gdk_screen_get_width(screen),
-                                                              gdk_screen_get_height(screen));
+                                                              screen_width,
+                                                              screen_height);
 
 
     if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
@@ -97,6 +110,7 @@ void _set_launcher_background(GdkWindow* win)
         g_free(bg_path);
         GSettings* s = g_settings_new(SCHEMA_ID);
         bg_path = g_settings_get_string(s, CURRENT_PCITURE);
+        printf("%s\n", bg_path);
         _set_launcher_background_aux(win, bg_path);
     }
 
@@ -114,13 +128,12 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 static
 void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
-    gtk_widget_set_size_request(container, gdk_screen_get_width(screen), gdk_screen_get_height(screen));
+    gtk_widget_set_size_request(container, screen_width, screen_height);
 }
 
 static
 void _on_realize(GtkWidget* container)
 {
-    GdkScreen* screen = gdk_screen_get_default();
     _update_size(screen, container);
     g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
 }
@@ -138,6 +151,7 @@ int main(int argc, char* argv[])
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
+    get_screen_info();
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -181,12 +195,9 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
-    GdkScreen* screen = gdk_screen_get_default();
     js_post_message_simply("workarea_changed",
             "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
-            gdk_screen_get_width(screen),
-            gdk_screen_get_height(screen)
-            );
+            screen_width, screen_height);
 }
 
 static GHashTable* _category_table = NULL;
