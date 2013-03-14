@@ -3,6 +3,7 @@
 #include "dock_config.h"
 #include "tasklist.h"
 #include "X_misc.h"
+#include "jsextension.h"
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
@@ -60,6 +61,7 @@ static void enter_hide()
     set_state(StateHidden);
     _change_workarea_height(0);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-3);
+    js_post_message("dock_hidden", NULL);
 }
 
 #define SHOW_HIDE_ANIMATION_STEP 10
@@ -81,6 +83,7 @@ static void enter_hidding()
     set_state(StateHidding);
     _cancel_animation();
     do_hide_animation(_dock_height);
+    js_post_message("dock_hidden", NULL);
 }
 static void enter_showing()
 {
