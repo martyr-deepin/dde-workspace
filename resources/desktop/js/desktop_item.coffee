@@ -19,6 +19,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+richdir_drag_canvas = document.createElement("canvas")
+richdir_drag_context = richdir_drag_canvas.getContext('2d')
+
+
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -869,7 +873,10 @@ class RichDir extends DesktopEntry
                 else
                     evt.dataTransfer.effectAllowed = "none"
 
-                if (img = this.getElementsByTagName("img"))? then evt.dataTransfer.setDragImage(img[0], 24, 24)
+                richdir_drag_canvas.width = _ITEM_WIDTH_
+                richdir_drag_canvas.height = _ITEM_HEIGHT_
+                draw_icon_on_canvas(richdir_drag_context, 0, 0, @getElementsByTagName("img")[0], this.innerText)
+                evt.dataTransfer.setDragCanvas(richdir_drag_canvas, 48, 24)
                 return
             )
             ele.addEventListener('dragend', (evt) ->
