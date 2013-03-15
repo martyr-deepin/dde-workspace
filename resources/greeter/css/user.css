@@ -48,8 +48,8 @@
 }
 
 .UserImg {
-    width: 12em;
-    height:12em;
+    max-width: 12em;
+    height: auto;
     border: 2px solid rgba(255,255,255,0.8);
     opacity:inherit;
 }
