@@ -52,7 +52,7 @@ static void accumulate_na_width(GdkWindow* icon, gpointer width)
     gdk_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
 }
 
-static void update_notify_area_width()
+void update_notify_area_width()
 {
     if (_fcitx_tray)
         _na_width = _deepin_tray_width + _fcitx_tray_width + DEFAULT_INTERVAL;
@@ -70,6 +70,10 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
         if (_deepin_tray == data) {
             _deepin_tray = NULL;
             _deepin_tray_width = 0;
+            gdk_window_move_resize(_fcitx_tray,
+                    _s_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
+                    NA_BASE_Y,
+                    _fcitx_tray_width, DEFAULT_HEIGHT);
         } else if (_fcitx_tray == data) {
             _fcitx_tray = NULL;
             _fcitx_tray_width = 0;
@@ -88,10 +92,11 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                     gdk_window_move_resize(_deepin_tray,
                             _s_width - _deepin_tray_width- DEFAULT_INTERVAL, 
                             NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
-                    gdk_window_move_resize(_fcitx_tray,
-                            _s_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
-                            NA_BASE_Y,
-                            _fcitx_tray_width, DEFAULT_HEIGHT);
+                    if (_fcitx_tray)
+                        gdk_window_move_resize(_fcitx_tray,
+                                _s_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
+                                NA_BASE_Y,
+                                _fcitx_tray_width, DEFAULT_HEIGHT);
                     update_notify_area_width();
                 }
             } else if (data == _fcitx_tray) {

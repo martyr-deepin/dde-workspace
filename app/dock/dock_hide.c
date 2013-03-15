@@ -313,6 +313,7 @@ void init_dock_guard_window()
     gdk_window_move(win, 0, _screen_height - GUARD_WINDOW_HEIGHT);
 }
 
+JS_EXPORT_API
 void dock_update_hide_mode()
 {
     if (!GD.is_webview_loaded) return;

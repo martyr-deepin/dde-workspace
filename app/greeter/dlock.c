@@ -21,6 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+#include <gdk/gdkx.h>
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
@@ -154,6 +155,13 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
+gboolean focus_out_cb(GtkWidget* w, GdkEvent*e, gpointer user_data)
+{
+    g_warning("dlock lose focus");
+    gdk_window_focus(gtk_widget_get_window(lock_container), 0);
+    //GRAB_DEVICE(NULL);
+}
+
 static void sigterm_cb(int signum)
 {
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
@@ -274,10 +282,10 @@ int main(int argc, char **argv)
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
     g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);
-    
+    g_signal_connect(webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
     gtk_widget_realize(lock_container);
-    GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
 
+    GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);

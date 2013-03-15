@@ -30,15 +30,18 @@ calc_app_item_size = ->
     for i in apps
         Widget.look_up(i.id)?.update_scale()
 
-    last = apps[apps.length-1]
-    if last and last.clientWidth != 0
-        p = get_page_xy(last, 0, 0)
-        offset = p.x + last.clientWidth
-        DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
-
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
         DCore.Dock.change_workarea_height(height)
+
+    update_dock_region()
+
+update_dock_region = ->
+    apps = $s(".AppItem")
+    last = apps[apps.length-1]
+    if last and last.clientWidth != 0
+        offset = ICON_SCALE * ITEM_WIDTH * apps.length
+        DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
     else
         echo "can't find last app #{apps.length}"
 

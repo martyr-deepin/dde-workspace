@@ -64,23 +64,20 @@ class PWContainer extends Widget
             @_current_pws[k] = true
 
         @_current_group.n_clients.forEach((w_id)=>
-            @_current_pws[w_id] = false
-            info = @_current_group.client_infos[w_id]
-            pw = info.pw_window
-            if pw == null
-                pw = new PreviewWindow("pw"+info.id, info.id, info.title, PREVIEW_WINDOW_WIDTH * @scale, PREVIEW_WINDOW_HEIGHT * @scale)
-                @_current_group.client_infos[w_id].pw_window = pw
-                @append(pw)
+            pw = Widget.look_up("pw"+w_id)
+            if not pw
+                info = @_current_group.client_infos[w_id]
+                pw = new PreviewWindow("pw"+info.id, info.id, info.title)
+
             setTimeout(->
                 pw.update_content()
             , 10)
+            @_current_pws[w_id] = false
         )
 
         for k, v of @_current_pws
             if v == true
                 Widget.look_up("pw"+k)?.destroy()
-                @_current_group.client_infos[k]?.pw_window = null
-                delete @_current_pws[k]
 
     _calc_size: ->
         return if @_current_group == null
@@ -95,8 +92,6 @@ class PWContainer extends Widget
 
         center_position = x - (pw_width * n / 2)
         offset = clamp(center_position, 5, screen.width - @pw* n)
-        #@element.style.width = PREVIEW_WINDOW_WIDTH * @scale * n
-        #@element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
         @arrow.move_to(x.toFixed() - offset - 3) # 3 is the half length of arrow width
 
         if @element.clientWidth == screen.width
@@ -104,45 +99,30 @@ class PWContainer extends Widget
         else
             @border.style.left = offset
 
-        #@region_height = PREVIEW_WINDOW_HEIGHT + 5 * PREVIEW_BORDER_LENGTH
-        @region_height = screen.height - DOCK_HEIGHT
-        #@region_width = n * pw_width + 5 * PREVIEW_BORDER_LENGTH
-        @region_width = screen.width
-        #@region_x = offset - 5
-        @region_x = 0
-        @region_y = -@region_height
-        DCore.Dock.require_region(@region_x, @region_y, @region_width, @region_height)
+        DCore.Dock.require_region(0, -screen.height, screen.width, screen.height + DOCK_HEIGHT)
 
     append: (pw)->
-        @_current_pws[pw.id] = true
+        @_current_pws[pw.w_id] = true
         @element.appendChild(pw.element)
 
     remove: (pw)->
-        delete @_current_pws[pw.id]
+        assert(not Widget.look_up(pw.id))
+        delete @_current_pws[pw.w_id]
+        @close() if Object.keys(@_current_pws).length == 0
+
 
     close: ->
-        @remove_all()
-        DCore.Dock.release_region(0, @region_y, screen.width, @region_height)
-        @is_showing = false
-
-    remove_all: ->
-        @hide()
         clearInterval(@_update_id)
-        @_update_id = -1
-
-
-        if @_current_group
-            for w_id in @_current_group.n_clients
-                info = @_current_group.client_infos[w_id]
-                info.pw_window?.delay_destroy()
-                info.pw_window = null
-
         @_current_group = null
-
+        Object.keys(@_current_pws).forEach((w_id)->
+            Widget.look_up("pw"+w_id)?.destroy()
+        )
+        update_dock_region()
+        @is_showing = false
 
     show_group: (group)->
         return if @_current_group == group
-        @remove_all()
+        @hide()
         @_current_group = group
         @_update()
 
@@ -174,6 +154,7 @@ Preview_close_now = ->
     __clear_timeout()
     return if Preview_container.is_showing == false
     Preview_container.hide()
+    DCore.Dock.update_hide_mode()
     setTimeout(->
         Preview_container.close()
     , 300)
@@ -182,7 +163,7 @@ Preview_close = ->
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_close_now()
-        , 1500)
+        , 500)
 
 _current_active_pw_window = null
 Preview_active_window_changed = (w_id) ->
@@ -191,7 +172,7 @@ Preview_active_window_changed = (w_id) ->
     _current_active_pw_window?.to_active()
 
 class PreviewWindow extends Widget
-    constructor: (@id, @w_id, @title_str, @width, @height)->
+    constructor: (@id, @w_id, @title_str)->
         super
         @title = create_element("div", "PWTitle", @element)
         @title.setAttribute("title", @title_str)

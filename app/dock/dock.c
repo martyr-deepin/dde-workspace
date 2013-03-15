@@ -173,11 +173,11 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
-        tray_init(container);
         inited = TRUE;
         init_config();
         init_launchers();
         init_task_list();
+        tray_init(container);
         remove_me_run_tray_icon();
         update_dock_size_mode();
         init_dock_guard_window();
@@ -185,6 +185,7 @@ void dock_emit_webview_ok()
         update_dock_apps();
         update_task_list();
         update_dock_size_mode();
+        update_notify_area_width();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {

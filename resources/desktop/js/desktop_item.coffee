@@ -703,7 +703,7 @@ class RichDir extends DesktopEntry
         menus.push([])
         menus.push([3, _("Rename"), not is_selected_multiple_items()])
         menus.push([])
-        menus.push([5, _("Dismiss")])
+        menus.push([5, _("Ungroup")])
         menus
 
 
@@ -711,7 +711,7 @@ class RichDir extends DesktopEntry
         switch evt.id
             when 1 then @item_exec()
             when 3 then @item_rename()
-            when 5 then @item_dismiss()
+            when 5 then @item_ungroup()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
@@ -765,7 +765,7 @@ class RichDir extends DesktopEntry
         super
 
 
-    item_dismiss : =>
+    item_ungroup: =>
         if (pos = load_position(@id))?
             clear_occupy(pos)
         DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)

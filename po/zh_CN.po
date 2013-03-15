@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-26 11:03+0800\n"
+"POT-Creation-Date: 2013-03-15 10:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 
 #: ../resources/greeter/js/user.coffee:63
 #: ../resources/greeter/js/user.coffee:81
+#: ../resources/greeter/js/user.coffee:79
 msgid "Log In"
 msgstr "登录"
 
@@ -26,22 +27,28 @@ msgstr "登录"
 #: ../resources/greeter/js/lock.coffee:57
 #: ../resources/greeter/js/lock.coffee:73
 #: ../resources/greeter/js/user.coffee:108
+#: ../resources/greeter/js/user.coffee:111
+#: ../resources/greeter/js/lock.coffee:77
 msgid "Welcome"
 msgstr "欢迎"
 
 #: ../resources/greeter/js/power.coffee:112
+#: ../resources/greeter/js/power.coffee:124
 msgid "suspend"
 msgstr "挂起"
 
 #: ../resources/greeter/js/power.coffee:114
+#: ../resources/greeter/js/power.coffee:126
 msgid "hibernate"
 msgstr "休眠"
 
 #: ../resources/greeter/js/power.coffee:116
+#: ../resources/greeter/js/power.coffee:128
 msgid "shutdown"
 msgstr "关机"
 
 #: ../resources/greeter/js/power.coffee:118
+#: ../resources/greeter/js/power.coffee:130
 msgid "restart"
 msgstr "重启"
 
@@ -123,10 +130,12 @@ msgstr "星期六"
 
 #: ../resources/greeter/js/lock.coffee:42
 #: ../resources/greeter/js/lock.coffee:58
+#: ../resources/greeter/js/lock.coffee:60
 msgid "Unlock"
 msgstr "解锁"
 
 #: ../resources/greeter/js/lock.coffee:82
+#: ../resources/greeter/js/lock.coffee:83
 msgid "Switch User"
 msgstr "切换用户"
 
@@ -137,60 +146,70 @@ msgstr "会话"
 #: ../resources/desktop/js/grid.coffee:692
 #: ../resources/desktop/js/grid.coffee:709
 #: ../resources/desktop/js/grid.coffee:710
+#: ../resources/desktop/js/grid.coffee:731
 msgid "Sort by"
 msgstr "排序方式"
 
 #: ../resources/desktop/js/grid.coffee:693
 #: ../resources/desktop/js/grid.coffee:710
 #: ../resources/desktop/js/grid.coffee:711
+#: ../resources/desktop/js/grid.coffee:732
 msgid "Name"
 msgstr "名称"
 
 #: ../resources/desktop/js/grid.coffee:694
 #: ../resources/desktop/js/grid.coffee:711
 #: ../resources/desktop/js/grid.coffee:712
+#: ../resources/desktop/js/grid.coffee:733
 msgid "Last modified time"
 msgstr "最近修改时间"
 
 #: ../resources/desktop/js/grid.coffee:697
 #: ../resources/desktop/js/grid.coffee:714
 #: ../resources/desktop/js/grid.coffee:715
+#: ../resources/desktop/js/grid.coffee:736
 msgid "New"
 msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:698
 #: ../resources/desktop/js/grid.coffee:715
 #: ../resources/desktop/js/grid.coffee:716
+#: ../resources/desktop/js/grid.coffee:737
 msgid "Folder"
 msgstr "文件夹"
 
 #: ../resources/desktop/js/grid.coffee:699
 #: ../resources/desktop/js/grid.coffee:716
 #: ../resources/desktop/js/grid.coffee:717
+#: ../resources/desktop/js/grid.coffee:738
 msgid "Text document"
 msgstr "文本文档"
 
 #: ../resources/desktop/js/grid.coffee:702
 #: ../resources/desktop/js/grid.coffee:719
 #: ../resources/desktop/js/grid.coffee:720
+#: ../resources/desktop/js/grid.coffee:741
 msgid "Open terminal here"
 msgstr "在此打开终端"
 
 #: ../resources/desktop/js/grid.coffee:703
 #: ../resources/desktop/js/grid.coffee:720
 #: ../resources/desktop/js/grid.coffee:721
+#: ../resources/desktop/js/grid.coffee:742
 msgid "Paste"
 msgstr "粘贴"
 
 #: ../resources/desktop/js/grid.coffee:705
 #: ../resources/desktop/js/grid.coffee:722
 #: ../resources/desktop/js/grid.coffee:723
+#: ../resources/desktop/js/grid.coffee:746
 msgid "Personalize"
 msgstr "个性化"
 
 #: ../resources/desktop/js/grid.coffee:706
 #: ../resources/desktop/js/grid.coffee:723
 #: ../resources/desktop/js/grid.coffee:724
+#: ../resources/desktop/js/grid.coffee:744
 msgid "Display settings"
 msgstr "显示设置"
 
@@ -210,18 +229,27 @@ msgstr "显示设置"
 #: ../resources/desktop/js/desktop_item.coffee:990
 #: ../resources/desktop/js/desktop_item.coffee:1070
 #: ../resources/desktop/js/desktop_item.coffee:1161
+#: ../resources/desktop/js/desktop_item.coffee:530
+#: ../resources/desktop/js/desktop_item.coffee:702
+#: ../resources/desktop/js/desktop_item.coffee:1181
+#: ../resources/desktop/js/desktop_item.coffee:1265
+#: ../resources/desktop/js/desktop_item.coffee:1359
+#: ../resources/desktop/js/desktop_item.coffee:1406
+#: ../resources/launcher/js/grid.coffee:62
 msgid "Open"
 msgstr "打开"
 
 #: ../resources/desktop/js/desktop_item.coffee:438
 #: ../resources/desktop/js/desktop_item.coffee:468
 #: ../resources/desktop/js/desktop_item.coffee:490
+#: ../resources/desktop/js/desktop_item.coffee:532
 msgid "Cut"
 msgstr "剪切"
 
 #: ../resources/desktop/js/desktop_item.coffee:439
 #: ../resources/desktop/js/desktop_item.coffee:469
 #: ../resources/desktop/js/desktop_item.coffee:491
+#: ../resources/desktop/js/desktop_item.coffee:533
 msgid "Copy"
 msgstr "复制"
 
@@ -231,6 +259,8 @@ msgstr "复制"
 #: ../resources/desktop/js/desktop_item.coffee:642
 #: ../resources/desktop/js/desktop_item.coffee:493
 #: ../resources/desktop/js/desktop_item.coffee:661
+#: ../resources/desktop/js/desktop_item.coffee:535
+#: ../resources/desktop/js/desktop_item.coffee:704
 msgid "Rename"
 msgstr "重命名"
 
@@ -243,6 +273,8 @@ msgstr "重命名"
 #: ../resources/desktop/js/desktop_item.coffee:913
 #: ../resources/desktop/js/desktop_item.coffee:494
 #: ../resources/desktop/js/desktop_item.coffee:943
+#: ../resources/desktop/js/desktop_item.coffee:536
+#: ../resources/desktop/js/desktop_item.coffee:1130
 msgid "Delete"
 msgstr "删除"
 
@@ -255,24 +287,30 @@ msgstr "删除"
 #: ../resources/desktop/js/desktop_item.coffee:496
 #: ../resources/desktop/js/desktop_item.coffee:992
 #: ../resources/desktop/js/desktop_item.coffee:1072
+#: ../resources/desktop/js/desktop_item.coffee:538
+#: ../resources/desktop/js/desktop_item.coffee:1183
+#: ../resources/desktop/js/desktop_item.coffee:1267
 msgid "Properties"
 msgstr "属性"
 
 #: ../resources/desktop/js/desktop_item.coffee:910
 #: ../resources/desktop/js/desktop_item.coffee:944
 #: ../resources/desktop/js/desktop_item.coffee:974
+#: ../resources/desktop/js/desktop_item.coffee:1161
 msgid "Computer"
 msgstr "计算机"
 
 #: ../resources/desktop/js/desktop_item.coffee:953
 #: ../resources/desktop/js/desktop_item.coffee:987
 #: ../resources/desktop/js/desktop_item.coffee:1017
+#: ../resources/desktop/js/desktop_item.coffee:1208
 msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/desktop_item.coffee:1035
 #: ../resources/desktop/js/desktop_item.coffee:1069
 #: ../resources/desktop/js/desktop_item.coffee:1101
+#: ../resources/desktop/js/desktop_item.coffee:1296
 msgid "Trash"
 msgstr "回收站"
 
@@ -285,90 +323,104 @@ msgstr "回收站"
 #: ../resources/desktop/js/desktop_item.coffee:1165
 #: ../resources/desktop/js/desktop_item.coffee:1167
 #: ../resources/desktop/js/desktop_item.coffee:1169
+#: ../resources/desktop/js/desktop_item.coffee:1363
+#: ../resources/desktop/js/desktop_item.coffee:1365
+#: ../resources/desktop/js/desktop_item.coffee:1367
 msgid "Clean up"
 msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1098
 #: ../resources/desktop/js/desktop_item.coffee:1132
 #: ../resources/desktop/js/desktop_item.coffee:1165
+#: ../resources/desktop/js/desktop_item.coffee:1363
 msgid "items"
 msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1100
 #: ../resources/desktop/js/desktop_item.coffee:1134
 #: ../resources/desktop/js/desktop_item.coffee:1167
+#: ../resources/desktop/js/desktop_item.coffee:1365
 msgid "item"
 msgstr "项"
 
 #: ../resources/dock/js/clientgroup.coffee:158
 #: ../resources/dock/js/clientgroup.coffee:144
+#: ../resources/dock/js/clientgroup.coffee:143
 msgid "New instance"
 msgstr "新建实例"
 
 #: ../resources/dock/js/clientgroup.coffee:159
 #: ../resources/dock/js/clientgroup.coffee:145
+#: ../resources/dock/js/clientgroup.coffee:144
 msgid "Close"
 msgstr "关闭"
 
 #: ../resources/dock/js/clientgroup.coffee:161
 #: ../resources/dock/js/clientgroup.coffee:147
+#: ../resources/dock/js/clientgroup.coffee:146
 msgid "Dock me"
 msgstr "驻留"
 
 #: ../resources/dock/js/launcher.coffee:22
+#: ../resources/dock/js/launcher.coffee:23
 msgid "Run"
 msgstr "运行"
 
 #: ../resources/dock/js/launcher.coffee:24
+#: ../resources/dock/js/launcher.coffee:25
 msgid "Undock"
 msgstr "移除驻留"
 
 #: ../resources/launcher/js/main.coffee:55
 #: ../resources/launcher/js/main.coffee:58
+#: ../resources/launcher/js/main.coffee:67
 msgid "All"
 msgstr "全部"
 
 #: ../resources/launcher/js/grid.coffee:60
+#: ../resources/launcher/js/grid.coffee:64
 msgid "Send to desktop"
 msgstr "发送到桌面"
 
 #: ../resources/launcher/js/grid.coffee:61
+#: ../resources/launcher/js/grid.coffee:65
 msgid "Send to dock"
 msgstr "添加到 Dock"
 
-#: ../app/desktop/desktop.c:122
+#: ../app/desktop/desktop.c:122 ../app/desktop/desktop.c:139
 msgid "Rich directory"
 msgstr "程序启动组"
 
-#: ../app/desktop/desktop.c:160
+#: ../app/desktop/desktop.c:160 ../app/desktop/desktop.c:177
 msgid "New file"
 msgstr "新建文件"
 
-#: ../app/desktop/desktop.c:171
+#: ../app/desktop/desktop.c:171 ../app/desktop/desktop.c:188
 msgid "New directory"
 msgstr "新建目录"
 
-#: ../app/lock/lock.c:79 ../app/lock/lock.c:169
+#: ../app/lock/lock.c:79 ../app/lock/lock.c:169 ../app/greeter/dlock.c:116
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/greeter/greeter.c:395
+#: ../app/greeter/greeter.c:395 ../app/greeter/greeter.c:423
 msgid "Invalid Username/Password"
 msgstr "用户名/密码错误"
 
-#: ../app/greeter/greeter.c:895
+#: ../app/greeter/greeter.c:895 ../app/greeter/dlock.c:146
+#: ../app/greeter/greeter.c:915
 msgid "%a,%b%d,%Y"
 msgstr "%Y年%b%d日 %A"
 
 #: ../lib/dentry/entry.c:330 ../lib/dentry/entry.c:336
-#: ../lib/dentry/entry.c:355
+#: ../lib/dentry/entry.c:355 ../lib/dentry/entry.c:385
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
 msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
 
 #: ../lib/dentry/entry.c:335 ../lib/dentry/entry.c:341
-#: ../lib/dentry/entry.c:360
+#: ../lib/dentry/entry.c:360 ../lib/dentry/entry.c:390
 msgid "The Item could not be renamed"
 msgstr "该项无法重命名"
 
@@ -535,34 +587,46 @@ msgstr "清空回收站(_T)"
 
 #: ../resources/launcher/js/main.coffee:20
 msgid "Type to search..."
-msgstr "键入要搜索的关键字"
+msgstr "键入要搜索的关键字..."
 
 #: ../resources/dock/js/deepin_item.coffee:37
 msgid "Launcher"
-msgstr ""
+msgstr "启动器"
 
 #: ../resources/dock/js/deepin_item.coffee:40
 msgid "Show/Hiden Desktop"
-msgstr ""
+msgstr "显示/隐藏桌面"
 
 #: ../lib/dentry/mime_actions.c:114
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr ""
+msgstr "您想要运行“%s”，还是显示其内容？"
 
 #: ../lib/dentry/mime_actions.c:115
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr ""
+msgstr "“%s”是一个可执行的文本文件。"
 
 #: ../lib/dentry/mime_actions.c:126
 msgid "Run in _Terminal"
-msgstr ""
+msgstr "在终端中打开(_T)"
 
 #: ../lib/dentry/mime_actions.c:127
 msgid "_Display"
-msgstr ""
+msgstr "显示(_D)"
 
 #: ../lib/dentry/mime_actions.c:129
 msgid "_Run"
-msgstr ""
+msgstr "运行(_R)"
+
+#: ../resources/desktop/js/grid.coffee:745
+msgid "Desktop settings"
+msgstr "桌面设置"
+
+#: ../resources/desktop/js/desktop_item.coffee:706
+msgid "Ungroup"
+msgstr "解散"
+
+#: ../resources/desktop/js/desktop_item.coffee:1390
+msgid "Deepin Software Center"
+msgstr "深度软件中心"

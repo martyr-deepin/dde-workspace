@@ -17,7 +17,6 @@ class ClientGroup extends AppItem
         @img3 = create_img("AppItemImg", "", @element)
 
         @to_normal_status()
-        @pw_window = null
 
     update_scale: ->
         super
@@ -75,7 +74,6 @@ class ClientGroup extends AppItem
             "id": id
             "icon": icon
             "title": title
-            "pw_window": null
         @add_client(id)
         @update_leader()
 
@@ -99,7 +97,6 @@ class ClientGroup extends AppItem
             delete @client_infos[id]
 
         @n_clients.remove(id)
-        @client_infos[id]?.pw_window?.destroy()
 
 
         if @n_clients.length == 0
@@ -150,7 +147,7 @@ class ClientGroup extends AppItem
         ]
 
     do_itemselected: (e)=>
-        Preview_container.remove_all()
+        Preview_container.close()
         switch e.id
             when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)

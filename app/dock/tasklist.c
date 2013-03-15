@@ -105,6 +105,7 @@ void _update_window_icon(Client *c);
 void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
+void _update_window_net_state(Client* c);
 static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
 static void _update_task_list(Window root);
@@ -124,15 +125,18 @@ Client* create_client_from_window(Window w)
     c->window = w;
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
-    c->is_hidden = TRUE;
+    c->is_hidden = FALSE;
     c->app_id = NULL;
     c->exec = NULL;
+    c->is_maximize = FALSE;
 
 
 
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    _update_window_net_state(c);
+    _update_is_overlay_client(c);
     if (c->app_id == NULL) {
         client_free(c);
         return NULL;
@@ -200,6 +204,7 @@ void client_free(Client* c)
     g_free(c->icon);
 
     g_free(c);
+    dock_update_hide_mode();
 }
 
 
@@ -307,6 +312,7 @@ void client_list_changed(Window* cs, size_t n)
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
+                dock_update_hide_mode();
                 _update_client_info(c);
             }
 
