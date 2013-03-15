@@ -147,7 +147,7 @@ class ClientGroup extends AppItem
         ]
 
     do_itemselected: (e)=>
-        Preview_container.remove_all()
+        Preview_container.close()
         switch e.id
             when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)

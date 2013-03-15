@@ -6,7 +6,7 @@
     border-radius: 6px;
     background: url("../img/preview_background.png");
     opacity: 0;
-    -webkit-transition: 0.5s left, 0.4s opacity, 0.5s top;
+    -webkit-transition: 0.5s left, 0.2s opacity, 0.5s top;
     pointer-events:none;
 }
 
