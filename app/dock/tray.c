@@ -52,7 +52,7 @@ static void accumulate_na_width(GdkWindow* icon, gpointer width)
     gdk_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
 }
 
-static void update_notify_area_width()
+void update_notify_area_width()
 {
     if (_fcitx_tray)
         _na_width = _deepin_tray_width + _fcitx_tray_width + DEFAULT_INTERVAL;
