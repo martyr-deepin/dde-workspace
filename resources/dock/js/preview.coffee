@@ -115,6 +115,8 @@ class PWContainer extends Widget
     remove: (pw)->
         assert(not Widget.look_up(pw.id))
         delete @_current_pws[pw.w_id]
+        @close() if Object.keys(@_current_pws).length == 0
+
 
     close: ->
         clearInterval(@_update_id)
