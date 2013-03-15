@@ -78,7 +78,11 @@ for info in DCore.Launcher.get_categories()
     append_to_category(c)
 
 category = $("#category")
-if category.children.length * (category.lastElementChild.clientHeight + 20) > category.clientHeight
-    category.style.overflowY = "scroll"
+warp = category.parentNode
+# add 20 px for margin
+categories_height = category.children.length * (category.lastElementChild.clientHeight + 20)
+if categories_height > warp.clientHeight
+    warp.style.overflowY = "scroll"
+    warp.style.marginBottom = "30px"
 
 grid_load_category(_all_application_category_id) #the All applications' ID is -1.
