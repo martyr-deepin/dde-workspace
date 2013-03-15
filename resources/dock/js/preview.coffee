@@ -163,7 +163,7 @@ Preview_close = ->
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_close_now()
-        , 1500)
+        , 500)
 
 _current_active_pw_window = null
 Preview_active_window_changed = (w_id) ->

@@ -185,6 +185,7 @@ void dock_emit_webview_ok()
         update_dock_apps();
         update_task_list();
         update_dock_size_mode();
+        update_notify_area_width();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {

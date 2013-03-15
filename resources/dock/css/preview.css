@@ -40,6 +40,7 @@
 }
 
 .PWCanvas {
+    background: rgba(0,0, 0, 0.4);
     margin-top: 11.875%;
     /*margin-left: 8.695652173913043%;*/
     display: block;
@@ -68,21 +69,15 @@
     margin-top: 1%;
 }
 .PWClose {
-    background: url("../img/close.png") no-repeat;
+    background: url("../img/close_hover.png") no-repeat;
     width: 21px;
     height: 16px;
-    border-radius: 2px;
     position: absolute;
     top: 0px;
     right: 0px;
     display:none;
     pointer-events:auto;
 }
-.PWClose:hover {
-    background: url("../img/close_hover.png") no-repeat;
-    cursor: pointer;
-}
-
 
 .Arrow {
     pointer-events: none;
