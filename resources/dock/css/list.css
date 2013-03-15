@@ -6,8 +6,8 @@
 }
 
 .AppItem {
-    -webkit-transition-property: webkit-transition-scale;
-    -webkit-transition: 0.1s ease-in-out;
+    /*-webkit-transition-property: webkit-transition-scale;*/
+    /*-webkit-transition: 0.1s ease-in-out;*/
     position:relative;
     max-width: 68px;
     max-height: 60px;

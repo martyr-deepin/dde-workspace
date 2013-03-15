@@ -99,7 +99,7 @@ class PWContainer extends Widget
         else
             @border.style.left = offset
 
-        DCore.Dock.require_region(0, -screen.height, screen.width, screen.height + DOCK_HEIGHT)
+        DCore.Dock.require_all_region()
 
     append: (pw)->
         @_current_pws[pw.w_id] = true

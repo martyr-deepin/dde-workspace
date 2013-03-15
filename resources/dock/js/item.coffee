@@ -116,7 +116,7 @@ class AppItem extends Widget
             @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
     do_dragstart: (e)->
-        DCore.Dock.require_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
+        DCore.Dock.require_all_region()
         Preview_close_now()
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)

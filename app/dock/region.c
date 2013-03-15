@@ -22,6 +22,10 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
     }
 }
 
+void dock_require_all_region()
+{
+    gdk_window_shape_combine_region(_win, NULL, 0, 0);
+}
 
 void dock_force_set_region(double x, double y, double width, double height)
 {
