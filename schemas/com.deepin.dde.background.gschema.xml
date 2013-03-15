@@ -35,7 +35,7 @@
       <description>Background image URIs delimited by semicolons. Note that the backend only supports local (file://) URIs.</description>
     </key>
     <key type="s" name="picture-uri">
-      <default></default>
+      <default>''</default>
       <summary>A temporary picture path set by user</summary>
       <description>User can set this path to a picture in the current picture-uris and force rendering this picture as the desktop background</description>
     </key>
