@@ -741,8 +741,9 @@ grid_right_click = (evt) ->
     menus.push([3, _("Open terminal here")])
     menus.push([4, _("Paste"), DCore.DEntry.can_paste()])
     menus.push([])
-    menus.push([5, _("Personalize")])
-    menus.push([6, _("Display settings")])
+    menus.push([5, _("Display settings")])
+    menus.push([6, _("Desktop settings")])
+    menus.push([7, _("Personalize")])
 
     div_grid.parentElement.contextMenu = build_menu(menus)
     return
@@ -756,8 +757,9 @@ grid_do_itemselected = (evt) ->
         when 22 then menu_create_new_file()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
-        when 5 then DCore.Desktop.run_deepin_settings("individuation")
-        when 6 then DCore.Desktop.run_deepin_settings("display")
+        when 5 then DCore.Desktop.run_deepin_settings("display")
+        when 6 then DCore.Desktop.run_deepin_settings("desktop")
+        when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else echo "not implemented function #{evt.id},#{evt.title}"
     return
 
