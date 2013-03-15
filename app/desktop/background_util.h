@@ -12,6 +12,7 @@
 
 #define	BG_CURRENT_PICT		"current-picture"
 #define BG_PICTURE_URIS		"picture-uris" //better renamed to picture-URIs
+#define BG_PICTURE_URI		"picture-uri"  //temporary picture path
 #define DELIMITER		';'		//picture-uri string delimiter 
 #define BG_BG_DURATION		"background-duration"
 #define BG_XFADE_MANUAL_INTERVAL "cross-fade-manual-interval"     //manually change background
