@@ -43,6 +43,8 @@
 
 //
 static GPtrArray *picture_paths;		//an array of picture paths (strings).
+//all picture paths are managed by picture_paths, this hashtable just references them.
+static GHashTable* picture_paths_ht;            //picture paths --> indices+1 in @picture_paths.
 static char*	prev_picture = NULL;		//to track 
 static guint	picture_num;		//number of pictures in GPtrArray.
 static guint	picture_index;		// the next background picture.
@@ -525,6 +527,9 @@ parse_picture_uris (gchar * pic_uri)
 	if (filename_ptr != NULL)
 	{
 	    g_ptr_array_add (picture_paths, filename_ptr);
+	    g_hash_table_insert (picture_paths_ht, 
+				 filename_ptr,
+				 GUINT_TO_POINTER(picture_num+1));
 	    picture_num ++;
 	    g_debug ("picture %d: %s", picture_num, filename_ptr);
 	}
@@ -537,6 +542,9 @@ parse_picture_uris (gchar * pic_uri)
 	if (filename_ptr != NULL)
 	{
 	    g_ptr_array_add (picture_paths, filename_ptr);
+	    g_hash_table_insert (picture_paths_ht, 
+				 filename_ptr,
+				 GUINT_TO_POINTER(picture_num+1));
 	    picture_num ++;
 	    g_debug ("picture %d: %s", picture_num, filename_ptr);
 	}
@@ -544,7 +552,11 @@ parse_picture_uris (gchar * pic_uri)
     //ensure we don't have a empty picture uris
     if (picture_num == 0)
     {
-	g_ptr_array_add (picture_paths, g_strdup(BG_DEFAULT_PICTURE));
+	filename_ptr = g_strdup(BG_DEFAULT_PICTURE);
+	g_ptr_array_add (picture_paths, filename_ptr);
+	g_hash_table_insert (picture_paths_ht, 
+			     filename_ptr,
+			     GUINT_TO_POINTER(picture_num+1));
 	picture_num =1;
     }
 }
@@ -554,7 +566,7 @@ destroy_picture_path (gpointer data)
     g_free (data);
 }
 /*
- *	it's not efficient to check if the new picture_uris is the same 
+ *	it's not efficient to check whether the new picture_uris is the same 
  *	as the previous value. we just restart all.
  */
 static void 
@@ -565,8 +577,12 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 
 
     g_debug ("picture_uris changed");
+    g_hash_table_destroy (picture_paths_ht);
     g_ptr_array_free (picture_paths, TRUE);
+
     picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
+    picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
+
     picture_num = 0;
     picture_index = 0;
 
@@ -607,6 +623,31 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
     setup_timers ();
 }
 
+/*
+ *	handle user-selected picture uri
+ */
+static void 
+bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
+{
+    if (g_strcmp0 (key, BG_PICTURE_URI))
+	return;
+
+    gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
+    gchar* tmp_image_path = g_filename_from_uri (tmp_image_uri, NULL, NULL);
+    g_free (tmp_image_uri);
+    guint tmp_value = GPOINTER_TO_UINT (g_hash_table_lookup (picture_paths_ht, tmp_image_path));
+    g_free (tmp_image_path);
+    
+    g_debug ("picture-uri changed: %d",tmp_value-1);
+    //g_hash_table_lookup can return NULL, so we store 'index+1' in hashtable 
+    if ((tmp_value != 0)&&(tmp_value != picture_index+1))
+    {
+	picture_index = tmp_value - 1; 
+	g_debug ("change to new current picture index: %d", picture_index);
+	remove_timers ();
+	setup_timers ();
+    }
+}
 /*
  *	we should reset timer and start auto	
  */
@@ -849,6 +890,7 @@ static void
 initial_setup (GSettings *settings)
 {
     picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
+    picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
 
     picture_num = 0;
     picture_index = 0;
@@ -944,6 +986,8 @@ bg_util_init (GdkWindow* bg_window)
     Settings = g_settings_new (BG_SCHEMA_ID);
     g_signal_connect (Settings, "changed::picture-uris",
 		      G_CALLBACK (bg_settings_picture_uris_changed), NULL);
+    g_signal_connect (Settings, "changed::picture-uri",
+		      G_CALLBACK (bg_settings_picture_uri_changed), NULL);
     g_signal_connect (Settings, "changed::background-duration",
 		      G_CALLBACK (bg_settings_bg_duration_changed), NULL);
     g_signal_connect (Settings, "changed::cross-fade-manual-interval",

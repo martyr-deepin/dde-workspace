@@ -6,7 +6,7 @@
     border-radius: 6px;
     background: url("../img/preview_background.png");
     opacity: 0;
-    -webkit-transition: 0.5s left, 0.4s opacity, 0.5s top;
+    -webkit-transition: 0.5s left, 0.2s opacity, 0.5s top;
     pointer-events:none;
 }
 
@@ -40,6 +40,7 @@
 }
 
 .PWCanvas {
+    background: rgba(0,0, 0, 0.4);
     margin-top: 11.875%;
     /*margin-left: 8.695652173913043%;*/
     display: block;
@@ -50,9 +51,6 @@
     max-height: 110px;
     border: solid 1px rgba(255, 255, 255, 0.8);
     pointer-events: none;
-}
-.PWCanvas:hover {
-    border: solid 1px rgba(0, 255, 255, 0.8);
 }
 
 .PWTitle {
@@ -71,21 +69,15 @@
     margin-top: 1%;
 }
 .PWClose {
-    background: url("../img/close.png") no-repeat;
+    background: url("../img/close_hover.png") no-repeat;
     width: 21px;
     height: 16px;
-    border-radius: 2px;
     position: absolute;
     top: 0px;
     right: 0px;
     display:none;
     pointer-events:auto;
 }
-.PWClose:hover {
-    background: url("../img/close_hover.png") no-repeat;
-    cursor: pointer;
-}
-
 
 .Arrow {
     pointer-events: none;

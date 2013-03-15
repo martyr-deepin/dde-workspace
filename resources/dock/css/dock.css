@@ -46,7 +46,6 @@ body {
 }
 
 #notifyarea {
-    /*background: rgba(0, 100, 0, 0.3);*/
     bottom:0px;
     right: 0px;
     -webkit-box-flex: 0;

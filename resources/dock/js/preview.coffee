@@ -99,14 +99,7 @@ class PWContainer extends Widget
         else
             @border.style.left = offset
 
-        #@region_height = PREVIEW_WINDOW_HEIGHT + 5 * PREVIEW_BORDER_LENGTH
-        @region_height = screen.height - DOCK_HEIGHT
-        #@region_width = n * pw_width + 5 * PREVIEW_BORDER_LENGTH
-        @region_width = screen.width
-        #@region_x = offset - 5
-        @region_x = 0
-        @region_y = -@region_height
-        DCore.Dock.require_region(@region_x, @region_y, @region_width, @region_height)
+        DCore.Dock.require_region(0, -screen.height, screen.width, screen.height + DOCK_HEIGHT)
 
     append: (pw)->
         @_current_pws[pw.w_id] = true
@@ -124,7 +117,7 @@ class PWContainer extends Widget
         Object.keys(@_current_pws).forEach((w_id)->
             Widget.look_up("pw"+w_id)?.destroy()
         )
-        DCore.Dock.release_region(0, @region_y, screen.width, @region_height)
+        update_dock_region()
         @is_showing = false
 
     show_group: (group)->
@@ -161,6 +154,7 @@ Preview_close_now = ->
     __clear_timeout()
     return if Preview_container.is_showing == false
     Preview_container.hide()
+    DCore.Dock.update_hide_mode()
     setTimeout(->
         Preview_container.close()
     , 300)
@@ -169,7 +163,7 @@ Preview_close = ->
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_close_now()
-        , 1500)
+        , 500)
 
 _current_active_pw_window = null
 Preview_active_window_changed = (w_id) ->

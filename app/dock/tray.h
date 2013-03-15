@@ -22,4 +22,5 @@
 #define _TRAY_H__
 void tray_init(GtkWidget* container);
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
+void update_notify_area_width();
 #endif
