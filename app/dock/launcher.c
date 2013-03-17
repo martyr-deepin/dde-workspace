@@ -223,6 +223,26 @@ void dock_swap_apps_position(const char* id1, const char* id2)
     save_app_config(k_apps, APPS_INI);
 }
 
+JS_EXPORT_API
+void dock_insert_apps_position(const char* id, const char* anchor_id)
+{
+    GList* l1 = g_list_find_custom(_apps_position, id, (GCompareFunc)g_strcmp0);
+    GList* l2 = g_list_find_custom(_apps_position, anchor_id, (GCompareFunc)g_strcmp0);
+    if (l1 == NULL)  {
+        return;
+    } else if (l2 == NULL) {
+        // if anchor_id is null means the l1 should change to the end of the position
+        _apps_position = g_list_append(_apps_position, g_strdup(l1->data));
+        _apps_position = g_list_delete_link(_apps_position, l1);
+    } else {
+        _apps_position = g_list_insert_before(_apps_position, l2, g_strdup(l1->data));
+        _apps_position = g_list_delete_link(_apps_position, l1);
+    }
+
+    _save_apps_position();
+    save_app_config(k_apps, APPS_INI);
+}
+
 static
 void write_app_info(GDesktopAppInfo* info)
 {
