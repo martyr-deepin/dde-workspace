@@ -48,6 +48,5 @@ DCore.signal_connect("launcher_destroy", ->
 )
 
 DCore.signal_connect("desktop_status_changed", ->
-    echo DCore.Dock.get_desktop_status()
     show_desktop.show(DCore.Dock.get_desktop_status())
 )
