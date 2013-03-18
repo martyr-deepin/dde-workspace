@@ -635,40 +635,40 @@ msgstr "深度软件中心"
 
 #: ../app/launcher/launcher.c:373
 msgid "internet"
-msgstr ""
+msgstr "网络应用"
 
 #: ../app/launcher/launcher.c:373
 msgid "mutilmedia"
-msgstr ""
+msgstr "影音播放"
 
 #: ../app/launcher/launcher.c:373
 msgid "games"
-msgstr ""
+msgstr "游戏娱乐"
 
 #: ../app/launcher/launcher.c:374
 msgid "graphics"
-msgstr ""
+msgstr "图形图像"
 
 #: ../app/launcher/launcher.c:374
 msgid "productivity"
-msgstr ""
+msgstr "办公软件"
 
 #: ../app/launcher/launcher.c:374
 msgid "industry"
-msgstr ""
+msgstr "行业软件"
 
 #: ../app/launcher/launcher.c:374
 msgid "education"
-msgstr ""
+msgstr "科学教育"
 
 #: ../app/launcher/launcher.c:375
 msgid "development"
-msgstr ""
+msgstr "编程开发"
 
 #: ../app/launcher/launcher.c:375
 msgid "system"
-msgstr ""
+msgstr "系统管理"
 
 #: ../app/launcher/launcher.c:375
 msgid "utilities"
-msgstr ""
+msgstr "实用工具"
