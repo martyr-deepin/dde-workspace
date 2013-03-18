@@ -57,7 +57,6 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
                                                                     &error);
 
     if (_background_image == NULL) {
-        fprintf(stderr, "[ERROR] create pixbuf from file fail!\n");
         g_debug("%s\n", error->message);
         g_error_free(error);
         return FALSE;
@@ -69,14 +68,14 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
 
     if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
-        fprintf(stderr, "[ERROR] create cairo surface fail!\n");
+        g_warning("create cairo surface fail!\n");
         return FALSE;
     }
 
     cairo_t* cr = cairo_create(img_surface);
 
     if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
-        fprintf(stderr, "[ERROR] create cairo fail!\n");
+        g_warning("create cairo fail!\n");
         return FALSE;
     }
 
@@ -87,7 +86,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
     cairo_pattern_t* pt = cairo_pattern_create_for_surface(img_surface);
 
     if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
-        fprintf(stderr, "[ERROR] create cairo pattern fail!\n");
+        g_warning("create cairo pattern fail!\n");
         return FALSE;
     }
 
@@ -362,7 +361,16 @@ double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 static
 void print(gpointer data, gpointer user_data)
 {
-    printf("%s\n", (const char*)data);
+    printf("%s\n", (const char *)data);
+}
+
+static
+void _insert_category(JSObjectRef categories, int array_index, int id, const char* name)
+{
+    JSObjectRef item = json_create();
+    json_append_number(item, "ID", id);
+    json_append_string(item, "Name", name);
+    json_array_insert(categories, array_index, item);
 }
 
 JS_EXPORT_API
@@ -378,10 +386,7 @@ JSObjectRef launcher_get_categories()
         const int category_num = sizeof(names) / sizeof(const char*);
 
         for (int i = 0; i < category_num; ++i) {
-            JSObjectRef item = json_create();
-            json_append_number(item, "ID", i);
-            json_append_string(item, "Name", names[i]);
-            json_array_insert(categories, i, item);
+            _insert_category(categories, i, i, names[i]);
         }
         return categories;
     }
@@ -389,10 +394,7 @@ JSObjectRef launcher_get_categories()
     for (int i=0, j = 0; i < infos->len; i++) {
         if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
             const char* category_name = (const char*)g_ptr_array_index(infos, i);
-            JSObjectRef item = json_create();
-            json_append_number(item, "ID", i);
-            json_append_string(item, "Name", category_name);
-            json_array_insert(categories, j++, item);
+            _insert_category(categories, j++, i, category_name);
         }
     }
 
