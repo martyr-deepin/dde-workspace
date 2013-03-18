@@ -18,13 +18,27 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
         _win = NULL;
         cairo_region_destroy(_region);
         init_region(win, x, y, width, height);
-        /*g_assert_not_reached();*/
     }
+}
+
+static
+gboolean _help_do_window_region(cairo_region_t* region)
+{
+    gdk_window_shape_combine_region(_win, region, 0, 0);
+    return FALSE;
+}
+static
+void do_window_shape_combine_region(cairo_region_t* region)
+{
+    static int _id = -1;
+    if (_id != -1)
+        g_source_remove(_id);
+    _id = g_timeout_add(100, (GSourceFunc)_help_do_window_region, region);
 }
 
 void dock_require_all_region()
 {
-    gdk_window_shape_combine_region(_win, NULL, 0, 0);
+    do_window_shape_combine_region(NULL);
 }
 
 void dock_force_set_region(double x, double y, double width, double height)
@@ -36,20 +50,20 @@ void dock_force_set_region(double x, double y, double width, double height)
     dock_board_rect.y += 30;
     dock_board_rect.height = 30;
     cairo_region_union_rectangle(_region, &dock_board_rect);
-    gdk_window_shape_combine_region(_win, _region, 0, 0);
+    do_window_shape_combine_region(_region);
 }
 
 void dock_require_region(double x, double y, double width, double height)
 {
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
     cairo_region_union_rectangle(_region, &tmp);
-    gdk_window_shape_combine_region(_win, _region, 0, 0);
+    do_window_shape_combine_region(_region);
 }
 void dock_release_region(double x, double y, double width, double height)
 {
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
     cairo_region_subtract_rectangle(_region, &tmp);
-    gdk_window_shape_combine_region(_win, _region, 0, 0);
+    do_window_shape_combine_region(_region);
 }
 void dock_set_region_origin(double x, double y)
 {
