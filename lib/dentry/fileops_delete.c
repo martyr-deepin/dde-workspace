@@ -25,6 +25,7 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
 
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Delete"), 
 				GTK_RESPONSE_OK, NULL);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
 	result = gtk_dialog_run (GTK_DIALOG (dialog));
 	gtk_widget_destroy (dialog);
