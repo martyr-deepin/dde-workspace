@@ -52,27 +52,109 @@ class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").insertBefore(@element, $("#notifyarea"))
+        @indicator = create_element("div", "Indicator")
+        @_insert_anchor_item = null
 
-    append: (c) ->
-        @element.appendChild(c.element)
+    append: (c)->
+        if @_insert_anchor_item
+            @element.insertBefore(c.element, @_insert_anchor_item.element)
+            DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
+            @hide_indicator()
+        else
+            @element.appendChild(c.element)
         run_post(calc_app_item_size)
 
+    append2: (c)->
+        @append(c)
+        DCore.Dock.insert_apps_position(c.app_id, null) if @_insert_anchor_item == null
+
+    record_last_over_item: (item)->
+        @_insert_anchor_item = item
+
     do_drop: (e)->
-        file = e.dataTransfer.getData("text/uri-list").substring(7)
-        if file.length > 9  # strlen("x.desktop") == 9
-            DCore.Dock.request_dock(decodeURI(file.trim()))
+        e.stopPropagation()
+        e.preventDefault()
+        if dnd_is_desktop(e)
+            path = e.dataTransfer.getData("text/uri-list").substring("file://".length).trim()
+            DCore.Dock.request_dock(decodeURI(path))
+        else if dnd_is_deepin_item(e) and @indicator.parentNode == @element
+            id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+            item = Widget.look_up(id) or Widget.look_up("le_"+id)
+            item.flash(0.5)
+            @append2(item)
+        @hide_indicator()
+        update_dock_region()
 
     do_dragover: (e) ->
-        e.dataTransfer.dropEffect="link"
+        e.preventDefault()
+        e.stopPropagation()
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            e.dataTransfer.dropEffect="copy"
+            n = e.x / (ITEM_WIDTH * ICON_SCALE)
+            if n > 2  # skip the show_desktop and show launcher AppItem
+                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
+            else
+                @hide_indicator()
+
+    do_dragleave: (e)->
+        @hide_indicator()
+        e.stopPropagation()
+        e.preventDefault()
+        if not dnd_is_deepin_item(e)
+            update_dock_region()
+    do_dragenter: (e)->
+        DCore.Dock.require_all_region()
+        e.stopPropagation()
+        e.preventDefault()
+
+    swap_item: (src, dest)->
+        swap_element(src.element, dest.element)
+        DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
 
     do_mouseover: (e)->
         if e.target == @element
             Preview_close()
 
-app_list = new AppList("app_list")
+    hide_indicator: ->
+        if @indicator.parentNode == @element
+            @element.removeChild(@indicator)
 
+    show_indicator: (x, try_insert_id)->
+        @indicator.style.width = ICON_SCALE * ICON_WIDTH
+        @indicator.style.height = ICON_SCALE * ICON_HEIGHT
+        margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
+        @indicator.style.marginTop = margin_top
+        @indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
+
+
+        return if @_insert_anchor_item?.app_id == try_insert_id
+
+        if @_insert_anchor_item and get_page_xy(@_insert_anchor_item.img).x < x
+            @_insert_anchor_item = @_insert_anchor_item.next()
+            return if @_insert_anchor_item?.app_id == try_insert_id
+        else
+            return if @_insert_anchor_item?.prev()?.app_id == try_insert_id
+
+        if @_insert_anchor_item
+            @element.insertBefore(@indicator, @_insert_anchor_item.element)
+        else
+            @element.appendChild(@indicator)
+
+app_list = new AppList("app_list")
 class AppItem extends Widget
     is_fixed_pos: false
+    next: ->
+        el = @element.nextElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
+    prev: ->
+        el = @element.previousElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
@@ -82,7 +164,14 @@ class AppItem extends Widget
         @img = create_img("AppItemImg", @icon, @element)
         @img.classList.add("ReflectImg")
         @element.draggable=true
+        if @constructor.name == "Launcher"
+            @app_id = @id
         app_list.append(@)
+
+    flash: (time)->
+        apply_animation(@img, "flash", time or 1000)
+    rotate: (time) ->
+        apply_animation(@img, "rotateOut", time or 1000)
 
     destroy: ->
         super
@@ -115,75 +204,91 @@ class AppItem extends Widget
             @indicate.style.height = h
             @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
+    do_dragover: (e)->
+        e.stopPropagation()
+        e.preventDefault()
+        return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
+        app_list.record_last_over_item(@)
+
     do_dragstart: (e)->
-        DCore.Dock.require_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        app_list.record_last_over_item(@)
         Preview_close_now()
         return if @is_fixed_pos
-        e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
-        e.dataTransfer.setData("deepin-item-id", @element.id)
-        e.dataTransfer.effectAllowed = "move"
-        e.stopPropagation()
+        e.dataTransfer.setDragImage(@img, 6, 4)
+        e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
+        e.dataTransfer.effectAllowed = "copyMove"
         @element.style.opacity = "0.5"
 
     do_dragend: (e)->
+        e.stopPropagation()
+        e.preventDefault()
         setTimeout(=>
-            DCore.Dock.release_region(0, ITEM_HEIGHT - screen.height, screen.width, screen.height - ITEM_HEIGHT)
-        ,500)
+            update_dock_region()
+        , 300)
         @element.style.opacity = "1"
 
-    do_dragover: (e) ->
-        e.preventDefault()
-        return if @is_fixed_pos
-        sid = e.dataTransfer.getData("deepin-item-id")
-        if not sid
-            return
-        did = @element.id
-        if sid != did
-            w_s = Widget.look_up(sid)
-            w_d = Widget.look_up(did)
-            swap_element(w_s.element, w_d.element)
-            if w_s.app_id
-                id_s = w_s.app_id
-            else
-                id_s = w_s.id
-            if w_d.app_id
-                id_d = w_d.app_id
-            else
-                id_d = w_d.id
-            DCore.Dock.swap_apps_position(id_s, id_d)
+    show_swap_indicator: ->
+        @add_css_class("ItemIndicator", @img)
+    hide_swap_indicator: ->
+        @remove_css_class("ItemIndicator", @img)
 
+    do_dragenter: (e)->
+        e.preventDefault()
+        e.stopPropagation()
+        return if @is_fixed_pos
+        app_list.hide_indicator()
+
+        @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        if @_try_swaping_id == @app_id
+            e.dataTransfer.dropEffect = "none"
+            return
+        else if dnd_is_deepin_item(e)
+            e.dataTransfer.dropEffect="copy"
+            @show_swap_indicator()
+        else
+            e.dataTransfer.dropEffect="move"
+
+    do_dragleave: (e)->
+        @hide_swap_indicator()
+        @_try_swaping_id = null
+        @hide_swap_indicator()
+        e.preventDefault()
         e.stopPropagation()
 
     do_drop: (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if e.dataTransfer.getData("deepin-item-id")
-            return
-        tmp_list = []
-        for file in e.dataTransfer.files
-            path = decodeURI(file.path)
-            entry = DCore.DEntry.create_by_path(path)
-            tmp_list.push(entry)
-        if tmp_list.length > 0
-            switch this.constructor.name
-                when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
-                when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
+        @hide_swap_indicator()
+        if dnd_is_deepin_item(e)
+            if @_try_swaping_id != @app_id
+                w_s = Widget.look_up(@_try_swaping_id) or Widget.look_up("le_" + @_try_swaping_id)
+                app_list.swap_item(w_s, @)
+        else
+            tmp_list = []
+            for file in e.dataTransfer.files
+                path = decodeURI(file.path)
+                entry = DCore.DEntry.create_by_path(path)
+                tmp_list.push(entry)
+            if tmp_list.length > 0
+                switch this.constructor.name
+                    when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
+                    when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
 
 
 document.body.addEventListener("drop", (e)->
-    s_id = e.dataTransfer.getData("deepin-item-id")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.constructor.name == "Launcher"
         s_widget.element.style.position = "fixed"
         s_widget.element.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
         s_widget.element.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
+        DCore.Dock.request_undock(s_id)
         s_widget.destroy_with_animation()
-        setTimeout(=>
-            DCore.Dock.request_undock(s_id)
-        ,500)
 )
 document.body.addEventListener("dragover", (e)->
-    s_id = e.dataTransfer.getData("deepin-item-id")
+    s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     if Widget.look_up(s_id)?.constructor.name == "Launcher"
         e.preventDefault()
 )

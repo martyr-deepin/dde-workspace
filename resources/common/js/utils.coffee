@@ -23,6 +23,14 @@ Storage.prototype.setObject = (key, value) ->
 Storage.prototype.getObject = (key) ->
     JSON.parse(@getItem(key))
 
+String.prototype.endsWith = (suffix)->
+    return this.indexOf(suffix, this.length - suffix.length) != -1
+
+Array.prototype.remove = (el)->
+    i = this.indexOf(el)
+    if i != -1
+        this.splice(this.indexOf(el), 1)[0]
+
 echo = (log) ->
     console.log log
 
@@ -33,10 +41,6 @@ assert = (value, msg) ->
 _ = (s)->
     DCore.gettext(s)
 
-Array.prototype.remove = (el)->
-    i = this.indexOf(el)
-    if i != -1
-        this.splice(this.indexOf(el), 1)[0]
 
 build_menu = (info) ->
     m = new DeepinMenu
@@ -106,3 +110,19 @@ clamp = (value, min, max)->
     return min if value < min
     return max if value > max
     return value
+
+get_function_name = ->
+    return "AnymouseFunction" if not arguments.caller
+    /function (.*?)\(/.exec(arguments.caller.toString())[1]
+
+
+DEEPIN_ITEM_ID = "deepin-item-id"
+dnd_is_desktop = (e)->
+    return e.dataTransfer.getData("text/uri-list").trim().endsWith(".desktop")
+dnd_is_deepin_item = (e)->
+    if e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        return true
+    else
+        return false
+dnd_is_file = (e)->
+    return e.dataTransfer.getData("text/uri-list").length != 0

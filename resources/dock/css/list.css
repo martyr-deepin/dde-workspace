@@ -6,8 +6,6 @@
 }
 
 .AppItem {
-    -webkit-transition-property: webkit-transition-scale;
-    -webkit-transition: 0.1s ease-in-out;
     position:relative;
     max-width: 68px;
     max-height: 60px;
@@ -16,6 +14,7 @@
 }
 .AppItem:hover {
     -webkit-transform: scale(1.1);
+    -webkit-transition: all 0.2s ease-out;
 }
 
 .AppItemBoard {
@@ -28,12 +27,13 @@
 
 .AppItemImg {
     position: absolute;
-    border-radius: 6px;
+    border-radius: 5px;
     max-width: 48px;
     max-height: 48px;
+    border: 2px dashed transparent;  /* border width should same as config.coffee's ICON_BORDER */
 }
 .AppItemImg:first-child {
-    pointer-events: auto;
+    pointer-events: auto;  /* this let only the first image can receive mouse event! (Be careful in .AppItem: pointer-events=none)*/
 }
 
 .OpenIndicate {
@@ -41,4 +41,17 @@
     max-width:66px;
     max-height:52px;
     z-index: -100;
+}
+
+.Indicator {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.3);
+    margin-left: 18px;
+}
+.ItemIndicator {
+    -webkit-transition: border 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding-top: 2px;
 }

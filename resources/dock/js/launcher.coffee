@@ -2,6 +2,7 @@ class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
         @img.setAttribute("title", DCore.DEntry.get_name(@core))
+        @app_id = @id
 
 
     try_swap_clientgroup: ->
@@ -11,7 +12,7 @@ class Launcher extends AppItem
             group.destroy()
 
     do_click: (e)->
-        apply_flash(@img, 1)
+        @flash()
         DCore.DEntry.launch(@core, [])
 
     do_itemselected: (e)->
@@ -26,7 +27,7 @@ class Launcher extends AppItem
         ]
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
-        apply_animation(@element, "rotateOut", 500)
+        @rotate()
         setTimeout(=>
             @destroy()
         ,500)

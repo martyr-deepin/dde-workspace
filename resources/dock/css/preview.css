@@ -78,6 +78,9 @@
     display:none;
     pointer-events:auto;
 }
+.PWClose:hover {
+    cursor: pointer;
+}
 
 .Arrow {
     pointer-events: none;

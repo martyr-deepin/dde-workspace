@@ -25,9 +25,9 @@
 
 typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
 
-const char* get_cateogry_db_path()
+const char* get_category_db_path()
 {
-    return DATA_DIR"/category-zh_CN.db";
+    return DATA_DIR"/old_category-zh_CN.db";
 }
 
 int _fill_category_info_id(GHashTable* infos, int argc, char** argv, char** colname)
@@ -45,7 +45,7 @@ int find_category_id(char* s)
         _c_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
         const char* sql = "select x_category_name, first_category_index from category;";
         sqlite3 *db = NULL;
-        if (SQLITE_OK == sqlite3_open_v2(get_cateogry_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
+        if (SQLITE_OK == sqlite3_open_v2(get_category_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
             char* error = NULL;
             sqlite3_exec(db, sql, (SQLEXEC_CB)_fill_category_info_id, _c_info, &error);
             if (error != NULL) {
@@ -100,7 +100,7 @@ void _load_category_info(GPtrArray* category_infos)
 {
     const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
     sqlite3 *db = NULL;
-    if (SQLITE_OK == sqlite3_open_v2(get_cateogry_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
+    if (SQLITE_OK == sqlite3_open_v2(get_category_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
         g_assert(db != NULL);
         char* error = NULL;
         sqlite3_exec(db, sql_category_info, (SQLEXEC_CB)_fill_category_info, category_infos, &error);

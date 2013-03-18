@@ -63,7 +63,7 @@ class PWContainer extends Widget
         for k, v of @_current_pws
             @_current_pws[k] = true
 
-        @_current_group.n_clients.forEach((w_id)=>
+        @_current_group?.n_clients?.forEach((w_id)=>
             pw = Widget.look_up("pw"+w_id)
             if not pw
                 info = @_current_group.client_infos[w_id]
@@ -99,7 +99,7 @@ class PWContainer extends Widget
         else
             @border.style.left = offset
 
-        DCore.Dock.require_region(0, -screen.height, screen.width, screen.height + DOCK_HEIGHT)
+        DCore.Dock.require_all_region()
 
     append: (pw)->
         @_current_pws[pw.w_id] = true

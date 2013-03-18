@@ -60,9 +60,7 @@ char* jsstring_to_cstr(JSContextRef ctx, JSStringRef js_string)
 
 char* jsvalue_to_cstr(JSContextRef ctx, JSValueRef jsvalue)
 {
-    if (!JSValueIsString(ctx, jsvalue))
-    {
-        g_warning("Convert an not JSStringRef to string!");
+    if (!JSValueIsString(ctx, jsvalue)) {
         return NULL;
     }
     JSStringRef js_string = JSValueToStringCopy(ctx, jsvalue, NULL);

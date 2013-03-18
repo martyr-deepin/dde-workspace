@@ -108,7 +108,9 @@ class Widget extends Module
         @element.parentElement?.removeChild(@element)
         delete Widget.object_table[@id]
 
-    add_css_class: (name)->
-        @element.classList.add(name)
-    remove_css_class: (name)->
-        @element.classList.remove(name)
+    add_css_class: (name, el)->
+        el = @element if not el
+        el.classList.add(name)
+    remove_css_class: (name, el)->
+        el = @element if not el
+        el.classList.remove(name)

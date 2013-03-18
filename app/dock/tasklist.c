@@ -722,7 +722,7 @@ JS_EXPORT_API
 gboolean dock_request_dock_by_client_id(double id)
 {
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)id));
-    g_return_val_if_fail(FALSE, c != NULL);
+    g_return_val_if_fail(c != NULL, FALSE);
 
     if (dock_has_launcher(c->app_id)) {
         // already has this app info

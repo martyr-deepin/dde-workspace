@@ -151,7 +151,10 @@ class ClientGroup extends AppItem
         switch e.id
             when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)
-            when 3 then DCore.Dock.request_dock_by_client_id(@leader)
+            when 3 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
+
+    record_launcher_position: ->
+        DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
     do_click: (e)->
         if @n_clients.length == 1 and active_group == @
