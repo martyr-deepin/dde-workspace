@@ -24,9 +24,12 @@
 #include <glib.h>
 
 #define CATEGORY_END_TAG -100
+#define OTHER_CATEGORY_ID 9
+typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
 
+const char* get_category_db_path();
 const char** get_category_list();
-int* get_deepin_categories(const char* c);
+GList* get_deepin_categories(const char* c);
 const GPtrArray* get_all_categories_array();
 
 #endif
