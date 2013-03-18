@@ -19,6 +19,7 @@ enum Event {
     ShowNow,
     HideNow,
 };
+static gboolean _IN_TOGGLE_SHOW = FALSE;
 static void handle_event(enum Event ev);
 static void _cancel_detect_hide_mode();
 
@@ -256,6 +257,14 @@ static void _cancel_detect_hide_mode()
         _detect_hide_mode_id = 0;
     }
 }
+
+gboolean _do_toggle_show_clean()
+{
+    _IN_TOGGLE_SHOW = FALSE;
+    dock_update_hide_mode();
+    return FALSE;
+}
+
 void dock_toggle_show()
 {
     if (CURRENT_STATE == StateHidden || CURRENT_STATE == StateHidding) {
@@ -263,7 +272,8 @@ void dock_toggle_show()
     } else if (CURRENT_STATE == StateShow || CURRENT_STATE == StateShowing) {
         handle_event(TriggerHide);
     }
-    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)dock_update_hide_mode, NULL);
+    _IN_TOGGLE_SHOW = TRUE;
+    _detect_hide_mode_id = g_timeout_add(3000, (GSourceFunc)_do_toggle_show_clean, NULL);
 }
 
 
@@ -316,7 +326,7 @@ void init_dock_guard_window()
 JS_EXPORT_API
 void dock_update_hide_mode()
 {
-    if (!GD.is_webview_loaded) return;
+    if (!GD.is_webview_loaded || _IN_TOGGLE_SHOW) return;
     _change_workarea_height(_dock_height);
 
     switch (GD.config.hide_mode) {
