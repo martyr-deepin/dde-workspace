@@ -90,9 +90,9 @@ class AppList extends Widget
         e.stopPropagation()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
             e.dataTransfer.dropEffect="copy"
-            n = e.x / ITEM_WIDTH * ICON_SCALE
-            if n > 2
-                @show_indicator(e.x)
+            n = e.x / (ITEM_WIDTH * ICON_SCALE)
+            if n > 2  # skip the show_desktop and show launcher AppItem
+                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
             else
                 @hide_indicator()
 
@@ -119,9 +119,22 @@ class AppList extends Widget
         if @indicator.parentNode == @element
             @element.removeChild(@indicator)
 
-    show_indicator: (x)->
+    show_indicator: (x, try_insert_id)->
+        @indicator.style.width = ICON_SCALE * ICON_WIDTH
+        @indicator.style.height = ICON_SCALE * ICON_HEIGHT
+        margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
+        @indicator.style.marginTop = margin_top
+        @indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
+
+
+        return if @_insert_anchor_item?.app_id == try_insert_id
+
         if @_insert_anchor_item and get_page_xy(@_insert_anchor_item.img).x < x
             @_insert_anchor_item = @_insert_anchor_item.next()
+            return if @_insert_anchor_item?.app_id == try_insert_id
+        else
+            return if @_insert_anchor_item?.prev()?.app_id == try_insert_id
+
         if @_insert_anchor_item
             @element.insertBefore(@indicator, @_insert_anchor_item.element)
         else
@@ -132,6 +145,12 @@ class AppItem extends Widget
     is_fixed_pos: false
     next: ->
         el = @element.nextElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
+    prev: ->
+        el = @element.previousElementSibling
         if el and el.classList.contains("AppItem")
             return Widget.look_up(el.id)
         else
@@ -197,7 +216,7 @@ class AppItem extends Widget
         app_list.record_last_over_item(@)
         Preview_close_now()
         return if @is_fixed_pos
-        e.dataTransfer.setDragImage(@img, @img.clientWidth/2, @img.clientHeight/2)
+        e.dataTransfer.setDragImage(@img, 6, 4)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
         e.dataTransfer.effectAllowed = "copyMove"
         @element.style.opacity = "0.5"
