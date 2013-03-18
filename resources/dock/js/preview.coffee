@@ -63,7 +63,7 @@ class PWContainer extends Widget
         for k, v of @_current_pws
             @_current_pws[k] = true
 
-        @_current_group.n_clients.forEach((w_id)=>
+        @_current_group?.n_clients?.forEach((w_id)=>
             pw = Widget.look_up("pw"+w_id)
             if not pw
                 info = @_current_group.client_infos[w_id]
