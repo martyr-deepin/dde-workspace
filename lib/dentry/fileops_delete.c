@@ -4,6 +4,14 @@
 #include "fileops.h"
 #include "fileops_delete.h"
 
+static gboolean
+focus_cb (GtkWidget* widget, GtkDirectionType direction, gpointer user_data)
+{
+    GdkWindow* gdk_dialog = gtk_widget_get_window (widget);
+    gdk_window_raise (gdk_dialog);
+    return FALSE;
+}
+
 void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog)
 {
     GtkWidget* dialog;
@@ -27,7 +35,11 @@ void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog
 				GTK_RESPONSE_OK, NULL);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
 
+        gtk_widget_add_events (dialog, GDK_FOCUS_CHANGE_MASK);
+        g_signal_connect (dialog, "focus-in-event", G_CALLBACK(focus_cb), NULL);
+
 	result = gtk_dialog_run (GTK_DIALOG (dialog));
+
 	gtk_widget_destroy (dialog);
     }
 
