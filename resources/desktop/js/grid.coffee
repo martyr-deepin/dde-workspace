@@ -131,8 +131,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.height = s_height
 
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
-
-    place_desktop_items()
+    return
 
 
 load_position = (id) ->
@@ -256,6 +255,7 @@ set_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
+    return
 
 
 detect_occupy = (info) ->
