@@ -158,6 +158,13 @@ discard_position = (id) ->
     return
 
 
+clear_all_positions = ->
+    for i in [(localStorage.length - 1) ... -1] by -1
+        if (val = localStorage.key(i)).match(/^id:.+/i)
+            localStorage.removeItem(val)
+    return
+
+
 update_position = (old_id, new_id) ->
     assert("string" == typeof(old_id), "[update_position]accept not string old_id")
     assert("string" == typeof(new_id), "[update_position]accept not string new_id")
@@ -170,13 +177,19 @@ update_position = (old_id, new_id) ->
 place_desktop_items = ->
     init_occupy_table()
 
-    for i in speical_item
-        w = Widget.look_up(i)
-        if w? then move_to_anywhere(w)
+    total_item = speical_item.concat(all_item)
+    not_founds = []
+    for i in total_item
+        if load_position(i) != null
+            w = Widget.look_up(i)
+            if w? then move_to_anywhere(w)
+        else
+            not_founds.push(i)
 
-    for i in all_item
+    for i in not_founds
         w = Widget.look_up(i)
         if w? then move_to_anywhere(w)
+    return
 
 
 compare_pos_top_left = (base, pos) ->
@@ -343,6 +356,8 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
+    clear_all_positions()
+
     item_ordered_list = all_item.concat()
     item_ordered_list.sort(func)
 
@@ -353,13 +368,11 @@ sort_desktop_item_by_func = (func) ->
     for i in speical_item
         w = Widget.look_up(i)
         if w?
-            discard_position(w.get_id())
             move_to_anywhere(w)
 
     for i in item_ordered_list
         w = Widget.look_up(i)
         if w?
-            discard_position(w.get_id())
             move_to_anywhere(w)
     return
 
