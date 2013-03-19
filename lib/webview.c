@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <string.h>
 #include "dwebview.h"
 #include "jsextension.h"
 #include "utils.h"
@@ -77,6 +78,13 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
+    const char* env_lang = getenv("LANG");
+    char lang[3] = {0};
+    strncpy(lang, env_lang, 5);
+    lang[2] = '-';
+    char exec_script[30] = {0};
+    sprintf(exec_script, "document.body.lang=\"%s\"", lang);
+    webkit_web_view_execute_script(web_view, exec_script);
 }
 
 
@@ -214,3 +222,4 @@ void monitor_resource_file(const char* app, GtkWidget* webview)
     g_signal_connect(m_js, "changed", G_CALLBACK(reload_webview), webview);
     g_signal_connect(m_css, "changed", G_CALLBACK(reload_webview), webview);
 }
+
