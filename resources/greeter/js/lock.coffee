@@ -203,6 +203,18 @@ u.focus()
 u.show_login()
 u.login.password.focus()
 
+document.body.addEventListener("keydown", (e) =>
+    if e.which == 13 
+        if not u.login_displayed
+            u.show_login()
+            u.login.password.focus()
+        else if u.login.password.value == ""
+            u.login.password.focus()
+
+    else if e.which == 27
+        u.hide_login()
+)
+
 DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
