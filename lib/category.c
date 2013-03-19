@@ -83,7 +83,6 @@ void _load_category_info(GPtrArray* category_infos)
         if (error != NULL) {
             g_warning("load_category_info failed %s\n", error);
             sqlite3_free(error);
-            sqlite3_close(db);
         }
         sqlite3_close(db);
     } else {
@@ -97,8 +96,10 @@ void _load_category_info(GPtrArray* category_infos)
         g_ptr_array_add(category_infos, g_strdup(_("development")));
         g_ptr_array_add(category_infos, g_strdup(_("system")));
         g_ptr_array_add(category_infos, g_strdup(_("utilities")));
-        /* g_ptr_array_add(category_infos, g_strdup("other")); */
     }
+
+    /* add this for apps which cannot be categoried */
+    g_ptr_array_add(category_infos, g_strdup(_("other")));
 }
 
 const GPtrArray* get_all_categories_array()
