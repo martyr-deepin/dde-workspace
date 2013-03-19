@@ -50,9 +50,12 @@ void fileops_confirm_trash ()
 				     NULL);
     gtk_window_set_title (GTK_WINDOW (dialog), _("Empty Trash"));
     gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-    char* _icon = icon_name_to_path ("user-trash-full.png", 16);
-    gtk_window_set_icon_from_file (GTK_WINDOW (dialog), _icon, NULL);
-    g_free (_icon);
+    char* _icon = icon_name_to_path ("user-trash-full", 16);
+    if (_icon != NULL)
+    {
+        gtk_window_set_icon_from_file (GTK_WINDOW (dialog), _icon, NULL);
+        g_free (_icon);
+    }
     g_object_set (dialog,
 	          "text", _("Empty all items from Trash?"),
 		  "secondary-text", _("All items in the Trash will be permanently deleted."),
