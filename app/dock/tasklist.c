@@ -747,3 +747,17 @@ gboolean is_has_client(const char* app_id)
     else
         return FALSE;
 }
+
+JS_EXPORT_API
+void dock_set_compiz_workaround_preview(gboolean v)
+{
+    static gboolean _v = 3;
+    if (_v != v) {
+        GSettings* compiz_workaround = g_settings_new_with_path(
+                "org.compiz.workarounds",
+                "/org/compiz/profiles/deepin/plugins/workarounds/");
+        g_settings_set_boolean(compiz_workaround, "keep-minimized-windows", v);
+        g_object_unref(compiz_workaround);
+        _v = v;
+    }
+}

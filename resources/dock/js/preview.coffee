@@ -119,8 +119,10 @@ class PWContainer extends Widget
         )
         update_dock_region()
         @is_showing = false
+        #DCore.Dock.set_compiz_workaround_preview(false)
 
     show_group: (group)->
+        #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
         @hide()
         @_current_group = group
