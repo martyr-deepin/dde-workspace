@@ -157,9 +157,7 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 
 gboolean focus_out_cb(GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
-    g_warning("dlock lose focus");
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
-    //GRAB_DEVICE(NULL);
 }
 
 static void sigterm_cb(int signum)
@@ -293,6 +291,7 @@ int main(int argc, char **argv)
     gtk_widget_show_all(lock_container);
     
     GRAB_DEVICE(NULL);
+    gdk_window_focus(gtk_widget_get_window(lock_container), 0);
     gdk_window_stick(gdkwindow);
 
     gtk_main();

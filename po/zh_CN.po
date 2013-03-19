@@ -32,6 +32,10 @@ msgstr "登录"
 msgid "Welcome"
 msgstr "欢迎"
 
+#:../resources/greeter/js/user.coffee:350
+msgid "guest"
+msgstr "访客"
+
 #: ../resources/greeter/js/power.coffee:112
 #: ../resources/greeter/js/power.coffee:124
 msgid "suspend"
