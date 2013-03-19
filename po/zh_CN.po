@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-18 16:48+0800\n"
+"POT-Creation-Date: 2013-03-19 14:45+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "登录"
 msgid "Welcome"
 msgstr "欢迎"
 
-#:../resources/greeter/js/user.coffee:350
+#: ../resources/greeter/js/user.coffee:350
 msgid "guest"
 msgstr "访客"
 
@@ -151,6 +151,7 @@ msgstr "会话"
 #: ../resources/desktop/js/grid.coffee:709
 #: ../resources/desktop/js/grid.coffee:710
 #: ../resources/desktop/js/grid.coffee:731
+#: ../resources/desktop/js/grid.coffee:744
 msgid "Sort by"
 msgstr "排序方式"
 
@@ -158,6 +159,7 @@ msgstr "排序方式"
 #: ../resources/desktop/js/grid.coffee:710
 #: ../resources/desktop/js/grid.coffee:711
 #: ../resources/desktop/js/grid.coffee:732
+#: ../resources/desktop/js/grid.coffee:745
 msgid "Name"
 msgstr "名称"
 
@@ -165,6 +167,7 @@ msgstr "名称"
 #: ../resources/desktop/js/grid.coffee:711
 #: ../resources/desktop/js/grid.coffee:712
 #: ../resources/desktop/js/grid.coffee:733
+#: ../resources/desktop/js/grid.coffee:746
 msgid "Last modified time"
 msgstr "最近修改时间"
 
@@ -172,6 +175,7 @@ msgstr "最近修改时间"
 #: ../resources/desktop/js/grid.coffee:714
 #: ../resources/desktop/js/grid.coffee:715
 #: ../resources/desktop/js/grid.coffee:736
+#: ../resources/desktop/js/grid.coffee:749
 msgid "New"
 msgstr "新建"
 
@@ -179,6 +183,7 @@ msgstr "新建"
 #: ../resources/desktop/js/grid.coffee:715
 #: ../resources/desktop/js/grid.coffee:716
 #: ../resources/desktop/js/grid.coffee:737
+#: ../resources/desktop/js/grid.coffee:750
 msgid "Folder"
 msgstr "文件夹"
 
@@ -186,6 +191,7 @@ msgstr "文件夹"
 #: ../resources/desktop/js/grid.coffee:716
 #: ../resources/desktop/js/grid.coffee:717
 #: ../resources/desktop/js/grid.coffee:738
+#: ../resources/desktop/js/grid.coffee:751
 msgid "Text document"
 msgstr "文本文档"
 
@@ -193,6 +199,7 @@ msgstr "文本文档"
 #: ../resources/desktop/js/grid.coffee:719
 #: ../resources/desktop/js/grid.coffee:720
 #: ../resources/desktop/js/grid.coffee:741
+#: ../resources/desktop/js/grid.coffee:754
 msgid "Open terminal here"
 msgstr "在此打开终端"
 
@@ -200,6 +207,7 @@ msgstr "在此打开终端"
 #: ../resources/desktop/js/grid.coffee:720
 #: ../resources/desktop/js/grid.coffee:721
 #: ../resources/desktop/js/grid.coffee:742
+#: ../resources/desktop/js/grid.coffee:755
 msgid "Paste"
 msgstr "粘贴"
 
@@ -207,6 +215,7 @@ msgstr "粘贴"
 #: ../resources/desktop/js/grid.coffee:722
 #: ../resources/desktop/js/grid.coffee:723
 #: ../resources/desktop/js/grid.coffee:746
+#: ../resources/desktop/js/grid.coffee:759
 msgid "Personalize"
 msgstr "个性化"
 
@@ -214,6 +223,7 @@ msgstr "个性化"
 #: ../resources/desktop/js/grid.coffee:723
 #: ../resources/desktop/js/grid.coffee:724
 #: ../resources/desktop/js/grid.coffee:744
+#: ../resources/desktop/js/grid.coffee:757
 msgid "Display settings"
 msgstr "显示设置"
 
@@ -279,6 +289,7 @@ msgstr "重命名"
 #: ../resources/desktop/js/desktop_item.coffee:943
 #: ../resources/desktop/js/desktop_item.coffee:536
 #: ../resources/desktop/js/desktop_item.coffee:1130
+#: ../lib/dentry/fileops_delete.c:34
 msgid "Delete"
 msgstr "删除"
 
@@ -438,15 +449,15 @@ msgstr "移动"
 msgid "copy"
 msgstr "复制"
 
-#: ../lib/dentry/fileops_delete.c:19
+#: ../lib/dentry/fileops_delete.c:19 ../lib/dentry/fileops_delete.c:27
 msgid "Delete File"
 msgstr "删除文件"
 
-#: ../lib/dentry/fileops_delete.c:22
+#: ../lib/dentry/fileops_delete.c:22 ../lib/dentry/fileops_delete.c:30
 msgid "Are you sure you want to permanently delete the files?"
 msgstr "您确定要永久删除文件吗？"
 
-#: ../lib/dentry/fileops_delete.c:23
+#: ../lib/dentry/fileops_delete.c:23 ../lib/dentry/fileops_delete.c:31
 msgid "If you delete an item, it will be permanently lost"
 msgstr "如果您要删除某项，它将永久丢失"
 
@@ -576,18 +587,22 @@ msgid "Error while %s files"
 msgstr "当%s文件时出错"
 
 #: ../lib/dentry/fileops_trash.c:50 ../lib/dentry/fileops_trash.c:49
+#: ../lib/dentry/fileops_trash.c:51
 msgid "Empty Trash"
 msgstr "清空回收站"
 
 #: ../lib/dentry/fileops_trash.c:53 ../lib/dentry/fileops_trash.c:52
+#: ../lib/dentry/fileops_trash.c:60
 msgid "Empty all items from Trash?"
 msgstr "清空回收站中的全部项目吗？"
 
 #: ../lib/dentry/fileops_trash.c:54 ../lib/dentry/fileops_trash.c:53
+#: ../lib/dentry/fileops_trash.c:61
 msgid "All items in the Trash will be permanently deleted."
 msgstr "回收站中的全部条目将被永久删除。"
 
 #: ../lib/dentry/fileops_trash.c:57 ../lib/dentry/fileops_trash.c:56
+#: ../lib/dentry/fileops_trash.c:64
 msgid "Empty _Trash"
 msgstr "清空回收站(_T)"
 
@@ -626,6 +641,7 @@ msgid "_Run"
 msgstr "运行(_R)"
 
 #: ../resources/desktop/js/grid.coffee:745
+#: ../resources/desktop/js/grid.coffee:758
 msgid "Desktop settings"
 msgstr "桌面设置"
 
@@ -637,42 +653,46 @@ msgstr "解散"
 msgid "Deepin Software Center"
 msgstr "深度软件中心"
 
-#: ../app/launcher/launcher.c:373
+#: ../app/launcher/launcher.c:373 ../app/launcher/launcher.c:389
 msgid "internet"
 msgstr "网络应用"
 
-#: ../app/launcher/launcher.c:373
+#: ../app/launcher/launcher.c:373 ../app/launcher/launcher.c:389
 msgid "multimedia"
 msgstr "影音播放"
 
-#: ../app/launcher/launcher.c:373
+#: ../app/launcher/launcher.c:373 ../app/launcher/launcher.c:389
 msgid "games"
 msgstr "游戏娱乐"
 
-#: ../app/launcher/launcher.c:374
+#: ../app/launcher/launcher.c:374 ../app/launcher/launcher.c:390
 msgid "graphics"
 msgstr "图形图像"
 
-#: ../app/launcher/launcher.c:374
+#: ../app/launcher/launcher.c:374 ../app/launcher/launcher.c:390
 msgid "productivity"
 msgstr "办公软件"
 
-#: ../app/launcher/launcher.c:374
+#: ../app/launcher/launcher.c:374 ../app/launcher/launcher.c:390
 msgid "industry"
 msgstr "行业软件"
 
-#: ../app/launcher/launcher.c:374
+#: ../app/launcher/launcher.c:374 ../app/launcher/launcher.c:390
 msgid "education"
 msgstr "科学教育"
 
-#: ../app/launcher/launcher.c:375
+#: ../app/launcher/launcher.c:375 ../app/launcher/launcher.c:391
 msgid "development"
 msgstr "编程开发"
 
-#: ../app/launcher/launcher.c:375
+#: ../app/launcher/launcher.c:375 ../app/launcher/launcher.c:391
 msgid "system"
 msgstr "系统管理"
 
-#: ../app/launcher/launcher.c:375
+#: ../app/launcher/launcher.c:375 ../app/launcher/launcher.c:391
 msgid "utilities"
 msgstr "实用工具"
+
+#: ../app/launcher/launcher.c:391
+msgid "other"
+msgstr "其他"

@@ -365,32 +365,43 @@ void _insert_category(JSObjectRef categories, int array_index, int id, const cha
     json_array_insert(categories, array_index, item);
 }
 
+static
+void _record_categories(JSObjectRef categories, const char* names[], int num)
+{
+    int count = 0;
+    for (int i = 0; i < num; ++i) {
+        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
+            _insert_category(categories, count++, i, names[i]);
+        }
+    }
+
+    if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(OTHER_CATEGORY_ID))) {
+        int last_index = num - 1;
+        _insert_category(categories, count, OTHER_CATEGORY_ID, names[last_index]);
+    }
+}
+
 JS_EXPORT_API
 JSObjectRef launcher_get_categories()
 {
     JSContextRef cxt = get_global_context();
     JSObjectRef categories = json_array_create();
+    const char* names[] = {_("internet"), _("multimedia"), _("games"),
+        _("graphics"), _("productivity"), _("industry"), _("education"),
+        _("development"), _("system"), _("utilities"), _("other")};
+    int category_num = 0;
 
     const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
-        const char* names[] = {_("internet"), _("multimedia"), _("games"),
-            _("graphics"), _("productivity"), _("industry"), _("education"),
-            _("development"), _("system"), _("utilities")};
-        const int category_num = sizeof(names) / sizeof(const char*);
-
+        category_num = sizeof(names) / sizeof(const char*) - 1;
+    } else {
+        category_num = infos->len;
         for (int i = 0; i < category_num; ++i) {
-            _insert_category(categories, i, i, names[i]);
-        }
-        return categories;
-    }
-
-    for (int i=0, j = 0; i < infos->len; i++) {
-        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
-            const char* category_name = (const char*)g_ptr_array_index(infos, i);
-            _insert_category(categories, j++, i, category_name);
+            names[i] = (char*)g_ptr_array_index(infos, i);
         }
     }
 
+    _record_categories(categories, names, category_num);
     return categories;
 }
 

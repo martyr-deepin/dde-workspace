@@ -24,7 +24,7 @@
 #include <glib.h>
 
 #define CATEGORY_END_TAG -100
-#define OTHER_CATEGORY_ID 9
+#define OTHER_CATEGORY_ID (-2)
 typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
 
 const char* get_category_db_path();

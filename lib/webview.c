@@ -79,9 +79,12 @@ static void add_ddesktop_class(WebKitWebView *web_view,
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
     const char* env_lang = getenv("LANG");
+    if (env_lang[0] == '\0') {
+        return;
+    }
+
     char lang[3] = {0};
-    strncpy(lang, env_lang, 5);
-    lang[2] = '-';
+    strncpy(lang, env_lang, 2);
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", lang);
     webkit_web_view_execute_script(web_view, exec_script);
