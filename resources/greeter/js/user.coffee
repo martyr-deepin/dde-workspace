@@ -347,7 +347,7 @@ else
             u.focus()
 
     if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", "guest", "images/guest.jpg")
+        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
         roundabout.appendChild(u.li)
         if DCore.Greeter.is_guest_default()
             u.focus()
@@ -410,7 +410,9 @@ document.body.addEventListener("keydown", (e)=>
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
-    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    userinfo_list[0]?.focus()
+    userinfo_list[0]?.show_login()
 
 run_post(->
     l = (screen.width  - roundabout.clientWidth) / 2
