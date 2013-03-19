@@ -370,7 +370,7 @@ JSObjectRef launcher_get_categories()
 
     const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
-        const char* names[] = {_("internet"), _("mutilmedia"), _("games"),
+        const char* names[] = {_("internet"), _("multimedia"), _("games"),
             _("graphics"), _("productivity"), _("industry"), _("education"),
             _("development"), _("system"), _("utilities")};
         const int category_num = sizeof(names) / sizeof(const char*);

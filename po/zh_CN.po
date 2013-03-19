@@ -638,7 +638,7 @@ msgid "internet"
 msgstr ""
 
 #: ../app/launcher/launcher.c:373
-msgid "mutilmedia"
+msgid "multimedia"
 msgstr ""
 
 #: ../app/launcher/launcher.c:373
