@@ -164,14 +164,14 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
                     NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
         }
     } else if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
-        if (_fcitx_tray == NULL) {
+        /*if (_fcitx_tray == NULL) {*/
             _fcitx_tray = icon;
             _fcitx_tray_width = gdk_window_get_width(icon);
             gdk_window_move_resize(_fcitx_tray,
                     _s_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
                     NA_BASE_Y,
                     _fcitx_tray_width, DEFAULT_HEIGHT);
-        }
+        /*}*/
 
     } else {
         g_hash_table_insert(_icons, icon, GINT_TO_POINTER(width));
