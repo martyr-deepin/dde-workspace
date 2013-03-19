@@ -6,6 +6,7 @@ scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "l
 other_files = [
 "../app/desktop/*.c",
 "../app/greeter/*.c",
+"../app/launcher/*.c",
 "../app/dock/*.c",
 "../lib/dentry/*.c"
 ]

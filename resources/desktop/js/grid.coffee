@@ -131,8 +131,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     div_grid.style.height = s_height
 
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
-
-    place_desktop_items()
+    return
 
 
 load_position = (id) ->
@@ -159,6 +158,13 @@ discard_position = (id) ->
     return
 
 
+clear_all_positions = ->
+    for i in [(localStorage.length - 1) ... -1] by -1
+        if (val = localStorage.key(i)).match(/^id:.+/i)
+            localStorage.removeItem(val)
+    return
+
+
 update_position = (old_id, new_id) ->
     assert("string" == typeof(old_id), "[update_position]accept not string old_id")
     assert("string" == typeof(new_id), "[update_position]accept not string new_id")
@@ -171,13 +177,19 @@ update_position = (old_id, new_id) ->
 place_desktop_items = ->
     init_occupy_table()
 
-    for i in speical_item
-        w = Widget.look_up(i)
-        if w? then move_to_anywhere(w)
+    total_item = speical_item.concat(all_item)
+    not_founds = []
+    for i in total_item
+        if load_position(i) != null
+            w = Widget.look_up(i)
+            if w? then move_to_anywhere(w)
+        else
+            not_founds.push(i)
 
-    for i in all_item
+    for i in not_founds
         w = Widget.look_up(i)
         if w? then move_to_anywhere(w)
+    return
 
 
 compare_pos_top_left = (base, pos) ->
@@ -256,6 +268,7 @@ set_occupy = (info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = true
+    return
 
 
 detect_occupy = (info) ->
@@ -343,6 +356,8 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
+    clear_all_positions()
+
     item_ordered_list = all_item.concat()
     item_ordered_list.sort(func)
 
@@ -353,13 +368,11 @@ sort_desktop_item_by_func = (func) ->
     for i in speical_item
         w = Widget.look_up(i)
         if w?
-            discard_position(w.get_id())
             move_to_anywhere(w)
 
     for i in item_ordered_list
         w = Widget.look_up(i)
         if w?
-            discard_position(w.get_id())
             move_to_anywhere(w)
     return
 
@@ -951,9 +964,7 @@ class Mouse_Select_Area_box
 
             effect_item = new Array
             for i in speical_item.concat(all_item)
-                w = Widget.look_up(i)
-                if not w? then continue
-                item_pos = load_position(w.get_id())
+                item_pos = load_position(i)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 

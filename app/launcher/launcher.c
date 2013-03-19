@@ -201,18 +201,15 @@ void launcher_notify_workarea_size()
             screen_width, screen_height);
 }
 
+/**
+ * @brief - key: the category id
+ *          value: a list of applications id (md5 basename of path)
+ */
 static GHashTable* _category_table = NULL;
 
-static gboolean _is_exist = FALSE;
 
 static
-void _handler(gpointer data, gpointer user_data)
-{
-    _is_exist = g_strcmp0((const char*)data, (const char*)user_data) == 0;
-}
-
-static
-void _append_to_category(const char* path, int* cs)
+void _append_to_category(const char* path, GList* cs)
 {
     if (cs == NULL) {
         //TODO add to default other category
@@ -227,21 +224,15 @@ void _append_to_category(const char* path, int* cs)
 
     GPtrArray* l = NULL;
 
-    while (*cs != CATEGORY_END_TAG) {
-        gpointer id = GINT_TO_POINTER(*cs);
+    for (GList* iter = g_list_first(cs); iter != NULL; iter = g_list_next(iter)) {
+        gpointer id = iter->data;
         l = g_hash_table_lookup(_category_table, id);
-        _is_exist = FALSE;
         if (l == NULL) {
             l = g_ptr_array_new_with_free_func(g_free);
             g_hash_table_insert(_category_table, id, l);
-        } else {
-            g_ptr_array_foreach(l, _handler, (gpointer)path);
         }
 
-        if (!_is_exist)
-            g_ptr_array_add(l, g_strdup(path));
-
-        cs++;
+        g_ptr_array_add(l, g_strdup(path));
     }
 }
 
@@ -268,9 +259,10 @@ JSObjectRef launcher_get_items_by_category(double _id)
 static
 void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
-   int* cs = get_deepin_categories(g_desktop_app_info_get_categories(info));
-   _append_to_category(id, cs);
-   g_free(cs);
+    const gchar* full_filename = g_desktop_app_info_get_filename(info);
+    GList* categories = get_deepin_categories(full_filename);
+    _append_to_category(id, categories);
+    /* g_free(categories); */
 }
 
 JS_EXPORT_API
@@ -381,8 +373,9 @@ JSObjectRef launcher_get_categories()
 
     const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
-        const char* names[] = {"Internet", "Media", "Game", "Graphics", "Office",
-            "Industry", "Education", "Development", "Wine", "General", "Other"};
+        const char* names[] = {_("internet"), _("multimedia"), _("games"),
+            _("graphics"), _("productivity"), _("industry"), _("education"),
+            _("development"), _("system"), _("utilities")};
         const int category_num = sizeof(names) / sizeof(const char*);
 
         for (int i = 0; i < category_num; ++i) {

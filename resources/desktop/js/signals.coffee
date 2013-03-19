@@ -80,6 +80,7 @@ do_item_rename = (data) ->
         if sel then set_item_selected(w)
 
     update_selected_item_drag_image()
+    return
 
 
 do_trash_update = ->
@@ -92,7 +93,7 @@ do_cut_completed = (items) ->
     for e in items
         w = Widget.look_up(DCore.DEntry.get_id(e))
         if w? and w.modifiable == true then w.display_not_cut()
-        return
+    return
 
 
 do_desktop_lost_focus = ->
@@ -102,18 +103,23 @@ do_desktop_lost_focus = ->
             w.item_blur()
         else
             last_widget_has_focus = false
+    return
 
 
 do_desktop_get_focus = ->
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
         last_widget_has_focus == false
+    return
 
 
 do_desktop_config_changed = ->
     load_speical_desktop_items()
     place_desktop_items()
+    return
 
 
 do_workarea_changed = (allo) ->
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
+    place_desktop_items()
+    return

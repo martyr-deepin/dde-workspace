@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-15 10:01+0800\n"
+"POT-Creation-Date: 2013-03-18 16:48+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,10 @@ msgstr "登录"
 #: ../resources/greeter/js/lock.coffee:77
 msgid "Welcome"
 msgstr "欢迎"
+
+#:../resources/greeter/js/user.coffee:350
+msgid "guest"
+msgstr "访客"
 
 #: ../resources/greeter/js/power.coffee:112
 #: ../resources/greeter/js/power.coffee:124
@@ -363,11 +367,13 @@ msgstr "驻留"
 
 #: ../resources/dock/js/launcher.coffee:22
 #: ../resources/dock/js/launcher.coffee:23
+#: ../resources/dock/js/launcher.coffee:24
 msgid "Run"
 msgstr "运行"
 
 #: ../resources/dock/js/launcher.coffee:24
 #: ../resources/dock/js/launcher.coffee:25
+#: ../resources/dock/js/launcher.coffee:26
 msgid "Undock"
 msgstr "移除驻留"
 
@@ -630,3 +636,43 @@ msgstr "解散"
 #: ../resources/desktop/js/desktop_item.coffee:1390
 msgid "Deepin Software Center"
 msgstr "深度软件中心"
+
+#: ../app/launcher/launcher.c:373
+msgid "internet"
+msgstr "网络应用"
+
+#: ../app/launcher/launcher.c:373
+msgid "multimedia"
+msgstr "影音播放"
+
+#: ../app/launcher/launcher.c:373
+msgid "games"
+msgstr "游戏娱乐"
+
+#: ../app/launcher/launcher.c:374
+msgid "graphics"
+msgstr "图形图像"
+
+#: ../app/launcher/launcher.c:374
+msgid "productivity"
+msgstr "办公软件"
+
+#: ../app/launcher/launcher.c:374
+msgid "industry"
+msgstr "行业软件"
+
+#: ../app/launcher/launcher.c:374
+msgid "education"
+msgstr "科学教育"
+
+#: ../app/launcher/launcher.c:375
+msgid "development"
+msgstr "编程开发"
+
+#: ../app/launcher/launcher.c:375
+msgid "system"
+msgstr "系统管理"
+
+#: ../app/launcher/launcher.c:375
+msgid "utilities"
+msgstr "实用工具"
