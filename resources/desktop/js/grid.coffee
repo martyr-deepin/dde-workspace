@@ -964,9 +964,7 @@ class Mouse_Select_Area_box
 
             effect_item = new Array
             for i in speical_item.concat(all_item)
-                w = Widget.look_up(i)
-                if not w? then continue
-                item_pos = load_position(w.get_id())
+                item_pos = load_position(i)
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 
