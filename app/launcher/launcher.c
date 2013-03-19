@@ -26,7 +26,6 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
-#include "sqlite3.h"
 #include <gio/gdesktopappinfo.h>
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
@@ -202,6 +201,10 @@ void launcher_notify_workarea_size()
             screen_width, screen_height);
 }
 
+/**
+ * @brief - key: the category id
+ *          value: a list of applications id (md5 basename of path)
+ */
 static GHashTable* _category_table = NULL;
 
 

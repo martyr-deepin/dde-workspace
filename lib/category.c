@@ -87,16 +87,17 @@ void _load_category_info(GPtrArray* category_infos)
         }
         sqlite3_close(db);
     } else {
-        g_ptr_array_add(category_infos, g_strdup("Internet"));
-        g_ptr_array_add(category_infos, g_strdup("Media"));
-        g_ptr_array_add(category_infos, g_strdup("Game"));
-        g_ptr_array_add(category_infos, g_strdup("Graphics"));
-        g_ptr_array_add(category_infos, g_strdup("Office"));
-        g_ptr_array_add(category_infos, g_strdup("Industry"));
-        g_ptr_array_add(category_infos, g_strdup("Education"));
-        g_ptr_array_add(category_infos, g_strdup("Development"));
-        g_ptr_array_add(category_infos, g_strdup("General"));
-        g_ptr_array_add(category_infos, g_strdup("Other"));
+        g_ptr_array_add(category_infos, g_strdup(_("internet")));
+        g_ptr_array_add(category_infos, g_strdup(_("multimedia")));
+        g_ptr_array_add(category_infos, g_strdup(_("games")));
+        g_ptr_array_add(category_infos, g_strdup(_("graphics")));
+        g_ptr_array_add(category_infos, g_strdup(_("productivity")));
+        g_ptr_array_add(category_infos, g_strdup(_("industry")));
+        g_ptr_array_add(category_infos, g_strdup(_("education")));
+        g_ptr_array_add(category_infos, g_strdup(_("development")));
+        g_ptr_array_add(category_infos, g_strdup(_("system")));
+        g_ptr_array_add(category_infos, g_strdup(_("utilities")));
+        /* g_ptr_array_add(category_infos, g_strdup("other")); */
     }
 }
 
@@ -106,7 +107,6 @@ const GPtrArray* get_all_categories_array()
     if (category_infos == NULL) {
         category_infos = g_ptr_array_new_with_free_func(g_free);
         _load_category_info(category_infos);
-
     }
     return category_infos;
 }
