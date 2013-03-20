@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <string.h>
 #include "xdg_misc.h"
 #include <gtk/gtk.h>
 #include "dwebview.h"
@@ -30,6 +31,7 @@
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
 #define CURRENT_PCITURE "current-picture"
+#define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
 
 static
@@ -100,20 +102,47 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     return TRUE;
 }
+static
+char* bg_blur_pict_get_dest_path (const char* src_uri)
+{
+    g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
+    g_return_val_if_fail (src_uri != NULL, NULL);
+
+    //1. calculate original picture md5
+    GChecksum* checksum;
+    checksum = g_checksum_new (G_CHECKSUM_MD5);
+    g_checksum_update (checksum, (const guchar *) src_uri, strlen (src_uri));
+
+    guint8 digest[16];
+    gsize digest_len = sizeof (digest);
+    g_checksum_get_digest (checksum, digest, &digest_len);
+    g_assert (digest_len == 16);
+
+    //2. build blurred picture path
+    char* file;
+    file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+    g_checksum_free (checksum);
+    char* path;
+    path = g_build_filename (g_get_user_cache_dir (),
+		    BG_BLUR_PICT_CACHE_DIR,
+		    file,
+		    NULL);
+    g_free (file);
+
+    return path;
+}
 
 static
 void _set_launcher_background(GdkWindow* win)
 {
-    char* bg_path = g_build_filename(g_get_tmp_dir(), ".deepin_background_gaussian.png", NULL);
-
-    if (!_set_launcher_background_aux(win, bg_path)) {
-        g_free(bg_path);
-        GSettings* s = g_settings_new(SCHEMA_ID);
-        bg_path = g_settings_get_string(s, CURRENT_PCITURE);
-        printf("%s\n", bg_path);
+    GSettings* s = g_settings_new(SCHEMA_ID);
+    const char* bg_path = g_settings_get_string(s, CURRENT_PCITURE);
+    const char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    if (!_set_launcher_background_aux(win, blur_path)) {
         _set_launcher_background_aux(win, bg_path);
     }
 
+    g_free(blur_path);
     g_free(bg_path);
 }
 
