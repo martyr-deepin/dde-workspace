@@ -175,12 +175,12 @@ void active_window_changed(Display* dsp, Window w)
     if (_active_client_id != w) {
         _active_client_id = w;
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)w));
-        if (c != NULL) {
-            JSObjectRef json = json_create();
-            json_append_number(json, "id", (int)w);
+        JSObjectRef json = json_create();
+        json_append_number(json, "id", (int)w);
+        if (c)
             json_append_string(json, "app_id", c->app_id);
-            js_post_message("active_window_changed", json);
-        }
+        //else we should tell frontend we lost the active window
+        js_post_message("active_window_changed", json);
     }
     if (_launcher_id != 0 && launcher_should_exit()) {
         close_launcher_window();
