@@ -52,7 +52,7 @@ class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").insertBefore(@element, $("#notifyarea"))
-        @indicator = create_element("div", "Indicator")
+        @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
 
     append: (c)->
@@ -77,7 +77,7 @@ class AppList extends Widget
         if dnd_is_desktop(e)
             path = e.dataTransfer.getData("text/uri-list").substring("file://".length).trim()
             DCore.Dock.request_dock(decodeURI(path))
-        else if dnd_is_deepin_item(e) and @indicator.parentNode == @element
+        else if dnd_is_deepin_item(e) and @insert_indicator.parentNode == @element
             id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
             item.flash(0.5)
@@ -116,15 +116,15 @@ class AppList extends Widget
             Preview_close()
 
     hide_indicator: ->
-        if @indicator.parentNode == @element
-            @element.removeChild(@indicator)
+        if @insert_indicator.parentNode == @element
+            @element.removeChild(@insert_indicator)
 
     show_indicator: (x, try_insert_id)->
-        @indicator.style.width = ICON_SCALE * ICON_WIDTH
-        @indicator.style.height = ICON_SCALE * ICON_HEIGHT
+        @insert_indicator.style.width = ICON_SCALE * ICON_WIDTH
+        @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
         margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
-        @indicator.style.marginTop = margin_top
-        @indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
+        @insert_indicator.style.marginTop = margin_top
+        @insert_indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
 
 
         return if @_insert_anchor_item?.app_id == try_insert_id
@@ -136,9 +136,9 @@ class AppList extends Widget
             return if @_insert_anchor_item?.prev()?.app_id == try_insert_id
 
         if @_insert_anchor_item
-            @element.insertBefore(@indicator, @_insert_anchor_item.element)
+            @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
-            @element.appendChild(@indicator)
+            @element.appendChild(@insert_indicator)
 
 app_list = new AppList("app_list")
 class AppItem extends Widget
@@ -163,6 +163,7 @@ class AppItem extends Widget
             @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
         @img.classList.add("ReflectImg")
+        @img.style.pointerEvents = "auto"
         @element.draggable=true
         if @constructor.name == "Launcher"
             @app_id = @id
@@ -198,11 +199,11 @@ class AppItem extends Widget
             @img3.style.width = icon_width
             @img3.style.height = icon_height
 
-        if @indicate
+        if @open_indicator
             h = INDICATER_HEIGHT * ICON_SCALE
-            @indicate.style.width = INDICATER_WIDTH * ICON_SCALE
-            @indicate.style.height = h
-            @indicate.style.top = ITEM_HEIGHT * ICON_SCALE - h
+            @open_indicator.style.width = INDICATER_WIDTH * ICON_SCALE
+            @open_indicator.style.height = h
+            @open_indicator.style.top = ITEM_HEIGHT * ICON_SCALE - h
 
     do_dragover: (e)->
         e.stopPropagation()
@@ -230,9 +231,9 @@ class AppItem extends Widget
         @element.style.opacity = "1"
 
     show_swap_indicator: ->
-        @add_css_class("ItemIndicator", @img)
+        @add_css_class("ItemSwapIndicator", @img)
     hide_swap_indicator: ->
-        @remove_css_class("ItemIndicator", @img)
+        @remove_css_class("ItemSwapIndicator", @img)
 
     do_dragenter: (e)->
         e.preventDefault()

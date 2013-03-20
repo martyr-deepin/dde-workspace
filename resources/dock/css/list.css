@@ -32,25 +32,23 @@
     max-height: 48px;
     border: 2px dashed transparent;  /* border width should same as config.coffee's ICON_BORDER */
 }
-.AppItemImg:first-child {
-    pointer-events: auto;  /* this let only the first image can receive mouse event! (Be careful in .AppItem: pointer-events=none)*/
-}
 
-.OpenIndicate {
+.OpenIndicator {
     position: absolute;
     max-width:66px;
     max-height:52px;
     z-index: -100;
 }
 
-.Indicator {
+
+.InsertIndicator {
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     pointer-events: none;
     background: rgba(255, 255, 255, 0.3);
     margin-left: 18px;
 }
-.ItemIndicator {
+.ItemSwapIndicator {
     -webkit-transition: border 0.3s;
     border: 1px solid rgba(0, 0, 0, 0.5);
     padding-top: 2px;

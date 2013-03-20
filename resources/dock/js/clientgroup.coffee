@@ -7,10 +7,9 @@ class ClientGroup extends AppItem
         @n_clients = []
         @client_infos = {}
 
-        @indicate = create_img("OpenIndicate", "", @element)
-        @indicate.style.left = INDICATER_IMG_MARGIN_LEFT
+        @open_indicator = create_img("OpenIndicator", "", @element)
+        @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
 
-        @in_iconfiy = false
         @leader = null
 
         @img2 = create_img("AppItemImg", "", @element)
@@ -58,15 +57,14 @@ class ClientGroup extends AppItem
                 @img3.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_LEFT
 
     to_active_status : (id)->
-        @in_iconfiy = false
         active_group?.to_normal_status()
-        @indicate.src = "img/s_app_active.png"
+        @open_indicator.src = "img/s_app_active.png"
         @leader = id
         DCore.Dock.active_window(@leader)
         active_group = @
 
     to_normal_status : ->
-        @indicate.src = "img/s_app_open.png"
+        @open_indicator.src = "img/s_app_open.png"
 
     update_client: (id, icon, title)->
         icon = NOT_FOUND_ICON if not icon
@@ -158,12 +156,8 @@ class ClientGroup extends AppItem
 
     do_click: (e)->
         if @n_clients.length == 1 and active_group == @
-            if @in_iconfiy
-                @to_active_status(@leader)
-            else
-                @in_iconfiy = true
-                DCore.Dock.iconify_window(@leader)
-                @to_normal_status()
+            DCore.Dock.iconify_window(@leader)
+            @to_normal_status()
         else if @n_clients.length > 1 and active_group == @
             @next_leader()
             @to_active_status(@leader)
@@ -171,4 +165,5 @@ class ClientGroup extends AppItem
             @to_active_status(@leader)
 
     do_mouseover: (e)->
+        e.stopPropagation()
         Preview_show(@)

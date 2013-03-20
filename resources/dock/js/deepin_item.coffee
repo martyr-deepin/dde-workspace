@@ -7,16 +7,16 @@ class FixedItem extends AppItem
         @element.draggable=false
         @img.setAttribute("title", title)
 
-        @indicate = create_img("OpenIndicate", "img/s_app_open.png", @element)
-        @indicate.style.left = INDICATER_IMG_MARGIN_LEFT
-        @indicate.style.display = "none"
+        @open_indicator = create_img("OpenIndicator", "img/s_app_open.png", @element)
+        @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
+        @open_indicator.style.display = "none"
 
     show: (v)->
         @__show = v
         if @__show
-            @indicate.style.display = "block"
+            @open_indicator.style.display = "block"
         else
-            @indicate.style.display = "none"
+            @open_indicator.style.display = "none"
 
 class ShowDesktop extends FixedItem
     do_click: (e)->

@@ -190,7 +190,7 @@ background_img = create_img("Background",user_background)
 document.body.appendChild(background_img)
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Alpha")}</sup></span> 
+            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Beta")}</sup></span> 
             "
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
@@ -221,10 +221,6 @@ DCore.signal_connect("unlock", (msg)->
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
-    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
-
-run_post(->
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
-)
-
+    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
