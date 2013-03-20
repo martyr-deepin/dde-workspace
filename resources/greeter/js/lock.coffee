@@ -190,7 +190,7 @@ background_img = create_img("Background",user_background)
 document.body.appendChild(background_img)
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Alpha")}</sup></span> 
+            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Beta")}</sup></span> 
             "
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)
