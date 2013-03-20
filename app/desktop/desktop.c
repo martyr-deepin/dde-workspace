@@ -239,17 +239,18 @@ gboolean desktop_get_config_boolean(const char* key_name)
 //TODO: connect gtk_icon_theme changed.
 
 static
-void screen_change_size(GdkScreen *screen, GtkWidget *w)
+void screen_change_size(GdkScreen *screen, GdkWindow *w)
 {
     int screen_width = gdk_screen_get_width(screen);
     int screen_height = gdk_screen_get_height(screen);
 
-    GdkGeometry geo = {0};
-    geo.min_width = screen_width;
-    geo.min_height = screen_height;
-    gdk_window_set_geometry_hints(gtk_widget_get_window(w), &geo, GDK_HINT_MIN_SIZE);
-
-    gdk_window_move_resize(gtk_widget_get_window(w), 0, 0, screen_width, screen_height);
+    if (w) {
+        GdkGeometry geo = {0};
+        geo.min_width = 0;
+        geo.min_height = 0;
+        gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
+        gdk_window_move_resize(w, 0, 0, screen_width, screen_height);
+    }
 }
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
@@ -300,7 +301,7 @@ int main(int argc, char* argv[])
     gtk_widget_set_size_request(container, gdk_screen_get_width(screen),
             gdk_screen_get_height(screen));
 
-    g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
 
     set_wmspec_desktop_hint(gtk_widget_get_window(container));
 
