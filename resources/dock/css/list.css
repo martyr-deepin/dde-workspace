@@ -32,9 +32,6 @@
     max-height: 48px;
     border: 2px dashed transparent;  /* border width should same as config.coffee's ICON_BORDER */
 }
-.AppItemImg:first-child {
-    pointer-events: auto;  /* this let only the first image can receive mouse event! (Be careful in .AppItem: pointer-events=none)*/
-}
 
 .OpenIndicator {
     position: absolute;
