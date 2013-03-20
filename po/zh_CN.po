@@ -145,7 +145,7 @@ msgstr "切换用户"
 
 #: ../resources/greeter/js/session.coffee:25
 msgid "Session"
-msgstr "会话"
+msgstr "桌面环境"
 
 #: ../resources/desktop/js/grid.coffee:692
 #: ../resources/desktop/js/grid.coffee:709
