@@ -156,6 +156,20 @@ gboolean lock_is_guest()
     return is_guest;
 }
 
+gboolean lock_is_running()
+{
+    gboolean run_flag = FALSE;
+
+    gchar *user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
+    if(is_application_running(user_lock_path)){
+        g_warning("another instance of dlock is running by current user...\n");
+        run_flag = TRUE;
+    }
+    g_free(user_lock_path);
+
+    return run_flag;
+}
+
 gchar* lock_get_background()
 {
     g_assert(user_proxy != NULL);
@@ -287,14 +301,16 @@ int main(int argc, char **argv)
     signal(SIGTERM, sigterm_cb);
 
     init_user();
-    
-    gchar *user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
-    if(is_application_running(user_lock_path)){
-        g_warning("another instance of dlock is running by current user...\n");
-        g_free(user_lock_path);
-        return 0;
+   
+    if(lock_is_running()){
+        g_object_unref(user_proxy);
+        exit(0);
     }
-    g_free(user_lock_path);
+
+    if(lock_is_guest()){
+        g_object_unref(user_proxy);
+        exit(0);
+    }
 
     lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
