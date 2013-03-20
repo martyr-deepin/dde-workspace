@@ -7,8 +7,8 @@ class ClientGroup extends AppItem
         @n_clients = []
         @client_infos = {}
 
-        @indicate = create_img("OpenIndicate", "", @element)
-        @indicate.style.left = INDICATER_IMG_MARGIN_LEFT
+        @open_indicator = create_img("OpenIndicator", "", @element)
+        @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
 
         @in_iconfiy = false
         @leader = null
@@ -60,13 +60,13 @@ class ClientGroup extends AppItem
     to_active_status : (id)->
         @in_iconfiy = false
         active_group?.to_normal_status()
-        @indicate.src = "img/s_app_active.png"
+        @open_indicator.src = "img/s_app_active.png"
         @leader = id
         DCore.Dock.active_window(@leader)
         active_group = @
 
     to_normal_status : ->
-        @indicate.src = "img/s_app_open.png"
+        @open_indicator.src = "img/s_app_open.png"
 
     update_client: (id, icon, title)->
         icon = NOT_FOUND_ICON if not icon
