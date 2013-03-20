@@ -74,8 +74,8 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     screen_height = gdk_screen_get_height(screen);
 
     GdkGeometry geo = {0};
-    geo.min_width = screen_width;
-    geo.min_height = screen_height;
+    geo.min_width = 0;
+    geo.min_height = 0;
 
     gdk_window_set_geometry_hints(gtk_widget_get_window(container), &geo, GDK_HINT_MIN_SIZE);
     gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);

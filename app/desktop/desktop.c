@@ -246,8 +246,8 @@ void screen_change_size(GdkScreen *screen, GdkWindow *w)
 
     if (w) {
         GdkGeometry geo = {0};
-        geo.min_width = screen_width;
-        geo.min_height = screen_height;
+        geo.min_width = 0;
+        geo.min_height = 0;
         gdk_window_set_geometry_hints(w, &geo, GDK_HINT_MIN_SIZE);
         gdk_window_move_resize(w, 0, 0, screen_width, screen_height);
     }
