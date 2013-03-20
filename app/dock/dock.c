@@ -86,6 +86,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
     webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
     tray_icon_do_screen_size_change();
+    update_dock_guard_window_position();
 }
 
 //TODO: REMOVE

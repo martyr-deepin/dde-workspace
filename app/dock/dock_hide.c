@@ -315,12 +315,19 @@ static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
     return GDK_FILTER_CONTINUE;
 }
 
+void update_dock_guard_window_position()
+{
+    GdkWindow* win = get_dock_guard_window();
+    extern int screen_height;
+    gdk_window_move(win, 0, screen_height - GUARD_WINDOW_HEIGHT);
+}
+
+
 void init_dock_guard_window()
 {
     GdkWindow* win = get_dock_guard_window();
     gdk_window_add_filter(win, _monitor_guard_window, NULL);
-    extern int screen_height;
-    gdk_window_move(win, 0, screen_height - GUARD_WINDOW_HEIGHT);
+    update_dock_guard_window_position();
 }
 
 JS_EXPORT_API

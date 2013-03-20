@@ -11,5 +11,7 @@ void dock_show_real_now();
 void dock_toggle_show();
 void dock_update_hide_mode();
 
+void update_dock_guard_window_position();
+
 void init_dock_guard_window();
 #endif
