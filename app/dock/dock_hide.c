@@ -46,7 +46,6 @@ static void set_state(enum State new_state)
 }
 
 
-extern int _screen_width;
 static void enter_show()
 {
     g_assert(CURRENT_STATE != StateShow);
@@ -282,7 +281,8 @@ GdkWindow* get_dock_guard_window()
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;
-        attributes.width = _screen_width;
+        extern int screen_width;
+        attributes.width = screen_width;
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
@@ -319,8 +319,8 @@ void init_dock_guard_window()
 {
     GdkWindow* win = get_dock_guard_window();
     gdk_window_add_filter(win, _monitor_guard_window, NULL);
-    extern int _screen_height;
-    gdk_window_move(win, 0, _screen_height - GUARD_WINDOW_HEIGHT);
+    extern int screen_height;
+    gdk_window_move(win, 0, screen_height - GUARD_WINDOW_HEIGHT);
 }
 
 JS_EXPORT_API

@@ -34,8 +34,8 @@
 
 void dock_change_workarea_height(double height);
 int _dock_height = 60;
-int _screen_width = 0;
-int _screen_height = 0;
+int screen_width = 0;
+int screen_height = 0;
 GdkWindow* get_dock_guard_window();
 
 gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
@@ -70,27 +70,22 @@ Window get_dock_window()
 }
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
-    _screen_width = gdk_screen_get_width(screen);
-    _screen_height = gdk_screen_get_height(screen);
-    gtk_window_move(GTK_WINDOW(container), 0, 0);
-    gtk_window_resize(GTK_WINDOW(container), _screen_width, _screen_height);
+    screen_width = gdk_screen_get_width(screen);
+    screen_height = gdk_screen_get_height(screen);
 
-    /*WebKitWebWindowFeatures *fe = webkit_web_view_get_window_features(webview);*/
-    /*GValue v_w = G_VALUE_INIT;*/
-    /*GValue v_h = G_VALUE_INIT;*/
-    /*g_value_init(&v_w, G_TYPE_INT);*/
-    /*g_value_init(&v_h, G_TYPE_INT);*/
-    /*g_value_set_int(&v_w, _screen_width);*/
-    /*g_value_set_int(&v_h, _screen_height);*/
-    /*g_object_set_property(fe, "width", &v_w);*/
-    /*g_object_set_property(fe, "height", &v_h);*/
-    gdk_window_move_resize(gtk_widget_get_window(webview), 0 ,0, _screen_width, _screen_height);
+    GdkGeometry geo = {0};
+    geo.min_width = screen_width;
+    geo.min_height = screen_height;
+
+    gdk_window_set_geometry_hints(gtk_widget_get_window(container), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
 
     dock_change_workarea_height(_dock_height);
 
-    init_region(DOCK_GDK_WINDOW(), 0, _screen_height - _dock_height, _screen_width, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, screen_height - _dock_height, screen_width, _dock_height);
 
     webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
+    tray_icon_do_screen_size_change();
 }
 
 //TODO: REMOVE
@@ -187,7 +182,7 @@ void dock_emit_webview_ok()
         update_dock_apps();
         update_task_list();
         update_dock_size_mode();
-        update_notify_area_width();
+        tray_icon_do_screen_size_change();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
@@ -199,9 +194,9 @@ void dock_emit_webview_ok()
 void _change_workarea_height(int height)
 {
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, _screen_width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, screen_width);
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, _screen_width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, screen_width);
     }
 }
 
@@ -216,7 +211,7 @@ void dock_change_workarea_height(double height)
     else
         _dock_height = height;
     _change_workarea_height(height);
-    init_region(DOCK_GDK_WINDOW(), 0, _screen_height - _dock_height, _screen_width, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, screen_height - _dock_height, screen_width, _dock_height);
 }
 
 JS_EXPORT_API
