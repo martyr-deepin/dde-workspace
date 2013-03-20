@@ -33,14 +33,18 @@ get_active_window = ->
     return _current_active_window
 
 DCore.signal_connect("active_window_changed", (info)->
-    active_group?.to_normal_status()
-    active_group = Widget.look_up("le_"+info.app_id)
-    active_group?.to_active_status(info.id)
+    if (info.app_id)
+        active_group?.to_normal_status()
+        active_group = Widget.look_up("le_"+info.app_id)
+        active_group?.to_active_status(info.id)
 
-    Preview_active_window_changed(info.id)
-    if info.id == null
-        alert("ERRRRRRRRRRRRR")
-    _current_active_window = info.id
+        Preview_active_window_changed(info.id)
+        _current_active_window = info.id
+    else
+        active_group?.to_normal_status()
+        active_group = null
+        Preview_active_window_changed(null)
+        _current_active_window = null
 )
 
 DCore.signal_connect("launcher_added", (info) ->
