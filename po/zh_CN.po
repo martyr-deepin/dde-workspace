@@ -695,4 +695,4 @@ msgstr "实用工具"
 
 #: ../app/launcher/launcher.c:391
 msgid "other"
-msgstr "其他软件"
+msgstr "其他"
