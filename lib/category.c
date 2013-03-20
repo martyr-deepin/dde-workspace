@@ -62,6 +62,10 @@ GList* get_deepin_categories(const char* full_path_name)
         sqlite3_close(db);
     }
 
+    if (categories == NULL) {
+        categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
+    }
+
     return categories;
 }
 

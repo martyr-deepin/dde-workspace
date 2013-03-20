@@ -136,8 +136,8 @@ static
 void _set_launcher_background(GdkWindow* win)
 {
     GSettings* s = g_settings_new(SCHEMA_ID);
-    const char* bg_path = g_settings_get_string(s, CURRENT_PCITURE);
-    const char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    char* bg_path = g_settings_get_string(s, CURRENT_PCITURE);
+    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     if (!_set_launcher_background_aux(win, blur_path)) {
         _set_launcher_background_aux(win, bg_path);
     }
@@ -240,12 +240,6 @@ static GHashTable* _category_table = NULL;
 static
 void _append_to_category(const char* path, GList* cs)
 {
-    if (cs == NULL) {
-        //TODO add to default other category
-        g_debug("%s hasn't categories info\n", path);
-        return;
-    }
-
     if (_category_table == NULL) {
         //TODO new_with_full
         _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
@@ -284,6 +278,7 @@ JSObjectRef launcher_get_items_by_category(double _id)
 
     return items;
 }
+
 
 static
 void _record_category_info(const char* id, GDesktopAppInfo* info)
