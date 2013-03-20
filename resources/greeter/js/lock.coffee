@@ -221,10 +221,6 @@ DCore.signal_connect("unlock", (msg)->
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
-    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
-
-run_post(->
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
-)
-
+    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
