@@ -241,8 +241,15 @@ gboolean desktop_get_config_boolean(const char* key_name)
 static
 void screen_change_size(GdkScreen *screen, GtkWidget *w)
 {
-    gtk_widget_set_size_request(w, gdk_screen_get_width(screen),
-            gdk_screen_get_height(screen));
+    int screen_width = gdk_screen_get_width(screen);
+    int screen_height = gdk_screen_get_height(screen);
+
+    GdkGeometry geo = {0};
+    geo.min_width = screen_width;
+    geo.min_height = screen_height;
+    gdk_window_set_geometry_hints(gtk_widget_get_window(w), &geo, GDK_HINT_MIN_SIZE);
+
+    gdk_window_move_resize(gtk_widget_get_window(w), 0, 0, screen_width, screen_height);
 }
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
