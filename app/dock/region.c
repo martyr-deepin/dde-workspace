@@ -45,7 +45,6 @@ void dock_force_set_region(double x, double y, double width, double height)
 {
     extern int screen_width;
     extern int screen_height;
-    extern int _dock_height;
     cairo_region_destroy(_region);
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
 

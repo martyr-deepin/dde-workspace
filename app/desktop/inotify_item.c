@@ -165,7 +165,6 @@ gboolean _inotify_poll()
         char buffer[EVENT_BUF_LEN];
         int length = read(_inotify_fd, buffer, EVENT_BUF_LEN); 
 
-        GList* move_out_files = NULL;
         struct inotify_event *move_out_event = NULL;
         GFile* old = NULL;
 
@@ -223,7 +222,7 @@ gboolean _inotify_poll()
         }
         if (move_out_event != NULL) {
             handle_delete(old);
-            move_out_event == NULL;
+            move_out_event = NULL;
         }
         return TRUE;
     } else {
