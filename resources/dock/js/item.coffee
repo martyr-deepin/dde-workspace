@@ -163,6 +163,7 @@ class AppItem extends Widget
             @icon = NOT_FOUND_ICON
         @img = create_img("AppItemImg", @icon, @element)
         @img.classList.add("ReflectImg")
+        @img.style.pointerEvents = "auto"
         @element.draggable=true
         if @constructor.name == "Launcher"
             @app_id = @id
