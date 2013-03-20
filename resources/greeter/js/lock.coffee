@@ -183,11 +183,9 @@ if not user_image? or user_image == "nonexists"
     catch error
         user_image = "images/img01.jpg"
 
-user_background = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").BackgroundFile
-if not user_background? or not user_background.length
-    user_background = "/usr/share/backgrounds/1440x900.jpg"
-background_img = create_img("Background",user_background) 
-document.body.appendChild(background_img)
+background.width = screen.width
+background.height = screen.height
+DCore.Lock.draw_background(background)
 
 $("#Version").innerHTML = "
             <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Beta")}</sup></span> 
