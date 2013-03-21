@@ -10,6 +10,7 @@
 void dock_request_dock(const char* path);
 void dock_show_desktop(gboolean value);
 void dock_toggle_show();
+void dock_show_inspecotr();
 gboolean launcher_should_exit();
 
 const char* _dock_dbus_iface_xml =
@@ -25,6 +26,8 @@ const char* _dock_dbus_iface_xml =
 "			</arg>\n"
 "		</method>\n"
 "       <method name=\"ToggleShow\">\n"
+"       </method>\n"
+"       <method name=\"ShowInspector\">\n"
 "       </method>\n"
 "	</interface>\n"
 "</node>\n"
@@ -172,6 +175,8 @@ _bus_method_call (GDBusConnection * connection,
         dock_show_desktop(value);
     } else if (g_strcmp0(method, "ToggleShow") == 0) {
         dock_toggle_show();
+    } else if (g_strcmp0(method, "ShowInspector") == 0) {
+        dock_show_inspecotr();
     } else {
         g_warning ("Calling method '%s' on dock and it's unknown", method);
     }

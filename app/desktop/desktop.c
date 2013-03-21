@@ -363,8 +363,6 @@ void desktop_emit_webview_ok()
         GdkWindow* background = get_background_window();
         gdk_window_restack(background, gtk_widget_get_window(container), FALSE);
 
-        GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
-        g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), background);
         //desktop, dock GSettings
         dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);
         g_signal_connect (dock_gsettings, "changed::hide-mode",
