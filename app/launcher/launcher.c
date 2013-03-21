@@ -143,7 +143,6 @@ void _set_launcher_background(GdkWindow* win)
     if (!_set_launcher_background_aux(win, blur_path)) {
         _set_launcher_background_aux(win, bg_path);
     }
-
     g_free(blur_path);
     g_free(bg_path);
 }
