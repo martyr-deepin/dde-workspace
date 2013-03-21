@@ -332,6 +332,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
+    lock_report_pid();
 
     lock_container = create_web_container(FALSE, TRUE);
 

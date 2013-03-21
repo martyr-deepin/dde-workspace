@@ -207,6 +207,7 @@ static void
 _bus_handle_unlock (const gchar *username, const gchar *password)
 {
 
+    g_warning("%s", username);
     gchar *lockpid_file = g_strdup_printf ("%s%s%s", "/home/", username, "/dlockpid");
     
     if (!g_file_test (lockpid_file, G_FILE_TEST_EXISTS)){

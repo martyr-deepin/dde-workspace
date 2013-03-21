@@ -53,3 +53,12 @@ install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
     DESTINATION ${RESOURCE_DIR}
     )
+
+install(
+    FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lock.service
+    DESTINATION /usr/share/dbus-1/system-services/
+    )
+install(
+    FILES ${PROJECT_SOURCE_DIR}/app/greeter/com.deepin.dde.lock.conf
+    DESTINATION /etc/dbus-1/system.d/
+    )
