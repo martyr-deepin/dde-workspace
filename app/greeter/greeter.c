@@ -37,6 +37,8 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
+
+#define DEBUG 1
     
 #ifdef DEBUG
 #define DBG(fmt, info...) js_post_message_simply("status", "{\"status\": \"" fmt "\"}", info) 
@@ -49,9 +51,10 @@ GtkWidget* webview = NULL;
 LightDMGreeter *greeter = NULL;
 GKeyFile *greeter_keyfile;
 static gchar* greeter_file = NULL;
-static gchar *selected_user = NULL, *selected_session = NULL;
+static gchar *selected_user = NULL, *selected_session = NULL, *selected_pwd = NULL;
 static gint response_count = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
+GError *error = NULL;
 
 static gboolean is_user_valid(const gchar *username);
 static gboolean is_session_valid(const gchar *session);
@@ -300,6 +303,12 @@ JS_EXPORT_API
 void greeter_login_clicked(const gchar *password)
 {
     DBG("%s", "login clicked");
+    if(selected_pwd != NULL){
+        g_free(selected_pwd);
+        selected_pwd = NULL;
+    }
+
+    selected_pwd = g_strdup(password);
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         DBG("%s", "login clicked, start session");
@@ -328,6 +337,41 @@ static void start_session(const gchar *session)
 
     DBG("%s", "start session");
 
+    gchar *user_lock_path = g_strdup_printf("%s%s", get_selected_user(), ".dlock.app.deepin");
+    if(is_application_running(user_lock_path)){
+        g_warning("greeter found user had locked");
+
+        GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
+                G_DBUS_PROXY_FLAGS_NONE,
+                NULL,
+                "com.deepin.dde.lock",
+                "/com/deepin/dde/lock",
+                "com.deepin.dde.lock",
+                NULL, 
+                &error);
+    
+        if(error != NULL){
+            g_warning("connect com.deepin.dde.lock failed");
+            g_clear_error(&error);
+        }
+
+        g_dbus_proxy_call_sync(lock_proxy,
+                    "Unlock",
+                    g_variant_new("(ss)", get_selected_user(), selected_pwd),
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+
+        if(error != NULL){
+            g_warning("greeter unlock failed");
+            g_clear_error(&error);
+        }
+
+        g_object_unref(lock_proxy);
+    }
+    g_free(user_lock_path);
+
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         DBG("%s", "start session failed");
 
@@ -338,34 +382,6 @@ static void start_session(const gchar *session)
 static void clean_before_exit()
 {
     DBG("%s", "start session finish");
-
-    gchar *lockpid_file = g_strdup_printf("%s%s%s", "/home/", selected_user, "/dlockpid");
-    
-    if(!g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        DBG("%s", "user hadn't locked");
-
-    }else{
-        gchar *contents = NULL;
-        gsize length;
-
-        if(g_file_get_contents(lockpid_file, &contents, &length, NULL)){
-            DBG("pid:%d", strtol(contents, NULL, 10));
-
-            if(kill( (pid_t)strtol(contents, NULL, 10), SIGTERM) == 0){
-                DBG("%s", "kill user lock succeed");
-
-            }else{
-                DBG("%s", "kill user lock failed");
-            }
-
-        }else{
-            DBG("%s", "get dlockpid file contents failed");
-        }
-
-        g_free(contents);
-    }
-
-    g_free(lockpid_file);
 
     g_free(greeter_file);
     greeter_file = NULL;

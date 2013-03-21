@@ -290,8 +290,7 @@ JSObjectRef launcher_get_items_by_category(double _id)
 static
 void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
-    const gchar* full_filename = g_desktop_app_info_get_filename(info);
-    GList* categories = get_deepin_categories(full_filename);
+    GList* categories = get_deepin_categories(info);
     _append_to_category(id, categories);
     /* g_free(categories); */
 }
