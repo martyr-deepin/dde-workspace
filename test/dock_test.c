@@ -77,11 +77,11 @@ int TEST_MAX_MEMORY= 100000;
 extern GHashTable* _clients_table;
 void dock_test()
 {
+    return;
     int xid = 0x2800006;
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
     dock_test_hide();
-    return;
 
     Test({
             GdkWindow* root = gdk_get_default_root_window();
