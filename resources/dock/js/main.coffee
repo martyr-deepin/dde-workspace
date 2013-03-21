@@ -74,8 +74,9 @@ DCore.signal_connect("task_updated", (info) ->
 
     if not leader
         leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id, info.exec)
+        leader?.try_swap_launcher()
 
-    leader.update_client(info.id, info.icon, info.title)
+    leader?.update_client(info.id, info.icon, info.title)
 )
 DCore.signal_connect("dock_hidden", ->
     Preview_close_now()
