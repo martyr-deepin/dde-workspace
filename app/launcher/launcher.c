@@ -72,6 +72,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
         g_warning("create cairo surface fail!\n");
+        g_object_unref(_background_image);
         return FALSE;
     }
 
@@ -79,6 +80,8 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
         g_warning("create cairo fail!\n");
+        g_object_unref(_background_image);
+        cairo_surface_destroy(img_surface);
         return FALSE;
     }
 
@@ -90,6 +93,8 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
         g_warning("create cairo pattern fail!\n");
+        cairo_surface_destroy(img_surface);
+        cairo_destroy(cr);
         return FALSE;
     }
 

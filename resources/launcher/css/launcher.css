@@ -92,9 +92,18 @@ body {
 
 #category {
     margin-top: 25px;
+}
+
+#category:lang(zh) {
     max-width: 180px;
     min-width: 180px;
 }
+
+#category:lang(en) {
+    max-width: 220px;
+    min-width: 220px;
+}
+
 .category_name {
     border: rgba(255,255,255, 0) 1px solid;
     margin: 10px 0px 10px 15px;
