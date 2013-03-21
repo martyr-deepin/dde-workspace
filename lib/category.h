@@ -22,6 +22,7 @@
 #define _CATEGORY_H_
 
 #include <glib.h>
+#include <gio/gdesktopappinfo.h>
 
 #define CATEGORY_END_TAG -100
 #define ALL_CATEGORY_ID (-1)
@@ -30,7 +31,7 @@ typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
 
 const char* get_category_db_path();
 const char** get_category_list();
-GList* get_deepin_categories(const char* c);
+GList* get_deepin_categories(GDesktopAppInfo*);
 const GPtrArray* get_all_categories_array();
 
 #endif
