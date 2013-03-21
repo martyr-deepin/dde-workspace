@@ -40,6 +40,7 @@ GtkWidget* container = NULL;
 static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
+static GSettings* dde_bg_g_settings = NULL;
 
 static void get_screen_info()
 {
@@ -124,9 +125,9 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
     g_checksum_free (checksum);
     char* path;
     path = g_build_filename (g_get_user_cache_dir (),
-		    BG_BLUR_PICT_CACHE_DIR,
-		    file,
-		    NULL);
+                    BG_BLUR_PICT_CACHE_DIR,
+                    file,
+                    NULL);
     g_free (file);
 
     return path;
@@ -135,14 +136,14 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
 static
 void _set_launcher_background(GdkWindow* win)
 {
-    GSettings* s = g_settings_new(SCHEMA_ID);
-    char* bg_path = g_settings_get_string(s, CURRENT_PCITURE);
-    g_free(s);
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
 
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     if (!_set_launcher_background_aux(win, blur_path)) {
         _set_launcher_background_aux(win, bg_path);
     }
+    g_object_unref(dde_bg_g_settings);
     g_free(blur_path);
     g_free(bg_path);
 }
@@ -393,16 +394,16 @@ void _insert_category(JSObjectRef categories, int array_index, int id, const cha
 static
 void _record_categories(JSObjectRef categories, const char* names[], int num)
 {
-    int count = 0;
+    int index = 1;
     for (int i = 0; i < num; ++i) {
         if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
-            _insert_category(categories, count++, i, names[i]);
+            _insert_category(categories, index++, i, names[i]);
         }
     }
 
     if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(OTHER_CATEGORY_ID))) {
         int last_index = num - 1;
-        _insert_category(categories, count, OTHER_CATEGORY_ID, names[last_index]);
+        _insert_category(categories, index, OTHER_CATEGORY_ID, names[last_index]);
     }
 }
 
@@ -411,6 +412,7 @@ JSObjectRef launcher_get_categories()
 {
     JSContextRef cxt = get_global_context();
     JSObjectRef categories = json_array_create();
+    _insert_category(categories, 0, ALL_CATEGORY_ID, _("all"));
     const char* names[] = {_("internet"), _("multimedia"), _("games"),
         _("graphics"), _("productivity"), _("industry"), _("education"),
         _("development"), _("system"), _("utilities"), _("other")};
