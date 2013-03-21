@@ -62,6 +62,7 @@ gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
 }
 
 GtkWidget* container = NULL;
+GtkWidget* webview = NULL;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 Window get_dock_window()
 {
@@ -115,7 +116,7 @@ int main(int argc, char* argv[])
 
     gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
 
-    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
+    webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
 
     g_signal_connect_after(webview, "draw", G_CALLBACK(draw_tray_icons), NULL);
 
@@ -223,4 +224,9 @@ void dock_toggle_launcher(gboolean show)
     } else {
         close_launcher_window();
     }
+}
+
+void dock_show_inspecotr()
+{
+    dwebview_show_inspector(webview);
 }

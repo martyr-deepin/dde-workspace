@@ -103,6 +103,17 @@ WebKitWebView* inspector_create(WebKitWebInspector *inspector,
     return WEBKIT_WEB_VIEW(web);
 }
 
+void dwebview_show_inspector(GtkWidget* webview)
+{
+    WebKitWebInspector *inspector = webkit_web_view_get_inspector(
+            WEBKIT_WEB_VIEW(webview));
+    g_assert(inspector != NULL);
+    WebKitDOMNode *node = 
+        (WebKitDOMNode*)webkit_web_view_get_dom_document(
+                (WebKitWebView*)webview);
+    webkit_web_inspector_inspect_node(inspector, node);
+}
+
 static bool webview_key_release_cb(GtkWidget* webview, 
         GdkEvent* event, gpointer data)
 {
@@ -113,13 +124,7 @@ static bool webview_key_release_cb(GtkWidget* webview,
             break;
         case GDK_KEY_F12:
             {
-                WebKitWebInspector *inspector = webkit_web_view_get_inspector(
-                        WEBKIT_WEB_VIEW(webview));
-                g_assert(inspector != NULL);
-                WebKitDOMNode *node = 
-                    (WebKitDOMNode*)webkit_web_view_get_dom_document(
-                            (WebKitWebView*)webview);
-                webkit_web_inspector_inspect_node(inspector, node);
+                dwebview_show_inspector(webview);
                 break;
             }
     }
