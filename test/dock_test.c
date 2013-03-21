@@ -32,15 +32,56 @@ void update_task_list();
 void _update_task_list(Window root);
 void update_active_window(Display* display, Window root);
 
+#include "../app/dock/dock_hide.h"
+void dock_test_hide()
+{
+    Test({
+            dock_delay_show(0);
+    }, "dock_delay_show");
+    Test({
+            dock_delay_hide(0);
+    }, "dock_delay_hide");
+
+    Test({
+            dock_show_now();
+    }, "dock_show_now");
+
+    Test({
+        dock_hide_now();
+    }, "dock_hide_now");
+
+    Test({
+        dock_toggle_show();
+    }, "dock_toggle_show");
+
+    Test({
+        dock_update_hide_mode();
+    }, "dock_update_hide_mode");
+
+    Test({
+        dock_hide_real_now();
+    }, "dock_hide_real_now");
+
+    Test({
+        dock_show_real_now();
+    }, "dock_show_real_now");
+
+    Test({
+        update_dock_guard_window_position();
+    }, "update_dock_guard_window_position");
+}
+
 int TEST_MAX_COUNT = 100000;
 int TEST_MAX_MEMORY= 100000;
 
 extern GHashTable* _clients_table;
 void dock_test()
 {
-    return;
     int xid = 0x2800006;
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+
+    dock_test_hide();
+    return;
 
     Test({
             GdkWindow* root = gdk_get_default_root_window();
