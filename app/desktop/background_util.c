@@ -824,6 +824,7 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
     root_height = gdk_screen_get_height(screen);
     g_debug ("screen_size_changed: root_width = %d", root_width);
     g_debug ("screen_size_changed: root_height = %d", root_height);
+    gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
@@ -873,16 +874,16 @@ bg_util_connect_screen_signals (GdkWindow* bg_window)
 {
     // xrandr screen resolution handling
     g_signal_connect (gdk_screen, "size-changed", 
-		      G_CALLBACK (screen_size_changed_cb), NULL);
+		      G_CALLBACK (screen_size_changed_cb), bg_window);
     g_signal_connect (gdk_screen, "monitors-changed",
-		      G_CALLBACK (screen_size_changed_cb), NULL);
+		      G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
 DEEPIN_EXPORT void
 bg_util_disconnect_screen_signals (GdkWindow* bg_window)
 {
     g_signal_handlers_disconnect_by_func (gdk_screen, 
-			   G_CALLBACK (screen_size_changed_cb), NULL);
+			   G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
 
