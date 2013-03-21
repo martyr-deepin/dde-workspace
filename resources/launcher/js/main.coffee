@@ -62,10 +62,6 @@ create_category = (info) ->
 append_to_category = (cat) ->
     $('#category').appendChild(cat)
 
-append_to_category  create_category(
-    "ID" : -1
-    "Name": _("All")
-)
 
 $("body").addEventListener("click", (e)->
     e.stopPropagation()

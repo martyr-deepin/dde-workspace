@@ -118,7 +118,7 @@ gchar* lock_get_icon()
     gchar* user_icon = g_variant_dup_string(user_icon_var, NULL);
 
     if(!g_file_test(user_icon, G_FILE_TEST_EXISTS)){
-        user_icon = "nonexists";
+        user_icon = g_strdup("nonexists");
     }
 
     g_variant_unref(user_icon_var);
@@ -133,6 +133,7 @@ gchar* lock_get_realname()
     g_assert(user_realname_var != NULL);
     
     gchar* user_realname = g_variant_dup_string(user_realname_var, NULL);
+    g_assert(user_realname);
 
     g_variant_unref(user_realname_var);
 
@@ -179,7 +180,7 @@ gchar* lock_get_background()
     gchar* background_image  = g_variant_dup_string(user_background_var, NULL);
 
     if(!g_file_test(background_image, G_FILE_TEST_EXISTS)){
-        background_image = "/usr/share/backgrounds/default_background.jpg";
+        background_image = g_strdup("/usr/share/backgrounds/default_background.jpg");
     }
 
     g_variant_unref(user_background_var);
