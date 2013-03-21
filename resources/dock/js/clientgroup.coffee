@@ -2,8 +2,6 @@ active_group = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
         super
-        @try_swap_launcher()
-
         @n_clients = []
         @client_infos = {}
 
@@ -133,8 +131,8 @@ class ClientGroup extends AppItem
 
     destroy: ->
         @element.style.display = "block"
-        @try_build_launcher()
         super
+        @try_build_launcher()
 
     do_buildmenu: ->
         [
