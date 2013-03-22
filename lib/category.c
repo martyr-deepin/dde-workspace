@@ -31,6 +31,12 @@ const char* get_category_db_path()
 }
 
 static
+const char* _get_x_category_db_path()
+{
+    return DATA_DIR"/x_category.sqlite";
+}
+
+static
 gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, void* res)
 {
     sqlite3* db = NULL;
@@ -67,7 +73,7 @@ int find_category_id(const char* category_name)
     if (_category_info == NULL) {
         _category_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
         const char* sql = "select x_category_name, first_category_index from x_category;";
-        _search_database(get_category_db_path(), sql,
+        _search_database(_get_x_category_db_path(), sql,
                          (SQLEXEC_CB)_get_all_possible_x_categories, _category_info);
     }
 
