@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-21 09:58+0800\n"
+"POT-Creation-Date: 2013-03-22 11:22+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -255,7 +255,7 @@ msgstr "运行"
 msgid "Undock"
 msgstr "移除驻留"
 
-#: ../app/launcher/launcher.c:415
+#: ../app/launcher/launcher.c:415 ../app/launcher/launcher.c:420
 msgid "all"
 msgstr "全部"
 
@@ -268,8 +268,8 @@ msgid "Send to dock"
 msgstr "添加到 Dock"
 
 #: ../app/desktop/desktop.c:139
-msgid "Rich directory"
-msgstr "程序启动组"
+msgid "App Group"
+msgstr "应用程序启动组"
 
 #: ../app/desktop/desktop.c:177
 msgid "New file"
@@ -279,15 +279,16 @@ msgstr "新建文件"
 msgid "New directory"
 msgstr "新建目录"
 
-#: ../app/greeter/dlock.c:265
+#: ../app/greeter/dlock.c:265 ../app/greeter/dlock.c:266
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/greeter/greeter.c:423
+#: ../app/greeter/greeter.c:423 ../app/greeter/greeter.c:418
 msgid "Invalid Username/Password"
 msgstr "用户名/密码错误"
 
 #: ../app/greeter/dlock.c:231 ../app/greeter/greeter.c:915
+#: ../app/greeter/dlock.c:232 ../app/greeter/greeter.c:910
 msgid "%a,%b%d,%Y"
 msgstr "%Y年%b%d日 %A"
 
@@ -508,46 +509,46 @@ msgstr "解散"
 msgid "Deepin Software Center"
 msgstr "深度软件中心"
 
-#: ../app/launcher/launcher.c:416
+#: ../app/launcher/launcher.c:416 ../app/launcher/launcher.c:421
 msgid "internet"
 msgstr "网络应用"
 
-#: ../app/launcher/launcher.c:416
+#: ../app/launcher/launcher.c:416 ../app/launcher/launcher.c:421
 msgid "multimedia"
 msgstr "影音播放"
 
-#: ../app/launcher/launcher.c:416
+#: ../app/launcher/launcher.c:416 ../app/launcher/launcher.c:421
 msgid "games"
 msgstr "游戏娱乐"
 
-#: ../app/launcher/launcher.c:417
+#: ../app/launcher/launcher.c:417 ../app/launcher/launcher.c:422
 msgid "graphics"
 msgstr "图形图像"
 
-#: ../app/launcher/launcher.c:417
+#: ../app/launcher/launcher.c:417 ../app/launcher/launcher.c:422
 msgid "productivity"
 msgstr "办公软件"
 
-#: ../app/launcher/launcher.c:417
+#: ../app/launcher/launcher.c:417 ../app/launcher/launcher.c:422
 msgid "industry"
 msgstr "行业软件"
 
-#: ../app/launcher/launcher.c:417
+#: ../app/launcher/launcher.c:417 ../app/launcher/launcher.c:422
 msgid "education"
 msgstr "科学教育"
 
-#: ../app/launcher/launcher.c:418
+#: ../app/launcher/launcher.c:418 ../app/launcher/launcher.c:423
 msgid "development"
 msgstr "编程开发"
 
-#: ../app/launcher/launcher.c:418
+#: ../app/launcher/launcher.c:418 ../app/launcher/launcher.c:423
 msgid "system"
 msgstr "系统管理"
 
-#: ../app/launcher/launcher.c:418
+#: ../app/launcher/launcher.c:418 ../app/launcher/launcher.c:423
 msgid "utilities"
 msgstr "实用工具"
 
-#: ../app/launcher/launcher.c:418
+#: ../app/launcher/launcher.c:418 ../app/launcher/launcher.c:423
 msgid "other"
 msgstr "其他"

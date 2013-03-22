@@ -101,27 +101,27 @@ class Item extends Widget
         super
 
 
-    set_entry : (entry) ->
+    set_entry : (entry) =>
         @_entry = entry
 
 
-    get_entry : ->
+    get_entry : =>
         @_entry
 
 
-    set_id : ->
+    set_id : =>
         @id = DCore.DEntry.get_id(@_entry)
 
 
-    get_id : ->
+    get_id : =>
         @id
 
 
-    get_name : ->
+    get_name : =>
         DCore.DEntry.get_name(@_entry)
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             if DCore.DEntry.can_thumbnail(@_entry) and (icon = DCore.DEntry.get_thumbnail(@_entry)) != null
                 @item_icon.className = "previewshadow"
@@ -136,11 +136,11 @@ class Item extends Widget
         return
 
 
-    get_path : ->
+    get_path : =>
         DCore.DEntry.get_uri(@_entry)
 
 
-    get_mtime : ->
+    get_mtime : =>
         DCore.DEntry.get_mtime(@_entry)
 
 
@@ -196,12 +196,12 @@ class Item extends Widget
         return
 
 
-    display_full_name : ->
+    display_full_name : =>
         @add_css_class("full_name")
         return
 
 
-    display_short_name : ->
+    display_short_name : =>
         @remove_css_class("full_name")
         return
 
@@ -238,39 +238,39 @@ class Item extends Widget
         return
 
 
-    display_cut : ->
+    display_cut : =>
         @element.style.opacity = "0.5"
         return
 
 
-    display_not_cut : ->
+    display_not_cut : =>
         @element.style.opacity = "1"
         return
 
 
-    on_event_stoppropagation : (evt) =>
+    on_event_stoppropagation : (evt) ->
         evt.stopPropagation()
         return
 
 
-    on_event_preventdefault : (evt) =>
+    on_event_preventdefault : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
         return
 
 
-    on_rename : (new_name) ->
+    on_rename : (new_name) =>
         DCore.DEntry.set_name(@_entry, new_name)
 
 
-    item_focus : ->
+    item_focus : =>
         @has_focus = true
         @display_full_name()
         @display_focus()
         return
 
 
-    item_blur : ->
+    item_blur : =>
         @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
 
@@ -280,14 +280,14 @@ class Item extends Widget
         return
 
 
-    item_selected : ->
+    item_selected : =>
         @display_selected()
         @item_name.style.pointerEvents = "auto"
         @selected = true
         return
 
 
-    item_normal : ->
+    item_normal : =>
         @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
         @display_not_selected()
@@ -297,15 +297,14 @@ class Item extends Widget
         return
 
 
-    item_update : ->
+    item_update : =>
         @set_icon()
 
         if @in_rename == false
             @item_name.innerText = @get_name()
 
-        li_list = @item_attrib.getElementsByTagName("li")
-        for i in [(li_list.length - 1) ... -1] by -1
-            @item_attrib.removeChild(li_list[i])
+        for i in @item_attrib.getElementsByTagName("li") by -1
+            @item_attrib.removeChild(i)
 
         if @modifiable == false then return
 
@@ -442,7 +441,7 @@ class Item extends Widget
         return
 
 
-    move: (x, y) ->
+    move: (x, y) =>
         style = @element.style
         style.position = "absolute"
         style.left = x
@@ -455,7 +454,7 @@ class DesktopEntry extends Item
         @add_css_class("DesktopEntry")
 
 
-    do_dragstart : (evt) =>
+    do_dragstart : (evt) ->
         evt.stopPropagation()
 
         @item_complete_rename(false)
@@ -464,7 +463,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_dragend : (evt) =>
+    do_dragend : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
 
@@ -473,7 +472,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_drop : (evt) =>
+    do_drop : (evt) ->
         if _IS_DND_INTERLNAL_(evt)
             if not @selected
                 evt.stopPropagation()
@@ -487,7 +486,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_dragenter : (evt) =>
+    do_dragenter : (evt) ->
         if _IS_DND_INTERLNAL_(evt)
             if not @selected
                 evt.stopPropagation()
@@ -501,7 +500,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_dragover : (evt) =>
+    do_dragover : (evt) ->
         if _IS_DND_INTERLNAL_(evt)
             if not @selected
                 evt.stopPropagation()
@@ -517,7 +516,7 @@ class DesktopEntry extends Item
         return
 
 
-    do_dragleave : (evt) =>
+    do_dragleave : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
         if not @selected
@@ -539,7 +538,7 @@ class DesktopEntry extends Item
         menu
 
 
-    do_itemselected : (evt) =>
+    do_itemselected : (evt) ->
         switch evt.id
             when 1 then open_selected_items()
             when 3 then selected_cut_to_clipboard()
@@ -551,7 +550,7 @@ class DesktopEntry extends Item
 
 
 class Folder extends DesktopEntry
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.get_theme_icon("folder", 48)
         else
@@ -559,7 +558,7 @@ class Folder extends DesktopEntry
         super(icon)
 
 
-    do_drop : (evt) =>
+    do_drop : (evt) ->
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
@@ -596,7 +595,7 @@ class Folder extends DesktopEntry
 
 
 class RichDir extends DesktopEntry
-    constructor : (entry)->
+    constructor : (entry) ->
         super(entry, false)
 
         @div_pop = null
@@ -608,11 +607,11 @@ class RichDir extends DesktopEntry
         super
 
 
-    get_name : ->
+    get_name : =>
         DCore.Desktop.get_rich_dir_name(@_entry)
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.Desktop.get_rich_dir_icon(@_entry)
         else
@@ -707,7 +706,7 @@ class RichDir extends DesktopEntry
         menus
 
 
-    do_itemselected : (evt) =>
+    do_itemselected : (evt) ->
         switch evt.id
             when 1 then @item_exec()
             when 3 then @item_rename()
@@ -715,12 +714,12 @@ class RichDir extends DesktopEntry
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
 
 
-    item_normal : ->
+    item_normal : =>
         if @div_pop != null then @hide_pop_block()
         super
 
 
-    item_blur : ->
+    item_blur : =>
         if @div_pop != null then @hide_pop_block()
         super
 
@@ -748,7 +747,7 @@ class RichDir extends DesktopEntry
         return
 
 
-    item_hint : ->
+    item_hint : =>
         apply_animation(@item_icon, "item_flash", "1s", "cubic-bezier(0, 0, 0.35, -1)")
         id = setTimeout(=>
             @item_icon.style.webkitAnimation = ""
@@ -756,7 +755,7 @@ class RichDir extends DesktopEntry
         , 1000)
 
 
-    item_exec : ->
+    item_exec : =>
         if @show_pop == false then @show_pop_block()
 
 
@@ -772,7 +771,7 @@ class RichDir extends DesktopEntry
         DCore.DEntry.delete_files([@_entry], false)
 
 
-    on_rename : (new_name) ->
+    on_rename : (new_name) =>
         DCore.Desktop.set_rich_dir_name(@_entry, new_name)
 
 
@@ -813,14 +812,11 @@ class RichDir extends DesktopEntry
 
 
     reflesh_pop_block : =>
-        tmp = @div_pop.getElementsByTagName("ul")
-        for i in [(tmp.length - 1) ... -1] by -1
-            tmp[i].parentElement.removeChild(tmp[i])
+        for i in @div_pop.getElementsByTagName("ul") by -1
+            i.parentElement.removeChild(i)
 
-        tmp = @div_pop.getElementsByTagName("div")
-        for i in [(tmp.length - 1) ... -1] by -1
-            if tmp[i].id.substr(0, 10) == "pop_arrow_"
-                tmp[i].parentElement.removeChild(tmp[i])
+        for i in @div_pop.getElementsByTagName("div") by -1
+            i.parentElement.removeChild(tmp[i]) if i.id.match(/^pop_arrow_.+/)
         @fill_pop_block()
 
 
@@ -974,7 +970,7 @@ class Application extends DesktopEntry
         @animate_background = null
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
                 icon = DCore.get_theme_icon("invalid_app", 48)
@@ -1117,7 +1113,7 @@ class NormalFile extends DesktopEntry
 
 
 class InvalidLink extends DesktopEntry
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.get_theme_icon("invalid-link", 48)
         else
@@ -1131,16 +1127,16 @@ class InvalidLink extends DesktopEntry
         ]
 
 
-    item_exec : ->
+    item_exec : =>
         return
 
 
-    item_update : ->
+    item_update : =>
         @set_icon()
         @item_name.innerText = @get_name()
 
 
-    item_rename : ->
+    item_rename : =>
         return
 
 
@@ -1153,15 +1149,15 @@ class ComputerVDir extends DesktopEntry
         super(entry, false)
 
 
-    set_id : ->
+    set_id : =>
         @id = _ITEM_ID_COMPUTER_
 
 
-    get_name : ->
+    get_name : =>
         _("Computer")
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, 48)
         else
@@ -1169,11 +1165,8 @@ class ComputerVDir extends DesktopEntry
         super(icon)
 
 
-    get_path : ->
+    get_path : =>
         ""
-
-    item_rename : ->
-        return
 
 
     do_buildmenu : ->
@@ -1194,21 +1187,25 @@ class ComputerVDir extends DesktopEntry
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
+    item_rename : =>
+        return
+
+
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
         super(entry, false)
 
 
-    set_id : ->
+    set_id : =>
         @id = _ITEM_ID_USER_HOME_
 
 
-    get_name : ->
+    get_name : =>
         _("Home")
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, 48)
         else
@@ -1216,7 +1213,7 @@ class HomeVDir extends DesktopEntry
         super(icon)
 
 
-    get_path : ->
+    get_path : =>
         ""
 
     do_drop : (evt) ->
@@ -1256,10 +1253,6 @@ class HomeVDir extends DesktopEntry
         return
 
 
-    item_rename : ->
-        return
-
-
     do_buildmenu : ->
         [
             [1, _("Open")],
@@ -1280,6 +1273,10 @@ class HomeVDir extends DesktopEntry
             else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
+    item_rename : =>
+        return
+
+
 class TrashVDir extends DesktopEntry
     constructor : ->
         entry = DCore.DEntry.get_trash_entry()
@@ -1288,15 +1285,15 @@ class TrashVDir extends DesktopEntry
     setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
 
 
-    set_id : ->
+    set_id : =>
         @id = _ITEM_ID_TRASH_BIN_
 
 
-    get_name : ->
+    get_name : =>
         _("Trash")
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             if DCore.DEntry.get_trash_count() > 0
                 icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, 48)
@@ -1307,7 +1304,7 @@ class TrashVDir extends DesktopEntry
         super(icon)
 
 
-    get_path : ->
+    get_path : =>
         ""
 
 
@@ -1350,10 +1347,6 @@ class TrashVDir extends DesktopEntry
         return
 
 
-    item_rename : ->
-        return
-
-
     do_buildmenu : ->
         menus = []
         menus.push([1, _("Open")])
@@ -1378,19 +1371,23 @@ class TrashVDir extends DesktopEntry
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
 
 
+    item_rename : =>
+        return
+
+
 class DeepinSoftwareCenter extends DesktopEntry
     constructor : ->
         super(null, false)
 
-    set_id : ->
+    set_id : =>
         @id = _ITEM_ID_DSC_
 
 
-    get_name : ->
+    get_name : =>
         _("Deepin Software Center")
 
 
-    set_icon : (src = null) ->
+    set_icon : (src = null) =>
         if src == null
             icon = DCore.get_theme_icon(_ICON_ID_DSC_, 48)
         else
@@ -1398,7 +1395,7 @@ class DeepinSoftwareCenter extends DesktopEntry
         super(icon)
 
 
-    get_path : ->
+    get_path : =>
         ""
 
 
@@ -1406,9 +1403,9 @@ class DeepinSoftwareCenter extends DesktopEntry
         menus = [[1, _("Open")]]
 
 
-    item_rename : ->
+    item_rename : =>
         return
 
 
-    item_exec : ->
+    item_exec : =>
         DCore.Desktop.run_deepin_software_center()

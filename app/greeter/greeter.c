@@ -356,7 +356,7 @@ static void start_session(const gchar *session)
         }
 
         g_dbus_proxy_call_sync(lock_proxy,
-                    "Unlock",
+                    "ExitLock",
                     g_variant_new("(ss)", get_selected_user(), selected_pwd),
                     G_DBUS_CALL_FLAGS_NONE,
                     -1,

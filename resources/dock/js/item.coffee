@@ -125,8 +125,6 @@ class AppList extends Widget
         @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
         margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
         @insert_indicator.style.marginTop = margin_top
-        @insert_indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
-
 
         return if @_insert_anchor_item?.app_id == try_insert_id
 
