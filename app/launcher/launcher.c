@@ -327,6 +327,35 @@ JSObjectRef launcher_get_items_by_category(double _id)
     return items;
 }
 
+static
+gboolean _pred(const gchar* lhs, const gchar* rhs)
+{
+    return g_strrstr(lhs, rhs) != NULL;
+}
+
+typedef gboolean (*Prediction)(const gchar*, const gchar*);
+
+static
+double _get_weight(const char* src, const char* key, Prediction pred, double weight)
+{
+    if (src == NULL) {
+        return 0.0;
+    }
+
+    char* k = g_utf8_casefold(src, -1);
+    double ret = pred(k, key) ? weight : 0.0;
+    g_free(k);
+    return ret;
+}
+
+#define FILENAME_WEIGHT 0.3
+#define GENERIC_NAME_WEIGHT 0.01
+#define KEYWORD_WEIGHT 0.1
+#define CATEGORY_WEIGHT 0.01
+#define NAME_WEIGHT 0.01
+#define DISPLAY_NAME_WEIGHT 0.1
+#define DESCRIPTION_WEIGHT 0.01
+#define EXECUTABLE_WEIGHT 0.05
 
 JS_EXPORT_API
 double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
@@ -335,50 +364,44 @@ double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 
     /* desktop file information */
     const char* path = g_desktop_app_info_get_filename(info);
-    if (g_strrstr(path, key)) {
-        weight += 0.3;
-    }
+    char* basename = g_path_get_basename(path);
+    *strchr(basename, '.') = '\0';
+    weight += _get_weight(basename, key, _pred, FILENAME_WEIGHT);
+    g_free(basename);
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
-    if (gname && g_strrstr(gname, key)) {
-        weight += 0.01;
-    }
+    weight += _get_weight(gname, key, _pred, GENERIC_NAME_WEIGHT);
 
     const char* const* keys = g_desktop_app_info_get_keywords(info);
     if (keys != NULL) {
         size_t n = g_strv_length((char**)keys);
         for (size_t i=0; i<n; i++) {
-            if (g_strrstr(keys[i], key)) {
-                weight += 0.1;
-            }
+            weight += _get_weight(keys[i], key, _pred, KEYWORD_WEIGHT);
         }
     }
 
     const char* categories = g_desktop_app_info_get_categories(info);
-    if (categories && g_strrstr(categories, key)) {
-        weight += 0.01;
+    if (categories) {
+        gchar** category_names = g_strsplit(categories, ";", -1);
+        gsize len = g_strv_length(category_names) - 1;
+        for (gsize i = 0; i < len; ++i) {
+            weight += _get_weight(category_names[i], key, _pred, CATEGORY_WEIGHT);
+        }
+        g_strfreev(category_names);
     }
 
     /* application information */
     const char* name = g_app_info_get_name((GAppInfo*)info);
-    if (name && g_strrstr(name, key)) {
-        weight += 0.1;
-    }
+    weight += _get_weight(name, key, _pred, NAME_WEIGHT);
 
     const char* dname = g_app_info_get_display_name((GAppInfo*)info);
-    if (dname && g_strrstr(dname, key)) {
-        weight += 0.05;
-    }
+    weight += _get_weight(dname, key, _pred, DISPLAY_NAME_WEIGHT);
 
     const char* desc = g_app_info_get_description((GAppInfo*)info);
-    if (desc && g_strrstr(desc, key)) {
-        weight += 0.01;
-    }
+    weight += _get_weight(desc, key, _pred, DESCRIPTION_WEIGHT);
 
     const char* exec = g_app_info_get_executable((GAppInfo*)info);
-    if (exec && g_strrstr(exec, key)) {
-        weight += 0.05;
-    }
+    weight += _get_weight(exec, key, _pred, EXECUTABLE_WEIGHT);
 
     return weight;
 }
@@ -427,7 +450,7 @@ JSObjectRef launcher_get_categories()
 
     const GPtrArray* infos = get_all_categories_array();
     if (infos == NULL) {
-        category_num = sizeof(names) / sizeof(const char*) - 1;
+        category_num = G_N_ELEMENTS(names) - 1;
     } else {
         category_num = infos->len;
         for (int i = 0; i < category_num; ++i) {

@@ -53,6 +53,7 @@ GKeyFile *greeter_keyfile;
 static gchar* greeter_file = NULL;
 static gchar *selected_user = NULL, *selected_session = NULL, *selected_pwd = NULL;
 static gint response_count = 0;
+static gint exit_flag = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
 GError *error = NULL;
 
@@ -69,6 +70,7 @@ gboolean greeter_is_authenticated();
 void greeter_start_authentication(const gchar *username);
 void greeter_cancel_authentication();
 void greeter_login_clicked(const gchar *password);
+static gboolean do_exit(gpointer user_data);
 static void start_session(const gchar *session);
 static void clean_before_exit();
 static void show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type);
@@ -328,8 +330,25 @@ void greeter_login_clicked(const gchar *password)
     }
 }
 
-static void start_session(const gchar *session)
+static gboolean do_exit(gpointer user_data)
 {
+    // start session failed
+    if(exit_flag == 1){
+
+        return FALSE;
+
+    // already receive sigterm
+    }else if(exit_flag == 2){
+
+        return FALSE;
+    // manual kill greeter
+    }else{
+        clean_before_exit();
+        exit(0);
+    }
+} 
+
+static void start_session(const gchar *session) {
     g_return_if_fail(is_session_valid(session));
 
     set_last_user(get_selected_user());
@@ -372,9 +391,12 @@ static void start_session(const gchar *session)
     }
     g_free(user_lock_path);
 
+    g_timeout_add_seconds(120, do_exit, NULL);
+
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         DBG("%s", "start session failed");
 
+        exit_flag = 1;
         greeter_start_authentication(get_selected_user());
     }
 }
@@ -808,6 +830,7 @@ gboolean greeter_run_shutdown()
 static void sigterm_cb(int signum)
 {
     DBG("%s", "sigterm cb");
+    exit_flag = 2;
     clean_before_exit();    
     exit(0);
 }
