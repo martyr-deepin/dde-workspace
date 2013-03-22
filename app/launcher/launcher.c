@@ -34,9 +34,7 @@
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
 
-static
-GtkWidget* container = NULL;
-
+static GtkWidget* container = NULL;
 static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
@@ -177,7 +175,7 @@ void _on_realize(GtkWidget* container)
 int main(int argc, char* argv[])
 {
     if (is_application_running("launcher.app.deepin")) {
-        if (argc > 1 && 0 == g_strcmp0("--toggle", argv[1])) {
+        if (argc > 1 && g_str_equal("--toggle", argv[1])) {
             system("killall launcher");
         } else {
             g_warning("another instance of application launcher is running...\n");
@@ -270,33 +268,12 @@ void _append_to_category(const char* path, GList* cs)
     }
 }
 
-JS_EXPORT_API
-JSObjectRef launcher_get_items_by_category(double _id)
-{
-    JSObjectRef items = json_array_create();
-
-    int id = _id;
-    GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
-    if (l == NULL) {
-        return items;
-    }
-
-    JSContextRef cxt = get_global_context();
-    for (int i = 0; i < l->len; ++i) {
-        const char* path = g_ptr_array_index(l, i);
-        json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
-    }
-
-    return items;
-}
-
-
 static
 void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
     GList* categories = get_deepin_categories(info);
     _append_to_category(id, categories);
-    /* g_free(categories); */
+    g_list_free(categories);
 }
 
 JS_EXPORT_API
@@ -328,6 +305,28 @@ JSObjectRef launcher_get_items()
 
     return items;
 }
+
+
+JS_EXPORT_API
+JSObjectRef launcher_get_items_by_category(double _id)
+{
+    JSObjectRef items = json_array_create();
+
+    int id = _id;
+    GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
+    if (l == NULL) {
+        return items;
+    }
+
+    JSContextRef cxt = get_global_context();
+    for (int i = 0; i < l->len; ++i) {
+        const char* path = g_ptr_array_index(l, i);
+        json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
+    }
+
+    return items;
+}
+
 
 JS_EXPORT_API
 double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
