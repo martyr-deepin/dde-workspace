@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    /* gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher"); */
+    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     get_screen_info();
     set_default_theme("Deepin");
@@ -221,7 +221,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
-    monitor_resource_file("launcher", webview);
+    /* monitor_resource_file("launcher", webview); */
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
