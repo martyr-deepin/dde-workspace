@@ -238,7 +238,7 @@ gchar * lock_get_date()
 }
 
 JS_EXPORT_API
-void lock_unlock_succeed()
+void lock_unlock_succeed ()
 {
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
         g_remove(lockpid_file);
@@ -251,26 +251,50 @@ void lock_unlock_succeed()
 
 /* return False if unlock succeed */
 JS_EXPORT_API
-gboolean lock_try_unlock(const gchar *password)
+gboolean lock_try_unlock (const gchar *password)
 {
-    gboolean is_locked;
-    gint exit_status;
+    gboolean succeed = FALSE;
+    GVariant *lock_succeed = NULL;
 
-    gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, password);
+    GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "com.deepin.dde.lock",
+            "/com/deepin/dde/lock",
+            "com.deepin.dde.lock",
+            NULL, 
+            &error);
 
-    g_spawn_command_line_sync(command, NULL, NULL, &exit_status, NULL);
+    if (error != NULL) {
+        g_warning("connect com.deepin.dde.lock failed");
+        g_clear_error(&error);
+     }
 
-    if(exit_status == 0){
-        js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
-        is_locked = FALSE;
-    }else{
-        js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
-        is_locked = TRUE;
+    lock_succeed  = g_dbus_proxy_call_sync(lock_proxy,
+                    "UnlockCheck",
+                    g_variant_new ("(ss)", username, password),
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+    
+    if(error != NULL){
+        g_clear_error (&error);
     }
 
-    g_free(command);
+    g_variant_get(lock_succeed, "(b)", &succeed);
+    
+    if(succeed){
+        js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
 
-    return is_locked;
+    } else {
+        js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
+    }
+
+    g_variant_unref(lock_succeed);
+    g_object_unref(lock_proxy);
+
+    return succeed;
 }
 
 
@@ -356,9 +380,9 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(lock_container);
     
- //   GRAB_DEVICE(NULL);
+    GRAB_DEVICE(NULL);
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
-//    gdk_window_stick(gdkwindow);
+    gdk_window_stick(gdkwindow);
 
     gtk_main();
     return 0;
