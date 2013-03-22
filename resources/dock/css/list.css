@@ -30,7 +30,6 @@
     border-radius: 5px;
     max-width: 48px;
     max-height: 48px;
-    border: 2px dashed transparent;  /* border width should same as config.coffee's ICON_BORDER */
 }
 
 .OpenIndicator {
@@ -46,7 +45,6 @@
     border-radius: 5px;
     pointer-events: none;
     background: rgba(255, 255, 255, 0.3);
-    margin-left: 18px;
 }
 .ItemSwapIndicator {
     -webkit-transition: border 0.3s;

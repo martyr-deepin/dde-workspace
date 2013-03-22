@@ -31,39 +31,100 @@ const char* get_category_db_path()
 }
 
 static
-int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
+gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, void* res)
 {
-    int category_id = OTHER_CATEGORY_ID;
-    if (argv[0][0] != '\0') {
-        category_id = (int)g_strtod(argv[0], NULL);
+    sqlite3* db = NULL;
+    gboolean is_good = SQLITE_OK == sqlite3_open_v2(db_path, &db, SQLITE_OPEN_READONLY, NULL);
+    if (is_good) {
+        char* error = NULL;
+        sqlite3_exec(db, sql, fn, res, &error);
+        sqlite3_close(db);
+        if (error != NULL) {
+            g_warning("%s\n", error);
+            sqlite3_free(error);
+            is_good = FALSE;
+        }
     }
 
-    *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
+    return is_good;
+}
+
+static
+int _get_all_possible_x_categories(GHashTable* infos, int argc, char** argv, char** colname)
+{
+    if (argv[1][0] != '\0') {
+        int id = (int)g_strtod(argv[1], NULL);
+        g_hash_table_insert(infos, g_strdup(_(argv[0])), GINT_TO_POINTER(id));
+    }
     return 0;
 }
 
-GList* get_deepin_categories(const char* full_path_name)
+static
+int find_category_id(const char* category_name)
+{
+    static GHashTable* _category_info = NULL;
+
+    if (_category_info == NULL) {
+        _category_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+        const char* sql = "select x_category_name, first_category_index from x_category;";
+        _search_database(get_category_db_path(), sql,
+                         (SQLEXEC_CB)_get_all_possible_x_categories, _category_info);
+    }
+
+    int id = OTHER_CATEGORY_ID;
+    char* key = g_utf8_casefold(category_name, -1);
+    gpointer tmp = g_hash_table_lookup(_category_info, _(key));
+    g_free(key);
+    if (tmp != NULL)
+        id = GPOINTER_TO_INT(tmp);
+    return id;
+}
+
+static
+GList* _get_x_category(GDesktopAppInfo* info)
+{
+    GList* categories = NULL;
+    const char* all_categories = g_desktop_app_info_get_categories(info);
+    if (all_categories == NULL) {
+        categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
+        return categories;
+    }
+
+    gchar** x_categories = g_strsplit(all_categories, ";", 0);
+    gsize len = g_strv_length(x_categories) - 1;
+    for (int i = 0; i < len; ++i) {
+        int id = find_category_id(x_categories[i]);
+        categories = g_list_append(categories, GINT_TO_POINTER(id));
+    }
+
+    g_strfreev(x_categories);
+    return categories;
+}
+
+static
+int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
+{
+    if (argv[0][0] != '\0') {
+        int category_id = (int)g_strtod(argv[0], NULL);
+        *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
+    }
+
+    return 0;
+}
+
+GList* get_deepin_categories(GDesktopAppInfo* info)
 {
     GList* categories = NULL;
     GString* sql = g_string_new("select first_category_index from desktop where desktop_path = \"");
-    g_string_append(sql, full_path_name);
+    g_string_append(sql, g_desktop_app_info_get_filename(info));
     g_string_append(sql, "\";");
-    sqlite3* db = NULL;
-    if (SQLITE_OK == sqlite3_open_v2(get_category_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
-        g_assert(db != NULL);
-        char* error = NULL;
-        sqlite3_exec(db, sql->str, (SQLEXEC_CB)_get_all_possible_categories, &categories, &error);
-        g_string_free(sql, TRUE);
-
-        if (error != NULL) {
-            g_warning("load category info failed %s\n", error);
-            sqlite3_free(error);
-        }
-        sqlite3_close(db);
-    }
+    _search_database(get_category_db_path(), sql->str,
+                     (SQLEXEC_CB)_get_all_possible_categories,
+                     &categories);
+    g_string_free(sql, TRUE);
 
     if (categories == NULL) {
-        categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
+        categories = _get_x_category(info);
     }
 
     return categories;
@@ -79,17 +140,8 @@ int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 void _load_category_info(GPtrArray* category_infos)
 {
     const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
-    sqlite3 *db = NULL;
-    if (SQLITE_OK == sqlite3_open_v2(get_category_db_path(), &db, SQLITE_OPEN_READONLY, NULL)) {
-        g_assert(db != NULL);
-        char* error = NULL;
-        sqlite3_exec(db, sql_category_info, (SQLEXEC_CB)_fill_category_info, category_infos, &error);
-        if (error != NULL) {
-            g_warning("load_category_info failed %s\n", error);
-            sqlite3_free(error);
-        }
-        sqlite3_close(db);
-    } else {
+    if (!_search_database(get_category_db_path(), sql_category_info,
+                          (SQLEXEC_CB)_fill_category_info, category_infos)) {
         g_ptr_array_add(category_infos, g_strdup(_("internet")));
         g_ptr_array_add(category_infos, g_strdup(_("multimedia")));
         g_ptr_array_add(category_infos, g_strdup(_("games")));

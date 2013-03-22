@@ -136,7 +136,7 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 JS_EXPORT_API
 GFile* desktop_create_rich_dir(ArrayContainer fs)
 {
-    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("Rich directory"), NULL);
+    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("App Group"), NULL);
     g_debug ("create_rich_dir: %s", temp_name);
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);

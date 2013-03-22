@@ -48,6 +48,7 @@ GError *error = NULL;
 
 static void init_user();
 static void sigterm_cb(int signum);
+static void lock_report_pid();
 
 static void init_user()
 {
@@ -237,7 +238,7 @@ gchar * lock_get_date()
 }
 
 JS_EXPORT_API
-void lock_unlock_succeed()
+void lock_unlock_succeed ()
 {
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
         g_remove(lockpid_file);
@@ -250,26 +251,50 @@ void lock_unlock_succeed()
 
 /* return False if unlock succeed */
 JS_EXPORT_API
-gboolean lock_try_unlock(const gchar *password)
+gboolean lock_try_unlock (const gchar *password)
 {
-    gboolean is_locked;
-    gint exit_status;
+    gboolean succeed = FALSE;
+    GVariant *lock_succeed = NULL;
 
-    gchar *command = g_strdup_printf("%s %s %s", "unlockcheck", username, password);
+    GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "com.deepin.dde.lock",
+            "/com/deepin/dde/lock",
+            "com.deepin.dde.lock",
+            NULL, 
+            &error);
 
-    g_spawn_command_line_sync(command, NULL, NULL, &exit_status, NULL);
+    if (error != NULL) {
+        g_warning("connect com.deepin.dde.lock failed");
+        g_clear_error(&error);
+     }
 
-    if(exit_status == 0){
-        js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
-        is_locked = FALSE;
-    }else{
-        js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
-        is_locked = TRUE;
+    lock_succeed  = g_dbus_proxy_call_sync(lock_proxy,
+                    "UnlockCheck",
+                    g_variant_new ("(ss)", username, password),
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+    
+    if(error != NULL){
+        g_clear_error (&error);
     }
 
-    g_free(command);
+    g_variant_get(lock_succeed, "(b)", &succeed);
+    
+    if(succeed){
+        js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
 
-    return is_locked;
+    } else {
+        js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
+    }
+
+    g_variant_unref(lock_succeed);
+    g_object_unref(lock_proxy);
+
+    return succeed;
 }
 
 
@@ -294,6 +319,24 @@ static void sigterm_cb(int signum)
     gtk_main_quit();
 }
 
+static void lock_report_pid()
+{
+    lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_debug("remove old pid info before lock"); 
+        g_remove(lockpid_file);
+    }
+
+    if(g_creat(lockpid_file, O_RDWR) == -1){
+        g_warning("touch lockpid_file failed\n");
+    }
+    
+    gchar *contents = g_strdup_printf("%d", getpid());
+    g_file_set_contents(lockpid_file, contents, -1, NULL);
+
+    g_free(contents);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -313,20 +356,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
-    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        g_debug("remove old pid info before lock"); 
-        g_remove(lockpid_file);
-    }
-
-    if(g_creat(lockpid_file, O_RDWR) == -1){
-        g_warning("touch lockpid_file failed\n");
-    }
-    
-    gchar *contents = g_strdup_printf("%d", getpid());
-    g_file_set_contents(lockpid_file, contents, -1, NULL);
-
-    g_free(contents);
+    lock_report_pid();
 
     lock_container = create_web_container(FALSE, TRUE);
 
@@ -336,15 +366,18 @@ int main(int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
+
     g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);
     g_signal_connect(webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
     gtk_widget_realize(lock_container);
 
     GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
+
     gdk_window_set_background_rgba(gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+
     gtk_widget_show_all(lock_container);
     
     GRAB_DEVICE(NULL);

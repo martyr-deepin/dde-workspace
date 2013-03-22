@@ -42,8 +42,6 @@ update_dock_region = ->
     if last and last.clientWidth != 0
         offset = ICON_SCALE * ITEM_WIDTH * apps.length
         DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
-    else
-        echo "can't find last app #{apps.length}"
 
 document.body.onresize = ->
     calc_app_item_size()
@@ -56,7 +54,7 @@ class AppList extends Widget
         @_insert_anchor_item = null
 
     append: (c)->
-        if @_insert_anchor_item
+        if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
             @element.insertBefore(c.element, @_insert_anchor_item.element)
             DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
             @hide_indicator()
@@ -65,8 +63,11 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     append2: (c)->
-        @append(c)
-        DCore.Dock.insert_apps_position(c.app_id, null) if @_insert_anchor_item == null
+        try  #TODO: remove DEBUG CODE
+            @append(c)
+            DCore.Dock.insert_apps_position(c.app_id, null) if @_insert_anchor_item == null
+        catch error
+            alert "AppList append :#{error}"
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -124,8 +125,6 @@ class AppList extends Widget
         @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
         margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
         @insert_indicator.style.marginTop = margin_top
-        @insert_indicator.style.marginLeft = ICON_BORDER * 2 * ICON_SCALE
-
 
         return if @_insert_anchor_item?.app_id == try_insert_id
 
@@ -212,6 +211,7 @@ class AppItem extends Widget
         app_list.record_last_over_item(@)
 
     do_dragstart: (e)->
+        @element.style.opacity = "0.5"
         e.stopPropagation()
         DCore.Dock.require_all_region()
         app_list.record_last_over_item(@)
@@ -220,15 +220,15 @@ class AppItem extends Widget
         e.dataTransfer.setDragImage(@img, 6, 4)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
         e.dataTransfer.effectAllowed = "copyMove"
-        @element.style.opacity = "0.5"
 
     do_dragend: (e)->
+        #TODO: This event may not apparence if drag the item drop and quickly clik other application
+        @element.style.opacity = "1"
         e.stopPropagation()
         e.preventDefault()
         setTimeout(=>
             update_dock_region()
         , 300)
-        @element.style.opacity = "1"
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
