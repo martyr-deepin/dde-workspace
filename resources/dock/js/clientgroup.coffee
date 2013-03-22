@@ -1,19 +1,22 @@
 active_group = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
-        super
-        @n_clients = []
-        @client_infos = {}
+        try
+            super
+            @n_clients = []
+            @client_infos = {}
 
-        @open_indicator = create_img("OpenIndicator", "", @element)
-        @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
+            @open_indicator = create_img("OpenIndicator", "", @element)
+            @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
 
-        @leader = null
+            @leader = null
 
-        @img2 = create_img("AppItemImg", "", @element)
-        @img3 = create_img("AppItemImg", "", @element)
+            @img2 = create_img("AppItemImg", "", @element)
+            @img3 = create_img("AppItemImg", "", @element)
 
-        @to_normal_status()
+            @to_normal_status()
+        catch error
+            alert "Group construcotr :#{error}"
 
     update_scale: ->
         super
@@ -110,11 +113,8 @@ class ClientGroup extends AppItem
     update_leader: ->
         @img.src = @client_infos[@leader].icon
         #@img.setAttribute("title", @client_infos[@leader].title)
-        try
-            @img2.src = @client_infos[@n_clients[1]].icon
-            #@img2.setAttribute("title", @client_infos[@n_clients[1]].title)
-            @img3.src = @client_infos[@n_clients[2]].icon
-            #@img3.setAttribute("title", @client_infos[@n_clients[2]].title)
+        @img2.src = @client_infos[@n_clients[1]].icon if @n_clients.length > 1
+        @img3.src = @client_infos[@n_clients[2]].icon if @n_clients.length > 2
 
     try_swap_launcher: ->
         l = Widget.look_up(@app_id)
