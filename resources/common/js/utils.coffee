@@ -72,11 +72,12 @@ find_drag_target = (el)->
     return null
 
 swap_element = (c1, c2) ->
-    tmp = document.createElement('div')
-    c1.parentNode.insertBefore(tmp, c1)
-    c2.parentNode.insertBefore(c1, c2)
-    tmp.parentNode.insertBefore(c2, tmp)
-    tmp.parentNode.removeChild(tmp)
+    if c1.parentNode == c2.parentNode
+        tmp = document.createElement('div')
+        c1.parentNode.insertBefore(tmp, c1)
+        c2.parentNode.insertBefore(c1, c2)
+        tmp.parentNode.insertBefore(c2, tmp)
+        tmp.parentNode.removeChild(tmp)
 
 #disable default body drop event
 document.body.ondrop = (e) -> e.preventDefault()

@@ -69,15 +69,8 @@ gboolean erase_background(GtkWidget* widget,
     return FALSE;
 }
 
-static void add_ddesktop_class(WebKitWebView *web_view,
-        WebKitWebFrame *frame, 
-        gpointer context, 
-        gpointer arg3, 
-        gpointer user_data)
+static void setup_lang(WebKitWebView* web_view)
 {
-
-    JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
-    init_js_extension(jsContext, (void*)web_view);
     const char* env_lang = getenv("LANG");
     if (env_lang[0] == '\0') {
         return;
@@ -88,6 +81,18 @@ static void add_ddesktop_class(WebKitWebView *web_view,
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", lang);
     webkit_web_view_execute_script(web_view, exec_script);
+}
+
+
+static void add_ddesktop_class(WebKitWebView *web_view,
+        WebKitWebFrame *frame, 
+        gpointer context, 
+        gpointer arg3, 
+        gpointer user_data)
+{
+
+    JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
+    init_js_extension(jsContext, (void*)web_view);
 }
 
 
@@ -139,9 +144,8 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    /*g_signal_connect(G_OBJECT(webview), "draw",*/
-           /*G_CALLBACK(_erase_background), NULL);*/
-
+    g_signal_connect(G_OBJECT(webview), "document-load-finished", 
+            G_CALLBACK(setup_lang), NULL);
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
@@ -178,7 +182,6 @@ GType d_webview_get_type(void)
 }
 
 
-
 GtkWidget* d_webview_new()
 {
     GtkWidget* webview = g_object_new(D_WEBVIEW_TYPE, NULL);
@@ -195,6 +198,7 @@ GtkWidget* d_webview_new()
     char* cfg_path = g_build_filename(g_get_user_config_dir(), "deepin-desktop", NULL);
     webkit_set_web_database_directory_path(cfg_path);
     g_free(cfg_path);
+
 
     return webview;
 }

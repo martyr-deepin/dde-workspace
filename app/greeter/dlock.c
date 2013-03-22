@@ -48,6 +48,7 @@ GError *error = NULL;
 
 static void init_user();
 static void sigterm_cb(int signum);
+static void lock_report_pid();
 
 static void init_user()
 {
@@ -294,6 +295,24 @@ static void sigterm_cb(int signum)
     gtk_main_quit();
 }
 
+static void lock_report_pid()
+{
+    lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
+    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
+        g_debug("remove old pid info before lock"); 
+        g_remove(lockpid_file);
+    }
+
+    if(g_creat(lockpid_file, O_RDWR) == -1){
+        g_warning("touch lockpid_file failed\n");
+    }
+    
+    gchar *contents = g_strdup_printf("%d", getpid());
+    g_file_set_contents(lockpid_file, contents, -1, NULL);
+
+    g_free(contents);
+}
+
 
 int main(int argc, char **argv)
 {
@@ -313,20 +332,7 @@ int main(int argc, char **argv)
         exit(0);
     }
 
-    lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
-    if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        g_debug("remove old pid info before lock"); 
-        g_remove(lockpid_file);
-    }
-
-    if(g_creat(lockpid_file, O_RDWR) == -1){
-        g_warning("touch lockpid_file failed\n");
-    }
-    
-    gchar *contents = g_strdup_printf("%d", getpid());
-    g_file_set_contents(lockpid_file, contents, -1, NULL);
-
-    g_free(contents);
+    lock_report_pid();
 
     lock_container = create_web_container(FALSE, TRUE);
 
@@ -336,20 +342,23 @@ int main(int argc, char **argv)
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
+
     g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);
     g_signal_connect(webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
     gtk_widget_realize(lock_container);
 
     GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
+
     gdk_window_set_background_rgba(gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+
     gtk_widget_show_all(lock_container);
     
-    GRAB_DEVICE(NULL);
+ //   GRAB_DEVICE(NULL);
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
-    gdk_window_stick(gdkwindow);
+//    gdk_window_stick(gdkwindow);
 
     gtk_main();
     return 0;
