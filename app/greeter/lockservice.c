@@ -24,6 +24,12 @@
 #include <stdlib.h>
 #include <glib.h>
 #include <gio/gio.h>
+#include <stdio.h>
+#include <string.h>
+#include <shadow.h>
+#include <unistd.h>
+#include <errno.h>
+#include <crypt.h>
 
 #define LOCK_DBUS_NAME     "com.deepin.dde.lock"
 #define LOCK_DBUS_OBJ       "/com/deepin/dde/lock"
@@ -35,7 +41,15 @@ const char* _lock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
 "<node>\n"
 "	<interface name=\""LOCK_DBUS_IFACE"\">\n"
-"		<method name=\"Unlock\">\n"
+"		<method name=\"UnlockCheck\">\n"
+"			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"			<arg name=\"password\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"			<arg name=\"succeed\" type=\"b\" direction=\"out\">\n"
+"			</arg>\n"
+"		</method>\n"
+"		<method name=\"ExitLock\">\n"
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
 "			</arg>\n"
 "			<arg name=\"password\" type=\"s\" direction=\"in\">\n"
@@ -59,7 +73,8 @@ static void _bus_method_call (GDBusConnection * connection, const gchar * sender
                              const gchar * object_path, const gchar * interface,
                              const gchar * method, GVariant * params,
                              GDBusMethodInvocation * invocation, gpointer user_data);
-static void _bus_handle_unlock(const gchar *username, const gchar *password);
+static void _bus_handle_exit_lock(const gchar *username, const gchar *password);
+static gboolean _bus_handle_unlock_check(const gchar *username, const gchar *password);
 static gboolean do_exit(gpointer user_data);
 
 static GDBusNodeInfo *      node_info = NULL;
@@ -180,13 +195,20 @@ _bus_method_call (GDBusConnection * connection,
     GVariant * retval = NULL;
     GError * error = NULL;
 
-    if (g_strcmp0 (method, "Unlock") == 0) {
+    if (g_strcmp0 (method, "ExitLock") == 0) {
         const gchar *username = NULL;
         const gchar *password = NULL;
         g_variant_get (params, "(ss)", &username, &password);
 
-        _bus_handle_unlock(username, password);
+        _bus_handle_exit_lock (username, password);
 
+    }else if (g_strcmp0 (method, "UnlockCheck") == 0) {
+        const gchar *username = NULL;
+        const gchar *password = NULL;
+        g_variant_get (params, "(ss)", &username, &password);
+
+        retval = g_variant_new("(b)", _bus_handle_unlock_check(username, password));
+        
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
     }
@@ -196,22 +218,19 @@ _bus_method_call (GDBusConnection * connection,
                 "com.deepin.dde.lock.Error", 
                 error->message);
         g_error_free (error);
+
     } else {
         g_dbus_method_invocation_return_value (invocation, retval);
     }
-
-    return;
 }
 
 static void
-_bus_handle_unlock (const gchar *username, const gchar *password)
+_bus_handle_exit_lock (const gchar *username, const gchar *password)
 {
-
-    g_warning("%s", username);
     gchar *lockpid_file = g_strdup_printf ("%s%s%s", "/home/", username, "/dlockpid");
     
     if (!g_file_test (lockpid_file, G_FILE_TEST_EXISTS)){
-        g_warning("user hadn't locked");
+        g_debug("user hadn't locked");
 
     } else {
         gchar *contents = NULL;
@@ -219,25 +238,20 @@ _bus_handle_unlock (const gchar *username, const gchar *password)
 
         if (g_file_get_contents (lockpid_file, &contents, &length, NULL)){
 
-            gint exit_status;
+            gboolean succeed = _bus_handle_unlock_check (username, password);
 
-            gchar *command = g_strdup_printf ("%s %s %s", "unlockcheck", username, password);
-            g_spawn_command_line_sync (command, NULL, NULL, &exit_status, NULL);
-
-            g_warning("kill user lock by pid");
-            if (exit_status == 0) {
+            g_debug ("kill user lock by pid");
+            if (succeed) {
     
                 if (kill((pid_t)strtol (contents, NULL, 10), SIGTERM) == 0){
-                    g_warning ("kill user lock succeed");
+                    g_debug ("kill user lock succeed");
 
                 } else {
-                    g_warning ("kill user lock failed");
+                    g_debug ("kill user lock failed");
                 }
             } else {
-                g_warning ("username and password not match");
+                g_debug ("username and password not match");
             }
-
-            g_free (command);
 
         } else {
             g_warning("get lockpid contents failed");
@@ -250,21 +264,45 @@ _bus_handle_unlock (const gchar *username, const gchar *password)
 
 }
 
+static gboolean
+_bus_handle_unlock_check (const gchar *username, const gchar *password)
+{
+    gboolean succeed = FALSE;
+
+    struct spwd *user_data;
+    errno = 0;
+
+    user_data = getspnam (username);
+
+    if (user_data == NULL)
+    {
+        g_warning ("No such user %s, or error %s\n", username, strerror(errno));
+        return succeed;
+    }
+
+    if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
+    {
+        succeed = TRUE;
+    }
+    
+    return succeed;
+}
+
 static gboolean 
 do_exit (gpointer user_data)
 {
-    g_main_loop_quit(loop);
+    g_main_loop_quit (loop);
 }
 
 int main(int argc, char **argv)
 {
-    g_type_init();
+    g_type_init ();
 
-    loop = g_main_loop_new(NULL, FALSE);
+    loop = g_main_loop_new (NULL, FALSE);
 
-    lock_setup_dbus_service();
-//    g_timeout_add_seconds(60, do_exit, NULL);
-    g_main_loop_run(loop);
+    lock_setup_dbus_service ();
+    g_timeout_add_seconds (60, do_exit, NULL);
+    g_main_loop_run (loop);
 
     return 0;
 }
