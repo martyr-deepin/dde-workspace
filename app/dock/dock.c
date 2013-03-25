@@ -36,11 +36,23 @@ void dock_change_workarea_height(double height);
 int _dock_height = 60;
 int screen_width = 0;
 int screen_height = 0;
+
+GtkWidget* container = NULL;
+GtkWidget* webview = NULL;
 GdkWindow* get_dock_guard_window();
+GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
+
+gboolean mouse_pointer_leave(int x, int y)
+{
+    cairo_region_t* region = gdk_window_get_visible_region(DOCK_GDK_WINDOW());
+    gboolean is_contain = cairo_region_contains_point(region, x, y);
+    cairo_region_destroy(region);
+    return is_contain;
+}
 
 gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL) {
+    if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
             dock_delay_hide(500);
         else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE)
@@ -51,7 +63,7 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     }
     return FALSE;
 }
-gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
+gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
     if (GD.config.hide_mode == AUTO_HIDE_MODE) {
         dock_show_real_now();
@@ -61,9 +73,6 @@ gboolean enter_notify(GtkWidget* w, GdkEvent* e, gpointer u)
     return FALSE;
 }
 
-GtkWidget* container = NULL;
-GtkWidget* webview = NULL;
-GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 Window get_dock_window()
 {
     g_assert(container != NULL);

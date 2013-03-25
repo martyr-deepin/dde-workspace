@@ -60,6 +60,7 @@ gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data);
 extern void canvas_custom_draw_did(cairo_t *cr, const cairo_rectangle_t* rect);
 extern cairo_t* fetch_cairo_from_html_canvas(JSContextRef ctx, JSValueRef v);
 GdkWindow* webkit_web_view_get_forward_window(GtkWidget*);
+void dwebview_show_inspector(GtkWidget* webview);
 
 
 // auto reload when resource file has changed
