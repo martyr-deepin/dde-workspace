@@ -60,7 +60,7 @@ int _get_all_possible_x_categories(GHashTable* infos, int argc, char** argv, cha
 {
     if (argv[1][0] != '\0') {
         int id = (int)g_strtod(argv[1], NULL);
-        g_hash_table_insert(infos, g_strdup(_(argv[0])), GINT_TO_POINTER(id));
+        g_hash_table_insert(infos, g_strdup(argv[0]), GINT_TO_POINTER(id));
     }
     return 0;
 }
@@ -79,10 +79,10 @@ int find_category_id(const char* category_name)
 
     int id = OTHER_CATEGORY_ID;
     char* key = g_utf8_casefold(category_name, -1);
-    gpointer tmp = g_hash_table_lookup(_category_info, _(key));
-    g_free(key);
-    if (tmp != NULL)
+    gpointer tmp;
+   if (g_hash_table_lookup_extended(_category_info, key, NULL, &tmp))
         id = GPOINTER_TO_INT(tmp);
+    g_free(key);
     return id;
 }
 
