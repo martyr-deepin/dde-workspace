@@ -816,7 +816,7 @@ class RichDir extends DesktopEntry
             i.parentElement.removeChild(i)
 
         for i in @div_pop.getElementsByTagName("div") by -1
-            i.parentElement.removeChild(tmp[i]) if i.id.match(/^pop_arrow_.+/)
+            i.parentElement.removeChild(i) if i.id.match(/^pop_arrow_.+/)
         @fill_pop_block()
 
 
