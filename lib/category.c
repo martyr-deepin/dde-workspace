@@ -87,6 +87,21 @@ int find_category_id(const char* category_name)
 }
 
 static
+GList* _remove_other_category(GList* categories)
+{
+    GList* iter = g_list_first(categories);
+    while (iter != NULL) {
+        if (iter->data == GINT_TO_POINTER(OTHER_CATEGORY_ID)) {
+            categories = g_list_remove(categories, iter->data);
+            iter = g_list_first(categories);
+        } else {
+            iter = g_list_next(iter);
+        }
+    }
+    return categories;
+}
+
+static
 GList* _get_x_category(GDesktopAppInfo* info)
 {
     GList* categories = NULL;
@@ -96,12 +111,21 @@ GList* _get_x_category(GDesktopAppInfo* info)
         return categories;
     }
 
+    gboolean has_other_id = FALSE;
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
     gsize len = g_strv_length(x_categories) - 1;
     for (int i = 0; i < len; ++i) {
         int id = find_category_id(x_categories[i]);
+        if (id == OTHER_CATEGORY_ID)
+            has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
     }
+
+    if (has_other_id)
+        categories = _remove_other_category(categories);
+
+    if (categories == NULL)
+        categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
 
     g_strfreev(x_categories);
     return categories;
@@ -129,9 +153,8 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
                      &categories);
     g_string_free(sql, TRUE);
 
-    if (categories == NULL) {
+    if (categories == NULL)
         categories = _get_x_category(info);
-    }
 
     return categories;
 }
