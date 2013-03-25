@@ -287,8 +287,8 @@ void _record_category_info(const char* id, GDesktopAppInfo* info)
     g_list_free(categories);
 }
 
-JS_EXPORT_API
-JSObjectRef launcher_get_items()
+static
+JSObjectRef _init_category_table()
 {
     JSObjectRef items = json_array_create();
     GList* app_infos = g_app_info_get_all();
@@ -321,6 +321,9 @@ JSObjectRef launcher_get_items()
 JS_EXPORT_API
 JSObjectRef launcher_get_items_by_category(double _id)
 {
+    if (_category_table == NULL)
+        return _init_category_table();
+
     JSObjectRef items = json_array_create();
 
     int id = _id;

@@ -98,7 +98,7 @@ class Item extends Widget
 
 
 # get all applications and sort them by name
-_all_items = DCore.Launcher.get_items()
+_all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
 _all_items.sort((lhs, rhs) ->
     lhs_name = DCore.DEntry.get_name(lhs)
     rhs_name = DCore.DEntry.get_name(rhs)
