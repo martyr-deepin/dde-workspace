@@ -366,7 +366,37 @@ double dentry_get_mtime(Entry* e)
     }
     return time;
 }
+static void show_rename_error_dialog (const char* name, gboolean is_app)
+{
+    GtkWidget* dialog;
+    dialog = gtk_message_dialog_new (NULL,
+                         GTK_DIALOG_MODAL,
+                         GTK_MESSAGE_WARNING,
+                         GTK_BUTTONS_OK,
+                         NULL);
+    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+    char* secondary_text;
+    if (is_app)
+    {
+       secondary_text = g_strdup_printf(_("This *.desktop file cannot be changed to the name \"%s\"."
+                                       "You may not have the permission"),
+                                       name);
+    }
+    else
+    {
+       secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this "
+                                        "folder. Please use a different name."),
+                                        name);
+    }
 
+    g_object_set (dialog,
+                  "text", _("The Item could not be renamed"),
+                  "secondary-text", secondary_text,
+                  NULL);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    gtk_widget_destroy (dialog);
+    g_free(secondary_text);
+}
 JS_EXPORT_API
 gboolean dentry_set_name(Entry* e, const char* name)
 {
@@ -374,25 +404,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
         GError* err = NULL;
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
-
-        GtkWidget* dialog;
-        dialog = gtk_message_dialog_new (NULL,
-                         GTK_DIALOG_MODAL,
-                         GTK_MESSAGE_WARNING,
-                         GTK_BUTTONS_OK,
-                         NULL);
-        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-        char* secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this "
-                             "folder. Please use a different name."),
-                           name);
-
-        g_object_set (dialog,
-              "text", _("The Item could not be renamed"),
-          "secondary-text", secondary_text,
-          NULL);
-        gtk_dialog_run (GTK_DIALOG (dialog));
-        gtk_widget_destroy (dialog);
-        g_free(secondary_text);
+	    show_rename_error_dialog (name, FALSE);
             g_error_free(err);
             return FALSE;
         } else {
@@ -401,7 +413,15 @@ gboolean dentry_set_name(Entry* e, const char* name)
         }
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
-        return change_desktop_entry_name(path, name);
+        if (!change_desktop_entry_name(path, name))
+        {
+	    show_rename_error_dialog (name, TRUE);
+            return FALSE;
+        }
+        else
+        {
+            return TRUE;
+        }
     TEST_END
 }
 
