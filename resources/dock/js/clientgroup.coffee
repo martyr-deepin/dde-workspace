@@ -131,8 +131,8 @@ class ClientGroup extends AppItem
 
     destroy: ->
         @element.style.display = "block"
-        super
         @try_build_launcher()
+        super
 
     do_buildmenu: ->
         [
