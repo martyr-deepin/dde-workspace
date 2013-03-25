@@ -121,8 +121,6 @@ update_items = (items) ->
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
 
-`const ITEM_WIDTH = 122`
-`const ITEM_HEIGHT = 132`
 update_scroll_bar = (items) ->
     lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
 

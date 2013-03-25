@@ -32,9 +32,8 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.Launcher.notify_workarea_size()
 
 
-`const _all_application_category_id = -1`
 _select_timeout_id = 0
-_select_category_id = _all_application_category_id
+_select_category_id = ALL_APPLICATION_CATEGORY_ID
 create_category = (info) ->
     el = document.createElement('div')
     el.setAttribute('class', 'category_name')
@@ -81,4 +80,4 @@ if categories_height > warp.clientHeight
     warp.style.overflowY = "scroll"
     warp.style.marginBottom = "30px"
 
-grid_load_category(_all_application_category_id) #the All applications' ID is -1.
+grid_load_category(ALL_APPLICATION_CATEGORY_ID) #the All applications' ID is -1.
