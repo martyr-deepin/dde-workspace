@@ -153,7 +153,7 @@ document.body.onkeypress = (e) ->
                     DCore.Launcher.exit_gui()
                 else
                     s_box.value = ""
-                    update_items(category_infos[_all_application_category_id])
+                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                     grid_load_category(_select_category_id)
                 return  # avoid to invoke search function
             when 8 # Backspace
