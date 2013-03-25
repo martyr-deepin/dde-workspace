@@ -597,7 +597,7 @@ cancel_item_selected = (w, change_focus = true) ->
     return true
 
 
-cancel_all_selected_stats = (clear_last = true) ->
+cancel_all_selected_stats = () ->
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
     return
