@@ -211,7 +211,6 @@ class AppItem extends Widget
         app_list.record_last_over_item(@)
 
     do_dragstart: (e)->
-        @element.style.opacity = "0.5"
         e.stopPropagation()
         DCore.Dock.require_all_region()
         app_list.record_last_over_item(@)
@@ -223,7 +222,6 @@ class AppItem extends Widget
 
     do_dragend: (e)->
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
-        @element.style.opacity = "1"
         e.stopPropagation()
         e.preventDefault()
         setTimeout(=>
