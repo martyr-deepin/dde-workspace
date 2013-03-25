@@ -39,6 +39,7 @@ static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
 static GSettings* dde_bg_g_settings = NULL;
+static gboolean is_debug;
 
 static void get_screen_info()
 {
@@ -143,7 +144,13 @@ void _set_launcher_background(GdkWindow* win)
     char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
 
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+
+    if (is_debug)
+        g_warning("blur pic path: %s\n", blur_path);
+
     if (!_set_launcher_background_aux(win, blur_path)) {
+        if (is_debug)
+            g_warning("no blur pic, use current bg: %s\n", bg_path);
         _set_launcher_background_aux(win, bg_path);
     }
     g_object_unref(dde_bg_g_settings);
@@ -174,6 +181,10 @@ void _on_realize(GtkWidget* container)
 
 int main(int argc, char* argv[])
 {
+    is_debug = FALSE;
+    if (argc > 1 && g_str_equal("-d", argv[1]))
+            is_debug = TRUE;
+
     if (is_application_running("launcher.app.deepin")) {
         if (argc > 1 && g_str_equal("--toggle", argv[1])) {
             system("killall launcher");
@@ -321,6 +332,8 @@ JSObjectRef launcher_get_items_by_category(double _id)
     JSContextRef cxt = get_global_context();
     for (int i = 0; i < l->len; ++i) {
         const char* path = g_ptr_array_index(l, i);
+        if (is_debug)
+            g_warning("insert category(name: %s, id: %d) into category(id: %d)\n", path, i, id);
         json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
     }
 
@@ -416,6 +429,8 @@ static
 void _insert_category(JSObjectRef categories, int array_index, int id, const char* name)
 {
     JSObjectRef item = json_create();
+    if (is_debug)
+        g_warning("insert category(name: %s, id: %d) into category list\n", name, id);
     json_append_number(item, "ID", id);
     json_append_string(item, "Name", name);
     json_array_insert(categories, array_index, item);
