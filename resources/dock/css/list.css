@@ -39,12 +39,15 @@
     z-index: -100;
 }
 
-
+@-webkit-keyframes showOut{
+    0% {width: 0px; opacity: 0;}
+}
 .InsertIndicator {
     border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     pointer-events: none;
     background: rgba(255, 255, 255, 0.3);
+    -webkit-animation: showOut 0.3s ease-out;
 }
 .ItemSwapIndicator {
     -webkit-transition: border 0.3s;
