@@ -1091,8 +1091,9 @@ class Application extends DesktopEntry
             img_item.style.top = "5px"
             img_item.style.left = "6px"
             setTimeout(=>
-                    @animate_background.parentElement.removeChild(@animate_background)
-                    @animate_background = null
+                    if @animate_background?
+                        @animate_background.parentElement.removeChild(@animate_background)
+                        @animate_background = null
                 , 101
             )
             return
@@ -1102,7 +1103,7 @@ class Application extends DesktopEntry
 
 
     animate_combining_cancel : =>
-        if @animate_background
+        if @animate_background?
             @animate_background.parentElement.removeChild(@animate_background)
             @animate_background = null
         @set_icon()
@@ -1282,6 +1283,7 @@ class TrashVDir extends DesktopEntry
         entry = DCore.DEntry.get_trash_entry()
         super(entry, false)
 
+    # XXX: try to avoid that get empty state when system startup
     setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
 
 
