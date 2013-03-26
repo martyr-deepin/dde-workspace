@@ -198,10 +198,14 @@ JS_EXPORT_API
 void lock_draw_background(JSValueRef canvas, JSData* data)
 {
     gchar* image_path = lock_get_background();
-    GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file(image_path, NULL);
+    gint height = gdk_screen_get_height(gdk_screen_get_default());
+    gint width = gdk_screen_get_width(gdk_screen_get_default());
+
+    GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_size(image_path, width, height, NULL);
     cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
 
     gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+
     cairo_paint(cr);
     canvas_custom_draw_did(cr, NULL);
 
