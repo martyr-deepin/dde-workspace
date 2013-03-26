@@ -31,6 +31,7 @@ void js_post_message(const char* name, JSValueRef json)
     }
 
     JSContextRef ctx = get_global_context();
+    g_return_if_fail(ctx != NULL);
     JSObjectRef cb = g_hash_table_lookup(signals, name);
 
     JSValueRef js_args[1];
