@@ -50,27 +50,22 @@ gboolean mouse_pointer_leave(int x, int y)
     return is_contain;
 }
 
-static int _leave_enter_guard_id = -1;
 gboolean get_leave_enter_guard()
 {
-    return _leave_enter_guard_id == -1;
-}
-void clean_leave_enter_guard()
-{
+    static int _leave_enter_guard_id = -1;
     if (_leave_enter_guard_id == -1) {
-        _leave_enter_guard_id = g_timeout_add(100, (GSourceFunc)clean_leave_enter_guard, NULL);
+        _leave_enter_guard_id = g_timeout_add(10, (GSourceFunc)get_leave_enter_guard, NULL);
+        return TRUE;
     } else {
-        _leave_enter_guard_id == -1;
+        _leave_enter_guard_id = -1;
+        return FALSE;
     }
 }
 
-
 gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    if (get_leave_enter_guard())
-        clean_leave_enter_guard();
-    else
-        return;
+    if (!get_leave_enter_guard())
+        return FALSE;
 
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
@@ -85,10 +80,8 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 }
 gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    if (get_leave_enter_guard())
-        clean_leave_enter_guard();
-    else
-        return;
+    if (!get_leave_enter_guard())
+        return FALSE;
 
     if (GD.config.hide_mode == AUTO_HIDE_MODE) {
         dock_show_real_now();
