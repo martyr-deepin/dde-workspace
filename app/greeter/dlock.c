@@ -206,17 +206,21 @@ void lock_draw_background(JSValueRef canvas, JSData* data)
 
     }else{
 
-        GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, False, NULL);
         cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+        GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, False, &error);
 
-        cairo_set_source_rgb(cr, 1, 0, 0);
-        cairo_paint(cr);
+        if (error != NULL) {
+            g_warning("get lockfile pixbuf failed");
+            g_clear_error(&error);
+            cairo_set_source_rgba(cr, 0.3, 0.3, 0.3, 0.5);
+            cairo_paint(cr);
 
-        gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+        } else {
+            gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+            cairo_paint(cr);
+        }
 
-        cairo_paint(cr);
         canvas_custom_draw_did(cr, NULL);
-
         g_object_unref(image_pixbuf);
     }
     g_free(image_path);
@@ -392,9 +396,9 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(lock_container);
     
-//    GRAB_DEVICE(NULL);
+    GRAB_DEVICE(NULL);
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
- //   gdk_window_stick(gdkwindow);
+    gdk_window_stick(gdkwindow);
 
     gtk_main();
     return 0;
