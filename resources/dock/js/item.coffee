@@ -57,6 +57,7 @@ class AppList extends Widget
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
             @element.insertBefore(c.element, @_insert_anchor_item.element)
             DCore.Dock.insert_apps_position(c.app_id, @_insert_anchor_item.app_id)
+            @_insert_anchor_item = null
             @hide_indicator()
         else
             @element.appendChild(c.element)

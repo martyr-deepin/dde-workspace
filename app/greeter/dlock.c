@@ -198,15 +198,31 @@ JS_EXPORT_API
 void lock_draw_background(JSValueRef canvas, JSData* data)
 {
     gchar* image_path = lock_get_background();
-    GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file(image_path, NULL);
-    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+    gint height = gdk_screen_get_height(gdk_screen_get_default());
+    gint width = gdk_screen_get_width(gdk_screen_get_default());
 
-    gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
-    cairo_paint(cr);
-    canvas_custom_draw_did(cr, NULL);
+    if(!g_file_test(image_path, G_FILE_TEST_EXISTS)){
+        g_warning("background file not exists");
 
-    cairo_destroy(cr);
-    g_object_unref(image_pixbuf);
+    }else{
+
+        cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+        GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, False, &error);
+
+        if (error != NULL) {
+            g_warning("get lockfile pixbuf failed");
+            g_clear_error(&error);
+            cairo_set_source_rgba(cr, 0.3, 0.3, 0.3, 0.5);
+            cairo_paint(cr);
+
+        } else {
+            gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+            cairo_paint(cr);
+        }
+
+        canvas_custom_draw_did(cr, NULL);
+        g_object_unref(image_pixbuf);
+    }
     g_free(image_path);
 }
 

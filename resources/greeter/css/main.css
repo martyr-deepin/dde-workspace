@@ -12,6 +12,11 @@ body{
     -webkit-user-select:none;
 }
 
+#background {
+    position: fixed;
+    z-index: -1000;
+}
+
 .Background{
     background-size:cover;
     height:100%;
