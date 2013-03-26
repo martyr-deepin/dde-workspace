@@ -532,6 +532,7 @@ item_dragend_handler = (w, evt) ->
             else
                 far_pos.y = b
 
+        # sort selected items by distance from the base point
         ordered_list = new Array()
         distance_list = new Array()
         for i in selected_item
@@ -703,6 +704,7 @@ is_selected_multiple_items = ->
 
 open_selected_items = ->
     Widget.look_up(i)?.item_exec() for i in selected_item
+    return
 
 
 delete_selected_items = (real_delete) ->
@@ -713,6 +715,7 @@ delete_selected_items = (real_delete) ->
 
     if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)
+    return
 
 
 show_selected_items_Properties = ->
@@ -724,6 +727,7 @@ show_selected_items_Properties = ->
     try
         g_dbus_nautilus?.ShowItemProperties_sync(tmp, "")
     catch e
+    return
 
 
 gird_left_mousedown = (evt) ->
@@ -731,6 +735,7 @@ gird_left_mousedown = (evt) ->
     if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
         if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
+    return
 
 
 grid_right_click = (evt) ->
@@ -776,7 +781,7 @@ grid_do_itemselected = (evt) ->
         else echo "not implemented function #{evt.id},#{evt.title}"
     return
 
-
+# handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
@@ -834,6 +839,7 @@ grid_do_keydown_to_shortcut = (evt) ->
     return
 
 
+# handle shortcuts keys
 grid_do_keyup_to_shrotcut = (evt) ->
     msg_disposed = false
     if ingore_keyup_counts > 0
@@ -919,6 +925,10 @@ class Mouse_Select_Area_box
         @element.style.visibility = "hidden"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
+
+
+    destory : =>
+        @parent_element.removeChild(@element)
 
 
     mousedown_event : (evt) =>
@@ -1026,7 +1036,3 @@ class Mouse_Select_Area_box
 
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
-
-
-    destory : =>
-        @parent_element.removeChild(@element)

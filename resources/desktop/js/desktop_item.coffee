@@ -215,10 +215,6 @@ class Item extends Widget
         return
 
 
-    display_not_selected : =>
-        @element.className = @element.className.replace(/\ item_selected/g, "")
-
-
     display_focus : =>
         @add_css_class("item_focus")
         return
