@@ -201,16 +201,24 @@ void lock_draw_background(JSValueRef canvas, JSData* data)
     gint height = gdk_screen_get_height(gdk_screen_get_default());
     gint width = gdk_screen_get_width(gdk_screen_get_default());
 
-    GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, True, NULL);
-    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+    if(!g_file_test(image_path, G_FILE_TEST_EXISTS)){
+        g_warning("background file not exists");
 
-    gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+    }else{
 
-    cairo_paint(cr);
-    canvas_custom_draw_did(cr, NULL);
+        GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, False, NULL);
+        cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
 
-    cairo_destroy(cr);
-    g_object_unref(image_pixbuf);
+        cairo_set_source_rgb(cr, 1, 0, 0);
+        cairo_paint(cr);
+
+        gdk_cairo_set_source_pixbuf(cr, image_pixbuf, 0, 0);
+
+        cairo_paint(cr);
+        canvas_custom_draw_did(cr, NULL);
+
+        g_object_unref(image_pixbuf);
+    }
     g_free(image_path);
 }
 
@@ -384,9 +392,9 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(lock_container);
     
-    GRAB_DEVICE(NULL);
+//    GRAB_DEVICE(NULL);
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
-    gdk_window_stick(gdkwindow);
+ //   gdk_window_stick(gdkwindow);
 
     gtk_main();
     return 0;
