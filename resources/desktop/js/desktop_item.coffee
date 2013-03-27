@@ -364,7 +364,7 @@ class Item extends Widget
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
         switch evt.keyCode
-            when 35 # 'End' key
+            when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
                 ws = window.getSelection()
                 range = document.createRange()
@@ -375,7 +375,7 @@ class Item extends Widget
                 range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
                 ws.removeAllRanges()
                 ws.addRange(range)
-            when 36 # 'Home' key
+            when 36 # 'Home' key, cant't handled in keypress; set caret to the start of whole name
                 evt.preventDefault()
                 ws = window.getSelection()
                 range = document.createRange()
@@ -395,6 +395,8 @@ class Item extends Widget
             when 13   # enter
                 evt.preventDefault()
                 @item_complete_rename(true)
+
+                # tell grid to ingore the same event after this event handler has been unregisterd
                 ++ingore_keyup_counts
             when 27   # esc
                 evt.preventDefault()
@@ -543,6 +545,7 @@ class DesktopEntry extends Item
             when 9 then delete_selected_items(evt.shiftKey == true)
             when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
+        return
 
 
 class Folder extends DesktopEntry
@@ -708,6 +711,7 @@ class RichDir extends DesktopEntry
             when 3 then @item_rename()
             when 5 then @item_ungroup()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
+        return
 
 
     item_normal : =>
@@ -1186,6 +1190,7 @@ class ComputerVDir extends DesktopEntry
                 DCore.Desktop.run_deepin_settings("system_information")
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>
@@ -1217,6 +1222,7 @@ class HomeVDir extends DesktopEntry
     get_path : =>
         ""
 
+
     do_drop : (evt) ->
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
@@ -1228,6 +1234,7 @@ class HomeVDir extends DesktopEntry
                 tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
+
 
     do_dragenter : (evt) ->
         super
@@ -1271,7 +1278,9 @@ class HomeVDir extends DesktopEntry
                     #XXX: we get an error here when call the nautilus DBus interface
                     g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@_entry)}"], "")
                 catch e
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>
@@ -1371,6 +1380,7 @@ class TrashVDir extends DesktopEntry
                 DCore.DEntry.confirm_trash()
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>

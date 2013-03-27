@@ -409,6 +409,7 @@ menu_create_new_file = () ->
     create_entry_to_new_item(entry)
 
 
+# all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
@@ -657,6 +658,7 @@ update_selected_stats = (w, evt) ->
     return
 
 
+# draw selected item icons DND image on speical html canvas
 update_selected_item_drag_image = ->
     drag_draw_delay_timer = -1
 
@@ -780,6 +782,7 @@ grid_do_itemselected = (evt) ->
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else echo "not implemented function #{evt.id},#{evt.title}"
     return
+
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
