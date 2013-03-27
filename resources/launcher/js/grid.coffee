@@ -36,11 +36,18 @@ class Item extends Widget
         super
         im = DCore.DEntry.get_icon(@core)
         if im == null
-            im = DCore.get_theme_icon('invalid-dock_app', 48)
+            im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
         @img = create_img("", im, @element)
-        @img.onload = =>
+        @img.onload = (e) =>
             if @img.width == @img.height
                 @img.className = 'square_img'
+            else if @img.width > @img.height
+                @img.className = 'hbar_img'
+                new_height = ITEM_IMG_SIZE * @img.height / @img.width
+                grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
+                @img.style.padding = "#{grap}px 0px"
+            else
+                @img.className = 'vbar_img'
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true

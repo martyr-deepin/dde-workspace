@@ -179,6 +179,13 @@ body {
     height: 48px;
 }
 
+.hbar_img {
+    width: 48px;
+}
+.vbar_img {
+    height: 48px;
+}
+
 .item_comment {
     width: 80px;
     color: transparent;
