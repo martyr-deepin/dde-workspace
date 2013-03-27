@@ -962,7 +962,7 @@ class RichDir extends DesktopEntry
 class Application extends DesktopEntry
     constructor : ->
         super
-        @show_launcher_box = false
+        @show_launcher_box = null
         @animate_background = null
 
 
@@ -1004,8 +1004,8 @@ class Application extends DesktopEntry
                     DCore.DEntry.launch(@_entry, tmp_list)
 
             if @show_launcher_box == true
-                @show_launcher_box = false
                 @animate_combining_cancel()
+            @show_launcher_box = null
         return
 
 
@@ -1015,7 +1015,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_launcher_box == false
+            if @show_launcher_box == null
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1026,6 +1026,8 @@ class Application extends DesktopEntry
                     if all_are_apps
                         @show_launcher_box = true
                         @animate_combining()
+                    else
+                        @show_launcher_box = false
         return
 
 
@@ -1035,7 +1037,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_launcher_box == false
+            if @show_launcher_box == null
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1046,6 +1048,8 @@ class Application extends DesktopEntry
                     if all_are_apps
                         @show_launcher_box = true
                         @animate_combining()
+                    else
+                        @show_launcher_box = false
         return
 
 
@@ -1057,8 +1061,8 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_launcher_box == true
-                @show_launcher_box = false
                 @animate_combining_cancel()
+            @show_launcher_box = null
         return
 
 
