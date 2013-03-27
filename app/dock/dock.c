@@ -57,6 +57,7 @@ gboolean get_leave_enter_guard()
         _leave_enter_guard_id = g_timeout_add(10, (GSourceFunc)get_leave_enter_guard, NULL);
         return TRUE;
     } else {
+        g_source_remove(_leave_enter_guard_id);
         _leave_enter_guard_id = -1;
         return FALSE;
     }
