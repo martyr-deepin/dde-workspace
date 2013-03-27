@@ -34,7 +34,10 @@ catch error
 class Item extends Widget
     constructor: (@id, @core)->
         super
-        @img = create_img("", DCore.DEntry.get_icon(@core), @element)
+        im = DCore.DEntry.get_icon(@core)
+        if im == null
+            im = DCore.get_theme_icon('invalid-dock_app', 48)
+        @img = create_img("", im, @element)
         @img.onload = =>
             if @img.width == @img.height
                 @img.className = 'square_img'
@@ -142,7 +145,6 @@ grid_show_items = (items, is_category) ->
     if not is_category
         update_items(items)
 
-    `const NUM_SHOWN_ONCE = 10`
     count = 0
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
