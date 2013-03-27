@@ -185,15 +185,17 @@ class UserInfo extends Widget
         else if _current_user == @ and not @login
             @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
+
             if DCore.Greeter.is_hide_users()
                 @element.style.paddingBottom = "0px"
                 @login.account.focus()
             else
                 @login.password.focus()
 
-            if @name.innerText == "guest"
+            if @id == "guest"
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
+
 
             @login_displayed = true
             @add_css_class("UserInfoSelected")
