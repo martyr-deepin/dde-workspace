@@ -62,10 +62,14 @@ void tray_icon_do_screen_size_change()
 static void accumulate_na_width(GdkWindow* icon, gpointer width)
 {
     g_assert(icon != _deepin_tray && icon != _fcitx_tray);
-    _na_width += gdk_window_get_width(icon) + 2 * DEFAULT_INTERVAL;
+    int icon_width = gdk_window_get_width(icon);
+    _na_width += icon_width + 2 * DEFAULT_INTERVAL;
     gdk_window_flush(icon);
     gint _na_base_x = screen_width - _na_width - DEFAULT_INTERVAL;
-    gdk_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
+    if (icon_width != GPOINTER_TO_INT(width))
+        gdk_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
+    else
+        gdk_window_move(icon, _na_base_x, NA_BASE_Y);
 }
 
 void _update_notify_area_width()
@@ -131,8 +135,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                     _update_fcitx_try_position();
                 }
             } else {
-                gdk_window_resize(data, new_width, new_height);
-                g_hash_table_insert(_icons, data, GINT_TO_POINTER(gdk_window_get_width(data)));
+                g_hash_table_insert(_icons, data, GINT_TO_POINTER((int)(new_width * 1.0 / new_height * DEFAULT_HEIGHT)));
                 _update_notify_area_width();
             }
         }
