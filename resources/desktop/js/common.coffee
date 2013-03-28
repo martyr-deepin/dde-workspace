@@ -58,6 +58,10 @@ _ICON_ID_TRASH_BIN_ = "user-trash"
 # id string for "Deepin Software Center" icon
 _ICON_ID_DSC_ = "deepin-software-center"
 
+# desktop icon size category
+D_ICON_SIZE_SMALL  = 16
+D_ICON_SIZE_NORMAL = 48
+D_ICON_SIZE_BIG    = 96
 
 # icon name for file attributes
 _FAI_READ_ONLY_  = "emblem-readonly"

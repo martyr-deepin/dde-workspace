@@ -128,7 +128,7 @@ class Item extends Widget
             else if (icon = DCore.DEntry.get_icon(@_entry)) != null
                 @item_icon.className = ""
             else
-                icon = DCore.get_theme_icon("unknown", 48)
+                icon = DCore.get_theme_icon("unknown", D_ICON_SIZE_NORMAL)
                 @item_icon.className = ""
         else
             icon = src
@@ -307,15 +307,15 @@ class Item extends Widget
         flags = DCore.DEntry.get_flags(@_entry)
         if flags.read_only? and flags.read_only == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.symbolic_link? and flags.symbolic_link == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_SYM_LINK_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.unreadable? and flags.unreadable == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_UNREADABLE_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         return
 
@@ -551,7 +551,7 @@ class DesktopEntry extends Item
 class Folder extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon("folder", 48)
+            icon = DCore.get_theme_icon("folder", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -962,7 +962,6 @@ class RichDir extends DesktopEntry
         @display_focus()
         @display_full_name()
 
-
 class Application extends DesktopEntry
     constructor : ->
         super
@@ -973,7 +972,7 @@ class Application extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
-                icon = DCore.get_theme_icon("invalid_app", 48)
+                icon = DCore.get_theme_icon("invalid_app", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1120,7 +1119,7 @@ class NormalFile extends DesktopEntry
 class InvalidLink extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon("invalid-link", 48)
+            icon = DCore.get_theme_icon("invalid-link", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1164,7 +1163,7 @@ class ComputerVDir extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1213,7 +1212,7 @@ class HomeVDir extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1307,9 +1306,9 @@ class TrashVDir extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if DCore.DEntry.get_trash_count() > 0
-                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, D_ICON_SIZE_NORMAL)
             else
-                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_, 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1401,7 +1400,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_DSC_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_DSC_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
