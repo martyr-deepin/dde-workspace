@@ -723,11 +723,12 @@ delete_selected_items = (real_delete) ->
 show_selected_items_Properties = ->
     tmp = []
     for i in selected_item
-        if (w = Widget.look_up(i))? then tmp.push(w.get_path())
+        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
 
     #XXX: we get an error here when call the nautilus DBus interface
     try
-        g_dbus_nautilus?.ShowItemProperties_sync(tmp, "")
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-properties"))?
+            DCore.DEntry.launch(entry, tmp)
     catch e
     return
 
