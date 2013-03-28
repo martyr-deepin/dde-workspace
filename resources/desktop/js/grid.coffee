@@ -727,7 +727,7 @@ show_selected_items_Properties = ->
 
     #XXX: we get an error here when call the nautilus DBus interface
     try
-        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-properties"))?
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
             DCore.DEntry.launch(entry, tmp)
     catch e
     return
