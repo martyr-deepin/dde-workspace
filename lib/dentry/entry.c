@@ -274,7 +274,17 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         if (info != NULL) {
             const char* content_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
             gboolean is_executable = g_file_info_get_attribute_boolean(info, "access::can-execute");
-            activate_file (f, content_type, is_executable);
+            //ugly hack here. we just read the first GFile*.
+            ArrayContainer _fs = _normalize_array_container(fs);
+            GFile** files = _fs.data;
+            GFile* _file_arg = files[0];
+
+            activate_file (f, content_type, is_executable, _file_arg);
+           
+            for (size_t i=0; i<_fs.num; i++) {
+                 g_object_unref(((GObject**)_fs.data)[i]);
+            }
+            g_free(_fs.data);
             g_object_unref(info);
         } else {
             char* path = g_file_get_path(f);
@@ -290,7 +300,10 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         for (size_t i=0; i<fs.num; i++) {
             list = g_list_append(list, files[i]);
         }
-        gboolean ret = g_app_info_launch(app, list, NULL, NULL);
+        GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
+        gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
+        gboolean ret = g_app_info_launch(app, list, launch_context, NULL);
+        g_object_unref(launch_context);
         g_list_free(list);
 
         for (size_t i=0; i<_fs.num; i++) {

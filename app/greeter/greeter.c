@@ -34,6 +34,7 @@
 #include <glib/gprintf.h>
 #include <sys/types.h>
 #include <signal.h>
+#include <X11/XKBlib.h>
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -103,6 +104,7 @@ static void sigterm_cb(int signum);
 static cairo_surface_t * create_root_surface(GdkScreen *screen);
 static void greeter_update_background();
 gchar* greeter_get_date();
+gboolean greeter_detect_capslock();
 
 /* GREETER */
 static gboolean is_user_valid(const gchar *username)
@@ -949,6 +951,24 @@ gchar * greeter_get_date()
     }
 
     return g_strdup(outstr);
+}
+
+JS_EXPORT_API
+gboolean greeter_detect_capslock()
+{
+    gboolean capslock_flag = False;
+
+    Display *d = XOpenDisplay((gchar*)0);
+    guint n;
+
+    if(d){
+        XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
+
+        if((n & 1)){
+            capslock_flag = True;
+        }
+    }
+    return capslock_flag;
 }
 
 int main(int argc, char **argv)

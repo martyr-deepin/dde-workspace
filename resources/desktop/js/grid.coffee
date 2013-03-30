@@ -409,6 +409,7 @@ menu_create_new_file = () ->
     create_entry_to_new_item(entry)
 
 
+# all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
@@ -657,6 +658,7 @@ update_selected_stats = (w, evt) ->
     return
 
 
+# draw selected item icons DND image on speical html canvas
 update_selected_item_drag_image = ->
     drag_draw_delay_timer = -1
 
@@ -721,11 +723,12 @@ delete_selected_items = (real_delete) ->
 show_selected_items_Properties = ->
     tmp = []
     for i in selected_item
-        if (w = Widget.look_up(i))? then tmp.push(w.get_path())
+        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
 
     #XXX: we get an error here when call the nautilus DBus interface
     try
-        g_dbus_nautilus?.ShowItemProperties_sync(tmp, "")
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
+            DCore.DEntry.launch(entry, tmp)
     catch e
     return
 
@@ -780,6 +783,7 @@ grid_do_itemselected = (evt) ->
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else echo "not implemented function #{evt.id},#{evt.title}"
     return
+
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
