@@ -290,7 +290,10 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         for (size_t i=0; i<fs.num; i++) {
             list = g_list_append(list, files[i]);
         }
-        gboolean ret = g_app_info_launch(app, list, NULL, NULL);
+        GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
+        gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
+        gboolean ret = g_app_info_launch(app, list, launch_context, NULL);
+        g_object_unref(launch_context);
         g_list_free(list);
 
         for (size_t i=0; i<_fs.num; i++) {
