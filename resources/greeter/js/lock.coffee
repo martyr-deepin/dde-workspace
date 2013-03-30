@@ -33,27 +33,22 @@ class LoginEntry extends Widget
         @password.setAttribute("maxlength", 16)
         @password.setAttribute("autofocus", true)
 
+        if DCore.Lock.detect_capslock()
+            @warning.classList.add("CapsWarningBackground")
+        else
+            @warning.classList.remove("CapsWarningBackground")
+
         @password.addEventListener("keyup", (e)=>
+            if DCore.Lock.detect_capslock()
+                @warning.classList.add("CapsWarningBackground")
+            else
+                @warning.classList.remove("CapsWarningBackground")
+
             if e.which == 13
                 if not @password.value
                     @password.focus()
                 else
                     @on_active(@password.value)
-        )
-
-        @password.addEventListener("keypress", (e)=>
-            keycode = e.KeyCode || e.which
-            is_shift = e.shiftKey || (keycode == 16) || false
-
-            if keycode >= 65 and keycode <= 90 and not is_shift
-                #echo "capslock active and not shift"
-                @warning.classList.add("CapsWarningBackground")
-            else if keycode >=97 and keycode <= 122 and is_shift
-                #echo "capslock active and shift"
-                @warning.classList.add("CapsWarningBackground")
-            else
-                #echo "capslock inactive"
-                @warning.classList.remove("CapsWarningBackground")
         )
 
         @login = create_element("button", "LoginButton", @element)

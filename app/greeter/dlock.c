@@ -37,6 +37,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "X_misc.h"
+#include <X11/XKBlib.h>
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -353,6 +354,23 @@ static void lock_report_pid()
     g_free(contents);
 }
 
+JS_EXPORT_API
+gboolean lock_detect_capslock()
+{
+    gboolean capslock_flag = False;
+
+    Display *d = XOpenDisplay((gchar*)0);
+    guint n;
+
+    if(d){
+        XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
+
+        if((n & 1)){
+            capslock_flag = True;
+        }
+    }
+    return capslock_flag;
+}
 
 int main(int argc, char **argv)
 {

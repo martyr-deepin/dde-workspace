@@ -64,11 +64,25 @@ void desktop_run_in_terminal(char* executable)
 #define RESPONSE_RUN_IN_TERMINAL 1002
 
 static void
-run_file  (GFile* file)
+run_file  (GFile* file, GFile* _file_arg)
 {
+    char* cmd_line;
+
     char* file_path = g_file_get_path (file);
-    g_spawn_command_line_async (file_path, NULL);
+    if (_file_arg != NULL)
+    {
+        char* _file_arg_uri = g_file_get_uri (_file_arg);
+        cmd_line = g_strdup_printf ("%s %s", file_path, _file_arg_uri);
+	g_free (_file_arg_uri);
+    }
+    else
+    {
+        cmd_line = g_strdup (file_path);
+    }
     g_free (file_path);
+
+    g_spawn_command_line_async (cmd_line, NULL);
+    g_free (cmd_line);
 }
 
 void desktop_run_in_terminal(char* executable);
@@ -91,7 +105,8 @@ display_file (GFile* file, const char* content_type)
 }
 
 void
-activate_file (GFile* file, const char* content_type, gboolean is_executable)
+activate_file (GFile* file, const char* content_type, 
+               gboolean is_executable, GFile* _file_arg)
 {
     char* file_name = g_file_get_basename (file);
     g_debug ("activate_file: %s", file_name);
@@ -143,7 +158,7 @@ activate_file (GFile* file, const char* content_type, gboolean is_executable)
                 display_file (file, content_type);
                 break;
             case RESPONSE_RUN:
-                run_file (file);
+                run_file (file, NULL);
                 break;
             case GTK_RESPONSE_CANCEL:
                 break;
@@ -154,7 +169,7 @@ activate_file (GFile* file, const char* content_type, gboolean is_executable)
         //2. an executable binary file
         else
         {
-            run_file (file);
+            run_file (file, _file_arg);
         }
     }
     //for non-executables just open it.

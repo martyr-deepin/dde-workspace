@@ -48,6 +48,8 @@ class Item extends Widget
                 @img.style.padding = "#{grap}px 0px"
             else
                 @img.className = 'vbar_img'
+        @img.onerror = (e) =>
+            @img.src = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true

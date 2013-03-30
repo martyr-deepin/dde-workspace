@@ -133,6 +133,7 @@ document.body.onkeydown = (e)->
         when 38 #p
             selected_up()
 
+last_val = ''
 document.body.onkeypress = (e) ->
     if e.ctrlKey
         switch e.which
@@ -152,12 +153,17 @@ document.body.onkeypress = (e) ->
                 if s_box.value == ""
                     DCore.Launcher.exit_gui()
                 else
+                    last_val = s_box.value
                     s_box.value = ""
                     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                     grid_load_category(_select_category_id)
-                return  # avoid to invoke search function
+                return  # to avoid to invoke search function
             when 8 # Backspace
+                last_val = s_box.value
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
+                if s_box.value == "" and last_val != s_box.value
+                    grid_load_category(_select_category_id)
+                return  # to avoid to invoke search function
             when 13 # Enter
                 if item_selected
                     item_selected.do_click()

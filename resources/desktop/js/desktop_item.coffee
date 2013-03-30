@@ -128,7 +128,7 @@ class Item extends Widget
             else if (icon = DCore.DEntry.get_icon(@_entry)) != null
                 @item_icon.className = ""
             else
-                icon = DCore.get_theme_icon("unknown", 48)
+                icon = DCore.get_theme_icon("unknown", D_ICON_SIZE_NORMAL)
                 @item_icon.className = ""
         else
             icon = src
@@ -307,15 +307,15 @@ class Item extends Widget
         flags = DCore.DEntry.get_flags(@_entry)
         if flags.read_only? and flags.read_only == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAI_READ_ONLY_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.symbolic_link? and flags.symbolic_link == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_SYM_LINK_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_SYM_LINK_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         if flags.unreadable? and flags.unreadable == 1
             ele = document.createElement("li")
-            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_UNREADABLE_, 16)}\" draggable=\"false\" />"
+            ele.innerHTML = "<img src=\"#{DCore.get_theme_icon(_FAT_UNREADABLE_, D_ICON_SIZE_SMALL)}\" draggable=\"false\" />"
             @item_attrib.appendChild(ele)
         return
 
@@ -364,7 +364,7 @@ class Item extends Widget
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
         switch evt.keyCode
-            when 35 # 'End' key
+            when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
                 ws = window.getSelection()
                 range = document.createRange()
@@ -375,7 +375,7 @@ class Item extends Widget
                 range.setEnd(@item_name.childNodes[0], @item_name.childNodes[0].length)
                 ws.removeAllRanges()
                 ws.addRange(range)
-            when 36 # 'Home' key
+            when 36 # 'Home' key, cant't handled in keypress; set caret to the start of whole name
                 evt.preventDefault()
                 ws = window.getSelection()
                 range = document.createRange()
@@ -395,6 +395,8 @@ class Item extends Widget
             when 13   # enter
                 evt.preventDefault()
                 @item_complete_rename(true)
+
+                # tell grid to ingore the same event after this event handler has been unregisterd
                 ++ingore_keyup_counts
             when 27   # esc
                 evt.preventDefault()
@@ -543,12 +545,13 @@ class DesktopEntry extends Item
             when 9 then delete_selected_items(evt.shiftKey == true)
             when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
+        return
 
 
 class Folder extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon("folder", 48)
+            icon = DCore.get_theme_icon("folder", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -708,6 +711,7 @@ class RichDir extends DesktopEntry
             when 3 then @item_rename()
             when 5 then @item_ungroup()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
+        return
 
 
     item_normal : =>
@@ -958,18 +962,17 @@ class RichDir extends DesktopEntry
         @display_focus()
         @display_full_name()
 
-
 class Application extends DesktopEntry
     constructor : ->
         super
-        @show_launcher_box = false
+        @show_launcher_box = null
         @animate_background = null
 
 
     set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
-                icon = DCore.get_theme_icon("invalid_app", 48)
+                icon = DCore.get_theme_icon("invalid_app", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1004,8 +1007,8 @@ class Application extends DesktopEntry
                     DCore.DEntry.launch(@_entry, tmp_list)
 
             if @show_launcher_box == true
-                @show_launcher_box = false
                 @animate_combining_cancel()
+            @show_launcher_box = null
         return
 
 
@@ -1015,7 +1018,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_launcher_box == false
+            if @show_launcher_box == null
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1026,6 +1029,8 @@ class Application extends DesktopEntry
                     if all_are_apps
                         @show_launcher_box = true
                         @animate_combining()
+                    else
+                        @show_launcher_box = false
         return
 
 
@@ -1035,7 +1040,7 @@ class Application extends DesktopEntry
         else
             evt.dataTransfer.dropEffect = "move"
 
-            if @show_launcher_box == false
+            if @show_launcher_box == null
                 if (all_are_apps = (evt.dataTransfer.files.length > 0))
                     for file in evt.dataTransfer.files
                         e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -1046,6 +1051,8 @@ class Application extends DesktopEntry
                     if all_are_apps
                         @show_launcher_box = true
                         @animate_combining()
+                    else
+                        @show_launcher_box = false
         return
 
 
@@ -1057,8 +1064,8 @@ class Application extends DesktopEntry
             evt.dataTransfer.dropEffect = "move"
 
             if @show_launcher_box == true
-                @show_launcher_box = false
                 @animate_combining_cancel()
+            @show_launcher_box = null
         return
 
 
@@ -1112,7 +1119,7 @@ class NormalFile extends DesktopEntry
 class InvalidLink extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon("invalid-link", 48)
+            icon = DCore.get_theme_icon("invalid-link", D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1156,7 +1163,7 @@ class ComputerVDir extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_COMPUTER_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1182,6 +1189,7 @@ class ComputerVDir extends DesktopEntry
                 DCore.Desktop.run_deepin_settings("system_information")
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>
@@ -1204,7 +1212,7 @@ class HomeVDir extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_USER_HOME_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1212,6 +1220,7 @@ class HomeVDir extends DesktopEntry
 
     get_path : =>
         ""
+
 
     do_drop : (evt) ->
         super
@@ -1224,6 +1233,7 @@ class HomeVDir extends DesktopEntry
                 tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
         return
+
 
     do_dragenter : (evt) ->
         super
@@ -1267,7 +1277,9 @@ class HomeVDir extends DesktopEntry
                     #XXX: we get an error here when call the nautilus DBus interface
                     g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@_entry)}"], "")
                 catch e
-            else echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+            else
+                echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>
@@ -1294,9 +1306,9 @@ class TrashVDir extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if DCore.DEntry.get_trash_count() > 0
-                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_FULL_, D_ICON_SIZE_NORMAL)
             else
-                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_, 48)
+                icon = DCore.get_theme_icon(_ICON_ID_TRASH_BIN_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
@@ -1367,6 +1379,7 @@ class TrashVDir extends DesktopEntry
                 DCore.DEntry.confirm_trash()
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
+        return
 
 
     item_rename : =>
@@ -1387,7 +1400,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
     set_icon : (src = null) =>
         if src == null
-            icon = DCore.get_theme_icon(_ICON_ID_DSC_, 48)
+            icon = DCore.get_theme_icon(_ICON_ID_DSC_, D_ICON_SIZE_NORMAL)
         else
             icon = src
         super(icon)
