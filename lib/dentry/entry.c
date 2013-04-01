@@ -37,6 +37,7 @@
 #include "fileops_delete.h"
 #include "thumbnails.h"
 #include "mime_actions.h"
+#include "fileops_error_reporting.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
@@ -205,8 +206,8 @@ char* dentry_get_icon(Entry* e)
     }
 }
 /*
- *	this differs dentry_get_icon:
- *	dentry_get_icon can return data_uri instead of actual paths
+ *      this differs dentry_get_icon:
+ *      dentry_get_icon can return data_uri instead of actual paths
  */
 char* dentry_get_icon_path(Entry* e)
 {
@@ -427,7 +428,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
         GError* err = NULL;
         GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
         if (err) {
-	    show_rename_error_dialog (name, FALSE);
+            show_rename_error_dialog (name, FALSE);
             g_error_free(err);
             return FALSE;
         } else {
@@ -438,7 +439,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
         const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
         if (!change_desktop_entry_name(path, name))
         {
-	    show_rename_error_dialog (name, TRUE);
+            show_rename_error_dialog (name, TRUE);
             return FALSE;
         }
         else
@@ -471,6 +472,83 @@ void dentry_move(ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
     fileops_move(_fs.data, _fs.num, dest);
+    for (size_t i=0; i<_fs.num; i++) {
+        g_object_unref(((GObject**)_fs.data)[i]);
+    }
+    g_free(_fs.data);
+}
+
+static
+void _do_dereference_symlink_copy(GFile* src, GFile* dest)
+{
+    GError* error = NULL;
+    if (!g_file_copy(src, dest, G_FILE_COPY_NONE, NULL, NULL, NULL, &error)) {
+        g_warning("error message: %s, error code: %d\n", error->message, error->code);
+        FileOpsResponse* response;
+        response = fileops_move_copy_error_show_dialog(_("copy"), error, src, dest, NULL);
+
+        if (response != NULL) {
+            switch (response->response_id)
+            {
+            case GTK_RESPONSE_CANCEL:
+                //cancel all operations
+                g_debug ("response : Cancel");
+                break;
+
+            case CONFLICT_RESPONSE_SKIP:
+                //skip, imediately return.
+                g_debug ("response : Skip");
+                break;
+            case CONFLICT_RESPONSE_RENAME:
+                //rename, redo operations
+                g_warning ("response : Rename to %s", response->file_name);
+
+                GFile* dest_parent = g_file_get_parent(dest);
+                GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+                g_object_unref(dest_parent);
+
+                _do_dereference_symlink_copy(src, new_dest);
+                g_object_unref(new_dest);
+
+                break;
+            case CONFLICT_RESPONSE_REPLACE:
+                {
+                    GError* error = NULL;
+                    g_file_delete(dest, NULL, &error);
+
+                    if (error != NULL) {
+                        //show error dialog
+                        g_warning ("_delete_files_async: %s", error->message);
+                        g_error_free(error);
+                        break;
+                    }
+
+                    g_file_copy(src, dest, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
+
+                    g_debug ("response : Replace");
+                    break;
+                }
+            default:
+                break;
+            }
+
+            free_fileops_response(response);
+            g_error_free(error);
+        }
+    }
+}
+void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
+{
+    ArrayContainer _fs = _normalize_array_container(fs);
+
+    GFile** _srcs = (GFile**)_fs.data;
+    for (size_t i = 0; i < _fs.num; ++i) {
+        const char* src_basename = g_file_get_basename(_srcs[i]);
+        GFile* dest = g_file_get_child(dest_dir, src_basename);
+        _do_dereference_symlink_copy(_srcs[i], dest);
+        g_object_unref(dest);
+    }
+
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
