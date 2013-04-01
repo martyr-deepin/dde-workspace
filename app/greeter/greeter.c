@@ -335,14 +335,17 @@ static gboolean do_exit(gpointer user_data)
     // start session failed
     if(exit_flag == 1){
 
+        g_warning("start session failed");
         return FALSE;
 
     // already receive sigterm
     }else if(exit_flag == 2){
 
+        g_warning("already receive sigterm");
         return FALSE;
     // manual kill greeter
     }else{
+        g_warning("timeout, kill greeter");
         clean_before_exit();
         exit(0);
     }
@@ -391,7 +394,7 @@ static void start_session(const gchar *session) {
     }
     g_free(user_lock_path);
 
-    g_timeout_add_seconds(120, do_exit, NULL);
+    g_timeout_add_seconds(10, do_exit, NULL);
 
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         DBG("%s", "start session failed");

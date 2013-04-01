@@ -715,6 +715,7 @@ delete_selected_items = (real_delete) ->
         w = Widget.look_up(i)
         if w? and w.modifiable == true then tmp.push(w.get_entry())
 
+    return if tmp.length == 0
     if real_delete then DCore.DEntry.delete_files(tmp, true)
     else DCore.DEntry.trash(tmp)
     return
