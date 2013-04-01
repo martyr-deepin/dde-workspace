@@ -36,7 +36,6 @@ static GFile* _desktop_file = NULL;
 static GFile* _trash_can = NULL;
 static int _inotify_fd = -1;
 
-
 void trash_changed()
 {
     GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
@@ -171,7 +170,8 @@ gboolean _inotify_poll()
         for (int i=0; i<length; ) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
             i += EVENT_SIZE+event->len;
-            if (event->name[0] == '.' && !g_str_has_prefix(event->name, DEEPIN_RICH_DIR)) continue;
+            if(file_filter(event->name))
+                continue;
             if (event->len) {
                 GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
 
