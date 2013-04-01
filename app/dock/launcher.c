@@ -43,6 +43,7 @@ static GList* _apps_position = NULL;
 static
 JSValueRef build_app_info(const char* app_id)
 {
+    g_assert(app_id != NULL);
     g_assert(g_key_file_has_group(k_apps, app_id));
     char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
     GAppInfo* info = NULL;
@@ -67,6 +68,13 @@ JSValueRef build_app_info(const char* app_id)
     }
 
     JSObjectRef json = json_create();
+    if (info == NULL) {
+        g_warning("cannot get app info");
+        g_key_file_remove_group(k_apps, app_id, NULL);
+        save_app_config(k_apps, APPS_INI);
+        update_task_list();
+        return jsvalue_null();
+    }
     json_append_nobject(json, "Core", info, g_object_ref, g_object_unref);
     json_append_string(json, "Id", app_id);
     json_append_string(json, "Name", g_app_info_get_display_name(info));
