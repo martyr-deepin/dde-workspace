@@ -48,11 +48,15 @@ DCore.signal_connect("active_window_changed", (info)->
 )
 
 DCore.signal_connect("launcher_added", (info) ->
+    if not info
+        return
     c = Widget.look_up(info.Id)
     if not c
         new Launcher(info.Id, info.Icon, info.Core)
 )
 DCore.signal_connect("dock_request", (info) ->
+    if not info
+        return
     group = Widget.look_up("le_"+info.Id)
     if group
         apply_flash(group.img, 0.3)

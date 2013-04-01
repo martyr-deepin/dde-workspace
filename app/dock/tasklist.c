@@ -727,6 +727,9 @@ gboolean dock_request_dock_by_client_id(double id)
     if (dock_has_launcher(c->app_id)) {
         // already has this app info
         return FALSE;
+    } else if (c->app_id == NULL || c->exec == NULL || c->icon == NULL) {
+        g_warning("cannot dock app, because app_id, command line or icon maybe NULL");
+        return FALSE;
     } else {
         request_by_info(c->app_id, c->exec, c->icon);
         return TRUE;
