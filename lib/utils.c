@@ -20,6 +20,7 @@
  **/
 #include "utils.h"
 #include "jsextension.h"
+#include "dentry/entry.h"
 #include <glib.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -362,4 +363,12 @@ char* to_lower_inplace(char* str)
     for (size_t i=0; i<strlen(str); i++)
         str[i] = g_ascii_tolower(str[i]);
     return str;
+}
+
+gboolean file_filter(const char *file_name)
+{
+    if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
+        return TRUE;
+    else 
+        return FALSE;
 }
