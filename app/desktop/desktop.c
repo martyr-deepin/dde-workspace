@@ -60,7 +60,7 @@ JSObjectRef desktop_get_desktop_entries()
 
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
-        if(file_filter(file_name))
+        if(desktop_file_filter(file_name))
             continue;
         char* path = g_build_filename(desktop_path, file_name, NULL);
         Entry* e = dentry_create_by_path(path);
