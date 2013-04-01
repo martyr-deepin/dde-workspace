@@ -24,6 +24,7 @@
 #include "pixbuf.h"
 #include "i18n.h"
 #include "dentry/entry.h"
+#include "inotify_item.h"
 
 #include <dwebview.h>
 #include <utils.h>

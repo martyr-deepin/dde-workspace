@@ -21,6 +21,7 @@
 #include "dwebview.h"
 #include "xdg_misc.h"
 #include "dentry/entry.h"
+#include "inotify_item.h"
 #include "utils.h"
 #include <gio/gio.h>
 #include <sys/inotify.h>
@@ -229,3 +230,12 @@ gboolean _inotify_poll()
         return FALSE;
     }
 }
+
+gboolean desktop_file_filter(const char *file_name)
+{
+    if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
+        return TRUE;
+    else 
+        return FALSE;
+}
+
