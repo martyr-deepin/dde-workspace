@@ -179,6 +179,19 @@ void _on_realize(GtkWidget* container)
     g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
 }
 
+
+void launcher_show()
+{
+    GdkWindow* w = gtk_widget_get_window(container);
+    gdk_window_show(w);
+}
+
+void launcher_hide()
+{
+    GdkWindow* w = gtk_widget_get_window(container);
+    gdk_window_hide(w);
+}
+
 int main(int argc, char* argv[])
 {
     is_debug = FALSE;
@@ -230,6 +243,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
+    setup_dbus_service ();
     /* monitor_resource_file("launcher", webview); */
     gtk_widget_show_all(container);
     gtk_main();
