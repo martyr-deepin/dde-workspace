@@ -181,11 +181,9 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     char *re_class = NULL;
     get_wmclass(icon, &re_class, NULL);
     if (g_strcmp0(re_class, DEEPIN_TRAY_ICON) == 0) {
-        if (_deepin_tray == NULL) {
-            _deepin_tray = icon;
-            _deepin_tray_width = gdk_window_get_width(icon);
-            _update_deepin_try_position();
-        }
+        _deepin_tray = icon;
+        _deepin_tray_width = gdk_window_get_width(icon);
+        _update_deepin_try_position();
     } else if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
         _fcitx_tray = icon;
         _fcitx_tray_width = gdk_window_get_width(icon);
