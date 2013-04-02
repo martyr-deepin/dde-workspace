@@ -98,3 +98,4 @@ char* desktop_get_transient_icon (Entry* p1)
 
     return ticon_path;
 }
+

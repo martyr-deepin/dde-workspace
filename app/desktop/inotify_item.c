@@ -21,6 +21,7 @@
 #include "dwebview.h"
 #include "xdg_misc.h"
 #include "dentry/entry.h"
+#include "inotify_item.h"
 #include "utils.h"
 #include <gio/gio.h>
 #include <sys/inotify.h>
@@ -35,7 +36,6 @@ static GHashTable* _monitor_table = NULL;
 static GFile* _desktop_file = NULL;
 static GFile* _trash_can = NULL;
 static int _inotify_fd = -1;
-
 
 void trash_changed()
 {
@@ -171,7 +171,8 @@ gboolean _inotify_poll()
         for (int i=0; i<length; ) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
             i += EVENT_SIZE+event->len;
-            if (event->name[0] == '.' && !g_str_has_prefix(event->name, DEEPIN_RICH_DIR)) continue;
+            if(desktop_file_filter(event->name))
+                continue;
             if (event->len) {
                 GFile* p = g_hash_table_lookup(_monitor_table, GINT_TO_POINTER(event->wd));
 
@@ -229,3 +230,12 @@ gboolean _inotify_poll()
         return FALSE;
     }
 }
+
+gboolean desktop_file_filter(const char *file_name)
+{
+    if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
+        return TRUE;
+    else 
+        return FALSE;
+}
+

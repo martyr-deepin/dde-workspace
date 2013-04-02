@@ -24,6 +24,7 @@
 #include "pixbuf.h"
 #include "i18n.h"
 #include "dentry/entry.h"
+#include "inotify_item.h"
 
 #include <dwebview.h>
 #include <utils.h>
@@ -60,8 +61,8 @@ JSObjectRef desktop_get_desktop_entries()
 
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
-        if (file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR)) continue;
-
+        if(desktop_file_filter(file_name))
+            continue;
         char* path = g_build_filename(desktop_path, file_name, NULL);
         Entry* e = dentry_create_by_path(path);
         g_free(path);
