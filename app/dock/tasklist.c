@@ -29,6 +29,7 @@
 #include "tasklist.h"
 #include "dock_hide.h"
 #include "region.h"
+#include "workspace.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -37,7 +38,6 @@ extern Window get_dock_window();
 #include <dwebview.h>
 #include <string.h>
 #include <math.h>
-
 
 static Atom ATOM_WINDOW_HIDDEN;
 static Atom ATOM_CLIENT_LIST;
@@ -86,6 +86,7 @@ typedef struct {
     gboolean is_overlay_dock;
     gboolean is_hidden;
     gboolean is_maximize;
+    Workspace workspace[4];
 
     Window window;
     GdkWindow* gdkwindow;
@@ -129,6 +130,11 @@ Client* create_client_from_window(Window w)
     c->app_id = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
+    // TODO: initialize workspace
+    c->workspace[0] = curr_space;
+    c->workspace[1] = curr_space;
+    c->workspace[2] = curr_space;
+    c->workspace[3] = curr_space;
 
 
 
@@ -564,10 +570,19 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
+gboolean is_cross_workspaces_contaion_current_space(Client* c)
+{
+    for (int i = 0; i < MAX_CROSS_WORKSPACE_NUM; ++i)
+        if (is_same_workspace(&c->workspace[i], &curr_space))
+            return TRUE;
+
+    return FALSE;
+}
+
 static
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
-    return !c->is_hidden && c->is_maximize;
+    return is_cross_workspaces_contaion_current_space(c) && !c->is_hidden && c->is_maximize;
 }
 gboolean dock_has_maximize_client()
 {
@@ -598,7 +613,7 @@ void _update_is_overlay_client(Client* c)
 static
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
-    return c->is_overlay_dock;
+    return is_cross_workspaces_contaion_current_space(c) && c->is_overlay_dock;
 }
 gboolean dock_has_overlay_client()
 {
@@ -763,4 +778,15 @@ void dock_set_compiz_workaround_preview(gboolean v)
         g_object_unref(compiz_workaround);
         _v = v;
     }
+}
+
+void get_mouse_position(GtkWidget* win, int* x, int* y)
+{
+    GdkDeviceManager *device_manager;
+    GdkDevice *pointer;
+
+    device_manager = gdk_display_get_device_manager(gdk_window_get_display(gtk_widget_get_window(win)));
+    pointer = gdk_device_manager_get_client_pointer(device_manager);
+    /* gdk_window_get_device_position(gtk_widget_get_window(window), pointer, x, y, NULL); */
+    gdk_device_get_position(pointer, NULL, x, y);
 }

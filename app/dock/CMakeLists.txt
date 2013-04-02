@@ -7,7 +7,8 @@ GEN_JSC_SOURCE(JSC_GEN "jsc")
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 SET(TEST_SRC "../../test/${NAME}_test.c" "../../test/test.c")
-SET(SRC_LIST dock.c dock_hide.c dock_config.c tray.c handle_icon.c dominant_color.c tasklist.c draw.c launcher.c region.c dbus.c ${JSC_GEN})
+SET(SRC_LIST dock.c dock_hide.c dock_config.c tray.c handle_icon.c
+    dominant_color.c tasklist.c draw.c launcher.c region.c dbus.c workspace.c ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST} ${TEST_SRC})
 
