@@ -105,6 +105,7 @@ static cairo_surface_t * create_root_surface(GdkScreen *screen);
 static void greeter_update_background();
 gchar* greeter_get_date();
 gboolean greeter_detect_capslock();
+double greeter_get_user_passwordmode(const gchar *username);
 
 /* GREETER */
 static gboolean is_user_valid(const gchar *username)
@@ -972,6 +973,81 @@ gboolean greeter_detect_capslock()
         }
     }
     return capslock_flag;
+}
+
+GPtrArray *greeter_get_nopasswdlogin_users()
+{
+    GPtrArray *nopasswdlogin = g_ptr_array_new();
+
+    GFile *file = g_file_new_for_path("/etc/group");
+    g_assert(file);
+
+    GFileInputStream *input = g_file_read(file, NULL, &error);
+    if(error != NULL){
+        g_warning("read /etc/group failed");
+        g_clear_error(&error);
+    }
+    g_assert(input);
+
+    GDataInputStream *data_input = g_data_input_stream_new((GInputStream *) input);
+    g_assert(data_input);
+    
+    char *data = (char *) 1;
+    while(data){
+        gsize length = 0;
+        data = g_data_input_stream_read_line(data_input, &length, NULL, &error);
+        if(error != NULL){
+            g_warning("read line error");
+            g_clear_error(&error);
+        }
+        
+        if(data != NULL){
+            if(g_str_has_prefix(data, "nopasswdlogin")){
+                gchar **nopwd_line = g_strsplit(data, ":", 4);
+                g_debug("data:%s", data);
+                g_debug("nopwd_line[3]:%s", nopwd_line[3]);
+                
+                if(nopwd_line[3] != NULL){
+                    gchar **user_strv = g_strsplit(nopwd_line[3], ",", 1024);
+
+                    for(int i = 0; i < g_strv_length(user_strv); i++){
+                        g_debug("user_strv[i]:%s", user_strv[i]);
+                        g_ptr_array_add(nopasswdlogin, g_strdup(user_strv[i]));
+                    }
+                    g_strfreev(user_strv);
+                }
+                g_strfreev(nopwd_line);
+            }
+        }else{
+            break;
+        }
+    }
+
+    g_object_unref(data_input);
+    g_object_unref(input);
+    g_object_unref(file);
+    
+    return nopasswdlogin;
+}
+
+JS_EXPORT_API
+gboolean greeter_is_user_nopasswdlogin(const gchar *username)
+{
+    gboolean ret = False;
+    GPtrArray *nopwdlogin = greeter_get_nopasswdlogin_users();
+
+    for(int i = 0; i < nopwdlogin->len; i++){
+        g_debug("array i:%s", (gchar*) g_ptr_array_index(nopwdlogin, i));
+
+        if(g_strcmp0(username, g_ptr_array_index(nopwdlogin, i)) == 0){
+            g_debug("nopwd login true");
+            ret = True;
+        }
+    }
+   
+    g_ptr_array_free(nopwdlogin, TRUE);
+    
+    return ret;
 }
 
 int main(int argc, char **argv)

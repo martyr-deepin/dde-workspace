@@ -43,6 +43,7 @@ static GList* _apps_position = NULL;
 static
 JSValueRef build_app_info(const char* app_id)
 {
+    g_assert(app_id != NULL);
     g_assert(g_key_file_has_group(k_apps, app_id));
     char* path = g_key_file_get_string(k_apps, app_id, "Path", NULL);
     GAppInfo* info = NULL;
@@ -66,6 +67,13 @@ JSValueRef build_app_info(const char* app_id)
         g_free(cmdline);
     }
 
+    if (info == NULL) {
+        g_warning("cannot get app info");
+        g_key_file_remove_group(k_apps, app_id, NULL);
+        save_app_config(k_apps, APPS_INI);
+        update_task_list();
+        return jsvalue_null();
+    }
     JSObjectRef json = json_create();
     json_append_nobject(json, "Core", info, g_object_ref, g_object_unref);
     json_append_string(json, "Id", app_id);
@@ -138,8 +146,11 @@ void update_dock_apps()
 
         for (gsize i=0; i<size; i++) {
             if (g_key_file_has_group(k_apps, list[i])) {
-                js_post_message("launcher_added", build_app_info(list[i]));
-                _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
+                JSValueRef app_info = build_app_info(list[i]);
+                if (app_info) {
+                    js_post_message("launcher_added", app_info);
+                    _apps_position = g_list_prepend(_apps_position, g_strdup(list[i]));
+                }
             }
         }
 
@@ -281,7 +292,9 @@ void dock_request_dock(const char* path)
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);
-        js_post_message("dock_request", build_app_info(app_id));
+        JSValueRef app_info = build_app_info(app_id);
+        if (app_info)
+            js_post_message("dock_request", app_info);
         g_free(app_id);
     } else {
         g_warning("request dock %s is invalide\n", path);
@@ -365,8 +378,11 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
 
         save_app_config(k_apps, APPS_INI);
 
-        if (!is_has_client(name))
-            js_post_message("launcher_added", build_app_info(name));
+        if (!is_has_client(name)) {
+            JSValueRef app_info = build_app_info(name);
+            if (app_info)
+                js_post_message("launcher_added", app_info);
+        }
     }
     return TRUE;
 }
