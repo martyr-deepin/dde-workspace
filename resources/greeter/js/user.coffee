@@ -191,6 +191,9 @@ class UserInfo extends Widget
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
 
+            else if DCore.Greeter.is_user_nopasswdlogin(@id)
+                @login.password.style.display = "none"
+                @login.password.value = "login"
 
             @login_displayed = true
             @add_css_class("UserInfoSelected")
