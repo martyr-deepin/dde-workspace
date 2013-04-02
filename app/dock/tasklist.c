@@ -570,7 +570,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
-gboolean is_cross_workspaces_contaion_current_space(Client* c)
+gboolean is_cross_workspaces_contain_current_space(Client* c)
 {
     for (int i = 0; i < MAX_CROSS_WORKSPACE_NUM; ++i)
         if (is_same_workspace(&c->workspace[i], &curr_space))
@@ -582,7 +582,7 @@ gboolean is_cross_workspaces_contaion_current_space(Client* c)
 static
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contaion_current_space(c) && !c->is_hidden && c->is_maximize;
+    return is_cross_workspaces_contain_current_space(c) && !c->is_hidden && c->is_maximize;
 }
 gboolean dock_has_maximize_client()
 {
@@ -613,7 +613,7 @@ void _update_is_overlay_client(Client* c)
 static
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contaion_current_space(c) && c->is_overlay_dock;
+    return is_cross_workspaces_contain_current_space(c) && c->is_overlay_dock;
 }
 gboolean dock_has_overlay_client()
 {
