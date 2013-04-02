@@ -233,6 +233,7 @@ gboolean _inotify_poll()
 
 gboolean desktop_file_filter(const char *file_name)
 {
+    g_assert(file_name != NULL);
     if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
         return TRUE;
     else 
