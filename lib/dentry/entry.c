@@ -282,7 +282,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             GFile** files = NULL;
             if (fs.num != 0)
             {
-                ArrayContainer _fs = _normalize_array_container(fs);
+                _fs = _normalize_array_container(fs);
                 GFile** files = _fs.data;
                 _file_arg = files[0];
             }
