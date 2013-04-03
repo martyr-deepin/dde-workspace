@@ -282,13 +282,13 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             GFile** files = NULL;
             if (fs.num != 0)
             {
-                ArrayContainer _fs = _normalize_array_container(fs);
+                _fs = _normalize_array_container(fs);
                 GFile** files = _fs.data;
                 _file_arg = files[0];
             }
 
             activate_file (f, content_type, is_executable, _file_arg);
-           
+
             if (fs.num != 0)
             {
                 for (size_t i=0; i<_fs.num; i++) {
@@ -544,10 +544,13 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 
     GFile** _srcs = (GFile**)_fs.data;
     for (size_t i = 0; i < _fs.num; ++i) {
-        const char* src_basename = g_file_get_basename(_srcs[i]);
+        char* src_basename = g_file_get_basename(_srcs[i]);
         GFile* dest = g_file_get_child(dest_dir, src_basename);
+        g_free(src_basename);
+
         _do_dereference_symlink_copy(_srcs[i], dest);
-        g_chmod(g_file_get_path(_srcs[i]), S_IRWXU | S_IROTH | S_IRGRP);
+        g_chmod(g_file_get_path(dest), S_IRWXU | S_IROTH | S_IRGRP);
+
         g_object_unref(dest);
     }
 
