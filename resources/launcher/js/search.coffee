@@ -161,9 +161,10 @@ document.body.onkeypress = (e) ->
             when 8 # Backspace
                 last_val = s_box.value
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                if s_box.value == "" and last_val != s_box.value
-                    grid_load_category(_select_category_id)
-                return  # to avoid to invoke search function
+                if s_box.value == ""
+                    if last_val != s_box.value
+                        grid_load_category(_select_category_id)
+                    return  # to avoid to invoke search function
             when 13 # Enter
                 if item_selected
                     item_selected.do_click()

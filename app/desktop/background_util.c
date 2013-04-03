@@ -921,7 +921,7 @@ initial_setup (GSettings *settings)
      *	don't remove following comments:
      * 	to keep pixmap resource available
     */
-    XSetCloseDownMode (display, RetainPermanent);
+    //XSetCloseDownMode (display, RetainPermanent);
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
