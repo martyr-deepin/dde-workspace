@@ -894,6 +894,18 @@ class RichDir extends DesktopEntry
                 if w? then w.hide_pop_block()
             )
 
+            ele.addEventListener('contextmenu', (evt) ->
+                evt.stopPropagation()
+                w = Widget.look_up(this.parentElement.id)
+                @contextMenu = build_menu(w.build_block_item_menu())
+            )
+    
+            ele.addEventListener("itemselected", (evt) ->
+                evt.stopPropagation()
+                w = Widget.look_up(this.parentElement.id)
+                w.block_do_itemselected(evt, this)
+            )
+            
             ele_ul.appendChild(ele)
 
         # 20px for ul padding, 2px for border, 8px for scrollbar
@@ -948,8 +960,6 @@ class RichDir extends DesktopEntry
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
 
-
-
     hide_pop_block : =>
         if @div_pop?
             @sub_items = {}
@@ -961,6 +971,61 @@ class RichDir extends DesktopEntry
         @display_selected()
         @display_focus()
         @display_full_name()
+
+
+    build_block_item_menu : =>
+        menu = []
+        menu.push([1, _("Open")])
+        menu.push([])
+        menu.push([3, _("Cut")])
+        menu.push([4, _("Copy")])
+        menu.push([])
+        menu.push([6, _("Delete")])
+        menu.push([])
+        menu.push([8, _("Properties")])
+        menu
+
+    block_do_itemselected : (evt, self) ->
+        switch evt.id
+            when 1
+                w = Widget.look_up(self.parentElement.id)
+                if w? then e = w.sub_items[self.id]
+                if e? then DCore.DEntry.launch(e, [])
+                if w? then w.hide_pop_block()
+            when 3
+                list = []
+                w = Widget.look_up(self.parentElement.id)
+                if w? then e = w.sub_items[self.id]
+                if e?
+                    list.push(e)
+                    DCore.DEntry.clipboard_cut(list)
+                if w? then w.hide_pop_block()
+            when 4
+                list = []
+                w = Widget.look_up(self.parentElement.id)
+                if w? then e = w.sub_items[self.id]
+                if e?
+                    list.push(e)
+                    DCore.DEntry.clipboard_copy(list)
+                if w? then w.hide_pop_block()
+            when 6
+                list = []
+                w = Widget.look_up(self.parentElement.id)
+                if w? then e = w.sub_items[self.id]
+                if e?
+                    list.push(e)
+                    DCore.DEntry.trash(list)
+            when 8
+                list = []
+                w = Widget.look_up(self.parentElement.id)
+                if w? then e = w.sub_items[self.id]
+                if e?
+                    list.push(e)
+                    if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
+                        DCore.DEntry.launch(entry, list)
+            else echo "menu clicked:id=#{env.id} title=#{env.title}"
+        return
+
 
 class Application extends DesktopEntry
     constructor : ->
