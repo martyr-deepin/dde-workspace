@@ -10,6 +10,7 @@
 extern int _dock_height;
 extern void _change_workarea_height(int height);
 extern GdkWindow* DOCK_GDK_WINDOW();
+extern gboolean mouse_pointer_leave();
 
 #define GUARD_WINDOW_HEIGHT 1
 
@@ -330,6 +331,24 @@ void init_dock_guard_window()
     update_dock_guard_window_position();
 }
 
+void get_mouse_position(int* x, int* y)
+{
+    GdkDeviceManager *device_manager;
+    GdkDevice *pointer;
+
+    device_manager = gdk_display_get_device_manager(gdk_display_get_default());
+    pointer = gdk_device_manager_get_client_pointer(device_manager);
+    gdk_device_get_position(pointer, NULL, x, y);
+}
+
+static
+gboolean is_mouse_in_dock()
+{
+    int x = 0, y = 0;
+    get_mouse_position(&x, &y);
+    return mouse_pointer_leave(x, y);
+}
+
 JS_EXPORT_API
 void dock_update_hide_mode()
 {
@@ -337,29 +356,35 @@ void dock_update_hide_mode()
     _change_workarea_height(_dock_height);
 
     switch (GD.config.hide_mode) {
-        case ALWAYS_HIDE_MODE: {
-                                   dock_hide_now();
-                                   break;
-                               }
-        case INTELLIGENT_HIDE_MODE: {
-                                 if (dock_has_overlay_client()) {
-                                     dock_delay_hide(50);
-                                 } else {
-                                     dock_delay_show(50);
-                                 }
-                                 break;
-                             }
-        case AUTO_HIDE_MODE: {
-                                        if (dock_has_maximize_client()) {
-                                            dock_hide_real_now();
-                                        } else {
-                                            dock_show_real_now();
-                                        }
-                                        break;
-                                    }
-        case NO_HIDE_MODE: {
-                               dock_show_now();
-                               break;
-                           }
+    case ALWAYS_HIDE_MODE: {
+        if (!is_mouse_in_dock()) {
+            dock_hide_now();
+        }
+        break;
+    }
+    case INTELLIGENT_HIDE_MODE: {
+        if (!is_mouse_in_dock()) {
+            if (dock_has_overlay_client()) {
+                dock_delay_hide(50);
+            } else {
+                dock_delay_show(50);
+            }
+        }
+        break;
+    }
+    case AUTO_HIDE_MODE: {
+        if (!is_mouse_in_dock()) {
+            if (dock_has_maximize_client()) {
+                dock_hide_real_now();
+            } else {
+                dock_show_real_now();
+            }
+        }
+        break;
+    }
+    case NO_HIDE_MODE: {
+        dock_show_now();
+        break;
+    }
     }
 }

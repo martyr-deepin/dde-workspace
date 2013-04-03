@@ -779,14 +779,3 @@ void dock_set_compiz_workaround_preview(gboolean v)
         _v = v;
     }
 }
-
-void get_mouse_position(GtkWidget* win, int* x, int* y)
-{
-    GdkDeviceManager *device_manager;
-    GdkDevice *pointer;
-
-    device_manager = gdk_display_get_device_manager(gdk_window_get_display(gtk_widget_get_window(win)));
-    pointer = gdk_device_manager_get_client_pointer(device_manager);
-    /* gdk_window_get_device_position(gtk_widget_get_window(window), pointer, x, y, NULL); */
-    gdk_device_get_position(pointer, NULL, x, y);
-}
