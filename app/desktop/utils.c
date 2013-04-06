@@ -8,6 +8,7 @@
 #include "pixbuf.h"
 #include "xdg_misc.h"
 #include "jsextension.h"
+#include <gio/gdesktopappinfo.h>
 
 //FIXME: implemented in lib/dentry/mime_actions.c
 //       move to a suitable place?
@@ -45,25 +46,9 @@ void desktop_run_deepin_settings(const char* mod)
 
 void desktop_run_deepin_software_center()
 {
-    char* cmd_line = g_strdup_printf("deepin-software-center");
-
-    GError* error=NULL;
-    GAppInfo* appinfo=g_app_info_create_from_commandline(cmd_line, NULL,
-                                                           G_APP_INFO_CREATE_NONE,
-                                                           &error);
-    g_free(cmd_line);
-    if (error != NULL)
-    {
-        g_debug("desktop_run_deepin_software_center error: %s", error->message);
-        g_error_free(error);
-    }
-    error = NULL;
-    g_app_info_launch(appinfo, NULL, NULL, &error);
-    if (error!=NULL)
-    {
-        g_debug("desktop_run_deepin_software_center error: %s", error->message);
-        g_error_free(error);
-    }
+    GAppInfo* appinfo = G_APP_INFO(g_desktop_app_info_new("deepin-software-center.desktop"));
+    ArrayContainer fs = {0, 0};
+    dentry_launch(appinfo, fs);
     g_object_unref(appinfo);
 }
 
