@@ -156,10 +156,10 @@ Preview_close_now = ->
     __clear_timeout()
     return if Preview_container.is_showing == false
     Preview_container.hide()
-    DCore.Dock.update_hide_mode()
     setTimeout(->
         Preview_container.close()
     , 300)
+    DCore.Dock.update_hide_mode()
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing

@@ -120,7 +120,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
 int main(int argc, char* argv[])
 {
-    //remove  option -f 
+    //remove  option -f
     parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
@@ -244,7 +244,7 @@ void dock_toggle_launcher(gboolean show)
     }
 }
 
-void dock_show_inspecotr()
+void dock_show_inspector()
 {
     dwebview_show_inspector(webview);
 }

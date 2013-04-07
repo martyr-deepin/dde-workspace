@@ -570,7 +570,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
-gboolean is_cross_workspaces_contaion_current_space(Client* c)
+gboolean is_cross_workspaces_contain_current_space(Client* c)
 {
     for (int i = 0; i < MAX_CROSS_WORKSPACE_NUM; ++i)
         if (is_same_workspace(&c->workspace[i], &curr_space))
@@ -582,7 +582,7 @@ gboolean is_cross_workspaces_contaion_current_space(Client* c)
 static
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contaion_current_space(c) && !c->is_hidden && c->is_maximize;
+    return is_cross_workspaces_contain_current_space(c) && !c->is_hidden && c->is_maximize;
 }
 gboolean dock_has_maximize_client()
 {
@@ -613,7 +613,7 @@ void _update_is_overlay_client(Client* c)
 static
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contaion_current_space(c) && c->is_overlay_dock;
+    return is_cross_workspaces_contain_current_space(c) && c->is_overlay_dock;
 }
 gboolean dock_has_overlay_client()
 {
@@ -778,15 +778,4 @@ void dock_set_compiz_workaround_preview(gboolean v)
         g_object_unref(compiz_workaround);
         _v = v;
     }
-}
-
-void get_mouse_position(GtkWidget* win, int* x, int* y)
-{
-    GdkDeviceManager *device_manager;
-    GdkDevice *pointer;
-
-    device_manager = gdk_display_get_device_manager(gdk_window_get_display(gtk_widget_get_window(win)));
-    pointer = gdk_device_manager_get_client_pointer(device_manager);
-    /* gdk_window_get_device_position(gtk_widget_get_window(window), pointer, x, y, NULL); */
-    gdk_device_get_position(pointer, NULL, x, y);
 }
