@@ -25,6 +25,7 @@
 #include "i18n.h"
 #include "dentry/entry.h"
 #include "inotify_item.h"
+#include "dbus.h"
 
 #include <dwebview.h>
 #include <utils.h>
@@ -269,7 +270,13 @@ void send_get_focus()
     js_post_message_simply("get_focus", NULL);
 }
 
-
+void focus_changed(gboolean is_changed)
+{
+    if(TRUE == is_changed)
+        send_get_focus();
+    else
+        send_lost_focus();
+}
 
 
 int main(int argc, char* argv[])
@@ -317,6 +324,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     setup_background_window();
+    setup_dbus_service ();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
