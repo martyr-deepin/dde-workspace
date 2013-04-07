@@ -269,7 +269,13 @@ void send_get_focus()
     js_post_message_simply("get_focus", NULL);
 }
 
-
+void focus_changed(gboolean is_changed)
+{
+    if(TRUE == is_changed)
+        send_get_focus();
+    else
+        send_lost_focus();
+}
 
 
 int main(int argc, char* argv[])
