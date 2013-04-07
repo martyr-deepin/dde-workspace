@@ -29,7 +29,6 @@
 #include "tasklist.h"
 #include "dock_hide.h"
 #include "region.h"
-#include "workspace.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -56,6 +55,8 @@ static Atom ATOM_WINDOW_MAXIMIZED_VERT;
 static Atom ATOM_WINDOW_SKIP_TASKBAR;
 static Atom ATOM_XEMBED_INFO;
 static Display* _dsp = NULL;
+static Atom ATOM_DEEPIN_WINDOW_VIEWPORT;
+static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
 static void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
@@ -74,6 +75,20 @@ static void _init_atoms()
     ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
     ATOM_WINDOW_SKIP_TASKBAR = gdk_x11_get_xatom_by_name("_NET_WM_STATE_SKIP_TASKBAR");
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
+    ATOM_DEEPIN_WINDOW_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORT");
+    ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
+}
+
+typedef struct _Workspace Workspace;
+struct _Workspace {
+    int x, y;
+};
+
+static Workspace current_workspace = {0, 0};
+
+gboolean is_same_workspace(Workspace* lhs, Workspace* rhs)
+{
+    return lhs->x == rhs->x && lhs->y == rhs->y;
 }
 
 typedef struct {
@@ -86,6 +101,7 @@ typedef struct {
     gboolean is_overlay_dock;
     gboolean is_hidden;
     gboolean is_maximize;
+    gulong cross_workspace_num;
     Workspace workspace[4];
 
     Window window;
@@ -113,6 +129,22 @@ static void _update_task_list(Window root);
 void client_free(Client* c);
 double dock_get_active_window();
 
+static
+void _update_window_viewport(Client* c)
+{
+    gulong items;
+    void* data = get_window_property(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORT, &items);
+    if (data == NULL)
+        return;
+    c->cross_workspace_num = (int)X_FETCH_32(data, 0);
+    for (int i = 0, j = 1; j < items; ++i, j += 2) {
+        c->workspace[i].x = (int)X_FETCH_32(data, j);
+        c->workspace[i].y = (int)X_FETCH_32(data, j + 1);
+    }
+    XFree(data);
+    dock_update_hide_mode();
+}
+
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
@@ -130,12 +162,8 @@ Client* create_client_from_window(Window w)
     c->app_id = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
-    // TODO: initialize workspace
-    c->workspace[0] = curr_space;
-    c->workspace[1] = curr_space;
-    c->workspace[2] = curr_space;
-    c->workspace[3] = curr_space;
-
+    // initialize workspace
+    _update_window_viewport(c);
 
 
     _update_window_title(c);
@@ -523,6 +551,20 @@ static gboolean _is_maximized_window(Window win)
     return FALSE;
 }
 
+static
+void _update_current_viewport(Workspace* vp)
+{
+    gulong n_item;
+    gpointer data= get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_DEEPIN_SCREEN_VIEWPORT, &n_item);
+    if (data == NULL)
+        return;
+    vp->x = X_FETCH_32(data, 0);
+    vp->y = X_FETCH_32(data, 1);
+    XFree(data);
+
+    dock_update_hide_mode();
+}
+
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
     switch (((XEvent*)xevent)->type) {
@@ -534,6 +576,8 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
                                      active_window_changed(_dsp, (Window)dock_get_active_window());
                                  } else if (ev->atom == ATOM_SHOW_DESKTOP) {
                                      js_post_message_simply("desktop_status_changed", NULL);
+                                 } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
+                                     _update_current_viewport(&current_workspace);
                                  }
                                  break;
                              }
@@ -561,6 +605,8 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
+            } else if (ev->atom == ATOM_DEEPIN_WINDOW_VIEWPORT) {
+                _update_window_viewport(c);
             }
         }
     } else if (xev->type == ConfigureNotify) {
@@ -570,11 +616,12 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
-gboolean is_cross_workspaces_contain_current_space(Client* c)
+gboolean cross_workspaces_contain_current_workspace(Client* c)
 {
-    for (int i = 0; i < MAX_CROSS_WORKSPACE_NUM; ++i)
-        if (is_same_workspace(&c->workspace[i], &curr_space))
+    for (int i = 0; i < c->cross_workspace_num; ++i) {
+        if (is_same_workspace(&c->workspace[i], &current_workspace))
             return TRUE;
+    }
 
     return FALSE;
 }
@@ -582,7 +629,7 @@ gboolean is_cross_workspaces_contain_current_space(Client* c)
 static
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contain_current_space(c) && !c->is_hidden && c->is_maximize;
+    return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
 }
 gboolean dock_has_maximize_client()
 {
@@ -613,7 +660,7 @@ void _update_is_overlay_client(Client* c)
 static
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
-    return is_cross_workspaces_contain_current_space(c) && c->is_overlay_dock;
+    return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
 }
 gboolean dock_has_overlay_client()
 {
