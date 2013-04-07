@@ -25,6 +25,7 @@
 #include "i18n.h"
 #include "dentry/entry.h"
 #include "inotify_item.h"
+#include "dbus.h"
 
 #include <dwebview.h>
 #include <utils.h>
@@ -323,6 +324,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     setup_background_window();
+    setup_dbus_service ();
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
