@@ -58,6 +58,7 @@ body {
     -webkit-line-clamp:2;
     text-overflow:ellipsis;
     overflow:hidden;
+    -webkit-transition:background-color 0.1s;
 }
 
 .DesktopEntry .item_icon {
