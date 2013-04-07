@@ -321,7 +321,7 @@ class Item extends Widget
 
 
     item_exec : =>
-        DCore.DEntry.launch(@_entry, [])
+        DCore.DEntry.launch(@_entry, []) 
 
 
     item_rename : =>
@@ -520,8 +520,14 @@ class DesktopEntry extends Item
         if not @selected
             @display_not_hover()
         return
-
-
+    ###
+    item_exec : =>
+        if !DCore.DEntry.launch(@_entry, []) 
+            if confirm("快捷方式已失效，是否删除？")
+                list = []
+                list.push(@_entry)
+                DCore.DEntry.trash(list)
+    ###
     do_buildmenu : ->
         menu = []
         menu.push([1, _("Open")])
@@ -1176,6 +1182,13 @@ class Application extends DesktopEntry
             @animate_background = null
         @set_icon()
         @item_name.style.opacity = 1
+
+    item_exec : =>
+        if !DCore.DEntry.launch(@_entry, []) 
+            if confirm("快捷方式已失效，是否删除？")
+                list = []
+                list.push(@_entry)
+                DCore.DEntry.trash(list)
 
 
 class NormalFile extends DesktopEntry
