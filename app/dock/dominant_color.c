@@ -66,6 +66,11 @@ void hsv2rgb(double h, double s, double v, double* r, double*g, double *b)
     }
 }
 
+void set_default_rgb(double* r, double *g, double *b)
+{
+    hsv2rgb(200/360.0, 0.5, 0.8, r, g, b);
+}
+
 typedef void (*ClampFunc)(double*, double*);
 
 void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
@@ -86,7 +91,7 @@ void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
     double h, s, v;
     rgb2hsv(a_r / count, a_g / count, a_b / count, &h, &s, &v);
     if (s < 0.05)
-        hsv2rgb(200/360.0, 0.5, 0.8, r, g, b);
+        set_default_rgb(r, g, b);
     else
         hsv2rgb(h, 0.5, 0.8, r, g, b);
 }
@@ -96,5 +101,10 @@ void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, doub
     g_assert(pixbuf != NULL);
     guint size = 0;
     guchar* buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
-    calc(buf, size, gdk_pixbuf_get_n_channels(pixbuf), r, g, b);
+    if (size == 0) {
+        g_warning("Get an zero length valid pixbuf!!!\n");
+        set_default_rgb(r, g, b);
+    } else {
+        calc(buf, size, gdk_pixbuf_get_n_channels(pixbuf), r, g, b);
+    }
 }

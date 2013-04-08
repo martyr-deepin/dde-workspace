@@ -39,7 +39,11 @@
 #include "X_misc.h"
 #include <X11/XKBlib.h>
 
+#include "gs-grab.h"
+
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
+
+static GSGrab* grab = NULL;
 
 static const gchar *username = NULL;
 static GtkWidget* lock_container = NULL;
@@ -372,6 +376,82 @@ gboolean lock_detect_capslock()
     return capslock_flag;
 }
 
+static void lock_show_cb (GtkWindow* lock_container, gpointer data)
+{
+    //GRAB_DEVICE(NULL);
+    gs_grab_move_to_window (grab, 
+                            gtk_widget_get_window (GTK_WIDGET(lock_container)), 
+                            gtk_window_get_screen (lock_container),
+                            FALSE);
+}
+
+static void
+select_popup_events (void)
+{
+        XWindowAttributes attr;
+        unsigned long     events;
+
+        gdk_error_trap_push ();
+
+        memset (&attr, 0, sizeof (attr));
+        XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
+
+        events = SubstructureNotifyMask | attr.your_event_mask;
+        XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
+
+        gdk_error_trap_pop_ignored ();
+}
+static gboolean
+x11_window_is_ours (Window window)
+{
+        GdkWindow *gwindow;
+        gboolean   ret;
+
+        ret = FALSE;
+
+        gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
+        if (gwindow && (window != GDK_ROOT_WINDOW ())) {
+                ret = TRUE;
+        }
+
+        return ret;
+}
+static GdkFilterReturn
+xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
+{
+    XEvent *ev = xevent;
+
+    switch (ev->type) 
+    {
+	g_debug ("event type: %d", ev->xany.type);
+        case MapNotify:
+	g_debug("dlock: MapNotify");
+             {
+                 XMapEvent *xme = &ev->xmap;
+                 if (! x11_window_is_ours (xme->window))
+                 {
+			g_debug("dlock: gdk_window_raise");
+                      gdk_window_raise (window);
+                 }
+             }
+             break;
+        case ConfigureNotify:
+	g_debug("dlock: ConfigureNotify");
+             {
+                  XConfigureEvent *xce = &ev->xconfigure;
+                  if (! x11_window_is_ours (xce->window))
+                  {
+			g_debug("dlock: gdk_window_raise");
+                      gdk_window_raise (window);
+                  }
+             }
+             break;
+        default:
+             break;
+    }
+
+    return GDK_FILTER_CONTINUE;
+}
 int main(int argc, char **argv)
 {
     init_i18n();
@@ -393,16 +473,30 @@ int main(int argc, char **argv)
     lock_report_pid();
 
     lock_container = create_web_container(FALSE, TRUE);
-
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
+    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (lock_container), TRUE);
+    gtk_window_set_skip_pager_hint (GTK_WINDOW (lock_container), TRUE);
     gtk_window_fullscreen(GTK_WINDOW(lock_container));
     gtk_window_set_keep_above(GTK_WINDOW(lock_container), TRUE);
+    gtk_widget_set_events (GTK_WIDGET (lock_container),
+                           gtk_widget_get_events (GTK_WIDGET (lock_container))
+                           | GDK_POINTER_MOTION_MASK
+                           | GDK_BUTTON_PRESS_MASK
+                           | GDK_BUTTON_RELEASE_MASK
+                           | GDK_KEY_PRESS_MASK
+                           | GDK_KEY_RELEASE_MASK
+                           | GDK_EXPOSURE_MASK
+                           | GDK_VISIBILITY_NOTIFY_MASK
+                           | GDK_ENTER_NOTIFY_MASK
+                           | GDK_LEAVE_NOTIFY_MASK);
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
 
     g_signal_connect(lock_container, "delete-event", G_CALLBACK(prevent_exit), NULL);
+    g_signal_connect(lock_container, "show", G_CALLBACK (lock_show_cb), NULL);
     g_signal_connect(webview, "focus-out-event", G_CALLBACK(focus_out_cb), NULL);
+
     gtk_widget_realize(lock_container);
 
     GdkWindow *gdkwindow = gtk_widget_get_window(lock_container);
@@ -412,9 +506,17 @@ int main(int argc, char **argv)
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
+    gdk_window_set_override_redirect (gdkwindow, TRUE);
+    select_popup_events ();
+    gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+
+    grab = gs_grab_new ();
     gtk_widget_show_all(lock_container);
+
+    gint height = gdk_screen_get_height(gdk_screen_get_default());
+    gint width = gdk_screen_get_width(gdk_screen_get_default());
+    gdk_window_move_resize (gdkwindow, 0, 0, width, height);
     
-    GRAB_DEVICE(NULL);
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
     gdk_window_stick(gdkwindow);
 

@@ -13,11 +13,11 @@ class Launcher extends AppItem
 
     do_click: (e)->
         @flash()
-        DCore.DEntry.launch(@core, [])
+        @_do_launch []
 
     do_itemselected: (e)->
         switch e.id
-            when 1 then DCore.DEntry.launch(@core, [])
+            when 1 then @_do_launch []
             when 2 then DCore.Dock.request_undock(@id)
     do_buildmenu: (e)->
         [

@@ -36,7 +36,7 @@ _GET_ENTRY_FROM_PATH_ = (path) ->
 
 
 class Item extends Widget
-    constructor: (@_entry, @modifiable = true) ->
+    constructor: (@_entry, @modifiable = true, @deletable = true) ->
         @set_id()
 
         @selected = false
@@ -302,7 +302,7 @@ class Item extends Widget
         for i in @item_attrib.getElementsByTagName("li") by -1
             @item_attrib.removeChild(i)
 
-        if @modifiable == false then return
+        if @modifiable == false && @deletable == false then return
 
         flags = DCore.DEntry.get_flags(@_entry)
         if flags.read_only? and flags.read_only == 1
@@ -520,14 +520,7 @@ class DesktopEntry extends Item
         if not @selected
             @display_not_hover()
         return
-    ###
-    item_exec : =>
-        if !DCore.DEntry.launch(@_entry, []) 
-            if confirm("快捷方式已失效，是否删除？")
-                list = []
-                list.push(@_entry)
-                DCore.DEntry.trash(list)
-    ###
+
     do_buildmenu : ->
         menu = []
         menu.push([1, _("Open")])
@@ -552,6 +545,10 @@ class DesktopEntry extends Item
             when 10 then show_selected_items_Properties()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
+
+    item_exec : =>
+        if !DCore.DEntry.launch(@_entry,[])
+            confirm(_("Can not open this file."), _("Warning"))
 
 
 class Folder extends DesktopEntry
@@ -601,7 +598,7 @@ class Folder extends DesktopEntry
 
 class RichDir extends DesktopEntry
     constructor : (entry) ->
-        super(entry, false)
+        super(entry, false, true)
 
         @div_pop = null
         @show_pop = false
@@ -708,6 +705,8 @@ class RichDir extends DesktopEntry
         menus.push([3, _("Rename"), not is_selected_multiple_items()])
         menus.push([])
         menus.push([5, _("Ungroup")])
+        menus.push([])
+        menus.push([7, _("Delete")])
         menus
 
 
@@ -716,6 +715,10 @@ class RichDir extends DesktopEntry
             when 1 then @item_exec()
             when 3 then @item_rename()
             when 5 then @item_ungroup()
+            when 7
+                list = []
+                list.push(@_entry)
+                DCore.DEntry.trash(list)
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
@@ -1184,8 +1187,8 @@ class Application extends DesktopEntry
         @item_name.style.opacity = 1
 
     item_exec : =>
-        if !DCore.DEntry.launch(@_entry, []) 
-            if confirm("快捷方式已失效，是否删除？")
+        if !DCore.DEntry.launch(@_entry, [])
+            if confirm(_("The link has expired, whether to delete?"), _("Warning"))
                 list = []
                 list.push(@_entry)
                 DCore.DEntry.trash(list)
@@ -1228,7 +1231,7 @@ class DesktopApplet extends Item
 class ComputerVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_computer_entry()
-        super(entry, false)
+        super(entry, false, false)
 
 
     set_id : =>
@@ -1277,7 +1280,7 @@ class ComputerVDir extends DesktopEntry
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
-        super(entry, false)
+        super(entry, false, false)
 
 
     set_id : =>
@@ -1367,7 +1370,7 @@ class HomeVDir extends DesktopEntry
 class TrashVDir extends DesktopEntry
     constructor : ->
         entry = DCore.DEntry.get_trash_entry()
-        super(entry, false)
+        super(entry, false, false)
 
     # XXX: try to avoid that get empty state when system startup
     setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
@@ -1466,7 +1469,7 @@ class TrashVDir extends DesktopEntry
 
 class DeepinSoftwareCenter extends DesktopEntry
     constructor : ->
-        super(null, false)
+        super(null, false, false)
 
     set_id : =>
         @id = _ITEM_ID_DSC_
