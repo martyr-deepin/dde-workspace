@@ -107,13 +107,15 @@ do_search = ->
     ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
     ret = (item.value for item in ret)
 
-    grid_show_items(ret, false)
+    update_items(ret)
     return ret
 
 search_id = null
 search = ->
     clearTimeout(search_id)
-    search_id = setTimeout(do_search, 20)
+    search_id = setTimeout(->
+        grid_show_items(do_search(), false)
+    , 20)
 
 $("#search").addEventListener('click', (e)->
     if e.target == s_box
@@ -163,6 +165,7 @@ document.body.onkeypress = (e) ->
                 s_box.value = s_box.value.substr(0, s_box.value.length-1)
                 if s_box.value == ""
                     if last_val != s_box.value
+                        do_search()
                         grid_load_category(_select_category_id)
                     return  # to avoid to invoke search function
             when 13 # Enter
