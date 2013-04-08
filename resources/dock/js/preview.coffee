@@ -159,7 +159,11 @@ Preview_close_now = ->
     setTimeout(->
         Preview_container.close()
     , 300)
-    DCore.Dock.update_hide_mode()
+    # timeout above + timeout of backend = 400ms
+    # to avoid the fact that dock doesn't hide, delay 500ms
+    setTimeout(->
+        DCore.Dock.update_hide_mode()
+    , 500)
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
