@@ -546,6 +546,10 @@ class DesktopEntry extends Item
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
+    item_exec : =>
+        if !DCore.DEntry.launch(@_entry,[])
+            confirm(_("Can not open this file."), _("Warning"))
+
 
 class Folder extends DesktopEntry
     set_icon : (src = null) =>
@@ -1183,8 +1187,8 @@ class Application extends DesktopEntry
         @item_name.style.opacity = 1
 
     item_exec : =>
-        if !DCore.DEntry.launch(@_entry, []) 
-            if confirm(_("The link has expired, whether to delete?"))
+        if !DCore.DEntry.launch(@_entry, [])
+            if confirm(_("The link has expired, whether to delete?"), _("Warning"))
                 list = []
                 list.push(@_entry)
                 DCore.DEntry.trash(list)

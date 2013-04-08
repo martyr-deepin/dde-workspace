@@ -225,7 +225,7 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
         gboolean is_in = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "is_mouse_in"));
         int x = 0;
         int y = 0;
-        gdk_window_get_position(icon, &x, &y);
+        gdk_window_get_geometry(icon, &x, &y, NULL, NULL); //gdk_window_get_position will get error value when dock is hidden!
         cairo_save(cr);
         if (icon == _deepin_tray || !is_in) {
             gdk_cairo_set_source_window(cr, icon, x, y);
