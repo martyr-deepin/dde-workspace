@@ -257,6 +257,12 @@ class AppItem extends Widget
         e.preventDefault()
         e.stopPropagation()
 
+    _do_launch: (list) =>
+        run_successful = DCore.DEntry.launch(@core, list)
+        if not run_successful
+            is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock bar?"))
+            if is_delete
+                DCore.Dock.request_undock(@id)
     do_drop: (e) ->
         e.preventDefault()
         e.stopPropagation()
@@ -273,7 +279,7 @@ class AppItem extends Widget
                 tmp_list.push(entry)
             if tmp_list.length > 0
                 switch this.constructor.name
-                    when "Launcher" then DCore.DEntry.launch(@core, tmp_list)
+                    when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
 
 
