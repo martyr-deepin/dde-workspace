@@ -26,6 +26,7 @@
 #include <glib/gi18n.h>
 #include "entry.h"
 #include <glib.h>
+#include <glib/gstdio.h>
 #include "jsextension.h"
 #include <string.h>
 #include <gio/gio.h>
