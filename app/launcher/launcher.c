@@ -245,7 +245,7 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     setup_dbus_service ();
-    /* monitor_resource_file("launcher", webview); */
+    monitor_resource_file("launcher", webview);
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
@@ -336,12 +336,12 @@ JSObjectRef _init_category_table()
 JS_EXPORT_API
 JSObjectRef launcher_get_items_by_category(double _id)
 {
-    if (_category_table == NULL)
+    int id = _id;
+    if (id == -1)
         return _init_category_table();
 
     JSObjectRef items = json_array_create();
 
-    int id = _id;
     GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
     if (l == NULL) {
         return items;

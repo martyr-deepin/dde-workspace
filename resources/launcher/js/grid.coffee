@@ -134,6 +134,7 @@ update_items = (items) ->
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
+    return  # some return like here will keep js converted by coffeescript returning stupid things
 
 update_scroll_bar = (items) ->
     lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
@@ -160,6 +161,7 @@ grid_show_items = (items, is_category) ->
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
         setTimeout(applications[id].show, 4 + group_num)
+    return
 
 show_grid_selected = (id)->
     cns = $s(".category_name")
@@ -168,6 +170,7 @@ show_grid_selected = (id)->
             c.setAttribute("class", "category_name category_selected")
         else
             c.setAttribute("class", "category_name")
+    return
 
 grid = $('#grid')
 grid_load_category = (cat_id) ->
