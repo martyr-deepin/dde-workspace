@@ -18,6 +18,10 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+document.body.addEventListener("contextmenu", (e) ->
+    # forbid context menu
+    e.preventDefault()
+)
 board.width = screen.width
 board.height = DOCK_HEIGHT
 DCore.Dock.draw_board(board)

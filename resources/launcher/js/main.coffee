@@ -68,6 +68,11 @@ $("body").addEventListener("click", (e)->
         DCore.Launcher.exit_gui()
 )
 
+document.body.addEventListener("contextmenu", (e)->
+    # forbid context meun
+    e.preventDefault()
+)
+
 for info in DCore.Launcher.get_categories()
     c = create_category(info)
     append_to_category(c)
