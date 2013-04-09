@@ -28,6 +28,7 @@
 #include "i18n.h"
 #include "category.h"
 #include "dbus.h"
+#include "gs-grab.h"
 #include <gio/gdesktopappinfo.h>
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
@@ -41,6 +42,87 @@ static int screen_width;
 static int screen_height;
 static GSettings* dde_bg_g_settings = NULL;
 static gboolean is_debug;
+static GSGrab* grab = NULL;
+
+static
+void show_launcher(GtkWindow* container, gpointer data)
+{
+    gs_grab_move_to_window(grab,
+                           gtk_widget_get_window(GTK_WIDGET(container)),
+                           gtk_widget_get_screen(GTK_WIDGET(container)),
+                           FALSE);
+}
+
+static
+void select_popup_events(void)
+{
+    XWindowAttributes attr;
+    unsigned long events;
+
+    gdk_error_trap_push();
+
+    memset(&attr, 0, sizeof (attr));
+    XGetWindowAttributes(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), GDK_ROOT_WINDOW(), &attr);
+
+    events = SubstructureNotifyMask | attr.your_event_mask;
+    XSelectInput(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), GDK_ROOT_WINDOW(), events);
+
+    gdk_error_trap_pop_ignored();
+}
+
+static
+gboolean x11_window_is_ours(Window window)
+{
+    GdkWindow *gwindow;
+    gboolean ret;
+
+    ret = FALSE;
+
+    gwindow = gdk_x11_window_lookup_for_display(gdk_display_get_default(), window);
+    if (gwindow && (window != GDK_ROOT_WINDOW())) {
+        ret = TRUE;
+    }
+
+    return ret;
+}
+
+
+static
+GdkFilterReturn xevent_filter(GdkXEvent *xevent, GdkEvent *event, GdkWindow *window)
+{
+    XEvent *ev = xevent;
+
+    switch (ev->type)
+    {
+        g_debug("event type: %d", ev->xany.type);
+    case MapNotify:
+        g_debug("launcher: MapNotify");
+        {
+            XMapEvent *xme = &ev->xmap;
+            if (! x11_window_is_ours(xme->window))
+            {
+                g_debug("launcher: gdk_window_raise");
+                gdk_window_raise(window);
+            }
+        }
+        break;
+    case ConfigureNotify:
+        g_debug("dlock: ConfigureNotify");
+        {
+            XConfigureEvent *xce = &ev->xconfigure;
+            if (! x11_window_is_ours (xce->window))
+            {
+                g_debug("launcher: gdk_window_raise");
+                gdk_window_raise(window);
+            }
+        }
+        break;
+    default:
+        break;
+    }
+
+    return GDK_FILTER_CONTINUE;
+}
 
 static void get_screen_info()
 {
@@ -212,7 +294,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
+    /* gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher"); */
 
     get_screen_info();
     set_default_theme("Deepin");
@@ -225,6 +307,18 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
+    gtk_widget_set_events(GTK_WIDGET(container),
+                          gtk_widget_get_events(GTK_WIDGET(container))
+                          | GDK_POINTER_MOTION_MASK
+                          | GDK_BUTTON_PRESS_MASK
+                          | GDK_BUTTON_RELEASE_MASK
+                          | GDK_KEY_PRESS_MASK
+                          | GDK_KEY_RELEASE_MASK
+                          | GDK_EXPOSURE_MASK
+                          | GDK_VISIBILITY_NOTIFY_MASK
+                          | GDK_ENTER_NOTIFY_MASK
+                          | GDK_LEAVE_NOTIFY_MASK);
+
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
 
@@ -236,6 +330,9 @@ int main(int argc, char* argv[])
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
+    gdk_window_set_override_redirect(gdkwindow, TRUE);
+    g_signal_connect(container, "show", G_CALLBACK (show_launcher), NULL);
+
 
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
@@ -244,9 +341,15 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
-    setup_dbus_service ();
+    setup_dbus_service();
     monitor_resource_file("launcher", webview);
+    gdk_window_set_override_redirect(gdkwindow, TRUE);
+    select_popup_events();
+    gdk_window_add_filter(NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+
+    grab = gs_grab_new();
     gtk_widget_show_all(container);
+    gdk_window_move_resize(gdkwindow, 0, 0, screen_width, screen_height);
     gtk_main();
     return 0;
 }
