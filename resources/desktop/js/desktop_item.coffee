@@ -546,6 +546,10 @@ class DesktopEntry extends Item
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
+    item_exec : =>
+        if !DCore.DEntry.launch(@_entry,[])
+            confirm(_("Can not open this file."), _("Warning"))
+
 
 class Folder extends DesktopEntry
     set_icon : (src = null) =>
@@ -895,7 +899,12 @@ class RichDir extends DesktopEntry
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
-                if e? then DCore.DEntry.launch(e, [])
+                if e?
+                    if !DCore.DEntry.launch(e, [])
+                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                            list = []
+                            list.push(e)
+                            DCore.DEntry.trash(list)
                 if w? then w.hide_pop_block()
             )
 
@@ -995,7 +1004,12 @@ class RichDir extends DesktopEntry
             when 1
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
-                if e? then DCore.DEntry.launch(e, [])
+                if e?
+                    if !DCore.DEntry.launch(e, [])
+                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                            list = []
+                            list.push(e)
+                            DCore.DEntry.trash(list)
                 if w? then w.hide_pop_block()
             when 3
                 list = []
@@ -1183,8 +1197,8 @@ class Application extends DesktopEntry
         @item_name.style.opacity = 1
 
     item_exec : =>
-        if !DCore.DEntry.launch(@_entry, []) 
-            if confirm(_("The link has expired, whether to delete?"))
+        if !DCore.DEntry.launch(@_entry, [])
+            if confirm(_("The link has expired, whether to delete?"), _("Warning"))
                 list = []
                 list.push(@_entry)
                 DCore.DEntry.trash(list)

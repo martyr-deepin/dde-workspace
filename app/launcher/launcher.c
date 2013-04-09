@@ -27,6 +27,7 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
+#include "dbus.h"
 #include <gio/gdesktopappinfo.h>
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"

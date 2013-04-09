@@ -29,6 +29,7 @@
 #include "tasklist.h"
 #include "dock_hide.h"
 #include "region.h"
+#include "special_window.h"
 extern Window get_dock_window();
 
 #include <gtk/gtk.h>
@@ -112,8 +113,8 @@ typedef struct {
 } Client;
 
 static GHashTable* _clients_table = NULL;
-static Window _active_client_id = 0;
-static Window _launcher_id = 0;
+Window active_client_id = 0;
+DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
 
 static
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
@@ -199,15 +200,36 @@ void _update_client_info(Client *c)
     js_post_message("task_updated", json);
 }
 
-gboolean launcher_should_exit()
+static
+void notify_desktop(DesktopFocusState current_state)
 {
-    return _active_client_id != get_dock_window() && _active_client_id != _launcher_id;
+    GDBusProxy* desktop_dbus = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                             G_DBUS_PROXY_FLAGS_NONE,
+                                                             NULL,
+                                                             "com.deepin.dde.desktop",
+                                                             "/com/deepin/dde/desktop",
+                                                             "com.deepin.dde.desktop",
+                                                             NULL,
+                                                             NULL);
+    if (desktop_dbus != NULL) {
+        GVariant* var = g_dbus_proxy_call_sync(desktop_dbus, "FocusChanged",
+                                               g_variant_new("(b)", current_state == DESKTOP_HAS_FOCUS),
+                                               G_DBUS_CALL_FLAGS_NONE,
+                                               -1, NULL, NULL);
+        if (var != NULL) {
+            g_variant_unref(var);
+            const char* state[] = {"focus", "blur"};
+            g_warning("desktop focus state changed to %s", state[current_state]);
+        }
+        g_object_unref(desktop_dbus);
+    }
 }
+
 
 void active_window_changed(Display* dsp, Window w)
 {
-    if (_active_client_id != w) {
-        _active_client_id = w;
+    if (active_client_id != w) {
+        active_client_id = w;
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)w));
         JSObjectRef json = json_create();
         json_append_number(json, "id", (int)w);
@@ -216,8 +238,15 @@ void active_window_changed(Display* dsp, Window w)
         //else we should tell frontend we lost the active window
         js_post_message("active_window_changed", json);
     }
-    if (_launcher_id != 0 && launcher_should_exit()) {
+    if (launcher_id != 0 && launcher_should_exit()) {
         close_launcher_window();
+    }
+    if (desktop_pid != 0) {
+        DesktopFocusState current_state = get_desktop_focus_state(_dsp);
+        if (current_state != DESKTOP_FOCUS_UNKNOWN && desktop_focus_state != current_state) {
+            desktop_focus_state = current_state;
+            notify_desktop(current_state);
+        }
     }
 }
 
@@ -271,28 +300,6 @@ gboolean is_skip_taskbar(Window w)
     return FALSE;
 }
 
-static
-GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
-{
-    XEvent* xev = xevent;
-    if (xev->type == DestroyNotify) {
-        js_post_message_simply("launcher_destroy", NULL);
-        _launcher_id = 0;
-    }
-    return GDK_FILTER_CONTINUE;
-}
-void start_monitor_launcher_window(Window w)
-{
-    _launcher_id = w;
-    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
-    if (win == NULL)
-        return;
-    js_post_message_simply("launcher_running", NULL);
-
-    g_assert(win != NULL);
-    gdk_window_set_events(win, GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
-    gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
-}
 
 gboolean is_normal_window(Window w)
 {
@@ -302,7 +309,10 @@ gboolean is_normal_window(Window w)
         if (g_strcmp0(ch.res_name, "explorer.exe") == 0 && g_strcmp0(ch.res_class, "Wine") == 0) {
             need_return = TRUE;
         } else if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
-            start_monitor_launcher_window(w);
+            start_monitor_launcher_window(_dsp, w);
+            need_return = TRUE;
+        } else if (g_str_equal(ch.res_class, "Desktop")) {
+            get_net_wm_pid(_dsp, w, &desktop_pid);
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -492,7 +502,7 @@ void _update_window_appid(Client* c)
         g_free(exec_name);
         g_free(exec_args);
     } else {
-        //if there is no ATOM_WINDOW_PID use WMCLASS 
+        //if there is no ATOM_WINDOW_PID use WMCLASS
         app_id = g_strdup(c->clss);
     }
 
@@ -568,19 +578,19 @@ void _update_current_viewport(Workspace* vp)
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
     switch (((XEvent*)xevent)->type) {
-        case PropertyNotify: {
-                                 XPropertyEvent* ev = xevent;
-                                 if (ev->atom == ATOM_CLIENT_LIST) {
-                                     _update_task_list(ev->window);
-                                 } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
-                                     active_window_changed(_dsp, (Window)dock_get_active_window());
-                                 } else if (ev->atom == ATOM_SHOW_DESKTOP) {
-                                     js_post_message_simply("desktop_status_changed", NULL);
-                                 } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
-                                     _update_current_viewport(&current_workspace);
-                                 }
-                                 break;
-                             }
+    case PropertyNotify: {
+        XPropertyEvent* ev = xevent;
+        if (ev->atom == ATOM_CLIENT_LIST) {
+            _update_task_list(ev->window);
+        } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
+            active_window_changed(_dsp, (Window)dock_get_active_window());
+        } else if (ev->atom == ATOM_SHOW_DESKTOP) {
+            js_post_message_simply("desktop_status_changed", NULL);
+        } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
+            _update_current_viewport(&current_workspace);
+        }
+        break;
+    }
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -694,7 +704,7 @@ void dock_active_window(double id)
     event.message_type = ATOM_ACTIVE_WINDOW;
     event.format = 32;
     event.data.l[0] = 2; // we are a pager?
-    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
+    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
             StructureNotifyMask, (XEvent*)&event);
 }
 
@@ -707,12 +717,8 @@ void dock_close_window(double id)
     event.window = (Window)id;
     event.message_type = ATOM_CLOSE_WINDOW;
     event.format = 32;
-    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False, 
+    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
             StructureNotifyMask, (XEvent*)&event);
-}
-void close_launcher_window()
-{
-    dock_close_window(_launcher_id);
 }
 
 JS_EXPORT_API
@@ -736,7 +742,7 @@ void dock_show_desktop(gboolean value)
     event.format = 32;
     event.window = root;
     event.data.l[0] = value;
-    XSendEvent(_dsp, root, False, 
+    XSendEvent(_dsp, root, False,
             StructureNotifyMask, (XEvent*)&event);
 }
 

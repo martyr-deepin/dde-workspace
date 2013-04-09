@@ -272,6 +272,7 @@ JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
     TEST_GFILE(e, f)
+        gboolean launch_res = TRUE;
         GFileInfo* info = g_file_query_info(f, "standard::content-type,access::can-execute", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
             const char* content_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
@@ -287,7 +288,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
                 _file_arg = files[0];
             }
 
-            activate_file (f, content_type, is_executable, _file_arg);
+            launch_res = activate_file (f, content_type, is_executable, _file_arg);
 
             if (fs.num != 0)
             {
@@ -304,6 +305,8 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             g_free(path);
             return TRUE;
         }
+
+        return launch_res;
     TEST_GAPP(e, app)
         ArrayContainer _fs = _normalize_array_container(fs);
 
