@@ -118,7 +118,7 @@ update_items = (items) ->
         grid.appendChild(item_to_be_shown)
     return items
 
-update_scroll_bar = (items) ->
+_update_scroll_bar = (items) ->
     lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
 
     if lines * ITEM_HEIGHT >= grid.clientHeight
@@ -126,11 +126,10 @@ update_scroll_bar = (items) ->
     else
         grid.style.overflowY = "hidden"
 
-#export function
 grid_show_items = (items, is_category) ->
     item_selected?.unselect()
     item_selected = null
-    update_scroll_bar(items)
+    _update_scroll_bar(items)
 
     for own key, value of applications
         if key not in items
@@ -145,7 +144,7 @@ grid_show_items = (items, is_category) ->
         setTimeout(applications[id].show, 4 + group_num)
     return  # some return like here will keep js converted by coffeescript returning stupid things
 
-show_grid_selected = (id)->
+_show_grid_selected = (id)->
     cns = $s(".category_name")
     for c in cns
         if `id == c.getAttribute("cat_id")`
@@ -156,7 +155,7 @@ show_grid_selected = (id)->
 
 category_infos = []
 grid_load_category = (cat_id) ->
-    show_grid_selected(cat_id)
+    _show_grid_selected(cat_id)
 
     if not category_infos[cat_id]
         if cat_id == -1
