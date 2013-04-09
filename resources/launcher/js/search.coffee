@@ -17,76 +17,22 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-basename = (path)->
-    path.replace(/\\/g,'/').replace(/.*\//,)
-
 s_box = $('#s_box')
 
-item_selected = null
+init_search_box = ->
+    s_box.setAttribute("placeholder", _("Type to search..."))
 
-update_selected = (el)->
-    item_selected?.unselect()
-    item_selected = el
-    item_selected?.select()
+    $("#search").addEventListener('click', (e)->
+        if e.target == s_box
+            e.stopPropagation()
+    )
 
-get_first_shown = ->
-    first_item = applications[$(".item").id]
-    if first_item.is_shown()
-        first_item
-    else
-        first_item.next_shown()
+    s_box.addEventListener('input', s_box.blur())
 
-selected_next = ->
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        return
-    n = item_selected.next_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-selected_prev = ->
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        return
-    n = item_selected.prev_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-
-selected_down = ->
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        return
-    n = item_selected
-    for i in [0..get_item_row_count()-1]
-        if n
-            n.scroll_to_view()
-            n = n.next_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-    grid.scrollTop += SCROLL_STEP_LEN
-
-selected_up = ->
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        return
-    n = item_selected
-    for i in [0..get_item_row_count()-1]
-        if n
-            n.scroll_to_view()
-            n = n.prev_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-    grid.scrollTop -= SCROLL_STEP_LEN
-
-get_item_row_count = ->
-    parseInt(grid.clientWidth / ITEM_WIDTH)
+    DCore.signal_connect("im_commit", (info)->
+        s_box.value += info.Content
+        search()
+    )
 
 do_search = ->
     ret = []
@@ -107,81 +53,16 @@ do_search = ->
     ret.sort((lhs, rhs) -> rhs.weight - lhs.weight)
     ret = (item.value for item in ret)
 
-    update_items(ret)
-    return ret
+    return update_items(ret)
 
-search_id = null
-search = ->
-    clearTimeout(search_id)
-    search_id = setTimeout(->
-        grid_show_items(do_search(), false)
-    , 20)
+search = do ->
+    _search_id = null
+    ->
+        clearTimeout(_search_id)
+        _search_id = setTimeout(->
+            grid_show_items(do_search(), false)
+        , 20)
 
-$("#search").addEventListener('click', (e)->
-    if e.target == s_box
-        e.stopPropagation()
-)
-
-s_box.addEventListener('input', s_box.blur())
-
-document.body.onkeydown = (e)->
-    switch e.which
-        when 39 #f
-            selected_next()
-        when 37 #b
-            selected_prev()
-        when 40 #n
-            selected_down()
-        when 38 #p
-            selected_up()
-
-last_val = ''
-document.body.onkeypress = (e) ->
-    if e.ctrlKey
-        switch e.which
-            when 112 #p
-                selected_up()
-            when 102 #f
-                selected_next()
-            when 98 #b
-                selected_prev()
-            when 110 #n
-                selected_down()
-            else
-                s_box.value += String.fromCharCode(e.which)
-    else
-        switch e.which
-            when 27 # ESC
-                if s_box.value == ""
-                    DCore.Launcher.exit_gui()
-                else
-                    last_val = s_box.value
-                    s_box.value = ""
-                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                    grid_load_category(_select_category_id)
-                return  # to avoid to invoke search function
-            when 8 # Backspace
-                last_val = s_box.value
-                s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                if s_box.value == ""
-                    if last_val != s_box.value
-                        do_search()
-                        grid_load_category(_select_category_id)
-                    return  # to avoid to invoke search function
-            when 13 # Enter
-                if item_selected
-                    item_selected.do_click()
-                else
-                    get_first_shown()?.do_click()
-            else
-                s_box.value += String.fromCharCode(e.which)
-        search()
-
-DCore.signal_connect("im_commit", (info)->
-    s_box.value += info.Content
-    search()
-)
 
 cursor = create_element("span", "cursor", document.body)
 cursor.innerText = "|"
-

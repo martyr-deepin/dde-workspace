@@ -294,7 +294,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    /* gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher"); */
+    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     get_screen_info();
     set_default_theme("Deepin");
@@ -578,13 +578,16 @@ JSObjectRef launcher_get_categories()
 {
     JSContextRef cxt = get_global_context();
     JSObjectRef categories = json_array_create();
+
     _insert_category(categories, 0, ALL_CATEGORY_ID, _("all"));
+
     const char* names[] = {_("internet"), _("multimedia"), _("games"),
         _("graphics"), _("productivity"), _("industry"), _("education"),
         _("development"), _("system"), _("utilities"), _("other")};
-    int category_num = 0;
 
+    int category_num = 0;
     const GPtrArray* infos = get_all_categories_array();
+
     if (infos == NULL) {
         category_num = G_N_ELEMENTS(names) - 1;
     } else {

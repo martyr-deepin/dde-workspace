@@ -17,14 +17,12 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-s_box.setAttribute("placeholder", _("Type to search..."))
 
-
-do_workarea_changed = (alloc)->
+DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     document.body.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
-DCore.signal_connect('workarea_changed', do_workarea_changed)
+)
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         DCore.Launcher.exit_gui()
@@ -32,37 +30,7 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.Launcher.notify_workarea_size()
 
 
-_select_timeout_id = 0
-_select_category_id = ALL_APPLICATION_CATEGORY_ID
-create_category = (info) ->
-    el = document.createElement('div')
-    el.setAttribute('class', 'category_name')
-    el.setAttribute('cat_id', info.ID)
-    el.innerText = info.Name
-    el.addEventListener('click', (e) ->
-        e.stopPropagation()
-    )
-    el.addEventListener('mouseover', (e)->
-        e.stopPropagation()
-        if info.ID != _select_category_id
-            s_box.value = "" if s_box.value != ""
-            _select_timeout_id = setTimeout(
-                ->
-                    grid_load_category(info.ID)
-                    _select_category_id = info.ID
-                , 25)
-    )
-    el.addEventListener('mouseout', (e)->
-        if _select_timeout_id != 0
-            clearTimeout(_select_timeout_id)
-    )
-    return el
-
-append_to_category = (cat) ->
-    $('#category').appendChild(cat)
-
-
-$("body").addEventListener("click", (e)->
+document.body.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
         DCore.Launcher.exit_gui()
@@ -73,16 +41,72 @@ document.body.addEventListener("contextmenu", (e)->
     e.preventDefault()
 )
 
-for info in DCore.Launcher.get_categories()
-    c = create_category(info)
-    append_to_category(c)
 
-category = $("#category")
-warp = category.parentNode
-# add 20 px for margin
-categories_height = category.children.length * (category.lastElementChild.clientHeight + 20)
-if categories_height > warp.clientHeight
-    warp.style.overflowY = "scroll"
-    warp.style.marginBottom = "30px"
+document.body.addEventListener("keypress", do ->
+    _last_val = ''
+    (e) ->
+        if e.ctrlKey
+            switch e.which
+                when 112 #p
+                    selected_up()
+                when 102 #f
+                    selected_next()
+                when 98 #b
+                    selected_prev()
+                when 110 #n
+                    selected_down()
+                else
+                    s_box.value += String.fromCharCode(e.which)
+        else
+            switch e.which
+                when ESC_KEY
+                    if s_box.value == ""
+                        DCore.Launcher.exit_gui()
+                    else
+                        _last_val = s_box.value
+                        s_box.value = ""
+                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                        grid_load_category(selected_category_id)
+                    return  # to avoid to invoke search function
+                when BACKSPACE_KEY
+                    _last_val = s_box.value
+                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
+                    if s_box.value == ""
+                        if _last_val != s_box.value
+                            do_search()
+                            grid_load_category(selected_category_id)
+                        return  # to avoid to invoke search function
+                when ENTER_KEY
+                    if item_selected
+                        item_selected.do_click()
+                    else
+                        get_first_shown()?.do_click()
+                else
+                    s_box.value += String.fromCharCode(e.which)
+            search()
+)
 
-grid_load_category(ALL_APPLICATION_CATEGORY_ID) #the All applications' ID is -1.
+
+applications = {}
+init_all_applications = ->
+    # get all applications and sort them by name
+    _all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
+    _all_items.sort((lhs, rhs) ->
+        lhs_name = DCore.DEntry.get_name(lhs)
+        rhs_name = DCore.DEntry.get_name(rhs)
+
+        if lhs_name > rhs_name
+            1
+        else if lhs_name == rhs_name
+            0
+        else
+            -1
+    )
+    for core in _all_items
+        id = DCore.DEntry.get_id(core)
+        applications[id] = new Item(id, core)
+
+init_search_box()
+init_all_applications()
+init_category_list()
+init_grid()
