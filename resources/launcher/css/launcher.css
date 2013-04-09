@@ -92,6 +92,7 @@ body {
 
 #category {
     margin-top: 25px;
+    min-width: 180px;
 }
 
 #category:lang(zh) {

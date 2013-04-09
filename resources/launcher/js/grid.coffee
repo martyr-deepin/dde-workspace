@@ -17,8 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-applications = {}
-category_infos = []
+grid = $('#grid')
 
 try_set_title = (el, text, width)->
     setTimeout(->
@@ -31,6 +30,7 @@ try
     s_dock = DCore.DBus.session("com.deepin.dde.dock")
 catch error
     s_dock = null
+
 class Item extends Widget
     constructor: (@id, @core)->
         super
@@ -115,31 +115,14 @@ class Item extends Widget
         @element.scrollIntoViewIfNeeded()
 
 
-# get all applications and sort them by name
-_all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
-_all_items.sort((lhs, rhs) ->
-    lhs_name = DCore.DEntry.get_name(lhs)
-    rhs_name = DCore.DEntry.get_name(rhs)
-
-    if lhs_name > rhs_name
-        1
-    else if lhs_name == rhs_name
-        0
-    else
-        -1
-)
-for core in _all_items
-    id = DCore.DEntry.get_id(core)
-    applications[id] = new Item(id, core)
-# load the Desktop Entry's infomations.
-
 update_items = (items) ->
     child_nodes = grid.childNodes
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
+    return items
 
-update_scroll_bar = (items) ->
+_update_scroll_bar = (items) ->
     lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
 
     if lines * ITEM_HEIGHT >= grid.clientHeight
@@ -147,11 +130,10 @@ update_scroll_bar = (items) ->
     else
         grid.style.overflowY = "hidden"
 
-#export function
 grid_show_items = (items, is_category) ->
     item_selected?.unselect()
     item_selected = null
-    update_scroll_bar(items)
+    _update_scroll_bar(items)
 
     for own key, value of applications
         if key not in items
@@ -164,18 +146,20 @@ grid_show_items = (items, is_category) ->
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
         setTimeout(applications[id].show, 4 + group_num)
+    return  # some return like here will keep js converted by coffeescript returning stupid things
 
-show_grid_selected = (id)->
+_show_grid_selected = (id)->
     cns = $s(".category_name")
     for c in cns
         if `id == c.getAttribute("cat_id")`
             c.setAttribute("class", "category_name category_selected")
         else
             c.setAttribute("class", "category_name")
+    return
 
-grid = $('#grid')
+category_infos = []
 grid_load_category = (cat_id) ->
-    show_grid_selected(cat_id)
+    _show_grid_selected(cat_id)
 
     if not category_infos[cat_id]
         if cat_id == -1
@@ -192,3 +176,6 @@ grid_load_category = (cat_id) ->
     grid_show_items(category_infos[cat_id], true)
     update_selected(null)
 
+
+init_grid = ->
+    grid_load_category(ALL_APPLICATION_CATEGORY_ID)

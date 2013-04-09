@@ -321,7 +321,7 @@ class Item extends Widget
 
 
     item_exec : =>
-        DCore.DEntry.launch(@_entry, []) 
+        DCore.DEntry.launch(@_entry, [])
 
 
     item_rename : =>
@@ -337,7 +337,7 @@ class Item extends Widget
             @item_name.addEventListener("mouseup", @on_event_stoppropagation)
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
-            @item_name.addEventListener("contextmenu", @on_event_preventdefault)
+            @item_name.addEventListener("contextmenu", @on_event_stoppropagation)
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
@@ -899,7 +899,12 @@ class RichDir extends DesktopEntry
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
                 if w? then e = w.sub_items[this.id]
-                if e? then DCore.DEntry.launch(e, [])
+                if e?
+                    if !DCore.DEntry.launch(e, [])
+                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                            list = []
+                            list.push(e)
+                            DCore.DEntry.trash(list)
                 if w? then w.hide_pop_block()
             )
 
@@ -908,13 +913,13 @@ class RichDir extends DesktopEntry
                 w = Widget.look_up(this.parentElement.id)
                 @contextMenu = build_menu(w.build_block_item_menu())
             )
-    
+
             ele.addEventListener("itemselected", (evt) ->
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
                 w.block_do_itemselected(evt, this)
             )
-            
+
             ele_ul.appendChild(ele)
 
         # 20px for ul padding, 2px for border, 8px for scrollbar
@@ -999,7 +1004,12 @@ class RichDir extends DesktopEntry
             when 1
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
-                if e? then DCore.DEntry.launch(e, [])
+                if e?
+                    if !DCore.DEntry.launch(e, [])
+                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                            list = []
+                            list.push(e)
+                            DCore.DEntry.trash(list)
                 if w? then w.hide_pop_block()
             when 3
                 list = []
