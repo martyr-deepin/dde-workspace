@@ -88,12 +88,16 @@ void calc(guchar* data, guint length, int skip, double *r, double *g, double *b)
         a_b += data[i+2];
         count++;
     }
+    if (count == 0) {
+        set_default_rgb(r, g, b);
+        return;
+    }
     double h, s, v;
     rgb2hsv(a_r / count, a_g / count, a_b / count, &h, &s, &v);
-    if (s < 0.05)
+    hsv2rgb(h, 0.5, 0.8, r, g, b);
+    if (s < 0.05) {
         set_default_rgb(r, g, b);
-    else
-        hsv2rgb(h, 0.5, 0.8, r, g, b);
+    }
 }
 
 void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, double *b)
