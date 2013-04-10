@@ -753,6 +753,23 @@ void dock_iconify_window(double id)
 }
 
 JS_EXPORT_API
+gboolean dock_is_client_minimized(double id)
+{
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)id));
+    if (c == NULL)
+        return FALSE;
+    Atom atom_wm_state = gdk_x11_get_xatom_by_name("WM_STATE");
+    gulong n_item;
+    gpointer data = get_window_property(_dsp, c->window, atom_wm_state, &n_item);
+    if (data == NULL)
+        return FALSE;
+
+    gboolean is_minimized = *(gulong*)data == IconicState;
+    XFree(data);
+    return is_minimized;
+}
+
+JS_EXPORT_API
 void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
 {
     if (JSValueIsNull(data->ctx, canvas)) {

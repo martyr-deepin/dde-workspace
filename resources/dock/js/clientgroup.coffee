@@ -1,5 +1,5 @@
-active_group = null
 class ClientGroup extends AppItem
+    active_group: null
     constructor: (@id, @icon, @app_id, @exec)->
         try
             super
@@ -58,11 +58,11 @@ class ClientGroup extends AppItem
                 @img3.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_LEFT
 
     to_active_status : (id)->
-        active_group?.to_normal_status()
+        ClientGroup.active_group?.to_normal_status()
         @open_indicator.src = "img/s_app_active.png"
         @leader = id
         DCore.Dock.active_window(@leader)
-        active_group = @
+        ClientGroup.active_group = @
 
     to_normal_status : ->
         @open_indicator.src = "img/s_app_open.png"
@@ -153,10 +153,10 @@ class ClientGroup extends AppItem
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
     do_click: (e)->
-        if @n_clients.length == 1 and active_group == @
+        if @n_clients.length == 1 and not DCore.Dock.is_client_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
-        else if @n_clients.length > 1 and active_group == @
+        else if @n_clients.length > 1 and ClientGroup.active_group == @
             @next_leader()
             @to_active_status(@leader)
         else
