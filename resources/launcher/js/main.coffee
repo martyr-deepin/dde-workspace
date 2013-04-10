@@ -29,31 +29,26 @@ DCore.signal_connect("lost_focus", (info)->
 )
 DCore.Launcher.notify_workarea_size()
 
+_b = document.body
 
-document.body.addEventListener("click", (e)->
+_b.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
         DCore.Launcher.exit_gui()
 )
 
-document.body.addEventListener("contextmenu", (e)->
-    # forbid context meun
-    e.preventDefault()
-)
-
-
-document.body.addEventListener("keypress", do ->
+_b.addEventListener("keypress", do ->
     _last_val = ''
     (e) ->
         if e.ctrlKey
             switch e.which
-                when 112 #p
+                when P_KEY
                     selected_up()
-                when 102 #f
+                when F_KEY
                     selected_next()
-                when 98 #b
+                when B_KEY
                     selected_prev()
-                when 110 #n
+                when N_KEY
                     selected_down()
                 else
                     s_box.value += String.fromCharCode(e.which)
@@ -81,13 +76,53 @@ document.body.addEventListener("keypress", do ->
                         item_selected.do_click()
                     else
                         get_first_shown()?.do_click()
+                when UP_ARROW
+                when DOWN_ARROW
+                when LEFT_ARROW
+                when RIGHT_ARROW
                 else
                     s_box.value += String.fromCharCode(e.which)
             search()
 )
 
+_contextmenu_callback = (msg) ->
+    (e) ->
+        menu = [
+            [1, msg]
+        ]
+        _b.contextMenu = build_menu(menu)
 
+is_show_hidden_icons = false
+_b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
+
+# TODO
+_show_hidden_icons = (is_shown) ->
+    is_show_hidden_icons = is_shown
+
+    if is_shown
+        for own k, v of applications
+            if v.display_mode == 'hidden'
+                v.display_icon_temp()
+        msg = HIDE_HIDDEN_ICONS
+    else
+        for own k, v of applications
+            if v.display_mode == 'hidden'
+                v.hide_icon()
+        msg = DISPLAY_HIDDEN_ICONS
+
+    _b.addEventListener("contextmenu", _contextmenu_callback(msg))
+
+_b.addEventListener("itemselected", (e) ->
+    _show_hidden_icons(not is_show_hidden_icons)
+    grid_load_category(selected_category_id)
+)
+
+# key: id of app (md5 basenam of path)
+# value: Item class
 applications = {}
+# key: id of app
+# value: a list of category id to which key belongs
+hidden_icons = {}
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
@@ -95,16 +130,21 @@ init_all_applications = ->
         lhs_name = DCore.DEntry.get_name(lhs)
         rhs_name = DCore.DEntry.get_name(rhs)
 
-        if lhs_name > rhs_name
-            1
-        else if lhs_name == rhs_name
-            0
-        else
-            -1
+        return 1 if lhs_name > rhs_name
+        return 0 if lhs_name == rhs_name
+        return -1
     )
-    for core in _all_items
-        id = DCore.DEntry.get_id(core)
-        applications[id] = new Item(id, core)
+
+    # hidden_icons = DCore.Launcher.read_hidden_icons()
+    if hidden_icons
+        for core in _all_items
+            id = DCore.DEntry.get_id(core)
+            applications[id] = new Item(id, core)
+    else
+        for core in _all_items
+            id = DCore.DEntry.get_id(core)
+            if id not in hidden_icons
+                applications[id] = new Item(id, core)
 
 init_search_box()
 init_all_applications()

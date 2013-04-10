@@ -57,6 +57,8 @@ class Item extends Widget
         @element.draggable = true
         @element.style.display = "none"
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
+        @display_mode = 'display'
+        @display_temp = false
 
     do_click : (e)->
         e?.stopPropagation()
@@ -75,22 +77,64 @@ class Item extends Widget
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    do_buildmenu: (e)->
-        [
+    @_menu: (msg) ->
+        menu = [
             [1, _("Open")],
             [],
-            [2, _("Send to desktop")],
-            [3, _("Send to dock"), s_dock!=null],
+            [2, msg],
+            [],
+            [3, _("Send to desktop")],
+            [4, _("Send to dock"), s_dock!=null],
         ]
+
+    @_contextmenu_callback: (msg) ->
+        (e) ->
+            @element.contextMenu = build_menu(Item._menu(msg))
+
+    do_buildmenu: (e)=>
+        if @display_mode == 'display'
+            msg = HIDE_ICON
+        else
+            msg = DISPLAY_ICON
+        Item._menu(msg)
+
+    hide_icon: (e)=>
+        # TODO
+        @display_mode = 'hidden'
+        @element.style.display = 'none'
+        @display_temp = false
+        # hidden_icon_number -= 1 if hidden_icon_number > 0
+        # _update_scroll_bar(category_infos[].length - hidden_icon_number)
+
+    display_icon: (e)=>
+        # TODO
+        @display_mode = 'display'
+        @element.style.display = 'block'
+        # hidden_icon_number += 1
+        # _update_scroll_bar(category_infos[].length - hidden_icon_number)
+
+    display_icon_temp: =>
+        @element.style.display = 'block'
+        @display_temp = true
+
+    _toggle_icon: =>
+        if @display_mode == 'display'
+            @hide_icon()
+            @element.addEventListener('conetxtmenu', Item._contextmenu_callback(DISPLAY_ICON))
+        else
+            @display_icon()
+            @element.addEventListener('contextmenu', Item._contextmenu_callback(HIDE_ICON))
+
     do_itemselected: (e)=>
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
-            when 2 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 3 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 2 then @_toggle_icon()
+            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
+            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
     hide: =>
         @element.style.display = "none"
     show: =>
-        @element.style.display = "block"
+        @element.style.display = "block" if @display_temp or @display_mode == 'display'
     is_shown: =>
         @element.style.display == "block"
     select: =>
@@ -122,8 +166,8 @@ update_items = (items) ->
         grid.appendChild(item_to_be_shown)
     return items
 
-_update_scroll_bar = (items) ->
-    lines = parseInt(ITEM_WIDTH * items.length / grid.clientWidth) + 1
+_update_scroll_bar = (len) ->
+    lines = parseInt(ITEM_WIDTH * len / grid.clientWidth) + 1
 
     if lines * ITEM_HEIGHT >= grid.clientHeight
         grid.style.overflowY = "scroll"
@@ -133,7 +177,7 @@ _update_scroll_bar = (items) ->
 grid_show_items = (items, is_category) ->
     item_selected?.unselect()
     item_selected = null
-    _update_scroll_bar(items)
+    _update_scroll_bar(items.length)
 
     for own key, value of applications
         if key not in items
@@ -157,6 +201,8 @@ _show_grid_selected = (id)->
             c.setAttribute("class", "category_name")
     return
 
+# key: category id
+# value: a list of Item which is in category whose id is key
 category_infos = []
 grid_load_category = (cat_id) ->
     _show_grid_selected(cat_id)

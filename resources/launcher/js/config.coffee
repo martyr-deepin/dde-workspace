@@ -14,3 +14,17 @@ GRID_MARGIN_BOTTOM = 30
 ESC_KEY = 27
 BACKSPACE_KEY = 8
 ENTER_KEY = 13
+P_KEY = 112
+N_KEY = 110
+B_KEY = 98
+F_KEY = 102
+UP_ARROW =
+DOWN_ARROW =
+LEFT_ARROW =
+RIGHT_ARROW =
+
+HIDE_HIDDEN_ICONS = _("Hide hidden icons")
+DISPLAY_HIDDEN_ICONS = _("Display hidden icons")
+
+HIDE_ICON = _("Hide this icon")
+DISPLAY_ICON = _("Dispaly this icon")
