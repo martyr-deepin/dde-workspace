@@ -341,6 +341,9 @@ class Item extends Widget
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
+            #XXX: workaround -> fix up get Enter keys before begining of rename
+            @item_name.addEventListener("input", @on_item_rename_input)
+
             @item_name.focus()
 
             ws = window.getSelection()
@@ -410,6 +413,11 @@ class Item extends Widget
         evt.stopPropagation()
         return
 
+    on_item_rename_input : (evt) =>
+        evt.stopPropagation()
+        @item_name.innerText = @item_name.innerText.replace(/[\n|\r]/gm, "")
+        return
+
 
     item_complete_rename : (modify = true) =>
         if modify == true
@@ -430,6 +438,8 @@ class Item extends Widget
         @item_name.removeEventListener("keydown", @on_item_rename_keydown)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
+        #XXX: workaround -> fix up get Enter keys before begining of rename
+        @item_name.removeEventListener("input", @on_item_rename_input)
 
         @display_selected()
 
