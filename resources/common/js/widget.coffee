@@ -100,6 +100,7 @@ class Widget extends Module
         @element.addEventListener("contextmenu", (e) =>
             if f_menu
                 @element.contextMenu = build_menu(f_menu())
+                e.stopPropagation()
             if f_rclick
                 f_rclick(e)
         )
