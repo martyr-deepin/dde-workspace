@@ -22,6 +22,7 @@
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "dwebview.h"
 
@@ -232,4 +233,17 @@ gboolean has_atom_property(Display* dsp, Window w, Atom prop)
         g_free(data);
         return TRUE;
     }
+}
+
+cairo_region_t* get_window_input_region(Display* dpy, Window w)
+{
+    int count = 0;
+    int ordering = 0;
+    XRectangle  *rects = XShapeGetRectangles (dpy, w, ShapeInput, &count, &ordering);
+    cairo_region_t* reg = cairo_region_create();
+    for (int i=0; i<count; i++) {
+        cairo_rectangle_int_t rect = {rects[i].x, rects[i].y, rects[i].width, rects[i].height};
+        cairo_region_union_rectangle(reg, &rect);
+    }
+    return reg;
 }
