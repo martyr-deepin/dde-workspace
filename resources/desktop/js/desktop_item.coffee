@@ -547,14 +547,14 @@ class DesktopEntry extends Item
             compressable = get_items_compressibility()
             if 0 == compressable
             else if 1 == compressable
-                menu.splice(2, 1, [11, _("Compress..")])
+                menu.splice(2, 0, [11, _("Compress..")])
             else if 2 == compressable
-                menu.splice(2, 1, [12, _("Decompress..")])
-                menu.splice(3, 1, [13, _("Decompress here..")])
+                menu.splice(2, 0, [12, _("Decompress..")])
+                menu.splice(3, 0, [13, _("Decompress here..")])
             else if 3 == compressable
-                menu.splice(2, 1, [11, _("compress..")])
-                menu.splice(3, 1, [12, _("Decompress..")])
-                menu.splice(4, 1, [13, _("Decompress here..")])
+                menu.splice(2, 0, [11, _("compress..")])
+                menu.splice(3, 0, [12, _("Decompress..")])
+                menu.splice(4, 0, [13, _("Decompress here..")])
         return menu
 
 
