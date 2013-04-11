@@ -64,11 +64,7 @@ class Item extends Widget
         e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
-        setTimeout(0, ->
-            #Must be let the main loop handle something before call main_quit eg. exit_gui().
-            #otherwise the Enter keyup event will be send to the current focus application.
-            DCore.Launcher.exit_gui()
-        )
+        DCore.Launcher.exit_gui()
     do_mouseover: (e)->
         #$("#close").setAttribute("class", "close_hover")
 
