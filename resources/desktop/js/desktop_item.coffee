@@ -573,8 +573,14 @@ class DesktopEntry extends Item
         return
 
     item_exec : =>
+        filename = @get_name()
+        if (filename.endsWith(".bin"))
+            if (entry =  DCore.DEntry.create_by_path(@get_path()))
+                DCore.DEntry.launch(entry, [])
+            return
         if !DCore.DEntry.launch(@_entry,[])
             confirm(_("Can not open this file."), _("Warning"))
+        return
 
 
 class Folder extends DesktopEntry
