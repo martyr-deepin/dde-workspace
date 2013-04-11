@@ -773,7 +773,7 @@ gboolean dock_is_client_minimized(double id)
 JS_EXPORT_API
 gboolean dock_window_need_to_be_minimized(double id)
 {
-    return !dock_is_client_minimized(id) && dock_is_active_window(id);
+    return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
 
 JS_EXPORT_API

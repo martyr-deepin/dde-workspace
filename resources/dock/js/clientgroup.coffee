@@ -162,7 +162,7 @@ class ClientGroup extends AppItem
         if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
-        else if @n_clients.length > 1 and DCore.Dock.is_active_window(@leader)
+        else if @n_clients.length > 1 and DCore.Dock.get_active_window() == @leader
             @next_leader()
             @to_active_status(@leader)
         else
