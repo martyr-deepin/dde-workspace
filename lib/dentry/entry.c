@@ -533,15 +533,15 @@ void dentry_decompress_files(ArrayContainer fs)
         _fs = _normalize_array_container(fs);
         files = _fs.data;
 
-        GList *list = NULL;
         for (size_t i=0; i<_fs.num; i++) 
         {
+            GList *list = NULL;
             GFile *file = files[i];
             list = g_list_append(list, file);
+            _commandline_exec("file-roller -f ", list);
+            g_list_free(list);
         }
-        _commandline_exec("file-roller -f ", list);
 
-        g_list_free(list);
         for (size_t i=0; i<_fs.num; i++) {
              g_object_unref(((GObject**)_fs.data)[i]);
         }
