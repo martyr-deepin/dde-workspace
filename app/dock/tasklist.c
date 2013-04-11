@@ -56,7 +56,7 @@ static Atom ATOM_WINDOW_MAXIMIZED_VERT;
 static Atom ATOM_WINDOW_SKIP_TASKBAR;
 static Atom ATOM_XEMBED_INFO;
 static Display* _dsp = NULL;
-static Atom ATOM_DEEPIN_WINDOW_VIEWPORT;
+static Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
 static void _init_atoms()
 {
@@ -76,7 +76,7 @@ static void _init_atoms()
     ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
     ATOM_WINDOW_SKIP_TASKBAR = gdk_x11_get_xatom_by_name("_NET_WM_STATE_SKIP_TASKBAR");
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
-    ATOM_DEEPIN_WINDOW_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORT");
+    ATOM_DEEPIN_WINDOW_VIEWPORTS = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORTS");
     ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
 }
 
@@ -144,7 +144,7 @@ void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res
 static
 void _update_window_viewport(Client* c)
 {
-    get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORT, c,
+    get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
                            _update_window_viewport_callback, -1);
     dock_update_hide_mode();
 }
@@ -615,7 +615,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
-            } else if (ev->atom == ATOM_DEEPIN_WINDOW_VIEWPORT) {
+            } else if (ev->atom == ATOM_DEEPIN_WINDOW_VIEWPORTS) {
                 _update_window_viewport(c);
             }
         }

@@ -170,7 +170,7 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
 
     gdk_window_reparent(icon, gtk_widget_get_window(container), 0, screen_height - DOCK_HEIGHT);
     //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
-    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK); 
+    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
     gdk_window_add_filter(icon, monitor_icon_event, icon);
     gdk_window_set_composited(icon, TRUE);
 
