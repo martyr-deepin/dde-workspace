@@ -474,8 +474,7 @@ _file_is_archive (GFile *file)
                              "application/x-tzo",
                              "application/x-msdownload",
                              "application/x-lha",
-                             "application/x-zoo",
-                             "application/octet-stream"}; 
+                             "application/x-zoo"}; 
 
 	g_return_val_if_fail (file != NULL, FALSE);
 
@@ -579,7 +578,7 @@ void dentry_decompress_files_here(ArrayContainer fs)
 static void
 _commandline_exec(const char *commandline, GList *list)
 {
-    GAppInfo *app_info = g_app_info_create_from_commandline(commandline, NULL, G_APP_INFO_CREATE_NONE, NULL);
+    GAppInfo *app_info = g_app_info_create_from_commandline(commandline, NULL, G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION, NULL);
     g_app_info_launch(app_info, list, NULL, NULL);
 
     g_object_unref(app_info);
