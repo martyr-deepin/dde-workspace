@@ -92,9 +92,8 @@ class ClientGroup extends AppItem
 
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
-            #TODO: new leader should insert at index 1
             @n_clients.remove(id)
-            @n_clients.push id
+            @n_clients.unshift id
             apply_rotate(@img, 1)
 
             if @leader != id
@@ -151,7 +150,8 @@ class ClientGroup extends AppItem
     do_itemselected: (e)=>
         Preview_container.close()
         switch e.id
-            when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
+            when 1
+                DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
@@ -168,10 +168,16 @@ class ClientGroup extends AppItem
         else
             @to_active_status(@leader)
 
-    do_mouseover: (e)->
-        e.stopPropagation()
-        Preview_show(@)
+    do_mouseover: (e) ->
+        if @n_clients.length == 0
+            1
+        else
+            e.stopPropagation()
+            Preview_show(@)
 
-    do_mousemove: (e)->
-        e.stopPropagation()
-        Preview_show(@)
+    do_mousemove: (e) ->
+        if @n_clients.length == 0
+            1
+        else
+            e.stopPropagation()
+            Preview_show(@)
