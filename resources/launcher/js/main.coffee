@@ -76,13 +76,22 @@ _b.addEventListener("keypress", do ->
                         item_selected.do_click()
                     else
                         get_first_shown()?.do_click()
-                when UP_ARROW
-                when DOWN_ARROW
-                when LEFT_ARROW
-                when RIGHT_ARROW
                 else
                     s_box.value += String.fromCharCode(e.which)
             search()
+)
+
+# this does not work on keypress
+_b.addEventListener("keydown", (e) ->
+    switch e.which
+        when UP_ARROW
+            selected_up()
+        when DOWN_ARROW
+            selected_down()
+        when LEFT_ARROW
+            selected_prev()
+        when RIGHT_ARROW
+            selected_next()
 )
 
 _contextmenu_callback = (msg) ->
