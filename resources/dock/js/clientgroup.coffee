@@ -17,6 +17,19 @@ class ClientGroup extends AppItem
         catch error
             alert "Group construcotr :#{error}"
 
+        # contextmenu and preview window cannot be shown at the same time
+        @element.addEventListener("contextmenu", (e) =>
+            Preview_close_now()
+            menu = build_menu([
+                [1, _("New instance")],
+                [2, _("Close")],
+                [],
+                [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
+            ])
+            @element.contextMenu = menu
+            e.stopPropagation()
+        )
+
     update_scale: ->
         super
         #TODO: why @n_clients maybe invalid !!!!!!!!!!!!
@@ -135,14 +148,6 @@ class ClientGroup extends AppItem
         @try_build_launcher()
         super
 
-    do_buildmenu: ->
-        [
-            [1, _("New instance")],
-            [2, _("Close")],
-            [],
-            [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
-        ]
-
     do_itemselected: (e)=>
         Preview_container.close()
         switch e.id
@@ -164,5 +169,9 @@ class ClientGroup extends AppItem
             @to_active_status(@leader)
 
     do_mouseover: (e)->
+        e.stopPropagation()
+        Preview_show(@)
+
+    do_mousemove: (e)->
         e.stopPropagation()
         Preview_show(@)
