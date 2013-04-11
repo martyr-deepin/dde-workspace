@@ -222,7 +222,7 @@ void notify_desktop(DesktopFocusState current_state)
         if (var != NULL) {
             g_variant_unref(var);
             const char* state[] = {"focus", "blur"};
-            g_warning("desktop focus state changed to %s", state[current_state]);
+            g_debug("desktop focus state changed to %s", state[current_state]);
         }
         g_object_unref(desktop_dbus);
     }
@@ -752,6 +752,7 @@ void dock_iconify_window(double id)
     XIconifyWindow(_dsp, (Window)id, 0);
 }
 
+
 JS_EXPORT_API
 gboolean dock_is_client_minimized(double id)
 {
@@ -761,11 +762,34 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
-    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0)) {
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0))
         is_minimized = wm_state == IconicState;
-        g_debug("window state: %lu", wm_state);
-    }
+
+    const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
+    g_debug("window state: %s", state[wm_state]);
     return is_minimized;
+}
+
+JS_EXPORT_API
+gboolean dock_is_active_window(double id)
+{
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)id));
+    if (c == NULL)
+        return FALSE;
+
+    Window wm_id;
+    gboolean is_active = FALSE;
+    GdkWindow* root = gdk_get_default_root_window();
+    if (get_atom_value_by_name(_dsp, GDK_WINDOW_XID(root), "_NET_ACTIVE_WINDOW", &wm_id, get_atom_value_by_index, 0))
+        is_active = wm_id == (Window)id;
+
+    g_debug("Window(id: 0x%lx) is %sactive window", (Window)id, is_active ? "" : "not ");
+    return is_active;
+}
+JS_EXPORT_API
+gboolean dock_window_need_to_be_minimized(double id)
+{
+    return !dock_is_client_minimized(id) && dock_is_active_window(id);
 }
 
 JS_EXPORT_API

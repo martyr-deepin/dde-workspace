@@ -1,5 +1,4 @@
 class ClientGroup extends AppItem
-    active_group: null
     constructor: (@id, @icon, @app_id, @exec)->
         try
             super
@@ -57,15 +56,17 @@ class ClientGroup extends AppItem
                 @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT
                 @img3.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_LEFT
 
-    to_active_status : (id)->
-        ClientGroup.active_group?.to_normal_status()
-        @open_indicator.src = "img/s_app_active.png"
-        @leader = id
-        DCore.Dock.active_window(@leader)
-        ClientGroup.active_group = @
+    to_active_status : do ->
+        active_group = null
+        (id)->
+            active_group?.to_normal_status()
+            @open_indicator.src = ACTIVE_STATUS_INDICATOR
+            @leader = id
+            DCore.Dock.active_window(@leader)
+            active_group = @
 
     to_normal_status : ->
-        @open_indicator.src = "img/s_app_open.png"
+        @open_indicator.src = NORMAL_STATUS_INDICATOR
 
     update_client: (id, icon, title)->
         icon = NOT_FOUND_ICON if not icon
@@ -153,10 +154,10 @@ class ClientGroup extends AppItem
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
     do_click: (e)->
-        if @n_clients.length == 1 and not DCore.Dock.is_client_minimized(@leader)
+        if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
-        else if @n_clients.length > 1 and ClientGroup.active_group == @
+        else if @n_clients.length > 1 and DCore.Dock.is_active_window(@leader)
             @next_leader()
             @to_active_status(@leader)
         else
