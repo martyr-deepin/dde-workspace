@@ -542,7 +542,20 @@ class DesktopEntry extends Item
         menu.push([9, _("Delete")])
         menu.push([])
         menu.push([10, _("Properties")])
-        menu
+
+        if DCore.DEntry.is_fileroller_exist()
+            compressable = get_items_compressibility()
+            if 0 == compressable
+            else if 1 == compressable
+                menu.splice(2, 1, [11, _("Compress..")])
+            else if 2 == compressable
+                menu.splice(2, 1, [12, _("Decompress..")])
+                menu.splice(3, 1, [13, _("Decompress here..")])
+            else if 3 == compressable
+                menu.splice(2, 1, [11, _("compress..")])
+                menu.splice(3, 1, [12, _("Decompress..")])
+                menu.splice(4, 1, [13, _("Decompress here..")])
+        return menu
 
 
     do_itemselected : (evt) ->
@@ -553,6 +566,9 @@ class DesktopEntry extends Item
             when 6 then @item_rename()
             when 9 then delete_selected_items(evt.shiftKey == true)
             when 10 then show_selected_items_Properties()
+            when 11 then compress_selected_items()
+            when 12 then decompress_selected_items()
+            when 13 then decompress_selected_items_here()
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
