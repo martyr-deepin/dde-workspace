@@ -771,25 +771,9 @@ gboolean dock_is_client_minimized(double id)
 }
 
 JS_EXPORT_API
-gboolean dock_is_active_window(double id)
-{
-    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)id));
-    if (c == NULL)
-        return FALSE;
-
-    Window wm_id;
-    gboolean is_active = FALSE;
-    GdkWindow* root = gdk_get_default_root_window();
-    if (get_atom_value_by_name(_dsp, GDK_WINDOW_XID(root), "_NET_ACTIVE_WINDOW", &wm_id, get_atom_value_by_index, 0))
-        is_active = wm_id == (Window)id;
-
-    g_debug("Window(id: 0x%lx) is %sactive window", (Window)id, is_active ? "" : "not ");
-    return is_active;
-}
-JS_EXPORT_API
 gboolean dock_window_need_to_be_minimized(double id)
 {
-    return !dock_is_client_minimized(id) && dock_is_active_window(id);
+    return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
 
 JS_EXPORT_API
