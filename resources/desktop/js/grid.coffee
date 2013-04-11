@@ -733,6 +733,42 @@ show_selected_items_Properties = ->
     catch e
     return
 
+compress_selected_items = ->
+    tmp = []
+    for i in selected_item
+        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
+    try
+        DCore.DEntry.compress_files(tmp)
+    catch e
+    return
+
+decompress_selected_items = ->
+    tmp = []
+    for i in selected_item
+        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
+    try
+        DCore.DEntry.decompress_files(tmp)
+    catch e
+    return
+
+decompress_selected_items_here = ->
+    tmp = []
+    for i in selected_item
+        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
+    try
+        DCore.DEntry.decompress_files_here(tmp)
+    catch e
+    return
+
+get_items_compressibility = ->
+    tmp = []
+    for i in selected_item
+        if (w = Widget.look_up(i))
+            if(false == w.modifiable)
+                return 0
+            else
+                tmp.push(w.get_entry())
+    DCore.DEntry.files_compressibility(tmp)
 
 gird_left_mousedown = (evt) ->
     evt.stopPropagation()

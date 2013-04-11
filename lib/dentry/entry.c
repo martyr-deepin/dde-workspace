@@ -45,6 +45,8 @@ ArrayContainer EMPTY_CONTAINER = {0, 0};
 
 static GFile* _get_gfile_from_gapp(GDesktopAppInfo* info);
 static ArrayContainer _normalize_array_container(ArrayContainer pfs);
+static gboolean _file_is_archive (GFile *file);
+static void _commandline_exec(const char *commandline, GList *list);
 
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
     GFile* f = e;
@@ -53,6 +55,12 @@ static ArrayContainer _normalize_array_container(ArrayContainer pfs);
     GAppInfo* app = e;
 
 #define TEST_END } else { g_warn_if_reached();}
+
+#define FILES_COMPRESSIBLE_NONE 0
+#define FILES_COMPRESSIBLE      1 
+#define FILES_DECOMPRESSIBLE    2
+#define FILES_COMPRESSIBLE_ALL  3
+                                
 
 JS_EXPORT_API
 Entry* dentry_get_desktop()
@@ -72,6 +80,7 @@ gboolean dentry_is_native(Entry* e)
     }
     return TRUE;
 }
+
 JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
@@ -92,7 +101,7 @@ double dentry_get_type(Entry* e)
                 }
         case G_FILE_TYPE_SYMBOLIC_LINK:
         {
-                    char* src = g_file_get_path(f);
+            char* src = g_file_get_path(f);
             char* target = g_file_read_link (src, NULL);
             g_free (src);
             if (target != NULL||g_file_test(target, G_FILE_TEST_EXISTS))
@@ -367,6 +376,213 @@ Entry* dentry_create_by_path(const char* path)
         if (e != NULL) return e;
     }
     return g_file_new_for_commandline_arg(path);
+}
+
+JS_EXPORT_API
+gboolean dentry_is_fileroller_exist()
+{
+    gchar *path = g_find_program_in_path("file-roller");
+
+    if(NULL != path)
+    {
+        g_free(path);
+        return TRUE;
+    }
+    
+    return FALSE;
+}
+
+JS_EXPORT_API
+double dentry_files_compressibility(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+
+    if (fs.num != 0)
+    {
+        _fs = _normalize_array_container(fs);
+        files = _fs.data;
+    }
+
+    if(1 == fs.num)  
+    {
+        GFile *f = files[0];
+        if(_file_is_archive(f))
+        {
+            return FILES_DECOMPRESSIBLE;
+        }
+    } 
+    else if(1 < fs.num)
+    {
+        gboolean all_compressed = TRUE;
+        for(int i=0; i<fs.num; i++)
+        {
+            GFile *f = files[i];
+            if(NULL == f)
+                return FILES_COMPRESSIBLE_NONE;
+            if(!_file_is_archive(f))
+            {
+                all_compressed = FALSE;
+                if(!g_file_get_path(f))
+                    return FILES_COMPRESSIBLE_NONE;
+            }
+        }
+
+        if(all_compressed)
+            return FILES_COMPRESSIBLE_ALL;
+    }
+
+    return FILES_COMPRESSIBLE;
+}
+
+static gboolean
+_file_is_archive (GFile *file)
+{
+	char *mime_type;
+	int i;
+	static const char * archive_mime_types[] = { "application/x-gtar",
+						     "application/x-zip",
+						     "application/x-zip-compressed",
+						     "application/zip",
+						     "application/x-zip",
+						     "application/x-tar",
+						     "application/x-7z-compressed",
+						     "application/x-rar",
+						     "application/x-rar-compressed",
+						     "application/x-jar",
+						     "application/x-java-archive",
+						     "application/x-war",
+						     "application/x-ear",
+						     "application/x-arj",
+						     "application/x-gzip",
+						     "application/x-bzip-compressed-tar",
+						     "application/x-compressed-tar", 
+                             "application/x-archive",
+                             "application/x-xz-compressed-tar",
+                             "application/x-bzip",
+                             "application/x-cbz",
+                             "application/x-xz",
+                             "application/x-lzma-compressed-tar",
+                             "application/x-ms-dos-executable",
+                             "application/x-lzma",
+                             "application/x-cd-image",
+                             "application/x-deb",
+                             "application/x-rpm",
+                             "application/x-stuffit",
+                             "application/x-tzo",
+                             "application/x-tarz",
+                             "application/x-tzo",
+                             "application/x-msdownload",
+                             "application/x-lha",
+                             "application/x-zoo",
+                             "application/octet-stream"}; 
+
+	g_return_val_if_fail (file != NULL, FALSE);
+
+    GFileInfo* info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, NULL, NULL);
+    if (info != NULL) {
+        mime_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+    }      
+
+	for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
+		if (!strcmp (mime_type, archive_mime_types[i])) {
+			g_free (mime_type);
+			return TRUE;
+		}
+	}
+	g_free (mime_type);
+
+	return FALSE;
+}
+
+JS_EXPORT_API
+void dentry_compress_files(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+
+    if(fs.num != 0)
+    {
+        _fs = _normalize_array_container(fs);
+        files = _fs.data;
+
+        GList *list = NULL;
+        for (size_t i=0; i<_fs.num; i++) 
+        {
+            GFile *file = files[i];
+            list = g_list_append(list, file);
+        }
+        _commandline_exec("file-roller -d %U ", list);
+
+        g_list_free(list);
+        for (size_t i=0; i<_fs.num; i++) {
+             g_object_unref(((GObject**)_fs.data)[i]);
+        }
+        g_free(_fs.data);
+    }
+}
+
+JS_EXPORT_API
+void dentry_decompress_files(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+           
+    if(fs.num != 0)
+    {   
+        _fs = _normalize_array_container(fs);
+        files = _fs.data;
+
+        GList *list = NULL;
+        for (size_t i=0; i<_fs.num; i++) 
+        {
+            GFile *file = files[i];
+            list = g_list_append(list, file);
+        }
+        _commandline_exec("file-roller -f ", list);
+
+        g_list_free(list);
+        for (size_t i=0; i<_fs.num; i++) {
+             g_object_unref(((GObject**)_fs.data)[i]);
+        }
+        g_free(_fs.data);
+    }
+}
+
+JS_EXPORT_API
+void dentry_decompress_files_here(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+           
+    if(fs.num != 0)
+    {   
+        _fs = _normalize_array_container(fs);
+        files = _fs.data;
+
+        GList *list = NULL;
+        for (size_t i=0; i<_fs.num; i++) 
+        {
+            GFile *file = files[i];
+            list = g_list_append(list, file);
+        }
+        _commandline_exec("file-roller -h ", list);
+
+        g_list_free(list);
+        for (size_t i=0; i<_fs.num; i++) {
+             g_object_unref(((GObject**)_fs.data)[i]);
+        }
+        g_free(_fs.data);
+    }
+}
+
+static void
+_commandline_exec(const char *commandline, GList *list)
+{
+    GAppInfo *app_info = g_app_info_create_from_commandline(commandline, NULL, G_APP_INFO_CREATE_NONE, NULL);
+    g_app_info_launch(app_info, list, NULL, NULL);
+
+    g_object_unref(app_info);
 }
 
 static
