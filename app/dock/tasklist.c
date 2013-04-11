@@ -131,18 +131,21 @@ void client_free(Client* c);
 double dock_get_active_window();
 
 static
-void _update_window_viewport(Client* c)
+void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
 {
-    gulong items;
-    void* data = get_window_property(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORT, &items);
-    if (data == NULL)
-        return;
+    Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
-    for (int i = 0, j = 1; j < items; ++i, j += 2) {
+    for (int i = 0, j = 1; j < n_item; ++i, j += 2) {
         c->workspace[i].x = (int)X_FETCH_32(data, j);
         c->workspace[i].y = (int)X_FETCH_32(data, j + 1);
     }
-    XFree(data);
+}
+
+static
+void _update_window_viewport(Client* c)
+{
+    get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORT, c,
+                           _update_window_viewport_callback, -1);
     dock_update_hide_mode();
 }
 
@@ -312,7 +315,7 @@ gboolean is_normal_window(Window w)
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
         } else if (g_str_equal(ch.res_class, "Desktop")) {
-            get_net_wm_pid(_dsp, w, &desktop_pid);
+            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_by_index, 0);
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -396,12 +399,8 @@ void _update_task_list(Window root)
 JS_EXPORT_API
 double dock_get_active_window()
 {
-    gulong items;
-    void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &items);
-    if (data == NULL)
-        return 0;
-    Window aw = X_FETCH_32(data, 0);
-    XFree(data);
+    Window aw = 0;
+    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_by_index, 0);
     return aw;
 }
 
@@ -560,6 +559,7 @@ static gboolean _is_maximized_window(Window win)
     }
     return FALSE;
 }
+
 
 static
 void _update_current_viewport(Workspace* vp)
@@ -758,14 +758,13 @@ gboolean dock_is_client_minimized(double id)
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)id));
     if (c == NULL)
         return FALSE;
-    Atom atom_wm_state = gdk_x11_get_xatom_by_name("WM_STATE");
-    gulong n_item;
-    gpointer data = get_window_property(_dsp, c->window, atom_wm_state, &n_item);
-    if (data == NULL)
-        return FALSE;
 
-    gboolean is_minimized = *(gulong*)data == IconicState;
-    XFree(data);
+    gulong wm_state;
+    gboolean is_minimized = FALSE;
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0)) {
+        is_minimized = wm_state == IconicState;
+        g_debug("window state: %lu", wm_state);
+    }
     return is_minimized;
 }
 

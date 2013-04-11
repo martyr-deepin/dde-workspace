@@ -24,7 +24,8 @@ gboolean desktop_has_focus(Display* dsp, gboolean* ret)
 {
     gboolean state;
     gulong active_client_wm_pid;
-    if (state = get_net_wm_pid(dsp, active_client_id, &active_client_wm_pid)) {
+    if (state = get_atom_value_by_name(dsp, active_client_id, "_NET_WM_PID",
+                                       &active_client_wm_pid, get_atom_value_by_index, 0)) {
         *ret = active_client_wm_pid == desktop_pid;
     }
 
@@ -64,15 +65,3 @@ void start_monitor_launcher_window(Display* dsp, Window w)
     gdk_window_add_filter(win, (GdkFilterFunc)_monitor_launcher_window, GINT_TO_POINTER(w));
 }
 
-gboolean get_net_wm_pid(Display* dsp, Window id, gulong* net_wm_pid)
-{
-    Atom atom_net_wm_pid = gdk_x11_get_xatom_by_name("_NET_WM_PID");
-    gulong n_item;
-    gpointer data = get_window_property(dsp, id, atom_net_wm_pid, &n_item);
-    if (data != NULL) {
-        *net_wm_pid = X_FETCH_32(data, 0);
-        XFree(data);
-        return TRUE;
-    }
-    return FALSE;
-}
