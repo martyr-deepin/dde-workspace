@@ -44,7 +44,13 @@ GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 
 gboolean mouse_pointer_leave(int x, int y)
 {
-    cairo_region_t* region = gdk_window_get_visible_region(DOCK_GDK_WINDOW());
+    static Display* dpy = NULL;
+    Window dock_window = 0;
+    if (dpy == NULL) {
+        dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+        dock_window = GDK_WINDOW_XID(DOCK_GDK_WINDOW());
+    }
+    cairo_region_t* region = get_window_input_region(dpy, dock_window);
     gboolean is_contain = cairo_region_contains_point(region, x, y);
     cairo_region_destroy(region);
     return is_contain;

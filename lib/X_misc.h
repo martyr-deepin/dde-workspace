@@ -38,6 +38,7 @@ void get_workarea_size(int screen_n, int desktop_n, int* x, int* y, int* width, 
 
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 
+cairo_region_t* get_window_input_region(Display* dpy, Window w);
 
 void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items);
 
