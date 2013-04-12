@@ -409,6 +409,7 @@ double dentry_files_compressibility(ArrayContainer fs)
         GFile *f = files[0];
         if(_file_is_archive(f))
         {
+            g_free(_fs.data);
             return FILES_DECOMPRESSIBLE;
         }
     } 
@@ -419,19 +420,32 @@ double dentry_files_compressibility(ArrayContainer fs)
         {
             GFile *f = files[i];
             if(NULL == f)
+            {
+                g_free(_fs.data);
                 return FILES_COMPRESSIBLE_NONE;
+            }
             if(!_file_is_archive(f))
             {
                 all_compressed = FALSE;
                 if(!g_file_get_path(f))
+                {
+                    g_free(_fs.data);
                     return FILES_COMPRESSIBLE_NONE;
+                }
             }
         }
 
         if(all_compressed)
+        {
+            g_free(_fs.data);
             return FILES_COMPRESSIBLE_ALL;
+        }
     }
 
+    if(_fs.data != NULL)
+    {
+        g_free(_fs.data);
+    }
     return FILES_COMPRESSIBLE;
 }
 
