@@ -237,12 +237,12 @@ int main(int argc, char* argv[])
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
 
-    GtkIMContext* im_context = gtk_im_multicontext_new();
-    gtk_im_context_set_client_window(im_context, gdkwindow);
-    GdkRectangle area = {0, 1700, 100, 30};
-    gtk_im_context_set_cursor_location(im_context, &area);
-    gtk_im_context_focus_in(im_context);
-    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+    /* GtkIMContext* im_context = gtk_im_multicontext_new(); */
+    /* gtk_im_context_set_client_window(im_context, gdkwindow); */
+    /* GdkRectangle area = {0, 1700, 100, 30}; */
+    /* gtk_im_context_set_cursor_location(im_context, &area); */
+    /* gtk_im_context_focus_in(im_context); */
+    /* g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL); */
 
     setup_dbus_service();
     monitor_resource_file("launcher", webview);
