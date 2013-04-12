@@ -1,8 +1,8 @@
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
-        @img.setAttribute("title", DCore.DEntry.get_name(@core))
         @app_id = @id
+        @set_tooltip_text(DCore.DEntry.get_name(@core))
 
 
     try_swap_clientgroup: ->
@@ -31,4 +31,3 @@ class Launcher extends AppItem
         setTimeout(=>
             @destroy()
         ,500)
-
