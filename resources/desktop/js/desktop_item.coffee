@@ -547,14 +547,14 @@ class DesktopEntry extends Item
             compressable = get_items_compressibility()
             if 0 == compressable
             else if 1 == compressable
-                menu.splice(2, 1, [11, _("Compress..")])
+                menu.splice(2, 0, [11, _("Compress..")])
             else if 2 == compressable
-                menu.splice(2, 1, [12, _("Decompress..")])
-                menu.splice(3, 1, [13, _("Decompress here..")])
+                menu.splice(2, 0, [12, _("Decompress..")])
+                menu.splice(3, 0, [13, _("Decompress here..")])
             else if 3 == compressable
-                menu.splice(2, 1, [11, _("compress..")])
-                menu.splice(3, 1, [12, _("Decompress..")])
-                menu.splice(4, 1, [13, _("Decompress here..")])
+                menu.splice(2, 0, [11, _("compress..")])
+                menu.splice(3, 0, [12, _("Decompress..")])
+                menu.splice(4, 0, [13, _("Decompress here..")])
         return menu
 
 
@@ -565,7 +565,7 @@ class DesktopEntry extends Item
             when 4 then selected_copy_to_clipboard()
             when 6 then @item_rename()
             when 9 then delete_selected_items(evt.shiftKey == true)
-            when 10 then show_selected_items_Properties()
+            when 10 then show_selected_items_properties()
             when 11 then compress_selected_items()
             when 12 then decompress_selected_items()
             when 13 then decompress_selected_items_here()
@@ -573,8 +573,14 @@ class DesktopEntry extends Item
         return
 
     item_exec : =>
+        filename = @get_name()
+        if (filename.endsWith(".bin"))
+            if (entry =  DCore.DEntry.create_by_path(@get_path()))
+                DCore.DEntry.launch(entry, [])
+            return
         if !DCore.DEntry.launch(@_entry,[])
             confirm(_("Can not open this file."), _("Warning"))
+        return
 
 
 class Folder extends DesktopEntry

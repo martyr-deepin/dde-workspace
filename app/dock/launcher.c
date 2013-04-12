@@ -30,7 +30,7 @@
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
 
-/* * app_id is 
+/* * app_id is
  * 1. the desktop file name in whitelist
  * 2. the normal desktop file name
  * 3. the executable file name
@@ -168,7 +168,7 @@ void init_launchers()
     }
 }
 
-static 
+static
 int get_need_terminal(GDesktopAppInfo* info)
 {
     //copy from gio source code.

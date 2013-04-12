@@ -409,6 +409,7 @@ double dentry_files_compressibility(ArrayContainer fs)
         GFile *f = files[0];
         if(_file_is_archive(f))
         {
+            g_free(_fs.data);
             return FILES_DECOMPRESSIBLE;
         }
     } 
@@ -419,19 +420,32 @@ double dentry_files_compressibility(ArrayContainer fs)
         {
             GFile *f = files[i];
             if(NULL == f)
+            {
+                g_free(_fs.data);
                 return FILES_COMPRESSIBLE_NONE;
+            }
             if(!_file_is_archive(f))
             {
                 all_compressed = FALSE;
                 if(!g_file_get_path(f))
+                {
+                    g_free(_fs.data);
                     return FILES_COMPRESSIBLE_NONE;
+                }
             }
         }
 
         if(all_compressed)
+        {
+            g_free(_fs.data);
             return FILES_COMPRESSIBLE_ALL;
+        }
     }
 
+    if(_fs.data != NULL)
+    {
+        g_free(_fs.data);
+    }
     return FILES_COMPRESSIBLE;
 }
 
@@ -474,8 +488,7 @@ _file_is_archive (GFile *file)
                              "application/x-tzo",
                              "application/x-msdownload",
                              "application/x-lha",
-                             "application/x-zoo",
-                             "application/octet-stream"}; 
+                             "application/x-zoo"}; 
 
 	g_return_val_if_fail (file != NULL, FALSE);
 
@@ -533,15 +546,15 @@ void dentry_decompress_files(ArrayContainer fs)
         _fs = _normalize_array_container(fs);
         files = _fs.data;
 
-        GList *list = NULL;
         for (size_t i=0; i<_fs.num; i++) 
         {
+            GList *list = NULL;
             GFile *file = files[i];
             list = g_list_append(list, file);
+            _commandline_exec("file-roller -f ", list);
+            g_list_free(list);
         }
-        _commandline_exec("file-roller -f ", list);
 
-        g_list_free(list);
         for (size_t i=0; i<_fs.num; i++) {
              g_object_unref(((GObject**)_fs.data)[i]);
         }
@@ -579,7 +592,7 @@ void dentry_decompress_files_here(ArrayContainer fs)
 static void
 _commandline_exec(const char *commandline, GList *list)
 {
-    GAppInfo *app_info = g_app_info_create_from_commandline(commandline, NULL, G_APP_INFO_CREATE_NONE, NULL);
+    GAppInfo *app_info = g_app_info_create_from_commandline(commandline, NULL, G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION, NULL);
     g_app_info_launch(app_info, list, NULL, NULL);
 
     g_object_unref(app_info);
