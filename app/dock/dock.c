@@ -143,8 +143,6 @@ int main(int argc, char* argv[])
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
 
-    g_signal_connect_after(webview, "draw", G_CALLBACK(draw_tray_icons), NULL);
-
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
 
@@ -201,7 +199,7 @@ void dock_emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
-        tray_init(container);
+        tray_init(webview);
         update_dock_size_mode();
         init_dock_guard_window();
     } else {

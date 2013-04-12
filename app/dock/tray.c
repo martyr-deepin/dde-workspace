@@ -49,6 +49,7 @@ static gboolean _TRY_ICON_INIT = FALSE;
 static void _update_deepin_try_position();
 static void _update_fcitx_try_position();
 static void _update_notify_area_width();
+gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 
 void tray_icon_do_screen_size_change()
 {
@@ -132,6 +133,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
             g_hash_table_remove(_icons, data);
             _update_notify_area_width();
         }
+        return GDK_FILTER_REMOVE;
     } else if (xev->type == ConfigureNotify) {
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
@@ -150,6 +152,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
                 _update_notify_area_width();
             }
         }
+        return GDK_FILTER_REMOVE;
     } else if (xev->type == GenericEvent) {
         XGenericEvent* ge = xevent;
         if (ge->evtype == EnterNotify) {
@@ -163,8 +166,9 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
             g_object_set_data(G_OBJECT(win), "is_mouse_in", GINT_TO_POINTER(FALSE));
             gdk_window_invalidate_rect(par, NULL, TRUE);
         }
+        return GDK_FILTER_REMOVE;
     }
-    return GDK_FILTER_REMOVE;
+    return GDK_FILTER_CONTINUE;
 }
 
 void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
@@ -217,6 +221,7 @@ void tray_init(GtkWidget* container)
     na_tray_manager_manage_screen(tray_manager, screen);
 
     g_signal_connect(tray_manager, "tray_icon_added", G_CALLBACK(tray_icon_added), container);
+    g_signal_connect_after(container, "draw", G_CALLBACK(draw_tray_icons), NULL);
     _TRY_ICON_INIT = TRUE;
 }
 
@@ -258,8 +263,6 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
 {
-    cairo_set_source_rgba(cr, 1, 0, 0, 0.3);
-    /* cairo_paint(cr); */
     if (_icons != NULL) {
         g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
         if (_deepin_tray)
