@@ -37,46 +37,48 @@ _b.addEventListener("click", (e)->
         DCore.Launcher.exit_gui()
 )
 
-_b.addEventListener("keypress", (e) ->
-    if e.ctrlKey
-        switch e.which
-            when P_KEY
-                selected_up()
-            when F_KEY
-                selected_next()
-            when B_KEY
-                selected_prev()
-            when N_KEY
-                selected_down()
-            when SPACE_KEY
-                s_box.focus()
-            #     DCore.signal_connect("im_commit", do ->
-            #         s_box.focus()
-            #         (info)->
-            #             s_box.value += info.Content
-            #             search()
-            #     )
-            else
-                s_box.value += String.fromCharCode(e.which)
-    else
-        switch e.which
-            when ESC_KEY
-                if s_box.value == ""
-                    DCore.Launcher.exit_gui()
+_b.addEventListener("keypress", do ->
+    _last_val = ''
+    (e) ->
+        if e.ctrlKey
+            switch e.which
+                when P_KEY
+                    selected_up()
+                when F_KEY
+                    selected_next()
+                when B_KEY
+                    selected_prev()
+                when N_KEY
+                    selected_down()
                 else
-                    s_box.value = ""
-                    do_search()
-                    grid_load_category(selected_category_id)
-            when ENTER_KEY
-                if item_selected
-                    item_selected.do_click()
+                    s_box.value += String.fromCharCode(e.which)
+        else
+            switch e.which
+                when ESC_KEY
+                    if s_box.value == ""
+                        DCore.Launcher.exit_gui()
+                    else
+                        _last_val = s_box.value
+                        s_box.value = ""
+                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                        grid_load_category(selected_category_id)
+                    return  # to avoid to invoke search function
+                when BACKSPACE_KEY
+                    _last_val = s_box.value
+                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
+                    if s_box.value == ""
+                        if _last_val != s_box.value
+                            do_search()
+                            grid_load_category(selected_category_id)
+                        return  # to avoid to invoke search function
+                when ENTER_KEY
+                    if item_selected
+                        item_selected.do_click()
+                    else
+                        get_first_shown()?.do_click()
                 else
-                    get_first_shown()?.do_click()
-            when SPACE_KEY
-                if s_box.value == ""
-                    s_box.focus()
-            else
-                s_box.focus()
+                    s_box.value += String.fromCharCode(e.which)
+            search()
 )
 
 # this does not work on keypress
