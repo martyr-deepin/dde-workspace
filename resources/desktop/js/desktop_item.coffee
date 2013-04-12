@@ -565,7 +565,7 @@ class DesktopEntry extends Item
             when 4 then selected_copy_to_clipboard()
             when 6 then @item_rename()
             when 9 then delete_selected_items(evt.shiftKey == true)
-            when 10 then show_selected_items_Properties()
+            when 10 then show_selected_items_properties()
             when 11 then compress_selected_items()
             when 12 then decompress_selected_items()
             when 13 then decompress_selected_items_here()
