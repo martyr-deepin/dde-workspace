@@ -75,6 +75,8 @@ class ClientGroup extends AppItem
             active_group?.to_normal_status()
             @open_indicator.src = ACTIVE_STATUS_INDICATOR
             @leader = id
+            @n_clients.remove(id)
+            @n_clients.unshift(id)
             DCore.Dock.active_window(@leader)
             active_group = @
 
