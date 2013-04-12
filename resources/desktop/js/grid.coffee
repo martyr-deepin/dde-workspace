@@ -721,7 +721,7 @@ delete_selected_items = (real_delete) ->
     return
 
 
-show_selected_items_Properties = ->
+show_selected_items_properties = ->
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())

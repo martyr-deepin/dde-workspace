@@ -49,6 +49,7 @@ static gboolean _TRY_ICON_INIT = FALSE;
 static void _update_deepin_try_position();
 static void _update_fcitx_try_position();
 static void _update_notify_area_width();
+gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 
 void tray_icon_do_screen_size_change()
 {
@@ -59,6 +60,19 @@ void tray_icon_do_screen_size_change()
     }
 }
 
+void safe_window_move_resize(GdkWindow* icon, int x, int y, int w, int h)
+{
+    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(icon), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
+    gdk_window_move_resize(icon, x, y, w, h);
+    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
+}
+void safe_window_move(GdkWindow* icon, int x, int y)
+{
+    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(icon), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
+    gdk_window_move(icon, x, y);
+    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
+}
+
 static void accumulate_na_width(GdkWindow* icon, gpointer width)
 {
     g_assert(icon != _deepin_tray && icon != _fcitx_tray);
@@ -67,9 +81,10 @@ static void accumulate_na_width(GdkWindow* icon, gpointer width)
     gdk_window_flush(icon);
     gint _na_base_x = screen_width - _na_width - DEFAULT_INTERVAL;
     if (icon_width != GPOINTER_TO_INT(width))
-        gdk_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
-    else
-        gdk_window_move(icon, _na_base_x, NA_BASE_Y);
+        safe_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
+    else {
+        safe_window_move(icon, _na_base_x, NA_BASE_Y);
+    }
 }
 
 void _update_notify_area_width()
@@ -84,7 +99,7 @@ void _update_notify_area_width()
 void _update_deepin_try_position()
 {
     if (_deepin_tray) {
-        gdk_window_move_resize(_deepin_tray,
+        safe_window_move_resize(_deepin_tray,
                 screen_width - _deepin_tray_width - DEFAULT_INTERVAL,
                 NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
         _update_notify_area_width();
@@ -93,7 +108,7 @@ void _update_deepin_try_position()
 void _update_fcitx_try_position()
 {
     if (_fcitx_tray) {
-        gdk_window_move_resize(_fcitx_tray,
+        safe_window_move_resize(_fcitx_tray,
                 screen_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
                 NA_BASE_Y,
                 _fcitx_tray_width, DEFAULT_HEIGHT);
@@ -118,27 +133,26 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
             g_hash_table_remove(_icons, data);
             _update_notify_area_width();
         }
+        return GDK_FILTER_REMOVE;
     } else if (xev->type == ConfigureNotify) {
-        int width = GPOINTER_TO_INT(g_hash_table_lookup(_icons, data));
+        XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
-        int new_height = ((XConfigureEvent*)xev)->height;
-        if (width != new_width) {
-            if (data == _deepin_tray) {
-                if (_deepin_tray_width != new_width) {
-                    _deepin_tray_width = new_width;
-                    _update_deepin_try_position();
-                    _update_fcitx_try_position();
-                }
-            } else if (data == _fcitx_tray) {
-                if (_fcitx_tray_width != new_width) {
-                    _fcitx_tray_width = new_width;
-                    _update_fcitx_try_position();
-                }
-            } else {
+        if (data == _deepin_tray && _deepin_tray_width != new_width) {
+            _deepin_tray_width = new_width;
+            _update_deepin_try_position();
+            _update_fcitx_try_position();
+        } else if (data == _fcitx_tray && _fcitx_tray_width != new_width) {
+            _fcitx_tray_width = new_width;
+            _update_fcitx_try_position();
+        } else if (data != _deepin_tray && data != _fcitx_tray) {
+            int width = GPOINTER_TO_INT(g_hash_table_lookup(_icons, data));
+            if (width != new_width) {
+                int new_height = ((XConfigureEvent*)xev)->height;
                 g_hash_table_insert(_icons, data, GINT_TO_POINTER((int)(new_width * 1.0 / new_height * DEFAULT_HEIGHT)));
                 _update_notify_area_width();
             }
         }
+        return GDK_FILTER_REMOVE;
     } else if (xev->type == GenericEvent) {
         XGenericEvent* ge = xevent;
         if (ge->evtype == EnterNotify) {
@@ -152,7 +166,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
             g_object_set_data(G_OBJECT(win), "is_mouse_in", GINT_TO_POINTER(FALSE));
             gdk_window_invalidate_rect(par, NULL, TRUE);
         }
-        return GDK_FILTER_TRANSLATE;
+        return GDK_FILTER_REMOVE;
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -207,6 +221,7 @@ void tray_init(GtkWidget* container)
     na_tray_manager_manage_screen(tray_manager, screen);
 
     g_signal_connect(tray_manager, "tray_icon_added", G_CALLBACK(tray_icon_added), container);
+    g_signal_connect_after(container, "draw", G_CALLBACK(draw_tray_icons), NULL);
     _TRY_ICON_INIT = TRUE;
 }
 
@@ -248,8 +263,6 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
 {
-    cairo_set_source_rgba(cr, 1, 0, 0, 0.3);
-    /* cairo_paint(cr); */
     if (_icons != NULL) {
         g_hash_table_foreach(_icons, (GHFunc)draw_tray_icon, cr);
         if (_deepin_tray)
