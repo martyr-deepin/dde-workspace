@@ -148,8 +148,10 @@ class ToolTip extends Widget
         ToolTip.tooltip ?= $("#tooltip")
         ToolTip.tooltip.innerText = text
     @show: ->
+        DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
     @hide: ->
+        update_dock_region()
         ToolTip.tooltip.style.display = "none"
     @move_to: (x, y) ->
         ToolTip.tooltip.style.left = "#{x}px"
