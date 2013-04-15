@@ -22,7 +22,6 @@
 #include <gtk/gtk.h>
 #include "dwebview.h"
 #include "i18n.h"
-#include "category.h"
 #include "utils.h"
 
 gboolean clear_bg(GtkWidget* w, cairo_t* cr)

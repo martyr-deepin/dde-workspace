@@ -150,6 +150,51 @@ void _update_window_viewport(Client* c)
     dock_update_hide_mode();
 }
 
+static
+gboolean _get_launcher_icon(Client* c)
+{
+    GAppInfo* info = g_app_info_create_from_commandline(c->exec, c->app_id, G_APP_INFO_CREATE_NONE, NULL);
+
+    if (info == NULL) {
+        g_debug("info == NULL");
+        return FALSE;
+    }
+
+    char* icon_name = NULL;
+    GIcon* icon = g_app_info_get_icon(info);
+    g_object_unref(info);
+
+    if (icon != NULL) {
+        icon_name = g_icon_to_string(icon);
+    } else {
+        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
+    }
+
+    if (icon_name != NULL) {
+        if (g_str_has_prefix(icon_name, "data:image")) {
+            c->icon = icon_name;
+        } else {
+            char* icon_path = icon_name_to_path(icon_name, 48);
+            g_free(icon_name);
+
+            if (is_deepin_icon(icon_path)) {
+                c->icon = icon_path;
+            } else {
+                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
+                g_free(icon_path);
+                if (pixbuf == NULL) {
+                    c->icon = NULL;
+                } else {
+                    char* icon_data = handle_icon(pixbuf);
+                    g_object_unref(pixbuf);
+                    c->icon = icon_data;
+                }
+            }
+        }
+    }
+    return c->icon == NULL;
+}
+
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
@@ -182,7 +227,15 @@ Client* create_client_from_window(Window w)
     }
 
     c->need_update_icon = FALSE;
-    c->icon = try_get_deepin_icon(c->app_id);
+    int operator_code = 0;
+    try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
+
+    if (c->icon == NULL) {
+        g_debug("try get deepin icon failed");
+        g_debug("appid: %s, operator_code: %d", c->app_id, operator_code);
+        if (operator_code == ICON_OPERATOR_USE_ICONNAME)
+            _get_launcher_icon(c);
+    }
 
     if (c->icon == NULL) {
         c->need_update_icon = TRUE;
@@ -421,41 +474,6 @@ void* argb_to_rgba(gulong* data, size_t s)
 
 void _update_window_icon(Client* c)
 {
-    GAppInfo* info = g_app_info_create_from_commandline(c->exec, c->app_id, G_APP_INFO_CREATE_NONE, NULL);
-    char* icon_name = NULL;
-    GIcon* icon = g_app_info_get_icon(info);
-    g_object_unref(info);
-
-    if (icon != NULL) {
-        icon_name = g_icon_to_string(icon);
-    } else {
-        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
-    }
-
-    if (icon_name != NULL) {
-        if (g_str_has_prefix(icon_name, "data:image")) {
-            c->icon = icon_name;
-        } else {
-            char* icon_path = icon_name_to_path(icon_name, 48);
-            g_free(icon_name);
-
-            if (is_deepin_icon(icon_path)) {
-                c->icon = icon_path;
-            } else {
-                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
-                g_free(icon_path);
-                if (pixbuf == NULL) {
-                    c->icon = NULL;
-                } else {
-                    char* icon_data = handle_icon(pixbuf);
-                    g_object_unref(pixbuf);
-                    c->icon = icon_data;
-                }
-            }
-        }
-        return;
-    }
-
     gulong items;
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
