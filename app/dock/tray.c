@@ -309,7 +309,7 @@ draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
             gdk_cairo_set_source_window(cr, icon, x, y);
             cairo_paint(cr);
             if (cairo_surface_status(right) == CAIRO_STATUS_SUCCESS) {
-                cairo_set_source_surface(cr, right, x + gdk_window_get_width(icon) + 2, y - 3);
+                cairo_set_source_surface(cr, right, x + gdk_window_get_width(wrapper) + 2, y - 3);
                 cairo_paint(cr);
             }
         }
