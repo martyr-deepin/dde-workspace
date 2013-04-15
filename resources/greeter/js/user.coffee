@@ -105,7 +105,7 @@ class Loading extends Widget
         create_element("div", "ball1", @element)
         create_element("span", "", @element).innerText = _("Welcome")
 
-_default_bg_src = "/usr/share/backgrounds/1440x900.jpg"
+_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
 _current_bg = create_img("Background", _default_bg_src)
 document.body.appendChild(_current_bg)
 
