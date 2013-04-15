@@ -38,6 +38,7 @@ void get_workarea_size(int screen_n, int desktop_n, int* x, int* y, int* width, 
 
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 
+cairo_region_t* get_window_input_region(Display* dpy, Window w);
 
 void* get_window_property(Display* dsp, Window w, Atom pro, gulong* items);
 
@@ -51,4 +52,19 @@ gboolean has_atom_property(Display* dsp, Window w, Atom prop);
 #define GRAB_DEVICE(w) (gdk_device_grab(gdk_device_manager_get_client_pointer(gdk_display_get_device_manager(gdk_display_get_default())), w? w:gdk_get_default_root_window(), GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME))
 #define UNGRAB_DEVICE() gdk_device_ungrab(gdk_device_manager_get_client_pointer(gdk_display_get_device_manager(gdk_display_get_default())), GDK_CURRENT_TIME)
 
+
+void get_atom_value_by_index(gpointer data, gulong n_item, gpointer res, gulong index);
+void get_atom_value_for_loop(gpointer data, gulong n_item, gpointer res, gulong start_index);
+
+typedef void* CallbackFunc;
+/**
+ * For following 2 functions, pass -1 to index, the callback function will be
+ * regarded as void (*f)(gpointer data, gulong n_item, gpointer res).
+ *
+ * This just works for self-defined functions.
+ */
+gboolean get_atom_value_by_atom(Display* dsp, Window id, Atom atom, gpointer res,
+                                CallbackFunc callback, gulong index);
+gboolean get_atom_value_by_name(Display* dsp, Window id, const char* name, gpointer res,
+                                CallbackFunc callback, gulong index);
 #endif

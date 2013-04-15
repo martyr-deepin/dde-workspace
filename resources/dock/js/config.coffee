@@ -41,3 +41,6 @@ catch e
     NOT_FOUND_ICON = "img/not_found.png"
 
 ICON_SCALE = MAX_SCALE  #this will be modify on runtime
+
+NORMAL_STATUS_INDICATOR = "img/s_app_open.png"
+ACTIVE_STATUS_INDICATOR = "img/s_app_active.png"

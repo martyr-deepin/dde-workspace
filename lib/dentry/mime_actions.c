@@ -94,27 +94,33 @@ run_file_in_terminal (GFile* file)
     g_free (executable);
 }
 
-static void
+static gboolean
 display_file (GFile* file, const char* content_type)
 {
+    gboolean res = TRUE;
     GAppInfo *app  = g_app_info_get_default_for_type(content_type, FALSE);
     GList* list = g_list_append(NULL, file);
-    g_app_info_launch(app, list, NULL, NULL);
+    res = g_app_info_launch(app, list, NULL, NULL);
     g_list_free(list);
     g_object_unref(app);
+
+    return res;
 }
 
-void
+gboolean 
 activate_file (GFile* file, const char* content_type, 
                gboolean is_executable, GFile* _file_arg)
 {
     char* file_name = g_file_get_basename (file);
+    gboolean is_bin = g_str_has_suffix(file_name, ".bin"); 
+    gboolean result = TRUE;
+
     g_debug ("activate_file: %s", file_name);
     g_free (file_name);
     g_debug ("content_type: %s", content_type);
 
     if (is_executable &&
-        g_content_type_can_be_executable (content_type))
+        (g_content_type_can_be_executable (content_type) || is_bin))
     {
         //1. an executable text file. or an shell script
         if (g_content_type_is_a (content_type, "text/plain")) 
@@ -152,10 +158,10 @@ activate_file (GFile* file, const char* content_type,
             switch (response)
             {
             case RESPONSE_RUN_IN_TERMINAL:
-		run_file_in_terminal (file);
+                run_file_in_terminal (file);
                 break;
             case RESPONSE_DISPLAY:
-                display_file (file, content_type);
+                result = display_file (file, content_type);
                 break;
             case RESPONSE_RUN:
                 run_file (file, NULL);
@@ -175,6 +181,8 @@ activate_file (GFile* file, const char* content_type,
     //for non-executables just open it.
     else
     {
-        display_file (file, content_type);
+        result = display_file (file, content_type);
     }
+
+    return result;
 }

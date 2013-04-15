@@ -56,7 +56,7 @@ static Atom ATOM_WINDOW_MAXIMIZED_VERT;
 static Atom ATOM_WINDOW_SKIP_TASKBAR;
 static Atom ATOM_XEMBED_INFO;
 static Display* _dsp = NULL;
-static Atom ATOM_DEEPIN_WINDOW_VIEWPORT;
+static Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
 static void _init_atoms()
 {
@@ -76,7 +76,7 @@ static void _init_atoms()
     ATOM_WINDOW_MAXIMIZED_VERT = gdk_x11_get_xatom_by_name("_NET_WM_STATE_MAXIMIZED_VERT");
     ATOM_WINDOW_SKIP_TASKBAR = gdk_x11_get_xatom_by_name("_NET_WM_STATE_SKIP_TASKBAR");
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
-    ATOM_DEEPIN_WINDOW_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORT");
+    ATOM_DEEPIN_WINDOW_VIEWPORTS = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORTS");
     ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
 }
 
@@ -131,18 +131,21 @@ void client_free(Client* c);
 double dock_get_active_window();
 
 static
-void _update_window_viewport(Client* c)
+void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
 {
-    gulong items;
-    void* data = get_window_property(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORT, &items);
-    if (data == NULL)
-        return;
+    Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
-    for (int i = 0, j = 1; j < items; ++i, j += 2) {
+    for (int i = 0, j = 1; j < n_item; ++i, j += 2) {
         c->workspace[i].x = (int)X_FETCH_32(data, j);
         c->workspace[i].y = (int)X_FETCH_32(data, j + 1);
     }
-    XFree(data);
+}
+
+static
+void _update_window_viewport(Client* c)
+{
+    get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
+                           _update_window_viewport_callback, -1);
     dock_update_hide_mode();
 }
 
@@ -219,7 +222,7 @@ void notify_desktop(DesktopFocusState current_state)
         if (var != NULL) {
             g_variant_unref(var);
             const char* state[] = {"focus", "blur"};
-            g_warning("desktop focus state changed to %s", state[current_state]);
+            g_debug("desktop focus state changed to %s", state[current_state]);
         }
         g_object_unref(desktop_dbus);
     }
@@ -312,7 +315,7 @@ gboolean is_normal_window(Window w)
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
         } else if (g_str_equal(ch.res_class, "Desktop")) {
-            get_net_wm_pid(_dsp, w, &desktop_pid);
+            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_by_index, 0);
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -396,12 +399,8 @@ void _update_task_list(Window root)
 JS_EXPORT_API
 double dock_get_active_window()
 {
-    gulong items;
-    void* data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &items);
-    if (data == NULL)
-        return 0;
-    Window aw = X_FETCH_32(data, 0);
-    XFree(data);
+    Window aw = 0;
+    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_by_index, 0);
     return aw;
 }
 
@@ -561,6 +560,7 @@ static gboolean _is_maximized_window(Window win)
     return FALSE;
 }
 
+
 static
 void _update_current_viewport(Workspace* vp)
 {
@@ -615,7 +615,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
                 _update_client_info(c);
             } else if (ev->atom == ATOM_WINDOW_NET_STATE) {
                 _update_window_net_state(c);
-            } else if (ev->atom == ATOM_DEEPIN_WINDOW_VIEWPORT) {
+            } else if (ev->atom == ATOM_DEEPIN_WINDOW_VIEWPORTS) {
                 _update_window_viewport(c);
             }
         }
@@ -750,6 +750,30 @@ JS_EXPORT_API
 void dock_iconify_window(double id)
 {
     XIconifyWindow(_dsp, (Window)id, 0);
+}
+
+
+JS_EXPORT_API
+gboolean dock_is_client_minimized(double id)
+{
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)id));
+    if (c == NULL)
+        return FALSE;
+
+    gulong wm_state;
+    gboolean is_minimized = FALSE;
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0))
+        is_minimized = wm_state == IconicState;
+
+    const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
+    g_debug("window state: %s", state[wm_state]);
+    return is_minimized;
+}
+
+JS_EXPORT_API
+gboolean dock_window_need_to_be_minimized(double id)
+{
+    return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
 
 JS_EXPORT_API

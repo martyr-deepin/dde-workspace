@@ -22,6 +22,7 @@
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <X11/extensions/shape.h>
 #include "X_misc.h"
 #include "dwebview.h"
 
@@ -45,7 +46,7 @@ void set_wmspec_dock_hint(GdkWindow *window)
             GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
 }
 
-void get_workarea_size(int screen_n, int desktop_n, 
+void get_workarea_size(int screen_n, int desktop_n,
         int* x, int* y, int* width, int* height)
 {
     GdkDisplay* gdpy = gdk_display_get_default();
@@ -66,7 +67,7 @@ void get_workarea_size(int screen_n, int desktop_n,
     g_assert(bytes_after == 0);
     g_assert(actual_format == 32);
 
-    // Although the actual_format is 32 bit, but the f**k xlib specified it format equal 
+    // Although the actual_format is 32 bit, but the f**k xlib specified it format equal
     // sizeof(long), eg on 64 bit os the value is 8 byte.
     gulong *data = (gulong*)(data_p + desktop_n * sizeof(long) * 4);
 
@@ -232,4 +233,62 @@ gboolean has_atom_property(Display* dsp, Window w, Atom prop)
         g_free(data);
         return TRUE;
     }
+}
+
+cairo_region_t* get_window_input_region(Display* dpy, Window w)
+{
+    int count = 0;
+    int ordering = 0;
+    XRectangle  *rects = XShapeGetRectangles (dpy, w, ShapeInput, &count, &ordering);
+    cairo_region_t* reg = cairo_region_create();
+    for (int i=0; i<count; i++) {
+        cairo_rectangle_int_t rect = {rects[i].x, rects[i].y, rects[i].width, rects[i].height};
+        cairo_region_union_rectangle(reg, &rect);
+    }
+    return reg;
+}
+
+
+void get_atom_value_by_index(gpointer data, gulong n_item, gpointer res, gulong index)
+{
+    *(gulong*)res = X_FETCH_32(data, index);
+}
+
+void get_atom_value_for_loop(gpointer data, gulong n_item, gpointer res, gulong start_index)
+{
+    for (int i = start_index; i < n_item; ++i) {
+        ((gulong*)res)[i] = X_FETCH_32(data, i);
+    }
+}
+
+typedef void (*CallbackFuncWithIndex)(gpointer, gulong, gpointer, gulong);
+typedef void (*CallbackFuncWithoutIndex)(gpointer, gulong, gpointer);
+
+/**
+ * For following 2 functions, pass -1 to index, the callback function will be
+ * regarded as CallbackFuncWithoutIndex type.
+ *
+ * This just works for self-defined functions.
+ */
+gboolean get_atom_value_by_atom(Display* dsp, Window window_id, Atom atom, gpointer res,
+                                CallbackFunc callback, gulong index)
+{
+    gulong n_item;
+    gpointer data = get_window_property(dsp, window_id, atom, &n_item);
+    if (data == NULL)
+        return FALSE;
+
+    if (index != -1)
+        ((CallbackFuncWithIndex)callback)(data, n_item, res, index);
+    else
+        ((CallbackFuncWithoutIndex)callback)(data, n_item, res);
+    XFree(data);
+    return TRUE;
+}
+
+gboolean get_atom_value_by_name(Display* dsp, Window window_id, const char* name, gpointer res,
+                                CallbackFunc callback, gulong index)
+{
+    Atom atom = gdk_x11_get_xatom_by_name(name);
+    return get_atom_value_by_atom(dsp, window_id, atom, res, callback, index);
 }

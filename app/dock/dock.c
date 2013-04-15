@@ -44,7 +44,13 @@ GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 
 gboolean mouse_pointer_leave(int x, int y)
 {
-    cairo_region_t* region = gdk_window_get_visible_region(DOCK_GDK_WINDOW());
+    static Display* dpy = NULL;
+    Window dock_window = 0;
+    if (dpy == NULL) {
+        dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+        dock_window = GDK_WINDOW_XID(DOCK_GDK_WINDOW());
+    }
+    cairo_region_t* region = get_window_input_region(dpy, dock_window);
     gboolean is_contain = cairo_region_contains_point(region, x, y);
     cairo_region_destroy(region);
     return is_contain;
@@ -137,8 +143,6 @@ int main(int argc, char* argv[])
 
     webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
 
-    g_signal_connect_after(webview, "draw", G_CALLBACK(draw_tray_icons), NULL);
-
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
 
@@ -195,7 +199,7 @@ void dock_emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
-        tray_init(container);
+        tray_init(webview);
         update_dock_size_mode();
         init_dock_guard_window();
     } else {

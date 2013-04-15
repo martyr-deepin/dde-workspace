@@ -1,4 +1,3 @@
-active_group = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
         try
@@ -17,6 +16,19 @@ class ClientGroup extends AppItem
             @to_normal_status()
         catch error
             alert "Group construcotr :#{error}"
+
+        # contextmenu and preview window cannot be shown at the same time
+        @element.addEventListener("contextmenu", (e) =>
+            Preview_close_now()
+            menu = build_menu([
+                [1, _("New instance")],
+                [2, _("Close")],
+                [],
+                [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
+            ])
+            @element.contextMenu = menu
+            e.stopPropagation()
+        )
 
     update_scale: ->
         super
@@ -57,15 +69,19 @@ class ClientGroup extends AppItem
                 @img2.style.marginLeft = BOARD_IMG_MARGIN_LEFT
                 @img3.style.marginLeft = BOARD_IMG_MARGIN_LEFT_THREE_LEFT
 
-    to_active_status : (id)->
-        active_group?.to_normal_status()
-        @open_indicator.src = "img/s_app_active.png"
-        @leader = id
-        DCore.Dock.active_window(@leader)
-        active_group = @
+    to_active_status : do ->
+        active_group = null
+        (id)->
+            active_group?.to_normal_status()
+            @open_indicator.src = ACTIVE_STATUS_INDICATOR
+            @leader = id
+            @n_clients.remove(id)
+            @n_clients.unshift(id)
+            DCore.Dock.active_window(@leader)
+            active_group = @
 
     to_normal_status : ->
-        @open_indicator.src = "img/s_app_open.png"
+        @open_indicator.src = NORMAL_STATUS_INDICATOR
 
     update_client: (id, icon, title)->
         icon = NOT_FOUND_ICON if not icon
@@ -78,9 +94,8 @@ class ClientGroup extends AppItem
 
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
-            #TODO: new leader should insert at index 1
             @n_clients.remove(id)
-            @n_clients.push id
+            @n_clients.unshift id
             apply_rotate(@img, 1)
 
             if @leader != id
@@ -134,18 +149,11 @@ class ClientGroup extends AppItem
         @try_build_launcher()
         super
 
-    do_buildmenu: ->
-        [
-            [1, _("New instance")],
-            [2, _("Close")],
-            [],
-            [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
-        ]
-
     do_itemselected: (e)=>
         Preview_container.close()
         switch e.id
-            when 1 then DCore.Dock.launch_by_app_id(@app_id, @exec, [])
+            when 1
+                DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 2 then DCore.Dock.close_window(@leader)
             when 3 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
@@ -153,15 +161,25 @@ class ClientGroup extends AppItem
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
     do_click: (e)->
-        if @n_clients.length == 1 and active_group == @
+        if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
-        else if @n_clients.length > 1 and active_group == @
+        else if @n_clients.length > 1 and DCore.Dock.get_active_window() == @leader
             @next_leader()
             @to_active_status(@leader)
         else
             @to_active_status(@leader)
 
-    do_mouseover: (e)->
-        e.stopPropagation()
-        Preview_show(@)
+    do_mouseover: (e) ->
+        if @n_clients.length == 0
+            1
+        else
+            e.stopPropagation()
+            Preview_show(@)
+
+    do_mousemove: (e) ->
+        if @n_clients.length == 0
+            1
+        else
+            e.stopPropagation()
+            Preview_show(@)

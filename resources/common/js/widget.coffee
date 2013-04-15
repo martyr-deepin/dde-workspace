@@ -98,10 +98,12 @@ class Widget extends Module
                 echo "found the do_ prefix but the name #{key} is not an dom events"
 
         @element.addEventListener("contextmenu", (e) =>
-            if f_menu
-                @element.contextMenu = build_menu(f_menu())
             if f_rclick
                 f_rclick(e)
+            if f_menu
+                @element.contextMenu = build_menu(f_menu())
+                e.stopPropagation()
+
         )
 
     destroy: ->
