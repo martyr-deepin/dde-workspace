@@ -75,7 +75,7 @@ void _init()
         str = g_key_file_get_string(process_regex, "DEEPIN_PREFIX", "skip_suffix", NULL);
         suffix_regex = g_regex_new(str, G_REGEX_OPTIMIZE, 0, NULL);
         g_free(str);
-    } 
+    }
     if (prefix_regex == NULL) {
         g_warning("Can't build prefix_regex, use fallback config!");
         prefix_regex = g_regex_new(
@@ -131,10 +131,10 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
     if (diff == 0) {
         *name = g_path_get_basename(cmdline[0]);
         if (length > 1) {
-            *args = g_strjoinv(" ", cmdline+1); 
+            *args = g_strjoinv(" ", cmdline+1);
         }
     } else if (diff >= 1){
-        *name = g_path_get_basename(cmdline[name_pos]); 
+        *name = g_path_get_basename(cmdline[name_pos]);
         if (diff >= 2) {
             *args = g_strjoinv(" ", cmdline+name_pos+1);
         }
