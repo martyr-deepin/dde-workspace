@@ -23,11 +23,50 @@
 #include <stdlib.h>
 #include <glib.h>
 #include "sqlite3.h"
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <glib.h>
+#include <glib/gprintf.h>
 
+#define DEEPIN_SOFTWARE_CENTER_DATE_DIR    "/usr/share/deepin-software-center/data"
+#define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATE_DIR"/data_newest_id.ini"
+#define DESKTOP_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATE_DIR"/update/%s/desktop/desktop.db"
 
-const char* get_category_db_path()
+static time_t _last_modify_time = 0;
+
+static
+gboolean _need_to_update()
 {
-    return DATA_DIR"/desktop.db";
+    struct stat newest;
+    if (!stat(DATA_NEWEST_ID, &newest)) {
+        return FALSE;
+    }
+
+    if (newest.st_mtime != _last_modify_time) {
+        _last_modify_time = newest.st_mtime;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+const gchar* get_category_db_path()
+{
+    // the path to db has fixed 65 bytes, and uuid is 35 or 36 bytes.
+    static gchar db_path[102] = {0};
+
+    if (db_path[0] == 0 || _need_to_update()) {
+        GKeyFile* id_file = g_key_file_new();
+        if (g_key_file_load_from_file(id_file, DATA_NEWEST_ID, G_KEY_FILE_NONE, NULL)) {
+            gchar* newest_id = g_key_file_get_value(id_file, "newest", "data_id", NULL);
+            g_key_file_free(id_file);
+            g_snprintf(db_path, 101, DESKTOP_DB_PATH, newest_id);
+            g_free(newest_id);
+        }
+    }
+
+    return db_path;
 }
 
 static
