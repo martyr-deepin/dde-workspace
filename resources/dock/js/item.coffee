@@ -242,9 +242,7 @@ class AppItem extends Widget
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
         e.stopPropagation()
         e.preventDefault()
-        setTimeout(=>
-            update_dock_region()
-        , 300)
+        update_dock_region()
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
