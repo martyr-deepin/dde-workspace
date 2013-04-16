@@ -51,6 +51,47 @@ static void _update_fcitx_try_position();
 static void _update_notify_area_width();
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 
+GdkWindow* get_icon_window(GdkWindow* wrapper)
+{
+    return g_object_get_data(G_OBJECT(wrapper), "wrapper_child") ? : wrapper;
+}
+GdkWindow* get_wrapper_window(GdkWindow* icon)
+{
+    return g_object_get_data(G_OBJECT(icon), "wrapper_parent") ? : icon;
+}
+
+GdkWindow* create_wrapper(GdkWindow* parent, Window tray_icon)
+{
+    GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), tray_icon);
+    if (icon == NULL)
+        return NULL;
+    GdkVisual* visual = gdk_window_get_visual(icon);
+    GdkWindow* wrapper = NULL;
+    if (gdk_visual_get_depth(visual) == 24) {
+        GdkWindowAttr attributes;
+        attributes.width = DEFAULT_HEIGHT;
+        attributes.height = DEFAULT_HEIGHT;
+        attributes.window_type = GDK_WINDOW_CHILD;
+        attributes.wclass = GDK_INPUT_OUTPUT;
+        attributes.event_mask = GDK_ALL_EVENTS_MASK;
+        attributes.visual = visual;
+        wrapper = gdk_window_new(parent, &attributes, GDK_WA_VISUAL);
+        GdkColor color = {1, 0, 0, 1};
+        gdk_window_set_background(wrapper, &color);
+
+        XReparentWindow(gdk_x11_get_default_xdisplay(), 
+                tray_icon,
+                GDK_WINDOW_XID(wrapper),
+                0, 0);
+        gdk_window_show(icon);
+        g_object_set_data(G_OBJECT(wrapper), "wrapper_child", icon);
+        g_object_set_data(G_OBJECT(icon), "wrapper_parent", wrapper);
+    } else {
+        wrapper = icon;
+    }
+    return wrapper;
+}
+
 void tray_icon_do_screen_size_change()
 {
     if (_TRY_ICON_INIT) {
@@ -60,30 +101,34 @@ void tray_icon_do_screen_size_change()
     }
 }
 
-void safe_window_move_resize(GdkWindow* icon, int x, int y, int w, int h)
+void safe_window_move_resize(GdkWindow* wrapper, int x, int y, int w, int h)
 {
-    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(icon), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
-    gdk_window_move_resize(icon, x, y, w, h);
-    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
+    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(wrapper), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
+    gdk_window_move_resize(wrapper, x, y, w, h);
+    GdkWindow* icon = g_object_get_data(G_OBJECT(wrapper), "wrapper_child");
+    if (icon) {
+        gdk_window_resize(icon, w, h);
+    }
+    gdk_window_set_events(wrapper, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
 }
-void safe_window_move(GdkWindow* icon, int x, int y)
+void safe_window_move(GdkWindow* wrapper, int x, int y)
 {
-    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(icon), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
-    gdk_window_move(icon, x, y);
-    gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
+    XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(wrapper), ExposureMask | VisibilityChangeMask | EnterWindowMask | LeaveWindowMask);
+    gdk_window_move(wrapper, x, y);
+    gdk_window_set_events(wrapper, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
 }
 
-static void accumulate_na_width(GdkWindow* icon, gpointer width)
+static void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 {
-    g_assert(icon != _deepin_tray && icon != _fcitx_tray);
-    int icon_width = gdk_window_get_width(icon);
+    g_assert(wrapper != _deepin_tray && wrapper != _fcitx_tray);
+    int icon_width = gdk_window_get_width(wrapper);
     _na_width += icon_width + 2 * DEFAULT_INTERVAL;
-    gdk_window_flush(icon);
+    gdk_window_flush(wrapper);
     gint _na_base_x = screen_width - _na_width - DEFAULT_INTERVAL;
     if (icon_width != GPOINTER_TO_INT(width))
-        safe_window_move_resize(icon, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
+        safe_window_move_resize(wrapper, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
     else {
-        safe_window_move(icon, _na_base_x, NA_BASE_Y);
+        safe_window_move(wrapper, _na_base_x, NA_BASE_Y);
     }
 }
 
@@ -117,54 +162,66 @@ void _update_fcitx_try_position()
 }
 
 static GdkFilterReturn
-monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
+monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper);
+void destroy_wrapper(GdkWindow* wrapper)
+{
+    GdkWindow* icon = get_icon_window(wrapper);
+    gdk_window_remove_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);
+    gdk_window_destroy(wrapper);
+    if (icon != wrapper) {
+        g_object_unref(icon);
+    }
+    g_object_unref(wrapper);
+}
+
+static GdkFilterReturn
+monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
-        if (_deepin_tray == data) {
+        if (_deepin_tray == wrapper ) {
+            destroy_wrapper(_deepin_tray);
             _deepin_tray = NULL;
             _deepin_tray_width = 0;
             _update_fcitx_try_position();
-        } else if (_fcitx_tray == data) {
+        } else if (_fcitx_tray == wrapper) {
+            destroy_wrapper(_fcitx_tray);
+            printf("destroy fcit %p\n", wrapper);
             _fcitx_tray = NULL;
             _fcitx_tray_width = 0;
             _update_notify_area_width();
         } else {
-            g_hash_table_remove(_icons, data);
+            g_hash_table_remove(_icons, wrapper);
+            destroy_wrapper(wrapper);
             _update_notify_area_width();
         }
         return GDK_FILTER_REMOVE;
     } else if (xev->type == ConfigureNotify) {
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
-        if (data == _deepin_tray && _deepin_tray_width != new_width) {
+        if (wrapper == _deepin_tray) {
             _deepin_tray_width = new_width;
             _update_deepin_try_position();
             _update_fcitx_try_position();
-        } else if (data == _fcitx_tray && _fcitx_tray_width != new_width) {
+        } else if (wrapper == _fcitx_tray) {
             _fcitx_tray_width = new_width;
+            printf("new fcitx width:%d\n", new_width);
             _update_fcitx_try_position();
-        } else if (data != _deepin_tray && data != _fcitx_tray) {
-            int width = GPOINTER_TO_INT(g_hash_table_lookup(_icons, data));
-            if (width != new_width) {
-                int new_height = ((XConfigureEvent*)xev)->height;
-                g_hash_table_insert(_icons, data, GINT_TO_POINTER((int)(new_width * 1.0 / new_height * DEFAULT_HEIGHT)));
-                _update_notify_area_width();
-            }
+        } else if (wrapper != _deepin_tray && wrapper != _fcitx_tray) {
+            int new_height = ((XConfigureEvent*)xev)->height;
+            g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER((int)(new_width * 1.0 / new_height * DEFAULT_HEIGHT)));
+            _update_notify_area_width();
         }
         return GDK_FILTER_REMOVE;
     } else if (xev->type == GenericEvent) {
+        GdkWindow* parent = gdk_window_get_parent(wrapper);
         XGenericEvent* ge = xevent;
         if (ge->evtype == EnterNotify) {
-            GdkWindow* win = ((GdkEventAny*)event)->window;
-            GdkWindow* par = gdk_window_get_parent(win);
-            g_object_set_data(G_OBJECT(win), "is_mouse_in", GINT_TO_POINTER(TRUE));
-            gdk_window_invalidate_rect(par, NULL, TRUE);
+            g_object_set_data(G_OBJECT(wrapper), "is_mouse_in", GINT_TO_POINTER(TRUE));
+            gdk_window_invalidate_rect(parent, NULL, TRUE);
         } else if (ge->evtype == LeaveNotify) {
-            GdkWindow* win = ((GdkEventAny*)event)->window;
-            GdkWindow* par = gdk_window_get_parent(win);
-            g_object_set_data(G_OBJECT(win), "is_mouse_in", GINT_TO_POINTER(FALSE));
-            gdk_window_invalidate_rect(par, NULL, TRUE);
+            g_object_set_data(G_OBJECT(wrapper), "is_mouse_in", GINT_TO_POINTER(FALSE));
+            gdk_window_invalidate_rect(parent, NULL, TRUE);
         }
         return GDK_FILTER_REMOVE;
     }
@@ -173,38 +230,36 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, gpointer data)
 
 void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
 {
-    Display* dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    XSetWindowBackgroundPixmap(dsp, child, None);
-
-    GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), child);
-    if (icon == NULL) {
-        g_debug("icon id:%d = 0 (invalide)\n", (int)child);
+    GdkWindow* wrapper = create_wrapper(gtk_widget_get_window(container), child);
+    if (wrapper == NULL)
         return;
-    }
+    GdkWindow* icon = get_icon_window(wrapper);
+    g_assert(icon != NULL);
 
-    gdk_window_reparent(icon, gtk_widget_get_window(container), 0, screen_height - DOCK_HEIGHT);
+    gdk_window_reparent(wrapper, gtk_widget_get_window(container), 0, screen_height - DOCK_HEIGHT);
     //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
     gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
-    gdk_window_add_filter(icon, monitor_icon_event, icon);
-    gdk_window_set_composited(icon, TRUE);
+    gdk_window_add_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);
+    gdk_window_set_composited(wrapper, TRUE);
 
-    int width = gdk_window_get_width(icon) * 1.0 / gdk_window_get_height(icon) * DEFAULT_HEIGHT;
-    gdk_window_resize(icon, width, DEFAULT_HEIGHT);
-    gdk_window_show(icon);
+    gdk_window_show(wrapper);
 
     char *re_class = NULL;
     get_wmclass(icon, &re_class, NULL);
     if (g_strcmp0(re_class, DEEPIN_TRAY_ICON) == 0) {
-        _deepin_tray = icon;
+        _deepin_tray = wrapper;
         _deepin_tray_width = gdk_window_get_width(icon);
         _update_deepin_try_position();
     } else if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
-        _fcitx_tray = icon;
+        printf("set fcitx_tray to %p\n", wrapper);
+        _fcitx_tray = wrapper;
         _fcitx_tray_width = gdk_window_get_width(icon);
         _update_fcitx_try_position();
 
     } else {
-        g_hash_table_insert(_icons, icon, GINT_TO_POINTER(width));
+        int width = gdk_window_get_width(icon) * 1.0 / gdk_window_get_height(icon) * DEFAULT_HEIGHT;
+        gdk_window_resize(icon, width, DEFAULT_HEIGHT);
+        g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(width));
     }
     g_free(re_class);
     _update_notify_area_width();
@@ -226,7 +281,7 @@ void tray_init(GtkWidget* container)
 }
 
 static void
-draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
+draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
 {
     static cairo_surface_t* left = NULL;
     static cairo_surface_t* right = NULL;
@@ -235,14 +290,15 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
     if (right == NULL)
         right = cairo_image_surface_create_from_png(TRAY_RIGHT_LINE_PATH);
 
-    g_assert(GDK_IS_WINDOW(icon));
+    GdkWindow* icon = get_icon_window(wrapper);
+    g_assert(GDK_IS_WINDOW(wrapper));
     if (!gdk_window_is_destroyed(icon)) {
-        gboolean is_in = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "is_mouse_in"));
+        gboolean is_in = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(wrapper), "is_mouse_in"));
         int x = 0;
         int y = 0;
-        gdk_window_get_geometry(icon, &x, &y, NULL, NULL); //gdk_window_get_position will get error value when dock is hidden!
+        gdk_window_get_geometry(wrapper, &x, &y, NULL, NULL); //gdk_window_get_position will get error value when dock is hidden!
         cairo_save(cr);
-        if (icon == _deepin_tray || !is_in) {
+        if (wrapper == _deepin_tray || !is_in) {
             gdk_cairo_set_source_window(cr, icon, x, y);
             cairo_paint(cr);
         } else {
@@ -253,7 +309,7 @@ draw_tray_icon(GdkWindow* icon, gpointer no_use, cairo_t* cr)
             gdk_cairo_set_source_window(cr, icon, x, y);
             cairo_paint(cr);
             if (cairo_surface_status(right) == CAIRO_STATUS_SUCCESS) {
-                cairo_set_source_surface(cr, right, x + gdk_window_get_width(icon) + 2, y - 3);
+                cairo_set_source_surface(cr, right, x + gdk_window_get_width(wrapper) + 2, y - 3);
                 cairo_paint(cr);
             }
         }

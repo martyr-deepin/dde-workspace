@@ -141,8 +141,25 @@ class AppList extends Widget
             @element.appendChild(@insert_indicator)
 
 app_list = new AppList("app_list")
+
+class ToolTip extends Widget
+    tooltip: null
+    @set_text: (text) ->
+        ToolTip.tooltip ?= $("#tooltip")
+        ToolTip.tooltip.innerText = text
+    @show: ->
+        DCore.Dock.require_all_region()
+        ToolTip.tooltip.style.display = "block"
+    @hide: ->
+        update_dock_region()
+        ToolTip.tooltip.style.display = "none"
+    @move_to: (x, y) ->
+        ToolTip.tooltip.style.left = "#{x}px"
+        ToolTip.tooltip.style.bottom = "#{y}px"
+
 class AppItem extends Widget
     is_fixed_pos: false
+    tooltip_show_id: -1
     next: ->
         el = @element.nextElementSibling
         if el and el.classList.contains("AppItem")
@@ -225,9 +242,7 @@ class AppItem extends Widget
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
         e.stopPropagation()
         e.preventDefault()
-        setTimeout(=>
-            update_dock_region()
-        , 300)
+        update_dock_region()
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
@@ -281,6 +296,27 @@ class AppItem extends Widget
                 switch this.constructor.name
                     when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
+    set_tooltip_text: (@text) ->
+        ToolTip.set_text(@text)
+    do_mouseover: (e) =>
+        @set_tooltip_text(@text)
+        AppItem.tooltip_show_id = setTimeout(=>
+            ToolTip.show()
+            @_move_tooltip()
+        , 300)
+    do_mouseout: (e) =>
+        clearTimeout(AppItem.tooltip_show_id)
+        AppItem.tooltip_show_id = -1
+        ToolTip.hide()
+
+    _move_tooltip: ->
+        item_x = get_page_xy(@element, 0, 0).x
+        offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2
+
+        echo "tooltip client width: #{ToolTip.tooltip.clientWidth}"
+        x = item_x + offset + 5  # 5 for subtle adapt
+        ToolTip.move_to(x.toFixed(), @element.clientHeight)
+
 
 
 document.body.addEventListener("drop", (e)->

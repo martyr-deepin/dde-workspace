@@ -145,6 +145,7 @@ class ClientGroup extends AppItem
             swap_element(@element, l.element)
 
     destroy: ->
+        Preview_close_now()
         @element.style.display = "block"
         @try_build_launcher()
         super

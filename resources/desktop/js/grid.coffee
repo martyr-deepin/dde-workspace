@@ -919,12 +919,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
                 if w? then w.item_rename()
             msg_disposed = true
 
-    else if evt.keyCode == 13    # Enter
-        if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
-            if selected_item.length > 0
-                Widget.look_up(last_widget)?.item_exec()
-            msg_disposed = true
-
     else if evt.keyCode == 32    # space
         if evt.ctrlKey == true
             if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
@@ -940,6 +934,14 @@ grid_do_keyup_to_shrotcut = (evt) ->
         evt.preventDefault()
 
 
+grid_do_keypress_to_shrotcut = (evt) ->
+    evt.stopPropagation()
+    evt.preventDefault()
+    if evt.keyCode == 13    # Enter
+        if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
+            if selected_item.length > 0
+                Widget.look_up(last_widget)?.item_exec()
+
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
@@ -951,6 +953,7 @@ create_item_grid = ->
     div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
     div_grid.parentElement.addEventListener("keydown", grid_do_keydown_to_shortcut)
     div_grid.parentElement.addEventListener("keyup", grid_do_keyup_to_shrotcut)
+    div_grid.parentElement.addEventListener("keypress", grid_do_keypress_to_shrotcut)
     sel = new Mouse_Select_Area_box(div_grid.parentElement)
 
     drag_canvas = document.createElement("canvas")

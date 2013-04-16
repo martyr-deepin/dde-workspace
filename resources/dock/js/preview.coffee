@@ -29,6 +29,8 @@ class Arrow extends Widget
 
 
 class PWContainer extends Widget
+    _need_move_animation: false
+    _cancel_move_animation_id: -1
     constructor: (@id)->
         super
         @border = create_element("div", "PWBorder", document.body)
@@ -45,8 +47,10 @@ class PWContainer extends Widget
         @is_showing = false
         @border.style.opacity = 0
     show: ->
+        PWContainer._need_move_animation = true
         @is_showing = true
         @border.style.opacity = 1
+        @border.style.display = "block"
 
     _update: ->
         clearInterval(@_update_id)
@@ -99,6 +103,11 @@ class PWContainer extends Widget
         else
             @border.style.left = offset
 
+        if PWContainer._need_move_animation
+            @border.style.display = "block"
+        else
+            @border.style.display = "none"
+
         DCore.Dock.require_all_region()
 
     append: (pw)->
@@ -122,6 +131,8 @@ class PWContainer extends Widget
         #DCore.Dock.set_compiz_workaround_preview(false)
 
     show_group: (group)->
+        clearTimeout(PWContainer._cancel_move_animation_id)
+        PWContainer._cancel_move_animation_id = -1
         #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
         @hide()
@@ -158,6 +169,9 @@ Preview_close_now = ->
     Preview_container.hide()
     setTimeout(->
         Preview_container.close()
+        PWContainer._cancel_move_animation_id = setTimeout(->
+            PWContainer._need_move_animation = false
+        , 3000)
     , 300)
     # timeout above + timeout of backend = 400ms
     # to avoid the fact that dock doesn't hide, delay 500ms

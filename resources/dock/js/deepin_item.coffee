@@ -5,11 +5,11 @@ class FixedItem extends AppItem
     constructor: (@id, @icon, title)->
         super
         @element.draggable=false
-        @img.setAttribute("title", title)
 
         @open_indicator = create_img("OpenIndicator", "img/s_app_open.png", @element)
         @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
         @open_indicator.style.display = "none"
+        @set_tooltip_text(title)
 
     show: (v)->
         @__show = v

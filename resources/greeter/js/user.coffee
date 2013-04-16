@@ -105,7 +105,7 @@ class Loading extends Widget
         create_element("div", "ball1", @element)
         create_element("span", "", @element).innerText = _("Welcome")
 
-_default_bg_src = "/usr/share/backgrounds/1440x900.jpg"
+_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
 _current_bg = create_img("Background", _default_bg_src)
 document.body.appendChild(_current_bg)
 
@@ -414,10 +414,8 @@ if roundabout.children.length <= 2
     userinfo_list[0]?.focus()
     userinfo_list[0]?.show_login()
 
-run_post(->
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-)
+l = (screen.width  - roundabout.clientWidth) / 2
+roundabout.style.left = "#{l}px"
 
 jQuery("#roundabout").drag("start", (ev, dd) ->
     _current_user?.hide_login()

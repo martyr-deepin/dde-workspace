@@ -22,53 +22,21 @@ s_box = $('#s_box')
 init_search_box = ->
     s_box.setAttribute("placeholder", _("Type to search..."))
 
-    s_box.addEventListener("input", do ->
-        last_val = ""  # reduce the action that invoking search function
-        (e) ->
-            if s_box.value == ""
-                do_search()
-                grid_load_category(selected_category_id)
-            else
-                s_box.value = s_box.value.trim()
-                if s_box.value != "" and last_val != s_box.value
-                    last_val = s_box.value
-                    search()
-    )
-
-    s_box.addEventListener("keydown", (e) ->
-        switch e.which
-            when ESC_KEY
-                if s_box.value == ""
-                    DCore.Launcher.exit_gui()
-                else
-                    s_box.value = ""
-                    s_box.blur()
-                    do_search()
-                    grid_load_category(selected_category_id)
-                    return
-            when ENTER_KEY
-                if item_selected
-                    item_selected.do_click()
-                else
-                    get_first_shown()?.do_click()
-            else
-                return  # for backspace, show current category items, not all
-        search()
-    )
-
     $("#search").addEventListener('click', (e)->
         if e.target == s_box
             e.stopPropagation()
     )
 
-    # DCore.signal_connect("im_commit", (info)->
-    #         s_box.value += info.Content
-    #         search()
-    # )
+    s_box.addEventListener('input', s_box.blur())
+
+    DCore.signal_connect("im_commit", (info)->
+        s_box.value += info.Content
+        search()
+    )
 
 do_search = ->
     ret = []
-    key = s_box.value.trim().toLowerCase()
+    key = s_box.value.toLowerCase().trim()
 
     for k,v of applications
         if key == ""
@@ -96,5 +64,5 @@ search = do ->
         , 20)
 
 
-# cursor = create_element("span", "cursor", document.body)
-# cursor.innerText = "|"
+cursor = create_element("span", "cursor", document.body)
+cursor.innerText = "|"

@@ -37,7 +37,7 @@
  * */
 
 #define APPS_INI "dock/apps.ini"
-static GKeyFile* k_apps = NULL;
+GKeyFile* k_apps = NULL;
 static GList* _apps_position = NULL;
 
 static
