@@ -171,16 +171,16 @@ class ClientGroup extends AppItem
         else
             @to_active_status(@leader)
 
+    do_mouseout: (e)->
+        # AppItem use this event to close tooltip, this action will lead
+        # update_dock_region to being invoked, make require_all_region invalid
     do_mouseover: (e) ->
-        if @n_clients.length == 0
-            1
-        else
-            e.stopPropagation()
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        if @n_clients.length != 0
             Preview_show(@)
-
     do_mousemove: (e) ->
-        if @n_clients.length == 0
-            1
-        else
-            e.stopPropagation()
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        if @n_clients.length != 0
             Preview_show(@)

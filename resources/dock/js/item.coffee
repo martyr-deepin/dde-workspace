@@ -144,13 +144,14 @@ app_list = new AppList("app_list")
 
 class ToolTip extends Widget
     tooltip: null
-    @set_text: (text) ->
+    @set_text: (widget, text) ->
         ToolTip.tooltip ?= $("#tooltip")
         ToolTip.tooltip.innerText = text
     @show: ->
         DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
     @hide: ->
+        echo 'ToolTip hide'
         update_dock_region()
         ToolTip.tooltip.style.display = "none"
     @move_to: (x, y) ->
@@ -297,7 +298,7 @@ class AppItem extends Widget
                     when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
     set_tooltip_text: (@text) ->
-        ToolTip.set_text(@text)
+        ToolTip.set_text(@, @text)
     do_mouseover: (e) =>
         @set_tooltip_text(@text)
         AppItem.tooltip_show_id = setTimeout(=>
