@@ -140,6 +140,8 @@ class PWContainer extends Widget
         @_update()
 
     do_mouseover: ->
+        clearTimeout(hide_id)
+        DCore.Dock.require_all_region()
         __clear_timeout()
 
 

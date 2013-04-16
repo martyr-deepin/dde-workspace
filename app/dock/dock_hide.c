@@ -300,7 +300,7 @@ GdkWindow* get_dock_guard_window()
     }
     return guard_window;
 }
-static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent, 
+static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
         GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;
@@ -341,7 +341,6 @@ void get_mouse_position(int* x, int* y)
     gdk_device_get_position(pointer, NULL, x, y);
 }
 
-static
 gboolean is_mouse_in_dock()
 {
     int x = 0, y = 0;
@@ -358,12 +357,14 @@ void dock_update_hide_mode()
     switch (GD.config.hide_mode) {
     case ALWAYS_HIDE_MODE: {
         if (!is_mouse_in_dock()) {
+            g_debug("mouse not in dock");
             dock_hide_now();
         }
         break;
     }
     case INTELLIGENT_HIDE_MODE: {
         if (!is_mouse_in_dock()) {
+            g_debug("mouse not in dock");
             if (dock_has_overlay_client()) {
                 dock_delay_hide(50);
             } else {
@@ -374,6 +375,7 @@ void dock_update_hide_mode()
     }
     case AUTO_HIDE_MODE: {
         if (!is_mouse_in_dock()) {
+            g_debug("mouse not in dock");
             if (dock_has_maximize_client()) {
                 dock_hide_real_now();
             } else {

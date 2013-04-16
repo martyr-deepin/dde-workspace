@@ -147,6 +147,7 @@ void _update_window_viewport(Client* c)
 {
     get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
                            _update_window_viewport_callback, -1);
+    g_debug("_update_window_viewport");
     dock_update_hide_mode();
 }
 
@@ -324,6 +325,7 @@ void client_free(Client* c)
     g_free(c->icon);
 
     g_free(c);
+    g_debug("client free");
     dock_update_hide_mode();
 }
 
@@ -413,6 +415,7 @@ void client_list_changed(Window* cs, size_t n)
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
+                g_debug("client_list_changed");
                 dock_update_hide_mode();
                 _update_client_info(c);
             }
@@ -594,6 +597,7 @@ void _update_window_net_state(Client* c)
         c->is_hidden = _is_hidden(c->window);
         _update_is_overlay_client(c);
     }
+    g_debug("_update_window_net_state");
     dock_update_hide_mode();
 }
 
@@ -626,6 +630,7 @@ void _update_current_viewport(Workspace* vp)
     vp->y = X_FETCH_32(data, 1);
     XFree(data);
 
+    g_debug("_update_current_viewport");
     dock_update_hide_mode();
 }
 
@@ -717,6 +722,7 @@ void _update_is_overlay_client(Client* c)
     }
     if (c->is_overlay_dock != is_overlay) {
         c->is_overlay_dock = is_overlay;
+        g_debug("_update_is_overlay_client");
         dock_update_hide_mode();
     }
 }

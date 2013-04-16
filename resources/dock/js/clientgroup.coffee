@@ -1,3 +1,4 @@
+hide_id = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
         try
@@ -172,6 +173,10 @@ class ClientGroup extends AppItem
             @to_active_status(@leader)
 
     do_mouseout: (e)->
+        update_dock_region()
+        hide_id = setTimeout(->
+            DCore.Dock.update_hide_mode()
+        , 300)
         # AppItem use this event to close tooltip, this action will lead
         # update_dock_region to being invoked, make require_all_region invalid
     do_mouseover: (e) ->
