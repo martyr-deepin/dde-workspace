@@ -245,6 +245,7 @@ cairo_region_t* get_window_input_region(Display* dpy, Window w)
         cairo_rectangle_int_t rect = {rects[i].x, rects[i].y, rects[i].width, rects[i].height};
         cairo_region_union_rectangle(reg, &rect);
     }
+    XFree(rects);
     return reg;
 }
 

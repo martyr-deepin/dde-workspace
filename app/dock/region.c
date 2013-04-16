@@ -98,32 +98,3 @@ void region_rectangles()
         g_debug("coordiantes: %dx%d, width: %d, height: %d", tmp.x, tmp.y, tmp.width, tmp.height);
     }
 }
-
-static
-gboolean in_x_axles(cairo_rectangle_int_t* rect_region, int x)
-{
-    return rect_region->x <= x && rect_region->x + rect_region->width >= x;
-}
-
-static
-gboolean in_y_axles(cairo_rectangle_int_t* rect_region, int y)
-{
-    return rect_region->y <= y && rect_region->y + rect_region->height >= y;
-}
-gboolean is_in_rectangle(cairo_rectangle_int_t* rect_region, int x, int y)
-{
-    return in_x_axles(rect_region, x) && in_y_axles(rect_region, y);
-}
-
-gboolean pointer_in_region(int x, int y)
-{
-    int num = cairo_region_num_rectangles(_region);
-    for (int i = 0; i < num; ++i) {
-        cairo_rectangle_int_t tmp;
-        cairo_region_get_rectangle(_region, i, &tmp);
-        if (is_in_rectangle(&tmp, x, y))
-            return TRUE;
-    }
-
-    return FALSE;
-}
