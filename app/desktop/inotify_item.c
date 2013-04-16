@@ -207,6 +207,7 @@ gboolean _inotify_poll()
                         g_object_unref(f);
                     } else {
                         GFile* f = g_file_get_child(p, event->name);
+                        _add_monitor_directory(f);
                         handle_update(f);
                         g_object_unref(f);
                     }

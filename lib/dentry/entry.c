@@ -412,6 +412,13 @@ double dentry_files_compressibility(ArrayContainer fs)
             g_free(_fs.data);
             return FILES_DECOMPRESSIBLE;
         }
+        char *filename = g_file_get_basename(f);
+        if(NULL!=filename && g_str_has_suffix(filename, ".desktop"))
+        {
+            g_free(_fs.data);
+            g_free(filename);
+            return FILES_COMPRESSIBLE_NONE;
+        }
     } 
     else if(1 < fs.num)
     {
@@ -432,6 +439,14 @@ double dentry_files_compressibility(ArrayContainer fs)
                     g_free(_fs.data);
                     return FILES_COMPRESSIBLE_NONE;
                 }
+            }
+
+            char *filename = g_file_get_basename(f);
+            if(NULL!=filename && g_str_has_suffix(filename, ".desktop"))
+            {
+                g_free(_fs.data);
+                g_free(filename);
+                return FILES_COMPRESSIBLE_NONE;
             }
         }
 

@@ -301,9 +301,6 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
-    g_signal_connect(webview, "focus-out-event", G_CALLBACK(send_lost_focus), NULL);
-    g_signal_connect(webview, "focus-in-event", G_CALLBACK(send_get_focus), NULL);
-
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
     gtk_widget_set_size_request(container, gdk_screen_get_width(screen),
