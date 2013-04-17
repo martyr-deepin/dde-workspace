@@ -145,16 +145,12 @@ init_all_applications = ->
         return -1
     )
 
-    # hidden_icons = DCore.Launcher.read_hidden_icons()
-    if hidden_icons
-        for core in _all_items
-            id = DCore.DEntry.get_id(core)
-            applications[id] = new Item(id, core)
-    else
-        for core in _all_items
-            id = DCore.DEntry.get_id(core)
-            if id not in hidden_icons
-                applications[id] = new Item(id, core)
+    hidden_icon_ids = DCore.Launcher.load_hidden_apps()
+    for core in _all_items
+        id = DCore.DEntry.get_id(core)
+        applications[id] = new Item(id, core)
+    for id in hidden_icon_ids?
+        hidden_icons[id] = applications[id]
 
 init_search_box()
 init_all_applications()

@@ -102,7 +102,7 @@ class Item extends Widget
         if not Item.display_temp and not is_show_hidden_icons
             @element.style.display = 'none'
             Item.display_temp = false
-        # hidden_icon_number -= 1 if hidden_icon_number > 0
+        delete hidden_icons[@id]
         # _update_scroll_bar(category_infos[].length - hidden_icon_number)
 
     display_icon: (e)->
@@ -111,7 +111,7 @@ class Item extends Widget
         @element.style.display = 'block'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
-        # hidden_icon_number += 1
+        hidden_icons[@id] = @
         # _update_scroll_bar(category_infos[].length - hidden_icon_number)
 
     display_icon_temp: ->
