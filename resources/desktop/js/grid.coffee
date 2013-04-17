@@ -966,7 +966,7 @@ class Mouse_Select_Area_box
         @last_effect_item = new Array
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
-        @element.style.visibility = "hidden"
+        @element.style.display = "none"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
 
@@ -1005,7 +1005,7 @@ class Mouse_Select_Area_box
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
         @element.style.height = "#{sh}px"
-        @element.style.visibility = "visible"
+        @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
         if compare_pos_top_left(@last_pos, new_pos) != 0
@@ -1075,7 +1075,7 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
-        @element.style.visibility = "hidden"
+        @element.style.display = "none"
         @last_effect_item.splice(0)
 
         if selected_item.length > 0 then update_selected_item_drag_image()
