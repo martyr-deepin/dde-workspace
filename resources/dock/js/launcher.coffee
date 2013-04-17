@@ -2,7 +2,7 @@ class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
         @app_id = @id
-        @set_tooltip_text(DCore.DEntry.get_name(@core))
+        @set_tooltip(DCore.DEntry.get_name(@core))
 
 
     try_swap_clientgroup: ->
