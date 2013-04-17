@@ -44,14 +44,15 @@ GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 
 gboolean mouse_pointer_leave(int x, int y)
 {
+    gboolean is_contain = FALSE;
     static Display* dpy = NULL;
-    Window dock_window = 0;
+    static Window dock_window = 0;
     if (dpy == NULL) {
         dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
         dock_window = GDK_WINDOW_XID(DOCK_GDK_WINDOW());
     }
     cairo_region_t* region = get_window_input_region(dpy, dock_window);
-    gboolean is_contain = cairo_region_contains_point(region, x, y);
+    is_contain = cairo_region_contains_point(region, x, y);
     cairo_region_destroy(region);
     return is_contain;
 }
@@ -75,12 +76,16 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
         return FALSE;
 
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
-        if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
+        if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
+            g_debug("always hide");
             dock_delay_hide(500);
-        else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE)
+        } else if (GD.config.hide_mode == INTELLIGENT_HIDE_MODE) {
+            g_debug("intelligent leave_notify");
             dock_update_hide_mode();
-        else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client())
+        } else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock()) {
+            g_debug("auto leave_notify");
             dock_hide_real_now();
+        }
         js_post_message_simply("leave-notify", NULL);
     }
     return FALSE;

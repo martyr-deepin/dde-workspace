@@ -414,10 +414,8 @@ if roundabout.children.length <= 2
     userinfo_list[0]?.focus()
     userinfo_list[0]?.show_login()
 
-run_post(->
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-)
+l = (screen.width  - roundabout.clientWidth) / 2
+roundabout.style.left = "#{l}px"
 
 jQuery("#roundabout").drag("start", (ev, dd) ->
     _current_user?.hide_login()

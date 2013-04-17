@@ -5,6 +5,8 @@
 #include "handle_icon.h"
 #include "xdg_misc.h"
 #include "utils.h"
+#include "launcher.h"
+#include <gio/gdesktopappinfo.h>
 
 #define BOARD_PATH RESOURCE_DIR"/dock/img/board.png"
 #define BOARD_MASK_PATH RESOURCE_DIR"/dock/img/mask.png"
@@ -76,23 +78,27 @@ gboolean is_deepin_icon(const char* path)
     return g_str_has_prefix(path, "/usr/share/icons/Deepin/");
 }
 
-char* try_get_deepin_icon(const char* _app_id)
+
+void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
 {
     char* app_id = g_strdup(_app_id);
     to_lower_inplace(app_id);
     if (is_deepin_app_id(app_id)) {
-        switch (get_deepin_app_id_operator(app_id)) {
+        *operator_code = get_deepin_app_id_operator(app_id);
+        switch (*operator_code) {
             case ICON_OPERATOR_USE_ICONNAME:
                 {
                     char* icon_name =  get_deepin_app_id_value(app_id);
                     char* icon_path = icon_name_to_path(icon_name, 48);
                     g_free(icon_name);
                     g_free(app_id);
-                    return icon_path;
+                    *icon = icon_path;
+                    break;
                 }
             case ICON_OPERATOR_USE_RUNTIME:
                 g_free(app_id);
-                return NULL;
+                *icon = NULL;
+                break;
             case ICON_OPERATOR_USE_PATH:
                 g_free(app_id);
                 g_warning("Hasn't support set path Icon Handler\n");
@@ -108,5 +114,4 @@ char* try_get_deepin_icon(const char* _app_id)
     } else {
         g_free(app_id);
     }
-    return NULL;
 }

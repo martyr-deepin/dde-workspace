@@ -147,7 +147,53 @@ void _update_window_viewport(Client* c)
 {
     get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
                            _update_window_viewport_callback, -1);
+    g_debug("_update_window_viewport");
     dock_update_hide_mode();
+}
+
+static
+gboolean _get_launcher_icon(Client* c)
+{
+    GAppInfo* info = g_app_info_create_from_commandline(c->exec, c->app_id, G_APP_INFO_CREATE_NONE, NULL);
+
+    if (info == NULL) {
+        g_debug("info == NULL");
+        return FALSE;
+    }
+
+    char* icon_name = NULL;
+    GIcon* icon = g_app_info_get_icon(info);
+    g_object_unref(info);
+
+    if (icon != NULL) {
+        icon_name = g_icon_to_string(icon);
+    } else {
+        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
+    }
+
+    if (icon_name != NULL) {
+        if (g_str_has_prefix(icon_name, "data:image")) {
+            c->icon = icon_name;
+        } else {
+            char* icon_path = icon_name_to_path(icon_name, 48);
+            g_free(icon_name);
+
+            if (is_deepin_icon(icon_path)) {
+                c->icon = icon_path;
+            } else {
+                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
+                g_free(icon_path);
+                if (pixbuf == NULL) {
+                    c->icon = NULL;
+                } else {
+                    char* icon_data = handle_icon(pixbuf);
+                    g_object_unref(pixbuf);
+                    c->icon = icon_data;
+                }
+            }
+        }
+    }
+    return c->icon == NULL;
 }
 
 Client* create_client_from_window(Window w)
@@ -182,7 +228,15 @@ Client* create_client_from_window(Window w)
     }
 
     c->need_update_icon = FALSE;
-    c->icon = try_get_deepin_icon(c->app_id);
+    int operator_code = 0;
+    try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
+
+    if (c->icon == NULL) {
+        g_debug("try get deepin icon failed");
+        g_debug("appid: %s, operator_code: %d", c->app_id, operator_code);
+        if (operator_code == ICON_OPERATOR_USE_ICONNAME)
+            _get_launcher_icon(c);
+    }
 
     if (c->icon == NULL) {
         c->need_update_icon = TRUE;
@@ -271,6 +325,7 @@ void client_free(Client* c)
     g_free(c->icon);
 
     g_free(c);
+    g_debug("client free");
     dock_update_hide_mode();
 }
 
@@ -360,6 +415,7 @@ void client_list_changed(Window* cs, size_t n)
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
+                g_debug("client_list_changed");
                 dock_update_hide_mode();
                 _update_client_info(c);
             }
@@ -421,41 +477,6 @@ void* argb_to_rgba(gulong* data, size_t s)
 
 void _update_window_icon(Client* c)
 {
-    GAppInfo* info = g_app_info_create_from_commandline(c->exec, c->app_id, G_APP_INFO_CREATE_NONE, NULL);
-    char* icon_name = NULL;
-    GIcon* icon = g_app_info_get_icon(info);
-    g_object_unref(info);
-
-    if (icon != NULL) {
-        icon_name = g_icon_to_string(icon);
-    } else {
-        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
-    }
-
-    if (icon_name != NULL) {
-        if (g_str_has_prefix(icon_name, "data:image")) {
-            c->icon = icon_name;
-        } else {
-            char* icon_path = icon_name_to_path(icon_name, 48);
-            g_free(icon_name);
-
-            if (is_deepin_icon(icon_path)) {
-                c->icon = icon_path;
-            } else {
-                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
-                g_free(icon_path);
-                if (pixbuf == NULL) {
-                    c->icon = NULL;
-                } else {
-                    char* icon_data = handle_icon(pixbuf);
-                    g_object_unref(pixbuf);
-                    c->icon = icon_data;
-                }
-            }
-        }
-        return;
-    }
-
     gulong items;
     gulong* data = get_window_property(_dsp, c->window, ATOM_WINDOW_ICON, &items);
     if (data == NULL) {
@@ -576,6 +597,7 @@ void _update_window_net_state(Client* c)
         c->is_hidden = _is_hidden(c->window);
         _update_is_overlay_client(c);
     }
+    g_debug("_update_window_net_state");
     dock_update_hide_mode();
 }
 
@@ -608,6 +630,7 @@ void _update_current_viewport(Workspace* vp)
     vp->y = X_FETCH_32(data, 1);
     XFree(data);
 
+    g_debug("_update_current_viewport");
     dock_update_hide_mode();
 }
 
@@ -699,6 +722,7 @@ void _update_is_overlay_client(Client* c)
     }
     if (c->is_overlay_dock != is_overlay) {
         c->is_overlay_dock = is_overlay;
+        g_debug("_update_is_overlay_client");
         dock_update_hide_mode();
     }
 }

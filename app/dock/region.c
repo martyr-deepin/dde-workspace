@@ -1,4 +1,5 @@
 #include "region.h"
+#include "dwebview.h"
 
 cairo_region_t* _region = NULL;
 GdkWindow* _win = NULL;
@@ -36,6 +37,7 @@ void do_window_shape_combine_region(cairo_region_t* region)
     _id = g_timeout_add(100, (GSourceFunc)_help_do_window_region, region);
 }
 
+JS_EXPORT_API
 void dock_require_all_region()
 {
     do_window_shape_combine_region(NULL);
@@ -84,4 +86,15 @@ gboolean dock_region_overlay(const cairo_rectangle_int_t* tmp)
     gboolean r = (cairo_region_contains_rectangle(region, tmp) != CAIRO_REGION_OVERLAP_OUT);
     cairo_region_destroy(region);
     return r;
+}
+
+void region_rectangles()
+{
+    int num = cairo_region_num_rectangles(_region);
+
+    for (int i = 0; i < num; ++i) {
+        cairo_rectangle_int_t tmp;
+        cairo_region_get_rectangle(_region, i, &tmp);
+        g_debug("coordiantes: %dx%d, width: %d, height: %d", tmp.x, tmp.y, tmp.width, tmp.height);
+    }
 }

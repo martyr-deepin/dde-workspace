@@ -61,7 +61,7 @@ const gchar* get_category_db_path()
         if (g_key_file_load_from_file(id_file, DATA_NEWEST_ID, G_KEY_FILE_NONE, NULL)) {
             gchar* newest_id = g_key_file_get_value(id_file, "newest", "data_id", NULL);
             g_key_file_free(id_file);
-            g_snprintf(db_path, 101, DESKTOP_DB_PATH, newest_id);
+            g_snprintf(db_path, 102, DESKTOP_DB_PATH, newest_id);
             g_free(newest_id);
         }
     }

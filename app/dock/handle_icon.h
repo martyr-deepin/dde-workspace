@@ -17,7 +17,7 @@
 char* get_data_uri_by_surface(cairo_surface_t* surface);
 gboolean is_deepin_icon(const char* path);
 char* handle_icon(GdkPixbuf* icon);
-char* try_get_deepin_icon(const char* app_id);
+void try_get_deepin_icon(const char* app_id, char** icon, int* operator_code);
 
 
 #endif

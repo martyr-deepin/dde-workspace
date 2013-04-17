@@ -1,3 +1,4 @@
+hide_id = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
         try
@@ -145,6 +146,7 @@ class ClientGroup extends AppItem
             swap_element(@element, l.element)
 
     destroy: ->
+        Preview_close_now()
         @element.style.display = "block"
         @try_build_launcher()
         super
@@ -170,16 +172,20 @@ class ClientGroup extends AppItem
         else
             @to_active_status(@leader)
 
+    do_mouseout: (e)->
+        update_dock_region()
+        hide_id = setTimeout(->
+            DCore.Dock.update_hide_mode()
+        , 300)
+        # AppItem use this event to close tooltip, this action will lead
+        # update_dock_region to being invoked, make require_all_region invalid
     do_mouseover: (e) ->
-        if @n_clients.length == 0
-            1
-        else
-            e.stopPropagation()
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        if @n_clients.length != 0
             Preview_show(@)
-
     do_mousemove: (e) ->
-        if @n_clients.length == 0
-            1
-        else
-            e.stopPropagation()
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        if @n_clients.length != 0
             Preview_show(@)
