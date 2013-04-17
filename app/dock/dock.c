@@ -117,14 +117,17 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     geo.min_width = 0;
     geo.min_height = 0;
 
+    gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_flush(gtk_widget_get_window(webview));
     gdk_window_set_geometry_hints(gtk_widget_get_window(container), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_flush(gtk_widget_get_window(container));
+    gdk_window_move_resize(gtk_widget_get_window(webview), 0, 0, screen_width, screen_height);
     gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
 
     dock_change_workarea_height(_dock_height);
 
     init_region(DOCK_GDK_WINDOW(), 0, screen_height - _dock_height, screen_width, _dock_height);
 
-    webkit_web_view_reload_bypass_cache(WEBKIT_WEB_VIEW(webview));
     tray_icon_do_screen_size_change();
     update_dock_guard_window_position();
 }
@@ -158,7 +161,7 @@ int main(int argc, char* argv[])
 
 
     GdkScreen* screen = gdk_screen_get_default();
-    g_signal_connect(screen, "size-changed", G_CALLBACK(update_dock_size), webview);
+    g_signal_connect_after(screen, "size-changed", G_CALLBACK(update_dock_size), webview);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -166,7 +169,6 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
     update_dock_size(screen, webview);
 
-    gdk_window_set_accept_focus(gtk_widget_get_window(webview), FALSE);
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
     monitor_resource_file("dock", webview);
