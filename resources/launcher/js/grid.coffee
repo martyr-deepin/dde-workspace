@@ -99,7 +99,7 @@ class Item extends Widget
         @display_mode = 'hidden'
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
-        if not Item.display_temp
+        if not Item.display_temp and not is_show_hidden_icons
             @element.style.display = 'none'
             Item.display_temp = false
         # hidden_icon_number -= 1 if hidden_icon_number > 0
