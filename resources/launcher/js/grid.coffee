@@ -32,6 +32,7 @@ catch error
     s_dock = null
 
 class Item extends Widget
+    display_temp: false
     constructor: (@id, @core)->
         super
         im = DCore.DEntry.get_icon(@core)
@@ -58,7 +59,6 @@ class Item extends Widget
         @element.style.display = "none"
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
         @display_mode = 'display'
-        @display_temp = false
 
     do_click : (e)->
         e?.stopPropagation()
@@ -94,26 +94,31 @@ class Item extends Widget
             msg = DISPLAY_ICON
         Item._menu(msg)
 
-    hide_icon: (e)=>
+    hide_icon: (e)->
         # TODO
         @display_mode = 'hidden'
-        @element.style.display = 'none'
-        @display_temp = false
+        if HIDE_ICON_CLASS not in @element.classList
+            @add_css_class(HIDE_ICON_CLASS, @element)
+        if not Item.display_temp
+            @element.style.display = 'none'
+            Item.display_temp = false
         # hidden_icon_number -= 1 if hidden_icon_number > 0
         # _update_scroll_bar(category_infos[].length - hidden_icon_number)
 
-    display_icon: (e)=>
+    display_icon: (e)->
         # TODO
         @display_mode = 'display'
         @element.style.display = 'block'
+        if HIDE_ICON_CLASS in @element.classList
+            @remove_css_class(HIDE_ICON_CLASS, @element)
         # hidden_icon_number += 1
         # _update_scroll_bar(category_infos[].length - hidden_icon_number)
 
-    display_icon_temp: =>
+    display_icon_temp: ->
         @element.style.display = 'block'
-        @display_temp = true
+        Item.display_temp = true
 
-    _toggle_icon: =>
+    _toggle_icon: ->
         if @display_mode == 'display'
             @hide_icon()
             @element.addEventListener('conetxtmenu', Item._contextmenu_callback(DISPLAY_ICON))
@@ -130,7 +135,7 @@ class Item extends Widget
     hide: =>
         @element.style.display = "none"
     show: =>
-        @element.style.display = "block" if @display_temp or @display_mode == 'display'
+        @element.style.display = "block" if Item.display_temp or @display_mode == 'display'
     is_shown: =>
         @element.style.display == "block"
     select: =>

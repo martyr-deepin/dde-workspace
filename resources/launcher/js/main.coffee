@@ -108,6 +108,7 @@ _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 _show_hidden_icons = (is_shown) ->
     is_show_hidden_icons = is_shown
 
+    Item.display_temp = false
     if is_shown
         for own k, v of applications
             if v.display_mode == 'hidden'
