@@ -137,6 +137,7 @@ draw_background (xfade_data_t* fade_data)
     cairo_set_source_surface (cr, fade_data->fading_surface, 0, 0);
     cairo_paint (cr);
     cairo_destroy (cr);
+    gdk_flush ();
 }
         	
 /*
@@ -962,6 +963,15 @@ initial_setup (GSettings *settings)
     return;
 }
 
+static GdkFilterReturn
+expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
+{
+    if (((XEvent*)xevent)->type == Expose) 
+    {
+    }
+    return GDK_FILTER_CONTINUE;
+}
+
 DEEPIN_EXPORT void
 bg_util_init (GdkWindow* bg_window)
 {
@@ -1003,5 +1013,6 @@ bg_util_init (GdkWindow* bg_window)
     g_signal_connect (Settings, "changed::current-picture",
 		      G_CALLBACK (bg_settings_current_picture_changed), NULL);
 
+    gdk_window_add_filter (background_window, expose_cb, NULL);
     initial_setup (Settings);
 }
