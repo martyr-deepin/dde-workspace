@@ -28,3 +28,5 @@ DISPLAY_HIDDEN_ICONS = _("Display hidden icons")
 
 HIDE_ICON = _("Hide this icon")
 DISPLAY_ICON = _("Dispaly this icon")
+
+HIDE_ICON_CLASS = 'hide_icon'

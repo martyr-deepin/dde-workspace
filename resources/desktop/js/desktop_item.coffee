@@ -810,7 +810,7 @@ class RichDir extends DesktopEntry
 
     item_ungroup: =>
         if (pos = load_position(@id))?
-            clear_occupy(pos)
+            clear_occupy(@id, pos)
         DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
         DCore.DEntry.delete_files([@_entry], false)
 

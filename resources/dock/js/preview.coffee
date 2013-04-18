@@ -248,6 +248,11 @@ class PreviewWindow extends Widget
 
     do_click: (e)->
         DCore.Dock.active_window(@w_id)
+        Preview_close_now()
+    do_rightclick: (e)=>
+        DCore.Dock.active_window(@w_id)
+    do_mouseover: (e)=>
+        Preview_active_window_changed(@w_id)
 
     update_content: ->
         if @scale != Preview_container.scale

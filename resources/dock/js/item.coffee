@@ -149,6 +149,19 @@ class ToolTip extends Widget
         ToolTip.tooltip ?= $("#tooltip")
 
         @event_bind('ondragstart', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip.style.display = "none"
+        )
+        @event_bind('ondragenter', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip.style.display = "none"
+        )
+        @event_bind('ondragover', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip.style.display = "none"
+        )
+        @event_bind('ondragleave', =>
+            clearTimeout(ToolTip.should_show_id)
             ToolTip.tooltip.style.display = "none"
         )
         @event_bind('ondragend', =>
@@ -164,6 +177,9 @@ class ToolTip extends Widget
             ToolTip.should_show_id = setTimeout(=>
                 @widget.tooltip.show()
             , 300)
+        )
+        @event_bind('onclick', =>
+            @widget.tooltip?.hide()
         )
 
     event_bind: (evt_name, callback) ->

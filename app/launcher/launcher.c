@@ -33,13 +33,17 @@
 #define SCHEMA_ID "com.deepin.dde.background"
 #define CURRENT_PCITURE "current-picture"
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
+#define APPS_INI "launcher/apps.ini"
 
 
+static GKeyFile* k_apps = NULL;
 static GtkWidget* container = NULL;
 static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
 static GSettings* dde_bg_g_settings = NULL;
+
+
 
 static void get_screen_info()
 {
@@ -53,10 +57,10 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
     GError* error = NULL;
     GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_scale(bg_path,
-                                                                    screen_width,
-                                                                    screen_height,
-                                                                    FALSE,
-                                                                    &error);
+                                                                     screen_width,
+                                                                     screen_height,
+                                                                     FALSE,
+                                                                     &error);
 
     if (_background_image == NULL) {
         g_debug("%s\n", error->message);
@@ -250,6 +254,7 @@ int main(int argc, char* argv[])
 JS_EXPORT_API
 void launcher_exit_gui()
 {
+    g_key_file_free(k_apps);
     gtk_main_quit();
 }
 
@@ -501,3 +506,38 @@ GFile* launcher_get_desktop_entry()
     return r;
 }
 
+JS_EXPORT_API
+JSValueRef launcher_load_hidden_apps()
+{
+    if (k_apps == NULL) {
+        k_apps = load_app_config(APPS_INI);
+    }
+
+    g_assert(k_apps != NULL);
+    GError* error = NULL;
+    gsize length = 0;
+    gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps, "__Config__", "app_ids", &length, &error);
+    if (raw_hidden_app_ids == NULL) {
+        g_warning("%s", error->message);
+        g_error_free(error);
+        return jsvalue_null();
+    }
+
+    JSObjectRef hidden_app_ids = json_array_create();
+    JSContextRef cxt = get_global_context();
+    for (gsize i = 0; i < length; ++i) {
+        g_debug("%s\n", raw_hidden_app_ids[i]);
+        json_array_insert(hidden_app_ids, i, jsvalue_from_cstr(cxt, raw_hidden_app_ids[i]));
+    }
+
+    g_strfreev(raw_hidden_app_ids);
+    return hidden_app_ids;
+}
+
+JS_EXPORT_API
+void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
+{
+    g_key_file_set_string_list(k_apps, "__Config__", "app_ids",
+        (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
+    save_app_config(k_apps, APPS_INI);
+}

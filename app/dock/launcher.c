@@ -297,7 +297,7 @@ void dock_request_dock(const char* path)
             js_post_message("dock_request", app_info);
         g_free(app_id);
     } else {
-        g_warning("request dock %s is invalide\n", path);
+        g_warning("request dock %s is invalid\n", path);
     }
     g_object_unref(info);
 }
