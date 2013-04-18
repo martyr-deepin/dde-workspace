@@ -41,7 +41,7 @@
 
 .PWCanvas {
     background: rgba(0,0, 0, 0.4);
-    margin-top: 11.875%;
+    margin-top: 2.875%;
     /*margin-left: 8.695652173913043%;*/
     display: block;
     margin-left:auto;
@@ -64,8 +64,8 @@
     color: white;
     text-shadow: 0px 1px 3px rgba(0,0,0,0.4), 0px 1px 3px rgba(0,0,0,0.4), 1px 0px 3px rgba(0,0,0,0.4), -0px 0px 3px rgba(0,0,0,0.4);
 
-    position: absolute;
-    width: 100%;
+    margin: 0 auto;
+    width: 90%;
     margin-top: 1%;
 }
 .PWClose {
