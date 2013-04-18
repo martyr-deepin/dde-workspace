@@ -25,15 +25,24 @@ DCore.signal_connect('workarea_changed', (alloc)->
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
+        _save_hidden_apps()
         DCore.Launcher.exit_gui()
 )
 DCore.Launcher.notify_workarea_size()
+
+
+_save_hidden_apps = ->
+    hidden_icons_ids = []
+    for own id of hidden_icons
+        hidden_icons_ids.push(id)
+    DCore.Launcher.save_hidden_apps(hidden_icons_ids)
 
 _b = document.body
 
 _b.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
+        _save_hidden_apps()
         DCore.Launcher.exit_gui()
 )
 
@@ -56,6 +65,7 @@ _b.addEventListener("keypress", do ->
             switch e.which
                 when ESC_KEY
                     if s_box.value == ""
+                        _save_hidden_apps()
                         DCore.Launcher.exit_gui()
                     else
                         _last_val = s_box.value
@@ -104,7 +114,6 @@ _contextmenu_callback = (msg) ->
 is_show_hidden_icons = false
 _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 
-# TODO
 _show_hidden_icons = (is_shown) ->
     is_show_hidden_icons = is_shown
 
@@ -145,14 +154,22 @@ init_all_applications = ->
         return -1
     )
 
-    hidden_icon_ids = DCore.Launcher.load_hidden_apps()
     for core in _all_items
         id = DCore.DEntry.get_id(core)
         applications[id] = new Item(id, core)
-    for id in hidden_icon_ids?
+
+_init_hidden_icons = ->
+    hidden_icon_ids = DCore.Launcher.load_hidden_apps()
+    for id in hidden_icon_ids
+        if not applications[id]
+            echo id
+            delete hidden_icons[id]
+    for id in hidden_icon_ids
         hidden_icons[id] = applications[id]
+        hidden_icons[id].hide_icon()
 
 init_search_box()
 init_all_applications()
 init_category_list()
 init_grid()
+_init_hidden_icons()
