@@ -165,6 +165,9 @@ class ToolTip extends Widget
                 @widget.tooltip.show()
             , 300)
         )
+        @event_bind('onclick', =>
+            @widget.tooltip?.hide()
+        )
 
     event_bind: (evt_name, callback) ->
         evt_handler = @widget.element[evt_name]
