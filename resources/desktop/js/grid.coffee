@@ -162,6 +162,7 @@ clear_all_positions = ->
     for i in [(localStorage.length - 1) ... -1] by -1
         if (val = localStorage.key(i)).match(/^id:.+/i)
             localStorage.removeItem(val)
+    echo "all positions cleared"
     return
 
 
@@ -249,30 +250,37 @@ init_occupy_table = ->
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
+    return
 
 
 clear_occupy_table = ->
     for i in [0 ... cols]
         for j in [0 ... rows]
             o_table[i][j] = null
+    echo "all occupy cleared"
+    return
 
 
-clear_occupy = (info) ->
+clear_occupy = (id, info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            o_table[info.x+i][info.y+j] = null
+            if o_table[info.x+i][info.y+j] == id
+                o_table[info.x+i][info.y+j] = null
+            else
+                return false
+    return true
 
 
-set_occupy = (info) ->
-    assert(info!=null, "[set_occupy] accept null")
+set_occupy = (id, info) ->
+    assert(info!=null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            o_table[info.x+i][info.y+j] = true
+            o_table[info.x+i][info.y+j] = id
     return
 
 
 detect_occupy = (info) ->
-    assert(info!=null, "[detect_occupy]accept null")
+    assert(info!=null, "[detect_occupy]get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
@@ -305,9 +313,11 @@ move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
+        echo "#{widget.get_id()} Y #{info.x}, #{info.y}"
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
+        echo "#{widget.get_id()} N #{info.x}, #{info.y}"
     return
 
 
@@ -329,8 +339,8 @@ move_to_position = (widget, info) ->
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
-    if old_info? then clear_occupy(old_info)
-    set_occupy(info)
+    if old_info? then clear_occupy(widget.get_id(), old_info)
+    set_occupy(widget.get_id(), info)
 
     return
 
@@ -356,14 +366,13 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
+    echo "======sort start======"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
     item_ordered_list.sort(func)
 
-    for i in [0 ... cols]
-        for j in [0 .. rows]
-            o_table[i][j] = null
+    clear_occupy_table()
 
     for i in speical_item
         w = Widget.look_up(i)
@@ -374,6 +383,7 @@ sort_desktop_item_by_func = (func) ->
         w = Widget.look_up(i)
         if w?
             move_to_anywhere(w)
+    echo "+======sort end======+"
     return
 
 
