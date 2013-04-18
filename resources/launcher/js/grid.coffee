@@ -60,20 +60,25 @@ class Item extends Widget
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
         @display_mode = 'display'
 
-    do_click : (e)->
+    do_click : (e)=>
         e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
+        _save_hidden_apps()
         DCore.Launcher.exit_gui()
     do_mouseover: (e)->
         #$("#close").setAttribute("class", "close_hover")
 
-    do_dragstart: (e)->
+    do_dragstart: (e)=>
         e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    @_menu: (msg) ->
+    _menu: ->
+        if @display_mode == 'display'
+            msg = HIDE_ICON
+        else
+            msg = DISPLAY_ICON
         menu = [
             [1, _("Open")],
             [],
@@ -83,36 +88,36 @@ class Item extends Widget
             [4, _("Send to dock"), s_dock!=null],
         ]
 
-    @_contextmenu_callback: (msg) ->
-        (e) ->
-            @element.contextMenu = build_menu(Item._menu(msg))
+    @_contextmenu_callback: ->
+        (e) =>
+            @element.contextMenu = build_menu(@_menu())
 
     do_buildmenu: (e)=>
-        if @display_mode == 'display'
-            msg = HIDE_ICON
-        else
-            msg = DISPLAY_ICON
-        Item._menu(msg)
+        @_menu()
 
-    hide_icon: (e)->
-        # TODO
+    hide_icon: (e)=>
         @display_mode = 'hidden'
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
         if not Item.display_temp and not is_show_hidden_icons
             @element.style.display = 'none'
             Item.display_temp = false
-        delete hidden_icons[@id]
-        # _update_scroll_bar(category_infos[].length - hidden_icon_number)
+        hidden_icons[@id] = @
+        count = 0
+        for own dump of hidden_icons
+            count += 1
+        _update_scroll_bar(category_infos[selected_category_id].length - count)
 
-    display_icon: (e)->
-        # TODO
+    display_icon: (e)=>
         @display_mode = 'display'
         @element.style.display = 'block'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
-        hidden_icons[@id] = @
-        # _update_scroll_bar(category_infos[].length - hidden_icon_number)
+        delete hidden_icons[@id]
+        count = 0
+        for own dump of hidden_icons
+            count += 1
+        _update_scroll_bar(category_infos[selected_category_id].length - count)
 
     display_icon_temp: ->
         @element.style.display = 'block'
@@ -121,10 +126,10 @@ class Item extends Widget
     _toggle_icon: ->
         if @display_mode == 'display'
             @hide_icon()
-            @element.addEventListener('conetxtmenu', Item._contextmenu_callback(DISPLAY_ICON))
+            @element.addEventListener('conetxtmenu', Item._contextmenu_callback())
         else
             @display_icon()
-            @element.addEventListener('contextmenu', Item._contextmenu_callback(HIDE_ICON))
+            @element.addEventListener('contextmenu', Item._contextmenu_callback())
 
     do_itemselected: (e)=>
         switch e.id
@@ -132,31 +137,31 @@ class Item extends Widget
             when 2 then @_toggle_icon()
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
-    hide: =>
+    hide: ->
         @element.style.display = "none"
-    show: =>
+    show: =>  # use '->', Item.display_temp and @display_mode will be undifined
         @element.style.display = "block" if Item.display_temp or @display_mode == 'display'
-    is_shown: =>
+    is_shown: ->
         @element.style.display == "block"
-    select: =>
+    select: ->
         @element.setAttribute("class", "item item_selected")
-    unselect: =>
+    unselect: ->
         @element.setAttribute("class", "item")
-    next_shown: =>
+    next_shown: ->
         next_sibling_id = @element.nextElementSibling?.id
         if next_sibling_id
             n = applications[next_sibling_id]
             if n.is_shown() then n else n.next_shown()
         else
             null
-    prev_shown: =>
+    prev_shown: ->
         prev_sibling_id = @element.previousElementSibling?.id
         if prev_sibling_id
             n = applications[prev_sibling_id]
             if n.is_shown() then n else n.prev_shown()
         else
             null
-    scroll_to_view: =>
+    scroll_to_view: ->
         @element.scrollIntoViewIfNeeded()
 
 

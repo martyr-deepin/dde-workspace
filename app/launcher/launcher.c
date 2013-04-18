@@ -507,12 +507,13 @@ GFile* launcher_get_desktop_entry()
 }
 
 JS_EXPORT_API
-JSObjectRef launcher_load_hidden_apps()
+JSValueRef launcher_load_hidden_apps()
 {
     if (k_apps == NULL) {
         k_apps = load_app_config(APPS_INI);
     }
 
+    g_assert(k_apps != NULL);
     GError* error = NULL;
     gsize length = 0;
     gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps, "__Config__", "app_ids", &length, &error);
@@ -523,14 +524,20 @@ JSObjectRef launcher_load_hidden_apps()
     }
 
     JSObjectRef hidden_app_ids = json_array_create();
-    for (gsize i = 0; i < length; ++i)
-        json_array_insert_nobject(hidden_app_ids, i, g_strdup(raw_hidden_app_ids[i]), g_object_ref, g_object_unref);
+    JSContextRef cxt = get_global_context();
+    for (gsize i = 0; i < length; ++i) {
+        g_debug("%s\n", raw_hidden_app_ids[i]);
+        json_array_insert(hidden_app_ids, i, jsvalue_from_cstr(cxt, raw_hidden_app_ids[i]));
+    }
 
     g_strfreev(raw_hidden_app_ids);
     return hidden_app_ids;
 }
 
-//JS_EXPORT_API
-//void launcher_save_hidden_apps(ArrayContainer* hidden_app_ids)
-//{
-//}
+JS_EXPORT_API
+void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
+{
+    g_key_file_set_string_list(k_apps, "__Config__", "app_ids",
+        (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
+    save_app_config(k_apps, APPS_INI);
+}
