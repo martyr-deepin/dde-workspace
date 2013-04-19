@@ -162,7 +162,6 @@ _init_hidden_icons = ->
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
     for id in hidden_icon_ids
         if not applications[id]
-            echo id
             delete hidden_icons[id]
     for id in hidden_icon_ids
         hidden_icons[id] = applications[id]
