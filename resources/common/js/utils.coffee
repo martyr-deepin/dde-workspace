@@ -127,3 +127,11 @@ dnd_is_deepin_item = (e)->
         return false
 dnd_is_file = (e)->
     return e.dataTransfer.getData("text/uri-list").length != 0
+
+ajax = (url, method, callback, asyn=true) ->
+    xhr = new XMLHttpRequest()
+    xhr.open(method, url, asyn)
+    xhr.send(null)
+    xhr.onreadystatechange = ->
+        if (xhr.readyState == 4 and xhr.status == 200)
+            callback?(xhr)
