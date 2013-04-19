@@ -737,18 +737,21 @@ delete_selected_items = (real_delete) ->
     else DCore.DEntry.trash(tmp)
     return
 
+show_entries_properties = (entries) ->
+    try
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
+            DCore.DEntry.launch(entry, entries)
+    catch e
+    return
+
 
 show_selected_items_properties = ->
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
-
-    #XXX: we get an error here when call the nautilus DBus interface
-    try
-        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
-            DCore.DEntry.launch(entry, tmp)
-    catch e
+    show_entries_properties(tmp)
     return
+
 
 compress_selected_items = ->
     tmp = []

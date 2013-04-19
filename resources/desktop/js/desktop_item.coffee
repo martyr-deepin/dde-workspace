@@ -1073,10 +1073,7 @@ class RichDir extends DesktopEntry
                 list = []
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
-                if e?
-                    list.push(e)
-                    if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
-                        DCore.DEntry.launch(entry, list)
+                show_entries_properties([e]) if e?
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
@@ -1399,10 +1396,7 @@ class HomeVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                try
-                    #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@_entry)}"], "")
-                catch e
+                show_entries_properties([@_entry])
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
         return
@@ -1418,7 +1412,7 @@ class TrashVDir extends DesktopEntry
         super(entry, false, false)
 
     # XXX: try to avoid that get empty state when system startup
-    setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
+    setTimeout(@item_update, 400) if DCore.DEntry.get_trash_count() == 0
 
 
     set_id : =>
