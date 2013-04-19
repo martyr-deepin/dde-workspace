@@ -30,6 +30,7 @@ extern int screen_height;
 #define TRAY_LEFT_LINE_PATH "/usr/share/deepin-system-tray/src/image/system/tray_left_line.png"
 #define TRAY_RIGHT_LINE_PATH "/usr/share/deepin-system-tray/src/image/system/tray_right_line.png"
 
+#define CLAMP_WIDTH(w) (((w) < 16) ? 16 : (w))
 #define DEFAULT_HEIGHT 16
 #define DEFAULT_INTERVAL 4
 #define DOCK_HEIGHT 30
@@ -62,6 +63,7 @@ GdkWindow* get_wrapper_window(GdkWindow* icon)
 
 GdkWindow* create_wrapper(GdkWindow* parent, Window tray_icon)
 {
+    gdk_flush();
     GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), tray_icon);
     if (icon == NULL)
         return NULL;
@@ -149,6 +151,7 @@ void _update_deepin_try_position()
                 NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
         _update_notify_area_width();
     }
+    _update_fcitx_try_position();
 }
 void _update_fcitx_try_position()
 {
@@ -167,11 +170,10 @@ void destroy_wrapper(GdkWindow* wrapper)
 {
     GdkWindow* icon = get_icon_window(wrapper);
     gdk_window_remove_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);
-    gdk_window_destroy(wrapper);
+    gdk_window_destroy(wrapper); //this will decrements wrapper's reference count, don't repeat call g_object_unref
     if (icon != wrapper) {
         g_object_unref(icon);
     }
-    g_object_unref(wrapper);
 }
 
 static GdkFilterReturn
@@ -186,7 +188,6 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
             _update_fcitx_try_position();
         } else if (_fcitx_tray == wrapper) {
             destroy_wrapper(_fcitx_tray);
-            printf("destroy fcit %p\n", wrapper);
             _fcitx_tray = NULL;
             _fcitx_tray_width = 0;
             _update_notify_area_width();
@@ -200,16 +201,14 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
         if (wrapper == _deepin_tray) {
-            _deepin_tray_width = new_width;
+            _deepin_tray_width = CLAMP_WIDTH(new_width);
             _update_deepin_try_position();
-            _update_fcitx_try_position();
         } else if (wrapper == _fcitx_tray) {
-            _fcitx_tray_width = new_width;
-            printf("new fcitx width:%d\n", new_width);
+            _fcitx_tray_width = CLAMP_WIDTH(new_width);
             _update_fcitx_try_position();
         } else if (wrapper != _deepin_tray && wrapper != _fcitx_tray) {
             int new_height = ((XConfigureEvent*)xev)->height;
-            g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER((int)(new_width * 1.0 / new_height * DEFAULT_HEIGHT)));
+            g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(CLAMP_WIDTH((new_width * 1.0 / new_height * DEFAULT_HEIGHT))));
             _update_notify_area_width();
         }
         return GDK_FILTER_REMOVE;
@@ -248,18 +247,17 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     get_wmclass(icon, &re_class, NULL);
     if (g_strcmp0(re_class, DEEPIN_TRAY_ICON) == 0) {
         _deepin_tray = wrapper;
-        _deepin_tray_width = gdk_window_get_width(icon);
+        _deepin_tray_width = CLAMP_WIDTH(gdk_window_get_width(icon));
         _update_deepin_try_position();
     } else if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
-        printf("set fcitx_tray to %p\n", wrapper);
         _fcitx_tray = wrapper;
-        _fcitx_tray_width = gdk_window_get_width(icon);
+        _fcitx_tray_width = CLAMP_WIDTH(gdk_window_get_width(icon));
         _update_fcitx_try_position();
 
     } else {
         int width = gdk_window_get_width(icon) * 1.0 / gdk_window_get_height(icon) * DEFAULT_HEIGHT;
         gdk_window_resize(icon, width, DEFAULT_HEIGHT);
-        g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(width));
+        g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(CLAMP_WIDTH(width)));
     }
     g_free(re_class);
     _update_notify_area_width();
