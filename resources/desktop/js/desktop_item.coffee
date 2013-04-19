@@ -97,7 +97,7 @@ class Item extends Widget
 
 
     destroy : ->
-        if (info = load_position(@id))? then clear_occupy(info)
+        if (info = load_position(@id))? then clear_occupy(@id, info)
         super
 
 
