@@ -62,6 +62,7 @@ GdkWindow* get_wrapper_window(GdkWindow* icon)
 
 GdkWindow* create_wrapper(GdkWindow* parent, Window tray_icon)
 {
+    gdk_flush();
     GdkWindow* icon = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), tray_icon);
     if (icon == NULL)
         return NULL;
@@ -167,11 +168,10 @@ void destroy_wrapper(GdkWindow* wrapper)
 {
     GdkWindow* icon = get_icon_window(wrapper);
     gdk_window_remove_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);
-    gdk_window_destroy(wrapper);
+    gdk_window_destroy(wrapper); //this will decrements wrapper's reference count, don't repeat call g_object_unref
     if (icon != wrapper) {
         g_object_unref(icon);
     }
-    g_object_unref(wrapper);
 }
 
 static GdkFilterReturn
@@ -186,7 +186,6 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
             _update_fcitx_try_position();
         } else if (_fcitx_tray == wrapper) {
             destroy_wrapper(_fcitx_tray);
-            printf("destroy fcit %p\n", wrapper);
             _fcitx_tray = NULL;
             _fcitx_tray_width = 0;
             _update_notify_area_width();
@@ -205,7 +204,6 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
             _update_fcitx_try_position();
         } else if (wrapper == _fcitx_tray) {
             _fcitx_tray_width = new_width;
-            printf("new fcitx width:%d\n", new_width);
             _update_fcitx_try_position();
         } else if (wrapper != _deepin_tray && wrapper != _fcitx_tray) {
             int new_height = ((XConfigureEvent*)xev)->height;
@@ -251,7 +249,6 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
         _deepin_tray_width = gdk_window_get_width(icon);
         _update_deepin_try_position();
     } else if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
-        printf("set fcitx_tray to %p\n", wrapper);
         _fcitx_tray = wrapper;
         _fcitx_tray_width = gdk_window_get_width(icon);
         _update_fcitx_try_position();
