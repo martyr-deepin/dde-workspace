@@ -75,6 +75,12 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     if (!get_leave_enter_guard())
         return FALSE;
 
+    extern Window launcher_id;
+    if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
+        dock_show_now();
+        return FALSE;
+    }
+
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
             g_debug("always hide");
@@ -118,7 +124,7 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
-        g_warning("size workaround run fix (%d,%d) to (%d,%d)\n", 
+        g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
                 allocation->width, allocation->height,
                 screen_width, screen_height);
     }

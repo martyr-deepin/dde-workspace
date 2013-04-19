@@ -11,7 +11,6 @@ extern int _dock_height;
 extern void _change_workarea_height(int height);
 extern GdkWindow* DOCK_GDK_WINDOW();
 extern gboolean mouse_pointer_leave();
-extern Window dock_get_active_window();
 
 #define GUARD_WINDOW_HEIGHT 1
 
