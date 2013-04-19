@@ -81,11 +81,3 @@ _CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 # wrapper func to get configs
 _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
-
-
-# DBus handler for invoke nautilus filemanager
-try
-    g_dbus_nautilus = DCore.DBus.session("org.freedesktop.FileManager1")
-catch e
-    echo "error when init nautilus DBus interface(#{e})"
-    g_dbus_nautilus = null

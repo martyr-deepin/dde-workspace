@@ -424,10 +424,13 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
+        if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
+            desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
+            evt.dataTransfer.setXDSPath(desktop_uri)
+        else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length]
                 file = evt.dataTransfer.files[i]
@@ -453,14 +456,18 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        if not _IS_DND_INTERLNAL_(evt)
+        if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
+            evt.dataTransfer.dropEffect = "copy"
+        else if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
-        if not _IS_DND_INTERLNAL_(evt)
+        if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
+            evt.dataTransfer.dropEffect = "copy"
+        else if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
@@ -730,18 +737,21 @@ delete_selected_items = (real_delete) ->
     else DCore.DEntry.trash(tmp)
     return
 
+show_entries_properties = (entries) ->
+    try
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
+            DCore.DEntry.launch(entry, entries)
+    catch e
+    return
+
 
 show_selected_items_properties = ->
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
-
-    #XXX: we get an error here when call the nautilus DBus interface
-    try
-        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
-            DCore.DEntry.launch(entry, tmp)
-    catch e
+    show_entries_properties(tmp)
     return
+
 
 compress_selected_items = ->
     tmp = []
