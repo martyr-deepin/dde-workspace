@@ -106,6 +106,7 @@ class Item extends Widget
         count = 0
         for own dump of hidden_icons
             count += 1
+        hide_category()
         _update_scroll_bar(category_infos[selected_category_id].length - count)
 
     display_icon: (e)=>
@@ -117,11 +118,13 @@ class Item extends Widget
         count = 0
         for own dump of hidden_icons
             count += 1
+        show_category()
         _update_scroll_bar(category_infos[selected_category_id].length - count)
 
     display_icon_temp: ->
         @element.style.display = 'block'
         Item.display_temp = true
+        show_category()
 
     _toggle_icon: ->
         if @display_mode == 'display'
@@ -207,24 +210,8 @@ _show_grid_selected = (id)->
             c.setAttribute("class", "category_name")
     return
 
-# key: category id
-# value: a list of Item which is in category whose id is key
-category_infos = []
 grid_load_category = (cat_id) ->
     _show_grid_selected(cat_id)
-
-    if not category_infos[cat_id]
-        if cat_id == -1
-            frag = document.createDocumentFragment()
-            category_infos[cat_id] = []
-            for own key, value of applications
-                frag.appendChild(value.element)
-                category_infos[cat_id].push(key)
-            grid.appendChild(frag)
-        else
-            info = DCore.Launcher.get_items_by_category(cat_id).sort()
-            category_infos[cat_id] = info
-
     grid_show_items(category_infos[cat_id], true)
     update_selected(null)
 
