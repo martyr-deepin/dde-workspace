@@ -184,8 +184,7 @@ _update_scroll_bar = (len) ->
         grid.style.overflowY = "hidden"
 
 grid_show_items = (items, is_category) ->
-    item_selected?.unselect()
-    item_selected = null
+    update_selected(null)
     _update_scroll_bar(items.length)
 
     for own key, value of applications

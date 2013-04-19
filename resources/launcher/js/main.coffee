@@ -46,10 +46,19 @@ _b.addEventListener("click", (e)->
         DCore.Launcher.exit_gui()
 )
 
-_b.addEventListener("keypress", do ->
+_b.addEventListener('keypress', (e) ->
+    s_box.value += String.fromCharCode(e.which)
+    search()
+)
+
+# this does not work on keypress
+_b.addEventListener("keydown", do ->
     _last_val = ''
     (e) ->
-        if e.ctrlKey
+        if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
+            selected_up()
+        else if e.ctrlKey
+            e.preventDefault()
             switch e.which
                 when P_KEY
                     selected_up()
@@ -57,10 +66,8 @@ _b.addEventListener("keypress", do ->
                     selected_next()
                 when B_KEY
                     selected_prev()
-                when N_KEY
+                when N_KEY, TAB_KEY
                     selected_down()
-                else
-                    s_box.value += String.fromCharCode(e.which)
         else
             switch e.which
                 when ESC_KEY
@@ -72,7 +79,20 @@ _b.addEventListener("keypress", do ->
                         s_box.value = ""
                         update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
-                    return  # to avoid to invoke search function
+                when UP_ARROW
+                    selected_up()
+                when DOWN_ARROW
+                    selected_down()
+                when LEFT_ARROW
+                    selected_prev()
+                when RIGHT_ARROW
+                    selected_next()
+                when TAB_KEY
+                    e.preventDefault()
+                    if e.shiftKey
+                        selected_prev()
+                    else
+                        selected_next()
                 when BACKSPACE_KEY
                     _last_val = s_box.value
                     s_box.value = s_box.value.substr(0, s_box.value.length-1)
@@ -81,27 +101,12 @@ _b.addEventListener("keypress", do ->
                             do_search()
                             grid_load_category(selected_category_id)
                         return  # to avoid to invoke search function
+                    search()
                 when ENTER_KEY
                     if item_selected
                         item_selected.do_click()
                     else
                         get_first_shown()?.do_click()
-                else
-                    s_box.value += String.fromCharCode(e.which)
-            search()
-)
-
-# this does not work on keypress
-_b.addEventListener("keydown", (e) ->
-    switch e.which
-        when UP_ARROW
-            selected_up()
-        when DOWN_ARROW
-            selected_down()
-        when LEFT_ARROW
-            selected_prev()
-        when RIGHT_ARROW
-            selected_next()
 )
 
 _contextmenu_callback = (msg) ->
