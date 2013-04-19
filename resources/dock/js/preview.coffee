@@ -163,7 +163,7 @@ Preview_show = (group) ->
     else
         __SHOW_PREVIEW_ID = setTimeout(->
             Preview_container.show_group(group)
-        , 1000)
+        , 300)
 
 Preview_close_now = ->
     __clear_timeout()
