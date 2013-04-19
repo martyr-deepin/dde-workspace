@@ -170,8 +170,10 @@ void destroy_wrapper(GdkWindow* wrapper)
 {
     GdkWindow* icon = get_icon_window(wrapper);
     gdk_window_remove_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);
-    gdk_window_destroy(wrapper); //this will decrements wrapper's reference count, don't repeat call g_object_unref
     if (icon != wrapper) {
+        gdk_window_destroy(wrapper); //this will decrements wrapper's reference count, don't repeat call g_object_unref
+        g_object_unref(icon);
+    } else {
         g_object_unref(icon);
     }
 }
@@ -196,7 +198,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
             destroy_wrapper(wrapper);
             _update_notify_area_width();
         }
-        return GDK_FILTER_REMOVE;
+        return GDK_FILTER_CONTINUE;
     } else if (xev->type == ConfigureNotify) {
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
