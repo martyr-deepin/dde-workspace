@@ -173,7 +173,7 @@ class ToolTip extends Widget
         @event_bind('onmouseover', =>
             ToolTip.should_show_id = setTimeout(=>
                 @widget.tooltip.show()
-            , 300)
+            , 500)
         )
         @event_bind('onclick', =>
             @widget.tooltip?.hide()
@@ -199,6 +199,9 @@ class ToolTip extends Widget
             DCore.Dock.update_hide_mode()
         , 400)
     @move_to: (x, y) ->
+        if y <= 0
+            @hide()
+            return
         ToolTip.tooltip.style.left = "#{x}px"
         ToolTip.tooltip.style.bottom = "#{y}px"
     _move_tooltip: ->

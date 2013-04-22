@@ -178,8 +178,6 @@ Preview_close_now = ->
             PWContainer._need_move_animation = false
         , 3000)
     , 300)
-    # timeout above + timeout of backend = 400ms
-    # to avoid the fact that dock doesn't hide, delay 500ms
     setTimeout(->
         DCore.Dock.update_hide_mode()
     , 500)

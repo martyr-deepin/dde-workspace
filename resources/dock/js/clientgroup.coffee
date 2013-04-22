@@ -188,6 +188,7 @@ class ClientGroup extends AppItem
     _show_preview_window: (e)=>
         e.stopPropagation()
         clearTimeout(hide_id)
+        clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
         clearTimeout(launcher_mouseover_id)
         DCore.Dock.require_all_region()

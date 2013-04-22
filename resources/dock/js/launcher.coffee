@@ -14,12 +14,17 @@ class Launcher extends AppItem
             group.destroy()
 
     do_click: (e)->
+        @tooltip.hide()
+        @tooltip = null
         @flash()
         @_do_launch []
 
     do_itemselected: (e)->
         switch e.id
-            when 1 then @_do_launch []
+            when 1
+                @tooltip.hide()
+                @tooltip = null
+                @_do_launch []
             when 2 then DCore.Dock.request_undock(@id)
     do_buildmenu: (e)->
         [
@@ -46,3 +51,9 @@ class Launcher extends AppItem
                 Preview_close()
                 update_dock_region()
             , 1000)
+        else
+            update_dock_region()
+            setTimeout(->
+                echo 'update_hide_mode'
+                DCore.Dock.update_hide_mode()
+            , 500)
