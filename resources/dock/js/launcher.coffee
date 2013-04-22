@@ -1,3 +1,5 @@
+launcher_mouseout_id = null
+launcher_mouseover_id = null
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
@@ -31,3 +33,16 @@ class Launcher extends AppItem
         setTimeout(=>
             @destroy()
         ,500)
+
+    do_mouseover: (e)->
+        launcher_mouseover_id = setTimeout(->
+            Preview_close()
+        , 1000)
+
+    do_mouseout: (e)->
+        if Preview_container.is_showing
+            DCore.Dock.require_all_region()
+            launcher_mouseout_id = setTimeout(->
+                Preview_close()
+                update_dock_region()
+            , 1000)

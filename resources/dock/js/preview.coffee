@@ -140,9 +140,12 @@ class PWContainer extends Widget
         @_update()
 
     do_mouseover: ->
+        __clear_timeout()
+        clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
         DCore.Dock.require_all_region()
-        __clear_timeout()
+    do_mouseout: ->
+        Preview_close()
 
 
 
@@ -252,6 +255,8 @@ class PreviewWindow extends Widget
     do_rightclick: (e)=>
         DCore.Dock.active_window(@w_id)
     do_mouseover: (e)=>
+        clearTimeout(launcher_mouseover_id)
+        clearTimeout(launcher_mouseout_id)
         Preview_active_window_changed(@w_id)
 
     update_content: ->

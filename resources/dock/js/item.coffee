@@ -113,10 +113,6 @@ class AppList extends Widget
         swap_element(src.element, dest.element)
         DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
 
-    do_mouseover: (e)->
-        if e.target == @element
-            Preview_close()
-
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
             @element.removeChild(@insert_indicator)
@@ -142,6 +138,7 @@ class AppList extends Widget
 
 app_list = new AppList("app_list")
 
+tooltip_hide_id = null
 class ToolTip extends Widget
     tooltip: null
     should_show_id: -1
@@ -189,15 +186,16 @@ class ToolTip extends Widget
             evt_handler?()
 
     show: ->
+        Preview_close_now()
         ToolTip.tooltip.innerText = @text
         DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
     hide: ->
-        update_dock_region()
         clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip.style.display = "none"
-        setTimeout(->
+        tooltip_hide_id = setTimeout(->
+            update_dock_region()
             DCore.Dock.update_hide_mode()
         , 400)
     @move_to: (x, y) ->
