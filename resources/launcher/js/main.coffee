@@ -165,12 +165,16 @@ init_all_applications = ->
 
 _init_hidden_icons = ->
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
+    hidden_icon_ids.filter((elem, index, array) ->
+        if not applications[elem]
+            array.splice(index, 1)
+    )
+    DCore.Launcher.save_hidden_apps(hidden_icon_ids)
     for id in hidden_icon_ids
-        if not applications[id]
-            delete hidden_icons[id]
-    for id in hidden_icon_ids
-        hidden_icons[id] = applications[id]
-        hidden_icons[id].hide_icon()
+        if applications[id]
+            hidden_icons[id] = applications[id]
+            hidden_icons[id].hide_icon()
+    return
 
 init_search_box()
 init_all_applications()
