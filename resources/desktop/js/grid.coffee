@@ -41,7 +41,7 @@ o_table = null
 
 # all file items on desktop
 all_item = new Array
-# speical items on desktop
+# special items on desktop
 speical_item = new Array
 # all selected items on desktop
 selected_item = new Array
@@ -58,7 +58,7 @@ drag_start = {x : 0, y: 0}
 # store the area selection box for grid
 sel = null
 
-# we need to ingore keyup event when rename files
+# we need to ignore keyup event when rename files
 ingore_keyup_counts = 0
 
 # store the pos the user pop the context menu
@@ -675,7 +675,7 @@ update_selected_stats = (w, evt) ->
     return
 
 
-# draw selected item icons DND image on speical html canvas
+# draw selected item icons DND image on special html canvas
 update_selected_item_drag_image = ->
     drag_draw_delay_timer = -1
 

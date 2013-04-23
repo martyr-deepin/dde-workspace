@@ -738,7 +738,7 @@ msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
 
 #: ../resources/desktop/js/desktop_item.coffee:585
 msgid "Can not open this file."
-msgstr ""
+msgstr "无法打开此文件"
 
 #: ../resources/desktop/js/desktop_item.coffee:585
 #: ../resources/desktop/js/desktop_item.coffee:939
@@ -746,7 +746,7 @@ msgstr ""
 #: ../resources/desktop/js/desktop_item.coffee:1236
 #: ../resources/desktop/js/desktop_item.coffee:1233
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: ../resources/dock/js/item.coffee:321 ../resources/dock/js/item.coffee:334
 msgid "The item is invalid. Do you want to remove it from the dock bar?"
