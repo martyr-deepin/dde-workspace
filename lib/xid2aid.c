@@ -79,7 +79,7 @@ void _init()
     if (prefix_regex == NULL) {
         g_warning("Can't build prefix_regex, use fallback config!");
         prefix_regex = g_regex_new(
-                "skip_prefix=(^gksu(do)?$)|(^sudo$)|(^java$)|(^mono$)|(^ruby$)|(^padsp$)|(^aoss$)|(^python(\\d.\\d)?$)|(^(ba)?sh$)",
+                "(^gksu(do)?$)|(^sudo$)|(^java$)|(^mono$)|(^ruby$)|(^padsp$)|(^aoss$)|(^python(\\d.\\d)?$)|(^(ba)?sh$)",
                 G_REGEX_OPTIMIZE, 0, NULL
                 );
 
@@ -102,6 +102,7 @@ void _init()
     g_assert(prefix_regex != NULL);
 }
 
+
 static
 void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
 {
@@ -109,22 +110,22 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
     *args = NULL;
 
     gsize name_pos = 0;
-    for (; name_pos < length; name_pos++) {
-        if (cmdline[name_pos] != NULL) {
-            char* basename = g_path_get_basename(cmdline[name_pos]);
-            if (g_regex_match(prefix_regex, basename, 0, NULL)) {
-                while (basename[0] == '-')
-                    name_pos++;
-                name_pos++;
 
-                g_free(basename);
-                break;
-            } else {
-                g_free(basename);
+    if (cmdline[0] != NULL) {
+        char* space_pos = NULL;
+        if ((space_pos = strchr(cmdline[0], ' ')) != NULL) {
+            *space_pos = '\0';
+            for (gsize i = length - 1; i > 0; --i) {
+                cmdline[i + 1] = cmdline[i];
             }
+            length += 1;
+            cmdline[1] = space_pos + 1;
         }
-        break;
-        //TODO: Should break after handle first position?
+        char* basename = g_path_get_basename(cmdline[0]);
+        if (g_regex_match(prefix_regex, basename, 0, NULL))
+            while (cmdline[++name_pos] && cmdline[name_pos][0] == '-')
+                ; // emtpy body
+        g_free(basename);
     }
 
     int diff = length - name_pos;
