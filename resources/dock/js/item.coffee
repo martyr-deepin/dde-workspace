@@ -147,19 +147,19 @@ class ToolTip extends Widget
 
         @event_bind('ondragstart', =>
             clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip.style.display = "none"
+            ToolTip.tooltip?.style.display = "none"
         )
         @event_bind('ondragenter', =>
             clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip.style.display = "none"
+            ToolTip.tooltip?.style.display = "none"
         )
         @event_bind('ondragover', =>
             clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip.style.display = "none"
+            ToolTip.tooltip?.style.display = "none"
         )
         @event_bind('ondragleave', =>
             clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip.style.display = "none"
+            ToolTip.tooltip?.style.display = "none"
         )
         @event_bind('ondragend', =>
             @widget.tooltip?.hide()
@@ -172,7 +172,7 @@ class ToolTip extends Widget
         )
         @event_bind('onmouseover', =>
             ToolTip.should_show_id = setTimeout(=>
-                @widget.tooltip.show()
+                @widget.tooltip?.show()
             , 500)
         )
         @event_bind('onclick', =>
@@ -194,10 +194,13 @@ class ToolTip extends Widget
     hide: ->
         clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip.style.display = "none"
+        sleep_time = 400
+        if Preview_container.is_showing
+            sleep_time = 1000
         tooltip_hide_id = setTimeout(->
             update_dock_region()
             DCore.Dock.update_hide_mode()
-        , 400)
+        , sleep_time)
     @move_to: (x, y) ->
         if y <= 0
             @hide()

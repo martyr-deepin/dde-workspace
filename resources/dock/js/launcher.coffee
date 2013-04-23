@@ -1,5 +1,4 @@
 launcher_mouseout_id = null
-launcher_mouseover_id = null
 class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
@@ -40,20 +39,21 @@ class Launcher extends AppItem
         ,500)
 
     do_mouseover: (e)->
-        launcher_mouseover_id = setTimeout(->
-            Preview_close()
-        , 1000)
+        clearTimeout(hide_id)
 
     do_mouseout: (e)->
         if Preview_container.is_showing
-            DCore.Dock.require_all_region()
-            launcher_mouseout_id = setTimeout(->
-                Preview_close()
-                update_dock_region()
-            , 1000)
+            setTimeout(->
+                __clear_timeout()
+                clearTimeout(tooltip_hide_id)
+                DCore.Dock.require_all_region()
+                launcher_mouseout_id = setTimeout(->
+                    Preview_close()
+                    update_dock_region()
+                , 2000)
+            , 400)
         else
             update_dock_region()
             setTimeout(->
-                echo 'update_hide_mode'
                 DCore.Dock.update_hide_mode()
             , 500)

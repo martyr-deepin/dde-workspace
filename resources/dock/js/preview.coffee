@@ -161,12 +161,9 @@ __clear_timeout = ->
 
 Preview_show = (group) ->
     __clear_timeout()
-    if Preview_container.is_showing
+    __SHOW_PREVIEW_ID = setTimeout(->
         Preview_container.show_group(group)
-    else
-        __SHOW_PREVIEW_ID = setTimeout(->
-            Preview_container.show_group(group)
-        , 300)
+    , 300)
 
 Preview_close_now = ->
     __clear_timeout()
@@ -253,7 +250,6 @@ class PreviewWindow extends Widget
     do_rightclick: (e)=>
         DCore.Dock.active_window(@w_id)
     do_mouseover: (e)=>
-        clearTimeout(launcher_mouseover_id)
         clearTimeout(launcher_mouseout_id)
         Preview_active_window_changed(@w_id)
 

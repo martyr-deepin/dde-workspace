@@ -184,17 +184,14 @@ class ClientGroup extends AppItem
                 update_dock_region()
                 Preview_close_now()
                 DCore.Dock.update_hide_mode()
-            , 1000)
-    _show_preview_window: (e)=>
+            , 1500)
+
+    do_mouseover: (e)=>
         e.stopPropagation()
+        __clear_timeout()
         clearTimeout(hide_id)
         clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
-        clearTimeout(launcher_mouseover_id)
         DCore.Dock.require_all_region()
         if @n_clients.length != 0
             Preview_show(@)
-    do_mouseover: (e)=>
-        @_show_preview_window(e)
-    do_mousemove: (e)=>
-        @_show_preview_window(e)
