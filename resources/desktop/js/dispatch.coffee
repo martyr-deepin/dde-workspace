@@ -100,6 +100,12 @@ load_speical_desktop_items = ->
             speical_item.push(item.get_id())
     else
         discard_position(_ITEM_ID_DSC_)
+    # mycode
+    item = new Weather("weather", 10, 1, 3, 1)
+    if item?
+        div_grid.appendChild(item.element)
+        speical_item.push(item.get_id())
+    #
     return
 
 
