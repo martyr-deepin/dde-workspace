@@ -162,6 +162,7 @@ clear_all_positions = ->
     for i in [(localStorage.length - 1) ... -1] by -1
         if (val = localStorage.key(i)).match(/^id:.+/i)
             localStorage.removeItem(val)
+    echo "all positions cleared"
     return
 
 
@@ -249,30 +250,37 @@ init_occupy_table = ->
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
+    return
 
 
 clear_occupy_table = ->
     for i in [0 ... cols]
         for j in [0 ... rows]
             o_table[i][j] = null
+    echo "all occupy cleared"
+    return
 
 
-clear_occupy = (info) ->
+clear_occupy = (id, info) ->
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            o_table[info.x+i][info.y+j] = null
+            if o_table[info.x+i][info.y+j] == id
+                o_table[info.x+i][info.y+j] = null
+            else
+                return false
+    return true
 
 
-set_occupy = (info) ->
-    assert(info!=null, "[set_occupy] accept null")
+set_occupy = (id, info) ->
+    assert(info!=null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            o_table[info.x+i][info.y+j] = true
+            o_table[info.x+i][info.y+j] = id
     return
 
 
 detect_occupy = (info) ->
-    assert(info!=null, "[detect_occupy]accept null")
+    assert(info!=null, "[detect_occupy]get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
@@ -281,6 +289,7 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
+    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -305,9 +314,11 @@ move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
+        echo "#{widget.get_id()} Y #{info.x}, #{info.y}"
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
+        echo "#{widget.get_id()} N #{info.x}, #{info.y}"
     return
 
 
@@ -315,7 +326,7 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        pos = find_free_position(1, 1)
+        pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
 
@@ -329,8 +340,8 @@ move_to_position = (widget, info) ->
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
 
-    if old_info? then clear_occupy(old_info)
-    set_occupy(info)
+    if old_info? then clear_occupy(widget.get_id(), old_info)
+    set_occupy(widget.get_id(), info)
 
     return
 
@@ -356,14 +367,13 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
+    echo "======sort start======"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
     item_ordered_list.sort(func)
 
-    for i in [0 ... cols]
-        for j in [0 .. rows]
-            o_table[i][j] = null
+    clear_occupy_table()
 
     for i in speical_item
         w = Widget.look_up(i)
@@ -374,6 +384,7 @@ sort_desktop_item_by_func = (func) ->
         w = Widget.look_up(i)
         if w?
             move_to_anywhere(w)
+    echo "+======sort end======+"
     return
 
 
@@ -414,10 +425,13 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-        if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
+        if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
+            desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
+            evt.dataTransfer.setXDSPath(desktop_uri)
+        else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length]
                 file = evt.dataTransfer.files[i]
@@ -443,14 +457,18 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        if not _IS_DND_INTERLNAL_(evt)
+        if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
+            evt.dataTransfer.dropEffect = "copy"
+        else if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
-        if not _IS_DND_INTERLNAL_(evt)
+        if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
+            evt.dataTransfer.dropEffect = "copy"
+        else if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
@@ -560,6 +578,37 @@ item_dragend_handler = (w, evt) ->
             if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
 
         update_selected_item_drag_image()
+    return
+
+
+desktop_plugin_dragstart_handler = (self, evt) ->
+    evt.dataTransfer.effectAllowed = "all"
+    _SET_DND_INTERNAL_FLAG_(evt)
+    pos = load_position(self.get_id())
+    clear_occupy(self.get_id(), pos)
+    return
+
+
+desktop_plugin_dragend_handler = (self, evt) ->
+    pos = load_position(self.get_id())
+    if evt.dataTransfer.dropEffect == "link"
+        alert "#{pos.x}, #{pos.y}, #{pos.width}, #{pos.height}"
+        old_pos = load_position(self.get_id())
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
+        new_pos = old_pos
+        x_offset = new_pos.x - old_pos.x
+        y_offset = new_pos.y - new_pos.y
+
+        if x_offset == 0 and y_offset == 0
+            #set_occupy(load_position(self.get_id()), pos)
+            return
+        if not detect_occupy(new_pos)
+            alert "#{new_pos.x}, #{new_pos.y}, #{new_pos.width}, #{new_pos.height}"
+            move_to_somewhere(self, new_pos)
+        else
+            #set_occupy(load_position(self.get_id()), pos)
+    else
+        #set_occupy(load_position(self.get_id()), pos)
     return
 
 
@@ -720,18 +769,21 @@ delete_selected_items = (real_delete) ->
     else DCore.DEntry.trash(tmp)
     return
 
+show_entries_properties = (entries) ->
+    try
+        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
+            DCore.DEntry.launch(entry, entries)
+    catch e
+    return
+
 
 show_selected_items_properties = ->
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
-
-    #XXX: we get an error here when call the nautilus DBus interface
-    try
-        if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
-            DCore.DEntry.launch(entry, tmp)
-    catch e
+    show_entries_properties(tmp)
     return
+
 
 compress_selected_items = ->
     tmp = []

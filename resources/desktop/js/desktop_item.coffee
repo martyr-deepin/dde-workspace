@@ -97,7 +97,7 @@ class Item extends Widget
 
 
     destroy : ->
-        if (info = load_position(@id))? then clear_occupy(info)
+        if (info = load_position(@id))? then clear_occupy(@id, info)
         super
 
 
@@ -547,16 +547,16 @@ class DesktopEntry extends Item
             compressable = get_items_compressibility()
             if 0 == compressable
             else if 1 == compressable
-                menu.splice(2, 0, [11, _("Compress..")])
+                menu.splice(2, 0, [11, _("Compress")])
                 menu.splice(3, 0, [])
             else if 2 == compressable
-                menu.splice(2, 0, [12, _("Decompress..")])
-                menu.splice(3, 0, [13, _("Decompress here..")])
+                menu.splice(2, 0, [12, _("Extract")])
+                menu.splice(3, 0, [13, _("Extract Here")])
                 menu.splice(4, 0, [])
             else if 3 == compressable
-                menu.splice(2, 0, [11, _("compress..")])
-                menu.splice(3, 0, [12, _("Decompress..")])
-                menu.splice(4, 0, [13, _("Decompress here..")])
+                menu.splice(2, 0, [11, _("Compress")])
+                menu.splice(3, 0, [12, _("Extract")])
+                menu.splice(4, 0, [13, _("Extract Here")])
                 menu.splice(5, 0, [])
         return menu
 
@@ -810,7 +810,7 @@ class RichDir extends DesktopEntry
 
     item_ungroup: =>
         if (pos = load_position(@id))?
-            clear_occupy(pos)
+            clear_occupy(@id, pos)
         DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
         DCore.DEntry.delete_files([@_entry], false)
 
@@ -1073,10 +1073,7 @@ class RichDir extends DesktopEntry
                 list = []
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
-                if e?
-                    list.push(e)
-                    if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
-                        DCore.DEntry.launch(entry, list)
+                show_entries_properties([e]) if e?
             else echo "menu clicked:id=#{env.id} title=#{env.title}"
         return
 
@@ -1399,10 +1396,7 @@ class HomeVDir extends DesktopEntry
             when 1
                 @item_exec()
             when 2
-                try
-                    #XXX: we get an error here when call the nautilus DBus interface
-                    g_dbus_nautilus?.ShowItemProperties_sync(["#{DCore.DEntry.get_uri(@_entry)}"], "")
-                catch e
+                show_entries_properties([@_entry])
             else
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
         return
@@ -1418,7 +1412,7 @@ class TrashVDir extends DesktopEntry
         super(entry, false, false)
 
     # XXX: try to avoid that get empty state when system startup
-    setTimeout(@item_update, 200) if DCore.DEntry.get_trash_count() == 0
+    setTimeout(@item_update, 400) if DCore.DEntry.get_trash_count() == 0
 
 
     set_id : =>
