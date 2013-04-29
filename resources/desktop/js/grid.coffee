@@ -593,7 +593,7 @@ desktop_plugin_dragend_handler = (self, evt) ->
     pos = load_position(self.get_id())
     if evt.dataTransfer.dropEffect == "link"
         old_pos = load_position(self.get_id())
-        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 3, 1)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
         new_pos = old_pos
         x_offset = new_pos.x - old_pos.x
         y_offset = new_pos.y - new_pos.y
