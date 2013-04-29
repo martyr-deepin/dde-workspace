@@ -125,6 +125,9 @@ char* get_desktop_dir(gboolean update)
         const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_DESKTOP_DIR'";
         g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
         g_strchomp(dir);
+        char* _dir = g_strconcat(dir, "/", NULL);
+        g_free(dir);
+        dir = _dir;
     }
     return g_strdup(dir);
 }

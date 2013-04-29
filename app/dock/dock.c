@@ -75,6 +75,12 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
     if (!get_leave_enter_guard())
         return FALSE;
 
+    extern Window launcher_id;
+    if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
+        dock_show_now();
+        return FALSE;
+    }
+
     if (e->detail == GDK_NOTIFY_NONLINEAR_VIRTUAL && !mouse_pointer_leave(e->x, e->y)) {
         if (GD.config.hide_mode == ALWAYS_HIDE_MODE && !is_mouse_in_dock()) {
             g_debug("always hide");
@@ -108,6 +114,21 @@ Window get_dock_window()
     g_assert(container != NULL);
     return GDK_WINDOW_XID(DOCK_GDK_WINDOW());
 }
+
+void size_workaround(GtkWidget* container, GdkRectangle* allocation)
+{
+    if (gtk_widget_get_realized(container) && (screen_width != allocation->width || screen_height != allocation->height)) {
+        GdkWindow* w = gtk_widget_get_window(container);
+        XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
+        gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
+        gdk_flush();
+        gdk_window_set_events(w, gdk_window_get_events(w));
+
+        g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
+                allocation->width, allocation->height,
+                screen_width, screen_height);
+    }
+}
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
     screen_width = gdk_screen_get_width(screen);
@@ -118,11 +139,11 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     geo.min_height = 0;
 
     gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_flush(gtk_widget_get_window(webview));
     gdk_window_set_geometry_hints(gtk_widget_get_window(container), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_flush(gtk_widget_get_window(container));
     gdk_window_move_resize(gtk_widget_get_window(webview), 0, 0, screen_width, screen_height);
     gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
+    gdk_window_flush(gtk_widget_get_window(webview));
+    gdk_window_flush(gtk_widget_get_window(container));
 
     dock_change_workarea_height(_dock_height);
 
@@ -158,6 +179,7 @@ int main(int argc, char* argv[])
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
 
 
     GdkScreen* screen = gdk_screen_get_default();

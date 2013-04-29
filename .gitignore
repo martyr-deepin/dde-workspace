@@ -11,3 +11,4 @@ resources/greeter/js/lock.js
 resources/greeter/js/time.js
 *.swp
 *.log
+*~

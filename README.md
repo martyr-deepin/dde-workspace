@@ -1,15 +1,15 @@
 Deepin Desktop
 ==============
 
-deepends 
+Depends
 -------
     apt-get build-dep deepin-desktop-environment
 
 
-how to build?
+How to build?
 ------
 
     mkdir build
     cd build
-    cmake ..
+    cmake -DDEVELOP=1 ..
     make

@@ -140,9 +140,12 @@ class PWContainer extends Widget
         @_update()
 
     do_mouseover: ->
+        __clear_timeout()
+        clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
         DCore.Dock.require_all_region()
-        __clear_timeout()
+    do_mouseout: ->
+        Preview_close()
 
 
 
@@ -158,12 +161,9 @@ __clear_timeout = ->
 
 Preview_show = (group) ->
     __clear_timeout()
-    if Preview_container.is_showing
+    __SHOW_PREVIEW_ID = setTimeout(->
         Preview_container.show_group(group)
-    else
-        __SHOW_PREVIEW_ID = setTimeout(->
-            Preview_container.show_group(group)
-        , 1000)
+    , 300)
 
 Preview_close_now = ->
     __clear_timeout()
@@ -175,8 +175,6 @@ Preview_close_now = ->
             PWContainer._need_move_animation = false
         , 3000)
     , 300)
-    # timeout above + timeout of backend = 400ms
-    # to avoid the fact that dock doesn't hide, delay 500ms
     setTimeout(->
         DCore.Dock.update_hide_mode()
     , 500)
@@ -248,6 +246,12 @@ class PreviewWindow extends Widget
 
     do_click: (e)->
         DCore.Dock.active_window(@w_id)
+        Preview_close_now()
+    do_rightclick: (e)=>
+        DCore.Dock.active_window(@w_id)
+    do_mouseover: (e)=>
+        clearTimeout(launcher_mouseout_id)
+        Preview_active_window_changed(@w_id)
 
     update_content: ->
         if @scale != Preview_container.scale

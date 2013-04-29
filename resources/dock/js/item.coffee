@@ -113,10 +113,6 @@ class AppList extends Widget
         swap_element(src.element, dest.element)
         DCore.Dock.swap_apps_position(src.app_id, dest.app_id)
 
-    do_mouseover: (e)->
-        if e.target == @element
-            Preview_close()
-
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
             @element.removeChild(@insert_indicator)
@@ -142,21 +138,81 @@ class AppList extends Widget
 
 app_list = new AppList("app_list")
 
+tooltip_hide_id = null
 class ToolTip extends Widget
     tooltip: null
-    @set_text: (widget, text) ->
+    should_show_id: -1
+    constructor: (@widget, @text)->
         ToolTip.tooltip ?= $("#tooltip")
-        ToolTip.tooltip.innerText = text
-    @show: ->
+
+        @event_bind('ondragstart', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip?.style.display = "none"
+        )
+        @event_bind('ondragenter', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip?.style.display = "none"
+        )
+        @event_bind('ondragover', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip?.style.display = "none"
+        )
+        @event_bind('ondragleave', =>
+            clearTimeout(ToolTip.should_show_id)
+            ToolTip.tooltip?.style.display = "none"
+        )
+        @event_bind('ondragend', =>
+            @widget.tooltip?.hide()
+        )
+        @event_bind('oncontextmenu', =>
+            @widget.tooltip?.hide()
+        )
+        @event_bind('onmouseout', =>
+            @widget.tooltip?.hide()
+        )
+        @event_bind('onmouseover', =>
+            ToolTip.should_show_id = setTimeout(=>
+                @widget.tooltip?.show()
+            , 500)
+        )
+        @event_bind('onclick', =>
+            @widget.tooltip?.hide()
+        )
+
+    event_bind: (evt_name, callback) ->
+        evt_handler = @widget.element[evt_name]
+        @widget.element[evt_name] = (e) ->
+            callback()
+            evt_handler?()
+
+    show: ->
+        Preview_close_now()
+        ToolTip.tooltip.innerText = @text
         DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
-    @hide: ->
-        echo 'ToolTip hide'
-        update_dock_region()
+        @_move_tooltip()
+    hide: ->
+        clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip.style.display = "none"
+        sleep_time = 400
+        if Preview_container.is_showing
+            sleep_time = 1000
+        tooltip_hide_id = setTimeout(->
+            update_dock_region()
+            DCore.Dock.update_hide_mode()
+        , sleep_time)
     @move_to: (x, y) ->
+        if y <= 0
+            @hide()
+            return
         ToolTip.tooltip.style.left = "#{x}px"
         ToolTip.tooltip.style.bottom = "#{y}px"
+    _move_tooltip: ->
+        item_x = get_page_xy(@widget.element, 0, 0).x
+        offset = (@widget.element.clientWidth - ToolTip.tooltip.clientWidth) / 2
+
+        x = item_x + offset + 4  # 4 for subtle adapt
+        ToolTip.move_to(x.toFixed(), @widget.element.clientHeight)
 
 class AppItem extends Widget
     is_fixed_pos: false
@@ -244,6 +300,9 @@ class AppItem extends Widget
         e.stopPropagation()
         e.preventDefault()
         update_dock_region()
+        setTimeout(->
+            DCore.Dock.update_hide_mode()
+        , 1000)
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
@@ -297,26 +356,9 @@ class AppItem extends Widget
                 switch this.constructor.name
                     when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
-    set_tooltip_text: (@text) ->
-        ToolTip.set_text(@, @text)
-    do_mouseover: (e) =>
-        @set_tooltip_text(@text)
-        AppItem.tooltip_show_id = setTimeout(=>
-            ToolTip.show()
-            @_move_tooltip()
-        , 300)
-    do_mouseout: (e) =>
-        clearTimeout(AppItem.tooltip_show_id)
-        AppItem.tooltip_show_id = -1
-        ToolTip.hide()
 
-    _move_tooltip: ->
-        item_x = get_page_xy(@element, 0, 0).x
-        offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2
-
-        echo "tooltip client width: #{ToolTip.tooltip.clientWidth}"
-        x = item_x + offset + 5  # 5 for subtle adapt
-        ToolTip.move_to(x.toFixed(), @element.clientHeight)
+    set_tooltip: (text) ->
+        @tooltip = new ToolTip(@, text)
 
 
 

@@ -173,19 +173,25 @@ class ClientGroup extends AppItem
             @to_active_status(@leader)
 
     do_mouseout: (e)->
-        update_dock_region()
-        hide_id = setTimeout(->
-            DCore.Dock.update_hide_mode()
-        , 300)
-        # AppItem use this event to close tooltip, this action will lead
-        # update_dock_region to being invoked, make require_all_region invalid
-    do_mouseover: (e) ->
+        if not Preview_container.is_showing
+            update_dock_region()
+            hide_id = setTimeout(->
+                DCore.Dock.update_hide_mode()
+            , 300)
+        else
+            DCore.Dock.require_all_region()
+            hide_id = setTimeout(->
+                update_dock_region()
+                Preview_close_now()
+                DCore.Dock.update_hide_mode()
+            , 1500)
+
+    do_mouseover: (e)=>
         e.stopPropagation()
-        DCore.Dock.require_all_region()
-        if @n_clients.length != 0
-            Preview_show(@)
-    do_mousemove: (e) ->
-        e.stopPropagation()
+        __clear_timeout()
+        clearTimeout(hide_id)
+        clearTimeout(tooltip_hide_id)
+        clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
         if @n_clients.length != 0
             Preview_show(@)

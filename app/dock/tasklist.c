@@ -597,7 +597,6 @@ void _update_window_net_state(Client* c)
         c->is_hidden = _is_hidden(c->window);
         _update_is_overlay_client(c);
     }
-    g_debug("_update_window_net_state");
     dock_update_hide_mode();
 }
 
@@ -722,7 +721,6 @@ void _update_is_overlay_client(Client* c)
     }
     if (c->is_overlay_dock != is_overlay) {
         c->is_overlay_dock = is_overlay;
-        g_debug("_update_is_overlay_client");
         dock_update_hide_mode();
     }
 }
@@ -822,11 +820,15 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
-    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0))
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0)) {
         is_minimized = wm_state == IconicState;
 
-    const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
-    g_debug("window state: %s", state[wm_state]);
+        const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
+        g_debug("window state: %s", state[wm_state]);
+    } else {
+        g_debug("cannot get Window state(WM_STATE)");
+    }
+
     return is_minimized;
 }
 

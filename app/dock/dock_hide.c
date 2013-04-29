@@ -354,6 +354,12 @@ void dock_update_hide_mode()
     if (!GD.is_webview_loaded || _IN_TOGGLE_SHOW) return;
     _change_workarea_height(_dock_height);
 
+    extern Window launcher_id;
+    if (launcher_id != 0 && dock_get_active_window() == launcher_id) {
+        dock_show_now();
+        return;
+    }
+
     switch (GD.config.hide_mode) {
     case ALWAYS_HIDE_MODE: {
         if (!is_mouse_in_dock()) {

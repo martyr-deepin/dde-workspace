@@ -25,22 +25,40 @@ DCore.signal_connect('workarea_changed', (alloc)->
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
+        _save_hidden_apps()
         DCore.Launcher.exit_gui()
 )
 DCore.Launcher.notify_workarea_size()
+
+
+_save_hidden_apps = ->
+    hidden_icons_ids = []
+    for own id of hidden_icons
+        hidden_icons_ids.push(id)
+    DCore.Launcher.save_hidden_apps(hidden_icons_ids)
 
 _b = document.body
 
 _b.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
+        _save_hidden_apps()
         DCore.Launcher.exit_gui()
 )
 
-_b.addEventListener("keypress", do ->
+_b.addEventListener('keypress', (e) ->
+    s_box.value += String.fromCharCode(e.which)
+    search()
+)
+
+# this does not work on keypress
+_b.addEventListener("keydown", do ->
     _last_val = ''
     (e) ->
-        if e.ctrlKey
+        if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
+            selected_up()
+        else if e.ctrlKey
+            e.preventDefault()
             switch e.which
                 when P_KEY
                     selected_up()
@@ -48,21 +66,33 @@ _b.addEventListener("keypress", do ->
                     selected_next()
                 when B_KEY
                     selected_prev()
-                when N_KEY
+                when N_KEY, TAB_KEY
                     selected_down()
-                else
-                    s_box.value += String.fromCharCode(e.which)
         else
             switch e.which
                 when ESC_KEY
                     if s_box.value == ""
+                        _save_hidden_apps()
                         DCore.Launcher.exit_gui()
                     else
                         _last_val = s_box.value
                         s_box.value = ""
                         update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
-                    return  # to avoid to invoke search function
+                when UP_ARROW
+                    selected_up()
+                when DOWN_ARROW
+                    selected_down()
+                when LEFT_ARROW
+                    selected_prev()
+                when RIGHT_ARROW
+                    selected_next()
+                when TAB_KEY
+                    e.preventDefault()
+                    if e.shiftKey
+                        selected_prev()
+                    else
+                        selected_next()
                 when BACKSPACE_KEY
                     _last_val = s_box.value
                     s_box.value = s_box.value.substr(0, s_box.value.length-1)
@@ -71,27 +101,12 @@ _b.addEventListener("keypress", do ->
                             do_search()
                             grid_load_category(selected_category_id)
                         return  # to avoid to invoke search function
+                    search()
                 when ENTER_KEY
                     if item_selected
                         item_selected.do_click()
                     else
                         get_first_shown()?.do_click()
-                else
-                    s_box.value += String.fromCharCode(e.which)
-            search()
-)
-
-# this does not work on keypress
-_b.addEventListener("keydown", (e) ->
-    switch e.which
-        when UP_ARROW
-            selected_up()
-        when DOWN_ARROW
-            selected_down()
-        when LEFT_ARROW
-            selected_prev()
-        when RIGHT_ARROW
-            selected_next()
 )
 
 _contextmenu_callback = (msg) ->
@@ -104,10 +119,10 @@ _contextmenu_callback = (msg) ->
 is_show_hidden_icons = false
 _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 
-# TODO
 _show_hidden_icons = (is_shown) ->
     is_show_hidden_icons = is_shown
 
+    Item.display_temp = false
     if is_shown
         for own k, v of applications
             if v.display_mode == 'hidden'
@@ -144,18 +159,25 @@ init_all_applications = ->
         return -1
     )
 
-    # hidden_icons = DCore.Launcher.read_hidden_icons()
-    if hidden_icons
-        for core in _all_items
-            id = DCore.DEntry.get_id(core)
-            applications[id] = new Item(id, core)
-    else
-        for core in _all_items
-            id = DCore.DEntry.get_id(core)
-            if id not in hidden_icons
-                applications[id] = new Item(id, core)
+    for core in _all_items
+        id = DCore.DEntry.get_id(core)
+        applications[id] = new Item(id, core)
+
+_init_hidden_icons = ->
+    hidden_icon_ids = DCore.Launcher.load_hidden_apps()
+    hidden_icon_ids.filter((elem, index, array) ->
+        if not applications[elem]
+            array.splice(index, 1)
+    )
+    DCore.Launcher.save_hidden_apps(hidden_icon_ids)
+    for id in hidden_icon_ids
+        if applications[id]
+            hidden_icons[id] = applications[id]
+            hidden_icons[id].hide_icon()
+    return
 
 init_search_box()
 init_all_applications()
 init_category_list()
 init_grid()
+_init_hidden_icons()
