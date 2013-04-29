@@ -592,23 +592,21 @@ desktop_plugin_dragstart_handler = (self, evt) ->
 desktop_plugin_dragend_handler = (self, evt) ->
     pos = load_position(self.get_id())
     if evt.dataTransfer.dropEffect == "link"
-        alert "#{pos.x}, #{pos.y}, #{pos.width}, #{pos.height}"
         old_pos = load_position(self.get_id())
-        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 3, 1)
         new_pos = old_pos
         x_offset = new_pos.x - old_pos.x
         y_offset = new_pos.y - new_pos.y
 
         if x_offset == 0 and y_offset == 0
-            #set_occupy(load_position(self.get_id()), pos)
+            set_occupy(load_position(self.get_id()), pos)
             return
         if not detect_occupy(new_pos)
-            alert "#{new_pos.x}, #{new_pos.y}, #{new_pos.width}, #{new_pos.height}"
             move_to_somewhere(self, new_pos)
         else
-            #set_occupy(load_position(self.get_id()), pos)
+            set_occupy(load_position(self.get_id()), pos)
     else
-        #set_occupy(load_position(self.get_id()), pos)
+        set_occupy(load_position(self.get_id()), pos)
     return
 
 
