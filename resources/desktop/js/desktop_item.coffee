@@ -853,6 +853,7 @@ class RichDir extends DesktopEntry
         @display_short_name()
 
         @fill_pop_block()
+        return
 
 
     reflesh_pop_block : =>
@@ -862,6 +863,7 @@ class RichDir extends DesktopEntry
         for i in @div_pop.getElementsByTagName("div") by -1
             i.parentElement.removeChild(i) if i.id.match(/^pop_arrow_.+/)
         @fill_pop_block()
+        return
 
 
     fill_pop_block : =>
@@ -869,7 +871,10 @@ class RichDir extends DesktopEntry
         ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
 
-        # calc columns
+        # how many we can hold per line due to workarea width
+        # 20px for ul padding, 2px for border, 8px for scrollbar
+        num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
+        # calc ideal columns
         if @sub_items_count <= 3
             col = @sub_items_count
         else if @sub_items_count <= 6
@@ -880,9 +885,13 @@ class RichDir extends DesktopEntry
             col = 5
         else
             col = 6
+        # restrict the col item number
+        if col > num_max then col = num_max
 
-        # calc rows
-        if (row = Math.ceil(@sub_items_count / col)) > 4 then row = 4
+        # calc ideal rows
+        row = col - 1
+        if row < 1 then row = 1
+        if row > 4 then row = 4
 
         for i, e of @sub_items
             ele = document.createElement("li")
@@ -890,7 +899,7 @@ class RichDir extends DesktopEntry
             ele.setAttribute('title', DCore.DEntry.get_name(e))
             ele.draggable = true
 
-            if row == 1 then ele.className = "auto_height"
+            if @sub_items_count <= 3 then ele.className = "auto_height"
 
             sb = document.createElement("div")
             sb.className = "item_icon"
@@ -957,22 +966,36 @@ class RichDir extends DesktopEntry
 
             ele_ul.appendChild(ele)
 
-        # 20px for ul padding, 2px for border, 8px for scrollbar
-        if @sub_items_count > 24
-            pop_width = col * _ITEM_WIDTH_ + 30
-        else
-            pop_width = col * _ITEM_WIDTH_ + 22
-        @div_pop.style.width = "#{pop_width}px"
+        #calc ideal pop div width
+        @div_pop.style.width = "#{col * _ITEM_WIDTH_ + 22}px"
+        ele_ul.style.maxHeight = "#{row * _ITEM_HEIGHT_}px"
 
         n = @element.offsetTop + Math.min(_ITEM_HEIGHT_, @element.offsetHeight)
-        if s_height - n > @div_pop.offsetHeight
-            pop_top = n + 14
-            arrow_pos_at_bottom = false
-        else
-            pop_top = @element.offsetTop - @div_pop.offsetHeight - 6
+        num_max = s_height - n
+        if (num_max < @div_pop.offsetHeight) and (num_max < @element.offsetTop)
             arrow_pos_at_bottom = true
+            num_max = @element.offsetTop
+        else
+            arrow_pos_at_bottom = false
+
+        # how many we can hold per column due to workarea height
+        num_max = Math.floor((num_max - 22) / _ITEM_HEIGHT_)
+        if row > num_max then row = num_max
+        # restrict the real pop div size
+        echo "compare #{@sub_items_count} #{col * row}"
+        if @sub_items_count > col * row
+            pop_width = col * _ITEM_WIDTH_ + 30
+            @div_pop.style.width = "#{pop_width}px"
+        pop_height = row * _ITEM_HEIGHT_
+        ele_ul.style.maxHeight = "#{pop_height}px"
+
+        if arrow_pos_at_bottom == true
+            pop_top = @element.offsetTop - @div_pop.offsetHeight - 6
+        else
+            pop_top = n + 14
         @div_pop.style.top = "#{pop_top}px"
 
+        # calc and make the arrow
         n = @div_pop.offsetWidth / 2 + 1
         p = @element.offsetLeft + @element.offsetWidth / 2
         arrow_outer = document.createElement("div")
@@ -1008,6 +1031,8 @@ class RichDir extends DesktopEntry
             @div_pop.insertBefore(arrow_outer, ele_ul)
             @div_pop.insertBefore(arrow_mid, ele_ul)
             @div_pop.insertBefore(arrow_inner, ele_ul)
+        return
+
 
     hide_pop_block : =>
         if @div_pop?
@@ -1020,6 +1045,7 @@ class RichDir extends DesktopEntry
         @display_selected()
         @display_focus()
         @display_full_name()
+        return
 
 
     build_block_item_menu : =>
@@ -1033,6 +1059,7 @@ class RichDir extends DesktopEntry
         menu.push([])
         menu.push([8, _("Properties")])
         menu
+
 
     block_do_itemselected : (evt, self) ->
         switch evt.id

@@ -38,6 +38,7 @@ add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
 
 find_package(PkgConfig)
 pkg_check_modules(WEBKIT REQUIRED deepin-webkit-3.0)
+pkg_check_modules(DBUS REQUIRED dbus-glib-1)
 
 set(CMAKE_C_FLAGS "-std=c99")
 
@@ -50,7 +51,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(BIN_JSC_GEN ${CMAKE_CURRENT_SOURCE_DIR}/lib/jsc_extension/jsc_gen.py)
 
 set(DWEBVIEW_INCLUDE_DIRS ${WEBKIT_INCLUDE_DIRS}) 
-set(DWEBVIEW_LIBRARIES ${WEBKIT_LIBRARIES} ${DBUS_LIBRARIES})
+set(DWEBVIEW_LIBRARIES ${WEBKIT_LIBRARIES} ${DBUS_LIBRARIES} m X11 Xext sqlite3)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
 

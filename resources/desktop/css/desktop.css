@@ -173,7 +173,6 @@ body {
 }
 
 #pop_grid ul {
-    max-height:376px;
     margin:1px;
     padding:9px;
     font-size:small;
@@ -184,10 +183,10 @@ body {
 }
 #pop_grid ul li {
     width:80px;
-    height:86px;
+    height:84px;
     padding:2px 4px;
-    border:1px solid rgba(0,0,0,0);
     margin:1px 1px;
+    border:1px solid transparent;
     display:inline-block;
     vertical-align:top;
     text-align:center;
