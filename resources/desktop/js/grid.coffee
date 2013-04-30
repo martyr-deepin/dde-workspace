@@ -456,18 +456,25 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
+        ###
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
+        ###
+        if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        ###
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
+
         else if not _IS_DND_INTERLNAL_(evt)
+        ###
+        if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
