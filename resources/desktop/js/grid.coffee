@@ -466,6 +466,7 @@ init_grid_drop = ->
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        alert "#{evt.dataTransfer.getXDSPath()}"
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
