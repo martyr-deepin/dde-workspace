@@ -1,0 +1,1 @@
+window.plugin = new Weather
