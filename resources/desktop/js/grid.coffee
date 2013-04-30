@@ -425,10 +425,13 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
+        ###
         if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
             desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
             evt.dataTransfer.setXDSPath(desktop_uri)
         else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
+        ###
+        if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
@@ -591,29 +594,37 @@ item_dragend_handler = (w, evt) ->
 desktop_plugin_dragstart_handler = (self, evt) ->
     evt.dataTransfer.effectAllowed = "all"
     _SET_DND_INTERNAL_FLAG_(evt)
-    pos = load_position(self.get_id())
-    clear_occupy(self.get_id(), pos)
+    id = self.get_id()
+    pos = load_position(id)
+    clear_occupy(id, pos)
+    div_x = self.element.getBoundingClientRect().left
+    div_y = self.element.getBoundingClientRect().top
+    rel_x = evt.clientX
+    rel_y = evt.clientY
+    self.relative_x = rel_x - div_x
+    self.relative_y = rel_y - div_y
     return
 
 
 desktop_plugin_dragend_handler = (self, evt) ->
-    pos = load_position(self.get_id())
+    id = self.get_id()
+    old_pos = load_position(id)
     if evt.dataTransfer.dropEffect == "link"
-        old_pos = load_position(self.get_id())
-        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
-        new_pos = old_pos
+        new_x = evt.clientX - self.relative_x + grid_item_width / 2
+        new_y = evt.clientY - self.relative_y + grid_item_height / 2
+        new_pos = pixel_to_pos(new_x, new_y, old_pos.width, old_pos.height)
         x_offset = new_pos.x - old_pos.x
-        y_offset = new_pos.y - new_pos.y
+        y_offset = new_pos.y - old_pos.y
 
         if x_offset == 0 and y_offset == 0
-            set_occupy(load_position(self.get_id()), pos)
+            set_occupy(id, old_pos)
             return
         if not detect_occupy(new_pos)
             move_to_somewhere(self, new_pos)
         else
-            set_occupy(load_position(self.get_id()), pos)
+            set_occupy(id, old_pos)
     else
-        set_occupy(load_position(self.get_id()), pos)
+        set_occupy(id, old_pos)
     return
 
 
