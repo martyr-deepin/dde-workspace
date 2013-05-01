@@ -104,11 +104,16 @@ load_speical_desktop_items = ->
 
 
 load_desktop_plugin = ->
-    gadget = new DesktopPlugin("weather", 10, 1, 3, 1)
-    plugin = window.plugin
-    div_grid.appendChild(gadget.element)
-    gadget.element.appendChild(plugin.element)
-    speical_item.push(gadget.get_id())
+    window.loader.add('desktop_plugin/plugins.js', true, ->
+        plugins = window.desktop_plugin
+        if plugins
+            for plugin in plugins
+                desktop_plugin = new DesktopPlugin("weather", 10, 1, 3, 1)
+                div_grid.appendChild(desktop_plugin.element)
+                speical_item.push(desktop_plugin.get_id())
+                desktop_plugin.element.appendChild(plugin.element)
+    ).load()
+    return
 
 
 clear_desktop_items = ->

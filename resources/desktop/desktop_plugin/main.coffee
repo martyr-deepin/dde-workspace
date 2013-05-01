@@ -1,1 +1,4 @@
-window.plugin = new Weather
+window.desktop_plugin = []
+plugins = window.desktop_plugin
+weather = new Weather
+plugins.push(weather)
