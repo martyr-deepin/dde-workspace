@@ -317,7 +317,7 @@ JSValueRef dock_get_launcher_info(const char* app_id)
     if (g_key_file_has_group(k_apps, app_id)) {
         return build_app_info(app_id);
     } else {
-        g_debug("try find %s failed \n", app_id);
+        g_debug("try find \"%s\" failed \n", app_id);
         return jsvalue_null();
     }
 }
