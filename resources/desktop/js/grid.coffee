@@ -287,6 +287,7 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
+    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -321,7 +322,7 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        pos = find_free_position(1, 1)
+        pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
 
@@ -459,6 +460,7 @@ init_grid_drop = ->
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        alert "#{evt.dataTransfer.getXDSPath()}"
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
@@ -571,6 +573,35 @@ item_dragend_handler = (w, evt) ->
             if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
 
         update_selected_item_drag_image()
+    return
+
+
+desktop_plugin_dragstart_handler = (self, evt) ->
+    evt.dataTransfer.effectAllowed = "all"
+    _SET_DND_INTERNAL_FLAG_(evt)
+    pos = load_position(self.get_id())
+    clear_occupy(self.get_id(), pos)
+    return
+
+
+desktop_plugin_dragend_handler = (self, evt) ->
+    pos = load_position(self.get_id())
+    if evt.dataTransfer.dropEffect == "link"
+        old_pos = load_position(self.get_id())
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
+        new_pos = old_pos
+        x_offset = new_pos.x - old_pos.x
+        y_offset = new_pos.y - new_pos.y
+
+        if x_offset == 0 and y_offset == 0
+            set_occupy(load_position(self.get_id()), pos)
+            return
+        if not detect_occupy(new_pos)
+            move_to_somewhere(self, new_pos)
+        else
+            set_occupy(load_position(self.get_id()), pos)
+    else
+        set_occupy(load_position(self.get_id()), pos)
     return
 
 
