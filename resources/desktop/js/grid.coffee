@@ -43,6 +43,8 @@ o_table = null
 all_item = new Array
 # special items on desktop
 speical_item = new Array
+# pulugin items on desktop
+plugins_item = new Array
 # all selected items on desktop
 selected_item = new Array
 # the last widget which been operated last time
@@ -179,6 +181,9 @@ place_desktop_items = ->
     init_occupy_table()
 
     total_item = speical_item.concat(all_item)
+    #total_item = plugins_item.concat(total_item)
+    for i in plugins_item
+        alert "#{i.get_id()}"
     not_founds = []
     for i in total_item
         if load_position(i) != null
@@ -425,13 +430,10 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        ###
         if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
             desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
             evt.dataTransfer.setXDSPath(desktop_uri)
         else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
-        ###
-        if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
@@ -460,25 +462,19 @@ init_grid_drop = ->
     div_grid.addEventListener("dragover", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        ###
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
-        ###
-        if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
-        ###
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
 
         else if not _IS_DND_INTERLNAL_(evt)
-        ###
-        if not _IS_DND_INTERLNAL_(evt)
             evt.dataTransfer.dropEffect = "move"
         else
             evt.dataTransfer.dropEffect = "link"
