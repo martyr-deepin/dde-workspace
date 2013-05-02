@@ -256,6 +256,13 @@
       var a1, a2, a3, city_and_date, fifth_day_weather_data, first_day_weather_data, fourth_day_weather_data, i, j, l1, l2, l3, more_city, more_city_menu, more_weather_menu, second_day_weather_data, sixth_day_weather_data, temp_str, temper, third_day_weather_data, u1, weather_now, week,
         _this = this;
 
+      this.id = "weather";
+      this.pos = {
+        x: 10,
+        y: 1,
+        width: 3,
+        height: 1
+      };
       this.element = document.createElement('div');
       this.element.setAttribute('class', "Weather");
       this.element.draggable = true;
@@ -454,6 +461,22 @@
           return echo("receiving");
         }
       };
+    };
+
+    Weather.prototype.get_id = function() {
+      return this.id;
+    };
+
+    Weather.prototype.set_id = function(id) {
+      return this.id = id;
+    };
+
+    Weather.prototype.get_pos = function() {
+      return this.pos;
+    };
+
+    Weather.prototype.set_pos = function(pos) {
+      return this.pos = pos;
     };
 
     Weather.prototype.weathergui_init = function() {

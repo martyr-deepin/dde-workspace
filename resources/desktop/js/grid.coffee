@@ -179,11 +179,8 @@ update_position = (old_id, new_id) ->
 
 place_desktop_items = ->
     init_occupy_table()
-
+    
     total_item = speical_item.concat(all_item)
-    #total_item = plugins_item.concat(total_item)
-    for i in plugins_item
-        alert "#{i.get_id()}"
     not_founds = []
     for i in total_item
         if load_position(i) != null

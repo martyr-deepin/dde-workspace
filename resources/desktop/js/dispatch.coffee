@@ -108,10 +108,13 @@ load_desktop_plugin = ->
         plugins = window.desktop_plugin
         if plugins
             for plugin in plugins
-                desktop_plugin = new DesktopPlugin("weather", 10, 1, 3, 1)
+                id = plugin.get_id()
+                pos = plugin.get_pos()
+                desktop_plugin = new DesktopPlugin(id, pos.x, pos.y, pos.width, pos.height)
                 div_grid.appendChild(desktop_plugin.element)
                 speical_item.push(desktop_plugin.get_id())
                 desktop_plugin.element.appendChild(plugin.element)
+                move_to_somewhere(desktop_plugin, pos)
     ).load()
     return
 
