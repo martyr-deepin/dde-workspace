@@ -460,7 +460,6 @@ init_grid_drop = ->
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
-        alert "#{evt.dataTransfer.getXDSPath()}"
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
@@ -1182,6 +1181,7 @@ item_rename_div.parentElement.addEventListener("keyup", (evt) ->
 
 
 move_widget_to_rename_div = (w) ->
+    if rename_div_process_events == true then return
     w.element.style.left = "#{w.element.offsetLeft + s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1}px"
     div_grid.removeChild(w.element)
@@ -1193,6 +1193,7 @@ move_widget_to_rename_div = (w) ->
 
 
 move_widget_to_grid_after_rename = (w) ->
+    if rename_div_process_events == false then return
     w.element.style.left = "#{w.element.offsetLeft - s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
     item_rename_div.removeChild(w.element)
