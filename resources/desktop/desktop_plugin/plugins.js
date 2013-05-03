@@ -192,7 +192,7 @@
 
   Loader = (function() {
     function Loader() {
-      window.loader = new Object;
+      this._loadsyncjs = __bind(this._loadsyncjs, this);      window.loader = new Object;
       this.loader = window.loader;
       this.syncjs = [];
       this.asyncjs = [];
@@ -259,40 +259,6 @@
       }
     };
 
-    Loader.prototype._onload = function(func, arg, obj) {
-      if (obj) {
-        if (typeof func === 'function') {
-          func = [func];
-        }
-        if (obj.readyState) {
-          obj.onreadystatechange = function() {
-            var i, _i, _len, _results;
-
-            if (obj.readyState === 'loaded' || obj.readyState === 'complete') {
-              obj.onreadystatechange === null;
-              _results = [];
-              for (_i = 0, _len = func.length; _i < _len; _i++) {
-                i = func[_i];
-                _results.push(func[i](arg));
-              }
-              return _results;
-            }
-          };
-        } else {
-          obj.onload = function() {
-            var i, _i, _len, _results;
-
-            _results = [];
-            for (_i = 0, _len = func.length; _i < _len; _i++) {
-              i = func[_i];
-              _results.push(func[i](arg));
-            }
-            return _results;
-          };
-        }
-      }
-    };
-
     Loader.prototype._loadjs = function(object, parent, func) {
       var fs, js;
 
@@ -334,6 +300,40 @@
         this._loadjs(asyncjs[i], head);
       }
       return this.asyncjs = [];
+    };
+
+    Loader.prototype._onload = function(func, arg, obj) {
+      if (obj) {
+        if (typeof func === 'function') {
+          func = [func];
+        }
+        if (obj.readyState) {
+          obj.onreadystatechange = function() {
+            var f, _i, _len, _results;
+
+            if (obj.readyState === 'loaded' || obj.readyState === 'complete') {
+              obj.onreadystatechange === null;
+              _results = [];
+              for (_i = 0, _len = func.length; _i < _len; _i++) {
+                f = func[_i];
+                _results.push(f(arg));
+              }
+              return _results;
+            }
+          };
+        } else {
+          obj.onload = function() {
+            var f, _i, _len, _results;
+
+            _results = [];
+            for (_i = 0, _len = func.length; _i < _len; _i++) {
+              f = func[_i];
+              _results.push(f(arg));
+            }
+            return _results;
+          };
+        }
+      }
     };
 
     return Loader;

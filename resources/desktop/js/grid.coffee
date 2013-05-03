@@ -43,8 +43,6 @@ o_table = null
 all_item = new Array
 # special items on desktop
 speical_item = new Array
-# pulugin items on desktop
-plugins_item = new Array
 # all selected items on desktop
 selected_item = new Array
 # the last widget which been operated last time
