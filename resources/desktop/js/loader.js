@@ -28,7 +28,6 @@
             c.media = css[i].media;
             head.appendChild(c);
         }
-        css = [];
     },
     
     // JS回调函数

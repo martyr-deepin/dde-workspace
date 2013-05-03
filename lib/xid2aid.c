@@ -124,7 +124,7 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
         char* basename = g_path_get_basename(cmdline[0]);
         if (g_regex_match(prefix_regex, basename, 0, NULL))
             while (cmdline[++name_pos] && cmdline[name_pos][0] == '-')
-                ; // emtpy body
+                ; // empty body
         g_free(basename);
     }
 
