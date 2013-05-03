@@ -2,6 +2,8 @@
 #Author:      yuanjq <yuanjq91@gmail.com>
 
 class DesktopPlugin extends Widget
+    @relative_x = 0
+    @relative_y = 0
     constructor : (name, x, y, width, height) ->
         @set_id()
         pos = {x:0, y:0, width:0, height:0}

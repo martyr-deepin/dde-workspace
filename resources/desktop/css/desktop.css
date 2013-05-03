@@ -150,35 +150,6 @@ body {
     z-index:50;
 }
 
-.Weather {
-    width: 286px;
-    height: 70px;
-    background-image: url(../img/weather/bg.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-.more_city_menu {
-    background-color: white;
-    position: absolute;
-    border: 1px;
-    border-color: black;
-}
-
-.more_city_menu ul {
-    top: 5px;
-    left: 0px;
-    list-style-type: none;
-      /*width: 50px;*/
-   /*border-style: solid;*/
-}
-
-.more_weather_menu {
-    border: 1px;
-    border-color: white;
-    border-style: solid;
-}
-
 #pop_grid {
     z-index:20000;
     position:fixed;
