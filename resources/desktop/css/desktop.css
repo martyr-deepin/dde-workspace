@@ -117,6 +117,10 @@ body {
     -webkit-user-modify:read-write-plaintext-only;
 }
 
+.DesktopEntry .item_renaming::selection {
+    color:white;
+    background:#39F;
+}
 .item_hover {
     border:1px solid rgba(255,255,255,0.5);
     background-color:rgba(68, 132, 195, 0.3);
