@@ -287,7 +287,6 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -605,7 +604,8 @@ desktop_plugin_dragend_handler = (self, evt) ->
             set_occupy(id, old_pos)
             return
         if not detect_occupy(new_pos)
-            move_to_somewhere(self, new_pos)
+            if new_pos.x+new_pos.width <= cols && new_pos.y+new_pos.height<=rows
+                move_to_somewhere(self, new_pos)
         else
             set_occupy(id, old_pos)
     else
