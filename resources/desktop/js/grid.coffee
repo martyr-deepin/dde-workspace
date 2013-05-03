@@ -162,7 +162,6 @@ clear_all_positions = ->
     for i in [(localStorage.length - 1) ... -1] by -1
         if (val = localStorage.key(i)).match(/^id:.+/i)
             localStorage.removeItem(val)
-    echo "all positions cleared"
     return
 
 
@@ -257,7 +256,6 @@ clear_occupy_table = ->
     for i in [0 ... cols]
         for j in [0 ... rows]
             o_table[i][j] = null
-    echo "all occupy cleared"
     return
 
 
@@ -289,6 +287,7 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
+    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -313,11 +312,9 @@ move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
     if info? and not detect_occupy(info)
         move_to_position(widget, info)
-        echo "#{widget.get_id()} Y #{info.x}, #{info.y}"
     else
         info = find_free_position(1, 1)
         move_to_position(widget, info)
-        echo "#{widget.get_id()} N #{info.x}, #{info.y}"
     return
 
 
@@ -325,7 +322,7 @@ move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
-        pos = find_free_position(1, 1)
+        pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
 
@@ -366,7 +363,6 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
-    echo "======sort start======"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
@@ -383,7 +379,6 @@ sort_desktop_item_by_func = (func) ->
         w = Widget.look_up(i)
         if w?
             move_to_anywhere(w)
-    echo "+======sort end======+"
     return
 
 
@@ -465,6 +460,7 @@ init_grid_drop = ->
         return
     )
     div_grid.addEventListener("dragenter", (evt) =>
+        alert "#{evt.dataTransfer.getXDSPath()}"
         if evt.dataTransfer.getXDSPath().length > 0 # compatible with XDS protocol
             evt.dataTransfer.dropEffect = "copy"
         else if not _IS_DND_INTERLNAL_(evt)
@@ -577,6 +573,35 @@ item_dragend_handler = (w, evt) ->
             if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
 
         update_selected_item_drag_image()
+    return
+
+
+desktop_plugin_dragstart_handler = (self, evt) ->
+    evt.dataTransfer.effectAllowed = "all"
+    _SET_DND_INTERNAL_FLAG_(evt)
+    pos = load_position(self.get_id())
+    clear_occupy(self.get_id(), pos)
+    return
+
+
+desktop_plugin_dragend_handler = (self, evt) ->
+    pos = load_position(self.get_id())
+    if evt.dataTransfer.dropEffect == "link"
+        old_pos = load_position(self.get_id())
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, pos.width, pos.height)
+        new_pos = old_pos
+        x_offset = new_pos.x - old_pos.x
+        y_offset = new_pos.y - new_pos.y
+
+        if x_offset == 0 and y_offset == 0
+            set_occupy(load_position(self.get_id()), pos)
+            return
+        if not detect_occupy(new_pos)
+            move_to_somewhere(self, new_pos)
+        else
+            set_occupy(load_position(self.get_id()), pos)
+    else
+        set_occupy(load_position(self.get_id()), pos)
     return
 
 
@@ -737,6 +762,7 @@ delete_selected_items = (real_delete) ->
     else DCore.DEntry.trash(tmp)
     return
 
+
 show_entries_properties = (entries) ->
     try
         if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
@@ -844,6 +870,7 @@ grid_do_itemselected = (evt) ->
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
+    if rename_div_process_events then return
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
         evt.preventDefault()
@@ -902,6 +929,7 @@ grid_do_keydown_to_shortcut = (evt) ->
 
 # handle shortcuts keys
 grid_do_keyup_to_shrotcut = (evt) ->
+    if rename_div_process_events then return
     msg_disposed = false
     if ingore_keyup_counts > 0
         --ingore_keyup_counts
@@ -952,15 +980,19 @@ grid_do_keyup_to_shrotcut = (evt) ->
     if msg_disposed == true
         evt.stopPropagation()
         evt.preventDefault()
+    return
 
 
 grid_do_keypress_to_shrotcut = (evt) ->
+    if rename_div_process_events then return
     evt.stopPropagation()
     evt.preventDefault()
     if evt.keyCode == 13    # Enter
         if evt.ctrlKey == false and evt.shiftKey == false and evt.altKey == false
             if selected_item.length > 0
                 Widget.look_up(last_widget)?.item_exec()
+    return
+
 
 create_item_grid = ->
     div_grid = document.createElement("div")
@@ -978,6 +1010,7 @@ create_item_grid = ->
 
     drag_canvas = document.createElement("canvas")
     drag_context = drag_canvas.getContext('2d')
+    return
 
 
 class Mouse_Select_Area_box
@@ -1100,3 +1133,70 @@ class Mouse_Select_Area_box
 
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
+
+# fullscreen div for item renaming
+rename_div_process_events = false
+item_rename_div = document.createElement("div")
+item_rename_div.setAttribute("class", "pop_rename")
+item_rename_div.style.display = "none"
+document.body.appendChild(item_rename_div)
+item_rename_div.addEventListener("mousedown", (evt) ->
+        evt.stopPropagation()
+        return
+)
+item_rename_div.addEventListener("mouseup", (evt) ->
+        evt.stopPropagation()
+        return
+)
+item_rename_div.addEventListener("click", (evt) ->
+        evt.stopPropagation()
+        if @id.length?
+            if (w = Widget.look_up(@id))?
+                w.item_complete_rename()
+        return
+)
+item_rename_div.parentElement.addEventListener("keydown", (evt) ->
+        if not rename_div_process_events then return
+        evt.stopPropagation()
+        if @id.length?
+            if (w = Widget.look_up(@id))?
+                w.on_item_rename_keydown(evt)
+        return
+)
+item_rename_div.parentElement.addEventListener("keypress", (evt) ->
+        if  not rename_div_process_events then return
+        evt.stopPropagation()
+        if @id.length?
+            if (w = Widget.look_up(@id))?
+                w.on_item_rename_keypress(evt)
+        return
+)
+item_rename_div.parentElement.addEventListener("keyup", (evt) ->
+        if  not rename_div_process_events then return
+        evt.stopPropagation()
+        if @id.length?
+            if (w = Widget.look_up(@id))?
+                w.on_item_rename_keyup(evt)
+        return
+)
+
+
+move_widget_to_rename_div = (w) ->
+    w.element.style.left = "#{w.element.offsetLeft + s_offset_x - 1}px"
+    w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1}px"
+    div_grid.removeChild(w.element)
+    item_rename_div.appendChild(w.element)
+    item_rename_div.setAttribute("id", w.get_id())
+    item_rename_div.style.display = ""
+    rename_div_process_events = true
+    return
+
+
+move_widget_to_grid_after_rename = (w) ->
+    w.element.style.left = "#{w.element.offsetLeft - s_offset_x - 1}px"
+    w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
+    item_rename_div.removeChild(w.element)
+    div_grid.appendChild(w.element)
+    item_rename_div.style.display = "none"
+    rename_div_process_events = false
+    return
