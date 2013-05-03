@@ -26,6 +26,17 @@ macro(GEN_JSC_SOURCE_WITH_NO_INIT JSC_GEN CFG_DIR)
     AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_BINARY_DIR} ${JSC_GEN})
 endmacro()
 
+macro(GEN_JS_FILE NAME)
+    set(_DIR ${PROJECT_SOURCE_DIR}/resources/${NAME}/js)
+    add_custom_target(${NAME}_js
+        COMMAND make -C ${_DIR}
+        DEPENDS ${_DIR}/makefile
+    )
+    execute_process(
+        COMMAND make -C ${_DIR}
+    )
+endmacro()
+
 if (DEVELOP)
     SET(RESOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/resources/")
     add_definitions("-DDATA_DIR=\"../data\"")

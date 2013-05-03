@@ -33,7 +33,8 @@ class Weather
     img_url_first = "desktop_plugin/weather/img/"
 
     constructor: ->
-
+        @id = "weather"
+        @pos = {x:10, y:1, width:3, height:1}
         @element = document.createElement('div')
         @element.setAttribute('class', "Weather")
         @element.draggable = true
@@ -257,6 +258,17 @@ class Weather
             else if xhr.readystate == 3
                 echo "receiving"
     
+    get_id: ->
+        @id
+
+    set_id: (id) ->
+        @id = id
+    
+    get_pos: ->
+        @pos
+
+    set_pos: (pos) ->
+        @pos = pos
 
     weathergui_init: =>
 

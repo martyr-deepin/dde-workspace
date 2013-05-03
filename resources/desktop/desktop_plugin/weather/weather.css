@@ -1,7 +1,7 @@
 .Weather {
     width: 286px;
     height: 70px;
-    background-image: url(/img/bg.png);
+    background-image: url(img/bg.png);
     background-repeat: no-repeat;
     background-size: contain;
     position: absolute;

@@ -11,10 +11,8 @@ target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-execute_process(
-    COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
-    )
+GEN_JS_FILE(${NAME})
+
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION bin
