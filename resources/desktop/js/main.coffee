@@ -23,6 +23,5 @@ connect_default_signals()
 DCore.Desktop.emit_webview_ok()
 
 load_speical_desktop_items()
-load_desktop_plugin()
 load_desktop_all_items()
 place_desktop_items()
