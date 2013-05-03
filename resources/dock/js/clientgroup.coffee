@@ -92,11 +92,12 @@ class ClientGroup extends AppItem
             "title": title
         @add_client(id)
         @update_leader()
+        @update_scale()
 
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
             @n_clients.remove(id)
-            @n_clients.unshift id
+            @n_clients.unshift(id)
             apply_rotate(@img, 1)
 
             if @leader != id
@@ -156,7 +157,9 @@ class ClientGroup extends AppItem
         switch e.id
             when 1
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
-            when 2 then DCore.Dock.close_window(@leader)
+            when 2
+                Preview_close_now()
+                DCore.Dock.close_window(@leader)
             when 3 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
     record_launcher_position: ->

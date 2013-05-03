@@ -60,15 +60,13 @@ class AppList extends Widget
             @_insert_anchor_item = null
             @hide_indicator()
         else
-            @element.appendChild(c.element)
+            @append_app_item(c)
+            if @_insert_anchor_item == null
+                DCore.Dock.insert_apps_position(c.app_id, null)
         run_post(calc_app_item_size)
 
-    append2: (c)->
-        try  #TODO: remove DEBUG CODE
-            @append(c)
-            DCore.Dock.insert_apps_position(c.app_id, null) if @_insert_anchor_item == null
-        catch error
-            alert "AppList append :#{error}"
+    append_app_item: (c)->
+        @element.appendChild(c.element)
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -83,7 +81,7 @@ class AppList extends Widget
             id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
             item = Widget.look_up(id) or Widget.look_up("le_"+id)
             item.flash(0.5)
-            @append2(item)
+            @append(item)
         @hide_indicator()
         update_dock_region()
 
@@ -241,7 +239,7 @@ class AppItem extends Widget
         @element.draggable=true
         if @constructor.name == "Launcher"
             @app_id = @id
-        app_list.append(@)
+        app_list.append_app_item(@)
 
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
