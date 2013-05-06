@@ -129,9 +129,9 @@
      * @param media CSS毁林类型
      */
     loader.addcss = function (u, media) {
-        if (!css.has(u)) {
+        // if (!css.has(u)) {
             css.push({'src': u, 'media': media || 'screen'});
-        }
+        // }
         return this;
     };
     

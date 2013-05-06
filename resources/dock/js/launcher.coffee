@@ -4,6 +4,7 @@ class Launcher extends AppItem
         super
         @app_id = @id
         @set_tooltip(DCore.DEntry.get_name(@core))
+        @update_scale()
 
 
     try_swap_clientgroup: ->

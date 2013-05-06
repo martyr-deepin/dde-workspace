@@ -13,8 +13,8 @@
     position:relative;
     top: 7px;
     left: 20px;  
-    width: 50px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
 }
 
 .temperature_now{
@@ -24,107 +24,32 @@
     width: 50px;
     height: 50px;
     font-size: 30px;
-    color: #00BFFF;   
-}
-
-.city_and_date{
-    position:absolute;
-    top: 15px;
-    left: 150px;
-    height: 40px;
-
-}
-
-.city{
-    position:relative;
-    left: 5px;   
-    color: #00BFFF;     
-}
-
-.date{
-   color: #00BFFF; 
-}
-
-.more_weather_menu{
-    position:absolute;
-    left: 80px;
-    top: 65px;
-    width: 175px;
-    display: none;
-}
-
-.first_day_weather_data{
-    background-color: #EEE8AA;
-    opacity:0.6;
-}
-
-.pic1{
-    width: 30px;
-    height: 28px;
-}
-
-.second_day_weather_data{
-    background-color: #00BFFF;
-    opacity:0.6;
-}
-
-.pic2{
-    width: 30px;
-    height: 28px;
-}
-
-.third_day_weather_data{
-    background-color: #EEE8AA;
-    opacity:0.6;
-}
-
-.pic3{
-    width: 30px;
-    height: 28px;
-}
-
-.fourth_day_weather_data{
-    background-color: #00BFFF;
-    opacity:0.6;
-}
-
-.pic4{
-    width: 30px;
-    height: 28px;
-}
-
-.fifth_day_weather_data{
-    background-color: #EEE8AA;
-    opacity:0.6;
-}
-
-.pic5{
-    width: 30px;
-    height: 28px;
-}
-
-.sixth_day_weather_data{
-    background-color: #00BFFF;
-    opacity:0.6;
-}
-
-.pic6{
-    width: 30px;
-    height: 28px;
-}
-
-.refresh{
-    position:absolute;
-    top: 12px;
-    left: 215px;   
-    width: 20px;
-    height: 20px;
+    color: black;   
 }
 
 .more_city{
     position:absolute;
-    top: 15px;
-    left: 190px;       
+    top: 17px;
+    left: 150px;
+    width: 100px;
+    height: 20px;    
+  
+}
+
+.city{
+    position: relative;
+    width: 80px;
+    left: 5px;
+    /*text-align: center;*/
+}
+
+.more_city_img{
+    position:absolute;
+    top:-2px;
+    right:10px;
+    width: 20px;
+    height: 20px;
+    opacity:0.8; 
 }
 
 .more_city_menu{
@@ -134,12 +59,80 @@
     display:none;
 }
 
+.city_and_date{
+    position:absolute;
+    top: 35px;
+    left: 150px;
+    height: 40px;
+}
+
+.date{
+   color: black; 
+}
+
+.more_weather_menu{
+    position:absolute;
+    left: 80px;
+    top: 65px;
+    width: 175px;
+    display: none;
+    opacity: 0.8;
+}
+
+.week1,
+.week2,
+.week3,
+.week4,
+.week5,
+.week6{
+    position: relative;
+    left: 5px;
+}
+
+.pic1,
+.pic2,
+.pic3,
+.pic4,
+.pic5,
+.pic6{
+    position: relative;
+    left: 17px;
+    width: 24px;
+    height: 24px;
+}
+
+.temperature1,
+.temperature2,
+.temperature3,
+.temperature4,
+.temperature5,
+.temperature6{
+    position: relative;
+    left: 30px;
+}
+
+
+.first_day_weather_data,
+.third_day_weather_data,
+.fifth_day_weather_data{
+    background-color: #EEE8AA;
+    opacity:0.8;
+}
+
+.second_day_weather_data,
+.fourth_day_weather_data,
+.sixth_day_weather_data{
+    background-color: #00BFFF;
+    opacity:0.8;
+}
+
+
 .chooseprov{
     position:absolute;
     top: 0px;
     left: -40px;
     width: 90px;
-    /*display: none;*/
+    opacity: 0.8;
 }
 
 .choosecity{
@@ -147,5 +140,27 @@
     top: 0px;
     left: 70px; 
     width: 90px; 
-    /*display: none;*/
+    opacity: 0.8;
+}
+
+.refresh{
+    position:absolute;
+    top: 18px;
+    left: 247px;   
+    width: 30px;
+    height: 30px;
+    opacity:0.6;
+}
+
+.close{
+    position:absolute;
+    top: 5px;
+    left: 243px; 
+    width: 22px;
+    height: 15px;
+    opacity:0.8;
+}
+
+.closebutton{
+    display:none;
 }

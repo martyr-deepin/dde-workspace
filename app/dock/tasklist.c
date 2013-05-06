@@ -39,6 +39,7 @@ extern Window get_dock_window();
 #include <dwebview.h>
 #include <string.h>
 #include <math.h>
+#include <gio/gdesktopappinfo.h>
 
 static Atom ATOM_WINDOW_HIDDEN;
 static Atom ATOM_CLIENT_LIST;
@@ -147,14 +148,15 @@ void _update_window_viewport(Client* c)
 {
     get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
                            _update_window_viewport_callback, -1);
-    g_debug("_update_window_viewport");
     dock_update_hide_mode();
 }
 
 static
 gboolean _get_launcher_icon(Client* c)
 {
-    GAppInfo* info = g_app_info_create_from_commandline(c->exec, c->app_id, G_APP_INFO_CREATE_NONE, NULL);
+    char* id = g_strconcat(c->app_id, ".desktop", NULL);
+    GDesktopAppInfo* info = g_desktop_app_info_new(id);
+    g_free(id);
 
     if (info == NULL) {
         g_debug("info == NULL");
@@ -162,13 +164,13 @@ gboolean _get_launcher_icon(Client* c)
     }
 
     char* icon_name = NULL;
-    GIcon* icon = g_app_info_get_icon(info);
-    g_object_unref(info);
+    GIcon* icon = g_app_info_get_icon(G_APP_INFO(info));
 
     if (icon != NULL) {
         icon_name = g_icon_to_string(icon);
     } else {
-        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
+        extern GKeyFile* k_apps;
+        char* icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
     }
 
     if (icon_name != NULL) {
@@ -193,6 +195,8 @@ gboolean _get_launcher_icon(Client* c)
             }
         }
     }
+
+    g_object_unref(info);
     return c->icon == NULL;
 }
 
@@ -238,7 +242,10 @@ Client* create_client_from_window(Window w)
             _get_launcher_icon(c);
     }
 
+    g_debug("icon path is %s", c->icon);
+
     if (c->icon == NULL) {
+        g_debug("get launcher icon failed");
         c->need_update_icon = TRUE;
         _update_window_icon(c);
     }
@@ -325,7 +332,6 @@ void client_free(Client* c)
     g_free(c->icon);
 
     g_free(c);
-    g_debug("client free");
     dock_update_hide_mode();
 }
 
@@ -415,7 +421,6 @@ void client_list_changed(Window* cs, size_t n)
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
-                g_debug("client_list_changed");
                 dock_update_hide_mode();
                 _update_client_info(c);
             }
@@ -880,6 +885,7 @@ gboolean dock_request_dock_by_client_id(double id)
 
     if (dock_has_launcher(c->app_id)) {
         // already has this app info
+        g_debug("already has this app info");
         return FALSE;
     } else if (c->app_id == NULL || c->exec == NULL || c->icon == NULL) {
         g_warning("cannot dock app, because app_id, command line or icon maybe NULL");
