@@ -12,3 +12,4 @@ resources/greeter/js/time.js
 *.swp
 *.log
 *~
+*.orig
