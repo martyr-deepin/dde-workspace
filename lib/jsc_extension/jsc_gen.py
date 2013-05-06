@@ -282,6 +282,16 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         return r;
 }
 """
+    test_function = """
+extern void %(module_name)s_%(name)s();
+static JSValueRef __%(name)s__ (JSContextRef ctx, JSObjectRef f, JSObjectRef this, size_t c, const JSValueRef args[], JSValueRef* excp)
+{
+#ifdef __DUI_DEBUG
+    g_timeout_add(3000, (GSourceFunc)%(module_name)s_%(name)s, NULL);
+#endif
+    return JSValueMakeNull(ctx);
+}
+"""
 
     def __init__(self, name, r_value, *params):
         self.params = params
@@ -291,6 +301,11 @@ static JSValueRef __%(name)s__ (JSContextRef context,
         self.module_name = name.lower()
 
     def str(self):
+        if self.name == "test":
+            return Function.test_function % { 
+                    "module_name": self.module_name,
+                    "name": "test" 
+                    }
         i = 0
         params_init = ""
         params_clear = ""

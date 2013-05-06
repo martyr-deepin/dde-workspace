@@ -128,7 +128,7 @@ void _update_window_appid(Client *c);
 void _update_window_net_state(Client* c);
 static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
-static void _update_task_list(Window root);
+PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
 double dock_get_active_window();
 

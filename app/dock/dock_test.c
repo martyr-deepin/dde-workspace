@@ -1,3 +1,5 @@
+#ifdef __DUI_DEBUG
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
@@ -5,6 +7,7 @@
 #include <glib.h>
 #include "test.h"
 #include "tasklist.h"
+#include "dock_hide.h"
 typedef struct {
     char* title; /* _NET_WM_NAME */
     char* clss; /* WMClass */
@@ -32,7 +35,6 @@ void update_task_list();
 void _update_task_list(Window root);
 void update_active_window(Display* display, Window root);
 
-#include "../app/dock/dock_hide.h"
 void dock_test_hide()
 {
     Test({
@@ -77,7 +79,6 @@ int TEST_MAX_MEMORY= 100000;
 extern GHashTable* _clients_table;
 void dock_test()
 {
-    return;
     int xid = 0x2800006;
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
@@ -139,3 +140,5 @@ void dock_test()
 
     g_message("All dock test passed!!!!");
 }
+
+#endif
