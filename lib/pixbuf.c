@@ -24,7 +24,7 @@
 
 static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
 {
-    int width, height, rowstride, n_channels;
+    int rowstride, n_channels;
     guchar *pixels, *p;
     guchar alpha;
 
@@ -33,9 +33,6 @@ static void change_corner_alpha (GdkPixbuf* pixbuf, float fa)
 
     g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
     g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
-
-    width = gdk_pixbuf_get_width (pixbuf);
-    height = gdk_pixbuf_get_height (pixbuf);
 
     rowstride = gdk_pixbuf_get_rowstride (pixbuf);
     pixels = gdk_pixbuf_get_pixels (pixbuf);
@@ -144,7 +141,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
         return NULL;
     }
 
-    char* base64 = g_base64_encode(buf, size);
+    char* base64 = g_base64_encode((const guchar*)buf, size);
     g_free(buf);
     char* data = g_strdup_printf("data:image/png;base64,%s", base64);
     g_free(base64);
@@ -169,7 +166,7 @@ char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf)
         return NULL;
     }
 
-    char* base64 = g_base64_encode(buf, size);
+    char* base64 = g_base64_encode((const guchar*)buf, size);
     g_free(buf);
     char* data = g_strconcat("data:image/png;base64,", base64, NULL);
     g_free(base64);
@@ -187,17 +184,17 @@ char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf)
     int pix_bit = stride / width;
 
     int offset = 0;
-    buf = gdk_pixbuf_get_pixels_with_length(pixbuf, &size);
+    buf = gdk_pixbuf_get_pixels_with_length(pixbuf, (guint*)&size);
 
     g_assert(buf != NULL);
     GString* string = g_string_sized_new(height * stride + 10);
     g_string_append_c(string, '[');
 
     if (pix_bit == 4) {
-        for (int i=0; i<height; i++) 
+        for (int i=0; i<height; i++)
             for (int j=0; j<width; j++) {
                 offset = i * stride + j*4;
-                g_string_append_printf(string, "%d,%d,%d,%d,", 
+                g_string_append_printf(string, "%d,%d,%d,%d,",
                         buf[offset],
                         buf[offset+1],
                         buf[offset+2],
@@ -205,10 +202,10 @@ char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf)
                         );
             }
     } else if (pix_bit == 3) {
-        for (int i=0; i<height; i++) 
+        for (int i=0; i<height; i++)
             for (int j=0; j<width; j++) {
                 offset = i * stride + j*3;
-                g_string_append_printf(string, "%d,%d,%d,255,", 
+                g_string_append_printf(string, "%d,%d,%d,255,",
                         buf[offset],
                         buf[offset+1],
                         buf[offset+2]);

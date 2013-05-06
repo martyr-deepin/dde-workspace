@@ -130,7 +130,6 @@ static void _update_is_overlay_client(Client* c);
 static gboolean _is_maximized_window(Window win);
 static void _update_task_list(Window root);
 void client_free(Client* c);
-double dock_get_active_window();
 
 static
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
@@ -170,7 +169,7 @@ gboolean _get_launcher_icon(Client* c)
         icon_name = g_icon_to_string(icon);
     } else {
         extern GKeyFile* k_apps;
-        char* icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
+        icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
     }
 
     if (icon_name != NULL) {

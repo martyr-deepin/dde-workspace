@@ -35,7 +35,7 @@
 #include "background_util.h"
 
 
-#define USEC_PER_SEC 1000000.0 // microseconds per second 
+#define USEC_PER_SEC 1000000.0 // microseconds per second
 #define MSEC_PER_SEC 1000.0    // milliseconds per second
 #define TIME_PER_FRAME	1.0/BG_FPS  // the interval between contingent frames
 #define ALPHA_THRESHOLD 0.9  //if alpah > this_value, the fading process is deemed
@@ -45,7 +45,6 @@
 static GPtrArray *picture_paths;		//an array of picture paths (strings).
 //all picture paths are managed by picture_paths, this hashtable just references them.
 static GHashTable* picture_paths_ht;            //picture paths --> indices+1 in @picture_paths.
-static char*	prev_picture = NULL;		//to track 
 static guint	picture_num;		//number of pictures in GPtrArray.
 static guint	picture_index;		// the next background picture.
 //this is only used update current image in the gsettings
@@ -54,7 +53,7 @@ static GSettings *Settings;
 static GDBusProxy* AccountsProxy = NULL;
 
 static gulong	gsettings_background_duration;
-static gulong	gsettings_xfade_auto_interval; //use this time only when we use 
+static gulong	gsettings_xfade_auto_interval; //use this time only when we use
                                                //multiple background pictures.
 static gulong	gsettings_xfade_manual_interval;
 static BgXFadeAutoMode	gsettings_xfade_auto_mode;
@@ -62,9 +61,9 @@ static BgDrawMode	gsettings_draw_mode;
 
 //static const gchar* bg_props[2] = {"_XROOTPMAP_ID","ESETROOT_PMAP_ID"};
 static const gchar* bg_props[1] = {"_XROOTPMAP_ID"};
-static Atom bg1_atom;  
+static Atom bg1_atom;
 //static Atom bg2_atom;
-static Atom pixmap_atom; 
+static Atom pixmap_atom;
 
 static Display* display;
 static Window	root;
@@ -95,7 +94,7 @@ typedef struct _xfade_data
     gdouble	start_time;
     gdouble	total_duration;
     gdouble	interval;
-	
+
     cairo_surface_t*	fading_surface;
     GdkPixbuf*		end_pixbuf;
     gdouble		alpha;
@@ -106,7 +105,7 @@ typedef struct _xfade_data
 static void
 _update_rootpmap (Pixmap pm)
 {
-    //avoid unnecessary updates 
+    //avoid unnecessary updates
     if ((pm == None)||(pm == current_rootpmap))
 	return ;
 
@@ -119,10 +118,10 @@ _update_rootpmap (Pixmap pm)
     gdk_error_trap_pop_ignored ();
 }
 /*
- *    compositing two cairo surfaces. 
+ *    compositing two cairo surfaces.
  *    use double buffering
  */
-static void 
+static void
 draw_background (xfade_data_t* fade_data)
 {
     cairo_t* cr;
@@ -139,11 +138,11 @@ draw_background (xfade_data_t* fade_data)
     cairo_destroy (cr);
     gdk_flush ();
 }
-        	
+
 /*
  * 	free fade_data and its fields.
  */
-static void 
+static void
 free_fade_data (xfade_data_t* fade_data)
 {
     cairo_surface_destroy (fade_data->fading_surface);
@@ -154,7 +153,7 @@ free_fade_data (xfade_data_t* fade_data)
 /*
  *	return current time in seconds.
  */
-static gdouble 
+static gdouble
 get_current_time (void)
 {
     double timestamp;
@@ -167,7 +166,7 @@ get_current_time (void)
     return timestamp;
 }
 
-static gboolean 
+static gboolean
 on_tick (gpointer user_data)
 {
     xfade_data_t* fade_data = (xfade_data_t*)user_data;
@@ -181,7 +180,7 @@ on_tick (gpointer user_data)
     draw_background (fade_data);
 
     static int i=0;
-	
+
     g_debug ("tick %d",++i);
     g_debug ("cur_time : %lf", cur_time);
     g_debug ("start_time: %lf", fade_data->start_time);
@@ -195,7 +194,7 @@ on_tick (gpointer user_data)
     return TRUE;
 }
 
-static void 
+static void
 on_finished (gpointer user_data)
 {
     xfade_data_t* fade_data = (xfade_data_t*) user_data;
@@ -207,7 +206,7 @@ on_finished (gpointer user_data)
     free_fade_data (fade_data);
     g_debug ("crossfade finished ");
 }
-static void 
+static void
 remove_timers ()
 {
     if (bg_timeout_id)
@@ -219,7 +218,7 @@ remove_timers ()
     {
 	g_source_remove (auto_timeout_id);
 	auto_timeout_id = 0;
-    }	
+    }
     if (manual_timeout_id)
     {
 	g_source_remove (manual_timeout_id);
@@ -233,38 +232,38 @@ remove_timers ()
  * 	   1) the property is not set.
  * 	      when we first startup.
  * 	   2) a pixmap that has been freed
- * 	   3) a pixmap that is inconsistent 
- * 	      with current resolution. so 
- * 	      we need to regenerate a pixmap. 
- * 	2. non-None 
- * 	   a valid pixmap that has the same size as 
+ * 	   3) a pixmap that is inconsistent
+ * 	      with current resolution. so
+ * 	      we need to regenerate a pixmap.
+ * 	2. non-None
+ * 	   a valid pixmap that has the same size as
  * 	   the root window in pixel.
  *
- * 	all None return value indicates that 
+ * 	all None return value indicates that
  * 	we need to regenerate a pixmap.
  *
  */
-static inline Pixmap 
+static inline Pixmap
 get_previous_background (void)
 {
     return current_rootpmap;
 }
 
 /*
- * 	create a cairo surface from a pixmap. this is where 
+ * 	create a cairo surface from a pixmap. this is where
  * 	we're drawing on
  * 	NOTE: @pixmap should not be None.
  * 	TODO: we assume that @pixmap is the same size as the
  * 	      root_window. if that's not tree, scale it.
  */
-static cairo_surface_t* 
+static cairo_surface_t*
 get_surface(Pixmap pixmap)
 {
     cairo_surface_t* cs=NULL;
-    cs = cairo_xlib_surface_create (display, pixmap, 
-			            root_visual, 
+    cs = cairo_xlib_surface_create (display, pixmap,
+			            root_visual,
 				    root_width, root_height);
-	
+
     return cs;
 }
 #if 0
@@ -274,10 +273,10 @@ get_current_picture_index ()
     return picture_index;
 }
 #endif
-static const char* 
+static const char*
 get_current_picture_path ()
 {
-    const char* _pic = g_ptr_array_index (picture_paths, 
+    const char* _pic = g_ptr_array_index (picture_paths,
 	                                  picture_index);
 
     return _pic;
@@ -289,6 +288,8 @@ get_next_picture_index ()
     guint _next_picture = 0;
     switch (gsettings_xfade_auto_mode)
     {
+        // header doesn't work, add this to avoid warning
+        extern long int random();
 	case XFADE_AUTO_MODE_RANDOM:
             _next_picture = random() % picture_num;
 	    break;
@@ -312,7 +313,7 @@ get_next_picture_path ()
     const gchar *_next_picture_path = NULL;
 
     _next_picture_index = get_next_picture_index ();
-    _next_picture_path = g_ptr_array_index (picture_paths, 
+    _next_picture_path = g_ptr_array_index (picture_paths,
 	                                    _next_picture_index);
     return _next_picture_path;
 }
@@ -351,16 +352,16 @@ get_xformed_gdk_pixbuf (const char* pict_path)
 		if (x + w0 <= root_width)
 		    w = w0;
 		else
-		    w = root_width - x;	    
+		    w = root_width - x;
 
 		for (y = 0; y < root_height; y += h0)
 		{
 		    if (y + h0 <= root_height)
 			h = h0;
 		    else
-			h = root_height - y;	    
+			h = root_height - y;
 
-		    gdk_pixbuf_copy_area (_pixbuf,	   
+		    gdk_pixbuf_copy_area (_pixbuf,
 					  0, 0, w, h,
 					  _xformed_pixbuf,
 					  x, y);
@@ -391,15 +392,15 @@ get_next_xformed_gdk_pixbuf ()
     return _pixbuf;
 }
 #endif
-static gboolean 
+static gboolean
 on_bg_duration_tick (gpointer user_data)
 {
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
-    
+
     fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
     fade_data->interval = TIME_PER_FRAME;
 
-    fade_data->start_time = get_current_time(); 
+    fade_data->start_time = get_current_time();
     fade_data->alpha = 0.0;
 
     g_debug ("on_bg_duration_tick: current_time: %lf", fade_data->start_time);
@@ -407,7 +408,7 @@ on_bg_duration_tick (gpointer user_data)
     gdk_error_trap_push ();
     if (prev_pixmap == None)
     {
-	prev_pixmap = XCreatePixmap (display, root, 
+	prev_pixmap = XCreatePixmap (display, root,
 				           root_width, root_height,
 				           root_depth);
 	_update_rootpmap (prev_pixmap);
@@ -434,7 +435,7 @@ on_bg_duration_tick (gpointer user_data)
     return TRUE;
 }
 
-static void 
+static void
 on_bg_duration_finished (gpointer user_data)
 {
     g_debug ("bg_duration_finished");
@@ -459,7 +460,7 @@ setup_crossfade_timer ()
     gdk_error_trap_push ();
     if (prev_pixmap == None)
     {
-	prev_pixmap = XCreatePixmap (display, root, 
+	prev_pixmap = XCreatePixmap (display, root,
 				     root_width, root_height,
 				     root_depth);
 	_update_rootpmap (prev_pixmap);
@@ -478,7 +479,7 @@ setup_crossfade_timer ()
     fade_data->total_duration = gsettings_xfade_manual_interval/MSEC_PER_SEC;
     fade_data->interval = TIME_PER_FRAME;
 
-    fade_data->start_time = get_current_time(); 
+    fade_data->start_time = get_current_time();
     g_debug ("start_time : %lf", fade_data->start_time);
     GSource* source = g_timeout_source_new (fade_data->interval*MSEC_PER_SEC);
 
@@ -490,7 +491,7 @@ setup_crossfade_timer ()
 
 /*
  */
-static void 
+static void
 setup_timers ()
 {
     if (gsettings_background_duration && picture_num > 1)
@@ -523,12 +524,12 @@ parse_picture_uris (gchar * pic_uri)
     while ((uri_end = strchr (uri_start, DELIMITER)) != NULL)
     {
 	*uri_end = '\0';
-	
+
        	filename_ptr = g_filename_from_uri (uri_start, NULL, NULL);
 	if (filename_ptr != NULL)
 	{
 	    g_ptr_array_add (picture_paths, filename_ptr);
-	    g_hash_table_insert (picture_paths_ht, 
+	    g_hash_table_insert (picture_paths_ht,
 				 filename_ptr,
 				 GUINT_TO_POINTER(picture_num+1));
 	    picture_num ++;
@@ -543,7 +544,7 @@ parse_picture_uris (gchar * pic_uri)
 	if (filename_ptr != NULL)
 	{
 	    g_ptr_array_add (picture_paths, filename_ptr);
-	    g_hash_table_insert (picture_paths_ht, 
+	    g_hash_table_insert (picture_paths_ht,
 				 filename_ptr,
 				 GUINT_TO_POINTER(picture_num+1));
 	    picture_num ++;
@@ -555,7 +556,7 @@ parse_picture_uris (gchar * pic_uri)
     {
 	filename_ptr = g_strdup(BG_DEFAULT_PICTURE);
 	g_ptr_array_add (picture_paths, filename_ptr);
-	g_hash_table_insert (picture_paths_ht, 
+	g_hash_table_insert (picture_paths_ht,
 			     filename_ptr,
 			     GUINT_TO_POINTER(picture_num+1));
 	picture_num =1;
@@ -567,10 +568,10 @@ destroy_picture_path (gpointer data)
     g_free (data);
 }
 /*
- *	it's not efficient to check whether the new picture_uris is the same 
+ *	it's not efficient to check whether the new picture_uris is the same
  *	as the previous value. we just restart all.
  */
-static void 
+static void
 bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_PICTURE_URIS))
@@ -602,7 +603,7 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
     gdk_error_trap_push ();
     if (prev_pixmap == None)
     {
-	Pixmap new_pixmap = XCreatePixmap (display, root, 
+	Pixmap new_pixmap = XCreatePixmap (display, root,
 				       root_width, root_height,
 				       root_depth);
 	prev_pixmap = new_pixmap;
@@ -610,11 +611,11 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
     gdk_error_trap_pop_ignored ();
 
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
-    
+
     fade_data->pixmap = prev_pixmap;
     fade_data->fading_surface = get_surface (prev_pixmap);
     fade_data->end_pixbuf = pb;
-    fade_data->alpha = 1.0;     
+    fade_data->alpha = 1.0;
 
     draw_background (fade_data);
     free_fade_data (fade_data);
@@ -627,7 +628,7 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 /*
  *	handle user-selected picture uri
  */
-static void 
+static void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_PICTURE_URI))
@@ -638,21 +639,21 @@ bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_
     g_free (tmp_image_uri);
     guint tmp_value = GPOINTER_TO_UINT (g_hash_table_lookup (picture_paths_ht, tmp_image_path));
     g_free (tmp_image_path);
-    
+
     g_debug ("picture-uri changed: %d",tmp_value-1);
-    //g_hash_table_lookup can return NULL, so we store 'index+1' in hashtable 
+    //g_hash_table_lookup can return NULL, so we store 'index+1' in hashtable
     if ((tmp_value != 0)&&(tmp_value != picture_index+1))
     {
-	picture_index = tmp_value - 1; 
+	picture_index = tmp_value - 1;
 	g_debug ("change to new current picture index: %d", picture_index);
 	remove_timers ();
 	setup_timers ();
     }
 }
 /*
- *	we should reset timer and start auto	
+ *	we should reset timer and start auto
  */
-static void 
+static void
 bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_BG_DURATION))
@@ -687,7 +688,7 @@ bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpoint
     gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
 
     remove_timers ();
-    
+
     if (gsettings_background_duration)
 	setup_timers ();
 }
@@ -733,7 +734,7 @@ register_account_service_background_path (const char* current_picture)
     {
 	int flags = G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES|
 		    G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS;
-	
+
         GDBusProxy* _proxy = NULL;
 	_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
 						flags,
@@ -751,7 +752,7 @@ register_account_service_background_path (const char* current_picture)
 
 	gint64 user_id = 0;
 	user_id = (gint64)geteuid ();
-	g_debug ("call FindUserById: uid = %i", user_id);
+	g_debug ("call FindUserById: uid = %li", user_id);
 
         GVariant* object_path_var = NULL;
 	error = NULL;
@@ -790,14 +791,14 @@ register_account_service_background_path (const char* current_picture)
 	}
 	g_free (object_path);
     }
-    
+
     error = NULL;
-    g_dbus_proxy_call_sync (AccountsProxy, 
+    g_dbus_proxy_call_sync (AccountsProxy,
 			    "SetBackgroundFile",
 			    g_variant_new("(s)",current_picture),
 			    G_DBUS_CALL_FLAGS_NONE,
-			    -1, 
-			    NULL, 
+			    -1,
+			    NULL,
 			    &error);
     if (error != NULL)
     {
@@ -815,7 +816,7 @@ bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer u
     register_account_service_background_path (cur_pict);
 }
 
-static void 
+static void
 screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 {
     //remove early to avoid fatal X errors
@@ -849,17 +850,17 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
     }
     gdk_error_trap_pop_ignored ();
 
-    Pixmap new_pixmap = XCreatePixmap (display, root, 
+    Pixmap new_pixmap = XCreatePixmap (display, root,
 				       root_width, root_height,
 				       root_depth);
 
     g_debug ("screen_size_changed_cb: new_pixmap = 0x%x", (unsigned)new_pixmap);
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
-    
+
     fade_data->pixmap = new_pixmap;
     fade_data->fading_surface = get_surface (new_pixmap);
     fade_data->end_pixbuf = pb;
-    fade_data->alpha = 1.0;     
+    fade_data->alpha = 1.0;
 
     draw_background (fade_data);
     free_fade_data (fade_data);
@@ -874,7 +875,7 @@ DEEPIN_EXPORT void
 bg_util_connect_screen_signals (GdkWindow* bg_window)
 {
     // xrandr screen resolution handling
-    g_signal_connect (gdk_screen, "size-changed", 
+    g_signal_connect (gdk_screen, "size-changed",
 		      G_CALLBACK (screen_size_changed_cb), bg_window);
     g_signal_connect (gdk_screen, "monitors-changed",
 		      G_CALLBACK (screen_size_changed_cb), bg_window);
@@ -883,7 +884,7 @@ bg_util_connect_screen_signals (GdkWindow* bg_window)
 DEEPIN_EXPORT void
 bg_util_disconnect_screen_signals (GdkWindow* bg_window)
 {
-    g_signal_handlers_disconnect_by_func (gdk_screen, 
+    g_signal_handlers_disconnect_by_func (gdk_screen,
 			   G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
@@ -936,17 +937,17 @@ initial_setup (GSettings *settings)
      *	this is most likely the situation when we first start up.
      *	resolution changed.
      */
-    Pixmap new_pixmap = XCreatePixmap (display, root, 
+    Pixmap new_pixmap = XCreatePixmap (display, root,
 				       root_width, root_height,
 				       root_depth);
     current_rootpmap = new_pixmap;
 
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
-    
+
     fade_data->pixmap = new_pixmap;
     fade_data->fading_surface = get_surface (new_pixmap);
     fade_data->end_pixbuf = pb;
-    fade_data->alpha = 1.0;     
+    fade_data->alpha = 1.0;
 
     draw_background (fade_data);
     cairo_pattern_t* pattern;
@@ -966,7 +967,7 @@ initial_setup (GSettings *settings)
 static GdkFilterReturn
 expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
-    if (((XEvent*)xevent)->type == Expose) 
+    if (((XEvent*)xevent)->type == Expose)
     {
     }
     return GDK_FILTER_CONTINUE;

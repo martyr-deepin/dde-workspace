@@ -21,7 +21,7 @@ typedef struct {
 } Client;
 Client* create_client_from_window(Window w);
 void _update_window_icon(Client *c);
-void _update_window_title(Client *c); 
+void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
 gboolean is_skip_taskbar(Window w);
@@ -79,7 +79,7 @@ void dock_test()
 {
     return;
     int xid = 0x2800006;
-    Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    /* Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default()); */
 
     dock_test_hide();
 

@@ -56,10 +56,8 @@ typedef union
     dbus_message_iter_close_container(iter, sub_iter); \
 } while (0)
 
-const char* jsvalue_to_signature(JSContextRef ctx, JSValueRef jsvalue) 
+const char* jsvalue_to_signature(JSContextRef ctx, JSValueRef jsvalue)
 {
-  char *signature = NULL;
-  
   switch (JSValueGetType(ctx, jsvalue))
   {
     case kJSTypeBoolean:
@@ -127,9 +125,9 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
         case DBUS_TYPE_BOOLEAN:
             {
                 dbus_bool_t value = JSValueToBoolean(ctx, jsvalue);
-                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) { 
-                    g_warning("signatuer:%c error!", type); 
-                    return FALSE; 
+                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) {
+                    g_warning("signatuer:%c error!", type);
+                    return FALSE;
                 }  else {
                     return TRUE;
                 }
@@ -142,9 +140,9 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return FALSE;
                 }
                 double value = JSValueToNumber(ctx, jsvalue, NULL);
-                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) { 
-                    g_warning("signatuer:%c error!", type); 
-                    return FALSE; 
+                if (!dbus_message_iter_append_basic(iter, type, (void*)&value)) {
+                    g_warning("signatuer:%c error!", type);
+                    return FALSE;
                 } else {
                     return TRUE;
                 }
@@ -156,7 +154,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         !dbus_message_iter_append_basic(iter, type, (void*)&value)) {
                     g_free(value);
                     js_fill_exception(ctx, exception, "jsvalue is not an string or memory not enough!");
-                    return FALSE; 
+                    return FALSE;
                 } else {
                     g_free(value);
                     return TRUE;
@@ -170,7 +168,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return FALSE;
                 }
 
-                JSPropertyNameArrayRef prop_names = 
+                JSPropertyNameArrayRef prop_names =
                     JSObjectCopyPropertyNames(ctx, (JSObjectRef)jsvalue);
                 int p_num = JSPropertyNameArrayGetCount(prop_names);
                 if (p_num == 0) {
@@ -261,8 +259,8 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         CASE_NUMBER
                         {
                             //TODO detect illegal number format
-                            JSValueRef excp; 
-                            double value = JSValueToNumber(ctx, 
+                            JSValueRef excp;
+                            double value = JSValueToNumber(ctx,
                                     JSValueMakeString(ctx, key_str), &excp);
 
                             if (excp != NULL) {
@@ -431,7 +429,7 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
 
                 int i=0;
                 do {
-                    if (dbus_message_iter_get_arg_type(&c_iter) == 
+                    if (dbus_message_iter_get_arg_type(&c_iter) ==
                             DBUS_TYPE_DICT_ENTRY) {
                         JSValueRef key;
                         JSStringRef key_str;

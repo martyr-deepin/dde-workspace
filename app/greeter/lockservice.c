@@ -79,13 +79,13 @@ static gboolean do_exit(gpointer user_data);
 
 static GDBusNodeInfo *      node_info = NULL;
 static GDBusInterfaceInfo * interface_info = NULL;
-static GDBusInterfaceVTable interface_table = { 
+static GDBusInterfaceVTable interface_table = {
     method_call:   _bus_method_call,
     get_property:   NULL, /* No properties */
     set_property:   NULL  /* No properties */
 };
 
-void 
+void
 lock_setup_dbus_service ()
 {
     GError* error = NULL;
@@ -113,18 +113,18 @@ static gboolean
 _retry_registration (gpointer user_data)
 {
 
-    lock_service_owner_id = g_bus_own_name (G_BUS_TYPE_SYSTEM, 
-            LOCK_DBUS_NAME, 
+    lock_service_owner_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
+            LOCK_DBUS_NAME,
             G_BUS_NAME_OWNER_FLAGS_NONE,
-            lock_service_reg_id ? NULL : _on_bus_acquired, 
-            _on_name_acquired, 
+            lock_service_reg_id ? NULL : _on_bus_acquired,
+            _on_name_acquired,
             _on_name_lost,
-            NULL, 
+            NULL,
             NULL);
     return TRUE;
 }
 
-static void 
+static void
 _on_bus_acquired (GDBusConnection * connection,
         const gchar * name,
         gpointer user_data)
@@ -137,13 +137,13 @@ _on_bus_acquired (GDBusConnection * connection,
     GError* error = NULL;
     lock_service_reg_id = g_dbus_connection_register_object (connection,
             LOCK_DBUS_OBJ,
-            interface_info, 
+            interface_info,
             &interface_table,
-            user_data, 
-            NULL, 
+            user_data,
+            NULL,
             &error);
 
-    if (error != NULL) 
+    if (error != NULL)
     {
         g_critical ("Unable to register the object to DBus: %s", error->message);
         g_error_free (error);
@@ -157,19 +157,19 @@ _on_bus_acquired (GDBusConnection * connection,
 }
 
 static void
-_on_name_acquired (GDBusConnection * connection, 
-        const gchar * name, 
+_on_name_acquired (GDBusConnection * connection,
+        const gchar * name,
         gpointer user_data)
 {
     g_debug ("Dbus name acquired");
 }
 
 static void
-_on_name_lost (GDBusConnection * connection, 
-        const gchar * name, 
+_on_name_lost (GDBusConnection * connection,
+        const gchar * name,
         gpointer user_data)
 {
-    if (connection == NULL) 
+    if (connection == NULL)
     {
         g_critical("Unable to get a connection to DBus");
     }
@@ -208,14 +208,14 @@ _bus_method_call (GDBusConnection * connection,
         g_variant_get (params, "(ss)", &username, &password);
 
         retval = g_variant_new("(b)", _bus_handle_unlock_check(username, password));
-        
+
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
     }
 
     if (error != NULL) {
         g_dbus_method_invocation_return_dbus_error (invocation,
-                "com.deepin.dde.lock.Error", 
+                "com.deepin.dde.lock.Error",
                 error->message);
         g_error_free (error);
 
@@ -228,7 +228,7 @@ static void
 _bus_handle_exit_lock (const gchar *username, const gchar *password)
 {
     gchar *lockpid_file = g_strdup_printf ("%s%s%s", "/home/", username, "/dlockpid");
-    
+
     if (!g_file_test (lockpid_file, G_FILE_TEST_EXISTS)){
         g_debug("user hadn't locked");
 
@@ -242,7 +242,9 @@ _bus_handle_exit_lock (const gchar *username, const gchar *password)
 
             g_debug ("kill user lock by pid");
             if (succeed) {
-    
+
+                // header doesn't work, add this to avoid warning
+                extern int kill(pid_t, int);
                 if (kill((pid_t)strtol (contents, NULL, 10), SIGTERM) == 0){
                     g_debug ("kill user lock succeed");
 
@@ -284,14 +286,15 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     {
         succeed = TRUE;
     }
-    
+
     return succeed;
 }
 
-static gboolean 
+static gboolean
 do_exit (gpointer user_data)
 {
     g_main_loop_quit (loop);
+    return FALSE;
 }
 
 int main(int argc, char **argv)

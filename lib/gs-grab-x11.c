@@ -28,7 +28,7 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#define gs_debug(x, ...) 
+#define gs_debug(x, ...)
 
 #ifdef HAVE_XF86MISCSETGRABKEYSSTATE
 # include <X11/extensions/xf86misc.h>
@@ -78,7 +78,7 @@ grab_string (int status)
 }
 
 #ifdef HAVE_XF86MISCSETGRABKEYSSTATE
-/* This function enables and disables the Ctrl-Alt-KP_star and 
+/* This function enables and disables the Ctrl-Alt-KP_star and
    Ctrl-Alt-KP_slash hot-keys, which (in XFree86 4.2) break any
    grabs and/or kill the grabbing client.  That would effectively
    unlock the screen, so we don't like that.
@@ -203,7 +203,7 @@ gs_grab_get_mouse (GSGrab    *grab,
                 grab->priv->mouse_hide_cursor = hide_cursor;
         }
 
-        gdk_cursor_unref (cursor);
+        g_object_unref (cursor);
 
         return status;
 }

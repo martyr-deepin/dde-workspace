@@ -50,9 +50,9 @@ void fileops_confirm_trash ()
     GtkWidget* dialog;
     int result;
 
-    dialog = gtk_message_dialog_new (NULL, 
+    dialog = gtk_message_dialog_new (NULL,
 				     GTK_DIALOG_MODAL,
-	                             GTK_MESSAGE_WARNING, 
+	                             GTK_MESSAGE_WARNING,
 				     GTK_BUTTONS_CANCEL,
 				     NULL);
     gtk_window_set_title (GTK_WINDOW (dialog), _("Empty Trash"));
@@ -68,7 +68,7 @@ void fileops_confirm_trash ()
 		  "secondary-text", _("All items in the Trash will be permanently deleted."),
 		  NULL);
 
-    gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Empty _Trash"), 
+    gtk_dialog_add_buttons (GTK_DIALOG (dialog), _("Empty _Trash"),
 			    GTK_RESPONSE_OK, NULL);
 
     gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
@@ -95,9 +95,9 @@ void fileops_empty_trash ()
 
     //iterate through all mounts
     GList* l;
-    for (l = mount_list; l != NULL; l = l->next) 
+    for (l = mount_list; l != NULL; l = l->next)
     {
-	trash_list = g_list_concat (trash_list, 
+	trash_list = g_list_concat (trash_list,
 		                    _get_trash_dirs_for_mount (l->data));
     }
     g_list_free_full (mount_list, g_object_unref);
@@ -120,7 +120,7 @@ _get_trash_dirs_for_mount (GMount *mount)
     GList *list;
 
     root = g_mount_get_root (mount);
-    if (root == NULL) 
+    if (root == NULL)
 	return NULL;
 
     list = NULL;
@@ -132,16 +132,16 @@ _get_trash_dirs_for_mount (GMount *mount)
 
 	list = g_list_prepend (list, g_file_get_child (trash, "files"));
 	list = g_list_prepend (list, g_file_get_child (trash, "info"));
-		
+
 	g_object_unref (trash);
-		
+
 	relpath = g_strdup_printf (".Trash-%d", getuid ());
 	trash = g_file_get_child (root, relpath);
 	g_free (relpath);
 
 	list = g_list_prepend (list, g_file_get_child (trash, "files"));
 	list = g_list_prepend (list, g_file_get_child (trash, "info"));
-		
+
 	g_object_unref (trash);
     }
     g_object_unref (root);
@@ -157,18 +157,20 @@ _empty_trash_job (GIOSchedulerJob *io_job,
     GList* trash_list = (GList*) user_data;
 
     GList* l;
-    for (l = trash_list; l != NULL; l = l->next) 
+    for (l = trash_list; l != NULL; l = l->next)
 	    _delete_trash_file (l->data, FALSE, TRUE);
 
     g_io_scheduler_job_send_to_mainloop_async (io_job,
 	                                       _empty_trash_job_done,
 					       user_data,
 					       NULL);
+    return FALSE;
 }
 static gboolean
 _empty_trash_job_done (gpointer user_data)
 {
     g_list_free_full (user_data, g_object_unref);
+    return FALSE;
 }
 static void
 _delete_trash_file (GFile *file,
@@ -186,7 +188,7 @@ _delete_trash_file (GFile *file,
 						G_FILE_ATTRIBUTE_STANDARD_TYPE,
 						G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 						NULL, NULL);
-	if (enumerator) 
+	if (enumerator)
 	{
 	    while ((info = g_file_enumerator_next_file (enumerator, NULL, NULL)) != NULL)
 	    {
@@ -200,7 +202,7 @@ _delete_trash_file (GFile *file,
 	    g_object_unref (enumerator);
 	}
     }
-    if (del_file) 
+    if (del_file)
     {
 	g_file_delete (file, NULL, NULL);
     }

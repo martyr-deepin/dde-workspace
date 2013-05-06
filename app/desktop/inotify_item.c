@@ -163,7 +163,7 @@ gboolean _inotify_poll()
 
     if (_inotify_fd != -1) {
         char buffer[EVENT_BUF_LEN];
-        int length = read(_inotify_fd, buffer, EVENT_BUF_LEN); 
+        int length = read(_inotify_fd, buffer, EVENT_BUF_LEN);
 
         struct inotify_event *move_out_event = NULL;
         GFile* old = NULL;
@@ -235,9 +235,9 @@ gboolean _inotify_poll()
 gboolean desktop_file_filter(const char *file_name)
 {
     g_assert(file_name != NULL);
-    if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
+    if((file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR)) || g_str_has_suffix(file_name, "~"))
         return TRUE;
-    else 
+    else
         return FALSE;
 }
 

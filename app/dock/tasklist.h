@@ -27,5 +27,6 @@ void update_task_list();
 void close_launcher_window();
 gboolean dock_has_overlay_client();
 gboolean dock_has_maximize_client();
+double dock_get_active_window();
 
 #endif

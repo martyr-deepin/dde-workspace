@@ -22,7 +22,7 @@ enum State {
 
 
 
-static 
+static
 void method_free(gpointer data)
 {
     struct Method* m = (struct Method*)data;
@@ -69,7 +69,7 @@ void parse_property(const gchar **names, const gchar **values)
         if (g_strcmp0(*n_c, "access") == 0) {
             if (g_strcmp0(*v_c, "read") == 0)
                 c_property->access = kJSPropertyAttributeReadOnly;
-            else if (g_strcmp0(*v_c, "readwrite") == 0) 
+            else if (g_strcmp0(*v_c, "readwrite") == 0)
                 c_property->access = kJSPropertyAttributeNone;
             else
                 g_assert_not_reached();
@@ -87,7 +87,7 @@ void parse_signal(const gchar **names, const gchar **values)
 
     while (*n_c) {
         if (g_strcmp0(*n_c, "type") == 0) {
-            c_signal->signature = 
+            c_signal->signature =
                 g_slist_append((GSList*)c_signal->signature, g_strdup(*v_c));
             return;
         }
@@ -119,15 +119,15 @@ void parse_parms(const gchar **names, const gchar **values)
     }
     g_assert(type != NULL);
     if (in)  {
-        c_method->signature_in = 
+        c_method->signature_in =
             g_slist_append(c_method->signature_in, g_strdup(type));
     } else {
-        c_method->signature_out = 
+        c_method->signature_out =
             g_slist_append(c_method->signature_out, g_strdup(type));
     }
 }
 
-static 
+static
 void parse_start(GMarkupParseContext* context,
         const gchar *element_name,
         const gchar **attribute_names,
@@ -154,7 +154,7 @@ void parse_start(GMarkupParseContext* context,
     if (state != S_NONE) {
         if (g_strcmp0(element_name, "method") == 0) {
             state = S_METHOD;
-            c_method = g_new0(struct Method, 1); 
+            c_method = g_new0(struct Method, 1);
             while (g_strcmp0(*name_cursor, "name") != 0) {
                 name_cursor++;
                 value_cursor++;
@@ -187,11 +187,16 @@ void parse_start(GMarkupParseContext* context,
         case S_SIGNAL:
             parse_signal(attribute_names, attribute_values);
             break;
+        // fall through, avoid warning
+        case S_NONE:
+        case S_PENDING:
+        case S_PROPERTY:
+            break;
     }
 }
 
 
-static 
+static
 void parse_end(GMarkupParseContext *context,
         const gchar* element_name, gpointer user_data, GError **error)
 {
@@ -199,16 +204,16 @@ void parse_end(GMarkupParseContext *context,
         state = S_NONE;
     }
     if (state == S_METHOD && g_strcmp0(element_name, "method") == 0) {
-        state == S_PENDING;
+        state = S_PENDING;
         g_hash_table_insert(c_obj_info->methods, c_method->name, c_method);
     }
     if (state == S_PROPERTY && g_strcmp0(element_name, "property") == 0) {
-        state == S_PENDING;
+        state = S_PENDING;
         g_hash_table_insert(c_obj_info->properties, c_property->name, c_property);
     }
 
     if (state == S_SIGNAL && g_strcmp0(element_name, "signal") == 0) {
-        state == S_PENDING;
+        state = S_PENDING;
         g_hash_table_insert(c_obj_info->signals, c_signal->name, c_signal);
     }
 }
@@ -220,13 +225,13 @@ void build_current_object_info(const char* xml, const char* interface)
     static GMarkupParser parser = {
         .start_element = parse_start,
         .end_element = parse_end,
-        .text = NULL, 
+        .text = NULL,
         .passthrough = NULL,
         .error = NULL
     };
 
     GMarkupParseContext *context = g_markup_parse_context_new(&parser, 0, NULL, NULL);
-    if (g_markup_parse_context_parse(context, xml, strlen(xml), NULL) 
+    if (g_markup_parse_context_parse(context, xml, strlen(xml), NULL)
             == FALSE) {
         g_warning("introspect's xml content error!\n");
     }
@@ -263,7 +268,7 @@ struct DBusObjectInfo* build_object_info(
     }
     g_object_unref(proxy);
 
-    if (info_xml == NULL) 
+    if (info_xml == NULL)
         return NULL;
 
     build_current_object_info(info_xml, interface);
