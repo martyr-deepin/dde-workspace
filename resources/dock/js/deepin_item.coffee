@@ -35,10 +35,10 @@ try
     icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-app_list.append(show_launcher)
+app_list.append_app_item(show_launcher)
 
 show_desktop = new ShowDesktop("show_desktop", icon_desktop, _("Show/Hiden Desktop"))
-app_list.append(show_desktop)
+app_list.append_app_item(show_desktop)
 
 DCore.signal_connect("launcher_running", ->
     show_launcher.show(true)

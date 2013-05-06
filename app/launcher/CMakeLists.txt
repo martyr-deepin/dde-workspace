@@ -19,7 +19,4 @@ install(
     DESTINATION ${RESOURCE_DIR}
     )
 
-execute_process(
-    COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
-    )
+GEN_JS_FILE(${NAME})

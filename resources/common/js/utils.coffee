@@ -135,3 +135,4 @@ ajax = (url, method, callback, asyn=true) ->
     xhr.onreadystatechange = ->
         if (xhr.readyState == 4 and xhr.status == 200)
             callback?(xhr)
+
