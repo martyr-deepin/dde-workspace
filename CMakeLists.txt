@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
+option(DEVELOP "enable develop mode (use src's resource)" false)
+option(TEST "enable test mode (run project's test code)" false)
+
 
 macro(GEN_JSC_SOURCE2 JSC_GEN_SRC CFG_DIR OUTPUT)
     set(OUT ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT})
@@ -45,6 +48,10 @@ else()
     add_definitions("-DDATA_DIR=\"${CMAKE_INSTALL_PREFIX}/share/dde/data\"")
 endif()
 
+if (TEST)
+    add_definitions("-D__DUI_DEBUG=1")
+endif()
+
 add_definitions("-DRESOURCE_DIR=\"${RESOURCE_DIR}\"")
 
 find_package(PkgConfig)
@@ -62,6 +69,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 set(BIN_JSC_GEN ${CMAKE_CURRENT_SOURCE_DIR}/lib/jsc_extension/jsc_gen.py)
 
 set(DWEBVIEW_INCLUDE_DIRS ${WEBKIT_INCLUDE_DIRS})
+set(DTEST_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test)
 set(DWEBVIEW_LIBRARIES ${WEBKIT_LIBRARIES} ${DBUS_LIBRARIES} m X11 Xext sqlite3)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 

@@ -5,16 +5,16 @@ add_subdirectory(notification_area)
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
+include_directories(${DTEST_INCLUDE_DIRS})
 
-SET(TEST_SRC "../../test/${NAME}_test.c" "../../test/test.c")
 SET(SRC_LIST dock.c dock_hide.c dock_config.c tray.c handle_icon.c
     dominant_color.c tasklist.c draw.c launcher.c region.c dbus.c
     special_window.c ${JSC_GEN})
 
-add_executable(${NAME} ${SRC_LIST} ${TEST_SRC})
+add_executable(${NAME} ${SRC_LIST} dock_test.c)
 
 
-target_link_libraries(${NAME} dcom dentry dbus tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus dtest tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

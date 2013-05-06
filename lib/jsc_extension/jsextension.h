@@ -20,10 +20,9 @@
  **/
 #ifndef __JS_EXTENSION__
 #define __JS_EXTENSION__
+#include "config.h"
 #include <JavaScriptCore/JavaScript.h>
 #include <glib.h>
-
-#define JS_EXPORT_API
 
 typedef struct JSData {
     JSContextRef ctx;

@@ -7,9 +7,9 @@
 #include "jsextension.h"
 #include "dbus_introspect.h"
 
-static gboolean init = FALSE;
-static DBusGConnection* sys_con = NULL;
-static DBusGConnection* session_con = NULL;
+PRIVATE gboolean init = FALSE;
+PRIVATE DBusGConnection* sys_con = NULL;
+PRIVATE DBusGConnection* session_con = NULL;
 
 
 void dbus_init()

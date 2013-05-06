@@ -106,10 +106,8 @@ setTimeout(->
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE)
 , 100)
 
-setTimeout(->
-    DCore.Dock.test("1")
-, 3000)
 
 DCore.Dock.emit_webview_ok()
 
 show_desktop.show(DCore.Dock.get_desktop_status())
+DCore.Dock.test()
