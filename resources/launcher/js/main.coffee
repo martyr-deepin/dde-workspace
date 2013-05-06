@@ -28,6 +28,9 @@ DCore.signal_connect("lost_focus", (info)->
         _save_hidden_apps()
         DCore.Launcher.exit_gui()
 )
+DCore.signal_connect("set_bg", (info)->
+    document.body.style.backgroundImage = info.bg_path
+)
 DCore.Launcher.notify_workarea_size()
 
 
@@ -176,6 +179,7 @@ _init_hidden_icons = ->
             hidden_icons[id].hide_icon()
     return
 
+DCore.Launcher.set_background()
 init_search_box()
 init_all_applications()
 init_category_list()

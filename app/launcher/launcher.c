@@ -38,6 +38,7 @@
 
 static GKeyFile* k_apps = NULL;
 static GtkWidget* container = NULL;
+static GtkWidget *webview = NULL;
 static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
@@ -151,13 +152,25 @@ void _set_launcher_background(GdkWindow* win)
 
     g_debug("blur pic path: %s\n", blur_path);
 
+    char* real_bg = blur_path;
+
     if (!_set_launcher_background_aux(win, blur_path)) {
         g_debug("no blur pic, use current bg: %s\n", bg_path);
         _set_launcher_background_aux(win, bg_path);
+        real_bg = _set_launcher_background_aux(win, bg_path) ? bg_path : "";
     }
+
+    js_post_message_simply("set_bg", "{\"bg_path\": \"%s\"}", real_bg);
+
     g_object_unref(dde_bg_g_settings);
     g_free(blur_path);
     g_free(bg_path);
+}
+
+JS_EXPORT_API
+void launcher_set_background()
+{
+    _set_launcher_background(gtk_widget_get_window(webview));
 }
 
 static
@@ -218,7 +231,7 @@ int main(int argc, char* argv[])
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
-    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
+    webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
@@ -228,7 +241,6 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
 
-    _set_launcher_background(gtk_widget_get_window(webview));
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
