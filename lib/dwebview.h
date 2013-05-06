@@ -21,6 +21,7 @@
 #ifndef __DEEPIN_WEBVIEW__
 #define __DEEPIN_WEBVIEW__
 
+#include "config.h"
 #include <glib.h>
 #include <glib-object.h>
 #include <webkit/webkit.h>

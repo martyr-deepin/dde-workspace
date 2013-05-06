@@ -4,7 +4,7 @@
 #include <string.h>
 #include <glib.h>
 #include "test.h"
-#include "../app/dock/tasklist.h"
+#include "tasklist.h"
 typedef struct {
     char* title; /* _NET_WM_NAME */
     char* clss; /* WMClass */
