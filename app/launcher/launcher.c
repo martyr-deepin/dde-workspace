@@ -94,7 +94,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     cairo_pattern_t* pt = cairo_pattern_create_for_surface(img_surface);
 
-    if (cairo_pattern_status(pt) != CAIRO_STATUS_SUCCESS) {
+    if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
         g_warning("create cairo pattern fail!\n");
         cairo_surface_destroy(img_surface);
         cairo_destroy(cr);
@@ -158,12 +158,6 @@ void _set_launcher_background(GdkWindow* win)
     g_object_unref(dde_bg_g_settings);
     g_free(blur_path);
     g_free(bg_path);
-}
-
-static
-gboolean _draw_callback(GtkWidget* widget, cairo_t* cr, gpointer data)
-{
-    _set_launcher_background((GdkWindow*)data);
 }
 
 static
@@ -234,7 +228,7 @@ int main(int argc, char* argv[])
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
 
-    g_signal_connect(webview, "draw", G_CALLBACK(_draw_callback), gtk_widget_get_window(webview));
+    _set_launcher_background(gtk_widget_get_window(webview));
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
