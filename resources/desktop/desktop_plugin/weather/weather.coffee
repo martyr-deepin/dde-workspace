@@ -239,8 +239,10 @@ class Weather
                 localStorage.removeItem(client_ip)
                 str = client_ip.toString()
                 echo str
-                prov_client = str.substring(str.length-11,str.length-9)
-                city_client = str.substring(str.length-8,str.length-6)
+                str_provcity = str.slice(str.indexOf("国")+2,-6)
+                echo str_provcity.indexOf(" ")#2
+                prov_client = str_provcity.slice(0,2)
+                city_client = str_provcity.slice(3)
                 echo "prov_client"
                 echo prov_client                  
                 echo "city_client"
