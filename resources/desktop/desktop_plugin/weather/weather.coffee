@@ -81,7 +81,9 @@ class Weather
         @choosecity = create_element("select", "choosecity", @more_city_menu)
         close = create_element("div","close",@element)
         closebutton = create_img("closebutton",@img_url_first + "closebutton.png",close)
-
+        @dialog = create_img("dialog",@img_url_first+"dialog.png",more_city)        
+        dialogmessage = create_element("a","dialogmessage",@dialog)
+        dialogmessage.textContent = "单击以选择城市～～"
         close.addEventListener("mouseover", ->
             closebutton.style.display = "block"
             )
@@ -104,10 +106,15 @@ class Weather
             else 
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
-                @more_weather_menu.style.zIndex = "1"
+                @more_weather_menu.style.zIndex = "0"
         )        
-
-        more_city.addEventListener("click", =>             
+        more_city.addEventListener("mouseover", =>
+            # @dialog.style.display = "block"
+            )
+        more_city.addEventListener("mouseout", =>
+            @dialog.style.display = "none"
+            )
+        more_city.addEventListener("click", =>                         
             if @more_city_menu.style.display == "none"
                 @more_city_menu.style.display = "block"
                 @chooseprov.style.display = "block"
@@ -119,15 +126,26 @@ class Weather
                 @chooseprov.style.display = "none"
                 @choosecity.style.display = "none"                
                 @more_weather_menu.style.display = "none"
-                @more_city_menu.style.zIndex = "1"
+                @more_city_menu.style.zIndex = "0"
 
+            @dialog.style.display = "none"
             @chooseprov.size = 13
             @chooseprov.options.length = 0 #clear the prov option value
+            provinit = create_element("option","provinit",@chooseprov)
+            provinit.innerText = "--省--"
+            provinit.selected = "true"
+            provinit.addEventListener("click", ->
+                alert "provinit click"
+            )
             for key of prov2city
                 provincetemp = create_element("option", "provincetemp", @chooseprov)
                 provincetemp.innerText = key
-            # citytemp = create_element("option", "citytemp", @choosecity)
-            # citytemp.innerText = "--市--"
+
+            @choosecity.size = 1
+            @choosecity.options.length = 0 #clear the city option value
+            cityinit = create_element("option", "cityinit", @choosecity)
+            cityinit.innerText = "--市--"
+            cityinit.selected = "true"
             # for provin of allname.data
             #     provincetemp = create_element("option", "provincetemp", @chooseprov)
             #     provincetemp.innerText = allname.data[provin].省
@@ -139,14 +157,13 @@ class Weather
             provIndex = @chooseprov.selectedIndex #序号，取当前选中选项的序号 
             @provincevalue = @chooseprov.options[provIndex].value 
             echo @provincevalue
-            # @chooseprov.size = 2
-
+            # @chooseprov.size = 1
             
             if prov2city[@provincevalue].length < 13                
                 @choosecity.size = prov2city[@provincevalue].length
                 # @choosecity.size = allname.data[@provincevalue].市.length
             else @choosecity.size = 13
-            @choosecity.options.length = 1 #clear the city option value
+            @choosecity.options.length = 1
             for cityvalue in prov2city[@provincevalue]
                 citytemp = create_element("option", "citytemp", @choosecity)
                 citytemp.innerText = cityvalue
@@ -156,6 +173,7 @@ class Weather
             #             citytemp = create_element("option", "citytemp", @choosecity)
             #             citytemp.innerText = allname.data[provin].市[ci].市名
             # chooseprov.options.length = 1;
+
             ) 
         @chooseprov.addEventListener("blur", ->
             echo "prov blur"            
@@ -195,23 +213,52 @@ class Weather
             @refresh.style.backgroundColor = "gray"
             @weathergui_update(@cityurl)
         )
-
-    ajax : (url, method, callback, asyn=true) ->
+        # @element.addEventListener("mouseout", =>
+            # @more_weather_menu.style.display = "none"
+            # @more_city_menu.style.display = "none"
+            # echo "@element mouseout"
+            # @more_weather_menu.style.zIndex = "0"
+            # )
+    ajax : (url, method, callback, asyn=true) =>
         xhr = new XMLHttpRequest()
         xhr.open(method, url, asyn)
         xhr.send(null)
-        xhr.onreadystatechange = ->
+        xhr.onreadystatechange = =>
             if (xhr.readyState == 4 and xhr.status == 200)
                 echo "XMLHttpRequest received all data."
                 callback?(xhr)                
             else if xhr.status isnt 200 
-                echo "XMLHttpRequest can't receive data."   
-
+                echo "XMLHttpRequest can't receive data."
+                @dialog.style.display = "block"   
+    get_client_cityid : =>
+        ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
+        # ip_url = "http://61.4.185.48:81/g/"
+        @ajax(ip_url,"GET", (xhr)=>
+                localStorage.setItem(client_ip,xhr.responseText)
+                client_ip = localStorage.getItem(client_ip)
+                localStorage.removeItem(client_ip)
+                str = client_ip.toString()
+                echo str
+                prov_client = str.substring(str.length-11,str.length-9)
+                city_client = str.substring(str.length-8,str.length-6)
+                echo "prov_client"
+                echo prov_client                  
+                echo "city_client"
+                echo city_client               
+                for provin of allname.data
+                    if allname.data[provin].省 is prov_client
+                        # echo allname.data[provin].省
+                        for ci of allname.data[provin].市
+                            if allname.data[provin].市[ci].市名 is city_client
+                                # echo allname.data[provin].市[ci].市名
+                                echo allname.data[provin].市[ci].编码
+                                cityid_init = allname.data[provin].市[ci].编码
+                                cityurl_init = "http://m.weather.com.cn/data/"+cityid_init+".html"    
+                                @weathergui_update(cityurl_init)
+            )
     weathergui_init: =>
         window.loader.addcss('desktop_plugin/weather/weather.css', 'screen print').load()
-        # cityid_init = 101010100  #101200101 #101010100
-        # cityurl_init = "http://m.weather.com.cn/data/"+cityid_init+".html"    
-        # @weathergui_update(cityurl_init)
+        @get_client_cityid()
 
     weathergui_update: (url)=>
         # echo "weathergui_update....."        
