@@ -28,12 +28,6 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#define gs_debug(x, ...)
-
-#ifdef HAVE_XF86MISCSETGRABKEYSSTATE
-# include <X11/extensions/xf86misc.h>
-#endif /* HAVE_XF86MISCSETGRABKEYSSTATE */
-
 #include "gs-grab.h"
 
 static void     gs_grab_class_init (GSGrabClass *klass);
@@ -48,8 +42,6 @@ static gpointer grab_object = NULL;
 
 struct GSGrabPrivate
 {
-        GDBusConnection *session_bus;
-
         guint      mouse_hide_cursor : 1;
         GdkWindow *mouse_grab_window;
         GdkWindow *keyboard_grab_window;
@@ -58,86 +50,6 @@ struct GSGrabPrivate
 
         GtkWidget *invisible;
 };
-
-static const char *
-grab_string (int status)
-{
-        switch (status) {
-        case GDK_GRAB_SUCCESS:          return "GrabSuccess";
-        case GDK_GRAB_ALREADY_GRABBED:  return "AlreadyGrabbed";
-        case GDK_GRAB_INVALID_TIME:     return "GrabInvalidTime";
-        case GDK_GRAB_NOT_VIEWABLE:     return "GrabNotViewable";
-        case GDK_GRAB_FROZEN:           return "GrabFrozen";
-        default:
-                {
-                        static char foo [255];
-                        sprintf (foo, "unknown status: %d", status);
-                        return foo;
-                }
-        }
-}
-
-#ifdef HAVE_XF86MISCSETGRABKEYSSTATE
-/* This function enables and disables the Ctrl-Alt-KP_star and
-   Ctrl-Alt-KP_slash hot-keys, which (in XFree86 4.2) break any
-   grabs and/or kill the grabbing client.  That would effectively
-   unlock the screen, so we don't like that.
-
-   The Ctrl-Alt-KP_star and Ctrl-Alt-KP_slash hot-keys only exist
-   if AllowDeactivateGrabs and/or AllowClosedownGrabs are turned on
-   in XF86Config.  I believe they are disabled by default.
-
-   This does not affect any other keys (specifically Ctrl-Alt-BS or
-   Ctrl-Alt-F1) but I wish it did.  Maybe it will someday.
- */
-static void
-xorg_lock_smasher_set_active (GSGrab  *grab,
-                              gboolean active)
-{
-        int status, event, error;
-
-	if (!XF86MiscQueryExtension (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), &event, &error)) {
-		gs_debug ("No XFree86-Misc extension present");
-		return;
-	}
-
-        if (active) {
-                gs_debug ("Enabling the x.org grab smasher");
-        } else {
-                gs_debug ("Disabling the x.org grab smasher");
-        }
-
-        gdk_error_trap_push ();
-
-        status = XF86MiscSetGrabKeysState (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), active);
-
-        gdk_display_sync (gdk_display_get_default ());
-        error = gdk_error_trap_pop ();
-
-        if (active && status == MiscExtGrabStateAlready) {
-                /* shut up, consider this success */
-                status = MiscExtGrabStateSuccess;
-        }
-
-        if (error == Success) {
-                gs_debug ("XF86MiscSetGrabKeysState(%s) returned %s\n",
-                          active ? "on" : "off",
-                          (status == MiscExtGrabStateSuccess ? "MiscExtGrabStateSuccess" :
-                           status == MiscExtGrabStateLocked  ? "MiscExtGrabStateLocked"  :
-                           status == MiscExtGrabStateAlready ? "MiscExtGrabStateAlready" :
-                           "unknown value"));
-        } else {
-                gs_debug ("XF86MiscSetGrabKeysState(%s) failed with error code %d\n",
-                          active ? "on" : "off", error);
-        }
-}
-#else
-static void
-xorg_lock_smasher_set_active (GSGrab  *grab,
-                              gboolean active)
-{
-}
-#endif /* HAVE_XF86MISCSETGRABKEYSSTATE */
 
 static int
 gs_grab_get_keyboard (GSGrab    *grab,
@@ -149,7 +61,7 @@ gs_grab_get_keyboard (GSGrab    *grab,
         g_return_val_if_fail (window != NULL, FALSE);
         g_return_val_if_fail (screen != NULL, FALSE);
 
-        gs_debug ("Grabbing keyboard widget=%X", (guint32) GDK_WINDOW_XID (window));
+        g_debug ("Grabbing keyboard widget=%X", (guint32) GDK_WINDOW_XID (window));
         status = gdk_keyboard_grab (window, FALSE, GDK_CURRENT_TIME);
 
         if (status == GDK_GRAB_SUCCESS) {
@@ -164,7 +76,7 @@ gs_grab_get_keyboard (GSGrab    *grab,
 
                 grab->priv->keyboard_grab_screen = screen;
         } else {
-                gs_debug ("Couldn't grab keyboard!  (%s)", grab_string (status));
+                g_debug ("Couldn't grab keyboard!");
         }
 
         return status;
@@ -184,7 +96,7 @@ gs_grab_get_mouse (GSGrab    *grab,
 
         cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
 
-        gs_debug ("Grabbing mouse widget=%X", (guint32) GDK_WINDOW_XID (window));
+        g_debug ("Grabbing mouse widget=%X", (guint32) GDK_WINDOW_XID (window));
         status = gdk_pointer_grab (window, TRUE, 0, NULL,
                                    (hide_cursor ? cursor : NULL),
                                    GDK_CURRENT_TIME);
@@ -208,24 +120,18 @@ gs_grab_get_mouse (GSGrab    *grab,
         return status;
 }
 
-void
-gs_grab_keyboard_reset (GSGrab *grab)
+static gboolean
+gs_grab_release_keyboard (GSGrab *grab)
 {
+        g_debug ("Ungrabbing keyboard");
+        gdk_keyboard_ungrab (GDK_CURRENT_TIME);
+
         if (grab->priv->keyboard_grab_window != NULL) {
                 g_object_remove_weak_pointer (G_OBJECT (grab->priv->keyboard_grab_window),
                                               (gpointer *) &grab->priv->keyboard_grab_window);
         }
         grab->priv->keyboard_grab_window = NULL;
         grab->priv->keyboard_grab_screen = NULL;
-}
-
-static gboolean
-gs_grab_release_keyboard (GSGrab *grab)
-{
-        gs_debug ("Ungrabbing keyboard");
-        gdk_keyboard_ungrab (GDK_CURRENT_TIME);
-
-        gs_grab_keyboard_reset (grab);
 
         return TRUE;
 }
@@ -245,7 +151,7 @@ gs_grab_mouse_reset (GSGrab *grab)
 gboolean
 gs_grab_release_mouse (GSGrab *grab)
 {
-        gs_debug ("Ungrabbing pointer");
+        g_debug ("Ungrabbing pointer");
         gdk_pointer_ungrab (GDK_CURRENT_TIME);
 
         gs_grab_mouse_reset (grab);
@@ -271,27 +177,27 @@ gs_grab_move_mouse (GSGrab    *grab,
         }
 
         if (grab->priv->mouse_grab_window == window) {
-                gs_debug ("Window %X is already grabbed, skipping",
+                g_debug ("Window %X is already grabbed, skipping",
                           (guint32) GDK_WINDOW_XID (grab->priv->mouse_grab_window));
                 return TRUE;
         }
 
 #if 0
-        gs_debug ("Intentionally skipping move pointer grabs");
+        g_debug ("Intentionally skipping move pointer grabs");
         /* FIXME: GTK doesn't like having the pointer grabbed */
         return TRUE;
 #else
         if (grab->priv->mouse_grab_window) {
-                gs_debug ("Moving pointer grab from %X to %X",
+                g_debug ("Moving pointer grab from %X to %X",
                           (guint32) GDK_WINDOW_XID (grab->priv->mouse_grab_window),
                           (guint32) GDK_WINDOW_XID (window));
         } else {
-                gs_debug ("Getting pointer grab on %X",
+                g_debug ("Getting pointer grab on %X",
                           (guint32) GDK_WINDOW_XID (window));
         }
 #endif
 
-        gs_debug ("*** doing X server grab");
+        g_debug ("*** doing X server grab");
         gdk_x11_grab_server ();
 
         old_window = grab->priv->mouse_grab_window;
@@ -310,11 +216,11 @@ gs_grab_move_mouse (GSGrab    *grab,
         }
 
         if ((result != GDK_GRAB_SUCCESS) && old_window) {
-                gs_debug ("Could not grab mouse for new window.  Resuming previous grab.");
+                g_debug ("Could not grab mouse for new window.  Resuming previous grab.");
                 gs_grab_get_mouse (grab, old_window, old_screen, old_hide_cursor);
         }
 
-        gs_debug ("*** releasing X server grab");
+        g_debug ("*** releasing X server grab");
         gdk_x11_ungrab_server ();
         gdk_flush ();
 
@@ -331,22 +237,22 @@ gs_grab_move_keyboard (GSGrab    *grab,
         GdkScreen *old_screen;
 
         if (grab->priv->keyboard_grab_window == window) {
-                gs_debug ("Window %X is already grabbed, skipping",
+                g_debug ("Window %X is already grabbed, skipping",
                           (guint32) GDK_WINDOW_XID (grab->priv->keyboard_grab_window));
                 return TRUE;
         }
 
         if (grab->priv->keyboard_grab_window != NULL) {
-                gs_debug ("Moving keyboard grab from %X to %X",
+                g_debug ("Moving keyboard grab from %X to %X",
                           (guint32) GDK_WINDOW_XID (grab->priv->keyboard_grab_window),
                           (guint32) GDK_WINDOW_XID (window));
         } else {
-                gs_debug ("Getting keyboard grab on %X",
+                g_debug ("Getting keyboard grab on %X",
                           (guint32) GDK_WINDOW_XID (window));
 
         }
 
-        gs_debug ("*** doing X server grab");
+        g_debug ("*** doing X server grab");
         gdk_x11_grab_server ();
 
         old_window = grab->priv->keyboard_grab_window;
@@ -364,11 +270,11 @@ gs_grab_move_keyboard (GSGrab    *grab,
         }
 
         if ((result != GDK_GRAB_SUCCESS) && old_window) {
-                gs_debug ("Could not grab keyboard for new window.  Resuming previous grab.");
+                g_debug ("Could not grab keyboard for new window.  Resuming previous grab.");
                 gs_grab_get_keyboard (grab, old_window, old_screen);
         }
 
-        gs_debug ("*** releasing X server grab");
+        g_debug ("*** releasing X server grab");
         gdk_x11_ungrab_server ();
         gdk_flush ();
 
@@ -381,7 +287,7 @@ gs_grab_nuke_focus (void)
         Window focus = 0;
         int    rev = 0;
 
-        gs_debug ("Nuking focus");
+        g_debug ("Nuking focus");
 
         gdk_error_trap_push ();
 
@@ -395,47 +301,13 @@ gs_grab_nuke_focus (void)
 void
 gs_grab_release (GSGrab *grab)
 {
-        gs_debug ("Releasing all grabs");
+        g_debug ("Releasing all grabs");
 
         gs_grab_release_mouse (grab);
         gs_grab_release_keyboard (grab);
 
-        /* FIXME: is it right to enable this ? */
-        xorg_lock_smasher_set_active (grab, TRUE);
-
         gdk_display_sync (gdk_display_get_default ());
         gdk_flush ();
-}
-
-/* The GNOME 3 Shell holds an X grab when we're in the overview;
- * ask it to bounce out before we try locking the screen.
- */
-static void
-request_shell_exit_overview (GSGrab *grab)
-{
-        GDBusMessage *message;
-
-        /* Shouldn't happen, but... */
-        if (!grab->priv->session_bus)
-                return;
-
-        message = g_dbus_message_new_method_call ("org.gnome.Shell",
-                                                  "/org/gnome/Shell",
-                                                  "org.freedesktop.DBus.Properties",
-                                                  "Set");
-        g_dbus_message_set_body (message,
-                                 g_variant_new ("(ssv)",
-                                                "org.gnome.Shell",
-                                                "OverviewActive",
-                                                g_variant_new ("b",
-                                                               FALSE)));
-
-        g_dbus_connection_send_message (grab->priv->session_bus,
-                                        message,
-                                        G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                        NULL,
-                                        NULL);
-        g_object_unref (message);
 }
 
 gboolean
@@ -449,9 +321,6 @@ gs_grab_grab_window (GSGrab    *grab,
         int      i;
         int      retries = 4;
         gboolean focus_fuckus = FALSE;
-
-        /* First, have stuff we control in GNOME un-grab */
-        request_shell_exit_overview (grab);
 
  AGAIN:
 
@@ -484,14 +353,8 @@ gs_grab_grab_window (GSGrab    *grab,
         }
 
         if (mstatus != GDK_GRAB_SUCCESS) {
-                gs_debug ("Couldn't grab pointer!  (%s)",
-                          grab_string (mstatus));
+                g_debug ("Couldn't grab pointer!");
         }
-
-#if 0
-        /* FIXME: release the pointer grab so GTK will work */
-        gs_grab_release_mouse (grab);
-#endif
 
         /* When should we allow blanking to proceed?  The current theory
            is that both a keyboard grab and a mouse grab are mandatory
@@ -532,29 +395,13 @@ gs_grab_grab_root (GSGrab  *grab,
         GdkScreen  *screen;
         gboolean    res;
 
-        gs_debug ("Grabbing the root window");
+        g_debug ("Grabbing the root window");
 
         display = gdk_display_get_default ();
         gdk_display_get_pointer (display, &screen, NULL, NULL, NULL);
         root = gdk_screen_get_root_window (screen);
 
         res = gs_grab_grab_window (grab, root, screen, hide_cursor);
-
-        return res;
-}
-
-/* this is used to grab the keyboard and mouse to an offscreen window */
-gboolean
-gs_grab_grab_offscreen (GSGrab *grab,
-                        gboolean hide_cursor)
-{
-        GdkScreen *screen;
-        gboolean   res;
-
-        gs_debug ("Grabbing an offscreen window");
-
-        screen = gtk_invisible_get_screen (GTK_INVISIBLE (grab->priv->invisible));
-        res = gs_grab_grab_window (grab, gtk_widget_get_window (grab->priv->invisible), screen, hide_cursor);
 
         return res;
 }
@@ -569,8 +416,6 @@ gs_grab_move_to_window (GSGrab    *grab,
         gboolean result = FALSE;
 
         g_return_if_fail (GS_IS_GRAB (grab));
-
-        xorg_lock_smasher_set_active (grab, FALSE);
 
         do {
                 result = gs_grab_move_keyboard (grab, window, screen);
@@ -598,8 +443,6 @@ gs_grab_init (GSGrab *grab)
 {
         grab->priv = GS_GRAB_GET_PRIVATE (grab);
 
-        grab->priv->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-
         grab->priv->mouse_hide_cursor = FALSE;
         grab->priv->invisible = gtk_invisible_new ();
         gtk_widget_show (grab->priv->invisible);
@@ -614,8 +457,6 @@ gs_grab_finalize (GObject *object)
         g_return_if_fail (GS_IS_GRAB (object));
 
         grab = GS_GRAB (object);
-
-        g_object_unref (grab->priv->session_bus);
 
         g_return_if_fail (grab->priv != NULL);
 
