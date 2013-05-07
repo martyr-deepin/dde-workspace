@@ -214,8 +214,26 @@ gboolean
 gs_grab_release_mouse (GSGrab *grab)
 {
         g_debug ("Ungrabbing pointer");
-        gdk_pointer_ungrab (GDK_CURRENT_TIME);
+//gdk_pointer_ungrab
+        GdkDisplay* display;
+        GdkDeviceManager *device_manager;
+        GList *devices, *dev;
+        GdkDevice *device;
 
+        display = gdk_display_get_default ();
+        device_manager = gdk_display_get_device_manager (display);
+        devices = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+
+        for (dev = devices; dev; dev = dev->next)
+        {
+            device = dev->data;
+            if (gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+                continue;
+
+            gdk_device_ungrab (device, GDK_CURRENT_TIME);
+        }
+        g_list_free (devices);
+//
         gs_grab_mouse_reset (grab);
 
         return TRUE;
