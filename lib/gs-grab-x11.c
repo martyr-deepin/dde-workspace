@@ -108,18 +108,42 @@ gs_grab_get_mouse (GSGrab    *grab,
                    GdkScreen *screen,
                    gboolean   hide_cursor)
 {
-        GdkGrabStatus status;
-        GdkCursor    *cursor;
-
         g_return_val_if_fail (window != NULL, FALSE);
         g_return_val_if_fail (screen != NULL, FALSE);
+
+        GdkGrabStatus status;
+        GdkCursor    *cursor;
 
         cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
 
         g_debug ("Grabbing mouse widget=%X", (guint32) GDK_WINDOW_XID (window));
-        status = gdk_pointer_grab (window, TRUE, 0, NULL,
-                                   (hide_cursor ? cursor : NULL),
-                                   GDK_CURRENT_TIME);
+//gdk_pointer_grab
+        GdkDisplay *display;
+        GdkDeviceManager *device_manager;
+        GdkDevice *device;
+        GList *devices, *dev;
+
+        display = gdk_window_get_display (window);
+        device_manager = gdk_display_get_device_manager (display);
+        devices = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+
+        for (dev = devices; dev; dev = dev->next)
+        {
+            device = dev->data;
+            if (gdk_device_get_source (device) != GDK_SOURCE_MOUSE)
+                continue;
+
+            status = gdk_device_grab (device,
+                                      window,
+                                      GDK_OWNERSHIP_NONE,
+                                      TRUE,
+                                      0,
+                                      (hide_cursor? cursor: NULL),
+                                      GDK_CURRENT_TIME
+                                      );
+        }
+        g_list_free (devices);
+//
 
         if (status == GDK_GRAB_SUCCESS) {
                 if (grab->priv->mouse_grab_window != NULL) {
