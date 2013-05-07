@@ -60,7 +60,7 @@ static Atom ATOM_XEMBED_INFO;
 static Display* _dsp = NULL;
 static Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
-static void _init_atoms()
+PRIVATE void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
@@ -118,7 +118,7 @@ static GHashTable* _clients_table = NULL;
 Window active_client_id = 0;
 DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
 
-static
+PRIVATE
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window id);
 
 void _update_window_icon(Client *c);
@@ -126,12 +126,12 @@ void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
 void _update_window_net_state(Client* c);
-static void _update_is_overlay_client(Client* c);
-static gboolean _is_maximized_window(Window win);
+PRIVATE void _update_is_overlay_client(Client* c);
+PRIVATE gboolean _is_maximized_window(Window win);
 PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
 
-static
+PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
 {
     Client* c = (Client*)res;
@@ -142,7 +142,7 @@ void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res
     }
 }
 
-static
+PRIVATE
 void _update_window_viewport(Client* c)
 {
     get_atom_value_by_atom(_dsp, c->window, ATOM_DEEPIN_WINDOW_VIEWPORTS, c,
@@ -150,7 +150,7 @@ void _update_window_viewport(Client* c)
     dock_update_hide_mode();
 }
 
-static
+PRIVATE
 gboolean _get_launcher_icon(Client* c)
 {
     char* id = g_strconcat(c->app_id, ".desktop", NULL);
@@ -264,7 +264,7 @@ void _update_client_info(Client *c)
     js_post_message("task_updated", json);
 }
 
-static
+PRIVATE
 void notify_desktop(DesktopFocusState current_state)
 {
     GDBusProxy* desktop_dbus = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
@@ -335,7 +335,7 @@ void client_free(Client* c)
 }
 
 
-static gboolean _is_hidden(Window w)
+PRIVATE gboolean _is_hidden(Window w)
 {
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_NET_STATE, &items);
@@ -405,7 +405,7 @@ gboolean is_normal_window(Window w)
     return TRUE;
 }
 
-static void _destroy_client(gpointer id)
+PRIVATE void _destroy_client(gpointer id)
 {
     g_hash_table_remove(_clients_table, id);
 }
@@ -465,7 +465,7 @@ double dock_get_active_window()
     return aw;
 }
 
-static
+PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
     guint32* img = g_new(guint32, s);
@@ -604,7 +604,7 @@ void _update_window_net_state(Client* c)
     dock_update_hide_mode();
 }
 
-static gboolean _is_maximized_window(Window win)
+PRIVATE gboolean _is_maximized_window(Window win)
 {
     gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
@@ -622,7 +622,7 @@ static gboolean _is_maximized_window(Window win)
 }
 
 
-static
+PRIVATE
 void _update_current_viewport(Workspace* vp)
 {
     gulong n_item;
@@ -698,7 +698,7 @@ gboolean cross_workspaces_contain_current_workspace(Client* c)
     return FALSE;
 }
 
-static
+PRIVATE
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
@@ -729,7 +729,7 @@ void _update_is_overlay_client(Client* c)
     }
 }
 
-static
+PRIVATE
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
@@ -895,7 +895,7 @@ gboolean dock_request_dock_by_client_id(double id)
     }
 }
 
-static
+PRIVATE
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;

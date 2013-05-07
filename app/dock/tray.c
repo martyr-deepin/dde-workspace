@@ -47,9 +47,9 @@ static GdkWindow* _deepin_tray = NULL;
 static gint _deepin_tray_width = 0;
 static gboolean _TRY_ICON_INIT = FALSE;
 
-static void _update_deepin_try_position();
-static void _update_fcitx_try_position();
-static void _update_notify_area_width();
+PRIVATE void _update_deepin_try_position();
+PRIVATE void _update_fcitx_try_position();
+PRIVATE void _update_notify_area_width();
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 
 GdkWindow* get_icon_window(GdkWindow* wrapper)
@@ -81,7 +81,7 @@ GdkWindow* create_wrapper(GdkWindow* parent, Window tray_icon)
         GdkColor color = {1, 0, 0, 1};
         gdk_window_set_background(wrapper, &color);
 
-        XReparentWindow(gdk_x11_get_default_xdisplay(), 
+        XReparentWindow(gdk_x11_get_default_xdisplay(),
                 tray_icon,
                 GDK_WINDOW_XID(wrapper),
                 0, 0);
@@ -120,7 +120,7 @@ void safe_window_move(GdkWindow* wrapper, int x, int y)
     gdk_window_set_events(wrapper, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
 }
 
-static void accumulate_na_width(GdkWindow* wrapper, gpointer width)
+PRIVATE void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 {
     g_assert(wrapper != _deepin_tray && wrapper != _fcitx_tray);
     int icon_width = gdk_window_get_width(wrapper);
@@ -164,7 +164,7 @@ void _update_fcitx_try_position()
     }
 }
 
-static GdkFilterReturn
+PRIVATE GdkFilterReturn
 monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper);
 void destroy_wrapper(GdkWindow* wrapper)
 {
@@ -178,7 +178,7 @@ void destroy_wrapper(GdkWindow* wrapper)
     }
 }
 
-static GdkFilterReturn
+PRIVATE GdkFilterReturn
 monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 {
     XEvent* xev = xevent;
@@ -280,7 +280,7 @@ void tray_init(GtkWidget* container)
     _TRY_ICON_INIT = TRUE;
 }
 
-static void
+PRIVATE void
 draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
 {
     static cairo_surface_t* left = NULL;

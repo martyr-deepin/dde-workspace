@@ -19,7 +19,7 @@ void close_launcher_window()
     dock_close_window(launcher_id);
 }
 
-static
+PRIVATE
 gboolean desktop_has_focus(Display* dsp, gboolean* ret)
 {
     gboolean state;
@@ -41,7 +41,7 @@ DesktopFocusState get_desktop_focus_state(Display* dsp)
         return DESKTOP_FOCUS_UNKNOWN;
 }
 
-static
+PRIVATE
 GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
     XEvent* xev = xevent;
