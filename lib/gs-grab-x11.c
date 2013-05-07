@@ -352,12 +352,16 @@ gs_grab_grab_root (GSGrab  *grab,
         GdkDisplay *display;
         GdkWindow  *root;
         GdkScreen  *screen;
+        GdkDeviceManager * device_manager;
+        GdkDevice* pointer_device;
         gboolean    res;
 
         g_debug ("Grabbing the root window");
-
+//gdk_pointer_get_position
         display = gdk_display_get_default ();
-        gdk_display_get_pointer (display, &screen, NULL, NULL, NULL);
+        device_manager = gdk_display_get_device_manager (display);
+        pointer_device = gdk_device_manager_get_client_pointer (device_manager);
+        gdk_device_get_position (pointer_device, &screen, NULL, NULL);
         root = gdk_screen_get_root_window (screen);
 
         res = gs_grab_grab_window (grab, root, screen, hide_cursor);
@@ -414,7 +418,14 @@ gs_grab_move_to_window (GSGrab    *grab,
         } while (!result);
 
         do {
-            if (! gdk_pointer_is_grabbed ()) {
+//gdk_pointer_is_grabbed
+            GdkDisplay *display;
+            GdkDeviceManager * device_manager;
+            GdkDevice* pointer_device;
+            display = gdk_display_get_default ();
+            device_manager = gdk_display_get_device_manager (display);
+            pointer_device = gdk_device_manager_get_client_pointer (device_manager);
+            if (! gdk_display_device_is_grabbed (display, pointer_device)) {
                 gs_grab_mouse_reset (grab);
             }
 
