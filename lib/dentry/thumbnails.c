@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 
 #define GNOME_DESKTOP_USE_UNSTABLE_API
-#include <libgnome-desktop/gnome-desktop-thumbnail.h>
+#include "gnome-desktop-thumbnail.h"
 
 static GnomeDesktopThumbnailFactory *
 get_thumbnail_factory ()
@@ -15,7 +15,7 @@ get_thumbnail_factory ()
     return thumbnail_factory;
 }
 
-gboolean 
+gboolean
 gfile_can_thumbnail (GFile* file)
 {
     GnomeDesktopThumbnailFactory *factory;
@@ -25,7 +25,7 @@ gfile_can_thumbnail (GFile* file)
     time_t mtime;
     const char* content_type;
     char* mime_type;
-		
+
     uri = g_file_get_uri (file);
 
     info = g_file_query_info (file, "standard::content-type,time::modified",
@@ -36,7 +36,7 @@ gfile_can_thumbnail (GFile* file)
 
     mtime = g_file_info_get_attribute_uint64(info, "time::modified");
     g_object_unref (info);
-	
+
     factory = get_thumbnail_factory ();
     //1' check if we can thumbnail
     can_thumbnail = gnome_desktop_thumbnail_factory_can_thumbnail (factory,
@@ -48,7 +48,7 @@ gfile_can_thumbnail (GFile* file)
     return can_thumbnail;
 }
 /*
- *      syncronously create thumbnails. shall we move to a threaded 
+ *      syncronously create thumbnails. shall we move to a threaded
  *      implementation?
  */
 char*
@@ -63,7 +63,7 @@ gfile_lookup_thumbnail (GFile* file)
     time_t mtime;
     const char* content_type;
     char* mime_type;
-		
+
     uri = g_file_get_uri (file);
 
     info = g_file_query_info (file, "standard::content-type,time::modified",
@@ -74,7 +74,7 @@ gfile_lookup_thumbnail (GFile* file)
 
     mtime = g_file_info_get_attribute_uint64(info, "time::modified");
     g_object_unref (info);
-	
+
     factory = get_thumbnail_factory ();
 #if 0
     //1' check if we can thumbnail
@@ -101,12 +101,12 @@ gfile_lookup_thumbnail (GFile* file)
         GdkPixbuf *pixbuf;
         pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (factory, uri, mime_type);
 
-        if (pixbuf) 
+        if (pixbuf)
         {
             gnome_desktop_thumbnail_factory_save_thumbnail (factory, pixbuf, uri, mtime);
             g_object_unref (pixbuf);
-        } 
-        else 
+        }
+        else
         {
             gnome_desktop_thumbnail_factory_create_failed_thumbnail (factory, uri, mtime);
         }
