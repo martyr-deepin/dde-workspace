@@ -48,11 +48,6 @@ gboolean has_atom_property(Display* dsp, Window w, Atom prop);
 #define X_FETCH_16(data, i) *((short*)data + i)
 #define X_FETCH_8(data, i) *((char*)data + i)
 
-
-#define GRAB_DEVICE(w) (gdk_device_grab(gdk_device_manager_get_client_pointer(gdk_display_get_device_manager(gdk_display_get_default())), w? w:gdk_get_default_root_window(), GDK_OWNERSHIP_WINDOW, TRUE, GDK_ALL_EVENTS_MASK, NULL, GDK_CURRENT_TIME))
-#define UNGRAB_DEVICE() gdk_device_ungrab(gdk_device_manager_get_client_pointer(gdk_display_get_device_manager(gdk_display_get_default())), GDK_CURRENT_TIME)
-
-
 void get_atom_value_by_index(gpointer data, gulong n_item, gpointer res, gulong index);
 void get_atom_value_for_loop(gpointer data, gulong n_item, gpointer res, gulong start_index);
 

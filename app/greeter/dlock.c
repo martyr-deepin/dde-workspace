@@ -379,7 +379,6 @@ gboolean lock_detect_capslock()
 
 static void lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
-    //GRAB_DEVICE(NULL);
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(lock_container)),
                             gtk_window_get_screen (lock_container),
