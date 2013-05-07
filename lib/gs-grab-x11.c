@@ -144,8 +144,26 @@ static gboolean
 gs_grab_release_keyboard (GSGrab *grab)
 {
         g_debug ("Ungrabbing keyboard");
-        gdk_keyboard_ungrab (GDK_CURRENT_TIME);
+//gdk_keyboard_ungrab
+        GdkDisplay* display;
+        GdkDeviceManager *device_manager;
+        GList *devices, *dev;
+        GdkDevice *device;
 
+        display = gdk_display_get_default ();
+        device_manager = gdk_display_get_device_manager (display);
+        devices = gdk_device_manager_list_devices (device_manager, GDK_DEVICE_TYPE_MASTER);
+
+        for (dev = devices; dev; dev = dev->next)
+        {
+            device = dev->data;
+            if (gdk_device_get_source (device) != GDK_SOURCE_KEYBOARD)
+                continue;
+
+            gdk_device_ungrab (device, GDK_CURRENT_TIME);
+        }
+        g_list_free (devices);
+//
         if (grab->priv->keyboard_grab_window != NULL) {
                 g_object_remove_weak_pointer (G_OBJECT (grab->priv->keyboard_grab_window),
                                               (gpointer *) &grab->priv->keyboard_grab_window);
