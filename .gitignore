@@ -13,3 +13,10 @@ resources/greeter/js/time.js
 *.log
 *~
 *.orig
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+install_manifest.txt

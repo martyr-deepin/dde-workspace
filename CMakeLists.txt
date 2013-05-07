@@ -65,6 +65,7 @@ set(CMAKE_C_FLAGS "-std=c99")
 set(JSC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/lib/jsc_extension/)
 include_directories(${JSC_HEADER})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
+include_directories(${PROJECT_SOURCE_DIR}/test/)
 
 set(BIN_JSC_GEN ${CMAKE_CURRENT_SOURCE_DIR}/lib/jsc_extension/jsc_gen.py)
 

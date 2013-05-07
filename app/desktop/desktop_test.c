@@ -1,5 +1,6 @@
 #ifdef __DUI_DEBUG
 
+#include <glib.h>
 #include "test.h"
 int TEST_MAX_COUNT = 100000;
 int TEST_MAX_MEMORY = 100000;
@@ -19,9 +20,9 @@ void test_inotify()
 
 void test_dbus()
 {
-    Test({
-        call_dbus("com.deepin.dde.desktop", "FocusChanged", FALSE);
-    }, "desktop_dbus");
+    /* Test({ */
+    /*     call_dbus("com.deepin.dde.desktop", "FocusChanged", FALSE); */
+    /* }, "desktop_dbus"); */
 }
 
 void test_background()
