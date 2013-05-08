@@ -229,8 +229,8 @@ class Weather
                             if allname.data[provin].市[ci].市名 is city_client
                                 echo allname.data[provin].市[ci].编码
                                 cityid_init = allname.data[provin].市[ci].编码
-                                cityurl_init = "http://m.weather.com.cn/data/"+cityid_init+".html"    
-                                @weathergui_update(cityurl_init)
+                                @cityurl = "http://m.weather.com.cn/data/"+cityid_init+".html"    
+                                @weathergui_update(@cityurl)
             )
     weathergui_init: =>
         window.loader.addcss('desktop_plugin/weather/weather.css', 'screen print').load()
