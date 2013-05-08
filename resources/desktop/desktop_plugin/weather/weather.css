@@ -169,6 +169,7 @@
 .first_day_weather_data,
 .third_day_weather_data,
 .fifth_day_weather_data{
+    background-color: #DCDCDC;
     height: 35px;
     opacity:0.8;
     line-height:35px;
