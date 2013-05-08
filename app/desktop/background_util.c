@@ -973,6 +973,8 @@ expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
     {
         initial_setup (Settings);
         is_initialized == TRUE;
+        GdkWindow* bg_window = data;
+        gdk_window_remove_filter (bg_window, expose_cb, data);
     }
     return GDK_FILTER_CONTINUE;
 }
@@ -1018,6 +1020,6 @@ bg_util_init (GdkWindow* bg_window)
     g_signal_connect (Settings, "changed::current-picture",
 		      G_CALLBACK (bg_settings_current_picture_changed), NULL);
 
-    gdk_window_add_filter (background_window, expose_cb, NULL);
+    gdk_window_add_filter (background_window, expose_cb, background_window);
     //initial_setup (Settings);
 }
