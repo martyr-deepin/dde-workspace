@@ -1,82 +1,136 @@
 .Weather {
-    position: absolute;
+    position: relative;
     top:50px;
     left:1000px;
-    width: 286px;
+    width: 300px;
     height: 70px;
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
-    background-size: contain;    
+}
+
+.left_div{
+    position: relative;
+    width: 83px;
+    height: 70px;
+    float: left;
+
 }
 
 .weather_now_pic{
     position:relative;
-    top: 7px;
-    left: 20px;  
+    top: 11px;
+    left: 20px;
     width: 48px;
     height: 48px;
 }
 
-.temperature_now{
-    position:absolute;
-    top: 25px;
-    left: 95px;   
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    color: black;   
-}
-
-.more_city{
-    position:absolute;
-    top: 17px;
-    left: 150px;
-    width: 100px;
-    height: 20px;    
-  
-}
-
-.city{
+.right_div{
     position: relative;
-    width: 80px;
-    left: 5px;
-    /*text-align: center;*/
+    width: 215px;
+    height: 70px;
+    float: left;
 }
 
-.more_city_img{
-    position:absolute;
-    top:-2px;
-    right:10px;
-    width: 20px;
-    height: 20px;
-    opacity:0.8; 
+.temperature_now{
+    position: relative;
+    top: 15px;
+    margin-left: 3px; 
+    height: 40px;
+    float: left;
+    text-shadow:;
 }
-
-.more_city_menu{
-    position:absolute;
-    top: 65px;
-    left: 80px;   
-    display:none;
+.temperature_now_minus{
+    position: relative;
+    top:10px;
+    font-size: 40px;
+    color: black;
+    opacity: 0;
+    /*font-border:3px solid black;*/
+    float: left;
+}
+.temperature_now_number{
+    position:relative;
+    float: left;
+    top:10px;
+    font-size: 40px;
+    color: #E6E6FA;   
+    font-weight: bold;
+    text-shadow: 2px 2px 1px #808080;
+    opacity: 0.0px;
 }
 
 .city_and_date{
-    position:absolute;
-    top: 35px;
-    left: 150px;
+    position: relative;
+    top:15px;
+    margin-left: 7px;  
+    float: left;
     height: 40px;
 }
-
+.city{
+    position: relative;
+    height: 20px;
+    float: left;
+    margin:auto;
+}
+.city_now{
+    position: relative;    
+    float: left;
+    font-size: 15px;
+    font-weight: bolder;
+    margin:auto;
+}
+.more_city_img{
+    position: relative;
+    top:3px;
+    float:left;
+}
 .date{
-   color: black; 
+    position: relative;
+    height: 20px;
+    clear: both;
+    color: #E6E6FA;   
+    font-weight: 600;
+    text-shadow: 0.5px 0.5px 1px #808080;
+}
+
+
+
+.more_city_menu{
+    position:absolute;
+    top: 70px;
+    left: 83px;   
+    display:none;
+    /*text-align: center;*/
+}
+.chooseprov{
+    position:relative;
+    float: left;
+    width: 85px;
+    opacity: 0.8;
+    border:2px solid #DCDCDC;
+    text-align: center;    
+}
+
+.choosecity{
+    position:relative;
+    float: left;
+    margin-left: 10px;
+    width: 85px; 
+    opacity: 0.8;
+    border:2px solid #DCDCDC;
+    text-align: center;
 }
 
 .more_weather_menu{
     position:absolute;
-    left: 80px;
-    top: 65px;
-    width: 175px;
+    left: 83px;
+    top: 70px;
+    width: 180px;
     display: none;
     opacity: 0.8;
+    /*text-align: center;*/
+    /*border:1px solid #ccc;*/
+    border:2px solid #DCDCDC;
 }
 
 .week1,
@@ -86,7 +140,7 @@
 .week5,
 .week6{
     position: relative;
-    left: 5px;
+    margin-left: 10px;
 }
 
 .pic1,
@@ -96,7 +150,7 @@
 .pic5,
 .pic6{
     position: relative;
-    left: 17px;
+    margin-left: 20px;
     width: 24px;
     height: 24px;
 }
@@ -108,77 +162,34 @@
 .temperature5,
 .temperature6{
     position: relative;
-    left: 30px;
+    margin-left: 10px;
 }
 
 
 .first_day_weather_data,
 .third_day_weather_data,
 .fifth_day_weather_data{
-    background-color: #EEE8AA;
+    height: 35px;
     opacity:0.8;
+    line-height:35px;
+
 }
 
 .second_day_weather_data,
 .fourth_day_weather_data,
 .sixth_day_weather_data{
     background-color: #00BFFF;
+    height: 35px;
     opacity:0.8;
-}
-
-
-.chooseprov{
-    position:absolute;
-    top: 0px;
-    left: -40px;
-    width: 90px;
-    opacity: 0.8;
-}
-
-.choosecity{
-    position:absolute;
-    top: 0px;
-    left: 70px; 
-    width: 90px; 
-    opacity: 0.8;
+    line-height:35px;
 }
 
 .refresh{
     position:absolute;
     top: 18px;
-    left: 247px;   
+    left: 260px;   
+    float: left;
     width: 30px;
     height: 30px;
     opacity:0.6;
-}
-
-.close{
-    position:absolute;
-    top: 5px;
-    left: 243px; 
-    width: 22px;
-    height: 15px;
-    opacity:0.8;
-}
-
-.closebutton{
-    display:none;
-}
-
-.dialog{
-    position:absolute;
-    top: -60px;
-    left: 0px; 
-    width: 80px;
-    height: 20x;
-    opacity:0.2;
-    display: none;
-    z-index: 0;
-}
-
-.dialogmessage{
-    text-align:center;
-    /*font-size: 30px;*/
-    color: black;
-    z-index: 1; 
 }

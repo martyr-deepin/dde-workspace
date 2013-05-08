@@ -11,24 +11,29 @@ class Weather
         img_now_url_init = @img_url_first + "48/T" + "0晴" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0晴" + ".png"
 
-
         @element = create_element("div","Weather",null)
         @element.draggable = true
 
         @weathergui_init() 
+        left_div = create_element("div", "left_div", @element)
+        @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
+
+        right_div = create_element("div","right_div",@element)
+        temperature_now = create_element("div", "temperature_now", right_div)
+        @temperature_now_minus = create_element("div", "temperature_now_minus", temperature_now)
+        @temperature_now_minus.textContent = "-"
+        @temperature_now_number = create_element("div", "temperature_now_number", temperature_now)
+        @temperature_now_number.textContent = "3°"
+
+        city_and_date = create_element("div","city_and_date",right_div)
+        city = create_element("div","city",city_and_date)
+        @city_now = create_element("div", "city_now", city)
+        @city_now.textContent = "北京"
+        @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
+        @more_city_menu = create_element("div", "more_city_menu", @element)
         
-        @weather_now_pic = create_img("weather_now_pic", img_now_url_init, @element)
-
-        @temperature_now = create_element("div", "temperature_now", @element)
-        @temperature_now.textContent = "20°"
-
-        more_city = create_element("div","more_city",@element)
-        @city = create_element("div", "city", more_city)
-        @city.textContent = "请选择城市"
-
-        city_and_date = create_element("div", "city_and_date", @element)
         @date = create_element("div", "date", city_and_date)
-        @date.textContent =  "正在加载中..." + "..."
+        @date.textContent =  "正在加载中..." + " " +"..."
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
 
@@ -75,28 +80,9 @@ class Weather
         @temperature6.textContent = "22℃~10℃"
 
         @refresh = create_img("refresh", @img_url_first + "refresh.png", @element)
-        @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", more_city)       
-        @more_city_menu = create_element("div", "more_city_menu", @element)
+
         @chooseprov = create_element("select", "chooseprov", @more_city_menu)        
         @choosecity = create_element("select", "choosecity", @more_city_menu)
-        close = create_element("div","close",@element)
-        closebutton = create_img("closebutton",@img_url_first + "closebutton.png",close)
-        @dialog = create_img("dialog",@img_url_first+"dialog.png",more_city)        
-        dialogmessage = create_element("a","dialogmessage",@dialog)
-        dialogmessage.textContent = "单击以选择城市～～"
-        close.addEventListener("mouseover", ->
-            closebutton.style.display = "block"
-            )
-        close.addEventListener("mouseout", ->
-            closebutton.style.display = "none"
-            )        
-
-        #when the mose click then leave ,close the weather widget
-        closebutton.addEventListener("mouseup", =>
-            @element.style.display = "none" #but the position still is there
-            # kill(@element)
-            # how to kill a class , then the widget position is null
-            )
 
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display == "none" 
@@ -108,13 +94,8 @@ class Weather
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
         )        
-        more_city.addEventListener("mouseover", =>
-            # @dialog.style.display = "block"
-            )
-        more_city.addEventListener("mouseout", =>
-            @dialog.style.display = "none"
-            )
-        more_city.addEventListener("click", =>                         
+
+        city.addEventListener("click", =>                         
             if @more_city_menu.style.display == "none"
                 @more_city_menu.style.display = "block"
                 @chooseprov.style.display = "block"
@@ -128,7 +109,6 @@ class Weather
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
 
-            @dialog.style.display = "none"
             @chooseprov.size = 13
             @chooseprov.options.length = 0 #clear the prov option value
             provinit = create_element("option","provinit",@chooseprov)
@@ -149,6 +129,9 @@ class Weather
             # for provin of allname.data
             #     provincetemp = create_element("option", "provincetemp", @chooseprov)
             #     provincetemp.innerText = allname.data[provin].省
+
+            #set 2 seconds no choose province to hide the more_city_menu option 
+
         )
 
 
@@ -213,12 +196,6 @@ class Weather
             @refresh.style.backgroundColor = "gray"
             @weathergui_update(@cityurl)
         )
-        # @element.addEventListener("mouseout", =>
-            # @more_weather_menu.style.display = "none"
-            # @more_city_menu.style.display = "none"
-            # echo "@element mouseout"
-            # @more_weather_menu.style.zIndex = "0"
-            # )
     ajax : (url, method, callback, asyn=true) =>
         xhr = new XMLHttpRequest()
         xhr.open(method, url, asyn)
@@ -229,7 +206,6 @@ class Weather
                 callback?(xhr)                
             else if xhr.status isnt 200 
                 echo "XMLHttpRequest can't receive data."
-                @dialog.style.display = "block"   
     get_client_cityid : =>
         ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
         # ip_url = "http://61.4.185.48:81/g/"
@@ -249,10 +225,8 @@ class Weather
                 echo city_client               
                 for provin of allname.data
                     if allname.data[provin].省 is prov_client
-                        # echo allname.data[provin].省
                         for ci of allname.data[provin].市
                             if allname.data[provin].市[ci].市名 is city_client
-                                # echo allname.data[provin].市[ci].市名
                                 echo allname.data[provin].市[ci].编码
                                 cityid_init = allname.data[provin].市[ci].编码
                                 cityurl_init = "http://m.weather.com.cn/data/"+cityid_init+".html"    
@@ -263,7 +237,7 @@ class Weather
         @get_client_cityid()
 
     weathergui_update: (url)=>
-        # echo "weathergui_update....."        
+        # alert "weathergui_update....."        
         @ajax( url , "GET", (xhr)=>
             localStorage.setItem(weather_data,xhr.responseText)
             weather_data = JSON.parse(localStorage.getItem(weather_data))
@@ -276,13 +250,13 @@ class Weather
             week_n = i_week
             @weather_now_pic.src = @img_url_first + "48/T" + weather_data.weatherinfo.img1 + weather_data.weatherinfo.img_title1 + ".png"
             str_data = weather_data.weatherinfo.date_y
-            @date.textContent = str_data.substring(0,str_data.indexOf("年")) + "." + str_data.substring(str_data.indexOf("年")+1,str_data.indexOf("月"))+ "." + str_data.substring(str_data.indexOf("月") + 1,str_data.indexOf("日")) + weather_data.weatherinfo.week            
+            @date.textContent = str_data.substring(0,str_data.indexOf("年")) + "." + str_data.substring(str_data.indexOf("年")+1,str_data.indexOf("月"))+ "." + str_data.substring(str_data.indexOf("月") + 1,str_data.indexOf("日")) + " "  + weather_data.weatherinfo.week            
             temp_str = weather_data.weatherinfo.temp1
             i = temp_str.indexOf("℃")
             j = temp_str.lastIndexOf("℃")
             temper= ( parseInt(temp_str.substring(0,i)) + parseInt(temp_str.substring(i+2,j)) )/2
-            @temperature_now.textContent = Math.round(temper) + "°"            
-            @city.textContent = weather_data.weatherinfo.city
+            @temperature_now_number.textContent = Math.round(temper) + "°"            
+            @city_now.textContent = weather_data.weatherinfo.city
 
             @week1.textContent = week_name[week_n%7]
             @pic1.src = @img_url_first + "24/T" + weather_data.weatherinfo.img1 + weather_data.weatherinfo.img_title1 + ".png"
