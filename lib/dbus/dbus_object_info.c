@@ -107,7 +107,7 @@ void parse_parms(const gchar **names, const gchar **values)
     while (*n_c) {
         if (g_strcmp0(*n_c, "type") == 0) {
             type = *v_c;
-        }
+        } 
         if (g_strcmp0(*n_c, "direction") == 0) {
             if (g_strcmp0(*v_c, "in") == 0)
                 in = TRUE;
@@ -117,13 +117,14 @@ void parse_parms(const gchar **names, const gchar **values)
         n_c++;
         v_c++;
     }
-    g_assert(type != NULL);
-    if (in)  {
-        c_method->signature_in = 
-            g_slist_append(c_method->signature_in, g_strdup(type));
-    } else {
-        c_method->signature_out = 
-            g_slist_append(c_method->signature_out, g_strdup(type));
+    if (type){
+        if (in)  {
+            c_method->signature_in =
+                g_slist_append(c_method->signature_in, g_strdup(type));
+        } else {
+            c_method->signature_out =
+                g_slist_append(c_method->signature_out, g_strdup(type));
+        }
     }
 }
 
