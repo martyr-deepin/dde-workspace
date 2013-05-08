@@ -33,7 +33,7 @@
 #include <gio/gio.h>
 
 #include "background_util.h"
-
+#include "jsextension.h"
 
 #define USEC_PER_SEC 1000000.0 // microseconds per second
 #define MSEC_PER_SEC 1000.0    // milliseconds per second
@@ -102,7 +102,7 @@ typedef struct _xfade_data
     Pixmap		pixmap;
 } xfade_data_t;
 
-static void
+PRIVATE void
 _update_rootpmap (Pixmap pm)
 {
     //avoid unnecessary updates
@@ -121,7 +121,7 @@ _update_rootpmap (Pixmap pm)
  *    compositing two cairo surfaces.
  *    use double buffering
  */
-static void
+PRIVATE void
 draw_background (xfade_data_t* fade_data)
 {
     cairo_t* cr;
@@ -142,7 +142,7 @@ draw_background (xfade_data_t* fade_data)
 /*
  * 	free fade_data and its fields.
  */
-static void
+PRIVATE void
 free_fade_data (xfade_data_t* fade_data)
 {
     cairo_surface_destroy (fade_data->fading_surface);
@@ -153,7 +153,7 @@ free_fade_data (xfade_data_t* fade_data)
 /*
  *	return current time in seconds.
  */
-static gdouble
+PRIVATE gdouble
 get_current_time (void)
 {
     double timestamp;
@@ -166,7 +166,7 @@ get_current_time (void)
     return timestamp;
 }
 
-static gboolean
+PRIVATE gboolean
 on_tick (gpointer user_data)
 {
     xfade_data_t* fade_data = (xfade_data_t*)user_data;
@@ -194,7 +194,7 @@ on_tick (gpointer user_data)
     return TRUE;
 }
 
-static void
+PRIVATE void
 on_finished (gpointer user_data)
 {
     xfade_data_t* fade_data = (xfade_data_t*) user_data;
@@ -206,7 +206,7 @@ on_finished (gpointer user_data)
     free_fade_data (fade_data);
     g_debug ("crossfade finished ");
 }
-static void
+PRIVATE void
 remove_timers ()
 {
     if (bg_timeout_id)
@@ -256,7 +256,7 @@ get_previous_background (void)
  * 	TODO: we assume that @pixmap is the same size as the
  * 	      root_window. if that's not tree, scale it.
  */
-static cairo_surface_t*
+PRIVATE cairo_surface_t*
 get_surface(Pixmap pixmap)
 {
     cairo_surface_t* cs=NULL;
@@ -267,13 +267,13 @@ get_surface(Pixmap pixmap)
     return cs;
 }
 #if 0
-static guint
+PRIVATE guint
 get_current_picture_index ()
 {
     return picture_index;
 }
 #endif
-static const char*
+PRIVATE const char*
 get_current_picture_path ()
 {
     const char* _pic = g_ptr_array_index (picture_paths,
@@ -282,7 +282,7 @@ get_current_picture_path ()
     return _pic;
 }
 // NOTE: this should be the only place to update picture_index
-static guint
+PRIVATE guint
 get_next_picture_index ()
 {
     guint _next_picture = 0;
@@ -306,7 +306,7 @@ get_next_picture_index ()
 }
 
 // NOTE: this should be the only place to update picture_index
-static const char*
+PRIVATE const char*
 get_next_picture_path ()
 {
     guint _next_picture_index = 0;
@@ -318,7 +318,7 @@ get_next_picture_path ()
     return _next_picture_path;
 }
 
-static GdkPixbuf*
+PRIVATE GdkPixbuf*
 get_xformed_gdk_pixbuf (const char* pict_path)
 {
     g_debug ("picture_index : %d", picture_index);
@@ -383,7 +383,7 @@ get_xformed_gdk_pixbuf (const char* pict_path)
     return _xformed_pixbuf;
 }
 #if 0
-static GdkPixbuf*
+PRIVATE GdkPixbuf*
 get_next_xformed_gdk_pixbuf ()
 {
     const char* _path = get_next_picture_path ();
@@ -392,7 +392,7 @@ get_next_xformed_gdk_pixbuf ()
     return _pixbuf;
 }
 #endif
-static gboolean
+PRIVATE gboolean
 on_bg_duration_tick (gpointer user_data)
 {
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
@@ -435,13 +435,13 @@ on_bg_duration_tick (gpointer user_data)
     return TRUE;
 }
 
-static void
+PRIVATE void
 on_bg_duration_finished (gpointer user_data)
 {
     g_debug ("bg_duration_finished");
 }
 
-static void
+PRIVATE void
 setup_background_timer ()
 {
     GSource* source = g_timeout_source_new (gsettings_background_duration*MSEC_PER_SEC);
@@ -451,7 +451,7 @@ setup_background_timer ()
     bg_timeout_id = g_source_attach (source, g_main_context_default());
 }
 
-static void
+PRIVATE void
 setup_crossfade_timer ()
 {
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
@@ -491,7 +491,7 @@ setup_crossfade_timer ()
 
 /*
  */
-static void
+PRIVATE void
 setup_timers ()
 {
     if (gsettings_background_duration && picture_num > 1)
@@ -513,7 +513,7 @@ setup_timers ()
  *
  *	<picture_uris> := (<uri> ";")* <uri> [";"]
  */
-static void
+PRIVATE void
 parse_picture_uris (gchar * pic_uri)
 {
     gchar* uri_end;   // end of a uri
@@ -562,7 +562,7 @@ parse_picture_uris (gchar * pic_uri)
 	picture_num =1;
     }
 }
-static void
+PRIVATE void
 destroy_picture_path (gpointer data)
 {
     g_free (data);
@@ -571,7 +571,7 @@ destroy_picture_path (gpointer data)
  *	it's not efficient to check whether the new picture_uris is the same
  *	as the previous value. we just restart all.
  */
-static void
+PRIVATE void
 bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_PICTURE_URIS))
@@ -628,7 +628,7 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 /*
  *	handle user-selected picture uri
  */
-static void
+PRIVATE void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_PICTURE_URI))
@@ -653,7 +653,7 @@ bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_
 /*
  *	we should reset timer and start auto
  */
-static void
+PRIVATE void
 bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_BG_DURATION))
@@ -666,7 +666,7 @@ bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_
     setup_timers ();
 }
 
-static void
+PRIVATE void
 bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_XFADE_MANUAL_INTERVAL))
@@ -679,7 +679,7 @@ bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpoi
     setup_timers ();
 }
 
-static void
+PRIVATE void
 bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_XFADE_AUTO_INTERVAL))
@@ -693,7 +693,7 @@ bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpoint
 	setup_timers ();
 }
 
-static void
+PRIVATE void
 bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_XFADE_AUTO_MODE))
@@ -712,7 +712,7 @@ bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer u
     setup_timers ();
 }
 //TODO: draw mode: scaling, and tiling
-static void
+PRIVATE void
 bg_settings_draw_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_DRAW_MODE))
@@ -725,7 +725,7 @@ bg_settings_draw_mode_changed (GSettings *settings, gchar *key, gpointer user_da
     setup_timers ();
 }
 
-static void
+PRIVATE void
 register_account_service_background_path (const char* current_picture)
 {
     GError* error = NULL;
@@ -806,7 +806,7 @@ register_account_service_background_path (const char* current_picture)
 	g_error_free (error);
     }
 }
-static void
+PRIVATE void
 bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     if (g_strcmp0 (key, BG_CURRENT_PICT))
@@ -816,7 +816,7 @@ bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer u
     register_account_service_background_path (cur_pict);
 }
 
-static void
+PRIVATE void
 screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 {
     //remove early to avoid fatal X errors
@@ -889,7 +889,7 @@ bg_util_disconnect_screen_signals (GdkWindow* bg_window)
 }
 
 
-static void
+PRIVATE void
 initial_setup (GSettings *settings)
 {
     picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
@@ -964,7 +964,7 @@ initial_setup (GSettings *settings)
     return;
 }
 
-static GdkFilterReturn
+PRIVATE GdkFilterReturn
 expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
     if (((XEvent*)xevent)->type == Expose)

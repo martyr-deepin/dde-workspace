@@ -27,9 +27,9 @@
 #include <sys/inotify.h>
 #include <fcntl.h>
 
-static gboolean _inotify_poll();
-static void _remove_monitor_directory(GFile*);
-static void _add_monitor_directory(GFile*);
+PRIVATE gboolean _inotify_poll();
+PRIVATE void _remove_monitor_directory(GFile*);
+PRIVATE void _add_monitor_directory(GFile*);
 void handle_delete(GFile* f);
 
 static GHashTable* _monitor_table = NULL;
@@ -45,7 +45,7 @@ void trash_changed()
     js_post_message_simply("trash_count_changed", "{\"value\":\"%d\"}", count);
 }
 
-static
+PRIVATE
 void _add_monitor_directory(GFile* f)
 {
     g_assert(_inotify_fd != -1);
@@ -134,7 +134,7 @@ void handle_new(GFile* f)
 }
 
 
-static
+PRIVATE
 void _remove_monitor_directory(GFile* f)
 {
     int wd = -1;
@@ -155,7 +155,7 @@ void _remove_monitor_directory(GFile* f)
     }
 }
 
-static
+PRIVATE
 gboolean _inotify_poll()
 {
 #define EVENT_SIZE  ( sizeof (struct inotify_event) )

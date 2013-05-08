@@ -1,5 +1,6 @@
 #include <gio/gio.h>
 #include "dbus.h"
+#include "jsextension.h"
 
 #define APP_NAME "desktop"
 #define APP_DBUS_NAME     "com.deepin.dde."APP_NAME
@@ -20,7 +21,7 @@ static const char* _dbus_iface_xml =
 "</node>\n"
 ;
 
-static void
+PRIVATE void
 _bus_method_call (GDBusConnection * connection,
                  const gchar * sender, const gchar * object_path, const gchar * interface,
                  const gchar * method, GVariant * params,
@@ -41,7 +42,7 @@ _bus_method_call (GDBusConnection * connection,
 
     if (error != NULL) {
         g_dbus_method_invocation_return_dbus_error (invocation,
-                "com.deepin.dde."APP_NAME".Error", 
+                "com.deepin.dde."APP_NAME".Error",
                 error->message);
         g_error_free (error);
     } else {
@@ -57,18 +58,18 @@ static guint retry_reg_timeout_id;   //timer used for retrying dbus name registr
 static GDBusConnection* _connection;
 
 //internal functions
-static gboolean _retry_registration (gpointer user_data);
-static void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _bus_method_call (GDBusConnection * connection, const gchar * sender,
+PRIVATE gboolean _retry_registration (gpointer user_data);
+PRIVATE void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _bus_method_call (GDBusConnection * connection, const gchar * sender,
                              const gchar * object_path, const gchar * interface,
                              const gchar * method, GVariant * params,
                              GDBusMethodInvocation * invocation, gpointer user_data);
 
 static GDBusNodeInfo *      node_info = NULL;
 static GDBusInterfaceInfo * interface_info = NULL;
-static GDBusInterfaceVTable interface_table = { 
+static GDBusInterfaceVTable interface_table = {
     method_call:   _bus_method_call,
     get_property:   NULL, /* No properties */
     set_property:   NULL  /* No properties */
@@ -97,22 +98,22 @@ void setup_dbus_service ()
     _retry_registration (NULL);
 }
 
-static gboolean
+PRIVATE gboolean
 _retry_registration (gpointer user_data)
 {
 
-    _service_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION, 
-            APP_DBUS_NAME, 
+    _service_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
+            APP_DBUS_NAME,
             G_BUS_NAME_OWNER_FLAGS_NONE,
-            _service_reg_id ? NULL : _on_bus_acquired, 
-            _on_name_acquired, 
+            _service_reg_id ? NULL : _on_bus_acquired,
+            _on_name_acquired,
             _on_name_lost,
-            NULL, 
+            NULL,
             NULL);
     return TRUE;
 }
 
-static void 
+PRIVATE void
 _on_bus_acquired (GDBusConnection * connection,
         const gchar * name,
         gpointer user_data)
@@ -125,13 +126,13 @@ _on_bus_acquired (GDBusConnection * connection,
     GError* error = NULL;
     _service_reg_id = g_dbus_connection_register_object (connection,
             APP_DBUS_OBJ,
-            interface_info, 
+            interface_info,
             &interface_table,
-            user_data, 
-            NULL, 
+            user_data,
+            NULL,
             &error);
 
-    if (error != NULL) 
+    if (error != NULL)
     {
         g_critical ("Unable to register the object to DBus: %s", error->message);
         g_error_free (error);
@@ -144,20 +145,20 @@ _on_bus_acquired (GDBusConnection * connection,
     return;
 }
 
-static void
-_on_name_acquired (GDBusConnection * connection, 
-        const gchar * name, 
+PRIVATE void
+_on_name_acquired (GDBusConnection * connection,
+        const gchar * name,
         gpointer user_data)
 {
     g_debug ("Dbus name acquired");
 }
 
-static void
-_on_name_lost (GDBusConnection * connection, 
-        const gchar * name, 
+PRIVATE void
+_on_name_lost (GDBusConnection * connection,
+        const gchar * name,
         gpointer user_data)
 {
-    if (connection == NULL) 
+    if (connection == NULL)
     {
         g_critical("Unable to get a connection to DBus");
     }
