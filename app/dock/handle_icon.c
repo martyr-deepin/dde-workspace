@@ -48,6 +48,7 @@ char* handle_icon(GdkPixbuf* icon)
     return data;
 }
 
+
 guchar* __data_base64 = NULL;
 size_t __data_size = 0;
 cairo_status_t write_func(void* store, unsigned char* data, unsigned int length)
@@ -57,6 +58,7 @@ cairo_status_t write_func(void* store, unsigned char* data, unsigned int length)
     memmove((void*)(__data_base64 + __data_size - length), (void*)data, (size_t)length);
     return CAIRO_STATUS_SUCCESS;
 }
+
 
 char* get_data_uri_by_surface(cairo_surface_t* surface)
 {

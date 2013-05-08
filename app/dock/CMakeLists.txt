@@ -1,6 +1,7 @@
 SET(NAME "dock")
 
 add_subdirectory(notification_area)
+add_subdirectory(test)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
@@ -11,10 +12,10 @@ SET(SRC_LIST dock.c dock_hide.c dock_config.c tray.c handle_icon.c
     dominant_color.c tasklist.c draw.c launcher.c region.c dbus.c
     special_window.c ${JSC_GEN})
 
-add_executable(${NAME} ${SRC_LIST} dock_test.c)
+add_executable(${NAME} ${SRC_LIST})
 
 
-target_link_libraries(${NAME} dcom dentry dbus dtest tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus dtest tray ddock_test ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

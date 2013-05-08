@@ -114,7 +114,7 @@ typedef struct {
     gboolean need_update_icon;
 } Client;
 
-static GHashTable* _clients_table = NULL;
+PRIVATE GHashTable* _clients_table = NULL;
 Window active_client_id = 0;
 DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
 
@@ -314,8 +314,9 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
-void client_free(Client* c)
+void client_free(Client* _c)
 {
+    Client* c = (Client*)_c;
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
     JSObjectRef json = json_create();
