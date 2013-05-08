@@ -122,12 +122,11 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
     }
     g_dir_close(dir);
     g_free(dir_path);
-    int z = 0;
     char* ret = generate_directory_icon(
-            icons[0] ? icons[0] : bad_icons[z++], 
-            icons[1] ? icons[1] : bad_icons[z++], 
-            icons[2] ? icons[2] : bad_icons[z++], 
-            icons[3] ? icons[3] : bad_icons[z++]);
+            icons[0] ? icons[0] : bad_icons[0],
+            icons[1] ? icons[1] : bad_icons[1],
+            icons[2] ? icons[2] : bad_icons[2],
+            icons[3] ? icons[3] : bad_icons[3]);
     for (int i=0; i<4; i++) {
         g_free(icons[i]);
         g_free(bad_icons[i]);
@@ -153,7 +152,7 @@ char* desktop_get_desktop_path()
     return get_desktop_dir(FALSE);
 }
 
-static 
+static
 GFile* _get_useable_file(const char* basename)
 {
     char* destkop_path = get_desktop_dir(FALSE);
@@ -177,7 +176,7 @@ JS_EXPORT_API
 GFile* desktop_new_file()
 {
     GFile* file = _get_useable_file(_("New file"));
-    GFileOutputStream* stream = 
+    GFileOutputStream* stream =
         g_file_create(file, G_FILE_CREATE_NONE, NULL, NULL);
     if (stream)
         g_object_unref(stream);
@@ -281,7 +280,7 @@ void focus_changed(gboolean is_changed)
 
 int main(int argc, char* argv[])
 {
-    //remove  option -f 
+    //remove  option -f
     parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
@@ -331,7 +330,7 @@ static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpoin
 {
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
-    if (xevt->type == PropertyNotify && 
+    if (xevt->type == PropertyNotify &&
             XInternAtom(xevt->display, "_NET_WORKAREA", False) == xevt->atom) {
         g_message("GET _NET_WORKAREA change on rootwindow");
 	GSettings* dock_gsettings = user_data;

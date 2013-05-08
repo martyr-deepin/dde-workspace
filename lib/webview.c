@@ -26,7 +26,7 @@
 void remove_resize_grip(GtkWidget* w)
 {
     GtkCssProvider* provider = gtk_css_provider_get_default();
-    gboolean v = gtk_css_provider_load_from_data(provider, "*{-GtkWindow-resize-grip-height:0;}", -1, NULL);
+    gtk_css_provider_load_from_data(provider, "*{-GtkWindow-resize-grip-height:0;}", -1, NULL);
     GtkStyleContext *ctx = gtk_widget_get_style_context(w);
     gtk_style_context_add_provider(ctx, (GtkStyleProvider*)provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
@@ -61,9 +61,9 @@ GtkWidget* create_web_container(bool normal, bool above)
     return window;
 }
 
-gboolean erase_background(GtkWidget* widget, 
+gboolean erase_background(GtkWidget* widget,
         cairo_t *cr, gpointer data)
-{ 
+{
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
     return FALSE;
@@ -85,9 +85,9 @@ static void setup_lang(WebKitWebView* web_view)
 
 
 static void add_ddesktop_class(WebKitWebView *web_view,
-        WebKitWebFrame *frame, 
-        gpointer context, 
-        gpointer arg3, 
+        WebKitWebFrame *frame,
+        gpointer context,
+        gpointer arg3,
         gpointer user_data)
 {
 
@@ -113,18 +113,18 @@ void dwebview_show_inspector(GtkWidget* webview)
     WebKitWebInspector *inspector = webkit_web_view_get_inspector(
             WEBKIT_WEB_VIEW(webview));
     g_assert(inspector != NULL);
-    WebKitDOMNode *node = 
+    WebKitDOMNode *node =
         (WebKitDOMNode*)webkit_web_view_get_dom_document(
                 (WebKitWebView*)webview);
     webkit_web_inspector_inspect_node(inspector, node);
 }
 
-static bool webview_key_release_cb(GtkWidget* webview, 
+static bool webview_key_release_cb(GtkWidget* webview,
         GdkEvent* event, gpointer data)
 {
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
-        case GDK_KEY_F5: 
+        case GDK_KEY_F5:
             webkit_web_view_reload(WEBKIT_WEB_VIEW(webview));
             break;
         case GDK_KEY_F12:
@@ -144,19 +144,19 @@ d_webview_init(DWebView *dwebview)
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
-    g_signal_connect(G_OBJECT(webview), "document-load-finished", 
+    g_signal_connect(G_OBJECT(webview), "document-load-finished",
             G_CALLBACK(setup_lang), NULL);
 
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
 
-    g_signal_connect(webview, "key-release-event", 
+    g_signal_connect(webview, "key-release-event",
             G_CALLBACK(webview_key_release_cb), NULL);
 
     WebKitWebInspector *inspector = webkit_web_view_get_inspector(
             WEBKIT_WEB_VIEW(webview));
     g_assert(inspector != NULL);
-    g_signal_connect_after(inspector, "inspect-web-view", 
+    g_signal_connect_after(inspector, "inspect-web-view",
             G_CALLBACK(inspector_create), NULL);
 }
 

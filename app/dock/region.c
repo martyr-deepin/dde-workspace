@@ -22,13 +22,13 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
     }
 }
 
-static
+PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
     return FALSE;
 }
-static
+PRIVATE
 void do_window_shape_combine_region(cairo_region_t* region)
 {
     static int _id = -1;

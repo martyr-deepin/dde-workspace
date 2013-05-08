@@ -19,13 +19,13 @@ void close_launcher_window()
     dock_close_window(launcher_id);
 }
 
-static
+PRIVATE
 gboolean desktop_has_focus(Display* dsp, gboolean* ret)
 {
     gboolean state;
     gulong active_client_wm_pid;
-    if (state = get_atom_value_by_name(dsp, active_client_id, "_NET_WM_PID",
-                                       &active_client_wm_pid, get_atom_value_by_index, 0)) {
+    if ((state = get_atom_value_by_name(dsp, active_client_id, "_NET_WM_PID",
+                                       &active_client_wm_pid, get_atom_value_by_index, 0))) {
         *ret = active_client_wm_pid == desktop_pid;
     }
 
@@ -41,7 +41,7 @@ DesktopFocusState get_desktop_focus_state(Display* dsp)
         return DESKTOP_FOCUS_UNKNOWN;
 }
 
-static
+PRIVATE
 GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
     XEvent* xev = xevent;

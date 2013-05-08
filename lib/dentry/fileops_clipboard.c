@@ -281,7 +281,7 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
 	gsize len;
 	str = __convert_file_list_to_string (&clipboard_info, FALSE, &len);
 
-	gtk_selection_data_set (selection_data, copied_files_atom, 8, str, len);
+	gtk_selection_data_set (selection_data, copied_files_atom, 8, (const guchar*)str, len);
         g_free (str);
     }
     g_debug ("_get_clipboard_callback: end");
@@ -443,11 +443,11 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 
     guchar *data;
 
-    data = (guchar *) gtk_selection_data_get_data (selection_data);
+    data = (guchar*) gtk_selection_data_get_data (selection_data);
     data[_len] = '\0';
 
     char **lines;
-    lines = g_strsplit (data, "\n", 0);
+    lines = g_strsplit ((const gchar*)data, "\n", 0);
 
     //fill FileOpsClipboardInfo* info
     if (lines[0] == NULL)

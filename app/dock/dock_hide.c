@@ -21,8 +21,8 @@ enum Event {
     HideNow,
 };
 static gboolean _IN_TOGGLE_SHOW = FALSE;
-static void handle_event(enum Event ev);
-static void _cancel_detect_hide_mode();
+PRIVATE void handle_event(enum Event ev);
+PRIVATE void _cancel_detect_hide_mode();
 
 enum State {
     StateShow,
@@ -39,7 +39,7 @@ gboolean dock_is_hidden()
         return FALSE;
 }
 
-static void set_state(enum State new_state)
+PRIVATE void set_state(enum State new_state)
 {
     /*char* StateStr[] = { "StateShow", "StateShowing", "StateHidden", "StateHidding"};*/
     /*printf("from %s to %s\n", StateStr[CURRENT_STATE], StateStr[new_state]);*/
@@ -47,7 +47,7 @@ static void set_state(enum State new_state)
 }
 
 
-static void enter_show()
+PRIVATE void enter_show()
 {
     g_assert(CURRENT_STATE != StateShow);
 
@@ -55,7 +55,7 @@ static void enter_show()
     _change_workarea_height(_dock_height);
     gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
 }
-static void enter_hide()
+PRIVATE void enter_hide()
 {
     g_assert(CURRENT_STATE != StateHidden);
 
@@ -67,101 +67,101 @@ static void enter_hide()
 
 #define SHOW_HIDE_ANIMATION_STEP 10
 #define SHOW_HIDE_ANIMATION_INTERVAL 40
-static gboolean do_hide_animation(int data);
-static gboolean do_show_animation(int data);
+PRIVATE gboolean do_hide_animation(int data);
+PRIVATE gboolean do_show_animation(int data);
 static guint _animation_show_id = 0;
 static guint _animation_hide_id = 0;
 
-static void _cancel_animation()
+PRIVATE void _cancel_animation()
 {
     if (_animation_show_id != 0) {
         g_source_remove(_animation_show_id);
         _animation_show_id = 0;
     }
 }
-static void enter_hidding()
+PRIVATE void enter_hidding()
 {
     set_state(StateHidding);
     _cancel_animation();
     do_hide_animation(_dock_height);
     js_post_message("dock_hidden", NULL);
 }
-static void enter_showing()
+PRIVATE void enter_showing()
 {
     set_state(StateShowing);
     _cancel_animation();
     do_show_animation(0);
 }
 
-static void handle_event(enum Event ev)
+PRIVATE void handle_event(enum Event ev)
 {
     switch (CURRENT_STATE) {
-        case StateShow: {
-                            switch (ev) {
-                                case TriggerShow:
-                                    break;
-                                case TriggerHide:
-                                    enter_hidding(); break;
-                                case ShowNow:
-                                    break;
-                                case HideNow:
-                                    enter_hide(); break;
-                                default:
-                                    g_assert_not_reached();
-                            }
-                            break;
-                        }
-        case StateShowing: {
-                               switch (ev) {
-                                   case TriggerShow:
-                                       break;
-                                   case TriggerHide:
-                                       enter_hidding(); break;
-                                   case ShowNow:
-                                       enter_show(); break;
-                                   case HideNow:
-                                       enter_hide(); break;
-                                   default:
-                                       g_assert_not_reached();
-                               }
-                               break;
-                           }
-        case StateHidden: {
-                              switch (ev) {
-                                  case TriggerShow:
-                                      enter_showing(); break;
-                                  case TriggerHide:
-                                      break;
-                                  case ShowNow:
-                                      enter_show(); break;
-                                  case HideNow:
-                                      break;
-                                  default:
-                                      g_assert_not_reached();
-                              }
-                              break;
-                          }
-        case StateHidding: {
-                               switch (ev) {
-                                   case TriggerShow:
-                                       enter_showing(); break;
-                                   case TriggerHide:
-                                       break;
-                                   case ShowNow:
-                                       enter_show(); break;
-                                   case HideNow:
-                                       enter_hide(); break;
-                                   default:
-                                       g_assert_not_reached();
-                               }
-                               break;
-                           }
+    case StateShow: {
+        switch (ev) {
+        case TriggerShow:
+            break;
+        case TriggerHide:
+            enter_hidding(); break;
+        case ShowNow:
+            break;
+        case HideNow:
+            enter_hide(); break;
+        default:
+            g_assert_not_reached();
+        }
+        break;
+    }
+    case StateShowing: {
+        switch (ev) {
+        case TriggerShow:
+            break;
+        case TriggerHide:
+            enter_hidding(); break;
+        case ShowNow:
+            enter_show(); break;
+        case HideNow:
+            enter_hide(); break;
+        default:
+            g_assert_not_reached();
+        }
+        break;
+    }
+    case StateHidden: {
+        switch (ev) {
+        case TriggerShow:
+            enter_showing(); break;
+        case TriggerHide:
+            break;
+        case ShowNow:
+            enter_show(); break;
+        case HideNow:
+            break;
+        default:
+            g_assert_not_reached();
+        }
+        break;
+    }
+    case StateHidding: {
+        switch (ev) {
+        case TriggerShow:
+            enter_showing(); break;
+        case TriggerHide:
+            break;
+        case ShowNow:
+            enter_show(); break;
+        case HideNow:
+            enter_hide(); break;
+        default:
+            g_assert_not_reached();
+        }
+        break;
+    }
     };
 }
 
 
 
-static gboolean do_show_animation(int current_height)
+PRIVATE gboolean do_show_animation(int current_height)
 {
     if (CURRENT_STATE != StateShowing) return FALSE;
 
@@ -176,7 +176,7 @@ static gboolean do_show_animation(int current_height)
     return FALSE;
 }
 
-static gboolean do_hide_animation(int current_height)
+PRIVATE gboolean do_hide_animation(int current_height)
 {
     if (CURRENT_STATE != StateHidding) return FALSE;
 
@@ -192,19 +192,19 @@ static gboolean do_hide_animation(int current_height)
 }
 
 
-static gboolean do_hide_dock()
+PRIVATE gboolean do_hide_dock()
 {
     handle_event(TriggerHide);
     return FALSE;
 }
-static gboolean do_show_dock()
+PRIVATE gboolean do_show_dock()
 {
     handle_event(TriggerShow);
     return FALSE;
 }
 
 static guint _delay_id = 0;
-static void _cancel_delay()
+PRIVATE void _cancel_delay()
 {
     if (_delay_id != 0) {
         g_source_remove(_delay_id);
@@ -250,7 +250,7 @@ void dock_hide_real_now()
 }
 
 static guint _detect_hide_mode_id = 0;
-static void _cancel_detect_hide_mode()
+PRIVATE void _cancel_detect_hide_mode()
 {
     if (_detect_hide_mode_id != 0) {
         g_source_remove(_detect_hide_mode_id);
@@ -300,7 +300,7 @@ GdkWindow* get_dock_guard_window()
     }
     return guard_window;
 }
-static GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
+PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
         GdkEvent* event, gpointer data)
 {
     XEvent* xev = xevent;

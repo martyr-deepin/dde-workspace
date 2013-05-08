@@ -57,10 +57,10 @@ static void _commandline_exec(const char *commandline, GList *list);
 #define TEST_END } else { g_warn_if_reached();}
 
 #define FILES_COMPRESSIBLE_NONE 0
-#define FILES_COMPRESSIBLE      1 
+#define FILES_COMPRESSIBLE      1
 #define FILES_DECOMPRESSIBLE    2
 #define FILES_COMPRESSIBLE_ALL  3
-                                
+
 
 JS_EXPORT_API
 Entry* dentry_get_desktop()
@@ -327,7 +327,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         }
         GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
         gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
-        gboolean ret = g_app_info_launch(app, list, launch_context, NULL);
+        gboolean ret = g_app_info_launch(app, list, (GAppLaunchContext*)launch_context, NULL);
         g_object_unref(launch_context);
         g_list_free(list);
 
@@ -388,7 +388,7 @@ gboolean dentry_is_fileroller_exist()
         g_free(path);
         return TRUE;
     }
-    
+
     return FALSE;
 }
 
@@ -404,7 +404,7 @@ double dentry_files_compressibility(ArrayContainer fs)
         files = _fs.data;
     }
 
-    if(1 == fs.num)  
+    if(1 == fs.num)
     {
         GFile *f = files[0];
         if(_file_is_archive(f))
@@ -419,7 +419,7 @@ double dentry_files_compressibility(ArrayContainer fs)
             g_free(filename);
             return FILES_COMPRESSIBLE_NONE;
         }
-    } 
+    }
     else if(1 < fs.num)
     {
         gboolean all_compressed = TRUE;
@@ -485,7 +485,7 @@ _file_is_archive (GFile *file)
 						     "application/x-arj",
 						     "application/x-gzip",
 						     "application/x-bzip-compressed-tar",
-						     "application/x-compressed-tar", 
+						     "application/x-compressed-tar",
                              "application/x-archive",
                              "application/x-xz-compressed-tar",
                              "application/x-bzip",
@@ -503,14 +503,14 @@ _file_is_archive (GFile *file)
                              "application/x-tzo",
                              "application/x-msdownload",
                              "application/x-lha",
-                             "application/x-zoo"}; 
+                             "application/x-zoo"};
 
 	g_return_val_if_fail (file != NULL, FALSE);
 
     GFileInfo* info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, NULL, NULL);
     if (info != NULL) {
-        mime_type = g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
-    }      
+        mime_type = (char*)g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+    }
 
 	for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
 		if (!strcmp (mime_type, archive_mime_types[i])) {
@@ -535,7 +535,7 @@ void dentry_compress_files(ArrayContainer fs)
         files = _fs.data;
 
         GList *list = NULL;
-        for (size_t i=0; i<_fs.num; i++) 
+        for (size_t i=0; i<_fs.num; i++)
         {
             GFile *file = files[i];
             list = g_list_append(list, file);
@@ -555,13 +555,13 @@ void dentry_decompress_files(ArrayContainer fs)
 {
     ArrayContainer _fs;
     GFile** files = NULL;
-           
+
     if(fs.num != 0)
-    {   
+    {
         _fs = _normalize_array_container(fs);
         files = _fs.data;
 
-        for (size_t i=0; i<_fs.num; i++) 
+        for (size_t i=0; i<_fs.num; i++)
         {
             GList *list = NULL;
             GFile *file = files[i];
@@ -582,14 +582,14 @@ void dentry_decompress_files_here(ArrayContainer fs)
 {
     ArrayContainer _fs;
     GFile** files = NULL;
-           
+
     if(fs.num != 0)
-    {   
+    {
         _fs = _normalize_array_container(fs);
         files = _fs.data;
 
         GList *list = NULL;
-        for (size_t i=0; i<_fs.num; i++) 
+        for (size_t i=0; i<_fs.num; i++)
         {
             GFile *file = files[i];
             list = g_list_append(list, file);
@@ -675,7 +675,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
 {
     TEST_GFILE(e, f)
         GError* err = NULL;
-        GFile* new_file = g_file_set_display_name(e, name, NULL, &err);
+        GFile* new_file = g_file_set_display_name(f, name, NULL, &err);
         if (err) {
             show_rename_error_dialog (name, FALSE);
             g_error_free(err);

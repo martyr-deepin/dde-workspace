@@ -264,12 +264,12 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
     char* dir = g_path_get_dirname(path);
     if (g_file_test(dir, G_FILE_TEST_IS_REGULAR)) {
         g_free(dir);
-        g_warning("write content to %s, but %s is not directory!!\n", 
+        g_warning("write content to %s, but %s is not directory!!\n",
                 path, dir);
         return FALSE;
     } else if (!g_file_test(dir, G_FILE_TEST_EXISTS)) {
         if (g_mkdir_with_parents(dir, 0755) == -1) {
-            g_warning("write content to %s, but create %s is failed!!\n", 
+            g_warning("write content to %s, but create %s is failed!!\n",
                     path, dir);
             return FALSE;
         }
@@ -293,7 +293,7 @@ int reparent_to_init ()
 {
     switch (fork())
     {
-	case -1: 
+	case -1:
 	    return EXIT_FAILURE;
 	case 0:
 	    return EXIT_SUCCESS;
@@ -337,7 +337,7 @@ void parse_cmd_line (int* argc_ptr, char*** argv_ptr)
 
     if (should_reparent)
     {
-	//close stdin, stdout, stderr 
+	//close stdin, stdout, stderr
 	//redirect them to /dev/null
 	int fd;
 	close(STDIN_FILENO);
@@ -367,8 +367,8 @@ char* to_lower_inplace(char* str)
 
 gboolean file_filter(const char *file_name)
 {
-    if(file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR) || g_str_has_suffix(file_name, "~"))
+    if((file_name[0] == '.' && !g_str_has_prefix(file_name, DEEPIN_RICH_DIR)) || g_str_has_suffix(file_name, "~"))
         return TRUE;
-    else 
+    else
         return FALSE;
 }

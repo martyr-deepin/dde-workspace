@@ -437,11 +437,6 @@ double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
     return weight;
 }
 
-static
-void print(gpointer data, gpointer user_data)
-{
-    printf("%s\n", (const char *)data);
-}
 
 static
 void _insert_category(JSObjectRef categories, int array_index, int id, const char* name)
@@ -472,7 +467,6 @@ void _record_categories(JSObjectRef categories, const char* names[], int num)
 JS_EXPORT_API
 JSObjectRef launcher_get_categories()
 {
-    JSContextRef cxt = get_global_context();
     JSObjectRef categories = json_array_create();
 
     _insert_category(categories, 0, ALL_CATEGORY_ID, _("all"));

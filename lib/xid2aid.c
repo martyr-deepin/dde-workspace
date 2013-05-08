@@ -270,6 +270,8 @@ char* get_exe(const char* app_id, int pid)
 {
     char buf[8095] = {0};
     char* path = g_strdup_printf("/proc/%d/exe", pid);
+    // header doesn't work, add this to avoid warning
+    extern ssize_t readlink(const char*, char*, size_t);
     gsize len = readlink(path, buf, 8095);
     if (len > 8095) {
         g_debug("PID:%d's exe is to long!", pid);

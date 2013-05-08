@@ -42,9 +42,9 @@ guint key_hash(struct ObjCacheKey* key)
 }
 guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
 {
-    char* a_str = g_strdup_printf("%s%s%s%p", 
+    char* a_str = g_strdup_printf("%s%s%s%p",
             a->bus_name, a->path, a->iface, a->connection);
-    char* b_str = g_strdup_printf("%s%s%s%p", 
+    char* b_str = g_strdup_printf("%s%s%s%p",
             b->bus_name, b->path, b->iface, a->connection);
     int ret = g_strcmp0(a_str, b_str);
     g_free(a_str);
@@ -53,7 +53,7 @@ guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
 }
 
 
-DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg, 
+DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
         void *no_use)
 {
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_SIGNAL)
@@ -82,8 +82,8 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
             }
         }
         g_assert(info->callback != NULL);
-        JSValueRef ret = JSObjectCallAsFunction(get_global_context(),
-                info->callback, NULL, 
+        JSObjectCallAsFunction(get_global_context(),
+                info->callback, NULL,
                 num, params, NULL);
         g_free(params);
 
@@ -91,7 +91,7 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     }
 }
 
-int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info, 
+int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
         struct Signal *sig, JSObjectRef func)
 {
     g_assert(sig != NULL);
@@ -120,7 +120,7 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
 
 
 
-static 
+static
 JSValueRef signal_connect(JSContextRef ctx,
                             JSObjectRef function,
                             JSObjectRef this,
@@ -175,7 +175,7 @@ JSValueRef signal_connect(JSContextRef ctx,
 }
 
 
-static 
+static
 JSValueRef signal_disconnect(JSContextRef ctx,
                             JSObjectRef function,
                             JSObjectRef this,
@@ -188,7 +188,7 @@ JSValueRef signal_disconnect(JSContextRef ctx,
     js_fill_exception(ctx, exception, "Not Implement signal dis_connect");
     return NULL;
 }
-static 
+static
 JSValueRef signal_emit(JSContextRef ctx,
                             JSObjectRef function,
                             JSObjectRef this,
@@ -230,12 +230,12 @@ void async_callback(DBusPendingCall *pending, void *user_data)
     }
     dbus_message_unref(reply);
     JSObjectCallAsFunction(get_global_context(),
-            info->on_ok, NULL, 
+            info->on_ok, NULL,
             num, params, NULL);
     g_free(params);
 }
 
-void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out, 
+void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
         JSObjectRef ok_callback, JSObjectRef error_callback)
 {
     DBusPendingCall *reply = NULL;
@@ -251,10 +251,10 @@ void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
 }
 
 
-JSValueRef call_sync(JSContextRef ctx, DBusConnection* con, 
+JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
         DBusMessage *msg, GSList* sigs_out, JSValueRef* exception)
 {
-    char *sig  = g_slist_nth_data(sigs_out, 0);
+    g_slist_nth_data(sigs_out, 0);
 
     g_assert(msg != NULL);
     g_assert(con != NULL);
@@ -264,7 +264,7 @@ JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
             msg, -1, NULL);
     //TODO: error handle
     //
-    
+
     if (reply == NULL) {
         js_fill_exception(ctx, exception, "dbus daemon faild call this function...");
         return NULL;
@@ -293,7 +293,7 @@ JSValueRef call_sync(JSContextRef ctx, DBusConnection* con,
     }
 }
 
-bool dynamic_set (JSContextRef ctx, JSObjectRef object, 
+bool dynamic_set (JSContextRef ctx, JSObjectRef object,
         JSStringRef propertyName, JSValueRef jsvalue, JSValueRef* exception)
 {
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(object);
@@ -303,8 +303,8 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     g_free(prop_name);
 
     DBusMessage* msg = dbus_message_new_method_call(
-            obj_info->server, 
-            obj_info->path, 
+            obj_info->server,
+            obj_info->path,
             "org.freedesktop.DBus.Properties",
             "Set");
     g_assert(msg != NULL);
@@ -325,7 +325,7 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     }
 
     DBusMessageIter v_iter;
-    dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, 
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT,
             g_slist_nth_data(p->signature, 0), &v_iter);
     if (!js_to_dbus(ctx, jsvalue, &v_iter, g_slist_nth_data(p->signature, 0), exception)) {
         dbus_message_unref(msg);
@@ -347,7 +347,7 @@ bool dynamic_set (JSContextRef ctx, JSObjectRef object,
     }
 }
 
-JSValueRef dynamic_get (JSContextRef ctx, 
+JSValueRef dynamic_get (JSContextRef ctx,
         JSObjectRef object, JSStringRef propertyName, JSValueRef* exception)
 {
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(object);
@@ -357,8 +357,8 @@ JSValueRef dynamic_get (JSContextRef ctx,
     g_free(prop_name);
 
     DBusMessage* msg = dbus_message_new_method_call(
-            obj_info->server, 
-            obj_info->path, 
+            obj_info->server,
+            obj_info->path,
             "org.freedesktop.DBus.Properties",
             "Get");
     g_assert(msg != NULL);
@@ -381,7 +381,7 @@ JSValueRef dynamic_get (JSContextRef ctx,
     return call_sync(ctx, obj_info->connection, msg, p->signature, exception);
 }
 
-static 
+static
 JSValueRef dynamic_function(JSContextRef ctx,
                             JSObjectRef function,
                             JSObjectRef this,
@@ -397,7 +397,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(this);
 
     JSStringRef name_str = JSStringCreateWithUTF8CString("name");
-    JSValueRef js_func_name = JSObjectGetProperty(ctx, function, 
+    JSValueRef js_func_name = JSObjectGetProperty(ctx, function,
             name_str, NULL);
     JSStringRelease(name_str);
 
@@ -444,9 +444,9 @@ JSValueRef dynamic_function(JSContextRef ctx,
     GSList* sigs_out = m->signature_out;
 
     DBusMessage* msg = dbus_message_new_method_call(
-            obj_info->server, 
-            obj_info->path, 
-            obj_info->iface, 
+            obj_info->server,
+            obj_info->path,
+            obj_info->iface,
             func_name);
     g_free(func_name);
     g_assert(msg != NULL);
@@ -455,7 +455,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     dbus_message_iter_init_append(msg, &iter);
 
     for (int i=0; i<argumentCount; i++) {
-        if (!js_to_dbus(ctx, arguments[i], 
+        if (!js_to_dbus(ctx, arguments[i],
                     &iter, g_slist_nth_data(sigs_in, i),
                     exception)) {
             g_warning("jsvalue to dbus don't match at pos:%d", i);
@@ -466,7 +466,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     if (async) {
         ret = JSValueMakeUndefined(ctx);
         if (ok_callback != NULL) {
-            call_async(obj_info->connection, msg, sigs_out, 
+            call_async(obj_info->connection, msg, sigs_out,
                     ok_callback, error_callback);
         }
     } else {
@@ -498,14 +498,14 @@ void obj_finalize(JSObjectRef obj)
 
 JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
 {
-    struct DBusObjectInfo* obj_info = build_object_info(key->connection, 
+    struct DBusObjectInfo* obj_info = build_object_info(key->connection,
             key->bus_name, key->path, key->iface);
 
     if (obj_info == NULL) //can't build object info
         return NULL;
 
     guint num_of_prop = g_hash_table_size(obj_info->properties);
-    guint num_of_signals = g_hash_table_size(obj_info->signals);
+    g_hash_table_size(obj_info->signals);
 
     // async_funs +  sync_funs + connect + emit + NULL
     JSStaticFunction* static_funcs = g_new0(JSStaticFunction, 4);
@@ -542,14 +542,14 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
     }
 
     GString *class_name = g_string_new(NULL);
-    g_string_printf(class_name, "%s_%s_%s", 
+    g_string_printf(class_name, "%s_%s_%s",
             obj_info->server, obj_info->path, obj_info->iface);
     JSClassDefinition class_def = {
         0,
         kJSClassAttributeNone,
         class_name->str,
         NULL,
-        static_values, 
+        static_values,
         static_funcs,
         NULL,
         NULL,//obj_finalize,
@@ -573,7 +573,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
     GList *funcs = g_hash_table_get_keys(obj_info->methods);
     for (int i = 0; i < num_of_func; i++) {
         JSStringRef f_name = JSStringCreateWithUTF8CString(g_list_nth_data(funcs, i));
-        JSObjectSetProperty(ctx, obj_info->obj, f_name, 
+        JSObjectSetProperty(ctx, obj_info->obj, f_name,
                 JSObjectMakeFunctionWithCallback(ctx, f_name, dynamic_function),
                 kJSPropertyAttributeReadOnly, NULL);
         JSStringRelease(f_name);
@@ -582,7 +582,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
         char* tmp = g_strdup_printf("%s_sync", (char*)g_list_nth_data(funcs, i));
         JSStringRef f_name_sync = JSStringCreateWithUTF8CString(tmp);
         g_free(tmp);
-        JSObjectSetProperty(ctx, obj_info->obj, f_name_sync, 
+        JSObjectSetProperty(ctx, obj_info->obj, f_name_sync,
                 JSObjectMakeFunctionWithCallback(ctx, f_name_sync, dynamic_function),
                 kJSPropertyAttributeReadOnly, NULL);
         JSStringRelease(f_name_sync);
@@ -596,13 +596,13 @@ JSObjectRef get_dbus_object(
 {
     if (__objs_cache == NULL) {
         __objs_cache = g_hash_table_new_full(
-                (GHashFunc)key_hash, 
+                (GHashFunc)key_hash,
                 (GEqualFunc)key_equal,
-                NULL, 
+                NULL,
                 (GDestroyNotify)dbus_object_info_free
                 );
     }
-    struct ObjCacheKey key; 
+    struct ObjCacheKey key;
     key.connection = con;
     key.bus_name = bus_name;
     key.path = path;

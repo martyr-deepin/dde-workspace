@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gdk/gdkx.h>
@@ -65,7 +66,7 @@ static void init_user()
             "org.freedesktop.Accounts",
             "/org/freedesktop/Accounts",
             "org.freedesktop.Accounts",
-            NULL, 
+            NULL,
             &error);
 
     if(error != NULL){
@@ -73,11 +74,11 @@ static void init_user()
         g_clear_error(&error);
     }
 
-    GVariant* user_path_var = g_dbus_proxy_call_sync(account_proxy, 
+    GVariant* user_path_var = g_dbus_proxy_call_sync(account_proxy,
            "FindUserByName",
             g_variant_new("(s)", username),
             G_DBUS_CALL_FLAGS_NONE,
-            -1, 
+            -1,
             NULL,
             &error);
 
@@ -85,7 +86,7 @@ static void init_user()
         g_debug("find user by name failed");
         g_clear_error(&error);
     }
-    
+
     g_object_unref(account_proxy);
     gchar * user_path = NULL;
     g_variant_get(user_path_var, "(o)", &user_path);
@@ -118,9 +119,9 @@ JS_EXPORT_API
 gchar* lock_get_icon()
 {
     g_assert(user_proxy != NULL);
-    GVariant* user_icon_var = g_dbus_proxy_get_cached_property(user_proxy, "IconFile"); 
+    GVariant* user_icon_var = g_dbus_proxy_get_cached_property(user_proxy, "IconFile");
     g_assert(user_icon_var != NULL);
-    
+
     gchar* user_icon = g_variant_dup_string(user_icon_var, NULL);
 
     if(!g_file_test(user_icon, G_FILE_TEST_EXISTS)){
@@ -135,9 +136,9 @@ gchar* lock_get_icon()
 gchar* lock_get_realname()
 {
     g_assert(user_proxy != NULL);
-    GVariant* user_realname_var = g_dbus_proxy_get_cached_property(user_proxy, "RealName"); 
+    GVariant* user_realname_var = g_dbus_proxy_get_cached_property(user_proxy, "RealName");
     g_assert(user_realname_var != NULL);
-    
+
     gchar* user_realname = g_variant_dup_string(user_realname_var, NULL);
     g_assert(user_realname);
 
@@ -180,9 +181,9 @@ gboolean lock_is_running()
 gchar* lock_get_background()
 {
     g_assert(user_proxy != NULL);
-    GVariant* user_background_var = g_dbus_proxy_get_cached_property(user_proxy, "BackgroundFile"); 
+    GVariant* user_background_var = g_dbus_proxy_get_cached_property(user_proxy, "BackgroundFile");
     g_assert(user_background_var != NULL);
-    
+
     gchar* background_image  = g_variant_dup_string(user_background_var, NULL);
 
     if(!g_file_test(background_image, G_FILE_TEST_EXISTS)){
@@ -283,7 +284,7 @@ gboolean lock_try_unlock (const gchar *password)
             "com.deepin.dde.lock",
             "/com/deepin/dde/lock",
             "com.deepin.dde.lock",
-            NULL, 
+            NULL,
             &error);
 
     if (error != NULL) {
@@ -298,13 +299,13 @@ gboolean lock_try_unlock (const gchar *password)
                     -1,
                     NULL,
                     &error);
-    
+
     if(error != NULL){
         g_clear_error (&error);
     }
 
     g_variant_get(lock_succeed, "(b)", &succeed);
-    
+
     if(succeed){
         js_post_message_simply("unlock", "{\"status\":\"%s\"}", "succeed");
 
@@ -324,7 +325,7 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
-gboolean focus_out_cb(GtkWidget* w, GdkEvent*e, gpointer user_data)
+void focus_out_cb(GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
 }
@@ -344,14 +345,14 @@ static void lock_report_pid()
 {
     lockpid_file = g_strdup_printf("%s%s%s", "/home/", username, "/dlockpid");
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
-        g_debug("remove old pid info before lock"); 
+        g_debug("remove old pid info before lock");
         g_remove(lockpid_file);
     }
 
     if(g_creat(lockpid_file, O_RDWR) == -1){
         g_warning("touch lockpid_file failed\n");
     }
-    
+
     gchar *contents = g_strdup_printf("%d", getpid());
     g_file_set_contents(lockpid_file, contents, -1, NULL);
 
@@ -378,9 +379,8 @@ gboolean lock_detect_capslock()
 
 static void lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
-    //GRAB_DEVICE(NULL);
-    gs_grab_move_to_window (grab, 
-                            gtk_widget_get_window (GTK_WIDGET(lock_container)), 
+    gs_grab_move_to_window (grab,
+                            gtk_widget_get_window (GTK_WIDGET(lock_container)),
                             gtk_window_get_screen (lock_container),
                             FALSE);
 }
@@ -421,7 +421,7 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
     XEvent *ev = xevent;
 
-    switch (ev->type) 
+    switch (ev->type)
     {
 	g_debug ("event type: %d", ev->xany.type);
         case MapNotify:
@@ -459,7 +459,7 @@ int main(int argc, char **argv)
     signal(SIGTERM, sigterm_cb);
 
     init_user();
-   
+
     if(lock_is_running()){
         g_object_unref(user_proxy);
         exit(0);
@@ -516,7 +516,7 @@ int main(int argc, char **argv)
     gint height = gdk_screen_get_height(gdk_screen_get_default());
     gint width = gdk_screen_get_width(gdk_screen_get_default());
     gdk_window_move_resize (gdkwindow, 0, 0, width, height);
-    
+
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
     gdk_window_stick(gdkwindow);
 

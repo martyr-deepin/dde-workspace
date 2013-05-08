@@ -40,7 +40,7 @@
 GKeyFile* k_apps = NULL;
 static GList* _apps_position = NULL;
 
-static
+PRIVATE
 JSValueRef build_app_info(const char* app_id)
 {
     g_assert(app_id != NULL);
@@ -115,7 +115,7 @@ JSValueRef build_app_info(const char* app_id)
 }
 
 
-static
+PRIVATE
 char* get_app_id(GDesktopAppInfo* info)
 {
     char* app_id = NULL;
@@ -168,7 +168,7 @@ void init_launchers()
     }
 }
 
-static
+PRIVATE
 int get_need_terminal(GDesktopAppInfo* info)
 {
     //copy from gio source code.
@@ -204,7 +204,7 @@ int get_need_terminal(GDesktopAppInfo* info)
     return ((struct _GDesktopAppInfo*)info)->terminal;
 }
 
-static
+PRIVATE
 void _save_apps_position()
 {
     gsize size = g_list_length(_apps_position);
@@ -254,7 +254,7 @@ void dock_insert_apps_position(const char* id, const char* anchor_id)
     save_app_config(k_apps, APPS_INI);
 }
 
-static
+PRIVATE
 void write_app_info(GDesktopAppInfo* info)
 {
     char* app_id = get_app_id(info);
