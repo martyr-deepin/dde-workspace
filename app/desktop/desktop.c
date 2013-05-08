@@ -50,7 +50,7 @@ void install_monitor();
 void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
 void unwatch_workarea_changes(GtkWidget* widget);
 
-static
+PRIVATE
 GFile* _get_useable_file(const char* basename);
 
 JS_EXPORT_API
@@ -152,7 +152,7 @@ char* desktop_get_desktop_path()
     return get_desktop_dir(FALSE);
 }
 
-static
+PRIVATE
 GFile* _get_useable_file(const char* basename)
 {
     char* destkop_path = get_desktop_dir(FALSE);
@@ -192,7 +192,7 @@ GFile* desktop_new_directory()
     return dir;
 }
 
-static void update_workarea_size(GSettings* dock_gsettings)
+PRIVATE void update_workarea_size(GSettings* dock_gsettings)
 {
     int x, y, width, height;
     get_workarea_size(0, 0, &x, &y, &width, &height);
@@ -214,7 +214,7 @@ static void update_workarea_size(GSettings* dock_gsettings)
     g_free (tmp);
 }
 
-static void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
+PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
     if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
@@ -224,7 +224,7 @@ static void dock_config_changed(GSettings* settings, char* key, gpointer usr_dat
 }
 
 
-static void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
+PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
     js_post_message_simply ("desktop_config_changed", NULL);
 }
@@ -239,7 +239,7 @@ gboolean desktop_get_config_boolean(const char* key_name)
 
 //TODO: connect gtk_icon_theme changed.
 
-static
+PRIVATE
 void screen_change_size(GdkScreen *screen, GdkWindow *w)
 {
     int screen_width = gdk_screen_get_width(screen);
@@ -326,7 +326,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-static GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
+PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
 {
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
