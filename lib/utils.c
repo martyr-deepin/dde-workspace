@@ -88,69 +88,6 @@ char* shell_escape(const char* source)
     return dest;
 }
 
-char* json_escape_with_swap (char **source)
-{
-    char* r = json_escape(*source);
-    g_free(*source);
-    *source = r;
-    return *source;
-}
-char* json_escape (const char *source)
-{
-    const unsigned char *p;
-    char *dest;
-    char *q;
-
-    g_return_val_if_fail (source != NULL, NULL);
-
-    p = (unsigned char *) source;
-    q = dest = g_malloc (strlen (source) * 4 + 1);
-
-    while (*p)
-    {
-        switch (*p)
-        {
-            case '\b':
-                *q++ = '\\';
-                *q++ = 'b';
-                break;
-            case '\f':
-                *q++ = '\\';
-                *q++ = 'f';
-                break;
-            case '\n':
-                *q++ = '\\';
-                *q++ = 'n';
-                break;
-            case '\r':
-                *q++ = '\\';
-                *q++ = 'r';
-                break;
-            case '\t':
-                *q++ = '\\';
-                *q++ = 't';
-                break;
-            case '\v':
-                *q++ = '\\';
-                *q++ = 'v';
-                break;
-            case '\\':
-                *q++ = '\\';
-                *q++ = '\\';
-                break;
-            case '"':
-                *q++ = '\\';
-                *q++ = '"';
-                break;
-            default:
-                *q++ = *p;
-        }
-        p++;
-    }
-    *q = 0;
-    return dest;
-}
-
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name)
 {
     char* log_file_path = g_strdup_printf("/tmp/%s.log", app_name);
@@ -169,14 +106,11 @@ char* dcore_gen_id(const char* seed)
     return g_compute_checksum_for_string(G_CHECKSUM_MD5, seed, strlen(seed));
 }
 
-JS_EXPORT_API
-void dcore_run_command(const char* cmd)
+void run_command(const char* cmd)
 {
     g_spawn_command_line_async(cmd, NULL);
 }
-
-JS_EXPORT_API
-void dcore_run_command1(const char* cmd, const char* p1)
+void run_command1(const char* cmd, const char* p1)
 {
     char* e_p = shell_escape(p1);
     char* e_cmd = g_strdup_printf("%s %s\n", cmd, e_p);
@@ -185,8 +119,7 @@ void dcore_run_command1(const char* cmd, const char* p1)
     g_spawn_command_line_async(e_cmd, NULL);
     g_free(e_cmd);
 }
-JS_EXPORT_API
-void dcore_run_command2(const char* cmd, const char* p1, const char* p2)
+void run_command2(const char* cmd, const char* p1, const char* p2)
 {
     char* e_p1 = shell_escape(p1);
     char* e_p2 = shell_escape(p2);

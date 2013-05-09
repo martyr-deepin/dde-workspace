@@ -114,7 +114,7 @@ typedef struct {
     gboolean need_update_icon;
 } Client;
 
-static GHashTable* _clients_table = NULL;
+PRIVATE GHashTable* _clients_table = NULL;
 Window active_client_id = 0;
 DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
 
@@ -314,8 +314,9 @@ void active_window_changed(Display* dsp, Window w)
     }
 }
 
-void client_free(Client* c)
+void client_free(Client* _c)
 {
+    Client* c = (Client*)_c;
     gdk_window_remove_filter(c->gdkwindow,
             (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(c->window));
     JSObjectRef json = json_create();
@@ -418,7 +419,7 @@ void client_list_changed(Window* cs, size_t n)
         if (is_normal_window(cs[i])) {
             if (c == NULL && (c = create_client_from_window(cs[i]))) {
                 //client maybe create failed!!
-                //because monitor_client_window maybe run after _update_task_list when XWindow has be destroied"
+                //because monitor_client_window maybe run after _update_task_list when XWindow has be destroyed"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
                 dock_update_hide_mode();
                 _update_client_info(c);
@@ -434,8 +435,7 @@ void client_list_changed(Window* cs, size_t n)
 void update_task_list()
 {
     g_hash_table_remove_all(_clients_table);
-    GdkWindow* root = gdk_get_default_root_window();
-    _update_task_list(GDK_WINDOW_XID(root));
+    _update_task_list(GDK_ROOT_WINDOW());
     active_window_changed(_dsp, (Window)dock_get_active_window());
 }
 

@@ -83,14 +83,17 @@ class Item extends Widget
             [1, _("Open")],
             [],
             [2, msg],
+            [3,
+            if not is_show_hidden_icons then DISPLAY_HIDDEN_ICONS else HIDE_HIDDEN_ICONS,
+            _get_hidden_icons_ids().length != 0],
             [],
-            [3, _("Send to desktop")],
-            [4, _("Send to dock"), s_dock!=null],
+            [4, _("Send to desktop")],
+            [5, _("Send to dock"), s_dock!=null],
         ]
 
-    @_contextmenu_callback: ->
-        (e) =>
-            @element.contextMenu = build_menu(@_menu())
+    @_contextmenu_callback: (item)->
+        (e) ->
+            item.element.contextMenu = build_menu(item._menu())
 
     do_buildmenu: (e)=>
         @_menu()
@@ -103,11 +106,8 @@ class Item extends Widget
             @element.style.display = 'none'
             Item.display_temp = false
         hidden_icons[@id] = @
-        count = 0
-        for own dump of hidden_icons
-            count += 1
         hide_category()
-        _update_scroll_bar(category_infos[selected_category_id].length - count)
+        _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
 
     display_icon: (e)=>
         @display_mode = 'display'
@@ -115,11 +115,12 @@ class Item extends Widget
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
         delete hidden_icons[@id]
-        count = 0
-        for own dump of hidden_icons
-            count += 1
+        hidden_icons_num = _get_hidden_icons_ids().length
         show_category()
-        _update_scroll_bar(category_infos[selected_category_id].length - count)
+        if hidden_icons_num == 0
+            is_show_hidden_icons = false
+            _show_hidden_icons(is_show_hidden_icons)
+        _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
 
     display_icon_temp: ->
         @element.style.display = 'block'
@@ -129,17 +130,20 @@ class Item extends Widget
     _toggle_icon: ->
         if @display_mode == 'display'
             @hide_icon()
-            @element.addEventListener('conetxtmenu', Item._contextmenu_callback())
         else
             @display_icon()
-            @element.addEventListener('contextmenu', Item._contextmenu_callback())
+        @element.contextMenu = build_menu(@_menu())
+        @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
 
     do_itemselected: (e)=>
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then @_toggle_icon()
-            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 3
+                _show_hidden_icons(not is_show_hidden_icons)
+                grid_load_category(selected_category_id)
+            when 4 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
+            when 5 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
     hide: ->
         @element.style.display = "none"
     show: =>  # use '->', Item.display_temp and @display_mode will be undifined

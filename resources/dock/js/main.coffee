@@ -22,6 +22,7 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
+board = $("#board")
 board.width = screen.width
 board.height = DOCK_HEIGHT
 DCore.Dock.draw_board(board)

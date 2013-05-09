@@ -30,12 +30,14 @@ DCore.signal_connect("lost_focus", (info)->
 )
 DCore.Launcher.notify_workarea_size()
 
-
-_save_hidden_apps = ->
+_get_hidden_icons_ids = ->
     hidden_icons_ids = []
     for own id of hidden_icons
         hidden_icons_ids.push(id)
-    DCore.Launcher.save_hidden_apps(hidden_icons_ids)
+    return hidden_icons_ids
+
+_save_hidden_apps = ->
+    DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
 
 _b = document.body
 
@@ -111,13 +113,17 @@ _b.addEventListener("keydown", do ->
 
 _contextmenu_callback = (msg) ->
     (e) ->
-        menu = [
-            [1, msg]
-        ]
+        hidden_icons_ids = _get_hidden_icons_ids()
+        if hidden_icons_ids.length
+            menu = [
+                [1, msg]
+            ]
+        else
+            menu = []
+            is_show_hidden_icons = false
         _b.contextMenu = build_menu(menu)
 
 is_show_hidden_icons = false
-_b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 
 _show_hidden_icons = (is_shown) ->
     is_show_hidden_icons = is_shown
@@ -135,11 +141,6 @@ _show_hidden_icons = (is_shown) ->
         msg = DISPLAY_HIDDEN_ICONS
 
     _b.addEventListener("contextmenu", _contextmenu_callback(msg))
-
-_b.addEventListener("itemselected", (e) ->
-    _show_hidden_icons(not is_show_hidden_icons)
-    grid_load_category(selected_category_id)
-)
 
 # key: id of app (md5 basenam of path)
 # value: Item class
@@ -174,6 +175,14 @@ _init_hidden_icons = ->
         if applications[id]
             hidden_icons[id] = applications[id]
             hidden_icons[id].hide_icon()
+
+    _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
+
+    _b.addEventListener("itemselected", (e) ->
+        _show_hidden_icons(not is_show_hidden_icons)
+        grid_load_category(selected_category_id)
+    )
+
     return
 
 init_search_box()
