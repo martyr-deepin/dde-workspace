@@ -11,8 +11,12 @@
 int TEST_MAX_COUNT = 100000;
 int TEST_MAX_MEMORY = 100000;
 
+const gchar *file1 = "~/Desktop/bg.png";
+const gchar *file2 = "~/Desktop/bg2.png";
+
 void test_inotify()
 {
+    void trash_changed();
     Test({
         g_assert(FALSE == desktop_file_filter("snyh.txt"));
         g_assert(TRUE == desktop_file_filter(".snyh.txt"));
@@ -22,18 +26,57 @@ void test_inotify()
         trash_changed();
     }, "trash_changed");
 
+    void _add_monitor_directory(GFile *f);
     Test({
-        GFile *f = g_file_new_for_path("~/deepin/test/desktop_test/bg.png");
+        GFile *f = g_file_new_for_path(file1);
         _add_monitor_directory(f);
-        g_free(f);
+        g_object_unref(f);
     }, " _add_monitor_directory");
-
+    
+    void install_monitor();
     Test({
-        GFile *old_f = g_file_new_for_path("~/deepin/test/desktop_test/bg.png");
-        GFile *new_f = g_file_new_for_path("~/deepin/test/desktop_test/bg.png");
+        install_monitor();
+    }, "install_monitor");
+
+
+    GFile *old_f = g_file_new_for_path(file1);
+    GFile *new_f = g_file_new_for_path(file2);
+
+    void handle_rename(GFile *, GFile *);
+    Test({
         handle_rename(old_f, new_f);
     }, "handle_rename");
-    
+
+    void handle_delete(GFile* f);
+    Test({
+        GFile *f = g_file_new_for_path(file1);
+        handle_delete(f);
+    }, "handle_delete");
+
+    void handle_update(GFile* f);
+    Test({
+        GFile *f = g_file_new_for_path(file1);
+        handle_update(f);
+    }, "handle_update");
+
+    void handle_new(GFile* f);
+    Test({
+        GFile *f = g_file_new_for_path(file1);
+        handle_new(f);
+    }, "handle_new");
+
+    void _remove_monitor_directory(GFile* f);
+    Test({
+        _remove_monitor_directory(old_f);
+    }, "_remove_monitor_directory");
+
+    void _inotify_poll();
+    Test({
+        _inotify_poll();   
+    }, "_inotify_poll");
+
+    g_object_unref(old_f);
+    g_object_unref(new_f);
 }
 
 void test_dbus()
@@ -45,31 +88,31 @@ void test_dbus()
 
 void test_background()
 {
+    //void setup_background_window();
+    void set_wmspec_desktop_hint(GdkWindow *);
+    GdkWindow* _background_window = NULL;
     Test({
-        setup_background_window();
+        GdkWindowAttr attributes;
+        attributes.width = 0;
+        attributes.height = 0;
+        attributes.window_type = GDK_WINDOW_CHILD;
+        attributes.wclass = GDK_INPUT_OUTPUT;
+        attributes.event_mask = GDK_EXPOSURE_MASK;
+
+        _background_window = gdk_window_new(NULL, &attributes, 0);
+        set_wmspec_desktop_hint(_background_window);
+
+        bg_util_init (_background_window);
+        bg_util_connect_screen_signals (_background_window);
+
+        gdk_window_show_unraised (_background_window);
+
+        gdk_window_destroy(_background_window);
     }, "setup_background_window");
 }
 
 void test_background_util()
-{
-    // _update_rootpmap
-    GdkScreen *screen = NULL;
-    GdkDisplay *display = NULL;
-    
-    screen = gdk_screen_get_default();
-    gint number = gdk_screen_get_number(screen);
-    gint width = gdk_screen_get_width(screen);
-    gint height = gdk_screen_get_display(screen);
-    display = XOpenDisplay(gdk_display_get_name(gdk_screen_get_display(screen)));
-    Pixmap pixmap = XCreatePixmap (display, RootWindow(display, number), width, height, DefaultDepth(display, number)); 
-    Test({
-        _update_rootpmap(pixmap);
-    }, "_update_rootpmap");
-
-    gdk_display_close(display);
-    XCloseDisplay(display);
-
-    // on_tick
+{   
     typedef struct _xfade_data
     {
         //all in seconds.
@@ -83,21 +126,86 @@ void test_background_util()
 
         Pixmap		pixmap;
     } xfade_data_t;
+   
+    // _update_rootpmap
+    void _update_rootpmap();
 
+    GdkScreen *screen = NULL;
+    Display *display = NULL;
+    
+    screen = gdk_screen_get_default();
+    gint number = gdk_screen_get_number(screen);
+    gint width = gdk_screen_get_width(screen);
+    gint height = gdk_screen_get_height(screen);
+    display = XOpenDisplay(gdk_display_get_name(gdk_screen_get_display(screen)));
+    Pixmap pixmap = XCreatePixmap (display, RootWindow(display, number), width, height, DefaultDepth(display, number)); 
+    Test({
+        _update_rootpmap(pixmap);
+    }, "_update_rootpmap");
+
+    //gdk_display_close(display);
+    //XCloseDisplay(display);
+
+    // on_tick
+    void on_tick(xfade_data_t *data);
+    cairo_surface_t *get_surface(Pixmap);
+    
     xfade_data_t *data = g_new0(xfade_data_t, 1);
+    data->pixmap = pixmap;
+    data->fading_surface = get_surface(pixmap);
+    data->end_pixbuf = gdk_pixbuf_new_from_file(file1, NULL);
     Test({
         on_tick(data);
     }, "on_tick");
+    
+    // draw_background
+    void draw_background(xfade_data_t *data);
+    draw_background(data);
+
+    g_object_unref(data->end_pixbuf);
+    cairo_surface_destroy(data->fading_surface);
     g_free(data);
 
+    // remove_timers
+    void remove_timers();
+    remove_timers();
+
+    // get_current_picture_path
+    const char *get_current_picture_path();
+    get_current_picture_path();
+
+    // get_next_picture_index
+    guint get_next_picture_index();
+    get_next_picture_index();
+
+    // get_next_picture_path
+    const char *get_next_picture_path();
+    get_next_picture_path();
+
     // get_xformed_gdk_pixbuf 
-    gchar *path = "/home/yjq/deepin/test/desktop_test/bg.png";
+    GdkPixbuf *get_xformed_gdk_pixbuf(const char *path);
+
     Test({
+        gchar *path = file1;
         get_xformed_gdk_pixbuf(path);
     }, "get_xformed_gdk_pixbuf");
-    g_free(path);
 
     // on_bg_duration_tick 
+    gboolean on_bg_duration_tick(const gchar *path);
+    void bg_settings_picture_uri_changed(GSettings *setting, const gchar *key, gpointer data);
+    void bg_settings_bg_duration_changed (GSettings *, const gchar *, gpointer);
+    void bg_settings_xfade_manual_interval_changed (GSettings *, const gchar *, gpointer);
+    void bg_settings_xfade_auto_interval_changed(GSettings *, const gchar *, gpointer);
+    void bg_settings_xfade_auto_mode_changed (GSettings *, const gchar *, gpointer);
+    void bg_settings_draw_mode_changed (GSettings *, const gchar *, gpointer);
+    void bg_settings_current_picture_changed (GSettings *, const gchar *, gpointer);
+    void register_account_service_background_path (const gchar *);
+    void bg_settings_current_picture_changed (GSettings *, const gchar *, gpointer);
+    void screen_size_changed_cb(GdkScreen *, gpointer);
+    void initial_setup(GSettings *);
+    void bg_util_init(GdkWindow *);
+    void bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data);
+
     Test({
         gpointer data = NULL;
         on_bg_duration_tick(data);
@@ -110,6 +218,12 @@ void test_background_util()
         gpointer data = NULL;
         bg_settings_picture_uri_changed(setting, BG_PICTURE_URI, data);
     }, "bg_settings_picture_uri_changed");
+
+    // bg_settings_picture_uris_changed 
+    Test({
+        gpointer data = NULL;
+        bg_settings_picture_uris_changed(setting, BG_PICTURE_URIS, data);
+    }, "bg_settings_picture_uris_changed");
 
     Test({
         gpointer data = NULL;
@@ -137,7 +251,7 @@ void test_background_util()
     }, "bg_settings_draw_mode_changed ");
 
     Test({
-        const char* cur_pict = g_settings_get_string (setting, BG_CURRENT_PICT);
+        char* cur_pict = g_settings_get_string (setting, BG_CURRENT_PICT);
         register_account_service_background_path (cur_pict);
         g_free(cur_pict);
     }, "register_account_service_background_path ");
@@ -178,20 +292,88 @@ void test_background_util()
     }, "bg_util_init ");
 
     g_object_unref(setting);
+
+    // setup_background_timer
+    void setup_background_timer();
+    Test({
+        setup_background_timer();
+    }, "setup_background_timer");
+
+    // setup_crossfade_timer
+    void setup_crossfade_timer();
+    Test({
+        setup_crossfade_timer();
+    }, "setup_crossfade_timer");
+
+    // setup_timers
+    void setup_timers();
+    Test({
+        setup_timers();
+    }, "setup_timers");
+
+    // parse_picture_uris (gchar * pic_uri)
+    void parse_picture_uris (gchar * pic_uri);
+    Test({
+        parse_picture_uris(file1);
+    }, "parse_picture_uris");
+
+    GdkPixbuf *get_xformedgdk_pixbuf(const char *path);
+    Test({
+        gchar *path = file1;
+        GdkPixbuf *pixbuf = get_xformed_gdk_pixbuf(path);
+        g_object_unref(pixbuf);
+    }, "get_xformed_gdk_pixbuf");
+ 
 }
 
 void test_other()
 {
 }
 
+void test_desktop()
+{
+    /*JSObjectRef desktop_get_desktop_entries();*/
+    /*desktop_get_desktop_entries();*/
+
+    /*char* desktop_get_rich_dir_name(GFile* dir);*/
+    /*desktop_get_rich_dir_name();*/
+
+    /*void desktop_set_rich_dir_name(GFile* dir, const char* name)*/
+    /*desktop_set_rich_dir_name()*/
+    /*char* desktop_get_rich_dir_icon(GFile* _dir)*/
+    /*GFile* desktop_create_rich_dir(ArrayContainer fs)*/
+    /*char* desktop_get_desktop_path()*/
+    /*GFile* _get_useable_file(const char* basename)*/
+    /*GFile* desktop_new_file()*/
+    /*GFile* desktop_new_directory()*/
+    /*void update_workarea_size(GSettings* dock_gsettings)*/
+    /*void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)*/
+    /*void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)*/
+    /*gboolean desktop_get_config_boolean(const char* key_name)*/
+    /*void screen_change_size(GdkScreen *screen, GdkWindow *w)*/
+    /*void send_lost_focus()*/
+    /*void send_get_focus()*/
+
+    /*GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)*/
+    /*void unwatch_workarea_changes(GtkWidget* widget)*/
+    /*void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings)*/
+    /*void desktop_emit_webview_ok()*/
+}
+
 void desktop_test()
 {
     /* test inotify successful.*/
     //test_inotify();
-    test_dbus();
-    test_background();
-    test_background_util();
-    test_other();
+    
+    //test_dbus();
+
+    //test_background();
+
+    //test_background_util();
+
+    //test_desktop();
+    
+    //test_other();
 }
 
 #endif

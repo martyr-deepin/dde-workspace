@@ -271,7 +271,7 @@ JS_EXPORT_API
 void dock_toggle_launcher(gboolean show)
 {
     if (show) {
-        dcore_run_command("launcher");
+        run_command("launcher");
     } else {
         close_launcher_window();
     }
