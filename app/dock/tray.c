@@ -78,8 +78,9 @@ GdkWindow* create_wrapper(GdkWindow* parent, Window tray_icon)
         attributes.event_mask = GDK_ALL_EVENTS_MASK;
         attributes.visual = visual;
         wrapper = gdk_window_new(parent, &attributes, GDK_WA_VISUAL);
-        GdkColor color = {1, 0, 0, 1};
-        gdk_window_set_background(wrapper, &color);
+        //TODO: there should set color correspond by dock background color
+        /*GdkColor color = {1, 0, 0, 1};*/
+        /*gdk_window_set_background_rgba(wrapper, &color);*/
 
         XReparentWindow(gdk_x11_get_default_xdisplay(),
                 tray_icon,

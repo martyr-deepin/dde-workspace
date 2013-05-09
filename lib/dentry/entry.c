@@ -311,7 +311,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             g_object_unref(info);
         } else {
             char* path = g_file_get_path(f);
-            dcore_run_command1("gvfs-open", path);
+            run_command1("gvfs-open", path);
             g_free(path);
             return TRUE;
         }
