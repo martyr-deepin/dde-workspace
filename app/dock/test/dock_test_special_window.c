@@ -2,4 +2,6 @@
 
 void dock_test_special_window()
 {
+    Test({
+         }, "");
 }
