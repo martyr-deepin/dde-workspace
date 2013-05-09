@@ -89,7 +89,6 @@ class Weather
             @refresh.style.backgroundColor = "gray"
             @weathergui_update(@cityurl)
         )
-
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display == "none" 
                 @more_weather_menu.style.display = "block"
@@ -106,6 +105,11 @@ class Weather
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
+                #set 2 seconds no choose province to hide the more_city_menu option 
+                # @more_city_menu_close()
+                setTimeout( => 
+                    @more_city_menu.style.display = "none"
+                ,2000);
             else 
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
@@ -128,8 +132,6 @@ class Weather
             distinit = create_element("option", "distinit", @choosedist)
             distinit.innerText = "--县--"
             distinit.selected = "true"
-            #set 2 seconds no choose province to hide the more_city_menu option 
-
         )
 
         @chooseprov.addEventListener("change", =>
@@ -138,7 +140,15 @@ class Weather
             provvalue = @chooseprov.options[provIndex].value 
             data = @read_data_from_json(provvalue)
             ) 
-
+    # more_city_menu_close:  =>
+    #     second = 1
+    #     t= setInterval( =>
+    #         if second > -1 then second-- 
+    #         else 
+    #             clearInterval(t)  
+    #             @more_city_menu.style.display = "none"
+    #      , 1000)
+        
     read_data_from_json: (id) =>
         xhr = new XMLHttpRequest()
         url = "desktop_plugin/weather/city/" + id + ".json"
@@ -173,8 +183,7 @@ class Weather
             echo "cityid " + cityid 
             @more_city_menu.style.display = "none"
             @cityurl = "http://m.weather.com.cn/data/"+cityid+".html" 
-            @weathergui_update(@cityurl)
-            setInterval(@weathergui_update(@cityurl),600000)
+            setInterval(@weathergui_update(@cityurl),600000)#ten minites update once
 
     ajax : (url, method, callback, asyn=true) =>
         xhr = new XMLHttpRequest()
