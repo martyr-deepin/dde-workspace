@@ -106,16 +106,17 @@ class Weather
                 @more_weather_menu.style.zIndex = "0"
         )        
 
-        city.addEventListener("click", =>                         
+        city.addEventListener("click", =>     
+            @flag_more_city_menu_click = 0                    
             if @more_city_menu.style.display == "none"
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
-                #set 2 seconds no choose province to hide the more_city_menu option 
-                # @more_city_menu_close()
-                # setTimeout( => 
-                #     @more_city_menu.style.display = "none"
-                # ,2000);
+                # set 2 seconds no choose province to hide the more_city_menu option ,
+                # but if you click the citychoose menu ,it will not hide
+                @display_city_menu_id = setTimeout( => 
+                    @more_city_menu.style.display = "none"
+                ,4000)
             else 
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
@@ -139,7 +140,10 @@ class Weather
             distinit.innerText = "--县--"
             distinit.selected = "true"
         )
-    
+        @more_city_menu.addEventListener("click", =>
+            # but if you click the citychoose menu ,it will not hide
+            clearTimeout(@display_city_menu_id)
+            )
         @chooseprov.addEventListener("change", =>
             echo "prov change"
             provIndex = @chooseprov.selectedIndex
@@ -150,26 +154,21 @@ class Weather
         @element.addEventListener("click" , =>
             @contextmenu.style.display = "none"
             )
-
         contextmenu_times = 0
         @element.addEventListener("contextmenu",  (evt) => 
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
             contextmenu_times++
-            # evt = (if evt then evt else window.event)
-            if contextmenu_times%2 is 1    
-                # @contextmenu.style.top =  evt.y - 2
-                # @contextmenu.style.left =  evt.x - 2         
+            # echo "contextmenu_times:" + contextmenu_times 
+            if contextmenu_times%2 is 1  
+                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+                echo "bottom_distance:" + bottom_distance
+                if bottom_distance < 200 
+                    @contextmenu.style.top = 0
                 @contextmenu.style.display = "block"
             else
-                @contextmenu.style.display= "none"            
-            # echo "evt.offsetTop:" + evt.y
-            # echo "evt.offsetLeft:" + evt.x
-            # evt.stopPropagation()
-            # @contextMenu = build_menu(@menu())
-            echo "oncontextmenu_times:" + contextmenu_times
+                @contextmenu.style.display= "none"   
             )
-
 
         weather_close.addEventListener("click", =>
             @element.style.display = "none"
@@ -179,14 +178,14 @@ class Weather
             @weathergui_update(@cityid)
             )
         feedback.addEventListener("click", ->
-            echo "feedback"
+            feedbackmsg = prompt("亲～谢谢您的反馈～～","")
+            echo feedbackmsg
             )
         about.addEventListener("click", ->
-            # str = "#  Copyright (c) 2011 ~ 2012 Deepin, Inc."  + '/n' +
-            #       "#  2011 ~ 2012 bluth" + '/n' +
-            #       "## Author:      bluth <yuanchenglu@linuxdeepin.com>" + '/n' 
-            #       "#  Maintainer:  bluth <yuanchenglu@linuxdeepin.com>"
-            str = "深度天气插件1.0.0"
+            str = "深度天气插件1.0.0" + "\n" +
+                  "Author:bluth" + "\n" +
+                  "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
+                  "www.linuxdeepin.com"
             alert str
             alert.title = "about"
             )
@@ -194,26 +193,6 @@ class Weather
             @refresh.style.backgroundColor = "gray"
             @weathergui_update(@cityid)
         )
-    menu : ->
-        # menu = [ "关闭","刷新","反馈","关于" ]
-        menu = []
-        menu.push([1, _("关闭")])
-        menu.push([])
-        menu.push([3, _("刷新")])
-        menu.push([4, _("反馈")])
-        menu.push([])
-        menu.push([6, _("关于")])
-        menu.push([])
-        menu.push([8, _("")])
-        menu
-    more_city_menu_close:  =>
-        second = 1
-        t= setInterval( =>
-            if second > -1 then second-- 
-            else 
-                clearInterval(t)  
-                @more_city_menu.style.display = "none"
-         , 1000)
         
     read_data_from_json: (id) =>
         xhr = new XMLHttpRequest()
@@ -297,9 +276,9 @@ class Weather
             localStorage.setItem(weather_data_now,xhr.responseText)
             weather_data_now = JSON.parse(localStorage.getItem(weather_data_now))
             temp_now = weather_data_now.weatherinfo.temp
-            time_update = weather_data_now.weatherinfo.time
+            @time_update = weather_data_now.weatherinfo.time
             echo "temp_now:" + temp_now
-            echo "time_update:" + time_update
+            echo "@time_update:" + @time_update
             @city_now.textContent = weather_data_now.weatherinfo.city
             if temp_now < -10
                 @temperature_now_minus.style.opacity = 0.8
@@ -312,34 +291,88 @@ class Weather
             localStorage.setItem(weather_data,xhr.responseText)
             weather_data = JSON.parse(localStorage.getItem(weather_data))
             # localStorage.removeItem(weather_data)  
+            @weather_data = weather_data
             week_name = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
             i_week = 0
             while i_week < week_name.length
                 break if weather_data.weatherinfo.week is week_name[i_week]
                 i_week++
             week_n = i_week
-            @weather_now_pic.src = @img_url_first + "48/T" + weather_data.weatherinfo.img1 + weather_data.weatherinfo.img_title1 + ".png"
             str_data = weather_data.weatherinfo.date_y
             @date.textContent = str_data.substring(0,str_data.indexOf("年")) + "." + str_data.substring(str_data.indexOf("年")+1,str_data.indexOf("月"))+ "." + str_data.substring(str_data.indexOf("月") + 1,str_data.indexOf("日")) + weather_data.weatherinfo.week 
-            
+            @weather_now_pic.src = @img_url_first + "48/T" + weather_data.weatherinfo.img_single + weather_data.weatherinfo.img_title_single + ".png"
+
             @week1.textContent = week_name[week_n%7]
-            @pic1.src = @img_url_first + "24/T" + weather_data.weatherinfo.img1 + weather_data.weatherinfo.img_title1 + ".png"
+            @pic1.src = @weather_more_pic_src(1)
             @temperature1.textContent = weather_data.weatherinfo.temp1
             @week2.textContent = week_name[(week_n+1)%7]
-            @pic2.src = @img_url_first + "24/T" + weather_data.weatherinfo.img3 + weather_data.weatherinfo.img_title3 + ".png"
+            @pic2.src = @weather_more_pic_src(2)
             @temperature2.textContent = weather_data.weatherinfo.temp2
             @week3.textContent = week_name[(week_n+2)%7]
-            @pic3.src = @img_url_first + "24/T" + weather_data.weatherinfo.img5 + weather_data.weatherinfo.img_title5 + ".png"
+            @pic3.src = @weather_more_pic_src(3)
             @temperature3.textContent = weather_data.weatherinfo.temp3
             @week4.textContent = week_name[(week_n+3)%7]
-            @pic4.src = @img_url_first + "24/T" + weather_data.weatherinfo.img7 + weather_data.weatherinfo.img_title7 + ".png"
+            @pic4.src = @weather_more_pic_src(4)
             @temperature4.textContent = weather_data.weatherinfo.temp4
             @week5.textContent = week_name[(week_n+4)%7]
-            @pic5.src = @img_url_first + "24/T" + weather_data.weatherinfo.img9 + weather_data.weatherinfo.img_title9 + ".png"
+            @pic5.src = @weather_more_pic_src(5)
             @temperature5.textContent = weather_data.weatherinfo.temp5
             @week6.textContent = week_name[(week_n+5)%7]
-            @pic6.src = @img_url_first + "24/T" + weather_data.weatherinfo.img11 + weather_data.weatherinfo.img_title11 + ".png"
+            @pic6.src = @weather_more_pic_src(6)
             @temperature6.textContent = weather_data.weatherinfo.temp6
 
             @refresh.style.backgroundColor = null
         )
+    weather_more_pic_src:(i) =>
+        i = i*2 -1
+        weather_data = @weather_data
+        src = null
+        time = new Date()
+        hours_now = time.getHours()
+        echo "hours_now:" + hours_now
+        img_front = [
+            weather_data.weatherinfo.img_single,
+            weather_data.weatherinfo.img1,
+            weather_data.weatherinfo.img2,
+            weather_data.weatherinfo.img3,
+            weather_data.weatherinfo.img4,
+            weather_data.weatherinfo.img5,
+            weather_data.weatherinfo.img6,
+            weather_data.weatherinfo.img7,
+            weather_data.weatherinfo.img8,
+            weather_data.weatherinfo.img9,
+            weather_data.weatherinfo.img10,
+            weather_data.weatherinfo.img11,
+            weather_data.weatherinfo.img12  
+        ]
+        img_behind = [
+            weather_data.weatherinfo.img_title_single,
+            weather_data.weatherinfo.img_title1,
+            weather_data.weatherinfo.img_title2,
+            weather_data.weatherinfo.img_title3,
+            weather_data.weatherinfo.img_title4,
+            weather_data.weatherinfo.img_title5,
+            weather_data.weatherinfo.img_title6,
+            weather_data.weatherinfo.img_title7,
+            weather_data.weatherinfo.img_title8,
+            weather_data.weatherinfo.img_title9,
+            weather_data.weatherinfo.img_title10,
+            weather_data.weatherinfo.img_title11,
+            weather_data.weatherinfo.img_title12                        
+        ]
+        
+        j = 0
+        # while j < img_front.length
+        #     if img_front[j+1] is "99" 
+        #         echo "99"
+        #         img_front[j+1] = img_front[j]
+        #     j++
+        if img_front[i+1] is "99" 
+            echo "99"
+            img_front[i+1] = img_front[i]
+        echo "img_front: " + img_front
+        if hours_now < 12                 
+            src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
+        else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
+        echo src
+        return src
