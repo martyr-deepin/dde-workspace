@@ -166,6 +166,7 @@ class Weather
                 if bottom_distance < 200 
                     @contextmenu.style.top = 0
                 @contextmenu.style.display = "block"
+                @contextmenu.style.zIndex  = "65535"
             else
                 @contextmenu.style.display= "none"   
             )
@@ -179,7 +180,8 @@ class Weather
             )
         feedback.addEventListener("click", ->
             feedbackmsg = prompt("亲～谢谢您的反馈～～","")
-            echo feedbackmsg
+            if feedbackmsg isnt null
+                echo feedbackmsg
             )
         about.addEventListener("click", ->
             str = "深度天气插件1.0.0" + "\n" +
@@ -187,7 +189,10 @@ class Weather
                   "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
                   "www.linuxdeepin.com"
             alert str
-            alert.title = "about"
+            # str.dialog({
+            #     buttons:{"确定"},
+            #     title:"关于",
+            #     })
             )
         @refresh.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
@@ -241,26 +246,36 @@ class Weather
                 echo "XMLHttpRequest can't receive data."
     get_client_cityid : =>
         ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
-        # ip_url = "http://61.4.185.48:81/g/"
         @ajax(ip_url,"GET", (xhr)=>
                 localStorage.setItem(client_ip,xhr.responseText)
                 client_ip = localStorage.getItem(client_ip)
                 # localStorage.removeItem(client_ip)
                 str = client_ip.toString()
                 echo str
-                str_provcity = str.slice(str.indexOf("国")+2,-6)
-                echo str_provcity.indexOf(" ")#2
-                prov_client = str_provcity.slice(0,2)
-                city_client = str_provcity.slice(3)
-                echo "prov_client:" + prov_client
-                echo "city_client:" + city_client
-                for provin of allname.data
-                    if allname.data[provin].省 is prov_client
-                        for ci of allname.data[provin].市
-                            if allname.data[provin].市[ci].市名 is city_client
-                                echo allname.data[provin].市[ci].编码
-                                @cityid = allname.data[provin].市[ci].编码
-                                @weathergui_update(@cityid)
+                if str[0] is '0'
+                    echo "str[0] is 0"
+                ip = str.slice(2,12)
+                echo "ip:" + ip
+                ip_url2 = ip_url + "?format=js&ip=" + ip
+                @ajax(ip_url2,"GET",(xhr)=>
+                    client_ip_city = xhr.responseText
+                    echo client_ip_city
+                    remote_ip_info = client_ip_city.slice(21,client_ip_city.length)
+                    localStorage.setItem(remote_ip_info,remote_ip_info)
+                    remote_ip_info = JSON.parse(localStorage.getItem(remote_ip_info))
+                    if remote_ip_info.ret is 1
+                        echo "remote_ip_info.province:" + remote_ip_info.province
+                        echo "remote_ip_info.city:" + remote_ip_info.city
+                        for provin of allname.data
+                            if allname.data[provin].省 is remote_ip_info.province
+                                for ci of allname.data[provin].市
+                                    if allname.data[provin].市[ci].市名 is remote_ip_info.city
+                                        echo allname.data[provin].市[ci].编码
+                                        @cityid = allname.data[provin].市[ci].编码
+                                        @weathergui_update(@cityid)
+                    else echo "没有找到匹配的 IP 地址信息！"
+                    )
+
             )
     weathergui_init: =>
         window.loader.addcss('desktop_plugin/weather/weather.css', 'screen print').load()
@@ -269,7 +284,6 @@ class Weather
     weathergui_update: (cityid)=>
         localStorage.setItem(cityid,cityid)
         cityid = localStorage.getItem(cityid)
-        # alert "weathergui_update....."  
         now_weather_url = "http://www.weather.com.cn/data/sk/" + cityid + ".html"
         weather_url = "http://m.weather.com.cn/data/"+cityid+".html"
         @ajax(now_weather_url , "GET" , (xhr) =>
@@ -329,7 +343,6 @@ class Weather
         src = null
         time = new Date()
         hours_now = time.getHours()
-        echo "hours_now:" + hours_now
         img_front = [
             weather_data.weatherinfo.img_single,
             weather_data.weatherinfo.img1,
@@ -361,18 +374,9 @@ class Weather
             weather_data.weatherinfo.img_title12                        
         ]
         
-        j = 0
-        # while j < img_front.length
-        #     if img_front[j+1] is "99" 
-        #         echo "99"
-        #         img_front[j+1] = img_front[j]
-        #     j++
         if img_front[i+1] is "99" 
-            echo "99"
             img_front[i+1] = img_front[i]
-        echo "img_front: " + img_front
         if hours_now < 12                 
             src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
-        echo src
         return src
