@@ -165,24 +165,21 @@ clear_all_positions = ->
     return
 
 
-update_position = (old_id, new_id) ->
-    assert("string" == typeof(old_id), "[update_position]accept not string old_id")
-    assert("string" == typeof(new_id), "[update_position]accept not string new_id")
-    if (o_p = load_position(old_id))?
-        discard_position(old_id)
-        save_position(new_id, o_p)
-    return
-
-
 place_desktop_items = ->
     init_occupy_table()
-    
+
     total_item = speical_item.concat(all_item)
     not_founds = []
     for i in total_item
-        if load_position(i) != null
-            w = Widget.look_up(i)
-            if w? then move_to_anywhere(w)
+        if not (w = Widget.look_up(i))?
+            echo "uncleaned item #{i}"
+            continue
+
+        pos = w.get_pos()
+        if (pos.x > -1) and (pos.y > -1) # we have a place and we did not to move it
+            continue
+        else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
+            move_to_somewhere(w, old_pos)
         else
             not_founds.push(i)
 
@@ -223,7 +220,7 @@ calc_pos_to_pos_distance = (base, pos) ->
 
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     items = speical_item.concat(all_item)
-    pos = load_position(start_item.get_id())
+    pos = start_item.get_pos()
     while true
         if x_delta != 0
             pos.x += x_delta
@@ -239,7 +236,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
-            find_pos = load_position(w.get_id())
+            find_pos = w.get_pos()
             if (find_pos.x <= pos.x <= find_pos.x + find_pos.width - 1) and (find_pos.y <= pos.y <= find_pos.y + find_pos.height - 1)
                 return w
     null
@@ -287,7 +284,6 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -308,6 +304,7 @@ find_free_position = (w, h) ->
     return null
 
 
+# need optimization
 move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
     if info? and not detect_occupy(info)
@@ -328,17 +325,14 @@ move_to_somewhere = (widget, pos) ->
 
 
 move_to_position = (widget, info) ->
-    old_info = load_position(widget.get_id())
-
-    if not info? then return
-
-    save_position(widget.get_id(), info)
+    old_info = widget.get_pos()
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
-
-    if old_info? then clear_occupy(widget.get_id(), old_info)
+    if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
     set_occupy(widget.get_id(), info)
 
+    widget.set_pos(info)
+    save_position(widget.get_id(), info)
     return
 
 
@@ -371,13 +365,15 @@ sort_desktop_item_by_func = (func) ->
     clear_occupy_table()
 
     for i in speical_item
-        w = Widget.look_up(i)
-        if w?
+        if (w = Widget.look_up(i))?
+            old_pos = w.get_pos()
+            w.set_pos(-1, -1, old_pos.width, old_pos.height)
             move_to_anywhere(w)
 
     for i in item_ordered_list
-        w = Widget.look_up(i)
-        if w?
+        if (w = Widget.look_up(i))?
+            old_pos = w.get_pos()
+            w.set_pos(-1, -1, old_pos.width, old_pos.height)
             move_to_anywhere(w)
     return
 
@@ -512,7 +508,7 @@ item_dragstart_handler = (widget, evt) ->
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        pos = load_position(widget.get_id())
+        pos = widget.get_pos()
         x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
         y = (pos.y - drag_start.y) * grid_item_height + 26
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
@@ -525,7 +521,7 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     if evt.dataTransfer.dropEffect == "link"
-        old_pos = load_position(w.get_id())
+        old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         coord_x_shift = new_pos.x - old_pos.x
         coord_y_shift = new_pos.y - old_pos.y
@@ -550,8 +546,8 @@ item_dragend_handler = (w, evt) ->
         ordered_list = new Array()
         distance_list = new Array()
         for i in selected_item
-            if not (pos = load_position(i))? then continue
-            dis = calc_pos_to_pos_distance(far_pos, pos)
+            if not (w = Widget.look_up(i))? then continue
+            dis = calc_pos_to_pos_distance(far_pos, w.get_pos())
             for j in [0 ... distance_list.length]
                 if dis < distance_list[j]
                     break
@@ -562,10 +558,9 @@ item_dragend_handler = (w, evt) ->
             ordered_list.reverse()
 
         for i in ordered_list
-            w = Widget.look_up(i)
-            if not w? then continue
+            if not (w = Widget.look_up(i))? then continue
 
-            old_pos = load_position(w.get_id())
+            old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
@@ -632,21 +627,19 @@ update_selected_stats = (w, evt) ->
 
         if selected_item.length == 1
             end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
-            start_pos = load_position(Widget.look_up(selected_item[0]).get_id())
+            start_pos = Widget.look_up(selected_item[0]).get_pos()
 
             ret = compare_pos_top_left(start_pos, end_pos)
             if ret < 0
-                for key in speical_item.concat(all_item)
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.get_id())
+                for w_id in speical_item.concat(all_item)
+                    i_pos = Widget.look_up(w_id).get_pos()
                     if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                         set_item_selected(val, true, true)
             else if ret == 0
                 cancel_item_selected(selected_item[0])
             else
-                for key in speical_item.concat(all_item)
-                    val = Widget.look_up(key)
-                    i_pos = load_position(val.get_id())
+                for w_id in speical_item.concat(all_item)
+                    i_pos = Widget.look_up(w_id).get_pos()
                     if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                         set_item_selected(val, true, true)
 
@@ -677,12 +670,13 @@ update_selected_item_drag_image = ->
 
     if selected_item.length == 0 then return
 
-    pos = load_position(selected_item[0])
+    pos = Widget.look_up(selected_item[0]).get_pos()
     top_left = {x : (cols - 1), y : (rows - 1)}
     bottom_right = {x : 0, y : 0}
 
     for i in selected_item
-        pos = load_position(i)
+        if not (w = Widget.look_up(i))? then continue
+        pos = w.get_pos()
 
         if top_left.x > pos.x then top_left.x = pos.x
         if bottom_right.x < pos.x then bottom_right.x = pos.x
@@ -700,7 +694,7 @@ update_selected_item_drag_image = ->
         w = Widget.look_up(i)
         if not w? then continue
 
-        pos = load_position(i)
+        pos = w.get_pos()
         pos.x -= top_left.x
         pos.y -= top_left.y
 
@@ -873,8 +867,8 @@ grid_do_keydown_to_shortcut = (evt) ->
                 selected_item.push(start_item)
 
             if selected_item.length == 1
-                start_pos = load_position(selected_item[0])
-                end_pos = load_position(w_f.get_id())
+                start_pos = Widget.look_up(selected_item[0]).get_pos()
+                end_pos = w_f.get_pos()
                 if compare_pos_top_left(start_pos, end_pos) < 0
                     pos_a = start_pos
                     pos_b = end_pos
@@ -883,7 +877,7 @@ grid_do_keydown_to_shortcut = (evt) ->
                     pos_a = end_pos
                 for i in speical_item.concat(all_item)
                     if not (w_i = Widget.look_up(i))? then continue
-                    item_pos = load_position(w_i.get_id())
+                    item_pos = w_i.get_pos()
                     if compare_pos_rect(pos_a, pos_b, item_pos) == true
                         set_item_selected(w_i) if not w_i.selected
 
@@ -1042,7 +1036,8 @@ class Mouse_Select_Area_box
 
             effect_item = new Array
             for i in speical_item.concat(all_item)
-                item_pos = load_position(i)
+                if not (wiget = Widget.look_up(i))? then continue
+                item_pos = wiget.get_pos()
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
                     effect_item.push(i)
 

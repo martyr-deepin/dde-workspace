@@ -35,6 +35,7 @@ connect_default_signals = ->
 
 
 do_item_delete = (data) ->
+    echo "received do_item_delete id:#{DCore.DEntry.get_id(data.entry)}"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         delete_item(w)
@@ -43,6 +44,7 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
+    echo "received do_item_update id:#{DCore.DEntry.get_id(data.entry)}"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         w.set_entry(data.entry)
@@ -55,13 +57,13 @@ do_item_update = (data) ->
 
 
 do_item_rename = (data) ->
+    echo "received do_item_rename id:#{DCore.DEntry.get_id(data.old)}"
     sel = false
     old_id = DCore.DEntry.get_id(data.old)
     new_id = DCore.DEntry.get_id(data.new)
-    if (o_p = load_position(old_id))?
-        save_position(new_id, o_p)
 
     if (w = Widget.look_up(old_id))?
+        save_position(new_id, w.get_pos())
         sel = cancel_item_selected(w)
         all_item.remove(old_id)
         w.destroy()
