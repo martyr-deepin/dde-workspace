@@ -84,11 +84,17 @@ class Weather
         @chooseprov = create_element("select", "chooseprov", @more_city_menu)        
         @choosecity = create_element("select", "choosecity", @more_city_menu)
         @choosedist = create_element("select", "choosedist", @more_city_menu)
-        
-        @refresh.addEventListener("click", =>
-            @refresh.style.backgroundColor = "gray"
-            @weathergui_update(@cityid)
-        )
+
+        @contextmenu = create_element("div","contextmenu",@element)
+        weather_close  = create_element("div","weather_close",@contextmenu)
+        refresh_context = create_element("div","refresh_context",@contextmenu)
+        feedback = create_element("div","feedback",@contextmenu)
+        about = create_element("div","about",@contextmenu)
+        weather_close.innerText = "关闭"
+        refresh_context.innerText = "刷新"
+        feedback.innerText = "反馈"
+        about.innerText = "关于"
+
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display == "none" 
                 @more_weather_menu.style.display = "block"
@@ -140,19 +146,63 @@ class Weather
             provvalue = @chooseprov.options[provIndex].value 
             data = @read_data_from_json(provvalue)
             ) 
-        
-        @element.addEventListener("contextmenu", =>  
-            contextmenu = create_element("contextmenu","contextmenu",@element)   
-            # contextmenu.style.position = "absolute"        
-            # contextmenu.style.left = event.clientX - 2 
-            # contextmenu.style.Top = event.clientY - 2
-            # contextmenu.style.width = 30
-            # contextmenu.style.height = 50
-            # contextmenu.style.backgroundColor = "blue"
-            # contextmenu.style.opacity = 0.3
-            contextmenu.style.display = "block"
-            echo "oncontextmenu"
-            ) 
+
+        @element.addEventListener("click" , =>
+            @contextmenu.style.display = "none"
+            )
+
+        contextmenu_times = 0
+        @element.addEventListener("contextmenu",  (evt) => 
+            contextmenu_times++
+            if contextmenu_times%2 is 1    
+                # @contextmenu.style.top =  event.clientY - 2
+                # @contextmenu.style.left =  event.clientX - 2         
+                @contextmenu.style.display = "block"
+            else
+                @contextmenu.style.display= "none"
+
+            # evt.stopPropagation()
+            # @contextMenu = build_menu(@menu())
+
+            echo "oncontextmenu_times:" + contextmenu_times
+            )
+
+
+        weather_close.addEventListener("click", =>
+            @element.style.display = "none"
+            )
+        refresh_context.addEventListener("click", =>
+            @refresh.style.backgroundColor = "gray"
+            @weathergui_update(@cityid)
+            )
+        feedback.addEventListener("click", ->
+            echo "feedback"
+            )
+        about.addEventListener("click", ->
+            # str = "#  Copyright (c) 2011 ~ 2012 Deepin, Inc."  + '/n' +
+            #       "#  2011 ~ 2012 bluth" + '/n' +
+            #       "## Author:      bluth <yuanchenglu@linuxdeepin.com>" + '/n' 
+            #       "#  Maintainer:  bluth <yuanchenglu@linuxdeepin.com>"
+            str = "深度天气插件1.0.0 by bluth"
+            alert str
+
+            )
+        @refresh.addEventListener("click", =>
+            @refresh.style.backgroundColor = "gray"
+            @weathergui_update(@cityid)
+        )
+    menu : ->
+        # menu = [ "关闭","刷新","反馈","关于" ]
+        menu = []
+        menu.push([1, _("关闭")])
+        menu.push([])
+        menu.push([3, _("刷新")])
+        menu.push([4, _("反馈")])
+        menu.push([])
+        menu.push([6, _("关于")])
+        menu.push([])
+        menu.push([8, _("")])
+        menu
     more_city_menu_close:  =>
         second = 1
         t= setInterval( =>
@@ -235,6 +285,8 @@ class Weather
         @get_client_cityid()
 
     weathergui_update: (cityid)=>
+        localStorage.setItem(cityid,cityid)
+        cityid = localStorage.getItem(cityid)
         # alert "weathergui_update....."  
         now_weather_url = "http://www.weather.com.cn/data/sk/" + cityid + ".html"
         weather_url = "http://m.weather.com.cn/data/"+cityid+".html"

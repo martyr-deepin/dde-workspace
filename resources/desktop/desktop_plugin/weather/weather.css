@@ -190,9 +190,22 @@
 
 .contextmenu{
     position: absolute;
-    width:30px; 
-    height:50px; 
+    width:100px; 
     display: none;
     background-color: #DCDCDC;
-    opacity: 0.5;
+    opacity: 0.6;
+    z-index: 5;
+}
+.weather_close,
+.refresh_context,
+.feedback,
+.about{
+    position: relative;
+    clear: both;
+    height: 30px;
+    margin: 5px 10px 5px 10px; 
+        /* up right botton left*/
+    line-height: 30px;
+    text-align: center;
+    border:2px solid white;
 }
