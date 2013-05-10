@@ -190,6 +190,8 @@
 
 .contextmenu{
     position: absolute;
+    top: 70px;
+    left: 123px;
     width:100px; 
     display: none;
     background-color: #DCDCDC;

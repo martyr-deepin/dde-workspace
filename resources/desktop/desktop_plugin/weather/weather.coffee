@@ -153,17 +153,20 @@ class Weather
 
         contextmenu_times = 0
         @element.addEventListener("contextmenu",  (evt) => 
+            @more_weather_menu.style.display = "none"
+            @more_city_menu.style.display = "none"
             contextmenu_times++
+            # evt = (if evt then evt else window.event)
             if contextmenu_times%2 is 1    
-                # @contextmenu.style.top =  event.clientY - 2
-                # @contextmenu.style.left =  event.clientX - 2         
+                # @contextmenu.style.top =  evt.y - 2
+                # @contextmenu.style.left =  evt.x - 2         
                 @contextmenu.style.display = "block"
             else
-                @contextmenu.style.display= "none"
-
+                @contextmenu.style.display= "none"            
+            # echo "evt.offsetTop:" + evt.y
+            # echo "evt.offsetLeft:" + evt.x
             # evt.stopPropagation()
             # @contextMenu = build_menu(@menu())
-
             echo "oncontextmenu_times:" + contextmenu_times
             )
 
@@ -183,9 +186,9 @@ class Weather
             #       "#  2011 ~ 2012 bluth" + '/n' +
             #       "## Author:      bluth <yuanchenglu@linuxdeepin.com>" + '/n' 
             #       "#  Maintainer:  bluth <yuanchenglu@linuxdeepin.com>"
-            str = "深度天气插件1.0.0 by bluth"
+            str = "深度天气插件1.0.0"
             alert str
-
+            alert.title = "about"
             )
         @refresh.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
