@@ -31,11 +31,13 @@ class Weather
         @city_now.textContent = "请选择城市"
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
         @more_city_menu = create_element("div", "more_city_menu", @element)
+        @more_city_menu.style.display = "none"
         
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  "正在加载中..." + " " +"..."
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
+        @more_weather_menu.style.display = "none"
 
         @first_day_weather_data = create_element("div", "first_day_weather_data", @more_weather_menu)
         @week1 = create_element("a", "week1", @first_day_weather_data)
@@ -86,6 +88,7 @@ class Weather
         @choosedist = create_element("select", "choosedist", @more_city_menu)
 
         @contextmenu = create_element("div","contextmenu",@element)
+        @contextmenu.style.display = "none"
         weather_close  = create_element("div","weather_close",@contextmenu)
         refresh_context = create_element("div","refresh_context",@contextmenu)
         feedback = create_element("div","feedback",@contextmenu)
@@ -96,19 +99,21 @@ class Weather
         about.innerText = "关于"
 
         @date.addEventListener("click", => 
-            if @more_weather_menu.style.display == "none" 
+            if @more_weather_menu.style.display is "none" 
+                echo "more_weather_menu is none,to block"
                 @more_weather_menu.style.display = "block"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "65535"    
             else 
+                echo "more_weather_menu is block,to none"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
         )        
 
         city.addEventListener("click", =>     
-            @flag_more_city_menu_click = 0                    
-            if @more_city_menu.style.display == "none"
+            if @more_city_menu.style.display is "none"
+                echo "more_city_menu is none,to block"
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
@@ -118,6 +123,7 @@ class Weather
                     @more_city_menu.style.display = "none"
                 ,4000)
             else 
+                echo "more_city_menu is block,to none"
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
@@ -128,7 +134,8 @@ class Weather
             i = 0
             while i < cities.length
                 @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
-            @chooseprov.size = (if (@chooseprov.options.length < 13) then @chooseprov.options.length else 13)    
+            @chooseprov.size = (if (@chooseprov.options.length < 13) then @chooseprov.options.length else 13)  
+            echo "@chooseprov.options.length:" + @chooseprov.options.length  
             @choosecity.size = 1
             @choosecity.options.length = 0 #clear the city option value
             cityinit = create_element("option", "cityinit", @choosecity)
@@ -142,27 +149,27 @@ class Weather
         )
         @more_city_menu.addEventListener("click", =>
             # but if you click the citychoose menu ,it will not hide
+            echo "@more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
         @chooseprov.addEventListener("change", =>
-            echo "prov change"
+            # echo "prov change"
             provIndex = @chooseprov.selectedIndex
             provvalue = @chooseprov.options[provIndex].value 
-            data = @read_data_from_json(provvalue)
+            echo "provvalue:" + provvalue
+            if provvalue isnt "--省--"
+                data = @read_data_from_json(provvalue)
             ) 
 
         @element.addEventListener("click" , =>
             @contextmenu.style.display = "none"
             )
-        contextmenu_times = 0
         @element.addEventListener("contextmenu",  (evt) => 
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
-            contextmenu_times++
-            # echo "contextmenu_times:" + contextmenu_times 
-            if contextmenu_times%2 is 1  
+            if @contextmenu.style.display is "none"  
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                echo "bottom_distance:" + bottom_distance
+                echo "bottom_distance:( if it > 200 then show up)" + bottom_distance
                 if bottom_distance < 200 
                     @contextmenu.style.top = 0
                 @contextmenu.style.display = "block"
@@ -181,7 +188,7 @@ class Weather
         feedback.addEventListener("click", ->
             feedbackmsg = prompt("亲～谢谢您的反馈～～","")
             if feedbackmsg isnt null
-                echo feedbackmsg
+                echo "feedbackmsg" + feedbackmsg
             )
         about.addEventListener("click", ->
             str = "深度天气插件1.0.0" + "\n" +
@@ -214,25 +221,31 @@ class Weather
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
         @choosecity.size = (if (@choosecity.options.length < 13) then @choosecity.options.length else 13)   
+        echo "@choosecity.options.length:" + @choosecity.options.length 
         echo "@choosecity.size:" + @choosecity.size
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
             cityvalue = @choosecity.options[cityIndex].value
-            @distadd(data[cityvalue].data)
+            echo "cityvalue:" + cityvalue
+            if cityvalue isnt "--市--"
+                @distadd(data[cityvalue].data)
     
     distadd: (data) =>
         @choosedist.options.length = 1
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
         @choosedist.size = (if (@choosedist.options.length < 13) then @choosedist.options.length else 13)
+        echo "@choosedist.options.length:" + @choosedist.options.length 
         echo "@choosedist.size:" + @choosedist.size
         @choosedist.onchange = =>
             distIndex = @choosedist.selectedIndex 
             distvalue = @choosedist.options[distIndex].value
-            @cityid = data[distvalue].data
-            echo "@cityid " + @cityid 
-            @more_city_menu.style.display = "none"
-            setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
+            echo "distvalue:" + distvalue
+            if distvalue isnt "--县--"
+                @cityid = data[distvalue].data
+                echo "@cityid " + @cityid 
+                @more_city_menu.style.display = "none"
+                setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
 
     ajax : (url, method, callback, asyn=true) =>
         xhr = new XMLHttpRequest()
@@ -240,7 +253,7 @@ class Weather
         xhr.send(null)
         xhr.onreadystatechange = =>
             if (xhr.readyState == 4 and xhr.status == 200)
-                echo "XMLHttpRequest received all data."
+                # echo "XMLHttpRequest received all data."
                 callback?(xhr)                
             else if xhr.status isnt 200 
                 echo "XMLHttpRequest can't receive data."
@@ -251,30 +264,31 @@ class Weather
                 client_ip = localStorage.getItem(client_ip)
                 # localStorage.removeItem(client_ip)
                 str = client_ip.toString()
-                echo str
-                if str[0] is '0'
-                    echo "str[0] is 0"
-                ip = str.slice(2,12)
-                echo "ip:" + ip
-                ip_url2 = ip_url + "?format=js&ip=" + ip
-                @ajax(ip_url2,"GET",(xhr)=>
-                    client_ip_city = xhr.responseText
-                    echo client_ip_city
-                    remote_ip_info = client_ip_city.slice(21,client_ip_city.length)
-                    localStorage.setItem(remote_ip_info,remote_ip_info)
-                    remote_ip_info = JSON.parse(localStorage.getItem(remote_ip_info))
-                    if remote_ip_info.ret is 1
-                        echo "remote_ip_info.province:" + remote_ip_info.province
-                        echo "remote_ip_info.city:" + remote_ip_info.city
-                        for provin of allname.data
-                            if allname.data[provin].省 is remote_ip_info.province
-                                for ci of allname.data[provin].市
-                                    if allname.data[provin].市[ci].市名 is remote_ip_info.city
-                                        echo allname.data[provin].市[ci].编码
-                                        @cityid = allname.data[provin].市[ci].编码
-                                        @weathergui_update(@cityid)
-                    else echo "没有找到匹配的 IP 地址信息！"
-                    )
+                # echo str
+                if str[0] is '1'
+                    # echo "str[0] is 1"
+                    ip = str.slice(2,12)
+                    echo "ip start :" + ip
+                    ip_url2 = ip_url + "?format=js&ip=" + ip
+                    @ajax(ip_url2,"GET",(xhr)=>
+                        client_ip_city = xhr.responseText
+                        # echo client_ip_city
+                        remote_ip_info = client_ip_city.slice(21,client_ip_city.length)
+                        localStorage.setItem(remote_ip_info,remote_ip_info)
+                        remote_ip_info = JSON.parse(localStorage.getItem(remote_ip_info))
+                        if remote_ip_info.ret is 1
+                            echo "remote_ip_info.province:" + remote_ip_info.province
+                            echo "remote_ip_info.city:" + remote_ip_info.city
+                            for provin of allname.data
+                                if allname.data[provin].省 is remote_ip_info.province
+                                    for ci of allname.data[provin].市
+                                        if allname.data[provin].市[ci].市名 is remote_ip_info.city
+                                            echo allname.data[provin].市[ci].编码
+                                            @cityid = allname.data[provin].市[ci].编码
+                                            @weathergui_update(@cityid)
+                        else echo "sina 没有找到匹配的 IP 地址信息！"
+                        )
+                else echo "sina iplookup first lose"
 
             )
     weathergui_init: =>
@@ -338,7 +352,7 @@ class Weather
             @refresh.style.backgroundColor = null
         )
     weather_more_pic_src:(i) =>
-        i = i*2 -1
+        i = i*2 - 1
         weather_data = @weather_data
         src = null
         time = new Date()

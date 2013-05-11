@@ -99,7 +99,7 @@
     position:absolute;
     top: 70px;
     /*left: 0px;   */
-    display:none;
+    /*display:none;*/
     /*text-align: center;*/
 }
 .chooseprov,
@@ -119,7 +119,7 @@
     left: 83px;
     top: 70px;
     width: 180px;
-    display: none;
+    /*display: none;*/
     opacity: 0.8;
     border:2px solid #DCDCDC;
 }
