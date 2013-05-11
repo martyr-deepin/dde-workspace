@@ -155,6 +155,7 @@ class Weather
         @chooseprov.addEventListener("change", =>
             # echo "prov change"
             provIndex = @chooseprov.selectedIndex
+            echo "provIndex:" + provIndex
             provvalue = @chooseprov.options[provIndex].value 
             echo "provvalue:" + provvalue
             if provvalue isnt "--省--"
@@ -225,6 +226,7 @@ class Weather
         echo "@choosecity.size:" + @choosecity.size
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
+            echo  "cityIndex:" + cityIndex
             cityvalue = @choosecity.options[cityIndex].value
             echo "cityvalue:" + cityvalue
             if cityvalue isnt "--市--"
@@ -238,7 +240,8 @@ class Weather
         echo "@choosedist.options.length:" + @choosedist.options.length 
         echo "@choosedist.size:" + @choosedist.size
         @choosedist.onchange = =>
-            distIndex = @choosedist.selectedIndex 
+            distIndex = @choosedist.selectedIndex
+            echo  "distIndex:" + distIndex
             distvalue = @choosedist.options[distIndex].value
             echo "distvalue:" + distvalue
             if distvalue isnt "--县--"
