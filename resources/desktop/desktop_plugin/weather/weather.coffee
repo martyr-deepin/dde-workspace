@@ -7,9 +7,9 @@
 class Weather
     constructor: ->
         @img_url_first = "desktop_plugin/weather/img/"
-        week_init = "星期日"
-        img_now_url_init = @img_url_first + "48/T" + "0晴" + ".png"
-        img_more_url_init = @img_url_first + "24/T" + "0晴" + ".png"
+        week_init = str_week_init
+        img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
+        img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
 
         @id = "weather"
         @pos = {x:10, y:1, width:3, height:1}
@@ -31,13 +31,13 @@ class Weather
         city_and_date = create_element("div","city_and_date",right_div)
         city = create_element("div","city",city_and_date)
         @city_now = create_element("div", "city_now", city)
-        @city_now.textContent = "请选择城市"
+        @city_now.textContent = str_city_now_init
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
         @more_city_menu = create_element("div", "more_city_menu", @element)
         @more_city_menu.style.display = "none"
         
         @date = create_element("div", "date", city_and_date)
-        @date.textContent =  "正在加载中..." + " " +"..."
+        @date.textContent =  str_data_init
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
         @more_weather_menu.style.display = "none"
@@ -90,16 +90,16 @@ class Weather
         @choosecity = create_element("select", "choosecity", @more_city_menu)
         @choosedist = create_element("select", "choosedist", @more_city_menu)
 
-        @contextmenu = create_element("div","contextmenu",@element)
-        @contextmenu.style.display = "none"
-        weather_close  = create_element("div","weather_close",@contextmenu)
-        refresh_context = create_element("div","refresh_context",@contextmenu)
-        feedback = create_element("div","feedback",@contextmenu)
-        about = create_element("div","about",@contextmenu)
-        weather_close.innerText = "关闭"
-        refresh_context.innerText = "刷新"
-        feedback.innerText = "反馈"
-        about.innerText = "关于"
+        @rightclick = create_element("div","rightclick",@element)
+        @rightclick.style.display = "none"
+        weather_close  = create_element("div","weather_close",@rightclick)
+        refresh_context = create_element("div","refresh_context",@rightclick)
+        feedback = create_element("div","feedback",@rightclick)
+        about = create_element("div","about",@rightclick)
+        weather_close.innerText = str_weather_close
+        refresh_context.innerText = str_refresh_context
+        feedback.innerText = str_feedback
+        about.innerText = str_about
 
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
@@ -132,7 +132,7 @@ class Weather
                 @more_city_menu.style.zIndex = "0"
             @chooseprov.options.length = 0 #clear the prov option value
             provinit = create_element("option","provinit",@chooseprov)
-            provinit.innerText = "--省--"
+            provinit.innerText = str_provinit
             provinit.selected = "true"
             i = 0
             while i < cities.length
@@ -142,12 +142,12 @@ class Weather
             @choosecity.size = 1
             @choosecity.options.length = 0 #clear the city option value
             cityinit = create_element("option", "cityinit", @choosecity)
-            cityinit.innerText = "--市--"
+            cityinit.innerText = str_cityinit
             cityinit.selected = "true"
             @choosedist.size = 1
             @choosedist.options.length = 0 #clear the city option value
             distinit = create_element("option", "distinit", @choosedist)
-            distinit.innerText = "--县--"
+            distinit.innerText = str_distinit
             distinit.selected = "true"
         )
         @more_city_menu.addEventListener("click", =>
@@ -161,25 +161,25 @@ class Weather
             echo "provIndex:" + provIndex
             provvalue = @chooseprov.options[provIndex].value 
             echo "provvalue:" + provvalue
-            if provvalue isnt "--省--"
+            if provvalue isnt str_provinit
                 data = @read_data_from_json(provvalue)
             ) 
 
         @element.addEventListener("click" , =>
-            @contextmenu.style.display = "none"
+            @rightclick.style.display = "none"
             )
         @element.addEventListener("contextmenu",  (evt) => 
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
-            if @contextmenu.style.display is "none"  
+            if @rightclick.style.display is "none"  
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 echo "bottom_distance:( if it > 200 then show up)" + bottom_distance
                 if bottom_distance < 200 
-                    @contextmenu.style.top = 0
-                @contextmenu.style.display = "block"
-                @contextmenu.style.zIndex  = "65535"
+                    @rightclick.style.top = 0
+                @rightclick.style.display = "block"
+                @rightclick.style.zIndex  = "65535"
             else
-                @contextmenu.style.display= "none"   
+                @rightclick.style.display= "none"   
             )
 
         weather_close.addEventListener("click", =>
@@ -190,16 +190,12 @@ class Weather
             @weathergui_update(@cityid)
             )
         feedback.addEventListener("click", ->
-            feedbackmsg = prompt("亲～谢谢您的反馈～～","")
+            feedbackmsg = prompt(str_feedbackmsg_prompt,"")
             if feedbackmsg isnt null
-                echo "feedbackmsg" + feedbackmsg
+                echo "feedbackmsg:" + feedbackmsg
             )
         about.addEventListener("click", ->
-            str = "深度天气插件1.0.0" + "\n" +
-                  "Author:bluth" + "\n" +
-                  "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
-                  "www.linuxdeepin.com"
-            alert str
+            alert str_about_msg
             # str.dialog({
             #     buttons:{"确定"},
             #     title:"关于",
@@ -247,7 +243,7 @@ class Weather
             else
                 cityvalue = @choosecity.options[cityIndex].value
                 echo "cityvalue:" + cityvalue
-                if cityvalue isnt "--市--"
+                if cityvalue isnt str_cityinit
                     @distadd(data[cityvalue].data)
     
     distadd: (data) =>
@@ -265,7 +261,7 @@ class Weather
             else
                 distvalue = @choosedist.options[distIndex].value
                 echo "distvalue:" + distvalue
-                if distvalue isnt "--县--"
+                if distvalue isnt str_distinit
                     @cityid = data[distvalue].data
                     echo "@cityid " + @cityid 
                     @more_city_menu.style.display = "none"
@@ -304,15 +300,15 @@ class Weather
                             echo "remote_ip_info.province:" + remote_ip_info.province
                             echo "remote_ip_info.city:" + remote_ip_info.city
                             for provin of allname.data
-                                if allname.data[provin].省 is remote_ip_info.province
-                                    for ci of allname.data[provin].市
-                                        if allname.data[provin].市[ci].市名 is remote_ip_info.city
-                                            echo allname.data[provin].市[ci].编码
-                                            @cityid = allname.data[provin].市[ci].编码
+                                if allname.data[provin].prov is remote_ip_info.province
+                                    for ci of allname.data[provin].city
+                                        if allname.data[provin].city[ci].cityname is remote_ip_info.city
+                                            @cityid = allname.data[provin].city[ci].code
+                                            echo "@cityid:" + @cityid
                                             @weathergui_update(@cityid)
-                        else echo "sina 没有找到匹配的 IP 地址信息！"
+                        else echo "sina iplookup can't find the matched location json by ip"
                         )
-                else echo "sina iplookup first lose"
+                else echo "sina iplookup can't get the client ip"
 
             )
     weathergui_init: =>
@@ -345,14 +341,13 @@ class Weather
             weather_data = JSON.parse(localStorage.getItem(weather_data))
             # localStorage.removeItem(weather_data)  
             @weather_data = weather_data
-            week_name = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
             i_week = 0
             while i_week < week_name.length
                 break if weather_data.weatherinfo.week is week_name[i_week]
                 i_week++
             week_n = i_week
             str_data = weather_data.weatherinfo.date_y
-            @date.textContent = str_data.substring(0,str_data.indexOf("年")) + "." + str_data.substring(str_data.indexOf("年")+1,str_data.indexOf("月"))+ "." + str_data.substring(str_data.indexOf("月") + 1,str_data.indexOf("日")) + weather_data.weatherinfo.week 
+            @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + weather_data.weatherinfo.week 
             @weather_now_pic.src = @img_url_first + "48/T" + weather_data.weatherinfo.img_single + weather_data.weatherinfo.img_title_single + ".png"
 
             @week1.textContent = week_name[week_n%7]
