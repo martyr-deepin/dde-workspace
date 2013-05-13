@@ -100,12 +100,12 @@ class Weather
 
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
-                echo "more_weather_menu is none,to block"
+                # echo "more_weather_menu is none,to block"
                 @more_weather_menu.style.display = "block"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "65535"    
             else 
-                echo "more_weather_menu is block,to none"
+                # echo "more_weather_menu is block,to none"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
@@ -113,7 +113,7 @@ class Weather
 
         city.addEventListener("click", =>     
             if @more_city_menu.style.display is "none"
-                echo "more_city_menu is none,to block"
+                # echo "more_city_menu is none,to block"
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
@@ -123,7 +123,7 @@ class Weather
                     @more_city_menu.style.display = "none"
                 ,4000)
             else 
-                echo "more_city_menu is block,to none"
+                # echo "more_city_menu is block,to none"
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
@@ -227,10 +227,13 @@ class Weather
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
             echo  "cityIndex:" + cityIndex
-            cityvalue = @choosecity.options[cityIndex].value
-            echo "cityvalue:" + cityvalue
-            if cityvalue isnt "--市--"
-                @distadd(data[cityvalue].data)
+            if cityIndex is -1
+                @choosecity.options.remove(cityIndex)
+            else
+                cityvalue = @choosecity.options[cityIndex].value
+                echo "cityvalue:" + cityvalue
+                if cityvalue isnt "--市--"
+                    @distadd(data[cityvalue].data)
     
     distadd: (data) =>
         @choosedist.options.length = 1
@@ -242,13 +245,16 @@ class Weather
         @choosedist.onchange = =>
             distIndex = @choosedist.selectedIndex
             echo  "distIndex:" + distIndex
-            distvalue = @choosedist.options[distIndex].value
-            echo "distvalue:" + distvalue
-            if distvalue isnt "--县--"
-                @cityid = data[distvalue].data
-                echo "@cityid " + @cityid 
-                @more_city_menu.style.display = "none"
-                setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
+            if distIndex is -1
+                @choosedist.options.remove(distIndex)
+            else
+                distvalue = @choosedist.options[distIndex].value
+                echo "distvalue:" + distvalue
+                if distvalue isnt "--县--"
+                    @cityid = data[distvalue].data
+                    echo "@cityid " + @cityid 
+                    @more_city_menu.style.display = "none"
+                    setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
 
     ajax : (url, method, callback, asyn=true) =>
         xhr = new XMLHttpRequest()
