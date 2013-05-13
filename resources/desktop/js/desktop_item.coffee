@@ -98,7 +98,7 @@ class Item extends Widget
 
 
     destroy : ->
-        if (pos.x > -1) and (pos.y > -1) then clear_occupy(@id, info)
+        if (@_position.x > -1) and (@_position.y > -1) then clear_occupy(@id, @_position)
         super
 
 
@@ -788,11 +788,16 @@ class RichDir extends DesktopEntry
         if list.length <= 1
             if @show_pop == true
                 @hide_pop_block()
-            if list.length > 0
-                save_position(DCore.DEntry.get_id(list[0]), @pos)
-                DCore.DEntry.move(list, g_desktop_entry)
-            DCore.DEntry.delete_files([@_entry], false)
+
+            pos = @get_pos()
+            entry = @_entry
             delete_item(@)
+            echo list.length
+            if list.length > 0
+                echo pos
+                save_position(DCore.DEntry.get_id(list[0]), pos)
+                DCore.DEntry.move(list, g_desktop_entry)
+            DCore.DEntry.delete_files([entry], false)
         else
             if @show_pop == true
                 @sub_items = {}
@@ -823,7 +828,7 @@ class RichDir extends DesktopEntry
 
 
     item_ungroup: =>
-        clear_occupy(@id, @pos)
+        clear_occupy(@id, @_position)
         DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
         DCore.DEntry.delete_files([@_entry], false)
 
@@ -1148,8 +1153,8 @@ class Application extends DesktopEntry
                     tmp_list.push(e)
 
                 if all_are_apps == true
+                    pos = @get_pos()
                     tmp_list.push(@_entry)
-                    pos = @pos
                     if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
                         for e in tmp_list
                             if (w = Widget.look_up(DCore.DEntry.get_id(e)))?

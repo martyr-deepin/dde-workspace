@@ -136,12 +136,13 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 load_position = (id) ->
     if typeof(id) != "string" then echo "error load_position #{id}"
+
     pos = localStorage.getObject("id:" + id)
-    if pos == null
-        return null
+
+    if pos == null then return null
 
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
-    if cols > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
+    if rows > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
     pos
 
 
