@@ -6,18 +6,30 @@
 
 class Weather
     constructor: ->
-        @img_url_first = "desktop_plugin/weather/img/"
-        week_init = str_week_init
-        img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
-        img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
-
         @id = "weather"
         @pos = {x:10, y:1, width:3, height:1}
         @element = document.createElement('div')
         @element.setAttribute('class', "Weather")
         @element.draggable = true
 
-        @weathergui_init() 
+        @weathergui_init()
+
+    get_id: ->
+        @id
+
+    set_id: (id) ->
+        @id = id
+    
+    get_pos: ->
+        @pos
+
+    set_pos: (pos) ->
+        @pos = pos
+
+    weather_style_build: ->
+        @img_url_first = "desktop_plugin/weather/img/"
+        img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
+
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
 
@@ -29,15 +41,37 @@ class Weather
         @temperature_now_number.textContent = "0°"
 
         city_and_date = create_element("div","city_and_date",right_div)
-        city = create_element("div","city",city_and_date)
-        @city_now = create_element("div", "city_now", city)
+        @city = create_element("div","city",city_and_date)
+        @city_now = create_element("div", "city_now", @city)
         @city_now.textContent = str_city_now_init
-        @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
-        @more_city_menu = create_element("div", "more_city_menu", @element)
-        @more_city_menu.style.display = "none"
+        @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", @city)
         
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  str_data_init
+
+        @refresh = create_img("refresh", @img_url_first + "refresh.png", @element)
+
+        @refresh.addEventListener("click", =>
+            @refresh.style.backgroundColor = "gray"
+            @weathergui_update(@cityid)
+        @element.addEventListener("drag", (event)=>
+            # echo "drag"
+            bottom_distance =  window.screen.availHeight - window.event.y
+            # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+            if bottom_distance < 330 
+                @rightclick.style.top = -160
+                @more_city_menu.style.top = -252
+                @more_weather_menu.style.top = -213
+            else 
+                @rightclick.style.top = 70
+                @more_city_menu.style.top = 70
+                @more_weather_menu.style.top = 70
+            )
+        )
+    more_weather_build: ->
+        week_init = str_week_init
+        img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
+        img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
         @more_weather_menu.style.display = "none"
@@ -83,24 +117,6 @@ class Weather
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
-
-        @refresh = create_img("refresh", @img_url_first + "refresh.png", @element)
-
-        @chooseprov = create_element("select", "chooseprov", @more_city_menu)        
-        @choosecity = create_element("select", "choosecity", @more_city_menu)
-        @choosedist = create_element("select", "choosedist", @more_city_menu)
-
-        @rightclick = create_element("div","rightclick",@element)
-        @rightclick.style.display = "none"
-        weather_close  = create_element("div","weather_close",@rightclick)
-        refresh_context = create_element("div","refresh_context",@rightclick)
-        feedback = create_element("div","feedback",@rightclick)
-        about = create_element("div","about",@rightclick)
-        weather_close.innerText = str_weather_close
-        refresh_context.innerText = str_refresh_context
-        feedback.innerText = str_feedback
-        about.innerText = str_about
-
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
@@ -115,9 +131,14 @@ class Weather
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
-        )        
-
-        city.addEventListener("click", =>     
+        )    
+    more_city_build: ->
+        @more_city_menu = create_element("div", "more_city_menu", @element)
+        @more_city_menu.style.display = "none"
+        @chooseprov = create_element("select", "chooseprov", @more_city_menu)
+        @choosecity = create_element("select", "choosecity", @more_city_menu)
+        @choosedist = create_element("select", "choosedist", @more_city_menu)
+        @city.addEventListener("click", =>     
             if @more_city_menu.style.display is "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
@@ -143,8 +164,9 @@ class Weather
             i = 0
             while i < cities.length
                 @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
-            @chooseprov.size = (if (@chooseprov.options.length < 13) then @chooseprov.options.length else 13)  
-            echo "@chooseprov.options.length:" + @chooseprov.options.length  
+            length = @chooseprov.options.length
+            @chooseprov.size = (if (length < 13) then length else 13)
+            # echo "@chooseprov.options.length:" + @chooseprov.options.length
             @choosecity.size = 1
             @choosecity.options.length = 0 #clear the city option value
             cityinit = create_element("option", "cityinit", @choosecity)
@@ -164,31 +186,26 @@ class Weather
         @chooseprov.addEventListener("change", =>
             # echo "prov change"
             provIndex = @chooseprov.selectedIndex
-            echo "provIndex:" + provIndex
-            provvalue = @chooseprov.options[provIndex].value 
-            echo "provvalue:" + provvalue
-            if provvalue isnt str_provinit
-                data = @read_data_from_json(provvalue)
-            ) 
-
-        @element.addEventListener("click" , =>
-            if @rightclick.style.display is "block"
-                @rightclick.style.display = "none"
-                @rightclick.style.zIndex = "0"
-            )
-        @element.addEventListener("drag", (event)=>
-            # echo "drag"
-            bottom_distance =  window.screen.availHeight - window.event.y
-            # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
-            if bottom_distance < 330 
-                @rightclick.style.top = -160
-                @more_city_menu.style.top = -252
-                @more_weather_menu.style.top = -213
-            else 
-                @rightclick.style.top = 70
-                @more_city_menu.style.top = 70
-                @more_weather_menu.style.top = 70
-            )
+            # echo "provIndex:" + provIndex
+            if provIndex is -1
+                @chooseprov.options.remove(provIndex)
+            else
+                provvalue = @chooseprov.options[provIndex].value 
+                # echo "provvalue:" + provvalue
+                if provvalue isnt str_provinit
+                    data = @read_data_from_json(provvalue)
+                )
+    rightclick_build: ->
+        @rightclick = create_element("div","rightclick",@element)
+        @rightclick.style.display = "none"
+        weather_close  = create_element("div","weather_close",@rightclick)
+        refresh_context = create_element("div","refresh_context",@rightclick)
+        feedback = create_element("div","feedback",@rightclick)
+        about = create_element("div","about",@rightclick)
+        weather_close.innerText = str_weather_close
+        refresh_context.innerText = str_refresh_context
+        feedback.innerText = str_feedback
+        about.innerText = str_about
         @element.addEventListener("contextmenu",  (evt) => 
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
@@ -203,7 +220,11 @@ class Weather
             else
                 @rightclick.style.display= "none"   
             )
-
+        @element.addEventListener("click" , =>
+            if @rightclick.style.display is "block"
+                @rightclick.style.display = "none"
+                @rightclick.style.zIndex = "0"
+            )
         weather_close.addEventListener("click", =>
             @element.style.display = "none"
             )
@@ -223,73 +244,18 @@ class Weather
             #     title:"关于",
             #     })
             )
-        @refresh.addEventListener("click", =>
-            @refresh.style.backgroundColor = "gray"
-            @weathergui_update(@cityid)
-        )
-        
-    get_id: ->
-        @id
 
-    set_id: (id) ->
-        @id = id
-    
-    get_pos: ->
-        @pos
+    weathergui_init: =>
+        loader = new Loader
+        loader.addcss('desktop_plugin/weather/weather.css').load()
+        @weather_style_build()
+        @more_weather_build()
+        @more_city_build()
+        @rightclick_build()
 
-    set_pos: (pos) ->
-        @pos = pos
+        @get_client_cityid()
 
-    read_data_from_json: (id) =>
-        xhr = new XMLHttpRequest()
-        url = "desktop_plugin/weather/city/" + id + ".json"
-        xhr.open("GET", url, true)
-        xhr.send(null)
-        xhr.onreadystatechange = =>
-            if (xhr.readyState == 4)
-                data = JSON.parse(xhr.responseText);
-                @cityadd(data[id].data)
-
-    cityadd: (data) =>
-        @choosecity.options.length = 1
-        for i of data
-            @choosecity.options.add(new Option(data[i].name, i))
-        @choosecity.size = (if (@choosecity.options.length < 13) then @choosecity.options.length else 13)   
-        echo "@choosecity.options.length:" + @choosecity.options.length 
-        echo "@choosecity.size:" + @choosecity.size
-        @choosecity.onchange = =>
-            cityIndex = @choosecity.selectedIndex
-            echo  "cityIndex:" + cityIndex
-            if cityIndex is -1
-                @choosecity.options.remove(cityIndex)
-            else
-                cityvalue = @choosecity.options[cityIndex].value
-                echo "cityvalue:" + cityvalue
-                if cityvalue isnt str_cityinit
-                    @distadd(data[cityvalue].data)
-    
-    distadd: (data) =>
-        @choosedist.options.length = 1
-        for i of data
-            @choosedist.options.add(new Option(data[i].name, i))
-        @choosedist.size = (if (@choosedist.options.length < 13) then @choosedist.options.length else 13)
-        echo "@choosedist.options.length:" + @choosedist.options.length 
-        echo "@choosedist.size:" + @choosedist.size
-        @choosedist.onchange = =>
-            distIndex = @choosedist.selectedIndex
-            echo  "distIndex:" + distIndex
-            if distIndex is -1
-                @choosedist.options.remove(distIndex)
-            else
-                distvalue = @choosedist.options[distIndex].value
-                echo "distvalue:" + distvalue
-                if distvalue isnt str_distinit
-                    @cityid = data[distvalue].data
-                    echo "@cityid " + @cityid 
-                    @more_city_menu.style.display = "none"
-                    setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
-
-    ajax : (url, method, callback, asyn=true) =>
+    ajax : (url, method, callback, asyn=true) ->
         xhr = new XMLHttpRequest()
         xhr.open(method, url, asyn)
         xhr.send(null)
@@ -299,7 +265,8 @@ class Weather
                 callback?(xhr)                
             else if xhr.status isnt 200 
                 echo "XMLHttpRequest can't receive data."
-    get_client_cityid : =>
+
+    get_client_cityid : ->
         ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
         @ajax(ip_url,"GET", (xhr)=>
                 localStorage.setItem(client_ip,xhr.responseText)
@@ -333,12 +300,58 @@ class Weather
                 else echo "sina iplookup can't get the client ip"
 
             )
-    weathergui_init: =>
-        loader = new Loader
-        loader.addcss('desktop_plugin/weather/weather.css').load()
-        @get_client_cityid()
+    read_data_from_json: (id) ->
+        xhr = new XMLHttpRequest()
+        url = "desktop_plugin/weather/city/" + id + ".json"
+        xhr.open("GET", url, true)
+        xhr.send(null)
+        xhr.onreadystatechange = =>
+            if (xhr.readyState == 4)
+                data = JSON.parse(xhr.responseText);
+                @cityadd(data[id].data)
 
-    weathergui_update: (cityid)=>
+    cityadd: (data) ->
+        @choosecity.options.length = 1
+        for i of data
+            @choosecity.options.add(new Option(data[i].name, i))
+        length = @choosecity.options.length
+        @choosecity.size = (if (length < 13) then length else 13)   
+        # echo "@choosecity.options.length:" + @choosecity.options.length
+        # echo "@choosecity.size:" + @choosecity.size
+        @choosecity.onchange = =>
+            cityIndex = @choosecity.selectedIndex
+            # echo  "cityIndex:" + cityIndex
+            if cityIndex is -1
+                @choosecity.options.remove(cityIndex)
+            else
+                cityvalue = @choosecity.options[cityIndex].value
+                # echo "cityvalue:" + cityvalue
+                if cityvalue isnt str_cityinit
+                    @distadd(data[cityvalue].data)
+    
+    distadd: (data) ->
+        @choosedist.options.length = 1
+        for i of data
+            @choosedist.options.add(new Option(data[i].name, i))
+        length = @choosedist.options.length
+        @choosedist.size = (if (length < 13) then length else 13)
+        # echo "@choosedist.options.length:" + @choosedist.options.length 
+        # echo "@choosedist.size:" + @choosedist.size
+        @choosedist.onchange = =>
+            distIndex = @choosedist.selectedIndex
+            # echo  "distIndex:" + distIndex
+            if distIndex is -1
+                @choosedist.options.remove(distIndex)
+            else
+                distvalue = @choosedist.options[distIndex].value
+                # echo "distvalue:" + distvalue
+                if distvalue isnt str_distinit
+                    @cityid = data[distvalue].data
+                    echo "@cityid " + @cityid 
+                    @more_city_menu.style.display = "none"
+                    setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
+
+    weathergui_update: (cityid)->
         localStorage.setItem(cityid,cityid)
         cityid = localStorage.getItem(cityid)
         now_weather_url = "http://www.weather.com.cn/data/sk/" + cityid + ".html"
@@ -359,7 +372,7 @@ class Weather
                     @temperature_now_number.textContent = -temp_now + "°"
                 else
                     @temperature_now_minus.style.opacity = 0
-                    @temperature_now_number.textContent = temp_now + "°"            
+                    @temperature_now_number.textContent = temp_now + "°"
             )   
         @ajax( weather_url , "GET", (xhr) =>
             localStorage.setItem(weather_data,xhr.responseText)
@@ -396,7 +409,7 @@ class Weather
 
             @refresh.style.backgroundColor = null
         )
-    weather_more_pic_src:(i) =>
+    weather_more_pic_src:(i) ->
         i = i*2 - 1
         weather_data = @weather_data
         src = null
