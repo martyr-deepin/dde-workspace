@@ -104,6 +104,11 @@ class Weather
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
                 # echo "more_weather_menu is none,to block"
+                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+                if bottom_distance < 200 
+                    @more_weather_menu.style.top = -213
+                else @more_weather_menu.style.top = 70
                 @more_weather_menu.style.display = "block"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "65535"    
@@ -117,6 +122,11 @@ class Weather
         city.addEventListener("click", =>     
             if @more_city_menu.style.display is "none"
                 # echo "more_city_menu is none,to block"
+                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+                if bottom_distance < 200 
+                    @more_city_menu.style.top = -252
+                else @more_city_menu.style.top = 70
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
@@ -155,6 +165,10 @@ class Weather
             echo "@more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
+        @more_city_menu.addEventListener("mouseover", =>
+            echo "@more_city_menu mouseover"
+            clearTimeout(@display_city_menu_id)
+            )
         @chooseprov.addEventListener("change", =>
             # echo "prov change"
             provIndex = @chooseprov.selectedIndex
@@ -166,16 +180,36 @@ class Weather
             ) 
 
         @element.addEventListener("click" , =>
-            @rightclick.style.display = "none"
+            if @rightclick.style.display is "block"
+                @rightclick.style.display = "none"
+                @rightclick.style.zIndex = "0"
+            # if @more_city_menu.style.display is "block"
+            #     @more_city_menu.style.display = "none"
+            # if @more_weather_menu.style.display is "block"
+            #     @more_weather_menu.style.display = "none"
+            )
+        @element.addEventListener("drag", (event)=>
+            # echo "drag"
+            bottom_distance =  window.screen.availHeight - window.event.y
+            # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+            if bottom_distance < 330 
+                @rightclick.style.top = -160
+                @more_city_menu.style.top = -252
+                @more_weather_menu.style.top = -213
+            else 
+                @rightclick.style.top = 70
+                @more_city_menu.style.top = 70
+                @more_weather_menu.style.top = 70
             )
         @element.addEventListener("contextmenu",  (evt) => 
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
             if @rightclick.style.display is "none"  
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                echo "bottom_distance:( if it > 200 then show up)" + bottom_distance
+                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
-                    @rightclick.style.top = 0
+                    @rightclick.style.top = -160
+                else @rightclick.style.top = 70
                 @rightclick.style.display = "block"
                 @rightclick.style.zIndex  = "65535"
             else
