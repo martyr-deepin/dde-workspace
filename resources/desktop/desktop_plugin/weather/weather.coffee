@@ -11,7 +11,10 @@ class Weather
         img_now_url_init = @img_url_first + "48/T" + "0晴" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0晴" + ".png"
 
-        @element = create_element("div","Weather",null)
+        @id = "weather"
+        @pos = {x:10, y:1, width:3, height:1}
+        @element = document.createElement('div')
+        @element.setAttribute('class', "Weather")
         @element.draggable = true
 
         @weathergui_init() 
@@ -23,7 +26,7 @@ class Weather
         @temperature_now_minus = create_element("div", "temperature_now_minus", temperature_now)
         @temperature_now_minus.textContent = "-"
         @temperature_now_number = create_element("div", "temperature_now_number", temperature_now)
-        @temperature_now_number.textContent = "3°"
+        @temperature_now_number.textContent = "0°"
 
         city_and_date = create_element("div","city_and_date",right_div)
         city = create_element("div","city",city_and_date)
@@ -207,6 +210,18 @@ class Weather
             @weathergui_update(@cityid)
         )
         
+    get_id: ->
+        @id
+
+    set_id: (id) ->
+        @id = id
+    
+    get_pos: ->
+        @pos
+
+    set_pos: (pos) ->
+        @pos = pos
+
     read_data_from_json: (id) =>
         xhr = new XMLHttpRequest()
         url = "desktop_plugin/weather/city/" + id + ".json"
@@ -301,7 +316,8 @@ class Weather
 
             )
     weathergui_init: =>
-        window.loader.addcss('desktop_plugin/weather/weather.css', 'screen print').load()
+        loader = new Loader
+        loader.addcss('desktop_plugin/weather/weather.css').load()
         @get_client_cityid()
 
     weathergui_update: (cityid)=>

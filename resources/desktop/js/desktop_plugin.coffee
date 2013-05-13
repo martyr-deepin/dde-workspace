@@ -11,7 +11,6 @@ class DesktopPlugin extends Widget
         pos.y = y
         pos.width = width
         pos.height = height
-        save_position(@id, pos)
         super(@id)
         @element.draggable = true
         return

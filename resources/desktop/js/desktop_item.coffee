@@ -19,6 +19,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+# canvas cache for drawing rich dir draging mouse image
 richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
@@ -328,6 +329,7 @@ class Item extends Widget
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
+            move_widget_to_rename_div(@)
             @display_full_name()
             @display_not_selected()
             @element.draggable = false
@@ -426,6 +428,7 @@ class Item extends Widget
                 if not @on_rename(new_name)
                     return
 
+        move_widget_to_grid_after_rename(@)
         @element.draggable = true
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
@@ -982,7 +985,6 @@ class RichDir extends DesktopEntry
         num_max = Math.floor((num_max - 22) / _ITEM_HEIGHT_)
         if row > num_max then row = num_max
         # restrict the real pop div size
-        echo "compare #{@sub_items_count} #{col * row}"
         if @sub_items_count > col * row
             pop_width = col * _ITEM_WIDTH_ + 30
             @div_pop.style.width = "#{pop_width}px"
@@ -1145,7 +1147,6 @@ class Application extends DesktopEntry
                             move_to_somewhere(w, pos)
                         else
                             save_position(id, pos)
-                            echo "save_position #{id}"
                 else
                     DCore.DEntry.launch(@_entry, tmp_list)
 
