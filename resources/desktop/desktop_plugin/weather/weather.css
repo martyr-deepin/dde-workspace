@@ -37,13 +37,12 @@
     margin-left: 3px; 
     height: 40px;
     float: left;
-    text-shadow:;
 }
 .temperature_now_minus{
     position: relative;
     top:10px;
-    font-size: 40px;
     color: #E6E6FA;
+    font-size: 40px;
     opacity: 0;
     text-shadow: 2px 2px 1px #808080;
     float: left;
@@ -52,8 +51,8 @@
     position:relative;
     float: left;
     top:10px;
-    font-size: 40px;
     color: #E6E6FA;   
+    font-size: 40px;
     font-weight: bold;
     text-shadow: 2px 2px 1px #808080;
     opacity: 0.7;
@@ -101,6 +100,7 @@
     /*left: 0px;   */
     /*display:none;*/
     /*text-align: center;*/
+
 }
 .chooseprov,
 .choosecity,

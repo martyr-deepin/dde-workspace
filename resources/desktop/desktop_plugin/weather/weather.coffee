@@ -103,9 +103,8 @@ class Weather
 
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
-                # echo "more_weather_menu is none,to block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @more_weather_menu.style.top = -213
                 else @more_weather_menu.style.top = 70
@@ -113,7 +112,6 @@ class Weather
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "65535"    
             else 
-                # echo "more_weather_menu is block,to none"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
@@ -121,9 +119,8 @@ class Weather
 
         city.addEventListener("click", =>     
             if @more_city_menu.style.display is "none"
-                # echo "more_city_menu is none,to block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @more_city_menu.style.top = -252
                 else @more_city_menu.style.top = 70
@@ -136,7 +133,6 @@ class Weather
                     @more_city_menu.style.display = "none"
                 ,4000)
             else 
-                # echo "more_city_menu is block,to none"
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
@@ -165,10 +161,6 @@ class Weather
             echo "@more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
-        @more_city_menu.addEventListener("mouseover", =>
-            echo "@more_city_menu mouseover"
-            clearTimeout(@display_city_menu_id)
-            )
         @chooseprov.addEventListener("change", =>
             # echo "prov change"
             provIndex = @chooseprov.selectedIndex
@@ -183,10 +175,6 @@ class Weather
             if @rightclick.style.display is "block"
                 @rightclick.style.display = "none"
                 @rightclick.style.zIndex = "0"
-            # if @more_city_menu.style.display is "block"
-            #     @more_city_menu.style.display = "none"
-            # if @more_weather_menu.style.display is "block"
-            #     @more_weather_menu.style.display = "none"
             )
         @element.addEventListener("drag", (event)=>
             # echo "drag"
@@ -206,7 +194,7 @@ class Weather
             @more_city_menu.style.display = "none"
             if @rightclick.style.display is "none"  
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @rightclick.style.top = -160
                 else @rightclick.style.top = 70
@@ -363,12 +351,15 @@ class Weather
             echo "temp_now:" + temp_now
             echo "@time_update:" + @time_update
             @city_now.textContent = weather_data_now.weatherinfo.city
-            if temp_now < -10
-                @temperature_now_minus.style.opacity = 0.8
-                @temperature_now_number.textContent = -temp_now + "°"
+            if temp_now is "\u6682\u65e0\u5b9e\u51b5"
+                @temperature_now_number.textContent = str_temperature_now_number_none
             else
-                @temperature_now_minus.style.opacity = 0
-                @temperature_now_number.textContent = temp_now + "°"            
+                if temp_now < -10
+                    @temperature_now_minus.style.opacity = 0.8
+                    @temperature_now_number.textContent = -temp_now + "°"
+                else
+                    @temperature_now_minus.style.opacity = 0
+                    @temperature_now_number.textContent = temp_now + "°"            
             )   
         @ajax( weather_url , "GET", (xhr) =>
             localStorage.setItem(weather_data,xhr.responseText)
