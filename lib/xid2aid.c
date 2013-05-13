@@ -128,6 +128,8 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
         g_free(basename);
     }
 
+    cmdline[length] = '\0';
+
     int diff = length - name_pos;
     if (diff == 0) {
         *name = g_path_get_basename(cmdline[0]);
@@ -136,9 +138,8 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
         }
     } else if (diff >= 1){
         *name = g_path_get_basename(cmdline[name_pos]);
-        if (diff >= 2) {
-            *args = g_strjoinv(" ", cmdline+name_pos+1);
-        }
+        if (diff >= 2)
+            *args = g_strjoinv(" ", cmdline + name_pos + 1);
     }
 
     char* tmp = *name;
