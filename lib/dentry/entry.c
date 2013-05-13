@@ -762,16 +762,6 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
                 break;
             case CONFLICT_RESPONSE_REPLACE:
                 {
-                    GError* error = NULL;
-                    g_file_delete(dest, NULL, &error);
-
-                    if (error != NULL) {
-                        //show error dialog
-                        g_warning ("_delete_files_async: %s", error->message);
-                        g_error_free(error);
-                        break;
-                    }
-
                     g_file_copy(src, dest, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
 
                     g_debug ("response : Replace");
