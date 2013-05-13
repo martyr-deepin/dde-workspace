@@ -384,15 +384,12 @@ _dummy_func (GFile* file, gpointer data)
 static gboolean
 _cmp_files (GFile* src, GFile* dest)
 {
-    gboolean retval;
-
-    GFile* dest_dir = g_file_get_parent (dest);
     char* src_uri = g_file_get_uri (src);
-    char* dest_uri = g_file_get_uri (dest_dir);
-    retval = g_strcmp0 (src_uri, dest_uri);
+    char* dest_uri = g_file_get_uri (dest);
+    gboolean retval = g_strcmp0 (src_uri, dest_uri);
     g_free (src_uri);
     g_free (dest_uri);
-    g_object_unref (dest_dir);
+
     return retval;
 }
 

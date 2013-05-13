@@ -1,6 +1,5 @@
 #include <time.h>
 #include <string.h>
-#include <string.h>
 
 #include <glib-object.h>
 #include <gio/gio.h>
@@ -9,6 +8,9 @@
 #include <gtk/gtk.h>
 
 #include "fileops_error_dialog.h"
+
+#define RICH_DIR_PREFIX     ".deepin_rich_dir_"
+#define RICH_DIR_PREFIX_LEN  strlen (RICH_DIR_PREFIX)
 
 struct _FileOpsFileConflictDialogDetails
 {
@@ -46,7 +48,7 @@ static FileOpsFileConflictDialogDetails details;
 static GtkWidget *dialog;
 
 //TODO: add a callback so we can retrieve the renamed name.
-GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src, 
+GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 	                                      GFile* dest, FileOpsResponse* response)
 {
     details.response = response;
@@ -80,7 +82,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     /* Setup the vbox for the dialog labels */
     widget = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
     gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
-	
+
     //1.
     details.titles_vbox = widget;
 
@@ -136,9 +138,9 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
     gtk_widget_hide (details.rename_button);
 
     //8. replace
-    details.replace_button = gtk_dialog_add_button (GTK_DIALOG (dialog), _("Replace"), 
+    details.replace_button = gtk_dialog_add_button (GTK_DIALOG (dialog), _("Replace"),
 						     CONFLICT_RESPONSE_REPLACE);
-    
+
     gtk_widget_grab_focus (details.replace_button);
 
     /* Setup HIG properties */
@@ -148,7 +150,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 
     gtk_widget_show_all (dialog_area);
 
-    _setup_dialog_labels (src, dest, dialog); 
+    _setup_dialog_labels (src, dest, dialog);
 
     return dialog;
 }
@@ -172,7 +174,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 				   G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 				   NULL, NULL);
 
-    //clean up 
+    //clean up
     time_t src_mtime, dest_mtime;
     GTimeVal src_gtime, dest_gtime;
     g_file_info_get_modification_time (src_info, &src_gtime);
@@ -188,6 +190,12 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
     const char *dest_name, *dest_dir_name;
     dest_name = g_file_info_get_display_name (dest_info);
     dest_dir_name = g_file_info_get_display_name (dest_dir_info);
+    //special attention to .deepin_rich_dir_XXXX
+    char* actual_dest_dir_name = NULL;
+    if (g_str_has_prefix (dest_dir_name, RICH_DIR_PREFIX))
+        actual_dest_dir_name = g_strdup (&dest_dir_name[RICH_DIR_PREFIX_LEN]);
+    else
+        actual_dest_dir_name = g_strdup (dest_dir_name);
 
     gboolean source_is_dir, dest_is_dir;
     source_is_dir = g_file_info_get_file_type (src_info) ==
@@ -203,61 +211,62 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
     //		+ @message_extra
     char *primary_text, *secondary_text;
     char *message_extra, *message;
-    if (dest_is_dir) 
+    if (dest_is_dir)
     {
-	if (source_is_dir) 
+	if (source_is_dir)
 	{
-	    primary_text = g_strdup_printf (_("Merge folder \"%s\"?"), 
+	    primary_text = g_strdup_printf (_("Merge folder \"%s\"?"),
 		                            dest_name);
 	    message_extra = _("Merging will ask for confirmation before "
 		              "replacing any files in the folder that "
 			      "conflict with the files being copied.");
-	    if (src_mtime > dest_mtime) 
+	    if (src_mtime > dest_mtime)
 		message = g_strdup_printf (_("An older folder with the same "
-			                   "name already exists in \"%s\"."), 
-			                   dest_dir_name);
-	    else if (src_mtime < dest_mtime) 
+			                   "name already exists in \"%s\"."),
+			                   actual_dest_dir_name);
+	    else if (src_mtime < dest_mtime)
 		message = g_strdup_printf (_("A newer folder with the same "
-			                   "name already exists in \"%s\"."), 
-					   dest_dir_name);
-	    else 
+			                   "name already exists in \"%s\"."),
+					   actual_dest_dir_name);
+	    else
 		message = g_strdup_printf (_("Another folder with the same "
-			                   "name already exists in \"%s\"."), 
-			                   dest_dir_name);
-	} 
-	else 
+			                   "name already exists in \"%s\"."),
+			                   actual_dest_dir_name);
+	}
+	else
 	{
 	    message_extra = _("Replacing it will remove all files in the "
 		              "folder.");
-	    primary_text = g_strdup_printf (_("Replace folder \"%s\"?"), 
+	    primary_text = g_strdup_printf (_("Replace folder \"%s\"?"),
 		                            dest_name);
-	    message = g_strdup_printf (_("A folder with the same name already " 
-			               "exists in \"%s\"."), dest_dir_name);
+	    message = g_strdup_printf (_("A folder with the same name already "
+			               "exists in \"%s\"."), actual_dest_dir_name);
 	}
-    } 
-    else 
+    }
+    else
     {
 	primary_text = g_strdup_printf (_("Replace file \"%s\"?"), dest_name);
 	message_extra = _("Replacing it will overwrite its content.");
-	if (src_mtime > dest_mtime) 
+	if (src_mtime > dest_mtime)
 	    message = g_strdup_printf (_("An older file with the same name "
-			               "already exists in \"%s\"."), 
-		                       dest_dir_name);
-       	else if (src_mtime < dest_mtime) 
+			               "already exists in \"%s\"."),
+		                       actual_dest_dir_name);
+       	else if (src_mtime < dest_mtime)
 	    message = g_strdup_printf (_("A newer file with the same name "
-			               "already exists in \"%s\"."), 
-		                       dest_dir_name);
-	else 
+			               "already exists in \"%s\"."),
+		                       actual_dest_dir_name);
+	else
 	    message = g_strdup_printf (_("Another file with the same name "
-			              "already exists in \"%s\"."), 
-		                      dest_dir_name);
+			              "already exists in \"%s\"."),
+		                      actual_dest_dir_name);
     }
+    g_free (actual_dest_dir_name);
     secondary_text = g_strdup_printf ("%s\n%s", message, message_extra);
     g_free (message);
 
     //1. setup primary text and secondary text;
     GtkWidget *label;
-    
+
     label = gtk_label_new (primary_text);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
     gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD_CHAR);
@@ -344,13 +353,13 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
     date = g_strdup (ctime (&src_mtime));
     size = g_file_info_get_size (dest_info);
 
-    if (should_show_type) 
+    if (should_show_type)
 	type = g_strdup (src_type);
 
     g_string_append_printf (str, "<b>%s</b>\n", _("Replace with"));
     g_string_append_printf (str, "<i>%s</i> %li Bytes\n", _("Size:"), size);
 
-    if (should_show_type) 
+    if (should_show_type)
     {
 	g_string_append_printf (str, "<i>%s</i> %s\n", _("Type:"), type);
 	g_free (type);
@@ -380,10 +389,10 @@ _expander_activated_cb (GtkExpander *w, GtkWidget *dialog)
 {
     int start_pos, end_pos;
 
-    if (!gtk_expander_get_expanded (w)) 
+    if (!gtk_expander_get_expanded (w))
     {
 	if (g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (details.entry)),
-		       details.conflict_name) == 0) 
+		       details.conflict_name) == 0)
 	{
 	    gtk_widget_grab_focus (details.entry);
 
@@ -410,8 +419,8 @@ _entry_text_changed_cb (GtkEditable *entry, GtkWidget *dialog)
 
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog),
 					 CONFLICT_RESPONSE_RENAME);
-    } 
-    else 
+    }
+    else
     {
 	gtk_widget_hide (details.rename_button);
 	gtk_widget_show (details.replace_button);
@@ -448,12 +457,12 @@ _checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog)
     if (!gtk_toggle_button_get_active (t) &&
 	g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (details.entry)),"") != 0 &&
 	g_strcmp0 (gtk_entry_get_text (GTK_ENTRY (details.entry)),
-		   details.conflict_name) != 0) 
+		   details.conflict_name) != 0)
     {
 	gtk_widget_hide (details.replace_button);
 	gtk_widget_show (details.rename_button);
     }
-    else 
+    else
     {
 	gtk_widget_hide (details.rename_button);
 	gtk_widget_show (details.replace_button);
@@ -467,18 +476,18 @@ eel_filename_get_extension_offset (const char *filename)
 
     end = strrchr (filename, '.');
 
-    if (end && end != filename) 
+    if (end && end != filename)
     {
 	if (strcmp (end, ".gz") == 0 ||
 	    strcmp (end, ".bz2") == 0 ||
 	    strcmp (end, ".sit") == 0 ||
-	    strcmp (end, ".Z") == 0) 
+	    strcmp (end, ".Z") == 0)
 	{
 	    end2 = end - 1;
 	    while (end2 > filename && *end2 != '.')
 		end2--;
-	    
-	    if (end2 != filename) 
+
+	    if (end2 != filename)
 		end = end2;
 	}
     }
@@ -490,15 +499,15 @@ eel_filename_strip_extension (const char * filename_with_extension)
 {
     char *filename, *end;
 
-    if (filename_with_extension == NULL) 
+    if (filename_with_extension == NULL)
 	return NULL;
 
     filename = g_strdup (filename_with_extension);
     end = eel_filename_get_extension_offset (filename);
 
-    if (end && end != filename) 
+    if (end && end != filename)
 	*end = '\0';
-	
+
     return filename;
 }
 
