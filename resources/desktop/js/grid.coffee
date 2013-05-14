@@ -287,7 +287,6 @@ detect_occupy = (info) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    echo "x:#{x}, y:#{y}, item_width:#{grid_item_width}, cols:#{cols}"
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
