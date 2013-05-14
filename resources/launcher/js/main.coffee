@@ -49,8 +49,9 @@ _b.addEventListener("click", (e)->
 )
 
 _b.addEventListener('keypress', (e) ->
-    s_box.value += String.fromCharCode(e.which)
-    search()
+    if e.which != ESC_KEY
+        s_box.value += String.fromCharCode(e.which)
+        search()
 )
 
 # this does not work on keypress
@@ -73,13 +74,14 @@ _b.addEventListener("keydown", do ->
         else
             switch e.which
                 when ESC_KEY
+                    e.stopPropagation()
                     if s_box.value == ""
                         _save_hidden_apps()
                         DCore.Launcher.exit_gui()
                     else
                         _last_val = s_box.value
                         s_box.value = ""
-                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                        # update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
                 when UP_ARROW
                     selected_up()

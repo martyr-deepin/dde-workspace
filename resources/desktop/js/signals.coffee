@@ -58,10 +58,9 @@ do_item_rename = (data) ->
     sel = false
     old_id = DCore.DEntry.get_id(data.old)
     new_id = DCore.DEntry.get_id(data.new)
-    if (o_p = load_position(old_id))?
-        save_position(new_id, o_p)
 
     if (w = Widget.look_up(old_id))?
+        save_position(new_id, w.get_pos())
         sel = cancel_item_selected(w)
         all_item.remove(old_id)
         w.destroy()

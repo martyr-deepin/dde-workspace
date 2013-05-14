@@ -37,7 +37,7 @@ extern GHashTable* _clients_table;
 
 void dock_test_tasklist()
 {
-    int xid = 0x802f2a;  // attention!! change it yourself if necessary.
+    int xid = 0x32082c8;  // attention!! change it yourself when you need to test.
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     GdkWindow* root = gdk_get_default_root_window();
 
@@ -50,18 +50,20 @@ void dock_test_tasklist()
     /*      active_window_changed(_dsp, (Window)dock_get_active_window()); */
     /* }, "active_window_changed"); */
 
-    // TBT
-    /* Test({ */
+    // TODO:
+    // TBT, because client_free cannot free Client.gdkwindow
+    Test({
          /* g_hash_table_remove_all(_clients_table); */
          /* g_hash_table_destroy(_clients_table); */
          /* _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free); */
          /* _update_task_list(GDK_WINDOW_XID(root)); */
-    /*      update_task_list(GDK_WINDOW_XID(root)); */
-    /* }, "update_task_list"); */
+         update_task_list(GDK_WINDOW_XID(root));
+    }, "update_task_list");
 
 
     /* Test({ */
-    /*         is_skip_taskbar(xid); */
+    /*      g_assert(is_skip_taskbar(xid) == FALSE); */
+    /*      g_assert(is_skip_taskbar(GDK_WINDOW_XID(root)) == FALSE); */
     /* }, "is_skip_taskbar"); */
 
     /* Test({ */
@@ -87,27 +89,27 @@ void dock_test_tasklist()
     /*      g_free(c->instance_name); */
     /*      }, "_update_window_class"); */
 
-    //TBD, end in 36m
-    Test({
-         c->title = NULL;
-         c->clss = NULL;
-         c->instance_name = NULL;
-         c->app_id = NULL;
-         _update_window_title(c);
-         _update_window_class(c);
-         _update_window_appid(c);
-         g_assert(c->app_id != NULL);
-         g_free(c->title);
-         g_free(c->clss);
-         g_free(c->instance_name);
-         g_free(c->app_id);
-         }, "_update_window_appid");
+    /* Test({ */
+    /*      c->title = NULL; */
+    /*      c->clss = NULL; */
+    /*      c->instance_name = NULL; */
+    /*      c->app_id = NULL; */
+    /*      _update_window_title(c); */
+    /*      _update_window_class(c); */
+    /*      _update_window_appid(c); */
+    /*      g_assert(c->app_id != NULL); */
+    /*      g_free(c->title); */
+    /*      g_free(c->clss); */
+    /*      g_free(c->instance_name); */
+    /*      g_free(c->app_id); */
+    /*      g_free(c->exec); */
+    /*      }, "_update_window_appid"); */
 
-    //TBD, end in 54m
-    extern void _update_window_viewport(Client* c);
-    Test({
-         _update_window_viewport(c);
-         }, "_update_window_viewport");
+    // TODO: dock_update_hide_mode lead to ending in 54m
+    /* extern void _update_window_viewport(Client* c); */
+    /* Test({ */
+    /*      _update_window_viewport(c); */
+    /*      }, "_update_window_viewport"); */
 
     /* Test({ */
     /*      c->title = NULL; */
@@ -127,7 +129,6 @@ void dock_test_tasklist()
     /*     } */
     /* , "try_get_deepin_icon"); */
 
-    //TBD, end in 36m
     /* extern gboolean _get_launcher_icon(Client* c); */
     /* Test({ */
     /*      c->title = NULL; */
@@ -142,38 +143,49 @@ void dock_test_tasklist()
     /*      g_free(c->clss); */
     /*      g_free(c->instance_name); */
     /*      g_free(c->app_id); */
+    /*      g_free(c->exec); */
     /*      g_free(c->icon); */
     /*      }, "_get_launcher_icon"); */
 
-    //TBD, end in 54m
-    Test({
-            _update_window_icon(c);
-         } , "update_window_icon");
+    /* Test({ */
+    /*      c->icon = NULL; */
+    /*      _update_window_icon(c); */
+    /*      g_free(c->icon); */
+    /*      } , "update_window_icon"); */
 
     /* Test({ */
     /*      extern void _update_is_overlay_client(Client* c); */
     /*      _update_is_overlay_client(c); */
     /*      }, "_update_is_overlay_client"); */
 
-    //TBD, end in 54m
-    extern void _update_window_net_state(Client* c);
-    Test({
-         _update_window_net_state(c);
-         }, "_update_window_net_state");
+    /* Test({ */
+    /*      extern gboolean _is_hidden(Window); */
+    /*      g_assert(_is_hidden(xid) == FALSE); */
+    /*      }, "_is_hidden"); */
+
+    // TODO: dock_update_hide_mode lead to ending in 54m
+    /* extern void _update_window_net_state(Client* c); */
+    /* Test({ */
+    /*      c->gdkwindow = root; */
+    /*      c->window = GDK_WINDOW_XID(root); */
+    /*      _update_window_net_state(c); */
+    /*      }, "_update_window_net_state"); */
 
     g_free(c);
 
-    /* Test({ */
-    /*      extern gboolean _is_hidden(Window); */
-    /*      _is_hidden(xid); */
-    /*      }, "_is_hidden"); */
-
-    // TBT
+    // TODO:
+    // TBT, client_free cannot free Client.gdkwindow
     /* Test({ */
     /*      Client* c = create_client_from_window(xid); */
     /*      g_assert(c != NULL); */
     /*      client_free(c); */
-    /*      }, "create client and free"); */
+    /*      }, "client create and free"); */
 
-    /* client_free(c); */
+
+    /* Test({ */
+    /*      dock_get_active_window(); */
+    /*      }, "dock_get_active_window"); */
+
+    Test({
+        };, "");
 }

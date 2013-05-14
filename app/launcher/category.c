@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include <glib.h>
 #include <glib/gprintf.h>
+#include "jsextension.h"
 
 #define DEEPIN_SOFTWARE_CENTER_DATE_DIR    "/usr/share/deepin-software-center/data"
 #define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATE_DIR"/data_newest_id.ini"
@@ -35,7 +36,7 @@
 
 static time_t _last_modify_time = 0;
 
-static
+PRIVATE
 gboolean _need_to_update()
 {
     struct stat newest;
@@ -69,13 +70,13 @@ const gchar* get_category_db_path()
     return db_path;
 }
 
-static
+PRIVATE
 const char* _get_x_category_db_path()
 {
     return DATA_DIR"/x_category.sqlite";
 }
 
-static
+PRIVATE
 gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, void* res)
 {
     sqlite3* db = NULL;
@@ -94,7 +95,7 @@ gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, v
     return is_good;
 }
 
-static
+PRIVATE
 int _get_all_possible_x_categories(GHashTable* infos, int argc, char** argv, char** colname)
 {
     if (argv[1][0] != '\0') {
@@ -104,7 +105,7 @@ int _get_all_possible_x_categories(GHashTable* infos, int argc, char** argv, cha
     return 0;
 }
 
-static
+PRIVATE
 int find_category_id(const char* category_name)
 {
     static GHashTable* _category_info = NULL;
@@ -125,7 +126,7 @@ int find_category_id(const char* category_name)
     return id;
 }
 
-static
+PRIVATE
 GList* _remove_other_category(GList* categories)
 {
     GList* iter = g_list_first(categories);
@@ -140,7 +141,7 @@ GList* _remove_other_category(GList* categories)
     return categories;
 }
 
-static
+PRIVATE
 GList* _get_x_category(GDesktopAppInfo* info)
 {
     GList* categories = NULL;
@@ -170,7 +171,7 @@ GList* _get_x_category(GDesktopAppInfo* info)
     return categories;
 }
 
-static
+PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0') {

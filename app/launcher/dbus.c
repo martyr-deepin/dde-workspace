@@ -1,5 +1,6 @@
 #include <gio/gio.h>
 #include "dbus.h"
+#include "jsextension.h"
 
 #define APP_NAME "launcher"
 #define APP_DBUS_NAME     "com.deepin.dde."APP_NAME
@@ -23,7 +24,7 @@ static const char* _dbus_iface_xml =
 "</node>\n"
 ;
 
-static void
+PRIVATE void
 _bus_method_call (GDBusConnection * connection,
                  const gchar * sender, const gchar * object_path, const gchar * interface,
                  const gchar * method, GVariant * params,
@@ -60,11 +61,11 @@ static guint retry_reg_timeout_id;   //timer used for retrying dbus name registr
 static GDBusConnection* _connection;
 
 //internal functions
-static gboolean _retry_registration (gpointer user_data);
-static void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data);
-static void _bus_method_call (GDBusConnection * connection, const gchar * sender,
+PRIVATE gboolean _retry_registration (gpointer user_data);
+PRIVATE void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data);
+PRIVATE void _bus_method_call (GDBusConnection * connection, const gchar * sender,
                              const gchar * object_path, const gchar * interface,
                              const gchar * method, GVariant * params,
                              GDBusMethodInvocation * invocation, gpointer user_data);
@@ -100,7 +101,7 @@ void setup_dbus_service ()
     _retry_registration (NULL);
 }
 
-static gboolean
+PRIVATE gboolean
 _retry_registration (gpointer user_data)
 {
 
@@ -115,7 +116,7 @@ _retry_registration (gpointer user_data)
     return TRUE;
 }
 
-static void
+PRIVATE void
 _on_bus_acquired (GDBusConnection * connection,
         const gchar * name,
         gpointer user_data)
@@ -147,7 +148,7 @@ _on_bus_acquired (GDBusConnection * connection,
     return;
 }
 
-static void
+PRIVATE void
 _on_name_acquired (GDBusConnection * connection,
         const gchar * name,
         gpointer user_data)
@@ -155,7 +156,7 @@ _on_name_acquired (GDBusConnection * connection,
     g_debug ("Dbus name acquired");
 }
 
-static void
+PRIVATE void
 _on_name_lost (GDBusConnection * connection,
         const gchar * name,
         gpointer user_data)

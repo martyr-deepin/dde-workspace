@@ -160,21 +160,21 @@ class ToolTip extends Widget
             ToolTip.tooltip?.style.display = "none"
         )
         @event_bind('ondragend', =>
-            @widget.tooltip?.hide()
+            @widget?.tooltip?.hide()
         )
         @event_bind('oncontextmenu', =>
-            @widget.tooltip?.hide()
+            @widget?.tooltip?.hide()
         )
         @event_bind('onmouseout', =>
-            @widget.tooltip?.hide()
+            @widget?.tooltip?.hide()
         )
         @event_bind('onmouseover', =>
             ToolTip.should_show_id = setTimeout(=>
-                @widget.tooltip?.show()
+                @widget?.tooltip?.show()
             , 500)
         )
         @event_bind('onclick', =>
-            @widget.tooltip?.hide()
+            @widget?.tooltip?.hide()
         )
 
     event_bind: (evt_name, callback) ->

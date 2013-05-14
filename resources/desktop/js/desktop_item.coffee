@@ -50,7 +50,7 @@ class Item extends Widget
         super(@id)
 
         el = @element
-        info = {x:0, y:0, width:1, height:1}
+        @_position = {x:-1, y:-1, width:1, height:1}
 
         #el.setAttribute("tabindex", 0)
         el.draggable = true
@@ -98,7 +98,7 @@ class Item extends Widget
 
 
     destroy : ->
-        if (info = load_position(@id))? then clear_occupy(@id, info)
+        if (@_position.x > -1) and (@_position.y > -1) then clear_occupy(@id, @_position)
         super
 
 
@@ -143,6 +143,16 @@ class Item extends Widget
 
     get_mtime : =>
         DCore.DEntry.get_mtime(@_entry)
+
+
+    get_pos : =>
+        ret_pos = {x : @_position.x, y : @_position.y, width : @_position.width, height : @_position.height}
+
+
+    set_pos : (info) =>
+        [@_position.x, @_position.y, @_position.width, @_position.height] = [info.x, info.y, info.width, info.height]
+        return
+
 
 
     do_mouseover : (evt) ->
@@ -190,6 +200,7 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
+        echo "do_rightclick"
         if @selected == false
             update_selected_stats(this, evt)
         else if @in_rename == true
@@ -253,6 +264,7 @@ class Item extends Widget
     on_event_preventdefault : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
+        echo "on_event_preventdefault"
         return
 
 
@@ -606,7 +618,7 @@ class Folder extends DesktopEntry
             for file in evt.dataTransfer.files
                 if (e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, "")))?
                     tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
 
@@ -709,7 +721,7 @@ class RichDir extends DesktopEntry
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
     do_dragenter : (evt) ->
@@ -776,12 +788,13 @@ class RichDir extends DesktopEntry
         if list.length <= 1
             if @show_pop == true
                 @hide_pop_block()
-            if list.length
-                DCore.DEntry.move(list, g_desktop_entry)
-                if (pos = load_position(DCore.DEntry.get_id(@_entry)))?
-                    save_position(DCore.DEntry.get_id(list[0]), pos)
+
+            pos = @get_pos()
+            clear_occupy(@id, @_position)
+            if list.length > 0
+                save_position(DCore.DEntry.get_id(list[0]), pos)
+                DCore.DEntry.move(list, g_desktop_entry, false)
             DCore.DEntry.delete_files([@_entry], false)
-            delete_item(@)
         else
             if @show_pop == true
                 @sub_items = {}
@@ -812,9 +825,7 @@ class RichDir extends DesktopEntry
 
 
     item_ungroup: =>
-        if (pos = load_position(@id))?
-            clear_occupy(@id, pos)
-        DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
+        DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry, false)
         DCore.DEntry.delete_files([@_entry], false)
 
 
@@ -1138,10 +1149,12 @@ class Application extends DesktopEntry
                     tmp_list.push(e)
 
                 if all_are_apps == true
+                    pos = @get_pos()
                     tmp_list.push(@_entry)
-                    pos = load_position(@id)
                     if (new_entry = DCore.Desktop.create_rich_dir(tmp_list))?
-                        (delete_item(w) if (w = Widget.look_up(DCore.DEntry.get_id(e)))?) for e in tmp_list
+                        for e in tmp_list
+                            if (w = Widget.look_up(DCore.DEntry.get_id(e)))?
+                                delete_item(w)
                         id = DCore.DEntry.get_id(new_entry)
                         if (w = Widget.look_up(id))?
                             move_to_somewhere(w, pos)
@@ -1382,7 +1395,7 @@ class HomeVDir extends DesktopEntry
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
 
@@ -1537,6 +1550,7 @@ class TrashVDir extends DesktopEntry
 class DeepinSoftwareCenter extends DesktopEntry
     constructor : ->
         super(null, false, false)
+
 
     set_id : =>
         @id = _ITEM_ID_DSC_
