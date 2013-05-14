@@ -535,3 +535,25 @@ void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
         (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
     save_app_config(k_apps, APPS_INI);
 }
+
+
+JS_EXPORT_API
+gboolean launcher_has_this_item_on_desktop(Entry* _item)
+{
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* desktop = get_desktop_dir(FALSE);
+    const char* item_path = g_desktop_app_info_get_filename(item);
+    char* basename = g_path_get_basename(item_path);
+    char* desktop_item_path = g_strconcat(desktop, basename, NULL);
+    g_free(desktop);
+
+    GFile* desktop_item = g_file_new_for_path(desktop_item_path);
+    g_free(basename);
+
+    gboolean is_exist = g_file_query_exists(desktop_item, NULL);
+    g_object_unref(desktop_item);
+    g_debug("%s exist? %d", desktop_item_path, is_exist);
+    g_free(desktop_item_path);
+
+    return is_exist;
+}

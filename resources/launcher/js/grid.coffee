@@ -87,7 +87,7 @@ class Item extends Widget
             if not is_show_hidden_icons then DISPLAY_HIDDEN_ICONS else HIDE_HIDDEN_ICONS,
             _get_hidden_icons_ids().length != 0],
             [],
-            [4, _("Send to desktop")],
+            [4, _("Send to desktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
             [5, _("Send to dock"), s_dock!=null],
         ]
 

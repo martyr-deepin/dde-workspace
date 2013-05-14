@@ -776,6 +776,8 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
         }
     }
 }
+
+
 void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -797,6 +799,8 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
     }
     g_free(_fs.data);
 }
+
+
 void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
