@@ -14,7 +14,7 @@ class Launcher extends AppItem
             group.destroy()
 
     do_click: (e)->
-        @tooltip.hide()
+        @tooltip?.hide()
         @tooltip = null
         @flash()
         @_do_launch []
@@ -22,7 +22,7 @@ class Launcher extends AppItem
     do_itemselected: (e)->
         switch e.id
             when 1
-                @tooltip.hide()
+                @tooltip?.hide()
                 @tooltip = null
                 @_do_launch []
             when 2 then DCore.Dock.request_undock(@id)
