@@ -440,7 +440,7 @@ init_grid_drop = ->
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
 
             if tmp_move.length
-                DCore.DEntry.move(tmp_move, g_desktop_entry)
+                DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         return
