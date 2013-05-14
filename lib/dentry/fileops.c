@@ -268,9 +268,10 @@ fileops_trash (GFile* file_list[], guint num)
  *	      traverse_directory. the default implementation can
  *	      recursively trash files.
  */
-void
+gboolean
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 {
+    gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
 
     GCancellable* move_cancellable = g_cancellable_new ();
@@ -294,7 +295,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 	{
 	    //TODO: symbolic links
 	    g_debug ("dest type is not directory");
-	    return;
+	    return FALSE;
 	}
 	char* src_basename= g_file_get_basename (src);
 	GFile* move_dest_file = g_file_get_child (dest_dir, src_basename);
@@ -302,13 +303,15 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 
 	data->dest_file = move_dest_file;
 
-	_move_files_async (src, data);
+	retval &= _move_files_async (src, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
     g_object_unref (data->cancellable);
     g_free (data);
     g_debug ("fileops_move: End moving files");
+
+    return retval;
 }
 /*
  *	@file_list : files(or directories) to trash.
@@ -452,6 +455,9 @@ _trash_files_async (GFile* file, gpointer data)
     return retval;
 }
 /*
+ * NOTE: the retval has been hacked to please frontend.
+ *             it's not consistent with other hook functions.
+ *             use with care.
  */
 static gboolean
 _move_files_async (GFile* src, gpointer data)
@@ -467,7 +473,7 @@ _move_files_async (GFile* src, gpointer data)
 
     _move_cancellable = _data->cancellable;
     dest = _data->dest_file;
-    if (!_cmp_files (src, dest)) //src==dest_dir
+    if (!_cmp_files (src, dest)) //src==dest
 	return FALSE;
     g_file_move (src, dest,
 	         G_FILE_COPY_NOFOLLOW_SYMLINKS,
@@ -497,7 +503,7 @@ _move_files_async (GFile* src, gpointer data)
 	    case CONFLICT_RESPONSE_SKIP:
 	        //skip, imediately return.
 	        g_debug ("response : Skip");
-		retval = TRUE;
+		retval = FALSE;
 	        break;
 	    case CONFLICT_RESPONSE_RENAME:
 		//rename, redo operations
@@ -511,7 +517,6 @@ _move_files_async (GFile* src, gpointer data)
 		_data->dest_file = new_dest;
 
 	        retval = _move_files_async (src, _data);
-
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 	        if (type == G_FILE_TYPE_DIRECTORY)
