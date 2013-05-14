@@ -159,6 +159,7 @@ class Weather
                 @more_city_menu.style.display = "none" 
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
+                clearTimeout(@display_city_menu_id)
             @chooseprov.options.length = 0 #clear the prov option value
             provinit = create_element("option","provinit",@chooseprov)
             provinit.innerText = str_provinit
@@ -328,7 +329,7 @@ class Weather
                     cityid_choose = localStorage.getItem("cityid_choose_storage")
                     # @weathergui_update(cityid_choose)
                     if cityid_choose isnt null
-                        @auto_update_cityid_choose = setInterval(@weathergui_update(cityid_choose),60000)# half  hour update once 1800000   60000--60s
+                        @auto_update_cityid_choose = setInterval(@weathergui_update(cityid_choose),600000)# half  hour update once 1800000   60000--60s
     
     get_client_cityid : ->
         ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
