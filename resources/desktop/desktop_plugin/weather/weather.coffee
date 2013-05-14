@@ -53,11 +53,14 @@ class Weather
 
         @refresh.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
-            @weathergui_update(@cityid)
-        @element.addEventListener("drag", (event)=>
-            # echo "drag"
-            bottom_distance =  window.screen.availHeight - window.event.y
-            # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
+            if localStorage.getItem("cityid_storage") isnt null
+                @weathergui_update(localStorage.getItem("cityid_storage"))
+
+        @element.addEventListener("dragstart", (event)=>
+            @rightclick.style.display = "none"
+            @more_city_menu.style.display = "none"
+            @more_weather_menu.style.display = "none"
+            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
             if bottom_distance < 330 
                 @rightclick.style.top = -160
                 @more_city_menu.style.top = -252
@@ -120,7 +123,6 @@ class Weather
         @date.addEventListener("click", => 
             if @more_weather_menu.style.display is "none" 
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @more_weather_menu.style.top = -213
                 else @more_weather_menu.style.top = 70
@@ -230,7 +232,8 @@ class Weather
             )
         refresh_context.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
-            @weathergui_update(@cityid)
+            if localStorage.getItem("cityid_storage") isnt null
+                @weathergui_update(localStorage.getItem("cityid_storage"))
             )
         feedback.addEventListener("click", ->
             feedbackmsg = prompt(str_feedbackmsg_prompt,"")
@@ -252,8 +255,14 @@ class Weather
         @more_weather_build()
         @more_city_build()
         @rightclick_build()
+        cityid = localStorage.getItem("cityid_storage")
+        if cityid is null
+            @get_client_cityid()
+        else
+            echo "cityid is : " + cityid
+            @weathergui_update(cityid)
 
-        @get_client_cityid()
+
 
     ajax : (url, method, callback, asyn=true) ->
         xhr = new XMLHttpRequest()
@@ -266,40 +275,6 @@ class Weather
             else if xhr.status isnt 200 
                 echo "XMLHttpRequest can't receive data."
 
-    get_client_cityid : ->
-        ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
-        @ajax(ip_url,"GET", (xhr)=>
-                localStorage.setItem(client_ip,xhr.responseText)
-                client_ip = localStorage.getItem(client_ip)
-                # localStorage.removeItem(client_ip)
-                str = client_ip.toString()
-                # echo str
-                if str[0] is '1'
-                    # echo "str[0] is 1"
-                    ip = str.slice(2,12)
-                    echo "ip start :" + ip
-                    ip_url2 = ip_url + "?format=js&ip=" + ip
-                    @ajax(ip_url2,"GET",(xhr)=>
-                        client_ip_city = xhr.responseText
-                        # echo client_ip_city
-                        remote_ip_info = client_ip_city.slice(21,client_ip_city.length)
-                        localStorage.setItem(remote_ip_info,remote_ip_info)
-                        remote_ip_info = JSON.parse(localStorage.getItem(remote_ip_info))
-                        if remote_ip_info.ret is 1
-                            echo "remote_ip_info.province:" + remote_ip_info.province
-                            echo "remote_ip_info.city:" + remote_ip_info.city
-                            for provin of allname.data
-                                if allname.data[provin].prov is remote_ip_info.province
-                                    for ci of allname.data[provin].city
-                                        if allname.data[provin].city[ci].cityname is remote_ip_info.city
-                                            @cityid = allname.data[provin].city[ci].code
-                                            echo "@cityid:" + @cityid
-                                            @weathergui_update(@cityid)
-                        else echo "sina iplookup can't find the matched location json by ip"
-                        )
-                else echo "sina iplookup can't get the client ip"
-
-            )
     read_data_from_json: (id) ->
         xhr = new XMLHttpRequest()
         url = "desktop_plugin/weather/city/" + id + ".json"
@@ -338,6 +313,7 @@ class Weather
         # echo "@choosedist.options.length:" + @choosedist.options.length 
         # echo "@choosedist.size:" + @choosedist.size
         @choosedist.onchange = =>
+            @more_city_menu.style.display = "none"
             distIndex = @choosedist.selectedIndex
             # echo  "distIndex:" + distIndex
             if distIndex is -1
@@ -346,19 +322,58 @@ class Weather
                 distvalue = @choosedist.options[distIndex].value
                 # echo "distvalue:" + distvalue
                 if distvalue isnt str_distinit
-                    @cityid = data[distvalue].data
-                    echo "@cityid " + @cityid 
-                    @more_city_menu.style.display = "none"
-                    setInterval(@weathergui_update(@cityid),1800000)# half  hour update once
+                    cityid_choose = data[distvalue].data
+                    echo "cityid_choose: " + cityid_choose
+                    localStorage.setItem("cityid_choose_storage",cityid_choose)
+                    cityid_choose = localStorage.getItem("cityid_choose_storage")
+                    # @weathergui_update(cityid_choose)
+                    if cityid_choose isnt null
+                        @auto_update_cityid_choose = setInterval(@weathergui_update(cityid_choose),60000)# half  hour update once 1800000   60000--60s
+    
+    get_client_cityid : ->
+        ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
+        @ajax(ip_url,"GET", (xhr)=>
+                str = xhr.responseText
+                # echo str
+                if str[0] is '1'
+                    # echo "str[0] is 1"
+                    ip = str.slice(2,12)
+                    echo "ip start :" + ip
+                    ip_url2 = ip_url + "?format=js&ip=" + ip
+                    @ajax(ip_url2,"GET",(xhr)=>
+                        client_ip_city = xhr.responseText
+                        remote_ip_info = JSON.parse(client_ip_city.slice(21,client_ip_city.length))
+                        # echo "remote_ip_info.ret: " + remote_ip_info.ret
+                        if remote_ip_info.ret is 1
+                            echo "remote_ip_info.province:" + remote_ip_info.province
+                            echo "remote_ip_info.city:" + remote_ip_info.city
+                            for provin of allname.data
+                                if allname.data[provin].prov is remote_ip_info.province
+                                    for ci of allname.data[provin].city
+                                        if allname.data[provin].city[ci].cityname is remote_ip_info.city
+                                            cityid_client = allname.data[provin].city[ci].code
+                                            echo "cityid_client:" + cityid_client
+                                            localStorage.setItem("cityid_client_storage",cityid_client)
+                                            cityid_client = localStorage.getItem("cityid_client_storage")
+                                            if cityid_client isnt null
+                                                @weathergui_update(cityid_client)
+                        else 
+                            echo "sina iplookup can't find the matched location json by ip"
+                        )
+                else 
+                    echo "sina iplookup can't get the client ip"
+            )
 
-    weathergui_update: (cityid)->
-        localStorage.setItem(cityid,cityid)
-        cityid = localStorage.getItem(cityid)
+
+    weathergui_update: (id)->
+        localStorage.setItem("cityid_storage",id)
+        cityid = localStorage.getItem("cityid_storage")
+        # localStorage.removeItem("cityid_storage")
         now_weather_url = "http://www.weather.com.cn/data/sk/" + cityid + ".html"
         weather_url = "http://m.weather.com.cn/data/"+cityid+".html"
         @ajax(now_weather_url , "GET" , (xhr) =>
-            localStorage.setItem(weather_data_now,xhr.responseText)
-            weather_data_now = JSON.parse(localStorage.getItem(weather_data_now))
+            localStorage.setItem("weather_data_now_storage",xhr.responseText)
+            weather_data_now = JSON.parse(localStorage.getItem("weather_data_now_storage"))
             temp_now = weather_data_now.weatherinfo.temp
             @time_update = weather_data_now.weatherinfo.time
             echo "temp_now:" + temp_now
@@ -375,9 +390,10 @@ class Weather
                     @temperature_now_number.textContent = temp_now + "°"
             )   
         @ajax( weather_url , "GET", (xhr) =>
-            localStorage.setItem(weather_data,xhr.responseText)
-            weather_data = JSON.parse(localStorage.getItem(weather_data))
-            # localStorage.removeItem(weather_data)  
+            localStorage.setItem("weather_data_storage",xhr.responseText)
+            # echo xhr.responseText
+            weather_data = JSON.parse(localStorage.getItem("weather_data_storage"))
+            # localStorage.removeItem("weather_data_storage")
             @weather_data = weather_data
             i_week = 0
             while i_week < week_name.length
@@ -409,6 +425,8 @@ class Weather
 
             @refresh.style.backgroundColor = null
         )
+        
+
     weather_more_pic_src:(i) ->
         i = i*2 - 1
         weather_data = @weather_data
@@ -443,7 +461,7 @@ class Weather
             weather_data.weatherinfo.img_title9,
             weather_data.weatherinfo.img_title10,
             weather_data.weatherinfo.img_title11,
-            weather_data.weatherinfo.img_title12                        
+            weather_data.weatherinfo.img_title12
         ]
         
         if img_front[i+1] is "99" 

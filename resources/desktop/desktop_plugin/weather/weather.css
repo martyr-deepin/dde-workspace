@@ -51,11 +51,10 @@
     position:relative;
     float: left;
     top:10px;
-    color: #E6E6FA;   
+    color: #FFF;   
     font-size: 40px;
     font-weight: bold;
     text-shadow: 2px 2px 1px #808080;
-    opacity: 0.7;
 }
 
 .city_and_date{
@@ -70,6 +69,7 @@
     height: 20px;
     float: left;
     margin:auto;
+    cursor: pointer;
 }
 .city_now{
     position: relative;    
@@ -77,6 +77,7 @@
     font-size: 15px;
     font-weight: bolder;
     margin:auto;
+    text-shadow: 2px 2px 1px #808080;
 }
 .more_city_img{
     position: relative;
@@ -87,9 +88,11 @@
     position: relative;
     height: 20px;
     clear: both;
-    color: #E6E6FA;   
+    color: #FFF;   
     font-weight: 600;
     text-shadow: 0.5px 0.5px 1px #808080;
+    font-weight: bolder;
+    cursor: pointer;
 }
 
 
@@ -100,7 +103,6 @@
     /*left: 0px;   */
     /*display:none;*/
     /*text-align: center;*/
-
 }
 .chooseprov,
 .choosecity,
@@ -119,9 +121,12 @@
     left: 83px;
     top: 70px;
     width: 180px;
-    /*display: none;*/
     opacity: 0.8;
     border:2px solid #DCDCDC;
+    text-shadow: 2px 2px 1px #808080;
+    /*color:#FFF;*/
+    font-weight: bolder;
+    /*font-size: 15px;*/
 }
 
 .week1,
@@ -144,6 +149,7 @@
     margin-left: 20px;
     width: 24px;
     height: 24px;
+    line-height:35px;
 }
 
 .temperature1,
@@ -160,7 +166,7 @@
 .first_day_weather_data,
 .third_day_weather_data,
 .fifth_day_weather_data{
-    background-color: #DCDCDC;
+    background-color: #FFF;
     height: 35px;
     opacity:0.8;
     line-height:35px;
@@ -181,8 +187,9 @@
     top: 25px;
     left: 265px;   
     float: left;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
     opacity:0.6;
 }
 
