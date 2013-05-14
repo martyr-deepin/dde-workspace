@@ -22,6 +22,6 @@ char* dentry_get_id(Entry* e);
 ArrayContainer dentry_list_files(GFile* f);
 char* dentry_get_icon(Entry* e);
 char* dentry_get_icon_path(Entry* e);
-gboolean dentry_move(ArrayContainer fs, GFile* dest);
+gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
 
 #endif

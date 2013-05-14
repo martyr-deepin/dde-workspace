@@ -269,7 +269,7 @@ fileops_trash (GFile* file_list[], guint num)
  *	      recursively trash files.
  */
 gboolean
-fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
+fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 {
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
@@ -303,7 +303,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir)
 
 	data->dest_file = move_dest_file;
 
-	retval &= _move_files_async (src, data);
+	retval &= _move_files_async (src, data, prompt);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
@@ -460,7 +460,7 @@ _trash_files_async (GFile* file, gpointer data)
  *             use with care.
  */
 static gboolean
-_move_files_async (GFile* src, gpointer data)
+_move_files_async (GFile* src, gpointer data, gboolean prompt)
 {
     g_debug ("begin _move_files_async");
     gboolean retval = TRUE;
@@ -488,6 +488,8 @@ _move_files_async (GFile* src, gpointer data)
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
 	FileOpsResponse* response;
+	if (promt == TRUE)
+        {
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
 
 	if(response != NULL)
@@ -544,6 +546,11 @@ _move_files_async (GFile* src, gpointer data)
 
 	free_fileops_response (response);
         }
+	}
+	else  // prompt == FALSE
+	{
+	    retval = FALSE;
+	}
 	g_error_free (error);
 	g_debug ("move_async: error handling end");
     }
