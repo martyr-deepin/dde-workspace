@@ -160,7 +160,7 @@ class Weather
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
                 clearTimeout(@display_city_menu_id)
-            @chooseprov.options.length = 0 #clear the prov option value
+            @chooseprov.options.length = 0 
             provinit = create_element("option","provinit",@chooseprov)
             provinit.innerText = str_provinit
             provinit.selected = "true"
@@ -171,12 +171,12 @@ class Weather
             @chooseprov.size = (if (length < 13) then length else 13)
             # echo "@chooseprov.options.length:" + @chooseprov.options.length
             @choosecity.size = 1
-            @choosecity.options.length = 0 #clear the city option value
+            @choosecity.options.length = 0 
             cityinit = create_element("option", "cityinit", @choosecity)
             cityinit.innerText = str_cityinit
             cityinit.selected = "true"
             @choosedist.size = 1
-            @choosedist.options.length = 0 #clear the city option value
+            @choosedist.options.length = 0
             distinit = create_element("option", "distinit", @choosedist)
             distinit.innerText = str_distinit
             distinit.selected = "true"
@@ -314,6 +314,7 @@ class Weather
         # echo "@choosedist.options.length:" + @choosedist.options.length 
         # echo "@choosedist.size:" + @choosedist.size
         @choosedist.onchange = =>
+            clearInterval(@auto_update_cityid_choose)
             @more_city_menu.style.display = "none"
             distIndex = @choosedist.selectedIndex
             # echo  "distIndex:" + distIndex
