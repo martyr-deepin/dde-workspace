@@ -14,7 +14,7 @@ static gboolean _dummy_func		(GFile* file, gpointer data);
 
 static gboolean _delete_files_async	(GFile* file, gpointer data);
 static gboolean _trash_files_async	(GFile* file, gpointer data);
-static gboolean _move_files_async	(GFile* file, gpointer data);
+static gboolean _move_files_async	(GFile* file, gpointer data, gboolean prompt);
 static gboolean _copy_files_async	(GFile* file, gpointer data);
 
 
@@ -488,7 +488,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
 	FileOpsResponse* response;
-	if (promt == TRUE)
+	if (prompt == TRUE)
         {
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
 
@@ -518,7 +518,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 		g_object_unref (dest);
 		_data->dest_file = new_dest;
 
-	        retval = _move_files_async (src, _data);
+	        retval = _move_files_async (src, _data, prompt);
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 	        if (type == G_FILE_TYPE_DIRECTORY)
@@ -532,7 +532,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
                     retval = _delete_files_async (dest, _data);
 		    if (retval == TRUE)
 		    {
-			retval = _move_files_async (src, _data);
+			retval = _move_files_async (src, _data, prompt);
 		    }
 		}
 

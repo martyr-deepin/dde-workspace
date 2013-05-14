@@ -142,7 +142,7 @@ GFile* desktop_create_rich_dir(ArrayContainer fs)
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);
     g_file_make_directory(dir, NULL, NULL);
-    dentry_move(fs, dir);
+    dentry_move(fs, dir, TRUE);
     return dir;
 }
 
