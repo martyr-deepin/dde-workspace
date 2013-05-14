@@ -45,14 +45,14 @@ static GSettings* dde_bg_g_settings = NULL;
 
 
 
-static void get_screen_info()
+PRIVATE void get_screen_info()
 {
     screen = gdk_screen_get_default();
     screen_width = gdk_screen_get_width(screen);
     screen_height = gdk_screen_get_height(screen);
 }
 
-static
+PRIVATE
 gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 {
     GError* error = NULL;
@@ -111,7 +111,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     return TRUE;
 }
-static
+PRIVATE
 char* bg_blur_pict_get_dest_path (const char* src_uri)
 {
     g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
@@ -141,7 +141,7 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
     return path;
 }
 
-static
+PRIVATE
 void _set_launcher_background(GdkWindow* win)
 {
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
@@ -160,7 +160,7 @@ void _set_launcher_background(GdkWindow* win)
     g_free(bg_path);
 }
 
-static
+PRIVATE
 void _do_im_commit(GtkIMContext *context, gchar* str)
 {
     JSObjectRef json = json_create();
@@ -168,13 +168,13 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
     js_post_message("im_commit", json);
 }
 
-static
+PRIVATE
 void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
     gtk_widget_set_size_request(container, screen_width, screen_height);
 }
 
-static
+PRIVATE
 void _on_realize(GtkWidget* container)
 {
     _update_size(screen, container);
@@ -273,7 +273,7 @@ void launcher_notify_workarea_size()
 static GHashTable* _category_table = NULL;
 
 
-static
+PRIVATE
 void _append_to_category(const char* path, GList* cs)
 {
     if (_category_table == NULL) {
@@ -295,7 +295,7 @@ void _append_to_category(const char* path, GList* cs)
     }
 }
 
-static
+PRIVATE
 void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
     GList* categories = get_deepin_categories(info);
@@ -303,7 +303,7 @@ void _record_category_info(const char* id, GDesktopAppInfo* info)
     g_list_free(categories);
 }
 
-static
+PRIVATE
 JSObjectRef _init_category_table()
 {
     JSObjectRef items = json_array_create();
@@ -358,7 +358,7 @@ JSObjectRef launcher_get_items_by_category(double _id)
     return items;
 }
 
-static
+PRIVATE
 gboolean _pred(const gchar* lhs, const gchar* rhs)
 {
     return g_strrstr(lhs, rhs) != NULL;
@@ -366,7 +366,7 @@ gboolean _pred(const gchar* lhs, const gchar* rhs)
 
 typedef gboolean (*Prediction)(const gchar*, const gchar*);
 
-static
+PRIVATE
 double _get_weight(const char* src, const char* key, Prediction pred, double weight)
 {
     if (src == NULL) {
@@ -438,7 +438,7 @@ double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
 }
 
 
-static
+PRIVATE
 void _insert_category(JSObjectRef categories, int array_index, int id, const char* name)
 {
     JSObjectRef item = json_create();
@@ -448,7 +448,7 @@ void _insert_category(JSObjectRef categories, int array_index, int id, const cha
     json_array_insert(categories, array_index, item);
 }
 
-static
+PRIVATE
 void _record_categories(JSObjectRef categories, const char* names[], int num)
 {
     int index = 1;

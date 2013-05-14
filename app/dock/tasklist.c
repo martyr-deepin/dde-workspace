@@ -42,7 +42,7 @@ extern Window get_dock_window();
 #include <gio/gdesktopappinfo.h>
 
 static Atom ATOM_WINDOW_HIDDEN;
-static Atom ATOM_CLIENT_LIST;
+PRIVATE Atom ATOM_CLIENT_LIST;
 static Atom ATOM_ACTIVE_WINDOW;
 static Atom ATOM_WINDOW_ICON;
 static Atom ATOM_WINDOW_TYPE;
@@ -114,6 +114,8 @@ typedef struct {
     gboolean need_update_icon;
 } Client;
 
+// Key: GINT_TO_POINTER(the id of window)
+// Value: struct Client*
 PRIVATE GHashTable* _clients_table = NULL;
 Window active_client_id = 0;
 DesktopFocusState desktop_focus_state = DESKTOP_HAS_FOCUS;
@@ -213,6 +215,8 @@ Client* create_client_from_window(Window w)
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
     c->is_hidden = FALSE;
+    c->title = NULL;
+    c->instance_name = NULL;
     c->app_id = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
@@ -230,6 +234,7 @@ Client* create_client_from_window(Window w)
         return NULL;
     }
 
+    c->icon = NULL;
     c->need_update_icon = FALSE;
     int operator_code = 0;
     try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
@@ -329,6 +334,7 @@ void client_free(Client* _c)
     g_free(c->app_id);
     g_free(c->exec);
     g_object_unref(c->gdkwindow);
+    /* gdk_window_destroy(c->gdkwindow); */
     g_free(c->icon);
 
     g_free(c);
