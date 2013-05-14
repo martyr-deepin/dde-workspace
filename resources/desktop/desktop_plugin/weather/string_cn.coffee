@@ -10,8 +10,7 @@ str_cityinit = "--市--"
 str_distinit = "--县--"
 str_feedbackmsg_prompt = "亲～谢谢您的反馈～～"
 str_about_msg = "深度天气插件1.0.0" + "\n" +
-      "Author:bluth" + "\n" +
-      "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
-      "www.linuxdeepin.com"
+                "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
+                "www.linuxdeepin.com"
 str_temperature_now_number_none = "无"
 week_name = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]

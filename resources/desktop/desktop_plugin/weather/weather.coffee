@@ -57,6 +57,7 @@ class Weather
                 @weathergui_update(localStorage.getItem("cityid_storage"))
 
         @element.addEventListener("dragstart", (event)=>
+            clearTimeout(@display_city_menu_id)
             @rightclick.style.display = "none"
             @more_city_menu.style.display = "none"
             @more_weather_menu.style.display = "none"
@@ -121,6 +122,7 @@ class Weather
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
         @date.addEventListener("click", => 
+            clearTimeout(@display_city_menu_id)
             if @more_weather_menu.style.display is "none" 
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200 
@@ -210,6 +212,7 @@ class Weather
         feedback.innerText = str_feedback
         about.innerText = str_about
         @element.addEventListener("contextmenu",  (evt) => 
+            clearTimeout(@display_city_menu_id)
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
             if @rightclick.style.display is "none"  
