@@ -717,14 +717,16 @@ static ArrayContainer _normalize_array_container(ArrayContainer pfs)
     return ret;
 }
 
-void dentry_move(ArrayContainer fs, GFile* dest)
+gboolean dentry_move(ArrayContainer fs, GFile* dest)
 {
+    gboolean retval = TRUE;
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_move(_fs.data, _fs.num, dest);
+    retval = fileops_move(_fs.data, _fs.num, dest);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
     g_free(_fs.data);
+    return retval;
 }
 
 static

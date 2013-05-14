@@ -14,7 +14,7 @@ void fileops_trash	(GFile* file_list[], guint num);
 void fileops_paste	(GFile* dest_dir);
 
 //@dest is a directory
-void fileops_move		(GFile* file_list[], guint num, GFile* dest_dir);
+gboolean fileops_move		(GFile* file_list[], guint num, GFile* dest_dir);
 void fileops_copy		(GFile* file_list[], guint num, GFile* dest_dir);
 
 #endif
