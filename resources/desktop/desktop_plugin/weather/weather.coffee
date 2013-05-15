@@ -256,7 +256,7 @@ class Weather
                 @weathergui_update(localStorage.getItem("cityid_storage"))
             )
         share.addEventListener("click", ->
-            alert "Please wait ......"
+            alert _("Please wait ......")
             )
         feedback.addEventListener("click", ->
             feedbackmsg = prompt(_("Thanks for your feedback～～"),"")
@@ -264,14 +264,10 @@ class Weather
                 echo "feedbackmsg:" + feedbackmsg
             )
         about.addEventListener("click", ->
-            str_about_msg = _("deepin weather widget 1.0.0" + "\n" +
+            str_about_msg = _("deepin weather widget 1.0.0") + "\n" +
                 "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
-                "www.linuxdeepin.com")
+                "www.linuxdeepin.com"
             alert str_about_msg
-            # str.dialog({
-            #     buttons:{"确定"},
-            #     title:"关于",
-            #     })
             )
 
     weathergui_init: ->
@@ -285,7 +281,6 @@ class Weather
         if cityid is null
             @get_client_cityid(ip_url1())
         else
-            echo "cityid is : " + cityid
             @weathergui_update(cityid)
 
     ajax : (url, method, callback, asyn=true) ->
@@ -339,7 +334,6 @@ class Weather
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue isnt @str_distinit
                     cityid_choose = data[distvalue].data
-                    echo "cityid_choose: " + cityid_choose
                     localStorage.setItem("cityid_choose_storage",cityid_choose)
                     cityid_choose = localStorage.getItem("cityid_choose_storage")
                     if cityid_choose isnt null
@@ -378,14 +372,12 @@ class Weather
     weathergui_update: (id)->
         localStorage.setItem("cityid_storage",id)
         cityid = localStorage.getItem("cityid_storage")
-        # localStorage.removeItem("cityid_storage")
         @ajax(now_weather_url(cityid) , "GET" , (xhr) =>
             localStorage.setItem("weather_data_now_storage",xhr.responseText)
             weather_data_now = JSON.parse(localStorage.getItem("weather_data_now_storage"))
             temp_now = weather_data_now.weatherinfo.temp
             @time_update = weather_data_now.weatherinfo.time
-            echo "temp_now:" + temp_now
-            echo "@time_update:" + @time_update
+            # echo "temp_now:" + temp_now
             # show the city name in chinese not in english
             @city_now.textContent = weather_data_now.weatherinfo.city
 
@@ -402,7 +394,6 @@ class Weather
         @ajax( more_weather_url(cityid) , "GET", (xhr) =>
             localStorage.setItem("weather_data_storage",xhr.responseText)
             weather_data = JSON.parse(localStorage.getItem("weather_data_storage"))
-            # localStorage.removeItem("weather_data_storage")
             @weather_data = weather_data
             i_week = 0
             week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]

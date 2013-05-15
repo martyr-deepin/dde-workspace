@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-15 14:20+0800\n"
+"POT-Creation-Date: 2013-05-15 15:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,36 +100,43 @@ msgstr "12月"
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:93
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:409
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:400
 msgid "Sat"
 msgstr "星期六"
 
@@ -869,7 +876,7 @@ msgstr "--市--"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:159
 msgid "--county--"
-msgstr "---县-"
+msgstr "--县--"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:224
 msgid "close"
@@ -900,9 +907,14 @@ msgid "deepin weather widget 1.0.0"
 msgstr "深度天气插件　1.0.0"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:393
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:385
 msgid "NO"
 msgstr "无"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:63
 msgid "loading............."
 msgstr "正在载入中......."
+
+#: ../resources/desktop/desktop_plugin/weather/weather.coffee:259
+msgid "Please wait ......"
+msgstr "敬请期待~~~"
