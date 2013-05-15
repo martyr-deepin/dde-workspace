@@ -840,8 +840,10 @@ gboolean greeter_run_shutdown()
 static void sigterm_cb(int signum)
 {
     DBG("%s", "sigterm cb");
+    g_warning ("sigterm cb\n");
     exit_flag = 2;
     clean_before_exit();    
+    gtk_main_quit();
     exit(0);
 }
 
@@ -941,6 +943,7 @@ static void greeter_update_background()
         /* Refresh background */
         gdk_flush();
         XClearWindow(GDK_SCREEN_XDISPLAY(screen), RootWindow(GDK_SCREEN_XDISPLAY(screen), i));
+        g_warning ("paint wait bg flush\n");
     }
     if(background_pixbuf){
         g_object_unref(background_pixbuf);
