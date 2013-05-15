@@ -333,20 +333,21 @@ void greeter_login_clicked(const gchar *password)
 
 static gboolean do_exit(gpointer user_data)
 {
+    g_warning ("timeout to do_exit, exit flag:%d\n", exit_flag);
     // start session failed
     if(exit_flag == 1){
 
-        g_warning("start session failed");
+        g_warning("start session failed\n");
         return FALSE;
 
     // already receive sigterm
     }else if(exit_flag == 2){
 
-        g_warning("already receive sigterm");
+        g_warning("already receive sigterm\n");
         return FALSE;
     // manual kill greeter
     }else{
-        g_warning("timeout, kill greeter");
+        g_warning("timeout, kill greeter\n");
         clean_before_exit();
         exit(0);
     }
@@ -360,9 +361,11 @@ static void start_session(const gchar *session) {
 
     DBG("%s", "start session");
 
+    g_warning ("now call start_session\n");
+
     gchar *user_lock_path = g_strdup_printf("%s%s", get_selected_user(), ".dlock.app.deepin");
     if(is_application_running(user_lock_path)){
-        g_warning("greeter found user had locked");
+        g_warning("greeter found user had locked\n");
 
         GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                 G_DBUS_PROXY_FLAGS_NONE,
@@ -374,7 +377,7 @@ static void start_session(const gchar *session) {
                 &error);
     
         if(error != NULL){
-            g_warning("connect com.deepin.dde.lock failed");
+            g_warning("connect com.deepin.dde.lock failed\n");
             g_clear_error(&error);
         }
 
@@ -387,7 +390,7 @@ static void start_session(const gchar *session) {
                     &error);
 
         if(error != NULL){
-            g_warning("greeter unlock failed");
+            g_warning("greeter unlock failed\n");
             g_clear_error(&error);
         }
 
@@ -396,6 +399,8 @@ static void start_session(const gchar *session) {
     g_free(user_lock_path);
 
     g_timeout_add_seconds(10, do_exit, NULL);
+    
+    g_warning ("start_session add do_exit timeout\n");
 
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         DBG("%s", "start session failed");
@@ -408,6 +413,7 @@ static void start_session(const gchar *session) {
 static void clean_before_exit()
 {
     DBG("%s", "start session finish");
+    g_warning ("clean_before_exit\n");
 
     g_free(greeter_file);
     greeter_file = NULL;
@@ -834,8 +840,10 @@ gboolean greeter_run_shutdown()
 static void sigterm_cb(int signum)
 {
     DBG("%s", "sigterm cb");
+    g_warning ("sigterm cb\n");
     exit_flag = 2;
     clean_before_exit();    
+    gtk_main_quit();
     exit(0);
 }
 
@@ -855,7 +863,7 @@ static cairo_surface_t * create_root_surface(GdkScreen *screen)
     display = XOpenDisplay(gdk_display_get_name(gdk_screen_get_display(screen)));
     if(!display)
     {
-        g_warning("Failed to create root pixmap");
+        g_warning("Failed to create root pixmap\n");
         return NULL;
     }
     XSetCloseDownMode(display, RetainPermanent);
@@ -883,16 +891,20 @@ static void greeter_update_background()
     GdkRGBA background_color;
     GdkRectangle monitor_geometry;
 
+    g_warning ("greeter update background when wait for desktop\n");
+
     const gchar *bg_path = greeter_get_user_background(get_selected_user());
     if(g_strcmp0(bg_path, "nonexists") == 0){
-        bg_path = "/usr/share/backgrounds/1440x900.jpg";
+        bg_path = "/usr/share/backgrounds/default_background.jpg";
     }
     
     if (!gdk_rgba_parse (&background_color, bg_path)){
         background_pixbuf = gdk_pixbuf_new_from_file (bg_path, NULL);
         if (!background_pixbuf)
-           g_warning ("Failed to load background: %s", bg_path);
+           g_warning ("Failed to load background: %s\n", bg_path);
     }
+
+    g_warning ("wait background path:%s\n", bg_path);
 
     for(int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
     {
@@ -922,6 +934,7 @@ static void greeter_update_background()
                 gdk_cairo_set_source_rgba(c, &background_color);
             }
 
+            g_warning ("paint wait background\n");
             cairo_paint(c);
         }
 
@@ -930,6 +943,7 @@ static void greeter_update_background()
         /* Refresh background */
         gdk_flush();
         XClearWindow(GDK_SCREEN_XDISPLAY(screen), RootWindow(GDK_SCREEN_XDISPLAY(screen), i));
+        g_warning ("paint wait bg flush\n");
     }
     if(background_pixbuf){
         g_object_unref(background_pixbuf);
@@ -984,7 +998,7 @@ GPtrArray *greeter_get_nopasswdlogin_users()
 
     GFileInputStream *input = g_file_read(file, NULL, &error);
     if(error != NULL){
-        g_warning("read /etc/group failed");
+        g_warning("read /etc/group failed\n");
         g_clear_error(&error);
     }
     g_assert(input);
@@ -997,7 +1011,7 @@ GPtrArray *greeter_get_nopasswdlogin_users()
         gsize length = 0;
         data = g_data_input_stream_read_line(data_input, &length, NULL, &error);
         if(error != NULL){
-            g_warning("read line error");
+            g_warning("read line error\n");
             g_clear_error(&error);
         }
         

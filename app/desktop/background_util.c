@@ -179,13 +179,14 @@ on_tick (gpointer user_data)
 
     draw_background (fade_data);
 
-    PRIVATE int i=0;
-
+    static int i=0;
+#if 0
     g_debug ("tick %d",++i);
     g_debug ("cur_time : %lf", cur_time);
     g_debug ("start_time: %lf", fade_data->start_time);
     g_debug ("total_duration: %lf", fade_data->total_duration);
     g_debug ("alpha	 : %lf", fade_data->alpha);
+#endif
 
     // 'coz fade_data->alpha is a rough value
     if(fade_data->alpha >= ALPHA_THRESHOLD)
