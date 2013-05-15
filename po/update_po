@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 
 base_dir = "../resources/"
-scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee"]
+scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee", "desktop/desktop_plugin/weather/*.coffee"]
 
 other_files = [
 "../app/desktop/*.c",
@@ -18,7 +18,8 @@ files = []
 for i in scan_dir:
     tmp = glob.glob(base_dir + i)
     files = files + tmp
-cmd= "xgettext -L python -j -o zh_CN.po " + " ".join(files)
+
+cmd= "xgettext --from-code=utf-8 -L python -j -o zh_CN.po " + " ".join(files)
 os.system(cmd)
 
 
@@ -27,5 +28,5 @@ files = []
 for i in other_files:
     tmp = glob.glob(base_dir + i)
     files = files + tmp
-cmd = "xgettext -k_ -j -o zh_CN.po " + " ".join(other_files)
+cmd = "xgettext --from-code=utf-8 -k_ -j -o zh_CN.po " + " ".join(other_files)
 os.system(cmd)
