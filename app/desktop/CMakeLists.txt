@@ -1,13 +1,14 @@
 SET(NAME "desktop")
 
+add_subdirectory(desktop_test)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
 SET(SRC_LIST dbus.c desktop.c background.c background_util.c background_util.h inotify_item.c utils.c ${JSC_GEN})
 
-add_executable(${NAME} ${SRC_LIST} desktop_test.c)
+add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES} dtest)
+target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES} dtest desktop_test)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
