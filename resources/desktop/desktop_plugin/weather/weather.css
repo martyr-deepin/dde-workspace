@@ -71,7 +71,7 @@
     margin:auto;
     cursor: pointer;
 }
-.city_now{
+.city_now:lang(en){
     position: relative;    
     float: left;
     font-size: 15px;
@@ -85,13 +85,13 @@
     top:3px;
     float:left;
 }
-.date{
+.date:lang(en){
     position: relative;
     height: 20px;
     clear: both;
     color: #FFF;   
     font-weight: 600;
-    text-shadow: 0.5px 0.5px 1px #808080;
+    text-shadow: 2px 2px 1px #808080;
     font-weight: bolder;
     cursor: pointer;
 }
@@ -101,8 +101,6 @@
 .more_city_menu{
     position:absolute;
     top: 70px;
-    /*left: 0px;   */
-    /*display:none;*/
     /*text-align: center;*/
 }
 .chooseprov,
@@ -123,11 +121,10 @@
     top: 70px;
     width: 180px;
     opacity: 0.8;
-    border:2px solid #DCDCDC;
-    text-shadow: 2px 2px 1px #808080;
+    border:3px solid #E6E6FA;
+    /*text-shadow: 2px 2px 1px #808080;*/
     /*color:#FFF;*/
     font-weight: bolder;
-    /*font-size: 15px;*/
 }
 
 .week1,
@@ -135,7 +132,7 @@
 .week3,
 .week4,
 .week5,
-.week6{
+.week6:lang(en){
     position: relative;
     margin-left: 10px;
 }
@@ -146,11 +143,11 @@
 .pic4,
 .pic5,
 .pic6{
-    position: relative;
-    margin-left: 20px;
+    position: absolute;
+    left: 60px;
     width: 24px;
     height: 24px;
-    line-height:35px;
+    margin-top: 5px;
 }
 
 .temperature1,
@@ -159,7 +156,8 @@
 .temperature4,
 .temperature5,
 .temperature6{
-    position: relative;
+    position: absolute;
+    left: 95px;
     margin-left: 10px;
 }
 
@@ -169,7 +167,6 @@
 .fifth_day_weather_data{
     background-color: #FFF;
     height: 35px;
-    opacity:0.8;
     line-height:35px;
 
 }
@@ -177,9 +174,9 @@
 .second_day_weather_data,
 .fourth_day_weather_data,
 .sixth_day_weather_data{
-    background-color: #87CEEB;
+    /*background-color: #87CEEB;*/
+    background-color: #DCDCDC;
     height: 35px;
-    opacity:0.8;
     line-height:35px;
 }
 
@@ -188,10 +185,10 @@
     top: 25px;
     left: 265px;   
     float: left;
-    width: 16px;
-    height: 16px;
     cursor: pointer;
     opacity:0.6;
+    /*background-image: url(img/refresh.png);*/
+    /*background-repeat: no-repeat;*/
 }
 
 .rightclick{
@@ -200,20 +197,20 @@
     left: 123px;
     width:100px; 
     display: none;
-    background-color: #DCDCDC;
+    background-color: #FFF;
     opacity: 0.6;
-    z-index: 5;
+    border:2px solid #DCDCDC;
 }
 .weather_close,
 .refresh_context,
+.share,
 .feedback,
 .about{
     position: relative;
     clear: both;
     height: 30px;
     margin: 5px 10px 5px 10px; 
-        /* up right botton left*/
     line-height: 30px;
     text-align: center;
-    border:2px solid white;
+    border:2px solid #DCDCDC;
 }

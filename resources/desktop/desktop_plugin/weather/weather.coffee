@@ -1,8 +1,22 @@
 #Copyright (c) 2011 ~ 2012 Deepin, Inc.
 #              2011 ~ 2012 bluth
 #
+#encoding: utf-8
 #Author:      bluth <yuanchenglu@linuxdeepin.com>
 #Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Weather
     constructor: ->
@@ -11,7 +25,6 @@ class Weather
         @element = document.createElement('div')
         @element.setAttribute('class', "Weather")
         @element.draggable = true
-
         @weathergui_init()
 
     get_id: ->
@@ -43,20 +56,24 @@ class Weather
         city_and_date = create_element("div","city_and_date",right_div)
         @city = create_element("div","city",city_and_date)
         @city_now = create_element("div", "city_now", @city)
-        @city_now.textContent = str_city_now_init
+        @city_now.textContent = _("choose city")
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", @city)
         
         @date = create_element("div", "date", city_and_date)
-        @date.textContent =  str_data_init
-
-        @refresh = create_img("refresh", @img_url_first + "refresh.png", @element)
+        @date.textContent =  _("loading.............")
+        
+        @refresh  = create_img("refresh", @img_url_first + "refresh.png",@element)
+        # refresh_img = create_img("refresh", @img_url_first + "refresh.png", @refresh)
+        # @refresh.drawImage( refresh_img,256,25)
 
         @refresh.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
+            # @refresh.style.filter = progid:DXImageTransform.Microsoft.BasicImage(rotation = 1)
+            # @refresh.rotate(90*Math.PI/180)
             if localStorage.getItem("cityid_storage") isnt null
                 @weathergui_update(localStorage.getItem("cityid_storage"))
 
-        @element.addEventListener("dragstart", (event)=>
+        @element.addEventListener("dragstart", =>
             clearTimeout(@display_city_menu_id)
             @rightclick.style.display = "none"
             @more_city_menu.style.display = "none"
@@ -73,7 +90,7 @@ class Weather
             )
         )
     more_weather_build: ->
-        week_init = str_week_init
+        week_init = _("Sun")
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
 
@@ -137,6 +154,9 @@ class Weather
                 @more_weather_menu.style.zIndex = "0"
         )    
     more_city_build: ->
+        @str_provinit = _("--province--")
+        @str_cityinit = _("--city--")
+        @str_distinit = _("--county--")
         @more_city_menu = create_element("div", "more_city_menu", @element)
         @more_city_menu.style.display = "none"
         @chooseprov = create_element("select", "chooseprov", @more_city_menu)
@@ -145,7 +165,6 @@ class Weather
         @city.addEventListener("click", =>     
             if @more_city_menu.style.display is "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @more_city_menu.style.top = -252
                 else @more_city_menu.style.top = 70
@@ -164,40 +183,34 @@ class Weather
                 clearTimeout(@display_city_menu_id)
             @chooseprov.options.length = 0 
             provinit = create_element("option","provinit",@chooseprov)
-            provinit.innerText = str_provinit
+            provinit.innerText = @str_provinit
             provinit.selected = "true"
             i = 0
             while i < cities.length
                 @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
             length = @chooseprov.options.length
             @chooseprov.size = (if (length < 13) then length else 13)
-            # echo "@chooseprov.options.length:" + @chooseprov.options.length
             @choosecity.size = 1
             @choosecity.options.length = 0 
             cityinit = create_element("option", "cityinit", @choosecity)
-            cityinit.innerText = str_cityinit
+            cityinit.innerText = @str_cityinit
             cityinit.selected = "true"
             @choosedist.size = 1
             @choosedist.options.length = 0
             distinit = create_element("option", "distinit", @choosedist)
-            distinit.innerText = str_distinit
+            distinit.innerText = @str_distinit
             distinit.selected = "true"
         )
         @more_city_menu.addEventListener("click", =>
-            # but if you click the citychoose menu ,it will not hide
-            echo "@more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
         @chooseprov.addEventListener("change", =>
-            # echo "prov change"
             provIndex = @chooseprov.selectedIndex
-            # echo "provIndex:" + provIndex
             if provIndex is -1
                 @chooseprov.options.remove(provIndex)
             else
                 provvalue = @chooseprov.options[provIndex].value 
-                # echo "provvalue:" + provvalue
-                if provvalue isnt str_provinit
+                if provvalue isnt @str_provinit
                     data = @read_data_from_json(provvalue)
                 )
     rightclick_build: ->
@@ -205,19 +218,20 @@ class Weather
         @rightclick.style.display = "none"
         weather_close  = create_element("div","weather_close",@rightclick)
         refresh_context = create_element("div","refresh_context",@rightclick)
+        share = create_element("div","share",@rightclick)
         feedback = create_element("div","feedback",@rightclick)
         about = create_element("div","about",@rightclick)
-        weather_close.innerText = str_weather_close
-        refresh_context.innerText = str_refresh_context
-        feedback.innerText = str_feedback
-        about.innerText = str_about
+        weather_close.innerText = _("close")
+        refresh_context.innerText = _("refresh")
+        share.innerText = _("share")
+        feedback.innerText = _("feedback")
+        about.innerText = _("about")
         @element.addEventListener("contextmenu",  (evt) => 
             clearTimeout(@display_city_menu_id)
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
             if @rightclick.style.display is "none"  
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                # echo "bottom_distance:( if it > 200 then show down,else show up)" + bottom_distance
                 if bottom_distance < 200 
                     @rightclick.style.top = -160
                 else @rightclick.style.top = 70
@@ -233,18 +247,26 @@ class Weather
             )
         weather_close.addEventListener("click", =>
             @element.style.display = "none"
+            msg_close = create_element("POST","msg_close",weather_close)
+            msg_close.innerText = "close"
             )
         refresh_context.addEventListener("click", =>
             @refresh.style.backgroundColor = "gray"
             if localStorage.getItem("cityid_storage") isnt null
                 @weathergui_update(localStorage.getItem("cityid_storage"))
             )
+        share.addEventListener("click", ->
+            alert "Please wait ......"
+            )
         feedback.addEventListener("click", ->
-            feedbackmsg = prompt(str_feedbackmsg_prompt,"")
-            if feedbackmsg isnt null
+            feedbackmsg = prompt(_("Thanks for your feedback～～"),"")
+            if feedbackmsg isnt null && feedbackmsg isnt ""
                 echo "feedbackmsg:" + feedbackmsg
             )
         about.addEventListener("click", ->
+            str_about_msg = _("deepin weather widget 1.0.0" + "\n" +
+                "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
+                "www.linuxdeepin.com")
             alert str_about_msg
             # str.dialog({
             #     buttons:{"确定"},
@@ -252,7 +274,7 @@ class Weather
             #     })
             )
 
-    weathergui_init: =>
+    weathergui_init: ->
         loader = new Loader
         loader.addcss('desktop_plugin/weather/weather.css').load()
         @weather_style_build()
@@ -261,12 +283,10 @@ class Weather
         @rightclick_build()
         cityid = localStorage.getItem("cityid_storage")
         if cityid is null
-            @get_client_cityid()
+            @get_client_cityid(ip_url1())
         else
             echo "cityid is : " + cityid
             @weathergui_update(cityid)
-
-
 
     ajax : (url, method, callback, asyn=true) ->
         xhr = new XMLHttpRequest()
@@ -274,7 +294,6 @@ class Weather
         xhr.send(null)
         xhr.onreadystatechange = =>
             if (xhr.readyState == 4 and xhr.status == 200)
-                # echo "XMLHttpRequest received all data."
                 callback?(xhr)                
             else if xhr.status isnt 200 
                 echo "XMLHttpRequest can't receive data."
@@ -295,17 +314,13 @@ class Weather
             @choosecity.options.add(new Option(data[i].name, i))
         length = @choosecity.options.length
         @choosecity.size = (if (length < 13) then length else 13)   
-        # echo "@choosecity.options.length:" + @choosecity.options.length
-        # echo "@choosecity.size:" + @choosecity.size
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
-            # echo  "cityIndex:" + cityIndex
             if cityIndex is -1
                 @choosecity.options.remove(cityIndex)
             else
                 cityvalue = @choosecity.options[cityIndex].value
-                # echo "cityvalue:" + cityvalue
-                if cityvalue isnt str_cityinit
+                if cityvalue isnt @str_cityinit
                     @distadd(data[cityvalue].data)
     
     distadd: (data) ->
@@ -314,41 +329,31 @@ class Weather
             @choosedist.options.add(new Option(data[i].name, i))
         length = @choosedist.options.length
         @choosedist.size = (if (length < 13) then length else 13)
-        # echo "@choosedist.options.length:" + @choosedist.options.length 
-        # echo "@choosedist.size:" + @choosedist.size
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
             @more_city_menu.style.display = "none"
             distIndex = @choosedist.selectedIndex
-            # echo  "distIndex:" + distIndex
             if distIndex is -1
                 @choosedist.options.remove(distIndex)
             else
                 distvalue = @choosedist.options[distIndex].value
-                # echo "distvalue:" + distvalue
-                if distvalue isnt str_distinit
+                if distvalue isnt @str_distinit
                     cityid_choose = data[distvalue].data
                     echo "cityid_choose: " + cityid_choose
                     localStorage.setItem("cityid_choose_storage",cityid_choose)
                     cityid_choose = localStorage.getItem("cityid_choose_storage")
-                    # @weathergui_update(cityid_choose)
                     if cityid_choose isnt null
                         @auto_update_cityid_choose = setInterval(@weathergui_update(cityid_choose),600000)# half  hour update once 1800000   60000--60s
     
-    get_client_cityid : ->
-        ip_url = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
-        @ajax(ip_url,"GET", (xhr)=>
+    get_client_cityid : (ip_url1) ->
+        @ajax(ip_url1,"GET", (xhr)=>
                 str = xhr.responseText
-                # echo str
                 if str[0] is '1'
-                    # echo "str[0] is 1"
                     ip = str.slice(2,12)
                     echo "ip start :" + ip
-                    ip_url2 = ip_url + "?format=js&ip=" + ip
-                    @ajax(ip_url2,"GET",(xhr)=>
+                    @ajax(ip_url2(ip),"GET",(xhr)=>
                         client_ip_city = xhr.responseText
                         remote_ip_info = JSON.parse(client_ip_city.slice(21,client_ip_city.length))
-                        # echo "remote_ip_info.ret: " + remote_ip_info.ret
                         if remote_ip_info.ret is 1
                             echo "remote_ip_info.province:" + remote_ip_info.province
                             echo "remote_ip_info.city:" + remote_ip_info.city
@@ -362,6 +367,7 @@ class Weather
                                             cityid_client = localStorage.getItem("cityid_client_storage")
                                             if cityid_client isnt null
                                                 @weathergui_update(cityid_client)
+                                            return cityid_client
                         else 
                             echo "sina iplookup can't find the matched location json by ip"
                         )
@@ -369,23 +375,22 @@ class Weather
                     echo "sina iplookup can't get the client ip"
             )
 
-
     weathergui_update: (id)->
         localStorage.setItem("cityid_storage",id)
         cityid = localStorage.getItem("cityid_storage")
         # localStorage.removeItem("cityid_storage")
-        now_weather_url = "http://www.weather.com.cn/data/sk/" + cityid + ".html"
-        weather_url = "http://m.weather.com.cn/data/"+cityid+".html"
-        @ajax(now_weather_url , "GET" , (xhr) =>
+        @ajax(now_weather_url(cityid) , "GET" , (xhr) =>
             localStorage.setItem("weather_data_now_storage",xhr.responseText)
             weather_data_now = JSON.parse(localStorage.getItem("weather_data_now_storage"))
             temp_now = weather_data_now.weatherinfo.temp
             @time_update = weather_data_now.weatherinfo.time
             echo "temp_now:" + temp_now
             echo "@time_update:" + @time_update
+            # show the city name in chinese not in english
             @city_now.textContent = weather_data_now.weatherinfo.city
+
             if temp_now is "\u6682\u65e0\u5b9e\u51b5"
-                @temperature_now_number.textContent = str_temperature_now_number_none
+                @temperature_now_number.textContent = _("NO")
             else
                 if temp_now < -10
                     @temperature_now_minus.style.opacity = 0.8
@@ -394,37 +399,38 @@ class Weather
                     @temperature_now_minus.style.opacity = 0
                     @temperature_now_number.textContent = temp_now + "°"
             )   
-        @ajax( weather_url , "GET", (xhr) =>
+        @ajax( more_weather_url(cityid) , "GET", (xhr) =>
             localStorage.setItem("weather_data_storage",xhr.responseText)
-            # echo xhr.responseText
             weather_data = JSON.parse(localStorage.getItem("weather_data_storage"))
             # localStorage.removeItem("weather_data_storage")
             @weather_data = weather_data
             i_week = 0
+            week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
+            week_show = [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
             while i_week < week_name.length
                 break if weather_data.weatherinfo.week is week_name[i_week]
                 i_week++
             week_n = i_week
             str_data = weather_data.weatherinfo.date_y
-            @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + weather_data.weatherinfo.week 
+            @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + week_show[week_n%7] 
             @weather_now_pic.src = @img_url_first + "48/T" + weather_data.weatherinfo.img_single + weather_data.weatherinfo.img_title_single + ".png"
 
-            @week1.textContent = week_name[week_n%7]
+            @week1.textContent = week_show[week_n%7]
             @pic1.src = @weather_more_pic_src(1)
             @temperature1.textContent = weather_data.weatherinfo.temp1
-            @week2.textContent = week_name[(week_n+1)%7]
+            @week2.textContent = week_show[(week_n+1)%7]
             @pic2.src = @weather_more_pic_src(2)
             @temperature2.textContent = weather_data.weatherinfo.temp2
-            @week3.textContent = week_name[(week_n+2)%7]
+            @week3.textContent = week_show[(week_n+2)%7]
             @pic3.src = @weather_more_pic_src(3)
             @temperature3.textContent = weather_data.weatherinfo.temp3
-            @week4.textContent = week_name[(week_n+3)%7]
+            @week4.textContent = week_show[(week_n+3)%7]
             @pic4.src = @weather_more_pic_src(4)
             @temperature4.textContent = weather_data.weatherinfo.temp4
-            @week5.textContent = week_name[(week_n+4)%7]
+            @week5.textContent = week_show[(week_n+4)%7]
             @pic5.src = @weather_more_pic_src(5)
             @temperature5.textContent = weather_data.weatherinfo.temp5
-            @week6.textContent = week_name[(week_n+5)%7]
+            @week6.textContent = week_show[(week_n+5)%7]
             @pic6.src = @weather_more_pic_src(6)
             @temperature6.textContent = weather_data.weatherinfo.temp6
 
@@ -471,7 +477,7 @@ class Weather
         
         if img_front[i+1] is "99" 
             img_front[i+1] = img_front[i]
-        if hours_now < 12                 
+        if hours_now < 12
             src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
