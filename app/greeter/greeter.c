@@ -889,9 +889,11 @@ static void greeter_update_background()
     GdkRGBA background_color;
     GdkRectangle monitor_geometry;
 
+    g_warning ("greeter update background when wait for desktop\n");
+
     const gchar *bg_path = greeter_get_user_background(get_selected_user());
     if(g_strcmp0(bg_path, "nonexists") == 0){
-        bg_path = "/usr/share/backgrounds/1440x900.jpg";
+        bg_path = "/usr/share/backgrounds/default_background.jpg";
     }
     
     if (!gdk_rgba_parse (&background_color, bg_path)){
@@ -899,6 +901,8 @@ static void greeter_update_background()
         if (!background_pixbuf)
            g_warning ("Failed to load background: %s\n", bg_path);
     }
+
+    g_warning ("wait background path:%s\n", bg_path);
 
     for(int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
     {
@@ -928,6 +932,7 @@ static void greeter_update_background()
                 gdk_cairo_set_source_rgba(c, &background_color);
             }
 
+            g_warning ("paint wait background\n");
             cairo_paint(c);
         }
 
