@@ -71,7 +71,8 @@
     margin:auto;
     cursor: pointer;
 }
-.city_now:lang(en){
+
+.city_now{
     position: relative;    
     float: left;
     font-size: 15px;
@@ -85,7 +86,7 @@
     top:3px;
     float:left;
 }
-.date:lang(en){
+.date{
     position: relative;
     height: 20px;
     clear: both;
@@ -95,8 +96,6 @@
     font-weight: bolder;
     cursor: pointer;
 }
-
-
 
 .more_city_menu{
     position:absolute;
@@ -132,7 +131,7 @@
 .week3,
 .week4,
 .week5,
-.week6:lang(en){
+.week6{
     position: relative;
     margin-left: 10px;
 }
