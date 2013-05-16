@@ -343,7 +343,23 @@ gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContai
             g_free(name);
         }
     } else {
-        info = g_app_info_create_from_commandline(exec, NULL, G_APP_INFO_CREATE_NONE, NULL);
+        g_warning("app_id: %s", app_id);
+        GList* all_app_list = g_app_info_get_all();
+        for (GList* iter = g_list_first(all_app_list); iter != NULL; iter = g_list_next(iter)) {
+            if (g_strrstr(g_desktop_app_info_get_filename((GDesktopAppInfo*)iter->data), app_id) != NULL
+                || g_strrstr(g_app_info_get_commandline((GAppInfo*)iter->data), app_id)) {
+                g_warning("cmd: %s", g_app_info_get_commandline((GAppInfo*)iter->data));
+                g_warning("desktop_file: %s", g_desktop_app_info_get_filename((GDesktopAppInfo*)iter->data));
+                info = g_app_info_dup((GAppInfo*)iter->data);
+                break;
+            }
+        }
+
+        g_list_free(all_app_list);
+        if (info == NULL) {
+            g_warning("has no desktop file, create from command line");
+            info = g_app_info_create_from_commandline(exec, NULL, G_APP_INFO_CREATE_NONE, NULL);
+        }
     }
 
     GFile** files = fs.data;
