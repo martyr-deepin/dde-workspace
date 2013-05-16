@@ -904,8 +904,6 @@ static void greeter_update_background()
            g_warning ("Failed to load background: %s\n", bg_path);
     }
 
-    g_warning ("wait background path:%s\n", bg_path);
-
     for(int i = 0; i < gdk_display_get_n_screens (gdk_display_get_default ()); i++)
     {
         GdkScreen *screen;
@@ -934,18 +932,14 @@ static void greeter_update_background()
                 gdk_cairo_set_source_rgba(c, &background_color);
             }
 
-            g_warning ("paint wait background\n");
             cairo_paint(c);
+            cairo_surface_flush(surface);
+            XFlush(gdk_x11_get_default_xdisplay());
         }
 
         cairo_destroy(c);
-
-        /* Refresh background */
-        gdk_flush();
-        XClearWindow(GDK_SCREEN_XDISPLAY(screen), RootWindow(GDK_SCREEN_XDISPLAY(screen), i));
-        g_warning ("paint wait bg flush\n");
     }
-    if(background_pixbuf){
+    if(background_pixbuf) {
         g_object_unref(background_pixbuf);
     }
 }
