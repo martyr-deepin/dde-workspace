@@ -280,6 +280,11 @@ void focus_changed(gboolean is_changed)
 
 int main(int argc, char* argv[])
 {
+    if (is_application_running("desktop.app.deepin")) {
+        g_warning("another instance of application desktop is running...\n");
+        return 0;
+    }
+
     //remove  option -f
     parse_cmd_line (&argc, &argv);
     init_i18n();

@@ -155,6 +155,11 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
 int main(int argc, char* argv[])
 {
+    if (is_application_running("dock.app.deepin")) {
+        g_warning("another instance of application dock is running...\n");
+        return 0;
+    }
+
     //remove  option -f
     parse_cmd_line (&argc, &argv);
     init_i18n();
