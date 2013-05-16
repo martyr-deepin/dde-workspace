@@ -1063,9 +1063,6 @@ int main(int argc, char **argv)
     GdkScreen *screen;
     GdkRectangle geometry;
 
-    signal(SIGTERM, sigterm_cb);
-    signal(SIGKILL, sigterm_cb);
-
     init_i18n();
     gtk_init(&argc, &argv);
 
@@ -1087,6 +1084,7 @@ int main(int argc, char **argv)
     g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
     g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
+    g_signal_connect (G_OBJECT (greeter), "quit", G_CALLBACK (sigterm_cb), NULL);
 
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
