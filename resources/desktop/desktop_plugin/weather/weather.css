@@ -182,6 +182,7 @@
 }
 .weather_close,
 .refresh_context,
+.autolocate:lang(zh),
 .share,
 .feedback,
 .about{
@@ -190,6 +191,15 @@
     height: 30px;
     margin: 5px 10px 5px 10px; 
     line-height: 30px;
+    text-align: center;
+    border:2px solid #DCDCDC;
+}
+.autolocate:lang(en){
+    position: relative;
+    clear: both;
+    height: 30px;
+    margin: 5px 10px 5px 10px; 
+    line-height: 15px;
     text-align: center;
     border:2px solid #DCDCDC;
 }

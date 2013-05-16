@@ -216,11 +216,13 @@ class Weather
         @rightclick.style.display = "none"
         weather_close  = create_element("div","weather_close",@rightclick)
         refresh_context = create_element("div","refresh_context",@rightclick)
+        autolocate = create_element("div","autolocate",@rightclick)
         share = create_element("div","share",@rightclick)
         feedback = create_element("div","feedback",@rightclick)
         about = create_element("div","about",@rightclick)
         weather_close.innerText = _("close")
         refresh_context.innerText = _("refresh")
+        autolocate.innerText = _("automatic location")
         share.innerText = _("share")
         feedback.innerText = _("feedback")
         about.innerText = _("about")
@@ -252,6 +254,9 @@ class Weather
             @refresh.style.backgroundColor = "gray"
             if localStorage.getItem("cityid_storage") isnt null
                 @weathergui_update(localStorage.getItem("cityid_storage"))
+            )
+        autolocate.addEventListener("click", =>
+            @get_client_cityid(ip_url1())
             )
         share.addEventListener("click", ->
             alert _("Please wait ......")
