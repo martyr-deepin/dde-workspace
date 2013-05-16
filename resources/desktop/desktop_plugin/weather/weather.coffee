@@ -171,8 +171,6 @@ class Weather
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
-                # set 2 seconds no choose province to hide the more_city_menu option ,
-                # but if you click the citychoose menu ,it will not hide
                 @display_city_menu_id = setTimeout( => 
                     @more_city_menu.style.display = "none"
                 ,4000)
@@ -344,19 +342,18 @@ class Weather
                 str = xhr.responseText
                 if str[0] is '1'
                     ip = str.slice(2,12)
-                    echo "ip start :" + ip
+                    # echo "ip start :" + ip
                     @ajax(ip_url2(ip),"GET",(xhr)=>
                         client_ip_city = xhr.responseText
                         remote_ip_info = JSON.parse(client_ip_city.slice(21,client_ip_city.length))
                         if remote_ip_info.ret is 1
-                            echo "remote_ip_info.province:" + remote_ip_info.province
-                            echo "remote_ip_info.city:" + remote_ip_info.city
+                            # echo "remote_ip_info.province:" + remote_ip_info.province
+                            # echo "remote_ip_info.city:" + remote_ip_info.city
                             for provin of allname.data
                                 if allname.data[provin].prov is remote_ip_info.province
                                     for ci of allname.data[provin].city
                                         if allname.data[provin].city[ci].cityname is remote_ip_info.city
                                             cityid_client = allname.data[provin].city[ci].code
-                                            echo "cityid_client:" + cityid_client
                                             localStorage.setItem("cityid_client_storage",cityid_client)
                                             cityid_client = localStorage.getItem("cityid_client_storage")
                                             if cityid_client isnt null

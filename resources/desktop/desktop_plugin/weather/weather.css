@@ -1,5 +1,4 @@
 .Weather {
-    /*position: relative;*/
     top:50px;
     left:1000px;
     width: 300px;
@@ -7,7 +6,6 @@
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
 }
-
 .left_div{
     position: relative;
     width: 83px;
@@ -15,7 +13,6 @@
     float: left;
 
 }
-
 .weather_now_pic{
     position:relative;
     top: 11px;
@@ -23,14 +20,12 @@
     width: 48px;
     height: 48px;
 }
-
 .right_div{
     position: relative;
     width: 215px;
     height: 70px;
     float: left;
 }
-
 .temperature_now{
     position: relative;
     top: 15px;
@@ -56,7 +51,6 @@
     font-weight: bold;
     text-shadow: 2px 2px 1px #808080;
 }
-
 .city_and_date{
     position: relative;
     top:15px;
@@ -71,7 +65,6 @@
     margin:auto;
     cursor: pointer;
 }
-
 .city_now{
     position: relative;    
     float: left;
@@ -96,11 +89,9 @@
     font-weight: bolder;
     cursor: pointer;
 }
-
 .more_city_menu{
     position:absolute;
     top: 70px;
-    /*text-align: center;*/
 }
 .chooseprov,
 .choosecity,
@@ -113,19 +104,15 @@
     border:2px solid #DCDCDC;
     text-align: center;  
 }
-
 .more_weather_menu{
     position:absolute;
     left: 83px;
     top: 70px;
     width: 180px;
-    opacity: 0.8;
+    opacity: 0.6;
     border:3px solid #E6E6FA;
-    /*text-shadow: 2px 2px 1px #808080;*/
-    /*color:#FFF;*/
     font-weight: bolder;
 }
-
 .week1,
 .week2,
 .week3,
@@ -135,7 +122,6 @@
     position: relative;
     margin-left: 10px;
 }
-
 .pic1,
 .pic2,
 .pic3,
@@ -148,7 +134,6 @@
     height: 24px;
     margin-top: 5px;
 }
-
 .temperature1,
 .temperature2,
 .temperature3,
@@ -159,8 +144,6 @@
     left: 95px;
     margin-left: 10px;
 }
-
-
 .first_day_weather_data,
 .third_day_weather_data,
 .fifth_day_weather_data{
@@ -169,7 +152,6 @@
     line-height:35px;
 
 }
-
 .second_day_weather_data,
 .fourth_day_weather_data,
 .sixth_day_weather_data{
@@ -178,7 +160,6 @@
     height: 35px;
     line-height:35px;
 }
-
 .refresh{
     position:absolute;
     top: 25px;
@@ -189,7 +170,6 @@
     /*background-image: url(img/refresh.png);*/
     /*background-repeat: no-repeat;*/
 }
-
 .rightclick{
     position: absolute;
     top: 70px;
