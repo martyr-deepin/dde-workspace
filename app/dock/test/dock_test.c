@@ -7,6 +7,7 @@ int TEST_MAX_COUNT = 100000;
 /* int TEST_MAX_COUNT = 1000; */
 /* int TEST_MAX_COUNT = 1; */
 int TEST_MAX_MEMORY= RES_IN_MB(90);
+/* int TEST_MAX_MEMORY= RES_IN_GB(1); */
 
 
 extern void dock_test_draw();
