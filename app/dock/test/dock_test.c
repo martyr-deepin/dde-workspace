@@ -17,6 +17,8 @@ extern void dock_test_hide();
 extern void dock_test_handle_icon();
 extern void dock_test_launcher();
 extern void dock_test_tasklist();
+extern void dock_test_special_window();
+extern void dock_test_tray();
 
 void dock_test()
 {
@@ -25,10 +27,15 @@ void dock_test()
     /* dock_test_config(); */
     /* dock_test_dominant_color(); */
     /* dock_test_handle_icon(); */
-    dock_test_launcher();
+
+    // TODO: test build_app_info
+    /* dock_test_launcher(); */
 
     // TODO: test more
     /* dock_test_tasklist(); */
+
+    /* dock_test_special_window(); */
+    dock_test_tray();
     g_message("All dock test passed!!!!");
 }
 
