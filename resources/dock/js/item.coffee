@@ -239,7 +239,10 @@ class AppItem extends Widget
         @element.draggable=true
         if @constructor.name == "Launcher"
             @app_id = @id
-        app_list.append_app_item(@)
+        if app_list._insert_anchor_item
+            app_list.append(@)
+        else
+            app_list.append_app_item(@)
 
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
