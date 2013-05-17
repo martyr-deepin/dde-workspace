@@ -18,12 +18,15 @@ extern void dock_test_tasklist();
 
 void dock_test()
 {
+    g_message("dock test start...");
     /* dock_test_hide(); */
     /* dock_test_config(); */
     /* dock_test_dominant_color(); */
     /* dock_test_handle_icon(); */
-    /* dock_test_launcher(); */
-    dock_test_tasklist();
+    dock_test_launcher();
+
+    // TODO: test more
+    /* dock_test_tasklist(); */
     g_message("All dock test passed!!!!");
 }
 

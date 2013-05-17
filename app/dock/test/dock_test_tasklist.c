@@ -37,7 +37,7 @@ extern GHashTable* _clients_table;
 
 void dock_test_tasklist()
 {
-    int xid = 0x32082c8;  // attention!! change it yourself when you need to test.
+    int xid = 0x2a00144;  // attention!! change it yourself when you need to test.
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     GdkWindow* root = gdk_get_default_root_window();
 
@@ -52,13 +52,9 @@ void dock_test_tasklist()
 
     // TODO:
     // TBT, because client_free cannot free Client.gdkwindow
-    Test({
-         /* g_hash_table_remove_all(_clients_table); */
-         /* g_hash_table_destroy(_clients_table); */
-         /* _clients_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)client_free); */
-         /* _update_task_list(GDK_WINDOW_XID(root)); */
-         update_task_list(GDK_WINDOW_XID(root));
-    }, "update_task_list");
+    /* Test({ */
+    /*      update_task_list(GDK_WINDOW_XID(root)); */
+    /* }, "update_task_list"); */
 
 
     /* Test({ */
@@ -186,6 +182,19 @@ void dock_test_tasklist()
     /*      dock_get_active_window(); */
     /*      }, "dock_get_active_window"); */
 
-    Test({
-        };, "");
+    /* Test({ */
+    /*      gboolean _is_maximized_window(Window win); */
+    /*      g_assert(_is_maximized_window(xid) == TRUE); */
+    /*      g_assert(_is_maximized_window(0x160725f) == FALSE); */
+    /*     };, "_is_maximized_window"); */
+
+    /* gboolean dock_has_maximize_client(); */
+    /* Test({ */
+    /*      g_assert(dock_has_maximize_client() == TRUE); */
+    /*      }, "dock_has_maximize_client"); */
+
+    /* void dock_active_window(double id); */
+    /* Test({ */
+    /*      dock_active_window(xid); */
+    /*      }, "dock_active_window"); */
 }

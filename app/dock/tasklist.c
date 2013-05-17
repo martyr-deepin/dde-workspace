@@ -639,7 +639,6 @@ void _update_current_viewport(Workspace* vp)
     vp->y = X_FETCH_32(data, 1);
     XFree(data);
 
-    g_debug("_update_current_viewport");
     dock_update_hide_mode();
 }
 
