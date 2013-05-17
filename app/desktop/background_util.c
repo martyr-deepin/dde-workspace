@@ -124,6 +124,7 @@ _update_rootpmap (Pixmap pm)
 PRIVATE void
 draw_background (xfade_data_t* fade_data)
 {
+    gdk_window_flush(background_window);
     cairo_t* cr;
     //draw on a pixmap
     cr = cairo_create (fade_data->fading_surface);
@@ -136,7 +137,7 @@ draw_background (xfade_data_t* fade_data)
     cairo_set_source_surface (cr, fade_data->fading_surface, 0, 0);
     cairo_paint (cr);
     cairo_destroy (cr);
-    gdk_flush ();
+    gdk_window_flush(background_window);
 }
 
 /*
@@ -863,7 +864,13 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
     fade_data->end_pixbuf = pb;
     fade_data->alpha = 1.0;
 
+    cairo_pattern_t* pattern;
+    pattern = cairo_pattern_create_for_surface (fade_data->fading_surface);
+    gdk_window_set_background_pattern (background_window, pattern);
+    cairo_pattern_destroy (pattern);
+
     draw_background (fade_data);
+
     free_fade_data (fade_data);
 
     if (gsettings_background_duration && picture_num > 1)
