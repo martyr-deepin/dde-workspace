@@ -4,6 +4,7 @@
 
 int TEST_MAX_COUNT = 100000;
 /* int TEST_MAX_COUNT = 1000000; */
+/* int TEST_MAX_COUNT = 1000; */
 /* int TEST_MAX_COUNT = 1; */
 int TEST_MAX_MEMORY= RES_IN_MB(90);
 

@@ -5,7 +5,7 @@
 #define $(body) lambda(void, (), body)
 
 typedef void (*TestFunc)(gpointer data);
-gboolean T_test(TestFunc f, gpointer data, int ms, int count);
+gboolean T_test(TestFunc f, gpointer data, int ms, int count, const char*);
 gboolean T(TestFunc f, const char* test_name);
 
 #define Test(body, name) T($(body), name)
