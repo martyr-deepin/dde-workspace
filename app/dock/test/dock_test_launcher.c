@@ -110,27 +110,34 @@ void dock_test_launcher()
 
     // TODO:
     // TBT
-    int xid = 0x2a00514;  // attention!! change it yourself when you need to test.
-    Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
-    GdkWindow* root = gdk_get_default_root_window();
-    Client* c = g_new0(Client, 1);
-    c->window = xid;
-    _update_window_title(c);
-    _update_window_class(c);
-    _update_window_appid(c);
-    ArrayContainer fs = {NULL, 0};
+    /* int xid = 0x2a00363;  // attention!! change it yourself when you need to test. */
+    /* Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default()); */
+    /* GdkWindow* root = gdk_get_default_root_window(); */
+    /* Client* c = g_new0(Client, 1); */
+    /* c->window = xid; */
+    /* _update_window_title(c); */
+    /* _update_window_class(c); */
+    /* _update_window_appid(c); */
+    /* ArrayContainer fs = {NULL, 0}; */
 
-    extern gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs);
+    /* extern gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs); */
+    /* Test({ */
+    /*      dock_launch_by_app_id(c->app_id, c->exec, fs); */
+    /*      }, "dock_launch_by_app_id"); */
+
+    /* g_free(c->title); */
+    /* g_free(c->clss); */
+    /* g_free(c->instance_name); */
+    /* g_free(c->app_id); */
+    /* g_free(c->exec); */
+    /* g_free(c); */
+
+    extern void dock_request_dock(const char* app_id);
+    extern void dock_request_undock(const char* app_id);
     Test({
-         dock_launch_by_app_id(c->app_id, c->exec, fs);
-         }, "dock_launch_by_app_id");
-
-    g_free(c->title);
-    g_free(c->clss);
-    g_free(c->instance_name);
-    g_free(c->app_id);
-    g_free(c->exec);
-    g_free(c);
+         dock_request_dock("/usr/share/applications/firefox.desktop");
+         dock_request_undock("firefox");
+         }, "dock_request_dock and dock_request_undock");
 
     /* g_object_unref(info1); */
     /* g_object_unref(info2); */
