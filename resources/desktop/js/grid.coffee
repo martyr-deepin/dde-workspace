@@ -177,8 +177,9 @@ place_desktop_items = ->
             continue
 
         pos = w.get_pos()
-        if (pos.x > -1) and (pos.y > -1) # we have a place and we did not to move it
-            continue
+        if (pos.x > -1) and (pos.y > -1) # we have a place
+            if not detect_occupy(pos)
+                move_to_somewhere(w, pos)
         else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
             move_to_somewhere(w, old_pos)
         else
@@ -440,7 +441,7 @@ init_grid_drop = ->
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
 
             if tmp_move.length
-                DCore.DEntry.move(tmp_move, g_desktop_entry)
+                DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         return

@@ -618,7 +618,7 @@ class Folder extends DesktopEntry
             for file in evt.dataTransfer.files
                 if (e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, "")))?
                     tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
 
@@ -721,7 +721,7 @@ class RichDir extends DesktopEntry
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
     do_dragenter : (evt) ->
@@ -790,14 +790,11 @@ class RichDir extends DesktopEntry
                 @hide_pop_block()
 
             pos = @get_pos()
-            entry = @_entry
-            delete_item(@)
-            echo list.length
+            clear_occupy(@id, @_position)
             if list.length > 0
-                echo pos
                 save_position(DCore.DEntry.get_id(list[0]), pos)
-                DCore.DEntry.move(list, g_desktop_entry)
-            DCore.DEntry.delete_files([entry], false)
+                DCore.DEntry.move(list, g_desktop_entry, false)
+            DCore.DEntry.delete_files([@_entry], false)
         else
             if @show_pop == true
                 @sub_items = {}
@@ -828,8 +825,7 @@ class RichDir extends DesktopEntry
 
 
     item_ungroup: =>
-        clear_occupy(@id, @_position)
-        DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry)
+        DCore.DEntry.move(DCore.DEntry.list_files(@_entry), g_desktop_entry, false)
         DCore.DEntry.delete_files([@_entry], false)
 
 
@@ -1399,7 +1395,7 @@ class HomeVDir extends DesktopEntry
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 tmp_list.push(e)
-            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
 
@@ -1554,6 +1550,7 @@ class TrashVDir extends DesktopEntry
 class DeepinSoftwareCenter extends DesktopEntry
     constructor : ->
         super(null, false, false)
+
 
     set_id : =>
         @id = _ITEM_ID_DSC_

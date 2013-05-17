@@ -717,14 +717,16 @@ static ArrayContainer _normalize_array_container(ArrayContainer pfs)
     return ret;
 }
 
-void dentry_move(ArrayContainer fs, GFile* dest)
+gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt)
 {
+    gboolean retval = TRUE;
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_move(_fs.data, _fs.num, dest);
+    retval = fileops_move(_fs.data, _fs.num, dest, prompt);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }
     g_free(_fs.data);
+    return retval;
 }
 
 static
@@ -776,6 +778,8 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
         }
     }
 }
+
+
 void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -797,6 +801,8 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
     }
     g_free(_fs.data);
 }
+
+
 void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);

@@ -42,47 +42,47 @@
 			     //to be completed.
 
 //
-static GPtrArray *picture_paths;		//an array of picture paths (strings).
+PRIVATE GPtrArray *picture_paths;		//an array of picture paths (strings).
 //all picture paths are managed by picture_paths, this hashtable just references them.
-static GHashTable* picture_paths_ht;            //picture paths --> indices+1 in @picture_paths.
-static guint	picture_num;		//number of pictures in GPtrArray.
-static guint	picture_index;		// the next background picture.
+PRIVATE GHashTable* picture_paths_ht;            //picture paths --> indices+1 in @picture_paths.
+PRIVATE guint	picture_num;		//number of pictures in GPtrArray.
+PRIVATE guint	picture_index;		// the next background picture.
 //this is only used update current image in the gsettings
-static GSettings *Settings;
+PRIVATE GSettings *Settings;
 //connect to AccountService DBus. and register background path
-static GDBusProxy* AccountsProxy = NULL;
+PRIVATE GDBusProxy* AccountsProxy = NULL;
 
-static gulong	gsettings_background_duration;
-static gulong	gsettings_xfade_auto_interval; //use this time only when we use
+PRIVATE gulong	gsettings_background_duration;
+PRIVATE gulong	gsettings_xfade_auto_interval; //use this time only when we use
                                                //multiple background pictures.
-static gulong	gsettings_xfade_manual_interval;
-static BgXFadeAutoMode	gsettings_xfade_auto_mode;
-static BgDrawMode	gsettings_draw_mode;
+PRIVATE gulong	gsettings_xfade_manual_interval;
+PRIVATE BgXFadeAutoMode	gsettings_xfade_auto_mode;
+PRIVATE BgDrawMode	gsettings_draw_mode;
 
-//static const gchar* bg_props[2] = {"_XROOTPMAP_ID","ESETROOT_PMAP_ID"};
-static const gchar* bg_props[1] = {"_XROOTPMAP_ID"};
-static Atom bg1_atom;
-//static Atom bg2_atom;
-static Atom pixmap_atom;
+//PRIVATE const gchar* bg_props[2] = {"_XROOTPMAP_ID","ESETROOT_PMAP_ID"};
+PRIVATE const gchar* bg_props[1] = {"_XROOTPMAP_ID"};
+PRIVATE Atom bg1_atom;
+//PRIVATE Atom bg2_atom;
+PRIVATE Atom pixmap_atom;
 
-static Display* display;
-static Window	root;
-static int	default_screen;
-static int	root_depth;
-static Visual*	root_visual;
-static int	root_width;
-static int	root_height;
+PRIVATE Display* display;
+PRIVATE Window	root;
+PRIVATE int	default_screen;
+PRIVATE int	root_depth;
+PRIVATE Visual*	root_visual;
+PRIVATE int	root_width;
+PRIVATE int	root_height;
 
-static GdkScreen * gdk_screen;
+PRIVATE GdkScreen * gdk_screen;
 
-static GdkWindow* background_window;
-static Pixmap current_rootpmap = None; // track the current background pixmap XID.
+PRIVATE GdkWindow* background_window;
+PRIVATE Pixmap current_rootpmap = None; // track the current background pixmap XID.
 			               // to avoid unnecessary updates of "_XROOTPMAP_ID".
 
 //global timeout_id to track in process timeoutout
-static guint	bg_timeout_id =0;	// background_duration
-static guint	auto_timeout_id = 0;	// xfade_auto_interval
-static guint	manual_timeout_id = 0;	// xfade_manual_interval
+PRIVATE guint	bg_timeout_id =0;	// background_duration
+PRIVATE guint	auto_timeout_id = 0;	// xfade_auto_interval
+PRIVATE guint	manual_timeout_id = 0;	// xfade_manual_interval
 //
 
 /*
@@ -180,12 +180,13 @@ on_tick (gpointer user_data)
     draw_background (fade_data);
 
     static int i=0;
-
+#if 0
     g_debug ("tick %d",++i);
     g_debug ("cur_time : %lf", cur_time);
     g_debug ("start_time: %lf", fade_data->start_time);
     g_debug ("total_duration: %lf", fade_data->total_duration);
     g_debug ("alpha	 : %lf", fade_data->alpha);
+#endif
 
     // 'coz fade_data->alpha is a rough value
     if(fade_data->alpha >= ALPHA_THRESHOLD)
@@ -964,7 +965,7 @@ initial_setup (GSettings *settings)
     return;
 }
 
-static gboolean is_initialized = FALSE;
+PRIVATE gboolean is_initialized = FALSE;
 PRIVATE GdkFilterReturn
 expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {

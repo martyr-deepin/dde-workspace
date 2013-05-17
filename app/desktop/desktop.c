@@ -142,7 +142,7 @@ GFile* desktop_create_rich_dir(ArrayContainer fs)
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);
     g_file_make_directory(dir, NULL, NULL);
-    dentry_move(fs, dir);
+    dentry_move(fs, dir, TRUE);
     return dir;
 }
 
@@ -280,6 +280,11 @@ void focus_changed(gboolean is_changed)
 
 int main(int argc, char* argv[])
 {
+    if (is_application_running("desktop.app.deepin")) {
+        g_warning("another instance of application desktop is running...\n");
+        return 0;
+    }
+
     //remove  option -f
     parse_cmd_line (&argc, &argv);
     init_i18n();

@@ -279,10 +279,13 @@ gboolean get_atom_value_by_atom(Display* dsp, Window window_id, Atom atom, gpoin
     if (data == NULL)
         return FALSE;
 
+    g_assert(callback != NULL);
+
     if (index != -1)
         ((CallbackFuncWithIndex)callback)(data, n_item, res, index);
     else
         ((CallbackFuncWithoutIndex)callback)(data, n_item, res);
+
     XFree(data);
     return TRUE;
 }
