@@ -284,10 +284,15 @@ static JSValueRef __%(name)s__ (JSContextRef context,
 """
     test_function = """
 extern void %(module_name)s_%(name)s();
+gboolean %(module_name)s_test_wrap()
+{
+    %(module_name)s_%(name)s();
+    return FALSE;
+}
 static JSValueRef __%(name)s__ (JSContextRef ctx, JSObjectRef f, JSObjectRef this, size_t c, const JSValueRef args[], JSValueRef* excp)
 {
 #ifdef __DUI_DEBUG
-    g_timeout_add(3000, (GSourceFunc)%(module_name)s_%(name)s, NULL);
+    g_timeout_add(3000, (GSourceFunc)%(module_name)s_test_wrap, NULL);
 #endif
     return JSValueMakeNull(ctx);
 }
