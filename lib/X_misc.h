@@ -34,7 +34,7 @@ enum {
 };
 void set_struct_partial(GdkWindow* window, guint32 orientation, guint32 strut, guint32 begin, guint32 end);
 
-void get_workarea_size(int screen_n, int desktop_n, int* x, int* y, int* width, int* height);
+void get_workarea_size(int* x, int* y, int* width, int* height);
 
 void get_wmclass (GdkWindow* xwindow, char **res_class, char **res_name);
 

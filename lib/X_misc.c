@@ -46,37 +46,22 @@ void set_wmspec_dock_hint(GdkWindow *window)
             GDK_PROP_MODE_REPLACE, (guchar *) &atom, 1);
 }
 
-void get_workarea_size(int screen_n, int desktop_n,
-        int* x, int* y, int* width, int* height)
+void get_workarea_size(int* x, int* y, int* width, int* height)
 {
-    GdkDisplay* gdpy = gdk_display_get_default();
-    GdkScreen* gscreen = gdk_display_get_screen(gdpy, screen_n);
-    Display *dpy = GDK_DISPLAY_XDISPLAY(gdpy);
-    Window root = GDK_WINDOW_XID(gdk_screen_get_root_window(gscreen));
+    Display *dpy = gdk_x11_get_default_xdisplay();
     Atom property = XInternAtom(dpy, "_NET_WORKAREA", False);
-    Atom actual_type = None;
-    gint actual_format = 0;
-    gulong nitems = 0;
-    gulong bytes_after = 0;
-    unsigned char *data_p = NULL;
-    XGetWindowProperty(dpy, root, property, 0, G_MAXULONG, False, XA_CARDINAL,
-            &actual_type, &actual_format, &nitems, &bytes_after, &data_p);
+    gulong items;
+    gulong* data = get_window_property(dpy, GDK_ROOT_WINDOW(), property, &items);
 
-
-    g_assert(desktop_n < nitems / 4);
-    g_assert(bytes_after == 0);
-    g_assert(actual_format == 32);
-
-    // Although the actual_format is 32 bit, but the f**k xlib specified it format equal
-    // sizeof(long), eg on 64 bit os the value is 8 byte.
-    gulong *data = (gulong*)(data_p + desktop_n * sizeof(long) * 4);
-
-    *x = data[0];
-    *y = data[1];
-    *width = data[2];
-    *height = data[3];
-
-    XFree(data_p);
+    if (data && items == 4) {
+        *x = X_FETCH_32(data, 0);
+        *y = X_FETCH_32(data, 1);
+        *width = X_FETCH_32(data, 2);
+        *height = X_FETCH_32(data, 3);
+        XFree(data);
+    } else {
+        x = y = width = height = 0;
+    }
 }
 
 /* from libwnck/xutils.c, comes as LGPLv2+ */
