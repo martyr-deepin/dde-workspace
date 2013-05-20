@@ -29,8 +29,6 @@ GError *error = NULL;
 
 int main(int argc, char **argv)
 {
-    g_type_init();
-
     GDBusProxy *display_proxy = NULL;
 
     display_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,

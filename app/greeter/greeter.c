@@ -333,21 +333,16 @@ void greeter_login_clicked(const gchar *password)
 
 static gboolean do_exit(gpointer user_data)
 {
-    g_warning ("timeout to do_exit, exit flag:%d\n", exit_flag);
     // start session failed
     if(exit_flag == 1){
-
-        g_warning("start session failed\n");
         return FALSE;
 
     // already receive sigterm
     }else if(exit_flag == 2){
-
-        g_warning("already receive sigterm\n");
         return FALSE;
+
     // manual kill greeter
     }else{
-        g_warning("timeout, kill greeter\n");
         clean_before_exit();
         exit(0);
     }
@@ -360,8 +355,6 @@ static void start_session(const gchar *session) {
     greeter_update_background();
 
     DBG("%s", "start session");
-
-    g_warning ("now call start_session\n");
 
     gchar *user_lock_path = g_strdup_printf("%s%s", get_selected_user(), ".dlock.app.deepin");
     if(is_application_running(user_lock_path)){
@@ -399,8 +392,6 @@ static void start_session(const gchar *session) {
     g_free(user_lock_path);
 
     g_timeout_add_seconds(10, do_exit, NULL);
-    
-    g_warning ("start_session add do_exit timeout\n");
 
     if(!lightdm_greeter_start_session_sync(greeter, session, NULL)){
         DBG("%s", "start session failed");
@@ -413,7 +404,6 @@ static void start_session(const gchar *session) {
 static void clean_before_exit()
 {
     DBG("%s", "start session finish");
-    g_warning ("clean_before_exit\n");
 
     g_free(greeter_file);
     greeter_file = NULL;
@@ -840,7 +830,6 @@ gboolean greeter_run_shutdown()
 static void sigterm_cb(int signum)
 {
     DBG("%s", "sigterm cb");
-    g_warning ("sigterm cb\n");
     exit_flag = 2;
     clean_before_exit();    
     gtk_main_quit();
@@ -890,8 +879,6 @@ static void greeter_update_background()
     GdkPixbuf *background_pixbuf = NULL;
     GdkRGBA background_color;
     GdkRectangle monitor_geometry;
-
-    g_warning ("greeter update background when wait for desktop\n");
 
     const gchar *bg_path = greeter_get_user_background(get_selected_user());
     if(g_strcmp0(bg_path, "nonexists") == 0){
