@@ -183,7 +183,7 @@ background.height = screen.height
 DCore.Lock.draw_background(background)
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" Beta")}</sup></span> 
+            <span> #{_("Linux Deepin 12.12")}<sup>#{_(" RC")}</sup></span> 
             "
 s = new SwitchUser("switchuser")
 $("#bottom_buttons").appendChild(s.element)

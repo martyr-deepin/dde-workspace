@@ -4,8 +4,9 @@
 #include <cairo/cairo-xlib.h>
 
 #include "background_util.h"
+#include "jsextension.h"
 
-static GdkWindow* _background_window = NULL;
+PRIVATE GdkWindow* _background_window = NULL;
 
 
 void setup_background_window()
@@ -28,6 +29,6 @@ void setup_background_window()
 GdkWindow* get_background_window ()
 {
     if (_background_window == NULL)
-	setup_background_window ();
+        setup_background_window ();
     return _background_window;
 }

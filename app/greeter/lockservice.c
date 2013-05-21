@@ -299,8 +299,6 @@ do_exit (gpointer user_data)
 
 int main(int argc, char **argv)
 {
-    g_type_init ();
-
     loop = g_main_loop_new (NULL, FALSE);
 
     lock_setup_dbus_service ();

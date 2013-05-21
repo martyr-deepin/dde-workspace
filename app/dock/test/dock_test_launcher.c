@@ -1,4 +1,5 @@
 #include "dock_test.h"
+#include "jsextension.h"
 #include <gio/gdesktopappinfo.h>
 
 typedef struct _Workspace Workspace;
@@ -28,6 +29,7 @@ typedef struct {
 extern void _update_window_title(Client *c);
 extern void _update_window_class(Client *c);
 extern void _update_window_appid(Client *c);
+extern void _update_window_icon(Client *c);
 
 void dock_test_launcher()
 {
@@ -108,36 +110,52 @@ void dock_test_launcher()
     /*      }, "write_app_info"); */
 
 
-    // TODO:
-    // TBT
-    /* int xid = 0x2a00363;  // attention!! change it yourself when you need to test. */
+    /* int xid = 0x1800043;  // ATTENTION!! change it yourself when you need to test. */
     /* Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default()); */
     /* GdkWindow* root = gdk_get_default_root_window(); */
     /* Client* c = g_new0(Client, 1); */
     /* c->window = xid; */
+    /* c->title = NULL; */
+    /* c->clss = NULL; */
+    /* c->instance_name = NULL; */
+    /* c->app_id = NULL; */
+    /* c->exec = NULL; */
+    /* c->icon = NULL; */
     /* _update_window_title(c); */
     /* _update_window_class(c); */
     /* _update_window_appid(c); */
-    /* ArrayContainer fs = {NULL, 0}; */
+    /* _update_window_icon(c); */
+    ArrayContainer fs = {NULL, 0};
 
+    // ATTENTION!!! test after commenting g_app_info_launch function;
     /* extern gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs); */
     /* Test({ */
     /*      dock_launch_by_app_id(c->app_id, c->exec, fs); */
     /*      }, "dock_launch_by_app_id"); */
+
+    // TODO:
+    // TBT, build_app_info lead to failed
+    /* extern gboolean request_by_info(const char* name, const char* cmdline, const char* icon); */
+    /* Test({ */
+    /*      request_by_info(c->app_id, c->exec, c->icon); */
+    /*      }, "request_by_info"); */
 
     /* g_free(c->title); */
     /* g_free(c->clss); */
     /* g_free(c->instance_name); */
     /* g_free(c->app_id); */
     /* g_free(c->exec); */
+    /* g_free(c->icon); */
     /* g_free(c); */
 
-    extern void dock_request_dock(const char* app_id);
-    extern void dock_request_undock(const char* app_id);
-    Test({
-         dock_request_dock("/usr/share/applications/firefox.desktop");
-         dock_request_undock("firefox");
-         }, "dock_request_dock and dock_request_undock");
+    // TODO:
+    // TBT, build_app_info lead to failed
+    /* extern void dock_request_dock(const char* app_id); */
+    /* extern void dock_request_undock(const char* app_id); */
+    /* Test({ */
+    /*      dock_request_dock("/usr/share/applications/firefox.desktop"); */
+    /*      dock_request_undock("firefox"); */
+    /*      }, "dock_request_dock and dock_request_undock"); */
 
     /* g_object_unref(info1); */
     /* g_object_unref(info2); */
@@ -145,4 +163,13 @@ void dock_test_launcher()
     /* g_object_unref(info4); */
     /* g_object_unref(info5); */
 
+    // TODO:
+    // TBT, failed
+    Test({
+         extern JSValueRef build_app_info(const char* app_id);
+         /* build_app_info("firefox"); */
+         JSValueRef app_info = build_app_info("firefox");
+         if (app_info)
+             js_post_message("launcher_added", app_info);
+         }, "build_app_info");
 }
