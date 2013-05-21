@@ -601,12 +601,23 @@ _copy_files_async (GFile* src, gpointer data)
 	if (!_cmp_files (src, dest)) //src==dest
         {
             //rename destination name
-            char* tmp_dest_dir = g_file_get_uri (dest);
-            char* tmp = g_strconcat (tmp_dest_dir, " (", _("Copy"), ")", NULL);
-            g_free (tmp_dest_dir);
-            g_object_unref (dest);
-            dest = g_file_new_for_uri (tmp);
+            char* tmp = g_file_get_uri (dest);
+            char* ext_name = strrchr (tmp, '.');
+            if (ext_name != NULL)
+            {
+                *ext_name = NULL;
+                ext_name ++;
+            }
+            char* stem_name = tmp;
+            char* tmp_dest = g_strconcat (stem_name, 
+                                          " (", _("Copy"), ")", ".",
+                                          ext_name,
+                                          NULL);
             g_free (tmp);
+
+            g_object_unref (dest);
+            dest = g_file_new_for_uri (tmp_dest);
+            g_free (tmp_dest);
             _data->dest_file = dest;
         }	
 
