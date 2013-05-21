@@ -598,8 +598,10 @@ _copy_files_async (GFile* src, gpointer data)
     }
     else
     {
+#if 0
 	if (!_cmp_files (src, dest)) //src==dest
 	    return FALSE;
+#endif
 	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		     _copy_cancellable,
