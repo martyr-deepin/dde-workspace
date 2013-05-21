@@ -37,7 +37,7 @@ extern GHashTable* _clients_table;
 
 void dock_test_tasklist()
 {
-    int xid = 0x2a00144;  // attention!! change it yourself when you need to test.
+    int xid = 0x2e00080;  // attention!! change it yourself when you need to test.
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     GdkWindow* root = gdk_get_default_root_window();
 
@@ -197,4 +197,35 @@ void dock_test_tasklist()
     /* Test({ */
     /*      dock_active_window(xid); */
     /*      }, "dock_active_window"); */
+
+
+    /* extern gboolean dock_get_desktop_status(); */
+    /* Test({ */
+    /*      dock_get_desktop_status(); */
+    /*      }, "dock_get_desktop_status"); */
+
+
+    /* extern gboolean dock_is_client_minimized(double id); */
+    /* Test({ */
+    /*      g_assert(FALSE == dock_is_client_minimized(xid)); */
+    /*      }, "dock_is_client_minimized"); */
+
+    /* extern gboolean dock_window_need_to_be_minimized(double id); */
+    /* Test({ */
+    /*      g_assert(dock_window_need_to_be_minimized(xid) == FALSE); */
+    /*      g_assert(dock_window_need_to_be_minimized(0x2e00006) == TRUE); */
+    /*      }, "dock_window_need_to_be_minimized"); */
+
+    /* extern gboolean is_has_client(const char* app_id); */
+    /* Test({ */
+    /*      g_assert(is_has_client("firefox") == FALSE); */
+    /*      g_assert(is_has_client("skype") == TRUE); */
+    /*      }, "is_has_client"); */
+
+    // TODO: TBT
+    /* extern void dock_draw_window_preview(JSValueRef canvas, double xid, double */
+    /*                                      dest_width, double dest_height, */
+    /*                                      JSData* data); */
+    /* Test({ */
+    /*      }, "dock_draw_window_preview"); */
 }

@@ -134,7 +134,7 @@ void dock_test_launcher()
     /*      }, "dock_launch_by_app_id"); */
 
     // TODO:
-    // TBT, build_app_info
+    // TBT, build_app_info lead to failed
     /* extern gboolean request_by_info(const char* name, const char* cmdline, const char* icon); */
     /* Test({ */
     /*      request_by_info(c->app_id, c->exec, c->icon); */
@@ -149,7 +149,7 @@ void dock_test_launcher()
     /* g_free(c); */
 
     // TODO:
-    // build_app_info lead to failed
+    // TBT, build_app_info lead to failed
     /* extern void dock_request_dock(const char* app_id); */
     /* extern void dock_request_undock(const char* app_id); */
     /* Test({ */
@@ -164,11 +164,12 @@ void dock_test_launcher()
     /* g_object_unref(info5); */
 
     // TODO:
-    // TBT end in 368m
-    /* Test({ */
-    /*      JSValueRef build_app_info(const char* app_id); */
-    /*      JSValueRef app_info = build_app_info("firefox"); */
-    /*      if (app_info) */
-    /*          js_post_message("launcher_added", app_info); */
-    /*      }, "build_app_info"); */
+    // TBT, failed
+    Test({
+         extern JSValueRef build_app_info(const char* app_id);
+         /* build_app_info("firefox"); */
+         JSValueRef app_info = build_app_info("firefox");
+         if (app_info)
+             js_post_message("launcher_added", app_info);
+         }, "build_app_info");
 }
