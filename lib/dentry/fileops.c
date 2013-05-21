@@ -598,10 +598,18 @@ _copy_files_async (GFile* src, gpointer data)
     }
     else
     {
-#if 0
 	if (!_cmp_files (src, dest)) //src==dest
-	    return FALSE;
-#endif
+        {
+            //rename destination name
+            char* tmp_dest_dir = g_file_get_uri (dest);
+            char* tmp = g_strconcat (tmp_dest_dir, " (", _("Copy"), ")", NULL);
+            g_free (tmp_dest_dir);
+            g_object_unref (dest);
+            dest = g_file_new_for_uri (tmp);
+            g_free (tmp);
+            _data->dest_file = dest;
+        }	
+
 	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		     _copy_cancellable,
