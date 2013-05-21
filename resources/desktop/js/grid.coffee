@@ -399,6 +399,7 @@ create_entry_to_new_item = (entry) ->
     move_to_somewhere(w, pos)
     all_item.push(w.get_id())
     set_item_selected(w)
+    update_selected_item_drag_image()
     w.item_rename()
 
 
@@ -755,6 +756,7 @@ compress_selected_items = ->
     catch e
     return
 
+
 decompress_selected_items = ->
     tmp = []
     for i in selected_item
@@ -763,6 +765,7 @@ decompress_selected_items = ->
         DCore.DEntry.decompress_files(tmp)
     catch e
     return
+
 
 decompress_selected_items_here = ->
     tmp = []
@@ -773,6 +776,7 @@ decompress_selected_items_here = ->
     catch e
     return
 
+
 get_items_compressibility = ->
     tmp = []
     for i in selected_item
@@ -782,6 +786,7 @@ get_items_compressibility = ->
             else
                 tmp.push(w.get_entry())
     DCore.DEntry.files_compressibility(tmp)
+
 
 gird_left_mousedown = (evt) ->
     evt.stopPropagation()
