@@ -14,7 +14,7 @@ static gboolean _dummy_func		(GFile* file, gpointer data);
 
 static gboolean _delete_files_async	(GFile* file, gpointer data);
 static gboolean _trash_files_async	(GFile* file, gpointer data);
-static gboolean _move_files_async	(GFile* file, gpointer data, gboolean prompt);
+static gboolean _move_files_async	(GFile* file, gpointer data);
 static gboolean _copy_files_async	(GFile* file, gpointer data);
 
 
@@ -268,9 +268,12 @@ fileops_trash (GFile* file_list[], guint num)
  *	      traverse_directory. the default implementation can
  *	      recursively trash files.
  */
+static gboolean g_prompt = FALSE; //add a global to retain _move_files_async signature
 gboolean
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 {
+    g_prompt = prompt;    
+ 
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
 
@@ -303,7 +306,8 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
 	data->dest_file = move_dest_file;
 
-	retval &= _move_files_async (src, data, prompt);
+	//retval &= _move_files_async (src, data);
+        retval &= traverse_directory (src, _move_files_async, _delete_files_async, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
 	g_object_unref (move_dest_file);
     }
@@ -454,13 +458,14 @@ _trash_files_async (GFile* file, gpointer data)
 
     return retval;
 }
+
 /*
  * NOTE: the retval has been hacked to please frontend.
  *             it's not consistent with other hook functions.
  *             use with care.
  */
 static gboolean
-_move_files_async (GFile* src, gpointer data, gboolean prompt)
+_move_files_async (GFile* src, gpointer data)
 {
     g_debug ("begin _move_files_async");
     gboolean retval = TRUE;
@@ -488,7 +493,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
 	FileOpsResponse* response;
-	if (prompt == TRUE)
+	if (g_prompt == TRUE)
         {
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
 
@@ -518,13 +523,13 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 		g_object_unref (dest);
 		_data->dest_file = new_dest;
 
-	        retval = _move_files_async (src, _data, prompt);
+	        retval = _move_files_async (src, _data);
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
-		    retval = TRUE;
+                    retval = TRUE;
 		}
 		else
 		{
@@ -532,7 +537,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
                     retval = _delete_files_async (dest, _data);
 		    if (retval == TRUE)
 		    {
-			retval = _move_files_async (src, _data, prompt);
+			retval = _move_files_async (src, _data);
 		    }
 		}
 
@@ -547,7 +552,7 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 	free_fileops_response (response);
         }
 	}
-	else  // prompt == FALSE
+	else  // g_prompt == FALSE
 	{
 	    retval = FALSE;
 	}
