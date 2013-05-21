@@ -464,6 +464,7 @@ msgstr "当%s文件时出错"
 msgid "Empty Trash"
 msgstr "清空回收站"
 
+
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
 msgstr "清空回收站中的全部项目吗？"
