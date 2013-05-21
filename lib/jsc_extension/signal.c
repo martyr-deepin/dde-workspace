@@ -47,6 +47,10 @@ void js_post_message(const char* name, JSValueRef json)
 void js_post_message_simply(const char* name, const char* format, ...)
 {
     JSContextRef ctx = get_global_context();
+    if (ctx == NULL) {
+        g_warning("send js message [%s] failed beacause js runtime hasn't be prepared.", name);
+        return;
+    }
     if (format == NULL) {
         js_post_message(name, JSValueMakeNull(ctx));
     } else {
