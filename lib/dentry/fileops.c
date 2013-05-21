@@ -363,7 +363,7 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 	else
 	    _copy_files_async (src,data);
 
-        g_object_unref (copy_dest_file);
+        g_object_unref (data->dest_file);
     }
 
     g_object_unref (data->cancellable);
