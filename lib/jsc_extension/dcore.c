@@ -22,11 +22,39 @@
 #include <string.h>
 #include "utils.h"
 #include "xdg_misc.h"
+#include "jsextension.h"
 
 //TODO run_command support variable arguments
 
-
+JS_EXPORT_API
 char* dcore_get_theme_icon(const char* name, double size)
 {
     return icon_name_to_path_with_check_xpm(name, size);
+}
+
+JS_EXPORT_API
+JSValueRef dcore_get_plugins(const char* app_name)
+{
+    JSObjectRef array = json_array_create();
+    char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
+
+    GDir* dir = g_dir_open(path, 0, NULL);
+    if (dir != NULL) {
+        JSContextRef ctx = get_global_context();
+        const char* file_name = NULL;
+        for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+            if (g_str_has_suffix(file_name, ".js")) {
+                char* js_path = g_build_filename(path, file_name, NULL);
+                JSValueRef v = jsvalue_from_cstr(ctx, js_path);
+                g_free(js_path);
+                json_array_insert(array, i++, v);
+            }
+        }
+
+        g_dir_close(dir);
+    }
+
+    g_free(path);
+
+    return array;
 }
