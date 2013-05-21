@@ -22,6 +22,8 @@ for i in scan_dir:
 cmd= "xgettext --from-code=utf-8 -L python -j -o zh_CN.po " + " ".join(files)
 os.system(cmd)
 
+cmd= "xgettext --from-code=utf-8 -L python -j -o zh_TW.po " + " ".join(files)
+os.system(cmd)
 
 
 files = []
@@ -29,4 +31,7 @@ for i in other_files:
     tmp = glob.glob(base_dir + i)
     files = files + tmp
 cmd = "xgettext --from-code=utf-8 -k_ -j -o zh_CN.po " + " ".join(other_files)
+os.system(cmd)
+
+cmd = "xgettext --from-code=utf-8 -k_ -j -o zh_TW.po " + " ".join(other_files)
 os.system(cmd)
