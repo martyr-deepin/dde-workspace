@@ -283,12 +283,14 @@ static JSValueRef __%(name)s__ (JSContextRef context,
 }
 """
     test_function = """
+#ifdef __DUI_DEBUG
 extern void %(module_name)s_%(name)s();
 gboolean %(module_name)s_test_wrap()
 {
     %(module_name)s_%(name)s();
     return FALSE;
 }
+#endif
 static JSValueRef __%(name)s__ (JSContextRef ctx, JSObjectRef f, JSObjectRef this, size_t c, const JSValueRef args[], JSValueRef* excp)
 {
 #ifdef __DUI_DEBUG

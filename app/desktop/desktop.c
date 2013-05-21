@@ -192,10 +192,14 @@ GFile* desktop_new_directory()
     return dir;
 }
 
-PRIVATE void update_workarea_size(GSettings* dock_gsettings)
+PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
 {
     int x, y, width, height;
-    get_workarea_size(0, 0, &x, &y, &width, &height);
+    get_workarea_size(&x, &y, &width, &height);
+    if (width == 0 || height == 0) {
+        g_timeout_add(200, update_workarea_size, dock_gsettings);
+        return FALSE;
+    }
 
     int  hide_mode = g_settings_get_enum (dock_gsettings, DOCK_HIDE_MODE);
     g_debug ("hide mode: %d", hide_mode);
@@ -212,6 +216,7 @@ PRIVATE void update_workarea_size(GSettings* dock_gsettings)
     g_debug ("%s", tmp);
     js_post_message_simply("workarea_changed", tmp);
     g_free (tmp);
+    return FALSE;
 }
 
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
