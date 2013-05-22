@@ -37,13 +37,14 @@ JSValueRef dcore_get_plugins(const char* app_name)
 {
     JSObjectRef array = json_array_create();
     char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
+    char* expected_filename = g_strconcat(app_name, ".js", NULL);
 
     GDir* dir = g_dir_open(path, 0, NULL);
     if (dir != NULL) {
         JSContextRef ctx = get_global_context();
         const char* file_name = NULL;
         for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
-            if (g_str_has_suffix(file_name, ".js")) {
+            if (g_str_equal(expected_filename, file_name)) {
                 char* js_path = g_build_filename(path, file_name, NULL);
                 JSValueRef v = jsvalue_from_cstr(ctx, js_path);
                 g_free(js_path);
@@ -54,6 +55,7 @@ JSValueRef dcore_get_plugins(const char* app_name)
         g_dir_close(dir);
     }
 
+    g_free(expected_filename);
     g_free(path);
 
     return array;
