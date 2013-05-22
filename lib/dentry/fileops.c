@@ -308,12 +308,12 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
 	data->dest_file = move_dest_file;
 
-	retval &= _move_files_async (src, data);
-	if (retval)
-		_delete_files_async (src, data);//ensure original file is removed.
-
-        //retval &= traverse_directory (src, _move_files_async, _delete_files_async, data);
+	//retval &= _move_files_async (src, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
+        retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
+	if (retval)
+		fileops_delete (&src, 1);//ensure original file is removed.
+
 	g_object_unref (move_dest_file);
     }
     g_object_unref (data->cancellable);
@@ -550,11 +550,13 @@ _move_files_async (GFile* src, gpointer data)
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
+	            g_debug ("response : Merge");
                     retval = TRUE;
 		}
 		else
 		{
 		    //replace
+	            g_debug ("response : Replace");
                     retval = _delete_files_async (dest, _data);
 		    if (retval == TRUE)
 		    {
@@ -562,7 +564,6 @@ _move_files_async (GFile* src, gpointer data)
 		    }
 		}
 
-	        g_debug ("response : Replace");
 		retval = TRUE;
 	        break;
 	    default:
