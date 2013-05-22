@@ -81,7 +81,7 @@ _b.addEventListener("keydown", do ->
                     else
                         _last_val = s_box.value
                         s_box.value = ""
-                        # update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
                 when UP_ARROW
                     selected_up()
