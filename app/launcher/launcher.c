@@ -469,17 +469,19 @@ JSObjectRef launcher_get_categories()
 {
     JSObjectRef categories = json_array_create();
 
-    _insert_category(categories, 0, ALL_CATEGORY_ID, _("all"));
+    _insert_category(categories, 0, ALL_CATEGORY_ID, ALL);
 
-    const char* names[] = {_("internet"), _("multimedia"), _("games"),
-        _("graphics"), _("productivity"), _("industry"), _("education"),
-        _("development"), _("system"), _("utilities"), _("other")};
+    const char* names[] = {
+        INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
+        INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
+        OTHER
+    };
 
     int category_num = 0;
     const GPtrArray* infos = get_all_categories_array();
 
     if (infos == NULL) {
-        category_num = G_N_ELEMENTS(names) - 1;
+        category_num = G_N_ELEMENTS(names);
     } else {
         category_num = infos->len;
         for (int i = 0; i < category_num; ++i) {
