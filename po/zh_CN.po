@@ -634,16 +634,16 @@ msgid "choose city"
 msgstr "请选择城市"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:43
-msgid "--province--"
-msgstr "--省--"
+msgid "province"
+msgstr "省"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:44
-msgid "--city--"
-msgstr "--市--"
+msgid "city"
+msgstr "市"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:45
-msgid "--county--"
-msgstr "--县--"
+msgid "county"
+msgstr "县"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:188
 msgid "close"
@@ -666,8 +666,8 @@ msgid "about"
 msgstr "关于"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:234
-msgid "Thanks for your feedback～～"
-msgstr "亲～谢谢您的反馈～～"
+msgid "Thanks for your feedback!"
+msgstr "谢谢您的反馈!"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:239
 msgid "deepin weather widget 1.0.0"
@@ -678,12 +678,12 @@ msgid "NO"
 msgstr "无"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:65
-msgid "loading............."
-msgstr "正在载入中......."
+msgid "loading"
+msgstr "正在加载"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:231
-msgid "Please wait ......"
-msgstr "敬请期待~~~"
+msgid "Please wait"
+msgstr "请稍等"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:190
 msgid "automatic location"
@@ -691,8 +691,8 @@ msgstr "自动定位"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
 msgid "you can press 'F5' to "
-msgstr "您可以按'F5'来"
+msgstr "您可以按“F5”来"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
 msgid "show the weather plugin again."
-msgstr "重新显示天气插件"
+msgstr "重新显示天气插件。"

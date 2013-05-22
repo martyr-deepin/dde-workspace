@@ -458,7 +458,7 @@ msgstr "合併"
 #: ../lib/dentry/fileops_error_reporting.c:165
 #, c-format
 msgid "Error while %s files"
-msgstr "當%文件時出錯"
+msgstr "當%s文件時出錯"
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
@@ -633,16 +633,16 @@ msgid "choose city"
 msgstr "請選擇城市"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:43
-msgid "--province--"
-msgstr "--省--"
+msgid "province"
+msgstr "省"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:44
-msgid "--city--"
-msgstr "--市--"
+msgid "city"
+msgstr "市"
 
 #: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:45
-msgid "--county--"
-msgstr "--縣--"
+msgid "county"
+msgstr "縣"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:188
 msgid "close"
@@ -665,8 +665,8 @@ msgid "about"
 msgstr "關於"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:234
-msgid "Thanks for your feedback～～"
-msgstr "親～謝謝您的反饋～～"
+msgid "Thanks for your feedback!"
+msgstr "謝謝您的反饋!"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:239
 msgid "deepin weather widget 1.0.0"
@@ -677,12 +677,12 @@ msgid "NO"
 msgstr "無"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:65
-msgid "loading............."
-msgstr "正在載入中......."
+msgid "loading"
+msgstr "正在載入中"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:231
-msgid "Please wait ......"
-msgstr "敬請期待~~~"
+msgid "Please wait"
+msgstr "敬請期待"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:190
 msgid "automatic location"

@@ -9,6 +9,7 @@ resources/memory_test/js/test.js
 resources/greeter/js/greeter.js
 resources/greeter/js/lock.js
 resources/greeter/js/time.js
+resources/desktop/desktop_plugin/plugin.js
 *.swp
 *.log
 *~
