@@ -773,7 +773,7 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
                 break;
             }
 
-            free_fileops_response(response);
+            fileops_response_free (response);
             g_error_free(error);
         }
     }

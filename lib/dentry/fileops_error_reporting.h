@@ -15,6 +15,9 @@ struct _FileOpsResponse
     gboolean apply_to_all;
 };
 
+FileOpsResponse* fileops_response_dup (FileOpsResponse* response);
+void             fileops_response_free (FileOpsResponse* response);
+
 //FileOpsResponse fileops_error_show_dialog (GError* error);
 //users should free FileOpsResponse
 FileOpsResponse* fileops_delete_trash_error_show_dialog (const char* fileops_str, GError* error, 
@@ -22,5 +25,4 @@ FileOpsResponse* fileops_delete_trash_error_show_dialog (const char* fileops_str
 FileOpsResponse* fileops_move_copy_error_show_dialog (const char* fileops_str, GError* error, 
 	                                             GFile* src, GFile* dest, GtkWindow* parent);
 
-void free_fileops_response (FileOpsResponse* response);
 #endif
