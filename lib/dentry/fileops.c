@@ -269,10 +269,12 @@ fileops_trash (GFile* file_list[], guint num)
  *	      recursively trash files.
  */
 static gboolean g_prompt = FALSE; //add a global to retain _move_files_async signature
+static FileOpsResponse* g_move_response = NULL; //keep track of user-specified action (applied to all).
 gboolean
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 {
     g_prompt = prompt;    
+    g_move_response = NULL;
  
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
@@ -307,12 +309,17 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 	data->dest_file = move_dest_file;
 
 	//retval &= _move_files_async (src, data);
-        retval &= traverse_directory (src, _move_files_async, _delete_files_async, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
+        retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
+	if (retval)
+		fileops_delete (&src, 1);//ensure original file is removed.
+
 	g_object_unref (move_dest_file);
     }
     g_object_unref (data->cancellable);
     g_free (data);
+
+    fileops_response_free (g_move_response);
     g_debug ("fileops_move: End moving files");
 
     return retval;
@@ -323,9 +330,13 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
  *	pre_hook = _copy_files_async
  *	post_hook = NULL
  */
+
+static FileOpsResponse* g_copy_response = NULL; //keep track of user-specified action (applied to all).
 void
 fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 {
+    g_copy_response = NULL;
+
     g_debug ("fileops_copy: Begin copying files");
 
     GCancellable* copy_cancellable = g_cancellable_new ();
@@ -365,9 +376,10 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 
         g_object_unref (data->dest_file);
     }
-
     g_object_unref (data->cancellable);
     g_free (data);
+
+    fileops_response_free (g_copy_response);
     g_debug ("fileops_copy: End copying files");
 }
 // internal functions
@@ -492,10 +504,19 @@ _move_files_async (GFile* src, gpointer data)
 //	g_cancellable_cancel (_move_cancellable);
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
-	FileOpsResponse* response;
 	if (g_prompt == TRUE)
         {
+	FileOpsResponse* response = NULL;
+        if (g_move_response != NULL && g_move_response->apply_to_all)
+        {
+            response = fileops_response_dup (g_move_response); //FIXME:reduce dup calls
+        }
+        else
+        {
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
+	if (response->apply_to_all)
+            g_move_response = fileops_response_dup (response);
+        }
 
 	if(response != NULL)
         {
@@ -529,11 +550,13 @@ _move_files_async (GFile* src, gpointer data)
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
+	            g_debug ("response : Merge");
                     retval = TRUE;
 		}
 		else
 		{
 		    //replace
+	            g_debug ("response : Replace");
                     retval = _delete_files_async (dest, _data);
 		    if (retval == TRUE)
 		    {
@@ -541,7 +564,6 @@ _move_files_async (GFile* src, gpointer data)
 		    }
 		}
 
-	        g_debug ("response : Replace");
 		retval = TRUE;
 	        break;
 	    default:
@@ -549,7 +571,7 @@ _move_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
-	free_fileops_response (response);
+	fileops_response_free (response);
         }
 	}
 	else  // g_prompt == FALSE
@@ -639,8 +661,17 @@ _copy_files_async (GFile* src, gpointer data)
 	//    g_cancellable_cancel (_copy_cancellable);
 	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
 	//TEST:
-	FileOpsResponse* response;
+	FileOpsResponse* response = NULL;
+        if (g_copy_response != NULL && g_copy_response->apply_to_all)
+        {
+            response = fileops_response_dup (g_copy_response); //FIXME:reduce dup calls
+        }
+        else
+        {
 	response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
+	if (response->apply_to_all)
+            g_copy_response = fileops_response_dup (response);
+        }
 
 	if(response != NULL)
 	{
@@ -693,7 +724,7 @@ _copy_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
-	free_fileops_response (response);
+	fileops_response_free (response);
 	}
 	g_error_free (error);
     }

@@ -975,17 +975,13 @@ initial_setup (GSettings *settings)
     return;
 }
 
-PRIVATE gboolean is_initialized = FALSE;
 PRIVATE GdkFilterReturn
 expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
-    if ((((XEvent*)xevent)->type == Expose)
-         && (is_initialized == FALSE))
+    //At least first running desktop and suspend/resume will trigger expose event
+    if (((XEvent*)xevent)->type == Expose)
     {
         initial_setup (Settings);
-        is_initialized == TRUE;
-        GdkWindow* bg_window = data;
-        gdk_window_remove_filter (bg_window, expose_cb, data);
     }
     return GDK_FILTER_CONTINUE;
 }
