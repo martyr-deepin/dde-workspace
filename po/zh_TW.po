@@ -650,7 +650,7 @@ msgstr "關閉"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:189
 msgid "refresh"
-msgstr "刷新"
+msgstr "重新整理"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:191
 msgid "share"
@@ -658,7 +658,7 @@ msgstr "分享"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:192
 msgid "feedback"
-msgstr "反饋"
+msgstr "回饋"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:193
 msgid "about"
@@ -666,11 +666,11 @@ msgstr "關於"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:234
 msgid "Thanks for your feedback!"
-msgstr "謝謝您的反饋!"
+msgstr "謝謝您的回饋!"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:239
 msgid "deepin weather widget 1.0.0"
-msgstr "深度天氣插件　1.0.0"
+msgstr "深度天氣元件　1.0.0"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:304
 msgid "NO"
@@ -678,11 +678,11 @@ msgstr "無"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:65
 msgid "loading"
-msgstr "正在載入中"
+msgstr "載入中"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:231
 msgid "Please wait"
-msgstr "敬請期待"
+msgstr "請稍候"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:190
 msgid "automatic location"
@@ -690,8 +690,8 @@ msgstr "自動定位"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
 msgid "you can press 'F5' to "
-msgstr "您可以按'F5'來"
+msgstr "您可以按“F5”來"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
 msgid "show the weather plugin again."
-msgstr "重新顯示天氣插件"
+msgstr "再次顯示天氣元件"
