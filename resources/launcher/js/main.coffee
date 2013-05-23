@@ -132,14 +132,12 @@ _show_hidden_icons = (is_shown) ->
 
     Item.display_temp = false
     if is_shown
-        for own k, v of applications
-            if v.display_mode == 'hidden'
-                v.display_icon_temp()
+        for own item of hidden_icons
+            hidden_icons[item].display_icon_temp()
         msg = HIDE_HIDDEN_ICONS
     else
-        for own k, v of applications
-            if v.display_mode == 'hidden'
-                v.hide_icon()
+        for own item of hidden_icons
+            hidden_icons[item].hide_icon()
         msg = DISPLAY_HIDDEN_ICONS
 
     _b.addEventListener("contextmenu", _contextmenu_callback(msg))
@@ -181,8 +179,8 @@ _init_hidden_icons = ->
     _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 
     _b.addEventListener("itemselected", (e) ->
-        _show_hidden_icons(not is_show_hidden_icons)
         grid_load_category(selected_category_id)
+        _show_hidden_icons(not is_show_hidden_icons)
     )
 
     return
