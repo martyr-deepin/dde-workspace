@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    /* gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher"); */
+    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
     get_screen_info();
     set_default_theme("Deepin");
