@@ -20,6 +20,7 @@
  **/
 #include <glib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "utils.h"
 #include "xdg_misc.h"
 #include "jsextension.h"
@@ -32,30 +33,61 @@ char* dcore_get_theme_icon(const char* name, double size)
     return icon_name_to_path_with_check_xpm(name, size);
 }
 
+
+PRIVATE
+const char* _is_plugin(const char* path, const char* dir_name)
+{
+    GDir* plugin_dir = g_dir_open(path, 0, NULL);
+    char* plugin_file_name = g_strconcat(dir_name, ".js", NULL);
+    const char* filename = NULL;
+
+    if (plugin_dir != NULL) {
+        const char* file_name = NULL;
+        while ((file_name = g_dir_read_name(plugin_dir)) != NULL) {
+            if (g_str_equal(plugin_file_name, file_name)) {
+                filename = file_name;
+                break;
+            }
+        }
+    }
+
+    g_dir_close(plugin_dir);
+    g_free(plugin_file_name);
+
+    return filename;
+}
+
+
+#define IS_DIR(path) g_file_test(path, G_FILE_TEST_IS_DIR)
+
+
 JS_EXPORT_API
 JSValueRef dcore_get_plugins(const char* app_name)
 {
     JSObjectRef array = json_array_create();
+    JSContextRef ctx = get_global_context();
     char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
-    char* expected_filename = g_strconcat(app_name, ".js", NULL);
 
     GDir* dir = g_dir_open(path, 0, NULL);
     if (dir != NULL) {
-        JSContextRef ctx = get_global_context();
         const char* file_name = NULL;
         for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
-            if (g_str_equal(expected_filename, file_name)) {
-                char* js_path = g_build_filename(path, file_name, NULL);
+            char* full_path = g_build_filename(path, file_name, NULL);
+            const char* filename = NULL;
+
+            if (IS_DIR(full_path) && (filename = _is_plugin(full_path, file_name)) != NULL) {
+                char* js_path = g_build_filename(full_path, filename, NULL);
                 JSValueRef v = jsvalue_from_cstr(ctx, js_path);
                 g_free(js_path);
                 json_array_insert(array, i++, v);
             }
+
+            g_free(full_path);
         }
 
         g_dir_close(dir);
     }
 
-    g_free(expected_filename);
     g_free(path);
 
     return array;
