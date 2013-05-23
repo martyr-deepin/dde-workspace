@@ -30,43 +30,67 @@
 #include <glib/gprintf.h>
 #include "jsextension.h"
 
-#define DEEPIN_SOFTWARE_CENTER_DATE_DIR    "/usr/share/deepin-software-center/data"
-#define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATE_DIR"/data_newest_id.ini"
-#define DESKTOP_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATE_DIR"/update/%s/desktop/desktop.db"
+#define DEEPIN_SOFTWARE_CENTER_DATA_DIR    "/usr/share/deepin-software-center/data"
+#define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATA_DIR"/data_newest_id.ini"
+#define CATEGORY_NAME_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/desktop/new_desktop.db"
+#define CATEGORY_INDEX_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/category/category.db"
 
-static time_t _last_modify_time = 0;
 
 PRIVATE
-gboolean _need_to_update()
+gboolean _need_to_update(const char* db_path)
 {
+    if (db_path[0] == '\0')
+        return TRUE;
+
+    static time_t _last_modify_time[2] = {0};
     struct stat newest;
     if (!stat(DATA_NEWEST_ID, &newest)) {
         return FALSE;
     }
 
-    if (newest.st_mtime != _last_modify_time) {
-        _last_modify_time = newest.st_mtime;
+    int index = (int)g_str_has_suffix(db_path, "category.db");
+
+    if (newest.st_mtime != _last_modify_time[index]) {
+        _last_modify_time[index] = newest.st_mtime;
         return TRUE;
     }
 
     return FALSE;
 }
 
-const gchar* get_category_db_path()
-{
-    // the path to db has fixed 65 bytes, and uuid is 35 or 36 bytes.
-    static gchar db_path[102] = {0};
 
-    if (db_path[0] == 0 || _need_to_update()) {
+PRIVATE
+void _get_db_path(char* db_path, size_t path_len, char const* db_path_template)
+{
+    if (_need_to_update(db_path)) {
         GKeyFile* id_file = g_key_file_new();
         if (g_key_file_load_from_file(id_file, DATA_NEWEST_ID, G_KEY_FILE_NONE, NULL)) {
             gchar* newest_id = g_key_file_get_value(id_file, "newest", "data_id", NULL);
             g_key_file_free(id_file);
-            g_snprintf(db_path, 102, DESKTOP_DB_PATH, newest_id);
+            g_snprintf(db_path, path_len, db_path_template, newest_id);
             g_free(newest_id);
         }
     }
+}
 
+const char* get_category_name_db_path()
+{
+    // the path to db has fixed 69 bytes, and uuid is 36 bytes.
+#define PATH_LEN 106
+    static gchar db_path[PATH_LEN] = {0};
+    _get_db_path(db_path, PATH_LEN, CATEGORY_NAME_DB_PATH);
+#undef PATH_LEN
+    return db_path;
+}
+
+
+const char* get_category_index_db_path()
+{
+    // the path to db has fixed 67 bytes, and uuid is 36 bytes.
+#define PATH_LEN 104
+    static char db_path[PATH_LEN] = {0};
+    _get_db_path(db_path, PATH_LEN, CATEGORY_INDEX_DB_PATH);
+#undef PATH_LEN
     return db_path;
 }
 
@@ -95,32 +119,36 @@ gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, v
     return is_good;
 }
 
+
 PRIVATE
-int _get_all_possible_x_categories(GHashTable* infos, int argc, char** argv, char** colname)
+int _get_category_name_index_map(GHashTable* infos, int argc, char** argv, char** colname)
 {
     if (argv[1][0] != '\0') {
         int id = (int)g_strtod(argv[1], NULL);
-        g_hash_table_insert(infos, g_strdup(argv[0]), GINT_TO_POINTER(id));
+        g_hash_table_insert(infos, g_strdup(_(argv[0])), GINT_TO_POINTER(id));
     }
     return 0;
 }
 
-PRIVATE
 int find_category_id(const char* category_name)
 {
     static GHashTable* _category_info = NULL;
 
     if (_category_info == NULL) {
         _category_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-        const char* sql = "select x_category_name, first_category_index from x_category;";
-        _search_database(_get_x_category_db_path(), sql,
-                         (SQLEXEC_CB)_get_all_possible_x_categories, _category_info);
+        char const* sql = "select distinct first_category_name, first_category_index from category_name;";
+        _search_database(get_category_index_db_path(), sql,
+                         (SQLEXEC_CB)_get_category_name_index_map, _category_info);
+
+        const char* x_sql = "select x_category_name, first_category_index from x_category;";
+        _search_database(_get_x_category_db_path(), x_sql,
+                         (SQLEXEC_CB)_get_category_name_index_map, _category_info);
     }
 
     int id = OTHER_CATEGORY_ID;
     char* key = g_utf8_casefold(category_name, -1);
     gpointer tmp;
-   if (g_hash_table_lookup_extended(_category_info, key, NULL, &tmp))
+    if (g_hash_table_lookup_extended(_category_info, key, NULL, &tmp))
         id = GPOINTER_TO_INT(tmp);
     g_free(key);
     return id;
@@ -175,7 +203,7 @@ PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0') {
-        int category_id = (int)g_strtod(argv[0], NULL);
+        int category_id = find_category_id(_(argv[0]));
         *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
     }
 
@@ -184,11 +212,16 @@ int _get_all_possible_categories(GList** categories, int argc, char** argv, char
 
 GList* get_deepin_categories(GDesktopAppInfo* info)
 {
+    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     GList* categories = NULL;
-    GString* sql = g_string_new("select first_category_index from desktop where desktop_path = \"");
-    g_string_append(sql, g_desktop_app_info_get_filename(info));
+    GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
+    char** app_name = g_strsplit(basename, ".", -1);
+    g_free(basename);
+
+    g_string_append(sql, app_name[0]);
+    g_strfreev(app_name);
     g_string_append(sql, "\";");
-    _search_database(get_category_db_path(), sql->str,
+    _search_database(get_category_name_db_path(), sql->str,
                      (SQLEXEC_CB)_get_all_possible_categories,
                      &categories);
     g_string_free(sql, TRUE);
@@ -202,29 +235,27 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
-    g_ptr_array_add(infos, g_strdup(_(argv[1])));
+    if (argv[0][0] != '\0')
+        g_ptr_array_add(infos, _(argv[0]));
     return 0;
 }
 
 void _load_category_info(GPtrArray* category_infos)
 {
-    const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
-    if (!_search_database(get_category_db_path(), sql_category_info,
+    const char* sql_category_info = "select distinct first_category_name from desktop;";
+    if (!_search_database(get_category_name_db_path(), sql_category_info,
                           (SQLEXEC_CB)_fill_category_info, category_infos)) {
-        g_ptr_array_add(category_infos, g_strdup(_("internet")));
-        g_ptr_array_add(category_infos, g_strdup(_("multimedia")));
-        g_ptr_array_add(category_infos, g_strdup(_("games")));
-        g_ptr_array_add(category_infos, g_strdup(_("graphics")));
-        g_ptr_array_add(category_infos, g_strdup(_("productivity")));
-        g_ptr_array_add(category_infos, g_strdup(_("industry")));
-        g_ptr_array_add(category_infos, g_strdup(_("education")));
-        g_ptr_array_add(category_infos, g_strdup(_("development")));
-        g_ptr_array_add(category_infos, g_strdup(_("system")));
-        g_ptr_array_add(category_infos, g_strdup(_("utilities")));
+        const char* const category_names[] = {
+            INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
+            INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
+        };
+        int category_num = G_N_ELEMENTS(category_names);
+        for (int i = 0; i < category_num; ++i)
+            g_ptr_array_add(category_infos, g_strdup(category_names[i]));
     }
 
     /* add this for apps which cannot be categoried */
-    g_ptr_array_add(category_infos, g_strdup(_("other")));
+    g_ptr_array_add(category_infos, g_strdup(OTHER));
 }
 
 const GPtrArray* get_all_categories_array()

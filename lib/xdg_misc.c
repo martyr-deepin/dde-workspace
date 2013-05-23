@@ -45,7 +45,7 @@ char* check_xpm(const char* path)
     if (path == NULL)
         return NULL;
     char* ext = strrchr(path, '.');
-    if (ext != NULL && 
+    if (ext != NULL &&
             (ext[1] == 'x' || ext[1] == 'X')  &&
             (ext[2] == 'p' || ext[2] == 'P')  &&
             (ext[3] == 'm' || ext[3] == 'M')
@@ -56,7 +56,7 @@ char* check_xpm(const char* path)
     }
 }
 
-char* icon_name_to_path_with_check_xpm(const char* name, int size) 
+char* icon_name_to_path_with_check_xpm(const char* name, int size)
 {
     char* path = icon_name_to_path(name, size);
     char* ret = check_xpm(path);
@@ -65,7 +65,7 @@ char* icon_name_to_path_with_check_xpm(const char* name, int size)
 }
 
 
-char* icon_name_to_path(const char* name, int size) 
+char* icon_name_to_path(const char* name, int size)
 {
     if (g_path_is_absolute(name))
         return g_strdup(name);
@@ -82,7 +82,7 @@ char* icon_name_to_path(const char* name, int size)
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     if (info) {
         char* path = g_strdup(gtk_icon_info_get_filename(info));
-        gtk_icon_info_free(info);
+        g_object_unref(info);
         return path;
     } else {
         return NULL;

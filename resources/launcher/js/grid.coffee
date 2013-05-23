@@ -140,8 +140,8 @@ class Item extends Widget
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then @_toggle_icon()
             when 3
-                _show_hidden_icons(not is_show_hidden_icons)
                 grid_load_category(selected_category_id)
+                _show_hidden_icons(not is_show_hidden_icons)
             when 4 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
             when 5 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
     hide: ->

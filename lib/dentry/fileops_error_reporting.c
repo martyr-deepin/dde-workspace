@@ -23,6 +23,28 @@ static FileOpsResponse*	_show_skip_cancel_replace_rename_all_dialog	(const char 
 									 GFile *src, 
 									 GFile *dest,
 									 GtkWindow* parent);
+FileOpsResponse* 
+fileops_response_dup (FileOpsResponse* response)
+{
+    FileOpsResponse* _dup_response;
+    _dup_response = g_new0 (FileOpsResponse, 1);
+
+    _dup_response->response_id = response->response_id;
+    _dup_response->file_name = g_strdup (response->file_name);
+    _dup_response->apply_to_all = response->apply_to_all;
+
+    return _dup_response;
+}
+
+void
+fileops_response_free (FileOpsResponse* response)
+{
+    if (response == NULL)
+        return;
+
+    g_free (response->file_name);
+    g_free (response);
+}
 
 /*
  *	delete, trash error need only one GFile* parameters. 
@@ -195,10 +217,4 @@ _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char
 
 
     return response;
-}
-void 
-free_fileops_response (FileOpsResponse* response)
-{
-    g_free (response->file_name);
-    g_free (response);
 }

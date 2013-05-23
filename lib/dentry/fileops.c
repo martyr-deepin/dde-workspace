@@ -14,7 +14,7 @@ static gboolean _dummy_func		(GFile* file, gpointer data);
 
 static gboolean _delete_files_async	(GFile* file, gpointer data);
 static gboolean _trash_files_async	(GFile* file, gpointer data);
-static gboolean _move_files_async	(GFile* file, gpointer data, gboolean prompt);
+static gboolean _move_files_async	(GFile* file, gpointer data);
 static gboolean _copy_files_async	(GFile* file, gpointer data);
 
 
@@ -268,9 +268,14 @@ fileops_trash (GFile* file_list[], guint num)
  *	      traverse_directory. the default implementation can
  *	      recursively trash files.
  */
+static gboolean g_prompt = FALSE; //add a global to retain _move_files_async signature
+static FileOpsResponse* g_move_response = NULL; //keep track of user-specified action (applied to all).
 gboolean
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 {
+    g_prompt = prompt;    
+    g_move_response = NULL;
+ 
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
 
@@ -303,12 +308,18 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
 	data->dest_file = move_dest_file;
 
-	retval &= _move_files_async (src, data, prompt);
+	//retval &= _move_files_async (src, data);
 	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
+        retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
+	if (retval)
+		fileops_delete (&src, 1);//ensure original file is removed.
+
 	g_object_unref (move_dest_file);
     }
     g_object_unref (data->cancellable);
     g_free (data);
+
+    fileops_response_free (g_move_response);
     g_debug ("fileops_move: End moving files");
 
     return retval;
@@ -319,9 +330,13 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
  *	pre_hook = _copy_files_async
  *	post_hook = NULL
  */
+
+static FileOpsResponse* g_copy_response = NULL; //keep track of user-specified action (applied to all).
 void
 fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 {
+    g_copy_response = NULL;
+
     g_debug ("fileops_copy: Begin copying files");
 
     GCancellable* copy_cancellable = g_cancellable_new ();
@@ -359,11 +374,12 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 	else
 	    _copy_files_async (src,data);
 
-        g_object_unref (copy_dest_file);
+        g_object_unref (data->dest_file);
     }
-
     g_object_unref (data->cancellable);
     g_free (data);
+
+    fileops_response_free (g_copy_response);
     g_debug ("fileops_copy: End copying files");
 }
 // internal functions
@@ -454,13 +470,14 @@ _trash_files_async (GFile* file, gpointer data)
 
     return retval;
 }
+
 /*
  * NOTE: the retval has been hacked to please frontend.
  *             it's not consistent with other hook functions.
  *             use with care.
  */
 static gboolean
-_move_files_async (GFile* src, gpointer data, gboolean prompt)
+_move_files_async (GFile* src, gpointer data)
 {
     g_debug ("begin _move_files_async");
     gboolean retval = TRUE;
@@ -487,10 +504,19 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 //	g_cancellable_cancel (_move_cancellable);
 	g_warning ("_move_files_async: %s", error->message);
 	//TEST:
-	FileOpsResponse* response;
-	if (prompt == TRUE)
+	if (g_prompt == TRUE)
+        {
+	FileOpsResponse* response = NULL;
+        if (g_move_response != NULL && g_move_response->apply_to_all)
+        {
+            response = fileops_response_dup (g_move_response); //FIXME:reduce dup calls
+        }
+        else
         {
 	response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
+	if (response->apply_to_all)
+            g_move_response = fileops_response_dup (response);
+        }
 
 	if(response != NULL)
         {
@@ -518,25 +544,26 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 		g_object_unref (dest);
 		_data->dest_file = new_dest;
 
-	        retval = _move_files_async (src, _data, prompt);
+	        retval = _move_files_async (src, _data);
 	        break;
 	    case CONFLICT_RESPONSE_REPLACE:
 	        if (type == G_FILE_TYPE_DIRECTORY)
 		{
 		    //Merge:
-		    retval = TRUE;
+	            g_debug ("response : Merge");
+                    retval = TRUE;
 		}
 		else
 		{
 		    //replace
+	            g_debug ("response : Replace");
                     retval = _delete_files_async (dest, _data);
 		    if (retval == TRUE)
 		    {
-			retval = _move_files_async (src, _data, prompt);
+			retval = _move_files_async (src, _data);
 		    }
 		}
 
-	        g_debug ("response : Replace");
 		retval = TRUE;
 	        break;
 	    default:
@@ -544,10 +571,10 @@ _move_files_async (GFile* src, gpointer data, gboolean prompt)
 	        break;
 	}
 
-	free_fileops_response (response);
+	fileops_response_free (response);
         }
 	}
-	else  // prompt == FALSE
+	else  // g_prompt == FALSE
 	{
 	    retval = FALSE;
 	}
@@ -598,10 +625,29 @@ _copy_files_async (GFile* src, gpointer data)
     }
     else
     {
-#if 0
 	if (!_cmp_files (src, dest)) //src==dest
-	    return FALSE;
-#endif
+        {
+            //rename destination name
+            char* tmp = g_file_get_uri (dest);
+            char* ext_name = strrchr (tmp, '.');
+            if (ext_name != NULL)
+            {
+                *ext_name = NULL;
+                ext_name ++;
+            }
+            char* stem_name = tmp;
+            char* tmp_dest = g_strconcat (stem_name, 
+                                          " (", _("Copy"), ")", ".",
+                                          ext_name,
+                                          NULL);
+            g_free (tmp);
+
+            g_object_unref (dest);
+            dest = g_file_new_for_uri (tmp_dest);
+            g_free (tmp_dest);
+            _data->dest_file = dest;
+        }	
+
 	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
 		     _copy_cancellable,
@@ -615,8 +661,17 @@ _copy_files_async (GFile* src, gpointer data)
 	//    g_cancellable_cancel (_copy_cancellable);
 	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
 	//TEST:
-	FileOpsResponse* response;
+	FileOpsResponse* response = NULL;
+        if (g_copy_response != NULL && g_copy_response->apply_to_all)
+        {
+            response = fileops_response_dup (g_copy_response); //FIXME:reduce dup calls
+        }
+        else
+        {
 	response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
+	if (response->apply_to_all)
+            g_copy_response = fileops_response_dup (response);
+        }
 
 	if(response != NULL)
 	{
@@ -669,7 +724,7 @@ _copy_files_async (GFile* src, gpointer data)
 	        break;
 	}
 
-	free_fileops_response (response);
+	fileops_response_free (response);
 	}
 	g_error_free (error);
     }
