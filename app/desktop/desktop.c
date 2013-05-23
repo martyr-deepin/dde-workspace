@@ -197,7 +197,7 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
     int x, y, width, height;
     get_workarea_size(&x, &y, &width, &height);
     if (width == 0 || height == 0) {
-        g_timeout_add(200, update_workarea_size, dock_gsettings);
+        g_timeout_add(200, (GSourceFunc)update_workarea_size, dock_gsettings);
         return FALSE;
     }
 
@@ -299,6 +299,7 @@ int main(int argc, char* argv[])
     set_desktop_env_name("Deepin");
 
     container = create_web_container(FALSE, FALSE);
+    ensure_fullscreen(container);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
     GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
@@ -312,9 +313,6 @@ int main(int argc, char* argv[])
     g_signal_connect (webview, "draw", G_CALLBACK(erase_background), NULL);
 
     GdkScreen* screen = gtk_window_get_screen(GTK_WINDOW(container));
-    gtk_widget_set_size_request(container, gdk_screen_get_width(screen),
-            gdk_screen_get_height(screen));
-
     g_signal_connect(screen, "size-changed", G_CALLBACK(screen_change_size), gtk_widget_get_window(container));
 
     set_wmspec_desktop_hint(gtk_widget_get_window(container));

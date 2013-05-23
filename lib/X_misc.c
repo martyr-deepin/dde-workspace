@@ -281,3 +281,17 @@ gboolean get_atom_value_by_name(Display* dsp, Window window_id, const char* name
     Atom atom = gdk_x11_get_xatom_by_name(name);
     return get_atom_value_by_atom(dsp, window_id, atom, res, callback, index);
 }
+
+static void _ensure_fullscreen_helper(GtkWidget* widget, GdkRectangle *alloc)
+{
+    int width = gdk_screen_width();
+    int height = gdk_screen_height();
+    if (alloc->x != 0 || alloc->y != 0 || alloc->width != width || alloc->height != height) {
+        gdk_window_move_resize(gtk_widget_get_window(widget), 0, 0, width, height);
+    }
+}
+void ensure_fullscreen(GtkWidget* widget)
+{
+    gtk_widget_set_size_request(widget, gdk_screen_width(), gdk_screen_height());
+    g_signal_connect(widget, "size-allocate", (GCallback)_ensure_fullscreen_helper, NULL);
+}
