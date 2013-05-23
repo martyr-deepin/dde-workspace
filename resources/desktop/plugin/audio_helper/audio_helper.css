@@ -1,0 +1,7 @@
+.AudioHelper img {
+    border: 1px dashed rgba(0, 0, 0, 0);
+}
+.AudioHelper:hover img {
+    cursor: pointer;
+    border: 1px dashed red;
+}

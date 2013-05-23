@@ -136,3 +136,13 @@ ajax = (url, method, callback, asyn=true) ->
         if (xhr.readyState == 4 and xhr.status == 200)
             callback?(xhr)
 
+
+get_path_base = (path)->
+    path.split('/').slice(0, -1).join('/')
+get_path_name = (path)->
+    dot_pos = path.lastIndexOf('.')
+    if dot_pos == -1
+        path.substring(path.lastIndexOf('/') + 1)
+    else
+        path.substring(path.lastIndexOf('/') + 1, dot_pos)
+
