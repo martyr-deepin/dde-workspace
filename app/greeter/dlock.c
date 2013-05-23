@@ -473,6 +473,7 @@ int main(int argc, char **argv)
     lock_report_pid();
 
     lock_container = create_web_container(FALSE, TRUE);
+    ensure_fullscreen(lock_container);
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (lock_container), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (lock_container), TRUE);
@@ -513,9 +514,9 @@ int main(int argc, char **argv)
     grab = gs_grab_new ();
     gtk_widget_show_all(lock_container);
 
-    gint height = gdk_screen_get_height(gdk_screen_get_default());
-    gint width = gdk_screen_get_width(gdk_screen_get_default());
-    gdk_window_move_resize (gdkwindow, 0, 0, width, height);
+    /*gint height = gdk_screen_get_height(gdk_screen_get_default());*/
+    /*gint width = gdk_screen_get_width(gdk_screen_get_default());*/
+    /*gdk_window_move_resize (gdkwindow, 0, 0, width, height);*/
 
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
     gdk_window_stick(gdkwindow);
