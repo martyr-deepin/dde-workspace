@@ -32,7 +32,7 @@
 
 #define DEEPIN_SOFTWARE_CENTER_DATE_DIR    "/usr/share/deepin-software-center/data"
 #define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATE_DIR"/data_newest_id.ini"
-#define DESKTOP_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATE_DIR"/update/%s/desktop/desktop.db"
+#define DESKTOP_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATE_DIR"/update/%s/desktop/new_desktop.db"
 
 
 PRIVATE
@@ -57,8 +57,8 @@ gboolean _need_to_update(const char* db_path)
 
 const gchar* get_category_db_path()
 {
-    // the path to db has fixed 65 bytes, and uuid is 35 or 36 bytes.
-#define PATH_LEN 102
+    // the path to db has fixed 69 bytes, and uuid is 35 or 36 bytes.
+#define PATH_LEN 106
     static gchar db_path[PATH_LEN] = {0};
 
     if (_need_to_update(db_path)) {
@@ -116,6 +116,13 @@ int find_category_id(const char* category_name)
 
     if (_category_info == NULL) {
         _category_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+        char const* category_names[] = {
+            INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
+            INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
+        };
+        int category_num = G_N_ELEMENTS(category_names);
+        for (int i = 0; i < category_num; ++i)
+            g_hash_table_insert(_category_info, (gpointer)category_names[i], GINT_TO_POINTER(i));
         const char* sql = "select x_category_name, first_category_index from x_category;";
         _search_database(_get_x_category_db_path(), sql,
                          (SQLEXEC_CB)_get_all_possible_x_categories, _category_info);
@@ -179,7 +186,7 @@ PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0') {
-        int category_id = (int)g_strtod(argv[0], NULL);
+        int category_id = find_category_id(_(argv[0]));
         *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
     }
 
@@ -188,9 +195,14 @@ int _get_all_possible_categories(GList** categories, int argc, char** argv, char
 
 GList* get_deepin_categories(GDesktopAppInfo* info)
 {
+    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     GList* categories = NULL;
-    GString* sql = g_string_new("select first_category_index from desktop where desktop_path = \"");
-    g_string_append(sql, g_desktop_app_info_get_filename(info));
+    GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
+    char** app_name = g_strsplit(basename, ".", -1);
+    g_free(basename);
+
+    g_string_append(sql, app_name[0]);
+    g_strfreev(app_name);
     g_string_append(sql, "\";");
     _search_database(get_category_db_path(), sql->str,
                      (SQLEXEC_CB)_get_all_possible_categories,
@@ -206,13 +218,13 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
-    g_ptr_array_add(infos, g_strdup(_(argv[1])));
+    g_ptr_array_add(infos, argv[0][0] != '\0' ? _(argv[0]) : OTHER);
     return 0;
 }
 
 void _load_category_info(GPtrArray* category_infos)
 {
-    const char* sql_category_info = "select distinct first_category_index, first_category_name from category_name group by first_category_index;";
+    const char* sql_category_info = "select distinct first_category_name from desktop;";
     if (!_search_database(get_category_db_path(), sql_category_info,
                           (SQLEXEC_CB)_fill_category_info, category_infos)) {
         const char* const category_names[] = {
