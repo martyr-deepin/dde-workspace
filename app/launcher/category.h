@@ -27,6 +27,20 @@
 #define CATEGORY_END_TAG -100
 #define ALL_CATEGORY_ID (-1)
 #define OTHER_CATEGORY_ID (-2)
+
+#define ALL _("all")
+#define INTERNET _("internet")
+#define MULTIMEDIA _("multimedia")
+#define GAMES _("games")
+#define GRAPHICS _("graphics")
+#define PRODUCTIVITY _("productivity")
+#define INDUSTRY _("industry")
+#define EDUCATION _("education")
+#define DEVELOPMENT _("development")
+#define SYSTEM _("system")
+#define UTILITIES _("utilities")
+#define OTHER _("other")
+
 typedef int (*SQLEXEC_CB) (void*, int, char**, char**);
 
 const char* get_category_db_path();

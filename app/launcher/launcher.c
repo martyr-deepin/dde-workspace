@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
+    /* gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher"); */
 
     get_screen_info();
     set_default_theme("Deepin");
@@ -251,10 +251,19 @@ int main(int argc, char* argv[])
     return 0;
 }
 
+
+/**
+ * @brief - key: the category id
+ *          value: a list of applications id (md5 basename of path)
+ */
+static GHashTable* _category_table = NULL;
+
+
 JS_EXPORT_API
 void launcher_exit_gui()
 {
     g_key_file_free(k_apps);
+    g_hash_table_destroy(_category_table);
     gtk_main_quit();
 }
 
@@ -266,20 +275,19 @@ void launcher_notify_workarea_size()
             screen_width, screen_height);
 }
 
-/**
- * @brief - key: the category id
- *          value: a list of applications id (md5 basename of path)
- */
-static GHashTable* _category_table = NULL;
+
+PRIVATE
+void ptr_array_free(gpointer data)
+{
+    g_ptr_array_free((GPtrArray*)data, TRUE);
+}
 
 
 PRIVATE
 void _append_to_category(const char* path, GList* cs)
 {
-    if (_category_table == NULL) {
-        //TODO new_with_full
-        _category_table = g_hash_table_new(g_direct_hash, g_direct_equal);
-    }
+    if (_category_table == NULL)
+        _category_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, ptr_array_free);
 
     GPtrArray* l = NULL;
 
@@ -338,7 +346,7 @@ JS_EXPORT_API
 JSObjectRef launcher_get_items_by_category(double _id)
 {
     int id = _id;
-    if (id == -1)
+    if (id == ALL_CATEGORY_ID)
         return _init_category_table();
 
     JSObjectRef items = json_array_create();
@@ -351,7 +359,6 @@ JSObjectRef launcher_get_items_by_category(double _id)
     JSContextRef cxt = get_global_context();
     for (int i = 0; i < l->len; ++i) {
         const char* path = g_ptr_array_index(l, i);
-        g_debug("insert category(name: %s, id: %d) into category(id: %d)\n", path, i, id);
         json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
     }
 
@@ -442,7 +449,6 @@ PRIVATE
 void _insert_category(JSObjectRef categories, int array_index, int id, const char* name)
 {
     JSObjectRef item = json_create();
-    g_debug("insert category(name: %s, id: %d) into category list\n", name, id);
     json_append_number(item, "ID", id);
     json_append_string(item, "Name", name);
     json_array_insert(categories, array_index, item);
@@ -453,14 +459,13 @@ void _record_categories(JSObjectRef categories, const char* names[], int num)
 {
     int index = 1;
     for (int i = 0; i < num; ++i) {
-        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i))) {
+        if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i)))
             _insert_category(categories, index++, i, names[i]);
-        }
     }
 
     if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(OTHER_CATEGORY_ID))) {
-        int last_index = num - 1;
-        _insert_category(categories, index, OTHER_CATEGORY_ID, names[last_index]);
+        int other_category_id = num - 1;
+        _insert_category(categories, index, OTHER_CATEGORY_ID, names[other_category_id]);
     }
 }
 
@@ -469,21 +474,29 @@ JSObjectRef launcher_get_categories()
 {
     JSObjectRef categories = json_array_create();
 
-    _insert_category(categories, 0, ALL_CATEGORY_ID, _("all"));
+    _insert_category(categories, 0, ALL_CATEGORY_ID, ALL);
 
-    const char* names[] = {_("internet"), _("multimedia"), _("games"),
-        _("graphics"), _("productivity"), _("industry"), _("education"),
-        _("development"), _("system"), _("utilities"), _("other")};
+    const char* names[] = {
+        INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
+        INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
+        OTHER
+    };
 
     int category_num = 0;
     const GPtrArray* infos = get_all_categories_array();
 
     if (infos == NULL) {
-        category_num = G_N_ELEMENTS(names) - 1;
+        category_num = G_N_ELEMENTS(names);
     } else {
         category_num = infos->len;
         for (int i = 0; i < category_num; ++i) {
-            names[i] = (char*)g_ptr_array_index(infos, i);
+            char* name = g_ptr_array_index(infos, i);
+
+            extern int find_category_id(const char* category_name);
+            int id = find_category_id(name);
+            int index = id == OTHER_CATEGORY_ID ? category_num - 1 : id;
+
+            names[index] = name;
         }
     }
 

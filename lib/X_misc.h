@@ -62,4 +62,6 @@ gboolean get_atom_value_by_atom(Display* dsp, Window id, Atom atom, gpointer res
                                 CallbackFunc callback, gulong index);
 gboolean get_atom_value_by_name(Display* dsp, Window id, const char* name, gpointer res,
                                 CallbackFunc callback, gulong index);
+
+void ensure_fullscreen(GtkWidget* widget);
 #endif
