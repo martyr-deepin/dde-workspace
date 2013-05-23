@@ -42,7 +42,7 @@ _set_adaptive_height = ->
 # value: a list of Item's id which is in category
 category_infos = []
 _load_category_infos = (cat_id)->
-    if cat_id == -1
+    if cat_id == ALL_APPLICATION_CATEGORY_ID
         frag = document.createDocumentFragment()
         category_infos[cat_id] = []
         for own key, value of applications

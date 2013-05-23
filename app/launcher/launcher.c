@@ -346,7 +346,7 @@ JS_EXPORT_API
 JSObjectRef launcher_get_items_by_category(double _id)
 {
     int id = _id;
-    if (id == -1)
+    if (id == ALL_CATEGORY_ID)
         return _init_category_table();
 
     JSObjectRef items = json_array_create();
@@ -464,8 +464,8 @@ void _record_categories(JSObjectRef categories, const char* names[], int num)
     }
 
     if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(OTHER_CATEGORY_ID))) {
-        int last_index = num - 1;
-        _insert_category(categories, index, OTHER_CATEGORY_ID, names[last_index]);
+        int other_category_id = num - 1;
+        _insert_category(categories, index, OTHER_CATEGORY_ID, names[other_category_id]);
     }
 }
 
@@ -489,6 +489,15 @@ JSObjectRef launcher_get_categories()
         category_num = G_N_ELEMENTS(names);
     } else {
         category_num = infos->len;
+        for (int i = 0; i < category_num; ++i) {
+            char* name = g_ptr_array_index(infos, i);
+
+            extern int find_category_id(const char* category_name);
+            int id = find_category_id(name);
+            int index = id == OTHER_CATEGORY_ID ? category_num - 1 : id;
+
+            names[index] = name;
+        }
     }
 
     _record_categories(categories, names, category_num);
