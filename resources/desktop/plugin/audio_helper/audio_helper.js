@@ -401,6 +401,7 @@
 
       this.id = id;
       Lines.__super__.constructor.apply(this, arguments);
+      this.current_value = 0;
       MIN_WIDTH = 14;
       MID_WIDTH = 16;
       BIG_WIDTH = 18;
@@ -414,6 +415,7 @@
       this.lines.push(this.create_line(HUGE_WIDTH));
       this.lines.push(this.create_line(BIG_WIDTH));
       this.lines.push(this.create_line(MIN_WIDTH));
+      this.lines.reverse();
     }
 
     Lines.prototype.create_line = function(width) {
@@ -424,16 +426,20 @@
       return line;
     };
 
-    Lines.prototype.active_line = function() {
-      var i, line, _i, _len, _ref, _results;
-
-      _ref = this.lines;
-      _results = [];
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        line = _ref[i];
-        _results.push(line.style.webkitAnimation = "blink " + (i + 1 / 2.0) + "s linear infinite");
+    Lines.prototype.active_line = function(n) {
+      if (n > this.lines.length) {
+        return;
       }
-      return _results;
+      if (n > this.current_value) {
+        while (n > this.current_value) {
+          this.lines[this.current_value++].style.background = "#10fdfb";
+        }
+      } else if (n < this.current_value) {
+        while (n < this.current_value) {
+          this.lines[this.current_value--].style.background = "white";
+        }
+      }
+      return this.current_value = clamp(n, 0, this.lines.length - 1);
     };
 
     return Lines;
@@ -454,7 +460,7 @@
     }
 
     AudioHelper.prototype.do_click = function(e) {
-      return this.lines.active_line();
+      return this.lines.active_line(e.detail - 1);
     };
 
     return AudioHelper;
