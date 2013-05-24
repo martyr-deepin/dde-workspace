@@ -43,6 +43,8 @@ o_table = null
 all_item = new Array
 # special items on desktop
 speical_item = new Array
+# all widget items on grid
+widget_item = new Array
 # all selected items on desktop
 selected_item = new Array
 # the last widget which been operated last time
@@ -169,7 +171,7 @@ clear_all_positions = ->
 place_desktop_items = ->
     init_occupy_table()
 
-    total_item = speical_item.concat(all_item)
+    total_item = speical_item.concat(all_item).concat(widget_item)
     not_founds = []
     for i in total_item
         if not (w = Widget.look_up(i))?
