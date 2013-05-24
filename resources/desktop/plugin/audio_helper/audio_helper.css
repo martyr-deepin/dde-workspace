@@ -1,7 +1,41 @@
-.AudioHelper img {
-    border: 1px dashed rgba(0, 0, 0, 0);
+.AudioHelper {
+    width: 156px;
+    height: 156px;
+    position: fixed;
+    left: 400px;
 }
-.AudioHelper:hover img {
-    cursor: pointer;
-    border: 1px dashed red;
+.AudioHelper .running {
+    position: absolute;
+    opacity: 0;
 }
+
+.Lines {
+    position: absolute;
+    top: 52px;
+    left: 66px;
+    width: 24px;
+    height: 40px;
+    /*background: rgba(100, 100, 0, 0.2);*/
+}
+
+.line {
+    margin: 2px auto;
+    background: white;
+    height: 2px;
+    -webkit-transition: background 1s ease-in;
+}
+
+@-webkit-keyframes running {
+    0% { -webkit-transform:rotate(0deg); }
+   100% { -webkit-transform:rotate(360deg); }
+}
+@-webkit-keyframes blink {
+    0% { background: rgba(0, 0, 0, 0); }
+    100% { background: rgba(255,255,255, 1); }
+}
+
+.AudioHelper .running:hover {
+    opacity: 1;
+    -webkit-animation: running 1.5s infinite linear;
+}
+
