@@ -4,3 +4,6 @@ Name=Deepin Dock
 Comment[zh_CN]=深度Dock
 Exec=dock
 NoDisplay=true
+X-GNOME-Autostart-Phase=Panel
+X-GNOME-Autostart-Notify=true
+X-GNOME-AutoRestart=true
