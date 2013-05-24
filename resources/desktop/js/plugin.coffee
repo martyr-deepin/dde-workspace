@@ -1,17 +1,22 @@
+class PluginHandle extends Widget
+
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
         @_position = {x:-1, y:-1, width:1, height:1}
         attach_item_to_grid(@)
         widget_item.push(@id)
-
+        @handle = new PluginHandle("handle"+@id)
+        @element.appendChild(@handle.element)
 
     get_id : =>
         @id
 
-
     get_pos : =>
-        ret_pos = {x : @_position.x, y : @_position.y, width : @_position.width, height : @_position.height}
+        x : @_position.x
+        y : @_position.y
+        width : @_position.width
+        height : @_position.height
 
 
     set_pos : (info) =>
@@ -28,9 +33,11 @@ class DesktopPluginItem extends Widget
 
 class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
-        @host = new DesktopPluginItem(@name).element
-        super(@path, @name, @host)
-
+        @item = new DesktopPluginItem(@name)
+        super(@path, @name, @item.element)
+    set_pos: (info)->
+        @item.set_pos(info)
+        move_to_somewhere(@item, info)
 
 load_plugins = ->
     for p in DCore.get_plugins("desktop")

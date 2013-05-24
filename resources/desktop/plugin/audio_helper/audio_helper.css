@@ -8,7 +8,7 @@
 }
 
 .Lines {
-    position: absolute;
+    position: relative;
     top: 52px;
     left: 66px;
     width: 24px;
