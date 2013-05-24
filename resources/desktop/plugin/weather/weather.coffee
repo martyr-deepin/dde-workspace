@@ -385,8 +385,8 @@ class Weather
         return src
 
 plugin = window._plugins["weather"]
-plugin.inject_css("#{plugin.path}/weather.css")
-plugin.inject_css("#{plugin.path}/citymoremenu.css")
+plugin.inject_css("weather")
+plugin.inject_css("citymoremenu")
 
 plugin.inject_css("weather")
 plugin.wrap_element(new Weather(plugin.id).element)

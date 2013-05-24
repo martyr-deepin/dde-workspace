@@ -34,31 +34,19 @@ char* dcore_get_theme_icon(const char* name, double size)
 }
 
 
-PRIVATE
-const char* _is_plugin(const char* path, const char* dir_name)
-{
-    GDir* plugin_dir = g_dir_open(path, 0, NULL);
-    char* plugin_file_name = g_strconcat(dir_name, ".js", NULL);
-    const char* filename = NULL;
-
-    if (plugin_dir != NULL) {
-        const char* file_name = NULL;
-        while ((file_name = g_dir_read_name(plugin_dir)) != NULL) {
-            if (g_str_equal(plugin_file_name, file_name)) {
-                filename = file_name;
-                break;
-            }
-        }
-    }
-
-    g_dir_close(plugin_dir);
-    g_free(plugin_file_name);
-
-    return filename;
-}
-
-
 #define IS_DIR(path) g_file_test(path, G_FILE_TEST_IS_DIR)
+
+
+gboolean is_plugin(char const* path)
+{
+    char* basename = g_path_get_basename(path);
+    char* js_name = g_strconcat(basename, ".js", NULL);
+    g_free(basename);
+    char* js_file_path = g_build_filename(path, js_name, NULL);
+    g_free(js_name);
+
+    return g_file_test(js_file_path, G_FILE_TEST_EXISTS);
+}
 
 
 JS_EXPORT_API
@@ -73,13 +61,16 @@ JSValueRef dcore_get_plugins(const char* app_name)
         const char* file_name = NULL;
         for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
             char* full_path = g_build_filename(path, file_name, NULL);
-            const char* filename = NULL;
 
-            if (IS_DIR(full_path) && (filename = _is_plugin(full_path, file_name)) != NULL) {
-                char* js_path = g_build_filename(full_path, filename, NULL);
+            if (IS_DIR(full_path) && is_plugin(full_path)) {
+                char* js_name = g_strconcat(file_name, ".js", NULL);
+                char* js_path = g_build_filename(full_path, js_name, NULL);
+                g_free(js_name);
+
                 JSValueRef v = jsvalue_from_cstr(ctx, js_path);
-                g_free(js_path);
                 json_array_insert(array, i++, v);
+
+                g_free(js_path);
             }
 
             g_free(full_path);
