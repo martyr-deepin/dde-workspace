@@ -23,6 +23,13 @@ FILE_TYPE_DIR = 2
 FILE_TYPE_RICH_DIR = 3
 FILE_TYPE_INVALID_LINK = 4
 
+
+attach_item_to_grid = (w) ->
+    if w? and w.element?
+        div_grid.appendChild(w.element)
+    return
+
+
 create_item = (entry) ->
     w = null
     Type = DCore.DEntry.get_type(entry)
@@ -49,7 +56,7 @@ create_item = (entry) ->
         else
             echo "don't support type"
 
-    if w? then div_grid.appendChild(w.element)
+    attach_item_to_grid(w)
     return w
 
 

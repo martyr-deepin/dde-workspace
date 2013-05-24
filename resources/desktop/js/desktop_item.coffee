@@ -154,7 +154,6 @@ class Item extends Widget
         return
 
 
-
     do_mouseover : (evt) ->
         @display_hover()
         return

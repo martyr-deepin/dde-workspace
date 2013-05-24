@@ -24,6 +24,8 @@ DCore.Desktop.emit_webview_ok()
 
 load_speical_desktop_items()
 load_desktop_all_items()
+load_plugins()
+
 place_desktop_items()
 
 DCore.Desktop.test()

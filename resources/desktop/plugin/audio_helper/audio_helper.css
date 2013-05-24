@@ -2,7 +2,6 @@
     width: 156px;
     height: 156px;
     position: fixed;
-    left: 400px;
 }
 .AudioHelper .running {
     position: absolute;

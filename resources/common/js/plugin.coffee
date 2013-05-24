@@ -3,9 +3,10 @@ class PluginManager
 
 class Plugin
     constructor: (@path, @name, @host)->
+        @id = "plugin:" + @path + @name
         window._plugin = @
         @inject_js(@name)
-        @id = "plugin:" + @path + @name
+
 
     wrap_element: (child)->
         @host.appendChild(child)
