@@ -273,9 +273,9 @@ static FileOpsResponse* g_move_response = NULL; //keep track of user-specified a
 gboolean
 fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 {
-    g_prompt = prompt;    
+    g_prompt = prompt;
     g_move_response = NULL;
- 
+
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
 
@@ -632,11 +632,11 @@ _copy_files_async (GFile* src, gpointer data)
             char* ext_name = strrchr (tmp, '.');
             if (ext_name != NULL)
             {
-                *ext_name = NULL;
+                *ext_name = '\0';
                 ext_name ++;
             }
             char* stem_name = tmp;
-            char* tmp_dest = g_strconcat (stem_name, 
+            char* tmp_dest = g_strconcat (stem_name,
                                           " (", _("Copy"), ")", ".",
                                           ext_name,
                                           NULL);
@@ -646,7 +646,7 @@ _copy_files_async (GFile* src, gpointer data)
             dest = g_file_new_for_uri (tmp_dest);
             g_free (tmp_dest);
             _data->dest_file = dest;
-        }	
+        }
 
 	g_file_copy (src, dest,
 		     G_FILE_COPY_NOFOLLOW_SYMLINKS,

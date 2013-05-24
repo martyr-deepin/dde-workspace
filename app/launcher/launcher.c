@@ -557,7 +557,7 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
     char* desktop = get_desktop_dir(FALSE);
     const char* item_path = g_desktop_app_info_get_filename(item);
     char* basename = g_path_get_basename(item_path);
-    char* desktop_item_path = g_strconcat(desktop, basename, NULL);
+    char* desktop_item_path = g_build_filename(desktop, basename, NULL);
     g_free(desktop);
 
     GFile* desktop_item = g_file_new_for_path(desktop_item_path);
