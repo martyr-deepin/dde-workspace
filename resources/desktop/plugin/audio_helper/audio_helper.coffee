@@ -38,8 +38,8 @@ class Lines extends Widget
 class AudioHelper extends Widget
     constructor: (@id) ->
         super
-        #@img = create_img("running", "#{_plugin.path}/running.png", @element)
-        @element.style.background = "url(#{_plugin.path}/static.png)"
+        #@img = create_img("running", "#{plugin.path}/running.png", @element)
+        @element.style.background = "url(#{plugin.path}/static.png)"
         @lines = new Lines()
         @element.appendChild(@lines.element)
         @active_id = -1
@@ -47,12 +47,13 @@ class AudioHelper extends Widget
         @lines.active_line(e.detail - 1)
 
 
-
-_plugin.inject_css("audio_helper")
-_plugin.wrap_element(new AudioHelper(_plugin.id).element)
-_plugin.set_pos(
-    x: 5
-    y: 0
+echo "plugin audio"
+plugin = window._plugins["audio_helper"]
+plugin.inject_css("audio_helper")
+plugin.wrap_element(new AudioHelper(plugin.id).element)
+plugin.set_pos(
+    x: 10
+    y: 7
     width: 2
     height: 2
 )

@@ -4,7 +4,8 @@ class PluginManager
 class Plugin
     constructor: (@path, @name, @host)->
         @id = "plugin:" + @path + @name
-        window._plugin = @
+        window._plugins = {} if not window._plugins
+        window._plugins[@name] = @
         @inject_js(@name)
 
 
@@ -12,7 +13,7 @@ class Plugin
         @host.appendChild(child)
 
     inject_js: (name) ->
-        @js_element = create_element("script", null, @host)
+        @js_element = create_element("script", null, document.body)
         @js_element.src = "#{@path}/#{name}.js"
 
     inject_css: (name)->

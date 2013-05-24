@@ -1,0 +1,15 @@
+.more_city_menu{
+    position:absolute;
+    /*top: 70px;*/
+}
+.chooseprov,
+.choosecity,
+.choosedist{
+    position:relative;
+    float: left;
+    margin-left: 10px;
+    width: 85px;
+    opacity: 0.8;
+    border:2px solid #DCDCDC;
+    text-align: center;  
+}
