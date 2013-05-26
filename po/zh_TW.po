@@ -176,7 +176,7 @@ msgstr "貼上"
 
 #: ../resources/desktop/js/grid.coffee:858
 msgid "Personalize"
-msgstr "貼上"
+msgstr "個人化"
 
 #: ../resources/desktop/js/grid.coffee:856
 msgid "Display settings"
