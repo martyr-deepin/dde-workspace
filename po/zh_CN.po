@@ -850,12 +850,12 @@ msgid "_Display settings"
 msgstr "显示设置(_D)"
 
 #: ../resources/desktop/js/grid.coffee:823
-msgid "Desktop _settings"
-msgstr "桌面设置(_S)"
+msgid "D_esktop settings"
+msgstr "桌面设置(_E)"
 
 #: ../resources/desktop/js/grid.coffee:824
-msgid "P_ersonalize"
-msgstr "个性化(_E)"
+msgid "Pe_rsonalize"
+msgstr "个性化(_R)"
 
 #: ../resources/desktop/js/desktop_item.coffee:552
 #: ../resources/desktop/js/desktop_item.coffee:1070

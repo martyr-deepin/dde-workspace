@@ -820,8 +820,8 @@ grid_right_click = (evt) ->
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
     menus.push([5, _("_Display settings")])
-    menus.push([6, _("Desktop _settings")])
-    menus.push([7, _("P_ersonalize")])
+    menus.push([6, _("D_esktop settings")])
+    menus.push([7, _("Pe_rsonalize")])
 
     div_grid.parentElement.contextMenu = build_menu(menus)
     return
