@@ -9,8 +9,10 @@ class DesktopPluginItem extends Widget
         @handle = new PluginHandle("handle"+@id)
         @element.appendChild(@handle.element)
 
+
     get_id : =>
         @id
+
 
     get_pos : =>
         x : @_position.x
@@ -20,7 +22,10 @@ class DesktopPluginItem extends Widget
 
 
     set_pos : (info) =>
-        [@_position.x, @_position.y, @_position.width, @_position.height] = [info.x, info.y, info.width, info.height]
+        @_position.x = info.x
+        @_position.y = info.y
+        @_position.width = info.width
+        @_position.height = info.height
         return
 
 
@@ -35,9 +40,12 @@ class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
         @item = new DesktopPluginItem(@name)
         super(@path, @name, @item.element)
+
+
     set_pos: (info)->
         @item.set_pos(info)
         move_to_somewhere(@item, info)
+
 
 load_plugins = ->
     for p in DCore.get_plugins("desktop")
