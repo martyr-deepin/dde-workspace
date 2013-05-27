@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 10:02+0800\n"
+"POT-Creation-Date: 2013-05-27 15:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,16 +257,19 @@ msgstr "属性"
 
 #: ../resources/desktop/js/desktop_item.coffee:1312
 #: ../resources/desktop/js/desktop_item.coffee:1328
+#: ../resources/desktop/js/desktop_item.coffee:1327
 msgid "Computer"
 msgstr "计算机"
 
 #: ../resources/desktop/js/desktop_item.coffee:1361
 #: ../resources/desktop/js/desktop_item.coffee:1377
+#: ../resources/desktop/js/desktop_item.coffee:1376
 msgid "Home"
 msgstr "主文件夹"
 
 #: ../resources/desktop/js/desktop_item.coffee:1451
 #: ../resources/desktop/js/desktop_item.coffee:1467
+#: ../resources/desktop/js/desktop_item.coffee:1466
 msgid "Trash"
 msgstr "回收站"
 
@@ -281,11 +284,13 @@ msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1514
 #: ../resources/desktop/js/desktop_item.coffee:1530
+#: ../resources/desktop/js/desktop_item.coffee:1529
 msgid "items"
 msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1516
 #: ../resources/desktop/js/desktop_item.coffee:1532
+#: ../resources/desktop/js/desktop_item.coffee:1531
 msgid "item"
 msgstr "项"
 
@@ -306,6 +311,7 @@ msgid "Run"
 msgstr "运行"
 
 #: ../resources/dock/js/launcher.coffee:33
+#: ../resources/dock/js/launcher.coffee:34
 msgid "_Undock"
 msgstr "移除驻留(_U)"
 
@@ -580,6 +586,7 @@ msgid "_Display"
 msgstr "显示(_D)"
 
 #: ../lib/dentry/mime_actions.c:150 ../resources/dock/js/launcher.coffee:31
+#: ../resources/dock/js/launcher.coffee:32
 msgid "_Run"
 msgstr "运行(_R)"
 
@@ -595,6 +602,7 @@ msgstr "解散"
 
 #: ../resources/desktop/js/desktop_item.coffee:1546
 #: ../resources/desktop/js/desktop_item.coffee:1563
+#: ../resources/desktop/js/desktop_item.coffee:1562
 msgid "Deepin Software Center"
 msgstr "深度软件中心"
 
@@ -648,6 +656,9 @@ msgstr "其他"
 #: ../resources/desktop/js/desktop_item.coffee:965
 #: ../resources/desktop/js/desktop_item.coffee:1087
 #: ../resources/desktop/js/desktop_item.coffee:1277
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
 msgid "The link has expired, whether to delete?"
 msgstr "该链接已经失效，是否要删除？"
 
@@ -663,6 +674,7 @@ msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
 
 #: ../resources/desktop/js/desktop_item.coffee:588
 #: ../resources/desktop/js/desktop_item.coffee:600
+#: ../resources/desktop/js/desktop_item.coffee:599
 msgid "Can not open this file."
 msgstr "无法打开此文件"
 
@@ -674,6 +686,10 @@ msgstr "无法打开此文件"
 #: ../resources/desktop/js/desktop_item.coffee:965
 #: ../resources/desktop/js/desktop_item.coffee:1087
 #: ../resources/desktop/js/desktop_item.coffee:1277
+#: ../resources/desktop/js/desktop_item.coffee:599
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
 msgid "Warning"
 msgstr "警告"
 
@@ -787,5 +803,110 @@ msgid "show the weather plugin again."
 msgstr "重新显示天气插件。"
 
 #: ../resources/launcher/js/grid.coffee:83
+#: ../resources/desktop/js/desktop_item.coffee:550
+#: ../resources/desktop/js/desktop_item.coffee:752
+#: ../resources/desktop/js/desktop_item.coffee:1068
+#: ../resources/desktop/js/desktop_item.coffee:1344
+#: ../resources/desktop/js/desktop_item.coffee:1431
+#: ../resources/desktop/js/desktop_item.coffee:1525
+#: ../resources/desktop/js/desktop_item.coffee:1578
 msgid "_Open"
 msgstr "打开(_O)"
+
+#: ../resources/desktop/js/grid.coffee:809
+msgid "_Sort by"
+msgstr "排序方式(_S)"
+
+#: ../resources/desktop/js/grid.coffee:810
+msgid "_Name"
+msgstr "名称(_N)"
+
+#: ../resources/desktop/js/grid.coffee:811
+msgid "Last modified _time"
+msgstr "最近修改时间(_T)"
+
+#: ../resources/desktop/js/grid.coffee:814
+msgid "_New"
+msgstr "新建(_N)"
+
+#: ../resources/desktop/js/grid.coffee:815
+msgid "_Folder"
+msgstr "文件夹(_F)"
+
+#: ../resources/desktop/js/grid.coffee:816
+msgid "_Text document"
+msgstr "文本文档(_T)"
+
+#: ../resources/desktop/js/grid.coffee:819
+msgid "Open _terminal here"
+msgstr "在此打开终端(_T)"
+
+#: ../resources/desktop/js/grid.coffee:820
+msgid "_Paste"
+msgstr "粘贴(_P)"
+
+#: ../resources/desktop/js/grid.coffee:822
+msgid "_Display settings"
+msgstr "显示设置(_D)"
+
+#: ../resources/desktop/js/grid.coffee:823
+msgid "D_esktop settings"
+msgstr "桌面设置(_E)"
+
+#: ../resources/desktop/js/grid.coffee:824
+msgid "Pe_rsonalize"
+msgstr "个性化(_R)"
+
+#: ../resources/desktop/js/desktop_item.coffee:552
+#: ../resources/desktop/js/desktop_item.coffee:1070
+msgid "Cu_t"
+msgstr "剪切(_T)"
+
+#: ../resources/desktop/js/desktop_item.coffee:553
+#: ../resources/desktop/js/desktop_item.coffee:1071
+msgid "_Copy"
+msgstr "复制(_C)"
+
+#: ../resources/desktop/js/desktop_item.coffee:555
+#: ../resources/desktop/js/desktop_item.coffee:754
+msgid "_Rename"
+msgstr "重命名(_R)"
+
+#: ../resources/desktop/js/desktop_item.coffee:556
+#: ../resources/desktop/js/desktop_item.coffee:758
+#: ../resources/desktop/js/desktop_item.coffee:1073
+#: ../resources/desktop/js/desktop_item.coffee:1296
+msgid "_Delete"
+msgstr "删除(_D)"
+
+#: ../resources/desktop/js/desktop_item.coffee:558
+#: ../resources/desktop/js/desktop_item.coffee:1075
+#: ../resources/desktop/js/desktop_item.coffee:1346
+#: ../resources/desktop/js/desktop_item.coffee:1433
+msgid "_Properties"
+msgstr "属性(_P)"
+
+#: ../resources/desktop/js/desktop_item.coffee:564
+#: ../resources/desktop/js/desktop_item.coffee:571
+msgid "Co_mpress"
+msgstr "压缩(_M)"
+
+#: ../resources/desktop/js/desktop_item.coffee:567
+#: ../resources/desktop/js/desktop_item.coffee:572
+msgid "_Extract"
+msgstr "解压(_E)"
+
+#: ../resources/desktop/js/desktop_item.coffee:568
+#: ../resources/desktop/js/desktop_item.coffee:573
+msgid "Extract _Here"
+msgstr "解压到此处(_H)"
+
+#: ../resources/desktop/js/desktop_item.coffee:756
+msgid "_Ungroup"
+msgstr "解散(_U)"
+
+#: ../resources/desktop/js/desktop_item.coffee:1529
+#: ../resources/desktop/js/desktop_item.coffee:1531
+#: ../resources/desktop/js/desktop_item.coffee:1533
+msgid "_Clean up"
+msgstr "清空(_C)"
