@@ -152,11 +152,6 @@ msgstr "排序"
 msgid "Name"
 msgstr "名稱"
 
-#: ../resources/desktop/js/grid.coffee:845
-#: ../resources/desktop/js/grid.coffee:809
-msgid "Last modified time"
-msgstr "最近修改時間"
-
 #: ../resources/desktop/js/grid.coffee:848
 #: ../resources/desktop/js/grid.coffee:812
 msgid "New"
@@ -192,38 +187,12 @@ msgstr "個人化"
 msgid "Display settings"
 msgstr "顯示設定"
 
-#: ../resources/desktop/js/desktop_item.coffee:539
-#: ../resources/desktop/js/desktop_item.coffee:741
-#: ../resources/desktop/js/desktop_item.coffee:1055
-#: ../resources/desktop/js/desktop_item.coffee:1329
-#: ../resources/desktop/js/desktop_item.coffee:1416
-#: ../resources/desktop/js/desktop_item.coffee:1510
-#: ../resources/desktop/js/desktop_item.coffee:1562
-#: ../resources/launcher/js/grid.coffee:83
-#: ../resources/desktop/js/desktop_item.coffee:551
-#: ../resources/desktop/js/desktop_item.coffee:753
-#: ../resources/desktop/js/desktop_item.coffee:1069
-#: ../resources/desktop/js/desktop_item.coffee:1345
-#: ../resources/desktop/js/desktop_item.coffee:1432
-#: ../resources/desktop/js/desktop_item.coffee:1526
-#: ../resources/desktop/js/desktop_item.coffee:1579
-msgid "Open"
-msgstr "打開"
-
 #: ../resources/desktop/js/desktop_item.coffee:541
 #: ../resources/desktop/js/desktop_item.coffee:1057
 #: ../resources/desktop/js/desktop_item.coffee:553
 #: ../resources/desktop/js/desktop_item.coffee:1071
 msgid "Cut"
 msgstr "剪下"
-
-#: ../resources/desktop/js/desktop_item.coffee:542
-#: ../resources/desktop/js/desktop_item.coffee:1058
-#: ../resources/desktop/js/desktop_item.coffee:554
-#: ../resources/desktop/js/desktop_item.coffee:1072
-#: ../lib/dentry/fileops.c:640
-msgid "Copy"
-msgstr "複製"
 
 #: ../resources/desktop/js/desktop_item.coffee:544
 #: ../resources/desktop/js/desktop_item.coffee:743
@@ -274,15 +243,6 @@ msgid "Trash"
 msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1514
-#: ../resources/desktop/js/desktop_item.coffee:1516
-#: ../resources/desktop/js/desktop_item.coffee:1518
-#: ../resources/desktop/js/desktop_item.coffee:1530
-#: ../resources/desktop/js/desktop_item.coffee:1532
-#: ../resources/desktop/js/desktop_item.coffee:1534
-msgid "Clean up"
-msgstr "清空"
-
-#: ../resources/desktop/js/desktop_item.coffee:1514
 #: ../resources/desktop/js/desktop_item.coffee:1530
 #: ../resources/desktop/js/desktop_item.coffee:1529
 msgid "items"
@@ -305,10 +265,6 @@ msgstr "關閉(_C)"
 #: ../resources/dock/js/clientgroup.coffee:28
 msgid "_Dock me"
 msgstr "駐留(_D)"
-
-#: ../resources/dock/js/launcher.coffee:31
-msgid "Run"
-msgstr "執行"
 
 #: ../resources/dock/js/launcher.coffee:33
 #: ../resources/dock/js/launcher.coffee:34
@@ -598,11 +554,6 @@ msgstr "執行(_R)"
 msgid "Desktop settings"
 msgstr "桌面設定"
 
-#: ../resources/desktop/js/desktop_item.coffee:745
-#: ../resources/desktop/js/desktop_item.coffee:757
-msgid "Ungroup"
-msgstr "解散"
-
 #: ../resources/desktop/js/desktop_item.coffee:1546
 #: ../resources/desktop/js/desktop_item.coffee:1563
 #: ../resources/desktop/js/desktop_item.coffee:1562
@@ -715,13 +666,6 @@ msgstr "隱藏該圖標(_H)"
 #: ../resources/launcher/js/config.coffee:33
 msgid "_Display this icon"
 msgstr "顯示該圖標(_D)"
-
-#: ../resources/desktop/js/desktop_item.coffee:553
-#: ../resources/desktop/js/desktop_item.coffee:560
-#: ../resources/desktop/js/desktop_item.coffee:565
-#: ../resources/desktop/js/desktop_item.coffee:572
-msgid "Compress"
-msgstr "壓縮"
 
 #: ../resources/desktop/js/desktop_item.coffee:556
 #: ../resources/desktop/js/desktop_item.coffee:561

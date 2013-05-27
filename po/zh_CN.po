@@ -142,119 +142,6 @@ msgstr "切换用户"
 msgid "Session"
 msgstr "桌面环境"
 
-#: ../resources/desktop/js/grid.coffee:843
-#: ../resources/desktop/js/grid.coffee:807
-msgid "Sort by"
-msgstr "排序方式"
-
-#: ../resources/desktop/js/grid.coffee:844
-#: ../resources/desktop/js/grid.coffee:808
-msgid "Name"
-msgstr "名称"
-
-#: ../resources/desktop/js/grid.coffee:845
-#: ../resources/desktop/js/grid.coffee:809
-msgid "Last modified time"
-msgstr "最近修改时间"
-
-#: ../resources/desktop/js/grid.coffee:848
-#: ../resources/desktop/js/grid.coffee:812
-msgid "New"
-msgstr "新建"
-
-#: ../resources/desktop/js/grid.coffee:849
-#: ../resources/desktop/js/grid.coffee:813
-msgid "Folder"
-msgstr "文件夹"
-
-#: ../resources/desktop/js/grid.coffee:850
-#: ../resources/desktop/js/grid.coffee:814
-msgid "Text document"
-msgstr "文本文档"
-
-#: ../resources/desktop/js/grid.coffee:853
-#: ../resources/desktop/js/grid.coffee:817
-msgid "Open terminal here"
-msgstr "在此打开终端"
-
-#: ../resources/desktop/js/grid.coffee:854
-#: ../resources/desktop/js/grid.coffee:818
-msgid "Paste"
-msgstr "粘贴"
-
-#: ../resources/desktop/js/grid.coffee:858
-#: ../resources/desktop/js/grid.coffee:822
-msgid "Personalize"
-msgstr "个性化"
-
-#: ../resources/desktop/js/grid.coffee:856
-#: ../resources/desktop/js/grid.coffee:820
-msgid "Display settings"
-msgstr "显示设置"
-
-#: ../resources/desktop/js/desktop_item.coffee:539
-#: ../resources/desktop/js/desktop_item.coffee:741
-#: ../resources/desktop/js/desktop_item.coffee:1055
-#: ../resources/desktop/js/desktop_item.coffee:1329
-#: ../resources/desktop/js/desktop_item.coffee:1416
-#: ../resources/desktop/js/desktop_item.coffee:1510
-#: ../resources/desktop/js/desktop_item.coffee:1562
-#: ../resources/launcher/js/grid.coffee:83
-#: ../resources/desktop/js/desktop_item.coffee:551
-#: ../resources/desktop/js/desktop_item.coffee:753
-#: ../resources/desktop/js/desktop_item.coffee:1069
-#: ../resources/desktop/js/desktop_item.coffee:1345
-#: ../resources/desktop/js/desktop_item.coffee:1432
-#: ../resources/desktop/js/desktop_item.coffee:1526
-#: ../resources/desktop/js/desktop_item.coffee:1579
-msgid "Open"
-msgstr "打开"
-
-#: ../resources/desktop/js/desktop_item.coffee:541
-#: ../resources/desktop/js/desktop_item.coffee:1057
-#: ../resources/desktop/js/desktop_item.coffee:553
-#: ../resources/desktop/js/desktop_item.coffee:1071
-msgid "Cut"
-msgstr "剪切"
-
-#: ../resources/desktop/js/desktop_item.coffee:542
-#: ../resources/desktop/js/desktop_item.coffee:1058
-#: ../resources/desktop/js/desktop_item.coffee:554
-#: ../resources/desktop/js/desktop_item.coffee:1072
-#: ../lib/dentry/fileops.c:640
-msgid "Copy"
-msgstr "复制"
-
-#: ../resources/desktop/js/desktop_item.coffee:544
-#: ../resources/desktop/js/desktop_item.coffee:743
-#: ../resources/desktop/js/desktop_item.coffee:556
-#: ../resources/desktop/js/desktop_item.coffee:755
-msgid "Rename"
-msgstr "重命名"
-
-#: ../resources/desktop/js/desktop_item.coffee:545
-#: ../resources/desktop/js/desktop_item.coffee:747
-#: ../resources/desktop/js/desktop_item.coffee:1060
-#: ../resources/desktop/js/desktop_item.coffee:1281
-#: ../lib/dentry/fileops_delete.c:34
-#: ../resources/desktop/js/desktop_item.coffee:557
-#: ../resources/desktop/js/desktop_item.coffee:759
-#: ../resources/desktop/js/desktop_item.coffee:1074
-#: ../resources/desktop/js/desktop_item.coffee:1297
-msgid "Delete"
-msgstr "删除"
-
-#: ../resources/desktop/js/desktop_item.coffee:547
-#: ../resources/desktop/js/desktop_item.coffee:1062
-#: ../resources/desktop/js/desktop_item.coffee:1331
-#: ../resources/desktop/js/desktop_item.coffee:1418
-#: ../resources/desktop/js/desktop_item.coffee:559
-#: ../resources/desktop/js/desktop_item.coffee:1076
-#: ../resources/desktop/js/desktop_item.coffee:1347
-#: ../resources/desktop/js/desktop_item.coffee:1434
-msgid "Properties"
-msgstr "属性"
-
 #: ../resources/desktop/js/desktop_item.coffee:1312
 #: ../resources/desktop/js/desktop_item.coffee:1328
 #: ../resources/desktop/js/desktop_item.coffee:1327
@@ -272,15 +159,6 @@ msgstr "主文件夹"
 #: ../resources/desktop/js/desktop_item.coffee:1466
 msgid "Trash"
 msgstr "回收站"
-
-#: ../resources/desktop/js/desktop_item.coffee:1514
-#: ../resources/desktop/js/desktop_item.coffee:1516
-#: ../resources/desktop/js/desktop_item.coffee:1518
-#: ../resources/desktop/js/desktop_item.coffee:1530
-#: ../resources/desktop/js/desktop_item.coffee:1532
-#: ../resources/desktop/js/desktop_item.coffee:1534
-msgid "Clean up"
-msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1514
 #: ../resources/desktop/js/desktop_item.coffee:1530
@@ -590,16 +468,6 @@ msgstr "显示(_D)"
 msgid "_Run"
 msgstr "运行(_R)"
 
-#: ../resources/desktop/js/grid.coffee:857
-#: ../resources/desktop/js/grid.coffee:821
-msgid "Desktop settings"
-msgstr "桌面设置"
-
-#: ../resources/desktop/js/desktop_item.coffee:745
-#: ../resources/desktop/js/desktop_item.coffee:757
-msgid "Ungroup"
-msgstr "解散"
-
 #: ../resources/desktop/js/desktop_item.coffee:1546
 #: ../resources/desktop/js/desktop_item.coffee:1563
 #: ../resources/desktop/js/desktop_item.coffee:1562
@@ -712,27 +580,6 @@ msgstr "隐藏该图标(_H)"
 #: ../resources/launcher/js/config.coffee:33
 msgid "_Display this icon"
 msgstr "显示该图标(_D)"
-
-#: ../resources/desktop/js/desktop_item.coffee:553
-#: ../resources/desktop/js/desktop_item.coffee:560
-#: ../resources/desktop/js/desktop_item.coffee:565
-#: ../resources/desktop/js/desktop_item.coffee:572
-msgid "Compress"
-msgstr "压缩"
-
-#: ../resources/desktop/js/desktop_item.coffee:556
-#: ../resources/desktop/js/desktop_item.coffee:561
-#: ../resources/desktop/js/desktop_item.coffee:568
-#: ../resources/desktop/js/desktop_item.coffee:573
-msgid "Extract"
-msgstr "解压"
-
-#: ../resources/desktop/js/desktop_item.coffee:557
-#: ../resources/desktop/js/desktop_item.coffee:562
-#: ../resources/desktop/js/desktop_item.coffee:569
-#: ../resources/desktop/js/desktop_item.coffee:574
-msgid "Extract Here"
-msgstr "解压到此处"
 
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:59
 msgid "choose city"
