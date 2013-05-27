@@ -1,38 +1,47 @@
 .AudioHelper {
-    width: 156px;
-    height: 156px;
+    width: 128px;
+    height: 128px;
+    background: rgba(0, 100, 0, 0.8);
 }
-.AudioHelper .running {
-    position: absolute;
-    opacity: 0;
-}
-
-.Lines {
-    position: relative;
-    top: 52px;
-    left: 66px;
-    width: 24px;
-    height: 40px;
-}
-
-.line {
-    margin: 2px auto;
-    background: white;
-    height: 2px;
-    -webkit-transition: background 0.5s ease-in;
-}
-
 
 @-webkit-keyframes running {
     0% { -webkit-transform:rotate(0deg); }
    100% { -webkit-transform:rotate(360deg); }
-}
-@-webkit-keyframes blink {
-    0% { background: rgba(0, 0, 0, 0); }
-    100% { background: rgba(255,255,255, 1); }
 }
 
 .AudioHelper .running:hover {
     opacity: 1;
     -webkit-animation: running 1.5s infinite linear;
 }
+.AudioHelper .running {
+    position: absolute;
+    opacity: 0;
+}
+@-webkit-keyframes breathing {
+    0% { opacity: 0.0; }
+    50% { opacity: 1; }
+   100% { opacity: 0.0; }
+}
+
+.AudioHelper .light {
+    z-index: -100;
+    position: absolute;
+    opacity: 1.0;
+    -webkit-animation: breathing 1.5s infinite ease-out;
+}
+
+.Lines {
+    position: relative;
+    top: 39px;
+    left: 56px;
+    width: 17px;
+    height: 34px;
+}
+
+.line {
+    margin: 2px auto;
+    background: rgba(0, 0, 0, 0);
+    height: 1px;
+    -webkit-transition: background 0.5s ease-in;
+}
+
