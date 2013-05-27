@@ -80,12 +80,12 @@ class Item extends Widget
         else
             msg = DISPLAY_ICON
         menu = [
-            [1, _("Open")],
+            [1, _("_Open")],
             [],
             [2, msg],
             [],
-            [3, _("Send to desktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
-            [4, _("Send to dock"), s_dock!=null],
+            [3, _("Send to d_esktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
+            [4, _("Send to do_ck"), s_dock!=null],
         ]
 
     @_contextmenu_callback: (item)->

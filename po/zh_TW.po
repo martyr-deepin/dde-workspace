@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-21 10:42+0800\n"
+"POT-Creation-Date: 2013-05-27 10:02+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,42 +143,52 @@ msgid "Session"
 msgstr "桌面環境"
 
 #: ../resources/desktop/js/grid.coffee:843
+#: ../resources/desktop/js/grid.coffee:807
 msgid "Sort by"
 msgstr "排序方式"
 
 #: ../resources/desktop/js/grid.coffee:844
+#: ../resources/desktop/js/grid.coffee:808
 msgid "Name"
 msgstr "名稱"
 
 #: ../resources/desktop/js/grid.coffee:845
+#: ../resources/desktop/js/grid.coffee:809
 msgid "Last modified time"
 msgstr "最近修改時間"
 
 #: ../resources/desktop/js/grid.coffee:848
+#: ../resources/desktop/js/grid.coffee:812
 msgid "New"
 msgstr "新建"
 
 #: ../resources/desktop/js/grid.coffee:849
+#: ../resources/desktop/js/grid.coffee:813
 msgid "Folder"
 msgstr "文件夾"
 
 #: ../resources/desktop/js/grid.coffee:850
+#: ../resources/desktop/js/grid.coffee:814
 msgid "Text document"
 msgstr "文本文檔"
 
 #: ../resources/desktop/js/grid.coffee:853
+#: ../resources/desktop/js/grid.coffee:817
 msgid "Open terminal here"
 msgstr "在此打開終端"
 
 #: ../resources/desktop/js/grid.coffee:854
+#: ../resources/desktop/js/grid.coffee:818
 msgid "Paste"
 msgstr "粘貼"
 
 #: ../resources/desktop/js/grid.coffee:858
+#: ../resources/desktop/js/grid.coffee:822
 msgid "Personalize"
 msgstr "粘貼"
 
 #: ../resources/desktop/js/grid.coffee:856
+#: ../resources/desktop/js/grid.coffee:820
 msgid "Display settings"
 msgstr "顯示設置"
 
@@ -190,21 +200,35 @@ msgstr "顯示設置"
 #: ../resources/desktop/js/desktop_item.coffee:1510
 #: ../resources/desktop/js/desktop_item.coffee:1562
 #: ../resources/launcher/js/grid.coffee:83
+#: ../resources/desktop/js/desktop_item.coffee:551
+#: ../resources/desktop/js/desktop_item.coffee:753
+#: ../resources/desktop/js/desktop_item.coffee:1069
+#: ../resources/desktop/js/desktop_item.coffee:1345
+#: ../resources/desktop/js/desktop_item.coffee:1432
+#: ../resources/desktop/js/desktop_item.coffee:1526
+#: ../resources/desktop/js/desktop_item.coffee:1579
 msgid "Open"
 msgstr "打開"
 
 #: ../resources/desktop/js/desktop_item.coffee:541
 #: ../resources/desktop/js/desktop_item.coffee:1057
+#: ../resources/desktop/js/desktop_item.coffee:553
+#: ../resources/desktop/js/desktop_item.coffee:1071
 msgid "Cut"
 msgstr "剪切"
 
 #: ../resources/desktop/js/desktop_item.coffee:542
 #: ../resources/desktop/js/desktop_item.coffee:1058
+#: ../resources/desktop/js/desktop_item.coffee:554
+#: ../resources/desktop/js/desktop_item.coffee:1072
+#: ../lib/dentry/fileops.c:640
 msgid "Copy"
 msgstr "複製"
 
 #: ../resources/desktop/js/desktop_item.coffee:544
 #: ../resources/desktop/js/desktop_item.coffee:743
+#: ../resources/desktop/js/desktop_item.coffee:556
+#: ../resources/desktop/js/desktop_item.coffee:755
 msgid "Rename"
 msgstr "重命名"
 
@@ -213,6 +237,10 @@ msgstr "重命名"
 #: ../resources/desktop/js/desktop_item.coffee:1060
 #: ../resources/desktop/js/desktop_item.coffee:1281
 #: ../lib/dentry/fileops_delete.c:34
+#: ../resources/desktop/js/desktop_item.coffee:557
+#: ../resources/desktop/js/desktop_item.coffee:759
+#: ../resources/desktop/js/desktop_item.coffee:1074
+#: ../resources/desktop/js/desktop_item.coffee:1297
 msgid "Delete"
 msgstr "删除"
 
@@ -220,88 +248,101 @@ msgstr "删除"
 #: ../resources/desktop/js/desktop_item.coffee:1062
 #: ../resources/desktop/js/desktop_item.coffee:1331
 #: ../resources/desktop/js/desktop_item.coffee:1418
+#: ../resources/desktop/js/desktop_item.coffee:559
+#: ../resources/desktop/js/desktop_item.coffee:1076
+#: ../resources/desktop/js/desktop_item.coffee:1347
+#: ../resources/desktop/js/desktop_item.coffee:1434
 msgid "Properties"
 msgstr "屬性"
 
 #: ../resources/desktop/js/desktop_item.coffee:1312
+#: ../resources/desktop/js/desktop_item.coffee:1328
 msgid "Computer"
 msgstr "計算機"
 
 #: ../resources/desktop/js/desktop_item.coffee:1361
+#: ../resources/desktop/js/desktop_item.coffee:1377
 msgid "Home"
 msgstr "主文件夾"
 
 #: ../resources/desktop/js/desktop_item.coffee:1451
+#: ../resources/desktop/js/desktop_item.coffee:1467
 msgid "Trash"
 msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1514
 #: ../resources/desktop/js/desktop_item.coffee:1516
 #: ../resources/desktop/js/desktop_item.coffee:1518
+#: ../resources/desktop/js/desktop_item.coffee:1530
+#: ../resources/desktop/js/desktop_item.coffee:1532
+#: ../resources/desktop/js/desktop_item.coffee:1534
 msgid "Clean up"
 msgstr "清空"
 
 #: ../resources/desktop/js/desktop_item.coffee:1514
+#: ../resources/desktop/js/desktop_item.coffee:1530
 msgid "items"
 msgstr "項"
 
 #: ../resources/desktop/js/desktop_item.coffee:1516
+#: ../resources/desktop/js/desktop_item.coffee:1532
 msgid "item"
 msgstr "項"
 
 #: ../resources/dock/js/clientgroup.coffee:25
-msgid "New instance"
-msgstr "新建實例"
+msgid "_New instance"
+msgstr "新建實例(_N)"
 
 #: ../resources/dock/js/clientgroup.coffee:26
-msgid "Close"
-msgstr "關閉"
+msgid "_Close"
+msgstr "關閉(_C)"
 
 #: ../resources/dock/js/clientgroup.coffee:28
-msgid "Dock me"
-msgstr "駐留"
+msgid "_Dock me"
+msgstr "駐留(_D)"
 
 #: ../resources/dock/js/launcher.coffee:31
 msgid "Run"
 msgstr "運行"
 
 #: ../resources/dock/js/launcher.coffee:33
-msgid "Undock"
-msgstr "移除駐留"
+msgid "_Undock"
+msgstr "移除駐留(_U)"
 
 #: ../app/launcher/launcher.c:484
 msgid "all"
 msgstr "全部"
 
 #: ../resources/launcher/js/grid.coffee:87
-msgid "Send to desktop"
-msgstr "發送到桌面"
+msgid "Send to d_esktop"
+msgstr "發送到桌面(_E)"
 
 #: ../resources/launcher/js/grid.coffee:88
-msgid "Send to dock"
-msgstr "添加到 Dock"
+msgid "Send to do_ck"
+msgstr "添加到 Dock(_C)"
 
-#: ../app/desktop/desktop.c:141
+#: ../app/desktop/desktop.c:141 ../app/desktop/desktop.c:140
 msgid "App Group"
 msgstr "應用程序啟動組"
 
-#: ../app/desktop/desktop.c:179
+#: ../app/desktop/desktop.c:179 ../app/desktop/desktop.c:178
 msgid "New file"
 msgstr "新建文件"
 
-#: ../app/desktop/desktop.c:190
+#: ../app/desktop/desktop.c:190 ../app/desktop/desktop.c:189
 msgid "New directory"
 msgstr "新建目錄"
 
-#: ../app/greeter/dlock.c:312
+#: ../app/greeter/dlock.c:312 ../app/greeter/dlock.c:313
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
-#: ../app/greeter/greeter.c:460
+#: ../app/greeter/greeter.c:460 ../app/greeter/greeter.c:456
 msgid "Invalid Username/Password"
 msgstr "用戶名/密碼錯誤"
 
 #: ../app/greeter/dlock.c:254 ../app/greeter/greeter.c:953
+#: ../app/greeter/dlock.c:255 ../app/greeter/greeter.c:948
 msgid "%a,%b%d,%Y"
 msgstr "%Y年%b%d日 %A"
 
@@ -315,11 +356,12 @@ msgstr "名稱“%s”已存在於該文件夾。請使用其他名稱。"
 msgid "The Item could not be renamed"
 msgstr "該項無法重命名"
 
-#: ../lib/dentry/fileops.c:488
+#: ../lib/dentry/fileops.c:488 ../lib/dentry/fileops.c:516
 msgid "move"
 msgstr "移動"
 
 #: ../lib/dentry/entry.c:737 ../lib/dentry/fileops.c:608
+#: ../lib/dentry/entry.c:739 ../lib/dentry/fileops.c:671
 msgid "copy"
 msgstr "複製"
 
@@ -336,126 +378,157 @@ msgid "If you delete an item, it will be permanently lost"
 msgstr "如果您要刪除某項，它將永久丟失"
 
 #: ../lib/dentry/fileops_error_dialog.c:60
+#: ../lib/dentry/fileops_error_dialog.c:62
 msgid "File conflict"
 msgstr "文件衝突"
 
 #: ../lib/dentry/fileops_error_dialog.c:104
+#: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
 msgstr "為目標選擇新的名稱(_S)"
 
 #: ../lib/dentry/fileops_error_dialog.c:115
+#: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
 msgstr "重置"
 
 #: ../lib/dentry/fileops_error_dialog.c:124
+#: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
 msgstr "將該動作應用到全部文件"
 
 #: ../lib/dentry/fileops_error_dialog.c:131
+#: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
 msgstr "跳過(_S)"
 
 #: ../lib/dentry/fileops_error_dialog.c:134
+#: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
 msgstr "重命名(_N)"
 
 #: ../lib/dentry/fileops_error_dialog.c:139
+#: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
 msgstr "替換"
 
 #: ../lib/dentry/fileops_error_dialog.c:210
+#: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
 msgstr "合併文件夾“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:212
+#: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "Merging will ask for confirmation before replacing any files in the folder "
 "that conflict with the files being copied."
 msgstr "合併將會在替換衝突文件時請求確認。"
 
 #: ../lib/dentry/fileops_error_dialog.c:216
+#: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名稱的一個較舊文件夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
+#: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名稱的一個較新文件夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:224
+#: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中有相同名稱的一個文件夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:230
+#: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
 msgstr "替換將移除文件夾中的所有文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:232
+#: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
 msgstr "替換文件夾“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:234
+#: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在相同文件名的文件夾。"
 
 #: ../lib/dentry/fileops_error_dialog.c:240
+#: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
 msgstr "替換文件“%s”？"
 
 #: ../lib/dentry/fileops_error_dialog.c:241
+#: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
 msgstr "替換將覆蓋它的內容。"
 
 #: ../lib/dentry/fileops_error_dialog.c:243
+#: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在較舊的相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:247
+#: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在更新的相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
+#: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在相同文件名的文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:322
+#: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
 msgstr "原始文件"
 
 #: ../lib/dentry/fileops_error_dialog.c:323
 #: ../lib/dentry/fileops_error_dialog.c:351
+#: ../lib/dentry/fileops_error_dialog.c:332
+#: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
 msgstr "大小："
 
 #: ../lib/dentry/fileops_error_dialog.c:327
 #: ../lib/dentry/fileops_error_dialog.c:355
+#: ../lib/dentry/fileops_error_dialog.c:336
+#: ../lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
 msgstr "類型："
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 #: ../lib/dentry/fileops_error_dialog.c:359
+#: ../lib/dentry/fileops_error_dialog.c:340
+#: ../lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
 msgstr "最近修改："
 
 #: ../lib/dentry/fileops_error_dialog.c:350
+#: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
 msgstr "替換為"
 
 #: ../lib/dentry/fileops_error_dialog.c:376
+#: ../lib/dentry/fileops_error_dialog.c:385
 msgid "Merge"
 msgstr "合併"
 
 #: ../lib/dentry/fileops_error_reporting.c:83
 #: ../lib/dentry/fileops_error_reporting.c:165
+#: ../lib/dentry/fileops_error_reporting.c:105
+#: ../lib/dentry/fileops_error_reporting.c:187
 #, c-format
 msgid "Error while %s files"
 msgstr "當%s文件時出錯"
@@ -506,19 +579,22 @@ msgstr "在終端中打開(_T)"
 msgid "_Display"
 msgstr "顯示(_D)"
 
-#: ../lib/dentry/mime_actions.c:150
+#: ../lib/dentry/mime_actions.c:150 ../resources/dock/js/launcher.coffee:31
 msgid "_Run"
 msgstr "運行(_R)"
 
 #: ../resources/desktop/js/grid.coffee:857
+#: ../resources/desktop/js/grid.coffee:821
 msgid "Desktop settings"
 msgstr "桌面設置"
 
 #: ../resources/desktop/js/desktop_item.coffee:745
+#: ../resources/desktop/js/desktop_item.coffee:757
 msgid "Ungroup"
 msgstr "解散"
 
 #: ../resources/desktop/js/desktop_item.coffee:1546
+#: ../resources/desktop/js/desktop_item.coffee:1563
 msgid "Deepin Software Center"
 msgstr "深度軟件中心"
 
@@ -569,6 +645,9 @@ msgstr "其他"
 #: ../resources/desktop/js/desktop_item.coffee:951
 #: ../resources/desktop/js/desktop_item.coffee:1073
 #: ../resources/desktop/js/desktop_item.coffee:1261
+#: ../resources/desktop/js/desktop_item.coffee:965
+#: ../resources/desktop/js/desktop_item.coffee:1087
+#: ../resources/desktop/js/desktop_item.coffee:1277
 msgid "The link has expired, whether to delete?"
 msgstr "該鏈接已經失效，是否要刪除？"
 
@@ -583,6 +662,7 @@ msgid ""
 msgstr "無法將該桌面文件重命名為“%s”。您可能沒有權限"
 
 #: ../resources/desktop/js/desktop_item.coffee:588
+#: ../resources/desktop/js/desktop_item.coffee:600
 msgid "Can not open this file."
 msgstr "無法打開此文件"
 
@@ -590,41 +670,51 @@ msgstr "無法打開此文件"
 #: ../resources/desktop/js/desktop_item.coffee:951
 #: ../resources/desktop/js/desktop_item.coffee:1073
 #: ../resources/desktop/js/desktop_item.coffee:1261
+#: ../resources/desktop/js/desktop_item.coffee:600
+#: ../resources/desktop/js/desktop_item.coffee:965
+#: ../resources/desktop/js/desktop_item.coffee:1087
+#: ../resources/desktop/js/desktop_item.coffee:1277
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/dock/js/item.coffee:336
+#: ../resources/dock/js/item.coffee:336 ../resources/dock/js/item.coffee:340
 msgid "The item is invalid. Do you want to remove it from the dock bar?"
 msgstr "該項無效。您要將其從Dock刪除嗎？"
 
 #: ../resources/launcher/js/config.coffee:29
-msgid "Hide hidden icons"
-msgstr "隱藏已隱藏圖標"
+msgid "_Hide hidden icons"
+msgstr "隱藏已隱藏圖標(_H)"
 
 #: ../resources/launcher/js/config.coffee:30
-msgid "Display hidden icons"
-msgstr "顯示已隱藏圖標"
+msgid "_Display hidden icons"
+msgstr "顯示已隱藏圖標(_D)"
 
 #: ../resources/launcher/js/config.coffee:32
-msgid "Hide this icon"
-msgstr "隱藏該圖標"
+msgid "_Hide this icon"
+msgstr "隱藏該圖標(_H)"
 
 #: ../resources/launcher/js/config.coffee:33
-msgid "Dispaly this icon"
-msgstr "顯示該圖標"
+msgid "_Display this icon"
+msgstr "顯示該圖標(_D)"
 
 #: ../resources/desktop/js/desktop_item.coffee:553
 #: ../resources/desktop/js/desktop_item.coffee:560
+#: ../resources/desktop/js/desktop_item.coffee:565
+#: ../resources/desktop/js/desktop_item.coffee:572
 msgid "Compress"
 msgstr "壓縮"
 
 #: ../resources/desktop/js/desktop_item.coffee:556
 #: ../resources/desktop/js/desktop_item.coffee:561
+#: ../resources/desktop/js/desktop_item.coffee:568
+#: ../resources/desktop/js/desktop_item.coffee:573
 msgid "Extract"
 msgstr "解壓"
 
 #: ../resources/desktop/js/desktop_item.coffee:557
 #: ../resources/desktop/js/desktop_item.coffee:562
+#: ../resources/desktop/js/desktop_item.coffee:569
+#: ../resources/desktop/js/desktop_item.coffee:574
 msgid "Extract Here"
 msgstr "解壓到此處"
 
@@ -695,3 +785,7 @@ msgstr "您可以按“F5”來"
 #: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
 msgid "show the weather plugin again."
 msgstr "再次顯示天氣元件。"
+
+#: ../resources/launcher/js/grid.coffee:83
+msgid "_Open"
+msgstr "打開(_O)"

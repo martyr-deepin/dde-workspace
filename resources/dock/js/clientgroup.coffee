@@ -22,10 +22,10 @@ class ClientGroup extends AppItem
         @element.addEventListener("contextmenu", (e) =>
             Preview_close_now()
             menu = build_menu([
-                [1, _("New instance")],
-                [2, _("Close")],
+                [1, _("_New instance")],
+                [2, _("_Close")],
                 [],
-                [3, _("Dock me"), !DCore.Dock.has_launcher(@app_id)],
+                [3, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)],
             ])
             @element.contextMenu = menu
             e.stopPropagation()
