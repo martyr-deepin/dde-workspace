@@ -306,7 +306,14 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
         succeed = TRUE;
+        return succeed;
     } 
+
+    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
+    {
+        succeed = TRUE;
+        return succeed;
+    }
 
     return succeed;
 }
