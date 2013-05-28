@@ -21,5 +21,10 @@
             <summary>show or hide Deepin Software Center icon</summary>
             <description>Show or hide Deepin Software Center icon on the desktop</description>
         </key>
+        <key type="as" name='disabled-plugins'>
+            <default>[]</default>
+            <summary>Disabled plugins</summary>
+            <description>Containing the disabled plugins of desktop</description>
+        </key>
     </schema>
 </schemalist>

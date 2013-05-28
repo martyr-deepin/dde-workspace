@@ -243,6 +243,7 @@ class AppItem extends Widget
             app_list.append(@)
         else
             app_list.append_app_item(@)
+        update_dock_region()
 
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
