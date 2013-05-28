@@ -410,6 +410,13 @@ _bus_handle_need_pwd (const gchar *username)
         return needed;
     }
 
+    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
+    {
+        g_debug ("live account don't need password\n");
+        needed = FALSE;
+        return needed;
+    } 
+
     return needed;
 }
 
