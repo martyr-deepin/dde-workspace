@@ -98,3 +98,4 @@ gboolean is_need_pwd (const gchar *username)
 
     return needed;
 }
+
