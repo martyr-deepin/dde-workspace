@@ -87,7 +87,7 @@ class ClientCityId
             try
                 # ...
                 client_cityjsonstr = xhr.responseText
-                echo "client_cityjsonstr:"  + client_cityjsonstr
+                # echo "client_cityjsonstr:"  + client_cityjsonstr
                 remote_ip_info = JSON.parse(client_cityjsonstr.slice(21,client_cityjsonstr.length))
                 echo "remote_ip_info:" + remote_ip_info
                 echo "remote_ip_info.ret:" + remote_ip_info.ret
@@ -109,9 +109,6 @@ class ClientCityId
             if allname.data[provin].prov == client_cityjson.province
                 for ci of allname.data[provin].city
                     if allname.data[provin].city[ci].cityname == client_cityjson.city
-                        cityid_client = allname.data[provin].city[ci].code
-                        echo "cityid_client:"+ cityid_client
-                        localStorage.setItem("cityid_storage",cityid_client)
-                        # @cityid_client = localStorage.getItem("cityid_storage")
-                        # new Weather()
-                        # return @cityid_client
+                        cityid = allname.data[provin].city[ci].code
+                        echo "cityid:"+ cityid
+                        localStorage.setItem("cityid_storage",cityid)
