@@ -18,34 +18,11 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-# use:(recommended)
-#     Clientcityid = new ClientCityId()
-#     cityid_client = localStorage.getItem("cityid_client_storage")
-# or 
-#     Clientcityid  = new ClientCityId())
-#     cityid = Clientcityid.cityid
-#     client_cityJSON = Clientcityid.client_cityjson
-#     client_ip = clientid.ip
-
 class ClientCityId
-    @url_clientip = null
-    @url_clientcityjsonbyip = null
+    constructor: ->
+        @url_clientip_str = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
 
-    @client_ipstr = null
-    @ip = null
-    @client_cityjson = null
-    @cityid_client = null
-
-    constructor: ()->
-        @url_clientip_str = @url_clientip()
-        @Get_client_cityip(@url_clientip_str)
-
-    url_clientip: ->
-        return "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
-    url_clientcityjsonbyip:(ip)-> 
-        return "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=" + ip
-
-    ajax : (url, callback) ->
+    ajax : (url, call) ->
         xhr = new XMLHttpRequest()
         xhr.open("GET", url, true)
         xhr.send(null)
@@ -53,7 +30,7 @@ class ClientCityId
             if (xhr.readyState == 4 and xhr.status == 200)
                 try 
                     if xhr.responseText != ""
-                        callback?(xhr)
+                        call?(xhr)
                         echo "XMLHttpRequest receive all data."
                 catch e
                     echo "xhr.responseText is error"
@@ -62,7 +39,7 @@ class ClientCityId
             else if xhr.status == 0
                 echo "your computer are not connected to the Internet"
             return xhr.status  
-    Get_client_cityip: (url_clientip = @url_clientip_str)=>
+    Get_client_cityip: (callback,url_clientip = @url_clientip_str)=>
         @ajax(url_clientip, (xhr)=>
             try
                 localStorage.setItem("client_ipstr_storage",xhr.responseText)
@@ -72,17 +49,17 @@ class ClientCityId
                     echo "ip start :" + ip
                     localStorage.setItem("client_ipstart_storage",ip)
                     @ip = localStorage.getItem("client_ipstart_storage")
-                    @Get_client_cityjsonByip(@ip)
+                    @Get_client_cityjsonByip(callback,@ip)
                     return ip
                 else 
                     echo "Get_client_cityip  can't get the right client ip"
                     return 0
             catch e
-                # @Get_client_cityip()
+                echo "Get_client_cityip error"
         )
 
-    Get_client_cityjsonByip: (ip = @ip)->
-        @url_clientcityjsonbyip = @url_clientcityjsonbyip(ip)
+    Get_client_cityjsonByip: (callback,ip = @ip)->
+        @url_clientcityjsonbyip = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=" + ip
         @ajax(@url_clientcityjsonbyip, (xhr)=>
             try
                 # ...
@@ -93,17 +70,17 @@ class ClientCityId
                 echo "remote_ip_info.ret:" + remote_ip_info.ret
                 echo "remote_ip_info.province:" + remote_ip_info.province
                 if remote_ip_info.ret == 1
-                    @Get_cityid_client_BycityJSON(remote_ip_info)
+                    @client_cityjson = remote_ip_info
+                    @Get_cityid_client_BycityJSON(callback,@client_cityjson)
                     return remote_ip_info
                 else 
                     echo "Get_client_cityjsonByip can't find the matched location right json by ip"
                     return 0
             catch e
-                # ...
-                # @Get_client_cityjsonByip()
+                echo "Get_client_cityjsonByip error"
         )
 
-    Get_cityid_client_BycityJSON:(client_cityjson = @client_cityjson)->
+    Get_cityid_client_BycityJSON:(callback,client_cityjson=@client_cityjson)->
         # echo "client_cityjson != null"
         for provin of allname.data
             if allname.data[provin].prov == client_cityjson.province
@@ -112,3 +89,4 @@ class ClientCityId
                         cityid = allname.data[provin].city[ci].code
                         echo "cityid:"+ cityid
                         localStorage.setItem("cityid_storage",cityid)
+                        callback()

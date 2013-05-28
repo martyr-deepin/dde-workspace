@@ -18,18 +18,15 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class CityMoreMenu
-    @cityid_choose = null
-
-    constructor: (clss, x,y,position=absolute)->
+class CityMoreMenu extends Widget
+    constructor: (clss, x,y,callback)->
         @more_city_menu = document.createElement('div')
         @more_city_menu.setAttribute("class", clss) if  clss
         @more_city_menu.style.display = "none"
-        @more_city_menu.style.position = position if position
         @more_city_menu.style.left = x if x
         @more_city_menu.style.top = y if y
-
         @more_city_build()
+        @change_chooseprov(callback)
         return @more_city_menu
 
     more_city_build: ->
@@ -60,6 +57,7 @@ class CityMoreMenu
         distinit.innerText = @str_distinit
         distinit.selected = "true"
 
+    change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
             provIndex = @chooseprov.selectedIndex
             if provIndex == -1
@@ -67,10 +65,10 @@ class CityMoreMenu
             else
                 provvalue = @chooseprov.options[provIndex].value 
                 if provvalue != @str_provinit
-                    data = @read_data_from_json(provvalue)
-                )
+                    data = @read_data_from_json(provvalue,callback)
+            )
 
-    read_data_from_json: (id) ->
+    read_data_from_json: (id,callback) ->
         xhr = new XMLHttpRequest()
         url = "city/" + id + ".json"
         xhr.open("GET", url, true)
@@ -78,10 +76,10 @@ class CityMoreMenu
         xhr.onreadystatechange = =>
             if (xhr.readyState == 4)
                 if xhr.responseText != "" && xhr.responseText != null
-                    data = JSON.parse(xhr.responseText);
-                    @cityadd(data[id].data)
+                    data = JSON.parse(xhr.responseText)
+                    @cityadd(data[id].data,callback)
 
-    cityadd: (data) ->
+    cityadd: (data,callback) ->
         @choosecity.options.length = 1
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
@@ -94,9 +92,9 @@ class CityMoreMenu
             else
                 cityvalue = @choosecity.options[cityIndex].value
                 if cityvalue != @str_cityinit
-                    @distadd(data[cityvalue].data)
+                    @distadd(data[cityvalue].data,callback)
     
-    distadd: (data) ->
+    distadd: (data,callback) ->
         @choosedist.options.length = 1
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
@@ -113,3 +111,4 @@ class CityMoreMenu
                 if distvalue != @str_distinit
                     cityid_choose = data[distvalue].data
                     localStorage.setItem("cityid_storage",cityid_choose)
+                    callback()

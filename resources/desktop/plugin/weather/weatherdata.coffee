@@ -18,31 +18,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-# use:(recommended)
-#     cityid = 10101011
-#     weatherdata = new WeatherData(cityid)
-#     weatherdata_now = localStorage.getItem("weatherdata_now_storage")
-#     weatherdata_more = localStorage.getItem("weatherdata_more_storage")
-# or 
-#     cityid = 10101011
-#     weatherdata  = new WeatherData(cityid)
-#     weatherdata_now = weatherdata.weatherdata_now
-#     weatherdata_more = weatherdata.weatherdata_more
-
 class WeatherData
-    # @weatherdata_now = null
-    # @weatherdata_more = null
-
     constructor: (cityid)->
-        localStorage.setItem("cityid_storage",cityid)
-        @cityid = localStorage.getItem("cityid_storage")
-        @url_nowweather_str = @url_nowweather(cityid)
-        @url_moreweather_str = @url_moreweather(cityid)
-
-    url_nowweather: (cityid)-> 
-        return "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
-    url_moreweather: (cityid)->
-        return "http://m.weather.com.cn/data/" + cityid + ".html"
+        @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
+        @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
 
     ajax : (url, callback) ->
         xhr = new XMLHttpRequest()
@@ -62,26 +41,22 @@ class WeatherData
                 echo "your computer are not connected to the Internet"
             return xhr.status  
 
-    Get_weatherdata_now:(cityid = @cityid)->
+    Get_weatherdata_now:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_now"
-        @ajax(@url_nowweather(cityid),(xhr)=>
+        @ajax(@url_nowweather_str,(xhr)=>
             # echo "weatherdata_now_storage:" + xhr.responseText
             try 
-                JSON.parse(xhr.responseText)
                 localStorage.setItem("weatherdata_now_storage",xhr.responseText)
-                # @weatherdata_now = localStorage.getObject("weatherdata_now_storage")
+                callback()
             catch e
                 echo "weatherdata_now xhr.responseText isnt JSON "
-                # @Get_weatherdata_now()
         )
-    Get_weatherdata_more:(cityid = @cityid)->
+    Get_weatherdata_more:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_more"
-        @ajax(@url_moreweather(cityid),(xhr)=>
+        @ajax(@url_moreweather_str,(xhr)=>
             try
-                JSON.parse(xhr.responseText)
                 localStorage.setItem("weatherdata_more_storage",xhr.responseText)
-                # @weatherdata_more = localStorage.getObject("weatherdata_more_storage")
+                callback()
             catch e
                 echo "weatherdata_more xhr.responseText isnt JSON "
-                # @Get_weatherdata_more()
         )

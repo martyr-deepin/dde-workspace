@@ -57,13 +57,11 @@ class Weather
         @city_now = create_element("div", "city_now", city)
         @city_now.textContent = _("choose city")
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
-        more_city_menu_parent= create_element("div","more_city_menu_parent",@element)
-        @more_city_menu = new CityMoreMenu("more_city_menu",0,70,"absolute")
-        more_city_menu_parent.appendChild(@more_city_menu)
-
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
-        
+
+        @more_city_menu = new CityMoreMenu("more_city_menu",0,70,@weathergui_update.bind(@))
+        @element.appendChild(@more_city_menu)
 
         city.addEventListener("click", => 
             if @more_city_menu.style.display == "none"
@@ -152,68 +150,35 @@ class Weather
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
-    
+
     weathergui_init: ->
         @weather_style_build()
         @more_weather_build()
-
-        # cityid = localStorage.getItem("cityid_storage")
-        # echo "cityid:" + cityid
-        # if cityid != undefined || cityid != null || cityid != ""
-        #     @weathergui_refresh(cityid)
-        # else 
-        #     echo "cityid in weathergui_init isnt ready "
-        #     @weathergui_update_autolocate()
-        @weathergui_update_autolocate()
-
-    weathergui_update_autolocate:->
-        Clientcityid = new ClientCityId()
-        setTimeout(null,1000)
         cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid
-        if cityid != "" || cityid != undefined || cityid != null
-            clearInterval(auto_weathergui_refresh)
-            auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
-        else
-            echo "cityidisnt ready"
+        echo "cityid:" + cityid 
+        if !cityid
+            Clientcityid = new ClientCityId()
+            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
+        @weathergui_update()
+
+    weathergui_update: ->
+            cityid = localStorage.getItem("cityid_storage")
+            clearInterval(@auto_weathergui_refresh)
+            @auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
 
     weathergui_refresh: (cityid)->
-        echo "cityid:" + cityid
-        if cityid != "" || cityid != undefined || cityid != null        
+        callback_now = ->
+            weather_data_now = localStorage.getObject("weatherdata_now_storage")
+            @update_weathernow(weather_data_now)
+        callback_more = ->
+            weather_data_more = localStorage.getObject("weatherdata_more_storage")
+            @update_weathermore(weather_data_more)
+        if cityid
             weatherdata = new WeatherData(cityid)
-            weatherdata.Get_weatherdata_now()
-            weatherdata.Get_weatherdata_more()
-            setTimeout(null,1000)
-            weather_data_now = JSON.parse(localStorage.getItem("weatherdata_now_storage"))
-            weather_data_more = JSON.parse(localStorage.getItem("weatherdata_more_storage")) 
-            if weather_data_now != "" || weather_data_now != undefined || weather_data_now != null || weather_data_more != "" || weather_data_more != undefined || weather_data_more != null
-                @weathergui_update(weather_data_now,weather_data_more)
-            else
-                echo "weather_data_now or weather_data_more isnt ready"
+            weatherdata.Get_weatherdata_now(callback_now.bind(@))
+            weatherdata.Get_weatherdata_more(callback_more.bind(@))
         else
-            echo "cityidisnt ready"
-
-    weathergui_update: (weather_data_now,weather_data_more)->
-        if weather_data_now != null && weather_data_now != "" && weather_data_more != null && weather_data_more != "" 
-            test_Internet_url = "http://www.weather.com.cn/data/sk/101010100.html"
-            xhr_tmp = new XMLHttpRequest()
-            xhr_tmp.open("GET", test_Internet_url, true)
-            xhr_tmp.send(null)
-            xhr_tmp.onreadystatechange = =>
-                # echo "xhr_tmp.readyState : " + xhr_tmp.readyState
-                # echo "xhr_tmp.status : " + xhr_tmp.status
-                if (xhr_tmp.readyState == 4 and xhr_tmp.status == 200)
-                    if xhr_tmp.responseText != ""
-                        echo "XMLHttpRequest test ok."
-                        @update_weathernow(weather_data_now)
-                        @update_weathermore(weather_data_more)
-                else if xhr_tmp.status == 404
-                    echo "XMLHttpRequest can't find the url ."
-                else if xhr_tmp.status == 0
-                    echo "your computer are not connected to the Internet"
-        else
-            echo "weather_data_now or weather_data_more isnt ready" 
-            return 0
+            echo "cityid isnt ready"
 
     update_weathernow: (weather_data_now)->
         # echo "weather_data_now:" + weather_data_now
