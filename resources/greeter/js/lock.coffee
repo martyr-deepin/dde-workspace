@@ -207,7 +207,8 @@ document.body.addEventListener("keydown", (e) =>
             u.show_login()
             #u.login.password.focus()
         else if DCore.Lock.need_pwd() and u.login.password.value == ""
-            u.login.password.focus()
+            pass
+            #u.login.password.focus()
         else 
             u.login.on_active(u.login.password.value)
 
