@@ -1,5 +1,4 @@
-/**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+/** * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
@@ -22,6 +21,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <string.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include <stdio.h>
@@ -270,7 +270,6 @@ static gboolean
 _bus_handle_unlock_check (const gchar *username, const gchar *password)
 {
     gboolean succeed = FALSE;
-
     struct spwd *user_data;
     errno = 0;
 
@@ -279,13 +278,21 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     if (user_data == NULL)
     {
         g_warning ("No such user %s, or error %s\n", username, strerror(errno));
+        succeed = TRUE;
+        return succeed;
+    }
+
+    if (user_data->sp_pwdp == NULL || strlen(user_data->sp_pwdp) == 0)
+    {
+        g_warning ("user sp_pwdp is null\n");
+        succeed = TRUE;
         return succeed;
     }
 
     if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
         succeed = TRUE;
-    }
+    } 
 
     return succeed;
 }

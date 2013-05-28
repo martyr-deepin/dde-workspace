@@ -154,7 +154,6 @@ class Item extends Widget
         return
 
 
-
     do_mouseover : (evt) ->
         @display_hover()
         return
@@ -548,30 +547,30 @@ class DesktopEntry extends Item
 
     do_buildmenu : ->
         menu = []
-        menu.push([1, _("Open")])
+        menu.push([1, _("_Open")])
         menu.push([])
-        menu.push([3, _("Cut")])
-        menu.push([4, _("Copy")])
+        menu.push([3, _("Cu_t")])
+        menu.push([4, _("_Copy")])
         menu.push([])
-        menu.push([6, _("Rename"), not is_selected_multiple_items()])
-        menu.push([9, _("Delete")])
+        menu.push([6, _("_Rename"), not is_selected_multiple_items()])
+        menu.push([9, _("_Delete")])
         menu.push([])
-        menu.push([10, _("Properties")])
+        menu.push([10, _("_Properties")])
 
         if DCore.DEntry.is_fileroller_exist()
             compressable = get_items_compressibility()
             if 0 == compressable
             else if 1 == compressable
-                menu.splice(2, 0, [11, _("Compress")])
+                menu.splice(2, 0, [11, _("Co_mpress")])
                 menu.splice(3, 0, [])
             else if 2 == compressable
-                menu.splice(2, 0, [12, _("Extract")])
-                menu.splice(3, 0, [13, _("Extract Here")])
+                menu.splice(2, 0, [12, _("_Extract")])
+                menu.splice(3, 0, [13, _("Extract _Here")])
                 menu.splice(4, 0, [])
             else if 3 == compressable
-                menu.splice(2, 0, [11, _("Compress")])
-                menu.splice(3, 0, [12, _("Extract")])
-                menu.splice(4, 0, [13, _("Extract Here")])
+                menu.splice(2, 0, [11, _("Co_mpress")])
+                menu.splice(3, 0, [12, _("_Extract")])
+                menu.splice(4, 0, [13, _("Extract _Here")])
                 menu.splice(5, 0, [])
         return menu
 
@@ -750,13 +749,13 @@ class RichDir extends DesktopEntry
 
     do_buildmenu : ->
         menus = []
-        menus.push([1, _("Open")])
+        menus.push([1, _("_Open")])
         menus.push([])
-        menus.push([3, _("Rename"), not is_selected_multiple_items()])
+        menus.push([3, _("_Rename"), not is_selected_multiple_items()])
         menus.push([])
-        menus.push([5, _("Ungroup")])
+        menus.push([5, _("_Ungroup")])
         menus.push([])
-        menus.push([7, _("Delete")])
+        menus.push([7, _("_Delete")])
         menus
 
 
@@ -1066,14 +1065,14 @@ class RichDir extends DesktopEntry
 
     build_block_item_menu : =>
         menu = []
-        menu.push([1, _("Open")])
+        menu.push([1, _("_Open")])
         menu.push([])
-        menu.push([3, _("Cut")])
-        menu.push([4, _("Copy")])
+        menu.push([3, _("Cu_t")])
+        menu.push([4, _("_Copy")])
         menu.push([])
-        menu.push([6, _("Delete")])
+        menu.push([6, _("_Delete")])
         menu.push([])
-        menu.push([8, _("Properties")])
+        menu.push([8, _("_Properties")])
         menu
 
 
@@ -1294,7 +1293,7 @@ class InvalidLink extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [9, _("Delete")]
+            [9, _("_Delete")]
         ]
 
 
@@ -1342,9 +1341,9 @@ class ComputerVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("Open")],
+            [1, _("_Open")],
             [],
-            [2, _("Properties")]
+            [2, _("_Properties")]
         ]
 
 
@@ -1429,9 +1428,9 @@ class HomeVDir extends DesktopEntry
 
     do_buildmenu : ->
         [
-            [1, _("Open")],
+            [1, _("_Open")],
             [],
-            [2, _("Properties")]
+            [2, _("_Properties")]
         ]
 
 
@@ -1523,15 +1522,15 @@ class TrashVDir extends DesktopEntry
 
     do_buildmenu : ->
         menus = []
-        menus.push([1, _("Open")])
+        menus.push([1, _("_Open")])
         menus.push([])
         count = DCore.DEntry.get_trash_count()
         if count > 1
-            menus.push([3, _("Clean up") + " #{count} " + _("items")])
+            menus.push([3, _("_Clean up") + " #{count} " + _("items")])
         else if count == 1
-            menus.push([3, _("Clean up") + " #{count} " + _("item")])
+            menus.push([3, _("_Clean up") + " #{count} " + _("item")])
         else
-            menus.push([3, _("Clean up"), false])
+            menus.push([3, _("_Clean up"), false])
         menus
 
 
@@ -1576,7 +1575,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     do_buildmenu : ->
-        menus = [[1, _("Open")]]
+        menus = [[1, _("_Open")]]
 
 
     item_rename : =>

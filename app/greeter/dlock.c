@@ -69,6 +69,7 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert (account_proxy != NULL);
     if(error != NULL){
         g_debug("connect org.freedesktop.Accounts failed");
         g_clear_error(&error);
@@ -82,14 +83,17 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert(user_path_var != NULL);
     if(error != NULL){
         g_debug("find user by name failed");
         g_clear_error(&error);
     }
 
     g_object_unref(account_proxy);
+
     gchar * user_path = NULL;
     g_variant_get(user_path_var, "(o)", &user_path);
+    g_assert(user_path != NULL);
 
     user_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
             G_DBUS_PROXY_FLAGS_NONE,
@@ -100,6 +104,7 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert(user_proxy != NULL);
     if(error != NULL){
         g_debug("connect org.freedesktop.Accounts failed");
         g_clear_error(&error);
@@ -140,7 +145,7 @@ gchar* lock_get_realname()
     g_assert(user_realname_var != NULL);
 
     gchar* user_realname = g_variant_dup_string(user_realname_var, NULL);
-    g_assert(user_realname);
+    g_assert(user_realname != NULL);
 
     g_variant_unref(user_realname_var);
 
@@ -287,6 +292,7 @@ gboolean lock_try_unlock (const gchar *password)
             NULL,
             &error);
 
+    g_assert(lock_proxy != NULL);
     if (error != NULL) {
         g_warning("connect com.deepin.dde.lock failed");
         g_clear_error(&error);
@@ -300,6 +306,7 @@ gboolean lock_try_unlock (const gchar *password)
                     NULL,
                     &error);
 
+    g_assert(lock_succeed != NULL);
     if(error != NULL){
         g_clear_error (&error);
     }
@@ -388,34 +395,36 @@ static void lock_show_cb (GtkWindow* lock_container, gpointer data)
 static void
 select_popup_events (void)
 {
-        XWindowAttributes attr;
-        unsigned long     events;
+    XWindowAttributes attr;
+    unsigned long     events;
 
-        gdk_error_trap_push ();
+    gdk_error_trap_push ();
 
-        memset (&attr, 0, sizeof (attr));
-        XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
+    memset (&attr, 0, sizeof (attr));
+    XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
 
-        events = SubstructureNotifyMask | attr.your_event_mask;
-        XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
+    events = SubstructureNotifyMask | attr.your_event_mask;
+    XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
 
-        gdk_error_trap_pop_ignored ();
+    gdk_error_trap_pop_ignored ();
 }
+
 static gboolean
 x11_window_is_ours (Window window)
 {
-        GdkWindow *gwindow;
-        gboolean   ret;
+    GdkWindow *gwindow;
+    gboolean   ret;
 
-        ret = FALSE;
+    ret = FALSE;
 
-        gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
-        if (gwindow && (window != GDK_ROOT_WINDOW ())) {
-                ret = TRUE;
-        }
+    gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
+    if (gwindow && (window != GDK_ROOT_WINDOW ())) {
+            ret = TRUE;
+    }
 
-        return ret;
+    return ret;
 }
+
 static GdkFilterReturn
 xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
@@ -452,6 +461,7 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
     return GDK_FILTER_CONTINUE;
 }
+
 int main(int argc, char **argv)
 {
     init_i18n();
