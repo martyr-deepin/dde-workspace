@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 15:08+0800\n"
+"POT-Creation-Date: 2013-05-28 10:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -299,6 +299,7 @@ msgid "New directory"
 msgstr "新增目錄"
 
 #: ../app/greeter/dlock.c:312 ../app/greeter/dlock.c:313
+#: ../app/greeter/dlock.c:362
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
@@ -308,6 +309,7 @@ msgstr "用戶名/密碼錯誤"
 
 #: ../app/greeter/dlock.c:254 ../app/greeter/greeter.c:953
 #: ../app/greeter/dlock.c:255 ../app/greeter/greeter.c:948
+#: ../app/greeter/dlock.c:260
 msgid "%a,%b%d,%Y"
 msgstr "%Y年%b%d日 %A"
 
@@ -857,3 +859,15 @@ msgstr "解散(_U)"
 #: ../resources/desktop/js/desktop_item.coffee:1533
 msgid "_Clean up"
 msgstr "清空(_C)"
+
+#: ../resources/desktop/js/grid.coffee:823
+msgid "D_esktop settings"
+msgstr "桌面設定(_E)"
+
+#: ../resources/desktop/js/grid.coffee:824
+msgid "Pe_rsonalize"
+msgstr "個人化(_R)"
+
+#: ../lib/dentry/fileops.c:640
+msgid "Copy"
+msgstr "複製"
