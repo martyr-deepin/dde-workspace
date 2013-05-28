@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
@@ -36,10 +35,10 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
+#include "account.h"
 #include "utils.h"
 #include "X_misc.h"
 #include <X11/XKBlib.h>
-
 #include "gs-grab.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -246,22 +245,7 @@ void lock_switch_user()
 JS_EXPORT_API
 gchar * lock_get_date()
 {
-    char outstr[200];
-    time_t t;
-    struct tm *tmp;
-
-    setlocale(LC_ALL, "");
-    t = time(NULL);
-    tmp = localtime(&t);
-    if (tmp == NULL) {
-        perror("localtime");
-    }
-
-    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
-            fprintf(stderr, "strftime returned 0");
-    }
-
-    return g_strdup(outstr);
+    return get_date_string();
 }
 
 JS_EXPORT_API
@@ -279,43 +263,7 @@ void lock_unlock_succeed ()
 JS_EXPORT_API
 gboolean lock_need_pwd ()
 {
-    gboolean needed = TRUE;
-    GVariant *lock_need_pwd = NULL;
-
-    GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
-            G_DBUS_PROXY_FLAGS_NONE,
-            NULL,
-            "com.deepin.dde.lock",
-            "/com/deepin/dde/lock",
-            "com.deepin.dde.lock",
-            NULL,
-            &error);
-
-    g_assert(lock_proxy != NULL);
-    if (error != NULL) {
-        g_warning("connect com.deepin.dde.lock failed");
-        g_clear_error(&error);
-     }
-
-    lock_need_pwd  = g_dbus_proxy_call_sync(lock_proxy,
-                    "NeedPwd",
-                    g_variant_new ("(s)", username),
-                    G_DBUS_CALL_FLAGS_NONE,
-                    -1,
-                    NULL,
-                    &error);
-
-    g_assert(lock_need_pwd != NULL);
-    if(error != NULL){
-        g_clear_error (&error);
-    }
-
-    g_variant_get(lock_need_pwd, "(b)", &needed);
-
-    g_variant_unref(lock_need_pwd);
-    g_object_unref(lock_proxy);
-
-    return needed;
+    return is_need_pwd (username);
 }
 
 /* return False if unlock succeed */
@@ -411,19 +359,7 @@ static void lock_report_pid()
 JS_EXPORT_API
 gboolean lock_detect_capslock()
 {
-    gboolean capslock_flag = False;
-
-    Display *d = XOpenDisplay((gchar*)0);
-    guint n;
-
-    if(d){
-        XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
-
-        if((n & 1)){
-            capslock_flag = True;
-        }
-    }
-    return capslock_flag;
+    return is_capslock_on(); 
 }
 
 static void lock_show_cb (GtkWindow* lock_container, gpointer data)

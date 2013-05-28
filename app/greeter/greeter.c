@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <X11/XKBlib.h>
+#include "account.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -934,115 +935,19 @@ static void greeter_update_background()
 JS_EXPORT_API
 gchar * greeter_get_date()
 {
-    char outstr[200];
-    time_t t;
-    struct tm *tmp;
-
-    setlocale(LC_ALL, "");
-    t = time(NULL);
-    tmp = localtime(&t);
-    if (tmp == NULL) {
-        perror("localtime");
-    }
-
-    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
-            fprintf(stderr, "strftime returned 0");
-    }
-
-    return g_strdup(outstr);
+    return get_date_string();
 }
 
 JS_EXPORT_API
 gboolean greeter_detect_capslock()
 {
-    gboolean capslock_flag = FALSE;
-
-    Display *d = XOpenDisplay((gchar*)0);
-    guint n;
-
-    if(d){
-        XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
-
-        if((n & 1)){
-            capslock_flag = TRUE;
-        }
-    }
-    return capslock_flag;
-}
-
-GPtrArray *greeter_get_nopasswdlogin_users()
-{
-    GPtrArray *nopasswdlogin = g_ptr_array_new();
-
-    GFile *file = g_file_new_for_path("/etc/group");
-    g_assert(file);
-
-    GFileInputStream *input = g_file_read(file, NULL, &error);
-    if(error != NULL){
-        g_warning("read /etc/group failed\n");
-        g_clear_error(&error);
-    }
-    g_assert(input);
-
-    GDataInputStream *data_input = g_data_input_stream_new((GInputStream *) input);
-    g_assert(data_input);
-    
-    char *data = (char *) 1;
-    while(data){
-        gsize length = 0;
-        data = g_data_input_stream_read_line(data_input, &length, NULL, &error);
-        if(error != NULL){
-            g_warning("read line error\n");
-            g_clear_error(&error);
-        }
-        
-        if(data != NULL){
-            if(g_str_has_prefix(data, "nopasswdlogin")){
-                gchar **nopwd_line = g_strsplit(data, ":", 4);
-                g_debug("data:%s", data);
-                g_debug("nopwd_line[3]:%s", nopwd_line[3]);
-                
-                if(nopwd_line[3] != NULL){
-                    gchar **user_strv = g_strsplit(nopwd_line[3], ",", 1024);
-
-                    for(int i = 0; i < g_strv_length(user_strv); i++){
-                        g_debug("user_strv[i]:%s", user_strv[i]);
-                        g_ptr_array_add(nopasswdlogin, g_strdup(user_strv[i]));
-                    }
-                    g_strfreev(user_strv);
-                }
-                g_strfreev(nopwd_line);
-            }
-        }else{
-            break;
-        }
-    }
-
-    g_object_unref(data_input);
-    g_object_unref(input);
-    g_object_unref(file);
-    
-    return nopasswdlogin;
+    return is_capslock_on();
 }
 
 JS_EXPORT_API
-gboolean greeter_is_user_nopasswdlogin(const gchar *username)
+gboolean greeter_need_password (const gchar *username)
 {
-    gboolean ret = FALSE;
-    GPtrArray *nopwdlogin = greeter_get_nopasswdlogin_users();
-
-    for(int i = 0; i < nopwdlogin->len; i++){
-        g_debug("array i:%s", (gchar*) g_ptr_array_index(nopwdlogin, i));
-
-        if(g_strcmp0(username, g_ptr_array_index(nopwdlogin, i)) == 0){
-            g_debug("nopwd login true");
-            ret = TRUE;
-        }
-    }
-   
-    g_ptr_array_free(nopwdlogin, TRUE);
-    
-    return ret;
+    return is_need_pwd(username);
 }
 
 int main(int argc, char **argv)
