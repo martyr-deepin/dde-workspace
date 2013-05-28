@@ -301,10 +301,6 @@ msgstr "关闭(_C)"
 msgid "_Dock me"
 msgstr "驻留(_D)"
 
-#: ../resources/dock/js/launcher.coffee:31
-msgid "Run"
-msgstr "运行"
-
 #: ../resources/dock/js/launcher.coffee:33
 msgid "_Undock"
 msgstr "移除驻留(_U)"
