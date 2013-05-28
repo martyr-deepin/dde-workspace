@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Weather
+class Weather 
     constructor: ->
         @id = "weather"
         @pos = {x:10, y:1, width:3, height:1}
@@ -59,45 +59,48 @@ class Weather
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
-
-        @more_city_menu = new CityMoreMenu("more_city_menu",0,70,@weathergui_update.bind(@))
-        @element.appendChild(@more_city_menu)
-
+        @more_city_menu = new CityMoreMenu(0,70)
+        echo @more_city_menu.menu
+        echo @more_city_menu.chooseprov
+        # @element.appendChild(@more_weather_menu.menu)
         city.addEventListener("click", =>
-            if @more_city_menu.style.display == "none"
+            @more_city_menu.menu.style.display = "block"
+            @more_city_menu.more_city_build()
+            @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
+            echo @more_city_menu.chooseprov
+            
+            if @more_city_menu.menu.style.display == "none"
+                echo "display none will block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
-                    @more_city_menu.style.top = -252
-                else @more_city_menu.style.top = 84
-                @more_city_menu.style.display = "block"
-                @more_weather_menu.style.display = "none"
-                @more_city_menu.style.zIndex = "65535"
+                    @more_city_menu.menu.style.top = -252
+                else @more_city_men.menu.style.top = 84
+                @more_city_menu.menu.style.display = "block"
+                @more_city_menu.menu.style.zIndex = "65535"
                 @display_city_menu_id = setTimeout( =>
-                    @more_city_menu.style.display = "none"
+                    @more_city_menu.menu.style.display = "none"
                 ,4000)
             else
-                @more_city_menu.style.display = "none"
-                @more_weather_menu.style.display = "none"
-                @more_city_menu.style.zIndex = "0"
+                @more_city_menu.menu.style.display = "none"
+                @more_city_menu.menu.style.zIndex = "0"
                 clearTimeout(@display_city_menu_id)
             )
         @date.addEventListener("click", =>
             clearTimeout(@display_city_menu_id)
+            @more_city_menu.menu.style.display = "none"
             if @more_weather_menu.style.display == "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
-                    @more_weather_menu.style.top = -200
+                    @more_weather_menu.style.top = -195
                 else @more_weather_menu.style.top = 84
                 @more_weather_menu.style.display = "block"
-                @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "65535"
             else
                 @more_weather_menu.style.display = "none"
-                @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
             )
 
-        @more_city_menu.addEventListener("click", =>
+        @more_city_menu.set_addeventListener("click", =>
             echo "more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )

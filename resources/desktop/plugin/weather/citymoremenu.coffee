@@ -19,40 +19,54 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
-    constructor: (clss, x,y,callback)->
-        @more_city_menu = document.createElement('div')
-        @more_city_menu.setAttribute("class", clss) if  clss
-        @more_city_menu.style.display = "none"
-        @more_city_menu.style.left = x if x
-        @more_city_menu.style.top = y if y
-        @more_city_build()
-        @change_chooseprov(callback)
-        return @more_city_menu
+    constructor: (x,y)->
+        @menu = document.createElement('div')
+        @menu.setAttribute("class", "menu")
+        @menu.style.left = x if x
+        @menu.style.top = y if y
+        @menu.style.display = "none"
+        @menu.style.zIndex = 0
+
+    check_style:(type)->
+        return @menu.style.type
+    set_style:(type,val)->
+        @menu.style.type = val
+    check_style_display:->
+        return @menu.style.display
+    set_style_display:(val)->
+        @menu.style.display = val
+    set_style_top:(val)->
+        @menu.style.top = val
+    set_style_zIndex:(val)->
+        @menu.style.zIndex = val    
+    set_addeventListener:(eventName,functionName)->
+        @menu.addEventListener(eventName,functionName)
 
     more_city_build: ->
         @str_provinit = "--" + _("province") + "--"
         @str_cityinit = "--" + _("city") + "--" 
         @str_distinit = "--" + _("county") + "--"
-        @chooseprov = create_element("select", "chooseprov", @more_city_menu)
-        @choosecity = create_element("select", "choosecity", @more_city_menu)
-        @choosedist = create_element("select", "choosedist", @more_city_menu)
+        @chooseprov = create_element("select", "chooseprov", @menu)
+        @choosecity = create_element("select", "choosecity", @menu)
+        @choosedist = create_element("select", "choosedist", @menu)
 
-        @chooseprov.options.length = 0 
+        @clearOptions(@chooseprov)
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
         provinit.selected = "true"
-        i = 0
-        while i < cities.length
-            @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
+        # i = 0
+        # while i < cities.length
+        #     @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
+        @chooseprov.options.add(new Option(cities[i].name, cities[i].id)) for i in cities.length
         length = @chooseprov.options.length
         @chooseprov.size = if length < 13 then length else 13
         @choosecity.size = 1
-        @choosecity.options.length = 0 
+        @clearOptions(@choosecity)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
         cityinit.selected = "true"
         @choosedist.size = 1
-        @choosedist.options.length = 0
+        @clearOptions(@choosedist)
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
         distinit.selected = "true"
@@ -68,7 +82,7 @@ class CityMoreMenu extends Widget
                     data = @read_data_from_json(provvalue,callback)
             )
 
-    read_data_from_json: (id,callback) ->
+    read_data_from_json: (id,callback) -> 
         xhr = new XMLHttpRequest()
         url = "city/" + id + ".json"
         xhr.open("GET", url, true)
@@ -80,7 +94,7 @@ class CityMoreMenu extends Widget
                     @cityadd(data[id].data,callback)
 
     cityadd: (data,callback) ->
-        @choosecity.options.length = 1
+        @clearOptions(@choosecity)#1
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
         length = @choosecity.options.length
@@ -95,14 +109,14 @@ class CityMoreMenu extends Widget
                     @distadd(data[cityvalue].data,callback)
     
     distadd: (data,callback) ->
-        @choosedist.options.length = 1
+        @clearOptions(@choosedist)#1
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
         length = @choosedist.options.length
         @choosedist.size = if length < 13 then length else 13
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
-            @more_city_menu.style.display = "none"
+            @menu.style.display = "none"
             distIndex = @choosedist.selectedIndex
             if distIndex == -1
                 @choosedist.options.remove(distIndex)
@@ -112,3 +126,5 @@ class CityMoreMenu extends Widget
                     cityid_choose = data[distvalue].data
                     localStorage.setItem("cityid_storage",cityid_choose)
                     callback()
+    clearOptions:(colls)->
+        colls.remove(i) for i in colls.length 
