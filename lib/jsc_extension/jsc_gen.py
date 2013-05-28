@@ -552,11 +552,16 @@ gboolean invoke_js_garbage()
     JSGarbageCollect(global_ctx);
     return TRUE;
 }
+void modules_reload()
+{
+    %(modules_reload)s;
+}
 void init_js_extension(JSGlobalContextRef context, void* webview)
 {
     if (global_ctx == NULL)
         g_timeout_add_seconds(5, (GSourceFunc)invoke_js_garbage, NULL);
     global_ctx = context;
+    modules_reload();
     __webview = webview;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_DCore = JSObjectMake(context, get_DCore_class(), NULL);
@@ -571,13 +576,16 @@ void init_js_extension(JSGlobalContextRef context, void* webview)
 """
     objs = ""
     objs_state = ""
+    modules_reload = ""
     modules.reverse()
     for m in modules:
         if m.name != "DCore":
             objs += m.str_install()
             objs_state += "extern JSClassRef get_%s_class();\n" % m.name
+            modules_reload += "extern void %(name)s_reload() __attribute__((weak));\n if (& %(name)s_reload)%(name)s_reload();\n" % { "name" : m.name.lower() }
+
     f = open(output_path+ "/" + init_name, "w")
-    f.write(temp % {"objs": objs, "objs_state": objs_state })
+    f.write(temp % {"objs": objs, "objs_state": objs_state, "modules_reload": modules_reload })
     f.close()
 
 def gen_module_c(output_path, cfg_dir, cfg_list=None):
