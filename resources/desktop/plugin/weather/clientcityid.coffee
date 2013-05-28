@@ -22,25 +22,8 @@ class ClientCityId
     constructor: ->
         @url_clientip_str = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
 
-    ajax : (url, call) ->
-        xhr = new XMLHttpRequest()
-        xhr.open("GET", url, true)
-        xhr.send(null)
-        xhr.onreadystatechange = ->
-            if (xhr.readyState == 4 and xhr.status == 200)
-                try 
-                    if xhr.responseText != ""
-                        call?(xhr)
-                        echo "XMLHttpRequest receive all data."
-                catch e
-                    echo "xhr.responseText is error"
-            else if xhr.status == 404
-                echo "XMLHttpRequest can't find the url ."
-            else if xhr.status == 0
-                echo "your computer are not connected to the Internet"
-            return xhr.status  
     Get_client_cityip: (callback,url_clientip = @url_clientip_str)=>
-        @ajax(url_clientip, (xhr)=>
+        ajax(url_clientip, (xhr)=>
             try
                 localStorage.setItem("client_ipstr_storage",xhr.responseText)
                 @client_ipstr = localStorage.getItem("client_ipstr_storage")
@@ -60,13 +43,10 @@ class ClientCityId
 
     Get_client_cityjsonByip: (callback,ip = @ip)->
         @url_clientcityjsonbyip = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=" + ip
-        @ajax(@url_clientcityjsonbyip, (xhr)=>
+        ajax(@url_clientcityjsonbyip, (xhr)=>
             try
-                # ...
                 client_cityjsonstr = xhr.responseText
-                # echo "client_cityjsonstr:"  + client_cityjsonstr
                 remote_ip_info = JSON.parse(client_cityjsonstr.slice(21,client_cityjsonstr.length))
-                echo "remote_ip_info:" + remote_ip_info
                 echo "remote_ip_info.ret:" + remote_ip_info.ret
                 echo "remote_ip_info.province:" + remote_ip_info.province
                 if remote_ip_info.ret == 1
@@ -81,7 +61,6 @@ class ClientCityId
         )
 
     Get_cityid_client_BycityJSON:(callback,client_cityjson=@client_cityjson)->
-        # echo "client_cityjson != null"
         for provin of allname.data
             if allname.data[provin].prov == client_cityjson.province
                 for ci of allname.data[provin].city

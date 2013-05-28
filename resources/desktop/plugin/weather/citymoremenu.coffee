@@ -83,15 +83,13 @@ class CityMoreMenu extends Widget
             )
 
     read_data_from_json: (id,callback) -> 
-        xhr = new XMLHttpRequest()
         url = "city/" + id + ".json"
-        xhr.open("GET", url, true)
-        xhr.send(null)
-        xhr.onreadystatechange = =>
-            if (xhr.readyState == 4)
-                if xhr.responseText != "" && xhr.responseText != null
-                    data = JSON.parse(xhr.responseText)
-                    @cityadd(data[id].data,callback)
+        ajax(url,(xhr)=>
+            if xhr.responseText != "" && xhr.responseText != null
+                data = JSON.parse(xhr.responseText)
+                @cityadd(data[id].data,callback)
+        ,false)
+
 
     cityadd: (data,callback) ->
         @clearOptions(@choosecity)#1
