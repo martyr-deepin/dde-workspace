@@ -22,18 +22,15 @@ class CityMoreMenu
     # @display_city_menu_id = null#setTimeOut hide the citymoremenu
     @cityid_choose = null
 
-    constructor: (clss, parent,x,y,position=absolute)->
-        @more_city_menu = create_element("div", "more_city_menu", parent)
+    constructor: (clss, x,y,position=absolute)->
+        @more_city_menu = document.createElement('div')
         @more_city_menu.setAttribute("class", clss) if  clss
-        if parent
-            parent.appendChild(@more_city_menu)
         @more_city_menu.style.display = "none"
         @more_city_menu.style.position = position if position
         @more_city_menu.style.left = x if x
         @more_city_menu.style.top = y if y
 
         @more_city_build()
-
         return @more_city_menu
 
     more_city_build: ->
@@ -48,11 +45,10 @@ class CityMoreMenu
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
         provinit.selected = "true"
-        i = 0
-        while i < cities.length
+        for i in cities.length
             @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
         length = @chooseprov.options.length
-        @chooseprov.size = (if (length < 13) then length else 13)
+        @chooseprov.size = if length < 13 then length else 13
         @choosecity.size = 1
         @choosecity.options.length = 0 
         cityinit = create_element("option", "cityinit", @choosecity)
@@ -67,11 +63,11 @@ class CityMoreMenu
 
         @chooseprov.addEventListener("change", =>
             provIndex = @chooseprov.selectedIndex
-            if provIndex is -1
+            if provIndex == -1
                 @chooseprov.options.remove(provIndex)
             else
                 provvalue = @chooseprov.options[provIndex].value 
-                if provvalue isnt @str_provinit
+                if provvalue != @str_provinit
                     data = @read_data_from_json(provvalue)
                 )
 
@@ -82,7 +78,7 @@ class CityMoreMenu
         xhr.send(null)
         xhr.onreadystatechange = =>
             if (xhr.readyState == 4)
-                if xhr.responseText isnt "" && xhr.responseText isnt null
+                if xhr.responseText != "" && xhr.responseText != null
                     data = JSON.parse(xhr.responseText);
                     @cityadd(data[id].data)
 
@@ -91,14 +87,14 @@ class CityMoreMenu
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
         length = @choosecity.options.length
-        @choosecity.size = (if (length < 13) then length else 13)   
+        @choosecity.size = if length < 13 then length else 13 
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
-            if cityIndex is -1
+            if cityIndex == -1
                 @choosecity.options.remove(cityIndex)
             else
                 cityvalue = @choosecity.options[cityIndex].value
-                if cityvalue isnt @str_cityinit
+                if cityvalue != @str_cityinit
                     @distadd(data[cityvalue].data)
     
     distadd: (data) ->
@@ -106,19 +102,18 @@ class CityMoreMenu
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
         length = @choosedist.options.length
-        @choosedist.size = (if (length < 13) then length else 13)
+        @choosedist.size = if length < 13 then length else 13
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
             @more_city_menu.style.display = "none"
             distIndex = @choosedist.selectedIndex
-            if distIndex is -1
+            if distIndex == -1
                 @choosedist.options.remove(distIndex)
             else
                 distvalue = @choosedist.options[distIndex].value
-                if distvalue isnt @str_distinit
+                if distvalue != @str_distinit
                     cityid_choose = data[distvalue].data
                     localStorage.setItem("cityid_storage",cityid_choose)
-                    @cityid_choose = localStorage.getItem("cityid_storage")
-                    weather = new Weather()
-                    echo "@cityid_choose:" + @cityid_choose
-    
+                    # @cityid_choose = localStorage.getItem("cityid_storage")
+                    # weather = new Weather()
+                    # echo "@cityid_choose:" + @cityid_choose
