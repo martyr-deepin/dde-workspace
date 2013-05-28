@@ -355,7 +355,9 @@ start_session(const gchar *session)
     DBG("%s", "start session");
 
     gchar *user_lock_path = g_strdup_printf("%s%s", get_selected_user(), ".dlock.app.deepin");
-    if(is_application_running(user_lock_path)){
+    g_warning("lock path:%s", user_lock_path);
+
+    if(app_is_running(user_lock_path)){
         g_warning("greeter found user had locked\n");
 
         GDBusProxy *lock_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
@@ -412,18 +414,15 @@ void greeter_login_clicked(const gchar *password)
 
     if(lightdm_greeter_get_is_authenticated(greeter)){
         DBG("%s", "login clicked, start session");
-
         start_session(get_selected_session());
 
     }else if(lightdm_greeter_get_in_authentication(greeter)){
         DBG("%s", "login clicked, respond");
-
         lightdm_greeter_respond(greeter, password);
         response_count = response_count + 1;
 
     }else{
         DBG("%s", "login clicked, start auth");
-
         greeter_start_authentication(get_selected_user());
     }
 }
@@ -435,7 +434,6 @@ show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType typ
     if(response_count == 1){
         js_post_message_simply("prompt", "{\"status\":\"%s\"}", "expect response");
     }
-
     DBG("%s", "show prompt cb");
 }
 
@@ -460,14 +458,12 @@ authentication_complete_cb(LightDMGreeter *greeter)
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
             DBG("%s", "auth complete, start session");
-
             start_session(get_selected_session());
         }
 
     }else{
         if(prompted){
             DBG("%s", "auth complete, restart auth");
-
             js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
             greeter_start_authentication(get_selected_user());
         }
@@ -563,7 +559,7 @@ int main(int argc, char **argv)
     g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
     g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
     g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
-    g_signal_connect (G_OBJECT (greeter), "quit", G_CALLBACK (sigterm_cb), NULL);
+    //g_signal_connect (G_OBJECT (greeter), "quit", G_CALLBACK (sigterm_cb), NULL);
 
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 

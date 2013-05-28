@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 
+gboolean app_is_running(const char* path);
 gboolean is_capslock_on();
 gchar* get_date_string();
 gboolean is_need_pwd(const gchar *username);

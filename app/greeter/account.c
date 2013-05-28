@@ -19,7 +19,28 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include "account.h"
+#include <sys/socket.h>
+#include <sys/un.h>
 
+gboolean app_is_running(const char* path)
+{
+    int server_sockfd;
+    socklen_t server_len;
+    struct sockaddr_un server_addr;
+
+    server_addr.sun_path[0] = '\0'; //make it be an name unix socket
+    int path_size = g_sprintf (server_addr.sun_path+1, "%s", path);
+    server_addr.sun_family = AF_UNIX;
+    server_len = 1 + path_size + offsetof(struct sockaddr_un, sun_path);
+
+    server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+
+    if (0 == bind(server_sockfd, (struct sockaddr *)&server_addr, server_len)) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
+}
 gboolean is_capslock_on ()
 {
     gboolean capslock_flag = FALSE;
