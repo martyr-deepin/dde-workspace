@@ -30,16 +30,14 @@
 #     weatherdata_more = weatherdata.weatherdata_more
 
 class WeatherData
-    @weatherdata_now = null
-    @weatherdata_more = null
+    # @weatherdata_now = null
+    # @weatherdata_more = null
 
     constructor: (cityid)->
-        if cityid isnt null && cityid isnt ""
-            localStorage.setItem("cityid_storage",cityid)
-            @cityid = localStorage.getItem("cityid_storage")
-            @url_nowweather_str = @url_nowweather(cityid)
-            @url_moreweather_str = @url_moreweather(cityid)
-        else return 0
+        localStorage.setItem("cityid_storage",cityid)
+        @cityid = localStorage.getItem("cityid_storage")
+        @url_nowweather_str = @url_nowweather(cityid)
+        @url_moreweather_str = @url_moreweather(cityid)
 
     url_nowweather: (cityid)-> 
         return "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
@@ -52,28 +50,38 @@ class WeatherData
         xhr.send(null)
         xhr.onreadystatechange = ->
             if (xhr.readyState == 4 and xhr.status == 200)
-                if xhr.responseText isnt ""
-                    callback?(xhr)
-                    echo "XMLHttpRequest receive all data."
-            else if xhr.status is 404
+                try
+                    if xhr.responseText != ""
+                        callback?(xhr)
+                        echo "XMLHttpRequest receive all data."
+                catch e
+                    echo "xhr.responseText is error"
+            else if xhr.status == 404
                 echo "XMLHttpRequest can't find the url ."
-            else if xhr.status is 0
+            else if xhr.status == 0
                 echo "your computer are not connected to the Internet"
             return xhr.status  
 
     Get_weatherdata_now:(cityid = @cityid)->
-        if cityid isnt "" && cityid isnt null
-            # echo "Get_weatherdata_now"
-            @ajax(@url_nowweather(cityid),(xhr)=>
+        # echo "Get_weatherdata_now"
+        @ajax(@url_nowweather(cityid),(xhr)=>
+            # echo "weatherdata_now_storage:" + xhr.responseText
+            try 
+                JSON.parse(xhr.responseText)
                 localStorage.setItem("weatherdata_now_storage",xhr.responseText)
-                @weatherdata_now = localStorage.getObject("weatherdata_now_storage")
-            )
-        else return 0
+                # @weatherdata_now = localStorage.getObject("weatherdata_now_storage")
+            catch e
+                echo "weatherdata_now xhr.responseText isnt JSON "
+                # @Get_weatherdata_now()
+        )
     Get_weatherdata_more:(cityid = @cityid)->
-        if cityid isnt "" && cityid isnt null
-            # echo "Get_weatherdata_more"
-            @ajax(@url_moreweather(cityid),(xhr)=>
+        # echo "Get_weatherdata_more"
+        @ajax(@url_moreweather(cityid),(xhr)=>
+            try
+                JSON.parse(xhr.responseText)
                 localStorage.setItem("weatherdata_more_storage",xhr.responseText)
-                @weatherdata_more = localStorage.getObject("weatherdata_more_storage")
-            )
-        else return 0
+                # @weatherdata_more = localStorage.getObject("weatherdata_more_storage")
+            catch e
+                echo "weatherdata_more xhr.responseText isnt JSON "
+                # @Get_weatherdata_more()
+        )

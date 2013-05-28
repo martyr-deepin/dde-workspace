@@ -51,20 +51,23 @@ class ClientCityId
         xhr.send(null)
         xhr.onreadystatechange = ->
             if (xhr.readyState == 4 and xhr.status == 200)
-                if xhr.responseText isnt ""
-                    callback?(xhr)
-                    echo "XMLHttpRequest receive all data."
-            # else if xhr.status is 404
-            #     echo "XMLHttpRequest can't find the url ."
-            # else if xhr.status is 0
-            #     echo "your computer are not connected to the Internet"
-            # return xhr.status  
+                try 
+                    if xhr.responseText != ""
+                        callback?(xhr)
+                        echo "XMLHttpRequest receive all data."
+                catch e
+                    echo "xhr.responseText is error"
+            else if xhr.status == 404
+                echo "XMLHttpRequest can't find the url ."
+            else if xhr.status == 0
+                echo "your computer are not connected to the Internet"
+            return xhr.status  
     Get_client_cityip: (url_clientip = @url_clientip_str)=>
-        if url_clientip isnt "" && url_clientip isnt null
-            @ajax(url_clientip, (xhr)=>
+        @ajax(url_clientip, (xhr)=>
+            try
                 localStorage.setItem("client_ipstr_storage",xhr.responseText)
                 @client_ipstr = localStorage.getItem("client_ipstr_storage")
-                if @client_ipstr[0] is '1'
+                if @client_ipstr[0] == '1'
                     ip = @client_ipstr.slice(2,12)
                     echo "ip start :" + ip
                     localStorage.setItem("client_ipstart_storage",ip)
@@ -74,39 +77,38 @@ class ClientCityId
                 else 
                     echo "Get_client_cityip  can't get the right client ip"
                     return 0
-            )
-        else return 0
+            catch e
+                # @Get_client_cityip()
+        )
 
     Get_client_cityjsonByip: (ip = @ip)->
-        if ip isnt "" && ip isnt null
-            @url_clientcityjsonbyip = @url_clientcityjsonbyip(ip)
-            @ajax(@url_clientcityjsonbyip, (xhr)=>
+        @url_clientcityjsonbyip = @url_clientcityjsonbyip(ip)
+        @ajax(@url_clientcityjsonbyip, (xhr)=>
+            try
+                # ...
                 client_cityjsonstr = xhr.responseText
-                echo "client_cityjsonstr:"  + client_cityjsonstr
+                # echo "client_cityjsonstr:"  + client_cityjsonstr
                 remote_ip_info = JSON.parse(client_cityjsonstr.slice(21,client_cityjsonstr.length))
                 echo "remote_ip_info:" + remote_ip_info
                 echo "remote_ip_info.ret:" + remote_ip_info.ret
                 echo "remote_ip_info.province:" + remote_ip_info.province
-                if remote_ip_info.ret is 1
+                if remote_ip_info.ret == 1
                     @Get_cityid_client_BycityJSON(remote_ip_info)
                     return remote_ip_info
                 else 
                     echo "Get_client_cityjsonByip can't find the matched location right json by ip"
                     return 0
-            )
-        else return 0
+            catch e
+                # ...
+                # @Get_client_cityjsonByip()
+        )
 
     Get_cityid_client_BycityJSON:(client_cityjson = @client_cityjson)->
-        if client_cityjson isnt "" && client_cityjson isnt null
-            # echo "client_cityjson isnt null"
-            for provin of allname.data
-                if allname.data[provin].prov is client_cityjson.province
-                    for ci of allname.data[provin].city
-                        if allname.data[provin].city[ci].cityname is client_cityjson.city
-                            cityid_client = allname.data[provin].city[ci].code
-                            echo "cityid_client:"+ cityid_client
-                            localStorage.setItem("cityid_storage",cityid_client)
-                            @cityid_client = localStorage.getItem("cityid_storage")
-                            new Weather()
-                            return @cityid_client
-        else return 0
+        # echo "client_cityjson != null"
+        for provin of allname.data
+            if allname.data[provin].prov == client_cityjson.province
+                for ci of allname.data[provin].city
+                    if allname.data[provin].city[ci].cityname == client_cityjson.city
+                        cityid = allname.data[provin].city[ci].code
+                        echo "cityid:"+ cityid
+                        localStorage.setItem("cityid_storage",cityid)

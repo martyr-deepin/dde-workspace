@@ -79,10 +79,12 @@ char* icon_name_to_path(const char* name, int size)
         }
     }
     GtkIconTheme* them = gtk_icon_theme_get_default(); //do not ref or unref it
+
+    // This info must not unref, owned by gtk !!!!!!!!!!!!!!!!!!!!!
     GtkIconInfo* info = gtk_icon_theme_lookup_icon(them, name, size, GTK_ICON_LOOKUP_GENERIC_FALLBACK);
     if (info) {
         char* path = g_strdup(gtk_icon_info_get_filename(info));
-        g_object_unref(info);
+        /*g_object_unref(info);*/
         return path;
     } else {
         return NULL;
@@ -125,9 +127,6 @@ char* get_desktop_dir(gboolean update)
         const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_DESKTOP_DIR'";
         g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
         g_strchomp(dir);
-        char* _dir = g_strconcat(dir, "/", NULL);
-        g_free(dir);
-        dir = _dir;
     }
     return g_strdup(dir);
 }

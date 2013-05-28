@@ -809,22 +809,22 @@ grid_right_click = (evt) ->
         cancel_all_selected_stats()
 
     menus = []
-    menus.push([_("Sort by"), [
-                [11, _("Name")],
-                [12, _("Last modified time")]
+    menus.push([_("_Sort by"), [
+                [11, _("_Name")],
+                [12, _("Last modified _time")]
             ]
         ])
-    menus.push([_("New"), [
-                [21, _("Folder")],
-                [22, _("Text document")]
+    menus.push([_("_New"), [
+                [21, _("_Folder")],
+                [22, _("_Text document")]
             ]
         ])
-    menus.push([3, _("Open terminal here")])
-    menus.push([4, _("Paste"), DCore.DEntry.can_paste()])
+    menus.push([3, _("Open _terminal here")])
+    menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
-    menus.push([5, _("Display settings")])
-    menus.push([6, _("Desktop settings")])
-    menus.push([7, _("Personalize")])
+    menus.push([5, _("_Display settings")])
+    menus.push([6, _("D_esktop settings")])
+    menus.push([7, _("Pe_rsonalize")])
 
     div_grid.parentElement.contextMenu = build_menu(menus)
     return

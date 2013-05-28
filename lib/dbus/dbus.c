@@ -15,7 +15,6 @@ PRIVATE DBusGConnection* session_con = NULL;
 void dbus_init()
 {
     dbus_g_thread_init();
-    g_type_init();
     init = TRUE;
 }
 
@@ -98,4 +97,9 @@ JSValueRef dbus_session(const char* bus_name, JSData* js)
     JSValueRef obj = dbus_session_object(bus_name, path, bus_name, js);
     g_free(path);
     return obj;
+}
+
+void dbus_reload()
+{
+    reset_dbus_infos();
 }

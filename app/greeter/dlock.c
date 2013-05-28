@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
@@ -36,10 +35,10 @@
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
+#include "account.h"
 #include "utils.h"
 #include "X_misc.h"
 #include <X11/XKBlib.h>
-
 #include "gs-grab.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -69,6 +68,7 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert (account_proxy != NULL);
     if(error != NULL){
         g_debug("connect org.freedesktop.Accounts failed");
         g_clear_error(&error);
@@ -82,14 +82,17 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert(user_path_var != NULL);
     if(error != NULL){
         g_debug("find user by name failed");
         g_clear_error(&error);
     }
 
     g_object_unref(account_proxy);
+
     gchar * user_path = NULL;
     g_variant_get(user_path_var, "(o)", &user_path);
+    g_assert(user_path != NULL);
 
     user_proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
             G_DBUS_PROXY_FLAGS_NONE,
@@ -100,6 +103,7 @@ static void init_user()
             NULL,
             &error);
 
+    g_assert(user_proxy != NULL);
     if(error != NULL){
         g_debug("connect org.freedesktop.Accounts failed");
         g_clear_error(&error);
@@ -140,7 +144,7 @@ gchar* lock_get_realname()
     g_assert(user_realname_var != NULL);
 
     gchar* user_realname = g_variant_dup_string(user_realname_var, NULL);
-    g_assert(user_realname);
+    g_assert(user_realname != NULL);
 
     g_variant_unref(user_realname_var);
 
@@ -241,22 +245,7 @@ void lock_switch_user()
 JS_EXPORT_API
 gchar * lock_get_date()
 {
-    char outstr[200];
-    time_t t;
-    struct tm *tmp;
-
-    setlocale(LC_ALL, "");
-    t = time(NULL);
-    tmp = localtime(&t);
-    if (tmp == NULL) {
-        perror("localtime");
-    }
-
-    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
-            fprintf(stderr, "strftime returned 0");
-    }
-
-    return g_strdup(outstr);
+    return get_date_string();
 }
 
 JS_EXPORT_API
@@ -269,6 +258,12 @@ void lock_unlock_succeed ()
 
     g_object_unref(user_proxy);
     gtk_main_quit();
+}
+
+JS_EXPORT_API
+gboolean lock_need_pwd ()
+{
+    return is_need_pwd (username);
 }
 
 /* return False if unlock succeed */
@@ -287,6 +282,7 @@ gboolean lock_try_unlock (const gchar *password)
             NULL,
             &error);
 
+    g_assert(lock_proxy != NULL);
     if (error != NULL) {
         g_warning("connect com.deepin.dde.lock failed");
         g_clear_error(&error);
@@ -300,6 +296,7 @@ gboolean lock_try_unlock (const gchar *password)
                     NULL,
                     &error);
 
+    g_assert(lock_succeed != NULL);
     if(error != NULL){
         g_clear_error (&error);
     }
@@ -362,19 +359,7 @@ static void lock_report_pid()
 JS_EXPORT_API
 gboolean lock_detect_capslock()
 {
-    gboolean capslock_flag = False;
-
-    Display *d = XOpenDisplay((gchar*)0);
-    guint n;
-
-    if(d){
-        XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
-
-        if((n & 1)){
-            capslock_flag = True;
-        }
-    }
-    return capslock_flag;
+    return is_capslock_on(); 
 }
 
 static void lock_show_cb (GtkWindow* lock_container, gpointer data)
@@ -388,34 +373,36 @@ static void lock_show_cb (GtkWindow* lock_container, gpointer data)
 static void
 select_popup_events (void)
 {
-        XWindowAttributes attr;
-        unsigned long     events;
+    XWindowAttributes attr;
+    unsigned long     events;
 
-        gdk_error_trap_push ();
+    gdk_error_trap_push ();
 
-        memset (&attr, 0, sizeof (attr));
-        XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
+    memset (&attr, 0, sizeof (attr));
+    XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
 
-        events = SubstructureNotifyMask | attr.your_event_mask;
-        XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
+    events = SubstructureNotifyMask | attr.your_event_mask;
+    XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
 
-        gdk_error_trap_pop_ignored ();
+    gdk_error_trap_pop_ignored ();
 }
+
 static gboolean
 x11_window_is_ours (Window window)
 {
-        GdkWindow *gwindow;
-        gboolean   ret;
+    GdkWindow *gwindow;
+    gboolean   ret;
 
-        ret = FALSE;
+    ret = FALSE;
 
-        gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
-        if (gwindow && (window != GDK_ROOT_WINDOW ())) {
-                ret = TRUE;
-        }
+    gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
+    if (gwindow && (window != GDK_ROOT_WINDOW ())) {
+            ret = TRUE;
+    }
 
-        return ret;
+    return ret;
 }
+
 static GdkFilterReturn
 xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
@@ -452,6 +439,7 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
     return GDK_FILTER_CONTINUE;
 }
+
 int main(int argc, char **argv)
 {
     init_i18n();

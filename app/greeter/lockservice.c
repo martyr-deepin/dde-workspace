@@ -1,5 +1,4 @@
-/**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+/** * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
@@ -22,6 +21,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <string.h>
 #include <glib.h>
 #include <gio/gio.h>
 #include <stdio.h>
@@ -36,6 +36,7 @@
 #define LOCK_DBUS_IFACE     "com.deepin.dde.lock"
 
 GMainLoop *loop = NULL;
+GError *error = NULL;
 
 const char* _lock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
@@ -53,6 +54,12 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
 "			</arg>\n"
 "			<arg name=\"password\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"		</method>\n"
+"		<method name=\"NeedPwd\">\n"
+"			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"			<arg name=\"needed\" type=\"b\" direction=\"out\">\n"
 "			</arg>\n"
 "		</method>\n"
 "	</interface>\n"
@@ -74,6 +81,7 @@ static void _bus_method_call (GDBusConnection * connection, const gchar * sender
                              const gchar * method, GVariant * params,
                              GDBusMethodInvocation * invocation, gpointer user_data);
 static void _bus_handle_exit_lock(const gchar *username, const gchar *password);
+static gboolean _bus_handle_need_pwd(const gchar *username);
 static gboolean _bus_handle_unlock_check(const gchar *username, const gchar *password);
 static gboolean do_exit(gpointer user_data);
 
@@ -209,6 +217,12 @@ _bus_method_call (GDBusConnection * connection,
 
         retval = g_variant_new("(b)", _bus_handle_unlock_check(username, password));
 
+    } else if (g_strcmp0 (method, "NeedPwd") == 0) {
+        const gchar *username = NULL;
+        g_variant_get (params, "(s)", &username);
+
+        retval = g_variant_new("(b)", _bus_handle_need_pwd (username));
+
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
     }
@@ -270,7 +284,6 @@ static gboolean
 _bus_handle_unlock_check (const gchar *username, const gchar *password)
 {
     gboolean succeed = FALSE;
-
     struct spwd *user_data;
     errno = 0;
 
@@ -279,15 +292,125 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     if (user_data == NULL)
     {
         g_warning ("No such user %s, or error %s\n", username, strerror(errno));
+        succeed = TRUE;
+        return succeed;
+    }
+
+    if (user_data->sp_pwdp == NULL || strlen(user_data->sp_pwdp) == 0)
+    {
+        g_warning ("user sp_pwdp is null\n");
+        succeed = TRUE;
         return succeed;
     }
 
     if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
         succeed = TRUE;
-    }
+    } 
 
     return succeed;
+}
+
+static
+GPtrArray *get_nopasswdlogin_users()
+{
+    GPtrArray *nopasswdlogin = g_ptr_array_new();
+
+    GFile *file = g_file_new_for_path("/etc/group");
+    g_assert(file);
+
+    GFileInputStream *input = g_file_read(file, NULL, &error);
+    if(error != NULL){
+        g_warning("read /etc/group failed\n");
+        g_clear_error(&error);
+    }
+    g_assert(input);
+
+    GDataInputStream *data_input = g_data_input_stream_new((GInputStream *) input);
+    g_assert(data_input);
+    
+    char *data = (char *) 1;
+    while(data){
+        gsize length = 0;
+        data = g_data_input_stream_read_line(data_input, &length, NULL, &error);
+        if(error != NULL){
+            g_warning("read line error\n");
+            g_clear_error(&error);
+        }
+        
+        if(data != NULL){
+            if(g_str_has_prefix(data, "nopasswdlogin")){
+                gchar **nopwd_line = g_strsplit(data, ":", 4);
+                g_debug("data:%s", data);
+                g_debug("nopwd_line[3]:%s", nopwd_line[3]);
+                
+                if(nopwd_line[3] != NULL){
+                    gchar **user_strv = g_strsplit(nopwd_line[3], ",", 1024);
+
+                    for(int i = 0; i < g_strv_length(user_strv); i++){
+                        g_debug("user_strv[i]:%s", user_strv[i]);
+                        g_ptr_array_add(nopasswdlogin, g_strdup(user_strv[i]));
+                    }
+                    g_strfreev(user_strv);
+                }
+                g_strfreev(nopwd_line);
+            }
+        }else{
+            break;
+        }
+    }
+
+    g_object_unref(data_input);
+    g_object_unref(input);
+    g_object_unref(file);
+    
+    return nopasswdlogin;
+}
+
+static 
+gboolean is_user_nopasswdlogin(const gchar *username)
+{
+    gboolean ret = FALSE;
+    GPtrArray *nopwdlogin = get_nopasswdlogin_users();
+
+    for(int i = 0; i < nopwdlogin->len; i++){
+        g_debug("array i:%s", (gchar*) g_ptr_array_index(nopwdlogin, i));
+
+        if(g_strcmp0(username, g_ptr_array_index(nopwdlogin, i)) == 0){
+            g_debug("nopwd login true");
+            ret = TRUE;
+        }
+    }
+   
+    g_ptr_array_free(nopwdlogin, TRUE);
+    
+    return ret;
+}
+
+static gboolean
+_bus_handle_need_pwd (const gchar *username)
+{
+    gboolean needed = TRUE;
+
+    struct spwd *user_data;
+
+    user_data = getspnam (username);
+
+    if (user_data != NULL && strlen(user_data->sp_pwdp) == 0)
+    {
+        g_debug ("user had blank password\n");
+        needed = FALSE;
+        return needed;
+    }
+
+    if (is_user_nopasswdlogin (username))
+    {
+        g_debug ("user in nopasswdlogin group\n");
+        needed = FALSE;
+        return needed;
+    }
+
+    return needed;
 }
 
 static gboolean
