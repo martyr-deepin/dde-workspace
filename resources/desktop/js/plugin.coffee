@@ -49,5 +49,5 @@ class DesktopPlugin extends Plugin
 
 load_plugins = ->
     for p in DCore.get_plugins("desktop")
-        w = new DesktopPlugin(get_path_base(p), get_path_name(p))
+        new DesktopPlugin(get_path_base(p), get_path_name(p))
     return

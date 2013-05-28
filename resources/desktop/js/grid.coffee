@@ -237,6 +237,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
         if detect_occupy(pos) == false then continue
 
+        #optimization by looking up o_table to get ID
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
@@ -254,8 +255,8 @@ init_occupy_table = ->
 
 
 clear_occupy_table = ->
-    for i in [0 ... cols]
-        for j in [0 ... rows]
+    for i in [0 ... cols] by 1
+        for j in [0 ... rows] by 1
             o_table[i][j] = null
     return
 
@@ -280,21 +281,13 @@ set_occupy = (id, info) ->
 
 detect_occupy = (info) ->
     assert(info!=null, "[detect_occupy]get null info")
+    if (info.x + info.width - 1) > cols  or (info.y + info.height - 1) > rows
+        return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
                 return true
     return false
-
-
-pixel_to_pos = (x, y, w, h) ->
-    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
-    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    coord_to_pos(index_x, index_y, w, h)
-
-
-coord_to_pos = (pos_x, pos_y, w, h) ->
-    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 find_free_position = (w, h) ->
@@ -306,6 +299,16 @@ find_free_position = (w, h) ->
                 info.y = j
                 return info
     return null
+
+
+pixel_to_pos = (x, y, w, h) ->
+    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
+    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
+    coord_to_pos(index_x, index_y, w, h)
+
+
+coord_to_pos = (pos_x, pos_y, w, h) ->
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 # need optimization

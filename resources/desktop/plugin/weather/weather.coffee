@@ -28,17 +28,29 @@ class Weather
         @weathergui_init()
         @locate_url = location.href.substring(0,location.href.lastIndexOf('/')) + '/weather/'
         echo "@locate_url:" + @locate_url
+
+
     get_id: ->
         @id
 
+
     set_id: (id) ->
         @id = id
-    
+
+
     get_pos: ->
-        @pos
+        x : @pos.x
+        y : @pos.y
+        width : @pos.width
+        height : @pos.height
+
 
     set_pos: (pos) ->
-        @pos = pos
+        @pos.x = pos.x
+        @pos.y = pos.y
+        @pos.width = pos.width
+        @pos.height = pos.height
+
 
     weather_style_build: ->
         @img_url_first = "plugin/weather/" + "img/"
@@ -64,7 +76,7 @@ class Weather
 
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
-        
+
         @refresh  = create_img("refresh", @img_url_first + "refresh.png",@element)
 
         @refresh.addEventListener("click", =>
@@ -78,44 +90,44 @@ class Weather
             @more_city_menu.style.display = "none"
             @more_weather_menu.style.display = "none"
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            if bottom_distance < 330 
+            if bottom_distance < 330
                 @rightclick.style.top = -160
                 @more_city_menu.style.top = -252
                 @more_weather_menu.style.top = -213
-            else 
+            else
                 @rightclick.style.top = 70
                 @more_city_menu.style.top = 70
                 @more_weather_menu.style.top = 70
             )
-        city.addEventListener("click", => 
+        city.addEventListener("click", =>
             if @more_city_menu.style.display is "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200 
+                if bottom_distance < 200
                     @more_city_menu.style.top = -252
                 else @more_city_menu.style.top = 70
                 @more_city_menu.style.display = "block"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "65535"
-                @display_city_menu_id = setTimeout( => 
+                @display_city_menu_id = setTimeout( =>
                     @more_city_menu.style.display = "none"
                 ,4000)
-            else 
-                @more_city_menu.style.display = "none" 
+            else
+                @more_city_menu.style.display = "none"
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.zIndex = "0"
                 clearTimeout(@display_city_menu_id)
             )
-        @date.addEventListener("click", => 
+        @date.addEventListener("click", =>
             clearTimeout(@display_city_menu_id)
-            if @more_weather_menu.style.display is "none" 
+            if @more_weather_menu.style.display is "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200 
+                if bottom_distance < 200
                     @more_weather_menu.style.top = -213
                 else @more_weather_menu.style.top = 70
                 @more_weather_menu.style.display = "block"
                 @more_city_menu.style.display = "none"
-                @more_weather_menu.style.zIndex = "65535"    
-            else 
+                @more_weather_menu.style.zIndex = "65535"
+            else
                 @more_weather_menu.style.display = "none"
                 @more_city_menu.style.display = "none"
                 @more_weather_menu.style.zIndex = "0"
@@ -173,7 +185,7 @@ class Weather
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
-    
+
 
     rightclick_build: ->
         str_close_msg = _("you can press 'F5' to ") + "\n" + _("show the weather plugin again.")
@@ -192,19 +204,19 @@ class Weather
         share.innerText = _("share")
         feedback.innerText = _("feedback")
         about.innerText = _("about")
-        @element.addEventListener("contextmenu",  (evt) => 
+        @element.addEventListener("contextmenu",  (evt) =>
             clearTimeout(@display_city_menu_id)
             @more_weather_menu.style.display = "none"
             @more_city_menu.style.display = "none"
-            if @rightclick.style.display is "none"  
+            if @rightclick.style.display is "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200 
+                if bottom_distance < 200
                     @rightclick.style.top = -160
                 else @rightclick.style.top = 70
                 @rightclick.style.display = "block"
                 @rightclick.style.zIndex  = "65535"
             else
-                @rightclick.style.display= "none"   
+                @rightclick.style.display= "none"
             )
         @element.addEventListener("click" , =>
             if @rightclick.style.display is "block"
@@ -238,7 +250,7 @@ class Weather
             )
         about.addEventListener("click", ->
             str_about_msg = _("deepin weather widget 1.0.0") + "\n" +
-                "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
+                "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" +
                 "www.linuxdeepin.com"
             alert str_about_msg
             )
@@ -266,12 +278,12 @@ class Weather
         weatherdata.Get_weatherdata_more()
         setTimeout(=>
             weather_data_now = localStorage.getObject("weatherdata_now_storage")
-            weather_data_more = localStorage.getObject("weatherdata_more_storage") 
+            weather_data_more = localStorage.getObject("weatherdata_more_storage")
             @weathergui_update(weather_data_now,weather_data_more)
         ,500)
 
     weathergui_update: (weather_data_now,weather_data_more)->
-        if weather_data_now isnt null && weather_data_now isnt "" && weather_data_more isnt null && weather_data_more isnt "" 
+        if weather_data_now isnt null && weather_data_now isnt "" && weather_data_more isnt null && weather_data_more isnt ""
             test_Internet_url = "http://www.weather.com.cn/data/sk/101010100.html"
             xhr_tmp = new XMLHttpRequest()
             xhr_tmp.open("GET", test_Internet_url, true)
@@ -305,7 +317,7 @@ class Weather
                 @temperature_now_number.textContent = -temp_now + "°"
             else
                 @temperature_now_minus.style.opacity = 0
-                @temperature_now_number.textContent = temp_now + "°"   
+                @temperature_now_number.textContent = temp_now + "°"
 
     update_weathermore: (weather_data_more)->
         i_week = 0
@@ -316,7 +328,7 @@ class Weather
             i_week++
         week_n = i_week
         str_data = weather_data_more.weatherinfo.date_y
-        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + week_show[week_n%7] 
+        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + week_show[week_n%7]
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
 
         @week1.textContent = week_show[week_n%7]
@@ -342,7 +354,7 @@ class Weather
 
     weather_more_pic_src:(i) ->
         i = i*2 - 1
-        weather_data_more = localStorage.getObject("weatherdata_more_storage") 
+        weather_data_more = localStorage.getObject("weatherdata_more_storage")
         src = null
         time = new Date()
         hours_now = time.getHours()
@@ -359,7 +371,7 @@ class Weather
             weather_data_more.weatherinfo.img9,
             weather_data_more.weatherinfo.img10,
             weather_data_more.weatherinfo.img11,
-            weather_data_more.weatherinfo.img12  
+            weather_data_more.weatherinfo.img12
         ]
         img_behind = [
             weather_data_more.weatherinfo.img_title_single,
@@ -376,8 +388,8 @@ class Weather
             weather_data_more.weatherinfo.img_title11,
             weather_data_more.weatherinfo.img_title12
         ]
-        
-        if img_front[i+1] is "99" 
+
+        if img_front[i+1] is "99"
             img_front[i+1] = img_front[i]
         if hours_now < 12
             src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
