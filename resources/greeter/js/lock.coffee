@@ -113,7 +113,12 @@ class UserInfo extends Widget
         else if not @login
             @login = new LoginEntry("login", (p)=>@on_verify(p))
             @element.appendChild(@login.element)
-            @login.password.focus()
+
+            if DCore.Lock.need_pwd()
+                @login.password.focus()
+            else
+                @login.password.style.display = "none"
+                @login.password.value = "deepin"
             @login_displayed = true
             @add_css_class("foo")
 
@@ -194,15 +199,17 @@ _current_user = u
 
 u.focus()
 u.show_login()
-u.login.password.focus()
+#u.login.password.focus()
 
 document.body.addEventListener("keydown", (e) =>
     if e.which == 13 
         if not u.login_displayed
             u.show_login()
+            #u.login.password.focus()
+        else if DCore.Lock.need_pwd() and u.login.password.value == ""
             u.login.password.focus()
-        else if u.login.password.value == ""
-            u.login.password.focus()
+        else 
+            u.login.on_active(u.login.password.value)
 
     else if e.which == 27
         u.hide_login()

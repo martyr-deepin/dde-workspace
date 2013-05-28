@@ -955,7 +955,7 @@ gchar * greeter_get_date()
 JS_EXPORT_API
 gboolean greeter_detect_capslock()
 {
-    gboolean capslock_flag = False;
+    gboolean capslock_flag = FALSE;
 
     Display *d = XOpenDisplay((gchar*)0);
     guint n;
@@ -964,7 +964,7 @@ gboolean greeter_detect_capslock()
         XkbGetIndicatorState(d, XkbUseCoreKbd, &n);
 
         if((n & 1)){
-            capslock_flag = True;
+            capslock_flag = TRUE;
         }
     }
     return capslock_flag;
@@ -1028,7 +1028,7 @@ GPtrArray *greeter_get_nopasswdlogin_users()
 JS_EXPORT_API
 gboolean greeter_is_user_nopasswdlogin(const gchar *username)
 {
-    gboolean ret = False;
+    gboolean ret = FALSE;
     GPtrArray *nopwdlogin = greeter_get_nopasswdlogin_users();
 
     for(int i = 0; i < nopwdlogin->len; i++){
@@ -1036,7 +1036,7 @@ gboolean greeter_is_user_nopasswdlogin(const gchar *username)
 
         if(g_strcmp0(username, g_ptr_array_index(nopwdlogin, i)) == 0){
             g_debug("nopwd login true");
-            ret = True;
+            ret = TRUE;
         }
     }
    
