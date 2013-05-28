@@ -19,7 +19,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu
-    # @display_city_menu_id = null#setTimeOut hide the citymoremenu
     @cityid_choose = null
 
     constructor: (clss, x,y,position=absolute)->
@@ -45,7 +44,8 @@ class CityMoreMenu
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
         provinit.selected = "true"
-        for i in cities.length
+        i = 0
+        while i < cities.length
             @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
         length = @chooseprov.options.length
         @chooseprov.size = if length < 13 then length else 13
@@ -59,7 +59,6 @@ class CityMoreMenu
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
         distinit.selected = "true"
-        
 
         @chooseprov.addEventListener("change", =>
             provIndex = @chooseprov.selectedIndex
@@ -114,6 +113,3 @@ class CityMoreMenu
                 if distvalue != @str_distinit
                     cityid_choose = data[distvalue].data
                     localStorage.setItem("cityid_storage",cityid_choose)
-                    # @cityid_choose = localStorage.getItem("cityid_storage")
-                    # weather = new Weather()
-                    # echo "@cityid_choose:" + @cityid_choose

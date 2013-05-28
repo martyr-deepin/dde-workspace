@@ -39,7 +39,7 @@ class Weather
         @pos = pos
 
     weather_style_build: ->
-        @img_url_first = "plugin/weather/" + "img/"
+        @img_url_first = plugin.path + "/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
 
         left_div = create_element("div", "left_div", @element)
@@ -57,27 +57,14 @@ class Weather
         @city_now = create_element("div", "city_now", city)
         @city_now.textContent = _("choose city")
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
-        # @more_city_menu= create_element("div","more_city_menu",@element)
+        more_city_menu_parent= create_element("div","more_city_menu_parent",@element)
         @more_city_menu = new CityMoreMenu("more_city_menu",0,70,"absolute")
+        more_city_menu_parent.appendChild(@more_city_menu)
 
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
         
-        @element.addEventListener("dragstart", =>
-            clearTimeout(@display_city_menu_id)
-            @rightclick.style.display = "none"
-            @more_city_menu.style.display = "none"
-            @more_weather_menu.style.display = "none"
-            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            if bottom_distance < 330 
-                @rightclick.style.top = -160
-                @more_city_menu.style.top = -252
-                @more_weather_menu.style.top = -200
-            else 
-                @rightclick.style.top = 70
-                @more_city_menu.style.top = 85
-                @more_weather_menu.style.top = 85
-            )
+
         city.addEventListener("click", => 
             if @more_city_menu.style.display == "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
@@ -113,6 +100,7 @@ class Weather
             )
 
         @more_city_menu.addEventListener("click", =>
+            echo "more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
     more_weather_build: ->
@@ -165,88 +153,18 @@ class Weather
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
     
-
-    rightclick_build: ->
-        str_close_msg = _("you can press 'F5' to ") + "\n" + _("show the weather plugin again.")
-        @rightclick = create_element("div","rightclick",@element)
-        @rightclick.style.display = "none"
-        weather_close  = create_element("div","weather_close",@rightclick)
-        weather_close.setAttribute("title", str_close_msg)
-        refresh_context = create_element("div","refresh_context",@rightclick)
-        autolocate = create_element("div","autolocate",@rightclick)
-        share = create_element("div","share",@rightclick)
-        feedback = create_element("div","feedback",@rightclick)
-        about = create_element("div","about",@rightclick)
-        weather_close.innerText = _("_close")
-        refresh_context.innerText = _("_refresh")
-        autolocate.innerText = _("_automatic location")
-        share.innerText = _("_share")
-        feedback.innerText = _("_feedback")
-        about.innerText = _("_about")
-        # @element.addEventListener("rightclick",  (evt) => 
-        #     clearTimeout(@display_city_menu_id)
-        #     @more_weather_menu.style.display = "none"
-        #     @more_city_menu.style.display = "none"
-        #     if @rightclick.style.display == "none"  
-        #         bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-        #         if bottom_distance < 200 
-        #             @rightclick.style.top = -160
-        #         else @rightclick.style.top = 70
-        #         @rightclick.style.display = "block"
-        #         @rightclick.style.zIndex  = "65535"
-        #     else
-        #         @rightclick.style.display= "none"   
-        #     )
-        @element.addEventListener("click" , =>
-            if @rightclick.style.display == "block"
-                @rightclick.style.display = "none"
-                @rightclick.style.zIndex = "0"
-            )
-        times = 0
-        weather_close.addEventListener("click", =>
-            @element.style.display = "none"
-            times = localStorage.getItem("close_times")
-            ++times
-            localStorage.setItem("close_times",times)
-            if times < 4
-                alert str_close_msg
-            # else echo "close the weather_close plugin " + times + "times"
-            )
-        refresh_context.addEventListener("click", =>
-            @weathergui_refresh()
-            )
-        autolocate.addEventListener("click", =>
-            @weathergui_update_autolocate()
-            )
-        share.addEventListener("click", ->
-            alert _("Please wait") + " ......"
-            )
-        feedback.addEventListener("click", ->
-            feedbackmsg = prompt(_("Thanks for your feedback!"),"")
-            if feedbackmsg != null && feedbackmsg != ""
-                echo "feedbackmsg:" + feedbackmsg
-            )
-        about.addEventListener("click", ->
-            str_about_msg = _("deepin weather widget 1.0.0") + "\n" +
-                "Copyright (c) 2011 ~ 2012 Deepin, Inc."  + "\n" + 
-                "www.linuxdeepin.com"
-            alert str_about_msg
-            )
-
     weathergui_init: ->
         @weather_style_build()
         @more_weather_build()
-        @rightclick_build()
 
-        cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid
-        if localStorage.getItem("cityid_storage") is null
-            echo "cityid_storage is undefined"
-        if cityid != undefined || cityid != null || cityid != ""
-            @weathergui_refresh(cityid)
-        else 
-            echo "cityid in weathergui_init isnt ready "
-            @weathergui_update_autolocate()
+        # cityid = localStorage.getItem("cityid_storage")
+        # echo "cityid:" + cityid
+        # if cityid != undefined || cityid != null || cityid != ""
+        #     @weathergui_refresh(cityid)
+        # else 
+        #     echo "cityid in weathergui_init isnt ready "
+        #     @weathergui_update_autolocate()
+        @weathergui_update_autolocate()
 
     weathergui_update_autolocate:->
         Clientcityid = new ClientCityId()
