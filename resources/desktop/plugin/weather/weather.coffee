@@ -26,20 +26,9 @@ class Weather
         @element.setAttribute('class', "Weather")
         @element.draggable = true
         @weathergui_init()
-    get_id: ->
-        @id
-
-    set_id: (id) ->
-        @id = id
-
-    get_pos: ->
-        @pos
-
-    set_pos: (pos) ->
-        @pos = pos
 
     weather_style_build: ->
-        @img_url_first = plugin.path + "/img/"
+        @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
 
         left_div = create_element("div", "left_div", @element)
@@ -104,6 +93,10 @@ class Weather
             echo "more_city_menu click"
             clearTimeout(@display_city_menu_id)
             )
+        left_div.addEventListener("click" , =>
+            @more_weather_menu.style.display = "none"
+            @more_city_menu.menu.style.display = "none"
+            )
     more_weather_build: ->
         week_init = _("Sun")
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
@@ -154,16 +147,18 @@ class Weather
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = "22℃~10℃"
 
+
     weathergui_init: ->
         @weather_style_build()
         @more_weather_build()
+        # @rightclick_build()
 
         cityid = localStorage.getItem("cityid_storage")
         echo "cityid:" + cityid 
         if !cityid
             Clientcityid = new ClientCityId()
             Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
-        @weathergui_update()
+        else @weathergui_update()
 
     weathergui_update: ->
             cityid = localStorage.getItem("cityid_storage")
@@ -276,6 +271,9 @@ class Weather
             src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
+
+# weather = new Weather()
+# weather.weathergui_init()
 
 plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
