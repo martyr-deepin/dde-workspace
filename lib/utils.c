@@ -38,9 +38,9 @@ gboolean is_application_running(const char* path)
     struct sockaddr_un server_addr;
 
     server_addr.sun_path[0] = '\0'; //make it be an name unix socket
-    strcpy(server_addr.sun_path+1, path);
+    int path_size = g_sprintf (server_addr.sun_path+1, "%s%d", path, getuid());
     server_addr.sun_family = AF_UNIX;
-    server_len = 1 + strlen(path) + offsetof(struct sockaddr_un, sun_path);
+    server_len = 1 + path_size + offsetof(struct sockaddr_un, sun_path);
 
     server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
 

@@ -27,10 +27,11 @@ class Launcher extends AppItem
                 @_do_launch []
             when 2 then DCore.Dock.request_undock(@id)
     do_buildmenu: (e)->
+        Preview_close_now()
         [
-            [1, _("Run")],
+            [1, _("_Run")],
             [],
-            [2, _("Undock")],
+            [2, _("_Undock")],
         ]
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")

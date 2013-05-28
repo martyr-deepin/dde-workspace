@@ -80,15 +80,12 @@ class Item extends Widget
         else
             msg = DISPLAY_ICON
         menu = [
-            [1, _("Open")],
+            [1, _("_Open")],
             [],
             [2, msg],
-            [3,
-            if not is_show_hidden_icons then DISPLAY_HIDDEN_ICONS else HIDE_HIDDEN_ICONS,
-            _get_hidden_icons_ids().length != 0],
             [],
-            [4, _("Send to desktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
-            [5, _("Send to dock"), s_dock!=null],
+            [3, _("Send to d_esktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
+            [4, _("Send to do_ck"), s_dock!=null],
         ]
 
     @_contextmenu_callback: (item)->
@@ -139,11 +136,8 @@ class Item extends Widget
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then @_toggle_icon()
-            when 3
-                grid_load_category(selected_category_id)
-                _show_hidden_icons(not is_show_hidden_icons)
-            when 4 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 5 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
+            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
     hide: ->
         @element.style.display = "none"
     show: =>  # use '->', Item.display_temp and @display_mode will be undifined
