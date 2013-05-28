@@ -15,6 +15,18 @@ void dbus_object_info_free(struct DBusObjectInfo* info);
 static GHashTable *__sig_info_hash = NULL; // struct signal -> GSList callback
 static GHashTable *__objs_cache = NULL;
 
+void reset_dbus_infos()
+{
+    if (__sig_info_hash) {
+        g_hash_table_remove_all(__sig_info_hash);
+        __sig_info_hash = NULL;
+    }
+    if (__objs_cache) {
+        g_hash_table_remove_all(__objs_cache);
+        __objs_cache = NULL;
+    }
+}
+
 struct SignalInfo {
     const char* name;
     GSList* signatures;
@@ -91,6 +103,16 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     }
 }
 
+
+PRIVATE void signal_info_free(struct SignalInfo* sig_info)
+{
+    g_assert(sig_info != NULL);
+    if (sig_info->callback) {
+        JSValueUnprotect(get_global_context(), sig_info->callback);
+    }
+    g_free(sig_info);
+}
+
 int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
         struct Signal *sig, JSObjectRef func)
 {
@@ -98,7 +120,7 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
     g_assert(func != NULL);
 
     if (__sig_info_hash == NULL) {
-        __sig_info_hash = g_hash_table_new(g_str_hash, g_str_equal);
+        __sig_info_hash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, (GDestroyNotify)signal_info_free);
     }
     char* key = g_strdup_printf("%s%s%s", info->path, info->iface, sig->name);
 
@@ -113,6 +135,7 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
     sig_info->path = info->path;
     sig_info->iface = info->iface;
     sig_info->callback = func;
+    JSValueProtect(ctx, func);
 
     g_hash_table_insert(__sig_info_hash, key, sig_info);
     return GPOINTER_TO_INT(func);
@@ -151,7 +174,7 @@ JSValueRef signal_connect(JSContextRef ctx,
     }
 
 
-    char* rule = g_strdup_printf("type=signal,interface=%s,member=%s",
+    char* rule = g_strdup_printf("eavesdrop=true,type=signal,interface=%s,member=%s",
             obj_info->iface, s_name);
     dbus_bus_add_match(obj_info->connection, rule, NULL);
     dbus_connection_flush(obj_info->connection);

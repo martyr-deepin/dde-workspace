@@ -5,9 +5,9 @@ GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
 
 pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 
-add_executable(${NAME} greeter.c ${JSC_GEN})
+add_executable(${NAME} greeter.c account.c ${JSC_GEN})
 add_executable(switchtogreeter switchtogreeter.c)
-add_executable(dlock dlock.c gs-grab.c ${JSC_LOCK_GEN})
+add_executable(dlock dlock.c gs-grab.c account.c ${JSC_LOCK_GEN})
 add_executable(lockservice lockservice.c)
 
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES})

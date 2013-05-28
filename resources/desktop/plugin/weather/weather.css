@@ -72,7 +72,6 @@
     font-size: 15px;
     font-weight: bolder;
     margin:auto;
-    color:#FFF;
     text-shadow: 2px 2px 1px #808080;
 }
 .more_city_img{
@@ -84,11 +83,11 @@
     position: relative;
     height: 20px;
     clear: both;
-    color: #FFF;   
-    font-weight: 600;
-    text-shadow: 2px 2px 1px #808080;
-    font-weight: bolder;
     cursor: pointer;
+
+    color: #FFF; 
+    font-weight: bolder;  
+    text-shadow: 2px 2px 1px #808080;
 }
 .more_city_menu{
     position:absolute;
@@ -98,12 +97,32 @@
 .more_weather_menu{
     position:absolute;
     left: 83px;
-    top: 70px;
+    top: 85px;
     width: 180px;
-    opacity: 0.6;
-    border:3px solid #E6E6FA;
-    font-weight: bolder;
+    border:1px solid #E6E6FA;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+
+    color: #FFF; 
+    font-weight: 900;
+    text-shadow: 2px 2px 1px #808080;
 }
+
+.first_day_weather_data,
+.third_day_weather_data,
+.fifth_day_weather_data{
+    height: 35px;
+    line-height:35px;
+    background-color:rgba(255,255,255,0.2);
+}
+.second_day_weather_data,
+.fourth_day_weather_data,
+.sixth_day_weather_data{
+    height: 35px;
+    line-height:35px;
+    background-color:rgba(0,0,0,0.15);
+}
+
 .week1,
 .week2,
 .week3,
@@ -134,41 +153,9 @@
     position: absolute;
     left: 85px;
     margin-left: 10px;
-    font-weight: normal;
 }
-.first_day_weather_data,
-.third_day_weather_data,
-.fifth_day_weather_data{
-    background-color: #FFF;
-    height: 35px;
-    line-height:35px;
-}
-.second_day_weather_data,
-.fourth_day_weather_data,
-.sixth_day_weather_data{
-    /*background-color: #87CEEB;*/
-    background-color: #DCDCDC;
-    height: 35px;
-    line-height:35px;
-}
-.refresh{
-    position:absolute;
-    top: 25px;
-    left: 265px;   
-    float: left;
-    cursor: pointer;
-    opacity:0.6;
-    /*background-image: url(img/refresh.png);*/
-/*    -webkit-transition: background-image 2s ease;
-    transition: all 4s ease;*/
-    /*transform:rotate(180deg)*/
-    /*background-repeat: no-repeat;*/
-}
-/*.refresh:hover{
-    transform:rotate(180deg);
-    background-color: blue;
-    color: #FFF
-}*/
+
+
 .rightclick{
     position: absolute;
     top: 70px;

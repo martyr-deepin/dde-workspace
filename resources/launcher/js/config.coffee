@@ -26,10 +26,10 @@ DOWN_ARROW = 40
 LEFT_ARROW = 37
 RIGHT_ARROW = 39
 
-HIDE_HIDDEN_ICONS = _("Hide hidden icons")
-DISPLAY_HIDDEN_ICONS = _("Display hidden icons")
+HIDE_HIDDEN_ICONS = _("_Hide hidden icons")
+DISPLAY_HIDDEN_ICONS = _("_Display hidden icons")
 
-HIDE_ICON = _("Hide this icon")
-DISPLAY_ICON = _("Dispaly this icon")
+HIDE_ICON = _("_Hide this icon")
+DISPLAY_ICON = _("_Display this icon")
 
 HIDE_ICON_CLASS = 'hide_icon'
