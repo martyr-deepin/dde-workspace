@@ -99,3 +99,9 @@ JSValueRef dbus_session(const char* bus_name, JSData* js)
     g_free(path);
     return obj;
 }
+
+JS_EXPORT_API
+void dbus_module_destroy()
+{
+    reset_dbus_infos();
+}
