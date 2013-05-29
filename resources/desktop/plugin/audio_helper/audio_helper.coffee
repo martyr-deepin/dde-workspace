@@ -44,41 +44,63 @@ class Lines extends Widget
 class AudioHelper extends Widget
     constructor: (@id) ->
         super
+        @dbus_init()
+        @circle = create_img("circle", "#{plugin.path}/circle.png", @element)
         @running = create_img("running", "#{plugin.path}/running.png", @element)
         @lighter = create_img("light", "#{plugin.path}/light.png", @element)
         @element.style.background = "url(#{plugin.path}/static.png)"
         @lines = new Lines()
         @element.appendChild(@lines.element)
-        @dbus_init()
+        @_clicked = false
+
+    do_buildmenu: ->
+        []
+
+    do_mousedown: (e)->
+        if e.which == 1
+            @circle.src = "#{plugin.path}/circle_press.png"
+    do_mouseup: ->
+        @circle.src = "#{plugin.path}/circle.png"
+
     do_click: (e)->
+        @dbus.speech_record()
         @lines.active_line(e.detail - 1)
+
     dbus_init: ->
         try
             @dbus = DCore.DBus.session("com.deepin.speech")
-        @dbus.connect("RecordStart", =>
-            @lighter.style.display = "block"
-            @running.style.display = "none"
-            echo "recordstart"
-        )
-        @dbus.connect("RecordEnd", =>
-            @lighter.style.display = "none"
-            @running.style.display = "none"
-            echo "recordend"
-        )
-        @dbus.connect("ParseStart", =>
-            @lighter.style.display = "none"
-            @running.style.display = "block"
-            echo "parsestart"
-        )
-        @dbus.connect("ParseEnd", =>
-            @lighter.style.display = "none"
-            @running.style.display = "none"
-            echo "parseend"
-        )
+            @dbus.connect("CurrentVolume",(s) =>
+                echo "volume: #{s}"
+            )
+            @dbus.connect("RecordStart", =>
+                #@lighter.style.display = "block"
+                @running.style.display = "none"
+                echo "recordstart"
+            )
+            @dbus.connect("RecordEnd", =>
+                #@lighter.style.display = "none"
+                @running.style.display = "none"
+                echo "recordend"
+            )
+            @dbus.connect("ParseStart", =>
+                @lighter.style.display = "none"
+                @running.style.display = "block"
+                echo "parsestart"
+            )
+            @dbus.connect("ParseEnd", =>
+                @lighter.style.display = "none"
+                @running.style.display = "none"
+                echo "parseend"
+            )
+            @dbus.connect("ParseError", =>
+                @lighter.style.display = "none"
+                @running.style.display = "none"
+                echo "parseerror"
+            )
 
 
 
-plugin = window._plugins["audio_helper"]
+plugin = window.plugin_manager.get_plugin("audio_helper")
 plugin.inject_css("audio_helper")
 plugin.wrap_element(new AudioHelper(plugin.id).element)
 plugin.set_pos(
