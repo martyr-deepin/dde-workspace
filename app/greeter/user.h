@@ -18,23 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#include <gtk/gtk.h>
-#include "jsextension.h"
-#include "dwebview.h"
-#include "i18n.h"
-#include "utils.h"
 #include <glib.h>
-#include <stdlib.h>
-#include <glib/gstdio.h>
-#include <glib/gprintf.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <X11/XKBlib.h>
-#include <gio/gio.h>
-#include <stdio.h>
-#include <string.h>
+#include <lightdm.h>
+#include "utils.h"
+#include "jsextension.h"
 
-gboolean app_is_running(const char* path);
-gboolean is_capslock_on();
-gchar* get_date_string();
-gboolean is_need_pwd(const gchar *username);
+gboolean is_user_valid(const gchar *username);
+JS_EXPORT_API const gchar* greeter_get_default_user();
+JS_EXPORT_API ArrayContainer greeter_get_users();
+JS_EXPORT_API const gchar* greeter_get_user_background(const gchar* name);
+JS_EXPORT_API const gchar* greeter_get_user_session(const gchar* name);
+const gchar* get_first_user();
