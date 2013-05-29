@@ -10,42 +10,42 @@ class DesktopPluginItem extends Widget
         @handle = new PluginHandle("handle"+@id)
         @element.appendChild(@handle.element)
 
-	
-	do_mousedown : (evt) ->
-		evt.stopPropagation()
-		return
-		
-	
-	do_click : (evt) ->
-		evt.stopPropagation()
-		return
-		
-		
-	do_mouseup : (evt) ->
-		evt.stopPropagation()
-		return
-		
 
-	do_rightclick : (evt) ->
-		evt.stopPropagation()
-		return
-		
-	
-	do_keydown : (evt) ->
-		evt.stopPropagation()
-		return
-	
-	
-	do_keypress : (evt) ->
-		evt.stopPropagation()
-		return
-	
-	
-	do_keyup : (evt) ->
-		evt.stopPropagation()
-		return
+    do_mousedown : (evt) ->
+        evt.stopPropagation()
+        return
 
-    
+
+    do_click : (evt) ->
+        evt.stopPropagation()
+        return
+
+
+    do_mouseup : (evt) ->
+        evt.stopPropagation()
+        return
+
+
+    do_rightclick : (evt) ->
+        evt.stopPropagation()
+        return
+
+
+    do_keydown : (evt) ->
+        evt.stopPropagation()
+        return
+
+
+    do_keypress : (evt) ->
+        evt.stopPropagation()
+        return
+
+
+    do_keyup : (evt) ->
+        evt.stopPropagation()
+        return
+
+
     get_id : =>
         @id
 
