@@ -56,15 +56,17 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(0,70)
+        @more_city_menu = new CityMoreMenu(0,84,65535)
         # echo @more_city_menu.element
         @element.appendChild(@more_city_menu.element)
-        @more_city_menu.more_city_build()
-        @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
+
         city.addEventListener("click", =>
             @more_weather_menu.style.display = "none"
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            @display_city_menu_id = @more_city_menu.show_hide_position(bottom_distance)
+            @more_city_menu.show_hide_position(bottom_distance)
+
+            @more_city_menu.more_city_build()
+            @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
             @more_city_menu.clearTimeout_display()
@@ -79,11 +81,11 @@ class Weather extends Widget
             else
                 @more_weather_menu.style.display = "none"
             )
-        
         left_div.addEventListener("click" , =>
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             )
+
     more_weather_build: ->
         
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"

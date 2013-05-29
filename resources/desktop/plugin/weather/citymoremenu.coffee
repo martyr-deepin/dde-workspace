@@ -19,23 +19,24 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
-    constructor: (x,y)->
+    constructor: (x,y,zIndex)->
         super
         @id = "CityMoreMenu"
         @element.style.left = x 
         @element.style.top = y 
         @element.style.display = "none"
-        @element.style.zIndex = 65535
+        @element.style.zIndex = zIndex
 
     do_click:(e)->
-        echo "do_click"
+        # echo "do_click"
         clearTimeout(@display_city_menu_id) if @display_city_menu_id
         e.stopPropagation()
         return
 
-    show_hide_position:(bottom_distance)=>
+    show_hide_position:(bottom_distance)->
         if @element.style.display == "none"
             if bottom_distance < 200
+                echo "bottom_distance:" + bottom_distance
                 @element.style.top = -252
             else @element.style.top = 84
             @element.style.display = "block"
@@ -45,12 +46,18 @@ class CityMoreMenu extends Widget
         else
             @element.style.display = "none"
             clearTimeout(@display_city_menu_id) if @display_city_menu_id
-        return @display_city_menu_id
+
     display_none:->
         @element.style.display = "none"
+
     clearTimeout_display:->
         clearTimeout(@display_city_menu_id) if @display_city_menu_id
+
     more_city_build: ->
+        @removeSelect(@chooseprov) if @chooseprov
+        @removeSelect(@choosecity) if @choosecity
+        @removeSelect(@choosedist) if @choosedist
+
         @str_provinit = "--" + _("province") + "--"
         @str_cityinit = "--" + _("city") + "--" 
         @str_distinit = "--" + _("county") + "--"
@@ -58,7 +65,7 @@ class CityMoreMenu extends Widget
         @choosecity = create_element("select", "choosecity", @element)
         @choosedist = create_element("select", "choosedist", @element)
 
-        @clearOptions(@chooseprov)
+        @clearOptions(@chooseprov,0)
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
         provinit.selected = "true"
@@ -67,14 +74,12 @@ class CityMoreMenu extends Widget
         length = @chooseprov.options.length
         @chooseprov.size = if length < 13 then length else 13
         
-        @choosecity.size = 1
-        @clearOptions(@choosecity)
+        @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
         cityinit.selected = "true"
         
-        @choosedist.size = 1
-        @clearOptions(@choosedist)
+        @clearOptions(@choosedist,0)
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
         distinit.selected = "true"
@@ -91,15 +96,15 @@ class CityMoreMenu extends Widget
             )
 
     read_data_from_json: (id,callback) -> 
-        url = "city/" + id + ".json"
+        url = "#{plugin.path}/city/" + id + ".json"
         ajax(url,(xhr)=>
-            if xhr.responseText != "" && xhr.responseText != null
+            if xhr.responseText
                 data = JSON.parse(xhr.responseText)
                 @cityadd(data[id].data,callback)
         ,false)
 
     cityadd: (data,callback) ->
-        @clearOptions(@choosecity)#1
+        @clearOptions(@choosecity,1)#1
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
         length = @choosecity.options.length
@@ -114,7 +119,7 @@ class CityMoreMenu extends Widget
                     @distadd(data[cityvalue].data,callback)
     
     distadd: (data,callback) ->
-        @clearOptions(@choosedist)#1
+        @clearOptions(@choosedist,1)#1
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
         length = @choosedist.options.length
@@ -131,5 +136,10 @@ class CityMoreMenu extends Widget
                     cityid_choose = data[distvalue].data
                     localStorage.setItem("cityid_storage",cityid_choose)
                     callback()
-    clearOptions:(colls)->
-        colls.remove(i) for i in colls.length 
+
+    clearOptions:(colls,first=0)->
+        i = first
+        colls.remove(i++) while i < colls.length 
+
+    removeSelect:(obj)->
+        obj.parentNode.removeChild(obj) if obj

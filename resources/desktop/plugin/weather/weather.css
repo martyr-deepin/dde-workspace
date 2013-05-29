@@ -96,10 +96,6 @@
     font-weight: bolder;  
     text-shadow: 2px 2px 1px #808080;
 }
-.more_city_menu{
-    position:absolute;
-}
-
 .more_weather_menu{
     position:absolute;
     left: 83px;
@@ -205,8 +201,4 @@
     line-height: 15px;
     text-align: center;
     border:2px solid #DCDCDC;
-}
-
-.CityMoreMenu{
-    display: none;
 }
