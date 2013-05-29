@@ -113,6 +113,7 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
     sig_info->path = info->path;
     sig_info->iface = info->iface;
     sig_info->callback = func;
+    JSValueProtect(ctx, func);
 
     g_hash_table_insert(__sig_info_hash, key, sig_info);
     return GPOINTER_TO_INT(func);
@@ -151,7 +152,7 @@ JSValueRef signal_connect(JSContextRef ctx,
     }
 
 
-    char* rule = g_strdup_printf("type=signal,interface=%s,member=%s",
+    char* rule = g_strdup_printf("eavesdrop=true,type=signal,interface=%s,member=%s",
             obj_info->iface, s_name);
     dbus_bus_add_match(obj_info->connection, rule, NULL);
     dbus_connection_flush(obj_info->connection);
