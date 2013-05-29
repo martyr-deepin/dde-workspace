@@ -8,6 +8,7 @@
     z-index: 0;
 
     font-family: Arial;
+    cursor:default;
 }
 .left_div{
     position: relative;
@@ -53,7 +54,7 @@
     color: #FFF;   
     font-size: 36px;
     font-weight: bold;
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0 0 4px #808080;
 }
 .temperature_now_number:after{
     content: "°";
@@ -94,7 +95,7 @@
 
     color: #FFF; 
     font-weight: bolder;  
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0 0 2px #808080;
 }
 .more_weather_menu{
     position:absolute;
@@ -110,7 +111,7 @@
 
     color: #FFF; 
     font-weight: bold;
-    text-shadow: 2px 1px 1px #808080;
+    text-shadow: 0 0 2px #808080;
 }
 
 .first_day_weather_data,

@@ -69,7 +69,6 @@ class Weather extends Widget
             @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
-            @more_city_menu.clearTimeout_display()
             @more_city_menu.display_none()
 
             if @more_weather_menu.style.display == "none"
