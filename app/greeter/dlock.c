@@ -173,7 +173,7 @@ gboolean lock_is_running()
     gboolean run_flag = FALSE;
 
     gchar *user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
-    if(is_application_running(user_lock_path)){
+    if(app_is_running(user_lock_path)){
         g_warning("another instance of dlock is running by current user...\n");
         run_flag = TRUE;
     }
