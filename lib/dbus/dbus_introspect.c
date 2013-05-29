@@ -235,8 +235,7 @@ void async_callback(DBusPendingCall *pending, void *user_data)
     struct AsyncInfo *info = (struct AsyncInfo*) user_data;
     if (dbus_message_get_type(reply) == DBUS_MESSAGE_TYPE_ERROR) {
         if (info->on_error != NULL)
-            JSObjectCallAsFunction(get_global_context(),
-                    info->on_error, NULL, 0, NULL, NULL);
+            JSObjectCallAsFunction(get_global_context(), info->on_error, NULL, 0, NULL, NULL);
         dbus_message_unref(reply);
         return;
     }
@@ -251,11 +250,22 @@ void async_callback(DBusPendingCall *pending, void *user_data)
         if (!dbus_message_iter_next(&iter)) {
         }
     }
-    dbus_message_unref(reply);
-    JSObjectCallAsFunction(get_global_context(),
-            info->on_ok, NULL,
-            num, params, NULL);
+    if (info->on_ok)
+        JSObjectCallAsFunction(get_global_context(), info->on_ok, NULL, num, params, NULL);
     g_free(params);
+
+    dbus_message_unref(reply);
+}
+
+void async_info_free(struct AsyncInfo* info)
+{
+    if (info->on_error) {
+        JSValueUnprotect(get_global_context(), info->on_error);
+    }
+    if (info->on_ok) {
+        JSValueUnprotect(get_global_context(), info->on_ok);
+    }
+    g_free(info);
 }
 
 void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
@@ -264,13 +274,21 @@ void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
     DBusPendingCall *reply = NULL;
     dbus_connection_send_with_reply(con, msg, &reply, -1);
 
-    struct AsyncInfo *info = g_new0(struct AsyncInfo, 1);
-    info->on_error = error_callback;
-    info->on_ok = ok_callback;
-    info->signatures = sigs_out;
+    if (reply != NULL) {
+        struct AsyncInfo *info = g_new0(struct AsyncInfo, 1);
+        if (error_callback) {
+            JSValueProtect(get_global_context(), error_callback);
+            info->on_error = error_callback;
+        }
+        if (ok_callback) {
+            JSValueProtect(get_global_context(), ok_callback);
+            info->on_ok = ok_callback;
+        }
+        info->signatures = sigs_out;
 
-    dbus_pending_call_set_notify(reply, async_callback, info, g_free);
-    /*dbus_pending_call_unref(reply);*/  //TODO: need this?
+        dbus_pending_call_set_notify(reply, async_callback, info, (DBusFreeFunction)async_info_free);
+        dbus_pending_call_unref(reply);
+    }
 }
 
 
@@ -488,10 +506,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     }
     if (async) {
         ret = JSValueMakeUndefined(ctx);
-        if (ok_callback != NULL) {
-            call_async(obj_info->connection, msg, sigs_out,
-                    ok_callback, error_callback);
-        }
+        call_async(obj_info->connection, msg, sigs_out, ok_callback, error_callback);
     } else {
         ret = call_sync(ctx, obj_info->connection, msg, sigs_out, exception);
     }
