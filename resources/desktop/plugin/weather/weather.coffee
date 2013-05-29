@@ -18,30 +18,17 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Weather
+class Weather extends Widget
     constructor: ->
-        @id = "weather"
-        @pos = {x:10, y:1, width:3, height:1}
-        @element = document.createElement('div')
-        @element.setAttribute('class', "Weather")
-        @element.draggable = true
+        super
         @weathergui_init()
-    get_id: ->
-        @id
-
-    set_id: (id) ->
-        @id = id
-
-    get_pos: ->
-        @pos
-
-    set_pos: (pos) ->
-        @pos = pos
-
+    do_buildmenu:->
+        []
     weather_style_build: ->
-        @img_url_first = plugin.path + "/img/"
+        @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
-
+        temp_now_init = "00°"
+        
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
 
@@ -50,63 +37,52 @@ class Weather
         @temperature_now_minus = create_element("div", "temperature_now_minus", temperature_now)
         @temperature_now_minus.textContent = "-"
         @temperature_now_number = create_element("div", "temperature_now_number", temperature_now)
-        @temperature_now_number.textContent = "0°"
+        @temperature_now_number.textContent = temp_now_init
 
         city_and_date = create_element("div","city_and_date",right_div)
         city = create_element("div","city",city_and_date)
         @city_now = create_element("div", "city_now", city)
         @city_now.textContent = _("choose city")
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
-        more_city_menu_parent= create_element("div","more_city_menu_parent",@element)
-        @more_city_menu = new CityMoreMenu("more_city_menu",0,70,"absolute")
-        more_city_menu_parent.appendChild(@more_city_menu)
-
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
 
-
+        @more_city_menu = new CityMoreMenu(0,70)
+        echo @more_city_menu.element
+        @element.appendChild(@more_city_menu.element)
+        @more_city_menu.more_city_build()
+        @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
+        echo @more_city_menu.chooseprov
+        @more_city_menu.do_click()
         city.addEventListener("click", =>
-            if @more_city_menu.style.display == "none"
-                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200
-                    @more_city_menu.style.top = -252
-                else @more_city_menu.style.top = 84
-                @more_city_menu.style.display = "block"
-                @more_weather_menu.style.display = "none"
-                @more_city_menu.style.zIndex = "65535"
-                @display_city_menu_id = setTimeout( =>
-                    @more_city_menu.style.display = "none"
-                ,4000)
-            else
-                @more_city_menu.style.display = "none"
-                @more_weather_menu.style.display = "none"
-                @more_city_menu.style.zIndex = "0"
-                clearTimeout(@display_city_menu_id)
+            @more_weather_menu.style.display = "none"
+            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+            @display_city_menu_id = @more_city_menu.show_hide_position(bottom_distance)
             )
         @date.addEventListener("click", =>
-            clearTimeout(@display_city_menu_id)
+            @more_city_menu.clearTimeout_display()
+            @more_city_menu.display_none()
+
             if @more_weather_menu.style.display == "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
-                    @more_weather_menu.style.top = -200
+                    @more_weather_menu.style.top = -195
                 else @more_weather_menu.style.top = 84
                 @more_weather_menu.style.display = "block"
-                @more_city_menu.style.display = "none"
-                @more_weather_menu.style.zIndex = "65535"
             else
                 @more_weather_menu.style.display = "none"
-                @more_city_menu.style.display = "none"
-                @more_weather_menu.style.zIndex = "0"
             )
-
-        @more_city_menu.addEventListener("click", =>
-            echo "more_city_menu click"
-            clearTimeout(@display_city_menu_id)
+        
+        left_div.addEventListener("click" , =>
+            @more_weather_menu.style.display = "none"
+            @more_city_menu.display_none()
             )
     more_weather_build: ->
-        week_init = _("Sun")
+        
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
+        week_init = _("Sun")
+        temp_init = "00℃~00℃"
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
         @more_weather_menu.style.display = "none"
@@ -116,104 +92,74 @@ class Weather
         @week1.textContent = week_init
         @pic1 = create_img("pic1", img_more_url_init, @first_day_weather_data)
         @temperature1 = create_element("a", "temperature1", @first_day_weather_data)
-        @temperature1.textContent = "22℃~10℃"
+        @temperature1.textContent = temp_init
 
         @second_day_weather_data = create_element("div", "second_day_weather_data", @more_weather_menu)
         @week2 = create_element("a", "week2", @second_day_weather_data)
         @week2.textContent = week_init
         @pic2 = create_img("pic2", img_more_url_init, @second_day_weather_data)
         @temperature2 = create_element("a", "temperature2", @second_day_weather_data)
-        @temperature2.textContent = "22℃~10℃"
+        @temperature2.textContent = temp_init
 
         @third_day_weather_data = create_element("div", "third_day_weather_data", @more_weather_menu)
         @week3 = create_element("a", "week3", @third_day_weather_data)
         @week3.textContent = week_init
         @pic3 = create_img("pic3", img_more_url_init, @third_day_weather_data)
         @temperature3 = create_element("a", "temperature3", @third_day_weather_data)
-        @temperature3.textContent = "22℃~10℃"
+        @temperature3.textContent = temp_init
 
         @fourth_day_weather_data = create_element("div", "fourth_day_weather_data", @more_weather_menu)
         @week4 = create_element("a", "week4", @fourth_day_weather_data)
         @week4.textContent = week_init
         @pic4 = create_img("pic4", img_more_url_init, @fourth_day_weather_data)
         @temperature4 = create_element("a", "temperature4", @fourth_day_weather_data)
-        @temperature4.textContent = "22℃~10℃"
+        @temperature4.textContent = temp_init
 
         @fifth_day_weather_data = create_element("div", "fifth_day_weather_data", @more_weather_menu)
         @week5 = create_element("a", "week5", @fifth_day_weather_data)
         @week5.textContent = week_init
         @pic5 = create_img("pic5", img_more_url_init, @fifth_day_weather_data)
         @temperature5 = create_element("a", "temperature5", @fifth_day_weather_data)
-        @temperature5.textContent = "22℃~10℃"
+        @temperature5.textContent = temp_init
 
         @sixth_day_weather_data = create_element("div", "sixth_day_weather_data", @more_weather_menu)
         @week6 = create_element("a", "week6", @sixth_day_weather_data)
         @week6.textContent = week_init
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
-        @temperature6.textContent = "22℃~10℃"
+        @temperature6.textContent = temp_init
+
 
     weathergui_init: ->
         @weather_style_build()
         @more_weather_build()
+        # @rightclick_build()
 
-        # cityid = localStorage.getItem("cityid_storage")
-        # echo "cityid:" + cityid
-        # if cityid != undefined || cityid != null || cityid != ""
-        #     @weathergui_refresh(cityid)
-        # else
-        #     echo "cityid in weathergui_init isnt ready "
-        #     @weathergui_update_autolocate()
-        @weathergui_update_autolocate()
-
-    weathergui_update_autolocate:->
-        Clientcityid = new ClientCityId()
-        setTimeout(null,1000)
         cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid
-        if cityid != "" || cityid != undefined || cityid != null
-            clearInterval(auto_weathergui_refresh)
-            auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
-        else
-            echo "cityidisnt ready"
+        echo "cityid:" + cityid 
+        if !cityid
+            Clientcityid = new ClientCityId()
+            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
+        else @weathergui_update()
+
+    weathergui_update: ->
+            cityid = localStorage.getItem("cityid_storage")
+            clearInterval(@auto_weathergui_refresh)
+            @auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
 
     weathergui_refresh: (cityid)->
-        echo "cityid:" + cityid
-        if cityid != "" || cityid != undefined || cityid != null
+        callback_now = ->
+            weather_data_now = localStorage.getObject("weatherdata_now_storage")
+            @update_weathernow(weather_data_now)
+        callback_more = ->
+            weather_data_more = localStorage.getObject("weatherdata_more_storage")
+            @update_weathermore(weather_data_more)
+        if cityid
             weatherdata = new WeatherData(cityid)
-            weatherdata.Get_weatherdata_now()
-            weatherdata.Get_weatherdata_more()
-            setTimeout(null,1000)
-            weather_data_now = JSON.parse(localStorage.getItem("weatherdata_now_storage"))
-            weather_data_more = JSON.parse(localStorage.getItem("weatherdata_more_storage"))
-            if weather_data_now != "" || weather_data_now != undefined || weather_data_now != null || weather_data_more != "" || weather_data_more != undefined || weather_data_more != null
-                @weathergui_update(weather_data_now,weather_data_more)
-            else
-                echo "weather_data_now or weather_data_more isnt ready"
+            weatherdata.Get_weatherdata_now(callback_now.bind(@))
+            weatherdata.Get_weatherdata_more(callback_more.bind(@))
         else
-            echo "cityidisnt ready"
-
-    weathergui_update: (weather_data_now,weather_data_more)->
-        if weather_data_now != null && weather_data_now != "" && weather_data_more != null && weather_data_more != ""
-            test_Internet_url = "http://www.weather.com.cn/data/sk/101010100.html"
-            xhr_tmp = new XMLHttpRequest()
-            xhr_tmp.open("GET", test_Internet_url, true)
-            xhr_tmp.send(null)
-            xhr_tmp.onreadystatechange = =>
-                # echo "xhr_tmp.readyState : " + xhr_tmp.readyState
-                # echo "xhr_tmp.status : " + xhr_tmp.status
-                if (xhr_tmp.readyState == 4 and xhr_tmp.status == 200)
-                    if xhr_tmp.responseText != ""
-                        echo "XMLHttpRequest test ok."
-                        @update_weathernow(weather_data_now)
-                        @update_weathermore(weather_data_more)
-                else if xhr_tmp.status == 404
-                    echo "XMLHttpRequest can't find the url ."
-                else if xhr_tmp.status == 0
-                    echo "your computer are not connected to the Internet"
-        else
-            echo "weather_data_now or weather_data_more isnt ready"
-            return 0
+            echo "cityid isnt ready"
 
     update_weathernow: (weather_data_now)->
         # echo "weather_data_now:" + weather_data_now
@@ -308,11 +254,11 @@ class Weather
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
 
+
 plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
-plugin.inject_css("weather")
 plugin.wrap_element(new Weather(plugin.id).element)
 plugin.set_pos(
     x: 9

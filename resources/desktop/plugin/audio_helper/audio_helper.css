@@ -20,6 +20,9 @@
    100% { opacity: 0.0; }
 }
 
+.AudioHelper .circle {
+    position: absolute;
+}
 .AudioHelper .light {
     z-index: -100;
     position: absolute;

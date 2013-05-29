@@ -128,14 +128,29 @@ dnd_is_deepin_item = (e)->
 dnd_is_file = (e)->
     return e.dataTransfer.getData("text/uri-list").length != 0
 
-ajax = (url, method, callback, asyn=true) ->
+ajax = (url, callback,internet = true) ->
     xhr = new XMLHttpRequest()
-    xhr.open(method, url, asyn)
+    xhr.open("GET", url, true)
     xhr.send(null)
     xhr.onreadystatechange = ->
-        if (xhr.readyState == 4 and xhr.status == 200)
-            callback?(xhr)
-
+        if internet == true
+            if (xhr.readyState == 4 and xhr.status == 200)
+                try   
+                    echo "XMLHttpRequest receive all data."             
+                    callback?(xhr)                
+                catch e
+                    echo "xhr.responseText is error"
+        else
+           if xhr.readyState == 4
+                try   
+                    echo "XMLHttpRequest receive all data."             
+                    callback?(xhr)                
+                catch e
+                    echo "xhr.responseText is error"
+        if xhr.status == 404
+            echo "XMLHttpRequest can't find the url ."
+        else if xhr.status == 0
+            echo "your computer are not connected to the Internet"
 
 get_path_base = (path)->
     path.split('/').slice(0, -1).join('/')
