@@ -6,6 +6,8 @@
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
     z-index: 0;
+
+    font-family: Arial;
 }
 .left_div{
     position: relative;
@@ -34,6 +36,7 @@
     height: 40px;
     float: left;
 }
+
 .temperature_now_minus{
     position: relative;
     top:10px;
@@ -48,14 +51,17 @@
     float: left;
     top:10px;
     color: #FFF;   
-    font-size: 30px;
+    font-size: 36px;
     font-weight: bold;
     text-shadow: 2px 2px 1px #808080;
+}
+.temperature_now_number:after{
+    content: "°";
 }
 .city_and_date{
     position: relative;
     top:15px;
-    margin-left: 7px;  
+    margin-left: 10px;  
     float: left;
     height: 40px;
 }
@@ -72,16 +78,17 @@
     font-size: 15px;
     font-weight: bolder;
     margin:auto;
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0px 1px 1px #FFF;
 }
 .more_city_img{
     position: relative;
     top:3px;
+    margin: 1px 0px 0px 3px;
     float:left;
 }
 .date{
     position: relative;
-    height: 20px;
+    height: 35px;
     clear: both;
     cursor: pointer;
 
@@ -91,23 +98,23 @@
 }
 .more_city_menu{
     position:absolute;
-    /*top: 70px;*/
 }
 
 .more_weather_menu{
     position:absolute;
     left: 83px;
     top: 85px;
-    width: 180px;
-    border:1px solid #E6E6FA;
+    width: 177px;
+    border:1px solid rgba(255,255,255,0.6);
     border-radius: 0 0 6px 6px;
     overflow: hidden;
     z-index: 65535;
     display: none;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
 
     color: #FFF; 
-    font-weight: 900;
-    text-shadow: 2px 2px 1px #808080;
+    font-weight: bold;
+    text-shadow: 2px 1px 1px #808080;
 }
 
 .first_day_weather_data,
@@ -115,7 +122,7 @@
 .fifth_day_weather_data{
     height: 35px;
     line-height:35px;
-    background-color:rgba(255,255,255,0.2);
+    background-color:rgba(255,255,255,0.35);
 }
 .second_day_weather_data,
 .fourth_day_weather_data,
@@ -157,7 +164,14 @@
     margin-left: 10px;
 }
 
-
+/*.temperature1:after,
+.temperature2:after,
+.temperature3:after,
+.temperature4:after,
+.temperature5:after,
+.temperature6:after{
+    content: "℃";
+}*/
 .rightclick{
     position: absolute;
     top: 70px;

@@ -27,9 +27,11 @@ class CityMoreMenu extends Widget
         @element.style.display = "none"
         @element.style.zIndex = 65535
 
-    do_click:->
+    do_click:(e)->
         echo "do_click"
         clearTimeout(@display_city_menu_id) if @display_city_menu_id
+        e.stopPropagation()
+        return
 
     show_hide_position:(bottom_distance)=>
         if @element.style.display == "none"

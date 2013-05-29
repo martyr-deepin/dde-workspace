@@ -21,14 +21,23 @@
 class Weather extends Widget
     constructor: ->
         super
-        @weathergui_init()
+        @weather_style_build()
+        @more_weather_build()
+
+        cityid = localStorage.getItem("cityid_storage")
+        echo "cityid:" + cityid 
+        if !cityid
+            Clientcityid = new ClientCityId()
+            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
+        else @weathergui_update()
+
     do_buildmenu:->
         []
     weather_style_build: ->
         @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
-        temp_now_init = "00°"
-        
+        temp_now_init = "0"
+
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
 
@@ -45,15 +54,13 @@ class Weather extends Widget
         @city_now.textContent = _("choose city")
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
         @date = create_element("div", "date", city_and_date)
-        @date.textContent =  _("loading") + "............."
+        @date.textContent =  _("loading") + ".........."
 
         @more_city_menu = new CityMoreMenu(0,70)
-        echo @more_city_menu.element
+        # echo @more_city_menu.element
         @element.appendChild(@more_city_menu.element)
         @more_city_menu.more_city_build()
         @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
-        echo @more_city_menu.chooseprov
-        @more_city_menu.do_click()
         city.addEventListener("click", =>
             @more_weather_menu.style.display = "none"
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
@@ -129,19 +136,6 @@ class Weather extends Widget
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = temp_init
 
-
-    weathergui_init: ->
-        @weather_style_build()
-        @more_weather_build()
-        # @rightclick_build()
-
-        cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid 
-        if !cityid
-            Clientcityid = new ClientCityId()
-            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
-        else @weathergui_update()
-
     weathergui_update: ->
             cityid = localStorage.getItem("cityid_storage")
             clearInterval(@auto_weathergui_refresh)
@@ -155,9 +149,9 @@ class Weather extends Widget
             weather_data_more = localStorage.getObject("weatherdata_more_storage")
             @update_weathermore(weather_data_more)
         if cityid
-            weatherdata = new WeatherData(cityid)
-            weatherdata.Get_weatherdata_now(callback_now.bind(@))
-            weatherdata.Get_weatherdata_more(callback_more.bind(@))
+            @weatherdata = new WeatherData(cityid)
+            @weatherdata.Get_weatherdata_now(callback_now.bind(@))
+            @weatherdata.Get_weatherdata_more(callback_more.bind(@))
         else
             echo "cityid isnt ready"
 
@@ -166,7 +160,7 @@ class Weather extends Widget
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
         echo "temp_now:" + temp_now
-        # show the city name in chinese not in english
+        # show the   name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
@@ -174,21 +168,16 @@ class Weather extends Widget
         else
             if temp_now < -10
                 @temperature_now_minus.style.opacity = 0.8
-                @temperature_now_number.textContent = -temp_now + "°"
+                @temperature_now_number.textContent = -temp_now
             else
                 @temperature_now_minus.style.opacity = 0
-                @temperature_now_number.textContent = temp_now + "°"
+                @temperature_now_number.textContent = temp_now
 
     update_weathermore: (weather_data_more)->
-        i_week = 0
-        week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
+        week_n = @weatherdata.week_n
         week_show = [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
-        while i_week < week_name.length
-            break if weather_data_more.weatherinfo.week == week_name[i_week]
-            i_week++
-        week_n = i_week
         str_data = weather_data_more.weatherinfo.date_y
-        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + week_show[week_n%7]
+        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + " " + week_show[week_n%7]
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
 
         @week1.textContent = week_show[week_n%7]
@@ -212,48 +201,17 @@ class Weather extends Widget
 
     weather_more_pic_src:(i) ->
         i = i*2 - 1
-        weather_data_more = JSON.parse(localStorage.getItem("weatherdata_more_storage"))
         src = null
         time = new Date()
         hours_now = time.getHours()
-        img_front = [
-            weather_data_more.weatherinfo.img_single,
-            weather_data_more.weatherinfo.img1,
-            weather_data_more.weatherinfo.img2,
-            weather_data_more.weatherinfo.img3,
-            weather_data_more.weatherinfo.img4,
-            weather_data_more.weatherinfo.img5,
-            weather_data_more.weatherinfo.img6,
-            weather_data_more.weatherinfo.img7,
-            weather_data_more.weatherinfo.img8,
-            weather_data_more.weatherinfo.img9,
-            weather_data_more.weatherinfo.img10,
-            weather_data_more.weatherinfo.img11,
-            weather_data_more.weatherinfo.img12
-        ]
-        img_behind = [
-            weather_data_more.weatherinfo.img_title_single,
-            weather_data_more.weatherinfo.img_title1,
-            weather_data_more.weatherinfo.img_title2,
-            weather_data_more.weatherinfo.img_title3,
-            weather_data_more.weatherinfo.img_title4,
-            weather_data_more.weatherinfo.img_title5,
-            weather_data_more.weatherinfo.img_title6,
-            weather_data_more.weatherinfo.img_title7,
-            weather_data_more.weatherinfo.img_title8,
-            weather_data_more.weatherinfo.img_title9,
-            weather_data_more.weatherinfo.img_title10,
-            weather_data_more.weatherinfo.img_title11,
-            weather_data_more.weatherinfo.img_title12
-        ]
-
+        img_front = @weatherdata.img_front
+        img_behind = @weatherdata.img_behind
         if img_front[i+1] == "99"
             img_front[i+1] = img_front[i]
         if hours_now < 12
             src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
-
 
 plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
