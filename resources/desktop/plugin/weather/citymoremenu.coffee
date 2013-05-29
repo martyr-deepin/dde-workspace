@@ -20,51 +20,57 @@
 
 class CityMoreMenu extends Widget
     constructor: (x,y)->
-        @menu = document.createElement('div')
-        @menu.setAttribute("class", "menu")
-        @menu.style.left = x if x
-        @menu.style.top = y if y
-        @menu.style.display = "none"
-        @menu.style.zIndex = 0
+        super
+        @id = "CityMoreMenu"
+        @element.style.left = x 
+        @element.style.top = y 
+        @element.style.display = "none"
+        @element.style.zIndex = 65535
 
-    check_style:(type)->
-        return @menu.style.type
-    set_style:(type,val)->
-        @menu.style.type = val
-    check_style_display:->
-        return @menu.style.display
-    set_style_display:(val)->
-        @menu.style.display = val
-    set_style_top:(val)->
-        @menu.style.top = val
-    set_style_zIndex:(val)->
-        @menu.style.zIndex = val    
-    set_addeventListener:(eventName,functionName)->
-        @menu.addEventListener(eventName,functionName)
+    do_click:->
+        echo "do_click"
+        clearTimeout(@display_city_menu_id) if @display_city_menu_id
 
+    show_hide_position:(bottom_distance)=>
+        if @element.style.display == "none"
+            if bottom_distance < 200
+                @element.style.top = -252
+            else @element.style.top = 84
+            @element.style.display = "block"
+            @display_city_menu_id = setTimeout( =>
+                @element.style.display = "none"
+            ,4000)
+        else
+            @element.style.display = "none"
+            clearTimeout(@display_city_menu_id) if @display_city_menu_id
+        return @display_city_menu_id
+    display_none:->
+        @element.style.display = "none"
+    clearTimeout_display:->
+        clearTimeout(@display_city_menu_id) if @display_city_menu_id
     more_city_build: ->
         @str_provinit = "--" + _("province") + "--"
         @str_cityinit = "--" + _("city") + "--" 
         @str_distinit = "--" + _("county") + "--"
-        @chooseprov = create_element("select", "chooseprov", @menu)
-        @choosecity = create_element("select", "choosecity", @menu)
-        @choosedist = create_element("select", "choosedist", @menu)
+        @chooseprov = create_element("select", "chooseprov", @element)
+        @choosecity = create_element("select", "choosecity", @element)
+        @choosedist = create_element("select", "choosedist", @element)
 
         @clearOptions(@chooseprov)
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
         provinit.selected = "true"
-        # i = 0
-        # while i < cities.length
-        #     @chooseprov.options.add(new Option(cities[i].name, cities[i++].id))
-        @chooseprov.options.add(new Option(cities[i].name, cities[i].id)) for i in cities.length
+        i = 0
+        @chooseprov.options.add(new Option(cities[i].name, cities[i++].id)) while i < cities.length
         length = @chooseprov.options.length
         @chooseprov.size = if length < 13 then length else 13
+        
         @choosecity.size = 1
         @clearOptions(@choosecity)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
         cityinit.selected = "true"
+        
         @choosedist.size = 1
         @clearOptions(@choosedist)
         distinit = create_element("option", "distinit", @choosedist)
@@ -90,7 +96,6 @@ class CityMoreMenu extends Widget
                 @cityadd(data[id].data,callback)
         ,false)
 
-
     cityadd: (data,callback) ->
         @clearOptions(@choosecity)#1
         for i of data
@@ -114,7 +119,7 @@ class CityMoreMenu extends Widget
         @choosedist.size = if length < 13 then length else 13
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
-            @menu.style.display = "none"
+            @element.style.display = "none"
             distIndex = @choosedist.selectedIndex
             if distIndex == -1
                 @choosedist.options.remove(distIndex)

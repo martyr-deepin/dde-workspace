@@ -18,19 +18,17 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Weather 
+class Weather extends Widget
     constructor: ->
-        @id = "weather"
-        @pos = {x:10, y:1, width:3, height:1}
-        @element = document.createElement('div')
-        @element.setAttribute('class', "Weather")
-        @element.draggable = true
+        super
         @weathergui_init()
-
+    do_buildmenu:->
+        []
     weather_style_build: ->
         @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
-
+        temp_now_init = "00°"
+        
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
 
@@ -39,7 +37,7 @@ class Weather
         @temperature_now_minus = create_element("div", "temperature_now_minus", temperature_now)
         @temperature_now_minus.textContent = "-"
         @temperature_now_number = create_element("div", "temperature_now_number", temperature_now)
-        @temperature_now_number.textContent = "0°"
+        @temperature_now_number.textContent = temp_now_init
 
         city_and_date = create_element("div","city_and_date",right_div)
         city = create_element("div","city",city_and_date)
@@ -48,59 +46,43 @@ class Weather
         @more_city_img = create_img("more_city_img", @img_url_first + "ar.png", city)
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + "............."
+
         @more_city_menu = new CityMoreMenu(0,70)
-        echo @more_city_menu.menu
+        echo @more_city_menu.element
+        @element.appendChild(@more_city_menu.element)
+        @more_city_menu.more_city_build()
+        @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
         echo @more_city_menu.chooseprov
-        # @element.appendChild(@more_weather_menu.menu)
+        @more_city_menu.do_click()
         city.addEventListener("click", =>
-            @more_city_menu.menu.style.display = "block"
-            @more_city_menu.more_city_build()
-            @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
-            echo @more_city_menu.chooseprov
-            
-            if @more_city_menu.menu.style.display == "none"
-                echo "display none will block"
-                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200
-                    @more_city_menu.menu.style.top = -252
-                else @more_city_men.menu.style.top = 84
-                @more_city_menu.menu.style.display = "block"
-                @more_city_menu.menu.style.zIndex = "65535"
-                @display_city_menu_id = setTimeout( =>
-                    @more_city_menu.menu.style.display = "none"
-                ,4000)
-            else
-                @more_city_menu.menu.style.display = "none"
-                @more_city_menu.menu.style.zIndex = "0"
-                clearTimeout(@display_city_menu_id)
+            @more_weather_menu.style.display = "none"
+            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+            @display_city_menu_id = @more_city_menu.show_hide_position(bottom_distance)
             )
         @date.addEventListener("click", =>
-            clearTimeout(@display_city_menu_id)
-            @more_city_menu.menu.style.display = "none"
+            @more_city_menu.clearTimeout_display()
+            @more_city_menu.display_none()
+
             if @more_weather_menu.style.display == "none"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
                     @more_weather_menu.style.top = -195
                 else @more_weather_menu.style.top = 84
                 @more_weather_menu.style.display = "block"
-                @more_weather_menu.style.zIndex = "65535"
             else
                 @more_weather_menu.style.display = "none"
-                @more_weather_menu.style.zIndex = "0"
             )
-
-        @more_city_menu.set_addeventListener("click", =>
-            echo "more_city_menu click"
-            clearTimeout(@display_city_menu_id)
-            )
+        
         left_div.addEventListener("click" , =>
             @more_weather_menu.style.display = "none"
-            @more_city_menu.menu.style.display = "none"
+            @more_city_menu.display_none()
             )
     more_weather_build: ->
-        week_init = _("Sun")
+        
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
+        week_init = _("Sun")
+        temp_init = "00℃~00℃"
 
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
         @more_weather_menu.style.display = "none"
@@ -110,42 +92,42 @@ class Weather
         @week1.textContent = week_init
         @pic1 = create_img("pic1", img_more_url_init, @first_day_weather_data)
         @temperature1 = create_element("a", "temperature1", @first_day_weather_data)
-        @temperature1.textContent = "22℃~10℃"
+        @temperature1.textContent = temp_init
 
         @second_day_weather_data = create_element("div", "second_day_weather_data", @more_weather_menu)
         @week2 = create_element("a", "week2", @second_day_weather_data)
         @week2.textContent = week_init
         @pic2 = create_img("pic2", img_more_url_init, @second_day_weather_data)
         @temperature2 = create_element("a", "temperature2", @second_day_weather_data)
-        @temperature2.textContent = "22℃~10℃"
+        @temperature2.textContent = temp_init
 
         @third_day_weather_data = create_element("div", "third_day_weather_data", @more_weather_menu)
         @week3 = create_element("a", "week3", @third_day_weather_data)
         @week3.textContent = week_init
         @pic3 = create_img("pic3", img_more_url_init, @third_day_weather_data)
         @temperature3 = create_element("a", "temperature3", @third_day_weather_data)
-        @temperature3.textContent = "22℃~10℃"
+        @temperature3.textContent = temp_init
 
         @fourth_day_weather_data = create_element("div", "fourth_day_weather_data", @more_weather_menu)
         @week4 = create_element("a", "week4", @fourth_day_weather_data)
         @week4.textContent = week_init
         @pic4 = create_img("pic4", img_more_url_init, @fourth_day_weather_data)
         @temperature4 = create_element("a", "temperature4", @fourth_day_weather_data)
-        @temperature4.textContent = "22℃~10℃"
+        @temperature4.textContent = temp_init
 
         @fifth_day_weather_data = create_element("div", "fifth_day_weather_data", @more_weather_menu)
         @week5 = create_element("a", "week5", @fifth_day_weather_data)
         @week5.textContent = week_init
         @pic5 = create_img("pic5", img_more_url_init, @fifth_day_weather_data)
         @temperature5 = create_element("a", "temperature5", @fifth_day_weather_data)
-        @temperature5.textContent = "22℃~10℃"
+        @temperature5.textContent = temp_init
 
         @sixth_day_weather_data = create_element("div", "sixth_day_weather_data", @more_weather_menu)
         @week6 = create_element("a", "week6", @sixth_day_weather_data)
         @week6.textContent = week_init
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
-        @temperature6.textContent = "22℃~10℃"
+        @temperature6.textContent = temp_init
 
 
     weathergui_init: ->
@@ -272,14 +254,11 @@ class Weather
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
 
-# weather = new Weather()
-# weather.weathergui_init()
 
 plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
-plugin.inject_css("weather")
 plugin.wrap_element(new Weather(plugin.id).element)
 plugin.set_pos(
     x: 9
