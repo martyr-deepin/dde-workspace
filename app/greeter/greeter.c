@@ -464,7 +464,7 @@ authentication_complete_cb(LightDMGreeter *greeter)
     }else{
         if(prompted){
             DBG("%s", "auth complete, restart auth");
-            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
+            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Password"));
             greeter_start_authentication(get_selected_user());
         }
     }

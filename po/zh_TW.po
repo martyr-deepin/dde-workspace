@@ -358,7 +358,7 @@ msgid "New directory"
 msgstr "新增目錄"
 
 #: ../app/greeter/account.c:74
-msgid "%a,%b%d,%Y"
+msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
 #: ../app/greeter/dlock.c:310

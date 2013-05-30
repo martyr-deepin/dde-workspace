@@ -71,7 +71,7 @@ gchar * get_date_string()
         perror("localtime");
     }
 
-    if (strftime(outstr, sizeof(outstr), _("%a,%b%d,%Y"), tmp) == 0) {
+    if (strftime(outstr, sizeof(outstr), _("%a, %b %d, %Y"), tmp) == 0) {
         fprintf(stderr, "strftime returned 0");
     }
 
