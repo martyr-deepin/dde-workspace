@@ -652,7 +652,7 @@ static void show_rename_error_dialog (const char* name, gboolean is_app)
     if (is_app)
     {
        secondary_text = g_strdup_printf(_("This *.desktop file cannot be changed to the name \"%s\"."
-                                       "You may not have the permission"),
+                                       "You may not have such permission"),
                                        name);
     }
     else

@@ -6,29 +6,29 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 10:52+0800\n"
+"POT-Creation-Date: 2013-05-30 10:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/user.coffee:74
-msgid "Log In"
-msgstr "登录"
+#: ../resources/greeter/js/lock.coffee:55
+msgid "Unlock"
+msgstr "解锁"
 
 #: ../resources/greeter/js/lock.coffee:72
 #: ../resources/greeter/js/user.coffee:106
 msgid "Welcome"
 msgstr "欢迎"
 
-#: ../resources/greeter/js/user.coffee:350
-msgid "guest"
-msgstr "访客"
+#: ../resources/greeter/js/lock.coffee:78
+msgid "Switch User"
+msgstr "切换用户"
 
 #: ../resources/greeter/js/power.coffee:124
 msgid "suspend"
@@ -45,6 +45,10 @@ msgstr "关机"
 #: ../resources/greeter/js/power.coffee:130
 msgid "restart"
 msgstr "重启"
+
+#: ../resources/greeter/js/session.coffee:25
+msgid "Session"
+msgstr "桌面环境"
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jan"
@@ -95,559 +99,41 @@ msgid "Dec"
 msgstr "12月"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:127
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:316
 msgid "Sat"
 msgstr "星期六"
 
-#: ../resources/greeter/js/lock.coffee:55
-msgid "Unlock"
-msgstr "解锁"
+#: ../resources/greeter/js/user.coffee:74
+msgid "Log In"
+msgstr "登录"
 
-#: ../resources/greeter/js/lock.coffee:78
-msgid "Switch User"
-msgstr "切换用户"
+#: ../resources/greeter/js/user.coffee:350
+msgid "guest"
+msgstr "访客"
 
-#: ../resources/greeter/js/session.coffee:25
-msgid "Session"
-msgstr "桌面环境"
-
-#: ../resources/desktop/js/desktop_item.coffee:1312
-#: ../resources/desktop/js/desktop_item.coffee:1328
-#: ../resources/desktop/js/desktop_item.coffee:1327
-msgid "Computer"
-msgstr "计算机"
-
-#: ../resources/desktop/js/desktop_item.coffee:1361
-#: ../resources/desktop/js/desktop_item.coffee:1377
-#: ../resources/desktop/js/desktop_item.coffee:1376
-msgid "Home"
-msgstr "主文件夹"
-
-#: ../resources/desktop/js/desktop_item.coffee:1451
-#: ../resources/desktop/js/desktop_item.coffee:1467
-#: ../resources/desktop/js/desktop_item.coffee:1466
-msgid "Trash"
-msgstr "回收站"
-
-#: ../resources/desktop/js/desktop_item.coffee:1514
-#: ../resources/desktop/js/desktop_item.coffee:1530
-#: ../resources/desktop/js/desktop_item.coffee:1529
-msgid "items"
-msgstr "项"
-
-#: ../resources/desktop/js/desktop_item.coffee:1516
-#: ../resources/desktop/js/desktop_item.coffee:1532
-#: ../resources/desktop/js/desktop_item.coffee:1531
-msgid "item"
-msgstr "项"
-
-#: ../resources/dock/js/clientgroup.coffee:25
-msgid "_New instance"
-msgstr "新建实例(_N)"
-
-#: ../resources/dock/js/clientgroup.coffee:26
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#: ../resources/dock/js/clientgroup.coffee:28
-msgid "_Dock me"
-msgstr "驻留(_D)"
-
-#: ../resources/dock/js/launcher.coffee:33
-#: ../resources/dock/js/launcher.coffee:34
-msgid "_Undock"
-msgstr "移除驻留(_U)"
-
-#: ../app/launcher/launcher.c:484
-msgid "all"
-msgstr "全部"
-
-#: ../resources/launcher/js/grid.coffee:87
-msgid "Send to d_esktop"
-msgstr "发送到桌面(_E)"
-
-#: ../resources/launcher/js/grid.coffee:88
-msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
-
-#: ../app/desktop/desktop.c:141 ../app/desktop/desktop.c:140
-msgid "App Group"
-msgstr "应用程序启动组"
-
-#: ../app/desktop/desktop.c:179 ../app/desktop/desktop.c:178
-msgid "New file"
-msgstr "新建文件"
-
-#: ../app/desktop/desktop.c:190 ../app/desktop/desktop.c:189
-msgid "New directory"
-msgstr "新建目录"
-
-#: ../app/greeter/dlock.c:312 ../app/greeter/dlock.c:313
-#: ../app/greeter/dlock.c:362
-msgid "Invalid Password"
-msgstr "密码错误"
-
-#: ../app/greeter/greeter.c:460 ../app/greeter/greeter.c:456
-msgid "Invalid Username/Password"
-msgstr "用户名/密码错误"
-
-#: ../app/greeter/dlock.c:254 ../app/greeter/greeter.c:953
-#: ../app/greeter/dlock.c:255 ../app/greeter/greeter.c:948
-#: ../app/greeter/dlock.c:260
-msgid "%a,%b%d,%Y"
-msgstr "%Y年%b%d日 %A"
-
-#: ../lib/dentry/entry.c:660
-#, c-format
-msgid ""
-"The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
-
-#: ../lib/dentry/entry.c:666
-msgid "The Item could not be renamed"
-msgstr "该项无法重命名"
-
-#: ../lib/dentry/fileops.c:488 ../lib/dentry/fileops.c:516
-msgid "move"
-msgstr "移动"
-
-#: ../lib/dentry/entry.c:737 ../lib/dentry/fileops.c:608
-#: ../lib/dentry/entry.c:739 ../lib/dentry/fileops.c:671
-msgid "copy"
-msgstr "复制"
-
-#: ../lib/dentry/fileops_delete.c:27
-msgid "Delete File"
-msgstr "删除文件"
-
-#: ../lib/dentry/fileops_delete.c:30
-msgid "Are you sure you want to permanently delete the files?"
-msgstr "您确定要永久删除文件吗？"
-
-#: ../lib/dentry/fileops_delete.c:31
-msgid "If you delete an item, it will be permanently lost"
-msgstr "如果您要删除某项，它将永久丢失"
-
-#: ../lib/dentry/fileops_error_dialog.c:60
-#: ../lib/dentry/fileops_error_dialog.c:62
-msgid "File conflict"
-msgstr "文件冲突"
-
-#: ../lib/dentry/fileops_error_dialog.c:104
-#: ../lib/dentry/fileops_error_dialog.c:106
-msgid "_Select a new name for the destination"
-msgstr "为目标选择新的名称(_S)"
-
-#: ../lib/dentry/fileops_error_dialog.c:115
-#: ../lib/dentry/fileops_error_dialog.c:117
-msgid "Reset"
-msgstr "重置"
-
-#: ../lib/dentry/fileops_error_dialog.c:124
-#: ../lib/dentry/fileops_error_dialog.c:126
-msgid "Apply this action to all files"
-msgstr "将该动作应用到全部文件"
-
-#: ../lib/dentry/fileops_error_dialog.c:131
-#: ../lib/dentry/fileops_error_dialog.c:133
-msgid "_Skip"
-msgstr "跳过(_S)"
-
-#: ../lib/dentry/fileops_error_dialog.c:134
-#: ../lib/dentry/fileops_error_dialog.c:136
-msgid "Re_name"
-msgstr "重命名(_N)"
-
-#: ../lib/dentry/fileops_error_dialog.c:139
-#: ../lib/dentry/fileops_error_dialog.c:141
-msgid "Replace"
-msgstr "替换"
-
-#: ../lib/dentry/fileops_error_dialog.c:210
-#: ../lib/dentry/fileops_error_dialog.c:218
-#, c-format
-msgid "Merge folder \"%s\"?"
-msgstr "合并文件夹“%s”？"
-
-#: ../lib/dentry/fileops_error_dialog.c:212
-#: ../lib/dentry/fileops_error_dialog.c:220
-msgid ""
-"Merging will ask for confirmation before replacing any files in the folder "
-"that conflict with the files being copied."
-msgstr "合并将会在替换冲突文件时请求确认。"
-
-#: ../lib/dentry/fileops_error_dialog.c:216
-#: ../lib/dentry/fileops_error_dialog.c:224
-#, c-format
-msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名称的一个较旧文件夹已存在。"
-
-#: ../lib/dentry/fileops_error_dialog.c:220
-#: ../lib/dentry/fileops_error_dialog.c:228
-#, c-format
-msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名称的一个较新文件夹已存在。"
-
-#: ../lib/dentry/fileops_error_dialog.c:224
-#: ../lib/dentry/fileops_error_dialog.c:232
-#, c-format
-msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名称的一个文件夹已存在。"
-
-#: ../lib/dentry/fileops_error_dialog.c:230
-#: ../lib/dentry/fileops_error_dialog.c:238
-msgid "Replacing it will remove all files in the folder."
-msgstr "替换将移除文件夹中的所有文件。"
-
-#: ../lib/dentry/fileops_error_dialog.c:232
-#: ../lib/dentry/fileops_error_dialog.c:240
-#, c-format
-msgid "Replace folder \"%s\"?"
-msgstr "替换文件夹“%s”？"
-
-#: ../lib/dentry/fileops_error_dialog.c:234
-#: ../lib/dentry/fileops_error_dialog.c:242
-#, c-format
-msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同文件名的文件夹。"
-
-#: ../lib/dentry/fileops_error_dialog.c:240
-#: ../lib/dentry/fileops_error_dialog.c:248
-#, c-format
-msgid "Replace file \"%s\"?"
-msgstr "替换文件“%s”？"
-
-#: ../lib/dentry/fileops_error_dialog.c:241
-#: ../lib/dentry/fileops_error_dialog.c:249
-msgid "Replacing it will overwrite its content."
-msgstr "替换将覆盖它的内容。"
-
-#: ../lib/dentry/fileops_error_dialog.c:243
-#: ../lib/dentry/fileops_error_dialog.c:251
-#, c-format
-msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在较旧的相同文件名的文件。"
-
-#: ../lib/dentry/fileops_error_dialog.c:247
-#: ../lib/dentry/fileops_error_dialog.c:255
-#, c-format
-msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在更新的相同文件名的文件。"
-
-#: ../lib/dentry/fileops_error_dialog.c:251
-#: ../lib/dentry/fileops_error_dialog.c:259
-#, c-format
-msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同文件名的文件。"
-
-#: ../lib/dentry/fileops_error_dialog.c:322
-#: ../lib/dentry/fileops_error_dialog.c:331
-msgid "Original file"
-msgstr "原始文件"
-
-#: ../lib/dentry/fileops_error_dialog.c:323
-#: ../lib/dentry/fileops_error_dialog.c:351
-#: ../lib/dentry/fileops_error_dialog.c:332
-#: ../lib/dentry/fileops_error_dialog.c:360
-msgid "Size:"
-msgstr "大小："
-
-#: ../lib/dentry/fileops_error_dialog.c:327
-#: ../lib/dentry/fileops_error_dialog.c:355
-#: ../lib/dentry/fileops_error_dialog.c:336
-#: ../lib/dentry/fileops_error_dialog.c:364
-msgid "Type:"
-msgstr "类型："
-
-#: ../lib/dentry/fileops_error_dialog.c:331
-#: ../lib/dentry/fileops_error_dialog.c:359
-#: ../lib/dentry/fileops_error_dialog.c:340
-#: ../lib/dentry/fileops_error_dialog.c:368
-msgid "Last modified:"
-msgstr "最近修改："
-
-#: ../lib/dentry/fileops_error_dialog.c:350
-#: ../lib/dentry/fileops_error_dialog.c:359
-msgid "Replace with"
-msgstr "替换为"
-
-#: ../lib/dentry/fileops_error_dialog.c:376
-#: ../lib/dentry/fileops_error_dialog.c:385
-msgid "Merge"
-msgstr "合并"
-
-#: ../lib/dentry/fileops_error_reporting.c:83
-#: ../lib/dentry/fileops_error_reporting.c:165
-#: ../lib/dentry/fileops_error_reporting.c:105
-#: ../lib/dentry/fileops_error_reporting.c:187
-#, c-format
-msgid "Error while %s files"
-msgstr "当%s文件时出错"
-
-#: ../lib/dentry/fileops_trash.c:58
-msgid "Empty Trash"
-msgstr "清空回收站"
-
-#: ../lib/dentry/fileops_trash.c:67
-msgid "Empty all items from Trash?"
-msgstr "清空回收站中的全部项目吗？"
-
-#: ../lib/dentry/fileops_trash.c:68
-msgid "All items in the Trash will be permanently deleted."
-msgstr "回收站中的全部条目将被永久删除。"
-
-#: ../lib/dentry/fileops_trash.c:71
-msgid "Empty _Trash"
-msgstr "清空回收站(_T)"
-
-#: ../resources/launcher/js/search.coffee:23
-msgid "Type to search..."
-msgstr "键入要搜索的关键字..."
-
-#: ../resources/dock/js/deepin_item.coffee:37
-msgid "Launcher"
-msgstr "启动器"
-
-#: ../resources/dock/js/deepin_item.coffee:40
-msgid "Show/Hiden Desktop"
-msgstr "显示/隐藏桌面"
-
-#: ../lib/dentry/mime_actions.c:135
-#, c-format
-msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "您想要运行“%s”，还是显示其内容？"
-
-#: ../lib/dentry/mime_actions.c:136
-#, c-format
-msgid "\"%s\" is an executable text file."
-msgstr "“%s”是一个可执行的文本文件。"
-
-#: ../lib/dentry/mime_actions.c:147
-msgid "Run in _Terminal"
-msgstr "在终端中打开(_T)"
-
-#: ../lib/dentry/mime_actions.c:148
-msgid "_Display"
-msgstr "显示(_D)"
-
-#: ../lib/dentry/mime_actions.c:150 ../resources/dock/js/launcher.coffee:31
-#: ../resources/dock/js/launcher.coffee:32
-msgid "_Run"
-msgstr "运行(_R)"
-
-#: ../resources/desktop/js/desktop_item.coffee:1546
-#: ../resources/desktop/js/desktop_item.coffee:1563
-#: ../resources/desktop/js/desktop_item.coffee:1562
-msgid "Deepin Software Center"
-msgstr "深度软件中心"
-
-#: ../app/launcher/category.c:213 ../app/launcher/launcher.c:486
-msgid "internet"
-msgstr "网络应用"
-
-#: ../app/launcher/category.c:214 ../app/launcher/launcher.c:486
-msgid "multimedia"
-msgstr "影音播放"
-
-#: ../app/launcher/category.c:215 ../app/launcher/launcher.c:486
-msgid "games"
-msgstr "游戏娱乐"
-
-#: ../app/launcher/category.c:216 ../app/launcher/launcher.c:487
-msgid "graphics"
-msgstr "图形图像"
-
-#: ../app/launcher/category.c:217 ../app/launcher/launcher.c:487
-msgid "productivity"
-msgstr "办公软件"
-
-#: ../app/launcher/category.c:218 ../app/launcher/launcher.c:487
-msgid "industry"
-msgstr "行业软件"
-
-#: ../app/launcher/category.c:219 ../app/launcher/launcher.c:487
-msgid "education"
-msgstr "科学教育"
-
-#: ../app/launcher/category.c:220 ../app/launcher/launcher.c:488
-msgid "development"
-msgstr "编程开发"
-
-#: ../app/launcher/category.c:221 ../app/launcher/launcher.c:488
-msgid "system"
-msgstr "系统管理"
-
-#: ../app/launcher/category.c:222 ../app/launcher/launcher.c:488
-msgid "utilities"
-msgstr "实用工具"
-
-#: ../app/launcher/category.c:226 ../app/launcher/launcher.c:488
-msgid "other"
-msgstr "其他"
-
-#: ../resources/desktop/js/desktop_item.coffee:951
-#: ../resources/desktop/js/desktop_item.coffee:1073
-#: ../resources/desktop/js/desktop_item.coffee:1261
-#: ../resources/desktop/js/desktop_item.coffee:965
-#: ../resources/desktop/js/desktop_item.coffee:1087
-#: ../resources/desktop/js/desktop_item.coffee:1277
-#: ../resources/desktop/js/desktop_item.coffee:964
-#: ../resources/desktop/js/desktop_item.coffee:1086
-#: ../resources/desktop/js/desktop_item.coffee:1276
-msgid "The link has expired, whether to delete?"
-msgstr "该链接已经失效，是否要删除？"
-
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "该项指向一个无效的路径。是否确定从面板删除？"
-
-#: ../lib/dentry/entry.c:654
-#, c-format
-msgid ""
-"This *.desktop file cannot be changed to the name \"%s\".You may not have "
-"the permission"
-msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
-
-#: ../resources/desktop/js/desktop_item.coffee:588
-#: ../resources/desktop/js/desktop_item.coffee:600
-#: ../resources/desktop/js/desktop_item.coffee:599
-msgid "Can not open this file."
-msgstr "无法打开此文件"
-
-#: ../resources/desktop/js/desktop_item.coffee:588
-#: ../resources/desktop/js/desktop_item.coffee:951
-#: ../resources/desktop/js/desktop_item.coffee:1073
-#: ../resources/desktop/js/desktop_item.coffee:1261
-#: ../resources/desktop/js/desktop_item.coffee:600
-#: ../resources/desktop/js/desktop_item.coffee:965
-#: ../resources/desktop/js/desktop_item.coffee:1087
-#: ../resources/desktop/js/desktop_item.coffee:1277
-#: ../resources/desktop/js/desktop_item.coffee:599
-#: ../resources/desktop/js/desktop_item.coffee:964
-#: ../resources/desktop/js/desktop_item.coffee:1086
-#: ../resources/desktop/js/desktop_item.coffee:1276
-msgid "Warning"
-msgstr "警告"
-
-#: ../resources/dock/js/item.coffee:336 ../resources/dock/js/item.coffee:340
-msgid "The item is invalid. Do you want to remove it from the dock bar?"
-msgstr "该项无效。您要将其从Dock删除吗？"
-
-#: ../resources/launcher/js/config.coffee:29
-msgid "_Hide hidden icons"
-msgstr "隐藏已隐藏图标(_H)"
-
-#: ../resources/launcher/js/config.coffee:30
-msgid "_Display hidden icons"
-msgstr "显示已隐藏图标(_D)"
-
-#: ../resources/launcher/js/config.coffee:32
-msgid "_Hide this icon"
-msgstr "隐藏该图标(_H)"
-
-#: ../resources/launcher/js/config.coffee:33
-msgid "_Display this icon"
-msgstr "显示该图标(_D)"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:59
-msgid "choose city"
-msgstr "请选择城市"
-
-#: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:43
-msgid "province"
-msgstr "省"
-
-#: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:44
-msgid "city"
-msgstr "市"
-
-#: ../resources/desktop/desktop_plugin/weather/citymoremenu.coffee:45
-msgid "county"
-msgstr "县"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:188
-msgid "close"
-msgstr "关闭"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:189
-msgid "refresh"
-msgstr "刷新"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:191
-msgid "share"
-msgstr "分享"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:192
-msgid "feedback"
-msgstr "反馈"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:193
-msgid "about"
-msgstr "关于"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:234
-msgid "Thanks for your feedback!"
-msgstr "谢谢您的反馈!"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:239
-msgid "deepin weather widget 1.0.0"
-msgstr "深度天气插件　1.0.0"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:304
-msgid "NO"
-msgstr "无"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:65
-msgid "loading"
-msgstr "正在加载"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:231
-msgid "Please wait"
-msgstr "敬请期待"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:190
-msgid "automatic location"
-msgstr "自动定位"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
-msgid "you can press 'F5' to "
-msgstr "您可以按“F5”来"
-
-#: ../resources/desktop/desktop_plugin/weather/weather.coffee:178
-msgid "show the weather plugin again."
-msgstr "重新显示天气插件。"
-
-#: ../resources/launcher/js/grid.coffee:83
 #: ../resources/desktop/js/desktop_item.coffee:550
 #: ../resources/desktop/js/desktop_item.coffee:752
 #: ../resources/desktop/js/desktop_item.coffee:1068
@@ -655,52 +141,9 @@ msgstr "重新显示天气插件。"
 #: ../resources/desktop/js/desktop_item.coffee:1431
 #: ../resources/desktop/js/desktop_item.coffee:1525
 #: ../resources/desktop/js/desktop_item.coffee:1578
+#: ../resources/launcher/js/grid.coffee:83
 msgid "_Open"
 msgstr "打开(_O)"
-
-#: ../resources/desktop/js/grid.coffee:809
-msgid "_Sort by"
-msgstr "排序方式(_S)"
-
-#: ../resources/desktop/js/grid.coffee:810
-msgid "_Name"
-msgstr "名称(_N)"
-
-#: ../resources/desktop/js/grid.coffee:811
-msgid "Last modified _time"
-msgstr "最近修改时间(_T)"
-
-#: ../resources/desktop/js/grid.coffee:814
-msgid "_New"
-msgstr "新建(_N)"
-
-#: ../resources/desktop/js/grid.coffee:815
-msgid "_Folder"
-msgstr "文件夹(_F)"
-
-#: ../resources/desktop/js/grid.coffee:816
-msgid "_Text document"
-msgstr "文本文档(_T)"
-
-#: ../resources/desktop/js/grid.coffee:819
-msgid "Open _terminal here"
-msgstr "在此打开终端(_T)"
-
-#: ../resources/desktop/js/grid.coffee:820
-msgid "_Paste"
-msgstr "粘贴(_P)"
-
-#: ../resources/desktop/js/grid.coffee:822
-msgid "_Display settings"
-msgstr "显示设置(_D)"
-
-#: ../resources/desktop/js/grid.coffee:823
-msgid "D_esktop settings"
-msgstr "桌面设置(_E)"
-
-#: ../resources/desktop/js/grid.coffee:824
-msgid "Pe_rsonalize"
-msgstr "个性化(_R)"
 
 #: ../resources/desktop/js/desktop_item.coffee:552
 #: ../resources/desktop/js/desktop_item.coffee:1070
@@ -746,9 +189,38 @@ msgstr "解压(_E)"
 msgid "Extract _Here"
 msgstr "解压到此处(_H)"
 
+#: ../resources/desktop/js/desktop_item.coffee:599
+msgid "Can not open this file."
+msgstr "无法打开此文件"
+
+#: ../resources/desktop/js/desktop_item.coffee:599
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
+msgid "Warning"
+msgstr "警告"
+
 #: ../resources/desktop/js/desktop_item.coffee:756
 msgid "_Ungroup"
 msgstr "解散(_U)"
+
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
+msgid "The link has expired. Do you want to delete it?"
+msgstr "该链接已经失效，是否要删除？"
+
+#: ../resources/desktop/js/desktop_item.coffee:1327
+msgid "Computer"
+msgstr "计算机"
+
+#: ../resources/desktop/js/desktop_item.coffee:1376
+msgid "Home"
+msgstr "主文件夹"
+
+#: ../resources/desktop/js/desktop_item.coffee:1466
+msgid "Trash"
+msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1529
 #: ../resources/desktop/js/desktop_item.coffee:1531
@@ -756,10 +228,346 @@ msgstr "解散(_U)"
 msgid "_Clean up"
 msgstr "清空(_C)"
 
+#: ../resources/desktop/js/desktop_item.coffee:1529
+msgid "items"
+msgstr "项"
+
+#: ../resources/desktop/js/desktop_item.coffee:1531
+msgid "item"
+msgstr "项"
+
+#: ../resources/desktop/js/desktop_item.coffee:1562
+msgid "Deepin Software Center"
+msgstr "深度软件中心"
+
+#: ../resources/desktop/js/grid.coffee:809
+msgid "_Sort by"
+msgstr "排序方式(_S)"
+
+#: ../resources/desktop/js/grid.coffee:810
+msgid "_Name"
+msgstr "名称(_N)"
+
+#: ../resources/desktop/js/grid.coffee:811
+msgid "Last modified _time"
+msgstr "最近修改时间(_T)"
+
+#: ../resources/desktop/js/grid.coffee:814
+msgid "_New"
+msgstr "新建(_N)"
+
+#: ../resources/desktop/js/grid.coffee:815
+msgid "_Folder"
+msgstr "文件夹(_F)"
+
+#: ../resources/desktop/js/grid.coffee:816
+msgid "_Text document"
+msgstr "文本文档(_T)"
+
+#: ../resources/desktop/js/grid.coffee:819
+msgid "Open in _terminal"
+msgstr "在终端中打开(_T)"
+
+#: ../resources/desktop/js/grid.coffee:820
+msgid "_Paste"
+msgstr "粘贴(_P)"
+
+#: ../resources/desktop/js/grid.coffee:822
+msgid "_Display settings"
+msgstr "显示设置(_D)"
+
+#: ../resources/desktop/js/grid.coffee:823
+msgid "D_esktop settings"
+msgstr "桌面设置(_E)"
+
+#: ../resources/desktop/js/grid.coffee:824
+msgid "Pe_rsonalize"
+msgstr "个性化(_R)"
+
+#: ../resources/dock/js/clientgroup.coffee:25
+msgid "_New instance"
+msgstr "新建实例(_N)"
+
+#: ../resources/dock/js/clientgroup.coffee:26
+msgid "_Close"
+msgstr "关闭(_C)"
+
+#: ../resources/dock/js/clientgroup.coffee:28
+msgid "_Dock me"
+msgstr "驻留(_D)"
+
+#: ../resources/dock/js/deepin_item.coffee:37
+msgid "Launcher"
+msgstr "启动器"
+
+#: ../resources/dock/js/deepin_item.coffee:40
+msgid "Show/Hide Desktop"
+msgstr "显示/隐藏桌面"
+
+#: ../resources/dock/js/item.coffee:340
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr "该项无效。您要将其从Dock删除吗？"
+
+#: ../resources/dock/js/launcher.coffee:32 ../lib/dentry/mime_actions.c:150
+msgid "_Run"
+msgstr "运行(_R)"
+
+#: ../resources/dock/js/launcher.coffee:34
+msgid "_Undock"
+msgstr "移除驻留(_U)"
+
+#: ../resources/launcher/js/config.coffee:29
+msgid "_Hide hidden icons"
+msgstr "隐藏已隐藏图标(_H)"
+
+#: ../resources/launcher/js/config.coffee:30
+msgid "_Display hidden icons"
+msgstr "显示已隐藏图标(_D)"
+
+#: ../resources/launcher/js/config.coffee:32
+msgid "_Hide this icon"
+msgstr "隐藏该图标(_H)"
+
+#: ../resources/launcher/js/config.coffee:33
+msgid "_Display this icon"
+msgstr "显示该图标(_D)"
+
+#: ../resources/launcher/js/grid.coffee:87
+msgid "Send to d_esktop"
+msgstr "发送到桌面(_E)"
+
+#: ../resources/launcher/js/grid.coffee:88
+msgid "Send to do_ck"
+msgstr "添加到 Dock(_C)"
+
+#: ../resources/launcher/js/search.coffee:23
+msgid "Type to search..."
+msgstr "键入要搜索的关键字..."
+
+#: ../app/desktop/desktop.c:140
+msgid "App Group"
+msgstr "应用程序启动组"
+
+#: ../app/desktop/desktop.c:178
+msgid "New file"
+msgstr "新建文件"
+
+#: ../app/desktop/desktop.c:189
+msgid "New directory"
+msgstr "新建目录"
+
+#: ../app/greeter/account.c:74
+msgid "%a,%b%d,%Y"
+msgstr "%Y年%b%d日 %A"
+
+#: ../app/greeter/dlock.c:310
+msgid "Invalid Password"
+msgstr "密码错误"
+
+#: ../app/greeter/greeter.c:467
+msgid "Invalid Username/Password"
+msgstr "用户名/密码错误"
+
+#: ../lib/dentry/entry.c:654
+#, c-format
+msgid ""
+"This *.desktop file cannot be changed to the name \"%s\".You may not have "
+"such permission"
+msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
+
+#: ../lib/dentry/entry.c:660
+#, c-format
+msgid ""
+"The name \"%s\" is already used in this folder. Please use a different name."
+msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
+
+#: ../lib/dentry/entry.c:666
+msgid "The Item could not be renamed"
+msgstr "该项无法重命名"
+
+#: ../lib/dentry/entry.c:739 ../lib/dentry/fileops.c:671
+msgid "copy"
+msgstr "复制"
+
+#: ../lib/dentry/fileops.c:516
+msgid "move"
+msgstr "移动"
+
 #: ../lib/dentry/fileops.c:640
 msgid "Copy"
 msgstr "复制"
 
+#: ../lib/dentry/fileops_delete.c:27
+msgid "Delete File"
+msgstr "删除文件"
+
+#: ../lib/dentry/fileops_delete.c:30
+msgid "Are you sure you want to permanently delete the files?"
+msgstr "您确定要永久删除文件吗？"
+
+#: ../lib/dentry/fileops_delete.c:31
+msgid "If you delete an item, it will be permanently lost"
+msgstr "如果您要删除某项，它将永久丢失"
+
 #: ../lib/dentry/fileops_delete.c:34
 msgid "Delete"
 msgstr "删除"
+
+#: ../lib/dentry/fileops_error_dialog.c:62
+msgid "File conflict"
+msgstr "文件冲突"
+
+#: ../lib/dentry/fileops_error_dialog.c:106
+msgid "_Select a new name for the destination"
+msgstr "为目标选择新的名称(_S)"
+
+#: ../lib/dentry/fileops_error_dialog.c:117
+msgid "Reset"
+msgstr "重置"
+
+#: ../lib/dentry/fileops_error_dialog.c:126
+msgid "Apply this action to all files"
+msgstr "将该动作应用到全部文件"
+
+#: ../lib/dentry/fileops_error_dialog.c:133
+msgid "_Skip"
+msgstr "跳过(_S)"
+
+#: ../lib/dentry/fileops_error_dialog.c:136
+msgid "Re_name"
+msgstr "重命名(_N)"
+
+#: ../lib/dentry/fileops_error_dialog.c:141
+msgid "Replace"
+msgstr "替换"
+
+#: ../lib/dentry/fileops_error_dialog.c:218
+#, c-format
+msgid "Merge folder \"%s\"?"
+msgstr "合并文件夹“%s”？"
+
+#: ../lib/dentry/fileops_error_dialog.c:220
+msgid ""
+"Merging will ask for confirmation before replacing any files in the folder "
+"that conflict with the files being copied."
+msgstr "合并将会在替换冲突文件时请求确认。"
+
+#: ../lib/dentry/fileops_error_dialog.c:224
+#, c-format
+msgid "An older folder with the same name already exists in \"%s\"."
+msgstr "在“%s”中有相同名称的一个较旧文件夹已存在。"
+
+#: ../lib/dentry/fileops_error_dialog.c:228
+#, c-format
+msgid "A newer folder with the same name already exists in \"%s\"."
+msgstr "在“%s”中有相同名称的一个较新文件夹已存在。"
+
+#: ../lib/dentry/fileops_error_dialog.c:232
+#, c-format
+msgid "Another folder with the same name already exists in \"%s\"."
+msgstr "在“%s”中有相同名称的一个文件夹已存在。"
+
+#: ../lib/dentry/fileops_error_dialog.c:238
+msgid "Replacing it will remove all files in the folder."
+msgstr "替换将移除文件夹中的所有文件。"
+
+#: ../lib/dentry/fileops_error_dialog.c:240
+#, c-format
+msgid "Replace folder \"%s\"?"
+msgstr "替换文件夹“%s”？"
+
+#: ../lib/dentry/fileops_error_dialog.c:242
+#, c-format
+msgid "A folder with the same name already exists in \"%s\"."
+msgstr "在“%s”中已存在相同文件名的文件夹。"
+
+#: ../lib/dentry/fileops_error_dialog.c:248
+#, c-format
+msgid "Replace file \"%s\"?"
+msgstr "替换文件“%s”？"
+
+#: ../lib/dentry/fileops_error_dialog.c:249
+msgid "Replacing it will overwrite its content."
+msgstr "替换将覆盖它的内容。"
+
+#: ../lib/dentry/fileops_error_dialog.c:251
+#, c-format
+msgid "An older file with the same name already exists in \"%s\"."
+msgstr "在“%s”中已存在较旧的相同文件名的文件。"
+
+#: ../lib/dentry/fileops_error_dialog.c:255
+#, c-format
+msgid "A newer file with the same name already exists in \"%s\"."
+msgstr "在“%s”中已存在更新的相同文件名的文件。"
+
+#: ../lib/dentry/fileops_error_dialog.c:259
+#, c-format
+msgid "Another file with the same name already exists in \"%s\"."
+msgstr "在“%s”中已存在相同文件名的文件。"
+
+#: ../lib/dentry/fileops_error_dialog.c:331
+msgid "Original file"
+msgstr "原始文件"
+
+#: ../lib/dentry/fileops_error_dialog.c:332
+#: ../lib/dentry/fileops_error_dialog.c:360
+msgid "Size:"
+msgstr "大小："
+
+#: ../lib/dentry/fileops_error_dialog.c:336
+#: ../lib/dentry/fileops_error_dialog.c:364
+msgid "Type:"
+msgstr "类型："
+
+#: ../lib/dentry/fileops_error_dialog.c:340
+#: ../lib/dentry/fileops_error_dialog.c:368
+msgid "Last modified:"
+msgstr "最近修改："
+
+#: ../lib/dentry/fileops_error_dialog.c:359
+msgid "Replace with"
+msgstr "替换为"
+
+#: ../lib/dentry/fileops_error_dialog.c:385
+msgid "Merge"
+msgstr "合并"
+
+#: ../lib/dentry/fileops_error_reporting.c:105
+#: ../lib/dentry/fileops_error_reporting.c:187
+#, c-format
+msgid "Error while %s files"
+msgstr "当%s文件时出错"
+
+#: ../lib/dentry/fileops_trash.c:58
+msgid "Empty Trash"
+msgstr "清空回收站"
+
+#: ../lib/dentry/fileops_trash.c:67
+msgid "Empty all items from Trash?"
+msgstr "清空回收站中的全部项目吗？"
+
+#: ../lib/dentry/fileops_trash.c:68
+msgid "All items in the Trash will be permanently deleted."
+msgstr "回收站中的全部条目将被永久删除。"
+
+#: ../lib/dentry/fileops_trash.c:71
+msgid "Empty _Trash"
+msgstr "清空回收站(_T)"
+
+#: ../lib/dentry/mime_actions.c:135
+#, c-format
+msgid "Do you want to run \"%s\", or display its contents?"
+msgstr "您想要运行“%s”，还是显示其内容？"
+
+#: ../lib/dentry/mime_actions.c:136
+#, c-format
+msgid "\"%s\" is an executable text file."
+msgstr "“%s”是一个可执行的文本文件。"
+
+#: ../lib/dentry/mime_actions.c:147
+msgid "Run in _Terminal"
+msgstr "在终端中打开(_T)"
+
+#: ../lib/dentry/mime_actions.c:148
+msgid "_Display"
+msgstr "显示(_D)"

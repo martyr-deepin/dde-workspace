@@ -74,9 +74,10 @@ class Widget extends Module
     constructor: ->
         el = document.createElement('div')
         el.setAttribute('class',  @constructor.name)
-        el.id = @id
+        if @id
+            el.id = @id
+            Widget.object_table[@id] = this
         @element = el
-        Widget.object_table[@id] = this
 
         #there has an strange bug when use indexof instead search,
         # the key value will always be "constructor" without any other thing
