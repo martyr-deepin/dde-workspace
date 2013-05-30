@@ -28,7 +28,7 @@ class Weather extends Widget
         @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
         temp_now_init = "00°"
-        
+
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
 
@@ -72,13 +72,13 @@ class Weather extends Widget
             else
                 @more_weather_menu.style.display = "none"
             )
-        
+
         left_div.addEventListener("click" , =>
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             )
     more_weather_build: ->
-        
+
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
         img_more_url_init = @img_url_first + "24/T" + "0\u6674" + ".png"
         week_init = _("Sun")
@@ -136,7 +136,7 @@ class Weather extends Widget
         # @rightclick_build()
 
         cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid 
+        echo "cityid:" + cityid
         if !cityid
             Clientcityid = new ClientCityId()
             Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
@@ -259,10 +259,4 @@ plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
-plugin.wrap_element(new Weather(plugin.id).element)
-plugin.set_pos(
-    x: 9
-    y: 0
-    width: 3
-    height: 1
-)
+plugin.wrap_element(new Weather(plugin.id).element, 3, 1)

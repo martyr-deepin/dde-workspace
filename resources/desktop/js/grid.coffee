@@ -162,34 +162,10 @@ discard_position = (id) ->
 
 
 clear_all_positions = ->
-    for i in [(localStorage.length - 1) ... -1] by -1
-        if (val = localStorage.key(i)).match(/^id:.+/i)
-            localStorage.removeItem(val)
-    return
-
-
-place_desktop_items = ->
-    init_occupy_table()
-
-    total_item = speical_item.concat(all_item).concat(widget_item)
-    not_founds = []
-    for i in total_item
-        if not (w = Widget.look_up(i))?
-            echo "uncleaned item #{i}"
-            continue
-
-        pos = w.get_pos()
-        if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos)
-                move_to_somewhere(w, pos)
-        else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
-            move_to_somewhere(w, old_pos)
-        else
-            not_founds.push(i)
-
-    for i in not_founds
-        w = Widget.look_up(i)
-        if w? then move_to_anywhere(w)
+    for i in all_item
+        localStorage.removeItem("id:#{i}")
+    for i in speical_item
+        localStorage.removeItem("id:#{i}")
     return
 
 
@@ -254,14 +230,8 @@ init_occupy_table = ->
     return
 
 
-clear_occupy_table = ->
-    for i in [0 ... cols] by 1
-        for j in [0 ... rows] by 1
-            o_table[i][j] = null
-    return
-
-
 clear_occupy = (id, info) ->
+    if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j] == id
@@ -272,7 +242,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    assert(info!=null, "[set_occupy] get null info")
+    assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = id
@@ -280,7 +250,7 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info) ->
-    assert(info!=null, "[detect_occupy]get null info")
+    assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width - 1) > cols  or (info.y + info.height - 1) > rows
         return true
     for i in [0..info.width - 1] by 1
@@ -288,6 +258,18 @@ detect_occupy = (info) ->
             if o_table[info.x+i][info.y+j]
                 return true
     return false
+
+
+clear_occupy_table = ->
+    item_list = all_item.concat(speical_item)
+    for i in item_list
+        if (w = Widget.look_up(i))?
+            pos = w.get_pos()
+            clear_occupy(w.get_id(), pos)
+            pos.x = -1
+            pos.y = -1
+            w.set_pos(pos)
+    return
 
 
 find_free_position = (w, h) ->
@@ -311,6 +293,18 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
     {x : pos_x, y : pos_y, width : w, height : h}
 
 
+move_to_position = (widget, info) ->
+    old_info = widget.get_pos()
+
+    widget.move(info.x * grid_item_width, info.y * grid_item_height)
+    if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
+    set_occupy(widget.get_id(), info)
+
+    widget.set_pos(info)
+    save_position(widget.get_id(), info)
+    return
+
+
 # need optimization
 move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
@@ -331,15 +325,28 @@ move_to_somewhere = (widget, pos) ->
     return
 
 
-move_to_position = (widget, info) ->
-    old_info = widget.get_pos()
+place_desktop_items = ->
+    clear_occupy_table()
 
-    widget.move(info.x * grid_item_width, info.y * grid_item_height)
-    if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
-    set_occupy(widget.get_id(), info)
+    total_item = speical_item.concat(all_item)
+    not_founds = []
+    for i in total_item
+        if not (w = Widget.look_up(i))?
+            echo "uncleaned item #{i}"
+            continue
 
-    widget.set_pos(info)
-    save_position(widget.get_id(), info)
+        pos = w.get_pos()
+        if (pos.x > -1) and (pos.y > -1) # we have a place
+            if not detect_occupy(pos)
+                move_to_somewhere(w, pos)
+        else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
+            move_to_somewhere(w, old_pos)
+        else
+            not_founds.push(i)
+
+    for i in not_founds
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
     return
 
 
@@ -374,13 +381,17 @@ sort_desktop_item_by_func = (func) ->
     for i in speical_item
         if (w = Widget.look_up(i))?
             old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+            old_pos.x = -1
+            old_pos.y = -1
+            w.set_pos(old_pos)
             move_to_anywhere(w)
 
     for i in item_ordered_list
         if (w = Widget.look_up(i))?
             old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+            old_pos.x = -1
+            old_pos.y = -1
+            w.set_pos(old_pos)
             move_to_anywhere(w)
     return
 
