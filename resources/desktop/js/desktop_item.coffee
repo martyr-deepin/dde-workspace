@@ -995,7 +995,7 @@ class RichDir extends DesktopEntry
             arrow_pos_at_bottom = false
 
         # how many we can hold per column due to workarea height
-        num_max = Math.floor((num_max - 22) / _ITEM_HEIGHT_)
+        num_max = Math.max(Math.floor((num_max - 22) / _ITEM_HEIGHT_), 1)
         if row > num_max then row = num_max
         # restrict the real pop div size
         if @sub_items_count > col * row
