@@ -70,6 +70,7 @@ class CityMoreMenu extends Widget
         @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
+        cityinit.style.textAlign = "center" 
         cityinit.selected = "true"
         
         @clearOptions(@choosedist,0)

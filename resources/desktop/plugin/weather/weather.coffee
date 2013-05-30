@@ -85,7 +85,10 @@ class Weather extends Widget
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
                     @more_weather_menu.style.top = -195
-                else @more_weather_menu.style.top = 84
+                    @more_weather_menu.style.borderRadius = "6px 6px 0 0"
+                else 
+                    @more_weather_menu.style.top = 84
+                    @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
                 @global_desktop.style.display = "none"

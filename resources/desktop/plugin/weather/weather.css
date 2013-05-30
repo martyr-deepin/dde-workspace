@@ -120,7 +120,7 @@
     top: 85px;
     width: 177px;
     border:1px solid rgba(255,255,255,0.6);
-    border-radius: 0 0 6px 6px;
+    /*border-radius: 0 0 6px 6px;*/ /*set in coffee */
     overflow: hidden;
     z-index: 65535;
     display: none;
@@ -170,9 +170,21 @@
 .pic3,
 .pic4,
 .pic5,
-.pic6{
+.pic6:lang(zh){
     position: absolute;
     left: 60px;
+    width: 24px;
+    height: 24px;
+    margin-top: 5px;
+}
+.pic1,
+.pic2,
+.pic3,
+.pic4,
+.pic5,
+.pic6:lang(en){
+    position: absolute;
+    left: 53px;
     width: 24px;
     height: 24px;
     margin-top: 5px;
