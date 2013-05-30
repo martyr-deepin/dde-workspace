@@ -113,10 +113,10 @@ load_plugins = ->
 
 find_free_position_for_widget = (info) ->
     new_pos = {x : 0, y : 0, width : info.width, height : info.height}
-    x_pos = cols
-    while (x_pos - info.width + 1) > -1
+    x_pos = cols - 1
+    while (x_pos = x_pos - info.width + 1) > -1
         new_pos.x = x_pos
-        for i in [0 ... (rows - info.height + 1)]
+        for i in [0 ... (rows - info.height)]
             new_pos.y = i
             if not detect_occupy(new_pos)
                 return new_pos
@@ -127,6 +127,7 @@ place_all_widgets = ->
     for i in widget_item
         continue if not (w = Widget.look_up(i))?
         if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos()))?
+            echo new_pos
             move_to_somewhere(w, new_pos)
         else
             move_to_anywhere(w)
