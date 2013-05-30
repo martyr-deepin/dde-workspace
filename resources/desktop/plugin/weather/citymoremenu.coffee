@@ -27,12 +27,6 @@ class CityMoreMenu extends Widget
         @element.style.display = "none"
         @element.style.zIndex = zIndex
 
-    do_click:(e)->
-        # echo "do_click"
-        clearTimeout(@display_city_menu_id) if @display_city_menu_id
-        e.stopPropagation()
-        return
-
     show_hide_position:(bottom_distance)->
         if @element.style.display == "none"
             if bottom_distance < 200
@@ -40,18 +34,11 @@ class CityMoreMenu extends Widget
                 @element.style.top = -252
             else @element.style.top = 84
             @element.style.display = "block"
-            @display_city_menu_id = setTimeout( =>
-                @element.style.display = "none"
-            ,4000)
         else
             @element.style.display = "none"
-            clearTimeout(@display_city_menu_id) if @display_city_menu_id
 
     display_none:->
         @element.style.display = "none"
-
-    clearTimeout_display:->
-        clearTimeout(@display_city_menu_id) if @display_city_menu_id
 
     more_city_build: ->
         @removeSelect(@chooseprov) if @chooseprov
@@ -111,10 +98,12 @@ class CityMoreMenu extends Widget
         @choosecity.size = if length < 13 then length else 13 
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
+            # echo "cityIndex:" + cityIndex
             if cityIndex == -1
                 @choosecity.options.remove(cityIndex)
             else
                 cityvalue = @choosecity.options[cityIndex].value
+                # echo "cityvalue:" + cityvalue
                 if cityvalue != @str_cityinit
                     @distadd(data[cityvalue].data,callback)
     
@@ -139,7 +128,8 @@ class CityMoreMenu extends Widget
 
     clearOptions:(colls,first=0)->
         i = first
-        colls.remove(i++) while i < colls.length 
+        # colls.remove(i++) while i < colls.length 
+        colls.options.length = i
 
     removeSelect:(obj)->
         obj.parentNode.removeChild(obj) if obj
