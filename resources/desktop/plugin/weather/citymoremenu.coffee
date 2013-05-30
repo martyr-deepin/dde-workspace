@@ -29,9 +29,10 @@ class CityMoreMenu extends Widget
     show_hide_position:(bottom_distance)->
         if @element.style.display == "none"
             if bottom_distance < 200
-                echo "bottom_distance:" + bottom_distance
-                @element.style.top = -252
+                # echo "bottom_distance:" + bottom_distance
+                @element.style.top = -242
             else @element.style.top = 84
+            # echo "@menu.style.top:" + @element.style.top
             @element.style.display = "block"
         else
             @element.style.display = "none"
@@ -41,8 +42,10 @@ class CityMoreMenu extends Widget
 
     display_check:->
         return @element.style.display
+
     zIndex_check:->
         return @element.style.zIndex
+
     more_city_build: ->
         @removeSelect(@chooseprov) if @chooseprov
         @removeSelect(@choosecity) if @choosecity

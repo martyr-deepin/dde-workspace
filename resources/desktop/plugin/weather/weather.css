@@ -15,6 +15,9 @@
     font-family: Arial;
     cursor:default;
 }
+.CityMoreMenu{
+    position: absolute;
+}
 .left_div{
     position: relative;
     width: 83px;
@@ -52,13 +55,22 @@
     text-shadow: 2px 2px 1px #808080;
     float: left;
 }
-.temperature_now_number{
+.temperature_now_number:lang(en){
     position:relative;
     float: left;
     top:10px;
     color: #FFF;   
     font-size: 36px;
     font-weight: bold;
+    text-shadow: 0 0 4px #808080;
+}
+.temperature_now_number:lang(zh){
+    position:relative;
+    float: left;
+    top:10px;
+    color: #FFF;   
+    font-size: 18px;
+    font-weight: bolder;
     text-shadow: 0 0 4px #808080;
 }
 .temperature_now_number:after{
