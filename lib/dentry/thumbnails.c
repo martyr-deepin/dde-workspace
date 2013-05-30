@@ -44,6 +44,8 @@ gfile_can_thumbnail (GFile* file)
                                                          mime_type,
                                                          mtime);
     g_debug ("%s can thumbnail(mime: %s): %d", uri, mime_type, can_thumbnail);
+    g_free (uri);
+    g_free (mime_type);
 
     return can_thumbnail;
 }

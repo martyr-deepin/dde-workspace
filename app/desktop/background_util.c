@@ -816,9 +816,10 @@ bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer u
 {
     if (g_strcmp0 (key, BG_CURRENT_PICT))
         return;
-    const char* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
+    gchar* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
 
     register_account_service_background_path (cur_pict);
+    g_free (cur_pict);
 }
 
 PRIVATE void
