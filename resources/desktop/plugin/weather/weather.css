@@ -1,6 +1,11 @@
+.global_desktop{
+    position: fixed;
+    display: none;
+    background-color:rgba(255,255,255,0.0);
+    top:0px;
+    left:0px;
+}
 .Weather {
-    top:50px;
-    left:1000px;
     width: 300px;
     height: 70px;
     background-image: url(img/bg.png);
@@ -134,7 +139,17 @@
 .week3,
 .week4,
 .week5,
-.week6{
+.week6:lang(zh){
+    position: relative;
+    margin-left: 10px;
+    font-weight: bolder;
+}
+.week1,
+.week2,
+.week3,
+.week4,
+.week5,
+.week6:lang(en){
     position: relative;
     margin-left: 10px;
 }
@@ -161,14 +176,6 @@
     margin-left: 10px;
 }
 
-/*.temperature1:after,
-.temperature2:after,
-.temperature3:after,
-.temperature4:after,
-.temperature5:after,
-.temperature6:after{
-    content: "℃";
-}*/
 .rightclick{
     position: absolute;
     top: 70px;
@@ -203,3 +210,4 @@
     text-align: center;
     border:2px solid #DCDCDC;
 }
+

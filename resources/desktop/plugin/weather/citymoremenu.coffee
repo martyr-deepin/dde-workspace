@@ -20,8 +20,7 @@
 
 class CityMoreMenu extends Widget
     constructor: (x,y,zIndex)->
-        super
-        @id = "CityMoreMenu"
+        super(null)
         @element.style.left = x 
         @element.style.top = y 
         @element.style.display = "none"
@@ -40,6 +39,10 @@ class CityMoreMenu extends Widget
     display_none:->
         @element.style.display = "none"
 
+    display_check:->
+        return @element.style.display
+    zIndex_check:->
+        return @element.style.zIndex
     more_city_build: ->
         @removeSelect(@chooseprov) if @chooseprov
         @removeSelect(@choosecity) if @choosecity

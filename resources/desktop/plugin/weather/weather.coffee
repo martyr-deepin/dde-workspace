@@ -20,7 +20,7 @@
 
 class Weather extends Widget
     constructor: ->
-        super
+        super(null)
         @weather_style_build()
         @more_weather_build()
 
@@ -57,11 +57,20 @@ class Weather extends Widget
         @date.textContent =  _("loading") + ".........."
 
         @more_city_menu = new CityMoreMenu(0,84,65535)
-        # echo @more_city_menu.element
         @element.appendChild(@more_city_menu.element)
+
+        @global_desktop = create_element("div","global_desktop",@element)
+        @global_desktop.style.height = window.screen.height
+        @global_desktop.style.width = window.screen.width
+        @global_desktop.style.zIndex = @more_city_menu.zIndex_check() - 1
 
         city.addEventListener("click", =>
             @more_weather_menu.style.display = "none"
+
+            if @more_city_menu.display_check() == "none"
+               @global_desktop.style.display = "block"
+            else @global_desktop.style.display = "none"
+
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
             @more_city_menu.show_hide_position(bottom_distance)
 
@@ -72,17 +81,21 @@ class Weather extends Widget
             @more_city_menu.display_none()
 
             if @more_weather_menu.style.display == "none"
+                @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
                     @more_weather_menu.style.top = -195
                 else @more_weather_menu.style.top = 84
                 @more_weather_menu.style.display = "block"
             else
+                @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
             )
-        left_div.addEventListener("click" , =>
+        @global_desktop.addEventListener("click",=>
+            # echo "display none all menu"
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
+            @global_desktop.style.display = "none"
             )
 
     more_weather_build: ->
@@ -136,6 +149,8 @@ class Weather extends Widget
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = temp_init
+
+
 
     weathergui_update: ->
             cityid = localStorage.getItem("cityid_storage")
