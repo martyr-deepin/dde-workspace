@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Wang Dianjin <wangdianjin@linuxdeepin.com>, 2013
 # freddy <freddy4212@gmail.com>, 2013
-
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 10:11+0800\n"
+"POT-Creation-Date: 2013-05-30 10:34+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,30 +99,38 @@ msgid "Dec"
 msgstr "十二月"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:105
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sat"
 msgstr "星期六"
 
@@ -241,49 +248,73 @@ msgstr "項目"
 msgid "Deepin Software Center"
 msgstr "深度軟體中心"
 
-#: ../resources/desktop/js/grid.coffee:809
+#: ../resources/desktop/js/grid.coffee:812
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:810
+#: ../resources/desktop/js/grid.coffee:813
 msgid "_Name"
 msgstr "名稱(_N)"
 
-#: ../resources/desktop/js/grid.coffee:811
+#: ../resources/desktop/js/grid.coffee:814
 msgid "Last modified _time"
 msgstr "最近修改時間(_T)"
 
-#: ../resources/desktop/js/grid.coffee:814
+#: ../resources/desktop/js/grid.coffee:817
 msgid "_New"
 msgstr "新建(_N)"
 
-#: ../resources/desktop/js/grid.coffee:815
+#: ../resources/desktop/js/grid.coffee:818
 msgid "_Folder"
 msgstr "資料夾(_F)"
 
-#: ../resources/desktop/js/grid.coffee:816
+#: ../resources/desktop/js/grid.coffee:819
 msgid "_Text document"
 msgstr "文字文檔(_T)"
 
-#: ../resources/desktop/js/grid.coffee:819
+#: ../resources/desktop/js/grid.coffee:822
 msgid "Open in _terminal"
 msgstr "在終端機中打開(_T)"
 
-#: ../resources/desktop/js/grid.coffee:820
+#: ../resources/desktop/js/grid.coffee:823
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: ../resources/desktop/js/grid.coffee:822
+#: ../resources/desktop/js/grid.coffee:825
 msgid "_Display settings"
 msgstr "顯示設定(_D)"
 
-#: ../resources/desktop/js/grid.coffee:823
+#: ../resources/desktop/js/grid.coffee:826
 msgid "D_esktop settings"
 msgstr "桌面設定(_E)"
 
-#: ../resources/desktop/js/grid.coffee:824
+#: ../resources/desktop/js/grid.coffee:827
 msgid "Pe_rsonalize"
 msgstr "個人化(_R)"
+
+#: ../resources/desktop/plugin/weather/citymoremenu.coffee:51
+msgid "province"
+msgstr "省"
+
+#: ../resources/desktop/plugin/weather/citymoremenu.coffee:52
+msgid "city"
+msgstr "市"
+
+#: ../resources/desktop/plugin/weather/citymoremenu.coffee:53
+msgid "county"
+msgstr "縣"
+
+#: ../resources/desktop/plugin/weather/weather.coffee:54
+msgid "choose city"
+msgstr "選擇城市"
+
+#: ../resources/desktop/plugin/weather/weather.coffee:57
+msgid "loading"
+msgstr "載入中"
+
+#: ../resources/desktop/plugin/weather/weather.coffee:183
+msgid "None"
+msgstr "沒有"
 
 #: ../resources/dock/js/clientgroup.coffee:25
 msgid "_New instance"
@@ -370,7 +401,7 @@ msgid "Invalid Username/Password"
 msgstr "使用者/密碼錯誤"
 
 #: ../lib/dentry/entry.c:654
-#,c-format
+#, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"

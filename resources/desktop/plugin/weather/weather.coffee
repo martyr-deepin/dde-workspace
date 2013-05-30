@@ -180,7 +180,7 @@ class Weather extends Widget
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
-            @temperature_now_number.textContent = _("NO")
+            @temperature_now_number.textContent = _("None")
         else
             if temp_now < -10
                 @temperature_now_minus.style.opacity = 0.8
