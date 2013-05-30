@@ -137,20 +137,20 @@ ajax = (url, callback,internet = true) ->
             if (xhr.readyState == 4 and xhr.status == 200)
                 try   
                     echo "XMLHttpRequest receive all data."             
-                    callback?(xhr)                
+                    callback?(xhr)
                 catch e
-                    echo "xhr.responseText is error"
+                    echo "XMLHttpRequest is error"
+            if xhr.status == 404
+                echo "XMLHttpRequest can't find the url:" + url
+            else if xhr.status == 0
+                echo "your computer are not connected to the Internet"
         else
-           if xhr.readyState == 4
+            if xhr.readyState == 4 
                 try   
-                    echo "XMLHttpRequest receive all data."             
                     callback?(xhr)                
                 catch e
-                    echo "xhr.responseText is error"
-        if xhr.status == 404
-            echo "XMLHttpRequest can't find the url ."
-        else if xhr.status == 0
-            echo "your computer are not connected to the Internet"
+                    echo "XMLHttpRequest is error"
+
 
 get_path_base = (path)->
     path.split('/').slice(0, -1).join('/')

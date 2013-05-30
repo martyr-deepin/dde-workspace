@@ -19,6 +19,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class WeatherData
+
     constructor: (cityid)->
         @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
         @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
@@ -37,7 +38,50 @@ class WeatherData
         ajax(@url_moreweather_str,(xhr)=>
             try
                 localStorage.setItem("weatherdata_more_storage",xhr.responseText)
+                @weather_more_img()
+                @weather_more_week()
                 callback()
             catch e
                 echo "weatherdata_more xhr.responseText isnt JSON "
         )
+
+    weather_more_img:->
+        weather_data_more = localStorage.getObject("weatherdata_more_storage")
+        @img_front = [
+            weather_data_more.weatherinfo.img_single,
+            weather_data_more.weatherinfo.img1,
+            weather_data_more.weatherinfo.img2,
+            weather_data_more.weatherinfo.img3,
+            weather_data_more.weatherinfo.img4,
+            weather_data_more.weatherinfo.img5,
+            weather_data_more.weatherinfo.img6,
+            weather_data_more.weatherinfo.img7,
+            weather_data_more.weatherinfo.img8,
+            weather_data_more.weatherinfo.img9,
+            weather_data_more.weatherinfo.img10,
+            weather_data_more.weatherinfo.img11,
+            weather_data_more.weatherinfo.img12
+        ]
+        @img_behind = [
+            weather_data_more.weatherinfo.img_title_single,
+            weather_data_more.weatherinfo.img_title1,
+            weather_data_more.weatherinfo.img_title2,
+            weather_data_more.weatherinfo.img_title3,
+            weather_data_more.weatherinfo.img_title4,
+            weather_data_more.weatherinfo.img_title5,
+            weather_data_more.weatherinfo.img_title6,
+            weather_data_more.weatherinfo.img_title7,
+            weather_data_more.weatherinfo.img_title8,
+            weather_data_more.weatherinfo.img_title9,
+            weather_data_more.weatherinfo.img_title10,
+            weather_data_more.weatherinfo.img_title11,
+            weather_data_more.weatherinfo.img_title12
+        ]
+    weather_more_week:->
+        i_week = 0
+        week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
+        weather_data_more = localStorage.getObject("weatherdata_more_storage")
+        while i_week < week_name.length
+            break if weather_data_more.weatherinfo.week == week_name[i_week]
+            i_week++
+        @week_n = i_week

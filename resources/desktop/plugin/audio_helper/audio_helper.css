@@ -2,6 +2,7 @@
     width: 128px;
     height: 128px;
     background: rgba(0, 100, 0, 0.8);
+    cursor: pointer;
 }
 
 @-webkit-keyframes running {
@@ -45,4 +46,3 @@
     height: 1px;
     -webkit-transition: background 0.5s ease-in;
 }
-

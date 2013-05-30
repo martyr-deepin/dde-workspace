@@ -830,7 +830,7 @@ grid_right_click = (evt) ->
                 [22, _("_Text document")]
             ]
         ])
-    menus.push([3, _("Open _terminal here")])
+    menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
     menus.push([5, _("_Display settings")])

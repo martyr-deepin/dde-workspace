@@ -20,52 +20,28 @@
 
 class ClientCityId
     constructor: ->
-        @url_clientip_str = "http://int.dpool.sina.com.cn/iplookup/iplookup.php"
+        @url_clientcity_json = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip="
 
-    Get_client_cityip: (callback,url_clientip = @url_clientip_str)=>
-        ajax(url_clientip, (xhr)=>
-            try
-                localStorage.setItem("client_ipstr_storage",xhr.responseText)
-                @client_ipstr = localStorage.getItem("client_ipstr_storage")
-                if @client_ipstr[0] == '1'
-                    ip = @client_ipstr.slice(2,12)
-                    echo "ip start :" + ip
-                    localStorage.setItem("client_ipstart_storage",ip)
-                    @ip = localStorage.getItem("client_ipstart_storage")
-                    @Get_client_cityjsonByip(callback,@ip)
-                    return ip
-                else 
-                    echo "Get_client_cityip  can't get the right client ip"
-                    return 0
-            catch e
-                echo "Get_client_cityip error"
-        )
-
-    Get_client_cityjsonByip: (callback,ip = @ip)->
-        @url_clientcityjsonbyip = "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&ip=" + ip
-        ajax(@url_clientcityjsonbyip, (xhr)=>
+    Get_client_cityid: (callback)->
+        ajax(@url_clientcity_json, (xhr)=>
             try
                 client_cityjsonstr = xhr.responseText
                 remote_ip_info = JSON.parse(client_cityjsonstr.slice(21,client_cityjsonstr.length))
                 echo "remote_ip_info.ret:" + remote_ip_info.ret
-                echo "remote_ip_info.province:" + remote_ip_info.province
+                echo "remote_ip_info.city:" + remote_ip_info.city
                 if remote_ip_info.ret == 1
-                    @client_cityjson = remote_ip_info
-                    @Get_cityid_client_BycityJSON(callback,@client_cityjson)
-                    return remote_ip_info
+                    for provin of allname.data
+                        if allname.data[provin].prov == remote_ip_info.province
+                            for ci of allname.data[provin].city
+                                if allname.data[provin].city[ci].cityname == remote_ip_info.city
+                                    cityid_client = allname.data[provin].city[ci].code
+                                    echo "cityid_client:"+ cityid_client
+                                    localStorage.setItem("cityid_storage",cityid_client)
+                                    callback()
+
                 else 
-                    echo "Get_client_cityjsonByip can't find the matched location right json by ip"
+                    echo "Get_client_cityid can't find the matched location right json by ip"
                     return 0
             catch e
-                echo "Get_client_cityjsonByip error"
+                echo "Get_client_cityid error"
         )
-
-    Get_cityid_client_BycityJSON:(callback,client_cityjson=@client_cityjson)->
-        for provin of allname.data
-            if allname.data[provin].prov == client_cityjson.province
-                for ci of allname.data[provin].city
-                    if allname.data[provin].city[ci].cityname == client_cityjson.city
-                        cityid = allname.data[provin].city[ci].code
-                        echo "cityid:"+ cityid
-                        localStorage.setItem("cityid_storage",cityid)
-                        callback()

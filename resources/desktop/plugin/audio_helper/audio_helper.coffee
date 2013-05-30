@@ -32,6 +32,7 @@ class Lines extends Widget
 
     active_line: (n)->
         return if n > @lines.length
+        @element.style.display = "block"
         if n > @current_value
             while n > @current_value
                 @lines[@current_value++].style.background = "#23fff8"
@@ -39,6 +40,9 @@ class Lines extends Widget
             while n < @current_value
                 @lines[@current_value--].style.background = "rgba(0,0,0,0)"
         @current_value = clamp(n, 0, @lines.length-1)
+
+    hide: ->
+        @element.style.display = "none"
 
 
 class AudioHelper extends Widget
@@ -49,7 +53,7 @@ class AudioHelper extends Widget
         @running = create_img("running", "#{plugin.path}/running.png", @element)
         @lighter = create_img("light", "#{plugin.path}/light.png", @element)
         @element.style.background = "url(#{plugin.path}/static.png)"
-        @lines = new Lines()
+        @lines = new Lines(@element)
         @element.appendChild(@lines.element)
         @_clicked = false
 
@@ -70,7 +74,8 @@ class AudioHelper extends Widget
         try
             @dbus = DCore.DBus.session("com.deepin.speech")
             @dbus.connect("CurrentVolume",(s) =>
-                echo "volume: #{s}"
+                i = @lines.lines.length * Math.random()
+                @lines.active_line(i)
             )
             @dbus.connect("RecordStart", =>
                 #@lighter.style.display = "block"
@@ -83,16 +88,19 @@ class AudioHelper extends Widget
                 echo "recordend"
             )
             @dbus.connect("ParseStart", =>
+                @lines.hide()
                 @lighter.style.display = "none"
                 @running.style.display = "block"
                 echo "parsestart"
             )
             @dbus.connect("ParseEnd", =>
+                @lines.hide()
                 @lighter.style.display = "none"
                 @running.style.display = "none"
                 echo "parseend"
             )
             @dbus.connect("ParseError", =>
+                @lines.hide()
                 @lighter.style.display = "none"
                 @running.style.display = "none"
                 echo "parseerror"

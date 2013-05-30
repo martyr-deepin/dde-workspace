@@ -1,9 +1,14 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
-base_dir = "../resources/"
-scan_dir = ["greeter/js/*.coffee", "desktop/js/*.coffee", "dock/js/*.coffee", "launcher/js/*.coffee", "desktop/desktop_plugin/weather/*.coffee"]
+coffee_files = [
+"../resources/greeter/js/*.coffee",
+"../resources/desktop/js/*.coffee",
+"../resources/desktop/plugin/weather/*.coffee",
+"../resources/dock/js/*.coffee",
+"../resources/launcher/js/*.coffee",
+]
 
-other_files = [
+c_files = [
 "../app/desktop/*.c",
 "../app/greeter/*.c",
 "../app/launcher/*.c",
@@ -11,27 +16,23 @@ other_files = [
 "../lib/dentry/*.c"
 ]
 
+lang = ["zh_CN", "zh_TW"]
+
+
 import glob
 import os
 
-files = []
-for i in scan_dir:
-    tmp = glob.glob(base_dir + i)
-    files = files + tmp
+for l in lang:
+    os.system("touch %s.pot" % l)
 
-cmd= "xgettext --from-code=utf-8 -L python -j -o zh_CN.po " + " ".join(files)
-os.system(cmd)
+    cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % l + " ".join(coffee_files)
+    os.system(cmd)
 
-cmd= "xgettext --from-code=utf-8 -L python -j -o zh_TW.po " + " ".join(files)
-os.system(cmd)
+    cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % l + " ".join(c_files)
+    os.system(cmd)
 
+    os.system("msgmerge %s.po %s.pot > new_%s.po" % (l, l, l))
 
-files = []
-for i in other_files:
-    tmp = glob.glob(base_dir + i)
-    files = files + tmp
-cmd = "xgettext --from-code=utf-8 -k_ -j -o zh_CN.po " + " ".join(other_files)
-os.system(cmd)
+    os.system("mv new_%s.po %s.po" % (l, l))
 
-cmd = "xgettext --from-code=utf-8 -k_ -j -o zh_TW.po " + " ".join(other_files)
-os.system(cmd)
+    os.system("rm %s.pot" % l)

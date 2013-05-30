@@ -1,11 +1,22 @@
+.global_desktop{
+    position: fixed;
+    display: none;
+    background-color:rgba(255,255,255,0.0);
+    top:0px;
+    left:0px;
+}
 .Weather {
-    top:50px;
-    left:1000px;
     width: 300px;
     height: 70px;
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
     z-index: 0;
+
+    font-family: Arial;
+    cursor:default;
+}
+.CityMoreMenu{
+    position: absolute;
 }
 .left_div{
     position: relative;
@@ -34,6 +45,7 @@
     height: 40px;
     float: left;
 }
+
 .temperature_now_minus{
     position: relative;
     top:10px;
@@ -48,14 +60,18 @@
     float: left;
     top:10px;
     color: #FFF;   
-    font-size: 30px;
+    font-size: 36px;
     font-weight: bold;
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0 0 4px #808080;
+}
+
+.temperature_now_number:after{
+    content: "°";
 }
 .city_and_date{
     position: relative;
     top:15px;
-    margin-left: 7px;  
+    margin-left: 10px;  
     float: left;
     height: 40px;
 }
@@ -72,42 +88,39 @@
     font-size: 15px;
     font-weight: bolder;
     margin:auto;
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0px 1px 1px #FFF;
 }
 .more_city_img{
     position: relative;
     top:3px;
+    margin: 1px 0px 0px 3px;
     float:left;
 }
 .date{
     position: relative;
-    height: 20px;
+    height: 35px;
     clear: both;
     cursor: pointer;
 
     color: #FFF; 
     font-weight: bolder;  
-    text-shadow: 2px 2px 1px #808080;
+    text-shadow: 0 0 2px #808080;
 }
-.more_city_menu{
-    position:absolute;
-    /*top: 70px;*/
-}
-
 .more_weather_menu{
     position:absolute;
     left: 83px;
     top: 85px;
-    width: 180px;
-    border:1px solid #E6E6FA;
-    border-radius: 0 0 6px 6px;
+    width: 177px;
+    border:1px solid rgba(255,255,255,0.6);
+    /*border-radius: 0 0 6px 6px;*/ /*set in coffee */
     overflow: hidden;
     z-index: 65535;
     display: none;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
 
     color: #FFF; 
-    font-weight: 900;
-    text-shadow: 2px 2px 1px #808080;
+    font-weight: bold;
+    text-shadow: 0 0 2px #808080;
 }
 
 .first_day_weather_data,
@@ -115,7 +128,7 @@
 .fifth_day_weather_data{
     height: 35px;
     line-height:35px;
-    background-color:rgba(255,255,255,0.2);
+    background-color:rgba(255,255,255,0.35);
 }
 .second_day_weather_data,
 .fourth_day_weather_data,
@@ -125,74 +138,65 @@
     background-color:rgba(0,0,0,0.15);
 }
 
-.week1,
-.week2,
-.week3,
-.week4,
-.week5,
-.week6{
+.week1:lang(zh),
+.week2:lang(zh),
+.week3:lang(zh),
+.week4:lang(zh),
+.week5:lang(zh),
+.week6:lang(zh){
+    position: relative;
+    margin-left: 10px;
+    font-weight: bolder;
+}
+.pic1:lang(zh),
+.pic2:lang(zh),
+.pic3:lang(zh),
+.pic4:lang(zh),
+.pic5:lang(zh),
+.pic6:lang(zh){
+    position: relative;
+    margin-left: 14px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+}
+.temperature1:lang(zh),
+.temperature2:lang(zh),
+.temperature3:lang(zh),
+.temperature4:lang(zh),
+.temperature5:lang(zh),
+.temperature6:lang(zh){
+    position: relative;
+    margin-left: 14px;
+}
+
+.week1:lang(en),
+.week2:lang(en),
+.week3:lang(en),
+.week4:lang(en),
+.week5:lang(en),
+.week6:lang(en){
     position: relative;
     margin-left: 10px;
 }
-.pic1,
-.pic2,
-.pic3,
-.pic4,
-.pic5,
-.pic6{
+.pic1:lang(en),
+.pic2:lang(en),
+.pic3:lang(en),
+.pic4:lang(en),
+.pic5:lang(en),
+.pic6:lang(en){
     position: absolute;
-    left: 60px;
+    left: 56px;
     width: 24px;
     height: 24px;
     margin-top: 5px;
 }
-.temperature1,
-.temperature2,
-.temperature3,
-.temperature4,
-.temperature5,
-.temperature6{
+.temperature1:lang(en),
+.temperature2:lang(en),
+.temperature3:lang(en),
+.temperature4:lang(en),
+.temperature5:lang(en),
+.temperature6:lang(en){
     position: absolute;
-    left: 85px;
-    margin-left: 10px;
-}
-
-
-.rightclick{
-    position: absolute;
-    top: 70px;
-    left: 123px;
-    width:100px; 
-    display: none;
-    background-color: #FFF;
-    opacity: 0.6;
-    border:2px solid #DCDCDC;
-    z-index: 1;
-}
-.weather_close,
-.refresh_context,
-.autolocate:lang(zh),
-.share,
-.feedback,
-.about{
-    position: relative;
-    clear: both;
-    height: 30px;
-    margin: 3px 10px 3px 10px; 
-    line-height: 30px;
-    text-align: center;
-    border:2px solid #DCDCDC;
-}
-.autolocate:lang(en){
-    position: relative;
-    clear: both;
-    height: 30px;
-    margin: 3px 10px 3px 10px; 
-    line-height: 15px;
-    text-align: center;
-    border:2px solid #DCDCDC;
-}
-
-.CityMoreMenu{
-    display: none;
+    left: 100px;
 }
