@@ -2,15 +2,16 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Wang Dianjin <wangdianjin@linuxdeepin.com>, 2013
-#
+# freddy <freddy4212@gmail.com>, 2013
+
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 09:49+0800\n"
+"POT-Creation-Date: 2013-05-30 10:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -207,7 +208,7 @@ msgstr "取消群組(_U)"
 #: ../resources/desktop/js/desktop_item.coffee:964
 #: ../resources/desktop/js/desktop_item.coffee:1086
 #: ../resources/desktop/js/desktop_item.coffee:1276
-msgid "The link has expired, whether to delete?"
+msgid "The link has expired. Do you want to delete it?"
 msgstr "該連結已經失效，是否要刪除？"
 
 #: ../resources/desktop/js/desktop_item.coffee:1327
@@ -265,8 +266,8 @@ msgid "_Text document"
 msgstr "文字文檔(_T)"
 
 #: ../resources/desktop/js/grid.coffee:819
-msgid "Open _terminal here"
-msgstr "在此打開終端機(_T)"
+msgid "Open in _terminal"
+msgstr "在終端機中打開(_T)"
 
 #: ../resources/desktop/js/grid.coffee:820
 msgid "_Paste"
@@ -301,11 +302,11 @@ msgid "Launcher"
 msgstr "啟動器"
 
 #: ../resources/dock/js/deepin_item.coffee:40
-msgid "Show/Hiden Desktop"
+msgid "Show/Hide Desktop"
 msgstr "顯示/隱藏桌面"
 
 #: ../resources/dock/js/item.coffee:340
-msgid "The item is invalid. Do you want to remove it from the dock bar?"
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
 msgstr "該項目無效。您要將其從 Dock 刪除嗎？"
 
 #: ../resources/dock/js/launcher.coffee:32 ../lib/dentry/mime_actions.c:150
@@ -369,10 +370,10 @@ msgid "Invalid Username/Password"
 msgstr "使用者/密碼錯誤"
 
 #: ../lib/dentry/entry.c:654
-#, c-format
+#,c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
-"the permission"
+"such permission"
 msgstr "無法將該桌面檔案重新命名為“%s”。您可能沒有權限"
 
 #: ../lib/dentry/entry.c:660
