@@ -56,7 +56,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(0,84,65535)
+        @more_city_menu = new CityMoreMenu(0,83,65535,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -74,7 +74,7 @@ class Weather extends Widget
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
             @more_city_menu.show_hide_position(bottom_distance)
 
-            @more_city_menu.more_city_build()
+            @more_city_menu.more_city_build(13)
             @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
@@ -87,7 +87,7 @@ class Weather extends Widget
                     @more_weather_menu.style.top = -195
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
                 else 
-                    @more_weather_menu.style.top = 84
+                    @more_weather_menu.style.top = 85
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
@@ -183,8 +183,10 @@ class Weather extends Widget
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
+            @temperature_now_number.style.fontSize = 18;
             @temperature_now_number.textContent = _("None")
         else
+            @temperature_now_number.style.fontSize = 36;
             if temp_now < -10
                 @temperature_now_minus.style.opacity = 0.8
                 @temperature_now_number.textContent = -temp_now

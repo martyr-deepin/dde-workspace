@@ -55,7 +55,7 @@
     text-shadow: 2px 2px 1px #808080;
     float: left;
 }
-.temperature_now_number:lang(en){
+.temperature_now_number{
     position:relative;
     float: left;
     top:10px;
@@ -64,15 +64,7 @@
     font-weight: bold;
     text-shadow: 0 0 4px #808080;
 }
-.temperature_now_number:lang(zh){
-    position:relative;
-    float: left;
-    top:10px;
-    color: #FFF;   
-    font-size: 18px;
-    font-weight: bolder;
-    text-shadow: 0 0 4px #808080;
-}
+
 .temperature_now_number:after{
     content: "°";
 }
@@ -146,92 +138,65 @@
     background-color:rgba(0,0,0,0.15);
 }
 
-.week1,
-.week2,
-.week3,
-.week4,
-.week5,
+.week1:lang(zh),
+.week2:lang(zh),
+.week3:lang(zh),
+.week4:lang(zh),
+.week5:lang(zh),
 .week6:lang(zh){
     position: relative;
     margin-left: 10px;
     font-weight: bolder;
 }
-.week1,
-.week2,
-.week3,
-.week4,
-.week5,
+.pic1:lang(zh),
+.pic2:lang(zh),
+.pic3:lang(zh),
+.pic4:lang(zh),
+.pic5:lang(zh),
+.pic6:lang(zh){
+    position: relative;
+    margin-left: 14px;
+    width: 24px;
+    height: 24px;
+    margin-bottom: 5px;
+}
+.temperature1:lang(zh),
+.temperature2:lang(zh),
+.temperature3:lang(zh),
+.temperature4:lang(zh),
+.temperature5:lang(zh),
+.temperature6:lang(zh){
+    position: relative;
+    margin-left: 14px;
+}
+
+.week1:lang(en),
+.week2:lang(en),
+.week3:lang(en),
+.week4:lang(en),
+.week5:lang(en),
 .week6:lang(en){
     position: relative;
     margin-left: 10px;
 }
-.pic1,
-.pic2,
-.pic3,
-.pic4,
-.pic5,
-.pic6:lang(zh){
-    position: absolute;
-    left: 60px;
-    width: 24px;
-    height: 24px;
-    margin-top: 5px;
-}
-.pic1,
-.pic2,
-.pic3,
-.pic4,
-.pic5,
+.pic1:lang(en),
+.pic2:lang(en),
+.pic3:lang(en),
+.pic4:lang(en),
+.pic5:lang(en),
 .pic6:lang(en){
     position: absolute;
-    left: 53px;
+    left: 56px;
     width: 24px;
     height: 24px;
     margin-top: 5px;
 }
-.temperature1,
-.temperature2,
-.temperature3,
-.temperature4,
-.temperature5,
-.temperature6{
+.temperature1:lang(en),
+.temperature2:lang(en),
+.temperature3:lang(en),
+.temperature4:lang(en),
+.temperature5:lang(en),
+.temperature6:lang(en){
     position: absolute;
-    left: 85px;
-    margin-left: 10px;
+    left: 100px;
 }
-
-.rightclick{
-    position: absolute;
-    top: 70px;
-    left: 123px;
-    width:100px; 
-    display: none;
-    background-color: #FFF;
-    opacity: 0.6;
-    border:2px solid #DCDCDC;
-    z-index: 1;
-}
-.weather_close,
-.refresh_context,
-.autolocate:lang(zh),
-.share,
-.feedback,
-.about{
-    position: relative;
-    clear: both;
-    height: 30px;
-    margin: 3px 10px 3px 10px; 
-    line-height: 30px;
-    text-align: center;
-    border:2px solid #DCDCDC;
-}
-.autolocate:lang(en){
-    position: relative;
-    clear: both;
-    height: 30px;
-    margin: 3px 10px 3px 10px; 
-    line-height: 15px;
-    text-align: center;
-    border:2px solid #DCDCDC;
-}
-

@@ -19,20 +19,20 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
-    constructor: (x,y,zIndex)->
+    constructor: (x,y,zIndex,y2)->
         super(null)
+        @y = y
+        @y2 = y2
         @element.style.left = x 
-        @element.style.top = y 
+        @element.style.top = @y
         @element.style.display = "none"
         @element.style.zIndex = zIndex
 
     show_hide_position:(bottom_distance)->
         if @element.style.display == "none"
             if bottom_distance < 200
-                # echo "bottom_distance:" + bottom_distance
-                @element.style.top = -242
-            else @element.style.top = 84
-            # echo "@menu.style.top:" + @element.style.top
+                @element.style.top = @y2
+            else @element.style.top = @y
             @element.style.display = "block"
         else
             @element.style.display = "none"
@@ -46,7 +46,8 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
 
-    more_city_build: ->
+    more_city_build: (selectsize)->
+        @selectsize = selectsize
         @removeSelect(@chooseprov) if @chooseprov
         @removeSelect(@choosecity) if @choosecity
         @removeSelect(@choosedist) if @choosedist
@@ -65,7 +66,7 @@ class CityMoreMenu extends Widget
         i = 0
         @chooseprov.options.add(new Option(cities[i].name, cities[i++].id)) while i < cities.length
         length = @chooseprov.options.length
-        @chooseprov.size = if length < 13 then length else 13
+        @chooseprov.size = if length < @selectsize then length else @selectsize
         
         @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
@@ -102,7 +103,7 @@ class CityMoreMenu extends Widget
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
         length = @choosecity.options.length
-        @choosecity.size = if length < 13 then length else 13 
+        @choosecity.size = if length < @selectsize then length else @selectsize 
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
             # echo "cityIndex:" + cityIndex
@@ -119,7 +120,7 @@ class CityMoreMenu extends Widget
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
         length = @choosedist.options.length
-        @choosedist.size = if length < 13 then length else 13
+        @choosedist.size = if length < @selectsize then length else @selectsize
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
             @element.style.display = "none"
