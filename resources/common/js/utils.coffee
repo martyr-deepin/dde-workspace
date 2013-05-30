@@ -139,7 +139,7 @@ ajax = (url, callback,internet = true) ->
                     echo "XMLHttpRequest receive all data."             
                     callback?(xhr)
                 catch e
-                    echo "xhr.responseText is error"
+                    echo "XMLHttpRequest is error"
             if xhr.status == 404
                 echo "XMLHttpRequest can't find the url:" + url
             else if xhr.status == 0
@@ -149,7 +149,7 @@ ajax = (url, callback,internet = true) ->
                 try   
                     callback?(xhr)                
                 catch e
-                    echo "xhr.responseText is error"
+                    echo "XMLHttpRequest is error"
 
 
 get_path_base = (path)->

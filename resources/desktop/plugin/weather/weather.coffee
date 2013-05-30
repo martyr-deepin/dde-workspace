@@ -28,7 +28,7 @@ class Weather extends Widget
         echo "cityid:" + cityid 
         if !cityid
             Clientcityid = new ClientCityId()
-            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
+            Clientcityid.Get_client_cityid(@weathergui_update.bind(@))
         else @weathergui_update()
 
     do_buildmenu:->
@@ -174,11 +174,13 @@ class Weather extends Widget
         else
             echo "cityid isnt ready"
 
+
+
     update_weathernow: (weather_data_now)->
         # echo "weather_data_now:" + weather_data_now
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
-        echo "temp_now:" + temp_now
+        # echo "temp_now:" + temp_now
         # show the   name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
