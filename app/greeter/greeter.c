@@ -24,6 +24,7 @@
 #include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <lightdm.h>
+#include <unistd.h>
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
@@ -208,7 +209,7 @@ greeter_update_background()
     GdkRectangle monitor_geometry;
 
     const gchar *bg_path = greeter_get_user_background(get_selected_user());
-    if(g_strcmp0(bg_path, "nonexists") == 0){
+    if(g_strcmp0(bg_path, "nonexists") == 0 || g_access(bg_path, R_OK) != 0){
         bg_path = "/usr/share/backgrounds/default_background.jpg";
     }
     
