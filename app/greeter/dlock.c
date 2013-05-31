@@ -132,6 +132,10 @@ gchar* lock_get_icon()
         user_icon = g_strdup("nonexists");
     }
 
+    if(g_access(user_icon, R_OK) != 0){
+        user_icon = g_strdup("nonexists");
+    }
+
     g_variant_unref(user_icon_var);
 
     return user_icon;
@@ -194,6 +198,10 @@ gchar* lock_get_background()
         background_image = g_strdup("/usr/share/backgrounds/default_background.jpg");
     }
 
+    if(g_access(background_image, R_OK) != 0){
+        background_image = g_strdup("/usr/share/backgrounds/default_background.jpg");
+    }
+
     g_variant_unref(user_background_var);
 
     return background_image;
@@ -211,8 +219,8 @@ void lock_draw_background(JSValueRef canvas, JSData* data)
     gint height = gdk_screen_get_height(gdk_screen_get_default());
     gint width = gdk_screen_get_width(gdk_screen_get_default());
 
-    if(!g_file_test(image_path, G_FILE_TEST_EXISTS)){
-        g_warning("background file not exists");
+    if(!g_file_test(image_path, G_FILE_TEST_EXISTS) || g_access(image_path, R_OK) != 0){
+        g_warning("background file not exists or can't read");
 
     }else{
 

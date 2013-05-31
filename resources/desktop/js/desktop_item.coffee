@@ -961,7 +961,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[this.id]
                 if e?
                     if !DCore.DEntry.launch(e, [])
-                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                        if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
                             list = []
                             list.push(e)
                             DCore.DEntry.trash(list)
@@ -995,7 +995,7 @@ class RichDir extends DesktopEntry
             arrow_pos_at_bottom = false
 
         # how many we can hold per column due to workarea height
-        num_max = Math.floor((num_max - 22) / _ITEM_HEIGHT_)
+        num_max = Math.max(Math.floor((num_max - 22) / _ITEM_HEIGHT_), 1)
         if row > num_max then row = num_max
         # restrict the real pop div size
         if @sub_items_count > col * row
@@ -1083,7 +1083,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[self.id]
                 if e?
                     if !DCore.DEntry.launch(e, [])
-                        if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+                        if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
                             list = []
                             list.push(e)
                             DCore.DEntry.trash(list)
@@ -1273,7 +1273,7 @@ class Application extends DesktopEntry
 
     item_exec : =>
         if !DCore.DEntry.launch(@_entry, [])
-            if confirm(_("The link has expired, whether to delete?"), _("Warning"))
+            if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
                 list = []
                 list.push(@_entry)
                 DCore.DEntry.trash(list)
@@ -1559,7 +1559,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     get_name : =>
-        _("Deepin Software Center")
+        _("Software Center")
 
 
     set_icon : (src = null) =>
