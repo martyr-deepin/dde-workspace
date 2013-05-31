@@ -27,10 +27,14 @@ class CityMoreMenu extends Widget
         @element.style.top = @y
         @element.style.display = "none"
         @element.style.zIndex = zIndex
+        @lable = create_element("lable","lable",@element)
+
 
     show_hide_position:(bottom_distance)->
+        # bottom_distance_mini = @selectsize * @chooseprov.style.width + 40
+        bottom_distance_mini = 200
         if @element.style.display == "none"
-            if bottom_distance < 200
+            if bottom_distance < bottom_distance_mini
                 @element.style.top = @y2
             else @element.style.top = @y
             @element.style.display = "block"
@@ -48,36 +52,35 @@ class CityMoreMenu extends Widget
 
     more_city_build: (selectsize)->
         @selectsize = selectsize
-        @removeSelect(@chooseprov) if @chooseprov
-        @removeSelect(@choosecity) if @choosecity
-        @removeSelect(@choosedist) if @choosedist
 
-        @str_provinit = "--" + _("province") + "--"
-        @str_cityinit = "--" + _("city") + "--" 
-        @str_distinit = "--" + _("county") + "--"
-        @chooseprov = create_element("select", "chooseprov", @element)
-        @choosecity = create_element("select", "choosecity", @element)
-        @choosedist = create_element("select", "choosedist", @element)
+        @remove_element(@chooseprov) if @chooseprov
+        @remove_element(@choosecity) if @choosecity
+        @remove_element(@choosedist) if @choosedist
+
+        @str_provinit = "-" + _("province") + "-"
+        @str_cityinit = "-" + _("city") + "-" 
+        @str_distinit = "-" + _("county") + "-"
+        @chooseprov = create_element("select", "chooseprov", @lable)
+        @choosecity = create_element("select", "choosecity", @lable)
+        @choosedist = create_element("select", "choosedist", @lable)
 
         @clearOptions(@chooseprov,0)
         provinit = create_element("option","provinit",@chooseprov)
         provinit.innerText = @str_provinit
-        provinit.selected = "true"
+        provinit.selected = "false"
         i = 0
         @chooseprov.options.add(new Option(cities[i].name, cities[i++].id)) while i < cities.length
-        length = @chooseprov.options.length
-        @chooseprov.size = if length < @selectsize then length else @selectsize
-        
+        @setMaxSize(@chooseprov)
         @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
         cityinit.style.textAlign = "center" 
-        cityinit.selected = "true"
+        cityinit.selected = "false"
         
         @clearOptions(@choosedist,0)
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
-        distinit.selected = "true"
+        distinit.selected = "false"
 
     change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
@@ -102,8 +105,7 @@ class CityMoreMenu extends Widget
         @clearOptions(@choosecity,1)#1
         for i of data
             @choosecity.options.add(new Option(data[i].name, i))
-        length = @choosecity.options.length
-        @choosecity.size = if length < @selectsize then length else @selectsize 
+        @setMaxSize(@choosecity)
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
             # echo "cityIndex:" + cityIndex
@@ -119,8 +121,7 @@ class CityMoreMenu extends Widget
         @clearOptions(@choosedist,1)#1
         for i of data
             @choosedist.options.add(new Option(data[i].name, i))
-        length = @choosedist.options.length
-        @choosedist.size = if length < @selectsize then length else @selectsize
+        @setMaxSize(@choosedist)
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
             @element.style.display = "none"
@@ -139,5 +140,9 @@ class CityMoreMenu extends Widget
         # colls.remove(i++) while i < colls.length 
         colls.options.length = i
 
-    removeSelect:(obj)->
+    remove_element:(obj)->
         obj.parentNode.removeChild(obj) if obj
+
+    setMaxSize:(obj,val=@selectsize)->
+        length = obj.options.length
+        obj.size = if length < val then length else val

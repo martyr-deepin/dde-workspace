@@ -1,12 +1,38 @@
-
+.label{
+}
 .chooseprov,
 .choosecity,
 .choosedist{
     position:relative;
     float: left;
-    margin-left: 10px;
+    margin-left: 5px;
+    
+    font-size: 14px;
+    color: #fff;
+    text-shadow:0 1px 2px rgba(0,0,0,0.8);
+    line-height: 30px;
+    padding: 0 10px;
+    border-radius: 6px;
+    /*height: 40px;*/
+    -webkit-appearance: none;
+    font-family:"微软雅黑";
+    outline: 0 none;
+    text-align:center;
     width: 85px;
-    opacity: 0.8;
-    border:2px solid #DCDCDC;
-    text-align: center;
+
 }
+
+.CityMoreMenu:nth-child(1) select,.CityMoreMenu:nth-child(2) select,.CityMoreMenu:nth-child(3) select{
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,
+                8px 8px 8px rgba(255,255,255,0.2) inset,
+                0 0 8px 8px rgba(255,255,255,0.2) inset,
+                -8px 8px 8px rgba(255,255,255,0.2) inset,
+                0 3px 8px rgba(0,0,0,0.4);
+                background: rgba(0,153,204,0.2);
+}
+.CityMoreMenu:nth-child(1) select:hover {
+    border: 1px solid rgba(0,153,204,0.5);
+    background: rgba(0,153,204,0.2);
+}
+.CityMoreMenu label select option{ color:#000;}

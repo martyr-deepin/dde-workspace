@@ -136,7 +136,7 @@ ajax = (url, callback,internet = true) ->
         if internet == true
             if (xhr.readyState == 4 and xhr.status == 200)
                 try   
-                    echo "XMLHttpRequest receive all data."             
+                    echo "XMLHttpRequest receive all data."
                     callback?(xhr)
                 catch e
                     echo "XMLHttpRequest is error"
@@ -147,7 +147,7 @@ ajax = (url, callback,internet = true) ->
         else
             if xhr.readyState == 4 
                 try   
-                    callback?(xhr)                
+                    callback?(xhr) 
                 catch e
                     echo "XMLHttpRequest is error"
 

@@ -56,7 +56,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(0,83,65535,-242)
+        @more_city_menu = new CityMoreMenu(-5,83,65535,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -156,6 +156,8 @@ class Weather extends Widget
 
 
     weathergui_update: ->
+            @global_desktop.style.display = "none"
+
             cityid = localStorage.getItem("cityid_storage")
             clearInterval(@auto_weathergui_refresh)
             @auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
@@ -174,13 +176,11 @@ class Weather extends Widget
         else
             echo "cityid isnt ready"
 
-
-
     update_weathernow: (weather_data_now)->
         # echo "weather_data_now:" + weather_data_now
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
-        # echo "temp_now:" + temp_now
+        echo "temp_now:" + temp_now
         # show the   name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
