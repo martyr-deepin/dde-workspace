@@ -116,7 +116,6 @@ _drag_flag = false
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
         super
-	echo "construct user"
         @li = create_element("li", "")
         @li.appendChild(@element)
         @userbase = create_element("div", "UserBase", @element)
@@ -137,8 +136,6 @@ class UserInfo extends Widget
 
         if user_bg == "nonexists"
             user_bg = _default_bg_src
-	echo "user background"
-        echo user_bg
         @background = create_img("Background", user_bg)
         @element.index = 0
 
