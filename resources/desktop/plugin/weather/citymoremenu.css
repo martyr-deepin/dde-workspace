@@ -1,3 +1,6 @@
+.CityMoreMenu{
+    font-family: Arial;
+}
 .label{
 }
 .chooseprov,
@@ -5,8 +8,8 @@
 .choosedist{
     position:relative;
     float: left;
-    margin-left: 5px;
-    
+    margin-left: 7px;
+
     font-size: 14px;
     color: #fff;
     text-shadow:0 1px 2px rgba(0,0,0,0.8);
@@ -18,7 +21,7 @@
     font-family:"微软雅黑";
     outline: 0 none;
     text-align:center;
-    width: 85px;
+    width: 90px;
 
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,
@@ -28,4 +31,3 @@
                 0 3px 8px rgba(0,0,0,0.4);
                 background: rgba(0,153,204,0.2);
 }
-

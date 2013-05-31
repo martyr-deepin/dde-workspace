@@ -56,7 +56,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(-5,83,65535,-242)
+        @more_city_menu = new CityMoreMenu(0,83,65535,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -94,12 +94,12 @@ class Weather extends Widget
                 @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
             )
-        left_div.addEventListener("click" , =>
+        @global_desktop.addEventListener("click",=>
+            # echo "display none all menu"
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             @global_desktop.style.display = "none"
             )
-
     more_weather_build: ->
 
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
