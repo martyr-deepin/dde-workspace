@@ -120,10 +120,6 @@ do_desktop_config_changed = ->
 
 do_workarea_changed = (allo) ->
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
-    items = speical_item.concat(all_item)
-    for item in items
-        if (w = Widget.look_up(item))?
-            old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+    init_occupy_table()
     place_desktop_items()
     return

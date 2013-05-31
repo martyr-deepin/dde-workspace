@@ -1,14 +1,48 @@
 class PluginHandle extends Widget
+    constructor : (@parent_element) ->
+        super
+
+
+    do_dragstart : (evt) ->
+        _SET_DND_INTERNAL_FLAG_(evt)
+        echo "123"
+
+
+    do_dragend : (evt) ->
+        echo "456"
 
 
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
         @_position = {x:-1, y:-1, width:1, height:1}
-        attach_item_to_grid(@)
         widget_item.push(@id)
+        attach_item_to_grid(@)
         @handle = new PluginHandle("handle"+@id)
         @element.appendChild(@handle.element)
+
+
+    get_id : =>
+        @id
+
+
+    get_pos : =>
+        x : @_position.x
+        y : @_position.y
+        width : @_position.width
+        height : @_position.height
+
+
+    set_pos : (info) =>
+        @_position.x = info.x
+        @_position.y = info.y
+        return
+
+
+    set_size : (info) =>
+        @_position.width = info.width
+        @_position.height = info.height
+        return
 
 
     do_mousedown : (evt) ->
@@ -46,25 +80,6 @@ class DesktopPluginItem extends Widget
         return
 
 
-    get_id : =>
-        @id
-
-
-    get_pos : =>
-        x : @_position.x
-        y : @_position.y
-        width : @_position.width
-        height : @_position.height
-
-
-    set_pos : (info) =>
-        @_position.x = info.x
-        @_position.y = info.y
-        @_position.width = info.width
-        @_position.height = info.height
-        return
-
-
     move: (x, y) =>
         style = @element.style
         style.position = "absolute"
@@ -79,11 +94,41 @@ class DesktopPlugin extends Plugin
 
 
     set_pos: (info)->
-        @item.set_pos(info)
         move_to_somewhere(@item, info)
+
+
+    wrap_element: (child, width, height)->
+        super(child)
+        pos = @item.get_pos()
+        pos.width = width
+        pos.height = height
+        @item.set_size(pos)
 
 
 load_plugins = ->
     for p in DCore.get_plugins("desktop")
         new DesktopPlugin(get_path_base(p), get_path_name(p))
+    return
+
+
+find_free_position_for_widget = (info) ->
+    new_pos = {x : 0, y : 0, width : info.width, height : info.height}
+    x_pos = cols - 1
+    while (x_pos = x_pos - info.width + 1) > -1
+        new_pos.x = x_pos
+        for i in [0 ... (rows - info.height)]
+            new_pos.y = i
+            if not detect_occupy(new_pos)
+                return new_pos
+    return null
+
+
+place_all_widgets = ->
+    for i in widget_item
+        continue if not (w = Widget.look_up(i))?
+        if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos()))?
+            echo new_pos
+            move_to_somewhere(w, new_pos)
+        else
+            move_to_anywhere(w)
     return
