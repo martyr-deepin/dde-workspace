@@ -3,13 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Wang Dianjin <wangdianjin@linuxdeepin.com>, 2013
 # freddy <freddy4212@gmail.com>, 2013
-
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 10:11+0800\n"
+"POT-Creation-Date: 2013-05-31 12:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -238,8 +237,8 @@ msgid "item"
 msgstr "項目"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
-msgid "Deepin Software Center"
-msgstr "深度軟體中心"
+msgid "Software Center"
+msgstr "軟體中心"
 
 #: ../resources/desktop/js/grid.coffee:809
 msgid "_Sort by"
@@ -370,7 +369,7 @@ msgid "Invalid Username/Password"
 msgstr "使用者/密碼錯誤"
 
 #: ../lib/dentry/entry.c:654
-#,c-format
+#, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
