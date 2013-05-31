@@ -24,6 +24,7 @@
 #include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <lightdm.h>
+#include <unistd.h>
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
@@ -208,7 +209,7 @@ greeter_update_background()
     GdkRectangle monitor_geometry;
 
     const gchar *bg_path = greeter_get_user_background(get_selected_user());
-    if(g_strcmp0(bg_path, "nonexists") == 0){
+    if(g_strcmp0(bg_path, "nonexists") == 0 || g_access(bg_path, R_OK) != 0){
         bg_path = "/usr/share/backgrounds/default_background.jpg";
     }
     
@@ -431,7 +432,7 @@ static void
 show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
-    if(response_count == 1){
+    if(response_count == 1 && greeter_is_hide_users()){
         js_post_message_simply("prompt", "{\"status\":\"%s\"}", "expect response");
     }
     DBG("%s", "show prompt cb");
@@ -464,7 +465,7 @@ authentication_complete_cb(LightDMGreeter *greeter)
     }else{
         if(prompted){
             DBG("%s", "auth complete, restart auth");
-            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Username/Password"));
+            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Password"));
             greeter_start_authentication(get_selected_user());
         }
     }
@@ -541,6 +542,19 @@ int main(int argc, char **argv)
     init_i18n();
     gtk_init(&argc, &argv);
 
+    greeter = lightdm_greeter_new();
+    g_assert(greeter);
+
+    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
+    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
+    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
+    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
+    //g_signal_connect (G_OBJECT (greeter), "quit", G_CALLBACK (sigterm_cb), NULL);
+
+    if(!lightdm_greeter_connect_sync(greeter, NULL)){
+        exit(EXIT_FAILURE);
+    }
+
     gchar *greeter_dir = g_build_filename(g_get_user_cache_dir(), "lightdm", NULL);
     if(g_mkdir_with_parents(greeter_dir, 0755) < 0){
         greeter_dir = "/var/cache/lightdm";
@@ -551,15 +565,6 @@ int main(int argc, char **argv)
 
     greeter_keyfile = g_key_file_new();
     g_key_file_load_from_file(greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
-
-    greeter = lightdm_greeter_new();
-    g_assert(greeter);
-
-    g_signal_connect(greeter, "show-prompt", G_CALLBACK(show_prompt_cb), NULL);
-    g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
-    g_signal_connect(greeter, "authentication-complete", G_CALLBACK(authentication_complete_cb), NULL);
-    g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
-    //g_signal_connect (G_OBJECT (greeter), "quit", G_CALLBACK (sigterm_cb), NULL);
 
     gdk_window_set_cursor(gdk_get_default_root_window(), gdk_cursor_new(GDK_LEFT_PTR));
 
@@ -575,10 +580,6 @@ int main(int argc, char **argv)
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_realize(container);
-
-    if(!lightdm_greeter_connect_sync(greeter, NULL)){
-        exit(EXIT_FAILURE);
-    }
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
