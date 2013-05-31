@@ -90,7 +90,6 @@ class CityMoreMenu extends Widget
             else
                 provvalue = @chooseprov.options[provIndex].value 
                 if provvalue != @str_provinit
-                    echo "provvalue:" + provvalue
                     data = @read_data_from_json(provvalue,callback)
             )
 

@@ -56,7 +56,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(-5,83,65535,-242)
+        @more_city_menu = new CityMoreMenu(0,83,65535,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
