@@ -67,6 +67,12 @@ delete_item = (w) ->
     discard_position(w.get_id())
 
 
+delete_widget = (w) ->
+    widget_item.remove(w.get_id())
+    w.destroy()
+    discard_position(w.get_id())
+
+
 clear_speical_desktop_items = ->
     Widget.look_up(i)?.destroy() for i in speical_item
     speical_item.splice(0)
