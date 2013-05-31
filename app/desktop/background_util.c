@@ -109,7 +109,7 @@ _update_rootpmap (Pixmap pm)
     // avoid unnecessary updates
     if ((pm == None)||(pm == current_rootpmap))
         return ;
-
+    current_rootpmap = pm;
     gdk_error_trap_push ();
     XChangeProperty (display, root, bg1_atom, pixmap_atom,
                      32, PropModeReplace, (unsigned char*)&pm, 1);
@@ -860,7 +860,8 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
                                        root_width, root_height,
                                        root_depth);
 
-    g_debug ("screen_size_changed_cb: new_pixmap = 0x%x", (unsigned)new_pixmap);
+    _update_rootpmap (new_pixmap);
+
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
 
     fade_data->pixmap = new_pixmap;
@@ -900,26 +901,30 @@ bg_util_disconnect_screen_signals (GdkWindow* bg_window)
                            G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
-
+//FIXME: screen_size_changed_cb and initial_setup have a lot of 
+//       duplicated function. 
+static gboolean is_initialized = FALSE;
 PRIVATE void
 initial_setup (GSettings *settings)
 {
-    picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
-    picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
+    if (is_initialized == FALSE)
+    {
+        picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
+        picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
+        picture_num = 0;
+        picture_index = 0;
 
-    picture_num = 0;
-    picture_index = 0;
+        gchar* bg_image_uri = g_settings_get_string (settings, BG_PICTURE_URIS);
+        parse_picture_uris (bg_image_uri);
+        free (bg_image_uri);
 
-    gchar* bg_image_uri = g_settings_get_string (settings, BG_PICTURE_URIS);
-    parse_picture_uris (bg_image_uri);
-    free (bg_image_uri);
+        gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
+        gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
+        gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
 
-    gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
-    gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
-    gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
+        gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
+        gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 
-    gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
-    gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 #if 0
     if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
         g_debug ("XFADE_AUTO_MODE_RANDOM");
@@ -931,6 +936,8 @@ initial_setup (GSettings *settings)
     else if (gsettings_draw_mode == DRAW_MODE_SCALING)
         g_debug ("DRAW_MODE_SCALING");
 #endif
+    }
+
     /*
      *  don't remove following comments:
      *  to keep pixmap resource available
@@ -941,18 +948,26 @@ initial_setup (GSettings *settings)
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
     //start_gaussian_helper (current_picture);
 
-    GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
-
-    g_assert (pb != NULL);
     /*
      *  no previous background, no cross fade effect.
      *  this is most likely the situation when we first start up.
      *  resolution changed.
      */
+    //since we now call initial setup in every expose event.
+    Pixmap prev_pixmap = get_previous_background();
+    gdk_error_trap_push ();
+    if (prev_pixmap != None)
+    {
+        XFreePixmap (display, prev_pixmap);
+    }
+    gdk_error_trap_pop_ignored ();
+
     Pixmap new_pixmap = XCreatePixmap (display, root,
                                        root_width, root_height,
                                        root_depth);
-    current_rootpmap = new_pixmap;
+    _update_rootpmap (new_pixmap);
+
+    GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
 
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
 
@@ -973,6 +988,7 @@ initial_setup (GSettings *settings)
         setup_background_timer ();
     }
 
+    is_initialized = TRUE;
     return;
 }
 
