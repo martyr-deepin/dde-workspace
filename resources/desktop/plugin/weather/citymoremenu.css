@@ -20,9 +20,6 @@
     text-align:center;
     width: 85px;
 
-}
-
-.CityMoreMenu:nth-child(1) select,.CityMoreMenu:nth-child(2) select,.CityMoreMenu:nth-child(3) select{
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,
                 8px 8px 8px rgba(255,255,255,0.2) inset,
@@ -31,8 +28,4 @@
                 0 3px 8px rgba(0,0,0,0.4);
                 background: rgba(0,153,204,0.2);
 }
-.CityMoreMenu:nth-child(1) select:hover {
-    border: 1px solid rgba(0,153,204,0.5);
-    background: rgba(0,153,204,0.2);
-}
-.CityMoreMenu label select option{ color:#000;}
+

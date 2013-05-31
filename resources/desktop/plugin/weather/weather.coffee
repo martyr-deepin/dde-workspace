@@ -36,7 +36,7 @@ class Weather extends Widget
     weather_style_build: ->
         @img_url_first = "#{plugin.path}/img/"
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
-        temp_now_init = "00°"
+        temp_now_init = "00"
 
         left_div = create_element("div", "left_div", @element)
         @weather_now_pic = create_img("weather_now_pic", img_now_url_init, left_div)
