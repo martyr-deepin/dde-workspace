@@ -237,8 +237,8 @@ msgid "item"
 msgstr "項目"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
-msgid "Deepin Software Center"
-msgstr "深度軟體中心"
+msgid "Software Center"
+msgstr "軟體中心"
 
 #: ../resources/desktop/js/grid.coffee:809
 msgid "_Sort by"
