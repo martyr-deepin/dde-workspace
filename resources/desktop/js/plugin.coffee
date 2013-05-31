@@ -1,15 +1,22 @@
 class PluginHandle extends Widget
-    constructor : (@parent_element) ->
-        super
+    constructor : (@parent_id) ->
+        @id = "handle-#{@parent_id}"
+        super(@id)
+        @element.setAttribute("draggable", "true")
 
 
-    do_dragstart : (evt) ->
+    do_dragstart : (evt) =>
+        evt.stopPropagation()
         _SET_DND_INTERNAL_FLAG_(evt)
-        echo "123"
 
 
-    do_dragend : (evt) ->
-        echo "456"
+    do_dragend : (evt) =>
+        evt.stopPropagation()
+        if not (w = Widget.look_up(@parent_id))? then return
+        old_pos = w.get_pos()
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
+        if not detect_occupy(new_pos)
+            move_to_somewhere(w, new_pos)
 
 
 class DesktopPluginItem extends Widget
@@ -18,7 +25,7 @@ class DesktopPluginItem extends Widget
         @_position = {x:-1, y:-1, width:1, height:1}
         widget_item.push(@id)
         attach_item_to_grid(@)
-        @handle = new PluginHandle("handle"+@id)
+        @handle = new PluginHandle(@id)
         @element.appendChild(@handle.element)
 
 

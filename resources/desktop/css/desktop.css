@@ -295,7 +295,7 @@ body {
     height: 15px;
     background: rgba(0, 100, 0, 0.8);
     opacity: 0;
-    -webkit-transition: opacity 1s ease-out;
+    -webkit-transition: opacity 0.3s ease-out;
 }
 .PluginHandle:hover {
     opacity: 1;
