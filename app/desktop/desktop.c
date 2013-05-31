@@ -234,6 +234,30 @@ PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr
     js_post_message_simply ("desktop_config_changed", NULL);
 }
 
+
+PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
+{
+    js_post_message_simply ("desktop_plugins_changed", NULL);
+}
+
+
+JS_EXPORT_API
+JSObjectRef desktop_get_plugin_array(char const* name)
+{
+    char** values = g_settings_get_strv(desktop_gsettings, "enabled-plugins");
+    JSContextRef ctx = get_global_context();
+
+    JSObjectRef array = json_array_create();
+
+    for (int i = 0; values[i] != NULL; ++i)
+        json_array_insert(array, i, jsvalue_from_cstr(ctx, values[i]));
+
+    g_strfreev(values);
+
+    return array;
+}
+
+
 JS_EXPORT_API
 gboolean desktop_get_config_boolean(const char* key_name)
 {
@@ -390,6 +414,8 @@ void desktop_emit_webview_ok()
                           G_CALLBACK(desktop_config_changed), NULL);
         g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
                           G_CALLBACK(desktop_config_changed), NULL);
+        g_signal_connect(desktop_gsettings, "changed::enabled-plugins",
+                         G_CALLBACK(desktop_plugins_changed), NULL);
 
         watch_workarea_changes(container, dock_gsettings);
     }

@@ -103,6 +103,11 @@ class DesktopPlugin extends Plugin
     set_pos: (info)->
         move_to_somewhere(@item, info)
 
+    destroy: ->
+        delete_widget(@item)
+        echo 'delete widget'
+        @host.parentNode.removeChild(@host)
+
 
     wrap_element: (child, width, height)->
         super(child)
@@ -113,7 +118,7 @@ class DesktopPlugin extends Plugin
 
 
 load_plugins = ->
-    for p in DCore.get_plugins("desktop")
+    for p in DCore.Desktop.get_plugin_array("desktop")
         new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 

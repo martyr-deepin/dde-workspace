@@ -7,14 +7,27 @@ class PluginManager
         PluginManager._plugins = {} if not PluginManager._plugins
 
     enable_plugin: (id, value)->
-        DCore.Desktop.enable_plugin(id, value)
+        double_name = get_path_name(id)
+        name = double_name.substring(double_name.length / 2)
+        DCore.Desktop.enable_plugin(name, value)
+        plugin = PluginManager._plugins[name]
+        if plugin
+            if value
+                echo "enable #{name}"
+                plugin.inject_css(name)
+            else
+                echo "disable #{name}"
+                plugin.destroy()
+                echo 'delete object'
+                delete PluginManager._plugins[name]
+        else
+            echo 'plugin is not exists'
 
     get_plugin: (name) ->
         PluginManager._plugins[name]
 
     add_plugin: (name, obj) ->
         PluginManager._plugins[name] = obj
-        @enable_plugin(obj.id, true)
 
 
 class Plugin
