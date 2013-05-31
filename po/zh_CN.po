@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 10:11+0800\n"
+"POT-Creation-Date: 2013-05-31 09:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -360,13 +360,57 @@ msgstr "新建目录"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:310
+#: ../app/greeter/dlock.c:310 ../app/greeter/greeter.c:467
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/greeter/greeter.c:467
-msgid "Invalid Username/Password"
-msgstr "用户名/密码错误"
+#: ../app/launcher/category.h:31
+msgid "all"
+msgstr "全部"
+
+#: ../app/launcher/category.h:32
+msgid "internet"
+msgstr "网络应用"
+
+#: ../app/launcher/category.h:33
+msgid "multimedia"
+msgstr "影音播放"
+
+#: ../app/launcher/category.h:34
+msgid "games"
+msgstr "游戏娱乐"
+
+#: ../app/launcher/category.h:35
+msgid "graphics"
+msgstr "图形图像"
+
+#: ../app/launcher/category.h:36
+msgid "productivity"
+msgstr "办公软件"
+
+#: ../app/launcher/category.h:37
+msgid "industry"
+msgstr "行业软件"
+
+#: ../app/launcher/category.h:38
+msgid "education"
+msgstr "科学教育"
+
+#: ../app/launcher/category.h:39
+msgid "development"
+msgstr "编程开发"
+
+#: ../app/launcher/category.h:40
+msgid "system"
+msgstr "系统管理"
+
+#: ../app/launcher/category.h:41
+msgid "utilities"
+msgstr "实用工具"
+
+#: ../app/launcher/category.h:42
+msgid "other"
+msgstr "其他"
 
 #: ../lib/dentry/entry.c:654
 #, c-format
