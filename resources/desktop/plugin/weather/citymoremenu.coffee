@@ -90,6 +90,7 @@ class CityMoreMenu extends Widget
             else
                 provvalue = @chooseprov.options[provIndex].value 
                 if provvalue != @str_provinit
+                    echo "provvalue:" + provvalue
                     data = @read_data_from_json(provvalue,callback)
             )
 
@@ -103,8 +104,7 @@ class CityMoreMenu extends Widget
 
     cityadd: (data,callback) ->
         @clearOptions(@choosecity,1)#1
-        for i of data
-            @choosecity.options.add(new Option(data[i].name, i))
+        @create_option(@choosecity,data)
         @setMaxSize(@choosecity)
         @choosecity.onchange = =>
             cityIndex = @choosecity.selectedIndex
@@ -119,8 +119,7 @@ class CityMoreMenu extends Widget
     
     distadd: (data,callback) ->
         @clearOptions(@choosedist,1)#1
-        for i of data
-            @choosedist.options.add(new Option(data[i].name, i))
+        @create_option(@choosedist,data)
         @setMaxSize(@choosedist)
         @choosedist.onchange = =>
             clearInterval(@auto_update_cityid_choose)
@@ -146,3 +145,8 @@ class CityMoreMenu extends Widget
     setMaxSize:(obj,val=@selectsize)->
         length = obj.options.length
         obj.size = if length < val then length else val
+
+    create_option:(obj,data)->
+        for i of data
+            # obj.add(new Div(data[i].name, i))
+            obj.options.add(new Option(data[i].name, i))

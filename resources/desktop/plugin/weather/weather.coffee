@@ -94,12 +94,12 @@ class Weather extends Widget
                 @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
             )
-        left_div.addEventListener("click" , =>
+        @global_desktop.addEventListener("click",=>
+            # echo "display none all menu"
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             @global_desktop.style.display = "none"
             )
-
     more_weather_build: ->
 
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
