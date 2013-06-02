@@ -31,8 +31,9 @@ class CityMoreMenu extends Widget
 
 
     show_hide_position:(bottom_distance)->
-        # bottom_distance_mini = @selectsize * @chooseprov.style.width + 40
-        bottom_distance_mini = 200
+        bottom_distance_mini = @selectsize * 12 + 40
+        echo "bottom_distance_mini:" + bottom_distance_mini
+        # bottom_distance_mini = 200
         if @element.style.display == "none"
             if bottom_distance < bottom_distance_mini
                 @element.style.top = @y2
@@ -71,6 +72,7 @@ class CityMoreMenu extends Widget
         i = 0
         @chooseprov.options.add(new Option(cities[i].name, cities[i++].id)) while i < cities.length
         @setMaxSize(@chooseprov)
+
         @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit

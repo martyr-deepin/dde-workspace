@@ -17,8 +17,11 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-
 class Weather extends Widget
+    ZINDEX_MENU = 65535
+    ZINDEX_PLUGIN = 65534
+    ZINDEX_GLOBAL_DESKTOP = 5000
+    ZINDEX_DOWNEST = 0
     constructor: ->
         super(null)
         @weather_style_build()
@@ -56,31 +59,37 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(0,83,65535,-242)
+        @more_city_menu = new CityMoreMenu(0,87,ZINDEX_MENU,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
         @global_desktop.style.height = window.screen.height
         @global_desktop.style.width = window.screen.width
-        @global_desktop.style.zIndex = @more_city_menu.zIndex_check() - 1
+        @global_desktop.style.zIndex = ZINDEX_GLOBAL_DESKTOP
 
         city.addEventListener("click", =>
             @more_weather_menu.style.display = "none"
 
             if @more_city_menu.display_check() == "none"
-               @global_desktop.style.display = "block"
-            else @global_desktop.style.display = "none"
-
-            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            @more_city_menu.show_hide_position(bottom_distance)
+                @element.style.zIndex = ZINDEX_PLUGIN;
+                @global_desktop.style.display = "block"
+            else 
+                @global_desktop.style.display = "none"
+                @element.style.zIndex = ZINDEX_DOWNEST;
+            echo "@element.style.zIndex:" + @element.style.zIndex
+            echo "@global_desktop.style.zIndex:" + @global_desktop.style.zIndex
 
             @more_city_menu.more_city_build(13)
+            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+            @more_city_menu.show_hide_position(bottom_distance)
             @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
+
             )
         @date.addEventListener("click", =>
             @more_city_menu.display_none()
 
             if @more_weather_menu.style.display == "none"
+                @element.style.zIndex = ZINDEX_PLUGIN;
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
@@ -91,11 +100,15 @@ class Weather extends Widget
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
+                @element.style.zIndex = ZINDEX_UPEST;
                 @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
+            echo "@element.style.zIndex:" + @element.style.zIndex
+            echo "@global_desktop.style.zIndex:" + @global_desktop.style.zIndex
             )
         @global_desktop.addEventListener("click",=>
             # echo "display none all menu"
+            @element.style.zIndex = ZINDEX_DOWNEST;
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             @global_desktop.style.display = "none"
@@ -212,6 +225,14 @@ class Weather extends Widget
         str_data = weather_data_more.weatherinfo.date_y
         @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + " " + week_show[week_n%7]
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
+
+        @weather_now_pic.title = weather_data_more.weatherinfo.weather1
+        @first_day_weather_data.title = weather_data_more.weatherinfo.weather1
+        @second_day_weather_data.title = weather_data_more.weatherinfo.weather2
+        @third_day_weather_data.title = weather_data_more.weatherinfo.weather3
+        @fourth_day_weather_data.title = weather_data_more.weatherinfo.weather4
+        @fifth_day_weather_data.title = weather_data_more.weatherinfo.weather5
+        @sixth_day_weather_data.title = weather_data_more.weatherinfo.weather6
 
         @week1.textContent = week_show[week_n%7]
         @pic1.src = @weather_more_pic_src(1)

@@ -10,8 +10,6 @@
     height: 70px;
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
-    z-index: 0;
-
     font-family: Arial;
     cursor:default;
 }
@@ -79,7 +77,8 @@
     position: relative;
     height: 20px;
     float: left;
-    margin:auto;
+    /*margin:auto;*/
+    margin-left: 0px;
     cursor: pointer;
 }
 .city_now{

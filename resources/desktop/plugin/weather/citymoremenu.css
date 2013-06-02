@@ -1,5 +1,6 @@
 .CityMoreMenu{
     font-family: Arial;
+    margin-top: 0px;
 }
 .label{
 }
@@ -14,13 +15,13 @@
     color: #fff;
     text-shadow:0 1px 2px rgba(0,0,0,0.8);
     line-height: 30px;
-    padding: 0 10px;
-    border-radius: 6px;
-    /*height: 40px;*/
-    -webkit-appearance: none;
     font-family:"微软雅黑";
-    outline: 0 none;
     text-align:center;
+
+    padding: 0 0 0 10px;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    outline: 0 none;
     width: 90px;
 
     border: 1px solid rgba(0,0,0,0.1);
@@ -30,4 +31,23 @@
                 -8px 8px 8px rgba(255,255,255,0.2) inset,
                 0 3px 8px rgba(0,0,0,0.4);
                 background: rgba(0,153,204,0.2);
+}
+
+.chooseprov::-webkit-scrollbar,
+.choosecity::-webkit-scrollbar,
+.choosedist::-webkit-scrollbar{
+    width: 12px;
+}
+.chooseprov::-webkit-scrollbar-track,
+.choosecity::-webkit-scrollbar-track,
+.choosedist::-webkit-scrollbar-track{
+    display: none;
+}
+.chooseprov::-webkit-scrollbar-thumb,
+.choosecity::-webkit-scrollbar-thumb,
+.choosedist::-webkit-scrollbar-thumb{
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(0,153,204,0.02);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
