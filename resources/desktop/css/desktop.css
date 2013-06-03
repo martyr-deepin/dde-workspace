@@ -263,11 +263,33 @@ body {
     z-index:30;
 }
 
+.DesktopPluginItem {
+    border:1px solid rgba(0,0,0,0);
+}
+.PluginHandle {
+    width: 100%;
+    height: 15px;
+    background: rgba(0, 100, 0, 0.8);
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease-out;
+}
+.PluginHandle:hover {
+    opacity: 1;
+}
+
+.plugin_hover_border {
+    border:1px solid #eee;
+    background-color:rgba(170, 200, 210, 0.3);
+}
+.plugin_DND_border {
+    border:1px solid #eee;
+    background-color:rgba(68, 132, 195, 0.3) !important;
+}
+
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
 #WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
     display:none;
 }
-
 @-webkit-keyframes item_flash {
     0% {
         box-shadow: 0px 0px 5px #01a6e8;
@@ -289,14 +311,3 @@ body {
     }
 }
 
-
-.PluginHandle {
-    width: 100%;
-    height: 15px;
-    background: rgba(0, 100, 0, 0.8);
-    opacity: 0;
-    -webkit-transition: opacity 0.3s ease-out;
-}
-.PluginHandle:hover {
-    opacity: 1;
-}

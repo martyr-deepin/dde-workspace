@@ -5,9 +5,23 @@ class PluginHandle extends Widget
         @element.setAttribute("draggable", "true")
 
 
+    do_mouseover : (evt) =>
+        if not (w = Widget.look_up(@parent_id))? then return
+        w.add_css_class("plugin_hover_border")
+        return
+
+
+    do_mouseout : (evt) =>
+        if not (w = Widget.look_up(@parent_id))? then return
+        w.remove_css_class("plugin_hover_border")
+        return
+
+
     do_dragstart : (evt) =>
         evt.stopPropagation()
         _SET_DND_INTERNAL_FLAG_(evt)
+        if (w = Widget.look_up(@parent_id))? then w.add_css_class("plugin_DND_border")
+        return
 
 
     do_dragend : (evt) =>
@@ -17,6 +31,8 @@ class PluginHandle extends Widget
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
         if not detect_occupy(new_pos, @parent_id)
             move_to_somewhere(w, new_pos)
+        w.remove_css_class("plugin_DND_border")
+        return
 
 
 class DesktopPluginItem extends Widget
