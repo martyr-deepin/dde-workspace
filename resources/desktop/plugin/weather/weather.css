@@ -1,7 +1,7 @@
 .global_desktop{
     position: fixed;
     display: none;
-    background-color:rgba(255,0,255,0.1);
+    background-color:rgba(255,255,255,0.0);
     top:0px;
     left:0px;
 }
