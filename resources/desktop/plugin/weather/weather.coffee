@@ -61,18 +61,18 @@ class Weather extends Widget
         @more_city_menu = new CityMoreMenu(10,87,ZINDEX_MENU,-242)
         @element.appendChild(@more_city_menu.element)
 
-        @global_desktop = create_element("div","global_desktop",@element)
-        @global_desktop.style.height = window.screen.height
-        @global_desktop.style.width = window.screen.width
-        @global_desktop.style.zIndex = ZINDEX_GLOBAL_DESKTOP
+        # @global_desktop = create_element("div","global_desktop",@element)
+        # @global_desktop.style.height = window.screen.height
+        # @global_desktop.style.width = window.screen.width
+        # @global_desktop.style.zIndex = ZINDEX_GLOBAL_DESKTOP
 
         city.addEventListener("click", =>
             @more_weather_menu.style.display = "none"
 
-            if @more_city_menu.display_check() == "none"
-                @global_desktop.style.display = "block"
-            else 
-                @global_desktop.style.display = "none"
+            # if @more_city_menu.display_check() == "none"
+            #     @global_desktop.style.display = "block"
+            # else 
+            #     @global_desktop.style.display = "none"
 
             @more_city_menu.more_city_build(13)
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
@@ -84,7 +84,7 @@ class Weather extends Widget
             @more_city_menu.display_none()
 
             if @more_weather_menu.style.display == "none"
-                @global_desktop.style.display = "block"
+                # @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
                     @more_weather_menu.style.top = -195
@@ -94,16 +94,15 @@ class Weather extends Widget
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
-                @global_desktop.style.display = "none"
+                # @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
             )
-        @global_desktop.addEventListener("click",=>
-            # echo "display none all menu"
-            @element.style.zIndex = ZINDEX_DOWNEST;
-            @more_weather_menu.style.display = "none"
-            @more_city_menu.display_none()
-            @global_desktop.style.display = "none"
-            )
+        # @global_desktop.addEventListener("click",=>
+        #     # echo "display none all menu"
+        #     @more_weather_menu.style.display = "none"
+        #     @more_city_menu.display_none()
+        #     @global_desktop.style.display = "none"
+        #     )
     more_weather_build: ->
 
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
@@ -155,7 +154,11 @@ class Weather extends Widget
         @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
         @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
         @temperature6.textContent = temp_init
-
+    
+    lostfocus:->
+        @more_weather_menu.style.display = "none"
+        @more_city_menu.display_none()
+        # @global_desktop.style.display = "none"
 
     weathergui_init: ->
         @weather_style_build()
@@ -170,7 +173,7 @@ class Weather extends Widget
         else @weathergui_update()
 
     weathergui_update: ->
-            @global_desktop.style.display = "none"
+            # @global_desktop.style.display = "none"
 
             cityid = localStorage.getItem("cityid_storage")
             clearInterval(@auto_weathergui_refresh)
