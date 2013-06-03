@@ -32,7 +32,6 @@ connect_default_signals = ->
     DCore.signal_connect("get_focus", do_desktop_get_focus)
     DCore.signal_connect("desktop_config_changed", do_desktop_config_changed)
     DCore.signal_connect("workarea_changed", do_workarea_changed)
-    DCore.signal_connect("desktop_plugins_changed", do_desktop_plugins_changed)
 
 
 do_item_delete = (data) ->
@@ -125,16 +124,3 @@ do_workarea_changed = (allo) ->
     place_desktop_items()
     return
 
-do_desktop_plugins_changed = ->
-    enabled_plugins = DCore.Desktop.get_plugin_array('desktop')
-    all_plugins = DCore.get_plugins('desktop')
-
-    for plugin in all_plugins
-        base = get_path_base(plugin)
-        name = get_path_name(plugin)
-        id = "plugin:" + base + name
-        if name in enabled_plugins
-            new DesktopPlugin(base, name)
-            plugin_manager.enable_plugin(id, true)
-        else
-            plugin_manager.enable_plugin(id, false)

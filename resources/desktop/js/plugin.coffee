@@ -15,7 +15,7 @@ class PluginHandle extends Widget
         if not (w = Widget.look_up(@parent_id))? then return
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
-        if not detect_occupy(new_pos)
+        if not detect_occupy(new_pos, @parent_id)
             move_to_somewhere(w, new_pos)
 
 
@@ -104,9 +104,8 @@ class DesktopPlugin extends Plugin
         move_to_somewhere(@item, info)
 
     destroy: ->
+        @host.parentElement.removeChild(@host)
         delete_widget(@item)
-        echo 'delete widget'
-        @host.parentNode.removeChild(@host)
 
 
     wrap_element: (child, width, height)->
@@ -126,14 +125,14 @@ load_plugins = ->
     return
 
 
-find_free_position_for_widget = (info) ->
+find_free_position_for_widget = (info, id = null) ->
     new_pos = {x : 0, y : 0, width : info.width, height : info.height}
     x_pos = cols - 1
     while (x_pos = x_pos - info.width + 1) > -1
         new_pos.x = x_pos
         for i in [0 ... (rows - info.height)]
             new_pos.y = i
-            if not detect_occupy(new_pos)
+            if not detect_occupy(new_pos, id)
                 return new_pos
     return null
 
@@ -141,7 +140,7 @@ find_free_position_for_widget = (info) ->
 place_all_widgets = ->
     for i in widget_item
         continue if not (w = Widget.look_up(i))?
-        if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos()))?
+        if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos(), w.get_id()))?
             echo new_pos
             move_to_somewhere(w, new_pos)
         else

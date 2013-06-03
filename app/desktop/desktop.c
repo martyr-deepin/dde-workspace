@@ -235,9 +235,31 @@ PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr
 }
 
 
+extern GHashTable* enabled_plugins;
+extern GHashTable* disabled_plugins;
+extern GHashTable* plugins_state;
+#define SCHEMA_KEY_ENABLED_PLUGINS "enabled-plugins"
+enum PluginState {
+    DISABLED_PLUGIN,
+    ENABLED_PLUGIN,
+    UNKNOWN_PLUGIN
+};
+
+
+extern void get_enabled_plugins(GSettings* gsettings);
+
+PRIVATE
+void _change_to_json(gpointer key, gpointer value, gpointer user_data)
+{
+    json_append_number((JSObjectRef)user_data, key, GPOINTER_TO_INT(value));
+}
+
 PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
 {
-    js_post_message_simply ("desktop_plugins_changed", NULL);
+    get_enabled_plugins(settings);
+    JSObjectRef json = json_create();
+    g_hash_table_foreach(plugins_state, _change_to_json, (gpointer)json);
+    js_post_message("plugins_changed", json);
 }
 
 
