@@ -145,7 +145,6 @@
 .week4:lang(zh),
 .week5:lang(zh),
 .week6:lang(zh){
-    position: relative;
     margin-left: 10px;
     font-weight: bolder;
 }
@@ -155,10 +154,7 @@
 .pic4:lang(zh),
 .pic5:lang(zh),
 .pic6:lang(zh){
-    position: relative;
     margin-left: 14px;
-    width: 24px;
-    height: 24px;
     margin-bottom: 5px;
 }
 .temperature1:lang(zh),
@@ -167,8 +163,7 @@
 .temperature4:lang(zh),
 .temperature5:lang(zh),
 .temperature6:lang(zh){
-    position: absolute;
-    right: 10px;
+    margin-left: 14px;
 }
 
 .week1:lang(en),

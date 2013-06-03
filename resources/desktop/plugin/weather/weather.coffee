@@ -74,6 +74,7 @@ class Weather extends Widget
             else 
                 @global_desktop.style.display = "none"
 
+            # @more_city_menu.common_city_build()
             @more_city_menu.more_city_build(13)
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
             @more_city_menu.show_hide_position(bottom_distance)

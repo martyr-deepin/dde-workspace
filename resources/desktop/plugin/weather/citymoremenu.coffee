@@ -60,8 +60,20 @@ class CityMoreMenu extends Widget
         Clientcityid.Get_client_cityid(->
             distname_choose[0] = localStorage.getItem("cityname_client_storage")
             distid_choose[0] = localStorage.getItem("cityid_storage")
+            echo distname_choose
+            @common_menu = create_element("div","common_menu",@element)
+
+            for distname in distname_choose
+                if distname != "0"
+                    echo "distname:" + distname
+                    @commn_city = create_element("div","commn_city",@common_menu)
+                    @commn_city.innerText = distname 
+
+            @add_common_city = create_element("div","add_common_city",@common_menu)
+            @add_common_city.innerText = _("add common city")
+
             )
-        # for i in times_dist_choose
+
 
     more_city_build: (selectsize)->
         @selectsize = selectsize
@@ -155,12 +167,13 @@ class CityMoreMenu extends Widget
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
                     distname_choose[times_dist_choose] = data[distvalue].name
-                    distid_choose[times_dist_choose++] = data[distvalue].data
+                    distid_choose[times_dist_choose] = data[distvalue].data
+                    times_dist_choose++
+                    echo times_dist_choose
                     if times_dist_choose > 4 then times_dist_choose = 1 
                     localStorage.setItem("distname_choose_storage",distname_choose)
                     localStorage.setItem("distid_choose_storage",distid_choose)
-                    localStorage.setItem("times_dist_choose_storage",times_dist_choose)
-                    
+                    # localStorage.setItem("times_dist_choose_storage",times_dist_choose)
 
                     # echo data[distvalue].name
                     distid_choose = data[distvalue].data
