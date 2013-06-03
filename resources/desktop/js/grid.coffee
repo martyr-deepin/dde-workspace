@@ -280,6 +280,8 @@ set_occupy = (id, info) ->
 
 detect_occupy = (info) ->
     assert(info!=null, "[detect_occupy]get null info")
+    if (info.x + info.width) > cols  or (info.y + info.height) > rows
+        return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]
