@@ -96,19 +96,35 @@ do_cut_completed = (items) ->
 
 
 do_desktop_lost_focus = ->
+    # destkop has lost focus
+    # notify destkop normal items
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
         if w.has_focus
             last_widget_has_focus = true
             w.item_blur()
         else
             last_widget_has_focus = false
+
+    # notify widgets
+    # !IMPORTANT : if a widget needs to know we lost focus, it should implement "lost_focus" method
+    for i in widget_item
+        if (w = Widget.look_up(i))? and w.lost_focus?
+            w.lost_focus()
     return
 
 
 do_desktop_get_focus = ->
+    # destkop has lost focus
+    # notify destkop normal items
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
         last_widget_has_focus == false
+
+    # notify widgets
+    # !IMPORTANT : if a widget needs to know we got focus, it should implement "get_focus" method
+    for i in widget_item
+        if (w = Widget.look_up(i))? and w.get_focus?
+            w.get_focus()
     return
 
 
