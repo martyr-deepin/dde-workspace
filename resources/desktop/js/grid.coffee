@@ -249,13 +249,13 @@ set_occupy = (id, info) ->
     return
 
 
-detect_occupy = (info) ->
+detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width - 1) > cols  or (info.y + info.height - 1) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            if o_table[info.x+i][info.y+j]
+            if o_table[info.x+i][info.y+j] and o_table[info.x+i][info.y+j] != id
                 return true
     return false
 
@@ -308,7 +308,7 @@ move_to_position = (widget, info) ->
 # need optimization
 move_to_anywhere = (widget) ->
     info = load_position(widget.get_id())
-    if info? and not detect_occupy(info)
+    if info? and not detect_occupy(info, widget.get_id())
         move_to_position(widget, info)
     else
         info = find_free_position(1, 1)
@@ -317,7 +317,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    if not detect_occupy(pos)
+    if not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
         pos = find_free_position(pos.width, pos.height)
@@ -337,7 +337,7 @@ place_desktop_items = ->
 
         pos = w.get_pos()
         if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos)
+            if not detect_occupy(pos, w.get_id())
                 move_to_somewhere(w, pos)
         else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
             move_to_somewhere(w, old_pos)
@@ -584,7 +584,7 @@ item_dragend_handler = (w, evt) ->
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
-            if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
+            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
 
         update_selected_item_drag_image()
     return
