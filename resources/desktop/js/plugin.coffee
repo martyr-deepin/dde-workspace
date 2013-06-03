@@ -104,9 +104,8 @@ class DesktopPlugin extends Plugin
         move_to_somewhere(@item, info)
 
     destroy: ->
+        @host.parentElement.removeChild(@host)
         delete_widget(@item)
-        echo 'delete widget'
-        @host.parentNode.removeChild(@host)
 
 
     wrap_element: (child, width, height)->

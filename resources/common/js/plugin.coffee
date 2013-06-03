@@ -1,7 +1,7 @@
 class PluginManager
     # key: plugin's name
     # value: Plugin class
-    _plugins: null
+    @_plugins: null
 
     constructor: ->
         PluginManager._plugins = {} if not PluginManager._plugins
@@ -9,7 +9,7 @@ class PluginManager
     enable_plugin: (id, value)->
         double_name = get_path_name(id)
         name = double_name.substring(double_name.length / 2)
-        DCore.Desktop.enable_plugin(name, value)
+        DCore.enable_plugin(name, value)
         plugin = PluginManager._plugins[name]
         if plugin
             if value
@@ -18,8 +18,8 @@ class PluginManager
             else
                 echo "disable #{name}"
                 plugin.destroy()
-                echo 'delete object'
-                delete PluginManager._plugins[name]
+                echo delete PluginManager._plugins[name]
+                PluginManager._plugins[name] = null
         else
             echo 'plugin is not exists'
 
@@ -28,6 +28,23 @@ class PluginManager
 
     add_plugin: (name, obj) ->
         PluginManager._plugins[name] = obj
+
+    @plugin_changed_handler: (info) ->
+        all_plugins = DCore.get_plugins('desktop')
+
+        for plugin in all_plugins
+            base = get_path_base(plugin)
+            name = get_path_name(plugin)
+            id = "plugin:" + base + name
+            if info[name]
+                echo 'plugin_changed_handler: enable plugin'
+                if not PluginManager._plugins or not PluginManager._plugins[name]
+                    new DesktopPlugin(base, name)
+                    plugin_manager.enable_plugin(id, true)
+            else
+                echo 'plugin_changed_handler: disable plugin'
+                plugin_manager.enable_plugin(id, false)
+        return
 
 
 class Plugin
@@ -51,3 +68,5 @@ class Plugin
         @css_element = create_element('link', null, @host)
         @css_element.rel = "stylesheet"
         @css_element.href = "#{@path}/#{name}.css"
+
+DCore.signal_connect("plugins_changed", PluginManager.plugin_changed_handler)
