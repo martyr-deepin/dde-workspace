@@ -99,11 +99,10 @@ class Weather extends Widget
             )
         @global_desktop.addEventListener("click",=>
             # echo "display none all menu"
-            # @more_weather_menu.style.display = "none"
-            # @more_city_menu.display_none()
+            @more_weather_menu.style.display = "none"
+            @more_city_menu.display_none()
             @global_desktop.style.display = "none"
             )
-
 
     more_weather_build: ->
 
@@ -165,7 +164,6 @@ class Weather extends Widget
     weathergui_init: ->
         @weather_style_build()
         @more_weather_build()
-        # @rightclick_build()
 
         cityid = localStorage.getItem("cityid_storage")
         echo "cityid:" + cityid
