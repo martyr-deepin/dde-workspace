@@ -251,7 +251,7 @@ set_occupy = (id, info) ->
 
 detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
-    if (info.x + info.width - 1) > cols  or (info.y + info.height - 1) > rows
+    if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
