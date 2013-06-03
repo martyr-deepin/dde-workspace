@@ -39,7 +39,7 @@
 .temperature_now{
     position: relative;
     top: 15px;
-    margin-left: 3px; 
+    margin-left: 3px;
     height: 40px;
     float: left;
 }
@@ -57,7 +57,7 @@
     position:relative;
     float: left;
     top:10px;
-    color: #FFF;   
+    color: #FFF;
     font-size: 36px;
     font-weight: bold;
     text-shadow: 0 0 4px #808080;
@@ -69,7 +69,7 @@
 .city_and_date{
     position: relative;
     top:15px;
-    margin-left: 10px;  
+    margin-left: 10px;
     float: left;
     height: 40px;
 }
@@ -82,7 +82,7 @@
     cursor: pointer;
 }
 .city_now{
-    position: relative;    
+    position: relative;
     float: left;
     font-size: 15px;
     font-weight: bolder;
@@ -101,8 +101,8 @@
     clear: both;
     cursor: pointer;
 
-    color: #FFF; 
-    font-weight: bolder;  
+    color: #FFF;
+    font-weight: bolder;
     text-shadow: 0 0 2px #808080;
 }
 .more_weather_menu{
@@ -117,82 +117,51 @@
     display: none;
     box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
 
-    color: #FFF; 
+    color: #FFF;
     font-weight: bold;
     text-shadow: 0 0 2px #808080;
 }
 
-.first_day_weather_data,
-.third_day_weather_data,
-.fifth_day_weather_data{
+.weather_data {
     position: relative;
     height: 35px;
-    line-height:35px;
+    line-height: 35px;
+}
+
+.weather_data:nth-child(odd) {
     background-color:rgba(255,255,255,0.35);
 }
-.second_day_weather_data,
-.fourth_day_weather_data,
-.sixth_day_weather_data{
-    position: relative;
-    height: 35px;
-    line-height:35px;
+
+.weather_data:nth-child(even) {
     background-color:rgba(0,0,0,0.15);
 }
 
-.week1:lang(zh),
-.week2:lang(zh),
-.week3:lang(zh),
-.week4:lang(zh),
-.week5:lang(zh),
-.week6:lang(zh){
+.week:lang(zh){
+    position: relative;
     margin-left: 10px;
     font-weight: bolder;
 }
-.pic1:lang(zh),
-.pic2:lang(zh),
-.pic3:lang(zh),
-.pic4:lang(zh),
-.pic5:lang(zh),
-.pic6:lang(zh){
+
+.pic:lang(zh){
     margin-left: 14px;
     margin-bottom: 5px;
 }
-.temperature1:lang(zh),
-.temperature2:lang(zh),
-.temperature3:lang(zh),
-.temperature4:lang(zh),
-.temperature5:lang(zh),
-.temperature6:lang(zh){
+.temperature:lang(zh){
     margin-left: 14px;
 }
 
-.week1:lang(en),
-.week2:lang(en),
-.week3:lang(en),
-.week4:lang(en),
-.week5:lang(en),
-.week6:lang(en){
+.week:lang(en){
     position: relative;
     margin-left: 10px;
 }
-.pic1:lang(en),
-.pic2:lang(en),
-.pic3:lang(en),
-.pic4:lang(en),
-.pic5:lang(en),
-.pic6:lang(en){
+.pic:lang(en){
     position: absolute;
     left: 56px;
     width: 24px;
     height: 24px;
     margin-top: 5px;
 }
-.temperature1:lang(en),
-.temperature2:lang(en),
-.temperature3:lang(en),
-.temperature4:lang(en),
-.temperature5:lang(en),
-.temperature6:lang(en){
+.temperature:lang(en){
     position: absolute;
     right: 10px;
 }

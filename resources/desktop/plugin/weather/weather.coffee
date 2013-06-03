@@ -27,7 +27,7 @@ class Weather extends Widget
         @more_weather_build()
 
         cityid = localStorage.getItem("cityid_storage")
-        # echo "cityid:" + cityid 
+        # echo "cityid:" + cityid
         if !cityid
             Clientcityid = new ClientCityId()
             Clientcityid.Get_client_cityid(@weathergui_update.bind(@))
@@ -71,7 +71,7 @@ class Weather extends Widget
 
             if @more_city_menu.display_check() == "none"
                 @global_desktop.style.display = "block"
-            else 
+            else
                 @global_desktop.style.display = "none"
 
             # @more_city_menu.common_city_build()
@@ -90,7 +90,7 @@ class Weather extends Widget
                 if bottom_distance < 200
                     @more_weather_menu.style.top = -196
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
-                else 
+                else
                     @more_weather_menu.style.top = 85
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
@@ -115,48 +115,18 @@ class Weather extends Widget
         @more_weather_menu = create_element("div", "more_weather_menu", @element)
         @more_weather_menu.style.display = "none"
 
-        @first_day_weather_data = create_element("div", "first_day_weather_data", @more_weather_menu)
-        @week1 = create_element("a", "week1", @first_day_weather_data)
-        @week1.textContent = week_init
-        @pic1 = create_img("pic1", img_more_url_init, @first_day_weather_data)
-        @temperature1 = create_element("a", "temperature1", @first_day_weather_data)
-        @temperature1.textContent = temp_init
+        @weather_data = []
+        @week = []
+        @pic = []
+        @temperature = []
+        for i in [0...6]
+            @weather_data[i] = create_element("div", "weather_data", @more_weather_menu)
+            @week[i] = create_element("a", "week", @weather_data[i])
+            @week[i].textContent = week_init
+            @pic[i] = create_img("pic", img_more_url_init, @weather_data[i])
+            @temperature[i] = create_element("a", "temperature", @weather_data[i])
+            @temperature[i].textContent = temp_init
 
-        @second_day_weather_data = create_element("div", "second_day_weather_data", @more_weather_menu)
-        @week2 = create_element("a", "week2", @second_day_weather_data)
-        @week2.textContent = week_init
-        @pic2 = create_img("pic2", img_more_url_init, @second_day_weather_data)
-        @temperature2 = create_element("a", "temperature2", @second_day_weather_data)
-        @temperature2.textContent = temp_init
-
-        @third_day_weather_data = create_element("div", "third_day_weather_data", @more_weather_menu)
-        @week3 = create_element("a", "week3", @third_day_weather_data)
-        @week3.textContent = week_init
-        @pic3 = create_img("pic3", img_more_url_init, @third_day_weather_data)
-        @temperature3 = create_element("a", "temperature3", @third_day_weather_data)
-        @temperature3.textContent = temp_init
-
-        @fourth_day_weather_data = create_element("div", "fourth_day_weather_data", @more_weather_menu)
-        @week4 = create_element("a", "week4", @fourth_day_weather_data)
-        @week4.textContent = week_init
-        @pic4 = create_img("pic4", img_more_url_init, @fourth_day_weather_data)
-        @temperature4 = create_element("a", "temperature4", @fourth_day_weather_data)
-        @temperature4.textContent = temp_init
-
-        @fifth_day_weather_data = create_element("div", "fifth_day_weather_data", @more_weather_menu)
-        @week5 = create_element("a", "week5", @fifth_day_weather_data)
-        @week5.textContent = week_init
-        @pic5 = create_img("pic5", img_more_url_init, @fifth_day_weather_data)
-        @temperature5 = create_element("a", "temperature5", @fifth_day_weather_data)
-        @temperature5.textContent = temp_init
-
-        @sixth_day_weather_data = create_element("div", "sixth_day_weather_data", @more_weather_menu)
-        @week6 = create_element("a", "week6", @sixth_day_weather_data)
-        @week6.textContent = week_init
-        @pic6 = create_img("pic6", img_more_url_init, @sixth_day_weather_data)
-        @temperature6 = create_element("a", "temperature6", @sixth_day_weather_data)
-        @temperature6.textContent = temp_init
-    
     lost_focus:->
         @more_weather_menu.style.display = "none"
         @more_city_menu.display_none()
@@ -222,31 +192,12 @@ class Weather extends Widget
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
 
         @weather_now_pic.title = weather_data_more.weatherinfo.weather1
-        @first_day_weather_data.title = weather_data_more.weatherinfo.weather1
-        @second_day_weather_data.title = weather_data_more.weatherinfo.weather2
-        @third_day_weather_data.title = weather_data_more.weatherinfo.weather3
-        @fourth_day_weather_data.title = weather_data_more.weatherinfo.weather4
-        @fifth_day_weather_data.title = weather_data_more.weatherinfo.weather5
-        @sixth_day_weather_data.title = weather_data_more.weatherinfo.weather6
-
-        @week1.textContent = week_show[week_n%7]
-        @pic1.src = @weather_more_pic_src(1)
-        @temperature1.textContent = weather_data_more.weatherinfo.temp1
-        @week2.textContent = week_show[(week_n+1)%7]
-        @pic2.src = @weather_more_pic_src(2)
-        @temperature2.textContent = weather_data_more.weatherinfo.temp2
-        @week3.textContent = week_show[(week_n+2)%7]
-        @pic3.src = @weather_more_pic_src(3)
-        @temperature3.textContent = weather_data_more.weatherinfo.temp3
-        @week4.textContent = week_show[(week_n+3)%7]
-        @pic4.src = @weather_more_pic_src(4)
-        @temperature4.textContent = weather_data_more.weatherinfo.temp4
-        @week5.textContent = week_show[(week_n+4)%7]
-        @pic5.src = @weather_more_pic_src(5)
-        @temperature5.textContent = weather_data_more.weatherinfo.temp5
-        @week6.textContent = week_show[(week_n+5)%7]
-        @pic6.src = @weather_more_pic_src(6)
-        @temperature6.textContent = weather_data_more.weatherinfo.temp6
+        for i in [0...6]
+            j = i + 1
+            @weather_data[i].title = weather_data_more.weatherinfo['weather' + j]
+            @week[i].textContent = week_show[(week_n + i) % 7]
+            @pic[i].src = @weather_more_pic_src(j)
+            @temperature[i].textContent = weather_data_more.weatherinfo['temp' + j]
 
     weather_more_pic_src:(i) ->
         i = i*2 - 1
