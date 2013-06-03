@@ -27,7 +27,7 @@ class Weather extends Widget
         @more_weather_build()
 
         cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid 
+        # echo "cityid:" + cityid 
         if !cityid
             Clientcityid = new ClientCityId()
             Clientcityid.Get_client_cityid(@weathergui_update.bind(@))
@@ -58,7 +58,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(10,87,ZINDEX_MENU,-242)
+        @more_city_menu = new CityMoreMenu(10,87,ZINDEX_MENU,-211)
         @element.appendChild(@more_city_menu.element)
 
         # @global_desktop = create_element("div","global_desktop",@element)
@@ -87,7 +87,7 @@ class Weather extends Widget
                 # @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
-                    @more_weather_menu.style.top = -195
+                    @more_weather_menu.style.top = -200
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
                 else 
                     @more_weather_menu.style.top = 85
@@ -103,6 +103,8 @@ class Weather extends Widget
         #     @more_city_menu.display_none()
         #     @global_desktop.style.display = "none"
         #     )
+
+
     more_weather_build: ->
 
         img_now_url_init = @img_url_first + "48/T" + "0\u6674" + ".png"
@@ -197,7 +199,7 @@ class Weather extends Widget
         # echo "weather_data_now:" + weather_data_now
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
-        echo "temp_now:" + temp_now
+        # echo "temp_now:" + temp_now
         # show the   name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 

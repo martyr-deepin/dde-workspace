@@ -27,15 +27,18 @@ class ClientCityId
             try
                 client_cityjsonstr = xhr.responseText
                 remote_ip_info = JSON.parse(client_cityjsonstr.slice(21,client_cityjsonstr.length))
-                echo "remote_ip_info.ret:" + remote_ip_info.ret
-                echo "remote_ip_info.city:" + remote_ip_info.city
+                # echo "remote_ip_info.ret:" + remote_ip_info.ret
+                # echo "remote_ip_info.city:" + remote_ip_info.city
                 if remote_ip_info.ret == 1
                     for provin of allname.data
                         if allname.data[provin].prov == remote_ip_info.province
                             for ci of allname.data[provin].city
                                 if allname.data[provin].city[ci].cityname == remote_ip_info.city
+                                    cityname_client = remote_ip_info.city
+                                    localStorage.setItem("cityname_client_storage",cityname_client)
+                                    
                                     cityid_client = allname.data[provin].city[ci].code
-                                    echo "cityid_client:"+ cityid_client
+                                    # echo "cityid_client:"+ cityid_client
                                     localStorage.setItem("cityid_storage",cityid_client)
                                     callback()
 

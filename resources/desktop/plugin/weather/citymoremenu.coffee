@@ -19,6 +19,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
+    times_dist_choose = 1
+    distname_choose = ["0", "0", "0", "0", "0"]
+    distid_choose = ["0", "0", "0", "0", "0"]
     constructor: (x,y,zIndex,y2)->
         super(null)
         @y = y
@@ -27,12 +30,12 @@ class CityMoreMenu extends Widget
         @element.style.top = @y
         @element.style.display = "none"
         @element.style.zIndex = zIndex
-        # @lable = create_element("lable","lable",@element)
+        @lable = create_element("lable","lable",@element)
 
 
     show_hide_position:(bottom_distance)->
         bottom_distance_mini = @selectsize * 12 + 40
-        echo "bottom_distance_mini:" + bottom_distance_mini
+        # echo "bottom_distance_mini:" + bottom_distance_mini
         # bottom_distance_mini = 200
         if @element.style.display == "none"
             if bottom_distance < bottom_distance_mini
@@ -51,6 +54,15 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
 
+
+    common_city_build:->
+        Clientcityid = new ClientCityId()
+        Clientcityid.Get_client_cityid(->
+            distname_choose[0] = localStorage.getItem("cityname_client_storage")
+            distid_choose[0] = localStorage.getItem("cityid_storage")
+            )
+        # for i in times_dist_choose
+
     more_city_build: (selectsize)->
         @selectsize = selectsize
 
@@ -64,9 +76,9 @@ class CityMoreMenu extends Widget
         @str_provinit = "-" + _("province") + "-"
         @str_cityinit = "-" + _("city") + "-" 
         @str_distinit = "-" + _("county") + "-"
-        @prov = create_element("div","prov",@element)
-        @city = create_element("div","city",@element)
-        @dist = create_element("div","dist",@element)
+        @prov = create_element("div","prov",@lable)
+        @city = create_element("div","city",@lable)
+        @dist = create_element("div","dist",@lable)
         @chooseprov = create_element("select", "chooseprov", @prov)
         @choosecity = create_element("select", "choosecity", @city)
         @choosedist = create_element("select", "choosedist", @dist)
@@ -104,7 +116,7 @@ class CityMoreMenu extends Widget
         # @chooseprov.onblur = =>
         #     echo "@chooseprov onblur"
         #     @setOptionSelectedColor(@chooseprov,@provIndex,"#F0F")
-            
+
     read_data_from_json: (id,callback) -> 
         url = "#{plugin.path}/city/" + id + ".json"
         ajax(url,(xhr)=>
@@ -142,8 +154,17 @@ class CityMoreMenu extends Widget
             else
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
-                    cityid_choose = data[distvalue].data
-                    localStorage.setItem("cityid_storage",cityid_choose)
+                    distname_choose[times_dist_choose] = data[distvalue].name
+                    distid_choose[times_dist_choose++] = data[distvalue].data
+                    if times_dist_choose > 4 then times_dist_choose = 1 
+                    localStorage.setItem("distname_choose_storage",distname_choose)
+                    localStorage.setItem("distid_choose_storage",distid_choose)
+                    localStorage.setItem("times_dist_choose_storage",times_dist_choose)
+                    
+
+                    # echo data[distvalue].name
+                    distid_choose = data[distvalue].data
+                    localStorage.setItem("cityid_storage",distid_choose)
                     callback()
 
     clearOptions:(colls,first=0)->
@@ -155,8 +176,9 @@ class CityMoreMenu extends Widget
         obj.parentNode.removeChild(obj) if obj
 
     setMaxSize:(obj,val=@selectsize)->
-        length = obj.options.length
-        obj.size = if length < val then length else val
+        # length = obj.options.length
+        # obj.size = if length < val then length else val
+        obj.size = val
 
     create_option:(obj,data)->
         for i of data
@@ -165,3 +187,4 @@ class CityMoreMenu extends Widget
     setOptionSelectedColor:(obj,index,color)->
         index = obj.selectedIndex if !index
         obj.options[index].style.background = color
+    common_dist_choose:->
