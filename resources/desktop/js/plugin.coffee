@@ -118,8 +118,11 @@ class DesktopPlugin extends Plugin
 
 
 load_plugins = ->
-    for p in DCore.Desktop.get_plugin_array("desktop")
-        new DesktopPlugin(get_path_base(p), get_path_name(p))
+    for p in DCore.get_plugins("desktop")
+        echo p
+        enabled_plugins = DCore.Desktop.get_plugin_array('desktop')
+        if get_path_name(p) in enabled_plugins
+            new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 
 
