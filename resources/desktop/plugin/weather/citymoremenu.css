@@ -8,11 +8,18 @@
     float: left;
     margin-right: 5px;
 }
-
+.common_menu{
+    text-align:center;
+}
+.commn_city,
+.add_common_city{
+    width: 70px;
+    background: rgba(255,255,255,0.75);
+}
 .chooseprov,
 .choosecity,
 .choosedist{
-    font-size: 14px;
+    /*font-size: 14px;*/
     text-align:center;
 
     padding: 0 0 0 10px;
@@ -47,18 +54,4 @@
     border-radius: 10px;
     background: rgba(0,153,204,0.02);
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-
-.common_menu{
-    position: relative;
-    width: 100px;
-    height: 100px;
-    
-    display: block;
-    box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,
-            8px 8px 8px rgba(255,255,255,0.2) inset,
-            0 0 8px 8px rgba(255,255,255,0.2) inset,
-            -8px 8px 8px rgba(255,255,255,0.2) inset,
-            0 3px 8px rgba(0,0,0,0.4);
-    background: rgba(255,255,255,0.75);
 }

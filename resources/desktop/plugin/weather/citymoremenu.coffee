@@ -33,6 +33,7 @@ class CityMoreMenu extends Widget
         @lable = create_element("lable","lable",@element)
 
 
+
     show_hide_position:(bottom_distance)->
         bottom_distance_mini = @selectsize * 12 + 40
         # echo "bottom_distance_mini:" + bottom_distance_mini
@@ -47,6 +48,8 @@ class CityMoreMenu extends Widget
 
     display_none:->
         @element.style.display = "none"
+    display_block:->
+        @element.style.display = "block"
 
     display_check:->
         return @element.style.display
@@ -55,12 +58,16 @@ class CityMoreMenu extends Widget
         return @element.style.zIndex
 
 
-    common_city_build:->
+    common_city_build:(selectsize,bottom_distance,callback)->
         Clientcityid = new ClientCityId()
-        Clientcityid.Get_client_cityid(->
+        Clientcityid.Get_client_cityid(=>
             distname_choose[0] = localStorage.getItem("cityname_client_storage")
             distid_choose[0] = localStorage.getItem("cityid_storage")
             echo distname_choose
+            echo distid_choose
+            echo "@common_menu:" + @common_menu
+
+            @remove_element(@common_menu) if @common_menu
             @common_menu = create_element("div","common_menu",@element)
 
             for distname in distname_choose
@@ -69,8 +76,14 @@ class CityMoreMenu extends Widget
                     @commn_city = create_element("div","commn_city",@common_menu)
                     @commn_city.innerText = distname 
 
-            @add_common_city = create_element("div","add_common_city",@common_menu)
-            @add_common_city.innerText = _("add common city")
+            add_common_city = create_element("div","add_common_city",@common_menu)
+            add_common_city.innerText = _("choose city")
+            echo "add_common_city:" + add_common_city
+            add_common_city.addEventListener("click",=>
+                @more_city_build(selectsize)
+                @show_hide_position(bottom_distance)
+                @change_chooseprov(callback)
+                )
 
             )
 
