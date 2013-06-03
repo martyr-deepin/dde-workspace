@@ -27,7 +27,7 @@ class CityMoreMenu extends Widget
         @element.style.top = @y
         @element.style.display = "none"
         @element.style.zIndex = zIndex
-        @lable = create_element("lable","lable",@element)
+        # @lable = create_element("lable","lable",@element)
 
 
     show_hide_position:(bottom_distance)->
@@ -54,6 +54,9 @@ class CityMoreMenu extends Widget
     more_city_build: (selectsize)->
         @selectsize = selectsize
 
+        @remove_element(@prov) if @prov
+        @remove_element(@city) if @city
+        @remove_element(@dist) if @dist
         @remove_element(@chooseprov) if @chooseprov
         @remove_element(@choosecity) if @choosecity
         @remove_element(@choosedist) if @choosedist
@@ -61,9 +64,12 @@ class CityMoreMenu extends Widget
         @str_provinit = "-" + _("province") + "-"
         @str_cityinit = "-" + _("city") + "-" 
         @str_distinit = "-" + _("county") + "-"
-        @chooseprov = create_element("select", "chooseprov", @lable)
-        @choosecity = create_element("select", "choosecity", @lable)
-        @choosedist = create_element("select", "choosedist", @lable)
+        @prov = create_element("div","prov",@element)
+        @city = create_element("div","city",@element)
+        @dist = create_element("div","dist",@element)
+        @chooseprov = create_element("select", "chooseprov", @prov)
+        @choosecity = create_element("select", "choosecity", @city)
+        @choosedist = create_element("select", "choosedist", @dist)
 
         @clearOptions(@chooseprov,0)
         provinit = create_element("option","provinit",@chooseprov)
@@ -86,15 +92,19 @@ class CityMoreMenu extends Widget
 
     change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
-            provIndex = @chooseprov.selectedIndex
-            if provIndex == -1
-                @chooseprov.options.remove(provIndex)
+            @provIndex = @chooseprov.selectedIndex
+
+            if @provIndex == -1
+                @chooseprov.options.remove(@provIndex)
             else
-                provvalue = @chooseprov.options[provIndex].value 
+                provvalue = @chooseprov.options[@provIndex].value 
                 if provvalue != @str_provinit
                     data = @read_data_from_json(provvalue,callback)
             )
-
+        # @chooseprov.onblur = =>
+        #     echo "@chooseprov onblur"
+        #     @setOptionSelectedColor(@chooseprov,@provIndex,"#F0F")
+            
     read_data_from_json: (id,callback) -> 
         url = "#{plugin.path}/city/" + id + ".json"
         ajax(url,(xhr)=>
@@ -108,6 +118,7 @@ class CityMoreMenu extends Widget
         @create_option(@choosecity,data)
         @setMaxSize(@choosecity)
         @choosecity.onchange = =>
+
             cityIndex = @choosecity.selectedIndex
             # echo "cityIndex:" + cityIndex
             if cityIndex == -1
@@ -151,3 +162,6 @@ class CityMoreMenu extends Widget
         for i of data
             # obj.add(new Div(data[i].name, i))
             obj.options.add(new Option(data[i].name, i))
+    setOptionSelectedColor:(obj,index,color)->
+        index = obj.selectedIndex if !index
+        obj.options[index].style.background = color

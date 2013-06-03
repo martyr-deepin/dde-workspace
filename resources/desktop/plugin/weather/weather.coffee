@@ -19,7 +19,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 class Weather extends Widget
     ZINDEX_MENU = 65535
-    ZINDEX_PLUGIN = 65534
     ZINDEX_GLOBAL_DESKTOP = 5000
     ZINDEX_DOWNEST = 0
     constructor: ->
@@ -59,7 +58,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(0,87,ZINDEX_MENU,-242)
+        @more_city_menu = new CityMoreMenu(10,87,ZINDEX_MENU,-242)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -71,13 +70,9 @@ class Weather extends Widget
             @more_weather_menu.style.display = "none"
 
             if @more_city_menu.display_check() == "none"
-                @element.style.zIndex = ZINDEX_PLUGIN;
                 @global_desktop.style.display = "block"
             else 
                 @global_desktop.style.display = "none"
-                @element.style.zIndex = ZINDEX_DOWNEST;
-            echo "@element.style.zIndex:" + @element.style.zIndex
-            echo "@global_desktop.style.zIndex:" + @global_desktop.style.zIndex
 
             @more_city_menu.more_city_build(13)
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
@@ -89,7 +84,6 @@ class Weather extends Widget
             @more_city_menu.display_none()
 
             if @more_weather_menu.style.display == "none"
-                @element.style.zIndex = ZINDEX_PLUGIN;
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
@@ -100,11 +94,8 @@ class Weather extends Widget
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
-                @element.style.zIndex = ZINDEX_UPEST;
                 @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
-            echo "@element.style.zIndex:" + @element.style.zIndex
-            echo "@global_desktop.style.zIndex:" + @global_desktop.style.zIndex
             )
         @global_desktop.addEventListener("click",=>
             # echo "display none all menu"
