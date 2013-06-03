@@ -58,7 +58,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(10,87,ZINDEX_MENU,-211)
+        @more_city_menu = new CityMoreMenu(10,83,ZINDEX_MENU,-208)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -87,7 +87,7 @@ class Weather extends Widget
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < 200
-                    @more_weather_menu.style.top = -200
+                    @more_weather_menu.style.top = -196
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
                 else 
                     @more_weather_menu.style.top = 85
