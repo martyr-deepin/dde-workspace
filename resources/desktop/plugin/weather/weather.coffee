@@ -99,8 +99,8 @@ class Weather extends Widget
             )
         @global_desktop.addEventListener("click",=>
             # echo "display none all menu"
-            @more_weather_menu.style.display = "none"
-            @more_city_menu.display_none()
+            # @more_weather_menu.style.display = "none"
+            # @more_city_menu.display_none()
             @global_desktop.style.display = "none"
             )
 
