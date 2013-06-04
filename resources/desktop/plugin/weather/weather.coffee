@@ -78,7 +78,7 @@ class Weather extends Widget
             else
                 @global_desktop.style.display = "none"
 
-            if 1
+            if 0
                 @more_city_menu.display_block()
                 @more_city_menu.common_city_build(13,bottom_distance,@weathergui_update.bind(@))
             else

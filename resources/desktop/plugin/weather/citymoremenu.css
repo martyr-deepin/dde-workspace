@@ -1,16 +1,9 @@
 .CityMoreMenu{
     margin-top: 0px;
 }
-.prov,
-.city,
-.dist{
-    position:relative;
-    float: left;
-    margin-right: 5px;
-}
 .common_menu{
     position: absolute;
-    left: 135px;
+    left: 120px;
 }
 .common_city,
 .add_common_city{
@@ -20,6 +13,14 @@
     text-align:center;
     background: rgba(255,255,255,0.75);
     -webkit-appearance: button;
+}
+
+.prov,
+.city,
+.dist{
+    position:relative;
+    float: left;
+    margin-right: 7px;
 }
 .chooseprov,
 .choosecity,
@@ -31,7 +32,7 @@
     border-radius: 6px;
     -webkit-appearance: none;
     outline: 0 none;
-    width: 90px;
+    width: 80px;
 
     border: 1px solid rgba(0,0,0,0.1);
     box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,

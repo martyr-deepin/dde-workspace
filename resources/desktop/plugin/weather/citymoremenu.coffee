@@ -19,9 +19,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
-    times_dist_choose = 1
-    distname_choose = ["0", "0", "0", "0", "0"]
-    distid_choose = ["0", "0", "0", "0", "0"]
+    times_dist_choose = 0
 
     constructor: (x,y,zIndex,y2)->
         super(null)
@@ -47,38 +45,33 @@ class CityMoreMenu extends Widget
 
 
     common_city_build:(selectsize,bottom_distance,callback)->
-        Clientcityid = new ClientCityId()
-        Clientcityid.Get_client_cityid(=>
-            distname_choose[0] = localStorage.getItem("cityname_client_storage")
-            distid_choose[0] = localStorage.getItem("cityid_storage")
-            )
-
         @remove_element(@common_menu) if @common_menu
         @common_menu = create_element("div","common_menu",@element)
-        # @common_menu.style.left = 90;
         @common_city = []
-        
-        for distname in distname_choose
-            if distname != "0"
-                @common_city[times_dist_choose] = create_element("div","common_city",@common_menu)
-                @common_city[times_dist_choose].innerText = distname 
+
+        common_dists_all = localStorage.getObject("common_dists_storage") if common_dists_all
+        echo common_dists_all
+
+        if common_dists_all
+            for dists in common_dists_all
+                echo dists
+                if dists.name && dists.id
+                    @common_city = create_element("div","common_city",@common_menu)
+                    @common_city.innerText = dists.name 
 
         add_common_city = create_element("div","add_common_city",@common_menu)
         add_common_city.innerText = _("choose city")
 
         @show_hide_position(bottom_distance)
 
-        echo distname_choose
-        echo distid_choose
 
         for i in [0...4]
             @common_city[i].addEventListener("click",=>
                 @element.style.display = "none"
-                distid_common = distid_choose[i]
-                echo distid_common
-                distname_common = distname_choose[i]
-                echo distname_common
-                echo distname_common + ":" + distid_common
+                dists_name = @common_city[i].innerText
+                for name in common_dists_all.name
+                    if dists_name == name
+                        echo name
                 localStorage.setItem("cityid_storage",distid_common)
                 callback()
                 ) if @common_city[i]
@@ -189,18 +182,24 @@ class CityMoreMenu extends Widget
             else
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
-                    distname_choose[times_dist_choose] = data[distvalue].name
-                    distid_choose[times_dist_choose] = data[distvalue].data
-                    times_dist_choose++
-                    # echo times_dist_choose
-                    if times_dist_choose > 4 then times_dist_choose = 1 
-                    localStorage.setItem("distname_choose_storage",distname_choose)
-                    localStorage.setItem("distid_choose_storage",distid_choose)
-                    # localStorage.setItem("times_dist_choose_storage",times_dist_choose)
 
-                    # echo data[distvalue].name
-                    distid_choose = data[distvalue].data
-                    localStorage.setItem("cityid_storage",distid_choose)
+                    if 0 
+                        common_dists[times_dist_choose].name = data[distvalue].name
+                        common_dists[times_dist_choose].id = data[distvalue].data
+                        times_dist_choose++
+                        if times_dist_choose > 4 then times_dist_choose = 0 
+                        echo times_dist_choose
+                        echo common_dists
+                        localStorage.setObject("common_dists_storage",common_dists)
+                        common_dists_all = localStorage.getObject("common_dists_storage")
+                        echo common_dists_all
+                        echo common_dists_all[0].name
+                        i = 0
+                        while i++ < common_dists_all.length
+                            echo common_dists_all[i].name
+                        # localStorage.setItem("times_dist_choose_storage",times_dist_choose)
+
+                    localStorage.setItem("cityid_storage",data[distvalue].data)
                     callback()
 
     clearOptions:(colls,first=0)->
