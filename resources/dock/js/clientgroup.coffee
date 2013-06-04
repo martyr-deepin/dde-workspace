@@ -187,7 +187,7 @@ class ClientGroup extends AppItem
                 update_dock_region()
                 Preview_close_now()
                 DCore.Dock.update_hide_mode()
-            , 1500)
+            , 1000)
 
     do_mouseover: (e)=>
         e.stopPropagation()

@@ -1564,7 +1564,7 @@ class DeepinSoftwareCenter extends DesktopEntry
 
 
     get_name : =>
-        _("Deepin Software Center")
+        _("Software Center")
 
 
     set_icon : (src = null) =>

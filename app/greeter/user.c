@@ -20,6 +20,7 @@
  **/
 
 #include "user.h"
+#include "unistd.h"
 
 gboolean 
 is_user_valid(const gchar *username)
@@ -127,6 +128,10 @@ const gchar* greeter_get_user_image(const gchar* name)
         image = "nonexists";
     }
 
+    if(g_access(image, R_OK) != 0){
+        image = "nonexists";
+    }
+
     return image;
 }
 
@@ -147,6 +152,10 @@ const gchar* greeter_get_user_background(const gchar* name)
 
     background = lightdm_user_get_background(user);
     if(!(g_file_test(background, G_FILE_TEST_EXISTS))){
+        background = "nonexists";
+    }
+
+    if(g_access(background, R_OK) != 0){
         background = "nonexists";
     }
 

@@ -17,6 +17,8 @@ class FixedItem extends AppItem
             @open_indicator.style.display = "block"
         else
             @open_indicator.style.display = "none"
+    do_mouseover: (e) ->
+        Preview_close_now()
 
 class ShowDesktop extends FixedItem
     do_click: (e)->

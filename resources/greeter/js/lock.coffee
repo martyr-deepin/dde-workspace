@@ -45,19 +45,13 @@ class LoginEntry extends Widget
                 @warning.classList.remove("CapsWarningBackground")
 
             if e.which == 13
-                if not @password.value
-                    @password.focus()
-                else
-                    @on_active(@password.value)
+                @on_active(@password.value)
         )
 
         @login = create_element("button", "LoginButton", @element)
         @login.innerText = _("Unlock")
         @login.addEventListener("click", =>
-            if not @password.value
-                @password.focus()
-            else
-                @on_active(@password.value)
+            @on_active(@password.value)
         )
 
         @password.index = 0
@@ -92,6 +86,7 @@ class UserInfo extends Widget
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
+        @display_failure = false
 
     focus: ->
         _current_user?.blur()
@@ -140,8 +135,9 @@ class UserInfo extends Widget
             @focus()
     
     on_verify: (password)->
-        if not password
+        if not password or @display_failure
             @login.password.focus()
+            @display_failure = false
         else
             @login.destroy()
             @loading = new Loading("loading")
@@ -150,10 +146,12 @@ class UserInfo extends Widget
 
     unlock_check: (msg) ->
         if msg.status == "succeed"
+            @display_failure = false
             DCore.Lock.unlock_succeed()
         else
             @focus()
             @show_login()
+            @display_failure = true
             @login.password.classList.remove("PasswordStyle")
             @login.password.style.color = "red"
             @login.password.value = msg.status
@@ -162,13 +160,9 @@ class UserInfo extends Widget
                 @login.password.classList.add("PasswordStyle")
                 @login.password.style.color ="black"
                 @login.password.value = ""
+                @display_failure = false
             )
 
-            document.body.addEventListener("keydown", (e) =>
-                if e.which == 13 and  @login_displayed
-                    @login.password.focus()
-
-            )
             apply_refuse_rotate(@element, 0.5)
 
 user = DCore.Lock.get_username()
@@ -199,17 +193,12 @@ _current_user = u
 
 u.focus()
 u.show_login()
-#u.login.password.focus()
 
 document.body.addEventListener("keydown", (e) =>
     if e.which == 13 
         if not u.login_displayed
             u.show_login()
-            #u.login.password.focus()
-        else if DCore.Lock.need_pwd() and u.login.password.value == ""
-            pass
-            #u.login.password.focus()
-        else 
+        else
             u.login.on_active(u.login.password.value)
 
     else if e.which == 27

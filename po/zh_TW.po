@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 10:34+0800\n"
+"POT-Creation-Date: 2013-05-31 09:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,8 +245,8 @@ msgid "item"
 msgstr "項目"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
-msgid "Deepin Software Center"
-msgstr "深度軟體中心"
+msgid "Software Center"
+msgstr "軟體中心"
 
 #: ../resources/desktop/js/grid.coffee:812
 msgid "_Sort by"
@@ -389,16 +389,60 @@ msgid "New directory"
 msgstr "新增目錄"
 
 #: ../app/greeter/account.c:74
-msgid "%a,%b%d,%Y"
+msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:310
+#: ../app/greeter/dlock.c:310 ../app/greeter/greeter.c:467
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
-#: ../app/greeter/greeter.c:467
-msgid "Invalid Username/Password"
-msgstr "使用者/密碼錯誤"
+#: ../app/launcher/category.h:31
+msgid "all"
+msgstr "全部"
+
+#: ../app/launcher/category.h:32
+msgid "internet"
+msgstr "網路應用"
+
+#: ../app/launcher/category.h:33
+msgid "multimedia"
+msgstr "影音播放"
+
+#: ../app/launcher/category.h:34
+msgid "games"
+msgstr "遊戲娛樂"
+
+#: ../app/launcher/category.h:35
+msgid "graphics"
+msgstr "圖形圖像"
+
+#: ../app/launcher/category.h:36
+msgid "productivity"
+msgstr "辦公軟體"
+
+#: ../app/launcher/category.h:37
+msgid "industry"
+msgstr "行業軟件"
+
+#: ../app/launcher/category.h:38
+msgid "education"
+msgstr "科學教育"
+
+#: ../app/launcher/category.h:39
+msgid "development"
+msgstr "編程開發"
+
+#: ../app/launcher/category.h:40
+msgid "system"
+msgstr "系統管理"
+
+#: ../app/launcher/category.h:41
+msgid "utilities"
+msgstr "實用工具"
+
+#: ../app/launcher/category.h:42
+msgid "other"
+msgstr "其他"
 
 #: ../lib/dentry/entry.c:654
 #, c-format

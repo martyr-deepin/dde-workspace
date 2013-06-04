@@ -10,16 +10,20 @@ coffee_files = [
 
 c_files = [
 "../app/desktop/*.c",
+"../app/desktop/*.h",
 "../app/greeter/*.c",
+"../app/greeter/*.h",
 "../app/launcher/*.c",
+"../app/launcher/*.h",
 "../app/dock/*.c",
-"../lib/dentry/*.c"
+"../app/dock/*.h",
+"../lib/dentry/*.c",
+"../lib/dentry/*.h"
 ]
 
 lang = ["zh_CN", "zh_TW"]
 
 
-import glob
 import os
 
 for l in lang:
