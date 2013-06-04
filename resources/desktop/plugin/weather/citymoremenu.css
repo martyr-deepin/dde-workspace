@@ -3,8 +3,6 @@
 }
 .common_menu{
     position: absolute;
-    left: 135px;
-    top:-35px;
     box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
     overflow: hidden;
     border:1px solid rgba(255,255,255,0.6);

@@ -61,10 +61,22 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
 
+    show_hide_position:(bottom_distance)->
+        bottom_distance_mini = @selectsize * 12 + 40
+        @lable_choose.style.display = "none" if @lable_choose
 
-    common_city_build:(selectsize,bottom_distance,callback)->
+        if @element.style.display == "none"
+            if bottom_distance < bottom_distance_mini
+                @element.style.top = @y2
+            else @element.style.top = @y
+            @common_menu.style.display = "block" if @common_menu
+            @element.style.display = "block"
+
+    common_city_build:(x=135,y=-25)->
         @remove_element(@common_menu) if @common_menu
         @common_menu = create_element("div","common_menu",@element)
+        @common_menu.style.left = x 
+        @common_menu.style.top = y
         @common_city = []
 
         common_dists = localStorage.getObject("common_dists_storage")
@@ -77,10 +89,8 @@ class CityMoreMenu extends Widget
                 @common_city[i].value = common_dists[i].id
             i++
 
-        add_common_city = create_element("div","add_common_city",@common_menu)
-        add_common_city.innerText = _("choose city")
-
-        @show_hide_position(bottom_distance)
+        @add_common_city = create_element("div","add_common_city",@common_menu)
+        @add_common_city.innerText = _("choose city")
 
         for div , i in @common_city
             # echo div
@@ -94,12 +104,14 @@ class CityMoreMenu extends Widget
                 callback()
                 )
 
-        add_common_city.addEventListener("click",=>
+    addcity:(selectsize,callback)->
+        @add_common_city.addEventListener("click",=>
             @common_menu.style.display = "none"
             @lable_choose.style.display = "block"
             @more_city_build(selectsize)
             @change_chooseprov(callback)
             )
+
     more_city_build: (selectsize)->
         @selectsize = selectsize
 
@@ -138,17 +150,6 @@ class CityMoreMenu extends Widget
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
         distinit.selected = "false"
-
-    show_hide_position:(bottom_distance)->
-        bottom_distance_mini = @selectsize * 12 + 40
-        @lable_choose.style.display = "none" if @lable_choose
-
-        if @element.style.display == "none"
-            if bottom_distance < bottom_distance_mini
-                @element.style.top = @y2
-            else @element.style.top = @y
-            @common_menu.style.display = "block" if @common_menu
-
 
     change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
@@ -200,18 +201,14 @@ class CityMoreMenu extends Widget
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
 
-                    if 1
-                        times_dist_choose = localStorage.getObject("times_dist_choose_storage") if times_dist_choose
-                        common_dists = localStorage.getObject("common_dists_storage") if common_dists
-
-                        common_dists[times_dist_choose].name = data[distvalue].name
-                        common_dists[times_dist_choose].id = data[distvalue].data
-                        localStorage.setObject("common_dists_storage",common_dists)
-
-                        times_dist_choose++
-                        if times_dist_choose > 4 then times_dist_choose = 0 
-                        localStorage.setItem("times_dist_choose_storage",times_dist_choose)
-                        echo "times_dist_choose:" + times_dist_choose
+                    times_dist_choose = localStorage.getObject("times_dist_choose_storage") if times_dist_choose
+                    common_dists = localStorage.getObject("common_dists_storage") if common_dists
+                    common_dists[times_dist_choose].name = data[distvalue].name
+                    common_dists[times_dist_choose].id = data[distvalue].data
+                    localStorage.setObject("common_dists_storage",common_dists)
+                    times_dist_choose++
+                    if times_dist_choose > 4 then times_dist_choose = 0 
+                    localStorage.setItem("times_dist_choose_storage",times_dist_choose)
 
                     echo data[distvalue].name
                     echo data[distvalue].data

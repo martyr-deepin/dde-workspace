@@ -78,15 +78,10 @@ class Weather extends Widget
             else
                 @global_desktop.style.display = "none"
 
-            if 1
-                @more_city_menu.display_block()
-                @more_city_menu.common_city_build(13,bottom_distance,@weathergui_update.bind(@))
-            else
-                @more_city_menu.more_city_build(13)
-                bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                @more_city_menu.show_hide_position(bottom_distance)
-                @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
-
+            bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
+            @more_city_menu.common_city_build(135,-25)
+            @more_city_menu.show_hide_position(bottom_distance)
+            @more_city_menu.addcity(13,@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
             @more_city_menu.display_none()
