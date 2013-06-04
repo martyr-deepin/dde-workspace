@@ -1,3 +1,10 @@
+get_name = (id) ->
+    index = id.indexOf(':')
+    if index == -1
+        return id
+    else
+        id.substring(index + 1)
+
 class PluginManager
     # key: plugin's name
     # value: Plugin class
@@ -7,51 +14,56 @@ class PluginManager
         PluginManager._plugins = {} if not PluginManager._plugins
 
     enable_plugin: (id, value)->
-        double_name = get_path_name(id)
-        name = double_name.substring(double_name.length / 2)
-        DCore.enable_plugin(name, value)
-        plugin = PluginManager._plugins[name]
+        DCore.enable_plugin(id, value)
+        name = get_name(id)
+        plugin = PluginManager._plugins[id]
         if plugin
             if value
-                echo "enable #{name}"
+                echo "enable #{id}"
                 plugin.inject_css(name)
             else
-                echo "disable #{name}"
+                echo "disable #{id}"
                 plugin.destroy()
-                echo delete PluginManager._plugins[name]
-                PluginManager._plugins[name] = null
+                echo delete PluginManager._plugins[id]
+                PluginManager._plugins[id] = null
         else
             echo 'plugin is not exists'
 
-    get_plugin: (name) ->
-        PluginManager._plugins[name]
+    get_plugin: (id) ->
+        PluginManager._plugins[id]
 
-    add_plugin: (name, obj) ->
-        PluginManager._plugins[name] = obj
+    add_plugin: (id, obj) ->
+        PluginManager._plugins[id] = obj
 
     @plugin_changed_handler: (info) ->
         all_plugins = DCore.get_plugins('desktop')
 
-        for plugin in all_plugins
-            base = get_path_base(plugin)
-            name = get_path_name(plugin)
-            id = "plugin:" + base + name
-            if info[name]
-                echo 'plugin_changed_handler: enable plugin'
-                if not PluginManager._plugins or not PluginManager._plugins[name]
-                    new DesktopPlugin(base, name)
-                    plugin_manager.enable_plugin(id, true)
-            else
+        id_prefix = info.app_name + ":"
+        delete info.app_name
+        for own k, v of info
+            id = id_prefix + k
+            echo id
+            if not v
                 echo 'plugin_changed_handler: disable plugin'
                 plugin_manager.enable_plugin(id, false)
+        for plugin in all_plugins
+            name = get_path_name(plugin)
+            id = id_prefix + name
+            if info[name]
+                echo 'plugin_changed_handler: enable plugin'
+                if not PluginManager._plugins or not PluginManager._plugins[id]
+                    new DesktopPlugin(get_path_base(plugin), name)
+                    echo 'enable created plugin'
+                    plugin_manager.enable_plugin(id, true)
+            else
         return
 
 
 class Plugin
-    constructor: (@path, @name, @host)->
-        @id = "plugin:" + @path + @name
+    constructor: (@app_name, @path, @name, @host)->
+        @id = @app_name + ':' + @name
         window.plugin_manager = new PluginManager() unless window.plugin_manager
-        window.plugin_manager.add_plugin(@name, @)
+        window.plugin_manager.add_plugin(@id, @)
         # window._plugins = {} if not window._plugins
         # window._plugins[@name] = @
         @inject_js(@name)

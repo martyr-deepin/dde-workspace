@@ -246,7 +246,7 @@ enum PluginState {
 };
 
 
-extern void get_enabled_plugins(GSettings* gsettings);
+extern void get_enabled_plugins(GSettings* gsettings, char const* key);
 
 PRIVATE
 void _change_to_json(gpointer key, gpointer value, gpointer user_data)
@@ -254,30 +254,43 @@ void _change_to_json(gpointer key, gpointer value, gpointer user_data)
     json_append_number((JSObjectRef)user_data, key, GPOINTER_TO_INT(value));
 }
 
+
+gchar const* get_schema_id(GSettings* gsettings)
+{
+    GValue value = G_VALUE_INIT;
+    g_value_init(&value, G_TYPE_STRING);
+    g_object_get_property(G_OBJECT(gsettings), "path", &value);
+    return g_value_get_string(&value);
+}
+
 PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
 {
-    get_enabled_plugins(settings);
+    extern void _init_state(gpointer key, gpointer value, gpointer user_data);
+    g_hash_table_foreach(plugins_state, _init_state, plugins_state);
+    get_enabled_plugins(settings, "enabled-plugins");
     JSObjectRef json = json_create();
+    if (g_str_equal(get_schema_id(settings), get_schema_id(desktop_gsettings)))
+        json_append_string(json, "app_name", "desktop");
     g_hash_table_foreach(plugins_state, _change_to_json, (gpointer)json);
     js_post_message("plugins_changed", json);
 }
 
 
-JS_EXPORT_API
-JSObjectRef desktop_get_plugin_array(char const* name)
-{
-    char** values = g_settings_get_strv(desktop_gsettings, "enabled-plugins");
-    JSContextRef ctx = get_global_context();
-
-    JSObjectRef array = json_array_create();
-
-    for (int i = 0; values[i] != NULL; ++i)
-        json_array_insert(array, i, jsvalue_from_cstr(ctx, values[i]));
-
-    g_strfreev(values);
-
-    return array;
-}
+/* JS_EXPORT_API */
+/* JSObjectRef desktop_get_plugin_array(char const* name) */
+/* { */
+/*     char** values = g_settings_get_strv(desktop_gsettings, "enabled-plugins"); */
+/*     JSContextRef ctx = get_global_context(); */
+/*  */
+/*     JSObjectRef array = json_array_create(); */
+/*  */
+/*     for (int i = 0; values[i] != NULL; ++i) */
+/*         json_array_insert(array, i, jsvalue_from_cstr(ctx, values[i])); */
+/*  */
+/*     g_strfreev(values); */
+/*  */
+/*     return array; */
+/* } */
 
 
 JS_EXPORT_API
