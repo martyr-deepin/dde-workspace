@@ -26,8 +26,12 @@ class Weather extends Widget
         @weather_style_build()
         @more_weather_build()
 
-        cityid = localStorage.getItem("cityid_storage")
-        # echo "cityid:" + cityid
+        cityid = localStorage.getObject("cityid_storage")
+        if cityid < 1000
+            cityid = 0
+            localStorage.setItem("cityid_storage",cityid)
+        echo "cityid:" + cityid
+
         if !cityid
             Clientcityid = new ClientCityId()
             Clientcityid.Get_client_cityid(@weathergui_update.bind(@))
@@ -136,21 +140,10 @@ class Weather extends Widget
         @more_city_menu.display_none()
         # @global_desktop.style.display = "none"
 
-    weathergui_init: ->
-        @weather_style_build()
-        @more_weather_build()
-
-        cityid = localStorage.getItem("cityid_storage")
-        echo "cityid:" + cityid
-        if !cityid
-            Clientcityid = new ClientCityId()
-            Clientcityid.Get_client_cityip(@weathergui_update.bind(@))
-        else @weathergui_update()
-
     weathergui_update: ->
             @global_desktop.style.display = "none"
 
-            cityid = localStorage.getItem("cityid_storage")
+            cityid = localStorage.getObject("cityid_storage")
             clearInterval(@auto_weathergui_refresh)
             @auto_weathergui_refresh = setInterval(@weathergui_refresh(cityid),600000)# ten minites update once 1800000   60000--60s
 
@@ -161,6 +154,9 @@ class Weather extends Widget
         callback_more = ->
             weather_data_more = localStorage.getObject("weatherdata_more_storage")
             @update_weathermore(weather_data_more)
+        if cityid < 1000
+            cityid = 0
+            localStorage.setItem("cityid_storage",cityid)
         if cityid
             @weatherdata = new WeatherData(cityid)
             @weatherdata.Get_weatherdata_now(callback_now.bind(@))

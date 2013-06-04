@@ -135,11 +135,11 @@ ajax = (url, callback,internet = true) ->
     xhr.onreadystatechange = ->
         if internet == true
             if (xhr.readyState == 4 and xhr.status == 200)
-                try   
+                # try   
                     echo "XMLHttpRequest receive all data."
                     callback?(xhr)
-                catch e
-                    echo "XMLHttpRequest is error"
+                # catch e
+                    # echo "XMLHttpRequest is error"
             if xhr.status == 404
                 echo "XMLHttpRequest can't find the url:" + url
             else if xhr.status == 0

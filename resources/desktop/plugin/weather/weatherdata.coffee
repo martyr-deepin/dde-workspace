@@ -21,29 +21,38 @@
 class WeatherData
 
     constructor: (cityid)->
+        @cityid = cityid
         @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
         @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
 
     Get_weatherdata_now:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_now"
-        ajax(@url_nowweather_str,(xhr)=>
-            try 
-                localStorage.setItem("weatherdata_now_storage",xhr.responseText)
-                callback()
-            catch e
-                echo "weatherdata_now xhr.responseText isnt JSON "
-        )
+        if cityid < 1000
+            cityid = 0
+            localStorage.setItem("cityid_storage",cityid)
+        if cityid
+            ajax(@url_nowweather_str,(xhr)=>
+                # try 
+                    localStorage.setItem("weatherdata_now_storage",xhr.responseText)
+                    callback()
+                # catch e
+                    # echo "weatherdata_now xhr.responseText isnt JSON "
+            )
     Get_weatherdata_more:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_more"
-        ajax(@url_moreweather_str,(xhr)=>
-            try
-                localStorage.setItem("weatherdata_more_storage",xhr.responseText)
-                @weather_more_img()
-                @weather_more_week()
-                callback()
-            catch e
-                echo "weatherdata_more xhr.responseText isnt JSON "
-        )
+        if cityid < 1000
+            cityid = 0
+            localStorage.setItem("cityid_storage",cityid)
+        if cityid
+            ajax(@url_moreweather_str,(xhr)=>
+                # try
+                    localStorage.setItem("weatherdata_more_storage",xhr.responseText)
+                    @weather_more_img()
+                    @weather_more_week()
+                    callback()
+                # catch e
+                    # echo "weatherdata_more xhr.responseText isnt JSON "
+            )
 
     weather_more_img:->
         weather_data_more = localStorage.getObject("weatherdata_more_storage")

@@ -151,9 +151,6 @@ class CityMoreMenu extends Widget
                 if provvalue != @str_provinit
                     data = @read_data_from_json(provvalue,callback)
             )
-        # @chooseprov.onblur = =>
-        #     echo "@chooseprov onblur"
-        #     @setOptionSelectedColor(@chooseprov,@provIndex,"#F0F")
 
     read_data_from_json: (id,callback) -> 
         url = "#{plugin.path}/city/" + id + ".json"
