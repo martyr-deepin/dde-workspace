@@ -113,7 +113,7 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
 
     if (cmdline[0] != NULL) {
         char* space_pos = NULL;
-        if ((space_pos = strchr(cmdline[0], ' ')) != NULL && space_pos[i] == '-') {
+        if ((space_pos = strchr(cmdline[0], ' ')) != NULL && space_pos[1] == '-') {
             *space_pos = '\0';
             for (gsize i = length - 1; i > 0; --i) {
                 cmdline[i + 1] = cmdline[i];
