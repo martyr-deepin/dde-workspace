@@ -143,45 +143,44 @@ class ToolTip extends Widget
     constructor: (@widget, @text)->
         ToolTip.tooltip ?= $("#tooltip")
 
-        @event_bind('ondragstart', =>
+        @event_bind('dragstart', =>
             clearTimeout(ToolTip.should_show_id)
             ToolTip.tooltip?.style.display = "none"
         )
-        @event_bind('ondragenter', =>
+        @event_bind('dragenter', =>
             clearTimeout(ToolTip.should_show_id)
             ToolTip.tooltip?.style.display = "none"
         )
-        @event_bind('ondragover', =>
+        @event_bind('dragover', =>
             clearTimeout(ToolTip.should_show_id)
             ToolTip.tooltip?.style.display = "none"
         )
-        @event_bind('ondragleave', =>
+        @event_bind('dragleave', =>
             clearTimeout(ToolTip.should_show_id)
             ToolTip.tooltip?.style.display = "none"
         )
-        @event_bind('ondragend', =>
+        @event_bind('dragend', =>
             @widget?.tooltip?.hide()
         )
-        @event_bind('oncontextmenu', =>
+        @event_bind('contextmenu', =>
             @widget?.tooltip?.hide()
         )
-        @event_bind('onmouseout', =>
+        @event_bind('mouseout', =>
             @widget?.tooltip?.hide()
         )
-        @event_bind('onmouseover', =>
+        @event_bind('mouseover', =>
             ToolTip.should_show_id = setTimeout(=>
                 @widget?.tooltip?.show()
             , 500)
         )
-        @event_bind('onclick', =>
+        @event_bind('click', =>
             @widget?.tooltip?.hide()
         )
 
     event_bind: (evt_name, callback) ->
-        evt_handler = @widget.element[evt_name]
-        @widget.element[evt_name] = (e) ->
+        @widget.element.addEventListener(evt_name, (e) ->
             callback()
-            evt_handler?()
+        )
 
     show: ->
         Preview_close_now()

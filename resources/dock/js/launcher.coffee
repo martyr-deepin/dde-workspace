@@ -3,8 +3,9 @@ class Launcher extends AppItem
     constructor: (@id, @icon, @core)->
         super
         @app_id = @id
-        @set_tooltip(DCore.DEntry.get_name(@core))
         @update_scale()
+
+        @set_tooltip(DCore.DEntry.get_name(@core))
 
 
     try_swap_clientgroup: ->
@@ -41,19 +42,17 @@ class Launcher extends AppItem
         ,500)
 
     do_mouseover: (e)->
+        Preview_close_now()
         clearTimeout(hide_id)
 
     do_mouseout: (e)->
         if Preview_container.is_showing
-            setTimeout(->
-                __clear_timeout()
-                clearTimeout(tooltip_hide_id)
-                DCore.Dock.require_all_region()
-                launcher_mouseout_id = setTimeout(->
-                    Preview_close()
-                    update_dock_region()
-                , 2000)
-            , 400)
+            __clear_timeout()
+            clearTimeout(tooltip_hide_id)
+            DCore.Dock.require_all_region()
+            launcher_mouseout_id = setTimeout(->
+                update_dock_region()
+            , 1000)
         else
             update_dock_region()
             setTimeout(->
