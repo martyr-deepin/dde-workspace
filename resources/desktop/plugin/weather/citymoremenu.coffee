@@ -64,7 +64,6 @@ class CityMoreMenu extends Widget
     show_hide_position:(bottom_distance)->
         bottom_distance_mini = @selectsize * 12 + 40
         @lable_choose.style.display = "none" if @lable_choose
-
         if @element.style.display == "none"
             if bottom_distance < bottom_distance_mini
                 @element.style.top = @y2
@@ -178,12 +177,10 @@ class CityMoreMenu extends Widget
         @choosecity.onchange = =>
 
             cityIndex = @choosecity.selectedIndex
-            # echo "cityIndex:" + cityIndex
             if cityIndex == -1
                 @choosecity.options.remove(cityIndex)
             else
                 cityvalue = @choosecity.options[cityIndex].value
-                # echo "cityvalue:" + cityvalue
                 if cityvalue != @str_cityinit
                     @distadd(data[cityvalue].data,callback)
     
@@ -230,9 +227,7 @@ class CityMoreMenu extends Widget
 
     create_option:(obj,data)->
         for i of data
-            # obj.add(new Div(data[i].name, i))
             obj.options.add(new Option(data[i].name, i))
     setOptionSelectedColor:(obj,index,color)->
         index = obj.selectedIndex if !index
         obj.options[index].style.background = color
-    common_dist_choose:->

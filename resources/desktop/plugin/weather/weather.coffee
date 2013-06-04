@@ -101,7 +101,6 @@ class Weather extends Widget
                 @more_weather_menu.style.display = "none"
             )
         @global_desktop.addEventListener("click",=>
-            # echo "display none all menu"
             @more_weather_menu.style.display = "none"
             @more_city_menu.display_none()
             @global_desktop.style.display = "none"
@@ -159,11 +158,8 @@ class Weather extends Widget
             echo "cityid isnt ready"
 
     update_weathernow: (weather_data_now)->
-        # echo "weather_data_now:" + weather_data_now
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
-        # echo "temp_now:" + temp_now
-        # show the name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
