@@ -9,12 +9,17 @@
     margin-right: 5px;
 }
 .common_menu{
-    text-align:center;
+    position: absolute;
+    left: 135px;
 }
-.commn_city,
+.common_city,
 .add_common_city{
     width: 70px;
+    height: 30px;
+    line-height: 30px;
+    text-align:center;
     background: rgba(255,255,255,0.75);
+    -webkit-appearance: button;
 }
 .chooseprov,
 .choosecity,
