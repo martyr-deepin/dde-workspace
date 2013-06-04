@@ -78,14 +78,13 @@ class Weather extends Widget
             else
                 @global_desktop.style.display = "none"
 
-            if 0
+            if 1
                 @more_city_menu.display_block()
                 @more_city_menu.common_city_build(13,bottom_distance,@weathergui_update.bind(@))
             else
-                @more_city_menu.display_block()
                 @more_city_menu.more_city_build(13)
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                # @more_city_menu.show_hide_position(bottom_distance)
+                @more_city_menu.show_hide_position(bottom_distance)
                 @more_city_menu.change_chooseprov(@weathergui_update.bind(@))
 
             )
@@ -138,7 +137,7 @@ class Weather extends Widget
     lost_focus:->
         @more_weather_menu.style.display = "none"
         @more_city_menu.display_none()
-        # @global_desktop.style.display = "none"
+        @global_desktop.style.display = "none"
 
     weathergui_update: ->
             @global_desktop.style.display = "none"

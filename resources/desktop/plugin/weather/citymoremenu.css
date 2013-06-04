@@ -3,7 +3,13 @@
 }
 .common_menu{
     position: absolute;
-    left: 120px;
+    left: 135px;
+    top:-35px;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    overflow: hidden;
+    border:1px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.75);
+
 }
 .common_city,
 .add_common_city{
@@ -11,8 +17,11 @@
     height: 30px;
     line-height: 30px;
     text-align:center;
-    background: rgba(255,255,255,0.75);
-    -webkit-appearance: button;
+    /*-webkit-appearance: button;*/
+}
+.common_city:hover,
+.add_common_city:hover{
+    background-color: #007fbe;
 }
 
 .prov,
@@ -35,12 +44,12 @@
     width: 80px;
 
     border: 1px solid rgba(0,0,0,0.1);
-    box-shadow: 0 8px 8px rgba(255,255,255,0.2) inset,
-                8px 8px 8px rgba(255,255,255,0.2) inset,
-                0 0 8px 8px rgba(255,255,255,0.2) inset,
-                -8px 8px 8px rgba(255,255,255,0.2) inset,
-                0 3px 8px rgba(0,0,0,0.4);
-    background: rgba(255,255,255,0.75);
+    box-shadow: 0 8px 8px rgba(255,255,255,0.1) inset,
+                8px 8px 8px rgba(255,255,255,0.1) inset,
+                0 0 8px 8px rgba(255,255,255,0.1) inset,
+                -8px 8px 8px rgba(255,255,255,0.1) inset,
+                0 3px 8px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.5);
 }
 
 .chooseprov::-webkit-scrollbar,
