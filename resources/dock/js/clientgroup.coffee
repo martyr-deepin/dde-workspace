@@ -6,13 +6,20 @@ class ClientGroup extends AppItem
             @n_clients = []
             @client_infos = {}
 
-            @open_indicator = create_img("OpenIndicator", "", @element)
-            @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
-
             @leader = null
 
+            # @img is the behind one,
+            # @img2 is the middle one,
+            # @img3 is the front one.
+            # set id for recognition at hand.
+            @img.id = 'client_group_image_1'
             @img2 = create_img("AppItemImg", "", @element)
+            @img2.id = 'client_group_image_2'
             @img3 = create_img("AppItemImg", "", @element)
+            @img3.id = 'client_group_image_3'
+
+            @open_indicator = create_img("OpenIndicator", "", @element)
+            @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
 
             @to_normal_status()
         catch error
@@ -94,11 +101,32 @@ class ClientGroup extends AppItem
         @update_leader()
         @update_scale()
 
+    leader_img: (len) ->
+        if len == 1
+            return @img
+        else if len == 2
+            return @img2
+        else if len >= 3
+            return @img3
+        else
+            return null
+
+    middle_img: (len) ->
+        if len > 2
+            return @img2
+        else
+            return @img3
+
+    behind_img: (len) ->
+        if len > 1
+            return @img
+        else
+            return @img3
+
     add_client: (id)->
         if @n_clients.indexOf(id) == -1
-            @n_clients.remove(id)
             @n_clients.unshift(id)
-            apply_rotate(@img, 1)
+            apply_rotate(@leader_img(@n_clients.length), 1)
 
             if @leader != id
                 @leader = id
@@ -128,10 +156,14 @@ class ClientGroup extends AppItem
         @update_leader()
 
     update_leader: ->
-        @img.src = @client_infos[@leader].icon
+        client_number = @n_clients.length
+        @leader_img(client_number).src = @client_infos[@leader].icon
         #@img.setAttribute("title", @client_infos[@leader].title)
-        @img2.src = @client_infos[@n_clients[1]].icon if @n_clients.length > 1
-        @img3.src = @client_infos[@n_clients[2]].icon if @n_clients.length > 2
+        if client_number == 2
+            @behind_img(client_number).src = @client_infos[@n_clients[1]].icon
+        else if client_number >= 3
+            @middle_img(client_number).src = @client_infos[@n_clients[1]].icon
+            @behind_img(client_number).src = @client_infos[@n_clients[2]].icon
 
     try_swap_launcher: ->
         l = Widget.look_up(@app_id)
