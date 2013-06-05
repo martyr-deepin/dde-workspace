@@ -11,19 +11,35 @@
     overflow: hidden;
     border:1px solid rgba(255,255,255,0.6);
     background: rgba(255,255,255,0.75);
-
-    display: -webkit-box;
-    -webkit-box-orient:vertical;
 }
-.common_city,
-.add_common_city{
+.common_city{
     height: 30px;
     line-height: 30px;
     text-align:center;
+    display: -webkit-box;
 }
+
+.common_city_text{
+    -webkit-box-flex:5;
+}
+.minus{
+    -webkit-box-flex:1;
+    /*-webkit-appearance: button;*/
+    margin-right: 2px;
+}
+
+.add_common_city{
+    height: 30px;
+    line-height: 30px;
+}
+.plus{
+    font-size: 25px;
+    text-align:center;
+}
+
 .common_city:hover,
 .add_common_city:hover{
-    background-color: #007fbe;
+    background-color: #24b8ff;
 }
 
 
