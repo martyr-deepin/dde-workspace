@@ -96,9 +96,9 @@
     color: #FFF;
     font-weight: bold;
     text-shadow: 0 0 2px #808080;
-
-    display: -webkit-box;
-    -webkit-box-orient:vertical;
+}
+.more_weather_menu>div:hover{
+    background-color: #24b8ff;
 }
 .weather_data {
     height: 35px;

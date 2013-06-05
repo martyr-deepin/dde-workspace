@@ -56,8 +56,8 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
     set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
-        echo obj
-        echo x1 + "," + y1 + ";" + x2 + "," + y2 + ";" + show
+        # echo obj
+        # echo x1 + "," + y1 + ";" + x2 + "," + y2 + ";" + show
         if bottom_distance > BOTTOM_DISTANCE_MINI
             obj.style.left = x1
             obj.style.top = y1
@@ -75,27 +75,35 @@ class CityMoreMenu extends Widget
         @common_menu.style.display = "none"
 
         common_dists = localStorage.getObject("common_dists_storage")
-        echo common_dists
         if common_dists
             common_city = []
             i = 0
             while i < common_dists.length
                 if common_dists[i].name && common_dists[i].id
                     common_city = create_element("div","common_city",@common_menu)
-                    common_city.innerText = common_dists[i].name 
-                    common_city.value = common_dists[i].id
-                    value = common_dists[i].id
 
-                    common_city.addEventListener("click",=>
-                        @element.style.display = "none"
-                        echo common_city.innerText
-                        localStorage.setItem("cityid_storage",value)
+                    common_city_text = create_element("div","common_city_text",common_city)
+                    common_city_text.innerText = common_dists[i].name 
+                    common_city_text.value = common_dists[i].id
+
+                    minus = create_element("div","minus",common_city)
+                    minus.innerText = "-"
+
+                    that = @
+                    common_city_text.addEventListener("click",->
+                        that.element.style.display = "none"
+                        localStorage.setItem("cityid_storage",this.value)
+                        that = null
                         callback()
+                        )
+                    minus.addEventListener("click",->
+                        # that.remove_element(common_city) if common_city
                         )
                 i++
 
         @add_common_city = create_element("div","add_common_city",@common_menu)
-        @add_common_city.innerText = _("choose city")
+        plus =  create_element("div","plus",@add_common_city)
+        plus.innerText = "+"
 
         @set_menu_position(@common_menu,bottom_distance,x1,y1,x2,y2,"block")
 
@@ -230,7 +238,7 @@ class CityMoreMenu extends Widget
         colls.options.length = i
 
     remove_element:(obj)->
-        obj.parentNode.removeChild(obj)
+        obj.parentNode.removeChild(obj) if obj
 
     setMaxSize:(obj,val=@selectsize)->
         # length = obj.options.length
