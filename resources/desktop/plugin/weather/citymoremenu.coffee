@@ -19,6 +19,8 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
+    COMMON_MENU_WIDTH_MINI = 70
+
     BOTTOM_DISTANCE_MINI = 200
     times_dist_choose = 0
     common_dists_init = [
@@ -92,12 +94,13 @@ class CityMoreMenu extends Widget
                     that = @
                     common_city_text.addEventListener("click",->
                         that.element.style.display = "none"
+                        echo this.innerText
                         localStorage.setItem("cityid_storage",this.value)
                         that = null
                         callback()
                         )
                     minus.addEventListener("click",->
-                        # that.remove_element(common_city) if common_city
+                        that.remove_element(this.parentElement)
                         )
                 i++
 

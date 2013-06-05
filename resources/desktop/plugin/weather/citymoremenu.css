@@ -5,8 +5,6 @@
 }
 .common_menu{
     position: absolute;
-    width: 70px;
-
     box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
     overflow: hidden;
     border:1px solid rgba(255,255,255,0.6);
@@ -17,15 +15,24 @@
     line-height: 30px;
     text-align:center;
     display: -webkit-box;
+    -webkit-box-pack:end;
 }
 
 .common_city_text{
-    -webkit-box-flex:5;
+    min-width: 50px;
 }
 .minus{
-    -webkit-box-flex:1;
-    /*-webkit-appearance: button;*/
-    margin-right: 2px;
+    min-width: 20px;
+    font-size: 25px;
+    opacity: 0.0;
+    display: block;
+}
+.minus:hover{
+    /*background-color: #ccc;*/
+    background: rgba(255,255,255,0.5);
+
+    opacity: 1.0;
+    /*display: block;*/
 }
 
 .add_common_city{
