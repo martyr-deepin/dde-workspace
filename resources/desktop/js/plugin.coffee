@@ -133,7 +133,7 @@ class DesktopPlugin extends Plugin
 
 
 load_plugins = ->
-    DCore.init_plugins()
+    DCore.init_plugins('desktop')
     for p in DCore.get_plugins("desktop")
         new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
@@ -155,7 +155,7 @@ place_all_widgets = ->
     for i in widget_item
         continue if not (w = Widget.look_up(i))?
         if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos(), w.get_id()))?
-            echo new_pos
+            echo "#{new_pos?.width}x#{new_pos?.height} in (#{new_pos?.x}, #{new_pos?.y})"
             move_to_somewhere(w, new_pos)
         else
             move_to_anywhere(w)
