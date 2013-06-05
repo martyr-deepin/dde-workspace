@@ -16,7 +16,7 @@ class PluginManager
     enable_plugin: (id, value)->
         DCore.enable_plugin(id, value)
         name = get_name(id)
-        plugin = PluginManager._plugins[id]
+        plugin = PluginManager._plugins[name]
         if plugin
             if value
                 echo "enable #{id}"
@@ -24,22 +24,22 @@ class PluginManager
             else
                 echo "disable #{id}"
                 plugin.destroy()
-                echo delete PluginManager._plugins[id]
-                PluginManager._plugins[id] = null
+                echo delete PluginManager._plugins[name]
+                PluginManager._plugins[name] = null
         else
             echo 'plugin is not exists'
 
-    get_plugin: (id) ->
-        PluginManager._plugins[id]
+    get_plugin: (name) ->
+        PluginManager._plugins[name]
 
-    add_plugin: (id, obj) ->
-        PluginManager._plugins[id] = obj
+    add_plugin: (name, obj) ->
+        PluginManager._plugins[name] = obj
 
     @plugin_changed_handler: (info) ->
-        all_plugins = DCore.get_plugins('desktop')
-
         id_prefix = info.app_name + ":"
+        all_plugins = DCore.get_plugins(info.app_name)
         delete info.app_name
+
         for own k, v of info
             id = id_prefix + k
             echo id
@@ -51,7 +51,7 @@ class PluginManager
             id = id_prefix + name
             if info[name]
                 echo 'plugin_changed_handler: enable plugin'
-                if not PluginManager._plugins or not PluginManager._plugins[id]
+                if not PluginManager._plugins or not PluginManager._plugins[name]
                     new DesktopPlugin(get_path_base(plugin), name)
                     echo 'enable created plugin'
                     plugin_manager.enable_plugin(id, true)
@@ -63,9 +63,7 @@ class Plugin
     constructor: (@app_name, @path, @name, @host)->
         @id = @app_name + ':' + @name
         window.plugin_manager = new PluginManager() unless window.plugin_manager
-        window.plugin_manager.add_plugin(@id, @)
-        # window._plugins = {} if not window._plugins
-        # window._plugins[@name] = @
+        window.plugin_manager.add_plugin(@name, @)
         @inject_js(@name)
 
 
