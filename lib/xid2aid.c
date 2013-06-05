@@ -79,7 +79,7 @@ void _init()
     if (prefix_regex == NULL) {
         g_warning("Can't build prefix_regex, use fallback config!");
         prefix_regex = g_regex_new(
-                "(^gksu(do)?$)|(^sudo$)|(^java$)|(^mono$)|(^ruby$)|(^padsp$)|(^aoss$)|(^python(\\d.\\d)?$)|(^(ba)?sh$)",
+                "(^gksu(do)?$)|(^sudo$)|(^mono$)|(^ruby$)|(^padsp$)|(^aoss$)|(^python(\\d.\\d)?$)|(^(ba)?sh$)",
                 G_REGEX_OPTIMIZE, 0, NULL
                 );
 
@@ -113,7 +113,7 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
 
     if (cmdline[0] != NULL) {
         char* space_pos = NULL;
-        if ((space_pos = strchr(cmdline[0], ' ')) != NULL) {
+        if ((space_pos = strchr(cmdline[0], ' ')) != NULL && space_pos[1] == '-') {
             *space_pos = '\0';
             for (gsize i = length - 1; i > 0; --i) {
                 cmdline[i + 1] = cmdline[i];

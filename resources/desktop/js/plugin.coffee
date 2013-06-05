@@ -113,7 +113,7 @@ class DesktopPluginItem extends Widget
 class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
         @item = new DesktopPluginItem(@name)
-        super(@path, @name, @item.element)
+        super('desktop', @path, @name, @item.element)
 
 
     set_pos: (info)->
@@ -133,11 +133,9 @@ class DesktopPlugin extends Plugin
 
 
 load_plugins = ->
+    DCore.init_plugins()
     for p in DCore.get_plugins("desktop")
-        echo p
-        enabled_plugins = DCore.Desktop.get_plugin_array('desktop')
-        if get_path_name(p) in enabled_plugins
-            new DesktopPlugin(get_path_base(p), get_path_name(p))
+        new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 
 

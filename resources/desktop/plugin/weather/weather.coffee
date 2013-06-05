@@ -222,7 +222,7 @@ class Weather extends Widget
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
 
-plugin = window.plugin_manager.get_plugin("weather")
+plugin = window.plugin_manager.get_plugin("desktop:weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
