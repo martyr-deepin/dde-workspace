@@ -28,9 +28,9 @@ class Weather extends Widget
     TOP_MORE_WEATHER_MENU2 = -191
 
     LEFT_COMMON_CITY_MENU1 = 160
-    TOP_COMMON_CITY_MENU1 = 55
+    TOP_COMMON_CITY_MENU1 = 57
     LEFT_COMMON_CITY_MENU2 = 160
-    TOP_COMMON_CITY_MENU2 = 55
+    TOP_COMMON_CITY_MENU2 = 57
 
     LEFT_MORE_CITY_MENU1 = 10
     TOP_MORE_CITY_MENU1 = 90
@@ -44,7 +44,7 @@ class Weather extends Widget
         @weather_style_build()
         @more_weather_build()
 
-        cityid = localStorage.getObject("cityid_storage")
+        cityid = localStorage.getObject("cityid_storage") if localStorage.getObject("cityid_storage")
         if cityid < 1000
             cityid = 0
             localStorage.setItem("cityid_storage",cityid)
