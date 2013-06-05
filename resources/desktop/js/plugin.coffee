@@ -3,6 +3,7 @@ class PluginHandle extends Widget
         @id = "handle-#{@parent_id}"
         super(@id)
         @element.setAttribute("draggable", "true")
+        @offset_pos = {x : -1, y : -1}
 
 
     do_mouseover : (evt) =>
@@ -19,7 +20,11 @@ class PluginHandle extends Widget
 
     do_dragstart : (evt) =>
         evt.stopPropagation()
+
         _SET_DND_INTERNAL_FLAG_(evt)
+        drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+        @offset_pos.x = drag_pos.x
+        @offset_pos.y = drag_pos.y
         if (w = Widget.look_up(@parent_id))? then w.add_css_class("plugin_DND_border")
         return
 
@@ -29,6 +34,10 @@ class PluginHandle extends Widget
         if not (w = Widget.look_up(@parent_id))? then return
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
+        new_pos.x -= (@offset_pos.x - old_pos.x)
+        new_pos.x = 0 if new_pos.x < 0
+        new_pos.y -= (@offset_pos.y - old_pos.y)
+        new_pos.y = 0 if new_pos.y < 0
         if not detect_occupy(new_pos, @parent_id)
             move_to_somewhere(w, new_pos)
         w.remove_css_class("plugin_DND_border")
