@@ -1,0 +1,21 @@
+.clockface {
+    pointer-events: none;
+    position: absolute;
+    z-index: -4;
+}
+
+.HandleSec {
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+}
+
+.HandleMin {
+    pointer-events: none;
+    position: absolute;
+    z-index: -2;
+}
+.HandleHour {
+    pointer-events: none;
+    z-index: -3;
+}
