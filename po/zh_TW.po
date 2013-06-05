@@ -382,7 +382,7 @@ msgstr "遊戲娛樂"
 
 #: ../app/launcher/category.h:35
 msgid "graphics"
-msgstr "圖形圖像"
+msgstr "美工繪圖"
 
 #: ../app/launcher/category.h:36
 msgid "productivity"
@@ -390,7 +390,7 @@ msgstr "辦公軟體"
 
 #: ../app/launcher/category.h:37
 msgid "industry"
-msgstr "行業軟件"
+msgstr "行業軟體"
 
 #: ../app/launcher/category.h:38
 msgid "education"
@@ -406,7 +406,7 @@ msgstr "系統管理"
 
 #: ../app/launcher/category.h:41
 msgid "utilities"
-msgstr "實用工具"
+msgstr "公用程式"
 
 #: ../app/launcher/category.h:42
 msgid "other"
@@ -417,13 +417,13 @@ msgstr "其他"
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
-msgstr "無法將該桌面檔案重新命名為“%s”。您可能沒有權限"
+msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
 
 #: ../lib/dentry/entry.c:660
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "名稱“%s”已存在於該資料夾。請使用其他名稱。"
+msgstr "名稱「%s」已存在於該資料夾。請使用其他名稱。"
 
 #: ../lib/dentry/entry.c:666
 msgid "The Item could not be renamed"
@@ -471,7 +471,7 @@ msgstr "重設"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "將該動作套用到全部文件"
+msgstr "將該動作套用到全部檔案"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
@@ -488,7 +488,7 @@ msgstr "取代"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr "合併資料夾“%s”？"
+msgstr "合併資料夾「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
@@ -499,36 +499,36 @@ msgstr "合併將會在替換衝突檔案時請求確認。"
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個較舊資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個較舊資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個較新資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個較新資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr "替換將移除資料夾中的所有文件。"
+msgstr "替換將移除資料夾中的所有檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr "替換資料夾“%s”？"
+msgstr "替換資料夾「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同檔案名的資料夾。"
+msgstr "在「%s」中已存在相同檔案名的資料夾。"
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr "替換檔案“%s”？"
+msgstr "替換檔案「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
@@ -537,17 +537,17 @@ msgstr "取代將覆蓋它的內容。"
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在較舊的相同文件名的檔案。"
+msgstr "在「%s」中已存在較舊的相同名稱的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在更新的相同檔案名的檔案。"
+msgstr "在「%s」中已存在更新的相同檔案名的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同檔案名的檔案。"
+msgstr "在「%s」中已存在相同檔案名的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
@@ -606,7 +606,7 @@ msgstr "您想要執行“%s”，還是顯示其內容？"
 #: ../lib/dentry/mime_actions.c:136
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "“%s”是一個可執行的文字文件。"
+msgstr "「%s」是一個可執行的文字文件。"
 
 #: ../lib/dentry/mime_actions.c:147
 msgid "Run in _Terminal"
