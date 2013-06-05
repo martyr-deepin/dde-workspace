@@ -76,7 +76,9 @@ gchar const* get_schema_id(GSettings* gsettings)
     GValue value = G_VALUE_INIT;
     g_value_init(&value, G_TYPE_STRING);
     g_object_get_property(G_OBJECT(gsettings), "schema-id", &value);
-    return g_value_get_string(&value);
+    char const* schema_id = g_value_get_string(&value);
+    g_value_unset(&value);
+    return schema_id;
 }
 
 
