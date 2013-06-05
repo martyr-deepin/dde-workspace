@@ -19,8 +19,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class CityMoreMenu extends Widget
+    BOTTOM_DISTANCE_MINI = 200
     times_dist_choose = 0
-    common_dists = [
+    common_dists_init = [
       {
         "name":"",
         "id":""
@@ -39,16 +40,10 @@ class CityMoreMenu extends Widget
       }
     ]
 
-    constructor: (x,y,zIndex,y2)->
+    constructor: (zIndex,callback)->
         super(null)
-        @x = x
-        @y = y
-        @y2 = y2
-        @element.style.left = @x 
-        @element.style.top = @y
         @element.style.display = "none"
         @element.style.zIndex = zIndex
-        @lable_choose = create_element("lable","lable_choose",@element)
 
     display_none:->
         @element.style.display = "none"
@@ -60,76 +55,85 @@ class CityMoreMenu extends Widget
 
     zIndex_check:->
         return @element.style.zIndex
+    set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
+        echo obj
+        echo x1 + "," + y1 + ";" + x2 + "," + y2 + ";" + show
+        if bottom_distance > BOTTOM_DISTANCE_MINI
+            obj.style.left = x1
+            obj.style.top = y1
+        else 
+            obj.style.left = x2
+            obj.style.top = y2
+        obj.style.display = show if obj
 
-    show_hide_position:(bottom_distance)->
-        bottom_distance_mini = @selectsize * 12 + 40
+    common_city_build:(bottom_distance,x1,y1,x2,y2,callback)->
+        @element.style.display = "block"
         @lable_choose.style.display = "none" if @lable_choose
-        if @element.style.display == "none"
-            if bottom_distance < bottom_distance_mini
-                @element.style.top = @y2
-            else @element.style.top = @y
-            @common_menu.style.display = "block" if @common_menu
-            @element.style.display = "block"
-
-    common_city_build:(x=135,y=-25)->
         @remove_element(@common_menu) if @common_menu
+
         @common_menu = create_element("div","common_menu",@element)
-        @common_menu.style.left = x 
-        @common_menu.style.top = y
-        @common_city = []
+        @common_menu.style.display = "none"
 
         common_dists = localStorage.getObject("common_dists_storage")
-        # echo common_dists
-        i = 0
-        while i < common_dists.length
-            if common_dists[i].name && common_dists[i].id
-                @common_city[i] = create_element("div","common_city",@common_menu)
-                @common_city[i].innerText = common_dists[i].name 
-                @common_city[i].value = common_dists[i].id
-            i++
+        echo common_dists
+        if common_dists
+            common_city = []
+            i = 0
+            while i < common_dists.length
+                if common_dists[i].name && common_dists[i].id
+                    common_city = create_element("div","common_city",@common_menu)
+                    common_city.innerText = common_dists[i].name 
+                    common_city.value = common_dists[i].id
+                    value = common_dists[i].id
+
+                    common_city.addEventListener("click",=>
+                        @element.style.display = "none"
+                        echo common_city.innerText
+                        localStorage.setItem("cityid_storage",value)
+                        callback()
+                        )
+                i++
 
         @add_common_city = create_element("div","add_common_city",@common_menu)
         @add_common_city.innerText = _("choose city")
 
-        for div , i in @common_city
-            # echo div
-            name = div.innerText
-            value = div.value
-            @common_city[i].addEventListener("click",=>
-                @element.style.display = "none"
-                echo name
-                echo value
-                localStorage.setItem("cityid_storage",value)
-                callback()
-                )
+        @set_menu_position(@common_menu,bottom_distance,x1,y1,x2,y2,"block")
 
-    addcity:(selectsize,callback)->
+    more_city_build:(selectsize,bottom_distance,x1,y1,x2,y2,callback)->
         @add_common_city.addEventListener("click",=>
             @common_menu.style.display = "none"
-            @lable_choose.style.display = "block"
-            @more_city_build(selectsize)
+            @more_city_create(selectsize)
+            @set_menu_position(@lable_choose,bottom_distance,x1,y1,x2,y2,"block")
             @change_chooseprov(callback)
             )
 
-    more_city_build: (selectsize)->
+    more_city_create: (selectsize)->
         @selectsize = selectsize
 
-        @remove_element(@prov) if @prov
-        @remove_element(@city) if @city
-        @remove_element(@dist) if @dist
+
+        @remove_element(@lable_choose) if @lable_choose
+        @remove_element(choose) if choose
+        @remove_element(prov) if prov
+        @remove_element(city) if city
+        @remove_element(dist) if dist
         @remove_element(@chooseprov) if @chooseprov
         @remove_element(@choosecity) if @choosecity
         @remove_element(@choosedist) if @choosedist
 
+        @lable_choose = create_element("div","lable_choose",@element)
+        @lable_choose.style.display = "none"
+
+        choose = create_element("div","choose",@lable_choose)
+
         @str_provinit = "-" + _("province") + "-"
         @str_cityinit = "-" + _("city") + "-" 
         @str_distinit = "-" + _("county") + "-"
-        @prov = create_element("div","prov",@lable_choose)
-        @city = create_element("div","city",@lable_choose)
-        @dist = create_element("div","dist",@lable_choose)
-        @chooseprov = create_element("select", "chooseprov", @prov)
-        @choosecity = create_element("select", "choosecity", @city)
-        @choosedist = create_element("select", "choosedist", @dist)
+        prov = create_element("div","prov",choose)
+        city = create_element("div","city",choose)
+        dist = create_element("div","dist",choose)
+        @chooseprov = create_element("select", "chooseprov", prov)
+        @choosecity = create_element("select", "choosecity", city)
+        @choosedist = create_element("select", "choosedist", dist)
 
         @clearOptions(@chooseprov,0)
         provinit = create_element("option","provinit",@chooseprov)
@@ -175,7 +179,6 @@ class CityMoreMenu extends Widget
         @create_option(@choosecity,data)
         @setMaxSize(@choosecity)
         @choosecity.onchange = =>
-
             cityIndex = @choosecity.selectedIndex
             if cityIndex == -1
                 @choosecity.options.remove(cityIndex)
@@ -198,11 +201,20 @@ class CityMoreMenu extends Widget
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
 
-                    times_dist_choose = localStorage.getObject("times_dist_choose_storage") if times_dist_choose
-                    common_dists = localStorage.getObject("common_dists_storage") if common_dists
+                    times = localStorage.getObject("times_dist_choose_storage")
+                    echo times
+                    times_dist_choose = if !times then 0 else times
+                    echo times_dist_choose
+
+                    common = localStorage.getObject("common_dists_storage")
+                    echo common
+                    common_dists = if !common then common_dists_init else common
+                    echo common_dists
+
                     common_dists[times_dist_choose].name = data[distvalue].name
                     common_dists[times_dist_choose].id = data[distvalue].data
                     localStorage.setObject("common_dists_storage",common_dists)
+
                     times_dist_choose++
                     if times_dist_choose > 4 then times_dist_choose = 0 
                     localStorage.setItem("times_dist_choose_storage",times_dist_choose)
@@ -218,7 +230,7 @@ class CityMoreMenu extends Widget
         colls.options.length = i
 
     remove_element:(obj)->
-        obj.parentNode.removeChild(obj) if obj
+        obj.parentNode.removeChild(obj)
 
     setMaxSize:(obj,val=@selectsize)->
         # length = obj.options.length

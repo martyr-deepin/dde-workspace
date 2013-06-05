@@ -1,10 +1,15 @@
 .global_desktop{
+    background-color:rgba(255,255,255,0.0);
     position: fixed;
     display: none;
-    background-color:rgba(255,255,255,0.0);
     top:0px;
     left:0px;
 }
+
+.CityMoreMenu{
+    position: absolute;
+}
+
 .Weather {
     width: 276px;
     height: 70px;
@@ -12,106 +17,77 @@
     background-repeat: no-repeat;
     cursor:default;
     z-index: 0;
+    display: -webkit-box;
 }
-.CityMoreMenu{
-    position: absolute;
-}
+
 .left_div{
-    position: relative;
     width: 83px;
     height: 70px;
-    float: left;
-
+    vertical-align:middle;
+    display:table-cell;
+    text-align:center;
 }
 .weather_now_pic{
-    position:relative;
-    top: 11px;
-    left: 20px;
-    width: 48px;
-    height: 48px;
-}
-.right_div{
-    position: relative;
-    width: 191px;
-    height: 70px;
-    float: left;
-}
-.temperature_now{
-    position: relative;
-    top: 15px;
-    margin-left: 3px;
-    height: 40px;
-    float: left;
 }
 
-.temperature_now_minus{
-    position: relative;
-    top:10px;
-    color: #E6E6FA;
-    font-size: 20px;
-    opacity: 0;
-    text-shadow: 2px 2px 1px #808080;
-    float: left;
+.right_div{
+    display: -webkit-box;
 }
-.temperature_now_number{
-    position:relative;
-    float: left;
-    top:10px;
+
+.temperature_now{
+    line-height: 70px;
     color: #FFF;
     font-size: 36px;
-    font-weight: bold;
     text-shadow: 0 0 4px #808080;
+    font-weight: bold;
+    display: -webkit-box;
 }
-
+.temperature_now_minus{
+    opacity: 0.0;
+}
+.temperature_now_number{
+}
 .temperature_now_number:after{
     content: "°";
 }
+
 .city_and_date{
-    position: relative;
-    top:15px;
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
     margin-left: 10px;
-    float: left;
-    height: 40px;
+    text-align: left;
 }
+
 .city{
-    position: relative;
-    height: 20px;
-    float: left;
-    /*margin:auto;*/
-    margin-left: 0px;
+    height: 35px;
+    display: -webkit-box;
     cursor: pointer;
 }
 .city_now{
-    position: relative;
-    float: left;
+    margin-top: 18px;
     font-size: 15px;
     font-weight: bolder;
-    margin:auto;
     text-shadow: 0px 1px 1px #FFF;
 }
 .more_city_img{
-    position: relative;
-    top:3px;
-    margin: 1px 0px 0px 3px;
-    float:left;
+    margin: 22px 0px 0px 3px;
 }
-.date{
-    position: relative;
-    height: 35px;
-    clear: both;
-    cursor: pointer;
 
+.date{
+    cursor: pointer;
+    height: 35px;
     color: #FFF;
     font-weight: bolder;
     text-shadow: 0 0 2px #808080;
 }
+
+
 .more_weather_menu{
     position:absolute;
     left: 83px;
-    top: 85px;
+    /*top set in coffee*/
     width: 162px;
     border:1px solid rgba(255,255,255,0.6);
-    /*border-radius: 0 0 6px 6px;*/ /*set in coffee */
     overflow: hidden;
     z-index: 65535;
     display: none;
@@ -120,13 +96,14 @@
     color: #FFF;
     font-weight: bold;
     text-shadow: 0 0 2px #808080;
-}
 
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+}
 .weather_data {
     height: 35px;
     line-height: 35px;
 }
-
 .weather_data:nth-child(odd) {
     background-color:rgba(255,255,255,0.35);
 }
@@ -139,7 +116,6 @@
     margin-left: 7px;
     font-weight: bolder;
 }
-
 .pic:lang(zh){
     margin-left: 10px;
     margin-bottom: 5px;

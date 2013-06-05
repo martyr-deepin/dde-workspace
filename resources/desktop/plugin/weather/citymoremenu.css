@@ -1,38 +1,47 @@
 .CityMoreMenu{
-    margin-top: 0px;
+    position: absolute;
+    left:0px;
+    top: 0px;
 }
 .common_menu{
     position: absolute;
+    width: 70px;
+
     box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
     overflow: hidden;
     border:1px solid rgba(255,255,255,0.6);
     background: rgba(255,255,255,0.75);
 
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
 }
 .common_city,
 .add_common_city{
-    width: 70px;
     height: 30px;
     line-height: 30px;
     text-align:center;
-    /*-webkit-appearance: button;*/
 }
 .common_city:hover,
 .add_common_city:hover{
     background-color: #007fbe;
 }
 
+
+.lable_choose{
+    position: absolute;
+    display: none;
+}
+.choose{
+    display: -webkit-box;
+}
 .prov,
 .city,
 .dist{
-    position:relative;
-    float: left;
     margin-right: 7px;
 }
 .chooseprov,
 .choosecity,
 .choosedist{
-    /*font-size: 14px;*/
     text-align:center;
 
     padding: 0 0 0 10px;

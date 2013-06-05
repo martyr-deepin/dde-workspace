@@ -21,6 +21,24 @@ class Weather extends Widget
     ZINDEX_MENU = 65535
     ZINDEX_GLOBAL_DESKTOP = 5000
     ZINDEX_DOWNEST = 0
+
+    BOTTOM_DISTANCE_MINI = 200
+
+    TOP_MORE_WEATHER_MENU1 = 90
+    TOP_MORE_WEATHER_MENU2 = -191
+
+    LEFT_COMMON_CITY_MENU1 = 160
+    TOP_COMMON_CITY_MENU1 = 55
+    LEFT_COMMON_CITY_MENU2 = 160
+    TOP_COMMON_CITY_MENU2 = 55
+
+    LEFT_MORE_CITY_MENU1 = 10
+    TOP_MORE_CITY_MENU1 = 90
+    LEFT_MORE_CITY_MENU2 = 10
+    TOP_MORE_CITY_MENU2 = -203
+
+    SELECT_SIZE = 13
+
     constructor: ->
         super(null)
         @weather_style_build()
@@ -62,7 +80,7 @@ class Weather extends Widget
         @date = create_element("div", "date", city_and_date)
         @date.textContent =  _("loading") + ".........."
 
-        @more_city_menu = new CityMoreMenu(10,83,ZINDEX_MENU,-208)
+        @more_city_menu = new CityMoreMenu(ZINDEX_MENU)
         @element.appendChild(@more_city_menu.element)
 
         @global_desktop = create_element("div","global_desktop",@element)
@@ -79,9 +97,8 @@ class Weather extends Widget
                 @global_desktop.style.display = "none"
 
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            @more_city_menu.common_city_build(135,-25)
-            @more_city_menu.show_hide_position(bottom_distance)
-            @more_city_menu.addcity(13,@weathergui_update.bind(@))
+            @more_city_menu.common_city_build(bottom_distance,LEFT_COMMON_CITY_MENU1,TOP_COMMON_CITY_MENU1,LEFT_COMMON_CITY_MENU2,TOP_COMMON_CITY_MENU2,@weathergui_update.bind(@))
+            @more_city_menu.more_city_build(SELECT_SIZE,bottom_distance,LEFT_MORE_CITY_MENU1,TOP_MORE_CITY_MENU1,LEFT_MORE_CITY_MENU2,TOP_MORE_CITY_MENU2,@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
             @more_city_menu.display_none()
@@ -89,11 +106,11 @@ class Weather extends Widget
             if @more_weather_menu.style.display == "none"
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < 200
-                    @more_weather_menu.style.top = -196
+                if bottom_distance < BOTTOM_DISTANCE_MINI
+                    @more_weather_menu.style.top = TOP_MORE_WEATHER_MENU2
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
                 else
-                    @more_weather_menu.style.top = 85
+                    @more_weather_menu.style.top = TOP_MORE_WEATHER_MENU1
                     @more_weather_menu.style.borderRadius = "0 0 6px 6px"
                 @more_weather_menu.style.display = "block"
             else
@@ -160,6 +177,8 @@ class Weather extends Widget
     update_weathernow: (weather_data_now)->
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
+        # echo "temp_now:" + temp_now
+        # show the name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
