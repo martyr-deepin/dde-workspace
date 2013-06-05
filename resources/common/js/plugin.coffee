@@ -1,5 +1,5 @@
 get_name = (id) ->
-    index = id.indexOf(':')
+    index = id.lastIndexOf(':')
     if index == -1
         return id
     else
@@ -16,6 +16,7 @@ class PluginManager
     enable_plugin: (id, value)->
         DCore.enable_plugin(id, value)
         name = get_name(id)
+        echo "plugin's name: #{name}"
         plugin = PluginManager._plugins[name]
         if plugin
             if value
@@ -24,10 +25,10 @@ class PluginManager
             else
                 echo "disable #{id}"
                 plugin.destroy()
-                echo delete PluginManager._plugins[name]
+                delete PluginManager._plugins[name]
                 PluginManager._plugins[name] = null
         else
-            echo 'plugin is not exists'
+            echo "plugin #{id} does not exists"
 
     get_plugin: (name) ->
         PluginManager._plugins[name]
@@ -40,22 +41,20 @@ class PluginManager
         all_plugins = DCore.get_plugins(info.app_name)
         delete info.app_name
 
-        for own k, v of info
-            id = id_prefix + k
-            echo id
-            if not v
-                echo 'plugin_changed_handler: disable plugin'
-                plugin_manager.enable_plugin(id, false)
         for plugin in all_plugins
             name = get_path_name(plugin)
             id = id_prefix + name
-            if info[name]
-                echo 'plugin_changed_handler: enable plugin'
+            if info[id]
+                delete info[id]
                 if not PluginManager._plugins or not PluginManager._plugins[name]
-                    new DesktopPlugin(get_path_base(plugin), name)
-                    echo 'enable created plugin'
-                    plugin_manager.enable_plugin(id, true)
-            else
+                    if id_prefix == 'desktop:'
+                        new DesktopPlugin(get_path_base(plugin), name)
+                        plugin_manager.enable_plugin(id, true)
+                        place_all_widgets()
+
+        for own k, v of info
+            plugin_manager.enable_plugin(k, false)
+
         return
 
 

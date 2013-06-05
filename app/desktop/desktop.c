@@ -255,22 +255,18 @@ void _change_to_json(gpointer key, gpointer value, gpointer user_data)
 }
 
 
-gchar const* get_schema_id(GSettings* gsettings)
-{
-    GValue value = G_VALUE_INIT;
-    g_value_init(&value, G_TYPE_STRING);
-    g_object_get_property(G_OBJECT(gsettings), "path", &value);
-    return g_value_get_string(&value);
-}
-
 PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
 {
+    extern gchar const* get_schema_id(GSettings* gsettings);
     extern void _init_state(gpointer key, gpointer value, gpointer user_data);
+
     g_hash_table_foreach(plugins_state, _init_state, plugins_state);
     get_enabled_plugins(settings, "enabled-plugins");
+
     JSObjectRef json = json_create();
     if (g_str_equal(get_schema_id(settings), get_schema_id(desktop_gsettings)))
         json_append_string(json, "app_name", "desktop");
+
     g_hash_table_foreach(plugins_state, _change_to_json, (gpointer)json);
     js_post_message("plugins_changed", json);
 }

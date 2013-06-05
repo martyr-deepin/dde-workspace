@@ -70,12 +70,28 @@ void _init_state(gpointer key, gpointer value, gpointer user_data)
     g_hash_table_replace((GHashTable*)user_data, g_strdup(key), GINT_TO_POINTER(DISABLED_PLUGIN));
 }
 
+
+gchar const* get_schema_id(GSettings* gsettings)
+{
+    GValue value = G_VALUE_INIT;
+    g_value_init(&value, G_TYPE_STRING);
+    g_object_get_property(G_OBJECT(gsettings), "schema-id", &value);
+    return g_value_get_string(&value);
+}
+
+
 void get_enabled_plugins(GSettings* gsettings, char const* key)
 {
+    char const* schema_id = get_schema_id(gsettings);
+    char const* id_prefix = NULL;
+    if (g_str_has_suffix(schema_id, "desktop"))
+        id_prefix = "desktop:";
+
     char** values = g_settings_get_strv(gsettings, key);
     for (int i = 0; values[i] != NULL; ++i) {
-        g_hash_table_add(enabled_plugins, g_strdup(values[i]));
-        g_hash_table_replace(plugins_state, g_strdup(values[i]), GINT_TO_POINTER(ENABLED_PLUGIN));
+        g_hash_table_add(enabled_plugins, g_strconcat(id_prefix, values[i], NULL));
+        g_hash_table_replace(plugins_state, g_strconcat(id_prefix, values[i], NULL),
+                             GINT_TO_POINTER(ENABLED_PLUGIN));
     }
 
     g_strfreev(values);
@@ -83,20 +99,25 @@ void get_enabled_plugins(GSettings* gsettings, char const* key)
 
 
 JS_EXPORT_API
-void dcore_init_plugins()
+void dcore_init_plugins(char const* app_name)
 {
+    GSettings* gsettings = NULL;
     if (desktop_gsettings == NULL)
         desktop_gsettings = g_settings_new(DESKTOP_SCHEMA_ID);
 
-    if (plugins_state == NULL) {
-        plugins_state = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-        g_hash_table_foreach(plugins_state, _init_state, plugins_state);
-    }
+    if (g_str_equal(app_name, "desktop"))
+        gsettings = desktop_gsettings;
 
-    if (enabled_plugins == NULL) {
-        enabled_plugins = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-        get_enabled_plugins(desktop_gsettings, SCHEMA_KEY_ENABLED_PLUGINS);
-    }
+    if (plugins_state == NULL)
+        plugins_state = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+
+    g_hash_table_foreach(plugins_state, _init_state, plugins_state);
+
+    if (enabled_plugins != NULL)
+        g_hash_table_unref(enabled_plugins);
+
+    enabled_plugins = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+    get_enabled_plugins(gsettings, SCHEMA_KEY_ENABLED_PLUGINS);
 }
 
 
@@ -118,11 +139,14 @@ JSValueRef dcore_get_plugins(const char* app_name)
                 char* js_path = g_build_filename(full_path, js_name, NULL);
                 g_free(js_name);
 
-                if (g_hash_table_contains(enabled_plugins, file_name)) {
+                char* key = g_strconcat(app_name, ":", file_name, NULL);
+                if (g_hash_table_contains(enabled_plugins, key)) {
+
                     JSValueRef v = jsvalue_from_cstr(ctx, js_path);
                     json_array_insert(array, i++, v);
                 }
 
+                g_free(key);
                 g_free(js_path);
             }
 
@@ -154,7 +178,13 @@ JS_EXPORT_API
 void dcore_enable_plugin(char const* id, gboolean value)
 {
     GSettings* gsettings = NULL;
-    gsettings = desktop_gsettings;
+    char* pos = strchr(id, ':');
+    char* app_name = g_strndup(id, pos - id);
+
+    if (g_str_equal(app_name, "desktop"))
+        gsettings = desktop_gsettings;
+
+    g_free(app_name);
 
     enable_plugin(gsettings, id, value);
 }
