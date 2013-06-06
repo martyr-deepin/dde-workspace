@@ -42,23 +42,22 @@ class ToolTip extends Widget
 
     show: ->
         ToolTip.tooltip.innerText = @text
-        DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
     hide: ->
         clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip?.style.display = "none"
-    @move_to: (x, y) ->
+    @move_to: (self, x, y) ->
         if y <= 0
-            @hide()
+            self.hide()
             return
         ToolTip.tooltip.style.left = "#{x}px"
         ToolTip.tooltip.style.bottom = "#{y}px"
     _move_tooltip: ->
-        item_x = get_page_xy(@element, 0, 0).x
+        page_xy= get_page_xy(@element, 0, 0)
         offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2
 
-        x = item_x + offset + 4  # 4 for subtle adapt
+        x = page_xy.x + offset + 4  # 4 for subtle adapt
         x = 0 if x < 0
-        ToolTip.move_to(x.toFixed(), @element.clientHeight)
+        ToolTip.move_to(@, x.toFixed(), document.body.clientHeight - page_xy.y)
 
