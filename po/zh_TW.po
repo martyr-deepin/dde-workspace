@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-31 09:16+0800\n"
+"POT-Creation-Date: 2013-06-06 09:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/lock.coffee:55
+#: ../resources/greeter/js/lock.coffee:52
 msgid "Unlock"
 msgstr "解鎖"
 
-#: ../resources/greeter/js/lock.coffee:72
+#: ../resources/greeter/js/lock.coffee:66
 #: ../resources/greeter/js/user.coffee:106
 msgid "Welcome"
 msgstr "歡迎"
 
-#: ../resources/greeter/js/lock.coffee:78
+#: ../resources/greeter/js/lock.coffee:72
 msgid "Switch User"
 msgstr "切換使用者"
 
@@ -231,120 +231,49 @@ msgid "Trash"
 msgstr "回收筒"
 
 #: ../resources/desktop/js/desktop_item.coffee:1529
+msgid "_Clean up %c items"
+msgstr "清理%c個項目(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1531
+msgid "_Clean up 1 item"
+msgstr "清理1個項目(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1533
 msgid "_Clean up"
 msgstr "清理(_C)"
-
-#: ../resources/desktop/js/desktop_item.coffee:1529
-msgid "items"
-msgstr "項目"
-
-#: ../resources/desktop/js/desktop_item.coffee:1531
-msgid "item"
-msgstr "項目"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
 msgid "Software Center"
 msgstr "軟體中心"
 
-#: ../resources/desktop/js/grid.coffee:812
-msgid "_Sort by"
-msgstr "排序方式(_S)"
-
-#: ../resources/desktop/js/grid.coffee:813
-msgid "_Name"
-msgstr "名稱(_N)"
-
-#: ../resources/desktop/js/grid.coffee:814
-msgid "Last modified _time"
-msgstr "最近修改時間(_T)"
-
-#: ../resources/desktop/js/grid.coffee:817
-msgid "_New"
-msgstr "新建(_N)"
-
-#: ../resources/desktop/js/grid.coffee:818
-msgid "_Folder"
-msgstr "資料夾(_F)"
-
-#: ../resources/desktop/js/grid.coffee:819
-msgid "_Text document"
-msgstr "文字文檔(_T)"
-
-#: ../resources/desktop/js/grid.coffee:822
-msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
-
-#: ../resources/desktop/js/grid.coffee:823
-msgid "_Paste"
-msgstr "貼上(_P)"
-
-#: ../resources/desktop/js/grid.coffee:825
-msgid "_Display settings"
-msgstr "顯示設定(_D)"
-
-#: ../resources/desktop/js/grid.coffee:826
-msgid "D_esktop settings"
-msgstr "桌面設定(_E)"
-
-#: ../resources/desktop/js/grid.coffee:827
-msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:51
-msgid "province"
-msgstr "省"
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:52
-msgid "city"
-msgstr "市"
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:53
-msgid "county"
-msgstr "縣"
-
-#: ../resources/desktop/plugin/weather/weather.coffee:54
-msgid "choose city"
-msgstr "選擇城市"
-
-#: ../resources/desktop/plugin/weather/weather.coffee:57
-msgid "loading"
-msgstr "載入中"
-
-#: ../resources/desktop/plugin/weather/weather.coffee:183
-msgid "None"
-msgstr "沒有"
-
-#: ../resources/dock/js/clientgroup.coffee:25
 msgid "_New instance"
 msgstr "新建實體(_N)"
 
-#: ../resources/dock/js/clientgroup.coffee:26
+#: ../resources/dock/js/clientgroup.coffee:33
 msgid "_Close"
 msgstr "關閉(_C)"
 
-#: ../resources/dock/js/clientgroup.coffee:28
+#: ../resources/dock/js/clientgroup.coffee:35
 msgid "_Dock me"
 msgstr "停駐(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:37
+#: ../resources/dock/js/deepin_item.coffee:39
 msgid "Launcher"
 msgstr "啟動器"
 
-#: ../resources/dock/js/deepin_item.coffee:40
+#: ../resources/dock/js/deepin_item.coffee:42
 msgid "Show/Hide Desktop"
 msgstr "顯示/隱藏桌面"
 
-#: ../resources/dock/js/item.coffee:340
+#: ../resources/dock/js/item.coffee:264
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
 msgstr "該項目無效。您要將其從 Dock 刪除嗎？"
 
-#: ../resources/dock/js/launcher.coffee:32 ../lib/dentry/mime_actions.c:150
+#: ../resources/dock/js/launcher.coffee:33 ../lib/dentry/mime_actions.c:150
 msgid "_Run"
 msgstr "執行(_R)"
 
-#: ../resources/dock/js/launcher.coffee:34
+#: ../resources/dock/js/launcher.coffee:35
 msgid "_Undock"
 msgstr "移除停駐(_U)"
 
@@ -392,7 +321,7 @@ msgstr "新增目錄"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:310 ../app/greeter/greeter.c:467
+#: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:468
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
@@ -414,7 +343,7 @@ msgstr "遊戲娛樂"
 
 #: ../app/launcher/category.h:35
 msgid "graphics"
-msgstr "圖形圖像"
+msgstr "美工繪圖"
 
 #: ../app/launcher/category.h:36
 msgid "productivity"
@@ -422,7 +351,7 @@ msgstr "辦公軟體"
 
 #: ../app/launcher/category.h:37
 msgid "industry"
-msgstr "行業軟件"
+msgstr "行業軟體"
 
 #: ../app/launcher/category.h:38
 msgid "education"
@@ -438,7 +367,7 @@ msgstr "系統管理"
 
 #: ../app/launcher/category.h:41
 msgid "utilities"
-msgstr "實用工具"
+msgstr "公用程式"
 
 #: ../app/launcher/category.h:42
 msgid "other"
@@ -449,13 +378,13 @@ msgstr "其他"
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
-msgstr "無法將該桌面檔案重新命名為“%s”。您可能沒有權限"
+msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
 
 #: ../lib/dentry/entry.c:660
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "名稱“%s”已存在於該資料夾。請使用其他名稱。"
+msgstr "名稱「%s」已存在於該資料夾。請使用其他名稱。"
 
 #: ../lib/dentry/entry.c:666
 msgid "The Item could not be renamed"
@@ -503,7 +432,7 @@ msgstr "重設"
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "將該動作套用到全部文件"
+msgstr "將該動作套用到全部檔案"
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
@@ -520,7 +449,7 @@ msgstr "取代"
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr "合併資料夾“%s”？"
+msgstr "合併資料夾「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
@@ -531,36 +460,36 @@ msgstr "合併將會在替換衝突檔案時請求確認。"
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個較舊資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個較舊資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個較新資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個較新資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中有相同名稱的一個資料夾已存在。"
+msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
 
 #: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr "替換將移除資料夾中的所有文件。"
+msgstr "替換將移除資料夾中的所有檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr "替換資料夾“%s”？"
+msgstr "替換資料夾「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同檔案名的資料夾。"
+msgstr "在「%s」中已存在相同檔案名的資料夾。"
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr "替換檔案“%s”？"
+msgstr "替換檔案「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
@@ -569,17 +498,17 @@ msgstr "取代將覆蓋它的內容。"
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在較舊的相同文件名的檔案。"
+msgstr "在「%s」中已存在較舊的相同名稱的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在更新的相同檔案名的檔案。"
+msgstr "在「%s」中已存在更新的相同檔案名的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在“%s”中已存在相同檔案名的檔案。"
+msgstr "在「%s」中已存在相同檔案名的檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
@@ -638,7 +567,7 @@ msgstr "您想要執行“%s”，還是顯示其內容？"
 #: ../lib/dentry/mime_actions.c:136
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "“%s”是一個可執行的文字文件。"
+msgstr "「%s」是一個可執行的文字文件。"
 
 #: ../lib/dentry/mime_actions.c:147
 msgid "Run in _Terminal"
