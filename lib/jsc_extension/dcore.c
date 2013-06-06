@@ -71,12 +71,12 @@ void _init_state(gpointer key, gpointer value, gpointer user_data)
 }
 
 
-gchar const* get_schema_id(GSettings* gsettings)
+gchar * get_schema_id(GSettings* gsettings)
 {
     GValue value = G_VALUE_INIT;
     g_value_init(&value, G_TYPE_STRING);
     g_object_get_property(G_OBJECT(gsettings), "schema-id", &value);
-    char const* schema_id = g_value_get_string(&value);
+    char * schema_id = g_strdup(g_value_get_string(&value));
     g_value_unset(&value);
     return schema_id;
 }
@@ -84,10 +84,13 @@ gchar const* get_schema_id(GSettings* gsettings)
 
 void get_enabled_plugins(GSettings* gsettings, char const* key)
 {
-    char const* schema_id = get_schema_id(gsettings);
+    char * schema_id = get_schema_id(gsettings);
     char const* id_prefix = NULL;
     if (g_str_has_suffix(schema_id, "desktop"))
         id_prefix = "desktop:";
+
+    g_free(schema_id);
+    g_assert(id_prefix != NULL);
 
     char** values = g_settings_get_strv(gsettings, key);
     for (int i = 0; values[i] != NULL; ++i) {
