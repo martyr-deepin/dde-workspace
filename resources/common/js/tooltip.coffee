@@ -2,45 +2,41 @@ tooltip_hide_id = null
 class ToolTip extends Widget
     tooltip: null
     should_show_id: -1
-    constructor: (@widget, @text)->
+    constructor: (@element, @text)->
         ToolTip.tooltip ?= $("#tooltip")
 
         @event_bind('dragstart', =>
-            clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip?.style.display = "none"
+            @_hide_tooltip()
         )
         @event_bind('dragenter', =>
-            clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip?.style.display = "none"
+            @_hide_tooltip()
         )
         @event_bind('dragover', =>
-            clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip?.style.display = "none"
+            @_hide_tooltip()
         )
         @event_bind('dragleave', =>
-            clearTimeout(ToolTip.should_show_id)
-            ToolTip.tooltip?.style.display = "none"
+            @_hide_tooltip()
         )
         @event_bind('dragend', =>
-            @widget?.tooltip?.hide()
+            @hide()
         )
         @event_bind('contextmenu', =>
-            @widget?.tooltip?.hide()
+            @hide()
         )
         @event_bind('mouseout', =>
-            @widget?.tooltip?.hide()
+            @hide()
         )
         @event_bind('mouseover', =>
             ToolTip.should_show_id = setTimeout(=>
-                @widget?.tooltip?.show()
+                @show()
             , 500)
         )
         @event_bind('click', =>
-            @widget?.tooltip?.hide()
+            @hide()
         )
 
     event_bind: (evt_name, callback) ->
-        @widget.element.addEventListener(evt_name, (e) ->
+        @element.addEventListener(evt_name, (e) ->
             callback()
         )
 
@@ -50,9 +46,11 @@ class ToolTip extends Widget
         DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
-    hide: ->
+    _hide_tooltip: ->
         clearTimeout(ToolTip.should_show_id)
-        ToolTip.tooltip.style.display = "none"
+        ToolTip.tooltip?.style.display = "none"
+    hide: ->
+        @_hide_tooltip()
         sleep_time = 400
         if Preview_container.is_showing
             sleep_time = 1000
@@ -67,10 +65,10 @@ class ToolTip extends Widget
         ToolTip.tooltip.style.left = "#{x}px"
         ToolTip.tooltip.style.bottom = "#{y}px"
     _move_tooltip: ->
-        item_x = get_page_xy(@widget.element, 0, 0).x
-        offset = (@widget.element.clientWidth - ToolTip.tooltip.clientWidth) / 2
+        item_x = get_page_xy(@element, 0, 0).x
+        offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2
 
         x = item_x + offset + 4  # 4 for subtle adapt
         x = 0 if x < 0
-        ToolTip.move_to(x.toFixed(), @widget.element.clientHeight)
+        ToolTip.move_to(x.toFixed(), @element.clientHeight)
 

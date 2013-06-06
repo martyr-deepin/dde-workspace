@@ -284,7 +284,7 @@ class AppItem extends Widget
                     when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
 
     set_tooltip: (text) ->
-        @tooltip = new ToolTip(@, text)
+        new ToolTip(@element, text)
 
 
 
