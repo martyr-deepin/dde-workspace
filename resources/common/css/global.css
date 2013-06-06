@@ -55,3 +55,14 @@ input[type="search"]::-webkit-search-cancel-button {
     z-index: -10000;
     opacity: 0;
 }
+
+.tooltip {
+    display: none;
+    position: absolute;
+    bottom: -0px;
+    background:rgba(0,0,0,0.8);
+    padding: 5px;
+    color: white;
+    border-radius: 4px;
+    z-index: 65535;
+}

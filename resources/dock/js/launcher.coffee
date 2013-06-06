@@ -43,6 +43,7 @@ class Launcher extends AppItem
 
     do_mouseover: (e)->
         Preview_close_now()
+        DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 
     do_mouseout: (e)->

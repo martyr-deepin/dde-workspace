@@ -11,6 +11,7 @@
     background: rgba(255,255,255,0.75);
 }
 .common_city{
+    min-width: 70px;
     height: 30px;
     line-height: 30px;
     text-align:center;
@@ -18,9 +19,6 @@
     -webkit-box-pack:end;
 }
 
-.common_city_text{
-    min-width: 50px;
-}
 .minus{
     min-width: 20px;
     font-size: 25px;
@@ -30,9 +28,7 @@
 .minus:hover{
     /*background-color: #ccc;*/
     background: rgba(255,255,255,0.5);
-
     opacity: 1.0;
-    /*display: block;*/
 }
 
 .add_common_city{
