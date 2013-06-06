@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-31 09:16+0800\n"
+"POT-Creation-Date: 2013-06-06 09:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/lock.coffee:55
+#: ../resources/greeter/js/lock.coffee:52
 msgid "Unlock"
 msgstr "解鎖"
 
-#: ../resources/greeter/js/lock.coffee:72
+#: ../resources/greeter/js/lock.coffee:66
 #: ../resources/greeter/js/user.coffee:106
 msgid "Welcome"
 msgstr "歡迎"
 
-#: ../resources/greeter/js/lock.coffee:78
+#: ../resources/greeter/js/lock.coffee:72
 msgid "Switch User"
 msgstr "切換使用者"
 
@@ -223,18 +223,16 @@ msgid "Trash"
 msgstr "回收筒"
 
 #: ../resources/desktop/js/desktop_item.coffee:1529
+msgid "_Clean up %c items"
+msgstr "清理%c個項目(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1531
+msgid "_Clean up 1 item"
+msgstr "清理1個項目(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1533
 msgid "_Clean up"
 msgstr "清理(_C)"
-
-#: ../resources/desktop/js/desktop_item.coffee:1529
-msgid "items"
-msgstr "項目"
-
-#: ../resources/desktop/js/desktop_item.coffee:1531
-msgid "item"
-msgstr "項目"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
 msgid "Software Center"
@@ -360,7 +358,7 @@ msgstr "新增目錄"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:310 ../app/greeter/greeter.c:467
+#: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:468
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
