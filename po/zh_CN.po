@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-31 12:13+0800\n"
+"POT-Creation-Date: 2013-06-06 09:03+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/lock.coffee:55
+#: ../resources/greeter/js/lock.coffee:52
 msgid "Unlock"
 msgstr "解锁"
 
-#: ../resources/greeter/js/lock.coffee:72
+#: ../resources/greeter/js/lock.coffee:66
 #: ../resources/greeter/js/user.coffee:106
 msgid "Welcome"
 msgstr "欢迎"
 
-#: ../resources/greeter/js/lock.coffee:78
+#: ../resources/greeter/js/lock.coffee:72
 msgid "Switch User"
 msgstr "切换用户"
 
@@ -223,96 +223,94 @@ msgid "Trash"
 msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1529
+msgid "_Clean up %c items"
+msgstr "清空%c项(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1531
+msgid "_Clean up 1 item"
+msgstr "清空1项(_C)"
+
 #: ../resources/desktop/js/desktop_item.coffee:1533
 msgid "_Clean up"
 msgstr "清空(_C)"
-
-#: ../resources/desktop/js/desktop_item.coffee:1529
-msgid "items"
-msgstr "项"
-
-#: ../resources/desktop/js/desktop_item.coffee:1531
-msgid "item"
-msgstr "项"
 
 #: ../resources/desktop/js/desktop_item.coffee:1562
 msgid "Software Center"
 msgstr "软件中心"
 
-#: ../resources/desktop/js/grid.coffee:809
+#: ../resources/desktop/js/grid.coffee:811
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:810
+#: ../resources/desktop/js/grid.coffee:812
 msgid "_Name"
 msgstr "名称(_N)"
 
-#: ../resources/desktop/js/grid.coffee:811
+#: ../resources/desktop/js/grid.coffee:813
 msgid "Last modified _time"
 msgstr "最近修改时间(_T)"
 
-#: ../resources/desktop/js/grid.coffee:814
+#: ../resources/desktop/js/grid.coffee:816
 msgid "_New"
 msgstr "新建(_N)"
 
-#: ../resources/desktop/js/grid.coffee:815
+#: ../resources/desktop/js/grid.coffee:817
 msgid "_Folder"
 msgstr "文件夹(_F)"
 
-#: ../resources/desktop/js/grid.coffee:816
+#: ../resources/desktop/js/grid.coffee:818
 msgid "_Text document"
 msgstr "文本文档(_T)"
 
-#: ../resources/desktop/js/grid.coffee:819
+#: ../resources/desktop/js/grid.coffee:821
 msgid "Open in _terminal"
 msgstr "在终端中打开(_T)"
 
-#: ../resources/desktop/js/grid.coffee:820
+#: ../resources/desktop/js/grid.coffee:822
 msgid "_Paste"
 msgstr "粘贴(_P)"
 
-#: ../resources/desktop/js/grid.coffee:822
+#: ../resources/desktop/js/grid.coffee:824
 msgid "_Display settings"
 msgstr "显示设置(_D)"
 
-#: ../resources/desktop/js/grid.coffee:823
+#: ../resources/desktop/js/grid.coffee:825
 msgid "D_esktop settings"
 msgstr "桌面设置(_E)"
 
-#: ../resources/desktop/js/grid.coffee:824
+#: ../resources/desktop/js/grid.coffee:826
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
-#: ../resources/dock/js/clientgroup.coffee:25
+#: ../resources/dock/js/clientgroup.coffee:32
 msgid "_New instance"
 msgstr "新建实例(_N)"
 
-#: ../resources/dock/js/clientgroup.coffee:26
+#: ../resources/dock/js/clientgroup.coffee:33
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: ../resources/dock/js/clientgroup.coffee:28
+#: ../resources/dock/js/clientgroup.coffee:35
 msgid "_Dock me"
 msgstr "驻留(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:37
+#: ../resources/dock/js/deepin_item.coffee:39
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/dock/js/deepin_item.coffee:40
+#: ../resources/dock/js/deepin_item.coffee:42
 msgid "Show/Hide Desktop"
 msgstr "显示/隐藏桌面"
 
-#: ../resources/dock/js/item.coffee:340
+#: ../resources/dock/js/item.coffee:264
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
 msgstr "该项无效。您要将其从Dock删除吗？"
 
-#: ../resources/dock/js/launcher.coffee:32 ../lib/dentry/mime_actions.c:150
+#: ../resources/dock/js/launcher.coffee:33 ../lib/dentry/mime_actions.c:150
 msgid "_Run"
 msgstr "运行(_R)"
 
-#: ../resources/dock/js/launcher.coffee:34
+#: ../resources/dock/js/launcher.coffee:35
 msgid "_Undock"
 msgstr "移除驻留(_U)"
 
@@ -360,7 +358,7 @@ msgstr "新建目录"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:310 ../app/greeter/greeter.c:467
+#: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:468
 msgid "Invalid Password"
 msgstr "密码错误"
 
