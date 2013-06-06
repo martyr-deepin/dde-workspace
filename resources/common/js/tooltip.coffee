@@ -3,19 +3,19 @@ class ToolTip extends Widget
     tooltip: null
     should_show_id: -1
     constructor: (@element, @text)->
-        ToolTip.tooltip ?= $("#tooltip")
+        ToolTip.tooltip ?= create_element("div", "tooltip", document.body)
 
         @event_bind('dragstart', =>
-            @_hide_tooltip()
+            @hide()
         )
         @event_bind('dragenter', =>
-            @_hide_tooltip()
+            @hide()
         )
         @event_bind('dragover', =>
-            @_hide_tooltip()
+            @hide()
         )
         @event_bind('dragleave', =>
-            @_hide_tooltip()
+            @hide()
         )
         @event_bind('dragend', =>
             @hide()
@@ -41,23 +41,13 @@ class ToolTip extends Widget
         )
 
     show: ->
-        Preview_close_now()
         ToolTip.tooltip.innerText = @text
         DCore.Dock.require_all_region()
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
-    _hide_tooltip: ->
+    hide: ->
         clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip?.style.display = "none"
-    hide: ->
-        @_hide_tooltip()
-        sleep_time = 400
-        if Preview_container.is_showing
-            sleep_time = 1000
-        tooltip_hide_id = setTimeout(->
-            update_dock_region()
-            DCore.Dock.update_hide_mode()
-        , sleep_time)
     @move_to: (x, y) ->
         if y <= 0
             @hide()
