@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 class Weather extends Widget
-    ZINDEX_MENU = 65535
+    ZINDEX_MENU = 5001
     ZINDEX_GLOBAL_DESKTOP = 5000
     ZINDEX_DOWNEST = 0
 
@@ -203,7 +203,8 @@ class Weather extends Widget
         @weather_now_pic.title = weather_data_more.weatherinfo.weather1
         for i in [0...6]
             j = i + 1
-            @weather_data[i].title = weather_data_more.weatherinfo['weather' + j]
+            # @weather_data[i].title = weather_data_more.weatherinfo['weather' + j]
+            new ToolTip(@weather_data[i],weather_data_more.weatherinfo['weather' + j])
             @week[i].textContent = week_show[(week_n + i) % 7]
             @pic[i].src = @weather_more_pic_src(j)
             @temperature[i].textContent = weather_data_more.weatherinfo['temp' + j]

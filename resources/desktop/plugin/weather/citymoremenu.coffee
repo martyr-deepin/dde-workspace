@@ -23,24 +23,7 @@ class CityMoreMenu extends Widget
 
     BOTTOM_DISTANCE_MINI = 200
     times_dist_choose = 0
-    common_dists_init = [
-      {
-        "name":"",
-        "id":""
-      },{
-        "name":"",
-        "id":""
-      },{
-        "name":"",
-        "id":""
-      },{
-        "name":"",
-        "id":""
-      },{
-        "name":"",
-        "id":""
-      }
-    ]
+
 
     constructor: (zIndex,callback)->
         super(null)
@@ -78,49 +61,60 @@ class CityMoreMenu extends Widget
 
         common_dists = localStorage.getObject("common_dists_storage")
         if common_dists
-            # common_city = []
+            common_city = []
+            common_city_text = []
+            minus = []
+            id_tmp = []
+            length = common_dists.length
             i = 0
-            while i < common_dists.length
+            while i < length
                 if common_dists[i].name && common_dists[i].id
-                    common_city = create_element("div","common_city",@common_menu)
-                    
-                    common_city_text = create_element("div","common_city_text",common_city)
-                    common_city_text.innerText = common_dists[i].name 
-                    common_city_text.value = common_dists[i].id
+                    common_city[i] = create_element("div","common_city",@common_menu)
+                    common_city[i].value = common_dists[i].name
 
-                    minus = create_element("div","minus",common_city)
-                    minus.innerText = "-"
+                    common_city_text[i] = create_element("div","common_city_text",common_city[i])
+                    common_city_text[i].innerText = common_dists[i].name 
+                    common_city_text[i].value = common_dists[i].id
+
+                    minus[i] = create_element("div","minus",common_city[i])
+                    minus[i].innerText = "-"
+                    minus[i].value = common_dists[i].id
 
                     that = @
-                    index = i
-                    # echo index
-                    common_city_text.addEventListener("click",->
+                    common_city_text[i].addEventListener("click",->
                         that.element.style.display = "none"
                         echo this.innerText
                         localStorage.setItem("cityid_storage",this.value)
                         that = null
                         callback()
                         )
-                    # minus.addEventListener("click",->
-                        # echo common_dists
-                        # echo index
-                        # remove_element(this.parentElement)
-                        # common_dists[index] = null
-                        # echo common_dists.length
-                        # echo common_dists
-                        # )
-                    minus.onclick = ->
-                        # echo common_dists
-                        # echo index
+
+                    echo common_dists
+                    minus[i].addEventListener("click",->
+                        name = this.parentElement.value
+                        id = this.value
                         remove_element(this.parentElement)
-                        # common_dists[0] = null
-                        # echo common_dists
+                        tmp = null
+                        index = null
+                        for tmp in common_dists
+                            for id_tmp ,i in tmp.id
+                                if id_tmp == id 
+                                    index = i
+                                    # echo id
+                        echo index
+                        common_dists.remove(tmp)
+                        echo common_dists
+                        localStorage.setObject("common_dists_storage",common_dists)
 
+                        times = localStorage.getObject("times_dist_choose_storage")
+                        times-- if times > 0
+                        localStorage.setObject("times_dist_choose_storage",times)
+                        )
 
-                    # common_city_text.addEventListener("mouseover",->
+                    # common_city_text[i].addEventListener("mouseover",->
                     #     minus.style.opacity = 1.0
                     #     )
-                    # common_city_text.addEventListener("mouseup",->
+                    # common_city_text[i].addEventListener("mouseup",->
                     #     minus.style.opacity = 0.0
                     #     )
                 i++
@@ -240,7 +234,11 @@ class CityMoreMenu extends Widget
 
                     common = localStorage.getObject("common_dists_storage")
                     echo common
-                    common_dists = if !common then common_dists_init else common
+                    if !common 
+                        echo "!common"
+                        common_dists = common_dists_init 
+                    else common_dists = common
+                    echo common_dists_init
                     echo common_dists
 
                     common_dists[times_dist_choose].name = data[distvalue].name

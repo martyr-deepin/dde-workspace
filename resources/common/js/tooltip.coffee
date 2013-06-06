@@ -2,8 +2,8 @@ tooltip_hide_id = null
 class ToolTip extends Widget
     tooltip: null
     should_show_id: -1
-    constructor: (@element, @text)->
-        ToolTip.tooltip ?= create_element("div", "tooltip", document.body)
+    constructor: (@element, @text, @parent=document.body)->
+        ToolTip.tooltip ?= create_element("div", "tooltip", @parent)
 
         @event_bind('dragstart', =>
             @hide()
@@ -60,4 +60,3 @@ class ToolTip extends Widget
         x = page_xy.x + offset + 4  # 4 for subtle adapt
         x = 0 if x < 0
         ToolTip.move_to(@, x.toFixed(), document.body.clientHeight - page_xy.y)
-
