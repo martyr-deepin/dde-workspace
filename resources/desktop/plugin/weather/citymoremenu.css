@@ -11,26 +11,34 @@
     background: rgba(255,255,255,0.75);
 }
 .common_city{
-    min-width: 70px;
+    min-width: 80px;
     height: 30px;
     line-height: 30px;
-    text-align:center;
     display: -webkit-box;
     -webkit-box-pack:end;
 }
-
+.common_city:hover > .minus{
+    background-color: #24b8ff;
+    opacity: 1.0;
+}
+.common_city:hover > .common_city_text{
+    background-color: #24b8ff;
+}
+.common_city_text{
+    text-indent:6px;
+    width: 75%;
+}
 .minus{
+    text-align:center;
     min-width: 20px;
     font-size: 25px;
     opacity: 0.0;
     display: block;
 }
-.minus:hover{
-    /*background-color: #ccc;*/
-    background: rgba(255,255,255,0.5);
-    opacity: 1.0;
+.common_city:hover > .minus:hover{
+    background:#ccc;
+    color: #fff;
 }
-
 .add_common_city{
     height: 30px;
     line-height: 30px;
@@ -41,7 +49,6 @@
     text-align:center;
 }
 
-.common_city:hover,
 .add_common_city:hover{
     background-color: #24b8ff;
 }

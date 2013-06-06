@@ -95,7 +95,6 @@ class CityMoreMenu extends Widget
                         echo name
                         echo id
                         remove_element(this.parentElement)
-                        tmp = null
                         for tmp ,i in common_dists
                             if id == tmp.id
                                 echo i
@@ -110,13 +109,6 @@ class CityMoreMenu extends Widget
                         times-- if times > 0
                         localStorage.setObject("times_dist_choose_storage",times)
                         )
-
-                    # common_city_text[i].addEventListener("mouseover",->
-                    #     minus.style.opacity = 1.0
-                    #     )
-                    # common_city_text[i].addEventListener("mouseup",->
-                    #     minus.style.opacity = 0.0
-                    #     )
                 i++
 
         @add_common_city = create_element("div","add_common_city",@common_menu)
@@ -226,11 +218,21 @@ class CityMoreMenu extends Widget
             else
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
+                    echo data[distvalue].name
+                    echo data[distvalue].data
+                    localStorage.setItem("cityid_storage",data[distvalue].data)
+                    callback()
+
+                    common = localStorage.getObject("common_dists_storage")
+                    common_dists = if !common then common_dists_init else common
+                    for tmp ,i in common_dists
+                        if data[distvalue].data == tmp.id
+                            # echo "same city add"
+                            return
 
                     times = localStorage.getObject("times_dist_choose_storage")
                     times_dist_choose = if !times then 0 else times
-                    common = localStorage.getObject("common_dists_storage")
-                    common_dists = if !common then common_dists_init else common
+
                     common_dists[times_dist_choose].name = data[distvalue].name
                     common_dists[times_dist_choose].id = data[distvalue].data
                     localStorage.setObject("common_dists_storage",common_dists)
@@ -238,10 +240,6 @@ class CityMoreMenu extends Widget
                     if times_dist_choose > 4 then times_dist_choose = 0 
                     localStorage.setItem("times_dist_choose_storage",times_dist_choose)
 
-                    echo data[distvalue].name
-                    echo data[distvalue].data
-                    localStorage.setItem("cityid_storage",data[distvalue].data)
-                    callback()
 
     clearOptions:(colls,first=0)->
         i = first
