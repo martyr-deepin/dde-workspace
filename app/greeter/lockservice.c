@@ -62,6 +62,12 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"needed\" type=\"b\" direction=\"out\">\n"
 "			</arg>\n"
 "		</method>\n"
+"		<method name=\"IsLiveCD\">\n"
+"			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"			<arg name=\"livecd\" type=\"b\" direction=\"out\">\n"
+"			</arg>\n"
+"		</method>\n"
 "	</interface>\n"
 "</node>\n"
 ;
@@ -82,6 +88,7 @@ static void _bus_method_call (GDBusConnection * connection, const gchar * sender
                              GDBusMethodInvocation * invocation, gpointer user_data);
 static void _bus_handle_exit_lock(const gchar *username, const gchar *password);
 static gboolean _bus_handle_need_pwd(const gchar *username);
+static gboolean _bus_handle_is_livecd (const gchar *username);
 static gboolean _bus_handle_unlock_check(const gchar *username, const gchar *password);
 static gboolean do_exit(gpointer user_data);
 
@@ -223,6 +230,12 @@ _bus_method_call (GDBusConnection * connection,
 
         retval = g_variant_new("(b)", _bus_handle_need_pwd (username));
 
+    } else if (g_strcmp0 (method, "IsLiveCD") == 0) {
+        const gchar *username = NULL;
+        g_variant_get (params, "(s)", &username);
+
+        retval = g_variant_new("(b)", _bus_handle_is_livecd (username));
+        
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
     }
@@ -283,7 +296,6 @@ _bus_handle_exit_lock (const gchar *username, const gchar *password)
 static gboolean
 _bus_handle_unlock_check (const gchar *username, const gchar *password)
 {
-    gboolean succeed = FALSE;
     struct spwd *user_data;
     errno = 0;
 
@@ -292,30 +304,26 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     if (user_data == NULL)
     {
         g_warning ("No such user %s, or error %s\n", username, strerror(errno));
-        succeed = TRUE;
-        return succeed;
+        return TRUE;
     }
 
     if (user_data->sp_pwdp == NULL || strlen(user_data->sp_pwdp) == 0)
     {
         g_warning ("user sp_pwdp is null\n");
-        succeed = TRUE;
-        return succeed;
+        return TRUE;
     }
 
     if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
-        succeed = TRUE;
-        return succeed;
+        return TRUE;
     } 
 
     if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
-        succeed = TRUE;
-        return succeed;
+        return TRUE;
     }
 
-    return succeed;
+    return FALSE;
 }
 
 static
@@ -397,8 +405,6 @@ gboolean is_user_nopasswdlogin(const gchar *username)
 static gboolean
 _bus_handle_need_pwd (const gchar *username)
 {
-    gboolean needed = TRUE;
-
     struct spwd *user_data;
 
     user_data = getspnam (username);
@@ -406,25 +412,47 @@ _bus_handle_need_pwd (const gchar *username)
     if (user_data != NULL && strlen(user_data->sp_pwdp) == 0)
     {
         g_debug ("user had blank password\n");
-        needed = FALSE;
-        return needed;
+        return FALSE;
     }
 
     if (is_user_nopasswdlogin (username))
     {
         g_debug ("user in nopasswdlogin group\n");
-        needed = FALSE;
-        return needed;
+        return FALSE;
     }
 
     if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
         g_debug ("live account don't need password\n");
-        needed = FALSE;
-        return needed;
+        return FALSE;
     } 
 
-    return needed;
+    return TRUE;
+}
+
+static gboolean
+_bus_handle_is_livecd (const gchar *username)
+{
+    if (g_strcmp0 ("deepin", username) != 0)
+    {
+        return FALSE;
+    }
+
+    struct spwd *user_data;
+
+    user_data = getspnam (username);
+    
+    if (user_data == NULL || strlen(user_data->sp_pwdp) == 0)
+    {
+        return FALSE;
+    }
+
+    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) != 0)
+    {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 static gboolean
