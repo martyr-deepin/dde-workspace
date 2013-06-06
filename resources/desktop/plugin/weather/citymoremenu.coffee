@@ -92,20 +92,19 @@ class CityMoreMenu extends Widget
                     minus[i].addEventListener("click",->
                         name = this.parentElement.value
                         id = this.value
+                        echo name
+                        echo id
                         remove_element(this.parentElement)
                         tmp = null
-                        index = null
-                        for tmp in common_dists
-                            echo tmp.id
-                            for id_tmp ,i in tmp
-                                # echo i
-                                if id_tmp == id 
-                                    index = i
-                                    # echo id
-                        echo index
-                        # common_dists.remove(tmp)
-                        echo common_dists
-                        localStorage.setObject("common_dists_storage",common_dists)
+                        for tmp ,i in common_dists
+                            if id == tmp.id
+                                echo i
+                                echo tmp.id
+                                common_dists[i].name = ""
+                                common_dists[i].id = ""
+                                echo common_dists
+                                localStorage.setObject("common_dists_storage",common_dists)
+                                break
 
                         times = localStorage.getObject("times_dist_choose_storage")
                         times-- if times > 0
