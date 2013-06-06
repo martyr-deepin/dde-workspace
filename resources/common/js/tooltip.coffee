@@ -1,7 +1,7 @@
 tooltip_hide_id = null
 class ToolTip extends Widget
-    tooltip: null
-    should_show_id: -1
+    @tooltip: null
+    @should_show_id: -1
     constructor: (@element, @text)->
         ToolTip.tooltip ?= create_element("div", "tooltip", document.body)
 
