@@ -161,3 +161,5 @@ get_path_name = (path)->
     else
         path.substring(path.lastIndexOf('/') + 1, dot_pos)
 
+remove_element = (obj)->
+    obj.parentNode.removeChild(obj) if obj

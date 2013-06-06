@@ -71,19 +71,19 @@ class CityMoreMenu extends Widget
     common_city_build:(bottom_distance,x1,y1,x2,y2,callback)->
         @element.style.display = "block"
         @lable_choose.style.display = "none" if @lable_choose
-        @remove_element(@common_menu) if @common_menu
+        remove_element(@common_menu) if @common_menu
 
         @common_menu = create_element("div","common_menu",@element)
         @common_menu.style.display = "none"
 
         common_dists = localStorage.getObject("common_dists_storage")
         if common_dists
-            common_city = []
+            # common_city = []
             i = 0
             while i < common_dists.length
                 if common_dists[i].name && common_dists[i].id
                     common_city = create_element("div","common_city",@common_menu)
-
+                    
                     common_city_text = create_element("div","common_city_text",common_city)
                     common_city_text.innerText = common_dists[i].name 
                     common_city_text.value = common_dists[i].id
@@ -92,6 +92,8 @@ class CityMoreMenu extends Widget
                     minus.innerText = "-"
 
                     that = @
+                    index = i
+                    # echo index
                     common_city_text.addEventListener("click",->
                         that.element.style.display = "none"
                         echo this.innerText
@@ -99,9 +101,28 @@ class CityMoreMenu extends Widget
                         that = null
                         callback()
                         )
-                    minus.addEventListener("click",->
-                        that.remove_element(this.parentElement)
-                        )
+                    # minus.addEventListener("click",->
+                        # echo common_dists
+                        # echo index
+                        # remove_element(this.parentElement)
+                        # common_dists[index] = null
+                        # echo common_dists.length
+                        # echo common_dists
+                        # )
+                    minus.onclick = ->
+                        # echo common_dists
+                        # echo index
+                        remove_element(this.parentElement)
+                        # common_dists[0] = null
+                        # echo common_dists
+
+
+                    # common_city_text.addEventListener("mouseover",->
+                    #     minus.style.opacity = 1.0
+                    #     )
+                    # common_city_text.addEventListener("mouseup",->
+                    #     minus.style.opacity = 0.0
+                    #     )
                 i++
 
         @add_common_city = create_element("div","add_common_city",@common_menu)
@@ -122,14 +143,14 @@ class CityMoreMenu extends Widget
         @selectsize = selectsize
 
 
-        @remove_element(@lable_choose) if @lable_choose
-        @remove_element(choose) if choose
-        @remove_element(prov) if prov
-        @remove_element(city) if city
-        @remove_element(dist) if dist
-        @remove_element(@chooseprov) if @chooseprov
-        @remove_element(@choosecity) if @choosecity
-        @remove_element(@choosedist) if @choosedist
+        remove_element(@lable_choose) if @lable_choose
+        remove_element(choose) if choose
+        remove_element(prov) if prov
+        remove_element(city) if city
+        remove_element(dist) if dist
+        remove_element(@chooseprov) if @chooseprov
+        remove_element(@choosecity) if @choosecity
+        remove_element(@choosedist) if @choosedist
 
         @lable_choose = create_element("div","lable_choose",@element)
         @lable_choose.style.display = "none"
@@ -240,9 +261,6 @@ class CityMoreMenu extends Widget
         # colls.remove(i++) while i < colls.length 
         colls.options.length = i
 
-    remove_element:(obj)->
-        obj.parentNode.removeChild(obj) if obj
-
     setMaxSize:(obj,val=@selectsize)->
         # length = obj.options.length
         # obj.size = if length < val then length else val
@@ -251,6 +269,3 @@ class CityMoreMenu extends Widget
     create_option:(obj,data)->
         for i of data
             obj.options.add(new Option(data[i].name, i))
-    setOptionSelectedColor:(obj,index,color)->
-        index = obj.selectedIndex if !index
-        obj.options[index].style.background = color

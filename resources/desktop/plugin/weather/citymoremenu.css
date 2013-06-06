@@ -40,6 +40,7 @@
     line-height: 30px;
 }
 .plus{
+    min-width: 40px;
     font-size: 25px;
     text-align:center;
 }
