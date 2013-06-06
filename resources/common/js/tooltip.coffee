@@ -3,7 +3,7 @@ class ToolTip extends Widget
     tooltip: null
     should_show_id: -1
     constructor: (@element, @text)->
-        ToolTip.tooltip ?= $("#tooltip")
+        ToolTip.tooltip ?= create_element("div", "tooltip", document.body)
 
         @event_bind('dragstart', =>
             @hide()
