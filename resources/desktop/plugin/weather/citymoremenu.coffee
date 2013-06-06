@@ -89,7 +89,6 @@ class CityMoreMenu extends Widget
                         callback()
                         )
 
-                    echo common_dists
                     minus[i].addEventListener("click",->
                         name = this.parentElement.value
                         id = this.value
@@ -97,12 +96,14 @@ class CityMoreMenu extends Widget
                         tmp = null
                         index = null
                         for tmp in common_dists
-                            for id_tmp ,i in tmp.id
+                            echo tmp.id
+                            for id_tmp ,i in tmp
+                                # echo i
                                 if id_tmp == id 
                                     index = i
                                     # echo id
                         echo index
-                        common_dists.remove(tmp)
+                        # common_dists.remove(tmp)
                         echo common_dists
                         localStorage.setObject("common_dists_storage",common_dists)
 
@@ -228,23 +229,12 @@ class CityMoreMenu extends Widget
                 if distvalue != @str_distinit
 
                     times = localStorage.getObject("times_dist_choose_storage")
-                    echo times
                     times_dist_choose = if !times then 0 else times
-                    echo times_dist_choose
-
                     common = localStorage.getObject("common_dists_storage")
-                    echo common
-                    if !common 
-                        echo "!common"
-                        common_dists = common_dists_init 
-                    else common_dists = common
-                    echo common_dists_init
-                    echo common_dists
-
+                    common_dists = if !common then common_dists_init else common
                     common_dists[times_dist_choose].name = data[distvalue].name
                     common_dists[times_dist_choose].id = data[distvalue].data
                     localStorage.setObject("common_dists_storage",common_dists)
-
                     times_dist_choose++
                     if times_dist_choose > 4 then times_dist_choose = 0 
                     localStorage.setItem("times_dist_choose_storage",times_dist_choose)
