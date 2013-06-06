@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-06 09:42+0800\n"
+"POT-Creation-Date: 2013-06-06 16:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -223,8 +223,8 @@ msgid "Trash"
 msgstr "回收站"
 
 #: ../resources/desktop/js/desktop_item.coffee:1529
-msgid "_Clean up %c items"
-msgstr "清空%c项(_C)"
+msgid "_Clean up %1 items"
+msgstr "清空%1项(_C)"
 
 #: ../resources/desktop/js/desktop_item.coffee:1531
 msgid "_Clean up 1 item"
@@ -358,7 +358,7 @@ msgstr "新建目录"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:468
+#: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:474
 msgid "Invalid Password"
 msgstr "密码错误"
 

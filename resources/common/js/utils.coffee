@@ -31,6 +31,14 @@ Array.prototype.remove = (el)->
     if i != -1
         this.splice(this.indexOf(el), 1)[0]
 
+String::args = ->
+    o = this
+    len = arguments.length
+    for i in [1..len]
+        o = o.replace(new RegExp("%" + i, "g"), arguments[i - 1])
+
+    return o
+
 echo = (log) ->
     console.log log
 
