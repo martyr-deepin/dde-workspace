@@ -83,7 +83,7 @@ class CityMoreMenu extends Widget
                     that = @
                     common_city_text[i].addEventListener("click",->
                         that.element.style.display = "none"
-                        echo this.innerText
+                        # echo this.innerText
                         localStorage.setItem("cityid_storage",this.value)
                         that = null
                         callback()
@@ -92,16 +92,15 @@ class CityMoreMenu extends Widget
                     minus[i].addEventListener("click",->
                         name = this.parentElement.value
                         id = this.value
-                        echo name
-                        echo id
+                        # echo name
+                        # echo id
                         remove_element(this.parentElement)
                         for tmp ,i in common_dists
                             if id == tmp.id
-                                echo i
-                                echo tmp.id
+                                # echo i
+                                # echo tmp.id
                                 common_dists[i].name = ""
                                 common_dists[i].id = ""
-                                echo common_dists
                                 localStorage.setObject("common_dists_storage",common_dists)
                                 break
 
@@ -218,8 +217,6 @@ class CityMoreMenu extends Widget
             else
                 distvalue = @choosedist.options[distIndex].value
                 if distvalue != @str_distinit
-                    echo data[distvalue].name
-                    echo data[distvalue].data
                     localStorage.setItem("cityid_storage",data[distvalue].data)
                     callback()
 
