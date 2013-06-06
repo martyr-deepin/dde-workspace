@@ -428,6 +428,12 @@ void greeter_login_clicked(const gchar *password)
     }
 }
 
+JS_EXPORT_API
+gboolean greeter_is_hide_users()
+{
+    return lightdm_greeter_get_hide_users_hint(greeter);
+}
+
 static void 
 show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
@@ -469,12 +475,6 @@ authentication_complete_cb(LightDMGreeter *greeter)
             greeter_start_authentication(get_selected_user());
         }
     }
-}
-
-JS_EXPORT_API
-gboolean greeter_is_hide_users()
-{
-    return lightdm_greeter_get_hide_users_hint(greeter);
 }
 
 JS_EXPORT_API

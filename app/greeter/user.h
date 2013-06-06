@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <lightdm.h>
 #include "utils.h"
 #include "jsextension.h"
