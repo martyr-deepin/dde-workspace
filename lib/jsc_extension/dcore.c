@@ -125,11 +125,27 @@ void dcore_init_plugins(char const* app_name)
     get_enabled_plugins(gsettings, SCHEMA_KEY_ENABLED_PLUGINS);
 }
 
+PRIVATE
+gboolean is_show_plugin()
+{
+    char* home_path = getenv("HOME");
+    char* dot_show_plugins = g_build_filename(home_path, ".show_plugins", NULL);
+    gboolean isexist = g_file_test(dot_show_plugins, G_FILE_TEST_EXISTS);
+    g_free(dot_show_plugins);
+
+    return isexist;
+}
+
+
 
 JS_EXPORT_API
 JSValueRef dcore_get_plugins(const char* app_name)
 {
     JSObjectRef array = json_array_create();
+
+    if (!is_show_plugin())
+        return array;
+
     JSContextRef ctx = get_global_context();
     char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
 
