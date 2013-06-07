@@ -37,7 +37,6 @@ class PluginHandle extends Widget
         @offset_pos.x = drag_pos.x
         @offset_pos.y = drag_pos.y
         if not (w = Widget.look_up(@parent_id))? then return
-        echo w.offsetHeight
         w.add_css_class("plugin_DND_border")
 
         parent = @element.parentElement

@@ -200,7 +200,7 @@ class Weather extends Widget
         @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + " " + week_show[week_n%7]
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
 
-        new ToolTip(@weather_now_pic,weather_data_more.weatherinfo['weather' + j])
+        new ToolTip(@weather_now_pic,weather_data_more.weatherinfo['weather' + 1])
 
         for i in [0...6]
             j = i + 1

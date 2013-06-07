@@ -58,21 +58,28 @@ class CityMoreMenu extends Widget
         @common_menu.style.display = "none"
 
         if bottom_distance > BOTTOM_DISTANCE_MINI
-            @common_city()
+            @common_city(callback)
             @add_common()
             @common_menu.style.left = x1
             @common_menu.style.top = y1
             @common_menu.style.display = "block"
         else
+            @common_city(callback)
             @add_common()
-            @common_city()
             @common_menu.style.display = "block"
-            @common_menu.style.left = x1
-            @common_menu.style.top = y1-@common_menu.clientWidth - 30
+            width = @common_menu.clientWidth
+            echo "width:" + width
             @common_menu.style.display = "none"
+
+            x2 = x1
+            y2 = y1 - width - 30 - 63
+            @common_menu.style.left = x2
+            @common_menu.style.top = y2
+            echo "y1:" + y1
+            echo "y2:" + y2
             @common_menu.style.display = "block"            
 
-    common_city:->
+    common_city:(callback)->
         common_dists = localStorage.getObject("common_dists_storage")
         if common_dists
             common_city = []

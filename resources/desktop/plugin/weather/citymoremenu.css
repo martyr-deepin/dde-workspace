@@ -25,6 +25,7 @@
     background-color: #24b8ff;
 }
 .common_city_text{
+    text-align: left;
     text-indent:6px;
     width: 75%;
 }
