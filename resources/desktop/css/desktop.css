@@ -290,7 +290,7 @@ body {
 }
 .plugin_DND_border {
     border:1px solid #eee;
-    /*background-color:rgba(68, 132, 195, 0.3) !important;*/
+    background-color:rgba(68, 132, 195, 0.3) !important;
 }
 .PluginHandle {
     width: 100%;

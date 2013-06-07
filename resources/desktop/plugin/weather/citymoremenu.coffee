@@ -41,15 +41,13 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
     set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
-        # echo obj
-        # echo x1 + "," + y1 + ";" + x2 + "," + y2 + ";" + show
         if bottom_distance > BOTTOM_DISTANCE_MINI
             obj.style.left = x1
             obj.style.top = y1
         else 
             obj.style.left = x2
             obj.style.top = y2
-        obj.style.display = show if obj
+        obj.style.display = show
 
     common_city_build:(bottom_distance,x1,y1,x2,y2,callback)->
         @element.style.display = "block"
@@ -59,6 +57,24 @@ class CityMoreMenu extends Widget
         @common_menu = create_element("div","common_menu",@element)
         @common_menu.style.display = "none"
 
+        if bottom_distance > BOTTOM_DISTANCE_MINI
+            @common_city()
+            @add_common()
+            @common_menu.style.left = x1
+            @common_menu.style.top = y1
+            @common_menu.style.display = "block"
+        else
+            @add_common()
+            @common_city()
+            @common_menu.style.display = "block"
+            @common_menu.style.left = x1
+            @common_menu.style.top = y1-@common_menu.clientWidth - 30
+            @common_menu.style.display = "none"
+            @common_menu.style.display = "block"            
+
+
+
+    common_city:->
         common_dists = localStorage.getObject("common_dists_storage")
         if common_dists
             common_city = []
@@ -109,12 +125,10 @@ class CityMoreMenu extends Widget
                         localStorage.setObject("times_dist_choose_storage",times)
                         )
                 i++
-
+    add_common:->
         @add_common_city = create_element("div","add_common_city",@common_menu)
         plus =  create_element("div","plus",@add_common_city)
         plus.innerText = "+"
-
-        @set_menu_position(@common_menu,bottom_distance,x1,y1,x2,y2,"block")
 
     more_city_build:(selectsize,bottom_distance,x1,y1,x2,y2,callback)->
         @add_common_city.addEventListener("click",=>
