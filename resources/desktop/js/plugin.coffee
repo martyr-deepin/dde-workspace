@@ -1,10 +1,18 @@
 class PluginHandle extends Widget
+    IMG_URL_PRESS = "../img/plugin/Press"
+
     constructor : (@parent_id) ->
         @id = "handle-#{@parent_id}"
         super(@id)
         @element.setAttribute("draggable", "true")
         @offset_pos = {x : -1, y : -1}
 
+        @plugin_close = create_element("div","plugin_close",@element)
+        @plugin_close.addEventListener("click",(evt)=>
+            @plugin_close.style.backgroundImage = IMG_URL_PRESS + "/window_close_press.png"
+            if not (w = Widget.look_up(@parent_id))? then return
+            delete_widget(w)
+            )
 
     do_mouseover : (evt) =>
         if not (w = Widget.look_up(@parent_id))? then return
@@ -15,6 +23,7 @@ class PluginHandle extends Widget
     do_mouseout : (evt) =>
         if not (w = Widget.look_up(@parent_id))? then return
         w.remove_css_class("plugin_hover_border")
+        w.remove_css_class("plugin_hover_close")
         return
 
 
