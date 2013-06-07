@@ -56,7 +56,7 @@ class PluginManager
                         place_all_widgets()
 
         for own k, v of info
-            plugin_manager._enable_plugin(k, false)
+            plugin_manager.enable_plugin_front(k, false)
 
         return
 
