@@ -106,10 +106,12 @@
 }
 .weather_data:nth-child(odd) {
     background-color:rgba(255,255,255,0.35);
+    display:-webkit-box; 
 }
 
 .weather_data:nth-child(even) {
     background-color:rgba(0,0,0,0.15);
+    display:-webkit-box; 
 }
 
 .week:lang(zh){
