@@ -15,6 +15,18 @@ void dbus_object_info_free(struct DBusObjectInfo* info);
 static GHashTable *__sig_info_hash = NULL; // struct signal -> GSList callback
 static GHashTable *__objs_cache = NULL;
 
+void reset_dbus_infos()
+{
+    if (__sig_info_hash) {
+        g_hash_table_remove_all(__sig_info_hash);
+        __sig_info_hash = NULL;
+    }
+    if (__objs_cache) {
+        g_hash_table_remove_all(__objs_cache);
+        __objs_cache = NULL;
+    }
+}
+
 struct SignalInfo {
     const char* name;
     GSList* signatures;
@@ -91,6 +103,16 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     }
 }
 
+
+PRIVATE void signal_info_free(struct SignalInfo* sig_info)
+{
+    g_assert(sig_info != NULL);
+    if (sig_info->callback) {
+        JSValueUnprotect(get_global_context(), sig_info->callback);
+    }
+    g_free(sig_info);
+}
+
 int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
         struct Signal *sig, JSObjectRef func)
 {
@@ -98,7 +120,7 @@ int add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *info,
     g_assert(func != NULL);
 
     if (__sig_info_hash == NULL) {
-        __sig_info_hash = g_hash_table_new(g_str_hash, g_str_equal);
+        __sig_info_hash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, (GDestroyNotify)signal_info_free);
     }
     char* key = g_strdup_printf("%s%s%s", info->path, info->iface, sig->name);
 
@@ -213,8 +235,7 @@ void async_callback(DBusPendingCall *pending, void *user_data)
     struct AsyncInfo *info = (struct AsyncInfo*) user_data;
     if (dbus_message_get_type(reply) == DBUS_MESSAGE_TYPE_ERROR) {
         if (info->on_error != NULL)
-            JSObjectCallAsFunction(get_global_context(),
-                    info->on_error, NULL, 0, NULL, NULL);
+            JSObjectCallAsFunction(get_global_context(), info->on_error, NULL, 0, NULL, NULL);
         dbus_message_unref(reply);
         return;
     }
@@ -229,11 +250,22 @@ void async_callback(DBusPendingCall *pending, void *user_data)
         if (!dbus_message_iter_next(&iter)) {
         }
     }
-    dbus_message_unref(reply);
-    JSObjectCallAsFunction(get_global_context(),
-            info->on_ok, NULL,
-            num, params, NULL);
+    if (info->on_ok)
+        JSObjectCallAsFunction(get_global_context(), info->on_ok, NULL, num, params, NULL);
     g_free(params);
+
+    dbus_message_unref(reply);
+}
+
+void async_info_free(struct AsyncInfo* info)
+{
+    if (info->on_error) {
+        JSValueUnprotect(get_global_context(), info->on_error);
+    }
+    if (info->on_ok) {
+        JSValueUnprotect(get_global_context(), info->on_ok);
+    }
+    g_free(info);
 }
 
 void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
@@ -242,13 +274,21 @@ void call_async(DBusConnection* con, DBusMessage *msg, GSList* sigs_out,
     DBusPendingCall *reply = NULL;
     dbus_connection_send_with_reply(con, msg, &reply, -1);
 
-    struct AsyncInfo *info = g_new0(struct AsyncInfo, 1);
-    info->on_error = error_callback;
-    info->on_ok = ok_callback;
-    info->signatures = sigs_out;
+    if (reply != NULL) {
+        struct AsyncInfo *info = g_new0(struct AsyncInfo, 1);
+        if (error_callback) {
+            JSValueProtect(get_global_context(), error_callback);
+            info->on_error = error_callback;
+        }
+        if (ok_callback) {
+            JSValueProtect(get_global_context(), ok_callback);
+            info->on_ok = ok_callback;
+        }
+        info->signatures = sigs_out;
 
-    dbus_pending_call_set_notify(reply, async_callback, info, g_free);
-    /*dbus_pending_call_unref(reply);*/  //TODO: need this?
+        dbus_pending_call_set_notify(reply, async_callback, info, (DBusFreeFunction)async_info_free);
+        dbus_pending_call_unref(reply);
+    }
 }
 
 
@@ -466,10 +506,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     }
     if (async) {
         ret = JSValueMakeUndefined(ctx);
-        if (ok_callback != NULL) {
-            call_async(obj_info->connection, msg, sigs_out,
-                    ok_callback, error_callback);
-        }
+        call_async(obj_info->connection, msg, sigs_out, ok_callback, error_callback);
     } else {
         ret = call_sync(ctx, obj_info->connection, msg, sigs_out, exception);
     }

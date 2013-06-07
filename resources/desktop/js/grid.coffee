@@ -162,34 +162,10 @@ discard_position = (id) ->
 
 
 clear_all_positions = ->
-    for i in [(localStorage.length - 1) ... -1] by -1
-        if (val = localStorage.key(i)).match(/^id:.+/i)
-            localStorage.removeItem(val)
-    return
-
-
-place_desktop_items = ->
-    init_occupy_table()
-
-    total_item = speical_item.concat(all_item).concat(widget_item)
-    not_founds = []
-    for i in total_item
-        if not (w = Widget.look_up(i))?
-            echo "uncleaned item #{i}"
-            continue
-
-        pos = w.get_pos()
-        if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos)
-                move_to_somewhere(w, pos)
-        else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
-            move_to_somewhere(w, old_pos)
-        else
-            not_founds.push(i)
-
-    for i in not_founds
-        w = Widget.look_up(i)
-        if w? then move_to_anywhere(w)
+    for i in all_item
+        localStorage.removeItem("id:#{i}")
+    for i in speical_item
+        localStorage.removeItem("id:#{i}")
     return
 
 
@@ -237,6 +213,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
         if detect_occupy(pos) == false then continue
 
+        #optimization by looking up o_table to get ID
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
@@ -253,14 +230,8 @@ init_occupy_table = ->
     return
 
 
-clear_occupy_table = ->
-    for i in [0 ... cols]
-        for j in [0 ... rows]
-            o_table[i][j] = null
-    return
-
-
 clear_occupy = (id, info) ->
+    if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j] == id
@@ -271,32 +242,34 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    assert(info!=null, "[set_occupy] get null info")
+    assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             o_table[info.x+i][info.y+j] = id
     return
 
 
-detect_occupy = (info) ->
-    assert(info!=null, "[detect_occupy]get null info")
+detect_occupy = (info, id = null) ->
+    assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            if o_table[info.x+i][info.y+j]
+            if o_table[info.x+i][info.y+j] and o_table[info.x+i][info.y+j] != id
                 return true
     return false
 
 
-pixel_to_pos = (x, y, w, h) ->
-    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
-    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    coord_to_pos(index_x, index_y, w, h)
-
-
-coord_to_pos = (pos_x, pos_y, w, h) ->
-    {x : pos_x, y : pos_y, width : w, height : h}
+clear_occupy_table = ->
+    item_list = all_item.concat(speical_item)
+    for i in item_list
+        if (w = Widget.look_up(i))?
+            pos = w.get_pos()
+            clear_occupy(w.get_id(), pos)
+            pos.x = -1
+            pos.y = -1
+            w.set_pos(pos)
+    return
 
 
 find_free_position = (w, h) ->
@@ -310,24 +283,14 @@ find_free_position = (w, h) ->
     return null
 
 
-# need optimization
-move_to_anywhere = (widget) ->
-    info = load_position(widget.get_id())
-    if info? and not detect_occupy(info)
-        move_to_position(widget, info)
-    else
-        info = find_free_position(1, 1)
-        move_to_position(widget, info)
-    return
+pixel_to_pos = (x, y, w, h) ->
+    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
+    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
+    coord_to_pos(index_x, index_y, w, h)
 
 
-move_to_somewhere = (widget, pos) ->
-    if not detect_occupy(pos)
-        move_to_position(widget, pos)
-    else
-        pos = find_free_position(pos.width, pos.height)
-        move_to_position(widget, pos)
-    return
+coord_to_pos = (pos_x, pos_y, w, h) ->
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 move_to_position = (widget, info) ->
@@ -339,6 +302,51 @@ move_to_position = (widget, info) ->
 
     widget.set_pos(info)
     save_position(widget.get_id(), info)
+    return
+
+
+# need optimization
+move_to_anywhere = (widget) ->
+    info = load_position(widget.get_id())
+    if info? and not detect_occupy(info, widget.get_id())
+        move_to_position(widget, info)
+    else
+        info = find_free_position(1, 1)
+        move_to_position(widget, info)
+    return
+
+
+move_to_somewhere = (widget, pos) ->
+    if not detect_occupy(pos, widget.get_id())
+        move_to_position(widget, pos)
+    else
+        pos = find_free_position(pos.width, pos.height)
+        move_to_position(widget, pos)
+    return
+
+
+place_desktop_items = ->
+    clear_occupy_table()
+
+    total_item = speical_item.concat(all_item)
+    not_founds = []
+    for i in total_item
+        if not (w = Widget.look_up(i))?
+            echo "uncleaned item #{i}"
+            continue
+
+        pos = w.get_pos()
+        if (pos.x > -1) and (pos.y > -1) # we have a place
+            if not detect_occupy(pos, w.get_id())
+                move_to_somewhere(w, pos)
+        else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
+            move_to_somewhere(w, old_pos)
+        else
+            not_founds.push(i)
+
+    for i in not_founds
+        w = Widget.look_up(i)
+        if w? then move_to_anywhere(w)
     return
 
 
@@ -373,13 +381,17 @@ sort_desktop_item_by_func = (func) ->
     for i in speical_item
         if (w = Widget.look_up(i))?
             old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+            old_pos.x = -1
+            old_pos.y = -1
+            w.set_pos(old_pos)
             move_to_anywhere(w)
 
     for i in item_ordered_list
         if (w = Widget.look_up(i))?
             old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+            old_pos.x = -1
+            old_pos.y = -1
+            w.set_pos(old_pos)
             move_to_anywhere(w)
     return
 
@@ -572,7 +584,7 @@ item_dragend_handler = (w, evt) ->
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
-            if not detect_occupy(new_pos) then move_to_somewhere(w, new_pos)
+            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
 
         update_selected_item_drag_image()
     return

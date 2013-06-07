@@ -1,0 +1,48 @@
+.AudioHelper {
+    width: 128px;
+    height: 128px;
+    background: rgba(0, 100, 0, 0.8);
+    cursor: pointer;
+}
+
+@-webkit-keyframes running {
+    0% { -webkit-transform:rotate(0deg); }
+   100% { -webkit-transform:rotate(360deg); }
+}
+
+.AudioHelper .running {
+    position: absolute;
+    display: none;
+    -webkit-animation: running 1.5s infinite linear;
+}
+@-webkit-keyframes breathing {
+    0% { opacity: 0.0; }
+    50% { opacity: 1; }
+   100% { opacity: 0.0; }
+}
+
+.AudioHelper .circle {
+    position: absolute;
+}
+.AudioHelper .light {
+    z-index: -100;
+    position: absolute;
+    opacity: 1.0;
+    -webkit-animation: breathing 1.5s infinite ease-out;
+    display: none;
+}
+
+.Lines {
+    position: relative;
+    top: 39px;
+    left: 56px;
+    width: 17px;
+    height: 34px;
+}
+
+.line {
+    margin: 2px auto;
+    background: rgba(0, 0, 0, 0);
+    height: 1px;
+    -webkit-transition: background 0.5s ease-in;
+}

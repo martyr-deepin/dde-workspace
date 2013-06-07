@@ -5,5 +5,6 @@
 
 JSObjectRef get_dbus_object(JSContextRef ctx, DBusGConnection* con,
         const char* server, const char* path, const char* iface);
+void reset_dbus_infos();
 #endif
 

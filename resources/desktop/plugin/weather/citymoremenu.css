@@ -1,0 +1,107 @@
+.CityMoreMenu{
+    position: absolute;
+    left:0px;
+    top: 0px;
+}
+.common_menu{
+    position: absolute;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    overflow: hidden;
+    border:1px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.75);
+}
+.common_city{
+    min-width: 80px;
+    height: 30px;
+    line-height: 30px;
+    display: -webkit-box;
+    -webkit-box-pack:end;
+}
+.common_city:hover > .minus{
+    background-color: #24b8ff;
+    opacity: 1.0;
+}
+.common_city:hover > .common_city_text{
+    background-color: #24b8ff;
+}
+.common_city_text{
+    text-align: left;
+    text-indent:6px;
+    width: 75%;
+}
+.minus{
+    text-align:center;
+    min-width: 20px;
+    font-size: 25px;
+    opacity: 0.0;
+    display: block;
+}
+.common_city:hover > .minus:hover{
+    background:#999;
+    color: #fff;
+}
+.add_common_city{
+    height: 30px;
+    line-height: 30px;
+}
+.plus{
+    min-width: 40px;
+    font-size: 25px;
+    text-align:center;
+}
+
+.add_common_city:hover{
+    background-color: #24b8ff;
+}
+
+
+.lable_choose{
+    position: absolute;
+    display: none;
+}
+.choose{
+    display: -webkit-box;
+}
+.prov,
+.city,
+.dist{
+    margin-right: 7px;
+}
+.chooseprov,
+.choosecity,
+.choosedist{
+    text-align:center;
+
+    padding: 0 0 0 10px;
+    border-radius: 6px;
+    -webkit-appearance: none;
+    outline: 0 none;
+    width: 80px;
+
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 8px 8px rgba(255,255,255,0.1) inset,
+                8px 8px 8px rgba(255,255,255,0.1) inset,
+                0 0 8px 8px rgba(255,255,255,0.1) inset,
+                -8px 8px 8px rgba(255,255,255,0.1) inset,
+                0 3px 8px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.5);
+}
+
+.chooseprov::-webkit-scrollbar,
+.choosecity::-webkit-scrollbar,
+.choosedist::-webkit-scrollbar{
+    width: 8px;
+}
+.chooseprov::-webkit-scrollbar-track,
+.choosecity::-webkit-scrollbar-track,
+.choosedist::-webkit-scrollbar-track{
+    display: none;
+}
+.chooseprov::-webkit-scrollbar-thumb,
+.choosecity::-webkit-scrollbar-thumb,
+.choosedist::-webkit-scrollbar-thumb{
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(0,153,204,0.02);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}

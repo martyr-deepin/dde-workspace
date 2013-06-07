@@ -263,11 +263,49 @@ body {
     z-index:30;
 }
 
+.DesktopPluginItem {
+    border:1px solid rgba(0,0,0,0);
+}
+.DesktopPluginItem .PluginOutbox {
+    display:table-cell;
+    text-align:center;
+    vertical-align:middle;
+}
+.DesktopPluginItem .PluginOutbox .PluginContainer{
+    display:inline-block;
+}
+.plugin_close{
+    width: 25.2px;
+    height: 20px;
+    background-position:10% 90%;
+    background-repeat: no-repeat;
+    background-image: url(../img/plugin/Normal/window_close_normal.png);
+}
+.plugin_close:hover{
+    background-image: url(../img/plugin/Hover/window_close_hover.png);
+}
+.plugin_hover_border {
+    border:1px solid #eee;
+}
+.plugin_DND_border {
+    border:1px solid #eee;
+    background-color:rgba(68, 132, 195, 0.3) !important;
+}
+.PluginHandle {
+    width: 100%;
+    height: 20px;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s ease-out;
+    display: -webkit-box;
+    -webkit-box-pack:end;
+}
+.PluginHandle:hover {
+    opacity: 1;
+}
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
 #WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
     display:none;
 }
-
 @-webkit-keyframes item_flash {
     0% {
         box-shadow: 0px 0px 5px #01a6e8;
@@ -288,3 +326,4 @@ body {
         box-shadow: 0px 0px 0px #01a6e8;
     }
 }
+

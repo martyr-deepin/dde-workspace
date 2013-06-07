@@ -99,30 +99,38 @@ msgid "Dec"
 msgstr "12月"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:105
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sat"
 msgstr "星期六"
 

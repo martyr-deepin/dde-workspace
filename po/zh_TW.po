@@ -99,30 +99,38 @@ msgid "Dec"
 msgstr "十二月"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:105
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sat"
 msgstr "星期六"
 
@@ -238,51 +246,6 @@ msgstr "清理(_C)"
 msgid "Software Center"
 msgstr "軟體中心"
 
-#: ../resources/desktop/js/grid.coffee:811
-msgid "_Sort by"
-msgstr "排序方式(_S)"
-
-#: ../resources/desktop/js/grid.coffee:812
-msgid "_Name"
-msgstr "名稱(_N)"
-
-#: ../resources/desktop/js/grid.coffee:813
-msgid "Last modified _time"
-msgstr "最近修改時間(_T)"
-
-#: ../resources/desktop/js/grid.coffee:816
-msgid "_New"
-msgstr "新建(_N)"
-
-#: ../resources/desktop/js/grid.coffee:817
-msgid "_Folder"
-msgstr "資料夾(_F)"
-
-#: ../resources/desktop/js/grid.coffee:818
-msgid "_Text document"
-msgstr "文字文檔(_T)"
-
-#: ../resources/desktop/js/grid.coffee:821
-msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
-
-#: ../resources/desktop/js/grid.coffee:822
-msgid "_Paste"
-msgstr "貼上(_P)"
-
-#: ../resources/desktop/js/grid.coffee:824
-msgid "_Display settings"
-msgstr "顯示設定(_D)"
-
-#: ../resources/desktop/js/grid.coffee:825
-msgid "D_esktop settings"
-msgstr "桌面設定(_E)"
-
-#: ../resources/desktop/js/grid.coffee:826
-msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
-
-#: ../resources/dock/js/clientgroup.coffee:32
 msgid "_New instance"
 msgstr "新建實體(_N)"
 

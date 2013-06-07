@@ -150,7 +150,12 @@ class Item extends Widget
 
 
     set_pos : (info) =>
-        [@_position.x, @_position.y, @_position.width, @_position.height] = [info.x, info.y, info.width, info.height]
+        [@_position.x, @_position.y] = [info.x, info.y]
+        return
+
+
+    _set_size : (info) =>
+        [@_position.width, @_position.height] = [info.width, info.height]
         return
 
 

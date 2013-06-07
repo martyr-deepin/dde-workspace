@@ -96,6 +96,8 @@ do_cut_completed = (items) ->
 
 
 do_desktop_lost_focus = ->
+    # destkop has lost focus
+    # notify destkop normal items
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))?
         if w.has_focus
             last_widget_has_focus = true
@@ -106,6 +108,8 @@ do_desktop_lost_focus = ->
 
 
 do_desktop_get_focus = ->
+    # destkop has lost focus
+    # notify destkop normal items
     if last_widget.length > 0 and (w = Widget.look_up(last_widget))? and last_widget_has_focus == true
         w.item_focus()
         last_widget_has_focus == false
@@ -120,10 +124,7 @@ do_desktop_config_changed = ->
 
 do_workarea_changed = (allo) ->
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
-    items = speical_item.concat(all_item)
-    for item in items
-        if (w = Widget.look_up(item))?
-            old_pos = w.get_pos()
-            w.set_pos(-1, -1, old_pos.width, old_pos.height)
+    init_occupy_table()
     place_desktop_items()
     return
+
