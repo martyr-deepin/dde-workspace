@@ -63,14 +63,15 @@ create_item = (entry) ->
 delete_item = (w) ->
     cancel_item_selected(w)
     all_item.remove(w.get_id())
-    w.destroy()
     discard_position(w.get_id())
+    w.destroy()
 
 
 delete_widget = (w) ->
     widget_item.remove(w.get_id())
-    w.destroy()
     discard_position(w.get_id())
+    plugin_manager.enable_plugin(w.get_plugin(), false)
+    w.destroy()
 
 
 clear_speical_desktop_items = ->
