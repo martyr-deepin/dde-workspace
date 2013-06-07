@@ -169,7 +169,9 @@ JSValueRef dcore_get_plugins(const char* app_name)
 
 void create_strv(gpointer key, gpointer value, gpointer user_data)
 {
-    g_ptr_array_add((GPtrArray*)user_data, g_strdup(value));
+    char* pos = strchr((char*)value, ':');
+    char* plugin_name = g_strdup(pos + 1);
+    g_ptr_array_add((GPtrArray*)user_data, plugin_name);
 }
 
 

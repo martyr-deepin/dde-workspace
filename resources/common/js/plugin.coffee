@@ -15,6 +15,8 @@ class PluginManager
 
     enable_plugin: (id, value)->
         DCore.enable_plugin(id, value)
+
+    enable_plugin_front: (id, value) ->
         name = get_name(id)
         echo "plugin's name: #{name}"
         plugin = PluginManager._plugins[name]
@@ -49,11 +51,12 @@ class PluginManager
                 if not PluginManager._plugins or not PluginManager._plugins[name]
                     if id_prefix == 'desktop:'
                         new DesktopPlugin(get_path_base(plugin), name)
-                        plugin_manager.enable_plugin(id, true)
+                        echo "id: #{id}"
+                        plugin_manager.enable_plugin_front(id, true)
                         place_all_widgets()
 
         for own k, v of info
-            plugin_manager.enable_plugin(k, false)
+            plugin_manager._enable_plugin(k, false)
 
         return
 
