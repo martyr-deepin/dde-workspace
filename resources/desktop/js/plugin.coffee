@@ -65,8 +65,20 @@ class DesktopPluginItem extends Widget
         @container = create_element("div", "PluginContainer", @container_outbox)
 
 
+    destroy: ->
+        @element.parentElement.removeChild(@element)
+
+
     get_id : =>
         @id
+
+
+    set_plugin : (id) =>
+        @plugin_id = id
+
+
+    get_plugin : =>
+        @plugin_id
 
 
     get_pos : =>
@@ -146,15 +158,15 @@ class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
         @item = new DesktopPluginItem(@name)
         super('desktop', @path, @name, @item.container)
-
-
-    set_pos: (info)->
-        move_to_somewhere(@item, info)
+        @item.set_plugin(@id)
 
 
     destroy: ->
         @host.parentElement.removeChild(@host)
-        delete_widget(@item)
+
+
+    set_pos: (info)->
+        move_to_somewhere(@item, info)
 
 
     wrap_element: (child, width, height)->
