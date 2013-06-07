@@ -286,7 +286,6 @@ body {
 }
 .plugin_hover_border {
     border:1px solid #eee;
-    /*background-color:rgba(170, 200, 210, 0.3);*/
 }
 .plugin_DND_border {
     border:1px solid #eee;
@@ -295,7 +294,6 @@ body {
 .PluginHandle {
     width: 100%;
     height: 20px;
-    /*background: rgba(0, 100, 0, 0.8);*/
     opacity: 0;
     -webkit-transition: opacity 0.3s ease-out;
     display: -webkit-box;
@@ -304,7 +302,6 @@ body {
 .PluginHandle:hover {
     opacity: 1;
 }
-
 /* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
 #WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
     display:none;

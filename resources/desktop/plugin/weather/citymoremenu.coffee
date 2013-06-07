@@ -72,8 +72,6 @@ class CityMoreMenu extends Widget
             @common_menu.style.display = "none"
             @common_menu.style.display = "block"            
 
-
-
     common_city:->
         common_dists = localStorage.getObject("common_dists_storage")
         if common_dists

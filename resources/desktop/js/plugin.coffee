@@ -1,5 +1,7 @@
 class PluginHandle extends Widget
     IMG_URL_PRESS = "../img/plugin/Press"
+    widget_drag_canvas = document.createElement("canvas")
+    widget_drag_context = widget_drag_canvas.getContext('2d')
 
     constructor : (@parent_id) ->
         @id = "handle-#{@parent_id}"
@@ -34,7 +36,19 @@ class PluginHandle extends Widget
         drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         @offset_pos.x = drag_pos.x
         @offset_pos.y = drag_pos.y
-        if (w = Widget.look_up(@parent_id))? then w.add_css_class("plugin_DND_border")
+        if not (w = Widget.look_up(@parent_id))? then return
+        echo w.offsetHeight
+        w.add_css_class("plugin_DND_border")
+
+        parent = @element.parentElement
+        offset_x = evt.clientX - parent.offsetLeft
+        offset_y = evt.clientY - parent.offsetTop
+        widget_drag_canvas.width = parent.offsetWidth
+        widget_drag_canvas.height = parent.offsetHeight
+        widget_drag_context.strokeStyle = "#fff"
+        widget_drag_context.strokeRect(1,1,widget_drag_canvas.width - 2,widget_drag_canvas.height - 2)
+        evt.dataTransfer.setDragCanvas(widget_drag_canvas, offset_x, offset_y)
+
         return
 
 
