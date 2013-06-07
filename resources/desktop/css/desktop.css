@@ -266,10 +266,13 @@ body {
 .DesktopPluginItem {
     border:1px solid rgba(0,0,0,0);
 }
-.DesktopPluginItem .PluginContainer {
+.DesktopPluginItem .PluginOutbox {
     display:table-cell;
     text-align:center;
     vertical-align:middle;
+}
+.DesktopPluginItem .PluginOutbox .PluginContainer{
+    display:inline-block;
 }
 .plugin_hover_border {
     border:1px solid #eee;
