@@ -167,6 +167,12 @@ JSValueRef dcore_get_plugins(const char* app_name)
 }
 
 
+void create_strv(gpointer key, gpointer value, gpointer user_data)
+{
+    g_ptr_array_add((GPtrArray*)user_data, g_strdup(value));
+}
+
+
 void enable_plugin(GSettings* gsettings, char const* id, gboolean value)
 {
     if (value && !g_hash_table_contains(enabled_plugins, id)) {
@@ -176,6 +182,13 @@ void enable_plugin(GSettings* gsettings, char const* id, gboolean value)
         g_hash_table_remove(enabled_plugins, id);
         g_hash_table_replace(plugins_state, g_strdup(id), GINT_TO_POINTER(DISABLED_PLUGIN));
     }
+
+    GPtrArray* values = g_ptr_array_new_with_free_func(g_free);
+    g_hash_table_foreach(enabled_plugins, create_strv, (gpointer)values);
+    g_ptr_array_add(values, NULL);
+    g_settings_set_strv(gsettings, SCHEMA_KEY_ENABLED_PLUGINS, (char const* const*)values->pdata);
+    g_ptr_array_unref(values);
+    g_settings_sync();
 }
 
 
