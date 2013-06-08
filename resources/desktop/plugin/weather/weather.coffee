@@ -48,12 +48,12 @@ class Weather extends Widget
         ajax(testInternet_url,@testInternet_connect(),@testInternet_noconnect)
 
     testInternet_connect:=>
-        echo "testInternet_connect"
+        # echo "testInternet_connect"
         cityid = localStorage.getObject("cityid_storage") if localStorage.getObject("cityid_storage")
         if cityid < 1000
             cityid = 0
             localStorage.setItem("cityid_storage",cityid)
-        echo "cityid:" + cityid
+        # echo "cityid:" + cityid
 
         if !cityid
             Clientcityid = new ClientCityId()
@@ -61,7 +61,7 @@ class Weather extends Widget
         else @weathergui_update()
 
     testInternet_noconnect:=>
-        echo "testInternet_noconnect"
+        # echo "testInternet_noconnect"
         @weatherdata = new WeatherData()
         weather_data_now = localStorage.getObject("weatherdata_now_storage")
         @update_weathernow(weather_data_now) if weather_data_now
