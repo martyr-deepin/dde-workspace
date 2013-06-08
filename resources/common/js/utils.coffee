@@ -38,9 +38,16 @@ assert = (value, msg) ->
     if not value
         throw new Error(msg)
 
-_ = (s)->
-    DCore.gettext(s)
+# xgettext will extract the first argument if two is given
+# so, if domain is given, it ought to be the second argument.
+_ = (s, d)->
+    if d
+        DCore.dgettext(d, s)
+    else
+        DCore.gettext(s)
 
+bindtextdomain = (domain, locale_dir) ->
+    DCore.bindtextdomain(domain, locale_dir)
 
 build_menu = (info) ->
     m = new DeepinMenu

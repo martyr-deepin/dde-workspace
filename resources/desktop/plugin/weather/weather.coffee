@@ -17,6 +17,9 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
+_ = (s) ->
+    DCore.dgettext('weather', s)
+
 class Weather extends Widget
     ZINDEX_MENU = 5001
     ZINDEX_GLOBAL_DESKTOP = 5000

@@ -208,3 +208,52 @@ void dcore_enable_plugin(char const* id, gboolean value)
 
     enable_plugin(gsettings, id, value);
 }
+
+
+JS_EXPORT_API
+JSValueRef dcore_get_plugin_info(char const* path)
+{
+    char* info_file_path = g_build_filename(path, "info.ini", NULL);
+    GKeyFile* info_file = g_key_file_new();
+    g_key_file_load_from_file(info_file, info_file_path, G_KEY_FILE_NONE, NULL);
+    g_free(info_file_path);
+
+    JSObjectRef json = json_create();
+    char* id = g_key_file_get_string(info_file, "Plugin", "ID", NULL);
+    json_append_string(json, "ID", id == NULL ? "" : id);
+    g_free(id);
+
+    char* name = g_key_file_get_string(info_file, "Plugin", "name", NULL);
+    json_append_string(json, "name", name == NULL ? "" : name);
+    g_free(name);
+
+    char* description = g_key_file_get_string(info_file, "Plugin", "description", NULL);
+    json_append_string(json, "description", description == NULL ? "" : description);
+    g_free(description);
+
+    int width = g_key_file_get_integer(info_file, "Plugin", "width", NULL);
+    json_append_number(json, "width", width);
+
+    int height = g_key_file_get_integer(info_file, "Plugin", "height", NULL);
+    json_append_number(json, "height", height);
+    /* "type" */
+
+    char* author = g_key_file_get_string(info_file, "Author", "author", NULL);
+    json_append_string(json, "author", author == NULL ? "" : author);
+    g_free(author);
+
+    char* email = g_key_file_get_string(info_file, "Author", "email", NULL);
+    json_append_string(json, "email", email == NULL ? "" : email);
+    g_free(email);
+
+    char* textdomain = g_key_file_get_string(info_file, "Resource", "textdomain", NULL);
+    json_append_string(json, "textdomain", textdomain == NULL ? "" : textdomain);
+    g_free(textdomain);
+    /* char* js = g_key_file_get_string("js" */
+    /* "css" */
+    /* "screenshot" */
+
+    g_key_file_free(info_file);
+
+    return json;
+}
