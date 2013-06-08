@@ -21,9 +21,10 @@
 class WeatherData
 
     constructor: (cityid)->
-        @cityid = cityid
-        @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html"
-        @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
+        if cityid
+            @cityid = cityid
+            @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html"
+            @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
 
     Get_weatherdata_now:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_now"
@@ -53,9 +54,9 @@ class WeatherData
                     echo "weatherdata_more xhr.responseText isnt JSON "
             )
 
-    weather_more_img:->
+    weather_more_img_front:->
         weather_data_more = localStorage.getObject("weatherdata_more_storage")
-        @img_front = [
+        img_front = [
             weather_data_more.weatherinfo.img_single,
             weather_data_more.weatherinfo.img1,
             weather_data_more.weatherinfo.img2,
@@ -70,7 +71,10 @@ class WeatherData
             weather_data_more.weatherinfo.img11,
             weather_data_more.weatherinfo.img12
         ]
-        @img_behind = [
+        return img_front
+    weather_more_img_behind:->
+        weather_data_more = localStorage.getObject("weatherdata_more_storage")
+        img_behind = [
             weather_data_more.weatherinfo.img_title_single,
             weather_data_more.weatherinfo.img_title1,
             weather_data_more.weatherinfo.img_title2,
@@ -85,3 +89,12 @@ class WeatherData
             weather_data_more.weatherinfo.img_title11,
             weather_data_more.weatherinfo.img_title12
         ]
+        return img_behind
+    weather_more_week:->
+        i_week = 0
+        week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
+        weather_data_more = localStorage.getObject("weatherdata_more_storage")
+        while i_week < week_name.length
+            break if weather_data_more.weatherinfo.week == week_name[i_week]
+            i_week++
+        return i_week
