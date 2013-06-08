@@ -33,11 +33,11 @@ class WeatherData
             localStorage.setItem("cityid_storage",cityid)
         if cityid
             ajax(@url_nowweather_str,(xhr)=>
-                try
+                # try
                     localStorage.setItem("weatherdata_now_storage",xhr.responseText)
                     callback()
-                catch e
-                    echo "weatherdata_now xhr.responseText isnt JSON "
+                # catch e
+                    # echo "weatherdata_now xhr.responseText isnt JSON "
             )
     Get_weatherdata_more:(callback,cityid = @cityid)->
         # echo "Get_weatherdata_more"
@@ -46,12 +46,11 @@ class WeatherData
             localStorage.setItem("cityid_storage",cityid)
         if cityid
             ajax(@url_moreweather_str,(xhr)=>
-                try
+                # try
                     localStorage.setItem("weatherdata_more_storage",xhr.responseText)
-                    @weather_more_img()
                     callback()
-                catch e
-                    echo "weatherdata_more xhr.responseText isnt JSON "
+                # catch e
+                    # echo "weatherdata_more xhr.responseText isnt JSON "
             )
 
     weather_more_img_front:->

@@ -189,10 +189,9 @@ class Weather extends Widget
             echo "cityid isnt ready"
 
     update_weathernow: (weather_data_now)->
+        # echo "update_weathernow"
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
-        # echo "temp_now:" + temp_now
-        # show the name in chinese not in english
         @city_now.textContent = weather_data_now.weatherinfo.city
 
         if temp_now == "\u6682\u65e0\u5b9e\u51b5"
@@ -208,11 +207,13 @@ class Weather extends Widget
                 @temperature_now_number.textContent = temp_now
 
     update_weathermore: (weather_data_more)->
-        week_n = @weatherdata.weather_more_week()
-        echo "week_n:" + week_n
+        # echo "update_weathermore"
+        @week_n = @weatherdata.weather_more_week()
+        @img_front = @weatherdata.weather_more_img_front()
+        @img_behind = @weatherdata.weather_more_img_behind()
         week_show = [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
         str_data = weather_data_more.weatherinfo.date_y
-        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + " " + week_show[week_n%7]
+        @date.textContent = str_data.substring(0,str_data.indexOf("\u5e74")) + "." + str_data.substring(str_data.indexOf("\u5e74")+1,str_data.indexOf("\u6708"))+ "." + str_data.substring(str_data.indexOf("\u6708") + 1,str_data.indexOf("\u65e5")) + " " + week_show[@week_n%7]
         @weather_now_pic.src = @img_url_first + "48/T" + weather_data_more.weatherinfo.img_single + weather_data_more.weatherinfo.img_title_single + ".png"
 
         @weather_now_pic.title = weather_data_more.weatherinfo['weather' + 1]
@@ -222,7 +223,7 @@ class Weather extends Widget
             j = i + 1
             @weather_data[i].title = weather_data_more.weatherinfo['weather' + j]
             # new ToolTip(@weather_data[i],weather_data_more.weatherinfo['weather' + j])
-            @week[i].textContent = week_show[(week_n + i) % 7]
+            @week[i].textContent = week_show[(@week_n + i) % 7]
             @pic[i].src = @weather_more_pic_src(j)
             @temperature[i].textContent = weather_data_more.weatherinfo['temp' + j]
 
@@ -231,13 +232,12 @@ class Weather extends Widget
         src = null
         time = new Date()
         hours_now = time.getHours()
-        img_front = @weatherdata.weather_more_img_front()
-        img_behind = @weatherdata.weather_more_img_behind()
-        if img_front[i+1] == "99"
-            img_front[i+1] = img_front[i]
+
+        if @img_front[i+1] == "99"
+            @img_front[i+1] = @img_front[i]
         if hours_now < 12
-            src = @img_url_first + "24/T" + img_front[i] + img_behind[i] + ".png"
-        else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
+            src = @img_url_first + "24/T" + @img_front[i] + @img_behind[i] + ".png"
+        else src = @img_url_first + "24/T" + @img_front[i+1] + @img_behind[i+1] + ".png"
         return src
 
 
