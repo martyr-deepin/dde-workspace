@@ -137,9 +137,11 @@ ajax = (url,callback,callback_error) ->
         echo "XMLHttpRequest onerror"
         callback_error?(xhr)
 
-    xhr.onload = ->
-        echo "XMLHttpRequest onload"
-        callback(xhr)
+    xhr.onloadend = ->
+        # echo "callback： #{typeof callback}"
+        echo "XMLHttpRequest onloadend"
+        callback?(xhr)
+        return
 
     xhr.send(null)
 
