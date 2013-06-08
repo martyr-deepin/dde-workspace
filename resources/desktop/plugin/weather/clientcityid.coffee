@@ -36,13 +36,13 @@ class ClientCityId
                                 if allname.data[provin].city[ci].cityname == remote_ip_info.city
                                     cityname_client = remote_ip_info.city
                                     localStorage.setItem("cityname_client_storage",cityname_client)
-                                    
+
                                     cityid_client = allname.data[provin].city[ci].code
                                     # echo "cityid_client:"+ cityid_client
                                     localStorage.setItem("cityid_storage",cityid_client)
                                     callback()
 
-                else 
+                else
                     echo "Get_client_cityid can't find the matched location right json by ip"
                     return 0
             catch e

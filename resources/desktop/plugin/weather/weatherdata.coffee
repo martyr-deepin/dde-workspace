@@ -27,30 +27,28 @@ class WeatherData
             @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
 
     Get_weatherdata_now:(callback,cityid = @cityid)->
-        # echo "Get_weatherdata_now"
         if cityid < 1000
             cityid = 0
             localStorage.setItem("cityid_storage",cityid)
         if cityid
             ajax(@url_nowweather_str,(xhr)=>
-                # try
+                try
                     localStorage.setItem("weatherdata_now_storage",xhr.responseText)
                     callback()
-                # catch e
-                    # echo "weatherdata_now xhr.responseText isnt JSON "
+                catch e
+                    echo "weatherdata_now xhr.responseText isnt JSON "
             )
     Get_weatherdata_more:(callback,cityid = @cityid)->
-        # echo "Get_weatherdata_more"
         if cityid < 1000
             cityid = 0
             localStorage.setItem("cityid_storage",cityid)
         if cityid
             ajax(@url_moreweather_str,(xhr)=>
-                # try
+                try
                     localStorage.setItem("weatherdata_more_storage",xhr.responseText)
                     callback()
-                # catch e
-                    # echo "weatherdata_more xhr.responseText isnt JSON "
+                catch e
+                    echo "weatherdata_more xhr.responseText isnt JSON "
             )
 
     weather_more_img_front:->

@@ -140,16 +140,15 @@ ajax = (url,callback,callback_error) ->
 
     xhr.open("GET", url, true)
 
-    xhr.onerror = ->
-        echo "XMLHttpRequest onerror"
-        callback_error?(xhr)
-
-    xhr.onloadend = ->
+    xhr.onload = ->
         # echo "callback： #{typeof callback}"
-        echo "XMLHttpRequest onloadend"
+        echo "XMLHttpRequest onload"
         callback?(xhr)
         return
 
+    xhr.onerror = ->
+        echo "XMLHttpRequest onerror"
+        callback_error?(xhr)
     xhr.send(null)
 
 get_path_base = (path)->
