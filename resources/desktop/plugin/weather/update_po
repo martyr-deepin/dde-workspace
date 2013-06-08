@@ -2,14 +2,15 @@
 
 lang = ["zh_CN", "zh_TW"]
 
+name = 'weather'
 
 import os
 import glob
 
 for l in lang:
     os.system("mkdir -p po/%s" % l)
-    os.system("touch po/%s/weather.po" % (l))
+    os.system("touch po/%s/%s.po" % (l, name))
 
-    cmd= "xgettext --from-code=utf-8 -L python -j -o po/%s/weather.po %s" % (l,
-            " ".join(glob.glob("*.coffee")))
+    cmd= "xgettext --from-code=utf-8 -L python -j -o po/%s/%s.po %s" % (l,
+            name, " ".join(glob.glob("*.coffee")))
     os.system(cmd)
