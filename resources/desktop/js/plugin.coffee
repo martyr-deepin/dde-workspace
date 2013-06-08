@@ -31,8 +31,9 @@ class PluginHandle extends Widget
 
     do_dragstart : (evt) =>
         evt.stopPropagation()
-
         _SET_DND_INTERNAL_FLAG_(evt)
+        evt.dataTransfer.effectAllowed = "all"
+
         drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
         @offset_pos.x = drag_pos.x
         @offset_pos.y = drag_pos.y
@@ -56,6 +57,8 @@ class PluginHandle extends Widget
 
     do_dragend : (evt) =>
         evt.stopPropagation()
+
+        if evt.dataTransfer.dropEffect != "link" then return
         if not (w = Widget.look_up(@parent_id))? then return
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
@@ -175,6 +178,10 @@ class DesktopPlugin extends Plugin
         @item = new DesktopPluginItem(@name)
         super('desktop', @path, @name, @item.container)
         @item.set_plugin(@id)
+        pos = @item.get_pos()
+        pos.width = @info.width
+        pos.height = @info.height
+        @item.set_size(pos)
 
 
     destroy: ->
@@ -183,14 +190,6 @@ class DesktopPlugin extends Plugin
 
     set_pos: (info)->
         move_to_somewhere(@item, info)
-
-
-    wrap_element: (child, width, height)->
-        @host.appendChild(child)
-        pos = @item.get_pos()
-        pos.width = width
-        pos.height = height
-        @item.set_size(pos)
 
 
 load_plugins = ->

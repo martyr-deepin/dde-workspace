@@ -250,4 +250,4 @@ plugin = window.plugin_manager.get_plugin("weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
-plugin.wrap_element(new Weather(plugin.id).element, 3, 1)
+plugin.wrap_element(new Weather(plugin.id).element)

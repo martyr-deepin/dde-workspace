@@ -23,4 +23,4 @@ class Clock extends Widget
 
 plugin = window.plugin_manager.get_plugin("clock")
 plugin.inject_css("clock")
-plugin.wrap_element(new Clock(plugin.id).element, 2, 2)
+plugin.wrap_element(new Clock(plugin.id).element)
