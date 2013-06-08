@@ -400,42 +400,42 @@ get_next_xformed_gdk_pixbuf ()
 PRIVATE gboolean
 on_bg_duration_tick (gpointer user_data)
 {
-    /* xfade_data_t* fade_data = g_new0 (xfade_data_t, 1); */
+    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
 
-    /* fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC; */
-    /* fade_data->interval = TIME_PER_FRAME; */
+    fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
+    fade_data->interval = TIME_PER_FRAME; 
 
-    /* fade_data->start_time = get_current_time(); */
-    /* fade_data->alpha = 0.0; */
+    fade_data->start_time = get_current_time();
+    fade_data->alpha = 0.0;
 
-    /* g_debug ("on_bg_duration_tick: current_time: %lf", fade_data->start_time); */
-    /* Pixmap prev_pixmap = get_previous_background(); */
-    /* gdk_error_trap_push (); */
-    /* if (prev_pixmap == None) */
-    /* { */
-    /*     prev_pixmap = XCreatePixmap (display, root, */
-    /*                                        root_width, root_height, */
-    /*                                        root_depth); */
-    /*     _update_rootpmap (prev_pixmap); */
-    /* } */
-    /* gdk_error_trap_pop_ignored (); */
+    g_debug ("on_bg_duration_tick: current_time: %lf", fade_data->start_time);
+    Pixmap prev_pixmap = get_previous_background();
+    gdk_error_trap_push ();
+    if (prev_pixmap == None) 
+    {
+        prev_pixmap = XCreatePixmap (display, root, 
+                                     root_width, root_height, 
+                                     root_depth); 
+        _update_rootpmap (prev_pixmap);
+    }
+    gdk_error_trap_pop_ignored ();
 
-    /* fade_data->pixmap = prev_pixmap; */
-    /* fade_data->fading_surface = get_surface (prev_pixmap); */
+    fade_data->pixmap = prev_pixmap;
+    fade_data->fading_surface = get_surface (prev_pixmap); 
 
-    /* const char* next_picture = get_next_picture_path (); */
-    /* g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture); */
+    const char* next_picture = get_next_picture_path (); 
+    g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture);
 
-    /* fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture); */
+    fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture);
 
-    /* GSource* source = g_timeout_source_new (fade_data->interval*MSEC_PER_SEC); */
+    GSource* source = g_timeout_source_new (fade_data->interval*MSEC_PER_SEC);
 
-    /* g_source_set_callback (source, (GSourceFunc) on_tick, fade_data, (GDestroyNotify)on_finished); */
+    g_source_set_callback (source, (GSourceFunc) on_tick, fade_data, (GDestroyNotify)on_finished);
 
-    /* if (auto_timeout_id) */
-    /*     g_source_remove (auto_timeout_id); */
+    if (auto_timeout_id)
+        g_source_remove (auto_timeout_id);
 
-    /* auto_timeout_id = g_source_attach (source, g_main_context_default()); */
+    auto_timeout_id = g_source_attach (source, g_main_context_default());
 
     return TRUE;
 }
