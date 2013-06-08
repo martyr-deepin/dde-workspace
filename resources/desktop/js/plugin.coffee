@@ -25,7 +25,7 @@ class PluginHandle extends Widget
     do_mouseout : (evt) =>
         if not (w = Widget.look_up(@parent_id))? then return
         w.remove_css_class("plugin_hover_border")
-        w.remove_css_class("plugin_hover_close")
+        # w.remove_css_class("plugin_hover_close")
         return
 
 
@@ -44,10 +44,13 @@ class PluginHandle extends Widget
         offset_y = evt.clientY - parent.offsetTop
         widget_drag_canvas.width = parent.offsetWidth
         widget_drag_canvas.height = parent.offsetHeight
-        widget_drag_context.strokeStyle = "#fff"
+        widget_drag_context.strokeStyle = "rgba(0, 0, 0, 0.5)"
         widget_drag_context.strokeRect(1,1,widget_drag_canvas.width - 2,widget_drag_canvas.height - 2)
+        # widget_drag_context.lineJoin = "round"
+        # widget_drag_context.lineCap = "round"
+        widget_drag_context.fillStyle = "rgba(255, 255, 255, 0.3)"
+        widget_drag_context.fillRect(1,1,widget_drag_canvas.width - 2,widget_drag_canvas.height - 2)
         evt.dataTransfer.setDragCanvas(widget_drag_canvas, offset_x, offset_y)
-
         return
 
 
