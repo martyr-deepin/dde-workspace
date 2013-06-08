@@ -20,10 +20,9 @@
 
 class CityMoreMenu extends Widget
     COMMON_MENU_WIDTH_MINI = 70
-
-    BOTTOM_DISTANCE_MINI = 200
+    BOTTOM_DISTANCE_CHOOSECITY_MINI = 200
+    BOTTOM_DISTANCE_COMMONCITY_MINI = 180
     times_dist_choose = 0
-
 
     constructor: (zIndex)->
         super(null)
@@ -44,7 +43,7 @@ class CityMoreMenu extends Widget
     zIndex_check:->
         return @element.style.zIndex
     set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
-        if bottom_distance > BOTTOM_DISTANCE_MINI
+        if bottom_distance > BOTTOM_DISTANCE_CHOOSECITY_MINI
             obj.style.left = x1
             obj.style.top = y1
         else
@@ -61,23 +60,29 @@ class CityMoreMenu extends Widget
         @common_menu.style.display = "none"
         common_dists = localStorage.getObject("common_dists_storage")
 
-        if bottom_distance > BOTTOM_DISTANCE_MINI
+        if bottom_distance > BOTTOM_DISTANCE_COMMONCITY_MINI
             @common_city(common_dists,callback)
             @add_common()
             @common_menu.style.left = x1
             @common_menu.style.top = y1
+            echo y1
             @common_menu.style.display = "block"
         else
-            @add_common()
             @common_city(common_dists.reverse(),callback)
+            @add_common()
             @common_menu.style.display = "block"
-            width = @common_menu.clientWidth
+            height = @common_menu.clientHeight
             @common_menu.style.display = "none"
 
-            x2 = x1
-            y2 = y1 - width - 15
+            if bottom_distance < height
+                x2 = x1
+                @common_menu.style.bottom = -35
+
+            else
+                x2 = x1
+                @common_menu.style.top = y1
+
             @common_menu.style.left = x2
-            @common_menu.style.bottom = y2
             @common_menu.style.display = "block"
 
     common_city:(common_dists,callback)->
@@ -204,11 +209,11 @@ class CityMoreMenu extends Widget
 
     read_data_from_json: (id,callback) ->
         url = "#{plugin.path}/city/" + id + ".json"
-        ajax(url,(xhr)=>
+        read_from_localfile(url,(xhr)=>
             if xhr.responseText
                 data = JSON.parse(xhr.responseText)
                 @cityadd(data[id].data,callback)
-        ,false)
+        )
 
     cityadd: (data,callback) ->
         @clearOptions(@choosecity,1)#1
