@@ -138,9 +138,22 @@ void init_i18n()
     textdomain("DDE");
 }
 
+JS_EXPORT_API
 const char* dcore_gettext(const char* c)
 {
     return gettext(c);
+}
+
+JS_EXPORT_API
+const char* dcore_dgettext(char const* domain, char const* s)
+{
+    return dgettext(domain, s);
+}
+
+JS_EXPORT_API
+void dcore_bindtextdomain(char const* domain, char const* mo_file)
+{
+    bindtextdomain(domain, mo_file);
 }
 
 
