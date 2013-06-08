@@ -22,7 +22,7 @@ class WeatherData
 
     constructor: (cityid)->
         @cityid = cityid
-        @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html" 
+        @url_nowweather_str = "http://www.weather.com.cn/data/sk/"+ cityid + ".html"
         @url_moreweather_str = "http://m.weather.com.cn/data/" + cityid + ".html"
 
     Get_weatherdata_now:(callback,cityid = @cityid)->
@@ -32,7 +32,7 @@ class WeatherData
             localStorage.setItem("cityid_storage",cityid)
         if cityid
             ajax(@url_nowweather_str,(xhr)=>
-                try 
+                try
                     localStorage.setItem("weatherdata_now_storage",xhr.responseText)
                     callback()
                 catch e
@@ -48,7 +48,6 @@ class WeatherData
                 try
                     localStorage.setItem("weatherdata_more_storage",xhr.responseText)
                     @weather_more_img()
-                    @weather_more_week()
                     callback()
                 catch e
                     echo "weatherdata_more xhr.responseText isnt JSON "
@@ -86,11 +85,3 @@ class WeatherData
             weather_data_more.weatherinfo.img_title11,
             weather_data_more.weatherinfo.img_title12
         ]
-    weather_more_week:->
-        i_week = 0
-        week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
-        weather_data_more = localStorage.getObject("weatherdata_more_storage")
-        while i_week < week_name.length
-            break if weather_data_more.weatherinfo.week == week_name[i_week]
-            i_week++
-        @week_n = i_week

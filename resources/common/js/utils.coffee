@@ -128,7 +128,7 @@ dnd_is_deepin_item = (e)->
 dnd_is_file = (e)->
     return e.dataTransfer.getData("text/uri-list").length != 0
 
-ajax = (url, callback,callback_nointernet ) ->
+ajax = (url, callback,callback_nointernet = null) ->
     xhr = new XMLHttpRequest()
     xhr.open("GET", url, true)
     xhr.send(null)
@@ -139,11 +139,12 @@ ajax = (url, callback,callback_nointernet ) ->
                     callback?(xhr)
                 # catch e
                     # echo "XMLHttpRequest is error"
-            if xhr.status == 404
+            else if xhr.status == 404
                 echo "XMLHttpRequest can't find the url:" + url
             else if xhr.status == 0
                 echo "your computer are not connected to the Internet"
-                callback_nointernet()
+                callback_nointernet if callback_nointernet
+                return
 
 read_from_localfile = (url,callback) ->
     xhr = new XMLHttpRequest()
