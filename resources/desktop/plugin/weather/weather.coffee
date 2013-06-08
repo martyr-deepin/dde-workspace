@@ -107,6 +107,7 @@ class Weather extends Widget
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
                 if bottom_distance < BOTTOM_DISTANCE_MINI
+                    # @weather_data.reverse()
                     @more_weather_menu.style.top = TOP_MORE_WEATHER_MENU2
                     @more_weather_menu.style.borderRadius = "6px 6px 0 0"
                 else

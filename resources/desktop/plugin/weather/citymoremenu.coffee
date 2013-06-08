@@ -25,10 +25,13 @@ class CityMoreMenu extends Widget
     times_dist_choose = 0
 
 
-    constructor: (zIndex,callback)->
+    constructor: (zIndex)->
         super(null)
         @element.style.display = "none"
         @element.style.zIndex = zIndex
+        common = localStorage.getObject("common_dists_storage")
+        common_dists = if !common then common_dists_init else common
+        localStorage.setObject("common_dists_storage",common_dists)
 
     display_none:->
         @element.style.display = "none"
@@ -44,7 +47,7 @@ class CityMoreMenu extends Widget
         if bottom_distance > BOTTOM_DISTANCE_MINI
             obj.style.left = x1
             obj.style.top = y1
-        else 
+        else
             obj.style.left = x2
             obj.style.top = y2
         obj.style.display = show
@@ -56,31 +59,28 @@ class CityMoreMenu extends Widget
 
         @common_menu = create_element("div","common_menu",@element)
         @common_menu.style.display = "none"
+        common_dists = localStorage.getObject("common_dists_storage")
 
         if bottom_distance > BOTTOM_DISTANCE_MINI
-            @common_city(callback)
+            @common_city(common_dists,callback)
             @add_common()
             @common_menu.style.left = x1
             @common_menu.style.top = y1
             @common_menu.style.display = "block"
         else
-            @common_city(callback)
             @add_common()
+            @common_city(common_dists.reverse(),callback)
             @common_menu.style.display = "block"
             width = @common_menu.clientWidth
-            echo "width:" + width
             @common_menu.style.display = "none"
 
             x2 = x1
-            y2 = y1 - width - 30 - 63
+            y2 = y1 - width - 15
             @common_menu.style.left = x2
-            @common_menu.style.top = y2
-            echo "y1:" + y1
-            echo "y2:" + y2
-            @common_menu.style.display = "block"            
+            @common_menu.style.bottom = y2
+            @common_menu.style.display = "block"
 
-    common_city:(callback)->
-        common_dists = localStorage.getObject("common_dists_storage")
+    common_city:(common_dists,callback)->
         if common_dists
             common_city = []
             common_city_text = []
@@ -94,7 +94,7 @@ class CityMoreMenu extends Widget
                     common_city[i].value = common_dists[i].name
 
                     common_city_text[i] = create_element("div","common_city_text",common_city[i])
-                    common_city_text[i].innerText = common_dists[i].name 
+                    common_city_text[i].innerText = common_dists[i].name
                     common_city_text[i].value = common_dists[i].id
 
                     minus[i] = create_element("div","minus",common_city[i])
@@ -162,7 +162,7 @@ class CityMoreMenu extends Widget
         choose = create_element("div","choose",@lable_choose)
 
         @str_provinit = "-" + _("province") + "-"
-        @str_cityinit = "-" + _("city") + "-" 
+        @str_cityinit = "-" + _("city") + "-"
         @str_distinit = "-" + _("county") + "-"
         prov = create_element("div","prov",choose)
         city = create_element("div","city",choose)
@@ -182,9 +182,9 @@ class CityMoreMenu extends Widget
         @clearOptions(@choosecity,0)
         cityinit = create_element("option", "cityinit", @choosecity)
         cityinit.innerText = @str_cityinit
-        cityinit.style.textAlign = "center" 
+        cityinit.style.textAlign = "center"
         cityinit.selected = "false"
-        
+
         @clearOptions(@choosedist,0)
         distinit = create_element("option", "distinit", @choosedist)
         distinit.innerText = @str_distinit
@@ -197,12 +197,12 @@ class CityMoreMenu extends Widget
             if @provIndex == -1
                 @chooseprov.options.remove(@provIndex)
             else
-                provvalue = @chooseprov.options[@provIndex].value 
+                provvalue = @chooseprov.options[@provIndex].value
                 if provvalue != @str_provinit
                     data = @read_data_from_json(provvalue,callback)
             )
 
-    read_data_from_json: (id,callback) -> 
+    read_data_from_json: (id,callback) ->
         url = "#{plugin.path}/city/" + id + ".json"
         ajax(url,(xhr)=>
             if xhr.responseText
@@ -222,7 +222,7 @@ class CityMoreMenu extends Widget
                 cityvalue = @choosecity.options[cityIndex].value
                 if cityvalue != @str_cityinit
                     @distadd(data[cityvalue].data,callback)
-    
+
     distadd: (data,callback) ->
         @clearOptions(@choosedist,1)#1
         @create_option(@choosedist,data)
@@ -253,13 +253,13 @@ class CityMoreMenu extends Widget
                     common_dists[times_dist_choose].id = data[distvalue].data
                     localStorage.setObject("common_dists_storage",common_dists)
                     times_dist_choose++
-                    if times_dist_choose > 4 then times_dist_choose = 0 
+                    if times_dist_choose > 4 then times_dist_choose = 0
                     localStorage.setItem("times_dist_choose_storage",times_dist_choose)
 
 
     clearOptions:(colls,first=0)->
         i = first
-        # colls.remove(i++) while i < colls.length 
+        # colls.remove(i++) while i < colls.length
         colls.options.length = i
 
     setMaxSize:(obj,val=@selectsize)->
