@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-08 16:34+0800\n"
+"POT-Creation-Date: 2013-06-08 17:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -395,51 +395,51 @@ msgid "Invalid Password"
 msgstr "密码错误"
 
 #: ../app/launcher/category.h:31
-msgid "all"
+msgid "All"
 msgstr "全部"
 
 #: ../app/launcher/category.h:32
-msgid "internet"
+msgid "Internet"
 msgstr "网络应用"
 
 #: ../app/launcher/category.h:33
-msgid "multimedia"
+msgid "Multimedia"
 msgstr "影音播放"
 
 #: ../app/launcher/category.h:34
-msgid "games"
+msgid "Games"
 msgstr "游戏娱乐"
 
 #: ../app/launcher/category.h:35
-msgid "graphics"
+msgid "Graphics"
 msgstr "图形图像"
 
 #: ../app/launcher/category.h:36
-msgid "productivity"
+msgid "Productivity"
 msgstr "办公软件"
 
 #: ../app/launcher/category.h:37
-msgid "industry"
+msgid "Industry"
 msgstr "行业软件"
 
 #: ../app/launcher/category.h:38
-msgid "education"
+msgid "Education"
 msgstr "科学教育"
 
 #: ../app/launcher/category.h:39
-msgid "development"
+msgid "Development"
 msgstr "编程开发"
 
 #: ../app/launcher/category.h:40
-msgid "system"
+msgid "System"
 msgstr "系统管理"
 
 #: ../app/launcher/category.h:41
-msgid "utilities"
+msgid "Utilities"
 msgstr "实用工具"
 
 #: ../app/launcher/category.h:42
-msgid "other"
+msgid "Other"
 msgstr "其他"
 
 #: ../lib/dentry/entry.c:654
