@@ -65,7 +65,6 @@ class CityMoreMenu extends Widget
             @add_common()
             @common_menu.style.left = x1
             @common_menu.style.top = y1
-            echo y1
             @common_menu.style.display = "block"
         else
             @common_city(common_dists.reverse(),callback)
@@ -198,7 +197,6 @@ class CityMoreMenu extends Widget
     change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
             @provIndex = @chooseprov.selectedIndex
-
             if @provIndex == -1
                 @chooseprov.options.remove(@provIndex)
             else
@@ -209,7 +207,7 @@ class CityMoreMenu extends Widget
 
     read_data_from_json: (id,callback) ->
         url = "#{plugin.path}/city/" + id + ".json"
-        read_from_localfile(url,(xhr)=>
+        ajax(url,(xhr)=>
             if xhr.responseText
                 data = JSON.parse(xhr.responseText)
                 @cityadd(data[id].data,callback)

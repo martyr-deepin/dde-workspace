@@ -47,7 +47,7 @@ class Weather extends Widget
         @more_weather_build()
         ajax(testInternet_url,@testInternet_connect(),@testInternet_noconnect)
 
-    testInternet_connect:->
+    testInternet_connect:=>
         echo "testInternet_connect"
         cityid = localStorage.getObject("cityid_storage") if localStorage.getObject("cityid_storage")
         if cityid < 1000
@@ -60,13 +60,12 @@ class Weather extends Widget
             Clientcityid.Get_client_cityid(@weathergui_update.bind(@))
         else @weathergui_update()
 
-    testInternet_noconnect:->
+    testInternet_noconnect:=>
         echo "testInternet_noconnect"
+        @weatherdata = new WeatherData()
         weather_data_now = localStorage.getObject("weatherdata_now_storage")
-        echo weather_data_now
         @update_weathernow(weather_data_now) if weather_data_now
         weather_data_more = localStorage.getObject("weatherdata_more_storage")
-        echo weather_data_more
         @update_weathermore(weather_data_more) if weather_data_more
 
     do_buildmenu:->
@@ -209,7 +208,7 @@ class Weather extends Widget
                 @temperature_now_number.textContent = temp_now
 
     update_weathermore: (weather_data_more)->
-        week_n = @weather_more_week()
+        week_n = @weatherdata.weather_more_week()
         echo "week_n:" + week_n
         week_show = [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]
         str_data = weather_data_more.weatherinfo.date_y
@@ -232,8 +231,8 @@ class Weather extends Widget
         src = null
         time = new Date()
         hours_now = time.getHours()
-        img_front = @weatherdata.img_front
-        img_behind = @weatherdata.img_behind
+        img_front = @weatherdata.weather_more_img_front()
+        img_behind = @weatherdata.weather_more_img_behind()
         if img_front[i+1] == "99"
             img_front[i+1] = img_front[i]
         if hours_now < 12
@@ -241,14 +240,7 @@ class Weather extends Widget
         else src = @img_url_first + "24/T" + img_front[i+1] + img_behind[i+1] + ".png"
         return src
 
-    weather_more_week:->
-        i_week = 0
-        week_name = ["\u661f\u671f\u65e5", "\u661f\u671f\u4e00", "\u661f\u671f\u4e8c", "\u661f\u671f\u4e09","\u661f\u671f\u56db", "\u661f\u671f\u4e94", "\u661f\u671f\u516d"]
-        weather_data_more = localStorage.getObject("weatherdata_more_storage")
-        while i_week < week_name.length
-            break if weather_data_more.weatherinfo.week == week_name[i_week]
-            i_week++
-        return i_week
+
 
 
 plugin = window.plugin_manager.get_plugin("weather")
