@@ -51,12 +51,10 @@ class Weather extends Widget
         ajax(testInternet_url,@testInternet_connect(),@testInternet_noconnect)
 
     testInternet_connect:=>
-        # echo "testInternet_connect"
         cityid = localStorage.getObject("cityid_storage") if localStorage.getObject("cityid_storage")
         if cityid < 1000
             cityid = 0
             localStorage.setItem("cityid_storage",cityid)
-        # echo "cityid:" + cityid
 
         if !cityid
             Clientcityid = new ClientCityId()
@@ -64,7 +62,6 @@ class Weather extends Widget
         else @weathergui_update()
 
     testInternet_noconnect:=>
-        # echo "testInternet_noconnect"
         @weatherdata = new WeatherData()
         weather_data_now = localStorage.getObject("weatherdata_now_storage")
         @update_weathernow(weather_data_now) if weather_data_now
@@ -136,7 +133,6 @@ class Weather extends Widget
     set_menu_position:(obj,bottom_distance,y1,y2,show = "block")->
         obj.style.display = "block"
         height = obj.clientHeight
-        echo "height:" + height
         obj.style.display = "none"
         if bottom_distance < height
             obj.style.top = y2
@@ -198,7 +194,6 @@ class Weather extends Widget
             echo "cityid isnt ready"
 
     update_weathernow: (weather_data_now)->
-        # echo "update_weathernow"
         temp_now = weather_data_now.weatherinfo.temp
         @time_update = weather_data_now.weatherinfo.time
         @city_now.textContent = weather_data_now.weatherinfo.city
@@ -216,7 +211,6 @@ class Weather extends Widget
                 @temperature_now_number.textContent = temp_now
 
     update_weathermore: (weather_data_more)->
-        # echo "update_weathermore"
         @week_n = @weatherdata.weather_more_week()
         @img_front = @weatherdata.weather_more_img_front()
         @img_behind = @weatherdata.weather_more_img_behind()
