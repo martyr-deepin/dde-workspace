@@ -21,7 +21,7 @@
 class CityMoreMenu extends Widget
     COMMON_MENU_WIDTH_MINI = 70
     BOTTOM_DISTANCE_CHOOSECITY_MINI = 200
-    BOTTOM_DISTANCE_COMMONCITY_MINI = 180
+    BOTTOM_DISTANCE_COMMONCITY_MINI = 200
     times_dist_choose = 0
 
     constructor: (zIndex)->
@@ -36,19 +36,21 @@ class CityMoreMenu extends Widget
         @element.style.display = "none"
     display_block:->
         @element.style.display = "block"
-
     display_check:->
         return @element.style.display
-
     zIndex_check:->
         return @element.style.zIndex
+
     set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
-        if bottom_distance > BOTTOM_DISTANCE_CHOOSECITY_MINI
+        obj.style.display = "block"
+        height = obj.clientHeight
+        obj.style.display = "none"
+        if bottom_distance < height
+            obj.style.left = x2
+            obj.style.bottom = y2
+        else
             obj.style.left = x1
             obj.style.top = y1
-        else
-            obj.style.left = x2
-            obj.style.top = y2
         obj.style.display = show
 
     common_city_build:(bottom_distance,x1,y1,x2,y2,callback)->
@@ -59,31 +61,9 @@ class CityMoreMenu extends Widget
         @common_menu = create_element("div","common_menu",@element)
         @common_menu.style.display = "none"
         common_dists = localStorage.getObject("common_dists_storage")
-
-        if bottom_distance > BOTTOM_DISTANCE_COMMONCITY_MINI
-            @common_city(common_dists,callback)
-            @add_common()
-            @common_menu.style.left = x1
-            @common_menu.style.top = y1
-            echo y1
-            @common_menu.style.display = "block"
-        else
-            @common_city(common_dists.reverse(),callback)
-            @add_common()
-            @common_menu.style.display = "block"
-            height = @common_menu.clientHeight
-            @common_menu.style.display = "none"
-
-            if bottom_distance < height
-                x2 = x1
-                @common_menu.style.bottom = -35
-
-            else
-                x2 = x1
-                @common_menu.style.top = y1
-
-            @common_menu.style.left = x2
-            @common_menu.style.display = "block"
+        @common_city(common_dists,callback)
+        @add_common()
+        @set_menu_position(@common_menu,bottom_distance,x1,y1,x2,y2,"block")
 
     common_city:(common_dists,callback)->
         if common_dists
@@ -109,7 +89,6 @@ class CityMoreMenu extends Widget
                     that = @
                     common_city_text[i].addEventListener("click",->
                         that.element.style.display = "none"
-                        # echo this.innerText
                         localStorage.setItem("cityid_storage",this.value)
                         that = null
                         callback()
@@ -118,13 +97,9 @@ class CityMoreMenu extends Widget
                     minus[i].addEventListener("click",->
                         name = this.parentElement.value
                         id = this.value
-                        # echo name
-                        # echo id
                         remove_element(this.parentElement)
                         for tmp ,i in common_dists
                             if id == tmp.id
-                                # echo i
-                                # echo tmp.id
                                 common_dists[i].name = ""
                                 common_dists[i].id = ""
                                 localStorage.setObject("common_dists_storage",common_dists)
@@ -198,7 +173,6 @@ class CityMoreMenu extends Widget
     change_chooseprov: (callback)->
         @chooseprov.addEventListener("change", =>
             @provIndex = @chooseprov.selectedIndex
-
             if @provIndex == -1
                 @chooseprov.options.remove(@provIndex)
             else
@@ -209,7 +183,7 @@ class CityMoreMenu extends Widget
 
     read_data_from_json: (id,callback) ->
         url = "#{plugin.path}/city/" + id + ".json"
-        read_from_localfile(url,(xhr)=>
+        ajax(url,(xhr)=>
             if xhr.responseText
                 data = JSON.parse(xhr.responseText)
                 @cityadd(data[id].data,callback)
@@ -248,7 +222,6 @@ class CityMoreMenu extends Widget
                     common_dists = if !common then common_dists_init else common
                     for tmp ,i in common_dists
                         if data[distvalue].data == tmp.id
-                            # echo "same city add"
                             return
 
                     times = localStorage.getObject("times_dist_choose_storage")
@@ -264,12 +237,9 @@ class CityMoreMenu extends Widget
 
     clearOptions:(colls,first=0)->
         i = first
-        # colls.remove(i++) while i < colls.length
         colls.options.length = i
 
     setMaxSize:(obj,val=@selectsize)->
-        # length = obj.options.length
-        # obj.size = if length < val then length else val
         obj.size = val
 
     create_option:(obj,data)->

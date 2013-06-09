@@ -56,13 +56,11 @@ char* dcore_get_theme_icon(const char* name, double size)
 
 gboolean is_plugin(char const* path)
 {
-    char* basename = g_path_get_basename(path);
-    char* js_name = g_strconcat(basename, ".js", NULL);
-    g_free(basename);
-    char* js_file_path = g_build_filename(path, js_name, NULL);
-    g_free(js_name);
+    char* info_file_path = g_build_filename(path, "info.ini", NULL);
+    gboolean _is_plugin = g_file_test(info_file_path, G_FILE_TEST_EXISTS);
+    g_free(info_file_path);
 
-    return g_file_test(js_file_path, G_FILE_TEST_EXISTS);
+    return _is_plugin;
 }
 
 void _init_state(gpointer key, gpointer value, gpointer user_data)
@@ -126,13 +124,12 @@ void dcore_init_plugins(char const* app_name)
 }
 
 
-JS_EXPORT_API
-JSValueRef dcore_get_plugins(const char* app_name)
+void scan_plugin_dir(char const* path, char const* app_name, JSObjectRef array)
 {
-    JSObjectRef array = json_array_create();
-    JSContextRef ctx = get_global_context();
-    char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
+    if (!g_file_test(path, G_FILE_TEST_EXISTS))
+        return;
 
+    JSContextRef ctx = get_global_context();
     GDir* dir = g_dir_open(path, 0, NULL);
     if (dir != NULL) {
         const char* file_name = NULL;
@@ -160,7 +157,22 @@ JSValueRef dcore_get_plugins(const char* app_name)
 
         g_dir_close(dir);
     }
+}
 
+
+
+JS_EXPORT_API
+JSValueRef dcore_get_plugins(const char* app_name)
+{
+    JSObjectRef array = json_array_create();
+
+    char* path = g_build_filename(RESOURCE_DIR, app_name, "plugin", NULL);
+    scan_plugin_dir(path, app_name, array);
+    g_free(path);
+
+    // TBD
+    path = g_build_filename(getenv("HOME"), ".dde-plugin", app_name, "plugin", NULL);
+    scan_plugin_dir(path, app_name, array);
     g_free(path);
 
     return array;
@@ -207,4 +219,80 @@ void dcore_enable_plugin(char const* id, gboolean value)
     g_free(app_name);
 
     enable_plugin(gsettings, id, value);
+}
+
+
+void trans_to_js_array(char** strv, gsize length, JSObjectRef json)
+{
+    JSContextRef ctx = get_global_context();
+    for (int i = 0; strv[i] != NULL; ++i)
+        json_array_insert(json, i, jsvalue_from_cstr(ctx, strv[i]));
+}
+
+
+JS_EXPORT_API
+JSValueRef dcore_get_plugin_info(char const* path)
+{
+    char* info_file_path = g_build_filename(path, "info.ini", NULL);
+    GKeyFile* info_file = g_key_file_new();
+    g_key_file_load_from_file(info_file, info_file_path, G_KEY_FILE_NONE, NULL);
+    g_free(info_file_path);
+
+    JSObjectRef json = json_create();
+    char* id = g_key_file_get_string(info_file, "Plugin", "ID", NULL);
+    json_append_string(json, "ID", id == NULL ? "" : id);
+    g_free(id);
+
+    char* name = g_key_file_get_string(info_file, "Plugin", "name", NULL);
+    json_append_string(json, "name", name == NULL ? "" : name);
+    g_free(name);
+
+    char* description = g_key_file_get_string(info_file, "Plugin", "description", NULL);
+    json_append_string(json, "description", description == NULL ? "" : description);
+    g_free(description);
+
+    int width = g_key_file_get_integer(info_file, "Plugin", "width", NULL);
+    json_append_number(json, "width", width);
+
+    int height = g_key_file_get_integer(info_file, "Plugin", "height", NULL);
+    json_append_number(json, "height", height);
+
+    char* type = g_key_file_get_string(info_file, "Plugin", "type", NULL);
+    json_append_string(json, "type", type == NULL ? "" : type);
+    g_free(type);
+
+    char* author = g_key_file_get_string(info_file, "Author", "author", NULL);
+    json_append_string(json, "author", author == NULL ? "" : author);
+    g_free(author);
+
+    char* email = g_key_file_get_string(info_file, "Author", "email", NULL);
+    json_append_string(json, "email", email == NULL ? "" : email);
+    g_free(email);
+
+    char* textdomain = g_key_file_get_string(info_file, "Resource", "textdomain", NULL);
+    json_append_string(json, "textdomain", textdomain == NULL ? "" : textdomain);
+    g_free(textdomain);
+
+    gsize length = 0;
+    char** js = g_key_file_get_string_list(info_file, "Resource", "js", &length, NULL);
+    JSObjectRef js_arr = json_array_create();
+    trans_to_js_array(js, length, js_arr);
+    json_append_value(json, "js", js_arr);
+    g_strfreev(js);
+
+    char** css = g_key_file_get_string_list(info_file, "Resource", "css", &length, NULL);
+    JSObjectRef css_arr = json_array_create();
+    trans_to_js_array(css, length, css_arr);
+    json_append_value(json, "css", css_arr);
+    g_strfreev(css);
+
+    char** screenshot = g_key_file_get_string_list(info_file, "Resource", "screenshot", &length, NULL);
+    JSObjectRef ss_arr = json_array_create();
+    trans_to_js_array(screenshot, length, ss_arr);
+    json_append_value(json, "screenshot", ss_arr);
+    g_strfreev(screenshot);
+
+    g_key_file_free(info_file);
+
+    return json;
 }

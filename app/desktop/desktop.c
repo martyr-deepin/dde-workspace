@@ -354,7 +354,11 @@ int main(int argc, char* argv[])
     parse_cmd_line (&argc, &argv);
     init_i18n();
     gtk_init(&argc, &argv);
+
+#ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "desktop");
+#endif
+
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -389,6 +393,11 @@ int main(int argc, char* argv[])
 
     setup_background_window();
     setup_dbus_service ();
+
+#ifndef NDEBUG
+    monitor_resource_file("desktop", webview);
+#endif
+
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;

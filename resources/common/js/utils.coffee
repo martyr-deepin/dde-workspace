@@ -46,9 +46,16 @@ assert = (value, msg) ->
     if not value
         throw new Error(msg)
 
-_ = (s)->
-    DCore.gettext(s)
+# xgettext will extract the first argument if two is given
+# so, if domain is given, it ought to be the second argument.
+_ = (s, d)->
+    if d
+        DCore.dgettext(d, s)
+    else
+        DCore.gettext(s)
 
+bindtextdomain = (domain, locale_dir) ->
+    DCore.bindtextdomain(domain, locale_dir)
 
 build_menu = (info) ->
     m = new DeepinMenu
@@ -136,35 +143,21 @@ dnd_is_deepin_item = (e)->
 dnd_is_file = (e)->
     return e.dataTransfer.getData("text/uri-list").length != 0
 
-ajax = (url, callback,callback_nointernet = null) ->
+ajax = (url,callback,callback_error) ->
     xhr = new XMLHttpRequest()
-    xhr.open("GET", url, true)
-    xhr.send(null)
-    xhr.onreadystatechange = ->
-            if (xhr.readyState == 4 and xhr.status == 200)
-                # try
-                    echo "XMLHttpRequest receive all data."
-                    callback?(xhr)
-                # catch e
-                    # echo "XMLHttpRequest is error"
-            else if xhr.status == 404
-                echo "XMLHttpRequest can't find the url:" + url
-            else if xhr.status == 0
-                echo "your computer are not connected to the Internet"
-                callback_nointernet if callback_nointernet
-                return
 
-read_from_localfile = (url,callback) ->
-    xhr = new XMLHttpRequest()
     xhr.open("GET", url, true)
-    xhr.send(null)
-    xhr.onreadystatechange = ->
-        if xhr.readyState == 4
-            try
-                callback?(xhr)
-            catch e
-                echo "XMLHttpRequest is error"
 
+    xhr.onload = ->
+        # echo "callback： #{typeof callback}"
+        echo "XMLHttpRequest onload"
+        callback?(xhr)
+        return
+
+    xhr.onerror = ->
+        echo "XMLHttpRequest onerror"
+        callback_error?(xhr)
+    xhr.send(null)
 
 get_path_base = (path)->
     path.split('/').slice(0, -1).join('/')

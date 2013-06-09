@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+
+lang = ["zh_CN", "zh_TW"]
+
+name = 'weather'
+
+import os
+
+for l in lang:
+    os.system('mkdir -p locale/%s/LC_MESSAGES' % l)
+    os.system('msgfmt po/%s/%s.po -o locale/%s/LC_MESSAGES/%s.mo' %
+            (l, name, l, name))

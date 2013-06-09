@@ -149,6 +149,7 @@ d_webview_init(DWebView *dwebview)
     g_signal_connect(G_OBJECT(webview), "window-object-cleared",
             G_CALLBACK(add_ddesktop_class), webview);
 
+#ifndef NDEBUG
     g_signal_connect(webview, "key-release-event",
             G_CALLBACK(webview_key_release_cb), NULL);
 
@@ -157,6 +158,7 @@ d_webview_init(DWebView *dwebview)
     g_assert(inspector != NULL);
     g_signal_connect_after(inspector, "inspect-web-view",
             G_CALLBACK(inspector_create), NULL);
+#endif
 }
 
 GType d_webview_get_type(void)

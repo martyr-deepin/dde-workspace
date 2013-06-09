@@ -1,0 +1,70 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-09 16:55+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: citymoremenu.coffee:168 citymoremenu.coffee:144
+msgid "province"
+msgstr "省"
+
+#: citymoremenu.coffee:169 citymoremenu.coffee:145
+msgid "city"
+msgstr "市"
+
+#: citymoremenu.coffee:170 citymoremenu.coffee:146
+msgid "county"
+msgstr "縣"
+
+#: weather.coffee:94 weather.coffee:91
+msgid "choose city"
+msgstr "請選擇城市"
+
+#: weather.coffee:97 weather.coffee:94
+msgid "loading"
+msgstr "載入中"
+
+#: weather.coffee:147 weather.coffee:217 weather.coffee:149
+msgid "Sun"
+msgstr "星期日"
+
+#: weather.coffee:202 weather.coffee:203
+msgid "None"
+msgstr "暫無"
+
+#: weather.coffee:217
+msgid "Mon"
+msgstr "星期一"
+
+#: weather.coffee:217
+msgid "Tue"
+msgstr "星期二"
+
+#: weather.coffee:217
+msgid "Wed"
+msgstr "星期三"
+
+#: weather.coffee:217
+msgid "Thu"
+msgstr "星期四"
+
+#: weather.coffee:217
+msgid "Fri"
+msgstr "星期五"
+
+#: weather.coffee:217
+msgid "Sat"
+msgstr "星期六"

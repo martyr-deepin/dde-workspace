@@ -66,6 +66,8 @@ class Plugin
         @id = @app_name + ':' + @name
         window.plugin_manager = new PluginManager() unless window.plugin_manager
         window.plugin_manager.add_plugin(@name, @)
+        @info = DCore.get_plugin_info(@path)
+        bindtextdomain(@info.textdomain, "#{@path}/locale")
         @inject_js(@name)
 
 
