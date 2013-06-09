@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-08 16:54+0800\n"
+"POT-Creation-Date: 2013-06-06 16:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,38 +99,38 @@ msgid "Dec"
 msgstr "12月"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:145
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:105
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
+#: ../resources/desktop/plugin/weather/weather.coffee:194
 msgid "Sat"
 msgstr "星期六"
 
@@ -142,177 +142,153 @@ msgstr "登录"
 msgid "guest"
 msgstr "访客"
 
-#: ../resources/desktop/js/desktop_item.coffee:555
-#: ../resources/desktop/js/desktop_item.coffee:757
-#: ../resources/desktop/js/desktop_item.coffee:1073
-#: ../resources/desktop/js/desktop_item.coffee:1349
-#: ../resources/desktop/js/desktop_item.coffee:1436
-#: ../resources/desktop/js/desktop_item.coffee:1530
-#: ../resources/desktop/js/desktop_item.coffee:1583
+#: ../resources/desktop/js/desktop_item.coffee:550
+#: ../resources/desktop/js/desktop_item.coffee:752
+#: ../resources/desktop/js/desktop_item.coffee:1068
+#: ../resources/desktop/js/desktop_item.coffee:1344
+#: ../resources/desktop/js/desktop_item.coffee:1431
+#: ../resources/desktop/js/desktop_item.coffee:1525
+#: ../resources/desktop/js/desktop_item.coffee:1578
 #: ../resources/launcher/js/grid.coffee:83
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: ../resources/desktop/js/desktop_item.coffee:557
-#: ../resources/desktop/js/desktop_item.coffee:1075
+#: ../resources/desktop/js/desktop_item.coffee:552
+#: ../resources/desktop/js/desktop_item.coffee:1070
 msgid "Cu_t"
 msgstr "剪切(_T)"
 
-#: ../resources/desktop/js/desktop_item.coffee:558
-#: ../resources/desktop/js/desktop_item.coffee:1076
+#: ../resources/desktop/js/desktop_item.coffee:553
+#: ../resources/desktop/js/desktop_item.coffee:1071
 msgid "_Copy"
 msgstr "复制(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:560
-#: ../resources/desktop/js/desktop_item.coffee:759
+#: ../resources/desktop/js/desktop_item.coffee:555
+#: ../resources/desktop/js/desktop_item.coffee:754
 msgid "_Rename"
 msgstr "重命名(_R)"
 
-#: ../resources/desktop/js/desktop_item.coffee:561
-#: ../resources/desktop/js/desktop_item.coffee:763
-#: ../resources/desktop/js/desktop_item.coffee:1078
-#: ../resources/desktop/js/desktop_item.coffee:1301
+#: ../resources/desktop/js/desktop_item.coffee:556
+#: ../resources/desktop/js/desktop_item.coffee:758
+#: ../resources/desktop/js/desktop_item.coffee:1073
+#: ../resources/desktop/js/desktop_item.coffee:1296
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/desktop_item.coffee:563
-#: ../resources/desktop/js/desktop_item.coffee:1080
-#: ../resources/desktop/js/desktop_item.coffee:1351
-#: ../resources/desktop/js/desktop_item.coffee:1438
+#: ../resources/desktop/js/desktop_item.coffee:558
+#: ../resources/desktop/js/desktop_item.coffee:1075
+#: ../resources/desktop/js/desktop_item.coffee:1346
+#: ../resources/desktop/js/desktop_item.coffee:1433
 msgid "_Properties"
 msgstr "属性(_P)"
 
-#: ../resources/desktop/js/desktop_item.coffee:569
-#: ../resources/desktop/js/desktop_item.coffee:576
+#: ../resources/desktop/js/desktop_item.coffee:564
+#: ../resources/desktop/js/desktop_item.coffee:571
 msgid "Co_mpress"
 msgstr "压缩(_M)"
 
+#: ../resources/desktop/js/desktop_item.coffee:567
 #: ../resources/desktop/js/desktop_item.coffee:572
-#: ../resources/desktop/js/desktop_item.coffee:577
 msgid "_Extract"
 msgstr "解压(_E)"
 
+#: ../resources/desktop/js/desktop_item.coffee:568
 #: ../resources/desktop/js/desktop_item.coffee:573
-#: ../resources/desktop/js/desktop_item.coffee:578
 msgid "Extract _Here"
 msgstr "解压到此处(_H)"
 
-#: ../resources/desktop/js/desktop_item.coffee:604
+#: ../resources/desktop/js/desktop_item.coffee:599
 msgid "Can not open this file."
 msgstr "无法打开此文件"
 
-#: ../resources/desktop/js/desktop_item.coffee:604
-#: ../resources/desktop/js/desktop_item.coffee:969
-#: ../resources/desktop/js/desktop_item.coffee:1091
-#: ../resources/desktop/js/desktop_item.coffee:1281
+#: ../resources/desktop/js/desktop_item.coffee:599
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/desktop/js/desktop_item.coffee:761
+#: ../resources/desktop/js/desktop_item.coffee:756
 msgid "_Ungroup"
 msgstr "解散(_U)"
 
-#: ../resources/desktop/js/desktop_item.coffee:969
-#: ../resources/desktop/js/desktop_item.coffee:1091
-#: ../resources/desktop/js/desktop_item.coffee:1281
+#: ../resources/desktop/js/desktop_item.coffee:964
+#: ../resources/desktop/js/desktop_item.coffee:1086
+#: ../resources/desktop/js/desktop_item.coffee:1276
 msgid "The link has expired. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
-#: ../resources/desktop/js/desktop_item.coffee:1332
+#: ../resources/desktop/js/desktop_item.coffee:1327
 msgid "Computer"
 msgstr "计算机"
 
-#: ../resources/desktop/js/desktop_item.coffee:1381
+#: ../resources/desktop/js/desktop_item.coffee:1376
 msgid "Home"
 msgstr "主文件夹"
 
-#: ../resources/desktop/js/desktop_item.coffee:1471
+#: ../resources/desktop/js/desktop_item.coffee:1466
 msgid "Trash"
 msgstr "回收站"
 
-#: ../resources/desktop/js/desktop_item.coffee:1534
+#: ../resources/desktop/js/desktop_item.coffee:1529
 msgid "_Clean up %1 items"
 msgstr "清空%1项(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1536
+#: ../resources/desktop/js/desktop_item.coffee:1531
 msgid "_Clean up 1 item"
 msgstr "清空1项(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1538
+#: ../resources/desktop/js/desktop_item.coffee:1533
 msgid "_Clean up"
 msgstr "清空(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1567
+#: ../resources/desktop/js/desktop_item.coffee:1562
 msgid "Software Center"
 msgstr "软件中心"
 
-#: ../resources/desktop/js/grid.coffee:823
+#: ../resources/desktop/js/grid.coffee:811
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:824
+#: ../resources/desktop/js/grid.coffee:812
 msgid "_Name"
 msgstr "名称(_N)"
 
-#: ../resources/desktop/js/grid.coffee:825
+#: ../resources/desktop/js/grid.coffee:813
 msgid "Last modified _time"
 msgstr "最近修改时间(_T)"
 
-#: ../resources/desktop/js/grid.coffee:828
+#: ../resources/desktop/js/grid.coffee:816
 msgid "_New"
 msgstr "新建(_N)"
 
-#: ../resources/desktop/js/grid.coffee:829
+#: ../resources/desktop/js/grid.coffee:817
 msgid "_Folder"
 msgstr "文件夹(_F)"
 
-#: ../resources/desktop/js/grid.coffee:830
+#: ../resources/desktop/js/grid.coffee:818
 msgid "_Text document"
 msgstr "文本文档(_T)"
 
-#: ../resources/desktop/js/grid.coffee:833
+#: ../resources/desktop/js/grid.coffee:821
 msgid "Open in _terminal"
 msgstr "在终端中打开(_T)"
 
-#: ../resources/desktop/js/grid.coffee:834
+#: ../resources/desktop/js/grid.coffee:822
 msgid "_Paste"
 msgstr "粘贴(_P)"
 
-#: ../resources/desktop/js/grid.coffee:836
+#: ../resources/desktop/js/grid.coffee:824
 msgid "_Display settings"
 msgstr "显示设置(_D)"
 
-#: ../resources/desktop/js/grid.coffee:837
+#: ../resources/desktop/js/grid.coffee:825
 msgid "D_esktop settings"
 msgstr "桌面设置(_E)"
 
-#: ../resources/desktop/js/grid.coffee:838
+#: ../resources/desktop/js/grid.coffee:826
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:169
-msgid "province"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:170
-msgid "city"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:171
-msgid "county"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:92
-msgid "choose city"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:95
-msgid "loading"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:201
-msgid "None"
-msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:32
 msgid "_New instance"
@@ -395,51 +371,51 @@ msgid "Invalid Password"
 msgstr "密码错误"
 
 #: ../app/launcher/category.h:31
-msgid "All"
+msgid "all"
 msgstr "全部"
 
 #: ../app/launcher/category.h:32
-msgid "Internet"
+msgid "internet"
 msgstr "网络应用"
 
 #: ../app/launcher/category.h:33
-msgid "Multimedia"
+msgid "multimedia"
 msgstr "影音播放"
 
 #: ../app/launcher/category.h:34
-msgid "Games"
+msgid "games"
 msgstr "游戏娱乐"
 
 #: ../app/launcher/category.h:35
-msgid "Graphics"
+msgid "graphics"
 msgstr "图形图像"
 
 #: ../app/launcher/category.h:36
-msgid "Productivity"
+msgid "productivity"
 msgstr "办公软件"
 
 #: ../app/launcher/category.h:37
-msgid "Industry"
+msgid "industry"
 msgstr "行业软件"
 
 #: ../app/launcher/category.h:38
-msgid "Education"
+msgid "education"
 msgstr "科学教育"
 
 #: ../app/launcher/category.h:39
-msgid "Development"
+msgid "development"
 msgstr "编程开发"
 
 #: ../app/launcher/category.h:40
-msgid "System"
+msgid "system"
 msgstr "系统管理"
 
 #: ../app/launcher/category.h:41
-msgid "Utilities"
+msgid "utilities"
 msgstr "实用工具"
 
 #: ../app/launcher/category.h:42
-msgid "Other"
+msgid "other"
 msgstr "其他"
 
 #: ../lib/dentry/entry.c:654
