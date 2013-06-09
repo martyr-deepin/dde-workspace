@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-08 17:49+0800\n"
+"POT-Creation-Date: 2013-06-09 11:32+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,38 +99,30 @@ msgid "Dec"
 msgstr "12月"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:145
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Sun"
 msgstr "星期日"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Mon"
 msgstr "星期一"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Tue"
 msgstr "星期二"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Wed"
 msgstr "星期三"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Thu"
 msgstr "星期四"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Fri"
 msgstr "星期五"
 
 #: ../resources/greeter/js/time.coffee:39
-#: ../resources/desktop/plugin/weather/weather.coffee:214
 msgid "Sat"
 msgstr "星期六"
 
@@ -290,30 +282,6 @@ msgstr "桌面设置(_E)"
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:169
-msgid "province"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:170
-msgid "city"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/citymoremenu.coffee:171
-msgid "county"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:92
-msgid "choose city"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:95
-msgid "loading"
-msgstr ""
-
-#: ../resources/desktop/plugin/weather/weather.coffee:201
-msgid "None"
-msgstr ""
-
 #: ../resources/dock/js/clientgroup.coffee:32
 msgid "_New instance"
 msgstr "新建实例(_N)"
@@ -395,51 +363,51 @@ msgid "Invalid Password"
 msgstr "密码错误"
 
 #: ../app/launcher/category.h:31
-msgid "All"
+msgid "all"
 msgstr "全部"
 
 #: ../app/launcher/category.h:32
-msgid "Internet"
+msgid "internet"
 msgstr "网络应用"
 
 #: ../app/launcher/category.h:33
-msgid "Multimedia"
+msgid "multimedia"
 msgstr "影音播放"
 
 #: ../app/launcher/category.h:34
-msgid "Games"
+msgid "games"
 msgstr "游戏娱乐"
 
 #: ../app/launcher/category.h:35
-msgid "Graphics"
+msgid "graphics"
 msgstr "图形图像"
 
 #: ../app/launcher/category.h:36
-msgid "Productivity"
+msgid "productivity"
 msgstr "办公软件"
 
 #: ../app/launcher/category.h:37
-msgid "Industry"
+msgid "industry"
 msgstr "行业软件"
 
 #: ../app/launcher/category.h:38
-msgid "Education"
+msgid "education"
 msgstr "科学教育"
 
 #: ../app/launcher/category.h:39
-msgid "Development"
+msgid "development"
 msgstr "编程开发"
 
 #: ../app/launcher/category.h:40
-msgid "System"
+msgid "system"
 msgstr "系统管理"
 
 #: ../app/launcher/category.h:41
-msgid "Utilities"
+msgid "utilities"
 msgstr "实用工具"
 
 #: ../app/launcher/category.h:42
-msgid "Other"
+msgid "other"
 msgstr "其他"
 
 #: ../lib/dentry/entry.c:654
