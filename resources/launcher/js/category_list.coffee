@@ -56,25 +56,23 @@ _load_category_infos = (cat_id)->
 
 hide_category = ->
     for own i of category_infos
-        all_is_hidden = true
-        for item in category_infos["#{i}"]
-            if applications[item].display_mode != "hidden"
-                all_is_hidden = false
-                break
+        all_is_hidden = category_infos["#{i}"].every((el, idx, arr) ->
+            applications[el].display_mode == "hidden"
+        )
         if all_is_hidden and not Item.display_temp
             $("##{i}").style.display = "none"
-            if selected_category_id == i
+            # i is a string, selected_category_id is a number
+            # "==" in coffee is "===" in js
+            if "" + selected_category_id == i
                 selected_category_id = ALL_APPLICATION_CATEGORY_ID
             grid_load_category(selected_category_id)
 
 
 show_category = ->
     for own i of category_infos
-        not_all_is_hidden = false
-        for item in category_infos["#{i}"]
-            if item.display_mode != "hidden"
-                not_all_is_hidden = true
-                break
+        not_all_is_hidden = category_infos["#{i}"].some((el, idx, arr) ->
+            applications[el].display_mode != "hidden"
+        )
         if not_all_is_hidden or Item.display_temp
             $("##{i}").style.display = "block"
 

@@ -128,6 +128,8 @@ _contextmenu_callback = (msg) ->
 is_show_hidden_icons = false
 
 _show_hidden_icons = (is_shown) ->
+    if is_shown == is_show_hidden_icons
+        return
     is_show_hidden_icons = is_shown
 
     Item.display_temp = false
