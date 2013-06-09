@@ -56,13 +56,11 @@ char* dcore_get_theme_icon(const char* name, double size)
 
 gboolean is_plugin(char const* path)
 {
-    char* basename = g_path_get_basename(path);
-    char* js_name = g_strconcat(basename, ".js", NULL);
-    g_free(basename);
-    char* js_file_path = g_build_filename(path, js_name, NULL);
-    g_free(js_name);
+    char* info_file_path = g_build_filename(path, "info.ini", NULL);
+    gboolean _is_plugin = g_file_test(info_file_path, G_FILE_TEST_EXISTS);
+    g_free(info_file_path);
 
-    return g_file_test(js_file_path, G_FILE_TEST_EXISTS);
+    return _is_plugin;
 }
 
 void _init_state(gpointer key, gpointer value, gpointer user_data)
