@@ -25,20 +25,20 @@ class Weather extends Widget
     ZINDEX_GLOBAL_DESKTOP = 5000
     ZINDEX_DOWNEST = 0
 
-    BOTTOM_DISTANCE_MINI = 200
+    BOTTOM_DISTANCE_MINI = 215
 
-    TOP_MORE_WEATHER_MENU1 = 90
+    TOP_MORE_WEATHER_MENU1 = 91
     TOP_MORE_WEATHER_MENU2 = -191
 
     LEFT_COMMON_CITY_MENU1 = 160
     TOP_COMMON_CITY_MENU1 = 57
     LEFT_COMMON_CITY_MENU2 = 160
-    TOP_COMMON_CITY_MENU2 = -35
+    BOTTOM_COMMON_CITY_MENU2 = -35
 
     LEFT_MORE_CITY_MENU1 = 10
     TOP_MORE_CITY_MENU1 = 90
     LEFT_MORE_CITY_MENU2 = 10
-    TOP_MORE_CITY_MENU2 = -203
+    BOTTOM_MORE_CITY_MENU2 = -22
 
     SELECT_SIZE = 13
 
@@ -113,8 +113,8 @@ class Weather extends Widget
                 @global_desktop.style.display = "none"
 
             bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-            @more_city_menu.common_city_build(bottom_distance,LEFT_COMMON_CITY_MENU1,TOP_COMMON_CITY_MENU1,LEFT_COMMON_CITY_MENU2,TOP_COMMON_CITY_MENU2,@weathergui_update.bind(@))
-            @more_city_menu.more_city_build(SELECT_SIZE,bottom_distance,LEFT_MORE_CITY_MENU1,TOP_MORE_CITY_MENU1,LEFT_MORE_CITY_MENU2,TOP_MORE_CITY_MENU2,@weathergui_update.bind(@))
+            @more_city_menu.common_city_build(bottom_distance,LEFT_COMMON_CITY_MENU1,TOP_COMMON_CITY_MENU1,LEFT_COMMON_CITY_MENU2,BOTTOM_COMMON_CITY_MENU2,@weathergui_update.bind(@))
+            @more_city_menu.more_city_build(SELECT_SIZE,bottom_distance,LEFT_MORE_CITY_MENU1,TOP_MORE_CITY_MENU1,LEFT_MORE_CITY_MENU2,BOTTOM_MORE_CITY_MENU2,@weathergui_update.bind(@))
             )
         @date.addEventListener("click", =>
             @more_city_menu.display_none()
@@ -122,14 +122,7 @@ class Weather extends Widget
             if @more_weather_menu.style.display == "none"
                 @global_desktop.style.display = "block"
                 bottom_distance =  window.screen.availHeight - @element.getBoundingClientRect().bottom
-                if bottom_distance < BOTTOM_DISTANCE_MINI
-                    # @weather_data.reverse()
-                    @more_weather_menu.style.top = TOP_MORE_WEATHER_MENU2
-                    @more_weather_menu.style.borderRadius = "6px 6px 0 0"
-                else
-                    @more_weather_menu.style.top = TOP_MORE_WEATHER_MENU1
-                    @more_weather_menu.style.borderRadius = "0 0 6px 6px"
-                @more_weather_menu.style.display = "block"
+                @set_menu_position(@more_weather_menu,bottom_distance,TOP_MORE_WEATHER_MENU1,TOP_MORE_WEATHER_MENU2,"block")
             else
                 @global_desktop.style.display = "none"
                 @more_weather_menu.style.display = "none"
@@ -139,6 +132,19 @@ class Weather extends Widget
             @more_city_menu.display_none()
             @global_desktop.style.display = "none"
             )
+
+    set_menu_position:(obj,bottom_distance,y1,y2,show = "block")->
+        obj.style.display = "block"
+        height = obj.clientHeight
+        echo "height:" + height
+        obj.style.display = "none"
+        if bottom_distance < height
+            obj.style.top = y2
+            obj.style.borderRadius = "6px 6px 0 0"
+        else
+            obj.style.top = y1
+            obj.style.borderRadius = "0 0 6px 6px"
+        obj.style.display = show
 
     more_weather_build: ->
 

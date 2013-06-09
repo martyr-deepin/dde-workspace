@@ -21,7 +21,7 @@
 class CityMoreMenu extends Widget
     COMMON_MENU_WIDTH_MINI = 70
     BOTTOM_DISTANCE_CHOOSECITY_MINI = 200
-    BOTTOM_DISTANCE_COMMONCITY_MINI = 180
+    BOTTOM_DISTANCE_COMMONCITY_MINI = 200
     times_dist_choose = 0
 
     constructor: (zIndex)->
@@ -36,19 +36,21 @@ class CityMoreMenu extends Widget
         @element.style.display = "none"
     display_block:->
         @element.style.display = "block"
-
     display_check:->
         return @element.style.display
-
     zIndex_check:->
         return @element.style.zIndex
+
     set_menu_position:(obj,bottom_distance,x1,y1,x2,y2,show = "block")->
-        if bottom_distance > BOTTOM_DISTANCE_CHOOSECITY_MINI
+        obj.style.display = "block"
+        height = obj.clientHeight
+        obj.style.display = "none"
+        if bottom_distance < height
+            obj.style.left = x2
+            obj.style.bottom = y2
+        else
             obj.style.left = x1
             obj.style.top = y1
-        else
-            obj.style.left = x2
-            obj.style.top = y2
         obj.style.display = show
 
     common_city_build:(bottom_distance,x1,y1,x2,y2,callback)->
@@ -59,30 +61,9 @@ class CityMoreMenu extends Widget
         @common_menu = create_element("div","common_menu",@element)
         @common_menu.style.display = "none"
         common_dists = localStorage.getObject("common_dists_storage")
-
-        if bottom_distance > BOTTOM_DISTANCE_COMMONCITY_MINI
-            @common_city(common_dists,callback)
-            @add_common()
-            @common_menu.style.left = x1
-            @common_menu.style.top = y1
-            @common_menu.style.display = "block"
-        else
-            @common_city(common_dists.reverse(),callback)
-            @add_common()
-            @common_menu.style.display = "block"
-            height = @common_menu.clientHeight
-            @common_menu.style.display = "none"
-
-            if bottom_distance < height
-                x2 = x1
-                @common_menu.style.bottom = -35
-
-            else
-                x2 = x1
-                @common_menu.style.top = y1
-
-            @common_menu.style.left = x2
-            @common_menu.style.display = "block"
+        @common_city(common_dists,callback)
+        @add_common()
+        @set_menu_position(@common_menu,bottom_distance,x1,y1,x2,y2,"block")
 
     common_city:(common_dists,callback)->
         if common_dists
