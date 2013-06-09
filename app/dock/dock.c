@@ -166,7 +166,9 @@ int main(int argc, char* argv[])
     gtk_init(&argc, &argv);
 
 
+#ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
+#endif
     set_desktop_env_name("Deepin");
     set_default_theme("Deepin");
 
@@ -198,7 +200,10 @@ int main(int argc, char* argv[])
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
+#ifndef NDEBUG
     monitor_resource_file("dock", webview);
+#endif
+
     /*gdk_window_set_debug_updates(TRUE);*/
 
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
