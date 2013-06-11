@@ -51,7 +51,7 @@ msgstr "星期一"
 
 #: weather.coffee:217
 msgid "Tue"
-msgstr "星期而"
+msgstr "星期二"
 
 #: weather.coffee:217
 msgid "Wed"
