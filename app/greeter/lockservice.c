@@ -296,6 +296,11 @@ _bus_handle_exit_lock (const gchar *username, const gchar *password)
 static gboolean
 _bus_handle_unlock_check (const gchar *username, const gchar *password)
 {
+    if (!(_bus_handle_need_pwd (username)))
+    {
+        return TRUE;
+    }
+
     struct spwd *user_data;
     errno = 0;
 
@@ -317,11 +322,6 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     {
         return TRUE;
     } 
-
-    if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
-    {
-        return TRUE;
-    }
 
     return FALSE;
 }

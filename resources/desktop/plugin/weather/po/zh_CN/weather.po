@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-09 09:28+0800\n"
+"POT-Creation-Date: 2013-06-09 16:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,31 +17,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: citymoremenu.coffee:168
+#: citymoremenu.coffee:168 citymoremenu.coffee:144
 msgid "province"
 msgstr "省"
 
-#: citymoremenu.coffee:169
+#: citymoremenu.coffee:169 citymoremenu.coffee:145
 msgid "city"
 msgstr "市"
 
-#: citymoremenu.coffee:170
+#: citymoremenu.coffee:170 citymoremenu.coffee:146
 msgid "county"
 msgstr "县"
 
-#: weather.coffee:94
+#: weather.coffee:94 weather.coffee:91
 msgid "choose city"
 msgstr "城市选择"
 
-#: weather.coffee:97
+#: weather.coffee:97 weather.coffee:94
 msgid "loading"
 msgstr "加载中"
 
-#: weather.coffee:147 weather.coffee:217
+#: weather.coffee:147 weather.coffee:217 weather.coffee:149
 msgid "Sun"
 msgstr "星期日"
 
-#: weather.coffee:202
+#: weather.coffee:202 weather.coffee:203
 msgid "None"
 msgstr "暂无"
 

@@ -3,7 +3,6 @@
 coffee_files = [
 "../resources/greeter/js/*.coffee",
 "../resources/desktop/js/*.coffee",
-"../resources/desktop/plugin/weather/*.coffee",
 "../resources/dock/js/*.coffee",
 "../resources/launcher/js/*.coffee",
 ]

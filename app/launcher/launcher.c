@@ -245,7 +245,11 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     setup_dbus_service();
+
+#ifndef NDEBUG
     monitor_resource_file("launcher", webview);
+#endif
+
     gtk_widget_show_all(container);
     gtk_main();
     return 0;
