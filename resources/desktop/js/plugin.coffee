@@ -55,8 +55,11 @@ class PluginHandle extends Widget
     do_dragend : (evt) =>
         evt.stopPropagation()
 
-        if evt.dataTransfer.dropEffect != "link" then return
         if not (w = Widget.look_up(@parent_id))? then return
+        w.remove_css_class("plugin_DND_border")
+        
+        if evt.dataTransfer.dropEffect != "link" then return
+        
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
         new_pos.x -= (@offset_pos.x - old_pos.x)
@@ -65,7 +68,6 @@ class PluginHandle extends Widget
         new_pos.y = 0 if new_pos.y < 0
         if not detect_occupy(new_pos, @parent_id)
             move_to_somewhere(w, new_pos)
-        w.remove_css_class("plugin_DND_border")
         return
 
 
