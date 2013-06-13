@@ -20,7 +20,6 @@ _create_category = (info) ->
             _select_category_timeout_id = setTimeout(
                 ->
                     grid_load_category(info.ID)
-                    _show_hidden_icons(is_show_hidden_icons)
                     selected_category_id = info.ID
                 , 25)
     )

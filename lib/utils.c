@@ -22,6 +22,7 @@
 #include "jsextension.h"
 #include "dentry/entry.h"
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <string.h>

@@ -135,7 +135,8 @@ _show_hidden_icons = (is_shown) ->
     Item.display_temp = false
     if is_shown
         for own item of hidden_icons
-            hidden_icons[item].display_icon_temp()
+            if item in category_infos[selected_category_id]
+                hidden_icons[item].display_icon_temp()
         msg = HIDE_HIDDEN_ICONS
     else
         for own item of hidden_icons
