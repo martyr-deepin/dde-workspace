@@ -55,9 +55,8 @@ class PluginHandle extends Widget
     do_dragend : (evt) =>
         evt.stopPropagation()
 
-        if not (w = Widget.look_up(@parent_id))? then return
         w.remove_css_class("plugin_DND_border")
-        
+        if not (w = Widget.look_up(@parent_id))? then return
         if evt.dataTransfer.dropEffect != "link" then return
         
         old_pos = w.get_pos()
