@@ -75,20 +75,26 @@ Entry* dentry_get_desktop()
 JS_EXPORT_API
 gboolean dentry_should_move(Entry* e)
 {
-    if (G_IS_FILE(e)) {
-        if (!g_file_is_native(e)) {
-            return FALSE;
-        }
-        GFileInfo* info = g_file_query_info (e, 
-                "access::can-delete",
-                G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
-                NULL,
-                NULL);
-        gboolean can_delete = g_file_info_get_attribute_boolean(info, "access::can-delete");
-        g_object_unref(info);
-        return can_delete;
+    GFile* file = e;
+    if (G_IS_APP_INFO(e)) {
+        file = _get_gfile_from_gapp(e);
     }
-    return FALSE;
+    if (!g_file_is_native(file)) {
+        if (file != e)
+            g_object_unref(file);
+        return FALSE;
+    }
+    GFileInfo* info = g_file_query_info (file,
+            "access::can-delete",
+            G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+            NULL,
+            NULL);
+    if (file != e)
+        g_object_unref(file);
+
+    gboolean can_delete = g_file_info_get_attribute_boolean(info, "access::can-delete");
+    g_object_unref(info);
+    return can_delete;
 }
 
 JS_EXPORT_API
