@@ -70,8 +70,14 @@ gboolean erase_background(GtkWidget* widget,
 
 static void setup_lang(WebKitWebView* web_view)
 {
-    const char* env_lang = getenv("LANG");
-    if (env_lang[0] == '\0') {
+    const char* env_lang = getenv("LANGUAGE");
+    if (!env_lang || env_lang[0] == '\0') {
+        env_lang = getenv("LC_ALL");
+        if (!env_lang || env_lang[0] == '\0') {
+            env_lang = getenv("LC_MESSAGES");
+        }
+    }
+    if (!env_lang || env_lang[0] == '\0') {
         return;
     }
 

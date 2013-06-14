@@ -17,5 +17,6 @@
 }
 .HandleHour {
     pointer-events: none;
+    position: relative;
     z-index: 2;
 }
