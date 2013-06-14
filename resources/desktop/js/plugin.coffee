@@ -56,8 +56,8 @@ class PluginHandle extends Widget
         evt.stopPropagation()
 
         w.remove_css_class("plugin_DND_border")
-        if not (w = Widget.look_up(@parent_id))? then return
         if evt.dataTransfer.dropEffect != "link" then return
+        if not (w = Widget.look_up(@parent_id))? then return
         
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, old_pos.width, old_pos.height)
