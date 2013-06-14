@@ -442,7 +442,7 @@ init_grid_drop = ->
             tmp_move = []
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
-            for i in [0 ... evt.dataTransfer.files.length]
+            for i in [0 ... evt.dataTransfer.files.length] by 1
                 file = evt.dataTransfer.files[i]
                 if (f_e = DCore.DEntry.create_by_path(file.path))?
                     if DCore.DEntry.should_move(f_e)
