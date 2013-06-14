@@ -85,7 +85,7 @@ gboolean dentry_should_move(Entry* e)
                 NULL,
                 NULL);
         gboolean can_delete = g_file_info_get_attribute_boolean(info, "access::can-delete");
-        g_free(info);
+        g_object_unref(info);
         return can_delete;
     }
     return FALSE;
