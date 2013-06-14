@@ -445,7 +445,7 @@ init_grid_drop = ->
             for i in [0 ... evt.dataTransfer.files.length]
                 file = evt.dataTransfer.files[i]
                 if (f_e = DCore.DEntry.create_by_path(file.path))?
-                    if DCore.DEntry.is_native(f_e)
+                    if DCore.DEntry.should_move(f_e)
                         tmp_move.push(f_e)
                     else
                         tmp_copy.push(f_e)
