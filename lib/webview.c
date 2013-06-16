@@ -69,18 +69,22 @@ gboolean erase_background(GtkWidget* widget,
     return FALSE;
 }
 
+
 static void setup_lang(WebKitWebView* web_view)
 {
-    const char * const *l = g_get_language_names();
-    char **locale = g_get_locale_variants(l[0]);
-    printf("%s\n",locale[3]);
+    const char * const *language_names = g_get_language_names();
+    if (!language_names[0])
+        return;
+    char **locale = g_get_locale_variants(language_names[0]);
+    if (!locale[3])
+        return;
     const char* env_lang = locale[3];
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", env_lang);
-    webkit_web_view_execute_script(web_view, exec_script);
+    printf("document.body.lang = --%s--\n", env_lang);
     g_strfreev(locale);
+    webkit_web_view_execute_script(web_view, exec_script);
 }
-
 
 
 static void add_ddesktop_class(WebKitWebView *web_view,
