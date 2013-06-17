@@ -191,7 +191,13 @@ class DesktopPlugin extends Plugin
 
 load_plugins = ->
     DCore.init_plugins('desktop')
+
     for p in DCore.get_plugins("desktop")
+        if get_path_name(p) == "weather"
+            new DesktopPlugin(get_path_base(p), get_path_name(p))
+    for p in DCore.get_plugins("desktop")
+        if get_path_name(p) == "weather" 
+            break;
         new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 
