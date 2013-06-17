@@ -81,6 +81,8 @@ static void setup_lang(WebKitWebView* web_view)
             break;
 	}
     }
+    if (!env_lang)
+	return;
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", env_lang);
     webkit_web_view_execute_script(web_view, exec_script);
