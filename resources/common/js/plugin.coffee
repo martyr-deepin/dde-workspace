@@ -5,13 +5,13 @@ get_name = (id) ->
     else
         id.substring(index + 1)
 
-class PluginManager
+class DDEPluginManager
     # key: plugin's name
     # value: Plugin class
     @_plugins: null
 
     constructor: ->
-        PluginManager._plugins = {} if not PluginManager._plugins
+        DDEPluginManager._plugins = {} if not DDEPluginManager._plugins
 
     enable_plugin: (id, value)->
         DCore.enable_plugin(id, value)
@@ -19,7 +19,7 @@ class PluginManager
     enable_plugin_front: (id, value) ->
         name = get_name(id)
         echo "plugin's name: #{name}"
-        plugin = PluginManager._plugins[name]
+        plugin = DDEPluginManager._plugins[name]
         if plugin
             if value
                 echo "enable #{id}"
@@ -27,16 +27,16 @@ class PluginManager
             else
                 echo "disable #{id}"
                 plugin.destroy()
-                delete PluginManager._plugins[name]
-                PluginManager._plugins[name] = null
+                delete DDEPluginManager._plugins[name]
+                DDEPluginManager._plugins[name] = null
         else
             echo "plugin #{id} does not exists"
 
     get_plugin: (name) ->
-        PluginManager._plugins[name]
+        DDEPluginManager._plugins[name]
 
     add_plugin: (name, obj) ->
-        PluginManager._plugins[name] = obj
+        DDEPluginManager._plugins[name] = obj
 
     @plugin_changed_handler: (info) ->
         id_prefix = info.app_name + ":"
@@ -48,15 +48,15 @@ class PluginManager
             id = id_prefix + name
             if info[id]
                 delete info[id]
-                if not PluginManager._plugins or not PluginManager._plugins[name]
+                if not DDEPluginManager._plugins or not DDEPluginManager._plugins[name]
                     if id_prefix == 'desktop:'
                         new DesktopPlugin(get_path_base(plugin), name)
                         echo "id: #{id}"
-                        plugin_manager.enable_plugin_front(id, true)
+                        PluginManager.enable_plugin_front(id, true)
                         place_all_widgets()
 
         for own k, v of info
-            plugin_manager.enable_plugin_front(k, false)
+            PluginManager.enable_plugin_front(k, false)
 
         return
 
@@ -64,10 +64,10 @@ class PluginManager
 class Plugin
     constructor: (@app_name, @path, @name, @host)->
         @id = @app_name + ':' + @name
-        window.plugin_manager = new PluginManager() unless window.plugin_manager
-        window.plugin_manager.add_plugin(@name, @)
+        window.PluginManager = new DDEPluginManager() unless window.PluginManager
+        PluginManager.add_plugin(@name, @)
         @info = DCore.get_plugin_info(@path)
-        bindtextdomain(@info.textdomain, "#{@path}/locale")
+        bindtextdomain(@info.textdomain, "#{@path}/locale/mo")
         @inject_js(@name)
 
 
@@ -83,4 +83,4 @@ class Plugin
         @css_element.rel = "stylesheet"
         @css_element.href = "#{@path}/#{name}.css"
 
-DCore.signal_connect("plugins_changed", PluginManager.plugin_changed_handler)
+DCore.signal_connect("plugins_changed", DDEPluginManager.plugin_changed_handler)

@@ -164,8 +164,10 @@ class DesktopPluginItem extends Widget
 
 
     move: (x, y) =>
-        @element.style.left = "#{x}px"
-        @element.style.top = "#{y}px"
+        style = @element.style
+        style.position = "absolute"
+        style.left = x
+        style.top = y
 
 
 class DesktopPlugin extends Plugin
@@ -189,9 +191,11 @@ class DesktopPlugin extends Plugin
 
 load_plugins = ->
     DCore.init_plugins('desktop')
+
     for p in DCore.get_plugins("desktop")
         if get_path_name(p) == "weather"
             new DesktopPlugin(get_path_base(p), get_path_name(p))
+
     for p in DCore.get_plugins("desktop")
         if get_path_name(p) == "weather"
             continue

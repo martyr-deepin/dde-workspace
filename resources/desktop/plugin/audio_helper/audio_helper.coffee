@@ -108,6 +108,6 @@ class AudioHelper extends Widget
 
 
 
-plugin = window.plugin_manager.get_plugin("audio_helper")
+plugin = PluginManager.get_plugin("audio_helper")
 plugin.inject_css("audio_helper")
 plugin.wrap_element(new AudioHelper(plugin.id).element)

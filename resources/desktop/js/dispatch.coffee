@@ -70,7 +70,7 @@ delete_item = (w) ->
 delete_widget = (w) ->
     widget_item.remove(w.get_id())
     discard_position(w.get_id())
-    plugin_manager.enable_plugin(w.get_plugin(), false)
+    PluginManager.enable_plugin(w.get_plugin(), false)
     w.destroy()
 
 

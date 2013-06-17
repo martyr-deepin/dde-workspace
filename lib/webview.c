@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <string.h>
+#include <glib.h>
 #include "dwebview.h"
 #include "jsextension.h"
 #include "utils.h"
@@ -67,6 +68,7 @@ gboolean erase_background(GtkWidget* widget,
     cairo_paint(cr);
     return FALSE;
 }
+
 
 static void setup_lang(WebKitWebView* web_view)
 {
