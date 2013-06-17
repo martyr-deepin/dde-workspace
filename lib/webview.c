@@ -73,14 +73,16 @@ static void setup_lang(WebKitWebView* web_view)
     const char * const *language_names = g_get_language_names();
     if (!language_names[0])
         return;
-    char **locale = g_get_locale_variants(language_names[0]);
-    if (!locale[3])
-        return;
-    const char* env_lang = locale[3];
+    char const *env_lang = NULL;
+    for (int i = 0; language_names[i] != NULL; ++i) {
+        if (strlen(language_names[i]) == 2) {
+            g_debug("%s", language_names[i]);
+            env_lang = language_names[i];
+            break;
+	}
+    }
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", env_lang);
-    printf("document.body.lang = --%s--\n", env_lang);
-    g_strfreev(locale);
     webkit_web_view_execute_script(web_view, exec_script);
 }
 
