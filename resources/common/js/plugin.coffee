@@ -52,11 +52,11 @@ class DDEPluginManager
                     if id_prefix == 'desktop:'
                         new DesktopPlugin(get_path_base(plugin), name)
                         echo "id: #{id}"
-                        plugin_manager.enable_plugin_front(id, true)
+                        PluginManager.enable_plugin_front(id, true)
                         place_all_widgets()
 
         for own k, v of info
-            plugin_manager.enable_plugin_front(k, false)
+            PluginManager.enable_plugin_front(k, false)
 
         return
 
