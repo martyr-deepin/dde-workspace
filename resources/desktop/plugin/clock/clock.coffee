@@ -21,6 +21,6 @@ class Clock extends Widget
         @min.style.webkitTransform = mrotate
         @hour.style.webkitTransform = hrotate
 
-plugin = PluginManager.get_plugin("clock")
+plugin = window.PluginManager.get_plugin("clock")
 plugin.inject_css("clock")
 plugin.wrap_element(new Clock(plugin.id).element)
