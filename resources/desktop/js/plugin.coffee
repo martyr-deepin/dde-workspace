@@ -164,10 +164,9 @@ class DesktopPluginItem extends Widget
 
 
     move: (x, y) =>
-        style = @element.style
-        style.position = "absolute"
-        style.left = x
-        style.top = y
+        @element.style.left = "#{x}px"
+        @element.style.top = "#{y}px"
+        echo "move #{@element.style.left},#{@element.style.top}"
 
 
 class DesktopPlugin extends Plugin
@@ -209,11 +208,16 @@ find_free_position_for_widget = (info, id = null) ->
 
 
 place_all_widgets = ->
+    not_found = new Array
     for i in widget_item
-        continue if not (w = Widget.look_up(i))?
-        if not load_position(i)? and (new_pos = find_free_position_for_widget(w.get_pos(), w.get_id()))?
-            echo "#{new_pos?.width}x#{new_pos?.height} in (#{new_pos?.x}, #{new_pos?.y})"
-            move_to_somewhere(w, new_pos)
+        if not (pos = load_position(i))?
+            not_found.push(i)
         else
+            continue if not (w = Widget.look_up(i))?
             move_to_anywhere(w)
+
+    for i in not_found
+        continue if not (w = Widget.look_up(i))?
+        if (new_pos = find_free_position_for_widget(w.get_pos(), w.get_id()))?
+            move_to_somewhere(w, new_pos)
     return
