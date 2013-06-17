@@ -195,9 +195,6 @@ load_plugins = ->
     for p in DCore.get_plugins("desktop")
         if get_path_name(p) == "weather"
             new DesktopPlugin(get_path_base(p), get_path_name(p))
-    for p in DCore.get_plugins("desktop")
-        if get_path_name(p) == "weather"
-            new DesktopPlugin(get_path_base(p), get_path_name(p))
 
     for p in DCore.get_plugins("desktop")
         if get_path_name(p) == "weather"
