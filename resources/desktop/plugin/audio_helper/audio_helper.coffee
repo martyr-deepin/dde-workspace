@@ -35,7 +35,7 @@ class Lines extends Widget
         @element.style.display = "block"
         if n > @current_value
             while n > @current_value
-                @lines[@current_value++].style.background = "#23fff8"
+                @lines[@current_value++].style.background = "#c6edff"
         else if n < @current_value
             while n < @current_value
                 @lines[@current_value--].style.background = "rgba(0,0,0,0)"

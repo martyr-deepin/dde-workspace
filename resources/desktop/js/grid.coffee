@@ -307,12 +307,13 @@ move_to_position = (widget, info) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
-    info = load_position(widget.get_id())
-    if info? and not detect_occupy(info, widget.get_id())
-        move_to_position(widget, info)
+    pos = load_position(widget.get_id())
+    if pos? and not detect_occupy(pos, widget.get_id())
+        move_to_position(widget, pos)
     else
-        info = find_free_position(1, 1)
-        move_to_position(widget, info)
+        old_size = widget.get_pos()
+        new_pos = find_free_position(old_size.width, old_size.height)
+        move_to_position(widget, new_pos)
     return
 
 
