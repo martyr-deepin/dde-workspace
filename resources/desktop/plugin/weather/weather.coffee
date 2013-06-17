@@ -246,7 +246,7 @@ class Weather extends Widget
 
 
 
-plugin = window.PluginManager.get_plugin("weather")
+plugin = PluginManager.get_plugin("weather")
 plugin.inject_css("weather")
 plugin.inject_css("citymoremenu")
 
