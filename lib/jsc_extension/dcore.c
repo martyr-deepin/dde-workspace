@@ -257,6 +257,23 @@ JSValueRef dcore_get_plugin_info(char const* path)
     int height = g_key_file_get_integer(info_file, "Plugin", "height", NULL);
     json_append_number(json, "height", height);
 
+    GError* error = NULL;
+    int x = g_key_file_get_integer(info_file, "Plugin", "x", &error);
+    if (error) {
+        json_append_value(json, "x", jsvalue_null());
+        g_error_free(error);
+    } else {
+        json_append_number(json, "x", x);
+    }
+
+    int y = g_key_file_get_integer(info_file, "Plugin", "y", NULL);
+    if (error) {
+        json_append_value(json, "y", jsvalue_null());
+        g_error_free(error);
+    } else {
+        json_append_number(json, "y", y);
+    }
+
     char* type = g_key_file_get_string(info_file, "Plugin", "type", NULL);
     json_append_string(json, "type", type == NULL ? "" : type);
     g_free(type);
