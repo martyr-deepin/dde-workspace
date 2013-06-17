@@ -7,6 +7,6 @@ name = 'weather'
 import os
 
 for l in lang:
-    os.system('mkdir -p locale/%s/LC_MESSAGES' % l)
-    os.system('msgfmt po/%s/%s.po -o locale/%s/LC_MESSAGES/%s.mo' %
+    os.system('mkdir -p locale/mo/%s/LC_MESSAGES' % l)
+    os.system('msgfmt locale/po/%s/%s.po -o locale/mo/%s/LC_MESSAGES/%s.mo' %
             (l, name, l, name))

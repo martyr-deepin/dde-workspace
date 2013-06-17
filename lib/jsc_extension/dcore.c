@@ -269,7 +269,7 @@ JSValueRef dcore_get_plugin_info(char const* path)
     json_append_string(json, "email", email == NULL ? "" : email);
     g_free(email);
 
-    char* textdomain = g_key_file_get_string(info_file, "Resource", "textdomain", NULL);
+    char* textdomain = g_key_file_get_string(info_file, "Locale", "textdomain", NULL);
     json_append_string(json, "textdomain", textdomain == NULL ? "" : textdomain);
     g_free(textdomain);
 

@@ -67,7 +67,7 @@ class Plugin
         window.PluginManager = new DDEPluginManager() unless window.PluginManager
         PluginManager.add_plugin(@name, @)
         @info = DCore.get_plugin_info(@path)
-        bindtextdomain(@info.textdomain, "#{@path}/locale")
+        bindtextdomain(@info.textdomain, "#{@path}/locale/mo")
         @inject_js(@name)
 
 
