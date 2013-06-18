@@ -68,7 +68,9 @@ delete_item = (w) ->
 
 
 delete_widget = (w) ->
+    old_info = w.get_pos()
     widget_item.remove(w.get_id())
+    clear_occupy(w.get_id(), old_info)
     discard_position(w.get_id())
     PluginManager.enable_plugin(w.get_plugin(), false)
     w.destroy()
