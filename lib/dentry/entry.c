@@ -493,60 +493,58 @@ double dentry_files_compressibility(ArrayContainer fs)
 static gboolean
 _file_is_archive (GFile *file)
 {
-	char *mime_type;
-	int i;
-	static const char * archive_mime_types[] = { "application/x-gtar",
-						     "application/x-zip",
-						     "application/x-zip-compressed",
-						     "application/zip",
-						     "application/x-zip",
-						     "application/x-tar",
-						     "application/x-7z-compressed",
-						     "application/x-rar",
-						     "application/x-rar-compressed",
-						     "application/x-jar",
-						     "application/x-java-archive",
-						     "application/x-war",
-						     "application/x-ear",
-						     "application/x-arj",
-						     "application/x-gzip",
-						     "application/x-bzip-compressed-tar",
-						     "application/x-compressed-tar",
-                             "application/x-archive",
-                             "application/x-xz-compressed-tar",
-                             "application/x-bzip",
-                             "application/x-cbz",
-                             "application/x-xz",
-                             "application/x-lzma-compressed-tar",
-                             "application/x-ms-dos-executable",
-                             "application/x-lzma",
-                             "application/x-cd-image",
-                             "application/x-deb",
-                             "application/x-rpm",
-                             "application/x-stuffit",
-                             "application/x-tzo",
-                             "application/x-tarz",
-                             "application/x-tzo",
-                             "application/x-msdownload",
-                             "application/x-lha",
-                             "application/x-zoo"};
+    char *mime_type = NULL;
+    int i;
+    static const char * archive_mime_types[] = { "application/x-gtar",
+        "application/x-zip",
+        "application/x-zip-compressed",
+        "application/zip",
+        "application/x-zip",
+        "application/x-tar",
+        "application/x-7z-compressed",
+        "application/x-rar",
+        "application/x-rar-compressed",
+        "application/x-jar",
+        "application/x-java-archive",
+        "application/x-war",
+        "application/x-ear",
+        "application/x-arj",
+        "application/x-gzip",
+        "application/x-bzip-compressed-tar",
+        "application/x-compressed-tar",
+        "application/x-archive",
+        "application/x-xz-compressed-tar",
+        "application/x-bzip",
+        "application/x-cbz",
+        "application/x-xz",
+        "application/x-lzma-compressed-tar",
+        "application/x-ms-dos-executable",
+        "application/x-lzma",
+        "application/x-cd-image",
+        "application/x-deb",
+        "application/x-rpm",
+        "application/x-stuffit",
+        "application/x-tzo",
+        "application/x-tarz",
+        "application/x-tzo",
+        "application/x-msdownload",
+        "application/x-lha",
+        "application/x-zoo"};
 
-	g_return_val_if_fail (file != NULL, FALSE);
+    g_return_val_if_fail (file != NULL, FALSE);
 
     GFileInfo* info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, NULL, NULL);
     if (info != NULL) {
         mime_type = (char*)g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+
+        for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
+            if (!strcmp (mime_type, archive_mime_types[i])) {
+                return TRUE;
+            }
+        }
+        g_object_unref(info);
     }
-
-	for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
-		if (!strcmp (mime_type, archive_mime_types[i])) {
-			g_free (mime_type);
-			return TRUE;
-		}
-	}
-	g_free (mime_type);
-
-	return FALSE;
+    return FALSE;
 }
 
 JS_EXPORT_API
