@@ -176,10 +176,29 @@ class DesktopPlugin extends Plugin
         super('desktop', @path, @name, @item.container)
         @item.set_plugin(@id)
         pos = @item.get_pos()
-        pos.width = @info.width
         pos.height = @info.height
+        pos.width = @info.width
         @item.set_size(pos)
+        echo @item.get_id()
+        if not load_position(@item.get_id())?
+            echo "not position"
+            echo "cols #{cols} + rows #{rows}"
+            echo @info.x
+            echo @info.y
 
+            if @info.x?
+                if @info.x < 0
+                    pos.x = cols + @info.x - @info.width + 1
+                else
+                    pos.x = if (cols - @info.x ) < @info.width then (cols - @info.width + 1) else @info.x
+            if @info.y?
+                if @info.y < 0
+                    pos.y = rows + @info.y - @info.height + 1
+                else
+                    pos.y = if (rows - @info.y ) < @info.height then (rows - @info.height + 1) else @info.y
+            if @info.x? or @info.y?
+                save_position(@item.get_id(),pos)
+            
 
     destroy: ->
         @host.parentElement.removeChild(@host)
@@ -191,14 +210,7 @@ class DesktopPlugin extends Plugin
 
 load_plugins = ->
     DCore.init_plugins('desktop')
-
     for p in DCore.get_plugins("desktop")
-        if get_path_name(p) == "weather"
-            new DesktopPlugin(get_path_base(p), get_path_name(p))
-
-    for p in DCore.get_plugins("desktop")
-        if get_path_name(p) == "weather"
-            continue
         new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 
