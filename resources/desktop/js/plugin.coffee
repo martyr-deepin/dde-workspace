@@ -181,11 +181,7 @@ class DesktopPlugin extends Plugin
         @item.set_size(pos)
         echo @item.get_id()
         if not load_position(@item.get_id())?
-            echo "not position"
-            echo "cols #{cols} + rows #{rows}"
-            echo @info.x
-            echo @info.y
-
+            echo "init position"
             if @info.x?
                 if @info.x < 0
                     pos.x = cols + @info.x - @info.width + 1
