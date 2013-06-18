@@ -17,8 +17,25 @@ class FixedItem extends AppItem
             @open_indicator.style.display = "block"
         else
             @open_indicator.style.display = "none"
+
     do_mouseover: (e) ->
         Preview_close_now()
+        DCore.Dock.require_all_region()
+        clearTimeout(hide_id)
+
+    do_mouseout: (e)->
+        if Preview_container.is_showing
+            __clear_timeout()
+            clearTimeout(tooltip_hide_id)
+            DCore.Dock.require_all_region()
+            launcher_mouseout_id = setTimeout(->
+                update_dock_region()
+            , 1000)
+        else
+            update_dock_region()
+            setTimeout(->
+                DCore.Dock.update_hide_mode()
+            , 500)
 
 class ShowDesktop extends FixedItem
     do_click: (e)->
