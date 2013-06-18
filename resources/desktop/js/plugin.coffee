@@ -191,7 +191,14 @@ class DesktopPlugin extends Plugin
 
 load_plugins = ->
     DCore.init_plugins('desktop')
+
     for p in DCore.get_plugins("desktop")
+        if get_path_name(p) == "weather"
+            new DesktopPlugin(get_path_base(p), get_path_name(p))
+
+    for p in DCore.get_plugins("desktop")
+        if get_path_name(p) == "weather"
+            continue
         new DesktopPlugin(get_path_base(p), get_path_name(p))
     return
 
@@ -209,20 +216,17 @@ find_free_position_for_widget = (info, id = null) ->
 
 
 place_all_widgets = ->
-    echo o_table
     not_found = new Array
     for i in widget_item
-        continue if not (w = Widget.look_up(i))?
         if not (pos = load_position(i))?
             not_found.push(i)
         else
+            continue if not (w = Widget.look_up(i))?
             move_to_anywhere(w)
-            echo "found #{i}"
-            echo pos
 
     for i in not_found
+        continue if not (w = Widget.look_up(i))?
         if (new_pos = find_free_position_for_widget(w.get_pos(), w.get_id()))?
             move_to_somewhere(w, new_pos)
-            echo i
-            echo new_pos
+
     return

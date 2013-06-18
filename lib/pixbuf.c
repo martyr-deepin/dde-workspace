@@ -131,6 +131,7 @@ char* generate_directory_icon(const char* p1, const char* p2, const char* p3, co
     gchar* buf = NULL;
     gsize size = 0;
 
+    error = NULL;
     gdk_pixbuf_save_to_buffer(bg, &buf, &size, "png", &error, NULL);
     g_assert(buf != NULL);
 

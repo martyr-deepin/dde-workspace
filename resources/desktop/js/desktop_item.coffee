@@ -204,7 +204,6 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
-        echo "do_rightclick"
         if @selected == false
             update_selected_stats(this, evt)
         else if @in_rename == true
@@ -268,7 +267,6 @@ class Item extends Widget
     on_event_preventdefault : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
-        echo "on_event_preventdefault"
         return
 
 

@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <string.h>
+#include <glib.h>
 #include "dwebview.h"
 #include "jsextension.h"
 #include "utils.h"
@@ -68,26 +69,26 @@ gboolean erase_background(GtkWidget* widget,
     return FALSE;
 }
 
+
 static void setup_lang(WebKitWebView* web_view)
 {
-    const char* env_lang = getenv("LANGUAGE");
-    if (!env_lang || env_lang[0] == '\0') {
-        env_lang = getenv("LC_ALL");
-        if (!env_lang || env_lang[0] == '\0') {
-            env_lang = getenv("LC_MESSAGES");
-        }
-    }
-    if (!env_lang || env_lang[0] == '\0') {
+    const char * const *language_names = g_get_language_names();
+    if (!language_names[0])
         return;
+    char const *env_lang = NULL;
+    for (int i = 0; language_names[i] != NULL; ++i) {
+        if (strlen(language_names[i]) == 2) {
+            g_debug("%s", language_names[i]);
+            env_lang = language_names[i];
+            break;
+	}
     }
-
-    char lang[3] = {0};
-    strncpy(lang, env_lang, 2);
+    if (!env_lang)
+	return;
     char exec_script[30] = {0};
-    sprintf(exec_script, "document.body.lang=\"%s\"", lang);
+    sprintf(exec_script, "document.body.lang=\"%s\"", env_lang);
     webkit_web_view_execute_script(web_view, exec_script);
 }
-
 
 static void add_ddesktop_class(WebKitWebView *web_view,
         WebKitWebFrame *frame,
