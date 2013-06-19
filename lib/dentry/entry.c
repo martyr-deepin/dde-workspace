@@ -201,11 +201,15 @@ char* dentry_get_name(Entry* e)
     TEST_END
 }
 
+
 JS_EXPORT_API
 char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
-        return g_file_get_uri(f);
+        char* uri = g_file_get_uri(f);
+        char* escaped_uri = g_uri_escape_string(uri, "/%", FALSE);
+        g_free(uri);
+        return escaped_uri;
     TEST_GAPP(e, app)
         char* encode = g_uri_escape_string(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)),
                     "/", FALSE);
@@ -815,7 +819,9 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
         g_free(src_basename);
 
         _do_dereference_symlink_copy(_srcs[i], dest);
-        g_chmod(g_file_get_path(dest), S_IRWXU | S_IROTH | S_IRGRP);
+        char* path = g_file_get_path(dest);
+        g_chmod(path, S_IRWXU | S_IROTH | S_IRGRP);
+        g_free(path);
 
         g_object_unref(dest);
     }
