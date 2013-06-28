@@ -70,7 +70,6 @@ class Plugin
         bindtextdomain(@info.textdomain, "#{@path}/locale/mo")
         @inject_js(@name)
 
-
     wrap_element: (child)->
         @host.appendChild(child)
 
