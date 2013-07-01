@@ -33,3 +33,6 @@ HIDE_ICON = _("_Hide this icon")
 DISPLAY_ICON = _("_Display this icon")
 
 HIDE_ICON_CLASS = 'hide_icon'
+
+STARTUP_ICON = _("_Add to autostart")
+NOT_STARTUP_ICON = _("_Remove from autostart")

@@ -578,18 +578,43 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
 
 
 JS_EXPORT_API
-void launcher_add_to_autostart(Entry* _item)
+gboolean launcher_is_autostart(Entry* _item)
 {
-    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* path = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
+    GDir* dir = g_dir_open(path, 0, NULL);
+    g_free(path);
 
-    const char* filename = g_desktop_app_info_get_filename(item);
-    char* name = g_path_get_basename(filename);
-    char* path = g_build_filename(g_get_user_config_dir(), "autostart", name, NULL);
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = get_desktop_file_basename(item);
+    gboolean is_existing = false;
+
+    const char* filename = NULL;
+    while ((filename = g_dir_read_name(dir)) != NULL) {
+        char* lowercase_name = g_utf8_strdown(filename, -1);
+
+        if (g_str_equal(name, lowercase_name)) {
+            g_free(lowercase_name);
+            is_existing = true;
+            break;
+        }
+
+        g_free(lowercase_name);
+    }
+
+    g_dir_close(dir);
     g_free(name);
 
-    if (g_file_test(path, G_FILE_TEST_EXISTS))
-        goto exit;
+    return is_existing;
+}
 
+
+JS_EXPORT_API
+void launcher_add_to_autostart(Entry* _item)
+{
+    if (launcher_is_autostart(_item))
+        return;
+
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     GKeyFile* autostart_file = g_key_file_new();
     g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
                           G_KEY_FILE_DESKTOP_KEY_NAME,
@@ -613,11 +638,13 @@ void launcher_add_to_autostart(Entry* _item)
     g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
                            G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, false);
 
-    save_key_file(autostart_file, path);
-    g_key_file_unref(autostart_file);
+    char* name = get_desktop_file_basename(item);
+    char* path = g_build_filename(g_get_user_config_dir(), "autostart", name, NULL);
+    g_free(name);
 
-exit:
+    save_key_file(autostart_file, path);
     g_free(path);
+    g_key_file_unref(autostart_file);
 }
 
 
@@ -625,8 +652,7 @@ JS_EXPORT_API
 void launcher_remove_from_autostart(Entry* _item)
 {
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    const char* filename = g_desktop_app_info_get_filename(item);
-    char* name = g_path_get_basename(filename);
+    char* name = get_desktop_file_basename(item);
     char* autostart_file_path = g_build_filename(g_get_user_config_dir(),
                                                  "autostart", name, NULL);
     g_free(name);

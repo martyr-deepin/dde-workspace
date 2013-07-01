@@ -169,7 +169,7 @@ init_all_applications = ->
 
 _init_hidden_icons = ->
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
-    hidden_icon_ids.filter((elem, index, array) ->
+    hidden_icon_ids?.filter((elem, index, array) ->
         if not applications[elem]
             array.splice(index, 1)
     )

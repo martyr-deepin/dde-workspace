@@ -324,3 +324,9 @@ gboolean file_filter(const char *file_name)
     else
         return FALSE;
 }
+
+char* get_desktop_file_basename(GDesktopAppInfo* file)
+{
+    const char* filename = g_desktop_app_info_get_filename(file);
+    return g_path_get_basename(filename);
+}
