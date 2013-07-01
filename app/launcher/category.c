@@ -29,6 +29,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 #include "jsextension.h"
+#include "x_category.h"
 
 #define DEEPIN_SOFTWARE_CENTER_DATA_DIR    "/usr/share/deepin-software-center/data"
 #define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATA_DIR"/data_newest_id.ini"
@@ -140,9 +141,9 @@ int find_category_id(const char* category_name)
         _search_database(get_category_index_db_path(), sql,
                          (SQLEXEC_CB)_get_category_name_index_map, _category_info);
 
-        const char* x_sql = "select x_category_name, first_category_index from x_category;";
-        _search_database(_get_x_category_db_path(), x_sql,
-                         (SQLEXEC_CB)_get_category_name_index_map, _category_info);
+        for (gsize i = 0; i < X_CATEGORY_NUM; ++i)
+            g_hash_table_insert(_category_info, g_strdup(_(x_category_name_index_map[i].name)),
+                                GINT_TO_POINTER(x_category_name_index_map[i].index));
     }
 
     int id = OTHER_CATEGORY_ID;

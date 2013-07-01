@@ -2,7 +2,9 @@ SET(NAME "launcher")
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
-SET(SRC_LIST launcher.c category.c dbus.c ${JSC_GEN})
+file(GLOB CFILES *.c)
+
+SET(SRC_LIST ${CFILES} ${JSC_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
