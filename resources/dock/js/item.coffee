@@ -281,7 +281,7 @@ class AppItem extends Widget
             if tmp_list.length > 0
                 switch this.constructor.name
                     when "Launcher" then @_do_launch tmp_list
-                    when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, tmp_list)
+                    when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, "", tmp_list) if @n_clients.length == 1
 
     set_tooltip: (text) ->
         new ToolTip(@element, text)
