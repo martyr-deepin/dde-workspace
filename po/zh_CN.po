@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-20 09:42+0800\n"
+"POT-Creation-Date: 2013-07-02 14:05+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,7 +141,7 @@ msgstr "访客"
 #: ../resources/desktop/js/desktop_item.coffee:1434
 #: ../resources/desktop/js/desktop_item.coffee:1528
 #: ../resources/desktop/js/desktop_item.coffee:1581
-#: ../resources/launcher/js/grid.coffee:83
+#: ../resources/launcher/js/grid.coffee:89
 msgid "_Open"
 msgstr "打开(_O)"
 
@@ -334,11 +334,19 @@ msgstr "隐藏该图标(_H)"
 msgid "_Display this icon"
 msgstr "显示该图标(_D)"
 
-#: ../resources/launcher/js/grid.coffee:87
+#: ../resources/launcher/js/config.coffee:37
+msgid "_Add to autostart"
+msgstr "添加至开机启动项(_A)"
+
+#: ../resources/launcher/js/config.coffee:38
+msgid "_Remove from autostart"
+msgstr "从开机启动项删除(_R)"
+
+#: ../resources/launcher/js/grid.coffee:93
 msgid "Send to d_esktop"
 msgstr "发送到桌面(_E)"
 
-#: ../resources/launcher/js/grid.coffee:88
+#: ../resources/launcher/js/grid.coffee:94
 msgid "Send to do_ck"
 msgstr "添加到 Dock(_C)"
 
@@ -365,6 +373,10 @@ msgstr "%Y年%b%d日 %A"
 #: ../app/greeter/dlock.c:318 ../app/greeter/greeter.c:474
 msgid "Invalid Password"
 msgstr "密码错误"
+
+#: ../app/launcher/launcher.c:207
+msgid "another instance of application launcher is running...\n"
+msgstr "已有一个程序启动器实例正在运行"
 
 #: ../app/launcher/category.h:31
 msgid "all"
@@ -413,6 +425,14 @@ msgstr "实用工具"
 #: ../app/launcher/category.h:42
 msgid "other"
 msgstr "其他"
+
+#: ../app/dock/dock.c:183
+msgid "another instance of application dock is running...\n"
+msgstr "已有一个Dock实例正在运行"
+
+#: ../app/dock/dock.c:196
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr "因Compiz插件未启用，Dock未能启动"
 
 #: ../lib/dentry/entry.c:682
 #, c-format
