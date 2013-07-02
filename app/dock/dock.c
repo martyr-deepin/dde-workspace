@@ -144,7 +144,7 @@ gboolean is_compiz_plugin_valid()
         Window current_dm_sn_owner = XGetSelectionOwner(dpy, dm_sn_atom);
         is_decorator_running = is_decorator_running || (None != current_dm_sn_owner);
 
-        sprintf(buf, "__NET_WM_CM_S%d", i);
+        sprintf(buf, "_NET_WM_CM_S%d", i);
         Atom cm_sn_atom = XInternAtom(dpy, buf, 0);
         Window current_cm_sn_owner = XGetSelectionOwner(dpy, cm_sn_atom);
         is_compiz_running = is_compiz_running || (None != current_cm_sn_owner);
@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
         GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
                                                    GTK_MESSAGE_ERROR,
                                                    GTK_BUTTONS_OK,
-                                                   _("start up dock failed, because the plugin of compiz is not enabled"));
+                                                   _("Dock failed to start, because the plugin of compiz is not enabled"));
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
         return 2;
