@@ -356,7 +356,7 @@ msgstr "键入要搜索的关键字..."
 
 #: ../app/desktop/desktop.c:140
 msgid "App Group"
-msgstr "应用程序启动组"
+msgstr "程序启动组"
 
 #: ../app/desktop/desktop.c:178
 msgid "New file"
