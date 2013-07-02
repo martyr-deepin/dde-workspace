@@ -204,7 +204,7 @@ int main(int argc, char* argv[])
         if (argc > 1 && g_str_equal("--toggle", argv[1])) {
             system("killall launcher");
         } else {
-            g_warning("another instance of application launcher is running...\n");
+            g_warning(_("another instance of application launcher is running...\n"));
         }
         return 0;
     }
