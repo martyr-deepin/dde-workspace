@@ -356,7 +356,7 @@ msgstr "鍵入要搜尋的關鍵字..."
 
 #: ../app/desktop/desktop.c:140
 msgid "App Group"
-msgstr "應用程式啟動組"
+msgstr "程式啟動組"
 
 #: ../app/desktop/desktop.c:178
 msgid "New file"
