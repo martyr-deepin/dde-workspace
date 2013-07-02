@@ -376,7 +376,7 @@ msgstr "密码错误"
 
 #: ../app/launcher/launcher.c:207
 msgid "another instance of application launcher is running...\n"
-msgstr "已有一个程序启动器实例正在运行"
+msgstr "已有一个程序启动器实例正在运行...\n"
 
 #: ../app/launcher/category.h:31
 msgid "all"
@@ -428,7 +428,7 @@ msgstr "其他"
 
 #: ../app/dock/dock.c:183
 msgid "another instance of application dock is running...\n"
-msgstr "已有一个Dock实例正在运行"
+msgstr "已有一个Dock实例正在运行...\n"
 
 #: ../app/dock/dock.c:196
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
