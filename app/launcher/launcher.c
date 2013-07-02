@@ -616,18 +616,19 @@ void launcher_add_to_autostart(Entry* _item)
 
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     GKeyFile* autostart_file = g_key_file_new();
+    char* value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_NAME);
     g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_NAME,
-                          g_desktop_app_info_get_string(item,
-                                                        G_KEY_FILE_DESKTOP_KEY_NAME));
+                          G_KEY_FILE_DESKTOP_KEY_NAME, value);
+    g_free(value);
+    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_EXEC);
     g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_EXEC,
-                          g_desktop_app_info_get_string(item,
-                                                        G_KEY_FILE_DESKTOP_KEY_EXEC));
+                          G_KEY_FILE_DESKTOP_KEY_EXEC, value);
+
+    g_free(value);
+    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_COMMENT);
     g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_COMMENT,
-                          g_desktop_app_info_get_string(item,
-                                                        G_KEY_FILE_DESKTOP_KEY_COMMENT));
+                          G_KEY_FILE_DESKTOP_KEY_COMMENT, value);
+    g_free(value);
     g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
                           G_KEY_FILE_DESKTOP_KEY_TYPE,
                           G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
