@@ -31,7 +31,7 @@ class ClientGroup extends AppItem
             menu = build_menu([
                 [1, _("_New instance")],
                 [2, _("_Close")],
-                [3, _("Close _All")]
+                [3, _("Close _All"), @n_clients.length > 1]
                 [],
                 [4, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)],
             ])
