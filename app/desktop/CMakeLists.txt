@@ -1,6 +1,6 @@
 SET(NAME "desktop")
 
-add_subdirectory(desktop_test)
+add_subdirectory(test)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 
