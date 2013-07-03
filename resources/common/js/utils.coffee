@@ -81,7 +81,7 @@ find_drag_target = (el)->
     p = el
     if p.draggable
         return p
-    while p = el.parentNode
+    while p = p.parentNode
         if p.draggable
             return p
     return null
