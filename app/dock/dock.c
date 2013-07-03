@@ -189,16 +189,6 @@ int main(int argc, char* argv[])
     init_i18n();
     gtk_init(&argc, &argv);
 
-    if (!is_compiz_plugin_valid()) {
-        GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-                                                   GTK_MESSAGE_ERROR,
-                                                   GTK_BUTTONS_OK,
-                                                   _("Dock failed to start, because the plugin of compiz is not enabled"));
-        gtk_dialog_run(GTK_DIALOG(dialog));
-        gtk_widget_destroy(dialog);
-        return 2;
-    }
-
 #ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 #endif
@@ -268,6 +258,19 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
+        if (!is_compiz_plugin_valid()) {
+            GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+                                                       GTK_MESSAGE_ERROR,
+                                                       GTK_BUTTONS_OK,
+                                                       _("Dock failed to start"
+                                                         ", because the plugin"
+                                                         " of compiz is not "
+                                                         "enabled"));
+            gtk_dialog_run(GTK_DIALOG(dialog));
+            gtk_widget_destroy(dialog);
+            exit(2);
+        }
+
         inited = TRUE;
         init_config();
         init_launchers();
