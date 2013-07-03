@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <stdlib.h>
+#include <gio/gdesktopappinfo.h>
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
 
@@ -41,11 +42,13 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
 
 GKeyFile* load_app_config(const char* name);
 
+void save_key_file(GKeyFile*, const char* path); /*careful, this function didn't free the key file*/
 void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
 
 int reparent_to_init();
 void parse_cmd_line (int* argc, char*** argv);
 char* to_lower_inplace(char* str);
 gboolean file_filter(const char *file_name);
+char* get_desktop_file_basename(GDesktopAppInfo* file);  // g_free the return value
 
 #endif

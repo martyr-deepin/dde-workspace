@@ -68,7 +68,14 @@ class PluginHandle extends Widget
             move_to_somewhere(w, new_pos)
         return
 
+    do_click:(evt)=>
+        evt.stopPropagation()
+        echo @element
 
+    destroy:->
+        echo "PluginHandle destroy"
+        remove_element(@element)
+        
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
@@ -79,10 +86,6 @@ class DesktopPluginItem extends Widget
         @element.appendChild(@handle.element)
         @container_outbox = create_element("div", "PluginOutbox", @element)
         @container = create_element("div", "PluginContainer", @container_outbox)
-
-
-    destroy: ->
-        @element.parentElement.removeChild(@element)
 
 
     get_id : =>
@@ -170,6 +173,12 @@ class DesktopPluginItem extends Widget
         style.top = y
 
 
+    destroy:->
+        echo "DesktopPluginItem destroy"
+        remove_element(@element)
+        #@handle.destroy()
+
+
 class DesktopPlugin extends Plugin
     constructor: (@path, @name)->
         @item = new DesktopPluginItem(@name)
@@ -196,9 +205,9 @@ class DesktopPlugin extends Plugin
                 save_position(@item.get_id(),pos)
             
 
-    destroy: ->
-        @host.parentElement.removeChild(@host)
-
+    destroy:->
+        echo "DesktopPlugin destory"
+        @item.destroy()
 
     set_pos: (info)->
         move_to_somewhere(@item, info)

@@ -34,6 +34,7 @@
 #define CURRENT_PCITURE "current-picture"
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 #define APPS_INI "launcher/apps.ini"
+#define AUTOSTART(file) "autostart/"file
 
 
 static GKeyFile* k_apps = NULL;
@@ -203,7 +204,7 @@ int main(int argc, char* argv[])
         if (argc > 1 && g_str_equal("--toggle", argv[1])) {
             system("killall launcher");
         } else {
-            g_warning("another instance of application launcher is running...\n");
+            g_warning(_("another instance of application launcher is running...\n"));
         }
         return 0;
     }
@@ -573,4 +574,91 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
     g_free(desktop_item_path);
 
     return is_exist;
+}
+
+
+JS_EXPORT_API
+gboolean launcher_is_autostart(Entry* _item)
+{
+    char* path = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
+    GDir* dir = g_dir_open(path, 0, NULL);
+    g_free(path);
+
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = get_desktop_file_basename(item);
+    gboolean is_existing = false;
+
+    const char* filename = NULL;
+    while ((filename = g_dir_read_name(dir)) != NULL) {
+        char* lowercase_name = g_utf8_strdown(filename, -1);
+
+        if (g_str_equal(name, lowercase_name)) {
+            g_free(lowercase_name);
+            is_existing = true;
+            break;
+        }
+
+        g_free(lowercase_name);
+    }
+
+    g_dir_close(dir);
+    g_free(name);
+
+    return is_existing;
+}
+
+
+JS_EXPORT_API
+void launcher_add_to_autostart(Entry* _item)
+{
+    if (launcher_is_autostart(_item))
+        return;
+
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    GKeyFile* autostart_file = g_key_file_new();
+    char* value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_NAME);
+    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_NAME, value);
+    g_free(value);
+    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_EXEC);
+    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_EXEC, value);
+
+    g_free(value);
+    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_COMMENT);
+    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_COMMENT, value);
+    g_free(value);
+    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_TYPE,
+                          G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
+    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                          G_KEY_FILE_DESKTOP_KEY_HIDDEN, false);
+    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                           "X-GNOME-Autostart-enable", true);
+    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
+                           G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, false);
+
+    char* name = get_desktop_file_basename(item);
+    char* path = g_build_filename(g_get_user_config_dir(), "autostart", name, NULL);
+    g_free(name);
+
+    save_key_file(autostart_file, path);
+    g_free(path);
+    g_key_file_unref(autostart_file);
+}
+
+
+JS_EXPORT_API
+void launcher_remove_from_autostart(Entry* _item)
+{
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = get_desktop_file_basename(item);
+    char* autostart_file_path = g_build_filename(g_get_user_config_dir(),
+                                                 "autostart", name, NULL);
+    g_free(name);
+    GFile* file = g_file_new_for_path(autostart_file_path);
+    g_file_delete(file, NULL, NULL);
+    g_object_unref(file);
+    g_free(autostart_file_path);
 }

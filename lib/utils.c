@@ -196,13 +196,18 @@ GKeyFile* load_app_config(const char* name)
     return key;
 }
 
-void save_app_config(GKeyFile* key, const char* name)
+void save_key_file(GKeyFile* key, const char* path)
 {
-    char* path = g_build_filename(g_get_user_config_dir(), name, NULL);
     gsize size;
     gchar* content = g_key_file_to_data(key, &size, NULL);
     write_to_file(path, content, size);
     g_free(content);
+}
+
+void save_app_config(GKeyFile* key, const char* name)
+{
+    char* path = g_build_filename(g_get_user_config_dir(), name, NULL);
+    save_key_file(key, path);
     g_free(path);
 }
 
@@ -318,4 +323,10 @@ gboolean file_filter(const char *file_name)
         return TRUE;
     else
         return FALSE;
+}
+
+char* get_desktop_file_basename(GDesktopAppInfo* file)
+{
+    const char* filename = g_desktop_app_info_get_filename(file);
+    return g_path_get_basename(filename);
 }

@@ -59,6 +59,7 @@ class Item extends Widget
         @element.style.display = "none"
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
         @display_mode = 'display'
+        @is_autostart = DCore.Launcher.is_autostart(@core)
 
     do_click : (e)=>
         e?.stopPropagation()
@@ -76,16 +77,23 @@ class Item extends Widget
 
     _menu: ->
         if @display_mode == 'display'
-            msg = HIDE_ICON
+            hide_icon_msg = HIDE_ICON
         else
-            msg = DISPLAY_ICON
+            hide_icon_msg = DISPLAY_ICON
+
+        if @is_autostart
+            startup_msg = NOT_STARTUP_ICON
+        else
+            startup_msg = STARTUP_ICON
         menu = [
             [1, _("_Open")],
             [],
-            [2, msg],
+            [2, hide_icon_msg],
             [],
             [3, _("Send to d_esktop"), not DCore.Launcher.has_this_item_on_desktop(@core)],
             [4, _("Send to do_ck"), s_dock!=null],
+            [],
+            [5, startup_msg]
         ]
 
     @_contextmenu_callback: (item)->
@@ -124,7 +132,7 @@ class Item extends Widget
         Item.display_temp = true
         show_category()
 
-    _toggle_icon: ->
+    toggle_icon: ->
         if @display_mode == 'display'
             @hide_icon()
         else
@@ -132,12 +140,27 @@ class Item extends Widget
         @element.contextMenu = build_menu(@_menu())
         @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
 
+    add_to_autostart: ->
+        @is_autostart = true
+        DCore.Launcher.add_to_autostart(@core)
+
+    remove_from_autostart: ->
+        @is_autostart = false
+        DCore.Launcher.remove_from_autostart(@core)
+
+    toggle_autostart: ->
+        if @is_autostart
+            @remove_from_autostart()
+        else
+            @add_to_autostart()
+
     do_itemselected: (e)=>
         switch e.id
             when 1 then DCore.DEntry.launch(@core, [])
-            when 2 then @_toggle_icon()
+            when 2 then @toggle_icon()
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 5 then @toggle_autostart()
     hide: ->
         @element.style.display = "none"
     show: =>  # use '->', Item.display_temp and @display_mode will be undifined

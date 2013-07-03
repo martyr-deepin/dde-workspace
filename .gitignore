@@ -13,6 +13,7 @@ resources/greeter/js/time.js
 *.log
 *~
 *.orig
+core
 
 # CMake
 CMakeFiles/

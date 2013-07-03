@@ -207,7 +207,14 @@ char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
         char* uri = g_file_get_uri(f);
-        char* escaped_uri = g_uri_escape_string(uri, "/%", FALSE);
+        /*
+         * some characters like ')', '(' may not be escaped
+         *
+         * ':' for scheme, like file:///...., the : cannot be escaped
+         * '/' for path separator, should be escaped
+         * '%' for the characters escaped, should be escaped
+         */
+        char* escaped_uri = g_uri_escape_string(uri, ":/%", FALSE);
         g_free(uri);
         return escaped_uri;
     TEST_GAPP(e, app)
