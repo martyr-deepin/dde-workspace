@@ -1,4 +1,9 @@
 .gitignore
+
+resources/desktop/plugin
+.tag*
+tags
+cscope*
 build/
 resources/desktop/js/desktop.js
 resources/dock/js/dock.js
