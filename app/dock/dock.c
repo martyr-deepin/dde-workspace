@@ -132,17 +132,17 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 
 gboolean is_compiz_plugin_valid()
 {
-    gboolean is_decorator_running = false;
+    /* gboolean is_decorator_running = false; */
     gboolean is_compiz_running = false;
     gint screen_num = gdk_display_get_n_screens(gdk_display_get_default());
     char buf[128] = {0};
     Display* dpy = XOpenDisplay(NULL);
 
     for (int i = 0; i < screen_num; ++i) {
-        sprintf(buf, "_COMPIZ_DM_S%d", i);
-        Atom dm_sn_atom = XInternAtom(dpy, buf, 0);
-        Window current_dm_sn_owner = XGetSelectionOwner(dpy, dm_sn_atom);
-        is_decorator_running = is_decorator_running || (None != current_dm_sn_owner);
+        /* sprintf(buf, "_COMPIZ_DM_S%d", i); */
+        /* Atom dm_sn_atom = XInternAtom(dpy, buf, 0); */
+        /* Window current_dm_sn_owner = XGetSelectionOwner(dpy, dm_sn_atom); */
+        /* is_decorator_running = is_decorator_running || (None != current_dm_sn_owner); */
 
         sprintf(buf, "_NET_WM_CM_S%d", i);
         Atom cm_sn_atom = XInternAtom(dpy, buf, 0);
@@ -150,7 +150,7 @@ gboolean is_compiz_plugin_valid()
         is_compiz_running = is_compiz_running || (None != current_cm_sn_owner);
     }
 
-    return is_compiz_running && is_decorator_running;
+    return is_compiz_running;// && is_decorator_running;
 }
 
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
