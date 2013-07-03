@@ -184,8 +184,14 @@ DCore.Lock.draw_background(background)
 $("#Version").innerHTML = "
             <span> #{_("Linux Deepin 12.12")}<sup>#{_(VERSION)}</sup></span> 
             "
-s = new SwitchUser("switchuser")
-$("#bottom_buttons").appendChild(s.element)
+try
+    is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
+catch error
+    is_livecd = false
+
+if not is_livecd
+    s = new SwitchUser("switchuser")
+    $("#bottom_buttons").appendChild(s.element)
 
 u = new UserInfo(user, user, user_image) 
 roundabout.appendChild(u.li)
