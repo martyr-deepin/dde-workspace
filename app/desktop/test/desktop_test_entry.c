@@ -12,13 +12,16 @@ Entry* gappinfo = NULL;
 void variable_init()
 {  
     gfileDirectory = g_file_new_for_path("/home/ycl/test_files");
-    gfileDocument = g_file_new_for_path("/home/ycl/test_files/001.png");
 
-    // gappinfo = g_app_info_create_from_commandline("skype",NULL,
-    //                                                         G_APP_INFO_CREATE_NONE,
-    //                                                         NULL);
+    // gfileDocument = g_file_new_for_path("/home/ycl/test_files/001.png");
+    // gfileDocument = g_file_new_for_path("/home/ycl/test_files/skype.desktop");
+    // gfileDocument = g_file_new_for_path("/home/ycl/test_files/text.css");
+    gfileDocument = g_file_new_for_path("/home/ycl/test_files/text.exe");
 
-    gappinfo = g_desktop_app_info_new_from_filename("/home/ycl/Desktop/skype.desktop");
+
+    // gappinfo = g_desktop_app_info_new_from_filename("/home/ycl/Desktop/skype.desktop");
+    gappinfo = g_desktop_app_info_new_from_filename("/home/ycl/test_files/skype.desktop");
+
 }
 
 void variable_free()
@@ -134,9 +137,13 @@ void test_entry()
 
     extern char* dentry_get_icon_path(Entry* e);
     Test({
-        func_test_entry_char(dentry_get_icon_path,gfileDirectory, "/usr/share/icons/Faenza/places/48/inode-directory.png");
-        func_test_entry_char(dentry_get_icon_path,gfileDocument, "/usr/share/icons/Faenza/mimetypes/48/image-png.png");
-        func_test_entry_char(dentry_get_icon_path,gappinfo, "/usr/share/icons/Deepin/apps/48/skype.png");
+        // func_test_entry_char(dentry_get_icon_path,gfileDirectory, "/usr/share/icons/Faenza/places/48/inode-directory.png");
+        // func_test_entry_char(dentry_get_icon_path,gfileDocument, "/usr/share/icons/Faenza/mimetypes/48/image-png.png");
+        // func_test_entry_char(dentry_get_icon_path,gfileDocument, "/usr/share/icons/Faenza/mimetypes/48/application-x-desktop.png");
+        // func_test_entry_char(dentry_get_icon_path,gfileDocument, "/usr/share/icons/Faenza/mimetypes/48/text-css.png");
+        func_test_entry_char(dentry_get_icon_path,gfileDocument, "/usr/share/icons/Faenza/mimetypes/48/application-x-ms-dos-executable.png");
+
+        // func_test_entry_char(dentry_get_icon_path,gappinfo, "/usr/share/icons/Deepin/apps/48/skype.png");
     },"dentry_get_icon"); 
 
 
