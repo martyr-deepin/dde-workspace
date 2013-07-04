@@ -12,7 +12,9 @@
 #include "test.h"
 #include "background_util.h"
 #include "inotify_item.h"
+#include <stdlib.h>
 
+#include "xdg_misc.h"
 #include "../../../lib/dentry/entry.h"
 #include "../../../lib/utils.h"
 
