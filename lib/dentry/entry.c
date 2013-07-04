@@ -233,7 +233,6 @@ char* dentry_get_icon(Entry* e)
     TEST_GFILE(e, f)
         GFileInfo *info = g_file_query_info(f, "standard::icon", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
-            fprintf(stderr,"info isnt null \n");
             GIcon* icon = g_file_info_get_icon(info);
             ret = lookup_icon_by_gicon(icon);
         }

@@ -97,7 +97,6 @@ char* lookup_icon_by_gicon(GIcon* icon)
     char* icon_path = NULL;
 
     char* icon_infos = g_icon_to_string(icon);
-    fprintf(stderr, "%s\n", icon_infos);
     char** types = g_strsplit(icon_infos, " ", -1);
     g_free(icon_infos);
 
