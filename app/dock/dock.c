@@ -276,6 +276,7 @@ void dock_emit_webview_ok()
     static gboolean inited = FALSE;
     if (!inited) {
         if (!is_compiz_plugin_valid()) {
+            gtk_widget_hide(container);
             GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
                                                        GTK_MESSAGE_ERROR,
                                                        GTK_BUTTONS_OK,
