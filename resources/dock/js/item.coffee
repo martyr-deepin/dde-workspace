@@ -219,7 +219,8 @@ class AppItem extends Widget
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, 6, 4)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
-        # do swap between launcher and clientgroup
+
+        # flag for doing swap between launcher and clientgroup
         e.dataTransfer.setData("text/plain", "swap")
         e.dataTransfer.effectAllowed = "copyMove"
 
@@ -254,13 +255,11 @@ class AppItem extends Widget
             e.dataTransfer.dropEffect="move"
 
     do_dragleave: (e)->
-        # do swap between launcher and clientgroup
-        # if e.dataTransfer.getData('text/plain') == 'swap'
-            @hide_swap_indicator()
-            @_try_swaping_id = null
-            @hide_swap_indicator()
-            e.preventDefault()
-            e.stopPropagation()
+        @hide_swap_indicator()
+        @_try_swaping_id = null
+        @hide_swap_indicator()
+        e.preventDefault()
+        e.stopPropagation()
 
     _do_launch: (list) =>
         run_successful = DCore.DEntry.launch(@core, list)
