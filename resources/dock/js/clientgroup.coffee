@@ -1,3 +1,4 @@
+pop_id = null
 hide_id = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
@@ -237,3 +238,20 @@ class ClientGroup extends AppItem
         DCore.Dock.require_all_region()
         if @n_clients.length != 0
             Preview_show(@)
+
+    do_dragleave: (e) ->
+        super
+        clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
+
+    do_dragenter: (e) ->
+        super
+        e.preventDefault()
+        if e.dataTransfer.getData('text/plain') == "" and @n_clients.length == 1
+            pop_id = setTimeout(=>
+                @to_active_status(@leader)
+                pop_id = null
+            , 1000)
+
+    do_drop: (e) ->
+        super
+        clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"

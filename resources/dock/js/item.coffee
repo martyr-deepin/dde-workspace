@@ -219,6 +219,8 @@ class AppItem extends Widget
         return if @is_fixed_pos
         e.dataTransfer.setDragImage(@img, 6, 4)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
+        # do swap between launcher and clientgroup
+        e.dataTransfer.setData("text/plain", "swap")
         e.dataTransfer.effectAllowed = "copyMove"
 
     do_dragend: (e)->
@@ -252,11 +254,13 @@ class AppItem extends Widget
             e.dataTransfer.dropEffect="move"
 
     do_dragleave: (e)->
-        @hide_swap_indicator()
-        @_try_swaping_id = null
-        @hide_swap_indicator()
-        e.preventDefault()
-        e.stopPropagation()
+        # do swap between launcher and clientgroup
+        # if e.dataTransfer.getData('text/plain') == 'swap'
+            @hide_swap_indicator()
+            @_try_swaping_id = null
+            @hide_swap_indicator()
+            e.preventDefault()
+            e.stopPropagation()
 
     _do_launch: (list) =>
         run_successful = DCore.DEntry.launch(@core, list)
@@ -281,7 +285,9 @@ class AppItem extends Widget
             if tmp_list.length > 0
                 switch this.constructor.name
                     when "Launcher" then @_do_launch tmp_list
-                    when "ClientGroup" then DCore.Dock.launch_by_app_id(@app_id, "", tmp_list) if @n_clients.length == 1
+                    when "ClientGroup"
+                        if @n_clients.length == 1
+                            DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
 
     set_tooltip: (text) ->
         new ToolTip(@element, text)
