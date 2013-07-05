@@ -169,15 +169,16 @@ init_all_applications = ->
 
 _init_hidden_icons = ->
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
-    hidden_icon_ids?.filter((elem, index, array) ->
-        if not applications[elem]
-            array.splice(index, 1)
-    )
-    DCore.Launcher.save_hidden_apps(hidden_icon_ids)
-    for id in hidden_icon_ids
-        if applications[id]
-            hidden_icons[id] = applications[id]
-            hidden_icons[id].hide_icon()
+    if hidden_icon_ids?
+        hidden_icon_ids.filter((elem, index, array) ->
+            if not applications[elem]
+                array.splice(index, 1)
+        )
+        DCore.Launcher.save_hidden_apps(hidden_icon_ids)
+        for id in hidden_icon_ids
+            if applications[id]
+                hidden_icons[id] = applications[id]
+                hidden_icons[id].hide_icon()
 
     _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 

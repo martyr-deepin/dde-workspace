@@ -528,9 +528,14 @@ JSValueRef launcher_load_hidden_apps()
     g_assert(k_apps != NULL);
     GError* error = NULL;
     gsize length = 0;
-    gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps, "__Config__", "app_ids", &length, &error);
+    gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps,
+                                                            "__Config__",
+                                                            "app_ids",
+                                                            &length,
+                                                            &error);
     if (raw_hidden_app_ids == NULL) {
-        g_warning("%s", error->message);
+        g_warning("read config file %s/%s failed: %s", g_get_user_config_dir(),
+                  APPS_INI, error->message);
         g_error_free(error);
         return jsvalue_null();
     }
