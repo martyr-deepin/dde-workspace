@@ -244,13 +244,14 @@ class ClientGroup extends AppItem
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
 
     do_dragenter: (e) ->
-        super
         e.preventDefault()
-        if e.dataTransfer.getData('text/plain') == "" and @n_clients.length == 1
+        flag = e.dataTransfer.getData("text/plain")
+        if flag != "swap" and @n_clients.length == 1
             pop_id = setTimeout(=>
                 @to_active_status(@leader)
                 pop_id = null
             , 1000)
+        super
 
     do_drop: (e) ->
         super
