@@ -1,23 +1,10 @@
-#ifdef __DUI_DEBUG
+#include "desktop_test.h"
 
-#include <X11/XKBlib.h>
-#include <gtk/gtk.h>
-#include <glib.h>
-#include <gio/gio.h>
-#include <gio/gdesktopappinfo.h>
-#include <X11/X.h>
-#include <JavaScriptCore/JSObjectRef.h>
-#include "jsextension.h"
-#include "test.h"
-#include "background_util.h"
-#include "inotify_item.h"
-
-int TEST_MAX_COUNT = 100000;
-int TEST_MAX_MEMORY = RES_IN_MB(90);
-
-gchar *file1 = "/home/liliqiang/1440x900.jpg";
-gchar *file2 = "/home/yjq/Desktop/bg2.png";
-gchar *rich_dir = "/home/yjq/Desktop/.deepin_rich_dir_desktop_test";
+gchar *file1 = "/home/test_files/360wallpaper38.jpg";
+gchar *file2 = "/home/test_files/001.png";
+gchar *rich_dir = "/home/test_files/.deepin_rich_dir_desktop_test";
+gchar *app_0 = "/home/test_files/skype.desktop";
+gchar *app_1 = "/home/test_files/deepin-user-manual.desktop";
 
 void test_inotify()
 {
@@ -112,9 +99,9 @@ void test_background_util()
     typedef struct _xfade_data
     {
         //all in seconds.
-        gdouble	start_time;
-        gdouble	total_duration;
-        gdouble	interval;
+        gdouble start_time;
+        gdouble total_duration;
+        gdouble interval;
 
         cairo_surface_t* fading_surface;
         GdkPixbuf* end_pixbuf;
@@ -342,8 +329,8 @@ void test_desktop()
         GFile** _files = NULL;
         fs.data = _files;
         fs.num = 2;
-        _files[0] = g_file_new_for_commandline_arg("/home/yjq/Desktop/skype.desktop");
-        _files[1] = g_file_new_for_commandline_arg("/home/yjq/Desktop/deepin-user-manual.desktop");
+        _files[0] = g_file_new_for_commandline_arg(app_0);
+        _files[1] = g_file_new_for_commandline_arg(app_1);
 
         GPtrArray* array = g_ptr_array_new();
 
@@ -497,25 +484,3 @@ void test_other()
     }, "on_bg_duration_tick");
 
 }
-
-void desktop_test()
-{
-    g_message("desktop test start...");
-    /* test inotify successful.*/
-    //test_inotify();
-
-    //test_dbus();
-
-    /* test_background(); */
-
-    test_background_util();
-
-    /* test_desktop(); */
-
-    /* test_utils(); */
-
-    //test_other();
-    g_message("desktop tests All passed!!!");
-}
-
-#endif

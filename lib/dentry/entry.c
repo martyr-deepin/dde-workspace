@@ -318,6 +318,7 @@ char* dentry_get_id(Entry* e)
 JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
+    g_message("start\n");
     TEST_GFILE(e, f)
         gboolean launch_res = TRUE;
         GFileInfo* info = g_file_query_info(f, "standard::content-type,access::can-execute", G_FILE_QUERY_INFO_NONE, NULL, NULL);
@@ -330,28 +331,36 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             GFile** files = NULL;
             if (fs.num != 0)
             {
+            g_message("GFileInfo isnt NULL");
+                //GLib-GObject-CRITICAL **: g_object_ref: assertion `G_IS_OBJECT (object)' failed
                 _fs = _normalize_array_container(fs);
                 GFile** files = _fs.data;
                 _file_arg = files[0];
             }
+                g_message("0234");
 
             launch_res = activate_file (f, content_type, is_executable, _file_arg);
 
             if (fs.num != 0)
             {
+                g_message("1234");
+                //GLib-GObject-CRITICAL **: g_object_unref: assertion `G_IS_OBJECT (object)' failed
                 for (size_t i=0; i<_fs.num; i++) {
                      g_object_unref(((GObject**)_fs.data)[i]);
                 }
+                g_message("5678");
                 g_free(_fs.data);
             }
 
             g_object_unref(info);
         } else {
+            g_message("GFileInfo is NULL");
             char* path = g_file_get_path(f);
             run_command1("gvfs-open", path);
             g_free(path);
             return TRUE;
         }
+        g_message("GFILE end\n");
 
         return launch_res;
     TEST_GAPP(e, app)
@@ -372,8 +381,10 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             g_object_unref(((GObject**)_fs.data)[i]);
         }
         g_free(_fs.data);
+        g_message("GAPP end\n");
 
         return ret;
+
     TEST_END
     return FALSE;
 }
