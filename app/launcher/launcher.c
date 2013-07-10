@@ -43,6 +43,7 @@ static GdkScreen* screen = NULL;
 static int screen_width;
 static int screen_height;
 static GSettings* dde_bg_g_settings = NULL;
+static GPtrArray* config_paths = NULL;
 
 
 
@@ -269,6 +270,7 @@ void launcher_exit_gui()
 {
     g_key_file_free(k_apps);
     g_hash_table_destroy(_category_table);
+    g_ptr_array_unref(config_paths);
     gtk_main_quit();
 }
 
@@ -528,9 +530,14 @@ JSValueRef launcher_load_hidden_apps()
     g_assert(k_apps != NULL);
     GError* error = NULL;
     gsize length = 0;
-    gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps, "__Config__", "app_ids", &length, &error);
+    gchar** raw_hidden_app_ids = g_key_file_get_string_list(k_apps,
+                                                            "__Config__",
+                                                            "app_ids",
+                                                            &length,
+                                                            &error);
     if (raw_hidden_app_ids == NULL) {
-        g_warning("%s", error->message);
+        g_warning("read config file %s/%s failed: %s", g_get_user_config_dir(),
+                  APPS_INI, error->message);
         g_error_free(error);
         return jsvalue_null();
     }
@@ -577,12 +584,11 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
 }
 
 
-JS_EXPORT_API
-gboolean launcher_is_autostart(Entry* _item)
+gboolean _check_autostart(const char* path, Entry* _item)
 {
-    char* path = g_build_filename(g_get_user_config_dir(), "autostart", NULL);
     GDir* dir = g_dir_open(path, 0, NULL);
-    g_free(path);
+    if (dir == NULL)
+        return false;
 
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     char* name = get_desktop_file_basename(item);
@@ -603,6 +609,39 @@ gboolean launcher_is_autostart(Entry* _item)
 
     g_dir_close(dir);
     g_free(name);
+
+    return is_existing;
+}
+
+
+JS_EXPORT_API
+gboolean launcher_is_autostart(Entry* _item)
+{
+    if (config_paths == NULL) {
+        config_paths = g_ptr_array_new_with_free_func(g_free);
+        g_ptr_array_add(config_paths, g_build_filename(g_get_user_config_dir(),
+                                               "autostart", NULL));
+
+        char const* const* sys_paths = g_get_system_config_dirs();
+        for (int i = 0 ; sys_paths[i] != NULL; ++i) {
+            g_ptr_array_add(config_paths, g_build_filename(sys_paths[i],
+                                                           "autostart",
+                                                           NULL));
+        }
+
+        g_ptr_array_add(config_paths, NULL);
+    }
+
+
+    gboolean is_existing = false;
+
+    int i = 0;
+    char* path = NULL;
+    // NOTE: those are two assignment
+    while ((path = (char*)g_ptr_array_index(config_paths, i++)) != NULL
+           && !(is_existing = _check_autostart(path, _item))) {
+        // empty body
+    }
 
     return is_existing;
 }

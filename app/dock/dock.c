@@ -132,25 +132,40 @@ void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 
 gboolean is_compiz_plugin_valid()
 {
-    /* gboolean is_decorator_running = false; */
     gboolean is_compiz_running = false;
     gint screen_num = gdk_display_get_n_screens(gdk_display_get_default());
     char buf[128] = {0};
     Display* dpy = XOpenDisplay(NULL);
 
     for (int i = 0; i < screen_num; ++i) {
-        /* sprintf(buf, "_COMPIZ_DM_S%d", i); */
-        /* Atom dm_sn_atom = XInternAtom(dpy, buf, 0); */
-        /* Window current_dm_sn_owner = XGetSelectionOwner(dpy, dm_sn_atom); */
-        /* is_decorator_running = is_decorator_running || (None != current_dm_sn_owner); */
-
         sprintf(buf, "_NET_WM_CM_S%d", i);
         Atom cm_sn_atom = XInternAtom(dpy, buf, 0);
         Window current_cm_sn_owner = XGetSelectionOwner(dpy, cm_sn_atom);
         is_compiz_running = is_compiz_running || (None != current_cm_sn_owner);
     }
 
-    return is_compiz_running;// && is_decorator_running;
+    return is_compiz_running;
+}
+
+
+static
+void is_compiz_valid(GdkScreen* screen, gpointer data)
+{
+    if (!gdk_screen_is_composited(screen)) {
+        GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+                                                   GTK_MESSAGE_ERROR,
+                                                   GTK_BUTTONS_OK,
+                                                   "compiz is dead");
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_destroy(dialog);
+        exit(1);
+    }
+}
+
+void check_compiz_validity()
+{
+    g_signal_connect(G_OBJECT(gdk_screen_get_default()), "composited-changed",
+                     G_CALLBACK(is_compiz_valid), NULL);
 }
 
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
@@ -189,15 +204,7 @@ int main(int argc, char* argv[])
     init_i18n();
     gtk_init(&argc, &argv);
 
-    if (!is_compiz_plugin_valid()) {
-        GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
-                                                   GTK_MESSAGE_ERROR,
-                                                   GTK_BUTTONS_OK,
-                                                   _("Dock failed to start, because the plugin of compiz is not enabled"));
-        gtk_dialog_run(GTK_DIALOG(dialog));
-        gtk_widget_destroy(dialog);
-        return 2;
-    }
+    /* check_compiz_validity(); */
 
 #ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
@@ -268,6 +275,20 @@ void dock_emit_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
+        if (!is_compiz_plugin_valid()) {
+            gtk_widget_hide(container);
+            GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
+                                                       GTK_MESSAGE_ERROR,
+                                                       GTK_BUTTONS_OK,
+                                                       _("Dock failed to start"
+                                                         ", because the plugin"
+                                                         " of compiz is not "
+                                                         "enabled"));
+            gtk_dialog_run(GTK_DIALOG(dialog));
+            gtk_widget_destroy(dialog);
+            exit(2);
+        }
+
         inited = TRUE;
         init_config();
         init_launchers();

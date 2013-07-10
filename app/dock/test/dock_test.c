@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include "dock_test.h"
 
-int TEST_MAX_COUNT = 100000;
-/* int TEST_MAX_COUNT = 1000000; */
+/* int TEST_MAX_COUNT = 100000; */
+int TEST_MAX_COUNT = 1000000;
 /* int TEST_MAX_COUNT = 1000; */
 /* int TEST_MAX_COUNT = 1; */
 int TEST_MAX_MEMORY= RES_IN_MB(90);
@@ -34,10 +34,10 @@ void dock_test()
 {
     g_message("dock test start...");
     // TODO:
-    dock_test_hide();
+    /* dock_test_hide(); */
     /* dock_test_config(); */
     /* dock_test_dominant_color(); */
-    /* dock_test_handle_icon(); */
+    dock_test_handle_icon();
 
     // TODO: test build_app_info
     /* dock_test_launcher(); */

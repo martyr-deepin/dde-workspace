@@ -1,3 +1,4 @@
+pop_id = null
 hide_id = null
 class ClientGroup extends AppItem
     constructor: (@id, @icon, @app_id, @exec)->
@@ -31,7 +32,7 @@ class ClientGroup extends AppItem
             menu = build_menu([
                 [1, _("_New instance")],
                 [2, _("_Close")],
-                [3, _("Close _All")]
+                [3, _("Close _All"), @n_clients.length > 1]
                 [],
                 [4, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)],
             ])
@@ -237,3 +238,21 @@ class ClientGroup extends AppItem
         DCore.Dock.require_all_region()
         if @n_clients.length != 0
             Preview_show(@)
+
+    do_dragleave: (e) ->
+        super
+        clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
+
+    do_dragenter: (e) ->
+        e.preventDefault()
+        flag = e.dataTransfer.getData("text/plain")
+        if flag != "swap" and @n_clients.length == 1
+            pop_id = setTimeout(=>
+                @to_active_status(@leader)
+                pop_id = null
+            , 1000)
+        super
+
+    do_drop: (e) ->
+        super
+        clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
