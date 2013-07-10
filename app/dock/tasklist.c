@@ -41,6 +41,9 @@ extern Window get_dock_window();
 #include <math.h>
 #include <gio/gdesktopappinfo.h>
 
+#define RECORD_FILE "dock/record.ini"
+GKeyFile* record_file = NULL;
+
 static Atom ATOM_WINDOW_HIDDEN;
 PRIVATE Atom ATOM_CLIENT_LIST;
 static Atom ATOM_ACTIVE_WINDOW;
@@ -281,6 +284,13 @@ void _update_client_info(Client *c)
     json_append_string(json, "app_id", c->app_id);
     json_append_string(json, "exec", c->exec);
     g_assert(c->app_id != NULL);
+
+    if (record_file == NULL)
+        record_file = load_app_config(RECORD_FILE);
+
+    guint64 last_time = g_key_file_get_uint64(record_file, c->app_id, "StartNum", NULL);
+    g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
+    save_app_config(record_file, RECORD_FILE);
     js_post_message("task_updated", json);
 }
 
