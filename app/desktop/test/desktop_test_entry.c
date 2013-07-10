@@ -103,12 +103,12 @@ void tear_down_fixture()
     g_ptr_array_unref(gfileDocument);
     g_ptr_array_unref(gappinfo);
 
-    system("rm -rf test_files/");
-    system("rm -rf ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
-    system("rm -rf _ahdsgioahgaosidg_agioasdhgo/");
-    system("rm -rf \\(test_files\\)/");
-    system("rm -rf 0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
-    system("rm -rf \\&asdgasd/");
+    // system("rm -rf test_files/");
+    // system("rm -rf ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
+    // system("rm -rf _ahdsgioahgaosidg_agioasdhgo/");
+    // system("rm -rf \\(test_files\\)/");
+    // system("rm -rf 0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
+    // system("rm -rf \\&asdgasd/");
 }
 
 void func_test_entry_char(char* (*func)(Entry*),Entry* variable,char* value_return)
@@ -265,10 +265,11 @@ void test_entry()
 
 
     extern gboolean dentry_launch(Entry* e, const ArrayContainer fs);
-    // const ArrayContainer fs =  *(ArrayContainer*)gfileDirectory;
     // const ArrayContainer fs = {g_ptr_array_index(gfileDirectory,0),1};
+    // const ArrayContainer fs = _normalize_array_container(*(ArrayContainer*)gfileDirectory);
+    // const ArrayContainer fs =  *(ArrayContainer*)gfileDirectory;
     // gpointer* _gp = g_ptr_array_free(gfileDirectory,FALSE) ;
-    // gpointer* _gp = gfileDirectory.pdata;
+    // gpointer* _gp = gfileDirectory.data;
     
     gpointer* _gp = g_ptr_array_index(gfileDirectory,0);    
     const ArrayContainer fs = {_gp,1};
@@ -278,8 +279,8 @@ void test_entry()
             func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
             // 
         },"dentry_launch");
-    g_free(_gp);
-
+    g_object_unref(_gp);
+    //g_assert (G_IS_OBJECT(_gp));
 
     tear_down_fixture();
 }
