@@ -48,6 +48,7 @@ static ArrayContainer _normalize_array_container(ArrayContainer pfs);
 static gboolean _file_is_archive (GFile *file);
 static void _commandline_exec(const char *commandline, GList *list);
 
+
 #define TEST_GFILE(e, f) if (G_IS_FILE(e)) { \
     GFile* f = e;
 
@@ -246,12 +247,7 @@ char* dentry_get_icon(Entry* e)
         }
     TEST_END
 
-
-    if (ret != NULL) {
-        return ret;
-    } else {
-        return NULL;
-    }
+    return ret;
 }
 /*
  *      this differs dentry_get_icon:
@@ -276,12 +272,7 @@ char* dentry_get_icon_path(Entry* e)
         }
     TEST_END
 
-
-    if (ret != NULL) {
-        return ret;
-    } else {
-        return NULL; //g_strdup("not_found.png");
-    }
+    return ret;
 }
 JS_EXPORT_API
 gboolean dentry_can_thumbnail(Entry* e)
@@ -331,24 +322,18 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             GFile** files = NULL;
             if (fs.num != 0)
             {
-            g_message("GFileInfo isnt NULL");
-                //GLib-GObject-CRITICAL **: g_object_ref: assertion `G_IS_OBJECT (object)' failed
                 _fs = _normalize_array_container(fs);
                 GFile** files = _fs.data;
                 _file_arg = files[0];
             }
-                g_message("0234");
 
             launch_res = activate_file (f, content_type, is_executable, _file_arg);
 
             if (fs.num != 0)
             {
-                g_message("1234");
-                //GLib-GObject-CRITICAL **: g_object_unref: assertion `G_IS_OBJECT (object)' failed
                 for (size_t i=0; i<_fs.num; i++) {
                      g_object_unref(((GObject**)_fs.data)[i]);
                 }
-                g_message("5678");
                 g_free(_fs.data);
             }
 
@@ -360,8 +345,6 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             g_free(path);
             return TRUE;
         }
-        g_message("GFILE end\n");
-
         return launch_res;
     TEST_GAPP(e, app)
         ArrayContainer _fs = _normalize_array_container(fs);
@@ -381,12 +364,10 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             g_object_unref(((GObject**)_fs.data)[i]);
         }
         g_free(_fs.data);
-        g_message("GAPP end\n");
-
         return ret;
 
     TEST_END
-    return FALSE;
+     return FALSE;
 }
 
 
@@ -395,16 +376,17 @@ JS_EXPORT_API
 ArrayContainer dentry_list_files(GFile* f)
 {
     g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
-
     char* dir_path = g_file_get_path(f);
     GDir* dir = g_dir_open(dir_path, 0, NULL);
     const char* child_name = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
+
     for (int i=0; NULL != (child_name = g_dir_read_name(dir)); i++) {
         char* path = g_build_filename(dir_path, child_name, NULL);
         g_ptr_array_add(array, dentry_create_by_path(path));
         g_free(path);
     }
+
     g_dir_close(dir);
     g_free(dir_path);
 
@@ -825,7 +807,7 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
     }
 }
 
-
+JS_EXPORT_API
 void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -850,7 +832,7 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
     g_free(_fs.data);
 }
 
-
+JS_EXPORT_API
 void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -861,6 +843,7 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
     g_free(_fs.data);
 }
 
+JS_EXPORT_API
 void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -870,6 +853,7 @@ void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
     }
     g_free(_fs.data);
 }
+JS_EXPORT_API
 void dentry_trash(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -881,6 +865,7 @@ void dentry_trash(ArrayContainer fs)
 }
 
 
+JS_EXPORT_API
 void dentry_clipboard_copy(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -891,6 +876,7 @@ void dentry_clipboard_copy(ArrayContainer fs)
     g_free(_fs.data);
 }
 
+JS_EXPORT_API
 void dentry_clipboard_cut(ArrayContainer fs)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
@@ -901,6 +887,7 @@ void dentry_clipboard_cut(ArrayContainer fs)
     g_free(_fs.data);
 }
 
+JS_EXPORT_API
 void dentry_clipboard_paste(GFile* dest_dir)
 {
     fileops_paste (dest_dir);
@@ -912,6 +899,7 @@ gboolean dentry_can_paste ()
     return ! is_clipboard_empty();
 }
 
+JS_EXPORT_API
 void dentry_confirm_trash()
 {
     fileops_confirm_trash();
@@ -923,7 +911,17 @@ GFile* dentry_get_trash_entry()
     return fileops_get_trash_entry ();
 }
 
+JS_EXPORT_API
 double dentry_get_trash_count()
 {
     return fileops_get_trash_count ();
+}
+
+void ArrayContainer_free(ArrayContainer array)
+{
+    for(size_t i = 0 ; i < array.num ; i++)
+    {
+        g_object_unref(((GObject**)array.data)[i]);
+    }
+    g_free(array.data);
 }

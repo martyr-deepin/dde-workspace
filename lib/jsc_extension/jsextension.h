@@ -35,6 +35,8 @@ typedef struct _ArrayContainer {
     size_t num;
 } ArrayContainer;
 
+
+
 void init_js_extension(JSGlobalContextRef context, void* webview);
 void destroy_js_extension();
 
