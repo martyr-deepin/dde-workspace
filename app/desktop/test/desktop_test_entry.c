@@ -6,9 +6,9 @@ extern void func_test_entry_arraycontainer(gboolean (*func)(Entry*,const ArrayCo
 
 gboolean FLAG_PRITN_RESULT = TRUE;
 gboolean TEST_OK = FALSE;
-GPtrArray* gfileDirectory = NULL;
-GPtrArray* gfileDocument = NULL;
-GPtrArray* gappinfo= NULL;
+GPtrArray *gfileDirectory = NULL;
+GPtrArray *gfileDocument = NULL;
+GPtrArray *gappinfo= NULL;
 
 
 void setup_fixture()
@@ -58,10 +58,14 @@ void setup_fixture()
     system("cp /usr/share/applications/audacity.desktop test_files/");
     system("cp /usr/share/applications/brasero.desktop test_files/");
 
-    gfileDirectory = g_ptr_array_new();
-    gfileDocument = g_ptr_array_new();
-    gappinfo = g_ptr_array_new();
+    //gfileDirectory = g_ptr_array_new();
+    // gfileDocument = g_ptr_array_new();
+    // gappinfo = g_ptr_array_new();
+    gfileDirectory = g_ptr_array_new_with_free_func(g_object_unref);
+    gfileDocument = g_ptr_array_new_with_free_func(g_object_unref);
+    gappinfo = g_ptr_array_new_with_free_func(g_object_unref);
 
+    
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("test_files"));//0
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh"));//1
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("_ahdsgioahgaosidg_agioasdhgo"));//2
@@ -258,6 +262,7 @@ void test_entry()
             func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
         },"dentry_launch");
     g_object_unref(_gp);
+    ArrayContainer_free(fs);
     //g_assert (G_IS_OBJECT(_gp));
 
 
@@ -296,15 +301,46 @@ void test_entry()
     //void dentry_decompress_files(ArrayContainer fs);
     //void dentry_decompress_files_here(ArrayContainer fs);
 
-    #endif
 
     extern double dentry_get_mtime(Entry* e);
     double d = 0;
     Test({
-        d = dentry_get_mtime(g_ptr_array_index(gappinfo,0));
+        // d = dentry_get_mtime(g_ptr_array_index(gfileDirectory,0));
+        d = dentry_get_mtime(g_ptr_array_index(gfileDocument,0));
+        // d = dentry_get_mtime(g_ptr_array_index(gfileDocument,1));
+        // d = dentry_get_mtime(g_ptr_array_index(gappinfo,0));
     },"dentry_get_mtime");
     g_message("%f",d);
 
+    #endif
+
+    extern gboolean dentry_set_name(Entry* e, const char* name);
+    gboolean b = 0;
+    system("rm -rf test_name_1/");
+    b = dentry_set_name(g_ptr_array_index(gfileDirectory,0),"test_name_1");
+    Test({
+        GFile* f1 = dentry_create_by_path("test_name_1");
+        b = dentry_set_name(f1,"test_name_2");
+        GFile* f2 = dentry_create_by_path("test_name_2");
+        b = dentry_set_name(f2,"test_name_1");
+        g_object_unref(f1);
+        g_object_unref(f2);
+    },"dentry_set_name");
+    system("rm -rf test_name_1/");
+    g_message("%d",b);
+
+
+
+    extern gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
+    gboolean b = FALSE;
+    gpointer* _gp = g_ptr_array_index(gappinfo,1);    
+    const ArrayContainer fs = {&_gp,1};
+    Test({
+        b = dentry_move();
+    },"dentry_move");
+    g_message("%d",b);
+    g_object_unref(_gp);
+    ArrayContainer_free(fs);
 
     tear_down_fixture();
 }

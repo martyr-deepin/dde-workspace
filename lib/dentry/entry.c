@@ -745,6 +745,7 @@ static ArrayContainer _normalize_array_container(ArrayContainer pfs)
     return ret;
 }
 
+JS_EXPORT_API
 gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt)
 {
     gboolean retval = TRUE;
