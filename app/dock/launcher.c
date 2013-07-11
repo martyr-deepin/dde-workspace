@@ -95,7 +95,21 @@ JSValueRef build_app_info(const char* app_id)
             if (is_deepin_icon(icon_path)) {
                 json_append_string(json, "Icon", icon_path);
             } else {
-                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
+                GdkPixbuf* pixbuf = NULL;
+                int operator_code;
+                if (is_deepin_app_id(app_id) && (operator_code = \
+                    get_deepin_app_id_operator(app_id)) == \
+                    ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD) {
+                    pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
+                                                               BOARD_WIDTH,
+                                                               BOARD_HEIGHT,
+                                                               TRUE, NULL);
+                } else {
+                    pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
+                                                               IMG_WIDTH,
+                                                               IMG_HEIGHT,
+                                                               TRUE, NULL);
+                }
                 if (pixbuf == NULL) {
                     json_append_string(json, "Icon", NULL);
                 } else {

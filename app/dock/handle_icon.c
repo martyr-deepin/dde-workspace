@@ -16,8 +16,9 @@ cairo_surface_t* _board_mask = NULL;
 
 char* handle_icon(GdkPixbuf* icon)
 {
-    int left_offset = (IMG_WIDTH - gdk_pixbuf_get_width(icon)) / 2;
-    int top_offset = (IMG_HEIGHT - gdk_pixbuf_get_height(icon)) / 2;
+    gboolean use_board = (gdk_pixbuf_get_width(icon) == IMG_WIDTH);
+    int left_offset = 0;
+    int top_offset = 0;
 
     if (_board== NULL) {
         _board = cairo_image_surface_create_from_png(BOARD_PATH);
@@ -25,21 +26,33 @@ char* handle_icon(GdkPixbuf* icon)
     }
     g_assert(_board_mask != NULL);
 
-    double r, g, b;
-    calc_dominant_color_by_pixbuf(icon, &r, &g, &b);
-
-    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, BOARD_WIDTH, BOARD_HEIGHT);
+    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                                          BOARD_WIDTH,
+                                                          BOARD_HEIGHT);
     cairo_t* cr  = cairo_create(surface);
 
-    cairo_set_source_rgb(cr, r, g, b);
-    cairo_mask_surface(cr, _board_mask, 0, BOARD_OFFSET);
-    /*cairo_paint(cr);*/
+    if (use_board) {
+        double r, g, b;
+        calc_dominant_color_by_pixbuf(icon, &r, &g, &b);
+        cairo_set_source_rgb(cr, r, g, b);
+        cairo_mask_surface(cr, _board_mask, 0, BOARD_OFFSET);
+        /*cairo_paint(cr);*/
 
-    gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT + left_offset, MARGIN_TOP-1 + top_offset);
+        left_offset = (IMG_WIDTH - gdk_pixbuf_get_width(icon)) / 2;
+        top_offset = (IMG_HEIGHT - gdk_pixbuf_get_height(icon)) / 2;
+
+        gdk_cairo_set_source_pixbuf(cr, icon, MARGIN_LEFT + left_offset,
+                                    MARGIN_TOP-1 + top_offset);
+    } else {
+        gdk_cairo_set_source_pixbuf(cr, icon, left_offset, top_offset);
+    }
+
     cairo_paint(cr);
 
-    cairo_set_source_surface(cr, _board, 0, BOARD_OFFSET);
-    cairo_paint(cr);
+    if (use_board) {
+        cairo_set_source_surface(cr, _board, 0, BOARD_OFFSET);
+        cairo_paint(cr);
+    }
 
     char* data = get_data_uri_by_surface(surface);
 
@@ -88,7 +101,13 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
     if (is_deepin_app_id(app_id)) {
         g_debug("\"%s\" is deepin app id", app_id);
         *operator_code = get_deepin_app_id_operator(app_id);
-        const char* operator_names[] = {"USE_ICONNAME", "USE_RUNTIME", "USE_PATH", "USE_DOMINANTCOLOR"};
+        const char* operator_names[] = {
+            "USE_ICONNAME",
+            "USE_RUNTIME_WITH_BOARD",
+            "USE_RUNTIME_WITHOUT_BOARD",
+            "USE_PATH",
+            "USE_DOMINANTCOLOR"
+        };
         g_debug("operator code is %s", operator_names[*operator_code]);
         switch (*operator_code) {
             case ICON_OPERATOR_USE_ICONNAME:
@@ -100,7 +119,11 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
                     *icon = icon_path;
                     break;
                 }
-            case ICON_OPERATOR_USE_RUNTIME:
+            case ICON_OPERATOR_USE_RUNTIME_WITH_BOARD:
+                g_free(app_id);
+                *icon = NULL;
+                break;
+            case ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD:
                 g_free(app_id);
                 *icon = NULL;
                 break;
