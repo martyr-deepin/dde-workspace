@@ -312,7 +312,6 @@ void test_entry()
     },"dentry_get_mtime");
     g_message("%f",d);
 
-    #endif
 
     extern gboolean dentry_set_name(Entry* e, const char* name);
     gboolean b = 0;
@@ -329,18 +328,47 @@ void test_entry()
     system("rm -rf test_name_1/");
     g_message("%d",b);
 
+    #endif
 
 
     extern gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
+    extern void dentry_trash(ArrayContainer fs);
     gboolean b = FALSE;
-    gpointer* _gp = g_ptr_array_index(gappinfo,1);    
-    const ArrayContainer fs = {&_gp,1};
+    gpointer* _gp = g_ptr_array_index(gappinfo,0);    
+    ArrayContainer fs = {&_gp,1};
+    g_message("1");
+    GFile* dest = g_file_new_for_uri("file:///home/ycl");
     Test({
-        b = dentry_move();
+    g_message("2");
+
+        b = dentry_move(fs,dest,FALSE);        
+
+    g_message("copy start");
+        GFile* _dest1 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/");
+        GFile* _src1 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+        ArrayContainer _fs1;
+        _fs1.data=&_src1;
+        _fs1.num = 1;
+        dentry_copy(_fs1,_dest1);
+        g_object_unref(_dest1);
+        ArrayContainer_free(_fs1);
+    g_message("copy end");
+
+        GFile* _dest = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+        ArrayContainer _fs;
+        _fs.data=&_dest;
+        _fs.num = 1;
+        dentry_trash(_fs);
+        ArrayContainer_free(_fs);
+    g_message("trash start");
+
     },"dentry_move");
-    g_message("%d",b);
-    g_object_unref(_gp);
+    g_message("3");
+
+    g_message("dentry_move return:");
+    g_message_boolean(b);
     ArrayContainer_free(fs);
+    g_object_unref(dest);
 
     tear_down_fixture();
 }

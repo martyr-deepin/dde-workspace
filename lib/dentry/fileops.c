@@ -245,15 +245,15 @@ fileops_trash (GFile* file_list[], guint num)
     int i;
     for (i = 0; i < num; i++)
     {
-	GFile* src = file_list[i];
-#if 1
-	char* src_uri = g_file_get_uri (src);
-	g_debug ("fileops_trash: file %d: %s", i, src_uri);
-	g_free (src_uri);
-#endif
+    	GFile* src = file_list[i];
+    #if 1
+    	char* src_uri = g_file_get_uri (src);
+    	g_debug ("fileops_trash: file %d: %s", i, src_uri);
+    	g_free (src_uri);
+    #endif
 
-	_trash_files_async (src, data);
-	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
+    	_trash_files_async (src, data);
+    	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
     }
     g_object_unref (data->cancellable);
     g_free (data);
@@ -278,6 +278,8 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
+    g_message ("fileops_move: Begin moving files");
+
 
     GCancellable* move_cancellable = g_cancellable_new ();
     TDData* data = g_malloc0 (sizeof (TDData));
@@ -286,42 +288,50 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
     int i;
     for (i = 0; i < num; i++)
     {
-	GFile* src = file_list[i];
-#if 1
-	char* src_uri = g_file_get_uri (src);
-	char* dest_dir_uri = g_file_get_uri (dest_dir);
-	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
-	g_free (src_uri);
-	g_free (dest_dir_uri);
-#endif
-	//make sure dest_dir is a directory before proceeding.
-	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
-	if (type != G_FILE_TYPE_DIRECTORY)
-	{
-	    //TODO: symbolic links
-	    g_debug ("dest type is not directory");
-	    return FALSE;
-	}
-	char* src_basename= g_file_get_basename (src);
-	GFile* move_dest_file = g_file_get_child (dest_dir, src_basename);
-	g_free (src_basename);
+    	GFile* src = file_list[i];
+    #if 1
+    	char* src_uri = g_file_get_uri (src);
+    	char* dest_dir_uri = g_file_get_uri (dest_dir);
+    	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
+        g_message ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
 
-	data->dest_file = move_dest_file;
+    	g_free (src_uri);
+    	g_free (dest_dir_uri);
+    #endif
+    	//make sure dest_dir is a directory before proceeding.
+    	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        g_message("GFileType=%d",type);
+    	if (type != G_FILE_TYPE_DIRECTORY)
+    	{
+    	    //TODO: symbolic links
+    	    g_debug ("dest type is not directory");
+            g_message ("dest type is not directory");
 
-	//retval &= _move_files_async (src, data);
-	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
-        retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
-	if (retval)
-		fileops_delete (&src, 1);//ensure original file is removed.
+    	    return FALSE;
+    	}
+    	char* src_basename= g_file_get_basename (src);
+    	GFile* move_dest_file = g_file_get_child (dest_dir, src_basename);
+    	g_free (src_basename);
 
-	g_object_unref (move_dest_file);
+    	data->dest_file = move_dest_file;
+
+    	//retval &= _move_files_async (src, data);
+    	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
+            retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
+    	if (retval)
+    		fileops_delete (&src, 1);//ensure original file is removed.
+
+    	g_object_unref (move_dest_file);
     }
     g_object_unref (data->cancellable);
     g_free (data);
 
     fileops_response_free (g_move_response);
     g_debug ("fileops_move: End moving files");
+    g_message ("fileops_move: End moving files");
 
+    g_message("retval=");
+    g_message_boolean(retval);
     return retval;
 }
 /*
@@ -458,9 +468,9 @@ _trash_files_async (GFile* file, gpointer data)
 
     if (error != NULL)
     {
-	g_cancellable_cancel (_trash_cancellable);
-	g_warning ("_trash_files_async: %s", error->message);
-	g_error_free (error);
+    	g_cancellable_cancel (_trash_cancellable);
+    	g_warning ("_trash_files_async: %s", error->message);
+    	g_error_free (error);
     }
 #if 1
     char* file_uri = g_file_get_uri (file);

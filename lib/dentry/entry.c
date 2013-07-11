@@ -926,3 +926,8 @@ void ArrayContainer_free(ArrayContainer array)
     }
     g_free(array.data);
 }
+
+void g_message_boolean(gboolean b)
+{
+    (b == TRUE)?(g_message("TRUE")):(g_message("FALSE"));
+}
