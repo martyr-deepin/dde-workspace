@@ -267,13 +267,10 @@ body {
     border:1px solid rgba(0,0,0,0);
     position: absolute;
 }
-.DesktopPluginItem .PluginOutbox {
-    display:table-cell;
-    text-align:center;
-    vertical-align:middle;
-}
-.DesktopPluginItem .PluginOutbox .PluginContainer{
-    display:inline-block;
+.DesktopPluginItem .PluginContainer{
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
 }
 .plugin_close{
     width: 25.2px;

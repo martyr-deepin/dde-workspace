@@ -84,8 +84,7 @@ class DesktopPluginItem extends Widget
         attach_item_to_grid(@)
         @handle = new PluginHandle(@id)
         @element.appendChild(@handle.element)
-        @container_outbox = create_element("div", "PluginOutbox", @element)
-        @container = create_element("div", "PluginContainer", @container_outbox)
+        @container = create_element("div", "PluginContainer", @element)
 
 
     get_id : =>
@@ -121,8 +120,8 @@ class DesktopPluginItem extends Widget
         @element.style.width = "#{real_width}px"
         @element.style.height = "#{real_height}px"
         real_height = real_height - @handle.element.offsetHeight
-        @container_outbox.style.width = "#{real_width}px"
-        @container_outbox.style.height = "#{real_height}px"
+        @container.style.width = "#{real_width}px"
+        @container.style.height = "#{real_height}px"
         return
 
 

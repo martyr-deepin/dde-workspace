@@ -41,6 +41,9 @@ extern Window get_dock_window();
 #include <math.h>
 #include <gio/gdesktopappinfo.h>
 
+#define RECORD_FILE "dock/record.ini"
+GKeyFile* record_file = NULL;
+
 static Atom ATOM_WINDOW_HIDDEN;
 PRIVATE Atom ATOM_CLIENT_LIST;
 static Atom ATOM_ACTIVE_WINDOW;
@@ -104,6 +107,7 @@ typedef struct {
     gboolean is_overlay_dock;
     gboolean is_hidden;
     gboolean is_maximize;
+    gboolean use_board;
     gulong cross_workspace_num;
     Workspace workspace[4];
 
@@ -184,7 +188,18 @@ gboolean _get_launcher_icon(Client* c)
             if (is_deepin_icon(icon_path)) {
                 c->icon = icon_path;
             } else {
-                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path, IMG_WIDTH, IMG_HEIGHT, TRUE, NULL);
+                GdkPixbuf* pixbuf = NULL;
+                if (c->use_board) {
+                    pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
+                                                               IMG_WIDTH,
+                                                               IMG_HEIGHT,
+                                                               TRUE, NULL);
+                } else {
+                    pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
+                                                               BOARD_WIDTH,
+                                                               BOARD_HEIGHT,
+                                                               TRUE, NULL);
+                }
                 g_free(icon_path);
                 if (pixbuf == NULL) {
                     c->icon = NULL;
@@ -220,6 +235,7 @@ Client* create_client_from_window(Window w)
     c->app_id = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
+    c->use_board = TRUE;
     // initialize workspace
     _update_window_viewport(c);
 
@@ -238,6 +254,8 @@ Client* create_client_from_window(Window w)
     c->need_update_icon = FALSE;
     int operator_code = 0;
     try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
+    if (operator_code == ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD)
+        c->use_board = FALSE;
 
     if (c->icon == NULL) {
         g_debug("try get deepin icon failed");
@@ -266,6 +284,13 @@ void _update_client_info(Client *c)
     json_append_string(json, "app_id", c->app_id);
     json_append_string(json, "exec", c->exec);
     g_assert(c->app_id != NULL);
+
+    if (record_file == NULL)
+        record_file = load_app_config(RECORD_FILE);
+
+    guint64 last_time = g_key_file_get_uint64(record_file, c->app_id, "StartNum", NULL);
+    g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
+    save_app_config(record_file, RECORD_FILE);
     js_post_message("task_updated", json);
 }
 
@@ -515,12 +540,19 @@ void _update_window_icon(Client* c)
 
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
-    GdkPixbuf* tmp = gdk_pixbuf_scale_simple(pixbuf, IMG_WIDTH, IMG_HEIGHT, GDK_INTERP_HYPER);
+    GdkPixbuf* tmp = NULL;
+    if (c->use_board) {
+        tmp = gdk_pixbuf_scale_simple(pixbuf, IMG_WIDTH, IMG_HEIGHT,
+                                      GDK_INTERP_HYPER);
+    } else {
+        tmp = gdk_pixbuf_scale_simple(pixbuf, BOARD_WIDTH, BOARD_HEIGHT,
+                                      GDK_INTERP_HYPER);
+    }
+
     g_object_unref(pixbuf);
     pixbuf= tmp;
 
 
-    char* handle_icon(GdkPixbuf* icon);
     g_free(c->icon);
     c->icon = handle_icon(pixbuf);
     g_object_unref(pixbuf);
