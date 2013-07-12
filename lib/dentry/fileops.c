@@ -278,8 +278,6 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
     gboolean retval = TRUE;
     g_debug ("fileops_move: Begin moving files");
-    g_message ("fileops_move: Begin moving files");
-
 
     GCancellable* move_cancellable = g_cancellable_new ();
     TDData* data = g_malloc0 (sizeof (TDData));
@@ -293,19 +291,16 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
     	char* src_uri = g_file_get_uri (src);
     	char* dest_dir_uri = g_file_get_uri (dest_dir);
     	g_debug ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
-        g_message ("fileops_move: file %d: %s to dest: %s", i, src_uri, dest_dir_uri);
 
     	g_free (src_uri);
     	g_free (dest_dir_uri);
     #endif
     	//make sure dest_dir is a directory before proceeding.
     	GFileType type = g_file_query_file_type (dest_dir, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
-        g_message("GFileType=%d",type);
     	if (type != G_FILE_TYPE_DIRECTORY)
     	{
     	    //TODO: symbolic links
     	    g_debug ("dest type is not directory");
-            g_message ("dest type is not directory");
 
     	    return FALSE;
     	}
@@ -328,10 +323,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
 
     fileops_response_free (g_move_response);
     g_debug ("fileops_move: End moving files");
-    g_message ("fileops_move: End moving files");
 
-    g_message("retval=");
-    g_message_boolean(retval);
     return retval;
 }
 /*

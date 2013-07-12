@@ -256,13 +256,13 @@ void test_entry()
     // gpointer* _gp = g_ptr_array_index(gfileDirectory,1);
     // gpointer* _gp = g_ptr_array_index(gappinfo,0);    
     // gpointer* _gp = g_ptr_array_index(gappinfo,1);    
-    gpointer* _gp = g_ptr_array_index(gappinfo,3);    
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,3));    
     const ArrayContainer fs = {&_gp,1};
     Test({
             func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
         },"dentry_launch");
     g_object_unref(_gp);
-    ArrayContainer_free(fs);
+    ArrayContainer_free0(fs);
     //g_assert (G_IS_OBJECT(_gp));
 
 
@@ -330,45 +330,131 @@ void test_entry()
 
     #endif
 
-
     extern gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
+    extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_trash(ArrayContainer fs);
-    gboolean b = FALSE;
-    gpointer* _gp = g_ptr_array_index(gappinfo,0);    
+    extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
+
+//     gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));    
+//     ArrayContainer fs = {&_gp,1};
+//     GFile* dest = g_file_new_for_uri("file:///home/ycl");
+
+//     Test({
+//     g_message("move start");
+//         dentry_move(fs,dest,FALSE);        
+//     g_message("move end");
+
+
+//     g_message("0copy start");
+//         GFile* _dest0 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/");
+//         GFile* _src0 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         ArrayContainer _fs0;
+//         _fs0.data=&_src0;
+//         _fs0.num = 1;
+//         dentry_copy(_fs0,_dest0);
+//         g_object_unref(_dest0);
+//         ArrayContainer_free0(_fs0);
+//     g_message("0copy end");
+
+// #if(0)
+
+//     g_message("1trash start");
+//         GFile* _src1 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         ArrayContainer _fs1;
+//         _fs1.data=&_src1;
+//         _fs1.num = 1;
+//         dentry_trash(_fs1);
+//         ArrayContainer_free0(_fs1);
+//     g_message("1trash end");
+
+
+
+//     g_message("2copy start");
+//         GFile* _src2 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/skype.desktop");
+//         GFile* _dest2 = g_file_new_for_uri("file:///home/ycl/");
+//         ArrayContainer _fs2;
+//         _fs2.data=&_src2;
+//         _fs2.num = 1;
+//         dentry_copy(_fs2,_dest2);
+//         g_object_unref(_dest2);
+//         ArrayContainer_free0(_fs2);
+//     g_message("2copy end");
+
+//     g_message("3delete start");
+//         GFile* _src3 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         ArrayContainer _fs3;
+//         _fs3.data=&_src3;
+//         _fs3.num = 1;
+//         dentry_delete_files(_fs3,FALSE);
+//         ArrayContainer_free0(_fs3);
+//     g_message("3delete end");
+// #endif
+
+//     },"dentry_move");
+//     ArrayContainer_free0(fs);
+//     g_object_unref(dest);
+    
+
+
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));    
     ArrayContainer fs = {&_gp,1};
-    g_message("1");
     GFile* dest = g_file_new_for_uri("file:///home/ycl");
+
     Test({
-    g_message("2");
+    g_message("move start");
+        dentry_move(fs,dest,FALSE);        
+    g_message("move end");
 
-        b = dentry_move(fs,dest,FALSE);        
 
-    g_message("copy start");
-        GFile* _dest1 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/");
-        GFile* _src1 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+    g_message("0copy start");
+        GFile* _dest0 = g_file_new_for_uri("file:///home/ycl/dde/build/");
+        GFile* _src0 = g_file_new_for_uri("file:///home/ycl/test_files");
+        ArrayContainer _fs0;
+        _fs0.data=&_src0;
+        _fs0.num = 1;
+        dentry_copy(_fs0,_dest0);
+        g_object_unref(_dest0);
+        ArrayContainer_free0(_fs0);
+    g_message("0copy end");
+
+
+    g_message("1trash start");
+        GFile* _src1 = g_file_new_for_uri("file:///home/ycl/test_files");
         ArrayContainer _fs1;
         _fs1.data=&_src1;
         _fs1.num = 1;
-        dentry_copy(_fs1,_dest1);
-        g_object_unref(_dest1);
-        ArrayContainer_free(_fs1);
-    g_message("copy end");
+        dentry_trash(_fs1);
+        ArrayContainer_free0(_fs1);
+    g_message("1trash end");
 
-        GFile* _dest = g_file_new_for_uri("file:///home/ycl/skype.desktop");
-        ArrayContainer _fs;
-        _fs.data=&_dest;
-        _fs.num = 1;
-        dentry_trash(_fs);
-        ArrayContainer_free(_fs);
-    g_message("trash start");
+
+    g_message("2copy start");
+        GFile* _src2 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files");
+        GFile* _dest2 = g_file_new_for_uri("file:///home/ycl/");
+        ArrayContainer _fs2;
+        _fs2.data=&_src2;
+        _fs2.num = 1;
+        dentry_copy(_fs2,_dest2);
+        g_object_unref(_dest2);
+        ArrayContainer_free0(_fs2);
+    g_message("2copy end");
+
+
+    g_message("3delete start");
+        GFile* _src3 = g_file_new_for_uri("file:///home/ycl/test_files");
+        ArrayContainer _fs3;
+        _fs3.data=&_src3;
+        _fs3.num = 1;
+        dentry_delete_files(_fs3,FALSE);
+        ArrayContainer_free0(_fs3);
+    g_message("3delete end");
+#if(0)
+#endif
 
     },"dentry_move");
-    g_message("3");
-
-    g_message("dentry_move return:");
-    g_message_boolean(b);
-    ArrayContainer_free(fs);
+    ArrayContainer_free0(fs);
     g_object_unref(dest);
+
 
     tear_down_fixture();
 }

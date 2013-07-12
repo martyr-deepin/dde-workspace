@@ -918,6 +918,13 @@ double dentry_get_trash_count()
     return fileops_get_trash_count ();
 }
 
+void ArrayContainer_free0(ArrayContainer array)
+{
+    for(size_t i = 0 ; i < array.num ; i++)
+    {
+        g_object_unref(((GObject**)array.data)[i]);
+    }
+}
 void ArrayContainer_free(ArrayContainer array)
 {
     for(size_t i = 0 ; i < array.num ; i++)
@@ -926,7 +933,6 @@ void ArrayContainer_free(ArrayContainer array)
     }
     g_free(array.data);
 }
-
 void g_message_boolean(gboolean b)
 {
     (b == TRUE)?(g_message("TRUE")):(g_message("FALSE"));
