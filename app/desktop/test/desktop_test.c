@@ -1,7 +1,7 @@
 #ifdef __DUI_DEBUG
 #include "desktop_test.h"
 
-int TEST_MAX_COUNT = 1000;
+int TEST_MAX_COUNT = 10000;
 int TEST_MAX_MEMORY = RES_IN_MB(90);
 
 extern void test_entry();

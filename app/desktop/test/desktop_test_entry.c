@@ -427,7 +427,7 @@ void test_entry()
         ArrayContainer_free0(_fs1);
     g_message("1trash end");
 
-
+#if(0)
     g_message("2copy start");
         GFile* _src2 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files");
         GFile* _dest2 = g_file_new_for_uri("file:///home/ycl/");
@@ -439,7 +439,6 @@ void test_entry()
         ArrayContainer_free0(_fs2);
     g_message("2copy end");
 
-
     g_message("3delete start");
         GFile* _src3 = g_file_new_for_uri("file:///home/ycl/test_files");
         ArrayContainer _fs3;
@@ -448,9 +447,7 @@ void test_entry()
         dentry_delete_files(_fs3,FALSE);
         ArrayContainer_free0(_fs3);
     g_message("3delete end");
-#if(0)
 #endif
-
     },"dentry_move");
     ArrayContainer_free0(fs);
     g_object_unref(dest);
