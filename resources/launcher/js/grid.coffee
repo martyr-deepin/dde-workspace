@@ -32,6 +32,7 @@ catch error
     s_dock = null
 
 class Item extends Widget
+    @theme_icon: null
     display_temp: false
     constructor: (@id, @core)->
         super
@@ -60,6 +61,10 @@ class Item extends Widget
         try_set_title(@element, DCore.DEntry.get_name(@core), 80)
         @display_mode = 'display'
         @is_autostart = DCore.Launcher.is_autostart(@core)
+        if @is_autostart
+            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+                AUTOSTART_ICON_SIZE)
+            create_img("autostart_flag", Item.theme_icon, @element)
 
     do_click : (e)=>
         e?.stopPropagation()
@@ -143,10 +148,14 @@ class Item extends Widget
     add_to_autostart: ->
         @is_autostart = true
         DCore.Launcher.add_to_autostart(@core)
+        Item.theme_icon ?= DCore.DEntry.get_theme_icon(AUTOSTART_ICON_NAME,
+            AUTOSTART_ICON_SIZE)
+        create_img("autostart_flag", Item.theme_icon, @element)
 
     remove_from_autostart: ->
         @is_autostart = false
         DCore.Launcher.remove_from_autostart(@core)
+        @element.removeChild(@element.lastChild)
 
     toggle_autostart: ->
         if @is_autostart

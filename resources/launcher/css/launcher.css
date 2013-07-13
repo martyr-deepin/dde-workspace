@@ -134,6 +134,7 @@ body {
 }
 
 .item {
+    position: relative;
     margin: 10px;
     cursor: default;
     float: left;
@@ -232,4 +233,10 @@ body {
 
 .hide_icon img {
     opacity: 0.3;
+}
+
+.autostart_flag {
+    position: absolute;
+    top: 40px;
+    left: 57px;
 }

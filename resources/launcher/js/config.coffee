@@ -36,3 +36,6 @@ HIDE_ICON_CLASS = 'hide_icon'
 
 STARTUP_ICON = _("_Add to autostart")
 NOT_STARTUP_ICON = _("_Remove from autostart")
+
+AUTOSTART_ICON_NAME = "emblem-autostart"
+AUTOSTART_ICON_SIZE = 16
