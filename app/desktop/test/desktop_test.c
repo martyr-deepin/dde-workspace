@@ -21,7 +21,6 @@ void desktop_test()
 
     test_entry();
 
-
     /* test inotify successful.*/
     //test_inotify();
 
@@ -36,6 +35,8 @@ void desktop_test()
     /* test_utils(); */
 
     //test_other();
+    //
+    
     g_message("desktop tests All passed!!!");
 }
 
