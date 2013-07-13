@@ -253,7 +253,7 @@ fileops_trash (GFile* file_list[], guint num)
     #endif
 
     	_trash_files_async (src, data);
-    	//traverse_directory (dir, _dummy_func, _trash_files_async, NULL);
+    	// traverse_dirsectory (src, _dummy_func, _trash_files_async, data);
     }
     g_object_unref (data->cancellable);
     g_free (data);
@@ -456,13 +456,14 @@ _trash_files_async (GFile* file, gpointer data)
     GCancellable* _trash_cancellable = NULL;
 
     _trash_cancellable = _data->cancellable;
-    g_file_trash (file, _trash_cancellable, &error);
-
+    g_file_trash (file, _trash_cancellable, &error);//By test this function , ensure that the GLIB function-org g_file_trash has bug in too times to trash
+    
     if (error != NULL)
     {
     	g_cancellable_cancel (_trash_cancellable);
     	g_warning ("_trash_files_async: %s", error->message);
     	g_error_free (error);
+        g_cancellable_reset (_trash_cancellable);
     }
 #if 1
     char* file_uri = g_file_get_uri (file);
