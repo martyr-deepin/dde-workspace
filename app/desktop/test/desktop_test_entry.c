@@ -10,53 +10,54 @@ GPtrArray *gfileDirectory = NULL;
 GPtrArray *gfileDocument = NULL;
 GPtrArray *gappinfo= NULL;
 
+#define CURRENT_DIR NULL
 
 void setup_fixture()
 {
     // g_mkdir("test_files");
     // g_creat("test_files/test.c");
     
-    system("rm -rf test_files/");
-    system("rm -rf ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
-    system("rm -rf _ahdsgioahgaosidg_agioasdhgo/");
-    system("rm -rf \\(test_files\\)/");
-    system("rm -rf 0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
-    system("rm -rf \\&asdgasd/");
+    system("rm -rf /tmp/test_files/");
+    system("rm -rf /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
+    system("rm -rf /tmp/_ahdsgioahgaosidg_agioasdhgo/");
+    system("rm -rf /tmp/\\(test_files\\)/");
+    system("rm -rf /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
+    system("rm -rf /tmp/\\&asdgasd/");
 
 
-    system("mkdir test_files");
-    system("mkdir ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
-    system("mkdir _ahdsgioahgaosidg_agioasdhgo");
-    system("mkdir \\(test_files\\)");
-    system("mkdir 0ashdgioasdhgo_asdhgio\\&asjdgioadsjg");
-    system("mkdir \\&asdgasd");
+    system("mkdir /tmp/test_files");
+    system("mkdir /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
+    system("mkdir /tmp/_ahdsgioahgaosidg_agioasdhgo");
+    system("mkdir /tmp/\\(test_files\\)");
+    system("mkdir /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg");
+    system("mkdir /tmp/\\&asdgasd");
 
 
-    system("cp /usr/share/backgrounds/default_background.jpg test_files/");
-    system("touch test_files/test.desktop");
-    system("touch test_files/test");
-    system("touch test_files/test.coffee");
-    system("touch test_files/test.cpp");
-    system("touch test_files/test.css");
-    system("touch test_files/test.exe");
-    system("touch test_files/test.h");
-    system("touch test_files/test.html");
-    system("touch test_files/test.js");
-    system("touch test_files/test.m");
-    system("touch test_files/test.test");
-    system("touch test_files/test.c");
-    system("touch test_files/test.txt");
-    system("touch test_files/test.wpt");
-    system("touch test_files/test.xls");
-    system("touch test_files/test.ppt");
-    system("touch test_files/test.doc");
+    system("cp /usr/share/backgrounds/default_background.jpg /tmp/test_files/");
+    system("touch /tmp/test_files/test.desktop");
+    system("touch /tmp/test_files/test");
+    system("touch /tmp/test_files/test.coffee");
+    system("touch /tmp/test_files/test.cpp");
+    system("touch /tmp/test_files/test.css");
+    system("touch /tmp/test_files/test.exe");
+    system("touch /tmp/test_files/test.h");
+    system("touch /tmp/test_files/test.html");
+    system("touch /tmp/test_files/test.js");
+    system("touch /tmp/test_files/test.m");
+    system("touch /tmp/test_files/test.test");
+    system("touch /tmp/test_files/test.c");
+    system("touch /tmp/test_files/test.txt");
+    system("touch /tmp/test_files/test.wpt");
+    system("touch /tmp/test_files/test.xls");
+    system("touch /tmp/test_files/test.ppt");
+    system("touch /tmp/test_files/test.doc");
 
-    system("cp /usr/share/applications/skype.desktop test_files/");
-    system("cp /usr/share/applications/deepin-desktop.desktop test_files/");
-    system("cp /usr/share/applications/deepin-media-player.desktop test_files/");
-    system("cp /usr/share/applications/deepin-system-settings.desktop test_files/");
-    system("cp /usr/share/applications/audacity.desktop test_files/");
-    system("cp /usr/share/applications/brasero.desktop test_files/");
+    system("cp /usr/share/applications/skype.desktop /tmp/test_files/");
+    system("cp /usr/share/applications/deepin-desktop.desktop /tmp/test_files/");
+    system("cp /usr/share/applications/deepin-media-player.desktop /tmp/test_files/");
+    system("cp /usr/share/applications/deepin-system-settings.desktop /tmp/test_files/");
+    system("cp /usr/share/applications/audacity.desktop /tmp/test_files/");
+    system("cp /usr/share/applications/brasero.desktop /tmp/test_files/");
 
     //gfileDirectory = g_ptr_array_new();
     // gfileDocument = g_ptr_array_new();
@@ -66,40 +67,40 @@ void setup_fixture()
     gappinfo = g_ptr_array_new_with_free_func(g_object_unref);
 
     
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("test_files"));//0
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh"));//1
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("_ahdsgioahgaosidg_agioasdhgo"));//2
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("(test_files)"));//3
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("0ashdgioasdhgo_asdhgio&asjdgioadsjg"));//4
-    g_ptr_array_add(gfileDirectory, g_file_new_for_path("&asdgasd"));//5
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/test_files"));//0
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh"));//1
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/_ahdsgioahgaosidg_agioasdhgo"));//2
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/(test_files)"));//3
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/0ashdgioasdhgo_asdhgio&asjdgioadsjg"));//4
+    g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/&asdgasd"));//5
 
 
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/default_background.jpg"));//0
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/skype.desktop"));//1
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text"));//2
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.coffee"));//3
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.cpp"));//4
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.css"));//5
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.exe"));//6
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.h"));//7
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.html"));//8
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.js"));//9
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.m"));//10
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.test"));//11
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.c"));//13
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.txt"));//14
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.wpt"));//15
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.xls"));//16
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.ppt"));//17
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/text.doc"));//18
-    g_ptr_array_add(gfileDocument, g_file_new_for_path("test_files/deepin-system-settings.desktop"));//19
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/default_background.jpg"));//0
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/skype.desktop"));//1
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text"));//2
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.coffee"));//3
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.cpp"));//4
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.css"));//5
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.exe"));//6
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.h"));//7
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.html"));//8
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.js"));//9
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.m"));//10
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.test"));//11
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.c"));//13
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.txt"));//14
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.wpt"));//15
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.xls"));//16
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.ppt"));//17
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/text.doc"));//18
+    g_ptr_array_add(gfileDocument, g_file_new_for_path("/tmp/test_files/deepin-system-settings.desktop"));//19
 
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/skype.desktop"));//0
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/deepin-desktop.desktop"));//1
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/deepin-media-player.desktop"));//2
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/deepin-system-settings.desktop"));//3
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/audacity.desktop"));//4
-    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("test_files/brasero.desktop"));//5
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/skype.desktop"));//0
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/deepin-desktop.desktop"));//1
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/deepin-media-player.desktop"));//2
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/deepin-system-settings.desktop"));//3
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/audacity.desktop"));//4
+    g_ptr_array_add(gappinfo, g_desktop_app_info_new_from_filename("/tmp/test_files/brasero.desktop"));//5
 
 }
 
@@ -189,12 +190,12 @@ void test_entry()
 
     extern char* dentry_get_uri(Entry* e);
     Test({
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,0),"file:///home/ycl/dde/build/test_files");
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,1),"file:///home/ycl/dde/build/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,2),"file:///home/ycl/dde/build/_ahdsgioahgaosidg_agioasdhgo");
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,3),"file:///home/ycl/dde/build/%28test_files%29");
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,4),"file:///home/ycl/dde/build/0ashdgioasdhgo_asdhgio%26asjdgioadsjg");
-        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDocument,0), "file:///home/ycl/test_files/default_background.jpg");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,0),"file:///tmp/test_files");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,1),"file:///tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,2),"file:///tmp/_ahdsgioahgaosidg_agioasdhgo");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,3),"file:///tmp/%28test_files%29");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,4),"file:///tmp/0ashdgioasdhgo_asdhgio%26asjdgioadsjg");
+        func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDocument,0), "file:///tmp/test_files/default_background.jpg");
         func_test_entry_char(dentry_get_uri,g_ptr_array_index(gappinfo,0),"file:///home/ycl/Desktop/skype.desktop");
     },"dentry_get_uri"); 
     
@@ -335,7 +336,69 @@ void test_entry()
     extern void dentry_trash(ArrayContainer fs);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
 
-//     gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));    
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));    
+    ArrayContainer fs = {&_gp,1};
+    GFile* dest = g_file_new_for_uri("file:///tmp");
+
+    Test({
+
+    g_message("start");
+        dentry_move(fs,dest,FALSE);        
+    // g_message("move end");
+
+
+    // g_message("0copy start");
+        GFile* _dest0 = g_file_new_for_uri("file:///tmp/test_files/");
+        GFile* _src0 = g_file_new_for_uri("file:///tmp/skype.desktop");
+        ArrayContainer _fs0;
+        _fs0.data=&_src0;
+        _fs0.num = 1;
+        dentry_copy(_fs0,_dest0);
+        g_object_unref(_dest0);
+        ArrayContainer_free0(_fs0);
+    // g_message("0copy end");
+
+
+
+    // g_message("1trash start");
+        GFile* _src1 = g_file_new_for_uri("file:///tmp/skype.desktop");
+        ArrayContainer _fs1;
+        _fs1.data=&_src1;
+        _fs1.num = 1;
+        dentry_trash(_fs1);
+        ArrayContainer_free0(_fs1);
+    g_message(" end");
+
+#if(0)
+
+    g_message("2copy start");
+        GFile* _src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
+        GFile* _dest2 = g_file_new_for_uri("file:///tmp/");
+        ArrayContainer _fs2;
+        _fs2.data=&_src2;
+        _fs2.num = 1;
+        dentry_copy(_fs2,_dest2);
+        g_object_unref(_dest2);
+        ArrayContainer_free0(_fs2);
+    g_message("2copy end");
+
+    g_message("3delete start");
+        GFile* _src3 = g_file_new_for_uri("file:///tmp/skype.desktop");
+        ArrayContainer _fs3;
+        _fs3.data=&_src3;
+        _fs3.num = 1;
+        dentry_delete_files(_fs3,FALSE);
+        ArrayContainer_free0(_fs3);
+    g_message("3delete end");
+#endif
+
+    },"dentry_move");
+    ArrayContainer_free0(fs);
+    g_object_unref(dest);
+    
+
+// #if(0)
+//     gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));    
 //     ArrayContainer fs = {&_gp,1};
 //     GFile* dest = g_file_new_for_uri("file:///home/ycl");
 
@@ -346,8 +409,8 @@ void test_entry()
 
 
 //     g_message("0copy start");
-//         GFile* _dest0 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/");
-//         GFile* _src0 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         GFile* _dest0 = g_file_new_for_uri("file:///tmp/");
+//         GFile* _src0 = g_file_new_for_uri("file:///tmp/test_files");
 //         ArrayContainer _fs0;
 //         _fs0.data=&_src0;
 //         _fs0.num = 1;
@@ -356,10 +419,9 @@ void test_entry()
 //         ArrayContainer_free0(_fs0);
 //     g_message("0copy end");
 
-// #if(0)
 
 //     g_message("1trash start");
-//         GFile* _src1 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         GFile* _src1 = g_file_new_for_uri("file:///tmp/test_files");
 //         ArrayContainer _fs1;
 //         _fs1.data=&_src1;
 //         _fs1.num = 1;
@@ -368,9 +430,8 @@ void test_entry()
 //     g_message("1trash end");
 
 
-
 //     g_message("2copy start");
-//         GFile* _src2 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files/skype.desktop");
+//         GFile* _src2 = g_file_new_for_uri("file:///tmp/test_files");
 //         GFile* _dest2 = g_file_new_for_uri("file:///home/ycl/");
 //         ArrayContainer _fs2;
 //         _fs2.data=&_src2;
@@ -381,77 +442,18 @@ void test_entry()
 //     g_message("2copy end");
 
 //     g_message("3delete start");
-//         GFile* _src3 = g_file_new_for_uri("file:///home/ycl/skype.desktop");
+//         GFile* _src3 = g_file_new_for_uri("file:///tmp/test_files");
 //         ArrayContainer _fs3;
 //         _fs3.data=&_src3;
 //         _fs3.num = 1;
 //         dentry_delete_files(_fs3,FALSE);
 //         ArrayContainer_free0(_fs3);
 //     g_message("3delete end");
-// #endif
 
 //     },"dentry_move");
 //     ArrayContainer_free0(fs);
 //     g_object_unref(dest);
-    
-
-
-    gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));    
-    ArrayContainer fs = {&_gp,1};
-    GFile* dest = g_file_new_for_uri("file:///home/ycl");
-
-    Test({
-    g_message("move start");
-        dentry_move(fs,dest,FALSE);        
-    g_message("move end");
-
-
-    g_message("0copy start");
-        GFile* _dest0 = g_file_new_for_uri("file:///home/ycl/dde/build/");
-        GFile* _src0 = g_file_new_for_uri("file:///home/ycl/test_files");
-        ArrayContainer _fs0;
-        _fs0.data=&_src0;
-        _fs0.num = 1;
-        dentry_copy(_fs0,_dest0);
-        g_object_unref(_dest0);
-        ArrayContainer_free0(_fs0);
-    g_message("0copy end");
-
-
-    g_message("1trash start");
-        GFile* _src1 = g_file_new_for_uri("file:///home/ycl/test_files");
-        ArrayContainer _fs1;
-        _fs1.data=&_src1;
-        _fs1.num = 1;
-        dentry_trash(_fs1);
-        ArrayContainer_free0(_fs1);
-    g_message("1trash end");
-
-#if(0)
-    g_message("2copy start");
-        GFile* _src2 = g_file_new_for_uri("file:///home/ycl/dde/build/test_files");
-        GFile* _dest2 = g_file_new_for_uri("file:///home/ycl/");
-        ArrayContainer _fs2;
-        _fs2.data=&_src2;
-        _fs2.num = 1;
-        dentry_copy(_fs2,_dest2);
-        g_object_unref(_dest2);
-        ArrayContainer_free0(_fs2);
-    g_message("2copy end");
-
-    g_message("3delete start");
-        GFile* _src3 = g_file_new_for_uri("file:///home/ycl/test_files");
-        ArrayContainer _fs3;
-        _fs3.data=&_src3;
-        _fs3.num = 1;
-        dentry_delete_files(_fs3,FALSE);
-        ArrayContainer_free0(_fs3);
-    g_message("3delete end");
-#endif
-    },"dentry_move");
-    ArrayContainer_free0(fs);
-    g_object_unref(dest);
-
+// #endif
 
     tear_down_fixture();
 }
