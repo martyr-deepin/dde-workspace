@@ -336,6 +336,7 @@ void test_entry()
     extern void dentry_trash(ArrayContainer fs);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
 
+#if(0)
     gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));    
     ArrayContainer fs = {&_gp,1};
     GFile* dest = g_file_new_for_uri("file:///tmp");
@@ -353,7 +354,7 @@ void test_entry()
         ArrayContainer _fs0;
         _fs0.data=&_src0;
         _fs0.num = 1;
-        dentry_copy(_fs0,_dest0);
+        dentry_copy(_fs0,_dest0);   
         g_object_unref(_dest0);
         ArrayContainer_free0(_fs0);
     // g_message("0copy end");
@@ -369,33 +370,33 @@ void test_entry()
         ArrayContainer_free0(_fs1);
     g_message(" end");
 
-#if(0)
+// #if(0)
 
-    g_message("2copy start");
-        GFile* _src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
-        GFile* _dest2 = g_file_new_for_uri("file:///tmp/");
-        ArrayContainer _fs2;
-        _fs2.data=&_src2;
-        _fs2.num = 1;
-        dentry_copy(_fs2,_dest2);
-        g_object_unref(_dest2);
-        ArrayContainer_free0(_fs2);
-    g_message("2copy end");
+//     g_message("2copy start");
+//         GFile* _src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
+//         GFile* _dest2 = g_file_new_for_uri("file:///tmp/");
+//         ArrayContainer _fs2;
+//         _fs2.data=&_src2;
+//         _fs2.num = 1;
+//         dentry_copy(_fs2,_dest2);
+//         g_object_unref(_dest2);
+//         ArrayContainer_free0(_fs2);
+//     g_message("2copy end");
 
-    g_message("3delete start");
-        GFile* _src3 = g_file_new_for_uri("file:///tmp/skype.desktop");
-        ArrayContainer _fs3;
-        _fs3.data=&_src3;
-        _fs3.num = 1;
-        dentry_delete_files(_fs3,FALSE);
-        ArrayContainer_free0(_fs3);
-    g_message("3delete end");
-#endif
+//     g_message("3delete start");
+//         GFile* _src3 = g_file_new_for_uri("file:///tmp/skype.desktop");
+//         ArrayContainer _fs3;
+//         _fs3.data=&_src3;
+//         _fs3.num = 1;
+//         dentry_delete_files(_fs3,FALSE);
+//         ArrayContainer_free0(_fs3);
+//     g_message("3delete end");
+// #endif
 
-    },"dentry_move");
-    ArrayContainer_free0(fs);
-    g_object_unref(dest);
-    
+//     },"dentry_move");
+//     ArrayContainer_free0(fs);
+//     g_object_unref(dest);
+// #endif    
 
 // #if(0)
 //     gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));    
@@ -454,6 +455,24 @@ void test_entry()
 //     ArrayContainer_free0(fs);
 //     g_object_unref(dest);
 // #endif
+
+
+
+    Test({
+        system("touch /tmp/test.c");
+        g_message("1trash start");
+        GFile* _src1 = g_file_new_for_uri("file:///tmp/test.c");
+        // ArrayContainer _fs1;
+        // _fs1.data=&_src1;
+        // _fs1.num = 1;
+        // dentry_trash(_fs1);
+        // ArrayContainer_free0(_fs1);
+
+        g_file_trash (_src1, NULL, NULL);/*the test program still dead in 28% ,means the GLIB function-org g_file_trash has bug in too times to trash*/
+        // g_object_unref(_src1);
+
+        g_message(" trash end");
+    },"dentry_trash");
 
     tear_down_fixture();
 }
