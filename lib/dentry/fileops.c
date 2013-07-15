@@ -118,6 +118,15 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
     g_debug ("traverse_directory: chdir to : %s", src_uri);
 #endif
 
+    //begin g_file_enumerator_next_file ,we must check if the file type is symbolic_link then goto post_processing:
+    GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+    if (type == G_FILE_TYPE_SYMBOLIC_LINK)
+    {
+        //TODO: symbolic links
+        g_debug ("-------src type is symbolic_link-------");
+        goto post_processing;
+    }
+
     GFileInfo* file_info = NULL;
     while ((file_info = g_file_enumerator_next_file (src_enumerator, NULL, &error)) != NULL)
     {
