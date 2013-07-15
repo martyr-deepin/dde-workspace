@@ -335,24 +335,28 @@ void test_entry()
     g_object_unref(dest);
 #endif
 
-
-#if 0 
+#if 0
     extern void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir);
     system("ln -s /tmp/test_files /tmp/test_files_link ");
-    system("mkdir /tmp/test_files_tmp");
     Test({
+        system("mkdir /tmp/test_files_tmp");
+
     g_message("copy_dereference_symlink start");
-        GFile* dest = g_file_new_for_uri("file:///tmp/test_files_tmp");
         GFile* src = g_file_new_for_uri("file:///tmp/test_files_link");
+        GFile* dest = g_file_new_for_uri("file:///tmp/test_files_tmp/");
         ArrayContainer fs;
         fs.data=&src;
         fs.num = 1;
         dentry_copy_dereference_symlink(fs,dest);
         ArrayContainer_free0(fs);
+        g_object_unref(dest);
     g_message("copy_dereference_symlink end");
-        // system("rm -rf /tmp/test_files_tmp");
-    },"dentry_copy_dereference_symlink");
 
+        system("rm -rf /tmp/test_files_tmp/");
+    },"dentry_copy_dereference_symlink");
+#endif 
+
+#if 0 
 
     extern void dentry_clipboard_copy(ArrayContainer fs);
     extern void dentry_clipboard_cut(ArrayContainer fs);
@@ -408,7 +412,6 @@ void test_entry()
 
     },"dentry_clipboard_copy cut paste can_paste");    
 
-#endif
 
 
     extern void dentry_confirm_trash();
@@ -441,6 +444,7 @@ void test_entry()
         g_object_unref(f);
 
     },"dentry_confirm_trash dentry_get_trash_entry dentry_get_trash_count");
+#endif
 
     tear_down_fixture();
 }
