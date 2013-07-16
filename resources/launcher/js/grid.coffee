@@ -101,6 +101,12 @@ class Item extends Widget
             [5, startup_msg]
         ]
 
+        if DCore.DEntry.internal()
+            menu.push([])
+            menu.push([100, "report this bad icon"])
+
+        menu
+
     @_contextmenu_callback: (item)->
         (e) ->
             item.element.contextMenu = build_menu(item._menu())
@@ -170,10 +176,13 @@ class Item extends Widget
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
             when 5 then @toggle_autostart()
+            when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
     hide: ->
         @element.style.display = "none"
 
-    show: =>  # use '->', Item.display_temp and @display_mode will be undifined
+    # use '->', Item.display_temp and @display_mode will be undifined when this
+    # function is pass to some other functions like setTimeout
+    show: =>
         @element.style.display = "block" if Item.display_temp or @display_mode == 'display'
 
     is_shown: ->
