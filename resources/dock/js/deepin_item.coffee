@@ -38,10 +38,20 @@ class FixedItem extends AppItem
             , 500)
 
 class ShowDesktop extends FixedItem
+    @set_time_id: null
     do_click: (e)->
         DCore.Dock.show_desktop(!@__show)
     do_buildmenu: ->
         []
+    do_dragenter: (e) ->
+        e.stopPropagation()
+        ShowDesktop.set_time_id = setTimeout(=>
+            DCore.Dock.show_desktop(true)
+        , 1000)
+    do_dragleave: (e) ->
+        e.stopPropagation()
+        clearTimeout(ShowDesktop.set_time_id)
+        ShowDesktop.set_time_id = null
 
 class LauncherItem extends FixedItem
     do_click: (e)->

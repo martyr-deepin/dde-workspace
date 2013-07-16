@@ -759,10 +759,10 @@ gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt)
 }
 
 static
-void _do_dereference_symlink_copy(GFile* src, GFile* dest)
+void _do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_flag)
 {
     GError* error = NULL;
-    if (!g_file_copy(src, dest, G_FILE_COPY_NONE, NULL, NULL, NULL, &error)) {
+    if (!g_file_copy(src, dest, copy_flag, NULL, NULL, NULL, &error)) {
         g_warning("error message: %s, error code: %d\n", error->message, error->code);
         FileOpsResponse* response;
         response = fileops_move_copy_error_show_dialog(_("copy"), error, src, dest, NULL);
@@ -787,7 +787,7 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest)
                 GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
                 g_object_unref(dest_parent);
 
-                _do_dereference_symlink_copy(src, new_dest);
+                _do_dereference_symlink_copy(src, new_dest, copy_flag);
                 g_object_unref(new_dest);
 
                 break;
@@ -819,7 +819,7 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
         GFile* dest = g_file_get_child(dest_dir, src_basename);
         g_free(src_basename);
 
-        _do_dereference_symlink_copy(_srcs[i], dest);
+        _do_dereference_symlink_copy(_srcs[i], dest, G_FILE_COPY_NONE);
         char* path = g_file_get_path(dest);
         g_chmod(path, S_IRWXU | S_IROTH | S_IRGRP);
         g_free(path);
@@ -918,6 +918,7 @@ double dentry_get_trash_count()
     return fileops_get_trash_count ();
 }
 
+
 void ArrayContainer_free0(ArrayContainer array)
 {
     for(size_t i = 0 ; i < array.num ; i++)
@@ -937,3 +938,126 @@ void g_message_boolean(gboolean b)
 {
     (b == TRUE)?(g_message("TRUE")):(g_message("FALSE"));
 }
+
+
+JS_EXPORT_API
+gboolean dentry_internal()
+{
+    char* dde_debug = g_build_filename(g_get_home_dir(), ".dde_debug", NULL);
+    gboolean is_exist = g_file_test(dde_debug, G_FILE_TEST_EXISTS);
+    g_free(dde_debug);
+
+    return is_exist;
+}
+
+
+char* get_basename_without_ext(char const* path)
+{
+    char* basename = g_path_get_basename(path);
+    char* ext_spe = strchr(basename, '.');
+    if (ext_spe != NULL) {
+        char* name = g_strndup(basename, ext_spe - basename);
+        g_free(basename);
+        return name;
+    }
+
+    return basename;
+}
+
+
+static
+char* _get_svg_icon_aux(char const* icon)
+{
+    char* icon_name = get_basename_without_ext(icon);
+
+    if (icon_name != NULL) {
+        char* svg_path =icon_name_to_path_with_check_xpm(icon_name, -1);
+        g_free(icon_name);
+
+        if (svg_path != NULL && g_str_has_suffix(svg_path, ".svg")) {
+            return svg_path;
+        } else {
+            g_free(svg_path);
+            return NULL;
+        }
+    }
+
+    return NULL;
+}
+
+
+static
+char* _get_svg_icon(Entry* entry)
+{
+    char* svg_path = NULL;
+
+    char* icon = dentry_get_icon(entry);
+
+    if (icon[0] == '/') {
+        svg_path = _get_svg_icon_aux(icon);
+
+        if (svg_path == NULL) {
+            char const* filename = g_desktop_app_info_get_filename(entry);
+            svg_path = _get_svg_icon_aux(filename);
+        }
+    }
+
+    g_free(icon);
+
+    return svg_path;
+}
+
+
+static
+void _bad_icon_copy(gpointer data, gpointer bad_icon_dir)
+{
+    GFile* file = (GFile*)data;
+    char* dest_basename = g_file_get_basename(file);
+    GFile* dest = g_file_get_child(bad_icon_dir, dest_basename);
+    g_free(dest_basename);
+
+    _do_dereference_symlink_copy(data, dest, G_FILE_COPY_OVERWRITE);
+
+    g_object_unref(dest);
+}
+
+
+JS_EXPORT_API
+void dentry_report_bad_icon(Entry* entry)
+{
+    if (!dentry_internal())
+        return;
+
+    GPtrArray* srcs = g_ptr_array_new_with_free_func(g_object_unref);
+
+    GFile* e = entry;
+    if (G_IS_APP_INFO(entry))
+        e = _get_gfile_from_gapp(entry);
+    g_ptr_array_add(srcs, e);
+
+    char* icon_path = dentry_get_icon_path(entry);
+    g_ptr_array_add(srcs, g_file_new_for_path(icon_path));
+    g_free(icon_path);
+
+
+    char* svg_path = _get_svg_icon(entry);
+    if (svg_path != NULL) {
+        GFile* svg_file = g_file_new_for_path(svg_path);
+        g_ptr_array_add(srcs, svg_file);
+        g_free(svg_path);
+    }
+
+    char const* desktop_path = g_get_user_special_dir(G_USER_DIRECTORY_DESKTOP);
+    char* bad_icon_dir_path = g_build_filename(desktop_path, "bad_icons", NULL);
+    GFile* bad_icon_dir = g_file_new_for_path(bad_icon_dir_path);
+    g_free(bad_icon_dir_path);
+
+    if (!g_file_query_exists(bad_icon_dir, NULL))
+        g_file_make_directory(bad_icon_dir, NULL, NULL);
+
+    g_ptr_array_foreach(srcs, _bad_icon_copy, (gpointer)bad_icon_dir);
+
+    g_ptr_array_free(srcs, TRUE);
+    g_object_unref(bad_icon_dir);
+}
+

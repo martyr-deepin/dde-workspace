@@ -124,7 +124,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
     if (type == G_FILE_TYPE_SYMBOLIC_LINK)
     {
         //TODO: symbolic links
-        g_debug ("-------------src type is symbolic_link----------------");
+        g_debug ("-------src type is symbolic_link-------");
         goto post_processing;
     }
 
