@@ -1,5 +1,4 @@
 #include "desktop_test.h"
-#include "setup_fixture.c"
 
 gboolean TEST_THEM = FALSE;
 

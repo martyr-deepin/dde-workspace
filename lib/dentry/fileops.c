@@ -114,6 +114,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
     }
 #if 1
     char* src_uri = NULL;
+    
     src_uri = g_file_get_uri (src);
     g_debug ("traverse_directory: chdir to : %s", src_uri);
 #endif
