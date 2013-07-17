@@ -12,6 +12,6 @@ void test_fileops_error_reporting()
 		                                             GFile* src, GFile* dest, GtkWindow* parent);
 
 	Test({
-
+		
 	},"test_fileops_error_reporting");
 }
