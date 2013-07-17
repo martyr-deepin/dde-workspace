@@ -10,8 +10,20 @@ void test_thumbnails()
 
     // GFile* src = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");//FALSE
 
-    GFile* src = g_file_new_for_uri("file:///tmp/test_files/test.exe");
-    char* result = "/home/ycl/.thumbnails/normal/77374021929390f03f990fdc306e7eb0.png";
+    // GFile* src = g_file_new_for_uri("file:///tmp/test_files/test.exe");
+    // char* result = "/home/ycl/.thumbnails/normal/77374021929390f03f990fdc306e7eb0.png";
+
+    // GFile* src = g_file_new_for_uri("file:///tmp/test_files/test.c");//FALSE
+    // char* result = "/home/ycl/.thumbnails/normal/77374021929390f03f990fdc306e7eb0.png";
+
+    // GFile* src = g_file_new_for_uri("file:///tmp/test_files/test.coffee");//FALSE
+    // char* result = "/home/ycl/.thumbnails/normal/77374021929390f03f990fdc306e7eb0.png";
+
+    // GFile* src = g_file_new_for_uri("file:///tmp/test_files/test.doc");//FALSE
+    // char* result = "/home/ycl/.thumbnails/normal/77374021929390f03f990fdc306e7eb0.png";
+
+    GFile* src = g_file_new_for_uri("file:///tmp/test_files/default_background.jpg");//FALSE
+    // char* result = "/home/ycl/.thumbnails/normal/490820ee22d8768354f5c428b7feba29.png";
 
 	Test({
 
@@ -22,7 +34,7 @@ void test_thumbnails()
     		g_message("TRUE");
         	char * s = gfile_lookup_thumbnail(src);
         	// g_message("%s",s);
-        	g_assert(g_str_equal(s, result) == TRUE);
+        	g_assert(g_str_equal(s, "/home/ycl/.thumbnails/normal/490820ee22d8768354f5c428b7feba29.png") == TRUE);
         	g_free(s);
     	}
     	else
@@ -32,7 +44,7 @@ void test_thumbnails()
 
     },"gfile_can_thumbnail gfile_lookup_thumbnail");
     g_object_unref(src);
-    g_free(result);
+    // g_free(result);
 
 	tear_down_fixture();
 }
