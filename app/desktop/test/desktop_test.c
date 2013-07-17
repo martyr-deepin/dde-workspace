@@ -15,6 +15,21 @@ extern void test_mime_actions();
 extern void test_thumbnails();
 extern void test_gnome_desktop_thumbnail();
 
+
+/* make 
+/home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘fileops_empty_trash’中:
+/home/ycl/dde/lib/dentry/fileops_trash.c:108:5: 警告： 不建议使用‘g_io_scheduler_push_job’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:36)：Use '"GThreadPool or g_task_run_in_thread"' instead [-Wdeprecated-declarations]
+/home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘_empty_trash_job’中:
+/home/ycl/dde/lib/dentry/fileops_trash.c:163:5: 警告： 不建议使用‘g_io_scheduler_job_send_to_mainloop_async’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:49)：Use 'g_main_context_invoke' instead [-Wdeprecated-declarations]
+[ 22%] Building C object lib/dentry/CMakeFiles/dentry.dir/gnome-desktop-thumbnail.c.o
+/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c: 在函数‘gnome_desktop_thumbnail_factory_finalize’中:
+/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c:456:7: 警告： 不建议使用‘g_mutex_free’(声明于 /usr/include/glib-2.0/glib/deprecated/gthread.h:274) [-Wdeprecated-declarations]
+/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c: 在函数‘gnome_desktop_thumbnail_factory_init’中:
+/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c:752:3: 警告： 不建议使用‘g_mutex_new’(声明于 /usr/include/glib-2.0/glib/deprecated/gthread.h:272) [-Wdeprecated-declarations]
+[ 23%] Building C object lib/dentry/CMakeFiles/dentry.dir/mime_actions.c.o
+
+ */
+
 void desktop_test()
 {
     g_message("desktop test start...");
