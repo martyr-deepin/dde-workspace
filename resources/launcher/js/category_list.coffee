@@ -84,3 +84,26 @@ init_category_list = ->
     _category.appendChild(frag)
 
     _set_adaptive_height()
+
+
+# the following code is working for touch device
+box = $("#send2desktop")
+box.addEventListener('dragleave', (e)->
+    box.style.display = 'none'
+)
+box.addEventListener('dragover', (e)->
+    e.preventDefault()
+)
+box.addEventListener("drop", (e) ->
+    e.stopPropagation()
+    if dnd_is_deepin_item(e)
+        id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        item = Widget.look_up(id)
+        if not DCore.Launcher.has_this_item_on_desktop(item.core)
+            DCore.DEntry.copy_dereference_symlink([item.core], DCore.Launcher.get_desktop_entry())
+)
+
+warp = $("#warp")
+warp.addEventListener('dragenter', (e) ->
+    box.style.display = 'block'
+)

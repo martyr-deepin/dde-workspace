@@ -240,3 +240,21 @@ body {
     top: 39px;
     left: 28px;
 }
+
+#send2desktop {
+    padding: 0px auto;
+    width: 140px;
+    height: 140px;
+    max-height: 250px;
+    border: 6px dashed lightgray;
+    font-size: 32;
+    color: lightgray;
+    line-height: 2.2em;
+    text-align: center;
+    display: none;
+}
+#warp {
+    width: 140px;
+    height: 140px;
+    margin: 120px auto;
+}

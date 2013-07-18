@@ -76,9 +76,14 @@ class Item extends Widget
         #$("#close").setAttribute("class", "close_hover")
 
     do_dragstart: (e)=>
+        e.dataTransfer.setData(DEEPIN_ITEM_ID, @id)
         e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
+    do_dragenter: (e)->
+        e.preventDefault()
+    do_dragend: (e)->
+        box.style.display = 'none'
 
     _menu: ->
         if @display_mode == 'display'

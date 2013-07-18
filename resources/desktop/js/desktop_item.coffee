@@ -62,6 +62,9 @@ class Item extends Widget
         @item_icon = document.createElement("img")
         @item_icon.draggable = false
         icon_box.appendChild(@item_icon)
+        @element.addEventListener("touchstart", ->
+            alert("hhhhhhhhhhhh")
+        )
         @item_icon.addEventListener("load", ->
             @style.width = ""
             @style.height = ""
@@ -178,22 +181,24 @@ class Item extends Widget
 
 
     do_click : (evt) ->
+        echo "click"
         evt.stopPropagation()
-        if @clicked_before == 1
-            @clicked_before = 2
+        if is_selected_multiple_items()
+            update_selected_stats(this, evt)
         else
-            if is_selected_multiple_items()
-                update_selected_stats(this, evt)
+            if @in_rename
+                @item_complete_rename(true)
             else
-                if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
-                    @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
-                else if @in_rename
-                    @item_complete_rename(true)
-                else
-                    @clear_delay_rename_timer()
+                @clear_delay_rename_timer()
+	        if not evt.ctrlKey then @item_exec()
+
+
+    do_touchstart: (evt) ->
+        alert "touch start"
 
 
     do_dblclick : (evt) ->
+        echo "dblclick"
         evt.stopPropagation()
         @clear_delay_rename_timer()
         if @in_rename then @item_complete_rename(false)
