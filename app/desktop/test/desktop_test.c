@@ -34,7 +34,7 @@ void desktop_test()
 {
     g_message("desktop test start...");
 
-    // test_entry();//test ok 
+    test_entry();//test ok 
     // ps:
     //1. g_file_trash() has bug when trash times and speed too fast
     //2. dentry_clipborad_paste() has bug when speed too fast ,becuase the X cannot follow it
@@ -52,7 +52,7 @@ void desktop_test()
     
     // test_fileops_trash();//test ok
     
-    test_fileops_clipboard();//test over 
+    // test_fileops_clipboard();//test over 
     // when the clipboard paste too fast, the desktop still will dead. because the clipboard too fast to X cannot follow ,as g_file_trash bug
     
     // test_fileops_error_reporting();//hsanot tested

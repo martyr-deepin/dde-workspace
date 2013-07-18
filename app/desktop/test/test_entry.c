@@ -212,13 +212,15 @@ void test_entry()
 #endif
     // endif of #if(TEST_THEM)
 
-#if 0
+#if 1
     extern gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_trash(ArrayContainer fs);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
 
-    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));    
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));
+    // system("ln -s /tmp/compiz.log /tmp/test_files/");    
+    // GFile* _gp = g_file_new_for_uri("file:///tmp/test_files/compiz.log");
     ArrayContainer fs = {&_gp,1};
     GFile* dest = g_file_new_for_uri("file:///tmp");
 

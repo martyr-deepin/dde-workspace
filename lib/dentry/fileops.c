@@ -82,11 +82,12 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 	{
 	    case G_IO_ERROR_NOT_FOUND:
 		//TODO: showup a message box and quit.
-            g_warning ("traverse_directory 1: %s", error->message);
-        
+        g_debug("G_IO_ERROR_NOT_FOUND");
 		break;
 	    case G_IO_ERROR_NOT_DIRECTORY:
 		//TODO:we're using a file.
+        g_debug("G_IO_ERROR_NOT_DIRECTORY");
+        //
 		if (pre_hook (src, data) == FALSE ||
 		    post_hook (src, data) == FALSE)
 		{
@@ -99,6 +100,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 		    return TRUE;
 		}
 	    default:
+        g_debug("src found and is directory");
 		break;
 	}
 	// g_warning ("traverse_directory 1: %s", error->message);
@@ -325,6 +327,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
     	//retval &= _move_files_async (src, data);
     	//traverse_directory (dir, _move_files_async, _dummy_func, move_dest_gfile);
             retval &= traverse_directory (src, _move_files_async, _dummy_func, data);
+        // here i must check out if dest has the same file or directory ,if true , fileops_delete,else, nothing do
     	if (retval)
     		fileops_delete (&src, 1);//ensure original file is removed.
 
