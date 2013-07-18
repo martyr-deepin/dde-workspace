@@ -136,7 +136,6 @@ PRIVATE void _update_is_overlay_client(Client* c);
 PRIVATE gboolean _is_maximized_window(Window win);
 PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
-GDesktopAppInfo* _guess_desktop_file(char const* app_id);
 
 PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
@@ -161,7 +160,7 @@ PRIVATE
 gboolean _get_launcher_icon(Client* c)
 {
     g_debug("try to get launcher's icon");
-    GDesktopAppInfo* info = _guess_desktop_file(c->app_id);
+    GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
         g_debug("info == NULL");
@@ -574,36 +573,6 @@ void _update_window_title(Client* c)
 
 }
 
-GDesktopAppInfo* _guess_desktop_file(char const* app_id)
-{
-    GDesktopAppInfo* desktop_file = NULL;
-    GList* all_desktop_files = g_app_info_get_all();
-
-    for (GList* iter = all_desktop_files; iter != NULL; iter = g_list_next(iter)) {
-        GDesktopAppInfo* iter_data_ref = (GDesktopAppInfo*)iter->data;
-        char const* filename = g_desktop_app_info_get_filename(iter_data_ref);
-
-        if (g_strstr_len(filename, -1, app_id)) {
-            desktop_file = g_object_ref(iter_data_ref);
-            break;
-        } else {
-            char* value = g_desktop_app_info_get_string(iter_data_ref,
-                                                        G_KEY_FILE_DESKTOP_KEY_EXEC);
-            if (g_strstr_len(value, -1, app_id)) {
-                desktop_file = g_object_ref(iter_data_ref);
-                g_free(value);
-                break;
-            }
-
-            g_free(value);
-        }
-    }
-
-    g_list_free_full(all_desktop_files, g_object_unref);
-
-    return desktop_file;
-}
-
 void _update_window_appid(Client* c)
 {
     char* app_id = NULL;
@@ -639,7 +608,7 @@ void _update_window_appid(Client* c)
         c->app_id = to_lower_inplace(app_id);
 
         if (s_pid != NULL) {
-            GDesktopAppInfo* desktop_file = _guess_desktop_file(c->app_id);
+            GDesktopAppInfo* desktop_file = guess_desktop_file(c->app_id);
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);

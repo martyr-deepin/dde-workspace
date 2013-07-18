@@ -330,3 +330,34 @@ char* get_desktop_file_basename(GDesktopAppInfo* file)
     const char* filename = g_desktop_app_info_get_filename(file);
     return g_path_get_basename(filename);
 }
+
+GDesktopAppInfo* guess_desktop_file(char const* app_id)
+{
+    GDesktopAppInfo* desktop_file = NULL;
+    GList* all_desktop_files = g_app_info_get_all();
+
+    for (GList* iter = all_desktop_files; iter != NULL; iter = g_list_next(iter)) {
+        GDesktopAppInfo* iter_data_ref = (GDesktopAppInfo*)iter->data;
+        char const* filename = g_desktop_app_info_get_filename(iter_data_ref);
+
+        if (g_strstr_len(filename, -1, app_id)) {
+            desktop_file = g_object_ref(iter_data_ref);
+            break;
+        } else {
+            char* value = g_desktop_app_info_get_string(iter_data_ref,
+                                                        G_KEY_FILE_DESKTOP_KEY_EXEC);
+            if (g_strstr_len(value, -1, app_id)) {
+                desktop_file = g_object_ref(iter_data_ref);
+                g_free(value);
+                break;
+            }
+
+            g_free(value);
+        }
+    }
+
+    g_list_free_full(all_desktop_files, g_object_unref);
+
+    return desktop_file;
+}
+
