@@ -115,14 +115,13 @@ _b.addEventListener("keydown", do ->
 
 _contextmenu_callback = (msg) ->
     (e) ->
+        menu = [[_("_Sort"), [
+            [11, _("Sort by _Name")],
+            [12, _("Sort by _Rate")]
+        ]]]
         hidden_icons_ids = _get_hidden_icons_ids()
         if hidden_icons_ids.length
-            menu = [
-                [1, msg]
-            ]
-        else
-            menu = []
-            is_show_hidden_icons = false
+            menu.push([2, msg])
         _b.contextMenu = build_menu(menu)
 
 is_show_hidden_icons = false
@@ -151,21 +150,53 @@ applications = {}
 # key: id of app
 # value: a list of category id to which key belongs
 hidden_icons = {}
+
+compare_string = (s1, s2) ->
+    return 1 if s1 > s2
+    return 0 if s1 == s2
+    return -1
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
-    _all_items.sort((lhs, rhs) ->
-        lhs_name = DCore.DEntry.get_name(lhs)
-        rhs_name = DCore.DEntry.get_name(rhs)
-
-        return 1 if lhs_name > rhs_name
-        return 0 if lhs_name == rhs_name
-        return -1
-    )
 
     for core in _all_items
         id = DCore.DEntry.get_id(core)
         applications[id] = new Item(id, core)
+
+
+get_name_by_id = (id) ->
+    DCore.DEntry.get_name(Widget.look_up(id).core)
+
+sort_by_name = (items)->
+    items.sort((lhs, rhs)->
+        lhs_name = get_name_by_id(lhs)
+        rhs_name = get_name_by_id(rhs)
+        compare_string(lhs_name, rhs_name)
+    )
+
+sort_by_rate = do ->
+    rates = null
+    (items, update)->
+        rates = DCore.get_app_rate() if update
+        items.sort((lhs, rhs)->
+            if rates[lhs]? and rates[rhs]?
+                rates_delta = rates[rhs] - rates[lhs]
+                if rates_delta == 0
+                    lhs_name = get_name_by_id(lhs)
+                    rhs_name = get_name_by_id(rhs)
+                    return compare_string(lhs_name, rhs_name)
+                else
+                    return rates_delta
+            else if rates[lhs]? and not rates[rhs]?
+                return -1
+            else if not rates[lhs]? and rates[rhs]?
+                return 1
+            else
+                lhs_name = get_name_by_id(lhs)
+                rhs_name = get_name_by_id(rhs)
+                return compare_string(lhs_name, rhs_name)
+        )
+
 
 _init_hidden_icons = ->
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
@@ -183,8 +214,22 @@ _init_hidden_icons = ->
     _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
 
     _b.addEventListener("itemselected", (e) ->
-        grid_load_category(selected_category_id)
-        _show_hidden_icons(not is_show_hidden_icons)
+        switch e.id
+            when 11
+                if DCore.Launcher.sort_method() != "name"
+                    DCore.Launcher.save_config('sort_method', 'name')
+                    sort_category_info(sort_by_name)
+                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                    grid_load_category(selected_category_id)
+            when 12
+                if DCore.Launcher.sort_method() != "rate"
+                    DCore.Launcher.save_config('sort_method', 'rate')
+                    sort_category_info(sort_by_rate)
+                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                    grid_load_category(selected_category_id)
+            when 2
+                grid_load_category(selected_category_id)
+                _show_hidden_icons(not is_show_hidden_icons)
     )
 
     return

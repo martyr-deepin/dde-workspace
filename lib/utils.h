@@ -50,5 +50,6 @@ void parse_cmd_line (int* argc, char*** argv);
 char* to_lower_inplace(char* str);
 gboolean file_filter(const char *file_name);
 char* get_desktop_file_basename(GDesktopAppInfo* file);  // g_free the return value
+GDesktopAppInfo* guess_desktop_file(char const* app_id);
 
 #endif

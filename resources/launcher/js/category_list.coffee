@@ -50,7 +50,7 @@ _load_category_infos = (cat_id)->
             category_infos[cat_id].push(key)
         grid.appendChild(frag)
     else
-        info = DCore.Launcher.get_items_by_category(cat_id).sort()
+        info = DCore.Launcher.get_items_by_category(cat_id)
         category_infos[cat_id] = info
 
 hide_category = ->
@@ -75,12 +75,31 @@ show_category = ->
         if not_all_is_hidden or Item.display_temp
             $("##{i}").style.display = "block"
 
+sort_category_info = do ->
+    _sort_func = sort_by_name
+    (sort_func)->
+        _sort_func = sort_func if sort_func
+        update = true  # some sort method like sort_by_rate needs update data
+        for own i of category_infos
+            _sort_func(category_infos["#{i}"], update)
+            update = false  # update data once should be ok
+        return
+
 init_category_list = ->
     frag = document.createDocumentFragment()
     for info in DCore.Launcher.get_categories()
         c = _create_category(info)
         frag.appendChild(c)
         _load_category_infos(info.ID)
+
+    sort_func = sort_by_name
+    sort_method = DCore.Launcher.sort_method()
+    if sort_method == 'rate'
+        sort_func = sort_by_rate
+    else
+        sort_func = sort_by_name
+
+    sort_category_info(sort_func)
     _category.appendChild(frag)
 
     _set_adaptive_height()

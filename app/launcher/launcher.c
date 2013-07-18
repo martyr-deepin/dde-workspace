@@ -34,10 +34,12 @@
 #define CURRENT_PCITURE "current-picture"
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 #define APPS_INI "launcher/apps.ini"
+#define LAUNCHER_CONF "launcher/config.ini"
 #define AUTOSTART(file) "autostart/"file
 
 
 static GKeyFile* k_apps = NULL;
+static GKeyFile* launcher_config = NULL;
 static GtkWidget* container = NULL;
 static GdkScreen* screen = NULL;
 static int screen_width;
@@ -196,6 +198,11 @@ void launcher_hide()
     gdk_window_hide(w);
 }
 
+#ifndef NDEBUG
+void empty()
+{ }
+#endif
+
 int main(int argc, char* argv[])
 {
     if (argc > 1 && g_str_equal("-d", argv[1]))
@@ -226,6 +233,9 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+#ifndef NDEBUG
+    g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
+#endif
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -269,8 +279,12 @@ JS_EXPORT_API
 void launcher_exit_gui()
 {
     g_key_file_free(k_apps);
+    g_key_file_free(launcher_config);
+
     g_hash_table_destroy(_category_table);
+
     g_ptr_array_unref(config_paths);
+
     gtk_main_quit();
 }
 
@@ -556,9 +570,11 @@ JSValueRef launcher_load_hidden_apps()
 JS_EXPORT_API
 void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
 {
-    g_key_file_set_string_list(k_apps, "__Config__", "app_ids",
-        (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
-    save_app_config(k_apps, APPS_INI);
+    if (hidden_app_ids.data != NULL) {
+        g_key_file_set_string_list(k_apps, "__Config__", "app_ids",
+            (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
+        save_app_config(k_apps, APPS_INI);
+    }
 }
 
 
@@ -700,4 +716,41 @@ void launcher_remove_from_autostart(Entry* _item)
     g_file_delete(file, NULL, NULL);
     g_object_unref(file);
     g_free(autostart_file_path);
+}
+
+
+JS_EXPORT_API
+JSValueRef launcher_sort_method()
+{
+    if (launcher_config == NULL) {
+        launcher_config = load_app_config(LAUNCHER_CONF);
+    }
+
+    GError* error = NULL;
+    char* sort_method = g_key_file_get_string(launcher_config, "main", "sort_method", &error);
+    if (error != NULL) {
+        g_warning("get sort method error: %s", error->message);
+        g_error_free(error);
+        return jsvalue_null();
+    }
+
+
+    JSContextRef ctx = get_global_context();
+    JSValueRef method = jsvalue_from_cstr(ctx, sort_method);
+
+    g_free(sort_method);
+
+    return method;
+}
+
+
+JS_EXPORT_API
+void launcher_save_config(char const* key, char const* value)
+{
+    if (launcher_config == NULL)
+        launcher_config = load_app_config(LAUNCHER_CONF);
+
+    g_key_file_set_string(launcher_config, "main", "sort_method", value);
+
+    save_app_config(launcher_config, LAUNCHER_CONF);
 }
