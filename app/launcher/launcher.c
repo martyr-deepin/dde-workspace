@@ -196,6 +196,10 @@ void launcher_hide()
     gdk_window_hide(w);
 }
 
+#ifndef NDEBUG
+void empty() {}
+#endif
+
 int main(int argc, char* argv[])
 {
     if (argc > 1 && g_str_equal("-d", argv[1]))
@@ -226,6 +230,9 @@ int main(int argc, char* argv[])
 
     g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
     g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+#ifndef NDEBUG
+    g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
+#endif
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -244,7 +251,7 @@ int main(int argc, char* argv[])
     GdkRectangle area = {0, 1700, 100, 30};
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
-    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+    //g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     setup_dbus_service();
 

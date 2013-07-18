@@ -41,6 +41,7 @@ _save_hidden_apps = ->
 
 _b = document.body
 
+
 _b.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
@@ -48,70 +49,21 @@ _b.addEventListener("click", (e)->
         DCore.Launcher.exit_gui()
 )
 
-_b.addEventListener('keypress', (e) ->
-    if e.which != ESC_KEY
-        s_box.value += String.fromCharCode(e.which)
+
+s_box.addEventListener('keypress', (e)->
+    switch e.which
+        when ESC_KEY
+            if s_box.value == ""
+                DCore.Launcher.exit_gui()
+            else
+                s_box.value = ""
+)
+s_box.addEventListener('keydown', (e)->
+    e.stopPropagation()
+    if e.target.id == 's_box'
         search()
 )
 
-# this does not work on keypress
-_b.addEventListener("keydown", do ->
-    _last_val = ''
-    (e) ->
-        if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
-            selected_up()
-        else if e.ctrlKey
-            e.preventDefault()
-            switch e.which
-                when P_KEY
-                    selected_up()
-                when F_KEY
-                    selected_next()
-                when B_KEY
-                    selected_prev()
-                when N_KEY, TAB_KEY
-                    selected_down()
-        else
-            switch e.which
-                when ESC_KEY
-                    e.stopPropagation()
-                    if s_box.value == ""
-                        _save_hidden_apps()
-                        DCore.Launcher.exit_gui()
-                    else
-                        _last_val = s_box.value
-                        s_box.value = ""
-                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                        grid_load_category(selected_category_id)
-                when UP_ARROW
-                    selected_up()
-                when DOWN_ARROW
-                    selected_down()
-                when LEFT_ARROW
-                    selected_prev()
-                when RIGHT_ARROW
-                    selected_next()
-                when TAB_KEY
-                    e.preventDefault()
-                    if e.shiftKey
-                        selected_prev()
-                    else
-                        selected_next()
-                when BACKSPACE_KEY
-                    _last_val = s_box.value
-                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                    if s_box.value == ""
-                        if _last_val != s_box.value
-                            do_search()
-                            grid_load_category(selected_category_id)
-                        return  # to avoid to invoke search function
-                    search()
-                when ENTER_KEY
-                    if item_selected
-                        item_selected.do_click()
-                    else
-                        get_first_shown()?.do_click()
-)
 
 _contextmenu_callback = (msg) ->
     (e) ->
@@ -194,3 +146,4 @@ init_all_applications()
 init_category_list()
 init_grid()
 _init_hidden_icons()
+s_box.focus()
