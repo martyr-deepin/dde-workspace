@@ -39,7 +39,13 @@ void test_fileops_clipboard()
 	        g_message("fileops_paste end");
 		}
 		system("rm /tmp/skype.desktop");
-		// init_fileops_clipboard();
+
+
+		g_message("init_fileops_clipboard start");
+        GFile* src = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
+        init_fileops_clipboard(&src,1,FALSE);
+        g_object_unref(src);
+    	g_message("init_fileops_clipboard end");
 
 	},"is_clipboard_empty  fileops_paste init_fileops_clipboard");
 

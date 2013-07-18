@@ -82,6 +82,8 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 	{
 	    case G_IO_ERROR_NOT_FOUND:
 		//TODO: showup a message box and quit.
+            g_warning ("traverse_directory 1: %s", error->message);
+        
 		break;
 	    case G_IO_ERROR_NOT_DIRECTORY:
 		//TODO:we're using a file.
@@ -99,7 +101,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 	    default:
 		break;
 	}
-	g_warning ("traverse_directory 1: %s", error->message);
+	// g_warning ("traverse_directory 1: %s", error->message);
 	g_error_free (error);
 
 	return TRUE;

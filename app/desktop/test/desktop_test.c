@@ -52,7 +52,8 @@ void desktop_test()
     
     // test_fileops_trash();//test ok
     
-    // test_fileops_clipboard();//test ok
+    test_fileops_clipboard();//test over 
+    // when the clipboard paste too fast, the desktop still will dead. because the clipboard too fast to X cannot follow ,as g_file_trash bug
     
     // test_fileops_error_reporting();//hsanot tested
 
@@ -60,7 +61,9 @@ void desktop_test()
     
     // test_mime_actions();////hasnot tested   because it used in dentry_launch()
 
-    test_thumbnails();//test over
+
+    // test_thumbnails();//test over
+    // 
     // but there is a bug ,but cannot be reviewed ,and it is hard to be shown :
     // after test programe run 100% over,there perhaps be a error to kill ./desktop -d but without any messageout
     // when I run test in gdb ,still no useful messageout
