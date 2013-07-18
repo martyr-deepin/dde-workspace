@@ -668,6 +668,11 @@ void _update_window_class(Client* c)
         c->clss = NULL;
         c->instance_name = NULL;
     }
+
+    if (c->title && g_str_equal(c->title, "Unknow Name") && c->clss) {
+        g_free(c->title);
+        c->title = g_strdup(c->clss);
+    }
 }
 
 void _update_window_net_state(Client* c)
