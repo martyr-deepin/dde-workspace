@@ -39,3 +39,7 @@ NOT_STARTUP_ICON = _("_Remove from autostart")
 
 AUTOSTART_ICON_NAME = "emblem-autostart"
 AUTOSTART_ICON_SIZE = 16
+
+SORT_MESSAGE =
+    "name": ("Sort By _Rate")
+    "rate": _("Sort By _Name")

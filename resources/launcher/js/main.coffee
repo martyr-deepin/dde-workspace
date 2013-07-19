@@ -113,15 +113,12 @@ _b.addEventListener("keydown", do ->
                         get_first_shown()?.do_click()
 )
 
-_contextmenu_callback = (msg) ->
+_contextmenu_callback = (icon_msg, sort_msg) ->
     (e) ->
-        menu = [[_("_Sort"), [
-            [11, _("Sort by _Name")],
-            [12, _("Sort by _Rate")]
-        ]]]
+        menu = [[1, sort_msg]]
         hidden_icons_ids = _get_hidden_icons_ids()
         if hidden_icons_ids.length
-            menu.push([2, msg])
+            menu.push([2, icon_msg])
         _b.contextMenu = build_menu(menu)
 
 is_show_hidden_icons = false
@@ -142,7 +139,8 @@ _show_hidden_icons = (is_shown) ->
             hidden_icons[item].hide_icon()
         msg = DISPLAY_HIDDEN_ICONS
 
-    _b.addEventListener("contextmenu", _contextmenu_callback(msg))
+    _b.addEventListener("contextmenu", _contextmenu_callback(msg,
+        SORT_MESSAGE[sort_method]))
 
 # key: id of app (md5 basenam of path)
 # value: Item class
@@ -197,8 +195,15 @@ sort_by_rate = do ->
                 return compare_string(lhs_name, rhs_name)
         )
 
+sort_methods =
+    "name": sort_by_name
+    "rate": sort_by_rate
 
+sort_method = "name"
 _init_hidden_icons = ->
+    sort_method = DCore.Launcher.sort_method()
+    sort_method = "name" if not sort_method
+
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
     if hidden_icon_ids?
         hidden_icon_ids.filter((elem, index, array) ->
@@ -211,26 +216,30 @@ _init_hidden_icons = ->
                 hidden_icons[id] = applications[id]
                 hidden_icons[id].hide_icon()
 
-    _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
-
     _b.addEventListener("itemselected", (e) ->
         switch e.id
-            when 11
-                if DCore.Launcher.sort_method() != "name"
-                    DCore.Launcher.save_config('sort_method', 'name')
-                    sort_category_info(sort_by_name)
-                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                    grid_load_category(selected_category_id)
-            when 12
-                if DCore.Launcher.sort_method() != "rate"
-                    DCore.Launcher.save_config('sort_method', 'rate')
-                    sort_category_info(sort_by_rate)
-                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                    grid_load_category(selected_category_id)
+            when 1
+                if sort_method == "rate"
+                    sort_method = "name"
+                else if sort_method == "name"
+                    sort_method = "rate"
+
+                sort_category_info(sort_methods[sort_method])
+                update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                grid_load_category(selected_category_id)
+
+                DCore.Launcher.save_config('sort_method', sort_method)
+                _b.addEventListener("contextmenu",
+                    _contextmenu_callback(DISPLAY_HIDDEN_ICONS,
+                    SORT_MESSAGE[sort_method]))
             when 2
                 grid_load_category(selected_category_id)
                 _show_hidden_icons(not is_show_hidden_icons)
     )
+
+    _b.addEventListener("contextmenu",
+        _contextmenu_callback(DISPLAY_HIDDEN_ICONS, SORT_MESSAGE[sort_method]))
+
 
     return
 
