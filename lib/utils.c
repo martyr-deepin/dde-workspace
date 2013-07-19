@@ -339,21 +339,24 @@ GDesktopAppInfo* guess_desktop_file(char const* app_id)
     for (GList* iter = all_desktop_files; iter != NULL; iter = g_list_next(iter)) {
         GDesktopAppInfo* iter_data_ref = (GDesktopAppInfo*)iter->data;
         char const* filename = g_desktop_app_info_get_filename(iter_data_ref);
+        char* basename = g_path_get_basename(filename);
+        char* ext_sep = strchr(basename, '.');
 
-        if (g_strstr_len(filename, -1, app_id)) {
+        if (ext_sep == NULL) {
+            g_free(basename);
+            continue;
+        }
+
+        char* name = g_strndup(basename, ext_sep - basename);
+        g_free(basename);
+
+        if (g_str_equal(name, app_id)) {
+            g_free(name);
             desktop_file = g_object_ref(iter_data_ref);
             break;
-        } else {
-            char* value = g_desktop_app_info_get_string(iter_data_ref,
-                                                        G_KEY_FILE_DESKTOP_KEY_EXEC);
-            if (g_strstr_len(value, -1, app_id)) {
-                desktop_file = g_object_ref(iter_data_ref);
-                g_free(value);
-                break;
-            }
-
-            g_free(value);
         }
+
+        g_free(name);
     }
 
     g_list_free_full(all_desktop_files, g_object_unref);
