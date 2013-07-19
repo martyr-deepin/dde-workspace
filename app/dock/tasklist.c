@@ -823,15 +823,15 @@ void dock_active_window(double id)
 
 
 JS_EXPORT_API
-void dock_close_window(double id)
+int dock_close_window(double id)
 {
     XClientMessageEvent event;
     event.type = ClientMessage;
     event.window = (Window)id;
     event.message_type = ATOM_CLOSE_WINDOW;
     event.format = 32;
-    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
-            StructureNotifyMask, (XEvent*)&event);
+    return XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
+                      StructureNotifyMask, (XEvent*)&event);
 }
 
 JS_EXPORT_API

@@ -196,10 +196,15 @@ class ClientGroup extends AppItem
                 DCore.Dock.close_window(@leader)
             when 3
                 Preview_close_now()
-                while @leader
-                    DCore.Dock.close_window(@leader)
-                    @remove_client(@leader)
+                i = 0
+                size = @n_clients.length
+                while i < size
+                    leader = @leader
                     @next_leader()
+                    error = DCore.Dock.close_window(leader)
+                    if not error
+                        @remove_client(leader)
+                    i += 1
             when 4 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
     record_launcher_position: ->
