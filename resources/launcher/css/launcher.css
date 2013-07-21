@@ -138,7 +138,6 @@ body {
     margin: 10px;
     cursor: default;
     float: left;
-    width: 80px;
     height: 74px;
     padding: 10px;
     padding-bottom: 2em;
@@ -155,11 +154,13 @@ body {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    width: 80px;
 
     text-shadow: 0px 1px 2px rgba(0,0,0,0.8), 0px 1px 2px rgba(0,0,0,0.8), 1px 0px 2px rgba(0,0,0,0.8), -0px 0px 2px rgba(0,0,0,0.8);
 
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 0 2px; /*fix the truncation when the word's length is to long*/
 }
 
 .item:hover {
