@@ -16,7 +16,7 @@ extern void test_thumbnails();
 extern void test_gnome_desktop_thumbnail();
 
 
-extern void test_inotify();
+extern void test_inotify_item();
 extern void test_dbus();
 extern void test_background();
 extern void test_background_util();
@@ -100,7 +100,7 @@ void desktop_test()
     //and I g_message in somewhere (begin function ,end function ,begin if and so on ),but ,there still isnot DEBUG message useful
 
     /* test inotify successful.*/
-    test_inotify();
+    test_inotify_item();
 
     // test_dbus();
 
