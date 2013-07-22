@@ -16,6 +16,15 @@ extern void test_thumbnails();
 extern void test_gnome_desktop_thumbnail();
 
 
+extern void test_inotify();
+extern void test_dbus();
+extern void test_background();
+extern void test_background_util();
+extern void test_desktop();
+extern void test_utils();
+extern void test_other();
+
+
 /* make 
 /home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘fileops_empty_trash’中:
 /home/ycl/dde/lib/dentry/fileops_trash.c:108:5: 警告： 不建议使用‘g_io_scheduler_push_job’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:36)：Use '"GThreadPool or g_task_run_in_thread"' instead [-Wdeprecated-declarations]
@@ -34,7 +43,7 @@ void desktop_test()
 {
     g_message("desktop test start...");
 
-    test_entry();//test ok 
+    // test_entry();//test ok 
     // ps:
     //1. g_file_trash() has bug when trash times and speed too fast
     //2. dentry_clipborad_paste() has bug when speed too fast ,becuase the X cannot follow it
@@ -91,7 +100,7 @@ void desktop_test()
     //and I g_message in somewhere (begin function ,end function ,begin if and so on ),but ,there still isnot DEBUG message useful
 
     /* test inotify successful.*/
-    //test_inotify();
+    test_inotify();
 
     // test_dbus();
 

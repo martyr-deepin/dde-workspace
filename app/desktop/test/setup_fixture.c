@@ -6,6 +6,15 @@ GPtrArray *gappinfo= NULL;
 
 gboolean FLAG_PRITN_RESULT = TRUE;
 
+
+gchar *file1 = "/home/test_files/360wallpaper38.jpg";
+gchar *file2 = "/home/test_files/001.png";
+gchar *rich_dir = "/home/test_files/.deepin_rich_dir_desktop_test";
+gchar *app_0 = "/home/test_files/skype.desktop";
+gchar *app_1 = "/home/test_files/deepin-user-manual.desktop";
+
+
+
 void setup_fixture()
 {
     // g_mkdir("test_files");
