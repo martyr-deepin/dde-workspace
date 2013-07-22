@@ -7,11 +7,11 @@ GPtrArray *gappinfo= NULL;
 gboolean FLAG_PRITN_RESULT = TRUE;
 
 
-gchar *file1 = "/home/test_files/360wallpaper38.jpg";
-gchar *file2 = "/home/test_files/001.png";
-gchar *rich_dir = "/home/test_files/.deepin_rich_dir_desktop_test";
-gchar *app_0 = "/home/test_files/skype.desktop";
-gchar *app_1 = "/home/test_files/deepin-user-manual.desktop";
+gchar *file1 = "/tmp/test_files/360wallpaper38.jpg";
+gchar *file2 = "/tmp/test_files/001.png";
+gchar *rich_dir = "/tmp/test_files/.deepin_rich_dir_desktop_test";
+gchar *app_0 = "/tmp/test_files/skype.desktop";
+gchar *app_1 = "/tmp/test_files/deepin-user-manual.desktop";
 
 
 
@@ -61,6 +61,12 @@ void setup_fixture()
     system("cp /usr/share/applications/deepin-system-settings.desktop /tmp/test_files/");
     system("cp /usr/share/applications/audacity.desktop /tmp/test_files/");
     system("cp /usr/share/applications/brasero.desktop /tmp/test_files/");
+
+    system("touch ~/Desktop/snyh.txt");
+    system("touch ~/Desktop/.snyh.txt");
+    system("touch ~/Desktop/snyh.txt~");
+
+
 
     //gfileDirectory = g_ptr_array_new();
     // gfileDocument = g_ptr_array_new();

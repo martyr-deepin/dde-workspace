@@ -4,7 +4,7 @@
 extern GPtrArray *gfileDirectory ;
 extern GPtrArray *gfileDocument;
 extern GPtrArray *gappinfo;
-
+extern gboolean FLAG_PRITN_RESULT ;
 extern gchar *file1;
 extern gchar *file2;
 extern gchar *rich_dir;

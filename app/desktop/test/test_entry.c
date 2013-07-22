@@ -1,6 +1,6 @@
 #include "desktop_test.h"
 
-gboolean TEST_THEM = TRUE;
+#define TEST_THEM FALSE
 
 void test_entry()
 {

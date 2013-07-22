@@ -1,22 +1,20 @@
 #include "desktop_test.h"
 
+#define TEST_OK FALSE
+
 void test_inotify_item()
 {
 	setup_fixture();
 
-
-	Test({
-
-
-	},"test_");
-
-
-    void trash_changed();
+#if TEST_OK
+    gboolean desktop_file_filter(const char *file_name);
     Test({
         g_assert(FALSE == desktop_file_filter("snyh.txt"));
         g_assert(TRUE == desktop_file_filter(".snyh.txt"));
         g_assert(TRUE == desktop_file_filter("snyh.txt~"));
     }, "desktop_file_filter");
+
+    void trash_changed();
     Test({
         trash_changed();
     }, "trash_changed");
@@ -32,7 +30,9 @@ void test_inotify_item()
     Test({
         install_monitor();
     }, "install_monitor");
-
+#endif
+//end if TEST_OK
+//
     void handle_rename(GFile *, GFile *);
     Test({
         GFile *old_f = g_file_new_for_path(file1);
