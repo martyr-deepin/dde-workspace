@@ -133,6 +133,7 @@ void handle_new(GFile* f)
     handle_update(f);
 }
 
+// test : use real fileops to test it
 
 PRIVATE
 void _remove_monitor_directory(GFile* f)
@@ -155,6 +156,8 @@ void _remove_monitor_directory(GFile* f)
     }
 }
 
+
+// test important
 PRIVATE
 gboolean _inotify_poll()
 {
