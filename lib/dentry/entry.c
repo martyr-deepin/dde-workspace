@@ -202,6 +202,20 @@ char* dentry_get_name(Entry* e)
     TEST_END
 }
 
+JS_EXPORT_API
+char* dentry_get_appid(Entry* e)
+{
+    char* basename = g_path_get_basename(g_desktop_app_info_get_filename(e));
+    char* ext_spe = strchr(basename, '.');
+    if (ext_spe == NULL) {
+        return basename;
+    } else {
+        char* app_id = g_strndup(basename, ext_spe - basename);
+        g_free(basename);
+        return app_id;
+    }
+}
+
 
 JS_EXPORT_API
 char* dentry_get_uri(Entry* e)

@@ -67,13 +67,11 @@ class Item extends Widget
             create_img("autostart_flag", Item.theme_icon, @element)
 
     do_click : (e)=>
-        e?.stopPropagation()
+        e.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         _save_hidden_apps()
         DCore.Launcher.exit_gui()
-    do_mouseover: (e)->
-        #$("#close").setAttribute("class", "close_hover")
 
     do_dragstart: (e)=>
         e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))
@@ -107,9 +105,13 @@ class Item extends Widget
 
         menu
 
-    @_contextmenu_callback: (item)->
-        (e) ->
-            item.element.contextMenu = build_menu(item._menu())
+    @_contextmenu_callback: do ->
+        _callback_func = null
+        (item)->
+            f = (e) ->
+                item.element.removeEventListener('contextmenu', _callback_func)
+                item.element.contextMenu = build_menu(item._menu())
+                _callback_func = f
 
     do_buildmenu: (e)=>
         @_menu()
@@ -148,7 +150,7 @@ class Item extends Widget
             @hide_icon()
         else
             @display_icon()
-        @element.contextMenu = build_menu(@_menu())
+
         @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
 
     add_to_autostart: ->
@@ -216,7 +218,6 @@ class Item extends Widget
 
 
 update_items = (items) ->
-    child_nodes = grid.childNodes
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
         grid.appendChild(item_to_be_shown)
@@ -248,6 +249,7 @@ grid_show_items = (items) ->
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
         setTimeout(applications[id].show, 4 + group_num)
+
     return  # some return like here will keep js converted by coffeescript returning stupid things
 
 _show_grid_selected = (id)->
@@ -266,5 +268,6 @@ grid_load_category = (cat_id) ->
 
 
 init_grid = ->
+    sort_category_info(sort_methods[sort_method])
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(ALL_APPLICATION_CATEGORY_ID)

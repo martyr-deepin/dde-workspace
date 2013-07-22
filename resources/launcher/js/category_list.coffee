@@ -79,12 +79,12 @@ sort_category_info = do ->
     _sort_func = sort_by_name
     (sort_func)->
         _sort_func = sort_func if sort_func
-        update = true  # some sort method like sort_by_rate needs update data
+        _sort_func(category_infos[ALL_APPLICATION_CATEGORY_ID], true)
         for own i of category_infos
-            _sort_func(category_infos["#{i}"], update)
-            update = false  # update data once should be ok
+            _sort_func(category_infos[i]) if i != "" + ALL_APPLICATION_CATEGORY_ID
         return
 
+sort_method = "name"
 init_category_list = ->
     frag = document.createDocumentFragment()
     for info in DCore.Launcher.get_categories()
@@ -92,14 +92,12 @@ init_category_list = ->
         frag.appendChild(c)
         _load_category_infos(info.ID)
 
-    sort_func = sort_by_name
-    sort_method = DCore.Launcher.sort_method()
-    if sort_method == 'rate'
-        sort_func = sort_by_rate
-    else
-        sort_func = sort_by_name
-
-    sort_category_info(sort_func)
     _category.appendChild(frag)
+
+    sort_func = sort_by_name
+    _sort_method = DCore.Launcher.sort_method()
+    sort_method = _sort_method if _sort_method
+    sort_func = sort_methods[sort_method]
+    sort_category_info(sort_methods[sort_method])
 
     _set_adaptive_height()

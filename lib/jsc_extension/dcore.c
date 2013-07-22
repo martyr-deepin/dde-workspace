@@ -326,20 +326,8 @@ JSValueRef dcore_get_app_rate()
     JSObjectRef json = json_create();
 
     for (int i = 0; i < size; ++i) {
-        GDesktopAppInfo* info = guess_desktop_file(groups[i]);
-
-        if (info != NULL) {
-            char const* name = g_desktop_app_info_get_filename(info);
-            char* basename = g_path_get_basename(name);
-            char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, basename,
-                                                     strlen(basename));
-            g_free(basename);
-
-            gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", NULL);
-            json_append_number(json, id, num);
-
-            g_free(id);
-        }
+        gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", NULL);
+        json_append_number(json, groups[i], num);
     }
 
     g_strfreev(groups);
