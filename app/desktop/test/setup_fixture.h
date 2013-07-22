@@ -5,6 +5,12 @@ extern GPtrArray *gfileDirectory ;
 extern GPtrArray *gfileDocument;
 extern GPtrArray *gappinfo;
 
+extern gchar *file1;
+extern gchar *file2;
+extern gchar *rich_dir;
+extern gchar *app_0;
+extern gchar *app_1;
+
 extern void setup_fixture();
 extern void tear_down_fixture();
 extern void func_test_entry_char(char* (*func)(Entry*),Entry* variable,char* value_return);

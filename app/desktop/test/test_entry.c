@@ -1,6 +1,6 @@
 #include "desktop_test.h"
 
-gboolean TEST_THEM = FALSE;
+gboolean TEST_THEM = TRUE;
 
 void test_entry()
 {
@@ -109,27 +109,6 @@ void test_entry()
     },"dentry_get_id");
 
 
-    extern gboolean dentry_launch(Entry* e, const ArrayContainer fs);
-    // const ArrayContainer fs = {g_ptr_array_index(gfileDirectory,0),1};
-    // const ArrayContainer fs = _normalize_array_container(*(ArrayContainer*)gfileDirectory);
-    // const ArrayContainer fs =  *(ArrayContainer*)gfileDirectory;
-    // gpointer* _gp = g_ptr_array_free(gfileDirectory,FALSE) ;
-    // gpointer* _gp = gfileDirectory->pdata;
-        
-    // gpointer* _gp = g_ptr_array_index(gfileDirectory,0);    
-    // gpointer* _gp = g_ptr_array_index(gfileDirectory,1);
-    // gpointer* _gp = g_ptr_array_index(gappinfo,0);    
-    // gpointer* _gp = g_ptr_array_index(gappinfo,1);    
-    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,3));    
-    const ArrayContainer fs = {&_gp,1};
-    Test({
-            func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
-        },"dentry_launch");
-    g_object_unref(_gp);
-    ArrayContainer_free0(fs);
-    //g_assert (G_IS_OBJECT(_gp));
-
-
     extern ArrayContainer dentry_list_files(GFile* f);
     GFile* f = g_ptr_array_index(gfileDirectory,0);
     Test({
@@ -191,8 +170,6 @@ void test_entry()
     },"dentry_set_name");
     system("rm -rf test_name_1/");
     g_message("%d",b);
-
-
     Test({
         system("touch /tmp/test.c");
         g_message("1trash start");
@@ -213,6 +190,28 @@ void test_entry()
     // endif of #if(TEST_THEM)
 
 #if 1
+    extern gboolean dentry_launch(Entry* e, const ArrayContainer fs);
+    // const ArrayContainer fs = {g_ptr_array_index(gfileDirectory,0),1};
+    // const ArrayContainer fs = _normalize_array_container(*(ArrayContainer*)gfileDirectory);
+    // const ArrayContainer fs =  *(ArrayContainer*)gfileDirectory;
+    // gpointer* _gp = g_ptr_array_free(gfileDirectory,FALSE) ;
+    // gpointer* _gp = gfileDirectory->pdata;
+        
+    // gpointer* _gp = g_ptr_array_index(gfileDirectory,0);    
+    // gpointer* _gp = g_ptr_array_index(gfileDirectory,1);
+    // gpointer* _gp = g_ptr_array_index(gappinfo,0);    
+    // gpointer* _gp = g_ptr_array_index(gappinfo,1);    
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,3));    
+    const ArrayContainer fs = {&_gp,1};
+    Test({
+            func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
+        },"dentry_launch");
+    g_object_unref(_gp);
+    ArrayContainer_free0(fs);
+    //g_assert (G_IS_OBJECT(_gp));
+#endif
+
+#if 0
     extern gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_trash(ArrayContainer fs);

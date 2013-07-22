@@ -133,6 +133,7 @@ void handle_new(GFile* f)
     handle_update(f);
 }
 
+// test : use real fileops to test it
 
 PRIVATE
 void _remove_monitor_directory(GFile* f)
@@ -155,6 +156,8 @@ void _remove_monitor_directory(GFile* f)
     }
 }
 
+
+// test important
 PRIVATE
 gboolean _inotify_poll()
 {
@@ -166,7 +169,7 @@ gboolean _inotify_poll()
         int length = read(_inotify_fd, buffer, EVENT_BUF_LEN);
 
         struct inotify_event *move_out_event = NULL;
-        GFile* old = NULL;
+        GFile* old = NULL;// test : use real fileops to test it
 
         for (int i=0; i<length; ) {
             struct inotify_event *event = (struct inotify_event *) &buffer[i];
