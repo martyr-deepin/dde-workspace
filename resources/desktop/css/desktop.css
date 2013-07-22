@@ -101,7 +101,7 @@ body {
     border-radius:2px;
     outline:none;
     overflow:hidden;
-    pointer-events:none;
+    padding: 0 1px; /*fix the truncation when the word's length is to long*/
 }
 
 .DesktopEntry .item_renaming {

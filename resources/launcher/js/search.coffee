@@ -60,7 +60,7 @@ search = do ->
     ->
         clearTimeout(_search_id)
         _search_id = setTimeout(->
-            grid_show_items(do_search(), false)
+            grid_show_items(update_items(do_search()))
         , 20)
 
 

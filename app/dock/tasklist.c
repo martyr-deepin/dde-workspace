@@ -136,7 +136,6 @@ PRIVATE void _update_is_overlay_client(Client* c);
 PRIVATE gboolean _is_maximized_window(Window win);
 PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
-GDesktopAppInfo* _guess_desktop_file(char const* app_id);
 
 PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
@@ -161,7 +160,7 @@ PRIVATE
 gboolean _get_launcher_icon(Client* c)
 {
     g_debug("try to get launcher's icon");
-    GDesktopAppInfo* info = _guess_desktop_file(c->app_id);
+    GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
         g_debug("info == NULL");
@@ -272,6 +271,14 @@ Client* create_client_from_window(Window w)
         _update_window_icon(c);
     }
 
+    if (record_file == NULL)
+        record_file = load_app_config(RECORD_FILE);
+
+    guint64 last_time = g_key_file_get_uint64(record_file, c->app_id, "StartNum", NULL);
+    g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
+    save_app_config(record_file, RECORD_FILE);
+
+
     return c;
 }
 
@@ -284,13 +291,6 @@ void _update_client_info(Client *c)
     json_append_string(json, "app_id", c->app_id);
     json_append_string(json, "exec", c->exec);
     g_assert(c->app_id != NULL);
-
-    if (record_file == NULL)
-        record_file = load_app_config(RECORD_FILE);
-
-    guint64 last_time = g_key_file_get_uint64(record_file, c->app_id, "StartNum", NULL);
-    g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
-    save_app_config(record_file, RECORD_FILE);
     js_post_message("task_updated", json);
 }
 
@@ -574,36 +574,6 @@ void _update_window_title(Client* c)
 
 }
 
-GDesktopAppInfo* _guess_desktop_file(char const* app_id)
-{
-    GDesktopAppInfo* desktop_file = NULL;
-    GList* all_desktop_files = g_app_info_get_all();
-
-    for (GList* iter = all_desktop_files; iter != NULL; iter = g_list_next(iter)) {
-        GDesktopAppInfo* iter_data_ref = (GDesktopAppInfo*)iter->data;
-        char const* filename = g_desktop_app_info_get_filename(iter_data_ref);
-
-        if (g_strstr_len(filename, -1, app_id)) {
-            desktop_file = g_object_ref(iter_data_ref);
-            break;
-        } else {
-            char* value = g_desktop_app_info_get_string(iter_data_ref,
-                                                        G_KEY_FILE_DESKTOP_KEY_EXEC);
-            if (g_strstr_len(value, -1, app_id)) {
-                desktop_file = g_object_ref(iter_data_ref);
-                g_free(value);
-                break;
-            }
-
-            g_free(value);
-        }
-    }
-
-    g_list_free_full(all_desktop_files, g_object_unref);
-
-    return desktop_file;
-}
-
 void _update_window_appid(Client* c)
 {
     char* app_id = NULL;
@@ -639,7 +609,7 @@ void _update_window_appid(Client* c)
         c->app_id = to_lower_inplace(app_id);
 
         if (s_pid != NULL) {
-            GDesktopAppInfo* desktop_file = _guess_desktop_file(c->app_id);
+            GDesktopAppInfo* desktop_file = guess_desktop_file(c->app_id);
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);
@@ -853,15 +823,15 @@ void dock_active_window(double id)
 
 
 JS_EXPORT_API
-void dock_close_window(double id)
+int dock_close_window(double id)
 {
     XClientMessageEvent event;
     event.type = ClientMessage;
     event.window = (Window)id;
     event.message_type = ATOM_CLOSE_WINDOW;
     event.format = 32;
-    XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
-            StructureNotifyMask, (XEvent*)&event);
+    return XSendEvent(_dsp, GDK_ROOT_WINDOW(), False,
+                      StructureNotifyMask, (XEvent*)&event);
 }
 
 JS_EXPORT_API

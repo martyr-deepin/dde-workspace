@@ -230,7 +230,7 @@ _update_scroll_bar = (len) ->
     else
         grid.style.overflowY = "hidden"
 
-grid_show_items = (items, is_category) ->
+grid_show_items = (items) ->
     update_selected(null)
 
     hidden_icon_ids = _get_hidden_icons_ids()
@@ -244,9 +244,6 @@ grid_show_items = (items, is_category) ->
         if key not in items
             value.hide()
 
-    if not is_category
-        update_items(items)
-
     count = 0
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
@@ -257,16 +254,17 @@ _show_grid_selected = (id)->
     cns = $s(".category_name")
     for c in cns
         if `id == c.getAttribute("cat_id")`
-            c.setAttribute("class", "category_name category_selected")
+            c.classList.add('category_selected')
         else
-            c.setAttribute("class", "category_name")
+            c.classList.remove('category_selected')
     return
 
 grid_load_category = (cat_id) ->
     _show_grid_selected(cat_id)
-    grid_show_items(category_infos[cat_id], true)
+    grid_show_items(category_infos[cat_id])
     update_selected(null)
 
 
 init_grid = ->
+    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(ALL_APPLICATION_CATEGORY_ID)

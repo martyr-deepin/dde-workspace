@@ -113,16 +113,12 @@ _b.addEventListener("keydown", do ->
                         get_first_shown()?.do_click()
 )
 
-_contextmenu_callback = (msg) ->
+_contextmenu_callback = (icon_msg, sort_msg) ->
     (e) ->
+        menu = [[1, sort_msg]]
         hidden_icons_ids = _get_hidden_icons_ids()
         if hidden_icons_ids.length
-            menu = [
-                [1, msg]
-            ]
-        else
-            menu = []
-            is_show_hidden_icons = false
+            menu.push([2, icon_msg])
         _b.contextMenu = build_menu(menu)
 
 is_show_hidden_icons = false
@@ -143,7 +139,8 @@ _show_hidden_icons = (is_shown) ->
             hidden_icons[item].hide_icon()
         msg = DISPLAY_HIDDEN_ICONS
 
-    _b.addEventListener("contextmenu", _contextmenu_callback(msg))
+    _b.addEventListener("contextmenu", _contextmenu_callback(msg,
+        SORT_MESSAGE[sort_method]))
 
 # key: id of app (md5 basenam of path)
 # value: Item class
@@ -151,23 +148,62 @@ applications = {}
 # key: id of app
 # value: a list of category id to which key belongs
 hidden_icons = {}
+
+compare_string = (s1, s2) ->
+    return 1 if s1 > s2
+    return 0 if s1 == s2
+    return -1
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
-    _all_items.sort((lhs, rhs) ->
-        lhs_name = DCore.DEntry.get_name(lhs)
-        rhs_name = DCore.DEntry.get_name(rhs)
-
-        return 1 if lhs_name > rhs_name
-        return 0 if lhs_name == rhs_name
-        return -1
-    )
 
     for core in _all_items
         id = DCore.DEntry.get_id(core)
         applications[id] = new Item(id, core)
 
+
+get_name_by_id = (id) ->
+    DCore.DEntry.get_name(Widget.look_up(id).core)
+
+sort_by_name = (items)->
+    items.sort((lhs, rhs)->
+        lhs_name = get_name_by_id(lhs)
+        rhs_name = get_name_by_id(rhs)
+        compare_string(lhs_name, rhs_name)
+    )
+
+sort_by_rate = do ->
+    rates = null
+    (items, update)->
+        rates = DCore.get_app_rate() if update
+        items.sort((lhs, rhs)->
+            if rates[lhs]? and rates[rhs]?
+                rates_delta = rates[rhs] - rates[lhs]
+                if rates_delta == 0
+                    lhs_name = get_name_by_id(lhs)
+                    rhs_name = get_name_by_id(rhs)
+                    return compare_string(lhs_name, rhs_name)
+                else
+                    return rates_delta
+            else if rates[lhs]? and not rates[rhs]?
+                return -1
+            else if not rates[lhs]? and rates[rhs]?
+                return 1
+            else
+                lhs_name = get_name_by_id(lhs)
+                rhs_name = get_name_by_id(rhs)
+                return compare_string(lhs_name, rhs_name)
+        )
+
+sort_methods =
+    "name": sort_by_name
+    "rate": sort_by_rate
+
+sort_method = "name"
 _init_hidden_icons = ->
+    sort_method = DCore.Launcher.sort_method()
+    sort_method = "name" if not sort_method
+
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
     if hidden_icon_ids?
         hidden_icon_ids.filter((elem, index, array) ->
@@ -180,12 +216,30 @@ _init_hidden_icons = ->
                 hidden_icons[id] = applications[id]
                 hidden_icons[id].hide_icon()
 
-    _b.addEventListener("contextmenu", _contextmenu_callback(DISPLAY_HIDDEN_ICONS))
-
     _b.addEventListener("itemselected", (e) ->
-        grid_load_category(selected_category_id)
-        _show_hidden_icons(not is_show_hidden_icons)
+        switch e.id
+            when 1
+                if sort_method == "rate"
+                    sort_method = "name"
+                else if sort_method == "name"
+                    sort_method = "rate"
+
+                sort_category_info(sort_methods[sort_method])
+                update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                grid_load_category(selected_category_id)
+
+                DCore.Launcher.save_config('sort_method', sort_method)
+                _b.addEventListener("contextmenu",
+                    _contextmenu_callback(DISPLAY_HIDDEN_ICONS,
+                    SORT_MESSAGE[sort_method]))
+            when 2
+                grid_load_category(selected_category_id)
+                _show_hidden_icons(not is_show_hidden_icons)
     )
+
+    _b.addEventListener("contextmenu",
+        _contextmenu_callback(DISPLAY_HIDDEN_ICONS, SORT_MESSAGE[sort_method]))
+
 
     return
 
