@@ -268,5 +268,6 @@ grid_load_category = (cat_id) ->
 
 
 init_grid = ->
+    sort_category_info(sort_methods[sort_method])
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(ALL_APPLICATION_CATEGORY_ID)

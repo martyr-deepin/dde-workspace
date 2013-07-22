@@ -172,6 +172,7 @@ init_all_applications = ->
 get_name_by_id = (id) ->
     DCore.DEntry.get_name(Widget.look_up(id).core)
 
+
 sort_by_name = (items)->
     items.sort((lhs, rhs)->
         lhs_name = get_name_by_id(lhs)
@@ -181,36 +182,43 @@ sort_by_name = (items)->
 
 sort_by_rate = do ->
     rates = null
+    items_name_map = {}
+
     (items, update)->
-        rates = DCore.get_app_rate() if update
+        if update
+            rates = DCore.get_app_rate()
+
+            for id in category_infos[ALL_APPLICATION_CATEGORY_ID]
+                if not items_name_map[id]?
+                    items_name_map[id] =
+                        DCore.DEntry.get_appid(Widget.look_up(id).core)
+
         items.sort((lhs, rhs)->
-            if rates[lhs]? and rates[rhs]?
-                rates_delta = rates[rhs] - rates[lhs]
+            lhs_appid = items_name_map[lhs]
+            lhs_rate = rates[lhs_appid] if lhs_appid?
+
+            rhs_appid = items_name_map[rhs]
+            rhs_rate = rates[rhs_appid] if rhs_appid?
+
+            if lhs_rate? and rhs_rate?
+                rates_delta = rhs_rate - lhs_rate
                 if rates_delta == 0
-                    lhs_name = get_name_by_id(lhs)
-                    rhs_name = get_name_by_id(rhs)
-                    return compare_string(lhs_name, rhs_name)
+                    return compare_string(get_name_by_id(lhs), get_name_by_id(rhs))
                 else
                     return rates_delta
-            else if rates[lhs]? and not rates[rhs]?
+            else if lhs_rate? and not rhs_rate?
                 return -1
-            else if not rates[lhs]? and rates[rhs]?
+            else if not lhs_rate? and rhs_rates?
                 return 1
             else
-                lhs_name = get_name_by_id(lhs)
-                rhs_name = get_name_by_id(rhs)
-                return compare_string(lhs_name, rhs_name)
+                return compare_string(get_name_by_id(lhs), get_name_by_id(rhs))
         )
 
 sort_methods =
     "name": sort_by_name
     "rate": sort_by_rate
 
-sort_method = "name"
 _init_hidden_icons = ->
-    sort_method = DCore.Launcher.sort_method()
-    sort_method = "name" if not sort_method
-
     hidden_icon_ids = DCore.Launcher.load_hidden_apps()
     if hidden_icon_ids?
         hidden_icon_ids.filter((elem, index, array) ->
