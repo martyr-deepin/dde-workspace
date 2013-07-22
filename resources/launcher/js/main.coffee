@@ -113,13 +113,20 @@ _b.addEventListener("keydown", do ->
                         get_first_shown()?.do_click()
 )
 
-_contextmenu_callback = (icon_msg, sort_msg) ->
-    (e) ->
-        menu = [[1, sort_msg]]
-        hidden_icons_ids = _get_hidden_icons_ids()
-        if hidden_icons_ids.length
-            menu.push([2, icon_msg])
-        _b.contextMenu = build_menu(menu)
+_contextmenu_callback = do ->
+    _callback_func = null
+    (icon_msg, sort_msg) ->
+        f = (e) ->
+            # remove the useless callback function to get better performance
+            _b.removeEventListener('contextmenu', _callback_func)
+            menu = [[1, sort_msg]]
+
+            hidden_icons_ids = _get_hidden_icons_ids()
+            if hidden_icons_ids.length
+                menu.push([2, icon_msg])
+
+            _b.contextMenu = build_menu(menu)
+            _callback_func = f
 
 is_show_hidden_icons = false
 
@@ -239,7 +246,6 @@ _init_hidden_icons = ->
 
     _b.addEventListener("contextmenu",
         _contextmenu_callback(DISPLAY_HIDDEN_ICONS, SORT_MESSAGE[sort_method]))
-
 
     return
 
