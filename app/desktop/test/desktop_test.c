@@ -17,7 +17,6 @@ extern void test_gnome_desktop_thumbnail();
 
 
 extern void test_inotify_item();
-extern void test_dbus();
 extern void test_background();
 extern void test_background_util();
 extern void test_desktop();
@@ -104,13 +103,13 @@ void desktop_test()
 
     // test_dbus();
 
-    test_background(); 
+    // test_background(); 
 
     // test_background_util();
 
     /* test_desktop(); */
 
-    /* test_utils(); */
+    // test_utils(); 
 
     //test_other();
     //

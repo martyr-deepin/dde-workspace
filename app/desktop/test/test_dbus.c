@@ -4,11 +4,11 @@ void test_dbus()
 {
 	setup_fixture();
 
+	// void setup_dbus_service ();
+	// Test({
 
-	Test({
-
-
-	},"test_");
+	// // setup_dbus_service();
+	// },"setup_dbus_service");
 
 
 
