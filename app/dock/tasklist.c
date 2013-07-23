@@ -32,6 +32,7 @@
 #include "special_window.h"
 #include "xdg_misc.h"
 extern Window get_dock_window();
+extern char* dcore_get_theme_icon(const char*, double);
 
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>

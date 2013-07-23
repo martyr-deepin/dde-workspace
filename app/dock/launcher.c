@@ -30,6 +30,9 @@
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
 
+extern char* dcore_get_theme_icon(char const*, double);
+
+
 /* * app_id is
  * 1. the desktop file name in whitelist
  * 2. the normal desktop file name
@@ -329,7 +332,9 @@ void write_app_info(GDesktopAppInfo* info)
 JS_EXPORT_API
 void dock_request_dock(const char* path)
 {
-    GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(path);
+    char* unescape_path = g_uri_unescape_string(path, "/:");
+    GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(unescape_path);
+    g_free(unescape_path);
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);
