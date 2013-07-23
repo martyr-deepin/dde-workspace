@@ -341,8 +341,8 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
                 _file_arg = files[0];
             }
 
-            // launch_res = activate_file (f, content_type, is_executable, _file_arg);
-            launch_res =TRUE;
+            launch_res = activate_file (f, content_type, is_executable, _file_arg);
+            /* launch_res =TRUE; */
 
             if (fs.num != 0)
             {
