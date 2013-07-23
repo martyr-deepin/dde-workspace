@@ -7,11 +7,11 @@ GPtrArray *gappinfo= NULL;
 gboolean FLAG_PRITN_RESULT = TRUE;
 
 
-gchar *file1 = "/tmp/test_files/360wallpaper38.jpg";
-gchar *file2 = "/tmp/test_files/001.png";
+gchar *file1 = "/tmp/test_files/default_background.jpg";
+gchar *file2 = "/tmp/test_files/text.test";
 gchar *rich_dir = "/tmp/test_files/.deepin_rich_dir_desktop_test";
 gchar *app_0 = "/tmp/test_files/skype.desktop";
-gchar *app_1 = "/tmp/test_files/deepin-user-manual.desktop";
+gchar *app_1 = "/tmp/test_files/deepin-media-player.desktop";
 
 
 

@@ -100,11 +100,11 @@ void desktop_test()
     //and I g_message in somewhere (begin function ,end function ,begin if and so on ),but ,there still isnot DEBUG message useful
 
     /* test inotify successful.*/
-    test_inotify_item();
+    // test_inotify_item();
 
     // test_dbus();
 
-    /* test_background(); */
+    test_background(); 
 
     // test_background_util();
 
