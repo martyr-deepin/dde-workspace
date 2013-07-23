@@ -181,6 +181,31 @@ gboolean _get_launcher_icon(Client* c)
         if (g_str_has_prefix(icon_name, "data:image")) {
             c->icon = icon_name;
         } else {
+            if (g_path_is_absolute(icon_name)) {
+                char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id,  48);
+
+                if (temp_icon_name_holder != NULL) {
+                    g_free(icon_name);
+                    icon_name = temp_icon_name_holder;
+                } else {
+                    char* basename =
+                        get_basename_without_extend_name(icon_name);
+
+                    if (basename != NULL) {
+                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
+                                                                     48);
+                        g_free(basename);
+
+                        if (temp_icon_name_holder != NULL &&
+                            !g_str_has_prefix(temp_icon_name_holder,
+                                              "data:image")) {
+                            g_free(icon_name);
+                            icon_name = temp_icon_name_holder;
+                        }
+                    }
+                }
+            }
+
             char* icon_path = icon_name_to_path(icon_name, 48);
             g_free(icon_name);
 
@@ -200,10 +225,11 @@ gboolean _get_launcher_icon(Client* c)
                                                                TRUE, NULL);
                 }
                 g_free(icon_path);
+
                 if (pixbuf == NULL) {
                     c->icon = NULL;
                 } else {
-                    char* icon_data = handle_icon(pixbuf);
+                    char* icon_data = handle_icon(pixbuf, c->use_board);
                     g_object_unref(pixbuf);
                     c->icon = icon_data;
                 }
@@ -554,7 +580,7 @@ void _update_window_icon(Client* c)
 
 
     g_free(c->icon);
-    c->icon = handle_icon(pixbuf);
+    c->icon = handle_icon(pixbuf, c->use_board);
     g_object_unref(pixbuf);
 
     g_free(img);

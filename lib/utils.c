@@ -364,3 +364,17 @@ GDesktopAppInfo* guess_desktop_file(char const* app_id)
     return desktop_file;
 }
 
+
+char* get_basename_without_extend_name(char const* path)
+{
+    g_assert(path!= NULL);
+    char* basename = g_path_get_basename(path);
+    char* ext_sep = strrchr(basename, '.');
+    if (ext_sep != NULL) {
+        char* basename_without_ext = g_strndup(basename, ext_sep - basename);
+        g_free(basename);
+        return basename_without_ext;
+    } else {
+        return basename;
+    }
+}

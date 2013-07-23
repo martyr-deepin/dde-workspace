@@ -326,7 +326,14 @@ JSValueRef dcore_get_app_rate()
     JSObjectRef json = json_create();
 
     for (int i = 0; i < size; ++i) {
-        gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", NULL);
+        GError* error = NULL;
+        gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", &error);
+
+        if (error != NULL) {
+            g_warning("get record file value failed: %s", error->message);
+            continue;
+        }
+
         json_append_number(json, groups[i], num);
     }
 
