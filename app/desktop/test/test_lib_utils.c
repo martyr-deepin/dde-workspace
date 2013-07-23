@@ -1,9 +1,15 @@
 #include "desktop_test.h"
 void test_lib_utils()
 {
-    gboolean on_bg_duration_tick(gpointer data);
+
+	extern char* dcore_gen_id(const char* seed);
+	const char* dcore_gettext(const char* c);
+	const char* dcore_dgettext(char const* domain, char const* s);
+	void dcore_bindtextdomain(char const* domain, char const* mo_file);
+
     Test({
-        on_bg_duration_tick(NULL);
-    }, "on_bg_duration_tick");
+        char* c = dcore_gen_id("1000");
+        g_free(c);
+    }, "dcore_gen_id");
 
 }
