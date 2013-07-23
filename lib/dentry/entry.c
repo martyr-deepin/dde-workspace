@@ -371,8 +371,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         }
         GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
         gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
-        // gboolean ret = g_app_info_launch(app, list, (GAppLaunchContext*)launch_context, NULL);
-        gboolean ret = TRUE;
+        gboolean ret = g_app_info_launch(app, list, (GAppLaunchContext*)launch_context, NULL);
         g_object_unref(launch_context);
         g_list_free(list);
 
