@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <gtk/gtk.h>
 #include <glib.h>
 #include <string.h>
 #include <gio/gio.h>
@@ -25,6 +26,7 @@
 #include "utils.h"
 #include "xdg_misc.h"
 #include "jsextension.h"
+#include "dwebview.h"
 
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
@@ -313,4 +315,17 @@ JSValueRef dcore_get_plugin_info(char const* path)
     g_key_file_free(info_file);
 
     return json;
+}
+
+
+JS_EXPORT_API
+void dcore_new_window(const char* url, const char* title, double w, double h)
+{
+    g_warning("Don't use the function now!");
+    GtkWidget* container = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(container), title);
+    gtk_widget_set_size_request(container, (int)w, (int)h);
+    GtkWidget *webview = d_webview_new_with_uri(url);
+    gtk_container_add(GTK_CONTAINER(container), webview);
+    gtk_widget_show_all(container);
 }
