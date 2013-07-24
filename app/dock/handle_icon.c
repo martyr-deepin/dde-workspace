@@ -14,9 +14,8 @@
 cairo_surface_t* _board = NULL;
 cairo_surface_t* _board_mask = NULL;
 
-char* handle_icon(GdkPixbuf* icon)
+char* handle_icon(GdkPixbuf* icon, gboolean use_board)
 {
-    gboolean use_board = (gdk_pixbuf_get_width(icon) == IMG_WIDTH);
     int left_offset = 0;
     int top_offset = 0;
 

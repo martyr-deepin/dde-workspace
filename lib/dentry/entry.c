@@ -323,7 +323,7 @@ char* dentry_get_id(Entry* e)
 JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
-    g_message("start\n");
+    /* g_message("start\n"); */
     TEST_GFILE(e, f)
         gboolean launch_res = TRUE;
         GFileInfo* info = g_file_query_info(f, "standard::content-type,access::can-execute", G_FILE_QUERY_INFO_NONE, NULL, NULL);

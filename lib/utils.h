@@ -52,4 +52,6 @@ gboolean file_filter(const char *file_name);
 char* get_desktop_file_basename(GDesktopAppInfo* file);  // g_free the return value
 GDesktopAppInfo* guess_desktop_file(char const* app_id);
 
+char* get_basename_without_extend_name(char const* path);
+
 #endif

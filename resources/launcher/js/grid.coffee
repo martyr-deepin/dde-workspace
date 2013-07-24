@@ -67,7 +67,7 @@ class Item extends Widget
             create_img("autostart_flag", Item.theme_icon, @element)
 
     do_click : (e)=>
-        e.stopPropagation()
+        e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         _save_hidden_apps()
@@ -161,10 +161,10 @@ class Item extends Widget
         create_img("autostart_flag", Item.theme_icon, @element)
 
     remove_from_autostart: ->
-        @is_autostart = false
-        DCore.Launcher.remove_from_autostart(@core)
-        last = @element.lastChild
-        @element.removeChild(last) if last.tagName == 'IMG'
+        if DCore.Launcher.remove_from_autostart(@core)
+            @is_autostart = false
+            last = @element.lastChild
+            @element.removeChild(last) if last.tagName == 'IMG'
 
     toggle_autostart: ->
         if @is_autostart

@@ -30,6 +30,9 @@
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
 
+extern char* dcore_get_theme_icon(char const*, double);
+
+
 /* * app_id is
  * 1. the desktop file name in whitelist
  * 2. the normal desktop file name
@@ -91,29 +94,56 @@ JSValueRef build_app_info(const char* app_id)
         if (g_str_has_prefix(icon_name, "data:image")) {
             json_append_string(json, "Icon", icon_name);
         } else {
+            if (g_path_is_absolute(icon_name)) {
+                char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
+                if (temp_icon_name_holder != NULL) {
+                    g_free(icon_name);
+                    icon_name = temp_icon_name_holder;
+                } else {
+                    char* basename =
+                        get_basename_without_extend_name(icon_name);
+
+                    if (basename != NULL) {
+                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
+                                                                     48);
+                        g_free(basename);
+
+                        if (temp_icon_name_holder != NULL &&
+                            !g_str_has_prefix(temp_icon_name_holder,
+                                              "data:image")) {
+                            g_free(icon_name);
+                            icon_name = temp_icon_name_holder;
+                        }
+                    }
+                }
+            };
+
             char* icon_path = icon_name_to_path(icon_name, 48);
             if (is_deepin_icon(icon_path)) {
                 json_append_string(json, "Icon", icon_path);
             } else {
+                gboolean use_board = TRUE;
                 GdkPixbuf* pixbuf = NULL;
-                int operator_code;
+                int operator_code = -1;
                 if (is_deepin_app_id(app_id) && (operator_code = \
-                    get_deepin_app_id_operator(app_id)) == \
+                                                 get_deepin_app_id_operator(app_id)) == \
                     ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD) {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
                                                                BOARD_WIDTH,
                                                                BOARD_HEIGHT,
                                                                TRUE, NULL);
+                    use_board = FALSE;
                 } else {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
                                                                IMG_WIDTH,
                                                                IMG_HEIGHT,
                                                                TRUE, NULL);
                 }
+
                 if (pixbuf == NULL) {
                     json_append_string(json, "Icon", NULL);
                 } else {
-                    char* icon_data = handle_icon(pixbuf);
+                    char* icon_data = handle_icon(pixbuf, use_board);
                     g_object_unref(pixbuf);
                     json_append_string(json, "Icon", icon_data);
                     g_free(icon_data);
@@ -302,7 +332,9 @@ void write_app_info(GDesktopAppInfo* info)
 JS_EXPORT_API
 void dock_request_dock(const char* path)
 {
-    GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(path);
+    char* unescape_path = g_uri_unescape_string(path, "/:");
+    GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(unescape_path);
+    g_free(unescape_path);
     if (info != NULL) {
         char* app_id = get_app_id(info);
         write_app_info(info);

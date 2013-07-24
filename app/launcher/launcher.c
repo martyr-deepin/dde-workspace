@@ -705,17 +705,61 @@ void launcher_add_to_autostart(Entry* _item)
 
 
 JS_EXPORT_API
-void launcher_remove_from_autostart(Entry* _item)
+gboolean launcher_remove_from_autostart(Entry* _item)
 {
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* name = get_desktop_file_basename(item);
-    char* autostart_file_path = g_build_filename(g_get_user_config_dir(),
-                                                 "autostart", name, NULL);
-    g_free(name);
-    GFile* file = g_file_new_for_path(autostart_file_path);
-    g_file_delete(file, NULL, NULL);
-    g_object_unref(file);
-    g_free(autostart_file_path);
+
+    if (config_paths == NULL) {
+        config_paths = g_ptr_array_new_with_free_func(g_free);
+        g_ptr_array_add(config_paths, g_build_filename(g_get_user_config_dir(),
+                                                       "autostart", NULL));
+
+        char const* const* sys_paths = g_get_system_config_dirs();
+        for (int i = 0 ; sys_paths[i] != NULL; ++i) {
+            g_ptr_array_add(config_paths, g_build_filename(sys_paths[i],
+                                                           "autostart",
+                                                           NULL));
+        }
+
+        g_ptr_array_add(config_paths, NULL);
+    }
+
+    int i = 0;
+    char* path = NULL;
+    while ((path = (char*)g_ptr_array_index(config_paths, i++)) != NULL) {
+        GDir* dir = g_dir_open(path, 0, NULL);
+        if (dir == NULL)
+            return FALSE;
+
+        char* name = get_desktop_file_basename(item);
+
+        const char* filename = NULL;
+        while ((filename = g_dir_read_name(dir)) != NULL) {
+            char* lowercase_name = g_utf8_strdown(filename, -1);
+
+            if (g_str_equal(name, lowercase_name)) {
+                g_free(lowercase_name);
+                char* file_path = g_build_filename(path, filename, NULL);
+                GFile* file = g_file_new_for_path(file_path);
+                g_free(file_path);
+                GError* error = NULL;
+                gboolean success = g_file_delete(file, NULL, &error);
+                if (!success) {
+                    g_warning("delete file failed: %s", error->message);
+                    g_error_free(error);
+                }
+                g_object_unref(file);
+                return success;
+            }
+
+            g_free(lowercase_name);
+        }
+
+        g_dir_close(dir);
+        g_free(name);
+    }
+
+    return FALSE;
 }
 
 
