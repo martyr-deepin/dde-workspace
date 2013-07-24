@@ -116,8 +116,8 @@ void desktop_test()
     //test_other();
     //
     // test_lib_utils();
-    test_pixbuf();
-    // test_xdg_misc();
+    // test_pixbuf();
+    test_xdg_misc();
     
     
     
