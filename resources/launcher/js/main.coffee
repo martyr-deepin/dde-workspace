@@ -186,7 +186,7 @@ sort_by_rate = do ->
 
     (items, update)->
         if update
-            rates = DCore.get_app_rate()
+            rates = DCore.Launcher.get_app_rate()
 
             for id in category_infos[ALL_APPLICATION_CATEGORY_ID]
                 if not items_name_map[id]?

@@ -319,33 +319,6 @@ JSValueRef dcore_get_plugin_info(char const* path)
 
 
 JS_EXPORT_API
-JSValueRef dcore_get_app_rate()
-{
-    GKeyFile* record_file = load_app_config("dock/record.ini");
-
-    gsize size = 0;
-    char** groups = g_key_file_get_groups(record_file, &size);
-    JSObjectRef json = json_create();
-
-    for (int i = 0; i < size; ++i) {
-        GError* error = NULL;
-        gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", &error);
-
-        if (error != NULL) {
-            g_warning("get record file value failed: %s", error->message);
-            continue;
-        }
-
-        json_append_number(json, groups[i], num);
-    }
-
-    g_strfreev(groups);
-    g_key_file_free(record_file);
-
-    return json;
-}
-
-JS_EXPORT_API
 void dcore_new_window(const char* url, const char* title, double w, double h)
 {
     g_warning("Don't use the function now!");

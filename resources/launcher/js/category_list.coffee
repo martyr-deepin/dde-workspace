@@ -41,7 +41,7 @@ _set_adaptive_height = ->
 # key: category id
 # value: a list of Item's id which is in category
 category_infos = []
-_load_category_infos = (cat_id)->
+_load_category_infos = (cat_id, sort_func)->
     if cat_id == ALL_APPLICATION_CATEGORY_ID
         frag = document.createDocumentFragment()
         category_infos[cat_id] = []
@@ -52,6 +52,8 @@ _load_category_infos = (cat_id)->
     else
         info = DCore.Launcher.get_items_by_category(cat_id)
         category_infos[cat_id] = info
+
+    sort_func(category_infos[cat_id])
 
 hide_category = ->
     for own i of category_infos
@@ -78,26 +80,27 @@ show_category = ->
 sort_category_info = do ->
     _sort_func = sort_by_name
     (sort_func)->
-        _sort_func = sort_func if sort_func
+        _sort_func = sort_func if sort_func?
         _sort_func(category_infos[ALL_APPLICATION_CATEGORY_ID], true)
         for own i of category_infos
-            _sort_func(category_infos[i]) if i != "" + ALL_APPLICATION_CATEGORY_ID
+            if i != "" + ALL_APPLICATION_CATEGORY_ID
+                _sort_func(category_infos[i])
         return
 
 sort_method = "name"
 init_category_list = ->
+
+    if (_sort_method = DCore.Launcher.sort_method())?
+        sort_method = _sort_method
+    else
+        DCore.Launcher.save_config('sort_method', sort_method)
+
     frag = document.createDocumentFragment()
     for info in DCore.Launcher.get_categories()
         c = _create_category(info)
         frag.appendChild(c)
-        _load_category_infos(info.ID)
+        _load_category_infos(info.ID, sort_methods[sort_method])
 
     _category.appendChild(frag)
-
-    sort_func = sort_by_name
-    _sort_method = DCore.Launcher.sort_method()
-    sort_method = _sort_method if _sort_method
-    sort_func = sort_methods[sort_method]
-    sort_category_info(sort_methods[sort_method])
 
     _set_adaptive_height()
