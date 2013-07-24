@@ -1,6 +1,7 @@
 #include "desktop_test.h"
 void test_lib_utils()
 {
+	setup_fixture();
 
 	extern char* dcore_gen_id(const char* seed);
 	const char* dcore_gettext(const char* c);
@@ -9,7 +10,15 @@ void test_lib_utils()
 
     Test({
         char* c = dcore_gen_id("1000");
-        g_free(c);
+        g_free(c);    
     }, "dcore_gen_id");
+
+
+    Test({
+        char* c = dcore_gettext("1000");
+        g_free(c);    
+    }, "dcore_gettext");
+
+    tear_down_fixture();
 
 }

@@ -24,6 +24,8 @@ extern void test_utils();
 extern void test_other();
 
 extern void test_lib_utils();
+extern void test_pixbuf();
+extern void test_xdg_misc();
 /* make 
 /home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘fileops_empty_trash’中:
 /home/ycl/dde/lib/dentry/fileops_trash.c:108:5: 警告： 不建议使用‘g_io_scheduler_push_job’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:36)：Use '"GThreadPool or g_task_run_in_thread"' instead [-Wdeprecated-declarations]
@@ -113,7 +115,11 @@ void desktop_test()
 
     //test_other();
     //
-    test_lib_utils();
+    // test_lib_utils();
+    test_pixbuf();
+    // test_xdg_misc();
+    
+    
     
     g_message("desktop tests All passed!!!");
 }
