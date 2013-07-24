@@ -798,3 +798,32 @@ void launcher_save_config(char const* key, char const* value)
 
     save_app_config(launcher_config, LAUNCHER_CONF);
 }
+
+
+JS_EXPORT_API
+JSValueRef launcher_get_app_rate()
+{
+    GKeyFile* record_file = load_app_config("dock/record.ini");
+
+    gsize size = 0;
+    char** groups = g_key_file_get_groups(record_file, &size);
+
+    JSObjectRef json = json_create();
+
+    for (int i = 0; i < size; ++i) {
+        GError* error = NULL;
+        gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", &error);
+
+        if (error != NULL) {
+            g_warning("get record file value failed: %s", error->message);
+            continue;
+        }
+
+        json_append_number(json, groups[i], num);
+    }
+
+    g_strfreev(groups);
+    g_key_file_free(record_file);
+
+    return json;
+}
