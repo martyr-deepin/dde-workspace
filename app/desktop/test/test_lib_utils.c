@@ -15,8 +15,8 @@ void test_lib_utils()
 
 
     Test({
-        char* c = dcore_gettext("1000");
-        g_free(c);    
+        const char* c = dcore_gettext("1000");
+        // g_free(c);    
     }, "dcore_gettext");
 
     tear_down_fixture();

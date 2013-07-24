@@ -22,6 +22,7 @@
 #define __XDG_MISC_H__
 #include <glib.h>
 #include <gio/gio.h>
+#include <jsextension.h>
 
 // the really icon path is determined by theme
 void set_default_theme(const char* theme);
@@ -48,6 +49,6 @@ char *   nautilus_get_templates_directory            (void);
 char *   nautilus_get_templates_directory_uri        (void);
 void     nautilus_create_templates_directory         (void);
 
-
+ArrayContainer natilus_get_templates_files(void);
 
 #endif

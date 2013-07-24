@@ -26,13 +26,21 @@ void test_xdg_misc()
     char *   nautilus_get_templates_directory            (void);
     char *   nautilus_get_templates_directory_uri        (void);
     void     nautilus_create_templates_directory         (void);
+    ArrayContainer natilus_get_templates_files(void);
 
-
+    
+#if 0 
     Test({
         char* c = nautilus_get_templates_directory_uri();
         g_message("%s",c);
         g_free(c);
     }, "nautilus_get_templates_directory_uri");
+#endif
+
+    Test({
+        ArrayContainer fs = natilus_get_templates_files();;
+        ArrayContainer_free(fs);
+    }, "natilus_get_templates_files");
 
     tear_down_fixture();
 }
