@@ -3,10 +3,10 @@ void test_pixbuf()
 {
 	// setup_fixture();4
 
-	char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4);
+	char* generate_directory_icon(const char* p1, const char* p2, const char* p3, const char* p4);// not test
 	char* get_data_uri_by_path(const char* path);//test ok
 	char* get_data_uri_by_pixbuf(GdkPixbuf* pixbuf);//test in get_data_uri_by_path //test ok
-	char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf);
+	char* pixbuf_to_canvas_data(GdkPixbuf* pixbuf);//test ok
 
 #if 0
 	Test({
