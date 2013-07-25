@@ -430,14 +430,33 @@ menu_create_new_file = () ->
     create_entry_to_new_item(entry)
 
 
+      # if(evt.dataTransfer.files.length == 0)
+      # {
+      #   //if the drop_target is internet files 
+      #   xdg_target = evt.dataTransfer.getData("text/uri-list");
+      #   echo("xdg_target:"+ xdg_target);
+      #   echo("xdg_target.length:"+xdg_target.length);        
+      #   desktop_uri = "" + (DCore.DEntry.get_uri(g_desktop_entry));
+      #   evt.dataTransfer.setData("Text",desktop_uri);
+      # }
+
+
 # all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
-            desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
-            evt.dataTransfer.setXDSPath(desktop_uri)
+        desktop_uri = DCore.DEntry.get_uri(g_desktop_entry)
+        echo desktop_uri
+
+        if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
+            xdg_target = evt.dataTransfer.getData("text/plain")
+            echo xdg_target
+            echo "xdg_target.length:" + xdg_target.length
+            tmp = DCore.DEntry.list_files(DCore.DEntry.create_by_path(xdg_target))
+            echo tmp
+            evt.dataTransfer.setData("text/plain",tmp)
+            DCore.DEntry.copy(tmp, g_desktop_entry)
         else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
             tmp_move = []
