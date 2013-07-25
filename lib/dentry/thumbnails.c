@@ -53,6 +53,7 @@ gfile_can_thumbnail (GFile* file)
  *      syncronously create thumbnails. shall we move to a threaded
  *      implementation?
  */
+#define THUMBNAIL_CREATION_DELAY	2
 char*
 gfile_lookup_thumbnail (GFile* file)
 {
@@ -99,6 +100,10 @@ gfile_lookup_thumbnail (GFile* file)
     //3' create thumbnail if not exist
     if (thumbnail_path == NULL)
     {
+        time_t current_time = 0;
+        time (&current_time);
+        if (current_time - mtime < THUMBNAIL_CREATION_DELAY)
+            return NULL;
         //try to create thumbnails
         GdkPixbuf *pixbuf;
         pixbuf = gnome_desktop_thumbnail_factory_generate_thumbnail (factory, uri, mime_type);
