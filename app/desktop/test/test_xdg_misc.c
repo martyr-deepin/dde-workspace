@@ -38,7 +38,15 @@ void test_xdg_misc()
 #endif
 
     Test({
-        ArrayContainer fs = natilus_get_templates_files();;
+        ArrayContainer fs = natilus_get_templates_files();
+        GFile* src = NULL;
+        for(size_t i = 0; i< fs.num;i++)
+        {
+            src=&(fs.data);
+            char* path = g_file_get_path(src);
+            g_message("path:%s",path);
+            g_free(path);
+        }
         ArrayContainer_free(fs);
     }, "natilus_get_templates_files");
 

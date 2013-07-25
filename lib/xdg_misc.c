@@ -29,7 +29,7 @@
 #include "pixbuf.h"
 #include "utils.h"
 #include "xdg_misc.h"
-#include "dentry/entry.h"
+#include "../lib/dentry/entry.h"
 
 static const char* GROUP = "Desktop Entry";
 static char DE_NAME[100] = "DEEPIN";
@@ -255,20 +255,35 @@ nautilus_get_templates_directory_uri (void)
 JS_EXPORT_API
 ArrayContainer natilus_get_templates_files(void)
 {
+    extern ArrayContainer dentry_list_files(GFile* f);
     ArrayContainer EMPTY_CONTAINER = {0, 0};
-    char * c = nautilus_get_templates_directory();
-    g_message("%s",c);
+    ArrayContainer ac;
+    char* c = nautilus_get_templates_directory();
+    // g_message("templates_directory:%s",c);
     GFile* f = g_file_new_for_path(c);
 
-    g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
+#if 0
+
+
+    // g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
+    // check the dir is empty,if is ,return ; or next;
     char* dir_path = g_file_get_path(f);
+    // g_message("dir_path:%s",dir_path);
     GDir* dir = g_dir_open(dir_path, 0, NULL);
     const char* child_name = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
 
     for (int i=0; NULL != (child_name = g_dir_read_name(dir)); i++) {
         char* path = g_build_filename(dir_path, child_name, NULL);
-        g_message("%s",path);
+        // g_message("child_name:%s",child_name);
+        // g_message("child_path:%s",path);
+        //first we must check the child_name file isnt directory
+            //if it is , we must first check out isnt empty, 
+                //if is empty, return
+                //else ,chdir in it ,and g_dir_open again, to g_dir_read_name in it 
+            //else we can directly to get child_name files and add into GPtrArray
+        g_return_val_if_fail(g_file_query_file_type(g_file_new_for_path(path), G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
+
         g_ptr_array_add(array, g_file_new_for_path(path));
         g_free(path);
     }
@@ -276,12 +291,12 @@ ArrayContainer natilus_get_templates_files(void)
     g_dir_close(dir);
     g_free(dir_path);
 
-    ArrayContainer ac;
+    
     ac.num = array->len;
     ac.data = array->pdata;
     g_ptr_array_free(array, FALSE);
-
-    // fs = dentry_list_files(f);
+#endif
+    ac = dentry_list_files(f);
 
     g_free(c);   
     g_object_unref(f); 
