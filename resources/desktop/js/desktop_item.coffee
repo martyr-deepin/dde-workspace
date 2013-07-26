@@ -715,6 +715,7 @@ class RichDir extends DesktopEntry
 
 
     do_drop : (evt) ->
+        echo "richdir do_drop"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
@@ -1141,6 +1142,7 @@ class Application extends DesktopEntry
 
     do_drop : (evt) ->
         super
+        echo "application do_drop"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             tmp_list = []
@@ -1176,6 +1178,7 @@ class Application extends DesktopEntry
 
     do_dragenter : (evt) ->
         super
+        echo "application do_dragenter"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1198,6 +1201,7 @@ class Application extends DesktopEntry
 
     do_dragover : (evt) ->
         super
+        echo "application do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1220,6 +1224,7 @@ class Application extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
+        echo "application do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.preventDefault()
