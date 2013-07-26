@@ -262,7 +262,6 @@ ArrayContainer natilus_get_templates_files(void)
     // g_message("templates_directory:%s",c);
     GFile* f = g_file_new_for_path(c);
 
-#if 0
 
 
     // g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
@@ -295,8 +294,9 @@ ArrayContainer natilus_get_templates_files(void)
     ac.num = array->len;
     ac.data = array->pdata;
     g_ptr_array_free(array, FALSE);
-#endif
+#if 0
     ac = dentry_list_files(f);
+#endif
 
     g_free(c);   
     g_object_unref(f); 

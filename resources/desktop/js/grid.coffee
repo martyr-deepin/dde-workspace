@@ -447,28 +447,62 @@ init_grid_drop = ->
         evt.preventDefault()
         evt.stopPropagation()
         desktop_uri = DCore.DEntry.get_uri(g_desktop_entry)
-        echo desktop_uri
+        file_uri = []
+        tmp_copy = []
+        # tmp_move = []
 
         if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
-            xdg_target = evt.dataTransfer.getData("text/plain")
-            echo xdg_target
-            echo "xdg_target.length:" + xdg_target.length
-            tmp = DCore.DEntry.list_files(DCore.DEntry.create_by_path(xdg_target))
-            echo tmp
-            evt.dataTransfer.setData("text/plain",tmp)
-            DCore.DEntry.copy(tmp, g_desktop_entry)
+            xdg_target = evt.dataTransfer.getData("Text")
+            enter_indexof = []
+            enter_indexof[0] = 0
+            k = 1
+            for i in [0 ... xdg_target.length] by 1
+                if xdg_target[i] == "\n"
+                    enter_indexof[k++] = i
+            for i in [0 ... enter_indexof.length - 1] by 1
+                file_uri[i] = xdg_target.substring(enter_indexof[i],enter_indexof[i+1]-1)#  -1 means delete enter char 
+
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+            w = Math.sqrt(file_uri.length) + 1
+            for i in [0 ... file_uri.length] by 1
+                file = file_uri[i]
+                if (f_e = DCore.DEntry.create_by_path(file))?
+                    tmp_copy.push(f_e)
+                    # only copy , not move
+                    # if DCore.DEntry.should_move(f_e)
+                    #     echo "move"
+                    #     tmp_move.push(f_e)
+                    # else
+                    #     echo "copy"
+                    #     tmp_copy.push(f_e)
+                    # make items as much nearer as possible to the pos that user drag on
+                    p = {x : 0, y : 0, width : 1, height : 1}
+                    p.x = pos.x + (i % w)
+                    p.y = pos.y + Math.floor(i / w)
+                    if p.x >= cols or p.y >= rows then continue
+                    save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
+            # only copy , not move
+            # if tmp_move.length
+            #     DCore.DEntry.move(tmp_move, g_desktop_entry, true)
+            if tmp_copy.length
+                DCore.DEntry.copy(tmp_copy, g_desktop_entry)
+
+            evt.dataTransfer.setData("Text",desktop_uri)
+
         else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
             tmp_copy = []
-            tmp_move = []
+            # tmp_move = []
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
                 file = evt.dataTransfer.files[i]
                 if (f_e = DCore.DEntry.create_by_path(file.path))?
-                    if DCore.DEntry.should_move(f_e)
-                        tmp_move.push(f_e)
-                    else
-                        tmp_copy.push(f_e)
+                    tmp_copy.push(f_e)
+                    # only copy , not move
+                    # if DCore.DEntry.should_move(f_e)
+                    #     tmp_move.push(f_e)
+                    # else
+                    #     tmp_copy.push(f_e)
 
                     # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1, height : 1}
@@ -476,9 +510,9 @@ init_grid_drop = ->
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
-
-            if tmp_move.length
-                DCore.DEntry.move(tmp_move, g_desktop_entry, true)
+            # only copy , not move
+            # if tmp_move.length
+            #     # DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         return
