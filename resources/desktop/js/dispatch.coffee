@@ -86,11 +86,15 @@ load_speical_desktop_items = ->
     clear_speical_desktop_items()
 
     if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
+        echo "load ComputerVDir"
+
         item = new ComputerVDir
+        echo item.get_path()
         if item?
             div_grid.appendChild(item.element)
             speical_item.push(item.get_id())
     else
+        echo "discard ComputerVDir"
         discard_position(_ITEM_ID_COMPUTER_)
 
     if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)

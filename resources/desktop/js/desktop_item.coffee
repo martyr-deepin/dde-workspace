@@ -481,7 +481,10 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-
+        # echo "desktopEntry do_dragstart"
+        # file = evt.dataTransfer.getData("Text")
+        # echo evt.dataTransfer
+        # echo file
         @item_complete_rename(false)
         item_dragstart_handler(this, evt)
 
@@ -491,7 +494,7 @@ class DesktopEntry extends Item
     do_dragend : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
-
+        # echo "desktopEntry do_dragend"
         item_dragend_handler(this, evt)
 
         return
@@ -710,24 +713,29 @@ class RichDir extends DesktopEntry
 
 
     do_dragstart : (evt) ->
+        # echo "RichDir do_dragstart"
         if @show_pop == true then @hide_pop_block()
         super
 
 
     do_drop : (evt) ->
-        echo "richdir do_drop"
+        # echo "RichDir do_drop"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
+            echo "_IS_DND_INTERLNAL_(evt)"
         else
+            echo "move"
             tmp_list = []
             for file in evt.dataTransfer.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
+                # tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
     do_dragenter : (evt) ->
+        # echo "RichDir do_dragenter"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
@@ -737,6 +745,7 @@ class RichDir extends DesktopEntry
 
     do_dragover : (evt) ->
         super
+        # echo "RichDir do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -745,6 +754,7 @@ class RichDir extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
+        # echo "RichDir do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1142,7 +1152,7 @@ class Application extends DesktopEntry
 
     do_drop : (evt) ->
         super
-        echo "application do_drop"
+        # echo "application do_drop"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             tmp_list = []
@@ -1178,7 +1188,7 @@ class Application extends DesktopEntry
 
     do_dragenter : (evt) ->
         super
-        echo "application do_dragenter"
+        # echo "application do_dragenter"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1201,7 +1211,7 @@ class Application extends DesktopEntry
 
     do_dragover : (evt) ->
         super
-        echo "application do_dragover"
+        # echo "application do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1224,7 +1234,7 @@ class Application extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-        echo "application do_dragleave"
+        # echo "application do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.preventDefault()
@@ -1343,8 +1353,8 @@ class ComputerVDir extends DesktopEntry
         super(icon)
 
 
-    get_path : =>
-        ""
+    # get_path : =>
+    #     ""
 
 
     do_buildmenu : ->
@@ -1373,6 +1383,7 @@ class ComputerVDir extends DesktopEntry
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
+        echo entry
         super(entry, false, false)
 
 
