@@ -95,9 +95,11 @@ load_speical_desktop_items = ->
     Computer_copy = []
     Computer_delete = []
     Computer_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Computer.desktop")
-    Computer_delete.push(Computer_f_e_delete)
+    if Computer_f_e_delete?
+        Computer_delete.push(Computer_f_e_delete)
     Computer_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Computer.desktop")
-    Computer_copy.push(Computer_f_e)
+    if Computer_f_e?
+        Computer_copy.push(Computer_f_e)
     Computer_p = {x : 0, y : 0, width : 1, height : 1}
     save_position(DCore.DEntry.get_id(Computer_f_e), Computer_p) if not detect_occupy(Computer_p)
 
