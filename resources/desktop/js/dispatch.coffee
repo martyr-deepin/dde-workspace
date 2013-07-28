@@ -90,7 +90,8 @@ still two bug:
 ###
 load_speical_desktop_items = ->
     clear_speical_desktop_items()
-    dde_path = "/home/ycl/dde"
+    dde_path = ".."
+    # echo DATA_DIR
 
     Computer_copy = []
     Computer_delete = []
