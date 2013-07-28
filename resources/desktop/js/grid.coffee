@@ -446,7 +446,7 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        desktop_uri = DCore.DEntry.get_uri(g_desktop_entry)
+        
         file_uri = []
         tmp_copy = []
         tmp_move = []
