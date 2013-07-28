@@ -84,42 +84,91 @@ clear_speical_desktop_items = ->
 
 load_speical_desktop_items = ->
     clear_speical_desktop_items()
+    # desktop_path = DCore.DEntry.get_desktop_path()
+    desktop_path = "home/ycl/Desktop"
+    dde_path = "/home/ycl/dde"
+    # echo desktop_path
 
-    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
-        echo "load ComputerVDir"
+    Computer_copy = []
+    Computer_delete = []
+    Computer_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Computer.desktop")
+    if Computer_f_e_delete?
+        Computer_delete.push(Computer_f_e_delete)
+    Computer_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Computer.desktop")
+    if Computer_f_e? 
+        Computer_copy.push(Computer_f_e)
+    Computer_p = {x : 0, y : 0, width : 1, height : 1}
+    save_position(DCore.DEntry.get_id(Computer_f_e), Computer_p) if not detect_occupy(Computer_p)
 
-        item = new ComputerVDir
-        echo item.get_path()
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        echo "discard ComputerVDir"
-        discard_position(_ITEM_ID_COMPUTER_)
+    Trash_copy = []
+    Trash_delete = []
+    Trash_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Trash.desktop")
+    if Trash_f_e_delete?
+        Trash_delete.push(Trash_f_e_delete)
+    Trash_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Trash.desktop")
+    if Trash_f_e? 
+        Trash_copy.push(Trash_f_e)
+    Trash_p = {x : 0, y : 1, width : 1, height : 1}
+    save_position(DCore.DEntry.get_id(Trash_f_e), Trash_p) if not detect_occupy(Trash_p)
 
-    if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)
-        item = new HomeVDir
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        discard_position(_ITEM_ID_USER_HOME_)
+    Home_copy = []
+    Home_delete = []
+    Home_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Home.desktop")
+    if Home_f_e_delete?
+        Home_delete.push(Home_f_e_delete)
+    Home_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Home.desktop")
+    if Home_f_e? 
+        Home_copy.push(Home_f_e)
+    Home_p = {x : 0, y : 2, width : 1, height : 1}
+    save_position(DCore.DEntry.get_id(Home_f_e), Home_p) if not detect_occupy(Home_p)
 
-    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
-        item = new TrashVDir
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
-    else
-        discard_position(_ITEM_ID_TRASH_BIN_)
+    SoftCenter_copy = []
+    SoftCenter_delete = []
+    SoftCenter_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/SoftCenter.desktop")
+    if SoftCenter_f_e_delete?
+        SoftCenter_delete.push(SoftCenter_f_e_delete)
+    SoftCenter_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/SoftCenter.desktop")
+    if SoftCenter_f_e? 
+        SoftCenter_copy.push(SoftCenter_f_e)
+    SoftCenter_p = {x : 0, y : 3, width : 1, height : 1}
+    save_position(DCore.DEntry.get_id(SoftCenter_f_e), SoftCenter_p) if not detect_occupy(SoftCenter_p)
+
 
     if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
-        item = new DeepinSoftwareCenter
-        if item?
-            div_grid.appendChild(item.element)
-            speical_item.push(item.get_id())
+        if Computer_copy.length && Computer_f_e_delete == null
+            echo "load Computer"
+            DCore.DEntry.copy(Computer_copy, g_desktop_entry)
     else
-        discard_position(_ITEM_ID_DSC_)
+        echo "discard Computer"
+        DCore.DEntry.delete_files(Computer_delete, false)
+
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
+        if Trash_copy.length && Trash_f_e_delete == null
+            echo "load Trash"
+            DCore.DEntry.copy(Trash_copy, g_desktop_entry)
+    else
+        echo "discard Trash"
+        DCore.DEntry.delete_files(Trash_delete, false)
+
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
+        if Home_copy.length && Home_f_e_delete == null
+            echo "load Home"
+            DCore.DEntry.copy(Home_copy, g_desktop_entry)
+    else
+        echo "discard Home"
+        DCore.DEntry.delete_files(Home_delete, false)
+
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
+        if SoftCenter_copy.length && SoftCenter_f_e_delete == null
+            echo "load SoftCenter"
+            DCore.DEntry.copy(SoftCenter_copy, g_desktop_entry)
+    else
+        echo "discard SoftCenter"
+        DCore.DEntry.delete_files(SoftCenter_delete, false)
+
     return
 
 

@@ -72,6 +72,12 @@ Entry* dentry_get_desktop()
     return ret;
 }
 
+JS_EXPORT_API
+char* dentry_get_desktop_path()
+{
+    char* path = get_desktop_dir(FALSE);
+    return path;
+}
 
 JS_EXPORT_API
 gboolean dentry_should_move(Entry* e)
@@ -239,6 +245,13 @@ char* dentry_get_uri(Entry* e)
         g_free(encode);
         return uri;
     TEST_END
+}
+
+JS_EXPORT_API
+char* dentry_get_path(Entry* e)
+{
+    char* path = g_file_get_path(e);
+    return path;
 }
 
 JS_EXPORT_API

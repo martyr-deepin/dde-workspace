@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Home
+Name[zh_HK]=主文件夾
+Name[zh_TW]=主文件夾
+Name[zh_CN]=主文件夹 
+Exec=nautilus --new-window
+Terminal=false
+Type=Application
+Icon=deepin-user-home
+Categories=Office

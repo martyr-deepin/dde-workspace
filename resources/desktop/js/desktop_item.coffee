@@ -24,6 +24,17 @@ richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 
+DesktopFile = 
+    Name:   "Computer"
+    Exec:   null
+    Icon:   null
+    Categories: "utilities"
+    Type: "Application"
+    Terminal: false
+    startupNotify: true
+
+
+
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -1337,7 +1348,6 @@ class ComputerVDir extends DesktopEntry
         entry = DCore.Desktop.get_computer_entry()
         super(entry, false, false)
 
-
     set_id : =>
         @id = _ITEM_ID_COMPUTER_
 
@@ -1367,12 +1377,16 @@ class ComputerVDir extends DesktopEntry
 
 
     do_itemselected : (evt) ->
+        echo "do_itemselected"
         switch evt.id
             when 1
+                echo "1" 
                 @item_exec()
             when 2
+                echo "2"
                 DCore.Desktop.run_deepin_settings("system_information")
             else
+                echo "else"
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
         return
 
