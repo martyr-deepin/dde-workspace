@@ -105,13 +105,6 @@ void handle_rename(GFile* old_f, GFile* new_f)
     g_object_unref(entry);
 }
 
-#define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
-void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
-{
-    extern void js_post_message_simply(const char* name, const char* format, ...);
-    js_post_message_simply ("desktop_config_changed", NULL);
-}
-
 void handle_delete(GFile* f)
 {
     g_message("handle_delete");
@@ -119,28 +112,6 @@ void handle_delete(GFile* f)
     JSObjectRef json = json_create();
     json_append_nobject(json, "entry", f, g_object_ref, g_object_unref);
     js_post_message("item_delete", json);
-
-
-    extern char* desktop_get_desktop_path();
-    // extern void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data);
-    
-    // static GSettings* desktop_gsettings = NULL;
-    // desktop_gsettings = g_settings_new (DESKTOP_SCHEMA_ID);
-    // g_signal_connect (desktop_gsettings, "changed::show-dsc-icon",
-    //               jG_CALLBACK(desktop_plugins_changed), NULL);
-
-    char* desktop_path = desktop_get_desktop_path();
-    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
-    // g_message("%s",dsc_path);
-    GFile* dest_file = dentry_create_by_path(dsc_path);
-    if(g_file_equal(f,dest_file))
-    {
-        g_message("delete is deepin-software-center.desktop");
-        // g_settings_set_boolean(desktop_gsettings,"show-dsc-icon",FALSE);
-    }
-    g_free(desktop_path);
-    g_free(dsc_path);
-    g_object_unref(dest_file);    
 }
 
 void handle_update(GFile* f)

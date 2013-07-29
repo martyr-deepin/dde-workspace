@@ -301,7 +301,11 @@ gboolean desktop_get_config_boolean(const char* key_name)
 
     return retval;
 }
-
+JS_EXPORT_API
+void desktop_set_config_boolean(const char* key_name,gboolean value)
+{
+    g_settings_set_boolean(desktop_gsettings, key_name,value);
+}
 JS_EXPORT_API
 char* desktop_get_data_dir()
 {
