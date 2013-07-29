@@ -318,13 +318,10 @@ void desktop_load_dsc_desktop_item()
 {   
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
-    // g_message("load_dsc_desktop_item start");
     char* desktop_path = desktop_get_desktop_path();
-    // g_message("%s",desktop_path);
     GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
     GFile* dest = dentry_create_by_path(desktop_path);
     char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
-    // g_message("%s",dsc_path);
     GFile* dest_file = dentry_create_by_path(dsc_path);
 
     ArrayContainer fs_src;
@@ -335,13 +332,8 @@ void desktop_load_dsc_desktop_item()
     fs_dest.data = &dest_file;
     fs_dest.num = 1;
 
-    // g_settings_set_boolean(desktop_gsettings,"show-dsc-icon",FALSE);
-
-    // g_message("%d",dentry_is_gapp(dest_file));
-
     if (desktop_get_config_boolean("show-dsc-icon"))
     {
-        // g_message("show");
         if (!dentry_is_gapp(dest_file))
         {
             dentry_copy(fs_src, dest);
@@ -351,7 +343,6 @@ void desktop_load_dsc_desktop_item()
     }
     else
     {
-        // g_message("hide");
         dentry_delete_files(fs_dest, FALSE);
     }
     g_free(desktop_path);
@@ -359,8 +350,6 @@ void desktop_load_dsc_desktop_item()
     g_object_unref(dest);
     ArrayContainer_free0(fs_src);
     ArrayContainer_free0(fs_dest);
-
-    // g_message("load_dsc_desktop_item end");
 }
 
 
