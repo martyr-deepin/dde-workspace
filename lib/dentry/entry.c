@@ -40,6 +40,7 @@
 #include "thumbnails.h"
 #include "mime_actions.h"
 #include "fileops_error_reporting.h"
+#include "templates.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
@@ -1090,3 +1091,16 @@ void dentry_report_bad_icon(Entry* entry)
     g_object_unref(bad_icon_dir);
 }
 
+
+JS_EXPORT_API
+ArrayContainer dentry_get_templates_files(void)
+{
+    ArrayContainer ac;
+    char* c = nautilus_get_templates_directory();
+    g_message("templates_directory:%s",c);
+    GFile* f = g_file_new_for_path(c);
+    ac = dentry_list_files(f);
+    g_free(c);   
+    g_object_unref(f); 
+    return ac ;
+}
