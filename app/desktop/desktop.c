@@ -302,6 +302,12 @@ gboolean desktop_get_config_boolean(const char* key_name)
     return retval;
 }
 
+JS_EXPORT_API
+char* desktop_get_data_dir()
+{
+    return g_strdup (DATA_DIR);
+}
+
 //TODO: connect gtk_icon_theme changed.
 
 PRIVATE

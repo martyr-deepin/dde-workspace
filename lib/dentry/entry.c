@@ -115,6 +115,14 @@ gboolean dentry_is_native(Entry* e)
 }
 
 JS_EXPORT_API
+gboolean dentry_is_gapp(Entry* e)
+{
+    if(G_IS_APP_INFO(e))
+        return TRUE;
+    else return FALSE;
+}
+
+JS_EXPORT_API
 double dentry_get_type(Entry* e)
 {
     TEST_GFILE(e, f)
@@ -245,13 +253,6 @@ char* dentry_get_uri(Entry* e)
         g_free(encode);
         return uri;
     TEST_END
-}
-
-JS_EXPORT_API
-char* dentry_get_path(Entry* e)
-{
-    char* path = g_file_get_path(e);
-    return path;
 }
 
 JS_EXPORT_API

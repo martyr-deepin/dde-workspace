@@ -94,7 +94,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 		}
 	    case G_IO_ERROR_NOT_DIRECTORY:
 		//TODO:we're using a file.
-                g_debug("G_IO_ERROR_NOT_DIRECTORY");
+                // g_debug("G_IO_ERROR_NOT_DIRECTORY");
 
 		if (pre_hook (src, data) == FALSE ||
 		    post_hook (src, data) == FALSE)

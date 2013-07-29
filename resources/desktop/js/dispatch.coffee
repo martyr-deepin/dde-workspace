@@ -80,105 +80,60 @@ clear_speical_desktop_items = ->
     Widget.look_up(i)?.destroy() for i in speical_item
     speical_item.splice(0)
     return
-
-
-###
-still two bug:
-1. when delete .desktop in desktop,but the system settings is still show. I can't change the settings
-2. when trash.desktop is delete, SoftCenter will show on the location which trash hide
-3. as 2 says, the desktop will chang all item,and it perhaps be slower.
-###
-load_speical_desktop_items = ->
-    clear_speical_desktop_items()
-    dde_path = ".."
-    # echo DATA_DIR
-
-    Computer_copy = []
-    Computer_delete = []
-    Computer_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Computer.desktop")
-    if Computer_f_e_delete?
-        Computer_delete.push(Computer_f_e_delete)
-    Computer_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Computer.desktop")
-    if Computer_f_e?
-        Computer_copy.push(Computer_f_e)
-    Computer_p = {x : 0, y : 0, width : 1, height : 1}
-    save_position(DCore.DEntry.get_id(Computer_f_e), Computer_p) if not detect_occupy(Computer_p)
-
-
-    Home_copy = []
-    Home_delete = []
-    Home_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Home.desktop")
-    if Home_f_e_delete?
-        Home_delete.push(Home_f_e_delete)
-    Home_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Home.desktop")
-    if Home_f_e? 
-        Home_copy.push(Home_f_e)
-    Home_p = {x : 0, y : 1, width : 1, height : 1}
-    save_position(DCore.DEntry.get_id(Home_f_e), Home_p) if not detect_occupy(Home_p)
-
-
-    Trash_copy = []
-    Trash_delete = []
-    Trash_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/Trash.desktop")
-    if Trash_f_e_delete?
-        Trash_delete.push(Trash_f_e_delete)
-    Trash_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/Trash.desktop")
-    if Trash_f_e? 
-        Trash_copy.push(Trash_f_e)
-    Trash_p = {x : 0, y : 2, width : 1, height : 1}
-    save_position(DCore.DEntry.get_id(Trash_f_e), Trash_p) if not detect_occupy(Trash_p)
-
+# load deepin-soft-center .desktop
+load_dsc_desktop_item = ->
+    # data_path = DCore.Desktop.get_data_dir()
 
     SoftCenter_copy = []
     SoftCenter_delete = []
     SoftCenter_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
     if SoftCenter_f_e_delete?
         SoftCenter_delete.push(SoftCenter_f_e_delete)
-    SoftCenter_f_e = DCore.DEntry.create_by_path("#{dde_path}/data/deepin-software-center.desktop")
-    if SoftCenter_f_e? 
-        SoftCenter_copy.push(SoftCenter_f_e)
+    SoftCenter_f_e = DCore.DEntry.create_by_path("/usr/share/applications/deepin-software-center.desktop")
+    if SoftCenter_f_e?
+        SoftCenter_copy.push(SoftCenter_f_e)    
     SoftCenter_p = {x : 0, y : 3, width : 1, height : 1}
     save_position(DCore.DEntry.get_id(SoftCenter_f_e), SoftCenter_p) if not detect_occupy(SoftCenter_p)
 
-    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
-        if (DCore.DEntry.get_type(Computer_f_e_delete) != 0)#if entry isnt GAPP  means if entry is null ,we must create it
-            echo "load Computer"
-            DCore.DEntry.copy(Computer_copy, g_desktop_entry)
-    else
-        if (DCore.DEntry.get_type(Computer_f_e_delete) != -1)#if .desktop isnt NULL ,else we won't delete it
-            echo "discard Computer"
-            DCore.DEntry.delete_files(Computer_delete, false)
-
-
-    if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)
-        if (DCore.DEntry.get_type(Home_f_e_delete) != 0)#if entry isnt GAPP  means if entry is null
-            # echo "load Home"
-            DCore.DEntry.copy(Home_copy, g_desktop_entry)
-    else
-        if (DCore.DEntry.get_type(Home_f_e_delete) != -1)
-            # echo "discard Home"
-            DCore.DEntry.delete_files(Home_delete, false)
-
-
-    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
-        if (DCore.DEntry.get_type(Trash_f_e_delete) != 0)#if entry isnt GAPP  means if entry is null
-            # echo "load Trash"
-            DCore.DEntry.copy(Trash_copy, g_desktop_entry)
-    else
-        if (DCore.DEntry.get_type(Trash_f_e_delete) != -1)
-            # echo "discard Trash"
-            DCore.DEntry.delete_files(Trash_delete, false)
-
-
     if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
-        if (DCore.DEntry.get_type(SoftCenter_f_e_delete) != 0)#if entry isnt GAPP  means if entry is null
+        # echo "load"
+        if (!DCore.DEntry.is_gapp(SoftCenter_f_e_delete))
             # echo "load SoftCenter"
             DCore.DEntry.copy(SoftCenter_copy, g_desktop_entry)
     else
-        if (DCore.DEntry.get_type(SoftCenter_f_e_delete) != -1)
+        # echo "discard"
+        if (DCore.DEntry.is_gapp(SoftCenter_f_e_delete))
             # echo "discard SoftCenter"
             DCore.DEntry.delete_files(SoftCenter_delete, false)
 
+load_speical_desktop_items = ->
+    clear_speical_desktop_items()
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
+        item = new ComputerVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+    else
+        discard_position(_ITEM_ID_COMPUTER_)
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_HOME_ICON_)
+        item = new HomeVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+    else
+        discard_position(_ITEM_ID_USER_HOME_)
+
+    if _GET_CFG_BOOL_(_CFG_SHOW_TRASH_BIN_ICON_)
+        item = new TrashVDir
+        if item?
+            div_grid.appendChild(item.element)
+            speical_item.push(item.get_id())
+    else
+        discard_position(_ITEM_ID_TRASH_BIN_)
+    
+    load_dsc_desktop_item()
     return
 
 

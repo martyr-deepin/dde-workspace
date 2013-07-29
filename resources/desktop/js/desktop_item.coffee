@@ -1380,13 +1380,10 @@ class ComputerVDir extends DesktopEntry
         echo "do_itemselected"
         switch evt.id
             when 1
-                echo "1" 
                 @item_exec()
             when 2
-                echo "2"
                 DCore.Desktop.run_deepin_settings("system_information")
             else
-                echo "else"
                 echo "computer unkown command id:#{evt.id} title:#{evt.title}"
         return
 
@@ -1398,7 +1395,6 @@ class ComputerVDir extends DesktopEntry
 class HomeVDir extends DesktopEntry
     constructor : ->
         entry = DCore.Desktop.get_home_entry()
-        echo entry
         super(entry, false, false)
 
 

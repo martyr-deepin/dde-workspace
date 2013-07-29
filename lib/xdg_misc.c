@@ -264,6 +264,7 @@ ArrayContainer natilus_get_templates_files(void)
 
 
 
+
     // g_return_val_if_fail(g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY, EMPTY_CONTAINER);
     // check the dir is empty,if is ,return ; or next;
     char* dir_path = g_file_get_path(f);
@@ -294,10 +295,10 @@ ArrayContainer natilus_get_templates_files(void)
     ac.num = array->len;
     ac.data = array->pdata;
     g_ptr_array_free(array, FALSE);
+
 #if 0
     ac = dentry_list_files(f);
 #endif
-
     g_free(c);   
     g_object_unref(f); 
     return ac ;
