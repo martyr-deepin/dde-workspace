@@ -884,11 +884,12 @@ grid_right_click = (evt) ->
         cancel_all_selected_stats()
 
     templates = []
-    templates_name = []
+    templates_menu = []
     templates = DCore.DEntry.get_templates_files()
     for i in [0...templates.length] by 1
-        templates_name[i] = DCore.DEntry.get_name(templates[i])
-        echo templates_name[i]
+        templates_name = DCore.DEntry.get_name(templates[i])
+        templates_id = i + 20
+        templates_menu.push([templates_id,templates_name])
 
     menus = []
     menus.push([_("_Sort by"), [
@@ -896,14 +897,7 @@ grid_right_click = (evt) ->
                 [12, _("Last modified _time")]
             ]
         ])
-    menus.push([("_New"), [
-                [20,templates_name[0]],
-                [21,templates_name[1]],
-                [22,templates_name[2]],
-                [23,templates_name[3]],
-                [24,templates_name[4]],
-            ]
-        ])
+    menus.push([_("_New"), templates_menu])
     menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
