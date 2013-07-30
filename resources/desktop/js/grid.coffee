@@ -440,6 +440,17 @@ menu_create_new_file = () ->
       #   evt.dataTransfer.setData("Text",desktop_uri);
       # }
 
+menu_create_new_templates = (id) ->
+    echo "menu_create_new_templates"
+    # ps: i can look the sources for nautilus search by Untilmie in en_US
+    id_num = id - 20
+    templates = DCore.DEntry.get_templates_files()
+    copy_templates_choose = []
+    for i in [0...templates.length] by 1
+        if i == id_num
+            copy_templates_choose.push(templates[i])
+            DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
+            
 
 # all DND event handlers
 init_grid_drop = ->
@@ -866,10 +877,18 @@ gird_left_mousedown = (evt) ->
 
 grid_right_click = (evt) ->
     evt.stopPropagation()
+    echo "grid_right_click in grid.coffee"
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
+
+    templates = []
+    templates_name = []
+    templates = DCore.DEntry.get_templates_files()
+    for i in [0...templates.length] by 1
+        templates_name[i] = DCore.DEntry.get_name(templates[i])
+        echo templates_name[i]
 
     menus = []
     menus.push([_("_Sort by"), [
@@ -877,9 +896,12 @@ grid_right_click = (evt) ->
                 [12, _("Last modified _time")]
             ]
         ])
-    menus.push([_("_New"), [
-                [21, _("_Folder")],
-                [22, _("_Text document")]
+    menus.push([("_New"), [
+                [20,templates_name[0]],
+                [21,templates_name[1]],
+                [22,templates_name[2]],
+                [23,templates_name[3]],
+                [24,templates_name[4]],
             ]
         ])
     menus.push([3, _("Open in _terminal")])
@@ -894,11 +916,14 @@ grid_right_click = (evt) ->
 
 
 grid_do_itemselected = (evt) ->
+
+    # menu for templates
+    if evt.id > 19 && evt.id < 30
+        menu_create_new_templates(evt.id)
+
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
-        when 21 then menu_create_new_folder()
-        when 22 then menu_create_new_file()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("display")

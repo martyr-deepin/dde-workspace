@@ -25,8 +25,7 @@
 #include <glib.h>
 #include <gio/gio.h>
 #include <glib/gstdio.h>
-#include <stdio.h>
-#include <string.h>
+
 
 char *   nautilus_get_xdg_dir                        (const char *type);
 gboolean nautilus_should_use_templates_directory     (void);

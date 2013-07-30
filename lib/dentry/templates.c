@@ -23,6 +23,7 @@
 #define DEFAULT_NAUTILUS_DIRECTORY_MODE (0755)
 #define DESKTOP_DIRECTORY_NAME "Desktop"
 
+
 char *
 nautilus_get_xdg_dir (const char *type)
 {
