@@ -344,11 +344,11 @@ msgstr "从开机启动项删除(_R)"
 
 #: ../resources/launcher/js/config.coffee:44
 msgid "Sort By _Frequency"
-msgstr "按使用率排序"
+msgstr "按使用率排序(_F)"
 
 #: ../resources/launcher/js/config.coffee:45
 msgid "Sort By _Name"
-msgstr "按名字排序"
+msgstr "按名字排序(_N)"
 
 #: ../resources/launcher/js/grid.coffee:96
 msgid "Send to d_esktop"

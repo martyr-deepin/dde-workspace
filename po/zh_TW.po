@@ -344,11 +344,11 @@ msgstr "從「自動啟動」中移除(_R)"
 
 #: ../resources/launcher/js/config.coffee:44
 msgid "Sort By _Frequency"
-msgstr "依使用頻率排序"
+msgstr "依使用頻率排序(_F)"
 
 #: ../resources/launcher/js/config.coffee:45
 msgid "Sort By _Name"
-msgstr "依名稱排序"
+msgstr "依名稱排序(_N)"
 
 #: ../resources/launcher/js/grid.coffee:96
 msgid "Send to d_esktop"
