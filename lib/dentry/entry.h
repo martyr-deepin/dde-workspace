@@ -30,5 +30,6 @@ void g_message_boolean(gboolean b);
 
 gboolean dentry_is_gapp(Entry* e);
 ArrayContainer dentry_get_templates_files(void);
-
+gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt);
+gboolean dentry_create_by_templates_to_desktop(GFile* src,char* new_name_add);
 #endif

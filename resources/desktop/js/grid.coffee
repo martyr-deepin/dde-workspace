@@ -446,10 +446,30 @@ menu_create_new_templates = (id) ->
     id_num = id - 20
     templates = DCore.DEntry.get_templates_files()
     copy_templates_choose = []
+
     for i in [0...templates.length] by 1
+        templates_name = DCore.DEntry.get_name(templates[i])
         if i == id_num
+            exist = DCore.Desktop.file_exist_in_desktop(templates_name)
             copy_templates_choose.push(templates[i])
             DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
+
+            # if exist
+            #     echo "file exsit"
+            #     name_new = _("Untitled")
+            #     templates_name_new = name_new + " " + templates_name
+            #     #1. copy the templates into /tmp/
+            #     DCore.DEntry.copy(copy_templates_choose,DCore.DEntry.create_by_path("/tmp/"))
+            #     #2. rename the file in /tmp  to Unnamed+oldname
+            #     if DCore.DEntry.set_name(DCore.DEntry.create_by_path("/tmp/" + "templates_name"),templates_name_new)
+            #         #3. if rename success,move it to the desktop with no dialog
+            #         tmp_new_file_path = "/tmp/"+ templates_name_new
+            #         echo tmp_new_file_path
+            #         templates_new_name = []
+            #         templates_new_name.push(DCore.DEntry.create_by_path(tmp_new_file_path))
+            #         DCore.DEntry.move(templates_new_name,g_desktop_entry,false)
+            # else
+            #     DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
             
 
 # all DND event handlers

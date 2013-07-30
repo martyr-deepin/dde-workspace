@@ -338,8 +338,6 @@ void desktop_load_dsc_desktop_item()
         {
             dentry_copy(fs_src, dest);
         }
-        else
-            g_message("dest file exist");
     }
     else
     {
@@ -352,6 +350,31 @@ void desktop_load_dsc_desktop_item()
     ArrayContainer_free0(fs_dest);
 }
 
+JS_EXPORT_API
+gboolean desktop_file_exist_in_desktop(char* name)
+{
+    char* desktop_path = get_desktop_dir(FALSE);
+    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+
+    const char* file_name = NULL;
+    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+        if(desktop_file_filter(file_name))
+            continue;
+        g_message("%d",i);
+        g_message("%s",file_name);
+        if(g_str_equal(name,file_name))
+        {
+            g_message("%s exist in desktoo",name);
+            g_dir_close(dir);
+            g_free(desktop_path);
+            return true;
+        }
+
+    }
+    g_dir_close(dir);
+    g_free(desktop_path);
+    return false;
+}
 
 //TODO: connect gtk_icon_theme changed.
 

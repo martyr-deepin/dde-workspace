@@ -874,6 +874,24 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
     g_free(_fs.data);
 }
 
+
+JS_EXPORT_API
+gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt)
+{
+    gboolean result = false;
+    if(dentry_set_name(src,new_name))
+    {
+        g_message("rename success!");
+        result =  fileops_move((gpointer)src,1,dest,prompt);
+    }
+    else
+    {
+        g_warning("rename failed!");
+    }
+    return result;
+}
+
+
 JS_EXPORT_API
 void dentry_delete_files(ArrayContainer fs, gboolean show_dialog)
 {
@@ -990,8 +1008,14 @@ char* get_basename_without_ext(char const* path)
         g_free(basename);
         return name;
     }
-
     return basename;
+}
+
+JS_EXPORT_API
+char* dentry_get_basename_without_ext(char const* path)
+{
+    char* name = get_basename_without_ext(path);
+    return name;
 }
 
 
@@ -1102,5 +1126,18 @@ ArrayContainer dentry_get_templates_files(void)
     ac = dentry_list_files(f);
     g_free(c);   
     g_object_unref(f); 
+
     return ac ;
 }
+
+JS_EXPORT_API
+gboolean dentry_create_by_templates_to_desktop(GFile* src,char* new_name_add)
+{
+    GFile* dest_tmp = dentry_create_by_path("/tmp/");
+    fileops_copy((gpointer)src,1,dest_tmp);
+    // gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt)
+
+    // dentry_rename_move()
+    return true;
+}
+
