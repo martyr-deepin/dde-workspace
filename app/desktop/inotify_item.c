@@ -107,7 +107,6 @@ void handle_rename(GFile* old_f, GFile* new_f)
 
 void handle_delete(GFile* f)
 {
-    g_message("handle_delete");
     _remove_monitor_directory(f);
     JSObjectRef json = json_create();
     json_append_nobject(json, "entry", f, g_object_ref, g_object_unref);
