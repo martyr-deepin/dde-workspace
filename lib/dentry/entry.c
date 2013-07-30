@@ -72,6 +72,12 @@ Entry* dentry_get_desktop()
     return ret;
 }
 
+JS_EXPORT_API
+char* dentry_get_desktop_path()
+{
+    char* path = get_desktop_dir(FALSE);
+    return path;
+}
 
 JS_EXPORT_API
 gboolean dentry_should_move(Entry* e)
@@ -106,6 +112,14 @@ gboolean dentry_is_native(Entry* e)
         return g_file_is_native (G_FILE(e));
     }
     return TRUE;
+}
+
+JS_EXPORT_API
+gboolean dentry_is_gapp(Entry* e)
+{
+    if(G_IS_APP_INFO(e))
+        return TRUE;
+    else return FALSE;
 }
 
 JS_EXPORT_API

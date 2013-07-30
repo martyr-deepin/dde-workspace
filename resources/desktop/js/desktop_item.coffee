@@ -24,6 +24,17 @@ richdir_drag_canvas = document.createElement("canvas")
 richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 
+DesktopFile = 
+    Name:   "Computer"
+    Exec:   null
+    Icon:   null
+    Categories: "utilities"
+    Type: "Application"
+    Terminal: false
+    startupNotify: true
+
+
+
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -357,8 +368,9 @@ class Item extends Widget
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
+
             #XXX: workaround -> fix up get Enter keys before begining of rename
-            @item_name.addEventListener("input", @on_item_rename_input)
+            #@item_name.addEventListener("input", @on_item_rename_input)
 
             @item_name.focus()
 
@@ -456,7 +468,7 @@ class Item extends Widget
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
         #XXX: workaround -> fix up get Enter keys before begining of rename
-        @item_name.removeEventListener("input", @on_item_rename_input)
+        #@item_name.removeEventListener("input", @on_item_rename_input)
 
         @display_selected()
 
@@ -481,7 +493,10 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-
+        # echo "desktopEntry do_dragstart"
+        # file = evt.dataTransfer.getData("Text")
+        # echo evt.dataTransfer
+        # echo file
         @item_complete_rename(false)
         item_dragstart_handler(this, evt)
 
@@ -491,7 +506,7 @@ class DesktopEntry extends Item
     do_dragend : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
-
+        # echo "desktopEntry do_dragend"
         item_dragend_handler(this, evt)
 
         return
@@ -710,23 +725,29 @@ class RichDir extends DesktopEntry
 
 
     do_dragstart : (evt) ->
+        # echo "RichDir do_dragstart"
         if @show_pop == true then @hide_pop_block()
         super
 
 
     do_drop : (evt) ->
+        # echo "RichDir do_drop"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
+            echo "_IS_DND_INTERLNAL_(evt)"
         else
+            echo "move"
             tmp_list = []
             for file in evt.dataTransfer.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
                 if not e? then continue
                 if DCore.DEntry.get_type(e) == FILE_TYPE_APP then tmp_list.push(e)
+                # tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
         return
 
     do_dragenter : (evt) ->
+        # echo "RichDir do_dragenter"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
@@ -736,6 +757,7 @@ class RichDir extends DesktopEntry
 
     do_dragover : (evt) ->
         super
+        # echo "RichDir do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -744,6 +766,7 @@ class RichDir extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
+        # echo "RichDir do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1141,6 +1164,7 @@ class Application extends DesktopEntry
 
     do_drop : (evt) ->
         super
+        # echo "application do_drop"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             tmp_list = []
@@ -1176,6 +1200,7 @@ class Application extends DesktopEntry
 
     do_dragenter : (evt) ->
         super
+        # echo "application do_dragenter"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1198,6 +1223,7 @@ class Application extends DesktopEntry
 
     do_dragover : (evt) ->
         super
+        # echo "application do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1220,6 +1246,7 @@ class Application extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
+        # echo "application do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.preventDefault()
@@ -1321,7 +1348,6 @@ class ComputerVDir extends DesktopEntry
         entry = DCore.Desktop.get_computer_entry()
         super(entry, false, false)
 
-
     set_id : =>
         @id = _ITEM_ID_COMPUTER_
 
@@ -1338,8 +1364,8 @@ class ComputerVDir extends DesktopEntry
         super(icon)
 
 
-    get_path : =>
-        ""
+    # get_path : =>
+    #     ""
 
 
     do_buildmenu : ->
@@ -1351,6 +1377,7 @@ class ComputerVDir extends DesktopEntry
 
 
     do_itemselected : (evt) ->
+        echo "do_itemselected"
         switch evt.id
             when 1
                 @item_exec()

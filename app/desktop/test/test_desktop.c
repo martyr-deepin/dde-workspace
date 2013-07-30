@@ -4,12 +4,6 @@ void test_desktop()
 {
 	setup_fixture();
 
-
-	Test({
-
-
-	},"test_");
-
     JSObjectRef desktop_get_desktop_entries();
     Test({
         JSObjectRef desktop_get_desktop_entries();

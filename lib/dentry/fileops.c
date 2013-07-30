@@ -71,7 +71,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
     GFileEnumerator* src_enumerator = NULL;
 
     src_enumerator = g_file_enumerate_children (src,
-					       "standard::*",
+					       "standard::name",
 					       G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 					       NULL,
 					       &error);
@@ -82,12 +82,20 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 	{
 	    case G_IO_ERROR_NOT_FOUND:
 		//TODO: showup a message box and quit.
-        g_debug("G_IO_ERROR_NOT_FOUND");
-		break;
+		if (g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL) == G_FILE_TYPE_REGULAR)
+		{
+		    //for smb files, previous enumeration can fail and return G_IO_ERROR_NOT_FOUND.
+		    //pass to G_IO_ERROR_NOT_DIRECTORY
+		}
+		else
+		{
+        	    g_debug("G_IO_ERROR_NOT_FOUND");
+		    break;
+		}
 	    case G_IO_ERROR_NOT_DIRECTORY:
 		//TODO:we're using a file.
-        g_debug("G_IO_ERROR_NOT_DIRECTORY");
-        //
+                // g_debug("G_IO_ERROR_NOT_DIRECTORY");
+
 		if (pre_hook (src, data) == FALSE ||
 		    post_hook (src, data) == FALSE)
 		{
@@ -100,7 +108,7 @@ traverse_directory (GFile* src, GFileProcessingFunc pre_hook, GFileProcessingFun
 		    return TRUE;
 		}
 	    default:
-        g_debug("src found and is directory");
+        	g_debug("src found and is directory");
 		break;
 	}
 	// g_warning ("traverse_directory 1: %s", error->message);
@@ -386,10 +394,7 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 
 	data->dest_file = copy_dest_file;
 
-	if (g_file_is_native (src))
-	    traverse_directory (src, _copy_files_async, _dummy_func, data);
-	else
-	    _copy_files_async (src,data);
+	traverse_directory (src, _copy_files_async, _dummy_func, data);
 
         g_object_unref (data->dest_file);
     }

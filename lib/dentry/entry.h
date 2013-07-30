@@ -27,4 +27,5 @@ gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt);
 void ArrayContainer_free(ArrayContainer array);
 void ArrayContainer_free0(ArrayContainer array);
 void g_message_boolean(gboolean b);
+gboolean dentry_is_gapp(Entry* e);
 #endif

@@ -4,13 +4,7 @@ void test_utils()
 {
 	setup_fixture();
 
-
-	Test({
-
-
-	},"test_");
-
-    typedef void Entry;
+    // typedef void Entry;
 
     void desktop_run_terminal();
     Test({

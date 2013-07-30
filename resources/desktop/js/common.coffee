@@ -69,8 +69,9 @@ _FAT_SYM_LINK_   = "emblem-symbolic-link"
 _FAT_UNREADABLE_ = "emblem-unreadable"
 
 # store the entry for desktop
-g_desktop_entry = DCore.DEntry.create_by_path(DCore.Desktop.get_desktop_path())
-
+desktop_path = DCore.Desktop.get_desktop_path()
+g_desktop_entry = DCore.DEntry.create_by_path(desktop_path)
+desktop_uri = DCore.DEntry.get_uri(g_desktop_entry)
 
 # const names to get configs
 _CFG_SHOW_COMPUTER_ICON_ = "show-computer-icon"

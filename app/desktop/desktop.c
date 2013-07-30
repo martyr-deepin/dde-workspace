@@ -301,6 +301,68 @@ gboolean desktop_get_config_boolean(const char* key_name)
 
     return retval;
 }
+JS_EXPORT_API
+void desktop_set_config_boolean(const char* key_name,gboolean value)
+{
+    g_settings_set_boolean(desktop_gsettings, key_name,value);
+}
+JS_EXPORT_API
+char* desktop_get_data_dir()
+{
+    return g_strdup (DATA_DIR);
+}
+
+
+JS_EXPORT_API
+void desktop_load_dsc_desktop_item()
+{   
+    extern void dentry_copy (ArrayContainer fs, GFile* dest);
+    extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
+    // g_message("load_dsc_desktop_item start");
+    char* desktop_path = desktop_get_desktop_path();
+    // g_message("%s",desktop_path);
+    GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
+    GFile* dest = dentry_create_by_path(desktop_path);
+    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
+    // g_message("%s",dsc_path);
+    GFile* dest_file = dentry_create_by_path(dsc_path);
+
+    ArrayContainer fs_src;
+    fs_src.data = &src_file;
+    fs_src.num = 1;
+
+    ArrayContainer fs_dest;
+    fs_dest.data = &dest_file;
+    fs_dest.num = 1;
+
+    // g_settings_set_boolean(desktop_gsettings,"show-dsc-icon",FALSE);
+
+    // g_message("%d",dentry_is_gapp(dest_file));
+
+    if (desktop_get_config_boolean("show-dsc-icon"))
+    {
+        // g_message("show");
+        if (!dentry_is_gapp(dest_file))
+        {
+            dentry_copy(fs_src, dest);
+        }
+        else
+            g_message("dest file exist");
+    }
+    else
+    {
+        // g_message("hide");
+        dentry_delete_files(fs_dest, FALSE);
+    }
+    g_free(desktop_path);
+    g_free(dsc_path);
+    g_object_unref(dest);
+    ArrayContainer_free0(fs_src);
+    ArrayContainer_free0(fs_dest);
+
+    // g_message("load_dsc_desktop_item end");
+}
+
 
 //TODO: connect gtk_icon_theme changed.
 

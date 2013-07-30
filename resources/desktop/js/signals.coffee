@@ -38,7 +38,10 @@ do_item_delete = (data) ->
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         delete_item(w)
-
+        dsc_e = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
+        dsc_id = DCore.DEntry.get_id(dsc_e)
+        if(id == dsc_id)
+            DCore.Desktop.set_config_boolean("show-dsc-icon",false);
         update_selected_item_drag_image()
 
 
