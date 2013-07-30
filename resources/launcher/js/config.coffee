@@ -41,5 +41,5 @@ AUTOSTART_ICON_NAME = "emblem-autostart"
 AUTOSTART_ICON_SIZE = 16
 
 SORT_MESSAGE =
-    "name": ("Sort By _Rate")
+    "name": _("Sort By _Frequency")
     "rate": _("Sort By _Name")

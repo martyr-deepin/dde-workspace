@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-02 14:05+0800\n"
+"POT-Creation-Date: 2013-07-29 17:25+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -141,7 +141,7 @@ msgstr "访客"
 #: ../resources/desktop/js/desktop_item.coffee:1434
 #: ../resources/desktop/js/desktop_item.coffee:1528
 #: ../resources/desktop/js/desktop_item.coffee:1581
-#: ../resources/launcher/js/grid.coffee:89
+#: ../resources/launcher/js/grid.coffee:92
 msgid "_Open"
 msgstr "打开(_O)"
 
@@ -282,31 +282,31 @@ msgstr "桌面设置(_E)"
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
-#: ../resources/dock/js/clientgroup.coffee:32
+#: ../resources/dock/js/clientgroup.coffee:33
 msgid "_New instance"
 msgstr "新建实例(_N)"
 
-#: ../resources/dock/js/clientgroup.coffee:33
+#: ../resources/dock/js/clientgroup.coffee:34
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: ../resources/dock/js/clientgroup.coffee:34
+#: ../resources/dock/js/clientgroup.coffee:35
 msgid "Close _All"
 msgstr "关闭所有(_A)"
 
-#: ../resources/dock/js/clientgroup.coffee:36
+#: ../resources/dock/js/clientgroup.coffee:37
 msgid "_Dock me"
 msgstr "驻留(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:56
+#: ../resources/dock/js/deepin_item.coffee:66
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/dock/js/deepin_item.coffee:59
+#: ../resources/dock/js/deepin_item.coffee:69
 msgid "Show/Hide Desktop"
 msgstr "显示/隐藏桌面"
 
-#: ../resources/dock/js/item.coffee:264
+#: ../resources/dock/js/item.coffee:267
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
 msgstr "该项无效。您要将其从Dock删除吗？"
 
@@ -342,11 +342,19 @@ msgstr "添加至开机启动项(_A)"
 msgid "_Remove from autostart"
 msgstr "从开机启动项删除(_R)"
 
-#: ../resources/launcher/js/grid.coffee:93
+#: ../resources/launcher/js/config.coffee:44
+msgid "Sort By _Frequency"
+msgstr "按使用率排序"
+
+#: ../resources/launcher/js/config.coffee:45
+msgid "Sort By _Name"
+msgstr "按名字排序"
+
+#: ../resources/launcher/js/grid.coffee:96
 msgid "Send to d_esktop"
 msgstr "发送到桌面(_E)"
 
-#: ../resources/launcher/js/grid.coffee:94
+#: ../resources/launcher/js/grid.coffee:97
 msgid "Send to do_ck"
 msgstr "添加到 Dock(_C)"
 
@@ -374,7 +382,7 @@ msgstr "%Y年%b%d日 %A"
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/launcher/launcher.c:207
+#: ../app/launcher/launcher.c:215
 msgid "another instance of application launcher is running...\n"
 msgstr "已有一个程序启动器实例正在运行...\n"
 
@@ -426,40 +434,40 @@ msgstr "实用工具"
 msgid "other"
 msgstr "其他"
 
-#: ../app/dock/dock.c:183
+#: ../app/dock/dock.c:198
 msgid "another instance of application dock is running...\n"
 msgstr "已有一个Dock实例正在运行...\n"
 
-#: ../app/dock/dock.c:196
+#: ../app/dock/dock.c:283
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
 msgstr "因Compiz插件未启用，Dock未能启动"
 
-#: ../lib/dentry/entry.c:682
+#: ../lib/dentry/entry.c:697
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
 msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
 
-#: ../lib/dentry/entry.c:688
+#: ../lib/dentry/entry.c:703
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
 msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
 
-#: ../lib/dentry/entry.c:694
+#: ../lib/dentry/entry.c:709
 msgid "The Item could not be renamed"
 msgstr "该项无法重命名"
 
-#: ../lib/dentry/entry.c:767 ../lib/dentry/fileops.c:671
+#: ../lib/dentry/entry.c:783 ../lib/dentry/fileops.c:689
 msgid "copy"
 msgstr "复制"
 
-#: ../lib/dentry/fileops.c:516
+#: ../lib/dentry/fileops.c:534
 msgid "move"
 msgstr "移动"
 
-#: ../lib/dentry/fileops.c:640
+#: ../lib/dentry/fileops.c:658
 msgid "Copy"
 msgstr "复制"
 
