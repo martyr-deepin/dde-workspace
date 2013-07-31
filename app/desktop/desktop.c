@@ -173,6 +173,29 @@ GFile* _get_useable_file(const char* basename)
 }
 
 JS_EXPORT_API
+GFile* desktop_new_useable_file(char* basename, char* name_add_before)
+{
+    char* destkop_path = get_desktop_dir(FALSE);
+    GFile* dir = g_file_new_for_path(destkop_path);
+
+    char* name = g_strdup(basename);
+    GFile* child = g_file_get_child(dir, name);
+    for (int i=0; g_file_query_exists(child, NULL); i++) {
+        g_object_unref(child);
+        g_free(name);
+        name = g_strdup_printf("%s %s", name_add_before,basename);
+        child = g_file_get_child(dir, name);
+    }
+
+    g_object_unref(dir);
+    g_free(destkop_path);
+    char* c = dentry_get_name(child);
+    g_message("%s",c);
+    g_free(c);
+    return child;
+}
+
+JS_EXPORT_API
 GFile* desktop_new_file()
 {
     GFile* file = _get_useable_file(_("New file"));
@@ -302,9 +325,10 @@ gboolean desktop_get_config_boolean(const char* key_name)
     return retval;
 }
 JS_EXPORT_API
-void desktop_set_config_boolean(const char* key_name,gboolean value)
+gboolean desktop_set_config_boolean(const char* key_name,gboolean value)
 {
-    g_settings_set_boolean(desktop_gsettings, key_name,value);
+    gboolean retval = g_settings_set_boolean(desktop_gsettings, key_name,value);
+    return retval;
 }
 JS_EXPORT_API
 char* desktop_get_data_dir()
@@ -355,25 +379,20 @@ gboolean desktop_file_exist_in_desktop(char* name)
 {
     char* desktop_path = get_desktop_dir(FALSE);
     GDir* dir = g_dir_open(desktop_path, 0, NULL);
-
+    gboolean result = false;
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
         if(desktop_file_filter(file_name))
             continue;
-        g_message("%d",i);
-        g_message("%s",file_name);
         if(g_str_equal(name,file_name))
         {
-            g_message("%s exist in desktoo",name);
-            g_dir_close(dir);
-            g_free(desktop_path);
-            return true;
+            result = true;
         }
 
     }
     g_dir_close(dir);
     g_free(desktop_path);
-    return false;
+    return result;
 }
 
 //TODO: connect gtk_icon_theme changed.

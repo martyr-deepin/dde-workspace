@@ -1121,7 +1121,7 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     char* c = nautilus_get_templates_directory();
-    g_message("templates_directory:%s",c);
+    // g_message("templates_directory:%s",c);
     GFile* f = g_file_new_for_path(c);
     ac = dentry_list_files(f);
     g_free(c);   
@@ -1129,15 +1129,3 @@ ArrayContainer dentry_get_templates_files(void)
 
     return ac ;
 }
-
-JS_EXPORT_API
-gboolean dentry_create_by_templates_to_desktop(GFile* src,char* new_name_add)
-{
-    GFile* dest_tmp = dentry_create_by_path("/tmp/");
-    fileops_copy((gpointer)src,1,dest_tmp);
-    // gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt)
-
-    // dentry_rename_move()
-    return true;
-}
-

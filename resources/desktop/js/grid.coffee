@@ -446,18 +446,24 @@ menu_create_new_templates = (id) ->
     id_num = id - 20
     templates = DCore.DEntry.get_templates_files()
     copy_templates_choose = []
-
+    name_add_before = _("Untitled") + " "
     for i in [0...templates.length] by 1
-        templates_name = DCore.DEntry.get_name(templates[i])
         if i == id_num
-            exist = DCore.Desktop.file_exist_in_desktop(templates_name)
-            copy_templates_choose.push(templates[i])
-            DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
+            templates_name = DCore.DEntry.get_name(templates[i])
+            echo templates_name
 
+            copy_templates_choose.push(templates[i])
+            # method 1: use desktop_new_useable_file to rename auto
+            #           desktop_new_useable_file can rename when the src exist in desktop
+            DCore.DEntry.copy(copy_templates_choose,DCore.Desktop.new_useable_file(templates_name,name_add_before))
+
+            # method 2 : copy to /tmp/ and rename and then move to desktop
+            # exist = DCore.Desktop.file_exist_in_desktop(templates_name)
+            # copy_templates_choose.push(templates[i])
+            # DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
             # if exist
             #     echo "file exsit"
-            #     name_new = _("Untitled")
-            #     templates_name_new = name_new + " " + templates_name
+            #     templates_name_new = name_add_before + templates_name
             #     #1. copy the templates into /tmp/
             #     DCore.DEntry.copy(copy_templates_choose,DCore.DEntry.create_by_path("/tmp/"))
             #     #2. rename the file in /tmp  to Unnamed+oldname
@@ -470,7 +476,7 @@ menu_create_new_templates = (id) ->
             #         DCore.DEntry.move(templates_new_name,g_desktop_entry,false)
             # else
             #     DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
-            
+
 
 # all DND event handlers
 init_grid_drop = ->
@@ -931,10 +937,6 @@ grid_right_click = (evt) ->
 
 grid_do_itemselected = (evt) ->
 
-    # menu for templates
-    if evt.id > 19 && evt.id < 30
-        menu_create_new_templates(evt.id)
-
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
@@ -943,7 +945,11 @@ grid_do_itemselected = (evt) ->
         when 5 then DCore.Desktop.run_deepin_settings("display")
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
-        else echo "not implemented function #{evt.id},#{evt.title}"
+        else 
+            if evt.id > 19 && evt.id < 30
+                menu_create_new_templates(evt.id)
+            else
+                echo "not implemented function #{evt.id},#{evt.title}"
     return
 
 
