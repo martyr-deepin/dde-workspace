@@ -1147,11 +1147,16 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_object_unref(dir);
     g_free(destkop_path);
 
+    ArrayContainer fs;
+    fs.data = &src;
+    fs.num = 1;
     //we should check @src type  to use diff method.
     GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_DIRECTORY)
     {
-    result = g_file_make_directory (child, NULL, NULL);
+    // result = g_file_make_directory (child, NULL, NULL);
+
+        dentry_copy(fs,child);
 #if 1
     g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
 #endif
@@ -1163,6 +1168,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_debug ("create_templates: new file : g_file_copy : %s", name);
 #endif        
     }
+    ArrayContainer_free0(fs);
 
     return result;
 }
