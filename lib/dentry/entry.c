@@ -338,7 +338,6 @@ char* dentry_get_id(Entry* e)
 JS_EXPORT_API
 gboolean dentry_launch(Entry* e, const ArrayContainer fs)
 {
-    /* g_message("start\n"); */
     TEST_GFILE(e, f)
         gboolean launch_res = TRUE;
         GFileInfo* info = g_file_query_info(f, "standard::content-type,access::can-execute", G_FILE_QUERY_INFO_NONE, NULL, NULL);
@@ -881,7 +880,6 @@ gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean promp
     gboolean result = false;
     if(dentry_set_name(src,new_name))
     {
-        g_message("rename success!");
         result =  fileops_move((gpointer)src,1,dest,prompt);
     }
     else
@@ -1121,11 +1119,50 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     char* c = nautilus_get_templates_directory();
-    // g_message("templates_directory:%s",c);
     GFile* f = g_file_new_for_path(c);
     ac = dentry_list_files(f);
     g_free(c);   
     g_object_unref(f); 
 
     return ac ;
+}
+
+
+JS_EXPORT_API
+gboolean dentry_create_templates(GFile* src, char* name_add_before)
+{
+    gboolean result = false;
+    char* basename = dentry_get_name(src);
+    char* destkop_path = get_desktop_dir(FALSE);
+    GFile* dir = g_file_new_for_path(destkop_path);
+    char* name = g_strdup(basename);
+    GFile* child = g_file_get_child(dir, name);
+    for (int i=0; g_file_query_exists(child, NULL); i++) {
+        g_object_unref(child);
+        g_free(name);
+        name = g_strdup_printf("%s %s", name_add_before,basename);
+        child = g_file_get_child(dir, name);
+    }
+    g_free(basename);
+    g_object_unref(dir);
+    g_free(destkop_path);
+
+    //we should check @src type  to use diff method.
+    GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+    if (type == G_FILE_TYPE_DIRECTORY)
+    {
+    result = g_file_make_directory (child, NULL, NULL);
+#if 1
+    g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
+#endif
+    }
+    else
+    {
+        result = g_file_copy(src, child, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
+#if 1
+    g_debug ("create_templates: new file : g_file_copy : %s", name);
+#endif        
+    }
+
+    return result;
 }

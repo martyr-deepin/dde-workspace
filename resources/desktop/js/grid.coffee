@@ -441,42 +441,16 @@ menu_create_new_file = () ->
       # }
 
 menu_create_new_templates = (id) ->
-    echo "menu_create_new_templates"
-    # ps: i can look the sources for nautilus search by Untilmie in en_US
     id_num = id - 20
     templates = DCore.DEntry.get_templates_files()
     copy_templates_choose = []
     name_add_before = _("Untitled") + " "
     for i in [0...templates.length] by 1
         if i == id_num
-            templates_name = DCore.DEntry.get_name(templates[i])
-            echo templates_name
-
-            copy_templates_choose.push(templates[i])
             # method 1: use desktop_new_useable_file to rename auto
             #           desktop_new_useable_file can rename when the src exist in desktop
-            DCore.DEntry.copy(copy_templates_choose,DCore.Desktop.new_useable_file(templates_name,name_add_before))
-
-            # method 2 : copy to /tmp/ and rename and then move to desktop
-            # exist = DCore.Desktop.file_exist_in_desktop(templates_name)
-            # copy_templates_choose.push(templates[i])
-            # DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
-            # if exist
-            #     echo "file exsit"
-            #     templates_name_new = name_add_before + templates_name
-            #     #1. copy the templates into /tmp/
-            #     DCore.DEntry.copy(copy_templates_choose,DCore.DEntry.create_by_path("/tmp/"))
-            #     #2. rename the file in /tmp  to Unnamed+oldname
-            #     if DCore.DEntry.set_name(DCore.DEntry.create_by_path("/tmp/" + "templates_name"),templates_name_new)
-            #         #3. if rename success,move it to the desktop with no dialog
-            #         tmp_new_file_path = "/tmp/"+ templates_name_new
-            #         echo tmp_new_file_path
-            #         templates_new_name = []
-            #         templates_new_name.push(DCore.DEntry.create_by_path(tmp_new_file_path))
-            #         DCore.DEntry.move(templates_new_name,g_desktop_entry,false)
-            # else
-            #     DCore.DEntry.copy(copy_templates_choose,g_desktop_entry)
-
+            if (DCore.DEntry.create_templates(templates[i],name_add_before))
+                echo "create_templates success!"
 
 # all DND event handlers
 init_grid_drop = ->
@@ -903,7 +877,6 @@ gird_left_mousedown = (evt) ->
 
 grid_right_click = (evt) ->
     evt.stopPropagation()
-    echo "grid_right_click in grid.coffee"
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
     if evt.ctrlKey == false and evt.shiftKey == false

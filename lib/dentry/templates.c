@@ -36,16 +36,16 @@ nautilus_get_xdg_dir (const char *type)
 
 
     for (i = 0 ; cached_xdg_dirs != NULL && cached_xdg_dirs[i].type != NULL; i++) {
-        if (strcmp (cached_xdg_dirs[i].type, type) == 0) {
+        if (g_strcmp0 (cached_xdg_dirs[i].type, type) == 0) {
             return g_strdup (cached_xdg_dirs[i].path);
         }
     }
 #endif
 
-    if (strcmp ("DESKTOP", type) == 0) {
+    if (g_strcmp0("DESKTOP", type) == 0) {
         return g_build_filename (g_get_home_dir (), DESKTOP_DIRECTORY_NAME, NULL);
     }
-    if (strcmp ("TEMPLATES", type) == 0) {
+    if (g_strcmp0("TEMPLATES", type) == 0) {
         return g_build_filename (g_get_home_dir (), "Templates", NULL);
     }
     
@@ -59,7 +59,7 @@ nautilus_should_use_templates_directory (void)
     gboolean res;
     
     dir = nautilus_get_xdg_dir ("TEMPLATES");
-    res = strcmp (dir, g_get_home_dir ()) != 0;
+    res = g_strcmp0 (dir, g_get_home_dir ()) != 0;
     g_free (dir);
     return res;
 }

@@ -152,7 +152,7 @@ char* desktop_get_desktop_path()
     return get_desktop_dir(FALSE);
 }
 
-PRIVATE
+
 GFile* _get_useable_file(const char* basename)
 {
     char* destkop_path = get_desktop_dir(FALSE);
@@ -172,28 +172,6 @@ GFile* _get_useable_file(const char* basename)
     return child;
 }
 
-JS_EXPORT_API
-GFile* desktop_new_useable_file(char* basename, char* name_add_before)
-{
-    char* destkop_path = get_desktop_dir(FALSE);
-    GFile* dir = g_file_new_for_path(destkop_path);
-
-    char* name = g_strdup(basename);
-    GFile* child = g_file_get_child(dir, name);
-    for (int i=0; g_file_query_exists(child, NULL); i++) {
-        g_object_unref(child);
-        g_free(name);
-        name = g_strdup_printf("%s %s", name_add_before,basename);
-        child = g_file_get_child(dir, name);
-    }
-
-    g_object_unref(dir);
-    g_free(destkop_path);
-    char* c = dentry_get_name(child);
-    g_message("%s",c);
-    g_free(c);
-    return child;
-}
 
 JS_EXPORT_API
 GFile* desktop_new_file()
