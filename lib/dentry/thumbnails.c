@@ -102,11 +102,8 @@ gfile_lookup_thumbnail (GFile* file)
     {
         time_t current_time = 0;
         time (&current_time);
-        g_message("%d",current_time);
-        g_message("%d",mtime);
         if (current_time - mtime < THUMBNAIL_CREATION_DELAY)
         {
-            g_debug ("thumbnail creation delayed: %d", current_time - mtime);
             return NULL;
         }
         //try to create thumbnails
