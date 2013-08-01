@@ -440,7 +440,7 @@ menu_create_new_file = () ->
       #   evt.dataTransfer.setData("Text",desktop_uri);
       # }
 
-menu_create_new_templates = (id) ->
+menu_create_templates = (id) ->
     id_num = id - 20
     templates = DCore.DEntry.get_templates_files()
     copy_templates_choose = []
@@ -920,7 +920,7 @@ grid_do_itemselected = (evt) ->
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else 
             if evt.id > 19 && evt.id < 30
-                menu_create_new_templates(evt.id)
+                menu_create_templates(evt.id)
             else
                 echo "not implemented function #{evt.id},#{evt.title}"
     return
