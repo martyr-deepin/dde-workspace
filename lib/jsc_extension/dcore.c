@@ -329,3 +329,25 @@ void dcore_new_window(const char* url, const char* title, double w, double h)
     gtk_container_add(GTK_CONTAINER(container), webview);
     gtk_widget_show_all(container);
 }
+
+
+JS_EXPORT_API
+gboolean dcore_open_browser(char const* origin_uri)
+{
+    if (origin_uri == NULL || origin_uri[0] == '\0')
+        return FALSE;
+
+    char* uri = g_uri_unescape_string(origin_uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH);
+    char* scheme = g_uri_parse_scheme(uri);
+    if (scheme == NULL) {
+        char* uri_without_scheme = uri;
+        uri = g_strconcat("http://", uri_without_scheme, NULL);
+        g_free(uri_without_scheme);
+    }
+    g_free(scheme);
+
+    gboolean launch_result = g_app_info_launch_default_for_uri(uri, NULL, NULL);
+    g_free(uri);
+
+    return launch_result;
+}
