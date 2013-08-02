@@ -23,22 +23,15 @@
 #define DEFAULT_NAUTILUS_DIRECTORY_MODE (0755)
 #define DESKTOP_DIRECTORY_NAME "Desktop"
 
+char* get_templates_dir(gboolean update);
 
 char *
 nautilus_get_xdg_dir (const char *type)
 {
 
+    char* c = get_templates_dir(TRUE);
+    return c;
 #if 0
-    static char* dir = NULL;
-    if (update || dir == NULL) {
-        if (dir != NULL)
-            g_free(dir);
-        const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_TEMPLATES_DIR'";
-        g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
-        g_strchomp(dir);
-    }
-    return g_strdup(dir);
-
 
     int i;
     if (cached_xdg_dirs == NULL) {
@@ -51,16 +44,15 @@ nautilus_get_xdg_dir (const char *type)
             return g_strdup (cached_xdg_dirs[i].path);
         }
     }
-#endif
-    ///////method 3////////
-    if (g_strcmp0("DESKTOP", type) == 0) {
+    if (strcmp ("DESKTOP", type) == 0) {
         return g_build_filename (g_get_home_dir (), DESKTOP_DIRECTORY_NAME, NULL);
     }
-    if (g_strcmp0("TEMPLATES", type) == 0) {
+    if (strcmp ("TEMPLATES", type) == 0) {
         return g_build_filename (g_get_home_dir (), "Templates", NULL);
     }
     
     return g_strdup (g_get_home_dir ());
+#endif
 }
 
 gboolean

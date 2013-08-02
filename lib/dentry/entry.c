@@ -1120,6 +1120,7 @@ ArrayContainer dentry_get_templates_files(void)
     ArrayContainer ac;
     //char* c = nautilus_get_templates_directory();
     char* c  = get_templates_dir(TRUE);
+    g_debug("get_templates_dir:---%s---",c);
     GFile* f = g_file_new_for_path(c);
     ac = dentry_list_files(f);
     g_free(c);   
