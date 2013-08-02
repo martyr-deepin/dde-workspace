@@ -440,6 +440,17 @@ menu_create_new_file = () ->
       #   evt.dataTransfer.setData("Text",desktop_uri);
       # }
 
+menu_create_templates = (id) ->
+    id_num = id - 20
+    templates = DCore.DEntry.get_templates_files()
+    copy_templates_choose = []
+    name_add_before = _("Untitled") + " "
+    for i in [0...templates.length] by 1
+        if i == id_num
+            # method 1: use desktop_new_useable_file to rename auto
+            #           desktop_new_useable_file can rename when the src exist in desktop
+            if (DCore.DEntry.create_templates(templates[i],name_add_before))
+                echo "create_templates success!"
 
 # all DND event handlers
 init_grid_drop = ->
@@ -871,17 +882,21 @@ grid_right_click = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
+    templates = []
+    templates_menu = []
+    templates = DCore.DEntry.get_templates_files()
+    for i in [0...templates.length] by 1
+        templates_name = DCore.DEntry.get_name(templates[i])
+        templates_id = i + 20
+        templates_menu.push([templates_id,templates_name])
+
     menus = []
     menus.push([_("_Sort by"), [
                 [11, _("_Name")],
                 [12, _("Last modified _time")]
             ]
         ])
-    menus.push([_("_New"), [
-                [21, _("_Folder")],
-                [22, _("_Text document")]
-            ]
-        ])
+    menus.push([_("_New"), templates_menu])
     menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
@@ -894,17 +909,20 @@ grid_right_click = (evt) ->
 
 
 grid_do_itemselected = (evt) ->
+
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
-        when 21 then menu_create_new_folder()
-        when 22 then menu_create_new_file()
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("display")
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
-        else echo "not implemented function #{evt.id},#{evt.title}"
+        else 
+            if evt.id > 19 && evt.id < 30
+                menu_create_templates(evt.id)
+            else
+                echo "not implemented function #{evt.id},#{evt.title}"
     return
 
 

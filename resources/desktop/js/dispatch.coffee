@@ -81,33 +81,6 @@ clear_speical_desktop_items = ->
     speical_item.splice(0)
     return
 
-# load deepin-soft-center .desktop
-# load_dsc_item = ->
-    # data_path = DCore.Desktop.get_data_dir()
-
-    # DCore.Desktop.load_dsc_desktop_item()
-
-    # SoftCenter_copy = []
-    # SoftCenter_delete = []
-    # SoftCenter_f_e_delete = DCore.DEntry.create_by_path("#{desktop_path}/deepin-software-center.desktop")
-    # if SoftCenter_f_e_delete?
-    #     SoftCenter_delete.push(SoftCenter_f_e_delete)
-    # SoftCenter_f_e = DCore.DEntry.create_by_path("/usr/share/applications/deepin-software-center.desktop")
-    # if SoftCenter_f_e?
-    #     SoftCenter_copy.push(SoftCenter_f_e)    
-    # SoftCenter_p = {x : 0, y : 3, width : 1, height : 1}
-    # save_position(DCore.DEntry.get_id(SoftCenter_f_e), SoftCenter_p) if not detect_occupy(SoftCenter_p)
-
-    # if _GET_CFG_BOOL_(_CFG_SHOW_DSC_ICON_)
-    #     # echo "load"
-    #     if (!DCore.DEntry.is_gapp(SoftCenter_f_e_delete))
-    #         # echo "load SoftCenter"
-    #         DCore.DEntry.copy(SoftCenter_copy, g_desktop_entry)
-    # else
-    #     # echo "discard"
-    #     if (DCore.DEntry.is_gapp(SoftCenter_f_e_delete))
-    #         # echo "discard SoftCenter"
-    #         DCore.DEntry.delete_files(SoftCenter_delete, false)
 
 load_speical_desktop_items = ->
     clear_speical_desktop_items()

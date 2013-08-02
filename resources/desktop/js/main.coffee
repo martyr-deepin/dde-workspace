@@ -30,6 +30,3 @@ place_desktop_items()
 place_all_widgets()
 
 DCore.Desktop.test()
-setTimeout(->
-    echo "lang:#{document.body.lang}"
-    ,1000)

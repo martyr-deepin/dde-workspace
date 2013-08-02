@@ -40,15 +40,4 @@ char* icon_name_to_path(const char* name, int size);
 char* icon_name_to_path_with_check_xpm(const char* name, int size);
 char* lookup_icon_by_gicon(GIcon* icon);
 
-
-//--------templates--------//
-char *   nautilus_get_xdg_dir                        (const char *type);
-
-gboolean nautilus_should_use_templates_directory     (void);
-char *   nautilus_get_templates_directory            (void);
-char *   nautilus_get_templates_directory_uri        (void);
-void     nautilus_create_templates_directory         (void);
-
-ArrayContainer natilus_get_templates_files(void);
-
 #endif

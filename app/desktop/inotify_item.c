@@ -107,7 +107,6 @@ void handle_rename(GFile* old_f, GFile* new_f)
 
 void handle_delete(GFile* f)
 {
-    g_message("handle_delete");
     _remove_monitor_directory(f);
     JSObjectRef json = json_create();
     json_append_nobject(json, "entry", f, g_object_ref, g_object_unref);
@@ -116,6 +115,7 @@ void handle_delete(GFile* f)
 
 void handle_update(GFile* f)
 {
+    // g_message("handle_update");
     if (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE ,NULL) != G_FILE_TYPE_UNKNOWN) {
         char* path = g_file_get_path(f);
         Entry* entry = dentry_create_by_path(path);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-29 17:25+0800\n"
+"POT-Creation-Date: 2013-08-01 10:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -130,155 +130,151 @@ msgstr "星期六"
 msgid "Log In"
 msgstr "登录"
 
-#: ../resources/greeter/js/user.coffee:350
+#: ../resources/greeter/js/user.coffee:355
 msgid "guest"
 msgstr "访客"
 
-#: ../resources/desktop/js/desktop_item.coffee:553
-#: ../resources/desktop/js/desktop_item.coffee:755
-#: ../resources/desktop/js/desktop_item.coffee:1071
-#: ../resources/desktop/js/desktop_item.coffee:1347
-#: ../resources/desktop/js/desktop_item.coffee:1434
-#: ../resources/desktop/js/desktop_item.coffee:1528
-#: ../resources/desktop/js/desktop_item.coffee:1581
+#: ../resources/desktop/js/desktop_item.coffee:568
+#: ../resources/desktop/js/desktop_item.coffee:778
+#: ../resources/desktop/js/desktop_item.coffee:1094
+#: ../resources/desktop/js/desktop_item.coffee:1373
+#: ../resources/desktop/js/desktop_item.coffee:1461
+#: ../resources/desktop/js/desktop_item.coffee:1555
+#: ../resources/desktop/js/desktop_item.coffee:1608
 #: ../resources/launcher/js/grid.coffee:92
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: ../resources/desktop/js/desktop_item.coffee:555
-#: ../resources/desktop/js/desktop_item.coffee:1073
+#: ../resources/desktop/js/desktop_item.coffee:570
+#: ../resources/desktop/js/desktop_item.coffee:1096
 msgid "Cu_t"
 msgstr "剪切(_T)"
 
-#: ../resources/desktop/js/desktop_item.coffee:556
-#: ../resources/desktop/js/desktop_item.coffee:1074
+#: ../resources/desktop/js/desktop_item.coffee:571
+#: ../resources/desktop/js/desktop_item.coffee:1097
 msgid "_Copy"
 msgstr "复制(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:558
-#: ../resources/desktop/js/desktop_item.coffee:757
+#: ../resources/desktop/js/desktop_item.coffee:573
+#: ../resources/desktop/js/desktop_item.coffee:780
 msgid "_Rename"
 msgstr "重命名(_R)"
 
-#: ../resources/desktop/js/desktop_item.coffee:559
-#: ../resources/desktop/js/desktop_item.coffee:761
-#: ../resources/desktop/js/desktop_item.coffee:1076
-#: ../resources/desktop/js/desktop_item.coffee:1299
+#: ../resources/desktop/js/desktop_item.coffee:574
+#: ../resources/desktop/js/desktop_item.coffee:784
+#: ../resources/desktop/js/desktop_item.coffee:1099
+#: ../resources/desktop/js/desktop_item.coffee:1326
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/desktop_item.coffee:561
-#: ../resources/desktop/js/desktop_item.coffee:1078
-#: ../resources/desktop/js/desktop_item.coffee:1349
-#: ../resources/desktop/js/desktop_item.coffee:1436
+#: ../resources/desktop/js/desktop_item.coffee:576
+#: ../resources/desktop/js/desktop_item.coffee:1101
+#: ../resources/desktop/js/desktop_item.coffee:1375
+#: ../resources/desktop/js/desktop_item.coffee:1463
 msgid "_Properties"
 msgstr "属性(_P)"
 
-#: ../resources/desktop/js/desktop_item.coffee:567
-#: ../resources/desktop/js/desktop_item.coffee:574
+#: ../resources/desktop/js/desktop_item.coffee:582
+#: ../resources/desktop/js/desktop_item.coffee:589
 msgid "Co_mpress"
 msgstr "压缩(_M)"
 
-#: ../resources/desktop/js/desktop_item.coffee:570
-#: ../resources/desktop/js/desktop_item.coffee:575
+#: ../resources/desktop/js/desktop_item.coffee:585
+#: ../resources/desktop/js/desktop_item.coffee:590
 msgid "_Extract"
 msgstr "解压(_E)"
 
-#: ../resources/desktop/js/desktop_item.coffee:571
-#: ../resources/desktop/js/desktop_item.coffee:576
+#: ../resources/desktop/js/desktop_item.coffee:586
+#: ../resources/desktop/js/desktop_item.coffee:591
 msgid "Extract _Here"
 msgstr "解压到此处(_H)"
 
-#: ../resources/desktop/js/desktop_item.coffee:602
+#: ../resources/desktop/js/desktop_item.coffee:617
 msgid "Can not open this file."
 msgstr "无法打开此文件"
 
-#: ../resources/desktop/js/desktop_item.coffee:602
-#: ../resources/desktop/js/desktop_item.coffee:967
-#: ../resources/desktop/js/desktop_item.coffee:1089
-#: ../resources/desktop/js/desktop_item.coffee:1279
+#: ../resources/desktop/js/desktop_item.coffee:617
+#: ../resources/desktop/js/desktop_item.coffee:990
+#: ../resources/desktop/js/desktop_item.coffee:1112
+#: ../resources/desktop/js/desktop_item.coffee:1306
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/desktop/js/desktop_item.coffee:759
+#: ../resources/desktop/js/desktop_item.coffee:782
 msgid "_Ungroup"
 msgstr "解散(_U)"
 
-#: ../resources/desktop/js/desktop_item.coffee:967
-#: ../resources/desktop/js/desktop_item.coffee:1089
-#: ../resources/desktop/js/desktop_item.coffee:1279
+#: ../resources/desktop/js/desktop_item.coffee:990
+#: ../resources/desktop/js/desktop_item.coffee:1112
+#: ../resources/desktop/js/desktop_item.coffee:1306
 msgid "The link has expired. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
-#: ../resources/desktop/js/desktop_item.coffee:1330
+#: ../resources/desktop/js/desktop_item.coffee:1356
 msgid "Computer"
 msgstr "计算机"
 
-#: ../resources/desktop/js/desktop_item.coffee:1379
+#: ../resources/desktop/js/desktop_item.coffee:1406
 msgid "Home"
 msgstr "主文件夹"
 
-#: ../resources/desktop/js/desktop_item.coffee:1469
+#: ../resources/desktop/js/desktop_item.coffee:1496
 msgid "Trash"
 msgstr "回收站"
 
-#: ../resources/desktop/js/desktop_item.coffee:1532
+#: ../resources/desktop/js/desktop_item.coffee:1559
 msgid "_Clean up %1 items"
 msgstr "清空%1项(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1534
+#: ../resources/desktop/js/desktop_item.coffee:1561
 msgid "_Clean up 1 item"
 msgstr "清空1项(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1536
+#: ../resources/desktop/js/desktop_item.coffee:1563
 msgid "_Clean up"
 msgstr "清空(_C)"
 
-#: ../resources/desktop/js/desktop_item.coffee:1565
+#: ../resources/desktop/js/desktop_item.coffee:1592
 msgid "Software Center"
 msgstr "软件中心"
 
-#: ../resources/desktop/js/grid.coffee:824
+#: ../resources/desktop/js/grid.coffee:447
+msgid "Untitled"
+msgstr "未命名"
+
+#: ../resources/desktop/js/grid.coffee:894
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:825
+#: ../resources/desktop/js/grid.coffee:895
 msgid "_Name"
 msgstr "名称(_N)"
 
-#: ../resources/desktop/js/grid.coffee:826
+#: ../resources/desktop/js/grid.coffee:896
 msgid "Last modified _time"
 msgstr "最近修改时间(_T)"
 
-#: ../resources/desktop/js/grid.coffee:829
+#: ../resources/desktop/js/grid.coffee:899
 msgid "_New"
 msgstr "新建(_N)"
 
-#: ../resources/desktop/js/grid.coffee:830
-msgid "_Folder"
-msgstr "文件夹(_F)"
-
-#: ../resources/desktop/js/grid.coffee:831
-msgid "_Text document"
-msgstr "文本文档(_T)"
-
-#: ../resources/desktop/js/grid.coffee:834
+#: ../resources/desktop/js/grid.coffee:900
 msgid "Open in _terminal"
 msgstr "在终端中打开(_T)"
 
-#: ../resources/desktop/js/grid.coffee:835
+#: ../resources/desktop/js/grid.coffee:901
 msgid "_Paste"
 msgstr "粘贴(_P)"
 
-#: ../resources/desktop/js/grid.coffee:837
+#: ../resources/desktop/js/grid.coffee:903
 msgid "_Display settings"
 msgstr "显示设置(_D)"
 
-#: ../resources/desktop/js/grid.coffee:838
+#: ../resources/desktop/js/grid.coffee:904
 msgid "D_esktop settings"
 msgstr "桌面设置(_E)"
 
-#: ../resources/desktop/js/grid.coffee:839
+#: ../resources/desktop/js/grid.coffee:905
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
@@ -366,11 +362,11 @@ msgstr "键入要搜索的关键字..."
 msgid "App Group"
 msgstr "程序启动组"
 
-#: ../app/desktop/desktop.c:178
+#: ../app/desktop/desktop.c:179
 msgid "New file"
 msgstr "新建文件"
 
-#: ../app/desktop/desktop.c:189
+#: ../app/desktop/desktop.c:190
 msgid "New directory"
 msgstr "新建目录"
 
@@ -442,32 +438,32 @@ msgstr "已有一个Dock实例正在运行...\n"
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
 msgstr "因Compiz插件未启用，Dock未能启动"
 
-#: ../lib/dentry/entry.c:697
+#: ../lib/dentry/entry.c:711
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
 msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
 
-#: ../lib/dentry/entry.c:703
+#: ../lib/dentry/entry.c:717
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
 msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
 
-#: ../lib/dentry/entry.c:709
+#: ../lib/dentry/entry.c:723
 msgid "The Item could not be renamed"
 msgstr "该项无法重命名"
 
-#: ../lib/dentry/entry.c:783 ../lib/dentry/fileops.c:689
+#: ../lib/dentry/entry.c:797 ../lib/dentry/fileops.c:694
 msgid "copy"
 msgstr "复制"
 
-#: ../lib/dentry/fileops.c:534
+#: ../lib/dentry/fileops.c:539
 msgid "move"
 msgstr "移动"
 
-#: ../lib/dentry/fileops.c:658
+#: ../lib/dentry/fileops.c:663
 msgid "Copy"
 msgstr "复制"
 
@@ -645,3 +641,9 @@ msgstr "在终端中打开(_T)"
 #: ../lib/dentry/mime_actions.c:148
 msgid "_Display"
 msgstr "显示(_D)"
+
+#~ msgid "_Folder"
+#~ msgstr "文件夹(_F)"
+
+#~ msgid "_Text document"
+#~ msgstr "文本文档(_T)"

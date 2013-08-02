@@ -152,7 +152,7 @@ char* desktop_get_desktop_path()
     return get_desktop_dir(FALSE);
 }
 
-PRIVATE
+
 GFile* _get_useable_file(const char* basename)
 {
     char* destkop_path = get_desktop_dir(FALSE);
@@ -171,6 +171,7 @@ GFile* _get_useable_file(const char* basename)
     g_free(destkop_path);
     return child;
 }
+
 
 JS_EXPORT_API
 GFile* desktop_new_file()
@@ -302,9 +303,10 @@ gboolean desktop_get_config_boolean(const char* key_name)
     return retval;
 }
 JS_EXPORT_API
-void desktop_set_config_boolean(const char* key_name,gboolean value)
+gboolean desktop_set_config_boolean(const char* key_name,gboolean value)
 {
-    g_settings_set_boolean(desktop_gsettings, key_name,value);
+    gboolean retval = g_settings_set_boolean(desktop_gsettings, key_name,value);
+    return retval;
 }
 JS_EXPORT_API
 char* desktop_get_data_dir()
@@ -318,13 +320,10 @@ void desktop_load_dsc_desktop_item()
 {   
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
-    // g_message("load_dsc_desktop_item start");
     char* desktop_path = desktop_get_desktop_path();
-    // g_message("%s",desktop_path);
     GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
     GFile* dest = dentry_create_by_path(desktop_path);
     char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
-    // g_message("%s",dsc_path);
     GFile* dest_file = dentry_create_by_path(dsc_path);
 
     ArrayContainer fs_src;
@@ -335,23 +334,15 @@ void desktop_load_dsc_desktop_item()
     fs_dest.data = &dest_file;
     fs_dest.num = 1;
 
-    // g_settings_set_boolean(desktop_gsettings,"show-dsc-icon",FALSE);
-
-    // g_message("%d",dentry_is_gapp(dest_file));
-
     if (desktop_get_config_boolean("show-dsc-icon"))
     {
-        // g_message("show");
         if (!dentry_is_gapp(dest_file))
         {
             dentry_copy(fs_src, dest);
         }
-        else
-            g_message("dest file exist");
     }
     else
     {
-        // g_message("hide");
         dentry_delete_files(fs_dest, FALSE);
     }
     g_free(desktop_path);
@@ -359,10 +350,28 @@ void desktop_load_dsc_desktop_item()
     g_object_unref(dest);
     ArrayContainer_free0(fs_src);
     ArrayContainer_free0(fs_dest);
-
-    // g_message("load_dsc_desktop_item end");
 }
 
+JS_EXPORT_API
+gboolean desktop_file_exist_in_desktop(char* name)
+{
+    char* desktop_path = get_desktop_dir(FALSE);
+    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+    gboolean result = false;
+    const char* file_name = NULL;
+    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+        if(desktop_file_filter(file_name))
+            continue;
+        if(g_str_equal(name,file_name))
+        {
+            result = true;
+        }
+
+    }
+    g_dir_close(dir);
+    g_free(desktop_path);
+    return result;
+}
 
 //TODO: connect gtk_icon_theme changed.
 
