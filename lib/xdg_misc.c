@@ -135,6 +135,21 @@ char* get_desktop_dir(gboolean update)
     return g_strdup(dir);
 }
 
+char* get_templates_dir(gboolean update)
+{
+    static char* dir = NULL;
+    if (update || dir == NULL) {
+        if (dir != NULL)
+            g_free(dir);
+        const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_TEMPLATES_DIR'";
+        g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
+        g_strchomp(dir);
+    }
+    return g_strdup(dir);
+}
+
+
+
 gboolean change_desktop_entry_name(const char* path, const char* name)
 {
     GKeyFile *de = g_key_file_new();

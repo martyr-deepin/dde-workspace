@@ -23,13 +23,17 @@
 #define DEFAULT_NAUTILUS_DIRECTORY_MODE (0755)
 #define DESKTOP_DIRECTORY_NAME "Desktop"
 
+char* get_templates_dir(gboolean update);
 
 char *
 nautilus_get_xdg_dir (const char *type)
 {
-    int i;
 
+    char* c = get_templates_dir(TRUE);
+    return c;
 #if 0
+
+    int i;
     if (cached_xdg_dirs == NULL) {
         update_xdg_dir_cache ();
     }
@@ -40,16 +44,15 @@ nautilus_get_xdg_dir (const char *type)
             return g_strdup (cached_xdg_dirs[i].path);
         }
     }
-#endif
-
-    if (g_strcmp0("DESKTOP", type) == 0) {
+    if (strcmp ("DESKTOP", type) == 0) {
         return g_build_filename (g_get_home_dir (), DESKTOP_DIRECTORY_NAME, NULL);
     }
-    if (g_strcmp0("TEMPLATES", type) == 0) {
+    if (strcmp ("TEMPLATES", type) == 0) {
         return g_build_filename (g_get_home_dir (), "Templates", NULL);
     }
     
     return g_strdup (g_get_home_dir ());
+#endif
 }
 
 gboolean

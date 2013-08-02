@@ -1118,7 +1118,9 @@ JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
-    char* c = nautilus_get_templates_directory();
+    //char* c = nautilus_get_templates_directory();
+    char* c  = get_templates_dir(TRUE);
+    g_debug("get_templates_dir:---%s---",c);
     GFile* f = g_file_new_for_path(c);
     ac = dentry_list_files(f);
     g_free(c);   
@@ -1127,29 +1129,30 @@ ArrayContainer dentry_get_templates_files(void)
     return ac ;
 }
 
-
 JS_EXPORT_API
 gboolean dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = false;
     char* basename = dentry_get_name(src);
+    g_debug("choose templates name :---%s---",basename);
+
     char* destkop_path = get_desktop_dir(FALSE);
     GFile* dir = g_file_new_for_path(destkop_path);
+
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
-    for (int i=0; g_file_query_exists(child, NULL); i++) {
+    for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
         g_object_unref(child);
         g_free(name);
-        name = g_strdup_printf("%s %s", name_add_before,basename);
+        name = g_strdup_printf("%s(%d)%s",name_add_before, i,basename);
         child = g_file_get_child(dir, name);
     }
-    g_free(basename);
+
     g_object_unref(dir);
     g_free(destkop_path);
 
-    ArrayContainer fs;
-    fs.data = &src;
-    fs.num = 1;
+    g_debug("choose templates new name :---%s---",name);
+
     //we should check @src type  to use diff method.
     GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_DIRECTORY)
