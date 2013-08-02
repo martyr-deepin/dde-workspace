@@ -27,9 +27,20 @@
 char *
 nautilus_get_xdg_dir (const char *type)
 {
-    int i;
 
 #if 0
+    static char* dir = NULL;
+    if (update || dir == NULL) {
+        if (dir != NULL)
+            g_free(dir);
+        const char* cmd = "sh -c '. ~/.config/user-dirs.dirs && echo $XDG_TEMPLATES_DIR'";
+        g_spawn_command_line_sync(cmd, &dir, NULL, NULL, NULL);
+        g_strchomp(dir);
+    }
+    return g_strdup(dir);
+
+
+    int i;
     if (cached_xdg_dirs == NULL) {
         update_xdg_dir_cache ();
     }
@@ -41,7 +52,7 @@ nautilus_get_xdg_dir (const char *type)
         }
     }
 #endif
-
+    ///////method 3////////
     if (g_strcmp0("DESKTOP", type) == 0) {
         return g_build_filename (g_get_home_dir (), DESKTOP_DIRECTORY_NAME, NULL);
     }

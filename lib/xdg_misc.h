@@ -34,7 +34,7 @@ gboolean change_desktop_entry_name(const char* path, const char* name);
 
 // get the $XDG_DESKTOP_DIR value
 char* get_desktop_dir(gboolean update);
-
+char* get_templates_dir(gboolean update);
 // convert the icon name to the really icon path, seea also "set_default_theme"
 char* icon_name_to_path(const char* name, int size);
 char* icon_name_to_path_with_check_xpm(const char* name, int size);
