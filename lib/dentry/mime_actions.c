@@ -67,8 +67,24 @@ static void
 run_file  (GFile* file, GFile* _file_arg)
 {
     char* cmd_line;
+    char* file_path;
 
-    char* file_path = g_file_get_path (file);
+
+    //here we should check the file type 
+    // if the src is symbolink we should set the file_path as the path for it's value
+    GFileType type = g_file_query_file_type (file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+    if (type == G_FILE_TYPE_SYMBOLIC_LINK)
+    {
+        //TODO: symbolic links
+        g_debug("the src file type is  G_FILE_TYPE_SYMBOLIC_LINK");
+        // file_path = target_link(src);
+        file_path = g_file_get_path (file);
+    }
+    else{
+        file_path = g_file_get_path (file);
+    }
+    g_debug("run file file_path :%s",file_path);
+    
     if (_file_arg != NULL)
     {
         char* _file_arg_uri = g_file_get_uri (_file_arg);
@@ -122,9 +138,11 @@ activate_file (GFile* file, const char* content_type,
     if (is_executable &&
         (g_content_type_can_be_executable (content_type) || is_bin))
     {
+        g_debug("is_executable && g_content_type_can_be_executable || is_bin");
         //1. an executable text file. or an shell script
         if (g_content_type_is_a (content_type, "text/plain")) 
         {
+            g_debug("g_content_type_is_a");
             GtkWidget* dialog;
             int response;
             char* file_name;
@@ -155,6 +173,7 @@ activate_file (GFile* file, const char* content_type,
             response = gtk_dialog_run (GTK_DIALOG(dialog));
             gtk_widget_destroy (GTK_WIDGET (dialog));
 
+            g_message("response:%d",response);
             switch (response)
             {
             case RESPONSE_RUN_IN_TERMINAL:
@@ -175,12 +194,14 @@ activate_file (GFile* file, const char* content_type,
         //2. an executable binary file
         else
         {
+            g_debug("run_file");
             run_file (file, _file_arg);
         }
     }
     //for non-executables just open it.
     else
     {
+        g_debug("for non-executables just open it.");
         result = display_file (file, content_type);
     }
 
