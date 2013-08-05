@@ -135,6 +135,98 @@ const gchar* greeter_get_user_image(const gchar* name)
     return image;
 }
 
+JS_EXPORT_API 
+const gchar *greeter_get_user_background_dbus(const gchar* name)
+{
+    g_return_val_if_fail(is_user_valid(name), "nonexists");
+
+    const gchar* background = NULL;
+    GError *error = NULL;
+
+    GDBusProxy *account_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            "/org/freedesktop/Accounts",
+            "org.freedesktop.Accounts",
+            NULL,
+            &error);
+
+    g_assert(account_proxy != NULL);
+    if (error != NULL) {
+        g_warning("get user background dbus:account proxy\n");
+        g_error_free (error);
+     }
+
+    GVariant *user_path_var = NULL;
+    user_path_var  = g_dbus_proxy_call_sync(account_proxy,
+                    "FindUserByName",
+                    g_variant_new ("(s)", name),
+                    G_DBUS_CALL_FLAGS_NONE,
+                    -1,
+                    NULL,
+                    &error);
+
+    if(error != NULL){
+        g_warning ("get user background dbus:FindUserByName\n");
+        g_error_free (error);
+    }
+
+    gchar *user_path = NULL;
+    g_variant_get (user_path_var, "(o)", &user_path);
+
+    if (user_path == NULL) {
+        g_warning ("get user background dbus:find user by name failed\n");
+        g_variant_unref (user_path_var);
+        g_object_unref (account_proxy);
+        return "nonexists";
+    }
+
+    g_variant_unref (user_path_var);
+    g_object_unref (account_proxy);
+
+    GDBusProxy *user_proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+            G_DBUS_PROXY_FLAGS_NONE,
+            NULL,
+            "org.freedesktop.Accounts",
+            user_path,
+            "org.freedesktop.Accounts.User",
+            NULL,
+            &error);
+
+    g_assert(user_proxy != NULL);
+    if (error != NULL) {
+        g_warning ("get user background dbus: user proxy\n");
+        g_error_free (error);
+    }
+
+    GVariant *background_var = NULL;
+    background_var = g_dbus_proxy_get_cached_property (user_proxy, "BackgroundFile");
+    //g_variant_get (background_var, "(s)", background);
+    background = g_variant_dup_string (background_var, NULL);
+    if (background == NULL) {
+        g_warning ("get user background dbus:background NULL\n");
+        g_free (user_path);
+        g_variant_unref (background_var);
+        g_object_unref (user_proxy);
+        return "nonexists";
+    }
+
+    g_free (user_path);
+    g_variant_unref (background_var);
+    g_object_unref (user_proxy);
+
+    if(!(g_file_test(background, G_FILE_TEST_EXISTS))){
+        background = "nonexists";
+    }
+
+    if(g_access(background, R_OK) != 0){
+        background = "nonexists";
+    }
+
+    return background;
+}
+
 JS_EXPORT_API
 const gchar* greeter_get_user_background(const gchar* name)
 {

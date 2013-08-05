@@ -130,9 +130,7 @@ class UserInfo extends Widget
             user_bg = _default_bg_src
         else
             try
-                user_path = DCore.DBus.sys_object("org.freedesktop.Accounts", "/org/freedesktop/Accounts", "org.freedesktop.Accounts").FindUserByName_sync(@id)
-                if user_path?
-                    user_bg = DCore.DBus.sys_object("org.freedesktop.Accounts", user_path, "org.freedesktop.Accounts.User").BackgroundFile
+                user_bg = DCore.Greeter.get_user_background_dbus(@id)
             catch error
                 try
                     user_bg = DCore.Greeter.get_user_background(@id)

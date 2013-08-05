@@ -25,8 +25,15 @@
 #include "jsextension.h"
 
 gboolean is_user_valid(const gchar *username);
+
 JS_EXPORT_API const gchar* greeter_get_default_user();
+
 JS_EXPORT_API ArrayContainer greeter_get_users();
+
+JS_EXPORT_API const gchar *greeter_get_user_background_dbus(const gchar* name);
+
 JS_EXPORT_API const gchar* greeter_get_user_background(const gchar* name);
+
 JS_EXPORT_API const gchar* greeter_get_user_session(const gchar* name);
+
 const gchar* get_first_user();
