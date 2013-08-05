@@ -398,8 +398,9 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 }
 
 GtkWidget* container = NULL;
-GdkWindow* webview_input = NULL;
+// GdkWindow* webview_input = NULL;
 GdkWindow* gdkwindow = NULL;
+GtkIMContext* im_context = NULL;
 
 void send_lost_focus()
 {
@@ -433,13 +434,10 @@ void desktop_set_position_input(double x , double y)
     int height = 30;
     GdkRectangle area = {(int)x, (int)y, width, height};
 
-    GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_focus_in(im_context);
     gtk_im_context_set_client_window(im_context, gdkwindow);
     gtk_im_context_set_cursor_location(im_context, &area);
-
-    g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
-    // g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+    // g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
 }
 
 
@@ -491,10 +489,11 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    // setup_background_window();
+    setup_background_window();
 
-    webview_input = gtk_widget_get_window(webview);
-    desktop_set_position_input(0,1000);//init im position
+    // webview_input = gtk_widget_get_window(webview);
+
+    g_object_get(webview,"im_context",&im_context,NULL);
 
     setup_dbus_service ();
 

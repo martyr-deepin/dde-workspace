@@ -366,6 +366,9 @@ class Item extends Widget
 
     item_rename : =>
         # echo "item_rename"
+        input_x = _ITEM_WIDTH_ * @_position.x;
+        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
+        DCore.Desktop.set_position_input(input_x,input_y)
 
         if @delay_rename_tid != -1 then
         if @selected == false then return
@@ -465,11 +468,7 @@ class Item extends Widget
 
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
-        # echo "on_item_rename_input"
-        input_x = _ITEM_WIDTH_ * @_position.x;
-        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
-        DCore.Desktop.set_position_input(input_x,input_y)
-      
+
         return
 
 
