@@ -26,6 +26,8 @@ richdir_drag_context = richdir_drag_canvas.getContext('2d')
 Flag_setTimeout = null
 t_set = 3000 # warning: must > 2s (THUMBNAIL_CREATION_DELAY  3s  - file save time 1s )
 
+im_below_input_pixel = 20
+
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
     if new_str == "." or new_str == ".."
@@ -363,6 +365,13 @@ class Item extends Widget
 
 
     item_rename : =>
+        echo "item_rename"
+        input_x = _ITEM_WIDTH_ * @_position.x;
+        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
+        echo "input_x:" + input_x
+        echo "input_y:" + input_y
+        DCore.Desktop.set_position_input(input_x,input_y)
+
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
@@ -406,6 +415,7 @@ class Item extends Widget
 
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
+
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()

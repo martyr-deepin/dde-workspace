@@ -373,6 +373,8 @@ gboolean desktop_file_exist_in_desktop(char* name)
     return result;
 }
 
+
+
 //TODO: connect gtk_icon_theme changed.
 
 PRIVATE
@@ -396,6 +398,8 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 }
 
 GtkWidget* container = NULL;
+GdkWindow* gdkwindow = NULL;
+
 void send_lost_focus()
 {
     js_post_message_simply("lost_focus", NULL);
@@ -411,6 +415,29 @@ void focus_changed(gboolean is_changed)
         send_get_focus();
     else
         send_lost_focus();
+}
+
+PRIVATE
+void _do_im_commit(GtkIMContext *context, gchar* str)
+{
+    JSObjectRef json = json_create();
+    json_append_string(json, "Content", str);
+    js_post_message("im_commit", json);
+}
+
+JS_EXPORT_API
+void desktop_set_position_input(double x , double y)
+{
+    int width = 100;
+    int height = 30;
+    GtkIMContext* im_context = gtk_im_multicontext_new();
+    gtk_im_context_set_client_window(im_context, gdkwindow);
+    GdkRectangle area = {(int)x, (int)y, width, height};
+    gtk_im_context_set_cursor_location(im_context, &area);
+    g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
+    gtk_im_context_focus_in(im_context);
+    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+
 }
 
 
@@ -458,11 +485,14 @@ int main(int argc, char* argv[])
     gtk_widget_show_all(container);
     g_signal_connect (container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-    GdkWindow* gdkwindow = gtk_widget_get_window(container);
+    gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     setup_background_window();
+
+    // desktop_set_position_input(0,1400);//init im position
+
     setup_dbus_service ();
 
 #ifndef NDEBUG
@@ -473,6 +503,7 @@ int main(int argc, char* argv[])
     unwatch_workarea_changes(container);
     return 0;
 }
+
 
 PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
 {
