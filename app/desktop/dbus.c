@@ -92,7 +92,7 @@ void setup_dbus_service ()
     }
     //deliberately leak node_info here, 'coz interface_info is owned by node_info, 
     //but we need interface_info for re-registration
-    //g_dbus_node_info_unref (node_info);
+    // g_dbus_node_info_unref (node_info);
 
     _service_owner_id = 0;
     _service_reg_id = 0;
