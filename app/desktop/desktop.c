@@ -491,7 +491,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    setup_background_window();
+    // setup_background_window();
 
     webview_input = gtk_widget_get_window(webview);
     desktop_set_position_input(0,1000);//init im position

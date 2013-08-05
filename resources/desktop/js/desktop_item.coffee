@@ -26,7 +26,7 @@ richdir_drag_context = richdir_drag_canvas.getContext('2d')
 Flag_setTimeout = null
 t_set = 3000 # warning: must > 2s (THUMBNAIL_CREATION_DELAY  3s  - file save time 1s )
 
-im_below_input_pixel = 20
+im_below_input_pixel = 100
 
 cleanup_filename = (str) ->
     new_str = str.replace(/\n|\//g, "")
@@ -366,13 +366,6 @@ class Item extends Widget
 
     item_rename : =>
         # echo "item_rename"
-        input_x = _ITEM_WIDTH_ * @_position.x;
-        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
-        # echo "input_x:" + input_x
-        # echo "input_y:" + input_y
-        DCore.Desktop.set_position_input(input_x,input_y)
-        #Warning: the best method is :
-        # in on_item_rename_keydown  and check the Cursor position and then set_position_input
 
         if @delay_rename_tid != -1 then
         if @selected == false then return
@@ -393,7 +386,7 @@ class Item extends Widget
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
 
             #XXX: workaround -> fix up get Enter keys before begining of rename
-            #@item_name.addEventListener("input", @on_item_rename_input)
+            @item_name.addEventListener("input", @on_item_rename_input)
 
             @item_name.focus()
 
@@ -418,6 +411,7 @@ class Item extends Widget
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
         # echo "on_item_rename_keydown"
+
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
@@ -472,8 +466,10 @@ class Item extends Widget
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
         # echo "on_item_rename_input"
-
-        @item_name.innerText = @item_name.innerText.replace(/[\n|\r]/gm, "")
+        input_x = _ITEM_WIDTH_ * @_position.x;
+        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
+        DCore.Desktop.set_position_input(input_x,input_y)
+      
         return
 
 
