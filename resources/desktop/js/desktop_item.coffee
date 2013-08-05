@@ -365,12 +365,14 @@ class Item extends Widget
 
 
     item_rename : =>
-        echo "item_rename"
+        # echo "item_rename"
         input_x = _ITEM_WIDTH_ * @_position.x;
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
-        echo "input_x:" + input_x
-        echo "input_y:" + input_y
+        # echo "input_x:" + input_x
+        # echo "input_y:" + input_y
         DCore.Desktop.set_position_input(input_x,input_y)
+        #Warning: the best method is :
+        # in on_item_rename_keydown  and check the Cursor position and then set_position_input
 
         if @delay_rename_tid != -1 then
         if @selected == false then return
@@ -415,7 +417,7 @@ class Item extends Widget
 
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
-
+        # echo "on_item_rename_keydown"
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
@@ -444,6 +446,8 @@ class Item extends Widget
 
     on_item_rename_keypress : (evt) =>
         evt.stopPropagation()
+        # echo "on_item_rename_keypress"
+
         switch evt.keyCode
             when 13   # enter
                 evt.preventDefault()
@@ -461,10 +465,14 @@ class Item extends Widget
 
     on_item_rename_keyup : (evt) =>
         evt.stopPropagation()
+        # echo "on_item_rename_keyup"
+
         return
 
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
+        # echo "on_item_rename_input"
+
         @item_name.innerText = @item_name.innerText.replace(/[\n|\r]/gm, "")
         return
 
