@@ -110,14 +110,23 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    n_cols = Math.floor(wa_width / _ITEM_WIDTH_)
-    n_rows = Math.floor(wa_height / _ITEM_HEIGHT_)
-    xx = wa_width % _ITEM_WIDTH_
-    yy = wa_height % _ITEM_HEIGHT_
-    g_ITEM_WIDTH_ = _ITEM_WIDTH_ + Math.floor(xx / n_cols)
-    g_ITEM_HEIGHT_ = _ITEM_HEIGHT_ + Math.floor(yy / n_rows)
+    echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
+    # only 4  9 16 25  but 16 is the best 
+    _GRID_WIDTH_INIT_ = _ITEM_WIDTH_/4
+    _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_/4
+    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
+    echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
+    n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
+    xx = wa_width % _GRID_WIDTH_INIT_
+    yy = wa_height % _GRID_HEIGHT_INIT_
+    echo "xx:" + xx + ",yy:" + yy
+    g_ITEM_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
+    g_ITEM_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
+    echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
 
-    return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
+    # return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
+    return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
 
 # update the coordinate of the gird_div to fit the size of the workarea
@@ -231,6 +240,7 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
+    echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -242,6 +252,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
+    echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -261,6 +272,7 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
+    echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -273,6 +285,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
+    echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
@@ -286,6 +299,9 @@ find_free_position = (w, h) ->
 pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
+
+    # index_x = Math.min(Math.floor(x / _ITEM_WIDTH_), (cols - 1))
+    # index_y = Math.min(Math.floor(y / _ITEM_HEIGHT_), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
 
 
@@ -294,9 +310,12 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, info) ->
+    echo "move_to_position"
     old_info = widget.get_pos()
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
+    # widget.move(info.x * _ITEM_WIDTH_, info.y * _ITEM_HEIGHT_)
+
     if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
     set_occupy(widget.get_id(), info)
 
@@ -307,6 +326,7 @@ move_to_position = (widget, info) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
+    echo "move_to_anywhere"
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
@@ -318,6 +338,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
+    echo "move_to_somewhere"
     if not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
@@ -327,6 +348,7 @@ move_to_somewhere = (widget, pos) ->
 
 
 place_desktop_items = ->
+    echo "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
@@ -372,6 +394,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
+    echo "sort_desktop_item_by_func"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
@@ -408,6 +431,7 @@ menu_sort_desktop_item_by_mtime = ->
 
 
 create_entry_to_new_item = (entry) ->
+    echo "create_entry_to_new_item"
     w = Widget.look_up(DCore.DEntry.get_id(entry))
     if not w? then w = create_item(entry)
 
@@ -457,7 +481,8 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        
+        echo "init_grid_drop"
+
         file_uri = []
         tmp_copy = []
         tmp_move = []
