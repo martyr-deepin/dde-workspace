@@ -112,8 +112,8 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 calc_row_and_cols = (wa_width, wa_height) ->
     echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
     # only 4  9 16 25  but 16 is the best 
-    _GRID_WIDTH_INIT_ = _ITEM_WIDTH_/4
-    _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_/4
+    _GRID_WIDTH_INIT_ = _ITEM_WIDTH_
+    _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_
     echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
@@ -126,7 +126,7 @@ calc_row_and_cols = (wa_width, wa_height) ->
     echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
 
     # return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
-    return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
+    return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]  
 
 
 # update the coordinate of the gird_div to fit the size of the workarea
@@ -310,7 +310,7 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, info) ->
-    echo "move_to_position"
+    # echo "move_to_position"
     old_info = widget.get_pos()
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
@@ -338,7 +338,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    echo "move_to_somewhere"
+    # echo "move_to_somewhere"
     if not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
@@ -608,8 +608,10 @@ item_dragstart_handler = (widget, evt) ->
             w = Widget.look_up(selected_item[i])
             if not w? or w.modifiable == false then continue
             path = w.get_path()
-            if path.length > 0
-                all_selected_items += path + "\n"
+            if selected_item.length == 1
+                all_selected_items += path
+            else if path.length > 0 
+                    all_selected_items += path + "\n"
 
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         _SET_DND_INTERNAL_FLAG_(evt)

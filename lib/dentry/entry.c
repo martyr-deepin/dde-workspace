@@ -253,6 +253,7 @@ char* dentry_get_uri(Entry* e)
         char* uri = g_strdup_printf("file://%s", encode);
         g_free(encode);
         return uri;
+    g_message("uri:---%s---",uri);
     TEST_END
 }
 
