@@ -583,11 +583,13 @@ item_dragstart_handler = (widget, evt) ->
             w = Widget.look_up(selected_item[i])
             if not w? or w.modifiable == false then continue
             path = w.get_path()
-            if selected_item.length == 1
-                all_selected_items += path
-            else if path.length > 0 
-                    all_selected_items += path + "\n"
-
+            if path.length > 0 
+                all_selected_items += path + "\r\n"
+        if all_selected_items.length > 0
+            all_selected_items = all_selected_items.substring(0,all_selected_items.length-2)
+        else 
+            echo "items path is null"
+            return
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"

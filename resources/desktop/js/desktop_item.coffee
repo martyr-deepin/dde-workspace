@@ -518,10 +518,6 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-        # echo "desktopEntry do_dragstart"
-        # file = evt.dataTransfer.getData("Text")
-        # echo evt.dataTransfer
-        # echo file
         @item_complete_rename(false)
         item_dragstart_handler(this, evt)
 
@@ -538,6 +534,9 @@ class DesktopEntry extends Item
 
 
     do_drop : (evt) ->
+        file = evt.dataTransfer.getData("Text")
+        # echo evt.dataTransfer
+        echo file
         if _IS_DND_INTERLNAL_(evt)
             if not @selected
                 evt.stopPropagation()
