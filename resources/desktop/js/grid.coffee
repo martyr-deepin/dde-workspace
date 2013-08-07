@@ -585,7 +585,7 @@ item_dragstart_handler = (widget, evt) ->
             path = w.get_path()
             if path.length > 0 
                 all_selected_items += path + "\r\n"
-        if all_selected_items.length > 0
+        if all_selected_items.length > 2
             all_selected_items = all_selected_items.substring(0,all_selected_items.length-2)
         else 
             echo "items path is null"
