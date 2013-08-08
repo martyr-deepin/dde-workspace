@@ -28,6 +28,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 #include "jsextension.h"
+#include "dcore.h"
 #include <string.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -270,8 +271,38 @@ char* dentry_get_icon(Entry* e)
         g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
+        
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
+
+            if (icon_str && g_path_is_absolute(icon_str) && !is_deepin_icon(icon_str)) {
+                char* app_id =
+                    get_basename_without_extend_name(g_desktop_app_info_get_filename((GDesktopAppInfo*)app));
+                char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
+                g_free(app_id);
+
+                if (temp_icon_name_holder != NULL) {
+                    g_free(icon_str);
+                    icon_str = temp_icon_name_holder;
+                } else {
+                    char* basename =
+                        get_basename_without_extend_name(icon_str);
+
+                    if (basename != NULL) {
+                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
+                                                                          48);
+                        g_free(basename);
+
+                        if (temp_icon_name_holder != NULL &&
+                            !g_str_has_prefix(temp_icon_name_holder,
+                                              "data:image")) {
+                            g_free(icon_str);
+                            icon_str = temp_icon_name_holder;
+                        }
+                    }
+                }
+            }
+
             ret = icon_name_to_path_with_check_xpm(icon_str, 48);
             g_free(icon_str);
         }
@@ -300,8 +331,11 @@ char* dentry_get_icon_path(Entry* e)
             ret = icon_name_to_path (icon_str, 48);
             g_free(icon_str);
         }
+        else{
+            g_debug("g_app_info_get_icon return NULL ");
+            return NULL;
+        }
     TEST_END
-
     return ret;
 }
 JS_EXPORT_API
@@ -1125,8 +1159,8 @@ ArrayContainer dentry_get_templates_files(void)
     g_debug("get_templates_dir:---%s---",c);
     GFile* f = g_file_new_for_path(c);
     ac = dentry_list_files(f);
-    g_free(c);   
-    g_object_unref(f); 
+    g_free(c);
+    g_object_unref(f);
 
     return ac ;
 }
@@ -1160,16 +1194,16 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     if (type == G_FILE_TYPE_DIRECTORY)
     {
     result = g_file_make_directory (child, NULL, NULL);
-#if 1
+#ifndef NDEBUG
     g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
 #endif
     }
     else
     {
         result = g_file_copy(src, child, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
-#if 1
+#ifndef NDEBUG
     g_debug ("create_templates: new file : g_file_copy : %s", name);
-#endif        
+#endif
     }
 
     return result;

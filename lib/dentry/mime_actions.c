@@ -77,13 +77,18 @@ run_file  (GFile* file, GFile* _file_arg)
     {
         //TODO: symbolic links
         g_debug("the src file type is  G_FILE_TYPE_SYMBOLIC_LINK");
-        // file_path = target_link(src);
-        file_path = g_file_get_path (file);
+        GFileInfo* info = g_file_query_info(file, "standard::*", G_FILE_QUERY_INFO_NONE, NULL, NULL);
+        if (info != NULL) {
+            const char * link_target_path = g_file_info_get_symlink_target(info);
+            g_debug("symbolic link target is :%s",link_target_path);                
+            file_path = g_strdup(link_target_path);
+        }
+        g_object_unref(info);
     }
     else{
         file_path = g_file_get_path (file);
     }
-    g_debug("run file file_path :%s",file_path);
+    g_debug("run file_path :%s",file_path);
     
     if (_file_arg != NULL)
     {
@@ -96,8 +101,14 @@ run_file  (GFile* file, GFile* _file_arg)
         cmd_line = g_strdup (file_path);
     }
     g_free (file_path);
-
-    g_spawn_command_line_async (cmd_line, NULL);
+    if(cmd_line != NULL)
+    {
+        g_spawn_command_line_async (cmd_line, NULL);
+    }    
+    else
+    {
+        g_warning("run file_path is null");
+    }
     g_free (cmd_line);
 }
 

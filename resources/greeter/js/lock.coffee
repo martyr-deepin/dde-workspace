@@ -182,7 +182,7 @@ background.height = screen.height
 DCore.Lock.draw_background(background)
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12")}<sup>#{_(VERSION)}</sup></span> 
+            <span> #{_("Linux Deepin 12.12.1")}<sup>#{_(VERSION)}</sup></span> 
             "
 try
     is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)

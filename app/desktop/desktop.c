@@ -26,7 +26,7 @@
 #include "dentry/entry.h"
 #include "inotify_item.h"
 #include "dbus.h"
-
+#include "dcore.h"
 #include <dwebview.h>
 #include <utils.h>
 #include <gtk/gtk.h>
@@ -107,7 +107,15 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
         if (g_str_has_suffix(child_name, ".desktop")) {
             char* path = g_build_filename(dir_path, child_name, NULL);
             Entry* entry = dentry_create_by_path(path);
-            icons[i++] = dentry_get_icon_path(entry);
+            char* icon_path = dentry_get_icon_path(entry);
+            if (icon_path == NULL)
+            {
+                g_warning("richdir dentry %d get_icon is null use invalid-dock_app.png instead",i);
+                const char * invalid_app = "invalid-dock_app";
+                icon_path = dcore_get_theme_icon(invalid_app, 48);
+                g_debug("icon_path %d :---%s---",i,icon_path);
+            }
+            icons[i++] = icon_path;
             g_object_unref(entry);
             g_free(path);
         } else if (j<4) {

@@ -378,3 +378,9 @@ char* get_basename_without_extend_name(char const* path)
         return basename;
     }
 }
+
+
+gboolean is_deepin_icon(char const* icon_path)
+{
+    return g_str_has_prefix(icon_path, "/usr/share/icons/Deepin/");
+}
