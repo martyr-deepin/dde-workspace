@@ -270,6 +270,7 @@ char* dentry_get_icon(Entry* e)
         g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
+        
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
 
@@ -305,8 +306,6 @@ char* dentry_get_icon(Entry* e)
             g_free(icon_str);
         }
 
-    TEST_END
-
     return ret;
 }
 /*
@@ -330,8 +329,11 @@ char* dentry_get_icon_path(Entry* e)
             ret = icon_name_to_path (icon_str, 48);
             g_free(icon_str);
         }
+        else{
+            g_debug("g_app_info_get_icon return NULL ");
+            return NULL;
+        }
     TEST_END
-
     return ret;
 }
 JS_EXPORT_API
