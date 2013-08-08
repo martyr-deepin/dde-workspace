@@ -1,0 +1,44 @@
+#!/usr/bin/env python2
+
+import sys
+
+from facepp import File, API
+
+API_KEY = '0b8c0488e457432f04e38b79982f66db'
+API_SCRET ='Bs-ncYt88ewu9euvhBzVo6YjHDzxJpTG'
+
+TARGET_IMAGE = '/tmp/deepin_user_face.png'
+GROUP_NAME = 'User'
+
+
+from pprint import pformat
+
+
+def print_result(hint, result):
+    def encode(obj):
+        if type(obj) is unicode:
+            return obj.encode('utf-8')
+        if type(obj) is dict:
+            return {encode(k): encode(v) for (k, v) in obj.iteritems()}
+        if type(obj) is list:
+            return [encode(i) for i in obj]
+        return obj
+    print hint
+    result = encode(result)
+    prefix = '  ' if hint else ''
+    print '\n'.join([prefix + i for i in pformat(result, width = 75).split('\n')])
+
+
+api = API(API_KEY, API_SCRET, timeout=10, max_retries=3)
+
+try:
+    result = api.recognition.recognize(img=File(TARGET_IMAGE), group_name=GROUP_NAME)
+except:
+    sys.exit(1)
+
+try:
+    # print result['face'][0]['candidate'][0]['person_name']
+    print_result('', result)
+except:
+    print_result('[Error]: ', result)
+

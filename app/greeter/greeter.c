@@ -42,9 +42,9 @@
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
-    
+
 #ifdef DEBUG
-#define DBG(fmt, info...) js_post_message_simply("status", "{\"status\": \"" fmt "\"}", info) 
+#define DBG(fmt, info...) js_post_message_simply("status", "{\"status\": \"" fmt "\"}", info)
 #else
 #define DBG(fmt...)
 #endif
@@ -59,6 +59,7 @@ static gint response_count = 0;
 static gint exit_flag = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
 GError *error = NULL;
+static GPid pid = 0;
 
 JS_EXPORT_API
 void greeter_set_selected_user(const gchar *username)
@@ -74,13 +75,13 @@ void greeter_set_selected_user(const gchar *username)
 }
 
 
-static const 
+static const
 gchar* get_last_user()
 {
     return g_key_file_get_value(greeter_keyfile, "deepin-greeter", "last-user", NULL);
 }
 
-static void 
+static void
 set_last_user(const gchar* name)
 {
     g_return_if_fail(name);
@@ -109,10 +110,10 @@ const gchar* greeter_get_default_user()
     }
     if(user != NULL){
         if(is_user_valid(user)){
-            return user; 
+            return user;
         }
     }
-    
+
     return get_first_user();
 }
 
@@ -146,7 +147,7 @@ const gchar* greeter_get_default_session()
     session = lightdm_greeter_get_default_session_hint(greeter);
     if(session != NULL){
         if(is_session_valid(session)){
-            return session; 
+            return session;
         }
     }
 
@@ -162,7 +163,7 @@ static gchar* get_selected_session()
     return selected_session;
 }
 
-static cairo_surface_t * 
+static cairo_surface_t *
 create_root_surface(GdkScreen *screen)
 {
     gint number, width, height;
@@ -198,10 +199,10 @@ create_root_surface(GdkScreen *screen)
                                 cairo_xlib_surface_get_drawable(surface));
 
 
-    return surface;  
+    return surface;
 }
 
-void 
+void
 greeter_update_background()
 {
     GdkPixbuf *background_pixbuf = NULL;
@@ -212,7 +213,7 @@ greeter_update_background()
     if(g_strcmp0(bg_path, "nonexists") == 0 || g_access(bg_path, R_OK) != 0){
         bg_path = "/usr/share/backgrounds/default_background.jpg";
     }
-    
+
     if (!gdk_rgba_parse (&background_color, bg_path)){
         background_pixbuf = gdk_pixbuf_new_from_file (bg_path, NULL);
         if (!background_pixbuf)
@@ -237,7 +238,7 @@ greeter_update_background()
             if(background_pixbuf)
             {
                 GdkPixbuf *pixbuf = gdk_pixbuf_scale_simple(background_pixbuf,
-                                                            monitor_geometry.width, 
+                                                            monitor_geometry.width,
                                                             monitor_geometry.height,
                                                             GDK_INTERP_BILINEAR);
 
@@ -260,14 +261,14 @@ greeter_update_background()
 }
 
 
-static void 
+static void
 clean_before_exit()
 {
     DBG("%s", "start session finish");
 
     g_free(greeter_file);
     greeter_file = NULL;
-    g_key_file_free(greeter_keyfile);        
+    g_key_file_free(greeter_keyfile);
     g_free(selected_user);
     selected_user = NULL;
     g_free(selected_session);
@@ -276,7 +277,7 @@ clean_before_exit()
     DBG("%s", "clean finish");
 }
 
-static gboolean 
+static gboolean
 do_exit(gpointer user_data)
 {
     // start session failed
@@ -292,7 +293,7 @@ do_exit(gpointer user_data)
         clean_before_exit();
         exit(0);
     }
-} 
+}
 
 JS_EXPORT_API
 const gchar* greeter_get_authentication_user()
@@ -345,7 +346,7 @@ void greeter_cancel_authentication()
     }
 }
 
-static void 
+static void
 start_session(const gchar *session)
 {
     g_return_if_fail(is_session_valid(session));
@@ -367,9 +368,9 @@ start_session(const gchar *session)
                 "com.deepin.dde.lock",
                 "/com/deepin/dde/lock",
                 "com.deepin.dde.lock",
-                NULL, 
+                NULL,
                 &error);
-    
+
         if(error != NULL){
             g_warning("connect com.deepin.dde.lock failed\n");
             g_clear_error(&error);
@@ -434,7 +435,7 @@ gboolean greeter_is_hide_users()
     return lightdm_greeter_get_hide_users_hint(greeter);
 }
 
-static void 
+static void
 show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
     prompted = TRUE;
@@ -444,7 +445,7 @@ show_prompt_cb(LightDMGreeter *greeter, const gchar *text, LightDMPromptType typ
     DBG("%s", "show prompt cb");
 }
 
-static void 
+static void
 show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType type)
 {
     if(type == LIGHTDM_MESSAGE_TYPE_ERROR){
@@ -452,7 +453,7 @@ show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType t
     }
 }
 
-static void 
+static void
 authentication_complete_cb(LightDMGreeter *greeter)
 {
     DBG("%s", "auth complete cb");
@@ -489,7 +490,7 @@ gboolean greeter_is_guest_default()
     return lightdm_greeter_get_select_guest_hint(greeter);
 }
 
-static void 
+static void
 autologin_timer_expired_cb(LightDMGreeter *greeter)
 {
     if(lightdm_greeter_get_autologin_guest_hint(greeter)){
@@ -505,12 +506,13 @@ autologin_timer_expired_cb(LightDMGreeter *greeter)
     }
 }
 
-static void 
+static void
 sigterm_cb(int signum)
 {
     DBG("%s", "sigterm cb");
     exit_flag = 2;
-    clean_before_exit();    
+    clean_before_exit();
+    g_spawn_close_pid(pid);
     gtk_main_quit();
     exit(0);
 }
@@ -559,7 +561,7 @@ int main(int argc, char **argv)
     if(g_mkdir_with_parents(greeter_dir, 0755) < 0){
         greeter_dir = "/var/cache/lightdm";
     }
-    
+
     greeter_file = g_build_filename(greeter_dir, "deepin-greeter", NULL);
     g_free(greeter_dir);
 
@@ -586,6 +588,17 @@ int main(int argc, char **argv)
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
     gtk_widget_show_all(container);
+
+    char* camera_info[] = {"camera_resolution", NULL};
+    char* outupt = NULL;
+    g_spawn_sync(NULL, camera_info, NULL, 0, NULL, NULL, &outupt, NULL, NULL, NULL);
+    printf("%s", outupt);
+    /* js_post_message_simply("resolution", "{width: %s, height: %s}", outupt[0], */
+    /*                        outupt[1]); */
+    g_free(outupt);
+
+    char* child_argv[] = { "camera", NULL };
+    g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL);
 
  //   monitor_resource_file("greeter", webview);
     gtk_main();

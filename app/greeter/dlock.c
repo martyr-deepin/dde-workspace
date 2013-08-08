@@ -40,6 +40,7 @@
 #include "X_misc.h"
 #include <X11/XKBlib.h>
 #include "gs-grab.h"
+#include "settings.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -50,10 +51,29 @@ static GtkWidget* lock_container = NULL;
 static gchar* lockpid_file = NULL;
 static GDBusProxy *user_proxy = NULL;
 GError *error = NULL;
+static GPid pid = 0;
 
 static void init_user();
 static void sigterm_cb(int signum);
 static void lock_report_pid();
+int kill(pid_t, int);
+
+
+JS_EXPORT_API
+void lock_webview_ok()
+{
+    static gboolean inited = FALSE;
+    if (!inited) {
+        if (lock_use_face_recognition_login()) {
+            // CAMERA_WINDOW is defined in CMakeLists.txt
+            char* child_argv[] = { CAMERA_WINDOW, NULL };
+            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL))
+                js_post_message_simply("draw", NULL);
+        }
+
+        inited = TRUE;
+    }
+}
 
 static void init_user()
 {
@@ -259,14 +279,17 @@ gchar * lock_get_date()
 JS_EXPORT_API
 void lock_unlock_succeed ()
 {
+    kill(0, 9);
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
         g_remove(lockpid_file);
     }
     g_free(lockpid_file);
 
     g_object_unref(user_proxy);
+    g_spawn_close_pid(pid);
     gtk_main_quit();
 }
+
 
 JS_EXPORT_API
 gboolean lock_need_pwd ()
@@ -337,12 +360,14 @@ void focus_out_cb(GtkWidget* w, GdkEvent*e, gpointer user_data)
 
 static void sigterm_cb(int signum)
 {
+    kill(0, 9);
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
         g_remove(lockpid_file);
     }
 
     g_free(lockpid_file);
     g_object_unref(user_proxy);
+    g_spawn_close_pid(pid);
     gtk_main_quit();
 }
 
@@ -367,15 +392,17 @@ static void lock_report_pid()
 JS_EXPORT_API
 gboolean lock_detect_capslock()
 {
-    return is_capslock_on(); 
+    return is_capslock_on();
 }
 
 static void lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
+#ifdef NDEBUG
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(lock_container)),
                             gtk_window_get_screen (lock_container),
                             FALSE);
+#endif
 }
 
 static void
@@ -472,8 +499,11 @@ int main(int argc, char **argv)
     ensure_fullscreen(lock_container);
     gtk_window_set_decorated(GTK_WINDOW(lock_container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (lock_container), TRUE);
+#ifdef NDEBUG
     gtk_window_set_skip_pager_hint (GTK_WINDOW (lock_container), TRUE);
+#endif
     gtk_window_fullscreen(GTK_WINDOW(lock_container));
+#ifdef NDEBUG
     gtk_window_set_keep_above(GTK_WINDOW(lock_container), TRUE);
     gtk_widget_set_events (GTK_WIDGET (lock_container),
                            gtk_widget_get_events (GTK_WIDGET (lock_container))
@@ -486,6 +516,7 @@ int main(int argc, char **argv)
                            | GDK_VISIBILITY_NOTIFY_MASK
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
+#endif
 
     GtkWidget *webview = d_webview_new_with_uri(LOCK_HTML_PATH);
     gtk_container_add(GTK_CONTAINER(lock_container), GTK_WIDGET(webview));
@@ -503,11 +534,13 @@ int main(int argc, char **argv)
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_cursor(gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
+#ifdef NDEBUG
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
 
     grab = gs_grab_new ();
+#endif
     gtk_widget_show_all(lock_container);
 
     /*gint height = gdk_screen_get_height(gdk_screen_get_default());*/
@@ -515,7 +548,9 @@ int main(int argc, char **argv)
     /*gdk_window_move_resize (gdkwindow, 0, 0, width, height);*/
 
     gdk_window_focus(gtk_widget_get_window(lock_container), 0);
+#ifdef NDEBUG
     gdk_window_stick(gdkwindow);
+#endif
 
     gtk_main();
     return 0;

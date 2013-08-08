@@ -119,7 +119,10 @@ class UserInfo extends Widget
         @li = create_element("li", "")
         @li.appendChild(@element)
         @userbase = create_element("div", "UserBase", @element)
-        @img = create_img("UserImg", img_src, @userbase)
+        if img_src
+            @img = create_img("UserImg", img_src, @userbase)
+        else
+            @canvas = create_element("canvas", "UserImg", @userbase)
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
@@ -163,7 +166,7 @@ class UserInfo extends Widget
                 if session? and session != "nonexists"
                     de_menu.set_current(session)
                     DCore.Greeter.set_selected_session(session)
-                        
+
             DCore.Greeter.start_authentication(@id)
 
     blur: ->
@@ -222,7 +225,7 @@ class UserInfo extends Widget
     animate_prev: ->
         echo "animate prev"
         if @index is 0
-            prev_index = _counts - 1 
+            prev_index = _counts - 1
         else
             prev_index = @index - 1
 
@@ -308,12 +311,12 @@ class UserInfo extends Widget
                 @login.password.style.color ="black"
                 @login.password.value = ""
             )
-    
+
             document.body.addEventListener("keydown", (e) =>
                 if e.which == 13 and @login_displayed
                     @login.password.focus()
             )
-    
+
         apply_refuse_rotate(@element, 0.5)
 
 ######get user icon from dbus ############
@@ -326,7 +329,7 @@ get_user_image = (user) ->
     if not user_image? or user_image == "nonexists"
         try
             user_image = DCore.DBus.sys_object("com.deepin.passwdservice",
-                                                "/", 
+                                                "/",
                                                 "com.deepin.passwdservice"
                                             ).get_user_fake_icon_sync(user)
         catch error
@@ -345,7 +348,10 @@ else
     for user in users
         if user == DCore.Greeter.get_default_user()
             user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image) 
+            if 0
+                u = new UserInfo(user, user, user_image)
+            else
+                u = new UserInfo(user, user)
             roundabout.appendChild(u.li)
             u.focus()
 
@@ -360,7 +366,7 @@ else
             echo "already append default user"
         else
             user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image) 
+            u = new UserInfo(user, user, user_image)
             roundabout.appendChild(u.li)
 
 DCore.signal_connect("message", (msg) ->
@@ -381,7 +387,7 @@ document.body.addEventListener("mousewheel", (e) =>
 
     if e.wheelDelta >= 120
         #echo "scroll to prev"
-        _ANIMATE_TIMEOUT_ID = setTimeout( -> 
+        _ANIMATE_TIMEOUT_ID = setTimeout( ->
             _current_user?.animate_prev()
         , 200)
 
@@ -398,11 +404,11 @@ document.body.addEventListener("keydown", (e)=>
         #echo "prev"
         _current_user?.animate_prev()
 
-    else if e.which == 39 
+    else if e.which == 39
         #echo "next"
         _current_user?.animate_next()
 
-    else if e.which == 13 
+    else if e.which == 13
         #echo "enter"
         _current_user?.show_login()
 
@@ -423,7 +429,7 @@ roundabout.style.left = "#{l}px"
 jQuery("#roundabout").drag("start", (ev, dd) ->
     _current_user?.hide_login()
     _drag_flag = true
-, {distance:100} 
+, {distance:100}
 )
 
 jQuery("#roundabout").drag("end", (ev, dd) ->

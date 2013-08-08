@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/com/deepin/dde/greeter/" id="com.deepin.dde.greeter">
+        <key type="b" name="face-recognition-login">
+            <default>false</default>
+            <summary>Start or Close face recognition login feature.</summary>
+            <description>Start or Close face recognition login feature.</description>
+        </key>
+    </schema>
+</schemalist>

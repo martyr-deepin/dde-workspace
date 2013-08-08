@@ -57,7 +57,7 @@ class LoginEntry extends Widget
         @password.index = 0
         @login.index = 1
         @password.focus()
-    
+
 class Loading extends Widget
     constructor: (@id)->
         super
@@ -82,11 +82,28 @@ class UserInfo extends Widget
         @li = create_element("li", "")
         @li.appendChild(@element)
         @userbase = create_element("div", "UserBase", @element)
-        @img = create_img("UserImg", img_src, @userbase)
+        if img_src
+            @img = create_img("UserImg", img_src, @userbase)
+        else
+            @scanner = create_element('div', 'scanner', @userbase)
+            # @scanner = create_element('div', 'scanner scanning-animation',
+            #     @userbase)
+            # create this image when starting scanning
+            # @img = create_img('', 'images/scan-line.png', @scanner)
+            @canvas = create_element("canvas", "UserImg", @userbase)
+            @canvas.setAttribute('width', '154px')
+            @canvas.setAttribute('height', "154px")
+            @camera_flag = create_img('camera', 'images/camera.png', @userbase)
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
         @display_failure = false
+
+    draw_camera:->
+        if @canvas?
+            setInterval(=>
+                DCore.Lock.draw_camera(@canvas, @canvas.width, @canvas.height)
+            , 100)
 
     focus: ->
         _current_user?.blur()
@@ -121,7 +138,7 @@ class UserInfo extends Widget
         if @login and @login_displayed
             @blur()
             @focus()
-    
+
     do_click: (e)->
         if _current_user == @
             if not @login
@@ -133,7 +150,7 @@ class UserInfo extends Widget
                     @hide_login()
         else
             @focus()
-    
+
     on_verify: (password)->
         if not password or @display_failure
             @login.password.focus()
@@ -182,7 +199,7 @@ background.height = screen.height
 DCore.Lock.draw_background(background)
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12.1")}<sup>#{_(VERSION)}</sup></span> 
+            <span> #{_("Linux Deepin 12.12")}<sup>#{_(VERSION)}</sup></span>
             "
 try
     is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
@@ -193,15 +210,18 @@ if not is_livecd
     s = new SwitchUser("switchuser")
     $("#bottom_buttons").appendChild(s.element)
 
-u = new UserInfo(user, user, user_image) 
+face_login = DCore.Lock.use_face_recognition_login()
+
+u = new UserInfo(user, user, if face_login then null else user_image)
 roundabout.appendChild(u.li)
 _current_user = u
 
 u.focus()
-u.show_login()
+if not face_login
+    u.show_login()
 
 document.body.addEventListener("keydown", (e) =>
-    if e.which == 13 
+    if e.which == 13
         if not u.login_displayed
             u.show_login()
         else
@@ -215,8 +235,17 @@ DCore.signal_connect("unlock", (msg)->
     u.unlock_check(msg)
 )
 
+DCore.signal_connect("draw", ->
+    setTimeout(->
+        u.draw_camera()
+    , 300)
+)
+
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
-    Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    if not face_login
+        Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+
+DCore.Lock.webview_ok()
