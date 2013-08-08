@@ -134,7 +134,7 @@ class Item extends Widget
                     if (icon = DCore.DEntry.get_icon(@_entry)) != null 
                         @item_icon.className = ""
                     else
-                        icon = DCore.get_theme_icon("unknown", D_ICON_SIZE_NORMAL) 
+                        icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
                         @item_icon.className = ""
                     #2. then set the 2s timeout to check the get_thumbnail 
                     that = @
@@ -153,7 +153,7 @@ class Item extends Widget
             else if (icon = DCore.DEntry.get_icon(@_entry)) != null 
                 @item_icon.className = ""
             else
-                icon = DCore.get_theme_icon("unknown", D_ICON_SIZE_NORMAL)
+                icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                 @item_icon.className = ""
         else
             icon = src
@@ -971,7 +971,10 @@ class RichDir extends DesktopEntry
             sb.className = "item_icon"
             ele.appendChild(sb)
             s = document.createElement("img")
-            s.src = DCore.DEntry.get_icon(e)
+            # s.src = DCore.DEntry.get_icon(e)
+            if (s.src = DCore.DEntry.get_icon(e)) == null 
+                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
+                echo "richdir child get_icon is null" + s.src
             sb.appendChild(s)
             s = document.createElement("div")
             s.className = "item_name"
@@ -1180,7 +1183,6 @@ class Application extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
-                echo "get_icon is null"
                 icon = DCore.get_theme_icon("invalid_app", D_ICON_SIZE_NORMAL)
         else
             icon = src
