@@ -87,12 +87,6 @@ char* get_data_uri_by_surface(cairo_surface_t* surface)
 }
 
 
-gboolean is_deepin_icon(const char* path)
-{
-    return g_str_has_prefix(path, "/usr/share/icons/Deepin/");
-}
-
-
 void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
 {
     char* app_id = g_strdup(_app_id);

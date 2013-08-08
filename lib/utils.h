@@ -53,5 +53,6 @@ char* get_desktop_file_basename(GDesktopAppInfo* file);  // g_free the return va
 GDesktopAppInfo* guess_desktop_file(char const* app_id);
 
 char* get_basename_without_extend_name(char const* path);
+gboolean is_deepin_icon(char const* icon_path);
 
 #endif
