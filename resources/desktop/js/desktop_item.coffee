@@ -1180,7 +1180,7 @@ class Application extends DesktopEntry
     set_icon : (src = null) =>
         if src == null
             if (icon = DCore.DEntry.get_icon(@_entry)) == null
-                # echo "get_icon is null"
+                echo "get_icon is null"
                 icon = DCore.get_theme_icon("invalid_app", D_ICON_SIZE_NORMAL)
         else
             icon = src

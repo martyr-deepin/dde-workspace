@@ -305,6 +305,7 @@ char* dentry_get_icon(Entry* e)
             ret = icon_name_to_path_with_check_xpm(icon_str, 48);
             g_free(icon_str);
         }
+    TEST_END
 
     return ret;
 }

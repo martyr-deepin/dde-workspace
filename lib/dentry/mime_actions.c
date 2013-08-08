@@ -84,10 +84,8 @@ run_file  (GFile* file, GFile* _file_arg)
             file_path = g_strdup(link_target_path);
         }
         g_object_unref(info);
-
     }
     else{
-        g_message("g_file_get_path");
         file_path = g_file_get_path (file);
     }
     g_debug("run file_path :%s",file_path);
