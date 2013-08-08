@@ -183,7 +183,7 @@ gboolean _get_launcher_icon(Client* c)
             c->icon = icon_name;
         } else {
             if (g_path_is_absolute(icon_name)) {
-                char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id,  48);
+                char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id, 48);
 
                 if (temp_icon_name_holder != NULL) {
                     g_free(icon_name);
