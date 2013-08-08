@@ -826,6 +826,14 @@ PRIVATE void
 screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 {
     //remove early to avoid fatal X errors
+    int current_root_width = gdk_screen_width();
+    int current_root_height = gdk_screen_height();
+    if (current_root_width != root_width || current_root_height != root_height) {
+        root_width = current_root_width;
+        root_height = current_root_height;
+    } else {
+        return;
+    }
     remove_timers ();
 
     root_width = gdk_screen_get_width(screen);
@@ -903,12 +911,12 @@ bg_util_disconnect_screen_signals (GdkWindow* bg_window)
 
 //FIXME: screen_size_changed_cb and initial_setup have a lot of 
 //       duplicated function. 
-static gboolean is_initialized = FALSE;
 PRIVATE void
 initial_setup (GSettings *settings)
 {
-    if (is_initialized == FALSE)
-    {
+    static gboolean is_initialized = FALSE;
+    if (is_initialized == FALSE) {
+        is_initialized = TRUE;
         picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
         picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
         picture_num = 0;
@@ -926,15 +934,15 @@ initial_setup (GSettings *settings)
         gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 
 #if 0
-    if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
-        g_debug ("XFADE_AUTO_MODE_RANDOM");
-    else if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_SEQUENTIAL)
-        g_debug ("XFADE_AUTO_MODE_SEQUENTIAL");
+        if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
+            g_debug ("XFADE_AUTO_MODE_RANDOM");
+        else if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_SEQUENTIAL)
+            g_debug ("XFADE_AUTO_MODE_SEQUENTIAL");
 
-    if (gsettings_draw_mode == DRAW_MODE_TILING)
-        g_debug ("DRAW_MODE_TILING");
-    else if (gsettings_draw_mode == DRAW_MODE_SCALING)
-        g_debug ("DRAW_MODE_SCALING");
+        if (gsettings_draw_mode == DRAW_MODE_TILING)
+            g_debug ("DRAW_MODE_TILING");
+        else if (gsettings_draw_mode == DRAW_MODE_SCALING)
+            g_debug ("DRAW_MODE_SCALING");
 #endif
     }
 
@@ -988,7 +996,6 @@ initial_setup (GSettings *settings)
         setup_background_timer ();
     }
 
-    is_initialized = TRUE;
     return;
 }
 
