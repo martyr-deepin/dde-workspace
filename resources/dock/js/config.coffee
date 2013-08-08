@@ -35,10 +35,7 @@ BOARD_IMG_MARGIN_LEFT_THREE_LEFT = "#{((ITEM_WIDTH - ICON_WIDTH) / 2 - THREE_MAR
 
 IN_INIT = true
 
-try
-    NOT_FOUND_ICON = DCore.get_theme_icon("invalid-dock_app", 48)
-catch e
-    NOT_FOUND_ICON = "img/not_found.png"
+NOT_FOUND_ICON = DCore.get_theme_icon("invalid-dock_app", 48)
 
 ICON_SCALE = MAX_SCALE  #this will be modify on runtime
 
