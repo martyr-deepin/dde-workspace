@@ -145,12 +145,17 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 JS_EXPORT_API
 GFile* desktop_create_rich_dir(ArrayContainer fs)
 {
-    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("App Group"), NULL);
+    char* group_name = dentry_get_rich_dir_group_name(fs);
+    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _(group_name), NULL);
+    g_free(group_name);
     g_debug ("create_rich_dir: %s", temp_name);
+
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);
+
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir, TRUE);
+
     return dir;
 }
 
@@ -325,7 +330,7 @@ char* desktop_get_data_dir()
 
 JS_EXPORT_API
 void desktop_load_dsc_desktop_item()
-{   
+{
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
     char* desktop_path = desktop_get_desktop_path();
@@ -447,6 +452,7 @@ void desktop_set_position_input(double x , double y)
     gtk_im_context_set_cursor_location(im_context, &area);
     // g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
 }
+
 
 
 int main(int argc, char* argv[])
