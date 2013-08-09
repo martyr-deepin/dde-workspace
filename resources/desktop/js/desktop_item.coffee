@@ -97,7 +97,11 @@ class Item extends Widget
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
         el.appendChild(@item_name)
-
+        @item_name.addEventListener("contextmenu",(evt)=>
+            echo "item_rename rightclick"
+            menu = []
+            @item_name.contextMenu = build_menu(menu)
+            )
         @item_update()
 
 
@@ -227,10 +231,13 @@ class Item extends Widget
 
 
     do_rightclick : (evt) ->
+        echo1 "item do_rightclick"
         evt.stopPropagation()
         if @selected == false
+            echo1 "do_rightclick in selected"
             update_selected_stats(this, evt)
         else if @in_rename == true
+            echo1 "do_rightclick in_rename"
             @item_complete_rename(false)
         return
 
@@ -588,6 +595,7 @@ class DesktopEntry extends Item
         return
 
     do_buildmenu : ->
+        echo1 "DesktopEntry do_buildmenu"
         menu = []
         menu.push([1, _("_Open")])
         menu.push([])

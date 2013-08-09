@@ -38,8 +38,10 @@ String::args = ->
         o = o.replace(new RegExp("%" + i, "g"), arguments[i - 1])
 
     return o
-
 echo = (log) ->
+
+
+echo1 = (log) ->
     console.log log
 
 assert = (value, msg) ->
