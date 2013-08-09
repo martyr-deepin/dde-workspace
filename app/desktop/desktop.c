@@ -463,7 +463,7 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 JS_EXPORT_API
 void desktop_set_position_input(double x , double y)
 {
-    g_debug("desktop_set_position_input");
+    // g_debug("desktop_set_position_input");
     int width = 100;
     int height = 30;
     GdkRectangle area = {(int)x, (int)y, width, height};
