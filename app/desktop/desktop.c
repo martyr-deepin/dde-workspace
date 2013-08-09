@@ -370,7 +370,13 @@ void desktop_load_dsc_desktop_item()
     }
     else
     {
-        dentry_delete_files(fs_dest, FALSE);
+        if(dentry_is_gapp(dest_file))
+        {
+            dentry_delete_files(fs_dest, FALSE);
+        }
+        else{
+            g_debug("deepin-software-center.desktop is not in desktop");
+        }
     }
     g_free(desktop_path);
     g_free(dsc_path);
