@@ -43,7 +43,7 @@ body {
 }
 
 .DesktopEntry {
-    background-color: #696969;
+    /*background-color: #696969;*/
 
     width:80px;
     padding:2px 4px;
@@ -65,7 +65,7 @@ body {
 }
 
 .DesktopEntry .item_icon {
-    background-color: #DCDCDC;
+    /*background-color: #DCDCDC;*/
 
     padding:0 16px;
     width:48px;
@@ -103,7 +103,7 @@ body {
     display:inline-block;
 }
 .DesktopEntry .item_name {
-    background-color: #228B22;
+    /*background-color: #228B22;*/
 
     border-radius:2px;
     outline:none;

@@ -66,9 +66,14 @@ ingore_keyup_counts = 0
 # store the pos the user pop the context menu
 rightclick_pos = {clientX : 0, clientY : 0}
 
+#templates
+TEMPATES_LENGTH = 0
+TEMPLATES_FILE_ID_FIRST = 20
+
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
+    # echo "draw_icon_on_canvas"
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
         canvas_cantext.drawImage(
@@ -110,27 +115,29 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
+    # echo "calc_row_and_cols"
+    # echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
     # only 4  9 16 25  but 16 is the best 
     _GRID_WIDTH_INIT_ = _ITEM_WIDTH_
     _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_
-    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
-    echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    # echo "wa_width:" + wa_width + ",wa_height:" + wa_height
+    # echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    echo "xx:" + xx + ",yy:" + yy
+    # echo "xx:" + xx + ",yy:" + yy
     g_ITEM_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
     g_ITEM_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
-    echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
+    # echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
 
-    # return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
-    return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]  
+    return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
+    # return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]  
 
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
+    # echo "update_gird_position"
     s_offset_x = wa_x
     s_offset_y = wa_y
     s_width = wa_width
@@ -146,6 +153,7 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (id) ->
+    # echo "load_position"
     if typeof(id) != "string" then echo "error load_position #{id}"
 
     pos = localStorage.getObject("id:" + id)
@@ -158,6 +166,7 @@ load_position = (id) ->
 
 
 save_position = (id, pos) ->
+    # echo "save_position"
     assert("string" == typeof(id), "[save_position]id not string")
     assert(pos != null, "[save_position]pos null")
     localStorage.setObject("id:" + id, pos)
@@ -165,12 +174,14 @@ save_position = (id, pos) ->
 
 
 discard_position = (id) ->
+    # echo "discard_position"
     assert("string" == typeof(id), "[discard_position]id not string")
     localStorage.removeItem("id:" + id)
     return
 
 
 clear_all_positions = ->
+    # echo "clear_all_positions"
     for i in all_item
         localStorage.removeItem("id:#{i}")
     for i in speical_item
@@ -179,6 +190,7 @@ clear_all_positions = ->
 
 
 compare_pos_top_left = (base, pos) ->
+    # echo "compare_pos_top_left"
     if pos.y < base.y
         -1
     else if pos.y >= base.y and pos.y <= base.y + base.height - 1
@@ -193,6 +205,7 @@ compare_pos_top_left = (base, pos) ->
 
 
 compare_pos_rect = (base1, base2, pos) ->
+    # echo "compare_pos_rect"
     top_left = Math.min(base1.x, base2.x)
     top_right = Math.max(base1.x, base2.x)
     bottom_left = Math.min(base1.y, base2.y)
@@ -204,10 +217,12 @@ compare_pos_rect = (base1, base2, pos) ->
 
 
 calc_pos_to_pos_distance = (base, pos) ->
+    # echo "calc_pos_to_pos_distance"
     Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
 
 
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
+    # echo "find_item_by_coord_delta"
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
     while true
@@ -233,6 +248,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
 
 init_occupy_table = ->
+    # echo "init_occupy_table"
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
@@ -240,7 +256,7 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
-    echo "clear_occupy"
+    # echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -252,7 +268,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    echo "set_occupy"
+    # echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -261,6 +277,7 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info, id = null) ->
+    # echo "detect_occupy"
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
@@ -272,7 +289,7 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
-    echo "clear_occupy_table"
+    # echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -285,7 +302,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    echo "find_free_position"
+    # echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
@@ -326,7 +343,7 @@ move_to_position = (widget, info) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
-    echo "move_to_anywhere"
+    # echo "move_to_anywhere"
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
@@ -348,7 +365,7 @@ move_to_somewhere = (widget, pos) ->
 
 
 place_desktop_items = ->
-    echo "place_desktop_items"
+    # echo "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
@@ -374,6 +391,7 @@ place_desktop_items = ->
 
 
 sort_list_by_name_from_id = (id1, id2) ->
+    # echo "sort_list_by_name_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -384,6 +402,7 @@ sort_list_by_name_from_id = (id1, id2) ->
 
 
 sort_list_by_mtime_from_id = (id1, id2) ->
+    # echo "sort_list_by_mtime_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -394,7 +413,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
-    echo "sort_desktop_item_by_func"
+    # echo "sort_desktop_item_by_func"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
@@ -431,7 +450,7 @@ menu_sort_desktop_item_by_mtime = ->
 
 
 create_entry_to_new_item = (entry) ->
-    echo "create_entry_to_new_item"
+    # echo "create_entry_to_new_item"
     w = Widget.look_up(DCore.DEntry.get_id(entry))
     if not w? then w = create_item(entry)
 
@@ -444,44 +463,36 @@ create_entry_to_new_item = (entry) ->
     w.item_rename()
 
 
-menu_create_new_folder = () ->
-    entry = DCore.Desktop.new_directory()
+menu_create_new_folder = (name_add_before) ->
+    entry = DCore.Desktop.new_directory(name_add_before)
     create_entry_to_new_item(entry)
 
 
-menu_create_new_file = () ->
-    entry = DCore.Desktop.new_file()
+menu_create_new_file = (name_add_before) ->
+    entry = DCore.Desktop.new_file(name_add_before)
     create_entry_to_new_item(entry)
-
-
-      # if(evt.dataTransfer.files.length == 0)
-      # {
-      #   //if the drop_target is internet files 
-      #   xdg_target = evt.dataTransfer.getData("text/uri-list");
-      #   echo("xdg_target:"+ xdg_target);
-      #   echo("xdg_target.length:"+xdg_target.length);        
-      #   desktop_uri = "" + (DCore.DEntry.get_uri(g_desktop_entry));
-      #   evt.dataTransfer.setData("Text",desktop_uri);
-      # }
 
 menu_create_templates = (id) ->
-    id_num = id - 20
+    
     templates = DCore.DEntry.get_templates_files()
-    copy_templates_choose = []
     name_add_before = _("Untitled") + " "
-    for i in [0...templates.length] by 1
-        if i == id_num
-            # method 1: use desktop_new_useable_file to rename auto
-            #           desktop_new_useable_file can rename when the src exist in desktop
-            if (DCore.DEntry.create_templates(templates[i],name_add_before))
-                echo "create_templates success!"
 
+    switch id
+        when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
+        when TEMPLATES_FILE_ID_FIRST + 1 then menu_create_new_file(name_add_before)
+        else
+            id_num = id - TEMPLATES_FILE_ID_FIRST - 2
+            for i in [0...templates.length] by 1
+                if i == id_num
+                    if (DCore.DEntry.create_templates(templates[i],name_add_before))
+                        echo "create_templates success!"
+    return
 # all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        echo "init_grid_drop"
+        # echo "init_grid_drop"
 
         file_uri = []
         tmp_copy = []
@@ -913,9 +924,12 @@ grid_right_click = (evt) ->
     templates = []
     templates_menu = []
     templates = DCore.DEntry.get_templates_files()
+    templates_menu.push([TEMPLATES_FILE_ID_FIRST, _("_Folder")])
+    templates_menu.push([TEMPLATES_FILE_ID_FIRST + 1, _("_Text document")])
+    TEMPATES_LENGTH = 2 + templates.length
     for i in [0...templates.length] by 1
         templates_name = DCore.DEntry.get_name(templates[i])
-        templates_id = i + 20
+        templates_id = i + 22
         templates_menu.push([templates_id,templates_name])
 
     menus = []
@@ -925,6 +939,7 @@ grid_right_click = (evt) ->
             ]
         ])
     menus.push([_("_New"), templates_menu])
+    # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
     menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
     menus.push([])
@@ -937,7 +952,6 @@ grid_right_click = (evt) ->
 
 
 grid_do_itemselected = (evt) ->
-
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
@@ -947,7 +961,9 @@ grid_do_itemselected = (evt) ->
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else 
-            if evt.id > 19 && evt.id < 30
+            # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 . 
+            # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
+            if evt.id > TEMPLATES_FILE_ID_FIRST - 1 && evt.id < TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST
                 menu_create_templates(evt.id)
             else
                 echo "not implemented function #{evt.id},#{evt.title}"
