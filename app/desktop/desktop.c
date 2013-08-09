@@ -186,10 +186,29 @@ GFile* _get_useable_file(const char* basename)
 }
 
 
-JS_EXPORT_API
-GFile* desktop_new_file()
+GFile* _get_useable_file_templates(const char* basename,const char* name_add_before)
 {
-    GFile* file = _get_useable_file(_("New file"));
+    char* destkop_path = get_desktop_dir(FALSE);
+    GFile* dir = g_file_new_for_path(destkop_path);
+
+    char* name = g_strdup(basename);
+    GFile* child = g_file_get_child(dir, name);
+    for (int i=0; g_file_query_exists(child, NULL); i++) {
+        g_object_unref(child);
+        g_free(name);
+        name = g_strdup_printf("%s(%d)%s",name_add_before, i,basename);
+        child = g_file_get_child(dir, name);
+    }
+
+    g_object_unref(dir);
+    g_free(destkop_path);
+    return child;
+}
+
+JS_EXPORT_API
+GFile* desktop_new_file(const char* name_add_before)
+{
+    GFile* file = _get_useable_file_templates(_("New file"),name_add_before);
     GFileOutputStream* stream =
         g_file_create(file, G_FILE_CREATE_NONE, NULL, NULL);
     if (stream)
@@ -198,9 +217,9 @@ GFile* desktop_new_file()
 }
 
 JS_EXPORT_API
-GFile* desktop_new_directory()
+GFile* desktop_new_directory(const char* name_add_before)
 {
-    GFile* dir = _get_useable_file(_("New directory"));
+    GFile* dir = _get_useable_file_templates(_("New directory"),name_add_before);
     g_file_make_directory(dir, NULL, NULL);
     //TODO: detect create status..
     return dir;
@@ -356,7 +375,13 @@ void desktop_load_dsc_desktop_item()
     }
     else
     {
-        dentry_delete_files(fs_dest, FALSE);
+        if(dentry_is_gapp(dest_file))
+        {
+            dentry_delete_files(fs_dest, FALSE);
+        }
+        else{
+            g_debug("deepin-software-center.desktop is not in desktop");
+        }
     }
     g_free(desktop_path);
     g_free(dsc_path);
@@ -443,6 +468,7 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 JS_EXPORT_API
 void desktop_set_position_input(double x , double y)
 {
+    // g_debug("desktop_set_position_input");
     int width = 100;
     int height = 30;
     GdkRectangle area = {(int)x, (int)y, width, height};

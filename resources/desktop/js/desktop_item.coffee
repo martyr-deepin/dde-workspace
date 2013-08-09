@@ -749,7 +749,7 @@ class RichDir extends DesktopEntry
 
 
     do_dragstart : (evt) ->
-        # echo "RichDir do_dragstart"
+        echo "RichDir do_dragstart"
         if @show_pop == true then @hide_pop_block()
         super
 
