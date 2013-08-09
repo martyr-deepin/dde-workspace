@@ -19,16 +19,18 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <string.h>
-#include "xdg_misc.h"
 #include <gtk/gtk.h>
+#include <gio/gdesktopappinfo.h>
+#include "xdg_misc.h"
 #include "dwebview.h"
 #include "dentry/entry.h"
 #include "utils.h"
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
+#include "launcher_category.h"
 #include "dbus.h"
-#include <gio/gdesktopappinfo.h>
+
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
 #define CURRENT_PCITURE "current-picture"

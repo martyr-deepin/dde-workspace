@@ -47,5 +47,8 @@ const char* get_category_db_path();
 const char** get_category_list();
 GList* get_deepin_categories(GDesktopAppInfo*);
 const GPtrArray* get_all_categories_array();
+const char* get_category_index_db_path();
+const char* get_category_name_db_path();
+gboolean search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, void* res);
 
 #endif

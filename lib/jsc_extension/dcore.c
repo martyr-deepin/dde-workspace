@@ -19,7 +19,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <gtk/gtk.h>
-#include <glib.h>
 #include <string.h>
 #include <gio/gio.h>
 #include <sys/stat.h>
@@ -27,6 +26,7 @@
 #include "xdg_misc.h"
 #include "jsextension.h"
 #include "dwebview.h"
+#include "dcore.h"
 
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"

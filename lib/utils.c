@@ -374,7 +374,13 @@ char* get_basename_without_extend_name(char const* path)
         char* basename_without_ext = g_strndup(basename, ext_sep - basename);
         g_free(basename);
         return basename_without_ext;
-    } else {
-        return basename;
     }
+
+    return basename;
+}
+
+
+gboolean is_deepin_icon(char const* icon_path)
+{
+    return g_str_has_prefix(icon_path, "/usr/share/icons/Deepin/");
 }

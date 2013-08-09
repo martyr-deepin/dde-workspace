@@ -1,123 +1,14 @@
-/**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 snyh
- *
- * Author:      snyh <snyh@snyh.org>
- * Maintainer:  snyh <snyh@snyh.org>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses/>.
- **/
-#include "i18n.h"
 #include "category.h"
-#include <stdlib.h>
-#include <glib.h>
-#include "sqlite3.h"
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <glib.h>
-#include <glib/gprintf.h>
-#include "jsextension.h"
 #include "x_category.h"
+#include "launcher_category.h"
+#include "i18n.h"
+#include "jsextension.h"
 
-#define DEEPIN_SOFTWARE_CENTER_DATA_DIR    "/usr/share/deepin-software-center/data"
-#define DATA_NEWEST_ID    DEEPIN_SOFTWARE_CENTER_DATA_DIR"/data_newest_id.ini"
-#define CATEGORY_NAME_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/desktop/new_desktop.db"
-#define CATEGORY_INDEX_DB_PATH   DEEPIN_SOFTWARE_CENTER_DATA_DIR"/update/%s/category/category.db"
-
-
-PRIVATE
-gboolean _need_to_update(const char* db_path)
-{
-    if (db_path[0] == '\0')
-        return TRUE;
-
-    static time_t _last_modify_time[2] = {0};
-    struct stat newest;
-    if (!stat(DATA_NEWEST_ID, &newest)) {
-        return FALSE;
-    }
-
-    int index = (int)g_str_has_suffix(db_path, "category.db");
-
-    if (newest.st_mtime != _last_modify_time[index]) {
-        _last_modify_time[index] = newest.st_mtime;
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-
-PRIVATE
-void _get_db_path(char* db_path, size_t path_len, char const* db_path_template)
-{
-    if (_need_to_update(db_path)) {
-        GKeyFile* id_file = g_key_file_new();
-        if (g_key_file_load_from_file(id_file, DATA_NEWEST_ID, G_KEY_FILE_NONE, NULL)) {
-            gchar* newest_id = g_key_file_get_value(id_file, "newest", "data_id", NULL);
-            g_key_file_free(id_file);
-            g_snprintf(db_path, path_len, db_path_template, newest_id);
-            g_free(newest_id);
-        }
-    }
-}
-
-const char* get_category_name_db_path()
-{
-    // the path to db has fixed 69 bytes, and uuid is 36 bytes.
-#define PATH_LEN 106
-    static gchar db_path[PATH_LEN] = {0};
-    _get_db_path(db_path, PATH_LEN, CATEGORY_NAME_DB_PATH);
-#undef PATH_LEN
-    return db_path;
-}
-
-
-const char* get_category_index_db_path()
-{
-    // the path to db has fixed 67 bytes, and uuid is 36 bytes.
-#define PATH_LEN 104
-    static char db_path[PATH_LEN] = {0};
-    _get_db_path(db_path, PATH_LEN, CATEGORY_INDEX_DB_PATH);
-#undef PATH_LEN
-    return db_path;
-}
 
 PRIVATE
 const char* _get_x_category_db_path()
 {
     return DATA_DIR"/x_category.sqlite";
-}
-
-PRIVATE
-gboolean _search_database(const char* db_path, const char* sql, SQLEXEC_CB fn, void* res)
-{
-    sqlite3* db = NULL;
-    gboolean is_good = SQLITE_OK == sqlite3_open_v2(db_path, &db, SQLITE_OPEN_READONLY, NULL);
-    if (is_good) {
-        char* error = NULL;
-        sqlite3_exec(db, sql, fn, res, &error);
-        sqlite3_close(db);
-        if (error != NULL) {
-            g_warning("%s\n", error);
-            sqlite3_free(error);
-            is_good = FALSE;
-        }
-    }
-
-    return is_good;
 }
 
 
@@ -138,8 +29,8 @@ int find_category_id(const char* category_name)
     if (_category_info == NULL) {
         _category_info = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
         char const* sql = "select distinct first_category_name, first_category_index from category_name;";
-        _search_database(get_category_index_db_path(), sql,
-                         (SQLEXEC_CB)_get_category_name_index_map, _category_info);
+        search_database(get_category_index_db_path(), sql,
+                        (SQLEXEC_CB)_get_category_name_index_map, _category_info);
 
         for (gsize i = 0; i < X_CATEGORY_NUM; ++i)
             g_hash_table_insert(_category_info, g_strdup(_(x_category_name_index_map[i].name)),
@@ -222,9 +113,9 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
     g_string_append(sql, app_name[0]);
     g_strfreev(app_name);
     g_string_append(sql, "\";");
-    _search_database(get_category_name_db_path(), sql->str,
-                     (SQLEXEC_CB)_get_all_possible_categories,
-                     &categories);
+    search_database(get_category_name_db_path(), sql->str,
+                    (SQLEXEC_CB)_get_all_possible_categories,
+                    &categories);
     g_string_free(sql, TRUE);
 
     if (categories == NULL)
@@ -234,6 +125,7 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 }
 
 
+static
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0')
@@ -241,11 +133,13 @@ int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
     return 0;
 }
 
+
+static
 void _load_category_info(GPtrArray* category_infos)
 {
     const char* sql_category_info = "select distinct first_category_name from desktop;";
-    if (!_search_database(get_category_name_db_path(), sql_category_info,
-                          (SQLEXEC_CB)_fill_category_info, category_infos)) {
+    if (!search_database(get_category_name_db_path(), sql_category_info,
+                         (SQLEXEC_CB)_fill_category_info, category_infos)) {
         const char* const category_names[] = {
             INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
             INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
@@ -258,6 +152,7 @@ void _load_category_info(GPtrArray* category_infos)
     /* add this for apps which cannot be categoried */
     g_ptr_array_add(category_infos, g_strdup(OTHER));
 }
+
 
 const GPtrArray* get_all_categories_array()
 {
