@@ -28,9 +28,9 @@
 #include "dock_config.h"
 #include "launcher.h"
 #include "region.h"
-#include "dbus.h"
 #include "dock_hide.h"
 #include <cairo.h>
+#include "DBUS_dock.h"
 
 void dock_change_workarea_height(double height);
 int _dock_height = 60;
@@ -250,7 +250,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
-    dock_setup_dbus_service();
+    setup_dock_dbus_service();
     gtk_main();
     return 0;
 }
