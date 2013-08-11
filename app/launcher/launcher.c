@@ -530,10 +530,7 @@ JSObjectRef launcher_get_categories()
 JS_EXPORT_API
 GFile* launcher_get_desktop_entry()
 {
-    char* desktop = get_desktop_dir(FALSE);
-    GFile* r = g_file_new_for_path(desktop);
-    g_free(desktop);
-    return r;
+    return g_file_new_for_path(DESKTOP_DIR());
 }
 
 JS_EXPORT_API
@@ -584,11 +581,9 @@ JS_EXPORT_API
 gboolean launcher_has_this_item_on_desktop(Entry* _item)
 {
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* desktop = get_desktop_dir(FALSE);
     const char* item_path = g_desktop_app_info_get_filename(item);
     char* basename = g_path_get_basename(item_path);
-    char* desktop_item_path = g_build_filename(desktop, basename, NULL);
-    g_free(desktop);
+    char* desktop_item_path = g_build_filename(DESKTOP_DIR(), basename, NULL);
 
     GFile* desktop_item = g_file_new_for_path(desktop_item_path);
     g_free(basename);
