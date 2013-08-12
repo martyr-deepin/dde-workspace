@@ -41,7 +41,6 @@
 #include "thumbnails.h"
 #include "mime_actions.h"
 #include "fileops_error_reporting.h"
-#include "templates.h"
 #include "category.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
@@ -1133,10 +1132,19 @@ JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
-    GFile* f = g_file_new_for_path(TEMPLATES_DIR());
-    ac = dentry_list_files(f);
-    g_object_unref(f);
-
+    g_debug("templates dir:--%s--",TEMPLATES_DIR());
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    if (is_exist)
+    {
+        GFile* f = g_file_new_for_path(TEMPLATES_DIR());
+        ac = dentry_list_files(f);
+        g_object_unref(f);
+    }
+    else{
+        g_debug("the templates directory isnot exist!");
+        ac.data = NULL;
+        ac.num = 0;
+    }
     return ac ;
 }
 
@@ -1244,75 +1252,68 @@ gboolean _is_generic_category(char const* category)
 
 
 PRIVATE
-void _count_categories(GHashTable* table, char* category)
+char* _get_group_name_from_category_field(ArrayContainer const fs)
 {
-    if (_is_valid_category(category)) {
-        if (!g_hash_table_contains(table, category)) {
-            g_hash_table_insert(table, category, GINT_TO_POINTER(1));
-        } else {
-            int value = GPOINTER_TO_INT(g_hash_table_lookup(table, category));
-            g_hash_table_insert(table, category, GINT_TO_POINTER(value + 1));
-        }
-    } else {
-        g_free(category);
-    }
-}
+    g_assert(fs.num == 2);
 
-
-static int max = 0;
-PRIVATE
-void _pred(gpointer key, gpointer value, gpointer user_data)
-{
-    int num = GPOINTER_TO_INT(value);
-    if (num > 1 && num >= max) {
-        if (max == num) {
-            if (!_is_generic_category((char*)key)
-                && _is_generic_category(*(char**)user_data)) {
-                g_free(*(char**)user_data);
-                *(char**)user_data = g_strdup((char*)key);
-            }
-        } else {
-            max = num;
-            g_free(*(char**)user_data);
-            *(char**)user_data = g_strdup((char*)key);
-        }
-    }
-}
-
-
-PRIVATE
-char* _get_group_name_from_category_field(ArrayContainer fs)
-{
     char* group_name = g_strdup("App Group");
 
     GHashTable* table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
                                               NULL);
 
-    for (int i = 0; i < fs.num; ++i) {
-        char** categories = NULL;
-        char* origin_categories =
-            g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[i]);
+    // Get the valid categories from one.
+    char** categories = NULL;
+    char const* origin_categories =
+        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[0]);
 
-        if (origin_categories[0] == '\0')
-            break;
-
+    if (origin_categories[0] != '\0') {
         categories = g_strsplit(origin_categories, ";", 0);
-        for (int j = 0; categories[j] != NULL && categories[j][0] != '\0'; ++j)
-            _count_categories(table, g_utf8_casefold(categories[j], -1));
+        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'; ++i) {
+            if (_is_valid_category(categories[i]))
+                g_hash_table_add(table, g_utf8_casefold(categories[i], -1));
+        }
 
         g_strfreev(categories);
     }
 
-    char* candidate_group_name = NULL;
-    max = 0;
-    g_hash_table_foreach(table, _pred, &candidate_group_name);
+    // Get the valid categories from the other and get the common categories.
+    origin_categories =
+        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[1]);
+
+    GPtrArray* common_categories = g_ptr_array_new_with_free_func(g_free);
+
+    if (origin_categories[0] != '\0') {
+        categories = g_strsplit(origin_categories, ";", 0);
+        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'
+             && _is_valid_category(categories[i]); ++i) {
+            char* low_case = g_utf8_casefold(categories[i], -1);
+
+            if (g_hash_table_contains(table, low_case))
+                g_ptr_array_add(common_categories, low_case);
+            else
+                g_free(low_case);
+        }
+
+        g_strfreev(categories);
+    }
 
     g_hash_table_unref(table);
 
-    if (candidate_group_name != NULL) {
-        g_free(group_name);
-        group_name = candidate_group_name;
+    // Remove the useless categories.
+    if (common_categories->len > 1) {
+        for (int i = 0; i < common_categories->len; ++i) {
+            if (_is_generic_category(g_ptr_array_index(common_categories, i))
+                && common_categories->len > 1)
+                g_ptr_array_remove_index(common_categories, i);
+        }
     }
+
+    if (common_categories->len > 0) {
+        g_free(group_name);
+        group_name = g_strdup(g_ptr_array_index(common_categories, 0));
+    }
+
+    g_ptr_array_unref(common_categories);
 
     return group_name;
 }
@@ -1358,7 +1359,7 @@ char* _get_category(GDesktopAppInfo* app)
 
 
 PRIVATE
-char* _get_group_name_from_software_center(ArrayContainer fs)
+char* _get_group_name_from_software_center(ArrayContainer const fs)
 {
     g_assert(fs.num == 2);
 
@@ -1377,7 +1378,7 @@ char* _get_group_name_from_software_center(ArrayContainer fs)
 }
 
 
-char* dentry_get_rich_dir_group_name(ArrayContainer fs)
+char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 {
     char* group_name = _get_group_name_from_software_center(fs);
 
