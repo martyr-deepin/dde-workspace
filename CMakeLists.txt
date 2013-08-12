@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 option(DEVELOP "enable develop mode (use src's resource)" false)
 option(TEST "enable test mode (run project's test code)" false)
-set(GOPATH "${CMAKE_CURRENT_SOURCE_DIR}/golang" CACHE STRING "set the golang path")
+set(GOPATH "${CMAKE_CURRENT_SOURCE_DIR}/golang" CACHE PATH "set the golang path")
 
 macro(GEN_JSC_SOURCE2 JSC_GEN_SRC CFG_DIR OUTPUT)
     set(OUT ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT})

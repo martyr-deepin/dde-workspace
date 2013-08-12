@@ -443,8 +443,6 @@ void send_get_focus()
 DBUS_EXPORT_API
 void desktop_focus_changed(gboolean focused)
 {
-    printf("focus changed :%d\n", focused);
-
     if(TRUE == focused)
         send_get_focus();
     else
