@@ -22,21 +22,19 @@ void desktop_run_in_terminal(char* executable)
 
     exec_val = g_settings_get_string(terminal_gsettings,
                                      TERMINAL_KEY_EXEC);
-    gchar* path = get_desktop_dir(0);
     if (executable == NULL)
     {
         cmd_line = g_strdup_printf("%s --working-directory=%s",
-                                   exec_val, path);
+                                   exec_val, DESKTOP_DIR());
     }
     else
     {
         char* exec_arg_val = g_settings_get_string (terminal_gsettings,
                                                     TERMINAL_KEY_EXEC_ARG);
         cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
-                                   exec_val, path, exec_arg_val, executable);
+                                   exec_val, DESKTOP_DIR(), exec_arg_val, executable);
         g_free (exec_arg_val);
     }
-    g_free(path);
     g_free(exec_val);
 
     GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,

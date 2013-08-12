@@ -69,17 +69,7 @@ static void _commandline_exec(const char *commandline, GList *list);
 JS_EXPORT_API
 Entry* dentry_get_desktop()
 {
-    char* path = get_desktop_dir(FALSE);
-    Entry* ret = dentry_create_by_path(path);
-    g_free(path);
-    return ret;
-}
-
-JS_EXPORT_API
-char* dentry_get_desktop_path()
-{
-    char* path = get_desktop_dir(FALSE);
-    return path;
+    return dentry_create_by_path(DESKTOP_DIR());
 }
 
 JS_EXPORT_API
@@ -1143,12 +1133,8 @@ JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
-    //char* c = nautilus_get_templates_directory();
-    char* c  = get_templates_dir(TRUE);
-    g_debug("get_templates_dir:---%s---",c);
-    GFile* f = g_file_new_for_path(c);
+    GFile* f = g_file_new_for_path(TEMPLATES_DIR());
     ac = dentry_list_files(f);
-    g_free(c);
     g_object_unref(f);
 
     return ac ;
@@ -1161,8 +1147,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
-    char* destkop_path = get_desktop_dir(FALSE);
-    GFile* dir = g_file_new_for_path(destkop_path);
+    GFile* dir = g_file_new_for_path(DESKTOP_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
@@ -1174,7 +1159,6 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
 
     g_object_unref(dir);
-    g_free(destkop_path);
 
     g_debug("choose templates new name :---%s---",name);
 
