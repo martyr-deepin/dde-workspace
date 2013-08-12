@@ -1133,7 +1133,7 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     g_debug("templates dir:--%s--",TEMPLATES_DIR());
-    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if (is_exist)
     {
         GFile* f = g_file_new_for_path(TEMPLATES_DIR());
@@ -1284,14 +1284,15 @@ char* _get_group_name_from_category_field(ArrayContainer const fs)
 
     if (origin_categories[0] != '\0') {
         categories = g_strsplit(origin_categories, ";", 0);
-        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'
-             && _is_valid_category(categories[i]); ++i) {
-            char* low_case = g_utf8_casefold(categories[i], -1);
+        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'; ++i) {
+            if (_is_valid_category(categories[i])) {
+                char* low_case = g_utf8_casefold(categories[i], -1);
 
-            if (g_hash_table_contains(table, low_case))
-                g_ptr_array_add(common_categories, low_case);
-            else
-                g_free(low_case);
+                if (g_hash_table_contains(table, low_case))
+                    g_ptr_array_add(common_categories, low_case);
+                else
+                    g_free(low_case);
+            }
         }
 
         g_strfreev(categories);
