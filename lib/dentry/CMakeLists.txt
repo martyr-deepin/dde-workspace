@@ -10,6 +10,6 @@ set(SRC_LIST ${DEntry})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
-add_library(dentry ${SRC_LIST})
+add_library(dentry ${SRC_LIST} ../category.c)
 target_link_libraries(dentry ${DWEBVIEW_LIBRAIRES})
 

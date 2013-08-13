@@ -374,9 +374,9 @@ char* get_basename_without_extend_name(char const* path)
         char* basename_without_ext = g_strndup(basename, ext_sep - basename);
         g_free(basename);
         return basename_without_ext;
-    } else {
-        return basename;
     }
+
+    return basename;
 }
 
 

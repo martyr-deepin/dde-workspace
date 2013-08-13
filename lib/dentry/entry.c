@@ -41,7 +41,7 @@
 #include "thumbnails.h"
 #include "mime_actions.h"
 #include "fileops_error_reporting.h"
-#include "templates.h"
+#include "category.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
 
@@ -68,17 +68,7 @@ static void _commandline_exec(const char *commandline, GList *list);
 JS_EXPORT_API
 Entry* dentry_get_desktop()
 {
-    char* path = get_desktop_dir(FALSE);
-    Entry* ret = dentry_create_by_path(path);
-    g_free(path);
-    return ret;
-}
-
-JS_EXPORT_API
-char* dentry_get_desktop_path()
-{
-    char* path = get_desktop_dir(FALSE);
-    return path;
+    return dentry_create_by_path(DESKTOP_DIR());
 }
 
 JS_EXPORT_API
@@ -271,13 +261,13 @@ char* dentry_get_icon(Entry* e)
         g_object_unref(info);
     TEST_GAPP(e, app)
         GIcon *icon = g_app_info_get_icon(app);
-        
+
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
 
             if (icon_str && g_path_is_absolute(icon_str) && !is_deepin_icon(icon_str)) {
                 char* app_id =
-                    get_basename_without_extend_name(g_desktop_app_info_get_filename((GDesktopAppInfo*)app));
+                    get_basename_without_extend_name(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
                 char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
                 g_free(app_id);
 
@@ -777,7 +767,7 @@ gboolean dentry_set_name(Entry* e, const char* name)
             return TRUE;
         }
     TEST_GAPP(e, app)
-        const char* path = g_desktop_app_info_get_filename((GDesktopAppInfo*)app);
+        const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
         if (!change_desktop_entry_name(path, name))
         {
             show_rename_error_dialog (name, TRUE);
@@ -1032,22 +1022,10 @@ gboolean dentry_internal()
 }
 
 
-char* get_basename_without_ext(char const* path)
-{
-    char* basename = g_path_get_basename(path);
-    char* ext_spe = strchr(basename, '.');
-    if (ext_spe != NULL) {
-        char* name = g_strndup(basename, ext_spe - basename);
-        g_free(basename);
-        return name;
-    }
-    return basename;
-}
-
 JS_EXPORT_API
 char* dentry_get_basename_without_ext(char const* path)
 {
-    char* name = get_basename_without_ext(path);
+    char* name = get_basename_without_extend_name(path);
     return name;
 }
 
@@ -1055,7 +1033,7 @@ char* dentry_get_basename_without_ext(char const* path)
 static
 char* _get_svg_icon_aux(char const* icon)
 {
-    char* icon_name = get_basename_without_ext(icon);
+    char* icon_name = get_basename_without_extend_name(icon);
 
     if (icon_name != NULL) {
         char* svg_path =icon_name_to_path_with_check_xpm(icon_name, -1);
@@ -1154,14 +1132,19 @@ JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
-    //char* c = nautilus_get_templates_directory();
-    char* c  = get_templates_dir(TRUE);
-    g_debug("get_templates_dir:---%s---",c);
-    GFile* f = g_file_new_for_path(c);
-    ac = dentry_list_files(f);
-    g_free(c);
-    g_object_unref(f);
-
+    g_debug("templates dir:--%s--",TEMPLATES_DIR());
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    if (is_exist)
+    {
+        GFile* f = g_file_new_for_path(TEMPLATES_DIR());
+        ac = dentry_list_files(f);
+        g_object_unref(f);
+    }
+    else{
+        g_debug("the templates directory isnot exist!");
+        ac.data = NULL;
+        ac.num = 0;
+    }
     return ac ;
 }
 
@@ -1172,8 +1155,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
-    char* destkop_path = get_desktop_dir(FALSE);
-    GFile* dir = g_file_new_for_path(destkop_path);
+    GFile* dir = g_file_new_for_path(DESKTOP_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
@@ -1185,7 +1167,6 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
 
     g_object_unref(dir);
-    g_free(destkop_path);
 
     g_debug("choose templates new name :---%s---",name);
 
@@ -1207,4 +1188,202 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
 
     return result;
+}
+
+
+PRIVATE
+gboolean _is_valid_category(char const* category)
+{
+#define CATEGORY_FILTER DATA_DIR"/category_filter.ini"
+    GKeyFile* filter_file = g_key_file_new();
+    GError* err = NULL;
+    if (!g_key_file_load_from_file(filter_file, CATEGORY_FILTER, G_KEY_FILE_NONE, &err)) {
+        g_warning("[Error] read file %s failed: %s", CATEGORY_FILTER, err->message);
+        g_error_free(err);
+        return TRUE;
+    }
+
+    gboolean is_valid = TRUE;
+    gsize size = 0;
+    char** filter = g_key_file_get_string_list(filter_file, "Main", "filter", &size, NULL);
+    for (int i = 0; filter[i] != NULL; ++i) {
+        if (g_str_equal(category, filter[i])) {
+            is_valid = FALSE;
+            break;
+        }
+    }
+    g_key_file_unref(filter_file);
+#undef CATEGORY_FILTER
+
+    return is_valid;
+}
+
+
+PRIVATE
+gboolean _is_generic_category(char const* category)
+{
+#define CATEGORY_FILTER DATA_DIR"/category_filter.ini"
+    GKeyFile* filter_file = g_key_file_new();
+    GError* err = NULL;
+    if (!g_key_file_load_from_file(filter_file, CATEGORY_FILTER, G_KEY_FILE_NONE, &err)) {
+        g_warning("[Error] read file %s failed: %s", CATEGORY_FILTER, err->message);
+        g_error_free(err);
+        return TRUE;
+    }
+
+    gboolean is_generic = FALSE;
+    gsize size = 0;
+    char** filter = g_key_file_get_string_list(filter_file, "Aux", "filter", &size, NULL);
+    for (int i = 0; filter[i] != NULL; ++i) {
+        char* low_case_catgory = g_utf8_casefold(category, -1);
+        char* low_case_filter = g_utf8_casefold(filter[i], -1);
+        if (g_str_equal(low_case_catgory, low_case_filter)) {
+            is_generic = TRUE;
+            break;
+        }
+        g_free(low_case_catgory);
+        g_free(low_case_filter);
+    }
+    g_key_file_unref(filter_file);
+#undef CATEGORY_FILTER
+
+    return is_generic;
+}
+
+
+PRIVATE
+char* _get_group_name_from_category_field(ArrayContainer const fs)
+{
+    g_assert(fs.num == 2);
+
+    char* group_name = g_strdup("App Group");
+
+    GHashTable* table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
+                                              NULL);
+
+    // Get the valid categories from one.
+    char** categories = NULL;
+    char const* origin_categories =
+        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[0]);
+
+    if (origin_categories[0] != '\0') {
+        categories = g_strsplit(origin_categories, ";", 0);
+        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'; ++i) {
+            if (_is_valid_category(categories[i]))
+                g_hash_table_add(table, g_utf8_casefold(categories[i], -1));
+        }
+
+        g_strfreev(categories);
+    }
+
+    // Get the valid categories from the other and get the common categories.
+    origin_categories =
+        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[1]);
+
+    GPtrArray* common_categories = g_ptr_array_new_with_free_func(g_free);
+
+    if (origin_categories[0] != '\0') {
+        categories = g_strsplit(origin_categories, ";", 0);
+        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'
+             && _is_valid_category(categories[i]); ++i) {
+            char* low_case = g_utf8_casefold(categories[i], -1);
+
+            if (g_hash_table_contains(table, low_case))
+                g_ptr_array_add(common_categories, low_case);
+            else
+                g_free(low_case);
+        }
+
+        g_strfreev(categories);
+    }
+
+    g_hash_table_unref(table);
+
+    // Remove the useless categories.
+    if (common_categories->len > 1) {
+        for (int i = 0; i < common_categories->len; ++i) {
+            if (_is_generic_category(g_ptr_array_index(common_categories, i))
+                && common_categories->len > 1)
+                g_ptr_array_remove_index(common_categories, i);
+        }
+    }
+
+    if (common_categories->len > 0) {
+        g_free(group_name);
+        group_name = g_strdup(g_ptr_array_index(common_categories, 0));
+    }
+
+    g_ptr_array_unref(common_categories);
+
+    return group_name;
+}
+
+
+PRIVATE
+int _get_category_name(void* _basename, int argc, char** argv, char** columnname)
+{
+    char** basename = (char**)_basename;
+    if (argv[0][0] != '\0')
+        *basename = g_strdup(argv[0]);
+    return 0;
+}
+
+
+PRIVATE
+char* _lookup(char const* basename)
+{
+    char* category_name = NULL;
+
+    GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
+    g_string_append(sql, basename);
+    g_string_append(sql, "\";");
+
+    search_database(get_category_name_db_path(), sql->str, _get_category_name,
+                    &category_name);
+
+    g_string_free(sql, TRUE);
+
+    return category_name;
+}
+
+
+PRIVATE
+char* _get_category(GDesktopAppInfo* app)
+{
+    char* basename = get_basename_without_extend_name(g_desktop_app_info_get_filename(app));
+    char* category = _lookup(basename);
+    g_free(basename);
+
+    return category;
+}
+
+
+PRIVATE
+char* _get_group_name_from_software_center(ArrayContainer const fs)
+{
+    g_assert(fs.num == 2);
+
+    char* category = _get_category(((GDesktopAppInfo**)fs.data)[0]);
+    char* another_category = _get_category(((GDesktopAppInfo**)fs.data)[1]);
+
+    if (category && another_category && g_str_equal(category, another_category)) {
+        g_free(another_category);
+        return category;
+    }
+
+    g_free(another_category);
+    g_free(category);
+
+    return NULL;
+}
+
+
+char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
+{
+    char* group_name = _get_group_name_from_software_center(fs);
+
+    if (group_name == NULL)
+        group_name = _get_group_name_from_category_field(fs);
+
+    return group_name;
 }

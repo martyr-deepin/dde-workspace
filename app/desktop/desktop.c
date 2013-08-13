@@ -57,21 +57,19 @@ JS_EXPORT_API
 JSObjectRef desktop_get_desktop_entries()
 {
     JSObjectRef array = json_array_create();
-    char* desktop_path = get_desktop_dir(FALSE);
-    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+    GDir* dir = g_dir_open(DESKTOP_DIR(), 0, NULL);
 
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
         if(desktop_file_filter(file_name))
             continue;
-        char* path = g_build_filename(desktop_path, file_name, NULL);
+        char* path = g_build_filename(DESKTOP_DIR(), file_name, NULL);
         Entry* e = dentry_create_by_path(path);
         g_free(path);
         json_array_insert_nobject(array, i++, e, g_object_ref, g_object_unref);
         g_object_unref(e);
     }
     g_dir_close(dir);
-    g_free(desktop_path);
     return array;
 }
 
@@ -145,26 +143,30 @@ char* desktop_get_rich_dir_icon(GFile* _dir)
 JS_EXPORT_API
 GFile* desktop_create_rich_dir(ArrayContainer fs)
 {
-    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _("App Group"), NULL);
+    char* group_name = dentry_get_rich_dir_group_name(fs);
+    char* temp_name = g_strconcat (DEEPIN_RICH_DIR, _(group_name), NULL);
+    g_free(group_name);
     g_debug ("create_rich_dir: %s", temp_name);
+
     GFile* dir = _get_useable_file(temp_name);
     g_free(temp_name);
+
     g_file_make_directory(dir, NULL, NULL);
     dentry_move(fs, dir, TRUE);
+
     return dir;
 }
 
 JS_EXPORT_API
-char* desktop_get_desktop_path()
+const char* desktop_get_desktop_path()
 {
-    return get_desktop_dir(FALSE);
+    return DESKTOP_DIR();
 }
 
 
 GFile* _get_useable_file(const char* basename)
 {
-    char* destkop_path = get_desktop_dir(FALSE);
-    GFile* dir = g_file_new_for_path(destkop_path);
+    GFile* dir = g_file_new_for_path(DESKTOP_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
@@ -176,15 +178,13 @@ GFile* _get_useable_file(const char* basename)
     }
 
     g_object_unref(dir);
-    g_free(destkop_path);
     return child;
 }
 
 
 GFile* _get_useable_file_templates(const char* basename,const char* name_add_before)
 {
-    char* destkop_path = get_desktop_dir(FALSE);
-    GFile* dir = g_file_new_for_path(destkop_path);
+    GFile* dir = g_file_new_for_path(TEMPLATES_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
@@ -196,7 +196,6 @@ GFile* _get_useable_file_templates(const char* basename,const char* name_add_bef
     }
 
     g_object_unref(dir);
-    g_free(destkop_path);
     return child;
 }
 
@@ -344,10 +343,10 @@ char* desktop_get_data_dir()
 
 JS_EXPORT_API
 void desktop_load_dsc_desktop_item()
-{   
+{
     extern void dentry_copy (ArrayContainer fs, GFile* dest);
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
-    char* desktop_path = desktop_get_desktop_path();
+    const char* desktop_path = DESKTOP_DIR();
     GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
     GFile* dest = dentry_create_by_path(desktop_path);
     char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
@@ -378,7 +377,6 @@ void desktop_load_dsc_desktop_item()
             g_debug("deepin-software-center.desktop is not in desktop");
         }
     }
-    g_free(desktop_path);
     g_free(dsc_path);
     g_object_unref(dest);
     ArrayContainer_free0(fs_src);
@@ -388,8 +386,7 @@ void desktop_load_dsc_desktop_item()
 JS_EXPORT_API
 gboolean desktop_file_exist_in_desktop(char* name)
 {
-    char* desktop_path = get_desktop_dir(FALSE);
-    GDir* dir = g_dir_open(desktop_path, 0, NULL);
+    GDir* dir = g_dir_open(DESKTOP_DIR(), 0, NULL);
     gboolean result = false;
     const char* file_name = NULL;
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
@@ -402,7 +399,6 @@ gboolean desktop_file_exist_in_desktop(char* name)
 
     }
     g_dir_close(dir);
-    g_free(desktop_path);
     return result;
 }
 
@@ -463,7 +459,7 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 JS_EXPORT_API
 void desktop_set_position_input(double x , double y)
 {
-    g_debug("desktop_set_position_input");
+    // g_debug("desktop_set_position_input");
     int width = 100;
     int height = 30;
     GdkRectangle area = {(int)x, (int)y, width, height};
@@ -473,6 +469,7 @@ void desktop_set_position_input(double x , double y)
     gtk_im_context_set_cursor_location(im_context, &area);
     // g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
 }
+
 
 
 int main(int argc, char* argv[])

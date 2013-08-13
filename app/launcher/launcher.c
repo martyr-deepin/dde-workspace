@@ -19,16 +19,18 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <string.h>
-#include "xdg_misc.h"
 #include <gtk/gtk.h>
+#include <gio/gdesktopappinfo.h>
+#include "xdg_misc.h"
 #include "dwebview.h"
 #include "dentry/entry.h"
 #include "utils.h"
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
+#include "launcher_category.h"
 #include "dbus.h"
-#include <gio/gdesktopappinfo.h>
+
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
 #define CURRENT_PCITURE "current-picture"
@@ -528,10 +530,7 @@ JSObjectRef launcher_get_categories()
 JS_EXPORT_API
 GFile* launcher_get_desktop_entry()
 {
-    char* desktop = get_desktop_dir(FALSE);
-    GFile* r = g_file_new_for_path(desktop);
-    g_free(desktop);
-    return r;
+    return g_file_new_for_path(DESKTOP_DIR());
 }
 
 JS_EXPORT_API
@@ -582,11 +581,9 @@ JS_EXPORT_API
 gboolean launcher_has_this_item_on_desktop(Entry* _item)
 {
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* desktop = get_desktop_dir(FALSE);
     const char* item_path = g_desktop_app_info_get_filename(item);
     char* basename = g_path_get_basename(item_path);
-    char* desktop_item_path = g_build_filename(desktop, basename, NULL);
-    g_free(desktop);
+    char* desktop_item_path = g_build_filename(DESKTOP_DIR(), basename, NULL);
 
     GFile* desktop_item = g_file_new_for_path(desktop_item_path);
     g_free(basename);
