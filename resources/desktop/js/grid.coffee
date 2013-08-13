@@ -364,10 +364,11 @@ move_to_somewhere = (widget, pos) ->
 
 
 place_desktop_items = ->
-    echo "place_desktop_items"
+    echo1 "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
+    echo1 total_item.length
     not_founds = []
     for i in total_item
         if not (w = Widget.look_up(i))?
@@ -1188,6 +1189,7 @@ check_mouse_select_by_one_item = ->
     # @last_effect_item = effect_item
 effect_item = new Array
 
+
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
         @parent_element = parentElement
@@ -1197,7 +1199,6 @@ class Mouse_Select_Area_box
         @element.style.display = "none"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
-
 
     destory : =>
         @parent_element.removeChild(@element)
@@ -1215,6 +1216,7 @@ class Mouse_Select_Area_box
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
             echo1 "@start_pos:#{@start_pos.x} #{@start_pos.y}"
             @last_pos = @start_pos
+            @total_item = speical_item.concat(all_item)
         return
 
 
@@ -1253,24 +1255,30 @@ class Mouse_Select_Area_box
 
             exist = false
 
-            for i in speical_item.concat(all_item)
+            for i in @total_item
+                # echo1 total_item.length
                 if not (w = Widget.look_up(i))? then continue
                 item_pos = w.get_pos()
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
-                    if !exist_in_array(i,effect_item)
+                    if !exist_in_array(w,selected_item)
                         echo1 "effect_item.push"
-                        effect_item.push(i)
-                        if i.selected == false then set_item_selected(i, true) 
+                        set_item_selected(w, true) 
+                        selected_item.push(w)
+                        echo1 w.selected
                 else
-                    if exist_in_array(i,effect_item)
+                    if exist_in_array(w,selected_item)
                         echo1 "effect_item.pop"
-                        effect_item.pop(i)
-                        if i.selected == true then set_item_selected(i, false)
+                        set_item_selected(w, false)
+                        selected_item.pop(w)
+                        echo1 w.selected
+                        
+                        
 
             # echo1 effect_item.length
 
             # for i in effect_item
             #     if not (w = Widget.look_up(i))? then continue
+            #     echo1 w.selected
             #     if w.selected == false then set_item_selected(w, true) 
         return
 
