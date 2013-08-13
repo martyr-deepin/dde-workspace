@@ -29,7 +29,7 @@
 #include "i18n.h"
 #include "category.h"
 #include "launcher_category.h"
-#include "dbus.h"
+#include "DBUS_launcher.h"
 
 #define DOCK_HEIGHT 30
 #define SCHEMA_ID "com.deepin.dde.background"
@@ -258,7 +258,7 @@ int main(int argc, char* argv[])
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
-    setup_dbus_service();
+    setup_launcher_dbus_service();
 
 #ifndef NDEBUG
     monitor_resource_file("launcher", webview);

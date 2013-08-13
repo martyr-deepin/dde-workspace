@@ -9,7 +9,6 @@
 #include "test.h"
 #include "tasklist.h"
 #include "dock_hide.h"
-#include "dbus.h"
 #include "dock_config.h"
 #include "dominant_color.h"
 #include "handle_icon.h"

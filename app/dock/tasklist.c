@@ -31,6 +31,7 @@
 #include "region.h"
 #include "special_window.h"
 #include "xdg_misc.h"
+#include "DBUS_dock.h"
 extern Window get_dock_window();
 extern char* dcore_get_theme_icon(const char*, double);
 
@@ -324,26 +325,7 @@ void _update_client_info(Client *c)
 PRIVATE
 void notify_desktop(DesktopFocusState current_state)
 {
-    GDBusProxy* desktop_dbus = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
-                                                             G_DBUS_PROXY_FLAGS_NONE,
-                                                             NULL,
-                                                             "com.deepin.dde.desktop",
-                                                             "/com/deepin/dde/desktop",
-                                                             "com.deepin.dde.desktop",
-                                                             NULL,
-                                                             NULL);
-    if (desktop_dbus != NULL) {
-        GVariant* var = g_dbus_proxy_call_sync(desktop_dbus, "FocusChanged",
-                                               g_variant_new("(b)", current_state == DESKTOP_HAS_FOCUS),
-                                               G_DBUS_CALL_FLAGS_NONE,
-                                               -1, NULL, NULL);
-        if (var != NULL) {
-            g_variant_unref(var);
-            const char* state[] = {"focus", "blur"};
-            g_debug("desktop focus state changed to %s", state[current_state]);
-        }
-        g_object_unref(desktop_dbus);
-    }
+    dbus_set_desktop_focused(current_state == DESKTOP_HAS_FOCUS);
 }
 
 

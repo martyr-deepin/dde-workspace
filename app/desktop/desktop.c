@@ -25,12 +25,12 @@
 #include "i18n.h"
 #include "dentry/entry.h"
 #include "inotify_item.h"
-#include "dbus.h"
 #include "dcore.h"
 #include <dwebview.h>
 #include <utils.h>
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
+#include "DBUS_desktop.h"
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
@@ -440,9 +440,10 @@ void send_get_focus()
     js_post_message_simply("get_focus", NULL);
 }
 
-void focus_changed(gboolean is_changed)
+DBUS_EXPORT_API
+void desktop_focus_changed(gboolean focused)
 {
-    if(TRUE == is_changed)
+    if(TRUE == focused)
         send_get_focus();
     else
         send_lost_focus();
@@ -526,7 +527,7 @@ int main(int argc, char* argv[])
 
     g_object_get(webview,"im_context",&im_context,NULL);
 
-    setup_dbus_service ();
+    setup_desktop_dbus_service ();
 
 #ifndef NDEBUG
     monitor_resource_file("desktop", webview);
