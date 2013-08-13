@@ -113,6 +113,26 @@ _current_user = null
 userinfo_list = []
 _drag_flag = false
 
+click_handler = (e)->
+    if _current_user == @
+        if not @login and not @in_drag
+            @show_login()
+        else
+            if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
+                echo "login pwd clicked"
+            else
+                @hide_login()
+    else
+        @focus()
+
+account_keydown_handler = (e) ->
+    if e.which == 13 and @login_displayed
+        @login.account.focus()
+
+passwd_keydown_handler = (e) ->
+    if e.which == 13 and @login_displayed
+        @login.password.focus()
+
 class UserInfo extends Widget
     constructor: (@id, name, img_src)->
         super
@@ -158,6 +178,22 @@ class UserInfo extends Widget
             setInterval(=>
                 DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
             , 100)
+
+    start_animation: ->
+        if @canvas?
+            @scanner.classList.add("scanning-animation")
+            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+            @element.removeEventListener("click", click_handler)
+            document.body.removeEventListener("keydown", account_keydown_handler)
+            document.body.removeEventListener("keydown", passwd_keydown_handler)
+
+    stop_animation: ->
+        if @canvas?
+            @scanner.classList.remove("scanning-animation")
+            @scanner.removeChild(@scan_line)
+            @element.addEventListener("click", click_handler)
+            document.body.addEventListener("keydown", account_keydown_handler)
+            document.body.addEventListener("keydown", passwd_keydown_handler)
 
     focus: ->
         _current_user?.blur()
@@ -218,23 +254,15 @@ class UserInfo extends Widget
             @login_displayed = true
             @add_css_class("UserInfoSelected")
             @add_css_class("foo")
+            click_handler = click_handler.bind(@)
+            @element.addEventListener("click", click_handler)
 
     hide_login: ->
         if @login and @login_displayed
             @blur()
             @focus()
 
-    do_click: (e)->
-        if _current_user == @
-            if not @login and not @in_drag
-                @show_login()
-            else
-                if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
-                    echo "login pwd clicked"
-                else
-                    @hide_login()
-        else
-            @focus()
+    # do_click: click_handler.bind(@)
 
     animate_prev: ->
         echo "animate prev"
@@ -311,10 +339,8 @@ class UserInfo extends Widget
                 @login.account.value = ""
                 DCore.Greeter.start_authentication("*other")
             )
-            document.body.addEventListener("keydown", (e) =>
-                if e.which == 13 and @login_displayed
-                    @login.account.focus()
-            )
+            account_keydown_handler = account_keydown_handler.bind(@)
+            document.body.addEventListener("keydown", account_keydown_handler)
         else
             @login.password.classList.remove("PasswordStyle")
             @login.password.style.color = "red"
@@ -326,10 +352,8 @@ class UserInfo extends Widget
                 @login.password.value = ""
             )
 
-            document.body.addEventListener("keydown", (e) =>
-                if e.which == 13 and @login_displayed
-                    @login.password.focus()
-            )
+            passwd_keydown_handler = passwd_keydown_handler.bind(@)
+            document.body.addEventListener("keydown", passwd_keydown_handler)
 
         apply_refuse_rotate(@element, 0.5)
 
@@ -401,11 +425,12 @@ DCore.signal_connect("draw", ->
 
 DCore.signal_connect("start-animation", ->
     echo "==================="
-    # DCore.Lock.try_unlock("")
+    u.start_animation()
 )
 
 DCore.signal_connect("stop-animation", ->
     echo "stop animation"
+    u.stop_animation()
 )
 DCore.signal_connect("start-login", ->
     echo "start login"
