@@ -1183,6 +1183,7 @@ class Mouse_Select_Area_box
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(evt.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(evt.clientY - @start_point.clientY), s_height - st)
+        echo1 "sl:#{sl},st:#{st},sw:#{sw},sh#{sh}."
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
@@ -1190,7 +1191,7 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        echo new_pos
+        echo1 new_pos
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos
@@ -1249,7 +1250,7 @@ class Mouse_Select_Area_box
                     if w.selected == true then cancel_item_selected(w, false)
 
             @last_pos = new_pos
-            echo @last_pos
+            echo1 "@last_pos:#{@last_pos}"
             @last_effect_item = effect_item
         return
 
@@ -1266,7 +1267,7 @@ class Mouse_Select_Area_box
         
         @last_point = evt
         @last_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        echo @last_pos
+        echo1 @last_pos
        
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
