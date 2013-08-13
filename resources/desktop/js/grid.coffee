@@ -1163,6 +1163,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
+            echo @start_pos
             @last_pos = @start_pos
         return
 
@@ -1189,6 +1190,7 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
+        echo new_pos
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos
@@ -1247,6 +1249,7 @@ class Mouse_Select_Area_box
                     if w.selected == true then cancel_item_selected(w, false)
 
             @last_pos = new_pos
+            echo @last_pos
             @last_effect_item = effect_item
         return
 
@@ -1260,7 +1263,11 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.display = "none"
         @last_effect_item.splice(0)
-
+        
+        @last_point = evt
+        @last_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
+        echo @last_pos
+       
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
 
