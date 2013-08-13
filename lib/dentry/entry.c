@@ -1132,10 +1132,19 @@ JS_EXPORT_API
 ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
-    GFile* f = g_file_new_for_path(TEMPLATES_DIR());
-    ac = dentry_list_files(f);
-    g_object_unref(f);
-
+    g_debug("templates dir:--%s--",TEMPLATES_DIR());
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    if (is_exist)
+    {
+        GFile* f = g_file_new_for_path(TEMPLATES_DIR());
+        ac = dentry_list_files(f);
+        g_object_unref(f);
+    }
+    else{
+        g_debug("the templates directory isnot exist!");
+        ac.data = NULL;
+        ac.num = 0;
+    }
     return ac ;
 }
 
