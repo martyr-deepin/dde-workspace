@@ -1,10 +1,11 @@
 SET(NAME "launcher")
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
+GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "launcher")
 
 file(GLOB CFILES *.c)
 
-SET(SRC_LIST ${CFILES} ${JSC_GEN})
+SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
