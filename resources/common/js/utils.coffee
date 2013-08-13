@@ -173,3 +173,10 @@ get_path_name = (path)->
 remove_element = (obj)->
     _parentElement = obj?.parentNode
     _parentElement?.removeChild(obj)
+
+exist_in_array = (i,array)->
+    result = false
+    for j in array
+        if j is i 
+            result = true
+    return result

@@ -1137,6 +1137,56 @@ create_item_grid = ->
     drag_context = drag_canvas.getContext('2d')
     return
 
+check_mouse_select_by_one_item = ->
+
+
+    # temp_list = effect_item.concat()
+    # # sel_list = @last_effect_item.concat()
+    # # if temp_list.length > 0 and sel_list.length > 0
+    # #     w.item_blur() if (w = Widget.look_up(last_widget))? and w.has_focus
+    # #     for i in [temp_list.length - 1 ... -1] by -1
+    # #         for n in [sel_list.length - 1 ... -1] by -1
+    # #             if temp_list[i] == sel_list[n]
+    # #                 temp_list.splice(i, 1)
+    # #                 sel_list.splice(n, 1)
+    # #                 break
+
+    # # all items in temp_list are new item included
+    # # all items in sel_list are items excluded
+
+    # # if evt.ctrlKey == true
+    # #     for i in temp_list
+    # #         w = Widget.look_up(i)
+    # #         if not w? then continue
+    # #         else if w.selected == false then set_item_selected(w, false)
+    # #         else cancel_item_selected(w, false)
+    # #     for i in sel_list
+    # #         w = Widget.look_up(i)
+    # #         if not w? then continue
+    # #         else if w.selected == false then set_item_selected(w, false)
+    # #         else cancel_item_selected(w, false)
+
+    # # else if evt.shiftKey == true
+    # #     for i in temp_list
+    # #         w = Widget.look_up(i)
+    # #         if not w? then continue
+    # #         if w.selected == false then set_item_selected(w, false)
+
+    # # else
+    # for i in temp_list
+    #     w = Widget.look_up(i)
+    #     if not w? then continue
+    #     if w.selected == false then set_item_selected(w, true)
+    #     # if w.selected == true then cancel_item_selected(w, true)
+    # # for i in sel_list
+    # #     w = Widget.look_up(i)
+    # #     if not w? then continue
+    # #     if w.selected == true then cancel_item_selected(w, false)
+
+    # @last_pos = new_pos
+    # echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
+    # @last_effect_item = effect_item
+effect_item = new Array
 
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
@@ -1163,7 +1213,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-            echo1 @start_pos
+            echo1 "@start_pos:#{@start_pos.x} #{@start_pos.y}"
             @last_pos = @start_pos
         return
 
@@ -1176,14 +1226,14 @@ class Mouse_Select_Area_box
 
 
     mousemove_event : (evt) =>
-        echo1 "mousemove_event"
+        # echo1 "mousemove_event"
         evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(evt.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(evt.clientY - @start_point.clientY), s_height - st)
-        echo1 "sl:#{sl},st:#{st},sw:#{sw},sh#{sh}."
+        # echo1 "sl:#{sl},st:#{st},sw:#{sw},sh:#{sh}."
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
@@ -1191,7 +1241,8 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        echo1 new_pos
+        # echo1 "new_pos:#{new_pos.x} #{new_pos.y}"
+
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
                 pos_a = new_pos
@@ -1200,60 +1251,27 @@ class Mouse_Select_Area_box
                 pos_a = @start_pos
                 pos_b = new_pos
 
-            effect_item = new Array
+            exist = false
+
             for i in speical_item.concat(all_item)
-                if not (wiget = Widget.look_up(i))? then continue
-                item_pos = wiget.get_pos()
+                if not (w = Widget.look_up(i))? then continue
+                item_pos = w.get_pos()
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
-                    effect_item.push(i)
+                    if !exist_in_array(i,effect_item)
+                        echo1 "effect_item.push"
+                        effect_item.push(i)
+                        if i.selected == false then set_item_selected(i, true) 
+                else
+                    if exist_in_array(i,effect_item)
+                        echo1 "effect_item.pop"
+                        effect_item.pop(i)
+                        if i.selected == true then set_item_selected(i, false)
 
-            temp_list = effect_item.concat()
-            sel_list = @last_effect_item.concat()
-            if temp_list.length > 0 and sel_list.length > 0
-                w.item_blur() if (w = Widget.look_up(last_widget))? and w.has_focus
-                for i in [temp_list.length - 1 ... -1] by -1
-                    for n in [sel_list.length - 1 ... -1] by -1
-                        if temp_list[i] == sel_list[n]
-                            temp_list.splice(i, 1)
-                            sel_list.splice(n, 1)
-                            break
+            # echo1 effect_item.length
 
-            # all items in temp_list are new item included
-            # all items in sel_list are items excluded
-
-            if evt.ctrlKey == true
-                for i in temp_list
-                    w = Widget.look_up(i)
-                    if not w? then continue
-                    else if w.selected == false then set_item_selected(w, false)
-                    else cancel_item_selected(w, false)
-                for i in sel_list
-                    w = Widget.look_up(i)
-                    if not w? then continue
-                    else if w.selected == false then set_item_selected(w, false)
-                    else cancel_item_selected(w, false)
-
-            else if evt.shiftKey == true
-                for i in temp_list
-                    w = Widget.look_up(i)
-                    if not w? then continue
-                    if w.selected == false then set_item_selected(w, false)
-
-            else
-                for i in temp_list
-                    w = Widget.look_up(i)
-                    if not w? then continue
-                    if w.selected == false then set_item_selected(w, false)
-                for i in sel_list
-                    w = Widget.look_up(i)
-                    if not w? then continue
-                    if w.selected == true then cancel_item_selected(w, false)
-
-            @last_pos = new_pos
-
-            echo1 "@last_pos:#{@last_pos}"
-
-            @last_effect_item = effect_item
+            # for i in effect_item
+            #     if not (w = Widget.look_up(i))? then continue
+            #     if w.selected == false then set_item_selected(w, true) 
         return
 
 
@@ -1269,7 +1287,7 @@ class Mouse_Select_Area_box
         
         @last_point = evt
         @last_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        echo1 @last_pos
+        echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
        
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
