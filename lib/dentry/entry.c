@@ -1133,12 +1133,22 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     g_debug("templates dir:--%s--",TEMPLATES_DIR());
-    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
-    if (is_exist)
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    if(is_exist)
     {
-        GFile* f = g_file_new_for_path(TEMPLATES_DIR());
-        ac = dentry_list_files(f);
-        g_object_unref(f);
+        if(g_str_equal(TEMPLATES_DIR(),HOME_DIR()))
+        {
+            g_debug("the templates directory is HOME_DIR,it isnt TEMPLATES_DIR");
+            ac.data = NULL;
+            ac.num = 0;
+        }
+        else
+        {
+            g_debug("the templates directory is exist!");
+            GFile* f = g_file_new_for_path(TEMPLATES_DIR());
+            ac = dentry_list_files(f);
+            g_object_unref(f);
+        }
     }
     else{
         g_debug("the templates directory isnot exist!");
