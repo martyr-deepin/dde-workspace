@@ -38,7 +38,9 @@ type ArgStruct struct {
     CName string
     DName string
     Type string
+    IsArray bool
 }
+
 func checkArgValid(value []string) {
     if len(value) != 2 {
         panic(fmt.Sprintf("Ret string is not valid: %q", strings.Join(value, ":")))
@@ -50,12 +52,18 @@ func checkArgValid(value []string) {
 func Ret(input string) ArgStruct {
     value := strings.Split(input, ":")
     checkArgValid(value)
-    return ArgStruct{value[0], value[1], type_table[value[1]], OutArg}
+    return ArgStruct{value[0], value[1], type_table[value[1]], OutArg, false}
 }
 func Arg(input string) ArgStruct {
     value := strings.Split(input, ":")
     checkArgValid(value)
-    return ArgStruct{value[0], value[1], type_table[value[1]], InArg}
+    return ArgStruct{value[0], value[1], type_table[value[1]], InArg, false}
+}
+func Array(arg ArgStruct) ArgStruct {
+    arg.CName = arg.CName + "*"
+    arg.DName = "a(" + arg.DName + ")"
+    arg.IsArray = true
+    return arg
 }
 
 
@@ -70,7 +78,7 @@ func Method(name string, cb CallbackStruct, args...ArgStruct) MethodStruct {
     if len(args) > 0 && args[0].Type == OutArg {
         return MethodStruct{nil, args[0], name, cb, args[1:]}
     }
-    ret := ArgStruct{"", "void", "", InvalidArg}
+    ret := ArgStruct{"", "void", "", InvalidArg, false}
     return MethodStruct{nil, ret, name, cb, args}
 }
 func (m MethodStruct) joinArgs(prefix...string) string{
@@ -84,32 +92,35 @@ func (m MethodStruct) joinArgs(prefix...string) string{
     }
     return strings.Join(ret, ",")
 }
+func (m MethodStruct) joinCallArgs(prefix...string) string{
+    ret := make([]string, len(m.Args))
+    for i, _ := range m.Args {
+        pre := ""
+        if len(prefix) == 1 {
+            pre = prefix[0]
+        }
+        ret[i] = fmt.Sprintf("%sarg%d", pre, i)
+    }
+    return strings.Join(ret, ",")
+}
 func Callback(name string) CallbackStruct {
     return CallbackStruct{name}
 }
 
 var temp_provider = template.Must(template.New("dbus_xml").Funcs(template.FuncMap{
-    "gen_arg_call": func(name string, args []ArgStruct) string {
-        ret := make([]string, len(args))
-        for i, _ := range args {
-            ret[i] = fmt.Sprintf("arg%d", i)
-        }
+    "gen_arg_call": func(m MethodStruct) string {
+        return fmt.Sprintf("%s(%s);", m.CB.Name, m.joinCallArgs())
+    },
+    "get_c_content": func(m MethodStruct) string {
         var get_variant string
-        if len(args) != 0 {
-            ret2 := make([]string, len(args))
-            signals := make([]string, len(args))
-            for i, s := range args {
-                ret2[i] = fmt.Sprintf("&arg%d", i)
-                signals[i] = s.DName
+        if len(m.Args) != 0 {
+            signals := make([]string, len(m.Args))
+            for i, arg := range m.Args {
+                signals[i] = arg.DName
             }
-            get_variant = fmt.Sprintf("g_variant_get(params, \"(%s)\", %s);\n", strings.Join(signals, ""), strings.Join(ret2, ", "))
+            get_variant = fmt.Sprintf("g_variant_get(params, \"(%s)\", %s);\n", strings.Join(signals, ""), m.joinCallArgs("&"))
         }
-
-        return fmt.Sprintf("    %s            %s(%s);",
-            get_variant,
-            name,
-            strings.Join(ret, ", "),
-        )
+        return get_variant;
     },
     "func_decl": func(method MethodStruct) string {
         return fmt.Sprintf("%s %s(%s);", method.Ret.CName, method.CB.Name, method.joinArgs())
@@ -131,8 +142,8 @@ static void _bus_method_call (GDBusConnection * connection,
     {{range $index, $arg := .Args}}
         {{$arg.CName}} arg{{$index}};
     {{end}}
-    {{if .Ret.Type }} {{..Ret.CName}} _c_retval = {{end}}
-    {{gen_arg_call .CB.Name .Args}}
+    {{get_c_content .}}
+    {{if .Ret.Type }} {{..Ret.CName}} _c_retval ={{end}} {{gen_arg_call .}}
 
     {{if .Ret.Type }}
         retval = g_variant_new("({{..Ret.DName}})", _c_retval);
