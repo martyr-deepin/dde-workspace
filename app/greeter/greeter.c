@@ -39,6 +39,7 @@
 #include "account.h"
 #include "user.h"
 #include "session.h"
+#include "settings.h"
 #include "DBUS_greeter.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
@@ -61,6 +62,23 @@ static gint exit_flag = 0;
 static gboolean cancelling = FALSE, prompted = FALSE;
 GError *error = NULL;
 static GPid pid = 0;
+
+
+JS_EXPORT_API
+void greeter_webview_ok()
+{
+    static gboolean inited = FALSE;
+    if (!inited) {
+        if (greeter_use_face_recognition_login()) {
+            // CAMERA_WINDOW is defined in CMakeLists.txt
+            char* child_argv[] = { CAMERA_WINDOW, NULL };
+            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL))
+                js_post_message_simply("draw", NULL);
+        }
+
+        inited = TRUE;
+    }
+}
 
 JS_EXPORT_API
 void greeter_set_selected_user(const gchar *username)

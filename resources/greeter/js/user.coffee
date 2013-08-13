@@ -470,3 +470,5 @@ jQuery("#roundabout").drag("start", (ev, dd) ->
 jQuery("#roundabout").drag("end", (ev, dd) ->
     _current_user?.animate_near()
 )
+
+DCore.Greeter.webview_ok()
