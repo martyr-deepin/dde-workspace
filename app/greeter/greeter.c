@@ -39,6 +39,7 @@
 #include "account.h"
 #include "user.h"
 #include "session.h"
+#include "DBUS_greeter.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -601,6 +602,7 @@ int main(int argc, char **argv)
     g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL);
 
  //   monitor_resource_file("greeter", webview);
+    setup_greeter_dbus_service();
     gtk_main();
     return 0;
 }

@@ -161,7 +161,7 @@ void _update_window_viewport(Client* c)
 PRIVATE
 gboolean _get_launcher_icon(Client* c)
 {
-    g_debug("try to get launcher's icon");
+    g_debug("[_get_launcher_icon] try to get launcher's icon");
     GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
@@ -291,7 +291,7 @@ Client* create_client_from_window(Window w)
             _get_launcher_icon(c);
     }
 
-    g_debug("icon path is %s", c->icon);
+    g_debug("[create_client_from_window] icon path is %s", c->icon);
 
     if (c->icon == NULL) {
         g_debug("get launcher icon failed");

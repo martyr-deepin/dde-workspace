@@ -38,6 +38,13 @@
 GMainLoop *loop = NULL;
 GError *error = NULL;
 
+struct LoginInfo {
+    char* username;
+    gboolean is_already_no_pwd_login;
+};
+
+static struct LoginInfo login_info = {NULL, FALSE};
+
 const char* _lock_dbus_iface_xml =
 "<?xml version=\"1.0\"?>\n"
 "<node>\n"
@@ -68,6 +75,14 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"livecd\" type=\"b\" direction=\"out\">\n"
 "			</arg>\n"
 "		</method>\n"
+"		<method name=\"AddToNoPasswordLoginGroup\">\n"
+"			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"		</method>\n"
+"		<method name=\"RemoveNoPasswordLoginGroup\">\n"
+"			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"		</method>\n"
 "	</interface>\n"
 "</node>\n"
 ;
@@ -90,6 +105,8 @@ static void _bus_handle_exit_lock(const gchar *username, const gchar *password);
 static gboolean _bus_handle_need_pwd(const gchar *username);
 static gboolean _bus_handle_is_livecd (const gchar *username);
 static gboolean _bus_handle_unlock_check(const gchar *username, const gchar *password);
+static void dbus_handle_add_to_nopwd_login_group(const char* username);
+static void dbus_handle_remove_from_nopwd_login_group(const char* username);
 static gboolean do_exit(gpointer user_data);
 
 static GDBusNodeInfo *      node_info = NULL;
@@ -235,7 +252,19 @@ _bus_method_call (GDBusConnection * connection,
         g_variant_get (params, "(s)", &username);
 
         retval = g_variant_new("(b)", _bus_handle_is_livecd (username));
-        
+
+    } else if (g_str_equal(method, "AddToNoPasswordLoginGroup")) {
+        const gchar* username = NULL;
+        g_variant_get(params, "(s)", &username);
+
+        dbus_handle_add_to_nopwd_login_group(username);
+
+    } else if (g_str_equal(method, "RemoveNoPasswordLoginGroup")) {
+        const gchar* username = NULL;
+        g_variant_get(params, "(s)", &username);
+
+        dbus_handle_remove_from_nopwd_login_group(username);
+
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
     }
@@ -321,7 +350,7 @@ _bus_handle_unlock_check (const gchar *username, const gchar *password)
     if ((strcmp (crypt (password, user_data->sp_pwdp), user_data->sp_pwdp)) == 0)
     {
         return TRUE;
-    } 
+    }
 
     return FALSE;
 }
@@ -343,7 +372,7 @@ GPtrArray *get_nopasswdlogin_users()
 
     GDataInputStream *data_input = g_data_input_stream_new((GInputStream *) input);
     g_assert(data_input);
-    
+
     char *data = (char *) 1;
     while(data){
         gsize length = 0;
@@ -352,13 +381,13 @@ GPtrArray *get_nopasswdlogin_users()
             g_warning("read line error\n");
             g_clear_error(&error);
         }
-        
+
         if(data != NULL){
             if(g_str_has_prefix(data, "nopasswdlogin")){
                 gchar **nopwd_line = g_strsplit(data, ":", 4);
                 g_debug("data:%s", data);
                 g_debug("nopwd_line[3]:%s", nopwd_line[3]);
-                
+
                 if(nopwd_line[3] != NULL){
                     gchar **user_strv = g_strsplit(nopwd_line[3], ",", 1024);
 
@@ -378,11 +407,11 @@ GPtrArray *get_nopasswdlogin_users()
     g_object_unref(data_input);
     g_object_unref(input);
     g_object_unref(file);
-    
+
     return nopasswdlogin;
 }
 
-static 
+static
 gboolean is_user_nopasswdlogin(const gchar *username)
 {
     gboolean ret = FALSE;
@@ -396,9 +425,9 @@ gboolean is_user_nopasswdlogin(const gchar *username)
             ret = TRUE;
         }
     }
-   
+
     g_ptr_array_free(nopwdlogin, TRUE);
-    
+
     return ret;
 }
 
@@ -425,7 +454,7 @@ _bus_handle_need_pwd (const gchar *username)
     {
         g_debug ("live account don't need password\n");
         return FALSE;
-    } 
+    }
 
     return TRUE;
 }
@@ -441,7 +470,7 @@ _bus_handle_is_livecd (const gchar *username)
     struct spwd *user_data;
 
     user_data = getspnam (username);
-    
+
     if (user_data == NULL || strlen(user_data->sp_pwdp) == 0)
     {
         return FALSE;
@@ -454,6 +483,60 @@ _bus_handle_is_livecd (const gchar *username)
 
     return TRUE;
 }
+
+
+static
+GPtrArray* _get_current_user_all_groups()
+{
+    int size = getgroups(0, NULL);
+    if (size == -1) {
+        return NULL;
+    }
+
+    gid_t* gids = g_new(gid_t, size);
+
+    int err = 0;
+    if ((err = getgroups(size, gids)) == -1) {
+        fprintf(stderr, "[Error]: %s\n", strerror(err));
+        return NULL;
+    }
+
+    GPtrArray* new_groups = g_ptr_array_new();
+    for (int i = 0; i < size; ++i)
+        g_ptr_array_add(new_groups, GINT_TO_POINTER(gids[i]));
+
+    return new_groups;
+}
+
+
+
+void dbus_handle_add_to_nopwd_login_group(const char* username)
+{
+    if (is_user_nopasswdlogin(username)) {
+        login_info.username = g_strdup(username);
+        login_info.is_already_no_pwd_login = TRUE;
+        return;
+    }
+
+    char* argv[] = {"gpasswd", "-a", username, "nopasswdlogin", NULL};
+    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    return;
+}
+
+
+void dbus_handle_remove_from_nopwd_login_group(const char* username)
+{
+    if (login_info.username != NULL && g_str_equal(login_info.username, username)
+        && login_info.is_already_no_pwd_login)
+        return;
+
+    char* argv[] = {"gpasswd", "-d", username, "nopasswdlogin", NULL};
+    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+
+    return ;
+}
+
 
 static gboolean
 do_exit (gpointer user_data)

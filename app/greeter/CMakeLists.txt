@@ -2,15 +2,16 @@ SET(NAME "greeter")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
 GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
+GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")
 
 pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 pkg_check_modules(OPENCV REQUIRED opencv)
 
 add_executable(${NAME} greeter.c account.c user.c power.c session.c ${JSC_GEN}
-    draw.c settings.c)
+    draw.c settings.c ${DBUS_GEN} connection.c)
 add_executable(switchtogreeter switchtogreeter.c)
 add_executable(dlock dlock.c gs-grab.c account.c ${JSC_LOCK_GEN} draw.c
-    settings.c)
+    settings.c ${DBUS_GEN} connection.c)
 add_executable(lockservice lockservice.c)
 
 set(CAMERA_WINDOW _camera)
@@ -26,7 +27,8 @@ target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES}
 target_link_libraries(switchtogreeter ${DWEBVIEW_LIBRARIES})
 target_link_libraries(dlock dcom dbus ${DWEBVIEW_LIBRARIES})
 target_link_libraries(lockservice crypt dcom dbus ${DWEBVIEW_LIBRARIES})
-target_link_libraries(${CAMERA_WINDOW} ${OPENCV_LIBRARIES} glib-2.0)
+target_link_libraries(${CAMERA_WINDOW} ${OPENCV_LIBRARIES} glib-2.0 gobject-2.0
+    gio-2.0)
 target_link_libraries(${HAS_CAMERA} ${OPENCV_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS})

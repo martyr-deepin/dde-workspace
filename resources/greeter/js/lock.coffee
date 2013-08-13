@@ -241,6 +241,18 @@ DCore.signal_connect("draw", ->
     , 300)
 )
 
+DCore.signal_connect("start-animation", ->
+    echo "==================="
+    # DCore.Lock.try_unlock("")
+)
+
+DCore.signal_connect("stop-animation", ->
+    echo "stop animation"
+)
+DCore.signal_connect("start-login", ->
+    echo "start login"
+)
+
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     l = (screen.width  - roundabout.clientWidth) / 2

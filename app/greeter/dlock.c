@@ -41,6 +41,7 @@
 #include <X11/XKBlib.h>
 #include "gs-grab.h"
 #include "settings.h"
+#include "DBUS_greeter.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -552,6 +553,7 @@ int main(int argc, char **argv)
     gdk_window_stick(gdkwindow);
 #endif
 
+    setup_greeter_dbus_service();
     gtk_main();
     return 0;
 }

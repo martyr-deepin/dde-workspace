@@ -37,8 +37,9 @@ except:
     sys.exit(1)
 
 try:
-    # print result['face'][0]['candidate'][0]['person_name']
-    print_result('', result)
+    print result['face'][0]['candidate'][0]['person_name']
+    # print_result('', result)
 except:
-    print_result('[Error]: ', result)
+    # print_result('[Error]: ', result)
+    pass
 

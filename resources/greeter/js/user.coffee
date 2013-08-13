@@ -122,7 +122,15 @@ class UserInfo extends Widget
         if img_src
             @img = create_img("UserImg", img_src, @userbase)
         else
+            @scanner = create_element('div', 'scanner', @userbase)
+            # @scanner = create_element('div', 'scanner scanning-animation',
+            #     @userbase)
+            # create this image when starting scanning
+            # @img = create_img('', 'images/scan-line.png', @scanner)
             @canvas = create_element("canvas", "UserImg", @userbase)
+            @canvas.setAttribute('width', '154px')
+            @canvas.setAttribute('height', "154px")
+            @camera_flag = create_img('camera', 'images/camera.png', @userbase)
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
@@ -144,6 +152,12 @@ class UserInfo extends Widget
             user_bg = _default_bg_src
         @background = create_img("Background", user_bg)
         @element.index = 0
+
+    draw_camera:->
+        if @canvas?
+            setInterval(=>
+                DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
+            , 100)
 
     focus: ->
         _current_user?.blur()
@@ -348,10 +362,12 @@ else
     for user in users
         if user == DCore.Greeter.get_default_user()
             user_image = get_user_image(user)
-            if 0
-                u = new UserInfo(user, user, user_image)
-            else
-                u = new UserInfo(user, user)
+            face_login = DCore.Greeter.use_face_recognition_login()
+            u = new UserInfo(user, user, if face_login then null else user_image)
+            # if 0
+            #     u = new UserInfo(user, user, user_image)
+            # else
+            #     u = new UserInfo(user, user)
             roundabout.appendChild(u.li)
             u.focus()
 
@@ -375,6 +391,24 @@ DCore.signal_connect("message", (msg) ->
 
 DCore.signal_connect("auth", (msg) ->
     _current_user?.verify_failed(msg.error)
+)
+
+DCore.signal_connect("draw", ->
+    setTimeout(->
+        u.draw_camera()
+    , 300)
+)
+
+DCore.signal_connect("start-animation", ->
+    echo "==================="
+    # DCore.Lock.try_unlock("")
+)
+
+DCore.signal_connect("stop-animation", ->
+    echo "stop animation"
+)
+DCore.signal_connect("start-login", ->
+    echo "start login"
 )
 
 ####the _counts must put before any animate of roundabout####
@@ -420,6 +454,7 @@ document.body.addEventListener("keydown", (e)=>
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    # if not face_login
     userinfo_list[0]?.focus()
     userinfo_list[0]?.show_login()
 
