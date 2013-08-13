@@ -41,7 +41,6 @@
 #include "thumbnails.h"
 #include "mime_actions.h"
 #include "fileops_error_reporting.h"
-#include "templates.h"
 #include "category.h"
 
 ArrayContainer EMPTY_CONTAINER = {0, 0};
