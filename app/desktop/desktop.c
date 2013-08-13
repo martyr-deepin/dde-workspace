@@ -184,7 +184,7 @@ GFile* _get_useable_file(const char* basename)
 
 GFile* _get_useable_file_templates(const char* basename,const char* name_add_before)
 {
-    GFile* dir = g_file_new_for_path(TEMPLATES_DIR());
+    GFile* dir = g_file_new_for_path(DESKTOP_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);

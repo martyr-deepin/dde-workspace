@@ -473,10 +473,8 @@ menu_create_new_file = (name_add_before) ->
     create_entry_to_new_item(entry)
 
 menu_create_templates = (id) ->
-    
     templates = DCore.DEntry.get_templates_files()
     name_add_before = _("Untitled") + " "
-
     switch id
         when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
         when TEMPLATES_FILE_ID_FIRST + 1 then menu_create_new_file(name_add_before)
