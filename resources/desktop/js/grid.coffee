@@ -1163,7 +1163,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-            echo @start_pos
+            echo1 @start_pos
             @last_pos = @start_pos
         return
 
@@ -1250,7 +1250,9 @@ class Mouse_Select_Area_box
                     if w.selected == true then cancel_item_selected(w, false)
 
             @last_pos = new_pos
+
             echo1 "@last_pos:#{@last_pos}"
+
             @last_effect_item = effect_item
         return
 
