@@ -263,7 +263,10 @@ func temp_caller_func_decl (m MethodStruct) string {
             decl += fmt.Sprintf("%s arg%d, ", arg.CName, i)
         }
     }
-    return fmt.Sprintf("%s %s(%s)", m.Ret.CName, m.Name, decl[:len(decl)-2])
+    if len(m.Args) > 0 {
+        decl = decl[:len(decl)-2]
+    }
+    return fmt.Sprintf("%s %s(%s)", m.Ret.CName, m.Name, decl)
 }
 
 var temp_caller_h = template.Must(template.New("dbus_call_h").Funcs(template.FuncMap{
@@ -287,7 +290,10 @@ var temp_caller = template.Must(template.New("dbus_call").Funcs(template.FuncMap
         for i, _ := range m.Args {
             decl += fmt.Sprintf("arg%d, ", i)
         }
-        return decl[:len(decl)-2]
+        if len(m.Args) > 0 {
+            decl = decl[:len(decl)-2]
+        }
+        return decl
     },
 }).Parse(`
 {{range .Methods }}
