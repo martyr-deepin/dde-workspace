@@ -315,7 +315,7 @@ var temp_caller = template.Must(template.New("dbus_call").Funcs(template.FuncMap
     }
     if (proxy != NULL) {
         GVariant* params = NULL;
-        params = g_variant_new("({{get_dbus_args .}})", {{get_c_args .}});
+        {{if .Ret.Type}}params = g_variant_new("({{get_dbus_args .}})", {{get_c_args .}});{{end}}
         GVariant* retval = g_dbus_proxy_call_sync(proxy, "{{.CB.Name}}",
                                                params,
                                                G_DBUS_CALL_FLAGS_NONE,
