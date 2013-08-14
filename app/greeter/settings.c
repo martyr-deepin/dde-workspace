@@ -9,7 +9,13 @@ gboolean _has_camera()
     // HAS_CAMERA is defined in CMakeLists.txt
     char* argv[] = {HAS_CAMERA, NULL};
     int exit_code = 1;
-    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, &exit_code, NULL);
+    GError* error = NULL;
+    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, &exit_code, &error);
+    if (error != NULL) {
+        g_warning("[Error in _has_camera] %s", error->message);
+        g_error_free(error);
+        return FALSE;
+    }
     return exit_code == 0;
 }
 

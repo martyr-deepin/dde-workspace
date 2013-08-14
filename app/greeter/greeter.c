@@ -608,19 +608,10 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(container);
 
-    char* camera_info[] = {"camera_resolution", NULL};
-    char* outupt = NULL;
-    g_spawn_sync(NULL, camera_info, NULL, 0, NULL, NULL, &outupt, NULL, NULL, NULL);
-    printf("%s", outupt);
-    /* js_post_message_simply("resolution", "{width: %s, height: %s}", outupt[0], */
-    /*                        outupt[1]); */
-    g_free(outupt);
-
-    char* child_argv[] = { "camera", NULL };
-    g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL);
-
  //   monitor_resource_file("greeter", webview);
     setup_greeter_dbus_service();
     gtk_main();
+    /* int kill(int, int); */
+    /* kill(0, 9); */
     return 0;
 }

@@ -175,6 +175,7 @@ class UserInfo extends Widget
 
     draw_camera:->
         if @canvas?
+            echo '[UserInfo.draw_camera] use camera'
             setInterval(=>
                 DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
             , 100)
@@ -382,11 +383,12 @@ if DCore.Greeter.is_hide_users()
     u.focus()
 else
     users = DCore.Greeter.get_users()
-    echo users
+    echo "users: #{users}"
     for user in users
         if user == DCore.Greeter.get_default_user()
             user_image = get_user_image(user)
             face_login = DCore.Greeter.use_face_recognition_login()
+            echo "face login: #{face_login}"
             u = new UserInfo(user, user, if face_login then null else user_image)
             # if 0
             #     u = new UserInfo(user, user, user_image)
