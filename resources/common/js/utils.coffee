@@ -38,10 +38,8 @@ String::args = ->
         o = o.replace(new RegExp("%" + i, "g"), arguments[i - 1])
 
     return o
+
 echo = (log) ->
-
-
-echo1 = (log) ->
     console.log log
 
 assert = (value, msg) ->
@@ -173,10 +171,3 @@ get_path_name = (path)->
 remove_element = (obj)->
     _parentElement = obj?.parentNode
     _parentElement?.removeChild(obj)
-
-exist_in_array = (i,array)->
-    result = false
-    for j in array
-        if j is i 
-            result = true
-    return result

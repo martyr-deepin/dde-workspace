@@ -73,7 +73,7 @@ TEMPLATES_FILE_ID_FIRST = 20
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
-    echo "draw_icon_on_canvas"
+    #echo "draw_icon_on_canvas"
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
         canvas_cantext.drawImage(
@@ -115,21 +115,21 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "calc_row_and_cols"
-    # echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
+    #echo "calc_row_and_cols"
+    # #echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
     # only 4  9 16 25  but 16 is the best 
     _GRID_WIDTH_INIT_ = _ITEM_WIDTH_
     _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_
-    # echo "wa_width:" + wa_width + ",wa_height:" + wa_height
-    # echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    # #echo "wa_width:" + wa_width + ",wa_height:" + wa_height
+    # #echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    # echo "xx:" + xx + ",yy:" + yy
+    # #echo "xx:" + xx + ",yy:" + yy
     g_ITEM_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
     g_ITEM_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
-    # echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
+    # #echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
 
     return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
     # return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]  
@@ -137,7 +137,7 @@ calc_row_and_cols = (wa_width, wa_height) ->
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
-    echo "update_gird_position"
+    #echo "update_gird_position"
     s_offset_x = wa_x
     s_offset_y = wa_y
     s_width = wa_width
@@ -153,8 +153,8 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (id) ->
-    echo "load_position"
-    if typeof(id) != "string" then echo "error load_position #{id}"
+    #echo "load_position"
+    if typeof(id) != "string" then #echo "error load_position #{id}"
 
     pos = localStorage.getObject("id:" + id)
 
@@ -166,7 +166,7 @@ load_position = (id) ->
 
 
 save_position = (id, pos) ->
-    echo "save_position"
+    #echo "save_position"
     assert("string" == typeof(id), "[save_position]id not string")
     assert(pos != null, "[save_position]pos null")
     localStorage.setObject("id:" + id, pos)
@@ -174,14 +174,14 @@ save_position = (id, pos) ->
 
 
 discard_position = (id) ->
-    echo "discard_position"
+    #echo "discard_position"
     assert("string" == typeof(id), "[discard_position]id not string")
     localStorage.removeItem("id:" + id)
     return
 
 
 clear_all_positions = ->
-    echo "clear_all_positions"
+    #echo "clear_all_positions"
     for i in all_item
         localStorage.removeItem("id:#{i}")
     for i in speical_item
@@ -190,7 +190,7 @@ clear_all_positions = ->
 
 
 compare_pos_top_left = (base, pos) ->
-    echo "compare_pos_top_left"
+    #echo "compare_pos_top_left"
     if pos.y < base.y
         -1
     else if pos.y >= base.y and pos.y <= base.y + base.height - 1
@@ -216,12 +216,12 @@ compare_pos_rect = (base1, base2, pos) ->
 
 
 calc_pos_to_pos_distance = (base, pos) ->
-    echo "calc_pos_to_pos_distance"
+    #echo "calc_pos_to_pos_distance"
     Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
 
 
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
-    echo "find_item_by_coord_delta"
+    #echo "find_item_by_coord_delta"
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
     while true
@@ -247,7 +247,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
 
 init_occupy_table = ->
-    echo "init_occupy_table"
+    #echo "init_occupy_table"
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
@@ -255,7 +255,7 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
-    echo "clear_occupy"
+    #echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -267,7 +267,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    echo "set_occupy"
+    #echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -276,7 +276,7 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info, id = null) ->
-    echo "detect_occupy"
+    #echo "detect_occupy"
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
@@ -288,7 +288,7 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
-    echo "clear_occupy_table"
+    #echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -301,7 +301,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    echo "find_free_position"
+    #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
@@ -326,7 +326,7 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, info) ->
-    echo "move_to_position"
+    # #echo "move_to_position"
     old_info = widget.get_pos()
 
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
@@ -342,7 +342,7 @@ move_to_position = (widget, info) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
-    echo "move_to_anywhere"
+    # #echo "move_to_anywhere"
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
@@ -354,7 +354,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    echo "move_to_somewhere"
+    # #echo "move_to_somewhere"
     if not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
@@ -364,11 +364,10 @@ move_to_somewhere = (widget, pos) ->
 
 
 place_desktop_items = ->
-    echo1 "place_desktop_items"
+    # #echo "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
-    echo1 total_item.length
     not_founds = []
     for i in total_item
         if not (w = Widget.look_up(i))?
@@ -391,7 +390,7 @@ place_desktop_items = ->
 
 
 sort_list_by_name_from_id = (id1, id2) ->
-    echo "sort_list_by_name_from_id"
+    # #echo "sort_list_by_name_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -402,7 +401,7 @@ sort_list_by_name_from_id = (id1, id2) ->
 
 
 sort_list_by_mtime_from_id = (id1, id2) ->
-    echo "sort_list_by_mtime_from_id"
+    # #echo "sort_list_by_mtime_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -413,7 +412,7 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
-    echo "sort_desktop_item_by_func"
+    # #echo "sort_desktop_item_by_func"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
@@ -450,7 +449,7 @@ menu_sort_desktop_item_by_mtime = ->
 
 
 create_entry_to_new_item = (entry) ->
-    # echo "create_entry_to_new_item"
+    # #echo "create_entry_to_new_item"
     w = Widget.look_up(DCore.DEntry.get_id(entry))
     if not w? then w = create_item(entry)
 
@@ -473,10 +472,8 @@ menu_create_new_file = (name_add_before) ->
     create_entry_to_new_item(entry)
 
 menu_create_templates = (id) ->
-    
     templates = DCore.DEntry.get_templates_files()
     name_add_before = _("Untitled") + " "
-
     switch id
         when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
         when TEMPLATES_FILE_ID_FIRST + 1 then menu_create_new_file(name_add_before)
@@ -485,14 +482,12 @@ menu_create_templates = (id) ->
             for i in [0...templates.length] by 1
                 if i == id_num
                     if (DCore.DEntry.create_templates(templates[i],name_add_before))
-                        echo "create_templates success!"
     return
 # all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        # echo "init_grid_drop"
 
         file_uri = []
         tmp_copy = []
@@ -517,10 +512,10 @@ init_grid_drop = ->
                     tmp_copy.push(f_e)
                     # only copy , not move
                     # if DCore.DEntry.should_move(f_e)
-                    #     echo "move"
+                    #     #echo "move"
                     #     tmp_move.push(f_e)
                     # else
-                    #     echo "copy"
+                    #     #echo "copy"
                     #     tmp_copy.push(f_e)
                     # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1, height : 1}
@@ -599,7 +594,7 @@ selected_copy_to_clipboard = ->
 
 
 selected_cut_to_clipboard = ->
-    echo "selected_cut_to_clipboard"
+    # #echo "selected_cut_to_clipboard"
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -610,12 +605,12 @@ selected_cut_to_clipboard = ->
 
 
 paste_from_clipboard = ->
-    echo "paste_from_clipboard"
+    # #echo "paste_from_clipboard"
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
 
 item_dragstart_handler = (widget, evt) ->
-    echo "item_dragstart_handler"
+    # #echo "item_dragstart_handler"
     all_selected_items = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -627,7 +622,7 @@ item_dragstart_handler = (widget, evt) ->
         if all_selected_items.length > 2
             all_selected_items = all_selected_items.substring(0,all_selected_items.length-2)
         else 
-            echo "items path is null"
+            echo "warning:items path is null"
         evt.dataTransfer.setData("text/uri-list", all_selected_items)
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
@@ -644,7 +639,7 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    echo "item_dragend_handler"
+    # #echo "item_dragend_handler"
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
@@ -697,7 +692,7 @@ item_dragend_handler = (w, evt) ->
 
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
-    echo "set_item_selected"
+    #echo "set_item_selected"
     if w.selected == false
         w.item_selected()
         if add_top == true
@@ -714,7 +709,7 @@ set_item_selected = (w, change_focus = true, add_top = false) ->
 
 
 set_all_item_selected = ->
-    echo "set_all_item_selected"
+    #echo "set_all_item_selected"
     for i in speical_item.concat(all_item)
         if selected_item.indexOf(i) >= 0 then continue
         w = Widget.look_up(i)
@@ -722,7 +717,7 @@ set_all_item_selected = ->
 
 
 cancel_item_selected = (w, change_focus = true) ->
-    echo "cancel_item_selected"
+    #echo "cancel_item_selected"
     i = selected_item.indexOf(w.get_id())
     if i < 0 then return false
     selected_item.splice(i, 1)
@@ -736,20 +731,19 @@ cancel_item_selected = (w, change_focus = true) ->
 
 
 cancel_all_selected_stats = () ->
-    echo "cancel_all_selected_stats"
+    #echo "cancel_all_selected_stats"
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
     return
 
 
 update_selected_stats = (w, evt) ->
-    echo1 "update_selected_stats"
+    #echo "update_selected_stats"
     if evt.ctrlKey
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
 
     else if evt.shiftKey
-        echo1 "shiftKey"
         if selected_item.length > 1
             last_one_id = selected_item[selected_item.length - 1]
             selected_item.splice(selected_item.length - 1, 1)
@@ -780,7 +774,6 @@ update_selected_stats = (w, evt) ->
             set_item_selected(w)
 
     else
-        echo1 "else"
         n = selected_item.indexOf(w.get_id())
         if n < 0
             cancel_all_selected_stats()
@@ -800,7 +793,7 @@ update_selected_stats = (w, evt) ->
 
 # draw selected item icons DND image on special html canvas
 update_selected_item_drag_image = ->
-    echo "update_selected_item_drag_image"
+    #echo "update_selected_item_drag_image"
     drag_draw_delay_timer = -1
 
     if selected_item.length == 0 then return
@@ -847,13 +840,13 @@ is_selected_multiple_items = ->
 
 
 open_selected_items = ->
-    echo "open_selected_items"
+    #echo "open_selected_items"
     Widget.look_up(i)?.item_exec() for i in selected_item
     return
 
 
 delete_selected_items = (real_delete) ->
-    echo "delete_selected_items"
+    #echo "delete_selected_items"
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -866,7 +859,7 @@ delete_selected_items = (real_delete) ->
 
 
 show_entries_properties = (entries) ->
-    echo "show_entries_properties"
+    #echo "show_entries_properties"
     try
         if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
             DCore.DEntry.launch(entry, entries)
@@ -875,7 +868,7 @@ show_entries_properties = (entries) ->
 
 
 show_selected_items_properties = ->
-    echo "show_selected_items_properties"
+    #echo "show_selected_items_properties"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -884,7 +877,7 @@ show_selected_items_properties = ->
 
 
 compress_selected_items = ->
-    echo "compress_selected_items"
+    #echo "compress_selected_items"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -895,7 +888,7 @@ compress_selected_items = ->
 
 
 decompress_selected_items = ->
-    echo "decompress_selected_items"
+    #echo "decompress_selected_items"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -906,7 +899,7 @@ decompress_selected_items = ->
 
 
 decompress_selected_items_here = ->
-    echo "decompress_selected_items_here"
+    #echo "decompress_selected_items_here"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -917,7 +910,7 @@ decompress_selected_items_here = ->
 
 
 get_items_compressibility = ->
-    echo "get_items_compressibility"
+    #echo "get_items_compressibility"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))
@@ -929,7 +922,7 @@ get_items_compressibility = ->
 
 
 gird_left_mousedown = (evt) ->
-    echo "grid_left_mounsedown"
+    #echo "grid_left_mounsedown"
     evt.stopPropagation()
     if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
@@ -938,7 +931,7 @@ gird_left_mousedown = (evt) ->
 
 
 grid_right_click = (evt) ->
-    echo "grid_right_click"
+    #echo "grid_right_click"
     evt.stopPropagation()
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
@@ -996,7 +989,7 @@ grid_do_itemselected = (evt) ->
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
-    echo "grid_do_keydown_to_shortcut"
+    #echo "grid_do_keydown_to_shortcut"
     if rename_div_process_events then return
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
@@ -1056,7 +1049,7 @@ grid_do_keydown_to_shortcut = (evt) ->
 
 # handle shortcuts keys
 grid_do_keyup_to_shrotcut = (evt) ->
-    echo "grid_do_keyup_to_shrotcut"
+    #echo "grid_do_keyup_to_shrotcut"
     if rename_div_process_events then return
     msg_disposed = false
     if ingore_keyup_counts > 0
@@ -1112,7 +1105,7 @@ grid_do_keyup_to_shrotcut = (evt) ->
 
 
 grid_do_keypress_to_shrotcut = (evt) ->
-    echo "grid_do_keypress_to_shrotcut"
+    #echo "grid_do_keypress_to_shrotcut"
     if rename_div_process_events then return
     evt.stopPropagation()
     evt.preventDefault()
@@ -1124,7 +1117,7 @@ grid_do_keypress_to_shrotcut = (evt) ->
 
 
 create_item_grid = ->
-    echo "create_item_grid"
+    #echo "create_item_grid"
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
     document.body.appendChild(div_grid)
@@ -1142,57 +1135,6 @@ create_item_grid = ->
     drag_context = drag_canvas.getContext('2d')
     return
 
-check_mouse_select_by_one_item = ->
-
-
-    # temp_list = effect_item.concat()
-    # # sel_list = @last_effect_item.concat()
-    # # if temp_list.length > 0 and sel_list.length > 0
-    # #     w.item_blur() if (w = Widget.look_up(last_widget))? and w.has_focus
-    # #     for i in [temp_list.length - 1 ... -1] by -1
-    # #         for n in [sel_list.length - 1 ... -1] by -1
-    # #             if temp_list[i] == sel_list[n]
-    # #                 temp_list.splice(i, 1)
-    # #                 sel_list.splice(n, 1)
-    # #                 break
-
-    # # all items in temp_list are new item included
-    # # all items in sel_list are items excluded
-
-    # # if evt.ctrlKey == true
-    # #     for i in temp_list
-    # #         w = Widget.look_up(i)
-    # #         if not w? then continue
-    # #         else if w.selected == false then set_item_selected(w, false)
-    # #         else cancel_item_selected(w, false)
-    # #     for i in sel_list
-    # #         w = Widget.look_up(i)
-    # #         if not w? then continue
-    # #         else if w.selected == false then set_item_selected(w, false)
-    # #         else cancel_item_selected(w, false)
-
-    # # else if evt.shiftKey == true
-    # #     for i in temp_list
-    # #         w = Widget.look_up(i)
-    # #         if not w? then continue
-    # #         if w.selected == false then set_item_selected(w, false)
-
-    # # else
-    # for i in temp_list
-    #     w = Widget.look_up(i)
-    #     if not w? then continue
-    #     if w.selected == false then set_item_selected(w, true)
-    #     # if w.selected == true then cancel_item_selected(w, true)
-    # # for i in sel_list
-    # #     w = Widget.look_up(i)
-    # #     if not w? then continue
-    # #     if w.selected == true then cancel_item_selected(w, false)
-
-    # @last_pos = new_pos
-    # echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
-    # @last_effect_item = effect_item
-
-
 
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
@@ -1202,14 +1144,11 @@ class Mouse_Select_Area_box
         @element.style.display = "none"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
-        @effect_item = new Array
 
     destory : =>
         @parent_element.removeChild(@element)
 
-
     mousedown_event : (evt) =>
-        echo1 "mousedown_event"
         evt.stopPropagation()
         evt.preventDefault()
         if evt.button == 0
@@ -1218,22 +1157,18 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
             @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-            echo1 "@start_pos:#{@start_pos.x} #{@start_pos.y}"
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
             
         return
 
-
     contextmenu_event : (evt) ->
-        echo1 "contextmenu_event"
         evt.stopPropagation()
         evt.preventDefault()
         return
 
 
     mousemove_event : (evt) =>
-        echo1 "mousemove_event"
         evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)
@@ -1260,25 +1195,14 @@ class Mouse_Select_Area_box
                 if not (w = Widget.look_up(i))? then continue
                 item_pos = w.get_pos()
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
-                    if not exist_in_array(w,@effect_item)
-                        echo1 "effect_item.push"
-                        echo1 w.get_name()
-                        @effect_item.push(w)
-                        if w.selected == false then set_item_selected(w,false) 
+                    if w.selected == false then set_item_selected(w) 
                 else
-                    if exist_in_array(w,@effect_item)
-                        echo1 "effect_item.pop"
-                        @effect_item.pop(w)
-                        echo1 w.get_name()
-                        if w.selected == true then cancel_item_selected(w)
+                    if w.selected == true then cancel_item_selected(w)
             
-            @last_pos = new_pos
-
         return
 
 
     mouseup_event : (evt) =>
-        echo1 "mouseup_event"
         evt.stopPropagation()
         evt.preventDefault()
         @parent_element.removeEventListener("mousemove", @mousemove_event)
@@ -1286,12 +1210,6 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.display = "none"
 
-        @effect_item.splice(0)
-
-        @last_point = evt
-        @last_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
-       
         if selected_item.length > 0 then update_selected_item_drag_image()
         return
 
@@ -1343,7 +1261,7 @@ item_rename_div.parentElement.addEventListener("keyup", (evt) ->
 
 
 move_widget_to_rename_div = (w) ->
-    echo "move_widget_to_rename_div"
+    #echo "move_widget_to_rename_div"
     if rename_div_process_events == true then return
     w.element.style.left = "#{w.element.offsetLeft + s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1}px"
@@ -1356,7 +1274,7 @@ move_widget_to_rename_div = (w) ->
 
 
 move_widget_to_grid_after_rename = (w) ->
-    echo "move_widget_to_grid_after_rename"
+    #echo "move_widget_to_grid_after_rename"
     if rename_div_process_events == false then return
     w.element.style.left = "#{w.element.offsetLeft - s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
