@@ -83,6 +83,12 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
 "			</arg>\n"
 "		</method>\n"
+"		<signal name=\"StartAnimation\">\n"
+"		</signal>\n"
+"		<signal name=\"StopAnimation\">\n"
+"		</signal>\n"
+"		<signal name=\"StartLogin\">\n"
+"		</signal>\n"
 "	</interface>\n"
 "</node>\n"
 ;
@@ -550,7 +556,7 @@ int main(int argc, char **argv)
     loop = g_main_loop_new (NULL, FALSE);
 
     lock_setup_dbus_service ();
-    g_timeout_add_seconds (60, do_exit, NULL);
+    /* g_timeout_add_seconds (60, do_exit, NULL); */
     g_main_loop_run (loop);
 
     return 0;

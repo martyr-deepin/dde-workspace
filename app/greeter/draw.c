@@ -1,3 +1,4 @@
+#include "glib.h"
 #include "gdk/gdk.h"
 #include "gdk/gdkx.h"
 #include "cairo.h"
@@ -16,10 +17,11 @@ void callback(gpointer data, gulong n_item, gpointer res)
 void _draw_camera(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
     if (JSValueIsNull(data->ctx, canvas)) {
-        g_debug("draw with null canvas!");
+        /* g_debug("draw with null canvas!"); */
         return;
     }
 
+    /* g_warning("[_draw_camera] draw camera"); */
     Display* _dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     static GdkWindow* win = NULL;
 
@@ -48,8 +50,10 @@ void _draw_camera(JSValueRef canvas, double dest_width, double dest_height, JSDa
             g_free(name);
         }
         XFree(xdata);
-        if (win == NULL)
+        if (win == NULL) {
+            /* g_warning("[_draw_camera] has no window to draw"); */
             return;
+        }
     }
 
     gdk_window_iconify(win);  // to avoid the window being saw when quit login

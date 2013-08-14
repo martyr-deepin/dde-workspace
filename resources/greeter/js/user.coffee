@@ -182,19 +182,19 @@ class UserInfo extends Widget
 
     start_animation: ->
         if @canvas?
-            @scanner.classList.add("scanning-animation")
             @scan_line = create_img('', 'images/scan-line.png', @scanner)
-            @element.removeEventListener("click", click_handler)
-            document.body.removeEventListener("keydown", account_keydown_handler)
-            document.body.removeEventListener("keydown", passwd_keydown_handler)
+            @scanner.classList.add("scanning-animation")
+            # @element.removeEventListener("click", click_handler)
+            # document.body.removeEventListener("keydown", account_keydown_handler)
+            # document.body.removeEventListener("keydown", passwd_keydown_handler)
 
     stop_animation: ->
         if @canvas?
-            @scanner.classList.remove("scanning-animation")
             @scanner.removeChild(@scan_line)
-            @element.addEventListener("click", click_handler)
-            document.body.addEventListener("keydown", account_keydown_handler)
-            document.body.addEventListener("keydown", passwd_keydown_handler)
+            @scanner.classList.remove("scanning-animation")
+            # @element.addEventListener("click", click_handler)
+            # document.body.addEventListener("keydown", account_keydown_handler)
+            # document.body.addEventListener("keydown", passwd_keydown_handler)
 
     focus: ->
         _current_user?.blur()

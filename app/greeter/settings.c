@@ -32,12 +32,14 @@ gboolean _face_recognition_login()
 JS_EXPORT_API
 gboolean lock_use_face_recognition_login()
 {
-    return _face_recognition_login();
+    /* return _face_recognition_login(); */
+    return TRUE;
 }
 
 
 JS_EXPORT_API
 gboolean greeter_use_face_recognition_login()
 {
-    return _face_recognition_login();
+    /* return _face_recognition_login(); */
+    return TRUE;
 }

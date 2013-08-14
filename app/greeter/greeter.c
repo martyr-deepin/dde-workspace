@@ -40,7 +40,7 @@
 #include "user.h"
 #include "session.h"
 #include "settings.h"
-#include "DBUS_greeter.h"
+#include "connection.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -71,9 +71,16 @@ void greeter_webview_ok()
     if (!inited) {
         if (greeter_use_face_recognition_login()) {
             // CAMERA_WINDOW is defined in CMakeLists.txt
-            char* child_argv[] = { CAMERA_WINDOW, NULL };
-            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL))
+            /* char* child_argv[] = { "/usr/bin/"CAMERA_WINDOW, NULL }; */
+            char* child_argv[] = { "/usr/bin/_camera", NULL };
+            GError* error = NULL;
+            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , &error))
                 js_post_message_simply("draw", NULL);
+
+            if (error != NULL) {
+                g_warning("[Error in greeter_webview_ok] %s", error->message);
+                g_error_free(error);
+            }
         }
 
         inited = TRUE;
@@ -555,6 +562,7 @@ gboolean greeter_need_password (const gchar *username)
     return is_need_pwd(username);
 }
 
+
 int main(int argc, char **argv)
 {
     GdkScreen *screen;
@@ -609,7 +617,7 @@ int main(int argc, char **argv)
     gtk_widget_show_all(container);
 
  //   monitor_resource_file("greeter", webview);
-    setup_greeter_dbus_service();
+    g_timeout_add(30, connect_signal, NULL);
     gtk_main();
     /* int kill(int, int); */
     /* kill(0, 9); */

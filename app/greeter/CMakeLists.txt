@@ -7,11 +7,12 @@ GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")
 pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 pkg_check_modules(OPENCV REQUIRED opencv)
 
+
 add_executable(${NAME} greeter.c account.c user.c power.c session.c ${JSC_GEN}
-    draw.c settings.c ${DBUS_GEN} connection.c)
+    draw.c settings.c connection.c)
 add_executable(switchtogreeter switchtogreeter.c)
 add_executable(dlock dlock.c gs-grab.c account.c ${JSC_LOCK_GEN} draw.c
-    settings.c ${DBUS_GEN} connection.c)
+    settings.c connection.c)
 add_executable(lockservice lockservice.c)
 
 set(CAMERA_WINDOW _camera)

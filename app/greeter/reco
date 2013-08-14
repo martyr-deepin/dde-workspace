@@ -38,7 +38,6 @@ except:
 
 try:
     print result['face'][0]['candidate'][0]['person_name']
-    # print_result('', result)
 except:
     # print_result('[Error]: ', result)
     pass

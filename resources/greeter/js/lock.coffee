@@ -99,6 +99,22 @@ class UserInfo extends Widget
         @login_displayed = false
         @display_failure = false
 
+    start_animation: ->
+        if @canvas?
+            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+            @scanner.classList.add("scanning-animation")
+            # @element.removeEventListener("click", click_handler)
+            # document.body.removeEventListener("keydown", account_keydown_handler)
+            # document.body.removeEventListener("keydown", passwd_keydown_handler)
+
+    stop_animation: ->
+        if @canvas?
+            @scanner.removeChild(@scan_line)
+            @scanner.classList.remove("scanning-animation")
+            # @element.addEventListener("click", click_handler)
+            # document.body.addEventListener("keydown", account_keydown_handler)
+            # document.body.addEventListener("keydown", passwd_keydown_handler)
+
     draw_camera:->
         if @canvas?
             setInterval(=>
@@ -140,6 +156,8 @@ class UserInfo extends Widget
             @focus()
 
     do_click: (e)->
+        @start_animation()
+        return
         if _current_user == @
             if not @login
                 @show_login()
@@ -211,6 +229,7 @@ if not is_livecd
     $("#bottom_buttons").appendChild(s.element)
 
 face_login = DCore.Lock.use_face_recognition_login()
+echo "face_login: #{face_login}"
 
 u = new UserInfo(user, user, if face_login then null else user_image)
 roundabout.appendChild(u.li)
@@ -243,11 +262,13 @@ DCore.signal_connect("draw", ->
 
 DCore.signal_connect("start-animation", ->
     echo "==================="
-    # DCore.Lock.try_unlock("")
+    u.start_animation()
+    DCore.Lock.try_unlock("")
 )
 
 DCore.signal_connect("stop-animation", ->
     echo "stop animation"
+    u.stop_animation()
 )
 DCore.signal_connect("start-login", ->
     echo "start login"
