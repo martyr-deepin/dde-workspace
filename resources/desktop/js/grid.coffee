@@ -1187,18 +1187,18 @@ check_mouse_select_by_one_item = ->
     # @last_pos = new_pos
     # echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
     # @last_effect_item = effect_item
-effect_item = new Array
+
 
 
 class Mouse_Select_Area_box
     constructor : (parentElement) ->
         @parent_element = parentElement
-        @last_effect_item = new Array
         @element = document.createElement("div")
         @element.setAttribute("id", "mouse_select_area_box")
         @element.style.display = "none"
         @parent_element.appendChild(@element)
         @parent_element.addEventListener("mousedown", @mousedown_event)
+        @effect_item = new Array
 
     destory : =>
         @parent_element.removeChild(@element)
@@ -1217,6 +1217,7 @@ class Mouse_Select_Area_box
             echo1 "@start_pos:#{@start_pos.x} #{@start_pos.y}"
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
+            
         return
 
 
@@ -1235,7 +1236,6 @@ class Mouse_Select_Area_box
         st = Math.min(Math.max(Math.min(@start_point.clientY, evt.clientY), s_offset_y), s_offset_y + s_height)
         sw = Math.min(Math.abs(evt.clientX - @start_point.clientX), s_width - sl)
         sh = Math.min(Math.abs(evt.clientY - @start_point.clientY), s_height - st)
-        # echo1 "sl:#{sl},st:#{st},sw:#{sw},sh:#{sh}."
         @element.style.left = "#{sl}px"
         @element.style.top = "#{st}px"
         @element.style.width = "#{sw}px"
@@ -1243,7 +1243,6 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-        # echo1 "new_pos:#{new_pos.x} #{new_pos.y}"
 
         if compare_pos_top_left(@last_pos, new_pos) != 0
             if compare_pos_top_left(@start_pos, new_pos) < 0
@@ -1253,33 +1252,24 @@ class Mouse_Select_Area_box
                 pos_a = @start_pos
                 pos_b = new_pos
 
-            exist = false
-
             for i in @total_item
-                # echo1 total_item.length
                 if not (w = Widget.look_up(i))? then continue
                 item_pos = w.get_pos()
                 if compare_pos_rect(pos_a, pos_b, item_pos) == true
-                    if !exist_in_array(w,selected_item)
+                    if not exist_in_array(w,@effect_item)
                         echo1 "effect_item.push"
-                        set_item_selected(w, true) 
-                        selected_item.push(w)
-                        echo1 w.selected
+                        echo1 w.get_name()
+                        @effect_item.push(w)
+                        if w.selected == false then set_item_selected(w,false) 
                 else
-                    if exist_in_array(w,selected_item)
+                    if exist_in_array(w,@effect_item)
                         echo1 "effect_item.pop"
-                        set_item_selected(w, false)
-                        selected_item.pop(w)
-                        echo1 w.selected
-                        
-                        
+                        @effect_item.pop(w)
+                        echo1 w.get_name()
+                        if w.selected == true then cancel_item_selected(w)
+            
+            @last_pos = new_pos
 
-            # echo1 effect_item.length
-
-            # for i in effect_item
-            #     if not (w = Widget.look_up(i))? then continue
-            #     echo1 w.selected
-            #     if w.selected == false then set_item_selected(w, true) 
         return
 
 
@@ -1291,8 +1281,9 @@ class Mouse_Select_Area_box
         @parent_element.removeEventListener("mouseup", @mouseup_event)
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
         @element.style.display = "none"
-        @last_effect_item.splice(0)
-        
+
+        @effect_item.splice(0)
+
         @last_point = evt
         @last_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
         echo1 "@last_pos:#{@last_pos.x} #{@last_pos.y}"
