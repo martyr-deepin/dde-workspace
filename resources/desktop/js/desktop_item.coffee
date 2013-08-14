@@ -97,7 +97,10 @@ class Item extends Widget
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
         el.appendChild(@item_name)
-
+        @item_name.addEventListener("contextmenu",(evt)=>
+            menu = []
+            @item_name.contextMenu = build_menu(menu)
+            )
         @item_update()
 
 
@@ -206,9 +209,8 @@ class Item extends Widget
         if @clicked_before == 1
             @clicked_before = 2
         else
-            if is_selected_multiple_items()
-                update_selected_stats(this, evt)
-            else
+            update_selected_stats(this, evt)
+            if !is_selected_multiple_items()
                 if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                     @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
                 else if @in_rename
@@ -333,7 +335,6 @@ class Item extends Widget
 
 
     item_update : =>
-        # echo "item_update"
         @set_icon()
 
         if @in_rename == false
@@ -365,7 +366,6 @@ class Item extends Widget
 
 
     item_rename : =>
-        # echo "item_rename"
         input_x = _ITEM_WIDTH_ * @_position.x;
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
         DCore.Desktop.set_position_input(input_x,input_y)
@@ -413,7 +413,6 @@ class Item extends Widget
 
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
-        # echo "on_item_rename_keydown"
 
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
@@ -443,8 +442,6 @@ class Item extends Widget
 
     on_item_rename_keypress : (evt) =>
         evt.stopPropagation()
-        # echo "on_item_rename_keypress"
-
         switch evt.keyCode
             when 13   # enter
                 evt.preventDefault()
@@ -462,8 +459,6 @@ class Item extends Widget
 
     on_item_rename_keyup : (evt) =>
         evt.stopPropagation()
-        # echo "on_item_rename_keyup"
-
         return
 
     on_item_rename_input : (evt) =>
@@ -527,7 +522,6 @@ class DesktopEntry extends Item
     do_dragend : (evt) ->
         evt.stopPropagation()
         evt.preventDefault()
-        # echo "desktopEntry do_dragend"
         item_dragend_handler(this, evt)
 
         return
@@ -535,8 +529,6 @@ class DesktopEntry extends Item
 
     do_drop : (evt) ->
         file = evt.dataTransfer.getData("Text")
-        # echo evt.dataTransfer
-        echo file
         if _IS_DND_INTERLNAL_(evt)
             if not @selected
                 evt.stopPropagation()
@@ -711,16 +703,14 @@ class RichDir extends DesktopEntry
             icon = src
         super(icon)
 
-
     do_click : (evt) ->
         evt.stopPropagation()
         if @clicked_before == 1
             @clicked_before = 2
             if @show_pop == false and evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
         else
-            if is_selected_multiple_items()
-                update_selected_stats(this, evt)
-            else
+            update_selected_stats(this, evt)
+            if !is_selected_multiple_items()
                 if @show_pop == false
                     if @in_rename
                         @item_complete_rename(true)
@@ -749,18 +739,14 @@ class RichDir extends DesktopEntry
 
 
     do_dragstart : (evt) ->
-        echo "RichDir do_dragstart"
         if @show_pop == true then @hide_pop_block()
         super
 
 
     do_drop : (evt) ->
-        # echo "RichDir do_drop"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
-            echo "_IS_DND_INTERLNAL_(evt)"
         else
-            echo "move"
             tmp_list = []
             for file in evt.dataTransfer.files
                 e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, ""))
@@ -771,7 +757,6 @@ class RichDir extends DesktopEntry
         return
 
     do_dragenter : (evt) ->
-        # echo "RichDir do_dragenter"
         super
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
@@ -781,7 +766,6 @@ class RichDir extends DesktopEntry
 
     do_dragover : (evt) ->
         super
-        # echo "RichDir do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -790,7 +774,6 @@ class RichDir extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-        # echo "RichDir do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -974,7 +957,7 @@ class RichDir extends DesktopEntry
             # s.src = DCore.DEntry.get_icon(e)
             if (s.src = DCore.DEntry.get_icon(e)) == null 
                 s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
-                echo "richdir child get_icon is null" + s.src
+                echo "warning: richdir child get_icon is null:" + s.src
             sb.appendChild(s)
             s = document.createElement("div")
             s.className = "item_name"
@@ -1191,7 +1174,6 @@ class Application extends DesktopEntry
 
     do_drop : (evt) ->
         super
-        # echo "application do_drop"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             tmp_list = []
@@ -1227,7 +1209,6 @@ class Application extends DesktopEntry
 
     do_dragenter : (evt) ->
         super
-        # echo "application do_dragenter"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1250,7 +1231,6 @@ class Application extends DesktopEntry
 
     do_dragover : (evt) ->
         super
-        # echo "application do_dragover"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.dataTransfer.dropEffect = "move"
@@ -1273,7 +1253,6 @@ class Application extends DesktopEntry
 
     do_dragleave : (evt) ->
         super
-        # echo "application do_dragleave"
         if _IS_DND_INTERLNAL_(evt) and @selected
         else
             evt.preventDefault()
@@ -1404,7 +1383,6 @@ class ComputerVDir extends DesktopEntry
 
 
     do_itemselected : (evt) ->
-        echo "do_itemselected"
         switch evt.id
             when 1
                 @item_exec()
