@@ -482,6 +482,7 @@ menu_create_templates = (id) ->
             for i in [0...templates.length] by 1
                 if i == id_num
                     if (DCore.DEntry.create_templates(templates[i],name_add_before))
+                        echo "create_templates finish!"
     return
 # all DND event handlers
 init_grid_drop = ->
@@ -1182,22 +1183,14 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
-
-        if compare_pos_top_left(@last_pos, new_pos) != 0
-            if compare_pos_top_left(@start_pos, new_pos) < 0
-                pos_a = new_pos
-                pos_b = @start_pos
+        
+        for i in @total_item
+            if not (w = Widget.look_up(i))? then continue
+            item_pos = w.get_pos()
+            if compare_pos_rect(new_pos, @start_pos, item_pos) == true
+                if w.selected == false then set_item_selected(w) 
             else
-                pos_a = @start_pos
-                pos_b = new_pos
-
-            for i in @total_item
-                if not (w = Widget.look_up(i))? then continue
-                item_pos = w.get_pos()
-                if compare_pos_rect(pos_a, pos_b, item_pos) == true
-                    if w.selected == false then set_item_selected(w) 
-                else
-                    if w.selected == true then cancel_item_selected(w)
+                if w.selected == true then cancel_item_selected(w)
             
         return
 
