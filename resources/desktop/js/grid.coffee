@@ -743,12 +743,13 @@ cancel_all_selected_stats = () ->
 
 
 update_selected_stats = (w, evt) ->
-    echo "update_selected_stats"
+    echo1 "update_selected_stats"
     if evt.ctrlKey
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
 
     else if evt.shiftKey
+        echo1 "shiftKey"
         if selected_item.length > 1
             last_one_id = selected_item[selected_item.length - 1]
             selected_item.splice(selected_item.length - 1, 1)
@@ -762,6 +763,7 @@ update_selected_stats = (w, evt) ->
             ret = compare_pos_top_left(start_pos, end_pos)
             if ret < 0
                 for w_id in speical_item.concat(all_item)
+                    if not (val = Widget.look_up(w_id))? then continue
                     i_pos = Widget.look_up(w_id).get_pos()
                     if compare_pos_top_left(end_pos, i_pos) >= 0 and compare_pos_top_left(start_pos, i_pos) < 0
                         set_item_selected(val, true, true)
@@ -769,6 +771,7 @@ update_selected_stats = (w, evt) ->
                 cancel_item_selected(selected_item[0])
             else
                 for w_id in speical_item.concat(all_item)
+                    if not (val = Widget.look_up(w_id))? then continue
                     i_pos = Widget.look_up(w_id).get_pos()
                     if compare_pos_top_left(start_pos, i_pos) > 0 and compare_pos_top_left(end_pos, i_pos) <= 0
                         set_item_selected(val, true, true)
@@ -777,6 +780,7 @@ update_selected_stats = (w, evt) ->
             set_item_selected(w)
 
     else
+        echo1 "else"
         n = selected_item.indexOf(w.get_id())
         if n < 0
             cancel_all_selected_stats()
@@ -1229,7 +1233,7 @@ class Mouse_Select_Area_box
 
 
     mousemove_event : (evt) =>
-        # echo1 "mousemove_event"
+        echo1 "mousemove_event"
         evt.stopPropagation()
         evt.preventDefault()
         sl = Math.min(Math.max(Math.min(@start_point.clientX, evt.clientX), s_offset_x), s_offset_x + s_width)

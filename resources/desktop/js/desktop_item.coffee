@@ -210,9 +210,8 @@ class Item extends Widget
         if @clicked_before == 1
             @clicked_before = 2
         else
-            if is_selected_multiple_items()
-                update_selected_stats(this, evt)
-            else
+            update_selected_stats(this, evt)
+            if !is_selected_multiple_items()
                 if @has_focus and evt.srcElement.className == "item_name" and @delay_rename_tid == -1
                     @delay_rename_tid = setTimeout(@item_rename, _RENAME_TIME_DELAY_)
                 else if @in_rename
@@ -719,16 +718,14 @@ class RichDir extends DesktopEntry
             icon = src
         super(icon)
 
-
     do_click : (evt) ->
         evt.stopPropagation()
         if @clicked_before == 1
             @clicked_before = 2
             if @show_pop == false and evt.shiftKey == false and evt.ctrlKey == false then @show_pop_block()
         else
-            if is_selected_multiple_items()
-                update_selected_stats(this, evt)
-            else
+            update_selected_stats(this, evt)
+            if !is_selected_multiple_items()
                 if @show_pop == false
                     if @in_rename
                         @item_complete_rename(true)
