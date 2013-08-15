@@ -33,4 +33,5 @@ ArrayContainer dentry_get_templates_files(void);
 gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt);
 gboolean dentry_create_templates(GFile* src, char* name_add_before);
 char* dentry_get_rich_dir_group_name(ArrayContainer const _fs);
+void do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_flag);
 #endif
