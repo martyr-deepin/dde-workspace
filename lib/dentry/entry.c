@@ -1133,7 +1133,7 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     g_debug("templates dir:--%s--",TEMPLATES_DIR());
-    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if(is_exist)
     {
         if(g_str_equal(TEMPLATES_DIR(),HOME_DIR()))
@@ -1275,6 +1275,9 @@ char* _get_group_name_from_category_field(ArrayContainer const fs)
     char** categories = NULL;
     char const* origin_categories =
         g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[0]);
+
+    if (origin_categories == NULL)
+        return group_name;
 
     if (origin_categories[0] != '\0') {
         categories = g_strsplit(origin_categories, ";", 0);
