@@ -749,6 +749,7 @@ register_account_service_background_path (const char* current_picture)
                                                 "org.freedesktop.Accounts",
                                                 NULL,
                                                 &error);
+        g_dbus_connection_set_exit_on_close(g_dbus_proxy_get_connection(_proxy), FALSE);
         if (error != NULL)
         {
             g_debug ("connect org.freedesktop.Accounts failed");
@@ -789,6 +790,7 @@ register_account_service_background_path (const char* current_picture)
                                                        "org.freedesktop.Accounts.User",
                                                        NULL,
                                                        &error);
+        g_dbus_connection_set_exit_on_close(g_dbus_proxy_get_connection(AccountsProxy), FALSE);
         if (error != NULL)
         {
             g_debug ("connect to %s failed", object_path);
