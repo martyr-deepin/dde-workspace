@@ -1165,7 +1165,6 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_debug("choose templates name :---%s---",basename);
 
     GFile* dir = g_file_new_for_path(DESKTOP_DIR());
-
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
     for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
@@ -1176,24 +1175,21 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
 
     g_object_unref(dir);
-
     g_debug("choose templates new name :---%s---",name);
 
     //we should check @src type  to use diff method.
     GFileType type = g_file_query_file_type (src, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_DIRECTORY)
     {
-    result = g_file_make_directory (child, NULL, NULL);
-#ifndef NDEBUG
-    g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
-#endif
+        result = g_file_make_directory (child, NULL, NULL);
+        g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
     }
     else
     {
         result = g_file_copy(src, child, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
-#ifndef NDEBUG
-    g_debug ("create_templates: new file : g_file_copy : %s", name);
-#endif
+        char* uri = dentry_get_uri(child);
+        g_debug ("create_templates: new file : %s", uri);
+        g_free(uri);
     }
 
     return result;
