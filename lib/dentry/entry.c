@@ -812,8 +812,7 @@ gboolean dentry_move(ArrayContainer fs, GFile* dest, gboolean prompt)
     return retval;
 }
 
-static
-void _do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_flag)
+void do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_flag)
 {
     GError* error = NULL;
     if (!g_file_copy(src, dest, copy_flag, NULL, NULL, NULL, &error)) {
@@ -841,7 +840,7 @@ void _do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_f
                 GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
                 g_object_unref(dest_parent);
 
-                _do_dereference_symlink_copy(src, new_dest, copy_flag);
+                do_dereference_symlink_copy(src, new_dest, copy_flag);
                 g_object_unref(new_dest);
 
                 break;
@@ -873,7 +872,7 @@ void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
         GFile* dest = g_file_get_child(dest_dir, src_basename);
         g_free(src_basename);
 
-        _do_dereference_symlink_copy(_srcs[i], dest, G_FILE_COPY_NONE);
+        do_dereference_symlink_copy(_srcs[i], dest, G_FILE_COPY_NONE);
         char* path = g_file_get_path(dest);
         g_chmod(path, S_IRWXU | S_IROTH | S_IRGRP);
         g_free(path);
@@ -1081,7 +1080,7 @@ void _bad_icon_copy(gpointer data, gpointer bad_icon_dir)
     GFile* dest = g_file_get_child(bad_icon_dir, dest_basename);
     g_free(dest_basename);
 
-    _do_dereference_symlink_copy(data, dest, G_FILE_COPY_OVERWRITE);
+    do_dereference_symlink_copy(data, dest, G_FILE_COPY_OVERWRITE);
 
     g_object_unref(dest);
 }
@@ -1133,7 +1132,7 @@ ArrayContainer dentry_get_templates_files(void)
 {
     ArrayContainer ac;
     g_debug("templates dir:--%s--",TEMPLATES_DIR());
-    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS); 
+    gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if(is_exist)
     {
         if(g_str_equal(TEMPLATES_DIR(),HOME_DIR()))
@@ -1271,6 +1270,9 @@ char* _get_group_name_from_category_field(ArrayContainer const fs)
     char** categories = NULL;
     char const* origin_categories =
         g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[0]);
+
+    if (origin_categories == NULL)
+        return group_name;
 
     if (origin_categories[0] != '\0') {
         categories = g_strsplit(origin_categories, ";", 0);
