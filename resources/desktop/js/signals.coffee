@@ -129,5 +129,6 @@ do_workarea_changed = (allo) ->
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
     init_occupy_table()
     place_desktop_items()
+    place_all_widgets()
     return
 
