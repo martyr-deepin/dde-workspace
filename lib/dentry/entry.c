@@ -1215,12 +1215,25 @@ gboolean _is_valid_category(char const* category)
     gboolean is_valid = TRUE;
     gsize size = 0;
     char** filter = g_key_file_get_string_list(filter_file, "Main", "filter", &size, NULL);
-    for (int i = 0; filter[i] != NULL; ++i) {
-        if (g_str_equal(category, filter[i])) {
+
+    for (int i = 0; i < size; ++i) {
+        char* lowcase_filter = g_utf8_casefold(filter[i], -1);
+        char* lowcase_category = g_utf8_casefold(category, -1);
+
+        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, g_str_equal(lowcase_category, lowcase_filter));
+
+        if (g_str_equal(lowcase_category, lowcase_filter)) {
             is_valid = FALSE;
+            g_free(lowcase_category);
+            g_free(lowcase_filter);
             break;
         }
+
+        g_free(lowcase_category);
+        g_free(lowcase_filter);
     }
+
+    g_strfreev(filter);
     g_key_file_unref(filter_file);
 #undef CATEGORY_FILTER
 
@@ -1244,15 +1257,22 @@ gboolean _is_generic_category(char const* category)
     gsize size = 0;
     char** filter = g_key_file_get_string_list(filter_file, "Aux", "filter", &size, NULL);
     for (int i = 0; filter[i] != NULL; ++i) {
-        char* low_case_catgory = g_utf8_casefold(category, -1);
-        char* low_case_filter = g_utf8_casefold(filter[i], -1);
-        if (g_str_equal(low_case_catgory, low_case_filter)) {
+        char* lowcase_category = g_utf8_casefold(category, -1);
+        char* lowcase_filter = g_utf8_casefold(filter[i], -1);
+
+        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, g_str_equal(lowcase_category, lowcase_filter));
+        if (g_str_equal(lowcase_category, lowcase_filter)) {
             is_generic = TRUE;
+            g_free(lowcase_category);
+            g_free(lowcase_filter);
             break;
         }
-        g_free(low_case_catgory);
-        g_free(low_case_filter);
+
+        g_free(lowcase_category);
+        g_free(lowcase_filter);
     }
+
+    g_strfreev(filter);
     g_key_file_unref(filter_file);
 #undef CATEGORY_FILTER
 
@@ -1261,72 +1281,130 @@ gboolean _is_generic_category(char const* category)
 
 
 PRIVATE
-char* _get_group_name_from_category_field(ArrayContainer const fs)
+char** _get_desktop_file_category(GDesktopAppInfo* f)
 {
-    g_assert(fs.num == 2);
-
-    char* group_name = g_strdup("App Group");
-
-    GHashTable* table = g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
-                                              NULL);
-
-    // Get the valid categories from one.
-    char** categories = NULL;
-    char const* origin_categories =
-        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[0]);
+    const char* origin_categories = g_desktop_app_info_get_categories(f);
 
     if (origin_categories == NULL)
-        return group_name;
+        return NULL;
 
-    if (origin_categories[0] != '\0') {
-        categories = g_strsplit(origin_categories, ";", 0);
-        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'; ++i) {
-            if (_is_valid_category(categories[i]))
-                g_hash_table_add(table, g_utf8_casefold(categories[i], -1));
+    if (origin_categories[0] == '\0')
+        return NULL;
+
+    return g_strsplit(origin_categories, ";", 0);
+}
+
+
+PRIVATE
+GHashTable* _count_categories(ArrayContainer const fs)
+{
+    GHashTable* categories_count = g_hash_table_new_full(g_str_hash,
+                                                         g_str_equal,
+                                                         g_free, NULL);
+
+    for (int i = 0; i < fs.num; ++i) {
+        GHashTable* set = g_hash_table_new_full(g_str_hash, g_str_equal,
+                                                g_free, NULL);
+        char** categories =
+            _get_desktop_file_category(((GDesktopAppInfo**)fs.data)[i]);
+
+        g_debug("[_count_categories] app: %s",
+                g_desktop_app_info_get_filename(((GDesktopAppInfo**)fs.data)[i]));
+
+        if (categories == NULL) {
+            g_hash_table_unref(set);
+            g_hash_table_unref(categories_count);
+            return NULL;
         }
 
-        g_strfreev(categories);
-    }
+        for (int j = 0; categories[j] != NULL && categories[j][0] != '\0'; ++j) {
+            char* low_case_category = g_utf8_casefold(categories[j], -1);
 
-    // Get the valid categories from the other and get the common categories.
-    origin_categories =
-        g_desktop_app_info_get_categories(((GDesktopAppInfo**)fs.data)[1]);
+            if (g_hash_table_contains(set, low_case_category)) {
+                g_free(low_case_category);
+                continue;
+            }
 
-    GPtrArray* common_categories = g_ptr_array_new_with_free_func(g_free);
+            // Do not free low_case_category explicitly, use g_hash_table_unref
+            // to free low_case_category, so that do not duplicate it here.
+            g_hash_table_add(set, low_case_category);
 
-    if (origin_categories[0] != '\0') {
-        categories = g_strsplit(origin_categories, ";", 0);
-        for (int i = 0; categories[i] != NULL && categories[i][0] != '\0'; ++i) {
-            if (_is_valid_category(categories[i])) {
-                char* low_case = g_utf8_casefold(categories[i], -1);
+            if (_is_valid_category(low_case_category)) {
+                g_debug("[_count_categories] === insert category: %s (lowcase:"
+                    " %s)", categories[j], low_case_category);
 
-                if (g_hash_table_contains(table, low_case))
-                    g_ptr_array_add(common_categories, low_case);
-                else
-                    g_free(low_case);
+                int value =
+                    GPOINTER_TO_INT(g_hash_table_lookup(categories_count,
+                                                        low_case_category));
+                g_hash_table_insert(categories_count,
+                                    g_strdup(low_case_category),
+                                    GINT_TO_POINTER(value + 1));
             }
         }
 
         g_strfreev(categories);
+        g_hash_table_unref(set);
+        g_debug("[_count_categories] ===================");
     }
 
-    g_hash_table_unref(table);
+    return categories_count;
+}
 
-    // Remove the useless categories.
-    if (common_categories->len > 1) {
-        for (int i = 0; i < common_categories->len; ++i) {
-            if (_is_generic_category(g_ptr_array_index(common_categories, i))
-                && common_categories->len > 1)
-                g_ptr_array_remove_index(common_categories, i);
+
+PRIVATE
+void _get_cadidate_categories(gpointer key, gpointer value, gpointer user_data)
+{
+    ArrayContainer* fs = ((void**)user_data)[0];
+    GPtrArray* candidate_categories = ((void**)user_data)[1];
+
+    if (GPOINTER_TO_INT(value) == fs->num) {
+        if (candidate_categories->len > 1) {
+            if (!_is_generic_category(key))
+                g_ptr_array_add(candidate_categories, g_strdup(key));
+        } else {
+            g_ptr_array_add(candidate_categories, g_strdup(key));
+        }
+    }
+}
+
+
+PRIVATE
+char* _get_group_name_from_category_field(ArrayContainer const fs)
+{
+    char* group_name = g_strdup("App Group");
+
+    GHashTable* categories_count = _count_categories(fs);
+
+    if (categories_count == NULL)
+        return group_name;
+
+    GPtrArray* candidate_categories = g_ptr_array_new_with_free_func(g_free);
+    candidate_categories->len = 0;
+
+    void* user_data[] = { (ArrayContainer*)(&fs), candidate_categories };
+    g_hash_table_foreach(categories_count, _get_cadidate_categories, user_data);
+
+    if (candidate_categories->len == 0)
+        goto out;
+
+    char* candidate = NULL;
+    for (int i = 0; candidate_categories->len > 1
+         && i < candidate_categories->len; ++i) {
+        if (!_is_generic_category(g_ptr_array_index(candidate_categories, i))) {
+            g_free(candidate);
+            candidate = g_strdup(g_ptr_array_index(candidate_categories, i));
         }
     }
 
-    if (common_categories->len > 0) {
-        g_free(group_name);
-        group_name = g_strdup(g_ptr_array_index(common_categories, 0));
-    }
+    g_free(group_name);
+    if (candidate == NULL)  // all candidate categories is generic category
+        group_name = g_strdup(g_ptr_array_index(candidate_categories, 0));
+    else
+        group_name = candidate;
 
-    g_ptr_array_unref(common_categories);
+out:
+    g_ptr_array_unref(candidate_categories);
+    g_hash_table_unref(categories_count);
 
     return group_name;
 }
@@ -1367,6 +1445,9 @@ char* _get_category(GDesktopAppInfo* app)
     char* category = _lookup(basename);
     g_free(basename);
 
+    if (category == NULL || category[0] == '\0')
+        return NULL;
+
     return category;
 }
 
@@ -1374,19 +1455,32 @@ char* _get_category(GDesktopAppInfo* app)
 PRIVATE
 char* _get_group_name_from_software_center(ArrayContainer const fs)
 {
-    g_assert(fs.num == 2);
+    g_assert(fs.num > 1);
 
-    char* category = _get_category(((GDesktopAppInfo**)fs.data)[0]);
-    char* another_category = _get_category(((GDesktopAppInfo**)fs.data)[1]);
+    GDesktopAppInfo** datas = (GDesktopAppInfo**)fs.data;
+    char* category = _get_category(datas[0]);
+    char* another_category = NULL;
 
-    if (category && another_category && g_str_equal(category, another_category)) {
+    if (category == NULL)
+        goto errorout;
+
+    for (int i = 1; i < fs.num; ++i) {
         g_free(another_category);
-        return category;
+        another_category = _get_category(datas[i]);
+
+        if (another_category == NULL)
+            goto errorout;
+
+        if (!g_str_equal(category, another_category))
+            goto errorout;
     }
 
     g_free(another_category);
-    g_free(category);
+    return category;
 
+errorout:
+    g_free(category);
+    g_free(another_category);
     return NULL;
 }
 
