@@ -917,15 +917,6 @@ initial_setup (GSettings *settings)
     static gboolean is_initialized = FALSE;
     if (is_initialized == FALSE) {
         is_initialized = TRUE;
-        picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
-        picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
-        picture_num = 0;
-        picture_index = 0;
-
-        gchar* bg_image_uri = g_settings_get_string (settings, BG_PICTURE_URIS);
-        parse_picture_uris (bg_image_uri);
-        free (bg_image_uri);
-
         gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
         gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
         gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
@@ -1013,44 +1004,56 @@ expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 DEEPIN_EXPORT void
 bg_util_init (GdkWindow* bg_window)
 {
-    background_window = bg_window;
+    static gboolean __init__ = FALSE;
+    if (__init__ == FALSE) {
+        __init__ = TRUE;
+        Settings = g_settings_new (BG_SCHEMA_ID);
+        picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
+        picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
+        picture_num = 0;
+        picture_index = 0;
 
-    display = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+        gchar* bg_image_uri = g_settings_get_string (Settings, BG_PICTURE_URIS);
+        parse_picture_uris (bg_image_uri);
+        free (bg_image_uri);
 
-    bg1_atom = gdk_x11_get_xatom_by_name(bg_props[0]);
-    //bg2_atom = gdk_x11_get_xatom_by_name(bg_props[1]);
-    pixmap_atom = gdk_x11_get_xatom_by_name("PIXMAP");
+        background_window = bg_window;
 
-    root = DefaultRootWindow(display);
-    default_screen = DefaultScreen(display);
-    root_depth = DefaultDepth(display, default_screen);
-    root_visual = DefaultVisual(display, default_screen);
-    root_width = DisplayWidth(display, default_screen);
-    root_height = DisplayHeight(display, default_screen);
+        display = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
-    gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
+        bg1_atom = gdk_x11_get_xatom_by_name(bg_props[0]);
+        //bg2_atom = gdk_x11_get_xatom_by_name(bg_props[1]);
+        pixmap_atom = gdk_x11_get_xatom_by_name("PIXMAP");
 
-    gdk_screen = gdk_screen_get_default();
+        root = DefaultRootWindow(display);
+        default_screen = DefaultScreen(display);
+        root_depth = DefaultDepth(display, default_screen);
+        root_visual = DefaultVisual(display, default_screen);
+        root_width = DisplayWidth(display, default_screen);
+        root_height = DisplayHeight(display, default_screen);
 
-    Settings = g_settings_new (BG_SCHEMA_ID);
-    g_signal_connect (Settings, "changed::picture-uris",
-                      G_CALLBACK (bg_settings_picture_uris_changed), NULL);
-    g_signal_connect (Settings, "changed::picture-uri",
-                      G_CALLBACK (bg_settings_picture_uri_changed), NULL);
-    g_signal_connect (Settings, "changed::background-duration",
-                      G_CALLBACK (bg_settings_bg_duration_changed), NULL);
-    g_signal_connect (Settings, "changed::cross-fade-manual-interval",
-                      G_CALLBACK (bg_settings_xfade_manual_interval_changed), NULL);
-    g_signal_connect (Settings, "changed::cross-fade-auto-interval",
-                      G_CALLBACK (bg_settings_xfade_auto_interval_changed), NULL);
-    g_signal_connect (Settings, "changed::cross-fade-auto-mode",
-                      G_CALLBACK (bg_settings_xfade_auto_mode_changed), NULL);
-    g_signal_connect (Settings, "changed::draw-mode",
-                      G_CALLBACK (bg_settings_draw_mode_changed), NULL);
-    //serialize access to current_picture.
-    g_signal_connect (Settings, "changed::current-picture",
-                      G_CALLBACK (bg_settings_current_picture_changed), NULL);
+        gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
 
-    gdk_window_add_filter (background_window, expose_cb, background_window);
-    //initial_setup (Settings);
+        gdk_screen = gdk_screen_get_default();
+
+        g_signal_connect (Settings, "changed::picture-uris",
+                G_CALLBACK (bg_settings_picture_uris_changed), NULL);
+        g_signal_connect (Settings, "changed::picture-uri",
+                G_CALLBACK (bg_settings_picture_uri_changed), NULL);
+        g_signal_connect (Settings, "changed::background-duration",
+                G_CALLBACK (bg_settings_bg_duration_changed), NULL);
+        g_signal_connect (Settings, "changed::cross-fade-manual-interval",
+                G_CALLBACK (bg_settings_xfade_manual_interval_changed), NULL);
+        g_signal_connect (Settings, "changed::cross-fade-auto-interval",
+                G_CALLBACK (bg_settings_xfade_auto_interval_changed), NULL);
+        g_signal_connect (Settings, "changed::cross-fade-auto-mode",
+                G_CALLBACK (bg_settings_xfade_auto_mode_changed), NULL);
+        g_signal_connect (Settings, "changed::draw-mode",
+                G_CALLBACK (bg_settings_draw_mode_changed), NULL);
+        //serialize access to current_picture.
+        g_signal_connect (Settings, "changed::current-picture",
+                G_CALLBACK (bg_settings_current_picture_changed), NULL);
+
+        gdk_window_add_filter (background_window, expose_cb, background_window);
+    }
 }
