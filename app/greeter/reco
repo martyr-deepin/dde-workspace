@@ -34,11 +34,11 @@ api = API(API_KEY, API_SCRET, timeout=10, max_retries=3)
 try:
     result = api.recognition.recognize(img=File(TARGET_IMAGE), group_name=GROUP_NAME)
 except:
+    print "has no target image"
     sys.exit(1)
 
 try:
     print result['face'][0]['candidate'][0]['person_name']
 except:
-    # print_result('[Error]: ', result)
-    pass
+    print_result('[Error]: ', result)
 

@@ -91,8 +91,8 @@ class UserInfo extends Widget
             # create this image when starting scanning
             # @img = create_img('', 'images/scan-line.png', @scanner)
             @canvas = create_element("canvas", "UserImg", @userbase)
-            @canvas.setAttribute('width', '154px')
-            @canvas.setAttribute('height', "154px")
+            @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
+            @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
             @camera_flag = create_img('camera', 'images/camera.png', @userbase)
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
@@ -117,9 +117,8 @@ class UserInfo extends Widget
 
     draw_camera:->
         if @canvas?
-            setInterval(=>
-                DCore.Lock.draw_camera(@canvas, @canvas.width, @canvas.height)
-            , 100)
+            echo 'draw camera'
+            DCore.Lock.draw_camera(@canvas)
 
     focus: ->
         _current_user?.blur()
@@ -255,9 +254,7 @@ DCore.signal_connect("unlock", (msg)->
 )
 
 DCore.signal_connect("draw", ->
-    setTimeout(->
-        u.draw_camera()
-    , 300)
+    u.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->

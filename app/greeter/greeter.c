@@ -40,7 +40,6 @@
 #include "user.h"
 #include "session.h"
 #include "settings.h"
-#include "connection.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -482,6 +481,7 @@ show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType t
 static void
 authentication_complete_cb(LightDMGreeter *greeter)
 {
+    /* GDBusProxy* proxy = ; */
     DBG("%s", "auth complete cb");
 
     if(cancelling){
@@ -617,7 +617,6 @@ int main(int argc, char **argv)
     gtk_widget_show_all(container);
 
  //   monitor_resource_file("greeter", webview);
-    g_timeout_add(30, connect_signal, NULL);
     gtk_main();
     /* int kill(int, int); */
     /* kill(0, 9); */

@@ -42,6 +42,7 @@
 #include "gs-grab.h"
 #include "settings.h"
 #include "connection.h"
+#include "camera.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -65,14 +66,8 @@ void lock_webview_ok()
 {
     static gboolean inited = FALSE;
     if (!inited) {
-        if (lock_use_face_recognition_login()) {
-            // CAMERA_WINDOW is defined in CMakeLists.txt
-            char* child_argv[] = { CAMERA_WINDOW, NULL };
-            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , NULL)) {
-                js_post_message_simply("draw", NULL);
-                g_timeout_add(30, connect_signal, NULL);
-            }
-        }
+        if (lock_use_face_recognition_login())
+            js_post_message_simply("draw", NULL);
 
         inited = TRUE;
     }
@@ -555,6 +550,9 @@ int main(int argc, char **argv)
     gdk_window_stick(gdkwindow);
 #endif
 
+    init_camera(argc, argv);
     gtk_main();
+    destroy_camera();
+
     return 0;
 }

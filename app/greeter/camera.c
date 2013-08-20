@@ -3,18 +3,27 @@
 #include <time.h>
 #include <signal.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-#include <gtk/gtk.h>
 #include <glib.h>
 #include <gio/gio.h>
-#include "opencv/cv.h"
-#include "opencv/highgui.h"
+#include <opencv/cv.h>
+#include <cairo.h>
+#include <gst/gst.h>
+
+#include "dwebview.h"
+#include "jsextension.h"
 #include "camera.h"
 
 
 #define CASCADE_NAME DATA_DIR"/haaracscades/haarcascade_frontalface_alt.xml"
 #define ESC_KEY 27
-#define DELAY_TIME 2.0
+#define DELAY_TIME 3.0
+#define CAMERA_WIDTH 154
+#define CAMERA_HEIGHT 154
+#define STR_CAMERA_WIDTH "154"
+#define STR_CAMERA_HEIGHT "154"
 
 
 enum {
@@ -23,7 +32,7 @@ enum {
     RECOGNIZED
 };
 
-static CvCapture* capture = NULL;
+
 static IplImage* small_img = NULL;
 static IplImage* gray = NULL;
 
@@ -31,58 +40,64 @@ static IplImage* frame = NULL;
 static CvHaarClassifierCascade* cascade = NULL;
 static CvMemStorage* storage = NULL;
 
-static char* username = NULL;
+static GstElement *pipeline = NULL;
+static GstElement *img_sink = NULL;
+
 static int flag = 0;
 static time_t start;
 static time_t output = 0;
 static double diff_time = 0;
 static double scale = 1.3;
 
-static GMainLoop* main_loop = NULL;
+
+static void do_quit();
+static void handler(int signum);
+void draw_to_canvas(GdkPixbuf* pixbuf, cairo_t* cr);
+static char* reco();
+static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
 
 
-void do_quit();
-void handler(int signum);
-char* reco();
-gboolean _camera(gpointer data);
-
-
-int main(int argc, char *argv[])
+void init_camera(int argc, char* argv[])
 {
-    main_loop = g_main_loop_new(NULL, TRUE);
+    gst_init (&argc, &argv);
 
-    signal(9, handler);
+    const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
+        "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
+        " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
 
-    capture = cvCaptureFromCAM(-1);
+    pipeline = gst_parse_launch(camera_launch, NULL);
+    g_warning("%d", pipeline == NULL);
+    img_sink = gst_bin_get_by_name(GST_BIN(pipeline), "imgSink");
 
-    if (capture == NULL)
-        return 1;
-    flag = NOT_START_RECOGNIZE;
-    cvNamedWindow(CAMERA, 0);
-    cascade = (CvHaarClassifierCascade*)cvLoad(CASCADE_NAME, 0, 0, 0);
-    storage = cvCreateMemStorage(0);
+    g_object_set(G_OBJECT(img_sink), "signal-handoffs", TRUE, NULL);
+    gst_element_set_state(pipeline, GST_STATE_PLAYING);
+}
 
-    time(&start);
 
-    g_timeout_add(40, _camera, NULL);
+void destroy_camera()
+{
+    gst_element_set_state(pipeline, GST_STATE_NULL);
+    gst_object_unref(img_sink);
+    gst_object_unref(GST_OBJECT(pipeline));
+}
 
-    g_main_loop_run(main_loop);
 
-    do_quit();
+gboolean has_camera()
+{
+    // FIXME: not suit for multi cameras.
+    int fd = open("/dev/video0", O_RDONLY);
+    if (fd == -1)
+        return FALSE;
 
-    return 0;
+    close(fd);
+    return TRUE;
 }
 
 
 void do_quit()
 {
-    /* if (username != NULL) */
-    /*     dbus_remove_from_nopwd_login_group(username); */
-    if (main_loop)
-        g_main_loop_unref(main_loop);
-
-    if (capture)
-        cvReleaseCapture(&capture);
+    if (frame)
+        cvReleaseImageHeader(&frame);
 
     if (small_img)
         cvReleaseImage(&small_img);
@@ -92,42 +107,77 @@ void do_quit()
 }
 
 
-void handler(int signum)
-{
-    if (signum == 9)
-        do_quit();
-}
-
-
 char* reco()
 {
     int exit_code = 1;
-    char* args[] = {"/usr/bin/python", "/home/liliqiang/dde/app/greeter/reco", NULL};
+
+    // DATA_DIR defined in CMakeLists.txt
+    char* args[] = {"/usr/bin/python", DATA_DIR"/../app/greeter/reco", NULL};
     GError* err = NULL;
+    char* username = NULL;
     g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &username, NULL, &exit_code,
                  &err);
     if (err != NULL) {
         g_warning("[reco] %s", err->message);
         g_error_free(err);
     }
-    return username;
+
+    if (g_strcmp0(username, g_get_user_name()) == 0)
+        return username;
+
+    g_free(username);
+    return NULL;
 }
 
 
-gboolean _camera(gpointer data)
+static
+gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 {
-    frame = cvQueryFrame(capture);
-    time(&output);
+    g_warning("_frame_handler");
+    if (frame == NULL)
+        frame = cvCreateImageHeader(cvSize(640, 480), IPL_DEPTH_8U, 3);
 
-    if (flag == NOT_START_RECOGNIZE)
-        diff_time = difftime(output, start);
+    frame->imageData = (char*)GST_BUFFER_DATA(buffer);
+    /* detect(frame); */
+    guchar* source_data = NULL;
+    if (0)
+        source_data = frame->imageData;
+    else
+        source_data = (guchar*)GST_BUFFER_DATA(buffer);
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
+                                                 GDK_COLORSPACE_RGB,  // color space
+                                                 FALSE,  // has alpha
+                                                 24,  // bits per sample
+                                                 CAMERA_WIDTH,  // width
+                                                 CAMERA_HEIGHT,  // height
+                                                 CAMERA_WIDTH,  // row stride
+                                                 NULL,  // destroy function
+                                                 NULL  // destroy function data
+                                                 );
+    draw_to_canvas(pixbuf, (cairo_t*)data);
+    g_object_unref(pixbuf);
 
-    if (flag != NOT_START_RECOGNIZE || diff_time > DELAY_TIME) {
-        if (flag == NOT_START_RECOGNIZE) {
-            flag = START_RECOGNIZE;
-        }
-    }
+    return TRUE;
+}
 
+
+void draw_to_canvas(GdkPixbuf* pixbuf, cairo_t* cr)
+{
+    g_warning("draw_to_canvas");
+    cairo_save(cr);
+
+    gdk_cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+
+    cairo_paint(cr);
+    cairo_restore(cr);
+
+    canvas_custom_draw_did(cr, NULL);
+}
+
+
+gboolean detect(IplImage* frame)
+{
+    gboolean has_face = FALSE;
     gray = cvCreateImage(cvSize(frame->width, frame->height), 8, 1);
     small_img = cvCreateImage(cvSize(cvRound(frame->width/scale),
                                      cvRound(frame->height/scale)),
@@ -138,14 +188,16 @@ gboolean _camera(gpointer data)
 
     cvClearMemStorage(storage);
     CvSeq* objects = NULL;
-    objects = cvHaarDetectObjects(small_img, cascade, storage, scale,
-                                  3, 0
-                                  | CV_HAAR_FIND_BIGGEST_OBJECT
-                                  , cvSize(0, 0), cvSize(0, 0));
+    /* objects = cvHaarDetectObjects(small_img, cascade, storage, scale, */
+    /*                               3, 0 */
+    /*                               | CV_HAAR_FIND_BIGGEST_OBJECT */
+    /*                               , cvSize(0, 0), cvSize(0, 0)); */
 
     if (objects && objects->total > 0) {
-        if (flag == START_RECOGNIZE)
-            cvSaveImage("/tmp/deepin_user_face.png", frame, NULL);
+        has_face = TRUE;
+
+        /* if (flag == START_RECOGNIZE) */
+        /*     cvSaveImage("/tmp/deepin_user_face.png", frame, NULL); */
 
         for (int i = 0; i < objects->total; ++i) {
             CvRect* r = (CvRect*)cvGetSeqElem(objects, i);
@@ -155,36 +207,43 @@ gboolean _camera(gpointer data)
         }
     }
 
-    cvShowImage(CAMERA, frame);
     cvReleaseImage(&gray);
     cvReleaseImage(&small_img);
 
-    /* if ((cvWaitKey(10) & 0xff) == ESC_KEY) */
-    /*     do_quit(); */
-
-    if (flag == START_RECOGNIZE) {
-        /* g_warning("start animation"); */
-        /* system("dbus-send /com/deepin/dde/lock com.deepin.dde.lock.StartAnimation"); */
-
-        /* if (0 == system("touch /tmp/start-animation")) */
-        /*     g_warning("emit signal finish"); */
+    return has_face;
+}
 
 
-        // stop animation and login
-        flag = NOT_START_RECOGNIZE;
-        reco();
-
-        // TODO: stop animation
-        /* system("touch /tmp/stop-animation"); */
-        if (username == NULL) {
-            time(&start);
-        } else {
-            flag = RECOGNIZED;
-            g_warning("user name: %s", username);
-            // TODO: start login
-            system("touch /tmp/start-login");
-        }
+void _draw(JSValueRef canvas, JSData* data)
+{
+    g_warning("_draw");
+    if (JSValueIsNull(data->ctx, canvas)) {
+        g_debug("draw with null canvas!");
+        return;
     }
 
-    return TRUE;
+    g_warning("get cairo from canvas");
+    cairo_t* cr = fetch_cairo_from_html_canvas(data->ctx, canvas);
+
+    g_warning("set signal connection");
+    g_warning("img_sink: %p", img_sink);
+
+    g_warning("set pipeline to playing");
+    g_signal_connect(G_OBJECT(img_sink), "handoff",
+                     G_CALLBACK(_frame_handler), cr);
+}
+
+
+JS_EXPORT_API
+void greeter_draw_camera(JSValueRef canvas, JSData* data)
+{
+    _draw(canvas, data);
+}
+
+
+JS_EXPORT_API
+void lock_draw_camera(JSValueRef canvas, JSData* data)
+{
+    g_warning("lock_draw_camera");
+    _draw(canvas, data);
 }

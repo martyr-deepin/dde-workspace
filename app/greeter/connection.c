@@ -2,6 +2,8 @@
 #include <glib/gstdio.h>
 #include <gio/gio.h>
 #include "jsextension.h"
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 
 
 void start_animation_handler()
@@ -25,7 +27,7 @@ void start_login_handler()
 }
 
 
-gboolean connect_signal(gpointer dump)
+gboolean connect_signal(gpointer dump) // {{{
 {
     static gboolean started_animation = FALSE;
     static gboolean stopped_animation = FALSE;
@@ -46,62 +48,62 @@ gboolean connect_signal(gpointer dump)
     /*     start_login_handler(); */
     /*     started_login = TRUE; */
     }
+} // }}}
+
+
+void connect_dbus_signal()  // {{{
+{
+    const char* rules = "eavesdrop=true,"
+        "type=signal,"
+        "interface=com.deepin.dde.lock,"
+        "member=StartAnimation";
+
+
+    DBusConnection* conn = dbus_bus_get(DBUS_BUS_SYSTEM, NULL);
+
+    dbus_bus_add_match(conn, rules, NULL);
+    dbus_connection_flush(conn);
+
+
+    GError* err = NULL;
+    GDBusConnection* connection = g_bus_get_sync(G_BUS_TYPE_SYSTEM,
+                                                 NULL, &err);
+
+    if (err != NULL) {
+        g_warning("[rev signal] %s", err->message);
+        g_error_free(err);
+    }
+
+    g_dbus_connection_signal_subscribe(connection,
+                                       "com.deepin.dde.lock",
+                                       "com.deepin.dde.lock",
+                                       "StartAnimation",
+                                       "/com/deepin/dde/lock",
+                                       NULL,
+                                       G_DBUS_SIGNAL_FLAGS_NONE,
+                                       start_animation_handler,
+                                       NULL, NULL
+                                       );
+    g_dbus_connection_signal_subscribe(connection,
+                                       "com.deepin.dde.lock",
+                                       "com.deepin.dde.lock",
+                                       "StopAnimation",
+                                       "/com/deepin/dde/lock",
+                                       NULL,
+                                       G_DBUS_SIGNAL_FLAGS_NONE,
+                                       start_animation_handler,
+                                       NULL, NULL
+                                       );
+    g_dbus_connection_signal_subscribe(connection,
+                                       "com.deepin.dde.lock",
+                                       "com.deepin.dde.lock",
+                                       "StartLogin",
+                                       "/com/deepin/dde/lock",
+                                       NULL,
+                                       G_DBUS_SIGNAL_FLAGS_NONE,
+                                       start_animation_handler,
+                                       NULL, NULL
+                                       );
+    g_object_unref(connection);
 }
-
-
-/* void connect_dbus_signal() */ // {{{
-/* { */
-/*     const char* rules = "eavesdrop=true," */
-/*         "type=signal," */
-/*         "interface=com.deepin.dde.lock," */
-/*         "member=StartAnimation"; */
-/*  */
-/*  */
-/*     DBusConnection* conn = dbus_bus_get(DBUS_BUS_SYSTEM, NULL); */
-/*  */
-/*     dbus_bus_add_match(conn, rules, NULL); */
-/*     dbus_connection_flush(conn); */
-/*  */
-/*  */
-/*     GError* err = NULL; */
-/*     GDBusConnection* connection = g_bus_get_sync(G_BUS_TYPE_SYSTEM, */
-/*                                                  NULL, &err); */
-/*  */
-/*     if (err != NULL) { */
-/*         g_warning("[rev signal] %s", err->message); */
-/*         g_error_free(err); */
-/*     } */
-/*  */
-/*     g_dbus_connection_signal_subscribe(connection, */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "StartAnimation", */
-/*                                        "/com/deepin/dde/lock", */
-/*                                        NULL, */
-/*                                        G_DBUS_SIGNAL_FLAGS_NONE, */
-/*                                        start_animation_handler, */
-/*                                        NULL, NULL */
-/*                                        ); */
-/*     g_dbus_connection_signal_subscribe(connection, */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "StopAnimation", */
-/*                                        "/com/deepin/dde/lock", */
-/*                                        NULL, */
-/*                                        G_DBUS_SIGNAL_FLAGS_NONE, */
-/*                                        start_animation_handler, */
-/*                                        NULL, NULL */
-/*                                        ); */
-/*     g_dbus_connection_signal_subscribe(connection, */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "com.deepin.dde.lock", */
-/*                                        "StartLogin", */
-/*                                        "/com/deepin/dde/lock", */
-/*                                        NULL, */
-/*                                        G_DBUS_SIGNAL_FLAGS_NONE, */
-/*                                        start_animation_handler, */
-/*                                        NULL, NULL */
-/*                                        ); */
-/*     g_object_unref(connection); */
-/* } */
 // }}}
