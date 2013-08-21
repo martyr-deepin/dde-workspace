@@ -85,17 +85,17 @@ class UserInfo extends Widget
         if img_src
             @img = create_img("UserImg", img_src, @userbase)
         else
+
+            @canvas = create_element("canvas", "UserImg", @userbase)
+            @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
+            @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
+            @camera_flag = create_img('camera', 'images/camera.png', @userbase)
             @scanner = create_element('div', 'scanner', @userbase)
             # @scanner = create_element('div', 'scanner scanning-animation',
             #     @userbase)
 
             # create this image when starting scanning
             @scan_line = create_img('', 'images/scan-line.png', @scanner)
-
-            @canvas = create_element("canvas", "UserImg", @userbase)
-            @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
-            @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
-            @camera_flag = create_img('camera', 'images/camera.png', @userbase)
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
@@ -104,7 +104,10 @@ class UserInfo extends Widget
     start_animation: ->
         if @canvas?
             @scanner.style.zIndex = 100
-            @scanner.classList.add("scanning-animation")
+            # apply_animation(@scanner, 'scanning', 5)
+            @scanner.style.webkitAnimation = 'scanning 5s linear infinite'
+            # alert('aslkdjf;lakjsd', 'asdfasdf')
+            # @scanner.classList.add("scanning-animation")
             # @element.removeEventListener("click", click_handler)
             # document.body.removeEventListener("keydown", account_keydown_handler)
             # document.body.removeEventListener("keydown", passwd_keydown_handler)
@@ -264,13 +267,13 @@ DCore.signal_connect("draw", ->
 DCore.signal_connect("start-animation", ->
     echo "==================="
     u.start_animation()
-    DCore.Lock.try_unlock("")
+    # DCore.Lock.try_unlock("")
 )
 
-DCore.signal_connect("stop-animation", ->
-    echo "stop animation"
-    u.stop_animation()
-)
+# DCore.signal_connect("stop-animation", ->
+#     echo "stop animation"
+#     u.stop_animation()
+# )
 DCore.signal_connect("start-login", ->
     echo "start login"
 )

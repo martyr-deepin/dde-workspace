@@ -241,9 +241,9 @@
     100% { height: 156px; }
 }
 
-.scanning-animation {
-    -webkit-animation: scanning 5s linear infinite;
-}
+/* .scanning-animation { */
+/*     -webkit-animation: scanning 5s linear infinite; */
+/* } */
 
 .camera {
     position: absolute;
