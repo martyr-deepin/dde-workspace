@@ -53,7 +53,7 @@ static double scale = 1.3;
 
 static void do_quit();
 static void handler(int signum);
-void draw_to_canvas(GdkPixbuf* pixbuf);//, cairo_t* cr);
+void draw_to_canvas(GdkPixbuf* pixbuf, JSValueRef);
 static char* reco();
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
 
@@ -149,6 +149,7 @@ gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
         source_data = (guchar*)GST_BUFFER_DATA(buffer);
     GError* error = NULL;
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file("/usr/share/icons/Deepin/apps/48/google-chrome.png", &error);
+    //{{{
     /* GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(g_strdup(source_data), */
     /*                                              GDK_COLORSPACE_RGB,  // color space */
     /*                                              FALSE,  // has alpha */
@@ -164,27 +165,35 @@ gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
     /* sprintf(name, "/tmp/test%d.png", i++); */
     /* gdk_pixbuf_save(pixbuf, name, "png", NULL, NULL); */
     /* g_free(name); */
+    //}}}
     if (error != NULL) {
         g_warning("%s", error->message);
         g_error_free(error);
         return FALSE;
     }
-    draw_to_canvas(pixbuf);
+
+    draw_to_canvas(pixbuf, (JSValueRef)data);
     g_object_unref(pixbuf);
 
     return TRUE;
 }
 
 
-void draw_to_canvas(GdkPixbuf* pixbuf)
+void draw_to_canvas(GdkPixbuf* pixbuf, JSValueRef canvas)
 {
     g_warning("draw_to_canvas");
+    cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
+    g_assert(cr == NULL);
+    if (cr == NULL) {
+        g_warning("cr is Null");
+        return ;
+    }
     cairo_save(cr);
 
-    gdk_cairo_set_source_pixbuf(cr, pixbuf, 0, 0);
+    /* gdk_cairo_set_source_pixbuf(cr, pixbuf, 0, 0); */
 
-    cairo_paint(cr);
-    cairo_restore(cr);
+    /* cairo_paint(cr); */
+    /* cairo_restore(cr); */
 
     canvas_custom_draw_did(cr, NULL);
 }
@@ -237,19 +246,18 @@ void _draw(JSValueRef canvas, JSData* data)
         return;
     }
 
-    g_warning("get cairo from canvas");
-    cairo_destroy(cr);
-    cr = fetch_cairo_from_html_canvas(data->ctx, canvas);
-
     g_warning("set signal connection");
     g_warning("img_sink: %p", img_sink);
 
+    JSValueProtect(data->ctx, canvas);
+    cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
+    g_assert(cr != NULL);
     g_warning("set pipeline to playing");
     g_signal_connect(G_OBJECT(img_sink), "handoff",
-                     G_CALLBACK(_frame_handler), NULL);
+                     G_CALLBACK(_frame_handler), (gpointer)canvas);
 }
 
-
+// {{{
 JS_EXPORT_API
 void greeter_draw_camera(JSValueRef canvas, JSData* data)
 {
@@ -263,3 +271,4 @@ void lock_draw_camera(JSValueRef canvas, JSData* data)
     g_warning("lock_draw_camera");
     _draw(canvas, data);
 }
+// }}}
