@@ -88,8 +88,10 @@ class UserInfo extends Widget
             @scanner = create_element('div', 'scanner', @userbase)
             # @scanner = create_element('div', 'scanner scanning-animation',
             #     @userbase)
+
             # create this image when starting scanning
-            # @img = create_img('', 'images/scan-line.png', @scanner)
+            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+
             @canvas = create_element("canvas", "UserImg", @userbase)
             @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
             @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
@@ -101,7 +103,7 @@ class UserInfo extends Widget
 
     start_animation: ->
         if @canvas?
-            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+            @scanner.style.zIndex = 100
             @scanner.classList.add("scanning-animation")
             # @element.removeEventListener("click", click_handler)
             # document.body.removeEventListener("keydown", account_keydown_handler)
@@ -109,7 +111,7 @@ class UserInfo extends Widget
 
     stop_animation: ->
         if @canvas?
-            @scanner.removeChild(@scan_line)
+            @scanner.style.zIndex = -100
             @scanner.classList.remove("scanning-animation")
             # @element.addEventListener("click", click_handler)
             # document.body.addEventListener("keydown", account_keydown_handler)
@@ -118,7 +120,9 @@ class UserInfo extends Widget
     draw_camera:->
         if @canvas?
             echo 'draw camera'
-            DCore.Lock.draw_camera(@canvas)
+            setInterval(=>
+                DCore.Lock.draw_camera(@canvas, @canvas.width, @canvas.height)
+            , 20)
 
     focus: ->
         _current_user?.blur()

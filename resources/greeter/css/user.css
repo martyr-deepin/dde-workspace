@@ -221,6 +221,7 @@
 }
 
 .scanner {
+    z-index: -100;
     position: absolute;
     background-image: url('../images/bg-grid.png');
     top: 16px;
@@ -230,6 +231,7 @@
 
 .scanner img {
     position: absolute;
+    left: 0px;
     bottom: 0px;
 }
 
