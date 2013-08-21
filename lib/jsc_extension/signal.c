@@ -23,6 +23,18 @@
 
 static GHashTable* signals = NULL;
 
+typedef struct {
+    JSObjectRef cb;
+    JSValueRef* args;
+} Call;
+
+gboolean _interal_call(Call* call)
+{
+    JSObjectCallAsFunction(get_global_context(), call->cb, NULL, 1, call->args, NULL);
+    g_free(call);
+    return FALSE;
+}
+
 void js_post_message(const char* name, JSValueRef json)
 {
     if (signals == NULL) {
@@ -38,7 +50,11 @@ void js_post_message(const char* name, JSValueRef json)
     js_args[0] = json;
 
     if (cb != NULL) {
-        JSObjectCallAsFunction(ctx, cb, NULL, 1, js_args, NULL);
+        Call* call = g_new0(Call, 1);
+        call->cb = cb;
+        call->args = js_args;
+        g_timeout_add(0, _interal_call, call);
+        /*JSObjectCallAsFunction(ctx, cb, NULL, 1, js_args, NULL);*/
     } else {
         g_warning("signal %s has not connected!\n", name);
     }
