@@ -20,10 +20,10 @@
 #define CASCADE_NAME DATA_DIR"/haaracscades/haarcascade_frontalface_alt.xml"
 #define ESC_KEY 27
 #define DELAY_TIME 3.0
-#define CAMERA_WIDTH 154
-#define CAMERA_HEIGHT 154
-#define STR_CAMERA_WIDTH "154"
-#define STR_CAMERA_HEIGHT "154"
+#define CAMERA_WIDTH 640
+#define CAMERA_HEIGHT 480
+#define STR_CAMERA_WIDTH "640"
+#define STR_CAMERA_HEIGHT "480"
 
 
 enum {
@@ -39,6 +39,7 @@ static IplImage* gray = NULL;
 static IplImage* frame = NULL;
 static CvHaarClassifierCascade* cascade = NULL;
 static CvMemStorage* storage = NULL;
+static cairo_t* cr = NULL;
 
 static GstElement *pipeline = NULL;
 static GstElement *img_sink = NULL;
@@ -52,7 +53,7 @@ static double scale = 1.3;
 
 static void do_quit();
 static void handler(int signum);
-void draw_to_canvas(GdkPixbuf* pixbuf, cairo_t* cr);
+void draw_to_canvas(GdkPixbuf* pixbuf);//, cairo_t* cr);
 static char* reco();
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
 
@@ -64,6 +65,8 @@ void init_camera(int argc, char* argv[])
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
         "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
         " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
+
+    g_warning("%s", camera_launch);
 
     pipeline = gst_parse_launch(camera_launch, NULL);
     g_warning("%d", pipeline == NULL);
@@ -144,24 +147,36 @@ gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
         source_data = frame->imageData;
     else
         source_data = (guchar*)GST_BUFFER_DATA(buffer);
-    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
-                                                 GDK_COLORSPACE_RGB,  // color space
-                                                 FALSE,  // has alpha
-                                                 24,  // bits per sample
-                                                 CAMERA_WIDTH,  // width
-                                                 CAMERA_HEIGHT,  // height
-                                                 CAMERA_WIDTH,  // row stride
-                                                 NULL,  // destroy function
-                                                 NULL  // destroy function data
-                                                 );
-    draw_to_canvas(pixbuf, (cairo_t*)data);
+    GError* error = NULL;
+    GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file("/usr/share/icons/Deepin/apps/48/google-chrome.png", &error);
+    /* GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(g_strdup(source_data), */
+    /*                                              GDK_COLORSPACE_RGB,  // color space */
+    /*                                              FALSE,  // has alpha */
+    /*                                              8,  // bits per sample */
+    /*                                              CAMERA_WIDTH,  // width */
+    /*                                              CAMERA_HEIGHT,  // height */
+    /*                                              3*CAMERA_WIDTH,  // row stride */
+    /*                                              (GdkPixbufDestroyNotify)g_free,  // destroy function */
+    /*                                              NULL  // destroy function data */
+    /*                                              ); */
+    /* static int i = 0; */
+    /* char name[1024] = {0}; */
+    /* sprintf(name, "/tmp/test%d.png", i++); */
+    /* gdk_pixbuf_save(pixbuf, name, "png", NULL, NULL); */
+    /* g_free(name); */
+    if (error != NULL) {
+        g_warning("%s", error->message);
+        g_error_free(error);
+        return FALSE;
+    }
+    draw_to_canvas(pixbuf);
     g_object_unref(pixbuf);
 
     return TRUE;
 }
 
 
-void draw_to_canvas(GdkPixbuf* pixbuf, cairo_t* cr)
+void draw_to_canvas(GdkPixbuf* pixbuf)
 {
     g_warning("draw_to_canvas");
     cairo_save(cr);
@@ -188,10 +203,10 @@ gboolean detect(IplImage* frame)
 
     cvClearMemStorage(storage);
     CvSeq* objects = NULL;
-    /* objects = cvHaarDetectObjects(small_img, cascade, storage, scale, */
-    /*                               3, 0 */
-    /*                               | CV_HAAR_FIND_BIGGEST_OBJECT */
-    /*                               , cvSize(0, 0), cvSize(0, 0)); */
+    objects = cvHaarDetectObjects(small_img, cascade, storage, scale,
+                                  3, 0
+                                  | CV_HAAR_FIND_BIGGEST_OBJECT
+                                  , cvSize(0, 0), cvSize(0, 0));
 
     if (objects && objects->total > 0) {
         has_face = TRUE;
@@ -218,19 +233,20 @@ void _draw(JSValueRef canvas, JSData* data)
 {
     g_warning("_draw");
     if (JSValueIsNull(data->ctx, canvas)) {
-        g_debug("draw with null canvas!");
+        g_warning("draw with null canvas!");
         return;
     }
 
     g_warning("get cairo from canvas");
-    cairo_t* cr = fetch_cairo_from_html_canvas(data->ctx, canvas);
+    cairo_destroy(cr);
+    cr = fetch_cairo_from_html_canvas(data->ctx, canvas);
 
     g_warning("set signal connection");
     g_warning("img_sink: %p", img_sink);
 
     g_warning("set pipeline to playing");
     g_signal_connect(G_OBJECT(img_sink), "handoff",
-                     G_CALLBACK(_frame_handler), cr);
+                     G_CALLBACK(_frame_handler), NULL);
 }
 
 
