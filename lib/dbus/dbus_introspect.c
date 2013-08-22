@@ -19,11 +19,9 @@ void reset_dbus_infos()
 {
     if (__sig_info_hash) {
         g_hash_table_remove_all(__sig_info_hash);
-        __sig_info_hash = NULL;
     }
     if (__objs_cache) {
         g_hash_table_remove_all(__objs_cache);
-        __objs_cache = NULL;
     }
 }
 
