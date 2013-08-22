@@ -632,18 +632,17 @@ static void g_file_copy_progress_handler(goffset current_num_bytes,
     gtk_progress_bar_set_fraction(progress_bar, (gdouble)current_num_bytes / (gdouble)total_num_bytes);
 
 }
- 
+gboolean COPY_ASYNC_FINISH = TRUE;
 static void g_file_copy_async_finish_handler(GObject *source_object,
             GAsyncResult *res, gpointer user_data)
 {
     GtkProgressBar *progress_bar = GTK_PROGRESS_BAR(user_data);
-    g_file_copy_finish(G_FILE(source_object), res, NULL);
+    COPY_ASYNC_FINISH =  g_file_copy_finish(G_FILE(source_object), res, NULL);
 
     gtk_progress_bar_set_show_text(progress_bar,TRUE);
     gtk_progress_bar_set_text(progress_bar, "Finished");
     gtk_progress_bar_set_fraction(progress_bar, 1.0);
     g_debug("_copy_files_async_true Finished");
-
 
     GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
     gtk_widget_destroy((GtkWidget *)progress_bar);
@@ -792,7 +791,7 @@ _copy_files_async (GFile* src, gpointer data)
 
                         // retval = _copy_files_async (src, _data);
                         _copy_files_async_true(src,_data);
-                        retval = TRUE;
+                        retval = COPY_ASYNC_FINISH;
                         break;
                     case CONFLICT_RESPONSE_REPLACE:
                         if (type == G_FILE_TYPE_DIRECTORY)
@@ -835,8 +834,8 @@ _copy_files_async (GFile* src, gpointer data)
 
     }
 
-
-    return retval;
+    COPY_ASYNC_FINISH = retval;
+    return COPY_ASYNC_FINISH;
 }
 
 
