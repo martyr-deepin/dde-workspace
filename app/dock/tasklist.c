@@ -605,6 +605,7 @@ void _update_window_appid(Client* c)
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
+            g_debug("[_update_window_appid] exec_name: %s, exec_args: %s", exec_name, exec_args);
             g_assert(c->title != NULL);
             app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
             if (app_id == NULL && c->instance_name != NULL)
