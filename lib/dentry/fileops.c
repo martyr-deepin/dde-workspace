@@ -677,7 +677,7 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     g_free (src_uri);
     g_free (dest_uri);
 #endif
-    g_file_copy_async(src, dest, G_FILE_COPY_OVERWRITE,
+    g_file_copy_async(src, dest, G_FILE_COPY_NOFOLLOW_SYMLINKS,
                 G_PRIORITY_DEFAULT, NULL, g_file_copy_progress_handler,
                 progress_bar, g_file_copy_async_ready_handler, progress_bar);
 }
