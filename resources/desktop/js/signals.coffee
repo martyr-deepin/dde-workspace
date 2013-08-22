@@ -138,7 +138,7 @@ do_workarea_changed = (allo) ->
         localStorage.setItem("workarea_width_storage",allo.width)
         localStorage.setItem("workarea_height_storage",allo.height)
         if delt_height is 60 and delt_width is 0
-            echo "do_workarea_changed is DOCK_PIXLE"
+            # echo "do_workarea_changed is DOCK_PIXLE"
             update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
             init_occupy_table()
             return
