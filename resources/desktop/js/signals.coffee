@@ -21,7 +21,6 @@
 # remember the last widget which been operated last time whether has focus
 last_widget_has_focus = false
 DOCK_PIXLE = 60
-WORKAREA_HEIGHT = 0
 
 connect_default_signals = ->
     DCore.signal_connect("item_update", do_item_update)
@@ -137,14 +136,14 @@ do_workarea_changed = (allo) ->
         delt_width = allo.width - workarea_width 
         localStorage.setItem("workarea_width_storage",allo.width)
         localStorage.setItem("workarea_height_storage",allo.height)
-        if delt_height is 60 and delt_width is 0
+        if delt_height is DOCK_PIXLE and delt_width is 0
             # echo "do_workarea_changed is DOCK_PIXLE"
             update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
             init_occupy_table()
-            return
-    update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
-    init_occupy_table()
-    place_desktop_items()
-    place_all_widgets()     
+        else
+            update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
+            init_occupy_table()
+            place_desktop_items()
+            place_all_widgets()     
 
     return
