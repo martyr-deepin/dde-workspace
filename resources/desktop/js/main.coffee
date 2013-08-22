@@ -17,22 +17,16 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-DOCK_PIXLE = 60
-WORKAREA_HEIGHT = 0
-
-SIGNALS = false
-if !SIGNALS
-    echo "create_item_grid"
-    create_item_grid()
+create_item_grid()
 
 connect_default_signals()
 DCore.Desktop.emit_webview_ok()
 
-if !SIGNALS
-    load_speical_desktop_items()
-    load_desktop_all_items()
-    load_plugins()
-    place_desktop_items()
-    place_all_widgets()
+load_speical_desktop_items()
+load_desktop_all_items()
+load_plugins()
+
+place_desktop_items()
+place_all_widgets()
 
 DCore.Desktop.test()

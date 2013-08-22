@@ -20,7 +20,8 @@
 
 # remember the last widget which been operated last time whether has focus
 last_widget_has_focus = false
-
+DOCK_PIXLE = 60
+WORKAREA_HEIGHT = 0
 
 connect_default_signals = ->
     DCore.signal_connect("item_update", do_item_update)
@@ -125,17 +126,8 @@ do_desktop_config_changed = ->
     return
 
 do_workarea_changed = (allo) ->
-    update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
-    init_occupy_table()
-    place_desktop_items()
-    place_all_widgets()
-    return
-
-
-    do_workarea_changed = (allo) ->
-    echo "signals : do_workarea_changed --------------start"
-
-    # if (WORKAREA_HEIGHT = localStorage.getItem("WORKAREA_HEIGHT_storage"))
+    # echo "signals : do_workarea_changed --------------start"
+    # if WORKAREA_HEIGHT = localStorage.getItem("WORKAREA_HEIGHT_storage")? 
     #     echo "WORKAREA_HEIGHT_storage:" + WORKAREA_HEIGHT
     #     echo "allo.height:" + allo.height
     #     if WORKAREA_HEIGHT is allo.height
@@ -151,20 +143,9 @@ do_workarea_changed = (allo) ->
     #     echo "first setItem"
     #     localStorage.setItem("WORKAREA_HEIGHT_storage",allo.height)
 
-    # echo "finish check allo.height"
-
-    if SIGNALS
-        echo "do_workarea_changed create_item_grid"
-        create_item_grid()
-
-    update_grid_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
+    update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
     init_occupy_table()
-    if SIGNALS
-        load_speical_desktop_items()
-        load_desktop_all_items()
-        load_plugins()
-
     place_desktop_items()
     place_all_widgets()
-    echo "signals : do_workarea_changed --------------end"
+    # echo "signals : do_workarea_changed --------------end"
     return
