@@ -44,7 +44,6 @@
 static GSettings* dock_gsettings = NULL;
 static GSettings* desktop_gsettings = NULL;
 
-void setup_background_window();
 GdkWindow* get_background_window ();
 void install_monitor();
 void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
@@ -184,7 +183,7 @@ GFile* _get_useable_file(const char* basename)
 
 GFile* _get_useable_file_templates(const char* basename,const char* name_add_before)
 {
-    GFile* dir = g_file_new_for_path(TEMPLATES_DIR());
+    GFile* dir = g_file_new_for_path(DESKTOP_DIR());
 
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
@@ -521,13 +520,13 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
 
-    setup_background_window();
-
     // webview_input = gtk_widget_get_window(webview);
 
     g_object_get(webview,"im_context",&im_context,NULL);
 
     setup_desktop_dbus_service ();
+    get_background_window();
+
 
 #ifndef NDEBUG
     monitor_resource_file("desktop", webview);
@@ -577,9 +576,7 @@ void desktop_emit_webview_ok()
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();
-
-        GdkWindow* background = get_background_window();
-        gdk_window_restack(background, gtk_widget_get_window(container), FALSE);
+        gdk_window_restack(get_background_window(), gtk_widget_get_window(container), FALSE);
 
         //desktop, dock GSettings
         dock_gsettings = g_settings_new (DOCK_SCHEMA_ID);

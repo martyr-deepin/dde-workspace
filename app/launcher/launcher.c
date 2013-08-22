@@ -666,38 +666,21 @@ void launcher_add_to_autostart(Entry* _item)
     if (launcher_is_autostart(_item))
         return;
 
-    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    GKeyFile* autostart_file = g_key_file_new();
-    char* value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_NAME);
-    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_NAME, value);
-    g_free(value);
-    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_EXEC);
-    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_EXEC, value);
+    const char* item_path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(_item));
+    GFile* item = g_file_new_for_path(item_path);
 
-    g_free(value);
-    value = g_desktop_app_info_get_string(item, G_KEY_FILE_DESKTOP_KEY_COMMENT);
-    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_COMMENT, value);
-    g_free(value);
-    g_key_file_set_string(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_TYPE,
-                          G_KEY_FILE_DESKTOP_TYPE_APPLICATION);
-    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                          G_KEY_FILE_DESKTOP_KEY_HIDDEN, false);
-    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                           "X-GNOME-Autostart-enable", true);
-    g_key_file_set_boolean(autostart_file, G_KEY_FILE_DESKTOP_GROUP,
-                           G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, false);
+    char* app_name = g_path_get_basename(item_path);
+    const char* config_dir = g_get_user_config_dir();
+    char* dest_path = g_build_filename(config_dir, "autostart", app_name,
+                                            NULL);
+    g_free(app_name);
 
-    char* name = get_desktop_file_basename(item);
-    char* path = g_build_filename(g_get_user_config_dir(), "autostart", name, NULL);
-    g_free(name);
+    GFile* dest = g_file_new_for_path(dest_path);
+    g_free(dest_path);
 
-    save_key_file(autostart_file, path);
-    g_free(path);
-    g_key_file_unref(autostart_file);
+    do_dereference_symlink_copy(item, dest, G_FILE_COPY_NONE);
+    g_object_unref(dest);
+    g_object_unref(item);
 }
 
 

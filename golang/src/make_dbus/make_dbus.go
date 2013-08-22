@@ -75,13 +75,21 @@ type MethodStruct struct {
     Name string
     CB CallbackStruct
     Args []ArgStruct
+    IsSignal bool
+}
+func Signal(name string, args...ArgStruct) MethodStruct {
+    if len(args) > 0 && args[0].Type == OutArg {
+        return MethodStruct{nil, args[0], name, Callback("I'm an signal"), args[1:], true}
+    }
+    ret := ArgStruct{"", "void", "", InvalidArg, false}
+    return MethodStruct{nil, ret, name, Callback("I'm a signal"), args, true}
 }
 func Method(name string, cb CallbackStruct, args...ArgStruct) MethodStruct {
     if len(args) > 0 && args[0].Type == OutArg {
-        return MethodStruct{nil, args[0], name, cb, args[1:]}
+        return MethodStruct{nil, args[0], name, cb, args[1:], false}
     }
     ret := ArgStruct{"", "void", "", InvalidArg, false}
-    return MethodStruct{nil, ret, name, cb, args}
+    return MethodStruct{nil, ret, name, cb, args, false}
 }
 func (m MethodStruct) joinArgs(prefix...string) string{
     ret := make([]string, len(m.Args))
@@ -130,16 +138,16 @@ var temp_provider = template.Must(template.New("dbus_xml").Funcs(template.FuncMa
 }).Parse(`
 static int _service_owner_id = 0;
 static GDBusInterfaceInfo * interface_info = NULL;
-{{range .Methods}}
+{{range .Methods}}{{if not .IsSignal}}
 {{func_decl .}}
-{{end}}
+{{end}}{{end}}
 static void _bus_method_call (GDBusConnection * connection,
                  const gchar * sender, const gchar * object_path, const gchar * interface,
                  const gchar * method, GVariant * params,
                  GDBusMethodInvocation * invocation, gpointer user_data)
 {
         GVariant * retval = NULL;
-        if (0) { {{range .Methods}}
+        if (0) { {{range .Methods}}{{if not .IsSignal}}
         } else if (g_strcmp0(method, "{{.Name}}") == 0) {
     {{range $index, $arg := .Args}}
         {{$arg.CName}} arg{{$index}};
@@ -152,7 +160,7 @@ static void _bus_method_call (GDBusConnection * connection,
     {{end}}
         g_dbus_method_invocation_return_value (invocation, retval);
         return;
-    {{end}}
+    {{end}}{{end}}
     } else {
         g_dbus_method_invocation_return_dbus_error (invocation,
                 "{{.BusInfo.Name}}.Error",
@@ -190,10 +198,12 @@ void
     const char* xml = "<?xml version=\"1.0\"?>"
 "<node>"
 "<interface name=\"{{.BusInfo.Ifce}}\">"
-{{range .Methods}}"       <method name=\"{{.Name}}\">"
+{{range .Methods}}{{if .IsSignal}}"       <signal name=\"{{.Name}}\">"
+{{range .Args}}"             <arg name=\"{{.Name}}\" type=\"{{.DName}}\" ></arg>"
+{{end}}"       </signal>"{{else}}"       <method name=\"{{.Name}}\">"
 {{if .Ret.Type}}"             <arg name=\"{{..Ret.Name}}\" type=\"{{..Ret.DName}}\" direction=\"out\"></arg>"
 {{end}}{{range .Args}}"             <arg name=\"{{.Name}}\" type=\"{{.DName}}\" direction=\"{{.Type}}\"></arg>"
-{{end}}"       </method>"
+{{end}}"       </method>" {{end}}
 {{end}}"</interface>"
 "</node>";
 

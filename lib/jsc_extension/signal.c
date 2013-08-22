@@ -23,6 +23,42 @@
 
 static GHashTable* signals = NULL;
 
+typedef struct {
+    JSObjectRef cb;
+    JSValueRef* args;
+} Call;
+
+gboolean _interal_call(Call* call)
+{
+    JSObjectCallAsFunction(get_global_context(), call->cb, NULL, 1, call->args, NULL);
+    g_free(call);
+    return FALSE;
+}
+
+void js_post_message_on_mainloop(const char* name, JSValueRef json)
+{
+    if (signals == NULL) {
+        g_warning("signals %s has not init!\n", name);
+        return;
+    }
+
+    JSContextRef ctx = get_global_context();
+    g_return_if_fail(ctx != NULL);
+    JSObjectRef cb = g_hash_table_lookup(signals, name);
+
+    JSValueRef js_args[1];
+    js_args[0] = json;
+
+    if (cb != NULL) {
+        Call* call = g_new0(Call, 1);
+        call->cb = cb;
+        call->args = js_args;
+        g_timeout_add(0, (GSourceFunc)_interal_call, call);
+    } else {
+        g_warning("signal %s has not connected!\n", name);
+    }
+}
+
 void js_post_message(const char* name, JSValueRef json)
 {
     if (signals == NULL) {

@@ -165,7 +165,7 @@ gboolean _get_launcher_icon(Client* c)
     GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
-        g_debug("info == NULL");
+        g_debug("[_get_launcher_icon] info == NULL");
         return FALSE;
     }
 
@@ -173,17 +173,24 @@ gboolean _get_launcher_icon(Client* c)
     GIcon* icon = g_app_info_get_icon(G_APP_INFO(info));
 
     if (icon != NULL) {
+        g_debug("[_get_launcher_icon] get icon from desktop file");
         icon_name = g_icon_to_string(icon);
     } else {
+        g_debug("[_get_launcher_icon] get icon from config file");
         extern GKeyFile* k_apps;
         icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
     }
 
+    g_debug("[_get_launcher_icon] icon name is \"%s\"", icon_name);
+
     if (icon_name != NULL) {
         if (g_str_has_prefix(icon_name, "data:image")) {
+            g_debug("[_get_launcher_icon] get image data from data uri scheme");
             c->icon = icon_name;
         } else {
+            g_debug("[_get_launcher_icon] get image path");
             if (g_path_is_absolute(icon_name)) {
+                g_debug("[_get_launcher_icon] image path is absolute path");
                 char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id, 48);
 
                 if (temp_icon_name_holder != NULL) {
@@ -211,9 +218,12 @@ gboolean _get_launcher_icon(Client* c)
             char* icon_path = icon_name_to_path(icon_name, 48);
             g_free(icon_name);
 
+            g_debug("[_get_launcher_icon] icon path is %s", icon_path);
             if (is_deepin_icon(icon_path)) {
+                g_debug("[_get_launcher_icon] icon is deepin icon");
                 c->icon = icon_path;
             } else {
+                g_debug("[_get_launcher_icon] icon is not deepin icon");
                 GdkPixbuf* pixbuf = NULL;
                 if (c->use_board) {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
@@ -285,8 +295,9 @@ Client* create_client_from_window(Window w)
         c->use_board = FALSE;
 
     if (c->icon == NULL) {
-        g_debug("try get deepin icon failed");
-        g_debug("appid: %s, operator_code: %d", c->app_id, operator_code);
+        g_debug("[create_client_from_window] try get deepin icon failed");
+        g_debug("[create_client_from_window] appid: %s, operator_code: %d",
+                c->app_id, operator_code);
         if (operator_code == ICON_OPERATOR_USE_ICONNAME)
             _get_launcher_icon(c);
     }
@@ -294,7 +305,7 @@ Client* create_client_from_window(Window w)
     g_debug("[create_client_from_window] icon path is %s", c->icon);
 
     if (c->icon == NULL) {
-        g_debug("get launcher icon failed");
+        g_debug("[create_client_from_window] get launcher icon failed");
         c->need_update_icon = TRUE;
         _update_window_icon(c);
     }
@@ -306,6 +317,7 @@ Client* create_client_from_window(Window w)
     g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
     save_app_config(record_file, RECORD_FILE);
 
+    g_debug("");
 
     return c;
 }
@@ -593,6 +605,7 @@ void _update_window_appid(Client* c)
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
+            g_debug("[_update_window_appid] exec_name: %s, exec_args: %s", exec_name, exec_args);
             g_assert(c->title != NULL);
             app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
             if (app_id == NULL && c->instance_name != NULL)
