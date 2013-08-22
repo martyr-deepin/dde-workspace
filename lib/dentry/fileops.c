@@ -617,6 +617,71 @@ _move_files_async (GFile* src, gpointer data)
 
     return retval;
 }
+
+ 
+static void g_file_copy_progress_handler(goffset current_num_bytes,
+            goffset total_num_bytes, gpointer user_data)
+{
+    GtkProgressBar *progress_bar = GTK_PROGRESS_BAR(user_data);
+    gchar buf[1024] = { 0 };
+ 
+    g_sprintf(buf, "%ld KB / %ld KB", current_num_bytes / 1024,
+                total_num_bytes / 1024);
+    gtk_progress_bar_set_show_text(progress_bar,TRUE);
+    gtk_progress_bar_set_text(progress_bar, buf);
+    gtk_progress_bar_set_fraction(progress_bar, (gdouble)current_num_bytes / (gdouble)total_num_bytes);
+
+}
+ 
+static void g_file_copy_async_ready_handler(GObject *source_object,
+            GAsyncResult *res, gpointer user_data)
+{
+    GtkProgressBar *progress_bar = GTK_PROGRESS_BAR(user_data);
+    gboolean retval = NULL;
+    retval = g_file_copy_finish(G_FILE(source_object), res, NULL);
+
+    gtk_progress_bar_set_show_text(progress_bar,TRUE);
+    gtk_progress_bar_set_text(progress_bar, "Finished");
+    gtk_progress_bar_set_fraction(progress_bar, 1.0);
+    g_debug("_copy_files_async_true Finished");
+
+    GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
+    gtk_widget_destroy(parent);
+}
+
+static void  _copy_files_async_true(GFile *src,gpointer data)
+{
+    g_debug("_copy_files_async_true start");
+    GFile* dest = NULL;
+    TDData* _data = (TDData*) data;
+    dest = _data->dest_file;
+    //--------------------------------
+    GtkWidget *parent = NULL;
+    GtkWidget *progress_bar = NULL;
+ 
+    parent = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_widget_set_size_request(parent, 400, 30);
+    gtk_window_set_position((GtkWindow *)parent,GTK_WIN_POS_CENTER);
+    gtk_widget_show(parent);
+ 
+    progress_bar = gtk_progress_bar_new();
+    gtk_container_add(GTK_CONTAINER(parent),
+                progress_bar);
+
+    gtk_widget_show(progress_bar);
+    //--------------------------------
+#if 1
+    char* src_uri = g_file_get_uri (src);
+    char* dest_uri = g_file_get_uri (dest);
+    g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
+    g_free (src_uri);
+    g_free (dest_uri);
+#endif
+    g_file_copy_async(src, dest, G_FILE_COPY_OVERWRITE,
+                G_PRIORITY_DEFAULT, NULL, g_file_copy_progress_handler,
+                progress_bar, g_file_copy_async_ready_handler, progress_bar);
+}
+
 /*
  *
  */
@@ -648,119 +713,129 @@ _copy_files_async (GFile* src, gpointer data)
     }
     else
     {
-	if (!_cmp_files (src, dest)) //src==dest
-        {
-            //rename destination name
-            char* tmp = g_file_get_uri (dest);
-            char* ext_name = strrchr (tmp, '.');
-            if (ext_name != NULL)
+    	if (!_cmp_files (src, dest)) //src==dest
             {
-                *ext_name = '\0';
-                ext_name ++;
+                //rename destination name
+                char* tmp = g_file_get_uri (dest);
+                char* ext_name = strrchr (tmp, '.');
+                if (ext_name != NULL)
+                {
+                    *ext_name = '\0';
+                    ext_name ++;
+                }
+                char* stem_name = tmp;
+                char* tmp_dest = g_strconcat (stem_name,
+                                              " (", _("Copy"), ")", ".",
+                                              ext_name,
+                                              NULL);
+                g_free (tmp);
+
+                g_object_unref (dest);
+                dest = g_file_new_for_uri (tmp_dest);
+                g_free (tmp_dest);
+                _data->dest_file = dest;
             }
-            char* stem_name = tmp;
-            char* tmp_dest = g_strconcat (stem_name,
-                                          " (", _("Copy"), ")", ".",
-                                          ext_name,
-                                          NULL);
-            g_free (tmp);
 
-            g_object_unref (dest);
-            dest = g_file_new_for_uri (tmp_dest);
-            g_free (tmp_dest);
-            _data->dest_file = dest;
-        }
-
-	g_file_copy (src, dest,
-		     G_FILE_COPY_NOFOLLOW_SYMLINKS,
-		     _copy_cancellable,
-		     NULL,
-		     NULL,
-		     &error);
-    }
-    //error handling
-    if (error != NULL)
-    {
-	//    g_cancellable_cancel (_copy_cancellable);
-	g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
-	//TEST:
-	FileOpsResponse* response = NULL;
-        if (g_copy_response != NULL && g_copy_response->apply_to_all)
+        gboolean  ASYNC = TRUE;
+        if (ASYNC)
         {
-            response = fileops_response_dup (g_copy_response); //FIXME:reduce dup calls
+
+            // g_debug("check the g_file_copy_async error first!");
+
+            char* dest_path = g_file_get_path (dest);
+            gboolean is_exist = g_file_test(dest_path,G_FILE_TEST_EXISTS);
+            g_free (dest_path);
+            if (is_exist)
+            {
+                error = g_error_new(G_FILE_TEST_EXISTS,G_IO_ERROR_EXISTS,"file already exist!");
+                //    g_cancellable_cancel (_copy_cancellable);
+                g_warning ("_copy_files_async: %s, code = %d", error->message, error->code);
+                //TEST:
+                FileOpsResponse* response = NULL;
+                if (g_copy_response != NULL && g_copy_response->apply_to_all)
+                {
+                    response = fileops_response_dup (g_copy_response); //FIXME:reduce dup calls
+                }
+                else
+                {
+                    response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
+                    if (response->apply_to_all)
+                            g_copy_response = fileops_response_dup (response);
+                }
+
+                if(response != NULL)
+                {
+                switch (response->response_id)
+                {
+                    case GTK_RESPONSE_CANCEL:
+                        //cancel all operations
+                        g_debug ("response : Cancel");
+                        retval = FALSE;
+                        break;
+
+                    case CONFLICT_RESPONSE_SKIP:
+                        //skip, imediately return.
+                            g_debug ("response : Skip");
+                        retval = TRUE;
+                        break;
+                    case CONFLICT_RESPONSE_RENAME:
+                        //rename, redo operations
+                        g_debug ("response : Rename to %s", response->file_name);
+
+                        GFile* dest_parent = g_file_get_parent (dest);
+                        GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
+                            g_object_unref (dest_parent);
+
+                        g_object_unref (dest);
+                        _data->dest_file = new_dest;
+
+                        // retval = _copy_files_async (src, _data);
+                        _copy_files_async_true(src,_data);
+                        retval = TRUE;
+                        break;
+                    case CONFLICT_RESPONSE_REPLACE:
+                        if (type == G_FILE_TYPE_DIRECTORY)
+                        {
+                            //Merge:
+                            g_debug("Merge");
+                            retval = TRUE;
+                        }
+                        else
+                        {
+                            //replace
+                            retval = _delete_files_async (dest, _data);
+                            if (retval == TRUE)
+                            {
+                            // retval = _copy_files_async (src, _data);
+                                _copy_files_async_true(src,_data);
+                            }
+                        }
+                        g_debug ("response : Replace");
+                        break;
+                    default:
+                        retval = FALSE;
+                        break;
+                }
+
+                fileops_response_free (response);
+                }
+                g_error_free (error);
+            }
+            else
+            {
+                g_debug("file not exist in dest");
+                _copy_files_async_true(src,_data);
+                retval == TRUE;
+            }
+
+
+
         }
-        else
-        {
-	response = fileops_move_copy_error_show_dialog (_("copy"), error, src, dest, NULL);
-	if (response->apply_to_all)
-            g_copy_response = fileops_response_dup (response);
-        }
 
-	if(response != NULL)
-	{
-	switch (response->response_id)
-	{
-	    case GTK_RESPONSE_CANCEL:
-		//cancel all operations
-		g_debug ("response : Cancel");
-		retval = FALSE;
-		break;
-
-	    case CONFLICT_RESPONSE_SKIP:
-		//skip, imediately return.
-	        g_debug ("response : Skip");
-		retval = TRUE;
-	        break;
-	    case CONFLICT_RESPONSE_RENAME:
-		//rename, redo operations
-		g_debug ("response : Rename to %s", response->file_name);
-
-		GFile* dest_parent = g_file_get_parent (dest);
-		GFile* new_dest = g_file_get_child (dest_parent, response->file_name);
-	        g_object_unref (dest_parent);
-
-		g_object_unref (dest);
-		_data->dest_file = new_dest;
-
-	        retval = _copy_files_async (src, _data);
-	        break;
-	    case CONFLICT_RESPONSE_REPLACE:
-	        if (type == G_FILE_TYPE_DIRECTORY)
-		{
-		    //Merge:
-		    retval = TRUE;
-		}
-		else
-		{
-		    //replace
-                    retval = _delete_files_async (dest, _data);
-		    if (retval == TRUE)
-		    {
-			retval = _copy_files_async (src, _data);
-		    }
-		}
-
-		g_debug ("response : Replace");
-	        break;
-	    default:
-		retval = FALSE;
-	        break;
-	}
-
-	fileops_response_free (response);
-	}
-	g_error_free (error);
     }
-#if 1
-    else
-    {
-	char* src_uri = g_file_get_uri (src);
-	char* dest_uri = g_file_get_uri (dest);
-	g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
-	g_free (src_uri);
-	g_free (dest_uri);
-    }
-#endif
+
 
     return retval;
 }
+
+
