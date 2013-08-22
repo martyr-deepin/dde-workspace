@@ -126,26 +126,25 @@ do_desktop_config_changed = ->
     return
 
 do_workarea_changed = (allo) ->
-    echo "signals : do_workarea_changed --------------start"
-
-    if localStorage.getItem("WORKAREA_HEIGHT_storage") is null
-        echo "first time launche desktop! WORKAREA_HEIGHT_storage is null!"
-        localStorage.setItem("WORKAREA_HEIGHT_storage",allo.height)
+    if localStorage.getItem("workarea_height_storage") is null
+        echo "first time launche desktop! workarea_height_storage is null!"
+        localStorage.setItem("workarea_width_storage",allo.width)
+        localStorage.setItem("workarea_height_storage",allo.height)
     else
-        WORKAREA_HEIGHT = localStorage.getObject("WORKAREA_HEIGHT_storage")
-        echo "WORKAREA_HEIGHT:" + WORKAREA_HEIGHT
-        echo "allo.height:" + allo.height
-        # echo "abs(WORKAREA_HEIGHT - allo.height )" + abs(WORKAREA_HEIGHT - allo.height )
-        # if abs(WORKAREA_HEIGHT - allo.height ) is DOCK_PIXLE
-        #     echo "do_workarea_changed is DOCK_PIXLE"
-        #     localStorage.setItem("WORKAREA_HEIGHT_storage",allo.height)
-        #     return
-        # else 
-        #     echo "isnt DOCK_PIXLE"
-
+        workarea_width = localStorage.getObject("workarea_width_storage")
+        workarea_height = localStorage.getObject("workarea_height_storage")
+        delt_height = allo.height - workarea_height 
+        delt_width = allo.width - workarea_width 
+        localStorage.setItem("workarea_width_storage",allo.width)
+        localStorage.setItem("workarea_height_storage",allo.height)
+        if delt_height is 60 and delt_width is 0
+            echo "do_workarea_changed is DOCK_PIXLE"
+            update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
+            init_occupy_table()
+            return
     update_gird_position(allo.x + 4, allo.y + 4, allo.width - 8, allo.height - 8)
     init_occupy_table()
     place_desktop_items()
-    place_all_widgets()
-    echo "signals : do_workarea_changed --------------end"
+    place_all_widgets()     
+
     return
