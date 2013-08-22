@@ -644,7 +644,9 @@ static void g_file_copy_async_finish_handler(GObject *source_object,
     gtk_progress_bar_set_fraction(progress_bar, 1.0);
     g_debug("_copy_files_async_true Finished");
 
+
     GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
+    gtk_widget_destroy((GtkWidget *)progress_bar);
     gtk_widget_destroy(parent);
 }
 
