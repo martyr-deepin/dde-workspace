@@ -633,12 +633,11 @@ static void g_file_copy_progress_handler(goffset current_num_bytes,
 
 }
  
-static void g_file_copy_async_ready_handler(GObject *source_object,
+static void g_file_copy_async_finish_handler(GObject *source_object,
             GAsyncResult *res, gpointer user_data)
 {
     GtkProgressBar *progress_bar = GTK_PROGRESS_BAR(user_data);
-    gboolean retval = NULL;
-    retval = g_file_copy_finish(G_FILE(source_object), res, NULL);
+    g_file_copy_finish(G_FILE(source_object), res, NULL);
 
     gtk_progress_bar_set_show_text(progress_bar,TRUE);
     gtk_progress_bar_set_text(progress_bar, "Finished");
@@ -679,7 +678,7 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
 #endif
     g_file_copy_async(src, dest, G_FILE_COPY_NOFOLLOW_SYMLINKS,
                 G_PRIORITY_DEFAULT, NULL, g_file_copy_progress_handler,
-                progress_bar, g_file_copy_async_ready_handler, progress_bar);
+                progress_bar, g_file_copy_async_finish_handler, progress_bar);
 }
 
 /*
