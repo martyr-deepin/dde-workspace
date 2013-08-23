@@ -277,7 +277,6 @@ gchar * lock_get_date()
 JS_EXPORT_API
 void lock_unlock_succeed ()
 {
-    kill(0, 9);
     if(g_file_test(lockpid_file, G_FILE_TEST_EXISTS)){
         g_remove(lockpid_file);
     }
