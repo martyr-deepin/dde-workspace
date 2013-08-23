@@ -455,18 +455,18 @@ JSValueRef dynamic_function(JSContextRef ctx,
     if (async) {
         if (i == 1) {
             ok_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
-            if (!JSObjectIsFunction(ctx, ok_callback)) {
+            if (!ok_callback || !JSObjectIsFunction(ctx, ok_callback)) {
                 js_fill_exception(ctx, exception, "the parmas's must be the ok callback");
                 return NULL;
             }
         } else if (i == 2) {
             error_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
-            if (!JSObjectIsFunction(ctx, error_callback)) {
+            if (!error_callback || !JSObjectIsFunction(ctx, error_callback)) {
                 js_fill_exception(ctx, exception, "last parmas's must be the error callback");
                 return NULL;
             }
             ok_callback = JSValueToObject(ctx, arguments[--argumentCount], NULL);
-            if (!JSObjectIsFunction(ctx, ok_callback)) {
+            if (!ok_callback || !JSObjectIsFunction(ctx, ok_callback)) {
                 js_fill_exception(ctx, exception, "the parmas's must be the ok callback");
                 return NULL;
             }
