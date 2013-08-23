@@ -658,9 +658,12 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     //--------------------------------
     GtkWidget *parent = NULL;
     GtkWidget *progress_bar = NULL;
- 
+    const char* basename = g_file_get_basename(src);
+    // const char* parsename = g_file_get_parse_name(src);
+
     parent = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(parent, 400, 30);
+    gtk_window_set_title((GtkWindow *)parent,basename);
     gtk_window_set_position((GtkWindow *)parent,GTK_WIN_POS_CENTER);
     gtk_widget_show(parent);
  
@@ -681,7 +684,6 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
                 G_PRIORITY_DEFAULT, NULL, g_file_copy_progress_handler,
                 progress_bar, g_file_copy_async_finish_handler, progress_bar);
 }
-
 /*
  *
  */
