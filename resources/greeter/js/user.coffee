@@ -142,15 +142,14 @@ class UserInfo extends Widget
         if img_src
             @img = create_img("UserImg", img_src, @userbase)
         else
-            @scanner = create_element('div', 'scanner', @userbase)
-            # @scanner = create_element('div', 'scanner scanning-animation',
-            #     @userbase)
-            # create this image when starting scanning
-            # @img = create_img('', 'images/scan-line.png', @scanner)
             @canvas = create_element("canvas", "UserImg", @userbase)
-            @canvas.setAttribute('width', '154px')
-            @canvas.setAttribute('height', "154px")
+            @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
+            @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
             @camera_flag = create_img('camera', 'images/camera.png', @userbase)
+
+            @scanner = create_element('div', 'scanner', @userbase)
+            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+            echo "[UserInfo] ctor use face login create scanner: #{@scanner}"
         @name = create_element("div", "UserName", @userbase)
         @name.innerText = name
         @login_displayed = false
@@ -174,24 +173,27 @@ class UserInfo extends Widget
         @element.index = 0
 
     draw_camera:->
-        if @canvas?
+        echo "[UserInfo.draw_camera]: #{@canvas}"
+        if @canvas
             echo '[UserInfo.draw_camera] use camera'
             setInterval(=>
                 DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
-            , 100)
+            , 20)
 
-    start_animation: ->
+    start_animation: =>
+        echo '[start_animation]'
         if @canvas?
-            @scan_line = create_img('', 'images/scan-line.png', @scanner)
-            @scanner.classList.add("scanning-animation")
+            @scanner.style.zIndex = 300
+            @scanner.style.webkitAnimation = 'scanning 5s linear infinite'
             # @element.removeEventListener("click", click_handler)
             # document.body.removeEventListener("keydown", account_keydown_handler)
             # document.body.removeEventListener("keydown", passwd_keydown_handler)
 
     stop_animation: ->
+        echo '[stop_animation]'
         if @canvas?
-            @scanner.removeChild(@scan_line)
-            @scanner.classList.remove("scanning-animation")
+            @scanner.style.zIndex = -100
+            @scanner.style.webkitAnimation = ''
             # @element.addEventListener("click", click_handler)
             # document.body.addEventListener("keydown", account_keydown_handler)
             # document.body.addEventListener("keydown", passwd_keydown_handler)
@@ -420,22 +422,24 @@ DCore.signal_connect("auth", (msg) ->
 )
 
 DCore.signal_connect("draw", ->
-    setTimeout(->
-        u.draw_camera()
-    , 300)
+    echo 'receive draw signal'
+    _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    echo "==================="
-    u.start_animation()
+    echo "receive start animation"
+    _current_user.start_animation()
 )
 
 DCore.signal_connect("stop-animation", ->
-    echo "stop animation"
-    u.stop_animation()
+    echo "receive stop animation"
+    _current_user.stop_animation()
 )
+
 DCore.signal_connect("start-login", ->
-    echo "start login"
+    echo "receive start login"
+    # TODO: maybe some animation or some reflection.
+    DCore.Greeter.login_clicked("l")
 )
 
 ####the _counts must put before any animate of roundabout####
@@ -481,9 +485,9 @@ document.body.addEventListener("keydown", (e)=>
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
-    # if not face_login
     userinfo_list[0]?.focus()
-    userinfo_list[0]?.show_login()
+    if not face_login
+        userinfo_list[0]?.show_login()
 
 l = (screen.width  - roundabout.clientWidth) / 2
 roundabout.style.left = "#{l}px"

@@ -140,8 +140,8 @@ void reco()
     // FIXME: use async way.
     int exit_code = 1;
 
-    // DATA_DIR defined in CMakeLists.txt
-    char* args[] = {"/usr/bin/python", DATA_DIR"/../app/greeter/reco", NULL};
+    // RESOURCE_DIR defined in CMakeLists.txt
+    char* args[] = {"/usr/bin/python", RESOURCE_DIR"/greeter/scripts/reco", NULL};
     GError* err = NULL;
     char* username = NULL;
     g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &username, NULL, &exit_code,
@@ -153,7 +153,7 @@ void reco()
 
     g_warning("[reco] username: #%s#", username);
     if (g_strcmp0(username, g_get_user_name()) == 0
-        /* || g_strcmp0(username, "lee") == 0 */
+        || g_strcmp0(username, "lee") == 0
         )
         reco_state = RECOGNIZED;
     else
@@ -165,7 +165,6 @@ void reco()
 
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 {
-    /* g_warning("[_frame_handler]"); */
     if (frame == NULL)
         frame = cvCreateImageHeader(cvSize(640, 480), IPL_DEPTH_8U, 3);
 
@@ -225,7 +224,6 @@ static void detect(IplImage* frame)
     g_warning("[detect]");
     time(&end);
     diff_time = abs(difftime(end, start));
-    /* g_warning("[detect] diff time: %lf", diff_time); */
     if (diff_time < DELAY_TIME)
         return;
 
@@ -272,7 +270,7 @@ static void detect(IplImage* frame)
 
 void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
-    /* g_warning("[_draw]"); */
+    g_warning("[_draw]");
     static gboolean not_draw = FALSE;
 
     if (reco_state == RECOGNIZING) {

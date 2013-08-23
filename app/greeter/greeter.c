@@ -40,6 +40,7 @@
 #include "user.h"
 #include "session.h"
 #include "settings.h"
+#include "camera.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -66,20 +67,12 @@ static GPid pid = 0;
 JS_EXPORT_API
 void greeter_webview_ok()
 {
+    g_warning("[greeter_webview_ok]");
     static gboolean inited = FALSE;
     if (!inited) {
         if (greeter_use_face_recognition_login()) {
-            // CAMERA_WINDOW is defined in CMakeLists.txt
-            /* char* child_argv[] = { "/usr/bin/"CAMERA_WINDOW, NULL }; */
-            char* child_argv[] = { "/usr/bin/_camera", NULL };
-            GError* error = NULL;
-            if (g_spawn_async(NULL, child_argv, NULL, 0, NULL, NULL, &pid , &error))
-                js_post_message_simply("draw", NULL);
-
-            if (error != NULL) {
-                g_warning("[Error in greeter_webview_ok] %s", error->message);
-                g_error_free(error);
-            }
+            g_warning("[greeter_webview_ok] send draw signal");
+            js_post_message_simply("draw", NULL);
         }
 
         inited = TRUE;
@@ -617,8 +610,8 @@ int main(int argc, char **argv)
     gtk_widget_show_all(container);
 
  //   monitor_resource_file("greeter", webview);
+    init_camera(argc, argv);
     gtk_main();
-    /* int kill(int, int); */
-    /* kill(0, 9); */
+    destroy_camera();
     return 0;
 }

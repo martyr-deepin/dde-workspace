@@ -85,7 +85,6 @@ class UserInfo extends Widget
         if img_src
             @img = create_img("UserImg", img_src, @userbase)
         else
-
             @canvas = create_element("canvas", "UserImg", @userbase)
             @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
             @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
@@ -269,7 +268,7 @@ DCore.signal_connect("stop-animation", ->
 DCore.signal_connect("start-login", ->
     echo "start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Lock.try_unlock("")
+    DCore.Lock.try_unlock("l")
 )
 
 if roundabout.children.length <= 2
