@@ -664,6 +664,7 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     parent = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(parent, 400, 30);
     gtk_window_set_title((GtkWindow *)parent,basename);
+    gtk_window_set_resizable((GtkWindow *)parent,FALSE);
     gtk_window_set_position((GtkWindow *)parent,GTK_WIN_POS_CENTER);
     gtk_widget_show(parent);
  
