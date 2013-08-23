@@ -1,3 +1,24 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 Liqiang Lee
+ *
+ * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -26,10 +47,11 @@
 
 
 enum RecogizeState {
-    NOT_START_RECOGNIZE,
-    START_RECOGNIZE,
+    NOT_START_RECOGNIZING,
+    START_RECOGNIZING,
     RECOGNIZING,
-    RECOGNIZED
+    RECOGNIZED,
+    NOT_RECOGNIZED
 };
 
 
@@ -37,15 +59,16 @@ enum RecogizeState {
 static IplImage* frame = NULL;
 static CvHaarClassifierCascade* cascade = NULL;
 static CvMemStorage* storage = NULL;
-static cairo_t* cr = NULL;
-static guchar* source_data = NULL;
-static GstBuffer* copy_buffer = NULL;
 
 static GstElement *pipeline = NULL;
 static GstElement *img_sink = NULL;
 
-static int flag = 0;
-static enum RecogizeState reco_state = NOT_START_RECOGNIZE;
+static guchar* source_data = NULL;
+static GstBuffer* copy_buffer = NULL;
+
+static int has_data = FALSE;
+static enum RecogizeState reco_state = NOT_START_RECOGNIZING;
+
 static time_t start = 0;
 static time_t end = 0;
 static double diff_time = 0;
@@ -55,14 +78,12 @@ static double diff_time = 0;
 // forward decleration {{{
 static void do_quit();
 static void handler(int signum);
-/* static void draw_to_canvas(GdkPixbuf* pixbuf, JSValueRef); */
-static char* reco();
-static enum RecogizeState detect(IplImage* frame);
+static void reco();
+static void detect(IplImage* frame);
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
 // }}}
 
 
-// {{{
 void init_camera(int argc, char* argv[])
 {
     gst_init (&argc, &argv);
@@ -71,12 +92,8 @@ void init_camera(int argc, char* argv[])
         "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
         " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
 
-    /* g_warning("camera_launch: %s", camera_launch); */
-
     pipeline = gst_parse_launch(camera_launch, NULL);
-    /* g_warning("pipeline is NULL?: %d", pipeline == NULL); */
     img_sink = gst_bin_get_by_name(GST_BIN(pipeline), "imgSink");
-    /* g_warning("img_sink is NULL?: %d", img_sink == NULL); */
 
     g_object_set(G_OBJECT(img_sink), "signal-handoffs", TRUE, NULL);
     g_signal_connect(G_OBJECT(img_sink), "handoff",
@@ -84,7 +101,6 @@ void init_camera(int argc, char* argv[])
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
 
     time(&start);
-    reco_state = NOT_START_RECOGNIZE;
 }
 
 
@@ -93,6 +109,7 @@ void destroy_camera()
     gst_element_set_state(pipeline, GST_STATE_NULL);
     gst_object_unref(img_sink);
     gst_object_unref(GST_OBJECT(pipeline));
+    do_quit();
 }
 
 
@@ -111,15 +128,16 @@ gboolean has_camera()
 void do_quit()
 {
     if (copy_buffer)
-        gst_object_unref(copy_buffer);
+        gst_buffer_unref(copy_buffer);
 
     if (frame)
         cvReleaseImageHeader(&frame);
 }
 
 
-char* reco()
+void reco()
 {
+    // FIXME: use async way.
     int exit_code = 1;
 
     // DATA_DIR defined in CMakeLists.txt
@@ -133,38 +151,68 @@ char* reco()
         g_error_free(err);
     }
 
-    if (g_strcmp0(username, g_get_user_name()) == 0)
-        return username;
+    g_warning("[reco] username: #%s#", username);
+    if (g_strcmp0(username, g_get_user_name()) == 0
+        /* || g_strcmp0(username, "lee") == 0 */
+        )
+        reco_state = RECOGNIZED;
+    else
+        reco_state = NOT_RECOGNIZED;
 
     g_free(username);
-    return NULL;
 }
-// }}}
 
 
-static
-gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
+static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 {
-    /* g_warning("_frame_handler"); */
+    /* g_warning("[_frame_handler]"); */
     if (frame == NULL)
         frame = cvCreateImageHeader(cvSize(640, 480), IPL_DEPTH_8U, 3);
 
-    if (reco_state == NOT_START_RECOGNIZE) {
+    switch (reco_state) {
+    case NOT_START_RECOGNIZING:
+        g_warning("[_frame_handler] not start recognizing");
         if (copy_buffer != NULL)
-            gst_object_unref(copy_buffer);
+            gst_buffer_unref(copy_buffer);
 
         copy_buffer = gst_buffer_copy((buffer));
 
         frame->imageData = (char*)GST_BUFFER_DATA(copy_buffer);
         detect(frame);
         source_data = frame->imageData;
-        flag = 1;
-    } else if (reco_state == START_RECOGNIZE) {
-        g_warning("stop draw and start animation");
+        has_data = TRUE;
+        break;
+    case START_RECOGNIZING:
+        g_warning("[_frame_handler] start recognizing");
         source_data = (guchar*)GST_BUFFER_DATA(copy_buffer);
-        flag = 1;
+        GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
+                                                     GDK_COLORSPACE_RGB,  // color space
+                                                     FALSE,  // has alpha
+                                                     8,  // bits per sample
+                                                     CAMERA_WIDTH,  // width
+                                                     CAMERA_HEIGHT,  // height
+                                                     3*CAMERA_WIDTH,  // row stride
+                                                     NULL,  // destroy function
+                                                     NULL  // destroy function data
+                                                    );
+        gdk_pixbuf_save(pixbuf, "/tmp/deepin_user_face.png", "png", NULL, NULL);
+        g_object_unref(pixbuf);
+        has_data = TRUE;
         js_post_message_simply("start-animation", NULL);
         reco_state = RECOGNIZING;
+        reco();
+        g_warning("[_frame_handler] recogninzing stop");
+        break;
+    case RECOGNIZED:
+        g_warning("[_frame_handler] recognized");
+        js_post_message_simply("start-login", NULL);
+        break;
+    case NOT_RECOGNIZED:
+        g_warning("[_frame_handler] not recognized");
+        time(&start);
+        reco_state = NOT_START_RECOGNIZING;
+        js_post_message_simply("stop-animation", NULL);
+        break;
     }
 
 
@@ -172,39 +220,14 @@ gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 }
 
 
-// draw_to_canvas {{{
-#if 0
-void draw_to_canvas(GdkPixbuf* pixbuf, JSValueRef canvas)
+static void detect(IplImage* frame)
 {
-    g_warning("draw_to_canvas");
-    cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
-    g_assert(cr == NULL);
-    if (cr == NULL) {
-        g_warning("cr is Null");
-        return ;
-    }
-    cairo_save(cr);
-
-    /* gdk_cairo_set_source_pixbuf(cr, pixbuf, 0, 0); */
-
-    /* cairo_paint(cr); */
-    /* cairo_restore(cr); */
-
-    canvas_custom_draw_did(cr, NULL);
-}
-#endif
-// }}}
-
-
-static
-enum RecogizeState detect(IplImage* frame)
-{
-    /* g_warning("detect"); */
+    g_warning("[detect]");
     time(&end);
     diff_time = abs(difftime(end, start));
     /* g_warning("[detect] diff time: %lf", diff_time); */
     if (diff_time < DELAY_TIME)
-        return reco_state;
+        return;
 
     double const scale = 1.3;
 
@@ -230,9 +253,7 @@ enum RecogizeState detect(IplImage* frame)
                                   , cvSize(0, 0), cvSize(0, 0));
 
     if (objects && objects->total > 0) {
-        reco_state = START_RECOGNIZE;
-        /* if (reco_state == START_RECOGNIZE) */
-        /*     cvSaveImage("/tmp/deepin_user_face.png", frame, NULL); */
+        reco_state = START_RECOGNIZING;
 
         for (int i = 0; i < objects->total; ++i) {
             CvRect* r = (CvRect*)cvGetSeqElem(objects, i);
@@ -240,38 +261,41 @@ enum RecogizeState detect(IplImage* frame)
                         cvPoint((r->x + r->width) * scale, (r->y + r->height) * scale),
                         cvScalar(0, 0xff, 0xff, 0), 4, 8, 0);
         }
+    } else {
+        time(&start);
     }
 
     cvReleaseImage(&gray);
     cvReleaseImage(&small_img);
-
-    return FALSE;
-    return reco_state;
 }
 
 
-void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* data)  // {{{
+void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
-    /* g_warning("_draw"); */
+    /* g_warning("[_draw]"); */
     static gboolean not_draw = FALSE;
 
-    if (not_draw)
+    if (reco_state == RECOGNIZING) {
+        g_warning("[_draw] recognizing");
         return;
+    }
 
-    if (!flag)
+    if (!has_data) {
+        g_warning("[_draw] not has data");
         return;
+    }
 
     if (JSValueIsNull(data->ctx, canvas)) {
-        g_warning("draw with null canvas!");
+        g_warning("[_draw] draw with null canvas!");
         return;
     }
 
     if (source_data == NULL) {
-        g_warning("source_data is null");
+        g_warning("[_draw] source_data is null");
         return;
     }
 
-    cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
+    cairo_t* cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
     g_assert(cr != NULL);
     cairo_save(cr);
 
@@ -303,17 +327,12 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* dat
     cairo_restore(cr);
 
     canvas_custom_draw_did(cr, NULL);
-    // g_object_unref 断言错误不在这，待定
     g_object_unref(pixbuf);
 
-    if (reco_state != NOT_START_RECOGNIZE)
-        not_draw = TRUE;
-    flag = 0;
+    has_data = 0;
 }
-// }}}
 
 
-// {{{1
 JS_EXPORT_API
 void greeter_draw_camera(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
@@ -324,7 +343,5 @@ void greeter_draw_camera(JSValueRef canvas, double dest_width, double dest_heigh
 JS_EXPORT_API
 void lock_draw_camera(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
-    /* g_warning("lock_draw_camera"); */
     _draw(canvas, dest_width, dest_height, data);
 }
-// }}}1

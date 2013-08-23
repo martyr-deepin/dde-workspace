@@ -1,4 +1,5 @@
-/** * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
@@ -524,7 +525,7 @@ void dbus_handle_add_to_nopwd_login_group(const char* username)
         return;
     }
 
-    char* argv[] = {"gpasswd", "-a", username, "nopasswdlogin", NULL};
+    char* argv[] = {"gpasswd", "-a", (char*)username, "nopasswdlogin", NULL};
     g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
     return;
@@ -537,7 +538,7 @@ void dbus_handle_remove_from_nopwd_login_group(const char* username)
         && login_info.is_already_no_pwd_login)
         return;
 
-    char* argv[] = {"gpasswd", "-d", username, "nopasswdlogin", NULL};
+    char* argv[] = {"gpasswd", "-d", (char*)username, "nopasswdlogin", NULL};
     g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 
     return ;
