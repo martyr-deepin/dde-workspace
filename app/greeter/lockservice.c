@@ -84,12 +84,6 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
 "			</arg>\n"
 "		</method>\n"
-"		<signal name=\"StartAnimation\">\n"
-"		</signal>\n"
-"		<signal name=\"StopAnimation\">\n"
-"		</signal>\n"
-"		<signal name=\"StartLogin\">\n"
-"		</signal>\n"
 "	</interface>\n"
 "</node>\n"
 ;
