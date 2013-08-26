@@ -171,7 +171,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
     switch (reco_state) {
     case NOT_START_RECOGNIZING:
-        /* g_warning("[_frame_handler] not start recognizing"); */
+        g_warning("[_frame_handler] not start recognizing");
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
 
@@ -183,7 +183,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         has_data = TRUE;
         break;
     case START_RECOGNIZING:
-        /* g_warning("[_frame_handler] start recognizing"); */
+        g_warning("[_frame_handler] start recognizing");
         source_data = (guchar*)GST_BUFFER_DATA(copy_buffer);
         GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
                                                      GDK_COLORSPACE_RGB,  // color space
@@ -204,11 +204,11 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         /* g_warning("[_frame_handler] recogninzing stop"); */
         break;
     case RECOGNIZED:
-        /* g_warning("[_frame_handler] recognized"); */
+        g_warning("[_frame_handler] recognized");
         js_post_message_simply("start-login", NULL);
         break;
     case NOT_RECOGNIZED:
-        /* g_warning("[_frame_handler] not recognized"); */
+        g_warning("[_frame_handler] not recognized");
         time(&start);
         reco_state = NOT_START_RECOGNIZING;
 
@@ -290,16 +290,16 @@ static void detect(IplImage* frame)
 
 void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
-    /* g_warning("[_draw]"); */
+    g_warning("[_draw]");
     static gboolean not_draw = FALSE;
 
     if (reco_state == RECOGNIZING) {
-        /* g_warning("[_draw] recognizing"); */
+        g_warning("[_draw] recognizing");
         return;
     }
 
     if (!has_data) {
-        /* g_warning("[_draw] not has data"); */
+        g_warning("[_draw] not has data");
         return;
     }
 
@@ -309,7 +309,7 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* dat
     }
 
     if (source_data == NULL) {
-        /* g_warning("[_draw] source_data is null"); */
+        g_warning("[_draw] source_data is null");
         return;
     }
 

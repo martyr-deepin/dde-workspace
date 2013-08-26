@@ -257,8 +257,8 @@ roundabout.appendChild(u.li)
 _current_user = u
 
 u.focus()
-# if not face_login
-#     u.show_login()
+if not face_login
+    u.show_login()
 
 document.body.addEventListener("keydown", (e) =>
     if e.which == ENTER_KEY
@@ -295,15 +295,14 @@ DCore.signal_connect("login-failed", ->
 DCore.signal_connect("start-login", ->
     echo "start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Lock.try_unlock("")
+    DCore.Lock.try_unlock("l")
 )
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
-    # if not face_login
-    #     Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    if not face_login
+        Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
 
 DCore.Lock.webview_ok(u.id)
-failed_tip = new Tip(roundabout.parentElement)
