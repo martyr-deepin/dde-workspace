@@ -73,6 +73,8 @@ static enum RecogizeState reco_state = NOT_START_RECOGNIZING;
 static time_t start = 0;
 static time_t end = 0;
 static double diff_time = 0;
+
+static gboolean sended = FALSE;
 // }}}
 
 
@@ -204,6 +206,9 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         /* g_warning("[_frame_handler] recogninzing stop"); */
         break;
     case RECOGNIZED:
+        if (sended)
+            break;
+        sended = TRUE;
         g_warning("[_frame_handler] recognized");
         js_post_message_simply("start-login", NULL);
         break;
@@ -211,6 +216,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         g_warning("[_frame_handler] not recognized");
         time(&start);
         reco_state = NOT_START_RECOGNIZING;
+        sended = FALSE;
 
         g_warning("[_frame_handler] play sound");
         GstElement* audio_pipeline = gst_pipeline_new("audio-player");
