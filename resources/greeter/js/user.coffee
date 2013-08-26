@@ -18,6 +18,19 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class Tip
+    constructor:(@parent)->
+        @failed_tip = null
+        @failed_tip = create_element("div", "failed-tip", parent)
+        @failed_tip.appendChild(document.createTextNode(LOGIN_FAILED_TIP_TEXT))
+
+    remove: =>
+        if @failed_tip
+            @parent.removeChild(@failed_tip)
+            @failed_tip = null
+
+failed_tip = null
+
 apply_refuse_rotate = (el, time)->
     apply_animation(el, "refuse", "#{time}s", "linear")
     setTimeout(->
@@ -431,9 +444,10 @@ DCore.signal_connect("start-animation", ->
     _current_user.start_animation()
 )
 
-DCore.signal_connect("stop-animation", ->
+DCore.signal_connect("login-failed", ->
     echo "receive stop animation"
     _current_user.stop_animation()
+    failed_tip = new Tip(roundabout.parentElement)
 )
 
 DCore.signal_connect("start-login", ->

@@ -486,31 +486,6 @@ _bus_handle_is_livecd (const gchar *username)
 }
 
 
-static
-GPtrArray* _get_current_user_all_groups()
-{
-    int size = getgroups(0, NULL);
-    if (size == -1) {
-        return NULL;
-    }
-
-    gid_t* gids = g_new(gid_t, size);
-
-    int err = 0;
-    if ((err = getgroups(size, gids)) == -1) {
-        fprintf(stderr, "[Error]: %s\n", strerror(err));
-        return NULL;
-    }
-
-    GPtrArray* new_groups = g_ptr_array_new();
-    for (int i = 0; i < size; ++i)
-        g_ptr_array_add(new_groups, GINT_TO_POINTER(gids[i]));
-
-    return new_groups;
-}
-
-
-
 void dbus_handle_add_to_nopwd_login_group(const char* username)
 {
     if (is_user_nopasswdlogin(username)) {

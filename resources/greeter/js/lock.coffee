@@ -18,6 +18,19 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class Tip
+    constructor:(@parent)->
+        @failed_tip = null
+        @failed_tip = create_element("div", "failed-tip", parent)
+        @failed_tip.appendChild(document.createTextNode(LOGIN_FAILED_TIP_TEXT))
+
+    remove: =>
+        if @failed_tip
+            @parent.removeChild(@failed_tip)
+            @failed_tip = null
+
+failed_tip = null
+
 apply_refuse_rotate = (el, time)->
     apply_animation(el, "refuse", "#{time}s", "linear")
     setTimeout(->
@@ -44,7 +57,7 @@ class LoginEntry extends Widget
             else
                 @warning.classList.remove("CapsWarningBackground")
 
-            if e.which == 13
+            if e.which == ENTER_KEY
                 @on_active(@password.value)
         )
 
@@ -71,6 +84,7 @@ class SwitchUser extends Widget
         @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
+            failed_tip?.remove()
             DCore.Lock.switch_user()
         )
 
@@ -157,12 +171,22 @@ class UserInfo extends Widget
     do_click: (e)->
         if _current_user == @
             if not @login
-                @show_login()
+                if @canvas
+                    if e.target.className == "UserName"
+                        failed_tip?.remove()
+                        @show_login()
+                else
+                    @show_login()
             else
                 if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
                     echo "login pwd clicked"
                 else
-                    @hide_login()
+                    if @canvas
+                        if e.target.className == "UserName"
+                            failed_tip?.remove()
+                            @hide_login()
+                    else
+                        @hide_login()
         else
             @focus()
 
@@ -233,17 +257,19 @@ roundabout.appendChild(u.li)
 _current_user = u
 
 u.focus()
-if not face_login
-    u.show_login()
+# if not face_login
+#     u.show_login()
 
 document.body.addEventListener("keydown", (e) =>
-    if e.which == 13
+    if e.which == ENTER_KEY
+        failed_tip?.remove()
         if not u.login_displayed
             u.show_login()
         else
             u.login.on_active(u.login.password.value)
 
-    else if e.which == 27
+    else if e.which == ESC_KEY
+        failed_tip?.remove()
         u.hide_login()
 )
 
@@ -260,22 +286,24 @@ DCore.signal_connect("start-animation", ->
     u.start_animation()
 )
 
-DCore.signal_connect("stop-animation", ->
+DCore.signal_connect("login-failed", ->
     echo "stop animation"
     u.stop_animation()
+    failed_tip = new Tip(roundabout.parentElement)
 )
 
 DCore.signal_connect("start-login", ->
     echo "start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Lock.try_unlock("l")
+    DCore.Lock.try_unlock("")
 )
 
 if roundabout.children.length <= 2
     roundabout.style.width = "0"
     l = (screen.width  - roundabout.clientWidth) / 2
     roundabout.style.left = "#{l}px"
-    if not face_login
-        Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+    # if not face_login
+    #     Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
 
 DCore.Lock.webview_ok(u.id)
+failed_tip = new Tip(roundabout.parentElement)

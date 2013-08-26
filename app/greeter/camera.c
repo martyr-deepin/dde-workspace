@@ -44,6 +44,7 @@
 #define CAMERA_HEIGHT 480
 #define STR_CAMERA_WIDTH "640"
 #define STR_CAMERA_HEIGHT "480"
+#define LOGIN_FAILED_SOUND DATA_DIR"/sound/login_failed.mp3"
 
 
 enum RecogizeState {
@@ -151,7 +152,7 @@ void reco()
         g_error_free(err);
     }
 
-    g_warning("[reco] username: #%s#", username);
+    /* g_warning("[reco] username: #%s#", username); */
     if (g_strcmp0(username, g_get_user_name()) == 0
         || g_strcmp0(username, "lee") == 0
         )
@@ -170,7 +171,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
     switch (reco_state) {
     case NOT_START_RECOGNIZING:
-        g_warning("[_frame_handler] not start recognizing");
+        /* g_warning("[_frame_handler] not start recognizing"); */
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
 
@@ -182,7 +183,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         has_data = TRUE;
         break;
     case START_RECOGNIZING:
-        g_warning("[_frame_handler] start recognizing");
+        /* g_warning("[_frame_handler] start recognizing"); */
         source_data = (guchar*)GST_BUFFER_DATA(copy_buffer);
         GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
                                                      GDK_COLORSPACE_RGB,  // color space
@@ -200,20 +201,39 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         js_post_message_simply("start-animation", NULL);
         reco_state = RECOGNIZING;
         reco();
-        g_warning("[_frame_handler] recogninzing stop");
+        /* g_warning("[_frame_handler] recogninzing stop"); */
         break;
     case RECOGNIZED:
-        g_warning("[_frame_handler] recognized");
+        /* g_warning("[_frame_handler] recognized"); */
         js_post_message_simply("start-login", NULL);
         break;
     case NOT_RECOGNIZED:
-        g_warning("[_frame_handler] not recognized");
+        /* g_warning("[_frame_handler] not recognized"); */
         time(&start);
         reco_state = NOT_START_RECOGNIZING;
-        js_post_message_simply("stop-animation", NULL);
+
+        g_warning("[_frame_handler] play sound");
+        GstElement* audio_pipeline = gst_pipeline_new("audio-player");
+        GstElement* audio_source = gst_element_factory_make("filesrc",
+                                                            "file-source");
+        GstElement* audio_decoder = gst_element_factory_make("mad",
+                                                             "mad-decoder");
+        GstElement* audio_sink = gst_element_factory_make("autoaudiosink",
+                                                          "audio-output");
+
+        gst_bin_add_many(GST_BIN(audio_pipeline), audio_source, audio_decoder,
+                         audio_sink,NULL);
+        gst_element_link_many(audio_source, audio_decoder, audio_sink, NULL);
+
+        g_object_set (G_OBJECT(audio_source), "location", LOGIN_FAILED_SOUND, NULL);
+        gst_element_set_state(audio_pipeline, GST_STATE_PLAYING);
+
+        gst_element_set_state(audio_pipeline, GST_STATE_NULL);
+        gst_object_unref(audio_pipeline);
+
+        js_post_message_simply("login-failed", NULL);
         break;
     }
-
 
     return TRUE;
 }
@@ -221,7 +241,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
 static void detect(IplImage* frame)
 {
-    g_warning("[detect]");
+    /* g_warning("[detect]"); */
     time(&end);
     diff_time = abs(difftime(end, start));
     if (diff_time < DELAY_TIME)
@@ -233,7 +253,7 @@ static void detect(IplImage* frame)
     IplImage* small_img = cvCreateImage(cvSize(cvRound(frame->width/scale),
                                      cvRound(frame->height/scale)),
                               8, 1);
-    cvCvtColor(frame, gray, CV_BGR2GRAY);
+    cvCvtColor(frame, gray, CV_RGB2GRAY);
     cvResize(gray, small_img, CV_INTER_LINEAR);
     cvEqualizeHist(small_img, small_img);
 
@@ -251,14 +271,14 @@ static void detect(IplImage* frame)
                                   , cvSize(0, 0), cvSize(0, 0));
 
     if (objects && objects->total > 0) {
-        reco_state = START_RECOGNIZING;
-
         for (int i = 0; i < objects->total; ++i) {
             CvRect* r = (CvRect*)cvGetSeqElem(objects, i);
             cvRectangle(frame, cvPoint(r->x * scale, r->y * scale),
                         cvPoint((r->x + r->width) * scale, (r->y + r->height) * scale),
                         cvScalar(0, 0xff, 0xff, 0), 4, 8, 0);
         }
+
+        reco_state = START_RECOGNIZING;
     } else {
         time(&start);
     }
@@ -270,16 +290,16 @@ static void detect(IplImage* frame)
 
 void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* data)
 {
-    g_warning("[_draw]");
+    /* g_warning("[_draw]"); */
     static gboolean not_draw = FALSE;
 
     if (reco_state == RECOGNIZING) {
-        g_warning("[_draw] recognizing");
+        /* g_warning("[_draw] recognizing"); */
         return;
     }
 
     if (!has_data) {
-        g_warning("[_draw] not has data");
+        /* g_warning("[_draw] not has data"); */
         return;
     }
 
@@ -289,7 +309,7 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* dat
     }
 
     if (source_data == NULL) {
-        g_warning("[_draw] source_data is null");
+        /* g_warning("[_draw] source_data is null"); */
         return;
     }
 
