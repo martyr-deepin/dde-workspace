@@ -65,12 +65,12 @@ static GPid pid = 0;
 
 
 JS_EXPORT_API
-void greeter_webview_ok()
+void greeter_webview_ok(char const* username)
 {
     g_warning("[greeter_webview_ok]");
     static gboolean inited = FALSE;
     if (!inited) {
-        if (greeter_use_face_recognition_login()) {
+        if (greeter_use_face_recognition_login(username)) {
             g_warning("[greeter_webview_ok] send draw signal");
             js_post_message_simply("draw", NULL);
         }

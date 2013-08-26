@@ -225,7 +225,7 @@ if not is_livecd
     s = new SwitchUser("switchuser")
     $("#bottom_buttons").appendChild(s.element)
 
-face_login = DCore.Lock.use_face_recognition_login()
+face_login = DCore.Lock.use_face_recognition_login(user)
 echo "face_login: #{face_login}"
 
 u = new UserInfo(user, user, if face_login then null else user_image)
@@ -278,4 +278,4 @@ if roundabout.children.length <= 2
     if not face_login
         Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
 
-DCore.Lock.webview_ok()
+DCore.Lock.webview_ok(u.id)

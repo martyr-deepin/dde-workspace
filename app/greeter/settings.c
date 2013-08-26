@@ -28,29 +28,43 @@
 #include "camera.h"
 #include "jsextension.h"
 
-#define GREETER_SCHEAM_ID "com.deepin.dde.greeter"
+#define CONFIG_FILE "/etc/face_login.ini"
 
-gboolean _get_face_recognition_login_setting()
+gboolean _get_face_recognition_login_setting(const char* username)
 {
-    GSettings* settings = g_settings_new(GREETER_SCHEAM_ID);
-    gboolean uses_camera = g_settings_get_boolean(settings,
-                                                  "face-recognition-login");
-    g_object_unref(settings);
-    return uses_camera;
+    gboolean use_face_login = FALSE;
+    GKeyFile* config = g_key_file_new();
+    GError* err = NULL;
+    g_key_file_load_from_file(config, CONFIG_FILE, G_KEY_FILE_NONE, &err);
+    if (err != NULL) {
+        g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
+        g_error_free(err);
+        goto out;
+    }
+
+    use_face_login = g_key_file_get_boolean(config, "Users", username, &err);
+    if (err != NULL) {
+        g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
+        g_error_free(err);
+    }
+
+out:
+    g_key_file_unref(config);
+    return use_face_login;
 }
 
 
 JS_EXPORT_API
-gboolean lock_use_face_recognition_login()
+gboolean lock_use_face_recognition_login(const char* username)
 {
-    /* return _has_camera() && _get_face_recognition_login_setting(); */
+    return has_camera() && _get_face_recognition_login_setting(username);
     return TRUE;
 }
 
 
 JS_EXPORT_API
-gboolean greeter_use_face_recognition_login()
+gboolean greeter_use_face_recognition_login(const char* username)
 {
-    /* return _has_camera() && _get_face_recognition_login_setting(); */
+    return has_camera() && _get_face_recognition_login_setting(username);
     return TRUE;
 }

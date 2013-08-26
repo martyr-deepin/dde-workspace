@@ -41,7 +41,6 @@
 #include <X11/XKBlib.h>
 #include "gs-grab.h"
 #include "settings.h"
-#include "connection.h"
 #include "camera.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -62,11 +61,11 @@ int kill(pid_t, int);
 
 
 JS_EXPORT_API
-void lock_webview_ok()
+void lock_webview_ok(char const* username)
 {
     static gboolean inited = FALSE;
     if (!inited) {
-        if (lock_use_face_recognition_login())
+        if (lock_use_face_recognition_login(username))
             js_post_message_simply("draw", NULL);
 
         inited = TRUE;

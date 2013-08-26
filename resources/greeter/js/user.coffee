@@ -389,7 +389,7 @@ else
     for user in users
         if user == DCore.Greeter.get_default_user()
             user_image = get_user_image(user)
-            face_login = DCore.Greeter.use_face_recognition_login()
+            face_login = DCore.Greeter.use_face_recognition_login(user)
             echo "face login: #{face_login}"
             u = new UserInfo(user, user, if face_login then null else user_image)
             # if 0
@@ -502,4 +502,4 @@ jQuery("#roundabout").drag("end", (ev, dd) ->
     _current_user?.animate_near()
 )
 
-DCore.Greeter.webview_ok()
+DCore.Greeter.webview_ok(_current_user.id)
