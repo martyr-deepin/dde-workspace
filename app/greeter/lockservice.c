@@ -76,12 +76,16 @@ const char* _lock_dbus_iface_xml =
 "			<arg name=\"livecd\" type=\"b\" direction=\"out\">\n"
 "			</arg>\n"
 "		</method>\n"
-"		<method name=\"AddToNoPasswordLoginGroup\">\n"
+"		<method name=\"AddNoPwdLogin\">\n"
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
 "			</arg>\n"
+"			<arg name=\"result\" type=\"b\" direction=\"out\">\n"
+"			</arg>\n"
 "		</method>\n"
-"		<method name=\"RemoveNoPasswordLoginGroup\">\n"
+"		<method name=\"RemoveNoPwdLogin\">\n"
 "			<arg name=\"username\" type=\"s\" direction=\"in\">\n"
+"			</arg>\n"
+"			<arg name=\"result\" type=\"b\" direction=\"out\">\n"
 "			</arg>\n"
 "		</method>\n"
 "	</interface>\n"
@@ -106,8 +110,8 @@ static void _bus_handle_exit_lock(const gchar *username, const gchar *password);
 static gboolean _bus_handle_need_pwd(const gchar *username);
 static gboolean _bus_handle_is_livecd (const gchar *username);
 static gboolean _bus_handle_unlock_check(const gchar *username, const gchar *password);
-static void dbus_handle_add_to_nopwd_login_group(const char* username);
-static void dbus_handle_remove_from_nopwd_login_group(const char* username);
+static gboolean _bus_handle_add_nopwdlogin(const gchar* username);
+static gboolean _bus_handle_remove_nopwdlogin(const gchar* username);
 static gboolean do_exit(gpointer user_data);
 
 static GDBusNodeInfo *      node_info = NULL;
@@ -254,17 +258,17 @@ _bus_method_call (GDBusConnection * connection,
 
         retval = g_variant_new("(b)", _bus_handle_is_livecd (username));
 
-    } else if (g_str_equal(method, "AddToNoPasswordLoginGroup")) {
+    } else if (g_str_equal(method, "AddNoPwdLogin")) {
         const gchar* username = NULL;
         g_variant_get(params, "(s)", &username);
 
-        dbus_handle_add_to_nopwd_login_group(username);
+        retval = g_variant_new ("(b)", _bus_handle_add_nopwdlogin (username));
 
-    } else if (g_str_equal(method, "RemoveNoPasswordLoginGroup")) {
+    } else if (g_str_equal(method, "RemoveNoPwdLogin")) {
         const gchar* username = NULL;
         g_variant_get(params, "(s)", &username);
 
-        dbus_handle_remove_from_nopwd_login_group(username);
+        retval = g_variant_new ("(b)", _bus_handle_remove_nopwdlogin (username));
 
     } else {
         g_warning ("Calling method '%s' on lock and it's unknown", method);
@@ -485,32 +489,66 @@ _bus_handle_is_livecd (const gchar *username)
     return TRUE;
 }
 
-
-void dbus_handle_add_to_nopwd_login_group(const char* username)
+gboolean
+_bus_handle_add_nopwdlogin (const gchar* username)
 {
-    if (is_user_nopasswdlogin(username)) {
-        login_info.username = g_strdup(username);
+    gboolean ret = FALSE;
+
+    GError *error = NULL;
+
+    if (is_user_nopasswdlogin (username)) {
+
+        login_info.username = g_strdup (username);
         login_info.is_already_no_pwd_login = TRUE;
-        return;
+        ret = TRUE;
+
+    } else {
+        gchar *add_cmd = g_strdup_printf ("gpasswd -a %s nopasswdlogin", username);
+
+        g_spawn_command_line_sync (add_cmd, NULL, NULL, NULL, &error);
+        if (error != NULL) {
+            g_warning ("_bus_handle_add_nopwdlogin:%s\n", error->message);
+            g_error_free (error);
+
+        } else {
+            ret = TRUE;
+        }
+        error = NULL;
+        
+        g_free (add_cmd);
     }
 
-    char* argv[] = {"gpasswd", "-a", (char*)username, "nopasswdlogin", NULL};
-    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
-
-    return;
+    return ret;
 }
 
-
-void dbus_handle_remove_from_nopwd_login_group(const char* username)
+gboolean
+_bus_handle_remove_nopwdlogin (const gchar* username)
 {
-    if (login_info.username != NULL && g_str_equal(login_info.username, username)
-        && login_info.is_already_no_pwd_login)
-        return;
+    gboolean ret = FALSE;
 
-    char* argv[] = {"gpasswd", "-d", (char*)username, "nopasswdlogin", NULL};
-    g_spawn_sync(NULL, argv, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+    GError *error = NULL;
 
-    return ;
+    if (!is_user_nopasswdlogin (username)) {
+
+        ret = TRUE;
+
+    } else {
+        gchar *remove_cmd = g_strdup_printf ("gpasswd -d %s nopasswdlogin", username);
+
+        g_spawn_command_line_sync (remove_cmd, NULL, NULL, NULL, &error);
+        if (error != NULL) {
+            g_warning ("_bus_handle_remove_nopwdlogin:%s\n", error->message);
+            g_error_free (error);
+
+        } else {
+            ret = TRUE;
+        }
+        error = NULL;
+        
+        g_free (remove_cmd);
+    }
+
+    return ret;
 }
 
 

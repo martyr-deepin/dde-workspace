@@ -453,7 +453,7 @@ DCore.signal_connect("login-failed", ->
 DCore.signal_connect("start-login", ->
     echo "receive start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Greeter.login_clicked("l")
+    DCore.Greeter.login_clicked("deepin")
 )
 
 ####the _counts must put before any animate of roundabout####
