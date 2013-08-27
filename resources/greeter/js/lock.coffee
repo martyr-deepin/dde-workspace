@@ -198,7 +198,7 @@ class UserInfo extends Widget
             @login.destroy()
             @loading = new Loading("loading")
             @element.appendChild(@loading.element)
-            DCore.Lock.try_unlock(password)
+            DCore.Lock.try_unlock(@id, password)
 
     unlock_check: (msg) ->
         if msg.status == "succeed"
@@ -295,7 +295,7 @@ DCore.signal_connect("login-failed", ->
 DCore.signal_connect("start-login", ->
     echo "start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Lock.try_unlock("l")
+    DCore.Lock.try_unlock(u.id, "")
 )
 
 if roundabout.children.length <= 2

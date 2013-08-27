@@ -41,6 +41,7 @@
 #include "session.h"
 #include "settings.h"
 #include "camera.h"
+#include "DBUS_greeter.h"
 
 #define XSESSIONS_DIR "/usr/share/xsessions/"
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
@@ -422,8 +423,11 @@ start_session(const gchar *session)
 }
 
 JS_EXPORT_API
-void greeter_login_clicked(const gchar *password)
+void greeter_login_clicked(const char* username, const gchar *password)
 {
+    g_warning("[login_clicked]");
+    dbus_add_nopwdlogin((char*)username);
+    g_warning("add to nopwdlogin");
     DBG("%s", "login clicked");
     if(selected_pwd != NULL){
         g_free(selected_pwd);
@@ -445,6 +449,8 @@ void greeter_login_clicked(const gchar *password)
         DBG("%s", "login clicked, start auth");
         greeter_start_authentication(get_selected_user());
     }
+    dbus_remove_nopwdlogin((char*)username);
+    g_warning("remove from nopwdlogin");
 }
 
 JS_EXPORT_API
@@ -474,7 +480,6 @@ show_message_cb(LightDMGreeter *greeter, const gchar *text, LightDMMessageType t
 static void
 authentication_complete_cb(LightDMGreeter *greeter)
 {
-    /* GDBusProxy* proxy = ; */
     DBG("%s", "auth complete cb");
 
     if(cancelling){

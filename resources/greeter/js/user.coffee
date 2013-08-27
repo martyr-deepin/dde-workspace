@@ -331,12 +331,12 @@ class UserInfo extends Widget
         DCore.Greeter.set_selected_session(de_menu.get_useable_current()[0])
         if DCore.Greeter.is_hide_users()
             DCore.Greeter.set_selected_user(username)
-            DCore.Greeter.login_clicked(username)
+            DCore.Greeter.login_clicked(username, "")
             DCore.signal_connect("prompt", (msg)->
-                DCore.Greeter.login_clicked(password)
+                DCore.Greeter.login_clicked(username, password)
             )
         else
-            DCore.Greeter.login_clicked(password)
+            DCore.Greeter.login_clicked(username, password)
         #debug code begin
         #div_auth = create_element("div", "", $("#Debug"))
         #div_auth.innerText += "authenticate"
@@ -453,7 +453,7 @@ DCore.signal_connect("login-failed", ->
 DCore.signal_connect("start-login", ->
     echo "receive start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Greeter.login_clicked("deepin")
+    DCore.Greeter.login_clicked(_current_user.id, "deepin")
 )
 
 ####the _counts must put before any animate of roundabout####

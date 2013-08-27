@@ -9,10 +9,10 @@ pkg_check_modules(OPENCV REQUIRED opencv)
 pkg_check_modules(GST REQUIRED gstreamer-0.10)
 
 add_executable(${NAME} greeter.c account.c user.c power.c session.c ${JSC_GEN}
-    camera.c settings.c)
+    camera.c settings.c ${DBUS_GEN})
 add_executable(switchtogreeter switchtogreeter.c)
 add_executable(dlock dlock.c gs-grab.c account.c ${JSC_LOCK_GEN} camera.c
-    settings.c)
+    settings.c ${DBUS_GEN})
 add_executable(lockservice lockservice.c)
 
 set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)

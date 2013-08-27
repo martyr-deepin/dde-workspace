@@ -42,6 +42,7 @@
 #include "gs-grab.h"
 #include "settings.h"
 #include "camera.h"
+#include "DBUS_greeter.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
@@ -295,8 +296,12 @@ gboolean lock_need_pwd ()
 
 /* return False if unlock succeed */
 JS_EXPORT_API
-gboolean lock_try_unlock (const gchar *password)
+gboolean lock_try_unlock (const char* username, const gchar *password)
 {
+    g_warning("try unlock");
+    dbus_add_nopwdlogin((char*)username);
+    g_warning("add \"%s\" to nopwdlogin", username);
+
     gboolean succeed = FALSE;
     GVariant *lock_succeed = NULL;
 
@@ -336,9 +341,11 @@ gboolean lock_try_unlock (const gchar *password)
     } else {
         js_post_message_simply("unlock", "{\"status\":\"%s\"}", _("Invalid Password"));
     }
-
     g_variant_unref(lock_succeed);
     g_object_unref(lock_proxy);
+
+    dbus_remove_nopwdlogin((char*)username);
+    g_warning("remove from nopwdlogin");
 
     return succeed;
 }
