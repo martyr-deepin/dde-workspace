@@ -202,7 +202,6 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         js_post_message_simply("start-animation", NULL);
         reco_state = RECOGNIZING;
         reco();
-        /* g_warning("[_frame_handler] recogninzing stop"); */
         break;
     case RECOGNIZED:
         g_warning("[_frame_handler] recognized");
@@ -235,8 +234,6 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
         js_post_message_simply("login-failed", NULL);
         break;
-    /* default: */
-    /*     break; */
     }
 
     return TRUE;
@@ -303,7 +300,7 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* dat
     }
 
     if (!has_data) {
-        g_warning("[_draw] not has data");
+        g_warning("[_draw] get no data from camera");
         return;
     }
 
@@ -351,7 +348,7 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height, JSData* dat
     canvas_custom_draw_did(cr, NULL);
     g_object_unref(pixbuf);
 
-    has_data = 0;
+    has_data = FALSE;
 }
 
 

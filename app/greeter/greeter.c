@@ -329,6 +329,11 @@ gboolean greeter_is_authenticated()
 JS_EXPORT_API
 void greeter_start_authentication(const gchar *username)
 {
+    if (greeter_use_face_recognition_login(username)) {
+        dbus_add_nopwdlogin((char*)username);
+        g_warning("add to nopwdlogin");
+    }
+
     cancelling = FALSE;
     prompted = FALSE;
 
@@ -425,14 +430,6 @@ start_session(const gchar *session)
 JS_EXPORT_API
 void greeter_login_clicked(const char* username, const gchar *password)
 {
-    greeter_cancel_authentication();
-
-    g_warning("[login_clicked]");
-    dbus_add_nopwdlogin((char*)username);
-    g_warning("add to nopwdlogin");
-
-    greeter_start_authentication(username);
-
     DBG("%s", "login clicked");
     if(selected_pwd != NULL){
         g_free(selected_pwd);
@@ -455,8 +452,6 @@ void greeter_login_clicked(const char* username, const gchar *password)
         greeter_start_authentication(get_selected_user());
     }
 
-    dbus_remove_nopwdlogin((char*)username);
-    g_warning("remove from nopwdlogin");
 }
 
 JS_EXPORT_API
@@ -496,6 +491,10 @@ authentication_complete_cb(LightDMGreeter *greeter)
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
             DBG("%s", "auth complete, start session");
+
+            dbus_remove_nopwdlogin(get_selected_user());
+            g_warning("remove from nopwdlogin");
+
             start_session(get_selected_session());
         }
 
@@ -626,3 +625,4 @@ int main(int argc, char **argv)
     destroy_camera();
     return 0;
 }
+
