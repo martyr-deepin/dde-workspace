@@ -289,6 +289,7 @@ DCore.signal_connect("start-animation", ->
 DCore.signal_connect("login-failed", ->
     echo "stop animation"
     u.stop_animation()
+    failed_tip?.remove()
     failed_tip = new Tip(roundabout.parentElement)
 )
 

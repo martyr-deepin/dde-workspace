@@ -501,7 +501,12 @@ authentication_complete_cb(LightDMGreeter *greeter)
     }else{
         if(prompted){
             DBG("%s", "auth complete, restart auth");
-            js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Password"));
+            if (greeter_use_face_recognition_login(get_selected_user())) {
+                js_post_message_simply("login-failed", NULL);
+                init_reco_state();
+            } else {
+                js_post_message_simply("auth", "{\"error\":\"%s\"}", _("Invalid Password"));
+            }
             greeter_start_authentication(get_selected_user());
         }
     }

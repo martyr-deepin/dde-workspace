@@ -404,11 +404,10 @@ else
             user_image = get_user_image(user)
             face_login = DCore.Greeter.use_face_recognition_login(user)
             echo "face login: #{face_login}"
-            u = new UserInfo(user, user, if face_login then null else user_image)
-            # if 0
-            #     u = new UserInfo(user, user, user_image)
-            # else
-            #     u = new UserInfo(user, user)
+            if face_login
+                u = new UserInfo(user, user, null)
+            else
+                u = new UserInfo(user, user, user_image)
             roundabout.appendChild(u.li)
             u.focus()
 
@@ -447,13 +446,14 @@ DCore.signal_connect("start-animation", ->
 DCore.signal_connect("login-failed", ->
     echo "receive stop animation"
     _current_user.stop_animation()
+    failed_tip?.remove()
     failed_tip = new Tip(roundabout.parentElement)
 )
 
 DCore.signal_connect("start-login", ->
     echo "receive start login"
     # TODO: maybe some animation or some reflection.
-    DCore.Greeter.login_clicked(_current_user.id, "l")
+    DCore.Greeter.login_clicked(_current_user.id, "")
 )
 
 ####the _counts must put before any animate of roundabout####
@@ -487,11 +487,11 @@ document.body.addEventListener("keydown", (e)=>
         #echo "next"
         _current_user?.animate_next()
 
-    else if e.which == 13
+    else if e.which == ENTER_KEY
         #echo "enter"
         _current_user?.show_login()
 
-    else if e.which == 27
+    else if e.which == ESC_KEY
         #echo "esc"
         _current_user?.hide_login()
 )

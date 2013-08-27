@@ -27,6 +27,7 @@
 gboolean has_camera();
 void init_camera(int argc, char* argv[]);
 void destroy_camera();
+void init_reco_state();
 
 #endif /* end of include guard: CAMERA_H */
 

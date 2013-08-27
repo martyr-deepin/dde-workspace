@@ -86,6 +86,13 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 // }}}
 
 
+void init_reco_state()
+{
+    reco_state = NOT_START_RECOGNIZING;
+    time(&start);
+}
+
+
 void init_camera(int argc, char* argv[])
 {
     gst_init (&argc, &argv);
