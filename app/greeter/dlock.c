@@ -298,9 +298,8 @@ gboolean lock_need_pwd ()
 JS_EXPORT_API
 gboolean lock_try_unlock (const char* username, const gchar *password)
 {
-    g_warning("try unlock");
-    dbus_add_nopwdlogin((char*)username);
-    g_warning("add \"%s\" to nopwdlogin", username);
+    if (lock_use_face_recognition_login(username))
+        gtk_main_quit();
 
     gboolean succeed = FALSE;
     GVariant *lock_succeed = NULL;
@@ -343,9 +342,6 @@ gboolean lock_try_unlock (const char* username, const gchar *password)
     }
     g_variant_unref(lock_succeed);
     g_object_unref(lock_proxy);
-
-    dbus_remove_nopwdlogin((char*)username);
-    g_warning("remove from nopwdlogin");
 
     return succeed;
 }

@@ -425,9 +425,14 @@ start_session(const gchar *session)
 JS_EXPORT_API
 void greeter_login_clicked(const char* username, const gchar *password)
 {
+    greeter_cancel_authentication();
+
     g_warning("[login_clicked]");
     dbus_add_nopwdlogin((char*)username);
     g_warning("add to nopwdlogin");
+
+    greeter_start_authentication(username);
+
     DBG("%s", "login clicked");
     if(selected_pwd != NULL){
         g_free(selected_pwd);
@@ -449,6 +454,7 @@ void greeter_login_clicked(const char* username, const gchar *password)
         DBG("%s", "login clicked, start auth");
         greeter_start_authentication(get_selected_user());
     }
+
     dbus_remove_nopwdlogin((char*)username);
     g_warning("remove from nopwdlogin");
 }
