@@ -61,18 +61,6 @@ static void lock_report_pid();
 int kill(pid_t, int);
 
 
-JS_EXPORT_API
-void lock_webview_ok(char const* username)
-{
-    static gboolean inited = FALSE;
-    if (!inited) {
-        if (lock_use_face_recognition_login(username))
-            js_post_message_simply("draw", NULL);
-
-        inited = TRUE;
-    }
-}
-
 static void init_user()
 {
     username = g_get_user_name();
@@ -557,3 +545,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+

@@ -68,3 +68,30 @@ gboolean greeter_use_face_recognition_login(const char* username)
     return has_camera() && _get_face_recognition_login_setting(username);
     return TRUE;
 }
+
+
+static void _webview_ok(char const* username)
+{
+    static gboolean inited = FALSE;
+    if (!inited) {
+        if (lock_use_face_recognition_login(username))
+            js_post_message_simply("draw", NULL);
+
+        inited = TRUE;
+    }
+}
+
+
+JS_EXPORT_API
+void lock_webview_ok(char const* username)
+{
+    _webview_ok(username);
+}
+
+
+JS_EXPORT_API
+void greeter_webview_ok(char const* username)
+{
+    _webview_ok(username);
+}
+
