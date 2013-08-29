@@ -18,15 +18,21 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+_b = document.body
+
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
-    document.body.style.maxHeight = "#{height}px"
+    _b.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         _save_hidden_apps()
         DCore.Launcher.exit_gui()
+)
+DCore.signal_connect("draw_background", (info)->
+    echo "set background to #{info.path}"
+    _b.style.backgroundImage = "url(#{info.path})"
 )
 DCore.Launcher.notify_workarea_size()
 
@@ -38,8 +44,6 @@ _get_hidden_icons_ids = ->
 
 _save_hidden_apps = ->
     DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
-
-_b = document.body
 
 _b.addEventListener("click", (e)->
     e.stopPropagation()
@@ -262,3 +266,5 @@ init_all_applications()
 init_category_list()
 init_grid()
 _init_hidden_icons()
+DCore.Launcher.webview_ok()
+

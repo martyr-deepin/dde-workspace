@@ -50,6 +50,10 @@ PRIVATE int screen_height;
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE GPtrArray* config_paths = NULL;
 
+#ifndef NDEBUG
+static gboolean is_daemonize = FALSE;
+#endif
+
 
 /**
  * @brief - key: the category id
@@ -63,6 +67,37 @@ PRIVATE void get_screen_info()
     screen = gdk_screen_get_default();
     screen_width = gdk_screen_get_width(screen);
     screen_height = gdk_screen_get_height(screen);
+}
+
+
+PRIVATE
+char* bg_blur_pict_get_dest_path (const char* src_uri)
+{
+    g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
+    g_return_val_if_fail (src_uri != NULL, NULL);
+
+    //1. calculate original picture md5
+    GChecksum* checksum;
+    checksum = g_checksum_new (G_CHECKSUM_MD5);
+    g_checksum_update (checksum, (const guchar *) src_uri, strlen (src_uri));
+
+    guint8 digest[16];
+    gsize digest_len = sizeof (digest);
+    g_checksum_get_digest (checksum, digest, &digest_len);
+    g_assert (digest_len == 16);
+
+    //2. build blurred picture path
+    char* file;
+    file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
+    g_checksum_free (checksum);
+    char* path;
+    path = g_build_filename (g_get_user_cache_dir (),
+                    BG_BLUR_PICT_CACHE_DIR,
+                    file,
+                    NULL);
+    g_free (file);
+
+    return path;
 }
 
 
@@ -123,45 +158,15 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
     cairo_surface_destroy(img_surface);
     cairo_destroy(cr);
 
+    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", bg_path);
+
     return TRUE;
-}
-
-
-PRIVATE
-char* bg_blur_pict_get_dest_path (const char* src_uri)
-{
-    g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
-    g_return_val_if_fail (src_uri != NULL, NULL);
-
-    //1. calculate original picture md5
-    GChecksum* checksum;
-    checksum = g_checksum_new (G_CHECKSUM_MD5);
-    g_checksum_update (checksum, (const guchar *) src_uri, strlen (src_uri));
-
-    guint8 digest[16];
-    gsize digest_len = sizeof (digest);
-    g_checksum_get_digest (checksum, digest, &digest_len);
-    g_assert (digest_len == 16);
-
-    //2. build blurred picture path
-    char* file;
-    file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
-    g_checksum_free (checksum);
-    char* path;
-    path = g_build_filename (g_get_user_cache_dir (),
-                    BG_BLUR_PICT_CACHE_DIR,
-                    file,
-                    NULL);
-    g_free (file);
-
-    return path;
 }
 
 
 PRIVATE
 void _set_launcher_background(GdkWindow* win)
 {
-    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
     char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
 
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
@@ -172,7 +177,7 @@ void _set_launcher_background(GdkWindow* win)
         g_debug("no blur pic, use current bg: %s\n", bg_path);
         _set_launcher_background_aux(win, bg_path);
     }
-    g_object_unref(dde_bg_g_settings);
+
     g_free(blur_path);
     g_free(bg_path);
 }
@@ -207,7 +212,6 @@ void launcher_show()
 {
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_show(w);
-    _set_launcher_background(gtk_widget_get_window(webview));
 }
 
 
@@ -224,6 +228,7 @@ void launcher_quit()
 {
     g_key_file_free(k_apps);
     g_key_file_free(launcher_config);
+    g_object_unref(dde_bg_g_settings);
 
     g_hash_table_destroy(_category_table);
 
@@ -242,7 +247,16 @@ void empty()
 JS_EXPORT_API
 void launcher_exit_gui()
 {
-    launcher_hide();
+#ifndef NDEBUG
+    if (is_daemonize)
+#endif
+
+        launcher_hide();
+
+#ifndef NDEBUG
+    else
+        launcher_quit();
+#endif
 }
 
 
@@ -776,13 +790,63 @@ JSValueRef launcher_get_app_rate()
 }
 
 
+JS_EXPORT_API
+void launcher_webview_ok()
+{
+    static gboolean inited = FALSE;
+
+    if (!inited) {
+        inited = TRUE;
+        _set_launcher_background(gtk_widget_get_window(webview));
+    }
+}
+
+
+PRIVATE
+void daemonize()
+{
+    g_warning("daemonize");
+    pid_t pid = 0;
+    if ((pid = fork()) == -1) {
+        g_warning("fork error");
+        exit(0);
+    } else if (pid != 0){
+        exit(0);
+    }
+
+    setsid();
+
+    if ((pid = fork()) == -1) {
+        g_warning("fork error");
+        exit(0);
+    } else if (pid != 0){
+        exit(0);
+    }
+}
+
+
+PRIVATE
+void _background_changed(GSettings* settings, char* key, gpointer user_data)
+{
+    char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
+    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    g_free(bg_path);
+    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
+}
+
 
 int main(int argc, char* argv[])
 {
-    if (argc > 1 && g_str_equal("-d", argv[1]))
+    if (argc == 2 && g_str_equal("-d", argv[1]))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
+#ifndef NDEBUG
+    if (argc == 2 && g_str_equal("-D", argv[1]))
+        is_daemonize = TRUE;
+#endif
+
     if (is_application_running("launcher.app.deepin")) {
+        g_warning("another instance of application launcher is running...\n");
         dbus_launcher_show();
         return 0;
     }
@@ -790,11 +854,10 @@ int main(int argc, char* argv[])
     signal(SIGKILL, launcher_quit);
     signal(SIGTERM, launcher_quit);
 
-#ifdef NDEBUG
-    if (fork() != 0) {
-        return 0;
-    }
+#ifndef NDEBUG
+    if (is_daemonize)
 #endif
+        daemonize();
 
     init_i18n();
     gtk_init(&argc, &argv);
@@ -815,11 +878,12 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
+                     G_CALLBACK(_background_changed), NULL);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
-
-    _set_launcher_background(gtk_widget_get_window(webview));
 
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };

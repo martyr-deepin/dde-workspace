@@ -346,3 +346,4 @@ void dock_show_inspector()
 {
     dwebview_show_inspector(webview);
 }
+

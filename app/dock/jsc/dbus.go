@@ -13,7 +13,12 @@ func main() {
     DBusCall(
         SessionDBUS("com.deepin.dde.desktop"),
         FLAGS_NONE,
-        Method("dbus_set_desktop_focused", Callback("FocusChanged"),  Arg("state:gboolean")), 
+        Method("dbus_set_desktop_focused", Callback("FocusChanged"),  Arg("state:gboolean")),
+    )
+    DBusCall(
+        SessionDBUS("com.deepin.dde.launcher"),
+        FLAGS_NONE,
+        Method("dbus_launcher_hide", Callback("Hide")),
     )
     OUTPUT_END()
 }
