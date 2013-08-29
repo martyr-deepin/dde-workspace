@@ -92,11 +92,15 @@ GList* _get_x_category(GDesktopAppInfo* info)
         return categories;
     }
 
+    g_debug("%s", g_desktop_app_info_get_filename(info));
     gboolean has_other_id = FALSE;
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
     gsize len = g_strv_length(x_categories) - 1;
     for (int i = 0; i < len; ++i) {
-        int id = find_category_id(x_categories[i]);
+        char* lower_case = g_utf8_casefold(x_categories[i], -1);
+        int id = find_category_id(_(lower_case));
+        g_free(lower_case);
+        g_debug("%s:%d", x_categories[i], id);
         if (id == OTHER_CATEGORY_ID)
             has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
@@ -108,6 +112,8 @@ GList* _get_x_category(GDesktopAppInfo* info)
     if (categories == NULL)
         categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
 
+    for (GList* iter = g_list_first(categories); iter != NULL; iter = g_list_next(iter))
+        g_debug("%d", GPOINTER_TO_INT(iter->data));
     g_strfreev(x_categories);
     return categories;
 }
