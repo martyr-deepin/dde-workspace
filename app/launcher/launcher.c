@@ -832,6 +832,7 @@ void _background_changed(GSettings* settings, char* key, gpointer user_data)
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     g_free(bg_path);
     js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
+    g_free(blur_path);
 }
 
 
