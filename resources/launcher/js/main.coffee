@@ -82,6 +82,13 @@ sort_methods =
     "name": sort_by_name
     "rate": sort_by_rate
 
+exit_launcher = ->
+    s_box.value = ""
+    do_search()
+    grid_load_category(selected_category_id)
+    _save_hidden_apps()
+    DCore.Launcher.exit_gui()
+
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     _b.style.maxHeight = "#{height}px"
@@ -89,8 +96,7 @@ DCore.signal_connect('workarea_changed', (alloc)->
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
-        _save_hidden_apps()
-        DCore.Launcher.exit_gui()
+        exit_launcher()
 )
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
@@ -128,8 +134,7 @@ _save_hidden_apps = ->
 _b.addEventListener("click", (e)->
     e.stopPropagation()
     if e.target != $("#category")
-        _save_hidden_apps()
-        DCore.Launcher.exit_gui()
+        exit_launcher()
 )
 
 
@@ -162,8 +167,7 @@ _b.addEventListener("keydown", do ->
                 when ESC_KEY
                     e.stopPropagation()
                     if s_box.value == ""
-                        _save_hidden_apps()
-                        DCore.Launcher.exit_gui()
+                        exit_launcher()
                     else
                         _last_val = s_box.value
                         s_box.value = ""
