@@ -97,10 +97,10 @@ class Item extends Widget
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
         el.appendChild(@item_name)
-        @item_name.addEventListener("contextmenu",(evt)=>
-            menu = []
-            @item_name.contextMenu = build_menu(menu)
-            )
+        #@item_name.addEventListener("contextmenu",(evt)=>
+            #menu = []
+            #@item_name.contextMenu = build_menu(menu)
+            #)
         @item_update()
 
 
@@ -230,9 +230,11 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
+        echo "do_rightclick"
         if @selected == false
             update_selected_stats(this, evt)
         else if @in_rename == true
+            echo "@in_rename == true"
             @item_complete_rename(false)
         return
 
@@ -369,7 +371,11 @@ class Item extends Widget
         input_x = _ITEM_WIDTH_ * @_position.x;
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
         DCore.Desktop.set_position_input(input_x,input_y)
-
+        #@item_name.addEventListener("contextmenu",(evt)=>
+            #echo "@item_name contextmenu addEventListener"
+            #menu = []
+            #@item_name.contextMenu = build_menu(menu)
+        #)
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
@@ -472,6 +478,7 @@ class Item extends Widget
             new_name = cleanup_filename(@item_name.innerText)
             if new_name.length > 0 and new_name != @get_name()
                 if not @on_rename(new_name)
+                    @in_rename = false
                     return
 
         move_widget_to_grid_after_rename(@)
@@ -581,6 +588,9 @@ class DesktopEntry extends Item
 
     do_buildmenu : ->
         menu = []
+        if @in_rename
+            echo "do_buildmenu @in_rename is true" 
+        
         menu.push([1, _("_Open")])
         menu.push([])
         menu.push([3, _("Cu_t")])
