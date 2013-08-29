@@ -186,9 +186,7 @@ class UserInfo extends Widget
         @element.index = 0
 
     draw_camera:->
-        echo "[UserInfo.draw_camera]: #{@canvas}"
         if @canvas
-            echo '[UserInfo.draw_camera] use camera'
             setInterval(=>
                 DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
             , 20)
@@ -434,24 +432,24 @@ DCore.signal_connect("auth", (msg) ->
 )
 
 DCore.signal_connect("draw", ->
-    echo 'receive draw signal'
+    # echo 'receive draw signal'
     _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    echo "receive start animation"
+    # echo "receive start animation"
     _current_user.start_animation()
 )
 
 DCore.signal_connect("login-failed", ->
-    echo "receive stop animation"
+    # echo "receive stop animation"
     _current_user.stop_animation()
     failed_tip?.remove()
     failed_tip = new Tip(roundabout.parentElement)
 )
 
 DCore.signal_connect("start-login", ->
-    echo "receive start login"
+    # echo "receive start login"
     # TODO: maybe some animation or some reflection.
     DCore.Greeter.login_clicked(_current_user.id, "")
 )
