@@ -31,7 +31,6 @@ DCore.signal_connect("lost_focus", (info)->
         DCore.Launcher.exit_gui()
 )
 DCore.signal_connect("draw_background", (info)->
-    echo "set background to #{info.path}"
     _b.style.backgroundImage = "url(#{info.path})"
 )
 DCore.Launcher.notify_workarea_size()
