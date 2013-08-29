@@ -22,6 +22,7 @@
 body {
     -webkit-user-select: none;
     background: rgba(0, 0, 0, 0.15);
+    background-size: 100% 100%;
     color: white;
     overflow-y: hidden;
 }
