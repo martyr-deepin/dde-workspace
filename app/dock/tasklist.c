@@ -165,8 +165,16 @@ gboolean _get_launcher_icon(Client* c)
     GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
-        g_debug("[_get_launcher_icon] info == NULL");
-        return FALSE;
+        // g_strdelimit directly modify the source string, not generate a new
+        // string.
+        char* new_appid = g_strdelimit(g_strdup(c->app_id), "-", '_');
+        info = guess_desktop_file(new_appid);
+        g_free(new_appid);
+
+        if (info == NULL) {
+            g_debug("[_get_launcher_icon] get desktop file failed.");
+            return FALSE;
+        }
     }
 
     char* icon_name = NULL;
@@ -643,6 +651,9 @@ void _update_window_appid(Client* c)
         }
     }
 
+    if (NULL != strchr(c->app_id, '_'))
+        g_strdelimit(c->app_id, "_", '-');
+
     XFree(s_pid);
 }
 
@@ -996,3 +1007,4 @@ void dock_set_compiz_workaround_preview(gboolean v)
         _v = v;
     }
 }
+
