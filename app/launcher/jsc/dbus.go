@@ -7,12 +7,14 @@ func main() {
         SessionDBUS("com.deepin.dde.launcher"),
         Method("Show", Callback("launcher_show")),
         Method("Hide", Callback("launcher_hide")),
-        Method("Exit", Callback("gtk_main_quit")),
+        Method("Exit", Callback("launcher_quit")),
     )
     DBusCall(
         SessionDBUS("com.deepin.dde.launcher"),
         FLAGS_NONE,
         Method("dbus_launcher_try", Callback("FocusChanged"), Ret("ret:gchar*"), Arg("state:gboolean"), Arg("arg2:gint32")),
+        Method("dbus_launcher_show", Callback("Show")),
+        Method("dbus_launcher_hide", Callback("Hide")),
     )
     OUTPUT_END()
 }

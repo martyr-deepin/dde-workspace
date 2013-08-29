@@ -40,15 +40,22 @@
 #define AUTOSTART(file) "autostart/"file
 
 
-static GKeyFile* k_apps = NULL;
-static GKeyFile* launcher_config = NULL;
-static GtkWidget* container = NULL;
-static GdkScreen* screen = NULL;
-static int screen_width;
-static int screen_height;
-static GSettings* dde_bg_g_settings = NULL;
-static GPtrArray* config_paths = NULL;
+PRIVATE GKeyFile* k_apps = NULL;
+PRIVATE GKeyFile* launcher_config = NULL;
+PRIVATE GtkWidget* container = NULL;
+PRIVATE GtkWidget* webview = NULL;
+PRIVATE GdkScreen* screen = NULL;
+PRIVATE int screen_width;
+PRIVATE int screen_height;
+PRIVATE GSettings* dde_bg_g_settings = NULL;
+PRIVATE GPtrArray* config_paths = NULL;
 
+
+/**
+ * @brief - key: the category id
+ *          value: a list of applications id (md5 basename of path)
+ */
+PRIVATE GHashTable* _category_table = NULL;
 
 
 PRIVATE void get_screen_info()
@@ -57,6 +64,7 @@ PRIVATE void get_screen_info()
     screen_width = gdk_screen_get_width(screen);
     screen_height = gdk_screen_get_height(screen);
 }
+
 
 PRIVATE
 gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
@@ -117,6 +125,8 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
 
     return TRUE;
 }
+
+
 PRIVATE
 char* bg_blur_pict_get_dest_path (const char* src_uri)
 {
@@ -147,6 +157,7 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
     return path;
 }
 
+
 PRIVATE
 void _set_launcher_background(GdkWindow* win)
 {
@@ -166,6 +177,7 @@ void _set_launcher_background(GdkWindow* win)
     g_free(bg_path);
 }
 
+
 PRIVATE
 void _do_im_commit(GtkIMContext *context, gchar* str)
 {
@@ -174,11 +186,13 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
     js_post_message("im_commit", json);
 }
 
+
 PRIVATE
 void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
     gtk_widget_set_size_request(container, screen_width, screen_height);
 }
+
 
 PRIVATE
 void _on_realize(GtkWidget* container)
@@ -188,97 +202,25 @@ void _on_realize(GtkWidget* container)
 }
 
 
+DBUS_EXPORT_API
 void launcher_show()
 {
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_show(w);
+    _set_launcher_background(gtk_widget_get_window(webview));
 }
 
+
+DBUS_EXPORT_API
 void launcher_hide()
 {
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_hide(w);
 }
 
-#ifndef NDEBUG
-void empty()
-{ }
-#endif
 
-int main(int argc, char* argv[])
-{
-    if (argc > 1 && g_str_equal("-d", argv[1]))
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-
-    if (is_application_running("launcher.app.deepin")) {
-        if (argc > 1 && g_str_equal("--toggle", argv[1])) {
-            system("killall launcher");
-        } else {
-            g_warning(_("another instance of application launcher is running...\n"));
-        }
-        return 0;
-    }
-
-    init_i18n();
-    gtk_init(&argc, &argv);
-    container = create_web_container(FALSE, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
-
-    get_screen_info();
-    set_default_theme("Deepin");
-    set_desktop_env_name("Deepin");
-
-    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
-
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
-    g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
-    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-#ifndef NDEBUG
-    g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
-#endif
-
-    gtk_widget_realize(container);
-    gtk_widget_realize(webview);
-
-    _set_launcher_background(gtk_widget_get_window(webview));
-
-    GdkWindow* gdkwindow = gtk_widget_get_window(container);
-    GdkRGBA rgba = {0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(gdkwindow, &rgba);
-
-    gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
-    gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
-
-    GtkIMContext* im_context = gtk_im_multicontext_new();
-    gtk_im_context_set_client_window(im_context, gdkwindow);
-    GdkRectangle area = {0, 1700, 100, 30};
-    gtk_im_context_set_cursor_location(im_context, &area);
-    gtk_im_context_focus_in(im_context);
-    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
-
-    setup_launcher_dbus_service();
-
-#ifndef NDEBUG
-    monitor_resource_file("launcher", webview);
-#endif
-
-    gtk_widget_show_all(container);
-    gtk_main();
-    return 0;
-}
-
-
-/**
- * @brief - key: the category id
- *          value: a list of applications id (md5 basename of path)
- */
-static GHashTable* _category_table = NULL;
-
-
-JS_EXPORT_API
-void launcher_exit_gui()
+DBUS_EXPORT_API
+void launcher_quit()
 {
     g_key_file_free(k_apps);
     g_key_file_free(launcher_config);
@@ -289,6 +231,20 @@ void launcher_exit_gui()
 
     gtk_main_quit();
 }
+
+
+#ifndef NDEBUG
+void empty()
+{ }
+#endif
+
+
+JS_EXPORT_API
+void launcher_exit_gui()
+{
+    launcher_hide();
+}
+
 
 JS_EXPORT_API
 void launcher_notify_workarea_size()
@@ -326,6 +282,7 @@ void _append_to_category(const char* path, GList* cs)
     }
 }
 
+
 PRIVATE
 void _record_category_info(const char* id, GDesktopAppInfo* info)
 {
@@ -333,6 +290,7 @@ void _record_category_info(const char* id, GDesktopAppInfo* info)
     _append_to_category(id, categories);
     g_list_free(categories);
 }
+
 
 PRIVATE
 JSObjectRef _init_category_table()
@@ -388,13 +346,16 @@ JSObjectRef launcher_get_items_by_category(double _id)
     return items;
 }
 
+
 PRIVATE
 gboolean _pred(const gchar* lhs, const gchar* rhs)
 {
     return g_strrstr(lhs, rhs) != NULL;
 }
 
+
 typedef gboolean (*Prediction)(const gchar*, const gchar*);
+
 
 PRIVATE
 double _get_weight(const char* src, const char* key, Prediction pred, double weight)
@@ -477,6 +438,7 @@ void _insert_category(JSObjectRef categories, int array_index, int id, const cha
     json_array_insert(categories, array_index, item);
 }
 
+
 PRIVATE
 void _record_categories(JSObjectRef categories, const char* names[], int num)
 {
@@ -491,6 +453,7 @@ void _record_categories(JSObjectRef categories, const char* names[], int num)
         _insert_category(categories, index, OTHER_CATEGORY_ID, names[other_category_id]);
     }
 }
+
 
 JS_EXPORT_API
 JSObjectRef launcher_get_categories()
@@ -527,11 +490,13 @@ JSObjectRef launcher_get_categories()
     return categories;
 }
 
+
 JS_EXPORT_API
 GFile* launcher_get_desktop_entry()
 {
     return g_file_new_for_path(DESKTOP_DIR());
 }
+
 
 JS_EXPORT_API
 JSValueRef launcher_load_hidden_apps()
@@ -566,6 +531,7 @@ JSValueRef launcher_load_hidden_apps()
     return hidden_app_ids;
 }
 
+
 JS_EXPORT_API
 void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
 {
@@ -597,6 +563,7 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
 }
 
 
+PRIVATE
 gboolean _check_autostart(const char* path, Entry* _item)
 {
     GDir* dir = g_dir_open(path, 0, NULL);
@@ -807,3 +774,75 @@ JSValueRef launcher_get_app_rate()
 
     return json;
 }
+
+
+
+int main(int argc, char* argv[])
+{
+    if (argc > 1 && g_str_equal("-d", argv[1]))
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+
+    if (is_application_running("launcher.app.deepin")) {
+        dbus_launcher_show();
+        return 0;
+    }
+
+    signal(SIGKILL, launcher_quit);
+    signal(SIGTERM, launcher_quit);
+
+#ifdef NDEBUG
+    if (fork() != 0) {
+        return 0;
+    }
+#endif
+
+    init_i18n();
+    gtk_init(&argc, &argv);
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+    gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
+
+    get_screen_info();
+    set_default_theme("Deepin");
+    set_desktop_env_name("Deepin");
+
+    webview = d_webview_new_with_uri(GET_HTML_PATH("launcher"));
+
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+
+    g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
+    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+#ifndef NDEBUG
+    g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
+#endif
+
+    gtk_widget_realize(container);
+    gtk_widget_realize(webview);
+
+    _set_launcher_background(gtk_widget_get_window(webview));
+
+    GdkWindow* gdkwindow = gtk_widget_get_window(container);
+    GdkRGBA rgba = {0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(gdkwindow, &rgba);
+
+    gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
+    gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
+
+    GtkIMContext* im_context = gtk_im_multicontext_new();
+    gtk_im_context_set_client_window(im_context, gdkwindow);
+    GdkRectangle area = {0, 1700, 100, 30};
+    gtk_im_context_set_cursor_location(im_context, &area);
+    gtk_im_context_focus_in(im_context);
+    g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+
+    setup_launcher_dbus_service();
+
+#ifndef NDEBUG
+    monitor_resource_file("launcher", webview);
+#endif
+
+    gtk_widget_show_all(container);
+    gtk_main();
+    return 0;
+}
+
