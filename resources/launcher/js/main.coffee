@@ -254,7 +254,6 @@ init_all_applications = ->
 _init_hidden_icons = do ->
     f = null
     ->
-        echo 'hide hidden icons'
         hidden_icon_ids = DCore.Launcher.load_hidden_apps()
         if hidden_icon_ids?
             hidden_icon_ids.filter((elem, index, array) ->
