@@ -89,7 +89,6 @@ sort_category_info = do ->
 
 sort_method = "name"
 init_category_list = ->
-
     if (_sort_method = DCore.Launcher.sort_method())?
         sort_method = _sort_method
     else

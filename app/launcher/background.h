@@ -18,17 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef _X_CATEGORY_H_
-#define _X_CATEGORY_H_
 
-#define X_CATEGORY_NUM 194
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
 
-typedef struct _XCategory XCategory;
-struct _XCategory {
-    char* name;
-    int index;
-};
+#include <gdk/gdk.h>
+#include <gio/gio.h>
 
-extern XCategory x_category_name_index_map[X_CATEGORY_NUM];
+#define SCHEMA_ID "com.deepin.dde.background"
+#define CURRENT_PCITURE "current-picture"
+#define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
-#endif  // end of guard: _X_CATEGORY_H_
+void set_launcher_background(GdkWindow* win, GSettings* settings, double width, double height);
+void background_changed(GSettings* settings, char* key, gpointer user_data);
+
+#endif /* end of include guard: BACKGROUND_H */
+

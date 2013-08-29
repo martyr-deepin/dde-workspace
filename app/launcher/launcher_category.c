@@ -1,3 +1,24 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 Liqiang Lee
+ *
+ * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
+
 #include "category.h"
 #include "x_category.h"
 #include "launcher_category.h"
@@ -71,11 +92,15 @@ GList* _get_x_category(GDesktopAppInfo* info)
         return categories;
     }
 
+    g_debug("%s", g_desktop_app_info_get_filename(info));
     gboolean has_other_id = FALSE;
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
     gsize len = g_strv_length(x_categories) - 1;
     for (int i = 0; i < len; ++i) {
-        int id = find_category_id(x_categories[i]);
+        char* lower_case = g_utf8_casefold(x_categories[i], -1);
+        int id = find_category_id(_(lower_case));
+        g_free(lower_case);
+        g_debug("%s:%d", x_categories[i], id);
         if (id == OTHER_CATEGORY_ID)
             has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
@@ -87,6 +112,8 @@ GList* _get_x_category(GDesktopAppInfo* info)
     if (categories == NULL)
         categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
 
+    for (GList* iter = g_list_first(categories); iter != NULL; iter = g_list_next(iter))
+        g_debug("%d", GPOINTER_TO_INT(iter->data));
     g_strfreev(x_categories);
     return categories;
 }

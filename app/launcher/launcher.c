@@ -29,12 +29,11 @@
 #include "i18n.h"
 #include "category.h"
 #include "launcher_category.h"
+#include "background.h"
+#include "file_monitor.h"
 #include "DBUS_launcher.h"
 
 #define DOCK_HEIGHT 30
-#define SCHEMA_ID "com.deepin.dde.background"
-#define CURRENT_PCITURE "current-picture"
-#define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 #define APPS_INI "launcher/apps.ini"
 #define LAUNCHER_CONF "launcher/config.ini"
 #define AUTOSTART(file) "autostart/"file
@@ -67,119 +66,6 @@ PRIVATE void get_screen_info()
     screen = gdk_screen_get_default();
     screen_width = gdk_screen_get_width(screen);
     screen_height = gdk_screen_get_height(screen);
-}
-
-
-PRIVATE
-char* bg_blur_pict_get_dest_path (const char* src_uri)
-{
-    g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
-    g_return_val_if_fail (src_uri != NULL, NULL);
-
-    //1. calculate original picture md5
-    GChecksum* checksum;
-    checksum = g_checksum_new (G_CHECKSUM_MD5);
-    g_checksum_update (checksum, (const guchar *) src_uri, strlen (src_uri));
-
-    guint8 digest[16];
-    gsize digest_len = sizeof (digest);
-    g_checksum_get_digest (checksum, digest, &digest_len);
-    g_assert (digest_len == 16);
-
-    //2. build blurred picture path
-    char* file;
-    file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
-    g_checksum_free (checksum);
-    char* path;
-    path = g_build_filename (g_get_user_cache_dir (),
-                    BG_BLUR_PICT_CACHE_DIR,
-                    file,
-                    NULL);
-    g_free (file);
-
-    return path;
-}
-
-
-PRIVATE
-gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path)
-{
-    GError* error = NULL;
-    GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_scale(bg_path,
-                                                                     screen_width,
-                                                                     screen_height,
-                                                                     FALSE,
-                                                                     &error);
-
-    if (_background_image == NULL) {
-        g_debug("%s\n", error->message);
-        g_error_free(error);
-        return FALSE;
-    }
-
-    cairo_surface_t* img_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                                              screen_width,
-                                                              screen_height);
-
-
-    if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
-        g_warning("create cairo surface fail!\n");
-        g_object_unref(_background_image);
-        return FALSE;
-    }
-
-    cairo_t* cr = cairo_create(img_surface);
-
-    if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
-        g_warning("create cairo fail!\n");
-        g_object_unref(_background_image);
-        cairo_surface_destroy(img_surface);
-        return FALSE;
-    }
-
-    gdk_cairo_set_source_pixbuf(cr, _background_image, 0, 0);
-    cairo_paint(cr);
-    g_object_unref(_background_image);
-
-    cairo_pattern_t* pt = cairo_pattern_create_for_surface(img_surface);
-
-    if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
-        g_warning("create cairo pattern fail!\n");
-        cairo_surface_destroy(img_surface);
-        cairo_destroy(cr);
-        return FALSE;
-    }
-
-    gdk_window_hide(win);
-    gdk_window_set_background_pattern(win, pt);
-    gdk_window_show(win);
-
-    cairo_pattern_destroy(pt);
-    cairo_surface_destroy(img_surface);
-    cairo_destroy(cr);
-
-    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", bg_path);
-
-    return TRUE;
-}
-
-
-PRIVATE
-void _set_launcher_background(GdkWindow* win)
-{
-    char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
-
-    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
-
-    g_debug("blur pic path: %s\n", blur_path);
-
-    if (!_set_launcher_background_aux(win, blur_path)) {
-        g_debug("no blur pic, use current bg: %s\n", bg_path);
-        _set_launcher_background_aux(win, bg_path);
-    }
-
-    g_free(blur_path);
-    g_free(bg_path);
 }
 
 
@@ -226,14 +112,12 @@ void launcher_hide()
 DBUS_EXPORT_API
 void launcher_quit()
 {
+    monitor_destroy();
     g_key_file_free(k_apps);
     g_key_file_free(launcher_config);
     g_object_unref(dde_bg_g_settings);
-
     g_hash_table_destroy(_category_table);
-
     g_ptr_array_unref(config_paths);
-
     gtk_main_quit();
 }
 
@@ -797,7 +681,10 @@ void launcher_webview_ok()
 
     if (!inited) {
         inited = TRUE;
-        _set_launcher_background(gtk_widget_get_window(webview));
+        set_launcher_background(gtk_widget_get_window(webview),
+                                dde_bg_g_settings,
+                                screen_width,
+                                screen_height);
     }
 }
 
@@ -822,17 +709,6 @@ void daemonize()
     } else if (pid != 0){
         exit(0);
     }
-}
-
-
-PRIVATE
-void _background_changed(GSettings* settings, char* key, gpointer user_data)
-{
-    char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
-    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
-    g_free(bg_path);
-    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
-    g_free(blur_path);
 }
 
 
@@ -881,7 +757,7 @@ int main(int argc, char* argv[])
 #endif
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
     g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
-                     G_CALLBACK(_background_changed), NULL);
+                     G_CALLBACK(background_changed), NULL);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -906,8 +782,10 @@ int main(int argc, char* argv[])
     monitor_resource_file("launcher", webview);
 #endif
 
+    monitor_apps();
     gtk_widget_show_all(container);
     gtk_main();
+    monitor_destroy();
     return 0;
 }
 

@@ -70,8 +70,7 @@ class Item extends Widget
         e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
-        _save_hidden_apps()
-        DCore.Launcher.exit_gui()
+        exit_launcher()
 
     do_dragstart: (e)=>
         e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))

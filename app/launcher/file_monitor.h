@@ -18,17 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef _X_CATEGORY_H_
-#define _X_CATEGORY_H_
 
-#define X_CATEGORY_NUM 194
+#ifndef FILE_MONITOR_H
+#define FILE_MONITOR_H
 
-typedef struct _XCategory XCategory;
-struct _XCategory {
-    char* name;
-    int index;
-};
+void monitor_apps();
+void monitor_destroy();
 
-extern XCategory x_category_name_index_map[X_CATEGORY_NUM];
+#endif /* end of include guard: FILE_MONITOR_H */
 
-#endif  // end of guard: _X_CATEGORY_H_
