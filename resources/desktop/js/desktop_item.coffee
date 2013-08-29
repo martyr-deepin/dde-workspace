@@ -97,10 +97,41 @@ class Item extends Widget
         @item_name = document.createElement("div")
         @item_name.className = "item_name"
         el.appendChild(@item_name)
-        #@item_name.addEventListener("contextmenu",(evt)=>
-            #menu = []
-            #@item_name.contextMenu = build_menu(menu)
-            #)
+        @item_name.addEventListener("contextmenu",(evt)=>
+            evt.stopPropagation()
+            if @selected == false
+                update_selected_stats(this, evt)
+            if @in_rename
+                menu = []
+            else
+                menu = []
+                menu.push([1, _("_Open")])
+                menu.push([])
+                menu.push([3, _("Cu_t")])
+                menu.push([4, _("_Copy")])
+                menu.push([])
+                menu.push([6, _("_Rename"), not is_selected_multiple_items()])
+                menu.push([9, _("_Delete")])
+                menu.push([])
+                menu.push([10, _("_Properties")])
+
+                if DCore.DEntry.is_fileroller_exist()
+                    compressable = get_items_compressibility()
+                    if 0 == compressable
+                    else if 1 == compressable
+                        menu.splice(2, 0, [11, _("Co_mpress")])
+                        menu.splice(3, 0, [])
+                    else if 2 == compressable
+                        menu.splice(2, 0, [12, _("_Extract")])
+                        menu.splice(3, 0, [13, _("Extract _Here")])
+                        menu.splice(4, 0, [])
+                    else if 3 == compressable
+                        menu.splice(2, 0, [11, _("Co_mpress")])
+                        menu.splice(3, 0, [12, _("_Extract")])
+                        menu.splice(4, 0, [13, _("Extract _Here")])
+                        menu.splice(5, 0, [])
+            @item_name.contextMenu = build_menu(menu)
+        )
         @item_update()
 
 
@@ -230,11 +261,9 @@ class Item extends Widget
 
     do_rightclick : (evt) ->
         evt.stopPropagation()
-        echo "do_rightclick"
         if @selected == false
             update_selected_stats(this, evt)
         else if @in_rename == true
-            echo "@in_rename == true"
             @item_complete_rename(false)
         return
 
@@ -588,9 +617,6 @@ class DesktopEntry extends Item
 
     do_buildmenu : ->
         menu = []
-        if @in_rename
-            echo "do_buildmenu @in_rename is true" 
-        
         menu.push([1, _("_Open")])
         menu.push([])
         menu.push([3, _("Cu_t")])
