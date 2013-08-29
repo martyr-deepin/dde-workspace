@@ -19,3 +19,11 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#ifndef FILE_MONITOR_H
+#define FILE_MONITOR_H
+
+void monitor_apps();
+void monitor_destroy();
+
+#endif /* end of include guard: FILE_MONITOR_H */
+

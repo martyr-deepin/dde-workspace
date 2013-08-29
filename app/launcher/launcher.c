@@ -30,6 +30,7 @@
 #include "category.h"
 #include "launcher_category.h"
 #include "background.h"
+#include "file_monitor.h"
 #include "DBUS_launcher.h"
 
 #define DOCK_HEIGHT 30
@@ -111,14 +112,12 @@ void launcher_hide()
 DBUS_EXPORT_API
 void launcher_quit()
 {
+    monitor_destroy();
     g_key_file_free(k_apps);
     g_key_file_free(launcher_config);
     g_object_unref(dde_bg_g_settings);
-
     g_hash_table_destroy(_category_table);
-
     g_ptr_array_unref(config_paths);
-
     gtk_main_quit();
 }
 
@@ -783,8 +782,10 @@ int main(int argc, char* argv[])
     monitor_resource_file("launcher", webview);
 #endif
 
+    monitor_apps();
     gtk_widget_show_all(container);
     gtk_main();
+    monitor_destroy();
     return 0;
 }
 
