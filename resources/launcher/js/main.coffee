@@ -84,9 +84,11 @@ sort_methods =
 
 exit_launcher = ->
     s_box.value = ""
-    do_search()
+    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
     _save_hidden_apps()
+    selected_category_id = ALL_APPLICATION_CATEGORY_ID
+    is_show_hidden_icons = false
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
