@@ -1165,6 +1165,8 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_debug("choose templates name :---%s---",basename);
 
     GFile* dir = g_file_new_for_path(DESKTOP_DIR());
+    
+        
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
     for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
@@ -1174,7 +1176,6 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
         child = g_file_get_child(dir, name);
     }
 
-    g_object_unref(dir);
     g_debug("choose templates new name :---%s---",name);
 
     //we should check @src type  to use diff method.
@@ -1183,6 +1184,11 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     {
         result = g_file_make_directory (child, NULL, NULL);
         g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
+        ArrayContainer ac;
+        ac = dentry_list_files(src);
+        dentry_copy(ac,child);   
+        ArrayContainer_free(ac);
+        result = true;
     }
     else
     {
@@ -1191,6 +1197,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
         g_debug ("create_templates: new file : %s", uri);
         g_free(uri);
     }
+    g_object_unref(dir);
 
     return result;
 }
