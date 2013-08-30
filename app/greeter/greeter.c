@@ -314,7 +314,8 @@ gboolean greeter_is_authenticated()
 JS_EXPORT_API
 void greeter_start_authentication(const gchar *username)
 {
-    if (greeter_use_face_recognition_login(username)) {
+    gboolean use_face_login = greeter_use_face_recognition_login(username);
+    if (use_face_login) {
         dbus_add_nopwdlogin((char*)username);
         g_warning("add to nopwdlogin");
     }
@@ -336,6 +337,11 @@ void greeter_start_authentication(const gchar *username)
 
     }else{
         lightdm_greeter_authenticate(greeter, username);
+    }
+
+    if (use_face_login) {
+        dbus_remove_nopwdlogin(get_selected_user());
+        g_warning("remove from nopwdlogin");
     }
 }
 
@@ -476,9 +482,6 @@ authentication_complete_cb(LightDMGreeter *greeter)
     if(lightdm_greeter_get_is_authenticated(greeter)){
         if(prompted){
             DBG("%s", "auth complete, start session");
-
-            dbus_remove_nopwdlogin(get_selected_user());
-            g_warning("remove from nopwdlogin");
 
             start_session(get_selected_session());
         }

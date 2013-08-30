@@ -7,9 +7,9 @@ func main() {
         SystemDBUS("com.deepin.dde.lock"),
         FLAGS_NONE,
         Method("dbus_add_nopwdlogin",
-            Callback("AddNoPwdLogin"), Arg("username:char*")),
+        Callback("AddNoPwdLogin"), Ret("ret:gboolean"), Arg("username:char*")),
         Method("dbus_remove_nopwdlogin",
-            Callback("RemoveNoPwdLogin"), Arg("username:char*")),
+        Callback("RemoveNoPwdLogin"), Ret("ret:gboolean"), Arg("username:char*")),
     )
 
     OUTPUT_END()
