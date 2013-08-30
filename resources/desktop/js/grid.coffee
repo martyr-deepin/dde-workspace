@@ -901,25 +901,31 @@ decompress_selected_items = ->
 
 decompress_selected_items_here = ->
     #echo "decompress_selected_items_here"
-    tmp = []
-    for i in selected_item
-        if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
-    try
-        DCore.DEntry.decompress_files_here(tmp)
-    catch e
-    return
-
+    if selected_item?
+        tmp = []
+        for i in selected_item
+            if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
+        try
+            DCore.DEntry.decompress_files_here(tmp)
+        catch e
+        return
+    else
+        return
 
 get_items_compressibility = ->
-    #echo "get_items_compressibility"
-    tmp = []
-    for i in selected_item
-        if (w = Widget.look_up(i))
-            if(false == w.modifiable)
-                return 0
-            else
-                tmp.push(w.get_entry())
-    DCore.DEntry.files_compressibility(tmp)
+    # echo "get_items_compressibility"
+    if selected_item?
+        tmp = []
+        for i in selected_item
+            if (w = Widget.look_up(i))
+                if(false == w.modifiable)
+                    return 0
+                else
+                    tmp.push(w.get_entry())
+        return DCore.DEntry.files_compressibility(tmp)
+    else
+        return 0
+
 
 
 gird_left_mousedown = (evt) ->

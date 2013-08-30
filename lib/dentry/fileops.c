@@ -363,7 +363,6 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
     g_copy_response = NULL;
 
     g_debug ("fileops_copy: Begin copying files");
-
     GCancellable* copy_cancellable = g_cancellable_new ();
     TDData* data = g_malloc0 (sizeof (TDData));
     data->cancellable = copy_cancellable;
@@ -377,7 +376,6 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
         char* dest_dir_uri = g_file_get_uri (dest_dir);
         g_debug ("fileops_copy: file %d: %s to dest_dir: %s", i, src_uri, dest_dir_uri);
         g_free (src_uri);
-        g_free (dest_dir_uri);
 #endif
 
         //make sure dest_dir is a directory before proceeding.
@@ -387,13 +385,33 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 	    //TODO: how to handle symbolic links
             return;
         }
-
-        char* src_basename = g_file_get_basename (src);
-        GFile* copy_dest_file = g_file_get_child (dest_dir, src_basename);
+        
+        // here ,we should first check the src directory is the same as the dest directory
+        // if is same , we should change the copy_dest_file by changing src_basename
+         char* src_basename = g_file_get_basename (src);
+         char* name = g_strdup(src_basename);
+         GFile* child = g_file_get_child(dest_dir, name);
+         const char* name_add_before = _("Untitled");
+         
+         GFile* parent = g_file_get_parent(src);
+         char* parent_uri = g_file_get_uri(parent);
+         g_object_unref(parent);
+         if(g_str_equal(parent_uri,dest_dir_uri))
+         {
+             for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
+                g_object_unref(child);
+                g_free(name);
+                name = g_strdup_printf("%s(%d)%s",name_add_before, i,src_basename);
+                child = g_file_get_child(dest_dir, name);
+             } 
+         }
+         
+        g_free (dest_dir_uri);
         g_free (src_basename);
+        g_free(name); 
+        g_free(parent_uri);
 
-	data->dest_file = copy_dest_file;
-
+	data->dest_file = child;
 	traverse_directory (src, _copy_files_async, _dummy_func, data);
 
         g_object_unref (data->dest_file);

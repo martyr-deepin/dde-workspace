@@ -98,9 +98,40 @@ class Item extends Widget
         @item_name.className = "item_name"
         el.appendChild(@item_name)
         @item_name.addEventListener("contextmenu",(evt)=>
-            menu = []
+            evt.stopPropagation()
+            if @selected == false
+                update_selected_stats(this, evt)
+            if @in_rename
+                menu = []
+            else
+                menu = []
+                menu.push([1, _("_Open")])
+                menu.push([])
+                menu.push([3, _("Cu_t")])
+                menu.push([4, _("_Copy")])
+                menu.push([])
+                menu.push([6, _("_Rename"), not is_selected_multiple_items()])
+                menu.push([9, _("_Delete")])
+                menu.push([])
+                menu.push([10, _("_Properties")])
+
+                if DCore.DEntry.is_fileroller_exist()
+                    compressable = get_items_compressibility()
+                    if 0 == compressable
+                    else if 1 == compressable
+                        menu.splice(2, 0, [11, _("Co_mpress")])
+                        menu.splice(3, 0, [])
+                    else if 2 == compressable
+                        menu.splice(2, 0, [12, _("_Extract")])
+                        menu.splice(3, 0, [13, _("Extract _Here")])
+                        menu.splice(4, 0, [])
+                    else if 3 == compressable
+                        menu.splice(2, 0, [11, _("Co_mpress")])
+                        menu.splice(3, 0, [12, _("_Extract")])
+                        menu.splice(4, 0, [13, _("Extract _Here")])
+                        menu.splice(5, 0, [])
             @item_name.contextMenu = build_menu(menu)
-            )
+        )
         @item_update()
 
 
@@ -369,7 +400,11 @@ class Item extends Widget
         input_x = _ITEM_WIDTH_ * @_position.x;
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
         DCore.Desktop.set_position_input(input_x,input_y)
-
+        #@item_name.addEventListener("contextmenu",(evt)=>
+            #echo "@item_name contextmenu addEventListener"
+            #menu = []
+            #@item_name.contextMenu = build_menu(menu)
+        #)
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
@@ -472,6 +507,7 @@ class Item extends Widget
             new_name = cleanup_filename(@item_name.innerText)
             if new_name.length > 0 and new_name != @get_name()
                 if not @on_rename(new_name)
+                    @in_rename = false
                     return
 
         move_widget_to_grid_after_rename(@)

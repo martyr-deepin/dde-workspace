@@ -22,10 +22,10 @@
 #include <gtk/gtk.h>
 #include "jsextension.h"
 #include "special_window.h"
+#include "../launcher/DBUS_launcher.h"
 
 extern Window active_client_id;
 extern Window get_dock_window();
-extern void dock_close_window(double id);
 
 Window launcher_id = 0;
 gulong desktop_pid = 0;
@@ -37,7 +37,8 @@ gboolean launcher_should_exit()
 
 void close_launcher_window()
 {
-    dock_close_window(launcher_id);
+    dbus_launcher_hide();
+    js_post_message_simply("launcher_destroy", NULL);
 }
 
 PRIVATE
