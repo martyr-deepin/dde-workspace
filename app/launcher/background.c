@@ -143,6 +143,9 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
     char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     g_free(bg_path);
+    while (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
+        g_usleep(3);
+    }
     js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
     g_free(blur_path);
 }
