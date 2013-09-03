@@ -927,13 +927,13 @@ gboolean dock_window_need_to_be_minimized(double id)
 }
 
 JS_EXPORT_API
-void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height, JSData* data)
+void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
 {
-    if (JSValueIsNull(data->ctx, canvas)) {
+    if (JSValueIsNull(get_global_context(), canvas)) {
         g_debug("draw_window_preview with null canvas!");
         return;
     }
-    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+    cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
     Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
     if (c == NULL)
