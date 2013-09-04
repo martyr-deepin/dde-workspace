@@ -35,9 +35,9 @@
 #define GET_A(c) ((c & 0xff) / 100.0)
 
 JS_EXPORT_API
-void dock_draw_board(JSValueRef canvas, JSData* data)
+void dock_draw_board(JSValueRef canvas)
 {
-    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+    cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
     int w = gdk_screen_get_width(gdk_screen_get_default());
 
@@ -83,6 +83,6 @@ void dock_draw_board(JSValueRef canvas, JSData* data)
     canvas_custom_draw_did(cr, NULL);
 }
 
-void draw_app_icon(JSValueRef canvas, double id, double number, JSData* data)
+void draw_app_icon(JSValueRef canvas, double id, double number)
 {
 }

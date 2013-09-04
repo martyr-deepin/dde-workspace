@@ -219,7 +219,7 @@ void lock_set_background(const gchar *path)
 }
 
 JS_EXPORT_API
-void lock_draw_background(JSValueRef canvas, JSData* data)
+void lock_draw_background(JSValueRef canvas)
 {
     gchar* image_path = lock_get_background();
     gint height = gdk_screen_get_height(gdk_screen_get_default());
@@ -230,7 +230,7 @@ void lock_draw_background(JSValueRef canvas, JSData* data)
 
     }else{
 
-        cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+        cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
         GdkPixbuf *image_pixbuf = gdk_pixbuf_new_from_file_at_scale(image_path, width, height, False, &error);
 
         if (error != NULL) {
