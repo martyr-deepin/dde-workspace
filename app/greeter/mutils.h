@@ -1,9 +1,9 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Liqiang Lee
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2011 ~ 2013 Long Wei
  *
- * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
- * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Author:      Long Wei <yilang2007lw@gmail.com>
+ * Maintainer:  Long Wei <yilang2007lw@gamil.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,18 +19,27 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef _M_UTILS_H
+#define _M_UTILS_H
 
-#define IMAGE_NAME "/tmp/deepin_user_face_for_login.png"
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <glib.h>
+#include <stdlib.h>
+#include <glib/gstdio.h>
+#include <glib/gprintf.h>
+#include <sys/types.h>
+#include <X11/XKBlib.h>
+#include <gio/gio.h>
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+#include "i18n.h"
 
-extern gboolean detect_is_enabled;
+gboolean app_is_running (const char* path);
 
-gboolean has_camera();
-void init_camera(int argc, char* argv[]);
-void connect_callback();
-void destroy_camera();
-void init_reco_state();
+gboolean is_capslock_on ();
 
-#endif /* end of include guard: CAMERA_H */
+gchar* get_date_string ();
 
+#endif

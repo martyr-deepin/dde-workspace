@@ -125,18 +125,8 @@ class ComboBox extends Widget
         @current_img.src = find[2]
         find[0]
 
-
-DCore.signal_connect("status", (msg) ->
-    echo msg.status
-#debug code begin
-#status_div = create_element("div", " ", $("#Debug"))
-#status_div.innerText = "status:" + msg.status
-#debug code end
-)
-
 de_menu_cb = (id, title)->
     id = de_menu.set_current(id)
-    DCore.Greeter.set_selected_session(id)
 
 de_menu = new ComboBox("desktop", de_menu_cb)
 #de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"

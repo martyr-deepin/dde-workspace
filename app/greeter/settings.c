@@ -38,26 +38,32 @@ gboolean _get_face_recognition_login_setting(const char* username)
     g_key_file_load_from_file(config, CONFIG_FILE, G_KEY_FILE_NONE, &err);
     if (err != NULL) {
         g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
-        g_error_free(err);
         goto out;
     }
 
     use_face_login = g_key_file_get_boolean(config, "Users", username, &err);
-    if (err != NULL) {
+    if (err != NULL)
         g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
-        g_error_free(err);
-    }
 
 out:
+    if (err != NULL)
+        g_error_free(err);
     g_key_file_unref(config);
     return use_face_login;
+}
+
+
+gboolean _use_face_recognition_login(char const* username)
+{
+    return detect_is_enabled && has_camera()
+        && _get_face_recognition_login_setting(username);
 }
 
 
 JS_EXPORT_API
 gboolean lock_use_face_recognition_login(const char* username)
 {
-    return has_camera() && _get_face_recognition_login_setting(username);
+    return _use_face_recognition_login(username);
     return TRUE;
 }
 
@@ -65,7 +71,7 @@ gboolean lock_use_face_recognition_login(const char* username)
 JS_EXPORT_API
 gboolean greeter_use_face_recognition_login(const char* username)
 {
-    return has_camera() && _get_face_recognition_login_setting(username);
+    return _use_face_recognition_login(username);
     return TRUE;
 }
 
@@ -74,8 +80,11 @@ static void _webview_ok(char const* username)
 {
     static gboolean inited = FALSE;
     if (!inited) {
-        if (lock_use_face_recognition_login(username))
+        g_warning("current user: %s", username);
+        if (_use_face_recognition_login(username)) {
             js_post_message_simply("draw", NULL);
+            connect_callback();
+        }
 
         inited = TRUE;
     }

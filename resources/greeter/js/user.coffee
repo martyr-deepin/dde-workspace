@@ -18,11 +18,22 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Tip
-    constructor:(@parent)->
+apply_refuse_rotate = (el, time)->
+    apply_animation(el, "refuse", "#{time}s", "linear")
+    setTimeout(->
+        el.style.webkitAnimation = ""
+    , time * 1000)
+
+
+class FailedTip
+    constructor:(text, @parent)->
         @failed_tip = null
-        @failed_tip = create_element("div", "failed-tip", parent)
-        @failed_tip.appendChild(document.createTextNode(LOGIN_FAILED_TIP_TEXT))
+        @failed_tip = create_element("div", "failed-tip", @parent)
+        @failed_tip.appendChild(document.createTextNode(text))
+        @failed_tip.style.top = "#{.15 * window.innerHeight + 310}px"
+
+    adjust_show_login: ->
+        @failed_tip.style.top = "#{.15 * window.innerHeight + 390}px"
 
     remove: =>
         if @failed_tip
@@ -30,21 +41,17 @@ class Tip
             @failed_tip = null
 
 failed_tip = null
+draw_camera_id = null
 
-apply_refuse_rotate = (el, time)->
-    apply_animation(el, "refuse", "#{time}s", "linear")
-    setTimeout(->
-        el.style.webkitAnimation = ""
-    , time * 1000)
 
 class LoginEntry extends Widget
-    constructor: (@id, @on_active)->
+    constructor: (@id, @loginuser, @on_active)->
         super
-        if DCore.Greeter.is_hide_users()
+        if is_hide_users
             @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
             @account.addEventListener("keyup", (e)=>
-                if e.which == 13
+                if e.which == ENTER_KEY
                     if not @account.value
                         @account.focus()
                     else
@@ -52,64 +59,53 @@ class LoginEntry extends Widget
             )
 
         @warning = create_element("div", "CapsWarning", @element)
-
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
 
-        if DCore.Greeter.detect_capslock()
+        @check_capslock()
+
+        @password.addEventListener("keyup", (e)=>
+            @check_capslock()
+            if e.which == ENTER_KEY
+                if @check_completeness
+                    if is_hide_users
+                        @on_active(@account.value, @password.value)
+                    else
+                        @on_active(@loginuser, @password.value)
+        )
+
+        @login = create_element("button", "LoginButton", @element)
+        if is_greeter
+            @login.innerText = _("Log In")
+        else
+            @login.innerText = _("Unlock")
+
+        @login.addEventListener("click", =>
+            if @check_completeness
+                if is_hide_users
+                    @on_active(@account.value, @password.value)
+                else
+                    @on_active(@loginuser, @password.value)
+        )
+        @element.setAttribute("autofocus", true)
+
+    check_capslock: ->
+        if DCore[APP_NAME].detect_capslock()
             @warning.classList.add("CapsWarningBackground")
         else
             @warning.classList.remove("CapsWarningBackground")
 
-        @password.addEventListener("keyup", (e)=>
-            if DCore.Greeter.detect_capslock()
-                @warning.classList.add("CapsWarningBackground")
-            else
-                @warning.classList.remove("CapsWarningBackground")
-
-            if e.which == 13
-                if DCore.Greeter.is_hide_users()
-                    if not @account.value
-                        @account.focus()
-                    else if not @password.value
-                        @password.focus()
-                    else
-                        @on_active(@account.value, @password.value)
-                else
-                    if not @password.value
-                        @password.focus()
-                    else
-                        @on_active(@id, @password.value)
-        )
-
-        @login = create_element("button", "LoginButton", @element)
-        @login.innerText = _("Log In")
-        @login.addEventListener("click", =>
-            if DCore.Greeter.is_hide_users()
-                if not @account.value
-                    @account.focus()
-                else if not @password.value
-                    @password.focus()
-                else
-                    @on_active(@account.value, @password.value)
-            else
-                if not @password.value
-                    @password.focus()
-                else
-                    @on_active(@id, @password.value)
-        )
-
-        @element.setAttribute("autofocus", true)
-        if DCore.Greeter.is_hide_users()
-            @account.index = 0
-            @password.index = 1
-            @login.index = 2
-            @account.focus()
-        else
-            @password.index = 0
-            @login.index = 1
+    check_completeness: ->
+        if is_hide_users
+            if not @account.value
+                @account.focus()
+                return false
+        if not @password.value
             @password.focus()
+            return false
+        return true
+
 
 class Loading extends Widget
     constructor: (@id)->
@@ -118,120 +114,99 @@ class Loading extends Widget
         create_element("div", "ball1", @element)
         create_element("span", "", @element).innerText = _("Welcome")
 
-_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
-_current_bg = create_img("Background", _default_bg_src)
-document.body.appendChild(_current_bg)
+class SwitchUser extends Widget
+    constructor: (@id)->
+        super
+        @switch = create_element("div", "SwitchGreeter", @element)
+        @switch.innerText = _("Switch User")
+        @switch.addEventListener("click", =>
+            clearInterval(draw_camera_id)
+            DCore.Lock.switch_user()
+        )
+
+#_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
+#_current_bg = create_img("Background", _default_bg_src)
+#document.body.appendChild(_current_bg)
 
 _current_user = null
 userinfo_list = []
 _drag_flag = false
 
-click_handler = (e)->
-    if _current_user == @
-        if not @login and not @in_drag
-            @show_login()
-        else
-            if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
-                echo "login pwd clicked"
-            else
-                @hide_login()
-    else
-        @focus()
+background = $("#background")
+background.width = screen.width
+background.height = screen.height
 
-account_keydown_handler = (e) ->
-    if e.which == 13 and @login_displayed
-        @login.account.focus()
 
-passwd_keydown_handler = (e) ->
-    if e.which == 13 and @login_displayed
-        @login.password.focus()
+enable_detection = (enabled)->
+    DCore[APP_NAME].enable_detection(enabled)
+
 
 class UserInfo extends Widget
-    constructor: (@id, name, img_src)->
+    constructor: (@id, name, @img_src)->
         super
+        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
+        echo "use face login: #{@face_login}"
         @li = create_element("li", "")
         @li.appendChild(@element)
+
         @userbase = create_element("div", "UserBase", @element)
-        if img_src
-            @img = create_img("UserImg", img_src, @userbase)
-        else
-            @canvas = create_element("canvas", "UserImg", @userbase)
-            @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
-            @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
-            @camera_flag = create_img('camera', 'images/camera.png', @userbase)
+
+        @canvas = create_element("canvas", "UserImg", @userbase)
+        @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
+        @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
+        @draw_avatar()
+
+        warp = create_element('div', "UserName", @userbase)
+
+        if @face_login
+            @camera_flag = create_img('camera_flag', 'images/camera.png', warp)
 
             @scanner = create_element('div', 'scanner', @userbase)
             @scan_line = create_img('', 'images/scan-line.png', @scanner)
-            echo "[UserInfo] ctor use face login create scanner: #{@scanner}"
-        @name = create_element("div", "UserName", @userbase)
+
+        @name = create_element("div", "UserName", warp)
         @name.innerText = name
-        @login_displayed = false
+
+        @element.index = 0
         @index = roundabout.childElementCount
         userinfo_list.push(@)
 
-        if @id == "guest"
-            user_bg = _default_bg_src
-        else
-            try
-                user_bg = DCore.Greeter.get_user_background_dbus(@id)
-            catch error
-                try
-                    user_bg = DCore.Greeter.get_user_background(@id)
-                catch error
-                    user_bg = _default_bg_src
+        @login_displayed = false
+        @display_failure = false
+        @is_recognizing = false
+        @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
-        if not user_bg? or user_bg == "nonexists"
-            user_bg = _default_bg_src
-        @background = create_img("Background", user_bg)
-        @element.index = 0
-
-    draw_camera:->
-        if @canvas
-            setInterval(=>
-                DCore.Greeter.draw_camera(@canvas, @canvas.width, @canvas.height)
-            , 20)
-
-    start_animation: =>
-        echo '[start_animation]'
-        if @canvas?
-            @scanner.style.zIndex = 300
-            @scanner.style.webkitAnimation = 'scanning 5s linear infinite'
-            # @element.removeEventListener("click", click_handler)
-            # document.body.removeEventListener("keydown", account_keydown_handler)
-            # document.body.removeEventListener("keydown", passwd_keydown_handler)
-
-    stop_animation: ->
-        echo '[stop_animation]'
-        if @canvas?
-            @scanner.style.zIndex = -100
-            @scanner.style.webkitAnimation = ''
-            # @element.addEventListener("click", click_handler)
-            # document.body.addEventListener("keydown", account_keydown_handler)
-            # document.body.addEventListener("keydown", passwd_keydown_handler)
+    draw_avatar: ->
+        ctx = @canvas.getContext("2d")
+        img = new Image()
+        img.onload = ->
+            ctx.drawImage(img, 0, 0)
+        img.src = @img_src
 
     focus: ->
+        DCore[APP_NAME].set_username(@id)
+
         _current_user?.blur()
         _current_user = @
         $("#roundabout").focus()
         @element.focus()
         @add_css_class("UserInfoSelected")
 
-        if DCore.Greeter.is_hide_users()
-            DCore.Greeter.start_authentication("*other")
-        else
-            if @background.src != _current_bg.src
-                document.body.appendChild(@background)
-                document.body.removeChild(_current_bg)
-                _current_bg = @background
+        if @id != "guest"
+            if is_greeter
+                DCore.Greeter.draw_user_background(background, @id)
 
-            DCore.Greeter.set_selected_user(@id)
-            if @id != "guest"
-                session = DCore.Greeter.get_user_session(@id)
-                if session? and session != "nonexists"
-                    de_menu.set_current(session)
-                    DCore.Greeter.set_selected_session(session)
+                if @session? and @session in sessions
+                    de_menu.set_current(@session)
+                else
+                    echo "in focus invalid user session"
+            else
+                DCore.Lock.draw_background(background)
 
-            DCore.Greeter.start_authentication(@id)
+            clearInterval(draw_camera_id)
+            draw_camera_id = null
+            @draw_camera()
+            enable_detection(true)
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
@@ -241,17 +216,27 @@ class UserInfo extends Widget
         @loading = null
         @login_displayed = false
 
+        if @ != _current_user
+            enable_detection(false)
+            clearInterval(draw_camera_id)
+            draw_camera_id = null
+            _current_user?.stop_animation()
+            @draw_avatar()
+
     show_login: ->
+        if @face_login
+            enable_detection(false)
+
         if false
             @login()
         else if _drag_flag
             echo "in drag"
 
         else if _current_user == @ and not @login
-            @login = new LoginEntry("login", (u, p)=>@on_verify(u, p))
+            @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
             @element.appendChild(@login.element)
 
-            if DCore.Greeter.is_hide_users()
+            if is_hide_users
                 @element.style.paddingBottom = "0px"
                 @login.account.focus()
             else
@@ -261,25 +246,131 @@ class UserInfo extends Widget
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
 
-            else if not DCore.Greeter.need_password(@id)
-                @login.password.style.display = "none"
-                @login.password.value = "deepin"
+            if is_greeter
+                if not DCore.Greeter.user_need_password(@id)
+                    @login.password.style.display = "none"
+                    @login.password.value = "deepin"
+            else
+                if not DCore.Lock.need_password()
+                    @login.password.style.display = "none"
+                    @login.password.value = "deepin"
 
             @login_displayed = true
             @add_css_class("UserInfoSelected")
             @add_css_class("foo")
-            click_handler = click_handler.bind(@)
-            @element.addEventListener("click", click_handler)
 
     hide_login: ->
+        if @face_login
+            enable_detection(true)
+
         if @login and @login_displayed
             @blur()
             @focus()
 
-    # do_click: click_handler.bind(@)
+    do_click: (e)=>
+        if _current_user == @
+            if not @login and not @in_drag
+                if @face_login
+                    if not @is_recognizing
+                        if e.target.className == "UserName"
+                            failed_tip?.remove()
+                            @show_login()
+                        else if e.target.className == 'UserImg'
+                            failed_tip?.remove()
+                            DCore[APP_NAME].start_recognize()
+                else
+                    @show_login()
+            else
+                if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
+                    echo "do click:login pwd clicked"
+                else
+                    @hide_login()
+
+                    if @face_login
+                        failed_tip?.remove()
+                        DCore[APP_NAME].start_recognize()
+        else
+            @focus()
+
+    on_verify: (username, password)->
+        if not password or @display_failure
+            @login.password.focus()
+            @display_failure = false
+        else
+            @login.destroy()
+            @loading = new Loading("loading")
+            @element.appendChild(@loading.element)
+
+            if is_greeter
+                session = de_menu.get_current()
+                if not session?
+                    echo "get session failed"
+                    session = "deepin"
+                @session = session
+                DCore.Greeter.start_session(username, password, @session)
+            else
+                DCore.Lock.try_unlock(password)
+
+    hide_user_fail:  (msg) ->
+        @login.account.style.color = "red"
+        @login.account.value = msg
+        @login.account.blur()
+
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == ENTER_KEY and @login_displayed and @display_failure
+                @login.account.focus()
+        )
+
+        @login.account.addEventListener("focus", (e)=>
+            @login.account.style.color = "black"
+            @login.account.value = ""
+            @display_failure = false
+        )
+
+    normal_user_fail: (msg) ->
+        @login.password.classList.remove("PasswordStyle")
+        @login.password.style.color = "red"
+        @login.password.value = msg
+        @login.password.blur()
+
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == ENTER_KEY and is_greeter and @login_displayed and @display_failure
+                @login.password.focus()
+        )
+
+        @login.password.addEventListener("focus", (e)=>
+            @login.password.classList.add("PasswordStyle")
+            @login.password.style.color ="black"
+            @login.password.value = ""
+            @display_failure = false
+        )
+
+    auth_failed: (msg) ->
+        echo "[User.auth_failed]"
+        if not @login_displayed and @face_login
+            echo "face login failed"
+            @stop_animation()
+            failed_tip?.remove()
+            failed_tip = null
+            failed_tip = new FailedTip(msg, roundabout.parentElement)
+        else
+            echo "login failed"
+            @focus()
+            @show_login()
+            @display_failure = true
+
+            if is_hide_users
+                @hide_user_fail(msg)
+            else
+                @normal_user_fail(msg)
+
+            apply_refuse_rotate(@element, 0.5)
 
     animate_prev: ->
-        echo "animate prev"
+        DCore[APP_NAME].cancel_detect()
+        if @is_recognizing
+            return
+
         if @index is 0
             prev_index = _counts - 1
         else
@@ -292,7 +383,10 @@ class UserInfo extends Widget
         jQuery("#roundabout").roundabout("animateToChild", prev_index)
 
     animate_next: ->
-        echo "animate next"
+        DCore[APP_NAME].cancel_detect()
+        if @is_recognizing
+            return
+
         if @index is _counts - 1
             next_index = 0
         else
@@ -305,7 +399,10 @@ class UserInfo extends Widget
         jQuery("#roundabout").roundabout("animateToChild", next_index)
 
     animate_near: ->
-        echo "animate near"
+        DCore[APP_NAME].cancel_detect()
+        if @is_recognizing
+            return
+
         try
             near_index = jQuery("#roundabout").roundabout("getNearestChild")
         catch error
@@ -321,197 +418,55 @@ class UserInfo extends Widget
             ,200)
         jQuery("#roundabout").roundabout("animateToChild", near_index)
 
-    on_verify: (username, password)->
-        @login.destroy()
-        @loading = new Loading("loading")
-        @element.appendChild(@loading.element)
+    draw_camera: ->
+        if @face_login
+            draw_camera_id = setInterval(=>
+                DCore[APP_NAME].draw_camera(@canvas, @canvas.width, @canvas.height)
+            , 20)
 
-        DCore.Greeter.set_selected_session(de_menu.get_useable_current()[0])
-        if DCore.Greeter.is_hide_users()
-            DCore.Greeter.set_selected_user(username)
-            DCore.Greeter.login_clicked(username, "")
-            DCore.signal_connect("prompt", (msg)->
-                DCore.Greeter.login_clicked(username, password)
-            )
-        else
-            DCore.Greeter.login_clicked(username, password)
-        #debug code begin
-        #div_auth = create_element("div", "", $("#Debug"))
-        #div_auth.innerText += "authenticate"
-        #debug code end
+    start_animation: =>
+        echo '[start_animation]'
+        if @face_login
+            echo '[set animation]'
+            @scanner.style.display = 'block'
+            @scanner.style.zIndex = 300
+            @scanner.style.webkitAnimation = 'scanning 5s linear infinite'
+            @scan_line.style.display = 'block'
 
-    verify_failed: (msg) ->
-        @focus()
-        @show_login()
-
-        if DCore.Greeter.is_hide_users()
-            @login.account.style.color = "red"
-            @login.account.value = msg
-            @login.account.blur()
-            @login.account.addEventListener("focus", (e)=>
-                @login.account.style.color = "black"
-                @login.account.value = ""
-                DCore.Greeter.start_authentication("*other")
-            )
-            account_keydown_handler = account_keydown_handler.bind(@)
-            document.body.addEventListener("keydown", account_keydown_handler)
-        else
-            @login.password.classList.remove("PasswordStyle")
-            @login.password.style.color = "red"
-            @login.password.value = msg
-            @login.password.blur()
-            @login.password.addEventListener("focus", (e)=>
-                @login.password.classList.add("PasswordStyle")
-                @login.password.style.color ="black"
-                @login.password.value = ""
-            )
-
-            passwd_keydown_handler = passwd_keydown_handler.bind(@)
-            document.body.addEventListener("keydown", passwd_keydown_handler)
-
-        apply_refuse_rotate(@element, 0.5)
-
-######get user icon from dbus ############
-get_user_image = (user) ->
-    echo "get_user_image"
-    try
-        user_image = DCore.Greeter.get_user_image(user)
-    catch error
-        echo "get user image failed"
-    if not user_image? or user_image == "nonexists"
-        try
-            user_image = DCore.DBus.sys_object("com.deepin.passwdservice",
-                                                "/",
-                                                "com.deepin.passwdservice"
-                                            ).get_user_fake_icon_sync(user)
-        catch error
-            user_image = "images/guest.jpg"
-    return user_image
-
-#######add all user(include guest) to roundabout############
-if DCore.Greeter.is_hide_users()
-    u = new UserInfo("*other", "", "images/huser.jpg")
-    roundabout.appendChild(u.li)
-    Widget.look_up("*other").element.style.paddingBottom = "5px"
-    u.focus()
-else
-    users = DCore.Greeter.get_users()
-    echo "users: #{users}"
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            user_image = get_user_image(user)
-            face_login = DCore.Greeter.use_face_recognition_login(user)
-            echo "face login: #{face_login}"
-            if face_login
-                u = new UserInfo(user, user, null)
-            else
-                u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
-            u.focus()
-
-    if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        roundabout.appendChild(u.li)
-        if DCore.Greeter.is_guest_default()
-            u.focus()
-
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            echo "already append default user"
-        else
-            user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
-
-DCore.signal_connect("message", (msg) ->
-    echo msg.error
-)
-
-DCore.signal_connect("auth", (msg) ->
-    _current_user?.verify_failed(msg.error)
-)
+    stop_animation: ->
+        echo '[stop_animation]'
+        if @face_login
+            @scanner.style.display = 'none'
+            @scanner.style.zIndex = -300
+            @scanner.style.webkitAnimation = ''
+            @scan_line.style.display = 'none'
 
 DCore.signal_connect("draw", ->
-    # echo 'receive draw signal'
+    echo 'receive draw signal'
+    clearInterval(draw_camera_id)
+    draw_camera_id = null
     _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    # echo "receive start animation"
+    echo "receive start animation"
+    _current_user.is_recognizing = true
+    _current_user.hide_login()
+    _remove_click_event?()
     _current_user.start_animation()
 )
 
-DCore.signal_connect("login-failed", ->
-    # echo "receive stop animation"
-    _current_user.stop_animation()
-    failed_tip?.remove()
-    failed_tip = new Tip(roundabout.parentElement)
+DCore.signal_connect("auth-failed", (msg)->
+    echo "[auth-failed]"
+    _current_user.is_recognizing = false
+    _current_user.auth_failed(msg.error)
 )
 
-DCore.signal_connect("start-login", ->
-    # echo "receive start login"
-    # TODO: maybe some animation or some reflection.
-    DCore.Greeter.login_clicked(_current_user.id, "")
+DCore.signal_connect("failed-too-much", (msg)->
+    echo '[failed-too-much]'
+    _current_user.is_recognizing = false
+    _current_user.auth_failed(msg.error)
+    _current_user.show_login()
+    failed_tip.adjust_show_login()
 )
 
-####the _counts must put before any animate of roundabout####
-_counts = roundabout.childElementCount
-_ANIMATE_TIMEOUT_ID = -1
-
-document.body.addEventListener("mousewheel", (e) =>
-    clearTimeout(_ANIMATE_TIMEOUT_ID)
-    _ANIMATE_TIMEOUT_ID = -1
-
-    if e.wheelDelta >= 120
-        #echo "scroll to prev"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_prev()
-        , 200)
-
-    if e.wheelDelta <= -120
-        #echo "scroll to next"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_next()
-        ,200)
-)
-
-document.body.addEventListener("keydown", (e)=>
-
-    if e.which == 37
-        #echo "prev"
-        _current_user?.animate_prev()
-
-    else if e.which == 39
-        #echo "next"
-        _current_user?.animate_next()
-
-    else if e.which == ENTER_KEY
-        #echo "enter"
-        _current_user?.show_login()
-
-    else if e.which == ESC_KEY
-        #echo "esc"
-        _current_user?.hide_login()
-)
-
-if roundabout.children.length <= 2
-    roundabout.style.width = "0"
-    #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
-    userinfo_list[0]?.focus()
-    if not face_login
-        userinfo_list[0]?.show_login()
-
-l = (screen.width  - roundabout.clientWidth) / 2
-roundabout.style.left = "#{l}px"
-
-jQuery("#roundabout").drag("start", (ev, dd) ->
-    _current_user?.hide_login()
-    _drag_flag = true
-, {distance:100}
-)
-
-jQuery("#roundabout").drag("end", (ev, dd) ->
-    _current_user?.animate_near()
-)
-
-DCore.Greeter.webview_ok(_current_user.id)

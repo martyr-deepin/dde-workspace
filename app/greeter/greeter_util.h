@@ -19,29 +19,35 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "jsextension.h"
+#ifndef _GREETER_UTIL_H
+#define _GREETER_UTIL_H
+
+#include <glib.h>
 #include <lightdm.h>
+#include "jsextension.h"
 
-JS_EXPORT_API JSObjectRef greeter_get_sessions ();
+JS_EXPORT_API JSObjectRef greeter_get_users ();
 
-JS_EXPORT_API gchar* greeter_get_session_name (const gchar *key);
+JS_EXPORT_API gchar* greeter_get_user_icon (const gchar* name);
 
-JS_EXPORT_API gchar* greeter_get_session_icon (const gchar *key);
+JS_EXPORT_API gchar* greeter_get_user_realname (const gchar* name);
 
-JS_EXPORT_API gchar* greeter_get_default_session ();
+JS_EXPORT_API gboolean greeter_user_need_password (const gchar *name);
 
-JS_EXPORT_API gboolean greeter_get_can_suspend ();
+JS_EXPORT_API gchar* greeter_get_default_user ();
 
-JS_EXPORT_API gboolean greeter_get_can_hibernate ();
+JS_EXPORT_API gchar* greeter_get_user_session (const gchar *name);
 
-JS_EXPORT_API gboolean greeter_get_can_restart ();
+JS_EXPORT_API gboolean greeter_is_hide_users ();
 
-JS_EXPORT_API gboolean greeter_get_can_shutdown ();
+JS_EXPORT_API gboolean greeter_is_support_guest ();
 
-JS_EXPORT_API gboolean greeter_run_suspend ();
+JS_EXPORT_API gboolean greeter_is_guest_default ();
 
-JS_EXPORT_API gboolean greeter_run_hibernate ();
+JS_EXPORT_API void greeter_draw_user_background (JSValueRef canvas, const gchar *username);
 
-JS_EXPORT_API gboolean greeter_run_restart ();
+JS_EXPORT_API gchar* greeter_get_date ();
 
-JS_EXPORT_API gboolean greeter_run_shutdown ();
+JS_EXPORT_API gboolean greeter_detect_capslock ();
+
+#endif
