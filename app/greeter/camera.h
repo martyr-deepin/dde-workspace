@@ -28,7 +28,7 @@ extern gboolean detect_is_enabled;
 
 gboolean has_camera();
 void init_camera(int argc, char* argv[]);
-void connect_callback();
+void connect_camera();
 void destroy_camera();
 void init_reco_state();
 

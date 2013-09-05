@@ -103,7 +103,11 @@ void init_reco_state()
 void init_camera(int argc, char* argv[])
 {
     gst_init (&argc, &argv);
+}
 
+
+void connect_camera()
+{
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
         "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
         " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
@@ -113,11 +117,6 @@ void init_camera(int argc, char* argv[])
 
     g_object_set(G_OBJECT(img_sink), "signal-handoffs", TRUE, NULL);
     gst_element_set_state(pipeline, GST_STATE_PLAYING);
-}
-
-
-void connect_callback()
-{
     g_signal_connect(G_OBJECT(img_sink), "handoff",
                      G_CALLBACK(_frame_handler), NULL);
 }

@@ -83,7 +83,7 @@ static void _webview_ok(char const* username)
         g_warning("current user: %s", username);
         if (_use_face_recognition_login(username)) {
             js_post_message_simply("draw", NULL);
-            connect_callback();
+            connect_camera();
         }
 
         inited = TRUE;
