@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Long Wei
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2011 ~ 2013 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
@@ -18,22 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+
+#ifndef _USER_H
+#define _USER_H
+
+#include <gio/gio.h>
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+#include <gdk/gdkx.h>
+#include <cairo-xlib.h>
 #include <glib.h>
 #include <glib/gstdio.h>
-#include <lightdm.h>
-#include "utils.h"
+#include <gio/gio.h>
+#include <stdio.h>
+#include "dwebview.h"
 #include "jsextension.h"
 
-gboolean is_user_valid(const gchar *username);
+GDBusProxy *get_user_proxy (const gchar *username);
 
-JS_EXPORT_API const gchar* greeter_get_default_user();
+gchar * get_user_icon (const gchar *username);
 
-JS_EXPORT_API ArrayContainer greeter_get_users();
+gchar * get_user_background (const gchar *username);
 
-JS_EXPORT_API const gchar *greeter_get_user_background_dbus(const gchar* name);
+gchar * get_user_realname (const gchar *username);
 
-JS_EXPORT_API const gchar* greeter_get_user_background(const gchar* name);
+gboolean is_need_pwd (const gchar *username);
 
-JS_EXPORT_API const gchar* greeter_get_user_session(const gchar* name);
+void draw_user_background (JSValueRef canvas, const gchar *username);
 
-const gchar* get_first_user();
+void keep_user_background (const gchar *username);
+
+void kill_user_lock (const gchar *username, const gchar *password);
+
+#endif

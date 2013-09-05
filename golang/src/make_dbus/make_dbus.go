@@ -27,7 +27,9 @@ var type_table = map[string]string {
     "gboolean": "b",
     "gint16": "n",
     "guint16": "q",
-    "gint32": "u",
+    "int": "i",
+    "gint32": "i",
+    "guint32": "u",
     "gint64": "x",
     "guint64": "t",
     "gdouble": "d",
@@ -248,8 +250,21 @@ func to_path(info string) string {
     return strings.Replace("/" + info, ".", "/", -1)
 }
 
+const (
+    SESSION_BUS = "G_BUS_TYPE_SESSION"
+    SYSTEM_BUS = "G_BUS_TYPE_SYSTEM"
+)
+
+func DBusFull(bus_type, name, path, interfaces string, flag int) BusInfoStruct {
+    return BusInfoStruct{bus_type, name, path, interfaces, flag}
+}
+
 func SessionDBUS(info string) BusInfoStruct {
-    return BusInfoStruct{"G_BUS_TYPE_SESSION", info, to_path(info), info, FLAGS_NONE}
+    return BusInfoStruct{SESSION_BUS, info, to_path(info), info, FLAGS_NONE}
+}
+
+func SystemDBUS(info string) BusInfoStruct {
+    return BusInfoStruct{SYSTEM_BUS, info, to_path(info), info, FLAGS_NONE}
 }
 
 func DBusInstall(setup_func_name string, bus BusInfoStruct, methods...MethodStruct) {
@@ -362,7 +377,7 @@ func DBusCall(bus BusInfoStruct, flags int, methods...MethodStruct) {
     if err != nil {
         panic(err)
     }
-  
+
 }
 const (
     FLAGS_NONE = 0

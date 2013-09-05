@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Long Wei
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2011 ~ 2013 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
@@ -18,23 +18,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#include <gtk/gtk.h>
+
+#ifndef _LOCK_UTIL_H
+#define _LOCK_UTIL_H
+
+#include <glib.h>
+#include <glib/gstdio.h>
+#include <fcntl.h>
+#include <pwd.h>
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-#include <glib.h>
-#include <stdlib.h>
-#include <glib/gstdio.h>
-#include <glib/gprintf.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <X11/XKBlib.h>
-#include <gio/gio.h>
-#include <stdio.h>
-#include <string.h>
+#include "X_misc.h"
 
-gboolean app_is_running(const char* path);
-gboolean is_capslock_on();
-gchar* get_date_string();
-gboolean is_need_pwd(const gchar *username);
+JS_EXPORT_API const gchar* lock_get_username ();
+
+JS_EXPORT_API gchar* lock_get_realname ();
+
+JS_EXPORT_API gchar* lock_get_user_icon ();
+
+JS_EXPORT_API gboolean lock_need_password ();
+
+JS_EXPORT_API gchar* lock_get_date ();
+
+JS_EXPORT_API gboolean lock_detect_capslock ();
+
+JS_EXPORT_API void lock_switch_user ();
+
+JS_EXPORT_API void lock_draw_background (JSValueRef canvas);
+
+gboolean lock_is_guest ();
+
+gboolean lock_is_running ();
+
+void lock_report_pid ();
+
+#endif

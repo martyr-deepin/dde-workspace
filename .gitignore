@@ -20,6 +20,7 @@ resources/greeter/js/time.js
 *.orig
 core
 *.pyc
+try/
 
 # CMake
 CMakeFiles/
