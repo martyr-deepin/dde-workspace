@@ -84,10 +84,10 @@ sort_methods =
 
 exit_launcher = ->
     s_box.value = ""
+    selected_category_id = ALL_APPLICATION_CATEGORY_ID
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
     _save_hidden_apps()
-    selected_category_id = ALL_APPLICATION_CATEGORY_ID
     is_show_hidden_icons = false
     DCore.Launcher.exit_gui()
 
@@ -116,6 +116,11 @@ DCore.signal_connect("update_items", ->
     init_category_list()
     init_grid()
     _init_hidden_icons()
+)
+DCore.signal_connect("show-launcher", ->
+    selected_category_id = ALL_APPLICATION_CATEGORY_ID
+    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+    grid_load_category(selected_category_id)
 )
 
 
