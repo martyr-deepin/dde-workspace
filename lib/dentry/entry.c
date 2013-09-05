@@ -271,7 +271,9 @@ char* dentry_get_icon(Entry* e)
                 char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
                 g_free(app_id);
 
-                if (temp_icon_name_holder != NULL) {
+                if (temp_icon_name_holder != NULL
+                    && !g_str_has_prefix(temp_icon_name_holder, "data:image")
+                    ){
                     g_free(icon_str);
                     icon_str = temp_icon_name_holder;
                 } else {
@@ -283,9 +285,9 @@ char* dentry_get_icon(Entry* e)
                                                                           48);
                         g_free(basename);
 
-                        if (temp_icon_name_holder != NULL &&
-                            !g_str_has_prefix(temp_icon_name_holder,
-                                              "data:image")) {
+                        if (temp_icon_name_holder != NULL
+                            && !g_str_has_prefix(temp_icon_name_holder,
+                                                 "data:image")) {
                             g_free(icon_str);
                             icon_str = temp_icon_name_holder;
                         }
@@ -1165,8 +1167,8 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_debug("choose templates name :---%s---",basename);
 
     GFile* dir = g_file_new_for_path(DESKTOP_DIR());
-    
-        
+
+
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
     for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
@@ -1186,7 +1188,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
         g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
         ArrayContainer ac;
         ac = dentry_list_files(src);
-        dentry_copy(ac,child);   
+        dentry_copy(ac,child);
         ArrayContainer_free(ac);
         result = true;
     }
@@ -1497,3 +1499,4 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 
     return group_name;
 }
+
