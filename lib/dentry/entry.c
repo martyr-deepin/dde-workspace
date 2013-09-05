@@ -268,31 +268,9 @@ char* dentry_get_icon(Entry* e)
             if (icon_str && g_path_is_absolute(icon_str) && !is_deepin_icon(icon_str)) {
                 char* app_id =
                     get_basename_without_extend_name(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
-                char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
-                g_free(app_id);
-
-                if (temp_icon_name_holder != NULL
-                    && !g_str_has_prefix(temp_icon_name_holder, "data:image")
-                    ){
-                    g_free(icon_str);
-                    icon_str = temp_icon_name_holder;
-                } else {
-                    char* basename =
-                        get_basename_without_extend_name(icon_str);
-
-                    if (basename != NULL) {
-                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
-                                                                          48);
-                        g_free(basename);
-
-                        if (temp_icon_name_holder != NULL
-                            && !g_str_has_prefix(temp_icon_name_holder,
-                                                 "data:image")) {
-                            g_free(icon_str);
-                            icon_str = temp_icon_name_holder;
-                        }
-                    }
-                }
+                char* temp_icon_name_holder = icon_str;
+                icon_str = check_absolute_path_icon(app_id, icon_str);
+                g_free(temp_icon_name_holder);
             }
 
             ret = icon_name_to_path_with_check_xpm(icon_str, 48);

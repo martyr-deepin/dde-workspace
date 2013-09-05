@@ -95,28 +95,10 @@ JSValueRef build_app_info(const char* app_id)
             json_append_string(json, "Icon", icon_name);
         } else {
             if (g_path_is_absolute(icon_name)) {
-                char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
-                if (temp_icon_name_holder != NULL) {
-                    g_free(icon_name);
-                    icon_name = temp_icon_name_holder;
-                } else {
-                    char* basename =
-                        get_basename_without_extend_name(icon_name);
-
-                    if (basename != NULL) {
-                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
-                                                                     48);
-                        g_free(basename);
-
-                        if (temp_icon_name_holder != NULL &&
-                            !g_str_has_prefix(temp_icon_name_holder,
-                                              "data:image")) {
-                            g_free(icon_name);
-                            icon_name = temp_icon_name_holder;
-                        }
-                    }
-                }
-            };
+                char* temp_icon_name_holder = icon_name;
+                icon_name = check_absolute_path_icon(app_id, icon_name);
+                g_free(temp_icon_name_holder);
+            }
 
             char* icon_path = icon_name_to_path(icon_name, 48);
             if (is_deepin_icon(icon_path)) {
@@ -443,3 +425,4 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
     }
     return TRUE;
 }
+

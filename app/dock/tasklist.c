@@ -205,35 +205,17 @@ gboolean _get_launcher_icon(Client* c)
             g_debug("[_get_launcher_icon] get image path");
             if (g_path_is_absolute(icon_name)) {
                 g_debug("[_get_launcher_icon] image path is absolute path");
-                char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id, 48);
-
-                if (temp_icon_name_holder != NULL) {
-                    g_free(icon_name);
-                    icon_name = temp_icon_name_holder;
-                } else {
-                    char* basename =
-                        get_basename_without_extend_name(icon_name);
-
-                    if (basename != NULL) {
-                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
-                                                                     48);
-                        g_free(basename);
-
-                        if (temp_icon_name_holder != NULL &&
-                            !g_str_has_prefix(temp_icon_name_holder,
-                                              "data:image")) {
-                            g_free(icon_name);
-                            icon_name = temp_icon_name_holder;
-                        }
-                    }
-                }
+                char* temp_icon_name_holder = icon_name;
+                icon_name = check_absolute_path_icon(c->app_id, icon_name);
+                g_free(temp_icon_name_holder);
             }
 
+            g_debug("[_get_launcher_icon] the final icon name is: %s", icon_name);
             char* icon_path = icon_name_to_path(icon_name, 48);
             g_free(icon_name);
 
             g_debug("[_get_launcher_icon] icon path is %s", icon_path);
-            if (is_deepin_icon(icon_path)) {
+            if (icon_path && is_deepin_icon(icon_path)) {
                 g_debug("[_get_launcher_icon] icon is deepin icon");
                 c->icon = icon_path;
             } else {
