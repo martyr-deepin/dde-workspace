@@ -47,7 +47,7 @@ gboolean desktop_has_focus(Display* dsp, gboolean* ret)
     gboolean state;
     gulong active_client_wm_pid;
     if ((state = get_atom_value_by_name(dsp, active_client_id, "_NET_WM_PID",
-                                       &active_client_wm_pid, get_atom_value_by_index, 0))) {
+                                       &active_client_wm_pid, get_atom_value_for_index, 0))) {
         *ret = active_client_wm_pid == desktop_pid;
     }
 

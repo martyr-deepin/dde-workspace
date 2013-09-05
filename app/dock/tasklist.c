@@ -52,6 +52,9 @@ static Atom ATOM_ACTIVE_WINDOW;
 static Atom ATOM_WINDOW_ICON;
 static Atom ATOM_WINDOW_TYPE;
 static Atom ATOM_WINDOW_TYPE_NORMAL;
+static Atom ATOM_WINDOW_TYPE_DIALOG;
+static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
+static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
 static Atom ATOM_WINDOW_NAME;
 static Atom ATOM_WINDOW_PID;
 static Atom ATOM_WINDOW_NET_STATE;
@@ -73,6 +76,9 @@ PRIVATE void _init_atoms()
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
     ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
+    ATOM_WINDOW_TYPE_DIALOG = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DIALOG");
+    ATOM_WINDOW_ALLOWED_ACTIONS = gdk_x11_get_xatom_by_name("_NET_WM_ALLOWED_ACTIONS");
+    ATOM_WINDOW_ALLOW_MINIMIZE = gdk_x11_get_xatom_by_name("_NET_WM_ACTION_MINIMIZE");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
     ATOM_WINDOW_PID = gdk_x11_get_xatom_by_name("_NET_WM_PID");
     ATOM_WINDOW_NET_STATE = gdk_x11_get_xatom_by_name("_NET_WM_STATE");
@@ -426,6 +432,24 @@ gboolean is_skip_taskbar(Window w)
 }
 
 
+static
+gboolean can_be_minimized(Window w)
+{
+    gulong items;
+    void* data = get_window_property(_dsp, w, ATOM_WINDOW_ALLOWED_ACTIONS, &items);
+
+    for (int i = 0; i < items; ++i) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_ALLOW_MINIMIZE) {
+            XFree(data);
+            return TRUE;
+        }
+    }
+
+    XFree(data);
+    return FALSE;
+}
+
+
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
@@ -437,7 +461,7 @@ gboolean is_normal_window(Window w)
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
         } else if (g_str_equal(ch.res_class, "Desktop")) {
-            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_by_index, 0);
+            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -456,14 +480,16 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
+        Atom window_type = (Atom)X_FETCH_32(data, i);
+        if (window_type == ATOM_WINDOW_TYPE_NORMAL
+            || (window_type == ATOM_WINDOW_TYPE_DIALOG && can_be_minimized(w))) {
             XFree(data);
-            return FALSE;
+            return TRUE;
         }
     }
     XFree(data);
 
-    return TRUE;
+    return FALSE;
 }
 
 PRIVATE void _destroy_client(gpointer id)
@@ -521,7 +547,7 @@ JS_EXPORT_API
 double dock_get_active_window()
 {
     Window aw = 0;
-    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_by_index, 0);
+    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
     return aw;
 }
 
@@ -908,7 +934,7 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
-    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0)) {
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
         const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
