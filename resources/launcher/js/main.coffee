@@ -117,11 +117,11 @@ DCore.signal_connect("update_items", ->
     init_grid()
     _init_hidden_icons()
 )
-DCore.signal_connect("show-launcher", ->
-    selected_category_id = ALL_APPLICATION_CATEGORY_ID
-    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-    grid_load_category(selected_category_id)
-)
+# DCore.signal_connect("show-launcher", ->
+#     selected_category_id = ALL_APPLICATION_CATEGORY_ID
+#     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+#     grid_load_category(selected_category_id)
+# )
 
 
 DCore.Launcher.notify_workarea_size()
