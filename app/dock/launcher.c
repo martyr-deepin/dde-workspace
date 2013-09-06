@@ -26,6 +26,7 @@
 #include "tasklist.h"
 #include "xid2aid.h"
 #include "handle_icon.h"
+#include "desktop_action.h"
 
 #include <string.h>
 #include <gio/gdesktopappinfo.h>
@@ -94,21 +95,25 @@ JSValueRef build_app_info(const char* app_id)
         if (g_str_has_prefix(icon_name, "data:image")) {
             json_append_string(json, "Icon", icon_name);
         } else {
-            if (g_path_is_absolute(icon_name)) {
+            if (g_path_is_absolute(icon_name) && !is_deepin_icon(icon_name)) {
                 char* temp_icon_name_holder = icon_name;
                 icon_name = check_absolute_path_icon(app_id, icon_name);
                 g_free(temp_icon_name_holder);
             }
 
             char* icon_path = icon_name_to_path(icon_name, 48);
+            g_debug("[build_app_info] icon_path: %s", icon_path);
             if (is_deepin_icon(icon_path)) {
                 json_append_string(json, "Icon", icon_path);
             } else {
                 gboolean use_board = TRUE;
-                GdkPixbuf* pixbuf = NULL;
+                GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(icon_path, NULL);
+                double width = gdk_pixbuf_get_width(pixbuf);
+                g_object_unref(pixbuf);
+                pixbuf = NULL;
                 int operator_code = -1;
-                if (is_deepin_app_id(app_id) && (operator_code = \
-                                                 get_deepin_app_id_operator(app_id)) == \
+                if (width == 48 || is_deepin_app_id(app_id)
+                    && (operator_code = get_deepin_app_id_operator(app_id)) == \
                     ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD) {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
                                                                BOARD_WIDTH,
@@ -136,7 +141,32 @@ JSValueRef build_app_info(const char* app_id)
         g_free(icon_name);
 
     }
+
+    // append actions
+    JSObjectRef actions_js_array = json_array_create();
+
+#if 0
+    GPtrArray* actions = get_app_actions(G_DESKTOP_APP_INFO(info));
+
+    if (actions != NULL) {
+        for (int i = 0; i < actions->len; ++i) {
+            struct Action* action = g_ptr_array_index(actions, i);
+
+            JSObjectRef action_item = json_create();
+            json_append_string(action_item, "name", g_strdup(action->name));
+            json_append_string(action_item, "exec", g_strdup(action->exec));
+
+            json_array_insert(actions_js_array, i, action_item);
+        }
+
+        g_ptr_array_unref(actions);
+    }
+#endif
+
+    json_append_value(json, "actions", actions_js_array);
+
     g_object_unref(info);
+
     return json;
 }
 

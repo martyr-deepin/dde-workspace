@@ -32,6 +32,7 @@
 #include "special_window.h"
 #include "xdg_misc.h"
 #include "DBUS_dock.h"
+#include "desktop_action.h"
 extern Window get_dock_window();
 extern char* dcore_get_theme_icon(const char*, double);
 
@@ -326,6 +327,34 @@ void _update_client_info(Client *c)
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
     json_append_string(json, "exec", c->exec);
+
+    // append actions
+    GDesktopAppInfo* app = guess_desktop_file(c->app_id);
+    JSObjectRef actions_js_array = json_array_create();
+
+#if 0
+    if (app != NULL) {
+        GPtrArray* actions = get_app_actions(app);
+
+        if (actions != NULL) {
+            for (int i = 0; i < actions->len; ++i) {
+                struct Action* action = g_ptr_array_index(actions, i);
+
+                JSObjectRef action_item = json_create();
+                json_append_string(action_item, "name", g_strdup(action->name));
+                json_append_string(action_item, "exec", g_strdup(action->exec));
+
+                json_array_insert(actions_js_array, i, action_item);
+            }
+
+            g_ptr_array_unref(actions);
+        }
+
+        g_object_unref(app);
+    }
+#endif
+
+    json_append_value(json, "actions", actions_js_array);
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }

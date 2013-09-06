@@ -261,3 +261,4 @@ class ClientGroup extends AppItem
     do_drop: (e) ->
         super
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
+

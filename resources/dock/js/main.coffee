@@ -55,7 +55,7 @@ DCore.signal_connect("active_window_changed", (info)->
 DCore.signal_connect("launcher_added", (info) ->
     c = Widget.look_up(info.Id)
     if not c
-        new Launcher(info.Id, info.Icon, info.Core)
+        new Launcher(info.Id, info.Icon, info.Core, info.Actions)
 )
 DCore.signal_connect("dock_request", (info) ->
     group = Widget.look_up("le_"+info.Id)
@@ -64,7 +64,7 @@ DCore.signal_connect("dock_request", (info) ->
     else
         c = Widget.look_up(info.Id)
         if not c
-            l = new Launcher(info.Id, info.Icon, info.Core)
+            l = new Launcher(info.Id, info.Icon, info.Core, info.Actions)
             apply_flash(l.img, 1)
         else
             apply_rotate(c.element, 0.3)
@@ -78,7 +78,7 @@ DCore.signal_connect("task_updated", (info) ->
     leader = Widget.look_up("le_" + info.app_id)
 
     if not leader
-        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id, info.exec)
+        leader = new ClientGroup("le_"+info.app_id, info.icon, info.app_id, info.exec, info.actions)
         leader?.try_swap_launcher()
 
     leader?.update_client(info.id, info.icon, info.title)
