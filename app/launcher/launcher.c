@@ -96,7 +96,6 @@ void _on_realize(GtkWidget* container)
 DBUS_EXPORT_API
 void launcher_show()
 {
-    /* js_post_message_simply("show-launcher", NULL); */
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_show(w);
 }

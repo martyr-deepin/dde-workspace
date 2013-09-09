@@ -88,7 +88,7 @@ exit_launcher = ->
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
     _save_hidden_apps()
-    is_show_hidden_icons = false
+    _show_hidden_icons(false)
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
@@ -117,11 +117,6 @@ DCore.signal_connect("update_items", ->
     init_grid()
     _init_hidden_icons()
 )
-# DCore.signal_connect("show-launcher", ->
-#     selected_category_id = ALL_APPLICATION_CATEGORY_ID
-#     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-#     grid_load_category(selected_category_id)
-# )
 
 
 DCore.Launcher.notify_workarea_size()
