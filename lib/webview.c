@@ -24,6 +24,16 @@
 #include "jsextension.h"
 #include "utils.h"
 
+static GHashTable* __views = NULL;
+
+struct _DWebViewPriv {
+    gint garbage_id;
+    void (*add_js_class)(GtkWidget*);
+    JSContextRef global_ctx;
+};
+
+G_DEFINE_TYPE(DWebView, d_webview, WEBKIT_TYPE_WEB_VIEW);
+
 void workaround_gtk_theme()
 {
     GtkCssProvider* provider = gtk_css_provider_get_default();
@@ -81,27 +91,40 @@ static void setup_lang(WebKitWebView* web_view)
             g_debug("%s", language_names[i]);
             env_lang = language_names[i];
             break;
-	}
+        }
     }
     if (!env_lang)
-	return;
+        return;
     char exec_script[30] = {0};
     sprintf(exec_script, "document.body.lang=\"%s\"", env_lang);
     webkit_web_view_execute_script(web_view, exec_script);
 }
 
-static void add_ddesktop_class(WebKitWebView *web_view,
+gboolean invoke_js_garbage(JSGlobalContextRef* ctx)
+{
+    JSGarbageCollect(ctx);
+    printf("garbage... %p\n", ctx);
+    return TRUE;
+}
+
+static void add_ddesktop_class(DWebView *web_view,
         WebKitWebFrame *frame,
         gpointer context,
         gpointer arg3,
         gpointer user_data)
 {
-
-    JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
-    init_js_extension(jsContext, (void*)web_view);
+    printf("add_ddesktop_class\n");
+    /*JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);*/
+    if (web_view->priv->add_js_class)
+        web_view->priv->add_js_class(web_view);
+    g_assert(web_view->priv->garbage_id == 0);
+    web_view->priv->garbage_id = g_timeout_add_seconds(3, (GSourceFunc)invoke_js_garbage, get_global_context());
 }
 
-
+void d_webview_set_js_init(DWebView* web_view, void (*init)(GtkWidget*))
+{
+    web_view->priv->add_js_class = init;
+}
 
 WebKitWebView* inspector_create(WebKitWebInspector *inspector,
         WebKitWebView *web_view, gpointer user_data)
@@ -147,6 +170,11 @@ static bool webview_key_release_cb(GtkWidget* webview,
 static void
 d_webview_init(DWebView *dwebview)
 {
+    dwebview->priv = G_TYPE_INSTANCE_GET_PRIVATE(dwebview, D_WEBVIEW_TYPE, DWebViewPriv);
+    dwebview->priv->add_js_class = NULL;
+    dwebview->priv->garbage_id = 0;
+    dwebview->priv->global_ctx = webkit_web_frame_get_global_context(webkit_web_view_get_main_frame(dwebview));
+
     WebKitWebView* webview = (WebKitWebView*)dwebview;
     webkit_web_view_set_transparent(webview, TRUE);
 
@@ -166,35 +194,54 @@ d_webview_init(DWebView *dwebview)
     g_signal_connect_after(inspector, "inspect-web-view",
             G_CALLBACK(inspector_create), NULL);
 #endif
+
+    g_hash_table_insert(__views, "main", dwebview);
 }
 
-GType d_webview_get_type(void)
+
+static void
+d_webview_dispose(GObject* webview)
 {
-    static GType type = 0;
-    if (!type) {
-        static const GTypeInfo info = {
-            sizeof(DWebViewClass),
-            NULL,
-            NULL,
-            NULL,//(GClassInitFunc)d_webview_class_init,
-            NULL,
-            NULL,
-            sizeof(DWebView),
-            0,
-            (GInstanceInitFunc)d_webview_init,
-        };
-
-        type = g_type_register_static(WEBKIT_TYPE_WEB_VIEW,  "DWebView", &info, 0);
-    }
-    return type;
+    int id = D_WEBVIEW(webview)->priv->garbage_id;
+    printf("webview:%p disposed %d\n", webview, id);
+    if (id > 0)
+        g_source_remove(id);
+    D_WEBVIEW(webview)->priv->garbage_id = 0;
+    G_OBJECT_CLASS(d_webview_parent_class)->dispose(webview);
 }
 
+JSGlobalContextRef get_global_context()
+{
+    const char* name = "main";
+    DWebView* webview = g_hash_table_lookup(__views, name);
+    if (webview == NULL)
+        webview = g_hash_table_lookup(__views, "main");
+    g_assert(webview != NULL);
+    return webview->priv->global_ctx;
+}
+JSGlobalContextRef get_global_context_by_webview(GtkWidget* webview)
+{
+    return D_WEBVIEW(webview)->priv->global_ctx;
+}
+
+void d_webview_class_init(DWebViewClass* klass)
+{
+    g_assert(__views == NULL);
+    __views = g_hash_table_new(g_str_hash, g_str_equal);
+    GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+    gobject_class->dispose = d_webview_dispose;
+
+    g_type_class_add_private(klass, sizeof(DWebViewPriv));
+
+    char* cfg_path = g_build_filename(g_get_user_config_dir(), "deepin-desktop", NULL);
+    webkit_set_web_database_directory_path(cfg_path);
+    g_free(cfg_path);
+}
 
 GtkWidget* d_webview_new()
 {
     GtkWidget* webview = g_object_new(D_WEBVIEW_TYPE, NULL);
     WebKitWebSettings *setting = webkit_web_view_get_settings(WEBKIT_WEB_VIEW(webview));
-
     g_object_set(G_OBJECT(setting),
             /*"enable-default-context-menu", FALSE,*/
             "enable-developer-extras", TRUE,
@@ -203,26 +250,14 @@ GtkWidget* d_webview_new()
             "javascript-can-access-clipboard", TRUE,
             NULL);
 
-    char* cfg_path = g_build_filename(g_get_user_config_dir(), "deepin-desktop", NULL);
-    webkit_set_web_database_directory_path(cfg_path);
-    g_free(cfg_path);
-
-
     return webview;
 }
 
 GtkWidget* d_webview_new_with_uri(const char* uri)
 {
-    /*return g_object_new(D_WEBVIEW_TYPE, "uri", uri, NULL);*/
     GtkWidget* webview = d_webview_new();
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webview), uri);
     return webview;
-}
-
-static
-void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
-{
-    webkit_web_view_reload(webview);
 }
 
 void monitor_resource_file(const char* app, GtkWidget* webview)
@@ -239,7 +274,7 @@ void monitor_resource_file(const char* app, GtkWidget* webview)
     GFileMonitor* m_css = g_file_monitor_directory(f_css,  G_FILE_MONITOR_NONE, NULL, NULL);
     g_file_monitor_set_rate_limit(m_js, 200);
     g_file_monitor_set_rate_limit(m_css, 200);
-    g_signal_connect(m_js, "changed", G_CALLBACK(reload_webview), webview);
-    g_signal_connect(m_css, "changed", G_CALLBACK(reload_webview), webview);
+    g_signal_connect_object(m_js, "changed", G_CALLBACK(webkit_web_view_reload), webview, G_CONNECT_SWAPPED);
+    g_signal_connect_object(m_css, "changed", G_CALLBACK(webkit_web_view_reload), webview, G_CONNECT_SWAPPED);
 }
 

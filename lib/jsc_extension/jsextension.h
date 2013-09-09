@@ -35,8 +35,9 @@ typedef struct _ArrayContainer {
 } ArrayContainer;
 
 
+typedef struct _GtkWidget GtkWidget;
 
-void init_js_extension(JSGlobalContextRef context, void* webview);
+void init_js_extension(GtkWidget* webview);
 void destroy_js_extension();
 
 
@@ -45,6 +46,7 @@ void destroy_js_extension();
 void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, ...);
 
 JSGlobalContextRef get_global_context();
+JSGlobalContextRef get_global_context_by_webview(GtkWidget* webview);
 
 JSValueRef jsvalue_null();
 

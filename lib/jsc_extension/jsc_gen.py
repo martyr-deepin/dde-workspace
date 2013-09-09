@@ -340,7 +340,6 @@ static JSValueRef __%(name)s__ (JSContextRef ctx, JSObjectRef f, JSObjectRef thi
     temp_return = """
         JSData* data = g_new0(JSData, 1);
         data->exception = exception;
-        data->webview = get_global_webview();
 
         %(store_c_return)s %(module_name)s_%(name)s (%(params)s);
         %(convert_c_to_js)s
@@ -371,8 +370,6 @@ class Class:
 #include "jsextension.h"
 #include <glib.h>
 #include <glib-object.h>
-
-extern void* get_global_webview();
 
 %(funcs_def)s
 
@@ -536,33 +533,14 @@ def gen_init_c(output_path, init_name):
 #include <JavaScriptCore/JSStringRef.h>
 extern JSClassRef get_DCore_class();
 %(objs_state)s
-JSGlobalContextRef global_ctx = NULL;
-void* __webview = NULL;
-void* get_global_webview()
-{
-    return __webview;
-}
-
-JSGlobalContextRef get_global_context()
-{
-    return global_ctx;
-}
-gboolean invoke_js_garbage()
-{
-    JSGarbageCollect(global_ctx);
-    return TRUE;
-}
 void modules_reload()
 {
     %(modules_reload)s;
 }
-void init_js_extension(JSGlobalContextRef context, void* webview)
+void init_js_extension(GtkWidget* webview)
 {
-    if (global_ctx == NULL)
-        g_timeout_add_seconds(5, (GSourceFunc)invoke_js_garbage, NULL);
-    global_ctx = context;
+    JSGlobalContextRef context = get_global_context_by_webview(webview);
     modules_reload();
-    __webview = webview;
     JSObjectRef global_obj = JSContextGetGlobalObject(context);
     JSObjectRef class_DCore = JSObjectMake(context, get_DCore_class(), NULL);
 

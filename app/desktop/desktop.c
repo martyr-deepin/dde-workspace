@@ -471,6 +471,7 @@ void desktop_set_position_input(double x , double y)
 }
 
 
+GtkWidget* webview = NULL;
 
 int main(int argc, char* argv[])
 {
@@ -495,7 +496,7 @@ int main(int argc, char* argv[])
     ensure_fullscreen(container);
     g_signal_connect(container, "delete-event", G_CALLBACK(prevent_exit), NULL);
 
-    GtkWidget *webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
+    webview = d_webview_new_with_uri(GET_HTML_PATH("desktop"));
     gdk_error_trap_push();
 
     gtk_window_set_skip_pager_hint(GTK_WINDOW(container), TRUE);
@@ -532,6 +533,7 @@ int main(int argc, char* argv[])
     monitor_resource_file("desktop", webview);
 #endif
 
+    d_webview_set_js_init(webview, init_js_extension);
     gtk_main();
     unwatch_workarea_changes(container);
     return 0;
@@ -596,7 +598,9 @@ void desktop_emit_webview_ok()
                          G_CALLBACK(desktop_plugins_changed), NULL);
 
         watch_workarea_changes(container, dock_gsettings);
+    } else {
     }
+    /*gtk_widget_destroy(webview);*/
     update_workarea_size (dock_gsettings);
 }
 

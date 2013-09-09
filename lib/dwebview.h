@@ -40,10 +40,12 @@ G_BEGIN_DECLS
             D_WEBVIEW_TYPE))
 
 typedef struct _DWebView    DWebView;
+typedef struct _DWebViewPriv DWebViewPriv;
 typedef struct _DWebViewClass   DWebViewClass;
 
 struct _DWebView {
     WebKitWebView parent;
+    DWebViewPriv* priv;
 };
 
 struct _DWebViewClass {
@@ -55,6 +57,7 @@ GtkWidget* create_web_container(bool normal, bool above);
 GtkWidget* d_webview_new();
 GtkWidget* d_webview_new_with_uri();
 gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data);
+JSContextRef d_webview_get_context(GtkWidget* webview);
 
 
 // custom webkit's function
@@ -66,6 +69,7 @@ void dwebview_show_inspector(GtkWidget* webview);
 
 // auto reload when resource file has changed
 void monitor_resource_file(const char* app, GtkWidget* webview);
+
 
 G_END_DECLS
 
