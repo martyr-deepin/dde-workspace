@@ -100,8 +100,12 @@ DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         exit_launcher()
 )
+inited = false
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
+    if inited
+        DCore.Launcher.clear()
+        inited = true
 )
 DCore.signal_connect("update_items", ->
     # echo "update items"

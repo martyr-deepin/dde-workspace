@@ -677,15 +677,7 @@ JSValueRef launcher_get_app_rate()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    static gboolean inited = FALSE;
-
-    if (!inited) {
-        inited = TRUE;
-        set_launcher_background(gtk_widget_get_window(webview),
-                                dde_bg_g_settings,
-                                screen_width,
-                                screen_height);
-    }
+    background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
 }
 
 
@@ -709,6 +701,13 @@ void daemonize()
     } else if (pid != 0){
         exit(0);
     }
+}
+
+
+JS_EXPORT_API
+void launcher_clear()
+{
+    webkit_web_view_reload_bypass_cache((WebKitWebView*)webview);
 }
 
 
