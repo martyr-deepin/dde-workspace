@@ -47,12 +47,12 @@ class ClientGroup extends AppItem
         menu_list.push([30, _("Close _All"), @n_clients.length > 1])
         menu_list.push([])
         menu_list.push([40, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)])
-        menu = build_menu(menu_list)
-        @element.contextMenu = menu
+        @menu = build_menu(menu_list)
 
         # contextmenu and preview window cannot be shown at the same time
-        @element.addEventListener("contextmenu", (e) ->
+        @element.addEventListener("contextmenu", (e) =>
             Preview_close_now()
+            @element.contextMenu = @menu
             e.stopPropagation()
         )
 
@@ -204,6 +204,14 @@ class ClientGroup extends AppItem
 
     do_itemselected: (e)=>
         Preview_container.close()
+
+        index = e.id - 1
+        action = @actions[index]
+        if action?
+            echo "#{action.name}, #{action.exec}"
+            DCore.Dock.launch_from_commandline(@app_id, action.exec)
+            return
+
         switch e.id
             when 10
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
@@ -213,12 +221,6 @@ class ClientGroup extends AppItem
             when 30
                 @close_all_windows()
             when 40 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
-
-        index = e.id - 1
-        action = @actions[index]
-        if action?
-            echo "#{action.name}, #{action.exec}"
-            DCore.Dock.launch_from_commandline(@app_id, action.exec)
 
     close_all_windows: ->
             Preview_close_now()

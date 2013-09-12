@@ -122,3 +122,4 @@ DCore.Dock.emit_webview_ok()
 
 show_desktop.show(DCore.Dock.get_desktop_status())
 DCore.Dock.test()
+

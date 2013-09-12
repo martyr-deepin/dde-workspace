@@ -1,11 +1,13 @@
 launcher_mouseout_id = null
 class Launcher extends AppItem
-    constructor: (@id, @icon, @core)->
+    constructor: (@id, @icon, @core, @actions)->
         super
         @app_id = @id
         @update_scale()
 
         @set_tooltip(DCore.DEntry.get_name(@core))
+
+        @build_menu()
 
 
     try_swap_clientgroup: ->
@@ -21,19 +23,43 @@ class Launcher extends AppItem
         @_do_launch []
 
     do_itemselected: (e)->
+        action = @actions[e.id - 1]
+        if action?
+            DCore.Dock.launch_from_commandline(@app_id, action.exec)
+            return
+
         switch e.id
-            when 1
+            when 10
                 @tooltip?.hide()
                 @tooltip = null
                 @_do_launch []
-            when 2 then DCore.Dock.request_undock(@id)
-    do_buildmenu: (e)->
-        Preview_close_now()
-        [
-            [1, _("_Run")],
-            [],
-            [2, _("_Undock")],
+            when 20 then DCore.Dock.request_undock(@id)
+
+    build_menu: ->
+        menu_list = [
+            [10, _("_Run")],
+            []
         ]
+
+        i = 0
+        len = @actions.length
+
+        while i < len
+            i = i + 1
+            menu_list.push([i, @actions[i - 1].name])
+
+        if len != 0
+            menu_list.push([])
+
+        menu_list.push([20, _("_Undock")])
+        @menu = build_menu(menu_list)
+
+        @element.addEventListener("contextmenu", (e)=>
+            Preview_close_now()
+            @element.contextMenu = @menu
+            e.stopPropagation()
+        )
+
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
         @rotate()

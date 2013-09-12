@@ -161,7 +161,7 @@ JSValueRef build_app_info(const char* app_id)
         g_ptr_array_unref(actions);
     }
 
-    json_append_value(json, "actions", actions_js_array);
+    json_append_value(json, "Actions", actions_js_array);
 
     g_object_unref(info);
 
