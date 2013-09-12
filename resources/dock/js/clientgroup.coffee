@@ -1,7 +1,7 @@
 pop_id = null
 hide_id = null
 class ClientGroup extends AppItem
-    constructor: (@id, @icon, @app_id, @exec)->
+    constructor: (@id, @icon, @app_id, @exec, @actions)->
         try
             super
             @n_clients = []

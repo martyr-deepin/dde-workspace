@@ -145,7 +145,6 @@ JSValueRef build_app_info(const char* app_id)
     // append actions
     JSObjectRef actions_js_array = json_array_create();
 
-#if 0
     GPtrArray* actions = get_app_actions(G_DESKTOP_APP_INFO(info));
 
     if (actions != NULL) {
@@ -153,15 +152,14 @@ JSValueRef build_app_info(const char* app_id)
             struct Action* action = g_ptr_array_index(actions, i);
 
             JSObjectRef action_item = json_create();
-            json_append_string(action_item, "name", g_strdup(action->name));
-            json_append_string(action_item, "exec", g_strdup(action->exec));
+            json_append_string(action_item, "name", action->name);
+            json_append_string(action_item, "exec", action->exec);
 
             json_array_insert(actions_js_array, i, action_item);
         }
 
         g_ptr_array_unref(actions);
     }
-#endif
 
     json_append_value(json, "actions", actions_js_array);
 
@@ -455,5 +453,17 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
         }
     }
     return TRUE;
+}
+
+
+JS_EXPORT_API
+void dock_launch_from_commandline(const char* name, const char* cmdline)
+{
+    GAppInfo* app = g_app_info_create_from_commandline(cmdline, name, G_APP_INFO_CREATE_NONE, NULL);
+    GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
+    gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
+    gboolean ret = g_app_info_launch(app, NULL, (GAppLaunchContext*)launch_context, NULL);
+    g_object_unref(launch_context);
+    g_object_unref(app);
 }
 
