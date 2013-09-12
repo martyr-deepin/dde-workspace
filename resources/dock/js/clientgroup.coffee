@@ -29,30 +29,30 @@ class ClientGroup extends AppItem
         @build_menu()
 
     build_menu: ->
-        menu_list = [
-            [10, _("_New instance")],
-            []
-        ]
-        i = 0
-        len = @actions.length
-
-        while i < len
-            i = i + 1
-            menu_list.push([i, @actions[i - 1].name])
-
-        if len != 0
-            menu_list.push([])
-
-        menu_list.push([20, _("_Close")])
-        menu_list.push([30, _("Close _All"), @n_clients.length > 1])
-        menu_list.push([])
-        menu_list.push([40, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)])
-        @menu = build_menu(menu_list)
-
         # contextmenu and preview window cannot be shown at the same time
         @element.addEventListener("contextmenu", (e) =>
             Preview_close_now()
-            @element.contextMenu = @menu
+            menu_list = [
+                [10, _("_New instance")],
+                []
+            ]
+            i = 0
+            len = @actions.length
+
+            while i < len
+                i = i + 1
+                menu_list.push([i, @actions[i - 1].name])
+
+            if len != 0
+                menu_list.push([])
+
+            menu_list.push([20, _("_Close")])
+            menu_list.push([30, _("Close _All"), @n_clients.length > 1])
+            menu_list.push([])
+            menu_list.push([40, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)])
+            menu = build_menu(menu_list)
+
+            @element.contextMenu = menu
             e.stopPropagation()
         )
 
