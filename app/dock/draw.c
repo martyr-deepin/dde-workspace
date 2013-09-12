@@ -1,3 +1,23 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *
+ * Author:      snyh <snyh@snyh.org>
+ * Maintainer:  snyh <snyh@snyh.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include "dwebview.h"
 #include "dock_config.h"
 
@@ -15,9 +35,9 @@
 #define GET_A(c) ((c & 0xff) / 100.0)
 
 JS_EXPORT_API
-void dock_draw_board(JSValueRef canvas, JSData* data)
+void dock_draw_board(JSValueRef canvas)
 {
-    cairo_t* cr =  fetch_cairo_from_html_canvas(data->ctx, canvas);
+    cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
     int w = gdk_screen_get_width(gdk_screen_get_default());
 
@@ -63,6 +83,6 @@ void dock_draw_board(JSValueRef canvas, JSData* data)
     canvas_custom_draw_did(cr, NULL);
 }
 
-void draw_app_icon(JSValueRef canvas, double id, double number, JSData* data)
+void draw_app_icon(JSValueRef canvas, double id, double number)
 {
 }

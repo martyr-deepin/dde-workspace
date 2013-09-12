@@ -235,7 +235,7 @@ cairo_region_t* get_window_input_region(Display* dpy, Window w)
 }
 
 
-void get_atom_value_by_index(gpointer data, gulong n_item, gpointer res, gulong index)
+void get_atom_value_for_index(gpointer data, gulong n_item, gpointer res, gulong index)
 {
     *(gulong*)res = X_FETCH_32(data, index);
 }
@@ -295,3 +295,4 @@ void ensure_fullscreen(GtkWidget* widget)
     gtk_widget_set_size_request(widget, gdk_screen_width(), gdk_screen_height());
     g_signal_connect(widget, "size-allocate", (GCallback)_ensure_fullscreen_helper, NULL);
 }
+

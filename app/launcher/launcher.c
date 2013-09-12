@@ -677,15 +677,7 @@ JSValueRef launcher_get_app_rate()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    static gboolean inited = FALSE;
-
-    if (!inited) {
-        inited = TRUE;
-        set_launcher_background(gtk_widget_get_window(webview),
-                                dde_bg_g_settings,
-                                screen_width,
-                                screen_height);
-    }
+    background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
 }
 
 
@@ -709,6 +701,13 @@ void daemonize()
     } else if (pid != 0){
         exit(0);
     }
+}
+
+
+JS_EXPORT_API
+void launcher_clear()
+{
+    webkit_web_view_reload_bypass_cache((WebKitWebView*)webview);
 }
 
 
@@ -765,6 +764,8 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
+    set_launcher_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+                            screen_width, screen_height);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);

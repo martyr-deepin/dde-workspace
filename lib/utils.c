@@ -21,6 +21,7 @@
 #include "utils.h"
 #include "jsextension.h"
 #include "dentry/entry.h"
+#include "dcore.h"
 #include <glib.h>
 #include <glib/gprintf.h>
 #include <sys/stat.h>
@@ -384,3 +385,37 @@ gboolean is_deepin_icon(char const* icon_path)
 {
     return g_str_has_prefix(icon_path, "/usr/share/icons/Deepin/");
 }
+
+
+static char* _check(char const* app_id)
+{
+    char* icon = NULL;
+    char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
+
+    if (temp_icon_name_holder != NULL) {
+        if (!g_str_has_prefix(temp_icon_name_holder, "data:image"))
+            icon = temp_icon_name_holder;
+        else
+            g_free(temp_icon_name_holder);
+    }
+
+    return icon;
+}
+
+
+char* check_absolute_path_icon(char const* app_id, char const* icon_path)
+{
+    char* icon = NULL;
+    if ((icon = _check(app_id)) == NULL) {
+        char* basename = get_basename_without_extend_name(icon_path);
+        if (basename != NULL) {
+            if (g_strcmp0(app_id, basename) == 0
+                || (icon = _check(basename)) == NULL)
+                icon = g_strdup(icon_path);
+            g_free(basename);
+        }
+    }
+
+    return icon;
+}
+

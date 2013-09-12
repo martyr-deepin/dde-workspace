@@ -113,8 +113,6 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
     cairo_surface_destroy(img_surface);
     cairo_destroy(cr);
 
-    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", bg_path);
-
     return TRUE;
 }
 
@@ -143,10 +141,15 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
     char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     g_free(bg_path);
+    int duration = 2;
     while (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        g_usleep(3);
+        if (duration > 300)
+            break;
+        g_usleep(duration);
+        duration += 2;
     }
-    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
+    if (g_file_test(blur_path, G_FILE_TEST_EXISTS))
+        js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
     g_free(blur_path);
 }
 

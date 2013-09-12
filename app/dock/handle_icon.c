@@ -1,3 +1,23 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *
+ * Author:      snyh <snyh@snyh.org>
+ * Maintainer:  snyh <snyh@snyh.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
 #include <gtk/gtk.h>
 #include <string.h>
 #include "dominant_color.h"
@@ -92,7 +112,7 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
     char* app_id = g_strdup(_app_id);
     to_lower_inplace(app_id);
     if (is_deepin_app_id(app_id)) {
-        g_debug("\"%s\" is deepin app id", app_id);
+        g_debug("[try_get_deepin_icon] \"%s\" is deepin app id", app_id);
         *operator_code = get_deepin_app_id_operator(app_id);
         const char* operator_names[] = {
             "USE_ICONNAME",
@@ -101,7 +121,7 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
             "USE_PATH",
             "USE_DOMINANTCOLOR"
         };
-        g_debug("operator code is %s", operator_names[*operator_code]);
+        g_debug("[try_get_deepin_icon] operator code is %s", operator_names[*operator_code]);
         switch (*operator_code) {
             case ICON_OPERATOR_USE_ICONNAME:
                 {
@@ -122,18 +142,19 @@ void try_get_deepin_icon(const char* _app_id, char** icon, int* operator_code)
                 break;
             case ICON_OPERATOR_USE_PATH:
                 g_free(app_id);
-                g_warning("Hasn't support set path Icon Handler\n");
+                g_warning("[try_get_deepin_icon] Hasn't support set path Icon Handler\n");
                 break;
             case ICON_OPERATOR_SET_DOMINANTCOLOR:
                 g_free(app_id);
-                g_warning("Hasn't support set dominantcolor Icon Handler\n");
+                g_warning("[try_get_deepin_icon] Hasn't support set dominantcolor Icon Handler\n");
                 break;
             default:
-                g_warning("Hasn't support unknow Icon Handler\n");
+                g_warning("[try_get_deepin_icon] Hasn't support unknow Icon Handler\n");
 
         }
     } else {
-        g_debug("\"%s\" is not deepin app id", app_id);
+        g_debug("[try_get_deepin_icon] \"%s\" is not deepin app id", app_id);
         g_free(app_id);
     }
 }
+

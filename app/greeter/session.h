@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Long Wei
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2011 ~ 2013 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
@@ -20,11 +20,28 @@
  **/
 
 #include "jsextension.h"
-#include <glib.h>
 #include <lightdm.h>
 
-gboolean is_session_valid(const gchar *session);
-const gchar* get_first_session();
-JS_EXPORT_API ArrayContainer greeter_get_sessions();
-JS_EXPORT_API const gchar* greeter_get_session_name(const gchar *key);
-JS_EXPORT_API const gchar* greeter_get_session_icon(const gchar *key);
+JS_EXPORT_API JSObjectRef greeter_get_sessions ();
+
+JS_EXPORT_API gchar* greeter_get_session_name (const gchar *key);
+
+JS_EXPORT_API gchar* greeter_get_session_icon (const gchar *key);
+
+JS_EXPORT_API gchar* greeter_get_default_session ();
+
+JS_EXPORT_API gboolean greeter_get_can_suspend ();
+
+JS_EXPORT_API gboolean greeter_get_can_hibernate ();
+
+JS_EXPORT_API gboolean greeter_get_can_restart ();
+
+JS_EXPORT_API gboolean greeter_get_can_shutdown ();
+
+JS_EXPORT_API gboolean greeter_run_suspend ();
+
+JS_EXPORT_API gboolean greeter_run_hibernate ();
+
+JS_EXPORT_API gboolean greeter_run_restart ();
+
+JS_EXPORT_API gboolean greeter_run_shutdown ();

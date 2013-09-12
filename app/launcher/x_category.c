@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+
 #include "x_category.h"
 
 XCategory x_category_name_index_map[X_CATEGORY_NUM] = {

@@ -95,8 +95,7 @@ GList* _get_x_category(GDesktopAppInfo* info)
     g_debug("%s", g_desktop_app_info_get_filename(info));
     gboolean has_other_id = FALSE;
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
-    gsize len = g_strv_length(x_categories) - 1;
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; x_categories[i] != NULL; ++i) {
         char* lower_case = g_utf8_casefold(x_categories[i], -1);
         int id = find_category_id(_(lower_case));
         g_free(lower_case);

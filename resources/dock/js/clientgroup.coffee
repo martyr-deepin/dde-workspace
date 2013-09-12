@@ -195,17 +195,20 @@ class ClientGroup extends AppItem
                 Preview_close_now()
                 DCore.Dock.close_window(@leader)
             when 3
-                Preview_close_now()
-                i = 0
-                size = @n_clients.length
-                while i < size
-                    leader = @leader
-                    @next_leader()
-                    error = DCore.Dock.close_window(leader)
-                    if not error
-                        @remove_client(leader)
-                    i += 1
+                @close_all_windows()
             when 4 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
+
+    close_all_windows: ->
+            Preview_close_now()
+            i = 0
+            size = @n_clients.length
+            while i < size
+                leader = @leader
+                @next_leader()
+                error = DCore.Dock.close_window(leader)
+                if not error
+                    @remove_client(leader)
+                i += 1
 
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
@@ -261,3 +264,4 @@ class ClientGroup extends AppItem
     do_drop: (e) ->
         super
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
+

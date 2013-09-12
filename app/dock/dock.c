@@ -342,6 +342,7 @@ void dock_toggle_launcher(gboolean show)
     }
 }
 
+DBUS_EXPORT_API
 void dock_show_inspector()
 {
     dwebview_show_inspector(webview);

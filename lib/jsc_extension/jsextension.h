@@ -25,7 +25,6 @@
 #include <glib.h>
 
 typedef struct JSData {
-    JSContextRef ctx;
     JSValueRef* exception;
     void* webview;
 } JSData;
