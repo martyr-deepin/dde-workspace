@@ -228,4 +228,25 @@ void dock_test_tasklist()
     /*                                      JSData* data); */
     /* Test({ */
     /*      }, "dock_draw_window_preview"); */
+
+
+    extern gchar* dock_bus_list_apps();
+    Test({
+         g_free(dock_bus_list_apps());
+         }, "dock_bus_list_apps");
+
+
+    extern guint32 dock_bus_app_id_2_xid(char* app_id);
+    Test({
+         dock_bus_app_id_2_xid("google-chrome");
+         dock_bus_app_id_2_xid("devhelp");
+         g_assert(dock_bus_app_id_2_xid("") == 0);
+         }, "dock_bus_app_id_2_xid");
+
+
+    extern char* dock_bus_current_focus_app();
+    Test({
+         g_free(dock_bus_current_focus_app());
+         }, "dock_bus_current_focus_app");
 }
+

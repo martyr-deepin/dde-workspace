@@ -88,7 +88,7 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
                     continue;
                 }
 
-                g_warning("name: %s, exec: %s", name, exec);
+                g_debug("name: %s, exec: %s", name, exec);
                 g_ptr_array_add(actions, action_new(name, exec));
                 g_free(exec);
             }
