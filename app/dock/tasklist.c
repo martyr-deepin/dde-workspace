@@ -1066,7 +1066,7 @@ gchar* dock_bus_list_apps()
 
     if (app_number == 0) {
         g_debug("[dock_bus_list_apps] app_number: 0");
-        return "";
+        return g_strdup("");
     }
 
     gchar* clients = NULL;
@@ -1088,5 +1088,37 @@ DBUS_EXPORT_API
 void dock_bus_active_window(char* app_id)
 {
     js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+guint32 dock_bus_app_id_2_xid(char* app_id)
+{
+    Window xid = 0;
+    GHashTableIter iter;
+    gpointer key = NULL, value = NULL;
+    g_hash_table_iter_init(&iter, _clients_table);
+    while (g_hash_table_iter_next(&iter, &key, &value)) {
+        if (g_strcmp0(app_id, ((Client*)value)->app_id) == 0) {
+            xid = (Window)key;
+            g_debug("[dock_bus_app_id_2_xid] find the xid of %s: %lu", app_id, xid);
+            break;
+        }
+    }
+
+    return xid;
+}
+
+
+DBUS_EXPORT_API
+char* dock_bus_current_focus_app()
+{
+    Window xid = (Window)dock_get_active_window();
+    g_debug("current app xid: %lu", xid);
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(xid));
+    if (c == NULL)
+        return g_strdup("");
+    else
+        return g_strdup(c->app_id);
 }
 
