@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Long Wei
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2011 ~ 2013 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
@@ -21,155 +21,198 @@
 
 #include "session.h"
 
-gboolean 
-is_session_valid(const gchar *session)
+static GList *sessions = NULL;
+
+JS_EXPORT_API
+JSObjectRef greeter_get_sessions ()
 {
-    gboolean ret = FALSE;
-    if((session == NULL)){
-	    return ret;
+    JSObjectRef array = json_array_create ();
+
+    int i;
+
+    if (sessions == NULL) {
+        sessions = lightdm_get_sessions ();
     }
 
-    GList *sessions = NULL;
-    LightDMSession *psession = NULL;
-    const gchar* key = NULL;
+    for (i = 0; i < g_list_length (sessions); ++i) {
+        gchar *key = NULL;
+        LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
 
-    sessions = lightdm_get_sessions();
-    g_assert(sessions);
+        key = g_strdup (lightdm_session_get_key (session));
+        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (key)));
 
-    for(int i = 0; i < g_list_length(sessions); i++){
-        psession = (LightDMSession *)g_list_nth_data(sessions, i);
-        g_assert(psession);
+        g_free (key);
+    }
 
-        key = lightdm_session_get_key(psession);
-        if(g_strcmp0(session, key) == 0){
-            ret = TRUE;
-            break;
-        }else{
-            continue;   
+    return array;
+}
+
+LightDMSession* 
+find_session_by_key(const gchar *key)
+{
+    LightDMSession *ret = NULL;
+    int i;
+
+    if (sessions == NULL) {
+        sessions = lightdm_get_sessions ();
+    }
+
+    for (i = 0; i < g_list_length (sessions); i++) {
+        LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
+
+        if (session != NULL) {
+            gchar *session_key = g_strdup (lightdm_session_get_key (session));
+            if (g_strcmp0 (key, session_key) == 0) {
+                ret = session;
+
+            } else {
+                continue;
+            }
+            g_free (session_key);
+
+        } else {
+            continue;
         }
     }
 
     return ret;
 }
 
-static LightDMSession* 
-find_session_by_key(const gchar *key)
+JS_EXPORT_API 
+gchar* greeter_get_session_name (const gchar *key)
 {
-    LightDMSession *session = NULL;
-    GList *sessions = NULL;
-    const gchar *session_key = NULL;
-
-    sessions = lightdm_get_sessions();
-    g_assert(sessions);
-
-    for(int i = 0; i < g_list_length(sessions); i++){
-        session = (LightDMSession *)g_list_nth_data(sessions, i);
-        g_assert(session);
-        session_key = lightdm_session_get_key(session);
-
-        if((g_strcmp0(key, session_key)) == 0){
-            return session;
-        }else{
-            continue;
-        }
-    }
-
-    return NULL;
-}
-
-const gchar* 
-get_first_session()
-{
-    const gchar *key = NULL;
-    GList *sessions = NULL;
+    gchar *name = NULL;
     LightDMSession *session = NULL;
 
-    sessions = lightdm_get_sessions();
-    g_assert(sessions);
+    session = find_session_by_key (key);
+    if (session != NULL) {
+        name = g_strdup (lightdm_session_get_name (session));
 
-    session = (LightDMSession *)g_list_nth_data(sessions, 0);
-    g_assert(session);
-
-    key = lightdm_session_get_key(session);
-
-    return key;
-}
-
-
-JS_EXPORT_API
-ArrayContainer greeter_get_sessions()
-{
-    GList *sessions = NULL;
-    const gchar *key = NULL;
-    LightDMSession *session = NULL;
-    GPtrArray *keys = g_ptr_array_new();
-
-    sessions = lightdm_get_sessions();
-    g_assert(sessions);
-
-    for(int i = 0; i < g_list_length(sessions); i++){
-        session = (LightDMSession *)g_list_nth_data(sessions, i);
-        g_assert(session);
-        key = lightdm_session_get_key(session);
-        g_ptr_array_add(keys, g_strdup(key));
-    }
-
-    ArrayContainer sessions_ac;
-    sessions_ac.num = keys->len;
-    sessions_ac.data = keys->pdata;
-    g_ptr_array_free(keys, FALSE);
-
-    return sessions_ac;
-}
-
-JS_EXPORT_API
-const gchar* greeter_get_session_name(const gchar *key)
-{
-    const gchar *name = NULL;
-    LightDMSession *session = NULL;
-
-    session = find_session_by_key(key);
-    g_assert(session);
-
-    if(session == NULL){
-        name = key;
-    }else{
-        name = lightdm_session_get_name(session);
+    } else {
+        g_warning ("get session name:session is NULL\n");
     }
 
     return name;
 }
 
-JS_EXPORT_API
-const gchar* greeter_get_session_icon(const gchar *key)
+JS_EXPORT_API 
+gchar* greeter_get_session_icon (const gchar *key)
 {
-    const gchar* icon = NULL;
-    const gchar* session = NULL;
+    gchar* icon = NULL;
 
-    session = g_strdup(g_ascii_strdown(key, -1));
-    g_assert(session);
+    gchar *session = g_ascii_strdown (key, -1);
 
-    if(g_str_has_prefix(session, "gnome")){
-        icon = "gnome.png";
+    if (session == NULL) {
+        g_warning ("get session icon:session is NULL\n");
+        icon = g_strdup ("unknown.png");
 
-    }else if(g_str_has_prefix(session, "deepin")){
-        icon = "deepin.png";
+    } else if (g_str_has_prefix (session, "gnome")){
+        icon = g_strdup ("gnome.png");
 
-    }else if(g_str_has_prefix(session, "kde")){
-        icon = "kde.png";
+    } else if (g_str_has_prefix (session, "deepin")){
+        icon = g_strdup ("deepin.png");
 
-    }else if(g_str_has_prefix(session, "ubuntu")){
-        icon = "ubuntu.png";
+    } else if (g_str_has_prefix (session, "kde")){
+        icon = g_strdup ("kde.png");
 
-    }else if(g_str_has_prefix(session, "xfce")){
-        icon = "xfce.png";
+    } else if (g_str_has_prefix (session, "ubuntu")){
+        icon = g_strdup ("ubuntu.png");
 
-    }else if(g_str_has_prefix(session, "cde")){
-        icon = "cde.png";
+    } else if (g_str_has_prefix (session, "xfce")){
+        icon = g_strdup ("xfce.png");
 
-    }else{
-        icon = "unknown.png";
+    } else if (g_str_has_prefix (session, "cde")){
+        icon = g_strdup ("cde.png");
+
+    } else {
+        icon = g_strdup ("unknown.png");
     }
 
+    g_free (session);
+
     return icon;
+}
+
+JS_EXPORT_API 
+gchar* greeter_get_default_session ()
+{
+    gchar *key = NULL;
+
+    extern LightDMGreeter *greeter;
+    int i;
+
+    gchar* session_name = g_strdup (lightdm_greeter_get_default_session_hint (greeter));
+    if (session_name != NULL) {
+
+        if (sessions == NULL) {
+            sessions = lightdm_get_sessions ();
+        }
+
+        for (i = 0; i < g_list_length (sessions); ++i) {
+
+            LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
+            gchar *name = g_strdup (lightdm_session_get_name (session));
+
+            if (g_strcmp0 (session_name, name) == 0) {
+                key = g_strdup (lightdm_session_get_key (session));
+                g_free (name);
+                break;
+
+            } else {
+                g_free (name);
+                continue;
+            }
+        }
+    }
+    g_free (session_name);
+
+    return key;
+}
+
+JS_EXPORT_API
+gboolean greeter_get_can_suspend ()
+{
+    return lightdm_get_can_suspend ();
+}
+
+JS_EXPORT_API
+gboolean greeter_get_can_hibernate ()
+{
+    return lightdm_get_can_hibernate ();
+}
+
+JS_EXPORT_API
+gboolean greeter_get_can_restart ()
+{
+    return lightdm_get_can_restart ();
+}
+
+JS_EXPORT_API
+gboolean greeter_get_can_shutdown ()
+{
+    return lightdm_get_can_shutdown ();
+}
+
+JS_EXPORT_API
+gboolean greeter_run_suspend ()
+{
+    return lightdm_suspend (NULL);
+}
+
+JS_EXPORT_API
+gboolean greeter_run_hibernate ()
+{
+    return lightdm_hibernate (NULL);
+}
+
+JS_EXPORT_API
+gboolean greeter_run_restart ()
+{
+    return lightdm_restart (NULL);
+}
+
+JS_EXPORT_API
+gboolean greeter_run_shutdown ()
+{
+    return lightdm_shutdown (NULL);
 }

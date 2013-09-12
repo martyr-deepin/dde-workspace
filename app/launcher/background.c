@@ -113,8 +113,6 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
     cairo_surface_destroy(img_surface);
     cairo_destroy(cr);
 
-    js_post_message_simply("draw_background", "{\"path\": \"%s\"}", bg_path);
-
     return TRUE;
 }
 

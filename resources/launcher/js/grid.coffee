@@ -31,8 +31,10 @@ try
 catch error
     s_dock = null
 
+
 class Item extends Widget
     @theme_icon: null
+    @hover_item_id: null
     @display_temp: false
     constructor: (@id, @core)->
         super
@@ -70,6 +72,7 @@ class Item extends Widget
         e?.stopPropagation()
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
+        Item.hover_item_id = @id
         exit_launcher()
 
     do_dragstart: (e)=>
@@ -214,6 +217,18 @@ class Item extends Widget
 
     scroll_to_view: ->
         @element.scrollIntoViewIfNeeded()
+
+    do_mouseover: =>
+        @element.style.background = "rgba(0, 183, 238, 0.2)"
+        @element.style.border = "1px rgba(255, 255, 255, 0.2) solid"
+        @element.style.borderRadius = "2px"
+        Item.hover_item_id = @id
+
+    do_mouseout: =>
+        @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        @element.style.background = ""
+        @element.style.borderRadius = ""
+        # Item.hover_item_id = null
 
 
 update_items = (items) ->

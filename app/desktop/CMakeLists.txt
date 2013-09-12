@@ -10,7 +10,8 @@ SET(SRC_LIST desktop.c background.c background_util.c background_util.h
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES} dtest desktop_test)
+target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
+    desktop_test dtest)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

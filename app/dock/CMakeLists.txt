@@ -16,7 +16,8 @@ SET(SRC_LIST dock.c dock_hide.c dock_config.c tray.c handle_icon.c
 add_executable(${NAME} ${SRC_LIST})
 
 
-target_link_libraries(${NAME} dcom dentry dbus dtest tray ddock_test ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus tray ddock_test
+    ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES} dtest)
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}

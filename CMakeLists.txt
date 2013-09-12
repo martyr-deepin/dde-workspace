@@ -82,7 +82,6 @@ set(DTEST_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/test)
 set(DWEBVIEW_LIBRARIES ${WEBKIT_LIBRARIES} ${DBUS_LIBRARIES} m X11 Xext sqlite3)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
 
-
 add_subdirectory(lib)
 add_subdirectory(app)
 add_subdirectory(po)

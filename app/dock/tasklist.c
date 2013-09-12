@@ -32,6 +32,7 @@
 #include "special_window.h"
 #include "xdg_misc.h"
 #include "DBUS_dock.h"
+#include "desktop_action.h"
 extern Window get_dock_window();
 extern char* dcore_get_theme_icon(const char*, double);
 
@@ -52,6 +53,9 @@ static Atom ATOM_ACTIVE_WINDOW;
 static Atom ATOM_WINDOW_ICON;
 static Atom ATOM_WINDOW_TYPE;
 static Atom ATOM_WINDOW_TYPE_NORMAL;
+static Atom ATOM_WINDOW_TYPE_DIALOG;
+static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
+static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
 static Atom ATOM_WINDOW_NAME;
 static Atom ATOM_WINDOW_PID;
 static Atom ATOM_WINDOW_NET_STATE;
@@ -73,6 +77,9 @@ PRIVATE void _init_atoms()
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
     ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
+    ATOM_WINDOW_TYPE_DIALOG = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DIALOG");
+    ATOM_WINDOW_ALLOWED_ACTIONS = gdk_x11_get_xatom_by_name("_NET_WM_ALLOWED_ACTIONS");
+    ATOM_WINDOW_ALLOW_MINIMIZE = gdk_x11_get_xatom_by_name("_NET_WM_ACTION_MINIMIZE");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
     ATOM_WINDOW_PID = gdk_x11_get_xatom_by_name("_NET_WM_PID");
     ATOM_WINDOW_NET_STATE = gdk_x11_get_xatom_by_name("_NET_WM_STATE");
@@ -199,35 +206,17 @@ gboolean _get_launcher_icon(Client* c)
             g_debug("[_get_launcher_icon] get image path");
             if (g_path_is_absolute(icon_name)) {
                 g_debug("[_get_launcher_icon] image path is absolute path");
-                char* temp_icon_name_holder = dcore_get_theme_icon(c->app_id, 48);
-
-                if (temp_icon_name_holder != NULL) {
-                    g_free(icon_name);
-                    icon_name = temp_icon_name_holder;
-                } else {
-                    char* basename =
-                        get_basename_without_extend_name(icon_name);
-
-                    if (basename != NULL) {
-                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
-                                                                     48);
-                        g_free(basename);
-
-                        if (temp_icon_name_holder != NULL &&
-                            !g_str_has_prefix(temp_icon_name_holder,
-                                              "data:image")) {
-                            g_free(icon_name);
-                            icon_name = temp_icon_name_holder;
-                        }
-                    }
-                }
+                char* temp_icon_name_holder = icon_name;
+                icon_name = check_absolute_path_icon(c->app_id, icon_name);
+                g_free(temp_icon_name_holder);
             }
 
+            g_debug("[_get_launcher_icon] the final icon name is: %s", icon_name);
             char* icon_path = icon_name_to_path(icon_name, 48);
             g_free(icon_name);
 
             g_debug("[_get_launcher_icon] icon path is %s", icon_path);
-            if (is_deepin_icon(icon_path)) {
+            if (icon_path && is_deepin_icon(icon_path)) {
                 g_debug("[_get_launcher_icon] icon is deepin icon");
                 c->icon = icon_path;
             } else {
@@ -338,6 +327,34 @@ void _update_client_info(Client *c)
     json_append_string(json, "icon", c->icon);
     json_append_string(json, "app_id", c->app_id);
     json_append_string(json, "exec", c->exec);
+
+    // append actions
+    GDesktopAppInfo* app = guess_desktop_file(c->app_id);
+    JSObjectRef actions_js_array = json_array_create();
+
+#if 0
+    if (app != NULL) {
+        GPtrArray* actions = get_app_actions(app);
+
+        if (actions != NULL) {
+            for (int i = 0; i < actions->len; ++i) {
+                struct Action* action = g_ptr_array_index(actions, i);
+
+                JSObjectRef action_item = json_create();
+                json_append_string(action_item, "name", g_strdup(action->name));
+                json_append_string(action_item, "exec", g_strdup(action->exec));
+
+                json_array_insert(actions_js_array, i, action_item);
+            }
+
+            g_ptr_array_unref(actions);
+        }
+
+        g_object_unref(app);
+    }
+#endif
+
+    json_append_value(json, "actions", actions_js_array);
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
@@ -426,6 +443,24 @@ gboolean is_skip_taskbar(Window w)
 }
 
 
+static
+gboolean can_be_minimized(Window w)
+{
+    gulong items;
+    void* data = get_window_property(_dsp, w, ATOM_WINDOW_ALLOWED_ACTIONS, &items);
+
+    for (int i = 0; i < items; ++i) {
+        if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_ALLOW_MINIMIZE) {
+            XFree(data);
+            return TRUE;
+        }
+    }
+
+    XFree(data);
+    return FALSE;
+}
+
+
 gboolean is_normal_window(Window w)
 {
     XClassHint ch;
@@ -437,7 +472,7 @@ gboolean is_normal_window(Window w)
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
         } else if (g_str_equal(ch.res_class, "Desktop")) {
-            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_by_index, 0);
+            get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -456,14 +491,16 @@ gboolean is_normal_window(Window w)
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
     for (int i=0; i<items; i++) {
-        if ((Atom)X_FETCH_32(data, i) != ATOM_WINDOW_TYPE_NORMAL) {
+        Atom window_type = (Atom)X_FETCH_32(data, i);
+        if (window_type == ATOM_WINDOW_TYPE_NORMAL
+            || (window_type == ATOM_WINDOW_TYPE_DIALOG && can_be_minimized(w))) {
             XFree(data);
-            return FALSE;
+            return TRUE;
         }
     }
     XFree(data);
 
-    return TRUE;
+    return FALSE;
 }
 
 PRIVATE void _destroy_client(gpointer id)
@@ -521,7 +558,7 @@ JS_EXPORT_API
 double dock_get_active_window()
 {
     Window aw = 0;
-    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_by_index, 0);
+    get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
     return aw;
 }
 
@@ -878,6 +915,7 @@ gboolean dock_get_desktop_status()
     return value;
 }
 
+DBUS_EXPORT_API
 JS_EXPORT_API
 void dock_show_desktop(gboolean value)
 {
@@ -908,7 +946,7 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
-    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_by_index, 0)) {
+    if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
         const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
@@ -1006,5 +1044,49 @@ void dock_set_compiz_workaround_preview(gboolean v)
         g_object_unref(compiz_workaround);
         _v = v;
     }
+}
+
+
+static
+void _append(gpointer key, gpointer value, gpointer user_data)
+{
+    gchar* appids = *(gchar**)user_data;
+    if (appids == NULL)
+        *(gchar**)user_data = g_strconcat(((Client*)value)->app_id, NULL);
+    else
+        *(gchar**)user_data = g_strconcat(appids, ";", ((Client*)value)->app_id, NULL);
+    g_free(appids);
+}
+
+
+DBUS_EXPORT_API
+gchar* dock_bus_list_apps()
+{
+    guint app_number = g_hash_table_size(_clients_table);
+
+    if (app_number == 0) {
+        g_debug("[dock_bus_list_apps] app_number: 0");
+        return "";
+    }
+
+    gchar* clients = NULL;
+    g_hash_table_foreach(_clients_table, _append, &clients);
+    g_debug("[dock_bus_list_apps] app_number: %d, clients: %s", app_number, clients);
+
+    return clients;
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_close_window(char* app_id)
+{
+    js_post_message_simply("close_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_active_window(char* app_id)
+{
+    js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
 }
 

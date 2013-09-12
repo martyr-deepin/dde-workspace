@@ -84,11 +84,14 @@ sort_methods =
 
 exit_launcher = ->
     s_box.value = ""
+    selected_category_id = ALL_APPLICATION_CATEGORY_ID
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
     _save_hidden_apps()
-    selected_category_id = ALL_APPLICATION_CATEGORY_ID
-    is_show_hidden_icons = false
+    _show_hidden_icons(false)
+    if Item.hover_item_id
+        event = new Event("mouseout")
+        Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
@@ -100,8 +103,12 @@ DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         exit_launcher()
 )
+inited = false
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
+    if inited
+        DCore.Launcher.clear()
+    inited = true
 )
 DCore.signal_connect("update_items", ->
     # echo "update items"

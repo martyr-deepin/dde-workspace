@@ -9,6 +9,9 @@ func main() {
         Method("ShowDesktop", Callback("dock_show_desktop"), Arg("value:gboolean")),
         Method("ToggleShow", Callback("dock_toggle_show")),
         Method("ShowInspector", Callback("dock_show_inspector")),
+        Method("CloseApp", Callback("dock_bus_close_window"), Arg("appid:gchar*")),
+        Method("ActiveApp", Callback("dock_bus_active_window"), Arg("appid:gchar*")),
+        Method("ListApps", Callback("dock_bus_list_apps"), Ret("clients:gchar*")),
     )
     DBusCall(
         SessionDBUS("com.deepin.dde.desktop"),

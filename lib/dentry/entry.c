@@ -268,29 +268,9 @@ char* dentry_get_icon(Entry* e)
             if (icon_str && g_path_is_absolute(icon_str) && !is_deepin_icon(icon_str)) {
                 char* app_id =
                     get_basename_without_extend_name(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)));
-                char* temp_icon_name_holder = dcore_get_theme_icon(app_id, 48);
-                g_free(app_id);
-
-                if (temp_icon_name_holder != NULL) {
-                    g_free(icon_str);
-                    icon_str = temp_icon_name_holder;
-                } else {
-                    char* basename =
-                        get_basename_without_extend_name(icon_str);
-
-                    if (basename != NULL) {
-                        char*temp_icon_name_holder = dcore_get_theme_icon(basename,
-                                                                          48);
-                        g_free(basename);
-
-                        if (temp_icon_name_holder != NULL &&
-                            !g_str_has_prefix(temp_icon_name_holder,
-                                              "data:image")) {
-                            g_free(icon_str);
-                            icon_str = temp_icon_name_holder;
-                        }
-                    }
-                }
+                char* temp_icon_name_holder = icon_str;
+                icon_str = check_absolute_path_icon(app_id, icon_str);
+                g_free(temp_icon_name_holder);
             }
 
             ret = icon_name_to_path_with_check_xpm(icon_str, 48);
@@ -1165,8 +1145,8 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     g_debug("choose templates name :---%s---",basename);
 
     GFile* dir = g_file_new_for_path(DESKTOP_DIR());
-    
-        
+
+
     char* name = g_strdup(basename);
     GFile* child = g_file_get_child(dir, name);
     for (int i=0; g_file_query_exists(child, NULL) && (i<500); i++) {
@@ -1186,7 +1166,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
         g_debug ("create_templates: new directory : g_file_make_directory : %s", name);
         ArrayContainer ac;
         ac = dentry_list_files(src);
-        dentry_copy(ac,child);   
+        dentry_copy(ac,child);
         ArrayContainer_free(ac);
         result = true;
     }
@@ -1497,3 +1477,4 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
 
     return group_name;
 }
+
