@@ -26,17 +26,33 @@ class ClientGroup extends AppItem
         catch error
             alert "Group construcotr :#{error}"
 
+        @build_menu()
+
+    build_menu: ->
+        menu_list = [
+            [10, _("_New instance")],
+            []
+        ]
+        i = 0
+        len = @actions.length
+
+        while i < len
+            i = i + 1
+            menu_list.push([i, @actions[i - 1].name])
+
+        if len != 0
+            menu_list.push([])
+
+        menu_list.push([20, _("_Close")])
+        menu_list.push([30, _("Close _All"), @n_clients.length > 1])
+        menu_list.push([])
+        menu_list.push([40, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)])
+        menu = build_menu(menu_list)
+        @element.contextMenu = menu
+
         # contextmenu and preview window cannot be shown at the same time
-        @element.addEventListener("contextmenu", (e) =>
+        @element.addEventListener("contextmenu", (e) ->
             Preview_close_now()
-            menu = build_menu([
-                [1, _("_New instance")],
-                [2, _("_Close")],
-                [3, _("Close _All"), @n_clients.length > 1]
-                [],
-                [4, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)],
-            ])
-            @element.contextMenu = menu
             e.stopPropagation()
         )
 
@@ -189,14 +205,20 @@ class ClientGroup extends AppItem
     do_itemselected: (e)=>
         Preview_container.close()
         switch e.id
-            when 1
+            when 10
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
-            when 2
+            when 20
                 Preview_close_now()
                 DCore.Dock.close_window(@leader)
-            when 3
+            when 30
                 @close_all_windows()
-            when 4 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
+            when 40 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
+
+        index = e.id - 1
+        action = @actions[index]
+        if action?
+            echo "#{action.name}, #{action.exec}"
+            DCore.Dock.launch_from_commandline(@app_id, action.exec)
 
     close_all_windows: ->
             Preview_close_now()
