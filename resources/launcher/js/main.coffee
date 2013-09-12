@@ -89,6 +89,9 @@ exit_launcher = ->
     grid_load_category(selected_category_id)
     _save_hidden_apps()
     _show_hidden_icons(false)
+    if Item.hover_item_id
+        event = new Event("mouseout")
+        Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
