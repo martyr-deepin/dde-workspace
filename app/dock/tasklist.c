@@ -915,6 +915,7 @@ gboolean dock_get_desktop_status()
     return value;
 }
 
+DBUS_EXPORT_API
 JS_EXPORT_API
 void dock_show_desktop(gboolean value)
 {
@@ -1043,5 +1044,49 @@ void dock_set_compiz_workaround_preview(gboolean v)
         g_object_unref(compiz_workaround);
         _v = v;
     }
+}
+
+
+static
+void _append(gpointer key, gpointer value, gpointer user_data)
+{
+    gchar* appids = *(gchar**)user_data;
+    if (appids == NULL)
+        *(gchar**)user_data = g_strconcat(((Client*)value)->app_id, NULL);
+    else
+        *(gchar**)user_data = g_strconcat(appids, ";", ((Client*)value)->app_id, NULL);
+    g_free(appids);
+}
+
+
+DBUS_EXPORT_API
+gchar* dock_bus_list_apps()
+{
+    guint app_number = g_hash_table_size(_clients_table);
+
+    if (app_number == 0) {
+        g_debug("[dock_bus_list_apps] app_number: 0");
+        return "";
+    }
+
+    gchar* clients = NULL;
+    g_hash_table_foreach(_clients_table, _append, &clients);
+    g_debug("[dock_bus_list_apps] app_number: %d, clients: %s", app_number, clients);
+
+    return clients;
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_close_window(char* app_id)
+{
+    js_post_message_simply("close_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_active_window(char* app_id)
+{
+    js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
 }
 

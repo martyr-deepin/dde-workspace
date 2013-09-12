@@ -341,6 +341,7 @@ void write_app_info(GDesktopAppInfo* info)
 }
 
 
+DBUS_EXPORT_API
 JS_EXPORT_API
 void dock_request_dock(const char* path)
 {

@@ -102,10 +102,10 @@ DCore.signal_connect("lost_focus", (info)->
 )
 inited = false
 DCore.signal_connect("draw_background", (info)->
-	_b.style.backgroundImage = "url(#{info.path})"
-	if inited
-		DCore.Launcher.clear()
-	inited = true
+    _b.style.backgroundImage = "url(#{info.path})"
+    if inited
+        DCore.Launcher.clear()
+    inited = true
 )
 DCore.signal_connect("update_items", ->
     # echo "update items"
