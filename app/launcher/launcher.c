@@ -154,8 +154,6 @@ void launcher_notify_workarea_size()
 
 
 PRIVATE
-
-PRIVATE
 void _append_to_category(const char* path, GList* cs)
 {
     if (_category_table == NULL) {
