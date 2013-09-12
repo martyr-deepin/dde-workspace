@@ -36,27 +36,27 @@ class Launcher extends AppItem
             when 20 then DCore.Dock.request_undock(@id)
 
     build_menu: ->
-        menu_list = [
-            [10, _("_Run")],
-            []
-        ]
-
-        i = 0
-        len = @actions.length
-
-        while i < len
-            i = i + 1
-            menu_list.push([i, @actions[i - 1].name])
-
-        if len != 0
-            menu_list.push([])
-
-        menu_list.push([20, _("_Undock")])
-        @menu = build_menu(menu_list)
-
         @element.addEventListener("contextmenu", (e)=>
             Preview_close_now()
-            @element.contextMenu = @menu
+            menu_list = [
+                [10, _("_Run")],
+                []
+            ]
+
+            i = 0
+            len = @actions.length
+
+            while i < len
+                i = i + 1
+                menu_list.push([i, @actions[i - 1].name])
+
+            if len != 0
+                menu_list.push([])
+
+            menu_list.push([20, _("_Undock")])
+            menu = build_menu(menu_list)
+
+            @element.contextMenu = menu
             e.stopPropagation()
         )
 
