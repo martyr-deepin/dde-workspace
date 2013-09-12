@@ -135,6 +135,9 @@ var temp_provider = template.Must(template.New("dbus_xml").Funcs(template.FuncMa
     "func_decl": func(method MethodStruct) string {
         return fmt.Sprintf("%s %s(%s);", method.Ret.CName, method.CB.Name, method.joinArgs())
     },
+    "is_string": func(ctypename string) bool {
+        return strings.HasSuffix(ctypename, "char*")
+    },
 }).Parse(`
 static int _service_owner_id = 0;
 static GDBusInterfaceInfo * interface_info = NULL;
@@ -157,6 +160,7 @@ static void _bus_method_call (GDBusConnection * connection,
 
     {{if .Ret.Type }}
         retval = g_variant_new("({{..Ret.DName}})", _c_retval);
+        {{if is_string .Ret.CName}}g_free(_c_retval);{{end}}
     {{end}}
         g_dbus_method_invocation_return_value (invocation, retval);
         return;
