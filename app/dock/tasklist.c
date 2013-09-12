@@ -332,7 +332,6 @@ void _update_client_info(Client *c)
     GDesktopAppInfo* app = guess_desktop_file(c->app_id);
     JSObjectRef actions_js_array = json_array_create();
 
-#if 0
     if (app != NULL) {
         GPtrArray* actions = get_app_actions(app);
 
@@ -341,8 +340,8 @@ void _update_client_info(Client *c)
                 struct Action* action = g_ptr_array_index(actions, i);
 
                 JSObjectRef action_item = json_create();
-                json_append_string(action_item, "name", g_strdup(action->name));
-                json_append_string(action_item, "exec", g_strdup(action->exec));
+                json_append_string(action_item, "name", action->name);
+                json_append_string(action_item, "exec", action->exec);
 
                 json_array_insert(actions_js_array, i, action_item);
             }
@@ -352,7 +351,6 @@ void _update_client_info(Client *c)
 
         g_object_unref(app);
     }
-#endif
 
     json_append_value(json, "actions", actions_js_array);
     g_assert(c->app_id != NULL);
@@ -915,6 +913,7 @@ gboolean dock_get_desktop_status()
     return value;
 }
 
+DBUS_EXPORT_API
 JS_EXPORT_API
 void dock_show_desktop(gboolean value)
 {
@@ -1043,5 +1042,81 @@ void dock_set_compiz_workaround_preview(gboolean v)
         g_object_unref(compiz_workaround);
         _v = v;
     }
+}
+
+
+static
+void _append(gpointer key, gpointer value, gpointer user_data)
+{
+    gchar* appids = *(gchar**)user_data;
+    if (appids == NULL)
+        *(gchar**)user_data = g_strconcat(((Client*)value)->app_id, NULL);
+    else
+        *(gchar**)user_data = g_strconcat(appids, ";", ((Client*)value)->app_id, NULL);
+    g_free(appids);
+}
+
+
+DBUS_EXPORT_API
+gchar* dock_bus_list_apps()
+{
+    guint app_number = g_hash_table_size(_clients_table);
+
+    if (app_number == 0) {
+        g_debug("[dock_bus_list_apps] app_number: 0");
+        return g_strdup("");
+    }
+
+    gchar* clients = NULL;
+    g_hash_table_foreach(_clients_table, _append, &clients);
+    g_debug("[dock_bus_list_apps] app_number: %d, clients: %s", app_number, clients);
+
+    return clients;
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_close_window(char* app_id)
+{
+    js_post_message_simply("close_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_active_window(char* app_id)
+{
+    js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+guint32 dock_bus_app_id_2_xid(char* app_id)
+{
+    Window xid = 0;
+    GHashTableIter iter;
+    gpointer key = NULL, value = NULL;
+    g_hash_table_iter_init(&iter, _clients_table);
+    while (g_hash_table_iter_next(&iter, &key, &value)) {
+        if (g_strcmp0(app_id, ((Client*)value)->app_id) == 0) {
+            xid = (Window)key;
+            g_debug("[dock_bus_app_id_2_xid] find the xid of %s: %lu", app_id, xid);
+            break;
+        }
+    }
+
+    return xid;
+}
+
+
+DBUS_EXPORT_API
+char* dock_bus_current_focus_app()
+{
+    Window xid = (Window)dock_get_active_window();
+    g_debug("current app xid: %lu", xid);
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(xid));
+    if (c == NULL)
+        return g_strdup("");
+    else
+        return g_strdup(c->app_id);
 }
 

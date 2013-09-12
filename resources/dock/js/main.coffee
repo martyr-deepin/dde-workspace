@@ -101,6 +101,16 @@ DCore.signal_connect("in_normal_mode", ->
     calc_app_item_size()
 )
 
+DCore.signal_connect("close_window", (info)->
+    echo "#{info.app_id}"
+    Widget.look_up("le_" + info.app_id).close_all_windows()
+)
+
+DCore.signal_connect("active_window", (info)->
+    echo "#{info.app_id}"
+    Widget.look_up("le_" + info.app_id).do_click()
+)
+
 setTimeout(->
     IN_INIT = false
     calc_app_item_size()
@@ -112,3 +122,4 @@ DCore.Dock.emit_webview_ok()
 
 show_desktop.show(DCore.Dock.get_desktop_status())
 DCore.Dock.test()
+

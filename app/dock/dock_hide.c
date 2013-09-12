@@ -285,6 +285,7 @@ gboolean _do_toggle_show_clean()
     return FALSE;
 }
 
+DBUS_EXPORT_API
 void dock_toggle_show()
 {
     if (CURRENT_STATE == StateHidden || CURRENT_STATE == StateHidding) {
@@ -416,3 +417,4 @@ void dock_update_hide_mode()
     }
     }
 }
+

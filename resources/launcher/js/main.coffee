@@ -32,7 +32,10 @@ is_show_hidden_icons = false
 
 
 get_name_by_id = (id) ->
-    DCore.DEntry.get_name(Widget.look_up(id).core)
+    if Widget.look_up(id)?
+        DCore.DEntry.get_name(Widget.look_up(id).core)
+    else
+        ""
 
 
 sort_by_name = (items)->
@@ -89,6 +92,9 @@ exit_launcher = ->
     grid_load_category(selected_category_id)
     _save_hidden_apps()
     _show_hidden_icons(false)
+    if Item.hover_item_id
+        event = new Event("mouseout")
+        Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
@@ -100,11 +106,15 @@ DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         exit_launcher()
 )
+inited = false
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
+    if inited
+        DCore.Launcher.clear()
+    inited = true
 )
 DCore.signal_connect("update_items", ->
-    # echo "update items"
+    echo "update items"
 
     applications = {}
     hidden_icons = {}

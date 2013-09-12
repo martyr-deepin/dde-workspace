@@ -164,13 +164,6 @@ body {
     text-overflow: ellipsis;
 }
 
-.item:hover {
-    background: rgba(0, 183, 238, 0.2);
-    border: 1px rgba(255, 255, 255, 0.2) solid;
-    border-radius: 2px;
-    /*-webkit-transform: rotate(-7deg);*/
-}
-
 .item img {
     border-radius: 6px;
     -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));

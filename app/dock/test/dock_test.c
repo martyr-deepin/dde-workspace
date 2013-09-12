@@ -8,7 +8,10 @@
 int TEST_MAX_COUNT = 1000000;
 /* int TEST_MAX_COUNT = 1000; */
 /* int TEST_MAX_COUNT = 1; */
-int TEST_MAX_MEMORY= RES_IN_MB(90);
+
+// resident memory
+int TEST_MAX_MEMORY= RES_IN_MB(40);
+/* int TEST_MAX_MEMORY= RES_IN_MB(90); */
 /* int TEST_MAX_MEMORY= RES_IN_MB(400); */
 
 
@@ -37,13 +40,13 @@ void dock_test()
     /* dock_test_hide(); */
     /* dock_test_config(); */
     /* dock_test_dominant_color(); */
-    dock_test_handle_icon();
+    /* dock_test_handle_icon(); */
 
     // TODO: test build_app_info
     /* dock_test_launcher(); */
 
     // TODO: client_free
-    /* dock_test_tasklist(); */
+    dock_test_tasklist();
 
     /* dock_test_special_window(); */
     /* dock_test_dock(); */
@@ -51,3 +54,4 @@ void dock_test()
 }
 
 #endif
+
