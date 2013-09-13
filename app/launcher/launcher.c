@@ -154,17 +154,13 @@ void launcher_notify_workarea_size()
 
 
 PRIVATE
-void ptr_array_free(gpointer data)
-{
-    g_ptr_array_free((GPtrArray*)data, TRUE);
-}
-
-
-PRIVATE
 void _append_to_category(const char* path, GList* cs)
 {
-    if (_category_table == NULL)
-        _category_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, ptr_array_free);
+    if (_category_table == NULL) {
+        _category_table =
+            g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL,
+                                  (GDestroyNotify)g_ptr_array_unref);
+    }
 
     GPtrArray* l = NULL;
 

@@ -135,7 +135,6 @@ draw_background (xfade_data_t* fade_data)
     cairo_paint_with_alpha (cr, fade_data->alpha);
     cairo_destroy (cr);
     //draw the pixmap on background window
-    g_debug ("draw background:");
     cr = gdk_cairo_create (background_window);
     cairo_set_source_surface (cr, fade_data->fading_surface, 0, 0);
     cairo_paint (cr);
@@ -183,15 +182,6 @@ on_tick (gpointer user_data)
 
     draw_background (fade_data);
 
-    static int i=0;
-#if 0
-    g_debug ("tick %d",++i);
-    g_debug ("cur_time : %lf", cur_time);
-    g_debug ("start_time: %lf", fade_data->start_time);
-    g_debug ("total_duration: %lf", fade_data->total_duration);
-    g_debug ("alpha      : %lf", fade_data->alpha);
-#endif
-
     // 'coz fade_data->alpha is a rough value
     if(fade_data->alpha >= ALPHA_THRESHOLD)
         return FALSE;
@@ -211,6 +201,7 @@ on_finished (gpointer user_data)
     free_fade_data (fade_data);
     g_debug ("crossfade finished ");
 }
+
 PRIVATE void
 remove_timers ()
 {
@@ -271,19 +262,12 @@ get_surface(Pixmap pixmap)
 
     return cs;
 }
-#if 0
-PRIVATE guint
-get_current_picture_index ()
-{
-    return picture_index;
-}
-#endif
+
 PRIVATE const char*
 get_current_picture_path ()
 {
     const char* _pic = g_ptr_array_index (picture_paths,
                                           picture_index);
-
     return _pic;
 }
 // NOTE: this should be the only place to update picture_index
@@ -387,16 +371,8 @@ get_xformed_gdk_pixbuf (const char* pict_path)
 
     return _xformed_pixbuf;
 }
-#if 0
-PRIVATE GdkPixbuf*
-get_next_xformed_gdk_pixbuf ()
-{
-    const char* _path = get_next_picture_path ();
-    GdkPixbuf* _pixbuf = get_xformed_gdk_pixbuf (_path);
 
-    return _pixbuf;
-}
-#endif
+
 PRIVATE gboolean
 on_bg_duration_tick (gpointer user_data)
 {
@@ -476,10 +452,8 @@ setup_crossfade_timer ()
     fade_data->fading_surface = get_surface (prev_pixmap);
     fade_data->alpha = 0;
 
-    const char* current_picture = get_current_picture_path ();
-    g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-
-    fade_data->end_pixbuf = get_xformed_gdk_pixbuf (current_picture);
+    g_settings_set_string (Settings, BG_CURRENT_PICT, get_current_picture_path());
+    fade_data->end_pixbuf = get_xformed_gdk_pixbuf (get_current_picture_path());
 
     fade_data->total_duration = gsettings_xfade_manual_interval/MSEC_PER_SEC;
     fade_data->interval = TIME_PER_FRAME;
@@ -519,11 +493,18 @@ setup_timers ()
  *      <picture_uris> := (<uri> ";")* <uri> [";"]
  */
 PRIVATE void
-parse_picture_uris (gchar * pic_uri)
+parse_picture_uris ()
 {
+    gchar* pic_uri = g_settings_get_string (Settings, BG_PICTURE_URIS);
+    gchar* cur_gsetting_pict = g_settings_get_string (Settings, BG_CURRENT_PICT);
+
+    picture_num = 0;
+    picture_index = 0;
+
     gchar* uri_end;   // end of a uri
     gchar* uri_start;   //start of a uri
     gchar* filename_ptr;
+
 
     uri_start = pic_uri;
     while ((uri_end = strchr (uri_start, DELIMITER)) != NULL)
@@ -533,6 +514,9 @@ parse_picture_uris (gchar * pic_uri)
         filename_ptr = g_filename_from_uri (uri_start, NULL, NULL);
         if (filename_ptr != NULL)
         {
+            if (g_strcmp0(cur_gsetting_pict, filename_ptr) == 0) {
+                picture_index = picture_num;
+            }
             g_ptr_array_add (picture_paths, filename_ptr);
             g_hash_table_insert (picture_paths_ht,
                                  filename_ptr,
@@ -566,6 +550,8 @@ parse_picture_uris (gchar * pic_uri)
                              GUINT_TO_POINTER(picture_num+1));
         picture_num =1;
     }
+    g_free(pic_uri);
+    g_free(cur_gsetting_pict);
 }
 PRIVATE void
 destroy_picture_path (gpointer data)
@@ -579,10 +565,6 @@ destroy_picture_path (gpointer data)
 PRIVATE void
 bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_PICTURE_URIS))
-        return;
-
-
     g_debug ("picture_uris changed");
     g_hash_table_destroy (picture_paths_ht);
     g_ptr_array_free (picture_paths, TRUE);
@@ -590,41 +572,11 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
     picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
     picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
 
-    picture_num = 0;
-    picture_index = 0;
-
-    gchar* bg_image_uri = g_settings_get_string (settings, BG_PICTURE_URIS);
-    parse_picture_uris (bg_image_uri);
-    free (bg_image_uri);
+    parse_picture_uris ();
 
     const char* current_picture = get_current_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, current_picture);
-#if 0
-    GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
-    g_assert (pb != NULL);
 
-    Pixmap prev_pixmap = get_previous_background();
-
-    gdk_error_trap_push ();
-    if (prev_pixmap == None)
-    {
-        Pixmap new_pixmap = XCreatePixmap (display, root,
-                                       root_width, root_height,
-                                       root_depth);
-        prev_pixmap = new_pixmap;
-    }
-    gdk_error_trap_pop_ignored ();
-
-    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
-
-    fade_data->pixmap = prev_pixmap;
-    fade_data->fading_surface = get_surface (prev_pixmap);
-    fade_data->end_pixbuf = pb;
-    fade_data->alpha = 1.0;
-
-    draw_background (fade_data);
-    free_fade_data (fade_data);
-#endif
     remove_timers ();
 
     setup_timers ();
@@ -636,9 +588,6 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 PRIVATE void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_PICTURE_URI))
-        return;
-
     gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
     gchar* tmp_image_path = g_filename_from_uri (tmp_image_uri, NULL, NULL);
     g_free (tmp_image_uri);
@@ -661,9 +610,6 @@ bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_
 PRIVATE void
 bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_BG_DURATION))
-        return;
-
     gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
 
     remove_timers ();
@@ -674,9 +620,6 @@ bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_
 PRIVATE void
 bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_XFADE_MANUAL_INTERVAL))
-        return;
-
     gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
 
     remove_timers ();
@@ -687,9 +630,6 @@ bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpoi
 PRIVATE void
 bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_XFADE_AUTO_INTERVAL))
-        return;
-
     gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
 
     remove_timers ();
@@ -701,9 +641,6 @@ bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpoint
 PRIVATE void
 bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_XFADE_AUTO_MODE))
-        return;
-
     gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
 #if 0
     if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
@@ -720,9 +657,6 @@ bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer u
 PRIVATE void
 bg_settings_draw_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_DRAW_MODE))
-        return;
-
     gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 
     remove_timers ();
@@ -816,8 +750,6 @@ register_account_service_background_path (const char* current_picture)
 PRIVATE void
 bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    if (g_strcmp0 (key, BG_CURRENT_PICT))
-        return;
     gchar* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
 
     register_account_service_background_path (cur_pict);
@@ -925,18 +857,6 @@ initial_setup (GSettings *settings)
 
         gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
         gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
-
-#if 0
-        if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
-            g_debug ("XFADE_AUTO_MODE_RANDOM");
-        else if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_SEQUENTIAL)
-            g_debug ("XFADE_AUTO_MODE_SEQUENTIAL");
-
-        if (gsettings_draw_mode == DRAW_MODE_TILING)
-            g_debug ("DRAW_MODE_TILING");
-        else if (gsettings_draw_mode == DRAW_MODE_SCALING)
-            g_debug ("DRAW_MODE_SCALING");
-#endif
     }
 
     /*
@@ -968,7 +888,7 @@ initial_setup (GSettings *settings)
                                        root_depth);
     _update_rootpmap (new_pixmap);
 
-    GdkPixbuf* pb = get_xformed_gdk_pixbuf (current_picture);
+    GdkPixbuf* pb = get_xformed_gdk_pixbuf (get_current_picture_path());
 
     xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
 
@@ -1013,11 +933,8 @@ bg_util_init (GdkWindow* bg_window)
         picture_paths = g_ptr_array_new_with_free_func (destroy_picture_path);
         picture_paths_ht = g_hash_table_new (g_str_hash, g_str_equal);
         picture_num = 0;
-        picture_index = 0;
 
-        gchar* bg_image_uri = g_settings_get_string (Settings, BG_PICTURE_URIS);
-        parse_picture_uris (bg_image_uri);
-        free (bg_image_uri);
+        parse_picture_uris ();
 
         background_window = bg_window;
 
@@ -1052,7 +969,6 @@ bg_util_init (GdkWindow* bg_window)
                 G_CALLBACK (bg_settings_xfade_auto_mode_changed), NULL);
         g_signal_connect (Settings, "changed::draw-mode",
                 G_CALLBACK (bg_settings_draw_mode_changed), NULL);
-        //serialize access to current_picture.
         g_signal_connect (Settings, "changed::current-picture",
                 G_CALLBACK (bg_settings_current_picture_changed), NULL);
 
