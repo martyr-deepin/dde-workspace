@@ -20,8 +20,7 @@
  **/
 #include "desktop_action.h"
 
-#define ACTION_NAME "ActionName"
-#define DESKTOP_ACTION_PATTERN "(?P<"ACTION_NAME">.*) Shortcut Group|Desktop Action (?<"ACTION_NAME">.*)"
+#define DESKTOP_ACTION_PATTERN ".* Shortcut Group|Desktop Action .*"
 
 struct Action* action_new(char const* name, char const* exec)
 {
@@ -74,44 +73,36 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
 
     actions = g_ptr_array_new_with_free_func((GDestroyNotify)action_free);
     for (int i = 0; groups[i] != NULL; ++i) {
-        GMatchInfo* match_info = NULL;
-        if (g_regex_match(desktop_action_pattern, groups[i], 0, &match_info)) {
-            gchar* name = g_match_info_fetch_named(match_info, ACTION_NAME);
-            if (name != NULL) {
-                gchar* action_name =
-                    g_key_file_get_locale_string(file,
-                                                 groups[i],
-                                                 G_KEY_FILE_DESKTOP_KEY_NAME,
-                                                 NULL,
-                                                 &error);
-                if (error != NULL) {
-                    g_warning("[get_actions] %s", error->message);
-                    g_error_free(error);
-                    error = NULL;
-                    continue;
-                }
-
-                gchar* exec = g_key_file_get_string(file,
-                                                    groups[i],
-                                                    G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                                    &error);
-                if (error != NULL) {
-                    g_warning("[get_actions] %s", error->message);
-                    g_error_free(error);
-                    error = NULL;
-                    continue;
-                }
-
-                g_debug("name: %s, exec: %s", name, exec);
-                g_ptr_array_add(actions, action_new(action_name, exec));
-                g_free(exec);
-                g_free(name);
-                g_free(action_name);
+        if (g_regex_match(desktop_action_pattern, groups[i], 0, NULL)) {
+            gchar* action_name =
+                g_key_file_get_locale_string(file,
+                                             groups[i],
+                                             G_KEY_FILE_DESKTOP_KEY_NAME,
+                                             NULL,
+                                             &error);
+            if (error != NULL) {
+                g_warning("[get_actions] %s", error->message);
+                g_error_free(error);
+                error = NULL;
+                continue;
             }
-        }
 
-        if (match_info != NULL)
-            g_match_info_unref(match_info);
+            gchar* exec = g_key_file_get_string(file,
+                                                groups[i],
+                                                G_KEY_FILE_DESKTOP_KEY_EXEC,
+                                                &error);
+            if (error != NULL) {
+                g_warning("[get_actions] %s", error->message);
+                g_error_free(error);
+                error = NULL;
+                continue;
+            }
+
+            g_debug("name: %s, exec: %s", action_name, exec);
+            g_ptr_array_add(actions, action_new(action_name, exec));
+            g_free(action_name);
+            g_free(exec);
+        }
     }
 
     g_strfreev(groups);
