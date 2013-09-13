@@ -78,9 +78,9 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
         if (g_regex_match(desktop_action_pattern, groups[i], 0, &match_info)) {
             gchar* name = g_match_info_fetch_named(match_info, ACTION_NAME);
             if (name != NULL) {
-                gchar* exec = g_key_file_get_string(file, groups[i],
-                                                  G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                                  &error);
+                gchar* exec = g_key_file_get_locale_string(file, groups[i],
+                                                           G_KEY_FILE_DESKTOP_KEY_EXEC,
+                                                           &error);
                 if (error != NULL) {
                     g_warning("[get_actions] %s", error->message);
                     g_error_free(error);
