@@ -78,9 +78,23 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
         if (g_regex_match(desktop_action_pattern, groups[i], 0, &match_info)) {
             gchar* name = g_match_info_fetch_named(match_info, ACTION_NAME);
             if (name != NULL) {
-                gchar* exec = g_key_file_get_locale_string(file, groups[i],
-                                                           G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                                           &error);
+                gchar* action_name =
+                    g_key_file_get_locale_string(file,
+                                                 groups[i],
+                                                 G_KEY_FILE_DESKTOP_KEY_NAME,
+                                                 NULL,
+                                                 &error);
+                if (error != NULL) {
+                    g_warning("[get_actions] %s", error->message);
+                    g_error_free(error);
+                    error = NULL;
+                    continue;
+                }
+
+                gchar* exec = g_key_file_get_string(file,
+                                                    groups[i],
+                                                    G_KEY_FILE_DESKTOP_KEY_EXEC,
+                                                    &error);
                 if (error != NULL) {
                     g_warning("[get_actions] %s", error->message);
                     g_error_free(error);
@@ -89,11 +103,18 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
                 }
 
                 g_debug("name: %s, exec: %s", name, exec);
-                g_ptr_array_add(actions, action_new(name, exec));
+                g_ptr_array_add(actions, action_new(action_name, exec));
                 g_free(exec);
+                g_free(name);
+                g_free(action_name);
             }
         }
+
+        if (match_info != NULL)
+            g_match_info_unref(match_info);
     }
+
+    g_strfreev(groups);
 
 out:
     g_key_file_unref(file);
