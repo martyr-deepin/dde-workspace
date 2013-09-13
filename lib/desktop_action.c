@@ -71,6 +71,9 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
     gsize len = 0;
     gchar** groups = g_key_file_get_groups(file, &len);
 
+    if (len == 0)
+        goto out;
+
     actions = g_ptr_array_new_with_free_func((GDestroyNotify)action_free);
     for (int i = 0; groups[i] != NULL; ++i) {
         if (g_regex_match(desktop_action_pattern, groups[i], 0, NULL)) {
@@ -105,9 +108,8 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
         }
     }
 
-    g_strfreev(groups);
-
 out:
+    g_strfreev(groups);
     g_key_file_unref(file);
 
     if (desktop_action_pattern != NULL)
