@@ -103,12 +103,13 @@ struct Action* _get_action(GKeyFile* file, const char* group_name)
         g_free(name);
         return NULL;
     }
+    g_debug("[_get_action] name: %s, exec: %s", name, exec);
+    struct Action* action = action_new(name, exec);
 
-    g_debug("name: %s, exec: %s", name, exec);
     g_free(name);
     g_free(exec);
 
-    return action_new(name, exec);
+    return action;
 }
 
 
@@ -136,8 +137,9 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
     for (int i = 0; groups[i] != NULL; ++i) {
         if (g_regex_match(desktop_action_pattern, groups[i], 0, NULL)) {
             struct Action* action = NULL;
-            if ((action = _get_action(file, groups[i])) != NULL)
+            if ((action = _get_action(file, groups[i])) != NULL) {
                 g_ptr_array_add(actions, action);
+            }
         }
     }
 
