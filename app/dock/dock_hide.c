@@ -303,8 +303,7 @@ GdkWindow* get_dock_guard_window()
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;
-        extern int screen_width;
-        attributes.width = screen_width;
+        attributes.width = gdk_screen_width();
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
@@ -340,8 +339,7 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
 void update_dock_guard_window_position()
 {
     GdkWindow* win = get_dock_guard_window();
-    extern int screen_height;
-    gdk_window_move(win, 0, screen_height - GUARD_WINDOW_HEIGHT);
+    gdk_window_move(win, 0, gdk_screen_height() - GUARD_WINDOW_HEIGHT);
 }
 
 
