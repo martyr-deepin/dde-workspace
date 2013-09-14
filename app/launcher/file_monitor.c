@@ -29,8 +29,6 @@
 #define APP_DIR "applications"
 
 
-PRIVATE GList* dirs = NULL;
-
 PRIVATE
 GPtrArray* _get_all_applications_dirs()
 {

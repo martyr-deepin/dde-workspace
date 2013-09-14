@@ -32,7 +32,10 @@ is_show_hidden_icons = false
 
 
 get_name_by_id = (id) ->
-    DCore.DEntry.get_name(Widget.look_up(id).core)
+    if Widget.look_up(id)?
+        DCore.DEntry.get_name(Widget.look_up(id).core)
+    else
+        ""
 
 
 sort_by_name = (items)->
@@ -111,7 +114,7 @@ DCore.signal_connect("draw_background", (info)->
     inited = true
 )
 DCore.signal_connect("update_items", ->
-    # echo "update items"
+    echo "update items"
 
     applications = {}
     hidden_icons = {}

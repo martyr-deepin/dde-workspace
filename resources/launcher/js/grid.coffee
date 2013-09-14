@@ -73,6 +73,7 @@ class Item extends Widget
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         Item.hover_item_id = @id
+        @element.style.cursor = "auto"
         exit_launcher()
 
     do_dragstart: (e)=>

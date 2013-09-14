@@ -20,8 +20,7 @@
  **/
 #include "desktop_action.h"
 
-#define ACTION_NAME "ActionName"
-#define DESKTOP_ACTION_PATTERN "(?P<"ACTION_NAME">.*) Shortcut Group|Desktop Action (?<"ACTION_NAME">.*)"
+#define DESKTOP_ACTION_PATTERN ".* Shortcut Group|Desktop Action .*"
 
 struct Action* action_new(char const* name, char const* exec)
 {
@@ -40,11 +39,10 @@ void action_free(struct Action* action)
 }
 
 
-GPtrArray* get_app_actions(GDesktopAppInfo* app)
+static
+GKeyFile* _read_as_key_file(GDesktopAppInfo* app)
 {
-    GPtrArray* actions = NULL;
     GError* error = NULL;
-
     GKeyFile* file = g_key_file_new();
     char const* filename = g_desktop_app_info_get_filename(app);
     g_key_file_load_from_file(file, filename, G_KEY_FILE_NONE, &error);
@@ -52,51 +50,104 @@ GPtrArray* get_app_actions(GDesktopAppInfo* app)
     if (error != NULL) {
         g_warning("[get_actions] %s", error->message);
         g_error_free(error);
-        goto out;
+        g_key_file_unref(file);
+        return NULL;
     }
 
-    GRegex* desktop_action_pattern = NULL;
-    desktop_action_pattern = g_regex_new(DESKTOP_ACTION_PATTERN,
-                                         G_REGEX_DUPNAMES
-                                         | G_REGEX_OPTIMIZE,
-                                         0,
-                                         &error
-                                        );
+    return file;
+}
+
+
+static
+GRegex* _desktop_action_pattern()
+{
+    GError* error = NULL;
+    GRegex* desktop_action_pattern = g_regex_new(DESKTOP_ACTION_PATTERN,
+                                                 G_REGEX_DUPNAMES
+                                                 | G_REGEX_OPTIMIZE,
+                                                 0,
+                                                 &error
+                                                );
 
     if (error != NULL) {
         g_warning("[get_actions] %s", error->message);
         g_error_free(error);
-        goto out;
     }
 
+    return desktop_action_pattern;
+}
+
+
+static
+struct Action* _get_action(GKeyFile* file, const char* group_name)
+{
+    GError* error = NULL;
+    gchar* name = g_key_file_get_locale_string(file,
+                                               group_name,
+                                               G_KEY_FILE_DESKTOP_KEY_NAME,
+                                               NULL,
+                                               &error);
+    if (error != NULL) {
+        g_warning("[get_actions] %s", error->message);
+        g_error_free(error);
+        return NULL;
+    }
+
+    gchar* exec = g_key_file_get_string(file,
+                                        group_name,
+                                        G_KEY_FILE_DESKTOP_KEY_EXEC,
+                                        &error);
+    if (error != NULL) {
+        g_warning("[get_actions] %s", error->message);
+        g_error_free(error);
+        g_free(name);
+        return NULL;
+    }
+    g_debug("[_get_action] name: %s, exec: %s", name, exec);
+    struct Action* action = action_new(name, exec);
+
+    g_free(name);
+    g_free(exec);
+
+    return action;
+}
+
+
+GPtrArray* get_app_actions(GDesktopAppInfo* app)
+{
+    gchar** groups = NULL;
+    GPtrArray* actions = NULL;
+
+    GKeyFile* file = _read_as_key_file(app);
+
+    if (file == NULL)
+        return NULL;
+
+    GRegex* desktop_action_pattern = _desktop_action_pattern();
+    if (desktop_action_pattern == NULL)
+        goto out;
+
     gsize len = 0;
-    gchar** groups = g_key_file_get_groups(file, &len);
+    groups = g_key_file_get_groups(file, &len);
+
+    if (len == 0)
+        goto out;
 
     actions = g_ptr_array_new_with_free_func((GDestroyNotify)action_free);
     for (int i = 0; groups[i] != NULL; ++i) {
-        GMatchInfo* match_info = NULL;
-        if (g_regex_match(desktop_action_pattern, groups[i], 0, &match_info)) {
-            gchar* name = g_match_info_fetch_named(match_info, ACTION_NAME);
-            if (name != NULL) {
-                gchar* exec = g_key_file_get_string(file, groups[i],
-                                                  G_KEY_FILE_DESKTOP_KEY_EXEC,
-                                                  &error);
-                if (error != NULL) {
-                    g_warning("[get_actions] %s", error->message);
-                    g_error_free(error);
-                    error = NULL;
-                    continue;
-                }
-
-                g_debug("name: %s, exec: %s", name, exec);
-                g_ptr_array_add(actions, action_new(name, exec));
-                g_free(exec);
+        if (g_regex_match(desktop_action_pattern, groups[i], 0, NULL)) {
+            struct Action* action = NULL;
+            if ((action = _get_action(file, groups[i])) != NULL) {
+                g_ptr_array_add(actions, action);
             }
         }
     }
 
 out:
-    g_key_file_unref(file);
+    g_strfreev(groups);
+
+    if (file != NULL)
+        g_key_file_unref(file);
 
     if (desktop_action_pattern != NULL)
         g_regex_unref(desktop_action_pattern);
