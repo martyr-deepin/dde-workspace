@@ -193,7 +193,7 @@ class ClientGroup extends AppItem
     try_build_launcher: ->
         info = DCore.Dock.get_launcher_info(@app_id)
         if info
-            l = new Launcher(info.Id, info.Icon, info.Core)
+            l = new Launcher(info.Id, info.Icon, info.Core, info.Actions)
             swap_element(@element, l.element)
 
     destroy: ->
