@@ -25,8 +25,11 @@
 #include "file_monitor.h"
 #include "jsextension.h"
 
-
 #define APP_DIR "applications"
+#define DELAY_TIME 3
+
+
+static gulong timeout_id = 0;
 
 
 PRIVATE
@@ -48,6 +51,14 @@ GPtrArray* _get_all_applications_dirs()
     g_free(user_dir);
 
     return app_dirs;
+}
+
+
+static
+gboolean _update_times(gpointer user_data)
+{
+    js_post_message_simply("update_items", NULL);
+    return FALSE;
 }
 
 
@@ -73,7 +84,12 @@ void monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
     case G_FILE_MONITOR_EVENT_DELETED:
     case G_FILE_MONITOR_EVENT_CREATED:
     case G_FILE_MONITOR_EVENT_MOVED:
-        js_post_message_simply("update_items", NULL);
+        if (timeout_id != 0) {
+            g_source_remove(timeout_id);
+            timeout_id = 0;
+        }
+
+        timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL);
     }
 }
 
@@ -100,6 +116,8 @@ void monitor_apps()
             continue;
         }
 
+        g_debug("[monitor_apps] monitor %s", g_file_get_path(g_ptr_array_index(dirs, i)));
+        /* g_file_monitor_set_rate_limit(monitor, min(1)); */
         g_signal_connect(monitor, "changed", G_CALLBACK(monitor_callback), NULL);
 
         g_ptr_array_add(monitors, monitor);

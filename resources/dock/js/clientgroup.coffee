@@ -193,7 +193,7 @@ class ClientGroup extends AppItem
     try_build_launcher: ->
         info = DCore.Dock.get_launcher_info(@app_id)
         if info
-            l = new Launcher(info.Id, info.Icon, info.Core)
+            l = new Launcher(info.Id, info.Icon, info.Core, info.Actions)
             swap_element(@element, l.element)
 
     destroy: ->
@@ -237,7 +237,7 @@ class ClientGroup extends AppItem
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
-    do_click: (e)->
+    do_click: (e)=>
         if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
