@@ -111,7 +111,8 @@ void connect_camera()
 {
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
         "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
-        " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
+        " ! ffmpegcolorspace ! videoflip method=horizontal-flip !"
+        " fakesink name=\"imgSink\"";
 
     pipeline = gst_parse_launch(camera_launch, NULL);
     img_sink = gst_bin_get_by_name(GST_BIN(pipeline), "imgSink");
@@ -183,6 +184,7 @@ void reco()
         g_error_free(err);
     }
 
+    g_warning("[reco] #%s#", is_same_person);
     if (g_strcmp0(is_same_person, "True") == 0) {
         reco_state = RECOGNIZED;
         g_free(is_same_person);

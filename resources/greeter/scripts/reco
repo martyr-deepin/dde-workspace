@@ -73,7 +73,7 @@ except Exception, e:
     sys.exit(1)
 
 try:
-    print(result['is_same_person'])
+    print(result['is_same_person'], end='')
 except:
     print_result('[Error]: ', result)
 
