@@ -237,7 +237,7 @@ class ClientGroup extends AppItem
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
-    do_click: (e)->
+    do_click: (e)=>
         if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
             @to_normal_status()
