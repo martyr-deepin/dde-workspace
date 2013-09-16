@@ -516,6 +516,9 @@ _bus_handle_remove_nopwdlogin (const gchar* username)
 {
     gboolean ret = FALSE;
 
+    if (login_info.is_already_no_pwd_login)
+        return TRUE;
+
     GError *error = NULL;
 
     if (!is_user_nopasswdlogin (username)) {
