@@ -28,7 +28,7 @@
 #include "camera.h"
 #include "jsextension.h"
 
-#define CONFIG_FILE "/etc/face_login.ini"
+#define CONFIG_FILE "/etc/face_recognition.cfg"
 
 gboolean _get_face_recognition_login_setting(const char* username)
 {
@@ -41,7 +41,7 @@ gboolean _get_face_recognition_login_setting(const char* username)
         goto out;
     }
 
-    use_face_login = g_key_file_get_boolean(config, "Users", username, &err);
+    use_face_login = g_key_file_get_boolean(config, username, "enable", &err);
     if (err != NULL)
         g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
 
