@@ -67,7 +67,7 @@ try:
     face_id = result["face"][0]["face_id"]
 
     result = api.recognition.verify(person_name=uuid, face_id=face_id)
-    print_result("", result)
+    # print_result("", result)
 except Exception, e:
     print(e)
     sys.exit(1)
