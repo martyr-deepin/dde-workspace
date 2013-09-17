@@ -277,6 +277,10 @@ Client* create_client_from_window(Window w)
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    if (c->app_id == NULL) {
+        client_free(c);
+        return NULL;
+    }
     _update_window_net_state(c);
     _update_is_overlay_client(c);
     if (c->app_id == NULL) {
@@ -513,7 +517,7 @@ void client_list_changed(Window* cs, size_t n)
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
 
         if (is_normal_window(cs[i])) {
-            if (c == NULL && (c = create_client_from_window(cs[i]))) {
+            if (c == NULL && ((c = create_client_from_window(cs[i])) != NULL)) {
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroyed"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
@@ -696,10 +700,10 @@ void _update_window_appid(Client* c)
                 c->exec = get_exe(app_id, *s_pid);
             }
         }
-    }
 
-    if (NULL != strchr(c->app_id, '_'))
-        g_strdelimit(c->app_id, "_", '-');
+        if (NULL != strchr(c->app_id, '_'))
+            g_strdelimit(c->app_id, "_", '-');
+    }
 
     XFree(s_pid);
 }
