@@ -45,12 +45,6 @@ else
             roundabout.appendChild(u.li)
             u.focus()
 
-    if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        roundabout.appendChild(u.li)
-        if DCore.Greeter.is_guest_default()
-            u.focus()
-
     for user in users
         if user == DCore.Greeter.get_default_user()
             echo "already append default user"
@@ -58,6 +52,12 @@ else
             user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image)
             roundabout.appendChild(u.li)
+
+    if DCore.Greeter.is_support_guest()
+        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+        roundabout.appendChild(u.li)
+        if DCore.Greeter.is_guest_default()
+            u.focus()
 
 userinfo_list[0]?.focus()
 
