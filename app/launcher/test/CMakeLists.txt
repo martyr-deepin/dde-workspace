@@ -4,6 +4,7 @@ pkg_check_modules(gtk REQUIRED gtk+-3.0)
 pkg_check_modules(webkit REQUIRED webkitgtk-3.0)
 
 
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/_launcher_test)
 set(test_bg launcher_test_bg_switch)
 add_executable(${test_bg} switch_background.c)
 include_directories(${test_bg} ${glib_INCLUDE_DIRS} ${gio_INCLUDE_DIRS})
