@@ -13,9 +13,9 @@
                 var i = 0;
                 var im = document.getElementById("0");
                 return function () {
-                // document.body.style.backgroundImage = "url(" + bgs[i] + ")";
-                im.src = bgs[i];
-                i = (i + 1) % 5;
+                document.body.style.backgroundImage = "url(" + bgs[i] + ")";
+                //im.src = bgs[i];
+                i = (i + 1) % bgs.length;
                 };
                 })(), 500);
     </script>
