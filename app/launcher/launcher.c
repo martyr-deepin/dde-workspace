@@ -51,6 +51,7 @@ PRIVATE GPtrArray* config_paths = NULL;
 
 #ifndef NDEBUG
 static gboolean is_daemonize = FALSE;
+static gboolean not_exit = FALSE;
 #endif
 
 
@@ -132,14 +133,15 @@ JS_EXPORT_API
 void launcher_exit_gui()
 {
 #ifndef NDEBUG
-    if (is_daemonize)
+    if (is_daemonize || not_exit) {
 #endif
 
         launcher_hide();
 
 #ifndef NDEBUG
-    else
+    } else {
         launcher_quit();
+    }
 #endif
 }
 
@@ -715,6 +717,10 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     if (argc == 2 && g_str_equal("-D", argv[1]))
         is_daemonize = TRUE;
+
+    if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
+        not_exit = TRUE;
+    }
 #endif
 
     if (is_application_running("launcher.app.deepin")) {
