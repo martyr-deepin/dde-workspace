@@ -77,15 +77,12 @@ show_category = ->
         if not_all_is_hidden or Item.display_temp
             $("##{i}").style.display = "block"
 
-sort_category_info = do ->
-    _sort_func = sort_by_name
-    (sort_func)->
-        _sort_func = sort_func if sort_func?
-        _sort_func(category_infos[ALL_APPLICATION_CATEGORY_ID], true)
-        for own i of category_infos
-            if i != "" + ALL_APPLICATION_CATEGORY_ID
-                _sort_func(category_infos[i])
-        return
+sort_category_info = (sort_func)->
+    sort_func(category_infos[ALL_APPLICATION_CATEGORY_ID], true)
+    for own i of category_infos
+        if i != "" + ALL_APPLICATION_CATEGORY_ID
+            sort_func(category_infos[i])
+    return
 
 sort_method = "name"
 init_category_list = ->

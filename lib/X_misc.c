@@ -247,9 +247,6 @@ void get_atom_value_for_loop(gpointer data, gulong n_item, gpointer res, gulong 
     }
 }
 
-typedef void (*CallbackFuncWithIndex)(gpointer, gulong, gpointer, gulong);
-typedef void (*CallbackFuncWithoutIndex)(gpointer, gulong, gpointer);
-
 /**
  * For following 2 functions, pass -1 to index, the callback function will be
  * regarded as CallbackFuncWithoutIndex type.
@@ -266,10 +263,7 @@ gboolean get_atom_value_by_atom(Display* dsp, Window window_id, Atom atom, gpoin
 
     g_assert(callback != NULL);
 
-    if (index != -1)
-        ((CallbackFuncWithIndex)callback)(data, n_item, res, index);
-    else
-        ((CallbackFuncWithoutIndex)callback)(data, n_item, res);
+    callback(data, n_item, res, index);
 
     XFree(data);
     return TRUE;
