@@ -1126,7 +1126,7 @@ grid_do_keypress_to_shrotcut = (evt) ->
 create_item_grid = ->
     echo "create_item_grid"
     div_grid = document.createElement("div")
-    div_grid.style.background = "blue"
+    #div_grid.style.background = "blue"
     #div_grid.style.opacity = 0.2
     div_grid.setAttribute("id", "item_grid")
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
