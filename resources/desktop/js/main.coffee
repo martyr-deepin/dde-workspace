@@ -30,3 +30,7 @@ place_desktop_items()
 place_all_widgets()
 
 DCore.Desktop.test()
+
+echo "s_width:" + s_width + ",s_height:" + s_height + ",s_offset_x:" + s_offset_x + ",s_offset_y:" + s_offset_y
+echo "grid_item_width:" + grid_item_width + ",grid_item_height:" + grid_item_height
+echo "cols:" + cols + ",rows:" + rows

@@ -34,7 +34,7 @@ grid_item_height = 0
 cols = 0
 rows = 0
 
-# grid html element
+# grid html element;not per item but only one! it is the whole Invalid Screen for desktop
 div_grid = null
 # grid occupy table
 o_table = null
@@ -50,9 +50,9 @@ selected_item = new Array
 # the last widget which been operated last time
 last_widget = ""
 
-# store the buffer canvas
+# store the buffer canvas for drag the items
 drag_canvas = null
-# store the context of the buffer canvas
+# store the context of the buffer canvas for drag the items
 drag_context = null
 # store the left top point of drag image start point
 drag_start = {x : 0, y: 0}
@@ -984,7 +984,7 @@ grid_do_itemselected = (evt) ->
         when 5 then DCore.Desktop.run_deepin_settings("display")
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
-        else 
+        else
             # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 . 
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
             if evt.id > TEMPLATES_FILE_ID_FIRST - 1 && evt.id < TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST
@@ -1124,11 +1124,13 @@ grid_do_keypress_to_shrotcut = (evt) ->
 
 
 create_item_grid = ->
-    #echo "create_item_grid"
+    echo "create_item_grid"
     div_grid = document.createElement("div")
+    div_grid.style.background = "blue"
+    #div_grid.style.opacity = 0.2
     div_grid.setAttribute("id", "item_grid")
-    document.body.appendChild(div_grid)
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
+    document.body.appendChild(div_grid)
     init_grid_drop()
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
