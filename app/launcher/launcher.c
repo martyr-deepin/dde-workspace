@@ -51,6 +51,7 @@ PRIVATE GPtrArray* config_paths = NULL;
 
 #ifndef NDEBUG
 static gboolean is_daemonize = FALSE;
+static gboolean not_exit = FALSE;
 #endif
 
 
@@ -132,14 +133,15 @@ JS_EXPORT_API
 void launcher_exit_gui()
 {
 #ifndef NDEBUG
-    if (is_daemonize)
+    if (is_daemonize || not_exit) {
 #endif
 
         launcher_hide();
 
 #ifndef NDEBUG
-    else
+    } else {
         launcher_quit();
+    }
 #endif
 }
 
@@ -154,17 +156,13 @@ void launcher_notify_workarea_size()
 
 
 PRIVATE
-void ptr_array_free(gpointer data)
-{
-    g_ptr_array_free((GPtrArray*)data, TRUE);
-}
-
-
-PRIVATE
 void _append_to_category(const char* path, GList* cs)
 {
-    if (_category_table == NULL)
-        _category_table = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, ptr_array_free);
+    if (_category_table == NULL) {
+        _category_table =
+            g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL,
+                                  (GDestroyNotify)g_ptr_array_unref);
+    }
 
     GPtrArray* l = NULL;
 
@@ -719,6 +717,10 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     if (argc == 2 && g_str_equal("-D", argv[1]))
         is_daemonize = TRUE;
+
+    if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
+        not_exit = TRUE;
+    }
 #endif
 
     if (is_application_running("launcher.app.deepin")) {

@@ -25,11 +25,12 @@
 #include "file_monitor.h"
 #include "jsextension.h"
 
-
 #define APP_DIR "applications"
+#define DELAY_TIME 3
 
 
-PRIVATE GList* dirs = NULL;
+static gulong timeout_id = 0;
+
 
 PRIVATE
 GPtrArray* _get_all_applications_dirs()
@@ -39,22 +40,25 @@ GPtrArray* _get_all_applications_dirs()
 
     for (int i = 0; dirs[i] != NULL; ++i) {
         char* app_dir = g_build_filename(dirs[i], APP_DIR, NULL);
-        if (!g_file_test(app_dir, G_FILE_TEST_EXISTS)) {
-            g_free(app_dir);
-            continue;
-        }
-
-        g_ptr_array_add(app_dirs, g_file_new_for_path(app_dir));
+        if (g_file_test(app_dir, G_FILE_TEST_EXISTS))
+            g_ptr_array_add(app_dirs, g_file_new_for_path(app_dir));
         g_free(app_dir);
     }
 
     char* user_dir = g_build_path(g_get_user_data_dir(), APP_DIR, NULL);
-    if (g_file_test(user_dir, G_FILE_TEST_EXISTS)) {
+    if (g_file_test(user_dir, G_FILE_TEST_EXISTS))
         g_ptr_array_add(app_dirs, g_file_new_for_path(user_dir));
-        g_free(user_dir);
-    }
+    g_free(user_dir);
 
     return app_dirs;
+}
+
+
+static
+gboolean _update_times(gpointer user_data)
+{
+    js_post_message_simply("update_items", NULL);
+    return FALSE;
 }
 
 
@@ -80,7 +84,12 @@ void monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
     case G_FILE_MONITOR_EVENT_DELETED:
     case G_FILE_MONITOR_EVENT_CREATED:
     case G_FILE_MONITOR_EVENT_MOVED:
-        js_post_message_simply("update_items", NULL);
+        if (timeout_id != 0) {
+            g_source_remove(timeout_id);
+            timeout_id = 0;
+        }
+
+        timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL);
     }
 }
 
@@ -102,14 +111,19 @@ void monitor_apps()
                                      NULL,
                                      &err);
         if (err != NULL) {
+            g_warning("[monitor_apps] %s", err->message);
             g_error_free(err);
             continue;
         }
 
+        g_debug("[monitor_apps] monitor %s", g_file_get_path(g_ptr_array_index(dirs, i)));
+        /* g_file_monitor_set_rate_limit(monitor, min(1)); */
         g_signal_connect(monitor, "changed", G_CALLBACK(monitor_callback), NULL);
 
         g_ptr_array_add(monitors, monitor);
     }
+
+    g_ptr_array_unref(dirs);
 }
 
 

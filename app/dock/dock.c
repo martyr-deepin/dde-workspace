@@ -32,15 +32,15 @@
 #include <cairo.h>
 #include "DBUS_dock.h"
 
-void dock_change_workarea_height(double height);
-int _dock_height = 60;
-int screen_width = 0;
-int screen_height = 0;
+static GtkWidget* container = NULL;
+static GtkWidget* webview = NULL;
 
-GtkWidget* container = NULL;
-GtkWidget* webview = NULL;
+int _dock_height = 60;
+GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
+
+JS_EXPORT_API void dock_change_workarea_height(double height);
+
 GdkWindow* get_dock_guard_window();
-GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container);}
 
 gboolean mouse_pointer_leave(int x, int y)
 {
@@ -117,16 +117,16 @@ Window get_dock_window()
 
 void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
-    if (gtk_widget_get_realized(container) && (screen_width != allocation->width || screen_height != allocation->height)) {
-        GdkWindow* w = gtk_widget_get_window(container);
+    if (gtk_widget_get_realized(container) && (gdk_screen_width() != allocation->width || gdk_screen_height() != allocation->height)) {
+        GdkWindow* w = DOCK_GDK_WINDOW();
         XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
-        gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
+        gdk_window_move_resize(w, 0, 0, gdk_screen_width(), gdk_screen_height());
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
         g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
                 allocation->width, allocation->height,
-                screen_width, screen_height);
+                gdk_screen_width(), gdk_screen_height());
     }
 }
 
@@ -170,23 +170,20 @@ void check_compiz_validity()
 
 void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 {
-    screen_width = gdk_screen_get_width(screen);
-    screen_height = gdk_screen_get_height(screen);
-
     GdkGeometry geo = {0};
     geo.min_width = 0;
     geo.min_height = 0;
 
     gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_set_geometry_hints(gtk_widget_get_window(container), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_move_resize(gtk_widget_get_window(webview), 0, 0, screen_width, screen_height);
-    gdk_window_move_resize(gtk_widget_get_window(container), 0, 0, screen_width, screen_height);
+    gdk_window_set_geometry_hints(DOCK_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_move_resize(gtk_widget_get_window(webview), 0, 0, gdk_screen_width(), gdk_screen_height());
+    gdk_window_move_resize(DOCK_GDK_WINDOW(), 0, 0, gdk_screen_width(), gdk_screen_height());
     gdk_window_flush(gtk_widget_get_window(webview));
-    gdk_window_flush(gtk_widget_get_window(container));
+    gdk_window_flush(DOCK_GDK_WINDOW());
 
     dock_change_workarea_height(_dock_height);
 
-    init_region(DOCK_GDK_WINDOW(), 0, screen_height - _dock_height, screen_width, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
 
     tray_icon_do_screen_size_change();
     update_dock_guard_window_position();
@@ -312,9 +309,9 @@ void dock_emit_webview_ok()
 void _change_workarea_height(int height)
 {
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, screen_width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, gdk_screen_width());
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, screen_width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, gdk_screen_width());
     }
 }
 
@@ -329,7 +326,7 @@ void dock_change_workarea_height(double height)
     else
         _dock_height = height;
     _change_workarea_height(height);
-    init_region(DOCK_GDK_WINDOW(), 0, screen_height - _dock_height, screen_width, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
 }
 
 JS_EXPORT_API

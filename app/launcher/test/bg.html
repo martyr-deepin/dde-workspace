@@ -1,0 +1,23 @@
+<html>
+    <body>
+    <img id='0' />
+    <script type="text/javascript" charset="utf-8">
+    setInterval((function() {
+                bgs = [
+                '/home/liliqiang/.cache/gaussian-background/24e77034a36c21c693f08352db0577f5.png',
+                '/home/liliqiang/.cache/gaussian-background/54cadc51623ec6b87589abd849d0ab78.png',
+                '/home/liliqiang/.cache/gaussian-background/9d0b1de1d6ef9e50aa4c1e608727b179.png',
+                '/home/liliqiang/.cache/gaussian-background/a46e8c07d43405cef6c776fd5b263cae.png',
+                '/home/liliqiang/.cache/gaussian-background/cf62e2fc773be8622c7a84f81f0ec584.png',
+                ]
+                var i = 0;
+                var im = document.getElementById("0");
+                return function () {
+                document.body.style.backgroundImage = "url(" + bgs[i] + ")";
+                //im.src = bgs[i];
+                i = (i + 1) % bgs.length;
+                };
+                })(), 500);
+    </script>
+    </body>
+    </html>

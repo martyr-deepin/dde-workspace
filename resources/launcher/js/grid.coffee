@@ -73,6 +73,7 @@ class Item extends Widget
         @element.style.cursor = "wait"
         DCore.DEntry.launch(@core, [])
         Item.hover_item_id = @id
+        @element.style.cursor = "auto"
         exit_launcher()
 
     do_dragstart: (e)=>
@@ -285,3 +286,10 @@ init_grid = ->
     sort_category_info(sort_methods[sort_method])
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(ALL_APPLICATION_CATEGORY_ID)
+
+show_grid_dom_child = ->
+    c = grid.children
+    i = 0
+    while i < c.length
+        echo "#{get_name_by_id(c[i].id)}"
+        i = i + 1

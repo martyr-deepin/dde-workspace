@@ -23,10 +23,6 @@
 #include "dwebview.h"
 #include "dock_config.h"
 
-extern int screen_width;
-extern int screen_height;
-
-
 #define TRAY_LEFT_LINE_PATH "/usr/share/deepin-system-tray/src/image/system/tray_left_line.png"
 #define TRAY_RIGHT_LINE_PATH "/usr/share/deepin-system-tray/src/image/system/tray_right_line.png"
 
@@ -34,7 +30,7 @@ extern int screen_height;
 #define DEFAULT_HEIGHT 16
 #define DEFAULT_INTERVAL 4
 #define DOCK_HEIGHT 30
-#define NA_BASE_Y (screen_height - DOCK_HEIGHT + (DOCK_HEIGHT - DEFAULT_HEIGHT)/2)
+#define NA_BASE_Y (gdk_screen_height() - DOCK_HEIGHT + (DOCK_HEIGHT - DEFAULT_HEIGHT)/2)
 static GHashTable* _icons = NULL;
 static gint _na_width = 0;
 
@@ -127,7 +123,7 @@ PRIVATE void accumulate_na_width(GdkWindow* wrapper, gpointer width)
     int icon_width = gdk_window_get_width(wrapper);
     _na_width += icon_width + 2 * DEFAULT_INTERVAL;
     gdk_window_flush(wrapper);
-    gint _na_base_x = screen_width - _na_width - DEFAULT_INTERVAL;
+    gint _na_base_x = gdk_screen_width() - _na_width - DEFAULT_INTERVAL;
     if (icon_width != GPOINTER_TO_INT(width))
         safe_window_move_resize(wrapper, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
     else {
@@ -148,7 +144,7 @@ void _update_deepin_try_position()
 {
     if (_deepin_tray) {
         safe_window_move_resize(_deepin_tray,
-                screen_width - _deepin_tray_width - DEFAULT_INTERVAL,
+                gdk_screen_width() - _deepin_tray_width - DEFAULT_INTERVAL,
                 NA_BASE_Y, _deepin_tray_width, DEFAULT_HEIGHT);
         _update_notify_area_width();
     }
@@ -158,7 +154,7 @@ void _update_fcitx_try_position()
 {
     if (_fcitx_tray) {
         safe_window_move_resize(_fcitx_tray,
-                screen_width - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
+                gdk_screen_width() - _deepin_tray_width - _fcitx_tray_width - 2 * DEFAULT_INTERVAL,
                 NA_BASE_Y,
                 _fcitx_tray_width, DEFAULT_HEIGHT);
         _update_notify_area_width();
@@ -238,7 +234,7 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
     GdkWindow* icon = get_icon_window(wrapper);
     g_assert(icon != NULL);
 
-    gdk_window_reparent(wrapper, gtk_widget_get_window(container), 0, screen_height - DOCK_HEIGHT);
+    gdk_window_reparent(wrapper, gtk_widget_get_window(container), 0, gdk_screen_height() - DOCK_HEIGHT);
     //add this mask so, gdk can handle GDK_SELECTION_CLEAR event to destroy this gdkwindow.
     gdk_window_set_events(icon, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK);
     gdk_window_add_filter(icon, (GdkFilterFunc)monitor_icon_event, wrapper);

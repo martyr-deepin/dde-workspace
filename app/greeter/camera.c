@@ -69,6 +69,7 @@ static GstElement *img_sink = NULL;
 
 static guchar* source_data = NULL;
 static GstBuffer* copy_buffer = NULL;
+static GstBuffer* pure_buffer = NULL;
 
 static int has_data = FALSE;
 static enum RecogizeState reco_state = NOT_START_RECOGNIZING;
@@ -110,7 +111,8 @@ void connect_camera()
 {
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
         "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
-        " ! ffmpegcolorspace ! fakesink name=\"imgSink\"";
+        " ! ffmpegcolorspace ! videoflip method=horizontal-flip !"
+        " fakesink name=\"imgSink\"";
 
     pipeline = gst_parse_launch(camera_launch, NULL);
     img_sink = gst_bin_get_by_name(GST_BIN(pipeline), "imgSink");
@@ -155,6 +157,11 @@ void do_quit()
         copy_buffer = NULL;
     }
 
+    if (pure_buffer) {
+        gst_buffer_unref(pure_buffer);
+        pure_buffer = NULL;
+    }
+
     if (frame) {
         cvReleaseImageHeader(&frame);
         frame = NULL;
@@ -168,40 +175,37 @@ void reco()
     int exit_code = 1;
 
     // RESOURCE_DIR defined in CMakeLists.txt
-    char* args[] = {"/usr/bin/python", RESOURCE_DIR"/greeter/scripts/reco", NULL};
+    char* args[] = {"/usr/bin/python", RESOURCE_DIR"/greeter/scripts/reco", current_username, NULL};
     GError* err = NULL;
-    char* username = NULL;
-    g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &username, NULL, &exit_code,
-                 &err);
+    char* is_same_person = NULL;
+    g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &is_same_person, NULL, &exit_code, &err);
     if (err != NULL) {
         g_warning("[reco] %s", err->message);
         g_error_free(err);
     }
 
-    if (g_strcmp0(username, current_username) == 0
-        || g_strcmp0(username, "lee") == 0
-        ) {
+    g_warning("[reco] #%s#", is_same_person);
+    if (g_strcmp0(is_same_person, "True") == 0) {
         reco_state = RECOGNIZED;
+        g_free(is_same_person);
     } else {
         reco_times += 1;
         if (reco_times == MAX_RECO_TIME) {
             JSObjectRef json = json_create();
             char* msg = g_strdup_printf("%s%s", ERR_POST_PREFIX,
-                                               _("Please login with your password or click your picture to retry."));
+                                        _("Please login with your password or click your picture to retry."));
             json_append_string(json, "error", msg);
             g_free(msg);
             js_post_message("failed-too-much", json);
 
             detect_is_enabled = FALSE;
             reco_state = RECOGNIZE_FINISH;
-            g_free(username);
+            g_free(is_same_person);
             return;
         }
 
         reco_state = NOT_RECOGNIZED;
     }
-
-    g_free(username);
 }
 
 
@@ -275,7 +279,11 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
 
+        if (pure_buffer != NULL)
+            gst_buffer_unref(pure_buffer);
+
         copy_buffer = gst_buffer_copy((buffer));
+        pure_buffer = gst_buffer_copy((buffer));
 
         frame->imageData = (char*)GST_BUFFER_DATA(copy_buffer);
         if (detect_is_enabled) {
@@ -287,8 +295,8 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         has_data = TRUE;
         break;
     case START_RECOGNIZING:
-        g_warning("[_frame_handler] start recognizing");
-        source_data = (guchar*)GST_BUFFER_DATA(copy_buffer);
+        //g_warning("[_frame_handler] start recognizing");
+        source_data = (guchar*)GST_BUFFER_DATA(pure_buffer);
         GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
                                                      GDK_COLORSPACE_RGB,  // color space
                                                      FALSE,  // has alpha
@@ -299,7 +307,13 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
                                                      NULL,  // destroy function
                                                      NULL  // destroy function data
                                                     );
-        gdk_pixbuf_save(pixbuf, "/tmp/deepin_user_face.png", "png", NULL, NULL);
+        GError* error = NULL;
+        gdk_pixbuf_save(pixbuf, "/tmp/deepin_user_face.png", "png", &error, NULL);
+        if (error != NULL) {
+            g_warning("[_frame_handler] %s", error->message);
+            g_error_free(error);
+        }
+
         g_object_unref(pixbuf);
         has_data = TRUE;
 
@@ -335,17 +349,12 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
 static void detect(IplImage* frame)
 {
-    time(&end);
-    diff_time = abs(difftime(end, start));
-    if (diff_time < DELAY_TIME)
-        return;
-
     double const scale = 1.3;
 
     IplImage* gray = cvCreateImage(cvSize(frame->width, frame->height), 8, 1);
     IplImage* small_img = cvCreateImage(cvSize(cvRound(frame->width/scale),
-                                     cvRound(frame->height/scale)),
-                              8, 1);
+                                               cvRound(frame->height/scale)),
+                                        8, 1);
     cvCvtColor(frame, gray, CV_RGB2GRAY);
     cvResize(gray, small_img, CV_INTER_LINEAR);
     cvEqualizeHist(small_img, small_img);
@@ -364,6 +373,11 @@ static void detect(IplImage* frame)
                                   , cvSize(0, 0), cvSize(0, 0));
 
     if (objects && objects->total > 0) {
+        time(&end);
+        diff_time = abs(difftime(end, start));
+        if (diff_time < DELAY_TIME)
+            goto out;
+
         for (int i = 0; i < objects->total; ++i) {
             CvRect* r = (CvRect*)cvGetSeqElem(objects, i);
             cvRectangle(frame, cvPoint(r->x * scale, r->y * scale),
@@ -376,6 +390,7 @@ static void detect(IplImage* frame)
         time(&start);
     }
 
+out:
     cvReleaseImage(&gray);
     cvReleaseImage(&small_img);
 }
@@ -412,15 +427,15 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height)
     cairo_save(cr);
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
-                                      GDK_COLORSPACE_RGB,  // color space
-                                      FALSE,  // has alpha
-                                      8,  // bits per sample
-                                      CAMERA_WIDTH,  // width
-                                      CAMERA_HEIGHT,  // height
-                                      3*CAMERA_WIDTH,  // row stride
-                                      NULL,  // destroy function
-                                      NULL  // destroy function data
-                                     );
+                                                 GDK_COLORSPACE_RGB,  // color space
+                                                 FALSE,  // has alpha
+                                                 8,  // bits per sample
+                                                 CAMERA_WIDTH,  // width
+                                                 CAMERA_HEIGHT,  // height
+                                                 3*CAMERA_WIDTH,  // row stride
+                                                 NULL,  // destroy function
+                                                 NULL  // destroy function data
+                                                );
 
     double scale = 0;
     if (CAMERA_WIDTH > CAMERA_HEIGHT) {

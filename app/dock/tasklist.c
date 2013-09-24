@@ -147,7 +147,7 @@ PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
 
 PRIVATE
-void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
+void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
 {
     Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
@@ -277,6 +277,10 @@ Client* create_client_from_window(Window w)
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    if (c->app_id == NULL) {
+        client_free(c);
+        return NULL;
+    }
     _update_window_net_state(c);
     _update_is_overlay_client(c);
     if (c->app_id == NULL) {
@@ -332,7 +336,6 @@ void _update_client_info(Client *c)
     GDesktopAppInfo* app = guess_desktop_file(c->app_id);
     JSObjectRef actions_js_array = json_array_create();
 
-#if 0
     if (app != NULL) {
         GPtrArray* actions = get_app_actions(app);
 
@@ -340,9 +343,10 @@ void _update_client_info(Client *c)
             for (int i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
+                g_debug("[_update_client_info] name: %s, exec: %s", action->name, action->exec);
                 JSObjectRef action_item = json_create();
-                json_append_string(action_item, "name", g_strdup(action->name));
-                json_append_string(action_item, "exec", g_strdup(action->exec));
+                json_append_string(action_item, "name", action->name);
+                json_append_string(action_item, "exec", action->exec);
 
                 json_array_insert(actions_js_array, i, action_item);
             }
@@ -352,7 +356,6 @@ void _update_client_info(Client *c)
 
         g_object_unref(app);
     }
-#endif
 
     json_append_value(json, "actions", actions_js_array);
     g_assert(c->app_id != NULL);
@@ -514,7 +517,7 @@ void client_list_changed(Window* cs, size_t n)
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
 
         if (is_normal_window(cs[i])) {
-            if (c == NULL && (c = create_client_from_window(cs[i]))) {
+            if (c == NULL && ((c = create_client_from_window(cs[i])) != NULL)) {
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroyed"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
@@ -558,7 +561,18 @@ JS_EXPORT_API
 double dock_get_active_window()
 {
     Window aw = 0;
+#if 1
     get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
+#else
+    gulong n_item;
+    gpointer data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &n_item);
+    if (data == NULL)
+        return 0;
+
+    aw = X_FETCH_32(data, 0);
+    XFree(data);
+#endif
+
     return aw;
 }
 
@@ -686,10 +700,10 @@ void _update_window_appid(Client* c)
                 c->exec = get_exe(app_id, *s_pid);
             }
         }
-    }
 
-    if (NULL != strchr(c->app_id, '_'))
-        g_strdelimit(c->app_id, "_", '-');
+        if (NULL != strchr(c->app_id, '_'))
+            g_strdelimit(c->app_id, "_", '-');
+    }
 
     XFree(s_pid);
 }
@@ -946,6 +960,7 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
+#if 1
     if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
@@ -954,6 +969,18 @@ gboolean dock_is_client_minimized(double id)
     } else {
         g_debug("cannot get Window state(WM_STATE)");
     }
+#else
+    gulong n_item;
+    Atom atom = gdk_x11_get_atom_by_name("WM_STATE");
+    gpointer data = get_window_property(_dsp, c->window, atom, &n_item);
+    if (data == NULL)
+        return 0;
+
+    wm_state = X_FETCH_32(data, 0);
+    XFree(data);
+
+    is_minimized = wm_state == IconicState;
+#endif
 
     return is_minimized;
 }
@@ -1066,7 +1093,7 @@ gchar* dock_bus_list_apps()
 
     if (app_number == 0) {
         g_debug("[dock_bus_list_apps] app_number: 0");
-        return "";
+        return g_strdup("");
     }
 
     gchar* clients = NULL;
@@ -1088,5 +1115,37 @@ DBUS_EXPORT_API
 void dock_bus_active_window(char* app_id)
 {
     js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
+}
+
+
+DBUS_EXPORT_API
+guint32 dock_bus_app_id_2_xid(char* app_id)
+{
+    Window xid = 0;
+    GHashTableIter iter;
+    gpointer key = NULL, value = NULL;
+    g_hash_table_iter_init(&iter, _clients_table);
+    while (g_hash_table_iter_next(&iter, &key, &value)) {
+        if (g_strcmp0(app_id, ((Client*)value)->app_id) == 0) {
+            xid = (Window)key;
+            g_debug("[dock_bus_app_id_2_xid] find the xid of %s: %lu", app_id, xid);
+            break;
+        }
+    }
+
+    return xid;
+}
+
+
+DBUS_EXPORT_API
+char* dock_bus_current_focus_app()
+{
+    Window xid = (Window)dock_get_active_window();
+    g_debug("current app xid: %lu", xid);
+    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(xid));
+    if (c == NULL)
+        return g_strdup("");
+    else
+        return g_strdup(c->app_id);
 }
 
