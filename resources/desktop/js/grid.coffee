@@ -1231,6 +1231,7 @@ item_rename_div.addEventListener("click", (evt) ->
         if @id.length?
             if (w = Widget.look_up(@id))?
                 w.item_complete_rename()
+                item_rename_div.style.zIndex = 0
         return
 )
 item_rename_div.parentElement.addEventListener("keydown", (evt) ->
