@@ -19,52 +19,53 @@ void setup_fixture()
 {
     // g_mkdir("test_files");
     // g_creat("test_files/test.c");
-    
-    system("rm -rf /tmp/test_files/");
-    system("rm -rf /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
-    system("rm -rf /tmp/_ahdsgioahgaosidg_agioasdhgo/");
-    system("rm -rf /tmp/\\(test_files\\)/");
-    system("rm -rf /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
-    system("rm -rf /tmp/\\&asdgasd/");
+
+    int dump = 0;
+    dump = system("rm -rf /tmp/test_files/");
+    dump = system("rm -rf /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh/");
+    dump = system("rm -rf /tmp/_ahdsgioahgaosidg_agioasdhgo/");
+    dump = system("rm -rf /tmp/\\(test_files\\)/");
+    dump = system("rm -rf /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg/");
+    dump = system("rm -rf /tmp/\\&asdgasd/");
 
 
-    system("mkdir /tmp/test_files");
-    system("mkdir /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
-    system("mkdir /tmp/_ahdsgioahgaosidg_agioasdhgo");
-    system("mkdir /tmp/\\(test_files\\)");
-    system("mkdir /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg");
-    system("mkdir /tmp/\\&asdgasd");
+    dump = system("mkdir /tmp/test_files");
+    dump = system("mkdir /tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh");
+    dump = system("mkdir /tmp/_ahdsgioahgaosidg_agioasdhgo");
+    dump = system("mkdir /tmp/\\(test_files\\)");
+    dump = system("mkdir /tmp/0ashdgioasdhgo_asdhgio\\&asjdgioadsjg");
+    dump = system("mkdir /tmp/\\&asdgasd");
 
 
-    system("cp /usr/share/backgrounds/default_background.jpg /tmp/test_files/");
-    system("touch /tmp/test_files/test.desktop");
-    system("touch /tmp/test_files/test");
-    system("touch /tmp/test_files/test.coffee");
-    system("touch /tmp/test_files/test.cpp");
-    system("touch /tmp/test_files/test.css");
-    system("touch /tmp/test_files/test.exe");
-    system("touch /tmp/test_files/test.h");
-    system("touch /tmp/test_files/test.html");
-    system("touch /tmp/test_files/test.js");
-    system("touch /tmp/test_files/test.m");
-    system("touch /tmp/test_files/test.test");
-    system("touch /tmp/test_files/test.c");
-    system("touch /tmp/test_files/test.txt");
-    system("touch /tmp/test_files/test.wpt");
-    system("touch /tmp/test_files/test.xls");
-    system("touch /tmp/test_files/test.ppt");
-    system("touch /tmp/test_files/test.doc");
+    dump = system("cp /usr/share/backgrounds/default_background.jpg /tmp/test_files/");
+    dump = system("touch /tmp/test_files/test.desktop");
+    dump = system("touch /tmp/test_files/test");
+    dump = system("touch /tmp/test_files/test.coffee");
+    dump = system("touch /tmp/test_files/test.cpp");
+    dump = system("touch /tmp/test_files/test.css");
+    dump = system("touch /tmp/test_files/test.exe");
+    dump = system("touch /tmp/test_files/test.h");
+    dump = system("touch /tmp/test_files/test.html");
+    dump = system("touch /tmp/test_files/test.js");
+    dump = system("touch /tmp/test_files/test.m");
+    dump = system("touch /tmp/test_files/test.test");
+    dump = system("touch /tmp/test_files/test.c");
+    dump = system("touch /tmp/test_files/test.txt");
+    dump = system("touch /tmp/test_files/test.wpt");
+    dump = system("touch /tmp/test_files/test.xls");
+    dump = system("touch /tmp/test_files/test.ppt");
+    dump = system("touch /tmp/test_files/test.doc");
 
-    system("cp /usr/share/applications/skype.desktop /tmp/test_files/");
-    system("cp /usr/share/applications/deepin-desktop.desktop /tmp/test_files/");
-    system("cp /usr/share/applications/deepin-media-player.desktop /tmp/test_files/");
-    system("cp /usr/share/applications/deepin-system-settings.desktop /tmp/test_files/");
-    system("cp /usr/share/applications/audacity.desktop /tmp/test_files/");
-    system("cp /usr/share/applications/brasero.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/skype.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/deepin-desktop.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/deepin-media-player.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/deepin-system-settings.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/audacity.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/brasero.desktop /tmp/test_files/");
 
-    system("touch ~/Desktop/snyh.txt");
-    system("touch ~/Desktop/.snyh.txt");
-    system("touch ~/Desktop/snyh.txt~");
+    dump = system("touch ~/Desktop/snyh.txt");
+    dump = system("touch ~/Desktop/.snyh.txt");
+    dump = system("touch ~/Desktop/snyh.txt~");
 
 
 
@@ -75,7 +76,7 @@ void setup_fixture()
     gfileDocument = g_ptr_array_new_with_free_func(g_object_unref);
     gappinfo = g_ptr_array_new_with_free_func(g_object_unref);
 
-    
+
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/test_files"));//0
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/ahsouifghasdgoiasdghah_sdgfuioashfdiosasdiafohdsoig_ashgioasdhaoisdhoifhasoi_aiosdfhasdoifhasodiufh"));//1
     g_ptr_array_add(gfileDirectory, g_file_new_for_path("/tmp/_ahdsgioahgaosidg_agioasdhgo"));//2
@@ -147,3 +148,4 @@ void func_test_entry_arraycontainer(gboolean (*func)(Entry*,const ArrayContainer
         g_assert(fuc_tmp == value_return);
         FLAG_PRITN_RESULT = FALSE;
 }
+
