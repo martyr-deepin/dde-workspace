@@ -291,6 +291,7 @@ Client* create_client_from_window(Window w)
     c->title = NULL;
     c->instance_name = NULL;
     c->app_id = NULL;
+    c->clss = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
     c->use_board = TRUE;
