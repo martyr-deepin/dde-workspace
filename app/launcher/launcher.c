@@ -39,10 +39,8 @@
 
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
-PRIVATE GdkScreen* screen = NULL;
-PRIVATE int screen_width;
-PRIVATE int screen_height;
 PRIVATE GSettings* dde_bg_g_settings = NULL;
+PRIVATE gboolean is_js_already = FALSE;
 
 #ifndef NDEBUG
 static gboolean is_daemonize = FALSE;
@@ -57,14 +55,6 @@ static gboolean not_exit = FALSE;
 PRIVATE GHashTable* _category_table = NULL;
 
 
-PRIVATE void get_screen_info()
-{
-    screen = gdk_screen_get_default();
-    screen_width = gdk_screen_get_width(screen);
-    screen_height = gdk_screen_get_height(screen);
-}
-
-
 PRIVATE
 void _do_im_commit(GtkIMContext *context, gchar* str)
 {
@@ -77,15 +67,18 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 PRIVATE
 void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
-    gtk_widget_set_size_request(container, screen_width, screen_height);
+    gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
 }
 
 
 PRIVATE
 void _on_realize(GtkWidget* container)
 {
+    GdkScreen* screen =  gdk_screen_get_default();
     _update_size(screen, container);
     g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
+    if (is_js_already)
+        background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
 }
 
 
@@ -144,7 +137,7 @@ void launcher_notify_workarea_size()
 {
     js_post_message_simply("workarea_changed",
             "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
-            screen_width, screen_height);
+            gdk_screen_width(), gdk_screen_height());
 }
 
 
@@ -391,6 +384,7 @@ JS_EXPORT_API
 void launcher_webview_ok()
 {
     background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+    is_js_already = TRUE;
 }
 
 
@@ -458,7 +452,6 @@ int main(int argc, char* argv[])
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
-    get_screen_info();
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -482,7 +475,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
     set_launcher_background(gtk_widget_get_window(webview), dde_bg_g_settings,
-                            screen_width, screen_height);
+                            gdk_screen_width(), gdk_screen_height());
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
