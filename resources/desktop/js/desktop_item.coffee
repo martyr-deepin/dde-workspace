@@ -472,6 +472,7 @@ class Item extends Widget
             if new_name.length > 0 and new_name != @get_name()
                 if not @on_rename(new_name)
                     @in_rename = false
+                    move_widget_to_grid_after_rename(@)
                     return
 
         move_widget_to_grid_after_rename(@)
@@ -513,7 +514,7 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-        @item_complete_rename(false)
+        #@item_complete_rename(false)
         item_dragstart_handler(this, evt)
 
         return
@@ -1094,8 +1095,9 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
-        @display_focus()
-        @display_full_name()
+        @item_focus()
+        #@display_focus()
+        #@display_full_name()
         return
 
 
