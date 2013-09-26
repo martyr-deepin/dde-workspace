@@ -91,7 +91,7 @@ exit_launcher = ->
     selected_category_id = ALL_APPLICATION_CATEGORY_ID
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
-    _save_hidden_apps()
+    save_hidden_apps()
     _show_hidden_icons(false)
     get_first_shown()?.scroll_to_view()
     if Item.hover_item_id
@@ -141,7 +141,7 @@ _get_hidden_icons_ids = ->
     return hidden_icons_ids
 
 
-_save_hidden_apps = ->
+save_hidden_apps = ->
     DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
 
 

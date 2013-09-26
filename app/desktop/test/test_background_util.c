@@ -35,7 +35,7 @@ void test_background_util()
     Pixmap pixmap = XCreatePixmap (display, RootWindow(display, number), width, height, DefaultDepth(display, number));
 
     cairo_surface_t *get_surface(Pixmap);
-    xfade_data_t *data = g_new0(xfade_data_t, 1);
+    xfade_data_t *data = g_slice_new(xfade_data_t);
     data->pixmap = pixmap;
     data->fading_surface = get_surface(pixmap);
     data->end_pixbuf = gdk_pixbuf_new_from_file(file1, NULL);

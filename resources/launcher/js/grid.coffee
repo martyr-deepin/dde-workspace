@@ -128,6 +128,7 @@ class Item extends Widget
             @element.style.display = 'none'
             Item.display_temp = false
         hidden_icons[@id] = @
+        save_hidden_apps()
         hide_category()
         _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
 
@@ -137,6 +138,7 @@ class Item extends Widget
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
         delete hidden_icons[@id]
+        save_hidden_apps()
         hidden_icons_num = _get_hidden_icons_ids().length
         show_category()
         if hidden_icons_num == 0

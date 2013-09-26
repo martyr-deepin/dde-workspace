@@ -3,7 +3,8 @@
 
 #define APPS_INI "launcher/apps.ini"
 #define LAUNCHER_CONF "launcher/config.ini"
-#define AUTOSTART(file) "autostart/"file
+#define AUTOSTART_DIR "autostart"
+#define GNOME_AUTOSTART_KEY "X-GNOME-Autostart-enabled"
 
 void destroy_config_file();
 

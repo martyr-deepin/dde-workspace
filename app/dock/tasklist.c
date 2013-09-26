@@ -283,7 +283,7 @@ Client* create_client_from_window(Window w)
     gdk_window_set_events(win, GDK_STRUCTURE_MASK | GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
-    Client* c = g_new0(Client, 1);
+    Client* c = g_slice_new(Client);
     c->window = w;
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
@@ -435,7 +435,7 @@ void client_free(Client* _c)
     /* gdk_window_destroy(c->gdkwindow); */
     g_free(c->icon);
 
-    g_free(c);
+    g_slice_free(Client, c);
     dock_update_hide_mode();
 }
 
@@ -588,14 +588,15 @@ void _update_task_list(Window root)
         return;
     }
 
-    Window *cs = g_new(Window, items);
+    Window *cs = g_slice_alloc(sizeof(Window) * items);
+
     for (int i=0; i<items; i++) {
         cs[i] = X_FETCH_32(data, i);
     }
     XFree(data);
 
     client_list_changed(cs, items);
-    g_free(cs);
+    g_slice_free1(sizeof(Window) * items, cs);
 }
 
 JS_EXPORT_API
@@ -620,7 +621,7 @@ double dock_get_active_window()
 PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
-    guint32* img = g_new(guint32, s);
+    guint32* img = g_slice_alloc(sizeof(guint32) * s);
     for (int i=0; i < s; i++) {
         guchar a = data[i] >> 24;
         guchar r = (data[i] >> 16) & 0xff;
@@ -678,7 +679,7 @@ void _update_window_icon(Client* c)
     c->icon = handle_icon(pixbuf, c->use_board);
     g_object_unref(pixbuf);
 
-    g_free(img);
+    g_slice_free1(sizeof(guint32)*w*h, img);
     XFree(data);
 }
 
