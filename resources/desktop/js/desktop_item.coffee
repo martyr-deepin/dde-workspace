@@ -364,10 +364,11 @@ class Item extends Widget
     item_rename : =>
         # first make the contextmenu not showed when is in_renaming 
         menu = []
-        @in_rename.contextmenu = build_menu(menu)
+        @item_name.parentElement.contextMenu = build_menu(menu)
+        #@item_name.parentElement.contextMenu = ""
         
-        input_x = _ITEM_WIDTH_ * @_position.x;
-        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel;
+        input_x = _ITEM_WIDTH_ * @_position.x
+        input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel
         DCore.Desktop.set_position_input(input_x,input_y)
         if @delay_rename_tid != -1 then
         if @selected == false then return
@@ -920,7 +921,10 @@ class RichDir extends DesktopEntry
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
-
+        
+        menus_div_pop = []
+        @div_pop.parentElement.contextMenu = build_menu(menus_div_pop)
+        
         # how many we can hold per line due to workarea width
         # 20px for ul padding, 2px for border, 8px for scrollbar
         num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
