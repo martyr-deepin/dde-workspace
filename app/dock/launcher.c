@@ -264,13 +264,13 @@ void _save_apps_position()
     gsize size = g_list_length(_apps_position);
     GList* _tmp_list = _apps_position;
 
-    const gchar**list = (const gchar**)g_new(char*, size);
+    const gchar**list = (const gchar**)g_slice_alloc(sizeof(char*) * size);
     for (size_t i=0; i<size; i++) {
         list[i] = _tmp_list->data;
         _tmp_list = g_list_next(_tmp_list);
     }
     g_key_file_set_string_list(k_apps, "__Config__", "Position", list, size);
-    g_free(list);
+    g_slice_free1(sizeof(char*) * size, list);
 }
 
 JS_EXPORT_API
