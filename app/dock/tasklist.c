@@ -513,9 +513,9 @@ gboolean is_normal_window(Window w)
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
 
-    if (data == NULL && !has_atom_property(_dsp, w, ATOM_WINDOW_PID)) return TRUE;
-
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
+
+    if (data == NULL) return TRUE;
 
     gboolean may_be_docked = FALSE;
     gboolean has_cannot_be_docked_type = FALSE;
