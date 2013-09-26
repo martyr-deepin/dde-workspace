@@ -113,7 +113,7 @@ void dock_test_launcher()
     /* int xid = 0x1800043;  // ATTENTION!! change it yourself when you need to test. */
     /* Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default()); */
     /* GdkWindow* root = gdk_get_default_root_window(); */
-    /* Client* c = g_new0(Client, 1); */
+    /* Client* c = g_slice_new(Client); */
     /* c->window = xid; */
     /* c->title = NULL; */
     /* c->clss = NULL; */

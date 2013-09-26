@@ -66,7 +66,7 @@ void dock_test_tasklist()
     /*         is_normal_window(xid); */
     /* }, "is_normal_window"); */
 
-    Client* c = g_new0(Client, 1);
+    Client* c = g_slice_new(Client);
     c->window = xid;
     /* Test({ */
     /*      c->title = NULL; */
