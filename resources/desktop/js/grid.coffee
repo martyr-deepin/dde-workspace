@@ -1230,8 +1230,7 @@ item_rename_div.addEventListener("click", (evt) ->
         evt.stopPropagation()
         if @id.length?
             if (w = Widget.look_up(@id))?
-                w.item_complete_rename()
-                item_rename_div.style.zIndex = 0
+                w.item_complete_rename(true)
         return
 )
 item_rename_div.parentElement.addEventListener("keydown", (evt) ->
@@ -1268,7 +1267,9 @@ move_widget_to_rename_div = (w) ->
     div_grid.removeChild(w.element)
     item_rename_div.appendChild(w.element)
     item_rename_div.setAttribute("id", w.get_id())
-    item_rename_div.style.display = ""
+    item_rename_div.style.zIndex = 50
+    item_rename_div.focus()
+    item_rename_div.style.display = "block"
     rename_div_process_events = true
     return
 
@@ -1280,6 +1281,8 @@ move_widget_to_grid_after_rename = (w) ->
     w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
     item_rename_div.removeChild(w.element)
     div_grid.appendChild(w.element)
+    item_rename_div.style.zIndex = 0
+    item_rename_div.blur()
     item_rename_div.style.display = "none"
     rename_div_process_events = false
     return
