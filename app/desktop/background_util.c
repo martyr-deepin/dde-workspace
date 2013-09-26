@@ -150,7 +150,7 @@ free_fade_data (xfade_data_t* fade_data)
 {
     cairo_surface_destroy (fade_data->fading_surface);
     g_object_unref (fade_data->end_pixbuf);
-    g_free (fade_data);
+    g_slice_free(xfade_data_t, fade_data);
 }
 
 /*
@@ -376,7 +376,7 @@ get_xformed_gdk_pixbuf (const char* pict_path)
 PRIVATE gboolean
 on_bg_duration_tick (gpointer user_data)
 {
-    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
+    xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
     fade_data->interval = TIME_PER_FRAME; 
@@ -435,7 +435,7 @@ setup_background_timer ()
 PRIVATE void
 setup_crossfade_timer ()
 {
-    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
+    xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     Pixmap prev_pixmap = get_previous_background ();
     gdk_error_trap_push ();
@@ -804,7 +804,7 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 
     _update_rootpmap (new_pixmap);
 
-    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
+    xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->pixmap = new_pixmap;
     fade_data->fading_surface = get_surface (new_pixmap);
@@ -890,7 +890,7 @@ initial_setup (GSettings *settings)
 
     GdkPixbuf* pb = get_xformed_gdk_pixbuf (get_current_picture_path());
 
-    xfade_data_t* fade_data = g_new0 (xfade_data_t, 1);
+    xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->pixmap = new_pixmap;
     fade_data->fading_surface = get_surface (new_pixmap);
