@@ -46,7 +46,7 @@
 #define STR_CAMERA_WIDTH "640"
 #define STR_CAMERA_HEIGHT "480"
 #define MAX_RECO_TIME 5
-#define ERR_POST_PREFIX _("Oops~I can't recognize your face. ")
+#define ERR_POST_PREFIX _("Oops...I can't recognize your face. ")
 
 
 enum RecogizeState {

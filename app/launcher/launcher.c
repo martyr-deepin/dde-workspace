@@ -783,7 +783,7 @@ int main(int argc, char* argv[])
 #endif
 
     if (is_application_running("launcher.app.deepin")) {
-        g_warning("another instance of application launcher is running...\n");
+        g_warning(_("another instance of launcher is running...\n"));
         dbus_launcher_show();
         return 0;
     }
