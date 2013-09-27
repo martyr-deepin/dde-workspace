@@ -38,12 +38,12 @@ body {
 }
 
 #item_grid {
-    /*background-color: #5F9EA0;*/
+    background-color: rgba(100,100,100);
     position:fixed;
 }
 
 .DesktopEntry {
-    /*background-color: #696969;*/
+    background-color: #696969;
 
     width:80px;
     padding:2px 4px;
@@ -65,7 +65,7 @@ body {
 }
 
 .DesktopEntry .item_icon {
-    /*background-color: #DCDCDC;*/
+    background-color: #DCDCDC;
 
     padding:0 16px;
     width:48px;
@@ -86,6 +86,8 @@ body {
 }
 
 .DesktopEntry .item_attrib {
+    background-color: #221122;
+    
     position:absolute;
     top:21px;
     right:24px;
@@ -103,7 +105,7 @@ body {
     display:inline-block;
 }
 .DesktopEntry .item_name {
-    /*background-color: #228B22;*/
+    background-color: #228B22;
 
     border-radius:2px;
     outline:none;

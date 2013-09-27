@@ -115,24 +115,29 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "calc_row_and_cols"
-    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
-    echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
-    echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    #echo "calc_row_and_cols"
+    # #echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
+    # only 4  9 16 25  but 16 is the best 
+    _GRID_WIDTH_INIT_ = _ITEM_WIDTH_
+    _GRID_HEIGHT_INIT_ = _ITEM_HEIGHT_
+    # #echo "wa_width:" + wa_width + ",wa_height:" + wa_height
+    # #echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    echo "xx:" + xx + ",yy:" + yy
-    #_GRID_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
-    #_GRID_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
+    # #echo "xx:" + xx + ",yy:" + yy
+    g_ITEM_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
+    g_ITEM_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
+    # #echo "n_cols:" + n_cols +  ",n_rows:" + n_rows + ",g_ITEM_WIDTH_:" + g_ITEM_WIDTH_ + ",g_ITEM_HEIGHT_:" + g_ITEM_HEIGHT_
 
-    return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
+    return [n_cols, n_rows, g_ITEM_WIDTH_, g_ITEM_HEIGHT_]
+    # return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]  
 
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
-    echo "update_gird_position"
+    #echo "update_gird_position"
     s_offset_x = wa_x
     s_offset_y = wa_y
     s_width = wa_width
@@ -149,13 +154,12 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 load_position = (id) ->
     #echo "load_position"
-    if typeof(id) != "string" then echo "error load_position #{id}"
+    if typeof(id) != "string" then #echo "error load_position #{id}"
 
     pos = localStorage.getObject("id:" + id)
 
     if pos == null then return null
 
-    #保证最右侧和最下面不越界,当超过时，自动排在最右侧和最下面
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if rows > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
     pos
@@ -251,7 +255,7 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
-    echo "clear_occupy"
+    #echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -263,7 +267,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    echo "set_occupy"
+    #echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -272,7 +276,7 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info, id = null) ->
-    echo "detect_occupy"
+    #echo "detect_occupy"
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
@@ -284,7 +288,7 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
-    echo "clear_occupy_table"
+    #echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -297,7 +301,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    echo "find_free_position"
+    #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
@@ -311,27 +315,26 @@ find_free_position = (w, h) ->
 pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    echo "index_x" + index_x + ",index_y" + index_y
+
+    # index_x = Math.min(Math.floor(x / _ITEM_WIDTH_), (cols - 1))
+    # index_y = Math.min(Math.floor(y / _ITEM_HEIGHT_), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
 
 
 coord_to_pos = (pos_x, pos_y, w, h) ->
-    {x : pos_x, y : pos_y, width : w*_PART_, height : h*_PART_}
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 move_to_position = (widget, info) ->
-    echo "move_to_position"
+    # #echo "move_to_position"
     old_info = widget.get_pos()
 
-    # 此处决定移动的单元格size
     widget.move(info.x * grid_item_width, info.y * grid_item_height)
+    widget.move(info.x * _ITEM_WIDTH_, info.y * _ITEM_HEIGHT_)
 
     if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
     set_occupy(widget.get_id(), info)
-    
-    # 此处是set_occupy，即设置一个desktop文件占了多少个格子，之前就是一个格子，现在要改成占了4*4=16个格子
-    # 同时当桌面初始化时，图标的位置就是通过这个函数移动的
-    
+
     widget.set_pos(info)
     save_position(widget.get_id(), info)
     return
@@ -339,13 +342,11 @@ move_to_position = (widget, info) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
-    echo "move_to_anywhere"
-    echo widget.get_name()
+    # #echo "move_to_anywhere"
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
-        #if pos localStorage return null
         old_size = widget.get_pos()
         new_pos = find_free_position(old_size.width, old_size.height)
         move_to_position(widget, new_pos)
@@ -353,8 +354,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    echo "move_to_somewhere"
-    echo widget.get_name()
+    # #echo "move_to_somewhere"
     if not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
