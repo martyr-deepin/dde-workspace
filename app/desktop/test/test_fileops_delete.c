@@ -2,18 +2,19 @@
 
 void test_fileops_delete()
 {
-    
-	extern void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog);
-	Test({
 
-		system("touch /tmp/test_files/skype.desktop");
+    extern void fileops_confirm_delete (GFile* file_list[], guint num, gboolean show_dialog);
+    Test({
 
-		g_message("fileops_confirm_delete start");
-        GFile* src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
-        fileops_confirm_delete(&src2,1,FALSE);
-        g_object_unref(src2);
-    	g_message("fileops_confirm_delete end");
+         int dump = system("touch /tmp/test_files/skype.desktop");
 
-	},"fileops_confirm_delete");
+         g_message("fileops_confirm_delete start");
+         GFile* src2 = g_file_new_for_uri("file:///tmp/test_files/skype.desktop");
+         fileops_confirm_delete(&src2,1,FALSE);
+         g_object_unref(src2);
+         g_message("fileops_confirm_delete end");
+
+         },"fileops_confirm_delete");
 
 }
+
