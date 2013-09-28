@@ -47,6 +47,7 @@ PRIVATE GtkWidget* webview = NULL;
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE GPtrArray* config_paths = NULL;
 PRIVATE gboolean is_js_already = FALSE;
+PRIVATE gboolean is_launcher_shown = FALSE;
 
 #ifndef NDEBUG
 static gboolean is_daemonize = FALSE;
@@ -91,6 +92,7 @@ void _on_realize(GtkWidget* container)
 DBUS_EXPORT_API
 void launcher_show()
 {
+    is_launcher_shown = TRUE;
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_show(w);
 }
@@ -99,8 +101,20 @@ void launcher_show()
 DBUS_EXPORT_API
 void launcher_hide()
 {
+    is_launcher_shown = FALSE;
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_hide(w);
+}
+
+
+DBUS_EXPORT_API
+void launcher_toggle()
+{
+    if (is_launcher_shown) {
+        launcher_hide();
+    } else {
+        launcher_show();
+    }
 }
 
 
@@ -777,14 +791,14 @@ int main(int argc, char* argv[])
     if (argc == 2 && g_str_equal("-D", argv[1]))
         is_daemonize = TRUE;
 
-    if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
+    if (argc == 2 && g_str_equal("-f", argv[1])) {
         not_exit = TRUE;
     }
 #endif
 
     if (is_application_running("launcher.app.deepin")) {
         g_warning(_("another instance of launcher is running...\n"));
-        dbus_launcher_show();
+        dbus_launcher_toggle();
         return 0;
     }
 
@@ -845,6 +859,7 @@ int main(int argc, char* argv[])
 
     monitor_apps();
     gtk_widget_show_all(container);
+    is_launcher_shown = TRUE;
     gtk_main();
     monitor_destroy();
     return 0;
