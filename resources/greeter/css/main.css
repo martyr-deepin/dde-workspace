@@ -27,7 +27,7 @@ body{
     #-webkit-animation:linear-show 2s ease-out;
 }
 
-#Version{ 
+#Version{
     /*background: url(../images/ver.png) no-repeat;*/
     font-size:24px;
     text-shadow:0 0 2px #333;
@@ -63,6 +63,7 @@ body{
 }
 
 .Time01{
+    width: 350px;
     left: 0px;
     cursor:default;
     font-size:120px;
@@ -75,7 +76,8 @@ body{
     text-shadow:0 0 2px #333;
 }
 
-.Time02{  
+.Time02{
+    width: 350px;
     cursor:default;
     padding-left:10px;
     font-size:30px;
