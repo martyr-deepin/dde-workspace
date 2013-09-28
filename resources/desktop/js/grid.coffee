@@ -617,20 +617,20 @@ paste_from_clipboard = ->
 
 
 item_dragstart_handler = (widget, evt) ->
-    # #echo "item_dragstart_handler"
-    all_selected_items = ""
+    echo "item_dragstart_handler"
+    all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
             w = Widget.look_up(selected_item[i])
             if not w? or w.modifiable == false then continue
             path = w.get_path()
-            if path.length > 0 
-                all_selected_items += path + "\r\n"
-        if all_selected_items.length > 2
-            all_selected_items = all_selected_items.substring(0,all_selected_items.length-2)
-        else 
+            if path.length > 0
+                all_selected_items_path += path + "\r\n"
+        if all_selected_items_path.length > 2
+            all_selected_items_path = all_selected_items_path.substring(0,all_selected_items_path.length-2)
+        else
             echo "warning:items path is null"
-        evt.dataTransfer.setData("text/uri-list", all_selected_items)
+        evt.dataTransfer.setData("text/uri-list", all_selected_items_path)
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
@@ -833,8 +833,8 @@ update_selected_item_drag_image = ->
         pos.x -= top_left.x
         pos.y -= top_left.y
 
-        start_x = pos.x * _ITEM_WIDTH_
-        start_y = pos.y * _ITEM_HEIGHT_
+        start_x = pos.x * _GRID_WIDTH_INIT_
+        start_y = pos.y * _GRID_HEIGHT_INIT_
 
         draw_icon_on_canvas(drag_context, start_x, start_y, w.item_icon, w.item_name.innerText)
 
