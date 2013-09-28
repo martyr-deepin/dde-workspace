@@ -636,7 +636,9 @@ item_dragstart_handler = (widget, evt) ->
 
         pos = widget.get_pos()
         x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
-        y = (pos.y - drag_start.y) * grid_item_height + 26
+        y = (pos.y - drag_start.y) * grid_item_height + 12
+        #x = (pos.x - drag_start.x) * grid_item_width
+        #y = (pos.y - drag_start.y) * grid_item_height
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
@@ -646,7 +648,7 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    # #echo "item_dragend_handler"
+    echo "item_dragend_handler"
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
@@ -1013,13 +1015,13 @@ grid_do_keydown_to_shortcut = (evt) ->
 
         w_f = null
         if evt.keyCode == 37         # left arrow
-            w_f = find_item_by_coord_delta(w, -1, 0)
+            w_f = find_item_by_coord_delta(w, -1*_PART_, 0)
         else if evt.keyCode == 38    # up arrow
-            w_f = find_item_by_coord_delta(w, 0, -1)
+            w_f = find_item_by_coord_delta(w, 0, -1*_PART_)
         else if evt.keyCode == 39    # right arrow
-            w_f = find_item_by_coord_delta(w, 1, 0)
+            w_f = find_item_by_coord_delta(w, 1*_PART_, 0)
         else if evt.keyCode == 40    # down arrow
-            w_f = find_item_by_coord_delta(w, 0, 1)
+            w_f = find_item_by_coord_delta(w, 0, 1*_PART_)
         if not w_f? then return
 
         if evt.ctrlKey == true
