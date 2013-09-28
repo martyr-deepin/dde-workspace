@@ -297,8 +297,14 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    echo "find_free_position"
-    info = {x:0, y:0, width:w, height:h}
+    # 新图标的摆放位置,就是当localStorage中没有id pos时，调用find_free_position 来得到new_pos,
+    # 然后move_to_position(new_pos)
+    # 这些操作都是在move_to_somewhere 和 move_to_anywhere中没有
+    # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
+    
+    #echo "find_free_position"
+    
+    info = {x:0, y:0, width:w*_PART_, height:h*_PART_}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
             if not o_table[i][j]?
