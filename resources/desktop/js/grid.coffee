@@ -302,11 +302,12 @@ find_free_position = (w, h) ->
     # 这些操作都是在move_to_somewhere 和 move_to_anywhere中没有
     # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
     
-    #echo "find_free_position"
+    echo "find_free_position"
     
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
+            echo o_table[i][j]
             if not o_table[i][j]?
                 info.x = i
                 info.y = j
@@ -325,21 +326,26 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
     {x : pos_x, y : pos_y, width : w, height : h}
 
 
-move_to_position = (widget, info) ->
+move_to_position = (widget, pos) ->
     echo "move_to_position"
-    old_info = widget.get_pos()
-
+    old_pos = widget.get_pos()
+    
+    echo "pos:"
+    echo pos
+    echo "old_pos:"
+    echo old_pos
+    
     # 此处决定移动的单元格size
-    widget.move(info.x * grid_item_width, info.y * grid_item_height)
+    widget.move(pos.x * grid_item_width, pos.y * grid_item_height)
 
-    if (old_info.x > -1) and (old_info.y > -1) then clear_occupy(widget.get_id(), old_info)
-    set_occupy(widget.get_id(), info)
+    if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
+    set_occupy(widget.get_id(), pos)
     
     # 此处是set_occupy，即设置一个desktop文件占了多少个格子，之前就是一个格子，现在要改成占了4*4=16个格子
     # 同时当桌面初始化时，图标的位置就是通过这个函数移动的
     
-    widget.set_pos(info)
-    save_position(widget.get_id(), info)
+    widget.set_pos(pos)
+    save_position(widget.get_id(), pos)
     return
 
 

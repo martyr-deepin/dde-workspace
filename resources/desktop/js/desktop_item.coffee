@@ -172,13 +172,13 @@ class Item extends Widget
         ret_pos = {x : @_position.x, y : @_position.y, width : @_position.width, height : @_position.height}
 
 
-    set_pos : (info) =>
-        [@_position.x, @_position.y] = [info.x, info.y]
+    set_pos : (pos) =>
+        [@_position.x, @_position.y] = [pos.x, pos.y]
         return
 
 
-    _set_size : (info) =>
-        [@_position.width, @_position.height] = [info.width, info.height]
+    _set_size : (pos) =>
+        [@_position.width, @_position.height] = [pos.width, pos.height]
         return
 
 
