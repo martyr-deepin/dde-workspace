@@ -53,13 +53,13 @@ document.body.addEventListener("keydown", (e) =>
         if not u.login_displayed
             if not u.is_recognizing
                 u.show_login()
-                failed_tip?.remove()
+                message_tip?.remove()
         else
             u.login.on_active(user, u.login.password.value)
 
     else if e.which == ESC_KEY
         u.hide_login()
-        failed_tip?.remove()
+        message_tip?.remove()
 )
 
 if roundabout.children.length <= 2
@@ -72,11 +72,14 @@ if roundabout.children.length <= 2
 
 
 DCore.signal_connect("start-login", ->
-    echo "receive start login"
+    # echo "receive start login"
     # TODO: maybe some animation or some reflection.
     u.is_recognizing = false
     DCore.Lock.try_unlock("")
 )
+
+# if _current_user.face_login
+#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
 
 DCore.Lock.webview_ok(_current_user.id)
 

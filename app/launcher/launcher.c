@@ -755,7 +755,7 @@ void launcher_webview_ok()
 PRIVATE
 void daemonize()
 {
-    g_warning("daemonize");
+    g_debug("daemonize");
     pid_t pid = 0;
     if ((pid = fork()) == -1) {
         g_warning("fork error");
