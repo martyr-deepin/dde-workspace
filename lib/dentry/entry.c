@@ -1354,7 +1354,7 @@ void _get_cadidate_categories(gpointer key, gpointer value, gpointer user_data)
 PRIVATE
 char* _get_group_name_from_category_field(ArrayContainer const fs)
 {
-    char* group_name = g_strdup("App Group");
+    char* group_name = g_strdup(_("App Group"));
 
     GHashTable* categories_count = _count_categories(fs);
 

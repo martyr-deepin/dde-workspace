@@ -149,7 +149,7 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
         duration += 2;
     }
     if (g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        g_warning("background changed");
+        g_debug("background changed");
         js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
     }
     g_free(blur_path);
