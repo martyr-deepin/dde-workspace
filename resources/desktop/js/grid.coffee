@@ -146,6 +146,10 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     [cols, rows, grid_item_width, grid_item_height] = calc_row_and_cols(s_width, s_height)
     return
 
+pos_zoom = (pos) ->
+    pos.width = pos.width * _PART_
+    pos.height = pos.height * _PART_
+    return pos
 
 load_position = (id) ->
     #echo "load_position"
@@ -158,8 +162,8 @@ load_position = (id) ->
     #保证最右侧和最下面不越界,当超过时，自动排在最右侧和最下面
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if rows > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
+    #pos_zoom(pos)
     pos
-
 
 save_position = (id, pos) ->
     #echo "save_position"
