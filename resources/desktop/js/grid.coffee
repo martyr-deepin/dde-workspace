@@ -304,7 +304,7 @@ find_free_position = (w, h) ->
     
     #echo "find_free_position"
     
-    info = {x:0, y:0, width:w*_PART_, height:h*_PART_}
+    info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - 1]
         for j in [0..rows - 1]
             if not o_table[i][j]?
@@ -322,7 +322,7 @@ pixel_to_pos = (x, y, w, h) ->
 
 
 coord_to_pos = (pos_x, pos_y, w, h) ->
-    {x : pos_x, y : pos_y, width : w*_PART_, height : h*_PART_}
+    {x : pos_x, y : pos_y, width : w, height : h}
 
 
 move_to_position = (widget, info) ->

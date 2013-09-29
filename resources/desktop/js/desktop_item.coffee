@@ -54,7 +54,7 @@ class Item extends Widget
         super(@id)
 
         el = @element
-        @_position = {x:-1, y:-1, width:1, height:1}
+        @_position = {x:-1, y:-1, width:1*_PART_, height:1*_PART_}
 
         #el.setAttribute("tabindex", 0)
         el.draggable = true
