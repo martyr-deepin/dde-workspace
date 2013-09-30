@@ -45,12 +45,6 @@ else
             roundabout.appendChild(u.li)
             u.focus()
 
-    if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        roundabout.appendChild(u.li)
-        if DCore.Greeter.is_guest_default()
-            u.focus()
-
     for user in users
         if user == DCore.Greeter.get_default_user()
             echo "already append default user"
@@ -58,6 +52,12 @@ else
             user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image)
             roundabout.appendChild(u.li)
+
+    if DCore.Greeter.is_support_guest()
+        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+        roundabout.appendChild(u.li)
+        if DCore.Greeter.is_guest_default()
+            u.focus()
 
 userinfo_list[0]?.focus()
 
@@ -96,12 +96,12 @@ document.body.addEventListener("keydown", (e)=>
         #echo "enter"
         if not _current_user?.is_recognizing
             _current_user?.show_login()
-            failed_tip?.remove()
+            message_tip?.remove()
 
     else if e.which == ESC_KEY
         #echo "esc"
         _current_user?.hide_login()
-        failed_tip?.remove()
+        message_tip?.remove()
 )
 
 if roundabout.children.length <= 2
@@ -125,11 +125,14 @@ jQuery("#roundabout").drag("end", (ev, dd) ->
 )
 
 DCore.signal_connect("start-login", ->
-    echo "receive start login"
+    # echo "receive start login"
     # TODO: maybe some animation or some reflection.
     _current_user.is_recognizing = false
     DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
 )
+
+# if _current_user.face_login
+#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
 
 DCore.Greeter.webview_ok(_current_user.id)
 

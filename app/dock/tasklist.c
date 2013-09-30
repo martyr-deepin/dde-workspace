@@ -54,6 +54,19 @@ static Atom ATOM_WINDOW_ICON;
 static Atom ATOM_WINDOW_TYPE;
 static Atom ATOM_WINDOW_TYPE_NORMAL;
 static Atom ATOM_WINDOW_TYPE_DIALOG;
+static Atom ATOM_WINDOW_TYPE_COMBO;
+static Atom ATOM_WINDOW_TYPE_DESKTOP;
+static Atom ATOM_WINDOW_TYPE_DND;
+static Atom ATOM_WINDOW_TYPE_DOCK;
+static Atom ATOM_WINDOW_TYPE_DROPDOWN_MENU;
+static Atom ATOM_WINDOW_TYPE_MENU;
+static Atom ATOM_WINDOW_TYPE_NOTIFICATION;
+static Atom ATOM_WINDOW_TYPE_POPUP_MENU;
+static Atom ATOM_WINDOW_TYPE_SPLASH;
+static Atom ATOM_WINDOW_TYPE_TOOLBAR;
+static Atom ATOM_WINDOW_TYPE_TOOLTIP;
+static Atom ATOM_WINDOW_TYPE_UTILITY;
+static Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE;
 static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
 static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
 static Atom ATOM_WINDOW_NAME;
@@ -78,6 +91,19 @@ PRIVATE void _init_atoms()
     ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
     ATOM_WINDOW_TYPE_NORMAL = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NORMAL");
     ATOM_WINDOW_TYPE_DIALOG = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DIALOG");
+    ATOM_WINDOW_TYPE_COMBO = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_COMBO");
+    ATOM_WINDOW_TYPE_DESKTOP = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DESKTOP");
+    ATOM_WINDOW_TYPE_DND = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DND");
+    ATOM_WINDOW_TYPE_DOCK = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DOCK");
+    ATOM_WINDOW_TYPE_DROPDOWN_MENU = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_DROPDOWN_MENU");
+    ATOM_WINDOW_TYPE_MENU = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_MENU");
+    ATOM_WINDOW_TYPE_NOTIFICATION = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_NOTIFICATION");
+    ATOM_WINDOW_TYPE_POPUP_MENU = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_POPUP_MENU");
+    ATOM_WINDOW_TYPE_SPLASH = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_SPLASH");
+    ATOM_WINDOW_TYPE_TOOLBAR = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_TOOLBAR");
+    ATOM_WINDOW_TYPE_TOOLTIP = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_TOOLTIP");
+    ATOM_WINDOW_TYPE_UTILITY = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_UTILITY");
+    ATOM_WINDOW_TYPE_KDE_OVERRIDE = gdk_x11_get_xatom_by_name("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE");
     ATOM_WINDOW_ALLOWED_ACTIONS = gdk_x11_get_xatom_by_name("_NET_WM_ALLOWED_ACTIONS");
     ATOM_WINDOW_ALLOW_MINIMIZE = gdk_x11_get_xatom_by_name("_NET_WM_ACTION_MINIMIZE");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
@@ -147,7 +173,7 @@ PRIVATE void _update_task_list(Window root);
 void client_free(Client* c);
 
 PRIVATE
-void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res)
+void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
 {
     Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
@@ -259,7 +285,7 @@ Client* create_client_from_window(Window w)
     gdk_window_set_events(win, GDK_STRUCTURE_MASK | GDK_PROPERTY_CHANGE_MASK | GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));
     gdk_window_add_filter(win, (GdkFilterFunc)monitor_client_window, GINT_TO_POINTER(w));
 
-    Client* c = g_new0(Client, 1);
+    Client* c = g_slice_new(Client);
     c->window = w;
     c->gdkwindow = win;
     c->is_overlay_dock = FALSE;
@@ -267,6 +293,7 @@ Client* create_client_from_window(Window w)
     c->title = NULL;
     c->instance_name = NULL;
     c->app_id = NULL;
+    c->clss = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
     c->use_board = TRUE;
@@ -277,6 +304,10 @@ Client* create_client_from_window(Window w)
     _update_window_title(c);
     _update_window_class(c);
     _update_window_appid(c);
+    if (c->app_id == NULL) {
+        client_free(c);
+        return NULL;
+    }
     _update_window_net_state(c);
     _update_is_overlay_client(c);
     if (c->app_id == NULL) {
@@ -407,7 +438,7 @@ void client_free(Client* _c)
     /* gdk_window_destroy(c->gdkwindow); */
     g_free(c->icon);
 
-    g_free(c);
+    g_slice_free(Client, c);
     dock_update_hide_mode();
 }
 
@@ -485,21 +516,41 @@ gboolean is_normal_window(Window w)
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_TYPE, &items);
 
-    if (data == NULL && !has_atom_property(_dsp, w, ATOM_WINDOW_PID)) return TRUE;
-
     if (data == NULL && has_atom_property(_dsp, w, ATOM_XEMBED_INFO)) return FALSE;
 
+    if (data == NULL) return TRUE;
+
+    gboolean may_be_docked = FALSE;
+    gboolean has_cannot_be_docked_type = FALSE;
     for (int i=0; i<items; i++) {
         Atom window_type = (Atom)X_FETCH_32(data, i);
-        if (window_type == ATOM_WINDOW_TYPE_NORMAL
-            || (window_type == ATOM_WINDOW_TYPE_DIALOG && can_be_minimized(w))) {
-            XFree(data);
-            return TRUE;
+        if ((window_type == ATOM_WINDOW_TYPE_NORMAL
+             || (window_type == ATOM_WINDOW_TYPE_DIALOG
+                 && can_be_minimized(w)))) {
+            may_be_docked = TRUE;
+        } else if (window_type == ATOM_WINDOW_TYPE_UTILITY
+                   || window_type == ATOM_WINDOW_TYPE_COMBO
+                   || window_type == ATOM_WINDOW_TYPE_DESKTOP
+                   || window_type == ATOM_WINDOW_TYPE_DND
+                   || window_type == ATOM_WINDOW_TYPE_DOCK
+                   || window_type == ATOM_WINDOW_TYPE_DROPDOWN_MENU
+                   || window_type == ATOM_WINDOW_TYPE_MENU
+                   || window_type == ATOM_WINDOW_TYPE_NOTIFICATION
+                   || window_type == ATOM_WINDOW_TYPE_POPUP_MENU
+                   || window_type == ATOM_WINDOW_TYPE_SPLASH
+                   || window_type == ATOM_WINDOW_TYPE_TOOLTIP
+                   || window_type == ATOM_WINDOW_TYPE_TOOLBAR
+                   || window_type == ATOM_WINDOW_TYPE_UTILITY) {
+            has_cannot_be_docked_type = TRUE;
+        } else if (window_type == ATOM_WINDOW_TYPE_KDE_OVERRIDE) {
+            may_be_docked = FALSE;
+            break;
         }
     }
+
     XFree(data);
 
-    return FALSE;
+    return may_be_docked && !has_cannot_be_docked_type;
 }
 
 PRIVATE void _destroy_client(gpointer id)
@@ -513,7 +564,7 @@ void client_list_changed(Window* cs, size_t n)
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
 
         if (is_normal_window(cs[i])) {
-            if (c == NULL && (c = create_client_from_window(cs[i]))) {
+            if (c == NULL && ((c = create_client_from_window(cs[i])) != NULL)) {
                 //client maybe create failed!!
                 //because monitor_client_window maybe run after _update_task_list when XWindow has be destroyed"
                 g_hash_table_insert(_clients_table, GINT_TO_POINTER(cs[i]), c);
@@ -543,28 +594,40 @@ void _update_task_list(Window root)
         return;
     }
 
-    Window *cs = g_new(Window, items);
+    Window *cs = g_slice_alloc(sizeof(Window) * items);
+
     for (int i=0; i<items; i++) {
         cs[i] = X_FETCH_32(data, i);
     }
     XFree(data);
 
     client_list_changed(cs, items);
-    g_free(cs);
+    g_slice_free1(sizeof(Window) * items, cs);
 }
 
 JS_EXPORT_API
 double dock_get_active_window()
 {
     Window aw = 0;
+#if 1
     get_atom_value_by_atom(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &aw, get_atom_value_for_index, 0);
+#else
+    gulong n_item;
+    gpointer data = get_window_property(_dsp, GDK_ROOT_WINDOW(), ATOM_ACTIVE_WINDOW, &n_item);
+    if (data == NULL)
+        return 0;
+
+    aw = X_FETCH_32(data, 0);
+    XFree(data);
+#endif
+
     return aw;
 }
 
 PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
-    guint32* img = g_new(guint32, s);
+    guint32* img = g_slice_alloc(sizeof(guint32) * s);
     for (int i=0; i < s; i++) {
         guchar a = data[i] >> 24;
         guchar r = (data[i] >> 16) & 0xff;
@@ -622,7 +685,7 @@ void _update_window_icon(Client* c)
     c->icon = handle_icon(pixbuf, c->use_board);
     g_object_unref(pixbuf);
 
-    g_free(img);
+    g_slice_free1(sizeof(guint32)*w*h, img);
     XFree(data);
 }
 
@@ -685,10 +748,10 @@ void _update_window_appid(Client* c)
                 c->exec = get_exe(app_id, *s_pid);
             }
         }
-    }
 
-    if (NULL != strchr(c->app_id, '_'))
-        g_strdelimit(c->app_id, "_", '-');
+        if (NULL != strchr(c->app_id, '_'))
+            g_strdelimit(c->app_id, "_", '-');
+    }
 
     XFree(s_pid);
 }
@@ -945,6 +1008,7 @@ gboolean dock_is_client_minimized(double id)
 
     gulong wm_state;
     gboolean is_minimized = FALSE;
+#if 1
     if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
@@ -953,6 +1017,18 @@ gboolean dock_is_client_minimized(double id)
     } else {
         g_debug("cannot get Window state(WM_STATE)");
     }
+#else
+    gulong n_item;
+    Atom atom = gdk_x11_get_atom_by_name("WM_STATE");
+    gpointer data = get_window_property(_dsp, c->window, atom, &n_item);
+    if (data == NULL)
+        return 0;
+
+    wm_state = X_FETCH_32(data, 0);
+    XFree(data);
+
+    is_minimized = wm_state == IconicState;
+#endif
 
     return is_minimized;
 }

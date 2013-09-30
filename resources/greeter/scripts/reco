@@ -22,14 +22,18 @@
 
 from __future__ import print_function
 import sys
+from ConfigParser import ConfigParser
 
 from facepp import File, API
 
-API_KEY = '0b8c0488e457432f04e38b79982f66db'
-API_SCRET ='Bs-ncYt88ewu9euvhBzVo6YjHDzxJpTG'
+#API_KEY = '0b8c0488e457432f04e38b79982f66db'
+#API_SECRET = 'Bs-ncYt88ewu9euvhBzVo6YjHDzxJpTG'
+
+
+API_KEY = 'e7d24ca8e91351b8cac02eb6e6080678'
+API_SECRET = 'iH_Dls3_gE2wx5dp2cKHPrO8W5V5NTr-'
 
 TARGET_IMAGE = '/tmp/deepin_user_face.png'
-GROUP_NAME = 'User'
 
 
 from pprint import pformat
@@ -51,16 +55,25 @@ def print_result(hint, result):
         75).split('\n')]))
 
 
-api = API(API_KEY, API_SCRET, timeout=10, max_retries=3)
+api = API(API_KEY, API_SECRET, timeout=10, max_retries=3)
+
+conf = ConfigParser()
+with open('/etc/face_recognition.cfg') as f:
+    conf.readfp(f)
+uuid = conf.get(sys.argv[1], "person_name");
 
 try:
-    result = api.recognition.recognize(img=File(TARGET_IMAGE), group_name=GROUP_NAME)
-except:
-    print("has no target image")
+    result = api.detection.detect(img=File(TARGET_IMAGE), mode="oneface")
+    face_id = result["face"][0]["face_id"]
+
+    result = api.recognition.verify(person_name=uuid, face_id=face_id)
+    # print_result("", result)
+except Exception, e:
+    print(e)
     sys.exit(1)
 
 try:
-    print(result['face'][0]['candidate'][0]['person_name'], end='')
+    print(result['is_same_person'], end='')
 except:
     print_result('[Error]: ', result)
 

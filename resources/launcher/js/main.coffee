@@ -54,6 +54,7 @@ sort_by_rate = do ->
         if update
             rates = DCore.Launcher.get_app_rate()
 
+            items_name_map = {}
             for id in category_infos[ALL_APPLICATION_CATEGORY_ID]
                 if not items_name_map[id]?
                     items_name_map[id] =
@@ -90,8 +91,9 @@ exit_launcher = ->
     selected_category_id = ALL_APPLICATION_CATEGORY_ID
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
-    _save_hidden_apps()
+    save_hidden_apps()
     _show_hidden_icons(false)
+    get_first_shown()?.scroll_to_view()
     if Item.hover_item_id
         event = new Event("mouseout")
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
@@ -139,7 +141,7 @@ _get_hidden_icons_ids = ->
     return hidden_icons_ids
 
 
-_save_hidden_apps = ->
+save_hidden_apps = ->
     DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
 
 
@@ -204,8 +206,7 @@ _b.addEventListener("keydown", do ->
                     s_box.value = s_box.value.substr(0, s_box.value.length-1)
                     if s_box.value == ""
                         if _last_val != s_box.value
-                            do_search()
-                            grid_load_category(selected_category_id)
+                            init_grid()
                         return  # to avoid to invoke search function
                     search()
                 when ENTER_KEY

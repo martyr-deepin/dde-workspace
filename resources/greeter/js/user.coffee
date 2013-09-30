@@ -25,22 +25,22 @@ apply_refuse_rotate = (el, time)->
     , time * 1000)
 
 
-class FailedTip
+class MessageTip
     constructor:(text, @parent)->
-        @failed_tip = null
-        @failed_tip = create_element("div", "failed-tip", @parent)
-        @failed_tip.appendChild(document.createTextNode(text))
-        @failed_tip.style.top = "#{.15 * window.innerHeight + 310}px"
+        @message_tip = null
+        @message_tip = create_element("div", "failed-tip", @parent)
+        @message_tip.appendChild(document.createTextNode(text))
+        @message_tip.style.top = "#{.15 * window.innerHeight + 310}px"
 
     adjust_show_login: ->
-        @failed_tip.style.top = "#{.15 * window.innerHeight + 390}px"
+        @message_tip.style.top = "#{.15 * window.innerHeight + 390}px"
 
     remove: =>
-        if @failed_tip
-            @parent.removeChild(@failed_tip)
-            @failed_tip = null
+        if @message_tip
+            @parent.removeChild(@message_tip)
+            @message_tip = null
 
-failed_tip = null
+message_tip = null
 draw_camera_id = null
 
 
@@ -121,6 +121,7 @@ class SwitchUser extends Widget
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             clearInterval(draw_camera_id)
+            draw_camera_id = null
             DCore.Lock.switch_user()
         )
 
@@ -145,7 +146,7 @@ class UserInfo extends Widget
     constructor: (@id, name, @img_src)->
         super
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
-        echo "use face login: #{@face_login}"
+        # echo "use face login: #{@face_login}"
         @li = create_element("li", "")
         @li.appendChild(@element)
 
@@ -273,10 +274,10 @@ class UserInfo extends Widget
                 if @face_login
                     if not @is_recognizing
                         if e.target.className == "UserName"
-                            failed_tip?.remove()
+                            message_tip?.remove()
                             @show_login()
                         else if e.target.className == 'UserImg'
-                            failed_tip?.remove()
+                            message_tip?.remove()
                             DCore[APP_NAME].start_recognize()
                 else
                     @show_login()
@@ -287,7 +288,7 @@ class UserInfo extends Widget
                     @hide_login()
 
                     if @face_login
-                        failed_tip?.remove()
+                        message_tip?.remove()
                         DCore[APP_NAME].start_recognize()
         else
             @focus()
@@ -346,15 +347,15 @@ class UserInfo extends Widget
         )
 
     auth_failed: (msg) ->
-        echo "[User.auth_failed]"
+        # echo "[User.auth_failed]"
         if not @login_displayed and @face_login
-            echo "face login failed"
+            # echo "face login failed"
             @stop_animation()
-            failed_tip?.remove()
-            failed_tip = null
-            failed_tip = new FailedTip(msg, roundabout.parentElement)
+            message_tip?.remove()
+            message_tip = null
+            message_tip = new MessageTip(msg, roundabout.parentElement)
         else
-            echo "login failed"
+            # echo "login failed"
             @focus()
             @show_login()
             @display_failure = true
@@ -420,21 +421,22 @@ class UserInfo extends Widget
 
     draw_camera: ->
         if @face_login
+            clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
                 DCore[APP_NAME].draw_camera(@canvas, @canvas.width, @canvas.height)
             , 20)
 
     start_animation: =>
-        echo '[start_animation]'
+        # echo '[start_animation]'
         if @face_login
-            echo '[set animation]'
+            # echo '[set animation]'
             @scanner.style.display = 'block'
             @scanner.style.zIndex = 300
-            @scanner.style.webkitAnimation = 'scanning 5s linear infinite'
+            @scanner.style.webkitAnimation = "scanning #{ANIMATION_TIME}s linear infinite"
             @scan_line.style.display = 'block'
 
     stop_animation: ->
-        echo '[stop_animation]'
+        # echo '[stop_animation]'
         if @face_login
             @scanner.style.display = 'none'
             @scanner.style.zIndex = -300
@@ -442,14 +444,14 @@ class UserInfo extends Widget
             @scan_line.style.display = 'none'
 
 DCore.signal_connect("draw", ->
-    echo 'receive draw signal'
+    # echo 'receive draw signal'
     clearInterval(draw_camera_id)
     draw_camera_id = null
     _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    echo "receive start animation"
+    # echo "receive start animation"
     _current_user.is_recognizing = true
     _current_user.hide_login()
     _remove_click_event?()
@@ -457,16 +459,16 @@ DCore.signal_connect("start-animation", ->
 )
 
 DCore.signal_connect("auth-failed", (msg)->
-    echo "[auth-failed]"
+    # echo "[auth-failed]"
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
 )
 
 DCore.signal_connect("failed-too-much", (msg)->
-    echo '[failed-too-much]'
+    # echo '[failed-too-much]'
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
     _current_user.show_login()
-    failed_tip.adjust_show_login()
+    message_tip.adjust_show_login()
 )
 

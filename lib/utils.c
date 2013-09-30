@@ -173,7 +173,7 @@ char* get_name_by_pid(int pid)
     if (fd == -1) {
         return NULL;
     } else {
-        read(fd, content, LEN);
+        int dump = read(fd, content, LEN);
         close(fd);
     }
     for (int i=0; i<LEN; i++) {

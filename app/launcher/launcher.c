@@ -36,21 +36,22 @@
 #define DOCK_HEIGHT 30
 #define APPS_INI "launcher/apps.ini"
 #define LAUNCHER_CONF "launcher/config.ini"
-#define AUTOSTART(file) "autostart/"file
+#define AUTOSTART_DIR "autostart"
+#define GNOME_AUTOSTART_KEY "X-GNOME-Autostart-enabled"
 
 
 PRIVATE GKeyFile* k_apps = NULL;
 PRIVATE GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
-PRIVATE GdkScreen* screen = NULL;
-PRIVATE int screen_width;
-PRIVATE int screen_height;
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE GPtrArray* config_paths = NULL;
+PRIVATE gboolean is_js_already = FALSE;
+PRIVATE gboolean is_launcher_shown = FALSE;
 
 #ifndef NDEBUG
 static gboolean is_daemonize = FALSE;
+static gboolean not_exit = FALSE;
 #endif
 
 
@@ -59,14 +60,6 @@ static gboolean is_daemonize = FALSE;
  *          value: a list of applications id (md5 basename of path)
  */
 PRIVATE GHashTable* _category_table = NULL;
-
-
-PRIVATE void get_screen_info()
-{
-    screen = gdk_screen_get_default();
-    screen_width = gdk_screen_get_width(screen);
-    screen_height = gdk_screen_get_height(screen);
-}
 
 
 PRIVATE
@@ -81,21 +74,25 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 PRIVATE
 void _update_size(GdkScreen *screen, GtkWidget* conntainer)
 {
-    gtk_widget_set_size_request(container, screen_width, screen_height);
+    gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
 }
 
 
 PRIVATE
 void _on_realize(GtkWidget* container)
 {
+    GdkScreen* screen =  gdk_screen_get_default();
     _update_size(screen, container);
     g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
+    if (is_js_already)
+        background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
 }
 
 
 DBUS_EXPORT_API
 void launcher_show()
 {
+    is_launcher_shown = TRUE;
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_show(w);
 }
@@ -104,8 +101,20 @@ void launcher_show()
 DBUS_EXPORT_API
 void launcher_hide()
 {
+    is_launcher_shown = FALSE;
     GdkWindow* w = gtk_widget_get_window(container);
     gdk_window_hide(w);
+}
+
+
+DBUS_EXPORT_API
+void launcher_toggle()
+{
+    if (is_launcher_shown) {
+        launcher_hide();
+    } else {
+        launcher_show();
+    }
 }
 
 
@@ -132,14 +141,15 @@ JS_EXPORT_API
 void launcher_exit_gui()
 {
 #ifndef NDEBUG
-    if (is_daemonize)
+    if (is_daemonize || not_exit) {
 #endif
 
         launcher_hide();
 
 #ifndef NDEBUG
-    else
+    } else {
         launcher_quit();
+    }
 #endif
 }
 
@@ -149,7 +159,7 @@ void launcher_notify_workarea_size()
 {
     js_post_message_simply("workarea_changed",
             "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
-            screen_width, screen_height);
+            gdk_screen_width(), gdk_screen_height());
 }
 
 
@@ -456,25 +466,97 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
     return is_exist;
 }
 
+void _init_config_path()
+{
+    config_paths = g_ptr_array_new_with_free_func(g_free);
+
+    char* autostart_dir = g_build_filename(g_get_user_config_dir(),
+                                           AUTOSTART_DIR, NULL);
+
+    if (g_file_test(autostart_dir, G_FILE_TEST_EXISTS))
+        g_ptr_array_add(config_paths, autostart_dir);
+    else
+        g_free(autostart_dir);
+
+    char const* const* sys_paths = g_get_system_config_dirs();
+    for (int i = 0 ; sys_paths[i] != NULL; ++i) {
+        autostart_dir = g_build_filename(sys_paths[i], AUTOSTART_DIR, NULL);
+
+        if (g_file_test(autostart_dir, G_FILE_TEST_EXISTS))
+            g_ptr_array_add(config_paths, autostart_dir);
+        else
+            g_free(autostart_dir);
+    }
+
+    g_ptr_array_add(config_paths, NULL);
+}
+
+gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboolean* is_autostart)
+{
+    gboolean is_success = FALSE;
+
+    char* full_path = g_build_filename(path, name, NULL);
+    GKeyFile* candidate_app = g_key_file_new();
+    GError* err = NULL;
+    g_key_file_load_from_file(candidate_app, full_path, G_KEY_FILE_NONE, &err);
+
+    if (err != NULL) {
+        g_warning("[_read_gnome_autostart_enable] load desktop file(%s) failed: %s", full_path, err->message);
+        goto out;
+    }
+
+    gboolean has_autostart_key = g_key_file_has_key(candidate_app,
+                                                    G_KEY_FILE_DESKTOP_GROUP,
+                                                    GNOME_AUTOSTART_KEY,
+                                                    &err);
+    if (err != NULL) {
+        g_warning("[_read_gnome_autostart_enable] function g_key_has_key error: %s", err->message);
+        goto out;
+    }
+
+    if (has_autostart_key) {
+        gboolean gnome_autostart = g_key_file_get_boolean(candidate_app,
+                                                          G_KEY_FILE_DESKTOP_GROUP,
+                                                          GNOME_AUTOSTART_KEY,
+                                                          &err);
+        if (err != NULL) {
+            g_warning("[_read_gnome_autostart_enable] get value failed: %s", err->message);
+        } else {
+            *is_autostart = gnome_autostart;
+        }
+
+        is_success = TRUE;
+    }
+
+out:
+    g_free(full_path);
+    if (err != NULL)
+        g_error_free(err);
+    g_key_file_unref(candidate_app);
+    return is_success;
+}
 
 PRIVATE
-gboolean _check_autostart(const char* path, Entry* _item)
+gboolean _check_exist(const char* path, const char* name)
 {
-    GDir* dir = g_dir_open(path, 0, NULL);
-    if (dir == NULL)
-        return false;
+    GError* err = NULL;
+    GDir* dir = g_dir_open(path, 0, &err);
 
-    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* name = get_desktop_file_basename(item);
-    gboolean is_existing = false;
+    if (dir == NULL) {
+        g_warning("[_check_exist] open dir(%s) failed: %s", path, err->message);
+        g_error_free(err);
+        return FALSE;
+    }
+
+    gboolean is_existing = FALSE;
 
     const char* filename = NULL;
     while ((filename = g_dir_read_name(dir)) != NULL) {
         char* lowercase_name = g_utf8_strdown(filename, -1);
 
-        if (g_str_equal(name, lowercase_name)) {
+        if (0 == g_strcmp0(name, lowercase_name)) {
             g_free(lowercase_name);
-            is_existing = true;
+            is_existing = TRUE;
             break;
         }
 
@@ -482,7 +564,6 @@ gboolean _check_autostart(const char* path, Entry* _item)
     }
 
     g_dir_close(dir);
-    g_free(name);
 
     return is_existing;
 }
@@ -492,32 +573,37 @@ JS_EXPORT_API
 gboolean launcher_is_autostart(Entry* _item)
 {
     if (config_paths == NULL) {
-        config_paths = g_ptr_array_new_with_free_func(g_free);
-        g_ptr_array_add(config_paths, g_build_filename(g_get_user_config_dir(),
-                                               "autostart", NULL));
-
-        char const* const* sys_paths = g_get_system_config_dirs();
-        for (int i = 0 ; sys_paths[i] != NULL; ++i) {
-            g_ptr_array_add(config_paths, g_build_filename(sys_paths[i],
-                                                           "autostart",
-                                                           NULL));
-        }
-
-        g_ptr_array_add(config_paths, NULL);
+        _init_config_path();
     }
 
 
-    gboolean is_existing = false;
+    gboolean is_autostart = FALSE;
+    gboolean is_existing = FALSE;
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = get_desktop_file_basename(item);
+    char* lowcase_name = g_utf8_strdown(name, -1);
+    g_free(name);
 
-    int i = 0;
     char* path = NULL;
-    // NOTE: those are two assignment
-    while ((path = (char*)g_ptr_array_index(config_paths, i++)) != NULL
-           && !(is_existing = _check_autostart(path, _item))) {
-        // empty body
+    for (int i = 0; (path = (char*)g_ptr_array_index(config_paths, i)) != NULL; ++i) {
+        if ((is_existing = _check_exist(path, lowcase_name))) {
+            gboolean gnome_autostart = FALSE;
+
+
+            if (i == 0 && _read_gnome_autostart_enable(path, lowcase_name, &gnome_autostart)) {
+                // user config
+                is_autostart = gnome_autostart;
+            } else {
+                is_autostart = is_existing;
+            }
+
+            break;
+        }
     }
 
-    return is_existing;
+    g_free(lowcase_name);
+
+    return is_autostart;
 }
 
 
@@ -532,8 +618,7 @@ void launcher_add_to_autostart(Entry* _item)
 
     char* app_name = g_path_get_basename(item_path);
     const char* config_dir = g_get_user_config_dir();
-    char* dest_path = g_build_filename(config_dir, "autostart", app_name,
-                                            NULL);
+    char* dest_path = g_build_filename(config_dir, AUTOSTART_DIR, app_name, NULL);
     g_free(app_name);
 
     GFile* dest = g_file_new_for_path(dest_path);
@@ -551,18 +636,7 @@ gboolean launcher_remove_from_autostart(Entry* _item)
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
 
     if (config_paths == NULL) {
-        config_paths = g_ptr_array_new_with_free_func(g_free);
-        g_ptr_array_add(config_paths, g_build_filename(g_get_user_config_dir(),
-                                                       "autostart", NULL));
-
-        char const* const* sys_paths = g_get_system_config_dirs();
-        for (int i = 0 ; sys_paths[i] != NULL; ++i) {
-            g_ptr_array_add(config_paths, g_build_filename(sys_paths[i],
-                                                           "autostart",
-                                                           NULL));
-        }
-
-        g_ptr_array_add(config_paths, NULL);
+        _init_config_path();
     }
 
     int i = 0;
@@ -578,7 +652,7 @@ gboolean launcher_remove_from_autostart(Entry* _item)
         while ((filename = g_dir_read_name(dir)) != NULL) {
             char* lowercase_name = g_utf8_strdown(filename, -1);
 
-            if (g_str_equal(name, lowercase_name)) {
+            if (0 == g_strcmp0(name, lowercase_name)) {
                 g_free(lowercase_name);
                 char* file_path = g_build_filename(path, filename, NULL);
                 GFile* file = g_file_new_for_path(file_path);
@@ -674,13 +748,14 @@ JS_EXPORT_API
 void launcher_webview_ok()
 {
     background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+    is_js_already = TRUE;
 }
 
 
 PRIVATE
 void daemonize()
 {
-    g_warning("daemonize");
+    g_debug("daemonize");
     pid_t pid = 0;
     if ((pid = fork()) == -1) {
         g_warning("fork error");
@@ -715,11 +790,15 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     if (argc == 2 && g_str_equal("-D", argv[1]))
         is_daemonize = TRUE;
+
+    if (argc == 2 && g_str_equal("-f", argv[1])) {
+        not_exit = TRUE;
+    }
 #endif
 
     if (is_application_running("launcher.app.deepin")) {
-        g_warning("another instance of application launcher is running...\n");
-        dbus_launcher_show();
+        g_warning(_("another instance of launcher is running...\n"));
+        dbus_launcher_toggle();
         return 0;
     }
 
@@ -737,7 +816,6 @@ int main(int argc, char* argv[])
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
-    get_screen_info();
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -761,7 +839,7 @@ int main(int argc, char* argv[])
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
     set_launcher_background(gtk_widget_get_window(webview), dde_bg_g_settings,
-                            screen_width, screen_height);
+                            gdk_screen_width(), gdk_screen_height());
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
@@ -781,6 +859,7 @@ int main(int argc, char* argv[])
 
     monitor_apps();
     gtk_widget_show_all(container);
+    is_launcher_shown = TRUE;
     gtk_main();
     monitor_destroy();
     return 0;

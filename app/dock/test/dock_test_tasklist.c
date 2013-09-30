@@ -37,7 +37,7 @@ extern GHashTable* _clients_table;
 
 void dock_test_tasklist()
 {
-    int xid = 0x2e00080;  // attention!! change it yourself when you need to test.
+    int xid = 0x38034c6;  // attention!! change it yourself when you need to test.
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     GdkWindow* root = gdk_get_default_root_window();
 
@@ -45,10 +45,10 @@ void dock_test_tasklist()
     /*         _update_task_list(GDK_WINDOW_XID(root)); */
     /* }, "_update_task_list"); */
 
-    /* Test({ */
-    /*      extern void active_window_changed(Display* dsp, Window w); */
-    /*      active_window_changed(_dsp, (Window)dock_get_active_window()); */
-    /* }, "active_window_changed"); */
+    Test({
+         extern void active_window_changed(Display* dsp, Window w);
+         active_window_changed(_dsp, (Window)dock_get_active_window());
+    }, "active_window_changed");
 
     // TODO:
     // TBT, because client_free cannot free Client.gdkwindow
@@ -66,7 +66,7 @@ void dock_test_tasklist()
     /*         is_normal_window(xid); */
     /* }, "is_normal_window"); */
 
-    Client* c = g_new0(Client, 1);
+    Client* c = g_slice_new(Client);
     c->window = xid;
     /* Test({ */
     /*      c->title = NULL; */
@@ -210,11 +210,11 @@ void dock_test_tasklist()
     /*      g_assert(FALSE == dock_is_client_minimized(xid)); */
     /*      }, "dock_is_client_minimized"); */
 
-    /* extern gboolean dock_window_need_to_be_minimized(double id); */
-    /* Test({ */
-    /*      g_assert(dock_window_need_to_be_minimized(xid) == FALSE); */
-    /*      g_assert(dock_window_need_to_be_minimized(0x2e00006) == TRUE); */
-    /*      }, "dock_window_need_to_be_minimized"); */
+    extern gboolean dock_window_need_to_be_minimized(double id);
+    Test({
+         g_assert(dock_window_need_to_be_minimized(xid) == FALSE);
+         g_assert(dock_window_need_to_be_minimized(0x3800006) == TRUE);
+         }, "dock_window_need_to_be_minimized");
 
     /* extern gboolean is_has_client(const char* app_id); */
     /* Test({ */
