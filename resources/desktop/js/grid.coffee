@@ -322,7 +322,7 @@ find_free_position = (w, h) ->
 pixel_to_pos = (x, y, w, h) ->
     index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
     index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
-    echo "index_x" + index_x + ",index_y" + index_y
+    echo "index_x:" + index_x + ",index_y:" + index_y
     coord_to_pos(index_x, index_y, w, h)
 
 
@@ -627,9 +627,14 @@ paste_from_clipboard = ->
     # #echo "paste_from_clipboard"
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
+evt_item_dragstart = null
+evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
     echo "item_dragstart_handler"
+    evt_item_dragend = null
+    evt_item_dragstart = evt
+    echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -661,9 +666,14 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     echo "item_dragend_handler"
+    evt_item_dragend = evt
+    echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
-        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+        if(evt_item_dragend.clientX - evt_item_dragstart.clientX) < _GRID_WIDTH_INIT_ and (evt_item_dragend.clientY - evt_item_dragstart.clientY) < _GRID_HEIGHT_INIT_
+            new_pos = old_pos
+        else
+            new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         coord_x_shift = new_pos.x - old_pos.x
         coord_y_shift = new_pos.y - old_pos.y
 
@@ -710,6 +720,8 @@ item_dragend_handler = (w, evt) ->
             move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
 
         update_selected_item_drag_image()
+
+    evt_item_dragstart = null
     return
 
 
@@ -815,7 +827,7 @@ update_selected_stats = (w, evt) ->
 
 # draw selected item icons DND image on special html canvas
 update_selected_item_drag_image = ->
-    #echo "update_selected_item_drag_image"
+    echo "update_selected_item_drag_image"
     drag_draw_delay_timer = -1
 
     if selected_item.length == 0 then return
@@ -853,6 +865,7 @@ update_selected_item_drag_image = ->
 
         draw_icon_on_canvas(drag_context, start_x, start_y, w.item_icon, w.item_name.innerText)
 
+    #[drag_start.x, drag_start.y] = [pos.x , pos.y]
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
     return
 
