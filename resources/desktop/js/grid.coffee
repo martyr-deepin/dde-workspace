@@ -372,15 +372,17 @@ move_to_somewhere = (widget, pos) ->
     echo "move_to_somewhere"
     echo widget.get_name()
     if not detect_occupy(pos, widget.get_id())
+        echo "not detect_occupy"
         move_to_position(widget, pos)
     else
+        echo "detect_occupy"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
 
 
 place_desktop_items = ->
-    # #echo "place_desktop_items"
+    echo "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
@@ -700,7 +702,7 @@ item_dragend_handler = (w, evt) ->
             if not (w = Widget.look_up(i))? then continue
 
             old_pos = w.get_pos()
-            new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1, 1)
+            new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
 
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
