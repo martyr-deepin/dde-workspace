@@ -537,7 +537,7 @@ init_grid_drop = ->
                     #     #echo "copy"
                     #     tmp_copy.push(f_e)
                     # make items as much nearer as possible to the pos that user drag on
-                    p = {x : 0, y : 0, width : 1, height : 1}
+                    p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
@@ -564,7 +564,7 @@ init_grid_drop = ->
                         #tmp_copy.push(f_e)
 
                     # make items as much nearer as possible to the pos that user drag on
-                    p = {x : 0, y : 0, width : 1, height : 1}
+                    p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
@@ -669,7 +669,7 @@ item_dragend_handler = (w, evt) ->
 
         if coord_x_shift == 0 and coord_y_shift == 0 then return
 
-        far_pos = {x : 0, y : 0, width : 1, height : 1}
+        far_pos = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
 
         if coord_x_shift == 0
             far_pos.x = new_pos.x
@@ -703,7 +703,8 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-
+            echo old_pos.x + "," + old_pos.y
+            echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
