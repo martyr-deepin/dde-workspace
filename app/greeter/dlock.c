@@ -216,6 +216,9 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
 int main (int argc, char **argv)
 {
+    if (argc == 2 && g_str_equal(argv[1], "-d"))
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+
     init_i18n ();
 
     gtk_init (&argc, &argv);
