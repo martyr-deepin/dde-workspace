@@ -44,7 +44,7 @@ create_item = (entry) ->
             list = DCore.DEntry.list_files(entry)
             if list.length <= 1
                 if list.length
-                    DCore.DEntry.move(list, g_desktop_entry)
+                    DCore.DEntry.move(list, g_desktop_entry,false)
                     if (pos = load_position(DCore.DEntry.get_id(entry)))?
                         save_position(DCore.DEntry.get_id(list[0]), pos)
                 discard_position(DCore.DEntry.get_id(entry))
