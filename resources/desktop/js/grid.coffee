@@ -472,7 +472,7 @@ create_entry_to_new_item = (entry) ->
     if not w? then w = create_item(entry)
 
     cancel_all_selected_stats()
-    pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1, 1)
+    pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1*_PART_, 1*_PART_)
     move_to_somewhere(w, pos)
     all_item.push(w.get_id())
     set_item_selected(w)
@@ -523,7 +523,7 @@ init_grid_drop = ->
             for i in [0 ... enter_indexof.length - 1] by 1
                 file_uri[i] = xdg_target.substring(enter_indexof[i],enter_indexof[i+1]-1)#  -1 means delete enter char 
 
-            pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(file_uri.length) + 1
             for i in [0 ... file_uri.length] by 1
                 file = file_uri[i]
@@ -551,7 +551,7 @@ init_grid_drop = ->
             evt.dataTransfer.setData("Text",desktop_uri)
 
         else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
-            pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
                 file = evt.dataTransfer.files[i]
@@ -663,7 +663,7 @@ item_dragend_handler = (w, evt) ->
     echo "item_dragend_handler"
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
-        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         coord_x_shift = new_pos.x - old_pos.x
         coord_y_shift = new_pos.y - old_pos.y
 
@@ -772,7 +772,7 @@ update_selected_stats = (w, evt) ->
             selected_item.push(last_one_id)
 
         if selected_item.length == 1
-            end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+            end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             start_pos = Widget.look_up(selected_item[0]).get_pos()
 
             ret = compare_pos_top_left(start_pos, end_pos)
@@ -1185,7 +1185,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
-            @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
+            @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1*_PART_, 1*_PART_)
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
             
@@ -1210,7 +1210,7 @@ class Mouse_Select_Area_box
         @element.style.height = "#{sh}px"
         @element.style.display = "block"
 
-        new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1, 1)
+        new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1*_PART_, 1*_PART_)
         
         for i in @total_item
             if not (w = Widget.look_up(i))? then continue
