@@ -320,9 +320,8 @@ find_free_position = (w, h) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width), (cols - 1))
+    index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width) - 1, (cols - 1))
     index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height), (rows - 1))
-    echo "index_x:" + index_x + ",index_y:" + index_y
     coord_to_pos(index_x, index_y, w, h)
 
 
@@ -653,9 +652,7 @@ item_dragstart_handler = (widget, evt) ->
 
         pos = widget.get_pos()
         x = (pos.x - drag_start.x) * grid_item_width + (_ITEM_WIDTH_ / 2)
-        y = (pos.y - drag_start.y) * grid_item_height + 12
-        #x = (pos.x - drag_start.x) * grid_item_width
-        #y = (pos.y - drag_start.y) * grid_item_height
+        y = (pos.y - drag_start.y) * grid_item_height + 24
         evt.dataTransfer.setDragCanvas(drag_canvas, x, y)
 
     else
@@ -862,7 +859,6 @@ update_selected_item_drag_image = ->
 
         draw_icon_on_canvas(drag_context, start_x, start_y, w.item_icon, w.item_name.innerText)
 
-    #[drag_start.x, drag_start.y] = [pos.x , pos.y]
     [drag_start.x, drag_start.y] = [top_left.x , top_left.y]
     return
 
