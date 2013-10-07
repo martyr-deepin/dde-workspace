@@ -309,10 +309,10 @@ find_free_position = (w, h) ->
     echo "find_free_position"
     
     info = {x:0, y:0, width:w, height:h}
-    for i in [0..cols - 1]
-        for j in [0..rows - 1]
-            echo o_table[i][j]
-            if not o_table[i][j]? && not o_table[i + _PART_][j]? && not o_table[i][j + _PART_]? && not o_table[i + _PART_][j + _PART_]?
+    for i in [0..cols - h]
+        for j in [0..rows - w]
+            #echo o_table[i][j]
+            if not o_table[i][j]? && not o_table[i + h - 1][j]? && not o_table[i][j + w - 1]? && not o_table[i + h - 1][j + w - 1]?
                 info.x = i
                 info.y = j
                 return info
