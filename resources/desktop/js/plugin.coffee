@@ -7,7 +7,7 @@ class PluginHandle extends Widget
         @id = "handle-#{@parent_id}"
         super(@id)
         @element.setAttribute("draggable", "true")
-        @offset_pos = {x : -1, y : -1}
+        @offset_pos = {x : -1 * _PART_, y : -1 * _PART_}
 
         @plugin_close = create_element("div","plugin_close",@element)
         @plugin_close.addEventListener("click",(evt)=>
@@ -79,7 +79,7 @@ class PluginHandle extends Widget
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
-        @_position = {x:-1, y:-1, width:1 * _PART_, height:1 * _PART_}
+        @_position = {x:-1 * _PART_, y:-1 * _PART_, width:1 * _PART_, height:1 * _PART_}
         widget_item.push(@id)
         attach_item_to_grid(@)
         @handle = new PluginHandle(@id)
@@ -220,7 +220,7 @@ load_plugins = ->
 
 
 find_free_position_for_widget = (info, id = null) ->
-    new_pos = {x : -1, y : -1, width : info.width, height : info.height}
+    new_pos = {x : -1 * _PART_, y : -1 * _PART_, width : info.width, height : info.height}
     x_pos = cols - 1
     while (x_pos = x_pos - info.width + 1) > -1
         new_pos.x = x_pos
