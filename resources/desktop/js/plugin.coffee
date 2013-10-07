@@ -79,7 +79,7 @@ class PluginHandle extends Widget
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
-        @_position = {x:-1, y:-1, width:1, height:1}
+        @_position = {x:-1, y:-1, width:1 * _PART_, height:1 * _PART_}
         widget_item.push(@id)
         attach_item_to_grid(@)
         @handle = new PluginHandle(@id)
@@ -115,8 +115,8 @@ class DesktopPluginItem extends Widget
     set_size : (info) =>
         @_position.width = info.width
         @_position.height = info.height
-        real_width = @_position.width * _ITEM_WIDTH_
-        real_height = @_position.height * _ITEM_HEIGHT_
+        real_width = @_position.width * _GRID_WIDTH_INIT_
+        real_height = @_position.height * _GRID_HEIGHT_INIT_
         @element.style.width = "#{real_width}px"
         @element.style.height = "#{real_height}px"
         real_height = real_height - @handle.element.offsetHeight
