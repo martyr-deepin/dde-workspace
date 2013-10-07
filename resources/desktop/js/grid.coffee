@@ -307,7 +307,6 @@ find_free_position = (w, h) ->
     # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
     
     echo "find_free_position"
-    
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - h]
         for j in [0..rows - w]
