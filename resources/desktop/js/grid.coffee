@@ -116,14 +116,14 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
     echo "calc_row_and_cols"
-    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
-    echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
-    echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    #echo "wa_width:" + wa_width + ",wa_height:" + wa_height
+    #echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
+    #echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    echo "xx:" + xx + ",yy:" + yy
+    #echo "xx:" + xx + ",yy:" + yy
     #_GRID_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
     #_GRID_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
 
@@ -320,8 +320,8 @@ find_free_position = (w, h) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    index_x = Math.min(Math.floor(x / grid_item_width), (cols - 1))
-    index_y = Math.min(Math.floor(y / grid_item_height), (rows - 1))
+    index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width), (cols - 1))
+    index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height), (rows - 1))
     echo "index_x:" + index_x + ",index_y:" + index_y
     coord_to_pos(index_x, index_y, w, h)
 
@@ -334,10 +334,10 @@ move_to_position = (widget, pos) ->
     echo "move_to_position"
     old_pos = widget.get_pos()
     
-    echo "pos:"
-    echo pos
-    echo "old_pos:"
-    echo old_pos
+    #echo "pos:"
+    #echo pos
+    #echo "old_pos:"
+    #echo old_pos
     
     # 此处决定移动的单元格size
     widget.move(pos.x * grid_item_width, pos.y * grid_item_height)
@@ -370,12 +370,12 @@ move_to_anywhere = (widget) ->
 
 move_to_somewhere = (widget, pos) ->
     echo "move_to_somewhere"
-    echo widget.get_name()
+    #echo widget.get_name()
     if not detect_occupy(pos, widget.get_id())
         echo "not detect_occupy"
         move_to_position(widget, pos)
     else
-        echo "detect_occupy"
+        echo "true detect_occupy"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
@@ -670,10 +670,7 @@ item_dragend_handler = (w, evt) ->
     echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
-        if(evt_item_dragend.clientX - evt_item_dragstart.clientX) < _GRID_WIDTH_INIT_ and (evt_item_dragend.clientY - evt_item_dragstart.clientY) < _GRID_HEIGHT_INIT_
-            new_pos = old_pos
-        else
-            new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         coord_x_shift = new_pos.x - old_pos.x
         coord_y_shift = new_pos.y - old_pos.y
 
@@ -1160,9 +1157,8 @@ grid_do_keypress_to_shrotcut = (evt) ->
 create_item_grid = ->
     echo "create_item_grid"
     div_grid = document.createElement("div")
-    #div_grid.style.background = "blue"
-    #div_grid.style.opacity = 0.2
     div_grid.setAttribute("id", "item_grid")
+    echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     document.body.appendChild(div_grid)
     init_grid_drop()
@@ -1224,7 +1220,7 @@ class Mouse_Select_Area_box
         @element.style.height = "#{sh}px"
         @element.style.display = "block"
 
-        new_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1*_PART_, 1*_PART_)
+        new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         
         for i in @total_item
             if not (w = Widget.look_up(i))? then continue
