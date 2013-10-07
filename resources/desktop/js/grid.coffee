@@ -355,7 +355,7 @@ move_to_position = (widget, pos) ->
 # need optimization
 move_to_anywhere = (widget) ->
     echo "move_to_anywhere"
-    echo widget.get_name()
+    #echo widget.get_name()
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)

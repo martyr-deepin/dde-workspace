@@ -33,7 +33,7 @@ class PluginHandle extends Widget
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+        drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1 * _PART_, 1 * _PART_)
         @offset_pos.x = drag_pos.x
         @offset_pos.y = drag_pos.y
         if not (w = Widget.look_up(@parent_id))? then return
