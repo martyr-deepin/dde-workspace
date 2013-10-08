@@ -19,6 +19,8 @@
 
 #localStorage.clear()
 
+#localStorage.clear()
+
 create_item_grid()
 
 connect_default_signals()
