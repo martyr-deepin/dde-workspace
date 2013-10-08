@@ -881,7 +881,7 @@ void dentry_copy (ArrayContainer fs, GFile* dest)
 JS_EXPORT_API
 gboolean dentry_rename_move(GFile* src,char* new_name,GFile* dest,gboolean prompt)
 {
-    gboolean result = false;
+    gboolean result = FALSE;
     if(dentry_set_name(src,new_name))
     {
         result =  fileops_move((gpointer)src,1,dest,prompt);
@@ -1140,7 +1140,7 @@ ArrayContainer dentry_get_templates_files(void)
 JS_EXPORT_API
 gboolean dentry_create_templates(GFile* src, char* name_add_before)
 {
-    gboolean result = false;
+    gboolean result = FALSE;
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
@@ -1168,7 +1168,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
         ac = dentry_list_files(src);
         dentry_copy(ac,child);
         ArrayContainer_free(ac);
-        result = true;
+        result = TRUE;
     }
     else
     {
