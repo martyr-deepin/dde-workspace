@@ -116,17 +116,12 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
     #echo "calc_row_and_cols"
-    #echo "wa_width:" + wa_width + ",wa_height:" + wa_height
-    #echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
-    #echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
+    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    #echo "xx:" + xx + ",yy:" + yy
-    #_GRID_WIDTH_ = _GRID_WIDTH_INIT_ + Math.floor(xx / n_cols)
-    #_GRID_HEIGHT_ = _GRID_HEIGHT_INIT_ + Math.floor(yy / n_rows)
-
+    echo "xx:" + xx + ",yy:" + yy
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
 
@@ -314,11 +309,18 @@ find_free_position = (w, h) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
+    echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     # here '-1' to fix bug of drag DesktopEntry and dragend the DesktopEntry move to right, after -1 ,it will not go to right . drag more actual!
     index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width) - 1, (cols - 1))
-    index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height), (rows - 1))
+    index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height) - 1, (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
 
+pos_to_pixel = (pos) ->
+    left = pos.x * grid_item_width + s_offset_x
+    top = pos.y * grid_item_height + s_offset_y
+    width_px = pos.width * grid_item_width
+    height_px = pos.height * grid_item_height
+    {x: left , y: top , width : width_px , height : height_px}
 
 coord_to_pos = (pos_x, pos_y, w, h) ->
     {x : pos_x, y : pos_y, width : w, height : h}
@@ -328,13 +330,14 @@ move_to_position = (widget, pos) ->
     echo "move_to_position"
     old_pos = widget.get_pos()
     
+    #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     #echo "pos:"
     #echo pos
     #echo "old_pos:"
     #echo old_pos
     
     # 此处决定移动的单元格size
-    widget.move(pos.x * grid_item_width, pos.y * grid_item_height)
+    widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
     set_occupy(widget.get_id(), pos)
