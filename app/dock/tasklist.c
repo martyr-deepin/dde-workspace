@@ -542,9 +542,9 @@ gboolean is_normal_window(Window w)
                    || window_type == ATOM_WINDOW_TYPE_TOOLBAR
                    || window_type == ATOM_WINDOW_TYPE_UTILITY) {
             has_cannot_be_docked_type = TRUE;
-        } else if (window_type == ATOM_WINDOW_TYPE_KDE_OVERRIDE) {
-            may_be_docked = FALSE;
-            break;
+        /* } else if (window_type == ATOM_WINDOW_TYPE_KDE_OVERRIDE) { */
+        /*     may_be_docked = FALSE; */
+        /*     break; */
         }
     }
 
