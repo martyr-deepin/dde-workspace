@@ -314,6 +314,7 @@ find_free_position = (w, h) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
+    # here '-1' to fix bug of drag DesktopEntry and dragend the DesktopEntry move to right, after -1 ,it will not go to right . drag more actual!
     index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width) - 1, (cols - 1))
     index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height), (rows - 1))
     coord_to_pos(index_x, index_y, w, h)
@@ -339,6 +340,7 @@ move_to_position = (widget, pos) ->
     set_occupy(widget.get_id(), pos)
     
     # 此处是set_occupy，即设置一个desktop文件占了多少个格子，之前就是一个格子，现在要改成占了4*4=16个格子
+    # 注：set_occupy是读取widget.width  height来设置哪些格子被占用的,故不需要单独去设置4×4
     # 同时当桌面初始化时，图标的位置就是通过这个函数移动的
     
     widget.set_pos(pos)
@@ -1185,7 +1187,7 @@ class Mouse_Select_Area_box
             @parent_element.addEventListener("mouseup", @mouseup_event)
             @parent_element.addEventListener("contextmenu", @contextmenu_event, true)
             @start_point = evt
-            @start_pos = pixel_to_pos(evt.clientX - s_offset_x, evt.clientY - s_offset_y, 1*_PART_, 1*_PART_)
+            @start_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
             
