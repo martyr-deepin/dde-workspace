@@ -153,4 +153,3 @@ do_workarea_changed = (allo) ->
     init_occupy_table()
     place_desktop_items()
     return
-
