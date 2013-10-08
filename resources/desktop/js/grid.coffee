@@ -115,7 +115,7 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "calc_row_and_cols"
+    #echo "calc_row_and_cols"
     #echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     #echo "_ITEM_WIDTH_:" + _ITEM_WIDTH_ + ",_ITEM_HEIGHT_:" + _ITEM_HEIGHT_
     #echo "_GRID_WIDTH_INIT_:" + _GRID_WIDTH_INIT_ + ",_GRID_HEIGHT_INIT_:" + _GRID_HEIGHT_INIT_
@@ -132,7 +132,7 @@ calc_row_and_cols = (wa_width, wa_height) ->
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
-    echo "update_gird_position"
+    #echo "update_gird_position"
     s_offset_x = wa_x
     s_offset_y = wa_y
     s_width = wa_width
@@ -242,7 +242,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
 
 init_occupy_table = ->
-    echo "init_occupy_table"
+    #echo "init_occupy_table"
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
@@ -250,7 +250,7 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
-    echo "clear_occupy"
+    #echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -262,7 +262,7 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    echo "set_occupy"
+    #echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -271,7 +271,7 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info, id = null) ->
-    echo "detect_occupy"
+    #echo "detect_occupy"
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
@@ -283,7 +283,7 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
-    echo "clear_occupy_table"
+    #echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -298,7 +298,7 @@ clear_occupy_table = ->
 find_free_position = (w, h) ->
     # 新图标的摆放位置,就是当localStorage中没有id pos时，调用find_free_position 来得到new_pos,
     # 然后move_to_position(new_pos)
-    # 这些操作都是在move_to_somewhere 和 move_to_anywhere中没有
+    # 这些操作都是在move_to_somewhere 和 move_to_anywhere中
     # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
     
     echo "find_free_position"
