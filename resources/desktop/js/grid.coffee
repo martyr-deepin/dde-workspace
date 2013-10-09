@@ -114,12 +114,10 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    echo "xx:" + xx + ",yy:" + yy
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
 
@@ -281,7 +279,7 @@ find_free_position = (w, h) ->
     # 这些操作都是在move_to_somewhere 和 move_to_anywhere中
     # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
     
-    echo "find_free_position"
+    #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - h]
         for j in [0..rows - w]
@@ -311,7 +309,7 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, pos) ->
-    echo "move_to_position"
+    #echo "move_to_position"
     old_pos = widget.get_pos()
     
     #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
@@ -604,10 +602,10 @@ evt_item_dragstart = null
 evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
-    echo "item_dragstart_handler"
+    #echo "item_dragstart_handler"
     evt_item_dragend = null
     evt_item_dragstart = evt
-    echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -636,9 +634,9 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    echo "item_dragend_handler"
+    #echo "item_dragend_handler"
     evt_item_dragend = evt
-    echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -681,8 +679,8 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-            echo old_pos.x + "," + old_pos.y
-            echo new_pos.x + "," + new_pos.y
+            #echo old_pos.x + "," + old_pos.y
+            #echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
@@ -1108,7 +1106,7 @@ grid_do_keypress_to_shrotcut = (evt) ->
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
-    echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
+    #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     document.body.appendChild(div_grid)
     init_grid_drop()
@@ -1274,3 +1272,9 @@ move_widget_to_grid_after_rename = (w) ->
     item_rename_div.style.display = "none"
     rename_div_process_events = false
     return
+
+set_version_desktop = (version)->
+    check = true
+    check  = DCore.Desktop.check_version_equal_set(version)
+    if check is false
+        localStorage.clear()

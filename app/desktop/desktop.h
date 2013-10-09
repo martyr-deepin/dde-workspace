@@ -1,9 +1,9 @@
 /**
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
- *               2013 ~ 2013 Liqiang Lee
+ *               2011 ~ 2013 bluth
  *
- * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
- * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Author:      bluth <yuanchenglu@linuxdeepin.com>
+ * Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,15 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LAUNCHER_CATEGORY_H
-#define LAUNCHER_CATEGORY_H
+#ifndef DESKTOP_H
+#define DESKTOP_H
 
-int find_category_id(const char* category_name);
-GList* get_deepin_categories(GDesktopAppInfo* info);
-const GPtrArray* get_all_categories_array();
+#include "utils.h"
 
-#endif /* end of include guard: LAUNCHER_CATEGORY_H */
+#define DESKTOP_MAJOR_VERSION 0
+#define DESKTOP_MINOR_VERSION 0
+#define DESKTOP_SUBMINOR_VERSION 0
+#define DESKTOP_VERSION STR(DESKTOP_MAJOR_VERSION)"."STR(DESKTOP_MINOR_VERSION)"."STR(DESKTOP_SUBMINOR_VERSION)
+
+#endif /* end of include guard: DESKTOP_H */
 

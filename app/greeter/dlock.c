@@ -43,6 +43,7 @@
 #include "gs-grab.h"
 #include "lock_util.h"
 #include "camera.h"
+#include "mutils.h"
 #include "settings.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -283,6 +284,7 @@ int main (int argc, char **argv)
     gdk_window_stick (gdkwindow);
 
     init_camera(argc, argv);
+    turn_numlock_on ();
     gtk_main ();
     destroy_camera();
 
