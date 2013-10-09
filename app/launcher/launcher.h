@@ -19,17 +19,15 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef _X_CATEGORY_H_
-#define _X_CATEGORY_H_
+#ifndef LAUNCHER_H
+#define LAUNCHER_H
 
-#define X_CATEGORY_NUM 194
+#include "utils.h"
 
-typedef struct _XCategory XCategory;
-struct _XCategory {
-    char* name;
-    int index;
-};
+#define LAUNCHER_MAJOR_VERSION 0
+#define LAUNCHER_MINOR_VERSION 0
+#define LAUNCHER_SUBMINOR_VERSION 0
+#define LAUNCHER_VERSION STR(LAUNCHER_MAJOR_VERSION)"."STR(LAUNCHER_MINOR_VERSION)"."STR(LAUNCHER_SUBMINOR_VERSION)
 
-extern XCategory x_category_name_index_map[X_CATEGORY_NUM];
+#endif /* end of include guard: LAUNCHER_H */
 
-#endif  // end of guard: _X_CATEGORY_H_
