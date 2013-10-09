@@ -1274,9 +1274,7 @@ move_widget_to_grid_after_rename = (w) ->
     return
 
 set_version_desktop = (version)->
-    #check  = DCore.Desktop.check_version_equal_set(version)
-    check = false
+    check = true
+    check  = DCore.Desktop.check_version_equal_set(version)
     if check is false
         localStorage.clear()
-    else
-        echo "desktop version :" + version
