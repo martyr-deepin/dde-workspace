@@ -114,12 +114,10 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
     xx = wa_width % _GRID_WIDTH_INIT_
     yy = wa_height % _GRID_HEIGHT_INIT_
-    echo "xx:" + xx + ",yy:" + yy
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
 
@@ -281,7 +279,7 @@ find_free_position = (w, h) ->
     # 这些操作都是在move_to_somewhere 和 move_to_anywhere中
     # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
     
-    echo "find_free_position"
+    #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - h]
         for j in [0..rows - w]
@@ -311,7 +309,7 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, pos) ->
-    echo "move_to_position"
+    #echo "move_to_position"
     old_pos = widget.get_pos()
     
     #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
@@ -1108,7 +1106,7 @@ grid_do_keypress_to_shrotcut = (evt) ->
 create_item_grid = ->
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
-    echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
+    #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     update_gird_position(s_offset_x, s_offset_y, s_width, s_height)
     document.body.appendChild(div_grid)
     init_grid_drop()
