@@ -19,12 +19,15 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LAUNCHER_CATEGORY_H
-#define LAUNCHER_CATEGORY_H
+#ifndef DOCK_H
+#define DOCK_H
 
-int find_category_id(const char* category_name);
-GList* get_deepin_categories(GDesktopAppInfo* info);
-const GPtrArray* get_all_categories_array();
+#include "utils.h"
 
-#endif /* end of include guard: LAUNCHER_CATEGORY_H */
+#define DOCK_MAJOR_VERSION 0
+#define DOCK_MINOR_VERSION 0
+#define DOCK_SUBMINOR_VERSION 0
+#define DOCK_VERSION STR(DOCK_MAJOR_VERSION)"."STR(DOCK_MINOR_VERSION)"."STR(DOCK_SUBMINOR_VERSION)
+
+#endif /* end of include guard: DOCK_H */
 

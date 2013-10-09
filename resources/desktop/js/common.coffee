@@ -33,6 +33,12 @@ _IS_DND_INTERLNAL_ = (evt) ->
 _ITEM_WIDTH_ = 80 + 6 * 2
 _ITEM_HEIGHT_ = 84 + 4 * 2
 
+# separate the grid to 4*4=16 parts
+_PART_ = 4
+
+# one grid size init 
+_GRID_WIDTH_INIT_ = Math.floor(_ITEM_WIDTH_/_PART_)
+_GRID_HEIGHT_INIT_ = Math.floor(_ITEM_HEIGHT_/_PART_)
 
 # delay interval time before renaming item
 _RENAME_TIME_DELAY_ = 600
