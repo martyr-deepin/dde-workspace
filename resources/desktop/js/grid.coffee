@@ -602,10 +602,10 @@ evt_item_dragstart = null
 evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
-    echo "item_dragstart_handler"
+    #echo "item_dragstart_handler"
     evt_item_dragend = null
     evt_item_dragstart = evt
-    echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -634,9 +634,9 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    echo "item_dragend_handler"
+    #echo "item_dragend_handler"
     evt_item_dragend = evt
-    echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -679,8 +679,8 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-            echo old_pos.x + "," + old_pos.y
-            echo new_pos.x + "," + new_pos.y
+            #echo old_pos.x + "," + old_pos.y
+            #echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
