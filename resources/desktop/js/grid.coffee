@@ -73,7 +73,6 @@ TEMPLATES_FILE_ID_FIRST = 20
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
-    #echo "draw_icon_on_canvas"
     if icon.src.length
         canvas_cantext.shadowColor = "rgba(0, 0, 0, 0)"
         canvas_cantext.drawImage(
@@ -115,7 +114,6 @@ draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
 
 # calc the best row and col number for desktop
 calc_row_and_cols = (wa_width, wa_height) ->
-    #echo "calc_row_and_cols"
     echo "wa_width:" + wa_width + ",wa_height:" + wa_height
     n_cols = Math.floor(wa_width / _GRID_WIDTH_INIT_)
     n_rows = Math.floor(wa_height / _GRID_HEIGHT_INIT_)
@@ -127,7 +125,6 @@ calc_row_and_cols = (wa_width, wa_height) ->
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
-    #echo "update_gird_position"
     s_offset_x = wa_x
     s_offset_y = wa_y
     s_width = wa_width
@@ -143,7 +140,6 @@ update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
 
 
 load_position = (id) ->
-    #echo "load_position"
     if typeof(id) != "string" then echo "error load_position #{id}"
 
     pos = localStorage.getObject("id:" + id)
@@ -156,7 +152,6 @@ load_position = (id) ->
     pos
 
 save_position = (id, pos) ->
-    #echo "save_position"
     assert("string" == typeof(id), "[save_position]id not string")
     assert(pos != null, "[save_position]pos null")
     localStorage.setObject("id:" + id, pos)
@@ -164,14 +159,12 @@ save_position = (id, pos) ->
 
 
 discard_position = (id) ->
-    #echo "discard_position"
     assert("string" == typeof(id), "[discard_position]id not string")
     localStorage.removeItem("id:" + id)
     return
 
 
 clear_all_positions = ->
-    #echo "clear_all_positions"
     for i in all_item
         localStorage.removeItem("id:#{i}")
     for i in speical_item
@@ -180,7 +173,6 @@ clear_all_positions = ->
 
 
 compare_pos_top_left = (base, pos) ->
-    #echo "compare_pos_top_left"
     if pos.y < base.y
         -1
     else if pos.y >= base.y and pos.y <= base.y + base.height - 1
@@ -206,12 +198,10 @@ compare_pos_rect = (base1, base2, pos) ->
 
 
 calc_pos_to_pos_distance = (base, pos) ->
-    #echo "calc_pos_to_pos_distance"
     Math.sqrt(Math.pow(Math.abs(base.x - pos.x), 2) + Math.pow(Math.abs(base.y - pos.y), 2))
 
 
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
-    #echo "find_item_by_coord_delta"
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
     while true
@@ -237,7 +227,6 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
 
 init_occupy_table = ->
-    #echo "init_occupy_table"
     o_table = new Array()
     for i in [0..cols]
         o_table[i] = new Array(rows)
@@ -245,7 +234,6 @@ init_occupy_table = ->
 
 
 clear_occupy = (id, info) ->
-    #echo "clear_occupy"
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -257,7 +245,6 @@ clear_occupy = (id, info) ->
 
 
 set_occupy = (id, info) ->
-    #echo "set_occupy"
     assert(info != null, "[set_occupy] get null info")
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
@@ -266,7 +253,6 @@ set_occupy = (id, info) ->
 
 
 detect_occupy = (info, id = null) ->
-    #echo "detect_occupy"
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
@@ -278,7 +264,6 @@ detect_occupy = (info, id = null) ->
 
 
 clear_occupy_table = ->
-    #echo "clear_occupy_table"
     item_list = all_item.concat(speical_item)
     for i in item_list
         if (w = Widget.look_up(i))?
@@ -309,7 +294,6 @@ find_free_position = (w, h) ->
 
 
 pixel_to_pos = (x, y, w, h) ->
-    echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
     # here '-1' to fix bug of drag DesktopEntry and dragend the DesktopEntry move to right, after -1 ,it will not go to right . drag more actual!
     index_x = Math.min(Math.floor((x - s_offset_x) / grid_item_width) - 1, (cols - 1))
     index_y = Math.min(Math.floor((y - s_offset_y) / grid_item_height) - 1, (rows - 1))
@@ -335,6 +319,10 @@ move_to_position = (widget, pos) ->
     #echo pos
     #echo "old_pos:"
     #echo old_pos
+
+    # 此处进行吸附判断操作，以及其他拖动用户行为判断及实现,得到一个new_pos
+    
+    
     
     # 此处决定移动的单元格size
     widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
@@ -353,13 +341,11 @@ move_to_position = (widget, pos) ->
 
 # need optimization
 move_to_anywhere = (widget) ->
-    echo "move_to_anywhere"
-    #echo widget.get_name()
     pos = load_position(widget.get_id())
     if pos? and not detect_occupy(pos, widget.get_id())
         move_to_position(widget, pos)
     else
-        #if pos localStorage return null
+        #if pos localStorage return null means the pos is occupyed
         old_size = widget.get_pos()
         new_pos = find_free_position(old_size.width, old_size.height)
         move_to_position(widget, new_pos)
@@ -367,20 +353,15 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    echo "move_to_somewhere"
-    #echo widget.get_name()
     if not detect_occupy(pos, widget.get_id())
-        echo "not detect_occupy"
         move_to_position(widget, pos)
     else
-        echo "true detect_occupy"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
 
 
 place_desktop_items = ->
-    echo "place_desktop_items"
     clear_occupy_table()
 
     total_item = speical_item.concat(all_item)
@@ -406,7 +387,6 @@ place_desktop_items = ->
 
 
 sort_list_by_name_from_id = (id1, id2) ->
-    # #echo "sort_list_by_name_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -417,7 +397,6 @@ sort_list_by_name_from_id = (id1, id2) ->
 
 
 sort_list_by_mtime_from_id = (id1, id2) ->
-    # #echo "sort_list_by_mtime_from_id"
     w1 = Widget.look_up(id1)
     w2 = Widget.look_up(id2)
     if not w1? or not w2?
@@ -428,7 +407,6 @@ sort_list_by_mtime_from_id = (id1, id2) ->
 
 
 sort_desktop_item_by_func = (func) ->
-    # #echo "sort_desktop_item_by_func"
     clear_all_positions()
 
     item_ordered_list = all_item.concat()
@@ -465,7 +443,6 @@ menu_sort_desktop_item_by_mtime = ->
 
 
 create_entry_to_new_item = (entry) ->
-    # #echo "create_entry_to_new_item"
     w = Widget.look_up(DCore.DEntry.get_id(entry))
     if not w? then w = create_item(entry)
 
@@ -611,7 +588,6 @@ selected_copy_to_clipboard = ->
 
 
 selected_cut_to_clipboard = ->
-    # #echo "selected_cut_to_clipboard"
     tmp_list = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -622,7 +598,6 @@ selected_cut_to_clipboard = ->
 
 
 paste_from_clipboard = ->
-    # #echo "paste_from_clipboard"
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
 evt_item_dragstart = null
@@ -719,7 +694,6 @@ item_dragend_handler = (w, evt) ->
 
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
-    #echo "set_item_selected"
     if w.selected == false
         w.item_selected()
         if add_top == true
@@ -736,7 +710,6 @@ set_item_selected = (w, change_focus = true, add_top = false) ->
 
 
 set_all_item_selected = ->
-    #echo "set_all_item_selected"
     for i in speical_item.concat(all_item)
         if selected_item.indexOf(i) >= 0 then continue
         w = Widget.look_up(i)
@@ -744,7 +717,6 @@ set_all_item_selected = ->
 
 
 cancel_item_selected = (w, change_focus = true) ->
-    #echo "cancel_item_selected"
     i = selected_item.indexOf(w.get_id())
     if i < 0 then return false
     selected_item.splice(i, 1)
@@ -758,14 +730,12 @@ cancel_item_selected = (w, change_focus = true) ->
 
 
 cancel_all_selected_stats = () ->
-    #echo "cancel_all_selected_stats"
     Widget.look_up(i)?.item_normal() for i in selected_item
     selected_item.splice(0)
     return
 
 
 update_selected_stats = (w, evt) ->
-    #echo "update_selected_stats"
     if evt.ctrlKey
         if w.selected == true then cancel_item_selected(w)
         else set_item_selected(w)
@@ -820,7 +790,6 @@ update_selected_stats = (w, evt) ->
 
 # draw selected item icons DND image on special html canvas
 update_selected_item_drag_image = ->
-    echo "update_selected_item_drag_image"
     drag_draw_delay_timer = -1
 
     if selected_item.length == 0 then return
@@ -867,13 +836,11 @@ is_selected_multiple_items = ->
 
 
 open_selected_items = ->
-    #echo "open_selected_items"
     Widget.look_up(i)?.item_exec() for i in selected_item
     return
 
 
 delete_selected_items = (real_delete) ->
-    #echo "delete_selected_items"
     tmp = []
     for i in selected_item
         w = Widget.look_up(i)
@@ -886,7 +853,6 @@ delete_selected_items = (real_delete) ->
 
 
 show_entries_properties = (entries) ->
-    #echo "show_entries_properties"
     try
         if (entry =  DCore.DEntry.create_by_path("/usr/bin/deepin-nautilus-properties"))?
             DCore.DEntry.launch(entry, entries)
@@ -895,7 +861,6 @@ show_entries_properties = (entries) ->
 
 
 show_selected_items_properties = ->
-    #echo "show_selected_items_properties"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -904,7 +869,6 @@ show_selected_items_properties = ->
 
 
 compress_selected_items = ->
-    #echo "compress_selected_items"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -915,7 +879,6 @@ compress_selected_items = ->
 
 
 decompress_selected_items = ->
-    #echo "decompress_selected_items"
     tmp = []
     for i in selected_item
         if (w = Widget.look_up(i))? then tmp.push(w.get_entry())
@@ -926,7 +889,6 @@ decompress_selected_items = ->
 
 
 decompress_selected_items_here = ->
-    #echo "decompress_selected_items_here"
     if selected_item?
         tmp = []
         for i in selected_item
@@ -939,7 +901,6 @@ decompress_selected_items_here = ->
         return
 
 get_items_compressibility = ->
-    # echo "get_items_compressibility"
     if selected_item?
         tmp = []
         for i in selected_item
@@ -955,7 +916,6 @@ get_items_compressibility = ->
 
 
 gird_left_mousedown = (evt) ->
-    #echo "grid_left_mounsedown"
     evt.stopPropagation()
     if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
@@ -964,7 +924,6 @@ gird_left_mousedown = (evt) ->
 
 
 grid_right_click = (evt) ->
-    #echo "grid_right_click"
     evt.stopPropagation()
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
@@ -1022,7 +981,6 @@ grid_do_itemselected = (evt) ->
 
 # handle up/down/left/right arrow keys to navigate between items
 grid_do_keydown_to_shortcut = (evt) ->
-    #echo "grid_do_keydown_to_shortcut"
     if rename_div_process_events then return
     if evt.keyCode >= 37 and evt.keyCode <= 40
         evt.stopPropagation()
@@ -1082,7 +1040,6 @@ grid_do_keydown_to_shortcut = (evt) ->
 
 # handle shortcuts keys
 grid_do_keyup_to_shrotcut = (evt) ->
-    #echo "grid_do_keyup_to_shrotcut"
     if rename_div_process_events then return
     msg_disposed = false
     if ingore_keyup_counts > 0
@@ -1138,7 +1095,6 @@ grid_do_keyup_to_shrotcut = (evt) ->
 
 
 grid_do_keypress_to_shrotcut = (evt) ->
-    #echo "grid_do_keypress_to_shrotcut"
     if rename_div_process_events then return
     evt.stopPropagation()
     evt.preventDefault()
@@ -1150,7 +1106,6 @@ grid_do_keypress_to_shrotcut = (evt) ->
 
 
 create_item_grid = ->
-    echo "create_item_grid"
     div_grid = document.createElement("div")
     div_grid.setAttribute("id", "item_grid")
     echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
@@ -1295,7 +1250,6 @@ item_rename_div.parentElement.addEventListener("keyup", (evt) ->
 
 
 move_widget_to_rename_div = (w) ->
-    #echo "move_widget_to_rename_div"
     if rename_div_process_events == true then return
     w.element.style.left = "#{w.element.offsetLeft + s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1}px"
@@ -1310,7 +1264,6 @@ move_widget_to_rename_div = (w) ->
 
 
 move_widget_to_grid_after_rename = (w) ->
-    #echo "move_widget_to_grid_after_rename"
     if rename_div_process_events == false then return
     w.element.style.left = "#{w.element.offsetLeft - s_offset_x - 1}px"
     w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
