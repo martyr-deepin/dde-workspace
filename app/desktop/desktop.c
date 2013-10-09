@@ -503,6 +503,7 @@ gboolean desktop_check_version_equal_set(const char* version_set)
     if (version != NULL)
         g_free(version);
     g_key_file_unref(desktop_config);    
+    desktop_config = NULL;
 
     return result;
 }
