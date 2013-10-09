@@ -1,9 +1,11 @@
 /**
  * Copyright (c) 2011 ~ 2012 Deepin, Inc.
  *               2011 ~ 2012 snyh
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,3 +134,4 @@ void calc_dominant_color_by_pixbuf(GdkPixbuf* pixbuf, double *r, double *g, doub
         calc(buf, size, gdk_pixbuf_get_n_channels(pixbuf), r, g, b);
     }
 }
+
