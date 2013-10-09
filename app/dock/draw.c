@@ -1,9 +1,11 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,3 +88,4 @@ void dock_draw_board(JSValueRef canvas)
 void draw_app_icon(JSValueRef canvas, double id, double number)
 {
 }
+
