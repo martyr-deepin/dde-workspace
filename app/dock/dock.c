@@ -1,9 +1,11 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
+ *               2013 ~ 2013 Liliqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
+ *              Liliqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +20,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include <cairo.h>
 #include <dwebview.h>
+#include "dock.h"
 #include "X_misc.h"
 #include "xdg_misc.h"
 #include "utils.h"
@@ -29,11 +33,13 @@
 #include "launcher.h"
 #include "region.h"
 #include "dock_hide.h"
-#include <cairo.h>
 #include "DBUS_dock.h"
+
+#define DOCK_CONFIG "dock/config.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
+static GKeyFile* dock_config = NULL;
 
 int _dock_height = 60;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
@@ -189,15 +195,40 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     update_dock_guard_window_position();
 }
 
+
+void check_version()
+{
+    if (dock_config == NULL)
+        dock_config = load_app_config(DOCK_CONFIG);
+
+    GError* err = NULL;
+    gchar* version = g_key_file_get_string(dock_config, "main", "version", &err);
+    if (err != NULL) {
+        g_warning("[%s] read version failed from config file: %s", __func__, err->message);
+        g_error_free(err);
+        g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
+        save_app_config(dock_config, DOCK_CONFIG);
+    }
+
+    if (version != NULL)
+        g_free(version);
+
+    g_key_file_unref(dock_config);
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running("dock.app.deepin")) {
-        g_warning(_("another instance of application dock is running...\n"));
+        g_warning(_("another instance of dock is running...\n"));
         return 1;
     }
 
     //remove  option -f
     parse_cmd_line (&argc, &argv);
+
+    check_version();
+
     init_i18n();
     gtk_init(&argc, &argv);
 

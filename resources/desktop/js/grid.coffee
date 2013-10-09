@@ -1233,6 +1233,14 @@ item_rename_div.addEventListener("click", (evt) ->
                 w.item_complete_rename(true)
         return
 )
+item_rename_div.addEventListener("contextmenu", (evt) ->
+        evt.stopPropagation()
+        if @id.length?
+            if (w = Widget.look_up(@id))?
+                w.item_complete_rename(true)
+        return
+)
+
 item_rename_div.parentElement.addEventListener("keydown", (evt) ->
         if not rename_div_process_events then return
         evt.stopPropagation()

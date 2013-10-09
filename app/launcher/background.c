@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Liqiang Lee
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
@@ -149,7 +149,7 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
         duration += 2;
     }
     if (g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        g_warning("background changed");
+        g_debug("background changed");
         js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
     }
     g_free(blur_path);

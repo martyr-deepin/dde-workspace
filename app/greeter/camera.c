@@ -39,14 +39,16 @@
 #include "i18n.h"
 
 
+#define STR_EXP(__A) #__A
+#define STR(A) STR_EXP(A)
 #define CASCADE_NAME DATA_DIR"/haaracscades/haarcascade_frontalface_alt.xml"
-#define DELAY_TIME 4.0
 #define CAMERA_WIDTH 640
 #define CAMERA_HEIGHT 480
-#define STR_CAMERA_WIDTH "640"
-#define STR_CAMERA_HEIGHT "480"
+/* #define STR_CAMERA_WIDTH "640" */
+/* #define STR_CAMERA_HEIGHT "480" */
 #define MAX_RECO_TIME 5
-#define ERR_POST_PREFIX _("Oops~I can't recognize your face. ")
+#define ERR_POST_PREFIX _("Oops...I can't recognize your face. ")
+#define ANIMATION_TIME 2000
 
 
 enum RecogizeState {
@@ -82,6 +84,7 @@ static double diff_time = 0;
 gboolean detect_is_enabled = TRUE;
 static char* current_username = NULL;
 static gboolean sended = FALSE;
+double DELAY_TIME = 3.0;
 // }}}
 
 
@@ -110,7 +113,7 @@ void init_camera(int argc, char* argv[])
 void connect_camera()
 {
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
-        "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
+        "width="STR(CAMERA_WIDTH)",height="STR(CAMERA_HEIGHT)
         " ! ffmpegcolorspace ! videoflip method=horizontal-flip !"
         " fakesink name=\"imgSink\"";
 
@@ -180,11 +183,11 @@ void reco()
     char* is_same_person = NULL;
     g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &is_same_person, NULL, &exit_code, &err);
     if (err != NULL) {
-        g_warning("[reco] %s", err->message);
+        g_debug("[reco] %s", err->message);
         g_error_free(err);
     }
 
-    g_warning("[reco] #%s#", is_same_person);
+    g_debug("[reco] #%s#", is_same_person);
     if (g_strcmp0(is_same_person, "True") == 0) {
         reco_state = RECOGNIZED;
         g_free(is_same_person);
@@ -236,7 +239,7 @@ static void bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
 static
 gboolean recognized_handler(gpointer data)
 {
-    g_warning("[recognized_handler] recognized");
+    g_debug("[recognized_handler] recognized");
     js_post_message_simply("start-login", NULL);
     reco_state = RECOGNIZE_FINISH;
 }
@@ -245,9 +248,10 @@ gboolean recognized_handler(gpointer data)
 static
 gboolean not_recognize_handler(gpointer data)
 {
-    g_warning("[not_recognize_handler] not recognized");
-    g_warning("[not_recognize_handler] send auth-failed signal");
+    g_debug("[not_recognize_handler] not recognized");
+    g_debug("[not_recognize_handler] send auth-failed signal");
     JSObjectRef json = json_create();
+    DELAY_TIME = 4.0;
     char* msg = g_strdup_printf(_("%sRetry automatically in %ds"),
                                 ERR_POST_PREFIX,
                                 (int)DELAY_TIME);
@@ -275,7 +279,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
     switch (reco_state) {
     case NOT_START_RECOGNIZING:
-        g_warning("[_frame_handler] not start recognizing");
+        g_debug("[_frame_handler] not start recognizing");
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
 
@@ -295,7 +299,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         has_data = TRUE;
         break;
     case START_RECOGNIZING:
-        //g_warning("[_frame_handler] start recognizing");
+        g_debug("[_frame_handler] start recognizing");
         source_data = (guchar*)GST_BUFFER_DATA(pure_buffer);
         GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(source_data,
                                                      GDK_COLORSPACE_RGB,  // color space
@@ -310,7 +314,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         GError* error = NULL;
         gdk_pixbuf_save(pixbuf, "/tmp/deepin_user_face.png", "png", &error, NULL);
         if (error != NULL) {
-            g_warning("[_frame_handler] %s", error->message);
+            g_debug("[_frame_handler] %s", error->message);
             g_error_free(error);
         }
 
@@ -324,18 +328,18 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         break;
     case RECOGNIZED:
         if (!sended) {
-            g_timeout_add_seconds(5, recognized_handler, NULL);
+            g_timeout_add(ANIMATION_TIME, recognized_handler, NULL);
             sended = TRUE;
         }
         break;
     case NOT_RECOGNIZED:
         if (!sended) {
-            g_timeout_add_seconds(5, not_recognize_handler, NULL);
+            g_timeout_add(ANIMATION_TIME, not_recognize_handler, NULL);
             sended = TRUE;
         }
         break;
     case RECOGNIZE_FINISH:
-        g_warning("[_frame_handler] recognizing finish");
+        g_debug("[_frame_handler] recognizing finish");
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
         copy_buffer = gst_buffer_copy((buffer));
@@ -401,26 +405,26 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height)
     static gboolean not_draw = FALSE;
 
     if (reco_state == RECOGNIZING) {
-        /* g_warning("[_draw] recognizing"); */
+        g_debug("[_draw] recognizing");
         return;
     }
 
     if (!has_data) {
-        /* g_warning("[_draw] get no data from camera"); */
+        g_debug("[_draw] get no data from camera");
         return;
     }
 
     if (JSValueIsNull(get_global_context(), canvas)) {
-        /* g_warning("[_draw] draw with null canvas!"); */
+        g_debug("[_draw] draw with null canvas!");
         return;
     }
 
     if (source_data == NULL) {
-        /* g_warning("[_draw] source_data is null"); */
+        g_debug("[_draw] source_data is null");
         return;
     }
 
-    /* g_warning("[_draw]"); */
+    g_debug("[_draw]");
 
     cairo_t* cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
     g_assert(cr != NULL);

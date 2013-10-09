@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Liqiang Lee
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>

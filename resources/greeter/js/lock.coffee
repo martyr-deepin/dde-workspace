@@ -28,7 +28,7 @@ if not user_image?
         user_image = "images/img01.jpg"
 
 $("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 12.12.1")}<sup>#{_(VERSION)}</sup></span>
+            <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span>
             "
 try
     is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
@@ -53,13 +53,13 @@ document.body.addEventListener("keydown", (e) =>
         if not u.login_displayed
             if not u.is_recognizing
                 u.show_login()
-                failed_tip?.remove()
+                message_tip?.remove()
         else
             u.login.on_active(user, u.login.password.value)
 
     else if e.which == ESC_KEY
         u.hide_login()
-        failed_tip?.remove()
+        message_tip?.remove()
 )
 
 if roundabout.children.length <= 2
@@ -72,11 +72,14 @@ if roundabout.children.length <= 2
 
 
 DCore.signal_connect("start-login", ->
-    echo "receive start login"
+    # echo "receive start login"
     # TODO: maybe some animation or some reflection.
     u.is_recognizing = false
     DCore.Lock.try_unlock("")
 )
+
+# if _current_user.face_login
+#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
 
 DCore.Lock.webview_ok(_current_user.id)
 
