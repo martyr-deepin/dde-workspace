@@ -1294,3 +1294,11 @@ move_widget_to_grid_after_rename = (w) ->
     item_rename_div.style.display = "none"
     rename_div_process_events = false
     return
+
+set_version_desktop = (version)->
+    #check  = DCore.Desktop.check_version_equal_set(version)
+    check = false
+    if check is false
+        localStorage.clear()
+    else
+        echo "desktop version :" + version
