@@ -39,11 +39,13 @@
 #include "i18n.h"
 
 
+#define STR_EXP(__A) #__A
+#define STR(A) STR_EXP(A)
 #define CASCADE_NAME DATA_DIR"/haaracscades/haarcascade_frontalface_alt.xml"
 #define CAMERA_WIDTH 640
 #define CAMERA_HEIGHT 480
-#define STR_CAMERA_WIDTH "640"
-#define STR_CAMERA_HEIGHT "480"
+/* #define STR_CAMERA_WIDTH "640" */
+/* #define STR_CAMERA_HEIGHT "480" */
 #define MAX_RECO_TIME 5
 #define ERR_POST_PREFIX _("Oops...I can't recognize your face. ")
 #define ANIMATION_TIME 2000
@@ -111,7 +113,7 @@ void init_camera(int argc, char* argv[])
 void connect_camera()
 {
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
-        "width="STR_CAMERA_WIDTH",height="STR_CAMERA_HEIGHT
+        "width="STR(CAMERA_WIDTH)",height="STR(CAMERA_HEIGHT)
         " ! ffmpegcolorspace ! videoflip method=horizontal-flip !"
         " fakesink name=\"imgSink\"";
 
