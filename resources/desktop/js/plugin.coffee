@@ -7,7 +7,7 @@ class PluginHandle extends Widget
         @id = "handle-#{@parent_id}"
         super(@id)
         @element.setAttribute("draggable", "true")
-        @offset_pos = {x : -1, y : -1}
+        @offset_pos = {x : -1 * _PART_, y : -1 * _PART_}
 
         @plugin_close = create_element("div","plugin_close",@element)
         @plugin_close.addEventListener("click",(evt)=>
@@ -33,7 +33,7 @@ class PluginHandle extends Widget
         _SET_DND_INTERNAL_FLAG_(evt)
         evt.dataTransfer.effectAllowed = "all"
 
-        drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1, 1)
+        drag_pos = pixel_to_pos(evt.clientX, evt.clientY, 1 * _PART_, 1 * _PART_)
         @offset_pos.x = drag_pos.x
         @offset_pos.y = drag_pos.y
         if not (w = Widget.look_up(@parent_id))? then return
@@ -79,7 +79,7 @@ class PluginHandle extends Widget
 class DesktopPluginItem extends Widget
     constructor: (@id)->
         super
-        @_position = {x:-1, y:-1, width:1, height:1}
+        @_position = {x:-1 * _PART_, y:-1 * _PART_, width:1 * _PART_, height:1 * _PART_}
         widget_item.push(@id)
         attach_item_to_grid(@)
         @handle = new PluginHandle(@id)
@@ -115,8 +115,8 @@ class DesktopPluginItem extends Widget
     set_size : (info) =>
         @_position.width = info.width
         @_position.height = info.height
-        real_width = @_position.width * _ITEM_WIDTH_
-        real_height = @_position.height * _ITEM_HEIGHT_
+        real_width = @_position.width * _GRID_WIDTH_INIT_
+        real_height = @_position.height * _GRID_HEIGHT_INIT_
         @element.style.width = "#{real_width}px"
         @element.style.height = "#{real_height}px"
         real_height = real_height - @handle.element.offsetHeight
@@ -220,7 +220,7 @@ load_plugins = ->
 
 
 find_free_position_for_widget = (info, id = null) ->
-    new_pos = {x : -1, y : -1, width : info.width, height : info.height}
+    new_pos = {x : -1 * _PART_, y : -1 * _PART_, width : info.width, height : info.height}
     x_pos = cols - 1
     while (x_pos = x_pos - info.width + 1) > -1
         new_pos.x = x_pos
