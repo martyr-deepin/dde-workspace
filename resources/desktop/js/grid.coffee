@@ -273,12 +273,10 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
-    for i in [0..cols - h]
-        for j in [0..rows - w]
-            #echo o_table[i][j]
-            if not o_table[i][j]? && not o_table[i + h - 1][j]? && not o_table[i][j + w - 1]? && not o_table[i + h - 1][j + w - 1]?
+    for i in [0..cols - w]
+        for j in [0..rows - h]
+            if not o_table[i][j]? && not o_table[i + w - 1][j]? && not o_table[i][j + h - 1]? && not o_table[i + w - 1][j + h - 1]?
                 info.x = i
                 info.y = j
                 return info
@@ -305,13 +303,23 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 move_to_position = (widget, pos) ->
     #echo "move_to_position"
     old_pos = widget.get_pos()
+    # echo widget.get_name()
     
-    #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
-    #echo "pos:"
-    #echo pos
-    #echo "old_pos:"
-    #echo old_pos
-    
+    # x = pos.x
+    # y = pos.y
+    # if pos.w? then w = pos.w else w = _PART_
+    # if pos.h? then h = pos.h else h = _PART_
+
+    # echo x + "," + y + "," + w + "," + h
+    # if !(not o_table[x][y]? && not o_table[x + w - 1][j]? && not o_table[x][y + h - 1]? && not o_table[x + w - 1][y + h - 1]?)
+    #     if x > w and y > h
+    #         for i in [x - 2 .. x + 2]
+    #             for j in [y - 2 .. y + 2]
+    #                 if not o_table[i][j]? && not o_table[i + w - 1][j]? && not o_table[i][j + h - 1]? && not o_table[i + w - 1][j + h - 1]?
+    #                     pos.x = i
+    #                     pos.y = j
+    #                     break
+
     widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
