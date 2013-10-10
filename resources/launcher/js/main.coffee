@@ -130,6 +130,14 @@ DCore.signal_connect("update_items", ->
     _init_hidden_icons()
 )
 
+DCore.signal_connect("autostart-update", (info)->
+    if (app = Widget.look_up(info.id))?
+        if info.is_autostart
+            app.add_to_autostart()
+        else
+            app.remove_from_autostart()
+)
+
 
 DCore.Launcher.notify_workarea_size()
 
