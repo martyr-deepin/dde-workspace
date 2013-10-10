@@ -1139,21 +1139,20 @@ ArrayContainer dentry_get_templates_files(void)
 JS_EXPORT_API
 ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 {
-    g_message("old num:%d",fs.num);
     ArrayContainer _fs;
     GFile** files = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
     
     _fs = _normalize_array_container(fs);
     files = _fs.data;
+    int j = 0;
     for(int i=0; i<fs.num; i++)
     {
         GFile *f = files[i];
         GFileType type = g_file_query_file_type (f,G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
-        if (type == G_FILE_TYPE_DIRECTORY){
-            break;
-        }else{
+        if (type != G_FILE_TYPE_DIRECTORY){
             g_ptr_array_add(array, f);
+            j++;
         }
      }
     g_free(_fs.data);
@@ -1161,7 +1160,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
     ac.num = array->len;
     ac.data = array->pdata;
     g_ptr_array_free(array, FALSE);
-
+    
     return ac;
 }
 
