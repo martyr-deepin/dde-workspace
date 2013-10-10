@@ -480,12 +480,13 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-
+        
         file_uri = []
         tmp_copy = []
-        #tmp_move = []
-
+        tmp_move = []
+        
         if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
+            echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
             enter_indexof[0] = 0
@@ -502,28 +503,19 @@ init_grid_drop = ->
                 file = file_uri[i]
                 if (f_e = DCore.DEntry.create_by_path(file))?
                     tmp_copy.push(f_e)
-                    # only copy , not move
-                    # if DCore.DEntry.should_move(f_e)
-                    #     #echo "move"
-                    #     tmp_move.push(f_e)
-                    # else
-                    #     #echo "copy"
-                    #     tmp_copy.push(f_e)
                     # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
-            # only copy , not move
-            # if tmp_move.length
-            #     DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
 
             evt.dataTransfer.setData("Text",desktop_uri)
 
-        else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
+        else if not _IS_DND_INTERLNAL_(evt) and not _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
+            echo "file not from desktop_internal and richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
@@ -547,6 +539,24 @@ init_grid_drop = ->
                 #DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
+        
+        else if  _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
+            echo "file from richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+            w = Math.sqrt(evt.dataTransfer.files.length) + 1
+            for i in [0 ... evt.dataTransfer.files.length] by 1
+                file = evt.dataTransfer.files[i]
+                if (f_e = DCore.DEntry.create_by_path(file.path))?
+                    tmp_move.push(f_e)
+                    # make items as much nearer as possible to the pos that user drag on
+                    p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
+                    p.x = pos.x + (i % w)
+                    p.y = pos.y + Math.floor(i / w)
+                    if p.x >= cols or p.y >= rows then continue
+                    save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
+            if tmp_move.length
+                DCore.DEntry.move(tmp_move, g_desktop_entry, true)
+        
         return
     )
     div_grid.addEventListener("dragover", (evt) =>

@@ -960,8 +960,8 @@ class RichDir extends DesktopEntry
             ele.appendChild(sb)
             s = document.createElement("img")
             # s.src = DCore.DEntry.get_icon(e)
-            if (s.src = DCore.DEntry.get_icon(e)) == null 
-                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
+            if (s.src = DCore.DEntry.get_icon(e)) == null
+                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                 echo "warning: richdir child get_icon is null:" + s.src
             sb.appendChild(s)
             s = document.createElement("div")
@@ -975,6 +975,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[this.id]
                 if e?
                     evt.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(e))
+                    _SET_DND_RICHDIR_FLAG_(evt)
                     evt.dataTransfer.effectAllowed = "all"
                 else
                     evt.dataTransfer.effectAllowed = "none"
