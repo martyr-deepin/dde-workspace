@@ -1139,15 +1139,13 @@ ArrayContainer dentry_get_templates_files(void)
 JS_EXPORT_API
 ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 {
+    g_message("old num:%d",fs.num);
     ArrayContainer _fs;
     GFile** files = NULL;
     GPtrArray* array = g_ptr_array_sized_new(1024);
-    if (fs.num != 0)
-    {
-        _fs = _normalize_array_container(fs);
-        files = _fs.data;
-    }
-    int j = 0;
+    
+    _fs = _normalize_array_container(fs);
+    files = _fs.data;
     for(int i=0; i<fs.num; i++)
     {
         GFile *f = files[i];

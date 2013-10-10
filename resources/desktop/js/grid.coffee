@@ -144,7 +144,6 @@ load_position = (id) ->
 
     if pos == null then return null
 
-    #保证最右侧和最下面不越界,当超过时，自动排在最右侧和最下面
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if rows > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
     pos
@@ -274,11 +273,6 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    # 新图标的摆放位置,就是当localStorage中没有id pos时，调用find_free_position 来得到new_pos,
-    # 然后move_to_position(new_pos)
-    # 这些操作都是在move_to_somewhere 和 move_to_anywhere中
-    # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
-    
     #echo "find_free_position"
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - h]
@@ -317,20 +311,11 @@ move_to_position = (widget, pos) ->
     #echo pos
     #echo "old_pos:"
     #echo old_pos
-
-    # 此处进行吸附判断操作，以及其他拖动用户行为判断及实现,得到一个new_pos
     
-    
-    
-    # 此处决定移动的单元格size
     widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
     set_occupy(widget.get_id(), pos)
-    
-    # 此处是set_occupy，即设置一个desktop文件占了多少个格子，之前就是一个格子，现在要改成占了4*4=16个格子
-    # 注：set_occupy是读取widget.width  height来设置哪些格子被占用的,故不需要单独去设置4×4
-    # 同时当桌面初始化时，图标的位置就是通过这个函数移动的
     
     widget.set_pos(pos)
     save_position(widget.get_id(), pos)
