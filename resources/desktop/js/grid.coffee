@@ -309,12 +309,12 @@ move_to_position = (widget, pos) ->
     # y = pos.y
     # if pos.w? then w = pos.w else w = _PART_
     # if pos.h? then h = pos.h else h = _PART_
+    # delt = 1
 
-    # echo x + "," + y + "," + w + "," + h
     # if !(not o_table[x][y]? && not o_table[x + w - 1][j]? && not o_table[x][y + h - 1]? && not o_table[x + w - 1][y + h - 1]?)
     #     if x > w and y > h
-    #         for i in [x - 2 .. x + 2]
-    #             for j in [y - 2 .. y + 2]
+    #         for i in [x - delt .. x + delt]
+    #             for j in [y - delt .. y + delt]
     #                 if not o_table[i][j]? && not o_table[i + w - 1][j]? && not o_table[i][j + h - 1]? && not o_table[i + w - 1][j + h - 1]?
     #                     pos.x = i
     #                     pos.y = j
@@ -467,6 +467,7 @@ menu_create_templates = (id) ->
                     if (DCore.DEntry.create_templates(templates[i],name_add_before))
                         echo "create_templates finish!"
     return
+
 # all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
@@ -478,7 +479,7 @@ init_grid_drop = ->
         tmp_move = []
         
         if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
-            echo "file from internet , evt.dataTransfer.files.length  = 0"
+            #echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
             enter_indexof[0] = 0
@@ -507,7 +508,7 @@ init_grid_drop = ->
             evt.dataTransfer.setData("Text",desktop_uri)
 
         else if not _IS_DND_INTERLNAL_(evt) and not _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
-            echo "file not from desktop_internal and richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
+            #echo "file not from desktop_internal and richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
@@ -533,7 +534,7 @@ init_grid_drop = ->
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         
         else if  _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
-            echo "file from richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
+            #echo "file from richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
