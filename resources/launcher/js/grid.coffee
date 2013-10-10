@@ -159,11 +159,11 @@ class Item extends Widget
         @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
 
     add_to_autostart: ->
-        @is_autostart = true
-        DCore.Launcher.add_to_autostart(@core)
-        Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
-            AUTOSTART_ICON_SIZE)
-        create_img("autostart_flag", Item.theme_icon, @element)
+        if DCore.Launcher.add_to_autostart(@core)
+            @is_autostart = true
+            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+                AUTOSTART_ICON_SIZE)
+            create_img("autostart_flag", Item.theme_icon, @element)
 
     remove_from_autostart: ->
         if DCore.Launcher.remove_from_autostart(@core)

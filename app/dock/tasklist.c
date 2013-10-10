@@ -506,6 +506,8 @@ gboolean is_normal_window(Window w)
         } else if (g_str_equal(ch.res_class, "Desktop")) {
             get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
+        } else if (g_str_equal(ch.res_class, "Dlock")) {
+            need_return = TRUE;
         }
         XFree(ch.res_name);
         XFree(ch.res_class);
