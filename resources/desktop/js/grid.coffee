@@ -69,7 +69,7 @@ rightclick_pos = {clientX : 0, clientY : 0}
 #templates
 TEMPATES_LENGTH = 0
 TEMPLATES_FILE_ID_FIRST = 20
-
+templates = []
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
@@ -463,7 +463,6 @@ menu_create_new_file = (name_add_before) ->
     create_entry_to_new_item(entry)
 
 menu_create_templates = (id) ->
-    templates = DCore.DEntry.get_templates_files()
     name_add_before = _("Untitled") + " "
     switch id
         when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
@@ -938,9 +937,9 @@ grid_right_click = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
-    templates = []
     templates_menu = []
-    templates = DCore.DEntry.get_templates_files()
+    templates_all = DCore.DEntry.get_templates_files()
+    templates = DCore.DEntry.get_templates_filter(templates_all)
     templates_menu.push([TEMPLATES_FILE_ID_FIRST, _("_Folder")])
     templates_menu.push([TEMPLATES_FILE_ID_FIRST + 1, _("_Text document")])
     TEMPATES_LENGTH = 2 + templates.length
