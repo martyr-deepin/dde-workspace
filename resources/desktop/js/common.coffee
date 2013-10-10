@@ -22,6 +22,7 @@ _DND_DATA_TYPE_NAME_ = "text/operate-type"
 _DND_DESKTOP_MARK_ = "desktop_internal"
 _DND_RICHDIR_MARK_ = "richdir_internal"
 
+RICHDIR_FLAG = false
 
 _SET_DND_INTERNAL_FLAG_ = (evt) ->
     evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)

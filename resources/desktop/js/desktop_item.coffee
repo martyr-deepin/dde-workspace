@@ -304,8 +304,10 @@ class Item extends Widget
 
 
     item_blur : =>
+        #echo "item_blur DesktopEntry"
         @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
+        if @in_rename && RICHDIR_FLAG is false then @item_complete_rename(false)
+        RICHDIR_FLAG = false
 
         @display_short_name()
         @display_not_focus()
@@ -363,6 +365,7 @@ class Item extends Widget
 
     item_rename : =>
         # first make the contextmenu not showed when is in_renaming 
+        #echo "item_rename"
         menu = []
         @item_name.parentElement.contextMenu = build_menu(menu)
         #@item_name.parentElement.contextMenu = ""
@@ -813,7 +816,9 @@ class RichDir extends DesktopEntry
 
 
     item_blur : =>
+        #echo "item_blur richdir"
         if @div_pop != null then @hide_pop_block()
+        RICHDIR_FLAG = true
         super
 
 
@@ -1100,7 +1105,9 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
+        
         @item_focus()
+        
         #@display_focus()
         #@display_full_name()
         return
