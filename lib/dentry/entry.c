@@ -845,7 +845,6 @@ JS_EXPORT_API
 void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-
     GFile** _srcs = (GFile**)_fs.data;
     for (size_t i = 0; i < _fs.num; ++i) {
         char* src_basename = g_file_get_basename(_srcs[i]);
@@ -1135,6 +1134,32 @@ ArrayContainer dentry_get_templates_files(void)
         ac.num = 0;
     }
     return ac ;
+}
+
+JS_EXPORT_API
+ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+    GPtrArray* array = g_ptr_array_sized_new(1024);
+    
+    _fs = _normalize_array_container(fs);
+    files = _fs.data;
+    for(int i=0; i<fs.num; i++)
+    {
+        GFile *f = files[i];
+        GFileType type = g_file_query_file_type (f,G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        if (type != G_FILE_TYPE_DIRECTORY){
+            g_ptr_array_add(array, f);
+        }
+     }
+    g_free(_fs.data);
+    ArrayContainer ac;
+    ac.num = array->len;
+    ac.data = array->pdata;
+    g_ptr_array_free(array, FALSE);
+    
+    return ac;
 }
 
 JS_EXPORT_API

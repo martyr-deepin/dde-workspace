@@ -20,14 +20,22 @@
 # const strings and functions for desktop internal DND operation
 _DND_DATA_TYPE_NAME_ = "text/operate-type"
 _DND_DESKTOP_MARK_ = "desktop_internal"
+_DND_RICHDIR_MARK_ = "richdir_internal"
+
+RICHDIR_FLAG = false
 
 _SET_DND_INTERNAL_FLAG_ = (evt) ->
     evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_DESKTOP_MARK_)
 
-
 _IS_DND_INTERLNAL_ = (evt) ->
     evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) == _DND_DESKTOP_MARK_
 
+
+_SET_DND_RICHDIR_FLAG_ = (evt) ->
+    evt.dataTransfer.setData(_DND_DATA_TYPE_NAME_, _DND_RICHDIR_MARK_)
+
+_IS_DND_RICHDIR_ = (evt) ->
+    evt.dataTransfer.getData(_DND_DATA_TYPE_NAME_) == _DND_RICHDIR_MARK_
 
 # item real size on grid
 _ITEM_WIDTH_ = 80 + 6 * 2

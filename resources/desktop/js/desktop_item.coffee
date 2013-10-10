@@ -304,8 +304,10 @@ class Item extends Widget
 
 
     item_blur : =>
+        #echo "item_blur DesktopEntry"
         @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
+        if @in_rename && RICHDIR_FLAG is false then @item_complete_rename(false)
+        RICHDIR_FLAG = false
 
         @display_short_name()
         @display_not_focus()
@@ -363,6 +365,7 @@ class Item extends Widget
 
     item_rename : =>
         # first make the contextmenu not showed when is in_renaming 
+        #echo "item_rename"
         menu = []
         @item_name.parentElement.contextMenu = build_menu(menu)
         #@item_name.parentElement.contextMenu = ""
@@ -813,7 +816,9 @@ class RichDir extends DesktopEntry
 
 
     item_blur : =>
+        #echo "item_blur richdir"
         if @div_pop != null then @hide_pop_block()
+        RICHDIR_FLAG = true
         super
 
 
@@ -960,8 +965,8 @@ class RichDir extends DesktopEntry
             ele.appendChild(sb)
             s = document.createElement("img")
             # s.src = DCore.DEntry.get_icon(e)
-            if (s.src = DCore.DEntry.get_icon(e)) == null 
-                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
+            if (s.src = DCore.DEntry.get_icon(e)) == null
+                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                 echo "warning: richdir child get_icon is null:" + s.src
             sb.appendChild(s)
             s = document.createElement("div")
@@ -975,6 +980,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[this.id]
                 if e?
                     evt.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(e))
+                    _SET_DND_RICHDIR_FLAG_(evt)
                     evt.dataTransfer.effectAllowed = "all"
                 else
                     evt.dataTransfer.effectAllowed = "none"
@@ -1099,7 +1105,9 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
+        
         @item_focus()
+        
         #@display_focus()
         #@display_full_name()
         return
