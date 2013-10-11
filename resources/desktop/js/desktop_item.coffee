@@ -305,7 +305,7 @@ class Item extends Widget
 
     item_blur : =>
         @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
+        if @in_rename then @item_complete_rename(true)
 
         @display_short_name()
         @display_not_focus()
