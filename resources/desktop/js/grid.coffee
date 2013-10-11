@@ -234,6 +234,8 @@ clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
+            # here perhaps should not use if checkout , maybe just make 16 o_tabble null
+            # should be optimize,maybe make bug
             if o_table[info.x+i][info.y+j] == id
                 o_table[info.x+i][info.y+j] = null
             else
@@ -248,14 +250,15 @@ set_occupy = (id, info) ->
             o_table[info.x+i][info.y+j] = id
     return
 
-
+# detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed 
+#               false :pos not be standed , the 16 grid are all free
 detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            if o_table[info.x+i][info.y+j] and o_table[info.x+i][info.y+j] != id
+            if o_table[info.x+i][info.y+j]?
                 return true
     return false
 
@@ -345,8 +348,10 @@ move_to_anywhere = (widget) ->
 
 move_to_somewhere = (widget, pos) ->
     if not detect_occupy(pos, widget.get_id())
+        #echo "detect_occupy false"
         move_to_position(widget, pos)
     else
+        #echo "detect_occupy true"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
@@ -601,14 +606,9 @@ selected_cut_to_clipboard = ->
 paste_from_clipboard = ->
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
-evt_item_dragstart = null
-evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
     #echo "item_dragstart_handler"
-    evt_item_dragend = null
-    evt_item_dragstart = evt
-    #echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -638,8 +638,8 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     #echo "item_dragend_handler"
-    evt_item_dragend = evt
-    #echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo evt.dataTransfer.dropEffect
+    
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -682,15 +682,12 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-            #echo old_pos.x + "," + old_pos.y
-            #echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
 
         update_selected_item_drag_image()
 
-    evt_item_dragstart = null
     return
 
 
