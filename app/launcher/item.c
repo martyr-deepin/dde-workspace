@@ -256,6 +256,7 @@ gboolean launcher_add_to_autostart(Entry* _item)
     if (launcher_is_autostart(_item))
         return TRUE;
 
+    gboolean success = TRUE;
     const char* item_path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(_item));
     GFile* item = g_file_new_for_path(item_path);
 
@@ -278,17 +279,20 @@ gboolean launcher_add_to_autostart(Entry* _item)
     g_key_file_load_from_file(dst, dest_path, G_KEY_FILE_NONE, &err);
 
     if (err != NULL) {
-        g_warning("[%s] load file failed: %s", __func__, err->message);
+        g_warning("[%s] load file(%s) failed: %s", __func__, dest_path, err->message);
         g_error_free(err);
-        return FALSE;
+        success = FALSE;
+        goto out;
     }
 
     g_key_file_set_boolean(dst, G_KEY_FILE_DESKTOP_GROUP,
                            GNOME_AUTOSTART_KEY, true);
     save_key_file(dst, dest_path);
+
+out:
     g_free(dest_path);
     g_key_file_unref(dst);
-    return TRUE;
+    return success;
 }
 
 
@@ -299,7 +303,7 @@ gboolean _remove_autostart(const char* file_path)
     GError* error = NULL;
     g_key_file_load_from_file(file, file_path, G_KEY_FILE_NONE, &error);
     if (error != NULL) {
-        g_warning("[%s] load file failed: %s", __func__, error->message);
+        g_warning("[%s] load file(%s) failed: %s", __func__, file_path, error->message);
         g_error_free(error);
         g_key_file_unref(file);
         return FALSE;
@@ -319,15 +323,27 @@ gboolean launcher_remove_from_autostart(Entry* _item)
     if (!launcher_is_autostart(_item))
         return TRUE;
 
+    gboolean success = FALSE;
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = to_lower_inplace(get_desktop_file_basename(item));
 
-    for (int i = 0; i < autostart_paths->len; ++i) {
+    char* dest_path = g_build_filename(g_get_user_config_dir(),
+                                       AUTOSTART_DIR, name, NULL);
+    if (g_file_test(dest_path, G_FILE_TEST_EXISTS)) {
+        success = _remove_autostart(dest_path);
+        goto out;
+    }
+
+    // start from 1 for skiping user autostart dir
+    for (int i = 1; i < autostart_paths->len; ++i) {
         char* path = g_ptr_array_index(autostart_paths, i);
-        GDir* dir = g_dir_open(path, 0, NULL);
-        if (dir == NULL)
-            return FALSE;
-
-        char* name = get_desktop_file_basename(item);
+        GError* err = NULL;
+        GDir* dir = g_dir_open(path, 0, &err);
+        if (dir == NULL) {
+            g_warning("[%s] open dir(%s) failed: %s", __func__, path, err->message);
+            g_error_free(err);
+            break;
+        }
 
         const char* filename = NULL;
         while ((filename = g_dir_read_name(dir)) != NULL) {
@@ -335,25 +351,33 @@ gboolean launcher_remove_from_autostart(Entry* _item)
 
             if (0 == g_strcmp0(name, lowercase_name)) {
                 g_free(lowercase_name);
+                g_dir_close(dir);
+
+                GFile* dest_file = g_file_new_for_path(dest_path);
 
                 char* file_path = g_build_filename(path, filename, NULL);
-                gboolean success = _remove_autostart(file_path);
-
+                GFile* src_file = g_file_new_for_path(file_path);
                 g_free(file_path);
-                g_dir_close(dir);
-                g_free(name);
 
-                return TRUE;
+                do_dereference_symlink_copy(src_file, dest_file, G_FILE_COPY_NONE);
+                g_object_unref(src_file);
+                g_object_unref(dest_file);
+
+                success = _remove_autostart(dest_path);
+
+                goto out;
             }
 
             g_free(lowercase_name);
         }
 
         g_dir_close(dir);
-        g_free(name);
     }
 
-    return FALSE;
+out:
+    g_free(dest_path);
+    g_free(name);
+    return success;
 }
 
 

@@ -141,14 +141,15 @@ void _monitor_desktop_files()
 
 gboolean _update_autostart(gpointer user_data)
 {
-    GDesktopAppInfo* f = g_desktop_app_info_new_from_filename((char*)user_data);
-    char* id = dentry_get_id(f);
-    gboolean is_autostart = launcher_is_autostart(f);
-    g_object_unref(f);
-    g_debug("[%s] %s is changed to %sautostart", __func__, (char*)user_data, is_autostart ? "" : "non-");
-    js_post_message_simply("autostart-update", "{\"id\": \"%s\", \"is_autostart\": %d}", id, is_autostart);
+    char* uri = (char*)user_data;
+    char* id = calc_id(uri);
 
-    g_free(user_data);
+    g_debug("[%s] %s is changed", __func__, uri);
+    js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id);
+
+    g_free(uri);
+    g_free(id);
+
     return FALSE;
 }
 
@@ -157,12 +158,11 @@ PRIVATE
 void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                                 GFileMonitorEvent event_type, gpointer data)
 {
-    /* if (event_type ==  G_FILE_MONITOR_EVENT_MOVED) */
     GFile* changed_file = file;
     static gulong timeout_id = 0;
     switch (event_type) {
         // fall through
-    case G_FILE_MONITOR_EVENT_MOVED:
+    case G_FILE_MONITOR_EVENT_MOVED:  // compatibility for gnome-session-properties
         changed_file = other_file;
     case G_FILE_MONITOR_EVENT_DELETED:
     case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
@@ -172,8 +172,12 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
         }
 
         g_debug("[%s] delete or changed", __func__);
+        char* uri = g_file_get_uri(file);
+        char* escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
+        g_free(uri);
         timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_autostart,
-                                   g_file_get_path(changed_file));
+                                   g_strdup(escaped_uri));
+        g_free(escaped_uri);
     }
 }
 

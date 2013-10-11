@@ -132,7 +132,7 @@ DCore.signal_connect("update_items", ->
 
 DCore.signal_connect("autostart-update", (info)->
     if (app = Widget.look_up(info.id))?
-        if info.is_autostart
+        if DCore.Launcher.is_autostart(app.core)
             app.add_to_autostart()
         else
             app.remove_from_autostart()

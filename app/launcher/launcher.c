@@ -465,6 +465,7 @@ int main(int argc, char* argv[])
         is_daemonize = TRUE;
 
     if (argc == 2 && g_str_equal("-f", argv[1])) {
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
         not_exit = TRUE;
     }
 #endif
