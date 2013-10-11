@@ -253,8 +253,10 @@ gboolean launcher_is_autostart(Entry* _item)
 JS_EXPORT_API
 gboolean launcher_add_to_autostart(Entry* _item)
 {
-    if (launcher_is_autostart(_item))
+    if (launcher_is_autostart(_item)){
+        g_debug("[%s] already autostart", __func__);
         return TRUE;
+    }
 
     gboolean success = TRUE;
     const char* item_path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(_item));
@@ -320,8 +322,10 @@ gboolean _remove_autostart(const char* file_path)
 JS_EXPORT_API
 gboolean launcher_remove_from_autostart(Entry* _item)
 {
-    if (!launcher_is_autostart(_item))
+    if (!launcher_is_autostart(_item)) {
+        g_debug("[%s] already not autostart", __func__);
         return TRUE;
+    }
 
     gboolean success = FALSE;
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;

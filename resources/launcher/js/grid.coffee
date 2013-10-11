@@ -163,13 +163,16 @@ class Item extends Widget
             @is_autostart = true
             Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
                 AUTOSTART_ICON_SIZE)
-            create_img("autostart_flag", Item.theme_icon, @element)
+            last = @element.lastChild
+            if last.tagName != 'IMG'
+                create_img("autostart_flag", Item.theme_icon, @element)
 
     remove_from_autostart: ->
         if DCore.Launcher.remove_from_autostart(@core)
             @is_autostart = false
             last = @element.lastChild
-            @element.removeChild(last) if last.tagName == 'IMG'
+            if last.tagName == 'IMG'
+                @element.removeChild(last)
 
     toggle_autostart: ->
         if @is_autostart
