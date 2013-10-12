@@ -33,9 +33,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-gboolean is_application_running(const char* path)
+int binding(int server_sockfd, const char* path)
 {
-    int server_sockfd;
     socklen_t server_len;
     struct sockaddr_un server_addr;
 
@@ -44,9 +43,15 @@ gboolean is_application_running(const char* path)
     server_addr.sun_family = AF_UNIX;
     server_len = 1 + path_size + offsetof(struct sockaddr_un, sun_path);
 
-    server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    return bind(server_sockfd, (struct sockaddr *)&server_addr, server_len);
+}
 
-    if (0 == bind(server_sockfd, (struct sockaddr *)&server_addr, server_len)) {
+
+gboolean is_application_running(const char* path)
+{
+    int server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (0 == binding(server_sockfd, path)) {
+        close(server_sockfd);
         return FALSE;
     } else {
         return TRUE;

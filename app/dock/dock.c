@@ -224,6 +224,9 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    int sd = socket(AF_UNIX, SOCK_STREAM, 0);
+    binding(sd, "dock.app.deepin");
+
     //remove  option -f
     parse_cmd_line (&argc, &argv);
 

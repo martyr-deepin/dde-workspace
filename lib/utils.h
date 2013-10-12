@@ -29,6 +29,7 @@
 #define STR_EXP(__A) #__A
 #define STR(A) STR_EXP(A)
 
+int binding(int server_sockfd, const char* path);
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
