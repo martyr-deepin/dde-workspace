@@ -55,7 +55,7 @@ const gchar *username;
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *password)
 {
-    if (lock_use_face_recognition_login(lock_get_username()) && detect_is_enabled) {
+    if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {
         gtk_main_quit();
         return TRUE;
     }

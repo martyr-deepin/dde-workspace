@@ -24,7 +24,30 @@
 
 #define IMAGE_NAME "/tmp/deepin_user_face_for_login.png"
 
-extern gboolean detect_is_enabled;
+
+enum RecognizeState {
+    NOT_START_RECOGNIZING,
+    START_RECOGNIZING,
+    RECOGNIZING,
+    RECOGNIZED,
+    NOT_RECOGNIZED,
+    RECOGNIZE_FINISH
+};
+
+struct RecognitionInfo {
+    gboolean detect_is_enabled;
+    gboolean has_data;
+    enum RecognizeState reco_state;
+    int reco_times;
+    double DELAY_TIME;
+    GTimer* timer;
+    guint length;
+    GPid pid;
+    guchar* source_data;
+    gchar* current_username;
+};
+
+extern struct RecognitionInfo recognition_info;
 
 gboolean has_camera();
 void init_camera(int argc, char* argv[]);
