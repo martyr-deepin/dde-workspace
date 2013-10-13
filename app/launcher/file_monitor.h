@@ -22,8 +22,8 @@
 #ifndef FILE_MONITOR_H
 #define FILE_MONITOR_H
 
-void monitor_apps();
-void monitor_destroy();
+void add_monitors();
+void destroy_monitors();
 
 #endif /* end of include guard: FILE_MONITOR_H */
 

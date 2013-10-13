@@ -23,6 +23,7 @@
 from __future__ import print_function
 import sys
 from ConfigParser import ConfigParser
+from pprint import pformat
 
 from facepp import File, API
 
@@ -34,9 +35,6 @@ API_KEY = 'e7d24ca8e91351b8cac02eb6e6080678'
 API_SECRET = 'iH_Dls3_gE2wx5dp2cKHPrO8W5V5NTr-'
 
 TARGET_IMAGE = '/tmp/deepin_user_face.png'
-
-
-from pprint import pformat
 
 
 def print_result(hint, result):

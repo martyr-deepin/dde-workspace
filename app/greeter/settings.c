@@ -55,7 +55,7 @@ out:
 
 gboolean _use_face_recognition_login(char const* username)
 {
-    return detect_is_enabled && has_camera()
+    return recognition_info.detect_is_enabled && has_camera()
         && _get_face_recognition_login_setting(username);
 }
 

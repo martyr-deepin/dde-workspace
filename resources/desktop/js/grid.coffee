@@ -69,7 +69,7 @@ rightclick_pos = {clientX : 0, clientY : 0}
 #templates
 TEMPATES_LENGTH = 0
 TEMPLATES_FILE_ID_FIRST = 20
-
+templates = []
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
@@ -144,7 +144,6 @@ load_position = (id) ->
 
     if pos == null then return null
 
-    #保证最右侧和最下面不越界,当超过时，自动排在最右侧和最下面
     if cols > 0 and pos.x + pos.width - 1 >= cols then pos.x = cols - pos.width
     if rows > 0 and pos.y + pos.height - 1 >= rows then pos.y = rows - pos.height
     pos
@@ -235,6 +234,8 @@ clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
+            # here perhaps should not use if checkout , maybe just make 16 o_tabble null
+            # should be optimize,maybe make bug
             if o_table[info.x+i][info.y+j] == id
                 o_table[info.x+i][info.y+j] = null
             else
@@ -249,14 +250,15 @@ set_occupy = (id, info) ->
             o_table[info.x+i][info.y+j] = id
     return
 
-
+# detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed 
+#               false :pos not be standed , the 16 grid are all free
 detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            if o_table[info.x+i][info.y+j] and o_table[info.x+i][info.y+j] != id
+            if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
                 return true
     return false
 
@@ -274,17 +276,12 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
-    # 新图标的摆放位置,就是当localStorage中没有id pos时，调用find_free_position 来得到new_pos,
-    # 然后move_to_position(new_pos)
-    # 这些操作都是在move_to_somewhere 和 move_to_anywhere中
-    # move_to_somewhere 又在place_desktop_items 和 sort_desktop_item_by_func等中
-    
-    #echo "find_free_position"
+    if not w? then w = _PART_
+    if not h? then h = _PART_
     info = {x:0, y:0, width:w, height:h}
-    for i in [0..cols - h]
-        for j in [0..rows - w]
-            #echo o_table[i][j]
-            if not o_table[i][j]? && not o_table[i + h - 1][j]? && not o_table[i][j + w - 1]? && not o_table[i + h - 1][j + w - 1]?
+    for i in [0..cols - w]
+        for j in [0..rows - h]
+            if not o_table[i][j]? && not o_table[i + w - 1][j]? && not o_table[i][j + h - 1]? && not o_table[i + w - 1][j + h - 1]?
                 info.x = i
                 info.y = j
                 return info
@@ -309,28 +306,11 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, pos) ->
-    #echo "move_to_position"
     old_pos = widget.get_pos()
-    
-    #echo "s_offset_x,y: " + s_offset_x + "," + s_offset_y
-    #echo "pos:"
-    #echo pos
-    #echo "old_pos:"
-    #echo old_pos
-
-    # 此处进行吸附判断操作，以及其他拖动用户行为判断及实现,得到一个new_pos
-    
-    
-    
-    # 此处决定移动的单元格size
     widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
     set_occupy(widget.get_id(), pos)
-    
-    # 此处是set_occupy，即设置一个desktop文件占了多少个格子，之前就是一个格子，现在要改成占了4*4=16个格子
-    # 注：set_occupy是读取widget.width  height来设置哪些格子被占用的,故不需要单独去设置4×4
-    # 同时当桌面初始化时，图标的位置就是通过这个函数移动的
     
     widget.set_pos(pos)
     save_position(widget.get_id(), pos)
@@ -340,7 +320,7 @@ move_to_position = (widget, pos) ->
 # need optimization
 move_to_anywhere = (widget) ->
     pos = load_position(widget.get_id())
-    if pos? and not detect_occupy(pos, widget.get_id())
+    if pos? and not detect_occupy(pos)
         move_to_position(widget, pos)
     else
         #if pos localStorage return null means the pos is occupyed
@@ -351,7 +331,7 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    if not detect_occupy(pos, widget.get_id())
+    if not detect_occupy(pos)
         move_to_position(widget, pos)
     else
         pos = find_free_position(pos.width, pos.height)
@@ -371,7 +351,7 @@ place_desktop_items = ->
 
         pos = w.get_pos()
         if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos, w.get_id())
+            if not detect_occupy(pos)
                 move_to_somewhere(w, pos)
         else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
             move_to_somewhere(w, old_pos)
@@ -463,7 +443,6 @@ menu_create_new_file = (name_add_before) ->
     create_entry_to_new_item(entry)
 
 menu_create_templates = (id) ->
-    templates = DCore.DEntry.get_templates_files()
     name_add_before = _("Untitled") + " "
     switch id
         when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
@@ -475,17 +454,19 @@ menu_create_templates = (id) ->
                     if (DCore.DEntry.create_templates(templates[i],name_add_before))
                         echo "create_templates finish!"
     return
+
 # all DND event handlers
 init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-
+        
         file_uri = []
         tmp_copy = []
-        #tmp_move = []
-
+        tmp_move = []
+        
         if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
+            #echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
             enter_indexof[0] = 0
@@ -502,28 +483,19 @@ init_grid_drop = ->
                 file = file_uri[i]
                 if (f_e = DCore.DEntry.create_by_path(file))?
                     tmp_copy.push(f_e)
-                    # only copy , not move
-                    # if DCore.DEntry.should_move(f_e)
-                    #     #echo "move"
-                    #     tmp_move.push(f_e)
-                    # else
-                    #     #echo "copy"
-                    #     tmp_copy.push(f_e)
                     # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
-            # only copy , not move
-            # if tmp_move.length
-            #     DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
 
             evt.dataTransfer.setData("Text",desktop_uri)
 
-        else if not _IS_DND_INTERLNAL_(evt) and evt.dataTransfer.files.length > 0
+        else if not _IS_DND_INTERLNAL_(evt) and not _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
+            #echo "file not from desktop_internal and richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(evt.dataTransfer.files.length) + 1
             for i in [0 ... evt.dataTransfer.files.length] by 1
@@ -547,6 +519,24 @@ init_grid_drop = ->
                 #DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
+        
+        else if  _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
+            #echo "file from richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
+            pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
+            w = Math.sqrt(evt.dataTransfer.files.length) + 1
+            for i in [0 ... evt.dataTransfer.files.length] by 1
+                file = evt.dataTransfer.files[i]
+                if (f_e = DCore.DEntry.create_by_path(file.path))?
+                    tmp_move.push(f_e)
+                    # make items as much nearer as possible to the pos that user drag on
+                    p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
+                    p.x = pos.x + (i % w)
+                    p.y = pos.y + Math.floor(i / w)
+                    if p.x >= cols or p.y >= rows then continue
+                    save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
+            if tmp_move.length
+                DCore.DEntry.move(tmp_move, g_desktop_entry, true)
+        
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -598,14 +588,9 @@ selected_cut_to_clipboard = ->
 paste_from_clipboard = ->
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
-evt_item_dragstart = null
-evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
     #echo "item_dragstart_handler"
-    evt_item_dragend = null
-    evt_item_dragstart = evt
-    #echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -634,9 +619,8 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    #echo "item_dragend_handler"
-    evt_item_dragend = evt
-    #echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo evt.dataTransfer.dropEffect
+    
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -679,15 +663,29 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-            #echo old_pos.x + "," + old_pos.y
-            #echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-
-            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
-
+            # final_pos = new_pos
+            # # if detect_occupy new_pos , we should find the final_pos nearly the pos!
+            # if detect_occupy(new_pos)
+            #     echo "find final_pos start"
+            #     x = new_pos.x
+            #     y = new_pos.y
+            #     if new_pos.w? then w = new_pos.w else w = _PART_
+            #     if new_pos.h? then h = new_pos.h else h = _PART_
+            #     delt = 2
+            #     if delt > Math.min(x,y) then delt = Math.min(x,y)
+            #     for i in [x - delt .. x + delt]
+            #         for j in [y - delt .. y + delt]
+            #             final_pos.x = i
+            #             final_pos.y = j
+            #             if not detect_occupy(final_pos)
+            #                 echo "have found final_pos"
+            #                 break
+            # new_pos = final_pos
+            # echo "2: " + w.get_pos().x + "," + w.get_pos().y
+            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos)
         update_selected_item_drag_image()
 
-    evt_item_dragstart = null
     return
 
 
@@ -928,9 +926,9 @@ grid_right_click = (evt) ->
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
-    templates = []
     templates_menu = []
-    templates = DCore.DEntry.get_templates_files()
+    templates_all = DCore.DEntry.get_templates_files()
+    templates = DCore.DEntry.get_templates_filter(templates_all)
     templates_menu.push([TEMPLATES_FILE_ID_FIRST, _("_Folder")])
     templates_menu.push([TEMPLATES_FILE_ID_FIRST + 1, _("_Text document")])
     TEMPATES_LENGTH = 2 + templates.length

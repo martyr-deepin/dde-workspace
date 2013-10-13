@@ -43,13 +43,14 @@
 #define HIDE_MODE_AUTOHIDDEN 3
 #define DESKTOP_CONFIG "desktop/config.ini"
 
-static GSettings* dock_gsettings = NULL;
-static GSettings* desktop_gsettings = NULL;
-static GKeyFile* desktop_config = NULL;
+PRIVATE
+GSettings* desktop_gsettings = NULL;
 
-GdkWindow* get_background_window ();
-void install_monitor();
+extern GdkWindow* get_background_window ();
+extern void install_monitor();
+PRIVATE
 void watch_workarea_changes(GtkWidget* widget, GSettings* dock_gsettings);
+PRIVATE
 void unwatch_workarea_changes(GtkWidget* widget);
 
 PRIVATE
@@ -429,7 +430,6 @@ gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 }
 
 GtkWidget* container = NULL;
-// GdkWindow* webview_input = NULL;
 GdkWindow* gdkwindow = NULL;
 GtkIMContext* im_context = NULL;
 
@@ -462,7 +462,6 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 JS_EXPORT_API
 void desktop_set_position_input(double x , double y)
 {
-    // g_debug("desktop_set_position_input");
     int width = 100;
     int height = 30;
     GdkRectangle area = {(int)x, (int)y, width, height};
@@ -470,12 +469,12 @@ void desktop_set_position_input(double x , double y)
     gtk_im_context_focus_in(im_context);
     gtk_im_context_set_client_window(im_context, gdkwindow);
     gtk_im_context_set_cursor_location(im_context, &area);
-    // g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
 }
 
 JS_EXPORT_API
 gboolean desktop_check_version_equal_set(const char* version_set)
 {
+    GKeyFile* desktop_config = NULL;
     gboolean result = FALSE;
     if (desktop_config == NULL)
         desktop_config = load_app_config(DESKTOP_CONFIG);
@@ -609,6 +608,7 @@ static gboolean __init__ = FALSE;
 JS_EXPORT_API
 void desktop_emit_webview_ok()
 {
+    GSettings* dock_gsettings = NULL;
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();
