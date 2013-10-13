@@ -31,6 +31,7 @@
 #include <gtk/gtk.h>
 #include <cairo/cairo-xlib.h>
 #include "DBUS_desktop.h"
+#include "desktop.h"
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
@@ -40,9 +41,11 @@
 #define HIDE_MODE_INTELLIGENT 1
 #define HIDE_MODE_KEEPHIDDEN 2
 #define HIDE_MODE_AUTOHIDDEN 3
+#define DESKTOP_CONFIG "desktop/config.ini"
 
 static GSettings* dock_gsettings = NULL;
 static GSettings* desktop_gsettings = NULL;
+static GKeyFile* desktop_config = NULL;
 
 GdkWindow* get_background_window ();
 void install_monitor();
@@ -470,7 +473,40 @@ void desktop_set_position_input(double x , double y)
     // g_debug("desktop_set_position_input: x :%d,y:%d,width:%d,height:%d",(int)x,(int)y,width,height);
 }
 
+JS_EXPORT_API
+gboolean desktop_check_version_equal_set(const char* version_set)
+{
+    gboolean result = FALSE;
+    if (desktop_config == NULL)
+        desktop_config = load_app_config(DESKTOP_CONFIG);
 
+    GError* err = NULL;
+    gchar* version = g_key_file_get_string(desktop_config, "main", "version", &err);
+    if (err != NULL) {
+        g_warning("[%s] read version failed from config file: %s", __func__, err->message);
+        g_error_free(err);
+        g_key_file_set_string(desktop_config, "main", "version", DESKTOP_VERSION);
+        save_app_config(desktop_config, DESKTOP_CONFIG);
+        g_message("desktop version : %s ",version);
+    }
+    else{
+        if (g_str_equal(version,version_set))
+            result = TRUE;
+        else{
+            result = FALSE;
+            g_key_file_set_string(desktop_config, "main", "version", version_set);
+            save_app_config(desktop_config, DESKTOP_CONFIG);
+            g_message("desktop version from %s update to %s",version,version_set);
+        }
+    }
+
+    if (version != NULL)
+        g_free(version);
+    g_key_file_unref(desktop_config);    
+    desktop_config = NULL;
+
+    return result;
+}
 
 int main(int argc, char* argv[])
 {
@@ -599,4 +635,3 @@ void desktop_emit_webview_ok()
     }
     update_workarea_size (dock_gsettings);
 }
-

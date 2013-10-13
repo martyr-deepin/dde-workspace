@@ -42,4 +42,6 @@ gboolean is_capslock_on ();
 
 gchar* get_date_string ();
 
+void turn_numlock_on ();
+
 #endif

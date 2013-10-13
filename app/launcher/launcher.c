@@ -1,9 +1,11 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
+ *               2013 ~ 2013 liliqiang
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
+ *              liliqiang <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +23,10 @@
 #include <string.h>
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
+#include "launcher.h"
 #include "xdg_misc.h"
 #include "dwebview.h"
 #include "dentry/entry.h"
-#include "utils.h"
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
@@ -782,6 +784,25 @@ void launcher_clear()
 }
 
 
+void check_version()
+{
+    if (launcher_config == NULL)
+        launcher_config = load_app_config(LAUNCHER_CONF);
+
+    GError* err = NULL;
+    gchar* version = g_key_file_get_string(launcher_config, "main", "version", &err);
+    if (err != NULL) {
+        g_warning("[%s] read version failed from config file: %s", __func__, err->message);
+        g_error_free(err);
+        g_key_file_set_string(launcher_config, "main", "version", LAUNCHER_VERSION);
+        save_app_config(launcher_config, LAUNCHER_CONF);
+    }
+
+    if (version != NULL)
+        g_free(version);
+}
+
+
 int main(int argc, char* argv[])
 {
     if (argc == 2 && g_str_equal("-d", argv[1]))
@@ -809,6 +830,8 @@ int main(int argc, char* argv[])
     if (is_daemonize)
 #endif
         daemonize();
+
+    check_version();
 
     init_i18n();
     gtk_init(&argc, &argv);
