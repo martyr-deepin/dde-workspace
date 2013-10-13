@@ -18,6 +18,7 @@ void dentry_decompress_files(const ArrayContainer fs);
 void dentry_decompress_files_here(const ArrayContainer fs);
 
 gboolean dentry_set_name(Entry* e, const char* name);
+char* calc_id(const char* uri);
 char* dentry_get_id(Entry* e);
 ArrayContainer dentry_list_files(GFile* f);
 char* dentry_get_icon(Entry* e);

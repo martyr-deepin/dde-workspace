@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Liqiang Lee
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
@@ -22,8 +22,8 @@
 #ifndef FILE_MONITOR_H
 #define FILE_MONITOR_H
 
-void monitor_apps();
-void monitor_destroy();
+void add_monitors();
+void destroy_monitors();
 
 #endif /* end of include guard: FILE_MONITOR_H */
 

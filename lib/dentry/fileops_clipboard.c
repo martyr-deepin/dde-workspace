@@ -107,7 +107,7 @@ fileops_paste (GFile* dest_dir)
 
     if (real_info->cut)
     {
-	fileops_move (real_info->file_list, real_info->num, dest_dir, true);
+	fileops_move (real_info->file_list, real_info->num, dest_dir, TRUE);
         //post messages event paste cancelled or failed.
 	JSObjectRef json = json_array_create();
 	for (int i = 0; i < real_info->num; i++)
