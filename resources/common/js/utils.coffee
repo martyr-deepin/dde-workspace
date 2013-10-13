@@ -171,3 +171,8 @@ get_path_name = (path)->
 remove_element = (obj)->
     _parentElement = obj?.parentNode
     _parentElement?.removeChild(obj)
+
+sortNumber = (a , b) ->
+    return a - b
+array_sort_min2max = (arr) ->
+    arr.sort(sortNumber)

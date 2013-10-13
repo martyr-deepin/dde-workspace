@@ -663,34 +663,69 @@ item_dragend_handler = (w, evt) ->
 
         for i in ordered_list
             if not (w = Widget.look_up(i))? then continue
-
             widget = w
-            old_pos = w.get_pos()
-            id = w.get_id()
+            old_pos = widget.get_pos()
+            id = widget.get_id()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-            final_pos = new_pos
-            # if detect_occupy new_pos , we should find the final_pos nearly the pos!
-            if detect_occupy(new_pos,id)
-                x = new_pos.x
-                y = new_pos.y
-                if new_pos.w? then w = new_pos.w else w = _PART_
-                if new_pos.h? then h = new_pos.h else h = _PART_
-                delt = 1
-                if delt > Math.min(x,y) then delt = Math.min(x,y)
-                for i in [x - delt .. x + delt]
-                    for j in [y - delt .. y + delt]
-                        final_pos.x = i
-                        final_pos.y = j
-                        if not detect_occupy(final_pos,id)
-                            echo "have found final_pos"
-                            break
-            new_pos = final_pos
-            move_to_somewhere(widget, new_pos) if not detect_occupy(new_pos,id)
+
+            final_pos = find_nearest_free_pos(widget,new_pos)
+            move_to_somewhere(widget, final_pos) if not detect_occupy(final_pos,id)
         update_selected_item_drag_image()
 
     return
 
+find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
+    id = w.get_id()
+    width = w.get_pos().width
+    height = w.get_pos().height
+    final_pos = dest_pos
+    # if detect_occupy new_pos , we should find the final_pos nearly the pos!
+    if detect_occupy(dest_pos,id)
+        distance_list = new Array()
+        distance_list_sorted = new Array()
+        pos_list = new Array()
+        minest = new Array()
+
+        x = dest_pos.x
+        y = dest_pos.y
+        if delt > Math.min(x,y) then delt = Math.min(x,y)
+        for i in [x - radius .. x + radius]
+            for j in [y - radius .. y + radius]
+                final_pos.x = i
+                final_pos.y = j
+                if not detect_occupy(final_pos,id)
+                    distance = Math.sqrt(Math.pow(Math.abs(final_pos.x - dest_pos.x) * grid_item_width,2) + Math.pow(Math.abs(final_pos.y - dest_pos.y) * grid_item_width,2))
+                    distance_list.push(distance)
+                    pos_list.push(final_pos)
+                    #echo "have found final_pos number:" + pos_list.length + ",and the distance : " + distance + "."
+                    break
+        # sort distance min2max
+        distance_list_sorted = distance_list.concat()
+        array_sort_min2max(distance_list_sorted)
+
+        # find the minest distance index and push in to minest array
+
+        for distance_min,i in distance_list
+            if distance is distance_list_sorted.slice(0,1)
+                minest.push(i)
+
+        # discuss the minest length
+        switch minest.length
+            when 0 then final_pos = dest_pos
+            when 1 then final_pos = pos_list[minest.slice(0,1)]
+            else final_pos = dest_pos
+
+        # clear the all array
+        distance_list.splice(0,pos_list.length)
+        distance_list_sorted.splice(0,pos_list.length)
+        pos_list.splice(0,pos_list.length)
+        minest.splice(0,pos_list.length)
+
+    else
+        final_pos = dest_pos
+
+    return final_pos
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
