@@ -96,8 +96,9 @@ DBUS_EXPORT_API
 void launcher_show()
 {
     is_launcher_shown = TRUE;
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_window_show(w);
+    gtk_widget_show(container);
+    /* GdkWindow* w = gtk_widget_get_window(container); */
+    /* gdk_window_show(w); */
 }
 
 
@@ -105,17 +106,18 @@ DBUS_EXPORT_API
 void launcher_hide()
 {
     is_launcher_shown = FALSE;
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_flush();
-    gdk_window_hide(w);
-    gdk_flush();
-    gdk_window_withdraw(w);
-    g_warning("[%s] 0x%lx", __func__, GDK_WINDOW_XID(w));
-    gdk_flush();
-    while (gdk_window_is_viewable(w)) {
-        g_warning("0x%lx is not hidden", GDK_WINDOW_XID(w));
-        gdk_window_hide(w);
-    }
+    gtk_widget_hide(container);
+    /* GdkWindow* w = gtk_widget_get_window(container); */
+    /* gdk_flush(); */
+    /* gdk_window_hide(w); */
+    /* gdk_flush(); */
+    /* gdk_window_withdraw(w); */
+    /* g_warning("[%s] 0x%lx", __func__, GDK_WINDOW_XID(w)); */
+    /* gdk_flush(); */
+    /* while (gdk_window_is_viewable(w)) { */
+    /*     g_warning("0x%lx is not hidden", GDK_WINDOW_XID(w)); */
+    /*     gdk_window_hide(w); */
+    /* } */
 }
 
 
@@ -614,7 +616,7 @@ int main(int argc, char* argv[])
     signal(SIGTERM, exit_signal_handler);
 
     pid_t p = getpid();
-    g_debug("No. #%d#", p);
+    g_warning("No. #%d#", p);
     save_pid();
 
     /* g_timeout_add_seconds(3, _launcher_size_monitor, NULL); */
@@ -667,11 +669,15 @@ int main(int argc, char* argv[])
 #endif
 
     add_monitors();
-    gtk_widget_show_all(container);
-    sleep(1);
+    gtk_widget_show_all(webview);
+    /* gtk_widget_show_all(container); */
+    /* sleep(1); */
     if (not_show) {
         g_warning("hide launcher");
         launcher_hide();
+    } else {
+        launcher_show();
+        /* gtk_widget_show(container); */
     }
     gtk_main();
     destroy_monitors();
