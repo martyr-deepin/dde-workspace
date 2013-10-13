@@ -664,29 +664,29 @@ item_dragend_handler = (w, evt) ->
         for i in ordered_list
             if not (w = Widget.look_up(i))? then continue
 
+            widget = w
             old_pos = w.get_pos()
+            id = w.get_id()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-            # final_pos = new_pos
-            # # if detect_occupy new_pos , we should find the final_pos nearly the pos!
-            # if detect_occupy(new_pos)
-            #     echo "find final_pos start"
-            #     x = new_pos.x
-            #     y = new_pos.y
-            #     if new_pos.w? then w = new_pos.w else w = _PART_
-            #     if new_pos.h? then h = new_pos.h else h = _PART_
-            #     delt = 2
-            #     if delt > Math.min(x,y) then delt = Math.min(x,y)
-            #     for i in [x - delt .. x + delt]
-            #         for j in [y - delt .. y + delt]
-            #             final_pos.x = i
-            #             final_pos.y = j
-            #             if not detect_occupy(final_pos)
-            #                 echo "have found final_pos"
-            #                 break
-            # new_pos = final_pos
-            # echo "2: " + w.get_pos().x + "," + w.get_pos().y
-            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos,w.get_id())
+            final_pos = new_pos
+            # if detect_occupy new_pos , we should find the final_pos nearly the pos!
+            if detect_occupy(new_pos,id)
+                x = new_pos.x
+                y = new_pos.y
+                if new_pos.w? then w = new_pos.w else w = _PART_
+                if new_pos.h? then h = new_pos.h else h = _PART_
+                delt = 1
+                if delt > Math.min(x,y) then delt = Math.min(x,y)
+                for i in [x - delt .. x + delt]
+                    for j in [y - delt .. y + delt]
+                        final_pos.x = i
+                        final_pos.y = j
+                        if not detect_occupy(final_pos,id)
+                            echo "have found final_pos"
+                            break
+            new_pos = final_pos
+            move_to_somewhere(widget, new_pos) if not detect_occupy(new_pos,id)
         update_selected_item_drag_image()
 
     return
