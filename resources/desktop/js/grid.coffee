@@ -320,7 +320,7 @@ move_to_position = (widget, pos) ->
 # need optimization
 move_to_anywhere = (widget) ->
     pos = load_position(widget.get_id())
-    if pos? and not detect_occupy(pos)
+    if pos? and not detect_occupy(pos,widget.get_id())
         move_to_position(widget, pos)
     else
         #if pos localStorage return null means the pos is occupyed
@@ -331,9 +331,12 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    if not detect_occupy(pos)
+    #echo "move_to_somewhere"
+    if not detect_occupy(pos,widget.get_id())
+        #echo "free pos"
         move_to_position(widget, pos)
     else
+        #echo "to find_free_position"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
@@ -351,7 +354,7 @@ place_desktop_items = ->
 
         pos = w.get_pos()
         if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos)
+            if not detect_occupy(pos,w.get_id())
                 move_to_somewhere(w, pos)
         else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
             move_to_somewhere(w, old_pos)
@@ -683,7 +686,7 @@ item_dragend_handler = (w, evt) ->
             #                 break
             # new_pos = final_pos
             # echo "2: " + w.get_pos().x + "," + w.get_pos().y
-            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos)
+            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos,w.get_id())
         update_selected_item_drag_image()
 
     return
