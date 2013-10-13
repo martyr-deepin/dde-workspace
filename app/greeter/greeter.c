@@ -40,6 +40,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "camera.h"
+#include "mutils.h"
 #include "settings.h"
 #include "DBUS_greeter.h"
 
@@ -279,6 +280,7 @@ int main (int argc, char **argv)
 
  //   monitor_resource_file("greeter", webview);
     init_camera(argc, argv);
+    turn_numlock_on ();
     gtk_main ();
     destroy_camera();
 

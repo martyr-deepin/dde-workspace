@@ -26,6 +26,8 @@
 #include <gio/gdesktopappinfo.h>
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
+#define STR_EXP(__A) #__A
+#define STR(A) STR_EXP(A)
 
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
