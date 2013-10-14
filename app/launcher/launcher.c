@@ -466,13 +466,6 @@ gboolean _launcher_size_monitor(gpointer user_data)
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
-        /* gchar* cmd[] = { */
-        /*     #<{(| "/usr/bin/launcher", |)}># */
-        /*     "launcher", */
-        /*     "-r", */
-        /*     NULL */
-        /* }; */
-        /* g_spawn_async(NULL, cmd, NULL, G_SPAWN_SEARCH_PATH | G_SPAWN_FILE_AND_ARGV_ZERO, NULL, NULL, NULL, NULL); */
         g_spawn_command_line_async("launcher -r", NULL);
         return FALSE;
     }
@@ -483,15 +476,6 @@ gboolean _launcher_size_monitor(gpointer user_data)
 
 gboolean save_pid()
 {
-#if 0
-    int fd = open("/home/liliqiang/.config/launcher/pid", O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
-    if (fd != -1)
-        g_warning("create launcher_pid");
-    char s[10] = {0};
-    sprintf(s, "%d", p);
-    write(fd, s, strlen(s));
-    close(fd);
-#else
     char* path = g_build_filename(g_get_user_config_dir(), "launcher", "pid", NULL);
     FILE* f = fopen(path, "w");
     g_free(path);
@@ -505,22 +489,12 @@ gboolean save_pid()
     fflush(f);
 
     fclose(f);
-#endif
     return TRUE;
 }
 
 
 pid_t read_pid()
 {
-#if 0
-    int fd = open("/home/liliqiang/.config/launcher/pid", O_RDONLY);
-    if (fd == -1)
-        g_warning("read launcher_pid failed");
-    char s[10] = {0};
-    read(fd, s, 10);
-    close(fd);
-    pid_t pid = atoi(s);
-#else
     char* path = g_build_filename(g_get_user_config_dir(), "launcher", "pid", NULL);
     gsize length = 0;
     GError* err = NULL;
@@ -535,7 +509,6 @@ pid_t read_pid()
     g_warning("[%s] %s", __func__, content);
     pid_t pid = atoi(content);
     g_free(content);
-#endif
     return pid;
 }
 
@@ -558,7 +531,7 @@ int main(int argc, char* argv[])
     if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
-#ifndef NDEBUG  // {{{
+#ifndef NDEBUG
     if (argc == 2 && 0 == g_strcmp0("-D", argv[1]))
         is_daemonize = TRUE;
 
@@ -566,12 +539,14 @@ int main(int argc, char* argv[])
         not_shows_launcher = TRUE;
         not_exit = TRUE;
     }
-#endif  // }}}
+#endif
 
     if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
-        g_warning("kill previous launcher");
         pid_t pid = read_pid();
+#ifndef NDEBUG
+        g_warning("kill previous launcher");
         g_warning("[%s] launcher's pid: #%d#", __func__, pid);
+#endif
         int kill(pid_t, int);  // avoid warning
         if (pid != -1)
             kill(pid, SIGKILL);
@@ -593,8 +568,6 @@ int main(int argc, char* argv[])
 #endif
     }
 
-    /* g_warning("is launcher running? %d, show launcher? %d", */
-    /*         is_application_running(LAUNCHER_ID_NAME), !not_shows_launcher); */
     if (is_application_running(LAUNCHER_ID_NAME) && !not_shows_launcher) {
         g_warning(_("another instance of launcher is running...\n"));
         dbus_launcher_toggle();
@@ -613,7 +586,9 @@ int main(int argc, char* argv[])
     signal(SIGTERM, exit_signal_handler);
 
     pid_t p = getpid();
+#ifndef NDEBUG
     g_warning("No. #%d#", p);
+#endif
     save_pid();
 
     g_timeout_add_seconds(3, _launcher_size_monitor, NULL);
