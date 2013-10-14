@@ -580,6 +580,13 @@ int main(int argc, char* argv[])
 #endif
     }
 
+    if (argc == 2 && 0 == g_strcmp0("-H", argv[1])) {
+        not_shows_launcher = TRUE;
+#ifndef NDEBUG
+        is_daemonize = TRUE;
+#endif
+    }
+
     /* g_warning("is launcher running? %d, show launcher? %d", */
     /*         is_application_running(LAUNCHER_ID_NAME), !not_shows_launcher); */
     if (is_application_running(LAUNCHER_ID_NAME) && !not_shows_launcher) {
