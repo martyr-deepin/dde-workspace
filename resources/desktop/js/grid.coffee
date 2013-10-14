@@ -234,6 +234,8 @@ clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
+            # here perhaps should not use if checkout , maybe just make 16 o_tabble null
+            # should be optimize,maybe make bug
             if o_table[info.x+i][info.y+j] == id
                 o_table[info.x+i][info.y+j] = null
             else
@@ -248,14 +250,15 @@ set_occupy = (id, info) ->
             o_table[info.x+i][info.y+j] = id
     return
 
-
+# detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed 
+#               false :pos not be standed , the 16 grid are all free
 detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
-            if o_table[info.x+i][info.y+j] and o_table[info.x+i][info.y+j] != id
+            if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
                 return true
     return false
 
@@ -273,6 +276,8 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
+    if not w? then w = _PART_
+    if not h? then h = _PART_
     info = {x:0, y:0, width:w, height:h}
     for i in [0..cols - w]
         for j in [0..rows - h]
@@ -301,25 +306,7 @@ coord_to_pos = (pos_x, pos_y, w, h) ->
 
 
 move_to_position = (widget, pos) ->
-    #echo "move_to_position"
     old_pos = widget.get_pos()
-    # echo widget.get_name()
-    
-    # x = pos.x
-    # y = pos.y
-    # if pos.w? then w = pos.w else w = _PART_
-    # if pos.h? then h = pos.h else h = _PART_
-    # delt = 1
-
-    # if !(not o_table[x][y]? && not o_table[x + w - 1][j]? && not o_table[x][y + h - 1]? && not o_table[x + w - 1][y + h - 1]?)
-    #     if x > w and y > h
-    #         for i in [x - delt .. x + delt]
-    #             for j in [y - delt .. y + delt]
-    #                 if not o_table[i][j]? && not o_table[i + w - 1][j]? && not o_table[i][j + h - 1]? && not o_table[i + w - 1][j + h - 1]?
-    #                     pos.x = i
-    #                     pos.y = j
-    #                     break
-
     widget.move(pos.x * grid_item_width + s_offset_x, pos.y * grid_item_height + s_offset_y)
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
@@ -333,7 +320,7 @@ move_to_position = (widget, pos) ->
 # need optimization
 move_to_anywhere = (widget) ->
     pos = load_position(widget.get_id())
-    if pos? and not detect_occupy(pos, widget.get_id())
+    if pos? and not detect_occupy(pos,widget.get_id())
         move_to_position(widget, pos)
     else
         #if pos localStorage return null means the pos is occupyed
@@ -344,9 +331,12 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    if not detect_occupy(pos, widget.get_id())
+    #echo "move_to_somewhere"
+    if not detect_occupy(pos,widget.get_id())
+        #echo "free pos"
         move_to_position(widget, pos)
     else
+        #echo "to find_free_position"
         pos = find_free_position(pos.width, pos.height)
         move_to_position(widget, pos)
     return
@@ -364,7 +354,7 @@ place_desktop_items = ->
 
         pos = w.get_pos()
         if (pos.x > -1) and (pos.y > -1) # we have a place
-            if not detect_occupy(pos, w.get_id())
+            if not detect_occupy(pos,w.get_id())
                 move_to_somewhere(w, pos)
         else if (old_pos = load_position(i)) != null # we get position remembered in localStorage
             move_to_somewhere(w, old_pos)
@@ -601,14 +591,9 @@ selected_cut_to_clipboard = ->
 paste_from_clipboard = ->
     DCore.DEntry.clipboard_paste(g_desktop_entry)
 
-evt_item_dragstart = null
-evt_item_dragend = null
 
 item_dragstart_handler = (widget, evt) ->
     #echo "item_dragstart_handler"
-    evt_item_dragend = null
-    evt_item_dragstart = evt
-    #echo "evt_item_dragstart.clientXY: " + evt.clientX + "," + evt.clientY
     all_selected_items_path = ""
     if selected_item.length > 0
         for i in [0 ... selected_item.length] by 1
@@ -637,9 +622,8 @@ item_dragstart_handler = (widget, evt) ->
 
 
 item_dragend_handler = (w, evt) ->
-    #echo "item_dragend_handler"
-    evt_item_dragend = evt
-    #echo "evt_item_dragend.clientXY: " + evt.clientX + "," + evt.clientY
+    #echo evt.dataTransfer.dropEffect
+    
     if evt.dataTransfer.dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -682,15 +666,29 @@ item_dragend_handler = (w, evt) ->
 
             old_pos = w.get_pos()
             new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
-            #echo old_pos.x + "," + old_pos.y
-            #echo new_pos.x + "," + new_pos.y
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-
-            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos, w.get_id())
-
+            # final_pos = new_pos
+            # # if detect_occupy new_pos , we should find the final_pos nearly the pos!
+            # if detect_occupy(new_pos)
+            #     echo "find final_pos start"
+            #     x = new_pos.x
+            #     y = new_pos.y
+            #     if new_pos.w? then w = new_pos.w else w = _PART_
+            #     if new_pos.h? then h = new_pos.h else h = _PART_
+            #     delt = 2
+            #     if delt > Math.min(x,y) then delt = Math.min(x,y)
+            #     for i in [x - delt .. x + delt]
+            #         for j in [y - delt .. y + delt]
+            #             final_pos.x = i
+            #             final_pos.y = j
+            #             if not detect_occupy(final_pos)
+            #                 echo "have found final_pos"
+            #                 break
+            # new_pos = final_pos
+            # echo "2: " + w.get_pos().x + "," + w.get_pos().y
+            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos,w.get_id())
         update_selected_item_drag_image()
 
-    evt_item_dragstart = null
     return
 
 
