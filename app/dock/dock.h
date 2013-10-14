@@ -29,5 +29,7 @@
 #define DOCK_SUBMINOR_VERSION 0
 #define DOCK_VERSION STR(DOCK_MAJOR_VERSION)"."STR(DOCK_MINOR_VERSION)"."STR(DOCK_SUBMINOR_VERSION)
 
+#define DOCK_ID_NAME "dock.app.deepin"
+
 #endif /* end of include guard: DOCK_H */
 

@@ -26,3 +26,8 @@ install(
     )
 
 GEN_JS_FILE(${NAME})
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-launcher.desktop
+    DESTINATION /etc/xdg/autostart/
+    )
