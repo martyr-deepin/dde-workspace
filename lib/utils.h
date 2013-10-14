@@ -32,6 +32,7 @@
 int binding(int server_sockfd, const char* path);
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
+void singleton(const char* name);
 void log_to_file(const gchar* log_domain, GLogLevelFlags log_level, const gchar* message, char* app_name);
 
 char* dcore_gen_id(const char* seed);

@@ -99,4 +99,4 @@ init_category_list = ->
 
     _category.appendChild(frag)
 
-    _set_adaptive_height()
+    # _set_adaptive_height()

@@ -91,6 +91,10 @@ body {
     bottom: 30px;
 }
 
+#container > div {
+    overflow-y: auto;
+}
+
 #category {
     margin-top: 25px;
     min-width: 180px;

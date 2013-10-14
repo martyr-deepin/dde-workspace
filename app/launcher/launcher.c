@@ -97,8 +97,6 @@ void launcher_show()
 {
     is_launcher_shown = TRUE;
     gtk_widget_show(container);
-    /* GdkWindow* w = gtk_widget_get_window(container); */
-    /* gdk_window_show(w); */
 }
 
 
@@ -107,17 +105,6 @@ void launcher_hide()
 {
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
-    /* GdkWindow* w = gtk_widget_get_window(container); */
-    /* gdk_flush(); */
-    /* gdk_window_hide(w); */
-    /* gdk_flush(); */
-    /* gdk_window_withdraw(w); */
-    /* g_warning("[%s] 0x%lx", __func__, GDK_WINDOW_XID(w)); */
-    /* gdk_flush(); */
-    /* while (gdk_window_is_viewable(w)) { */
-    /*     g_warning("0x%lx is not hidden", GDK_WINDOW_XID(w)); */
-    /*     gdk_window_hide(w); */
-    /* } */
 }
 
 
@@ -429,7 +416,6 @@ PRIVATE
 void daemonize()
 {
     g_debug("daemonize");
-    /* g_warning("daemonize"); */
     pid_t pid = 0;
     if ((pid = fork()) == -1) {
         g_warning("fork error");
@@ -481,7 +467,7 @@ gboolean _launcher_size_monitor(gpointer user_data)
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
         gchar* cmd[] = {
-            "launcher",
+            "/usr/bin/launcher",
             "-r",
             NULL
         };
@@ -545,6 +531,7 @@ pid_t read_pid()
         g_error_free(err);
         return -1;
     }
+    g_warning("[%s] %s", __func__, content);
     pid_t pid = atoi(content);
     g_free(content);
 #endif
@@ -567,7 +554,7 @@ void exit_signal_handler(int signum)
 
 int main(int argc, char* argv[])
 {
-    gboolean not_show = FALSE;
+    gboolean not_shows_launcher = FALSE;
 
     if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
@@ -577,27 +564,27 @@ int main(int argc, char* argv[])
         is_daemonize = TRUE;
 
     if (argc == 2 && g_str_equal("-f", argv[1])) {
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
         not_exit = TRUE;
     }
 #endif  // }}}
 
     if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
-        if (is_application_running("launcher.app.deepin")) {
+        if (is_application_running(LAUNCHER_ID_NAME)) {
             g_warning("kill previous launcher");
             pid_t pid = read_pid();
             g_warning("[%s] launcher's pid: #%d#", __func__, pid);
             int kill(pid_t, int);  // avoid warning
             kill(pid, SIGKILL);
+            not_shows_launcher = TRUE;
         }
-        usleep(100);
-        not_show = TRUE;
 #ifndef NDEBUG
         is_daemonize = TRUE;
 #endif
     }
 
-    if (is_application_running("launcher.app.deepin") && !not_show) {
+    /* g_warning("is launcher running? %d, show launcher? %d", */
+    /*         is_application_running(LAUNCHER_ID_NAME), !not_shows_launcher); */
+    if (is_application_running(LAUNCHER_ID_NAME) && !not_shows_launcher) {
         g_warning(_("another instance of launcher is running...\n"));
         dbus_launcher_toggle();
         return 0;
@@ -608,8 +595,7 @@ int main(int argc, char* argv[])
 #endif
         daemonize();
 
-    int sd = socket(AF_UNIX, SOCK_STREAM, 0);
-    binding(sd, "launcher.app.deepin");
+    singleton(LAUNCHER_ID_NAME);
     check_version();
 
     signal(SIGKILL, exit_signal_handler);
@@ -619,7 +605,7 @@ int main(int argc, char* argv[])
     g_warning("No. #%d#", p);
     save_pid();
 
-    /* g_timeout_add_seconds(3, _launcher_size_monitor, NULL); */
+    g_timeout_add_seconds(3, _launcher_size_monitor, NULL);
 
     init_i18n();
     gtk_init(&argc, &argv);
@@ -670,14 +656,10 @@ int main(int argc, char* argv[])
 
     add_monitors();
     gtk_widget_show_all(webview);
-    /* gtk_widget_show_all(container); */
-    /* sleep(1); */
-    if (not_show) {
-        g_warning("hide launcher");
+    if (not_shows_launcher) {
         launcher_hide();
     } else {
         launcher_show();
-        /* gtk_widget_show(container); */
     }
     gtk_main();
     destroy_monitors();
