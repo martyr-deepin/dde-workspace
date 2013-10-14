@@ -466,13 +466,14 @@ gboolean _launcher_size_monitor(gpointer user_data)
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
-        gchar* cmd[] = {
-            "/usr/bin/launcher",
-            "-r",
-            NULL
-        };
-        /* g_spawn_command_line_async("launcher -r", NULL); */
-        g_spawn_async(NULL, cmd, NULL, G_SPAWN_SEARCH_PATH | G_SPAWN_FILE_AND_ARGV_ZERO, NULL, NULL, NULL, NULL);
+        /* gchar* cmd[] = { */
+        /*     #<{(| "/usr/bin/launcher", |)}># */
+        /*     "launcher", */
+        /*     "-r", */
+        /*     NULL */
+        /* }; */
+        /* g_spawn_async(NULL, cmd, NULL, G_SPAWN_SEARCH_PATH | G_SPAWN_FILE_AND_ARGV_ZERO, NULL, NULL, NULL, NULL); */
+        g_spawn_command_line_async("launcher -r", NULL);
         return FALSE;
     }
 
