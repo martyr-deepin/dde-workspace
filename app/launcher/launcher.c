@@ -542,12 +542,10 @@ pid_t read_pid()
 
 void exit_signal_handler(int signum)
 {
-    fprintf(stderr, "recive signal %d", signum);
     switch (signum)
     {
     case SIGKILL:
     case SIGTERM:
-        fprintf(stderr, "recive KILL signal");
         launcher_quit();
     }
 }
@@ -570,14 +568,13 @@ int main(int argc, char* argv[])
 #endif  // }}}
 
     if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
-        if (is_application_running(LAUNCHER_ID_NAME)) {
-            g_warning("kill previous launcher");
-            pid_t pid = read_pid();
-            g_warning("[%s] launcher's pid: #%d#", __func__, pid);
-            int kill(pid_t, int);  // avoid warning
+        g_warning("kill previous launcher");
+        pid_t pid = read_pid();
+        g_warning("[%s] launcher's pid: #%d#", __func__, pid);
+        int kill(pid_t, int);  // avoid warning
+        if (pid != -1)
             kill(pid, SIGKILL);
-            not_shows_launcher = TRUE;
-        }
+        not_shows_launcher = TRUE;
 #ifndef NDEBUG
         is_daemonize = TRUE;
 #endif
