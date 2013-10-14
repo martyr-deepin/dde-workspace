@@ -21,22 +21,18 @@ GAppInfo *gen_app_info (const char* exec_val, const char* executable)
     GError* error = NULL;
     char* cmd_line;
 
-    if ( g_strcmp0 ("deepin-terminal", exec_val) == 0) {
-        cmd_line = g_strdup (exec_val);
-    } else {
-        if (executable == NULL)
-        {
-            cmd_line = g_strdup_printf("%s --working-directory=%s",
-                    exec_val, DESKTOP_DIR());
-        }
-        else
-        {
-            char* exec_arg_val = g_settings_get_string (terminal_gsettings,
-                                                        TERMINAL_KEY_EXEC_ARG);
-            cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
-                    exec_val, DESKTOP_DIR(), exec_arg_val, executable);
-            g_free (exec_arg_val);
-        }
+    if (executable == NULL)
+    {
+        cmd_line = g_strdup_printf("%s --working-directory=%s",
+                exec_val, DESKTOP_DIR());
+    }
+    else
+    {
+        char* exec_arg_val = g_settings_get_string (terminal_gsettings,
+                                                    TERMINAL_KEY_EXEC_ARG);
+        cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
+                exec_val, DESKTOP_DIR(), exec_arg_val, executable);
+        g_free (exec_arg_val);
     }
 
     appinfo = g_app_info_create_from_commandline(cmd_line, NULL, 
@@ -66,7 +62,6 @@ gboolean exec_app_info (const char *exec_val, const char *executable)
     }
 
     is_ok = g_app_info_launch (appinfo, NULL, NULL, &error);
-    g_free(exec_val);
     if (error!=NULL)
     {
         g_debug("exec app info error: %s", error->message);
