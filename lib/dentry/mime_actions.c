@@ -22,6 +22,10 @@ void desktop_run_in_terminal(char* executable)
 
     exec_val = g_settings_get_string(terminal_gsettings,
                                      TERMINAL_KEY_EXEC);
+    if ( exec_val == NULL ) {
+        exec_val = g_strdup ("x-terminal-emulator");
+    }
+
     if (executable == NULL)
     {
         cmd_line = g_strdup_printf("%s --working-directory=%s",
