@@ -667,40 +667,50 @@ static void g_file_copy_async_finish_handler(GObject *source_object,
     gtk_widget_destroy(parent);
 }
 
+GFile* dest_pb = NULL;
+GCancellable* gcancellable = NULL;
+void progress_bar_delete_event(GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+    g_message("progress_bar_delete_event");
+    /*g_cancellable_cancel(gcancellable);*/
+    /*g_file_delete (dest_pb, NULL, NULL);*/
+}
+
 static void  _copy_files_async_true(GFile *src,gpointer data)
 {
     g_debug("_copy_files_async_true start");
-    GFile* dest = NULL;
     TDData* _data = (TDData*) data;
-    dest = _data->dest_file;
-    //--------------------------------
+    dest_pb = _data->dest_file;
     GtkWidget *parent = NULL;
     GtkWidget *progress_bar = NULL;
     const char* basename = g_file_get_basename(src);
-    // const char* parsename = g_file_get_parse_name(src);
 
     parent = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_deletable(GTK_WINDOW(parent),FALSE);
+    gtk_window_set_position(GTK_WINDOW(parent),GTK_WIN_POS_CENTER);
     gtk_widget_set_size_request(parent, 400, 30);
-    gtk_window_set_title((GtkWindow *)parent,basename);
-    gtk_window_set_resizable((GtkWindow *)parent,FALSE);
-    gtk_window_set_position((GtkWindow *)parent,GTK_WIN_POS_CENTER);
+    gtk_window_set_title(GTK_WINDOW(parent),basename);
+    gtk_window_set_resizable(GTK_WINDOW(parent),FALSE);
+    g_signal_connect (G_OBJECT (parent), "delete_event", G_CALLBACK (progress_bar_delete_event), NULL);
     gtk_widget_show(parent);
- 
+    
     progress_bar = gtk_progress_bar_new();
-    gtk_container_add(GTK_CONTAINER(parent),
-                progress_bar);
-
+    gtk_container_add(GTK_CONTAINER(parent),progress_bar);
     gtk_widget_show(progress_bar);
-    //--------------------------------
+
+    gcancellable = g_cancellable_new();
+
+
+
 #if 1
     char* src_uri = g_file_get_uri (src);
-    char* dest_uri = g_file_get_uri (dest);
+    char* dest_uri = g_file_get_uri (dest_pb);
     g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
     g_free (src_uri);
     g_free (dest_uri);
 #endif
-    g_file_copy_async(src, dest, G_FILE_COPY_NOFOLLOW_SYMLINKS,
-                G_PRIORITY_DEFAULT, NULL, g_file_copy_progress_handler,
+    g_file_copy_async(src, dest_pb, G_FILE_COPY_NOFOLLOW_SYMLINKS,
+                G_PRIORITY_DEFAULT, gcancellable, g_file_copy_progress_handler,
                 progress_bar, g_file_copy_async_finish_handler, progress_bar);
 }
 /*
