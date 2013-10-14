@@ -1,7 +1,9 @@
 VERSION = " "  #RC Beta
+
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
-LOGIN_FAILED_TIP_TEXT = "Oops~无法识别您的面部信息，请点击头像重试或点击用户ID切换到密码输入"
+ANIMATION_TIME = 2
+# SCANNING_TIP = _("Scanning in 3 seconds")
 
 ESC_KEY = 27
 ENTER_KEY = 13
@@ -22,9 +24,3 @@ if is_greeter
     is_hide_users = DCore.Greeter.is_hide_users()
 else
     is_hide_users = false
-
-
-
-
-
-

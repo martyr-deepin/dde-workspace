@@ -88,3 +88,8 @@ get_date_string ()
 
     return ret;
 }
+
+void turn_numlock_on ()
+{
+    g_spawn_command_line_async ("numlockx on", NULL);
+}

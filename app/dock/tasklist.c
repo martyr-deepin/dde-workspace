@@ -1,9 +1,11 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +68,7 @@ static Atom ATOM_WINDOW_TYPE_SPLASH;
 static Atom ATOM_WINDOW_TYPE_TOOLBAR;
 static Atom ATOM_WINDOW_TYPE_TOOLTIP;
 static Atom ATOM_WINDOW_TYPE_UTILITY;
-static Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE;
+/* static Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
 static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
 static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
 static Atom ATOM_WINDOW_NAME;
@@ -103,7 +105,7 @@ PRIVATE void _init_atoms()
     ATOM_WINDOW_TYPE_TOOLBAR = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_TOOLBAR");
     ATOM_WINDOW_TYPE_TOOLTIP = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_TOOLTIP");
     ATOM_WINDOW_TYPE_UTILITY = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE_UTILITY");
-    ATOM_WINDOW_TYPE_KDE_OVERRIDE = gdk_x11_get_xatom_by_name("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE");
+    /* ATOM_WINDOW_TYPE_KDE_OVERRIDE = gdk_x11_get_xatom_by_name("_KDE_NET_WM_WINDOW_TYPE_OVERRIDE"); */
     ATOM_WINDOW_ALLOWED_ACTIONS = gdk_x11_get_xatom_by_name("_NET_WM_ALLOWED_ACTIONS");
     ATOM_WINDOW_ALLOW_MINIMIZE = gdk_x11_get_xatom_by_name("_NET_WM_ACTION_MINIMIZE");
     ATOM_WINDOW_NAME = gdk_x11_get_xatom_by_name("_NET_WM_NAME");
@@ -504,6 +506,8 @@ gboolean is_normal_window(Window w)
         } else if (g_str_equal(ch.res_class, "Desktop")) {
             get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
+        } else if (g_str_equal(ch.res_class, "Dlock")) {
+            need_return = TRUE;
         }
         XFree(ch.res_name);
         XFree(ch.res_class);
@@ -542,9 +546,9 @@ gboolean is_normal_window(Window w)
                    || window_type == ATOM_WINDOW_TYPE_TOOLBAR
                    || window_type == ATOM_WINDOW_TYPE_UTILITY) {
             has_cannot_be_docked_type = TRUE;
-        } else if (window_type == ATOM_WINDOW_TYPE_KDE_OVERRIDE) {
-            may_be_docked = FALSE;
-            break;
+        /* } else if (window_type == ATOM_WINDOW_TYPE_KDE_OVERRIDE) { */
+        /*     may_be_docked = FALSE; */
+        /*     break; */
         }
     }
 

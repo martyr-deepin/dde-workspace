@@ -43,6 +43,7 @@
 #include "gs-grab.h"
 #include "lock_util.h"
 #include "camera.h"
+#include "mutils.h"
 #include "settings.h"
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
@@ -54,7 +55,7 @@ const gchar *username;
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *password)
 {
-    if (lock_use_face_recognition_login(lock_get_username()) && detect_is_enabled) {
+    if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {
         gtk_main_quit();
         return TRUE;
     }
@@ -216,6 +217,9 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
 int main (int argc, char **argv)
 {
+    if (argc == 2 && g_str_equal(argv[1], "-d"))
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+
     init_i18n ();
 
     gtk_init (&argc, &argv);
@@ -280,6 +284,7 @@ int main (int argc, char **argv)
     gdk_window_stick (gdkwindow);
 
     init_camera(argc, argv);
+    turn_numlock_on ();
     gtk_main ();
     destroy_camera();
 

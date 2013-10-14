@@ -40,6 +40,7 @@
 #include "i18n.h"
 #include "utils.h"
 #include "camera.h"
+#include "mutils.h"
 #include "settings.h"
 #include "DBUS_greeter.h"
 
@@ -222,6 +223,9 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
 int main (int argc, char **argv)
 {
+    /* if (argc == 2 && g_str_equal(argv[1], "-d")) */
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+
     GdkScreen *screen;
     GdkRectangle geometry;
 
@@ -276,6 +280,7 @@ int main (int argc, char **argv)
 
  //   monitor_resource_file("greeter", webview);
     init_camera(argc, argv);
+    turn_numlock_on ();
     gtk_main ();
     destroy_camera();
 
