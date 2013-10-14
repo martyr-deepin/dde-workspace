@@ -711,22 +711,47 @@ void _update_window_appid(Client* c)
     char* app_id = NULL;
     gulong item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+    if (0 == g_strcmp0(c->clss, "Google-chrome")) {
+        app_id = g_strdup(c->instance_name);
+
+        if (g_str_has_prefix(app_id, "usr_share_deepin-webapps")) {
+            g_free(app_id);
+            app_id = NULL;
+        }
+
+        g_warning("[%s] google chrome, app_id is: %s", __func__, app_id);
+    }
+
     if (s_pid != NULL) {
         char* exec_name = NULL;
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
-            g_debug("[_update_window_appid] exec_name: %s, exec_args: %s", exec_name, exec_args);
+            g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
             g_assert(c->title != NULL);
-            app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL && c->instance_name != NULL)
-                app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-            if (app_id == NULL && c->clss != NULL)
-                app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-            if (app_id == NULL && exec_args != NULL)
-                app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
             if (app_id == NULL)
+                app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
+
+            if (app_id == NULL && c->instance_name != NULL) {
+                app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from instance name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && c->clss != NULL) {
+                app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from class name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && exec_args != NULL) {
+                app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+            }
+            if (app_id == NULL) {
                 app_id = g_strdup(exec_name);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec name: %s", __func__, app_id);
+            }
         } else {
             app_id = g_strdup(c->clss);
         }
@@ -737,6 +762,7 @@ void _update_window_appid(Client* c)
         app_id = g_strdup(c->clss);
     }
 
+    g_warning("[%s] tmp appid is: %s", __func__, app_id);
     g_free(c->app_id);
     if (app_id != NULL) {
         c->app_id = to_lower_inplace(app_id);
@@ -756,6 +782,8 @@ void _update_window_appid(Client* c)
         if (NULL != strchr(c->app_id, '_'))
             g_strdelimit(c->app_id, "_", '-');
     }
+
+    g_warning("[%s] final app_id is: %s", __func__, app_id);
 
     XFree(s_pid);
 }
