@@ -244,9 +244,8 @@ update_items = (items) ->
     return items
 
 _update_scroll_bar = (len) ->
-    echo 'update scroll bar'
     lang = _b.getAttribute('lang')
-    if lang == en
+    if lang == 'en'
         category_width = 220
     else
         category_width = 180
@@ -254,14 +253,12 @@ _update_scroll_bar = (len) ->
     lines = parseInt(ITEM_WIDTH * len / grid_width) + 1
 
     grid_height = window.screen.height - 100
-    echo "#{lines * ITEM_HEIGHT}"
     if lines * ITEM_HEIGHT >= grid_height
         grid.style.overflowY = "scroll"
     else
         grid.style.overflowY = "hidden"
 
 grid_show_items = (items) ->
-    echo 'grid show items'
     update_selected(null)
 
     hidden_icon_ids = _get_hidden_icons_ids()
@@ -298,7 +295,6 @@ grid_load_category = (cat_id) ->
 
 
 init_grid = ->
-    echo 'init grid'
     sort_category_info(sort_methods[sort_method])
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(ALL_APPLICATION_CATEGORY_ID)

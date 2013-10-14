@@ -583,6 +583,7 @@ int main(int argc, char* argv[])
 
     if (argc == 2 && 0 == g_strcmp0("-H", argv[1])) {
         if (is_application_running(LAUNCHER_ID_NAME)) {
+            g_warning(_("another instance of launcher is running...\n"));
             return 0;
         }
 
