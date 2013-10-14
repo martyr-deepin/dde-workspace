@@ -247,12 +247,6 @@ void get_atom_value_for_loop(gpointer data, gulong n_item, gpointer res, gulong 
     }
 }
 
-/**
- * For following 2 functions, pass -1 to index, the callback function will be
- * regarded as CallbackFuncWithoutIndex type.
- *
- * This just works for self-defined functions.
- */
 gboolean get_atom_value_by_atom(Display* dsp, Window window_id, Atom atom, gpointer res,
                                 CallbackFunc callback, gulong index)
 {

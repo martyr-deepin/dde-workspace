@@ -103,6 +103,7 @@ DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     _b.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
+    category_column_adaptive_height()
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)

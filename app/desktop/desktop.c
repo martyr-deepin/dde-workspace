@@ -501,7 +501,7 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
     if (version != NULL)
         g_free(version);
-    g_key_file_unref(desktop_config);    
+    g_key_file_unref(desktop_config);
     desktop_config = NULL;
 
     return result;
@@ -509,10 +509,12 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
 int main(int argc, char* argv[])
 {
-    if (is_application_running("desktop.app.deepin")) {
+    if (is_application_running(DESKTOP_ID_NAME)) {
         g_warning("another instance of application desktop is running...\n");
         return 0;
     }
+
+    singleton(DESKTOP_ID_NAME);
 
     //remove  option -f
     parse_cmd_line (&argc, &argv);
@@ -635,3 +637,4 @@ void desktop_emit_webview_ok()
     }
     update_workarea_size (dock_gsettings);
 }
+
