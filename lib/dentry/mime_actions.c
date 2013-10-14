@@ -10,12 +10,12 @@
 
 static GSettings* terminal_gsettings = NULL;
 
-GAppInfo *gen_app_info (char* exec_val, char* executable);
-gboolean exec_app_info (char *exec_val, char *executable);
+GAppInfo *gen_app_info (const char* exec_val, const char* executable);
+gboolean exec_app_info (const char *exec_val, const char *executable);
 
 //used by dentry/mime_actions.c
 
-GAppInfo *gen_app_info (char* exec_val, char* executable)
+GAppInfo *gen_app_info (const char* exec_val, const char* executable)
 {
     GAppInfo *appinfo = NULL;
     GError* error = NULL;
@@ -38,7 +38,6 @@ GAppInfo *gen_app_info (char* exec_val, char* executable)
             g_free (exec_arg_val);
         }
     }
-    g_free(exec_val);
 
     appinfo = g_app_info_create_from_commandline(cmd_line, NULL, 
             G_APP_INFO_CREATE_NONE, &error);
@@ -54,7 +53,7 @@ GAppInfo *gen_app_info (char* exec_val, char* executable)
     return appinfo;
 }
 
-gboolean exec_app_info (char *exec_val, char *executable)
+gboolean exec_app_info (const char *exec_val, const char *executable)
 {
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
@@ -67,6 +66,7 @@ gboolean exec_app_info (char *exec_val, char *executable)
     }
 
     is_ok = g_app_info_launch (appinfo, NULL, NULL, &error);
+    g_free(exec_val);
     if (error!=NULL)
     {
         g_debug("exec app info error: %s", error->message);
@@ -96,6 +96,7 @@ void desktop_run_in_terminal(char* executable)
     }
 
     is_ok = exec_app_info (exec_val, executable);
+    g_free(exec_val);
     if ( !is_ok ) {
         g_debug ("exec app info failed!");
 
