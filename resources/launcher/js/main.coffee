@@ -104,6 +104,13 @@ DCore.signal_connect('workarea_changed', (alloc)->
     _b.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
     category_column_adaptive_height()
+
+    hidden_icon_ids = _get_hidden_icons_ids()
+    count = 0
+    for i in category_infos[ALL_APPLICATION_CATEGORY_ID]
+        if i not in hidden_icon_ids
+            count += 1
+    _update_scroll_bar(count)
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
