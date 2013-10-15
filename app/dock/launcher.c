@@ -202,6 +202,7 @@ void update_dock_apps()
 
         for (gsize i=0; i<size; i++) {
             if (g_key_file_has_group(k_apps, list[i])) {
+                g_debug("[%s] build app info: %s", __func__, list[i]);
                 JSValueRef app_info = build_app_info(list[i]);
                 if (app_info) {
                     js_post_message("launcher_added", app_info);
@@ -442,6 +443,12 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
     if (info != NULL) {
         dock_request_dock(g_desktop_app_info_get_filename(info));
     } else {
+        GList* pos = g_list_find_custom(_apps_position, name, (GCompareFunc)g_strcmp0);
+        if (pos == NULL) {
+            _apps_position = g_list_append(_apps_position, g_strdup(name));
+        }
+
+        _save_apps_position();
         g_key_file_set_string(k_apps, name, "Name", name);
         g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
         g_key_file_set_string(k_apps, name, "Icon", icon);

@@ -45,6 +45,7 @@
 
 PRIVATE
 GSettings* desktop_gsettings = NULL;
+GSettings* dock_gsettings = NULL;
 
 extern GdkWindow* get_background_window ();
 extern void install_monitor();
@@ -610,7 +611,6 @@ static gboolean __init__ = FALSE;
 JS_EXPORT_API
 void desktop_emit_webview_ok()
 {
-    GSettings* dock_gsettings = NULL;
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();

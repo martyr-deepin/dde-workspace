@@ -47,6 +47,7 @@ extern char* dcore_get_theme_icon(const char*, double);
 #include <gio/gdesktopappinfo.h>
 
 #define RECORD_FILE "dock/record.ini"
+#define FILTER_FILE "dock/filter.ini"
 GKeyFile* record_file = NULL;
 
 static Atom ATOM_WINDOW_HIDDEN;
@@ -372,7 +373,7 @@ void _update_client_info(Client *c)
             for (int i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
-                g_debug("[_update_client_info] name: %s, exec: %s", action->name, action->exec);
+                /* g_debug("[_update_client_info] name: %s, exec: %s", action->name, action->exec); */
                 JSObjectRef action_item = json_create();
                 json_append_string(action_item, "name", action->name);
                 json_append_string(action_item, "exec", action->exec);
@@ -706,29 +707,63 @@ void _update_window_title(Client* c)
 
 }
 
+
 void _update_window_appid(Client* c)
 {
+    GDesktopAppInfo* desktop_file = NULL;
     char* app_id = NULL;
     gulong item;
     long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+
     if (s_pid != NULL) {
         char* exec_name = NULL;
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
-            g_debug("[_update_window_appid] exec_name: %s, exec_args: %s", exec_name, exec_args);
+            g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
             g_assert(c->title != NULL);
-            app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL && c->instance_name != NULL)
+            if (app_id == NULL) {
+                GKeyFile* f = load_app_config(FILTER_FILE);
+                if (f != NULL) {
+                    app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
+                    char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
+                    if (path != NULL)
+                        desktop_file = g_desktop_app_info_new_from_filename(path);
+                    g_free(path);
+                }
+                g_key_file_unref(f);
+
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
+            }
+            if (app_id == NULL) {
+                app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
+            }
+            if (app_id == NULL && c->instance_name != NULL) {
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-            if (app_id == NULL && c->clss != NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from instance name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && c->clss != NULL) {
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-            if (app_id == NULL && exec_args != NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from class name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && exec_args != NULL) {
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
-            if (app_id == NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+            }
+            if (app_id == NULL) {
                 app_id = g_strdup(exec_name);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec name: %s", __func__, app_id);
+            }
         } else {
             app_id = g_strdup(c->clss);
+            g_debug("[%s] no s_pid, get app id from class name: %s", __func__, app_id);
         }
         g_free(exec_name);
         g_free(exec_args);
@@ -737,12 +772,14 @@ void _update_window_appid(Client* c)
         app_id = g_strdup(c->clss);
     }
 
+    g_debug("[%s] temp app id: %s", __func__, app_id);
     g_free(c->app_id);
     if (app_id != NULL) {
         c->app_id = to_lower_inplace(app_id);
 
         if (s_pid != NULL) {
-            GDesktopAppInfo* desktop_file = guess_desktop_file(c->app_id);
+            if (desktop_file == NULL)
+                desktop_file = guess_desktop_file(c->app_id);
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);
@@ -1085,12 +1122,13 @@ gboolean dock_request_dock_by_client_id(double id)
 
     if (dock_has_launcher(c->app_id)) {
         // already has this app info
-        g_debug("already has this app info");
+        g_debug("[%s] already has this app info", __func__);
         return FALSE;
     } else if (c->app_id == NULL || c->exec == NULL || c->icon == NULL) {
-        g_warning("cannot dock app, because app_id, command line or icon maybe NULL");
+        g_warning("[%s] cannot dock app, because app_id, command line or icon maybe NULL", __func__);
         return FALSE;
     } else {
+        g_debug("[%s] request_by_info", __func__);
         request_by_info(c->app_id, c->exec, c->icon);
         return TRUE;
     }
