@@ -17,6 +17,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+set_version_desktop("0.0.3")
+
 create_item_grid()
 
 connect_default_signals()
@@ -30,3 +32,6 @@ place_desktop_items()
 place_all_widgets()
 
 DCore.Desktop.test()
+
+#echo "s_width:" + s_width + ",s_height:" + s_height + ",s_offset_x:" + s_offset_x + ",s_offset_y:" + s_offset_y
+#echo "cols:" + cols + ",rows:" + rows + ",grid_item_width:" + grid_item_width + ",grid_item_height:" + grid_item_height

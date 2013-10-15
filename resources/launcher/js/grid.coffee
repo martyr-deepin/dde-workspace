@@ -160,17 +160,20 @@ class Item extends Widget
         @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
 
     add_to_autostart: ->
-        @is_autostart = true
-        DCore.Launcher.add_to_autostart(@core)
-        Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
-            AUTOSTART_ICON_SIZE)
-        create_img("autostart_flag", Item.theme_icon, @element)
+        if DCore.Launcher.add_to_autostart(@core)
+            @is_autostart = true
+            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+                AUTOSTART_ICON_SIZE)
+            last = @element.lastChild
+            if last.tagName != 'IMG'
+                create_img("autostart_flag", Item.theme_icon, @element)
 
     remove_from_autostart: ->
         if DCore.Launcher.remove_from_autostart(@core)
             @is_autostart = false
             last = @element.lastChild
-            @element.removeChild(last) if last.tagName == 'IMG'
+            if last.tagName == 'IMG'
+                @element.removeChild(last)
 
     toggle_autostart: ->
         if @is_autostart
@@ -247,9 +250,16 @@ update_items = (items) ->
     return items
 
 _update_scroll_bar = (len) ->
-    lines = parseInt(ITEM_WIDTH * len / grid.clientWidth) + 1
+    lang = _b.getAttribute('lang')
+    if lang == 'en'
+        category_width = 220
+    else
+        category_width = 180
+    grid_width = window.screen.width - 20 - category_width
+    lines = parseInt(ITEM_WIDTH * len / grid_width) + 1
 
-    if lines * ITEM_HEIGHT >= grid.clientHeight
+    grid_height = window.screen.height - 100
+    if lines * ITEM_HEIGHT >= grid_height
         grid.style.overflowY = "scroll"
     else
         grid.style.overflowY = "hidden"

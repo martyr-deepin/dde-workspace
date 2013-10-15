@@ -329,13 +329,19 @@ char* dentry_get_thumbnail(Entry* e)
     return ret;
 }
 
+char* calc_id(const char* uri)
+{
+    char* name = g_path_get_basename(uri);
+    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, name, strlen(name));
+    g_free(name);
+    return id;
+}
+
 JS_EXPORT_API
 char* dentry_get_id(Entry* e)
 {
     char* uri = dentry_get_uri(e);
-    char* name = g_path_get_basename(uri);
-    char* id = g_compute_checksum_for_string(G_CHECKSUM_MD5, name, strlen(name));
-    g_free(name);
+    char* id = calc_id(uri);
     g_free(uri);
     return id;
 }
@@ -381,6 +387,17 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         }
         return launch_res;
     TEST_GAPP(e, app)
+        char const* startup_wm_class = g_desktop_app_info_get_startup_wm_class(G_DESKTOP_APP_INFO(app));
+        if (startup_wm_class != NULL) {
+            GKeyFile* f = load_app_config("dock/filter.ini");
+            const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
+            char* appid = get_basename_without_extend_name(path);
+            g_key_file_set_string(f, startup_wm_class, "appid", appid);
+            g_key_file_set_string(f, startup_wm_class, "path", path);
+            g_free(appid);
+            save_app_config(f, "dock/filter.ini");
+            g_key_file_unref(f);
+        }
         ArrayContainer _fs = _normalize_array_container(fs);
 
         GFile** files = _fs.data;
@@ -796,7 +813,8 @@ void do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_fl
 {
     GError* error = NULL;
     if (!g_file_copy(src, dest, copy_flag, NULL, NULL, NULL, &error)) {
-        g_warning("error message: %s, error code: %d\n", error->message, error->code);
+        g_warning("[%s] error message: %s, error code: %d\n", __func__,
+                  error->message, error->code);
         FileOpsResponse* response;
         response = fileops_move_copy_error_show_dialog(_("copy"), error, src, dest, NULL);
 
@@ -845,7 +863,6 @@ JS_EXPORT_API
 void dentry_copy_dereference_symlink(ArrayContainer fs, GFile* dest_dir)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-
     GFile** _srcs = (GFile**)_fs.data;
     for (size_t i = 0; i < _fs.num; ++i) {
         char* src_basename = g_file_get_basename(_srcs[i]);
@@ -1135,6 +1152,32 @@ ArrayContainer dentry_get_templates_files(void)
         ac.num = 0;
     }
     return ac ;
+}
+
+JS_EXPORT_API
+ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
+{
+    ArrayContainer _fs;
+    GFile** files = NULL;
+    GPtrArray* array = g_ptr_array_sized_new(1024);
+
+    _fs = _normalize_array_container(fs);
+    files = _fs.data;
+    for(int i=0; i<fs.num; i++)
+    {
+        GFile *f = files[i];
+        GFileType type = g_file_query_file_type (f,G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
+        if (type != G_FILE_TYPE_DIRECTORY){
+            g_ptr_array_add(array, f);
+        }
+     }
+    g_free(_fs.data);
+    ArrayContainer ac;
+    ac.num = array->len;
+    ac.data = array->pdata;
+    g_ptr_array_free(array, FALSE);
+
+    return ac;
 }
 
 JS_EXPORT_API

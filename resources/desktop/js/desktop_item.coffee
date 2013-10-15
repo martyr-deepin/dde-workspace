@@ -54,7 +54,7 @@ class Item extends Widget
         super(@id)
 
         el = @element
-        @_position = {x:-1, y:-1, width:1, height:1}
+        @_position = {x:-1, y:-1, width:1*_PART_, height:1*_PART_}
 
         #el.setAttribute("tabindex", 0)
         el.draggable = true
@@ -172,13 +172,13 @@ class Item extends Widget
         ret_pos = {x : @_position.x, y : @_position.y, width : @_position.width, height : @_position.height}
 
 
-    set_pos : (info) =>
-        [@_position.x, @_position.y] = [info.x, info.y]
+    set_pos : (pos) =>
+        [@_position.x, @_position.y] = [pos.x, pos.y]
         return
 
 
-    _set_size : (info) =>
-        [@_position.width, @_position.height] = [info.width, info.height]
+    _set_size : (pos) =>
+        [@_position.width, @_position.height] = [pos.width, pos.height]
         return
 
 
@@ -305,7 +305,7 @@ class Item extends Widget
 
     item_blur : =>
         @clear_delay_rename_timer()
-        if @in_rename then @item_complete_rename(false)
+        if @in_rename then @item_complete_rename(true)
 
         @display_short_name()
         @display_not_focus()
@@ -365,7 +365,6 @@ class Item extends Widget
         # first make the contextmenu not showed when is in_renaming 
         menu = []
         @item_name.parentElement.contextMenu = build_menu(menu)
-        #@item_name.parentElement.contextMenu = ""
         
         input_x = _ITEM_WIDTH_ * @_position.x
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel
@@ -960,8 +959,8 @@ class RichDir extends DesktopEntry
             ele.appendChild(sb)
             s = document.createElement("img")
             # s.src = DCore.DEntry.get_icon(e)
-            if (s.src = DCore.DEntry.get_icon(e)) == null 
-                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
+            if (s.src = DCore.DEntry.get_icon(e)) == null
+                s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                 echo "warning: richdir child get_icon is null:" + s.src
             sb.appendChild(s)
             s = document.createElement("div")
@@ -975,6 +974,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[this.id]
                 if e?
                     evt.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(e))
+                    _SET_DND_RICHDIR_FLAG_(evt)
                     evt.dataTransfer.effectAllowed = "all"
                 else
                     evt.dataTransfer.effectAllowed = "none"
@@ -1099,7 +1099,9 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
+        
         @item_focus()
+        
         #@display_focus()
         #@display_full_name()
         return

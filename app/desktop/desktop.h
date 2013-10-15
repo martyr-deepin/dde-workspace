@@ -1,9 +1,9 @@
 /**
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
- *               2013 ~ 2013 Liqiang Lee
+ *               2011 ~ 2013 bluth
  *
- * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
- * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Author:      bluth <yuanchenglu@linuxdeepin.com>
+ * Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,17 +19,17 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LAUNCHER_H
-#define LAUNCHER_H
+#ifndef DESKTOP_H
+#define DESKTOP_H
 
 #include "utils.h"
 
-#define LAUNCHER_MAJOR_VERSION 0
-#define LAUNCHER_MINOR_VERSION 0
-#define LAUNCHER_SUBMINOR_VERSION 0
-#define LAUNCHER_VERSION STR(LAUNCHER_MAJOR_VERSION)"."STR(LAUNCHER_MINOR_VERSION)"."STR(LAUNCHER_SUBMINOR_VERSION)
+#define DESKTOP_MAJOR_VERSION 0
+#define DESKTOP_MINOR_VERSION 0
+#define DESKTOP_SUBMINOR_VERSION 0
+#define DESKTOP_VERSION STR(DESKTOP_MAJOR_VERSION)"."STR(DESKTOP_MINOR_VERSION)"."STR(DESKTOP_SUBMINOR_VERSION)
 
-#define LAUNCHER_ID_NAME "launcher.app.deepin"
+#define DESKTOP_ID_NAME "desktop.app.deepin"
 
-#endif /* end of include guard: LAUNCHER_H */
+#endif /* end of include guard: DESKTOP_H */
 

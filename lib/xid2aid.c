@@ -236,7 +236,7 @@ gboolean is_app_in_white_list(const char* name)
     if (!_is_init) {
         _init();
     }
-    return g_hash_table_contains(white_apps, name);
+    return g_str_has_prefix(name, "chrome-http") || g_hash_table_contains(white_apps, name);
 }
 
 
@@ -281,3 +281,4 @@ char* get_exe(const char* app_id, int pid)
     g_free(path);
     return g_strdup(buf);
 }
+

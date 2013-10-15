@@ -1,6 +1,6 @@
 /**
- * Copyright (c) 2011 ~ 2012 Deepin, Inc.
- *               2011 ~ 2012 Liqiang Lee
+ * Copyright (c) 2011 ~ 2013 Deepin, Inc.
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
@@ -35,18 +35,24 @@
 #define SOFTWARE_CENTER_INTERFACE SOFTWARE_CENTER_NAME
 
 PRIVATE GKeyFile* hidden_app_conf = NULL;
+PRIVATE GPtrArray* autostart_paths = NULL;
 PRIVATE GKeyFile* launcher_config = NULL;
-PRIVATE GPtrArray* config_paths = NULL;
 
-void destroy_config_file()
+
+void free_resources()
 {
-    g_key_file_free(hidden_app_conf);
-    g_key_file_free(launcher_config);
-    g_ptr_array_unref(config_paths);
+    if (hidden_app_conf != NULL)
+        g_key_file_unref(hidden_app_conf);
+
+    if (autostart_paths != NULL)
+        g_ptr_array_unref(autostart_paths);
+
+    if (launcher_config != NULL)
+        g_key_file_unref(launcher_config);
 }
 
 JS_EXPORT_API
-JSValueRef launcher_load_hidden_apps()
+JSValueRef launcher_load_hidden_app_conf()
 {
     if (hidden_app_conf == NULL) {
         hidden_app_conf = load_app_config(APPS_INI);
@@ -80,7 +86,7 @@ JSValueRef launcher_load_hidden_apps()
 
 
 JS_EXPORT_API
-void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
+void launcher_save_hidden_app_conf(ArrayContainer hidden_app_ids)
 {
     if (hidden_app_ids.data != NULL) {
         g_key_file_set_string_list(hidden_app_conf, "__Config__", "app_ids",
@@ -109,16 +115,18 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
     return is_exist;
 }
 
-
-void _init_config_path()
+GPtrArray* get_autostart_paths()
 {
-    config_paths = g_ptr_array_new_with_free_func(g_free);
+    if (autostart_paths != NULL)
+        return g_ptr_array_ref(autostart_paths);
+
+    GPtrArray* paths = g_ptr_array_new_with_free_func(g_free);
 
     char* autostart_dir = g_build_filename(g_get_user_config_dir(),
                                            AUTOSTART_DIR, NULL);
 
     if (g_file_test(autostart_dir, G_FILE_TEST_EXISTS))
-        g_ptr_array_add(config_paths, autostart_dir);
+        g_ptr_array_add(paths, autostart_dir);
     else
         g_free(autostart_dir);
 
@@ -127,12 +135,12 @@ void _init_config_path()
         autostart_dir = g_build_filename(sys_paths[i], AUTOSTART_DIR, NULL);
 
         if (g_file_test(autostart_dir, G_FILE_TEST_EXISTS))
-            g_ptr_array_add(config_paths, autostart_dir);
+            g_ptr_array_add(paths, autostart_dir);
         else
             g_free(autostart_dir);
     }
 
-    g_ptr_array_add(config_paths, NULL);
+    return paths;
 }
 
 gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboolean* is_autostart)
@@ -145,7 +153,7 @@ gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboole
     g_key_file_load_from_file(candidate_app, full_path, G_KEY_FILE_NONE, &err);
 
     if (err != NULL) {
-        g_warning("[_read_gnome_autostart_enable] load desktop file(%s) failed: %s", full_path, err->message);
+        g_warning("[%s] load desktop file(%s) failed: %s", __func__, full_path, err->message);
         goto out;
     }
 
@@ -154,7 +162,7 @@ gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboole
                                                     GNOME_AUTOSTART_KEY,
                                                     &err);
     if (err != NULL) {
-        g_warning("[_read_gnome_autostart_enable] function g_key_has_key error: %s", err->message);
+        g_warning("[%s] function g_key_has_key error: %s", __func__, err->message);
         goto out;
     }
 
@@ -164,7 +172,7 @@ gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboole
                                                           GNOME_AUTOSTART_KEY,
                                                           &err);
         if (err != NULL) {
-            g_warning("[_read_gnome_autostart_enable] get value failed: %s", err->message);
+            g_warning("[%s] get value failed: %s", __func__, err->message);
         } else {
             *is_autostart = gnome_autostart;
         }
@@ -173,10 +181,11 @@ gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboole
     }
 
 out:
-    g_free(full_path);
     if (err != NULL)
         g_error_free(err);
+    g_free(full_path);
     g_key_file_unref(candidate_app);
+
     return is_success;
 }
 
@@ -216,8 +225,8 @@ gboolean _check_exist(const char* path, const char* name)
 JS_EXPORT_API
 gboolean launcher_is_autostart(Entry* _item)
 {
-    if (config_paths == NULL) {
-        _init_config_path();
+    if (autostart_paths == NULL) {
+        autostart_paths = get_autostart_paths();
     }
 
 
@@ -228,11 +237,10 @@ gboolean launcher_is_autostart(Entry* _item)
     char* lowcase_name = g_utf8_strdown(name, -1);
     g_free(name);
 
-    char* path = NULL;
-    for (int i = 0; (path = (char*)g_ptr_array_index(config_paths, i)) != NULL; ++i) {
+    for (int i = 0; i < autostart_paths->len; ++i) {
+        char* path = g_ptr_array_index(autostart_paths, i);
         if ((is_existing = _check_exist(path, lowcase_name))) {
             gboolean gnome_autostart = FALSE;
-
 
             if (i == 0 && _read_gnome_autostart_enable(path, lowcase_name, &gnome_autostart)) {
                 // user config
@@ -252,11 +260,14 @@ gboolean launcher_is_autostart(Entry* _item)
 
 
 JS_EXPORT_API
-void launcher_add_to_autostart(Entry* _item)
+gboolean launcher_add_to_autostart(Entry* _item)
 {
-    if (launcher_is_autostart(_item))
-        return;
+    if (launcher_is_autostart(_item)){
+        g_debug("[%s] already autostart", __func__);
+        return TRUE;
+    }
 
+    gboolean success = TRUE;
     const char* item_path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(_item));
     GFile* item = g_file_new_for_path(item_path);
 
@@ -265,32 +276,87 @@ void launcher_add_to_autostart(Entry* _item)
     char* dest_path = g_build_filename(config_dir, AUTOSTART_DIR, app_name, NULL);
     g_free(app_name);
 
-    GFile* dest = g_file_new_for_path(dest_path);
-    g_free(dest_path);
+    if (!g_file_test(dest_path, G_FILE_TEST_EXISTS)) {
+        GFile* dest = g_file_new_for_path(dest_path);
 
-    do_dereference_symlink_copy(item, dest, G_FILE_COPY_NONE);
-    g_object_unref(dest);
+        do_dereference_symlink_copy(item, dest, G_FILE_COPY_NONE);
+        g_object_unref(dest);
+    }
+
     g_object_unref(item);
+
+    GKeyFile* dst = g_key_file_new();
+    GError* err = NULL;
+    g_key_file_load_from_file(dst, dest_path, G_KEY_FILE_NONE, &err);
+
+    if (err != NULL) {
+        g_warning("[%s] load file(%s) failed: %s", __func__, dest_path, err->message);
+        g_error_free(err);
+        success = FALSE;
+        goto out;
+    }
+
+    g_key_file_set_boolean(dst, G_KEY_FILE_DESKTOP_GROUP,
+                           GNOME_AUTOSTART_KEY, true);
+    save_key_file(dst, dest_path);
+
+out:
+    g_free(dest_path);
+    g_key_file_unref(dst);
+    return success;
+}
+
+
+PRIVATE
+gboolean _remove_autostart(const char* file_path)
+{
+    GKeyFile* file = g_key_file_new();
+    GError* error = NULL;
+    g_key_file_load_from_file(file, file_path, G_KEY_FILE_NONE, &error);
+    if (error != NULL) {
+        g_warning("[%s] load file(%s) failed: %s", __func__, file_path, error->message);
+        g_error_free(error);
+        g_key_file_unref(file);
+        return FALSE;
+    }
+
+    g_key_file_set_boolean(file, G_KEY_FILE_DESKTOP_GROUP,
+                           GNOME_AUTOSTART_KEY, FALSE);
+    save_key_file(file, file_path);
+    g_key_file_unref(file);
+    return TRUE;
 }
 
 
 JS_EXPORT_API
 gboolean launcher_remove_from_autostart(Entry* _item)
 {
-    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-
-    if (config_paths == NULL) {
-        _init_config_path();
+    if (!launcher_is_autostart(_item)) {
+        g_debug("[%s] already not autostart", __func__);
+        return TRUE;
     }
 
-    int i = 0;
-    char* path = NULL;
-    while ((path = (char*)g_ptr_array_index(config_paths, i++)) != NULL) {
-        GDir* dir = g_dir_open(path, 0, NULL);
-        if (dir == NULL)
-            return FALSE;
+    gboolean success = FALSE;
+    GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
+    char* name = to_lower_inplace(get_desktop_file_basename(item));
 
-        char* name = get_desktop_file_basename(item);
+    char* dest_path = g_build_filename(g_get_user_config_dir(),
+                                       AUTOSTART_DIR, name, NULL);
+    if (g_file_test(dest_path, G_FILE_TEST_EXISTS)) {
+        success = _remove_autostart(dest_path);
+        goto out;
+    }
+
+    // start from 1 for skiping user autostart dir
+    for (int i = 1; i < autostart_paths->len; ++i) {
+        char* path = g_ptr_array_index(autostart_paths, i);
+        GError* err = NULL;
+        GDir* dir = g_dir_open(path, 0, &err);
+        if (dir == NULL) {
+            g_warning("[%s] open dir(%s) failed: %s", __func__, path, err->message);
+            g_error_free(err);
+            break;
+        }
 
         const char* filename = NULL;
         while ((filename = g_dir_read_name(dir)) != NULL) {
@@ -298,27 +364,33 @@ gboolean launcher_remove_from_autostart(Entry* _item)
 
             if (0 == g_strcmp0(name, lowercase_name)) {
                 g_free(lowercase_name);
+                g_dir_close(dir);
+
+                GFile* dest_file = g_file_new_for_path(dest_path);
+
                 char* file_path = g_build_filename(path, filename, NULL);
-                GFile* file = g_file_new_for_path(file_path);
+                GFile* src_file = g_file_new_for_path(file_path);
                 g_free(file_path);
-                GError* error = NULL;
-                gboolean success = g_file_delete(file, NULL, &error);
-                if (!success) {
-                    g_warning("delete file failed: %s", error->message);
-                    g_error_free(error);
-                }
-                g_object_unref(file);
-                return success;
+
+                do_dereference_symlink_copy(src_file, dest_file, G_FILE_COPY_NONE);
+                g_object_unref(src_file);
+                g_object_unref(dest_file);
+
+                success = _remove_autostart(dest_path);
+
+                goto out;
             }
 
             g_free(lowercase_name);
         }
 
         g_dir_close(dir);
-        g_free(name);
     }
 
-    return FALSE;
+out:
+    g_free(dest_path);
+    g_free(name);
+    return success;
 }
 
 
