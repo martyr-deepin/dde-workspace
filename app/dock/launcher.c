@@ -176,13 +176,16 @@ char* get_app_id(GDesktopAppInfo* info)
 {
     char* app_id = NULL;
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
+    g_debug("[%s] basename: %s", __func__, basename);
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         app_id = basename;
+        g_debug("[%s] is_app_in_white_list: %s", __func__, app_id);
     } else {
         g_free(basename);
 
         app_id = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
+        g_debug("[%s] not is_app_in_white_list: %s", __func__, app_id);
     }
     return to_lower_inplace(app_id);
 }
@@ -348,6 +351,7 @@ void dock_request_dock(const char* path)
 {
     char* unescape_path = g_uri_unescape_string(path, "/:");
     GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(unescape_path);
+    g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
         char* app_id = get_app_id(info);
