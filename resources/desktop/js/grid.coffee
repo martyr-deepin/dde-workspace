@@ -635,8 +635,9 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     #echo evt.dataTransfer.dropEffect
-    
-    if evt.dataTransfer.dropEffect == "link"
+    dropEffect = evt.dataTransfer.dropEffect
+    #echo dropEffect
+    if dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         coord_x_shift = new_pos.x - old_pos.x
@@ -701,6 +702,8 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         minest = new Array()
 
         if radius > Math.min(dest_pos.x,dest_pos.y) then radius = Math.min(dest_pos.x,dest_pos.y)
+        if dest_pos.x + radius > cols or dest_pos.y + radius > rows
+            radius = Math.min(cols - dest_pos.x,rows - dest_pos.y)
         for i in [dest_pos.x - radius .. dest_pos.x + radius]
             for j in [dest_pos.y - radius .. dest_pos.y + radius]
                 final_pos.x = i
