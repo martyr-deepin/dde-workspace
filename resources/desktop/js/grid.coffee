@@ -682,7 +682,7 @@ item_dragend_handler = (w, evt) ->
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             new_pos = find_nearest_free_pos(widget,new_pos)
-            move_to_somewhere(widget, new_pos)
+            move_to_somewhere(widget, new_pos) if not detect_occupy(new_pos,id)
 
         update_selected_item_drag_image()
 
