@@ -689,76 +689,46 @@ item_dragend_handler = (w, evt) ->
     return
 
 
-# return the realative position that dest to src
-# example: RIGHT means dest is in src's right
-calc_relative_position = (src_pos,dest_pos) ->
-    delt = 3
-    if src_pos.x - dest_pos.x > delt then horizon = RIGHT
-    else if src_pos.x - dest_pos.x < -1 * delt then horizon = LEFT
-    else horizon = CENTER
-
-    if src_pos.y - dest_pos.y > delt then vertical = DOWN
-    else if src_pos.y - dest_pos.y < -1 * delt then vertical = UP
-    else vertical = CENTER
-
-    return {hori : horizon, vert : vertical}
-
-find_nearest_free_pos = (w,dest_pos,radius = _PART_ * 2) ->
-    echo "find_nearest_free_pos"
+find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
     id = w.get_id()
     width = w.get_pos().width
     height = w.get_pos().height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
     if detect_occupy(dest_pos,id)
-
-        dest_widget = null
-        for i in [0..dest_pos.width - 1] by 1
-            for j in [0..dest_pos.height - 1] by 1
-                if o_table[dest_pos.x+i][dest_pos.y+j]? && o_table[dest_pos.x+i][dest_pos.y+j] isnt id
-                    dest_widget = Widget.look_up(o_table[dest_pos.x+i][dest_pos.y+j])
-        echo dest_widget.get_name()
-        destw_pos = dest_widget.get_pos()
-        destw_pos_to_srcw_destpos = calc_relative_position(dest_pos,destw_pos)
-        echo destw_pos_to_srcw_destpos.hori + "," + destw_pos_to_srcw_destpos.vert
         distance_list = new Array()
         distance_list_sorted = new Array()
         pos_list = new Array()
         minest = new Array()
 
-        if radius > Math.min(dest_pos.x,dest_pos.y) then delt = Math.min(dest_pos.x,dest_pos.y)
+        if radius > Math.min(dest_pos.x,dest_pos.y) then radius = Math.min(dest_pos.x,dest_pos.y)
         for i in [dest_pos.x - radius .. dest_pos.x + radius]
             for j in [dest_pos.y - radius .. dest_pos.y + radius]
                 final_pos.x = i
                 final_pos.y = j
                 if not detect_occupy(final_pos,id)
-                    x_dis = Math.abs(i - destw_pos.x)
-                    y_dis = Math.abs(j - destw_pos.y)
+                    x_dis = Math.abs(final_pos.x - dest_pos.x)
+                    y_dis = Math.abs(final_pos.y - dest_pos.y)
                     distance = Math.sqrt(Math.pow(x_dis,2) + Math.pow(y_dis,2))
                     distance_list.push(distance)
-                    pos_list.push(final_pos)
-                    #echo "have found final_pos index: " + pos_list.length + ",and the distance : " + distance + "."
+                    pos_list.push(final_pos.x)
+                    pos_list.push(final_pos.y)
         
         distance_list_sorted = distance_list.concat()
         array_sort_min2max(distance_list_sorted)
-        for m in distance_list_sorted
-            echo m
+        
         for dis,i in distance_list
             if dis is distance_list_sorted[0]
-                echo "minest.push(" + i + "),and the distance_minest is: " + distance_list_sorted[0]
                 minest.push(i)
-        
         switch minest.length
             when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
-            when 1 then final_pos = coord_to_pos(pos_list[minest[0]].x, pos_list[minest[0]].y,width,height)
-            else final_pos = coord_to_pos(pos_list[minest[0]].x, pos_list[minest[0]].y,width,height)
+            when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
+            else final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
 
         distance_list.splice(0,pos_list.length)
         distance_list_sorted.splice(0,pos_list.length)
         pos_list.splice(0,pos_list.length)
         minest.splice(0,pos_list.length)
     
-    if not detect_occupy(final_pos,id)
-        echo "final_pos:" + final_pos.x +  "," + final_pos.y
     return final_pos
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
