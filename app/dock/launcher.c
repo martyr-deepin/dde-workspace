@@ -176,13 +176,16 @@ char* get_app_id(GDesktopAppInfo* info)
 {
     char* app_id = NULL;
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
+    g_debug("[%s] basename: %s", __func__, basename);
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         app_id = basename;
+        g_debug("[%s] is_app_in_white_list: %s", __func__, app_id);
     } else {
         g_free(basename);
 
         app_id = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
+        g_debug("[%s] not is_app_in_white_list: %s", __func__, app_id);
     }
     return to_lower_inplace(app_id);
 }
@@ -202,6 +205,7 @@ void update_dock_apps()
 
         for (gsize i=0; i<size; i++) {
             if (g_key_file_has_group(k_apps, list[i])) {
+                g_debug("[%s] build app info: %s", __func__, list[i]);
                 JSValueRef app_info = build_app_info(list[i]);
                 if (app_info) {
                     js_post_message("launcher_added", app_info);
@@ -347,6 +351,7 @@ void dock_request_dock(const char* path)
 {
     char* unescape_path = g_uri_unescape_string(path, "/:");
     GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(unescape_path);
+    g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
         char* app_id = get_app_id(info);
@@ -442,6 +447,12 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
     if (info != NULL) {
         dock_request_dock(g_desktop_app_info_get_filename(info));
     } else {
+        GList* pos = g_list_find_custom(_apps_position, name, (GCompareFunc)g_strcmp0);
+        if (pos == NULL) {
+            _apps_position = g_list_append(_apps_position, g_strdup(name));
+        }
+
+        _save_apps_position();
         g_key_file_set_string(k_apps, name, "Name", name);
         g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
         g_key_file_set_string(k_apps, name, "Icon", icon);

@@ -10,51 +10,95 @@
 
 static GSettings* terminal_gsettings = NULL;
 
+GAppInfo *gen_app_info (const char* exec_val, const char* executable);
+gboolean exec_app_info (const char *exec_val, const char *executable);
+
 //used by dentry/mime_actions.c
-void desktop_run_in_terminal(char* executable)
+
+GAppInfo *gen_app_info (const char* exec_val, const char* executable)
 {
+    GAppInfo *appinfo = NULL;
     GError* error = NULL;
-    char* exec_val;
     char* cmd_line;
 
-    if (terminal_gsettings == NULL)
-        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
-
-    exec_val = g_settings_get_string(terminal_gsettings,
-                                     TERMINAL_KEY_EXEC);
     if (executable == NULL)
     {
         cmd_line = g_strdup_printf("%s --working-directory=%s",
-                                   exec_val, DESKTOP_DIR());
+                exec_val, DESKTOP_DIR());
     }
     else
     {
         char* exec_arg_val = g_settings_get_string (terminal_gsettings,
                                                     TERMINAL_KEY_EXEC_ARG);
         cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
-                                   exec_val, DESKTOP_DIR(), exec_arg_val, executable);
+                exec_val, DESKTOP_DIR(), exec_arg_val, executable);
         g_free (exec_arg_val);
     }
-    g_free(exec_val);
 
-    GAppInfo* appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
-                                                           G_APP_INFO_CREATE_NONE,
-                                                           &error);
+    appinfo = g_app_info_create_from_commandline(cmd_line, NULL, 
+            G_APP_INFO_CREATE_NONE, &error);
     g_free(cmd_line);
     if (error!=NULL)
     {
-        g_debug("desktop_run_terminal error: %s", error->message);
+        g_debug("gen_app_info error: %s", error->message);
         g_error_free(error);
+        return NULL;
     }
     error = NULL;
-    g_app_info_launch(appinfo, NULL, NULL, &error);
-    if (error!=NULL)
-    {
-        g_debug("desktop_run_terminal error: %s", error->message);
-        g_error_free(error);
+
+    return appinfo;
+}
+
+gboolean exec_app_info (const char *exec_val, const char *executable)
+{
+    GAppInfo *appinfo = NULL;
+    GError *error = NULL;
+    gboolean is_ok = FALSE;
+
+    appinfo = gen_app_info (exec_val, executable);
+    if ( appinfo == NULL ) {
+        g_debug ("gen app info failed!");
+        return FALSE;
     }
 
-    g_object_unref(appinfo);
+    is_ok = g_app_info_launch (appinfo, NULL, NULL, &error);
+    if (error!=NULL)
+    {
+        g_debug("exec app info error: %s", error->message);
+        g_error_free(error);
+        g_object_unref (appinfo);
+
+        return FALSE;
+    }
+
+    g_object_unref (appinfo);
+    return TRUE;
+}
+
+void desktop_run_in_terminal(char* executable)
+{
+    gboolean is_ok = FALSE;
+    char* exec_val;
+
+    if (terminal_gsettings == NULL)
+        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
+
+    exec_val = g_settings_get_string(terminal_gsettings,
+                                     TERMINAL_KEY_EXEC);
+    if ( exec_val == NULL ) {
+        g_debug ("terminal exec is null");
+        return ;
+    }
+
+    is_ok = exec_app_info (exec_val, executable);
+    g_free(exec_val);
+    if ( !is_ok ) {
+        g_debug ("exec app info failed!");
+
+        exec_app_info ("x-terminal-emulator", executable);
+    }
+
+    return ;
 }
 
 #define RESPONSE_RUN 1000

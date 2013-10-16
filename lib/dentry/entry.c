@@ -387,6 +387,17 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         }
         return launch_res;
     TEST_GAPP(e, app)
+        char const* startup_wm_class = g_desktop_app_info_get_startup_wm_class(G_DESKTOP_APP_INFO(app));
+        if (startup_wm_class != NULL) {
+            GKeyFile* f = load_app_config("dock/filter.ini");
+            const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
+            char* appid = get_basename_without_extend_name(path);
+            g_key_file_set_string(f, startup_wm_class, "appid", appid);
+            g_key_file_set_string(f, startup_wm_class, "path", path);
+            g_free(appid);
+            save_app_config(f, "dock/filter.ini");
+            g_key_file_unref(f);
+        }
         ArrayContainer _fs = _normalize_array_container(fs);
 
         GFile** files = _fs.data;

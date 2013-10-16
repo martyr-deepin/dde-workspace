@@ -244,9 +244,16 @@ update_items = (items) ->
     return items
 
 _update_scroll_bar = (len) ->
-    lines = parseInt(ITEM_WIDTH * len / grid.clientWidth) + 1
+    lang = _b.getAttribute('lang')
+    if lang == 'en'
+        category_width = 220
+    else
+        category_width = 180
+    grid_width = window.screen.width - 20 - category_width
+    lines = parseInt(ITEM_WIDTH * len / grid_width) + 1
 
-    if lines * ITEM_HEIGHT >= grid.clientHeight
+    grid_height = window.screen.height - 100
+    if lines * ITEM_HEIGHT >= grid_height
         grid.style.overflowY = "scroll"
     else
         grid.style.overflowY = "hidden"

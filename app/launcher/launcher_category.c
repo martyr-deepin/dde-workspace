@@ -92,14 +92,14 @@ GList* _get_x_category(GDesktopAppInfo* info)
         return categories;
     }
 
-    g_debug("%s", g_desktop_app_info_get_filename(info));
+    g_debug("[%s] %s", __func__, g_desktop_app_info_get_filename(info));
     gboolean has_other_id = FALSE;
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
-    for (int i = 0; x_categories[i] != NULL; ++i) {
+    for (int i = 0; x_categories[i] != NULL && x_categories[i][0] != '\0'; ++i) {
         char* lower_case = g_utf8_casefold(x_categories[i], -1);
         int id = find_category_id(_(lower_case));
         g_free(lower_case);
-        g_debug("%s:%d", x_categories[i], id);
+        g_debug("[%s] #%s#:%d", __func__, x_categories[i], id);
         if (id == OTHER_CATEGORY_ID)
             has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
@@ -112,7 +112,7 @@ GList* _get_x_category(GDesktopAppInfo* info)
         categories = g_list_append(categories, GINT_TO_POINTER(OTHER_CATEGORY_ID));
 
     for (GList* iter = g_list_first(categories); iter != NULL; iter = g_list_next(iter))
-        g_debug("%d", GPOINTER_TO_INT(iter->data));
+        g_debug("[%s] using %d", __func__, GPOINTER_TO_INT(iter->data));
     g_strfreev(x_categories);
     return categories;
 }
@@ -122,6 +122,7 @@ int _get_all_possible_categories(GList** categories, int argc, char** argv, char
 {
     if (argv[0][0] != '\0') {
         int category_id = find_category_id(_(argv[0]));
+        g_debug("[%s] %d", __func__, category_id);
         *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
     }
 
@@ -137,6 +138,7 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
     g_free(basename);
 
     g_string_append(sql, app_name[0]);
+    g_debug("[%s] app: %s", __func__, app_name[0]);
     g_strfreev(app_name);
     g_string_append(sql, "\";");
     search_database(get_category_name_db_path(), sql->str,
