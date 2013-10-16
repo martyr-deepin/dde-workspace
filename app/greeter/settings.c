@@ -84,6 +84,9 @@ static void _webview_ok(char const* username)
         if (_use_face_recognition_login(username)) {
             js_post_message_simply("draw", NULL);
             connect_camera();
+        } else {
+            g_timer_stop(recognition_info.timer);
+            g_timer_destroy(recognition_info.timer);
         }
 
         inited = TRUE;

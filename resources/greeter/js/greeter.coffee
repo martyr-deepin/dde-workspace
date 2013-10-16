@@ -83,13 +83,12 @@ document.body.addEventListener("mousewheel", (e) =>
 )
 
 document.body.addEventListener("keydown", (e)=>
-
-    if e.which == 37
-        #echo "prev"
+    if e.which == LEFT_ARROW
+        # echo "prev"
         _current_user?.animate_prev()
 
-    else if e.which == 39
-        #echo "next"
+    else if e.which == RIGHT_ARROW
+        # echo "next"
         _current_user?.animate_next()
 
     else if e.which == ENTER_KEY
