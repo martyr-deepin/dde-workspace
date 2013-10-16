@@ -187,6 +187,7 @@ char* get_app_id(GDesktopAppInfo* info)
         app_id = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
         g_debug("[%s] not is_app_in_white_list: %s", __func__, app_id);
     }
+    g_strdelimit(app_id, "_", '-');
     return to_lower_inplace(app_id);
 }
 
@@ -329,6 +330,7 @@ void write_app_info(GDesktopAppInfo* info)
     }
 
     g_key_file_set_string(k_apps, app_id, "Name", g_app_info_get_display_name(G_APP_INFO(info)));
+    /* g_warning("[%s] write Name to %s", __func__, g_app_info_get_display_name(G_APP_INFO(info))); */
 
     g_key_file_set_string(k_apps, app_id, "Path", g_desktop_app_info_get_filename(info));
     g_key_file_set_boolean(k_apps, app_id, "Terminal", get_need_terminal(info));
@@ -450,12 +452,41 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
         GList* pos = g_list_find_custom(_apps_position, name, (GCompareFunc)g_strcmp0);
         if (pos == NULL) {
             _apps_position = g_list_append(_apps_position, g_strdup(name));
+
+            _save_apps_position();
         }
 
-        _save_apps_position();
-        g_key_file_set_string(k_apps, name, "Name", name);
-        g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
-        g_key_file_set_string(k_apps, name, "Icon", icon);
+        if (g_str_has_prefix(name, "chrome-http")) {
+            /* g_warning("[%s] %s is chrome app", __func__, name); */
+            GKeyFile* f = load_app_config(FILTER_FILE);
+            gsize length = 0;
+            char** groups = g_key_file_get_groups(f, &length);
+            for (int i = 0; i < length; ++i) {
+                char* appid = g_key_file_get_string(f, groups[i], "appid", NULL);
+                /* g_warning("[%s] compare #%s# and #%s#", __func__, name, appid); */
+                if (appid != NULL && 0 == g_strcmp0(appid, name)) {
+                    /* g_warning("find it"); */
+                    char* path = g_key_file_get_string(f, groups[i], "path", NULL);
+                    /* g_warning("[%s] find path: %s", __func__, path); */
+                    g_key_file_set_string(k_apps, name, "Path", path);
+                    GDesktopAppInfo* d = g_desktop_app_info_new_from_filename(path);
+                    if (d != NULL) {
+                        /* g_warning("[%s] ", __func__); */
+                        write_app_info(d);
+                    }
+                    g_object_unref(d);
+                    g_free(path);
+                    break;
+                }
+                g_free(appid);
+            }
+            g_strfreev(groups);
+            g_key_file_unref(f);
+        } else {
+            g_key_file_set_string(k_apps, name, "Name", name);
+            g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
+            g_key_file_set_string(k_apps, name, "Icon", icon);
+        }
 
         save_app_config(k_apps, APPS_INI);
 

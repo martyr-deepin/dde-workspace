@@ -47,7 +47,6 @@ extern char* dcore_get_theme_icon(const char*, double);
 #include <gio/gdesktopappinfo.h>
 
 #define RECORD_FILE "dock/record.ini"
-#define FILTER_FILE "dock/filter.ini"
 GKeyFile* record_file = NULL;
 
 static Atom ATOM_WINDOW_HIDDEN;
@@ -790,6 +789,7 @@ void _update_window_appid(Client* c)
             }
         }
 
+        // uniform '_' to '-'
         if (NULL != strchr(c->app_id, '_'))
             g_strdelimit(c->app_id, "_", '-');
     }
