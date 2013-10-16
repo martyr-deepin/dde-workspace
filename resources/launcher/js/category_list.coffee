@@ -30,11 +30,12 @@ _create_category = (info) ->
     return el
 
 
-_set_adaptive_height = ->
+category_column_adaptive_height = ->
     warp = _category.parentNode
     # add 20px for margin
     categories_height = _category.children.length * (_category.lastElementChild.clientHeight + 20)
-    if categories_height > warp.clientHeight
+    warp_height = window.screen.height - 100
+    if categories_height > warp_height
         warp.style.overflowY = "scroll"
         warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
 
@@ -99,4 +100,4 @@ init_category_list = ->
 
     _category.appendChild(frag)
 
-    _set_adaptive_height()
+    category_column_adaptive_height()

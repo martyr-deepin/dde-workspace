@@ -219,10 +219,12 @@ void check_version()
 
 int main(int argc, char* argv[])
 {
-    if (is_application_running("dock.app.deepin")) {
+    if (is_application_running(DOCK_ID_NAME)) {
         g_warning(_("another instance of dock is running...\n"));
         return 1;
     }
+
+    singleton(DOCK_ID_NAME);
 
     //remove  option -f
     parse_cmd_line (&argc, &argv);

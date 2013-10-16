@@ -20,7 +20,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <signal.h>
+#include <errno.h>
 #include <string.h>
+#include <sys/resource.h>
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
 #include "launcher.h"
@@ -34,9 +41,8 @@
 #include "background.h"
 #include "file_monitor.h"
 #include "item.h"
+#include "test.h"
 #include "DBUS_launcher.h"
-
-#define DOCK_HEIGHT 30
 
 
 PRIVATE GKeyFile* launcher_config = NULL;
@@ -47,8 +53,8 @@ PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 
 #ifndef NDEBUG
-static gboolean is_daemonize = FALSE;
-static gboolean not_exit = FALSE;
+PRIVATE gboolean is_daemonize = FALSE;
+PRIVATE gboolean not_exit = FALSE;
 #endif
 
 
@@ -90,8 +96,7 @@ DBUS_EXPORT_API
 void launcher_show()
 {
     is_launcher_shown = TRUE;
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_window_show(w);
+    gtk_widget_show(container);
 }
 
 
@@ -99,8 +104,7 @@ DBUS_EXPORT_API
 void launcher_hide()
 {
     is_launcher_shown = FALSE;
-    GdkWindow* w = gtk_widget_get_window(container);
-    gdk_window_hide(w);
+    gtk_widget_hide(container);
 }
 
 
@@ -118,11 +122,13 @@ void launcher_toggle()
 DBUS_EXPORT_API
 void launcher_quit()
 {
+    g_warning("%d quit", getpid());
     destroy_monitors();
     free_resources();
     g_key_file_free(launcher_config);
     g_object_unref(dde_bg_g_settings);
-    g_hash_table_destroy(_category_table);
+    if (_category_table != NULL)
+        g_hash_table_destroy(_category_table);
     gtk_main_quit();
 }
 
@@ -455,36 +461,137 @@ void check_version()
 }
 
 
+gboolean _launcher_size_monitor(gpointer user_data)
+{
+    struct rusage usg;
+    getrusage(RUSAGE_SELF, &usg);
+    if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
+        g_spawn_command_line_async("launcher -r", NULL);
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+
+gboolean save_pid()
+{
+    char* path = g_build_filename(g_get_user_config_dir(), "launcher", "pid", NULL);
+    FILE* f = fopen(path, "w");
+    g_free(path);
+
+    if (f == NULL) {
+        g_warning("[%s] save pid error: %s", __func__, strerror(errno));
+        return FALSE;
+    }
+
+    fprintf(f, "%d", getpid());
+    fflush(f);
+
+    fclose(f);
+    return TRUE;
+}
+
+
+pid_t read_pid()
+{
+    char* path = g_build_filename(g_get_user_config_dir(), "launcher", "pid", NULL);
+    gsize length = 0;
+    GError* err = NULL;
+    char* content = NULL;
+    g_file_get_contents(path, &content, &length, &err);
+    g_free(path);
+    if (err != NULL) {
+        g_warning("[%s] read pid failed: %s", __func__, err->message);
+        g_error_free(err);
+        return -1;
+    }
+    g_warning("[%s] %s", __func__, content);
+    pid_t pid = atoi(content);
+    g_free(content);
+    return pid;
+}
+
+
+void exit_signal_handler(int signum)
+{
+    switch (signum)
+    {
+    case SIGKILL:
+    case SIGTERM:
+        launcher_quit();
+    }
+}
+
+
 int main(int argc, char* argv[])
 {
-    if (argc == 2 && g_str_equal("-d", argv[1]))
+    gboolean not_shows_launcher = FALSE;
+
+    if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
 #ifndef NDEBUG
-    if (argc == 2 && g_str_equal("-D", argv[1]))
+    if (argc == 2 && 0 == g_strcmp0("-D", argv[1]))
         is_daemonize = TRUE;
 
     if (argc == 2 && g_str_equal("-f", argv[1])) {
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+        not_shows_launcher = TRUE;
         not_exit = TRUE;
     }
 #endif
 
-    if (is_application_running("launcher.app.deepin")) {
+    if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
+        pid_t pid = read_pid();
+#ifndef NDEBUG
+        g_warning("kill previous launcher");
+        g_warning("[%s] launcher's pid: #%d#", __func__, pid);
+#endif
+        int kill(pid_t, int);  // avoid warning
+        if (pid != -1)
+            kill(pid, SIGKILL);
+        not_shows_launcher = TRUE;
+#ifndef NDEBUG
+        is_daemonize = TRUE;
+#endif
+    }
+
+    if (argc == 2 && 0 == g_strcmp0("-H", argv[1])) {
+        if (is_application_running(LAUNCHER_ID_NAME)) {
+            g_warning(_("another instance of launcher is running...\n"));
+            return 0;
+        }
+
+        not_shows_launcher = TRUE;
+#ifndef NDEBUG
+        is_daemonize = TRUE;
+#endif
+    }
+
+    if (is_application_running(LAUNCHER_ID_NAME) && !not_shows_launcher) {
         g_warning(_("another instance of launcher is running...\n"));
         dbus_launcher_toggle();
         return 0;
     }
-
-    signal(SIGKILL, launcher_quit);
-    signal(SIGTERM, launcher_quit);
 
 #ifndef NDEBUG
     if (is_daemonize)
 #endif
         daemonize();
 
+    singleton(LAUNCHER_ID_NAME);
     check_version();
+
+    signal(SIGKILL, exit_signal_handler);
+    signal(SIGTERM, exit_signal_handler);
+
+    pid_t p = getpid();
+#ifndef NDEBUG
+    g_warning("No. #%d#", p);
+#endif
+    save_pid();
+
+    g_timeout_add_seconds(3, _launcher_size_monitor, NULL);
 
     init_i18n();
     gtk_init(&argc, &argv);
@@ -522,6 +629,8 @@ int main(int argc, char* argv[])
 
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
+    // TODO: fix it
+    // set to search bar
     GdkRectangle area = {0, 1700, 100, 30};
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
@@ -534,8 +643,12 @@ int main(int argc, char* argv[])
 #endif
 
     add_monitors();
-    gtk_widget_show_all(container);
-    is_launcher_shown = TRUE;
+    gtk_widget_show_all(webview);
+    if (not_shows_launcher) {
+        launcher_hide();
+    } else {
+        launcher_show();
+    }
     gtk_main();
     destroy_monitors();
     return 0;

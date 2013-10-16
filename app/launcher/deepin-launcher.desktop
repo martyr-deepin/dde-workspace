@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Deepin Launcher
+Comment[zh_CN]=深度启动器
+Exec=launcher -H
+NoDisplay=true
+OnlyShowIn=Deepin
+X-GNOME-Autostart-Delay=20

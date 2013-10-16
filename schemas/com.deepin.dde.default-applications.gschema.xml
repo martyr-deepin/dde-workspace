@@ -5,7 +5,7 @@
   </schema>
   <schema path="/com/deepin/desktop/applications/terminal/" id="com.deepin.desktop.default-applications.terminal">
     <key type="s" name="exec">
-      <default>'gnome-terminal'</default>
+      <default>'deepin-terminal'</default>
       <summary>Terminal application</summary>
       <description>Terminal program to use when starting applications that require one.</description>
     </key>
