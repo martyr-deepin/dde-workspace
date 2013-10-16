@@ -153,8 +153,6 @@ void do_quit()
 }
 
 
-
-
 void reco()
 {
     // RESOURCE_DIR defined in CMakeLists.txt
@@ -548,8 +546,8 @@ void _cancel_detect()
 {
     g_warning("cancel");
     _enable_detection(false);
-    int kill(pid_t, int);
-    kill(recognition_info.pid, SIGKILL);
+    /* int kill(pid_t, int); */
+    /* kill(recognition_info.pid, SIGKILL); */
     g_spawn_close_pid(recognition_info.pid);
     recognition_info.reco_state = NOT_START_RECOGNIZING;
     g_timer_start(recognition_info.timer);

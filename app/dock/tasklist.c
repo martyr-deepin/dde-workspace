@@ -790,6 +790,7 @@ void _update_window_appid(Client* c)
             }
         }
 
+        // uniform '_' to '-'
         if (NULL != strchr(c->app_id, '_'))
             g_strdelimit(c->app_id, "_", '-');
     }

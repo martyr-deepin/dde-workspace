@@ -261,7 +261,7 @@ set_occupy = (id, info) ->
             o_table[info.x+i][info.y+j] = id
     return
 
-# detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed 
+# detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed
 #               false :pos not be standed , the 16 grid are all free
 #      warning: the id is used for : the self pos is free for detect !
 detect_occupy = (info, id = null) ->
@@ -323,7 +323,7 @@ move_to_position = (widget, pos) ->
 
     if (old_pos.x > -1) and (old_pos.y > -1) then clear_occupy(widget.get_id(), old_pos)
     set_occupy(widget.get_id(), pos)
-    
+
     widget.set_pos(pos)
     save_position(widget.get_id(), pos)
     return
@@ -475,12 +475,12 @@ init_grid_drop = ->
     div_grid.addEventListener("drop", (evt) =>
         evt.preventDefault()
         evt.stopPropagation()
-        
+
         file_uri = []
         tmp_copy = []
         tmp_move = []
-        
-        if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
+
+        if evt.dataTransfer.files.length == 0 # if the drop_target is internet files
             #echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
@@ -490,7 +490,7 @@ init_grid_drop = ->
                 if xdg_target[i] == "\n"
                     enter_indexof[k++] = i
             for i in [0 ... enter_indexof.length - 1] by 1
-                file_uri[i] = xdg_target.substring(enter_indexof[i],enter_indexof[i+1]-1)#  -1 means delete enter char 
+                file_uri[i] = xdg_target.substring(enter_indexof[i],enter_indexof[i+1]-1)#  -1 means delete enter char
 
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             w = Math.sqrt(file_uri.length) + 1
@@ -534,7 +534,7 @@ init_grid_drop = ->
                 #DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
-        
+
         else if  _IS_DND_RICHDIR_(evt) and evt.dataTransfer.files.length > 0
             #echo "file from richdir_internal && evt.dataTransfer.files.length = " + evt.dataTransfer.files.length
             pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
@@ -551,7 +551,7 @@ init_grid_drop = ->
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
             if tmp_move.length
                 DCore.DEntry.move(tmp_move, g_desktop_entry, true)
-        
+
         return
     )
     div_grid.addEventListener("dragover", (evt) =>
@@ -683,7 +683,7 @@ item_dragend_handler = (w, evt) ->
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
 
             new_pos = find_nearest_free_pos(widget,new_pos)
-            move_to_somewhere(widget, new_pos) if not detect_occupy(new_pos,id)
+            move_to_somewhere(widget, new_pos)
 
         update_selected_item_drag_image()
 
@@ -715,10 +715,10 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
                     distance_list.push(distance)
                     pos_list.push(final_pos.x)
                     pos_list.push(final_pos.y)
-        
+
         distance_list_sorted = distance_list.concat()
         array_sort_min2max(distance_list_sorted)
-        
+
         for dis,i in distance_list
             if dis is distance_list_sorted[0]
                 minest.push(i)
@@ -731,7 +731,7 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         distance_list_sorted.splice(0,pos_list.length)
         pos_list.splice(0,pos_list.length)
         minest.splice(0,pos_list.length)
-    
+
     return final_pos
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
@@ -1011,7 +1011,7 @@ grid_do_itemselected = (evt) ->
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else
-            # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 . 
+            # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 .
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
             if evt.id > TEMPLATES_FILE_ID_FIRST - 1 && evt.id < TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST
                 menu_create_templates(evt.id)
@@ -1189,7 +1189,7 @@ class Mouse_Select_Area_box
             @start_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             @last_pos = @start_pos
             @total_item = speical_item.concat(all_item)
-            
+
         return
 
     contextmenu_event : (evt) ->
@@ -1212,15 +1212,15 @@ class Mouse_Select_Area_box
         @element.style.display = "block"
 
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
-        
+
         for i in @total_item
             if not (w = Widget.look_up(i))? then continue
             item_pos = w.get_pos()
             if compare_pos_rect(new_pos, @start_pos, item_pos) == true
-                if w.selected == false then set_item_selected(w) 
+                if w.selected == false then set_item_selected(w)
             else
                 if w.selected == true then cancel_item_selected(w)
-            
+
         return
 
 

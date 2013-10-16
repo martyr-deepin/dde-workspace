@@ -34,6 +34,7 @@
 #define SOFTWARE_CENTER_PATH "/com/linuxdeepin/softwarecenter"
 #define SOFTWARE_CENTER_INTERFACE SOFTWARE_CENTER_NAME
 
+
 PRIVATE GKeyFile* hidden_app_conf = NULL;
 PRIVATE GPtrArray* autostart_paths = NULL;
 PRIVATE GKeyFile* launcher_config = NULL;
