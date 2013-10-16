@@ -636,6 +636,10 @@ _move_files_async (GFile* src, gpointer data)
     return retval;
 }
 
+/*file copy async var global*/
+gboolean COPY_ASYNC_FINISH = TRUE;
+GFile* dest_pb = NULL;
+GCancellable* _copy_cancellable = NULL;
  
 static void g_file_copy_progress_handler(goffset current_num_bytes,
             goffset total_num_bytes, gpointer user_data)
@@ -648,9 +652,9 @@ static void g_file_copy_progress_handler(goffset current_num_bytes,
     gtk_progress_bar_set_show_text(progress_bar,TRUE);
     gtk_progress_bar_set_text(progress_bar, buf);
     gtk_progress_bar_set_fraction(progress_bar, (gdouble)current_num_bytes / (gdouble)total_num_bytes);
-
+    /*gtk_widget_destroy((GtkWidget *)progress_bar);*/
 }
-gboolean COPY_ASYNC_FINISH = TRUE;
+
 static void g_file_copy_async_finish_handler(GObject *source_object,
             GAsyncResult *res, gpointer user_data)
 {
@@ -667,13 +671,14 @@ static void g_file_copy_async_finish_handler(GObject *source_object,
     gtk_widget_destroy(parent);
 }
 
-GFile* dest_pb = NULL;
-GCancellable* gcancellable = NULL;
-void progress_bar_delete_event(GtkWidget *widget, GdkEvent *event, gpointer data)
+void progress_bar_delete_event(GtkWidget *progress_bar, GdkEvent *event, gpointer data)
 {
     g_message("progress_bar_delete_event");
-    /*g_cancellable_cancel(gcancellable);*/
-    /*g_file_delete (dest_pb, NULL, NULL);*/
+    g_cancellable_cancel(_copy_cancellable);
+    GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
+    gtk_widget_destroy((GtkWidget *)progress_bar);
+    gtk_widget_destroy(parent);
+    g_file_delete (dest_pb, NULL, NULL);
 }
 
 static void  _copy_files_async_true(GFile *src,gpointer data)
@@ -681,6 +686,8 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     g_debug("_copy_files_async_true start");
     TDData* _data = (TDData*) data;
     dest_pb = _data->dest_file;
+    _copy_cancellable = _data->cancellable;
+    
     GtkWidget *parent = NULL;
     GtkWidget *progress_bar = NULL;
     const char* basename = g_file_get_basename(src);
@@ -698,11 +705,8 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     gtk_container_add(GTK_CONTAINER(parent),progress_bar);
     gtk_widget_show(progress_bar);
 
-    gcancellable = g_cancellable_new();
 
-
-
-#if 1
+#if DEBUG
     char* src_uri = g_file_get_uri (src);
     char* dest_uri = g_file_get_uri (dest_pb);
     g_debug ("_copy_files_async: copy %s to %s", src_uri, dest_uri);
@@ -710,7 +714,7 @@ static void  _copy_files_async_true(GFile *src,gpointer data)
     g_free (dest_uri);
 #endif
     g_file_copy_async(src, dest_pb, G_FILE_COPY_NOFOLLOW_SYMLINKS,
-                G_PRIORITY_DEFAULT, gcancellable, g_file_copy_progress_handler,
+                G_PRIORITY_DEFAULT, _copy_cancellable, g_file_copy_progress_handler,
                 progress_bar, g_file_copy_async_finish_handler, progress_bar);
 }
 /*
@@ -724,7 +728,7 @@ _copy_files_async (GFile* src, gpointer data)
     TDData* _data = (TDData*) data;
 
     GError* error = NULL;
-    GCancellable* _copy_cancellable = NULL;
+    /*GCancellable* _copy_cancellable = NULL;*/
     GFile* dest = NULL;
 
     _copy_cancellable = _data->cancellable;
