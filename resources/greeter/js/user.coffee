@@ -369,7 +369,9 @@ class UserInfo extends Widget
             apply_refuse_rotate(@element, 0.5)
 
     animate_prev: ->
-        DCore[APP_NAME].cancel_detect()
+        if @face_login
+            DCore[APP_NAME].cancel_detect()
+
         if @is_recognizing
             return
 
@@ -385,7 +387,9 @@ class UserInfo extends Widget
         jQuery("#roundabout").roundabout("animateToChild", prev_index)
 
     animate_next: ->
-        DCore[APP_NAME].cancel_detect()
+        if @face_login
+            DCore[APP_NAME].cancel_detect()
+
         if @is_recognizing
             return
 
@@ -401,7 +405,9 @@ class UserInfo extends Widget
         jQuery("#roundabout").roundabout("animateToChild", next_index)
 
     animate_near: ->
-        DCore[APP_NAME].cancel_detect()
+        if @face_login
+            DCore[APP_NAME].cancel_detect()
+
         if @is_recognizing
             return
 
