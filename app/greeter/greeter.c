@@ -223,7 +223,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
 int main (int argc, char **argv)
 {
-    /* if (argc == 2 && g_str_equal(argv[1], "-d")) */
+    /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
     GdkScreen *screen;
