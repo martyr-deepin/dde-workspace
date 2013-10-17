@@ -273,11 +273,13 @@ class UserInfo extends Widget
             if not @login and not @in_drag
                 if @face_login
                     if not @is_recognizing
-                        message_tip?.remove()
-                        if e.target.className == "UserName"
-                            @show_login()
-                        else if e.target.className == 'UserImg'
+                        if e.target.className == 'UserImg'
+                            message_tip?.remove()
                             DCore[APP_NAME].start_recognize()
+                    if e.target.className = "UserName"
+                        message_tip?.remove()
+                        @show_login()
+                        @stop_animation()
                 else
                     @show_login()
             else

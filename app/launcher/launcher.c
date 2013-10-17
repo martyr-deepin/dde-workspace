@@ -535,7 +535,7 @@ int main(int argc, char* argv[])
     if (argc == 2 && 0 == g_strcmp0("-D", argv[1]))
         is_daemonize = TRUE;
 
-    if (argc == 2 && g_str_equal("-f", argv[1])) {
+    if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
         not_shows_launcher = TRUE;
         not_exit = TRUE;
     }

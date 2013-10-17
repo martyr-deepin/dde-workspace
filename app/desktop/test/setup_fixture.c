@@ -131,7 +131,7 @@ void func_test_entry_char(char* (*func)(Entry*),Entry* variable,char* value_retu
             // fprintf(stderr, "%s\n", s);
             g_message("func result over.\n");
         }
-        g_assert(g_str_equal(s, value_return) == TRUE);
+        g_assert(0 == g_strcmp0(s, value_return));
         FLAG_PRITN_RESULT = FALSE;
         g_free(s);
 }
