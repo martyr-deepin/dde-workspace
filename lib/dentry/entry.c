@@ -1134,7 +1134,7 @@ ArrayContainer dentry_get_templates_files(void)
     gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if(is_exist)
     {
-        if(g_str_equal(TEMPLATES_DIR(),HOME_DIR()))
+        if(0 == g_strcmp0(TEMPLATES_DIR(),HOME_DIR()))
         {
             g_debug("the templates directory is HOME_DIR,it isnt TEMPLATES_DIR");
             ac.data = NULL;
@@ -1248,9 +1248,9 @@ gboolean _is_valid_category(char const* category)
         char* lowcase_filter = g_utf8_casefold(filter[i], -1);
         char* lowcase_category = g_utf8_casefold(category, -1);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, g_str_equal(lowcase_category, lowcase_filter));
+        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, 0 == g_strcmp0(lowcase_category, lowcase_filter));
 
-        if (g_str_equal(lowcase_category, lowcase_filter)) {
+        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
             is_valid = FALSE;
             g_free(lowcase_category);
             g_free(lowcase_filter);
@@ -1288,8 +1288,8 @@ gboolean _is_generic_category(char const* category)
         char* lowcase_category = g_utf8_casefold(category, -1);
         char* lowcase_filter = g_utf8_casefold(filter[i], -1);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, g_str_equal(lowcase_category, lowcase_filter));
-        if (g_str_equal(lowcase_category, lowcase_filter)) {
+        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, 0 == g_strcmp0(lowcase_category, lowcase_filter));
+        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
             is_generic = TRUE;
             g_free(lowcase_category);
             g_free(lowcase_filter);
@@ -1499,7 +1499,7 @@ char* _get_group_name_from_software_center(ArrayContainer const fs)
         if (another_category == NULL)
             goto errorout;
 
-        if (!g_str_equal(category, another_category))
+        if (0 != g_strcmp0(category, another_category))
             goto errorout;
     }
 

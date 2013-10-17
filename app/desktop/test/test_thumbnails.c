@@ -34,7 +34,7 @@ void test_thumbnails()
     		g_message("TRUE");
         	char * s = gfile_lookup_thumbnail(src);
         	// g_message("%s",s);
-        	g_assert(g_str_equal(s, "/home/ycl/.thumbnails/normal/490820ee22d8768354f5c428b7feba29.png") == TRUE);
+        	g_assert(g_strcmp0(s, "/home/ycl/.thumbnails/normal/490820ee22d8768354f5c428b7feba29.png") == 0);
         	g_free(s);
     	}
     	else
@@ -48,3 +48,4 @@ void test_thumbnails()
 
 	tear_down_fixture();
 }
+

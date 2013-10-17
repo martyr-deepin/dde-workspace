@@ -495,6 +495,13 @@ gboolean can_be_minimized(Window w)
 
 gboolean is_normal_window(Window w)
 {
+    XWindowAttributes attr;
+    if(XGetWindowAttributes(_dsp, w, &attr)) {
+        if (attr.map_state != IsViewable)
+            return FALSE;
+    } else {
+        return FALSE;
+    }
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
         gboolean need_return = FALSE;
@@ -503,10 +510,10 @@ gboolean is_normal_window(Window w)
         } else if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
-        } else if (g_str_equal(ch.res_class, "Desktop")) {
+        } else if (0 == g_strcmp0(ch.res_class, "Desktop")) {
             get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
-        } else if (g_str_equal(ch.res_class, "Dlock")) {
+        } else if (0 == g_strcmp0(ch.res_class, "Dlock")) {
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -812,7 +819,7 @@ void _update_window_class(Client* c)
         c->instance_name = NULL;
     }
 
-    if (c->title && g_str_equal(c->title, "Unknow Name") && c->clss) {
+    if (c->title && 0 == g_strcmp0(c->title, "Unknow Name") && c->clss) {
         g_free(c->title);
         c->title = g_strdup(c->clss);
     }
