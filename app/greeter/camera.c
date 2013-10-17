@@ -74,13 +74,6 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 // }}}
 
 
-void init_reco_state()
-{
-    recognition_info.reco_state = NOT_START_RECOGNIZING;
-    g_timer_start(recognition_info.timer);
-}
-
-
 void init_camera(int argc, char* argv[])
 {
     gst_init (&argc, &argv);
@@ -117,8 +110,10 @@ void destroy_camera()
         do_quit();
     }
 
-    g_timer_stop(recognition_info.timer);
-    g_timer_destroy(recognition_info.timer);
+    if (recognition_info.timer != NULL) {
+        g_timer_stop(recognition_info.timer);
+        g_timer_destroy(recognition_info.timer);
+    }
 }
 
 
@@ -552,7 +547,8 @@ void _cancel_detect()
     /* kill(recognition_info.pid, SIGKILL); */
     /* g_spawn_close_pid(recognition_info.pid); */
     recognition_info.reco_state = NOT_START_RECOGNIZING;
-    g_timer_start(recognition_info.timer);
+    if (recognition_info.timer != NULL)
+        g_timer_start(recognition_info.timer);
 }
 
 
