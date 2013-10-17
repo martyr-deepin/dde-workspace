@@ -550,7 +550,7 @@ void _cancel_detect()
     _enable_detection(false);
     /* int kill(pid_t, int); */
     /* kill(recognition_info.pid, SIGKILL); */
-    g_spawn_close_pid(recognition_info.pid);
+    /* g_spawn_close_pid(recognition_info.pid); */
     recognition_info.reco_state = NOT_START_RECOGNIZING;
     g_timer_start(recognition_info.timer);
 }
