@@ -630,9 +630,8 @@ int main(int argc, char* argv[])
 
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
-    // TODO: fix it
-    // set to search bar
-    GdkRectangle area = {0, 1700, 100, 30};
+    GdkRectangle area = {0, 60, 0, 0};
+    area.x = gdk_screen_width() * .5 - 150;
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
