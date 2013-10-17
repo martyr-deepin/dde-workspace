@@ -200,14 +200,15 @@ class UserInfo extends Widget
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
-                    echo "in focus invalid user session"
+                    echo "#{@id} in focus invalid user session"
             else
                 DCore.Lock.draw_background(background)
 
             clearInterval(draw_camera_id)
             draw_camera_id = null
             @draw_camera()
-            enable_detection(true)
+            if @face_login
+                enable_detection(true)
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
@@ -218,7 +219,8 @@ class UserInfo extends Widget
         @login_displayed = false
 
         if @ != _current_user
-            enable_detection(false)
+            if @face_login
+                enable_detection(false)
             clearInterval(draw_camera_id)
             draw_camera_id = null
             _current_user?.stop_animation()
@@ -299,7 +301,9 @@ class UserInfo extends Widget
             @login.password.focus()
             @display_failure = false
         else
+            echo 'destroy'
             @login.destroy()
+            echo 'destroy end'
             @loading = new Loading("loading")
             @element.appendChild(@loading.element)
 
@@ -309,7 +313,9 @@ class UserInfo extends Widget
                     echo "get session failed"
                     session = "deepin"
                 @session = session
+                echo 'start session'
                 DCore.Greeter.start_session(username, password, @session)
+                echo 'start session end'
             else
                 DCore.Lock.try_unlock(password)
 

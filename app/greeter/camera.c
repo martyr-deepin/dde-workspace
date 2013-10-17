@@ -549,6 +549,7 @@ void _cancel_detect()
     recognition_info.reco_state = NOT_START_RECOGNIZING;
     if (recognition_info.timer != NULL)
         g_timer_start(recognition_info.timer);
+    g_warning("cancel end");
 }
 
 
