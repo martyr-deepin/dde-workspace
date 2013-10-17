@@ -2,7 +2,7 @@
 Type=Application
 Name=Deepin Launcher
 Comment[zh_CN]=深度启动器
-Exec=launcher -H
+Exec=sh -c 'sleep 20 && launcher -H'
 NoDisplay=true
 OnlyShowIn=Deepin
 X-GNOME-Autostart-Delay=20
