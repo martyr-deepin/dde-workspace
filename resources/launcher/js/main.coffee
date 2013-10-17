@@ -119,9 +119,9 @@ DCore.signal_connect("lost_focus", (info)->
 inited = false
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
-    if inited
-        DCore.Launcher.clear()
-    inited = true
+    # if inited
+    #     DCore.Launcher.clear()
+    # inited = true
 )
 DCore.signal_connect("update_items", ->
     echo "update items"
@@ -171,7 +171,7 @@ _b.addEventListener("click", (e)->
 
 
 _b.addEventListener('keypress', (e) ->
-    if e.which != ESC_KEY
+    if e.which != ESC_KEY and e.which != BACKSPACE_KEY
         s_box.value += String.fromCharCode(e.which)
         search()
 )
@@ -205,6 +205,22 @@ _b.addEventListener("keydown", do ->
                         s_box.value = ""
                         update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
+                when BACKSPACE_KEY
+                    e.stopPropagation()
+                    e.preventDefault()
+                    _last_val = s_box.value
+                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
+                    if s_box.value == ""
+                        if _last_val != s_box.value
+                            update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                            grid_load_category(selected_category_id)
+                        return  # to avoid to invoke search function
+                    search()
+                when ENTER_KEY
+                    if item_selected
+                        item_selected.do_click()
+                    else
+                        get_first_shown()?.do_click()
                 when UP_ARROW
                     selected_up()
                 when DOWN_ARROW
@@ -219,19 +235,6 @@ _b.addEventListener("keydown", do ->
                         selected_prev()
                     else
                         selected_next()
-                when BACKSPACE_KEY
-                    _last_val = s_box.value
-                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                    if s_box.value == ""
-                        if _last_val != s_box.value
-                            init_grid()
-                        return  # to avoid to invoke search function
-                    search()
-                when ENTER_KEY
-                    if item_selected
-                        item_selected.do_click()
-                    else
-                        get_first_shown()?.do_click()
 )
 
 
