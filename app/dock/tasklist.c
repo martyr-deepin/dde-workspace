@@ -495,6 +495,13 @@ gboolean can_be_minimized(Window w)
 
 gboolean is_normal_window(Window w)
 {
+    XWindowAttributes attr;
+    if(XGetWindowAttributes(_dsp, w, &attr)) {
+        if (attr.map_state != IsViewable)
+            return FALSE;
+    } else {
+        return FALSE;
+    }
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
         gboolean need_return = FALSE;
