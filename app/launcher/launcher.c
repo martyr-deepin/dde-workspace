@@ -105,6 +105,7 @@ void launcher_hide()
 {
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
+    js_post_message_simply("exit_launcher", NULL);
 }
 
 
