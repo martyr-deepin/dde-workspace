@@ -52,9 +52,10 @@ document.body.addEventListener("keydown", (e) =>
     if e.which == ENTER_KEY
         if not u.login_displayed
             # if not u.is_recognizing
-            DCore[APP_NAME].cancel_detect()
-            u?.stop_animation()
-            u.is_recognizing = false
+            if u.face_login
+                DCore[APP_NAME].cancel_detect()
+                u?.stop_animation()
+                u.is_recognizing = false
             u.show_login()
             message_tip?.remove()
         else

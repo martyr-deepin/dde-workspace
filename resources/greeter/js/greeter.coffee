@@ -94,9 +94,10 @@ document.body.addEventListener("keydown", (e)=>
     else if e.which == ENTER_KEY
         #echo "enter"
         # if not _current_user?.is_recognizing
-        _current_user?.is_recognizing = false
-        DCore[APP_NAME].cancel_detect()
-        _current_user?.stop_animation()
+        if _current_user?.face_login
+            _current_user?.is_recognizing = false
+            DCore[APP_NAME].cancel_detect()
+            _current_user?.stop_animation()
         _current_user?.show_login()
         message_tip?.remove()
 
