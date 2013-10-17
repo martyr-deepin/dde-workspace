@@ -257,13 +257,13 @@ _bus_method_call (GDBusConnection * connection, const gchar * sender, const gcha
 
         retval = g_variant_new ("(b)", _bus_handle_is_livecd (username));
 
-    } else if (g_str_equal(method, "AddNoPwdLogin")) {
+    } else if (0 == g_strcmp0(method, "AddNoPwdLogin")) {
         const gchar* username = NULL;
         g_variant_get(params, "(s)", &username);
 
         retval = g_variant_new ("(b)", _bus_handle_add_nopwdlogin (username));
 
-    } else if (g_str_equal(method, "RemoveNoPwdLogin")) {
+    } else if (0 == g_strcmp0(method, "RemoveNoPwdLogin")) {
         const gchar* username = NULL;
         g_variant_get(params, "(s)", &username);
 

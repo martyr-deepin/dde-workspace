@@ -297,7 +297,7 @@ PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer us
     JSObjectRef json = json_create();
     char* current_gsettings_schema_id = get_schema_id(settings);
     char* desktop_gsettings_schema_id = get_schema_id(desktop_gsettings);
-    if (g_str_equal(current_gsettings_schema_id, desktop_gsettings_schema_id))
+    if (0 == g_strcmp0(current_gsettings_schema_id, desktop_gsettings_schema_id))
         json_append_string(json, "app_name", "desktop");
 
     g_free(desktop_gsettings_schema_id);
@@ -396,7 +396,7 @@ gboolean desktop_file_exist_in_desktop(char* name)
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
         if(desktop_file_filter(file_name))
             continue;
-        if(g_str_equal(name,file_name))
+        if(0 == g_strcmp0(name,file_name))
         {
             result = true;
         }
@@ -490,7 +490,7 @@ gboolean desktop_check_version_equal_set(const char* version_set)
         g_message("desktop version : %s ",version);
     }
     else{
-        if (g_str_equal(version,version_set))
+        if (0 == g_strcmp0(version,version_set))
             result = TRUE;
         else{
             result = FALSE;

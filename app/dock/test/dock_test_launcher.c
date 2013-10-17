@@ -51,25 +51,25 @@ void dock_test_launcher()
     /* Test({ */
     /*      g_assert(info1 != NULL); */
     /*      app_id = get_app_id(info1); */
-    /*      g_assert(g_str_equal(app_id, "devhelp")); */
+    /*      g_assert(0 == g_strcmp0(app_id, "devhelp")); */
     /*      g_free(app_id); */
     /*      app_id = NULL; */
 
     /*      g_assert(info2 != NULL); */
     /*      app_id = get_app_id(info2); */
-    /*      g_assert(g_str_equal(app_id, "fcitx")); */
+    /*      g_assert(0 == g_strcmp0(app_id, "fcitx")); */
     /*      g_free(app_id); */
     /*      app_id = NULL; */
 
     /*      g_assert(info3 != NULL); */
     /*      app_id = get_app_id(info3); */
-    /*      g_assert(g_str_equal(app_id, "desktop")); */
+    /*      g_assert(0 == g_strcmp0(app_id, "desktop")); */
     /*      g_free(app_id); */
     /*      app_id = NULL; */
 
     /*      g_assert(info4 != NULL); */
     /*      app_id = get_app_id(info4); */
-    /*      g_assert(g_str_equal(app_id, "dock")); */
+    /*      g_assert(0 == g_strcmp0(app_id, "dock")); */
     /*      g_free(app_id); */
     /*      app_id = NULL; */
     /*      }, "get_app_id"); */
@@ -173,3 +173,4 @@ void dock_test_launcher()
              js_post_message("launcher_added", app_info);
          }, "build_app_info");
 }
+
