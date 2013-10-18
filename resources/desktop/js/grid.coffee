@@ -30,7 +30,8 @@ s_offset_y = 0
 grid_item_width = 0
 grid_item_height = 0
 
-# gird size
+# gird size cols lie ---59; rows  hang ---30
+# i cols lie ----59;  j rows hang----30 
 cols = 0
 rows = 0
 
@@ -236,6 +237,7 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
 init_occupy_table = ->
     o_table = new Array()
+    # i cols lie ----59;  j rows hang----30 
     for i in [0..cols]
         o_table[i] = new Array(rows)
     return
@@ -288,6 +290,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
+    # i cols lie ----59;  j rows hang----30 
     if not w? then w = _PART_
     if not h? then h = _PART_
     info = {x:0, y:0, width:w, height:h}
@@ -343,7 +346,6 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    #echo "move_to_somewhere"
     if not detect_occupy(pos,widget.get_id())
         #echo "free pos"
         move_to_position(widget, pos)
@@ -691,21 +693,28 @@ item_dragend_handler = (w, evt) ->
 
 
 find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
+    #echo "find_nearest_free_pos"
     id = w.get_id()
     width = w.get_pos().width
     height = w.get_pos().height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
-    if detect_occupy(dest_pos,id)
+    if detect_occupy(final_pos,id)
         distance_list = new Array()
         distance_list_sorted = new Array()
         pos_list = new Array()
         minest = new Array()
 
-        if radius > Math.min(dest_pos.x,dest_pos.y) then radius = Math.min(dest_pos.x,dest_pos.y)
-        if dest_pos.x + radius > cols or dest_pos.y + radius > rows
-            radius = Math.min(cols - dest_pos.x,rows - dest_pos.y)
-        for i in [dest_pos.x - radius .. dest_pos.x + radius]
-            for j in [dest_pos.y - radius .. dest_pos.y + radius]
+        # i cols lie ----59;  j rows hang----30 
+        i_start = dest_pos.x - radius
+        if i_start < 0 then i_start = 0
+        i_end = dest_pos.x + radius
+        if i_end > cols then i_end = cols
+        j_start = dest_pos.y - radius
+        if j_start < 0 then j_start = 0
+        j_end = dest_pos.y + radius
+        if j_end > rows then j_end = rows
+        for i in [i_start .. i_end]
+            for j in [j_start .. j_end]
                 final_pos.x = i
                 final_pos.y = j
                 if not detect_occupy(final_pos,id)
@@ -715,13 +724,14 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
                     distance_list.push(distance)
                     pos_list.push(final_pos.x)
                     pos_list.push(final_pos.y)
-        
+                    #echo "#{k++},#{distance},#{final_pos.x},#{final_pos.y}"
         distance_list_sorted = distance_list.concat()
         array_sort_min2max(distance_list_sorted)
         
         for dis,i in distance_list
             if dis is distance_list_sorted[0]
                 minest.push(i)
+                #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
         switch minest.length
             when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
             when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
@@ -731,6 +741,8 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         distance_list_sorted.splice(0,pos_list.length)
         pos_list.splice(0,pos_list.length)
         minest.splice(0,pos_list.length)
+    else
+        final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
     
     return final_pos
 
