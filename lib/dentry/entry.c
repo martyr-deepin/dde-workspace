@@ -299,6 +299,13 @@ char* dentry_get_icon_path(Entry* e)
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
             ret = icon_name_to_path (icon_str, 48);
+            if (ret == NULL)
+            {
+                g_warning("richdir dentry  get_icon is null use invalid-dock_app.png instead");
+                const char * invalid_app = "invalid-dock_app";
+                ret = dcore_get_theme_icon(invalid_app, 48);
+            }
+            
             g_free(icon_str);
         }
         else{
