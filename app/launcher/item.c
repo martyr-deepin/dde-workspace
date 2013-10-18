@@ -329,7 +329,7 @@ gboolean launcher_remove_from_autostart(Entry* _item)
 
     gboolean success = FALSE;
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* name = to_lower_inplace(get_desktop_file_basename(item));
+    char* name = (get_desktop_file_basename(item));
 
     char* dest_path = g_build_filename(g_get_user_config_dir(),
                                        AUTOSTART_DIR, name, NULL);
@@ -337,6 +337,8 @@ gboolean launcher_remove_from_autostart(Entry* _item)
         success = _remove_autostart(dest_path);
         goto out;
     }
+
+    to_lower_inplace(name);
 
     // start from 1 for skiping user autostart dir
     for (int i = 1; i < autostart_paths->len; ++i) {
