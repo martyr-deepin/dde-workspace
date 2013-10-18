@@ -67,7 +67,7 @@ JSValueRef launcher_load_hidden_apps()
     JSObjectRef hidden_app_ids = json_array_create();
     JSContextRef cxt = get_global_context();
     for (gsize i = 0; i < length; ++i) {
-        g_debug("%s\n", raw_hidden_app_ids[i]);
+        g_debug("[%s] hidden appid: %s\n", __func__, raw_hidden_app_ids[i]);
         json_array_insert(hidden_app_ids, i, jsvalue_from_cstr(cxt, raw_hidden_app_ids[i]));
     }
 
@@ -100,7 +100,7 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
 
     gboolean is_exist = g_file_query_exists(desktop_item, NULL);
     g_object_unref(desktop_item);
-    g_debug("%s exist? %d", desktop_item_path, is_exist);
+    g_debug("[%s] %s exist? %d", __func__, desktop_item_path, is_exist);
     g_free(desktop_item_path);
 
     return is_exist;
@@ -134,9 +134,9 @@ GPtrArray* get_autostart_paths()
     return paths;
 }
 
-gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboolean* is_autostart)
+gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboolean* is_autostart/* output */)
 {
-    gboolean is_success = FALSE;
+    gboolean read_success = FALSE;
 
     char* full_path = g_build_filename(path, name, NULL);
     GKeyFile* candidate_app = g_key_file_new();
@@ -166,9 +166,9 @@ gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboole
             g_warning("[%s] get value failed: %s", __func__, err->message);
         } else {
             *is_autostart = gnome_autostart;
-        }
 
-        is_success = TRUE;
+            read_success = TRUE;
+        }
     }
 
 out:
@@ -177,7 +177,7 @@ out:
     g_free(full_path);
     g_key_file_unref(candidate_app);
 
-    return is_success;
+    return read_success;
 }
 
 PRIVATE
@@ -194,19 +194,21 @@ gboolean _check_exist(const char* path, const char* name)
 
     gboolean is_existing = FALSE;
 
+    char* lowercase_name = g_utf8_strdown(name, -1);
     const char* filename = NULL;
     while ((filename = g_dir_read_name(dir)) != NULL) {
-        char* lowercase_name = g_utf8_strdown(filename, -1);
+        char* lowercase_filename = g_utf8_strdown(filename, -1);
 
-        if (0 == g_strcmp0(name, lowercase_name)) {
-            g_free(lowercase_name);
+        if (0 == g_strcmp0(lowercase_name, lowercase_filename)) {
+            g_free(lowercase_filename);
             is_existing = TRUE;
             break;
         }
 
-        g_free(lowercase_name);
+        g_free(lowercase_filename);
     }
 
+    g_free(lowercase_name);
     g_dir_close(dir);
 
     return is_existing;
@@ -220,16 +222,14 @@ gboolean launcher_is_autostart(Entry* _item)
         autostart_paths = get_autostart_paths();
     }
 
-
     gboolean is_autostart = FALSE;
     gboolean is_existing = FALSE;
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     char* name = get_desktop_file_basename(item);
-    char* lowcase_name = g_utf8_strdown(name, -1);
 
     for (int i = 0; i < autostart_paths->len; ++i) {
         char* path = g_ptr_array_index(autostart_paths, i);
-        if ((is_existing = _check_exist(path, lowcase_name))) {
+        if ((is_existing = _check_exist(path, name))) {
             gboolean gnome_autostart = FALSE;
 
             if (i == 0 && _read_gnome_autostart_enable(path, name, &gnome_autostart)) {
@@ -244,7 +244,6 @@ gboolean launcher_is_autostart(Entry* _item)
     }
 
     g_free(name);
-    g_free(lowcase_name);
 
     return is_autostart;
 }
@@ -401,7 +400,6 @@ JSValueRef launcher_sort_method()
         g_error_free(error);
         return jsvalue_null();
     }
-
 
     JSContextRef ctx = get_global_context();
     JSValueRef method = jsvalue_from_cstr(ctx, sort_method);

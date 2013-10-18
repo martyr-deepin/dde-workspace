@@ -115,7 +115,7 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
     switch (event_type) {
         // fall through
     case G_FILE_MONITOR_EVENT_DELETED:
-    case G_FILE_MONITOR_EVENT_CREATED:
+    case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
     case G_FILE_MONITOR_EVENT_MOVED:
         if (timeout_id != 0) {
             g_source_remove(timeout_id);

@@ -27,7 +27,7 @@
 PRIVATE
 char* bg_blur_pict_get_dest_path (const char* src_uri)
 {
-    g_debug ("bg_blur_pict_get_dest_path: src_uri=%s", src_uri);
+    g_debug ("[%s] bg_blur_pict_get_dest_path: src_uri=%s", __func__, src_uri);
     g_return_val_if_fail (src_uri != NULL, NULL);
 
     //1. calculate original picture md5
@@ -67,7 +67,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
                                                                      &error);
 
     if (_background_image == NULL) {
-        g_debug("%s\n", error->message);
+        g_debug("[%s] %s\n", __func__, error->message);
         g_error_free(error);
         return FALSE;
     }
@@ -78,7 +78,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
 
 
     if (cairo_surface_status(img_surface) != CAIRO_STATUS_SUCCESS) {
-        g_warning("create cairo surface fail!\n");
+        g_warning("[%s] create cairo surface fail!\n", __func__);
         g_object_unref(_background_image);
         return FALSE;
     }
@@ -86,7 +86,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
     cairo_t* cr = cairo_create(img_surface);
 
     if (cairo_status(cr) != CAIRO_STATUS_SUCCESS) {
-        g_warning("create cairo fail!\n");
+        g_warning("[%s] create cairo fail!\n", __func__);
         g_object_unref(_background_image);
         cairo_surface_destroy(img_surface);
         return FALSE;
@@ -99,7 +99,7 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
     cairo_pattern_t* pt = cairo_pattern_create_for_surface(img_surface);
 
     if (cairo_pattern_status(pt) == CAIRO_STATUS_NO_MEMORY) {
-        g_warning("create cairo pattern fail!\n");
+        g_warning("[%s] create cairo pattern fail!\n", __func__);
         cairo_surface_destroy(img_surface);
         cairo_destroy(cr);
         return FALSE;
@@ -124,10 +124,10 @@ void set_launcher_background(GdkWindow* win, GSettings* dde_bg_g_settings,
 
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
 
-    g_debug("blur pic path: %s\n", blur_path);
+    g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
 
     if (!_set_launcher_background_aux(win, blur_path, width, height)) {
-        g_debug("no blur pic, use current bg: %s\n", bg_path);
+        g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
         _set_launcher_background_aux(win, bg_path, width, height);
     }
 
