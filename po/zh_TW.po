@@ -287,7 +287,7 @@ msgstr "個人化(_R)"
 
 #: ../resources/dock/js/clientgroup.coffee:36
 msgid "_New instance"
-msgstr "新增實體(_N)"
+msgstr "新建實體(_N)"
 
 #: ../resources/dock/js/clientgroup.coffee:49
 msgid "_Close"
