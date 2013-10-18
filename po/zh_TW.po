@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Wang Dianjin <wangdianjin@linuxdeepin.com>, 2013
 # freddy <freddy4212@gmail.com>, 2013
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
@@ -142,7 +142,7 @@ msgstr "切換使用者"
 #: ../resources/desktop/js/desktop_item.coffee:1619
 #: ../resources/launcher/js/grid.coffee:95
 msgid "_Open"
-msgstr "打開(_O)"
+msgstr "開啟(_O)"
 
 #: ../resources/desktop/js/desktop_item.coffee:588
 #: ../resources/desktop/js/desktop_item.coffee:1112
@@ -371,7 +371,7 @@ msgstr "新增檔案"
 
 #: ../app/desktop/desktop.c:215
 msgid "New directory"
-msgstr "新增目錄"
+msgstr "新增資料夾"
 
 #: ../app/greeter/camera.c:49
 msgid "Oops...I can't recognize your face. "
