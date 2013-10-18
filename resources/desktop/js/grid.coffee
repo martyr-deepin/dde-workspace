@@ -133,6 +133,21 @@ calc_row_and_cols = (wa_width, wa_height) ->
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
 
+#limit_in_desktop_range
+# i cols lie ----59;  j rows hang----30 
+limit_in_desktop_range = (pos) ->
+    i = pos.x
+    j = pos.y
+    if i?
+        if i < 0 then i = 0
+        else if i > cols then i = cols
+    if j?
+        if j < 0 then j  = 0
+        else if j > rows then j = rows
+    pos.x = i
+    pos.y = j
+    return pos
+
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
     s_offset_x = wa_x
@@ -443,6 +458,8 @@ create_entry_to_new_item = (entry) ->
 
     cancel_all_selected_stats()
     pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1*_PART_, 1*_PART_)
+    pos = limit_in_desktop_range(pos)
+    pos = find_nearest_free_pos(w,pos)
     move_to_somewhere(w, pos)
     all_item.push(w.get_id())
     set_item_selected(w)
@@ -468,8 +485,9 @@ menu_create_templates = (id) ->
             id_num = id - TEMPLATES_FILE_ID_FIRST - 2
             for i in [0...templates.length] by 1
                 if i == id_num
-                    if (DCore.DEntry.create_templates(templates[i],name_add_before))
-                        echo "create_templates finish!"
+                    entry = DCore.DEntry.create_templates(templates[i],name_add_before)
+                    create_entry_to_new_item(entry)
+                    echo "create_templates finish!"
     return
 
 # all DND event handlers
@@ -713,6 +731,7 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         if j_start < 0 then j_start = 0
         j_end = dest_pos.y + radius
         if j_end > rows then j_end = rows
+        #echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
         for i in [i_start .. i_end]
             for j in [j_start .. j_end]
                 final_pos.x = i
@@ -743,7 +762,7 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         minest.splice(0,pos_list.length)
     else
         final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
-    
+    final_pos = limit_in_desktop_range(final_pos)
     return final_pos
 
 set_item_selected = (w, change_focus = true, add_top = false) ->

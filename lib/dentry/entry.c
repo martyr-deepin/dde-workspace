@@ -1183,7 +1183,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 }
 
 JS_EXPORT_API
-gboolean dentry_create_templates(GFile* src, char* name_add_before)
+GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = FALSE;
     char* basename = dentry_get_name(src);
@@ -1224,7 +1224,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
     g_object_unref(dir);
 
-    return result;
+    return child;
 }
 
 
