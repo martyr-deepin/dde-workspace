@@ -226,14 +226,13 @@ gboolean launcher_is_autostart(Entry* _item)
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     char* name = get_desktop_file_basename(item);
     char* lowcase_name = g_utf8_strdown(name, -1);
-    g_free(name);
 
     for (int i = 0; i < autostart_paths->len; ++i) {
         char* path = g_ptr_array_index(autostart_paths, i);
         if ((is_existing = _check_exist(path, lowcase_name))) {
             gboolean gnome_autostart = FALSE;
 
-            if (i == 0 && _read_gnome_autostart_enable(path, lowcase_name, &gnome_autostart)) {
+            if (i == 0 && _read_gnome_autostart_enable(path, name, &gnome_autostart)) {
                 // user config
                 is_autostart = gnome_autostart;
             } else {
@@ -244,6 +243,7 @@ gboolean launcher_is_autostart(Entry* _item)
         }
     }
 
+    g_free(name);
     g_free(lowcase_name);
 
     return is_autostart;
@@ -329,7 +329,7 @@ gboolean launcher_remove_from_autostart(Entry* _item)
 
     gboolean success = FALSE;
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
-    char* name = (get_desktop_file_basename(item));
+    char* name = get_desktop_file_basename(item);
 
     char* dest_path = g_build_filename(g_get_user_config_dir(),
                                        AUTOSTART_DIR, name, NULL);

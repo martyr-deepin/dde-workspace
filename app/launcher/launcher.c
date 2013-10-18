@@ -644,9 +644,7 @@ int main(int argc, char* argv[])
 
     add_monitors();
     gtk_widget_show_all(webview);
-    if (not_shows_launcher) {
-        launcher_hide();
-    } else {
+    if (!not_shows_launcher) {
         launcher_show();
     }
     gtk_main();
