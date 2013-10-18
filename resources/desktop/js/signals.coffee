@@ -20,7 +20,6 @@
 
 # remember the last widget which been operated last time whether has focus
 last_widget_has_focus = false
-DOCK_PIXLE = 60
 
 connect_default_signals = ->
     DCore.signal_connect("item_update", do_item_update)
