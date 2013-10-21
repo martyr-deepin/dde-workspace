@@ -228,13 +228,58 @@ calc_pos_to_pos_distance = (base, pos) ->
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
+
+    # return
+    # distance_list = new Array()
+    # distance_list_sorted = new Array()
+    # pos_list = new Array()
+    # minest = new Array()
+    # i cols lie ----59;  j rows hang----30 
+    # i_start = dest_pos.x - radius
+    # if i_start < 0 then i_start = 0
+    # i_end = dest_pos.x + radius
+    # if i_end > cols then i_end = cols
+    # j_start = dest_pos.y - radius
+    # if j_start < 0 then j_start = 0
+    # j_end = dest_pos.y + radius
+    # if j_end > rows then j_end = rows
+    #echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
+    # for i in [pos.x .. cols] by x_delta
+    #     for j in [pos.y .. rows] by y_delta
+    #         final_pos.x = i
+    #         final_pos.y = j
+    #         if not detect_occupy(final_pos,id)
+    #             x_dis = Math.abs(final_pos.x - dest_pos.x)
+    #             y_dis = Math.abs(final_pos.y - dest_pos.y)
+    #             distance = Math.sqrt(Math.pow(x_dis,2) + Math.pow(y_dis,2))
+    #             distance_list.push(distance)
+    #             pos_list.push(final_pos.x)
+    #             pos_list.push(final_pos.y)
+    #             #echo "#{k++},#{distance},#{final_pos.x},#{final_pos.y}"
+    # distance_list_sorted = distance_list.concat()
+    # array_sort_min2max(distance_list_sorted)
+    
+    # for dis,i in distance_list
+    #     if dis is distance_list_sorted[0]
+    #         minest.push(i)
+    #         #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
+    # switch minest.length
+    #     when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+    #     when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
+    #     else final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
+
+    # distance_list.splice(0,pos_list.length)
+    # distance_list_sorted.splice(0,pos_list.length)
+    # pos_list.splice(0,pos_list.length)
+    # minest.splice(0,pos_list.length)
+
     while true
         if x_delta != 0
-            pos.x += x_delta
+            pos.x += x_delta * _PART_
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
-            pos.y += y_delta
+            pos.y += y_delta * _PART_
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
@@ -1063,13 +1108,13 @@ grid_do_keydown_to_shortcut = (evt) ->
 
         w_f = null
         if evt.keyCode == 37         # left arrow
-            w_f = find_item_by_coord_delta(w, -1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, -1, 0)
         else if evt.keyCode == 38    # up arrow
-            w_f = find_item_by_coord_delta(w, 0, -1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, -1)
         else if evt.keyCode == 39    # right arrow
-            w_f = find_item_by_coord_delta(w, 1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, 1, 0)
         else if evt.keyCode == 40    # down arrow
-            w_f = find_item_by_coord_delta(w, 0, 1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, 1)
         if not w_f? then return
 
         if evt.ctrlKey == true
