@@ -419,3 +419,9 @@ char* check_absolute_path_icon(char const* app_id, char const* icon_path)
     return icon;
 }
 
+
+gboolean is_chrome_app(char const* name)
+{
+    return g_str_has_prefix(name, "chrome-");
+}
+

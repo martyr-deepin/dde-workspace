@@ -246,8 +246,7 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
         if (g_str_has_suffix(uri, ".desktop")) {
             char* escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
             timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_autostart,
-                                       g_strdup(escaped_uri));
-            g_free(escaped_uri);
+                                       escaped_uri);
         }
         g_free(uri);
     }

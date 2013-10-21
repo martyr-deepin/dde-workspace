@@ -372,7 +372,7 @@ void _update_client_info(Client *c)
             for (int i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
-                /* g_debug("[_update_client_info] name: %s, exec: %s", action->name, action->exec); */
+                g_debug("[%s(%s:%d)] name: %s, exec: %s", __func__, __FILE__, __LINE__, action->name, action->exec);
                 JSObjectRef action_item = json_create();
                 json_append_string(action_item, "name", action->name);
                 json_append_string(action_item, "exec", action->exec);
@@ -786,6 +786,7 @@ void _update_window_appid(Client* c)
         if (s_pid != NULL) {
             if (desktop_file == NULL)
                 desktop_file = guess_desktop_file(c->app_id);
+
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);
@@ -1060,7 +1061,7 @@ gboolean dock_is_client_minimized(double id)
     if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
-        const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
+        static const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
         g_debug("window state: %s", state[wm_state]);
     } else {
         g_debug("cannot get Window state(WM_STATE)");

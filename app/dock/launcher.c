@@ -356,6 +356,7 @@ void dock_request_dock(const char* path)
     g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
+        g_debug("[%s(%s:%d)]", __func__, __FILE__, __LINE__);
         char* app_id = get_app_id(info);
         write_app_info(info);
         JSValueRef app_info = build_app_info(app_id);
@@ -443,6 +444,7 @@ gboolean dock_has_launcher(const char* app_id)
 
 gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
 {
+    g_debug("[%s(%s:%d)] ", __func__, __FILE__, __LINE__);
     char* id = g_strconcat(name, ".desktop", NULL);
     GDesktopAppInfo* info = g_desktop_app_info_new(id);
     g_free(id);
@@ -456,8 +458,8 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
             _save_apps_position();
         }
 
-        if (g_str_has_prefix(name, "chrome-http")) {
-            /* g_warning("[%s] %s is chrome app", __func__, name); */
+        if (is_chrome_app(name)) {
+            g_debug("[%s] %s is chrome app", __func__, name);
             GKeyFile* f = load_app_config(FILTER_FILE);
             gsize length = 0;
             char** groups = g_key_file_get_groups(f, &length);
@@ -465,7 +467,6 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
                 char* appid = g_key_file_get_string(f, groups[i], "appid", NULL);
                 /* g_warning("[%s] compare #%s# and #%s#", __func__, name, appid); */
                 if (appid != NULL && 0 == g_strcmp0(appid, name)) {
-                    /* g_warning("find it"); */
                     char* path = g_key_file_get_string(f, groups[i], "path", NULL);
                     /* g_warning("[%s] find path: %s", __func__, path); */
                     g_key_file_set_string(k_apps, name, "Path", path);

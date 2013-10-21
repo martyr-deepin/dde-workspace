@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include "xid2aid.h"
+#include "utils.h"
 #include <string.h>
 #include <glib.h>
 #include <unistd.h>
@@ -236,7 +237,7 @@ gboolean is_app_in_white_list(const char* name)
     if (!_is_init) {
         _init();
     }
-    return g_str_has_prefix(name, "chrome-http") || g_hash_table_contains(white_apps, name);
+    return is_chrome_app(name) || g_hash_table_contains(white_apps, name);
 }
 
 
