@@ -375,7 +375,7 @@ class Item extends Widget
             move_widget_to_rename_div(@)
             @display_full_name()
             @display_not_selected()
-            @element.draggable = false
+            @element.draggable = true
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
             @item_name.addEventListener("mousedown", @on_event_stoppropagation)
@@ -514,7 +514,7 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-        #@item_complete_rename(false)
+        @item_complete_rename(true)
         item_dragstart_handler(this, evt)
 
         return
