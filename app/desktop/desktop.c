@@ -32,6 +32,7 @@
 #include <cairo/cairo-xlib.h>
 #include "DBUS_desktop.h"
 #include "desktop.h"
+#include <sys/stat.h>
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
@@ -348,43 +349,22 @@ char* desktop_get_data_dir()
 JS_EXPORT_API
 void desktop_load_dsc_desktop_item()
 {
-    extern void dentry_copy (ArrayContainer fs, GFile* dest);
-    extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
-    const char* desktop_path = DESKTOP_DIR();
-    GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
-    GFile* dest = dentry_create_by_path(desktop_path);
-    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
-    GFile* dest_file = dentry_create_by_path(dsc_path);
-
-    ArrayContainer fs_src;
-    fs_src.data = &src_file;
-    fs_src.num = 1;
-
-    ArrayContainer fs_dest;
-    fs_dest.data = &dest_file;
-    fs_dest.num = 1;
+    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop", DESKTOP_DIR());
+    GFile* dest_file = g_file_new_for_path(dsc_path);
 
     if (desktop_get_config_boolean("show-dsc-icon"))
     {
-        if (!dentry_is_gapp(dest_file))
-        {
-            dentry_copy(fs_src, dest);
-        }
+        GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-software-center.desktop");
+        g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
+        g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+        g_object_unref(src_file);
     }
     else
     {
-        if(dentry_is_gapp(dest_file))
-        {
-            dentry_delete_files(fs_dest, FALSE);
-        }
-        else{
-            g_debug("deepin-software-center.desktop is not in desktop");
-        }
+        g_file_delete(dest_file, NULL, NULL);
     }
     g_free(dsc_path);
-    g_object_unref(dest);
-    ArrayContainer_free0(fs_src);
-    ArrayContainer_free0(fs_dest);
+    g_object_unref(dest_file);
 }
 
 JS_EXPORT_API
