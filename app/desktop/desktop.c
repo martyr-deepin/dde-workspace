@@ -19,6 +19,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <glib.h>
+#include <glib/gstdio.h>
+
 #include "xdg_misc.h"
 #include "X_misc.h"
 #include "pixbuf.h"
