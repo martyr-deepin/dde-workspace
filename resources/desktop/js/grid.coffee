@@ -228,13 +228,14 @@ calc_pos_to_pos_distance = (base, pos) ->
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
+
     while true
         if x_delta != 0
-            pos.x += x_delta
+            pos.x += x_delta * _PART_
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
-            pos.y += y_delta
+            pos.y += y_delta * _PART_
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
@@ -1063,13 +1064,13 @@ grid_do_keydown_to_shortcut = (evt) ->
 
         w_f = null
         if evt.keyCode == 37         # left arrow
-            w_f = find_item_by_coord_delta(w, -1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, -1, 0)
         else if evt.keyCode == 38    # up arrow
-            w_f = find_item_by_coord_delta(w, 0, -1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, -1)
         else if evt.keyCode == 39    # right arrow
-            w_f = find_item_by_coord_delta(w, 1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, 1, 0)
         else if evt.keyCode == 40    # down arrow
-            w_f = find_item_by_coord_delta(w, 0, 1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, 1)
         if not w_f? then return
 
         if evt.ctrlKey == true

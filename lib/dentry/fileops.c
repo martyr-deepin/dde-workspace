@@ -652,7 +652,6 @@ static void g_file_copy_progress_handler(goffset current_num_bytes,
     gtk_progress_bar_set_show_text(progress_bar,TRUE);
     gtk_progress_bar_set_text(progress_bar, buf);
     gtk_progress_bar_set_fraction(progress_bar, (gdouble)current_num_bytes / (gdouble)total_num_bytes);
-    /*gtk_widget_destroy((GtkWidget *)progress_bar);*/
 }
 
 static void g_file_copy_async_finish_handler(GObject *source_object,
@@ -678,7 +677,8 @@ void progress_bar_delete_event(GtkWidget *progress_bar, GdkEvent *event, gpointe
     GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
     gtk_widget_destroy((GtkWidget *)progress_bar);
     gtk_widget_destroy(parent);
-    g_file_delete (dest_pb, NULL, NULL);
+    g_file_delete (dest_pb,NULL, NULL);
+    g_object_unref(dest_pb);
 }
 
 static void  _copy_files_async_true(GFile *src,gpointer data)
