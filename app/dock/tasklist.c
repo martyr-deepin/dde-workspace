@@ -675,7 +675,9 @@ void _update_window_icon(Client* c)
         offset += width*height;
     }
 
-    void* img = argb_to_rgba(p, w*h);
+    // use &p[2] to avoid width and height
+    // otherwise a wrong icon will be generated
+    void* img = argb_to_rgba(&p[2], w*h);
 
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);

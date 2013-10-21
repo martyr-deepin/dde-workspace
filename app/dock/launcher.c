@@ -195,7 +195,8 @@ void update_dock_apps()
 {
     gsize size = 0;
     GError* err = NULL;
-    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position", &size, &err);
+    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position",
+                                             &size, &err);
     if (list != NULL) {
         g_assert(list != NULL);
 
@@ -218,6 +219,10 @@ void update_dock_apps()
         _apps_position = g_list_reverse(_apps_position);
 
         g_strfreev(list);
+    } else {
+        g_warning("[%s(%s)] get string list from file(%s) failed: %s",
+                  __func__, __FILE__, APPS_INI, err->message);
+        g_error_free(err);
     }
 }
 
