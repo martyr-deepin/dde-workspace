@@ -45,10 +45,11 @@ do_item_delete = (data) ->
 
 
 do_item_update = (data) ->
+    #echo "do_item_update"
     id = DCore.DEntry.get_id(data.entry)
     if (w = Widget.look_up(id))?
         w.set_entry(data.entry)
-        #w.item_update?()
+        w.item_update?()
     else if (w = create_item(data.entry))?
         all_item.push(w.get_id())
         move_to_anywhere(w)
