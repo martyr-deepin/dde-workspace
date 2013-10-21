@@ -231,18 +231,18 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     while true
         if x_delta != 0
             pos.x += x_delta * _PART_
-            if  pos.x < 0 or pos.x > cols
-                pos.x = 0
-                pos.y += y_delta * _PART_
-                break
+            # if  pos.x < 0 or pos.x > cols
+            #     pos.x = 0
+            #     pos.y += y_delta * _PART_
+            #     break
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
             pos.y += y_delta * _PART_
-            if pos.y < 0 or pos.y > rows
-                pos.x += x_delta * _PART_
-                pos.y = 0
-                break
+            # if pos.y < 0 or pos.y > rows
+            #     pos.x += x_delta * _PART_
+            #     pos.y = 0
+            #     break
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
