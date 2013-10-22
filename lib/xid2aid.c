@@ -166,12 +166,11 @@ char* _find_app_id_by_filter(const char* name, const char* keys_str, GKeyFile* f
         gsize size = 0;
         char** keys = g_key_file_get_keys(filter, name, &size, NULL);
         for (gsize i=0; i<size; i++) {
-            char* value = g_key_file_get_string(filter, name, keys[i], NULL);
             if (g_strstr_len(keys_str , -1, keys[i])) {
+                char* value = g_key_file_get_string(filter, name, keys[i], NULL);
                 g_strfreev(keys);
                 return value;
             }
-            g_free(value);
         }
         g_strfreev(keys);
         /*g_debug("find \"%s\" in filter.ini but can't find the really desktop file\n", name);*/

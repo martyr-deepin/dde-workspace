@@ -33,97 +33,98 @@ extern void _update_window_icon(Client *c);
 
 void dock_test_launcher()
 {
-    /* Test({ */
-    /*      update_dock_apps(); */
-    /*      }, "update_dock_apps"); */
+    Test({
+         update_dock_apps();
+         }, "update_dock_apps");
 
-    /* Test({ */
-    /*      extern void _save_apps_position(); */
-    /*      _save_apps_position(); */
-    /*      }, "_save_apps_position"); */
+    return;
+    Test({
+         extern void _save_apps_position();
+         _save_apps_position();
+         }, "_save_apps_position");
 
-    /* char* app_id = NULL; */
-    /* GDesktopAppInfo* info1 = g_desktop_app_info_new_from_filename("/usr/share/applications/devhelp.desktop"); */
-    /* GDesktopAppInfo* info2 = g_desktop_app_info_new_from_filename("/usr/share/applications/fcitx.desktop"); */
-    /* GDesktopAppInfo* info3 = g_desktop_app_info_new_from_filename("/usr/share/applications/deepin-desktop.desktop"); */
-    /* GDesktopAppInfo* info4 = g_desktop_app_info_new_from_filename("/usr/share/applications/deepin-dock.desktop"); */
-    /* extern char* get_app_id(GDesktopAppInfo* info); */
-    /* Test({ */
-    /*      g_assert(info1 != NULL); */
-    /*      app_id = get_app_id(info1); */
-    /*      g_assert(0 == g_strcmp0(app_id, "devhelp")); */
-    /*      g_free(app_id); */
-    /*      app_id = NULL; */
+    char* app_id = NULL;
+    GDesktopAppInfo* info1 = g_desktop_app_info_new_from_filename("/usr/share/applications/devhelp.desktop");
+    GDesktopAppInfo* info2 = g_desktop_app_info_new_from_filename("/usr/share/applications/fcitx.desktop");
+    GDesktopAppInfo* info3 = g_desktop_app_info_new_from_filename("/usr/share/applications/deepin-desktop.desktop");
+    GDesktopAppInfo* info4 = g_desktop_app_info_new_from_filename("/usr/share/applications/deepin-dock.desktop");
+    extern char* get_app_id(GDesktopAppInfo* info);
+    Test({
+         g_assert(info1 != NULL);
+         app_id = get_app_id(info1);
+         g_assert(0 == g_strcmp0(app_id, "devhelp"));
+         g_free(app_id);
+         app_id = NULL;
 
-    /*      g_assert(info2 != NULL); */
-    /*      app_id = get_app_id(info2); */
-    /*      g_assert(0 == g_strcmp0(app_id, "fcitx")); */
-    /*      g_free(app_id); */
-    /*      app_id = NULL; */
+         g_assert(info2 != NULL);
+         app_id = get_app_id(info2);
+         g_assert(0 == g_strcmp0(app_id, "fcitx"));
+         g_free(app_id);
+         app_id = NULL;
 
-    /*      g_assert(info3 != NULL); */
-    /*      app_id = get_app_id(info3); */
-    /*      g_assert(0 == g_strcmp0(app_id, "desktop")); */
-    /*      g_free(app_id); */
-    /*      app_id = NULL; */
+         g_assert(info3 != NULL);
+         app_id = get_app_id(info3);
+         g_assert(0 == g_strcmp0(app_id, "desktop"));
+         g_free(app_id);
+         app_id = NULL;
 
-    /*      g_assert(info4 != NULL); */
-    /*      app_id = get_app_id(info4); */
-    /*      g_assert(0 == g_strcmp0(app_id, "dock")); */
-    /*      g_free(app_id); */
-    /*      app_id = NULL; */
-    /*      }, "get_app_id"); */
+         g_assert(info4 != NULL);
+         app_id = get_app_id(info4);
+         g_assert(0 == g_strcmp0(app_id, "dock"));
+         g_free(app_id);
+         app_id = NULL;
+         }, "get_app_id");
 
-    /* Test({ */
-    /*      extern int get_need_terminal(GDesktopAppInfo*); */
-    /*      g_assert(get_need_terminal(info1) == 0); */
-    /*      g_assert(get_need_terminal(info2) == 0); */
-    /*      g_assert(get_need_terminal(info3) == 0); */
-    /*      g_assert(get_need_terminal(info4) == 0); */
-    /*      }, "get_need_terminal"); */
+    Test({
+         extern int get_need_terminal(GDesktopAppInfo*);
+         g_assert(get_need_terminal(info1) == 0);
+         g_assert(get_need_terminal(info2) == 0);
+         g_assert(get_need_terminal(info3) == 0);
+         g_assert(get_need_terminal(info4) == 0);
+         }, "get_need_terminal");
 
-    /* GDesktopAppInfo* info5 = g_desktop_app_info_new_from_filename("/usr/share/applications/firefox.desktop"); */
+    GDesktopAppInfo* info5 = g_desktop_app_info_new_from_filename("/usr/share/applications/firefox.desktop");
     // those two seem have some problems
-    /* extern void dock_swap_apps_position(const char* id1, const char* id2); */
-    /* Test({ */
-    /*      dock_swap_apps_position(get_app_id(info1), get_app_id(info2)); */
-    /*      dock_swap_apps_position(get_app_id(info2), get_app_id(info1)); */
-    /*      dock_swap_apps_position(get_app_id(info2), get_app_id(info3)); */
-    /*      dock_swap_apps_position(get_app_id(info1), get_app_id(info5)); */
-    /*      }, "dock_swap_apps_position"); */
+    extern void dock_swap_apps_position(const char* id1, const char* id2);
+    Test({
+         dock_swap_apps_position(get_app_id(info1), get_app_id(info2));
+         dock_swap_apps_position(get_app_id(info2), get_app_id(info1));
+         dock_swap_apps_position(get_app_id(info2), get_app_id(info3));
+         dock_swap_apps_position(get_app_id(info1), get_app_id(info5));
+         }, "dock_swap_apps_position");
 
-    /* extern void dock_insert_apps_position(const char* id, const char* anchor_id); */
-    /* Test({ */
-    /*      dock_insert_apps_position(get_app_id(info1), get_app_id(info2)); */
-    /*      dock_insert_apps_position(get_app_id(info2), get_app_id(info1)); */
-    /*      dock_insert_apps_position(get_app_id(info2), get_app_id(info3)); */
-    /*      dock_insert_apps_position(get_app_id(info1), get_app_id(info5)); */
-    /*      }, "dock_insert_apps_position"); */
+    extern void dock_insert_apps_position(const char* id, const char* anchor_id);
+    Test({
+         dock_insert_apps_position(get_app_id(info1), get_app_id(info2));
+         dock_insert_apps_position(get_app_id(info2), get_app_id(info1));
+         dock_insert_apps_position(get_app_id(info2), get_app_id(info3));
+         dock_insert_apps_position(get_app_id(info1), get_app_id(info5));
+         }, "dock_insert_apps_position");
 
-    /* extern void write_app_info(GDesktopAppInfo* info); */
-    /* Test({ */
-    /*      write_app_info(info1); */
-    /*      write_app_info(info2); */
-    /*      write_app_info(info3); */
-    /*      write_app_info(info4); */
-    /*      write_app_info(info5); */
-    /*      }, "write_app_info"); */
+    extern void write_app_info(GDesktopAppInfo* info);
+    Test({
+         write_app_info(info1);
+         write_app_info(info2);
+         write_app_info(info3);
+         write_app_info(info4);
+         write_app_info(info5);
+         }, "write_app_info");
 
 
-    /* int xid = 0x1800043;  // ATTENTION!! change it yourself when you need to test. */
-    /* Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default()); */
-    /* GdkWindow* root = gdk_get_default_root_window(); */
-    /* Client* c = g_slice_new(Client); */
-    /* c->window = xid; */
-    /* c->title = NULL; */
-    /* c->clss = NULL; */
-    /* c->instance_name = NULL; */
-    /* c->app_id = NULL; */
-    /* c->exec = NULL; */
-    /* c->icon = NULL; */
-    /* _update_window_title(c); */
-    /* _update_window_class(c); */
-    /* _update_window_appid(c); */
+    int xid = 0xa00027;  // ATTENTION!! change it yourself when you need to test.
+    Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    GdkWindow* root = gdk_get_default_root_window();
+    Client* c = g_slice_new(Client);
+    c->window = xid;
+    c->title = NULL;
+    c->clss = NULL;
+    c->instance_name = NULL;
+    c->app_id = NULL;
+    c->exec = NULL;
+    c->icon = NULL;
+    _update_window_title(c);
+    _update_window_class(c);
+    _update_window_appid(c);
     /* _update_window_icon(c); */
     ArrayContainer fs = {NULL, 0};
 
@@ -165,12 +166,12 @@ void dock_test_launcher()
 
     // TODO:
     // TBT, failed
-    Test({
-         extern JSValueRef build_app_info(const char* app_id);
-         /* build_app_info("firefox"); */
-         JSValueRef app_info = build_app_info("firefox");
-         if (app_info)
-             js_post_message("launcher_added", app_info);
-         }, "build_app_info");
+    /* Test({ */
+    /*      extern JSValueRef build_app_info(const char* app_id); */
+    /*      #<{(| build_app_info("firefox"); |)}># */
+    /*      JSValueRef app_info = build_app_info("firefox"); */
+    /*      if (app_info) */
+    /*          js_post_message("launcher_added", app_info); */
+    /*      }, "build_app_info"); */
 }
 

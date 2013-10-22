@@ -33,7 +33,7 @@
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
 #define SCHEMA_KEY_ENABLED_PLUGINS "enabled-plugins"
 
-PRIVATE GSettings* desktop_gsettings = NULL;
+static GSettings* desktop_gsettings = NULL;
 GHashTable* enabled_plugins = NULL;
 GHashTable* plugins_state = NULL;
 

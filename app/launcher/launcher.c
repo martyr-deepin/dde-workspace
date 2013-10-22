@@ -45,7 +45,7 @@
 #include "DBUS_launcher.h"
 
 
-PRIVATE GKeyFile* launcher_config = NULL;
+static GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 PRIVATE GSettings* dde_bg_g_settings = NULL;

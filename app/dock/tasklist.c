@@ -49,41 +49,41 @@ extern char* dcore_get_theme_icon(const char*, double);
 #define RECORD_FILE "dock/record.ini"
 GKeyFile* record_file = NULL;
 
-static Atom ATOM_WINDOW_HIDDEN;
+PRIVATE Atom ATOM_WINDOW_HIDDEN;
 PRIVATE Atom ATOM_CLIENT_LIST;
-static Atom ATOM_ACTIVE_WINDOW;
-static Atom ATOM_WINDOW_ICON;
-static Atom ATOM_WINDOW_TYPE;
-static Atom ATOM_WINDOW_TYPE_NORMAL;
-static Atom ATOM_WINDOW_TYPE_DIALOG;
-static Atom ATOM_WINDOW_TYPE_COMBO;
-static Atom ATOM_WINDOW_TYPE_DESKTOP;
-static Atom ATOM_WINDOW_TYPE_DND;
-static Atom ATOM_WINDOW_TYPE_DOCK;
-static Atom ATOM_WINDOW_TYPE_DROPDOWN_MENU;
-static Atom ATOM_WINDOW_TYPE_MENU;
-static Atom ATOM_WINDOW_TYPE_NOTIFICATION;
-static Atom ATOM_WINDOW_TYPE_POPUP_MENU;
-static Atom ATOM_WINDOW_TYPE_SPLASH;
-static Atom ATOM_WINDOW_TYPE_TOOLBAR;
-static Atom ATOM_WINDOW_TYPE_TOOLTIP;
-static Atom ATOM_WINDOW_TYPE_UTILITY;
-/* static Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
-static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
-static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
-static Atom ATOM_WINDOW_NAME;
-static Atom ATOM_WINDOW_PID;
-static Atom ATOM_WINDOW_NET_STATE;
-static Atom ATOM_CLOSE_WINDOW;
-static Atom ATOM_SHOW_DESKTOP;
-static Atom ATOM_ACTION_ADD;
-static Atom ATOM_WINDOW_STATE_HIDDEN;
-static Atom ATOM_WINDOW_MAXIMIZED_VERT;
-static Atom ATOM_WINDOW_SKIP_TASKBAR;
-static Atom ATOM_XEMBED_INFO;
-static Display* _dsp = NULL;
-static Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
-static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
+PRIVATE Atom ATOM_ACTIVE_WINDOW;
+PRIVATE Atom ATOM_WINDOW_ICON;
+PRIVATE Atom ATOM_WINDOW_TYPE;
+PRIVATE Atom ATOM_WINDOW_TYPE_NORMAL;
+PRIVATE Atom ATOM_WINDOW_TYPE_DIALOG;
+PRIVATE Atom ATOM_WINDOW_TYPE_COMBO;
+PRIVATE Atom ATOM_WINDOW_TYPE_DESKTOP;
+PRIVATE Atom ATOM_WINDOW_TYPE_DND;
+PRIVATE Atom ATOM_WINDOW_TYPE_DOCK;
+PRIVATE Atom ATOM_WINDOW_TYPE_DROPDOWN_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_NOTIFICATION;
+PRIVATE Atom ATOM_WINDOW_TYPE_POPUP_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_SPLASH;
+PRIVATE Atom ATOM_WINDOW_TYPE_TOOLBAR;
+PRIVATE Atom ATOM_WINDOW_TYPE_TOOLTIP;
+PRIVATE Atom ATOM_WINDOW_TYPE_UTILITY;
+/* PRIVATE Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
+PRIVATE Atom ATOM_WINDOW_ALLOWED_ACTIONS;
+PRIVATE Atom ATOM_WINDOW_ALLOW_MINIMIZE;
+PRIVATE Atom ATOM_WINDOW_NAME;
+PRIVATE Atom ATOM_WINDOW_PID;
+PRIVATE Atom ATOM_WINDOW_NET_STATE;
+PRIVATE Atom ATOM_CLOSE_WINDOW;
+PRIVATE Atom ATOM_SHOW_DESKTOP;
+PRIVATE Atom ATOM_ACTION_ADD;
+PRIVATE Atom ATOM_WINDOW_STATE_HIDDEN;
+PRIVATE Atom ATOM_WINDOW_MAXIMIZED_VERT;
+PRIVATE Atom ATOM_WINDOW_SKIP_TASKBAR;
+PRIVATE Atom ATOM_XEMBED_INFO;
+PRIVATE Display* _dsp = NULL;
+PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
+PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
 PRIVATE void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
@@ -325,17 +325,17 @@ Client* create_client_from_window(Window w)
         c->use_board = FALSE;
 
     if (c->icon == NULL) {
-        g_debug("[create_client_from_window] try get deepin icon failed");
-        g_debug("[create_client_from_window] appid: %s, operator_code: %d",
+        g_debug("[%s] try get deepin icon failed", __func__);
+        g_debug("[%s] appid: %s, operator_code: %d", __func__,
                 c->app_id, operator_code);
         if (operator_code == ICON_OPERATOR_USE_ICONNAME)
             _get_launcher_icon(c);
     }
 
-    g_debug("[create_client_from_window] icon path is %s", c->icon);
+    g_debug("[%s] icon path is %s", __func__, c->icon);
 
     if (c->icon == NULL) {
-        g_debug("[create_client_from_window] get launcher icon failed");
+        g_debug("[%s] get launcher icon failed", __func__);
         c->need_update_icon = TRUE;
         _update_window_icon(c);
     }
@@ -721,7 +721,8 @@ void _update_window_appid(Client* c)
     GDesktopAppInfo* desktop_file = NULL;
     char* app_id = NULL;
     gulong item;
-    long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+    long* s_pid = NULL;
+    s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
 
     if (s_pid != NULL) {
         char* exec_name = NULL;
@@ -734,15 +735,17 @@ void _update_window_appid(Client* c)
                 GKeyFile* f = load_app_config(FILTER_FILE);
                 if (f != NULL) {
                     app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
-                    char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
-                    if (path != NULL)
-                        desktop_file = g_desktop_app_info_new_from_filename(path);
-                    g_free(path);
+
+                    if (app_id != NULL) {
+                        g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
+
+                        char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
+                        if (path != NULL)
+                            desktop_file = g_desktop_app_info_new_from_filename(path);
+                        g_free(path);
+                    }
                 }
                 g_key_file_unref(f);
-
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
             }
             if (app_id == NULL) {
                 app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
