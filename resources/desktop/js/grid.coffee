@@ -248,7 +248,6 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
 
         if pos.x < 0 or pos.x > cols then break
         if pos.y < 0 or pos.y > rows then break
-        #pos = limit_in_desktop_range(pos)
         if detect_occupy(pos) == false then continue
         echo "find"
         #optimization by looking up o_table to get ID
@@ -296,6 +295,7 @@ detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
+    info = limit_in_desktop_range(info)
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
