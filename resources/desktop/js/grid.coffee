@@ -228,17 +228,25 @@ calc_pos_to_pos_distance = (base, pos) ->
 find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     items = speical_item.concat(all_item)
     pos = start_item.get_pos()
-
     while true
         if x_delta != 0
             pos.x += x_delta * _PART_
+            # if  pos.x < 0 or pos.x > cols
+            #     pos.x = 0
+            #     pos.y += y_delta * _PART_
+            #     break
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
             pos.y += y_delta * _PART_
+            # if pos.y < 0 or pos.y > rows
+            #     pos.x += x_delta * _PART_
+            #     pos.y = 0
+            #     break
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
+        pos = limit_in_desktop_range(pos)
         if detect_occupy(pos) == false then continue
 
         #optimization by looking up o_table to get ID
@@ -251,13 +259,13 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     null
 
 
+
 init_occupy_table = ->
     o_table = new Array()
     # i cols lie ----59;  j rows hang----30 
     for i in [0..cols]
         o_table[i] = new Array(rows)
     return
-
 
 clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
@@ -286,6 +294,7 @@ detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
+    info = limit_in_desktop_range(info)
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
