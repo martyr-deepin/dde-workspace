@@ -231,29 +231,32 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     while true
         if x_delta != 0
             pos.x += x_delta * _PART_
-            # if  pos.x < 0 or pos.x > cols
-            #     pos.x = 0
-            #     pos.y += y_delta * _PART_
-            #     break
-            if x_delta > 0 and pos.x > cols then break
-            else if x_delta < 0 and pos.x < 0 then break
+            if  x_delta < 0 and pos.x < 0
+                pos.x = cols - Math.abs(pos.x)
+                pos.y += x_delta * _PART_
+            else if x_delta > 0 and  pos.x > cols
+                pos.x = pos.x - cols
+                pos.y += x_delta * _PART_
         if y_delta != 0
             pos.y += y_delta * _PART_
-            # if pos.y < 0 or pos.y > rows
-            #     pos.x += x_delta * _PART_
-            #     pos.y = 0
-            #     break
-            if y_delta > 0 and pos.y > rows then break
-            else if y_delta < 0 and pos.y < 0 then break
+            if  y_delta < 0 and pos.y < 0
+                pos.y = rows - Math.abs(pos.y)
+                pos.x += y_delta * _PART_
+            else if y_delta > 0 and  pos.y > rows
+                pos.y = pos.y - rows
+                pos.x += y_delta * _PART_
 
-        pos = limit_in_desktop_range(pos)
+        if pos.x < 0 or pos.x > cols then break
+        if pos.y < 0 or pos.y > rows then break
+        #pos = limit_in_desktop_range(pos)
         if detect_occupy(pos) == false then continue
-
+        echo "find"
         #optimization by looking up o_table to get ID
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
             find_pos = w.get_pos()
+            echo "for"
             if (find_pos.x <= pos.x <= find_pos.x + find_pos.width - 1) and (find_pos.y <= pos.y <= find_pos.y + find_pos.height - 1)
                 return w
     null
