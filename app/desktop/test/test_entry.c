@@ -6,7 +6,7 @@ void test_entry()
 {
     setup_fixture();
 
-    #if TEST_THEM
+#if 0
 
     extern Entry* dentry_get_desktop();
     Test({
@@ -62,17 +62,21 @@ void test_entry()
         func_test_entry_char(dentry_get_uri,g_ptr_array_index(gappinfo,0),"file:///home/ycl/Desktop/skype.desktop");
     },"dentry_get_uri");
 
-
+#endif
     extern char* dentry_get_icon(Entry* e);
     Test({
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDirectory,0), "/usr/share/icons/Faenza/places/48/inode-directory.png");
+        
+           /*char * icon  = dentry_get_icon(g_ptr_array_index(gappinfo,0));*/
+           char * icon  = dentry_get_icon(g_ptr_array_index(gfileDirectory,0));
+           g_free(icon);
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDirectory,0), "/usr/share/icons/Faenza/places/48/inode-directory.png");*/
         //the icon isn't icon which in .thumbnail/ ,and the file icon show first in thumbnail (code in desktop_item.coffee->set_icon)
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDocument,6), "/usr/share/icons/Faenza/mimetypes/48/application-x-ms-dos-executable.png");
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,4), "/usr/share/icons/Deepin/apps/48/audacity.png");
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDocument,6), "/usr/share/icons/Faenza/mimetypes/48/application-x-ms-dos-executable.png");*/
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");*/
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,4), "/usr/share/icons/Deepin/apps/48/audacity.png");*/
     },"dentry_get_icon");
 
-
+#if 0
     extern gboolean dentry_can_thumbnail(Entry* e);
     gboolean bool_return = false;
     Test({
@@ -93,7 +97,10 @@ void test_entry()
         func_test_entry_char(dentry_get_thumbnail,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");
     },"dentry_get_thumbnail");
 
+#endif
 
+
+#if 0
     extern char* dentry_get_id(Entry* e);
     Test({
         // func_test_entry_char(dentry_get_id, g_ptr_array_index(gfileDirectory,0),"5565c4012ed4c6f1007c2b86aea48956");
@@ -187,9 +194,8 @@ void test_entry()
     },"dentry_trash");
 
 #endif
-    // endif of #if(TEST_THEM)
 
-#if 1
+#if 0
     extern gboolean dentry_launch(Entry* e, const ArrayContainer fs);
     // const ArrayContainer fs = {g_ptr_array_index(gfileDirectory,0),1};
     // const ArrayContainer fs = _normalize_array_container(*(ArrayContainer*)gfileDirectory);
