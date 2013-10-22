@@ -249,13 +249,11 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
         if pos.x < 0 or pos.x > cols then break
         if pos.y < 0 or pos.y > rows then break
         if detect_occupy(pos) == false then continue
-        echo "find"
         #optimization by looking up o_table to get ID
         for i in items
             w = Widget.look_up(i)
             if not w? then continue
             find_pos = w.get_pos()
-            echo "for"
             if (find_pos.x <= pos.x <= find_pos.x + find_pos.width - 1) and (find_pos.y <= pos.y <= find_pos.y + find_pos.height - 1)
                 return w
     null
