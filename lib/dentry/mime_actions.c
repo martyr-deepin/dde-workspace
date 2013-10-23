@@ -4,18 +4,18 @@
 
 #include "xdg_misc.h"
 
-#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"
-#define TERMINAL_KEY_EXEC  "exec"
-#define TERMINAL_KEY_EXEC_ARG "exec-arg"
+/*#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"*/
+/*#define TERMINAL_KEY_EXEC  "exec"*/
+/*#define TERMINAL_KEY_EXEC_ARG "exec-arg"*/
 
-static GSettings* terminal_gsettings = NULL;
+/*static GSettings* terminal_gsettings = NULL;*/
 
-GAppInfo *gen_app_info (const char* exec_val, const char* executable);
-gboolean exec_app_info (const char *exec_val, const char *executable);
+GAppInfo *gen_app_info (const char* executable);
+gboolean exec_app_info (const char *executable);
 
 //used by dentry/mime_actions.c
 
-GAppInfo *gen_app_info (const char* exec_val, const char* executable)
+GAppInfo *gen_app_info (const char* executable)
 {
     GAppInfo *appinfo = NULL;
     GError* error = NULL;
@@ -23,20 +23,16 @@ GAppInfo *gen_app_info (const char* exec_val, const char* executable)
 
     if (executable == NULL)
     {
-        cmd_line = g_strdup_printf("%s --working-directory=%s",
-                exec_val, DESKTOP_DIR());
+        cmd_line = g_strdup_printf("sh -c \"cd %s && exec $SHELL\"",
+                DESKTOP_DIR());
     }
     else
     {
-        char* exec_arg_val = g_settings_get_string (terminal_gsettings,
-                                                    TERMINAL_KEY_EXEC_ARG);
-        cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
-                exec_val, DESKTOP_DIR(), exec_arg_val, executable);
-        g_free (exec_arg_val);
+        cmd_line = g_strdup(executable);
     }
 
     appinfo = g_app_info_create_from_commandline(cmd_line, NULL, 
-            G_APP_INFO_CREATE_NONE, &error);
+            G_APP_INFO_CREATE_NEEDS_TERMINAL, &error);
     g_free(cmd_line);
     if (error!=NULL)
     {
@@ -49,13 +45,13 @@ GAppInfo *gen_app_info (const char* exec_val, const char* executable)
     return appinfo;
 }
 
-gboolean exec_app_info (const char *exec_val, const char *executable)
+gboolean exec_app_info (const char *executable)
 {
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
     gboolean is_ok = FALSE;
 
-    appinfo = gen_app_info (exec_val, executable);
+    appinfo = gen_app_info (executable);
     if ( appinfo == NULL ) {
         g_debug ("gen app info failed!");
         return FALSE;
@@ -78,24 +74,11 @@ gboolean exec_app_info (const char *exec_val, const char *executable)
 void desktop_run_in_terminal(char* executable)
 {
     gboolean is_ok = FALSE;
-    char* exec_val;
 
-    if (terminal_gsettings == NULL)
-        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
-
-    exec_val = g_settings_get_string(terminal_gsettings,
-                                     TERMINAL_KEY_EXEC);
-    if ( exec_val == NULL ) {
-        g_debug ("terminal exec is null");
-        return ;
-    }
-
-    is_ok = exec_app_info (exec_val, executable);
-    g_free(exec_val);
+    is_ok = exec_app_info (executable);
     if ( !is_ok ) {
         g_debug ("exec app info failed!");
-
-        exec_app_info ("x-terminal-emulator", executable);
+        /*exec_app_info (executable);*/
     }
 
     return ;
