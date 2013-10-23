@@ -733,7 +733,7 @@ void _update_window_appid(Client* c)
             g_assert(c->title != NULL);
             if (app_id == NULL) {
                 GKeyFile* f = load_app_config(FILTER_FILE);
-                if (f != NULL) {
+                if (f != NULL && c->instance_name != NULL) {
                     app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
 
                     if (app_id != NULL) {

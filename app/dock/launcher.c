@@ -397,6 +397,7 @@ JSValueRef dock_get_launcher_info(const char* app_id)
 JS_EXPORT_API
 gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs)
 {
+    g_assert(app_id != NULL);
     GAppInfo* info = NULL;
     gboolean ret = FALSE;
     if (g_key_file_has_group(k_apps, app_id)) {
@@ -469,6 +470,7 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
             gsize length = 0;
             char** groups = g_key_file_get_groups(f, &length);
             for (int i = 0; i < length; ++i) {
+                g_assert(groups[i] != NULL);
                 char* appid = g_key_file_get_string(f, groups[i], "appid", NULL);
                 /* g_warning("[%s] compare #%s# and #%s#", __func__, name, appid); */
                 if (appid != NULL && 0 == g_strcmp0(appid, name)) {
