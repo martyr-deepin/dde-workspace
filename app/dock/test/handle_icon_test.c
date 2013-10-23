@@ -30,6 +30,7 @@ void dock_test_handle_icon()
          TEST("devhelp", icon, operator);
          TEST("deepin-music-player", icon, operator);
          TEST("vim", icon, operator);
+         TEST("terminator", icon, operator);
          TEST("emacs", icon, operator);
          TEST("chromium-browser", icon, operator);
          TEST("gnome-terminal", icon, operator);
@@ -47,3 +48,4 @@ void dock_test_handle_icon()
 /*     g_object_unref(pixbuf2); */
 /*     g_object_unref(pixbuf3); */
 }
+

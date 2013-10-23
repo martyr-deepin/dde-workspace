@@ -78,64 +78,63 @@ void dock_test_tasklist()
     /*      g_free(c->instance_name); */
     /*      }, "_update_window_class"); */
 
-    Test({
-         c->title = NULL;
-         c->clss = NULL;
-         c->instance_name = NULL;
-         c->app_id = NULL;
-         _update_window_title(c);
-         _update_window_class(c);
-         _update_window_appid(c);
-         g_free(c->title);
-         g_free(c->clss);
-         g_free(c->instance_name);
-         g_free(c->app_id);
-         g_free(c->exec);
-         }, "_update_window_appid");
+    /* Test({ */
+    /*      c->title = NULL; */
+    /*      c->clss = NULL; */
+    /*      c->instance_name = NULL; */
+    /*      c->app_id = NULL; */
+    /*      _update_window_title(c); */
+    /*      _update_window_class(c); */
+    /*      _update_window_appid(c); */
+    /*      g_free(c->title); */
+    /*      g_free(c->clss); */
+    /*      g_free(c->instance_name); */
+    /*      g_free(c->app_id); */
+    /*      g_free(c->exec); */
+    /*      }, "_update_window_appid"); */
 
-#if 0
-    Test({
-         c->title = NULL;
-         c->clss = NULL;
-         c->instance_name = NULL;
-         c->app_id = NULL;
-         _update_window_title(c);
-         _update_window_class(c);
-         _update_window_appid(c);
-         int operator_code;
-         try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
-         g_free(c->title);
-         g_free(c->clss);
-         g_free(c->instance_name);
-         g_free(c->app_id);
-         g_free(c->icon);
-        }
-    , "try_get_deepin_icon");
+    /* Test({ */
+    /*      c->title = NULL; */
+    /*      c->clss = NULL; */
+    /*      c->instance_name = NULL; */
+    /*      c->app_id = NULL; */
+    /*      _update_window_title(c); */
+    /*      _update_window_class(c); */
+    /*      _update_window_appid(c); */
+    /*      int operator_code; */
+    /*      try_get_deepin_icon(c->app_id, &c->icon, &operator_code); */
+    /*      g_free(c->title); */
+    /*      g_free(c->clss); */
+    /*      g_free(c->instance_name); */
+    /*      g_free(c->app_id); */
+    /*      g_free(c->exec); */
+    /*      g_free(c->icon); */
+    /*     } */
+    /* , "try_get_deepin_icon"); */
 
-    extern gboolean _get_launcher_icon(Client* c);
-    Test({
-         c->title = NULL;
-         c->clss = NULL;
-         c->instance_name = NULL;
-         c->app_id = NULL;
-         _update_window_title(c);
-         _update_window_class(c);
-         _update_window_appid(c);
-         _get_launcher_icon(c);
-         g_free(c->title);
-         g_free(c->clss);
-         g_free(c->instance_name);
-         g_free(c->app_id);
-         g_free(c->exec);
-         g_free(c->icon);
-         }, "_get_launcher_icon");
+    /* extern gboolean _get_launcher_icon(Client* c); */
+    /* Test({ */
+    /*      c->title = NULL; */
+    /*      c->clss = NULL; */
+    /*      c->instance_name = NULL; */
+    /*      c->app_id = NULL; */
+    /*      _update_window_title(c); */
+    /*      _update_window_class(c); */
+    /*      _update_window_appid(c); */
+    /*      _get_launcher_icon(c); */
+    /*      g_free(c->title); */
+    /*      g_free(c->clss); */
+    /*      g_free(c->instance_name); */
+    /*      g_free(c->app_id); */
+    /*      g_free(c->exec); */
+    /*      g_free(c->icon); */
+    /*      }, "_get_launcher_icon"); */
 
-    Test({
-         c->icon = NULL;
-         _update_window_icon(c);
-         g_free(c->icon);
-         } , "update_window_icon");
-#endif
+    /* Test({ */
+    /*      c->icon = NULL; */
+    /*      _update_window_icon(c); */
+    /*      g_free(c->icon); */
+    /*      } , "update_window_icon"); */
 
     /* Test({ */
     /*      extern void _update_is_overlay_client(Client* c); */
@@ -150,8 +149,15 @@ void dock_test_tasklist()
     // TODO: dock_update_hide_mode lead to ending in 54m
     /* extern void _update_window_net_state(Client* c); */
     /* Test({ */
+    /*      // !is_skip_taskbar branch */
     /*      c->gdkwindow = root; */
     /*      c->window = GDK_WINDOW_XID(root); */
+    /*      _update_window_net_state(c); */
+
+    /*      // is_skip_taskbar branch */
+    /*      Window launcher_xid = 0x3200004; */
+    /*      c->gdkwindow = gdk_x11_window_lookup_for_display(gdk_display_get_default(), launcher_xid); */
+    /*      c->window = launcher_xid; */
     /*      _update_window_net_state(c); */
     /*      }, "_update_window_net_state"); */
 
@@ -240,10 +246,10 @@ void dock_test_tasklist()
 
     // TODO:
     // TBT, client_free cannot free Client.gdkwindow
-    /* Test({ */
-    /*      Client* c = create_client_from_window(xid); */
-    /*      g_assert(c != NULL); */
-    /*      client_free(c); */
-    /*      }, "client create and free"); */
+    Test({
+         Client* c = create_client_from_window(xid);
+         g_assert(c != NULL);
+         client_free(c);
+         }, "client create and free");
 }
 

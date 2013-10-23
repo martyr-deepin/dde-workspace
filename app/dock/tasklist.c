@@ -84,7 +84,10 @@ PRIVATE Atom ATOM_XEMBED_INFO;
 PRIVATE Display* _dsp = NULL;
 PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
-PRIVATE void _init_atoms()
+
+
+PRIVATE
+void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
@@ -169,10 +172,11 @@ void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
 void _update_window_net_state(Client* c);
+void client_free(Client* c);
 PRIVATE void _update_is_overlay_client(Client* c);
 PRIVATE gboolean _is_maximized_window(Window win);
 PRIVATE void _update_task_list(Window root);
-void client_free(Client* c);
+
 
 PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
@@ -185,6 +189,7 @@ void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res
     }
 }
 
+
 PRIVATE
 void _update_window_viewport(Client* c)
 {
@@ -192,6 +197,7 @@ void _update_window_viewport(Client* c)
                            _update_window_viewport_callback, -1);
     dock_update_hide_mode();
 }
+
 
 PRIVATE
 gboolean _get_launcher_icon(Client* c)
@@ -278,6 +284,7 @@ gboolean _get_launcher_icon(Client* c)
     return c->icon == NULL;
 }
 
+
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
@@ -352,6 +359,7 @@ Client* create_client_from_window(Window w)
     return c;
 }
 
+
 void _update_client_info(Client *c)
 {
     JSObjectRef json = json_create();
@@ -391,6 +399,7 @@ void _update_client_info(Client *c)
     js_post_message("task_updated", json);
 }
 
+
 PRIVATE
 void notify_desktop(DesktopFocusState current_state)
 {
@@ -421,6 +430,7 @@ void active_window_changed(Display* dsp, Window w)
         }
     }
 }
+
 
 void client_free(Client* _c)
 {
@@ -459,6 +469,8 @@ PRIVATE gboolean _is_hidden(Window w)
     XFree(data);
     return FALSE;
 }
+
+
 gboolean is_skip_taskbar(Window w)
 {
     gulong items;
@@ -564,10 +576,14 @@ gboolean is_normal_window(Window w)
     return may_be_docked && !has_cannot_be_docked_type;
 }
 
-PRIVATE void _destroy_client(gpointer id)
+
+PRIVATE
+void _destroy_client(gpointer id)
 {
     g_hash_table_remove(_clients_table, id);
 }
+
+
 void client_list_changed(Window* cs, size_t n)
 {
     GList* destroying_clients = g_hash_table_get_keys(_clients_table);
@@ -590,12 +606,14 @@ void client_list_changed(Window* cs, size_t n)
     g_list_free_full(destroying_clients, (GDestroyNotify)_destroy_client);
 }
 
+
 void update_task_list()
 {
     g_hash_table_remove_all(_clients_table);
     _update_task_list(GDK_ROOT_WINDOW());
     active_window_changed(_dsp, (Window)dock_get_active_window());
 }
+
 
 void _update_task_list(Window root)
 {
@@ -616,6 +634,7 @@ void _update_task_list(Window root)
     g_slice_free1(sizeof(Window) * items, cs);
 }
 
+
 JS_EXPORT_API
 double dock_get_active_window()
 {
@@ -635,6 +654,7 @@ double dock_get_active_window()
     return aw;
 }
 
+
 PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
@@ -648,6 +668,7 @@ void* argb_to_rgba(gulong* data, size_t s)
     }
     return img;
 }
+
 
 void _update_window_icon(Client* c)
 {
@@ -701,6 +722,7 @@ void _update_window_icon(Client* c)
     g_slice_free1(sizeof(guint32)*w*h, img);
     XFree(data);
 }
+
 
 void _update_window_title(Client* c)
 {
@@ -810,6 +832,7 @@ void _update_window_appid(Client* c)
     XFree(s_pid);
 }
 
+
 void _update_window_class(Client* c)
 {
     g_free(c->clss);
@@ -831,6 +854,7 @@ void _update_window_class(Client* c)
     }
 }
 
+
 void _update_window_net_state(Client* c)
 {
     if (is_skip_taskbar(c->window)) {
@@ -842,7 +866,9 @@ void _update_window_net_state(Client* c)
     dock_update_hide_mode();
 }
 
-PRIVATE gboolean _is_maximized_window(Window win)
+
+PRIVATE
+gboolean _is_maximized_window(Window win)
 {
     gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
@@ -873,6 +899,7 @@ void _update_current_viewport(Workspace* vp)
 
     dock_update_hide_mode();
 }
+
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
@@ -925,6 +952,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
+
 gboolean cross_workspaces_contain_current_workspace(Client* c)
 {
     for (int i = 0; i < c->cross_workspace_num; ++i) {
@@ -935,15 +963,19 @@ gboolean cross_workspaces_contain_current_workspace(Client* c)
     return FALSE;
 }
 
+
 PRIVATE
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
 }
+
+
 gboolean dock_has_maximize_client()
 {
     return g_hash_table_find(_clients_table, (GHRFunc)_find_maximize_client, NULL) != NULL;
 }
+
 
 void _update_is_overlay_client(Client* c)
 {
@@ -966,11 +998,14 @@ void _update_is_overlay_client(Client* c)
     }
 }
 
+
 PRIVATE
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
 }
+
+
 gboolean dock_has_overlay_client()
 {
     return g_hash_table_find(_clients_table, (GHRFunc)_find_overlay_window, NULL) != NULL;
@@ -993,6 +1028,7 @@ void init_task_list()
     update_task_list();
     active_window_changed(_dsp, (Window)dock_get_active_window());
 }
+
 
 JS_EXPORT_API
 void dock_active_window(double id)
@@ -1020,6 +1056,7 @@ int dock_close_window(double id)
                       StructureNotifyMask, (XEvent*)&event);
 }
 
+
 JS_EXPORT_API
 gboolean dock_get_desktop_status()
 {
@@ -1030,6 +1067,7 @@ gboolean dock_get_desktop_status()
     XFree(data);
     return value;
 }
+
 
 DBUS_EXPORT_API
 JS_EXPORT_API
@@ -1045,6 +1083,7 @@ void dock_show_desktop(gboolean value)
     XSendEvent(_dsp, root, False,
             StructureNotifyMask, (XEvent*)&event);
 }
+
 
 JS_EXPORT_API
 void dock_iconify_window(double id)
@@ -1093,6 +1132,7 @@ gboolean dock_window_need_to_be_minimized(double id)
     return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
 
+
 JS_EXPORT_API
 void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
 {
@@ -1127,6 +1167,7 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     canvas_custom_draw_did(cr, NULL);
 }
 
+
 JS_EXPORT_API
 gboolean dock_request_dock_by_client_id(double id)
 {
@@ -1147,11 +1188,13 @@ gboolean dock_request_dock_by_client_id(double id)
     }
 }
 
+
 PRIVATE
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;
 }
+
 
 gboolean is_has_client(const char* app_id)
 {
@@ -1161,6 +1204,7 @@ gboolean is_has_client(const char* app_id)
     else
         return FALSE;
 }
+
 
 JS_EXPORT_API
 void dock_set_compiz_workaround_preview(gboolean v)
