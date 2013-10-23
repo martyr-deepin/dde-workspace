@@ -42,9 +42,12 @@ void action_free(struct Action* action)
 static
 GKeyFile* _read_as_key_file(GDesktopAppInfo* app)
 {
+    char const* filename = g_desktop_app_info_get_filename(app);
+    if (filename == NULL)
+        return NULL;
+
     GError* error = NULL;
     GKeyFile* file = g_key_file_new();
-    char const* filename = g_desktop_app_info_get_filename(app);
     g_key_file_load_from_file(file, filename, G_KEY_FILE_NONE, &error);
 
     if (error != NULL) {
@@ -103,7 +106,7 @@ struct Action* _get_action(GKeyFile* file, const char* group_name)
         g_free(name);
         return NULL;
     }
-    g_debug("[_get_action] name: %s, exec: %s", name, exec);
+    /* g_debug("[_get_action] name: %s, exec: %s", name, exec); */
     struct Action* action = action_new(name, exec);
 
     g_free(name);

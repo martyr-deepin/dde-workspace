@@ -23,6 +23,8 @@
 #ifndef __TASKLIST_ACTIVE_WINDOW_H
 #define __TASKLIST_ACTIVE_WINDOW_H
 
+#define FILTER_FILE "dock/filter.ini"
+
 void init_task_list();
 gboolean is_has_client(const char* app_id);
 void update_task_list();

@@ -49,42 +49,45 @@ extern char* dcore_get_theme_icon(const char*, double);
 #define RECORD_FILE "dock/record.ini"
 GKeyFile* record_file = NULL;
 
-static Atom ATOM_WINDOW_HIDDEN;
+PRIVATE Atom ATOM_WINDOW_HIDDEN;
 PRIVATE Atom ATOM_CLIENT_LIST;
-static Atom ATOM_ACTIVE_WINDOW;
-static Atom ATOM_WINDOW_ICON;
-static Atom ATOM_WINDOW_TYPE;
-static Atom ATOM_WINDOW_TYPE_NORMAL;
-static Atom ATOM_WINDOW_TYPE_DIALOG;
-static Atom ATOM_WINDOW_TYPE_COMBO;
-static Atom ATOM_WINDOW_TYPE_DESKTOP;
-static Atom ATOM_WINDOW_TYPE_DND;
-static Atom ATOM_WINDOW_TYPE_DOCK;
-static Atom ATOM_WINDOW_TYPE_DROPDOWN_MENU;
-static Atom ATOM_WINDOW_TYPE_MENU;
-static Atom ATOM_WINDOW_TYPE_NOTIFICATION;
-static Atom ATOM_WINDOW_TYPE_POPUP_MENU;
-static Atom ATOM_WINDOW_TYPE_SPLASH;
-static Atom ATOM_WINDOW_TYPE_TOOLBAR;
-static Atom ATOM_WINDOW_TYPE_TOOLTIP;
-static Atom ATOM_WINDOW_TYPE_UTILITY;
-/* static Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
-static Atom ATOM_WINDOW_ALLOWED_ACTIONS;
-static Atom ATOM_WINDOW_ALLOW_MINIMIZE;
-static Atom ATOM_WINDOW_NAME;
-static Atom ATOM_WINDOW_PID;
-static Atom ATOM_WINDOW_NET_STATE;
-static Atom ATOM_CLOSE_WINDOW;
-static Atom ATOM_SHOW_DESKTOP;
-static Atom ATOM_ACTION_ADD;
-static Atom ATOM_WINDOW_STATE_HIDDEN;
-static Atom ATOM_WINDOW_MAXIMIZED_VERT;
-static Atom ATOM_WINDOW_SKIP_TASKBAR;
-static Atom ATOM_XEMBED_INFO;
-static Display* _dsp = NULL;
-static Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
-static Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
-PRIVATE void _init_atoms()
+PRIVATE Atom ATOM_ACTIVE_WINDOW;
+PRIVATE Atom ATOM_WINDOW_ICON;
+PRIVATE Atom ATOM_WINDOW_TYPE;
+PRIVATE Atom ATOM_WINDOW_TYPE_NORMAL;
+PRIVATE Atom ATOM_WINDOW_TYPE_DIALOG;
+PRIVATE Atom ATOM_WINDOW_TYPE_COMBO;
+PRIVATE Atom ATOM_WINDOW_TYPE_DESKTOP;
+PRIVATE Atom ATOM_WINDOW_TYPE_DND;
+PRIVATE Atom ATOM_WINDOW_TYPE_DOCK;
+PRIVATE Atom ATOM_WINDOW_TYPE_DROPDOWN_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_NOTIFICATION;
+PRIVATE Atom ATOM_WINDOW_TYPE_POPUP_MENU;
+PRIVATE Atom ATOM_WINDOW_TYPE_SPLASH;
+PRIVATE Atom ATOM_WINDOW_TYPE_TOOLBAR;
+PRIVATE Atom ATOM_WINDOW_TYPE_TOOLTIP;
+PRIVATE Atom ATOM_WINDOW_TYPE_UTILITY;
+/* PRIVATE Atom ATOM_WINDOW_TYPE_KDE_OVERRIDE; */
+PRIVATE Atom ATOM_WINDOW_ALLOWED_ACTIONS;
+PRIVATE Atom ATOM_WINDOW_ALLOW_MINIMIZE;
+PRIVATE Atom ATOM_WINDOW_NAME;
+PRIVATE Atom ATOM_WINDOW_PID;
+PRIVATE Atom ATOM_WINDOW_NET_STATE;
+PRIVATE Atom ATOM_CLOSE_WINDOW;
+PRIVATE Atom ATOM_SHOW_DESKTOP;
+PRIVATE Atom ATOM_ACTION_ADD;
+PRIVATE Atom ATOM_WINDOW_STATE_HIDDEN;
+PRIVATE Atom ATOM_WINDOW_MAXIMIZED_VERT;
+PRIVATE Atom ATOM_WINDOW_SKIP_TASKBAR;
+PRIVATE Atom ATOM_XEMBED_INFO;
+PRIVATE Display* _dsp = NULL;
+PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
+PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
+
+
+PRIVATE
+void _init_atoms()
 {
     ATOM_WINDOW_HIDDEN = gdk_x11_get_xatom_by_name("_NET_WM_STATE_HIDDEN");
     ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
@@ -169,10 +172,11 @@ void _update_window_title(Client *c);
 void _update_window_class(Client *c);
 void _update_window_appid(Client *c);
 void _update_window_net_state(Client* c);
+void client_free(Client* c);
 PRIVATE void _update_is_overlay_client(Client* c);
 PRIVATE gboolean _is_maximized_window(Window win);
 PRIVATE void _update_task_list(Window root);
-void client_free(Client* c);
+
 
 PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
@@ -185,6 +189,7 @@ void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res
     }
 }
 
+
 PRIVATE
 void _update_window_viewport(Client* c)
 {
@@ -192,6 +197,7 @@ void _update_window_viewport(Client* c)
                            _update_window_viewport_callback, -1);
     dock_update_hide_mode();
 }
+
 
 PRIVATE
 gboolean _get_launcher_icon(Client* c)
@@ -278,6 +284,7 @@ gboolean _get_launcher_icon(Client* c)
     return c->icon == NULL;
 }
 
+
 Client* create_client_from_window(Window w)
 {
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(_dsp), w);
@@ -325,17 +332,17 @@ Client* create_client_from_window(Window w)
         c->use_board = FALSE;
 
     if (c->icon == NULL) {
-        g_debug("[create_client_from_window] try get deepin icon failed");
-        g_debug("[create_client_from_window] appid: %s, operator_code: %d",
+        g_debug("[%s] try get deepin icon failed", __func__);
+        g_debug("[%s] appid: %s, operator_code: %d", __func__,
                 c->app_id, operator_code);
         if (operator_code == ICON_OPERATOR_USE_ICONNAME)
             _get_launcher_icon(c);
     }
 
-    g_debug("[create_client_from_window] icon path is %s", c->icon);
+    g_debug("[%s] icon path is %s", __func__, c->icon);
 
     if (c->icon == NULL) {
-        g_debug("[create_client_from_window] get launcher icon failed");
+        g_debug("[%s] get launcher icon failed", __func__);
         c->need_update_icon = TRUE;
         _update_window_icon(c);
     }
@@ -351,6 +358,7 @@ Client* create_client_from_window(Window w)
 
     return c;
 }
+
 
 void _update_client_info(Client *c)
 {
@@ -372,7 +380,7 @@ void _update_client_info(Client *c)
             for (int i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
-                g_debug("[_update_client_info] name: %s, exec: %s", action->name, action->exec);
+                g_debug("[%s(%s:%d)] name: %s, exec: %s", __func__, __FILE__, __LINE__, action->name, action->exec);
                 JSObjectRef action_item = json_create();
                 json_append_string(action_item, "name", action->name);
                 json_append_string(action_item, "exec", action->exec);
@@ -390,6 +398,7 @@ void _update_client_info(Client *c)
     g_assert(c->app_id != NULL);
     js_post_message("task_updated", json);
 }
+
 
 PRIVATE
 void notify_desktop(DesktopFocusState current_state)
@@ -421,6 +430,7 @@ void active_window_changed(Display* dsp, Window w)
         }
     }
 }
+
 
 void client_free(Client* _c)
 {
@@ -459,6 +469,8 @@ PRIVATE gboolean _is_hidden(Window w)
     XFree(data);
     return FALSE;
 }
+
+
 gboolean is_skip_taskbar(Window w)
 {
     gulong items;
@@ -495,6 +507,13 @@ gboolean can_be_minimized(Window w)
 
 gboolean is_normal_window(Window w)
 {
+    XWindowAttributes attr;
+    if(XGetWindowAttributes(_dsp, w, &attr)) {
+        if (attr.map_state != IsViewable)
+            return FALSE;
+    } else {
+        return FALSE;
+    }
     XClassHint ch;
     if (XGetClassHint(_dsp, w, &ch)) {
         gboolean need_return = FALSE;
@@ -503,10 +522,10 @@ gboolean is_normal_window(Window w)
         } else if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
             start_monitor_launcher_window(_dsp, w);
             need_return = TRUE;
-        } else if (g_str_equal(ch.res_class, "Desktop")) {
+        } else if (0 == g_strcmp0(ch.res_class, "Desktop")) {
             get_atom_value_by_name(_dsp, w, "_NET_WM_PID", &desktop_pid, get_atom_value_for_index, 0);
             need_return = TRUE;
-        } else if (g_str_equal(ch.res_class, "Dlock")) {
+        } else if (0 == g_strcmp0(ch.res_class, "Dlock")) {
             need_return = TRUE;
         }
         XFree(ch.res_name);
@@ -557,10 +576,14 @@ gboolean is_normal_window(Window w)
     return may_be_docked && !has_cannot_be_docked_type;
 }
 
-PRIVATE void _destroy_client(gpointer id)
+
+PRIVATE
+void _destroy_client(gpointer id)
 {
     g_hash_table_remove(_clients_table, id);
 }
+
+
 void client_list_changed(Window* cs, size_t n)
 {
     GList* destroying_clients = g_hash_table_get_keys(_clients_table);
@@ -583,12 +606,14 @@ void client_list_changed(Window* cs, size_t n)
     g_list_free_full(destroying_clients, (GDestroyNotify)_destroy_client);
 }
 
+
 void update_task_list()
 {
     g_hash_table_remove_all(_clients_table);
     _update_task_list(GDK_ROOT_WINDOW());
     active_window_changed(_dsp, (Window)dock_get_active_window());
 }
+
 
 void _update_task_list(Window root)
 {
@@ -609,6 +634,7 @@ void _update_task_list(Window root)
     g_slice_free1(sizeof(Window) * items, cs);
 }
 
+
 JS_EXPORT_API
 double dock_get_active_window()
 {
@@ -628,6 +654,7 @@ double dock_get_active_window()
     return aw;
 }
 
+
 PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
@@ -641,6 +668,7 @@ void* argb_to_rgba(gulong* data, size_t s)
     }
     return img;
 }
+
 
 void _update_window_icon(Client* c)
 {
@@ -668,7 +696,9 @@ void _update_window_icon(Client* c)
         offset += width*height;
     }
 
-    void* img = argb_to_rgba(p, w*h);
+    // use &p[2] to avoid width and height
+    // otherwise a wrong icon will be generated
+    void* img = argb_to_rgba(&p[2], w*h);
 
 
     GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(img, GDK_COLORSPACE_RGB, TRUE, 8, w, h, w*4, NULL, NULL);
@@ -693,6 +723,7 @@ void _update_window_icon(Client* c)
     XFree(data);
 }
 
+
 void _update_window_title(Client* c)
 {
     g_free(c->title);
@@ -706,29 +737,66 @@ void _update_window_title(Client* c)
 
 }
 
+
 void _update_window_appid(Client* c)
 {
+    GDesktopAppInfo* desktop_file = NULL;
     char* app_id = NULL;
     gulong item;
-    long* s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+    long* s_pid = NULL;
+    s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
+
     if (s_pid != NULL) {
         char* exec_name = NULL;
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
-            g_debug("[_update_window_appid] exec_name: %s, exec_args: %s", exec_name, exec_args);
+            g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
             g_assert(c->title != NULL);
-            app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-            if (app_id == NULL && c->instance_name != NULL)
+            if (app_id == NULL) {
+                GKeyFile* f = load_app_config(FILTER_FILE);
+                if (f != NULL && c->instance_name != NULL) {
+                    app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
+
+                    if (app_id != NULL) {
+                        g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
+
+                        char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
+                        if (path != NULL)
+                            desktop_file = g_desktop_app_info_new_from_filename(path);
+                        g_free(path);
+                    }
+                }
+                g_key_file_unref(f);
+            }
+            if (app_id == NULL) {
+                app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
+            }
+            if (app_id == NULL && c->instance_name != NULL) {
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-            if (app_id == NULL && c->clss != NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from instance name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && c->clss != NULL) {
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-            if (app_id == NULL && exec_args != NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from class name: %s", __func__, app_id);
+            }
+            if (app_id == NULL && exec_args != NULL) {
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
-            if (app_id == NULL)
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+            }
+            if (app_id == NULL) {
                 app_id = g_strdup(exec_name);
+                if (app_id != NULL)
+                    g_debug("[%s] get app id from exec name: %s", __func__, app_id);
+            }
         } else {
             app_id = g_strdup(c->clss);
+            g_debug("[%s] no s_pid, get app id from class name: %s", __func__, app_id);
         }
         g_free(exec_name);
         g_free(exec_args);
@@ -737,12 +805,15 @@ void _update_window_appid(Client* c)
         app_id = g_strdup(c->clss);
     }
 
+    g_debug("[%s] temp app id: %s", __func__, app_id);
     g_free(c->app_id);
     if (app_id != NULL) {
         c->app_id = to_lower_inplace(app_id);
 
         if (s_pid != NULL) {
-            GDesktopAppInfo* desktop_file = guess_desktop_file(c->app_id);
+            if (desktop_file == NULL)
+                desktop_file = guess_desktop_file(c->app_id);
+
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);
@@ -753,12 +824,14 @@ void _update_window_appid(Client* c)
             }
         }
 
+        // uniform '_' to '-'
         if (NULL != strchr(c->app_id, '_'))
             g_strdelimit(c->app_id, "_", '-');
     }
 
     XFree(s_pid);
 }
+
 
 void _update_window_class(Client* c)
 {
@@ -775,11 +848,12 @@ void _update_window_class(Client* c)
         c->instance_name = NULL;
     }
 
-    if (c->title && g_str_equal(c->title, "Unknow Name") && c->clss) {
+    if (c->title && 0 == g_strcmp0(c->title, "Unknow Name") && c->clss) {
         g_free(c->title);
         c->title = g_strdup(c->clss);
     }
 }
+
 
 void _update_window_net_state(Client* c)
 {
@@ -792,7 +866,9 @@ void _update_window_net_state(Client* c)
     dock_update_hide_mode();
 }
 
-PRIVATE gboolean _is_maximized_window(Window win)
+
+PRIVATE
+gboolean _is_maximized_window(Window win)
 {
     gulong items;
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
@@ -823,6 +899,7 @@ void _update_current_viewport(Workspace* vp)
 
     dock_update_hide_mode();
 }
+
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
@@ -875,6 +952,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
     return GDK_FILTER_CONTINUE;
 }
 
+
 gboolean cross_workspaces_contain_current_workspace(Client* c)
 {
     for (int i = 0; i < c->cross_workspace_num; ++i) {
@@ -885,15 +963,19 @@ gboolean cross_workspaces_contain_current_workspace(Client* c)
     return FALSE;
 }
 
+
 PRIVATE
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
 }
+
+
 gboolean dock_has_maximize_client()
 {
     return g_hash_table_find(_clients_table, (GHRFunc)_find_maximize_client, NULL) != NULL;
 }
+
 
 void _update_is_overlay_client(Client* c)
 {
@@ -916,11 +998,14 @@ void _update_is_overlay_client(Client* c)
     }
 }
 
+
 PRIVATE
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
     return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
 }
+
+
 gboolean dock_has_overlay_client()
 {
     return g_hash_table_find(_clients_table, (GHRFunc)_find_overlay_window, NULL) != NULL;
@@ -943,6 +1028,7 @@ void init_task_list()
     update_task_list();
     active_window_changed(_dsp, (Window)dock_get_active_window());
 }
+
 
 JS_EXPORT_API
 void dock_active_window(double id)
@@ -970,6 +1056,7 @@ int dock_close_window(double id)
                       StructureNotifyMask, (XEvent*)&event);
 }
 
+
 JS_EXPORT_API
 gboolean dock_get_desktop_status()
 {
@@ -980,6 +1067,7 @@ gboolean dock_get_desktop_status()
     XFree(data);
     return value;
 }
+
 
 DBUS_EXPORT_API
 JS_EXPORT_API
@@ -995,6 +1083,7 @@ void dock_show_desktop(gboolean value)
     XSendEvent(_dsp, root, False,
             StructureNotifyMask, (XEvent*)&event);
 }
+
 
 JS_EXPORT_API
 void dock_iconify_window(double id)
@@ -1016,7 +1105,7 @@ gboolean dock_is_client_minimized(double id)
     if (get_atom_value_by_name(_dsp, c->window, "WM_STATE", &wm_state, get_atom_value_for_index, 0)) {
         is_minimized = wm_state == IconicState;
 
-        const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
+        static const char* state[] = {"WithDraw", "Normal", NULL, "Iconic"};
         g_debug("window state: %s", state[wm_state]);
     } else {
         g_debug("cannot get Window state(WM_STATE)");
@@ -1042,6 +1131,7 @@ gboolean dock_window_need_to_be_minimized(double id)
 {
     return !dock_is_client_minimized(id) && dock_get_active_window() == id;
 }
+
 
 JS_EXPORT_API
 void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
@@ -1077,6 +1167,7 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
     canvas_custom_draw_did(cr, NULL);
 }
 
+
 JS_EXPORT_API
 gboolean dock_request_dock_by_client_id(double id)
 {
@@ -1085,22 +1176,25 @@ gboolean dock_request_dock_by_client_id(double id)
 
     if (dock_has_launcher(c->app_id)) {
         // already has this app info
-        g_debug("already has this app info");
+        g_debug("[%s] already has this app info", __func__);
         return FALSE;
     } else if (c->app_id == NULL || c->exec == NULL || c->icon == NULL) {
-        g_warning("cannot dock app, because app_id, command line or icon maybe NULL");
+        g_warning("[%s] cannot dock app, because app_id, command line or icon maybe NULL", __func__);
         return FALSE;
     } else {
+        g_debug("[%s] request_by_info", __func__);
         request_by_info(c->app_id, c->exec, c->icon);
         return TRUE;
     }
 }
+
 
 PRIVATE
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
     return g_strcmp0(c->app_id, app_id) == 0;
 }
+
 
 gboolean is_has_client(const char* app_id)
 {
@@ -1110,6 +1204,7 @@ gboolean is_has_client(const char* app_id)
     else
         return FALSE;
 }
+
 
 JS_EXPORT_API
 void dock_set_compiz_workaround_preview(gboolean v)

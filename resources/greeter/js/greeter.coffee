@@ -83,20 +83,23 @@ document.body.addEventListener("mousewheel", (e) =>
 )
 
 document.body.addEventListener("keydown", (e)=>
-
-    if e.which == 37
-        #echo "prev"
+    if e.which == LEFT_ARROW
+        # echo "prev"
         _current_user?.animate_prev()
 
-    else if e.which == 39
-        #echo "next"
+    else if e.which == RIGHT_ARROW
+        # echo "next"
         _current_user?.animate_next()
 
     else if e.which == ENTER_KEY
         #echo "enter"
-        if not _current_user?.is_recognizing
-            _current_user?.show_login()
-            message_tip?.remove()
+        # if not _current_user?.is_recognizing
+        if _current_user?.face_login
+            _current_user?.is_recognizing = false
+            DCore[APP_NAME].cancel_detect()
+            _current_user?.stop_animation()
+        _current_user?.show_login()
+        message_tip?.remove()
 
     else if e.which == ESC_KEY
         #echo "esc"

@@ -32,52 +32,22 @@
 #define AUTOSTART_DELAY_TIME 100
 
 
-PRIVATE
-GPtrArray* _get_all_applications_dirs()
-{
-    const char *const * dirs = g_get_system_data_dirs();
-    GPtrArray* app_dirs = g_ptr_array_new_with_free_func(g_free);
-
-    for (int i = 0; dirs[i] != NULL; ++i) {
-        char* app_dir = g_build_filename(dirs[i], APP_DIR, NULL);
-        if (g_file_test(app_dir, G_FILE_TEST_EXISTS))
-            g_ptr_array_add(app_dirs, g_strdup(app_dir));
-        g_free(app_dir);
-    }
-
-    char* user_dir = g_build_path(g_get_user_data_dir(), APP_DIR, NULL);
-    if (g_file_test(user_dir, G_FILE_TEST_EXISTS))
-        g_ptr_array_add(app_dirs, g_strdup(user_dir));
-    g_free(user_dir);
-
-    return app_dirs;
-}
-
-
-static
-gboolean _update_times(gpointer user_data)
-{
-    js_post_message_simply("update_items", NULL);
-    return FALSE;
-}
-
-
-PRIVATE
 GPtrArray* desktop_monitors = NULL;
 GPtrArray* autostart_monitors = NULL;
 
 
 PRIVATE
-void append_monitor(GPtrArray* monitors, GPtrArray* paths, GCallback monitor_callback)
+void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monitor_callback)
 {
     // check NULL to avoid the last one is NULL
     for (int i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
         GError* err = NULL;
-        GFileMonitor* monitor =
-            g_file_monitor_directory(g_file_new_for_path(g_ptr_array_index(paths, i)),
-                                     G_FILE_MONITOR_SEND_MOVED,
-                                     NULL,
-                                     &err);
+        GFile* file = g_file_new_for_path(g_ptr_array_index(paths, i));
+        GFileMonitor* monitor = g_file_monitor_directory(file,
+                                                         G_FILE_MONITOR_SEND_MOVED,
+                                                         NULL,
+                                                         &err);
+        g_object_unref(file);
         if (err != NULL) {
             g_warning("[%s] %s", __func__, err->message);
             g_error_free(err);
@@ -94,9 +64,82 @@ void append_monitor(GPtrArray* monitors, GPtrArray* paths, GCallback monitor_cal
 
 
 PRIVATE
+GPtrArray* _get_all_applications_dirs()
+{
+    const char *const * dirs = g_get_system_data_dirs();
+    GPtrArray* app_dirs = g_ptr_array_new_with_free_func(g_free);
+
+    for (int i = 0; dirs[i] != NULL; ++i) {
+        char* app_dir = g_build_filename(dirs[i], APP_DIR, NULL);
+        if (g_file_test(app_dir, G_FILE_TEST_EXISTS))
+            g_ptr_array_add(app_dirs, g_strdup(app_dir));
+        g_free(app_dir);
+    }
+
+    char* user_dir = g_build_filename(g_get_user_data_dir(), APP_DIR, NULL);
+    if (g_file_test(user_dir, G_FILE_TEST_EXISTS))
+        g_ptr_array_add(app_dirs, g_strdup(user_dir));
+    g_free(user_dir);
+
+    return app_dirs;
+}
+
+
+enum DesktopStatus {
+    UNKNOWN,
+    DELETED,
+    ADDED,
+    CHANGED
+};
+
+
+struct DesktopInfo {
+    char* path;
+    enum DesktopStatus status;
+};
+
+
+PRIVATE
+struct DesktopInfo* desktop_info_create(const char* path, enum DesktopStatus status)
+{
+    struct DesktopInfo* info = g_slice_new(struct DesktopInfo);
+    info->path = g_strdup(path);
+    info->status = status;
+
+    return info;
+}
+
+
+PRIVATE
+void desktop_info_destroy(struct DesktopInfo** di)
+{
+    g_free((*di)->path);
+    g_slice_free(struct DesktopInfo, *di);
+    *di = NULL;
+}
+
+
+PRIVATE
+gboolean _update_items(gpointer user_data)
+{
+    // TODO: deal with DesktopInfo
+    // 1. add/delete/changed
+    // 2. if changed, maybe invalid changes
+    // 3. unique app (e.g. use $HOME/.local/share/applications to overload
+    // system's desktop file)
+    struct DesktopInfo* info = (struct DesktopInfo*)user_data;
+    js_post_message_simply("update_items", NULL);  // update some infos
+    desktop_info_destroy(&info);
+    return FALSE;
+}
+
+
+
+PRIVATE
 void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                               GFileMonitorEvent event_type, gpointer data)
 {
+    static gulong timeout_id = 0;
 #if 0
     static char* names[] = {
         "changed",
@@ -108,22 +151,49 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
         "mount",
         "moved",
     };
-    g_warning("[%s] event type: %s", __func__, names[event_type]);
+    char* file_path = g_file_get_path(file);
+    char* other_file_path = other_file != NULL ? g_file_get_path(other_file) : NULL;
+    g_warning("[%s] #%s#%s# event type: %s", __func__, file_path, other_file_path, names[event_type]);
+    g_free(file_path);
+    g_free(other_file_path);
 #endif
-
-    static gulong timeout_id = 0;
+    char* path = NULL;
+    enum DesktopStatus status = UNKNOWN;
     switch (event_type) {
-        // fall through
     case G_FILE_MONITOR_EVENT_DELETED:
-    case G_FILE_MONITOR_EVENT_CREATED:
+        path = g_file_get_path(file);
+        if (g_str_has_suffix(path, ".desktop")) {
+            status = DELETED;
+            g_warning("[%s] %s is deleted", __func__, path);
+        }
+        break;
     case G_FILE_MONITOR_EVENT_MOVED:
+        path = g_file_get_path(other_file);
+        if (g_str_has_suffix(path, ".desktop")) {
+            status = ADDED;
+            g_warning("[%s] %s is added", __func__, path);
+        }
+        break;
+    case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+        path = g_file_get_path(file);
+        if (g_str_has_suffix(path, ".desktop")) {
+            status = ADDED;
+            g_warning("[%s] %s is changed/added", __func__, path);
+        }
+        break;
+    }
+
+    if (status != UNKNOWN) {
         if (timeout_id != 0) {
             g_source_remove(timeout_id);
             timeout_id = 0;
         }
 
-        timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL);
+        /* timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL); */
+        struct DesktopInfo* info = desktop_info_create(path, status);
+        timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_items, info);
     }
+    g_free(path);
 }
 
 
@@ -172,12 +242,13 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
         }
 
         g_debug("[%s] delete or changed", __func__);
-        char* uri = g_file_get_uri(file);
-        char* escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
+        char* uri = g_file_get_uri(changed_file);
+        if (g_str_has_suffix(uri, ".desktop")) {
+            char* escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
+            timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_autostart,
+                                       escaped_uri);
+        }
         g_free(uri);
-        timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_autostart,
-                                   g_strdup(escaped_uri));
-        g_free(escaped_uri);
     }
 }
 

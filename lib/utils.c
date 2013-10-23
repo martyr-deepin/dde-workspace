@@ -33,9 +33,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-gboolean is_application_running(const char* path)
+int binding(int server_sockfd, const char* path)
 {
-    int server_sockfd;
     socklen_t server_len;
     struct sockaddr_un server_addr;
 
@@ -44,13 +43,39 @@ gboolean is_application_running(const char* path)
     server_addr.sun_family = AF_UNIX;
     server_len = 1 + path_size + offsetof(struct sockaddr_un, sun_path);
 
-    server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    const int reuse = 1;
+    socklen_t val_len = sizeof reuse;
+    setsockopt(server_sockfd, SOL_SOCKET, SO_REUSEADDR, (const void*)&reuse, val_len);
 
-    if (0 == bind(server_sockfd, (struct sockaddr *)&server_addr, server_len)) {
+    // force quit
+    /* const struct linger linger_val = {1, 0}; */
+    /* val_len = sizeof linger_val; */
+    /* setsockopt(server_sockfd, SOL_SOCKET, SO_LINGER, (const void*)&linger_val, val_len); */
+
+    return bind(server_sockfd, (struct sockaddr *)&server_addr, server_len);
+}
+
+
+gboolean is_application_running(const char* path)
+{
+    int server_sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (0 == binding(server_sockfd, path)) {
+        close(server_sockfd);
         return FALSE;
     } else {
         return TRUE;
     }
+}
+
+void singleton(const char* name)
+{
+    static int sd = 0;
+    if (sd != 0)
+        return;
+
+    sd = socket(AF_UNIX, SOCK_STREAM, 0);
+    while (0 != binding(sd, name))
+        g_debug("binding failed");
 }
 
 char* shell_escape(const char* source)
@@ -193,6 +218,7 @@ GKeyFile* load_app_config(const char* name)
     char* path = g_build_filename(g_get_user_config_dir(), name, NULL);
     GKeyFile* key = g_key_file_new();
     g_key_file_load_from_file(key, path, G_KEY_FILE_NONE, NULL);
+    g_free(path);
     /* no need to test file exitstly */
     return key;
 }
@@ -334,34 +360,9 @@ char* get_desktop_file_basename(GDesktopAppInfo* file)
 
 GDesktopAppInfo* guess_desktop_file(char const* app_id)
 {
-    GDesktopAppInfo* desktop_file = NULL;
-    GList* all_desktop_files = g_app_info_get_all();
-
-    for (GList* iter = all_desktop_files; iter != NULL; iter = g_list_next(iter)) {
-        GDesktopAppInfo* iter_data_ref = (GDesktopAppInfo*)iter->data;
-        char const* filename = g_desktop_app_info_get_filename(iter_data_ref);
-        char* basename = g_path_get_basename(filename);
-        char* ext_sep = strchr(basename, '.');
-
-        if (ext_sep == NULL) {
-            g_free(basename);
-            continue;
-        }
-
-        char* name = g_strndup(basename, ext_sep - basename);
-        g_free(basename);
-
-        if (g_str_equal(name, app_id)) {
-            g_free(name);
-            desktop_file = g_object_ref(iter_data_ref);
-            break;
-        }
-
-        g_free(name);
-    }
-
-    g_list_free_full(all_desktop_files, g_object_unref);
-
+    char* basename = g_strconcat(app_id, ".desktop", NULL);
+    GDesktopAppInfo* desktop_file = g_desktop_app_info_new(basename);
+    g_free(basename);
     return desktop_file;
 }
 
@@ -417,5 +418,11 @@ char* check_absolute_path_icon(char const* app_id, char const* icon_path)
     }
 
     return icon;
+}
+
+
+gboolean is_chrome_app(char const* name)
+{
+    return g_str_has_prefix(name, "chrome-");
 }
 

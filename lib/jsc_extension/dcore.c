@@ -33,7 +33,7 @@
 #define DOCK_SCHEMA_ID "com.deepin.dde.dock"
 #define SCHEMA_KEY_ENABLED_PLUGINS "enabled-plugins"
 
-PRIVATE GSettings* desktop_gsettings = NULL;
+static GSettings* desktop_gsettings = NULL;
 GHashTable* enabled_plugins = NULL;
 GHashTable* plugins_state = NULL;
 
@@ -110,7 +110,7 @@ void dcore_init_plugins(char const* app_name)
     if (desktop_gsettings == NULL)
         desktop_gsettings = g_settings_new(DESKTOP_SCHEMA_ID);
 
-    if (g_str_equal(app_name, "desktop"))
+    if (0 == g_strcmp0(app_name, "desktop"))
         gsettings = desktop_gsettings;
 
     if (plugins_state == NULL)
@@ -215,7 +215,7 @@ void dcore_enable_plugin(char const* id, gboolean value)
     char* pos = strchr(id, ':');
     char* app_name = g_strndup(id, pos - id);
 
-    if (g_str_equal(app_name, "desktop"))
+    if (0 == g_strcmp0(app_name, "desktop"))
         gsettings = desktop_gsettings;
 
     g_free(app_name);
@@ -351,3 +351,4 @@ gboolean dcore_open_browser(char const* origin_uri)
 
     return launch_result;
 }
+

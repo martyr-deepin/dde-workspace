@@ -22,7 +22,7 @@
             <description>Show or hide Deepin Software Center icon on the desktop</description>
         </key>
         <key type="as" name='enabled-plugins'>
-            <default>[]</default>
+            <default>['weather','clock']</default>
             <summary>Enabled plugins</summary>
             <description>Containing the enabled plugins of desktop</description>
         </key>

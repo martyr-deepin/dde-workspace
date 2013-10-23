@@ -127,29 +127,29 @@ class Item extends Widget
 
     set_icon : (src = null) =>
         if src == null
-            if DCore.DEntry.can_thumbnail(@_entry) 
+            if DCore.DEntry.can_thumbnail(@_entry)
                 if (icon = DCore.DEntry.get_thumbnail(@_entry)) == null
                     #1. first use the get_icon to show
-                    if (icon = DCore.DEntry.get_icon(@_entry)) != null 
+                    if (icon = DCore.DEntry.get_icon(@_entry)) != null
                         @item_icon.className = ""
                     else
-                        icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL) 
+                        icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                         @item_icon.className = ""
                     #2. then set the 2s timeout to check the get_thumbnail 
                     that = @
                     clearInterval(Flag_setTimeout) if Flag_setTimeout
                     Flag_setTimeout = setInterval(->
                         if (icon = DCore.DEntry.get_thumbnail(that._entry)) != null
-                            that.item_icon.className = "previewshadow"  
+                            that.item_icon.className = "previewshadow"
                             that.item_icon.src = icon
                             that = null
                             clearInterval(Flag_setTimeout)
                     ,t_set)
 
-                else 
+                else
                     @item_icon.className = "previewshadow"
 
-            else if (icon = DCore.DEntry.get_icon(@_entry)) != null 
+            else if (icon = DCore.DEntry.get_icon(@_entry)) != null
                 @item_icon.className = ""
             else
                 icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
@@ -375,7 +375,7 @@ class Item extends Widget
             move_widget_to_rename_div(@)
             @display_full_name()
             @display_not_selected()
-            @element.draggable = false
+            @element.draggable = true
             @item_name.contentEditable = "true"
             @item_name.className = "item_renaming"
             @item_name.addEventListener("mousedown", @on_event_stoppropagation)
@@ -514,7 +514,7 @@ class DesktopEntry extends Item
 
     do_dragstart : (evt) ->
         evt.stopPropagation()
-        #@item_complete_rename(false)
+        @item_complete_rename(true)
         item_dragstart_handler(this, evt)
 
         return
@@ -683,7 +683,6 @@ class Folder extends DesktopEntry
 class RichDir extends DesktopEntry
     constructor : (entry) ->
         super(entry, false, true)
-
         @div_pop = null
         @show_pop = false
 

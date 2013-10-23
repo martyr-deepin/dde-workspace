@@ -19,7 +19,7 @@ selected_next = ->
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
-        item_selected.scroll_to_view()
+        item_selected?.scroll_to_view()
         return
     n = item_selected.next_shown()
     if n
@@ -29,7 +29,7 @@ selected_prev = ->
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
-        item_selected.scroll_to_view()
+        item_selected?.scroll_to_view()
         return
     n = item_selected.prev_shown()
     if n
@@ -40,7 +40,7 @@ selected_down = ->
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
-        item_selected.scroll_to_view()
+        item_selected?.scroll_to_view()
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]
@@ -56,7 +56,7 @@ selected_up = ->
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
-        item_selected.scroll_to_view()
+        item_selected?.scroll_to_view()
         return
     n = item_selected
     for i in [0..get_item_row_count()-1]

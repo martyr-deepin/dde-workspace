@@ -299,6 +299,13 @@ char* dentry_get_icon_path(Entry* e)
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
             ret = icon_name_to_path (icon_str, 48);
+            if (ret == NULL)
+            {
+                g_warning("richdir dentry  get_icon is null use invalid-dock_app.png instead");
+                const char * invalid_app = "invalid-dock_app";
+                ret = dcore_get_theme_icon(invalid_app, 48);
+            }
+            
             g_free(icon_str);
         }
         else{
@@ -387,6 +394,19 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
         }
         return launch_res;
     TEST_GAPP(e, app)
+        char const* startup_wm_class = g_desktop_app_info_get_startup_wm_class(G_DESKTOP_APP_INFO(app));
+        if (startup_wm_class != NULL) {
+            GKeyFile* f = load_app_config("dock/filter.ini");
+            const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
+            char* appid = get_basename_without_extend_name(path);
+            g_strdelimit(appid, "_", '-');
+            /* g_warning("[%s] save %s", __func__, appid); */
+            g_key_file_set_string(f, startup_wm_class, "appid", appid);
+            g_key_file_set_string(f, startup_wm_class, "path", path);
+            g_free(appid);
+            save_app_config(f, "dock/filter.ini");
+            g_key_file_unref(f);
+        }
         ArrayContainer _fs = _normalize_array_container(fs);
 
         GFile** files = _fs.data;
@@ -1121,7 +1141,7 @@ ArrayContainer dentry_get_templates_files(void)
     gboolean is_exist = g_file_test(TEMPLATES_DIR(),G_FILE_TEST_EXISTS);
     if(is_exist)
     {
-        if(g_str_equal(TEMPLATES_DIR(),HOME_DIR()))
+        if(0 == g_strcmp0(TEMPLATES_DIR(),HOME_DIR()))
         {
             g_debug("the templates directory is HOME_DIR,it isnt TEMPLATES_DIR");
             ac.data = NULL;
@@ -1170,7 +1190,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 }
 
 JS_EXPORT_API
-gboolean dentry_create_templates(GFile* src, char* name_add_before)
+GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = FALSE;
     char* basename = dentry_get_name(src);
@@ -1211,7 +1231,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
     g_object_unref(dir);
 
-    return result;
+    return child;
 }
 
 
@@ -1235,9 +1255,9 @@ gboolean _is_valid_category(char const* category)
         char* lowcase_filter = g_utf8_casefold(filter[i], -1);
         char* lowcase_category = g_utf8_casefold(category, -1);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, g_str_equal(lowcase_category, lowcase_filter));
+        g_debug("compare #%s# with #%s#: %d", lowcase_category, lowcase_filter, 0 == g_strcmp0(lowcase_category, lowcase_filter));
 
-        if (g_str_equal(lowcase_category, lowcase_filter)) {
+        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
             is_valid = FALSE;
             g_free(lowcase_category);
             g_free(lowcase_filter);
@@ -1275,8 +1295,8 @@ gboolean _is_generic_category(char const* category)
         char* lowcase_category = g_utf8_casefold(category, -1);
         char* lowcase_filter = g_utf8_casefold(filter[i], -1);
 
-        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, g_str_equal(lowcase_category, lowcase_filter));
-        if (g_str_equal(lowcase_category, lowcase_filter)) {
+        g_debug("compare #%s# with #%s#: %d", lowcase_filter, lowcase_category, 0 == g_strcmp0(lowcase_category, lowcase_filter));
+        if (0 == g_strcmp0(lowcase_category, lowcase_filter)) {
             is_generic = TRUE;
             g_free(lowcase_category);
             g_free(lowcase_filter);
@@ -1486,7 +1506,7 @@ char* _get_group_name_from_software_center(ArrayContainer const fs)
         if (another_category == NULL)
             goto errorout;
 
-        if (!g_str_equal(category, another_category))
+        if (0 != g_strcmp0(category, another_category))
             goto errorout;
     }
 

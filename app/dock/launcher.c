@@ -176,14 +176,18 @@ char* get_app_id(GDesktopAppInfo* info)
 {
     char* app_id = NULL;
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
+    g_debug("[%s] basename: %s", __func__, basename);
     basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
     if (is_app_in_white_list(basename)) {
         app_id = basename;
+        g_debug("[%s] is_app_in_white_list: %s", __func__, app_id);
     } else {
         g_free(basename);
 
         app_id = g_path_get_basename(g_app_info_get_executable(G_APP_INFO(info)));
+        g_debug("[%s] not is_app_in_white_list: %s", __func__, app_id);
     }
+    g_strdelimit(app_id, "_", '-');
     return to_lower_inplace(app_id);
 }
 
@@ -191,7 +195,8 @@ void update_dock_apps()
 {
     gsize size = 0;
     GError* err = NULL;
-    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position", &size, &err);
+    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position",
+                                             &size, &err);
     if (list != NULL) {
         g_assert(list != NULL);
 
@@ -202,6 +207,7 @@ void update_dock_apps()
 
         for (gsize i=0; i<size; i++) {
             if (g_key_file_has_group(k_apps, list[i])) {
+                g_debug("[%s] build app info: %s", __func__, list[i]);
                 JSValueRef app_info = build_app_info(list[i]);
                 if (app_info) {
                     js_post_message("launcher_added", app_info);
@@ -213,6 +219,10 @@ void update_dock_apps()
         _apps_position = g_list_reverse(_apps_position);
 
         g_strfreev(list);
+    } else {
+        g_warning("[%s(%s)] get string list from file(%s) failed: %s",
+                  __func__, __FILE__, APPS_INI, err->message);
+        g_error_free(err);
     }
 }
 
@@ -325,6 +335,7 @@ void write_app_info(GDesktopAppInfo* info)
     }
 
     g_key_file_set_string(k_apps, app_id, "Name", g_app_info_get_display_name(G_APP_INFO(info)));
+    /* g_warning("[%s] write Name to %s", __func__, g_app_info_get_display_name(G_APP_INFO(info))); */
 
     g_key_file_set_string(k_apps, app_id, "Path", g_desktop_app_info_get_filename(info));
     g_key_file_set_boolean(k_apps, app_id, "Terminal", get_need_terminal(info));
@@ -347,8 +358,10 @@ void dock_request_dock(const char* path)
 {
     char* unescape_path = g_uri_unescape_string(path, "/:");
     GDesktopAppInfo* info = g_desktop_app_info_new_from_filename(unescape_path);
+    g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
+        g_debug("[%s(%s:%d)]", __func__, __FILE__, __LINE__);
         char* app_id = get_app_id(info);
         write_app_info(info);
         JSValueRef app_info = build_app_info(app_id);
@@ -384,6 +397,7 @@ JSValueRef dock_get_launcher_info(const char* app_id)
 JS_EXPORT_API
 gboolean dock_launch_by_app_id(const char* app_id, const char* exec, ArrayContainer fs)
 {
+    g_assert(app_id != NULL);
     GAppInfo* info = NULL;
     gboolean ret = FALSE;
     if (g_key_file_has_group(k_apps, app_id)) {
@@ -436,15 +450,51 @@ gboolean dock_has_launcher(const char* app_id)
 
 gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
 {
+    g_debug("[%s(%s:%d)] ", __func__, __FILE__, __LINE__);
     char* id = g_strconcat(name, ".desktop", NULL);
     GDesktopAppInfo* info = g_desktop_app_info_new(id);
     g_free(id);
     if (info != NULL) {
         dock_request_dock(g_desktop_app_info_get_filename(info));
     } else {
-        g_key_file_set_string(k_apps, name, "Name", name);
-        g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
-        g_key_file_set_string(k_apps, name, "Icon", icon);
+        GList* pos = g_list_find_custom(_apps_position, name, (GCompareFunc)g_strcmp0);
+        if (pos == NULL) {
+            _apps_position = g_list_append(_apps_position, g_strdup(name));
+
+            _save_apps_position();
+        }
+
+        if (is_chrome_app(name)) {
+            g_debug("[%s] %s is chrome app", __func__, name);
+            GKeyFile* f = load_app_config(FILTER_FILE);
+            gsize length = 0;
+            char** groups = g_key_file_get_groups(f, &length);
+            for (int i = 0; i < length; ++i) {
+                g_assert(groups[i] != NULL);
+                char* appid = g_key_file_get_string(f, groups[i], "appid", NULL);
+                /* g_warning("[%s] compare #%s# and #%s#", __func__, name, appid); */
+                if (appid != NULL && 0 == g_strcmp0(appid, name)) {
+                    char* path = g_key_file_get_string(f, groups[i], "path", NULL);
+                    /* g_warning("[%s] find path: %s", __func__, path); */
+                    g_key_file_set_string(k_apps, name, "Path", path);
+                    GDesktopAppInfo* d = g_desktop_app_info_new_from_filename(path);
+                    if (d != NULL) {
+                        /* g_warning("[%s] ", __func__); */
+                        write_app_info(d);
+                    }
+                    g_object_unref(d);
+                    g_free(path);
+                    break;
+                }
+                g_free(appid);
+            }
+            g_strfreev(groups);
+            g_key_file_unref(f);
+        } else {
+            g_key_file_set_string(k_apps, name, "Name", name);
+            g_key_file_set_string(k_apps, name, "CmdLine", cmdline);
+            g_key_file_set_string(k_apps, name, "Icon", icon);
+        }
 
         save_app_config(k_apps, APPS_INI);
 

@@ -19,6 +19,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <glib.h>
+#include <glib/gstdio.h>
+
 #include "xdg_misc.h"
 #include "X_misc.h"
 #include "pixbuf.h"
@@ -32,6 +35,7 @@
 #include <cairo/cairo-xlib.h>
 #include "DBUS_desktop.h"
 #include "desktop.h"
+#include <sys/stat.h>
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
@@ -45,6 +49,7 @@
 
 PRIVATE
 GSettings* desktop_gsettings = NULL;
+GSettings* dock_gsettings = NULL;
 
 extern GdkWindow* get_background_window ();
 extern void install_monitor();
@@ -296,7 +301,7 @@ PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer us
     JSObjectRef json = json_create();
     char* current_gsettings_schema_id = get_schema_id(settings);
     char* desktop_gsettings_schema_id = get_schema_id(desktop_gsettings);
-    if (g_str_equal(current_gsettings_schema_id, desktop_gsettings_schema_id))
+    if (0 == g_strcmp0(current_gsettings_schema_id, desktop_gsettings_schema_id))
         json_append_string(json, "app_name", "desktop");
 
     g_free(desktop_gsettings_schema_id);
@@ -347,43 +352,22 @@ char* desktop_get_data_dir()
 JS_EXPORT_API
 void desktop_load_dsc_desktop_item()
 {
-    extern void dentry_copy (ArrayContainer fs, GFile* dest);
-    extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
-    const char* desktop_path = DESKTOP_DIR();
-    GFile* src_file = dentry_create_by_path("/usr/share/applications/deepin-software-center.desktop");
-    GFile* dest = dentry_create_by_path(desktop_path);
-    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop",desktop_path);
-    GFile* dest_file = dentry_create_by_path(dsc_path);
-
-    ArrayContainer fs_src;
-    fs_src.data = &src_file;
-    fs_src.num = 1;
-
-    ArrayContainer fs_dest;
-    fs_dest.data = &dest_file;
-    fs_dest.num = 1;
+    char* dsc_path = g_strdup_printf("%s/deepin-software-center.desktop", DESKTOP_DIR());
+    GFile* dest_file = g_file_new_for_path(dsc_path);
 
     if (desktop_get_config_boolean("show-dsc-icon"))
     {
-        if (!dentry_is_gapp(dest_file))
-        {
-            dentry_copy(fs_src, dest);
-        }
+        GFile* src_file = g_file_new_for_path("/usr/share/applications/deepin-software-center.desktop");
+        g_file_copy(src_file, dest_file, G_FILE_COPY_NONE, NULL, NULL, NULL, NULL);
+        g_chmod(dsc_path, S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+        g_object_unref(src_file);
     }
     else
     {
-        if(dentry_is_gapp(dest_file))
-        {
-            dentry_delete_files(fs_dest, FALSE);
-        }
-        else{
-            g_debug("deepin-software-center.desktop is not in desktop");
-        }
+        g_file_delete(dest_file, NULL, NULL);
     }
     g_free(dsc_path);
-    g_object_unref(dest);
-    ArrayContainer_free0(fs_src);
-    ArrayContainer_free0(fs_dest);
+    g_object_unref(dest_file);
 }
 
 JS_EXPORT_API
@@ -395,7 +379,7 @@ gboolean desktop_file_exist_in_desktop(char* name)
     for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
         if(desktop_file_filter(file_name))
             continue;
-        if(g_str_equal(name,file_name))
+        if(0 == g_strcmp0(name,file_name))
         {
             result = true;
         }
@@ -489,7 +473,7 @@ gboolean desktop_check_version_equal_set(const char* version_set)
         g_message("desktop version : %s ",version);
     }
     else{
-        if (g_str_equal(version,version_set))
+        if (0 == g_strcmp0(version,version_set))
             result = TRUE;
         else{
             result = FALSE;
@@ -501,7 +485,7 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
     if (version != NULL)
         g_free(version);
-    g_key_file_unref(desktop_config);    
+    g_key_file_unref(desktop_config);
     desktop_config = NULL;
 
     return result;
@@ -509,10 +493,12 @@ gboolean desktop_check_version_equal_set(const char* version_set)
 
 int main(int argc, char* argv[])
 {
-    if (is_application_running("desktop.app.deepin")) {
+    if (is_application_running(DESKTOP_ID_NAME)) {
         g_warning("another instance of application desktop is running...\n");
         return 0;
     }
+
+    singleton(DESKTOP_ID_NAME);
 
     //remove  option -f
     parse_cmd_line (&argc, &argv);
@@ -608,7 +594,6 @@ static gboolean __init__ = FALSE;
 JS_EXPORT_API
 void desktop_emit_webview_ok()
 {
-    GSettings* dock_gsettings = NULL;
     if (!__init__) {
         __init__ = TRUE;
         install_monitor();
@@ -635,3 +620,4 @@ void desktop_emit_webview_ok()
     }
     update_workarea_size (dock_gsettings);
 }
+

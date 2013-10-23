@@ -6,7 +6,7 @@ void test_entry()
 {
     setup_fixture();
 
-    #if TEST_THEM
+#if 0
 
     extern Entry* dentry_get_desktop();
     Test({
@@ -26,7 +26,7 @@ void test_entry()
         dentry_is_native(g_ptr_array_index(gfileDirectory,0));
         dentry_is_native(g_ptr_array_index(gfileDocument,0));
         dentry_is_native(g_ptr_array_index(gappinfo,0));
-    },"dentry_is_native");    
+    },"dentry_is_native");
 
     extern double dentry_get_type(Entry* e);
     Test({
@@ -40,7 +40,7 @@ void test_entry()
         dentry_get_flags(g_ptr_array_index(gfileDirectory,0));
         dentry_get_flags(g_ptr_array_index(gfileDocument,0));
         dentry_get_flags(g_ptr_array_index(gappinfo,0));
-    },"dentry_get_flags");    
+    },"dentry_get_flags");
 
 
     extern char* dentry_get_name(Entry* e);
@@ -60,19 +60,23 @@ void test_entry()
         func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDirectory,4),"file:///tmp/0ashdgioasdhgo_asdhgio%26asjdgioadsjg");
         func_test_entry_char(dentry_get_uri,g_ptr_array_index(gfileDocument,0), "file:///tmp/test_files/default_background.jpg");
         func_test_entry_char(dentry_get_uri,g_ptr_array_index(gappinfo,0),"file:///home/ycl/Desktop/skype.desktop");
-    },"dentry_get_uri"); 
-    
+    },"dentry_get_uri");
 
-    extern char* dentry_get_icon(Entry* e);    
+#endif
+    extern char* dentry_get_icon(Entry* e);
     Test({
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDirectory,0), "/usr/share/icons/Faenza/places/48/inode-directory.png");
+        
+           /*char * icon  = dentry_get_icon(g_ptr_array_index(gappinfo,0));*/
+           char * icon  = dentry_get_icon(g_ptr_array_index(gfileDirectory,0));
+           g_free(icon);
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDirectory,0), "/usr/share/icons/Faenza/places/48/inode-directory.png");*/
         //the icon isn't icon which in .thumbnail/ ,and the file icon show first in thumbnail (code in desktop_item.coffee->set_icon)
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDocument,6), "/usr/share/icons/Faenza/mimetypes/48/application-x-ms-dos-executable.png");
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");
-        func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,4), "/usr/share/icons/Deepin/apps/48/audacity.png");
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gfileDocument,6), "/usr/share/icons/Faenza/mimetypes/48/application-x-ms-dos-executable.png");*/
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");*/
+        /*func_test_entry_char(dentry_get_icon,g_ptr_array_index(gappinfo,4), "/usr/share/icons/Deepin/apps/48/audacity.png");*/
     },"dentry_get_icon");
 
-
+#if 0
     extern gboolean dentry_can_thumbnail(Entry* e);
     gboolean bool_return = false;
     Test({
@@ -93,7 +97,10 @@ void test_entry()
         func_test_entry_char(dentry_get_thumbnail,g_ptr_array_index(gappinfo,0), "/usr/share/icons/Deepin/apps/48/skype.png");
     },"dentry_get_thumbnail");
 
+#endif
 
+
+#if 0
     extern char* dentry_get_id(Entry* e);
     Test({
         // func_test_entry_char(dentry_get_id, g_ptr_array_index(gfileDirectory,0),"5565c4012ed4c6f1007c2b86aea48956");
@@ -114,7 +121,7 @@ void test_entry()
     Test({
         ArrayContainer array = dentry_list_files(f);
         ArrayContainer_free(array);
-    },"dentry_list_files");    
+    },"dentry_list_files");
 
     extern Entry* dentry_create_by_path(const char* path);
     // const char* path = dentry_get_icon_path(g_ptr_array_index(gappinfo,0));
@@ -127,7 +134,7 @@ void test_entry()
     Test({
         Entry* e = dentry_create_by_path(path);
         g_object_unref(e);
-    },"dentry_create_by_path");    
+    },"dentry_create_by_path");
 
 
     extern gboolean dentry_is_fileroller_exist();
@@ -187,21 +194,20 @@ void test_entry()
     },"dentry_trash");
 
 #endif
-    // endif of #if(TEST_THEM)
 
-#if 1
+#if 0
     extern gboolean dentry_launch(Entry* e, const ArrayContainer fs);
     // const ArrayContainer fs = {g_ptr_array_index(gfileDirectory,0),1};
     // const ArrayContainer fs = _normalize_array_container(*(ArrayContainer*)gfileDirectory);
     // const ArrayContainer fs =  *(ArrayContainer*)gfileDirectory;
     // gpointer* _gp = g_ptr_array_free(gfileDirectory,FALSE) ;
     // gpointer* _gp = gfileDirectory->pdata;
-        
-    // gpointer* _gp = g_ptr_array_index(gfileDirectory,0);    
+
+    // gpointer* _gp = g_ptr_array_index(gfileDirectory,0);
     // gpointer* _gp = g_ptr_array_index(gfileDirectory,1);
-    // gpointer* _gp = g_ptr_array_index(gappinfo,0);    
-    // gpointer* _gp = g_ptr_array_index(gappinfo,1);    
-    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,3));    
+    // gpointer* _gp = g_ptr_array_index(gappinfo,0);
+    // gpointer* _gp = g_ptr_array_index(gappinfo,1);
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,3));
     const ArrayContainer fs = {&_gp,1};
     Test({
             func_test_entry_arraycontainer(dentry_launch,_gp,fs,TRUE);
@@ -218,7 +224,7 @@ void test_entry()
     extern void dentry_delete_files(ArrayContainer fs, gboolean show_dialog);
 
     gpointer* _gp = g_object_ref(g_ptr_array_index(gappinfo,0));
-    // system("ln -s /tmp/compiz.log /tmp/test_files/");    
+    // system("ln -s /tmp/compiz.log /tmp/test_files/");
     // GFile* _gp = g_file_new_for_uri("file:///tmp/test_files/compiz.log");
     ArrayContainer fs = {&_gp,1};
     GFile* dest = g_file_new_for_uri("file:///tmp");
@@ -226,7 +232,7 @@ void test_entry()
     Test({
 
     g_message("start");
-        dentry_move(fs,dest,FALSE);        
+        dentry_move(fs,dest,FALSE);
     // g_message("move end");
 
 
@@ -236,7 +242,7 @@ void test_entry()
         ArrayContainer _fs0;
         _fs0.data=&_src0;
         _fs0.num = 1;
-        dentry_copy(_fs0,_dest0);   
+        dentry_copy(_fs0,_dest0);
         g_object_unref(_dest0);
         ArrayContainer_free0(_fs0);
     // g_message("0copy end");
@@ -278,13 +284,13 @@ void test_entry()
 #endif
 
 #if 0
-    gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));    
+    gpointer* _gp = g_object_ref(g_ptr_array_index(gfileDirectory,0));
     ArrayContainer fs = {&_gp,1};
     GFile* dest = g_file_new_for_uri("file:///home/ycl");
 
     Test({
     g_message("move start");
-        dentry_move(fs,dest,FALSE);        
+        dentry_move(fs,dest,FALSE);
     g_message("move end");
 
 
@@ -354,9 +360,9 @@ void test_entry()
 
         system("rm -rf /tmp/test_files_tmp/");
     },"dentry_copy_dereference_symlink");
-#endif 
+#endif
 
-#if 0 
+#if 0
 
     extern void dentry_clipboard_copy(ArrayContainer fs);
     extern void dentry_clipboard_cut(ArrayContainer fs);
@@ -410,7 +416,7 @@ void test_entry()
 
     system("rm /tmp/skype.desktop");
 
-    },"dentry_clipboard_copy cut paste can_paste");    
+    },"dentry_clipboard_copy cut paste can_paste");
 
 
 
@@ -431,12 +437,12 @@ void test_entry()
 
         // char* name  = dentry_get_name(f);
         // g_message("name:%s",name);
-        // g_assert(g_str_equal(name,"/");
+        // g_assert(0 == g_strcmp0(name,"/");
         // g_free(name);
-        
+
         // char* uri = dentry_get_uri(f);
         // g_message("uri:%s",uri);
-        // g_assert(g_str_equal(uri,"trash:///");
+        // g_assert(0 == g_strcmp0(uri,"trash:///");
         // g_free(uri);
 
         double d = dentry_get_trash_count();
@@ -448,3 +454,4 @@ void test_entry()
 
     tear_down_fixture();
 }
+

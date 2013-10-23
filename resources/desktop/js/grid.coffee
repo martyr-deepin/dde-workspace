@@ -30,7 +30,8 @@ s_offset_y = 0
 grid_item_width = 0
 grid_item_height = 0
 
-# gird size
+# gird size cols lie ---59; rows  hang ---30
+# i cols lie ----59;  j rows hang----30 
 cols = 0
 rows = 0
 
@@ -70,6 +71,17 @@ rightclick_pos = {clientX : 0, clientY : 0}
 TEMPATES_LENGTH = 0
 TEMPLATES_FILE_ID_FIRST = 20
 templates = []
+
+
+#direction
+LEFT = -1
+CENTER = 0
+RIGHT = 1
+UP  = -1
+DOWN = 1
+
+
+
 #draw icon and title to canvas surface
 draw_icon_on_canvas = (canvas_cantext, start_x, start_y, icon, title)->
     # draw icon
@@ -120,6 +132,21 @@ calc_row_and_cols = (wa_width, wa_height) ->
     yy = wa_height % _GRID_HEIGHT_INIT_
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
+
+#limit_in_desktop_range
+# i cols lie ----59;  j rows hang----30 
+limit_in_desktop_range = (pos) ->
+    i = pos.x
+    j = pos.y
+    if i?
+        if i < 0 then i = 0
+        else if i > cols then i = cols
+    if j?
+        if j < 0 then j  = 0
+        else if j > rows then j = rows
+    pos.x = i
+    pos.y = j
+    return pos
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
@@ -203,14 +230,23 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     pos = start_item.get_pos()
     while true
         if x_delta != 0
-            pos.x += x_delta
+            pos.x += x_delta * _PART_
+            # if  pos.x < 0 or pos.x > cols
+            #     pos.x = 0
+            #     pos.y += y_delta * _PART_
+            #     break
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
-            pos.y += y_delta
+            pos.y += y_delta * _PART_
+            # if pos.y < 0 or pos.y > rows
+            #     pos.x += x_delta * _PART_
+            #     pos.y = 0
+            #     break
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
+        pos = limit_in_desktop_range(pos)
         if detect_occupy(pos) == false then continue
 
         #optimization by looking up o_table to get ID
@@ -223,12 +259,13 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     null
 
 
+
 init_occupy_table = ->
     o_table = new Array()
+    # i cols lie ----59;  j rows hang----30 
     for i in [0..cols]
         o_table[i] = new Array(rows)
     return
-
 
 clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
@@ -252,10 +289,12 @@ set_occupy = (id, info) ->
 
 # detect_occupy true : pos already be standed,perhaps 1/16 only one grid be standed 
 #               false :pos not be standed , the 16 grid are all free
+#      warning: the id is used for : the self pos is free for detect !
 detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
+    info = limit_in_desktop_range(info)
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
@@ -276,6 +315,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
+    # i cols lie ----59;  j rows hang----30 
     if not w? then w = _PART_
     if not h? then h = _PART_
     info = {x:0, y:0, width:w, height:h}
@@ -331,7 +371,6 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    #echo "move_to_somewhere"
     if not detect_occupy(pos,widget.get_id())
         #echo "free pos"
         move_to_position(widget, pos)
@@ -429,6 +468,8 @@ create_entry_to_new_item = (entry) ->
 
     cancel_all_selected_stats()
     pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1*_PART_, 1*_PART_)
+    pos = limit_in_desktop_range(pos)
+    pos = find_nearest_free_pos(w,pos)
     move_to_somewhere(w, pos)
     all_item.push(w.get_id())
     set_item_selected(w)
@@ -454,8 +495,9 @@ menu_create_templates = (id) ->
             id_num = id - TEMPLATES_FILE_ID_FIRST - 2
             for i in [0...templates.length] by 1
                 if i == id_num
-                    if (DCore.DEntry.create_templates(templates[i],name_add_before))
-                        echo "create_templates finish!"
+                    entry = DCore.DEntry.create_templates(templates[i],name_add_before)
+                    create_entry_to_new_item(entry)
+                    echo "create_templates finish!"
     return
 
 # all DND event handlers
@@ -623,8 +665,9 @@ item_dragstart_handler = (widget, evt) ->
 
 item_dragend_handler = (w, evt) ->
     #echo evt.dataTransfer.dropEffect
-    
-    if evt.dataTransfer.dropEffect == "link"
+    dropEffect = evt.dataTransfer.dropEffect
+    #echo dropEffect
+    if dropEffect == "link"
         old_pos = w.get_pos()
         new_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
         coord_x_shift = new_pos.x - old_pos.x
@@ -663,34 +706,74 @@ item_dragend_handler = (w, evt) ->
 
         for i in ordered_list
             if not (w = Widget.look_up(i))? then continue
-
-            old_pos = w.get_pos()
-            new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, 1*_PART_, 1*_PART_)
+            widget = w
+            old_pos = widget.get_pos()
+            id = widget.get_id()
+            new_pos = coord_to_pos(old_pos.x + coord_x_shift, old_pos.y + coord_y_shift, old_pos.width, old_pos.height)
             if new_pos.x < 0 or new_pos.y < 0 or new_pos.x >= cols or new_pos.y >= rows then continue
-            # final_pos = new_pos
-            # # if detect_occupy new_pos , we should find the final_pos nearly the pos!
-            # if detect_occupy(new_pos)
-            #     echo "find final_pos start"
-            #     x = new_pos.x
-            #     y = new_pos.y
-            #     if new_pos.w? then w = new_pos.w else w = _PART_
-            #     if new_pos.h? then h = new_pos.h else h = _PART_
-            #     delt = 2
-            #     if delt > Math.min(x,y) then delt = Math.min(x,y)
-            #     for i in [x - delt .. x + delt]
-            #         for j in [y - delt .. y + delt]
-            #             final_pos.x = i
-            #             final_pos.y = j
-            #             if not detect_occupy(final_pos)
-            #                 echo "have found final_pos"
-            #                 break
-            # new_pos = final_pos
-            # echo "2: " + w.get_pos().x + "," + w.get_pos().y
-            move_to_somewhere(w, new_pos) if not detect_occupy(new_pos,w.get_id())
+
+            new_pos = find_nearest_free_pos(widget,new_pos)
+            move_to_somewhere(widget, new_pos)
+
         update_selected_item_drag_image()
 
     return
 
+
+find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
+    #echo "find_nearest_free_pos"
+    id = w.get_id()
+    width = w.get_pos().width
+    height = w.get_pos().height
+    final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+    if detect_occupy(final_pos,id)
+        distance_list = new Array()
+        distance_list_sorted = new Array()
+        pos_list = new Array()
+        minest = new Array()
+
+        # i cols lie ----59;  j rows hang----30 
+        i_start = dest_pos.x - radius
+        if i_start < 0 then i_start = 0
+        i_end = dest_pos.x + radius
+        if i_end > cols then i_end = cols
+        j_start = dest_pos.y - radius
+        if j_start < 0 then j_start = 0
+        j_end = dest_pos.y + radius
+        if j_end > rows then j_end = rows
+        #echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
+        for i in [i_start .. i_end]
+            for j in [j_start .. j_end]
+                final_pos.x = i
+                final_pos.y = j
+                if not detect_occupy(final_pos,id)
+                    x_dis = Math.abs(final_pos.x - dest_pos.x)
+                    y_dis = Math.abs(final_pos.y - dest_pos.y)
+                    distance = Math.sqrt(Math.pow(x_dis,2) + Math.pow(y_dis,2))
+                    distance_list.push(distance)
+                    pos_list.push(final_pos.x)
+                    pos_list.push(final_pos.y)
+                    #echo "#{k++},#{distance},#{final_pos.x},#{final_pos.y}"
+        distance_list_sorted = distance_list.concat()
+        array_sort_min2max(distance_list_sorted)
+        
+        for dis,i in distance_list
+            if dis is distance_list_sorted[0]
+                minest.push(i)
+                #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
+        switch minest.length
+            when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+            when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
+            else final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
+
+        distance_list.splice(0,pos_list.length)
+        distance_list_sorted.splice(0,pos_list.length)
+        pos_list.splice(0,pos_list.length)
+        minest.splice(0,pos_list.length)
+    else
+        final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+    final_pos = limit_in_desktop_range(final_pos)
+    return final_pos
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
@@ -990,13 +1073,13 @@ grid_do_keydown_to_shortcut = (evt) ->
 
         w_f = null
         if evt.keyCode == 37         # left arrow
-            w_f = find_item_by_coord_delta(w, -1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, -1, 0)
         else if evt.keyCode == 38    # up arrow
-            w_f = find_item_by_coord_delta(w, 0, -1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, -1)
         else if evt.keyCode == 39    # right arrow
-            w_f = find_item_by_coord_delta(w, 1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, 1, 0)
         else if evt.keyCode == 40    # down arrow
-            w_f = find_item_by_coord_delta(w, 0, 1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, 1)
         if not w_f? then return
 
         if evt.ctrlKey == true

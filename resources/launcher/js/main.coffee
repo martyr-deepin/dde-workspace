@@ -86,9 +86,11 @@ sort_methods =
     "name": sort_by_name
     "rate": sort_by_rate
 
-exit_launcher = ->
+reset = ->
     s_box.value = ""
     selected_category_id = ALL_APPLICATION_CATEGORY_ID
+    # if s_box.value != ""
+    #     sort_category_info(sort_methods[sort_method])
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
     grid_load_category(selected_category_id)
     save_hidden_apps()
@@ -97,23 +99,36 @@ exit_launcher = ->
     if Item.hover_item_id
         event = new Event("mouseout")
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
+
+exit_launcher = ->
     DCore.Launcher.exit_gui()
 
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     _b.style.maxHeight = "#{height}px"
     $('#grid').style.maxHeight = "#{height-60}px"
+    category_column_adaptive_height()
+
+    hidden_icon_ids = _get_hidden_icons_ids()
+    count = 0
+    for i in category_infos[ALL_APPLICATION_CATEGORY_ID]
+        if i not in hidden_icon_ids
+            count += 1
+    _update_scroll_bar(count)
 )
 DCore.signal_connect("lost_focus", (info)->
     if s_dock.LauncherShouldExit_sync(info.xid)
         exit_launcher()
 )
+DCore.signal_connect("exit_launcher", ->
+    reset()
+)
 inited = false
 DCore.signal_connect("draw_background", (info)->
     _b.style.backgroundImage = "url(#{info.path})"
-    if inited
-        DCore.Launcher.clear()
-    inited = true
+    # if inited
+    #     DCore.Launcher.clear()
+    # inited = true
 )
 DCore.signal_connect("update_items", ->
     echo "update items"
@@ -163,8 +178,11 @@ _b.addEventListener("click", (e)->
 
 
 _b.addEventListener('keypress', (e) ->
-    if e.which != ESC_KEY
+    e.preventDefault()
+    e.stopPropagation()
+    if e.which != ESC_KEY and e.which != BACKSPACE_KEY
         s_box.value += String.fromCharCode(e.which)
+        # echo '[keypress] search'
         search()
 )
 
@@ -173,7 +191,9 @@ _b.addEventListener('keypress', (e) ->
 _b.addEventListener("keydown", do ->
     _last_val = ''
     (e) ->
+        e.stopPropagation()
         if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
+            e.preventDefault()
             selected_up()
         else if e.ctrlKey
             e.preventDefault()
@@ -189,6 +209,7 @@ _b.addEventListener("keydown", do ->
         else
             switch e.which
                 when ESC_KEY
+                    e.preventDefault()
                     e.stopPropagation()
                     if s_box.value == ""
                         exit_launcher()
@@ -197,13 +218,37 @@ _b.addEventListener("keydown", do ->
                         s_box.value = ""
                         update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
                         grid_load_category(selected_category_id)
+                when BACKSPACE_KEY
+                    e.stopPropagation()
+                    e.preventDefault()
+                    _last_val = s_box.value
+                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
+                    if s_box.value == ""
+                        get_first_shown()?.scroll_to_view()
+                        # if _last_val != s_box.value
+                        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                        grid_load_category(selected_category_id)
+                        # echo 'backspace'
+                        return  # to avoid to invoke search function
+                    # echo '[keydown] search'
+                    search()
+                when ENTER_KEY
+                    e.preventDefault()
+                    if item_selected
+                        item_selected.do_click()
+                    else
+                        get_first_shown()?.do_click()
                 when UP_ARROW
+                    e.preventDefault()
                     selected_up()
                 when DOWN_ARROW
+                    e.preventDefault()
                     selected_down()
                 when LEFT_ARROW
+                    e.preventDefault()
                     selected_prev()
                 when RIGHT_ARROW
+                    e.preventDefault()
                     selected_next()
                 when TAB_KEY
                     e.preventDefault()
@@ -211,19 +256,6 @@ _b.addEventListener("keydown", do ->
                         selected_prev()
                     else
                         selected_next()
-                when BACKSPACE_KEY
-                    _last_val = s_box.value
-                    s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                    if s_box.value == ""
-                        if _last_val != s_box.value
-                            init_grid()
-                        return  # to avoid to invoke search function
-                    search()
-                when ENTER_KEY
-                    if item_selected
-                        item_selected.do_click()
-                    else
-                        get_first_shown()?.do_click()
 )
 
 
