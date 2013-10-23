@@ -23,8 +23,14 @@ GAppInfo *gen_app_info (const char* executable)
 
     if (executable == NULL)
     {
-        cmd_line = g_strdup_printf("sh -c \"cd %s && exec $SHELL\"",
-                DESKTOP_DIR());
+        char* tmp1 = g_shell_quote(DESKTOP_DIR());
+        char* tmp2 = g_strdup_printf("cd %s && exec $SHELL", tmp1);
+        g_free(tmp1);
+        tmp1 = g_shell_quote(tmp2);
+        g_free(tmp2);
+
+        cmd_line = g_strconcat("sh -c ", tmp1, NULL);
+        g_free(tmp1);
     }
     else
     {
@@ -57,7 +63,10 @@ gboolean exec_app_info (const char *executable)
         return FALSE;
     }
 
-    is_ok = g_app_info_launch (appinfo, NULL, NULL, &error);
+    GdkAppLaunchContext* ctx = gdk_display_get_app_launch_context(gdk_display_get_default());
+    gdk_app_launch_context_set_screen(ctx, gdk_screen_get_default()); //must set this otherwise termiator will not work properly
+    is_ok = g_app_info_launch (appinfo, NULL, ctx, &error);
+    g_object_unref(ctx);
     if (error!=NULL)
     {
         g_debug("exec app info error: %s", error->message);
