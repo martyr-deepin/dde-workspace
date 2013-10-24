@@ -67,6 +67,7 @@ ingore_keyup_counts = 0
 # store the pos the user pop the context menu
 rightclick_pos = {clientX : 0, clientY : 0}
 
+name_add_before = _("Untitled") + " "
 #templates
 TEMPLATES_FILE_ID_FIRST = 22
 templates = []
