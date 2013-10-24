@@ -20,3 +20,47 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class Folder extends DesktopEntry
+    set_icon : (src = null) =>
+        if src == null
+            icon = DCore.get_theme_icon("folder", D_ICON_SIZE_NORMAL)
+        else
+            icon = src
+        super(icon)
+
+
+    do_drop : (evt) ->
+        super
+        if _IS_DND_INTERLNAL_(evt) and @selected
+        else
+            tmp_list = []
+            for file in evt.dataTransfer.files
+                if (e = DCore.DEntry.create_by_path(decodeURI(file.path).replace(/^file:\/\//i, "")))?
+                    tmp_list.push(e)
+            if tmp_list.length > 0 then DCore.DEntry.move(tmp_list, @_entry, true)
+        return
+
+
+    do_dragenter : (evt) ->
+        super
+        if _IS_DND_INTERLNAL_(evt) and @selected
+        else
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragover : (evt) ->
+        super
+        if _IS_DND_INTERLNAL_(evt) and @selected
+        else
+            evt.dataTransfer.dropEffect = "move"
+        return
+
+
+    do_dragleave : (evt) ->
+        super
+        if _IS_DND_INTERLNAL_(evt) and @selected
+        else
+            evt.dataTransfer.dropEffect = "move"
+        return
+

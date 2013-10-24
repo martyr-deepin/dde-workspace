@@ -20,3 +20,30 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class InvalidLink extends DesktopEntry
+    set_icon : (src = null) =>
+        if src == null
+            icon = DCore.get_theme_icon("invalid-link", D_ICON_SIZE_NORMAL)
+        else
+            icon = src
+        super(icon)
+
+
+    do_buildmenu : ->
+        [
+            [9, _("_Delete")]
+        ]
+
+
+    item_exec : =>
+        return
+
+
+    item_update : =>
+        @set_icon()
+        @item_name.innerText = @get_name()
+
+
+    item_rename : =>
+        return
+
