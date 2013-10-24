@@ -164,21 +164,21 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
         path = g_file_get_path(file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = DELETED;
-            g_warning("[%s] %s is deleted", __func__, path);
+            g_debug("[%s] %s is deleted", __func__, path);
         }
         break;
     case G_FILE_MONITOR_EVENT_MOVED:
         path = g_file_get_path(other_file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = ADDED;
-            g_warning("[%s] %s is added", __func__, path);
+            g_debug("[%s] %s is added", __func__, path);
         }
         break;
     case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
         path = g_file_get_path(file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = ADDED;
-            g_warning("[%s] %s is changed/added", __func__, path);
+            g_debug("[%s] %s is changed/added", __func__, path);
         }
         break;
     }
