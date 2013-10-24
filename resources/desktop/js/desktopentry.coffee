@@ -150,3 +150,6 @@ class DesktopEntry extends Item
             confirm(_("Can not open this file."), _("Warning"))
         return
 
+class NormalFile extends DesktopEntry
+
+class DesktopApplet extends Item
