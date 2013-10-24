@@ -68,8 +68,7 @@ ingore_keyup_counts = 0
 rightclick_pos = {clientX : 0, clientY : 0}
 
 #templates
-TEMPATES_LENGTH = 0
-TEMPLATES_FILE_ID_FIRST = 20
+TEMPLATES_FILE_ID_FIRST = 22
 templates = []
 
 
@@ -475,30 +474,6 @@ create_entry_to_new_item = (entry) ->
     set_item_selected(w)
     update_selected_item_drag_image()
     w.item_rename()
-
-
-menu_create_new_folder = (name_add_before) ->
-    entry = DCore.Desktop.new_directory(name_add_before)
-    create_entry_to_new_item(entry)
-
-
-menu_create_new_file = (name_add_before) ->
-    entry = DCore.Desktop.new_file(name_add_before)
-    create_entry_to_new_item(entry)
-
-menu_create_templates = (id) ->
-    name_add_before = _("Untitled") + " "
-    switch id
-        when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
-        when TEMPLATES_FILE_ID_FIRST + 1 then menu_create_new_file(name_add_before)
-        else
-            id_num = id - TEMPLATES_FILE_ID_FIRST - 2
-            for i in [0...templates.length] by 1
-                if i == id_num
-                    entry = DCore.DEntry.create_templates(templates[i],name_add_before)
-                    create_entry_to_new_item(entry)
-                    echo "create_templates finish!"
-    return
 
 # all DND event handlers
 init_grid_drop = ->
@@ -1015,12 +990,12 @@ grid_right_click = (evt) ->
     templates_menu = []
     templates_all = DCore.DEntry.get_templates_files()
     templates = DCore.DEntry.get_templates_filter(templates_all)
-    templates_menu.push([TEMPLATES_FILE_ID_FIRST, _("_Folder")])
-    templates_menu.push([TEMPLATES_FILE_ID_FIRST + 1, _("_Text document")])
-    TEMPATES_LENGTH = 2 + templates.length
+    templates_menu.push([20, _("_Folder")])
+    templates_menu.push([21,_("_Text document")])
+    templates_menu.push([])
     for i in [0...templates.length] by 1
         templates_name = DCore.DEntry.get_name(templates[i])
-        templates_id = i + 22
+        templates_id = i + TEMPLATES_FILE_ID_FIRST
         templates_menu.push([templates_id,templates_name])
 
     menus = []
@@ -1029,7 +1004,7 @@ grid_right_click = (evt) ->
                 [12, _("Last modified _time")]
             ]
         ])
-    menus.push([_("_New"), templates_menu])
+    menus.push([_("_New"),templates_menu])
     # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
     menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
@@ -1038,6 +1013,7 @@ grid_right_click = (evt) ->
     menus.push([6, _("D_esktop settings")])
     menus.push([7, _("Pe_rsonalize")])
 
+    echo menus.length
     div_grid.parentElement.contextMenu = build_menu(menus)
     return
 
@@ -1046,18 +1022,39 @@ grid_do_itemselected = (evt) ->
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
+        when 20 then menu_create_new_folder(name_add_before)
+        when 21 then menu_create_new_file(name_add_before)
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("display")
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else
-            # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 . 
+            # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 . 
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
-            if evt.id > TEMPLATES_FILE_ID_FIRST - 1 && evt.id < TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST
+            if evt.id >= TEMPLATES_FILE_ID_FIRST && evt.id < templates.length + TEMPLATES_FILE_ID_FIRST
                 menu_create_templates(evt.id)
             else
                 echo "not implemented function #{evt.id},#{evt.title}"
+    return
+
+
+menu_create_new_folder = (name_add_before) ->
+    entry = DCore.Desktop.new_directory(name_add_before)
+    create_entry_to_new_item(entry)
+
+
+menu_create_new_file = (name_add_before) ->
+    entry = DCore.Desktop.new_file(name_add_before)
+    create_entry_to_new_item(entry)
+
+menu_create_templates = (id) ->
+    name_add_before = _("Untitled") + " "
+    i = id - TEMPLATES_FILE_ID_FIRST
+    if 0 <= i < templates.length
+        entry = DCore.DEntry.create_templates(templates[i],name_add_before)
+        create_entry_to_new_item(entry)
+        echo "create_templates finish!"
     return
 
 
