@@ -484,8 +484,10 @@ init_grid_drop = ->
         file_uri = []
         tmp_copy = []
         tmp_move = []
-        
-        if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
+        if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
+            desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
+            evt.dataTransfer.setXDSPath(desktop_uri)
+        else if evt.dataTransfer.files.length == 0 # if the drop_target is internet files 
             #echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
