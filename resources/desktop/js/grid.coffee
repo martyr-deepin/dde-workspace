@@ -1013,7 +1013,6 @@ grid_right_click = (evt) ->
     menus.push([6, _("D_esktop settings")])
     menus.push([7, _("Pe_rsonalize")])
 
-    echo menus.length
     div_grid.parentElement.contextMenu = build_menu(menus)
     return
 
