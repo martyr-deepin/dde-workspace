@@ -55,7 +55,7 @@ void _add_monitor_directory(GFile* f)
     GFileInfo* info = g_file_query_info(f, "standard::type", G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &err);
     GFileType type = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_STANDARD_TYPE);
     if (err != NULL) {
-        g_print(err->message);
+        g_print("%s", err->message);
     }
     g_assert(info != NULL);
     if (g_file_info_get_is_symlink(info)) {

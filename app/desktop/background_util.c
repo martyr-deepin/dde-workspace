@@ -376,26 +376,26 @@ on_bg_duration_tick (gpointer user_data)
     xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
-    fade_data->interval = TIME_PER_FRAME; 
+    fade_data->interval = TIME_PER_FRAME;
 
     fade_data->start_time = get_current_time();
     fade_data->alpha = 0.0;
 
     Pixmap prev_pixmap = get_previous_background();
     gdk_error_trap_push ();
-    if (prev_pixmap == None) 
+    if (prev_pixmap == None)
     {
-        prev_pixmap = XCreatePixmap (display, root, 
-                                     root_width, root_height, 
-                                     root_depth); 
+        prev_pixmap = XCreatePixmap (display, root,
+                                     root_width, root_height,
+                                     root_depth);
         _update_rootpmap (prev_pixmap);
     }
     gdk_error_trap_pop_ignored ();
 
     fade_data->pixmap = prev_pixmap;
-    fade_data->fading_surface = get_surface (prev_pixmap); 
+    fade_data->fading_surface = get_surface (prev_pixmap);
 
-    const char* next_picture = get_next_picture_path (); 
+    const char* next_picture = get_next_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture);
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture);
@@ -578,9 +578,9 @@ PRIVATE void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
-    if (strlen(tmp_image_uri) == 0)  return; 
+    if (strlen(tmp_image_uri) == 0)  return;
     gchar* tmp_image_path = g_filename_from_uri (tmp_image_uri, NULL, NULL);
-    g_debug ("picture-uri changed: |%s|(%p len:%d) |%s|", tmp_image_uri, tmp_image_uri, strlen(tmp_image_uri), tmp_image_path);
+    g_debug ("picture-uri changed: |%s|(%p len:%ld) |%s|", tmp_image_uri, tmp_image_uri, strlen(tmp_image_uri), tmp_image_path);
     g_free (tmp_image_uri);
     guint tmp_value = GPOINTER_TO_UINT (g_hash_table_lookup (picture_paths_ht, tmp_image_path));
     g_free (tmp_image_path);
@@ -819,8 +819,8 @@ bg_util_disconnect_screen_signals (GdkWindow* bg_window)
                            G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
-//FIXME: screen_size_changed_cb and initial_setup have a lot of 
-//       duplicated function. 
+//FIXME: screen_size_changed_cb and initial_setup have a lot of
+//       duplicated function.
 PRIVATE void
 initial_setup (GSettings *settings)
 {
@@ -951,3 +951,4 @@ bg_util_init (GdkWindow* bg_window)
         gdk_window_add_filter (background_window, expose_cb, background_window);
     }
 }
+
