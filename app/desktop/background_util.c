@@ -486,9 +486,16 @@ setup_timers ()
 PRIVATE void
 parse_picture_uris ()
 {
-    gchar* pic_uri = g_settings_get_string (Settings, BG_PICTURE_URIS);
-    gchar* cur_gsetting_pict = g_settings_get_string (Settings, BG_CURRENT_PICT);
-    if (strlen(pic_uri) == 0 || strlen(cur_gsetting_pict) == 0) return;
+    gchar* pic_uris = g_settings_get_string (Settings, BG_PICTURE_URIS);
+    gchar* cur_pic = g_settings_get_string (Settings, BG_CURRENT_PICT);
+    if (strlen(cur_pic) == 0) {
+        g_free(cur_pic);
+        cur_pic = g_strdup(BG_DEFAULT_PICTURE);
+    }
+    if (strlen(pic_uris) == 0) {
+        g_free(pic_uris);
+        pic_uris = g_strdup(cur_pic);
+    }
 
     picture_num = 0;
     picture_index = 0;
@@ -498,7 +505,7 @@ parse_picture_uris ()
     gchar* filename_ptr;
 
 
-    uri_start = pic_uri;
+    uri_start = pic_uris;
     while ((uri_end = strchr (uri_start, DELIMITER)) != NULL)
     {
         *uri_end = '\0';
@@ -506,7 +513,7 @@ parse_picture_uris ()
         filename_ptr = g_filename_from_uri (uri_start, NULL, NULL);
         if (filename_ptr != NULL)
         {
-            if (g_strcmp0(cur_gsetting_pict, filename_ptr) == 0) {
+            if (g_strcmp0(cur_pic, filename_ptr) == 0) {
                 picture_index = picture_num;
             }
             g_ptr_array_add (picture_paths, filename_ptr);
@@ -540,8 +547,8 @@ parse_picture_uris ()
                              GUINT_TO_POINTER(picture_num+1));
         picture_num =1;
     }
-    g_free(pic_uri);
-    g_free(cur_gsetting_pict);
+    g_free(pic_uris);
+    g_free(cur_pic);
 }
 PRIVATE void
 destroy_picture_path (gpointer data)

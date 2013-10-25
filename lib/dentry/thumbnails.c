@@ -29,7 +29,7 @@ gfile_can_thumbnail (GFile* file)
     uri = g_file_get_uri (file);
 
     info = g_file_query_info (file, "standard::content-type,time::modified",
-                              G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
+                              G_FILE_QUERY_INFO_NONE,
                               NULL, NULL);
     content_type = g_file_info_get_content_type (info);
     mime_type = g_content_type_get_mime_type (content_type);
