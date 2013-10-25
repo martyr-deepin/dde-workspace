@@ -51,12 +51,9 @@ void _add_monitor_directory(GFile* f)
 {
     g_assert(_inotify_fd != -1);
 
-    GError* err = NULL;
-    GFileInfo* info = g_file_query_info(f, "standard::type", G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, &err);
+    GFileInfo* info = g_file_query_info(f, "standard::type", G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, NULL);
+    if (info == NULL) return; //temp file may cause this like downloading file or compressing file
     GFileType type = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_STANDARD_TYPE);
-    if (err != NULL) {
-        g_print("%s", err->message);
-    }
     g_assert(info != NULL);
     if (g_file_info_get_is_symlink(info)) {
         GFile* maybe_real_target = g_file_new_for_uri(g_file_info_get_symlink_target(info));
