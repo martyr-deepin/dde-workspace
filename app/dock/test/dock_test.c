@@ -45,10 +45,10 @@ void dock_test()
     /* dock_test_handle_icon(); */
 
     // TODO: test build_app_info
-    /* dock_test_launcher(); */
+    dock_test_launcher();
 
     // TODO: client_free
-    dock_test_tasklist();
+    /* dock_test_tasklist(); */
 
     /* dock_test_special_window(); */
     /* dock_test_dock(); */

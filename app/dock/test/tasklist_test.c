@@ -246,10 +246,10 @@ void dock_test_tasklist()
 
     // TODO:
     // TBT, client_free cannot free Client.gdkwindow
-    Test({
-         Client* c = create_client_from_window(xid);
-         g_assert(c != NULL);
-         client_free(c);
-         }, "client create and free");
+    /* Test({ */
+    /*      Client* c = create_client_from_window(xid); */
+    /*      g_assert(c != NULL); */
+    /*      client_free(c); */
+    /*      }, "client create and free"); */
 }
 

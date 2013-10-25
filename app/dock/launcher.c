@@ -368,10 +368,10 @@ void dock_request_dock(const char* path)
         if (app_info)
             js_post_message("dock_request", app_info);
         g_free(app_id);
+        g_object_unref(info);
     } else {
         g_warning("request dock %s is invalid\n", path);
     }
-    g_object_unref(info);
 }
 
 JS_EXPORT_API
