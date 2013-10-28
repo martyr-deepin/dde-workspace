@@ -362,4 +362,4 @@ init_category_list()
 init_grid()
 _init_hidden_icons()
 DCore.Launcher.webview_ok()
-
+DCore.Launcher.test()

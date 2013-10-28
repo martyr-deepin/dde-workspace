@@ -21,3 +21,10 @@ target_link_libraries(${test_gtk_webkit_change_bg} ${gtk_LIBRARIES}
     ${webkit_LIBRARIES})
 include_directories(${test_gtk_webkit_change_bg} ${gtk_INCLUDE_DIRS}
     ${webkit_INCLUDE_DIRS})
+
+
+add_library(dlauncher_test monitor_test.c launcher_test.c)
+target_link_libraries(dlauncher_test dcom dentry dbus dtest ${DWEBVIEW_LIBRARIES})
+include_directories(${DWEBVIEW_INCLUDE_DIRS})
+include_directories(${DTEST_INCLUDE_DIRS})
+include_directories(..)

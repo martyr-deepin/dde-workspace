@@ -1,6 +1,8 @@
 #ifndef __TEST_H__
 #define __TEST_H__
 
+#include <glib.h>
+
 #define lambda(ret_type, args, body) ({ret_type func_name args body &func_name;})
 #define $(body) lambda(void, (), body)
 

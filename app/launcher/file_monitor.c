@@ -85,23 +85,12 @@ GPtrArray* _get_all_applications_dirs()
 }
 
 
-enum DesktopStatus {
-    UNKNOWN,
-    DELETED,
-    ADDED,
-    CHANGED
-};
-
-
-struct DesktopInfo {
-    char* path;
-    enum DesktopStatus status;
-};
-
-
 PRIVATE
 struct DesktopInfo* desktop_info_create(const char* path, enum DesktopStatus status)
 {
+    g_assert(path != NULL);
+    g_assert(status == UNKNOWN || status == DELETED || status == ADDED
+             || status == CHANGED);
     struct DesktopInfo* info = g_slice_new(struct DesktopInfo);
     info->path = g_strdup(path);
     info->status = status;
@@ -128,9 +117,10 @@ gboolean _update_items(gpointer user_data)
     // 3. unique app (e.g. use $HOME/.local/share/applications to overload
     // system's desktop file)
     struct DesktopInfo* info = (struct DesktopInfo*)user_data;
-    js_post_message_simply("update_items", NULL);  // update some infos
+    /* js_post_message_simply("update_items", NULL);  // update some infos */
     desktop_info_destroy(&info);
-    return FALSE;
+
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -139,7 +129,6 @@ PRIVATE
 void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                               GFileMonitorEvent event_type, gpointer data)
 {
-    static gulong timeout_id = 0;
 #if 0
     static char* names[] = {
         "changed",
@@ -157,6 +146,8 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
     g_free(file_path);
     g_free(other_file_path);
 #endif
+    static gulong timeout_id = 0;
+    static struct DesktopInfo* info = NULL;
     char* path = NULL;
     enum DesktopStatus status = UNKNOWN;
     switch (event_type) {
@@ -189,8 +180,12 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
             timeout_id = 0;
         }
 
+        if (info != NULL) {
+            desktop_info_destroy(&info);
+        }
+
         /* timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL); */
-        struct DesktopInfo* info = desktop_info_create(path, status);
+        info = desktop_info_create(path, status);
         timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_items, info);
     }
     g_free(path);
@@ -209,18 +204,19 @@ void _monitor_desktop_files()
 }
 
 
+PRIVATE
 gboolean _update_autostart(gpointer user_data)
 {
     char* uri = (char*)user_data;
     char* id = calc_id(uri);
 
     g_debug("[%s] %s is changed", __func__, uri);
-    js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id);
+    /* js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id); */
 
     g_free(uri);
     g_free(id);
 
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -230,6 +226,7 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
 {
     GFile* changed_file = file;
     static gulong timeout_id = 0;
+    static char* escaped_uri = NULL;
     switch (event_type) {
         // fall through
     case G_FILE_MONITOR_EVENT_MOVED:  // compatibility for gnome-session-properties
@@ -241,10 +238,14 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
             timeout_id = 0;
         }
 
+        if (escaped_uri != NULL) {
+            g_clear_pointer(&escaped_uri, g_free);
+        }
+
         g_debug("[%s] delete or changed", __func__);
         char* uri = g_file_get_uri(changed_file);
         if (g_str_has_suffix(uri, ".desktop")) {
-            char* escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
+            escaped_uri = g_uri_escape_string(uri, G_URI_RESERVED_CHARS_ALLOWED_IN_PATH, FALSE);
             timeout_id = g_timeout_add(AUTOSTART_DELAY_TIME, _update_autostart,
                                        escaped_uri);
         }
