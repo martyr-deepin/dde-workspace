@@ -511,6 +511,7 @@ init_grid_drop = ->
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
@@ -525,21 +526,12 @@ init_grid_drop = ->
                 file = evt.dataTransfer.files[i]
                 if (f_e = DCore.DEntry.create_by_path(file.path))?
                     tmp_copy.push(f_e)
-                    # only copy , not move
-#                    if DCore.DEntry.should_move(f_e)
-                        #tmp_move.push(f_e)
-                    #else
-                        #tmp_copy.push(f_e)
-
-                    # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
-            # only copy , not move
-            #if tmp_move.length
-                #DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
         
@@ -556,6 +548,7 @@ init_grid_drop = ->
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
             if tmp_move.length
                 DCore.DEntry.move(tmp_move, g_desktop_entry, true)
@@ -698,11 +691,9 @@ item_dragend_handler = (w, evt) ->
     return
 
 
-find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
-    #echo "find_nearest_free_pos"
-    id = w.get_id()
-    width = w.get_pos().width
-    height = w.get_pos().height
+find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
+    width = dest_pos.width
+    height = dest_pos.height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
     if detect_occupy(final_pos,id)
         distance_list = new Array()
@@ -752,6 +743,12 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
     final_pos = limit_in_desktop_range(final_pos)
     return final_pos
+
+
+find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
+    #echo "find_nearest_free_pos"
+    id = w.get_id()
+    return find_nearest_free_pos_id(id,dest_pos,radius)
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
