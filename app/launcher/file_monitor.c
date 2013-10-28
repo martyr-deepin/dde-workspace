@@ -117,7 +117,7 @@ gboolean _update_items(gpointer user_data)
     // 3. unique app (e.g. use $HOME/.local/share/applications to overload
     // system's desktop file)
     struct DesktopInfo* info = (struct DesktopInfo*)user_data;
-    /* js_post_message_simply("update_items", NULL);  // update some infos */
+    js_post_message_simply("update_items", NULL);  // update some infos
     desktop_info_destroy(&info);
 
     return G_SOURCE_REMOVE;
@@ -211,7 +211,7 @@ gboolean _update_autostart(gpointer user_data)
     char* id = calc_id(uri);
 
     g_debug("[%s] %s is changed", __func__, uri);
-    /* js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id); */
+    js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id);
 
     g_free(uri);
     g_free(id);
