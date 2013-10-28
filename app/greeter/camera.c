@@ -67,7 +67,6 @@ static GstBuffer* pure_buffer = NULL;
 
 // forward decleration {{{
 static void do_quit();
-static void handler(int signum);
 static void reco();
 static void detect(IplImage* frame);
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
@@ -221,6 +220,7 @@ gboolean recognized_handler(gpointer data)
     g_debug("[%s] recognized", __func__);
     js_post_message_simply("start-login", NULL);
     recognition_info.reco_state = RECOGNIZE_FINISH;
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -240,7 +240,7 @@ gboolean not_recognize_handler(gpointer data)
     g_timer_start(recognition_info.timer);
     recognition_info.reco_state = NOT_START_RECOGNIZING;
 
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 
