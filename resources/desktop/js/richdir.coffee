@@ -302,6 +302,8 @@ class RichDir extends DesktopEntry
             sb.className = "item_icon"
             ele.appendChild(sb)
             s = document.createElement("img")
+            s.style.width = "48px"
+            s.style.height = "48px"
             # s.src = DCore.DEntry.get_icon(e)
             if (s.src = DCore.DEntry.get_icon(e)) == null
                 s.src = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
