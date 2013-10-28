@@ -183,7 +183,7 @@ void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res
 {
     Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
-    for (int i = 0, j = 1; j < n_item; ++i, j += 2) {
+    for (guint i = 0, j = 1; j < n_item; ++i, j += 2) {
         c->workspace[i].x = (int)X_FETCH_32(data, j);
         c->workspace[i].y = (int)X_FETCH_32(data, j + 1);
     }
@@ -377,7 +377,7 @@ void _update_client_info(Client *c)
         GPtrArray* actions = get_app_actions(app);
 
         if (actions != NULL) {
-            for (int i = 0; i < actions->len; ++i) {
+            for (guint i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
                 g_debug("[%s(%s:%d)] name: %s, exec: %s", __func__, __FILE__, __LINE__, action->name, action->exec);
@@ -460,7 +460,7 @@ PRIVATE gboolean _is_hidden(Window w)
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_NET_STATE, &items);
     if (data == NULL) return FALSE;
-    for (int i=0; i<items; i++) {
+    for (guint i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_HIDDEN) {
             XFree(data);
             return TRUE;
@@ -476,7 +476,7 @@ gboolean is_skip_taskbar(Window w)
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_NET_STATE, &items);
     if (data == NULL) return FALSE;
-    for (int i=0; i<items; i++) {
+    for (guint i=0; i<items; i++) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_SKIP_TASKBAR) {
             XFree(data);
             return TRUE;
@@ -493,7 +493,7 @@ gboolean can_be_minimized(Window w)
     gulong items;
     void* data = get_window_property(_dsp, w, ATOM_WINDOW_ALLOWED_ACTIONS, &items);
 
-    for (int i = 0; i < items; ++i) {
+    for (guint i = 0; i < items; ++i) {
         if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_ALLOW_MINIMIZE) {
             XFree(data);
             return TRUE;
@@ -545,7 +545,7 @@ gboolean is_normal_window(Window w)
 
     gboolean may_be_docked = FALSE;
     gboolean has_cannot_be_docked_type = FALSE;
-    for (int i=0; i<items; i++) {
+    for (guint i=0; i<items; i++) {
         Atom window_type = (Atom)X_FETCH_32(data, i);
         if ((window_type == ATOM_WINDOW_TYPE_NORMAL
              || (window_type == ATOM_WINDOW_TYPE_DIALOG
@@ -587,7 +587,7 @@ void _destroy_client(gpointer id)
 void client_list_changed(Window* cs, size_t n)
 {
     GList* destroying_clients = g_hash_table_get_keys(_clients_table);
-    for (int i=0; i<n; i++) {
+    for (guint i=0; i<n; i++) {
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER(cs[i]));
 
         if (is_normal_window(cs[i])) {
@@ -625,7 +625,7 @@ void _update_task_list(Window root)
 
     Window *cs = g_slice_alloc(sizeof(Window) * items);
 
-    for (int i=0; i<items; i++) {
+    for (guint i=0; i<items; i++) {
         cs[i] = X_FETCH_32(data, i);
     }
     XFree(data);
@@ -659,7 +659,7 @@ PRIVATE
 void* argb_to_rgba(gulong* data, size_t s)
 {
     guint32* img = g_slice_alloc(sizeof(guint32) * s);
-    for (int i=0; i < s; i++) {
+    for (guint i=0; i < s; i++) {
         guchar a = data[i] >> 24;
         guchar r = (data[i] >> 16) & 0xff;
         guchar g = (data[i] >> 8) & 0xff;
@@ -874,7 +874,7 @@ gboolean _is_maximized_window(Window win)
     long* data = get_window_property(_dsp, win, ATOM_WINDOW_NET_STATE, &items);
 
     if (data != NULL) {
-        for (int i=0; i<items; i++) {
+        for (guint i=0; i<items; i++) {
             if ((Atom)X_FETCH_32(data, i) == ATOM_WINDOW_MAXIMIZED_VERT) {
                 XFree(data);
                 return TRUE;
@@ -955,7 +955,7 @@ GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window
 
 gboolean cross_workspaces_contain_current_workspace(Client* c)
 {
-    for (int i = 0; i < c->cross_workspace_num; ++i) {
+    for (guint i = 0; i < c->cross_workspace_num; ++i) {
         if (is_same_workspace(&c->workspace[i], &current_workspace))
             return TRUE;
     }

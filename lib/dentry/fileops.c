@@ -367,7 +367,7 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
     TDData* data = g_malloc0 (sizeof (TDData));
     data->cancellable = copy_cancellable;
 
-    int i;
+    guint i;
     for (i = 0; i < num; i++)
     {
         GFile* src = file_list[i];
