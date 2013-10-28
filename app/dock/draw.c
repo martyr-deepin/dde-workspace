@@ -58,7 +58,7 @@ void dock_draw_board(JSValueRef canvas)
     cairo_line_to(cr, w, 0.5);
     cairo_stroke(cr);
 
-    cairo_set_source_rgba(cr, 1, 1, 1, 0.2);
+    cairo_set_source_rgba(cr, 1, 1, 1, 0.05);
     cairo_move_to(cr, 0, 1.5);
     cairo_line_to(cr, w, 1.5);
     cairo_stroke(cr);
