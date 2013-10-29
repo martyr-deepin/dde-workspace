@@ -30,7 +30,7 @@ PRIVATE GPtrArray* autostart_paths = NULL;
 PRIVATE GKeyFile* launcher_config = NULL;
 
 
-void free_resources()
+void destroy_item_config()
 {
     if (hidden_apps != NULL)
         g_key_file_unref(hidden_apps);
