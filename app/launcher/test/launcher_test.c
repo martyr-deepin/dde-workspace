@@ -13,6 +13,7 @@ extern void item_test();
 
 void launcher_test()
 {
+    TEST_MAX_COUNT = 10000;
 #ifdef __DUI_DEBUG
     g_message("start testing");
     /* monitor_test(); */

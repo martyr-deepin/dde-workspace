@@ -4,6 +4,19 @@
 
 
 #ifdef __DUI_DEBUG
+void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monitor_callback);
+GPtrArray* _get_all_applications_dirs();
+struct DesktopInfo* desktop_info_create(const char* path, enum DesktopStatus status);
+void desktop_info_destroy(struct DesktopInfo* di);
+gboolean _update_items(gpointer user_data);
+void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
+                              GFileMonitorEvent event_type, gpointer data);
+void _monitor_desktop_files();
+gboolean _update_autostart(gpointer user_data);
+void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
+                                GFileMonitorEvent event_type, gpointer data);
+void _monitor_autostart_files();
+
 void test_get_all_applications_dirs()
 {
     Test({
@@ -36,8 +49,7 @@ void test_desktop_info()
     // also testing _update_items
     Test({
          struct DesktopInfo* i = desktop_info_create("test", ADDED);
-         desktop_info_destroy(&i);
-         g_assert(i == NULL);
+         desktop_info_destroy(i);
          }, "desktop info create and destroy");
 }
 
@@ -46,9 +58,11 @@ void test__update_autostart()
 {
     // not use the original _update_autostart, just skip the
     // js_post_message_simply function.
+    char* data = g_strdup("test");
     Test({
-         _update_autostart(g_strdup("test"));
+         _update_autostart(data);
     }, "_update_autostart");
+    g_free(data);
 }
 
 
@@ -77,14 +91,15 @@ void test_autostart_monitor_callback()
 
 void monitor_test()
 {
-    /* test_get_all_applications_dirs(); */
-    /* test_append_monitor(); */
-    /* test_desktop_info(); */
     // comment js_post_message_simply or something like that before testing
     // backend memory is convenient.
+
+    /* test_get_all_applications_dirs(); */
+    /* test_append_monitor(); */
+    test_desktop_info();
     /* test__update_autostart(); */
-    test_desktop_monitor_callback();
-    test_autostart_monitor_callback();
+    /* test_desktop_monitor_callback(); */
+    /* test_autostart_monitor_callback(); */
 }
 #endif
 

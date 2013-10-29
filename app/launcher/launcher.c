@@ -28,8 +28,10 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/resource.h>
+
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
+
 #include "launcher.h"
 #include "xdg_misc.h"
 #include "dwebview.h"
@@ -569,10 +571,13 @@ int main(int argc, char* argv[])
 #endif
     }
 
-    if (is_application_running(LAUNCHER_ID_NAME) && !not_shows_launcher) {
+    if (is_application_running(LAUNCHER_ID_NAME)) {
         g_warning(_("another instance of launcher is running...\n"));
-        dbus_launcher_toggle();
-        return 0;
+
+        if (!not_shows_launcher) {
+            dbus_launcher_toggle();
+            return 0;
+        }
     }
 
 #ifndef NDEBUG
@@ -622,7 +627,7 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-    set_launcher_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
                             gdk_screen_width(), gdk_screen_height());
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);

@@ -56,8 +56,8 @@ char* bg_blur_pict_get_dest_path (const char* src_uri)
 
 
 PRIVATE
-gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
-                                      double width, double height)
+gboolean _set_background_aux(GdkWindow* win, const char* bg_path, double width,
+                             double height)
 {
     GError* error = NULL;
     GdkPixbuf* _background_image = gdk_pixbuf_new_from_file_at_scale(bg_path,
@@ -117,8 +117,8 @@ gboolean _set_launcher_background_aux(GdkWindow* win, const char* bg_path,
 }
 
 
-void set_launcher_background(GdkWindow* win, GSettings* dde_bg_g_settings,
-                             double width, double height)
+void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
+                    double height)
 {
     char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
 
@@ -126,9 +126,9 @@ void set_launcher_background(GdkWindow* win, GSettings* dde_bg_g_settings,
 
     g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
 
-    if (!_set_launcher_background_aux(win, blur_path, width, height)) {
+    if (!_set_background_aux(win, blur_path, width, height)) {
         g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
-        _set_launcher_background_aux(win, bg_path, width, height);
+        _set_background_aux(win, bg_path, width, height);
     }
 
     g_free(blur_path);

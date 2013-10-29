@@ -38,20 +38,5 @@ struct DesktopInfo {
     enum DesktopStatus status;
 };
 
-#ifdef __DUI_DEBUG
-void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monitor_callback);
-GPtrArray* _get_all_applications_dirs();
-struct DesktopInfo* desktop_info_create(const char* path, enum DesktopStatus status);
-void desktop_info_destroy(struct DesktopInfo** di);
-gboolean _update_items(gpointer user_data);
-void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
-                              GFileMonitorEvent event_type, gpointer data);
-void _monitor_desktop_files();
-gboolean _update_autostart(gpointer user_data);
-void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
-                                GFileMonitorEvent event_type, gpointer data);
-void _monitor_autostart_files();
-#endif
-
 #endif /* end of include guard: FILE_MONITOR_H */
 
