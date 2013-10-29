@@ -42,6 +42,7 @@ void free_resources()
         g_key_file_unref(launcher_config);
 }
 
+
 JS_EXPORT_API
 JSValueRef launcher_load_hidden_apps()
 {
@@ -88,7 +89,7 @@ void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
 
 
 JS_EXPORT_API
-gboolean launcher_has_this_item_on_desktop(Entry* _item)
+gboolean launcher_is_on_desktop(Entry* _item)
 {
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     const char* item_path = g_desktop_app_info_get_filename(item);
@@ -105,6 +106,7 @@ gboolean launcher_has_this_item_on_desktop(Entry* _item)
 
     return is_exist;
 }
+
 
 GPtrArray* get_autostart_paths()
 {
@@ -134,8 +136,11 @@ GPtrArray* get_autostart_paths()
     return paths;
 }
 
+
+PRIVATE
 gboolean _read_gnome_autostart_enable(const char* path, const char* name, gboolean* is_autostart/* output */)
 {
+    g_assert(is_autostart != NULL);
     gboolean read_success = FALSE;
 
     char* full_path = g_build_filename(path, name, NULL);
@@ -179,6 +184,7 @@ out:
 
     return read_success;
 }
+
 
 PRIVATE
 gboolean _check_exist(const char* path, const char* name)
@@ -438,6 +444,7 @@ JSValueRef launcher_get_app_rate()
 
         if (error != NULL) {
             g_warning("get record file value failed: %s", error->message);
+            g_clear_error(&error);
             continue;
         }
 

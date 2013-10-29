@@ -25,6 +25,7 @@ include_directories(${test_gtk_webkit_change_bg} ${gtk_INCLUDE_DIRS}
 
 file(GLOB TEST_SRC *_test.c)
 add_library(dlauncher_test ${TEST_SRC})
+message(============================================================================ ${TEST_SRC})
 target_link_libraries(dlauncher_test dcom dentry dbus dtest ${DWEBVIEW_LIBRARIES})
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DTEST_INCLUDE_DIRS})
