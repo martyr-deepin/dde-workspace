@@ -167,6 +167,7 @@ _get_hidden_icons_ids = ->
 
 
 save_hidden_apps = ->
+    echo 'save'
     DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
 
 

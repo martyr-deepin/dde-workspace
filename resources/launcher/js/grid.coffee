@@ -120,7 +120,9 @@ class Item extends Widget
         hidden_icons[@id] = @
         save_hidden_apps()
         hide_category()
-        _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
+        if _get_hidden_icons_ids().length == 0
+            _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
+            Item.display_temp = false
 
     display_icon: (e)=>
         @display_mode = 'display'

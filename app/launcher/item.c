@@ -83,8 +83,10 @@ void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
     if (hidden_app_ids.data != NULL) {
         g_key_file_set_string_list(hidden_apps, "__Config__", "app_ids",
             (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
-        save_app_config(hidden_apps, APPS_INI);
+    } else {
+        g_key_file_set_string(hidden_apps, "__Config__", "app_ids", "");
     }
+    save_app_config(hidden_apps, APPS_INI);
 }
 
 
@@ -233,7 +235,7 @@ gboolean launcher_is_autostart(Entry* _item)
     GDesktopAppInfo* item = (GDesktopAppInfo*)_item;
     char* name = get_desktop_file_basename(item);
 
-    for (int i = 0; i < autostart_paths->len; ++i) {
+    for (guint i = 0; i < autostart_paths->len; ++i) {
         char* path = g_ptr_array_index(autostart_paths, i);
         if ((is_existing = _check_exist(path, name))) {
             gboolean gnome_autostart = FALSE;
@@ -346,7 +348,7 @@ gboolean launcher_remove_from_autostart(Entry* _item)
     to_lower_inplace(name);
 
     // start from 1 for skiping user autostart dir
-    for (int i = 1; i < autostart_paths->len; ++i) {
+    for (guint i = 1; i < autostart_paths->len; ++i) {
         char* path = g_ptr_array_index(autostart_paths, i);
         GError* err = NULL;
         GDir* dir = g_dir_open(path, 0, &err);
@@ -422,7 +424,7 @@ void launcher_save_config(char const* key, char const* value)
     if (launcher_config == NULL)
         launcher_config = load_app_config(LAUNCHER_CONF);
 
-    g_key_file_set_string(launcher_config, "main", "sort_method", value);
+    g_key_file_set_string(launcher_config, "main", key, value);
 
     save_app_config(launcher_config, LAUNCHER_CONF);
 }
@@ -438,7 +440,7 @@ JSValueRef launcher_get_app_rate()
 
     JSObjectRef json = json_create();
 
-    for (int i = 0; i < size; ++i) {
+    for (guint i = 0; i < size; ++i) {
         GError* error = NULL;
         gint64 num = g_key_file_get_int64(record_file, groups[i], "StartNum", &error);
 
