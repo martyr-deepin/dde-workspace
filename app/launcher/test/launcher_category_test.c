@@ -1,6 +1,7 @@
 #ifdef __DUI_DEBUG
 
 #include <gio/gdesktopappinfo.h>
+#include "dentry/entry.h"
 #include "launcher_test.h"
 #include "../launcher_category.h"
 
@@ -9,6 +10,9 @@ extern GList* _remove_other_category(GList* categories);
 extern GList* _get_x_category(GDesktopAppInfo* info);
 extern GList* get_deepin_categories(GDesktopAppInfo* info);
 extern void _load_category_info(GPtrArray* category_infos);
+
+extern void _record_category_info(const char* id, GDesktopAppInfo* info);
+extern double launcher_weight(GDesktopAppInfo* info, const char* key);
 
 void test_find_category_id()
 {
@@ -77,11 +81,39 @@ void test_get_deepin_categories()
 
 void test__load_category_info()
 {
+    // also testing get_all_categories_array
     Test({
          GPtrArray* category_infos = g_ptr_array_new_with_free_func(g_free);
          _load_category_info(category_infos);
          g_ptr_array_unref(category_infos);
          }, "_load_category_info");
+}
+
+
+void test_launcher_weight()
+{
+    GDesktopAppInfo* firefox = g_desktop_app_info_new("firefox.desktop");
+    Test({
+         launcher_weight(firefox, "web");
+         launcher_weight(firefox, "test");
+         launcher_weight(firefox, "br");
+         launcher_weight(firefox, "f");
+         launcher_weight(firefox, "z");
+         }, "launcher_key_weight");
+    g_object_unref(firefox);
+}
+
+
+void test__record_category_info()
+{
+    // also testing _append_to_category
+    GDesktopAppInfo* firefox = g_desktop_app_info_new("firefox.desktop");
+    char* id = dentry_get_id(firefox);
+    Test({
+         _record_category_info(id, firefox);
+         }, "_record_category_info");
+    g_free(id);
+    g_object_unref(firefox);
 }
 
 
@@ -92,6 +124,8 @@ void launcher_category_test()
     /* test__get_x_category(); */
     /* test_get_deepin_categories(); */
     /* test__load_category_info(); */
+    /* test_launcher_weight(); */
+    /* test__record_category_info(); */
 }
 
 #endif

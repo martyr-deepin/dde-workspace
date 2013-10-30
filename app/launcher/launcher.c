@@ -353,7 +353,7 @@ int main(int argc, char* argv[])
 
     pid_t p = getpid();
 #ifndef NDEBUG
-    g_warning("No. #%d#", p);
+    g_debug("No. #%d#", p);
 #endif
     save_pid();
 

@@ -203,7 +203,7 @@ const GPtrArray* get_all_categories_array()
 
 /**
  * @brief - key: the category id
- *          value: a list of applications id (md5 basename of path)
+ *          value: a set of applications id (md5 basename of path)
  */
 PRIVATE GHashTable* _category_table = NULL;
 
@@ -221,20 +221,24 @@ void _append_to_category(const char* path, GList* cs)
     if (_category_table == NULL) {
         _category_table =
             g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL,
-                                  (GDestroyNotify)g_ptr_array_unref);
+                                  (GDestroyNotify)g_hash_table_unref);
     }
 
-    GPtrArray* l = NULL;
+    // Using GHashTable instead of GPtrArray to avoiding infinitely append the
+    // same value.
+    GHashTable* l = NULL;
 
     for (GList* iter = g_list_first(cs); iter != NULL; iter = g_list_next(iter)) {
         gpointer id = iter->data;
         l = g_hash_table_lookup(_category_table, id);
         if (l == NULL) {
-            l = g_ptr_array_new_with_free_func(g_free);
+            // Using GHashTable as a set, just one destroy function is needed,
+            // otherwise, double free occurs.
+            l = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
             g_hash_table_insert(_category_table, id, l);
         }
 
-        g_ptr_array_add(l, g_strdup(path));
+        g_hash_table_add(l, g_strdup(path));
     }
 }
 
@@ -268,7 +272,7 @@ JSObjectRef _init_category_table()
         g_free(id);
 
         json_array_insert_nobject(items, i - skip,
-                info, g_object_ref, g_object_unref);
+                                  info, g_object_ref, g_object_unref);
 
         g_object_unref(info);
     }
@@ -288,14 +292,18 @@ JSObjectRef launcher_get_items_by_category(double _id)
 
     JSObjectRef items = json_array_create();
 
-    GPtrArray* l = g_hash_table_lookup(_category_table, GINT_TO_POINTER(id));
+    GHashTable* l = (GHashTable*)g_hash_table_lookup(_category_table,
+                                                     GINT_TO_POINTER(id));
     if (l == NULL) {
         return items;
     }
 
     JSContextRef cxt = get_global_context();
-    for (int i = 0; i < l->len; ++i) {
-        const char* path = g_ptr_array_index(l, i);
+    GHashTableIter iter;
+    gpointer value = NULL;
+    g_hash_table_iter_init(&iter, l);
+    for (int i = 0; g_hash_table_iter_next(&iter, &value, NULL); ++i) {
+        char const* path = (char const*)value;
         json_array_insert(items, i, jsvalue_from_cstr(cxt, path));
     }
 
@@ -336,7 +344,7 @@ double _get_weight(const char* src, const char* key, Prediction pred, double wei
 #define EXECUTABLE_WEIGHT 0.05
 
 JS_EXPORT_API
-double launcher_is_contain_key(GDesktopAppInfo* info, const char* key)
+double launcher_weight(GDesktopAppInfo* info, const char* key)
 {
     double weight = 0.0;
 
