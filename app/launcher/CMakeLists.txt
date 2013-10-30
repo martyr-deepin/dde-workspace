@@ -12,7 +12,8 @@ SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
 
-target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
+    dlauncher_test)
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 

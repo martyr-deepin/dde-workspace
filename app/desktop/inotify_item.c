@@ -50,10 +50,22 @@ PRIVATE
 void _add_monitor_directory(GFile* f)
 {
     g_assert(_inotify_fd != -1);
-    char* path = g_file_get_path(f);
-    int watch = inotify_add_watch(_inotify_fd, path, IN_CREATE | IN_DELETE | IN_MODIFY | IN_MOVED_FROM | IN_MOVED_TO | IN_ATTRIB);
-    g_free(path);
-    g_hash_table_insert(_monitor_table, GINT_TO_POINTER(watch), g_object_ref(f));
+
+    GFileInfo* info = g_file_query_info(f, "standard::type", G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL, NULL);
+    if (info == NULL) return; //temp file may cause this like downloading file or compressing file
+    GFileType type = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_STANDARD_TYPE);
+    g_assert(info != NULL);
+    if (g_file_info_get_is_symlink(info)) {
+        GFile* maybe_real_target = g_file_new_for_uri(g_file_info_get_symlink_target(info));
+        _add_monitor_directory(maybe_real_target);
+        g_object_unref(maybe_real_target);
+    } else if (type == G_FILE_TYPE_DIRECTORY) {
+        char* path = g_file_get_path(f);
+        int watch = inotify_add_watch(_inotify_fd, path, IN_CREATE | IN_DELETE | IN_MODIFY | IN_MOVED_FROM | IN_MOVED_TO | IN_ATTRIB);
+        g_free(path);
+        g_hash_table_insert(_monitor_table, GINT_TO_POINTER(watch), g_object_ref(f));
+    }
+    g_object_unref(info);
 }
 
 void install_monitor()
@@ -76,9 +88,7 @@ void install_monitor()
             const char* filename = NULL;
             while ((filename = g_dir_read_name(dir)) != NULL) {
                 GFile* f = g_file_get_child(_desktop_file, filename);
-                if (g_file_query_file_type(f, G_FILE_QUERY_INFO_NONE, NULL) == G_FILE_TYPE_DIRECTORY) {
-                    _add_monitor_directory(f);
-                }
+                _add_monitor_directory(f);
                 g_object_unref(f);
             }
             g_dir_close(dir);

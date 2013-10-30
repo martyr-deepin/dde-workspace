@@ -29,3 +29,11 @@ set(test_get_pkg_name launcher_test_get_pkg_name)
 add_executable(${test_get_pkg_name} test_get_pkg_name.c)
 target_link_libraries(${test_get_pkg_name} ${gio_LIBRARIES} ${glib_LIBRARIES}
     ${DWEBVIEW_LIBRARIES} dtest dcom)
+
+
+file(GLOB TEST_SRC *_test.c)
+add_library(dlauncher_test ${TEST_SRC})
+target_link_libraries(dlauncher_test dcom dentry dbus dtest ${DWEBVIEW_LIBRARIES})
+include_directories(${DWEBVIEW_INCLUDE_DIRS})
+include_directories(${DTEST_INCLUDE_DIRS})
+include_directories(..)

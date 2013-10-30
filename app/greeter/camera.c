@@ -67,18 +67,10 @@ static GstBuffer* pure_buffer = NULL;
 
 // forward decleration {{{
 static void do_quit();
-static void handler(int signum);
 static void reco();
 static void detect(IplImage* frame);
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data);
 // }}}
-
-
-void init_reco_state()
-{
-    recognition_info.reco_state = NOT_START_RECOGNIZING;
-    g_timer_start(recognition_info.timer);
-}
 
 
 void init_camera(int argc, char* argv[])
@@ -117,8 +109,10 @@ void destroy_camera()
         do_quit();
     }
 
-    g_timer_stop(recognition_info.timer);
-    g_timer_destroy(recognition_info.timer);
+    if (recognition_info.timer != NULL) {
+        g_timer_stop(recognition_info.timer);
+        g_timer_destroy(recognition_info.timer);
+    }
 }
 
 
@@ -224,6 +218,7 @@ gboolean recognized_handler(gpointer data)
     g_debug("[%s] recognized", __func__);
     js_post_message_simply("start-login", NULL);
     recognition_info.reco_state = RECOGNIZE_FINISH;
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -243,7 +238,7 @@ gboolean not_recognize_handler(gpointer data)
     g_timer_start(recognition_info.timer);
     recognition_info.reco_state = NOT_START_RECOGNIZING;
 
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 
@@ -548,9 +543,11 @@ void _cancel_detect()
     _enable_detection(false);
     /* int kill(pid_t, int); */
     /* kill(recognition_info.pid, SIGKILL); */
-    g_spawn_close_pid(recognition_info.pid);
+    /* g_spawn_close_pid(recognition_info.pid); */
     recognition_info.reco_state = NOT_START_RECOGNIZING;
-    g_timer_start(recognition_info.timer);
+    if (recognition_info.timer != NULL)
+        g_timer_start(recognition_info.timer);
+    g_warning("cancel end");
 }
 
 

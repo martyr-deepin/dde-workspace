@@ -60,8 +60,8 @@ void setup_fixture()
     dump = system("cp /usr/share/applications/deepin-desktop.desktop /tmp/test_files/");
     dump = system("cp /usr/share/applications/deepin-media-player.desktop /tmp/test_files/");
     dump = system("cp /usr/share/applications/deepin-system-settings.desktop /tmp/test_files/");
-    dump = system("cp /usr/share/applications/audacity.desktop /tmp/test_files/");
-    dump = system("cp /usr/share/applications/brasero.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/wine.desktop /tmp/test_files/");
+    dump = system("cp /usr/share/applications/xchat.desktop /tmp/test_files/");
 
     dump = system("touch ~/Desktop/snyh.txt");
     dump = system("touch ~/Desktop/.snyh.txt");

@@ -199,7 +199,6 @@ on_finished (gpointer user_data)
     draw_background (fade_data);
 
     free_fade_data (fade_data);
-    g_debug ("crossfade finished ");
 }
 
 PRIVATE void
@@ -310,7 +309,6 @@ get_next_picture_path ()
 PRIVATE GdkPixbuf*
 get_xformed_gdk_pixbuf (const char* pict_path)
 {
-    g_debug ("picture_index : %d", picture_index);
     GError* error = NULL;
     GdkPixbuf* _pixbuf = NULL;
     GdkPixbuf* _xformed_pixbuf = NULL;
@@ -318,7 +316,6 @@ get_xformed_gdk_pixbuf (const char* pict_path)
     _pixbuf = gdk_pixbuf_new_from_file (pict_path, &error);
     if (error != NULL)
     {
-        g_debug ("get_next_gdk_pixbuf: %s", error->message);
         _pixbuf = gdk_pixbuf_new_from_file (BG_DEFAULT_PICTURE, NULL);
     }
 
@@ -379,27 +376,26 @@ on_bg_duration_tick (gpointer user_data)
     xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
-    fade_data->interval = TIME_PER_FRAME; 
+    fade_data->interval = TIME_PER_FRAME;
 
     fade_data->start_time = get_current_time();
     fade_data->alpha = 0.0;
 
-    g_debug ("on_bg_duration_tick: current_time: %lf", fade_data->start_time);
     Pixmap prev_pixmap = get_previous_background();
     gdk_error_trap_push ();
-    if (prev_pixmap == None) 
+    if (prev_pixmap == None)
     {
-        prev_pixmap = XCreatePixmap (display, root, 
-                                     root_width, root_height, 
-                                     root_depth); 
+        prev_pixmap = XCreatePixmap (display, root,
+                                     root_width, root_height,
+                                     root_depth);
         _update_rootpmap (prev_pixmap);
     }
     gdk_error_trap_pop_ignored ();
 
     fade_data->pixmap = prev_pixmap;
-    fade_data->fading_surface = get_surface (prev_pixmap); 
+    fade_data->fading_surface = get_surface (prev_pixmap);
 
-    const char* next_picture = get_next_picture_path (); 
+    const char* next_picture = get_next_picture_path ();
     g_settings_set_string (Settings, BG_CURRENT_PICT, next_picture);
 
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf (next_picture);
@@ -419,7 +415,6 @@ on_bg_duration_tick (gpointer user_data)
 PRIVATE void
 on_bg_duration_finished (gpointer user_data)
 {
-    g_debug ("bg_duration_finished");
 }
 
 PRIVATE void
@@ -459,13 +454,11 @@ setup_crossfade_timer ()
     fade_data->interval = TIME_PER_FRAME;
 
     fade_data->start_time = get_current_time();
-    g_debug ("start_time : %lf", fade_data->start_time);
     GSource* source = g_timeout_source_new (fade_data->interval*MSEC_PER_SEC);
 
     g_source_set_callback (source, (GSourceFunc) on_tick, fade_data, (GDestroyNotify)on_finished);
 
     manual_timeout_id = g_source_attach (source, g_main_context_default());
-    g_debug ("timeout_id : %d", manual_timeout_id);
 }
 
 /*
@@ -475,13 +468,11 @@ setup_timers ()
 {
     if (gsettings_background_duration && picture_num > 1)
     {
-        g_debug ("setup_background_timer");
         setup_crossfade_timer ();
         setup_background_timer ();
     }
     else
     {
-        g_debug ("setup_crossfade_timer");
         setup_crossfade_timer ();
     }
 }
@@ -495,8 +486,16 @@ setup_timers ()
 PRIVATE void
 parse_picture_uris ()
 {
-    gchar* pic_uri = g_settings_get_string (Settings, BG_PICTURE_URIS);
-    gchar* cur_gsetting_pict = g_settings_get_string (Settings, BG_CURRENT_PICT);
+    gchar* pic_uris = g_settings_get_string (Settings, BG_PICTURE_URIS);
+    gchar* cur_pic = g_settings_get_string (Settings, BG_CURRENT_PICT);
+    if (strlen(cur_pic) == 0) {
+        g_free(cur_pic);
+        cur_pic = g_strdup(BG_DEFAULT_PICTURE);
+    }
+    if (strlen(pic_uris) == 0) {
+        g_free(pic_uris);
+        pic_uris = g_strdup(cur_pic);
+    }
 
     picture_num = 0;
     picture_index = 0;
@@ -506,7 +505,7 @@ parse_picture_uris ()
     gchar* filename_ptr;
 
 
-    uri_start = pic_uri;
+    uri_start = pic_uris;
     while ((uri_end = strchr (uri_start, DELIMITER)) != NULL)
     {
         *uri_end = '\0';
@@ -514,7 +513,7 @@ parse_picture_uris ()
         filename_ptr = g_filename_from_uri (uri_start, NULL, NULL);
         if (filename_ptr != NULL)
         {
-            if (g_strcmp0(cur_gsetting_pict, filename_ptr) == 0) {
+            if (g_strcmp0(cur_pic, filename_ptr) == 0) {
                 picture_index = picture_num;
             }
             g_ptr_array_add (picture_paths, filename_ptr);
@@ -522,7 +521,6 @@ parse_picture_uris ()
                                  filename_ptr,
                                  GUINT_TO_POINTER(picture_num+1));
             picture_num ++;
-            g_debug ("picture %d: %s", picture_num, filename_ptr);
         }
 
         uri_start = uri_end + 1;
@@ -537,7 +535,6 @@ parse_picture_uris ()
                                  filename_ptr,
                                  GUINT_TO_POINTER(picture_num+1));
             picture_num ++;
-            g_debug ("picture %d: %s", picture_num, filename_ptr);
         }
     }
     //ensure we don't have a empty picture uris
@@ -550,8 +547,8 @@ parse_picture_uris ()
                              GUINT_TO_POINTER(picture_num+1));
         picture_num =1;
     }
-    g_free(pic_uri);
-    g_free(cur_gsetting_pict);
+    g_free(pic_uris);
+    g_free(cur_pic);
 }
 PRIVATE void
 destroy_picture_path (gpointer data)
@@ -565,7 +562,6 @@ destroy_picture_path (gpointer data)
 PRIVATE void
 bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
-    g_debug ("picture_uris changed");
     g_hash_table_destroy (picture_paths_ht);
     g_ptr_array_free (picture_paths, TRUE);
 
@@ -589,17 +585,17 @@ PRIVATE void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
+    if (strlen(tmp_image_uri) == 0)  return;
     gchar* tmp_image_path = g_filename_from_uri (tmp_image_uri, NULL, NULL);
+    g_debug ("picture-uri changed: |%s|(%p len:%ld) |%s|", tmp_image_uri, tmp_image_uri, strlen(tmp_image_uri), tmp_image_path);
     g_free (tmp_image_uri);
     guint tmp_value = GPOINTER_TO_UINT (g_hash_table_lookup (picture_paths_ht, tmp_image_path));
     g_free (tmp_image_path);
 
-    g_debug ("picture-uri changed: %d",tmp_value-1);
     //g_hash_table_lookup can return NULL, so we store 'index+1' in hashtable
     if ((tmp_value != 0)&&(tmp_value != picture_index+1))
     {
         picture_index = tmp_value - 1;
-        g_debug ("change to new current picture index: %d", picture_index);
         remove_timers ();
         setup_timers ();
     }
@@ -642,12 +638,6 @@ PRIVATE void
 bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
-#if 0
-    if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_RANDOM)
-        g_debug ("XFADE_AUTO_MODE_RANDOM");
-    else if (gsettings_xfade_auto_mode == XFADE_AUTO_MODE_SEQUENTIAL)
-        g_debug ("XFADE_AUTO_MODE_SEQUENTIAL");
-#endif
 
     remove_timers ();
 
@@ -686,13 +676,11 @@ register_account_service_background_path (const char* current_picture)
         g_dbus_connection_set_exit_on_close(g_dbus_proxy_get_connection(_proxy), FALSE);
         if (error != NULL)
         {
-            g_debug ("connect org.freedesktop.Accounts failed");
             g_error_free (error);
         }
 
         gint64 user_id = 0;
         user_id = (gint64)geteuid ();
-        g_debug ("call FindUserById: uid = %li", user_id);
 
         GVariant* object_path_var = NULL;
         error = NULL;
@@ -704,13 +692,11 @@ register_account_service_background_path (const char* current_picture)
                                                   &error);
         if (error != NULL)
         {
-            g_debug ("FindUserById: %s", error->message);
             g_error_free (error);
         }
 
         char* object_path = NULL;
         g_variant_get (object_path_var, "(o)", &object_path);
-        g_debug ("object_path : %s", object_path);
 
         g_variant_unref (object_path_var);
         g_object_unref (_proxy);
@@ -727,7 +713,6 @@ register_account_service_background_path (const char* current_picture)
         g_dbus_connection_set_exit_on_close(g_dbus_proxy_get_connection(AccountsProxy), FALSE);
         if (error != NULL)
         {
-            g_debug ("connect to %s failed", object_path);
             g_error_free (error);
         }
         g_free (object_path);
@@ -743,7 +728,6 @@ register_account_service_background_path (const char* current_picture)
                             &error);
     if (error != NULL)
     {
-        g_debug ("org.freedesktop.Accounts.User: SetBackgroundFile %s failed", current_picture);
         g_error_free (error);
     }
 }
@@ -751,6 +735,7 @@ PRIVATE void
 bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
     gchar* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
+    if (strlen(cur_pict) == 0)  return;
 
     register_account_service_background_path (cur_pict);
     g_free (cur_pict);
@@ -772,8 +757,6 @@ screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 
     root_width = gdk_screen_get_width(screen);
     root_height = gdk_screen_get_height(screen);
-    g_debug ("screen_size_changed: root_width = %d", root_width);
-    g_debug ("screen_size_changed: root_height = %d", root_height);
     gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
 
     const char* current_picture = get_current_picture_path ();
@@ -843,8 +826,8 @@ bg_util_disconnect_screen_signals (GdkWindow* bg_window)
                            G_CALLBACK (screen_size_changed_cb), bg_window);
 }
 
-//FIXME: screen_size_changed_cb and initial_setup have a lot of 
-//       duplicated function. 
+//FIXME: screen_size_changed_cb and initial_setup have a lot of
+//       duplicated function.
 PRIVATE void
 initial_setup (GSettings *settings)
 {
@@ -975,3 +958,4 @@ bg_util_init (GdkWindow* bg_window)
         gdk_window_add_filter (background_window, expose_cb, background_window);
     }
 }
+

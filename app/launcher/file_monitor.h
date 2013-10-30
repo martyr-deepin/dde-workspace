@@ -25,5 +25,18 @@
 void add_monitors();
 void destroy_monitors();
 
+enum DesktopStatus {
+    UNKNOWN,
+    DELETED,
+    ADDED,
+    CHANGED
+};
+
+
+struct DesktopInfo {
+    char* path;
+    enum DesktopStatus status;
+};
+
 #endif /* end of include guard: FILE_MONITOR_H */
 

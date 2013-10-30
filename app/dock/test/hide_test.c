@@ -17,11 +17,11 @@ enum State {
 void dock_test_hide()
 {
     /* Test({ */
-    /*         dock_delay_show(0); */
+    /*         dock_delay_show(100); */
     /* }, "dock_delay_show"); */
 
     /* Test({ */
-    /*         dock_delay_hide(0); */
+    /*         dock_delay_hide(100); */
     /* }, "dock_delay_hide"); */
 
     /* Test({ */

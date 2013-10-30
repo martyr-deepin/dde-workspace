@@ -10,7 +10,7 @@
 #define AUTOSTART_DIR "autostart"
 #define GNOME_AUTOSTART_KEY "X-GNOME-Autostart-enabled"
 
-void free_resources();
+void destroy_item_config();
 GPtrArray* get_autostart_paths();
 JS_EXPORT_API gboolean launcher_is_autostart(Entry* _item);
 

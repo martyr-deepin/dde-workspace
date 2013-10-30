@@ -53,7 +53,6 @@ gboolean has_camera();
 void init_camera(int argc, char* argv[]);
 void connect_camera();
 void destroy_camera();
-void init_reco_state();
 
 #endif /* end of include guard: CAMERA_H */
 

@@ -4,18 +4,18 @@
 
 #include "xdg_misc.h"
 
-#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"
-#define TERMINAL_KEY_EXEC  "exec"
-#define TERMINAL_KEY_EXEC_ARG "exec-arg"
+/*#define TERMINAL_SCHEMA_ID "com.deepin.desktop.default-applications.terminal"*/
+/*#define TERMINAL_KEY_EXEC  "exec"*/
+/*#define TERMINAL_KEY_EXEC_ARG "exec-arg"*/
 
-static GSettings* terminal_gsettings = NULL;
+/*static GSettings* terminal_gsettings = NULL;*/
 
-GAppInfo *gen_app_info (const char* exec_val, const char* executable);
-gboolean exec_app_info (const char *exec_val, const char *executable);
+GAppInfo *gen_app_info (const char* executable);
+gboolean exec_app_info (const char *executable);
 
 //used by dentry/mime_actions.c
 
-GAppInfo *gen_app_info (const char* exec_val, const char* executable)
+GAppInfo *gen_app_info (const char* executable)
 {
     GAppInfo *appinfo = NULL;
     GError* error = NULL;
@@ -23,20 +23,22 @@ GAppInfo *gen_app_info (const char* exec_val, const char* executable)
 
     if (executable == NULL)
     {
-        cmd_line = g_strdup_printf("%s --working-directory=%s",
-                exec_val, DESKTOP_DIR());
+        char* tmp1 = g_shell_quote(DESKTOP_DIR());
+        char* tmp2 = g_strdup_printf("cd %s && exec $SHELL", tmp1);
+        g_free(tmp1);
+        tmp1 = g_shell_quote(tmp2);
+        g_free(tmp2);
+
+        cmd_line = g_strconcat("sh -c ", tmp1, NULL);
+        g_free(tmp1);
     }
     else
     {
-        char* exec_arg_val = g_settings_get_string (terminal_gsettings,
-                                                    TERMINAL_KEY_EXEC_ARG);
-        cmd_line = g_strdup_printf("%s --working-directory=%s %s %s", 
-                exec_val, DESKTOP_DIR(), exec_arg_val, executable);
-        g_free (exec_arg_val);
+        cmd_line = g_strdup(executable);
     }
 
-    appinfo = g_app_info_create_from_commandline(cmd_line, NULL, 
-            G_APP_INFO_CREATE_NONE, &error);
+    appinfo = g_app_info_create_from_commandline(cmd_line, NULL,
+            G_APP_INFO_CREATE_NEEDS_TERMINAL, &error);
     g_free(cmd_line);
     if (error!=NULL)
     {
@@ -49,19 +51,22 @@ GAppInfo *gen_app_info (const char* exec_val, const char* executable)
     return appinfo;
 }
 
-gboolean exec_app_info (const char *exec_val, const char *executable)
+gboolean exec_app_info (const char *executable)
 {
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
     gboolean is_ok = FALSE;
 
-    appinfo = gen_app_info (exec_val, executable);
+    appinfo = gen_app_info (executable);
     if ( appinfo == NULL ) {
         g_debug ("gen app info failed!");
         return FALSE;
     }
 
-    is_ok = g_app_info_launch (appinfo, NULL, NULL, &error);
+    GdkAppLaunchContext* ctx = gdk_display_get_app_launch_context(gdk_display_get_default());
+    gdk_app_launch_context_set_screen(ctx, gdk_screen_get_default()); //must set this otherwise termiator will not work properly
+    is_ok = g_app_info_launch (appinfo, NULL, (GAppLaunchContext*)ctx, &error);
+    g_object_unref(ctx);
     if (error!=NULL)
     {
         g_debug("exec app info error: %s", error->message);
@@ -78,24 +83,11 @@ gboolean exec_app_info (const char *exec_val, const char *executable)
 void desktop_run_in_terminal(char* executable)
 {
     gboolean is_ok = FALSE;
-    char* exec_val;
 
-    if (terminal_gsettings == NULL)
-        terminal_gsettings = g_settings_new(TERMINAL_SCHEMA_ID);
-
-    exec_val = g_settings_get_string(terminal_gsettings,
-                                     TERMINAL_KEY_EXEC);
-    if ( exec_val == NULL ) {
-        g_debug ("terminal exec is null");
-        return ;
-    }
-
-    is_ok = exec_app_info (exec_val, executable);
-    g_free(exec_val);
+    is_ok = exec_app_info (executable);
     if ( !is_ok ) {
         g_debug ("exec app info failed!");
-
-        exec_app_info ("x-terminal-emulator", executable);
+        /*exec_app_info (executable);*/
     }
 
     return ;
@@ -112,7 +104,7 @@ run_file  (GFile* file, GFile* _file_arg)
     char* file_path;
 
 
-    //here we should check the file type 
+    //here we should check the file type
     // if the src is symbolink we should set the file_path as the path for it's value
     GFileType type = g_file_query_file_type (file, G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS, NULL);
     if (type == G_FILE_TYPE_SYMBOLIC_LINK)
@@ -122,7 +114,7 @@ run_file  (GFile* file, GFile* _file_arg)
         GFileInfo* info = g_file_query_info(file, "standard::*", G_FILE_QUERY_INFO_NONE, NULL, NULL);
         if (info != NULL) {
             const char * link_target_path = g_file_info_get_symlink_target(info);
-            g_debug("symbolic link target is :%s",link_target_path);                
+            g_debug("symbolic link target is :%s",link_target_path);
             file_path = g_strdup(link_target_path);
         }
         g_object_unref(info);
@@ -131,7 +123,7 @@ run_file  (GFile* file, GFile* _file_arg)
         file_path = g_file_get_path (file);
     }
     g_debug("run file_path :%s",file_path);
-    
+
     if (_file_arg != NULL)
     {
         char* _file_arg_uri = g_file_get_uri (_file_arg);
@@ -146,7 +138,7 @@ run_file  (GFile* file, GFile* _file_arg)
     if(cmd_line != NULL)
     {
         g_spawn_command_line_async (cmd_line, NULL);
-    }    
+    }
     else
     {
         g_warning("run file_path is null");
@@ -176,12 +168,12 @@ display_file (GFile* file, const char* content_type)
     return res;
 }
 
-gboolean 
-activate_file (GFile* file, const char* content_type, 
+gboolean
+activate_file (GFile* file, const char* content_type,
                gboolean is_executable, GFile* _file_arg)
 {
     char* file_name = g_file_get_basename (file);
-    gboolean is_bin = g_str_has_suffix(file_name, ".bin"); 
+    gboolean is_bin = g_str_has_suffix(file_name, ".bin");
     gboolean result = TRUE;
 
     g_debug ("activate_file: %s", file_name);
@@ -193,7 +185,7 @@ activate_file (GFile* file, const char* content_type,
     {
         g_debug("is_executable && g_content_type_can_be_executable || is_bin");
         //1. an executable text file. or an shell script
-        if (g_content_type_is_a (content_type, "text/plain")) 
+        if (g_content_type_is_a (content_type, "text/plain"))
         {
             g_debug("g_content_type_is_a");
             GtkWidget* dialog;
@@ -207,9 +199,9 @@ activate_file (GFile* file, const char* content_type,
             detail = g_strdup_printf (_("\"%s\" is an executable text file."), file_name);
             g_free (file_name);
             //create prompt dialog
-            dialog = gtk_message_dialog_new (NULL, 
+            dialog = gtk_message_dialog_new (NULL,
                                              GTK_DIALOG_MODAL,
-                                             GTK_MESSAGE_QUESTION, 
+                                             GTK_MESSAGE_QUESTION,
                                              GTK_BUTTONS_NONE,
                                              NULL);
             g_object_set (dialog, "text", prompt, "secondary-text", detail, NULL);
@@ -260,3 +252,4 @@ activate_file (GFile* file, const char* content_type,
 
     return result;
 }
+

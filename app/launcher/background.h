@@ -29,7 +29,7 @@
 #define CURRENT_PCITURE "current-picture"
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
-void set_launcher_background(GdkWindow* win, GSettings* settings, double width, double height);
+void set_background(GdkWindow* win, GSettings* settings, double width, double height);
 void background_changed(GSettings* settings, char* key, gpointer user_data);
 
 #endif /* end of include guard: BACKGROUND_H */

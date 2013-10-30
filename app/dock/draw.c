@@ -53,12 +53,12 @@ void dock_draw_board(JSValueRef canvas)
     cairo_paint(cr);
 
     cairo_set_line_width(cr, 1);
-    cairo_set_source_rgba(cr, 0, 0, 0, 0.3);
+    cairo_set_source_rgba(cr, 0, 0, 0, 0.2);
     cairo_move_to(cr, 0, 0.5);
     cairo_line_to(cr, w, 0.5);
     cairo_stroke(cr);
 
-    cairo_set_source_rgba(cr, 1, 1, 1, 0.2);
+    cairo_set_source_rgba(cr, 1, 1, 1, 0.08);
     cairo_move_to(cr, 0, 1.5);
     cairo_line_to(cr, w, 1.5);
     cairo_stroke(cr);

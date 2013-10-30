@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     gtk_init(NULL, NULL);
     GtkWidget* container = create_web_container(FALSE, TRUE);
-    GtkWidget* webview = d_webview_new_with_uri(("file:///home/liliqiang/dde/app/launcher/test/bg.html"));
+    GtkWidget* webview = d_webview_new_with_uri("file:///home/liliqiang/dde/app/launcher/test/bg_test.html");
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
     gtk_widget_show_all(container);

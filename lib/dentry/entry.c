@@ -299,6 +299,13 @@ char* dentry_get_icon_path(Entry* e)
         if (icon != NULL) {
             char* icon_str = g_icon_to_string(icon);
             ret = icon_name_to_path (icon_str, 48);
+            if (ret == NULL)
+            {
+                g_warning("richdir dentry  get_icon is null use invalid-dock_app.png instead");
+                const char * invalid_app = "invalid-dock_app";
+                ret = dcore_get_theme_icon(invalid_app, 48);
+            }
+            
             g_free(icon_str);
         }
         else{
@@ -408,6 +415,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             list = g_list_append(list, files[i]);
         }
         GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
+        gdk_app_launch_context_set_screen(launch_context, gdk_screen_get_default());
         gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
         gboolean ret = g_app_info_launch(app, list, (GAppLaunchContext*)launch_context, NULL);
         g_object_unref(launch_context);
@@ -1183,7 +1191,7 @@ ArrayContainer dentry_get_templates_filter(ArrayContainer fs)
 }
 
 JS_EXPORT_API
-gboolean dentry_create_templates(GFile* src, char* name_add_before)
+GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = FALSE;
     char* basename = dentry_get_name(src);
@@ -1224,7 +1232,7 @@ gboolean dentry_create_templates(GFile* src, char* name_add_before)
     }
     g_object_unref(dir);
 
-    return result;
+    return child;
 }
 
 

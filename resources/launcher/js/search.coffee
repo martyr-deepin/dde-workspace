@@ -44,7 +44,7 @@ do_search = ->
                 "value": k
                 "weight": 0
             )
-        else if (weight = DCore.Launcher.is_contain_key(v.core, key))
+        else if (weight = DCore.Launcher.weight(v.core, key))
             ret.push(
                 "value": k
                 "weight": weight

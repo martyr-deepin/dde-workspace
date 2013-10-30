@@ -218,6 +218,7 @@ GKeyFile* load_app_config(const char* name)
     char* path = g_build_filename(g_get_user_config_dir(), name, NULL);
     GKeyFile* key = g_key_file_new();
     g_key_file_load_from_file(key, path, G_KEY_FILE_NONE, NULL);
+    g_free(path);
     /* no need to test file exitstly */
     return key;
 }
@@ -417,5 +418,11 @@ char* check_absolute_path_icon(char const* app_id, char const* icon_path)
     }
 
     return icon;
+}
+
+
+gboolean is_chrome_app(char const* name)
+{
+    return g_str_has_prefix(name, "chrome-");
 }
 

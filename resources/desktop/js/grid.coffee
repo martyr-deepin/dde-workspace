@@ -30,7 +30,8 @@ s_offset_y = 0
 grid_item_width = 0
 grid_item_height = 0
 
-# gird size
+# gird size cols lie ---59; rows  hang ---30
+# i cols lie ----59;  j rows hang----30
 cols = 0
 rows = 0
 
@@ -66,9 +67,9 @@ ingore_keyup_counts = 0
 # store the pos the user pop the context menu
 rightclick_pos = {clientX : 0, clientY : 0}
 
+name_add_before = _("Untitled") + " "
 #templates
-TEMPATES_LENGTH = 0
-TEMPLATES_FILE_ID_FIRST = 20
+TEMPLATES_FILE_ID_FIRST = 22
 templates = []
 
 
@@ -131,6 +132,21 @@ calc_row_and_cols = (wa_width, wa_height) ->
     yy = wa_height % _GRID_HEIGHT_INIT_
     return [n_cols, n_rows, _GRID_WIDTH_INIT_, _GRID_HEIGHT_INIT_]
 
+
+#limit_in_desktop_range
+# i cols lie ----59;  j rows hang----30
+limit_in_desktop_range = (pos) ->
+    i = pos.x
+    j = pos.y
+    if i?
+        if i < 0 then i = 0
+        else if i > cols then i = cols
+    if j?
+        if j < 0 then j  = 0
+        else if j > rows then j = rows
+    pos.x = i
+    pos.y = j
+    return pos
 
 # update the coordinate of the gird_div to fit the size of the workarea
 update_gird_position = (wa_x, wa_y, wa_width, wa_height) ->
@@ -214,14 +230,23 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     pos = start_item.get_pos()
     while true
         if x_delta != 0
-            pos.x += x_delta
+            pos.x += x_delta * _PART_
+            # if  pos.x < 0 or pos.x > cols
+            #     pos.x = 0
+            #     pos.y += y_delta * _PART_
+            #     break
             if x_delta > 0 and pos.x > cols then break
             else if x_delta < 0 and pos.x < 0 then break
         if y_delta != 0
-            pos.y += y_delta
+            pos.y += y_delta * _PART_
+            # if pos.y < 0 or pos.y > rows
+            #     pos.x += x_delta * _PART_
+            #     pos.y = 0
+            #     break
             if y_delta > 0 and pos.y > rows then break
             else if y_delta < 0 and pos.y < 0 then break
 
+        pos = limit_in_desktop_range(pos)
         if detect_occupy(pos) == false then continue
 
         #optimization by looking up o_table to get ID
@@ -234,12 +259,13 @@ find_item_by_coord_delta = (start_item, x_delta, y_delta) ->
     null
 
 
+
 init_occupy_table = ->
     o_table = new Array()
+    # i cols lie ----59;  j rows hang----30
     for i in [0..cols]
         o_table[i] = new Array(rows)
     return
-
 
 clear_occupy = (id, info) ->
     if info.x == -1 or info.y == -1 then return true
@@ -268,6 +294,7 @@ detect_occupy = (info, id = null) ->
     assert(info != null, "[detect_occupy]get null info")
     if (info.x + info.width) > cols  or (info.y + info.height) > rows
         return true
+    info = limit_in_desktop_range(info)
     for i in [0..info.width - 1] by 1
         for j in [0..info.height - 1] by 1
             if o_table[info.x+i][info.y+j]? && o_table[info.x+i][info.y+j] isnt id
@@ -288,6 +315,7 @@ clear_occupy_table = ->
 
 
 find_free_position = (w, h) ->
+    # i cols lie ----59;  j rows hang----30
     if not w? then w = _PART_
     if not h? then h = _PART_
     info = {x:0, y:0, width:w, height:h}
@@ -343,7 +371,6 @@ move_to_anywhere = (widget) ->
 
 
 move_to_somewhere = (widget, pos) ->
-    #echo "move_to_somewhere"
     if not detect_occupy(pos,widget.get_id())
         #echo "free pos"
         move_to_position(widget, pos)
@@ -441,34 +468,13 @@ create_entry_to_new_item = (entry) ->
 
     cancel_all_selected_stats()
     pos = pixel_to_pos(rightclick_pos.clientX, rightclick_pos.clientY, 1*_PART_, 1*_PART_)
+    pos = limit_in_desktop_range(pos)
+    pos = find_nearest_free_pos(w,pos)
     move_to_somewhere(w, pos)
     all_item.push(w.get_id())
     set_item_selected(w)
     update_selected_item_drag_image()
     w.item_rename()
-
-
-menu_create_new_folder = (name_add_before) ->
-    entry = DCore.Desktop.new_directory(name_add_before)
-    create_entry_to_new_item(entry)
-
-
-menu_create_new_file = (name_add_before) ->
-    entry = DCore.Desktop.new_file(name_add_before)
-    create_entry_to_new_item(entry)
-
-menu_create_templates = (id) ->
-    name_add_before = _("Untitled") + " "
-    switch id
-        when TEMPLATES_FILE_ID_FIRST then menu_create_new_folder(name_add_before)
-        when TEMPLATES_FILE_ID_FIRST + 1 then menu_create_new_file(name_add_before)
-        else
-            id_num = id - TEMPLATES_FILE_ID_FIRST - 2
-            for i in [0...templates.length] by 1
-                if i == id_num
-                    if (DCore.DEntry.create_templates(templates[i],name_add_before))
-                        echo "create_templates finish!"
-    return
 
 # all DND event handlers
 init_grid_drop = ->
@@ -479,8 +485,10 @@ init_grid_drop = ->
         file_uri = []
         tmp_copy = []
         tmp_move = []
-
-        if evt.dataTransfer.files.length == 0 # if the drop_target is internet files
+        if (xdg_target = evt.dataTransfer.getXDSPath()).length > 0 # compatible with XDS protocol
+            desktop_uri = "#{DCore.DEntry.get_uri(g_desktop_entry)}/#{xdg_target}"
+            evt.dataTransfer.setXDSPath(desktop_uri)
+        else if evt.dataTransfer.files.length == 0 # if the drop_target is internet files
             #echo "file from internet , evt.dataTransfer.files.length  = 0"
             xdg_target = evt.dataTransfer.getData("Text")
             enter_indexof = []
@@ -503,6 +511,7 @@ init_grid_drop = ->
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
@@ -517,21 +526,12 @@ init_grid_drop = ->
                 file = evt.dataTransfer.files[i]
                 if (f_e = DCore.DEntry.create_by_path(file.path))?
                     tmp_copy.push(f_e)
-                    # only copy , not move
-#                    if DCore.DEntry.should_move(f_e)
-                        #tmp_move.push(f_e)
-                    #else
-                        #tmp_copy.push(f_e)
-
-                    # make items as much nearer as possible to the pos that user drag on
                     p = {x : 0, y : 0, width : 1*_PART_, height : 1*_PART_}
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
-            # only copy , not move
-            #if tmp_move.length
-                #DCore.DEntry.move(tmp_move, g_desktop_entry, true)
             if tmp_copy.length
                 DCore.DEntry.copy(tmp_copy, g_desktop_entry)
 
@@ -548,6 +548,7 @@ init_grid_drop = ->
                     p.x = pos.x + (i % w)
                     p.y = pos.y + Math.floor(i / w)
                     if p.x >= cols or p.y >= rows then continue
+                    p = find_nearest_free_pos_id(DCore.DEntry.get_id(f_e),p)
                     save_position(DCore.DEntry.get_id(f_e), p) if not detect_occupy(p)
             if tmp_move.length
                 DCore.DEntry.move(tmp_move, g_desktop_entry, true)
@@ -690,22 +691,28 @@ item_dragend_handler = (w, evt) ->
     return
 
 
-find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
-    id = w.get_id()
-    width = w.get_pos().width
-    height = w.get_pos().height
+find_nearest_free_pos_id = (id,dest_pos,radius = _PART_) ->
+    width = dest_pos.width
+    height = dest_pos.height
     final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
-    if detect_occupy(dest_pos,id)
+    if detect_occupy(final_pos,id)
         distance_list = new Array()
         distance_list_sorted = new Array()
         pos_list = new Array()
         minest = new Array()
 
-        if radius > Math.min(dest_pos.x,dest_pos.y) then radius = Math.min(dest_pos.x,dest_pos.y)
-        if dest_pos.x + radius > cols or dest_pos.y + radius > rows
-            radius = Math.min(cols - dest_pos.x,rows - dest_pos.y)
-        for i in [dest_pos.x - radius .. dest_pos.x + radius]
-            for j in [dest_pos.y - radius .. dest_pos.y + radius]
+        # i cols lie ----59;  j rows hang----30
+        i_start = dest_pos.x - radius
+        if i_start < 0 then i_start = 0
+        i_end = dest_pos.x + radius
+        if i_end > cols then i_end = cols
+        j_start = dest_pos.y - radius
+        if j_start < 0 then j_start = 0
+        j_end = dest_pos.y + radius
+        if j_end > rows then j_end = rows
+        #echo "i: #{i_start}---#{i_end}; j: #{j_start}--#{j_end}"
+        for i in [i_start .. i_end]
+            for j in [j_start .. j_end]
                 final_pos.x = i
                 final_pos.y = j
                 if not detect_occupy(final_pos,id)
@@ -715,13 +722,14 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
                     distance_list.push(distance)
                     pos_list.push(final_pos.x)
                     pos_list.push(final_pos.y)
-
+                    #echo "#{k++},#{distance},#{final_pos.x},#{final_pos.y}"
         distance_list_sorted = distance_list.concat()
         array_sort_min2max(distance_list_sorted)
 
         for dis,i in distance_list
             if dis is distance_list_sorted[0]
                 minest.push(i)
+                #echo "#{i},#{distance_list_sorted[0]},#{pos_list[i * 2]},#{pos_list[i *2 + 1]}"
         switch minest.length
             when 0 then final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
             when 1 then final_pos = coord_to_pos(pos_list[minest[0] * 2] , pos_list[minest[0] * 2 + 1],width,height)
@@ -731,8 +739,16 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
         distance_list_sorted.splice(0,pos_list.length)
         pos_list.splice(0,pos_list.length)
         minest.splice(0,pos_list.length)
-
+    else
+        final_pos = coord_to_pos(dest_pos.x, dest_pos.y, width, height)
+    final_pos = limit_in_desktop_range(final_pos)
     return final_pos
+
+
+find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
+    #echo "find_nearest_free_pos"
+    id = w.get_id()
+    return find_nearest_free_pos_id(id,dest_pos,radius)
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
@@ -974,13 +990,14 @@ grid_right_click = (evt) ->
     templates_menu = []
     templates_all = DCore.DEntry.get_templates_files()
     templates = DCore.DEntry.get_templates_filter(templates_all)
-    templates_menu.push([TEMPLATES_FILE_ID_FIRST, _("_Folder")])
-    templates_menu.push([TEMPLATES_FILE_ID_FIRST + 1, _("_Text document")])
-    TEMPATES_LENGTH = 2 + templates.length
-    for i in [0...templates.length] by 1
-        templates_name = DCore.DEntry.get_name(templates[i])
-        templates_id = i + 22
-        templates_menu.push([templates_id,templates_name])
+    templates_menu.push([20, _("_Folder")])
+    templates_menu.push([21,_("_Text document")])
+    if templates_all.length > 0
+        templates_menu.push([])
+        for i in [0...templates.length] by 1
+            templates_name = DCore.DEntry.get_name(templates[i])
+            templates_id = i + TEMPLATES_FILE_ID_FIRST
+            templates_menu.push([templates_id,templates_name])
 
     menus = []
     menus.push([_("_Sort by"), [
@@ -988,7 +1005,7 @@ grid_right_click = (evt) ->
                 [12, _("Last modified _time")]
             ]
         ])
-    menus.push([_("_New"), templates_menu])
+    menus.push([_("_New"),templates_menu])
     # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
     menus.push([3, _("Open in _terminal")])
     menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
@@ -1005,18 +1022,38 @@ grid_do_itemselected = (evt) ->
     switch evt.id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
+        when 20 then menu_create_new_folder(name_add_before)
+        when 21 then menu_create_new_file(name_add_before)
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("display")
         when 6 then DCore.Desktop.run_deepin_settings("desktop")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else
-            # warning: the TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST must < 30 .
+            # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 .
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
-            if evt.id > TEMPLATES_FILE_ID_FIRST - 1 && evt.id < TEMPATES_LENGTH + TEMPLATES_FILE_ID_FIRST
+            if evt.id >= TEMPLATES_FILE_ID_FIRST && evt.id < templates.length + TEMPLATES_FILE_ID_FIRST
                 menu_create_templates(evt.id)
             else
                 echo "not implemented function #{evt.id},#{evt.title}"
+    return
+
+
+menu_create_new_folder = (name_add_before) ->
+    entry = DCore.Desktop.new_directory(name_add_before)
+    create_entry_to_new_item(entry)
+
+
+menu_create_new_file = (name_add_before) ->
+    entry = DCore.Desktop.new_file(name_add_before)
+    create_entry_to_new_item(entry)
+
+menu_create_templates = (id) ->
+    i = id - TEMPLATES_FILE_ID_FIRST
+    if 0 <= i < templates.length
+        entry = DCore.DEntry.create_templates(templates[i],name_add_before)
+        create_entry_to_new_item(entry)
+        echo "create_templates finish!"
     return
 
 
@@ -1032,13 +1069,13 @@ grid_do_keydown_to_shortcut = (evt) ->
 
         w_f = null
         if evt.keyCode == 37         # left arrow
-            w_f = find_item_by_coord_delta(w, -1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, -1, 0)
         else if evt.keyCode == 38    # up arrow
-            w_f = find_item_by_coord_delta(w, 0, -1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, -1)
         else if evt.keyCode == 39    # right arrow
-            w_f = find_item_by_coord_delta(w, 1*_PART_, 0)
+            w_f = find_item_by_coord_delta(w, 1, 0)
         else if evt.keyCode == 40    # down arrow
-            w_f = find_item_by_coord_delta(w, 0, 1*_PART_)
+            w_f = find_item_by_coord_delta(w, 0, 1)
         if not w_f? then return
 
         if evt.ctrlKey == true

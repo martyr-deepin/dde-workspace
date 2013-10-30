@@ -1,8 +1,8 @@
 #ifdef __DUI_DEBUG
 #include "desktop_test.h"
 
-int TEST_MAX_COUNT = 1;
-int TEST_MAX_MEMORY = RES_IN_MB(90);
+int TEST_MAX_COUNT = 900000;
+int TEST_MAX_MEMORY = RES_IN_MB(85);
 
 extern void test_entry();
 extern void test_fileops_delete();
@@ -26,25 +26,11 @@ extern void test_other();
 extern void test_lib_utils();
 extern void test_pixbuf();
 extern void test_xdg_misc();
-/* make 
-/home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘fileops_empty_trash’中:
-/home/ycl/dde/lib/dentry/fileops_trash.c:108:5: 警告： 不建议使用‘g_io_scheduler_push_job’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:36)：Use '"GThreadPool or g_task_run_in_thread"' instead [-Wdeprecated-declarations]
-/home/ycl/dde/lib/dentry/fileops_trash.c: 在函数‘_empty_trash_job’中:
-/home/ycl/dde/lib/dentry/fileops_trash.c:163:5: 警告： 不建议使用‘g_io_scheduler_job_send_to_mainloop_async’(声明于 /usr/include/glib-2.0/gio/gioscheduler.h:49)：Use 'g_main_context_invoke' instead [-Wdeprecated-declarations]
-[ 22%] Building C object lib/dentry/CMakeFiles/dentry.dir/gnome-desktop-thumbnail.c.o
-/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c: 在函数‘gnome_desktop_thumbnail_factory_finalize’中:
-/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c:456:7: 警告： 不建议使用‘g_mutex_free’(声明于 /usr/include/glib-2.0/glib/deprecated/gthread.h:274) [-Wdeprecated-declarations]
-/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c: 在函数‘gnome_desktop_thumbnail_factory_init’中:
-/home/ycl/dde/lib/dentry/gnome-desktop-thumbnail.c:752:3: 警告： 不建议使用‘g_mutex_new’(声明于 /usr/include/glib-2.0/glib/deprecated/gthread.h:272) [-Wdeprecated-declarations]
-[ 23%] Building C object lib/dentry/CMakeFiles/dentry.dir/mime_actions.c.o
-
- */
-
 void desktop_test()
 {
     g_message("desktop test start...");
 
-    // test_entry();//test ok 
+    test_entry();//test ok 
     // ps:
     //1. g_file_trash() has bug when trash times and speed too fast
     //2. dentry_clipborad_paste() has bug when speed too fast ,becuase the X cannot follow it
@@ -117,7 +103,7 @@ void desktop_test()
     //
     // test_lib_utils();
     // test_pixbuf();
-    test_xdg_misc();
+    /*test_xdg_misc();*/
     
     
     
