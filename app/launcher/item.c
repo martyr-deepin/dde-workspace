@@ -54,7 +54,7 @@ void destroy_item_config()
 
 
 JS_EXPORT_API
-JSValueRef launcher_load_hidden_app_conf()
+JSValueRef launcher_load_hidden_apps()
 {
     if (hidden_app_conf == NULL) {
         hidden_app_conf = load_app_config(APPS_INI);
@@ -88,7 +88,7 @@ JSValueRef launcher_load_hidden_app_conf()
 
 
 JS_EXPORT_API
-void launcher_save_hidden_app_conf(ArrayContainer hidden_app_ids)
+void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
 {
     if (hidden_app_ids.data != NULL) {
         g_key_file_set_string_list(hidden_app_conf, "__Config__", "app_ids",
