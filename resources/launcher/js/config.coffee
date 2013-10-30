@@ -26,16 +26,19 @@ DOWN_ARROW = 40
 LEFT_ARROW = 37
 RIGHT_ARROW = 39
 
-HIDE_HIDDEN_ICONS = _("_Hide hidden icons")
-DISPLAY_HIDDEN_ICONS = _("_Display hidden icons")
+HIDDEN_ICONS_MESSAGE =
+    true: _("_Hide hidden icons")
+    false: _("_Display hidden icons")
 
-HIDE_ICON = _("_Hide this icon")
-DISPLAY_ICON = _("_Display this icon")
+ITEM_HIDDEN_ICON_MESSAGE =
+    'display': _("_Hide this icon")
+    'hidden': _("_Display this icon")
 
 HIDE_ICON_CLASS = 'hide_icon'
 
-STARTUP_ICON = _("_Add to autostart")
-NOT_STARTUP_ICON = _("_Remove from autostart")
+AUTOSTARTUP_MESSAGE =
+    false: _("_Add to autostart")
+    true: _("_Remove from autostart")
 
 AUTOSTART_ICON_NAME = "emblem-autostart"
 AUTOSTART_ICON_SIZE = 16

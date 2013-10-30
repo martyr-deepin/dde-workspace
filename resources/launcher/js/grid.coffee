@@ -82,24 +82,15 @@ class Item extends Widget
         e.dataTransfer.effectAllowed = "all"
 
     _menu: ->
-        if @display_mode == 'display'
-            hide_icon_msg = HIDE_ICON
-        else
-            hide_icon_msg = DISPLAY_ICON
-
-        if @is_autostart
-            startup_msg = NOT_STARTUP_ICON
-        else
-            startup_msg = STARTUP_ICON
         menu = [
             [1, _("_Open")],
             [],
-            [2, hide_icon_msg],
+            [2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]],
             [],
             [3, _("Send to d_esktop"), not DCore.Launcher.is_on_desktop(@core)],
             [4, _("Send to do_ck"), s_dock!=null],
             [],
-            [5, startup_msg]
+            [5, AUTOSTARTUP_MESSAGE[@is_autostart]]
         ]
 
         if DCore.DEntry.internal()
