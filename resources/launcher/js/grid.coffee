@@ -250,7 +250,7 @@ _update_scroll_bar = (len) ->
     else
         category_width = 180
     grid_width = window.screen.width - 20 - category_width
-    lines = parseInt(ITEM_WIDTH * len / grid_width) + 1
+    lines = Math.ceil(ITEM_WIDTH * len / grid_width)
 
     grid_height = window.screen.height - 100
     if lines * ITEM_HEIGHT >= grid_height
