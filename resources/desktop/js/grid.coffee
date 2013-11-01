@@ -974,8 +974,9 @@ get_items_compressibility = ->
 
 gird_left_mousedown = (evt) ->
     evt.stopPropagation()
-    if evt.button == 0 and evt.ctrlKey == false and evt.shiftKey == false
-        cancel_all_selected_stats()
+    if evt.button == 0 and not evt.shiftKey
+        if not evt.ctrlKey
+            cancel_all_selected_stats()
         if last_widget.length > 0 then Widget.look_up(last_widget)?.item_blur()
     return
 
@@ -1256,7 +1257,7 @@ class Mouse_Select_Area_box
             if compare_pos_rect(new_pos, @start_pos, item_pos) == true
                 if w.selected == false then set_item_selected(w)
             else
-                if w.selected == true then cancel_item_selected(w)
+                if w.selected == true and not evt.ctrlKey then cancel_item_selected(w)
 
         return
 
