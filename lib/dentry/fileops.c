@@ -242,8 +242,7 @@ fileops_delete (GFile* file_list[], guint num)
     data->dest_file = NULL;
     data->cancellable = delete_cancellable;
 
-    int i;
-    for (i = 0; i < num; i++)
+    for (guint i = 0; i < num; i++)
     {
         GFile* src = file_list[i];
 #if 1
@@ -275,8 +274,7 @@ fileops_trash (GFile* file_list[], guint num)
     data->dest_file = NULL;
     data->cancellable = trash_cancellable;
 
-    int i;
-    for (i = 0; i < num; i++)
+    for (guint i = 0; i < num; i++)
     {
         GFile* src = file_list[i];
     #if 1
@@ -316,8 +314,7 @@ fileops_move (GFile* file_list[], guint num, GFile* dest_dir, gboolean prompt)
     TDData* data = g_malloc0 (sizeof (TDData));
     data->cancellable = move_cancellable;
 
-    int i;
-    for (i = 0; i < num; i++)
+    for (guint i = 0; i < num; i++)
     {
         GFile* src = file_list[i];
     #if 1
@@ -873,9 +870,6 @@ _copy_files_async (GFile* src, gpointer data)
                 _copy_files_async_true(src,_data);
                 retval == TRUE;
             }
-
-
-
         }
 
     }

@@ -182,6 +182,7 @@ GType d_webview_get_type(void)
             sizeof(DWebView),
             0,
             (GInstanceInitFunc)d_webview_init,
+            NULL
         };
 
         type = g_type_register_static(WEBKIT_TYPE_WEB_VIEW,  "DWebView", &info, 0);

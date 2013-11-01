@@ -28,7 +28,7 @@ JSObjectRef greeter_get_sessions ()
 {
     JSObjectRef array = json_array_create ();
 
-    int i;
+    guint i;
 
     if (sessions == NULL) {
         sessions = lightdm_get_sessions ();
@@ -47,11 +47,11 @@ JSObjectRef greeter_get_sessions ()
     return array;
 }
 
-LightDMSession* 
+LightDMSession*
 find_session_by_key(const gchar *key)
 {
     LightDMSession *ret = NULL;
-    int i;
+    guint i;
 
     if (sessions == NULL) {
         sessions = lightdm_get_sessions ();
@@ -78,7 +78,7 @@ find_session_by_key(const gchar *key)
     return ret;
 }
 
-JS_EXPORT_API 
+JS_EXPORT_API
 gchar* greeter_get_session_name (const gchar *key)
 {
     gchar *name = NULL;
@@ -95,7 +95,7 @@ gchar* greeter_get_session_name (const gchar *key)
     return name;
 }
 
-JS_EXPORT_API 
+JS_EXPORT_API
 gchar* greeter_get_session_icon (const gchar *key)
 {
     gchar* icon = NULL;
@@ -133,13 +133,13 @@ gchar* greeter_get_session_icon (const gchar *key)
     return icon;
 }
 
-JS_EXPORT_API 
+JS_EXPORT_API
 gchar* greeter_get_default_session ()
 {
     gchar *key = NULL;
 
     extern LightDMGreeter *greeter;
-    int i;
+    guint i;
 
     gchar* session_name = g_strdup (lightdm_greeter_get_default_session_hint (greeter));
     if (session_name != NULL) {
@@ -216,3 +216,4 @@ gboolean greeter_run_shutdown ()
 {
     return lightdm_shutdown (NULL);
 }
+

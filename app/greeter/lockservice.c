@@ -392,7 +392,7 @@ GPtrArray *get_nopasswdlogin_users ()
                 if (nopwd_line[3] != NULL) {
                     gchar **user_strv = g_strsplit (nopwd_line[3], ",", 1024);
 
-                    for (int i = 0; i < g_strv_length (user_strv); i++) {
+                    for (guint i = 0; i < g_strv_length (user_strv); i++) {
                         g_debug ("user_strv[i]:%s", user_strv[i]);
                         g_ptr_array_add (nopasswdlogin, g_strdup (user_strv[i]));
                     }
@@ -418,7 +418,7 @@ gboolean is_user_nopasswdlogin (const gchar *username)
     gboolean ret = FALSE;
     GPtrArray *nopwdlogin = get_nopasswdlogin_users ();
 
-    for (int i = 0; i < nopwdlogin->len; i++) {
+    for (guint i = 0; i < nopwdlogin->len; i++) {
         g_debug ("array i:%s", (gchar*) g_ptr_array_index (nopwdlogin, i));
 
         if(g_strcmp0 (username, g_ptr_array_index (nopwdlogin, i)) == 0){

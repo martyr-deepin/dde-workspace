@@ -275,7 +275,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         } else {
             g_timer_start(recognition_info.timer);
         }
-        recognition_info.source_data = frame->imageData;
+        recognition_info.source_data = (guchar*)(frame->imageData);
         recognition_info.length = GST_BUFFER_SIZE(copy_buffer);
         recognition_info.has_data = TRUE;
         break;

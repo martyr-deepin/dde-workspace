@@ -31,7 +31,7 @@ JSObjectRef greeter_get_users ()
     JSObjectRef array = json_array_create ();
 
     LightDMUser *user = NULL;
-    int i;
+    guint i;
 
     if (users == NULL) {
         LightDMUserList *user_list = lightdm_user_list_get_instance ();

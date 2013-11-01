@@ -149,7 +149,7 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
     *name = g_regex_replace_literal (suffix_regex, tmp, -1, 0, "", 0, NULL);
     g_free(tmp);
 
-    for (int i=0; i<strlen(*name); i++) {
+    for (guint i=0; i<strlen(*name); i++) {
         if ((*name)[i] == ' ') {
             (*name)[i] = '\0';
             break;

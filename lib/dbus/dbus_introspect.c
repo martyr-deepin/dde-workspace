@@ -493,7 +493,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
     DBusMessageIter iter;
     dbus_message_iter_init_append(msg, &iter);
 
-    for (int i=0; i<argumentCount; i++) {
+    for (guint i=0; i<argumentCount; i++) {
         if (!js_to_dbus(ctx, arguments[i],
                     &iter, g_slist_nth_data(sigs_in, i),
                     exception)) {
@@ -562,7 +562,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
     static_funcs[2].attributes = kJSPropertyAttributeReadOnly;
 
     GList *props = g_hash_table_get_keys(obj_info->properties);
-    for (int i = 0; i < num_of_prop; i++) {
+    for (guint i = 0; i < num_of_prop; i++) {
         const char *p_name = g_list_nth_data(props, i);
         struct Property *prop = g_hash_table_lookup(obj_info->properties, p_name);
 
@@ -607,7 +607,7 @@ JSObjectRef build_dbus_object(JSContextRef ctx, struct ObjCacheKey *key)
 
     guint num_of_func = g_hash_table_size(obj_info->methods);
     GList *funcs = g_hash_table_get_keys(obj_info->methods);
-    for (int i = 0; i < num_of_func; i++) {
+    for (guint i = 0; i < num_of_func; i++) {
         JSStringRef f_name = JSStringCreateWithUTF8CString(g_list_nth_data(funcs, i));
         JSObjectSetProperty(ctx, obj_info->obj, f_name,
                 JSObjectMakeFunctionWithCallback(ctx, f_name, dynamic_function),

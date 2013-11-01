@@ -40,7 +40,7 @@ PRIVATE
 void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monitor_callback)
 {
     // check NULL to avoid the last one is NULL
-    for (int i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
+    for (guint i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
         GError* err = NULL;
         GFile* file = g_file_new_for_path(g_ptr_array_index(paths, i));
         GFileMonitor* monitor = g_file_monitor_directory(file,
