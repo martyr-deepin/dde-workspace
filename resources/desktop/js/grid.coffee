@@ -215,10 +215,7 @@ compare_pos_rect = (base1, base2, pos) ->
     top_right = Math.max(base1.x, base2.x)
     bottom_left = Math.min(base1.y, base2.y)
     bottom_right = Math.max(base1.y, base2.y)
-    if top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
-        true
-    else
-        false
+    return top_left <= pos.x <= top_right and bottom_left <= pos.y <= bottom_right
 
 
 calc_pos_to_pos_distance = (base, pos) ->
@@ -752,6 +749,7 @@ find_nearest_free_pos = (w,dest_pos,radius = _PART_) ->
 
 set_item_selected = (w, change_focus = true, add_top = false) ->
     if w.selected == false
+        w.is_in_select_area = true
         w.item_selected()
         if add_top == true
             selected_item.unshift(w.get_id())
@@ -774,6 +772,7 @@ set_all_item_selected = ->
 
 
 cancel_item_selected = (w, change_focus = true) ->
+    w.is_in_select_area = false
     i = selected_item.indexOf(w.get_id())
     if i < 0 then return false
     selected_item.splice(i, 1)
@@ -1255,9 +1254,16 @@ class Mouse_Select_Area_box
             if not (w = Widget.look_up(i))? then continue
             item_pos = w.get_pos()
             if compare_pos_rect(new_pos, @start_pos, item_pos) == true
-                if w.selected == false then set_item_selected(w)
+                if not w.selected and not w.is_in_select_area
+                    set_item_selected(w)
+                else
+                    if evt.ctrlKey and not w.is_in_select_area
+                        cancel_item_selected(w)
+                        w.is_in_select_area = true
             else
-                if w.selected == true and not evt.ctrlKey then cancel_item_selected(w)
+                w.is_in_select_area = false
+                if w.selected == true and not w.ctrl_selected then cancel_item_selected(w)
+                else if w.ctrl_selected then set_item_selected(w)
 
         return
 
@@ -1265,6 +1271,10 @@ class Mouse_Select_Area_box
     mouseup_event : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
+        for i in @total_item
+            if not (w = Widget.look_up(i))? then continue
+            w.is_in_select_area = false
+            w.ctrl_selected = w.selected
         @parent_element.removeEventListener("mousemove", @mousemove_event)
         @parent_element.removeEventListener("mouseup", @mouseup_event)
         @parent_element.removeEventListener("contextmenu", @contextmenu_event, true)
