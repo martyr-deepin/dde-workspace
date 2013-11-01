@@ -897,7 +897,8 @@ JS_EXPORT_API
 void dentry_copy (ArrayContainer fs, GFile* dest)
 {
     ArrayContainer _fs = _normalize_array_container(fs);
-    fileops_copy (_fs.data, _fs.num, dest);
+    /*fileops_copy (_fs.data, _fs.num, dest);*/
+    files_copy_via_dbus (_fs.data, _fs.num, dest);
     for (size_t i=0; i<_fs.num; i++) {
         g_object_unref(((GObject**)_fs.data)[i]);
     }

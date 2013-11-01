@@ -9,6 +9,12 @@
 #include "fileops.h"
 #include "fileops_error_reporting.h"
 
+#define DBUS_NAUTILUS_NAME  "org.gnome.Nautilus"
+#define DBUS_NAUTILUS_PATH  "/org/gnome/Nautilus"
+#define DBUS_NAUTILUS_INFACE    "org.gnome.Nautilus.FileOperations"
+
+#define DBUS_COPY_METHOD    "CopyURIs"
+
 
 static gboolean _dummy_func             (GFile* file, gpointer data);
 
@@ -16,6 +22,11 @@ static gboolean _delete_files_async     (GFile* file, gpointer data);
 static gboolean _trash_files_async      (GFile* file, gpointer data);
 static gboolean _move_files_async       (GFile* file, gpointer data);
 static gboolean _copy_files_async       (GFile* file, gpointer data);
+
+static void dbus_call_method_cb (GObject *source_object, 
+        GAsyncResult *res, gpointer user_data);
+static void call_method_via_dbus (const GVariantBuilder *builder, 
+        const gchar *dest_uri);
 
 
 /*
@@ -873,4 +884,67 @@ _copy_files_async (GFile* src, gpointer data)
     return COPY_ASYNC_FINISH;
 }
 
+void
+files_copy_via_dbus (GFile *file_list[], guint num, GFile *dest_dir)
+{
+    g_debug ("files copy start ...\n");
+    guint i = 0;
+    GVariantBuilder builder;
 
+    g_variant_builder_init (&builder, G_VARIANT_TYPE("as"));
+    for ( ; i < num; i++ ) {
+        gchar *src_uri = g_file_get_uri (file_list[i]);
+        g_variant_builder_add (&builder, "s", src_uri);
+        g_free (src_uri);
+    }
+    gchar *dest_uri = g_file_get_uri (dest_dir);
+    call_method_via_dbus (&builder, dest_uri);
+    g_variant_builder_clear (&builder);
+    g_free (dest_uri);
+}
+
+static void
+call_method_via_dbus (const GVariantBuilder *builder, const gchar *dest_uri)
+{
+    GDBusProxy *proxy = NULL;
+    GError *error = NULL;
+
+    proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION, 
+            G_DBUS_PROXY_FLAGS_NONE, NULL, 
+            DBUS_NAUTILUS_NAME, DBUS_NAUTILUS_PATH, 
+            DBUS_NAUTILUS_INFACE, NULL, &error);
+    if ( error ) {
+        g_warning ("get new proxy failed: %s", error->message);
+        g_error_free (error);
+        error = NULL;
+        return ;
+    }
+
+    g_dbus_proxy_call (proxy, DBUS_COPY_METHOD, 
+            g_variant_new ("(ass)", builder, dest_uri), 
+            G_DBUS_CALL_FLAGS_NONE, 
+            -1, NULL, (GAsyncReadyCallback)dbus_call_method_cb, 
+            NULL);
+    g_object_unref (proxy);
+}
+
+static void
+dbus_call_method_cb (GObject *source_object, 
+        GAsyncResult *res, gpointer user_data)
+{
+    GError *error = NULL;
+    GVariant *retval = NULL;
+    GDBusProxy *proxy = (GDBusProxy*)source_object;
+
+    retval = g_dbus_proxy_call_finish (proxy, res, &error);
+    if ( error ) {
+        g_warning ("call method failed: %s", error->message);
+        g_error_free (error);
+        error = NULL;
+        return ;
+    }
+    if ( retval ) {
+        g_variant_unref (retval);
+    }
+    g_debug ("call method success!\n");
+}
