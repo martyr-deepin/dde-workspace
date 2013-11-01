@@ -889,17 +889,17 @@ files_copy_via_dbus (GFile *file_list[], guint num, GFile *dest_dir)
 {
     g_debug ("files copy start ...\n");
     guint i = 0;
-    GVariantBuilder *builder = NULL;
+    GVariantBuilder builder;
 
-    builder = g_variant_builder_new (G_VARIANT_TYPE("as"));
+    g_variant_builder_init (&builder, G_VARIANT_TYPE("as"));
     for ( ; i < num; i++ ) {
         gchar *src_uri = g_file_get_uri (file_list[i]);
-        g_variant_builder_add (builder, "s", g_strdup(src_uri));
+        g_variant_builder_add (&builder, "s", src_uri);
         g_free (src_uri);
     }
     gchar *dest_uri = g_file_get_uri (dest_dir);
-    call_method_via_dbus (builder, dest_uri);
-    g_variant_builder_unref (builder);
+    call_method_via_dbus (&builder, dest_uri);
+    g_variant_builder_clear (&builder);
     g_free (dest_uri);
 }
 
@@ -917,11 +917,11 @@ call_method_via_dbus (const GVariantBuilder *builder, const gchar *dest_uri)
         g_warning ("get new proxy failed: %s", error->message);
         g_error_free (error);
         error = NULL;
-        return 0;
+        return ;
     }
 
     g_dbus_proxy_call (proxy, DBUS_COPY_METHOD, 
-            g_variant_new ("(ass)", builder, g_strdup (dest_uri)), 
+            g_variant_new ("(ass)", builder, dest_uri), 
             G_DBUS_CALL_FLAGS_NONE, 
             -1, NULL, (GAsyncReadyCallback)dbus_call_method_cb, 
             NULL);
@@ -939,6 +939,8 @@ dbus_call_method_cb (GObject *source_object,
     retval = g_dbus_proxy_call_finish (proxy, res, &error);
     if ( error ) {
         g_warning ("call method failed: %s", error->message);
+        g_error_free (error);
+        error = NULL;
         return ;
     }
     if ( retval ) {
