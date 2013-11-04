@@ -2,9 +2,8 @@ tooltip_hide_id = null
 class ToolTip extends Widget
     @tooltip: null
     @should_show_id: -1
-    constructor: (@element, @text, @parent=document.body)->
-        ToolTip.tooltip ?= create_element("div", "tooltip", @parent)
-        ToolTip.tooltip.style.positioon = "fixed"
+    constructor: (@element, @text)->
+        ToolTip.tooltip ?= create_element("div", "tooltip", @element)
         @event_bind('dragstart', =>
             @hide()
         )
@@ -43,11 +42,10 @@ class ToolTip extends Widget
 
     show: ->
         ToolTip.tooltip.innerText = @text
-        ToolTip.tooltip.style.zIndex = 65530
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
     hide: ->
-        clearTimeout(ToolTip.should_show_id)
+        #clearTimeout(ToolTip.should_show_id)
         ToolTip.tooltip?.style.display = "none"
     @move_to: (self, x, y) ->
         if y <= 0
