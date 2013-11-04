@@ -2,8 +2,8 @@ tooltip_hide_id = null
 class ToolTip extends Widget
     @tooltip: null
     @should_show_id: -1
-    constructor: (@element, @text)->
-        ToolTip.tooltip ?= create_element("div", "tooltip", @element)
+    constructor: (@element, @text, @parent=document.body)->
+        ToolTip.tooltip ?= create_element("div", "tooltip", @parent)
         @event_bind('dragstart', =>
             @hide()
         )
