@@ -4,7 +4,7 @@ class ToolTip extends Widget
     @should_show_id: -1
     constructor: (@element, @text, @parent=document.body)->
         ToolTip.tooltip ?= create_element("div", "tooltip", @parent)
-        ToolTip.tooltip.style.positioon = "absolute"
+        ToolTip.tooltip.style.positioon = "fixed"
         @event_bind('dragstart', =>
             @hide()
         )
@@ -27,9 +27,10 @@ class ToolTip extends Widget
             @hide()
         )
         @event_bind('mouseover', =>
-            ToolTip.should_show_id = setTimeout(=>
-                @show()
-            , 500)
+            @show()
+            #ToolTip.should_show_id = setTimeout(=>
+                #@show()
+            #, 500)
         )
         @event_bind('click', =>
             @hide()
@@ -41,7 +42,6 @@ class ToolTip extends Widget
         )
 
     show: ->
-        ToolTip.tooltip.style.positioon = "fixed"
         ToolTip.tooltip.innerText = @text
         ToolTip.tooltip.style.zIndex = 65530
         ToolTip.tooltip.style.display = "block"
