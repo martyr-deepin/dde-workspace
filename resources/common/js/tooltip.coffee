@@ -41,6 +41,7 @@ class ToolTip extends Widget
         )
 
     show: ->
+        ToolTip.tooltip.style.positioon = "fixed"
         ToolTip.tooltip.innerText = @text
         ToolTip.tooltip.style.zIndex = 65530
         ToolTip.tooltip.style.display = "block"
