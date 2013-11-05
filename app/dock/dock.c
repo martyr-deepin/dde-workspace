@@ -323,7 +323,7 @@ void dock_emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
-        tray_init(webview);
+        /* tray_init(webview); */
         update_dock_size_mode();
         init_dock_guard_window();
     } else {
