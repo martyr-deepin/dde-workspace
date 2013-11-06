@@ -164,6 +164,10 @@ class UserInfo extends Widget
 
         if @face_login
             @camera_flag = create_img('camera_flag', 'images/camera.png', warp)
+            @camera_flag.addEventListener('click', (e)->
+                e.preventDefault()
+                e.stopPropagation()
+            )
 
             @scanner = create_element('div', 'scanner', @userbase)
             @scan_line = create_img('', 'images/scan-line.png', @scanner)
