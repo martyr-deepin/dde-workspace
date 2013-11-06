@@ -1262,8 +1262,8 @@ class Mouse_Select_Area_box
                         w.is_in_select_area = true
             else
                 w.is_in_select_area = false
-                if w.selected == true and not w.ctrl_selected then cancel_item_selected(w)
-                else if w.ctrl_selected then set_item_selected(w)
+                if w.selected == true and not w.ctrl_selected
+                    cancel_item_selected(w)
 
         return
 
