@@ -220,8 +220,8 @@ void update_dock_apps()
 
         g_strfreev(list);
     } else {
-        g_warning("[%s(%s)] get string list from file(%s) failed: %s",
-                  __func__, __FILE__, APPS_INI, err->message);
+        g_warning("[%s] get string list from file(%s) failed: %s",
+                  __func__, APPS_INI, err->message);
         g_error_free(err);
     }
 }
@@ -361,7 +361,7 @@ void dock_request_dock(const char* path)
     g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
-        g_debug("[%s(%s:%d)]", __func__, __FILE__, __LINE__);
+        g_debug("[%s]", __func__);
         char* app_id = get_app_id(info);
         write_app_info(info);
         JSValueRef app_info = build_app_info(app_id);
@@ -450,7 +450,7 @@ gboolean dock_has_launcher(const char* app_id)
 
 gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
 {
-    g_debug("[%s(%s:%d)] ", __func__, __FILE__, __LINE__);
+    g_debug("[%s] ", __func__);
     char* id = g_strconcat(name, ".desktop", NULL);
     GDesktopAppInfo* info = g_desktop_app_info_new(id);
     g_free(id);

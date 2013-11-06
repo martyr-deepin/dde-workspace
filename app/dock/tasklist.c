@@ -380,7 +380,7 @@ void _update_client_info(Client *c)
             for (guint i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
-                g_debug("[%s(%s:%d)] name: %s, exec: %s", __func__, __FILE__, __LINE__, action->name, action->exec);
+                g_debug("[%s] name: %s, exec: %s", __func__, action->name, action->exec);
                 JSObjectRef action_item = json_create();
                 json_append_string(action_item, "name", action->name);
                 json_append_string(action_item, "exec", action->exec);
