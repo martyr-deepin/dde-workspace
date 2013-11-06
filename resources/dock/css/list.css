@@ -1,11 +1,11 @@
 .AppList {
-    clear: both;
     display: -webkit-box;
     -webkit-box-flex: 1;
-    padding-right: 25px;
+    border: solid 2px black;
 }
 
 .AppItem {
+    /* border: solid 2px red; */
     position:relative;
     max-width: 68px;
     max-height: 60px;

@@ -24,7 +24,7 @@ calc_app_item_size = ->
     return if apps.length = 0
 
     list = $("#app_list")
-    w = clamp((list.clientWidth - 26) / list.children.length, 34, ITEM_WIDTH * MAX_SCALE)
+    w = clamp(list.clientWidth / list.children.length, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
 
     for i in apps
@@ -49,7 +49,7 @@ document.body.onresize = ->
 class AppList extends Widget
     constructor: (@id) ->
         super
-        $("#container").insertBefore(@element, $("#notifyarea"))
+        $("#container").appendChild(@element)
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
 
@@ -65,8 +65,22 @@ class AppList extends Widget
                 DCore.Dock.insert_apps_position(c.app_id, null)
         run_post(calc_app_item_size)
 
-    append_app_item: (c)->
+    append_app_item: (c, is_resize=true)->
         @element.appendChild(c.element)
+        # echo c.element.clientWidth
+        # if is_resize
+        #     new_width = parseInt($("#container").clientWidth)
+        #     if isNaN(new_width)
+        #         echo 'isNaN'
+        #         new_width = c.element.clientWidth
+        #     else
+        #         new_width += c.element.clientWidth
+        #     @resize(new_width)
+
+    resize: (new_width)->
+        echo "new_width: #{new_width}"
+        new_width = screen.width if new_width > screen.width
+        $("#container").style.width = new_width
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -180,6 +194,7 @@ class AppItem extends Widget
 
     update_scale: () ->
         @element.style.maxWidth = ITEM_WIDTH * ICON_SCALE
+        # @element.style.minHeight = ITEM_HEIGHT * ICON_SCALE
         $("#container").style.minHeight = ITEM_HEIGHT * ICON_SCALE
 
         icon_width = ICON_WIDTH * ICON_SCALE
@@ -282,7 +297,7 @@ class AppItem extends Widget
                 entry = DCore.DEntry.create_by_path(path)
                 tmp_list.push(entry)
             if tmp_list.length > 0
-                switch this.constructor.name
+                switch @constructor.name
                     when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup"
                         if @n_clients.length == 1

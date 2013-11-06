@@ -27,11 +27,6 @@ board.width = screen.width
 board.height = DOCK_HEIGHT
 DCore.Dock.draw_board(board)
 
-DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
-
-DCore.signal_connect("tray_icon_area_changed", (info)->
-    $("#notifyarea").style.width = "#{info.width}px"
-)
 
 _current_active_window = null
 get_active_window = ->

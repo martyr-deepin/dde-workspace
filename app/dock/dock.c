@@ -288,7 +288,7 @@ int main(int argc, char* argv[])
 void update_dock_color()
 {
     /*if (GD.is_webview_loaded)*/
-        js_post_message_simply("dock_color_changed", NULL);
+        /* js_post_message_simply("dock_color_changed", NULL); */
 }
 
 void update_dock_size_mode()
