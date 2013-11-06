@@ -152,10 +152,13 @@ class UserInfo extends Widget
 
         @userbase = create_element("div", "UserBase", @element)
 
-        @canvas = create_element("canvas", "UserImg", @userbase)
-        @canvas.setAttribute('width', "#{CANVAS_WIDTH}px")
-        @canvas.setAttribute('height', "#{CANVAS_HEIGHT}px")
-        @draw_avatar()
+        if @face_login
+            @avatar = create_element("canvas", "UserImg", @userbase)
+            @avatar.setAttribute('width', "#{CANVAS_WIDTH}px")
+            @avatar.setAttribute('height', "#{CANVAS_HEIGHT}px")
+            @draw_avatar()
+        else
+            @avatar = create_img("UserImg", @img_src, @userbase)
 
         warp = create_element('div', "UserName", @userbase)
 
@@ -178,7 +181,7 @@ class UserInfo extends Widget
         @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
     draw_avatar: ->
-        ctx = @canvas.getContext("2d")
+        ctx = @avatar.getContext("2d")
         img = new Image()
         img.onload = ->
             ctx.drawImage(img, 0, 0)
@@ -436,7 +439,7 @@ class UserInfo extends Widget
         if @face_login
             clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(@canvas, @canvas.width, @canvas.height)
+                DCore[APP_NAME].draw_camera(@avatar, @avatar.width, @avatar.height)
             , 20)
 
     start_animation: =>
