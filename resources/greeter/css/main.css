@@ -54,7 +54,7 @@ body{
 
 .Time {
     cursor:default;
-    width:350px;
+    width:400px;
     height:217px;
     position:absolute;
     bottom:0;
@@ -63,7 +63,7 @@ body{
 }
 
 .Time01{
-    width: 350px;
+    width: 400px;
     left: 0px;
     cursor:default;
     font-size:120px;
@@ -77,7 +77,7 @@ body{
 }
 
 .Time02{
-    width: 350px;
+    width: 400px;
     cursor:default;
     padding-left:10px;
     font-size:30px;
