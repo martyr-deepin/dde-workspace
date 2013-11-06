@@ -65,22 +65,8 @@ class AppList extends Widget
                 DCore.Dock.insert_apps_position(c.app_id, null)
         run_post(calc_app_item_size)
 
-    append_app_item: (c, is_resize=true)->
+    append_app_item: (c)->
         @element.appendChild(c.element)
-        # echo c.element.clientWidth
-        # if is_resize
-        #     new_width = parseInt($("#container").clientWidth)
-        #     if isNaN(new_width)
-        #         echo 'isNaN'
-        #         new_width = c.element.clientWidth
-        #     else
-        #         new_width += c.element.clientWidth
-        #     @resize(new_width)
-
-    resize: (new_width)->
-        echo "new_width: #{new_width}"
-        new_width = screen.width if new_width > screen.width
-        $("#container").style.width = new_width
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item

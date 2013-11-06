@@ -33,12 +33,13 @@ body {
 }
 
 #container {
-    position: fixed;
+    position:fixed;
     bottom: 0px;
     display: -webkit-box;
     min-height: 60px;
     max-height: 60px;
-    border: solid 1px black;
+    max-width: 1200px;
+    /* border: solid 1px black; */
 }
 
 #board {
@@ -46,5 +47,6 @@ body {
     bottom: 0px;
     min-height: 30px;
     max-height: 30px;
+    max-width: 1200px;
     z-index: -1000;
 }

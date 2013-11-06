@@ -1,7 +1,8 @@
 .AppList {
     display: -webkit-box;
     -webkit-box-flex: 1;
-    border: solid 2px black;
+    -webkit-box-pack: center;
+    /* border: solid 2px red; */
 }
 
 .AppItem {
