@@ -21,314 +21,49 @@
 
 @import url("../../common/css/animation.css");
 
-::-webkit-scrollbar {
-    width: 4px;
-}
-body {
-    background:rgba(0, 100, 100, 0.0);
-    margin:0px;
-    position:fixed;
-    left:0px;
-    top:0px;
+
+body{
+    cursor:default;
+    overflow:hidden;
     width:100%;
     height:100%;
-}
-.itemContainer {
-    overflow:hidden;
-}
-
-#item_grid {
-    background-color: rgba(100,100,100);
-    position:fixed;
+    background: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    -webkit-user-select:none;
 }
 
-.DesktopEntry {
-    width:80px;
-    padding:2px 4px;
-    margin:1px 1px;
-    border:1px solid transparent;
-    border-radius:3px;
-    text-align:center;
-    font-size:small;
-    color:white;
-    text-shadow:1px 0 1px #000, 0 1px 1px #000, -1px 0 1px #000, 0 -1px 1px #000;
-    word-wrap:break-word;
-    word-break:break-all;
-    -webkit-line-clamp:2;
-    text-overflow:ellipsis;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-    -webkit-transition:background-color 0.15s ease-out;
+#background {
+    position: fixed;
+    z-index: -1000;
 }
 
-.DesktopEntry .item_icon {
-    padding:0 16px;
-    width:48px;
-    height:48px;
-    vertical-align:middle;
-    display: table-cell;
-    pointer-events:none;
-}
-
-.DesktopEntry .item_icon {
-    border-radius:3px;
-}
-
-.DesktopEntry .item_icon .previewshadow {
-    box-shadow:0px 0px 2px 1px rgba(0,0,0,0.7);
-    background: rgba(255,255,255,0.8);
-    border-radius:3px;
-}
-
-.DesktopEntry .item_attrib {
-    position:absolute;
-    top:21px;
-    right:24px;
-    width:48px;
-    height:12px;
-    list-style:none;
-    pointer-events:none;
-}
-
-.DesktopEntry .item_attrib li{
-    float:right;
-    padding-left:2px;
-    width:12px;
-    height:12px;
-    display:inline-block;
-}
-.DesktopEntry .item_name {
-    border-radius:2px;
-    outline:none;
-    overflow:hidden;
-    padding: 0 1px; /*fix the truncation when the word's length is to long*/
-}
-
-.DesktopEntry .item_renaming {
-    width:100%;
-    color:black;
-    text-shadow:none;
-    word-wrap:break-word;
-    word-break:break-all;
-    background-color:#FFF;
-    outline:#000 solid 1px;
-    cursor:text;
-    -webkit-user-select:text;
-    -webkit-user-modify:read-write-plaintext-only;
-}
-
-.DesktopEntry .item_renaming::selection {
-    color:white;
-    background:#39F;
-}
-.item_hover {
-    border:1px solid rgba(255,255,255,0.5);
-    background-color:rgba(255, 255, 255, 0.1);
-    -webkit-transition:background-color 0.15s ease-in;
-}
-
-.item_focus {
-    box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.35);
-    z-index:10;
-}
-
-.item_selected {
-    border:1px solid rgba(255,255,255,0.5);
-    background-color:rgba(255, 255, 255, 0.3);
-}
-
-.full_name {
-    -webkit-line-clamp:99;
-}
-
-.pop_rename {
-    top:0;
-    left:0;
-    width:100%;
+.Background{
+    background-size:cover;
     height:100%;
-    position:fixed;
+    width:100%;
+    overflow:hidden;
+    z-index:-10000;
+    top: 0;
+    left: 0;
+    #-webkit-animation:linear-show 2s ease-out;
 }
 
-#pop_grid {
-    background-color: #F0E68C;
-    z-index:20000;
-    position:fixed;
-    background:url(../img/preview_background.png);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    border-radius: 6px 6px 6px 6px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+.opt:nth-child(even){
+    display:-webkit-box;
+    margin:20px 20px 20px 20px
+    -webkit-box-orient:vertical;
+/*width:160px;*/
+    /*height:160px;*/
 }
 
-#pop_grid ul {
-    margin:1px;
-    padding:9px;
-    font-size:small;
-    list-style:none;
-    background-color: rgba(0,0,0,0.7);
-    border-radius: 5px;
-    overflow-y:auto;
+
+opt_img{
+    width:100px;
+    height:100px;
 }
-#pop_grid ul li {
-    width:80px;
-    height:84px;
-    padding:2px 4px;
-    margin:1px 1px;
-    border:1px solid transparent;
-    display:inline-block;
-    vertical-align:top;
+
+opt_text{
+    color: #FFF;
+    font-weight: bold;
+    text-shadow: 0 0 2px #808080;
     text-align:center;
 }
-#pop_grid ul .auto_height {
-    height:auto;
-}
-#pop_grid ul li:hover {
-    border:1px solid rgba(255,255,255,0.2);
-    background-color:rgba(255, 255, 255, 0.1);
-    -webkit-transition:background-color 0.15s ease-in;
-    border-radius:3px;
-}
-#pop_grid ul li .item_icon {
-    padding:0 16px;
-    width:48px;
-    height:48px;
-    vertical-align:middle;
-    display: table-cell;
-    pointer-events:none;
-}
-#pop_grid ul li .item_icon img {
-    max-width:48px;
-    max-height:48px;
-}
-#pop_grid ul li .item_name {
-    max-width:90px;
-    color:#FFF;
-    word-wrap:break-word;
-    word-break:break-all;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    pointer-events:none;
-}
-#pop_arrow_up_outer {
-    bottom: -7px;
-    position: absolute;
-    border-top: 7px solid rgba(0,0,0,0.64);
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-}
-#pop_arrow_up_mid {
-    bottom: -6px;
-    position: absolute;
-    border-top: 7px solid rgba(255,255,255, 0.3);
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-}
-#pop_arrow_up_inner {
-    bottom:-5px;
-    position:absolute;
-    bord-image:url(../img/preview_background.png);
-    border-top: 6px solid rgba(0,0,0,0.9);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-}
-#pop_arrow_down_outer {
-    top:-7px;
-    position:absolute;
-    border-bottom: 7px solid rgba(0, 0, 0, 0.64);
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-
-}
-#pop_arrow_down_mid {
-    top:-6px;
-    position:absolute;
-    border-bottom: 7px solid rgba(255,255,255,0.3);
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-}
-#pop_arrow_down_inner {
-    top:-5px;
-    position:absolute;
-    bord-image:url(../img/preview_background.png);
-    border-bottom: 6px solid rgba(0,0,0,0.9);
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-}
-
-#mouse_select_area_box {
-    position:absolute;
-    border:1px solid rgba(255,255,255,0.3);
-    background-color:rgba(255, 255, 255, 0.2);
-    z-index:30;
-}
-
-.DesktopPluginItem {
-    border:1px solid rgba(0,0,0,0);
-    position: absolute;
-}
-.DesktopPluginItem .PluginContainer{
-    display: -webkit-box;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
-}
-.plugin_close{
-    width: 25.2px;
-    height: 20px;
-    background-position:10% 90%;
-    background-repeat: no-repeat;
-    background-image: url(../img/plugin/Normal/window_close_normal.png);
-}
-.plugin_close:hover{
-    background-image: url(../img/plugin/Hover/window_close_hover.png);
-    cursor: default;
-}
-.plugin_hover_border {
-    border:1px solid rgba(0,0,0,0.35);
-    border-radius:5px;
-    background-color:rgba(255, 255, 255, 0.35) !important;
-}
-.plugin_DND_border {
-    border:1px solid #eee;
-    background-color:rgba(68, 132, 195, 0.3) !important;
-}
-.PluginHandle {
-    width: 100%;
-    height: 20px;
-    opacity: 0;
-    -webkit-transition: opacity 0.3s ease-out;
-    display: -webkit-box;
-    -webkit-box-pack:end;
-}
-.PluginHandle:hover {
-    opacity: 1;
-    cursor: move;
-    background-color:rgba(255,255,255,0.5) !important
-}
-/* remove the elements that webkit add to the page when set a div's "contenteditable" to "true" */
-#WebKit-Editing-Delete-Container, #WebKit-Editing-Delete-Outline, #WebKit-Editing-Delete-Button {
-    display:none;
-}
-@-webkit-keyframes item_flash {
-    0% {
-        box-shadow: 0px 0px 5px #01a6e8;
-    }
-    20% {
-        box-shadow: 0px 0px 0px #01a6e8;
-    }
-    40% {
-        box-shadow: 0px 0px 5px #01a6e8;
-    }
-    60% {
-        box-shadow: 0px 0px 0px #01a6e8;
-    }
-    80% {
-        box-shadow: 0px 0px 5px #01a6e8;
-    }
-    100% {
-        box-shadow: 0px 0px 0px #01a6e8;
-    }
-}
-
