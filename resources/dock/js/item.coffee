@@ -34,14 +34,18 @@ calc_app_item_size = ->
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region()
+    update_dock_region(w * apps.length + 10)
 
-update_dock_region = ->
+update_dock_region = (w)->
+    if board
+        board.set_width(w)
+        board.draw()
     apps = $s(".AppItem")
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
-        offset = ICON_SCALE * ITEM_WIDTH * apps.length
-        DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
+        app_len = ICON_SCALE * ITEM_WIDTH * apps.length
+        left_offset = (screen.width - app_len) / 2
+        DCore.Dock.force_set_region(left_offset, 0, app_len, DOCK_HEIGHT)
 
 document.body.onresize = ->
     calc_app_item_size()
@@ -83,7 +87,8 @@ class AppList extends Widget
             item.flash(0.5)
             @append(item)
         @hide_indicator()
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
 
     do_dragover: (e) ->
         e.preventDefault()
@@ -101,11 +106,20 @@ class AppList extends Widget
         e.stopPropagation()
         e.preventDefault()
         if not dnd_is_deepin_item(e)
-            update_dock_region()
+            calc_app_item_size()
+            # update_dock_region()
+    has_child: (node)->
+        for own v of @element.children
+            if v.id == node.id
+                return true
+        return false
     do_dragenter: (e)->
         DCore.Dock.require_all_region()
         e.stopPropagation()
         e.preventDefault()
+        # if @_insert_anchor_item == null
+        # board.set_width(board.board.width + ITEM_WIDTH)
+        # board.draw()
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
@@ -139,18 +153,6 @@ app_list = new AppList("app_list")
 class AppItem extends Widget
     is_fixed_pos: false
     tooltip_show_id: -1
-    next: ->
-        el = @element.nextElementSibling
-        if el and el.classList.contains("AppItem")
-            return Widget.look_up(el.id)
-        else
-            return null
-    prev: ->
-        el = @element.previousElementSibling
-        if el and el.classList.contains("AppItem")
-            return Widget.look_up(el.id)
-        else
-            return null
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
@@ -167,8 +169,21 @@ class AppItem extends Widget
             app_list.append(@)
         else
             app_list.append_app_item(@)
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
 
+    next: ->
+        el = @element.nextElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
+    prev: ->
+        el = @element.previousElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
     rotate: (time) ->
@@ -229,7 +244,8 @@ class AppItem extends Widget
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
         e.stopPropagation()
         e.preventDefault()
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
         setTimeout(->
             DCore.Dock.update_hide_mode()
         , 1000)
@@ -244,6 +260,7 @@ class AppItem extends Widget
         e.stopPropagation()
         return if @is_fixed_pos
         app_list.hide_indicator()
+        # board.set_width(board.board.width + ITEM_WIDTH)
 
         @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
         if @_try_swaping_id == @app_id
@@ -295,6 +312,8 @@ class AppItem extends Widget
 
 
 document.body.addEventListener("drop", (e)->
+    board.set_width(board.board.width - ITEM_WIDTH)
+    board.draw()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.constructor.name == "Launcher"

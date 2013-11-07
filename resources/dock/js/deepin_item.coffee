@@ -29,10 +29,12 @@ class FixedItem extends AppItem
             clearTimeout(tooltip_hide_id)
             DCore.Dock.require_all_region()
             launcher_mouseout_id = setTimeout(->
-                update_dock_region()
+                calc_app_item_size()
+                # update_dock_region()
             , 1000)
         else
-            update_dock_region()
+            calc_app_item_size()
+            # update_dock_region()
             setTimeout(->
                 DCore.Dock.update_hide_mode()
             , 500)

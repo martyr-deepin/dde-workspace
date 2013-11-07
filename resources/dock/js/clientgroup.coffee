@@ -249,14 +249,16 @@ class ClientGroup extends AppItem
 
     do_mouseout: (e)->
         if not Preview_container.is_showing
-            update_dock_region()
+            # update_dock_region()
+            calc_app_item_size()
             hide_id = setTimeout(->
                 DCore.Dock.update_hide_mode()
             , 300)
         else
             DCore.Dock.require_all_region()
             hide_id = setTimeout(->
-                update_dock_region()
+                calc_app_item_size()
+                # update_dock_region()
                 Preview_close_now()
                 DCore.Dock.update_hide_mode()
             , 1000)

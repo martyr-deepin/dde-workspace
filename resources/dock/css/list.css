@@ -2,11 +2,11 @@
     display: -webkit-box;
     -webkit-box-flex: 1;
     -webkit-box-pack: center;
-    /* border: solid 2px red; */
+    /* border: solid 2px yellow; */
 }
 
 .AppItem {
-    /* border: solid 2px red; */
+    /* border: solid 1px red; */
     position:relative;
     max-width: 68px;
     max-height: 60px;
@@ -17,10 +17,6 @@
 .AppItem:hover {
     -webkit-transform: scale(1.1);
     -webkit-transition: all 0.2s ease-out;
-}
-
-.AppItemBoard {
-    display: none;
 }
 
 .ReflectImg {

@@ -126,7 +126,8 @@ class PWContainer extends Widget
         Object.keys(@_current_pws).forEach((w_id)->
             Widget.look_up("pw"+w_id)?.destroy()
         )
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
         @is_showing = false
         #DCore.Dock.set_compiz_workaround_preview(false)
 

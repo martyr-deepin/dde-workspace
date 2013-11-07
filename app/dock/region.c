@@ -49,7 +49,7 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
-    gdk_window_input_shape_combine_region(_win, region, 0, 0);
+    gdk_window_shape_combine_region(_win, region, 0, 0);
     return FALSE;
 }
 
@@ -75,15 +75,16 @@ void dock_force_set_region(double x, double y, double width, double height)
 {
     cairo_region_destroy(_region);
     cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)width, (int)height};
+    _region = cairo_region_create_rectangle(&tmp);
 
-    cairo_rectangle_int_t dock_board_rect = _base_rect;
-    dock_board_rect.x = 0;
-    dock_board_rect.y = gdk_screen_height() - 30;
-    dock_board_rect.height = 30;
-    dock_board_rect.width = gdk_screen_width();
-    _region = cairo_region_create_rectangle(&dock_board_rect);
+    /* cairo_rectangle_int_t dock_board_rect = _base_rect; */
+    /* dock_board_rect.x = 0; */
+    /* dock_board_rect.y = gdk_screen_height(); */
+    /* dock_board_rect.height = 0; */
+    /* dock_board_rect.width = gdk_screen_width(); */
+    /* _region = cairo_region_create_rectangle(&dock_board_rect); */
 
-    cairo_region_union_rectangle(_region, &tmp);
+    /* cairo_region_union_rectangle(_region, &tmp); */
     do_window_shape_combine_region(_region);
 }
 
