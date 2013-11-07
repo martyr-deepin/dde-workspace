@@ -108,18 +108,15 @@ class AppList extends Widget
         if not dnd_is_deepin_item(e)
             calc_app_item_size()
             # update_dock_region()
-    has_child: (node)->
-        for own v of @element.children
-            if v.id == node.id
-                return true
-        return false
+
     do_dragenter: (e)->
         DCore.Dock.require_all_region()
         e.stopPropagation()
         e.preventDefault()
-        # if @_insert_anchor_item == null
-        # board.set_width(board.board.width + ITEM_WIDTH)
-        # board.draw()
+        echo e
+        if dnd_is_desktop(e)
+            board.set_width(board.board.width + ITEM_WIDTH)
+            board.draw()
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
@@ -312,8 +309,6 @@ class AppItem extends Widget
 
 
 document.body.addEventListener("drop", (e)->
-    board.set_width(board.board.width - ITEM_WIDTH)
-    board.draw()
     s_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
     s_widget = Widget.look_up(s_id)
     if s_widget and s_widget.constructor.name == "Launcher"
