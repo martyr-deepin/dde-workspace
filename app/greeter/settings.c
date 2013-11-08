@@ -37,13 +37,13 @@ gboolean _get_face_recognition_login_setting(const char* username)
     GError* err = NULL;
     g_key_file_load_from_file(config, CONFIG_FILE, G_KEY_FILE_NONE, &err);
     if (err != NULL) {
-        g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
+        g_warning("[%s] read config file failed: %s", __func__, err->message);
         goto out;
     }
 
     use_face_login = g_key_file_get_boolean(config, username, "enable", &err);
     if (err != NULL)
-        g_warning("[_get_face_recognition_login_setting] read config file failed: %s", err->message);
+        g_warning("[%s] read config file failed: %s", __func__, err->message);
 
 out:
     if (err != NULL)

@@ -195,7 +195,7 @@ gboolean _check_exist(const char* path, const char* name)
     GDir* dir = g_dir_open(path, 0, &err);
 
     if (dir == NULL) {
-        g_warning("[_check_exist] open dir(%s) failed: %s", path, err->message);
+        g_warning("[%s] open dir(%s) failed: %s", __func__, path, err->message);
         g_error_free(err);
         return FALSE;
     }

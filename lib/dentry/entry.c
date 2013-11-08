@@ -1344,7 +1344,7 @@ GHashTable* _count_categories(ArrayContainer const fs)
         char** categories =
             _get_desktop_file_category(((GDesktopAppInfo**)fs.data)[i]);
 
-        g_debug("[_count_categories] app: %s",
+        g_debug("[%s] app: %s", __func__,
                 g_desktop_app_info_get_filename(((GDesktopAppInfo**)fs.data)[i]));
 
         if (categories == NULL) {
@@ -1366,8 +1366,8 @@ GHashTable* _count_categories(ArrayContainer const fs)
             g_hash_table_add(set, low_case_category);
 
             if (_is_valid_category(low_case_category)) {
-                g_debug("[_count_categories] === insert category: %s (lowcase:"
-                    " %s)", categories[j], low_case_category);
+                g_debug("[%s] === insert category: %s (lowcase: %s)", __func__,
+                        categories[j], low_case_category);
 
                 int value =
                     GPOINTER_TO_INT(g_hash_table_lookup(categories_count,
@@ -1380,7 +1380,7 @@ GHashTable* _count_categories(ArrayContainer const fs)
 
         g_strfreev(categories);
         g_hash_table_unref(set);
-        g_debug("[_count_categories] ===================");
+        g_debug("[%s] ===================", __func__);
     }
 
     return categories_count;
