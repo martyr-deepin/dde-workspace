@@ -17,40 +17,38 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+document.body.style.height = window.screen.availHeight
+document.body.style.width = window.screen.availWidth
 
-get_user_image = (user) ->
-    try
-        user_image = DCore.Greeter.get_user_icon(user)
-    catch error
-        echo error
-
-    if not user_image?
-        try
-            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-        catch error
-            user_image = "images/guest.jpg"
-
-    return user_image
 
 
 class ShutDown extends Widget
-	option = ["lock","suspend","logout","restart","shutdown"]
+    
     constructor: (@id)->
         super
-        @frame = create_element("div", "frame", @element)
+        # alert("shutdown")
+        echo "shutdown"
+        option = ["lock","suspend","logout","restart","shutdown"]
+        
+        frame = create_element("div", "frame", @element)
+        button = create_element("div","button",frame)
         
         opt = []
         img_url = []
         opt_img = []
-        text = []
         opt_text = []
         
         for tmp ,i in option
-            opt[i] = create_element("div","opt",@frame)
+            opt[i] = create_element("div","opt",button)
             img_url[i] = "img/normal/#{option[i]}.png"
             opt_img[i] = create_img("opt_img",img_url[i],opt[i])
-            text[i] = _(option[i])
-            opt_text[i] = create_element("a","opt_text",opt[i])
-            opt_text[i].textContext = text[i]
+            opt_text[i] = create_element("div","opt_text",opt[i])
+            opt_text[i].textContent = option[i]
+        
+        message = create_element("div","message",frame)
+        message.textContent = "do you want to shutdown your computer?"
 
 
+
+shutdown = new ShutDown()
+document.body.appendChild(shutdown.element)
