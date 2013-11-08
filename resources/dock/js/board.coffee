@@ -43,7 +43,7 @@ class Board
         ctx.restore()
 
     set_width: (w)->
-        @board.width = w
+        @board.width = if w > screen.width then screen.width else w
 
     set_height: (h)->
         @board.height = h

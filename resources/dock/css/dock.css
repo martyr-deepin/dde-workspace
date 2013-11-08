@@ -38,7 +38,6 @@ body {
     display: -webkit-box;
     min-height: 60px;
     max-height: 60px;
-    max-width: 1200px;
     /* border: solid 2px red; */
 }
 
@@ -47,6 +46,5 @@ body {
     bottom: 0px;
     min-height: 30px;
     max-height: 30px;
-    max-width: 1200px;
     z-index: -1000;
 }

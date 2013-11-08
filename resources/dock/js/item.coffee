@@ -34,7 +34,7 @@ calc_app_item_size = ->
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region(w * apps.length + 10)
+    update_dock_region(w * list.children.length + 10)
 
 update_dock_region = (w)->
     if board
@@ -56,6 +56,7 @@ class AppList extends Widget
         $("#container").appendChild(@element)
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
+        @is_insert_indicator_shown = false
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -105,7 +106,7 @@ class AppList extends Widget
         @hide_indicator()
         e.stopPropagation()
         e.preventDefault()
-        if not dnd_is_deepin_item(e)
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
             calc_app_item_size()
             # update_dock_region()
 
@@ -113,10 +114,6 @@ class AppList extends Widget
         DCore.Dock.require_all_region()
         e.stopPropagation()
         e.preventDefault()
-        echo e
-        if dnd_is_desktop(e)
-            board.set_width(board.board.width + ITEM_WIDTH)
-            board.draw()
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
@@ -125,8 +122,11 @@ class AppList extends Widget
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
             @element.removeChild(@insert_indicator)
+            @is_insert_indicator_shown = false
 
     show_indicator: (x, try_insert_id)->
+        if @is_insert_indicator_shown
+            return
         @insert_indicator.style.width = ICON_SCALE * ICON_WIDTH
         @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
         margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
@@ -144,6 +144,10 @@ class AppList extends Widget
             @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
             @element.appendChild(@insert_indicator)
+
+        @is_insert_indicator_shown = true
+        board.set_width(board.board.width + ITEM_WIDTH)
+        board.draw()
 
 app_list = new AppList("app_list")
 

@@ -62,6 +62,9 @@ class Launcher extends AppItem
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
+        t = @element.parentElement.removeChild(@element)
+        document.body.appendChild(t)
+        calc_app_item_size()
         @rotate()
         setTimeout(=>
             @destroy()

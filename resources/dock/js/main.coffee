@@ -22,6 +22,7 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
+$("#container").style.maxWidth = screen.width
 board = new Board("board")
 board.draw()
 
