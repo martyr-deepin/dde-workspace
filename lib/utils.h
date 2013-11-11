@@ -28,6 +28,7 @@
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
 #define STR_EXP(__A) #__A
 #define STR(A) STR_EXP(A)
+#define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
 int binding(int server_sockfd, const char* path);
 char* shell_escape(const char* source);
