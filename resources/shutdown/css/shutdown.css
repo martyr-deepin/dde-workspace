@@ -90,7 +90,9 @@ body{
 
 
 
-
+@-webkit-keyframes fade_animation{
+    to{left:500px;}
+}
 
 
 

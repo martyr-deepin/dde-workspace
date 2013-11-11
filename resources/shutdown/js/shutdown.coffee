@@ -32,6 +32,11 @@ message_text = [
 
 
 class ShutDown extends Widget
+    opt = []
+    img_url = []
+    opt_img = []
+    opt_text = []
+    
     constructor: (@id)->
         super
         echo "shutdown"
@@ -43,10 +48,6 @@ class ShutDown extends Widget
         message = create_element("div","message",frame)
         message.textContent = message_init
         
-        opt = []
-        img_url = []
-        opt_img = []
-        opt_text = []
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
@@ -83,15 +84,16 @@ class ShutDown extends Widget
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 message.textContent = message_text[i]
-                that.fade_animal()
+                that.fade_animal(i)
                 
                 confirmdialog = new ConfirmDialog(i)
                 confirmdialog.frame_build()
-                confirmdialog.show_animal()
             )
     
-    fade_animal:->
+    fade_animal:(i)->
         echo "fade_animal"
+        for el in opt
+            apply_animation(el,"fade_animation","2s")
         document.body.removeChild(@element)
 
 
@@ -138,8 +140,8 @@ class ConfirmDialog extends Widget
             echo "#{button_ok.textContent}"
         )
 
-    show_animal:->
         echo "show_animal"
+        apply_flash(@element,2)
         document.body.appendChild(@element)
 
 
