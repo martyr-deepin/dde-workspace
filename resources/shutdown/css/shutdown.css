@@ -28,14 +28,17 @@ body{
     background: url(../img/background.jpg) center no-repeat;
     vertical-align:middle;
     /*-webkit-user-select:none;*/
-    display:-webkit-box;
+    /*display:-webkit-box;*/
     /*-webkit-box-pack:center;*/
-    -webkit-box-align:center;
+    /*-webkit-box-align:center;*/
 }
 
 .frame{
     position:absolute;
     z-index:65535;
+    margin-left:400px;
+    margin-top:200px;   
+
     display:-webkit-box;
     -webkit-box-orient:vertical;
     background-color:rgba(255,255,0,0.1)
@@ -94,10 +97,10 @@ body{
 .frame_confirm{
     position:absolute;
     z-index:65535;
+    margin-left:400px;
+    margin-top:200px;   
+    
     display:-webkit-box;
-    /*-webkit-box-pack:center;*/
-    /*-webkit-box-align:center;*/
-    /*background-color:rgba(255,255,0,0.5)*/
 }
 
 .left{
