@@ -20,21 +20,24 @@
 document.body.style.height = window.screen.availHeight
 document.body.style.width = window.screen.availWidth
 
+option = ["lock","suspend","logout","restart","shutdown"]
+message_init = "choose one"
+message_text = [
+    "do you want to lock your computer?",
+    "do you want to suspend your computer?",
+    "do you want to logout your computer?",
+    "do you want to restart your computer?",
+    "do you want to shutdown your computer?"
+]
 
 
 class ShutDown extends Widget
     constructor: (@id)->
         super
         echo "shutdown"
-        option = ["lock","suspend","logout","restart","shutdown"]
-        message_init = "choose one"
-        message_text = [
-            "do you want to lock your computer?",
-            "do you want to suspend your computer?",
-            "do you want to logout your computer?",
-            "do you want to restart your computer?",
-            "do you want to shutdown your computer?"
-        ]
+
+
+    frame_build:->
         frame = create_element("div", "frame", @element)
         button = create_element("div","button",frame)
         message = create_element("div","message",frame)
@@ -71,27 +74,76 @@ class ShutDown extends Widget
             #click
             opt[i].addEventListener("mousedown",->
                 i = this.value
-                echo "#{i}:mousedown"
+                #echo "#{i}:mousedown"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 message.textContent = message_text[i]
             )
             opt[i].addEventListener("click",->
                 i = this.value
-                echo "#{i}:click"
+                #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 message.textContent = message_text[i]
-                document.body.removeChild(that.element)
-                new ConfirmDialog(i)
-                #location.href = "confirmdialog.html"
+                that.fade_animal()
+                
+                confirmdialog = new ConfirmDialog(i)
+                confirmdialog.frame_build()
+                confirmdialog.show_animal()
             )
-        
+    
+    fade_animal:->
+        echo "fade_animal"
+        document.body.removeChild(@element)
+
+
 
 class ConfirmDialog extends Widget
     constructor: (i)->
         super
-        echo "ConfirmDialog:#{i}"
+        @i = i
+        echo "ConfirmDialog:#{option[i]}"
+
+    frame_build:->
+        i = @i
+        frame_confirm = create_element("div", "frame_confirm", @element)
+        
+        left = create_element("div","left",frame_confirm)
+        img_url = []
+        img_url[i] = "img/normal/#{option[i]}.png"
+        img_confirm = create_img("img_confirm",img_url[i],left)
+        text_img = create_element("div","text_img",left)
+        text_img.textContent = option[i]
+        
+        right = create_element("div","right",frame_confirm)
+        message_confirm = create_element("div","message_confirm",right)
+        message_confirm.textContent = message_text[i]
+
+        button_confirm = create_element("div","button_confirm",right)
+        
+        button_cancel = create_element("button","button_cancel",button_confirm)
+        button_cancel.type = "button"
+        button_cancel.textContent = "cancel"
+        button_cancel.name = "cancel"
+        button_cancel.value = "cancel"
+
+        button_ok = create_element("button","button_ok",button_confirm)
+        button_ok.type = "button"
+        button_ok.textContent = option[i]
+        button_ok.name = option[i]
+        button_ok.value = option[i]
+
+        button_cancel.addEventListener("click",->
+            echo "cancel"
+        )
+        button_ok.addEventListener("click",->
+            echo "#{button_ok.textContent}"
+        )
+
+    show_animal:->
+        echo "show_animal"
+        document.body.appendChild(@element)
 
 
 
 shutdown = new ShutDown()
+shutdown.frame_build()
 document.body.appendChild(shutdown.element)
