@@ -100,7 +100,7 @@ void launcher_hide()
 {
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
-    js_post_message_simply("exit_launcher", NULL);
+    js_post_signal("exit_launcher");
 }
 
 
@@ -154,9 +154,12 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
-    js_post_message_simply("workarea_changed",
-            "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
-            gdk_screen_width(), gdk_screen_height());
+    JSObjectRef workarea_info = json_create();
+    json_append_number(workarea_info, "x", 0);
+    json_append_number(workarea_info, "y", 0);
+    json_append_number(workarea_info, "width", gdk_screen_width());
+    json_append_number(workarea_info, "height", gdk_screen_height());
+    js_post_message("workarea_changed", workarea_info);
 }
 
 
