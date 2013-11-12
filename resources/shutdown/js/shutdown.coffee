@@ -144,8 +144,3 @@ class ConfirmDialog extends Widget
         apply_flash(@element,2)
         document.body.appendChild(@element)
 
-
-
-shutdown = new ShutDown()
-shutdown.frame_build()
-document.body.appendChild(shutdown.element)
