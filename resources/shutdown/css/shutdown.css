@@ -25,7 +25,7 @@
 body{
     cursor:default;
     overflow:hidden;
-    /*background: url(../img/background.jpg) center no-repeat;*/
+    background-color:rgba(0,0,0,0.5)
     /*-webkit-user-select:none;*/
     /*display:-webkit-box;*/
     /*-webkit-box-pack:center;*/
@@ -90,6 +90,7 @@ body{
 
 
 @-webkit-keyframes fade_animation{
+    from{left:800px;}
     to{left:500px;}
 }
 
