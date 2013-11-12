@@ -40,7 +40,7 @@ gboolean launcher_should_exit()
 void close_launcher_window()
 {
     dbus_launcher_hide();
-    js_post_message_simply("launcher_destroy", NULL);
+    js_post_signal("launcher_destroy");
 }
 
 PRIVATE
@@ -70,7 +70,7 @@ GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Win
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
-        js_post_message_simply("launcher_destroy", NULL);
+        js_post_signal("launcher_destroy");
         launcher_id = 0;
     }
     return GDK_FILTER_CONTINUE;
@@ -82,7 +82,7 @@ void start_monitor_launcher_window(Display* dsp, Window w)
     GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_x11_lookup_xdisplay(dsp), w);
     if (win == NULL)
         return;
-    js_post_message_simply("launcher_running", NULL);
+    js_post_signal("launcher_running");
 
     g_assert(win != NULL);
     gdk_window_set_events(win, GDK_VISIBILITY_NOTIFY_MASK | gdk_window_get_events(win));

@@ -140,7 +140,9 @@ void _update_notify_area_width()
     else
         _na_width = _deepin_tray_width - DEFAULT_INTERVAL + _fcitx_tray_width;
     g_hash_table_foreach(_icons, (GHFunc)accumulate_na_width, NULL);
-    js_post_message_simply("tray_icon_area_changed", "{\"width\":%d}", _na_width + 2 *DEFAULT_INTERVAL);
+    JSObjectRef width = json_create();
+    json_append_number(width, "width", _na_width + 2 * DEFAULT_INTERVAL);
+    js_post_message("tray_icon_area_changed", width);
 }
 void _update_deepin_try_position()
 {

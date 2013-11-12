@@ -22,37 +22,7 @@
 #include <string.h>
 #include "background.h"
 #include "jsextension.h"
-
-
-PRIVATE
-char* bg_blur_pict_get_dest_path (const char* src_uri)
-{
-    g_debug ("[%s] bg_blur_pict_get_dest_path: src_uri=%s", __func__, src_uri);
-    g_return_val_if_fail (src_uri != NULL, NULL);
-
-    //1. calculate original picture md5
-    GChecksum* checksum;
-    checksum = g_checksum_new (G_CHECKSUM_MD5);
-    g_checksum_update (checksum, (const guchar *) src_uri, strlen (src_uri));
-
-    guint8 digest[16];
-    gsize digest_len = sizeof (digest);
-    g_checksum_get_digest (checksum, digest, &digest_len);
-    g_assert (digest_len == 16);
-
-    //2. build blurred picture path
-    char* file;
-    file = g_strconcat (g_checksum_get_string (checksum), ".png", NULL);
-    g_checksum_free (checksum);
-    char* path;
-    path = g_build_filename (g_get_user_cache_dir (),
-                    BG_BLUR_PICT_CACHE_DIR,
-                    file,
-                    NULL);
-    g_free (file);
-
-    return path;
-}
+#include "utils.h"
 
 
 PRIVATE
@@ -150,7 +120,9 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
     }
     if (g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
         g_debug("background changed");
-        js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
+        JSObjectRef path = json_create();
+        json_append_string(path, "path", blur_path);
+        js_post_message("draw_background", path);
     }
     g_free(blur_path);
 }

@@ -35,6 +35,7 @@ catch error
 class Item extends Widget
     @theme_icon: null
     @hover_item_id: null
+    @clean_hover_temp: false
     @display_temp: false
     constructor: (@id, @core)->
         super
@@ -218,10 +219,11 @@ class Item extends Widget
         @element.scrollIntoViewIfNeeded()
 
     do_mouseover: =>
-        @element.style.background = "rgba(0, 183, 238, 0.2)"
-        @element.style.border = "1px rgba(255, 255, 255, 0.2) solid"
-        @element.style.borderRadius = "2px"
         Item.hover_item_id = @id
+        if not Item.clean_hover_temp
+            @element.style.background = "rgba(0, 183, 238, 0.2)"
+            @element.style.border = "1px rgba(255, 255, 255, 0.2) solid"
+            @element.style.borderRadius = "2px"
 
     do_mouseout: =>
         @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"

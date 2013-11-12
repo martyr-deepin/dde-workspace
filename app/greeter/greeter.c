@@ -144,7 +144,9 @@ start_session (LightDMGreeter *greeter)
 
     if (!lightdm_greeter_get_is_authenticated (greeter)) {
         g_warning ("start session:not authenticated\n");
-        js_post_message_simply("auth-failed", "{\"error\":\"%s\"}", _("Invalid Password"));
+        JSObjectRef error_message = json_create();
+        json_append_string(error_message, "error", _("Invalid Password"));
+        js_post_message("auth-failed", error_message);
 
         g_free (session);
         return ;
