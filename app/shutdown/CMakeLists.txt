@@ -7,9 +7,11 @@ pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 pkg_check_modules(OPENCV REQUIRED opencv)
 pkg_check_modules(GST REQUIRED gstreamer-0.10)
 
-add_executable(${NAME} shutdown.c user.c session.c mutils.c ${JSC_GEN} 
-    ${DBUS_GEN}
-    )
+file(GLOB CFILES *.c)
+
+SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
+
+add_executable(${NAME} ${SRC_LIST})
 
 set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}

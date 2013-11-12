@@ -40,191 +40,89 @@
 #include "utils.h"
 #include "mutils.h"
 #include "DBUS_shutdown.h"
+#include "background.h"
 
 #define shutdown_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdown.html"
 
+#define SHUTDOWN_MAJOR_VERSION 0
+#define SHUTDOWN_MINOR_VERSION 0
+#define SHUTDOWN_SUBMINOR_VERSION 0
+#define SHUTDOWN_VERSION STR(SHUTDOWN_MAJOR_VERSION)"."STR(SHUTDOWN_MINOR_VERSION)"."STR(SHUTDOWN_SUBMINOR_VERSION)
+#define SHUTDOWN_CONF "shutdown/config.ini"
+static GKeyFile* shutdown_config = NULL;
+
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
-// LightDMGreeter *shutdown;
-// GKeyFile *shutdown_keyfile;
-// gchar* shutdown_file;
 
-// struct AuthHandler {
-//     gchar *username;
-//     gchar *password;
-//     gchar *session;
-// };
+PRIVATE GSettings* dde_bg_g_settings = NULL;
+PRIVATE gboolean is_js_already = FALSE;
 
-// struct AuthHandler *handler;
 
-// static void
-// free_auth_handler (struct AuthHandler *handler)
-// {
-//     if (handler == NULL) {
-//         return ;
-//     }
+PRIVATE
+void _update_size(GdkScreen *screen, GtkWidget* conntainer)
+{
+    gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
+}
 
-//     if (handler->username != NULL) {
-//         g_free (handler->username);
-//     }
 
-//     if (handler->password != NULL) {
-//         g_free (handler->password);
-//     }
+PRIVATE
+void _on_realize(GtkWidget* container)
+{
+    GdkScreen* screen =  gdk_screen_get_default();
+    _update_size(screen, container);
+    g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
+    if (is_js_already)
+        background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+}
 
-//     if (handler->session != NULL) {
-//         g_free (handler->session);
-//     }
 
-//     if (handler != NULL) {
-//         g_free (handler);
-//     }
-// }
+DBUS_EXPORT_API
+void shutdown_quit()
+{
+    g_key_file_free(shutdown_config);
+    g_object_unref(dde_bg_g_settings);
+    gtk_main_quit();
+}
 
-// static void
-// start_authentication (struct AuthHandler *handler)
-// {
-//     gchar *username = g_strdup (handler->username);
-//     //g_warning ("start authentication:%s\n", username);
 
-//     if (g_strcmp0 (username, "guest") == 0) {
-//         lightdm_shutdown_authenticate_as_guest (shutdown);
-//         g_warning ("start authentication for guest\n");
+JS_EXPORT_API
+void shutdown_notify_workarea_size()
+{
+    JSObjectRef workarea_info = json_create();
+    json_append_number(workarea_info, "x", 0);
+    json_append_number(workarea_info, "y", 0);
+    json_append_number(workarea_info, "width", gdk_screen_width());
+    json_append_number(workarea_info, "height", gdk_screen_height());
+    js_post_message("workarea_changed", workarea_info);
+}
 
-//     } else {
-//         lightdm_shutdown_authenticate (shutdown, username);
-//     }
 
-//     g_free (username);
-// }
+JS_EXPORT_API
+void shutdown_webview_ok()
+{
+    background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+    is_js_already = TRUE;
+}
 
-// static void
-// respond_authentication (LightDMGreeter *shutdown, const gchar *text, LightDMPromptType type)
-// {
-//     gchar *respond = NULL;
 
-//     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {
-//         respond = g_strdup (handler->username);
+void check_version()
+{
+    if (shutdown_config == NULL)
+        shutdown_config = load_app_config(SHUTDOWN_CONF);
 
-//     }  else if (type == LIGHTDM_PROMPT_TYPE_SECRET) {
-//         respond = g_strdup (handler->password);
+    GError* err = NULL;
+    gchar* version = g_key_file_get_string(shutdown_config, "main", "version", &err);
+    if (err != NULL) {
+        g_warning("[%s] read version failed from config file: %s", __func__, err->message);
+        g_error_free(err);
+        g_key_file_set_string(shutdown_config, "main", "version", SHUTDOWN_VERSION);
+        save_app_config(shutdown_config, SHUTDOWN_CONF);
+    }
 
-//     } else {
-//         g_warning ("respond authentication failed:invalid prompt type\n");
-//         return ;
-//     }
-//     //g_warning ("respond authentication:%s\n", respond);
+    if (version != NULL)
+        g_free(version);
+}
 
-//     lightdm_shutdown_respond (shutdown, respond);
-
-//     g_free (respond);
-// }
-
-// static void
-// set_last_user (const gchar* username)
-// {
-//     gchar *data;
-//     gsize length;
-
-//     g_key_file_set_value (shutdown_keyfile, "deepin-shutdown", "last-user", g_strdup (username));
-//     data = g_key_file_to_data (shutdown_keyfile, &length, NULL);
-//     g_file_set_contents (shutdown_file, data, length, NULL);
-
-//     g_free (data);
-// }
-
-// static void
-// start_session (LightDMGreeter *shutdown)
-// {
-//     gchar *session = g_strdup (handler->session);
-//     //g_warning ("start session:%s\n", session);
-
-//     if (!lightdm_shutdown_get_is_authenticated (shutdown)) {
-//         g_warning ("start session:not authenticated\n");
-//         JSObjectRef error_message = json_create();
-//         json_append_string(error_message, "error", _("Invalid Password"));
-//         js_post_message("auth-failed", error_message);
-
-//         g_free (session);
-//         return ;
-//     }
-
-//     set_last_user (handler->username);
-//     keep_user_background (handler->username);
-//     kill_user_lock (handler->username, handler->password);
-
-//     if (!lightdm_shutdown_start_session_sync (shutdown, session, NULL)) {
-//         g_warning ("start session %s failed\n", session);
-
-//         g_free (session);
-//         free_auth_handler (handler);
-
-//     } else {
-//         g_debug ("start session %s succeed\n", session);
-
-//         g_key_file_free (shutdown_keyfile);
-//         g_free (shutdown_file);
-//         g_free (session);
-//         free_auth_handler (handler);
-//     }
-// }
-
-// JS_EXPORT_API
-// gboolean shutdown_start_session (const gchar *username, const gchar *password, const gchar *session)
-// {
-//     gboolean use_face_login = shutdown_use_face_recognition_login(username);
-//     if (use_face_login)
-//         dbus_add_nopwdlogin((char*)username);
-
-//     gboolean ret = FALSE;
-
-//     if (handler != NULL) {
-//         free_auth_handler (handler);
-//     }
-
-//     handler = g_new0 (struct AuthHandler, 1);
-//     handler->username = g_strdup (username);
-//     handler->password = g_strdup (password);
-//     handler->session = g_strdup (session);
-
-//     if (lightdm_shutdown_get_is_authenticated (shutdown)) {
-
-//         g_warning ("shutdown start session:already authenticated\n");
-//         //start_session (handler);
-//         ret = TRUE;
-
-//     } else if (lightdm_shutdown_get_in_authentication (shutdown)) {
-
-//         if (g_strcmp0 (username, lightdm_shutdown_get_authentication_user (shutdown)) == 0) {
-
-//             g_warning ("shutdown start session:current user in authentication\n");
-//          //   respond_authentication (handler);
-
-//         } else {
-
-//             g_warning ("shutdown start session:other user in authentication\n");
-//           //  lightdm_shutdown_cancel_authentication (shutdown);
-//         }
-
-//     } else {
-
-//         // g_warning ("shutdown start session:start authenticated\n");
-//         start_authentication (handler);
-
-//         ret = TRUE;
-//     }
-
-//     if (use_face_login)
-//         dbus_remove_nopwdlogin((char*)username);
-
-//     return ret;
-// }
-
-// JS_EXPORT_API
-// void shutdown_draw_user_background (JSValueRef canvas, const gchar *username)
-// {
-//     draw_user_background (canvas, username);
-// }
 
 int main (int argc, char **argv)
 {
@@ -233,34 +131,9 @@ int main (int argc, char **argv)
 
     GdkScreen *screen;
     GdkRectangle geometry;
-
+    check_version();
     init_i18n ();
     gtk_init (&argc, &argv);
-
-    // shutdown = lightdm_shutdown_new ();
-    // g_assert (shutdown);
-
-    // g_signal_connect (shutdown, "show-prompt", G_CALLBACK (respond_authentication), NULL);
-    // //g_signal_connect(shutdown, "show-message", G_CALLBACK(show_message_cb), NULL);
-    // g_signal_connect (shutdown, "authentication-complete", G_CALLBACK (start_session), NULL);
-    // //g_signal_connect(shutdown, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
-
-    // if(!lightdm_shutdown_connect_sync (shutdown, NULL)){
-    //     g_warning ("connect shutdown failed\n");
-    //     exit (EXIT_FAILURE);
-    // }
-
-    // gchar *shutdown_dir = g_build_filename (g_get_user_cache_dir (), "lightdm", NULL);
-
-    // if (g_mkdir_with_parents (shutdown_dir, 0755) < 0){
-    //     shutdown_dir = "/var/cache/lightdm";
-    // }
-
-    // shutdown_file = g_build_filename (shutdown_dir, "deepin-shutdown", NULL);
-    // g_free (shutdown_dir);
-
-    // shutdown_keyfile = g_key_file_new ();
-    // g_key_file_load_from_file (shutdown_keyfile, shutdown_file, G_KEY_FILE_NONE, NULL);
 
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
@@ -275,19 +148,27 @@ int main (int argc, char **argv)
     webview = d_webview_new_with_uri (shutdown_HTML_PATH);
     g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+
+
+    g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
+    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
+                     G_CALLBACK(background_changed), NULL);
+
+
     gtk_widget_realize (container);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
+    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+                            gdk_screen_width(), gdk_screen_height());
 
     gtk_widget_show_all (container);
 
- //   monitor_resource_file("shutdown", webview);
-    // init_camera(argc, argv);
-    // turn_numlock_on ();
+
     gtk_main ();
-    // destroy_camera();
 
     return 0;
 }
