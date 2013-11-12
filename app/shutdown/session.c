@@ -23,151 +23,151 @@
 
 static GList *sessions = NULL;
 
-JS_EXPORT_API
-JSObjectRef shutdown_get_sessions ()
-{
-    JSObjectRef array = json_array_create ();
+// JS_EXPORT_API
+// JSObjectRef shutdown_get_sessions ()
+// {
+//     JSObjectRef array = json_array_create ();
 
-    guint i;
+//     guint i;
 
-    if (sessions == NULL) {
-        sessions = lightdm_get_sessions ();
-    }
+//     if (sessions == NULL) {
+//         sessions = lightdm_get_sessions ();
+//     }
 
-    for (i = 0; i < g_list_length (sessions); ++i) {
-        gchar *key = NULL;
-        LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
+//     for (i = 0; i < g_list_length (sessions); ++i) {
+//         gchar *key = NULL;
+//         LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
 
-        key = g_strdup (lightdm_session_get_key (session));
-        json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (key)));
+//         key = g_strdup (lightdm_session_get_key (session));
+//         json_array_insert (array, i, jsvalue_from_cstr (get_global_context (), g_strdup (key)));
 
-        g_free (key);
-    }
+//         g_free (key);
+//     }
 
-    return array;
-}
+//     return array;
+// }
 
-LightDMSession*
-find_session_by_key(const gchar *key)
-{
-    LightDMSession *ret = NULL;
-    guint i;
+// LightDMSession*
+// find_session_by_key(const gchar *key)
+// {
+//     LightDMSession *ret = NULL;
+//     guint i;
 
-    if (sessions == NULL) {
-        sessions = lightdm_get_sessions ();
-    }
+//     if (sessions == NULL) {
+//         sessions = lightdm_get_sessions ();
+//     }
 
-    for (i = 0; i < g_list_length (sessions); i++) {
-        LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
+//     for (i = 0; i < g_list_length (sessions); i++) {
+//         LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
 
-        if (session != NULL) {
-            gchar *session_key = g_strdup (lightdm_session_get_key (session));
-            if (g_strcmp0 (key, session_key) == 0) {
-                ret = session;
+//         if (session != NULL) {
+//             gchar *session_key = g_strdup (lightdm_session_get_key (session));
+//             if (g_strcmp0 (key, session_key) == 0) {
+//                 ret = session;
 
-            } else {
-                continue;
-            }
-            g_free (session_key);
+//             } else {
+//                 continue;
+//             }
+//             g_free (session_key);
 
-        } else {
-            continue;
-        }
-    }
+//         } else {
+//             continue;
+//         }
+//     }
 
-    return ret;
-}
+//     return ret;
+// }
 
-JS_EXPORT_API
-gchar* shutdown_get_session_name (const gchar *key)
-{
-    gchar *name = NULL;
-    LightDMSession *session = NULL;
+// JS_EXPORT_API
+// gchar* shutdown_get_session_name (const gchar *key)
+// {
+//     gchar *name = NULL;
+//     LightDMSession *session = NULL;
 
-    session = find_session_by_key (key);
-    if (session != NULL) {
-        name = g_strdup (lightdm_session_get_name (session));
+//     session = find_session_by_key (key);
+//     if (session != NULL) {
+//         name = g_strdup (lightdm_session_get_name (session));
 
-    } else {
-        g_warning ("get session name:session is NULL\n");
-    }
+//     } else {
+//         g_warning ("get session name:session is NULL\n");
+//     }
 
-    return name;
-}
+//     return name;
+// }
 
-JS_EXPORT_API
-gchar* shutdown_get_session_icon (const gchar *key)
-{
-    gchar* icon = NULL;
+// JS_EXPORT_API
+// gchar* shutdown_get_session_icon (const gchar *key)
+// {
+//     gchar* icon = NULL;
 
-    gchar *session = g_ascii_strdown (key, -1);
+//     gchar *session = g_ascii_strdown (key, -1);
 
-    if (session == NULL) {
-        g_warning ("get session icon:session is NULL\n");
-        icon = g_strdup ("unknown.png");
+//     if (session == NULL) {
+//         g_warning ("get session icon:session is NULL\n");
+//         icon = g_strdup ("unknown.png");
 
-    } else if (g_str_has_prefix (session, "gnome")){
-        icon = g_strdup ("gnome.png");
+//     } else if (g_str_has_prefix (session, "gnome")){
+//         icon = g_strdup ("gnome.png");
 
-    } else if (g_str_has_prefix (session, "deepin")){
-        icon = g_strdup ("deepin.png");
+//     } else if (g_str_has_prefix (session, "deepin")){
+//         icon = g_strdup ("deepin.png");
 
-    } else if (g_str_has_prefix (session, "kde")){
-        icon = g_strdup ("kde.png");
+//     } else if (g_str_has_prefix (session, "kde")){
+//         icon = g_strdup ("kde.png");
 
-    } else if (g_str_has_prefix (session, "ubuntu")){
-        icon = g_strdup ("ubuntu.png");
+//     } else if (g_str_has_prefix (session, "ubuntu")){
+//         icon = g_strdup ("ubuntu.png");
 
-    } else if (g_str_has_prefix (session, "xfce")){
-        icon = g_strdup ("xfce.png");
+//     } else if (g_str_has_prefix (session, "xfce")){
+//         icon = g_strdup ("xfce.png");
 
-    } else if (g_str_has_prefix (session, "cde")){
-        icon = g_strdup ("cde.png");
+//     } else if (g_str_has_prefix (session, "cde")){
+//         icon = g_strdup ("cde.png");
 
-    } else {
-        icon = g_strdup ("unknown.png");
-    }
+//     } else {
+//         icon = g_strdup ("unknown.png");
+//     }
 
-    g_free (session);
+//     g_free (session);
 
-    return icon;
-}
+//     return icon;
+// }
 
-JS_EXPORT_API
-gchar* shutdown_get_default_session ()
-{
-    gchar *key = NULL;
+// JS_EXPORT_API
+// gchar* shutdown_get_default_session ()
+// {
+//     gchar *key = NULL;
 
-    extern LightDMShutdown *shutdown;
-    guint i;
+//     extern LightDMGreeter *shutdown;
+//     guint i;
 
-    gchar* session_name = g_strdup (lightdm_shutdown_get_default_session_hint (shutdown));
-    if (session_name != NULL) {
+//     gchar* session_name = g_strdup (lightdm_shutdown_get_default_session_hint (shutdown));
+//     if (session_name != NULL) {
 
-        if (sessions == NULL) {
-            sessions = lightdm_get_sessions ();
-        }
+//         if (sessions == NULL) {
+//             sessions = lightdm_get_sessions ();
+//         }
 
-        for (i = 0; i < g_list_length (sessions); ++i) {
+//         for (i = 0; i < g_list_length (sessions); ++i) {
 
-            LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
-            gchar *name = g_strdup (lightdm_session_get_name (session));
+//             LightDMSession *session = (LightDMSession *) g_list_nth_data (sessions, i);
+//             gchar *name = g_strdup (lightdm_session_get_name (session));
 
-            if (g_strcmp0 (session_name, name) == 0) {
-                key = g_strdup (lightdm_session_get_key (session));
-                g_free (name);
-                break;
+//             if (g_strcmp0 (session_name, name) == 0) {
+//                 key = g_strdup (lightdm_session_get_key (session));
+//                 g_free (name);
+//                 break;
 
-            } else {
-                g_free (name);
-                continue;
-            }
-        }
-    }
-    g_free (session_name);
+//             } else {
+//                 g_free (name);
+//                 continue;
+//             }
+//         }
+//     }
+//     g_free (session_name);
 
-    return key;
-}
+//     return key;
+// }
 
 JS_EXPORT_API
 gboolean shutdown_get_can_suspend ()

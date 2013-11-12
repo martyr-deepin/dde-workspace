@@ -22,13 +22,13 @@
 #include "jsextension.h"
 #include <lightdm.h>
 
-JS_EXPORT_API JSObjectRef shutdown_get_sessions ();
+// JS_EXPORT_API JSObjectRef shutdown_get_sessions ();
 
-JS_EXPORT_API gchar* shutdown_get_session_name (const gchar *key);
+// JS_EXPORT_API gchar* shutdown_get_session_name (const gchar *key);
 
-JS_EXPORT_API gchar* shutdown_get_session_icon (const gchar *key);
+// JS_EXPORT_API gchar* shutdown_get_session_icon (const gchar *key);
 
-JS_EXPORT_API gchar* shutdown_get_default_session ();
+// JS_EXPORT_API gchar* shutdown_get_default_session ();
 
 JS_EXPORT_API gboolean shutdown_get_can_suspend ();
 
