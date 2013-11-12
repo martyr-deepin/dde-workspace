@@ -24,26 +24,19 @@ class Board
         @board = $("##{@id}")
         @board.width = screen.width
         @board.height = BOARD_HEIGHT
-        @draw()
+        @image = new Image()
+        @image.src = PANEL_IMG
+        @image.addEventListener("load", @draw)
 
-    draw: ->
+    draw: =>
         # echo 'draw board'
         ctx = @board.getContext("2d")
         ctx.save()
-
-        # draw board
-        ctx.beginPath()
-        ctx.moveTo(10, 0)
-        ctx.lineTo(@board.width - 10, 0)
-        ctx.lineTo(@board.width, DOCK_HEIGHT)
-        ctx.lineTo(0, DOCK_HEIGHT)
-        ctx.closePath()
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)'
-        ctx.fill()
+        ctx.drawImage(@image, 3, 0, @board.width, BOARD_HEIGHT)
         ctx.restore()
 
     set_width: (w)->
-        @board.width = if w > screen.width then screen.width else w
+        @board.width = Math.min(w + 30, screen.width)
 
     set_height: (h)->
         @board.height = h

@@ -34,7 +34,7 @@ body {
 
 #container {
     position:fixed;
-    bottom: 0px;
+    bottom: 11px;
     display: -webkit-box;
     min-height: 60px;
     max-height: 60px;
@@ -42,9 +42,10 @@ body {
 }
 
 #board {
+    /* border: solid 2px black; */
     position: fixed;
     bottom: 0px;
     min-height: 30px;
-    max-height: 30px;
+    max-height: 40px;
     z-index: -1000;
 }

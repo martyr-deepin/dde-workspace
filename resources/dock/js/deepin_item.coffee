@@ -6,7 +6,7 @@ class FixedItem extends AppItem
         super
         @element.draggable=false
 
-        @open_indicator = create_img("OpenIndicator", "img/s_app_open.png", @element)
+        @open_indicator = create_img("OpenIndicator", SHORT_INDICATOR, @element)
         @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
         @open_indicator.style.display = "none"
         @set_tooltip(title)
@@ -18,12 +18,14 @@ class FixedItem extends AppItem
         else
             @open_indicator.style.display = "none"
 
-    do_mouseover: (e) ->
+    do_mouseover: (e) =>
+        super
         Preview_close_now()
         DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 
-    do_mouseout: (e)->
+    do_mouseout: (e)=>
+        super
         if Preview_container.is_showing
             __clear_timeout()
             clearTimeout(tooltip_hide_id)
@@ -47,16 +49,16 @@ class ShowDesktop extends FixedItem
         DCore.signal_connect("desktop_status_changed", =>
             @show(DCore.Dock.get_desktop_status())
         )
-    do_click: (e)->
+    do_click: (e)=>
         DCore.Dock.show_desktop(!@__show)
-    do_buildmenu: ->
+    do_buildmenu: =>
         []
-    do_dragenter: (e) ->
+    do_dragenter: (e) =>
         e.stopPropagation()
         ShowDesktop.set_time_id = setTimeout(=>
             DCore.Dock.show_desktop(true)
         , 1000)
-    do_dragleave: (e) ->
+    do_dragleave: (e) =>
         e.stopPropagation()
         clearTimeout(ShowDesktop.set_time_id)
         ShowDesktop.set_time_id = null
@@ -71,9 +73,9 @@ class LauncherItem extends FixedItem
         DCore.signal_connect("launcher_destroy", =>
             @show(false)
         )
-    do_click: (e)->
+    do_click: (e)=>
         DCore.Dock.toggle_launcher(!@__show)
-    do_buildmenu: ->
+    do_buildmenu: =>
         []
 
 
@@ -85,13 +87,14 @@ class Trash extends FixedItem
             @update(info.value)
         )
 
-    do_buildmenu:->
+    do_buildmenu:=>
         menu = [[1, _("_Clean up"), DCore.DEntry.get_trash_count() != 0]]
         if @is_opened
             menu.push([2, _("_Close")])
         menu
 
-    do_itemselected: (e)->
+    do_itemselected: (e)=>
+        super
         calc_app_item_size()
         switch e.id
             when 1
@@ -105,11 +108,11 @@ class Trash extends FixedItem
             when 2
                 DCore.Dock.close_window(@id)
 
-    do_click: ->
+    do_click: =>
         if !DCore.DEntry.launch(@entry, [])
             confirm(_("Can not open this file."), _("Warning"))
 
-    do_drop: (evt)->
+    do_drop: (evt)=>
         evt.stopPropagation()
         evt.preventDefault()
         if dnd_is_file(evt) or dnd_is_desktop(evt)
@@ -120,17 +123,17 @@ class Trash extends FixedItem
                 tmp_list.push(e)
             if tmp_list.length > 0 then DCore.DEntry.trash(tmp_list)
 
-    do_dragenter : (evt) ->
+    do_dragenter : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"
 
-    do_dragover : (evt) ->
+    do_dragover : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"
 
-    do_dragleave : (evt) ->
+    do_dragleave : (evt) =>
         evt.stopPropagation()
         evt.preventDefault()
         evt.dataTransfer.dropEffect = "move"

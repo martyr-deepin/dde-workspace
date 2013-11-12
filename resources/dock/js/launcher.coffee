@@ -16,13 +16,14 @@ class Launcher extends AppItem
             swap_element(@element, group.element)
             group.destroy()
 
-    do_click: (e)->
+    do_click: (e)=>
         @tooltip?.hide()
         @tooltip = null
         @flash()
         @_do_launch []
 
-    do_itemselected: (e)->
+    do_itemselected: (e)=>
+        super
         action = @actions[e.id - 1]
         if action?
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
@@ -70,12 +71,14 @@ class Launcher extends AppItem
             @destroy()
         ,500)
 
-    do_mouseover: (e)->
+    do_mouseover: (e)=>
+        super
         Preview_close_now()
         DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 
-    do_mouseout: (e)->
+    do_mouseout: (e)=>
+        super
         if Preview_container.is_showing
             __clear_timeout()
             clearTimeout(tooltip_hide_id)

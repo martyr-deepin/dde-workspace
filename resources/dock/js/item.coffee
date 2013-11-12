@@ -33,10 +33,11 @@ calc_app_item_size = ->
         Widget.look_up(i.id)?.update_scale()
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
-        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
+        # apps are moved up, so add 5
+        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 5
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region(w * item_num + 10)
+    update_dock_region(w * item_num)
 
 update_dock_region = (w)->
     if board
@@ -84,7 +85,7 @@ class AppList extends Widget
     record_last_over_item: (item)->
         @_insert_anchor_item = item
 
-    do_drop: (e)->
+    do_drop: (e)=>
         e.stopPropagation()
         e.preventDefault()
         if dnd_is_desktop(e)
@@ -99,7 +100,7 @@ class AppList extends Widget
         calc_app_item_size()
         # update_dock_region()
 
-    do_dragover: (e) ->
+    do_dragover: (e) =>
         e.preventDefault()
         e.stopPropagation()
         if dnd_is_deepin_item(e) or dnd_is_desktop(e)
@@ -110,7 +111,7 @@ class AppList extends Widget
             else
                 @hide_indicator()
 
-    do_dragleave: (e)->
+    do_dragleave: (e)=>
         @hide_indicator()
         e.stopPropagation()
         e.preventDefault()
@@ -118,7 +119,7 @@ class AppList extends Widget
             calc_app_item_size()
             # update_dock_region()
 
-    do_dragenter: (e)->
+    do_dragenter: (e)=>
         DCore.Dock.require_all_region()
         e.stopPropagation()
         e.preventDefault()
@@ -217,26 +218,17 @@ class AppItem extends Widget
         @img.style.width = icon_width
         @img.style.height = icon_height
 
-        if @img2
-            @img2.style.width = icon_width
-            @img2.style.height = icon_height
-        if @img3
-            @img3.style.width = icon_width
-            @img3.style.height = icon_height
-
         if @open_indicator
-            h = INDICATER_HEIGHT * ICON_SCALE
             @open_indicator.style.width = INDICATER_WIDTH * ICON_SCALE
-            @open_indicator.style.height = h
-            @open_indicator.style.top = ITEM_HEIGHT * ICON_SCALE - h
+            @open_indicator.style.top = icon_height + 10  # 10 for reflect effective
 
-    do_dragover: (e)->
+    do_dragover: (e)=>
         e.stopPropagation()
         e.preventDefault()
         return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
         app_list.record_last_over_item(@)
 
-    do_dragstart: (e)->
+    do_dragstart: (e)=>
         e.stopPropagation()
         DCore.Dock.require_all_region()
         app_list.record_last_over_item(@)
@@ -249,7 +241,7 @@ class AppItem extends Widget
         e.dataTransfer.setData("text/plain", "swap")
         e.dataTransfer.effectAllowed = "copyMove"
 
-    do_dragend: (e)->
+    do_dragend: (e)=>
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
         e.stopPropagation()
         e.preventDefault()
@@ -261,10 +253,11 @@ class AppItem extends Widget
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
+
     hide_swap_indicator: ->
         @remove_css_class("ItemSwapIndicator", @img)
 
-    do_dragenter: (e)->
+    do_dragenter: (e)=>
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
@@ -281,7 +274,7 @@ class AppItem extends Widget
         else
             e.dataTransfer.dropEffect="move"
 
-    do_dragleave: (e)->
+    do_dragleave: (e)=>
         @hide_swap_indicator()
         @_try_swaping_id = null
         @hide_swap_indicator()
@@ -294,7 +287,7 @@ class AppItem extends Widget
             is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock panel?"))
             if is_delete
                 DCore.Dock.request_undock(@id)
-    do_drop: (e) ->
+    do_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
         @hide_swap_indicator()
@@ -318,6 +311,17 @@ class AppItem extends Widget
     set_tooltip: (text) ->
         new ToolTip(@element, text)
 
+    # use these three event to avoid the fact css events are not triggered.
+    do_mouseover: (e)=>
+        @img.style.webkitTransform = 'scale(1.1)'
+        @img.style.webkitTransition = 'all 0.2s ease-out'
+
+    do_mouseout: (e)=>
+        @img.style.webkitTransform = ''
+        @img.style.webkitTransition = 'opacity 1s ease-in'
+
+    do_itemselected: (e)=>
+        @do_mouseout(e)
 
 
 document.body.addEventListener("drop", (e)->

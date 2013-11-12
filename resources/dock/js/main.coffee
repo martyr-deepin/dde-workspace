@@ -22,7 +22,7 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
-$("#container").style.maxWidth = screen.width
+$("#container").style.maxWidth = screen.width - 70  # force board to contain apps
 board = new Board("board")
 board.draw()
 
@@ -115,7 +115,8 @@ DCore.signal_connect("active_window", (info)->
 setTimeout(->
     IN_INIT = false
     calc_app_item_size()
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE)
+    # apps are moved up, so add 5
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 5)
 , 100)
 
 

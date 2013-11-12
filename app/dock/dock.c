@@ -42,7 +42,7 @@ static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
 static GKeyFile* dock_config = NULL;
 
-int _dock_height = 60;
+int _dock_height = 65;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 
 JS_EXPORT_API void dock_change_workarea_height(double height);
