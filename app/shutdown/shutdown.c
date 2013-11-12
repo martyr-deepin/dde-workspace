@@ -51,15 +51,15 @@
 #define SHUTDOWN_CONF "shutdown/config.ini"
 static GKeyFile* shutdown_config = NULL;
 
-static GtkWidget* container = NULL;
-static GtkWidget* webview = NULL;
+PRIVATE GtkWidget* container = NULL;
+PRIVATE GtkWidget* webview = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 
 
 PRIVATE
-void _update_size(GdkScreen *screen, GtkWidget* conntainer)
+void _update_size(GdkScreen *screen, GtkWidget* container)
 {
     gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
 }
@@ -158,6 +158,7 @@ int main (int argc, char **argv)
 
 
     gtk_widget_realize (container);
+    gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
