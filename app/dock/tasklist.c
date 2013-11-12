@@ -84,6 +84,7 @@ PRIVATE Atom ATOM_XEMBED_INFO;
 PRIVATE Display* _dsp = NULL;
 PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
+PRIVATE Atom ATOM_ICON_NAME;
 
 
 PRIVATE
@@ -123,6 +124,7 @@ void _init_atoms()
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_DEEPIN_WINDOW_VIEWPORTS = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORTS");
     ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
+    ATOM_ICON_NAME = gdk_x11_get_xatom_by_name("_NET_WM_ICON_NAME");
 }
 
 typedef struct _Workspace Workspace;
@@ -754,13 +756,12 @@ void _update_window_appid(Client* c)
             g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
             g_assert(c->title != NULL);
             if (app_id == NULL) {
+                g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
                 GKeyFile* f = load_app_config(FILTER_FILE);
                 if (f != NULL && c->instance_name != NULL) {
                     app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
 
                     if (app_id != NULL) {
-                        g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
-
                         char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
                         if (path != NULL)
                             desktop_file = g_desktop_app_info_new_from_filename(path);
@@ -770,33 +771,37 @@ void _update_window_appid(Client* c)
                 g_key_file_unref(f);
             }
             if (app_id == NULL) {
+                g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
             }
             if (app_id == NULL && c->instance_name != NULL) {
+                g_debug("[%s] get app id from instance name: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from instance name: %s", __func__, app_id);
             }
             if (app_id == NULL && c->clss != NULL) {
+                g_debug("[%s] get app id from class name: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from class name: %s", __func__, app_id);
             }
             if (app_id == NULL && exec_args != NULL) {
+                g_debug("[%s] get app id from exec args: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from exec args: %s", __func__, app_id);
             }
             if (app_id == NULL) {
+                g_debug("[%s] get app id from _NET_WM_ICON_NAME", __func__);
+                gulong item = 0;
+                char* icon_name = get_window_property(_dsp, c->window, ATOM_ICON_NAME, &item);
+                if (icon_name != NULL) {
+                    app_id = find_app_id(exec_name, icon_name, APPID_FILTER_ICON_NAME);
+                    g_free(icon_name);
+                }
+            }
+            if (app_id == NULL) {
+                g_debug("[%s] get app id from exec name: %s", __func__, app_id);
                 app_id = g_strdup(exec_name);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from exec name: %s", __func__, app_id);
             }
         } else {
-            app_id = g_strdup(c->clss);
             g_debug("[%s] no s_pid, get app id from class name: %s", __func__, app_id);
+            app_id = g_strdup(c->clss);
         }
         g_free(exec_name);
         g_free(exec_args);

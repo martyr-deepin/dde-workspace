@@ -69,6 +69,10 @@ DCore.signal_connect("launcher_removed", (info) ->
 )
 
 DCore.signal_connect("task_updated", (info) ->
+    if info.app_id == 'trash'
+        Widget.look_up(info.app_id).set_id(info.id).show_indicator()
+        return
+
     leader = Widget.look_up("le_" + info.app_id)
 
     if not leader
@@ -82,6 +86,9 @@ DCore.signal_connect("dock_hidden", ->
 )
 
 DCore.signal_connect("task_removed", (info) ->
+    if info.app_id == 'trash'
+        Widget.look_up(info.app_id).hide_indicator()
+        return
     Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
 )
 

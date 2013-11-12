@@ -19,6 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <stdlib.h>
+
 #include <glib.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -274,6 +276,7 @@ void add_monitors()
 {
     _monitor_desktop_files();
     _monitor_autostart_files();
+    atexit(destroy_monitors);
 }
 
 

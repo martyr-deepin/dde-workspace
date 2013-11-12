@@ -34,6 +34,7 @@
 #include "region.h"
 #include "dock_hide.h"
 #include "DBUS_dock.h"
+#include "monitor.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 
@@ -253,7 +254,9 @@ int main(int argc, char* argv[])
 
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+#ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+#endif
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
@@ -281,6 +284,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
     setup_dock_dbus_service();
+    GFileMonitor* m = monitor_trash();
     gtk_main();
     return 0;
 }

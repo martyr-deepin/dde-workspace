@@ -24,7 +24,9 @@ calc_app_item_size = ->
     return if apps.length = 0
 
     list = $("#app_list")
-    w = clamp(list.clientWidth / list.children.length, 34, ITEM_WIDTH * MAX_SCALE)
+    client_width = list.clientWidth
+    item_num = list.children.length
+    w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
 
     for i in apps
@@ -34,7 +36,7 @@ calc_app_item_size = ->
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region(w * list.children.length + 10)
+    update_dock_region(w * item_num + 10)
 
 update_dock_region = (w)->
     if board
@@ -57,6 +59,7 @@ class AppList extends Widget
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
+        @trash = null
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -71,7 +74,12 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     append_app_item: (c)->
-        @element.appendChild(c.element)
+        if @trash == null
+            @element.appendChild(c.element)
+            if c.id == "trash"
+                @trash = c.element
+        else
+            @element.insertBefore(c.element, @trash)
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -143,7 +151,7 @@ class AppList extends Widget
         if @_insert_anchor_item
             @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
-            @element.appendChild(@insert_indicator)
+            @element.insertBefore(@insert_indicator, @trash)
 
         @is_insert_indicator_shown = true
         board.set_width(board.board.width + ITEM_WIDTH)

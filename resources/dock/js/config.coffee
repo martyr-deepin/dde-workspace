@@ -42,3 +42,6 @@ ICON_SCALE = MAX_SCALE  #this will be modify on runtime
 
 NORMAL_STATUS_INDICATOR = "img/s_app_open.png"
 ACTIVE_STATUS_INDICATOR = "img/s_app_active.png"
+
+EMPTY_TRASH_ICON = "user-trash"
+FULL_TRASH_ICON = "user-trash-full"

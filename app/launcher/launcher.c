@@ -413,7 +413,6 @@ int main(int argc, char* argv[])
         launcher_show();
     }
     gtk_main();
-    destroy_monitors();
     return 0;
 }
 

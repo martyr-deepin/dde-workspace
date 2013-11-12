@@ -9,6 +9,9 @@ class ClientGroup extends AppItem
 
             @leader = null
 
+            ###
+            @app_img = create_img("AppItemImg", "", @element)
+            ###
             # @img is the behind one,
             # @img2 is the middle one,
             # @img3 is the front one.
