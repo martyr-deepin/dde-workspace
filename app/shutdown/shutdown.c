@@ -146,7 +146,6 @@ int main (int argc, char **argv)
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri (shutdown_HTML_PATH);
-    g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
 

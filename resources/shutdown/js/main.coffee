@@ -25,15 +25,15 @@ DCore.signal_connect('workarea_changed', (alloc)->
     echo "workarea_changed"
     height = alloc.height
     width = alloc.width
-    echo shutdown.element + "#{height};#{width}"
-    shutdown.element.style.maxHeight = "#{height}px"
-    shutdown.element.style.maxWidth = "#{width}px"
+    echo document.body + "#{height};#{width}"
+    document.body.style.maxHeight = "#{height}px"
+    document.body.style.maxWidth = "#{width}px"
 )
 
 inited = false
 DCore.signal_connect("draw_background", (info)->
     echo "draw_background:url(#{info.path})"
-    shutdown.element.style.backgroundImage = "url(#{info.path})"
+    document.body.style.backgroundImage = "url(#{info.path})"
     # if inited
     #     DCore.Launcher.clear()
     # inited = true
