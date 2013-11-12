@@ -380,7 +380,9 @@ void dock_request_undock(const char* app_id)
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
 
-    js_post_message_simply("launcher_removed", "{\"Id\": \"%s\"}", app_id);
+    JSObjectRef id_info = json_create();
+    json_append_string(id_info, "Id", app_id);
+    js_post_message("launcher_removed", id_info);
 }
 
 JS_EXPORT_API

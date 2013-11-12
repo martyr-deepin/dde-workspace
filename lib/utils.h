@@ -61,5 +61,6 @@ char* get_basename_without_extend_name(char const* path);
 gboolean is_deepin_icon(char const* icon_path);
 char* check_absolute_path_icon(char const* app_id, char const* icon_path);
 gboolean is_chrome_app(char const* name);
+char* bg_blur_pict_get_dest_path (const char* src_uri);
 
 #endif

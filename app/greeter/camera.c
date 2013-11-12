@@ -218,7 +218,7 @@ static
 gboolean recognized_handler(gpointer data)
 {
     g_debug("[%s] recognized", __func__);
-    js_post_message_simply("start-login", NULL);
+    js_post_signal("start-login");
     recognition_info.reco_state = RECOGNIZE_FINISH;
     return G_SOURCE_REMOVE;
 }
@@ -303,7 +303,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         g_object_unref(pixbuf);
         recognition_info.has_data = TRUE;
 
-        js_post_message_simply("start-animation", NULL);
+        js_post_signal("start-animation");
         recognition_info.reco_state = RECOGNIZING;
         sended = FALSE;
         reco();

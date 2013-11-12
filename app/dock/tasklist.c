@@ -916,7 +916,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             active_window_changed(_dsp, (Window)dock_get_active_window());
         } else if (ev->atom == ATOM_SHOW_DESKTOP) {
-            js_post_message_simply("desktop_status_changed", NULL);
+            js_post_signal("desktop_status_changed");
         } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
             _update_current_viewport(&current_workspace);
         }
@@ -1259,14 +1259,18 @@ gchar* dock_bus_list_apps()
 DBUS_EXPORT_API
 void dock_bus_close_window(char* app_id)
 {
-    js_post_message_simply("close_window", "{\"app_id\": \"%s\"}", app_id);
+    JSObjectRef appid = json_create();
+    json_append_string(appid, "app_id", app_id);
+    js_post_message("close_window", appid);
 }
 
 
 DBUS_EXPORT_API
 void dock_bus_active_window(char* app_id)
 {
-    js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
+    JSObjectRef appid = json_create();
+    json_append_string(appid, "app_id", app_id);
+    js_post_message("active_window", appid);
 }
 
 

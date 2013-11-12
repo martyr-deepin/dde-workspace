@@ -109,7 +109,9 @@ gboolean lock_try_unlock (const gchar *password)
         gtk_main_quit ();
 
     } else {
-        js_post_message_simply("auth-failed", "{\"error\":\"%s\"}", _("Invalid Password"));
+        JSObjectRef error_message = json_create();
+        json_append_string(error_message, "error", _("Invalid Password"));
+        js_post_message("auth-failed", error_message);
     }
 
     return succeed;

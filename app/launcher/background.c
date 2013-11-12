@@ -120,7 +120,9 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
     }
     if (g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
         g_debug("background changed");
-        js_post_message_simply("draw_background", "{\"path\": \"%s\"}", blur_path);
+        JSObjectRef path = json_create();
+        json_append_string(path, "path", blur_path);
+        js_post_message("draw_background", path);
     }
     g_free(blur_path);
 }

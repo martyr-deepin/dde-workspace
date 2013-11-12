@@ -57,7 +57,7 @@ void test_desktop_info()
 void test__update_autostart()
 {
     // not use the original _update_autostart, just skip the
-    // js_post_message_simply function.
+    // js_post_XXX function.
     char* data = g_strdup("test");
     Test({
          _update_autostart(data);
@@ -91,7 +91,7 @@ void test_autostart_monitor_callback()
 
 void monitor_test()
 {
-    // comment js_post_message_simply or something like that before testing
+    // comment js_post_XXX or something like that before testing
     // backend memory is convenient.
 
     /* test_get_all_applications_dirs(); */

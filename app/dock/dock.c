@@ -99,7 +99,7 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
             g_debug("auto leave_notify");
             dock_hide_real_now();
         }
-        js_post_message_simply("leave-notify", NULL);
+        js_post_signal("leave-notify");
     }
     return FALSE;
 }
@@ -292,15 +292,15 @@ int main(int argc, char* argv[])
 void update_dock_color()
 {
     /*if (GD.is_webview_loaded)*/
-        /* js_post_message_simply("dock_color_changed", NULL); */
+        /* js_post_signal("dock_color_changed"); */
 }
 
 void update_dock_size_mode()
 {
     if (GD.config.mini_mode) {
-        js_post_message_simply("in_mini_mode", NULL);
+        js_post_signal("in_mini_mode");
     } else {
-        js_post_message_simply("in_normal_mode", NULL);
+        js_post_signal("in_normal_mode");
     }
 }
 
