@@ -19,18 +19,18 @@
 
 frame_click = false
 option = ["lock","suspend","logout","restart","shutdown"]
-message_text = [
-    "do you want to lock your computer?",
-    "do you want to suspend your computer?",
-    "do you want to logout your computer?",
-    "do you want to restart your computer?",
-    "do you want to shutdown your computer?"
-]
+timeId = null
+
+destory_all = ->
+    clearInterval(timeId) if timeId
+    DCore.Shutdown.quit()
+
+
 
 document.body.addEventListener("click",->
     if !frame_click
         echo "right click body"
-        DCore.Shutdown.quit()
+        destory_all()
     frame_click = false
     )
 
@@ -100,10 +100,10 @@ class ShutDown extends Widget
         confirmdialog = new ConfirmDialog(i)
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
+        confirmdialog.interval(60)
 
     fade:(i)->
-        echo "fade"
-        time = 0.7
+        time = 0.5
         for el,j in opt
             apply_animation(el,"fade_animation#{j}","#{time}s")
         opt[i].addEventListener("webkitAnimationEnd",=>
@@ -112,12 +112,24 @@ class ShutDown extends Widget
 
 
 class ConfirmDialog extends Widget
+    message_text = [
+        "System will auto lock ",
+        "System will auto suspend ",
+        "System will auto logout ",
+        "System will auto restart ",
+        "System will auto shutdown "
+    ]
+    timeId = null
+
     constructor: (i)->
         super
         if i < 2 or i > 4 then return
         @i = i
         #echo "ConfirmDialog:#{option[i]}"
-    
+   
+    destory:->
+        document.body.removeChild(@element)
+
 
     frame_build:->
         i = @i
@@ -127,15 +139,14 @@ class ConfirmDialog extends Widget
         )
         
         left = create_element("div","left",frame_confirm)
-        img_url = []
-        img_url[i] = "img/normal/#{option[i]}.png"
-        img_confirm = create_img("img_confirm",img_url[i],left)
+        img_url = "img/normal/#{option[i]}.png"
+        @img_confirm = create_img("img_confirm",img_url,left)
         text_img = create_element("div","text_img",left)
         text_img.textContent = option[i]
         
         right = create_element("div","right",frame_confirm)
-        message_confirm = create_element("div","message_confirm",right)
-        message_confirm.textContent = message_text[i]
+        @message_confirm = create_element("div","message_confirm",right)
+        @message_confirm.textContent = message_text[i] + "in 60 seconds."
 
         button_confirm = create_element("div","button_confirm",right)
         
@@ -152,9 +163,11 @@ class ConfirmDialog extends Widget
         button_ok.value = option[i]
 
         button_cancel.addEventListener("click",->
-            DCore.Shutdown.quit()
+            clearInterval(timeId) if timeId
+            destory_all()
         )
         button_ok.addEventListener("click",->
+            destory_all()
             switch button_ok.textContent
                 when "logout" then echo "logout"
                 when "restart" then echo "restart"
@@ -162,8 +175,27 @@ class ConfirmDialog extends Widget
                 else return
         )
 
-        apply_animation(right,"show_confirm","0.5s")
+        apply_animation(right,"show_confirm","0.3s")
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"
         ,false)
+    
+    interval:(time)->
+        i = @i
+        that = @
+        clearInterval(timeId) if timeId
+        timeId = setInterval(->
+            time--
+            that.message_confirm.textContent = message_text[i] + "in #{time} seconds."
+            #img_url = "img/interval/#{option[i]}/#{option[i]}#{60 - time}.png"
+            #that.img_confirm.src = img_url
+            if time == 0
+                clearInterval(timeId)
+                destory_all()
+                switch option[i]
+                    when "logout" then echo "logout"
+                    when "restart" then echo "restart"
+                    when "shutdown" then echo "shutdown"
+                    else return
+        ,1000)
 

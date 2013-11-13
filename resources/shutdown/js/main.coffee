@@ -21,7 +21,7 @@
 document.body.style.height = window.screen.availHeight
 document.body.style.width = window.screen.availWidth
 DCore.signal_connect("draw_background", (info)->
-    echo "draw_background:url(#{info.path})"
+    #echo "draw_background:url(#{info.path})"
     document.body.style.backgroundImage = "url(#{info.path})"
 )
 
