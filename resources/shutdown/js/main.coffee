@@ -30,11 +30,7 @@ DCore.signal_connect('workarea_changed', (alloc)->
     document.body.style.maxWidth = "#{width}px"
 )
 
-inited = false
 DCore.signal_connect("draw_background", (info)->
     echo "draw_background:url(#{info.path})"
     document.body.style.backgroundImage = "url(#{info.path})"
-    # if inited
-    #     DCore.Launcher.clear()
-    # inited = true
 )

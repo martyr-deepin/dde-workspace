@@ -21,7 +21,6 @@
 
 @import url("../../common/css/animation.css");
 
-
 body{
     position:absolute;
     /*z-index:65535;*/
@@ -29,18 +28,19 @@ body{
     overflow:hidden;
     background-color:rgba(0,0,0,0.5)
     /*-webkit-user-select:none;*/
-    /*display:-webkit-box;*/
-    /*-webkit-box-pack:center;*/
-    /*-webkit-box-align:center;*/
+}
+
+.ShutDown{
+    width:100%;
+    height:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 .frame{
-    margin-left:400px;
-    margin-top:200px;   
-
     display:-webkit-box;
     -webkit-box-orient:vertical;
-    /*background-color:rgba(255,255,0,0.1);*/
 }
 
 .button{
@@ -113,15 +113,23 @@ body{
     to{opacity:1.0;}
 }
 
+
+
+
+.ConfirmDialog{
+    width:100%;
+    height:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
 .frame_confirm{
-    margin-left:400px;
-    margin-top:200px;   
-    
+    margin-left:100px;
+    margin-bottom:40px;
     display:-webkit-box;
 }
 
-.left{
-}
 .img_url{
     width:100px;
     height:100px;
@@ -141,7 +149,7 @@ body{
 .right{
     opacity:0.0;
     margin-left:50px;
-    margin-top:10px;
+    margin-top:30px;
 }
 .message_confirm{
     height:30px;
