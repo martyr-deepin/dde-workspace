@@ -26,7 +26,7 @@ body{
     /*z-index:65535;*/
     cursor:default;
     overflow:hidden;
-    background-color:rgba(0,0,0,0.5)
+    background-color:rgba(0,0,0,0.7)
     /*-webkit-user-select:none;*/
 }
 
@@ -52,43 +52,32 @@ body{
 }
 
 .opt:nth-child(even){
-    margin:10px 10px 10px 10px;
+    margin:0 10px 0 10px;
     /*-webkit-animation:fade_animation 3s;*/
 }
 
 
 .opt:nth-child(odd){
-    margin:10px 10px 10px 10px;
+    margin:0 10px 0 10px;
 }
 
 .opt_img{
-    width:100px;
-    height:100px;
+    width:80px;
+    height:80px;
     cursor: pointer;
 }
 
 .opt_text{
     height:30px;
     line-height:30px;
-    width:100px;
+    width:80px;
     cursor: pointer;
     text-align:center;
     color: #FFF;
-    font-size:large;
-    font-weight: bold;
-    text-shadow: 0 0 2px #808080;
-}
-.message{
-    height:40px;
-    width:100%;
-    line-height:40px;
-    text-align:center;
-    color: #FFF;
-    font-size:large;
-    font-weight: bold;
-    text-shadow: 0 0 2px #808080;
-}
+    font-size:14px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
 
+}
 
 @-webkit-keyframes fade_animation0{
     to{left:120px;opacity:0.0;}
@@ -125,31 +114,31 @@ body{
 }
 
 .frame_confirm{
-    margin-left:100px;
-    margin-bottom:40px;
     display:-webkit-box;
 }
 
-.img_url{
-    width:100px;
-    height:100px;
+.left{
+    margin-left:135px;
 }
-
+.img_confirm{
+    width:80px;
+    height:80px;
+}
 .text_img{
     height:30px;
     line-height:30px;
-    width:100px;
+    width:80px;
+    cursor: pointer;
     text-align:center;
     color: #FFF;
-    font-size:large;
-    font-weight: bold;
-    text-shadow: 0 0 2px #808080;
+    font-size:14px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }
 
 .right{
     opacity:0.0;
     margin-left:50px;
-    margin-top:30px;
+    margin-top:10px;
 }
 .message_confirm{
     height:30px;

@@ -21,15 +21,6 @@ shutdown = new ShutDown()
 shutdown.frame_build()
 document.body.appendChild(shutdown.element)
 
-DCore.signal_connect('workarea_changed', (alloc)->
-    echo "workarea_changed"
-    height = alloc.height
-    width = alloc.width
-    echo document.body + "#{height};#{width}"
-    document.body.style.maxHeight = "#{height}px"
-    document.body.style.maxWidth = "#{width}px"
-)
-
 DCore.signal_connect("draw_background", (info)->
     echo "draw_background:url(#{info.path})"
     document.body.style.backgroundImage = "url(#{info.path})"

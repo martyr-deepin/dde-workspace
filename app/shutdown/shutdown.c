@@ -57,51 +57,12 @@ PRIVATE GtkWidget* webview = NULL;
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 
-
-PRIVATE
-void _update_size(GdkScreen *screen, GtkWidget* container)
-{
-    gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
-}
-
-
-PRIVATE
-void _on_realize(GtkWidget* container)
-{
-    GdkScreen* screen =  gdk_screen_get_default();
-    _update_size(screen, container);
-    g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
-    if (is_js_already)
-        background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
-}
-
-
 JS_EXPORT_API
 void shutdown_quit()
 {
     g_key_file_free(shutdown_config);
     g_object_unref(dde_bg_g_settings);
     gtk_main_quit();
-}
-
-
-PRIVATE
-void shutdown_notify_workarea_size()
-{
-    JSObjectRef workarea_info = json_create();
-    json_append_number(workarea_info, "x", 0);
-    json_append_number(workarea_info, "y", 0);
-    json_append_number(workarea_info, "width", gdk_screen_width());
-    json_append_number(workarea_info, "height", gdk_screen_height());
-    js_post_message("workarea_changed", workarea_info);
-}
-
-
-PRIVATE
-void shutdown_webview_ok()
-{
-    background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
-    is_js_already = TRUE;
 }
 
 
@@ -150,11 +111,7 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
 
-    g_signal_connect(container, "realize", G_CALLBACK(_on_realize), NULL);
-    g_signal_connect (container, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
-    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
-                     G_CALLBACK(background_changed), NULL);
 
 
     gtk_widget_realize (container);

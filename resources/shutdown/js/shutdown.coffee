@@ -45,8 +45,6 @@ class ShutDown extends Widget
     frame_build:->
         frame = create_element("div", "frame", @element)
         button = create_element("div","button",frame)
-        message = create_element("div","message",frame)
-        message.textContent = message_init
         
         
         for tmp ,i in option
@@ -62,14 +60,12 @@ class ShutDown extends Widget
             opt[i].addEventListener("mouseover",->
                 i = this.value
                 opt_img[this.value].src = "img/hover/#{option[i]}.png"
-                message.textContent = message_text[i]
             )
             
             #normal
             opt[i].addEventListener("mouseout",->
                 i = this.value
                 opt_img[this.value].src = "img/normal/#{option[i]}.png"
-                message.textContent = message_init
             )
 
             #click
@@ -77,13 +73,11 @@ class ShutDown extends Widget
                 i = this.value
                 #echo "#{i}:mousedown"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
-                message.textContent = message_text[i]
             )
             opt[i].addEventListener("click",->
                 i = this.value
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
-                message.textContent = message_text[i]
                 that.fade(i)
                 
             )
