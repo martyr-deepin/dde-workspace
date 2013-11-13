@@ -18,16 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 #TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
-class Arrow extends Widget
-    constructor: (@id)->
-        super
-        arrow_outter = create_element("div", "pop_arrow_up_outer", @element)
-        arrow_mid = create_element("div", "pop_arrow_up_mid", @element)
-        arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
-    move_to: (left)->
-        @element.style.left = "#{left}px"
-
-
 class PWContainer extends Widget
     _need_move_animation: false
     _cancel_move_animation_id: -1

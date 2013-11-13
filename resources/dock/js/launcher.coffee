@@ -9,7 +9,6 @@ class Launcher extends AppItem
 
         @build_menu()
 
-
     try_swap_clientgroup: ->
         group = Widget.look_up("le_"+@id)
         if group?

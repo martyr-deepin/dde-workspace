@@ -34,7 +34,7 @@ body {
 
 #container {
     position:fixed;
-    bottom: 11px;
+    bottom: 9px;
     display: -webkit-box;
     min-height: 60px;
     max-height: 60px;

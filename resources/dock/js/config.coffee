@@ -5,7 +5,7 @@ ITEM_WIDTH = 54.0
 ICON_WIDTH = 48.0
 ICON_HEIGHT = 48.0
 
-DOCK_HEIGHT = 65.0
+DOCK_HEIGHT = 68.0
 BOARD_HEIGHT = 40
 
 BOARD_IMG_PATH = "img/board.png"
@@ -41,3 +41,10 @@ SHORT_INDICATOR = "img/indicator-short.svg"
 LONG_INDICATOR = "img/indicator-long.svg"
 
 PANEL_IMG = 'img/panel.svg'
+
+ITEM_TYPE_NULL = ''
+ITEM_TYPE_APP = "App"
+ITEM_TYPE_PLUGIN = "Plugin"
+ITEM_TYPE_RICH_DIR = "RichDir"
+
+WEEKDAY = ["SUN", "MON", "TUE", "WEN", "THU", "FRI", "STA"]

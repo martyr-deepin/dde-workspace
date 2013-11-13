@@ -34,7 +34,7 @@ calc_app_item_size = ->
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
         # apps are moved up, so add 5
-        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 5
+        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
         DCore.Dock.change_workarea_height(height)
 
     update_dock_region(w * item_num)
@@ -166,6 +166,8 @@ class AppItem extends Widget
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
+        @type = ITEM_TYPE_APP
+        @tooltip = null
 
         if not @icon
             @icon = NOT_FOUND_ICON
@@ -220,7 +222,7 @@ class AppItem extends Widget
 
         if @open_indicator
             @open_indicator.style.width = INDICATER_WIDTH * ICON_SCALE
-            @open_indicator.style.top = icon_height + 11  # 11 for reflect effective
+            @open_indicator.style.top = icon_height + 9  # 9 for reflect effective
 
     do_dragover: (e)=>
         e.stopPropagation()
@@ -309,8 +311,11 @@ class AppItem extends Widget
                             DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
 
     set_tooltip: (text) ->
-        @tooltip = new ToolTip(@element, text)
-        @tooltip.set_delay_time(200)  # set delay time to the same as scale time
+        if @tooltip == null
+            @tooltip = new ArrowToolTip(@element, text)
+            @tooltip.set_delay_time(200)  # set delay time to the same as scale time
+            return
+        @tooltip.set_text(text)
 
     # use these three event to avoid the fact css events are not triggered.
     do_mouseover: (e)=>

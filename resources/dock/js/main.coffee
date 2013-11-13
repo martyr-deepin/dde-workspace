@@ -115,13 +115,14 @@ DCore.signal_connect("active_window", (info)->
 setTimeout(->
     IN_INIT = false
     calc_app_item_size()
-    # apps are moved up, so add 5
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 5)
+    # apps are moved up, so add 8
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
 
 
 DCore.Dock.emit_webview_ok()
 
 show_desktop.show(DCore.Dock.get_desktop_status())
+new DigitClock("dde_clock", 'img/digit-clock.svg', '')
 DCore.Dock.test()
 

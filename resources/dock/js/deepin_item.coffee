@@ -1,22 +1,15 @@
-class FixedItem extends AppItem
-    is_fixed_pos: true
-    __show: false
+class Plugin extends AppItem
+    is_fixed_pos: false
 
     constructor: (@id, @icon, title)->
         super
+        @type = ITEM_TYPE_PLUGIN
         @element.draggable=false
 
         @open_indicator = create_img("OpenIndicator", SHORT_INDICATOR, @element)
         @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
         @open_indicator.style.display = "none"
         @set_tooltip(title)
-
-    show: (v)->
-        @__show = v
-        if @__show
-            @open_indicator.style.display = "block"
-        else
-            @open_indicator.style.display = "none"
 
     do_mouseover: (e) =>
         super
@@ -40,6 +33,18 @@ class FixedItem extends AppItem
             setTimeout(->
                 DCore.Dock.update_hide_mode()
             , 500)
+
+
+class FixedItem extends Plugin
+    is_fixed_pos: true
+    __show: false
+
+    show: (v)->
+        @__show = v
+        if @__show
+            @open_indicator.style.display = "block"
+        else
+            @open_indicator.style.display = "none"
 
 
 class ShowDesktop extends FixedItem
@@ -160,6 +165,51 @@ class Trash extends FixedItem
     update: (n=null)->
         n = DCore.DEntry.get_trash_count() if n == null
         @img.src = Trash.get_icon(n)
+
+
+class DigitClock extends Plugin
+    constructor: ->
+        super
+        @date = new Date()
+        @weekday = create_element('div', 'DigitClockWeek', @element)
+        @time = create_element('div', 'DigitClockTime', @element)
+        @update_time()
+        setInterval(@update_time, 1000)
+
+    update_time: =>
+        @time.textContent = "#{@hour()}:#{@min()}"
+        @weekday.textContent = WEEKDAY[@date.getDay()]
+
+    force2bit: (n)->
+        if n < 10 then "0#{n}" else "#{n}"
+
+    hour: (max_hour=24, twobit=false)->
+        hour = @date.getHours()
+        switch max_hour
+            when 12
+                if twobit then @force2bit(hour % 12) else hour % 12
+            when 24
+                if twobit then @force2bit(hour) else hour
+
+    min: (twobit=true) ->
+        min = @date.getMinutes()
+        if twobit then @force2bit(min) else "#{min}"
+
+    do_mouseover: =>
+        super
+        @set_tooltip((new Date()).toLocaleDateString())
+        @element.style.webkitTransform = 'scale(1.1)'
+        @element.style.webkitTransition = 'all 0.2s ease-out'
+        # @weekday.style.top = '4%'
+
+    do_mouseout: =>
+        super
+        @element.style.webkitTransform = ''
+        @element.style.webkitTransition = 'opacity 1s ease-in'
+        # @weekday.style.top = '5%'
+
+
+class AnalogClock extends Plugin
 
 
 try
