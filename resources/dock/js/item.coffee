@@ -309,7 +309,8 @@ class AppItem extends Widget
                             DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
 
     set_tooltip: (text) ->
-        new ToolTip(@element, text)
+        @tooltip = new ToolTip(@element, text)
+        @tooltip.set_delay_time(200)  # set delay time to the same as scale time
 
     # use these three event to avoid the fact css events are not triggered.
     do_mouseover: (e)=>

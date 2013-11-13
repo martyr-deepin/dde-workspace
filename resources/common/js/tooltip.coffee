@@ -1,8 +1,9 @@
 tooltip_hide_id = null
 class ToolTip extends Widget
     @tooltip: null
-    @should_show_id: -1
     constructor: (@element, @text, @parent=document.body)->
+        @delay_time = 0
+        @delay_id = null
         ToolTip.tooltip ?= create_element("div", "tooltip", @parent)
         @event_bind('dragstart', =>
             @hide()
@@ -26,14 +27,16 @@ class ToolTip extends Widget
             @hide()
         )
         @event_bind('mouseover', =>
-            @show()
-            #ToolTip.should_show_id = setTimeout(=>
-                #@show()
-            #, 500)
+            @delay_id = setTimeout(=>
+                @show()
+            , @delay_time)
         )
         @event_bind('click', =>
             @hide()
         )
+
+    set_delay_time: (millseconds) ->
+        @delay_time = millseconds
 
     event_bind: (evt_name, callback) ->
         @element.addEventListener(evt_name, (e) ->
@@ -44,15 +47,18 @@ class ToolTip extends Widget
         ToolTip.tooltip.innerText = @text
         ToolTip.tooltip.style.display = "block"
         @_move_tooltip()
+
     hide: ->
-        #clearTimeout(ToolTip.should_show_id)
+        clearTimeout(@delay_id)
         ToolTip.tooltip?.style.display = "none"
+
     @move_to: (self, x, y) ->
         if y <= 0
             self.hide()
             return
         ToolTip.tooltip.style.left = "#{x}px"
         ToolTip.tooltip.style.bottom = "#{y}px"
+
     _move_tooltip: ->
         page_xy= get_page_xy(@element, 0, 0)
         offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2

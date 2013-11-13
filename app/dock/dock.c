@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
- *               2013 ~ 2013 Liliqiang Lee
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
- *              Liliqiang Lee <liliqiang@linuxdeepin.com>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,7 +193,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
     init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
 
     tray_icon_do_screen_size_change();
-    update_dock_guard_window_position();
+    update_dock_guard_window_position(0);
 }
 
 

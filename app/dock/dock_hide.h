@@ -34,7 +34,7 @@ void dock_show_real_now();
 void dock_toggle_show();
 void dock_update_hide_mode();
 
-void update_dock_guard_window_position();
+void update_dock_guard_window_position(double width);
 
 void init_dock_guard_window();
 gboolean is_mouse_in_dock();

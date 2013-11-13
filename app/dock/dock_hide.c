@@ -75,7 +75,8 @@ PRIVATE void enter_show()
 
     set_state(StateShow);
     _change_workarea_height(_dock_height);
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
+    // move window down 1px to cover 1px blank line
+    gdk_window_move(DOCK_GDK_WINDOW(), 0, 1);
 }
 PRIVATE void enter_hide()
 {
@@ -83,7 +84,7 @@ PRIVATE void enter_hide()
 
     set_state(StateHidden);
     _change_workarea_height(0);
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height-3);
+    gdk_window_move(DOCK_GDK_WINDOW(), 0, _dock_height);
     js_post_message("dock_hidden", NULL);
 }
 
@@ -233,21 +234,21 @@ PRIVATE void _cancel_delay()
         _delay_id = 0;
     }
 }
-void dock_delay_show(int delay)
+void dock_delay_show(int delay_ms)
 {
     _cancel_detect_hide_mode();
     if (CURRENT_STATE == StateHidding) {
         do_show_dock();
     } else {
         _cancel_delay();
-        _delay_id = g_timeout_add(delay, do_show_dock, NULL);
+        _delay_id = g_timeout_add(delay_ms, do_show_dock, NULL);
     }
 }
-void dock_delay_hide(int delay)
+void dock_delay_hide(int delay_ms)
 {
     _cancel_detect_hide_mode();
     _cancel_delay();
-    _delay_id = g_timeout_add(delay, do_hide_dock, NULL);
+    _delay_id = g_timeout_add(delay_ms, do_hide_dock, NULL);
 }
 
 void dock_show_now()
@@ -309,12 +310,12 @@ GdkWindow* get_dock_guard_window()
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
-        /*attributes.wclass = GDK_INPUT_ONLY;*/
+        /* attributes.wclass = GDK_INPUT_ONLY; */
         attributes.event_mask = GDK_ENTER_NOTIFY_MASK;
         /*attributes.event_mask = GDK_ALL_EVENTS_MASK;*/
 
         guard_window =  gdk_window_new(NULL, &attributes, 0);
-        GdkRGBA rgba = { 0, 0, 0, .1 };
+        GdkRGBA rgba = { 0, 0, 0, 0 };
         set_wmspec_dock_hint(guard_window);
         gdk_window_set_background_rgba(guard_window, &rgba);
 
@@ -338,18 +339,30 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
     return GDK_FILTER_CONTINUE;
 }
 
-void update_dock_guard_window_position()
+void update_dock_guard_window_position(double width)
 {
+    if (width == 0)
+        width = gdk_screen_width();
+
     GdkWindow* win = get_dock_guard_window();
-    gdk_window_move(win, 0, gdk_screen_height() - GUARD_WINDOW_HEIGHT);
+    gdk_window_move_resize(win,
+                           (gdk_screen_width() - width) / 2,
+                           gdk_screen_height() - GUARD_WINDOW_HEIGHT,
+                           width,
+                           GUARD_WINDOW_HEIGHT);
 }
 
+JS_EXPORT_API
+void dock_update_guard_window_width(double width)
+{
+    update_dock_guard_window_position(width);
+}
 
 void init_dock_guard_window()
 {
     GdkWindow* win = get_dock_guard_window();
     gdk_window_add_filter(win, _monitor_guard_window, NULL);
-    update_dock_guard_window_position();
+    update_dock_guard_window_position(gdk_screen_width());
 }
 
 void get_mouse_position(int* x, int* y)
