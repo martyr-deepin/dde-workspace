@@ -310,7 +310,7 @@ GdkWindow* get_dock_guard_window()
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
-        /* attributes.wclass = GDK_INPUT_ONLY; */
+        attributes.wclass = GDK_INPUT_ONLY;
         attributes.event_mask = GDK_ENTER_NOTIFY_MASK;
         /*attributes.event_mask = GDK_ALL_EVENTS_MASK;*/
 

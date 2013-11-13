@@ -211,6 +211,22 @@ void check_version()
         save_app_config(dock_config, DOCK_CONFIG);
     }
 
+    if (g_strcmp0(DOCK_VERSION, version) != 0) {
+        g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
+        save_app_config(dock_config, DOCK_CONFIG);
+
+        system("sed -i 's/__Config__/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        GKeyFile* f = load_app_config(APPS_INI);
+        gsize len = 0;
+        char** list = g_key_file_get_groups(f, &len);
+        for (int i = 1; i < len; ++i) {
+            g_key_file_set_string(f, list[i], "Type", DOCKED_ITEM_APP_TYPE);
+        }
+        g_strfreev(list);
+        save_app_config(f, APPS_INI);
+        g_key_file_unref(f);
+    }
+
     if (version != NULL)
         g_free(version);
 

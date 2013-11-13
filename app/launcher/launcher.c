@@ -222,6 +222,13 @@ void check_version()
         save_app_config(launcher_config, LAUNCHER_CONF);
     }
 
+    if (g_strcmp0(LAUNCHER_VERSION, version) != 0) {
+        g_key_file_set_string(launcher_config, "main", "version", LAUNCHER_VERSION);
+        save_app_config(launcher_config, LAUNCHER_CONF);
+
+        system("sed -i 's/__Config__/"HIDDEN_APP_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+    }
+
     if (version != NULL)
         g_free(version);
 }

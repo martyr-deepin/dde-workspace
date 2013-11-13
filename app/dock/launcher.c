@@ -42,7 +42,6 @@ extern char* dcore_get_theme_icon(char const*, double);
  * 3. the executable file name
  * */
 
-#define APPS_INI "dock/apps.ini"
 GKeyFile* k_apps = NULL;
 static GList* _apps_position = NULL;
 
@@ -195,8 +194,11 @@ void update_dock_apps()
 {
     gsize size = 0;
     GError* err = NULL;
-    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position",
-                                             &size, &err);
+    char** list = g_key_file_get_string_list(k_apps,
+                                             DOCKED_ITEM_GROUP_NAME,
+                                             DOCKED_ITEM_KEY_NAME,
+                                             &size,
+                                             &err);
     if (list != NULL) {
         g_assert(list != NULL);
 
@@ -281,7 +283,11 @@ void _save_apps_position()
         list[i] = _tmp_list->data;
         _tmp_list = g_list_next(_tmp_list);
     }
-    g_key_file_set_string_list(k_apps, "__Config__", "Position", list, size);
+    g_key_file_set_string_list(k_apps,
+                               DOCKED_ITEM_GROUP_NAME,
+                               DOCKED_ITEM_KEY_NAME,
+                               list,
+                               size);
     g_slice_free1(sizeof(char*) * size, list);
 }
 
