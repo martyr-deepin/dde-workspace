@@ -49,16 +49,6 @@ body{
 }
 .opt{
     position:relative;
-}
-
-.opt:nth-child(even){
-    margin:0 10px 0 10px;
-    cursor: pointer;
-    /*-webkit-animation:fade_animation 3s;*/
-}
-
-
-.opt:nth-child(odd){
     cursor: pointer;
     margin:0 10px 0 10px;
 }
