@@ -22,7 +22,6 @@ option = ["lock","suspend","logout","restart","shutdown"]
 timeId = null
 
 destory_all = ->
-    echo "destory_all"
     clearInterval(timeId) if timeId
     DCore.Shutdown.quit()
 
@@ -33,6 +32,7 @@ document.body.addEventListener("click",->
     )
 
 confirm_ok = (i)->
+    destory_all()
     switch option[i]
         when "lock" then echo "lock"
         when "suspend" then echo "suspend"
@@ -77,7 +77,7 @@ class ShutDown extends Widget
             opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
-                opt_img[this.value].src = "img/hover/#{option[i]}.png"
+                that.hover_state(i)
             )
             
             #normal
@@ -119,29 +119,26 @@ class ShutDown extends Widget
             @timefunc(i)
         ,false)
     
+    hover_state:(i)->
+        opt_img[i].src = "img/hover/#{option[i]}.png"
+        for tmp,j in opt_img
+            if j != i then tmp.src = "img/normal/#{option[j]}.png"
+    
     key:->
-        hover_state = =>
-            i = choose_num
-            opt_img[i].src = "img/hover/#{option[i]}.png"
-            for tmp,j in opt_img
-                if j != i then tmp.src = "img/normal/#{option[j]}.png"
-
-        choose_enter = =>
-            i = choose_num
-            confirm_ok(i)
-
         document.body.addEventListener("keydown", (e)=>
             switch e.which
                 when LEFT_ARROW
                     choose_num--
                     if choose_num <= 0 then choose_num = 0
-                    hover_state()
+                    @hover_state(choose_num)
                 when RIGHT_ARROW
                     choose_num++
                     if choose_num >= 4 then choose_num = 4
-                    hover_state()
+                    @hover_state(choose_num)
                 when ENTER_KEY
-                    choose_enter()
+                    i = choose_num
+                    if 2 <= i <= 4 then @fade(i)
+                    else if i < 2 then confirm_ok(i)
                 when ESC_KEY
                     destory_all()
         )
@@ -207,7 +204,6 @@ class ConfirmDialog extends Widget
         )
         @button_ok.addEventListener("click",->
             echo "ok"
-            destory_all()
             confirm_ok(i)
         )
 
@@ -229,7 +225,6 @@ class ConfirmDialog extends Widget
             that.message_confirm.textContent = message_text[i] + "in #{time} seconds."
             if time == 0
                 clearInterval(timeId)
-                destory_all()
                 if 2 <= i <= 4 then confirm_ok(i)
         ,1000)
 

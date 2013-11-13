@@ -52,6 +52,9 @@ body{
     cursor: pointer;
     margin:0 10px 0 10px;
 }
+.opt:hover{
+    cursor: pointer;
+}
 
 .opt_img{
     width:80px;
@@ -157,6 +160,7 @@ body{
 }
 .button_cancel:hover{
     color:rgba(0,193,255,1.0)
+    cursor:pointer;
 }
 
 
@@ -170,5 +174,6 @@ body{
 }
 .button_ok:hover{
     color:rgba(0,193,255,1.0)
+    cursor:pointer;
 }
 
