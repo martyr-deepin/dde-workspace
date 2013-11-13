@@ -27,7 +27,6 @@ body{
     cursor:default;
     overflow:hidden;
     background-color:rgba(0,0,0,0.7)
-    /*-webkit-user-select:none;*/
 }
 
 .ShutDown{
@@ -53,25 +52,23 @@ body{
 
 .opt:nth-child(even){
     margin:0 10px 0 10px;
+    cursor: pointer;
     /*-webkit-animation:fade_animation 3s;*/
 }
 
 
 .opt:nth-child(odd){
+    cursor: pointer;
     margin:0 10px 0 10px;
 }
 
 .opt_img{
     width:80px;
     height:80px;
-    cursor: pointer;
 }
 
 .opt_text{
-    height:30px;
-    line-height:30px;
     width:80px;
-    cursor: pointer;
     text-align:center;
     color: #FFF;
     font-size:14px;
@@ -125,10 +122,7 @@ body{
     height:80px;
 }
 .text_img{
-    height:30px;
-    line-height:30px;
     width:80px;
-    cursor: pointer;
     text-align:center;
     color: #FFF;
     font-size:14px;
@@ -141,92 +135,49 @@ body{
     margin-top:10px;
 }
 .message_confirm{
-    height:30px;
-    width:100%;
-    line-height:30px;
-
     text-align:center;
     color: #FFF;
 
     
-    font-size:16px;
+    font-size:13px;
     word-wrap:break-word;
     white-space:pre;
     overflow:visible;    
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }
 
 .button_confirm{
+    height:80px;
+    width:100%;
     display:-webkit-box;
     -webkit-box-pack:end;
-    margin-top:20px;
-    pointer-events:pointer;
+    -webkit-box-align:end;
+    
+    font-size:14px;
 }
+
+
+.button_cancel{
+    width:70px;
+    height:30px;
+    cursor:pointer;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    color:rgba(255,255,255,0.5)
+}
+.button_cancel:hover{
+    color:rgba(0,193,255,1.0)
+}
+
 
 .button_ok{
     width:70x;
     height:30px;
     margin-left:40px;
-
-    border-style: solid;
-    padding: 6px;
-    border-width: 1px;
-    -webkit-user-select: none;
-    background-color: rgb(240, 240, 240);
-    border-bottom-left-radius: 3px;
-    -webkit-box-shadow: rgb(0, 0, 0) 0px 0px 2px;
-    box-shadow: rgb(0, 0, 0) 0px 0px 2px;
-    border-bottom-right-radius: 3px;
-    background-image: -webkit-linear-gradient(270deg, rgb(50, 50, 50), rgb(18, 18, 18));
-    border-top-left-radius: 3px;
-    letter-spacing: 3px;
-    border-top-right-radius: 3px;
-    border-color: rgb(96, 95, 96) rgb(74, 73, 74) rgb(52, 52, 53) rgb(77, 77, 78);
-    line-height: 9px;
-    word-wrap: break-word;
-    display: inline;
-    /*font-family: Helvetica, Arial, sans-serif;*/
-    font-size: 13px;
-    text-align: center;
-    color: rgb(254, 253, 255);
-    cursor: pointer;
-    overflow: visible;
-
+    cursor:pointer;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    color:rgba(255,255,255,1.0)
 }
 .button_ok:hover{
-    color:rgb(0,193,255)
+    color:rgba(0,193,255,1.0)
 }
-
-.button_cancel{
-    width:70px;
-    height:30px;
-
-    border-style: solid;
-    padding: 6px;
-    border-width: 1px;
-    -webkit-user-select: none;
-    background-color: rgb(240, 240, 240);
-    border-bottom-left-radius: 3px;
-    -webkit-box-shadow: rgb(0, 0, 0) 0px 0px 2px;
-    box-shadow: rgb(0, 0, 0) 0px 0px 2px;
-    border-bottom-right-radius: 3px;
-    background-image: -webkit-linear-gradient(270deg, rgb(50, 50, 50), rgb(18, 18, 18));
-    border-top-left-radius: 3px;
-    letter-spacing: 3px;
-    border-top-right-radius: 3px;
-    border-color: rgb(96, 95, 96) rgb(74, 73, 74) rgb(52, 52, 53) rgb(77, 77, 78);
-    line-height: 9px;
-    word-wrap: break-word;
-    display: inline;
-    /*font-family: Helvetica, Arial, sans-serif;*/
-    font-size: 13px;
-    text-align: center;
-    color: rgb(254, 253, 255);
-    cursor: pointer;
-    overflow: visible;
-}
-.button_cancel:hover{
-    color:rgb(0,193,255);
-}
-
-
 

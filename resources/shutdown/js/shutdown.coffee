@@ -17,11 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-document.body.style.height = window.screen.availHeight
-document.body.style.width = window.screen.availWidth
-
 option = ["lock","suspend","logout","restart","shutdown"]
-message_init = "choose one"
 message_text = [
     "do you want to lock your computer?",
     "do you want to suspend your computer?",
@@ -78,7 +74,9 @@ class ShutDown extends Widget
                 i = this.value
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
-                that.fade(i)
+                if 2 <= i <= 4 then that.fade(i)
+                else
+                     echo "option[i]:click to #{option[i]}."
                 
             )
     
@@ -92,7 +90,6 @@ class ShutDown extends Widget
         echo "fade"
         time = 0.7
         for el,j in opt
-            #@animfun(el,time,@timefunc.bind(@))
             apply_animation(el,"fade_animation#{j}","#{time}s")
         opt[i].addEventListener("webkitAnimationEnd",=>
             @timefunc(i)
@@ -102,6 +99,7 @@ class ShutDown extends Widget
 class ConfirmDialog extends Widget
     constructor: (i)->
         super
+        if i < 2 or i > 4 then return
         @i = i
         echo "ConfirmDialog:#{option[i]}"
 
@@ -122,13 +120,13 @@ class ConfirmDialog extends Widget
 
         button_confirm = create_element("div","button_confirm",right)
         
-        button_cancel = create_element("button","button_cancel",button_confirm)
+        button_cancel = create_element("div","button_cancel",button_confirm)
         button_cancel.type = "button"
         button_cancel.textContent = "cancel"
         button_cancel.name = "cancel"
         button_cancel.value = "cancel"
 
-        button_ok = create_element("button","button_ok",button_confirm)
+        button_ok = create_element("div","button_ok",button_confirm)
         button_ok.type = "button"
         button_ok.textContent = option[i]
         button_ok.name = option[i]
@@ -144,7 +142,6 @@ class ConfirmDialog extends Widget
         )
 
         document.body.appendChild(@element)
-        echo "show_animal"
         apply_animation(right,"show_confirm","0.5s")
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"

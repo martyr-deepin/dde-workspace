@@ -17,6 +17,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+document.body.style.height = window.screen.availHeight
+document.body.style.width = window.screen.availWidth
+
+
 shutdown = new ShutDown()
 shutdown.frame_build()
 document.body.appendChild(shutdown.element)
