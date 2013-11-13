@@ -32,6 +32,16 @@ document.body.addEventListener("click",->
     frame_click = false
     )
 
+confirm_ok = (i)->
+    switch option[i]
+        when "lock" then echo "lock"
+        when "suspend" then echo "suspend"
+        when "logout" then echo "logout"
+        when "restart" then echo "restart"
+        when "shutdown" then echo "shutdown"
+        else return
+
+
 class ShutDown extends Widget
     opt = []
     img_url = []
@@ -87,8 +97,7 @@ class ShutDown extends Widget
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 if 2 <= i <= 4 then that.fade(i)
-                else
-                     echo "option[i]:click to #{option[i]}."
+                else if i < 2 then confirm_ok(i)
                 
             )
     
@@ -110,19 +119,16 @@ class ShutDown extends Widget
         ,false)
     
     key:->
-        @element.addEventListener("keydown", (e)=>
-            if e.which == LEFT_ARROW
-                echo "prev"
-
-            else if e.which == RIGHT_ARROW
-                echo "next"
-
-            else if e.which == ENTER_KEY
-                echo "enter"
-
-            else if e.which == ESC_KEY
-                #echo "esc"
-                destory_all()
+        document.body.addEventListener("keydown", (e)=>
+            switch e.which
+                when LEFT_ARROW
+                    echo "prev"
+                when RIGHT_ARROW
+                    echo "next"
+                when ENTER_KEY
+                    echo "enter"
+                when ESC_KEY
+                    destory_all()
         )
 
 
@@ -135,6 +141,9 @@ class ConfirmDialog extends Widget
         "System will auto shutdown "
     ]
     timeId = null
+    CANCEL = 0
+    OK = 1
+    choose_num = OK
 
     constructor: (i)->
         super
@@ -165,36 +174,33 @@ class ConfirmDialog extends Widget
 
         button_confirm = create_element("div","button_confirm",right)
         
-        button_cancel = create_element("div","button_cancel",button_confirm)
-        button_cancel.type = "button"
-        button_cancel.textContent = "cancel"
-        button_cancel.name = "cancel"
-        button_cancel.value = "cancel"
+        @button_cancel = create_element("div","button_cancel",button_confirm)
+        @button_cancel.textContent = "cancel"
+        @button_cancel.name = "cancel"
+        @button_cancel.value = "cancel"
 
-        button_ok = create_element("div","button_ok",button_confirm)
-        button_ok.type = "button"
-        button_ok.textContent = option[i]
-        button_ok.name = option[i]
-        button_ok.value = option[i]
+        @button_ok = create_element("div","button_ok",button_confirm)
+        @button_ok.textContent = option[i]
+        @button_ok.name = option[i]
+        @button_ok.value = option[i]
 
-        button_cancel.addEventListener("click",->
+        @button_cancel.addEventListener("click",->
             clearInterval(timeId) if timeId
             destory_all()
         )
-        button_ok.addEventListener("click",->
+        @button_ok.addEventListener("click",->
             destory_all()
-            switch button_ok.textContent
-                when "logout" then echo "logout"
-                when "restart" then echo "restart"
-                when "shutdown" then echo "shutdown"
-                else return
+            confirm_ok()
         )
 
         apply_animation(right,"show_confirm","0.3s")
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"
         ,false)
-    
+
+
+
+
     interval:(time)->
         i = @i
         that = @
@@ -207,25 +213,48 @@ class ConfirmDialog extends Widget
             if time == 0
                 clearInterval(timeId)
                 destory_all()
-                switch option[i]
-                    when "logout" then echo "logout"
-                    when "restart" then echo "restart"
-                    when "shutdown" then echo "shutdown"
-                    else return
+                if 2 <= i <= 4 then confirm_ok(i)
         ,1000)
 
     key:->
-        @element.addEventListener("keydown", (e)=>
-            if e.which == LEFT_ARROW
-                echo "prev"
+        
+        change_choose =->
+            if choose_num == OK then choose_num = CANCEL
+            else choose_num = OK
 
-            else if e.which == RIGHT_ARROW
-                echo "next"
+        hover_state = =>
+            switch choose_num
+                when OK
+                    @button_ok.style.color = "rgba(0,193,255,1.0)"
+                    @button_cancel.style.color = "rgba(255,255,255,0.5)"
+                when CANCEL
+                    @button_cancel.style.color = "rgba(0,193,255,1.0)"
+                    @button_ok.style.color = "rgba(255,255,255,0.5)"
+                else return
+        
+        choose_enter = =>
+            i = @i
+            switch choose_num
+                when OK
+                    if 2 <= i <= 4 then confirm_ok(i)
+                when CANCEL
+                    destory_all()
+                else return
 
-            else if e.which == ENTER_KEY
-                echo "enter"
-
-            else if e.which == ESC_KEY
-                #echo "esc"
-                destory_all()
+        document.body.addEventListener("keydown", (e)=>
+            switch e.which
+                when LEFT_ARROW
+                    echo "prev"
+                    change_choose()
+                    hover_state()
+                when RIGHT_ARROW
+                    echo "next"
+                    change_choose()
+                    hover_state()
+                when ENTER_KEY
+                    echo "enter"
+                    choose_enter()
+                when ESC_KEY
+                    destory_all()
         )
+
