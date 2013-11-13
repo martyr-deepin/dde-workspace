@@ -42,9 +42,9 @@
 #include "DBUS_shutdown.h"
 #include "background.h"
 
-#define shutdown_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdown.html"
+#define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdown.html"
 
-#define SHUTDOWN_MAJOR_VERSION 0
+#define SHUTDOWN_MAJOR_VERSION 2
 #define SHUTDOWN_MINOR_VERSION 0
 #define SHUTDOWN_SUBMINOR_VERSION 0
 #define SHUTDOWN_VERSION STR(SHUTDOWN_MAJOR_VERSION)"."STR(SHUTDOWN_MINOR_VERSION)"."STR(SHUTDOWN_SUBMINOR_VERSION)
@@ -55,7 +55,6 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
-PRIVATE gboolean is_js_already = FALSE;
 
 JS_EXPORT_API
 void shutdown_quit()
@@ -107,24 +106,20 @@ int main (int argc, char **argv)
     gtk_window_set_default_size (GTK_WINDOW (container), geometry.width, geometry.height);
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
-    webview = d_webview_new_with_uri (shutdown_HTML_PATH);
+    webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
-
-
-    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
-
-
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
+    
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
     set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
                             gdk_screen_width(), gdk_screen_height());
 
     gtk_widget_show_all (container);
-
 
     gtk_main ();
 

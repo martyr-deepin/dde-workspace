@@ -17,9 +17,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-
-document.body.style.height = window.screen.availHeight
-document.body.style.width = window.screen.availWidth
+document.body.style.height = window.innerHeight
+document.body.style.width = window.innerWidth
 DCore.signal_connect("draw_background", (info)->
     #echo "draw_background:url(#{info.path})"
     document.body.style.backgroundImage = "url(#{info.path})"
@@ -28,4 +27,5 @@ DCore.signal_connect("draw_background", (info)->
 shutdown = new ShutDown()
 shutdown.frame_build()
 document.body.appendChild(shutdown.element)
+shutdown.key()
 

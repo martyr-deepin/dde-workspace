@@ -23,7 +23,8 @@
 
 body{
     position:absolute;
-    /*z-index:65535;*/
+    z-index:65535;
+    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
     cursor:default;
     overflow:hidden;
     background-color:rgba(0,0,0,0.7)

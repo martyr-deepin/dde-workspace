@@ -25,8 +25,6 @@ destory_all = ->
     clearInterval(timeId) if timeId
     DCore.Shutdown.quit()
 
-
-
 document.body.addEventListener("click",->
     if !frame_click
         echo "right click body"
@@ -101,6 +99,7 @@ class ShutDown extends Widget
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
         confirmdialog.interval(60)
+        confirmdialog.key()
 
     fade:(i)->
         time = 0.5
@@ -109,6 +108,22 @@ class ShutDown extends Widget
         opt[i].addEventListener("webkitAnimationEnd",=>
             @timefunc(i)
         ,false)
+    
+    key:->
+        @element.addEventListener("keydown", (e)=>
+            if e.which == LEFT_ARROW
+                echo "prev"
+
+            else if e.which == RIGHT_ARROW
+                echo "next"
+
+            else if e.which == ENTER_KEY
+                echo "enter"
+
+            else if e.which == ESC_KEY
+                #echo "esc"
+                destory_all()
+        )
 
 
 class ConfirmDialog extends Widget
@@ -199,3 +214,18 @@ class ConfirmDialog extends Widget
                     else return
         ,1000)
 
+    key:->
+        @element.addEventListener("keydown", (e)=>
+            if e.which == LEFT_ARROW
+                echo "prev"
+
+            else if e.which == RIGHT_ARROW
+                echo "next"
+
+            else if e.which == ENTER_KEY
+                echo "enter"
+
+            else if e.which == ESC_KEY
+                #echo "esc"
+                destory_all()
+        )
