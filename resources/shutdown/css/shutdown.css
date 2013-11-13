@@ -90,7 +90,6 @@ body{
 }
 
 
-
 @-webkit-keyframes fade_animation0{
     to{left:120px;opacity:0.0;}
 }
@@ -108,6 +107,10 @@ body{
 }
 @-webkit-keyframes fade_animation4{
     to{right:360px;opacity:0.0;}
+}
+
+@-webkit-keyframes show_confirm{
+    to{opacity:1.0;}
 }
 
 .frame_confirm{
@@ -136,6 +139,7 @@ body{
 }
 
 .right{
+    opacity:0.0;
     margin-left:50px;
     margin-top:10px;
 }

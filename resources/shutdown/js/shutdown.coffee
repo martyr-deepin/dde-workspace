@@ -87,30 +87,16 @@ class ShutDown extends Widget
                 that.fade(i)
                 
             )
+    
     timefunc:(i) ->
         echo "timefunc"
         document.body.removeChild(@element)
         confirmdialog = new ConfirmDialog(i)
         confirmdialog.frame_build()
-    
-    animfun:(el,time,cb)->
-        frameTime = 13
-        startTime = new Date
-        timerId = setInterval(->
-            dur = time * 1000
-            per = Math.min(1.0,(new Date - startTime)/dur)
-            if(per >= 1)
-                clearTimeout(timerId)
-                cb()?
-            else
-                el.style.left = Math.round(500 * per) + "px"
-        ,frameTime)
-        
-        
 
     fade:(i)->
         echo "fade"
-        time = 2
+        time = 0.7
         for el,j in opt
             #@animfun(el,time,@timefunc.bind(@))
             apply_animation(el,"fade_animation#{j}","#{time}s")
@@ -163,8 +149,10 @@ class ConfirmDialog extends Widget
 
         )
 
-        echo "show_animal"
-        
-        #apply_flash(@element,2)
         document.body.appendChild(@element)
+        echo "show_animal"
+        apply_animation(right,"show_confirm","0.5s")
+        right.addEventListener("webkitAnimationEnd",=>
+            right.style.opacity = "1.0"
+        ,false)
 
