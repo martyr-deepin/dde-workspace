@@ -23,6 +23,8 @@
 
 
 body{
+    position:absolute;
+    /*z-index:65535;*/
     cursor:default;
     overflow:hidden;
     background-color:rgba(0,0,0,0.5)
@@ -33,28 +35,30 @@ body{
 }
 
 .frame{
-    position:absolute;
-    z-index:65535;
     margin-left:400px;
     margin-top:200px;   
 
     display:-webkit-box;
     -webkit-box-orient:vertical;
-    /*background-color:rgba(255,255,0,0.1)*/
+    /*background-color:rgba(255,255,0,0.1);*/
 }
 
 .button{
     display:-webkit-box;
     -webkit-box-orient:horizontal;
 }
+.opt{
+    position:relative;
+}
 
 .opt:nth-child(even){
-    margin:10px 10px 10px 10px
+    margin:10px 10px 10px 10px;
+    /*-webkit-animation:fade_animation 3s;*/
 }
 
 
 .opt:nth-child(odd){
-    margin:10px 10px 10px 10px
+    margin:10px 10px 10px 10px;
 }
 
 .opt_img{
@@ -87,18 +91,26 @@ body{
 
 
 
-
-
-@-webkit-keyframes fade_animation{
-    from{left:800px;}
-    to{left:500px;}
+@-webkit-keyframes fade_animation0{
+    to{left:120px;opacity:0.0;}
 }
 
+@-webkit-keyframes fade_animation1{
+    to{right:0px;opacity:0.0;}
+}
 
+@-webkit-keyframes fade_animation2{
+    to{right:120px;opacity:0.0;}
+}
+
+@-webkit-keyframes fade_animation3{
+    to{right:240px;opacity:0.0;}
+}
+@-webkit-keyframes fade_animation4{
+    to{right:360px;opacity:0.0;}
+}
 
 .frame_confirm{
-    position:absolute;
-    z-index:65535;
     margin-left:400px;
     margin-top:200px;   
     
@@ -212,7 +224,7 @@ body{
     overflow: visible;
 }
 .button_cancel:hover{
-    color:rgb(0,193,255)
+    color:rgb(0,193,255);
 }
 
 

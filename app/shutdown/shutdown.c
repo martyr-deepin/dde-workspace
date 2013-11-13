@@ -76,7 +76,7 @@ void _on_realize(GtkWidget* container)
 }
 
 
-DBUS_EXPORT_API
+JS_EXPORT_API
 void shutdown_quit()
 {
     g_key_file_free(shutdown_config);
@@ -85,7 +85,7 @@ void shutdown_quit()
 }
 
 
-JS_EXPORT_API
+PRIVATE
 void shutdown_notify_workarea_size()
 {
     JSObjectRef workarea_info = json_create();
@@ -97,7 +97,7 @@ void shutdown_notify_workarea_size()
 }
 
 
-JS_EXPORT_API
+PRIVATE
 void shutdown_webview_ok()
 {
     background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
@@ -105,6 +105,7 @@ void shutdown_webview_ok()
 }
 
 
+PRIVATE
 void check_version()
 {
     if (shutdown_config == NULL)

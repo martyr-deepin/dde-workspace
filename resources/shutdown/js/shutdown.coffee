@@ -84,18 +84,39 @@ class ShutDown extends Widget
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 message.textContent = message_text[i]
-                that.fade_animal(i)
+                that.fade(i)
                 
-                confirmdialog = new ConfirmDialog(i)
-                confirmdialog.frame_build()
             )
-    
-    fade_animal:(i)->
-        echo "fade_animal"
-        for el in opt
-            apply_animation(el,"fade_animation","2s")
+    timefunc:(i) ->
+        echo "timefunc"
         document.body.removeChild(@element)
+        confirmdialog = new ConfirmDialog(i)
+        confirmdialog.frame_build()
+    
+    animfun:(el,time,cb)->
+        frameTime = 13
+        startTime = new Date
+        timerId = setInterval(->
+            dur = time * 1000
+            per = Math.min(1.0,(new Date - startTime)/dur)
+            if(per >= 1)
+                clearTimeout(timerId)
+                cb()?
+            else
+                el.style.left = Math.round(500 * per) + "px"
+        ,frameTime)
+        
+        
 
+    fade:(i)->
+        echo "fade"
+        time = 2
+        for el,j in opt
+            #@animfun(el,time,@timefunc.bind(@))
+            apply_animation(el,"fade_animation#{j}","#{time}s")
+        opt[i].addEventListener("webkitAnimationEnd",=>
+            @timefunc(i)
+        ,false)
 
 
 class ConfirmDialog extends Widget
@@ -135,12 +156,15 @@ class ConfirmDialog extends Widget
 
         button_cancel.addEventListener("click",->
             echo "cancel"
+            DCore.Shutdown.quit()
         )
         button_ok.addEventListener("click",->
             echo "#{button_ok.textContent}"
+
         )
 
         echo "show_animal"
-        apply_flash(@element,2)
+        
+        #apply_flash(@element,2)
         document.body.appendChild(@element)
 
