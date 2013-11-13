@@ -17,6 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+frame_click = false
 option = ["lock","suspend","logout","restart","shutdown"]
 message_text = [
     "do you want to lock your computer?",
@@ -26,6 +27,12 @@ message_text = [
     "do you want to shutdown your computer?"
 ]
 
+document.body.addEventListener("click",->
+    if !frame_click
+        echo "right click body"
+        DCore.Shutdown.quit()
+    frame_click = false
+    )
 
 class ShutDown extends Widget
     opt = []
@@ -37,11 +44,17 @@ class ShutDown extends Widget
         super
         echo "shutdown"
 
+    destory:->
+        document.body.removeChild(@element)
 
     frame_build:->
         frame = create_element("div", "frame", @element)
         button = create_element("div","button",frame)
-        
+       
+        frame.addEventListener("click",->
+            frame_click = true
+        )
+
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
@@ -72,6 +85,7 @@ class ShutDown extends Widget
             )
             opt[i].addEventListener("click",->
                 i = this.value
+                frame_click = true
                 #echo "#{i}:click"
                 opt_img[this.value].src = "img/click/#{option[i]}.png"
                 if 2 <= i <= 4 then that.fade(i)
@@ -81,10 +95,11 @@ class ShutDown extends Widget
             )
     
     timefunc:(i) ->
-        echo "timefunc"
-        document.body.removeChild(@element)
+        #echo "timefunc"
+        @destory()
         confirmdialog = new ConfirmDialog(i)
         confirmdialog.frame_build()
+        document.body.appendChild(confirmdialog.element)
 
     fade:(i)->
         echo "fade"
@@ -101,11 +116,15 @@ class ConfirmDialog extends Widget
         super
         if i < 2 or i > 4 then return
         @i = i
-        echo "ConfirmDialog:#{option[i]}"
+        #echo "ConfirmDialog:#{option[i]}"
+    
 
     frame_build:->
         i = @i
         frame_confirm = create_element("div", "frame_confirm", @element)
+        frame_confirm.addEventListener("click",->
+            frame_click = true
+        )
         
         left = create_element("div","left",frame_confirm)
         img_url = []
@@ -133,15 +152,16 @@ class ConfirmDialog extends Widget
         button_ok.value = option[i]
 
         button_cancel.addEventListener("click",->
-            echo "cancel"
             DCore.Shutdown.quit()
         )
         button_ok.addEventListener("click",->
-            echo "#{button_ok.textContent}"
-
+            switch button_ok.textContent
+                when "logout" then echo "logout"
+                when "restart" then echo "restart"
+                when "shutdown" then echo "shutdown"
+                else return
         )
 
-        document.body.appendChild(@element)
         apply_animation(right,"show_confirm","0.5s")
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"
