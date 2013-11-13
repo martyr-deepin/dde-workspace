@@ -75,8 +75,7 @@ PRIVATE void enter_show()
 
     set_state(StateShow);
     _change_workarea_height(_dock_height);
-    // move window down 1px to cover 1px blank line
-    gdk_window_move(DOCK_GDK_WINDOW(), 0, 1);
+    gdk_window_move(DOCK_GDK_WINDOW(), 0, 0);
 }
 PRIVATE void enter_hide()
 {

@@ -220,7 +220,7 @@ class AppItem extends Widget
 
         if @open_indicator
             @open_indicator.style.width = INDICATER_WIDTH * ICON_SCALE
-            @open_indicator.style.top = icon_height + 10  # 10 for reflect effective
+            @open_indicator.style.top = icon_height + 11  # 11 for reflect effective
 
     do_dragover: (e)=>
         e.stopPropagation()

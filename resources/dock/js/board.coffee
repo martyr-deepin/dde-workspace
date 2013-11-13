@@ -32,7 +32,7 @@ class Board
         # echo 'draw board'
         ctx = @board.getContext("2d")
         ctx.save()
-        ctx.drawImage(@image, 3, 0, @board.width, BOARD_HEIGHT)
+        ctx.drawImage(@image, 3, 1, @board.width, BOARD_HEIGHT)
         ctx.restore()
         DCore.Dock.update_guard_window_width(@board.width - 40)
 

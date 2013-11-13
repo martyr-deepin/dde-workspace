@@ -192,8 +192,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
     init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
 
-    tray_icon_do_screen_size_change();
-    update_dock_guard_window_position(0);
+    /* update_dock_guard_window_position(0); */
 }
 
 
@@ -350,7 +349,6 @@ void dock_emit_webview_ok()
         update_dock_apps();
         update_task_list();
         update_dock_size_mode();
-        tray_icon_do_screen_size_change();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
