@@ -117,6 +117,7 @@ class ShutDown extends Widget
     fade:(i)->
         opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
         opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
+        opt[i].style.borderRadius = null
         time = 0.5
         for el,j in opt
             apply_animation(el,"fade_animation#{j}","#{time}s")
