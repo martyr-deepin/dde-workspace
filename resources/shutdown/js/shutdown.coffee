@@ -48,6 +48,8 @@ class ShutDown extends Widget
     opt_img = []
     opt_text = []
     choose_num = -1
+    select_css = null
+    select_state_confirm = "none"
 
     constructor: (@id)->
         super
@@ -120,21 +122,31 @@ class ShutDown extends Widget
         ,false)
     
     hover_state:(i)->
+        choose_num = i
+        if select_css then @select_state(i)
         opt_img[i].src = "img/hover/#{option[i]}.png"
         for tmp,j in opt_img
             if j != i then tmp.src = "img/normal/#{option[j]}.png"
+   
+    select_state:(i)->
+        choose_num = i
+        remove_element(select_css) if select_css
+        select_css = create_element("div","select_css",opt[i])
+        select_css.style.display = "block"
     
     key:->
         document.body.addEventListener("keydown", (e)=>
             switch e.which
                 when LEFT_ARROW
+                    select_state_confirm = "block"
                     choose_num--
-                    if choose_num <= 0 then choose_num = 0
-                    @hover_state(choose_num)
+                    if choose_num == -1 then choose_num = 4
+                    @select_state(choose_num)
                 when RIGHT_ARROW
+                    select_state_confirm = "block"
                     choose_num++
-                    if choose_num >= 4 then choose_num = 4
-                    @hover_state(choose_num)
+                    if choose_num == 5 then choose_num = 0
+                    @select_state(choose_num)
                 when ENTER_KEY
                     i = choose_num
                     if 2 <= i <= 4 then @fade(i)
