@@ -22,8 +22,6 @@
 @import url("../../common/css/animation.css");
 
 body{
-    position:absolute;
-    z-index:65535;
     background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
     cursor:default;
     overflow:hidden;

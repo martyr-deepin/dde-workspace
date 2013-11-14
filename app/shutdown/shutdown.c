@@ -210,11 +210,6 @@ int main (int argc, char **argv)
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
 
-    // screen = gtk_window_get_screen (GTK_WINDOW (container));
-    // gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
-    // gtk_window_set_default_size (GTK_WINDOW (container), geometry.width, geometry.height);
-    // gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
-
     webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     gtk_widget_realize (container);
@@ -228,7 +223,7 @@ int main (int argc, char **argv)
 
 
     gdk_window_set_override_redirect (gdkwindow, TRUE);
-    /*select_popup_events ();*/
+    select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
 
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
