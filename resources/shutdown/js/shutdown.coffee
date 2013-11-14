@@ -219,13 +219,26 @@ class ConfirmDialog extends Widget
             confirm_ok(i)
         )
 
+        @button_cancel.addEventListener("mouseover",=>
+            choose_num = CANCEL
+            @hover_state(choose_num)
+        )
+        @button_cancel.addEventListener("mouseout",=>
+            @normal_state(CANCEL)
+        )
+        @button_ok.addEventListener("mouseover",=>
+            choose_num = OK
+            @hover_state(choose_num)
+        )
+
+        @button_ok.addEventListener("mouseout",=>
+            @normal_state(OK)
+        )
 
         apply_animation(right,"show_confirm","0.3s")
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"
         ,false)
-
-
 
 
     interval:(time)->
@@ -240,21 +253,32 @@ class ConfirmDialog extends Widget
                 if 2 <= i <= 4 then confirm_ok(i)
         ,1000)
 
+    hover_state: (choose_num)->
+        switch choose_num
+            when OK
+                @button_ok.style.color = "rgba(0,193,255,1.0)"
+                @button_cancel.style.color = "rgba(255,255,255,0.5)"
+            when CANCEL
+                @button_cancel.style.color = "rgba(0,193,255,1.0)"
+                @button_ok.style.color = "rgba(255,255,255,0.5)"
+            else return
+
+    normal_state: (choose_num)->
+        switch choose_num
+            when OK
+                @button_ok.style.color = "rgba(255,255,255,0.5)"
+                @button_cancel.style.color = "rgba(255,255,255,0.5)"
+            when CANCEL
+                @button_cancel.style.color = "rgba(255,255,255,0.5)"
+                @button_ok.style.color = "rgba(255,255,255,0.5)"
+            else return
+    
     key:->
         change_choose =->
             if choose_num == OK then choose_num = CANCEL
             else choose_num = OK
+            return choose_num
 
-        hover_state = =>
-            switch choose_num
-                when OK
-                    @button_ok.style.color = "rgba(0,193,255,1.0)"
-                    @button_cancel.style.color = "rgba(255,255,255,0.5)"
-                when CANCEL
-                    @button_cancel.style.color = "rgba(0,193,255,1.0)"
-                    @button_ok.style.color = "rgba(255,255,255,0.5)"
-                else return
-        
         choose_enter = =>
             i = @i
             switch choose_num
@@ -270,10 +294,10 @@ class ConfirmDialog extends Widget
             switch e.which
                 when LEFT_ARROW
                     change_choose()
-                    hover_state()
+                    @hover_state(choose_num)
                 when RIGHT_ARROW
                     change_choose()
-                    hover_state()
+                    @hover_state(choose_num)
                 when ENTER_KEY
                     choose_enter()
                 when ESC_KEY
