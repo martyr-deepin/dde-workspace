@@ -18,13 +18,14 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 frame_click = false
-option = ["Lock","Suspend","Log out","Restart","Shut down"]
+option = ["lock","suspend","logout","restart","shutdown"]
+option_text = [_("Lock"),_("Suspend"),_("Log out"),_("Restart"),_("Shut down")]
 message_text = [
-    "The system will be locked in",
-    "The system will be suspended in",
-    "You will be automatically logged out in:",
-    "The system will restart in:",
-    "The system will shut down in:"
+    _("The system will be locked in:"),
+    _("The system will be suspended in:"),
+    _("You will be automatically logged out in:"),
+    _("The system will restart in:"),
+    _("The system will shut down in:")
 ]
 timeId = null
 
@@ -80,7 +81,7 @@ class ShutDown extends Widget
             img_url[i] = "img/normal/#{option[i]}.png"
             opt_img[i] = create_img("opt_img",img_url[i],opt[i])
             opt_text[i] = create_element("div","opt_text",opt[i])
-            opt_text[i].textContent = option[i]
+            opt_text[i].textContent = option_text[i]
 
             that = @
             #hover
@@ -93,20 +94,20 @@ class ShutDown extends Widget
             #normal
             opt[i].addEventListener("mouseout",->
                 i = this.value
-                opt_img[this.value].src = "img/normal/#{option[i]}.png"
+                opt_img[i].src = "img/normal/#{option[i]}.png"
             )
 
             #click
             opt[i].addEventListener("mousedown",->
                 i = this.value
                 #echo "#{i}:mousedown"
-                opt_img[this.value].src = "img/click/#{option[i]}.png"
+                opt_img[i].src = "img/click/#{option[i]}.png"
             )
             opt[i].addEventListener("click",->
                 i = this.value
                 frame_click = true
                 #echo "#{i}:click"
-                opt_img[this.value].src = "img/click/#{option[i]}.png"
+                opt_img[i].src = "img/click/#{option[i]}.png"
                 if 2 <= i <= 4 then that.fade(i)
                 else if i < 2 then confirm_ok(i)
                 
@@ -199,25 +200,21 @@ class ConfirmDialog extends Widget
         img_url = "img/normal/#{option[i]}.png"
         @img_confirm = create_img("img_confirm",img_url,left)
         text_img = create_element("div","text_img",left)
-        text_img.textContent = option[i]
+        text_img.textContent = option_text[i]
         
         right = create_element("div","right",frame_confirm)
         @message_confirm = create_element("div","message_confirm",right)
-        @message_confirm.textContent = message_text[i] + " 60 " + _("seconds").
+        @message_confirm.textContent = message_text[i] + " 60 " + _("seconds.")
 
         button_confirm = create_element("div","button_confirm",right)
         
         @button_cancel = create_element("div","button_cancel",button_confirm)
-        @button_cancel.textContent = "cancel"
-        @button_cancel.type = "button"
-        @button_cancel.name = "cancel"
-        @button_cancel.value = "cancel"
+        @button_cancel.textContent = _("Cancel")
+        #@button_cancel.type = "button"
 
         @button_ok = create_element("div","button_ok",button_confirm)
-        @button_ok.textContent = option[i]
-        @button_ok.type = "button"
-        @button_ok.name = option[i]
-        @button_ok.value = option[i]
+        @button_ok.textContent = option_text[i]
+        #@button_ok.type = "button"
 
         @button_cancel.addEventListener("click",->
             echo "cancel"
