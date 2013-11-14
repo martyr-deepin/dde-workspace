@@ -1,10 +1,8 @@
 class Applet extends AppItem
     is_fixed_pos: false
-
     constructor: (@id, @icon, title)->
         super
-        @type = ITEM_TYPE_PLUGIN
-        @element.draggable=false
+        @type = ITEM_TYPE_APPLET
 
         @open_indicator = create_img("OpenIndicator", SHORT_INDICATOR, @element)
         @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
@@ -38,6 +36,9 @@ class Applet extends AppItem
 class FixedItem extends Applet
     is_fixed_pos: true
     __show: false
+    constructor: ->
+        super
+        @element.draggable=false
 
     show: (v)->
         @__show = v
@@ -167,14 +168,28 @@ class Trash extends FixedItem
         @img.src = Trash.get_icon(n)
 
 
-class DigitClock extends Applet
+
+class ClockBase extends Applet
+    do_mouseover: =>
+        super
+        @set_tooltip((new Date()).toLocaleDateString())
+
+    start_time_settings: ->
+        echo 'time settings'
+
+    destroy: ->
+        super
+        clearInterval(@update_id)
+
+
+class DigitClock extends ClockBase
     constructor: ->
         super
         @date = new Date()
         @weekday = create_element('div', 'DigitClockWeek', @element)
         @time = create_element('div', 'DigitClockTime', @element)
         @update_time()
-        setInterval(@update_time, 1000)
+        @update_id = setInterval(@update_time, 1000)
 
     update_time: =>
         @time.textContent = "#{@hour()}:#{@min()}"
@@ -195,12 +210,30 @@ class DigitClock extends Applet
         min = @date.getMinutes()
         if twobit then @force2bit(min) else "#{min}"
 
-    do_mouseover: =>
-        super
-        @set_tooltip((new Date()).toLocaleDateString())
+    do_buildmenu: =>
+        [
+            [1, _("_View as analog")],
+            [2, _("_Time settings")]
+        ]
+
+    do_itemselected: (e)=>
+        switch e.id
+            when 1
+                @switch_to_analog()
+            when 2
+                @start_time_settings()
+
+    do_click: (e) =>
+        if e.altKey
+            @switch_to_analog()
+
+    switch_to_analog: ->
+        analog_clock = new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
+        @destroy()
+        swap_element(@element, analog_clock.element)
 
 
-class AnalogClock extends Applet
+class AnalogClock extends ClockBase
     @DEG_PER_HOUR: 3
     @DEG_PER_MIN: 6
     constructor: ->
@@ -215,9 +248,27 @@ class AnalogClock extends Applet
         @short_pointer.style.webkitTransform = "rotate(#{@date.getHours() * AnalogClock.DEG_PER_HOUR + @date.getMinutes()}deg)"
         @long_pointer.style.webkitTransform = "rotate(#{@date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
-    do_mouseover: =>
-        super
-        # @set_tooltip((new Date()).toLocaleDateString())
+    do_buildmenu: =>
+        [
+            [1, _("_View as digit")],
+            [2, _("_Time settings")]
+        ]
+
+    do_itemselected: (e)=>
+        switch e.id
+            when 1
+                @switch_to_digit()
+            when 2
+                @start_time_settings()
+
+    do_click: (e) =>
+        if e.altKey
+            @switch_to_digit()
+
+    switch_to_digit: ->
+        digit_clock = new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
+        @destroy()
+        swap_element(@element, digit_clock.element)
 
 
 try

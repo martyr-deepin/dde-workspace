@@ -44,7 +44,14 @@ PANEL_IMG = 'img/panel.svg'
 
 ITEM_TYPE_NULL = ''
 ITEM_TYPE_APP = "App"
-ITEM_TYPE_PLUGIN = "Plugin"
+ITEM_TYPE_APPLET = "Applet"
 ITEM_TYPE_RICH_DIR = "RichDir"
 
 WEEKDAY = ["SUN", "MON", "TUE", "WEN", "THU", "FRI", "STA"]
+
+DIGIT_CLOCK =
+    'bg':'img/digit-clock.svg'
+    'id':'dde_digit_clock'
+ANALOG_CLOCK =
+    'bg':'img/analog-clock.svg'
+    'id':'dde_analog_clock'
