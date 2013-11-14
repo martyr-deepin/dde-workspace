@@ -18,7 +18,14 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 frame_click = false
-option = ["lock","suspend","logout","restart","shutdown"]
+option = ["Lock","Suspend","Log out","Restart","Shut down"]
+message_text = [
+    "The system will be locked in",
+    "The system will be suspended in",
+    "You will be automatically logged out in:",
+    "The system will restart in:",
+    "The system will shut down in:"
+]
 timeId = null
 
 destory_all = ->
@@ -34,11 +41,11 @@ document.body.addEventListener("click",->
 confirm_ok = (i)->
     destory_all()
     switch option[i]
-        when "lock" then echo "lock"
-        when "suspend" then echo "suspend"
-        when "logout" then echo "logout"
-        when "restart" then echo "restart"
-        when "shutdown" then echo "shutdown"
+        when "Lock" then echo "lock"
+        when "Suspend" then echo "suspend"
+        when "Log out" then echo "logout"
+        when "Restart" then echo "restart"
+        when "Shut down" then echo "shutdown"
         else return
 
 
@@ -167,13 +174,6 @@ class ShutDown extends Widget
 
 
 class ConfirmDialog extends Widget
-    message_text = [
-        "System will auto lock ",
-        "System will auto suspend ",
-        "System will auto logout ",
-        "System will auto restart ",
-        "System will auto shutdown "
-    ]
     timeId = null
     CANCEL = 0
     OK = 1
@@ -203,7 +203,7 @@ class ConfirmDialog extends Widget
         
         right = create_element("div","right",frame_confirm)
         @message_confirm = create_element("div","message_confirm",right)
-        @message_confirm.textContent = message_text[i] + "in 60 seconds."
+        @message_confirm.textContent = message_text[i] + " 60 " + _("seconds").
 
         button_confirm = create_element("div","button_confirm",right)
         
@@ -257,7 +257,7 @@ class ConfirmDialog extends Widget
         clearInterval(timeId) if timeId
         timeId = setInterval(->
             time--
-            that.message_confirm.textContent = message_text[i] + "in #{time} seconds."
+            that.message_confirm.textContent = message_text[i] + " #{time} " +  _("seconds.")
             if time == 0
                 clearInterval(timeId)
                 if 2 <= i <= 4 then confirm_ok(i)

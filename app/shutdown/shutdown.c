@@ -221,8 +221,8 @@ int main (int argc, char **argv)
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
 
-    /*gdk_window_set_override_redirect (gdkwindow, TRUE);*/
-    /*select_popup_events ();*/
+    gdk_window_set_override_redirect (gdkwindow, TRUE);
+    select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
 
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
