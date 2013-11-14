@@ -51,6 +51,11 @@ body{
     position:relative;
     cursor: pointer;
     margin:0 10px 0 10px;
+    width:100px;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 .opt:hover{
     cursor: pointer;
@@ -63,6 +68,7 @@ body{
 
 .opt_text{
     width:80px;
+    height:30px;
     text-align:center;
     color: #FFF;
     font-size:14px;

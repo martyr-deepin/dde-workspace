@@ -137,10 +137,12 @@ class ShutDown extends Widget
         for tmp,j in opt
             if j == i
                 tmp.style.backgroundColor = "rgba(255,255,255,0.1)"
-                tmp.style.border = "1px solid rgba(255,255,255,0.5)"
+                tmp.style.border = "1px solid rgba(255,255,255,0.15)"
+                tmp.style.borderRadius = "4px"
             else
                 tmp.style.backgroundColor = "rgba(255,255,255,0.0)"
                 tmp.style.border = "1px solid rgba(255,255,255,0.0)"
+                tmp.style.borderRadius = null
 
     
     key:->
