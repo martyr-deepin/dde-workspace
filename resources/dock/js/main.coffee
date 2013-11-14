@@ -123,7 +123,5 @@ setTimeout(->
 DCore.Dock.emit_webview_ok()
 
 show_desktop.show(DCore.Dock.get_desktop_status())
-new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
-# new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
 DCore.Dock.test()
 

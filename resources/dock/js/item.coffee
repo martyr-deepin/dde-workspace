@@ -60,7 +60,7 @@ class AppList extends Widget
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
-        @trash = null
+        @last_fixed = null
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -75,12 +75,14 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     append_app_item: (c)->
-        if @trash == null
+        if @last_fixed == null
             @element.appendChild(c.element)
             if c.id == "trash"
-                @trash = c.element
+                @last_fixed = c.element
         else
-            @element.insertBefore(c.element, @trash)
+            @element.insertBefore(c.element, @last_fixed)
+            if c.id == 'dde_digit_clock' || c.id == 'dde_analog_clock'
+                @last_fixed = c.element
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -152,7 +154,7 @@ class AppList extends Widget
         if @_insert_anchor_item
             @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
-            @element.insertBefore(@insert_indicator, @trash)
+            @element.insertBefore(@insert_indicator, @last_fixed)
 
         @is_insert_indicator_shown = true
         board.set_width(board.board.width + ITEM_WIDTH)
