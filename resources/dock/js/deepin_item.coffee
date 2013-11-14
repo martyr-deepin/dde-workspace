@@ -172,7 +172,14 @@ class Trash extends FixedItem
 class ClockBase extends FixedItem
     do_mouseover: =>
         super
+        @element.style.webkitTransform = 'scale(1.1)'
+        @element.style.webkitTransition = 'all 0.2s ease-out'
         @set_tooltip((new Date()).toLocaleDateString())
+
+    do_mouseout: (e)=>
+        super
+        @element.style.webkitTransform = ''
+        @element.style.webkitTransition = 'opacity 1s ease-in'
 
     start_time_settings: ->
         echo 'time settings'

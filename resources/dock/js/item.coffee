@@ -322,12 +322,13 @@ class AppItem extends Widget
     # use these three event to avoid the fact css events are not triggered.
     do_mouseover: (e)=>
         DCore.Dock.require_all_region()
-        @element.style.webkitTransform = 'scale(1.1)'
-        @element.style.webkitTransition = 'all 0.2s ease-out'
+        # not use element for fixing open indicator
+        @img.style.webkitTransform = 'scale(1.1)'
+        @img.style.webkitTransition = 'all 0.2s ease-out'
 
     do_mouseout: (e)=>
-        @element.style.webkitTransform = ''
-        @element.style.webkitTransition = 'opacity 1s ease-in'
+        @img.style.webkitTransform = ''
+        @img.style.webkitTransition = 'opacity 1s ease-in'
 
     do_itemselected: (e)=>
         @do_mouseout(e)
