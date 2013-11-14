@@ -32,8 +32,10 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <X11/XKBlib.h>
-#include "user.h"
-#include "session.h"
+
+
+#include "X_misc.h"
+#include "gs-grab.h"
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
@@ -41,6 +43,9 @@
 #include "mutils.h"
 #include "DBUS_shutdown.h"
 #include "background.h"
+
+
+#define SHUTDOWN_ID_NAME "desktop.app.shutdown"
 
 #define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdown.html"
 
@@ -53,6 +58,7 @@ static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
+static GSGrab* grab = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 
@@ -62,6 +68,81 @@ void shutdown_quit()
     g_key_file_free(shutdown_config);
     g_object_unref(dde_bg_g_settings);
     gtk_main_quit();
+}
+
+static void
+select_popup_events (void)
+{
+    XWindowAttributes attr;
+    unsigned long     events;
+
+    gdk_error_trap_push ();
+
+    memset (&attr, 0, sizeof (attr));
+    XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), &attr);
+
+    events = SubstructureNotifyMask | attr.your_event_mask;
+    XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), GDK_ROOT_WINDOW (), events);
+
+    gdk_error_trap_pop_ignored ();
+}
+
+
+static gboolean
+x11_window_is_ours (Window window)
+{
+    GdkWindow *gwindow;
+    gboolean   ret;
+
+    ret = FALSE;
+
+    gwindow = gdk_x11_window_lookup_for_display (gdk_display_get_default (), window);
+
+    if (gwindow && (window != GDK_ROOT_WINDOW ())) {
+            ret = TRUE;
+    }
+
+    return ret;
+}
+
+
+static GdkFilterReturn
+xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
+{
+    XEvent *ev = xevent;
+
+    switch (ev->type) {
+
+        g_debug ("event type: %d", ev->xany.type);
+        case MapNotify:
+            g_debug("dlock: MapNotify");
+             {
+                 XMapEvent *xme = &ev->xmap;
+                 if (! x11_window_is_ours (xme->window))
+                 {
+            g_debug("dlock: gdk_window_raise");
+                      gdk_window_raise (window);
+                 }
+             }
+             break;
+
+        case ConfigureNotify:
+             g_debug("dlock: ConfigureNotify");
+             {
+                  XConfigureEvent *xce = &ev->xconfigure;
+                  if (! x11_window_is_ours (xce->window))
+                  {
+                      g_debug("dlock: gdk_window_raise");
+                      gdk_window_raise (window);
+                  }
+             }
+             break;
+
+        default:
+             break;
+    }
+
+    return GDK_FILTER_CONTINUE;
 }
 
 
@@ -89,6 +170,16 @@ int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    if (is_application_running(SHUTDOWN_ID_NAME)) {
+        g_warning("another instance of application shutdown is running...\n");
+        return 0;
+    }
+
+    singleton(SHUTDOWN_ID_NAME);
+
+    //remove  option -f
+    parse_cmd_line (&argc, &argv);
+
 
     GdkScreen *screen;
     GdkRectangle geometry;
@@ -96,15 +187,33 @@ int main (int argc, char **argv)
     init_i18n ();
     gtk_init (&argc, &argv);
 
+
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
-    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
+    ensure_fullscreen (container);
 
-    screen = gtk_window_get_screen (GTK_WINDOW (container));
-    gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
-    gtk_window_set_default_size (GTK_WINDOW (container), geometry.width, geometry.height);
-    gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
+    gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
+    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
+    gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
+
+    gtk_window_fullscreen (GTK_WINDOW (container));
+    gtk_widget_set_events (GTK_WIDGET (container),
+                           gtk_widget_get_events (GTK_WIDGET (container))
+                           | GDK_POINTER_MOTION_MASK
+                           | GDK_BUTTON_PRESS_MASK
+                           | GDK_BUTTON_RELEASE_MASK
+                           | GDK_KEY_PRESS_MASK
+                           | GDK_KEY_RELEASE_MASK
+                           | GDK_EXPOSURE_MASK
+                           | GDK_VISIBILITY_NOTIFY_MASK
+                           | GDK_ENTER_NOTIFY_MASK
+                           | GDK_LEAVE_NOTIFY_MASK);
+
+    // screen = gtk_window_get_screen (GTK_WINDOW (container));
+    // gdk_screen_get_monitor_geometry (screen, gdk_screen_get_primary_monitor (screen), &geometry);
+    // gtk_window_set_default_size (GTK_WINDOW (container), geometry.width, geometry.height);
+    // gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
@@ -114,12 +223,25 @@ int main (int argc, char **argv)
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
-    
+    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
+    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+
+
+    gdk_window_set_override_redirect (gdkwindow, TRUE);
+    /*select_popup_events ();*/
+    gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
     set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
                             gdk_screen_width(), gdk_screen_height());
+    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
 
+    grab = gs_grab_new ();
     gtk_widget_show_all (container);
+
+    gdk_window_focus (gtk_widget_get_window (container), 0);
+    gdk_window_stick (gdkwindow);
+
 
     gtk_main ();
 
