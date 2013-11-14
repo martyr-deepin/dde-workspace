@@ -181,8 +181,6 @@ int main (int argc, char **argv)
     parse_cmd_line (&argc, &argv);
 
 
-    GdkScreen *screen;
-    GdkRectangle geometry;
     check_version();
     init_i18n ();
     gtk_init (&argc, &argv);
@@ -196,6 +194,7 @@ int main (int argc, char **argv)
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
+    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
 
     gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_widget_set_events (GTK_WIDGET (container),
@@ -222,14 +221,13 @@ int main (int argc, char **argv)
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
 
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
-    select_popup_events ();
+    /*gdk_window_set_override_redirect (gdkwindow, TRUE);*/
+    /*select_popup_events ();*/
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
 
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
     set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
                             gdk_screen_width(), gdk_screen_height());
-    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
 
     grab = gs_grab_new ();
     gtk_widget_show_all (container);

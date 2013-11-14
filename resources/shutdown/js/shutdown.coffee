@@ -48,8 +48,7 @@ class ShutDown extends Widget
     opt_img = []
     opt_text = []
     choose_num = -1
-    select_css = null
-    select_state_confirm = "none"
+    select_state_confirm = false
 
     constructor: (@id)->
         super
@@ -68,6 +67,8 @@ class ShutDown extends Widget
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
+            opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+            opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             opt[i].value = i
             img_url[i] = "img/normal/#{option[i]}.png"
             opt_img[i] = create_img("opt_img",img_url[i],opt[i])
@@ -114,6 +115,8 @@ class ShutDown extends Widget
         confirmdialog.key()
 
     fade:(i)->
+        opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+        opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
         time = 0.5
         for el,j in opt
             apply_animation(el,"fade_animation#{j}","#{time}s")
@@ -123,27 +126,31 @@ class ShutDown extends Widget
     
     hover_state:(i)->
         choose_num = i
-        if select_css then @select_state(i)
-        opt_img[i].src = "img/hover/#{option[i]}.png"
+        if select_state_confirm then @select_state(i)
         for tmp,j in opt_img
-            if j != i then tmp.src = "img/normal/#{option[j]}.png"
+            if j == i then tmp.src = "img/hover/#{option[i]}.png"
+            else tmp.src = "img/normal/#{option[j]}.png"
    
     select_state:(i)->
+        select_state_confirm = true
         choose_num = i
-        remove_element(select_css) if select_css
-        select_css = create_element("div","select_css",opt[i])
-        select_css.style.display = "block"
+        for tmp,j in opt
+            if j == i
+                tmp.style.backgroundColor = "rgba(255,255,255,0.1)"
+                tmp.style.border = "1px solid rgba(255,255,255,0.5)"
+            else
+                tmp.style.backgroundColor = "rgba(255,255,255,0.0)"
+                tmp.style.border = "1px solid rgba(255,255,255,0.0)"
+
     
     key:->
         document.body.addEventListener("keydown", (e)=>
             switch e.which
                 when LEFT_ARROW
-                    select_state_confirm = "block"
                     choose_num--
                     if choose_num == -1 then choose_num = 4
                     @select_state(choose_num)
                 when RIGHT_ARROW
-                    select_state_confirm = "block"
                     choose_num++
                     if choose_num == 5 then choose_num = 0
                     @select_state(choose_num)
