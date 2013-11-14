@@ -5,6 +5,7 @@ coffee_files = [
 "../resources/desktop/js/*.coffee",
 "../resources/dock/js/*.coffee",
 "../resources/launcher/js/*.coffee",
+"../resources/shutdown/js/*.coffee",
 ]
 
 c_files = [
@@ -19,6 +20,8 @@ c_files = [
 "../lib/dentry/*.c",
 "../lib/dentry/*.h",
 "../lib/category.h",
+"../app/shutdown/*.c",
+"../app/shutdown/*.h",
 ]
 
 lang = ["zh_CN", "zh_TW"]

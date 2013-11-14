@@ -70,6 +70,35 @@ void shutdown_quit()
     gtk_main_quit();
 }
 
+static gboolean
+prevent_exit (GtkWidget* w, GdkEvent* e)
+{
+    return TRUE;
+}
+
+
+static void
+focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
+{
+    gdk_window_focus (gtk_widget_get_window (container), 0);
+}
+
+static void
+sigterm_cb (int signum)
+{
+    gtk_main_quit ();
+}
+
+static void
+show_cb (GtkWindow* container, gpointer data)
+{
+    gs_grab_move_to_window (grab,
+                            gtk_widget_get_window (GTK_WIDGET(container)),
+                            gtk_window_get_screen (container),
+                            FALSE);
+}
+
+
 static void
 select_popup_events (void)
 {
@@ -211,6 +240,10 @@ int main (int argc, char **argv)
 
     webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    /*g_signal_connect (container, "delete-event", G_CALLBACK (prevent_exit), NULL);*/
+    g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
+    g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
+
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
 
