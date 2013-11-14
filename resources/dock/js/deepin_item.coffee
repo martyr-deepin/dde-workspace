@@ -1,4 +1,4 @@
-class Plugin extends AppItem
+class Applet extends AppItem
     is_fixed_pos: false
 
     constructor: (@id, @icon, title)->
@@ -35,7 +35,7 @@ class Plugin extends AppItem
             , 500)
 
 
-class FixedItem extends Plugin
+class FixedItem extends Applet
     is_fixed_pos: true
     __show: false
 
@@ -167,7 +167,7 @@ class Trash extends FixedItem
         @img.src = Trash.get_icon(n)
 
 
-class DigitClock extends Plugin
+class DigitClock extends Applet
     constructor: ->
         super
         @date = new Date()
@@ -198,18 +198,26 @@ class DigitClock extends Plugin
     do_mouseover: =>
         super
         @set_tooltip((new Date()).toLocaleDateString())
-        @element.style.webkitTransform = 'scale(1.1)'
-        @element.style.webkitTransition = 'all 0.2s ease-out'
-        # @weekday.style.top = '4%'
 
-    do_mouseout: =>
+
+class AnalogClock extends Applet
+    @DEG_PER_HOUR: 3
+    @DEG_PER_MIN: 6
+    constructor: ->
         super
-        @element.style.webkitTransform = ''
-        @element.style.webkitTransition = 'opacity 1s ease-in'
-        # @weekday.style.top = '5%'
+        @date = new Date()
+        @short_pointer = create_img('pointer', 'img/short-pointer.svg', @element)
+        @long_pointer = create_img('pointer', 'img/long-pointer.svg', @element)
+        @update_time()
+        @update_id = setInterval(@update_time, 1000)
 
+    update_time: =>
+        @short_pointer.style.webkitTransform = "rotate(#{@date.getHours() * AnalogClock.DEG_PER_HOUR + @date.getMinutes()}deg)"
+        @long_pointer.style.webkitTransform = "rotate(#{@date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
-class AnalogClock extends Plugin
+    do_mouseover: =>
+        super
+        # @set_tooltip((new Date()).toLocaleDateString())
 
 
 try

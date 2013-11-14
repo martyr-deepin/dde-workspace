@@ -66,5 +66,11 @@
     text-align: center;
     color: white;
     font-weight: bold;
-    top: 4%;
+    top: 5%;
+}
+
+.pointer{
+    position: absolute;
+    top: 5px;
+    left: 3px;
 }
