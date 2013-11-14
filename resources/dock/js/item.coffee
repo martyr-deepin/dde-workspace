@@ -312,13 +312,14 @@ class AppItem extends Widget
 
     set_tooltip: (text) ->
         if @tooltip == null
-            @tooltip = new ArrowToolTip(@element, text)
+            @tooltip = new ToolTip(@element, text)
             @tooltip.set_delay_time(200)  # set delay time to the same as scale time
             return
         @tooltip.set_text(text)
 
     # use these three event to avoid the fact css events are not triggered.
     do_mouseover: (e)=>
+        DCore.Dock.require_all_region()
         @img.style.webkitTransform = 'scale(1.1)'
         @img.style.webkitTransition = 'all 0.2s ease-out'
 
