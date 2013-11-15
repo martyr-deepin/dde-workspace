@@ -192,7 +192,6 @@ class ClockBase extends FixedItem
 class DigitClock extends ClockBase
     constructor: ->
         super
-        @date = new Date()
         @weekday = create_element('div', 'DigitClockWeek', @element)
         @time = create_element('div', 'DigitClockTime', @element)
         @update_time()
@@ -200,13 +199,13 @@ class DigitClock extends ClockBase
 
     update_time: =>
         @time.textContent = "#{@hour()}:#{@min()}"
-        @weekday.textContent = WEEKDAY[@date.getDay()]
+        @weekday.textContent = WEEKDAY[new Date().getDay()]
 
     force2bit: (n)->
         if n < 10 then "0#{n}" else "#{n}"
 
     hour: (max_hour=24, twobit=false)->
-        hour = @date.getHours()
+        hour = new Date().getHours()
         switch max_hour
             when 12
                 if twobit then @force2bit(hour % 12) else hour % 12
@@ -214,7 +213,7 @@ class DigitClock extends ClockBase
                 if twobit then @force2bit(hour) else hour
 
     min: (twobit=true) ->
-        min = @date.getMinutes()
+        min = new Date().getMinutes()
         if twobit then @force2bit(min) else "#{min}"
 
     do_buildmenu: =>
@@ -235,8 +234,8 @@ class DigitClock extends ClockBase
             @switch_to_analog()
 
     switch_to_analog: ->
-        analog_clock = new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
         @destroy()
+        analog_clock = new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
         swap_element(@element, analog_clock.element)
 
 
@@ -245,15 +244,15 @@ class AnalogClock extends ClockBase
     @DEG_PER_MIN: 6
     constructor: ->
         super
-        @date = new Date()
         @short_pointer = create_img('pointer', 'img/short-pointer.svg', @element)
         @long_pointer = create_img('pointer', 'img/long-pointer.svg', @element)
         @update_time()
         @update_id = setInterval(@update_time, 1000)
 
     update_time: =>
-        @short_pointer.style.webkitTransform = "rotate(#{@date.getHours() * AnalogClock.DEG_PER_HOUR + @date.getMinutes()}deg)"
-        @long_pointer.style.webkitTransform = "rotate(#{@date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
+        date = new Date()
+        @short_pointer.style.webkitTransform = "rotate(#{date.getHours() * AnalogClock.DEG_PER_HOUR + date.getMinutes()}deg)"
+        @long_pointer.style.webkitTransform = "rotate(#{date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
     do_buildmenu: =>
         [
@@ -273,8 +272,8 @@ class AnalogClock extends ClockBase
             @switch_to_digit()
 
     switch_to_digit: ->
-        digit_clock = new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
         @destroy()
+        digit_clock = new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
         swap_element(@element, digit_clock.element)
 
 
