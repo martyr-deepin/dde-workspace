@@ -27,9 +27,6 @@ if not user_image?
     catch error
         user_image = "images/img01.jpg"
 
-$("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span>
-            "
 try
     is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
 catch error

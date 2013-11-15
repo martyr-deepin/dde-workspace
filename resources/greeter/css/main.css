@@ -26,25 +26,6 @@ body{
     left: 0;
     #-webkit-animation:linear-show 2s ease-out;
 }
-
-#Version{
-    /*background: url(../images/ver.png) no-repeat;*/
-    font-size:24px;
-    text-shadow:0 0 2px #333;
-    color: white;
-    width:440px;
-    height:50px;
-    position:absolute;
-    bottom:22px;
-    left:50%;
-    text-align:center;
-    margin-left:-220px;
-}
-
-#Version sup{
-    font-size:12px;
-}
-
 #Debug{
     width:300px;
     position:absolute;
@@ -53,40 +34,34 @@ body{
 }
 
 .Time {
-    cursor:default;
-    width:400px;
-    height:217px;
+    background-color:rgba(125,255,120,0.7);
     position:absolute;
-    bottom:0;
-    left:0;
-    padding-left:30px;
+    bottom:50px;
+    left:70px;
+    width:250px;
+    height:150px;
+    
+    cursor:default;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+
 }
 
 .Time01{
-    width: 400px;
-    left: 0px;
-    cursor:default;
-    font-size:120px;
+    margin-top:30px;
+    font-size:70px;
     color: #fff;
-    display: block;
-    line-height: 150px;
-    display: inline-block;
-    height:130px;
-    color:#fff;
+    font-weight:lighter;
     text-shadow:0 0 2px #333;
+    display: block;
 }
 
 .Time02{
-    width: 400px;
-    cursor:default;
-    padding-left:10px;
-    font-size:30px;
+    margin-top:30px;
+    font-size:15px;
     color: #fff;
-    display: block;
-    height: 30px;
-    line-height: 50px;
-    color:#fff;
     text-shadow:0 0 2px #333;
+    display: block;
 }
 
 @-webkit-keyframes linear-showtime {
