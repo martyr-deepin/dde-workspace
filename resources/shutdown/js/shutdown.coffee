@@ -27,6 +27,9 @@ message_text = [
     _("The system will restart in:"),
     _("The system will shut down in:")
 ]
+
+dbus_shutdown = DCore.DBus.session("org.gnome.SessionManager")
+
 timeId = null
 
 destory_all = ->
@@ -39,14 +42,19 @@ document.body.addEventListener("click",->
     frame_click = false
     )
 
+#DBus
+
+
+
+
 confirm_ok = (i)->
     destory_all()
     switch option[i]
         when "Lock" then echo "lock"
         when "Suspend" then echo "suspend"
-        when "Log out" then echo "logout"
-        when "Restart" then echo "restart"
-        when "Shut down" then echo "shutdown"
+        when "Log out" then dbus_shutdown.Logout(1)
+        when "Restart" then dbus_shutdown.Reboot()
+        when "Shut down" then dbus_shutdown.Shutdown()
         else return
 
 
