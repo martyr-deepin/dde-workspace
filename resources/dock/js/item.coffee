@@ -207,7 +207,7 @@ class AppItem extends Widget
         super
         calc_app_item_size()
 
-    update_scale: () ->
+    update_scale: ->
         @element.style.maxWidth = ITEM_WIDTH * ICON_SCALE
         # @element.style.minHeight = ITEM_HEIGHT * ICON_SCALE
         $("#container").style.minHeight = ITEM_HEIGHT * ICON_SCALE

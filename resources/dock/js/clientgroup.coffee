@@ -9,7 +9,8 @@ class ClientGroup extends AppItem
 
             @leader = null
 
-            @open_indicator = create_img("OpenIndicator", SHORT_INDICATOR, @element)
+            @open_indicator_short = create_img("OpenIndicator", SHORT_INDICATOR, @element)
+            @open_indicator_long = create_img("OpenIndicator", LONG_INDICATOR, @element)
         catch error
             alert "Group construcotr :#{error}"
 
@@ -52,10 +53,15 @@ class ClientGroup extends AppItem
     handle_clients_change: ->
         if not @_img_margin_top
             @_img_margin_top = 6 * ICON_SCALE
+
         if @n_clients.length > 1
-            @open_indicator.src = LONG_INDICATOR
-        else
-            @open_indicator.src = SHORT_INDICATOR
+            @open_indicator = @open_indicator_long
+            @open_indicator_short.style.display = 'none'
+            @open_indicator_long.style.display = 'block'
+        else if @n_clients.length == 1
+            @open_indicator = @open_indicator_short
+            @open_indicator_short.style.display = 'block'
+            @open_indicator_long.style.display = 'none'
 
     to_active_status : (id)->
         @leader = id
@@ -81,7 +87,7 @@ class ClientGroup extends AppItem
                 @leader = id
 
             @handle_clients_change()
-        # @element.style.display = "block"
+        @element.style.display = "block"
 
 
     remove_client: (id, used_internal=false) ->
@@ -89,7 +95,6 @@ class ClientGroup extends AppItem
             delete @client_infos[id]
 
         @n_clients.remove(id)
-
 
         if @n_clients.length == 0
             @destroy()
