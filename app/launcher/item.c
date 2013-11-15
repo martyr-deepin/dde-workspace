@@ -54,8 +54,8 @@ JSValueRef launcher_load_hidden_apps()
     GError* error = NULL;
     gsize length = 0;
     gchar** raw_hidden_app_ids = g_key_file_get_string_list(hidden_apps,
-                                                            "__Config__",
-                                                            "app_ids",
+                                                            HIDDEN_APP_GROUP_NAME,
+                                                            HIDDEN_APP_KEY_NAME,
                                                             &length,
                                                             &error);
     if (raw_hidden_app_ids == NULL) {
@@ -81,11 +81,18 @@ JS_EXPORT_API
 void launcher_save_hidden_apps(ArrayContainer hidden_app_ids)
 {
     if (hidden_app_ids.data != NULL) {
-        g_key_file_set_string_list(hidden_apps, "__Config__", "app_ids",
-            (const gchar* const*)hidden_app_ids.data, hidden_app_ids.num);
+        g_key_file_set_string_list(hidden_apps,
+                                   HIDDEN_APP_GROUP_NAME,
+                                   HIDDEN_APP_KEY_NAME,
+                                   (const gchar* const*)hidden_app_ids.data,
+                                   hidden_app_ids.num);
     } else {
-        g_key_file_set_string(hidden_apps, "__Config__", "app_ids", "");
+        g_key_file_set_string(hidden_apps,
+                              HIDDEN_APP_GROUP_NAME,
+                              HIDDEN_APP_KEY_NAME,
+                              "");
     }
+
     save_app_config(hidden_apps, APPS_INI);
 }
 
@@ -195,7 +202,7 @@ gboolean _check_exist(const char* path, const char* name)
     GDir* dir = g_dir_open(path, 0, &err);
 
     if (dir == NULL) {
-        g_warning("[_check_exist] open dir(%s) failed: %s", path, err->message);
+        g_warning("[%s] open dir(%s) failed: %s", __func__, path, err->message);
         g_error_free(err);
         return FALSE;
     }

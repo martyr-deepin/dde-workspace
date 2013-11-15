@@ -233,21 +233,21 @@ PRIVATE void _cancel_delay()
         _delay_id = 0;
     }
 }
-void dock_delay_show(int delay)
+void dock_delay_show(int delay_ms)
 {
     _cancel_detect_hide_mode();
     if (CURRENT_STATE == StateHidding) {
         do_show_dock();
     } else {
         _cancel_delay();
-        _delay_id = g_timeout_add(delay, do_show_dock, NULL);
+        _delay_id = g_timeout_add(delay_ms, do_show_dock, NULL);
     }
 }
-void dock_delay_hide(int delay)
+void dock_delay_hide(int delay_ms)
 {
     _cancel_detect_hide_mode();
     _cancel_delay();
-    _delay_id = g_timeout_add(delay, do_hide_dock, NULL);
+    _delay_id = g_timeout_add(delay_ms, do_hide_dock, NULL);
 }
 
 void dock_show_now()

@@ -61,8 +61,7 @@ GtkWidget* create_web_container(bool normal, bool above)
     return window;
 }
 
-gboolean erase_background(GtkWidget* widget,
-        cairo_t *cr, gpointer data)
+gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
 {
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
