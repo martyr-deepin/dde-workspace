@@ -23,6 +23,14 @@
 #ifndef _LAUNCHER_H__
 #define _LAUNCHER_H__
 
+#define APPS_INI "dock/apps.ini"
+#define DOCKED_ITEM_GROUP_NAME "DockedItems"
+#define DOCKED_ITEM_KEY_NAME "Position"
+
+#define DOCKED_ITEM_APP_TYPE "App"
+#define DOCKED_ITEM_PLUGIN_TYPE "Plugin"
+#define DOCKED_ITEM_RICHDIR_TYPE "RichDir"
+
 extern GKeyFile* k_apps;
 void init_launchers();
 gboolean dock_has_launcher(const char* app_id);

@@ -11,7 +11,7 @@ clean_hover_state = do ->
             Item.clean_hover_temp = false
             event = new Event("mouseover")
             Widget.look_up(Item.hover_item_id)?.element.dispatchEvent(event)
-        , 300)
+        , 1100)
 
 get_item_row_count = ->
     parseInt(grid.clientWidth / ITEM_WIDTH)

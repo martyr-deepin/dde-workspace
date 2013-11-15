@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
- *               2013 ~ 2013 Liliqiang Lee
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
- *              Liliqiang Lee <liliqiang@linuxdeepin.com>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
-static GKeyFile* dock_config = NULL;
 
 int _dock_height = 60;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
@@ -198,8 +197,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
 void check_version()
 {
-    if (dock_config == NULL)
-        dock_config = load_app_config(DOCK_CONFIG);
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
 
     GError* err = NULL;
     gchar* version = g_key_file_get_string(dock_config, "main", "version", &err);
@@ -208,6 +206,22 @@ void check_version()
         g_error_free(err);
         g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
         save_app_config(dock_config, DOCK_CONFIG);
+    }
+
+    if (g_strcmp0(DOCK_VERSION, version) != 0) {
+        g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
+        save_app_config(dock_config, DOCK_CONFIG);
+
+        system("sed -i 's/__Config__/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        GKeyFile* f = load_app_config(APPS_INI);
+        gsize len = 0;
+        char** list = g_key_file_get_groups(f, &len);
+        for (int i = 1; i < len; ++i) {
+            g_key_file_set_string(f, list[i], "Type", DOCKED_ITEM_APP_TYPE);
+        }
+        g_strfreev(list);
+        save_app_config(f, APPS_INI);
+        g_key_file_unref(f);
     }
 
     if (version != NULL)
@@ -236,6 +250,7 @@ int main(int argc, char* argv[])
 
     /* check_compiz_validity(); */
 
+/* #define DEBUG_REGION */
 #ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 #endif
@@ -251,9 +266,11 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+#ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+#endif
+#undef DEBUG_REGION
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
