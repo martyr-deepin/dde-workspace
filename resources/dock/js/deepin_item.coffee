@@ -12,7 +12,6 @@ class Applet extends AppItem
     do_mouseover: (e) =>
         super
         Preview_close_now()
-        DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 
     do_mouseout: (e)=>
@@ -81,6 +80,7 @@ class LauncherItem extends FixedItem
         )
     do_click: (e)=>
         DCore.Dock.toggle_launcher(!@__show)
+
     do_buildmenu: =>
         []
 
@@ -234,8 +234,8 @@ class DigitClock extends ClockBase
             @switch_to_analog()
 
     switch_to_analog: ->
-        @destroy()
         analog_clock = new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
+        @destroy()
         swap_element(@element, analog_clock.element)
 
 
@@ -272,8 +272,8 @@ class AnalogClock extends ClockBase
             @switch_to_digit()
 
     switch_to_digit: ->
-        @destroy()
         digit_clock = new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
+        @destroy()
         swap_element(@element, digit_clock.element)
 
 
