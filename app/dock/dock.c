@@ -40,7 +40,6 @@
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
-static GKeyFile* dock_config = NULL;
 
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
@@ -198,8 +197,7 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
 void check_version()
 {
-    if (dock_config == NULL)
-        dock_config = load_app_config(DOCK_CONFIG);
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
 
     GError* err = NULL;
     gchar* version = g_key_file_get_string(dock_config, "main", "version", &err);
