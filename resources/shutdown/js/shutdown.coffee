@@ -50,11 +50,11 @@ document.body.addEventListener("click",->
 confirm_ok = (i)->
     destory_all()
     switch option[i]
-        when "Lock" then echo "lock"
-        when "Suspend" then echo "suspend"
-        when "Log out" then dbus_shutdown.Logout(1)
-        when "Restart" then dbus_shutdown.Reboot()
-        when "Shut down" then dbus_shutdown.Shutdown()
+        when "lock" then echo "lock"
+        when "suspend" then echo "suspend"
+        when "logout" then dbus_shutdown.Logout(1)
+        when "restart" then dbus_shutdown.Reboot()
+        when "shutdown" then dbus_shutdown.Shutdown()
         else return
 
 
