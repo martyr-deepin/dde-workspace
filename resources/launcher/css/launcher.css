@@ -151,9 +151,9 @@ body {
     border: 1px rgba(255, 255, 255, 0.0) solid;
 }
 .item_selected {
-    background: rgba(0, 183, 238, 0.4);
-    border: 1px rgba(255, 255, 255, 0.4) solid;
-    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px rgba(255, 255, 255, 0.45) solid;
+    border-radius: 4px;
 }
 
 .item_name {

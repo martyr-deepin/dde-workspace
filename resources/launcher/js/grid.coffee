@@ -221,9 +221,9 @@ class Item extends Widget
     do_mouseover: =>
         Item.hover_item_id = @id
         if not Item.clean_hover_temp
-            @element.style.background = "rgba(0, 183, 238, 0.2)"
-            @element.style.border = "1px rgba(255, 255, 255, 0.2) solid"
-            @element.style.borderRadius = "2px"
+            @element.style.background = "rgba(255, 255, 255, 0.15)"
+            @element.style.border = "1px rgba(255, 255, 255, 0.25) solid"
+            @element.style.borderRadius = "4px"
 
     do_mouseout: =>
         @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
