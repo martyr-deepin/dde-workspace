@@ -172,6 +172,8 @@ class Trash extends FixedItem
 class ClockBase extends FixedItem
     do_mouseover: =>
         super
+        @img.style.webkitTransform = ''
+        @img.style.webkitTransition = ''
         @element.style.webkitTransform = 'scale(1.1)'
         @element.style.webkitTransition = 'all 0.2s ease-out'
         @set_tooltip((new Date()).toLocaleDateString())

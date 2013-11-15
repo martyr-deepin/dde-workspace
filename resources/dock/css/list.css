@@ -28,7 +28,6 @@
 .OpenIndicator {
     position: absolute;
     max-width:66px;
-    bottom: -60px;
 }
 
 @-webkit-keyframes showOut{

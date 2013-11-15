@@ -26,7 +26,6 @@
 #include "X_misc.h"
 #include "xdg_misc.h"
 #include "utils.h"
-#include "tray.h"
 #include "tasklist.h"
 #include "i18n.h"
 #include "dock_config.h"
