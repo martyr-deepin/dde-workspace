@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
 
     /* check_compiz_validity(); */
 
-/* #define DEBUG_REGION */
+#define DEBUG_REGION
 #ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 #endif
@@ -392,5 +392,42 @@ DBUS_EXPORT_API
 void dock_show_inspector()
 {
     dwebview_show_inspector(webview);
+}
+
+
+#define CLOCK_TYPE_KEY_NAME "ClockType"
+JS_EXPORT_API
+char* dock_clock_type()
+{
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
+
+    GError* err = NULL;
+    char* clock_type = g_key_file_get_string(dock_config, "main",
+                                             CLOCK_TYPE_KEY_NAME, &err);
+    if (err != NULL) {
+        g_warning("[%s] get clock type failed: %s", __func__, err->message);
+        if (err->code == G_KEY_FILE_ERROR_KEY_NOT_FOUND) {
+            // using digit clock as default
+            g_key_file_set_string(dock_config, "main", CLOCK_TYPE_KEY_NAME, "digit");
+        }
+        save_app_config(dock_config, DOCK_CONFIG);
+        g_clear_error(&err);
+        g_key_file_unref(dock_config);
+        return g_strdup("digit");
+    }
+
+    g_key_file_unref(dock_config);
+
+    return clock_type;
+}
+
+
+JS_EXPORT_API
+void dock_set_clock_type(char const* type)
+{
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
+    g_key_file_set_string(dock_config, "main", CLOCK_TYPE_KEY_NAME, type);
+    save_app_config(dock_config, DOCK_CONFIG);
+    g_key_file_unref(dock_config);
 }
 

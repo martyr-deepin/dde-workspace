@@ -52,6 +52,9 @@ WEEKDAY = ["SUN", "MON", "TUE", "WEN", "THU", "FRI", "STA"]
 DIGIT_CLOCK =
     'bg':'img/digit-clock.svg'
     'id':'dde_digit_clock'
+    'type': "digit"
+
 ANALOG_CLOCK =
     'bg':'img/analog-clock.svg'
     'id':'dde_analog_clock'
+    'type': "analog"

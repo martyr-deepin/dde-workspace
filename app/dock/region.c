@@ -51,7 +51,7 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
-/* #define DEBUG_REGION */
+#define DEBUG_REGION
 #ifndef DEBUG_REGION
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
 #else
