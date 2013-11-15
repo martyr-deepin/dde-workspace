@@ -34,10 +34,10 @@ class Board
         ctx.save()
         ctx.drawImage(@image, 3, 1, @board.width, BOARD_HEIGHT)
         ctx.restore()
-        DCore.Dock.update_guard_window_width(@board.width - 40)
+        DCore.Dock.update_guard_window_width(@board.width)
 
     set_width: (w)->
-        @board.width = Math.min(w + 30, screen.width)
+        @board.width = Math.min(w + ITEM_WIDTH, screen.width)
 
     set_height: (h)->
         @board.height = h

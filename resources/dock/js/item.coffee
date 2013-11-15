@@ -33,7 +33,7 @@ calc_app_item_size = ->
         Widget.look_up(i.id)?.update_scale()
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
-        # apps are moved up, so add 5
+        # apps are moved up, so add 8
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
         DCore.Dock.change_workarea_height(height)
 
@@ -48,12 +48,13 @@ update_dock_region = (w)->
     if last and last.clientWidth != 0
         app_len = ICON_SCALE * ITEM_WIDTH * apps.length
         left_offset = (screen.width - app_len) / 2
-        DCore.Dock.force_set_region(left_offset, 0, app_len, DOCK_HEIGHT)
+        DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH, apps.length, DOCK_HEIGHT)
 
 document.body.onresize = ->
     calc_app_item_size()
 
 class AppList extends Widget
+    @expand_panel_id: null
     constructor: (@id) ->
         super
         $("#container").appendChild(@element)
@@ -105,13 +106,16 @@ class AppList extends Widget
     do_dragover: (e) =>
         e.preventDefault()
         e.stopPropagation()
-        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            e.dataTransfer.dropEffect="copy"
-            n = e.x / (ITEM_WIDTH * ICON_SCALE)
-            if n > 2  # skip the show_desktop and show launcher AppItem
-                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
-            else
-                @hide_indicator()
+        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+        if e.screenX > min_x and e.screenX < max_x
+            if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+                e.dataTransfer.dropEffect="copy"
+                n = e.x / (ITEM_WIDTH * ICON_SCALE)
+                if n > 2  # skip the show_desktop and show launcher AppItem
+                    @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
+                else
+                    @hide_indicator()
 
     do_dragleave: (e)=>
         @hide_indicator()
@@ -122,9 +126,12 @@ class AppList extends Widget
             # update_dock_region()
 
     do_dragenter: (e)=>
-        DCore.Dock.require_all_region()
         e.stopPropagation()
         e.preventDefault()
+        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+        if e.screenX > min_x and e.screenX < max_x
+            DCore.Dock.require_all_region()
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
@@ -134,6 +141,7 @@ class AppList extends Widget
         if @insert_indicator.parentNode == @element
             @element.removeChild(@insert_indicator)
             @is_insert_indicator_shown = false
+            clearTimeout(AppList.expand_panel_id)
 
     show_indicator: (x, try_insert_id)->
         if @is_insert_indicator_shown
@@ -157,8 +165,10 @@ class AppList extends Widget
             @element.insertBefore(@insert_indicator, @last_fixed)
 
         @is_insert_indicator_shown = true
-        board.set_width(board.board.width + ITEM_WIDTH)
-        board.draw()
+        AppList.expand_panel_id = setTimeout(->
+            board.set_width(board.board.width)
+            board.draw()
+        , 50)
 
 app_list = new AppList("app_list")
 
@@ -229,8 +239,9 @@ class AppItem extends Widget
     do_dragover: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
-        app_list.record_last_over_item(@)
+        if e.screenX > get_page_xy($("#show_desktop"), 0, 0).x and e.screenX < get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+            return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
+            app_list.record_last_over_item(@)
 
     do_dragstart: (e)=>
         e.stopPropagation()
