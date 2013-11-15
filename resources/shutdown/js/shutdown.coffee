@@ -1,8 +1,9 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 snyh
+#Copyright (c) 2012 ~ 2013 Deepin, Inc.
+#              2012 ~ 2013 bluth
 #
-#Author:      Cole <phcourage@gmail.com>
-#Maintainer:  Cole <phcourage@gmail.com>
+#encoding: utf-8
+#Author:      bluth <\yuanchenglu@linuxdeepin.com>
+#Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -17,47 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-frame_click = false
-option = ["lock","suspend","logout","restart","shutdown"]
-option_text = [_("Lock"),_("Suspend"),_("Log out"),_("Restart"),_("Shut down")]
-message_text = [
-    _("The system will be locked in:"),
-    _("The system will be suspended in:"),
-    _("You will be automatically logged out in:"),
-    _("The system will restart in:"),
-    _("The system will shut down in:")
-]
-
-dbus_shutdown = DCore.DBus.session("org.gnome.SessionManager")
-
-timeId = null
-
-destory_all = ->
-    clearInterval(timeId) if timeId
-    DCore.Shutdown.quit()
-
-document.body.addEventListener("click",->
-    if !frame_click
-        destory_all()
-    frame_click = false
-    )
-
-#DBus
-
-
-
-
-confirm_ok = (i)->
-    destory_all()
-    switch option[i]
-        when "lock" then echo "lock"
-        when "suspend" then echo "suspend"
-        when "logout" then dbus_shutdown.Logout(1)
-        when "restart" then dbus_shutdown.Reboot()
-        when "shutdown" then dbus_shutdown.Shutdown()
-        else return
-
-
 class ShutDown extends Widget
     opt = []
     img_url = []
@@ -68,7 +28,7 @@ class ShutDown extends Widget
 
     constructor: (@id)->
         super
-        echo "shutdown"
+        confirmdialog = null
 
     destory:->
         document.body.removeChild(@element)
@@ -108,27 +68,23 @@ class ShutDown extends Widget
             #click
             opt[i].addEventListener("mousedown",->
                 i = this.value
-                #echo "#{i}:mousedown"
                 opt_img[i].src = "img/click/#{option[i]}.png"
             )
             opt[i].addEventListener("click",->
                 i = this.value
                 frame_click = true
-                #echo "#{i}:click"
                 opt_img[i].src = "img/click/#{option[i]}.png"
                 if 2 <= i <= 4 then that.fade(i)
-                else if i < 2 then confirm_ok(i)
+                else if 0 <= i <= 1 then confirm_ok(i)
                 
             )
     
     timefunc:(i) ->
-        #echo "timefunc"
         @destory()
         confirmdialog = new ConfirmDialog(i)
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
         confirmdialog.interval(60)
-        confirmdialog.key()
 
     fade:(i)->
         opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
@@ -162,160 +118,20 @@ class ShutDown extends Widget
                 tmp.style.borderRadius = null
 
     
-    key:->
-        document.body.addEventListener("keydown", (e)=>
-            switch e.which
-                when LEFT_ARROW
-                    choose_num--
-                    if choose_num == -1 then choose_num = 4
-                    @select_state(choose_num)
-                when RIGHT_ARROW
-                    choose_num++
-                    if choose_num == 5 then choose_num = 0
-                    @select_state(choose_num)
-                when ENTER_KEY
-                    i = choose_num
-                    if 2 <= i <= 4 then @fade(i)
-                    else if i < 2 then confirm_ok(i)
-                when ESC_KEY
-                    destory_all()
-        )
-
-
-class ConfirmDialog extends Widget
-    timeId = null
-    CANCEL = 0
-    OK = 1
-    choose_num = OK
-
-    constructor: (i)->
-        super
-        if i < 2 or i > 4 then return
-        @i = i
-   
-    destory:->
-        document.body.removeChild(@element)
-
-
-    frame_build:->
-        i = @i
-        frame_confirm = create_element("div", "frame_confirm", @element)
-        frame_confirm.addEventListener("click",->
-            frame_click = true
-        )
-        
-        left = create_element("div","left",frame_confirm)
-        img_url = "img/normal/#{option[i]}.png"
-        @img_confirm = create_img("img_confirm",img_url,left)
-        text_img = create_element("div","text_img",left)
-        text_img.textContent = option_text[i]
-        
-        right = create_element("div","right",frame_confirm)
-        @message_confirm = create_element("div","message_confirm",right)
-        @message_confirm.textContent = message_text[i] + " 60 " + _("seconds.")
-
-        button_confirm = create_element("div","button_confirm",right)
-        
-        @button_cancel = create_element("div","button_cancel",button_confirm)
-        @button_cancel.textContent = _("Cancel")
-        #@button_cancel.type = "button"
-
-        @button_ok = create_element("div","button_ok",button_confirm)
-        @button_ok.textContent = option_text[i]
-        #@button_ok.type = "button"
-
-        @button_cancel.addEventListener("click",->
-            echo "cancel"
-            clearInterval(timeId) if timeId
-            destory_all()
-        )
-        @button_ok.addEventListener("click",->
-            echo "ok"
-            confirm_ok(i)
-        )
-
-        @button_cancel.addEventListener("mouseover",=>
-            choose_num = CANCEL
-            @hover_state(choose_num)
-        )
-        @button_cancel.addEventListener("mouseout",=>
-            @normal_state(CANCEL)
-        )
-        @button_ok.addEventListener("mouseover",=>
-            choose_num = OK
-            @hover_state(choose_num)
-        )
-
-        @button_ok.addEventListener("mouseout",=>
-            @normal_state(OK)
-        )
-
-        apply_animation(right,"show_confirm","0.3s")
-        right.addEventListener("webkitAnimationEnd",=>
-            right.style.opacity = "1.0"
-        ,false)
-
-
-    interval:(time)->
-        i = @i
-        that = @
-        clearInterval(timeId) if timeId
-        timeId = setInterval(->
-            time--
-            that.message_confirm.textContent = message_text[i] + " #{time} " +  _("seconds.")
-            if time == 0
-                clearInterval(timeId)
-                if 2 <= i <= 4 then confirm_ok(i)
-        ,1000)
-
-    hover_state: (choose_num)->
-        switch choose_num
-            when OK
-                @button_ok.style.color = "rgba(0,193,255,1.0)"
-                @button_cancel.style.color = "rgba(255,255,255,0.5)"
-            when CANCEL
-                @button_cancel.style.color = "rgba(0,193,255,1.0)"
-                @button_ok.style.color = "rgba(255,255,255,0.5)"
-            else return
-
-    normal_state: (choose_num)->
-        switch choose_num
-            when OK
-                @button_ok.style.color = "rgba(255,255,255,0.5)"
-                @button_cancel.style.color = "rgba(255,255,255,0.5)"
-            when CANCEL
-                @button_cancel.style.color = "rgba(255,255,255,0.5)"
-                @button_ok.style.color = "rgba(255,255,255,0.5)"
-            else return
-    
-    key:->
-        change_choose =->
-            if choose_num == OK then choose_num = CANCEL
-            else choose_num = OK
-            return choose_num
-
-        choose_enter = =>
-            i = @i
-            switch choose_num
-                when OK
-                    echo "ok"
-                    if 2 <= i <= 4 then confirm_ok(i)
-                when CANCEL
-                    echo "cancel"
-                    destory_all()
-                else return
-
-        document.body.addEventListener("keydown", (e)=>
-            switch e.which
-                when LEFT_ARROW
-                    change_choose()
-                    @hover_state(choose_num)
-                when RIGHT_ARROW
-                    change_choose()
-                    @hover_state(choose_num)
-                when ENTER_KEY
-                    choose_enter()
-                when ESC_KEY
-                    destory_all()
-        )
+    keydown:(keyCode)->
+        switch keyCode
+            when LEFT_ARROW
+                choose_num--
+                if choose_num == -1 then choose_num = 4
+                @select_state(choose_num)
+            when RIGHT_ARROW
+                choose_num++
+                if choose_num == 5 then choose_num = 0
+                @select_state(choose_num)
+            when ENTER_KEY
+                i = choose_num
+                if 2 <= i <= 4 then @fade(i)
+                else if 0 <= i <= 1 then confirm_ok(i)
+            when ESC_KEY
+                destory_all()
 

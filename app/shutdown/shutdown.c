@@ -223,7 +223,7 @@ int main (int argc, char **argv)
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
-    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
+    /*gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);*/
 
     gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_widget_set_events (GTK_WIDGET (container),
@@ -240,7 +240,6 @@ int main (int argc, char **argv)
 
     webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
-    /*g_signal_connect (container, "delete-event", G_CALLBACK (prevent_exit), NULL);*/
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 
@@ -252,7 +251,6 @@ int main (int argc, char **argv)
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-
 
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();

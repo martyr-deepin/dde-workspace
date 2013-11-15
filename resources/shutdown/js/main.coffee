@@ -1,8 +1,9 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 snyh
+#Copyright (c) 2012 ~ 2013 Deepin, Inc.
+#              2012 ~ 2013 bluth
 #
-#Author:      Cole <phcourage@gmail.com>
-#Maintainer:  Cole <phcourage@gmail.com>
+#encoding: utf-8
+#Author:      bluth <\yuanchenglu@linuxdeepin.com>
+#Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -27,5 +28,14 @@ DCore.signal_connect("draw_background", (info)->
 shutdown = new ShutDown()
 shutdown.frame_build()
 document.body.appendChild(shutdown.element)
-shutdown.key()
 
+document.body.addEventListener("keydown",(e)->
+    if shutdown then shutdown.keydown(e.which)
+    else if confirmdialog then confirmdialog.keydown(e.which)
+    )
+
+document.body.addEventListener("click",->
+    if !frame_click
+        destory_all()
+    frame_click = false
+    )
