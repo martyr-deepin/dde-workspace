@@ -1,4 +1,4 @@
-#roundabout {
+#div_users {
     position:fixed;
     list-style: none;
     margin:0 auto;
@@ -8,7 +8,7 @@
     height:30em;
 }
 
-#roundabout li {
+#div_users li {
     width: 14em;
     height: 16.5em;
     background: rgba(255,255,255,0.5);
@@ -16,7 +16,7 @@
     border-radius: 5px;
 }
 
-#roundabout li.roundabout-in-focus {
+#div_users li.div_users-in-focus {
     cursor: auto;
     background: none;
     border: none;

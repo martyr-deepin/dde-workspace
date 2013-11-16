@@ -38,7 +38,7 @@ if not is_livecd
 
 u = new UserInfo(user, user, user_image)
 
-roundabout.appendChild(u.li)
+div_users.appendChild(u.li)
 _current_user = u
 
 u.focus()
@@ -63,11 +63,11 @@ document.body.addEventListener("keydown", (e) =>
         message_tip?.remove()
 )
 
-if roundabout.children.length <= 2
-    roundabout.style.width = "0"
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-    user = Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))
+if div_users.children.length <= 2
+    div_users.style.width = "0"
+    l = (screen.width  - div_users.clientWidth) / 2
+    div_users.style.left = "#{l}px"
+    user = Widget.look_up(div_users.children[0].children[0].getAttribute("id"))
     if not user?.face_login
         user?.show_login()
 
@@ -80,7 +80,7 @@ DCore.signal_connect("start-login", ->
 )
 
 # if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
+#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
 
 DCore.Lock.webview_ok(_current_user.id)
 

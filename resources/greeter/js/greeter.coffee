@@ -33,7 +33,7 @@ get_user_image = (user) ->
 
 if DCore.Greeter.is_hide_users()
     u = new UserInfo("*other", "", "images/huser.jpg")
-    roundabout.appendChild(u.li)
+    div_users.appendChild(u.li)
     Widget.look_up("*other").element.style.paddingBottom = "5px"
     u.focus()
 else
@@ -42,7 +42,7 @@ else
         if user == DCore.Greeter.get_default_user()
             user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
+            div_users.appendChild(u.li)
             u.focus()
 
     for user in users
@@ -51,18 +51,18 @@ else
         else
             user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
+            div_users.appendChild(u.li)
 
     if DCore.Greeter.is_support_guest()
         u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        roundabout.appendChild(u.li)
+        div_users.appendChild(u.li)
         if DCore.Greeter.is_guest_default()
             u.focus()
 
 userinfo_list[0]?.focus()
 
-####the _counts must put before any animate of roundabout####
-_counts = roundabout.childElementCount
+####the _counts must put before any animate of div_users####
+_counts = div_users.childElementCount
 _ANIMATE_TIMEOUT_ID = -1
 
 document.body.addEventListener("mousewheel", (e) =>
@@ -107,23 +107,23 @@ document.body.addEventListener("keydown", (e)=>
         message_tip?.remove()
 )
 
-if roundabout.children.length <= 2
-    roundabout.style.width = "0"
-    #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
+if div_users.children.length <= 2
+    div_users.style.width = "0"
+    #Widget.look_up(div_users.children[0].children[0].getAttribute("id"))?.show_login()
     userinfo_list[0]?.focus()
     if not userinfo_list[0].face_login
         userinfo_list[0]?.show_login()
 
-l = (screen.width  - roundabout.clientWidth) / 2
-roundabout.style.left = "#{l}px"
+l = (screen.width  - div_users.clientWidth) / 2
+div_users.style.left = "#{l}px"
 
-jQuery("#roundabout").drag("start", (ev, dd) ->
+jQuery("#div_users").drag("start", (ev, dd) ->
     _current_user?.hide_login()
     _drag_flag = true
 , {distance:100}
 )
 
-jQuery("#roundabout").drag("end", (ev, dd) ->
+jQuery("#div_users").drag("end", (ev, dd) ->
     _current_user?.animate_near()
 )
 
@@ -135,7 +135,7 @@ DCore.signal_connect("start-login", ->
 )
 
 # if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
+#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
 
 DCore.Greeter.webview_ok(_current_user.id)
 

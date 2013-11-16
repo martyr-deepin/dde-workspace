@@ -176,7 +176,7 @@ class UserInfo extends Widget
         @name.innerText = name
 
         @element.index = 0
-        @index = roundabout.childElementCount
+        @index = div_users.childElementCount
         userinfo_list.push(@)
 
         @login_displayed = false
@@ -196,7 +196,7 @@ class UserInfo extends Widget
 
         _current_user?.blur()
         _current_user = @
-        $("#roundabout").focus()
+        $("#div_users").focus()
         @element.focus()
         @add_css_class("UserInfoSelected")
 
@@ -367,7 +367,7 @@ class UserInfo extends Widget
             @stop_animation()
             message_tip?.remove()
             message_tip = null
-            message_tip = new MessageTip(msg, roundabout.parentElement)
+            message_tip = new MessageTip(msg, div_users.parentElement)
         else
             # echo "login failed"
             @focus()
@@ -397,7 +397,7 @@ class UserInfo extends Widget
                 userinfo_list[prev_index].focus()
                 return true
             ,200)
-        jQuery("#roundabout").roundabout("animateToChild", prev_index)
+        jQuery("#div_users").div_users("animateToChild", prev_index)
 
     animate_next: ->
         if @face_login
@@ -415,7 +415,7 @@ class UserInfo extends Widget
                 userinfo_list[next_index].focus()
                 return true
             ,200)
-        jQuery("#roundabout").roundabout("animateToChild", next_index)
+        jQuery("#div_users").div_users("animateToChild", next_index)
 
     animate_near: ->
         if @face_login
@@ -425,7 +425,7 @@ class UserInfo extends Widget
             return
 
         try
-            near_index = jQuery("#roundabout").roundabout("getNearestChild")
+            near_index = jQuery("#div_users").div_users("getNearestChild")
         catch error
             echo "getNeareastChild error"
 
@@ -437,7 +437,7 @@ class UserInfo extends Widget
                 _drag_flag = false
                 return true
             ,200)
-        jQuery("#roundabout").roundabout("animateToChild", near_index)
+        jQuery("#div_users").div_users("animateToChild", near_index)
 
     draw_camera: ->
         if @face_login
