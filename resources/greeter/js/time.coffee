@@ -17,6 +17,25 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+# <div id="time" class="time"></div>
+# <div id="date" class="date"></div>
+
+class Time extends Widget
+    constructor:->
+        super
+        
+        time_div = create_element("div","time_div",@element)
+        time = create_element("div","time",time_div)
+        date = create_element("div","date",time_div)
+
+
+
+
+
+
+
+
 format_two_bit = (s) ->
     if s < 10
         return "0#{s}"

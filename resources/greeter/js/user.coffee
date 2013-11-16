@@ -25,6 +25,20 @@ apply_refuse_rotate = (el, time)->
     , time * 1000)
 
 
+
+class User extends Widget
+    constructor:->
+        super
+        
+        user_div = create_element("div","user_div",@element)
+        user_ul = create_element("ul","user_ul",user_div)
+
+
+
+
+
+
+
 class MessageTip
     constructor:(text, @parent)->
         @message_tip = null

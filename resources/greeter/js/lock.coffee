@@ -34,7 +34,7 @@ catch error
 
 if not is_livecd
     s = new SwitchUser("switchuser")
-    $("#bottom_buttons").appendChild(s.element)
+    $("#desktop_power").appendChild(s.element)
 
 u = new UserInfo(user, user, user_image)
 

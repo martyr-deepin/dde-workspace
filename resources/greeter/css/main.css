@@ -47,7 +47,7 @@ body{
 
 }
 
-.Time01{
+.time{
     margin-top:30px;
     font-size:70px;
     color: #fff;
@@ -56,7 +56,7 @@ body{
     display: block;
 }
 
-.Time02{
+.date{
     margin-top:30px;
     font-size:15px;
     color: #fff;
@@ -78,6 +78,11 @@ body{
 }
 
 .Detext{
+    position:absolute;
+    margin-left:auto;
+    margin-right:auto;
+    bottom:200px;
+    
     cursor:default;
     padding:0;
     margin:0 5px 0 0;
@@ -85,14 +90,14 @@ body{
     text-align:right;
     height:32px;
     width:300px;
-    bottom:20px;
+    
     line-height: 30px;
     color:#fff;
     text-shadow:0 0 2px #333;
     -webkit-user-select:none;
 }
 
-#bottom_buttons {
+#desktop_power {
     position: absolute;
     bottom: 43px;
     right: 20px;
