@@ -26,7 +26,7 @@ class ShutDown extends Widget
     choose_num = -1
     select_state_confirm = false
 
-    constructor: (@id)->
+    constructor: ()->
         super
         confirmdialog = null
 
