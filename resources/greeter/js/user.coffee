@@ -24,9 +24,17 @@ apply_refuse_rotate = (el, time)->
         el.style.webkitAnimation = ""
     , time * 1000)
 
+enable_detection = (enabled)->
+    DCore[APP_NAME].enable_detection(enabled)
 
+message_tip = null
+draw_camera_id = null
+_current_user = null
+userinfo_list = []
+_drag_flag = false
 
 class User extends Widget
+
     constructor:->
         super
         
@@ -34,28 +42,12 @@ class User extends Widget
         user_ul = create_element("ul","user_ul",user_div)
 
 
-
-
-
-
-
-class MessageTip
-    constructor:(text, @parent)->
-        @message_tip = null
-        @message_tip = create_element("div", "failed-tip", @parent)
-        @message_tip.appendChild(document.createTextNode(text))
-        @message_tip.style.top = "#{.15 * window.innerHeight + 310}px"
-
-    adjust_show_login: ->
-        @message_tip.style.top = "#{.15 * window.innerHeight + 390}px"
-
-    remove: =>
-        if @message_tip
-            @parent.removeChild(@message_tip)
-            @message_tip = null
-
-message_tip = null
-draw_camera_id = null
+#_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
+#_current_bg = create_img("Background", _default_bg_src)
+#document.body.appendChild(_current_bg)
+background = $("#background")
+background.width = screen.width
+background.height = screen.height
 
 
 class LoginEntry extends Widget
@@ -138,22 +130,6 @@ class SwitchUser extends Widget
             draw_camera_id = null
             DCore.Lock.switch_user()
         )
-
-#_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
-#_current_bg = create_img("Background", _default_bg_src)
-#document.body.appendChild(_current_bg)
-
-_current_user = null
-userinfo_list = []
-_drag_flag = false
-
-background = $("#background")
-background.width = screen.width
-background.height = screen.height
-
-
-enable_detection = (enabled)->
-    DCore[APP_NAME].enable_detection(enabled)
 
 
 class UserInfo extends Widget

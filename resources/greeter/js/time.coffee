@@ -91,8 +91,3 @@ class Time extends Widget
 
     import_css:(src)->
         inject_css(@element,src)
-
-
-time = new Time()
-time.show()
-time.import_css("css/time.css")

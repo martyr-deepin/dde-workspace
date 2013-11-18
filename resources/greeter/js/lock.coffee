@@ -105,3 +105,8 @@ if div_users.children.length <= 2
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)
 lcok.keydown(userinfo)
+
+
+time = new Time()
+time.show()
+time.import_css("css/time.css")
