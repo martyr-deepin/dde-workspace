@@ -1,4 +1,4 @@
-#div_users {
+.user_div {
     position:fixed;
     list-style: none;
     margin:0 auto;
@@ -8,7 +8,7 @@
     height:30em;
 }
 
-#div_users li {
+#user_div li {
     width: 14em;
     height: 16.5em;
     background: rgba(255,255,255,0.5);
@@ -16,7 +16,7 @@
     border-radius: 5px;
 }
 
-#div_users li.div_users-in-focus {
+#user_div li.user_div-in-focus {
     cursor: auto;
     background: none;
     border: none;

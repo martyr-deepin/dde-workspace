@@ -77,35 +77,12 @@ class Lock extends Widget
 
 
 lock = new Lock()
-if not lock.is_livecd
-    s = new SwitchUser("switchuser")
-    $("#div_users").appendChild(s.element)
+user = new User()
+time.import_css("css/user.css")
 
-username = lock.get_username()
-userimage = lock.get_userimage()
-userinfo = new UserInfo(username, username, userimage)
-div_users.appendChild(userinfo.li)
-
-_current_user = userinfo
-userinfo.focus()
-if not userinfo.face_login
-    userinfo.show_login()
-
-# if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
-
-if div_users.children.length <= 2
-    div_users.style.width = "0"
-    l = (screen.width  - div_users.clientWidth) / 2
-    div_users.style.left = "#{l}px"
-    user = Widget.look_up(div_users.children[0].children[0].getAttribute("id"))
-    if not user?.face_login
-        user?.show_login()
-
-lock.start_login_connect(userinfo)
-lock.webview_ok(_current_user)
-lcok.keydown(userinfo)
-
+lock.start_login_connect(user.userinfo)
+lock.webview_ok(user.get_current_user())
+lcok.keydown(user.userinfo)
 
 time = new Time()
 time.show()
