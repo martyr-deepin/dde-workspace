@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
 
     gtk_container_add(GTK_CONTAINER(main), GTK_WIDGET(tray));
     gtk_widget_show_all(main);
+    na_tray_force_redraw(tray);
 
-    /* int x, width; */
-    /* gdk_window_get_geometry(window, &x, NULL, &width, NULL); */
-    /* gtk_window_move(GTK_WINDOW(main), x - width /2, 0); */
+    int x, width;
+    gdk_window_get_geometry(window, &x, NULL, &width, NULL);
+    gtk_window_move(GTK_WINDOW(main), x - width /2, 0);
     gtk_main();
     return 0;
 }
