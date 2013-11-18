@@ -17,51 +17,82 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-user = DCore.Lock.get_username()
-
-user_image = DCore.Lock.get_user_icon()
-
-if not user_image?
-    try
-        user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-    catch error
-        user_image = "images/img01.jpg"
-
-try
-    is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
-catch error
+class Lock extends Widget
     is_livecd = false
 
-if not is_livecd
+    constructor:->
+        super
+        @is_livecd()
+
+    is_livecd:->
+        try
+            is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
+        catch error
+            is_livecd = false
+
+    keydown:(userinfo)->
+        document.body.addEventListener("keydown", (e) =>
+            if e.which == ENTER_KEY
+                if not userinfo.login_displayed
+                    # if not userinfo.is_recognizing
+                    if userinfo.face_login
+                        DCore[APP_NAME].cancel_detect()
+                        userinfo?.stop_animation()
+                        userinfo.is_recognizing = false
+                    userinfo.show_login()
+                    message_tip?.remove()
+                else
+                    userinfo.login.on_active(user, userinfo.login.password.value)
+
+            else if e.which == ESC_KEY
+                userinfo.hide_login()
+                message_tip?.remove()
+        )
+
+    webview_ok:(_current_user)->
+        DCore.Lock.webview_ok(_current_user.id)
+
+
+    start_login_connect:(userinfo)->
+        DCore.signal_connect("start-login", ->
+            # echo "receive start login"
+            # TODO: maybe some animation or some reflection.
+            userinfo.is_recognizing = false
+            DCore.Lock.try_unlock("")
+        )
+
+    get_username:->
+        username = DCore.Lock.get_username()
+        return username
+
+    get_userimage:->
+        user_image = DCore.Lock.get_user_icon()
+        if not user_image?
+            try
+                user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+            catch error
+                user_image = "images/img01.jpg"
+        return user_image
+
+
+
+lock = new Lock()
+if not lock.is_livecd
     s = new SwitchUser("switchuser")
     $("#div_users").appendChild(s.element)
 
-u = new UserInfo(user, user, user_image)
+username = lock.get_username()
+userimage = lock.get_userimage()
+userinfo = new UserInfo(username, username, userimage)
+div_users.appendChild(userinfo.li)
 
-div_users.appendChild(u.li)
-_current_user = u
+_current_user = userinfo
+userinfo.focus()
+if not userinfo.face_login
+    userinfo.show_login()
 
-u.focus()
-if not u.face_login
-    u.show_login()
-
-document.body.addEventListener("keydown", (e) =>
-    if e.which == ENTER_KEY
-        if not u.login_displayed
-            # if not u.is_recognizing
-            if u.face_login
-                DCore[APP_NAME].cancel_detect()
-                u?.stop_animation()
-                u.is_recognizing = false
-            u.show_login()
-            message_tip?.remove()
-        else
-            u.login.on_active(user, u.login.password.value)
-
-    else if e.which == ESC_KEY
-        u.hide_login()
-        message_tip?.remove()
-)
+# if _current_user.face_login
+#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
 
 if div_users.children.length <= 2
     div_users.style.width = "0"
@@ -71,16 +102,6 @@ if div_users.children.length <= 2
     if not user?.face_login
         user?.show_login()
 
-
-DCore.signal_connect("start-login", ->
-    # echo "receive start login"
-    # TODO: maybe some animation or some reflection.
-    u.is_recognizing = false
-    DCore.Lock.try_unlock("")
-)
-
-# if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
-
-DCore.Lock.webview_ok(_current_user.id)
-
+lock.start_login_connect(userinfo)
+lock.webview_ok(_current_user)
+lcok.keydown(userinfo)
