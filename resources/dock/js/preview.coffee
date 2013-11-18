@@ -17,6 +17,20 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+class Arrow extends Widget
+    constructor: (@id)->
+        super
+        @arrow_outter = create_element("div", "pop_arrow_up_outer", @element)
+        @arrow_mid = create_element("div", "pop_arrow_up_mid", @element)
+        @arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
+
+    move_to: (x, y)->
+        @element.style.left = "#{x}px"
+        if y
+            @element.style.top = "#{y}px"
+
+
 #TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
 class PWContainer extends Widget
     _need_move_animation: false

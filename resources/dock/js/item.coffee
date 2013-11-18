@@ -325,7 +325,8 @@ class AppItem extends Widget
 
     set_tooltip: (text) ->
         if @tooltip == null
-            @tooltip = new ToolTip(@element, text)
+            # @tooltip = new ToolTip(@element, text)
+            @tooltip = new ArrowToolTip(@element, text)
             @tooltip.set_delay_time(200)  # set delay time to the same as scale time
             return
         @tooltip.set_text(text)
