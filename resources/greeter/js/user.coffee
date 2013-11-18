@@ -43,7 +43,6 @@ background.width = screen.width
 background.height = screen.height
 
 
-
 class User extends Widget
     is_livecd = false
     username = null
@@ -101,16 +100,11 @@ class User extends Widget
         inject_css(@element,src)
 
 
-
-
-
-
-
 class LoginEntry extends Widget
     constructor: (@id, @loginuser, @on_active)->
         super
         if is_hide_users
-            @account = create_element("input", "Account", user_ul)
+            @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
             @account.addEventListener("keyup", (e)=>
                 if e.which == ENTER_KEY
@@ -120,7 +114,7 @@ class LoginEntry extends Widget
                         @password.focus()
             )
 
-        @warning = create_element("div", "CapsWarning", user_ul)
+        @warning = create_element("div", "CapsWarning", @element)
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
@@ -137,7 +131,7 @@ class LoginEntry extends Widget
                         @on_active(@loginuser, @password.value)
         )
 
-        @login = create_element("button", "LoginButton", user_ul)
+        @login = create_element("button", "LoginButton", @element)
         if is_greeter
             @login.innerText = _("Log In")
         else
@@ -150,7 +144,7 @@ class LoginEntry extends Widget
                 else
                     @on_active(@loginuser, @password.value)
         )
-        user_ul.setAttribute("autofocus", true)
+        @element.setAttribute("autofocus", true)
 
     check_capslock: ->
         if DCore[APP_NAME].detect_capslock()
@@ -172,14 +166,14 @@ class LoginEntry extends Widget
 class Loading extends Widget
     constructor: (@id)->
         super
-        create_element("div", "ball", user_ul)
-        create_element("div", "ball1", user_ul)
-        create_element("span", "", user_ul).innerText = _("Welcome")
+        create_element("div", "ball", @element)
+        create_element("div", "ball1", @element)
+        create_element("span", "", @element).innerText = _("Welcome")
 
 class SwitchUser extends Widget
     constructor: (@id)->
         super
-        @switch = create_element("div", "SwitchGreeter", user_ul)
+        @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
             clearInterval(draw_camera_id)
@@ -194,9 +188,9 @@ class UserInfo extends Widget
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         # echo "use face login: #{@face_login}"
         @li = create_element("li", "")
-        @li.appendChild(user_ul)
+        @li.appendChild(@element)
 
-        @userbase = create_element("div", "UserBase", user_ul)
+        @userbase = create_element("div", "UserBase", @element)
 
         if @face_login
             @avatar = create_element("canvas", "UserImg", @userbase)
@@ -221,7 +215,7 @@ class UserInfo extends Widget
         @name = create_element("div", "UserName", warp)
         @name.innerText = name
 
-        user_ul.index = 0
+        @element.index = 0
         @index = user_div.childElementCount
         userinfo_list.push(@)
 
@@ -243,7 +237,7 @@ class UserInfo extends Widget
         _current_user?.blur()
         _current_user = @
         $("#user_div").focus()
-        user_ul.focus()
+        @element.focus()
         @add_css_class("UserInfoSelected")
 
         if @id != "guest"
@@ -264,7 +258,7 @@ class UserInfo extends Widget
                 enable_detection(true)
 
     blur: ->
-        user_ul.setAttribute("class", "UserInfo")
+        @element.setAttribute("class", "UserInfo")
         @login?.destroy()
         @login = null
         @loading?.destroy()
@@ -290,10 +284,10 @@ class UserInfo extends Widget
 
         else if _current_user == @ and not @login
             @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
-            user_ul.appendChild(@login.element)
+            @element.appendChild(@login.element)
 
             if is_hide_users
-                user_ul.style.paddingBottom = "0px"
+                @element.style.paddingBottom = "0px"
                 @login.account.focus()
             else
                 @login.password.focus()
@@ -358,7 +352,7 @@ class UserInfo extends Widget
             @login.destroy()
             echo 'destroy end'
             @loading = new Loading("loading")
-            user_ul.appendChild(@loading.element)
+            @element.appendChild(@loading.element)
 
             if is_greeter
                 session = de_menu.get_current()
@@ -425,7 +419,7 @@ class UserInfo extends Widget
             else
                 @normal_user_fail(msg)
 
-            apply_refuse_rotate(user_ul, 0.5)
+            apply_refuse_rotate(@element, 0.5)
 
     animate_prev: ->
         if @face_login
