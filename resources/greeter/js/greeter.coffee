@@ -16,8 +16,9 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
+_ANIMATE_TIMEOUT_ID = -1
 
-get_user_image = (user) ->
+get_userimage = (user) ->
     try
         user_image = DCore.Greeter.get_user_icon(user)
     catch error
@@ -31,111 +32,100 @@ get_user_image = (user) ->
 
     return user_image
 
-if DCore.Greeter.is_hide_users()
-    u = new UserInfo("*other", "", "images/huser.jpg")
-    div_users.appendChild(u.li)
-    Widget.look_up("*other").element.style.paddingBottom = "5px"
-    u.focus()
-else
-    users = DCore.Greeter.get_users()
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image)
-            div_users.appendChild(u.li)
-            u.focus()
 
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            echo "already append default user"
-        else
-            user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image)
-            div_users.appendChild(u.li)
+class Greeter extends Widget
+    is_livecd = false
 
-    if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        div_users.appendChild(u.li)
-        if DCore.Greeter.is_guest_default()
-            u.focus()
+    constructor:->
+        super
+        @is_livecd()
 
-userinfo_list[0]?.focus()
+    is_livecd:->
+        try
+            is_livecd = DCore.DBus.sys_object("com.deepin.dde.greeter", "/com/deepin/dde/greeter", "com.deepin.dde.greeter").IsLiveCD_sync(user)
+        catch error
+            is_livecd = false
 
-####the _counts must put before any animate of div_users####
-_counts = div_users.childElementCount
-_ANIMATE_TIMEOUT_ID = -1
 
-document.body.addEventListener("mousewheel", (e) =>
-    clearTimeout(_ANIMATE_TIMEOUT_ID)
-    _ANIMATE_TIMEOUT_ID = -1
 
-    if e.wheelDelta >= 120
-        #echo "scroll to prev"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_prev()
-        , 200)
+    webview_ok:(_current_user)->
+        DCore.Greeter.webview_ok(_current_user.id)
 
-    if e.wheelDelta <= -120
-        #echo "scroll to next"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_next()
-        ,200)
-)
+    start_login_connect:(_current_user)->
+        DCore.signal_connect("start-login", ->
+            # echo "receive start login"
+            # TODO: maybe some animation or some reflection.
+            _current_user.is_recognizing = false
+            DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
+        )        
 
-document.body.addEventListener("keydown", (e)=>
-    if e.which == LEFT_ARROW
-        # echo "prev"
-        _current_user?.animate_prev()
+    mousewheel_listener:(_current_user)->
+        document.body.addEventListener("mousewheel", (e) =>
+            clearTimeout(_ANIMATE_TIMEOUT_ID)
+            _ANIMATE_TIMEOUT_ID = -1
 
-    else if e.which == RIGHT_ARROW
-        # echo "next"
-        _current_user?.animate_next()
+            if e.wheelDelta >= 120
+                #echo "scroll to prev"
+                _ANIMATE_TIMEOUT_ID = setTimeout( ->
+                    _current_user?.animate_prev()
+                , 200)
 
-    else if e.which == ENTER_KEY
-        #echo "enter"
-        # if not _current_user?.is_recognizing
-        if _current_user?.face_login
-            _current_user?.is_recognizing = false
-            DCore[APP_NAME].cancel_detect()
-            _current_user?.stop_animation()
-        _current_user?.show_login()
-        message_tip?.remove()
+            if e.wheelDelta <= -120
+                #echo "scroll to next"
+                _ANIMATE_TIMEOUT_ID = setTimeout( ->
+                    _current_user?.animate_next()
+                ,200)
+        )
 
-    else if e.which == ESC_KEY
-        #echo "esc"
-        _current_user?.hide_login()
-        message_tip?.remove()
-)
 
-if div_users.children.length <= 2
-    div_users.style.width = "0"
-    #Widget.look_up(div_users.children[0].children[0].getAttribute("id"))?.show_login()
-    userinfo_list[0]?.focus()
-    if not userinfo_list[0].face_login
-        userinfo_list[0]?.show_login()
+    keydown_listner:(_current_user)->
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == LEFT_ARROW
+                # echo "prev"
+                _current_user?.animate_prev()
 
-l = (screen.width  - div_users.clientWidth) / 2
-div_users.style.left = "#{l}px"
+            else if e.which == RIGHT_ARROW
+                # echo "next"
+                _current_user?.animate_next()
 
-jQuery("#div_users").drag("start", (ev, dd) ->
-    _current_user?.hide_login()
-    _drag_flag = true
-, {distance:100}
-)
+            else if e.which == ENTER_KEY
+                #echo "enter"
+                # if not _current_user?.is_recognizing
+                if _current_user?.face_login
+                    _current_user?.is_recognizing = false
+                    DCore[APP_NAME].cancel_detect()
+                    _current_user?.stop_animation()
+                _current_user?.show_login()
+                message_tip?.remove()
 
-jQuery("#div_users").drag("end", (ev, dd) ->
-    _current_user?.animate_near()
-)
+            else if e.which == ESC_KEY
+                #echo "esc"
+                _current_user?.hide_login()
+                message_tip?.remove()
+        )
 
-DCore.signal_connect("start-login", ->
-    # echo "receive start login"
-    # TODO: maybe some animation or some reflection.
-    _current_user.is_recognizing = false
-    DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
-)
 
-# if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, div_users.parentElement)
 
-DCore.Greeter.webview_ok(_current_user.id)
 
+
+
+
+greeter = new Greeter()
+
+user = new User()
+user.new_switchuser()
+user.new_userinfo_for_greeter()
+userinfo = user.get_userinfo_for_greeter()
+_current_user = user.get_current_user_for_greeter()
+user.drag(_current_user)
+
+time.import_css("css/user.css")
+
+greeter.start_login_connect(userinfo)
+greeter.webview_ok(_current_user)
+greeter.keydown_listener(userinfo)
+greeter.mousewheel_listener(_current_user)
+
+time = new Time()
+time.show()
+time.import_css("css/time.css")

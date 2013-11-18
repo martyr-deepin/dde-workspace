@@ -30,7 +30,20 @@ class Lock extends Widget
         catch error
             is_livecd = false
 
-    keydown:(userinfo)->
+
+    webview_ok:(_current_user)->
+        DCore.Lock.webview_ok(_current_user.id)
+
+
+    start_login_connect:(userinfo)->
+        DCore.signal_connect("start-login", ->
+            # echo "receive start login"
+            # TODO: maybe some animation or some reflection.
+            userinfo.is_recognizing = false
+            DCore.Lock.try_unlock("")
+        )
+
+    keydown_listener:(userinfo)->
         document.body.addEventListener("keydown", (e) =>
             if e.which == ENTER_KEY
                 if not userinfo.login_displayed
@@ -49,18 +62,6 @@ class Lock extends Widget
                 message_tip?.remove()
         )
 
-    webview_ok:(_current_user)->
-        DCore.Lock.webview_ok(_current_user.id)
-
-
-    start_login_connect:(userinfo)->
-        DCore.signal_connect("start-login", ->
-            # echo "receive start login"
-            # TODO: maybe some animation or some reflection.
-            userinfo.is_recognizing = false
-            DCore.Lock.try_unlock("")
-        )
-
     get_username:->
         username = DCore.Lock.get_username()
         return username
@@ -76,13 +77,22 @@ class Lock extends Widget
 
 
 
+
 lock = new Lock()
+username = lock.get_username()
+userimage = lock.get_userimage()
+
 user = new User()
+user.new_switchuser()
+user.new_userinfo_for_lock(username,userimage)
+userinfo = user.get_userinfo_for_lock()
+_current_user = user.get_current_user_for_lock()
+
 time.import_css("css/user.css")
 
-lock.start_login_connect(user.userinfo)
-lock.webview_ok(user.get_current_user())
-lcok.keydown(user.userinfo)
+lock.start_login_connect(userinfo)
+lock.webview_ok(_current_user)
+lock.keydown_listener(userinfo)
 
 time = new Time()
 time.show()

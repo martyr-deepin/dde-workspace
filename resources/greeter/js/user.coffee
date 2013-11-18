@@ -55,9 +55,6 @@ class User extends Widget
         @is_livecd()
         user_div = create_element("div","user_div",@element)
         user_ul = create_element("ul","user_ul",user_div)
-        @new_switchuser()
-        @new_userinfo()
-
     
     is_livecd:->
         try
@@ -71,9 +68,7 @@ class User extends Widget
             user_ul.appendChild(s.element)
             return s
 
-    new_userinfo:->
-        username = lock.get_username()
-        userimage = lock.get_userimage()
+    new_userinfo_for_lock:(username,userimage)->
         userinfo = new UserInfo(username, username, userimage)
         user_ul.appendChild(userinfo.li)
         userinfo.focus()
@@ -89,12 +84,67 @@ class User extends Widget
                 user?.show_login()
         return userinfo
 
-    get_current_user:->
-        @new_userinfo() if userinfo == null
+    get_current_user_for_lock:->
         _current_user = userinfo
         # if _current_user.face_login
         #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
         return _current_user
+
+    get_userinfo_for_lock:->
+        return userinfo
+
+
+    new_userinfo_for_greeter:()->
+        if DCore.Greeter.is_hide_users()
+            u = new UserInfo("*other", "", "images/huser.jpg")
+            user_ul.appendChild(u.li)
+            Widget.look_up("*other").element.style.paddingBottom = "5px"
+            u.focus()
+        else
+            users = DCore.Greeter.get_users()
+            for user in users
+                if user == DCore.Greeter.get_default_user()
+                    userimage = get_user_image(user)
+                    u = new UserInfo(user, user, userimage)
+                    user_ul.appendChild(u.li)
+                    u.focus()
+
+            for user in users
+                if user == DCore.Greeter.get_default_user()
+                    echo "already append default user"
+                else
+                    userimage = get_user_image(user)
+                    u = new UserInfo(user, user, userimage)
+                    user_ul.appendChild(u.li)
+
+            if DCore.Greeter.is_support_guest()
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+                user_ul.appendChild(u.li)
+                if DCore.Greeter.is_guest_default()
+                    u.focus()
+
+    get_current_user_for_greeter:->
+        @new_userinfo_for_greeter() if userinfo == null
+        _current_user = userinfo
+        # if _current_user.face_login
+        #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
+        return _current_user
+
+    get_userinfo_for_greeter:->
+        @new_userinfo_for_greeter() if userinfo == null
+        return userinfo
+
+
+    drag:(_current_user)->
+        jQuery("#user_div").drag("start", (ev, dd) ->
+            _current_user?.hide_login()
+            _drag_flag = true
+        , {distance:100}
+        )
+
+        jQuery("#user_div").drag("end", (ev, dd) ->
+            _current_user?.animate_near()
+        )
 
     import_css:(src)->
         inject_css(@element,src)
