@@ -70,7 +70,6 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 
 .arrow_tooltip_container {
-    display: none;
     position: absolute;
     /* border: 2px green solid; */
 }

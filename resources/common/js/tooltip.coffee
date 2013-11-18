@@ -78,8 +78,6 @@ class ArrowToolTip extends ToolTipBase
         @bind_events()
 
     draw: ->
-        ArrowToolTip._hidden_content.innerText = @text
-        ArrowToolTip._hidden_content.style.display = 'block'
         content = ArrowToolTip._hidden_content
         canvas = ArrowToolTip.tooltip
         ctx = canvas.getContext('2D')
@@ -103,6 +101,7 @@ class ArrowToolTip extends ToolTipBase
         offsetForShadow = 5
         offsetForRadius = 3
         height = content.clientHeight - offsetForRadius * 2
+
         canvas.width = content.clientWidth + 2 * (padding.horizontal + radius + offsetForShadow)
         canvas.height = height + 2 * (padding.vertical + radius + offsetForShadow) + triangle.height
         ArrowToolTip.container.width = canvas.width
@@ -112,6 +111,7 @@ class ArrowToolTip extends ToolTipBase
         bottomY = topY + height + padding.vertical * 2
         leftX = offsetForShadow + radius
         rightX = leftX + 2 * padding.horizontal + content.clientWidth
+
         arch =
             TopLeft:
                 ox: leftX
@@ -125,56 +125,54 @@ class ArrowToolTip extends ToolTipBase
                 radius: radius
                 startAngle: Math.PI
                 endAngle: Math.PI * 2
-            BottomLeft:
-                ox: leftX
-                oy: bottomY
-                radius: radius
-                startAngle: Math.PI * 0.5
-                endAngle: Math.PI
             BottomRight:
                 ox: rightX
                 oy: bottomY
                 radius: radius
                 startAngle: 0
                 endAngle: Math.PI * 0.5
+            BottomLeft:
+                ox: leftX
+                oy: bottomY
+                radius: radius
+                startAngle: Math.PI * 0.5
+                endAngle: Math.PI
+
         ctx = canvas.getContext('2d')
-        # ctx.globalAlpha = 0.8
         ctx.save()
+        # ctx.globalAlpha = 0.8
         ctx.beginPath()
 
+        ctx.moveTo(offsetForShadow, topY)
         ctx.arc(arch['TopLeft'].ox, arch['TopLeft'].oy, arch['TopLeft'].radius,
                 arch['TopLeft'].startAngle, arch['TopLeft'].endAngle)
 
-        ctx.lineTo(rightX, offsetForShadow + 0)
+        ctx.lineTo(rightX, offsetForShadow)
 
         ctx.arc(arch['TopRight'].ox, arch['TopRight'].oy, arch['TopRight'].radius,
                 arch['TopRight'].startAngle, arch['TopRight'].endAngle)
 
-        ctx.lineTo(rightX + radius, topY)
+        ctx.lineTo(rightX + radius, bottomY)
 
         ctx.arc(arch['BottomRight'].ox, arch['BottomRight'].oy, arch['BottomRight'].radius,
                 arch['BottomRight'].startAngle, arch['BottomRight'].endAngle)
 
         # bottom line
         ctx.lineTo(leftX + padding.horizontal + (content.clientWidth + triangle.width) / 2,
-                   bottomY + radius
-        )
+                   bottomY + radius)
 
         # triangle
         ctx.lineTo(leftX + padding.horizontal + content.clientWidth / 2,
-                   bottomY + radius + triangle.height
-        )
+                   bottomY + radius + triangle.height)
 
         ctx.lineTo(leftX + padding.horizontal + (content.clientWidth - triangle.width)/2,
-                   bottomY + radius
-        )
+                   bottomY + radius)
 
         # bottom line
         ctx.lineTo(leftX, bottomY + radius)
 
         ctx.arc(arch['BottomLeft'].ox, arch['BottomLeft'].oy, arch['BottomLeft'].radius,
-                arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle
-        )
+                arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle)
         ctx.closePath()
 
         ctx.shadowBlur = 7
@@ -182,19 +180,18 @@ class ArrowToolTip extends ToolTipBase
         ctx.shadowOffsetX = 1
         ctx.shadowOffsetY = 1
 
+        ctx.strokeStyle = 'rgba(255,255,255, 0.2)'
+        ctx.lineWidth = 1
+        ctx.stroke()
+
         grd = ctx.createLinearGradient(0, 0, 0, height + 2 * 3 + radius * 2 + 12)
         grd.addColorStop(0, 'rgba(0,0,0,0.8)')
         grd.addColorStop(1, 'rgba(0,0,0,0.9)')
         ctx.fillStyle = grd
         ctx.fill()
 
-        ctx.strokeStyle = 'rgba(255,255,255, 0.2)'
-        ctx.lineWidth = 1
-        ctx.stroke()
-
         ctx.restore()
 
-        ArrowToolTip._hidden_content.style.display = 'hidden'
         ArrowToolTip.content.style.top = offsetForShadow + padding.vertical + radius - offsetForRadius
         ArrowToolTip.content.style.left = offsetForShadow + padding.horizontal + radius
 
@@ -202,7 +199,8 @@ class ArrowToolTip extends ToolTipBase
         ArrowToolTip.container.style.display = "block"
         ArrowToolTip.container.style.opacity = 1
         ArrowToolTip.content.style.display = "block"
-        ArrowToolTip.content.innerText = @text
+        ArrowToolTip.content.textContent = @text
+        ArrowToolTip._hidden_content.textContent = @text
         @draw()
         @_move_tooltip()
 
@@ -210,7 +208,6 @@ class ArrowToolTip extends ToolTipBase
         super
         ArrowToolTip.container.style.display = 'none'
         ArrowToolTip.container.style.opacity = 0
-        ArrowToolTip.tooltip.style.display = 'none'
 
     @move_to: (self, x, y) ->
         if y <= 0
@@ -225,5 +222,5 @@ class ArrowToolTip extends ToolTipBase
 
         x = page_xy.x + offset
         x = 0 if x < 0
-        y = document.body.clientHeight - page_xy.y - 7 # 7 for triangle height
+        y = document.body.clientHeight - page_xy.y - 7 # 7 for subtle
         ArrowToolTip.move_to(@, x.toFixed(), y)
