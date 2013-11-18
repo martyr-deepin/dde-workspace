@@ -249,7 +249,6 @@ int main(int argc, char* argv[])
 
     /* check_compiz_validity(); */
 
-#define DEBUG_REGION
 #ifndef NDEBUG
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 #endif
@@ -266,6 +265,7 @@ int main(int argc, char* argv[])
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+/* #define DEBUG_REGION */
 #ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
 #endif
