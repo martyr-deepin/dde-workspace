@@ -211,7 +211,6 @@ class ArrowToolTip extends ToolTipBase
         ArrowToolTip.container.style.display = 'none'
         ArrowToolTip.container.style.opacity = 0
         ArrowToolTip.tooltip.style.display = 'none'
-        ArrowToolTip.arrow.style.display = 'none'
 
     @move_to: (self, x, y) ->
         if y <= 0
