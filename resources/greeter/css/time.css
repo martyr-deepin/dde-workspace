@@ -1,0 +1,30 @@
+.Time {
+    background-color:rgba(125,255,120,0.7);
+    position:absolute;
+    bottom:50px;
+    left:70px;
+    width:250px;
+    height:150px;
+    
+    cursor:default;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+
+}
+
+.time{
+    margin-top:30px;
+    font-size:70px;
+    color: #fff;
+    font-weight:lighter;
+    text-shadow:0 0 2px #333;
+    display: block;
+}
+
+.date{
+    margin-top:30px;
+    font-size:15px;
+    color: #fff;
+    text-shadow:0 0 2px #333;
+    display: block;
+}
