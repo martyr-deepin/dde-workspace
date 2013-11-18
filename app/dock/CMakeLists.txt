@@ -1,6 +1,6 @@
 SET(NAME "dock")
 
-# add_subdirectory(notification_area)
+add_subdirectory(notification_area)
 add_subdirectory(test)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")

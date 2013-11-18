@@ -24,8 +24,12 @@
 #ifndef __NA_TRAY_MANAGER_H__
 #define __NA_TRAY_MANAGER_H__
 
+#ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
+#endif
 #include <gtk/gtk.h>
+
+#include "na-tray-child.h"
 
 G_BEGIN_DECLS
 
@@ -68,18 +72,18 @@ struct _NaTrayManagerClass
   GObjectClass parent_class;
 
   void (* tray_icon_added)   (NaTrayManager      *manager,
-			      Window *child);
+			      NaTrayChild        *child);
   void (* tray_icon_removed) (NaTrayManager      *manager,
-			      Window *child);
+			      NaTrayChild        *child);
 
   void (* message_sent)      (NaTrayManager      *manager,
-			      Window *child,
+			      NaTrayChild        *child,
 			      const gchar        *message,
 			      glong               id,
 			      glong               timeout);
   
   void (* message_cancelled) (NaTrayManager      *manager,
-			      Window *child,
+			      NaTrayChild        *child,
 			      glong               id);
 
   void (* lost_selection)    (NaTrayManager      *manager);
