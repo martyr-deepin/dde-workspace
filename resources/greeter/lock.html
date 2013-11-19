@@ -4,15 +4,15 @@
         <link href="../common/css/global.css" rel="stylesheet">
         <link href="../common/css/animation.css" rel="stylesheet">
         <link href="css/lock.css" rel="stylesheet">
-<!--         <link href="css/user.css" rel="stylesheet">
-        <link href="css/time.css" rel="stylesheet"> -->
-        <!-- <link href="css/mediacontrol.css" rel="stylesheet"> -->
+        <link href="css/user.css" rel="stylesheet">
+        <link href="css/time.css" rel="stylesheet">
+        <link href="css/mediacontrol.css" rel="stylesheet">
     </head>
     
     <body oncontextmenu="return false">
         <canvas id="background"></canvas>
 
-        <div id="div_users"></div>
+        <div id="div_users" class=""div_users></div>
         <div id="Time" class="Time"></div>
         <div id="media_control" class="media_control"></div>
 
@@ -21,17 +21,17 @@
         <script src="js/jquery.easing.js"></script>
         <script src="js/jquery.smooth-scroll.js"></script>
         <script src="js/lock.js"> </script>
-        <script>
-            $("#div_users").roundabout({
-                    tilt: 0.6,
-                    minScale: 0.5,
-                    duration: 200,
-                    easing: 'easeOutQuad',
-                    enableDrag: true,
-                    dropEasing: 'easeOutBounce'
-                }, function() {
-                    $(this).fadeTo(300, 1);
-            });
-        </script>
+<!--        <script>-->
+            <!--$("#div_users").roundabout({-->
+                    <!--tilt: 0.6,-->
+                    <!--minScale: 0.5,-->
+                    <!--duration: 200,-->
+                    <!--easing: 'easeOutQuad',-->
+                    <!--enableDrag: true,-->
+                    <!--dropEasing: 'easeOutBounce'-->
+                <!--}, function() {-->
+                    <!--$(this).fadeTo(300, 1);-->
+            <!--});-->
+        <!--</script>-->
     </body>
 </html>

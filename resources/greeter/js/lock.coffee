@@ -76,6 +76,7 @@ username = lock.get_username()
 userimage = lock.get_userimage(username)
 
 user = new User()
+#user.import_css("css/user.css")
 user.new_switchuser()
 user.new_userinfo_for_lock(username,userimage)
 userinfo = user.get_userinfo_for_lock()
@@ -87,4 +88,4 @@ lock.keydown_listener(userinfo)
 
 time = new Time()
 time.show()
-time.import_css("css/time.css")
+#time.import_css("css/time.css")
