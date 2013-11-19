@@ -34,12 +34,6 @@ _current_user = null
 userinfo_list = []
 _drag_flag = false
 
-#_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
-#_current_bg = create_img("Background", _default_bg_src)
-#document.body.appendChild(_current_bg)
-background = $("#background")
-background.width = screen.width
-background.height = screen.height
 
 class User extends Widget
     is_livecd = false
@@ -51,7 +45,7 @@ class User extends Widget
     constructor:->
         super
         @is_livecd()
-        user_ul = create_element("ul","user_ul",@element)
+        user_ul = create_element("div","user_ul",@element)
     
     is_livecd:->
         try
@@ -63,7 +57,7 @@ class User extends Widget
     new_switchuser:->
         if not is_livecd
             s = new SwitchUser("switchuser")
-            user_ul.appendChild(s.element)
+            @element.appendChild(s.element)
             return s
 
     new_userinfo_for_lock:(username,userimage)->
