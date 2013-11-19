@@ -4,7 +4,7 @@ com_coffee = ${com_dir}/utils.coffee ${com_dir}/animation.coffee ${com_dir}/modu
 
 greeter_coffee = config.coffee messagetip.coffee time.coffee menu.coffee session.coffee user.coffee greeter.coffee
 
-lock_coffee = config.coffee messagetip.coffee time.coffee user.coffee lock.coffee 
+lock_coffee = config.coffee messagetip.coffee time.coffee user.coffee mediacontrol.coffee lock.coffee 
 
 all: ${com_coffee} ${greeter_coffee} ${lock_coffee}
 	coffee -cj greeter.js ${com_coffee} ${greeter_coffee}
