@@ -23,8 +23,7 @@ class DesktopMenu extends Widget
 	de_menu = null
 	sessions = {}
 	parent = null
-
-    constructor: (parent_el) ->
+	constructor: (parent_el) ->
         super
         parent = parent_el
         detext = create_element("div", "Detext", parent)
@@ -34,7 +33,7 @@ class DesktopMenu extends Widget
 		sessions = DCore.Greeter.get_sessions()
 
 	new_desktop_menu:->
-		
+
 		get_sessions = @get_sessions()
 		de_menu_cb = (id, title)->
 		    id = de_menu.set_current(id)

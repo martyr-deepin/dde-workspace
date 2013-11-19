@@ -24,8 +24,7 @@ class PowerMenu extends Widget
 	power_dict = {}
 	power_menu = null
 	parent = null
-
-    constructor: (parent_el) ->
+	constructor: (parent_el) ->
         super
         parent = parent_el
 		upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
