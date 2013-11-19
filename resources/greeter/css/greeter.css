@@ -1,7 +1,7 @@
 body{
     cursor:default;
     overflow:hidden;
-    background: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    /*background: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;*/
     background-color:rgba(0,0,0,0.7)
 }
 
