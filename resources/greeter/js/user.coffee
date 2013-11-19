@@ -27,7 +27,6 @@ apply_refuse_rotate = (el, time)->
 enable_detection = (enabled)->
     DCore[APP_NAME].enable_detection(enabled)
 
-user_div = null
 user_ul = null
 message_tip = null
 draw_camera_id = null
@@ -41,8 +40,6 @@ _drag_flag = false
 background = $("#background")
 background.width = screen.width
 background.height = screen.height
-user_div = null
-user_ul = null
 
 class User extends Widget
     is_livecd = false
@@ -54,8 +51,7 @@ class User extends Widget
     constructor:->
         super
         @is_livecd()
-        user_div = create_element("div","user_div",@element)
-        user_ul = create_element("ul","user_ul",user_div)
+        user_ul = create_element("ul","user_ul",@element)
     
     is_livecd:->
         try
