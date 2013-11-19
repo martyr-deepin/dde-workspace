@@ -41,7 +41,8 @@ _drag_flag = false
 background = $("#background")
 background.width = screen.width
 background.height = screen.height
-
+user_div = null
+user_ul = null
 
 class User extends Widget
     is_livecd = false
@@ -136,13 +137,13 @@ class User extends Widget
 
 
     drag:(_current_user)->
-        jQuery("#user_div").drag("start", (ev, dd) ->
+        jQuery("#user_ul").drag("start", (ev, dd) ->
             _current_user?.hide_login()
             _drag_flag = true
         , {distance:100}
         )
 
-        jQuery("#user_div").drag("end", (ev, dd) ->
+        jQuery("#user_ul").drag("end", (ev, dd) ->
             _current_user?.animate_near()
         )
 
@@ -266,7 +267,7 @@ class UserInfo extends Widget
         @name.innerText = name
 
         @element.index = 0
-        @index = user_div.childElementCount
+        @index = user_ul.childElementCount
         userinfo_list.push(@)
 
         @login_displayed = false
@@ -286,7 +287,7 @@ class UserInfo extends Widget
 
         _current_user?.blur()
         _current_user = @
-        $("#user_div").focus()
+        $("#user_ul").focus()
         @element.focus()
         @add_css_class("UserInfoSelected")
 
@@ -457,7 +458,7 @@ class UserInfo extends Widget
             @stop_animation()
             message_tip?.remove()
             message_tip = null
-            message_tip = new MessageTip(msg, user_div.parentElement)
+            message_tip = new MessageTip(msg, user_ul.parentElement)
         else
             # echo "login failed"
             @focus()
@@ -487,7 +488,7 @@ class UserInfo extends Widget
                 userinfo_list[prev_index].focus()
                 return true
             ,200)
-        jQuery("#user_div").user_div("animateToChild", prev_index)
+        jQuery("#user_ul").user_ul("animateToChild", prev_index)
 
     animate_next: ->
         if @face_login
@@ -505,7 +506,7 @@ class UserInfo extends Widget
                 userinfo_list[next_index].focus()
                 return true
             ,200)
-        jQuery("#user_div").user_div("animateToChild", next_index)
+        jQuery("#user_ul").user_ul("animateToChild", next_index)
 
     animate_near: ->
         if @face_login
@@ -515,7 +516,7 @@ class UserInfo extends Widget
             return
 
         try
-            near_index = jQuery("#user_div").user_div("getNearestChild")
+            near_index = jQuery("#user_ul").user_ul("getNearestChild")
         catch error
             echo "getNeareastChild error"
 
@@ -527,7 +528,7 @@ class UserInfo extends Widget
                 _drag_flag = false
                 return true
             ,200)
-        jQuery("#user_div").user_div("animateToChild", near_index)
+        jQuery("#user_ul").user_ul("animateToChild", near_index)
 
     draw_camera: ->
         if @face_login
