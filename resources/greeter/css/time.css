@@ -1,11 +1,11 @@
 .TimeDate {
     background-color:rgba(125,255,120,0.7);
-    width:250px;
-    height:150px;
+    width:200px;
+    height:100px;
 }
 
 .time{
-    margin-top:30px;
+    padding-top:30px;
     font-size:70px;
     color: #fff;
     font-weight:lighter;
