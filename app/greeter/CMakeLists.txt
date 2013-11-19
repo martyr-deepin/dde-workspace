@@ -8,10 +8,10 @@ pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 pkg_check_modules(OPENCV REQUIRED opencv)
 pkg_check_modules(GST REQUIRED gstreamer-0.10)
 
-add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
+add_executable(${NAME} background.c greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
-add_executable(dlock dlock.c gs-grab.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(dlock background.c dlock.c gs-grab.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
 add_executable(switchtogreeter switchtogreeter.c)

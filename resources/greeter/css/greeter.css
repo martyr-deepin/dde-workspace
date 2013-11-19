@@ -3,7 +3,7 @@ body{
     overflow:hidden;
     width:100%;
     height:100%;
-    background: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    /*background: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;*/
     -webkit-user-select:none;
 
 }
@@ -69,7 +69,7 @@ body{
 
 
 
-
+/*
 
 
 
@@ -87,7 +87,7 @@ body{
     top: 0;
     left: 0;
     #-webkit-animation:linear-show 2s ease-out;
-}
+}*/
 /*
 #Debug{
     width:300px;

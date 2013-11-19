@@ -284,14 +284,14 @@ class UserInfo extends Widget
 
         if @id != "guest"
             if is_greeter
-                DCore.Greeter.draw_user_background(background, @id)
+                #DCore.Greeter.draw_user_background(background, @id)
 
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
                     echo "#{@id} in focus invalid user session"
-            else
-                DCore.Lock.draw_background(background)
+            #else
+                #DCore.Lock.draw_background(background)
 
             clearInterval(draw_camera_id)
             draw_camera_id = null

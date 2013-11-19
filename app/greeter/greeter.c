@@ -43,6 +43,7 @@
 #include "mutils.h"
 #include "settings.h"
 #include "DBUS_greeter.h"
+#include "background.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
 
@@ -51,6 +52,7 @@ static GtkWidget* webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
+static GSettings* dde_bg_g_settings = NULL;
 
 struct AuthHandler {
     gchar *username;
@@ -272,11 +274,17 @@ int main (int argc, char **argv)
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    
+    gtk_widget_realize (webview);
     gtk_widget_realize (container);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
+
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+                            gdk_screen_width(), gdk_screen_height());
 
     gtk_widget_show_all (container);
 

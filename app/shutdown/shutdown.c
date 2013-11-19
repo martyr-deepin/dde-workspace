@@ -59,7 +59,7 @@ PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
 static GSGrab* grab = NULL;
 
-PRIVATE GSettings* dde_bg_g_settings = NULL;
+static GSettings* dde_bg_g_settings = NULL;
 
 JS_EXPORT_API
 void shutdown_quit()

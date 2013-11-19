@@ -45,12 +45,15 @@
 #include "camera.h"
 #include "mutils.h"
 #include "settings.h"
+ #include "background.h"
+
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 static GSGrab* grab = NULL;
 static GtkWidget* lock_container = NULL;
 const gchar *username;
+static GSettings* dde_bg_g_settings = NULL;
 
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *password)
@@ -267,6 +270,7 @@ int main (int argc, char **argv)
     /*g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);*/
 
     gtk_widget_realize (lock_container);
+    gtk_widget_realize (webview);
 
     GdkWindow *gdkwindow = gtk_widget_get_window (lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
@@ -277,6 +281,11 @@ int main (int argc, char **argv)
     /*gdk_window_set_override_redirect (gdkwindow, TRUE);*/
     /*select_popup_events ();*/
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+
+
+    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+                            gdk_screen_width(), gdk_screen_height());
 
     grab = gs_grab_new ();
     gtk_widget_show_all (lock_container);
