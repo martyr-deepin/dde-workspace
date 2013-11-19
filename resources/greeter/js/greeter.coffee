@@ -34,19 +34,9 @@ get_userimage = (user) ->
 
 
 class Greeter extends Widget
-    is_livecd = false
 
     constructor:->
         super
-        @is_livecd()
-
-    is_livecd:->
-        try
-            is_livecd = DCore.DBus.sys_object("com.deepin.dde.greeter", "/com/deepin/dde/greeter", "com.deepin.dde.greeter").IsLiveCD_sync(user)
-        catch error
-            is_livecd = false
-
-
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id)
@@ -57,7 +47,7 @@ class Greeter extends Widget
             # TODO: maybe some animation or some reflection.
             _current_user.is_recognizing = false
             DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
-        )        
+        )
 
     mousewheel_listener:(_current_user)->
         document.body.addEventListener("mousewheel", (e) =>

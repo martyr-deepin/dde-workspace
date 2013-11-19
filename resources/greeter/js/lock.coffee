@@ -18,18 +18,10 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Lock extends Widget
-    is_livecd = false
 
     constructor:->
         super
-        @is_livecd()
-
-    is_livecd:->
-        try
-            is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
-        catch error
-            is_livecd = false
-
+        echo "Lock"
 
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id)
@@ -66,11 +58,12 @@ class Lock extends Widget
         username = DCore.Lock.get_username()
         return username
 
-    get_userimage:->
+    get_userimage:(username)->
         user_image = DCore.Lock.get_user_icon()
         if not user_image?
             try
-                user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+                dbus = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice")
+                user_image = dbus.get_user_fake_icon_sync(username)
             catch error
                 user_image = "images/img01.jpg"
         return user_image
@@ -80,7 +73,7 @@ class Lock extends Widget
 
 lock = new Lock()
 username = lock.get_username()
-userimage = lock.get_userimage()
+userimage = lock.get_userimage(username)
 
 user = new User()
 user.new_switchuser()

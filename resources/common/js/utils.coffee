@@ -177,12 +177,11 @@ sortNumber = (a , b) ->
 array_sort_min2max = (arr) ->
     arr.sort(sortNumber)
 
-inject_js: (el,src) ->
+inject_js = (el,src) ->
     js_element = create_element("script", null, el)
     js_element.src = src
 
-inject_css: (el,src)->
+inject_css = (el,src)->
     css_element = create_element('link', null, el)
     css_element.rel = "stylesheet"
     css_element.href = src
-

@@ -59,7 +59,8 @@ class User extends Widget
     
     is_livecd:->
         try
-            is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
+            dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
+            is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
         catch error
             is_livecd = false
 
