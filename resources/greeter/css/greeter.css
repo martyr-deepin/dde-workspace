@@ -25,7 +25,7 @@ body{
 
 
 
-.Time {
+.div_time {
     background-color:rgba(125,255,120,0.5);
     position:absolute;
     bottom:10%;
@@ -39,7 +39,7 @@ body{
 }
 
 
-.media_control{
+.div_media_control{
     background-color:rgba(125,255,120,0.5);
     position:absolute;
     bottom:10%;
@@ -53,6 +53,18 @@ body{
 }
 
 
+.div_desktop_power {
+    background-color:rgba(125,255,120,0.5);
+    position:absolute;
+    bottom:10%;
+    right:270px;
+    width:300px;
+    height:150px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
 
 
 
@@ -76,7 +88,7 @@ body{
     left: 0;
     #-webkit-animation:linear-show 2s ease-out;
 }
-
+/*
 #Debug{
     width:300px;
     position:absolute;
@@ -148,9 +160,4 @@ body{
     -webkit-user-select:none;
 }
 
-#desktop_power {
-    position: absolute;
-    bottom: 43px;
-    right: 20px;
-    display: -webkit-box;
-}
+*/

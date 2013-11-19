@@ -103,6 +103,7 @@ class Greeter extends Widget
 greeter = new Greeter()
 
 user = new User()
+$("#div_users").appendChild(user.element)
 user.new_switchuser()
 user.new_userinfo_for_greeter()
 userinfo = user.get_userinfo_for_greeter()
@@ -115,5 +116,5 @@ greeter.keydown_listener(userinfo)
 greeter.mousewheel_listener(_current_user)
 
 time = new Time()
+$("#div_time").appendChild(time.element)
 time.show()
-time.import_css("css/time.css")

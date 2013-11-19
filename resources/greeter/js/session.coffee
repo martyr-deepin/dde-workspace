@@ -21,7 +21,7 @@ $("#Version").innerHTML = "
             <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span> 
             "
 
-detext = create_element("div", "Detext", $("#desktop_power"))
+detext = create_element("div", "Detext", $("#div_desktop_power"))
 detext.innerText = _("Session")
 
 sessions = DCore.Greeter.get_sessions()
@@ -34,7 +34,7 @@ for session in sessions
 
 default_session = DCore.Greeter.get_default_session()
     
-$("#desktop_power").appendChild(de_menu.element)
+$("#div_desktop_power").appendChild(de_menu.element)
 de_menu.set_current(default_session)
 #DCore.Greeter.set_selected_session(default_session)
 
@@ -143,7 +143,7 @@ for key, value of power_dict
     power_menu.insert_noimg(key, title)
 
 power_menu.current_img.src = "images/control-power.png"
-$("#desktop_power").appendChild(power_menu.element)
+$("#div_desktop_power").appendChild(power_menu.element)
 
 power_menu.show_item.addEventListener("click", (e) =>
     power_dict["shutdown"]()

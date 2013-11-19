@@ -4,17 +4,17 @@
         <link href="../common/css/global.css" rel="stylesheet">
         <link href="../common/css/animation.css" rel="stylesheet">
         <link href="css/greeter.css" rel="stylesheet">
-<!--         <link href="css/user.css" rel="stylesheet">
-        <link href="css/time.css" rel="stylesheet"> -->
-        <!-- <link href="css/mediacontrol.css" rel="stylesheet"> -->
+        <link href="css/user.css" rel="stylesheet">
+        <link href="css/time.css" rel="stylesheet">
+        <link href="css/desktop_power.css" rel="stylesheet">
     </head>
     
     <body oncontextmenu="return false">
         <canvas id="background"></canvas>
 
-        <div id="div_users"></div>
-        <div id="Time" class="Time"></div>
-        <div id="desktop_power" class="desktop_power"></div>
+        <div id="div_users" class="div_users"></div>
+        <div id="div_time" class="div_time"></div>
+        <div id="div_desktop_power" class="div_desktop_power"></div>
 
         <script src="js/jquery.js"></script>
         <script src="js/jquery.roundabout.js"></script>
@@ -22,16 +22,16 @@
         <script src="js/jquery.smooth-scroll.js"></script>
         <script src="js/greeter.js"> </script>
         <script>
-            $("#div_users").roundabout({
-                    tilt: 0.6,
-                    minScale: 0.5,
-                    duration: 200,
-                    easing: 'easeOutQuad',
-                    enableDrag: true,
-                    dropEasing: 'easeOutBounce'
-                }, function() {
-                    $(this).fadeTo(300, 1);
-            });
+            // $("#div_users").roundabout({
+            //         tilt: 0.6,
+            //         minScale: 0.5,
+            //         duration: 200,
+            //         easing: 'easeOutQuad',
+            //         enableDrag: true,
+            //         dropEasing: 'easeOutBounce'
+            //     }, function() {
+            //         $(this).fadeTo(300, 1);
+            // });
         </script>
     </body>
 </html>
