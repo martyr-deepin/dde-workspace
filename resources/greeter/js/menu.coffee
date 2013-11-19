@@ -125,14 +125,3 @@ class ComboBox extends Widget
         @current_img.src = find[2]
         find[0]
 
-de_menu_cb = (id, title)->
-    id = de_menu.set_current(id)
-
-de_menu = new ComboBox("desktop", de_menu_cb)
-#de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
-
-power_dict = {}
-power_menu_cb = (id, title)->
-    power_dict[id]()
-
-power_menu = new ComboBox("power", power_menu_cb)

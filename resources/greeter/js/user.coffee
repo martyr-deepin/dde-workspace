@@ -443,7 +443,7 @@ class UserInfo extends Widget
 
         @login.password.addEventListener("focus", (e)=>
             @login.password.classList.add("PasswordStyle")
-            @login.password.style.color ="black"
+            @login.password.style.color = "black"
             @login.password.value = ""
             @display_failure = false
         )
