@@ -33,9 +33,9 @@ body{
     width:250px;
     height:150px;
     
-    /*display:-webkit-box;*/
-    /*-webkit-box-pack:center;*/
-    /*-webkit-box-align:center;*/
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 
