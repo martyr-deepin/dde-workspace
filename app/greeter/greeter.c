@@ -45,7 +45,7 @@
 #include "DBUS_greeter.h"
 #include "background.h"
 
-#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
+#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
