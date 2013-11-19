@@ -23,9 +23,11 @@ class Power extends Widget
 	consolekit_obj = null
 	power_dict = {}
 	power_menu = null
+	parent = null
 
-    constructor: (@id) ->
+    constructor: (parent_el) ->
         super
+        parent = parent_el
 		upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
 		consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
 
@@ -117,7 +119,7 @@ class Power extends Widget
 	#
 	#    return power_dict
 
-	new_power_menu:->
+	new_power_menu:()->
 		power_dict = get_power_dict()
 		power_menu_cb = (id, title)->
 		    power_dict[id]()
@@ -140,7 +142,7 @@ class Power extends Widget
 		    power_menu.insert_noimg(key, title)
 
 		power_menu.current_img.src = "images/control-power.png"
-		$("#div_power").appendChild(power_menu.element)
+		parent.appendChild(power_menu.element)
 
 		power_menu.show_item.addEventListener("click", (e) =>
 		    power_dict["shutdown"]()
