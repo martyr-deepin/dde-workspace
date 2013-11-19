@@ -1,15 +1,7 @@
-.Time {
+.TimeDate {
     background-color:rgba(125,255,120,0.7);
-    position:absolute;
-    bottom:50px;
-    left:70px;
     width:250px;
     height:150px;
-    
-    cursor:default;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-
 }
 
 .time{

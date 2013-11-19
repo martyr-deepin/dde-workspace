@@ -17,7 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Time extends Widget
+class TimeDate extends Widget
     constructor:->
         super
 
@@ -57,12 +57,8 @@ class Time extends Widget
 
 
     show:->
-        time_div = create_element("div","time_div",@element)
-        time = create_element("div","time",time_div)
-        date = create_element("div","date",time_div)
-
-        # time = $("#time")
-        # date = $("#date")
+        time = create_element("div","time",@element)
+        date = create_element("div","date",@element)
 
         #time.innerText = @get_time_str()
         hours = create_element("span", "", time)
