@@ -123,7 +123,7 @@ class ArrowToolTip extends ToolTipBase
                 ox: rightX
                 oy: topY
                 radius: radius
-                startAngle: Math.PI
+                startAngle: Math.PI * 1.5
                 endAngle: Math.PI * 2
             BottomRight:
                 ox: rightX
@@ -183,7 +183,7 @@ class ArrowToolTip extends ToolTipBase
         ctx.lineWidth = 1
         ctx.stroke()
 
-        grd = ctx.createLinearGradient(0, 0, 0, height + 2 * 3 + radius * 2 + 12)
+        grd = ctx.createLinearGradient(0, 0, 0, height + 2 * padding.vertical + radius * 2 + triangle.height)
         grd.addColorStop(0, 'rgba(0,0,0,0.7)')
         grd.addColorStop(1, 'rgba(0,0,0,0.9)')
         ctx.fillStyle = grd
