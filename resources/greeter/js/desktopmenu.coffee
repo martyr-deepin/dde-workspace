@@ -19,37 +19,32 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class DesktopMenu extends Widget
-	detext = null
-	de_menu = null
-	sessions = {}
-	parent = null
-	constructor: (parent_el) ->
+    de_menu = null
+    sessions = {}
+    parent = null
+
+    constructor: (parent_el) ->
         super
         parent = parent_el
         detext = create_element("div", "Detext", parent)
-		detext.innerText = _("Session")
+        detext.innerText = _("Session")
 
-	get_sessions:->
-		sessions = DCore.Greeter.get_sessions()
-
-	new_desktop_menu:->
-
-		get_sessions = @get_sessions()
-		de_menu_cb = (id, title)->
-		    id = de_menu.set_current(id)
-
-		de_menu = new ComboBox("desktop", de_menu_cb)
-		#de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
-
-		for session in sessions
-		    id = session
-		    name = DCore.Greeter.get_session_name(id)
-		    icon = DCore.Greeter.get_session_icon(session)
-		    icon_path = "images/#{icon}"
-		    de_menu.insert(id, name, icon_path)
-
-		default_session = DCore.Greeter.get_default_session()
-		    
-		parent.appendChild(de_menu.element)
-		de_menu.set_current(default_session)
-		#DCore.Greeter.set_selected_session(default_session)
+    get_sessions: ->
+        sessions = DCore.Greeter.get_sessions()
+    
+    new_desktop_menu: ->
+        get_sessions = @get_sessions()
+        de_menu_cb = (id, title)->
+            id = de_menu.set_current(id)
+        de_menu = new ComboBox("desktop", de_menu_cb)
+        #de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
+        for session in sessions
+            id = session
+            name = DCore.Greeter.get_session_name(id)
+            icon = DCore.Greeter.get_session_icon(session)
+            icon_path = "images/#{icon}"
+            de_menu.insert(id, name, icon_path)
+        default_session = DCore.Greeter.get_default_session()
+        parent.appendChild(de_menu.element)
+        de_menu.set_current(default_session)
+        #DCore.Greeter.set_selected_session(default_session)

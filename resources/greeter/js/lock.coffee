@@ -97,7 +97,7 @@ $("#div_time").appendChild(timedate.element)
 timedate.show()
 
 mediacontrol = new MediaControl()
-$("#div_mediacontrol").appendChild(mediacontrol.element)
+$("#div_media_control").appendChild(mediacontrol.element)
 
 desktopmenu = new DesktopMenu($("div_desktop"))
 desktopmenu.new_desktop_menu()

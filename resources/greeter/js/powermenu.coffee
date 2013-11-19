@@ -19,14 +19,14 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class PowerMenu extends Widget
-	upower_obj = null
+    upower_obj = null
 	consolekit_obj = null
 	power_dict = {}
 	power_menu = null
 	parent = null
 	constructor: (parent_el) ->
-        super
-        parent = parent_el
+	    super
+	    parent = parent_el
 		upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
 		consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
 
@@ -147,6 +147,3 @@ class PowerMenu extends Widget
 		power_menu.show_item.addEventListener("click", (e) =>
 		    power_dict["shutdown"]()
 		)
-
-
-

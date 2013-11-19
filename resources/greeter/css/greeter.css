@@ -34,21 +34,6 @@ body{
     -webkit-box-align:center;
 }
 
-
-.div_media_control{
-    background-color:rgba(125,255,120,0.5);
-    position:absolute;
-    bottom:10%;
-    right:270px;
-    width:300px;
-    height:150px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
-
-
 .div_desktop {
     background-color:rgba(125,255,120,0.5);
     position:absolute;
