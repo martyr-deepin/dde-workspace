@@ -99,7 +99,7 @@ class ArrowToolTip extends ToolTipBase
             vertical: 0
         radius = 8
         offsetForShadow = 5
-        offsetForRadius = 3
+        offsetForRadius = 4
         height = content.clientHeight - offsetForRadius * 2
 
         canvas.width = content.clientWidth + 2 * (padding.horizontal + radius + offsetForShadow)
@@ -176,16 +176,15 @@ class ArrowToolTip extends ToolTipBase
         ctx.closePath()
 
         ctx.shadowBlur = 7
-        ctx.shadowColor = 'black'
-        ctx.shadowOffsetX = 1
+        ctx.shadowColor = 'rgba(0,0,0,0.5)'
         ctx.shadowOffsetY = 1
 
-        ctx.strokeStyle = 'rgba(255,255,255, 0.2)'
+        ctx.strokeStyle = 'rgba(255,255,255, 0.7)'
         ctx.lineWidth = 1
         ctx.stroke()
 
         grd = ctx.createLinearGradient(0, 0, 0, height + 2 * 3 + radius * 2 + 12)
-        grd.addColorStop(0, 'rgba(0,0,0,0.8)')
+        grd.addColorStop(0, 'rgba(0,0,0,0.7)')
         grd.addColorStop(1, 'rgba(0,0,0,0.9)')
         ctx.fillStyle = grd
         ctx.fill()
