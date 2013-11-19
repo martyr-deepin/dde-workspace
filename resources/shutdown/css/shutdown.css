@@ -19,8 +19,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-@import url("../../common/css/animation.css");
-
 body{
     background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
     cursor:default;
