@@ -18,12 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-_global_menu_container = create_element("div", "", document.body)
-_global_menu_container.id = "global_menu_container"
-_global_menu_container.addEventListener("click", (e)->
-    _global_menu_container.style.display = "none"
-    _global_menu_container.removeChild(_global_menu_container.children[0])
-)
 
 class Menu extends Widget
     constructor: (@id) ->
@@ -69,6 +63,13 @@ class Menu extends Widget
 
     try_append: ->
         if not @element.parent
+            _global_menu_container = create_element("div", "", document.body)
+            _global_menu_container.id = "global_menu_container"
+            _global_menu_container.addEventListener("click", (e)->
+                _global_menu_container.style.display = "none"
+                _global_menu_container.removeChild(_global_menu_container.children[0])
+            )
+
             _global_menu_container.appendChild(@element)
             _global_menu_container.style.display = "block"
 

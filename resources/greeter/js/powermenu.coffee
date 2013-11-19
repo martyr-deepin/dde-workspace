@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Power extends Widget
+class PowerMenu extends Widget
 	upower_obj = null
 	consolekit_obj = null
 	power_dict = {}
@@ -120,7 +120,8 @@ class Power extends Widget
 	#    return power_dict
 
 	new_power_menu:()->
-		power_dict = get_power_dict()
+
+		power_dict = @get_power_dict()
 		power_menu_cb = (id, title)->
 		    power_dict[id]()
 
