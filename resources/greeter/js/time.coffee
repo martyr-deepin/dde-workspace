@@ -33,10 +33,10 @@ class Time extends Widget
         return "#{hours}:#{min}"
 
     get_hours : ->
-        return format_two_bit new Date().getHours()
+        return @format_two_bit new Date().getHours()
 
     get_min : ->
-        return format_two_bit new Date().getMinutes()
+        return @format_two_bit new Date().getMinutes()
 
     get_date_str : ->
         month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
@@ -78,13 +78,13 @@ class Time extends Widget
         #date.innerText = @get_date_str()
         date.innerText = @get_c_date_str()
 
-        setInterval( ->
-                hours.innerText = get_hours()
+        setInterval( =>
+                hours.innerText = @get_hours()
                 min.innerText = @get_min()
                 return true
             , 1000)
 
-        setInterval( ->
+        setInterval( =>
                 date.innerText = @get_c_date_str()
                 return true
             , 1000)

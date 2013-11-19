@@ -119,8 +119,6 @@ userinfo = user.get_userinfo_for_greeter()
 _current_user = user.get_current_user_for_greeter()
 user.drag(_current_user)
 
-time.import_css("css/user.css")
-
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
 greeter.keydown_listener(userinfo)

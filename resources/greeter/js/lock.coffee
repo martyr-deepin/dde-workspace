@@ -88,8 +88,6 @@ user.new_userinfo_for_lock(username,userimage)
 userinfo = user.get_userinfo_for_lock()
 _current_user = user.get_current_user_for_lock()
 
-time.import_css("css/user.css")
-
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)
 lock.keydown_listener(userinfo)

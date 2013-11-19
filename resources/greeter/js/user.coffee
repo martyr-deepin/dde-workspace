@@ -287,7 +287,7 @@ class UserInfo extends Widget
 
         _current_user?.blur()
         _current_user = @
-        $("#user_ul").focus()
+        user_ul.focus()
         @element.focus()
         @add_css_class("UserInfoSelected")
 
