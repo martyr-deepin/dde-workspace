@@ -147,7 +147,12 @@ class PowerMenu extends Widget
 
         power_menu.current_img.src = img_before + "shutdown_normal.png"
         parent.appendChild(power_menu.element)
-
-        power_menu.element.addEventListener("click", (e) =>
+        power_menu.current_img.addEventListener("mouseover",=>
+            power_menu.current_img.src = img_before + "shutdown.png"
+        )
+        power_menu.current_img.addEventListener("mouseout",=>
+            power_menu.current_img.src = img_before + "shutdown_normal.png"
+        )
+        power_menu.current_img.addEventListener("click", (e) =>
             power_dict["shutdown"]()
         )
