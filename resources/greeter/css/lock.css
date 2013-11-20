@@ -7,7 +7,7 @@ body{
 
 
 .div_users{
-    background-color:rgba(0,255,120,0.5);
+    background-color:rgba(0,255,120,0.2);
     position:absolute;
     top:18%;
     left:35%;
@@ -23,7 +23,7 @@ body{
 
 
 .div_time {
-    background-color:rgba(125,255,120,0.5);
+    background-color:rgba(125,255,120,0.2);
     position:absolute;
     bottom:10%;
     left:70px;
@@ -37,16 +37,16 @@ body{
 
 
 .div_media_control{
-    background-color:rgba(125,255,120,0.5);
+    background-color:rgba(125,255,120,0.2);
     position:absolute;
     bottom:10%;
     right:270px;
     width:300px;
     height:150px;
     
-    /*display:-webkit-box;*/
-    /*-webkit-box-pack:center;*/
-    /*-webkit-box-align:center;*/
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 

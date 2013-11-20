@@ -20,3 +20,13 @@
 class MediaControl extends Widget
     constructor:->
         super
+        img_src_before = "images/mediacontrol/"
+        name = create_element("div","name",@element)
+        name.textContent = "God is a girl"
+        control = create_element("div","control",@element)
+        
+        up = create_img("up",img_src_before + "up_normal.png",control)
+        play = create_img("play",img_src_before + "play_normal.png",control)
+        next = create_img("next",img_src_before + "next_normal.png",control)
+        voice = create_img("voice",img_src_before + "voice_normal.png",control)
+

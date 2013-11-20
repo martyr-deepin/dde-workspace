@@ -1,0 +1,42 @@
+.MediaControl{
+    background-color:rgba(125,0,120,0.2);
+    width:250px;
+    height:100px;
+    
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    /*-webkit-box-pack:center;*/
+    /*-webkit-box-align:center;*/
+}
+
+.name{
+    font-size:16px;
+    color:#fff;
+    text-align:center;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+.control{
+    margin-top:10px;
+    display:-webkit-box;
+}
+
+.up:hover{
+    cursor:pointer;
+    background-image:url("../images/mediacontrol/up_hover.png")
+}
+
+.play:hover{
+    cursor:pointer;
+    background-image:url("../images/mediacontrol/play_hover.png")
+}
+
+.next:hover{
+    cursor:pointer;
+    background-image:url("../images/mediacontrol/next_hover.png")
+}
+
+.voice:hover{
+    cursor:pointer;
+    background-image:url("../images/mediacontrol/voice_hover.png")
+}
