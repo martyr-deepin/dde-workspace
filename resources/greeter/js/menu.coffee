@@ -22,6 +22,7 @@
 class Menu extends Widget
     parent = null
     mouseover = false
+    menuimg = {}
 
     constructor: (@id) ->
         super

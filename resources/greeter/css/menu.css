@@ -1,7 +1,6 @@
 .ComboBox {
-    background-color:rgba(125,0,120,0.2);
+    /*background-color:rgba(125,0,120,0.2);*/
     cursor:pointer;
-    margin:0 20px 0 0;
     width:60px;
 }
 
@@ -18,6 +17,8 @@
 }
 
 .menuimg{
+    margin-top:10px;
+    cursor:pointer;
     width:60px;
     height:60px;
 }
@@ -44,12 +45,6 @@
 .MenuItem:hover {
     background: rgba(0,183,238, 0.5);
     color:black;
-}
-
-.MenuImg {
-    width:16px;
-    height:16px;
-    margin: 2px 0 0 0px;
 }
 
 .MenuTitle:hover {
