@@ -37,7 +37,7 @@ class Board
         DCore.Dock.update_guard_window_width(@board.width)
 
     set_width: (w)->
-        @board.width = Math.min(w + ITEM_WIDTH, screen.width)
+        @board.width = Math.min(w + ITEM_WIDTH - 12, screen.width)
 
     set_height: (h)->
         @board.height = h
