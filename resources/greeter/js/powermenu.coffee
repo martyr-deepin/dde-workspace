@@ -98,8 +98,8 @@ class PowerMenu extends Widget
     get_power_dict : ->
         if upower_obj.SuspendAllowed_sync()
             power_dict["suspend"] = @suspend_cb
-#        if upower_obj.HibernateAllowed_sync()
-            #power_dict["hibernate"] = @hibernate_cb
+        if upower_obj.HibernateAllowed_sync()
+            power_dict["hibernate"] = @hibernate_cb
         if consolekit_obj.CanRestart_sync()
             power_dict["restart"] = @restart_cb
         if consolekit_obj.CanStop_sync()
@@ -134,14 +134,16 @@ class PowerMenu extends Widget
             title = null
             if key == "suspend"
                 title = _("suspend")
-            else if key == "shutdown"
-                title = _("shutdown")
+                img = img_before + "#{key}.png"
+                power_menu.insert(key, title, img)
             else if key == "restart"
                 title = _("restart")
+                img = img_before + "#{key}.png"
+                power_menu.insert(key, title, img)
+#            else if key == "shutdown"
+                #title = _("shutdown")
             else
                 echo "invalid power option"
-            img = img_before + "#{key}.png"
-            power_menu.insert(key, title, img)
 
         power_menu.current_img.src = img_before + "shutdown_normal.png"
         parent.appendChild(power_menu.element)
