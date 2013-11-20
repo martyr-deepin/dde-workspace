@@ -146,7 +146,7 @@ class PowerMenu extends Widget
                 echo "invalid power option"
 
         power_menu.current_img.src = img_before + "shutdown_normal.png"
-        parent.appendChild(power_menu.element)
+        parent.appendChild(power_menu.element) if parent
         power_menu.current_img.addEventListener("mouseover",=>
             power_menu.current_img.src = img_before + "shutdown.png"
         )

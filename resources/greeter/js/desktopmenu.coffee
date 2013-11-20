@@ -39,9 +39,9 @@ class DesktopMenu extends Widget
             id = session
             name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = "images/#{icon}"
+            icon_path = "images/desktopmenu/#{icon}"
             de_menu.insert(id, name, icon_path)
         default_session = DCore.Greeter.get_default_session()
-        parent.appendChild(de_menu.element)
+        parent.appendChild(de_menu.element) if parent
         de_menu.set_current(default_session)
         #DCore.Greeter.set_selected_session(default_session)
