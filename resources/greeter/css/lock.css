@@ -52,12 +52,12 @@ body{
 
 
 .div_power {
-    background-color:rgba(125,255,120,0.5);
+    background-color:rgba(125,255,120,0.2);
     position:absolute;
     bottom:10%;
-    right:170px;
-    width:50px;
-    height:50px;
+    right:70px;
+    width:100px;
+    height:100px;
     
     display:-webkit-box;
     -webkit-box-pack:center;

@@ -141,9 +141,9 @@ class PowerMenu extends Widget
                 echo "invalid power option"
             power_menu.insert_noimg(key, title)
 
-        power_menu.current_img.src = "images/control-power.png"
+        power_menu.current_img.src = "images/powermenu/shutdown_normal.png"
         parent.appendChild(power_menu.element)
 
-        power_menu.show_item.addEventListener("click", (e) =>
+        power_menu.element.addEventListener("click", (e) =>
             power_dict["shutdown"]()
         )

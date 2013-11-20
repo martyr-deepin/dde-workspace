@@ -20,10 +20,15 @@
 
 
 class Menu extends Widget
+    _global_menu_container = null
+    parent = null
+    mouseover = false
+
     constructor: (@id) ->
         super
         @current = @id
         @items = {}
+        @element.style.display = "none"
 
     insert: (@id, @title, @img)->
         _id = @id
@@ -55,27 +60,37 @@ class Menu extends Widget
 
     set_callback: (@cb)->
 
-    show: (x, y)->
-        @try_append()
+    
+    append:(el)->
+        parent = el
+        parent.appendChild(@element)
+    
+    destory:->
+        remove_element(@element)
 
-        @element.style.left = x
-        @element.style.top = y
+    do_mouseover: (e)->
+        #echo "menu over"
+        mouseover = true
+        @element.style.display = "block"
+    
+    do_mouseout: (e)->
+        #echo "menu out"
+        mouseover = false
+        @hide()
+    
+    show: (left, bottom)->
+        #echo "show"
+        document.body.appendChild(@element) if not parent?
+        @element.style.left = left
+        @element.style.bottom = bottom
+        @element.style.display = "block"
 
-    try_append: ->
-        if not @element.parent
-            _global_menu_container = create_element("div", "", document.body)
-            _global_menu_container.id = "global_menu_container"
-            _global_menu_container.appendChild(@element)
-            _global_menu_container.style.display = "block"
-            _global_menu_container.addEventListener("click", (e)->
-                _global_menu_container.style.display = "none"
-                _global_menu_container.removeChild(_global_menu_container.children[0]) if _global_menu_container.children[0]
-            )
-
-
-    get_allocation: ->
-        @try_append()
-
+    hide:->
+        #echo "hide"
+        @element.style.display = "none" if not mouseover
+    
+    get_size: ->
+        @element.style.display = "block"
         width = @element.clientWidth
         height = @element.clientHeight
 
@@ -85,9 +100,7 @@ class Menu extends Widget
 class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
-        @show_item = create_element("div", "ShowItem", @element)
-        @current_img = create_img("", "", @show_item)
-        @switch = create_element("div", "Switcher", @element)
+        @current_img = create_img("current_img", "", @element)
         @menu = new Menu(@id+"_menu")
         @menu.set_callback(@on_click_cb)
 
@@ -98,15 +111,17 @@ class ComboBox extends Widget
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
 
-    do_click: (e)->
-        if e.target == @switch
-            p = get_page_xy(e.target, 0, 0)
-            alloc = @menu.get_allocation()
-            x = p.x - alloc.width + @switch.offsetWidth - 3
-            y = p.y - alloc.height - 3
-
-            @menu.show(x, y)
-
+    do_mouseover: (e)->
+        #echo "box over"
+        p = get_page_xy(@current_img, 0, 0)
+        left = p.x
+        bottom = document.body.clientHeight - p.y
+        @menu.show(left, bottom)
+    
+    do_mouseout: (e)->
+        #echo "box out"
+        @menu.hide()
+    
     get_current: ->
         return @menu.current
 
