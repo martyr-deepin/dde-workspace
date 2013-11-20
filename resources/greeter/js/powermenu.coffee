@@ -24,9 +24,12 @@ class PowerMenu extends Widget
     power_dict = {}
     power_menu = null
     parent = null
+    img_before = null
+    
     constructor: (parent_el) ->
         super
         parent = parent_el
+        img_before = "images/powermenu/"
         upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
         consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
 
@@ -95,8 +98,8 @@ class PowerMenu extends Widget
     get_power_dict : ->
         if upower_obj.SuspendAllowed_sync()
             power_dict["suspend"] = @suspend_cb
-        if upower_obj.HibernateAllowed_sync()
-            power_dict["hibernate"] = @hibernate_cb
+#        if upower_obj.HibernateAllowed_sync()
+            #power_dict["hibernate"] = @hibernate_cb
         if consolekit_obj.CanRestart_sync()
             power_dict["restart"] = @restart_cb
         if consolekit_obj.CanStop_sync()
@@ -131,17 +134,16 @@ class PowerMenu extends Widget
             title = null
             if key == "suspend"
                 title = _("suspend")
-            else if key == "hibernate"
-                title = _("hibernate")
             else if key == "shutdown"
                 title = _("shutdown")
             else if key == "restart"
                 title = _("restart")
             else
                 echo "invalid power option"
-            power_menu.insert_noimg(key, title)
+            img = img_before + "#{key}.png"
+            power_menu.insert(key, title, img)
 
-        power_menu.current_img.src = "images/powermenu/shutdown_normal.png"
+        power_menu.current_img.src = img_before + "shutdown_normal.png"
         parent.appendChild(power_menu.element)
 
         power_menu.element.addEventListener("click", (e) =>

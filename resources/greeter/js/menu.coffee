@@ -20,7 +20,6 @@
 
 
 class Menu extends Widget
-    _global_menu_container = null
     parent = null
     mouseover = false
 
@@ -33,15 +32,12 @@ class Menu extends Widget
     insert: (@id, @title, @img)->
         _id = @id
         _title = @title
-        item = create_element("div", "menuitem", @element)
-        item.addEventListener("click", (e)=>
+        _img = @img
+        menuimg = create_img("menuimg", @img, @element)
+        menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
         )
-        create_img("menuimg", @img, item)
-        title = create_element("div", "menutitle", item)
-        title.innerText = @title
 
-        _img = @img
         @items[_id] = [_id, _title, _img]
         @current = @id
 
@@ -105,7 +101,7 @@ class ComboBox extends Widget
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img)->
-        @current_img.src = img
+        #@current_img.src = img
         @menu.insert(id, title, img)
 
     insert_noimg: (id, title)->
