@@ -19,25 +19,22 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class DesktopMenu extends Widget
-    de_menu = null
-    sessions = {}
     parent = null
-
+    
     constructor: (parent_el) ->
         super
         parent = parent_el
         detext = create_element("div", "Detext", parent)
         detext.innerText = _("Session")
-
-    get_sessions: ->
-        sessions = DCore.Greeter.get_sessions()
     
     new_desktop_menu: ->
-        get_sessions = @get_sessions()
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
         de_menu = new ComboBox("desktop", de_menu_cb)
         #de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
+        
+        sessions = DCore.Greeter.get_sessions()
+        echo sessions
         for session in sessions
             id = session
             name = DCore.Greeter.get_session_name(id)

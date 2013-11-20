@@ -65,13 +65,13 @@ class Menu extends Widget
         if not @element.parent
             _global_menu_container = create_element("div", "", document.body)
             _global_menu_container.id = "global_menu_container"
-            _global_menu_container.addEventListener("click", (e)->
-                _global_menu_container.style.display = "none"
-                _global_menu_container.removeChild(_global_menu_container.children[0])
-            )
-
             _global_menu_container.appendChild(@element)
             _global_menu_container.style.display = "block"
+            _global_menu_container.addEventListener("click", (e)->
+                _global_menu_container.style.display = "none"
+                _global_menu_container.removeChild(_global_menu_container.children[0]) if _global_menu_container.children[0]
+            )
+
 
     get_allocation: ->
         @try_append()

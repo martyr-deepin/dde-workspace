@@ -99,8 +99,6 @@ timedate.show()
 mediacontrol = new MediaControl()
 $("#div_media_control").appendChild(mediacontrol.element)
 
-desktopmenu = new DesktopMenu($("div_desktop"))
-desktopmenu.new_desktop_menu()
 
-powermenu = new PowerMenu($("div_power"))
+powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
