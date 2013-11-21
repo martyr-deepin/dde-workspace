@@ -1,0 +1,185 @@
+/**
+ * Copyright (c) 2011 ~ 2012 Deepin, Inc.
+ *               2011 ~ 2012 snyh
+ *
+ * Author:       snyh <snyh@snyh.org>
+ * Maintainer:   Cole <phcourage@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ **/
+
+@import url("../../common/css/animation.css");
+
+body{
+    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    cursor:default;
+    overflow:hidden;
+    background-color:rgba(0,0,0,0.7)
+}
+
+.ShutDown{
+    width:100%;
+    height:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+130
+.frame{
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+}
+
+.button{
+    display:-webkit-box;
+    -webkit-box-orient:horizontal;
+}
+
+
+.opt{
+    position:relative;
+    cursor: pointer;
+    margin:0 10px 0 10px;
+    width:100px;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+.opt:hover{
+    cursor: pointer;
+}
+
+.opt_img{
+    width:80px;
+    height:80px;
+}
+
+.opt_text{
+    width:80px;
+    height:30px;
+    text-align:center;
+    color: #FFF;
+    font-size:14px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+
+}
+
+@-webkit-keyframes fade_animation0{
+    to{left:120px;opacity:0.0;}
+}
+
+@-webkit-keyframes fade_animation1{
+    to{right:0px;opacity:0.0;}
+}
+
+@-webkit-keyframes fade_animation2{
+    to{right:120px;opacity:0.0;}
+}
+
+@-webkit-keyframes fade_animation3{
+    to{right:240px;opacity:0.0;}
+}
+@-webkit-keyframes fade_animation4{
+    to{right:360px;opacity:0.0;}
+}
+
+@-webkit-keyframes show_confirm{
+    to{opacity:1.0;}
+}
+
+
+
+
+.ConfirmDialog{
+    width:100%;
+    height:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+.frame_confirm{
+    display:-webkit-box;
+}
+
+.left{
+    margin-left:135px;
+}
+.img_confirm{
+    width:80px;
+    height:80px;
+}
+.text_img{
+    width:80px;
+    text-align:center;
+    color: #FFF;
+    font-size:14px;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+.right{
+    opacity:0.0;
+    margin-left:50px;
+    margin-top:10px;
+}
+.message_confirm{
+    text-align:center;
+    color: #FFF;
+
+    
+    font-size:13px;
+    word-wrap:break-word;
+    white-space:pre;
+    overflow:visible;    
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
+
+.button_confirm{
+    height:80px;
+    width:100%;
+    display:-webkit-box;
+    -webkit-box-pack:end;
+    -webkit-box-align:end;
+    
+    font-size:14px;
+}
+
+
+.button_cancel{
+    width:70px;
+    height:30px;
+    cursor:pointer;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    color:rgba(255,255,255,0.5)
+}
+.button_cancel:hover{
+    color:rgba(0,193,255,1.0)
+    cursor:pointer;
+}
+
+
+.button_ok{
+    width:70x;
+    height:30px;
+    margin-left:40px;
+    cursor:pointer;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    color:rgba(255,255,255,1.0)
+}
+.button_ok:hover{
+    color:rgba(0,193,255,1.0)
+    cursor:pointer;
+}
+
