@@ -18,6 +18,9 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class MediaControl extends Widget
+    
+    play_status = true
+
     constructor:->
         super
         img_src_before = "images/mediacontrol/"
@@ -29,4 +32,56 @@ class MediaControl extends Widget
         play = create_img("play",img_src_before + "play_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
+
+        @normal_hover_click_cb(up,
+            img_src_before + "up_normal.png",
+            img_src_before + "up_hover.png",
+            img_src_before + "up_press.png",
+            @media_up
+        )
+        @normal_hover_click_cb(play,
+            img_src_before + "play_normal.png",
+            img_src_before + "play_hover.png",
+            img_src_before + "play_press.png",
+            @media_play
+        )
+        @normal_hover_click_cb(next,
+            img_src_before + "next_normal.png",
+            img_src_before + "next_hover.png",
+            img_src_before + "next_press.png",
+            @media_next
+        )
+        @normal_hover_click_cb(voice,
+            img_src_before + "voice_normal.png",
+            img_src_before + "voice_hover.png",
+            img_src_before + "voice_press.png",
+            @media_voice
+        )
+        
+
+    normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = hover
+        )
+        el.addEventListener("mouseout",->
+            el.src = normal
+        )
+        el.addEventListener("click",=>
+            el.src = click
+            click_cb?()
+        )
+
+    media_up:->
+        echo "up"
+
+
+    media_play:->
+
+
+
+    media_next:->
+
+
+    media_voice:->
+
 
