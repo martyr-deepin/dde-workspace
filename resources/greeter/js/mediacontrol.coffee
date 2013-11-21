@@ -18,8 +18,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class MediaControl extends Widget
-    
-    play_status = true
+    img_src_before = null
+    up = null
+    play = null
+    next = null
+    voice = null
+
+    play_status = "play"
 
     constructor:->
         super
@@ -29,7 +34,7 @@ class MediaControl extends Widget
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
-        play = create_img("play",img_src_before + "play_normal.png",control)
+        play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
 
@@ -38,12 +43,6 @@ class MediaControl extends Widget
             img_src_before + "up_hover.png",
             img_src_before + "up_press.png",
             @media_up
-        )
-        @normal_hover_click_cb(play,
-            img_src_before + "play_normal.png",
-            img_src_before + "play_hover.png",
-            img_src_before + "play_press.png",
-            @media_play
         )
         @normal_hover_click_cb(next,
             img_src_before + "next_normal.png",
@@ -57,27 +56,42 @@ class MediaControl extends Widget
             img_src_before + "voice_press.png",
             @media_voice
         )
+        @play_normal_hover_click_cb(play,@media_play)
         
 
+    play_normal_hover_click_cb: (el,click_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = img_src_before + play_status + "_hover.png"
+        )
+        el.addEventListener("mouseout",->
+            el.src = img_src_before + play_status + "_normal.png"
+        )
+        el.addEventListener("click",=>
+            el.src = img_src_before + play_status + "_press.png"
+            click_cb?()
+        )
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
-        )
+        ) if hover
         el.addEventListener("mouseout",->
             el.src = normal
-        )
+        ) if normal
         el.addEventListener("click",=>
             el.src = click
             click_cb?()
-        )
+        ) if click
 
     media_up:->
         echo "up"
 
 
-    media_play:->
-
-
+    media_play:=>
+        if play_status is "play" then play_status = "pause"
+        else play_status = "play"
+        play.src = img_src_before + "#{play_status}_normal.png"
+        echo play_status
+        
 
     media_next:->
 

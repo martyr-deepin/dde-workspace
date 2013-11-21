@@ -21,22 +21,3 @@
     display:-webkit-box;
 }
 
-.up:hover{
-    cursor:pointer;
-    background-image:url("../images/mediacontrol/up_hover.png")
-}
-
-.play:hover{
-    cursor:pointer;
-    background-image:url("../images/mediacontrol/play_hover.png")
-}
-
-.next:hover{
-    cursor:pointer;
-    background-image:url("../images/mediacontrol/next_hover.png")
-}
-
-.voice:hover{
-    cursor:pointer;
-    background-image:url("../images/mediacontrol/voice_hover.png")
-}
