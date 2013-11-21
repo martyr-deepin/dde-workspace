@@ -22,7 +22,44 @@ class VoiceControl extends Widget
     constructor:->
         super
         document.body.appendChild(@element)
+    
+    append:(el)->
+        parent = el
+        parent.appendChild(@element)
+    destory:->
+        remove_element(@element)
 
+    do_mouseover: (e)->
+        #echo "menu over"
+        mouseover = true
+        @element.style.display = "block"
+    
+    do_mouseout: (e)->
+        #echo "menu out"
+        mouseover = false
+        @hide()
+    
+    show: (left, bottom)->
+        #echo "show"
+        document.body.appendChild(@element) if not parent?
+        @element.style.left = left
+        @element.style.bottom = bottom
+        @element.style.display = "block"
+
+    hide:->
+        #echo "hide"
+        @element.style.display = "none" if not mouseover
+    
+    get_size: ->
+        @element.style.display = "block"
+        width = @element.clientWidth
+        height = @element.clientHeight
+
+        "width":width
+        "height":height
+
+    voice_control:=>
+        voice = 50
 
     get_voice:->
         return voice
