@@ -286,8 +286,8 @@ msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
 #: ../resources/dock/js/clientgroup.coffee:36
-msgid "_New instance"
-msgstr "新建实例(_N)"
+msgid "_New window"
+msgstr "新建窗口(_N)"
 
 #: ../resources/dock/js/clientgroup.coffee:49
 msgid "_Close"
