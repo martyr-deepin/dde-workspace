@@ -109,7 +109,7 @@ greeter = new Greeter()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.new_switchuser()
+#user.new_switchuser()
 user.new_userinfo_for_greeter()
 userinfo = user.get_userinfo_for_greeter()
 _current_user = user.get_current_user_for_greeter()

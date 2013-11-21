@@ -1,8 +1,7 @@
 .User{
-    position:fixed;
     list-style: none;
-    width:350px;
-    height:350px;;
+    width:200px;
+    height:300px;;
 }
 
 .user_ul li {
