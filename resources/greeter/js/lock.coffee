@@ -59,7 +59,7 @@ class Lock extends Widget
         return username
 
     get_userimage:(username)->
-        user_image = DCore.Lock.get_user_icon()
+        user_image = DCore.Lock.get_user_icon(username)
         if not user_image?
             try
                 dbus = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice")

@@ -343,7 +343,7 @@ class UserInfo extends Widget
                     @login.password.style.display = "none"
                     @login.password.value = "deepin"
             else
-                if not DCore.Lock.need_password()
+                if not DCore.Lock.need_password(@id)
                     @login.password.style.display = "none"
                     @login.password.value = "deepin"
 

@@ -34,11 +34,11 @@
 
 JS_EXPORT_API const gchar* lock_get_username ();
 
-JS_EXPORT_API gchar* lock_get_realname ();
+JS_EXPORT_API gchar* lock_get_user_realname (const gchar* name);
 
-JS_EXPORT_API gchar* lock_get_user_icon ();
+JS_EXPORT_API gchar* lock_get_user_icon (const gchar* name);
 
-JS_EXPORT_API gboolean lock_need_password ();
+JS_EXPORT_API gboolean lock_need_password (const gchar* name);
 
 JS_EXPORT_API gchar* lock_get_date ();
 
