@@ -17,6 +17,16 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+class VoiceControl extends Widget
+    voice = 50
+    constructor:->
+        super
+        document.body.appendChild(@element)
+
+
+    get_voice:->
+        return voice
+
 class MediaControl extends Widget
     img_src_before = null
     up = null
@@ -25,7 +35,8 @@ class MediaControl extends Widget
     voice = null
 
     play_status = "play"
-
+    voice_status = "voice"
+    
     constructor:->
         super
         img_src_before = "images/mediacontrol/"
@@ -50,14 +61,20 @@ class MediaControl extends Widget
             img_src_before + "next_press.png",
             @media_next
         )
-        @normal_hover_click_cb(voice,
-            img_src_before + "voice_normal.png",
-            img_src_before + "voice_hover.png",
-            img_src_before + "voice_press.png",
-            @media_voice
-        )
         @play_normal_hover_click_cb(play,@media_play)
+        @voice_normal_hover_click_cb(voice,@media_voice)
         
+    voice_normal_hover_click_cb: (el,hover_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = img_src_before + voice_status + "_hover.png"
+            hover_cb?()
+        )
+        el.addEventListener("mouseout",->
+            el.src = img_src_before + voice_status + "_normal.png"
+        )
+        el.addEventListener("click",=>
+            el.src = img_src_before + voice_status + "_press.png"
+        )
 
     play_normal_hover_click_cb: (el,click_cb) ->
         el.addEventListener("mouseover",->
@@ -97,5 +114,8 @@ class MediaControl extends Widget
 
 
     media_voice:->
-
+        voicecontrol.style.display = "block"
+        if voicecontrol.get_voice() == 0
+            voice_status = "mute"
+            voice.src = img_src_before + voice_status + "_hover.png"
 
