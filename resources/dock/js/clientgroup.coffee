@@ -133,7 +133,6 @@ class ClientGroup extends AppItem
 
         switch id
             when 10
-                # echo "#{@app_id}, #{@exec}"
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 20
                 Preview_close_now()

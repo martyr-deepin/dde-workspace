@@ -7,8 +7,6 @@ class Launcher extends AppItem
 
         @set_tooltip(DCore.DEntry.get_name(@core))
 
-        @build_menu()
-
     try_swap_clientgroup: ->
         group = Widget.look_up("le_"+@id)
         if group?
@@ -37,8 +35,7 @@ class Launcher extends AppItem
                 @_do_launch []
             when 20 then DCore.Dock.request_undock(@id)
 
-    build_menu: (e)=>
-        e.stopPropagation()
+    do_buildmenu: =>
         []
 
     do_rightclick: =>

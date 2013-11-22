@@ -67,7 +67,6 @@ pkg_check_modules(WEBKIT REQUIRED deepin-webkit-3.0)
 pkg_check_modules(DBUS REQUIRED dbus-glib-1)
 
 set(CMAKE_C_FLAGS "-Wall -Wextra -std=c99")
-set(CMAKE_C_FLAGS "-std=c99")
 
 set(JSC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/lib/jsc_extension/)
 include_directories(${JSC_HEADER})
