@@ -221,5 +221,5 @@ class ArrowToolTip extends ToolTipBase
 
         x = page_xy.x + offset
         x = 0 if x < 0
-        y = document.body.clientHeight - page_xy.y - 7 # 7 for subtle
+        y = document.body.clientHeight - page_xy.y - 2 # 7 for subtle
         ArrowToolTip.move_to(@, x.toFixed(), y)

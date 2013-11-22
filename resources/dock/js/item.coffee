@@ -346,8 +346,9 @@ class AppItem extends Widget
         e.stopPropagation()
         @do_mouseout(e)
 
-    do_rightclick: (e)=>
+    do_buildmenu: (e)=>
         Preview_close_now()
+        []
 
 
 document.body.addEventListener("drop", (e)->

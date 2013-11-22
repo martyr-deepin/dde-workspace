@@ -50,6 +50,7 @@ class PWContainer extends Widget
     hide: ->
         @is_showing = false
         @border.style.opacity = 0
+        @border.style.display = 'none'
 
     show: ->
         PWContainer._need_move_animation = true

@@ -97,14 +97,8 @@ class ClientGroup extends AppItem
         @try_build_launcher()
         super
 
-    do_buildmenu: (e)=>
-        e.stopPropagation()
-        e.preventDefault()
-        []
-
     do_rightclick: (e)=>
-        super
-        e.preventDefault()
+        Preview_close_now()
 
         menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', DCore.get_name_by_appid(@app_id) || _("_New Window")))
         menu.addSeparator()
@@ -124,12 +118,10 @@ class ClientGroup extends AppItem
 
         menu.listenItemSelected(@on_itemselected)
         xy = get_page_xy(@element)
-        echo menu.menu
-        menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y, 'down')
+        menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y + 5, 'down')
 
     on_itemselected: (id)=>
         super
-        Preview_container.close()
 
         id = parseInt(id)
         index = id - 1

@@ -23,8 +23,8 @@ class Launcher extends AppItem
 
     on_itemselected: (id)=>
         super
-        id = parseInt(id)
 
+        id = parseInt(id)
         action = @actions[id - 1]
         if action?
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
@@ -41,8 +41,8 @@ class Launcher extends AppItem
         e.stopPropagation()
         []
 
-    do_rightclick: (e) =>
-        super
+    do_rightclick: =>
+        Preview_close_now()
         menu = create_menu(MENU_TYPE_NORMAL, new MenuItem("10", _("_Run")))
         menu.addSeparator()
 
@@ -56,7 +56,7 @@ class Launcher extends AppItem
 
         xy = get_page_xy(@element)
         menu.listenItemSelected(@on_itemselected)
-        menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y, 'down')
+        menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y + 5, 'down')
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
