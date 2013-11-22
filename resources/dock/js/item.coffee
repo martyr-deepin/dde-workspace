@@ -342,8 +342,12 @@ class AppItem extends Widget
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = 'opacity 1s ease-in'
 
-    do_itemselected: (e)=>
+    on_itemselected: (e)=>
+        e.stopPropagation()
         @do_mouseout(e)
+
+    do_rightclick: (e)=>
+        Preview_close_now()
 
 
 document.body.addEventListener("drop", (e)->

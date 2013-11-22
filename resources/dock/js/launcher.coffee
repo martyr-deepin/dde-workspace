@@ -21,44 +21,42 @@ class Launcher extends AppItem
         @flash()
         @_do_launch []
 
-    do_itemselected: (e)=>
+    on_itemselected: (id)=>
         super
-        action = @actions[e.id - 1]
+        id = parseInt(id)
+
+        action = @actions[id - 1]
         if action?
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 
-        switch e.id
+        switch id
             when 10
                 @tooltip?.hide()
                 @tooltip = null
                 @_do_launch []
             when 20 then DCore.Dock.request_undock(@id)
 
-    build_menu: ->
-        @element.addEventListener("contextmenu", (e)=>
-            Preview_close_now()
-            menu_list = [
-                [10, _("_Run")],
-                []
-            ]
+    build_menu: (e)=>
+        e.stopPropagation()
+        []
 
-            i = 0
-            len = @actions.length
+    do_rightclick: (e) =>
+        super
+        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem("10", _("_Run")))
+        menu.addSeparator()
 
-            while i < len
-                i = i + 1
-                menu_list.push([i, @actions[i - 1].name])
+        for i in [0...@actions.length]
+            menu.append(new MenuItem("#{i}", @actions[i].name))
 
-            if len != 0
-                menu_list.push([])
+        if @actions.length > 0
+            menu.addSeparator()
 
-            menu_list.push([20, _("_Undock")])
-            menu = build_menu(menu_list)
+        menu.append(new MenuItem('20', _("_Undock")))
 
-            @element.contextMenu = menu
-            e.stopPropagation()
-        )
+        xy = get_page_xy(@element)
+        menu.listenItemSelected(@on_itemselected)
+        menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y, 'down')
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")

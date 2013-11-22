@@ -6,6 +6,7 @@ add_subdirectory(app_tray)
 #add_subdirectory(memory_test)
 #add_subdirectory(dominant_color)
 add_subdirectory(greeter)
+add_subdirectory(shutdown)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/common

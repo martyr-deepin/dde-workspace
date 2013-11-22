@@ -270,7 +270,6 @@ int main (int argc, char **argv)
 
     GdkWindow *gdkwindow = gtk_widget_get_window (lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
-
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));

@@ -14,35 +14,6 @@ class ClientGroup extends AppItem
         catch error
             alert "Group construcotr :#{error}"
 
-        @build_menu()
-
-    build_menu: ->
-        # contextmenu and preview window cannot be shown at the same time
-        @element.addEventListener("contextmenu", (e) =>
-            Preview_close_now()
-            menu_list = [
-                [10, _("_New instance")],
-                []
-            ]
-            i = 0
-            len = @actions.length
-
-            while i < len
-                i = i + 1
-                menu_list.push([i, @actions[i - 1].name])
-
-            if len != 0
-                menu_list.push([])
-
-            menu_list.push([20, _("_Close")])
-            menu_list.push([30, _("Close _All"), @n_clients.length > 1])
-            menu_list.push([])
-            menu_list.push([40, _("_Dock me"), !DCore.Dock.has_launcher(@app_id)])
-            menu = build_menu(menu_list)
-
-            @element.contextMenu = menu
-            e.stopPropagation()
-        )
 
     update_scale: ->
         super
@@ -126,19 +97,51 @@ class ClientGroup extends AppItem
         @try_build_launcher()
         super
 
-    do_itemselected: (e)=>
+    do_buildmenu: (e)=>
+        e.stopPropagation()
+        e.preventDefault()
+        []
+
+    do_rightclick: (e)=>
+        super
+        e.preventDefault()
+
+        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', DCore.get_name_by_appid(@app_id) || _("_New Window")))
+        menu.addSeparator()
+
+        for i in [0...@actions.length]
+            menu.append(new MenuItem("#{i}", @actions[i].name))
+
+        if @actions.length != 0
+            menu.addSeparator()
+
+        menu.append(
+            new MenuItem("20", _("_Close")),
+            new MenuItem("30", _("Close _All")).setActive(@n_clients.length > 1),
+            new MenuSeparator,
+            new MenuItem('40', _("_Dock me")).setActive(!DCore.Dock.has_launcher(@app_id))
+            )
+
+        menu.listenItemSelected(@on_itemselected)
+        xy = get_page_xy(@element)
+        echo menu.menu
+        menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y, 'down')
+
+    on_itemselected: (id)=>
         super
         Preview_container.close()
 
-        index = e.id - 1
+        id = parseInt(id)
+        index = id - 1
         action = @actions[index]
         if action?
+            # echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 
-        switch e.id
+        switch id
             when 10
-                echo "#{@app_id}, #{@exec}"
+                # echo "#{@app_id}, #{@exec}"
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
             when 20
                 Preview_close_now()

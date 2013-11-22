@@ -74,7 +74,7 @@ build_menu = (info) ->
         m.appendItem(i)
     return m
 
-get_page_xy = (el, x, y) ->
+get_page_xy = (el, x=0, y=0) ->
     p = webkitConvertPointFromNodeToPage(el, new WebKitPoint(x, y))
 
 find_drag_target = (el)->
