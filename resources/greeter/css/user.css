@@ -1,63 +1,92 @@
 .User{
     list-style: none;
-    width:200px;
-    height:300px;;
-}
-
-.user_ul li {
-
-}
-
-.user_ul li.user_ul-in-focus {
-    cursor: auto;
-    background: none;
-    border: none;
+    width:400px;
+    height:350px;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 .UserInfo {
-    width: 14em;
-    height: 16.5em;
-    background: rgba(255,255,255,0.5);
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 5px;
+    width: 360px;
+    height: 140px;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
     
-    color: rgba(0, 0, 0, 0.3);
-    opacity:inherit;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+
+    background: rgba(255,250,246,0.6);
+    border-radius: 4px;
+    color: #7e7975;
+    box-shadow:
+        0 0 0 5px rgba(255,255,255,0.2); 
+
+    display:-webkit-box;
 }
 
-.UserInfoSelected {
-    background: #333;
-    color: white;
-    opacity:1;
-    border: 1px solid rgba(0,0,0,1);
-    border-radius: 5px;
-    cursor:pointer;
-}
-
-.UserInfoSelected .UserName {
-    color: white;
-}
 
 .UserBase {
-    width: auto;
-    height: auto;
-    padding-top: 1em;
-    text-align:center;
+    width: 150px;
+    height: 140px;
+    border-radius: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 1px 0 0 rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.img_div{
+    width: 100%;
+    height: 100px;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 .UserImg {
-    max-width: 12em;
-    height: auto;
-    border: 2px solid rgba(255,255,255,0.8);
-    opacity:inherit;
+    width:90px; 
+    height:90px; 
+    border-radius:50%; 
+    border:rgba(255,250,246,0.9) 4px solid;
+    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2); 
+}
+.recognize{
+    width:100%;
+    height:40px;
+    background: url(images/light.png) repeat, black;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-animation-name: recognize-animation;
+    -webkit-animation-duration: 10s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
 
 .UserName {
-    margin: 0.6em auto;
-    color: black;
-    width: 100%;
-    font-size: 1.2em;
-    text-align: center;
+    font-size:15px;
+    font-weight:bold; 
+    text-align:center; 
+    color:#333;
+    cursor: pointer;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+}
+ 
+@-webkit-keyframes recognize-animation {
+    0% {background-position: left bottom;}
+    100% {background-position: right bottom;}
+}
+
+
+
+
+.login_div{
+    width: 200px;
+    height: 140px;
 }
 
 .Account {
@@ -100,9 +129,9 @@
 
 .LoginEntry{
     width:100%;
-    background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
+    /*background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));*/
     border-radius:5px;
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
 }
 
 .LoginButton:hover, .LoginButton:focus{

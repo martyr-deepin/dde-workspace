@@ -156,6 +156,7 @@ class LoginEntry extends Widget
                         @password.focus()
             )
 
+        @usertype = create_element("div","usertype",@element)
         @warning = create_element("div", "CapsWarning", @element)
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
@@ -225,37 +226,31 @@ class SwitchUser extends Widget
 
 
 class UserInfo extends Widget
+    userbase = null
+    right = null
+    userimg = null
+    username = null
+    login_div = null
+
     constructor: (@id, name, @img_src)->
         super
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         # echo "use face login: #{@face_login}"
         #@li = create_element("li", "")
         #@li.appendChild(@element)
+        
 
-        @userbase = create_element("div", "UserBase", @element)
+        userbase = create_element("div", "UserBase", @element)
+        img_div = create_element("div","img_div",userbase)
+        userimg = create_img("userimg", @img_src, img_div)
+        recognize = create_element("div", "recognize", userbase)
+        recognize_h1 = create_element("h1", "", recognize)
+        username = create_element("label", "UserName", recognize_h1)
+        username.innerText = name
 
-        if @face_login
-            @avatar = create_element("canvas", "UserImg", @userbase)
-            @avatar.setAttribute('width', "#{CANVAS_WIDTH}px")
-            @avatar.setAttribute('height', "#{CANVAS_HEIGHT}px")
-            @draw_avatar()
-        else
-            @avatar = create_img("UserImg", @img_src, @userbase)
+        login_div = create_element("div", "login_div", @element)
+        @show_login()
 
-        warp = create_element('div', "UserName", @userbase)
-
-        if @face_login
-            @camera_flag = create_img('camera_flag', 'images/camera.png', warp)
-            @camera_flag.addEventListener('click', (e)->
-                e.preventDefault()
-                e.stopPropagation()
-            )
-
-            @scanner = create_element('div', 'scanner', @userbase)
-            @scan_line = create_img('', 'images/scan-line.png', @scanner)
-
-        @name = create_element("div", "UserName", warp)
-        @name.innerText = name
 
         @element.index = 0
         @index = user_ul.childElementCount
@@ -266,8 +261,28 @@ class UserInfo extends Widget
         @is_recognizing = false
         @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
+    facelogin:->
+
+        if @face_login
+            enable_detection(true)
+
+        if @face_login
+            userimg = create_element("canvas", "UserImg", userbase)
+            userimg.setAttribute('width', "#{CANVAS_WIDTH}px")
+            userimg.setAttribute('height', "#{CANVAS_HEIGHT}px")
+            @draw_avatar()
+        if @face_login
+            @camera_flag = create_img('camera_flag', 'images/camera.png', userbase)
+            @camera_flag.addEventListener('click', (e)->
+                e.preventDefault()
+                e.stopPropagation()
+            )
+
+            @scanner = create_element('div', 'scanner', userbase)
+            @scan_line = create_img('', 'images/scan-line.png', @scanner)
+
     draw_avatar: ->
-        ctx = @avatar.getContext("2d")
+        ctx = userimg.getContext("2d")
         img = new Image()
         img.onload = ->
             ctx.drawImage(img, 0, 0)
@@ -326,7 +341,7 @@ class UserInfo extends Widget
 
         else if _current_user == @ and not @login
             @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
-            @element.appendChild(@login.element)
+            login_div.appendChild(@login.element)
 
             if is_hide_users
                 @element.style.paddingBottom = "0px"
@@ -525,7 +540,7 @@ class UserInfo extends Widget
         if @face_login
             clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(@avatar, @avatar.width, @avatar.height)
+                DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
 
     start_animation: =>
