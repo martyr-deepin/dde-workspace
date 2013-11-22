@@ -1,0 +1,60 @@
+<div class="container">
+    <section class="main">
+        <form class="form-2">
+        <div class="user">
+            <img src="images/userpic.jpg" />
+            <p class="clearfix">
+                <h1><label for="login" class="username">Recognition...</label></h1>
+            </p>
+        </div>
+            <div style=" margin-left:150px; height:140px;">
+            <p class="glass"></p>
+            
+          <p class="clearfix" style="margin-top:-165px;z-index:999; position: relative;">
+                <label for="password"><i class="icon-lock"></i>Administrator</label>
+                <input name="password" type="password" class="showpassword" placeholder="Password" maxlength="16">
+            </p>
+            <p class="clearfix" style="z-index:999; position: relative;">
+              <input type="submit" name="submit" value="Login">
+            </p>
+            </div>
+        </form>​​
+    </section>
+    
+</div>
+<!-- jQuery if needed -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".showpassword").each(function(index,input) {
+            var $input = $(input);
+            $("<p class='opt' style='height:10px;'/>").append(
+              $("<span class='checkbox icon-eye-open'/>").append(
+                $("<input type='checkbox' id='showPassword' />").click(function() {
+                    var change = $(this).is(":checked") ? "text" : "password";
+                    var rep = $("<input placeholder='Password' type='" + change + "' />")
+                        .attr("id", $input.attr("id"))
+                        .attr("name", $input.attr("name"))
+                        .attr('class', $input.attr('class'))
+                        .val($input.val())
+                        .insertBefore($input);
+                    $input.remove();
+                    $input = rep;
+                 })
+            )).append($("<label for='showPassword' data-on='ON' data-off='OFF'>").text("")).insertAfter($input.parent());
+            
+        });
+
+        $('#showPassword').click(function(){
+            if($("#showPassword").is(":checked")) {
+                $('.icon-lock').addClass('icon-unlock');
+                $('.icon-unlock').removeClass('icon-lock');
+                $('.icon-eye-open').css('color','#333');   
+            } else {
+                $('.icon-unlock').addClass('icon-lock');
+                $('.icon-lock').removeClass('icon-unlock');
+                $('.icon-eye-open').css('color','');
+            }
+        });
+    });
+</script>
