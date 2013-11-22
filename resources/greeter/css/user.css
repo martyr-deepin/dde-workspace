@@ -5,11 +5,7 @@
 }
 
 .user_ul li {
-    width: 14em;
-    height: 16.5em;
-    background: rgba(255,255,255,0.5);
-    border: 1px solid rgba(0,0,0,0.2);
-    border-radius: 5px;
+
 }
 
 .user_ul li.user_ul-in-focus {
@@ -19,6 +15,12 @@
 }
 
 .UserInfo {
+    width: 14em;
+    height: 16.5em;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 5px;
+    
     color: rgba(0, 0, 0, 0.3);
     opacity:inherit;
 }

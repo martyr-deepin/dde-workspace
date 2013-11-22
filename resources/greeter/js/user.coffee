@@ -62,13 +62,13 @@ class User extends Widget
 
     new_userinfo_for_lock:(username,userimage)->
         userinfo = new UserInfo(username, username, userimage)
-        user_ul.appendChild(userinfo.li)
+        user_ul.appendChild(userinfo.element)
         userinfo.focus()
         if not userinfo.face_login
             userinfo.show_login()
 
         if user_ul.children.length <= 2
-            user_ul.style.width = "0"
+            #user_ul.style.width = "0"
             # l = (screen.width  - user_ul.clientWidth) / 2
             # user_ul.style.left = "#{l}px"
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
@@ -89,7 +89,7 @@ class User extends Widget
     new_userinfo_for_greeter:()->
         if DCore.Greeter.is_hide_users()
             u = new UserInfo("*other", "", "images/huser.jpg")
-            user_ul.appendChild(u.li)
+            user_ul.appendChild(u.element)
             Widget.look_up("*other").element.style.paddingBottom = "5px"
             u.focus()
         else
@@ -98,7 +98,7 @@ class User extends Widget
                 if user == DCore.Greeter.get_default_user()
                     userimage = get_user_image(user)
                     u = new UserInfo(user, user, userimage)
-                    user_ul.appendChild(u.li)
+                    user_ul.appendChild(u.element)
                     u.focus()
 
             for user in users
@@ -107,11 +107,11 @@ class User extends Widget
                 else
                     userimage = get_user_image(user)
                     u = new UserInfo(user, user, userimage)
-                    user_ul.appendChild(u.li)
+                    user_ul.appendChild(u.element)
 
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-                user_ul.appendChild(u.li)
+                user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
 
@@ -229,8 +229,8 @@ class UserInfo extends Widget
         super
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         # echo "use face login: #{@face_login}"
-        @li = create_element("li", "")
-        @li.appendChild(@element)
+        #@li = create_element("li", "")
+        #@li.appendChild(@element)
 
         @userbase = create_element("div", "UserBase", @element)
 

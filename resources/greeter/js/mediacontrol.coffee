@@ -70,6 +70,7 @@ class MediaControl extends Widget
     play = null
     next = null
     voice = null
+    voicecontrol = null
 
     play_status = "play"
     voice_status = "voice"
@@ -85,7 +86,8 @@ class MediaControl extends Widget
         play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
-
+        voicecontrol = new VoiceControl()
+        
         @normal_hover_click_cb(up,
             img_src_before + "up_normal.png",
             img_src_before + "up_hover.png",
@@ -151,7 +153,7 @@ class MediaControl extends Widget
 
 
     media_voice:->
-        voicecontrol.style.display = "block"
+        voicecontrol.element.style.display = "block"
         if voicecontrol.get_voice() == 0
             voice_status = "mute"
             voice.src = img_src_before + voice_status + "_hover.png"
