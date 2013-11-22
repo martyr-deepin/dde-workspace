@@ -15,6 +15,27 @@
     margin: 0;
 }
 
+.masked{
+    background: url(images/light.png) repeat, black;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-animation-name: masked-animation;
+    -webkit-animation-duration: 10s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    width:100%;
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+ 
+ 
+@-webkit-keyframes masked-animation {
+    0% {background-position: left bottom;}
+    100% {background-position: right bottom;}
+}
+
+
 .clearfix:after {
     content: "";
     display: table;
@@ -26,8 +47,8 @@
 .form-2 {
     /* Size and position */
     width: 350px;
-    margin: 20% auto 30px;
-    position: relative;
+    /*margin: 20% auto 30px;*/
+    /*position: relative;*/
 
     /* Styles */
     background: rgba(255,250,246,0.6);
