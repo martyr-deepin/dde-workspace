@@ -343,7 +343,6 @@ class AppItem extends Widget
         @img.style.webkitTransition = 'opacity 1s ease-in'
 
     on_itemselected: (e)=>
-        e.stopPropagation()
         @do_mouseout(e)
 
     do_buildmenu: (e)=>
