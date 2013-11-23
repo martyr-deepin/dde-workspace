@@ -157,6 +157,7 @@ class LoginEntry extends Widget
             )
 
         @usertype = create_element("div","usertype",@element)
+        @usertype.textContent = "Administrator"
         @warning = create_element("div", "CapsWarning", @element)
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
