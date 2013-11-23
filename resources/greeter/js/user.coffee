@@ -157,9 +157,13 @@ class LoginEntry extends Widget
             )
 
         @usertype = create_element("div","usertype",@element)
-        @usertype.textContent = "Administrator"
-        @warning = create_element("div", "CapsWarning", @element)
-        @password = create_element("input", "Password", @warning)
+        icon_lock = create_element("i","icon_lock",@usertype)
+        type_text = create_element("div","type_text",@usertype)
+        type_text.textContent = "Administrator"
+        
+        @capswarning = create_element("div", "capswarning", @element)
+        @password = create_element("input", "password", @capswarning)
+        @password.type = "password"
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
 
@@ -175,7 +179,8 @@ class LoginEntry extends Widget
                         @on_active(@loginuser, @password.value)
         )
 
-        @login = create_element("button", "LoginButton", @element)
+        @login = create_element("input", "loginbutton", @element)
+        @login.type = "submit"
         if is_greeter
             @login.innerText = _("Log In")
         else
@@ -192,9 +197,9 @@ class LoginEntry extends Widget
 
     check_capslock: ->
         if DCore[APP_NAME].detect_capslock()
-            @warning.classList.add("CapsWarningBackground")
+            @capswarning.classList.add("CapsWarningBackground")
         else
-            @warning.classList.remove("CapsWarningBackground")
+            @capswarning.classList.remove("CapsWarningBackground")
 
     check_completeness: ->
         if is_hide_users
