@@ -158,7 +158,7 @@ class LoginEntry extends Widget
             )
 
         @usertype = create_element("div","usertype",@element)
-        icon_lock = create_element("i","icon_lock",@usertype)
+        icon_lock = create_element("i","icon-lock",@usertype)
         type_text = create_element("div","type_text",@usertype)
         type_text.textContent = "Administrator"
         

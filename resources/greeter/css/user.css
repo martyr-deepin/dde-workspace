@@ -1,3 +1,5 @@
+@import url('font-awesome.css');
+
 .User{
     list-style: none;
     width:400px;
@@ -118,7 +120,7 @@
     text-shadow: 0 1px 0 rgba(255,255,255,0.8);
     font-size: 11px;
 }
-.icon_lock{
+.icon-lock{
     width:10px;
     height:10px;
 }
@@ -159,7 +161,13 @@
 .PasswordStyle {
     -webkit-text-security:disc !important;
 }
-
+#showpassword{
+    display: inline-block;
+    /*margin-bottom: 10px;*/
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
 
 
 
