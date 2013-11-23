@@ -129,7 +129,7 @@ class User extends Widget
 
     drag:(_current_user)->
         jQuery("#user_ul").drag("start", (ev, dd) ->
-            _current_user?.hide_login()
+            # _current_user?.hide_login()
             _drag_flag = true
         , {distance:100}
         )
@@ -145,6 +145,7 @@ class User extends Widget
 class LoginEntry extends Widget
     constructor: (@id, @loginuser, @on_active)->
         super
+        echo "new LoginEntry"
         if is_hide_users
             @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
@@ -179,8 +180,7 @@ class LoginEntry extends Widget
                         @on_active(@loginuser, @password.value)
         )
 
-        @login = create_element("input", "loginbutton", @element)
-        @login.type = "submit"
+        @login = create_element("button", "loginbutton", @element)
         if is_greeter
             @login.innerText = _("Log In")
         else
@@ -255,7 +255,6 @@ class UserInfo extends Widget
         username.innerText = name
 
         login_div = create_element("div", "login_div", @element)
-        @show_login()
 
 
         @element.index = 0
@@ -266,6 +265,7 @@ class UserInfo extends Widget
         @display_failure = false
         @is_recognizing = false
         @session = DCore.Greeter.get_user_session(@id) if is_greeter
+        @show_login()
 
     facelogin:->
 
@@ -398,7 +398,7 @@ class UserInfo extends Widget
                 if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
                     echo "do click:login pwd clicked"
                 else
-                    @hide_login()
+                    # @hide_login()
 
                     if @face_login
                         message_tip?.remove()
@@ -576,7 +576,7 @@ DCore.signal_connect("draw", ->
 DCore.signal_connect("start-animation", ->
     # echo "receive start animation"
     _current_user.is_recognizing = true
-    _current_user.hide_login()
+    # _current_user.hide_login()
     _remove_click_event?()
     _current_user.start_animation()
 )
