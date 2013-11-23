@@ -50,14 +50,13 @@
         <script src="js/jquery.roundabout.js"></script>
         <script src="js/jquery.easing.js"></script>
         <script src="js/jquery.smooth-scroll.js"></script>
-        <script src="js/lock.js"> </script>
         <!-- jQuery if needed -->
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript">
             $(function(){
                 $(".password").each(function(index,input) {
                     var $input = $(input);
-                    $("<p class='opt' style='height:10px;'/>").append(
+                    $("<p class='opt'/>").append(
                       $("<span class='checkbox icon-eye-open'/>").append(
                         $("<input type='checkbox' id='showPassword' />").click(function() {
                             var change = $(this).is(":checked") ? "text" : "password";
@@ -87,6 +86,7 @@
                 });
             });
         </script>
+        <script src="js/lock.js"> </script>
 
     </body>
 </html>

@@ -145,7 +145,7 @@ class User extends Widget
 class LoginEntry extends Widget
     constructor: (@id, @loginuser, @on_active)->
         super
-        echo "new LoginEntry"
+        # echo "new LoginEntry"
         if is_hide_users
             @account = create_element("input", "Account", @element)
             @account.setAttribute("autofocus", "true")
@@ -167,8 +167,10 @@ class LoginEntry extends Widget
         @password.type = "password"
         @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
-
-        @check_capslock()
+        eye = create_element("div","eye",@capswarning)
+        eye.classList.add("opt")
+        
+        # @check_capslock()
 
         @password.addEventListener("keyup", (e)=>
             @check_capslock()
