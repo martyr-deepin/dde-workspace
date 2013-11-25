@@ -11,8 +11,9 @@ class ClientGroup extends AppItem
 
             @open_indicator_short = create_img("OpenIndicator", SHORT_INDICATOR, @element)
             @open_indicator_long = create_img("OpenIndicator", LONG_INDICATOR, @element)
+            @element.addEventListener('contextmenu', @rightclick)
         catch error
-            alert "Group construcotr :#{error}"
+            alert "Group constructor :#{error}"
 
 
     update_scale: ->
@@ -97,7 +98,9 @@ class ClientGroup extends AppItem
         @try_build_launcher()
         super
 
-    do_rightclick: (e)=>
+
+    # do_rightclick: (e)=>
+    rightclick: =>
         Preview_close_now()
 
         menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', DCore.get_name_by_appid(@app_id) || _("_New Window")))
@@ -113,14 +116,19 @@ class ClientGroup extends AppItem
             new MenuItem("20", _("_Close")),
             new MenuItem("30", _("Close _All")).setActive(@n_clients.length > 1),
             new MenuSeparator,
-            new MenuItem('40', _("_Dock me")).setActive(!DCore.Dock.has_launcher(@app_id))
+            new MenuItem("40", _("_Dock me")).setActive(!DCore.Dock.has_launcher(@app_id))
             )
+        menu.bind(@)
 
-        menu.listenItemSelected(@on_itemselected)
-        xy = get_page_xy(@element)
-        menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y + 5, 'down')
+        # menu.listenItemSelected(@on_itemselected)
+        # xy = get_page_xy(@element)
+        # menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y + 5, 'down')
 
+    ###
     on_itemselected: (id)=>
+    ###
+    do_itemselected: (e)=>
+        id = e.id
         super
 
         id = parseInt(id)

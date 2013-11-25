@@ -342,7 +342,8 @@ class AppItem extends Widget
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = 'opacity 1s ease-in'
 
-    on_itemselected: (e)=>
+    # on_itemselected: (e)=>
+    do_itemselected: (e) =>
         @do_mouseout(e)
 
     do_buildmenu: (e)=>

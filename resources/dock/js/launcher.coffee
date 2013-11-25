@@ -6,6 +6,7 @@ class Launcher extends AppItem
         @update_scale()
 
         @set_tooltip(DCore.DEntry.get_name(@core))
+        @element.addEventListener('contextmenu', @rightclick)
 
     try_swap_clientgroup: ->
         group = Widget.look_up("le_"+@id)
@@ -19,7 +20,9 @@ class Launcher extends AppItem
         @flash()
         @_do_launch []
 
-    on_itemselected: (id)=>
+    # on_itemselected: (id)=>
+    do_itemselected: (e)=>
+        id = e.id
         super
 
         id = parseInt(id)
@@ -35,10 +38,11 @@ class Launcher extends AppItem
                 @_do_launch []
             when 20 then DCore.Dock.request_undock(@id)
 
-    do_buildmenu: =>
-        []
+    # do_buildmenu: =>
+    #     []
 
-    do_rightclick: =>
+    # do_rightclick: =>
+    rightclick: =>
         Preview_close_now()
         menu = create_menu(MENU_TYPE_NORMAL, new MenuItem("10", _("_Run")))
         menu.addSeparator()
@@ -50,10 +54,11 @@ class Launcher extends AppItem
             menu.addSeparator()
 
         menu.append(new MenuItem('20', _("_Undock")))
+        menu.bind(@)
 
-        xy = get_page_xy(@element)
-        menu.listenItemSelected(@on_itemselected)
-        menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y + 5, 'down')
+        # xy = get_page_xy(@element)
+        # menu.listenItemSelected(@on_itemselected)
+        # menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y + 5, 'down')
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")

@@ -1,9 +1,10 @@
+###
 class Menu
     constructor: (item...)->
         @checkableMenu = false
         @singleCheck = false
         @items = []
-        if item.length == 1 and Array.isArray(item)
+        if item.length == 1 and Array.isArray(item[0])
             Menu::append.apply(@, item[0])
         else
             Menu::append.apply(@, item)
@@ -115,9 +116,6 @@ class MenuHandler
         JSON.stringify(@menu)
 
 
-MENU_TYPE_NORMAL = 0
-MENU_TYPE_CHECKBOX = 1
-MENU_TYPE_RADIOBOX = 2
 create_menu = (type, items...)->
     switch type
         when MENU_TYPE_NORMAL
@@ -126,3 +124,47 @@ create_menu = (type, items...)->
             new MenuHandler(new CheckBoxMenu(items))
         when MENU_TYPE_RADIOBOX
             new MenuHandler(new RadioBoxMenu(items))
+###
+
+class Menu
+    constructor: (items...)->
+        @items = []
+        if items.length == 1 and Array.isArray(items[0])
+            Menu::append.apply(@, items[0])
+        else
+            Menu::append.apply(@, items)
+
+    append: (items...)->
+        for i in [0...items.length]
+            @items.push(items[i].raw())
+        @
+
+    addSeparator: ->
+        @append(new MenuSeparator)
+
+    bind: (item)=>
+        item.element.contextMenu = build_menu(@items)
+
+
+class MenuItem
+    constructor: (id, text)->
+        if typeof id != 'number'
+            @item = [parseInt(id), text, true]
+        else
+            @item = [id, text, true]
+
+    setActive: (actived)->
+        @item[2] = actived
+        @
+
+    raw: ->
+        @item
+
+
+class MenuSeparator
+    constructor: ->
+    raw: ->
+        []
+
+create_menu = (type, items...) ->
+    new Menu(items)
