@@ -40,7 +40,7 @@ class User extends Widget
     username = null
     userimage = null
     userinfo = null
-    _current_user = null
+    _current_username = null
 
         
     users_path = []
@@ -76,14 +76,14 @@ class User extends Widget
             users_name.push(name)
         return users_name
 
-    get_current_user:->
+    get_current_username:->
         if is_greeter
-            _current_user = DCore.Greeter.get_default_user()
+            _current_username = DCore.Greeter.get_default_user()
         else
-            _current_user = DCore.Lock.get_username()
+            _current_username = DCore.Lock.get_username()
         # if _current_user.face_login
         #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
-        return _current_user
+        return _current_username
 
     get_user_image:(user) ->
         try
@@ -102,6 +102,9 @@ class User extends Widget
 
         return user_image
 
+    get_user_type:(user)->
+        user_type = "Administrator"
+
     new_userinfo_all:()->
         if is_hide_users
             userinfo = new UserInfo("*other", "", "images/huser.jpg")
@@ -109,22 +112,22 @@ class User extends Widget
             Widget.look_up("*other").element.style.paddingBottom = "5px"
             userinfo.focus()
         else
-            _current_user = @get_current_user()
+            _current_username = @get_current_username()
             users_name = @get_all_users()
             #users = DCore.Greeter.get_users()
             for user in users_name
-                if user == _current_user
+                if user == _current_username
                     userimage = @get_user_image(user)
-                    userinfo = new UserInfo(user, user, userimage)
-                    user_ul.appendChild(userinfo.element)
-                    userinfo.focus()
+                    _current_user = new UserInfo(user, user, userimage)
+                    user_ul.appendChild(_current_user.element)
+                    _current_user.focus()
                 else
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage)
                     user_ul.appendChild(u.element)
 
-        if not userinfo.face_login
-            userinfo.show_login()
+        if not _current_user.face_login
+            _current_user.show_login()
 
         if user_ul.children.length <= 2
             #user_ul.style.width = "0"
@@ -133,7 +136,7 @@ class User extends Widget
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
             if not user?.face_login
                 user?.show_login()
-        return userinfo
+        return _current_user
 
        # if DCore.Greeter.is_support_guest()
        #      u = new UserInfo("guest", _("guest"), "images/guest.jpg")
@@ -142,8 +145,8 @@ class User extends Widget
        #          u.focus()
     
     get_current_userinfo:->
-        @new_userinfo() if userinfo == null
-        return userinfo
+        @new_userinfo() if _current_user == null
+        return _current_user
 
     drag:(_current_user)->
         jQuery("#user_ul").drag("start", (ev, dd) ->
@@ -260,11 +263,10 @@ class UserInfo extends Widget
 
     constructor: (@id, name, @img_src)->
         super
-        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
+
         # echo "use face login: #{@face_login}"
         #@li = create_element("li", "")
         #@li.appendChild(@element)
-        
 
         userbase = create_element("div", "UserBase", @element)
         img_div = create_element("div","img_div",userbase)
@@ -288,7 +290,8 @@ class UserInfo extends Widget
         @show_login()
 
     facelogin:->
-
+        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
+        
         if @face_login
             enable_detection(true)
 
@@ -317,6 +320,7 @@ class UserInfo extends Widget
     focus: ->
         DCore[APP_NAME].set_username(@id)
 
+        echo _current_user
         _current_user?.blur()
         _current_user = @
         user_ul.focus()

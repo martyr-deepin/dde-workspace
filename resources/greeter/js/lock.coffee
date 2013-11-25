@@ -70,7 +70,7 @@ $("#div_users").appendChild(user.element)
 #user.new_switchuser()
 user.new_userinfo_all()
 userinfo = user.get_current_userinfo()
-_current_user = user.get_current_user()
+_current_user = user.get_current_userinfo()
 
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)

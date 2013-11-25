@@ -96,7 +96,7 @@ user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_all()
 userinfo = user.get_current_userinfo()
-_current_user = user.get_current_user()
+_current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
