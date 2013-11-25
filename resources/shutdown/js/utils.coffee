@@ -42,11 +42,4 @@ destory_all = ->
 confirm_ok = (i)->
     destory_all()
     echo option[i]
-    dbus_shutdown = DCore.DBus.session("org.gnome.SessionManager")
-    switch option[i]
-        when "lock" then echo "you choose lock"
-        when "suspend" then echo "you choose suspend"
-        when "logout" then dbus_shutdown.Logout(1)
-        when "restart" then dbus_shutdown.RequestReboot()
-        when "shutdown" then dbus_shutdown.RequestShutdown()
-        else return
+    power_fuc(option[i])

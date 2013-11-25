@@ -185,3 +185,14 @@ inject_css = (el,src)->
     css_element = create_element('link', null, el)
     css_element.rel = "stylesheet"
     css_element.href = src
+
+power_fuc = (power) ->
+    # option = ["lock","suspend","logout","restart","shutdown"]
+    dbus_power = DCore.DBus.session("com.deepin.power")
+    switch power
+        when "lock" then dbus_power.lock()
+        when "suspend" then dbus_power.suspend()
+        when "logout" then dbus_power.Logout()
+        when "restart" then dbus_power.Reboot()
+        when "shutdown" then dbus_power.Shutdown()
+        else return
