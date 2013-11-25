@@ -37,6 +37,7 @@ _drag_flag = false
 
 class User extends Widget
     is_livecd = false
+
     username = null
     userimage = null
     userinfo = null
@@ -51,7 +52,8 @@ class User extends Widget
     constructor:->
         super
         @is_livecd()
-        user_ul = create_element("div","user_ul",@element)
+        user_ul = create_element("ul","user_ul",@element)
+        user_ul.id = "user_ul"
     
     is_livecd:->
         try

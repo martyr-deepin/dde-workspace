@@ -5,7 +5,6 @@
         <link href="../common/css/animation.css" rel="stylesheet">
         <link href="css/lock.css" rel="stylesheet">
         <link href="css/user.css" rel="stylesheet">
-        <!-- <link href="css/userstyle.css" rel="stylesheet"> -->
         <link href="css/time.css" rel="stylesheet">
         <link href="css/mediacontrol.css" rel="stylesheet">
         <link href="css/menu.css" rel="stylesheet">
@@ -17,13 +16,15 @@
         <div id="div_time" class="div_time"></div>
         <div id="div_media_control" class="div_media_control"></div>
         <div id="div_power" class="div_power"></div>
-        
+
+        <!-- jQuery if needed -->
         <script src="js/jquery.js"></script>
-        <script src="js/jquery.roundabout.js"></script>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/roundabout/jquery.roundabout.js"></script>
+        <script src="js/roundabout/jquery.roundabout.min.js"></script>
         <script src="js/jquery.easing.js"></script>
         <script src="js/jquery.smooth-scroll.js"></script>
-        <!-- jQuery if needed -->
-        <script type="text/javascript" src="js/jquery.min.js"></script>
+
         <script type="text/javascript">
             // $(function(){
             //     $(".password").each(function(index,input) {
@@ -59,6 +60,20 @@
             // });
         </script>
         <script src="js/lock.js"> </script>
+        <script type="text/javascript">
+            console.log($("#user_ul"))
+            // $("#user_ul").roundabout({
+            //         tilt: 0.6,
+            //         minScale: 0.5,
+            //         duration: 200,
+            //         easing: 'easeOutQuad',
+            //         enableDrag: true,
+            //         dropEasing: 'easeOutBounce'
+            //     }, function() {
+            //         $(this).fadeTo(300, 1);
+            // });
+            $("#user_ul").roundabout({shape: 'waterWheel'});
+        </script>
 
     </body>
 </html>
