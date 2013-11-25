@@ -188,6 +188,7 @@ inject_css = (el,src)->
 
 power_fuc = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
+    echo "Warning: The system will ----#{power}----"
     dbus_power = DCore.DBus.session("com.deepin.power")
     switch power
         when "lock" then dbus_power.lock()
