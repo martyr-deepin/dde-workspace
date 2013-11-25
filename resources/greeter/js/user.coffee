@@ -280,6 +280,8 @@ class UserInfo extends Widget
         username.innerText = name
 
         login_div = create_element("div", "login_div", @element)
+        @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
+        login_div.appendChild(@login.element)
 
 
         @element.index = 0
@@ -348,8 +350,8 @@ class UserInfo extends Widget
 
     blur: ->
         @element.setAttribute("class", "UserInfo")
-        @login?.destroy()
-        @login = null
+#        @login?.destroy()
+        #@login = null
         @loading?.destroy()
         @loading = null
         @login_displayed = false
@@ -368,13 +370,8 @@ class UserInfo extends Widget
 
         if false
             @login()
-        else if _drag_flag
-            echo "in drag"
-
-        else if _current_user == @ and not @login
-            @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
-            login_div.appendChild(@login.element)
-
+        else
+        #else if _current_user == @ and not @login
             if is_hide_users
                 @element.style.paddingBottom = "0px"
                 @login.account.focus()
@@ -394,7 +391,7 @@ class UserInfo extends Widget
                     @login.password.style.display = "none"
                     @login.password.value = "deepin"
 
-            @login_displayed = true
+            #@login_displayed = true
             @add_css_class("UserInfoSelected")
             @add_css_class("foo")
 
