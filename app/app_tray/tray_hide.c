@@ -22,6 +22,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
+#include "config.h"
 #include "main.h"
 #include "tray_hide.h"
 #include "tray_guard_window.h"
@@ -272,6 +273,7 @@ void tray_show_now()
 }
 
 
+DBUS_EXPORT_API
 void tray_show_real_now()
 {
     _cancel_detect_hide_mode();
@@ -286,6 +288,7 @@ void tray_hide_now()
 }
 
 
+DBUS_EXPORT_API
 void tray_hide_real_now()
 {
     _cancel_detect_hide_mode();
