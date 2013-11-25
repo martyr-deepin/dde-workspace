@@ -38,11 +38,11 @@ destory_all = ->
     clearInterval(timeId) if timeId
     DCore.Shutdown.quit()
 
-dbus_shutdown = DCore.DBus.session("org.gnome.SessionManager")
 
 confirm_ok = (i)->
     destory_all()
     echo option[i]
+    dbus_shutdown = DCore.DBus.session("org.gnome.SessionManager")
     switch option[i]
         when "lock" then echo "you choose lock"
         when "suspend" then echo "you choose suspend"
