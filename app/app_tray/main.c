@@ -27,21 +27,11 @@ gboolean draw_background(GtkWidget* widget, cairo_t* cr, gpointer user_data)
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_rgba(cr, 0, 0, 0, .6);
-    GtkAllocation allocation;
-    gtk_widget_get_allocation (container, &allocation);
-    /* cairo_rectangle (cr, allocation.x, allocation.y, allocation.width, allocation.height); */
     cairo_fill(cr);
     cairo_paint(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
     cairo_restore(cr);
 
-    gtk_window_move(GTK_WINDOW(container), (gdk_screen_width() - allocation.width)/2.0, 0);
-    init_tray_guard_window(allocation.width);
-    update_tray_guard_window_position(allocation.width);
-
-    /* GdkColor color = {0,0,0}; */
-    /* na_tray_set_colors(tray, &color, &color, &color, &color); */
-    na_tray_force_redraw(tray);
 
     return FALSE;
     return TRUE;
@@ -83,18 +73,24 @@ int main(int argc, char *argv[])
         g_debug("support composition");
     }
 
+    GdkWindow* tray_window = gtk_widget_get_window(GTK_WIDGET(tray));
+    /* gdk_window_set_composited(tray_window, TRUE); */
+
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_resizable(GTK_WINDOW(container), FALSE);
     gtk_window_set_position(GTK_WINDOW(container), GTK_WIN_POS_CENTER);
     gtk_widget_realize(container);
     gtk_widget_realize(GTK_WIDGET(tray));
 
-    g_signal_connect(container, "draw", G_CALLBACK(draw_background), (gpointer)tray);
+    /* g_signal_connect(container, "draw", G_CALLBACK(draw_background), (gpointer)tray); */
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
 
     GdkWindow* window = gtk_widget_get_window(container);
     set_wmspec_dock_hint(window);
+    GdkRGBA rgba = {0, 0, 0, 0.6};
+    cairo_pattern_t* pattern = cairo_pattern_create_rgba(0, 0, 0, 1);
+    gdk_window_set_background_pattern(window, pattern);
 
     GdkColor c = {0,0,0,0};
     na_tray_set_colors(tray, &c, &c, &c, &c);
@@ -103,10 +99,14 @@ int main(int argc, char *argv[])
     GtkAllocation allocation;
     gtk_widget_get_allocation (container, &allocation);
     gtk_window_move(GTK_WINDOW(container), (gdk_screen_width() - allocation.width)/2.0, gdk_screen_height());
+    /* init_tray_guard_window(allocation.width); */
+    /* update_tray_guard_window_position(allocation.width); */
 
-    gtk_widget_show_all(container);
+    GdkColor color = {0,0,0};
+    na_tray_set_colors(tray, &color, &color, &color, &color);
     na_tray_force_redraw(tray);
-    tray_delay_hide(1000);  // ms
+    gtk_widget_show_all(container);
+    /* tray_delay_hide(3000);  // ms */
 
     gtk_main();
     return 0;

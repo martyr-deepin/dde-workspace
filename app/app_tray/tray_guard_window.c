@@ -38,7 +38,7 @@ GdkWindow* get_tray_guard_window()
         //attributes.event_mask = GDK_ALL_EVENTS_MASK;
 
         guard_window =  gdk_window_new(NULL, &attributes, 0);
-        GdkRGBA rgba = { 0, 0, 0, 0 };
+        GdkRGBA rgba = { 0, 0, 0, 0.6 };
         set_wmspec_dock_hint(guard_window);
         gdk_window_set_background_rgba(guard_window, &rgba);
 
