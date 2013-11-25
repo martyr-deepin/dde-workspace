@@ -57,6 +57,6 @@ class ToolTip extends Widget
         page_xy= get_page_xy(@element, 0, 0)
         offset = (@element.clientWidth - ToolTip.tooltip.clientWidth) / 2
 
-        x = page_xy.x + offset + 4  # 4 for subtle adapt
+        x = page_xy.x + offset
         x = 0 if x < 0
         ToolTip.move_to(@, x.toFixed(), document.body.clientHeight - page_xy.y)

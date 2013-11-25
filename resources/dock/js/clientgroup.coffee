@@ -33,7 +33,7 @@ class ClientGroup extends AppItem
         @element.addEventListener("contextmenu", (e) =>
             Preview_close_now()
             menu_list = [
-                [10, _("_New instance")],
+                [10, DCore.get_name_by_appid(@app_id) || _("_New Window")],
                 []
             ]
             i = 0
@@ -208,7 +208,7 @@ class ClientGroup extends AppItem
         index = e.id - 1
         action = @actions[index]
         if action?
-            echo "#{action.name}, #{action.exec}"
+            # echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 

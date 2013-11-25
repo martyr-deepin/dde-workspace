@@ -414,7 +414,7 @@ class UserInfo extends Widget
                         if e.target.className == 'UserImg'
                             message_tip?.remove()
                             DCore[APP_NAME].start_recognize()
-                    if e.target.className = "UserName"
+                    if e.target.className == "UserName"
                         message_tip?.remove()
                         @show_login()
                         @stop_animation()

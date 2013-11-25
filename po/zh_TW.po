@@ -286,8 +286,8 @@ msgid "Software Center"
 msgstr "軟體中心"
 
 #: ../resources/dock/js/clientgroup.coffee:36
-msgid "_New instance"
-msgstr "新建實體(_N)"
+msgid "_New Window"
+msgstr "新建视窗(_N)"
 
 #: ../resources/dock/js/clientgroup.coffee:49
 msgid "_Close"
