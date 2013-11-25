@@ -40,6 +40,7 @@ class User extends Widget
     username = null
     userimage = null
     userinfo = null
+    userinfo_all = []
     _current_username = null
 
         
@@ -119,11 +120,13 @@ class User extends Widget
                 if user == _current_username
                     userimage = @get_user_image(user)
                     _current_user = new UserInfo(user, user, userimage)
+                    userinfo_all.push(_current_user)
                     user_ul.appendChild(_current_user.element)
                     _current_user.focus()
                 else
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage)
+                    userinfo_all.push(u)
                     user_ul.appendChild(u.element)
 
         if not _current_user.face_login
@@ -136,7 +139,7 @@ class User extends Widget
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
             if not user?.face_login
                 user?.show_login()
-        return _current_user
+        return userinfo_all
 
        # if DCore.Greeter.is_support_guest()
        #      u = new UserInfo("guest", _("guest"), "images/guest.jpg")
@@ -320,7 +323,6 @@ class UserInfo extends Widget
     focus: ->
         DCore[APP_NAME].set_username(@id)
 
-        echo _current_user
         _current_user?.blur()
         _current_user = @
         user_ul.focus()
