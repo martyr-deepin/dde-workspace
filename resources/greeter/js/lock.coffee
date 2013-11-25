@@ -54,20 +54,6 @@ class Lock extends Widget
                 message_tip?.remove()
         )
 
-    get_username:->
-        username = DCore.Lock.get_username()
-        return username
-
-    get_userimage:(username)->
-        user_image = DCore.Lock.get_user_icon(username)
-        if not user_image?
-            try
-                dbus = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice")
-                user_image = dbus.get_user_fake_icon_sync(username)
-            catch error
-                user_image = "images/img01.jpg"
-        return user_image
-
 
 
 document.body.style.height = window.innerHeight
@@ -78,16 +64,13 @@ DCore.signal_connect("draw_background", (info)->
 )
 
 lock = new Lock()
-username = lock.get_username()
-userimage = lock.get_userimage(username)
 
 user = new User()
-all_user = user.get_all_users()
 $("#div_users").appendChild(user.element)
 #user.new_switchuser()
-user.new_userinfo_for_lock(username,userimage)
-userinfo = user.get_userinfo_for_lock()
-_current_user = user.get_current_user_for_lock()
+user.new_userinfo_all()
+userinfo = user.get_current_userinfo()
+_current_user = user.get_current_user()
 
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)

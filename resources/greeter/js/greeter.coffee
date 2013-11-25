@@ -18,21 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 _ANIMATE_TIMEOUT_ID = -1
 
-get_userimage = (user) ->
-    try
-        user_image = DCore.Greeter.get_user_icon(user)
-    catch error
-        echo error
-
-    if not user_image?
-        try
-            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-        catch error
-            user_image = "images/guest.jpg"
-
-    return user_image
-
-
 class Greeter extends Widget
 
     constructor:->
@@ -109,11 +94,9 @@ greeter = new Greeter()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-#user.new_switchuser()
-user.new_userinfo_for_greeter()
-userinfo = user.get_userinfo_for_greeter()
-_current_user = user.get_current_user_for_greeter()
-user.drag(_current_user)
+user.new_userinfo_all()
+userinfo = user.get_current_userinfo()
+_current_user = user.get_current_user()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
