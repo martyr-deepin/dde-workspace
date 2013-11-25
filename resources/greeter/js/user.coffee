@@ -42,6 +42,11 @@ class User extends Widget
     userinfo = null
     _current_user = null
 
+        
+    users_path = []
+    users_name = []
+    users_realname = []
+   
     constructor:->
         super
         @is_livecd()
@@ -59,6 +64,17 @@ class User extends Widget
             s = new SwitchUser("switchuser")
             @element.appendChild(s.element)
             return s
+
+    get_all_users:->
+        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
+        users_path = Dbus_Account.ListCachedUsers_sync()
+        for user in users_path
+            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",user,"org.freedesktop.Accounts.User")
+            name = user_dbus.UserName
+            realname = user_dbus.RealName
+            users_realname.push(realname)
+            users_name.push(name)
+        return users_name
 
     new_userinfo_for_lock:(username,userimage)->
         userinfo = new UserInfo(username, username, userimage)

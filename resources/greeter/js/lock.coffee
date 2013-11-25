@@ -82,6 +82,7 @@ username = lock.get_username()
 userimage = lock.get_userimage(username)
 
 user = new User()
+all_user = user.get_all_users()
 $("#div_users").appendChild(user.element)
 #user.new_switchuser()
 user.new_userinfo_for_lock(username,userimage)
