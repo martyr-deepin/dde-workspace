@@ -80,8 +80,11 @@ timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
 
-mediacontrol = new MediaControl()
-$("#div_media_control").appendChild(mediacontrol.element)
+
+AudioPlay = new AudioPlay()
+if AudioPlay.mpris_dbus isnt null 
+    mediacontrol = new MediaControl()
+    $("#div_media_control").appendChild(mediacontrol.element)
 
 
 powermenu = new PowerMenu($("#div_power"))

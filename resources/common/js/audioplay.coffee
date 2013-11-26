@@ -25,7 +25,11 @@ class AudioPlay
     constructor: ->
         # default_audio_player = @get_default_audio_player_name()
         if default_audio_player? then default_audio_player = "dmusic"
-        mpris_dbus = DCore.DBus.sys_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+        try
+            mpris_dbus = DCore.DBus.sys_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+        catch error
+            mpris_dbus = null
+            echo "mpris_dbus is null ,the player isnt launched!"
 
     get_default_audio_player_name:->
         default_audio_player_name = DCore.DEntry.get_default_audio_player_name()
