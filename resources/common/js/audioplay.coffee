@@ -26,6 +26,7 @@ class AudioPlay
     constructor: ->
         # default_audio_player = @get_default_audio_player_name()
         if not default_audio_player? then default_audio_player = "dmusic"
+        default_audio_player = default_audio_player.toLowerCase()
         try
             mpris_dbus = DCore.DBus.session_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
             echo mpris_dbus
