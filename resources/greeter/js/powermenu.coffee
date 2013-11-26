@@ -34,60 +34,16 @@ class PowerMenu extends Widget
         consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
 
     suspend_cb : ->
-        echo "suspend cb"
-        if not upower_obj.SuspendAllowed_sync()
-            echo "suspend not allowed"
-            return
-        try
-            upower_obj.Suspend_sync()
-        catch error
-            echo "suspend failed"
-            try
-                DCore.Greeter.run_suspend()
-            catch error
-                echo error
+        power_func("suspend")
 
     hibernate_cb : ->
-        echo "hibernate cb"
-        if not upower_obj.HibernateAllowed_sync()
-            echo "hibernate not allowed"
-            return
-        try
-            upower_obj.Hibernate_sync()
-        catch error
-            echo "hibernate failed"
-            try
-                DCore.Greeter.run_hibernate()
-            catch error
-                echo error
+        power_func("hibernate")
 
     restart_cb : ->
-        echo "restart cb"
-        if not consolekit_obj.CanRestart_sync()
-            echo "restart not allowed"
-            return
-        try
-            consolekit_obj.Restart_sync()
-        catch error
-            echo "restart failed"
-            try
-                DCore.Greeter.run_restart()
-            catch error
-                echo error
+        power_func("restart")
 
     shutdown_cb : ->
-        echo "shutdown cb"
-        if not consolekit_obj.CanStop_sync()
-            echo "shutdown not allowed"
-            return
-        try
-            consolekit_obj.Stop_sync()
-        catch error
-            echo "shutdown failed"
-            try
-                DCore.Greeter.run_shutdown()
-            catch error
-                echo error
+        power_func("shutdown")
 
     signal_connect:->
         #DCore.signal_connect("power", (msg) ->

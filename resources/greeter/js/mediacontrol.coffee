@@ -22,6 +22,8 @@ class VoiceControl extends Widget
     constructor:->
         super
         document.body.appendChild(@element)
+        AudioPlay = new AudioPlay()
+
     
     append:(el)->
         parent = el
@@ -59,10 +61,11 @@ class VoiceControl extends Widget
         "height":height
 
     voice_control:=>
-        voice = 50
+        voice = 0.5
+        AudioPlay.setVolume(voice)
 
     get_voice:->
-        return voice
+        AudioPlay.getVolume()
 
 class MediaControl extends Widget
     img_src_before = null
@@ -77,6 +80,7 @@ class MediaControl extends Widget
     
     constructor:->
         super
+        AudioPlay = new AudioPlay()
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
         name.textContent = "God is a girl"
@@ -139,17 +143,18 @@ class MediaControl extends Widget
         ) if click
 
     media_up:->
-        echo "up"
-
+        AudioPlay.Previous()
 
     media_play:=>
         if play_status is "play" then play_status = "pause"
         else play_status = "play"
         play.src = img_src_before + "#{play_status}_normal.png"
         echo play_status
+        AudioPlay.PlayPause()
         
 
     media_next:->
+        AudioPlay.Next()
 
 
     media_voice:->

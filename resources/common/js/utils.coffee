@@ -186,7 +186,7 @@ inject_css = (el,src)->
     css_element.rel = "stylesheet"
     css_element.href = src
 
-power_fuc = (power) ->
+power_func = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
     echo "Warning: The system will ----#{power}----"
     dbus_power = DCore.DBus.session("com.deepin.power")
