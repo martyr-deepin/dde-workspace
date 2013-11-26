@@ -18,17 +18,19 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class AudioPlay
-    default_audio_player = null
+    default_audio_player_name = null
+    default_audio_player_icon = null
     Metedata = null
     mpris_dbus = null
     launched_status = false
 
     constructor: ->
-        # default_audio_player = @get_default_audio_player_name()
-        if not default_audio_player? then default_audio_player = "dmusic"
-        default_audio_player = default_audio_player.toLowerCase()
+        # default_audio_player_name = @get_default_audio_player_name()
+        echo default_audio_player_name
+        if not default_audio_player_name? then default_audio_player_name = "dmusic"
+        default_audio_player_name = default_audio_player_name.toLowerCase()
         try
-            mpris_dbus = DCore.DBus.session_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            mpris_dbus = DCore.DBus.session_object("org.mpris.MediaPlayer2.#{default_audio_player_name}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
             echo mpris_dbus
             launched_status = true
         catch error

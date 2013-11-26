@@ -22,8 +22,7 @@ class VoiceControl extends Widget
     constructor:->
         super
         document.body.appendChild(@element)
-        
-
+        volume_img = create_img() 
     
     append:(el)->
         parent = el
