@@ -81,14 +81,13 @@ $("#div_time").appendChild(timedate.element)
 timedate.show()
 
 
-AudioPlay = new AudioPlay()
-if AudioPlay.mpris_dbus isnt null 
-    mediacontrol = new MediaControl()
-    $("#div_media_control").appendChild(mediacontrol.element)
 
-
+$("#div_power").title = _("ShutDown")
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 
-
+audioplay = new AudioPlay()
+if audioplay.get_launched_status()
+    mediacontrol = new MediaControl()
+    $("#div_media_control").appendChild(mediacontrol.element)

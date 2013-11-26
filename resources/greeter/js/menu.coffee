@@ -35,6 +35,7 @@ class Menu extends Widget
         _title = @title
         _img = @img
         menuimg = create_img("menuimg", @img, @element)
+        menuimg.title = @title
         menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
         )

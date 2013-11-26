@@ -52,30 +52,10 @@ class PowerMenu extends Widget
         #)
 
     get_power_dict : ->
-        if upower_obj.SuspendAllowed_sync()
-            power_dict["suspend"] = @suspend_cb
-        if upower_obj.HibernateAllowed_sync()
-            power_dict["hibernate"] = @hibernate_cb
-        if consolekit_obj.CanRestart_sync()
-            power_dict["restart"] = @restart_cb
-        if consolekit_obj.CanStop_sync()
-            power_dict["shutdown"] = @shutdown_cb
-
+        power_dict["suspend"] = @suspend_cb
+        power_dict["restart"] = @restart_cb
+        power_dict["shutdown"] = @shutdown_cb
         return power_dict
-
-    #get_power_dict : ->
-    #    power_dict = {}
-    #
-    #    if DCore.Greeter.get_can_suspend()
-    #        power_dict["suspend"] = @suspend_cb
-    #    if DCore.Greeter.get_can_hibernate()
-    #        power_dict["hibernate"] = @hibernate_cb
-    #    if DCore.Greeter.get_can_restart()
-    #        power_dict["restart"] = @restart_cb
-    #    if DCore.Greeter.get_can_shutdown()
-    #        power_dict["shutdown"] = @shutdown_cb
-    #
-    #    return power_dict
 
     new_power_menu:->
 
@@ -115,4 +95,3 @@ class PowerMenu extends Widget
         power_menu.menu.element.addEventListener("mouseover",=>
             power_menu.current_img.src = img_before + "shutdown.png"
         )
-

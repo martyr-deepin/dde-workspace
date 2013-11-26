@@ -21,15 +21,21 @@ class AudioPlay
     default_audio_player = null
     Metedata = null
     mpris_dbus = null
+    launched_status = false
 
     constructor: ->
         # default_audio_player = @get_default_audio_player_name()
-        if default_audio_player? then default_audio_player = "dmusic"
+        if not default_audio_player? then default_audio_player = "dmusic"
         try
-            mpris_dbus = DCore.DBus.sys_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            mpris_dbus = DCore.DBus.session_object("org.mpris.MediaPlayer2.#{default_audio_player}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            echo mpris_dbus
+            launched_status = true
         catch error
-            mpris_dbus = null
+            launched_status = false
             echo "mpris_dbus is null ,the player isnt launched!"
+
+    get_launched_status:->
+        return launched_status
 
     get_default_audio_player_name:->
         default_audio_player_name = DCore.DEntry.get_default_audio_player_name()
@@ -79,13 +85,15 @@ class AudioPlay
         Metedata = mpris_dbus.Metedata
 
     getTitle:->
-        mpris_dbus.Metedata.xesam:title
+        # mpris_dbus.Metedata.xesam:title
+        echo mpris_dbus.Metedata
+        return "God is a girl"
 
     getUrl:->
-        mpris_dbus.Metedata.xesam:url
+        # mpris_dbus.Metedata.xesam:url
 
     getArtist:->
-        mpris_dbus.Metedata.xesam:artist
+        # mpris_dbus.Metedata.xesam:artist
 
     getArtUrl:->
-        mpris_dbus.Metedata.mpris:artUrl
+        # mpris_dbus.Metedata.mpris:artUrl

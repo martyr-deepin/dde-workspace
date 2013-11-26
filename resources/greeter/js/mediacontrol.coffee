@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class VoiceControl extends Widget
+    AudioPlay = null
     voice = 50
     constructor:->
         super
@@ -77,13 +78,17 @@ class MediaControl extends Widget
 
     play_status = "play"
     voice_status = "voice"
-    
+    AudioPlay = null
+
     constructor:->
         super
+        echo "AudioPlay"
         AudioPlay = new AudioPlay()
+        if not AudioPlay.get_launched_status() then return
+        echo "MediaControl"
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
-        name.textContent = "God is a girl"
+        name.textContent = AudioPlay.getTitle()
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
