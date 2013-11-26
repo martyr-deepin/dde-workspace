@@ -30,7 +30,6 @@ void set_region(double x, double y, double width, double height)
 {
     cairo_rectangle_int_t tmp = {(int)x, (int)y, (int)width, (int)height};
     cairo_region_t* _region = cairo_region_create_rectangle(&tmp);
-    g_warning("%dx%d (%d, %d)", tmp.width, tmp.height, tmp.x, tmp.y);
     gdk_window_input_shape_combine_region(_win, _region, 0, 0);
     gdk_window_shape_combine_region(_win, _region, 0, 0);
     cairo_region_destroy(_region);
