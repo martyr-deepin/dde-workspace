@@ -87,7 +87,6 @@ powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
 
-audioplay = new AudioPlay()
-if audioplay.get_launched_status()
+if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)

@@ -26,3 +26,7 @@ if is_greeter
     is_hide_users = DCore.Greeter.is_hide_users()
 else
     is_hide_users = false
+
+
+audioplay = new AudioPlay()
+audio_play_status = audioplay.get_launched_status()

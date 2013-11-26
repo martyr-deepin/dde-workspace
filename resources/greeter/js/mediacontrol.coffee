@@ -18,12 +18,11 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class VoiceControl extends Widget
-    AudioPlay = null
     voice = 50
     constructor:->
         super
         document.body.appendChild(@element)
-        AudioPlay = new AudioPlay()
+        
 
     
     append:(el)->
@@ -63,10 +62,10 @@ class VoiceControl extends Widget
 
     voice_control:=>
         voice = 0.5
-        AudioPlay.setVolume(voice)
+        audioplay.setVolume(voice)
 
     get_voice:->
-        AudioPlay.getVolume()
+        audioplay.getVolume()
 
 class MediaControl extends Widget
     img_src_before = null
@@ -78,17 +77,15 @@ class MediaControl extends Widget
 
     play_status = "play"
     voice_status = "voice"
-    AudioPlay = null
 
     constructor:->
         super
-        echo "AudioPlay"
-        AudioPlay = new AudioPlay()
-        if not AudioPlay.get_launched_status() then return
+        echo "audioplay"
+        if not audio_play_status then return
         echo "MediaControl"
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
-        name.textContent = AudioPlay.getTitle()
+        name.textContent = audioplay.getTitle()
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
@@ -148,18 +145,18 @@ class MediaControl extends Widget
         ) if click
 
     media_up:->
-        AudioPlay.Previous()
+        audioplay.Previous()
 
     media_play:=>
         if play_status is "play" then play_status = "pause"
         else play_status = "play"
         play.src = img_src_before + "#{play_status}_normal.png"
         echo play_status
-        AudioPlay.PlayPause()
+        audioplay.PlayPause()
         
 
     media_next:->
-        AudioPlay.Next()
+        audioplay.Next()
 
 
     media_voice:->
