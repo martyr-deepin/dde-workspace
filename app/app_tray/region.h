@@ -2,7 +2,7 @@
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2013 ~ 2013 Liqiang Lee
  *
- * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Author:      snyh <snyh@snyh.org>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,15 +18,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef __TRAY_GUARD_WINDOW_H__
-#define __TRAY_GUARD_WINDOW_H__
 
-#include <gtk/gtk.h>
+#ifndef _REGION_H_
+#define _REGION_H_
 
-#define GUARD_WINDOW_HEIGHT 1
-GdkWindow* get_tray_guard_window();
-void init_tray_guard_window();
-void update_tray_guard_window_position(double width);
+void init_region(GdkWindow* win, double x, double y, double width, double height);
+void update_tray_region(double width);
 
-#endif /* end of include guard: __TRAY_GUARD_WINDOW_H__ */
+#endif /* end of include guard: _REGION_H_ */
 

@@ -40,14 +40,8 @@ enum Event {
     HideNow,
 };
 
-enum State {
-    StateShow,
-    StateShowing,
-    StateHidden,
-    StateHidding,
-} CURRENT_STATE = StateShow;
 
-
+static enum State CURRENT_STATE = StateShow;
 static gboolean _IN_TOGGLE_SHOW = FALSE;
 static guint _animation_show_id = 0;
 static guint _animation_hide_id = 0;
@@ -56,6 +50,12 @@ static void _cancel_detect_hide_mode();
 static void _cancel_delay();
 static gboolean do_hide_animation(int data);
 static gboolean do_show_animation(int data);
+
+
+enum State get_tray_state()
+{
+    return CURRENT_STATE;
+}
 
 
 gboolean tray_is_hidden()

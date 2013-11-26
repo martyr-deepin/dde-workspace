@@ -29,11 +29,13 @@ GdkWindow* get_tray_guard_window()
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;
-        attributes.width = gdk_screen_width();
+        attributes.width = 1;
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
+#ifdef NDEBUG
         attributes.wclass = GDK_INPUT_ONLY;
+#endif
         attributes.event_mask = GDK_ENTER_NOTIFY_MASK;
         //attributes.event_mask = GDK_ALL_EVENTS_MASK;
 
@@ -69,13 +71,13 @@ static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
 }
 
 
-void init_tray_guard_window(double width)
+void init_tray_guard_window()
 {
     static gboolean is_inited = FALSE;
     if (!is_inited) {
         GdkWindow* win = get_tray_guard_window();
         gdk_window_add_filter(win, _monitor_tray_guard_window, NULL);
-        update_tray_guard_window_position(width);
+        update_tray_guard_window_position(1);
         is_inited = TRUE;
     }
 }
@@ -84,8 +86,9 @@ void init_tray_guard_window(double width)
 void update_tray_guard_window_position(double width)
 {
     if (width == 0)
-        width = gdk_screen_width();
+        width = 1;
 
+    g_debug("[%s] new width of guard window: %lf", __func__, width);
     GdkWindow* win = get_tray_guard_window();
     gdk_window_move_resize(win,
                            (gdk_screen_width() - width) / 2,

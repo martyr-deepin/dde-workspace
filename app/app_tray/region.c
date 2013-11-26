@@ -2,7 +2,7 @@
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2013 ~ 2013 Liqiang Lee
  *
- * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
+ * Author:      snyh <snyh@snyh.org>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,33 +18,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-#ifndef __TRAY_HIDE_H__
-#define __TRAY_HIDE_H__
 
-#include <glib.h>
-
-
-enum State {
-    StateShow,
-    StateShowing,
-    StateHidden,
-    StateHidding,
-};
+#include "main.h"
+#include "region.h"
 
 
-enum State get_tray_state();
-void tray_delay_show(int delay);
-void tray_delay_hide(int delay);
-void tray_show_now();
-void tray_hide_now();
-void tray_hide_real_now();
-void tray_show_real_now();
+GdkWindow* _win = NULL;
 
-void tray_toggle_show();
-void tray_update_hide_mode();
 
-void update_tray_guard_window_position(double width);
+void set_region(double x, double y, double width, double height)
+{
+    cairo_rectangle_int_t tmp = {(int)x, (int)y, (int)width, (int)height};
+    cairo_region_t* _region = cairo_region_create_rectangle(&tmp);
+    g_warning("%dx%d (%d, %d)", tmp.width, tmp.height, tmp.x, tmp.y);
+    gdk_window_input_shape_combine_region(_win, _region, 0, 0);
+    gdk_window_shape_combine_region(_win, _region, 0, 0);
+    cairo_region_destroy(_region);
+}
 
-gboolean is_mouse_in_tray();
 
-#endif
+void init_region(GdkWindow* win, double x, double y, double width, double height)
+{
+    _win = win;
+    set_region(x, y, width, height);
+}
+
+
+void update_tray_region(double width)
+{
+    int x = (gdk_screen_width() - width) / 2;
+    set_region(x, 0, width, TRAY_HEIGHT);
+}
+
