@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-14 16:55+0800\n"
+"POT-Creation-Date: 2013-11-27 14:49+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -365,57 +365,53 @@ msgstr "添加到 Dock(_C)"
 msgid "Type to search..."
 msgstr "键入要搜索的关键字..."
 
-#: ../resources/shutdown/js/shutdown.coffee:22
-msgid "Lock"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:22
-#, fuzzy
-msgid "Suspend"
-msgstr "挂起"
-
-#: ../resources/shutdown/js/shutdown.coffee:22
-#, fuzzy
-msgid "Log out"
-msgstr "登录"
-
-#: ../resources/shutdown/js/shutdown.coffee:22
-#, fuzzy
-msgid "Restart"
-msgstr "重启"
-
-#: ../resources/shutdown/js/shutdown.coffee:22
-#, fuzzy
-msgid "Shut down"
-msgstr "关机"
-
-#: ../resources/shutdown/js/shutdown.coffee:24
-msgid "The system will be locked in:"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:25
-msgid "The system will be suspended in:"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:26
-msgid "You will be automatically logged out in:"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:27
-msgid "The system will restart in:"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:28
-msgid "The system will shut down in:"
-msgstr ""
-
-#: ../resources/shutdown/js/shutdown.coffee:207
-#: ../resources/shutdown/js/shutdown.coffee:257
+#: ../resources/shutdown/js/confirmdialog.coffee:52
+#: ../resources/shutdown/js/confirmdialog.coffee:101
 msgid "seconds."
 msgstr ""
 
-#: ../resources/shutdown/js/shutdown.coffee:212
+#: ../resources/shutdown/js/confirmdialog.coffee:57
 msgid "Cancel"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Lock"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Suspend"
+msgstr "挂起"
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Log out"
+msgstr "登录"
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Restart"
+msgstr "重启"
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Shut down"
+msgstr "关机"
+
+#: ../resources/shutdown/js/utils.coffee:28
+msgid "The system will be locked in:"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:29
+msgid "The system will be suspended in:"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:30
+msgid "You will be automatically logged out in:"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:31
+msgid "The system will restart in:"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:32
+msgid "The system will shut down in:"
 msgstr ""
 
 #: ../app/desktop/desktop.c:213
@@ -443,19 +439,19 @@ msgstr "%s%d秒后自动重试"
 msgid "Invalid Password"
 msgstr "密码错误"
 
-#: ../app/greeter/mutils.c:83 ../app/shutdown/mutils.c:83
+#: ../app/greeter/mutils.c:83
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/launcher/launcher.c:327 ../app/launcher/launcher.c:338
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
 msgid "another instance of launcher is running...\n"
 msgstr "已有一个程序启动器实例正在运行...\n"
 
-#: ../app/dock/dock.c:223
+#: ../app/dock/dock.c:286
 msgid "another instance of dock is running...\n"
 msgstr "已有一个Dock实例正在运行...\n"
 
-#: ../app/dock/dock.c:313
+#: ../app/dock/dock.c:379
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
 msgstr "因Compiz插件未启用，Dock未能启动"
 
