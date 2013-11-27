@@ -25,17 +25,40 @@ class AudioPlay
     launched_status = false
 
     constructor: ->
-        # default_audio_player_name = @get_default_audio_player_name()
-        echo default_audio_player_name
-        if not default_audio_player_name? then default_audio_player_name = "dmusic"
-        default_audio_player_name = default_audio_player_name.toLowerCase()
         try
-            mpris_dbus = DCore.DBus.session_object("org.mpris.MediaPlayer2.#{default_audio_player_name}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            mpris = @get_mpris_dbus()
+            echo mpris
+            mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
             echo mpris_dbus
             launched_status = true
         catch error
             launched_status = false
             echo "mpris_dbus is null ,the player isnt launched!"
+
+    get_mpris_dbus:->
+        echo "get_mpris_dbus"
+        mpris_dbus_min = "org.mpris.MediaPlayer2."
+        dbus_all = []
+        mpris_dbus_all = []
+        freedesktop_dbus = DCore.DBus.session_object("org.freedesktop.DBus","/","org.freedesktop.DBus")
+        dbus_all = freedesktop_dbus.ListNames_sync()
+        for dbus in dbus_all
+            index = dbus.indexOf(mpris_dbus_min)
+            if index != -1
+                name = dbus.substring(index + mpris_dbus_min.length)
+                mpris_dbus_all.push({"mpris":dbus,"name":name})
+        echo mpris_dbus_all
+        
+        switch(mpris_dbus_all.length)
+            when 0 then return null
+            when 1 then return mpris_dbus_all[0].mpris
+            else
+                for dbus in mpris_dbus_all
+                    mpris = dbus.mpris
+                    #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
+                    if dbus.name is "dmusic" then return dbus.mpris
+                    return mpris
+
 
     get_launched_status:->
         return launched_status
@@ -89,6 +112,7 @@ class AudioPlay
 
     getTitle:->
         # mpris_dbus.Metedata.xesam:title
+        echo "getTitle"
         echo mpris_dbus.Metedata
         return "God is a girl"
 

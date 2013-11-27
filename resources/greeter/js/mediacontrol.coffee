@@ -18,17 +18,60 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class VoiceControl extends Widget
-    voice = 50
-    constructor:->
+    myCanvas = null
+    mouseover = false
+
+    constructor:(x,y)->
         super
         document.body.appendChild(@element)
-        volume_img = create_img() 
+        @element.style.left = x
+        @element.style.bottom = y
+
+    show:->
+        @element.style.display = "show"
     
-    append:(el)->
-        parent = el
-        parent.appendChild(@element)
-    destory:->
-        remove_element(@element)
+    hide:->
+        #echo "hide"
+        @element.style.display = "none" if not mouseover
+     
+    drawVolume:(vol)->
+        remove_element(myCanvas) if myCanvas
+        myCanvas = create_element("canvas","myCanvas",@element)
+        myCanvas.id = "myCanvas"
+        #myCanvas.style.left = 0
+        #myCanvas.style.top = 0
+        myCanvas.style.width = "300px"
+        myCanvas.style.top = "150px"
+        c = document.getElementById("myCanvas")
+        ctx = c.getContext("2d")
+
+        volume = vol
+        x0 = 0
+        y0 = 0
+        width = 50
+        height = 50
+        ctx.beginPath()
+        ctx.moveTo(x0,y0)
+        ctx.lineTo(x0 + width,y0)
+        ctx.lineTo(x0,y0 + height)
+        ctx.closePath()
+        ctx.strokeStyle = "#DCDCDC"
+        ctx.stroke()
+        
+        ctx.fillStyle = "#fff0ff"
+        ctx.fillRect(x0,y0 + height - volume * height,x0 + width,y0 + height)
+        
+        ctx.globalCompositeOperation = "destination-in"
+
+        ctx.beginPath()
+        ctx.moveTo(x0,y0)
+        ctx.lineTo(x0 + width,y0)
+        ctx.lineTo(x0,y0 + height)
+        ctx.closePath()
+        ctx.strokeStyle = "#DCDCDC"
+        ctx.stroke()
+        ctx.fill()
+        @element.style.display = "block"
 
     do_mouseover: (e)->
         #echo "menu over"
@@ -40,17 +83,7 @@ class VoiceControl extends Widget
         mouseover = false
         @hide()
     
-    show: (left, bottom)->
-        #echo "show"
-        document.body.appendChild(@element) if not parent?
-        @element.style.left = left
-        @element.style.bottom = bottom
-        @element.style.display = "block"
-
-    hide:->
-        #echo "hide"
-        @element.style.display = "none" if not mouseover
-    
+   
     get_size: ->
         @element.style.display = "block"
         width = @element.clientWidth
@@ -59,13 +92,22 @@ class VoiceControl extends Widget
         "width":width
         "height":height
 
-    voice_control:=>
-        voice = 0.5
-        audioplay.setVolume(voice)
+    setVolume:(volume) =>
+        audioplay.setVolume(volume)
+        @drawVolume(@getVolume())
 
-    get_voice:->
+    getVolume:->
         audioplay.getVolume()
 
+    do_mousewheel:(e)=>
+        volume = @getVolume()
+        if e.wheelDelta >= 120
+            volume = volume + 0.1
+        else if e.wheelDelta <= -120
+            volume = volume - 0.1
+        setVolume(volume)
+
+        
 class MediaControl extends Widget
     img_src_before = null
     up = null
@@ -73,6 +115,7 @@ class MediaControl extends Widget
     next = null
     voice = null
     voicecontrol = null
+    is_volume_control = false
 
     play_status = "play"
     voice_status = "voice"
@@ -85,13 +128,17 @@ class MediaControl extends Widget
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
         name.textContent = audioplay.getTitle()
+        echo "getTitle over"
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
         play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
-        voicecontrol = new VoiceControl()
+        p = get_page_xy(voice, 0, 0)
+        left = p.x + voice.clientHeight + 15
+        top = p.y
+        voicecontrol = new VoiceControl(left,top)
         
         @normal_hover_click_cb(up,
             img_src_before + "up_normal.png",
@@ -106,20 +153,30 @@ class MediaControl extends Widget
             @media_next
         )
         @play_normal_hover_click_cb(play,@media_play)
-        @voice_normal_hover_click_cb(voice,@media_voice)
+        @voice_normal_hover_click_cb(voice)
         
-    voice_normal_hover_click_cb: (el,hover_cb) ->
+    voice_normal_hover_click_cb: (el) ->
         el.addEventListener("mouseover",->
+            is_volume_control = true
             el.src = img_src_before + voice_status + "_hover.png"
-            hover_cb?()
+            volume = audioplay.getVolume()
+            voicecontrol.drawVolume(volume)
+            if volume == 0
+                voice_status = "mute"
+                qvoice.src = img_src_before + voice_status + "_hover.png"
         )
         el.addEventListener("mouseout",->
+            is_volume_control = false
+            voicecontrol.hide()
             el.src = img_src_before + voice_status + "_normal.png"
         )
         el.addEventListener("click",=>
             el.src = img_src_before + voice_status + "_press.png"
         )
-
+        document.body.addEventListener("mousewheel",(e) =>
+            if is_volume_control
+                echo "is_volume_control"
+        )
     play_normal_hover_click_cb: (el,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = img_src_before + play_status + "_hover.png"
@@ -156,11 +213,4 @@ class MediaControl extends Widget
 
     media_next:->
         audioplay.Next()
-
-
-    media_voice:->
-        voicecontrol.element.style.display = "block"
-        if voicecontrol.get_voice() == 0
-            voice_status = "mute"
-            voice.src = img_src_before + voice_status + "_hover.png"
 
