@@ -36,10 +36,6 @@
 #define DEFAULT_INTERVAL 4
 #define PADDING ((TRAY_HEIGHT - DEFAULT_HEIGHT) / 2)
 #define NA_BASE_Y PADDING
-#define TRAY_CORNER_RADIUS 3
-#ifndef PI
-#define PI 3.141592653589793
-#endif
 
 
 static GHashTable* _icons = NULL;
@@ -307,38 +303,12 @@ draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
 
 void _draw_background(cairo_t* cr)
 {
-    /* cairo_region_t* region = cairo_region_create(); */
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_rgba(cr, 0, 0, 0, 0.7);
-    int x = (gdk_screen_width() - _na_width) / 2;
-
-    cairo_move_to(cr, x, 0);
-    cairo_new_path(cr);
-    cairo_line_to(cr, x, TRAY_HEIGHT - TRAY_CORNER_RADIUS);
-    cairo_arc(cr,
-              x + TRAY_CORNER_RADIUS,
-              TRAY_HEIGHT - TRAY_CORNER_RADIUS,
-              TRAY_CORNER_RADIUS,
-              PI,
-              PI * 1.5
-              );
-    cairo_line_to(cr, x + _na_width - TRAY_CORNER_RADIUS, TRAY_HEIGHT);
-    cairo_arc(cr,
-              x + _na_width - TRAY_CORNER_RADIUS,
-              TRAY_HEIGHT - TRAY_CORNER_RADIUS,
-              TRAY_CORNER_RADIUS,
-              PI * 1.5,
-              PI * 2);
-    cairo_line_to(cr, x + _na_width, 0);
-    cairo_close_path(cr);
-
-    /* cairo_clip(cr); */
     cairo_paint(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
     cairo_restore(cr);
-
-    /* gdk_window_shape_combine_region(TRAY_GDK_WINDOW(), _region, 0, 0); */
 }
 
 

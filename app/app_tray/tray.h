@@ -22,7 +22,16 @@
  **/
 #ifndef _TRAY_H__
 #define _TRAY_H__
+
+#include <math.h>
+
+#define TRAY_CORNER_RADIUS 3
+#ifndef M_PI
+#define M_PI 3.141592653589793
+#endif
+
 void tray_init(GtkWidget* container);
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 void tray_icon_do_screen_size_change();
+
 #endif
