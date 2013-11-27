@@ -756,7 +756,6 @@ void _update_window_appid(Client* c)
             g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
             g_assert(c->title != NULL);
             if (app_id == NULL) {
-                g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
                 GKeyFile* f = load_app_config(FILTER_FILE);
                 if (f != NULL && c->instance_name != NULL) {
                     app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
@@ -769,39 +768,40 @@ void _update_window_appid(Client* c)
                     }
                 }
                 g_key_file_unref(f);
+                g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
             }
             if (app_id == NULL) {
-                g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
+                g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
             }
             if (app_id == NULL && c->instance_name != NULL) {
-                g_debug("[%s] get app id from instance name: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
+                g_debug("[%s] get app id from instance name: %s", __func__, app_id);
             }
             if (app_id == NULL && c->clss != NULL) {
-                g_debug("[%s] get app id from class name: %s", __func__, app_id);
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
+                g_debug("[%s] get app id from class name: %s", __func__, app_id);
             }
-            if (app_id == NULL && exec_args != NULL) {
-                g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+            if (app_id == NULL && exec_args != NULL && exec_args[0] != '\0') {
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
+                g_debug("[%s] get app id from exec args: %s", __func__, app_id);
             }
             if (app_id == NULL) {
-                g_debug("[%s] get app id from _NET_WM_ICON_NAME", __func__);
                 gulong item = 0;
                 char* icon_name = get_window_property(_dsp, c->window, ATOM_ICON_NAME, &item);
                 if (icon_name != NULL) {
                     app_id = find_app_id(exec_name, icon_name, APPID_FILTER_ICON_NAME);
                     g_free(icon_name);
                 }
+                g_debug("[%s] get app id from _NET_WM_ICON_NAME", __func__);
             }
-            if (app_id == NULL) {
+            if (app_id == NULL && exec_name != NULL) {
+                app_id = find_app_id(exec_name, exec_name, APPID_FILTER_EXEC_NAME);
                 g_debug("[%s] get app id from exec name: %s", __func__, app_id);
-                app_id = g_strdup(exec_name);
             }
         } else {
-            g_debug("[%s] no s_pid, get app id from class name: %s", __func__, app_id);
             app_id = g_strdup(c->clss);
+            g_debug("[%s] no s_pid, get app id from class name: %s", __func__, app_id);
         }
         g_free(exec_name);
         g_free(exec_args);

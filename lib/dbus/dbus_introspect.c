@@ -64,7 +64,7 @@ guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
     return ret;
 }
 
-void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusMessage *msg) 
+void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusMessage *msg)
 {
     DBusMessageIter iter;
     dbus_message_iter_init(msg, &iter);
@@ -129,7 +129,7 @@ SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *
 
     GHashTable *cbs = g_hash_table_lookup(__sig_info_hash, key);
     if (cbs == NULL) {
-	cbs = g_hash_table_new_full(g_direct_hash, g_direct_hash, NULL, (GDestroyNotify)signal_info_free);
+	cbs = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, (GDestroyNotify)signal_info_free);
 	g_hash_table_insert(__sig_info_hash, key, cbs);
     }
 
@@ -141,8 +141,8 @@ SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *
     sig_info->callback = func;
     JSValueProtect(ctx, func);
 
-    SIGNAL_CALLBACK_ID id = (SIGNAL_CALLBACK_ID)func;
-    g_hash_table_insert(cbs, id, sig_info);
+    SIGNAL_CALLBACK_ID id = (SIGNAL_CALLBACK_ID)GPOINTER_TO_INT(func);
+    g_hash_table_insert(cbs, GINT_TO_POINTER((int)id), sig_info);
     return id;
 }
 

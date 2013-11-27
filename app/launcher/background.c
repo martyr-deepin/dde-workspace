@@ -25,6 +25,38 @@
 #include "utils.h"
 
 
+#define DEFAULT_BACKGROUND_IMAGE "/usr/share/backgrounds/default_background.jpg"
+// get these macros from deepin-settings-deamon/plugins/background/
+#define GSD_LIBEXECDIR "/usr/lib/gnome-settings-daemon"
+#define BG_GAUSSIAN_SIGMA 10.0
+#define BG_GAUSSIAN_NSTEPS 10UL
+
+
+void start_gaussian_helper(const char* cur_pict_path)
+{
+    if (cur_pict_path == NULL)
+        return;
+
+    char* command = NULL;
+    command = g_strdup_printf(GSD_LIBEXECDIR"/gsd-background-helper "
+                              "%lf %lu %s",
+                              BG_GAUSSIAN_SIGMA,
+                              BG_GAUSSIAN_NSTEPS,
+                              cur_pict_path);
+    g_debug("[%s] command: %s", __func__, command);
+
+    GError* error = NULL;
+    gboolean ret = FALSE;
+    if ((ret = g_spawn_command_line_async(command, &error)) == FALSE) {
+        g_debug("Failed to launche '%s': '%s'", command, error->message);
+        g_error_free(error);
+    }
+
+    g_debug("gsd-background-helper started");
+    g_free(command);
+}
+
+
 PRIVATE
 gboolean _set_background_aux(GdkWindow* win, const char* bg_path, double width,
                              double height)
@@ -92,6 +124,12 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 {
     char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
 
+    if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
+        g_warning("[%s] the image(\"%s\") is not existed, use the default image", __func__, bg_path);
+        g_free(bg_path);
+        bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
+    }
+
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
 
     g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
@@ -109,7 +147,14 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 void background_changed(GSettings* settings, char* key, gpointer user_data)
 {
     char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
+    if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
+        g_warning("[%s] the image(\"%s\") is not existed, using the default background image(\"%s\")", __func__, bg_path, DEFAULT_BACKGROUND_IMAGE);
+        g_free(bg_path);
+        bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
+    }
+
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    g_debug("[%s] blur_path: %s", __func__, blur_path);
     g_free(bg_path);
     int duration = 2;
     while (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
@@ -118,12 +163,20 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
         g_usleep(duration);
         duration += 2;
     }
-    if (g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        g_debug("background changed");
-        JSObjectRef path = json_create();
-        json_append_string(path, "path", blur_path);
-        js_post_message("draw_background", path);
+
+    JSObjectRef path = json_create();
+    if (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
+        start_gaussian_helper(DEFAULT_BACKGROUND_IMAGE);
+        g_warning("[%s] the image(\"%s\") is not existed, "
+                  "using the default background image(\"%s\")",
+                  __func__, blur_path, DEFAULT_BACKGROUND_IMAGE);
+        g_free(blur_path);
+        blur_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
     }
+
+    g_debug("background changed");
+    json_append_string(path, "path", blur_path);
     g_free(blur_path);
+    js_post_message("draw_background", path);
 }
 

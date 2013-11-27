@@ -28,14 +28,24 @@
 #include "camera.h"
 #include "jsextension.h"
 
-#define CONFIG_FILE "/etc/face_recognition.cfg"
+#define CONFIG_FILE "/face_recognition.cfg"
+
+gchar *
+_get_face_recog_config_path ()
+{
+	gchar *path = g_strdup_printf ("%s%s", g_get_user_config_dir(), 
+			CONFIG_FILE);
+	return path;
+}
 
 gboolean _get_face_recognition_login_setting(const char* username)
 {
     gboolean use_face_login = FALSE;
     GKeyFile* config = g_key_file_new();
     GError* err = NULL;
-    g_key_file_load_from_file(config, CONFIG_FILE, G_KEY_FILE_NONE, &err);
+	gchar *config_path = _get_face_recog_config_path();
+    g_key_file_load_from_file(config, config_path, G_KEY_FILE_NONE, &err);
+	g_free (config_path);
     if (err != NULL) {
         g_warning("[%s] read config file failed: %s", __func__, err->message);
         goto out;
