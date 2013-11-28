@@ -29,7 +29,6 @@ class AudioPlay
             mpris = @get_mpris_dbus()
             echo mpris
             mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
-            echo mpris_dbus
             launched_status = true
         catch error
             launched_status = false
@@ -37,7 +36,6 @@ class AudioPlay
 
     
     get_mpris_dbus:->
-        echo "get_mpris_dbus"
         mpris_dbus_min = "org.mpris.MediaPlayer2."
         dbus_all = []
         mpris_dbus_all = []
