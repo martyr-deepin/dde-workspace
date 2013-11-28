@@ -107,23 +107,23 @@ class AudioPlay
         mpris_dbus.Volume = val
 
     getMetadata:->
-        # Metadata = mpris_dbus.Metadata
+        Metadata = mpris_dbus.Metadata
 
     getTitle:->
-        # mpris_dbus.Metadata.xesam:title
+        mpris_dbus.Metadata['xesam:title']
 
     getUrl:->
         #www url
-        # mpris_dbus.Metadata.xesam:url
+        mpris_dbus.Metadata['xesam:url']
     
     getalbum:->
         #zhuanji name
-        # mpris_dbus.Metadata.xesam:album
+        mpris_dbus.Metadata['xesam:album']
 
     getArtist:->
         #artist name
-        # mpris_dbus.Metadata.xesam:artist[0]
+        mpris_dbus.Metadata['xesam:artist']
 
     getArtUrl:->
         #artist img
-        # mpris_dbus.Metadata.mpris:artUrl
+        mpris_dbus.Metadata['mpris:artUrl']
