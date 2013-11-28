@@ -128,7 +128,6 @@ class MediaControl extends Widget
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
         name.textContent = audioplay.getTitle()
-        echo "getTitle over"
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
@@ -160,6 +159,7 @@ class MediaControl extends Widget
             is_volume_control = true
             el.src = img_src_before + voice_status + "_hover.png"
             volume = audioplay.getVolume()
+            echo volume
             voicecontrol.drawVolume(volume)
             if volume == 0
                 voice_status = "mute"

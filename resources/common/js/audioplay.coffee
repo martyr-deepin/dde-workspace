@@ -20,7 +20,7 @@
 class AudioPlay
     default_audio_player_name = null
     default_audio_player_icon = null
-    Metedata = null
+    Metadata = null
     mpris_dbus = null
     launched_status = false
 
@@ -47,7 +47,6 @@ class AudioPlay
             if index != -1
                 name = dbus.substring(index + mpris_dbus_min.length)
                 mpris_dbus_all.push({"mpris":dbus,"name":name})
-        echo mpris_dbus_all
         
         switch(mpris_dbus_all.length)
             when 0 then return null
@@ -107,20 +106,24 @@ class AudioPlay
         else if val < 0 then val = 0
         mpris_dbus.Volume = val
 
-    getMetedata:->
-        Metedata = mpris_dbus.Metedata
+    getMetadata:->
+        Metadata = mpris_dbus.Metadata
 
     getTitle:->
-        # mpris_dbus.Metedata.xesam:title
-        echo "getTitle"
-        echo mpris_dbus.Metedata
-        return "God is a girl"
+        mpris_dbus.Metadata.xesam:title
 
     getUrl:->
-        # mpris_dbus.Metedata.xesam:url
+        #www url
+        mpris_dbus.Metadata.xesam:url
+    
+    getalbum:->
+        #zhuanji name
+        mpris_dbus.Metadata.xesam:album
 
     getArtist:->
-        # mpris_dbus.Metedata.xesam:artist
+        #artist name
+        mpris_dbus.Metadata.xesam:artist[0]
 
     getArtUrl:->
-        # mpris_dbus.Metedata.mpris:artUrl
+        #artist img
+        mpris_dbus.Metadata.mpris:artUrl
