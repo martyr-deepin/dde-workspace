@@ -1,4 +1,4 @@
-SET(NAME "dpowerchoose")
+SET(NAME "shutdown")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "shutdown" "shutdown.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "shutdown")
@@ -43,7 +43,7 @@ install(
 
 install(
     FILES ${PROJECT_SOURCE_DIR}/app/shutdown/com.deepin.dde.shutdown.service
-    DESTINATION /usr/share/dbus-1/system-services/
+    DESTINATION /usr/share/dbus-1/services/
     )
 
 install(
