@@ -1,5 +1,4 @@
 .MediaControl{
-    /*background-color:rgba(125,0,120,0.2);*/
     width:250px;
     height:100px;
     
@@ -19,19 +18,8 @@
     display:-webkit-box;
 }
 
-.voice{
-    position:absolute;
-}
-
-
-.VoiceControl{
-    /*background-color:rgba(125,0,120,0.2);*/
-    position:absolute;
-}
-
-.myCanvas{
-    position:relative;
-    left:10px;
-    /*width: 70px;*/
-    /*height: 70px;*/
+.num{
+    color:#fff;
+    text-align:center;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
 }

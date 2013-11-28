@@ -19,6 +19,8 @@
 
 class VoiceControl extends Widget
     myCanvas = null
+    num = null
+    
     mouseover = false
 
     constructor:->
@@ -26,7 +28,10 @@ class VoiceControl extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
     
-    show:(x,y)->
+    show:(x,y,position = "absolute")->
+        @element.style.position = position
+        @x = x
+        @y = y
         @element.style.left = x
         @element.style.top = y
         @element.style.display = "block"
@@ -34,19 +39,20 @@ class VoiceControl extends Widget
     hide:->
         @element.style.display = "none"
      
-    drawVolume:(vol)->
+    drawVolume:(vol,width = 50,height = 50)->
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
         x0 = 0
         y0 = 0
-        width = 50
-        height = 50
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
+        myCanvas.style.position = "relative"
+        myCanvas.style.left = "10px"
         c = document.getElementById("myCanvas")
         ctx = c.getContext("2d")
-
+        
+        # for the boder
         ctx.beginPath()
         ctx.moveTo(x0,y0)
         ctx.lineTo(x0 + width,y0)
@@ -55,19 +61,33 @@ class VoiceControl extends Widget
         ctx.strokeStyle = "#DCDCDC"
         ctx.stroke()
         
-        ctx.fillStyle = "#ffffff"
+        
+        #dest
+        ctx.beginPath()
+        ctx.moveTo(x0,y0)
+        ctx.lineTo(x0 + width,y0)
+        ctx.lineTo(x0,y0 + height)
+        ctx.closePath()
+        ctx.strokeStyle = "#DCDCDC"
+        ctx.stroke()
+        ctx.fillStyle = "rgba(255,255,255,1.0)"
+        ctx.fill()
+        
+        ctx.globalCompositeOperation = "source-in"
+
+        #src
+        ctx.fillStyle = "rgba(255,255,255,1.0)"
         ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
         
-        ctx.globalCompositeOperation = "destination-in"
+        remove_element(num) if num
+        num = create_element("div","num",@element)
+        num.style.position = "relative"
+        fontSize = 10
+        num.style.fontSize = fontSize
+        num.style.left = -25
+        num.style.top = -80
+        num.textContent = Math.round(vol * 100)
 
-        ctx.beginPath()
-        ctx.moveTo(x0,y0)
-        ctx.lineTo(x0 + width,y0)
-        ctx.lineTo(x0,y0 + height)
-        ctx.closePath()
-        ctx.strokeStyle = "#DCDCDC"
-        ctx.stroke()
-        ctx.fill()
         @element.style.display = "block"
 
     do_mouseover: (e)->
@@ -186,7 +206,7 @@ class MediaControl extends Widget
             is_volume_control = true
             p = e.srcElement
             x = p.x + voice.clientWidth
-            y = p.y + 5
+            y = p.y + 11
             voicecontrol.show(x,y)
             el.src = img_src_before + voice_status + "_hover.png"
             volume = audioplay.getVolume()
