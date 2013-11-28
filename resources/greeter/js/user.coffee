@@ -61,7 +61,7 @@ class LoginEntry extends Widget
         @warning = create_element("div", "CapsWarning", @element)
         @password = create_element("input", "Password", @warning)
         @password.classList.add("PasswordStyle")
-        @password.setAttribute("maxlength", 16)
+        #@password.setAttribute("maxlength", 16)
 
         @check_capslock()
 
