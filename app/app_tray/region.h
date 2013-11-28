@@ -24,6 +24,7 @@
 
 void init_region(GdkWindow* win, double x, double y, double width, double height);
 void update_tray_region(double width);
+void draw_tray_panel(cairo_t* cr, int width, int height);
 
 #endif /* end of include guard: _REGION_H_ */
 

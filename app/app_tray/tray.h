@@ -26,9 +26,6 @@
 #include <math.h>
 
 #define TRAY_CORNER_RADIUS 3
-#ifndef M_PI
-#define M_PI 3.141592653589793
-#endif
 
 void tray_init(GtkWidget* container);
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);

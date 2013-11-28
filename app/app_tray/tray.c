@@ -21,7 +21,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include <math.h>
+#include <string.h>
 
 #include "main.h"
 #include "na-tray-manager.h"
@@ -29,12 +29,13 @@
 #include "tray.h"
 #include "tray_hide.h"
 #include "region.h"
+#include "utils.h"
 
 #define CLAMP_WIDTH(w) (((w) < 16) ? 16 : (w))
 #define DEFAULT_HEIGHT 16
 #define DEFAULT_WIDTH 16
 #define DEFAULT_INTERVAL 4
-#define PADDING ((TRAY_HEIGHT - DEFAULT_HEIGHT) / 2)
+#define PADDING ((PANEL_HEIGHT - DEFAULT_HEIGHT) / 2)
 #define NA_BASE_Y PADDING
 
 
@@ -157,6 +158,7 @@ void _update_notify_area_width()
     g_hash_table_foreach(_icons, (GHFunc)accumulate_na_width, NULL);
     update_tray_guard_window_position(_na_width);
     update_tray_region(_na_width);
+    gdk_window_invalidate_rect(TRAY_GDK_WINDOW(), NULL, FALSE);
 }
 
 
@@ -301,13 +303,110 @@ draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
 }
 
 
+void cairo_image_surface_blur(cairo_surface_t* surface, double radius)
+{
+    // Steve Hanov, 2009
+    // Released into the public domain.
+
+    // get width, height
+    int width = cairo_image_surface_get_width(surface);
+    int height = cairo_image_surface_get_height(surface);
+    unsigned char* dst = (unsigned char*)malloc(width*height*4);
+    unsigned* precalc =
+        (unsigned*)malloc(width*height*sizeof(unsigned));
+    unsigned char* src = cairo_image_surface_get_data(surface);
+    double mul = 1.f / ((radius*2)*(radius*2));
+
+    // The number of times to perform the averaging. According to wikipedia,
+    // three iterations is good enough to pass for a gaussian.
+    const int MAX_ITERATIONS = 3;
+
+    memcpy(dst, src, width*height*4);
+
+    int iteration;
+    int channel;
+    for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
+        for(channel = 0; channel < 4; channel++) {
+            int x,y;
+
+            // precomputation step.
+            unsigned char* pix = src;
+            unsigned* pre = precalc;
+
+            pix += channel;
+            for (y = 0; y < height; y++) {
+                for (x = 0; x < width; x++) {
+                    int tot = pix[0];
+                    if (x>0) tot += pre[-1];
+                    if (y>0) tot += pre[-width];
+                    if (x>0 && y>0) tot -= pre[-width-1];
+                    *pre++ = tot;
+                    pix += 4;
+                }
+            }
+
+            // blur step.
+            pix = dst + (int)radius * width * 4 + (int)radius * 4 + channel;
+            for (y = radius; y < height - radius; y++) {
+                for (x = radius; x < width - radius; x++) {
+                    int l = x < radius ? 0 : x - radius;
+                    int t = y < radius ? 0 : y - radius;
+                    int r = x + radius >= width ? width - 1 : x + radius;
+                    int b = y + radius >= height ? height - 1 : y + radius;
+                    int tot = precalc[r+b*width] + precalc[l+t*width] -
+                        precalc[l+b*width] - precalc[r+t*width];
+                    *pix = (unsigned char)(tot*mul);
+                    pix += 4;
+                }
+                pix += (int)radius * 2 * 4;
+            }
+        }
+        memcpy(src, dst, width*height*4);
+    }
+
+    free(dst);
+    free(precalc);
+}
+
+
 void _draw_background(cairo_t* cr)
 {
+    // draw shadow
+    int shadow_width = _na_width + SHADOW_WIDTH * 2;
+    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gdk_screen_width(), TRAY_HEIGHT);
+    cairo_t* ctx = cairo_create(surface);
+    cairo_translate(ctx, (gdk_screen_width() - shadow_width) / 2, 0);
+
+    // outter
+    draw_tray_panel(ctx, shadow_width, TRAY_HEIGHT);
+    cairo_set_source_rgba(ctx, 1, 1, 1, 0);
+    cairo_fill(ctx);
+
+    // inner
+    cairo_translate(ctx, SHADOW_WIDTH, 0);
+    draw_tray_panel(ctx, _na_width, PANEL_HEIGHT + 3);
+    cairo_set_source_rgba(ctx, 0, 0, 0, .5);
+    cairo_fill(ctx);
+
+    /* cairo_surface_write_to_png(surface, "/tmp/bg.png"); */
+    cairo_image_surface_blur(surface, 2.);
+    /* cairo_surface_write_to_png(surface, "/tmp/blur_bg.png"); */
+    cairo_destroy(ctx);
+
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_rgba(cr, 0, 0, 0, 0.7);
+    cairo_set_source_surface(cr, surface, 2, -1);
+    cairo_surface_destroy(surface);
     cairo_paint(cr);
+
+    // draw main panel
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+    cairo_translate(cr, (gdk_screen_width() - _na_width)/2, 0);
+    cairo_set_source_rgba(cr, 0, 0, 0, 0.5);
+    draw_tray_panel(cr, _na_width, PANEL_HEIGHT);
+    cairo_fill(cr);
+
+    /* cairo_paint(cr); */
     cairo_restore(cr);
 }
 

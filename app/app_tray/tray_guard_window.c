@@ -19,6 +19,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include "main.h"
 #include "tray_guard_window.h"
 #include "tray_hide.h"
 #include "X_misc.h"
@@ -60,7 +61,9 @@ static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
     if (xev->type == GenericEvent) {
         if (e->evtype == EnterNotify) {
             g_debug("[%s] EnterNotify", __func__);
-            tray_delay_show(100);
+            if (gdk_window_get_width(TRAY_GDK_WINDOW()) > 16) {
+                tray_delay_show(100);
+            }
         } else if (e->evtype == LeaveNotify) {
             g_debug("[%s] LeaveNotify", __func__);
             tray_delay_hide(100);

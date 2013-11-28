@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     GdkVisual* v = gdk_screen_get_rgba_visual(gdk_screen_get_default());
     if (v != NULL && gdk_screen_is_composited(gdk_screen_get_default())) {
         gtk_widget_set_visual(container, v);
-        g_warning("support composition");
+        g_debug("support composition");
     }
 
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
@@ -60,17 +60,12 @@ int main(int argc, char *argv[])
 
     GdkWindow* window = gtk_widget_get_window(container);
     set_wmspec_dock_hint(window);
-    GdkRGBA rgba = {0, 0, 0, 0.6};
-    cairo_pattern_t* pattern = cairo_pattern_create_rgba(0, 0, 0, 1);
-    gdk_window_set_background_pattern(window, pattern);
 
-    // TODO:
-    // add region like dock
     gtk_widget_set_size_request(container, gdk_screen_width(), TRAY_HEIGHT);
     gtk_widget_show_all(container);
 
     tray_init(container);
-    init_region(TRAY_GDK_WINDOW(), 0, 0, 0, TRAY_HEIGHT);
+    init_region(TRAY_GDK_WINDOW(), 0, 0, 0, PANEL_HEIGHT);
     init_tray_guard_window();
     update_tray_guard_window_position(0);
 

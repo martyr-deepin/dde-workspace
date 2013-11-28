@@ -22,21 +22,14 @@
 #include "main.h"
 #include "region.h"
 #include "tray.h"
-#include <math.h>
+#include "utils.h"
 
 
-GdkWindow* _win = NULL;
+static GdkWindow* _win = NULL;
 
 
-void set_region(double _x, double _y, double _width, double _height)
+void draw_tray_panel(cairo_t* cr, int width, int height)
 {
-    int x = (int)_x, y = (int)_y, width = (int)_width, height = (int)_height;
-
-    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gdk_screen_width(), height);
-    cairo_t* cr = cairo_create(surface);
-
-    cairo_save(cr);
-    cairo_translate(cr, (gdk_screen_width() - width)/2, 0);
     cairo_new_path(cr);
     cairo_line_to(cr, width, 0);
     cairo_line_to(cr, width, height - TRAY_CORNER_RADIUS);
@@ -57,20 +50,50 @@ void set_region(double _x, double _y, double _width, double _height)
               );
     cairo_line_to(cr, 0, 0);
     cairo_close_path(cr);
-    cairo_set_source_rgba(cr, 0, 1, 0, 1);
+}
+
+
+static
+cairo_region_t* create_tray_region(int width, int height)
+{
+    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gdk_screen_width(), height);
+    cairo_t* cr = cairo_create(surface);
+
+    cairo_save(cr);
+    cairo_translate(cr, (gdk_screen_width() - width)/2, 0);
+    draw_tray_panel(cr, width, height);
+    /* cairo_set_source_rgba(cr, 0, 0, 0, .7); */
     cairo_fill(cr);
     cairo_clip(cr);
     cairo_restore(cr);
-
     cairo_destroy(cr);
 
-    /* cairo_surface_write_to_png(surface, "/tmp/test.png"); */
+    static int i = 0;
+    char* name = g_strdup_printf("/tmp/test%d.png", i);
+    cairo_surface_write_to_png(surface, name);
+    g_free(name);
     cairo_region_t* _region = gdk_cairo_region_create_from_surface(surface);
     cairo_surface_destroy(surface);
 
-    gdk_window_input_shape_combine_region(_win, _region, 0, 0);
-    gdk_window_shape_combine_region(_win, _region, 0, 0);
-    cairo_region_destroy(_region);
+    return _region;
+}
+
+
+void set_region(double _x, double _y, double _width, double _height)
+{
+    int x = (int)_x, y = (int)_y, width = (int)_width, height = (int)_height;
+
+    gdk_window_input_shape_combine_region(_win, NULL, 0, 0);
+    gdk_window_shape_combine_region(_win, NULL, 0, 0);
+
+    cairo_region_t* main_region = create_tray_region(width, height);
+    cairo_region_t* shadow_region = create_tray_region(width + SHADOW_WIDTH * 2, height + SHADOW_WIDTH);
+
+    gdk_window_input_shape_combine_region(_win, main_region, 0, 0);
+    gdk_window_shape_combine_region(_win, shadow_region, 0, 0);
+
+    cairo_region_destroy(main_region);
+    cairo_region_destroy(shadow_region);
 }
 
 
@@ -84,6 +107,6 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 void update_tray_region(double width)
 {
     int x = (gdk_screen_width() - width) / 2;
-    set_region(x, 0, width, TRAY_HEIGHT);
+    set_region(x, 0, width, PANEL_HEIGHT);
 }
 
