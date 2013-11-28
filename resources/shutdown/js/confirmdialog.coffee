@@ -24,8 +24,14 @@ class ConfirmDialog extends Widget
     OK = 1
     choose_num = OK
 
-    constructor: (i)->
+    constructor: (opt)->
         super
+        i = null
+        for tmp,j in option
+            if tmp is opt then i  = j
+        if i is null
+            echo "no this power option!"
+            return
         if i < 2 or i > 4 then return
         @i = i
         shutdown = null

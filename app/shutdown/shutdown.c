@@ -46,7 +46,7 @@
 
 #define SHUTDOWN_ID_NAME "desktop.app.shutdown"
 
-#define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdown.html"
+#define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/powerchoose.html"
 
 #define SHUTDOWN_MAJOR_VERSION 2
 #define SHUTDOWN_MINOR_VERSION 0

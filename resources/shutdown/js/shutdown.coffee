@@ -26,7 +26,7 @@ class ShutDown extends Widget
     choose_num = -1
     select_state_confirm = false
 
-    constructor: (@id)->
+    constructor: ()->
         super
         confirmdialog = null
 
@@ -81,7 +81,7 @@ class ShutDown extends Widget
     
     timefunc:(i) ->
         @destory()
-        confirmdialog = new ConfirmDialog(i)
+        confirmdialog = new ConfirmDialog(option[i])
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
         confirmdialog.interval(60)
