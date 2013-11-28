@@ -1,4 +1,4 @@
-SET(NAME "dpowerchoose")
+SET(NAME "shutdown")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "shutdown" "shutdown.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "shutdown")
