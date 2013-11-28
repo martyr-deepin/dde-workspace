@@ -145,7 +145,7 @@ class MediaControl extends Widget
        
         setInterval(->
             name.textContent = audioplay.getTitle()
-        ,2000)
+            ,2000)
 
         @normal_hover_click_cb(up,
             img_src_before + "up_normal.png",
@@ -210,7 +210,6 @@ class MediaControl extends Widget
 
     media_up:->
         audioplay.Previous()
-        name.textContent = audioplay.getTitle()
 
     media_play:=>
         if play_status is "play" then play_status = "pause"
@@ -222,5 +221,4 @@ class MediaControl extends Widget
 
     media_next:->
         audioplay.Next()
-        name.textContent = audioplay.getTitle()
 

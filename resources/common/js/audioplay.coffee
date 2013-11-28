@@ -35,6 +35,7 @@ class AudioPlay
             launched_status = false
             echo "mpris_dbus is null ,the player isnt launched!"
 
+    
     get_mpris_dbus:->
         echo "get_mpris_dbus"
         mpris_dbus_min = "org.mpris.MediaPlayer2."
