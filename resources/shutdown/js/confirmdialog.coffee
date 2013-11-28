@@ -34,7 +34,7 @@ class ConfirmDialog extends Widget
             return
         if i < 2 or i > 4 then return
         @i = i
-        shutdown = null
+        powerchoose = null
    
     destory:->
         document.body.removeChild(@element)

@@ -19,7 +19,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 confirmdialog = null
-shutdown = null
+powerchoose = null
 
 frame_click = false
 option = ["lock","suspend","logout","restart","shutdown"]
@@ -43,3 +43,11 @@ confirm_ok = (i)->
     destory_all()
     echo option[i]
     power_func(option[i])
+
+
+document.body.style.height = window.innerHeight
+document.body.style.width = window.innerWidth
+DCore.signal_connect("draw_background", (info)->
+    #echo "draw_background:url(#{info.path})"
+    document.body.style.backgroundImage = "url(#{info.path})"
+)
