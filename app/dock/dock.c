@@ -216,11 +216,60 @@ void check_version()
         GKeyFile* f = load_app_config(APPS_INI);
         gsize len = 0;
         char** list = g_key_file_get_groups(f, &len);
-        for (int i = 1; i < len; ++i) {
-            g_key_file_set_string(f, list[i], "Type", DOCKED_ITEM_APP_TYPE);
+        for (guint i = 1; i < len; ++i) {
+            /* g_key_file_set_string(f, list[i], "Type", DOCKED_ITEM_APP_TYPE); */
+            if (g_strcmp0(list[i], "wps") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Write");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/wps %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-wpsmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-wps.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
+            if (g_strcmp0(list[i], "wpp") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Presentation");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/wpp %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-wppmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-wpp.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
+            if (g_strcmp0(list[i], "et") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Spreadsheet");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/et %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-etmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-et.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
         }
         g_strfreev(list);
+
+        list = g_key_file_get_string_list(f, "DockedItems", "Position", &len, &err);
+        if (err != NULL) {
+            g_error_free(err);
+            len = 0;
+            list = NULL;
+        }
+        for (guint i = 0; i < len; ++i) {
+            if (g_strcmp0("wps", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-wps");
+            }
+            if (g_strcmp0("wpp", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-wpp");
+            }
+            if (g_strcmp0("et", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-et");
+            }
+        }
+        if (list != NULL) {
+            g_key_file_set_string_list(f, "DockedItems", "Position", (const char* const*)list, len);
+            g_strfreev(list);
+        }
         save_app_config(f, APPS_INI);
+        system("sed -i 's/\\[wps\\]/\\[wps-office-wps\\]/g' $HOME/.config/"APPS_INI);
+        system("sed -i 's/\\[wpp\\]/\\[wps-office-wpp\\]/g' $HOME/.config/"APPS_INI);
+        system("sed -i 's/\\[et\\]/\\[wps-office-et\\]/g' $HOME/.config/"APPS_INI);
         g_key_file_unref(f);
     }
 

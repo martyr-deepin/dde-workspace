@@ -33,7 +33,7 @@ class ClientGroup extends AppItem
         @element.addEventListener("contextmenu", (e) =>
             Preview_close_now()
             menu_list = [
-                [10, DCore.get_name_by_appid(@app_id) || _("_New Window")],
+                [10, DCore.get_name_by_appid(@app_id) || _("_New window")],
                 []
             ]
             i = 0

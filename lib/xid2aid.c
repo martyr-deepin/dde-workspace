@@ -30,6 +30,7 @@
 #define FILTER_WMNAME_PATH DATA_DIR"/filter_wmname.ini"
 #define FILTER_WMCLASS_PATH DATA_DIR"/filter_wmclass.ini"
 #define FILTER_WMINSTANCE_PATH DATA_DIR"/filter_wminstance.ini"
+#define FILTER_EXEC_NAME_PATH DATA_DIR"/filter_execname.ini"
 #define PROCESS_REGEX_PATH DATA_DIR"/process_regex.ini"
 #define DEEPIN_ICONS_PATH DATA_DIR"/deepin_icons.ini"
 
@@ -37,6 +38,7 @@ static GKeyFile* filter_args = NULL;
 static GKeyFile* filter_wmname = NULL;
 static GKeyFile* filter_wmclass = NULL;
 static GKeyFile* filter_wminstance = NULL;
+static GKeyFile* filter_exec_name = NULL;
 static GKeyFile* deepin_icons = NULL;
 
 static GRegex* prefix_regex = NULL;
@@ -96,6 +98,7 @@ void _init()
     _build_filter_info(filter_wmclass = g_key_file_new(), FILTER_WMCLASS_PATH);
     _build_filter_info(filter_wminstance = g_key_file_new(), FILTER_WMINSTANCE_PATH);
     _build_filter_info(filter_wmname = g_key_file_new(), FILTER_WMNAME_PATH);
+    _build_filter_info(filter_exec_name = g_key_file_new(), FILTER_EXEC_NAME_PATH);
 
     // set init flag
     _is_init = TRUE;
@@ -193,6 +196,12 @@ char* find_app_id(const char* exec_name, const char* key, int filter)
             return _find_app_id_by_filter(exec_name, key, filter_args);
         case APPID_FILTER_WMINSTANCE:
             return _find_app_id_by_filter(exec_name, key, filter_wminstance);
+        case APPID_FILTER_EXEC_NAME: {
+            char* id = _find_app_id_by_filter(exec_name, key, filter_exec_name);
+            if (id == NULL)
+                id = g_strdup(exec_name);
+            return id;
+        }
         default:
             g_error("filter %d is not support !", filter);
     }

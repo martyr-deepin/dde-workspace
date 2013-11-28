@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class ShutDown extends Widget
+class PowerChoose extends Widget
     opt = []
     img_url = []
     opt_img = []
@@ -81,7 +81,7 @@ class ShutDown extends Widget
     
     timefunc:(i) ->
         @destory()
-        confirmdialog = new ConfirmDialog(i)
+        confirmdialog = new ConfirmDialog(option[i])
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
         confirmdialog.interval(60)
