@@ -32,23 +32,21 @@ class VoiceControl extends Widget
         @element.style.display = "block"
     
     hide:->
-        #echo "hide"
-        @element.style.display = "none" if not mouseover
+        @element.style.display = "none"
      
     drawVolume:(vol)->
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
-        myCanvas.style.width = "300px"
-        myCanvas.style.height = "150px"
-        c = document.getElementById("myCanvas")
-        ctx = c.getContext("2d")
-
-        volume = vol
         x0 = 0
         y0 = 0
         width = 50
         height = 50
+        myCanvas.style.width = width * 2
+        myCanvas.style.height = height * 2
+        c = document.getElementById("myCanvas")
+        ctx = c.getContext("2d")
+
         ctx.beginPath()
         ctx.moveTo(x0,y0)
         ctx.lineTo(x0 + width,y0)
@@ -58,7 +56,7 @@ class VoiceControl extends Widget
         ctx.stroke()
         
         ctx.fillStyle = "#ffffff"
-        ctx.fillRect(x0,y0 + height - volume * height,x0 + width,y0 + height)
+        ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
         
         ctx.globalCompositeOperation = "destination-in"
 
@@ -73,12 +71,10 @@ class VoiceControl extends Widget
         @element.style.display = "block"
 
     do_mouseover: (e)->
-        #echo "menu over"
         mouseover = true
-        @element.style.display = "block"
+        #@element.style.display = "block"
     
     do_mouseout: (e)->
-        #echo "menu out"
         mouseover = false
         @hide()
     
@@ -199,6 +195,7 @@ class MediaControl extends Widget
         el.addEventListener("mouseout",->
             is_volume_control = false
             voicecontrol.hide()
+            #voicecontrol.hide() if not voicecontrol.mouseover
             el.src = img_src_before + voice_status + "_normal.png"
         )
         #el.addEventListener("click",=>
