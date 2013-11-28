@@ -76,11 +76,10 @@ class Menu extends Widget
         mouseover = false
         @hide()
     
-    show: (left, bottom)->
-        #echo "show"
+    show: (x, y)->
         document.body.appendChild(@element) if not parent?
-        @element.style.left = left
-        @element.style.bottom = bottom
+        @element.style.left = x
+        @element.style.top = y
         @element.style.display = "block"
 
     hide:->
@@ -112,9 +111,9 @@ class ComboBox extends Widget
     do_mouseover: (e)->
         #echo "box over"
         p = get_page_xy(@current_img, 0, 0)
-        left = p.x
-        bottom = document.body.clientHeight - p.y
-        @menu.show(left, bottom)
+        x = p.x
+        y = document.body.clientHeight - p.y
+        @menu.show(x, y)
     
     do_mouseout: (e)->
         #echo "box out"

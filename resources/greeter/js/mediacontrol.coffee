@@ -21,14 +21,15 @@ class VoiceControl extends Widget
     myCanvas = null
     mouseover = false
 
-    constructor:(x,y)->
+    constructor:->
         super
         document.body.appendChild(@element)
+        @element.style.display = "none"
+    
+    show:(x,y)->
         @element.style.left = x
-        @element.style.bottom = y
-
-    show:->
-        @element.style.display = "show"
+        @element.style.top = y
+        @element.style.display = "block"
     
     hide:->
         #echo "hide"
@@ -38,10 +39,8 @@ class VoiceControl extends Widget
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
-        #myCanvas.style.left = 0
-        #myCanvas.style.top = 0
         myCanvas.style.width = "300px"
-        myCanvas.style.top = "150px"
+        myCanvas.style.height = "150px"
         c = document.getElementById("myCanvas")
         ctx = c.getContext("2d")
 
@@ -114,7 +113,6 @@ class MediaControl extends Widget
     up = null
     play = null
     next = null
-    voice = null
     voicecontrol = null
     is_volume_control = false
 
@@ -137,11 +135,8 @@ class MediaControl extends Widget
         else play_status = "play"
         play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
-        voice = create_img("voice",img_src_before + "voice_normal.png",control)
-        p = get_page_xy(voice, 0, 0)
-        left = p.x + voice.clientHeight + 15
-        top = p.y
-        voicecontrol = new VoiceControl(left,top)
+        @voice = create_img("voice",img_src_before + "voice_normal.png",control)
+        voicecontrol = new VoiceControl()
        
         setInterval(->
             name.textContent = audioplay.getTitle()
@@ -160,42 +155,8 @@ class MediaControl extends Widget
             @media_next
         )
         @play_normal_hover_click_cb(play,@media_play)
-        @voice_normal_hover_click_cb(voice)
+        @voice_normal_hover_click_cb(@voice)
         
-    voice_normal_hover_click_cb: (el) ->
-        el.addEventListener("mouseover",->
-            is_volume_control = true
-            el.src = img_src_before + voice_status + "_hover.png"
-            volume = audioplay.getVolume()
-            echo volume
-            voicecontrol.drawVolume(volume)
-            if volume == 0
-                voice_status = "mute"
-                qvoice.src = img_src_before + voice_status + "_hover.png"
-        )
-        el.addEventListener("mouseout",->
-            is_volume_control = false
-            voicecontrol.hide()
-            el.src = img_src_before + voice_status + "_normal.png"
-        )
-        el.addEventListener("click",=>
-            el.src = img_src_before + voice_status + "_press.png"
-        )
-        document.body.addEventListener("mousewheel",(e) =>
-            if is_volume_control
-                echo "is_volume_control"
-        )
-    play_normal_hover_click_cb: (el,click_cb) ->
-        el.addEventListener("mouseover",->
-            el.src = img_src_before + play_status + "_hover.png"
-        )
-        el.addEventListener("mouseout",->
-            el.src = img_src_before + play_status + "_normal.png"
-        )
-        el.addEventListener("click",=>
-            el.src = img_src_before + play_status + "_press.png"
-            click_cb?()
-        )
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -223,4 +184,44 @@ class MediaControl extends Widget
     media_next:->
         audioplay.Next()
         name.textContent = audioplay.getTitle()
+
+    voice_normal_hover_click_cb: (el) ->
+        el.addEventListener("mouseover",(e)=>
+            echo e
+            is_volume_control = true
+            p = e.srcElement
+            x = p.x + @voice.clientWidth
+            y = p.y + 5
+            voicecontrol.show(x,y)
+            el.src = img_src_before + voice_status + "_hover.png"
+            volume = audioplay.getVolume()
+            echo volume
+            voicecontrol.drawVolume(volume)
+            if volume < 0.01
+                voice_status = "mute"
+                qvoice.src = img_src_before + voice_status + "_hover.png"
+        )
+        el.addEventListener("mouseout",->
+            is_volume_control = false
+            voicecontrol.hide()
+            el.src = img_src_before + voice_status + "_normal.png"
+        )
+        #el.addEventListener("click",=>
+            #el.src = img_src_before + voice_status + "_press.png"
+        #)
+        document.body.addEventListener("mousewheel",(e) =>
+            if is_volume_control
+                echo "is_volume_control"
+        )
+    play_normal_hover_click_cb: (el,click_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = img_src_before + play_status + "_hover.png"
+        )
+        el.addEventListener("mouseout",->
+            el.src = img_src_before + play_status + "_normal.png"
+        )
+        el.addEventListener("click",=>
+            el.src = img_src_before + play_status + "_press.png"
+            click_cb?()
+        )
 
