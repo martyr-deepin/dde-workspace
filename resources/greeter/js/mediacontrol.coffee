@@ -57,7 +57,7 @@ class VoiceControl extends Widget
         ctx.strokeStyle = "#DCDCDC"
         ctx.stroke()
         
-        ctx.fillStyle = "#fff0ff"
+        ctx.fillStyle = "#ffffff"
         ctx.fillRect(x0,y0 + height - volume * height,x0 + width,y0 + height)
         
         ctx.globalCompositeOperation = "destination-in"
@@ -141,9 +141,6 @@ class MediaControl extends Widget
        
         setInterval(->
             name.textContent = audioplay.getTitle()
-            if audioplay.getVolume() < 0.01 then voice_status = "mute"
-            else voice_status = "voice"
-            voice.src = img_src_before + voice_status + "_hover.png"
         ,1000)
 
         @normal_hover_click_cb(up,
@@ -181,7 +178,6 @@ class MediaControl extends Widget
         if play_status is "play" then play_status = "pause"
         else play_status = "play"
         play.src = img_src_before + "#{play_status}_normal.png"
-        echo play_status
         audioplay.PlayPause()
         
 
@@ -209,10 +205,11 @@ class MediaControl extends Widget
             #el.src = img_src_before + voice_status + "_press.png"
         #)
         document.body.addEventListener("mousewheel",(e) =>
-            if is_volume_control then voicecontrol.mousewheel(e)
-            if audioplay.getVolume() < 0.01 then voice_status = "mute"
-            else voice_status = "voice"
-            voice.src = img_src_before + voice_status + "_hover.png"
+            if is_volume_control
+                voicecontrol.mousewheel(e)
+                if audioplay.getVolume() < 0.01 then voice_status = "mute"
+                else voice_status = "voice"
+                voice.src = img_src_before + voice_status + "_hover.png"
         )
         
     play_normal_hover_click_cb: (el,click_cb) ->
