@@ -25,7 +25,7 @@ document.body.appendChild(confirmdialog.element)
 confirmdialog.interval(60)
 
 document.body.addEventListener("keydown",(e)->
-    if shutdown then shutdown.keydown(e.which)
+    if powerchoose then powerchoose.keydown(e.which)
     else if confirmdialog then confirmdialog.keydown(e.which)
     )
 
