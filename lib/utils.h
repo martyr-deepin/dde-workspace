@@ -30,6 +30,10 @@
 #define STR(A) STR_EXP(A)
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 
+#ifndef M_PI
+#define M_PI 3.141592653589793
+#endif
+
 int binding(int server_sockfd, const char* path);
 char* shell_escape(const char* source);
 int is_application_running(const char* path);
