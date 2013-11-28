@@ -35,6 +35,13 @@ gboolean enter_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 }
 
 
+static
+gboolean motion_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
+{
+    tray_show_real_now();
+}
+
+
 int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
@@ -53,10 +60,13 @@ int main(int argc, char *argv[])
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_resizable(GTK_WINDOW(container), FALSE);
     gtk_window_set_position(GTK_WINDOW(container), GTK_WIN_POS_CENTER);
+
+    gtk_widget_set_events(container, GDK_ALL_EVENTS_MASK);
     gtk_widget_realize(container);
 
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
+    g_signal_connect(container, "motion-notify-event", G_CALLBACK(motion_notify), NULL);
 
     GdkWindow* window = gtk_widget_get_window(container);
     set_wmspec_dock_hint(window);

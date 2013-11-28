@@ -228,6 +228,8 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 #endif
 
         return GDK_FILTER_REMOVE;
+    } else if (xev->type == PropertyNotify) {
+        tray_delay_hide(2000/*ms*/);
     }
 
     return GDK_FILTER_CONTINUE;
