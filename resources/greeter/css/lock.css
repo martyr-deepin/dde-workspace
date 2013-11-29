@@ -9,10 +9,10 @@ body{
 .div_users{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
-    top:18%;
-    left:35%;
-    width:400px;
-    height:400px;
+    top:5%;
+    left:5%;
+    width:90%;
+    height:90%;
     
     display:-webkit-box;
     -webkit-box-pack:center;

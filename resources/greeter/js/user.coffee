@@ -52,8 +52,12 @@ class User extends Widget
     constructor:->
         super
         @is_livecd()
-        user_ul = create_element("ul","user_ul",@element)
-        user_ul.id = "user_ul"
+        
+        @element.type = "ul"
+        @element.id = "user_ul"
+        user_ul = @element
+        #user_ul = create_element("ul","user_ul",@element)
+        #user_ul.id = "user_ul"
     
     is_livecd:->
         try
@@ -275,7 +279,7 @@ class UserInfo extends Widget
         # echo "use face login: #{@face_login}"
         #@li = create_element("li", "")
         #@li.appendChild(@element)
-
+        @element.type = "li"
         userbase = create_element("div", "UserBase", @element)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
