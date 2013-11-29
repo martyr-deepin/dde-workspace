@@ -1,11 +1,16 @@
+#include <stdlib.h>
+
 #include <gtk/gtk.h>
 
 #include "main.h"
 #include "tray.h"
 #include "tray_hide.h"
 #include "region.h"
-#include "tray_guard_window.h"
 #include "X_misc.h"
+#include "i18n.h"
+
+
+#define TRAY_ID_NAME "apptray.app.deepin"
 
 
 static GtkWidget* container = NULL;
@@ -42,12 +47,30 @@ gboolean motion_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 }
 
 
+void parse_cmd(int argc, char* argv[])
+{
+    gboolean reparent_to_init = TRUE;
+    if (argc == 2 && g_strcmp0(argv[1], "-d") == 0) {
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+        reparent_to_init = FALSE;
+    }
+
+    if (argc == 2 && g_strcmp0(argv[1], "-f") == 0) {
+        reparent_to_init = FALSE;
+    }
+
+    if (reparent_to_init && fork() != 0) {
+        // exit on parent process
+        exit(0);
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
+    init_i18n();
     gtk_init(&argc, &argv);
-
-    if (argc == 2 && g_strcmp0(argv[1], "-d") == 0)
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    parse_cmd(argc, argv);
 
     container = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -72,16 +95,11 @@ int main(int argc, char *argv[])
     set_wmspec_dock_hint(window);
 
     gtk_widget_set_size_request(container, gdk_screen_width(), TRAY_HEIGHT);
-    gtk_widget_show_all(container);
 
     tray_init(container);
-    init_region(TRAY_GDK_WINDOW(), 0, 0, 0, PANEL_HEIGHT);
-    init_tray_guard_window();
-    update_tray_guard_window_position(0);
 
-    GtkAllocation allocation;
-    gtk_widget_get_allocation (container, &allocation);
-    gtk_window_move(GTK_WINDOW(container), (gdk_screen_width() - allocation.width)/2.0, 0);
+    gtk_widget_show_all(container);
+    gtk_window_move(GTK_WINDOW(container), 0, 0);
 
     tray_delay_hide(1000/*ms*/);
 

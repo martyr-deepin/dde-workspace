@@ -1,45 +1,54 @@
 #!/usr/bin/python
 
-coffee_files = [
-"../resources/greeter/js/*.coffee",
-"../resources/desktop/js/*.coffee",
-"../resources/dock/js/*.coffee",
-"../resources/launcher/js/*.coffee",
-"../resources/shutdown/js/*.coffee",
-]
+import glob
+import os
 
-c_files = [
-"../app/desktop/*.c",
-"../app/desktop/*.h",
-"../app/greeter/*.c",
-"../app/greeter/*.h",
-"../app/launcher/*.c",
-"../app/launcher/*.h",
-"../app/dock/*.c",
-"../app/dock/*.h",
-"../lib/dentry/*.c",
-"../lib/dentry/*.h",
-"../lib/category.h",
-"../app/shutdown/*.c",
-"../app/shutdown/*.h",
-]
+
+coffee_files = []
+c_files = []
+
+except_dirs = ["dbus_test", "memory_test", "dominant_color"]
+
+
+def get_files():
+    global coffee_files, c_files
+    for d in os.listdir("../resources"):
+        if d != "common" and d not in except_dirs:
+            coffee_files += glob.glob("../resources/%s/js/*.coffee" % d)
+
+    for d in os.listdir("../app"):
+        if d not in except_dirs:
+            c_files += glob.glob("../app/%s/*.c" % d);
+            c_files += glob.glob("../app/%s/*.h" % d);
+
+    c_files += [
+            "../lib/dentry/*.c",
+            "../lib/dentry/*.h",
+            "../lib/category.h",
+            ]
+
 
 lang = ["zh_CN", "zh_TW"]
 
 
-import os
+def scan():
+    global coffee_files, c_files
+    for l in lang:
+        os.system("touch %s.pot" % l)
 
-for l in lang:
-    os.system("touch %s.pot" % l)
+        cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % l + " ".join(coffee_files)
+        os.system(cmd)
 
-    cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % l + " ".join(coffee_files)
-    os.system(cmd)
+        cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % l + " ".join(c_files)
+        os.system(cmd)
 
-    cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % l + " ".join(c_files)
-    os.system(cmd)
+        os.system("msgmerge %s.po %s.pot > new_%s.po" % (l, l, l))
 
-    os.system("msgmerge %s.po %s.pot > new_%s.po" % (l, l, l))
+        os.system("mv new_%s.po %s.po" % (l, l))
 
-    os.system("mv new_%s.po %s.po" % (l, l))
+        os.system("rm %s.pot" % l)
 
-    os.system("rm %s.pot" % l)
+
+if __name__ == '__main__':
+    get_files();
+    scan()

@@ -20,6 +20,7 @@
  **/
 
 #include "main.h"
+#include "tray.h"
 #include "tray_guard_window.h"
 #include "tray_hide.h"
 #include "X_misc.h"
@@ -61,7 +62,8 @@ static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
     if (xev->type == GenericEvent) {
         if (e->evtype == EnterNotify) {
             g_debug("[%s] EnterNotify", __func__);
-            if (gdk_window_get_width(TRAY_GDK_WINDOW()) > 16) {
+            if (tray_width() > DEFAULT_WIDTH) {
+                g_debug("[%s] show tray", __func__);
                 tray_delay_show(500);
             }
         } else if (e->evtype == LeaveNotify) {
@@ -80,7 +82,6 @@ void init_tray_guard_window()
     if (!is_inited) {
         GdkWindow* win = get_tray_guard_window();
         gdk_window_add_filter(win, _monitor_tray_guard_window, NULL);
-        update_tray_guard_window_position(1);
         is_inited = TRUE;
     }
 }

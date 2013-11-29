@@ -28,12 +28,12 @@
 #include "X_misc.h"
 #include "tray.h"
 #include "tray_hide.h"
+#include "tray_guard_window.h"
 #include "region.h"
 #include "utils.h"
+#include "i18n.h"
 
 #define CLAMP_WIDTH(w) (((w) < 16) ? 16 : (w))
-#define DEFAULT_HEIGHT 16
-#define DEFAULT_WIDTH 16
 #define DEFAULT_INTERVAL 4
 #define PADDING ((PANEL_HEIGHT - DEFAULT_HEIGHT) / 2)
 #define NA_BASE_Y PADDING
@@ -53,6 +53,12 @@ void _update_fcitx_try_position();
 #endif
 void _update_notify_area_width();
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
+
+
+int tray_width()
+{
+    return _na_width;
+}
 
 
 GdkWindow* get_icon_window(GdkWindow* wrapper)
@@ -277,6 +283,10 @@ void tray_init(GtkWidget* container)
     _icons = g_hash_table_new(g_direct_hash, g_direct_equal);
     GdkScreen* screen = gdk_screen_get_default();
     NaTrayManager* tray_manager = NULL;
+    if (na_tray_manager_check_running(screen)) {
+        g_warning(_("another systray is already running..."));
+        exit(1);
+    }
     tray_manager = na_tray_manager_new();
     /* g_spawn_command_line_async("xev -name dapptray", NULL); */
     //TODO: update _na_base_y
@@ -285,6 +295,10 @@ void tray_init(GtkWidget* container)
     g_signal_connect(tray_manager, "tray_icon_added", G_CALLBACK(tray_icon_added), container);
     g_signal_connect_after(container, "draw", G_CALLBACK(draw_tray_icons), NULL);
     _TRY_ICON_INIT = TRUE;
+
+    init_region(TRAY_GDK_WINDOW(), 0, 0, 0, PANEL_HEIGHT);
+    init_tray_guard_window();
+    update_tray_guard_window_position(0);
 }
 
 
@@ -415,6 +429,15 @@ void _draw_background(cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
 {
+    if (_na_width < DEFAULT_WIDTH) {
+        cairo_save(cr);
+        cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+        cairo_paint(cr);
+        cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+        cairo_restore(cr);
+        return FALSE;
+    }
+
     _draw_background(cr);
 
     if (_icons != NULL) {

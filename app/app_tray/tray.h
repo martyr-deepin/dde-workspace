@@ -26,9 +26,13 @@
 #include <math.h>
 
 #define TRAY_CORNER_RADIUS 3
+#define DEFAULT_HEIGHT 16
+#define DEFAULT_WIDTH 16
 
 void tray_init(GtkWidget* container);
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr);
 void tray_icon_do_screen_size_change();
+int tray_width();
 
 #endif
+
