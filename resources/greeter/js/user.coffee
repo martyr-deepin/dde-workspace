@@ -54,6 +54,7 @@ class User extends Widget
         @is_livecd()
         
         @element.type = "ul"
+        @id = "user_ul"
         @element.id = "user_ul"
         user_ul = @element
         #user_ul = create_element("ul","user_ul",@element)
@@ -69,6 +70,7 @@ class User extends Widget
     new_switchuser:->
         if not is_livecd
             s = new SwitchUser("switchuser")
+            s.button_switch()
             @element.appendChild(s.element)
             return s
 
@@ -256,6 +258,8 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
+        
+    button_switch:->
         @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
@@ -264,6 +268,17 @@ class SwitchUser extends Widget
             DCore.Lock.switch_user()
         )
 
+    SwitchToGreeter:->
+        DCore.Lock.switch_user()
+
+
+    SwitchToUser:(username,session_name)->
+        try
+            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus.SwitchToUser(username,session_name)
+        catch error
+            echo "can not find the switch dbus,perhaps you only have one userAccount!"
+            return false
 
 class UserInfo extends Widget
     userbase = null
@@ -343,7 +358,8 @@ class UserInfo extends Widget
         @add_css_class("UserInfoSelected")
 
         if @id != "guest"
-            if is_greeter
+            #if is_greeter
+            if true
                 #DCore.Greeter.draw_user_background(background, @id)
 
                 if @session? and @session in sessions
@@ -365,7 +381,7 @@ class UserInfo extends Widget
         #@login = null
         @loading?.destroy()
         @loading = null
-        @login_displayed = false
+        #@login_displayed = false
 
         if @ != _current_user
             if @face_login
@@ -376,69 +392,69 @@ class UserInfo extends Widget
             @draw_avatar()
 
     show_login: ->
-        if @face_login
-            enable_detection(false)
+#        if @face_login
+            #enable_detection(false)
 
-        if false
-            @login()
-        else
-        #else if _current_user == @ and not @login
-            if is_hide_users
-                @element.style.paddingBottom = "0px"
-                @login.account.focus()
-            else
-                @login.password.focus()
+        #if false
+            #@login()
+        #else
+        ##else if _current_user == @ and not @login
+            #if is_hide_users
+                #@element.style.paddingBottom = "0px"
+                #@login.account.focus()
+            #else
+                #@login.password.focus()
 
-            if @id == "guest"
-                @login.password.style.display = "none"
-                @login.password.value = "guest"
+            #if @id == "guest"
+                #@login.password.style.display = "none"
+                #@login.password.value = "guest"
 
-            if is_greeter
-                if not DCore.Greeter.user_need_password(@id)
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
-            else
-                if not DCore.Lock.need_password(@id)
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
+            #if is_greeter
+                #if not DCore.Greeter.user_need_password(@id)
+                    #@login.password.style.display = "none"
+                    #@login.password.value = "deepin"
+            #else
+                #if not DCore.Lock.need_password(@id)
+                    #@login.password.style.display = "none"
+                    #@login.password.value = "deepin"
 
-            #@login_displayed = true
-            @add_css_class("UserInfoSelected")
-            @add_css_class("foo")
+            ##@login_displayed = true
+            #@add_css_class("UserInfoSelected")
+            #@add_css_class("foo")
 
     hide_login: ->
-        if @face_login
-            enable_detection(true)
+#        if @face_login
+            #enable_detection(true)
 
-        if @login and @login_displayed
-            @blur()
-            @focus()
+        #if @login and @login_displayed
+            #@blur()
+            #@focus()
 
-    do_click: (e)=>
-        if _current_user == @
-            if not @login and not @in_drag
-                if @face_login
-                    if not @is_recognizing
-                        if e.target.className == 'UserImg'
-                            message_tip?.remove()
-                            DCore[APP_NAME].start_recognize()
-                    if e.target.className == "UserName"
-                        message_tip?.remove()
-                        @show_login()
-                        @stop_animation()
-                else
-                    @show_login()
-            else
-                if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
-                    echo "do click:login pwd clicked"
-                else
-                    # @hide_login()
+#    do_click: (e)=>
+        #if _current_user == @
+            #if not @login and not @in_drag
+                #if @face_login
+                    #if not @is_recognizing
+                        #if e.target.className == 'UserImg'
+                            #message_tip?.remove()
+                            #DCore[APP_NAME].start_recognize()
+                    #if e.target.className == "UserName"
+                        #message_tip?.remove()
+                        #@show_login()
+                        #@stop_animation()
+                #else
+                    #@show_login()
+            #else
+                #if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
+                    #echo "do click:login pwd clicked"
+                #else
+                    ## @hide_login()
 
-                    if @face_login
-                        message_tip?.remove()
-                        DCore[APP_NAME].start_recognize()
-        else
-            @focus()
+                    #if @face_login
+                        #message_tip?.remove()
+                        #DCore[APP_NAME].start_recognize()
+        #else
+            #@focus()
 
     on_verify: (username, password)->
         if not password or @display_failure
@@ -449,13 +465,13 @@ class UserInfo extends Widget
             #@loading = new Loading("loading")
             #@element.appendChild(@loading.element)
 
+            session = de_menu.get_current()
+            if not session?
+                echo "get session failed"
+                session = "deepin"
+            @session = session
+            echo 'start session'
             if is_greeter
-                session = de_menu.get_current()
-                if not session?
-                    echo "get session failed"
-                    session = "deepin"
-                @session = session
-                echo 'start session'
                 DCore.Greeter.start_session(username, password, @session)
                 echo 'start session end'
             else
@@ -463,12 +479,16 @@ class UserInfo extends Widget
                     DCore.Lock.try_unlock(username,password)
                 else
                     echo "we must start_session"
-                    DCore.Lock.try_unlock(username,password)
+                    s = new SwitchUser()
+                    echo @session
+                    s.SwitchToUser(username,@session)
+                    #DCore.Lock.try_unlock(username,password)
+    
 
     hide_user_fail:  (msg) ->
         @login.account.style.color = "red"
         @login.account.value = msg
-        @login.account.blur()
+        #@login.account.blur()
 
         document.body.addEventListener("keydown", (e)=>
             if e.which == ENTER_KEY and @login_displayed and @display_failure
@@ -478,7 +498,7 @@ class UserInfo extends Widget
         @login.account.addEventListener("focus", (e)=>
             @login.account.style.color = "black"
             @login.account.value = ""
-            @display_failure = false
+            #@display_failure = false
         )
 
     normal_user_fail: (msg) ->
@@ -486,7 +506,7 @@ class UserInfo extends Widget
         @login.password.classList.remove("PasswordStyle")
         @login.password.style.color = "red"
         @login.password.value = msg
-        @login.password.blur()
+        #@login.password.blur()
 
         document.body.addEventListener("keydown", (e)=>
             if e.which == ENTER_KEY and is_greeter and @login_displayed and @display_failure
@@ -497,7 +517,7 @@ class UserInfo extends Widget
             @login.password.classList.add("PasswordStyle")
             @login.password.style.color = "black"
             @login.password.value = ""
-            @display_failure = false
+            #@display_failure = false
         )
 
     auth_failed: (msg) ->
