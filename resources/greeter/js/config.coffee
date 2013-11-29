@@ -23,7 +23,8 @@ catch error
     APP_NAME = "Lock"
 
 if is_greeter
-    is_hide_users = DCore.Greeter.is_hide_users()
+    #is_hide_users = DCore.Greeter.is_hide_users()
+    is_hide_users = false
 else
     is_hide_users = false
 

@@ -436,9 +436,7 @@ class UserInfo extends Widget
             @login.password.focus()
             @display_failure = false
         else
-            echo 'destroy'
             @login.destroy()
-            echo 'destroy end'
             @loading = new Loading("loading")
             @element.appendChild(@loading.element)
 
