@@ -233,13 +233,12 @@ class TrashVDir extends DesktopEntry
         menus.push([])
         count = DCore.DEntry.get_trash_count()
         if count > 1
-            menus.push([3, _("_Clean up") + "#{count}" + _("items")])
+            menus.push([3, _("_Clean up %1 items").args(count)])
         else if count == 1
-            menus.push([3, _("_Clean up") + "1" + _("item")])
+            menus.push([3, _("_Clean up 1 item")])
         else
             menus.push([3, _("_Clean up"), false])
         menus
-
 
     do_itemselected : (evt) ->
         switch evt.id
