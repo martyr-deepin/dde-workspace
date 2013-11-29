@@ -1,57 +1,57 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Wang Dianjin <wangdianjin@linuxdeepin.com>, 2013
-# freddy <freddy4212@gmail.com>, 2013
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1 \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-11-29 15:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../resources/dock/js/deepin_item.coffee:66
 msgid "Launcher"
-msgstr "啟動器"
+msgstr ""
 
 #: ../resources/dock/js/deepin_item.coffee:69
 msgid "Show/Hide Desktop"
-msgstr "顯示/隱藏桌面"
+msgstr ""
 
 #: ../resources/dock/js/item.coffee:267
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "該項目無效。您要將其從 Dock 刪除嗎？"
+msgstr ""
 
 #: ../resources/dock/js/launcher.coffee:42 ../lib/dentry/mime_actions.c:213
 msgid "_Run"
-msgstr "執行(_R)"
+msgstr ""
 
 #: ../resources/dock/js/launcher.coffee:56
 msgid "_Undock"
-msgstr "移除停駐(_U)"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:36
 msgid "_New window"
-msgstr "新建视窗(_N)"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:49
 msgid "_Close"
-msgstr "關閉(_C)"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:50
 msgid "Close _All"
-msgstr "關閉全部(_A)"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:52
 msgid "_Dock me"
-msgstr "停駐(_D)"
+msgstr ""
 
 #: ../resources/launcher/js/grid.coffee:87
 #: ../resources/desktop/js/desktopentry.coffee:101
@@ -62,602 +62,602 @@ msgstr "停駐(_D)"
 #: ../resources/desktop/js/richdir.coffee:130
 #: ../resources/desktop/js/richdir.coffee:458
 msgid "_Open"
-msgstr "開啟(_O)"
+msgstr ""
 
 #: ../resources/launcher/js/grid.coffee:91
 msgid "Send to d_esktop"
-msgstr "發送到桌面(_E)"
+msgstr ""
 
 #: ../resources/launcher/js/grid.coffee:92
 msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:30
 msgid "_Hide hidden icons"
-msgstr "隱藏已隱藏圖示(_H)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:31
 msgid "_Display hidden icons"
-msgstr "顯示已隱藏圖示(_D)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:34
 msgid "_Hide this icon"
-msgstr "隱藏該圖示(_H)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:35
 msgid "_Display this icon"
-msgstr "顯示該圖示(_D)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:40
 msgid "_Add to autostart"
-msgstr "加入到「自動啟動」(_A)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:41
 msgid "_Remove from autostart"
-msgstr "從「自動啟動」中移除(_R)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:47
 msgid "Sort By _Frequency"
-msgstr "依使用頻率排序(_F)"
+msgstr ""
 
 #: ../resources/launcher/js/config.coffee:48
 msgid "Sort By _Name"
-msgstr "依名稱排序(_N)"
+msgstr ""
 
 #: ../resources/launcher/js/search.coffee:23
 msgid "Type to search..."
-msgstr "鍵入要搜尋的關鍵字..."
+msgstr ""
 
 #: ../resources/desktop/js/invalidlink.coffee:34
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/richdir.coffee:136
 #: ../resources/desktop/js/richdir.coffee:463
 msgid "_Delete"
-msgstr "删除(_D)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:103
 #: ../resources/desktop/js/richdir.coffee:460
 msgid "Cu_t"
-msgstr "剪下(_T)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:104
 #: ../resources/desktop/js/richdir.coffee:461
 msgid "_Copy"
-msgstr "複製(_C)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:106
 #: ../resources/desktop/js/richdir.coffee:132
 msgid "_Rename"
-msgstr "重新命名(_R)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:109
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:140
 #: ../resources/desktop/js/richdir.coffee:465
 msgid "_Properties"
-msgstr "屬性(_P)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
 msgid "Co_mpress"
-msgstr "壓縮(_M)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:118
 #: ../resources/desktop/js/desktopentry.coffee:123
 msgid "_Extract"
-msgstr "解開(_E)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:119
 #: ../resources/desktop/js/desktopentry.coffee:124
 msgid "Extract _Here"
-msgstr "在此解壓縮(_H)"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:150
 msgid "Can not open this file."
-msgstr "無法打開此檔案。"
+msgstr ""
 
 #: ../resources/desktop/js/desktopentry.coffee:150
 #: ../resources/desktop/js/application.coffee:177
 #: ../resources/desktop/js/richdir.coffee:351
 #: ../resources/desktop/js/richdir.coffee:476
 msgid "Warning"
-msgstr "警告"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
 msgid "Untitled"
-msgstr "無標題"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:993
 msgid "_Folder"
-msgstr "資料夾(_F)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:994
 msgid "_Text document"
-msgstr "文字文件(_T)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1003
 msgid "_Sort by"
-msgstr "排序方式(_S)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1004
 msgid "_Name"
-msgstr "名稱(_N)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1005
 msgid "Last modified _time"
-msgstr "最近修改時間(_T)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1008
 msgid "_New"
-msgstr "新增(_N)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1010
 msgid "Open in _terminal"
-msgstr "在終端機中打開(_T)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1011
 msgid "_Paste"
-msgstr "貼上(_P)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1013
 msgid "_Display settings"
-msgstr "顯示設定(_D)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1014
 msgid "D_esktop settings"
-msgstr "桌面設定(_E)"
+msgstr ""
 
 #: ../resources/desktop/js/grid.coffee:1015
 msgid "Pe_rsonalize"
-msgstr "個人化(_R)"
+msgstr ""
 
 #: ../resources/desktop/js/application.coffee:177
 #: ../resources/desktop/js/richdir.coffee:351
 #: ../resources/desktop/js/richdir.coffee:476
 msgid "The link has expired. Do you want to delete it?"
-msgstr "該連結已經失效，是否要刪除？"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
-msgstr "電腦"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:83
 msgid "Home"
-msgstr "家目錄"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:173
 msgid "Trash"
-msgstr "回收筒"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:236
 msgid "_Clean up %1 items"
-msgstr "清理%1個項目(_C)"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:238
 msgid "_Clean up 1 item"
-msgstr "清理1個項目(_C)"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:240
 msgid "_Clean up"
-msgstr "清理(_C)"
+msgstr ""
 
 #: ../resources/desktop/js/specialitem.coffee:269
 msgid "Software Center"
-msgstr "軟體中心"
+msgstr ""
 
 #: ../resources/desktop/js/richdir.coffee:134
 msgid "_Ungroup"
-msgstr "取消群組(_U)"
+msgstr ""
 
 #: ../resources/greeter/js/session.coffee:25
 msgid "Session"
-msgstr "作業階段"
+msgstr ""
 
 #: ../resources/greeter/js/session.coffee:134
 msgid "suspend"
-msgstr "暫停"
+msgstr ""
 
 #: ../resources/greeter/js/session.coffee:136
 msgid "hibernate"
-msgstr "休眠"
+msgstr ""
 
 #: ../resources/greeter/js/session.coffee:138
 msgid "shutdown"
-msgstr "關機"
+msgstr ""
 
 #: ../resources/greeter/js/session.coffee:140
 msgid "restart"
-msgstr "重新啟動"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jan"
-msgstr "一月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Feb"
-msgstr "二月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Mar"
-msgstr "三月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Apr"
-msgstr "四月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "May"
-msgstr "五月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jun"
-msgstr "六月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Jul"
-msgstr "七月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Aug"
-msgstr "八月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Sep"
-msgstr "九月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Oct"
-msgstr "十月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Nov"
-msgstr "十一月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:38
 msgid "Dec"
-msgstr "十二月"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sun"
-msgstr "星期日"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Mon"
-msgstr "星期一"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Tue"
-msgstr "星期二"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Wed"
-msgstr "星期三"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Thu"
-msgstr "星期四"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Fri"
-msgstr "星期五"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:39
 msgid "Sat"
-msgstr "星期六"
+msgstr ""
 
 #: ../resources/greeter/js/greeter.coffee:57
 msgid "guest"
-msgstr "訪客"
+msgstr ""
 
 #: ../resources/greeter/js/user.coffee:80
 msgid "Log In"
-msgstr "登入"
+msgstr ""
 
 #: ../resources/greeter/js/user.coffee:82
 msgid "Unlock"
-msgstr "解鎖"
+msgstr ""
 
 #: ../resources/greeter/js/user.coffee:115
 msgid "Welcome"
-msgstr "歡迎"
+msgstr ""
 
 #: ../resources/greeter/js/user.coffee:121
 msgid "Switch User"
-msgstr "切換使用者"
+msgstr ""
 
 #: ../app/dock/dock.c:286
 msgid "another instance of dock is running...\n"
-msgstr "已有一個應用程式Dock例程正在運行...\n"
+msgstr ""
 
 #: ../app/dock/dock.c:379
 msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "無法啟用Dock，因為Compiz附加元件尚未啟用"
+msgstr ""
 
 #: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
 msgid "another instance of launcher is running...\n"
-msgstr "已有一個應用程式啟動器例程正在運行...\n"
+msgstr ""
 
 #: ../app/desktop/desktop.c:213
 msgid "New file"
-msgstr "新增檔案"
+msgstr ""
 
 #: ../app/desktop/desktop.c:224
 msgid "New directory"
-msgstr "新增資料夾"
+msgstr ""
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
-msgstr "糟糕～無法識別您的面部信息"
+msgstr ""
 
 #: ../app/greeter/camera.c:177
 msgid "Please login with your password or click your picture to retry."
-msgstr "請使用密碼登入或點擊頭像重試"
+msgstr ""
 
 #: ../app/greeter/camera.c:234
 #, c-format
 msgid "%sRetry automatically in %ds"
-msgstr "%s%d秒後自動重試"
+msgstr ""
 
 #: ../app/greeter/dlock.c:113 ../app/greeter/greeter.c:148
 msgid "Invalid Password"
-msgstr "密碼錯誤"
+msgstr ""
 
 #: ../app/greeter/mutils.c:83
 msgid "%a, %b %d, %Y"
-msgstr "%Y年%b%d日 %A"
+msgstr ""
 
 #: ../lib/dentry/entry.c:742
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
-msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
+msgstr ""
 
 #: ../lib/dentry/entry.c:748
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "名稱「%s」已存在於該資料夾。請使用其他名稱。"
+msgstr ""
 
 #: ../lib/dentry/entry.c:754
 msgid "The Item could not be renamed"
-msgstr "該項目無法重命名"
+msgstr ""
 
 #: ../lib/dentry/entry.c:828 ../lib/dentry/fileops.c:804
 msgid "copy"
-msgstr "複製"
+msgstr ""
 
 #: ../lib/dentry/entry.c:1410
 msgid "App Group"
-msgstr "程式啟動組"
+msgstr ""
 
 #: ../lib/dentry/fileops.c:565
 msgid "move"
-msgstr "移動"
+msgstr ""
 
 #: ../lib/dentry/fileops.c:771
 msgid "Copy"
-msgstr "複製"
+msgstr ""
 
 #: ../lib/dentry/fileops_delete.c:27
 msgid "Delete File"
-msgstr "刪除檔案"
+msgstr ""
 
 #: ../lib/dentry/fileops_delete.c:30
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "您確定要永久刪除檔案嗎？"
+msgstr ""
 
 #: ../lib/dentry/fileops_delete.c:31
 msgid "If you delete an item, it will be permanently lost"
-msgstr "如果您要刪除某項目，它將永久消失"
+msgstr ""
 
 #: ../lib/dentry/fileops_delete.c:34
 msgid "Delete"
-msgstr "刪除"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:62
 msgid "File conflict"
-msgstr "檔案衝突"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:106
 msgid "_Select a new name for the destination"
-msgstr "為目標選擇新的名稱(_S)"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:117
 msgid "Reset"
-msgstr "重設"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:126
 msgid "Apply this action to all files"
-msgstr "將該動作套用到全部檔案"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:133
 msgid "_Skip"
-msgstr "略過(_S)"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:136
 msgid "Re_name"
-msgstr "重新命名(_N)"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:141
 msgid "Replace"
-msgstr "取代"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:218
 #, c-format
 msgid "Merge folder \"%s\"?"
-msgstr "合併資料夾「%s」？"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 msgid ""
 "Merging will ask for confirmation before replacing any files in the folder "
 "that conflict with the files being copied."
-msgstr "合併將會在替換衝突檔案時請求確認。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:224
 #, c-format
 msgid "An older folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較舊資料夾已存在。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:228
 #, c-format
 msgid "A newer folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個較新資料夾已存在。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:232
 #, c-format
 msgid "Another folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中有相同名稱的一個資料夾已存在。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:238
 msgid "Replacing it will remove all files in the folder."
-msgstr "替換將移除資料夾中的所有檔案。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:240
 #, c-format
 msgid "Replace folder \"%s\"?"
-msgstr "替換資料夾「%s」？"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
 msgid "A folder with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的資料夾。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:248
 #, c-format
 msgid "Replace file \"%s\"?"
-msgstr "替換檔案「%s」？"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:249
 msgid "Replacing it will overwrite its content."
-msgstr "取代將覆蓋它的內容。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:251
 #, c-format
 msgid "An older file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在較舊的相同名稱的檔案。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:255
 #, c-format
 msgid "A newer file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在更新的相同檔案名的檔案。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:259
 #, c-format
 msgid "Another file with the same name already exists in \"%s\"."
-msgstr "在「%s」中已存在相同檔案名的檔案。"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:331
 msgid "Original file"
-msgstr "原始檔案"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:332
 #: ../lib/dentry/fileops_error_dialog.c:360
 msgid "Size:"
-msgstr "大小："
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:336
 #: ../lib/dentry/fileops_error_dialog.c:364
 msgid "Type:"
-msgstr "類型："
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:340
 #: ../lib/dentry/fileops_error_dialog.c:368
 msgid "Last modified:"
-msgstr "修改日期："
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:359
 msgid "Replace with"
-msgstr "取代為"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_dialog.c:385
 msgid "Merge"
-msgstr "合併"
+msgstr ""
 
 #: ../lib/dentry/fileops_error_reporting.c:105
 #: ../lib/dentry/fileops_error_reporting.c:187
 #, c-format
 msgid "Error while %s files"
-msgstr "當%s檔案時出錯"
+msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:58
 msgid "Empty Trash"
-msgstr "清理回收筒"
+msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:67
 msgid "Empty all items from Trash?"
-msgstr "清理回收筒中的全部項目嗎？"
+msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:68
 msgid "All items in the Trash will be permanently deleted."
-msgstr "回收筒中的全部項目將被永久刪除。"
+msgstr ""
 
 #: ../lib/dentry/fileops_trash.c:71
 msgid "Empty _Trash"
-msgstr "清理回收筒(_T)"
+msgstr ""
 
 #: ../lib/dentry/mime_actions.c:198
 #, c-format
 msgid "Do you want to run \"%s\", or display its contents?"
-msgstr "您想要執行“%s”，還是顯示其內容？"
+msgstr ""
 
 #: ../lib/dentry/mime_actions.c:199
 #, c-format
 msgid "\"%s\" is an executable text file."
-msgstr "「%s」是一個可執行的文字文件。"
+msgstr ""
 
 #: ../lib/dentry/mime_actions.c:210
 msgid "Run in _Terminal"
-msgstr "在終端機中打開(_T)"
+msgstr ""
 
 #: ../lib/dentry/mime_actions.c:211
 msgid "_Display"
-msgstr "顯示(_D)"
+msgstr ""
 
 #: ../lib/category.h:31
 msgid "all"
-msgstr "全部"
+msgstr ""
 
 #: ../lib/category.h:32
 msgid "internet"
-msgstr "網路應用"
+msgstr ""
 
 #: ../lib/category.h:33
 msgid "multimedia"
-msgstr "影音播放"
+msgstr ""
 
 #: ../lib/category.h:34
 msgid "games"
-msgstr "遊戲娛樂"
+msgstr ""
 
 #: ../lib/category.h:35
 msgid "graphics"
-msgstr "美工繪圖"
+msgstr ""
 
 #: ../lib/category.h:36
 msgid "productivity"
-msgstr "辦公軟體"
+msgstr ""
 
 #: ../lib/category.h:37
 msgid "industry"
-msgstr "行業軟體"
+msgstr ""
 
 #: ../lib/category.h:38
 msgid "education"
-msgstr "科學教育"
+msgstr ""
 
 #: ../lib/category.h:39
 msgid "development"
-msgstr "編程開發"
+msgstr ""
 
 #: ../lib/category.h:40
 msgid "system"
-msgstr "系統管理"
+msgstr ""
 
 #: ../lib/category.h:41
 msgid "utilities"
-msgstr "公用程式"
+msgstr ""
 
 #: ../lib/category.h:42
 msgid "other"
-msgstr "其他"
+msgstr ""
