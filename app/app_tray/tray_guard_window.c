@@ -62,7 +62,7 @@ static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
         if (e->evtype == EnterNotify) {
             g_debug("[%s] EnterNotify", __func__);
             if (gdk_window_get_width(TRAY_GDK_WINDOW()) > 16) {
-                tray_delay_show(100);
+                tray_delay_show(500);
             }
         } else if (e->evtype == LeaveNotify) {
             g_debug("[%s] LeaveNotify", __func__);
