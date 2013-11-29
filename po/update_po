@@ -30,16 +30,14 @@ lang = ["zh_CN", "zh_TW"]
 import os
 
 for l in lang:
-    os.system("touch %s.pot" % l)
+    os.system("touch dde.pot")
 
-    cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % l + " ".join(coffee_files)
+    cmd= "xgettext --from-code=utf-8 -L python -j -o dde.pot " + " ".join(coffee_files)
     os.system(cmd)
 
-    cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % l + " ".join(c_files)
+    cmd = "xgettext --from-code=utf-8 -k_ -j -o dde.pot " + " ".join(c_files)
     os.system(cmd)
 
-    os.system("msgmerge %s.po %s.pot > new_%s.po" % (l, l, l))
+    os.system("msgmerge %s.po dde.pot > new_%s.po" % (l, l))
 
     os.system("mv new_%s.po %s.po" % (l, l))
-
-    os.system("rm %s.pot" % l)
