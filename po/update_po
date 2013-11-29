@@ -4,9 +4,10 @@ import glob
 import os
 
 
+lang = ["zh_CN", "zh_TW"]
+
 coffee_files = []
 c_files = []
-
 except_dirs = ["dbus_test", "memory_test", "dominant_color"]
 
 
@@ -28,27 +29,23 @@ def get_files():
             ]
 
 
-lang = ["zh_CN", "zh_TW"]
-
-
 def scan():
-    global coffee_files, c_files
+    global coffee_files, c_files, lang
+    os.system("rm dde.pot")
     for l in lang:
-        os.system("touch %s.pot" % l)
+        os.system("touch dde.pot")
+        os.system("touch %s.po" % l)
 
-        cmd= "xgettext --from-code=utf-8 -L python -j -o %s.pot " % l + " ".join(coffee_files)
+        cmd= "xgettext --from-code=utf-8 -L python -j -o dde.pot " + " ".join(coffee_files)
         os.system(cmd)
 
-        cmd = "xgettext --from-code=utf-8 -k_ -j -o %s.pot " % l + " ".join(c_files)
+        cmd = "xgettext --from-code=utf-8 -k_ -j -o dde.pot " + " ".join(c_files)
         os.system(cmd)
 
-        os.system("msgmerge %s.po %s.pot > new_%s.po" % (l, l, l))
+        os.system("msgmerge %s.po dde.pot > new_%s.po" % (l, l))
 
         os.system("mv new_%s.po %s.po" % (l, l))
 
-        os.system("rm %s.pot" % l)
-
-
 if __name__ == '__main__':
-    get_files();
+    get_files()
     scan()
