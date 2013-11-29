@@ -265,6 +265,7 @@ class UserInfo extends Widget
     userbase = null
     right = null
     userimg = null
+    recognize = null
     username = null
     login_div = null
 
@@ -320,11 +321,13 @@ class UserInfo extends Widget
             @scan_line = create_img('', 'images/scan-line.png', @scanner)
 
     draw_avatar: ->
-        ctx = userimg.getContext("2d")
-        img = new Image()
-        img.onload = ->
-            ctx.drawImage(img, 0, 0)
-        img.src = @img_src
+        #ctx = userimg.getContext("2d")
+        #img = new Image()
+        #img.onload = ->
+            #ctx.drawImage(img, 0, 0)
+        #img.src = @img_src
+
+        apply_animation(recognize,recognize_animation,"10s")
 
     focus: ->
         DCore[APP_NAME].set_username(@id)
@@ -452,7 +455,11 @@ class UserInfo extends Widget
                 DCore.Greeter.start_session(username, password, @session)
                 echo 'start session end'
             else
-                DCore.Lock.try_unlock(username,password)
+                if username is DCore.Lock.get_username()
+                    DCore.Lock.try_unlock(username,password)
+                else
+                    echo "we must start_session"
+                    DCore.Lock.try_unlock(username,password)
 
     hide_user_fail:  (msg) ->
         @login.account.style.color = "red"

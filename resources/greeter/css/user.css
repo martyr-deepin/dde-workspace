@@ -57,7 +57,7 @@
     background: url(../images/light.png) repeat, black;
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
-    -webkit-animation-name: recognize-animation;
+    /*-webkit-animation-name: recognize-animation;*/
     -webkit-animation-duration: 10s;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
