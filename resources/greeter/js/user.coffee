@@ -199,9 +199,10 @@ class LoginEntry extends Widget
         # @check_capslock()
 
         @password.addEventListener("keyup", (e)=>
-            @check_capslock()
+            #@check_capslock()
             if e.which == ENTER_KEY
                 if @check_completeness
+                    echo "#{@loginuser},#{@password.value}"
                     if is_hide_users
                         @on_active(@account.value, @password.value)
                     else
@@ -216,6 +217,7 @@ class LoginEntry extends Widget
 
         @login.addEventListener("click", =>
             if @check_completeness
+                echo "#{@loginuser},#{@password.value}"
                 if is_hide_users
                     @on_active(@account.value, @password.value)
                 else
@@ -437,8 +439,8 @@ class UserInfo extends Widget
             @display_failure = false
         else
             @login.destroy()
-            @loading = new Loading("loading")
-            @element.appendChild(@loading.element)
+            #@loading = new Loading("loading")
+            #@element.appendChild(@loading.element)
 
             if is_greeter
                 session = de_menu.get_current()
@@ -450,7 +452,7 @@ class UserInfo extends Widget
                 DCore.Greeter.start_session(username, password, @session)
                 echo 'start session end'
             else
-                DCore.Lock.try_unlock(password)
+                DCore.Lock.try_unlock(username,password)
 
     hide_user_fail:  (msg) ->
         @login.account.style.color = "red"
@@ -469,6 +471,7 @@ class UserInfo extends Widget
         )
 
     normal_user_fail: (msg) ->
+        echo "normal_user_fail"
         @login.password.classList.remove("PasswordStyle")
         @login.password.style.color = "red"
         @login.password.value = msg

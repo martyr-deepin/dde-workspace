@@ -52,11 +52,11 @@
 
 static GSGrab* grab = NULL;
 static GtkWidget* lock_container = NULL;
-const gchar *username;
 static GSettings* dde_bg_g_settings = NULL;
+const gchar *username = NULL;
 
 JS_EXPORT_API
-gboolean lock_try_unlock (const gchar *password)
+gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
     if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {
         gtk_main_quit();
@@ -84,9 +84,9 @@ gboolean lock_try_unlock (const gchar *password)
     }
     error = NULL;
 
-    if (username == NULL) {
-        username = lock_get_username ();
-    }
+    /*if (username == NULL) {*/
+        /*username = lock_get_username ();*/
+    /*}*/
 
     lock_succeed  = g_dbus_proxy_call_sync (lock_proxy,
                     "UnlockCheck",
