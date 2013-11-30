@@ -36,6 +36,7 @@ _drag_flag = false
 
 
 class User extends Widget
+    Dbus_Account = null
     is_livecd = false
 
     username = null
@@ -48,7 +49,7 @@ class User extends Widget
     users_path = []
     users_name = []
     users_realname = []
-   
+    users_type = []
     constructor:->
         super
         @is_livecd()
@@ -58,6 +59,7 @@ class User extends Widget
     
     is_livecd:->
         try
+            Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
             dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
             is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
         catch error
@@ -71,14 +73,15 @@ class User extends Widget
             return s
 
     get_all_users:->
-        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         users_path = Dbus_Account.ListCachedUsers_sync()
         for user in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",user,"org.freedesktop.Accounts.User")
             name = user_dbus.UserName
             realname = user_dbus.RealName
+            type = user_dbus.AccountType
             users_realname.push(realname)
             users_name.push(name)
+            users_type.push(type)
         return users_name
 
     get_current_username:->
@@ -108,11 +111,19 @@ class User extends Widget
         return user_image
 
     get_user_type:(user)->
-        user_type = "Administrator"
+        if users_type.length == 0 or users_name.length == 0 then @get_all_users()
+        for username,j in users_name
+            if user is username
+                type = users_type[j]
+                switch type
+                    when 1 then return _("Administrator")
+                    when 0 then return _("Standard user")
+                    else return _("Standard user")
+        return _("Standard user")
 
     new_userinfo_all:()->
         if is_hide_users
-            userinfo = new UserInfo("*other", "", "images/huser.jpg")
+            userinfo = new UserInfo("*other", "", "images/huser.jpg",@get_user_type("*other"))
             user_ul.appendChild(userinfo.userinfo_li)
             Widget.look_up("*other").element.style.paddingBottom = "5px"
             userinfo.focus()
@@ -123,13 +134,13 @@ class User extends Widget
             for user in users_name
                 if user == _current_username
                     userimage = @get_user_image(user)
-                    _current_user = new UserInfo(user, user, userimage)
+                    _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
                     userinfo_all.push(_current_user)
                     user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
                 else
                     userimage = @get_user_image(user)
-                    u = new UserInfo(user, user, userimage)
+                    u = new UserInfo(user, user, userimage,@get_user_type(user))
                     userinfo_all.push(u)
                     user_ul.appendChild(u.userinfo_li)
 
@@ -139,7 +150,7 @@ class User extends Widget
         return userinfo_all
 
         if DCore.Greeter.is_support_guest() and is_greeter
-            u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+            u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
             user_ul.appendChild(u.userinfo_li)
             if DCore.Greeter.is_guest_default()
                 u.focus()
@@ -163,7 +174,7 @@ class User extends Widget
 
 
 class LoginEntry extends Widget
-    constructor: (@id, @loginuser, @on_active)->
+    constructor: (@id, @loginuser,@type ,@on_active)->
         super
         # echo "new LoginEntry"
         if is_hide_users
@@ -180,8 +191,8 @@ class LoginEntry extends Widget
         @usertype = create_element("div","usertype",@element)
         icon_lock = create_element("i","icon-lock",@usertype)
         type_text = create_element("div","type_text",@usertype)
-        type_text.textContent = "Administrator"
-        
+        type_text.textContent = @type
+
         @capswarning = create_element("div", "capswarning", @element)
         @password = create_element("input", "password", @capswarning)
         @password.type = "password"
@@ -283,7 +294,7 @@ class UserInfo extends Widget
     username = null
     login_div = null
 
-    constructor: (@id, name, @img_src)->
+    constructor: (@id, name, @img_src,@type)->
         super
 
         @element.setAttribute("type","li")
@@ -298,7 +309,7 @@ class UserInfo extends Widget
         username.innerText = name
 
         login_div = create_element("div", "login_div", @userinfo_li)
-        @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
+        @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
 
