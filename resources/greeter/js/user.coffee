@@ -336,10 +336,7 @@ class UserInfo extends Widget
 
         @element.focus()
 
-        if not @session? and @session in sessions
-            de_menu.set_current(@session)
-        else
-            echo "#{@id} in focus invalid user session"
+        #if @session then de_menu.set_current(@session)
 
         @draw_camera()
         @draw_avatar()
