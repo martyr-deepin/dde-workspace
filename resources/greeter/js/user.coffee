@@ -276,7 +276,6 @@ class SwitchUser extends Widget
     SwitchToGreeter:->
         DCore.Lock.switch_user()
 
-
     SwitchToUser:(username,session_name)->
         try
             switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
