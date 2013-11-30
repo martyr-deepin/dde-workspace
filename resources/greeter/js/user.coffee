@@ -53,12 +53,8 @@ class User extends Widget
         super
         @is_livecd()
         
-        @element.setAttribute("type","ul")
-        @id = "user_ul"
-        @element.id = "user_ul"
-        user_ul = @element
-        #user_ul = create_element("ul","user_ul",@element)
-        #user_ul.id = "user_ul"
+        user_ul = create_element("ul","user_ul",@element)
+        user_ul.id = "user_ul"
     
     is_livecd:->
         try
@@ -117,7 +113,7 @@ class User extends Widget
     new_userinfo_all:()->
         if is_hide_users
             userinfo = new UserInfo("*other", "", "images/huser.jpg")
-            user_ul.appendChild(userinfo.element)
+            user_ul.appendChild(userinfo.userinfo_li)
             Widget.look_up("*other").element.style.paddingBottom = "5px"
             userinfo.focus()
         else
@@ -129,13 +125,13 @@ class User extends Widget
                     userimage = @get_user_image(user)
                     _current_user = new UserInfo(user, user, userimage)
                     userinfo_all.push(_current_user)
-                    user_ul.appendChild(_current_user.element)
+                    user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
                 else
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage)
                     userinfo_all.push(u)
-                    user_ul.appendChild(u.element)
+                    user_ul.appendChild(u.userinfo_li)
 
 
         if user_ul.children.length <= 2
@@ -144,7 +140,7 @@ class User extends Widget
 
         if DCore.Greeter.is_support_guest() and is_greeter
             u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-            user_ul.appendChild(u.element)
+            user_ul.appendChild(u.userinfo_li)
             if DCore.Greeter.is_guest_default()
                 u.focus()
     
@@ -274,6 +270,7 @@ class SwitchUser extends Widget
         try
             switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
             switch_dbus.SwitchToUser(username,session_name)
+            echo switch_dbus
         catch error
             echo "can not find the switch dbus,perhaps you only have one userAccount!"
             return false
@@ -290,7 +287,9 @@ class UserInfo extends Widget
         super
 
         @element.setAttribute("type","li")
-        userbase = create_element("div", "UserBase", @element)
+        @userinfo_li = create_element("li","userinfo_li",@element)
+        @userinfo_li.id = "userinfo_li"
+        userbase = create_element("div", "UserBase", @userinfo_li)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
@@ -298,7 +297,7 @@ class UserInfo extends Widget
         username = create_element("label", "UserName", recognize_h1)
         username.innerText = name
 
-        login_div = create_element("div", "login_div", @element)
+        login_div = create_element("div", "login_div", @userinfo_li)
         @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
@@ -324,7 +323,7 @@ class UserInfo extends Widget
         draw_camera_id = null
         apply_animation(recognize,"","") if @face_login
         enable_detection(false) if @face_login
-        DCore[APP_NAME].cancel_detect()
+        #DCore[APP_NAME].cancel_detect()
 
     focus: ->
         DCore[APP_NAME].set_username(@id)
@@ -380,6 +379,7 @@ class UserInfo extends Widget
             echo 'start session end'
         else
             if DCore.Lock.try_unlock(username,password)
+                echo "try_unlock succeed!"
                 if username isnt DCore.Lock.get_username()
                     echo "we must start_session for #{username}"
                     s = new SwitchUser()
