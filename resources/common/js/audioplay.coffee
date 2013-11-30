@@ -27,6 +27,7 @@ class AudioPlay
     constructor: ->
         try
             mpris = @get_mpris_dbus()
+            if not mpris? then return
             echo mpris
             mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
             launched_status = true
