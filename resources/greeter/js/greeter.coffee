@@ -92,6 +92,10 @@ DCore.signal_connect("draw_background", (info)->
 
 greeter = new Greeter()
 
+desktopmenu = new DesktopMenu($("div_desktop"))
+desktopmenu.new_desktop_menu()
+
+
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_all()
@@ -106,9 +110,6 @@ greeter.mousewheel_listener(_current_user)
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
-
-desktopmenu = new DesktopMenu($("div_desktop"))
-desktopmenu.new_desktop_menu()
 
 powermenu = new PowerMenu($("div_power"))
 powermenu.new_power_menu()
