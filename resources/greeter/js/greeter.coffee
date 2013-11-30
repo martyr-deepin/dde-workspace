@@ -53,13 +53,13 @@ class Greeter extends Widget
         )
 
 
-    keydown_listner:(_current_user)->
+    keydown_listener:(_current_user)->
         document.body.addEventListener("keydown", (e)=>
-            if e.which == LEFT_ARROW
+            if e.which == UP_ARROW
                 # echo "prev"
                 _current_user?.animate_prev()
 
-            else if e.which == RIGHT_ARROW
+            else if e.which == DOWN_ARROW
                 # echo "next"
                 _current_user?.animate_next()
 
@@ -71,11 +71,6 @@ class Greeter extends Widget
                     DCore[APP_NAME].cancel_detect()
                     _current_user?.stop_animation()
                 _current_user?.show_login()
-                message_tip?.remove()
-
-            else if e.which == ESC_KEY
-                #echo "esc"
-                _current_user?.hide_login()
                 message_tip?.remove()
         )
 

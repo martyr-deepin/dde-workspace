@@ -29,29 +29,51 @@ class Lock extends Widget
 
     start_login_connect:(userinfo)->
         DCore.signal_connect("start-login", ->
-            # echo "receive start login"
+            echo "receive start login"
             # TODO: maybe some animation or some reflection.
             userinfo.is_recognizing = false
             DCore.Lock.try_unlock("")
         )
 
-    keydown_listener:(userinfo)->
-        document.body.addEventListener("keydown", (e) =>
-            if e.which == ENTER_KEY
-                if not userinfo.login_displayed
-                    # if not userinfo.is_recognizing
-                    if userinfo.face_login
-                        DCore[APP_NAME].cancel_detect()
-                        userinfo?.stop_animation()
-                        userinfo.is_recognizing = false
-                    userinfo.show_login()
-                    message_tip?.remove()
-                else
-                    userinfo.login.on_active(user, userinfo.login.password.value)
+    mousewheel_listener:(_current_user)->
+        document.body.addEventListener("mousewheel", (e) =>
+            clearTimeout(_ANIMATE_TIMEOUT_ID)
+            _ANIMATE_TIMEOUT_ID = -1
 
-            else if e.which == ESC_KEY
-                userinfo.hide_login()
+            if e.wheelDelta >= 120
+                #echo "scroll to prev"
+                _ANIMATE_TIMEOUT_ID = setTimeout( ->
+                    _current_user?.animate_prev()
+                , 200)
+
+            if e.wheelDelta <= -120
+                #echo "scroll to next"
+                _ANIMATE_TIMEOUT_ID = setTimeout( ->
+                    _current_user?.animate_next()
+                ,200)
+        )
+
+
+    keydown_listener:(_current_user)->
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == UP_ARROW
+                # echo "prev"
+                _current_user?.animate_prev()
+
+            else if e.which == DOWN_ARROW
+                # echo "next"
+                _current_user?.animate_next()
+
+            else if e.which == ENTER_KEY
+                #echo "enter"
+                # if not _current_user?.is_recognizing
+                if _current_user?.face_login
+                    _current_user?.is_recognizing = false
+                    DCore[APP_NAME].cancel_detect()
+                    _current_user?.stop_animation()
+                _current_user?.show_login()
                 message_tip?.remove()
+
         )
 
 
@@ -75,6 +97,7 @@ _current_user = user.get_current_userinfo()
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)
 lock.keydown_listener(userinfo)
+lock.mousewheel_listener(_current_user)
 
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
