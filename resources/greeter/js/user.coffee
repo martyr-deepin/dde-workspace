@@ -416,16 +416,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        if @index is 0
-            prev_index = _counts - 1
-        else
-            prev_index = @index - 1
-
-        setTimeout( ->
-                userinfo_list[prev_index].focus()
-                return true
-            ,200)
-        jQuery("#user_ul").user_ul("animateToChild", prev_index)
+        jQuery("#user_ul").roundabout("animateToPreviousChild")
 
     animate_next: ->
         if @face_login
@@ -434,16 +425,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        if @index is _counts - 1
-            next_index = 0
-        else
-            next_index = @index + 1
-
-        setTimeout( ->
-                userinfo_list[next_index].focus()
-                return true
-            ,200)
-        jQuery("#user_ul").user_ul("animateToChild", next_index)
+        jQuery("#user_ul").roundabout("animateToNextChild")
 
     animate_near: ->
         if @face_login
@@ -451,21 +433,7 @@ class UserInfo extends Widget
 
         if @is_recognizing
             return
-
-        try
-            near_index = jQuery("#user_ul").user_ul("getNearestChild")
-        catch error
-            echo "getNeareastChild error"
-
-        if near_index is false
-            near_index = @index
-
-        setTimeout( ->
-                userinfo_list[near_index].focus()
-                _drag_flag = false
-                return true
-            ,200)
-        jQuery("#user_ul").user_ul("animateToChild", near_index)
+        jQuery("#user_ul").roundabout("animateToNearestChild", near_index)
 
     draw_camera: ->
         if @face_login

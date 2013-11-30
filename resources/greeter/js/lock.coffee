@@ -37,20 +37,8 @@ class Lock extends Widget
 
     mousewheel_listener:(_current_user)->
         document.body.addEventListener("mousewheel", (e) =>
-            clearTimeout(_ANIMATE_TIMEOUT_ID)
-            _ANIMATE_TIMEOUT_ID = -1
-
-            if e.wheelDelta >= 120
-                #echo "scroll to prev"
-                _ANIMATE_TIMEOUT_ID = setTimeout( ->
-                    _current_user?.animate_prev()
-                , 200)
-
-            if e.wheelDelta <= -120
-                #echo "scroll to next"
-                _ANIMATE_TIMEOUT_ID = setTimeout( ->
-                    _current_user?.animate_next()
-                ,200)
+            if e.wheelDelta >= 120 then _current_user?.animate_prev()
+            else if e.wheelDelta <= -120 then _current_user?.animate_next()
         )
 
 
