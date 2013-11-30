@@ -269,7 +269,7 @@ class SwitchUser extends Widget
     SwitchToUser:(username,session_name)->
         try
             switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
-            switch_dbus.SwitchToUser(username,session_name)
+            switch_dbus.SwitchToUser_sync(username,session_name)
             echo switch_dbus
         catch error
             echo "can not find the switch dbus,perhaps you only have one userAccount!"
