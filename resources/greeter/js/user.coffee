@@ -295,6 +295,7 @@ class UserInfo extends Widget
 
     constructor: (@id, name, @img_src,@type)->
         super
+        @is_recognizing = false
 
         @element.setAttribute("type","li")
         @userinfo_li = create_element("li","userinfo_li",@element)
@@ -311,18 +312,13 @@ class UserInfo extends Widget
         @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
-
-        @element.index = 0
-        @index = user_ul.childElementCount
-        userinfo_list.push(@)
-
-        @is_recognizing = false
-
         if is_greeter then @session = DCore.Greeter.get_user_session(@id)
         else @session = "deepin"
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
+        
+        userinfo_list.push(@)
 
     draw_avatar: ->
         apply_animation(recognize,recognize_animation,"10s") if @face_login
@@ -433,7 +429,7 @@ class UserInfo extends Widget
 
         if @is_recognizing
             return
-        jQuery("#user_ul").roundabout("animateToNearestChild", near_index)
+        jQuery("#user_ul").roundabout("animateToNearestChild")
 
     draw_camera: ->
         if @face_login
