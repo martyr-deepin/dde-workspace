@@ -10,7 +10,6 @@
 }
 
 .Menu {
-    position: absolute;
     width:60px;
     display:-webkit-box;
     -webkit-box-orient:vertical;

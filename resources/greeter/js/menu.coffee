@@ -78,8 +78,9 @@ class Menu extends Widget
     
     show: (x, y)->
         document.body.appendChild(@element) if not parent?
+        @element.style.position = "absolute"
         @element.style.left = x
-        @element.style.top = y
+        @element.style.bottom = y
         @element.style.display = "block"
 
     hide:->

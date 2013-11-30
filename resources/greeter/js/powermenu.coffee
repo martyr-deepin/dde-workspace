@@ -58,7 +58,6 @@ class PowerMenu extends Widget
         return power_dict
 
     new_power_menu:->
-
         power_dict = @get_power_dict()
         power_menu_cb = (id, title)->
             power_dict[id]()
