@@ -21,7 +21,6 @@ class AudioPlay
     default_audio_player_name = null
     default_audio_player_icon = null
     Metadata = null
-    mpris_dbus = null
     launched_status = false
 
     constructor: ->
@@ -29,30 +28,30 @@ class AudioPlay
             mpris = @get_mpris_dbus()
             if not mpris? then return
             echo mpris
-            mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+            @mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
             launched_status = true
         catch error
             launched_status = false
-            echo "mpris_dbus is null ,the player isnt launched!"
+            echo "@mpris_dbus is null ,the player isnt launched!"
 
     
     get_mpris_dbus:->
-        mpris_dbus_min = "org.mpris.MediaPlayer2."
+        @mpris_dbus_min = "org.mpris.MediaPlayer2."
         dbus_all = []
-        mpris_dbus_all = []
+        @mpris_dbus_all = []
         freedesktop_dbus = DCore.DBus.session_object("org.freedesktop.DBus","/","org.freedesktop.DBus")
         dbus_all = freedesktop_dbus.ListNames_sync()
         for dbus in dbus_all
-            index = dbus.indexOf(mpris_dbus_min)
+            index = dbus.indexOf(@mpris_dbus_min)
             if index != -1
-                name = dbus.substring(index + mpris_dbus_min.length)
-                mpris_dbus_all.push({"mpris":dbus,"name":name})
+                name = dbus.substring(index + @mpris_dbus_min.length)
+                @mpris_dbus_all.push({"mpris":dbus,"name":name})
         
-        switch(mpris_dbus_all.length)
+        switch(@mpris_dbus_all.length)
             when 0 then return null
-            when 1 then return mpris_dbus_all[0].mpris
+            when 1 then return @mpris_dbus_all[0].mpris
             else
-                for dbus in mpris_dbus_all
+                for dbus in @mpris_dbus_all
                     mpris = dbus.mpris
                     #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
                     if dbus.name is "dmusic" then return dbus.mpris
@@ -69,61 +68,61 @@ class AudioPlay
         default_audio_player_icon = DCore.DEntry.get_default_audio_player_icon()
 
     getPlaybackStatus:->
-        mpris_dbus.PlaybackStatus
+        @mpris_dbus.PlaybackStatus
 
     Next:->
-        mpris_dbus.Next()
+        @mpris_dbus.Next()
 
     Pause:->
-        mpris_dbus.Pause()
+        @mpris_dbus.Pause()
 
     Play:->
-        mpris_dbus.Play()
+        @mpris_dbus.Play()
 
     PlayPause:->
-        mpris_dbus.PlayPause()
+        @mpris_dbus.PlayPause()
 
     Previous:->
-        mpris_dbus.Previous()
+        @mpris_dbus.Previous()
 
     Seek:->
-        mpris_dbus.Seek()
+        @mpris_dbus.Seek()
 
     SetPosition:->
-        mpris_dbus.SetPosition()
+        @mpris_dbus.SetPosition()
 
     getPosition:->
-        mpris_dbus.Position
+        @mpris_dbus.Position
 
     Stop:->
-        mpris_dbus.Stop()
+        @mpris_dbus.Stop()
 
     getVolume:->
-        mpris_dbus.Volume
+        @mpris_dbus.Volume
 
     setVolume:(val)->
         if val > 1 then val = 1
         else if val < 0 then val = 0
-        mpris_dbus.Volume = val
+        @mpris_dbus.Volume = val
 
     getMetadata:->
-        Metadata = mpris_dbus.Metadata
+        Metadata = @mpris_dbus.Metadata
 
     getTitle:->
-        mpris_dbus.Metadata['xesam:title']
+        @mpris_dbus.Metadata['xesam:title']
 
     getUrl:->
         #www url
-        mpris_dbus.Metadata['xesam:url']
+        @mpris_dbus.Metadata['xesam:url']
     
     getalbum:->
         #zhuanji name
-        mpris_dbus.Metadata['xesam:album']
+        @mpris_dbus.Metadata['xesam:album']
 
     getArtist:->
         #artist name
-        mpris_dbus.Metadata['xesam:artist']
+        @mpris_dbus.Metadata['xesam:artist']
 
     getArtUrl:->
         #artist img
-        mpris_dbus.Metadata['mpris:artUrl']
+        @mpris_dbus.Metadata['mpris:artUrl']

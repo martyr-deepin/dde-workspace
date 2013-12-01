@@ -149,8 +149,8 @@ class MediaControl extends Widget
         up = create_img("up",img_src_before + "up_normal.png",control)
         
         if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
-        if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
-        else play_status = "pause"
+        else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
+        else play_status = "play"
         play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
@@ -192,14 +192,12 @@ class MediaControl extends Widget
         name.textContent = audioplay.getTitle()
 
     media_play:=>
-        if play_status is "play"
-            #audioplay.Pause()
-            play_status = "pause"
-        else
-            #audioplay.Play()
-            play_status = "play"
+        audioplay.mpris_dbus.PlayPause_sync()
+        
+        if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
+        else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
+        else play_status = "play"
         play.src = img_src_before + "#{play_status}_normal.png"
-        audioplay.PlayPause()
         
 
     media_next:->
