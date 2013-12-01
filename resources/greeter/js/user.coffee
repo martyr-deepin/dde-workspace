@@ -54,9 +54,36 @@ class User extends Widget
         super
         @is_livecd()
         
+        img_src_before = "images/userswitch/"
+        @prevuserinfo = create_img("prevuserinfo",img_src_before + "up_normal.png",@element)
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
-    
+        @new_userinfo_all()
+        @nextuserinfo = create_img("nextuserinfo",img_src_before + "down_normal.png",@element)
+        if user_ul.children.length > 5
+            @prevuserinfo.style.display = "block"
+            @nextuserinfo.style.display = "block"
+        @normal_hover_click_cb(@prevuserinfo,
+            img_src_before + "up_normal.png",
+            img_src_before + "up_hover.png",
+            img_src_before + "up_press.png",
+        )
+        @normal_hover_click_cb(@nextuserinfo,
+            img_src_before + "down_normal.png",
+            img_src_before + "down_hover.png",
+            img_src_before + "down_press.png",
+        )
+  
+        @prevuserinfo.addEventListener("click",=>
+            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_press.png')"
+        )
+        @prevuserinfo.addEventListener("mouseout",=>
+            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_normal.png')"
+        )
+        @prevuserinfo.addEventListener("mouseover",=>
+            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_hover.png')"
+        )
+
     is_livecd:->
         try
             Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
@@ -64,6 +91,19 @@ class User extends Widget
             is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
         catch error
             is_livecd = false
+    
+    normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = hover
+        ) if hover
+        el.addEventListener("mouseout",->
+            el.src = normal
+        ) if normal
+        el.addEventListener("click",=>
+            el.src = click
+            click_cb?()
+        ) if click
+
 
     new_switchuser:->
         if not is_livecd
@@ -144,17 +184,19 @@ class User extends Widget
                     userinfo_all.push(u)
                     user_ul.appendChild(u.userinfo_li)
 
-
+        if is_greeter
+            if DCore.Greeter.is_support_guest()
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                user_ul.appendChild(u.userinfo_li)
+                if DCore.Greeter.is_guest_default()
+                    u.focus()
+        
+        echo user_ul
+        echo user_ul.children.length
         if user_ul.children.length <= 2
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
         return userinfo_all
 
-        if DCore.Greeter.is_support_guest() and is_greeter
-            u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
-            user_ul.appendChild(u.userinfo_li)
-            if DCore.Greeter.is_guest_default()
-                u.focus()
-    
     get_current_userinfo:->
         @new_userinfo() if _current_user == null
         return _current_user
@@ -172,6 +214,9 @@ class User extends Widget
     import_css:(src)->
         inject_css(@element,src)
 
+    new_NextPrevUserinfo:->
+        echo "new_NextPrevUserinfo"
+        
 
 class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
@@ -317,11 +362,12 @@ class UserInfo extends Widget
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
-        
+        @face_login =false
+
         userinfo_list.push(@)
 
     draw_avatar: ->
-        apply_animation(recognize,recognize_animation,"10s") if @face_login
+        apply_animation(recognize,"recognize_animation","10s") if @face_login
         enable_detection(true) if @face_login
 
     stop_avatar:->
@@ -331,16 +377,21 @@ class UserInfo extends Widget
         enable_detection(false) if @face_login
         #DCore[APP_NAME].cancel_detect()
 
-    focus: ->
+    do_focus: ->
+        echo "do_focus"
         DCore[APP_NAME].set_username(@id)
-
         @element.focus()
-
         #if @session then de_menu.set_current(@session)
-
         @draw_camera()
         @draw_avatar()
-
+    
+    focus:->
+        DCore[APP_NAME].set_username(@id)
+        @element.focus()
+        #if @session then de_menu.set_current(@session)
+        @draw_camera()
+        @draw_avatar()
+    
     blur: ->
         # @loading?.destroy()
         # @loading = null
