@@ -35,7 +35,7 @@
 #define SOFTWARE_CENTER_INTERFACE SOFTWARE_CENTER_NAME
 
 
-PRIVATE GKeyFile* hidden_app_conf = NULL;
+PRIVATE GKeyFile* hidden_apps = NULL;
 PRIVATE GPtrArray* autostart_paths = NULL;
 PRIVATE GKeyFile* launcher_config = NULL;
 
