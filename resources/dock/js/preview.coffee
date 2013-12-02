@@ -50,9 +50,12 @@ class PWContainer extends Widget
     hide: ->
         @is_showing = false
         @border.style.opacity = 0
-        @border.style.display = 'none'
+        @hide_border_id = setTimeout(=>
+            @border.style.display = 'none'
+        , 500)
 
     show: ->
+        clearTimeout(@hide_border_id)
         PWContainer._need_move_animation = true
         @is_showing = true
         @border.style.opacity = 1
