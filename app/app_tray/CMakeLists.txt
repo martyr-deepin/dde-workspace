@@ -12,3 +12,8 @@ install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION bin
     )
+
+install(
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-apptray.desktop
+    DESTINATION /etc/xdg/autostart/
+    )

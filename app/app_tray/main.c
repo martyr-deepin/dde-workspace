@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
 
     gtk_widget_set_size_request(container, gdk_screen_width(), TRAY_HEIGHT);
 
+    gdk_error_trap_push();
     tray_init(container);
 
     gtk_widget_show_all(container);
