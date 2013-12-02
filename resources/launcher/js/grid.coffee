@@ -35,6 +35,7 @@ catch error
 class Item extends Widget
     @theme_icon: null
     @hover_item_id: null
+    @clean_hover_temp: false
     @display_temp: false
     constructor: (@id, @core)->
         super
@@ -82,24 +83,15 @@ class Item extends Widget
         e.dataTransfer.effectAllowed = "all"
 
     _menu: ->
-        if @display_mode == 'display'
-            hide_icon_msg = HIDE_ICON
-        else
-            hide_icon_msg = DISPLAY_ICON
-
-        if @is_autostart
-            startup_msg = NOT_STARTUP_ICON
-        else
-            startup_msg = STARTUP_ICON
         menu = [
             [1, _("_Open")],
             [],
-            [2, hide_icon_msg],
+            [2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]],
             [],
             [3, _("Send to d_esktop"), not DCore.Launcher.is_on_desktop(@core)],
             [4, _("Send to do_ck"), s_dock!=null],
             [],
-            [5, startup_msg]
+            [5, AUTOSTARTUP_MESSAGE[@is_autostart]]
             [6, _("_Uninstall")]
         ]
 
@@ -130,7 +122,9 @@ class Item extends Widget
         hidden_icons[@id] = @
         save_hidden_apps()
         hide_category()
-        _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
+        if _get_hidden_icons_ids().length == 0
+            _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
+            Item.display_temp = false
 
     display_icon: (e)=>
         @display_mode = 'display'
@@ -231,10 +225,11 @@ class Item extends Widget
         @element.scrollIntoViewIfNeeded()
 
     do_mouseover: =>
-        @element.style.background = "rgba(0, 183, 238, 0.2)"
-        @element.style.border = "1px rgba(255, 255, 255, 0.2) solid"
-        @element.style.borderRadius = "2px"
         Item.hover_item_id = @id
+        if not Item.clean_hover_temp
+            @element.style.background = "rgba(255, 255, 255, 0.15)"
+            @element.style.border = "1px rgba(255, 255, 255, 0.25) solid"
+            @element.style.borderRadius = "4px"
 
     do_mouseout: =>
         @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
@@ -256,7 +251,7 @@ _update_scroll_bar = (len) ->
     else
         category_width = 180
     grid_width = window.screen.width - 20 - category_width
-    lines = parseInt(ITEM_WIDTH * len / grid_width) + 1
+    lines = Math.ceil(ITEM_WIDTH * len / grid_width)
 
     grid_height = window.screen.height - 100
     if lines * ITEM_HEIGHT >= grid_height

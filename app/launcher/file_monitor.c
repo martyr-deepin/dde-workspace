@@ -19,6 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <stdlib.h>
+
 #include <glib.h>
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
@@ -40,7 +42,7 @@ PRIVATE
 void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monitor_callback)
 {
     // check NULL to avoid the last one is NULL
-    for (int i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
+    for (guint i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
         GError* err = NULL;
         GFile* file = g_file_new_for_path(g_ptr_array_index(paths, i));
         GFileMonitor* monitor = g_file_monitor_directory(file,
@@ -123,7 +125,7 @@ gboolean _update_items(gpointer user_data)
     // 3. unique app (e.g. use $HOME/.local/share/applications to overload
     // system's desktop file)
     struct DesktopInfo* info = (struct DesktopInfo*)user_data;
-    js_post_message_simply("update_items", NULL);  // update some infos
+    js_post_signal("update_items");  // update some infos
 
     return G_SOURCE_REMOVE;
 }
@@ -215,7 +217,9 @@ gboolean _update_autostart(gpointer user_data)
     char* id = calc_id(uri);
 
     g_debug("[%s] %s is changed", __func__, uri);
-    js_post_message_simply("autostart-update", "{\"id\": \"%s\"}", id);
+    JSObjectRef id_info = json_create();
+    json_append_string(id_info, "id", id);
+    js_post_message("autostart-update", id_info);
 
     g_free(id);
 
@@ -274,6 +278,7 @@ void add_monitors()
 {
     _monitor_desktop_files();
     _monitor_autostart_files();
+    atexit(destroy_monitors);
 }
 
 

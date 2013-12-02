@@ -15,7 +15,6 @@
 #include "launcher.h"
 #include "region.h"
 #include "special_window.h"
-#include "tray.h"
 #include "jsextension.h"
 
 #endif

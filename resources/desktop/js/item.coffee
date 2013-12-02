@@ -42,6 +42,8 @@ class Item extends Widget
     constructor: (@_entry, @modifiable = true, @deletable = true) ->
         @set_id()
 
+        @is_in_select_area = false
+        @ctrl_selected = false
         @selected = false
         @has_focus = false
         @clicked_before = 0
@@ -133,7 +135,7 @@ class Item extends Widget
                     else
                         icon = DCore.get_theme_icon("invalid-dock_app", D_ICON_SIZE_NORMAL)
                         @item_icon.className = ""
-                    #2. then set the 2s timeout to check the get_thumbnail 
+                    #2. then set the 2s timeout to check the get_thumbnail
                     that = @
                     clearInterval(Flag_setTimeout) if Flag_setTimeout
                     Flag_setTimeout = setInterval(->
@@ -360,10 +362,10 @@ class Item extends Widget
 
 
     item_rename : =>
-        # first make the contextmenu not showed when is in_renaming 
+        # first make the contextmenu not showed when is in_renaming
         menu = []
         @item_name.parentElement.contextMenu = build_menu(menu)
-        
+
         input_x = _ITEM_WIDTH_ * @_position.x
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel
         DCore.Desktop.set_position_input(input_x,input_y)

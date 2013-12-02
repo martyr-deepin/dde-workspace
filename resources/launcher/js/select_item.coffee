@@ -1,5 +1,18 @@
 item_selected = null
 
+clean_hover_state = do ->
+    hover_timeout_id = null
+    ->
+        Item.clean_hover_temp = true
+        event = new Event("mouseout")
+        Widget.look_up(Item.hover_item_id)?.element.dispatchEvent(event)
+        clearTimeout(hover_timeout_id)
+        hover_timeout_id = setTimeout(->
+            Item.clean_hover_temp = false
+            event = new Event("mouseover")
+            Widget.look_up(Item.hover_item_id)?.element.dispatchEvent(event)
+        , 1100)
+
 get_item_row_count = ->
     parseInt(grid.clientWidth / ITEM_WIDTH)
 
@@ -16,6 +29,7 @@ get_first_shown = ->
         first_item.next_shown()
 
 selected_next = ->
+    clean_hover_state()
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
@@ -26,6 +40,7 @@ selected_next = ->
         n.scroll_to_view()
         update_selected(n)
 selected_prev = ->
+    clean_hover_state()
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
@@ -37,6 +52,7 @@ selected_prev = ->
         update_selected(n)
 
 selected_down = ->
+    clean_hover_state()
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)
@@ -53,6 +69,7 @@ selected_down = ->
     grid.scrollTop += SCROLL_STEP_LEN
 
 selected_up = ->
+    clean_hover_state()
     if not item_selected
         item_selected = get_first_shown()
         update_selected(item_selected)

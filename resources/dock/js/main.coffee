@@ -22,16 +22,10 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
-board = $("#board")
-board.width = screen.width
-board.height = DOCK_HEIGHT
-DCore.Dock.draw_board(board)
+$("#container").style.maxWidth = screen.width - 70  # force board to contain apps
+board = new Board("board")
+board.draw()
 
-DCore.signal_connect("dock_color_changed", -> DCore.Dock.draw_board(board))
-
-DCore.signal_connect("tray_icon_area_changed", (info)->
-    $("#notifyarea").style.width = "#{info.width}px"
-)
 
 _current_active_window = null
 get_active_window = ->
@@ -75,6 +69,10 @@ DCore.signal_connect("launcher_removed", (info) ->
 )
 
 DCore.signal_connect("task_updated", (info) ->
+    if info.app_id == 'trash'
+        Widget.look_up(info.app_id).set_id(info.id).show_indicator()
+        return
+
     leader = Widget.look_up("le_" + info.app_id)
 
     if not leader
@@ -88,6 +86,9 @@ DCore.signal_connect("dock_hidden", ->
 )
 
 DCore.signal_connect("task_removed", (info) ->
+    if info.app_id == 'trash'
+        Widget.look_up(info.app_id).hide_indicator()
+        return
     Widget.look_up("le_"+info.app_id)?.remove_client(info.id)
 )
 
@@ -114,7 +115,8 @@ DCore.signal_connect("active_window", (info)->
 setTimeout(->
     IN_INIT = false
     calc_app_item_size()
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE)
+    # apps are moved up, so add 8
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
 
 

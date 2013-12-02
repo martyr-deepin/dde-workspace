@@ -6,9 +6,7 @@ class Launcher extends AppItem
         @update_scale()
 
         @set_tooltip(DCore.DEntry.get_name(@core))
-
-        @build_menu()
-
+        @element.addEventListener('contextmenu', @rightclick)
 
     try_swap_clientgroup: ->
         group = Widget.look_up("le_"+@id)
@@ -16,72 +14,81 @@ class Launcher extends AppItem
             swap_element(@element, group.element)
             group.destroy()
 
-    do_click: (e)->
+    do_click: (e)=>
         @tooltip?.hide()
         @tooltip = null
         @flash()
         @_do_launch []
 
-    do_itemselected: (e)->
-        action = @actions[e.id - 1]
+    # on_itemselected: (id)=>
+    do_itemselected: (e)=>
+        id = e.id
+        super
+
+        id = parseInt(id)
+        action = @actions[id - 1]
         if action?
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 
-        switch e.id
+        switch id
             when 10
                 @tooltip?.hide()
                 @tooltip = null
                 @_do_launch []
             when 20 then DCore.Dock.request_undock(@id)
 
-    build_menu: ->
-        @element.addEventListener("contextmenu", (e)=>
-            Preview_close_now()
-            menu_list = [
-                [10, _("_Run")],
-                []
-            ]
+    # do_buildmenu: =>
+    #     []
 
-            i = 0
-            len = @actions.length
+    # do_rightclick: =>
+    rightclick: =>
+        Preview_close_now()
+        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem("10", _("_Run")))
+        menu.addSeparator()
 
-            while i < len
-                i = i + 1
-                menu_list.push([i, @actions[i - 1].name])
+        for i in [0...@actions.length]
+            menu.append(new MenuItem("#{i}", @actions[i].name))
 
-            if len != 0
-                menu_list.push([])
+        if @actions.length > 0
+            menu.addSeparator()
 
-            menu_list.push([20, _("_Undock")])
-            menu = build_menu(menu_list)
+        menu.append(new MenuItem('20', _("_Undock")))
+        menu.bind(@)
 
-            @element.contextMenu = menu
-            e.stopPropagation()
-        )
+        # xy = get_page_xy(@element)
+        # menu.listenItemSelected(@on_itemselected)
+        # menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y + 5, 'down')
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
+        t = @element.parentElement.removeChild(@element)
+        document.body.appendChild(t)
+        calc_app_item_size()
         @rotate()
         setTimeout(=>
             @destroy()
         ,500)
 
-    do_mouseover: (e)->
+    do_mouseover: (e)=>
+        super
         Preview_close_now()
         DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 
-    do_mouseout: (e)->
+    do_mouseout: (e)=>
+        super
         if Preview_container.is_showing
             __clear_timeout()
             clearTimeout(tooltip_hide_id)
             DCore.Dock.require_all_region()
             launcher_mouseout_id = setTimeout(->
-                update_dock_region()
+                calc_app_item_size()
+                # update_dock_region()
             , 1000)
         else
-            update_dock_region()
+            calc_app_item_size()
+            # update_dock_region()
             setTimeout(->
                 DCore.Dock.update_hide_mode()
             , 500)

@@ -100,7 +100,7 @@ void launcher_hide()
 {
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
-    js_post_message_simply("exit_launcher", NULL);
+    js_post_signal("exit_launcher");
 }
 
 
@@ -154,9 +154,12 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
-    js_post_message_simply("workarea_changed",
-            "{\"x\":0, \"y\":0, \"width\":%d, \"height\":%d}",
-            gdk_screen_width(), gdk_screen_height());
+    JSObjectRef workarea_info = json_create();
+    json_append_number(workarea_info, "x", 0);
+    json_append_number(workarea_info, "y", 0);
+    json_append_number(workarea_info, "width", gdk_screen_width());
+    json_append_number(workarea_info, "height", gdk_screen_height());
+    js_post_message("workarea_changed", workarea_info);
 }
 
 
@@ -217,6 +220,13 @@ void check_version()
         g_error_free(err);
         g_key_file_set_string(launcher_config, "main", "version", LAUNCHER_VERSION);
         save_app_config(launcher_config, LAUNCHER_CONF);
+    }
+
+    if (g_strcmp0(LAUNCHER_VERSION, version) != 0) {
+        g_key_file_set_string(launcher_config, "main", "version", LAUNCHER_VERSION);
+        save_app_config(launcher_config, LAUNCHER_CONF);
+
+        system("sed -i 's/__Config__/"HIDDEN_APP_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
     }
 
     if (version != NULL)
@@ -413,7 +423,6 @@ int main(int argc, char* argv[])
         launcher_show();
     }
     gtk_main();
-    destroy_monitors();
     return 0;
 }
 

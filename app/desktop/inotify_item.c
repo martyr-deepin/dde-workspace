@@ -43,7 +43,9 @@ void trash_changed()
     GFileInfo* info = g_file_query_info(_trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
     int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
     g_object_unref(info);
-    js_post_message_simply("trash_count_changed", "{\"value\":\"%d\"}", count);
+    JSObjectRef value = json_create();
+    json_append_number(value, "value", count);
+    js_post_message("trash_count_changed", value);
 }
 
 PRIVATE

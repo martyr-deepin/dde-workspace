@@ -66,7 +66,7 @@ void* jsvalue_to_nobject(JSContextRef, JSValueRef);
 gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass);
 
 void js_post_message(const char* name, JSValueRef json);
-void js_post_message_simply(const char* name, const char* format, ...);
+void js_post_signal(const char* name);
 
 JSObjectRef json_create();
 void json_append_value(JSObjectRef json, const char* key, JSValueRef value);

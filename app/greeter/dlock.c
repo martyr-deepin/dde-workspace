@@ -109,7 +109,9 @@ gboolean lock_try_unlock (const gchar *password)
         gtk_main_quit ();
 
     } else {
-        js_post_message_simply("auth-failed", "{\"error\":\"%s\"}", _("Invalid Password"));
+        JSObjectRef error_message = json_create();
+        json_append_string(error_message, "error", _("Invalid Password"));
+        js_post_message("auth-failed", error_message);
     }
 
     return succeed;
@@ -268,7 +270,6 @@ int main (int argc, char **argv)
 
     GdkWindow *gdkwindow = gtk_widget_get_window (lock_container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
-
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));

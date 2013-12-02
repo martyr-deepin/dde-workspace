@@ -42,7 +42,6 @@ extern char* dcore_get_theme_icon(char const*, double);
  * 3. the executable file name
  * */
 
-#define APPS_INI "dock/apps.ini"
 GKeyFile* k_apps = NULL;
 static GList* _apps_position = NULL;
 
@@ -104,7 +103,7 @@ JSValueRef build_app_info(const char* app_id)
             }
 
             char* icon_path = icon_name_to_path(icon_name, 48);
-            g_debug("[build_app_info] icon_path: %s", icon_path);
+            g_debug("[%s] icon_path: %s", __func__, icon_path);
             if (is_deepin_icon(icon_path)) {
                 json_append_string(json, "Icon", icon_path);
             } else {
@@ -195,8 +194,11 @@ void update_dock_apps()
 {
     gsize size = 0;
     GError* err = NULL;
-    char** list = g_key_file_get_string_list(k_apps, "__Config__", "Position",
-                                             &size, &err);
+    char** list = g_key_file_get_string_list(k_apps,
+                                             DOCKED_ITEM_GROUP_NAME,
+                                             DOCKED_ITEM_KEY_NAME,
+                                             &size,
+                                             &err);
     if (list != NULL) {
         g_assert(list != NULL);
 
@@ -220,8 +222,8 @@ void update_dock_apps()
 
         g_strfreev(list);
     } else {
-        g_warning("[%s(%s)] get string list from file(%s) failed: %s",
-                  __func__, __FILE__, APPS_INI, err->message);
+        g_warning("[%s] get string list from file(%s) failed: %s",
+                  __func__, APPS_INI, err->message);
         g_error_free(err);
     }
 }
@@ -281,7 +283,11 @@ void _save_apps_position()
         list[i] = _tmp_list->data;
         _tmp_list = g_list_next(_tmp_list);
     }
-    g_key_file_set_string_list(k_apps, "__Config__", "Position", list, size);
+    g_key_file_set_string_list(k_apps,
+                               DOCKED_ITEM_GROUP_NAME,
+                               DOCKED_ITEM_KEY_NAME,
+                               list,
+                               size);
     g_slice_free1(sizeof(char*) * size, list);
 }
 
@@ -361,7 +367,7 @@ void dock_request_dock(const char* path)
     g_debug("[%s] info filename: %s", __func__, g_desktop_app_info_get_filename(info));
     g_free(unescape_path);
     if (info != NULL) {
-        g_debug("[%s(%s:%d)]", __func__, __FILE__, __LINE__);
+        g_debug("[%s]", __func__);
         char* app_id = get_app_id(info);
         write_app_info(info);
         JSValueRef app_info = build_app_info(app_id);
@@ -380,7 +386,9 @@ void dock_request_undock(const char* app_id)
     g_key_file_remove_group(k_apps, app_id, NULL);
     save_app_config(k_apps, APPS_INI);
 
-    js_post_message_simply("launcher_removed", "{\"Id\": \"%s\"}", app_id);
+    JSObjectRef id_info = json_create();
+    json_append_string(id_info, "Id", app_id);
+    js_post_message("launcher_removed", id_info);
 }
 
 JS_EXPORT_API
@@ -450,7 +458,7 @@ gboolean dock_has_launcher(const char* app_id)
 
 gboolean request_by_info(const char* name, const char* cmdline, const char* icon)
 {
-    g_debug("[%s(%s:%d)] ", __func__, __FILE__, __LINE__);
+    g_debug("[%s] ", __func__);
     char* id = g_strconcat(name, ".desktop", NULL);
     GDesktopAppInfo* info = g_desktop_app_info_new(id);
     g_free(id);

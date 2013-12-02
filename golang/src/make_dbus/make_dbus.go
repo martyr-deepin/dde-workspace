@@ -339,7 +339,8 @@ var temp_caller = template.Must(template.New("dbus_call").Funcs(template.FuncMap
                                                      NULL,
                                                      &error);
     if (error != NULL) {
-        g_warning ("call {{.Name}} on {{.BusInfo.Name}} failed");
+        g_warning ("call {{.Name}} on {{.BusInfo.Name}} failed: %s",
+        error->message);
         g_error_free(error);
     }
     if (proxy != NULL) {

@@ -17,17 +17,21 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-#TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
+
 class Arrow extends Widget
     constructor: (@id)->
         super
-        arrow_outter = create_element("div", "pop_arrow_up_outer", @element)
-        arrow_mid = create_element("div", "pop_arrow_up_mid", @element)
-        arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
-    move_to: (left)->
-        @element.style.left = left + "px"
+        @arrow_outter = create_element("div", "pop_arrow_up_outer", @element)
+        @arrow_mid = create_element("div", "pop_arrow_up_mid", @element)
+        @arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
+
+    move_to: (x, y)->
+        @element.style.left = "#{x}px"
+        if y
+            @element.style.top = "#{y}px"
 
 
+#TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
 class PWContainer extends Widget
     _need_move_animation: false
     _cancel_move_animation_id: -1
@@ -46,7 +50,12 @@ class PWContainer extends Widget
     hide: ->
         @is_showing = false
         @border.style.opacity = 0
+        @hide_border_id = setTimeout(=>
+            @border.style.display = 'none'
+        , 500)
+
     show: ->
+        clearTimeout(@hide_border_id)
         PWContainer._need_move_animation = true
         @is_showing = true
         @border.style.opacity = 1
@@ -91,11 +100,11 @@ class PWContainer extends Widget
         @scale = new_scale
 
         group_element = @_current_group.element
-        x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2
-        @x = x
+        # FIXME: why need 5 external???
+        x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2 - 5
 
         center_position = x - (pw_width * n / 2)
-        offset = clamp(center_position, 5, screen.width - @pw* n)
+        offset = clamp(center_position, 5, screen.width - pw_width)
         @arrow.move_to(x.toFixed() - offset - 3) # 3 is the half length of arrow width
 
         if @element.clientWidth == screen.width
@@ -126,7 +135,8 @@ class PWContainer extends Widget
         Object.keys(@_current_pws).forEach((w_id)->
             Widget.look_up("pw"+w_id)?.destroy()
         )
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
         @is_showing = false
         #DCore.Dock.set_compiz_workaround_preview(false)
 
@@ -139,12 +149,12 @@ class PWContainer extends Widget
         @_current_group = group
         @_update()
 
-    do_mouseover: ->
+    do_mouseover: =>
         __clear_timeout()
         clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
         DCore.Dock.require_all_region()
-    do_mouseout: ->
+    do_mouseout: =>
         Preview_close()
 
 
@@ -241,14 +251,17 @@ class PreviewWindow extends Widget
     to_active: ->
         _current_active_pw_window = @
         @add_css_class("PreviewWindowActived")
+
     to_normal: ->
         @remove_css_class("PreviewWindowActived")
 
-    do_click: (e)->
+    do_click: (e)=>
         DCore.Dock.active_window(@w_id)
         Preview_close_now()
+
     do_rightclick: (e)=>
         DCore.Dock.active_window(@w_id)
+
     do_mouseover: (e)=>
         clearTimeout(launcher_mouseout_id)
         Preview_active_window_changed(@w_id)

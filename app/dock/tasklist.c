@@ -85,6 +85,7 @@ PRIVATE Atom ATOM_XEMBED_INFO;
 PRIVATE Display* _dsp = NULL;
 PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
+PRIVATE Atom ATOM_ICON_NAME;
 
 
 PRIVATE
@@ -124,6 +125,7 @@ void _init_atoms()
     ATOM_XEMBED_INFO = gdk_x11_get_xatom_by_name("_XEMBED_INFO");
     ATOM_DEEPIN_WINDOW_VIEWPORTS = gdk_x11_get_xatom_by_name("DEEPIN_WINDOW_VIEWPORTS");
     ATOM_DEEPIN_SCREEN_VIEWPORT = gdk_x11_get_xatom_by_name("DEEPIN_SCREEN_VIEWPORT");
+    ATOM_ICON_NAME = gdk_x11_get_xatom_by_name("_NET_WM_ICON_NAME");
 }
 
 typedef struct _Workspace Workspace;
@@ -203,7 +205,7 @@ void _update_window_viewport(Client* c)
 PRIVATE
 gboolean _get_launcher_icon(Client* c)
 {
-    g_debug("[_get_launcher_icon] try to get launcher's icon");
+    g_debug("[%s] try to get launcher's icon", __func__);
     GDesktopAppInfo* info = guess_desktop_file(c->app_id);
 
     if (info == NULL) {
@@ -214,7 +216,7 @@ gboolean _get_launcher_icon(Client* c)
         g_free(new_appid);
 
         if (info == NULL) {
-            g_debug("[_get_launcher_icon] get desktop file failed.");
+            g_debug("[%s] get desktop file failed.", __func__);
             return FALSE;
         }
     }
@@ -223,39 +225,39 @@ gboolean _get_launcher_icon(Client* c)
     GIcon* icon = g_app_info_get_icon(G_APP_INFO(info));
 
     if (icon != NULL) {
-        g_debug("[_get_launcher_icon] get icon from desktop file");
+        g_debug("[%s] get icon from desktop file", __func__);
         icon_name = g_icon_to_string(icon);
     } else {
-        g_debug("[_get_launcher_icon] get icon from config file");
+        g_debug("[%s] get icon from config file", __func__);
         extern GKeyFile* k_apps;
         icon_name = g_key_file_get_string(k_apps, c->app_id, "Icon", NULL);
     }
 
-    g_debug("[_get_launcher_icon] icon name is \"%s\"", icon_name);
+    g_debug("[%s] icon name is \"%s\"", __func__, icon_name);
 
     if (icon_name != NULL) {
         if (g_str_has_prefix(icon_name, "data:image")) {
-            g_debug("[_get_launcher_icon] get image data from data uri scheme");
+            g_debug("[%s] get image data from data uri scheme", __func__);
             c->icon = icon_name;
         } else {
-            g_debug("[_get_launcher_icon] get image path");
+            g_debug("[%s] get image path", __func__);
             if (g_path_is_absolute(icon_name)) {
-                g_debug("[_get_launcher_icon] image path is absolute path");
+                g_debug("[%s] image path is absolute path", __func__);
                 char* temp_icon_name_holder = icon_name;
                 icon_name = check_absolute_path_icon(c->app_id, icon_name);
                 g_free(temp_icon_name_holder);
             }
 
-            g_debug("[_get_launcher_icon] the final icon name is: %s", icon_name);
+            g_debug("[%s] the final icon name is: %s", __func__, icon_name);
             char* icon_path = icon_name_to_path(icon_name, 48);
             g_free(icon_name);
 
-            g_debug("[_get_launcher_icon] icon path is %s", icon_path);
+            g_debug("[%s] icon path is %s", __func__, icon_path);
             if (icon_path && is_deepin_icon(icon_path)) {
-                g_debug("[_get_launcher_icon] icon is deepin icon");
+                g_debug("[%s] icon is deepin icon", __func__);
                 c->icon = icon_path;
             } else {
-                g_debug("[_get_launcher_icon] icon is not deepin icon");
+                g_debug("[%s] icon is not deepin icon", __func__);
                 GdkPixbuf* pixbuf = NULL;
                 if (c->use_board) {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
@@ -381,7 +383,7 @@ void _update_client_info(Client *c)
             for (guint i = 0; i < actions->len; ++i) {
                 struct Action* action = g_ptr_array_index(actions, i);
 
-                g_debug("[%s(%s:%d)] name: %s, exec: %s", __func__, __FILE__, __LINE__, action->name, action->exec);
+                g_debug("[%s] name: %s, exec: %s", __func__, action->name, action->exec);
                 JSObjectRef action_item = json_create();
                 json_append_string(action_item, "name", action->name);
                 json_append_string(action_item, "exec", action->exec);
@@ -760,8 +762,6 @@ void _update_window_appid(Client* c)
                     app_id = g_key_file_get_string(f, c->instance_name, "appid", NULL);
 
                     if (app_id != NULL) {
-                        g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
-
                         char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
                         if (path != NULL)
                             desktop_file = g_desktop_app_info_new_from_filename(path);
@@ -769,31 +769,36 @@ void _update_window_appid(Client* c)
                     }
                 }
                 g_key_file_unref(f);
+                g_debug("[%s] get app id from StartupWMClass filter: %s", __func__, app_id);
             }
             if (app_id == NULL) {
                 app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
+                g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
             }
             if (app_id == NULL && c->instance_name != NULL) {
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from instance name: %s", __func__, app_id);
+                g_debug("[%s] get app id from instance name: %s", __func__, app_id);
             }
             if (app_id == NULL && c->clss != NULL) {
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from class name: %s", __func__, app_id);
+                g_debug("[%s] get app id from class name: %s", __func__, app_id);
             }
-            if (app_id == NULL && exec_args != NULL) {
+            if (app_id == NULL && exec_args != NULL && exec_args[0] != '\0') {
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+                g_debug("[%s] get app id from exec args: %s", __func__, app_id);
             }
             if (app_id == NULL) {
-                app_id = g_strdup(exec_name);
-                if (app_id != NULL)
-                    g_debug("[%s] get app id from exec name: %s", __func__, app_id);
+                gulong item = 0;
+                char* icon_name = get_window_property(_dsp, c->window, ATOM_ICON_NAME, &item);
+                if (icon_name != NULL) {
+                    app_id = find_app_id(exec_name, icon_name, APPID_FILTER_ICON_NAME);
+                    g_free(icon_name);
+                }
+                g_debug("[%s] get app id from _NET_WM_ICON_NAME", __func__);
+            }
+            if (app_id == NULL && exec_name != NULL) {
+                app_id = find_app_id(exec_name, exec_name, APPID_FILTER_EXEC_NAME);
+                g_debug("[%s] get app id from exec name: %s", __func__, app_id);
             }
         } else {
             app_id = g_strdup(c->clss);
@@ -912,7 +917,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
         } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
             active_window_changed(_dsp, (Window)dock_get_active_window());
         } else if (ev->atom == ATOM_SHOW_DESKTOP) {
-            js_post_message_simply("desktop_status_changed", NULL);
+            js_post_signal("desktop_status_changed");
         } else if (ev->atom == ATOM_DEEPIN_SCREEN_VIEWPORT) {
             _update_current_viewport(&current_workspace);
         }
@@ -1240,13 +1245,13 @@ gchar* dock_bus_list_apps()
     guint app_number = g_hash_table_size(_clients_table);
 
     if (app_number == 0) {
-        g_debug("[dock_bus_list_apps] app_number: 0");
+        g_debug("[%s] app_number: 0", __func__);
         return g_strdup("");
     }
 
     gchar* clients = NULL;
     g_hash_table_foreach(_clients_table, _append, &clients);
-    g_debug("[dock_bus_list_apps] app_number: %d, clients: %s", app_number, clients);
+    g_debug("[%s] app_number: %d, clients: %s", __func__, app_number, clients);
 
     return clients;
 }
@@ -1255,14 +1260,18 @@ gchar* dock_bus_list_apps()
 DBUS_EXPORT_API
 void dock_bus_close_window(char* app_id)
 {
-    js_post_message_simply("close_window", "{\"app_id\": \"%s\"}", app_id);
+    JSObjectRef appid = json_create();
+    json_append_string(appid, "app_id", app_id);
+    js_post_message("close_window", appid);
 }
 
 
 DBUS_EXPORT_API
 void dock_bus_active_window(char* app_id)
 {
-    js_post_message_simply("active_window", "{\"app_id\": \"%s\"}", app_id);
+    JSObjectRef appid = json_create();
+    json_append_string(appid, "app_id", app_id);
+    js_post_message("active_window", appid);
 }
 
 

@@ -26,7 +26,7 @@
 #include <sys/types.h>
 
 gchar *
-get_user_name () 
+get_user_name ()
 {
     gchar *username = NULL;
 
@@ -59,7 +59,7 @@ get_seat_path (gchar *username)
                                                    "org.freedesktop.DisplayManager",
                                                    "/org/freedesktop/DisplayManager",
                                                    "org.freedesktop.DisplayManager",
-                                                   NULL, 
+                                                   NULL,
                                                    &error);
     if (error != NULL) {
         g_warning ("switchtogreeter:lightdm dbus %s\n", error->message);
@@ -83,7 +83,7 @@ get_seat_path (gchar *username)
         return seat_path;
     }
 
-    for (int i = 0; i < length; ++i) {
+    for (guint i = 0; i < length; ++i) {
 
         GDBusProxy *session_proxy = NULL;
         GVariant *username_prop_var = NULL;
@@ -215,3 +215,4 @@ int main (int argc, char **argv)
 
     return 0;
 }
+

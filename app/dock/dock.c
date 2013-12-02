@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2011 ~ 2013 Deepin, Inc.
  *               2011 ~ 2012 snyh
- *               2013 ~ 2013 Liliqiang Lee
+ *               2013 ~ 2013 Liqiang Lee
  *
  * Author:      snyh <snyh@snyh.org>
  * Maintainer:  snyh <snyh@snyh.org>
- *              Liliqiang Lee <liliqiang@linuxdeepin.com>
+ *              Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 #include "X_misc.h"
 #include "xdg_misc.h"
 #include "utils.h"
-#include "tray.h"
 #include "tasklist.h"
 #include "i18n.h"
 #include "dock_config.h"
@@ -34,14 +33,14 @@
 #include "region.h"
 #include "dock_hide.h"
 #include "DBUS_dock.h"
+#include "monitor.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
-static GKeyFile* dock_config = NULL;
 
-int _dock_height = 60;
+int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 
 JS_EXPORT_API void dock_change_workarea_height(double height);
@@ -98,7 +97,7 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
             g_debug("auto leave_notify");
             dock_hide_real_now();
         }
-        js_post_message_simply("leave-notify", NULL);
+        js_post_signal("leave-notify");
     }
     return FALSE;
 }
@@ -191,15 +190,13 @@ void update_dock_size(GdkScreen* screen, GtkWidget* webview)
 
     init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
 
-    tray_icon_do_screen_size_change();
-    update_dock_guard_window_position();
+    /* update_dock_guard_window_position(0); */
 }
 
 
 void check_version()
 {
-    if (dock_config == NULL)
-        dock_config = load_app_config(DOCK_CONFIG);
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
 
     GError* err = NULL;
     gchar* version = g_key_file_get_string(dock_config, "main", "version", &err);
@@ -208,6 +205,71 @@ void check_version()
         g_error_free(err);
         g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
         save_app_config(dock_config, DOCK_CONFIG);
+    }
+
+    if (g_strcmp0(DOCK_VERSION, version) != 0) {
+        g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
+        save_app_config(dock_config, DOCK_CONFIG);
+
+        system("sed -i 's/__Config__/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        GKeyFile* f = load_app_config(APPS_INI);
+        gsize len = 0;
+        char** list = g_key_file_get_groups(f, &len);
+        for (guint i = 1; i < len; ++i) {
+            /* g_key_file_set_string(f, list[i], "Type", DOCKED_ITEM_APP_TYPE); */
+            if (g_strcmp0(list[i], "wps") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Write");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/wps %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-wpsmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-wps.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
+            if (g_strcmp0(list[i], "wpp") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Presentation");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/wpp %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-wppmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-wpp.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
+            if (g_strcmp0(list[i], "et") == 0) {
+                g_key_file_set_string(f, list[i], "Name", "Kingsoft Spreadsheet");
+                g_key_file_set_string(f, list[i], "CmdLine", "/usr/bin/et %%f");
+                g_key_file_set_string(f, list[i], "Icon", "wps-office-etmain");
+                g_key_file_set_string(f, list[i], "Path", "/usr/share/aplications/wps-office-et.desktop");
+                g_key_file_set_string(f, list[i], "Terminal", "false");
+            }
+        }
+        g_strfreev(list);
+
+        list = g_key_file_get_string_list(f, "DockedItems", "Position", &len, &err);
+        if (err != NULL) {
+            g_error_free(err);
+            len = 0;
+            list = NULL;
+        }
+        for (guint i = 0; i < len; ++i) {
+            if (g_strcmp0("wps", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-wps");
+            }
+            if (g_strcmp0("wpp", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-wpp");
+            }
+            if (g_strcmp0("et", list[i]) == 0) {
+                g_free(list[i]);
+                list[i] = g_strdup("wps-office-et");
+            }
+        }
+        if (list != NULL) {
+            g_key_file_set_string_list(f, "DockedItems", "Position", (const char* const*)list, len);
+            g_strfreev(list);
+        }
+        save_app_config(f, APPS_INI);
+        system("sed -i 's/\\[wps\\]/\\[wps-office-wps\\]/g' $HOME/.config/"APPS_INI);
+        system("sed -i 's/\\[wpp\\]/\\[wps-office-wpp\\]/g' $HOME/.config/"APPS_INI);
+        system("sed -i 's/\\[et\\]/\\[wps-office-et\\]/g' $HOME/.config/"APPS_INI);
+        g_key_file_unref(f);
     }
 
     if (version != NULL)
@@ -251,9 +313,12 @@ int main(int argc, char* argv[])
 
     gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
 
-
     g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+/* #define DEBUG_REGION */
+#ifndef DEBUG_REGION
     g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+#endif
+#undef DEBUG_REGION
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
@@ -281,6 +346,7 @@ int main(int argc, char* argv[])
     gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
 
     setup_dock_dbus_service();
+    GFileMonitor* m = monitor_trash();
     gtk_main();
     return 0;
 }
@@ -288,15 +354,15 @@ int main(int argc, char* argv[])
 void update_dock_color()
 {
     /*if (GD.is_webview_loaded)*/
-        js_post_message_simply("dock_color_changed", NULL);
+        /* js_post_signal("dock_color_changed"); */
 }
 
 void update_dock_size_mode()
 {
     if (GD.config.mini_mode) {
-        js_post_message_simply("in_mini_mode", NULL);
+        js_post_signal("in_mini_mode");
     } else {
-        js_post_message_simply("in_normal_mode", NULL);
+        js_post_signal("in_normal_mode");
     }
 }
 
@@ -323,14 +389,13 @@ void dock_emit_webview_ok()
         init_config();
         init_launchers();
         init_task_list();
-        tray_init(webview);
+        /* tray_init(webview); */
         update_dock_size_mode();
         init_dock_guard_window();
     } else {
         update_dock_apps();
         update_task_list();
         update_dock_size_mode();
-        tray_icon_do_screen_size_change();
     }
     GD.is_webview_loaded = TRUE;
     if (GD.config.hide_mode == ALWAYS_HIDE_MODE) {
@@ -376,5 +441,42 @@ DBUS_EXPORT_API
 void dock_show_inspector()
 {
     dwebview_show_inspector(webview);
+}
+
+
+#define CLOCK_TYPE_KEY_NAME "ClockType"
+JS_EXPORT_API
+char* dock_clock_type()
+{
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
+
+    GError* err = NULL;
+    char* clock_type = g_key_file_get_string(dock_config, "main",
+                                             CLOCK_TYPE_KEY_NAME, &err);
+    if (err != NULL) {
+        g_warning("[%s] get clock type failed: %s", __func__, err->message);
+        if (err->code == G_KEY_FILE_ERROR_KEY_NOT_FOUND) {
+            // using digit clock as default
+            g_key_file_set_string(dock_config, "main", CLOCK_TYPE_KEY_NAME, "digit");
+        }
+        save_app_config(dock_config, DOCK_CONFIG);
+        g_clear_error(&err);
+        g_key_file_unref(dock_config);
+        return g_strdup("digit");
+    }
+
+    g_key_file_unref(dock_config);
+
+    return clock_type;
+}
+
+
+JS_EXPORT_API
+void dock_set_clock_type(char const* type)
+{
+    GKeyFile* dock_config = load_app_config(DOCK_CONFIG);
+    g_key_file_set_string(dock_config, "main", CLOCK_TYPE_KEY_NAME, type);
+    save_app_config(dock_config, DOCK_CONFIG);
+    g_key_file_unref(dock_config);
 }
 

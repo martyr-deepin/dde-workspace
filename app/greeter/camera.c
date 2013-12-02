@@ -156,11 +156,11 @@ void reco()
     g_spawn_sync(NULL, args, NULL, 0, NULL, NULL, &is_same_person, NULL, NULL, &err);
 
     if (err != NULL) {
-        g_warning("[reco] %s", err->message);
+        g_warning("[%s] %s", __func__, err->message);
         g_error_free(err);
     }
 
-    g_debug("[reco] #%s#", is_same_person);
+    g_debug("[%s] #%s#", __func__, is_same_person);
     if (g_strcmp0(is_same_person, "True") == 0) {
         recognition_info.reco_state = RECOGNIZED;
         g_free(is_same_person);
@@ -216,7 +216,7 @@ static
 gboolean recognized_handler(gpointer data)
 {
     g_debug("[%s] recognized", __func__);
-    js_post_message_simply("start-login", NULL);
+    js_post_signal("start-login");
     recognition_info.reco_state = RECOGNIZE_FINISH;
     return G_SOURCE_REMOVE;
 }
@@ -257,7 +257,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
 
     switch (recognition_info.reco_state) {
     case NOT_START_RECOGNIZING:
-        g_debug("[_frame_handler] not start recognizing");
+        g_debug("[%s] not start recognizing", __func__);
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
 
@@ -273,12 +273,12 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         } else {
             g_timer_start(recognition_info.timer);
         }
-        recognition_info.source_data = frame->imageData;
+        recognition_info.source_data = (guchar*)(frame->imageData);
         recognition_info.length = GST_BUFFER_SIZE(copy_buffer);
         recognition_info.has_data = TRUE;
         break;
     case START_RECOGNIZING:
-        g_debug("[_frame_handler] start recognizing");
+        g_debug("[%s] start recognizing", __func__);
         recognition_info.source_data = (guchar*)GST_BUFFER_DATA(pure_buffer);
         recognition_info.length = GST_BUFFER_SIZE(pure_buffer);
         GdkPixbuf* pixbuf = gdk_pixbuf_new_from_data(recognition_info.source_data,
@@ -294,14 +294,14 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         GError* error = NULL;
         gdk_pixbuf_save(pixbuf, "/tmp/deepin_user_face.png", "png", &error, NULL);
         if (error != NULL) {
-            g_debug("[_frame_handler] %s", error->message);
+            g_debug("[%s] %s", __func__, error->message);
             g_error_free(error);
         }
 
         g_object_unref(pixbuf);
         recognition_info.has_data = TRUE;
 
-        js_post_message_simply("start-animation", NULL);
+        js_post_signal("start-animation");
         recognition_info.reco_state = RECOGNIZING;
         sended = FALSE;
         reco();
@@ -321,7 +321,7 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         }
         break;
     case RECOGNIZE_FINISH:
-        g_debug("[_frame_handler] recognizing finish");
+        g_debug("[%s] recognizing finish", __func__);
         if (copy_buffer != NULL)
             gst_buffer_unref(copy_buffer);
         copy_buffer = gst_buffer_copy((buffer));
@@ -393,26 +393,26 @@ void _draw(JSValueRef canvas, double dest_width, double dest_height)
     static gboolean not_draw = FALSE;
 
     if (recognition_info.reco_state == RECOGNIZING) {
-        /* g_debug("[_draw] recognizing"); */
+        /* g_debug("[%s] recognizing", __func__); */
         return;
     }
 
     if (!recognition_info.has_data) {
-        g_debug("[_draw] get no data from camera");
+        g_debug("[%s] get no data from camera", __func__);
         return;
     }
 
     if (JSValueIsNull(get_global_context(), canvas)) {
-        g_debug("[_draw] draw with null canvas!");
+        g_debug("[%s] draw with null canvas!", __func__);
         return;
     }
 
     if (recognition_info.source_data == NULL) {
-        g_debug("[_draw] source_data is null");
+        g_debug("[%s] source_data is null", __func__);
         return;
     }
 
-    g_debug("[_draw]");
+    g_debug("[%s]", __func__);
 
     cairo_t* cr = fetch_cairo_from_html_canvas(get_global_context(), canvas);
     g_assert(cr != NULL);

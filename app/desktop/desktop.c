@@ -247,10 +247,13 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
             height = root_height - 60 -y;
     }
 
-    char* tmp = g_strdup_printf("{\"x\":%d, \"y\":%d, \"width\":%d, \"height\":%d}", x, y, width, height);
-    g_debug ("%s", tmp);
-    js_post_message_simply("workarea_changed", tmp);
-    g_free (tmp);
+    JSObjectRef workarea_info = json_create();
+    json_append_number(workarea_info, "x", x);
+    json_append_number(workarea_info, "y", y);
+    json_append_number(workarea_info, "width", width);
+    json_append_number(workarea_info, "height", height);
+    js_post_message("workarea_changed", workarea_info);
+
     return FALSE;
 }
 
@@ -266,7 +269,7 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 
 PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    js_post_message_simply ("desktop_config_changed", NULL);
+    js_post_signal ("desktop_config_changed");
 }
 
 
@@ -419,11 +422,11 @@ GtkIMContext* im_context = NULL;
 
 void send_lost_focus()
 {
-    js_post_message_simply("lost_focus", NULL);
+    js_post_signal("lost_focus");
 }
 void send_get_focus()
 {
-    js_post_message_simply("get_focus", NULL);
+    js_post_signal("get_focus");
 }
 
 DBUS_EXPORT_API

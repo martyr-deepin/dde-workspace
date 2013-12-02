@@ -6,4 +6,4 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DTEST_INCLUDE_DIRS})
 include_directories(..)
 
-target_link_libraries(desktop_test dcom dentry dbus dtest tray ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})
+target_link_libraries(desktop_test dcom dentry dbus dtest ${DBUS_LIBRARIES} ${DWEBVIEW_LIBRARIES})

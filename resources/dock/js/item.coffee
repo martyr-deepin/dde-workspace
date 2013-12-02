@@ -24,34 +24,44 @@ calc_app_item_size = ->
     return if apps.length = 0
 
     list = $("#app_list")
-    w = clamp((list.clientWidth - 26) / list.children.length, 34, ITEM_WIDTH * MAX_SCALE)
+    client_width = list.clientWidth
+    item_num = list.children.length
+    w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
 
     for i in apps
         Widget.look_up(i.id)?.update_scale()
 
         h = w * (ITEM_HEIGHT / ITEM_WIDTH)
-        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE
+        # apps are moved up, so add 8
+        height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region()
+    update_dock_region(w * item_num)
 
-update_dock_region = ->
+update_dock_region = (w)->
+    if board
+        board.set_width(w)
+        board.draw()
     apps = $s(".AppItem")
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
-        offset = ICON_SCALE * ITEM_WIDTH * apps.length
-        DCore.Dock.force_set_region(0, 0, offset, DOCK_HEIGHT)
+        app_len = ICON_SCALE * ITEM_WIDTH * apps.length
+        left_offset = (screen.width - app_len) / 2
+        DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH, apps.length, DOCK_HEIGHT)
 
 document.body.onresize = ->
     calc_app_item_size()
 
 class AppList extends Widget
+    @expand_panel_id: null
     constructor: (@id) ->
         super
-        $("#container").insertBefore(@element, $("#notifyarea"))
+        $("#container").appendChild(@element)
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
+        @is_insert_indicator_shown = false
+        @last_fixed = null
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -66,12 +76,19 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     append_app_item: (c)->
-        @element.appendChild(c.element)
+        if @last_fixed == null
+            @element.appendChild(c.element)
+            if c.id == "trash"
+                @last_fixed = c.element
+        else
+            @element.insertBefore(c.element, @last_fixed)
+            if c.id == 'dde_digit_clock' || c.id == 'dde_analog_clock'
+                @last_fixed = c.element
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
 
-    do_drop: (e)->
+    do_drop: (e)=>
         e.stopPropagation()
         e.preventDefault()
         if dnd_is_desktop(e)
@@ -83,29 +100,38 @@ class AppList extends Widget
             item.flash(0.5)
             @append(item)
         @hide_indicator()
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
 
-    do_dragover: (e) ->
+    do_dragover: (e) =>
         e.preventDefault()
         e.stopPropagation()
-        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
-            e.dataTransfer.dropEffect="copy"
-            n = e.x / (ITEM_WIDTH * ICON_SCALE)
-            if n > 2  # skip the show_desktop and show launcher AppItem
-                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
-            else
-                @hide_indicator()
+        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+        if e.screenX > min_x and e.screenX < max_x
+            if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+                e.dataTransfer.dropEffect="copy"
+                n = e.x / (ITEM_WIDTH * ICON_SCALE)
+                if n > 2  # skip the show_desktop and show launcher AppItem
+                    @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
+                else
+                    @hide_indicator()
 
-    do_dragleave: (e)->
+    do_dragleave: (e)=>
         @hide_indicator()
         e.stopPropagation()
         e.preventDefault()
-        if not dnd_is_deepin_item(e)
-            update_dock_region()
-    do_dragenter: (e)->
-        DCore.Dock.require_all_region()
+        if dnd_is_deepin_item(e) or dnd_is_desktop(e)
+            calc_app_item_size()
+            # update_dock_region()
+
+    do_dragenter: (e)=>
         e.stopPropagation()
         e.preventDefault()
+        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+        if e.screenX > min_x and e.screenX < max_x
+            DCore.Dock.require_all_region()
 
     swap_item: (src, dest)->
         swap_element(src.element, dest.element)
@@ -114,8 +140,12 @@ class AppList extends Widget
     hide_indicator: ->
         if @insert_indicator.parentNode == @element
             @element.removeChild(@insert_indicator)
+            @is_insert_indicator_shown = false
+            clearTimeout(AppList.expand_panel_id)
 
     show_indicator: (x, try_insert_id)->
+        if @is_insert_indicator_shown
+            return
         @insert_indicator.style.width = ICON_SCALE * ICON_WIDTH
         @insert_indicator.style.height = ICON_SCALE * ICON_HEIGHT
         margin_top = (ITEM_HEIGHT - ICON_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) * ICON_SCALE
@@ -132,28 +162,24 @@ class AppList extends Widget
         if @_insert_anchor_item
             @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
-            @element.appendChild(@insert_indicator)
+            @element.insertBefore(@insert_indicator, @last_fixed)
+
+        @is_insert_indicator_shown = true
+        AppList.expand_panel_id = setTimeout(->
+            board.set_width(board.board.width)
+            board.draw()
+        , 50)
 
 app_list = new AppList("app_list")
 
 class AppItem extends Widget
     is_fixed_pos: false
     tooltip_show_id: -1
-    next: ->
-        el = @element.nextElementSibling
-        if el and el.classList.contains("AppItem")
-            return Widget.look_up(el.id)
-        else
-            return null
-    prev: ->
-        el = @element.previousElementSibling
-        if el and el.classList.contains("AppItem")
-            return Widget.look_up(el.id)
-        else
-            return null
     constructor: (@id, @icon)->
         super
         @add_css_class("AppItem")
+        @type = ITEM_TYPE_APP
+        @tooltip = null
 
         if not @icon
             @icon = NOT_FOUND_ICON
@@ -167,8 +193,21 @@ class AppItem extends Widget
             app_list.append(@)
         else
             app_list.append_app_item(@)
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
 
+    next: ->
+        el = @element.nextElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
+    prev: ->
+        el = @element.previousElementSibling
+        if el and el.classList.contains("AppItem")
+            return Widget.look_up(el.id)
+        else
+            return null
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
     rotate: (time) ->
@@ -178,8 +217,9 @@ class AppItem extends Widget
         super
         calc_app_item_size()
 
-    update_scale: () ->
+    update_scale: ->
         @element.style.maxWidth = ITEM_WIDTH * ICON_SCALE
+        # @element.style.minHeight = ITEM_HEIGHT * ICON_SCALE
         $("#container").style.minHeight = ITEM_HEIGHT * ICON_SCALE
 
         icon_width = ICON_WIDTH * ICON_SCALE
@@ -192,26 +232,18 @@ class AppItem extends Widget
         @img.style.width = icon_width
         @img.style.height = icon_height
 
-        if @img2
-            @img2.style.width = icon_width
-            @img2.style.height = icon_height
-        if @img3
-            @img3.style.width = icon_width
-            @img3.style.height = icon_height
-
         if @open_indicator
-            h = INDICATER_HEIGHT * ICON_SCALE
             @open_indicator.style.width = INDICATER_WIDTH * ICON_SCALE
-            @open_indicator.style.height = h
-            @open_indicator.style.top = ITEM_HEIGHT * ICON_SCALE - h
+            @open_indicator.style.top = icon_height + 9  # 9 for reflect effective
 
-    do_dragover: (e)->
+    do_dragover: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
-        app_list.record_last_over_item(@)
+        if e.screenX > get_page_xy($("#show_desktop"), 0, 0).x and e.screenX < get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+            return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
+            app_list.record_last_over_item(@)
 
-    do_dragstart: (e)->
+    do_dragstart: (e)=>
         e.stopPropagation()
         DCore.Dock.require_all_region()
         app_list.record_last_over_item(@)
@@ -224,25 +256,28 @@ class AppItem extends Widget
         e.dataTransfer.setData("text/plain", "swap")
         e.dataTransfer.effectAllowed = "copyMove"
 
-    do_dragend: (e)->
+    do_dragend: (e)=>
         #TODO: This event may not apparence if drag the item drop and quickly clik other application
         e.stopPropagation()
         e.preventDefault()
-        update_dock_region()
+        calc_app_item_size()
+        # update_dock_region()
         setTimeout(->
             DCore.Dock.update_hide_mode()
         , 1000)
 
     show_swap_indicator: ->
         @add_css_class("ItemSwapIndicator", @img)
+
     hide_swap_indicator: ->
         @remove_css_class("ItemSwapIndicator", @img)
 
-    do_dragenter: (e)->
+    do_dragenter: (e)=>
         e.preventDefault()
         e.stopPropagation()
         return if @is_fixed_pos
         app_list.hide_indicator()
+        # board.set_width(board.board.width + ITEM_WIDTH)
 
         @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
         if @_try_swaping_id == @app_id
@@ -254,7 +289,7 @@ class AppItem extends Widget
         else
             e.dataTransfer.dropEffect="move"
 
-    do_dragleave: (e)->
+    do_dragleave: (e)=>
         @hide_swap_indicator()
         @_try_swaping_id = null
         @hide_swap_indicator()
@@ -267,7 +302,7 @@ class AppItem extends Widget
             is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock panel?"))
             if is_delete
                 DCore.Dock.request_undock(@id)
-    do_drop: (e) ->
+    do_drop: (e) =>
         e.preventDefault()
         e.stopPropagation()
         @hide_swap_indicator()
@@ -282,15 +317,38 @@ class AppItem extends Widget
                 entry = DCore.DEntry.create_by_path(path)
                 tmp_list.push(entry)
             if tmp_list.length > 0
-                switch this.constructor.name
+                switch @constructor.name
                     when "Launcher" then @_do_launch tmp_list
                     when "ClientGroup"
                         if @n_clients.length == 1
                             DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
 
     set_tooltip: (text) ->
-        new ToolTip(@element, text)
+        if @tooltip == null
+            # @tooltip = new ToolTip(@element, text)
+            @tooltip = new ArrowToolTip(@element, text)
+            @tooltip.set_delay_time(200)  # set delay time to the same as scale time
+            return
+        @tooltip.set_text(text)
 
+    # use these three event to avoid the fact css events are not triggered.
+    do_mouseover: (e)=>
+        DCore.Dock.require_all_region()
+        # not use element for fixing open indicator
+        @img.style.webkitTransform = 'scale(1.1)'
+        @img.style.webkitTransition = 'all 0.2s ease-out'
+
+    do_mouseout: (e)=>
+        @img.style.webkitTransform = ''
+        @img.style.webkitTransition = 'opacity 1s ease-in'
+
+    # on_itemselected: (e)=>
+    do_itemselected: (e) =>
+        @do_mouseout(e)
+
+    do_buildmenu: (e)=>
+        Preview_close_now()
+        []
 
 
 document.body.addEventListener("drop", (e)->
