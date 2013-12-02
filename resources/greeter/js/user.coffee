@@ -214,9 +214,14 @@ class User extends Widget
     import_css:(src)->
         inject_css(@element,src)
 
-    new_NextPrevUserinfo:->
-        echo "new_NextPrevUserinfo"
-        
+    roundabout_animation:->
+        jQuery("#user_ul").roundabout({
+            shape: 'waterWheel',
+            enableDrag: true,
+            tilt: 1.5,
+            btnNext: jQuery(".nextuserinfo"),
+            btnPrev: jQuery(".prevuserinfo")
+        })
 
 class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->

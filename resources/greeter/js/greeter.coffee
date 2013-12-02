@@ -80,6 +80,8 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
+user.roundabout_animation()
+
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
