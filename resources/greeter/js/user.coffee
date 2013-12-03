@@ -31,7 +31,7 @@ user_ul = null
 message_tip = null
 draw_camera_id = null
 _current_user = null
-userinfo_list = []
+_current_username = null
 _drag_flag = false
 
 
@@ -43,8 +43,6 @@ class User extends Widget
     userimage = null
     userinfo = null
     userinfo_all = []
-    _current_username = null
-
         
     users_path = []
     users_name = []
@@ -178,7 +176,8 @@ class User extends Widget
                     userinfo_all.push(_current_user)
                     user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
-                else
+            for user in users_name
+                if user isnt _current_username
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage,@get_user_type(user))
                     userinfo_all.push(u)
@@ -217,6 +216,8 @@ class User extends Widget
     roundabout_animation:->
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
+            startingChild: 0,
+            clickToFocus: true,
             enableDrag: true,
             tilt: 1.5,
             btnNext: jQuery(".nextuserinfo"),
@@ -347,9 +348,9 @@ class UserInfo extends Widget
         super
         @is_recognizing = false
 
-        @element.setAttribute("type","li")
+        #@element.setAttribute("type","li")
         @userinfo_li = create_element("li","userinfo_li",@element)
-        @userinfo_li.id = "userinfo_li"
+        @userinfo_li.id = "#{@id}_li"
         userbase = create_element("div", "UserBase", @userinfo_li)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
@@ -368,8 +369,6 @@ class UserInfo extends Widget
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         @face_login =false
-
-        userinfo_list.push(@)
 
     draw_avatar: ->
         apply_animation(recognize,"recognize_animation","10s") if @face_login
@@ -391,6 +390,7 @@ class UserInfo extends Widget
         @draw_avatar()
     
     focus:->
+        echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
         #if @session then de_menu.set_current(@session)
