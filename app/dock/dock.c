@@ -208,11 +208,11 @@ void check_version()
         save_app_config(dock_config, DOCK_CONFIG);
     }
 
-    if (g_strcmp0(DOCK_VERSION, version) != 0) {
+    if (version != NULL && g_strcmp0(DOCK_VERSION, version) != 0) {
         g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
         save_app_config(dock_config, DOCK_CONFIG);
 
-        system("sed -i 's/__Config__/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        system("sed -i 's/DockedItems/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
         GKeyFile* f = load_app_config(APPS_INI);
         gsize len = 0;
         char** list = g_key_file_get_groups(f, &len);
@@ -242,7 +242,7 @@ void check_version()
         }
         g_strfreev(list);
 
-        list = g_key_file_get_string_list(f, "DockedItems", "Position", &len, &err);
+        list = g_key_file_get_string_list(f, DOCKED_ITEM_GROUP_NAME, DOCKED_ITEM_KEY_NAME, &len, &err);
         if (err != NULL) {
             g_error_free(err);
             len = 0;
@@ -263,7 +263,7 @@ void check_version()
             }
         }
         if (list != NULL) {
-            g_key_file_set_string_list(f, "DockedItems", "Position", (const char* const*)list, len);
+            g_key_file_set_string_list(f, DOCKED_ITEM_GROUP_NAME, DOCKED_ITEM_KEY_NAME, (const char* const*)list, len);
             g_strfreev(list);
         }
         save_app_config(f, APPS_INI);
@@ -273,8 +273,7 @@ void check_version()
         g_key_file_unref(f);
     }
 
-    if (version != NULL)
-        g_free(version);
+    g_free(version);
 
     g_key_file_unref(dock_config);
 }
