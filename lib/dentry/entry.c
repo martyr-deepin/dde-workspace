@@ -574,6 +574,7 @@ _file_is_archive (GFile *file)
         "application/x-ear",
         "application/x-arj",
         "application/x-gzip",
+        "application/gzip",
         "application/x-bzip-compressed-tar",
         "application/x-compressed-tar",
         "application/x-archive",
@@ -600,6 +601,9 @@ _file_is_archive (GFile *file)
     GFileInfo* info = g_file_query_info(file, "standard::content-type", G_FILE_QUERY_INFO_NONE, NULL, NULL);
     if (info != NULL) {
         mime_type = (char*)g_file_info_get_attribute_string(info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+        char* path = g_file_get_path(file);
+        g_debug("[%s] \"%s\" MINE type is: \"%s\"", __func__, path, mime_type);
+        g_free(path);
 
         for (i = 0; i < G_N_ELEMENTS (archive_mime_types); i++) {
             if (!strcmp (mime_type, archive_mime_types[i])) {
