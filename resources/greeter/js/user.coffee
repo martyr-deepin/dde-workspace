@@ -112,6 +112,7 @@ class User extends Widget
             return s
 
     get_all_users:->
+        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         users_path = Dbus_Account.ListCachedUsers_sync()
         for user in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",user,"org.freedesktop.Accounts.User")
