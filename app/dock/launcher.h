@@ -24,7 +24,7 @@
 #define _LAUNCHER_H__
 
 #define APPS_INI "dock/apps.ini"
-#define DOCKED_ITEM_GROUP_NAME "DockedItems"
+#define DOCKED_ITEM_GROUP_NAME "__Config__"
 #define DOCKED_ITEM_KEY_NAME "Position"
 
 #define DOCKED_ITEM_APP_TYPE "App"

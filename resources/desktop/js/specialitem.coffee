@@ -240,7 +240,6 @@ class TrashVDir extends DesktopEntry
             menus.push([3, _("_Clean up"), false])
         menus
 
-
     do_itemselected : (evt) ->
         switch evt.id
             when 1
