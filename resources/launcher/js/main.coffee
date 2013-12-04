@@ -51,7 +51,10 @@ DCore.signal_connect("exit_launcher", ->
 )
 inited = false
 DCore.signal_connect("draw_background", (info)->
-    _b.style.backgroundImage = "url(#{info.path})"
+    img = new Image()
+    img.src = info.path
+    img.onload = ->
+        _b.style.backgroundImage = "url(#{img.src})"
     # if inited
     #     DCore.Launcher.clear()
     # inited = true
@@ -139,12 +142,9 @@ sort_methods =
     "rate": sort_by_rate
 
 reset = ->
-    s_box.value = ""
     selected_category_id = ALL_APPLICATION_CATEGORY_ID
-    # if s_box.value != ""
-    #     sort_category_info(sort_methods[sort_method])
-    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-    grid_load_category(selected_category_id)
+    clean_search_bar()
+    s_box.focus()
     save_hidden_apps()
     _show_hidden_icons(false)
     get_first_shown()?.scroll_to_view()
@@ -204,6 +204,8 @@ compare_string = (s1, s2) ->
     return 1 if s1 > s2
     return 0 if s1 == s2
     return -1
+
+
 bind_events = ->
     _b.addEventListener("contextmenu",
                         _contextmenu_callback(HIDDEN_ICONS_MESSAGE[is_show_hidden_icons],
@@ -242,82 +244,66 @@ bind_events = ->
     _b.addEventListener('keypress', (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if e.which != ESC_KEY and e.which != BACKSPACE_KEY
+        if e.which != ESC_KEY and e.which != BACKSPACE_KEY and e.which != ENTER_KEY and e.whicn != SPACE_KEY
             s_box.value += String.fromCharCode(e.which)
-            # echo '[keypress] search'
-            search()
     )
 
 
 # this does not work on keypress
-    _b.addEventListener("keydown", do ->
-        _last_val = ''
-        (e) ->
-            e.stopPropagation()
-            if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
-                e.preventDefault()
-                selected_up()
-            else if e.ctrlKey
-                e.preventDefault()
-                switch e.which
-                    when P_KEY
-                        selected_up()
-                    when F_KEY
-                        selected_next()
-                    when B_KEY
+    _b.addEventListener("keydown", (e) ->
+        e.stopPropagation()
+        if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
+            e.preventDefault()
+            selected_up()
+        else if e.ctrlKey
+            e.preventDefault()
+            switch e.which
+                when P_KEY
+                    selected_up()
+                when F_KEY
+                    selected_next()
+                when B_KEY
+                    selected_prev()
+                when N_KEY, TAB_KEY
+                    selected_down()
+                when ENTER_KEY, SPACE_KEY
+                    s_box.focus()
+        else if String.fromCharCode(e.which).match(/\w/)
+            s_box.focus()
+        else
+            switch e.which
+                when ESC_KEY
+                    e.preventDefault()
+                    e.stopPropagation()
+                    if s_box.value == ""
+                        exit_launcher()
+                    else
+                        s_box.focus()
+                        clean_search_bar()
+                when ENTER_KEY
+                    e.preventDefault()
+                    if item_selected
+                        item_selected.do_click()
+                    else
+                        get_first_shown()?.do_click()
+                when UP_ARROW
+                    e.preventDefault()
+                    selected_up()
+                when DOWN_ARROW
+                    e.preventDefault()
+                    selected_down()
+                when LEFT_ARROW
+                    e.preventDefault()
+                    selected_prev()
+                when RIGHT_ARROW
+                    e.preventDefault()
+                    selected_next()
+                when TAB_KEY
+                    e.preventDefault()
+                    if e.shiftKey
                         selected_prev()
-                    when N_KEY, TAB_KEY
-                        selected_down()
-            else
-                switch e.which
-                    when ESC_KEY
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if s_box.value == ""
-                            exit_launcher()
-                        else
-                            _last_val = s_box.value
-                            s_box.value = ""
-                            update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                            grid_load_category(selected_category_id)
-                    when BACKSPACE_KEY
-                        e.stopPropagation()
-                        e.preventDefault()
-                        _last_val = s_box.value
-                        s_box.value = s_box.value.substr(0, s_box.value.length-1)
-                        if s_box.value == ""
-                            get_first_shown()?.scroll_to_view()
-                            # if _last_val != s_box.value
-                            update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                            grid_load_category(selected_category_id)
-                            # echo 'backspace'
-                            return  # to avoid to invoke search function
-                        # echo '[keydown] search'
-                        search()
-                    when ENTER_KEY
-                        e.preventDefault()
-                        if item_selected
-                            item_selected.do_click()
-                        else
-                            get_first_shown()?.do_click()
-                    when UP_ARROW
-                        e.preventDefault()
-                        selected_up()
-                    when DOWN_ARROW
-                        e.preventDefault()
-                        selected_down()
-                    when LEFT_ARROW
-                        e.preventDefault()
-                        selected_prev()
-                    when RIGHT_ARROW
-                        e.preventDefault()
+                    else
                         selected_next()
-                    when TAB_KEY
-                        e.preventDefault()
-                        if e.shiftKey
-                            selected_prev()
-                        else
-                            selected_next()
     )
 
 

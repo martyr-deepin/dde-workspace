@@ -19,24 +19,53 @@
 
 s_box = $('#s_box')
 
+
+clean_search_bar = ->
+    s_box.value = ""
+    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+    grid_load_category(selected_category_id)
+
 init_search_box = ->
     s_box.setAttribute("placeholder", _("Type to search..."))
+
+    # stop propagation to body
+    s_box.addEventListener('keypress', (e)->
+        e.stopPropagation()
+    )
+
+    s_box.addEventListener("input", (e) ->
+        if s_box.value == ""
+            clean_search_bar()
+        else if s_box.value.match(/^\s/)
+            s_box.value = s_box.value.trim()
+        else
+            search()
+        e.stopPropagation()
+        e.preventDefault()
+    )
+
+    s_box.addEventListener("keydown", (e) ->
+        e.stopPropagation()
+        switch e.which
+            when ESC_KEY
+                if s_box.value == ""
+                    exit_launcher()
+                else
+                    clean_search_bar()
+            when ENTER_KEY
+                s_box.blur()
+            when TAB_KEY
+                e.preventDefault()
+    )
 
     $("#search").addEventListener('click', (e)->
         if e.target == s_box
             e.stopPropagation()
     )
 
-    s_box.addEventListener('input', s_box.blur())
-
-    DCore.signal_connect("im_commit", (info)->
-        s_box.value += info.Content
-        search()
-    )
-
 do_search = ->
     ret = []
-    key = s_box.value.toLowerCase().trim()
+    key = s_box.value.trim().toLowerCase()
 
     for k,v of applications
         if key == ""
@@ -64,5 +93,5 @@ search = do ->
         , 20)
 
 
-cursor = create_element("span", "cursor", document.body)
-cursor.innerText = "|"
+# cursor = create_element("span", "cursor", document.body)
+# cursor.innerText = "|"

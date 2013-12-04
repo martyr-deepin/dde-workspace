@@ -238,7 +238,7 @@ gboolean _launcher_size_monitor(gpointer user_data)
 {
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
-    if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
+    if (usg.ru_maxrss > RES_IN_MB(140) && !is_launcher_shown) {
         g_spawn_command_line_async("launcher -r", NULL);
         return FALSE;
     }

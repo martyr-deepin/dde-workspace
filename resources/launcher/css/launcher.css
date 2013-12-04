@@ -64,6 +64,7 @@ body {
     height: 24px;
     width: 300px;
     border-radius: 5px;
+    outline: none;
 }
 #s_box:hover {
     margin: 22px;
@@ -88,7 +89,7 @@ body {
 
     position:absolute;
     top: 70px;
-    bottom: 30px;
+    bottom: 40px;
 }
 
 #container > div {

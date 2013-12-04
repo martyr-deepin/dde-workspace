@@ -61,12 +61,10 @@ selected_down = ->
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
-            n.scroll_to_view()
             n = n.next_shown()
     if n
-        n.scroll_to_view()
+        grid.scrollTop += SCROLL_STEP_LEN
         update_selected(n)
-    grid.scrollTop += SCROLL_STEP_LEN
 
 selected_up = ->
     clean_hover_state()
@@ -78,9 +76,7 @@ selected_up = ->
     n = item_selected
     for i in [0..get_item_row_count()-1]
         if n
-            n.scroll_to_view()
             n = n.prev_shown()
     if n
-        n.scroll_to_view()
+        grid.scrollTop -= SCROLL_STEP_LEN
         update_selected(n)
-    grid.scrollTop -= SCROLL_STEP_LEN
