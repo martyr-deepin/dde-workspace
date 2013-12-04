@@ -48,6 +48,8 @@ else
     for user in users
         if user == DCore.Greeter.get_default_user()
             echo "already append default user"
+        if is_disable_user(user)
+            echo "is_disable_user:#{user},will not show!"
         else
             user_image = get_user_image(user)
             u = new UserInfo(user, user, user_image)
