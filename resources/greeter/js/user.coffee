@@ -52,7 +52,8 @@ class User extends Widget
     constructor:->
         super
         @is_livecd()
-        
+        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
+
         img_src_before = "images/userswitch/"
         @prevuserinfo = create_img("prevuserinfo",img_src_before + "up_normal.png",@element)
         user_ul = create_element("ul","user_ul",@element)
@@ -85,7 +86,6 @@ class User extends Widget
 
     is_livecd:->
         try
-            Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
             dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
             is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
         catch error
@@ -112,7 +112,6 @@ class User extends Widget
             return s
 
     get_all_users:->
-        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         users_path = Dbus_Account.ListCachedUsers_sync()
         for user in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",user,"org.freedesktop.Accounts.User")
@@ -161,6 +160,16 @@ class User extends Widget
                     else return _("Standard user")
         return _("Standard user")
 
+    is_disable_user :(username)->
+        disable = false
+        users_path = Dbus_Account.ListCachedUsers_sync()
+        for u in users_path
+            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
+            if username is u.UserName
+                if user_dbus.Locked is null then disable = false
+                else if user_dbus.Locked is true then disable = true
+                return disable
+
     new_userinfo_all:()->
         if is_hide_users
             userinfo = new UserInfo("*other", "", "images/huser.jpg",@get_user_type("*other"))
@@ -182,7 +191,7 @@ class User extends Widget
                     user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
             for user in users_name
-                if user isnt _current_username
+                if user isnt _current_username or not is_disable_user(user)
                     is_current_user = false
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage,@get_user_type(user))
