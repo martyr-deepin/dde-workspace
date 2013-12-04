@@ -29,12 +29,12 @@ else
 
 
 is_disable_user = (username)->
-	disable = false
+    disable = false
     Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
     users_path = Dbus_Account.ListCachedUsers_sync()
     for u in users_path
         user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-        if username is u.UserName
-        	if user_dbus.Locked is null then disable = false
-        	else if user_dbus.Locked is true then disable = true
-    		return disable
+        if username is user_dbus.UserName
+            if user_dbus.Locked is null then disable = false
+            else if user_dbus.Locked is true then disable = true
+            return disable
