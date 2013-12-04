@@ -255,6 +255,7 @@ class User extends Widget
             echo "_focus_userinfo_index:#{_focus_userinfo_index}"
             userinfo_all[_focus_userinfo_index_prev].only_show_name(true)
             userinfo_all[_focus_userinfo_index].only_show_name(false)
+            userinfo_all[_focus_userinfo_index].focus()
         )
 
 
@@ -406,10 +407,9 @@ class UserInfo extends Widget
 
     only_show_name:(only_show_name)->
         if only_show_name
-            username.style.opacity = "1.0"
             username.style.textAlign = "left"
-            img_div.style.opacity = "0.0"
-            login_div.style.opacity = "0.0"
+            img_div.style.display = "none"
+            login_div.style.display = "none"
             
             @userinfo_li.style.background = "rgba(255,250,246,0.0)"
             @userinfo_li.style.borderRadius = "0px"
@@ -418,10 +418,9 @@ class UserInfo extends Widget
             
             userbase.style.boxShadow = "0px 0 0 rgba(255,255,255,0.0)"
         else
-            username.style.opacity = "1.0"
             username.style.textAlign = "center"
-            img_div.style.opacity = "1.0"
-            login_div.style.opacity = "1.0"
+            img_div.style.display = "-webkit-box"
+            login_div.style.display = "-webkit-box"
             
             @userinfo_li.style.background = "rgba(255,250,246,0.5)"
             @userinfo_li.style.borderRadius = "4px"
