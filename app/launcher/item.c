@@ -42,8 +42,8 @@ PRIVATE GKeyFile* launcher_config = NULL;
 
 void destroy_item_config()
 {
-    if (hidden_app_conf != NULL)
-        g_key_file_unref(hidden_app_conf);
+    if (hidden_apps != NULL)
+        g_key_file_unref(hidden_apps);
 
     if (autostart_paths != NULL)
         g_ptr_array_unref(autostart_paths);
@@ -56,11 +56,11 @@ void destroy_item_config()
 JS_EXPORT_API
 JSValueRef launcher_load_hidden_apps()
 {
-    if (hidden_app_conf == NULL) {
-        hidden_app_conf = load_app_config(APPS_INI);
+    if (hidden_apps == NULL) {
+        hidden_apps = load_app_config(APPS_INI);
     }
 
-    g_assert(hidden_app_conf != NULL);
+    g_assert(hidden_apps != NULL);
     GError* error = NULL;
     gsize length = 0;
     gchar** raw_hidden_app_ids = g_key_file_get_string_list(hidden_apps,
