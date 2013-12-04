@@ -32,6 +32,7 @@ message_tip = null
 draw_camera_id = null
 _current_user = null
 _current_username = null
+is_current_user = false
 _drag_flag = false
 
 
@@ -162,6 +163,7 @@ class User extends Widget
     new_userinfo_all:()->
         if is_hide_users
             userinfo = new UserInfo("*other", "", "images/huser.jpg",@get_user_type("*other"))
+            userinfo.only_show_name(true)
             user_ul.appendChild(userinfo.userinfo_li)
             Widget.look_up("*other").element.style.paddingBottom = "5px"
             userinfo.focus()
@@ -171,27 +173,30 @@ class User extends Widget
             #users = DCore.Greeter.get_users()
             for user in users_name
                 if user == _current_username
+                    is_current_user = true
                     userimage = @get_user_image(user)
                     _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+                    _current_user.only_show_name(false)
                     userinfo_all.push(_current_user)
                     user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
             for user in users_name
                 if user isnt _current_username
+                    is_current_user = false
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage,@get_user_type(user))
+                    u.only_show_name(true)
                     userinfo_all.push(u)
                     user_ul.appendChild(u.userinfo_li)
 
         if is_greeter
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                u.only_show_name(true)
                 user_ul.appendChild(u.userinfo_li)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
         
-        echo user_ul
-        echo user_ul.children.length
         if user_ul.children.length <= 2
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
         return userinfo_all
@@ -339,16 +344,15 @@ class SwitchUser extends Widget
 class UserInfo extends Widget
     userbase = null
     right = null
+    img_div = null
     userimg = null
     recognize = null
     username = null
     login_div = null
-
     constructor: (@id, name, @img_src,@type)->
         super
         @is_recognizing = false
-
-        #@element.setAttribute("type","li")
+        
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         userbase = create_element("div", "UserBase", @userinfo_li)
@@ -369,6 +373,23 @@ class UserInfo extends Widget
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         @face_login =false
+
+
+    only_show_name:(only_show_name)->
+        if only_show_name
+            img_div.style.display = "none"
+            login_div.style.display = "none"
+        else
+            img_div.style.display = "block"
+            login_div.style.display = "block"
+            
+            @userinfo_li.style.background = "rgba(255,250,246,0.5)"
+            @userinfo_li.style.borderRadius = "4px"
+            @userinfo_li.style.color = "#7e7975"
+            @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.2)"
+            
+            userbase.style.boxShadow = "1px 0 0 rgba(255,255,255,0.8)"
+            
 
     draw_avatar: ->
         apply_animation(recognize,"recognize_animation","10s") if @face_login
