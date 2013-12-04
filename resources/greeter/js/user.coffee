@@ -234,7 +234,8 @@ class User extends Widget
             startingChild: 0,
             clickToFocus: true,
             enableDrag: true,
-            tilt: 1.5,
+            tilt: 2.3,
+            minOpacity: 0.0,
             btnNext: jQuery(".nextuserinfo"),
             btnPrev: jQuery(".prevuserinfo")
         })
@@ -387,9 +388,11 @@ class UserInfo extends Widget
 
     only_show_name:(only_show_name)->
         if only_show_name
+            username.style.textAlign = "left"
             img_div.style.display = "none"
             login_div.style.display = "none"
         else
+            username.style.textAlign = "center"
             img_div.style.display = "block"
             login_div.style.display = "block"
             
