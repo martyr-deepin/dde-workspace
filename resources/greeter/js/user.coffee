@@ -35,6 +35,7 @@ _current_username = null
 is_current_user = false
 _drag_flag = false
 _focus_userinfo_index = 0
+_focus_userinfo_index_prev = 0
 
 class User extends Widget
     Dbus_Account = null
@@ -242,10 +243,18 @@ class User extends Widget
             btnNext: jQuery(".nextuserinfo"),
             btnPrev: jQuery(".prevuserinfo")
         })
-        .bind("focus",=>
+        .bind("animationStart",=>
             echo "animationStart"
+            _focus_userinfo_index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
+            echo "_focus_userinfo_index_prev:#{_focus_userinfo_index_prev}"
+        )
+
+        .bind("animationEnd",=>
+            echo "animationEnd"
             _focus_userinfo_index = jQuery("#user_ul").roundabout("getChildInFocus")
-            echo _focus_userinfo_index
+            echo "_focus_userinfo_index:#{_focus_userinfo_index}"
+            userinfo_all[_focus_userinfo_index_prev].only_show_name(true)
+            userinfo_all[_focus_userinfo_index].only_show_name(false)
         )
 
 
@@ -397,13 +406,22 @@ class UserInfo extends Widget
 
     only_show_name:(only_show_name)->
         if only_show_name
+            username.style.opacity = "1.0"
             username.style.textAlign = "left"
-            img_div.style.display = "none"
-            login_div.style.display = "none"
+            img_div.style.opacity = "0.0"
+            login_div.style.opacity = "0.0"
+            
+            @userinfo_li.style.background = "rgba(255,250,246,0.0)"
+            @userinfo_li.style.borderRadius = "0px"
+            @userinfo_li.style.color = "rgba(255,250,246,0.0)"
+            @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.0)"
+            
+            userbase.style.boxShadow = "0px 0 0 rgba(255,255,255,0.0)"
         else
+            username.style.opacity = "1.0"
             username.style.textAlign = "center"
-            img_div.style.display = "block"
-            login_div.style.display = "block"
+            img_div.style.opacity = "1.0"
+            login_div.style.opacity = "1.0"
             
             @userinfo_li.style.background = "rgba(255,250,246,0.5)"
             @userinfo_li.style.borderRadius = "4px"

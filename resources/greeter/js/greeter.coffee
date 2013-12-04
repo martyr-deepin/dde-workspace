@@ -37,18 +37,18 @@ class Greeter extends Widget
     mousewheel_listener:(_current_user)->
         document.body.addEventListener("mousewheel", (e) =>
             if not is_volume_control
-                if e.wheelDelta >= 120 then _current_user?.animate_prev()
-                else if e.wheelDelta <= -120 then _current_user?.animate_next()
+                if e.wheelDelta >= 120 then _current_user?.animate_next()
+                else if e.wheelDelta <= -120 then _current_user?.animate_prev()
         )
     keydown_listener:(_current_user)->
         document.body.addEventListener("keydown", (e)=>
             if e.which == UP_ARROW
                 # echo "prev"
-                _current_user?.animate_prev()
+                _current_user?.animate_next()
 
             else if e.which == DOWN_ARROW
                 # echo "next"
-                _current_user?.animate_next()
+                _current_user?.animate_prev()
 
             else if e.which == ENTER_KEY
                 #echo "enter"
