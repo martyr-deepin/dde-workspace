@@ -165,7 +165,7 @@ class User extends Widget
         users_path = Dbus_Account.ListCachedUsers_sync()
         for u in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-            if username is u.UserName
+            if username is user_dbus.UserName
                 if user_dbus.Locked is null then disable = false
                 else if user_dbus.Locked is true then disable = true
                 return disable
@@ -191,7 +191,7 @@ class User extends Widget
                     user_ul.appendChild(_current_user.userinfo_li)
                     _current_user.focus()
             for user in users_name
-                if user isnt _current_username or not is_disable_user(user)
+                if user isnt _current_username and not @is_disable_user(user)
                     is_current_user = false
                     userimage = @get_user_image(user)
                     u = new UserInfo(user, user, userimage,@get_user_type(user))
