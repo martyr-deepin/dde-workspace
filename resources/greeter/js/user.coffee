@@ -34,7 +34,7 @@ _current_user = null
 _current_username = null
 is_current_user = false
 _drag_flag = false
-
+_focus_userinfo_index = 0
 
 class User extends Widget
     Dbus_Account = null
@@ -231,14 +231,23 @@ class User extends Widget
     roundabout_animation:->
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
+            tilt: 2.3,
+            minOpacity: 0.0,
             startingChild: 0,
             clickToFocus: true,
             enableDrag: true,
-            tilt: 2.3,
-            minOpacity: 0.0,
+            triggerFocusEvents: true,
+            triggerBlurEvents: true,
+            
             btnNext: jQuery(".nextuserinfo"),
             btnPrev: jQuery(".prevuserinfo")
         })
+        .bind("focus",=>
+            echo "animationStart"
+            _focus_userinfo_index = jQuery("#user_ul").roundabout("getChildInFocus")
+            echo _focus_userinfo_index
+        )
+
 
 class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
