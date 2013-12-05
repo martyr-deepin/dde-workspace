@@ -28,14 +28,41 @@
 #include "file_monitor.h"
 #include "jsextension.h"
 #include "item.h"
+#include "background.h"
+#include "utils.h"
 
 #define APP_DIR "applications"
 #define DELAY_TIME 3
 #define AUTOSTART_DELAY_TIME 100
 
 
-GPtrArray* desktop_monitors = NULL;
-GPtrArray* autostart_monitors = NULL;
+static GPtrArray* desktop_monitors = NULL;
+static GPtrArray* autostart_monitors = NULL;
+static GFileMonitor* gaussian_background_monitor = NULL;
+
+
+PRIVATE
+GFileMonitor* create_monitor(const char* path, GCallback monitor_callback)
+{
+    GError* err = NULL;
+    GFile* file = g_file_new_for_path(path);
+    GFileMonitor* monitor = g_file_monitor(file,
+                                           G_FILE_MONITOR_SEND_MOVED,
+                                           NULL,
+                                           &err);
+    g_object_unref(file);
+    if (err != NULL) {
+        g_warning("[%s] monitor %s failed: %s", __func__, path, err->message);
+        g_error_free(err);
+        return NULL;
+    }
+
+    g_debug("[%s] monitor %s", __func__, path);
+    /* g_file_monitor_set_rate_limit(monitor, min(1)); */
+    g_signal_connect(monitor, "changed", monitor_callback, NULL);
+
+    return monitor;
+}
 
 
 PRIVATE
@@ -43,24 +70,9 @@ void append_monitor(GPtrArray* monitors, const GPtrArray* paths, GCallback monit
 {
     // check NULL to avoid the last one is NULL
     for (guint i = 0; i < paths->len && g_ptr_array_index(paths, i) != NULL; ++i) {
-        GError* err = NULL;
-        GFile* file = g_file_new_for_path(g_ptr_array_index(paths, i));
-        GFileMonitor* monitor = g_file_monitor_directory(file,
-                                                         G_FILE_MONITOR_SEND_MOVED,
-                                                         NULL,
-                                                         &err);
-        g_object_unref(file);
-        if (err != NULL) {
-            g_warning("[%s] %s", __func__, err->message);
-            g_error_free(err);
-            continue;
-        }
-
-        g_debug("[%s] monitor %s", __func__, (char*)g_ptr_array_index(paths, i));
-        /* g_file_monitor_set_rate_limit(monitor, min(1)); */
-        g_signal_connect(monitor, "changed", monitor_callback, NULL);
-
-        g_ptr_array_add(monitors, monitor);
+        GFileMonitor* monitor = create_monitor(g_ptr_array_index(paths, i), monitor_callback);
+        if (monitor != NULL)
+            g_ptr_array_add(monitors, monitor);
     }
 }
 
@@ -274,11 +286,46 @@ void _monitor_autostart_files()
 }
 
 
+void gaussian_update(GFileMonitor* monitor,
+                     GFile* origin_file,
+                     GFile* new_file,
+                     GFileMonitorEvent event_type,
+                     gpointer user_data)
+{
+    switch (event_type) {
+    case G_FILE_MONITOR_EVENT_MOVED: {
+        // gaussian picture is generated.
+        char* path = g_file_get_path(new_file);
+
+        GSettings* settings = get_background_gsettings();
+        char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
+        char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+        g_free(bg_path);
+
+        if (g_strcmp0(path, blur_path) == 0)
+            background_changed(settings, CURRENT_PCITURE, NULL);
+
+        g_free(blur_path);
+        g_free(path);
+    }
+    }
+}
+
+
+PRIVATE
+void _monitor_gaussian_background()
+{
+    char* path = g_build_filename(g_get_user_cache_dir(), "gaussian-background", NULL);
+    gaussian_background_monitor = create_monitor(path, G_CALLBACK(gaussian_update));
+    g_free(path);
+}
+
+
 void add_monitors()
 {
     _monitor_desktop_files();
     _monitor_autostart_files();
-    atexit(destroy_monitors);
+    _monitor_gaussian_background();
 }
 
 
@@ -289,5 +336,8 @@ void destroy_monitors()
 
     if (autostart_monitors != NULL)
         g_ptr_array_unref(autostart_monitors);
+
+    if (gaussian_background_monitor != NULL)
+        g_clear_pointer(&gaussian_background_monitor, g_object_unref);
 }
 
