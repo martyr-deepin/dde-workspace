@@ -23,6 +23,8 @@
 
 .nextuserinfo{
     display:none;
+    position:relative;
+    top:-50px;
     width:60px;
     height:60px;
 }
@@ -38,6 +40,17 @@
     height: 140px;
     display:-webkit-box;
 }
+.only_name{
+    width:100%;
+    text-align:center;
+    font-size:15px;
+    font-weight:normal; 
+    color:#333;
+    cursor: pointer;
+    /*text-shadow:none;*/
+    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+}
+
 .UserBase {
     width: 150px;
     height: 100%;
