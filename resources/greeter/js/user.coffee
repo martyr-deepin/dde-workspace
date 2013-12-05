@@ -227,6 +227,7 @@ class User extends Widget
         })
         .bind("animationStart",=>
             index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
+            index_prev = @check_index(index_prev)
             userinfo_all[index_prev].blur()
             #apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","3s")
         )
@@ -235,12 +236,18 @@ class User extends Widget
             userinfo_all[index_prev].only_show_name(true)
             
             index_target = jQuery("#user_ul").roundabout("getChildInFocus")
+            index_target = @check_index(index_target)
             userinfo_all[index_target].only_show_name(false)
             userinfo_all[index_target].focus()
             apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
             
         )
 
+    check_index:(index)->
+        tmp = index
+        if index >= userinfo_all.length then tmp = userinfo_all.length - 1
+        else if index < 0 then tmp = 0
+        return tmp
 
 class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
@@ -485,10 +492,7 @@ class UserInfo extends Widget
         # message_tip?.remove()
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
-        @login.password.style.color = "red"
-        @login.password.value = msg
-        @login.password.blur()
-        #@normal_user_fail(msg)
+        @normal_user_fail(msg)
 
 
     animate_prev: ->

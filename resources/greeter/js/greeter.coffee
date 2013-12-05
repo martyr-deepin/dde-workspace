@@ -22,6 +22,8 @@ class Greeter extends Widget
 
     constructor:->
         super
+        echo "Greeter"
+
 
     webview_ok:(_current_user)->
         DCore.Greeter.webview_ok(_current_user.id)
@@ -40,6 +42,8 @@ class Greeter extends Widget
                 if e.wheelDelta >= 120 then _current_user?.animate_next()
                 else if e.wheelDelta <= -120 then _current_user?.animate_prev()
         )
+
+
     keydown_listener:(_current_user)->
         document.body.addEventListener("keydown", (e)=>
             if e.which == UP_ARROW
@@ -59,9 +63,8 @@ class Greeter extends Widget
                     _current_user?.stop_animation()
                 _current_user?.show_login()
                 message_tip?.remove()
+
         )
-
-
 
 
 
@@ -94,5 +97,13 @@ timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
 
-powermenu = new PowerMenu($("div_power"))
+
+
+$("#div_power").title = _("ShutDown")
+powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
+
+
+version = new Version()
+$("#div_version").appendChild(version.element)
+

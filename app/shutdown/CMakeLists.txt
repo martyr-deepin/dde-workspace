@@ -46,7 +46,3 @@ install(
     DESTINATION /usr/share/dbus-1/services/
     )
 
-install(
-    FILES ${PROJECT_SOURCE_DIR}/app/shutdown/com.deepin.dde.shutdown.conf
-    DESTINATION /etc/dbus-1/system.d/
-    )

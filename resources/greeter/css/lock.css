@@ -26,7 +26,7 @@ body{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:10%;
-    left:70px;
+    left:10%;
     width:250px;
     height:150px;
     
@@ -40,7 +40,7 @@ body{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:10%;
-    right:270px;
+    right:40%;
     width:300px;
     height:150px;
     
@@ -55,7 +55,7 @@ body{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:10%;
-    right:70px;
+    right:10%;
     width:100px;
     height:100px;
     
