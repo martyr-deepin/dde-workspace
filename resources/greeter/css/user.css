@@ -239,7 +239,9 @@
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 14px;
     line-height: 29px; /* Same as height */
-    text-align: center;
+    text-indent:10px;
+    letter-spacing:10px;
+    /*text-align: center;*/
     font-weight: bold;
 
     background: #fbd568; /* Fallback */
