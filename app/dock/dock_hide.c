@@ -305,7 +305,7 @@ GdkWindow* get_dock_guard_window()
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;
-        attributes.width = gdk_screen_width();
+        attributes.width = gdk_screen_width() - 10;
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
