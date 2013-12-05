@@ -17,3 +17,10 @@ apply_flash = (el, time)->
         clearTimeout(id)
     , time * 1000)
 
+apply_refuse_rotate = (el, time)->
+    apply_animation(el, "refuse", "#{time}s", "linear")
+    setTimeout(->
+        el.style.webkitAnimation = ""
+    , time * 1000)
+
+

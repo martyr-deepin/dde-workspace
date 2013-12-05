@@ -88,6 +88,14 @@
     0% {background-position: left bottom;}
     100% {background-position: right bottom;}
 }
+@-webkit-keyframes show_animation {
+    0% {opacity: 0.0;}
+    100% {opacity: 1.0;}
+}
+@-webkit-keyframes hide_animation {
+    0% {opacity: 1.0;}
+    100% {opacity: 0.0;}
+}
 
 
 

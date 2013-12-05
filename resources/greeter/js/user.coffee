@@ -18,15 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-apply_refuse_rotate = (el, time)->
-    apply_animation(el, "refuse", "#{time}s", "linear")
-    setTimeout(->
-        el.style.webkitAnimation = ""
-    , time * 1000)
-
-enable_detection = (enabled)->
-    DCore[APP_NAME].enable_detection(enabled)
-
 user_ul = null
 message_tip = null
 draw_camera_id = null
@@ -34,8 +25,9 @@ _current_user = null
 _current_username = null
 is_current_user = false
 _drag_flag = false
-_focus_userinfo_index = 0
-_focus_userinfo_index_prev = 0
+index_prev = null
+index_target = null
+index_next = null
 
 class User extends Widget
     Dbus_Account = null
@@ -244,18 +236,18 @@ class User extends Widget
             btnPrev: jQuery(".prevuserinfo")
         })
         .bind("animationStart",=>
-            echo "animationStart"
-            _focus_userinfo_index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
-            echo "_focus_userinfo_index_prev:#{_focus_userinfo_index_prev}"
+            index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
+            apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","2s")
         )
 
         .bind("animationEnd",=>
-            echo "animationEnd"
-            _focus_userinfo_index = jQuery("#user_ul").roundabout("getChildInFocus")
-            echo "_focus_userinfo_index:#{_focus_userinfo_index}"
-            userinfo_all[_focus_userinfo_index_prev].only_show_name(true)
-            userinfo_all[_focus_userinfo_index].only_show_name(false)
-            userinfo_all[_focus_userinfo_index].focus()
+            userinfo_all[index_prev].only_show_name(true)
+            
+            index_target = jQuery("#user_ul").roundabout("getChildInFocus")
+            userinfo_all[index_target].only_show_name(false)
+            userinfo_all[index_target].focus()
+            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1s")
+            
         )
 
 
@@ -439,7 +431,6 @@ class UserInfo extends Widget
         #DCore[APP_NAME].cancel_detect()
 
     do_focus: ->
-        echo "do_focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
         #if @session then de_menu.set_current(@session)
@@ -447,7 +438,7 @@ class UserInfo extends Widget
         @draw_avatar()
     
     focus:->
-        echo "#{@id} focus"
+        #echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
         #if @session then de_menu.set_current(@session)
