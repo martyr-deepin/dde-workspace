@@ -59,24 +59,14 @@ class User extends Widget
         @normal_hover_click_cb(@prevuserinfo,
             img_src_before + "up_normal.png",
             img_src_before + "up_hover.png",
-            img_src_before + "up_press.png",
+            img_src_before + "up_press.png"
         )
         @normal_hover_click_cb(@nextuserinfo,
             img_src_before + "down_normal.png",
             img_src_before + "down_hover.png",
-            img_src_before + "down_press.png",
+            img_src_before + "down_press.png"
         )
-  
-        @prevuserinfo.addEventListener("click",=>
-            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_press.png')"
-        )
-        @prevuserinfo.addEventListener("mouseout",=>
-            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_normal.png')"
-        )
-        @prevuserinfo.addEventListener("mouseover",=>
-            @prevuserinfo.style.backgroundImage = "url('images/userswitch/up_hover.png')"
-        )
-
+     
     is_livecd:->
         try
             dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
@@ -232,13 +222,13 @@ class User extends Widget
             triggerFocusEvents: true,
             triggerBlurEvents: true,
             
-            btnNext: jQuery(".nextuserinfo"),
-            btnPrev: jQuery(".prevuserinfo")
+            btnNext: jQuery(".prevuserinfo"),
+            btnPrev: jQuery(".nextuserinfo")
         })
         .bind("animationStart",=>
             index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
             userinfo_all[index_prev].blur()
-            apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","2s")
+            #apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","3s")
         )
 
         .bind("animationEnd",=>
@@ -247,7 +237,7 @@ class User extends Widget
             index_target = jQuery("#user_ul").roundabout("getChildInFocus")
             userinfo_all[index_target].only_show_name(false)
             userinfo_all[index_target].focus()
-            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1s")
+            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
             
         )
 
@@ -378,7 +368,7 @@ class UserInfo extends Widget
         
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
-        @only_name = create_element("div","UserName",@userinfo_li)
+        @only_name = create_element("div","only_name",@userinfo_li)
         @only_name.innerText = name
         @all_info = create_element("div","all_info",@userinfo_li)
         userbase = create_element("div", "UserBase", @all_info)
@@ -430,24 +420,18 @@ class UserInfo extends Widget
         apply_animation(recognize,"","") if @face_login
         enable_detection(false) if @face_login
         #DCore[APP_NAME].cancel_detect()
-
-    do_focus: ->
-        DCore[APP_NAME].set_username(@id)
-        @element.focus()
-        #if @session then de_menu.set_current(@session)
-        @draw_camera()
-        @draw_avatar()
-    
+   
     focus:->
         #echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
         @draw_camera()
         @draw_avatar()
+        @login.password.focus()
         
-        #if @session then de_menu.set_current(@session)
         if is_greeter
             remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
+            #if @session then de_menu.set_current(@session)
             desktopmenu = new DesktopMenu($("div_desktop"))
             desktopmenu.new_desktop_menu()
     
@@ -459,7 +443,7 @@ class UserInfo extends Widget
 
 
     show_login: ->
-        if _current_user == @ and not @login
+        if _current_user == @
             if is_hide_users
                 @element.style.paddingBottom = "0px"
                 @login.account.focus()
@@ -469,15 +453,6 @@ class UserInfo extends Widget
             if @id == "guest"
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
-
-            if is_greeter
-                if not DCore.Greeter.user_need_password(@id)
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
-            else
-                if not DCore.Lock.need_password(@id)
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
 
     on_verify: (username, password)->
         #@loading = new Loading("loading")
@@ -510,7 +485,10 @@ class UserInfo extends Widget
         # message_tip?.remove()
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
-        @normal_user_fail(msg)
+        @login.password.style.color = "red"
+        @login.password.value = msg
+        @login.password.blur()
+        #@normal_user_fail(msg)
 
 
     animate_prev: ->
