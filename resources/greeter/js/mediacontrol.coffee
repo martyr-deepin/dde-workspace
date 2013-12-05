@@ -43,24 +43,26 @@ class VoiceControl extends Widget
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
-        x0 = 0
-        y0 = 0
+        x0 = 1
+        y0 = 1
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
         myCanvas.style.position = "relative"
         myCanvas.style.left = "10px"
         c = document.getElementById("myCanvas")
+        ctx1 = c.getContext("2d")
         ctx = c.getContext("2d")
         
-        # for the boder
-        ctx.beginPath()
-        ctx.moveTo(x0,y0)
-        ctx.lineTo(x0 + width,y0)
-        ctx.lineTo(x0,y0 + height)
-        ctx.closePath()
-        ctx.strokeStyle = "#DCDCDC"
-        ctx.stroke()
-        
+        # for the border
+        delt = 1
+        ctx1.beginPath()
+        ctx1.moveTo(x0 - delt,y0 - delt)
+        ctx1.lineTo(x0 + delt + width,y0 - delt)
+        ctx1.lineTo(x0 - delt,y0 + height + delt)
+        ctx1.closePath()
+        ctx1.strokeStyle = "rgba(255,0,255,1.0)"
+        ctx1.stroke()
+        echo ctx1
         
         #dest
         ctx.beginPath()
@@ -78,6 +80,7 @@ class VoiceControl extends Widget
         #src
         ctx.fillStyle = "rgba(255,255,255,1.0)"
         ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
+        echo ctx
         
         remove_element(num) if num
         num = create_element("div","num",@element)
@@ -243,4 +246,12 @@ class MediaControl extends Widget
             el.src = img_src_before + play_status + "_press.png"
             click_cb?()
         )
-
+    keydown_listener:->
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == LEFT_ARROW
+                # echo "prev"
+                @media_up()
+            else if e.which == RIGHT_ARROW
+                # echo "next"
+                @media_next()
+        )
