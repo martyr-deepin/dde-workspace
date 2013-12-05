@@ -386,6 +386,7 @@ class UserInfo extends Widget
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","UserName",@userinfo_li)
+        @only_name.innerText = name
         @all_info = create_element("div","all_info",@userinfo_li)
         userbase = create_element("div", "UserBase", @all_info)
         img_div = create_element("div","img_div",userbase)
@@ -423,7 +424,7 @@ class UserInfo extends Widget
             @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.2)"
             
             @only_name.style.display = "none"
-            @all_info.style.display = "block"
+            @all_info.style.display = "-webkit-box"
             
 
     draw_avatar: ->
