@@ -65,7 +65,8 @@ class Lock extends Widget
 
         )
 
-
+#DCore.Lock.switch_user()
+#return
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
@@ -102,3 +103,4 @@ powermenu.new_power_menu()
 if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
+    mediacontrol.keydown_listener()
