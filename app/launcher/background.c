@@ -32,6 +32,15 @@
 #define BG_GAUSSIAN_NSTEPS 10UL
 
 
+GSettings* get_background_gsettings()
+{
+    static GSettings* settings = NULL;
+    if (settings == NULL)
+        settings = g_settings_new(SCHEMA_ID);
+    return settings;
+}
+
+
 void start_gaussian_helper(const char* cur_pict_path)
 {
     if (cur_pict_path == NULL)
@@ -48,7 +57,7 @@ void start_gaussian_helper(const char* cur_pict_path)
     GError* error = NULL;
     gboolean ret = FALSE;
     if ((ret = g_spawn_command_line_async(command, &error)) == FALSE) {
-        g_debug("Failed to launche '%s': '%s'", command, error->message);
+        g_debug("Failed to launch '%s': '%s'", command, error->message);
         g_error_free(error);
     }
 
@@ -146,19 +155,25 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 
 void background_changed(GSettings* settings, char* key, gpointer user_data)
 {
-    char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
+    char* bg_path = g_settings_get_string(settings, key);
     if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
-        g_warning("[%s] the image(\"%s\") is not existed, using the default background image(\"%s\")", __func__, bg_path, DEFAULT_BACKGROUND_IMAGE);
+        g_warning("[%s] the background image(\"%s\") is not existed,"
+                  " using the default background image(\"%s\")",
+                  __func__, bg_path, DEFAULT_BACKGROUND_IMAGE);
         g_free(bg_path);
         bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
     }
 
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     g_debug("[%s] blur_path: %s", __func__, blur_path);
-    g_free(bg_path);
+
+    if (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
+        start_gaussian_helper(bg_path);
+    }
+
     int duration = 2;
     while (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        if (duration > 300)
+        if (duration > 400)
             break;
         g_usleep(duration);
         duration += 2;
@@ -166,17 +181,18 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
 
     JSObjectRef path = json_create();
     if (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        start_gaussian_helper(DEFAULT_BACKGROUND_IMAGE);
-        g_warning("[%s] the image(\"%s\") is not existed, "
+        g_warning("[%s] the blur image(\"%s\") is not existed, "
                   "using the default background image(\"%s\")",
-                  __func__, blur_path, DEFAULT_BACKGROUND_IMAGE);
+                  __func__, blur_path, bg_path);
         g_free(blur_path);
-        blur_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
+        blur_path = g_strdup(bg_path);
     }
 
     g_debug("background changed");
     json_append_string(path, "path", blur_path);
-    g_free(blur_path);
     js_post_message("draw_background", path);
+
+    g_free(bg_path);
+    g_free(blur_path);
 }
 
