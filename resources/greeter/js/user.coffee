@@ -385,7 +385,9 @@ class UserInfo extends Widget
         
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
-        userbase = create_element("div", "UserBase", @userinfo_li)
+        @only_name = create_element("div","UserName",@userinfo_li)
+        @all_info = create_element("div","all_info",@userinfo_li)
+        userbase = create_element("div", "UserBase", @all_info)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
@@ -393,7 +395,7 @@ class UserInfo extends Widget
         username = create_element("label", "UserName", recognize_h1)
         username.innerText = name
 
-        login_div = create_element("div", "login_div", @userinfo_li)
+        login_div = create_element("div", "login_div", @all_info)
         @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
@@ -407,27 +409,21 @@ class UserInfo extends Widget
 
     only_show_name:(only_show_name)->
         if only_show_name
-            username.style.textAlign = "left"
-            img_div.style.display = "none"
-            login_div.style.display = "none"
-            
             @userinfo_li.style.background = "rgba(255,250,246,0.0)"
             @userinfo_li.style.borderRadius = "0px"
             @userinfo_li.style.color = "rgba(255,250,246,0.0)"
             @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.0)"
             
-            userbase.style.boxShadow = "0px 0 0 rgba(255,255,255,0.0)"
+            @only_name.style.display = "block"
+            @all_info.style.display = "none"
         else
-            username.style.textAlign = "center"
-            img_div.style.display = "-webkit-box"
-            login_div.style.display = "-webkit-box"
-            
             @userinfo_li.style.background = "rgba(255,250,246,0.5)"
             @userinfo_li.style.borderRadius = "4px"
             @userinfo_li.style.color = "#7e7975"
             @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.2)"
             
-            userbase.style.boxShadow = "1px 0 0 rgba(255,255,255,0.8)"
+            @only_name.style.display = "none"
+            @all_info.style.display = "block"
             
 
     draw_avatar: ->
