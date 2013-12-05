@@ -254,4 +254,7 @@ class MediaControl extends Widget
             else if e.which == RIGHT_ARROW
                 # echo "next"
                 @media_next()
+            else if e.which == SPACE_KEY
+                # echo "next"
+                @media_play()
         )
