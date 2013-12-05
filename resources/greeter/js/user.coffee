@@ -237,6 +237,7 @@ class User extends Widget
         })
         .bind("animationStart",=>
             index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
+            userinfo_all[index_prev].blur()
             apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","2s")
         )
 
@@ -441,13 +442,19 @@ class UserInfo extends Widget
         #echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
-        #if @session then de_menu.set_current(@session)
         @draw_camera()
         @draw_avatar()
+        
+        #if @session then de_menu.set_current(@session)
+        if is_greeter
+            remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
+            desktopmenu = new DesktopMenu($("div_desktop"))
+            desktopmenu.new_desktop_menu()
+    
     
     blur: ->
-        # @loading?.destroy()
-        # @loading = null
+        @loading?.destroy()
+        @loading = null
         @stop_avatar()
 
 
