@@ -8,7 +8,7 @@
     -webkit-box-orient:vertical;
 }
 
-.prev{
+.prevuserinfo{
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
@@ -16,11 +16,11 @@
     width:100%;
     height:60px;
 }
-.prevuserinfo{
+.prevuserinfo_img{
     width:60px;
     height:60px;
 }
-.prev:hover{
+.prevuserinfo:hover{
     opacity:1.0;
 }
 
@@ -32,7 +32,7 @@
     height:550px;
 }
 
-.next{
+.nextuserinfo{
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
@@ -40,11 +40,11 @@
     width:100%;
     height:60px;
 }
-.nextuserinfo{
+.nextuserinfo_img{
     width:60px;
     height:60px;
 }
-.next:hover{
+.nextuserinfo:hover{
     opacity:1.0;
 }
 

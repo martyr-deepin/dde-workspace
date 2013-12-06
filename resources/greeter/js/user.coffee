@@ -48,22 +48,22 @@ class User extends Widget
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
 
         img_src_before = "images/userswitch/"
-        prev = create_element("div","prev",@element)
-        @prevuserinfo = create_img("prevuserinfo",img_src_before + "up_normal.png",prev)
+        prevuserinfo = create_element("div","prevuserinfo",@element)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         @new_userinfo_all()
-        next = create_element("div","next",@element)
-        @nextuserinfo = create_img("nextuserinfo",img_src_before + "down_normal.png",next)
-        if user_ul.children.length > 5
-            @prevuserinfo.style.display = "block"
-            @nextuserinfo.style.display = "block"
-        @normal_hover_click_cb(@prevuserinfo,
+        nextuserinfo = create_element("div","nextuserinfo",@element)
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
+#        if user_ul.children.length > 5
+            #@prevuserinfo.style.display = "block"
+            #@nextuserinfo.style.display = "block"
+        @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "up_normal.png",
             img_src_before + "up_hover.png",
             img_src_before + "up_press.png"
         )
-        @normal_hover_click_cb(@nextuserinfo,
+        @normal_hover_click_cb(@nextuserinfo_img,
             img_src_before + "down_normal.png",
             img_src_before + "down_hover.png",
             img_src_before + "down_press.png"
@@ -224,8 +224,8 @@ class User extends Widget
             triggerFocusEvents: true,
             triggerBlurEvents: true,
             
-            btnNext: jQuery(".prevuserinfo"),
-            btnPrev: jQuery(".nextuserinfo")
+            btnNext: jQuery(".prevuserinfo_img"),
+            btnPrev: jQuery(".nextuserinfo_img")
         })
         .bind("animationStart",=>
             index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
