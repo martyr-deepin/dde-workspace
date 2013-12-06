@@ -27,6 +27,8 @@ class VoiceControl extends Widget
         super
         document.body.appendChild(@element)
         @element.style.display = "none"
+        remove_element(background) if background
+        background = create_img("background","images/voicecontrol/background.png",@element)
     
     show:(x,y,position = "absolute")->
         @element.style.position = position
@@ -43,27 +45,13 @@ class VoiceControl extends Widget
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
-        x0 = 1
-        y0 = 1
+        x0 = 0
+        y0 = 0
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
-        myCanvas.style.position = "relative"
-        myCanvas.style.left = "10px"
         c = document.getElementById("myCanvas")
-        ctx1 = c.getContext("2d")
         ctx = c.getContext("2d")
-        
-        # for the border
-        delt = 1
-        ctx1.beginPath()
-        ctx1.moveTo(x0 - delt,y0 - delt)
-        ctx1.lineTo(x0 + delt + width,y0 - delt)
-        ctx1.lineTo(x0 - delt,y0 + height + delt)
-        ctx1.closePath()
-        ctx1.strokeStyle = "rgba(255,0,255,1.0)"
-        ctx1.stroke()
-        echo ctx1
-        
+       
         #dest
         ctx.beginPath()
         ctx.moveTo(x0,y0)

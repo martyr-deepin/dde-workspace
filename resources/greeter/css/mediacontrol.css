@@ -22,6 +22,16 @@
     cursor:pointer;
 }
 
+.background{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:18;
+    height:35px;
+}
+
+.myCanvas{
+}
 .num{
     color:#fff;
     text-align:center;
