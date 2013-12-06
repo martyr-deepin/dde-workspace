@@ -127,13 +127,18 @@ class MediaControl extends Widget
 
     play_status = "play"
     voice_status = "voice"
+    
+    name_text = null
 
     constructor:->
         super
         if not audio_play_status then return
         img_src_before = "images/mediacontrol/"
         name = create_element("div","name",@element)
-        name.textContent = audioplay.getTitle()
+        if audioplay.getArtist() isnt undefined
+            name_text = audioplay.getTitle() + " -- " + audioplay.getArtist()
+        else name_text = audioplay.getTitle()
+        name.textContent = name_text
         control = create_element("div","control",@element)
         
         up = create_img("up",img_src_before + "up_normal.png",control)
@@ -147,7 +152,10 @@ class MediaControl extends Widget
         voicecontrol = new VoiceControl()
        
         setInterval(->
-            name.textContent = audioplay.getTitle()
+            if audioplay.getArtist() isnt undefined
+                name_text = audioplay.getTitle() + " -- " + audioplay.getArtist()
+            else name_text = audioplay.getTitle()
+            name.textContent = name_text
         ,1000)
 
         @normal_hover_click_cb(up,
