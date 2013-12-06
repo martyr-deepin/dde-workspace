@@ -14,12 +14,12 @@
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
-    opacity:0.0;
+    opacity:1.0;
     width:400px;
     height:60px;
     
     position:absolute;
-    z-index:65535;
+    z-index:2;
     top:50px;
 }
 .prevuserinfo_img{
@@ -46,12 +46,12 @@
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
-    opacity:0.0;
+    opacity:1.0;
     width:400px;
     height:60px;
     
     position:absolute;
-    z-index:65530;
+    z-index:2;
     bottom:50px;
 }
 .nextuserinfo_img{
