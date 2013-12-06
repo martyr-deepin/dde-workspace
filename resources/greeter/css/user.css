@@ -9,22 +9,26 @@
 }
 
 .prevuserinfo{
+    position:relative;
+    top:10px;
     display:none;
     width:60px;
     height:60px;
 }
 
 .user_ul{
-    /*background: rgba(255,0,246,0.3);*/
+    background: rgba(255,0,246,0.3);
+    position:relative;
+    top:10px;
     list-style: none;
     width:400px;
-    height:350px;
+    height:550px;
 }
 
 .nextuserinfo{
-    display:none;
     position:relative;
-    top:-50px;
+    bottom:10px;
+    display:none;
     width:60px;
     height:60px;
 }
@@ -41,14 +45,15 @@
     display:-webkit-box;
 }
 .only_name{
-    width:100%;
-    text-align:center;
+    position:relative;
+    top:45%;
+    /*text-align:center;*/
     font-size:15px;
     font-weight:normal; 
-    color:#333;
+    color:rgb(255,255,255);
     cursor: pointer;
     /*text-shadow:none;*/
-    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    /*text-shadow: 0 1px 0 rgba(255,255,255,0.8);*/
 }
 
 .UserBase {
@@ -89,12 +94,13 @@
 } 
 
 .UserName {
-    font-size:15px;
+    font-size:13px;
+    /*font-size:36px;*/
     font-weight:normal; 
     color:#333;
     cursor: pointer;
     /*text-shadow:none;*/
-    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    /*text-shadow: 0 1px 0 rgba(255,255,255,0.8);*/
 }
  
 @-webkit-keyframes recognize_animation {
@@ -152,7 +158,7 @@
 .type_text{
     margin-left: 5px;
     font-weight: 400;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
     font-size: 11px;
 }
 
@@ -196,7 +202,7 @@
     height:28px;
     width: 100%;
     border: 1px solid #ebe6e2;
-    /*border-radius: 4px;*/
+    border-radius: 4px;
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
     -ms-transition: all 0.3s ease-out;
@@ -233,7 +239,7 @@
     height: 29px;
 
     box-shadow: inset 0 1px rgba(255,255,255,0.3);
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
 
     font-family: 'Lato', Calibri, Arial, sans-serif;
