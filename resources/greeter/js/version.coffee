@@ -23,6 +23,4 @@ class Version extends Widget
         @element.innerHTML = "
                     <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span> 
                     "
-        @element.style.color = "rgba(255,255,255,1.0)"
-        @element.style.fontSize = "50px"
-        @element.style.textShadow = "0 0 2px #333"
+
