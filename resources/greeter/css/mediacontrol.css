@@ -19,6 +19,7 @@
 .control{
     margin-top:10px;
     display:-webkit-box;
+    cursor:pointer;
 }
 
 .num{
