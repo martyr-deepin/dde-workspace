@@ -214,7 +214,7 @@ class User extends Widget
     roundabout_animation:->
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
-            tilt: 2.3,
+            tilt: 2.5,
             minOpacity: 0.0,
             startingChild: 0,
             clickToFocus: true,
@@ -229,12 +229,11 @@ class User extends Widget
             index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
             index_prev = @check_index(index_prev)
             userinfo_all[index_prev].blur()
+            userinfo_all[index_prev].only_show_name(true)
             #apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","3s")
         )
 
         .bind("animationEnd",=>
-            userinfo_all[index_prev].only_show_name(true)
-            
             index_target = jQuery("#user_ul").roundabout("getChildInFocus")
             index_target = @check_index(index_target)
             userinfo_all[index_target].only_show_name(false)
