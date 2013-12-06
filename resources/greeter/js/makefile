@@ -2,7 +2,7 @@ com_dir = ../../common/js
 
 com_coffee =${com_dir}/keyconfig.coffee ${com_dir}/utils.coffee ${com_dir}/animation.coffee ${com_dir}/audioplay.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee
 
-greeter_coffee = config.coffee messagetip.coffee time.coffee  user.coffee menu.coffee desktopmenu.coffee powermenu.coffee greeter.coffee
+greeter_coffee = config.coffee messagetip.coffee time.coffee version.coffee  user.coffee menu.coffee desktopmenu.coffee powermenu.coffee greeter.coffee
 
 lock_coffee = config.coffee messagetip.coffee time.coffee user.coffee mediacontrol.coffee menu.coffee desktopmenu.coffee powermenu.coffee lock.coffee 
 
