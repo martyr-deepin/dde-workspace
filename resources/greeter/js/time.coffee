@@ -58,21 +58,21 @@ class TimeDate extends Widget
 
     show:->
         time = create_element("div","time",@element)
-        date = create_element("div","date",@element)
+        date = create_element("h1","date",@element)
 
         #time.innerText = @get_time_str()
-        hours = create_element("span", "", time)
+        hours = create_element("span", "hours", time)
         hours.innerText = @get_hours()
 
         #colon = create_element("span", "timecolon", time)
-        colon = create_element("span", "", time)
+        colon = create_element("span", "colon", time)
         colon.innerText = ":"
 
-        min = create_element("span", "", time)
+        min = create_element("span", "min", time)
         min.innerText = @get_min()
 
         #date.innerText = @get_date_str()
-        date.innerText = @get_c_date_str()
+        date.value = @get_c_date_str()
 
         setInterval( =>
                 hours.innerText = @get_hours()

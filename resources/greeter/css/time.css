@@ -4,19 +4,32 @@
     height:100px;
 }
 
+@font-face {
+    font-family:'MavenProLight';
+    src:url('../font/MavenProLight-200.otf') format('opentype');
+}
+
+
 .time{
     padding-top:30px;
-    font-size:70px;
-    color: #fff;
-    font-weight:lighter;
-    text-shadow:0 0 2px #333;
     display: block;
+}
+
+span{
+    color: #fff;
+    text-shadow:0 0 2px #333;
+    font-size:70px;
+    font-family: MavenProLight;
 }
 
 .date{
     margin-top:30px;
+    display: block;
+}
+
+h1{
     font-size:15px;
     color: #fff;
+    font-family: MavenProLight;
     text-shadow:0 0 2px #333;
-    display: block;
 }
