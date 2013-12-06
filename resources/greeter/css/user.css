@@ -8,30 +8,48 @@
     -webkit-box-orient:vertical;
 }
 
+.prev{
+    display:-webkit-box;
+    -webkit-box-align:center;
+    -webkit-box-orient:vertical;
+    opacity:0.0;
+    width:100%;
+    height:60px;
+}
+
 .prevuserinfo{
-    position:relative;
-    top:10px;
-    display:none;
     width:60px;
     height:60px;
+}
+
+.prev:hover{
+    opacity:1.0;
 }
 
 .user_ul{
     background: rgba(255,0,246,0.3);
     position:relative;
-    top:10px;
     list-style: none;
     width:400px;
     height:550px;
 }
 
+.next{
+    display:-webkit-box;
+    -webkit-box-align:center;
+    -webkit-box-orient:vertical;
+    opacity:0.0;
+    width:100%;
+    height:60px;
+}
 .nextuserinfo{
-    position:relative;
-    bottom:10px;
-    display:none;
     width:60px;
     height:60px;
 }
+.next:hover{
+    opacity:1.0;
+}
+
 
 
 .UserInfo {
@@ -47,20 +65,16 @@
 .only_name{
     position:relative;
     top:45%;
-    /*text-align:center;*/
     font-size:15px;
     font-weight:normal; 
     color:rgb(255,255,255);
     cursor: pointer;
-    /*text-shadow:none;*/
-    /*text-shadow: 0 1px 0 rgba(255,255,255,0.8);*/
 }
 
 .UserBase {
     width: 150px;
     height: 100%;
     overflow: hidden;
-    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
 }
 
 .img_div{
@@ -75,9 +89,9 @@
 .UserImg {
     width:90px; 
     height:90px; 
-    border-radius:50%; 
     border:rgba(255,250,246,0.9) 4px solid;
-    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2); 
+    border-radius:50%; 
+    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
 }
 .recognize{
     width:100%;

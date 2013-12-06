@@ -48,11 +48,13 @@ class User extends Widget
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
 
         img_src_before = "images/userswitch/"
-        @prevuserinfo = create_img("prevuserinfo",img_src_before + "up_normal.png",@element)
+        prev = create_element("div","prev",@element)
+        @prevuserinfo = create_img("prevuserinfo",img_src_before + "up_normal.png",prev)
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         @new_userinfo_all()
-        @nextuserinfo = create_img("nextuserinfo",img_src_before + "down_normal.png",@element)
+        next = create_element("div","next",@element)
+        @nextuserinfo = create_img("nextuserinfo",img_src_before + "down_normal.png",next)
         if user_ul.children.length > 5
             @prevuserinfo.style.display = "block"
             @nextuserinfo.style.display = "block"
