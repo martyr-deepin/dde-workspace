@@ -416,7 +416,6 @@ static
 gboolean is_user_nopasswdlogin (const gchar *username)
 {
     gboolean ret = FALSE;
-    return ret;
     GPtrArray *nopwdlogin = get_nopasswdlogin_users ();
 
     for (guint i = 0; i < nopwdlogin->len; i++) {
@@ -442,14 +441,12 @@ _bus_handle_need_pwd (const gchar *username)
 
     if (user_data != NULL && strlen (user_data->sp_pwdp) == 0) {
         g_debug ("user had blank password\n");
-        return TRUE;//delete this functions
-        /*return FALSE;*/
+        return FALSE;
     }
 
     if (is_user_nopasswdlogin (username)) {
         g_debug ("user in nopasswdlogin group\n");
-        return TRUE;//delete this functions
-        /*return FALSE;*/
+        return FALSE;
     }
 
     if ((strcmp (crypt ("", user_data->sp_pwdp), user_data->sp_pwdp)) == 0) {
