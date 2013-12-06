@@ -72,7 +72,7 @@ class TimeDate extends Widget
         min.innerText = @get_min()
 
         #date.innerText = @get_date_str()
-        date.value = @get_c_date_str()
+        date.innerText = @get_c_date_str()
 
         setInterval( =>
                 hours.innerText = @get_hours()
