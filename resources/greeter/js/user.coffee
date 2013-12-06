@@ -220,7 +220,7 @@ class User extends Widget
             minOpacity: 0.0,
             startingChild: 0,
             clickToFocus: true,
-            enableDrag: true,
+            enableDrag: false,
             triggerFocusEvents: true,
             triggerBlurEvents: true,
             
