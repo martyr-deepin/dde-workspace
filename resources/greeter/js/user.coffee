@@ -184,13 +184,13 @@ class User extends Widget
                     userinfo_all.push(u)
                     user_ul.appendChild(u.userinfo_li)
 
-        if is_greeter
-            if DCore.Greeter.is_support_guest()
-                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
-                u.only_show_name(true)
-                user_ul.appendChild(u.userinfo_li)
-                if DCore.Greeter.is_guest_default()
-                    u.focus()
+#        if is_greeter
+            #if DCore.Greeter.is_support_guest()
+                #u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                #u.only_show_name(true)
+                #user_ul.appendChild(u.userinfo_li)
+                #if DCore.Greeter.is_guest_default()
+                    #u.focus()
         
         if user_ul.children.length <= 2
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
