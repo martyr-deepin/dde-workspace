@@ -32,18 +32,21 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <X11/XKBlib.h>
-#include "user.h"
-#include "session.h"
-#include "greeter_util.h"
+
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-#include "camera.h"
 #include "mutils.h"
+
 #include "settings.h"
-#include "DBUS_greeter.h"
 #include "background.h"
+#include "camera.h"
+
+#include "user.h"
+#include "session.h"
+#include "greeter_util.h"
+#include "DBUS_greeter.h"
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
@@ -155,7 +158,7 @@ start_session (LightDMGreeter *greeter)
     }
 
     set_last_user (handler->username);
-    keep_user_background (handler->username);
+    /*keep_user_background (handler->username);*/
     kill_user_lock (handler->username, handler->password);
 
     if (!lightdm_greeter_start_session_sync (greeter, session, NULL)) {
@@ -272,7 +275,7 @@ int main (int argc, char **argv)
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
-    g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);
+    /*g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);*/
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     
     gtk_widget_realize (webview);
@@ -283,6 +286,8 @@ int main (int argc, char **argv)
     gdk_window_set_background_rgba (gdkwindow, &rgba);
 
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
+    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
+                     G_CALLBACK(background_changed), NULL);
     set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
                             gdk_screen_width(), gdk_screen_height());
 
