@@ -46,7 +46,7 @@ confirm_ok = (i)->
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
-DCore.signal_connect("draw_background", (info)->
+#DCore.signal_connect("draw_background", (info)->
     #echo "draw_background:url(#{info.path})"
-    document.body.style.backgroundImage = "url(#{info.path})"
-)
+    #document.body.style.backgroundImage = "url(#{info.path})"
+#)
