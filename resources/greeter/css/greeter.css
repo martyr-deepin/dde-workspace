@@ -9,8 +9,7 @@ body{
 .div_users{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
-    top:2%;
-    left:30%;
+    left:27%;
     width:40%;
     height:70%;
     
@@ -18,9 +17,6 @@ body{
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
-
-
-
 
 .div_time {
     /*background-color:rgba(125,255,120,0.2);*/
@@ -34,6 +30,22 @@ body{
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
+
+.div_power {
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:50px;
+    right:30px;
+    width:60px;
+    /*height:60px;*/
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
+
 
 
 .div_version{
@@ -59,21 +71,3 @@ body{
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
-
-
-.div_power {
-    /*background-color:rgba(125,255,120,0.2);*/
-    position:absolute;
-    bottom:50px;
-    right:30px;
-    width:60px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
-
-
-
-
-
