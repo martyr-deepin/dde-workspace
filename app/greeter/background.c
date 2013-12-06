@@ -25,7 +25,6 @@
 #include "utils.h"
 
 
-PRIVATE
 gboolean _set_background_aux(GdkWindow* win, const char* bg_path, double width,
                              double height)
 {
