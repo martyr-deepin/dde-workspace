@@ -50,7 +50,7 @@
 static GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
-PRIVATE GSettings* dde_bg_g_settings = NULL;
+PRIVATE GSettings* background_gsettings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 
@@ -83,7 +83,7 @@ void _on_realize(GtkWidget* container)
     _update_size(screen, container);
     g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
     if (is_js_already)
-        background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+        background_changed(background_gsettings, CURRENT_PCITURE, NULL);
 }
 
 
@@ -123,7 +123,7 @@ void launcher_quit()
     destroy_item_config();
     destroy_category_table();
     g_key_file_free(launcher_config);
-    g_object_unref(dde_bg_g_settings);
+    g_object_unref(background_gsettings);
     gtk_main_quit();
 }
 
@@ -173,7 +173,7 @@ GFile* launcher_get_desktop_entry()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    background_changed(dde_bg_g_settings, CURRENT_PCITURE, NULL);
+    background_changed(background_gsettings, CURRENT_PCITURE, NULL);
     is_js_already = TRUE;
 }
 
@@ -238,7 +238,7 @@ gboolean _launcher_size_monitor(gpointer user_data)
 {
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
-    if (usg.ru_maxrss > RES_IN_MB(80) && !is_launcher_shown) {
+    if (usg.ru_maxrss > RES_IN_MB(180) && !is_launcher_shown) {
         g_spawn_command_line_async("launcher -r", NULL);
         return FALSE;
     }
@@ -387,8 +387,8 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
-    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
-    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
+    background_gsettings = get_background_gsettings();
+    g_signal_connect(background_gsettings, "changed::"CURRENT_PCITURE,
                      G_CALLBACK(background_changed), NULL);
 
     gtk_widget_realize(container);
@@ -397,7 +397,7 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
+    set_background(gtk_widget_get_window(webview), background_gsettings,
                             gdk_screen_width(), gdk_screen_height());
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
