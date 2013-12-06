@@ -13,23 +13,23 @@
 .time{
     padding-top:30px;
     display: block;
+    text-align:left;
 }
 
 span{
     color: #fff;
     text-shadow:0 0 2px #333;
-    font-size:70px;
+    font-size:90px;
     font-family: MavenProLight;
 }
 
 .date{
-    margin-top:30px;
+    margin-top:20px;
     display: block;
-}
-
-h1{
     font-size:15px;
     color: #fff;
-    font-family: MavenProLight;
+    /*font-family: MavenProLight;*/
     text-shadow:0 0 2px #333;
+    text-align:left;
+    margin-left:15px;
 }
