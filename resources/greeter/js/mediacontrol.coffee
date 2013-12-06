@@ -68,7 +68,6 @@ class VoiceControl extends Widget
         #src
         ctx.fillStyle = "rgba(255,255,255,1.0)"
         ctx.fillRect(x0,y0 + height - vol * height,x0 + width,y0 + height)
-        echo ctx
         
         remove_element(num) if num
         num = create_element("div","num",@element)

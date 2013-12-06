@@ -27,7 +27,9 @@ de_menu = null
 
 audioplay = new AudioPlay()
 audio_play_status = audioplay.get_launched_status()
+if audioplay.getTitle() is undefined then audio_play_status = false
 is_volume_control = false
+echo "audio_play_status:#{audio_play_status}"
 
 enable_detection = (enabled)->
     DCore[APP_NAME].enable_detection(enabled)
