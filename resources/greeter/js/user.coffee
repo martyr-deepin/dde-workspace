@@ -430,7 +430,7 @@ class UserInfo extends Widget
         #DCore[APP_NAME].cancel_detect()
    
     focus:->
-        #echo "#{@id} focus"
+        echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
         @element.focus()
         @draw_camera()
