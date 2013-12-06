@@ -49,11 +49,10 @@ body{
 
 
 .div_version{
-    background-color:rgba(125,255,120,0.2);
     position:absolute;
-    bottom:30px;
+    bottom:50px;
     right:250px;
-    width:300px;
+    width:350px;
     
     display:-webkit-box;
     -webkit-box-pack:center;

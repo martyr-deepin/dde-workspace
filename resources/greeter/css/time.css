@@ -16,7 +16,7 @@
     text-align:left;
 }
 
-span{
+.TimeDate span{
     color: #fff;
     text-shadow:0 0 2px #333;
     font-size:90px;
