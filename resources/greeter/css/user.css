@@ -3,20 +3,27 @@
 .User{
     /*background: rgba(255,0,0,0.3);*/
     width:400px;
+    height:550px;
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
 }
 
 .prevuserinfo{
+    /*background: rgba(255,0,0,0.3);*/
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:100%;
+    width:400px;
     height:60px;
+    
+    position:absolute;
+    z-index:65535;
+    top:50px;
 }
 .prevuserinfo_img{
+    margin-left:80px;
     width:60px;
     height:60px;
 }
@@ -25,22 +32,30 @@
 }
 
 .user_ul{
-    background: rgba(255,0,246,0.3);
+    position:absolute;
+    z-index:1;
+    /*background: rgba(255,0,246,0.3);*/
     position:relative;
     list-style: none;
     width:400px;
-    height:550px;
+    height:500px;
 }
 
 .nextuserinfo{
+    /*background: rgba(255,0,0,0.3);*/
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:100%;
+    width:400px;
     height:60px;
+    
+    position:absolute;
+    z-index:65530;
+    bottom:50px;
 }
 .nextuserinfo_img{
+    margin-left:80px;
     width:60px;
     height:60px;
 }
