@@ -269,7 +269,7 @@ int main (int argc, char **argv)
 
     g_signal_connect (lock_container, "delete-event", G_CALLBACK (prevent_exit), NULL);
     g_signal_connect (lock_container, "show", G_CALLBACK (lock_show_cb), NULL);
-    /*g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);*/
+    g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 
     gtk_widget_realize (lock_container);
     gtk_widget_realize (webview);

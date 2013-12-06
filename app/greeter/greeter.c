@@ -55,7 +55,7 @@ static GtkWidget* webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
-static GSettings* dde_bg_g_settings = NULL;
+/*static GSettings* dde_bg_g_settings = NULL;*/
 
 struct AuthHandler {
     gchar *username;
@@ -228,6 +228,22 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
     return ret;
 }
 
+void greeter_set_background(GdkWindow* win, gchar* username, double width, double height)
+{
+    gchar* bg_path = get_user_background (username);
+    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
+
+    if (!_set_background_aux(win, blur_path, width, height)) {
+        g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
+        _set_background_aux(win, bg_path, width, height);
+    }
+
+    g_free(blur_path);
+    g_free(bg_path);
+
+}
+
 int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
@@ -285,12 +301,10 @@ int main (int argc, char **argv)
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
 
-    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
-    g_signal_connect(dde_bg_g_settings, "changed::"CURRENT_PCITURE,
-                     G_CALLBACK(background_changed), NULL);
-    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
-                            gdk_screen_width(), gdk_screen_height());
-
+    gchar* username = greeter_get_default_user();
+    greeter_set_background(gtk_widget_get_window(webview), username, gdk_screen_width(), gdk_screen_height());
+    g_free(username);
+    
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);

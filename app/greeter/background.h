@@ -28,6 +28,8 @@
 #define SCHEMA_ID "com.deepin.dde.background"
 #define CURRENT_PCITURE "current-picture"
 
+gboolean _set_background_aux(GdkWindow* win, const char* bg_path, double width, double height);
+
 void set_background(GdkWindow* win, GSettings* settings, double width, double height);
 void background_changed(GSettings* settings, char* key, gpointer user_data);
 
