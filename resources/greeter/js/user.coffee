@@ -480,8 +480,8 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
     on_verify: (username, password)->
-        #@loading = new Loading("loading")
-        #@element.appendChild(@loading.element)
+        @loading = new Loading("loading")
+        @all_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
         if not @session?
@@ -503,6 +503,8 @@ class UserInfo extends Widget
     
     auth_failed: (msg) ->
         @stop_avatar()
+        @loading?.destroy()
+        @loading = null
         # message_tip?.remove()
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
