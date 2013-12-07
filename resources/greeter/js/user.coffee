@@ -484,7 +484,7 @@ class UserInfo extends Widget
         echo "on_verify:#{username},#{password}"
 
         if not @session?
-            echo "get session failed"
+            echo "get session failed and session default deepin"
             @session = "deepin"
 
         if is_greeter
@@ -492,13 +492,7 @@ class UserInfo extends Widget
             DCore.Greeter.start_session(username, password, @session)
             echo 'start session end'
         else
-            if DCore.Lock.try_unlock(username,password)
-                echo "try_unlock succeed!"
-                # if username isnt in starting-seesion，then start_seesion
-                if username isnt DCore.Lock.get_username()
-                    echo "we must start_session for #{username}"
-                    s = new SwitchUser()
-                    s.SwitchToUser(username,@session)
+            DCore.Lock.start_session(username,password,@session)
     
     auth_failed: (msg) ->
         @stop_avatar()
