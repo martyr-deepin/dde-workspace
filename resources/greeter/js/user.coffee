@@ -299,7 +299,6 @@ class LoginEntry extends Widget
         )
 
         @loginbutton.addEventListener("click", =>
-            echo "#{@loginuser}:loginbutton click"
             if @check_completeness
                 if is_hide_users
                     @on_active(@account.value, @password.value)
@@ -343,6 +342,10 @@ class LoginEntry extends Widget
         @password.blur()
         @loginbutton.disable = true
         @loginbutton.style.background = "#808080"
+
+    show_password:->
+        @password.type = "text"
+
 
 class Loading extends Widget
     constructor: (@id)->
