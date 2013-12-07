@@ -265,11 +265,10 @@ class LoginEntry extends Widget
         @capswarning = create_element("div", "capswarning", @element)
         @password = create_element("input", "password", @capswarning)
         @password.type = "password"
-        # @password.classList.add("PasswordStyle")
         @password.setAttribute("maxlength", 16)
         # eye = create_element("div","eye",@capswarning)
         # eye.classList.add("opt")
-        #@element.setAttribute("autofocus", true)
+        @password.setAttribute("autofocus", true)
         
 
         @loginbutton = create_element("button", "loginbutton", @element)
@@ -279,7 +278,7 @@ class LoginEntry extends Widget
         else
             @loginbutton.innerText = _("Unlock")
    
-        # @check_capslock()
+        #@check_capslock()
         @password_eventlistener()
     
     password_eventlistener:->
@@ -287,7 +286,7 @@ class LoginEntry extends Widget
             if @password.value is password_error_msg
                 @input_password_again()
         )
-
+        
         document.body.addEventListener("keyup",(e)=>
             if e.which == ENTER_KEY
                 if _current_user.id is @loginuser
