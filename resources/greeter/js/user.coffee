@@ -218,7 +218,7 @@ class User extends Widget
     roundabout_animation:->
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
-            tilt: 2.5,
+            tilt: 2.3,
             minOpacity: 0.0,
             startingChild: 0,
             clickToFocus: true,
