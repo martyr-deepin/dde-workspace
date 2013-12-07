@@ -232,7 +232,6 @@ int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    int i;
     const gchar *username;
     const gchar *password;
     const gchar *session;
@@ -251,7 +250,7 @@ int main (int argc, char **argv)
     if (error1 != NULL) {
         g_warning ("switchtogreeter_cmd error:%s\n", error1->message);
         g_error_free (error1);
-        return FALSE;
+        return 0;
     }
     error1 = NULL;
 
