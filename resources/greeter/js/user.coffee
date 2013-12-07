@@ -257,17 +257,6 @@ class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
         super
         # echo "new LoginEntry"
-        if is_hide_users
-            @account = create_element("input", "Account", @element)
-            @account.setAttribute("autofocus", "true")
-            @account.addEventListener("keyup", (e)=>
-                if e.which == ENTER_KEY
-                    if not @account.value
-                        @account.focus()
-                    else
-                        @password.focus()
-            )
-
         @usertype = create_element("div","usertype",@element)
         icon_lock = create_element("i","icon-lock",@usertype)
         type_text = create_element("div","type_text",@usertype)
@@ -282,44 +271,42 @@ class LoginEntry extends Widget
         # eye.classList.add("opt")
         #@element.setAttribute("autofocus", true)
         
+
+        @loginbutton = create_element("button", "loginbutton", @element)
+        @loginbutton.type = "submit"
+        if is_greeter
+            @loginbutton.innerText = _("Log In")
+        else
+            @loginbutton.innerText = _("Unlock")
+   
         # @check_capslock()
-
-        
-
+        @password_eventlistener()
+    
+    password_eventlistener:->
         @password.addEventListener("click", (e)=>
-            @password.style.color = "black"
             if @password.value is password_error_msg
-                @password.value = null
-                @password.focus()
+                @input_password_again()
         )
 
         document.body.addEventListener("keyup",(e)=>
             @password.style.color = "black"
             if e.which == ENTER_KEY
-                if @check_completeness
-                    echo "#{@loginuser},#{@password.value}"
+                if _current_user.id is @id and @check_completeness
                     if is_hide_users
                         @on_active(@account.value, @password.value)
                     else
                         @on_active(@loginuser, @password.value)
-                  
-        
         )
 
-        @loginbutton = create_element("button", "loginbutton", @element)
-        if is_greeter
-            @loginbutton.innerText = _("Log In")
-        else
-            @loginbutton.innerText = _("Unlock")
-
         @loginbutton.addEventListener("click", =>
+            echo "#{@id}:loginbutton click"
             if @check_completeness
-                echo "#{@loginuser},#{@password.value}"
                 if is_hide_users
                     @on_active(@account.value, @password.value)
                 else
                     @on_active(@loginuser, @password.value)
         )
+ 
 
     check_capslock: ->
         if DCore[APP_NAME].detect_capslock()
@@ -328,6 +315,8 @@ class LoginEntry extends Widget
             @capswarning.classList.remove("CapsWarningBackground")
 
     check_completeness: ->
+        echo "password_error_msg:--#{password_error_msg}--;"
+        echo "password.value:---#{@password.value}---"
         if is_hide_users
             if not @account.value
                 @account.focus()
@@ -336,16 +325,24 @@ class LoginEntry extends Widget
             @password.focus()
             return false
         if @password.value is password_error_msg
-            @password.value = null
-            @password.focus()
+            @input_password_again()
             return false
+        echo "check_completeness true"
         return true
+
+    input_password_again:->
+        @password.style.color = "black"
+        @password.value = null
+        @password.focus()
+        @loginbutton.disable = false
+
 
     password_error:(msg)->
         @password.style.color = "red"
         password_error_msg = msg
         @password.value = password_error_msg
         @password.blur()
+        @loginbutton.disable = true
         echo "password_error"
 
 class Loading extends Widget
@@ -483,6 +480,7 @@ class UserInfo extends Widget
     on_verify: (username, password)->
         #@loading = new Loading("loading")
         #@element.appendChild(@loading.element)
+        echo "on_verify:#{username},#{password}"
 
         if not @session?
             echo "get session failed"
@@ -500,18 +498,12 @@ class UserInfo extends Widget
                     s = new SwitchUser()
                     s.SwitchToUser(username,@session)
     
-    normal_user_fail: (msg) ->
-        echo "normal_user_fail"
-        @login.password_error(msg)
-        #apply_refuse_rotate(@element, 0.5)
-
     auth_failed: (msg) ->
-        #echo "[User.auth_failed]"
         @stop_avatar()
         # message_tip?.remove()
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
-        @normal_user_fail(msg)
+        @login.password_error(msg)
 
 
     animate_prev: ->
@@ -548,27 +540,27 @@ class UserInfo extends Widget
             , 20)
 
 DCore.signal_connect("draw", ->
-    # echo 'receive draw signal'
+    echo 'receive camera draw signal'
     clearInterval(draw_camera_id)
     draw_camera_id = null
     _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    # echo "receive start animation"
+    echo "receive start animation"
     _current_user.is_recognizing = true
     _remove_click_event?()
     _current_user.draw_avatar()
 )
 
 DCore.signal_connect("auth-failed", (msg)->
-    # echo "[auth-failed]"
+    echo "#{_current_user.id}:[auth-failed]"
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
 )
 
 DCore.signal_connect("failed-too-much", (msg)->
-    # echo '[failed-too-much]'
+    echo '[failed-too-much]'
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
     message_tip.adjust_show_login()
