@@ -28,6 +28,8 @@ _drag_flag = false
 index_prev = null
 index_target = null
 index_next = null
+password_error_msg = null
+
 
 class User extends Widget
     Dbus_Account = null
@@ -238,6 +240,7 @@ class User extends Widget
         .bind("animationEnd",=>
             index_target = jQuery("#user_ul").roundabout("getChildInFocus")
             index_target = @check_index(index_target)
+            _current_user = userinfo_all[index_target]
             userinfo_all[index_target].only_show_name(false)
             userinfo_all[index_target].focus()
             apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
@@ -277,14 +280,17 @@ class LoginEntry extends Widget
         @password.setAttribute("maxlength", 16)
         # eye = create_element("div","eye",@capswarning)
         # eye.classList.add("opt")
-        @element.setAttribute("autofocus", true)
+        #@element.setAttribute("autofocus", true)
         
         # @check_capslock()
+
+        
 
         @password.addEventListener("keyup", (e)=>
             @password.style.color = "black"
             #@check_capslock()
             if e.which == ENTER_KEY
+                echo "password ENTER_KEY"
                 if @check_completeness
                     echo "#{@loginuser},#{@password.value}"
                     if is_hide_users
@@ -293,13 +299,13 @@ class LoginEntry extends Widget
                         @on_active(@loginuser, @password.value)
         )
 
-        @login = create_element("button", "loginbutton", @element)
+        @loginbutton = create_element("button", "loginbutton", @element)
         if is_greeter
-            @login.innerText = _("Log In")
+            @loginbutton.innerText = _("Log In")
         else
-            @login.innerText = _("Unlock")
+            @loginbutton.innerText = _("Unlock")
 
-        @login.addEventListener("click", =>
+        @loginbutton.addEventListener("click", =>
             if @check_completeness
                 echo "#{@loginuser},#{@password.value}"
                 if is_hide_users
@@ -322,11 +328,16 @@ class LoginEntry extends Widget
         if not @password.value
             @password.focus()
             return false
+        if @password.value is password_error_msg
+            @password.value = null
+            @password.focus()
+            return false
         return true
 
     password_error:(msg)->
         @password.style.color = "red"
-        @password.value = msg
+        password_error_msg = msg
+        @password.value = password_error_msg
         @password.blur()
         echo "password_error"
 
@@ -432,7 +443,7 @@ class UserInfo extends Widget
     focus:->
         echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
-        @element.focus()
+        #@element.focus()
         @draw_camera()
         @draw_avatar()
         @login.password.focus()
