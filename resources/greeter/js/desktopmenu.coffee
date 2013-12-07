@@ -24,8 +24,8 @@ class DesktopMenu extends Widget
     constructor: (parent_el) ->
         super
         parent = parent_el
-        detext = create_element("div", "Detext", parent)
-        detext.innerText = _("Session")
+        #detext = create_element("div", "Detext", parent)
+        #detext.innerText = _("Session")
     
     new_desktop_menu: ->
         de_menu_cb = (id, title)->

@@ -73,7 +73,7 @@ document.body.style.width = window.innerWidth
 
 greeter = new Greeter()
 
-desktopmenu = new DesktopMenu($("div_desktop"))
+desktopmenu = new DesktopMenu($("#div_desktop"))
 desktopmenu.new_desktop_menu()
 
 
@@ -92,7 +92,6 @@ greeter.mousewheel_listener(_current_user)
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
 timedate.show()
-
 
 
 $("#div_power").title = _("ShutDown")
