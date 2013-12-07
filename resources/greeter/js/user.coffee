@@ -315,8 +315,6 @@ class LoginEntry extends Widget
             @capswarning.classList.remove("CapsWarningBackground")
 
     check_completeness: ->
-        echo "password_error_msg:--#{password_error_msg}--;"
-        echo "password.value:---#{@password.value}---"
         if is_hide_users
             if not @account.value
                 @account.focus()
@@ -327,19 +325,19 @@ class LoginEntry extends Widget
         else if @password.value is password_error_msg
             @input_password_again()
             return false
-        echo "check_completeness true"
         return true
 
     input_password_again:->
         @password.style.color = "black"
         @password.value = null
+        @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
         @loginbutton.style.background = "#fbd568"
 
     password_error:(msg)->
-        echo "password_error"
         @password.style.color = "red"
+        @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg
         @password.blur()
