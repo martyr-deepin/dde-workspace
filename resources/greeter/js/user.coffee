@@ -286,17 +286,24 @@ class LoginEntry extends Widget
 
         
 
-        @password.addEventListener("keyup", (e)=>
+        @password.addEventListener("click", (e)=>
             @password.style.color = "black"
-            #@check_capslock()
+            if @password.value is password_error_msg
+                @password.value = null
+                @password.focus()
+        )
+
+        document.body.addEventListener("keyup",(e)=>
+            @password.style.color = "black"
             if e.which == ENTER_KEY
-                echo "password ENTER_KEY"
                 if @check_completeness
                     echo "#{@loginuser},#{@password.value}"
                     if is_hide_users
                         @on_active(@account.value, @password.value)
                     else
                         @on_active(@loginuser, @password.value)
+                  
+        
         )
 
         @loginbutton = create_element("button", "loginbutton", @element)
