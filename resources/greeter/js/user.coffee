@@ -289,17 +289,17 @@ class LoginEntry extends Widget
         )
 
         document.body.addEventListener("keyup",(e)=>
-            @password.style.color = "black"
             if e.which == ENTER_KEY
-                if _current_user.id is @id and @check_completeness
-                    if is_hide_users
-                        @on_active(@account.value, @password.value)
-                    else
-                        @on_active(@loginuser, @password.value)
+                if _current_user.id is @loginuser
+                    if @check_completeness()
+                        if is_hide_users
+                            @on_active(@account.value, @password.value)
+                        else
+                            @on_active(@loginuser, @password.value)
         )
 
         @loginbutton.addEventListener("click", =>
-            echo "#{@id}:loginbutton click"
+            echo "#{@loginuser}:loginbutton click"
             if @check_completeness
                 if is_hide_users
                     @on_active(@account.value, @password.value)
@@ -324,7 +324,7 @@ class LoginEntry extends Widget
         if not @password.value
             @password.focus()
             return false
-        if @password.value is password_error_msg
+        else if @password.value is password_error_msg
             @input_password_again()
             return false
         echo "check_completeness true"
@@ -335,15 +335,16 @@ class LoginEntry extends Widget
         @password.value = null
         @password.focus()
         @loginbutton.disable = false
-
+        @loginbutton.style.background = "#fbd568"
 
     password_error:(msg)->
+        echo "password_error"
         @password.style.color = "red"
         password_error_msg = msg
         @password.value = password_error_msg
         @password.blur()
         @loginbutton.disable = true
-        echo "password_error"
+        @loginbutton.style.background = "#808080"
 
 class Loading extends Widget
     constructor: (@id)->
@@ -485,14 +486,15 @@ class UserInfo extends Widget
         if not @session?
             echo "get session failed"
             @session = "deepin"
-        echo 'start session'
 
         if is_greeter
+            echo 'start session'
             DCore.Greeter.start_session(username, password, @session)
             echo 'start session end'
         else
             if DCore.Lock.try_unlock(username,password)
                 echo "try_unlock succeed!"
+                # if username isnt in starting-seesion，then start_seesion
                 if username isnt DCore.Lock.get_username()
                     echo "we must start_session for #{username}"
                     s = new SwitchUser()

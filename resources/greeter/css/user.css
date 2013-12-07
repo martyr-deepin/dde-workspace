@@ -278,9 +278,6 @@
     font-weight: bold;
 
     background: #fbd568; /* Fallback */
-    background: -moz-linear-gradient(#fbd568, #ffb347);
-    background: -ms-linear-gradient(#fbd568, #ffb347);
-    background: -o-linear-gradient(#fbd568, #ffb347);
     background: -webkit-gradient(linear, 0 0, 0 100%, from(#fbd568), to(#ffb347));
     background: -webkit-linear-gradient(#fbd568, #ffb347);
     background: linear-gradient(#fbd568, #ffb347);
