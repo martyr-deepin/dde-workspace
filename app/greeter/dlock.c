@@ -57,6 +57,7 @@ static GtkWidget* lock_container = NULL;
 static GSettings* dde_bg_g_settings = NULL;
 const gchar *username = NULL;
 
+
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
@@ -120,6 +121,29 @@ gboolean lock_try_unlock (const gchar *username,const gchar *password)
     }
 
     return succeed;
+}
+
+
+JS_EXPORT_API
+gboolean lock_start_session(const gchar *username,const gchar *password,const gchar *session)
+{
+
+    if (g_str_equal(username,lock_get_username())){
+        gboolean lock = lock_try_unlock(username,password);
+        return lock;        
+    }
+
+    GError *error = NULL;
+    const gchar *startsession_cmd = g_strdup_printf ("startsession %s %s %s",username, password, session);
+    g_spawn_command_line_sync (startsession_cmd, NULL, NULL, NULL, &error);
+    if (error != NULL) {
+        g_warning ("startsession_cmd error:%s\n", error->message);
+        g_error_free (error);
+        return FALSE;
+    }
+    error = NULL;
+    return TRUE;
+
 }
 
 static gboolean
