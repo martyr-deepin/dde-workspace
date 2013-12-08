@@ -22,12 +22,8 @@ user_ul = null
 message_tip = null
 draw_camera_id = null
 _current_user = null
-_current_username = null
-is_current_user = false
+_default_username = null
 _drag_flag = false
-index_prev = null
-index_target = null
-index_next = null
 password_error_msg = null
 
 
@@ -111,14 +107,14 @@ class User extends Widget
             users_type.push(type)
         return users_name
 
-    get_current_username:->
+    get_default_username:->
         if is_greeter
-            _current_username = DCore.Greeter.get_default_user()
+            _default_username = DCore.Greeter.get_default_user()
         else
-            _current_username = DCore.Lock.get_username()
+            _default_username = DCore.Lock.get_username()
         # if _current_user.face_login
         #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
-        return _current_username
+        return _default_username
 
     get_user_image:(user) ->
         try
@@ -159,12 +155,11 @@ class User extends Widget
                 return disable
 
     new_userinfo_all:()->
-        _current_username = @get_current_username()
+        _default_username = @get_default_username()
         users_name = @get_all_users()
         #users = DCore.Greeter.get_users()
         for user in users_name
-            if user == _current_username
-                is_current_user = true
+            if user == _default_username
                 userimage = @get_user_image(user)
                 _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
                 _current_user.only_show_name(false)
@@ -172,8 +167,7 @@ class User extends Widget
                 user_ul.appendChild(_current_user.userinfo_li)
                 _current_user.focus()
         for user in users_name
-            if user isnt _current_username and not @is_disable_user(user)
-                is_current_user = false
+            if user isnt _default_username and not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
                 u.only_show_name(true)
@@ -377,12 +371,8 @@ class SwitchUser extends Widget
             return false
 
 class UserInfo extends Widget
-    userbase = null
-    right = null
-    img_div = null
     userimg = null
     recognize = null
-    login_div = null
     constructor: (@id, name, @img_src,@type)->
         super
         @is_recognizing = false
