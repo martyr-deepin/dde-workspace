@@ -273,7 +273,8 @@ class LoginEntry extends Widget
         super
         # echo "new LoginEntry"
         @usertype = create_element("div","usertype",@element)
-        icon_lock = create_element("i","icon-lock",@usertype)
+        icon_lock = create_element("div","icon_lock",@usertype)
+        icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
         type_text = create_element("div","type_text",@usertype)
         type_text.textContent = @type
 
@@ -288,8 +289,10 @@ class LoginEntry extends Widget
             @show_hide_password()
             if @password.type is "password"
                 @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+                icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
             else
                 @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
+                icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
                 
         )
         

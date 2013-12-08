@@ -1,4 +1,3 @@
-@import url('font-awesome.css');
 
 .User{
     /*background: rgba(255,0,0,0.3);*/
@@ -167,10 +166,11 @@
     /*padding: 0 0 5px 2px;*/
     cursor: pointer;
     display: -webkit-box;
+    -webkit-box-align:center;
 }
-.icon-lock{
+.icon_lock{
     width:15px;
-    height:10px;
+    height:15px;
 }
 .type_text{
     margin-left: 5px;
