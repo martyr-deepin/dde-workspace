@@ -101,8 +101,8 @@ class User extends Widget
 
     get_all_users:->
         users_path = Dbus_Account.ListCachedUsers_sync()
-        for user in users_path
-            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",user,"org.freedesktop.Accounts.User")
+        for path in users_path
+            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
             name = user_dbus.UserName
             realname = user_dbus.RealName
             type = user_dbus.AccountType
@@ -148,12 +148,12 @@ class User extends Widget
                     else return _("Standard user")
         return _("Standard user")
 
-    is_disable_user :(name)->
+    is_disable_user :(user)->
         disable = false
         users_path = Dbus_Account.ListCachedUsers_sync()
         for u in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-            if name is user_dbus.UserName
+            if user is user_dbus.UserName
                 if user_dbus.Locked is null then disable = false
                 else if user_dbus.Locked is true then disable = true
                 return disable
@@ -196,7 +196,6 @@ class User extends Widget
         return userinfo_all
 
     get_current_userinfo:->
-        @new_userinfo() if _current_user == null
         return _current_user
 
     drag:(_current_user)->
@@ -208,9 +207,6 @@ class User extends Widget
         jQuery("#user_ul").drag("end", (ev, dd) ->
             _current_user?.animate_near()
         )
-
-    import_css:(src)->
-        inject_css(@element,src)
 
     roundabout_animation:->
         jQuery("#user_ul").roundabout({
@@ -297,7 +293,6 @@ class LoginEntry extends Widget
         else
             @loginbutton.innerText = _("Unlock")
    
-        #@check_capslock()
         @password_eventlistener()
     
     password_eventlistener:->
