@@ -277,13 +277,21 @@ class LoginEntry extends Widget
         type_text = create_element("div","type_text",@usertype)
         type_text.textContent = @type
 
-        @capswarning = create_element("div", "capswarning", @element)
-        @password = create_element("input", "password", @capswarning)
+        @password_div = create_element("div", "password_div", @element)
+        @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", 16)
-        # eye = create_element("div","eye",@capswarning)
-        # eye.classList.add("opt")
         @password.setAttribute("autofocus", true)
+        @eye = create_element("div","eye",@password_div)
+        @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+        @eye.addEventListener("click",=>
+            @show_hide_password()
+            if @password.type is "password"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+            else
+                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
+                
+        )
         
 
         @loginbutton = create_element("button", "loginbutton", @element)
@@ -321,12 +329,6 @@ class LoginEntry extends Widget
         )
  
 
-    check_capslock: ->
-        if DCore[APP_NAME].detect_capslock()
-            @capswarning.classList.add("CapsWarningBackground")
-        else
-            @capswarning.classList.remove("CapsWarningBackground")
-
     check_completeness: ->
         if is_hide_users
             if not @account.value
@@ -357,9 +359,9 @@ class LoginEntry extends Widget
         @loginbutton.disable = true
         @loginbutton.style.background = "#808080"
 
-    show_password:->
-        @password.type = "text"
-
+    show_hide_password:->
+        if @password.type is "password" then @password.type = "text"
+        else if @password.type is "text" then @password.type = "password"
 
 class Loading extends Widget
     constructor: (@id)->
