@@ -40,7 +40,8 @@ destory_all = ->
 
 
 confirm_ok = (i)->
-    destory_all()
+    clearInterval(timeId) if timeId
+    #destory_all()
     echo option[i]
     power_func(option[i])
 
