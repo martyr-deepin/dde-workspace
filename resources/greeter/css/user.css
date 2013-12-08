@@ -273,8 +273,7 @@
     font-size: 14px;
     line-height: 29px; /* Same as height */
     text-indent:10px;
-    letter-spacing:10px;
-    /*text-align: center;*/
+    text-align: center;
     font-weight: bold;
 
     background: #fbd568; /* Fallback */
@@ -289,7 +288,9 @@
     background: #F60;
 }
 
-
+.loginbutton:lang(zh){
+    letter-spacing:10px;
+}
 
 
 
