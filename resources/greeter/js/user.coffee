@@ -139,8 +139,8 @@ class User extends Widget
 
     get_user_type:(user)->
         if users_type.length == 0 or users_name.length == 0 then @get_all_users()
-        for username,j in users_name
-            if user is username
+        for tmp,j in users_name
+            if user is tmp
                 type = users_type[j]
                 switch type
                     when 1 then return _("Administrator")
@@ -148,12 +148,12 @@ class User extends Widget
                     else return _("Standard user")
         return _("Standard user")
 
-    is_disable_user :(username)->
+    is_disable_user :(name)->
         disable = false
         users_path = Dbus_Account.ListCachedUsers_sync()
         for u in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-            if username is user_dbus.UserName
+            if name is user_dbus.UserName
                 if user_dbus.Locked is null then disable = false
                 else if user_dbus.Locked is true then disable = true
                 return disable
@@ -317,26 +317,16 @@ class LoginEntry extends Widget
             if e.which == ENTER_KEY
                 if _current_user.id is @loginuser
                     if @check_completeness()
-                        if is_hide_users
-                            @on_active(@account.value, @password.value)
-                        else
-                            @on_active(@loginuser, @password.value)
+                        @on_active(@loginuser, @password.value)
         )
 
         @loginbutton.addEventListener("click", =>
             if @check_completeness
-                if is_hide_users
-                    @on_active(@account.value, @password.value)
-                else
-                    @on_active(@loginuser, @password.value)
+                @on_active(@loginuser, @password.value)
         )
  
 
     check_completeness: ->
-        if is_hide_users
-            if not @account.value
-                @account.focus()
-                return false
         if not @password.value
             @password.focus()
             return false
@@ -404,7 +394,6 @@ class UserInfo extends Widget
     img_div = null
     userimg = null
     recognize = null
-    username = null
     login_div = null
     constructor: (@id, name, @img_src,@type)->
         super
@@ -421,8 +410,8 @@ class UserInfo extends Widget
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
         recognize_h1 = create_element("h1", "", recognize)
-        username = create_element("label", "UserName", recognize_h1)
-        username.innerText = name
+        @username = create_element("label", "UserName", recognize_h1)
+        @username.innerText = name
 
         login_div = create_element("div", "login_div", @all_info)
         @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
@@ -489,11 +478,7 @@ class UserInfo extends Widget
 
     show_login: ->
         if _current_user == @
-            if is_hide_users
-                @element.style.paddingBottom = "0px"
-                @login.account.focus()
-            else
-                @login.password.focus()
+            @login.password.focus()
 
             if @id == "guest"
                 @login.password.style.display = "none"
