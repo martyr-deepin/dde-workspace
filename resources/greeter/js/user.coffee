@@ -55,6 +55,7 @@ class User extends Widget
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         @new_userinfo_all()
+        @username_font_animation(_current_user.index)
         nextuserinfo = create_element("div","nextuserinfo",@element)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
 #        if user_ul.children.length > 5
@@ -196,6 +197,9 @@ class User extends Widget
         
         if user_ul.children.length <= 2
             user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
+        
+        for user,j in userinfo_all
+            user.index = j
         return userinfo_all
 
     get_current_userinfo:->
@@ -244,14 +248,25 @@ class User extends Widget
             userinfo_all[index_target].only_show_name(false)
             userinfo_all[index_target].focus()
             apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
-            
+            @username_font_animation(_current_user.index)
         )
+    
+    username_font_animation:(FocusChildIndex)->
+        prev = @check_index(FocusChildIndex - 1)
+        next = @check_index(FocusChildIndex + 1)
+        
+        for i in [0 ... (userinfo_all.length - 1) / 2]
+            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
+            size = 26 - i * 6
+            if size < 13 then size = 13
+            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
+            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
+
 
     check_index:(index)->
-        tmp = index
-        if index >= userinfo_all.length then tmp = userinfo_all.length - 1
-        else if index < 0 then tmp = 0
-        return tmp
+        if index >= userinfo_all.length then index = 0
+        else if index < 0 then index = userinfo_all.length - 1
+        return index
 
 class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
@@ -389,7 +404,8 @@ class UserInfo extends Widget
     constructor: (@id, name, @img_src,@type)->
         super
         @is_recognizing = false
-        
+        @index = null
+
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","only_name",@userinfo_li)

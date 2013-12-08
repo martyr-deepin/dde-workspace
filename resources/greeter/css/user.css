@@ -79,6 +79,7 @@
     position:relative;
     top:45%;
     font-size:15px;
+    /*font-size:36px;*/
     font-weight:normal; 
     color:rgb(255,255,255);
     cursor: pointer;
@@ -122,7 +123,6 @@
 
 .UserName {
     font-size:13px;
-    /*font-size:36px;*/
     font-weight:normal; 
     color:#333;
     cursor: pointer;
