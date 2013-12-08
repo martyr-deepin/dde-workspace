@@ -159,33 +159,26 @@ class User extends Widget
                 return disable
 
     new_userinfo_all:()->
-        if is_hide_users
-            userinfo = new UserInfo("*other", "", "images/huser.jpg",@get_user_type("*other"))
-            userinfo.only_show_name(true)
-            user_ul.appendChild(userinfo.userinfo_li)
-            Widget.look_up("*other").element.style.paddingBottom = "5px"
-            userinfo.focus()
-        else
-            _current_username = @get_current_username()
-            users_name = @get_all_users()
-            #users = DCore.Greeter.get_users()
-            for user in users_name
-                if user == _current_username
-                    is_current_user = true
-                    userimage = @get_user_image(user)
-                    _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
-                    _current_user.only_show_name(false)
-                    userinfo_all.push(_current_user)
-                    user_ul.appendChild(_current_user.userinfo_li)
-                    _current_user.focus()
-            for user in users_name
-                if user isnt _current_username and not @is_disable_user(user)
-                    is_current_user = false
-                    userimage = @get_user_image(user)
-                    u = new UserInfo(user, user, userimage,@get_user_type(user))
-                    u.only_show_name(true)
-                    userinfo_all.push(u)
-                    user_ul.appendChild(u.userinfo_li)
+        _current_username = @get_current_username()
+        users_name = @get_all_users()
+        #users = DCore.Greeter.get_users()
+        for user in users_name
+            if user == _current_username
+                is_current_user = true
+                userimage = @get_user_image(user)
+                _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+                _current_user.only_show_name(false)
+                userinfo_all.push(_current_user)
+                user_ul.appendChild(_current_user.userinfo_li)
+                _current_user.focus()
+        for user in users_name
+            if user isnt _current_username and not @is_disable_user(user)
+                is_current_user = false
+                userimage = @get_user_image(user)
+                u = new UserInfo(user, user, userimage,@get_user_type(user))
+                u.only_show_name(true)
+                userinfo_all.push(u)
+                user_ul.appendChild(u.userinfo_li)
 
 #        if is_greeter
             #if DCore.Greeter.is_support_guest()
@@ -195,8 +188,8 @@ class User extends Widget
                 #if DCore.Greeter.is_guest_default()
                     #u.focus()
         
-        if user_ul.children.length <= 2
-            user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
+        # if user_ul.children.length <= 2
+        #     user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
         
         for user,j in userinfo_all
             user.index = j
