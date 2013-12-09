@@ -21,7 +21,7 @@ body{
 .div_time {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:50px;
+    bottom:40px;
     left:30px;
     width:250px;
     /*height:150px;*/
@@ -34,7 +34,7 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:50px;
+    bottom:40px;
     right:30px;
     width:60px;
     /*height:60px;*/

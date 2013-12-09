@@ -34,7 +34,7 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:50px;
+    bottom:40px;
     right:30px;
     width:60px;
     
@@ -50,8 +50,8 @@ body{
 .div_version{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:50px;
-    right:250px;
+    bottom:40px;
+    right:200px;
     width:150px;
     
     display:-webkit-box;
@@ -63,8 +63,8 @@ body{
 .div_desktop{
     /*background-color:rgba(125,0,120,0.2);*/
     position:absolute;
-    bottom:50px;
-    right:170;
+    bottom:40px;
+    right:120px;
     width:60px;
     
     display:-webkit-box;

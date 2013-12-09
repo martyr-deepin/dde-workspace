@@ -175,6 +175,7 @@
 .type_text{
     margin-left: 5px;
     font-weight: 400;
+    color:#333;
     text-shadow: 0 1px 0 rgba(255,255,255,0.2);
     font-size: 11px;
 }
