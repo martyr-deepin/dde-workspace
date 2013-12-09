@@ -206,6 +206,7 @@ class User extends Widget
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
             tilt: 2.3,
+            minZ: 180,
             minOpacity: 0.0,
             startingChild: 0,
             clickToFocus: true,
@@ -449,8 +450,8 @@ class UserInfo extends Widget
     
     
     blur: ->
-        @loading?.destroy()
-        @loading = null
+        #@loading?.destroy()
+        #@loading = null
         @stop_avatar()
 
 
@@ -463,8 +464,8 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
     on_verify: (username, password)->
-        @loading = new Loading("loading")
-        @all_info.appendChild(@loading.element)
+        #@loading = new Loading("loading")
+        #@all_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
         if not @session?
@@ -480,8 +481,8 @@ class UserInfo extends Widget
     
     auth_failed: (msg) ->
         @stop_avatar()
-        @loading?.destroy()
-        @loading = null
+        #@loading?.destroy()
+        #@loading = null
         # message_tip?.remove()
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)

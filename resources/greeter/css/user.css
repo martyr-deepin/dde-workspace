@@ -31,13 +31,13 @@
 }
 
 .user_ul{
+    /*background: rgba(255,0,246,0.3);*/
     position:absolute;
     z-index:1;
-    /*background: rgba(255,0,246,0.3);*/
     position:relative;
     list-style: none;
     width:400px;
-    height:500px;
+    height:550px;
 }
 
 .nextuserinfo{
@@ -51,7 +51,7 @@
     
     position:absolute;
     z-index:2;
-    bottom:50px;
+    bottom:10px;
 }
 .nextuserinfo_img{
     margin-left:80px;

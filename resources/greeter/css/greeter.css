@@ -37,7 +37,6 @@ body{
     bottom:50px;
     right:30px;
     width:60px;
-    /*height:60px;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -49,10 +48,11 @@ body{
 
 
 .div_version{
+    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:60px;
+    bottom:50px;
     right:250px;
-    width:350px;
+    width:150px;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -61,6 +61,7 @@ body{
 
 
 .div_desktop{
+    /*background-color:rgba(125,0,120,0.2);*/
     position:absolute;
     bottom:50px;
     right:170;
