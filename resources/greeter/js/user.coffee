@@ -256,14 +256,9 @@ class UserInfo extends Widget
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
 
-            if is_greeter
-                if not DCore.Greeter.user_need_password(@id)
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
-            else
-                if not DCore.Lock.need_password()
-                    @login.password.style.display = "none"
-                    @login.password.value = "deepin"
+            if is_auto_login(@id)
+                @login.password.style.display = "none"
+                @login.password.value = "deepin"
 
             @login_displayed = true
             @add_css_class("UserInfoSelected")

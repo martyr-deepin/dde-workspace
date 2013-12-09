@@ -28,6 +28,12 @@ else
     is_hide_users = false
 
 
+is_auto_login = (username) ->
+    #delete this function 
+    return false
+    if is_greeter then return DCore.Greeter.user_need_password(username)
+    else return DCore.Lock.need_password(username)
+
 is_disable_user = (username)->
     disable = false
     Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
