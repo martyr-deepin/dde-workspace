@@ -191,7 +191,7 @@
 }
 .password {
     height:28px;
-    width: 80%;
+    width: 91%;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -211,8 +211,8 @@
     outline: none; /* Remove Chrome's outline */
 }
 .eye{
-    width:27px;
-    height:15px;
+    width:16px;
+    height:16px;
 }
 
 
