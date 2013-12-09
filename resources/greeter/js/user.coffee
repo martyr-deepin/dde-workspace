@@ -239,7 +239,7 @@ class User extends Widget
         prev = @check_index(FocusChildIndex - 1)
         next = @check_index(FocusChildIndex + 1)
         
-        for i in [0 ... (userinfo_all.length - 1) / 2]
+        for i in [0 ... (userinfo_all.length) / 2]
             #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
             size = 26 - i * 6
             if size < 13 then size = 13
