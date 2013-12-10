@@ -287,8 +287,10 @@ class LoginEntry extends Widget
         else
             @loginbutton.innerText = _("Unlock")
    
+
         @password_eventlistener()
     
+
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
             if @password.value is password_error_msg
@@ -382,6 +384,9 @@ class UserInfo extends Widget
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","only_name",@userinfo_li)
         @only_name.innerText = name
+        
+        @glass = create_element("p","glass",@userinfo_li)
+        
         @all_info = create_element("div","all_info",@userinfo_li)
         userbase = create_element("div", "UserBase", @all_info)
         img_div = create_element("div","img_div",userbase)
@@ -411,6 +416,7 @@ class UserInfo extends Widget
             @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.0)"
             
             @only_name.style.display = "block"
+            @glass.style.display = "none"
             @all_info.style.display = "none"
         else
             @userinfo_li.style.background = "rgba(255,250,246,0.5)"
@@ -419,6 +425,7 @@ class UserInfo extends Widget
             @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.2)"
             
             @only_name.style.display = "none"
+            @glass.style.display = "block"
             @all_info.style.display = "-webkit-box"
             
 
