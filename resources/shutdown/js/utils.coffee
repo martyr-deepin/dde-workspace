@@ -40,9 +40,12 @@ destory_all = ->
 
 
 confirm_ok = (i)->
-    clearInterval(timeId) if timeId
     #destory_all()
     echo option[i]
+    switch option[i]
+        when "lock" then destory_all()
+        when "suspend" then destory_all()
+    clearInterval(timeId) if timeId
     power_func(option[i])
 
 document.body.style.height = window.innerHeight
