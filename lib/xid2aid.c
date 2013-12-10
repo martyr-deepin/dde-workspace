@@ -126,9 +126,13 @@ void _get_exec_name_args(char** cmdline, gsize length, char** name, char** args)
             cmdline[1] = space_pos + 1;
         }
         char* basename = g_path_get_basename(cmdline[0]);
-        if (g_regex_match(prefix_regex, basename, 0, NULL))
-            while (cmdline[++name_pos] && cmdline[name_pos][0] == '-')
-                ; // empty body
+        if (g_regex_match(prefix_regex, basename, 0, NULL)) {
+            g_debug("prefix match");
+            while (cmdline[name_pos + 1] && cmdline[name_pos + 1][0] == '-') {
+                ++name_pos;
+                g_debug("name pos changed");
+            }
+        }
         g_free(basename);
     }
 
