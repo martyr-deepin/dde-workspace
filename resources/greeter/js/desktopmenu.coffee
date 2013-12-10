@@ -20,10 +20,13 @@
 
 class DesktopMenu extends Widget
     parent = null
+    img_before = null
     
     constructor: (parent_el) ->
         super
         parent = parent_el
+        img_before = "images/desktopmenu/"
+
         #detext = create_element("div", "Detext", parent)
         #detext.innerText = _("Session")
     
@@ -39,9 +42,24 @@ class DesktopMenu extends Widget
             id = session
             name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = "images/desktopmenu/#{icon}"
+            icon_path = img_before + "#{icon}"
             de_menu.insert(id, name, icon_path)
         default_session = DCore.Greeter.get_default_session()
         parent.appendChild(de_menu.element) if parent
         de_menu.set_current(default_session)
+        
+        de_menu.current_img.src = img_before + "deepin_normal.png"
+
         #DCore.Greeter.set_selected_session(default_session)
+        de_menu.current_img.addEventListener("mouseover",=>
+            de_menu.current_img.src = img_before + "deepin.png"
+        )
+        de_menu.current_img.addEventListener("mouseout",=>
+            de_menu.current_img.src = img_before + "deepin_normal.png"
+        )
+        # de_menu.current_img.addEventListener("click", (e) =>
+        #     power_dict["deepin"]()
+        # )
+        de_menu.menu.element.addEventListener("mouseover",=>
+            de_menu.current_img.src = img_before + "deepin.png"
+        )
