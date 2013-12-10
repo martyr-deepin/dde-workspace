@@ -195,7 +195,7 @@ class MediaControl extends Widget
         if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
         else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
         else play_status = "play"
-        play.src = img_src_before + "#{play_status}_normal.png"
+        play.src = img_src_before + "#{play_status}_hover.png"
         
 
     media_next:->
