@@ -30,10 +30,6 @@
 #include "item.h"
 #include "DBUS_launcher.h"
 
-#define SOFTWARE_CENTER_NAME "com.linuxdeepin.softwarecenter"
-#define SOFTWARE_CENTER_PATH "/com/linuxdeepin/softwarecenter"
-#define SOFTWARE_CENTER_INTERFACE SOFTWARE_CENTER_NAME
-
 
 PRIVATE GKeyFile* hidden_apps = NULL;
 PRIVATE GPtrArray* autostart_paths = NULL;
@@ -474,85 +470,5 @@ JSValueRef launcher_get_app_rate()
     g_key_file_free(record_file);
 
     return json;
-}
-
-
-PRIVATE
-char* _get_pkg_name(const char* name)
-{
-    GError* err = NULL;
-    gint exit_status = 0;
-    char* cmd[] = { "dpkg", "-S", (char*)name, NULL};
-    char* output = NULL;
-
-    if (!g_spawn_sync(NULL, cmd, NULL,
-                      G_SPAWN_SEARCH_PATH
-                      | G_SPAWN_STDERR_TO_DEV_NULL,
-                      NULL, NULL, &output, NULL, &exit_status, &err)) {
-        g_warning("[launcher_uninstall] get package name failed: %s", err->message);
-        g_error_free(err);
-        return NULL;
-    }
-
-    if (exit_status != 0) {
-        g_free(output);
-        return NULL;
-    }
-
-    char* del = strchr(output, ':');
-    char* pkg_name = g_strndup(output, del - output);
-    g_free(output);
-
-    return pkg_name;
-}
-
-
-PRIVATE
-gboolean _uninstall_pkg(const char* pkg_name, gboolean is_purge)
-{
-    GDBusConnection* conn = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, NULL);
-    GError* err = NULL;
-    g_dbus_connection_call_sync(conn,
-                                SOFTWARE_CENTER_NAME,
-                                SOFTWARE_CENTER_PATH,
-                                SOFTWARE_CENTER_INTERFACE,
-                                "uninstall_pkg",
-                                g_variant_new("(sb)", pkg_name, is_purge),
-                                NULL,
-                                G_DBUS_CALL_FLAGS_NONE,
-                                -1,
-                                NULL,
-                                &err
-                               );
-    if (err != NULL) {
-        g_warning("%s", err->message);
-        g_error_free(err);
-        return FALSE;
-    }
-
-    g_object_unref(conn);
-    return TRUE;
-}
-
-
-JS_EXPORT_API
-gboolean launcher_uninstall(Entry* _item)
-{
-    GDesktopAppInfo* item = G_DESKTOP_APP_INFO(_item);
-    const char* filename = g_desktop_app_info_get_filename(item);
-    char* name = g_path_get_basename(filename);
-
-    char* pkg_name = _get_pkg_name(name);
-    g_free(name);
-
-    gboolean is_uninstall_successful = FALSE;
-
-    if (pkg_name != NULL) {
-        is_uninstall_successful = _uninstall_pkg(pkg_name, TRUE);
-        g_free(pkg_name);
-    } else {
-    }
-
-    return is_uninstall_successful;
 }
 

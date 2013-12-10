@@ -37,7 +37,7 @@ class Item extends Widget
     @hover_item_id: null
     @clean_hover_temp: false
     @display_temp: false
-    constructor: (@id, @core)->
+    constructor: (@id, @core, @package_name)->
         super
         im = DCore.DEntry.get_icon(@core)
         if im == null
@@ -92,7 +92,9 @@ class Item extends Widget
             [4, _("Send to do_ck"), s_dock!=null],
             [],
             [5, AUTOSTARTUP_MESSAGE[@is_autostart]]
+            [],
             [6, _("_Uninstall")]
+            [7, _("_Uninstall with configurations")]
         ]
 
         if DCore.DEntry.internal()
@@ -182,10 +184,18 @@ class Item extends Widget
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
             when 5 then @toggle_autostart()
-            when 6 then echo "uninstall #{DCore.Launcher.uninstall(@core)}"
-            # system_dbus, com.linuxdeepin.softwarecenter, /com/linuxdeepin/softwarecenter, com.linuxdeepin.softwarecenter
-            # uninstall_pkg(pkg_name, purge?) -- method
-            # update_signal -- signal
+            when 6
+                # TODO:
+                # 1. confirm.
+                # 2. stop launcher hiding when confirm.
+                # echo "Are you sure to uninstall this?"
+                DCore.Launcher.uninstall(@package_name, @core, false)
+            when 7
+                # TODO:
+                # 1. confirm.
+                # 2. stop launcher hiding when confirm.
+                # echo "Are you sure to uninstall this?"
+                DCore.Launcher.uninstall(@package_name, @core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
 
     hide: ->
