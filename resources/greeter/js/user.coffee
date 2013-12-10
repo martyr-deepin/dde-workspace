@@ -51,7 +51,7 @@ class User extends Widget
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         @new_userinfo_all()
-        @username_font_animation(_current_user.index)
+        #@username_font_animation(_current_user.index)
         nextuserinfo = create_element("div","nextuserinfo",@element)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
 #        if user_ul.children.length > 5
@@ -222,7 +222,6 @@ class User extends Widget
             index_prev = @check_index(index_prev)
             userinfo_all[index_prev].blur()
             userinfo_all[index_prev].only_show_name(true)
-            #apply_animation(userinfo_all[index_prev].userinfo_li,"hide_animation","3s")
         )
 
         .bind("animationEnd",=>
@@ -232,7 +231,7 @@ class User extends Widget
             userinfo_all[index_target].only_show_name(false)
             userinfo_all[index_target].focus()
             apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
-            @username_font_animation(_current_user.index)
+            #@username_font_animation(_current_user.index)
         )
     
     username_font_animation:(FocusChildIndex)->
