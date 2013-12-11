@@ -248,28 +248,7 @@ int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    const gchar *username;
-    const gchar *password;
-    const gchar *session;
-    if(argc == 4)
-    {
-        username = argv[1];
-        password = argv[2];
-        session = argv[3];        
-    GError *error1 = NULL;
-    const gchar *switchtogreeter_cmd = g_strdup_printf ("switchtogreeter");
-    g_spawn_command_line_sync (switchtogreeter_cmd, NULL, NULL, NULL, &error1);
-    /*g_spawn_command_line_async (switchtogreeter_cmd, &error1);*/
-    if (error1 != NULL) {
-        g_warning ("switchtogreeter_cmd error:%s\n", error1->message);
-        g_error_free (error1);
-        return 0;
-    }
-    error1 = NULL;
-    g_message("switchtogreeter_cmd ok"); 
-
-    }
-    
+   
 
     GdkScreen *screen;
     GdkRectangle geometry;
@@ -302,11 +281,6 @@ int main (int argc, char **argv)
     greeter_keyfile = g_key_file_new ();
     g_key_file_load_from_file (greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
     
-    if(argc == 4)
-        greeter_start_session (username, password, session);
-
-    gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
-
     container = create_web_container (FALSE, TRUE);
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
