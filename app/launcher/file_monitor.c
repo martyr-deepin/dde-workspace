@@ -58,7 +58,6 @@ GFileMonitor* create_monitor(const char* path, GCallback monitor_callback)
     }
 
     g_debug("[%s] monitor %s", __func__, path);
-    /* g_file_monitor_set_rate_limit(monitor, min(1)); */
     g_signal_connect(monitor, "changed", monitor_callback, NULL);
 
     return monitor;
@@ -138,6 +137,10 @@ gboolean _update_items(gpointer user_data)
     // system's desktop file)
     struct DesktopInfo* info = (struct DesktopInfo*)user_data;
     js_post_signal("update_items");  // update some infos
+    JSObjectRef update_info = json_create();
+    json_append_number(update_info, "status", info->status);
+    json_append_string(update_info, "path", g_strdup(info->path));
+    js_post_message("update_items", update_info);
 
     return G_SOURCE_REMOVE;
 }
@@ -173,6 +176,8 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
         path = g_file_get_path(file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = DELETED;
+            // TODO:
+            // delete from back/front end info.
             g_debug("[%s] %s is deleted", __func__, path);
         }
         break;
@@ -180,6 +185,8 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
         path = g_file_get_path(other_file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = ADDED;
+            // TODO:
+            // add to table, maybe replace the system app.
             g_debug("[%s] %s is added", __func__, path);
         }
         break;
@@ -187,6 +194,8 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
         path = g_file_get_path(file);
         if (g_str_has_suffix(path, ".desktop")) {
             status = ADDED;
+            // TODO:
+            // update back/front end info, maybe add to table.
             g_debug("[%s] %s is changed/added", __func__, path);
         }
         break;
@@ -198,7 +207,6 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
             timeout_id = 0;
         }
 
-        /* timeout_id = g_timeout_add_seconds(DELAY_TIME, _update_times, NULL); */
         struct DesktopInfo* info = desktop_info_create(path, status);
         timeout_id = g_timeout_add_full(G_PRIORITY_DEFAULT,
                                         AUTOSTART_DELAY_TIME,
