@@ -18,7 +18,7 @@
     height:60px;
     
     position:absolute;
-    z-index:2;
+    z-index:10;
     top:50px;
 }
 .prevuserinfo_img{
@@ -33,7 +33,7 @@
 .user_ul{
     /*background: rgba(255,0,246,0.3);*/
     position:absolute;
-    z-index:1;
+    z-index:3;
     position:relative;
     list-style: none;
     width:400px;
@@ -50,7 +50,7 @@
     height:60px;
     
     position:absolute;
-    z-index:2;
+    z-index:10;
     bottom:10px;
 }
 .nextuserinfo_img{
@@ -65,12 +65,12 @@
 
 
 .UserInfo {
-    width: 350px;
+    width: 370px;
     height: 140px;
 }
 
 .userinfo_li{
-    width: 350px;
+    width: 370px;
     height: 140px;
     display:-webkit-box;
     overflow:hidden;
@@ -100,7 +100,7 @@
 
 .all_info{
     position: relative;
-    z-index:1;
+    z-index:3;
 }
 
 .UserBase {
@@ -179,7 +179,6 @@
 .LoginEntry{
     width: 185px;
     height:135px;
-    margin-left:15px;
     border-radius:5px;
     overflow:hidden;
 }
@@ -214,7 +213,7 @@
 }
 .password {
     height:28px;
-    width: 91%;
+    width: 99.2%;
     font-family: 'Lato', Calibri, Arial, sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -223,6 +222,7 @@
     display: block;
     -webkit-transition: all 0.3s ease-out;
     transition: all 0.3s ease-out;
+    z-index:4;
 }
 
 .password:hover {
@@ -234,8 +234,12 @@
     outline: none; /* Remove Chrome's outline */
 }
 .eye{
+    position:absolute;
+    margin-top:6px;
+    right:12px;
     width:16px;
     height:16px;
+    z-index:15;
 }
 
 
