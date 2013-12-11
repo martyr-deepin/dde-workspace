@@ -177,8 +177,9 @@
 
 
 .LoginEntry{
+    /*margin-top:15px;*/
     width: 185px;
-    height:135px;
+    height:105px;
     border-radius:5px;
     overflow:hidden;
 }
