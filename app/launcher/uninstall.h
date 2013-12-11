@@ -22,9 +22,7 @@
 #ifndef _UNINSTALL_H_
 #define _UNINSTALL_H_
 
-DBusConnection* get_dbus(const char* dbus_name,
-                         const char* dbus_interface,
-                         const char* dbus_object_path);
+gboolean is_launcher_uninstalling();
 
 #endif /* end of include guard: _UNINSTALL_H_ */
 

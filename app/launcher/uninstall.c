@@ -45,6 +45,24 @@
 #define ACTION_FAILED_TYPE "(sia(sbbb)s)"
 
 
+static gboolean is_uninstalling = FALSE;
+
+
+static
+gboolean set_uninstalling(gboolean status)
+{
+    // FIXME: add a lock?
+    is_uninstalling = status;
+    return is_uninstalling;
+}
+
+
+gboolean is_launcher_uninstalling()
+{
+    return is_uninstalling;
+}
+
+
 static
 void notify(const char* title, const char* content)
 {
@@ -107,14 +125,36 @@ enum ACTION_TYPE get_action_type(const char* action_type)
 }
 
 
+typedef void (*ITERATOR_FUNC)(DBusMessageIter* parent_container_iter,
+                              DBusMessageIter* iter,
+                              gpointer user_data);
+
 static
-void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
+void iterate_container_message(DBusMessageIter* container,
+                               ITERATOR_FUNC iterate_func,
+                               gpointer user_data)
 {
-    switch (dbus_message_iter_get_arg_type(struct_iter)){
+    DBusMessageIter element_iter;
+    dbus_message_iter_recurse(container, &element_iter);
+    while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
+        iterate_func(container, &element_iter, user_data);
+        dbus_message_iter_next(&element_iter);
+    }
+}
+
+
+static
+void iter_struct(DBusMessageIter* struct_iter,
+                 DBusMessageIter* struct_element_iter,
+                 gpointer user_data
+                 )
+{
+    DBusMessageIter* array_iter = (DBusMessageIter*)user_data;
+    switch (dbus_message_iter_get_arg_type(struct_element_iter)){
     case DBUS_TYPE_STRING: {
         // first field -- action type
         DBusBasicValue value;
-        dbus_message_iter_get_basic(struct_iter, &value);
+        dbus_message_iter_get_basic(struct_element_iter, &value);
 #ifndef NDEBUG
         g_debug("signature: %s, first field value: %s", dbus_message_iter_get_signature(array_iter), value.str);
 #endif
@@ -123,14 +163,14 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
     case DBUS_TYPE_STRUCT: {
         // second field -- action detail
 #ifndef NDEBUG
-        const char* signature = dbus_message_iter_get_signature(struct_iter);
+        const char* signature = dbus_message_iter_get_signature(struct_element_iter);
         g_debug("second field signature: %s", signature);
 #endif
         DBusMessageIter iter;
-        dbus_message_iter_recurse(struct_iter, &iter);
+        dbus_message_iter_recurse(struct_element_iter, &iter);
 
         enum ACTION_TYPE type =
-            get_action_type(dbus_message_iter_get_signature(struct_iter));
+            get_action_type(dbus_message_iter_get_signature(struct_element_iter));
 #ifndef NDEBUG
         const char* types[] = {
             "ACTION_START",
@@ -147,6 +187,7 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
             g_warning("start");
 #endif
             // (si)
+            set_uninstalling(TRUE);
             break;
         case ACTION_UPDATE: {
 #ifndef NDEBUG
@@ -161,7 +202,8 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
             g_warning("finish");
 #endif
             // (sia(sbbb))
-            notify("uninstall finished", "uninstall finished");
+            // notify("uninstall finished", "uninstall finished");
+            set_uninstalling(FALSE);
             return;
         case ACTION_FAILED: {
 #ifndef NDEBUG
@@ -169,7 +211,7 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
 #endif
             // (sia(sbbb)s)
             DBusMessageIter failed_iter;
-            dbus_message_iter_recurse(struct_iter, &failed_iter);
+            dbus_message_iter_recurse(struct_element_iter, &failed_iter);
             while (dbus_message_iter_get_arg_type(&failed_iter) != DBUS_TYPE_ARRAY) {
                 dbus_message_iter_next(&failed_iter);
             }
@@ -177,6 +219,7 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
             DBusBasicValue value;
             dbus_message_iter_get_basic(&failed_iter, &value);
             notify(UNINSTALL_FAILED_TITLE, value.str);
+            set_uninstalling(FALSE);
             return;
         }
         case ACTION_INVALID:
@@ -191,15 +234,11 @@ void iter_struct(DBusMessageIter* array_iter, DBusMessageIter* struct_iter)
 
 
 static
-void iter_message_array(DBusMessageIter* array_iter)
+void iter_array(DBusMessageIter* array_iter,
+                DBusMessageIter* array_element_iter,
+                gpointer user_data)
 {
-    DBusMessageIter struct_iter;
-    dbus_message_iter_recurse(array_iter, &struct_iter);
-
-    while (dbus_message_iter_get_arg_type(&struct_iter) != DBUS_TYPE_INVALID) {
-        iter_struct(array_iter, &struct_iter);
-        dbus_message_iter_next(&struct_iter);
-    }
+    iterate_container_message(array_element_iter, iter_struct, array_iter);
 }
 
 
@@ -228,11 +267,7 @@ void uninstall_signal_handler(DBusConnection* conn)
             DBusMessageIter array_iter;
             dbus_message_iter_recurse(&args, &array_iter);
 
-            while (dbus_message_iter_get_arg_type(&array_iter) != DBUS_TYPE_INVALID) {
-                g_warning("iter message array");
-                iter_message_array(&array_iter);
-                dbus_message_iter_next(&array_iter);
-            }
+            iterate_container_message(&array_iter, iter_array, NULL);
         }
         dbus_message_unref(message);
     }
