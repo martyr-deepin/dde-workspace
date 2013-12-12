@@ -30,6 +30,7 @@
 
 #include "dcore.h"
 #include "dentry/entry.h"
+#include "category.h"
 
 #define UNINSTALL_FAILED_TITLE "uninstall failed"
 
@@ -46,6 +47,7 @@
 
 
 static gboolean is_uninstalling = FALSE;
+static GQueue* uninstall_queue = NULL;
 
 
 static
@@ -149,14 +151,13 @@ void iter_struct(DBusMessageIter* struct_iter,
                  gpointer user_data
                  )
 {
-    DBusMessageIter* array_iter = (DBusMessageIter*)user_data;
     switch (dbus_message_iter_get_arg_type(struct_element_iter)){
     case DBUS_TYPE_STRING: {
         // first field -- action type
         DBusBasicValue value;
         dbus_message_iter_get_basic(struct_element_iter, &value);
 #ifndef NDEBUG
-        g_debug("signature: %s, first field value: %s", dbus_message_iter_get_signature(array_iter), value.str);
+        g_debug("first field value: %s", value.str);
 #endif
         break;
     }
@@ -183,48 +184,51 @@ void iter_struct(DBusMessageIter* struct_iter,
 #endif
         switch (type) {
         case ACTION_START:
-#ifndef NDEBUG
-            g_warning("start");
-#endif
             // (si)
+            g_message("start");
             set_uninstalling(TRUE);
             break;
         case ACTION_UPDATE: {
-#ifndef NDEBUG
-            g_debug("update");
-#endif
+            g_message("update");
             // (siis)
-            g_warning("update");
             break;
         }
-        case ACTION_FINISH:
-#ifndef NDEBUG
-            g_warning("finish");
-#endif
+        case ACTION_FINISH: {
             // (sia(sbbb))
-            // notify("uninstall finished", "uninstall finished");
+            g_message("finish");
+            // delete local file
+            char* filename = g_queue_pop_head(uninstall_queue);
+            if (filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS)) {
+                g_unlink(filename);
+                g_free(filename);
+            }
+
+            notify("uninstall finished", "uninstall finished");
             set_uninstalling(FALSE);
             return;
+        }
         case ACTION_FAILED: {
-#ifndef NDEBUG
-            g_warning("failed");
-#endif
             // (sia(sbbb)s)
+            g_warning("failed");
             DBusMessageIter failed_iter;
             dbus_message_iter_recurse(struct_element_iter, &failed_iter);
+
             while (dbus_message_iter_get_arg_type(&failed_iter) != DBUS_TYPE_ARRAY) {
                 dbus_message_iter_next(&failed_iter);
             }
+
             dbus_message_iter_next(&failed_iter);
             DBusBasicValue value;
             dbus_message_iter_get_basic(&failed_iter, &value);
+
+            g_free(g_queue_pop_head(uninstall_queue));
             notify(UNINSTALL_FAILED_TITLE, value.str);
             set_uninstalling(FALSE);
             return;
         }
         case ACTION_INVALID:
             g_warning("INVALID");
-            return;
+            break;
         }
 
         break;
@@ -238,7 +242,7 @@ void iter_array(DBusMessageIter* array_iter,
                 DBusMessageIter* array_element_iter,
                 gpointer user_data)
 {
-    iterate_container_message(array_element_iter, iter_struct, array_iter);
+    iterate_container_message(array_element_iter, iter_struct, NULL);
 }
 
 
@@ -307,12 +311,19 @@ void listen_update_signal()
                                    SOFTWARE_CENTER_INTERFACE,
                                    UNINSTALL_LISTEN_SIGNAL,
                                    SOFTWARE_CENTER_OBJECT_PATH);
+
+    DBusConnection* conn = get_dbus(DBUS_BUS_SYSTEM);
+    if (conn == NULL) {
+        g_free(g_queue_pop_head(uninstall_queue));
+        return;
+    }
+
     DBusError error;
     dbus_error_init(&error);
 
-    DBusConnection* conn = get_dbus(DBUS_BUS_SYSTEM);
     dbus_bus_add_match(conn, rules, &error);
     g_free (rules);
+
     if (dbus_error_is_set(&error)) {
         g_warning("[%s] add match failed: %s", __func__, error.message);
         dbus_error_free(&error);
@@ -333,8 +344,35 @@ void _uninstall_package(const char* pkg_name, gboolean is_purge)
 }
 
 
-char* _get_pkg_name(const char* name)
+static
+int _get_package_names(char** package_name, int argc, char** argv, char** column_name)
 {
+    if (argv[0][0] != '\0') {
+        g_debug("[%s] get package name: '%s'", __func__, argv[0]);
+        *package_name = g_strdup(argv[0]);
+    }
+    return 0;
+}
+
+
+char* get_package_names(const char* name)
+{
+    char* package_names = NULL;
+    char* sql = g_strdup_printf("select pkg_names "
+                                "from desktop "
+                                "where desktop_name like \"%s\";"
+                                , name);
+    search_database(get_category_name_db_path(),
+                    sql,
+                    (SQLEXEC_CB)_get_package_names,
+                    &package_names);
+    g_free(sql);
+    if (package_names != NULL) {
+        g_warning("[%s] get package names from database: %s", __func__, package_names);
+        return package_names;
+    }
+
+    g_warning("[%s] get packages from dpkg", __func__);
     GError* err = NULL;
     gint exit_status = 0;
     char* cmd[] = { "dpkg", "-S", (char*)name, NULL};
@@ -355,38 +393,32 @@ char* _get_pkg_name(const char* name)
     }
 
     char* del = strchr(output, ':');
-    char* pkg_name = g_strndup(output, del - output);
+    package_names = g_strndup(output, del - output);
     g_free(output);
 
-    return pkg_name;
+    return package_names;
 }
 
 
-/* JS_EXPORT_API */
-void launcher_uninstall(const char* package_name, Entry* _item, gboolean is_purge)
+JS_EXPORT_API
+void launcher_uninstall(Entry* _item, gboolean is_purge)
 {
-    g_assert(package_name != NULL);
     GDesktopAppInfo* item = G_DESKTOP_APP_INFO(_item);
     const char* filename = g_desktop_app_info_get_filename(item);
-    char* pkg_name = g_strdup(package_name);
-    if (pkg_name[0] == '\0') {
-        g_free(pkg_name);
-        g_debug("[%s] package is empty", __func__);
-        char* name = g_path_get_basename(filename);
-        pkg_name = _get_pkg_name(name);
-        g_free(name);
-    }
+    char* name = g_path_get_basename(filename);
+    char* package_names = get_package_names(name);
+    g_free(name);
 
-    g_debug("[%s] the found package name is '%s'", __func__, pkg_name);
+    g_debug("[%s] the found package name is '%s'", __func__, package_names);
 
 
-    if (pkg_name != NULL) {
-        _uninstall_package(pkg_name, is_purge);
-        // delete local file
-        if (g_file_test(filename, G_FILE_TEST_EXISTS)) {
-            g_unlink(filename);
+    if (package_names != NULL) {
+        if (uninstall_queue == NULL) {
+            uninstall_queue = g_queue_new();
         }
-        g_free(pkg_name);
+        g_queue_push_tail(uninstall_queue, g_strdup(filename));
+        _uninstall_package(package_names, is_purge);
+        g_free(package_names);
     } else {
         notify(UNINSTALL_FAILED_TITLE, "package name is not found");
     }

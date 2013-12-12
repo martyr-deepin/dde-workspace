@@ -37,7 +37,7 @@ class Item extends Widget
     @hover_item_id: null
     @clean_hover_temp: false
     @display_temp: false
-    constructor: (@id, @core, @package_name)->
+    constructor: (@id, @core)->
         super
         im = DCore.DEntry.get_icon(@core)
         if im == null
@@ -189,13 +189,13 @@ class Item extends Widget
                 # 1. confirm.
                 # 2. stop launcher hiding when confirm.
                 # echo "Are you sure to uninstall this?"
-                DCore.Launcher.uninstall(@package_name, @core, false)
+                DCore.Launcher.uninstall(@core, false)
             when 7
                 # TODO:
                 # 1. confirm.
                 # 2. stop launcher hiding when confirm.
                 # echo "Are you sure to uninstall this?"
-                DCore.Launcher.uninstall(@package_name, @core, true)
+                DCore.Launcher.uninstall(@core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
 
     hide: ->

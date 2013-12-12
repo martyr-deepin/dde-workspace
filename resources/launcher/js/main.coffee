@@ -313,7 +313,7 @@ init_all_applications = ->
 
     for core in _all_items
         id = DCore.DEntry.get_id(core)
-        applications[id] = new Item(id, core, "")
+        applications[id] = new Item(id, core)
 
 
 _init_hidden_icons = ->

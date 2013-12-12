@@ -30,13 +30,6 @@
 
 
 PRIVATE
-const char* _get_x_category_db_path()
-{
-    return DATA_DIR"/x_category.sqlite";
-}
-
-
-PRIVATE
 int _get_category_name_index_map(GHashTable* infos, int argc, char** argv, char** colname)
 {
     if (argv[1][0] != '\0') {
@@ -141,21 +134,15 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 {
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     GList* categories = NULL;
-    GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
-    char** app_name = g_strsplit(basename, ".", -1);
+    char* sql = g_strdup_printf("select first_category_name "
+                                "from desktop "
+                                "where desktop_name like \"%s\";", basename);
+    g_debug("[%s] app: %s", __func__, basename);
     g_free(basename);
-
-    g_string_append(sql, app_name[0]);
-    g_debug("[%s] app: %s", __func__, app_name[0]);
-    g_strfreev(app_name);
-    g_string_append(sql, "\";");
-    search_database(get_category_name_db_path(), sql->str,
+    search_database(get_category_name_db_path(), sql,
                     (SQLEXEC_CB)_get_all_possible_categories,
                     &categories);
-    g_string_free(sql, TRUE);
-
-    if (categories == NULL)
-        categories = _get_x_category(info);
+    g_free(sql);
 
     return categories;
 }
@@ -244,10 +231,16 @@ void _append_to_category(const char* path, GList* cs)
 
 
 PRIVATE
-void _record_category_info(const char* id, GDesktopAppInfo* info)
+void _record_category_info(GDesktopAppInfo* info)
 {
+    char* id = dentry_get_id(info);
     GList* categories = get_deepin_categories(info);
+
+    if (categories == NULL)
+        categories = _get_x_category(info);
+
     _append_to_category(id, categories);
+    g_free(id);
     g_list_free(categories);
 }
 
@@ -267,9 +260,7 @@ JSObjectRef _init_category_table()
             continue;
         }
 
-        char* id = dentry_get_id(info);
-        _record_category_info(id, G_DESKTOP_APP_INFO(info));
-        g_free(id);
+        _record_category_info(G_DESKTOP_APP_INFO(info));
 
         json_array_insert_nobject(items, i - skip,
                                   info, g_object_ref, g_object_unref);
