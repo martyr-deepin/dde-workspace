@@ -47,7 +47,6 @@
 
 
 static gboolean is_uninstalling = FALSE;
-static GQueue* uninstall_queue = NULL;
 
 
 static
@@ -101,6 +100,21 @@ DBusConnection* get_dbus(DBusBusType type)
 }
 
 
+struct UninstallInfo {
+    char* path;
+    char* package_names;
+    gboolean is_purge;
+};
+
+
+void destroy_uninstall_info(struct UninstallInfo* info)
+{
+    g_free(info->path);
+    g_free(info->package_names);
+    g_slice_free(struct UninstallInfo, info);
+}
+
+
 enum ACTION_TYPE {
     ACTION_START,
     ACTION_UPDATE,
@@ -151,6 +165,7 @@ void iter_struct(DBusMessageIter* struct_iter,
                  gpointer user_data
                  )
 {
+    struct UninstallInfo* info = (struct UninstallInfo*)user_data;
     switch (dbus_message_iter_get_arg_type(struct_element_iter)){
     case DBUS_TYPE_STRING: {
         // first field -- action type
@@ -196,16 +211,16 @@ void iter_struct(DBusMessageIter* struct_iter,
         case ACTION_FINISH: {
             // (sia(sbbb))
             g_message("finish");
+
             // delete local file
-            char* filename = g_queue_pop_head(uninstall_queue);
-            if (filename != NULL && g_file_test(filename, G_FILE_TEST_EXISTS)) {
-                g_unlink(filename);
-                g_free(filename);
+            if (g_file_test(info->path, G_FILE_TEST_EXISTS)) {
+                g_unlink(info->path);
+                destroy_uninstall_info(info);
             }
 
             notify("uninstall finished", "uninstall finished");
             set_uninstalling(FALSE);
-            return;
+            g_thread_exit(NULL);
         }
         case ACTION_FAILED: {
             // (sia(sbbb)s)
@@ -221,10 +236,10 @@ void iter_struct(DBusMessageIter* struct_iter,
             DBusBasicValue value;
             dbus_message_iter_get_basic(&failed_iter, &value);
 
-            g_free(g_queue_pop_head(uninstall_queue));
+            destroy_uninstall_info(info);
             notify(UNINSTALL_FAILED_TITLE, value.str);
             set_uninstalling(FALSE);
-            return;
+            g_thread_exit(NULL);
         }
         case ACTION_INVALID:
             g_warning("INVALID");
@@ -242,12 +257,12 @@ void iter_array(DBusMessageIter* array_iter,
                 DBusMessageIter* array_element_iter,
                 gpointer user_data)
 {
-    iterate_container_message(array_element_iter, iter_struct, NULL);
+    iterate_container_message(array_element_iter, iter_struct, user_data);
 }
 
 
 static
-void uninstall_signal_handler(DBusConnection* conn)
+void uninstall_signal_handler(DBusConnection* conn, struct UninstallInfo* info)
 {
     while (1) {
         dbus_connection_read_write(conn, 0);
@@ -271,7 +286,7 @@ void uninstall_signal_handler(DBusConnection* conn)
             DBusMessageIter array_iter;
             dbus_message_iter_recurse(&args, &array_iter);
 
-            iterate_container_message(&array_iter, iter_array, NULL);
+            iterate_container_message(&array_iter, iter_array, info);
         }
         dbus_message_unref(message);
     }
@@ -279,29 +294,45 @@ void uninstall_signal_handler(DBusConnection* conn)
 
 
 static
-void invoke_uninstall_method(const char* pkg_name, gboolean is_purge)
+gboolean invoke_uninstall_method(struct UninstallInfo* info)
 {
+    GError* error = NULL;
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SYSTEM,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
                                                       SOFTWARE_CENTER_NAME,
                                                       SOFTWARE_CENTER_OBJECT_PATH,
                                                       SOFTWARE_CENTER_INTERFACE,
-                                                      NULL, NULL
+                                                      NULL,
+                                                      &error
                                                       );
+    if (error != NULL) {
+        g_warning("[%s] create dbus proxy failed: %s", __func__, error->message);
+        g_clear_error(&error);
+        return FALSE;
+    }
     g_variant_unref(g_dbus_proxy_call_sync(proxy,
                                            UNINSTALL_PACKAGE_METHOD_NAME,
-                                           g_variant_new("(sb)", pkg_name, is_purge),
+                                           g_variant_new("(sb)",
+                                                         info->package_names,
+                                                         info->is_purge),
                                            G_DBUS_CALL_FLAGS_NONE,
                                            -1,
                                            NULL,
-                                           NULL
+                                           &error
                                           ));
+    if (error != NULL) {
+        g_warning("[%s] invoke dbus method failed: %s", __func__, error->message);
+        g_clear_error(&error);
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 
 static
-void listen_update_signal()
+void listen_update_signal(struct UninstallInfo* info)
 {
     gchar *rules = g_strdup_printf("eavesdrop='true',"
                                    "type='signal',"
@@ -314,7 +345,6 @@ void listen_update_signal()
 
     DBusConnection* conn = get_dbus(DBUS_BUS_SYSTEM);
     if (conn == NULL) {
-        g_free(g_queue_pop_head(uninstall_queue));
         return;
     }
 
@@ -332,15 +362,15 @@ void listen_update_signal()
 
     dbus_connection_flush(conn);
 
-    g_thread_unref(g_thread_new("uninstall_software", (GThreadFunc)uninstall_signal_handler, conn));
+    uninstall_signal_handler(conn, info);
 }
 
 
 static
-void _uninstall_package(const char* pkg_name, gboolean is_purge)
+void _uninstall_package(struct UninstallInfo* info)
 {
-    invoke_uninstall_method(pkg_name, is_purge);
-    listen_update_signal();
+    if (invoke_uninstall_method(info))
+        listen_update_signal(info);
 }
 
 
@@ -355,27 +385,29 @@ int _get_package_names(char** package_name, int argc, char** argv, char** column
 }
 
 
-char* get_package_names(const char* name)
+static
+char* get_package_names_from_database(const char* basename)
 {
     char* package_names = NULL;
     char* sql = g_strdup_printf("select pkg_names "
                                 "from desktop "
                                 "where desktop_name like \"%s\";"
-                                , name);
+                                , basename);
     search_database(get_category_name_db_path(),
                     sql,
                     (SQLEXEC_CB)_get_package_names,
                     &package_names);
     g_free(sql);
-    if (package_names != NULL) {
-        g_warning("[%s] get package names from database: %s", __func__, package_names);
-        return package_names;
-    }
+    return package_names;
+}
 
-    g_warning("[%s] get packages from dpkg", __func__);
+
+static
+char* get_package_names_from_command_line(const char* basename)
+{
     GError* err = NULL;
     gint exit_status = 0;
-    char* cmd[] = { "dpkg", "-S", (char*)name, NULL};
+    char* cmd[] = { "dpkg", "-S", (char*)basename, NULL};
     char* output = NULL;
 
     if (!g_spawn_sync(NULL, cmd, NULL,
@@ -393,10 +425,45 @@ char* get_package_names(const char* name)
     }
 
     char* del = strchr(output, ':');
-    package_names = g_strndup(output, del - output);
+    char* package_names = g_strndup(output, del - output);
     g_free(output);
 
     return package_names;
+}
+
+
+char* get_package_names(const char* basename)
+{
+    char* package_names = NULL;
+
+    package_names = get_package_names_from_database(basename);
+    if (package_names != NULL) {
+        g_warning("[%s] get package names from database: %s", __func__, package_names);
+        return package_names;
+    }
+
+    package_names = get_package_names_from_command_line(basename);
+
+    if (package_names != NULL)
+        g_warning("[%s] get package names from command line: %s", __func__, package_names);
+
+    return package_names;
+}
+
+
+static
+void do_uninstall(gpointer _info)
+{
+    struct UninstallInfo* info = (struct UninstallInfo*)_info;
+    char* basename = g_path_get_basename(info->path);
+    info->package_names = get_package_names(basename);
+    g_free(basename);
+
+    if (info->package_names != NULL) {
+        _uninstall_package(info);
+    } else {
+        notify(UNINSTALL_FAILED_TITLE, "package name is not found");
+    }
 }
 
 
@@ -405,22 +472,9 @@ void launcher_uninstall(Entry* _item, gboolean is_purge)
 {
     GDesktopAppInfo* item = G_DESKTOP_APP_INFO(_item);
     const char* filename = g_desktop_app_info_get_filename(item);
-    char* name = g_path_get_basename(filename);
-    char* package_names = get_package_names(name);
-    g_free(name);
-
-    g_debug("[%s] the found package name is '%s'", __func__, package_names);
-
-
-    if (package_names != NULL) {
-        if (uninstall_queue == NULL) {
-            uninstall_queue = g_queue_new();
-        }
-        g_queue_push_tail(uninstall_queue, g_strdup(filename));
-        _uninstall_package(package_names, is_purge);
-        g_free(package_names);
-    } else {
-        notify(UNINSTALL_FAILED_TITLE, "package name is not found");
-    }
+    struct UninstallInfo* info = g_slice_new(struct UninstallInfo);
+    info->path = g_strdup(filename);
+    info->is_purge = is_purge;
+    g_thread_unref(g_thread_new("launcher_do_uninstall", (GThreadFunc)do_uninstall, info));
 }
 
