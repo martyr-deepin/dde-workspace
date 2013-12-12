@@ -243,7 +243,8 @@ int main (int argc, char **argv)
         password = argv[2];
         session = argv[3];        
     }
-    
+   
+
     GError *error1 = NULL;
     const gchar *switchtogreeter_cmd = g_strdup_printf ("switchtogreeter");
     g_spawn_command_line_sync (switchtogreeter_cmd, NULL, NULL, NULL, &error1);
@@ -254,7 +255,21 @@ int main (int argc, char **argv)
     }
     error1 = NULL;
 
+    const gchar *fd;
+    fd = g_getenv ("LIGHTDM_TO_SERVER_FD");
+    if (!fd)
+    {
+        g_warning ("No LIGHTDM_TO_SERVER_FD environment variable");
+        g_setenv("LIGHTDM_TO_SERVER_FD","19",TRUE);
+    }
 
+    fd = g_getenv ("LIGHTDM_FROM_SERVER_FD");
+    if (!fd)
+    {
+        g_warning ("No LIGHTDM_FROM_SERVER_FD environment variable");
+        g_setenv("LIGHTDM_FROM_SERVER_FD","16",TRUE);
+    }
+ 
     GdkScreen *screen;
     GdkRectangle geometry;
 
