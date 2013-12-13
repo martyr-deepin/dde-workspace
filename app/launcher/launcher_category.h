@@ -22,10 +22,16 @@
 #ifndef LAUNCHER_CATEGORY_H
 #define LAUNCHER_CATEGORY_H
 
+#include "dentry/entry.h"
+
 int find_category_id(const char* category_name);
 GList* get_deepin_categories(GDesktopAppInfo* info);
 const GPtrArray* get_all_categories_array();
 void destroy_category_table();
+GList* get_categories(GDesktopAppInfo* info);
+void record_category_info(GDesktopAppInfo* info);
+void remove_category_info(Entry* info);
+GList* lookup_categories(const char* id);
 
 #endif /* end of include guard: LAUNCHER_CATEGORY_H */
 

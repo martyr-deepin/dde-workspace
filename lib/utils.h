@@ -29,6 +29,7 @@
 #define STR_EXP(__A) #__A
 #define STR(A) STR_EXP(A)
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
+#define UNUSED(p) do { (void)p; } while (0)
 
 #ifndef M_PI
 #define M_PI 3.141592653589793

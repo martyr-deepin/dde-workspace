@@ -22,20 +22,25 @@
 #ifndef FILE_MONITOR_H
 #define FILE_MONITOR_H
 
+#include <glib.h>
+#include <gio/gdesktopappinfo.h>
+
 void add_monitors();
 void destroy_monitors();
 
 enum DesktopStatus {
     UNKNOWN,
     DELETED,
-    ADDED,
-    CHANGED
+    UPDATED
 };
 
 
 struct DesktopInfo {
+    char* id;
     char* path;
     enum DesktopStatus status;
+    GList* categories;
+    GDesktopAppInfo* core;
 };
 
 #endif /* end of include guard: FILE_MONITOR_H */

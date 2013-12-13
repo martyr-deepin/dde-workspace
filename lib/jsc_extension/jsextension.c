@@ -37,6 +37,12 @@ void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, .
 }
 
 
+JSValueRef jsvalue_from_number(JSContextRef ctx, double number)
+{
+    return JSValueMakeNumber(ctx, number);
+}
+
+
 JSValueRef jsvalue_from_cstr(JSContextRef ctx, const char* str)
 {
     JSStringRef jsstr = JSStringCreateWithUTF8CString(str);
@@ -80,3 +86,4 @@ gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass
   JSStringRelease(property);
   return JSValueIsInstanceOfConstructor(ctx, test, ctor, NULL);
 }
+

@@ -228,23 +228,18 @@ char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
         char* uri = g_file_get_uri(f);
-        /*
-         * some characters like ')', '(' may not be escaped
-         *
-         * ':' for scheme, like file:///...., the : cannot be escaped
-         * '/' for path separator, should be escaped
-         * '%' for the characters escaped, should be escaped
-         */
-        char* escaped_uri = g_uri_escape_string(uri, ":/%", FALSE);
+        char* escaped_uri = g_uri_escape_string(uri,
+                                                G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                                FALSE);
         g_free(uri);
         return escaped_uri;
     TEST_GAPP(e, app)
         char* encode = g_uri_escape_string(g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app)),
-                    "/", FALSE);
+                                           G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                           FALSE);
         char* uri = g_strdup_printf("file://%s", encode);
         g_free(encode);
         return uri;
-    g_message("uri:---%s---",uri);
     TEST_END
 }
 

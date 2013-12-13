@@ -39,6 +39,28 @@ class Item extends Widget
     @display_temp: false
     constructor: (@id, @core)->
         super
+        @load_image()
+        @name = create_element("div", "item_name", @element)
+        @name.innerText = DCore.DEntry.get_name(@core)
+        @element.draggable = true
+        @element.style.display = "none"
+        try_set_title(@element, DCore.DEntry.get_name(@core), 80)
+        @display_mode = 'display'
+        @is_autostart = DCore.Launcher.is_autostart(@core)
+        if @is_autostart
+            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+                AUTOSTART_ICON_SIZE)
+            create_img("autostart_flag", Item.theme_icon, @element)
+
+    update: (core)->
+        @core = core
+        @name.innerText = DCore.DEntry.get_name(@core)
+        im = DCore.DEntry.get_icon(@core)
+        if im == null
+            im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
+        @img.src = im
+
+    load_image: ->
         im = DCore.DEntry.get_icon(@core)
         if im == null
             im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
@@ -57,17 +79,6 @@ class Item extends Widget
             src = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
             if src != @img.src
                 @img.src = src
-        @name = create_element("div", "item_name", @element)
-        @name.innerText = DCore.DEntry.get_name(@core)
-        @element.draggable = true
-        @element.style.display = "none"
-        try_set_title(@element, DCore.DEntry.get_name(@core), 80)
-        @display_mode = 'display'
-        @is_autostart = DCore.Launcher.is_autostart(@core)
-        if @is_autostart
-            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
-                AUTOSTART_ICON_SIZE)
-            create_img("autostart_flag", Item.theme_icon, @element)
 
     do_click : (e)=>
         e?.stopPropagation()

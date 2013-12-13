@@ -438,14 +438,14 @@ char* get_package_names(const char* basename)
 
     package_names = get_package_names_from_database(basename);
     if (package_names != NULL) {
-        g_warning("[%s] get package names from database: %s", __func__, package_names);
+        g_message("[%s] get package names from database: %s", __func__, package_names);
         return package_names;
     }
 
     package_names = get_package_names_from_command_line(basename);
 
     if (package_names != NULL)
-        g_warning("[%s] get package names from command line: %s", __func__, package_names);
+        g_message("[%s] get package names from command line: %s", __func__, package_names);
 
     return package_names;
 }
