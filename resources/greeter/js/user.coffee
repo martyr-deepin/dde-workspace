@@ -256,6 +256,7 @@ class User extends Widget
         )
  
     jCarousel_animation:->
+        @element.style.overflow = "hidden"
         jQuery(".User").jcarousel({
             vertical: true
         })

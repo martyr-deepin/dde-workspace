@@ -1,6 +1,8 @@
 
 .User{
     /*background: rgba(255,0,0,0.3);*/
+    position:relative;
+    /*overflow:hidden;*/
     width:400px;
     height:550px;
     display:-webkit-box;
@@ -33,11 +35,13 @@
 .user_ul{
     /*background: rgba(255,0,246,0.3);*/
     position:absolute;
+    width:400px;
+    height:550px;
     z-index:3;
     position:relative;
     list-style: none;
-    width:400px;
-    height:550px;
+    margin:0;
+    padding:0;
 }
 
 .nextuserinfo{
@@ -70,6 +74,7 @@
 }
 
 .userinfo_li{
+    float:left;
     width: 350px;
     height: 140px;
     display:-webkit-box;
