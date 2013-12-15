@@ -292,8 +292,8 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER (lock_container), GTK_WIDGET (webview));
 
     g_signal_connect (lock_container, "delete-event", G_CALLBACK (prevent_exit), NULL);
-    g_signal_connect (lock_container, "show", G_CALLBACK (lock_show_cb), NULL);
-    g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
+    /*g_signal_connect (lock_container, "show", G_CALLBACK (lock_show_cb), NULL);*/
+    /*g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);*/
 
     gtk_widget_realize (lock_container);
     gtk_widget_realize (webview);
@@ -304,9 +304,9 @@ int main (int argc, char **argv)
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-    gdk_window_set_override_redirect (gdkwindow, TRUE);
-    select_popup_events ();
-    gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+    /*gdk_window_set_override_redirect (gdkwindow, TRUE);*/
+    /*select_popup_events ();*/
+    /*gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);*/
 
 
     dde_bg_g_settings = g_settings_new(SCHEMA_ID);
