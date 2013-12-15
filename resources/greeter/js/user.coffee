@@ -272,6 +272,8 @@ class User extends Widget
             wrap: 'circular',
             center: true
         })
+        jQuery(".User").jcarousel('scroll','+=1')
+        jQuery(".User").jcarousel('reload')
         echo jQuery(".User")
 
  class LoginEntry extends Widget
@@ -410,8 +412,8 @@ class UserInfo extends Widget
         
         @glass = create_element("p","glass",@userinfo_li)
         
-        @all_info = create_element("div","all_info",@userinfo_li)
-        userbase = create_element("div", "UserBase", @all_info)
+        @only_info = create_element("div","only_info",@userinfo_li)
+        userbase = create_element("div", "UserBase", @only_info)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
@@ -419,7 +421,7 @@ class UserInfo extends Widget
         @username = create_element("label", "UserName", recognize_h1)
         @username.innerText = name
 
-        login_div = create_element("div", "login_div", @all_info)
+        login_div = create_element("div", "login_div", @only_info)
         @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
@@ -433,23 +435,13 @@ class UserInfo extends Widget
 
     only_show_name:(only_show_name)->
         if only_show_name
-            @userinfo_li.style.background = "rgba(255,250,246,0.0)"
-            @userinfo_li.style.borderRadius = "0px"
-            @userinfo_li.style.color = "rgba(255,250,246,0.0)"
-            @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.0)"
-            
             @only_name.style.display = "block"
             @glass.style.display = "none"
-            @all_info.style.display = "none"
+            @only_info.style.display = "none"
         else
-            @userinfo_li.style.background = "rgba(255,250,246,0.5)"
-            @userinfo_li.style.borderRadius = "4px"
-            @userinfo_li.style.color = "#7e7975"
-            @userinfo_li.style.boxShadow = "0 0 0 5px rgba(255,255,255,0.2)"
-            
             @only_name.style.display = "none"
             @glass.style.display = "block"
-            @all_info.style.display = "-webkit-box"
+            @only_info.style.display = "-webkit-box"
             
 
     draw_avatar: ->
@@ -501,7 +493,7 @@ class UserInfo extends Widget
 
     on_verify: (username, password)->
         #@loading = new Loading("loading")
-        #@all_info.appendChild(@loading.element)
+        #@only_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
         if not @session?
