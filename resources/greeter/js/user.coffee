@@ -202,9 +202,7 @@ class User extends Widget
         else if index < 0 then index = userinfo_all.length - 1
         return index
 
-    roundabout_animation:->
-        #inject_js("js/roundabout/jquery.roundabout.js")
-        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
+    prev_next_userinfo_create:->
         prevuserinfo = create_element("div","prevuserinfo",@element)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
         #@username_font_animation(_current_user.index)
@@ -223,7 +221,13 @@ class User extends Widget
             img_src_before + "down_hover.png",
             img_src_before + "down_press.png"
         )
-        
+
+
+    roundabout_animation:->
+        #inject_js("js/roundabout/jquery.roundabout.js")
+        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
+        @prev_next_userinfo_create()
+
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
             tilt: 2.3,
@@ -257,8 +261,16 @@ class User extends Widget
  
     jCarousel_animation:->
         @element.style.overflow = "hidden"
+        #@prev_next_userinfo_create()
+
         jQuery(".User").jcarousel({
-            vertical: true
+            vertical: true,
+            rtl: false,
+            list: '.user_ul',
+            items: '.userinfo_li',
+            animation: 'slow',
+            wrap: 'circular',
+            center: true
         })
         echo jQuery(".User")
 
