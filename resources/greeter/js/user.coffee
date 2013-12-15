@@ -260,7 +260,7 @@ class User extends Widget
         )
  
     jCarousel_animation:->
-        @element.style.overflow = "hidden"
+        # @element.style.overflow = "hidden"
         #@prev_next_userinfo_create()
 
         jQuery(".User").jcarousel({
