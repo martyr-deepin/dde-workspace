@@ -392,7 +392,7 @@ class UserInfo extends Widget
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
-        recognize_h1 = create_element("h1", "", recognize)
+        recognize_h1 = create_element("h1", "recognize_h1", recognize)
         @username = create_element("label", "UserName", recognize_h1)
         @username.innerText = name
 
@@ -430,8 +430,15 @@ class UserInfo extends Widget
             
 
     draw_avatar: ->
-        apply_animation(recognize,"recognize_animation","10s") if @face_login
-        enable_detection(true) if @face_login
+        if @face_login
+            recognize.style.background = "url(images/light.png) repeat black"
+            recognize.style.webkitBackgroundClip = "text"
+            recognize.style.webkitTextFill = "transparent"
+            recognize.style.webkitAnimationName = "recognize_animation"
+            recognize.style.webkitAnimationDuration = "10s"
+            recognize.style.webkitAnimationIteration = "infinite"
+            recognize.style.webkitAnimationTimingFunction = "linear"
+            enable_detection(true)
 
     stop_avatar:->
         clearInterval(draw_camera_id)
