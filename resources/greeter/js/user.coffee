@@ -30,6 +30,7 @@ password_error_msg = null
 class User extends Widget
     Dbus_Account = null
     is_livecd = false
+    img_src_before = null
 
     username = null
     userimage = null
@@ -44,30 +45,11 @@ class User extends Widget
         super
         @is_livecd()
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
-
         img_src_before = "images/userswitch/"
-        prevuserinfo = create_element("div","prevuserinfo",@element)
-        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         @new_userinfo_all()
-        #@username_font_animation(_current_user.index)
-        nextuserinfo = create_element("div","nextuserinfo",@element)
-        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
-#        if user_ul.children.length > 5
-            #@prevuserinfo.style.display = "block"
-            #@nextuserinfo.style.display = "block"
-        @normal_hover_click_cb(@prevuserinfo_img,
-            img_src_before + "up_normal.png",
-            img_src_before + "up_hover.png",
-            img_src_before + "up_press.png"
-        )
-        @normal_hover_click_cb(@nextuserinfo_img,
-            img_src_before + "down_normal.png",
-            img_src_before + "down_hover.png",
-            img_src_before + "down_press.png"
-        )
-     
+    
     is_livecd:->
         try
             dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
@@ -223,6 +205,25 @@ class User extends Widget
     roundabout_animation:->
         #inject_js("js/roundabout/jquery.roundabout.js")
         #inject_js("js/roundabout/jquery.roundabout-shapes.js")
+        prevuserinfo = create_element("div","prevuserinfo",@element)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
+        #@username_font_animation(_current_user.index)
+        nextuserinfo = create_element("div","nextuserinfo",@element)
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
+#        if user_ul.children.length > 5
+            #@prevuserinfo.style.display = "block"
+            #@nextuserinfo.style.display = "block"
+        @normal_hover_click_cb(@prevuserinfo_img,
+            img_src_before + "up_normal.png",
+            img_src_before + "up_hover.png",
+            img_src_before + "up_press.png"
+        )
+        @normal_hover_click_cb(@nextuserinfo_img,
+            img_src_before + "down_normal.png",
+            img_src_before + "down_hover.png",
+            img_src_before + "down_press.png"
+        )
+        
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
             tilt: 2.3,
@@ -254,7 +255,12 @@ class User extends Widget
             #@username_font_animation(_current_user.index)
         )
  
- 
+    jCarousel_animation:->
+        jQuery(".User").jcarousel({
+            vertical: true
+        })
+        echo jQuery(".User")
+
  class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
         super
