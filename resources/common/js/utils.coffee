@@ -177,8 +177,8 @@ sortNumber = (a , b) ->
 array_sort_min2max = (arr) ->
     arr.sort(sortNumber)
 
-inject_js = (el,src) ->
-    js_element = create_element("script", null, el)
+inject_js = (src) ->
+    js_element = create_element("script", null, document.body)
     js_element.src = src
 
 inject_css = (el,src)->

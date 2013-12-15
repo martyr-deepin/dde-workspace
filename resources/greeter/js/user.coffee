@@ -202,7 +202,27 @@ class User extends Widget
             _current_user?.animate_near()
         )
 
+   
+    username_font_animation:(FocusChildIndex)->
+        prev = @check_index(FocusChildIndex - 1)
+        next = @check_index(FocusChildIndex + 1)
+        
+        for i in [0 ... (userinfo_all.length) / 2]
+            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
+            size = 26 - i * 6
+            if size < 13 then size = 13
+            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
+            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
+
+
+    check_index:(index)->
+        if index >= userinfo_all.length then index = 0
+        else if index < 0 then index = userinfo_all.length - 1
+        return index
+
     roundabout_animation:->
+        #inject_js("js/roundabout/jquery.roundabout.js")
+        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
         jQuery("#user_ul").roundabout({
             shape: 'waterWheel',
             tilt: 2.3,
@@ -233,25 +253,9 @@ class User extends Widget
             apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
             #@username_font_animation(_current_user.index)
         )
-    
-    username_font_animation:(FocusChildIndex)->
-        prev = @check_index(FocusChildIndex - 1)
-        next = @check_index(FocusChildIndex + 1)
-        
-        for i in [0 ... (userinfo_all.length) / 2]
-            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
-            size = 26 - i * 6
-            if size < 13 then size = 13
-            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
-            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
-
-
-    check_index:(index)->
-        if index >= userinfo_all.length then index = 0
-        else if index < 0 then index = userinfo_all.length - 1
-        return index
-
-class LoginEntry extends Widget
+ 
+ 
+ class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
         super
         # echo "new LoginEntry"
