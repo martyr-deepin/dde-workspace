@@ -410,10 +410,10 @@ class UserInfo extends Widget
         @only_name = create_element("div","only_name",@userinfo_li)
         @only_name.innerText = name
         
-        @glass = create_element("p","glass",@userinfo_li)
         
         @only_info = create_element("div","only_info",@userinfo_li)
-        userbase = create_element("div", "UserBase", @only_info)
+        @only_info_background = create_element("div","only_info_background",@only_info)
+        userbase = create_element("div", "UserBase", @only_info_background)
         img_div = create_element("div","img_div",userbase)
         userimg = create_img("userimg", @img_src, img_div)
         recognize = create_element("div", "recognize", userbase)
@@ -421,10 +421,12 @@ class UserInfo extends Widget
         @username = create_element("label", "UserName", recognize_h1)
         @username.innerText = name
 
-        login_div = create_element("div", "login_div", @only_info)
+        login_div = create_element("div", "login_div", @only_info_background)
         @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
         login_div.appendChild(@login.element)
 
+        @glass = create_element("p","glass",@only_info)
+        
         if is_greeter then @session = DCore.Greeter.get_user_session(@id)
         else @session = "deepin"
 
