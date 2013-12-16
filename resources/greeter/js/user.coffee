@@ -136,40 +136,52 @@ class User extends Widget
                 else if user_dbus.Locked is true then disable = true
                 return disable
 
-    new_userinfo_all:()->
+    new_userinfo_all:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
-        #users = DCore.Greeter.get_users()
+        #users_name = DCore.Greeter.get_users()
+       
         for user in users_name
-            if user == _default_username
-                userimage = @get_user_image(user)
-                _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
-                _current_user.only_show_name(false)
-                userinfo_all.push(_current_user)
-                user_ul.appendChild(_current_user.userinfo_li)
-                _current_user.focus()
-        for user in users_name
-            if user isnt _default_username and not @is_disable_user(user)
+            if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
-                u.only_show_name(true)
+                if user is _default_username
+                    _current_user = u
+                    _current_user.only_show_name(false)
+                else
+                    u.only_show_name(true)
                 userinfo_all.push(u)
-                user_ul.appendChild(u.userinfo_li)
-
-#        if is_greeter
-            #if DCore.Greeter.is_support_guest()
-                #u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
-                #u.only_show_name(true)
-                #user_ul.appendChild(u.userinfo_li)
-                #if DCore.Greeter.is_guest_default()
-                    #u.focus()
-        
-        # if user_ul.children.length <= 2
-        #     user = Widget.look_up(user_ul.children[0].children[0].getAttribute("id"))
-        
         for user,j in userinfo_all
             user.index = j
+        @sort_current_user_info_center()
         return userinfo_all
+
+    
+    is_support_guest:->
+        if is_greeter
+            if DCore.Greeter.is_support_guest()
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                u.only_show_name(true)
+                user_ul.appendChild(u.userinfo_li)
+                if DCore.Greeter.is_guest_default()
+                    u.focus()
+       
+    sort_current_user_info_center:->
+        echo "_current_user.index:#{_current_user.index}"
+        tmp_length = (userinfo_all.length - 1) / 2
+        center_index = Math.round(tmp_length)
+        echo "center index:#{center_index}"
+        if _current_user.index == center_index then return
+        
+        center_old = userinfo_all[center_index]
+        echo "center_old id is :#{center_old.id}"
+        userinfo_all[center_index] = _current_user
+        userinfo_all[_current_user.index] = center_old
+        for user,j in userinfo_all
+            user.index = j
+            user_ul.appendChild(user.userinfo_li)
+            if user is _current_user then _current_user.focus()
+        echo "_current_user.index:#{_current_user.index}"
 
     get_current_userinfo:->
         return _current_user
@@ -224,6 +236,7 @@ class User extends Widget
 
 
     roundabout_animation:->
+        echo "roundabout_animation"
         #inject_js("js/roundabout/jquery.roundabout.js")
         #inject_js("js/roundabout/jquery.roundabout-shapes.js")
         @prev_next_userinfo_create()
@@ -233,7 +246,7 @@ class User extends Widget
             tilt: 2.3,
             minZ: 180,
             minOpacity: 0.0,
-            startingChild: 0,
+            startingChild: _current_user.index,
             clickToFocus: true,
             enableDrag: false,
             triggerFocusEvents: true,
@@ -260,6 +273,7 @@ class User extends Widget
         )
  
     jCarousel_animation:->
+        echo "jCarousel_animation"
         # @element.style.overflow = "hidden"
         #@prev_next_userinfo_create()
 
