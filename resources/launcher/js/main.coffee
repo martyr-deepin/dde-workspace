@@ -55,9 +55,6 @@ DCore.signal_connect("draw_background", (info)->
     img.src = info.path
     img.onload = ->
         _b.style.backgroundImage = "url(#{img.src})"
-    # if inited
-    #     DCore.Launcher.clear()
-    # inited = true
 )
 DCore.signal_connect("update_items", (info)->
     echo "update items:"
@@ -90,7 +87,7 @@ DCore.signal_connect("update_items", (info)->
             applications[info.id].update(info.core)
 
     update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-    # TODO:
+    # FIXME:
     # load what should be shown
     grid_load_category(selected_category_id)
 )

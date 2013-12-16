@@ -422,7 +422,7 @@ void active_window_changed(Display* dsp, Window w)
         //else we should tell frontend we lost the active window
         js_post_message("active_window_changed", json);
     }
-    if (launcher_id != 0 && launcher_should_exit()) {
+    if (launcher_should_exit()) {
         close_launcher_window();
     }
     if (desktop_pid != 0) {

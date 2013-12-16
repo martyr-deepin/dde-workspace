@@ -47,3 +47,8 @@ AUTOSTART_ICON_SIZE = 16
 SORT_MESSAGE =
     "name": _("Sort By _Frequency")
     "rate": _("Sort By _Name")
+
+SOFTWARE_STATE =
+    IDLE: 0
+    UNINSTALLING: 1
+    INSTALLING: 2

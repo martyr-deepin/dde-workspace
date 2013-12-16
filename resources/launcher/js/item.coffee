@@ -39,6 +39,7 @@ class Item extends Widget
     constructor: (@id, @core)->
         super
         @load_image()
+        @status = SOFTWARE_STATE.IDLE
         @name = create_element("div", "item_name", @element)
         @name.innerText = DCore.DEntry.get_name(@core)
         @element.draggable = true
@@ -97,15 +98,21 @@ class Item extends Widget
         menu = [
             [1, _("_Open")],
             [],
+            # [],
+            # [id, _("Pin") / _("UNPin")],
+            # []
             [2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]],
             [],
             [3, _("Send to d_esktop"), not DCore.Launcher.is_on_desktop(@core)],
             [4, _("Send to do_ck"), s_dock!=null],
             [],
-            [5, AUTOSTARTUP_MESSAGE[@is_autostart]]
+            [5, AUTOSTARTUP_MESSAGE[@is_autostart]],
             [],
-            [6, _("_Uninstall")]
-            [7, _("_Uninstall with configurations")]
+            # [id, _("Update"), has_update?],
+            # if has_update?
+            #   [id, _("Update All")],
+            # [],
+            [6, _("_Uninstall")],
         ]
 
         if DCore.DEntry.internal()
@@ -196,17 +203,10 @@ class Item extends Widget
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
             when 5 then @toggle_autostart()
             when 6
-                # TODO:
-                # 1. confirm.
-                # 2. stop launcher hiding when confirm.
-                # echo "Are you sure to uninstall this?"
-                DCore.Launcher.uninstall(@core, false)
-            when 7
-                # TODO:
-                # 1. confirm.
-                # 2. stop launcher hiding when confirm.
-                # echo "Are you sure to uninstall this?"
-                DCore.Launcher.uninstall(@core, true)
+                if confirm("Are you sure to uninstall Item?")
+                    @element.style.display = 'none'
+                    @status = SOFTWARE_STATE.UNINSTALLING
+                    DCore.Launcher.uninstall(@core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
 
     hide: ->
