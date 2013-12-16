@@ -33,19 +33,19 @@ execute_process(
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dpowerchoose
-    DESTINATION bin
+    DESTINATION lib/deepin-daemon
     )
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dshutdowndialog
-    DESTINATION bin
+    DESTINATION lib/deepin-daemon
     )
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/drebootdialog
-    DESTINATION bin
+    DESTINATION lib/deepin-daemon
     )
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dlogoutdialog
-    DESTINATION bin
+    DESTINATION lib/deepin-daemon
     )
 
 install(
