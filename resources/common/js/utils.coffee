@@ -177,8 +177,8 @@ sortNumber = (a , b) ->
 array_sort_min2max = (arr) ->
     arr.sort(sortNumber)
 
-inject_js = (el,src) ->
-    js_element = create_element("script", null, el)
+inject_js = (src) ->
+    js_element = create_element("script", null, document.body)
     js_element.src = src
 
 inject_css = (el,src)->
@@ -191,9 +191,10 @@ power_func = (power) ->
     echo "Warning: The system will ----#{power}----"
     dbus_power = DCore.DBus.session("com.deepin.daemon.DShutdown")
     switch power
-        when "lock" then dbus_power.Lock()
-        when "suspend" then dbus_power.Suspend()
-        when "logout" then dbus_power.Logout()
-        when "restart" then dbus_power.Reboot()
-        when "shutdown" then dbus_power.Shutdown()
+        when "lock" then dbus_power.RequestLock()
+        when "suspend" then dbus_power.RequestSuspend()
+        when "logout" then dbus_power.RequestLogout()
+        when "restart" then dbus_power.RequestReboot()
+        when "shutdown" then dbus_power.RequestShutdown()
         else return
+

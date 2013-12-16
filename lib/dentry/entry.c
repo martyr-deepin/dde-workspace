@@ -1535,3 +1535,23 @@ char* dentry_get_rich_dir_group_name(ArrayContainer const fs)
     return group_name;
 }
 
+JS_EXPORT_API
+char* dentry_get_default_audio_player_name()
+{
+   GAppInfo* gappinfo = g_app_info_get_default_for_type("audio/mpeg",FALSE);
+   const char* name = g_app_info_get_name(gappinfo);
+   g_object_unref(gappinfo);
+   return name;
+}
+
+
+JS_EXPORT_API
+char* dentry_get_default_audio_player_icon()
+{
+   GAppInfo* gappinfo = g_app_info_get_default_for_type("audio/mpeg",FALSE);
+   GIcon* icon = g_app_info_get_icon(gappinfo);
+   gchar* icon_url = g_icon_to_string(icon);
+   g_object_unref(icon);
+   g_object_unref(gappinfo);
+   return icon_url;
+}
