@@ -69,8 +69,9 @@ DCore.signal_connect("update_items", (info)->
     if info.status.match(/^deleted$/i)
         if Widget.look_up(info.id)?
             echo 'deleted'
+            applications[info.id].destroy()
             delete applications[info.id]
-            for category_index in info.categories
+            for category_index in info.categories.concat([ALL_APPLICATION_CATEGORY_ID])
                 category = category_infos["#{category_index}"]
                 category_infos["#{category_index}"] = category.filter((el)->
                     el != info.id
@@ -78,11 +79,12 @@ DCore.signal_connect("update_items", (info)->
     else if info.status.match(/^updated$/i)
         if not Widget.look_up(info.id)?
             echo 'added'
-            info.status = "added"
+            # info.status = "added"
             applications[info.id] = new Item(info.id, info.core)
-            for category_index in info.categories
+            for category_index in info.categories.concat([ALL_APPLICATION_CATEGORY_ID])
                 category_infos["#{category_index}"].push(info.id)
-                sort_category_info(sort_methods[sort_method])
+            # TODO: may sort category_info which is changed.
+            sort_category_info(sort_methods[sort_method])
         else
             echo 'updated'
             applications[info.id].update(info.core)
