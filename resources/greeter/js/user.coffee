@@ -167,36 +167,21 @@ class User extends Widget
                     u.focus()
        
     sort_current_user_info_center:->
-        echo "_current_user.index:#{_current_user.index}"
         tmp_length = (userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
-        echo "center index:#{center_index}"
         if _current_user.index == center_index then return
         
         center_old = userinfo_all[center_index]
-        echo "center_old id is :#{center_old.id}"
         userinfo_all[center_index] = _current_user
         userinfo_all[_current_user.index] = center_old
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
             if user is _current_user then _current_user.focus()
-        echo "_current_user.index:#{_current_user.index}"
 
     get_current_userinfo:->
         return _current_user
 
-    drag:(_current_user)->
-        jQuery("#user_ul").drag("start", (ev, dd) ->
-            _drag_flag = true
-        , {distance:100}
-        )
-
-        jQuery("#user_ul").drag("end", (ev, dd) ->
-            _current_user?.animate_near()
-        )
-
-   
     username_font_animation:(FocusChildIndex)->
         prev = @check_index(FocusChildIndex - 1)
         next = @check_index(FocusChildIndex + 1)
