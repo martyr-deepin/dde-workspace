@@ -1,0 +1,42 @@
+.MediaControl{
+    width:250px;
+    height:100px;
+    
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+}
+
+.name{
+    width:175px;
+    font-size:16px;
+    color:#fff;
+    text-align:center;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    white-space:nowrap; 
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+.control{
+    margin-top:10px;
+    display:-webkit-box;
+    cursor:pointer;
+}
+
+.background{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:18;
+    height:35px;
+}
+
+.myCanvas{
+
+}
+.num{
+    color:#fff;
+    text-align:center;
+    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+}
