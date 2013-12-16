@@ -17,10 +17,10 @@ catch error
     APP_NAME = "Lock"
 
 if is_greeter
-    #is_hide_users = DCore.Greeter.is_hide_users()
-    is_hide_users = false
+    is_hide_users = DCore.Greeter.is_hide_users()
 else
     is_hide_users = false
+is_hide_users = false
 
 de_menu = null
 
