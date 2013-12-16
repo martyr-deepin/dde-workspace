@@ -259,6 +259,7 @@ class User extends Widget
  
     jCarousel_animation:->
         echo "jCarousel_animation"
+        @prev_next_userinfo_create()
         # @element.style.overflow = "hidden"
         #@prev_next_userinfo_create()
 
@@ -271,9 +272,10 @@ class User extends Widget
             wrap: 'circular',
             center: true
         })
-        jQuery(".User").jcarousel('scroll','+=1')
+        jQuery(".User").jcarousel('scroll','+=2')
         jQuery(".User").jcarousel('reload')
         echo jQuery(".User")
+        @username_font_animation(_current_user.index)
 
  class LoginEntry extends Widget
     constructor: (@id, @loginuser,@type ,@on_active)->
