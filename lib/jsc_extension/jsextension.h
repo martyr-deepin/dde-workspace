@@ -39,6 +39,9 @@ typedef struct _ArrayContainer {
 void init_js_extension(JSGlobalContextRef context, void* webview);
 void destroy_js_extension();
 
+/* Be careful use GRAB_CTX/UNGRAB_CTX */
+void GRAB_CTX();
+void UNGRAB_CTX();
 
 /*  utils function *  */
 
