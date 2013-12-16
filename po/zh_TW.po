@@ -404,7 +404,7 @@ msgid "New directory"
 msgstr "新增資料夾"
 
 #: ../app/app_tray/tray.c:287
-msgid "another systray is already running..."
+msgid "another systray is already running...\n"
 msgstr "另一個託盤程式正在運行...\n"
 
 #: ../app/greeter/camera.c:47
