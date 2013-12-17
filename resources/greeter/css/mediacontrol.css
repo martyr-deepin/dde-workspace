@@ -23,10 +23,12 @@
     display:-webkit-box;
     cursor:pointer;
 }
-
+.voice:hover{
+    background-image:url(images/mediacontrol/voice_hover.png) 
+}
 
 .VoiceControl{
-
+    position:absolute;
 }
 
 .background{
@@ -38,7 +40,7 @@
 }
 
 .myCanvas{
-    position:relative;
+    position:absolute;
 }
 .num{
     position:relative;
