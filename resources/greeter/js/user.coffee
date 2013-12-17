@@ -63,7 +63,6 @@ class User extends Widget
 
     get_all_users:->
         users_path = Dbus_Account.ListCachedUsers_sync()
-        echo users_path
         for path in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
             name = user_dbus.UserName
@@ -371,7 +370,7 @@ class UserInfo extends Widget
         super
         @is_recognizing = false
         @index = null
-        echo @id
+        echo "new UserInfo :#{@id}"
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","only_name",@userinfo_li)
