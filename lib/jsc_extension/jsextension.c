@@ -21,9 +21,9 @@
 #include "jsextension.h"
 #include <glib.h>
 
-static GMutex* __ctx_lock;
-void GRAB_CTX() { g_mutex_trylock(&__ctx_lock); }
-void UNGRAB_CTX() { g_mutex_unlock(&__ctx_lock); }
+static GRecMutex __ctx_lock;
+void GRAB_CTX() { g_rec_mutex_trylock(&__ctx_lock); }
+void UNGRAB_CTX() { g_rec_mutex_unlock(&__ctx_lock); }
 
 
 void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, ...)
