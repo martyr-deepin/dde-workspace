@@ -63,6 +63,7 @@ class User extends Widget
 
     get_all_users:->
         users_path = Dbus_Account.ListCachedUsers_sync()
+        echo users_path
         for path in users_path
             user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
             name = user_dbus.UserName
