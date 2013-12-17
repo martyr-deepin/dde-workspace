@@ -141,6 +141,10 @@ class User extends Widget
         return userinfo_all
 
     new_userinfo_for_lock:->
+        user_ul.style.display = "-webkit-box"
+        user_ul.style.WebkitBoxAlign = "center"
+        user_ul.style.WebkitBoxPack = "center"
+        
         user = @get_default_username()
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
@@ -404,7 +408,7 @@ class UserInfo extends Widget
         else
             @only_name.style.display = "none"
             @glass.style.display = "block"
-            @only_info.style.display = "-webkit-box"
+            @only_info.style.display = "block"
             
 
     draw_avatar: ->
