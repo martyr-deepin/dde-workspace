@@ -48,7 +48,6 @@ class User extends Widget
         img_src_before = "images/userswitch/"
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
-        @new_userinfo_all()
     
     is_livecd:->
         try
@@ -136,7 +135,7 @@ class User extends Widget
                 else if user_dbus.Locked is true then disable = true
                 return disable
 
-    new_userinfo_all:->
+    new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
         #users_name = DCore.Greeter.get_users()
@@ -155,6 +154,13 @@ class User extends Widget
             user.index = j
         @sort_current_user_info_center()
         return userinfo_all
+
+    new_userinfo_for_lock:->
+        user = @get_default_username()
+        userimage = @get_user_image(user)
+        _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+        _current_user.only_show_name(false)
+        user_ul.appendChild(_current_user.userinfo_li)
 
     
     is_support_guest:->
@@ -366,37 +372,6 @@ class User extends Widget
         if @password.type is "password" then @password.type = "text"
         else if @password.type is "text" then @password.type = "password"
 
-class Loading extends Widget
-    constructor: (@id)->
-        super
-        create_element("div", "ball", @element)
-        create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome")
-
-class SwitchUser extends Widget
-    constructor: (@id)->
-        super
-        clearInterval(draw_camera_id)
-        draw_camera_id = null
-
-    button_switch:->
-        @switch = create_element("div", "SwitchGreeter", @element)
-        @switch.innerText = _("Switch User")
-        @switch.addEventListener("click", =>
-            DCore.Lock.switch_user()
-        )
-
-    SwitchToGreeter:->
-        DCore.Lock.switch_user()
-
-    SwitchToUser:(username,session_name)->
-        try
-            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
-            switch_dbus.SwitchToUser_sync(username,session_name)
-            echo switch_dbus
-        catch error
-            echo "can not find the switch dbus,perhaps you only have one userAccount!"
-            return false
 
 class UserInfo extends Widget
     userimg = null
@@ -552,6 +527,17 @@ class UserInfo extends Widget
             draw_camera_id = setInterval(=>
                 DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
+
+
+
+class Loading extends Widget
+    constructor: (@id)->
+        super
+        create_element("div", "ball", @element)
+        create_element("div", "ball1", @element)
+        create_element("span", "", @element).innerText = _("Welcome")
+
+
 
 DCore.signal_connect("draw", ->
     echo 'receive camera draw signal'

@@ -64,7 +64,8 @@ lock = new Lock()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.roundabout_animation()
+user.new_userinfo_for_lock()
+#user.roundabout_animation()
 #user.jCarousel_animation()
 
 userinfo = user.get_current_userinfo()
