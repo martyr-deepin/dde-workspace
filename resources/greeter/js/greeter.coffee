@@ -16,126 +16,79 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-get_user_image = (user) ->
-    try
-        user_image = DCore.Greeter.get_user_icon(user)
-    catch error
-        echo error
-
-    if not user_image?
-        try
-            user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-        catch error
-            user_image = "images/guest.jpg"
-
-    return user_image
-
-if DCore.Greeter.is_hide_users()
-    u = new UserInfo("*other", "", "images/huser.jpg")
-    roundabout.appendChild(u.li)
-    Widget.look_up("*other").element.style.paddingBottom = "5px"
-    u.focus()
-else
-    users = DCore.Greeter.get_users()
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
-            u.focus()
-
-    for user in users
-        if user == DCore.Greeter.get_default_user()
-            echo "already append default user"
-        else if not is_disable_user(user)
-            user_image = get_user_image(user)
-            u = new UserInfo(user, user, user_image)
-            roundabout.appendChild(u.li)
-
-    if DCore.Greeter.is_support_guest()
-        u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-        roundabout.appendChild(u.li)
-        if DCore.Greeter.is_guest_default()
-            u.focus()
-
-userinfo_list[0]?.focus()
-
-####the _counts must put before any animate of roundabout####
-_counts = roundabout.childElementCount
 _ANIMATE_TIMEOUT_ID = -1
 
-document.body.addEventListener("mousewheel", (e) =>
-    clearTimeout(_ANIMATE_TIMEOUT_ID)
-    _ANIMATE_TIMEOUT_ID = -1
+class Greeter extends Widget
 
-    if e.wheelDelta >= 120
-        #echo "scroll to prev"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_prev()
-        , 200)
+    constructor:->
+        super
+        echo "Greeter"
 
-    if e.wheelDelta <= -120
-        #echo "scroll to next"
-        _ANIMATE_TIMEOUT_ID = setTimeout( ->
-            _current_user?.animate_next()
-        ,200)
-)
 
-document.body.addEventListener("keydown", (e)=>
-    if e.which == LEFT_ARROW
-        # echo "prev"
-        _current_user?.animate_prev()
+    webview_ok:(_current_user)->
+        DCore.Greeter.webview_ok(_current_user.id)
 
-    else if e.which == RIGHT_ARROW
-        # echo "next"
-        _current_user?.animate_next()
+    start_login_connect:(_current_user)->
+        DCore.signal_connect("start-login", ->
+            # echo "receive start login"
+            # TODO: maybe some animation or some reflection.
+            _current_user.is_recognizing = false
+            DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
+        )
 
-    else if e.which == ENTER_KEY
-        #echo "enter"
-        # if not _current_user?.is_recognizing
-        if _current_user?.face_login
-            _current_user?.is_recognizing = false
-            DCore[APP_NAME].cancel_detect()
-            _current_user?.stop_animation()
-        _current_user?.show_login()
-        message_tip?.remove()
+    mousewheel_listener:(_current_user)->
+        document.body.addEventListener("mousewheel", (e) =>
+            if not is_volume_control
+                if e.wheelDelta >= 120 then _current_user?.animate_next()
+                else if e.wheelDelta <= -120 then _current_user?.animate_prev()
+        )
 
-    else if e.which == ESC_KEY
-        #echo "esc"
-        _current_user?.hide_login()
-        message_tip?.remove()
-)
 
-if roundabout.children.length <= 2
-    roundabout.style.width = "0"
-    #Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))?.show_login()
-    userinfo_list[0]?.focus()
-    if not userinfo_list[0].face_login
-        userinfo_list[0]?.show_login()
+    keydown_listener:(_current_user)->
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == UP_ARROW
+                # echo "prev"
+                _current_user?.animate_next()
 
-l = (screen.width  - roundabout.clientWidth) / 2
-roundabout.style.left = "#{l}px"
+            else if e.which == DOWN_ARROW
+                # echo "next"
+                _current_user?.animate_prev()
 
-jQuery("#roundabout").drag("start", (ev, dd) ->
-    _current_user?.hide_login()
-    _drag_flag = true
-, {distance:100}
-)
+        )
 
-jQuery("#roundabout").drag("end", (ev, dd) ->
-    _current_user?.animate_near()
-)
 
-DCore.signal_connect("start-login", ->
-    # echo "receive start login"
-    # TODO: maybe some animation or some reflection.
-    _current_user.is_recognizing = false
-    DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
-)
 
-# if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
+document.body.style.height = window.innerHeight
+document.body.style.width = window.innerWidth
 
-DCore.Greeter.webview_ok(_current_user.id)
+greeter = new Greeter()
+
+desktopmenu = new DesktopMenu($("#div_desktop"))
+desktopmenu.new_desktop_menu()
+
+
+user = new User()
+$("#div_users").appendChild(user.element)
+user.roundabout_animation()
+
+userinfo = user.get_current_userinfo()
+_current_user = user.get_current_userinfo()
+
+greeter.start_login_connect(userinfo)
+greeter.webview_ok(_current_user)
+greeter.keydown_listener(userinfo)
+greeter.mousewheel_listener(_current_user)
+
+timedate = new TimeDate()
+$("#div_time").appendChild(timedate.element)
+timedate.show()
+
+
+$("#div_power").title = _("ShutDown")
+powermenu = new PowerMenu($("#div_power"))
+powermenu.new_power_menu()
+
+
+version = new Version()
+$("#div_version").appendChild(version.element)
 

@@ -17,64 +17,73 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-format_two_bit = (s) ->
-    if s < 10
-        return "0#{s}"
-    else
-        return s
+class TimeDate extends Widget
+    constructor:->
+        super
 
-get_time_str = ->
-    hours = format_two_bit new Date().getHours()
-    min = format_two_bit new Date().getMinutes()
-    return "#{hours}:#{min}"
+    format_two_bit : (s) ->
+        if s < 10
+            return "0#{s}"
+        else
+            return s
 
-get_hours = ->
-    return format_two_bit new Date().getHours()
+    get_time_str : ->
+        hours = @format_two_bit new Date().getHours()
+        min = @format_two_bit new Date().getMinutes()
+        return "#{hours}:#{min}"
 
-get_min = ->
-    return format_two_bit new Date().getMinutes()
+    get_hours : ->
+        return @format_two_bit new Date().getHours()
 
-get_date_str = ->
-    month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
-    day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
+    get_min : ->
+        return @format_two_bit new Date().getMinutes()
 
-    day = day_list[new Date().getDay()]
-    mon = month_list[new Date().getMonth()]
-    date = new Date().getDate()
-    year = new Date().getFullYear()
+    get_date_str : ->
+        month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
+        day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
 
-    return "#{day}, #{mon} #{date}, #{year}"
+        day = day_list[new Date().getDay()]
+        mon = month_list[new Date().getMonth()]
+        date = new Date().getDate()
+        year = new Date().getFullYear()
 
-get_c_date_str = ->
-    if is_greeter
-        return DCore.Greeter.get_date()
-    else
-        return DCore.Lock.get_date()
+        return "#{day}, #{mon} #{date}, #{year}"
 
-time = $("#time")
-date = $("#date")
-#time.innerText = get_time_str()
-hours = create_element("span", "", time)
-hours.innerText = get_hours()
+    get_c_date_str : ->
+        if is_greeter
+            return DCore.Greeter.get_date()
+        else
+            return DCore.Lock.get_date()
 
-#colon = create_element("span", "timecolon", time)
-colon = create_element("span", "", time)
-colon.innerText = ":"
 
-min = create_element("span", "", time)
-min.innerText = get_min()
+    show:->
+        time = create_element("div","time",@element)
+        date = create_element("div","date",@element)
 
-#date.innerText = get_date_str()
-date.innerText = get_c_date_str()
+        #time.innerText = @get_time_str()
+        hours = create_element("span", "hours", time)
+        hours.innerText = @get_hours()
 
-setInterval( ->
-        hours.innerText = get_hours()
-        min.innerText = get_min()
-        return true
-    , 1000)
+        #colon = create_element("span", "timecolon", time)
+        colon = create_element("span", "colon", time)
+        colon.innerText = ":"
 
-setInterval( ->
-        date.innerText = get_c_date_str()
-        return true
-    , 1000)
+        min = create_element("span", "min", time)
+        min.innerText = @get_min()
 
+        #date.innerText = @get_date_str()
+        date.innerText = @get_c_date_str()
+
+        setInterval( =>
+                hours.innerText = @get_hours()
+                min.innerText = @get_min()
+                return true
+            , 1000)
+
+        setInterval( =>
+                date.innerText = @get_c_date_str()
+                return true
+            , 1000)
+
+    import_css:(src)->
+        inject_css(@element,src)

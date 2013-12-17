@@ -92,7 +92,7 @@ DBUS_EXPORT_API
 void launcher_show()
 {
     is_launcher_shown = TRUE;
-    gtk_widget_show(container);
+    gtk_widget_show_all(container);
 }
 
 

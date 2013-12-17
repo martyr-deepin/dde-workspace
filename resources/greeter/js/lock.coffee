@@ -17,73 +17,76 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-user = DCore.Lock.get_username()
+class Lock extends Widget
 
-user_image = DCore.Lock.get_user_icon()
+    constructor:->
+        super
+        echo "Lock"
 
-if not user_image?
-    try
-        user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-    catch error
-        user_image = "images/img01.jpg"
-
-$("#Version").innerHTML = "
-            <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span>
-            "
-try
-    is_livecd = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock").IsLiveCD_sync(user)
-catch error
-    is_livecd = false
-
-if not is_livecd
-    s = new SwitchUser("switchuser")
-    $("#bottom_buttons").appendChild(s.element)
-
-u = new UserInfo(user, user, user_image)
-
-roundabout.appendChild(u.li)
-_current_user = u
-
-u.focus()
-if not u.face_login
-    u.show_login()
-
-document.body.addEventListener("keydown", (e) =>
-    if e.which == ENTER_KEY
-        if not u.login_displayed
-            # if not u.is_recognizing
-            if u.face_login
-                DCore[APP_NAME].cancel_detect()
-                u?.stop_animation()
-                u.is_recognizing = false
-            u.show_login()
-            message_tip?.remove()
-        else
-            u.login.on_active(user, u.login.password.value)
-
-    else if e.which == ESC_KEY
-        u.hide_login()
-        message_tip?.remove()
-)
-
-if roundabout.children.length <= 2
-    roundabout.style.width = "0"
-    l = (screen.width  - roundabout.clientWidth) / 2
-    roundabout.style.left = "#{l}px"
-    user = Widget.look_up(roundabout.children[0].children[0].getAttribute("id"))
-    if not user?.face_login
-        user?.show_login()
+    webview_ok:(_current_user)->
+        DCore.Lock.webview_ok(_current_user.id)
 
 
-DCore.signal_connect("start-login", ->
-    # echo "receive start login"
-    # TODO: maybe some animation or some reflection.
-    u.is_recognizing = false
-    DCore.Lock.try_unlock("")
-)
+    start_login_connect:(userinfo)->
+        DCore.signal_connect("start-login", ->
+            echo "receive start login"
+            # TODO: maybe some animation or some reflection.
+            userinfo.is_recognizing = false
+            DCore.Lock.try_unlock("")
+        )
 
-# if _current_user.face_login
-#     message_tip = new MessageTip(SCANNING_TIP, roundabout.parentElement)
+    mousewheel_listener:(_current_user)->
+        document.body.addEventListener("mousewheel", (e) =>
+            if not is_volume_control
+                if e.wheelDelta >= 120 then _current_user?.animate_next()
+                else if e.wheelDelta <= -120 then _current_user?.animate_prev()
+        )
 
-DCore.Lock.webview_ok(_current_user.id)
 
+    keydown_listener:(_current_user)->
+        document.body.addEventListener("keydown", (e)=>
+            if e.which == UP_ARROW
+                # echo "prev"
+                _current_user?.animate_next()
+
+            else if e.which == DOWN_ARROW
+                # echo "next"
+                _current_user?.animate_prev()
+        )
+
+#DCore.Lock.switch_user()
+#return
+
+document.body.style.height = window.innerHeight
+document.body.style.width = window.innerWidth
+
+lock = new Lock()
+
+user = new User()
+$("#div_users").appendChild(user.element)
+user.roundabout_animation()
+#user.jCarousel_animation()
+
+userinfo = user.get_current_userinfo()
+_current_user = user.get_current_userinfo()
+
+lock.start_login_connect(userinfo)
+lock.webview_ok(_current_user)
+lock.keydown_listener(userinfo)
+lock.mousewheel_listener(_current_user)
+
+timedate = new TimeDate()
+$("#div_time").appendChild(timedate.element)
+timedate.show()
+
+
+
+$("#div_power").title = _("ShutDown")
+powermenu = new PowerMenu($("#div_power"))
+powermenu.new_power_menu()
+
+
+if audio_play_status
+    mediacontrol = new MediaControl()
+    $("#div_media_control").appendChild(mediacontrol.element)
+    mediacontrol.keydown_listener()

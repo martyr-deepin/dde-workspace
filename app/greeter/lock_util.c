@@ -35,32 +35,20 @@ const gchar* lock_get_username ()
 }
 
 JS_EXPORT_API
-gchar *lock_get_realname ()
+gchar *lock_get_user_realname (const gchar* name)
 {
-    if (username == NULL) {
-        username = lock_get_username ();
-    }
-
     return get_user_realname (username);
 }
 
 JS_EXPORT_API
-gchar* lock_get_user_icon ()
+gchar* lock_get_user_icon (const gchar* name)
 {
-    if (username == NULL) {
-        username = lock_get_username ();
-    }
-
     return get_user_icon (username);
 }
 
 JS_EXPORT_API
-gboolean lock_need_password ()
+gboolean lock_need_password (const gchar* name)
 {
-    if (username == NULL) {
-        username = lock_get_username ();
-    }
-
     return is_need_pwd (username);
 }
 
@@ -137,8 +125,7 @@ gboolean lock_is_running ()
 
     user_lock_path = g_strdup_printf ("%s%s", username, ".dlock.app.deepin");
     if (app_is_running (user_lock_path)) {
-
-        g_warning ("another instance of dlock is running by current user...\n");
+        g_warning ("another instance of dlock is running by current user %s...\n",user_lock_path);
         run_flag = TRUE;
     }
 

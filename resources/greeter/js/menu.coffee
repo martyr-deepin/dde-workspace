@@ -18,31 +18,28 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-_global_menu_container = create_element("div", "", document.body)
-_global_menu_container.id = "global_menu_container"
-_global_menu_container.addEventListener("click", (e)->
-    _global_menu_container.style.display = "none"
-    _global_menu_container.removeChild(_global_menu_container.children[0])
-)
 
 class Menu extends Widget
+    parent = null
+    mouseover = false
+    menuimg = {}
+
     constructor: (@id) ->
         super
         @current = @id
         @items = {}
+        @element.style.display = "none"
 
     insert: (@id, @title, @img)->
         _id = @id
         _title = @title
-        item = create_element("div", "menuitem", @element)
-        item.addEventListener("click", (e)=>
+        _img = @img
+        menuimg = create_img("menuimg", @img, @element)
+        menuimg.title = @title
+        menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
         )
-        create_img("menuimg", @img, item)
-        title = create_element("div", "menutitle", item)
-        title.innerText = @title
 
-        _img = @img
         @items[_id] = [_id, _title, _img]
         @current = @id
 
@@ -61,20 +58,37 @@ class Menu extends Widget
 
     set_callback: (@cb)->
 
+    
+    append:(el)->
+        parent = el
+        parent.appendChild(@element)
+    
+    destory:->
+        remove_element(@element)
+
+    do_mouseover: (e)->
+        #echo "menu over"
+        mouseover = true
+        @element.style.display = "block"
+    
+    do_mouseout: (e)->
+        #echo "menu out"
+        mouseover = false
+        @hide()
+    
     show: (x, y)->
-        @try_append()
-
+        document.body.appendChild(@element) if not parent?
+        @element.style.position = "absolute"
         @element.style.left = x
-        @element.style.top = y
+        @element.style.bottom = y
+        @element.style.display = "block"
 
-    try_append: ->
-        if not @element.parent
-            _global_menu_container.appendChild(@element)
-            _global_menu_container.style.display = "block"
-
-    get_allocation: ->
-        @try_append()
-
+    hide:->
+        #echo "hide"
+        @element.style.display = "none" if not mouseover
+    
+    get_size: ->
+        @element.style.display = "block"
         width = @element.clientWidth
         height = @element.clientHeight
 
@@ -84,28 +98,28 @@ class Menu extends Widget
 class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
-        @show_item = create_element("div", "ShowItem", @element)
-        @current_img = create_img("", "", @show_item)
-        @switch = create_element("div", "Switcher", @element)
+        @current_img = create_img("current_img", "", @element)
         @menu = new Menu(@id+"_menu")
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img)->
-        @current_img.src = img
+        #@current_img.src = img
         @menu.insert(id, title, img)
 
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
 
-    do_click: (e)->
-        if e.target == @switch
-            p = get_page_xy(e.target, 0, 0)
-            alloc = @menu.get_allocation()
-            x = p.x - alloc.width + @switch.offsetWidth - 3
-            y = p.y - alloc.height - 3
-
-            @menu.show(x, y)
-
+    do_mouseover: (e)->
+        #echo "box over"
+        p = get_page_xy(@current_img, 0, 0)
+        x = p.x
+        y = document.body.clientHeight - p.y
+        @menu.show(x, y)
+    
+    do_mouseout: (e)->
+        #echo "box out"
+        @menu.hide()
+    
     get_current: ->
         return @menu.current
 
@@ -125,14 +139,3 @@ class ComboBox extends Widget
         @current_img.src = find[2]
         find[0]
 
-de_menu_cb = (id, title)->
-    id = de_menu.set_current(id)
-
-de_menu = new ComboBox("desktop", de_menu_cb)
-#de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
-
-power_dict = {}
-power_menu_cb = (id, title)->
-    power_dict[id]()
-
-power_menu = new ComboBox("power", power_menu_cb)

@@ -18,94 +18,353 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-apply_refuse_rotate = (el, time)->
-    apply_animation(el, "refuse", "#{time}s", "linear")
-    setTimeout(->
-        el.style.webkitAnimation = ""
-    , time * 1000)
-
-
-class MessageTip
-    constructor:(text, @parent)->
-        @message_tip = null
-        @message_tip = create_element("div", "failed-tip", @parent)
-        @message_tip.appendChild(document.createTextNode(text))
-        @message_tip.style.top = "#{.15 * window.innerHeight + 310}px"
-
-    adjust_show_login: ->
-        @message_tip.style.top = "#{.15 * window.innerHeight + 390}px"
-
-    remove: =>
-        if @message_tip
-            @parent.removeChild(@message_tip)
-            @message_tip = null
-
+user_ul = null
 message_tip = null
 draw_camera_id = null
+_current_user = null
+_default_username = null
+_drag_flag = false
+password_error_msg = null
 
 
-class LoginEntry extends Widget
-    constructor: (@id, @loginuser, @on_active)->
+class User extends Widget
+    Dbus_Account = null
+    is_livecd = false
+    img_src_before = null
+
+    username = null
+    userimage = null
+    userinfo = null
+    userinfo_all = []
+        
+    users_path = []
+    users_name = []
+    users_realname = []
+    users_type = []
+    constructor:->
         super
-        if is_hide_users
-            @account = create_element("input", "Account", @element)
-            @account.setAttribute("autofocus", "true")
-            @account.addEventListener("keyup", (e)=>
-                if e.which == ENTER_KEY
-                    if not @account.value
-                        @account.focus()
-                    else
-                        @password.focus()
-            )
+        @is_livecd()
+        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
+        img_src_before = "images/userswitch/"
+        user_ul = create_element("ul","user_ul",@element)
+        user_ul.id = "user_ul"
+        @new_userinfo_all()
+    
+    is_livecd:->
+        try
+            dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
+            is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
+        catch error
+            is_livecd = false
+    
+    normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
+        el.addEventListener("mouseover",->
+            el.src = hover
+        ) if hover
+        el.addEventListener("mouseout",->
+            el.src = normal
+        ) if normal
+        el.addEventListener("click",=>
+            el.src = click
+            click_cb?()
+        ) if click
 
-        @warning = create_element("div", "CapsWarning", @element)
-        @password = create_element("input", "Password", @warning)
-        @password.classList.add("PasswordStyle")
-        #@password.setAttribute("maxlength", 16)
 
-        @check_capslock()
+    new_switchuser:->
+        if not is_livecd
+            s = new SwitchUser("switchuser")
+            s.button_switch()
+            @element.appendChild(s.element)
+            return s
 
-        @password.addEventListener("keyup", (e)=>
-            @check_capslock()
+    get_all_users:->
+        users_path = Dbus_Account.ListCachedUsers_sync()
+        for path in users_path
+            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
+            name = user_dbus.UserName
+            realname = user_dbus.RealName
+            type = user_dbus.AccountType
+            users_realname.push(realname)
+            users_name.push(name)
+            users_type.push(type)
+        return users_name
+
+    get_default_username:->
+        if is_greeter
+            _default_username = DCore.Greeter.get_default_user()
+        else
+            _default_username = DCore.Lock.get_username()
+        # if _current_user.face_login
+        #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
+        return _default_username
+
+    get_user_image:(user) ->
+        try
+            if is_greeter
+                user_image = DCore.Greeter.get_user_icon(user)
+            else
+                user_image = DCore.Lock.get_user_icon(username)
+        catch error
+            echo error
+
+        if not user_image?
+            try
+                user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
+            catch error
+                user_image = "images/img01.jpg"
+
+        return user_image
+
+    get_user_type:(user)->
+        if users_type.length == 0 or users_name.length == 0 then @get_all_users()
+        for tmp,j in users_name
+            if user is tmp
+                type = users_type[j]
+                switch type
+                    when 1 then return _("Administrator")
+                    when 0 then return _("Standard user")
+                    else return _("Standard user")
+        return _("Standard user")
+
+    is_disable_user :(user)->
+        disable = false
+        users_path = Dbus_Account.ListCachedUsers_sync()
+        for u in users_path
+            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
+            if user is user_dbus.UserName
+                if user_dbus.Locked is null then disable = false
+                else if user_dbus.Locked is true then disable = true
+                return disable
+
+    new_userinfo_all:->
+        _default_username = @get_default_username()
+        users_name = @get_all_users()
+        #users_name = DCore.Greeter.get_users()
+       
+        for user in users_name
+            if not @is_disable_user(user)
+                userimage = @get_user_image(user)
+                u = new UserInfo(user, user, userimage,@get_user_type(user))
+                if user is _default_username
+                    _current_user = u
+                    _current_user.only_show_name(false)
+                else
+                    u.only_show_name(true)
+                userinfo_all.push(u)
+        for user,j in userinfo_all
+            user.index = j
+        @sort_current_user_info_center()
+        return userinfo_all
+
+    
+    is_support_guest:->
+        if is_greeter
+            if DCore.Greeter.is_support_guest()
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                u.only_show_name(true)
+                user_ul.appendChild(u.userinfo_li)
+                if DCore.Greeter.is_guest_default()
+                    u.focus()
+       
+    sort_current_user_info_center:->
+        tmp_length = (userinfo_all.length - 1) / 2
+        center_index = Math.round(tmp_length)
+        if _current_user.index == center_index then return
+        
+        center_old = userinfo_all[center_index]
+        userinfo_all[center_index] = _current_user
+        userinfo_all[_current_user.index] = center_old
+        for user,j in userinfo_all
+            user.index = j
+            user_ul.appendChild(user.userinfo_li)
+            if user is _current_user then _current_user.focus()
+
+    get_current_userinfo:->
+        return _current_user
+
+    username_font_animation:(FocusChildIndex)->
+        prev = @check_index(FocusChildIndex - 1)
+        next = @check_index(FocusChildIndex + 1)
+        
+        for i in [0 ... (userinfo_all.length) / 2]
+            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
+            size = 26 - i * 6
+            if size < 13 then size = 13
+            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
+            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
+
+
+    check_index:(index)->
+        if index >= userinfo_all.length then index = 0
+        else if index < 0 then index = userinfo_all.length - 1
+        return index
+
+    prev_next_userinfo_create:->
+        prevuserinfo = create_element("div","prevuserinfo",@element)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
+        #@username_font_animation(_current_user.index)
+        nextuserinfo = create_element("div","nextuserinfo",@element)
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
+#        if user_ul.children.length > 5
+            #@prevuserinfo.style.display = "block"
+            #@nextuserinfo.style.display = "block"
+        @normal_hover_click_cb(@prevuserinfo_img,
+            img_src_before + "up_normal.png",
+            img_src_before + "up_hover.png",
+            img_src_before + "up_press.png"
+        )
+        @normal_hover_click_cb(@nextuserinfo_img,
+            img_src_before + "down_normal.png",
+            img_src_before + "down_hover.png",
+            img_src_before + "down_press.png"
+        )
+
+
+    roundabout_animation:->
+        echo "roundabout_animation"
+        #inject_js("js/roundabout/jquery.roundabout.js")
+        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
+        @prev_next_userinfo_create()
+
+        jQuery("#user_ul").roundabout({
+            shape: 'waterWheel',
+            tilt: 2.3,
+            minZ: 180,
+            minOpacity: 0.0,
+            startingChild: _current_user.index,
+            clickToFocus: true,
+            enableDrag: false,
+            triggerFocusEvents: true,
+            triggerBlurEvents: true,
+            
+            btnNext: jQuery(".prevuserinfo_img"),
+            btnPrev: jQuery(".nextuserinfo_img")
+        })
+        .bind("animationStart",=>
+            index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
+            index_prev = @check_index(index_prev)
+            userinfo_all[index_prev].blur()
+            userinfo_all[index_prev].only_show_name(true)
+        )
+
+        .bind("animationEnd",=>
+            index_target = jQuery("#user_ul").roundabout("getChildInFocus")
+            index_target = @check_index(index_target)
+            _current_user = userinfo_all[index_target]
+            userinfo_all[index_target].only_show_name(false)
+            userinfo_all[index_target].focus()
+            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
+            #@username_font_animation(_current_user.index)
+        )
+ 
+    jCarousel_animation:->
+        echo "jCarousel_animation"
+        @prev_next_userinfo_create()
+        # @element.style.overflow = "hidden"
+        #@prev_next_userinfo_create()
+
+        jQuery(".User").jcarousel({
+            vertical: true,
+            rtl: false,
+            list: '.user_ul',
+            items: '.userinfo_li',
+            animation: 'slow',
+            wrap: 'circular',
+            center: true
+        })
+        jQuery(".User").jcarousel('scroll','+=2')
+        jQuery(".User").jcarousel('reload')
+        echo jQuery(".User")
+        @username_font_animation(_current_user.index)
+
+ class LoginEntry extends Widget
+    constructor: (@id, @loginuser,@type ,@on_active)->
+        super
+        # echo "new LoginEntry"
+        @usertype = create_element("div","usertype",@element)
+        icon_lock = create_element("div","icon_lock",@usertype)
+        icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
+        type_text = create_element("div","type_text",@usertype)
+        type_text.textContent = @type
+
+        @password_div = create_element("div", "password_div", @element)
+        @password = create_element("input", "password", @password_div)
+        @password.type = "password"
+        @password.setAttribute("maxlength", 16)
+        @password.setAttribute("autofocus", true)
+        @eye = create_element("div","eye",@password_div)
+        @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+        @eye.addEventListener("click",=>
+            @show_hide_password()
+            if @password.type is "password"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+                icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
+            else
+                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
+                icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
+                
+        )
+        
+
+        @loginbutton = create_element("button", "loginbutton", @element)
+        @loginbutton.type = "submit"
+        if is_greeter
+            @loginbutton.innerText = _("Log In")
+        else
+            @loginbutton.innerText = _("Unlock")
+   
+
+        @password_eventlistener()
+    
+
+    password_eventlistener:->
+        @password.addEventListener("click", (e)=>
+            if @password.value is password_error_msg
+                @input_password_again()
+        )
+        
+        document.body.addEventListener("keyup",(e)=>
             if e.which == ENTER_KEY
-                if @check_completeness
-                    if is_hide_users
-                        @on_active(@account.value, @password.value)
-                    else
+                if _current_user.id is @loginuser
+                    if @check_completeness()
                         @on_active(@loginuser, @password.value)
         )
 
-        @login = create_element("button", "LoginButton", @element)
-        if is_greeter
-            @login.innerText = _("Log In")
-        else
-            @login.innerText = _("Unlock")
-
-        @login.addEventListener("click", =>
+        @loginbutton.addEventListener("click", =>
             if @check_completeness
-                if is_hide_users
-                    @on_active(@account.value, @password.value)
-                else
-                    @on_active(@loginuser, @password.value)
+                @on_active(@loginuser, @password.value)
         )
-        @element.setAttribute("autofocus", true)
-
-    check_capslock: ->
-        if DCore[APP_NAME].detect_capslock()
-            @warning.classList.add("CapsWarningBackground")
-        else
-            @warning.classList.remove("CapsWarningBackground")
+ 
 
     check_completeness: ->
-        if is_hide_users
-            if not @account.value
-                @account.focus()
-                return false
         if not @password.value
             @password.focus()
             return false
+        else if @password.value is password_error_msg
+            @input_password_again()
+            return false
         return true
 
+    input_password_again:->
+        @password.style.color = "black"
+        @password.value = null
+        @password.type = "password"
+        @password.focus()
+        @loginbutton.disable = false
+        @loginbutton.style.background = "#fbd568"
+
+    password_error:(msg)->
+        @password.style.color = "red"
+        @password.type = "text"
+        password_error_msg = msg
+        @password.value = password_error_msg
+        @password.blur()
+        @loginbutton.disable = true
+        @loginbutton.style.background = "#808080"
+
+    show_hide_password:->
+        if @password.type is "password" then @password.type = "text"
+        else if @password.type is "text" then @password.type = "password"
 
 class Loading extends Widget
     constructor: (@id)->
@@ -117,264 +376,149 @@ class Loading extends Widget
 class SwitchUser extends Widget
     constructor: (@id)->
         super
+        clearInterval(draw_camera_id)
+        draw_camera_id = null
+
+    button_switch:->
         @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>
-            clearInterval(draw_camera_id)
-            draw_camera_id = null
             DCore.Lock.switch_user()
         )
 
-#_default_bg_src = "/usr/share/backgrounds/default_background.jpg"
-#_current_bg = create_img("Background", _default_bg_src)
-#document.body.appendChild(_current_bg)
+    SwitchToGreeter:->
+        DCore.Lock.switch_user()
 
-_current_user = null
-userinfo_list = []
-_drag_flag = false
-
-background = $("#background")
-background.width = screen.width
-background.height = screen.height
-
-
-enable_detection = (enabled)->
-    DCore[APP_NAME].enable_detection(enabled)
-
+    SwitchToUser:(username,session_name)->
+        try
+            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus.SwitchToUser_sync(username,session_name)
+            echo switch_dbus
+        catch error
+            echo "can not find the switch dbus,perhaps you only have one userAccount!"
+            return false
 
 class UserInfo extends Widget
-    constructor: (@id, name, @img_src)->
+    userimg = null
+    recognize = null
+    constructor: (@id, name, @img_src,@type)->
         super
-        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
-        # echo "use face login: #{@face_login}"
-        @li = create_element("li", "")
-        @li.appendChild(@element)
-
-        @userbase = create_element("div", "UserBase", @element)
-
-        if @face_login
-            @avatar = create_element("canvas", "UserImg", @userbase)
-            @avatar.setAttribute('width', "#{CANVAS_WIDTH}px")
-            @avatar.setAttribute('height', "#{CANVAS_HEIGHT}px")
-            @draw_avatar()
-        else
-            @avatar = create_img("UserImg", @img_src, @userbase)
-
-        warp = create_element('div', "UserName", @userbase)
-
-        if @face_login
-            @camera_flag = create_img('camera_flag', 'images/camera.png', warp)
-            @camera_flag.addEventListener('click', (e)->
-                e.preventDefault()
-                e.stopPropagation()
-            )
-
-            @scanner = create_element('div', 'scanner', @userbase)
-            @scan_line = create_img('', 'images/scan-line.png', @scanner)
-
-        @name = create_element("div", "UserName", warp)
-        @name.innerText = name
-
-        @element.index = 0
-        @index = roundabout.childElementCount
-        userinfo_list.push(@)
-
-        @login_displayed = false
-        @display_failure = false
         @is_recognizing = false
-        @session = DCore.Greeter.get_user_session(@id) if is_greeter
+        @index = null
+
+        @userinfo_li = create_element("li","userinfo_li",@element)
+        @userinfo_li.id = "#{@id}_li"
+        @only_name = create_element("div","only_name",@userinfo_li)
+        @only_name.innerText = name
+        
+        
+        @only_info = create_element("div","only_info",@userinfo_li)
+        @only_info_background = create_element("div","only_info_background",@only_info)
+        userbase = create_element("div", "UserBase", @only_info_background)
+        img_div = create_element("div","img_div",userbase)
+        userimg = create_img("userimg", @img_src, img_div)
+        recognize = create_element("div", "recognize", userbase)
+        recognize_h1 = create_element("h1", "recognize_h1", recognize)
+        @username = create_element("label", "UserName", recognize_h1)
+        @username.innerText = name
+
+        login_div = create_element("div", "login_div", @only_info_background)
+        @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
+        login_div.appendChild(@login.element)
+
+        @glass = create_element("p","glass",@only_info)
+        
+        if is_greeter then @session = DCore.Greeter.get_user_session(@id)
+        else @session = "deepin"
+
+        @show_login()
+        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
+        @face_login =false
+
+
+    only_show_name:(only_show_name)->
+        if only_show_name
+            @only_name.style.display = "block"
+            @glass.style.display = "none"
+            @only_info.style.display = "none"
+        else
+            @only_name.style.display = "none"
+            @glass.style.display = "block"
+            @only_info.style.display = "-webkit-box"
+            
 
     draw_avatar: ->
-        ctx = @avatar.getContext("2d")
-        img = new Image()
-        img.onload = ->
-            ctx.drawImage(img, 0, 0)
-        img.src = @img_src
+        if @face_login
+            recognize.style.background = "url(images/light.png) repeat black"
+            recognize.style.webkitBackgroundClip = "text"
+            recognize.style.webkitTextFill = "transparent"
+            recognize.style.webkitAnimationName = "recognize_animation"
+            recognize.style.webkitAnimationDuration = "10s"
+            recognize.style.webkitAnimationIteration = "infinite"
+            recognize.style.webkitAnimationTimingFunction = "linear"
+            enable_detection(true)
 
-    focus: ->
+    stop_avatar:->
+        clearInterval(draw_camera_id)
+        draw_camera_id = null
+        apply_animation(recognize,"","") if @face_login
+        enable_detection(false) if @face_login
+        #DCore[APP_NAME].cancel_detect()
+   
+    focus:->
+        echo "#{@id} focus"
         DCore[APP_NAME].set_username(@id)
-
-        _current_user?.blur()
-        _current_user = @
-        $("#roundabout").focus()
-        @element.focus()
-        @add_css_class("UserInfoSelected")
-
-        if @id != "guest"
-            if is_greeter
-                DCore.Greeter.draw_user_background(background, @id)
-
-                if @session? and @session in sessions
-                    de_menu.set_current(@session)
-                else
-                    echo "#{@id} in focus invalid user session"
-            else
-                DCore.Lock.draw_background(background)
-
-            clearInterval(draw_camera_id)
-            draw_camera_id = null
-            @draw_camera()
-            if @face_login
-                enable_detection(true)
-
+        #@element.focus()
+        @draw_camera()
+        @draw_avatar()
+        @login.password.focus()
+        
+        if is_greeter
+            remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
+            #if @session then de_menu.set_current(@session)
+            desktopmenu = new DesktopMenu($("div_desktop"))
+            desktopmenu.new_desktop_menu()
+    
+    
     blur: ->
-        @element.setAttribute("class", "UserInfo")
-        @login?.destroy()
-        @login = null
-        @loading?.destroy()
-        @loading = null
-        @login_displayed = false
+        #@loading?.destroy()
+        #@loading = null
+        @stop_avatar()
 
-        if @ != _current_user
-            if @face_login
-                enable_detection(false)
-            clearInterval(draw_camera_id)
-            draw_camera_id = null
-            _current_user?.stop_animation()
-            @draw_avatar()
 
     show_login: ->
-        if @face_login
-            enable_detection(false)
-
-        if false
-            @login()
-        else if _drag_flag
-            echo "in drag"
-
-        else if _current_user == @ and not @login
-            @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
-            @element.appendChild(@login.element)
-
-            if is_hide_users
-                @element.style.paddingBottom = "0px"
-                @login.account.focus()
-            else
-                @login.password.focus()
+        if _current_user == @
+            @login.password.focus()
 
             if @id == "guest"
                 @login.password.style.display = "none"
                 @login.password.value = "guest"
 
-            if is_auto_login(@id)
-                @login.password.style.display = "none"
-                @login.password.value = "deepin"
-
-            @login_displayed = true
-            @add_css_class("UserInfoSelected")
-            @add_css_class("foo")
-
-    hide_login: ->
-        if @face_login
-            enable_detection(true)
-
-        if @login and @login_displayed
-            @blur()
-            @focus()
-
-    do_click: (e)=>
-        if _current_user == @
-            if not @login and not @in_drag
-                if @face_login
-                    if not @is_recognizing
-                        if e.target.className == 'UserImg'
-                            message_tip?.remove()
-                            DCore[APP_NAME].start_recognize()
-                    if e.target.className == "UserName"
-                        message_tip?.remove()
-                        @show_login()
-                        @stop_animation()
-                else
-                    @show_login()
-            else
-                if e.target.parentElement.className == "LoginEntry" or e.target.parentElement.className == "CapsWarning"
-                    echo "do click:login pwd clicked"
-                else
-                    @hide_login()
-
-                    if @face_login
-                        message_tip?.remove()
-                        DCore[APP_NAME].start_recognize()
-        else
-            @focus()
-
     on_verify: (username, password)->
-        if not password or @display_failure
-            @login.password.focus()
-            @display_failure = false
+        #@loading = new Loading("loading")
+        #@only_info.appendChild(@loading.element)
+        echo "on_verify:#{username},#{password}"
+
+        if not @session?
+            echo "get session failed and session default deepin"
+            @session = "deepin"
+
+        if is_greeter
+            echo 'start session'
+            DCore.Greeter.start_session(username, password, @session)
+            echo 'start session end'
         else
-            echo 'destroy'
-            @login.destroy()
-            echo 'destroy end'
-            @loading = new Loading("loading")
-            @element.appendChild(@loading.element)
-
-            if is_greeter
-                session = de_menu.get_current()
-                if not session?
-                    echo "get session failed"
-                    session = "deepin"
-                @session = session
-                echo 'start session'
-                DCore.Greeter.start_session(username, password, @session)
-                echo 'start session end'
-            else
-                DCore.Lock.try_unlock(password)
-
-    hide_user_fail:  (msg) ->
-        @login.account.style.color = "red"
-        @login.account.value = msg
-        @login.account.blur()
-
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == ENTER_KEY and @login_displayed and @display_failure
-                @login.account.focus()
-        )
-
-        @login.account.addEventListener("focus", (e)=>
-            @login.account.style.color = "black"
-            @login.account.value = ""
-            @display_failure = false
-        )
-
-    normal_user_fail: (msg) ->
-        @login.password.classList.remove("PasswordStyle")
-        @login.password.style.color = "red"
-        @login.password.value = msg
-        @login.password.blur()
-
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == ENTER_KEY and is_greeter and @login_displayed and @display_failure
-                @login.password.focus()
-        )
-
-        @login.password.addEventListener("focus", (e)=>
-            @login.password.classList.add("PasswordStyle")
-            @login.password.style.color ="black"
-            @login.password.value = ""
-            @display_failure = false
-        )
-
+            DCore.Lock.start_session(username,password,@session)
+    
     auth_failed: (msg) ->
-        # echo "[User.auth_failed]"
-        if not @login_displayed and @face_login
-            # echo "face login failed"
-            @stop_animation()
-            message_tip?.remove()
-            message_tip = null
-            message_tip = new MessageTip(msg, roundabout.parentElement)
-        else
-            # echo "login failed"
-            @focus()
-            @show_login()
-            @display_failure = true
+        @stop_avatar()
+        #@loading?.destroy()
+        #@loading = null
+        # message_tip?.remove()
+        # message_tip = null
+        # message_tip = new MessageTip(msg, user_ul.parentElement)
+        @login.password_error(msg)
 
-            if is_hide_users
-                @hide_user_fail(msg)
-            else
-                @normal_user_fail(msg)
-
-            apply_refuse_rotate(@element, 0.5)
 
     animate_prev: ->
         if @face_login
@@ -383,16 +527,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        if @index is 0
-            prev_index = _counts - 1
-        else
-            prev_index = @index - 1
-
-        setTimeout( ->
-                userinfo_list[prev_index].focus()
-                return true
-            ,200)
-        jQuery("#roundabout").roundabout("animateToChild", prev_index)
+        jQuery("#user_ul").roundabout("animateToPreviousChild")
 
     animate_next: ->
         if @face_login
@@ -401,16 +536,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        if @index is _counts - 1
-            next_index = 0
-        else
-            next_index = @index + 1
-
-        setTimeout( ->
-                userinfo_list[next_index].focus()
-                return true
-            ,200)
-        jQuery("#roundabout").roundabout("animateToChild", next_index)
+        jQuery("#user_ul").roundabout("animateToNextChild")
 
     animate_near: ->
         if @face_login
@@ -418,72 +544,39 @@ class UserInfo extends Widget
 
         if @is_recognizing
             return
-
-        try
-            near_index = jQuery("#roundabout").roundabout("getNearestChild")
-        catch error
-            echo "getNeareastChild error"
-
-        if near_index is false
-            near_index = @index
-
-        setTimeout( ->
-                userinfo_list[near_index].focus()
-                _drag_flag = false
-                return true
-            ,200)
-        jQuery("#roundabout").roundabout("animateToChild", near_index)
+        jQuery("#user_ul").roundabout("animateToNearestChild")
 
     draw_camera: ->
         if @face_login
             clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(@avatar, @avatar.width, @avatar.height)
+                DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
 
-    start_animation: =>
-        # echo '[start_animation]'
-        if @face_login
-            # echo '[set animation]'
-            @scanner.style.display = 'block'
-            @scanner.style.zIndex = 300
-            @scanner.style.webkitAnimation = "scanning #{ANIMATION_TIME}s linear infinite"
-            @scan_line.style.display = 'block'
-
-    stop_animation: ->
-        # echo '[stop_animation]'
-        if @face_login
-            @scanner.style.display = 'none'
-            @scanner.style.zIndex = -300
-            @scanner.style.webkitAnimation = ''
-            @scan_line.style.display = 'none'
-
 DCore.signal_connect("draw", ->
-    # echo 'receive draw signal'
+    echo 'receive camera draw signal'
     clearInterval(draw_camera_id)
     draw_camera_id = null
     _current_user.draw_camera()
 )
 
 DCore.signal_connect("start-animation", ->
-    # echo "receive start animation"
+    echo "receive start animation"
     _current_user.is_recognizing = true
-    _current_user.hide_login()
     _remove_click_event?()
-    _current_user.start_animation()
+    _current_user.draw_avatar()
 )
 
 DCore.signal_connect("auth-failed", (msg)->
-    # echo "[auth-failed]"
+    echo "#{_current_user.id}:[auth-failed]"
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
 )
 
 DCore.signal_connect("failed-too-much", (msg)->
-    # echo '[failed-too-much]'
+    echo '[failed-too-much]'
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
-    _current_user.show_login()
     message_tip.adjust_show_login()
 )
 

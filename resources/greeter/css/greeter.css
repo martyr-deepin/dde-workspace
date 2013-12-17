@@ -1,0 +1,73 @@
+body{
+    cursor:default;
+    overflow:hidden;
+    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    background-color:rgba(0,0,0,0.6)
+}
+
+
+.div_users{
+    /*background-color:rgba(0,255,120,0.2);*/
+    position:absolute;
+    left:27%;
+    width:40%;
+    height:70%;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+.div_time {
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:50px;
+    left:30px;
+    width:250px;
+    /*height:150px;*/
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+.div_power {
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:30px;
+    width:60px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
+
+
+
+.div_version{
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:200px;
+    width:150px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
+.div_desktop{
+    /*background-color:rgba(125,0,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:120px;
+    width:60px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}

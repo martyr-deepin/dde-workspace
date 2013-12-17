@@ -121,8 +121,12 @@ gchar* greeter_get_session_icon (const gchar *key)
     } else if (g_str_has_prefix (session, "xfce")){
         icon = g_strdup ("xfce.png");
 
-    } else if (g_str_has_prefix (session, "cde")){
-        icon = g_strdup ("cde.png");
+    } else if (g_str_has_prefix (session, "lxde")){
+        icon = g_strdup ("lxde.png");
+    } else if (g_str_has_prefix (session, "enlightenment")){
+        icon = g_strdup ("enlightenment.png");
+    } else if (g_str_has_prefix (session, "fluxbox")){
+        icon = g_strdup ("fluxbox.png");
 
     } else {
         icon = g_strdup ("unknown.png");

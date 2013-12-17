@@ -32,25 +32,30 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <X11/XKBlib.h>
-#include "user.h"
-#include "session.h"
-#include "greeter_util.h"
+
 #include "jsextension.h"
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-#include "camera.h"
 #include "mutils.h"
+
 #include "settings.h"
+#include "background.h"
+#include "camera.h"
+
+#include "user.h"
+#include "session.h"
+#include "greeter_util.h"
 #include "DBUS_greeter.h"
 
-#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/index.html"
+#define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
+/*static GSettings* dde_bg_g_settings = NULL;*/
 
 struct AuthHandler {
     gchar *username;
@@ -153,7 +158,7 @@ start_session (LightDMGreeter *greeter)
     }
 
     set_last_user (handler->username);
-    keep_user_background (handler->username);
+    /*keep_user_background (handler->username);*/
     kill_user_lock (handler->username, handler->password);
 
     if (!lightdm_greeter_start_session_sync (greeter, session, NULL)) {
@@ -223,10 +228,27 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
     return ret;
 }
 
+void greeter_set_background(GdkWindow* win, gchar* username, double width, double height)
+{
+    gchar* bg_path = get_user_background (username);
+    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
+    g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
+
+    if (!_set_background_aux(win, blur_path, width, height)) {
+        g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
+        _set_background_aux(win, bg_path, width, height);
+    }
+
+    g_free(blur_path);
+    g_free(bg_path);
+
+}
+
 int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+   
 
     GdkScreen *screen;
     GdkRectangle geometry;
@@ -258,9 +280,7 @@ int main (int argc, char **argv)
 
     greeter_keyfile = g_key_file_new ();
     g_key_file_load_from_file (greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
-
-    gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
-
+    
     container = create_web_container (FALSE, TRUE);
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
@@ -270,14 +290,20 @@ int main (int argc, char **argv)
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
-    g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);
+    /*g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);*/
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+    
+    gtk_widget_realize (webview);
     gtk_widget_realize (container);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
 
+    gchar* username_default = greeter_get_default_user();
+    greeter_set_background(gtk_widget_get_window(webview), username_default, gdk_screen_width(), gdk_screen_height());
+    g_free(username_default);
+    
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);
@@ -285,7 +311,6 @@ int main (int argc, char **argv)
     turn_numlock_on ();
     gtk_main ();
     destroy_camera();
-
     return 0;
 }
 
