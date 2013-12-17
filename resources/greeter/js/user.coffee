@@ -72,6 +72,7 @@ class User extends Widget
             users_realname.push(realname)
             users_name.push(name)
             users_type.push(type)
+        echo users_name
         return users_name
 
     get_default_username:->
