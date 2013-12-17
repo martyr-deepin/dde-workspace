@@ -24,8 +24,9 @@ class SwitchUser extends Widget
         super
         clearInterval(draw_camera_id)
         draw_camera_id = null
-
+    
     button_switch:->
+        if is_livecd then return
         @switch = create_element("div", "SwitchGreeter", @element)
         @switch.innerText = _("Switch User")
         @switch.addEventListener("click", =>

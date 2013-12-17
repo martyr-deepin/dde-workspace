@@ -68,3 +68,9 @@ if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
     mediacontrol.keydown_listener()
+
+
+if not is_livecd
+    s = new SwitchUser("switchuser")
+    s.button_switch()
+    $("#div_switchuser").appendChild(s.element)

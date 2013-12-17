@@ -4,7 +4,7 @@ com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/animatio
 
 greeter_coffee = config.coffee messagetip.coffee time.coffee version.coffee  user.coffee menu.coffee desktopmenu.coffee powermenu.coffee greeter.coffee
 
-lock_coffee = config.coffee messagetip.coffee time.coffee user.coffee switchuser.coffee mediacontrol.coffee menu.coffee desktopmenu.coffee powermenu.coffee lock.coffee 
+lock_coffee = config.coffee messagetip.coffee time.coffee switchuser.coffee user.coffee mediacontrol.coffee menu.coffee desktopmenu.coffee powermenu.coffee lock.coffee 
 
 all: ${com_coffee} ${greeter_coffee} ${lock_coffee}
 	coffee -cj greeter.js ${com_coffee} ${greeter_coffee}

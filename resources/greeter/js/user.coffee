@@ -29,7 +29,6 @@ password_error_msg = null
 
 class User extends Widget
     Dbus_Account = null
-    is_livecd = false
     img_src_before = null
 
     username = null
@@ -43,19 +42,12 @@ class User extends Widget
     users_type = []
     constructor:->
         super
-        @is_livecd()
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         img_src_before = "images/userswitch/"
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
     
-    is_livecd:->
-        try
-            dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
-            is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
-        catch error
-            is_livecd = false
-    
+   
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -68,13 +60,6 @@ class User extends Widget
             click_cb?()
         ) if click
 
-
-    new_switchuser:->
-        if not is_livecd
-            s = new SwitchUser("switchuser")
-            s.button_switch()
-            @element.appendChild(s.element)
-            return s
 
     get_all_users:->
         users_path = Dbus_Account.ListCachedUsers_sync()
