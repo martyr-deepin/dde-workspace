@@ -35,7 +35,7 @@ String::args = ->
     o = this
     len = arguments.length
     for i in [1..len]
-        o = o.replace(new RegExp("%" + i, "g"), arguments[i - 1])
+        o = o.replace(new RegExp("%" + i, "g"), "#{arguments[i - 1]}")
 
     return o
 
