@@ -25,11 +25,11 @@ frame_click = false
 option = ["lock","suspend","logout","restart","shutdown"]
 option_text = [_("Lock"),_("Suspend"),_("Log out"),_("Restart"),_("Shut down")]
 message_text = [
-    _("The system will be locked in:"),
-    _("The system will be suspended in:"),
-    _("You will be automatically logged out in:"),
-    _("The system will restart in:"),
-    _("The system will shut down in:")
+    _("The system will be locked in %1 seconds."),
+    _("The system will be suspended in %1 seconds."),
+    _("You will be automatically logged out in %1 seconds."),
+    _("The system will restart in %1 seconds."),
+    _("The system will shut down in %1 seconds.")
 ]
 
 timeId = null
