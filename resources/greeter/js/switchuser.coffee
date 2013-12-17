@@ -20,16 +20,24 @@
 
 
 class SwitchUser extends Widget
-    constructor: (@id)->
+    constructor: ()->
         super
         clearInterval(draw_camera_id)
         draw_camera_id = null
     
     button_switch:->
-        if is_livecd then return
-        @switch = create_element("div", "SwitchGreeter", @element)
-        @switch.innerText = _("Switch User")
+        echo "button_switch"
+        @switch = create_img("switch", "images/userswitch/down_normal.png", @element)
+        @switch.style.width = "60px"
+        @switch.style.height = "60px"
+        @switch.addEventListener("mouseover", =>
+            @switch.src = "images/userswitch/down_hover.png"
+        )
+        @switch.addEventListener("mouseout", =>
+            @switch.src = "images/userswitch/down_normal.png"
+        )
         @switch.addEventListener("click", =>
+            @switch.src = "images/userswitch/down_press.png"
             DCore.Lock.switch_user()
         )
 

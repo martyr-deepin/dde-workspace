@@ -71,6 +71,6 @@ if audio_play_status
 
 
 if not is_livecd
-    s = new SwitchUser("switchuser")
+    s = new SwitchUser()
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
