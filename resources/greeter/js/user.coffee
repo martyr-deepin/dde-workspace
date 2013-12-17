@@ -141,6 +141,7 @@ class User extends Widget
         return userinfo_all
 
     new_userinfo_for_lock:->
+        user_ul.style.height = "400px"
         user_ul.style.display = "-webkit-box"
         user_ul.style.WebkitBoxAlign = "center"
         user_ul.style.WebkitBoxPack = "center"
