@@ -28,7 +28,6 @@
 }
 
 .VoiceControl{
-    position:absolute;
 }
 
 .background{
@@ -40,7 +39,7 @@
 }
 
 .myCanvas{
-    position:absolute;
+    position:relative;
 }
 .num{
     position:relative;
