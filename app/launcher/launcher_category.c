@@ -41,7 +41,7 @@ int _get_category_name_index_map(GHashTable* infos, int argc, char** argv, char*
 {
     if (argv[1][0] != '\0') {
         int id = (int)g_strtod(argv[1], NULL);
-        g_hash_table_insert(infos, g_strdup(_(argv[0])), GINT_TO_POINTER(id));
+        g_hash_table_insert(infos, g_strdup(argv[0]), GINT_TO_POINTER(id));
     }
     return 0;
 }
@@ -67,6 +67,7 @@ int find_category_id(const char* category_name)
     gpointer tmp;
     if (g_hash_table_lookup_extended(_category_info, key, NULL, &tmp))
         id = GPOINTER_TO_INT(tmp);
+    g_debug("[%s] category:%s:%d", __func__, key, id);
     g_free(key);
     return id;
 }
@@ -103,9 +104,9 @@ GList* _get_x_category(GDesktopAppInfo* info)
     gchar** x_categories = g_strsplit(all_categories, ";", 0);
     for (int i = 0; x_categories[i] != NULL && x_categories[i][0] != '\0'; ++i) {
         char* lower_case = g_utf8_casefold(x_categories[i], -1);
-        int id = find_category_id(_(lower_case));
+        int id = find_category_id(lower_case);
         g_free(lower_case);
-        g_debug("[%s] #%s#:%d", __func__, x_categories[i], id);
+        g_debug("[%s] #%s#:category name:#%s#:%d", __func__, x_categories[i], lower_case, id);
         if (id == OTHER_CATEGORY_ID)
             has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
@@ -128,8 +129,8 @@ PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0') {
-        int category_id = find_category_id(_(argv[0]));
-        g_debug("[%s] %d", __func__, category_id);
+        int category_id = find_category_id(argv[0]);
+        g_debug("[%s] %s:%d", __func__, argv[0], category_id);
         *categories = g_list_append(*categories, GINT_TO_POINTER(category_id));
     }
 
@@ -165,7 +166,7 @@ static
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
     if (argv[0][0] != '\0')
-        g_ptr_array_add(infos, g_strdup(_(argv[0])));
+        g_ptr_array_add(infos, g_strdup(argv[0]));
     return 0;
 }
 
@@ -409,12 +410,12 @@ void _record_categories(JSObjectRef categories, const char* names[], int num)
     int index = 1;
     for (int i = 0; i < num; ++i) {
         if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(i)))
-            _insert_category(categories, index++, i, names[i]);
+            _insert_category(categories, index++, i, _(names[i]));
     }
 
     if (g_hash_table_lookup(_category_table, GINT_TO_POINTER(OTHER_CATEGORY_ID))) {
         int other_category_id = num - 1;
-        _insert_category(categories, index, OTHER_CATEGORY_ID, names[other_category_id]);
+        _insert_category(categories, index, OTHER_CATEGORY_ID, _(names[other_category_id]));
     }
 }
 
@@ -442,7 +443,6 @@ JSObjectRef launcher_get_categories()
         for (int i = 0; i < category_num; ++i) {
             char* name = g_ptr_array_index(infos, i);
 
-            extern int find_category_id(const char* category_name);
             int id = find_category_id(name);
             int index = id == OTHER_CATEGORY_ID ? category_num - 1 : id;
 
