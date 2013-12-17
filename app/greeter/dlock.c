@@ -57,6 +57,13 @@ static GtkWidget* lock_container = NULL;
 static GSettings* dde_bg_g_settings = NULL;
 const gchar *username = NULL;
 
+JS_EXPORT_API
+void lock_quit()
+{
+    gtk_main_quit();
+}
+
+
 
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)

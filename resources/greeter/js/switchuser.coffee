@@ -38,11 +38,20 @@ class SwitchUser extends Widget
         )
         @switch.addEventListener("click", =>
             @switch.src = "images/userswitch/down_press.png"
+            #document.body.style.opacity = "0.0"
+            #document.body.style.display = "none"
+            #DCore.Lock.quit()
             DCore.Lock.switch_user()
+            #@SwitchToGreeter()
         )
 
     SwitchToGreeter:->
-        DCore.Lock.switch_user()
+        try
+            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus.SwitchToGreeter()
+        catch error
+            echo "can not find the switch dbus,perhaps you only have one userAccount!"
+            return false
 
     SwitchToUser:(username,session_name)->
         try
