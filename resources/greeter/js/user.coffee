@@ -167,11 +167,10 @@ class User extends Widget
     sort_current_user_info_center:->
         tmp_length = (userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
-        if _current_user.index == center_index then return
-        
-        center_old = userinfo_all[center_index]
-        userinfo_all[center_index] = _current_user
-        userinfo_all[_current_user.index] = center_old
+        if _current_user.index isnt center_index
+            center_old = userinfo_all[center_index]
+            userinfo_all[center_index] = _current_user
+            userinfo_all[_current_user.index] = center_old
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
