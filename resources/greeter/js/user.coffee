@@ -161,7 +161,7 @@ class User extends Widget
         _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
         _current_user.only_show_name(false)
         user_ul.appendChild(_current_user.userinfo_li)
-
+        _current_user.focus()
     
     is_support_guest:->
         if is_greeter
