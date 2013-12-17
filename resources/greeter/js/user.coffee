@@ -372,7 +372,7 @@ class UserInfo extends Widget
         super
         @is_recognizing = false
         @index = null
-
+        echo @id
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","only_name",@userinfo_li)
