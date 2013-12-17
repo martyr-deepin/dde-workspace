@@ -21,6 +21,11 @@
 #include "jsextension.h"
 #include <glib.h>
 
+static GRecMutex __ctx_lock;
+void GRAB_CTX() { g_rec_mutex_trylock(&__ctx_lock); }
+void UNGRAB_CTX() { g_rec_mutex_unlock(&__ctx_lock); }
+
+
 void js_fill_exception(JSContextRef ctx, JSValueRef* excp, const char* format, ...)
 {
     va_list args;
@@ -80,3 +85,4 @@ gboolean jsvalue_instanceof(JSContextRef ctx, JSValueRef test, const char *klass
   JSStringRelease(property);
   return JSValueIsInstanceOfConstructor(ctx, test, ctor, NULL);
 }
+
