@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-17 17:17+0800\n"
+"POT-Creation-Date: 2013-12-18 10:28+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,7 +170,7 @@ msgstr "登入"
 msgid "Unlock"
 msgstr "解鎖"
 
-#: ../resources/greeter/js/user.coffee:528
+#: ../resources/greeter/js/user.coffee:530
 msgid "Welcome"
 msgstr "歡迎"
 
@@ -434,7 +434,7 @@ msgstr "取消"
 msgid "another instance of launcher is running...\n"
 msgstr "已有一個應用程式啟動器例程正在運行...\n"
 
-#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:119
+#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
 #: ../app/greeter/greeter.c:153
 msgid "Invalid Password"
 msgstr "密碼錯誤"

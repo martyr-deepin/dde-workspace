@@ -4,7 +4,7 @@ import glob
 import os
 
 
-lang = ["zh_CN", "zh_TW"]
+lang = ["zh_CN", "zh_TW","es","pt_BR"]
 
 coffee_files = []
 c_files = []
