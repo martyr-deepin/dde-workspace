@@ -28,6 +28,7 @@ class SwitchUser extends Widget
     button_switch:->
         echo "button_switch"
         @switch = create_img("switch", "images/userswitch/acount_switch_normal.png", @element)
+        @switch.style.cursor = "pointer"
         @switch.style.width = "60px"
         @switch.style.height = "60px"
         @switch.addEventListener("mouseover", =>
