@@ -188,6 +188,7 @@ inject_css = (el,src)->
 
 power_func = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
+    document.body.style.cursor = "wait"
     echo "Warning: The system will ----#{power}----"
     dbus_power = DCore.DBus.session("com.deepin.daemon.DShutdown")
     switch power
