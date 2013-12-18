@@ -268,7 +268,7 @@ bind_events = ->
                     selected_down()
                 when ENTER_KEY, SPACE_KEY
                     s_box.focus()
-        else if String.fromCharCode(e.which).match(/\w/)
+        else if String.fromCharCode(e.which).match(/\w/) or e.which == BACKSPACE_KEY
             s_box.focus()
         else
             switch e.which
