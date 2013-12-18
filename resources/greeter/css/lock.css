@@ -9,7 +9,7 @@ body{
 .div_users{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
-    left:27%;
+    left:32%;
     width:40%;
     height:70%;
     
@@ -31,6 +31,20 @@ body{
     -webkit-box-align:center;
 }
 
+.div_switchuser {
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:110px;
+    width:60px;
+    /*height:60px;*/
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
@@ -51,7 +65,7 @@ body{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:30px;
-    right:130;
+    right:200px;
     width:300px;
     /*height:150px;*/
     

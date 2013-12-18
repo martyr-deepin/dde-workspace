@@ -27,6 +27,7 @@
     margin-left:80px;
     width:60px;
     height:60px;
+    cursor:pointer;
 }
 .prevuserinfo:hover{
     opacity:1.0;
@@ -61,6 +62,7 @@
     margin-left:80px;
     width:60px;
     height:60px;
+    cursor:pointer;
 }
 .nextuserinfo:hover{
     opacity:1.0;
@@ -95,9 +97,7 @@
 
     overflow:hidden;
 
-    background:rgba(255,250,246,0.5);
     border-radius:4px;
-    color:#7E7975;
     box-shadow:0 0 0 5px rgba(255,255,255,0.2);
 }
 
@@ -107,6 +107,9 @@
     position: relative;
     z-index:3;
     display:-webkit-box;
+    
+    background:rgba(255,250,246,0.5);
+    color:#7E7975;
 }
 
 .glass{
@@ -114,8 +117,8 @@
     width:300px;
     height:180px;
     position: relative;
-    top:-30px;
-    left:-180px;
+    bottom:180px;
+    left:160px;
     -webkit-transform: rotate(65deg);
     background: -webkit-linear-gradient(50deg, rgba(255,255,255,0.5), rgba(0,0,0,0.2));
     pointer-events:none;

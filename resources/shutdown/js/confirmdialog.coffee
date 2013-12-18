@@ -55,7 +55,7 @@ class ConfirmDialog extends Widget
         
         right = create_element("div","right",frame_confirm)
         @message_confirm = create_element("div","message_confirm",right)
-        @message_confirm.textContent = message_text[i] + " 60 " + _("seconds.")
+        @message_confirm.textContent = message_text[i].args(60)
 
         button_confirm = create_element("div","button_confirm",right)
         
@@ -104,7 +104,7 @@ class ConfirmDialog extends Widget
         clearInterval(timeId) if timeId
         timeId = setInterval(->
             time--
-            that.message_confirm.textContent = message_text[i] + " #{time} " +  _("seconds.")
+            that.message_confirm.textContent = message_text[i].args(time)
             if time == 0
                 clearInterval(timeId)
                 if 2 <= i <= 4 then confirm_ok(i)

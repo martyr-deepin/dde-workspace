@@ -35,27 +35,6 @@ class Lock extends Widget
             DCore.Lock.try_unlock("")
         )
 
-    mousewheel_listener:(_current_user)->
-        document.body.addEventListener("mousewheel", (e) =>
-            if not is_volume_control
-                if e.wheelDelta >= 120 then _current_user?.animate_next()
-                else if e.wheelDelta <= -120 then _current_user?.animate_prev()
-        )
-
-
-    keydown_listener:(_current_user)->
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == UP_ARROW
-                # echo "prev"
-                _current_user?.animate_next()
-
-            else if e.which == DOWN_ARROW
-                # echo "next"
-                _current_user?.animate_prev()
-        )
-
-#DCore.Lock.switch_user()
-#return
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
@@ -64,7 +43,8 @@ lock = new Lock()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.roundabout_animation()
+user.new_userinfo_for_lock()
+#user.roundabout_animation()
 #user.jCarousel_animation()
 
 userinfo = user.get_current_userinfo()
@@ -72,8 +52,6 @@ _current_user = user.get_current_userinfo()
 
 lock.start_login_connect(userinfo)
 lock.webview_ok(_current_user)
-lock.keydown_listener(userinfo)
-lock.mousewheel_listener(_current_user)
 
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)
@@ -90,3 +68,9 @@ if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
     mediacontrol.keydown_listener()
+
+
+if not is_livecd
+    s = new SwitchUser()
+    s.button_switch()
+    $("#div_switchuser").appendChild(s.element)

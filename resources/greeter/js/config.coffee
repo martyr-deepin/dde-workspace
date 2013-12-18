@@ -34,4 +34,12 @@ echo "audio_play_status:#{audio_play_status}"
 
 enable_detection = (enabled)->
     DCore[APP_NAME].enable_detection(enabled)
-
+    
+ 
+is_livecd = false
+try
+    dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
+    is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
+catch error
+    is_livecd = false
+ 

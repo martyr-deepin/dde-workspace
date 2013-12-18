@@ -69,6 +69,7 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
+user.new_userinfo_for_greeter()
 user.roundabout_animation()
 
 userinfo = user.get_current_userinfo()

@@ -29,7 +29,6 @@ password_error_msg = null
 
 class User extends Widget
     Dbus_Account = null
-    is_livecd = false
     img_src_before = null
 
     username = null
@@ -43,20 +42,12 @@ class User extends Widget
     users_type = []
     constructor:->
         super
-        @is_livecd()
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         img_src_before = "images/userswitch/"
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
-        @new_userinfo_all()
     
-    is_livecd:->
-        try
-            dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
-            is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
-        catch error
-            is_livecd = false
-    
+   
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -70,13 +61,6 @@ class User extends Widget
         ) if click
 
 
-    new_switchuser:->
-        if not is_livecd
-            s = new SwitchUser("switchuser")
-            s.button_switch()
-            @element.appendChild(s.element)
-            return s
-
     get_all_users:->
         users_path = Dbus_Account.ListCachedUsers_sync()
         for path in users_path
@@ -87,6 +71,7 @@ class User extends Widget
             users_realname.push(realname)
             users_name.push(name)
             users_type.push(type)
+        echo users_name
         return users_name
 
     get_default_username:->
@@ -136,7 +121,7 @@ class User extends Widget
                 else if user_dbus.Locked is true then disable = true
                 return disable
 
-    new_userinfo_all:->
+    new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
         #users_name = DCore.Greeter.get_users()
@@ -156,6 +141,18 @@ class User extends Widget
         @sort_current_user_info_center()
         return userinfo_all
 
+    new_userinfo_for_lock:->
+        user_ul.style.height = "400px"
+        user_ul.style.display = "-webkit-box"
+        user_ul.style.WebkitBoxAlign = "center"
+        user_ul.style.WebkitBoxPack = "center"
+        
+        user = @get_default_username()
+        userimage = @get_user_image(user)
+        _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+        _current_user.only_show_name(false)
+        user_ul.appendChild(_current_user.userinfo_li)
+        _current_user.focus()
     
     is_support_guest:->
         if is_greeter
@@ -169,11 +166,10 @@ class User extends Widget
     sort_current_user_info_center:->
         tmp_length = (userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
-        if _current_user.index == center_index then return
-        
-        center_old = userinfo_all[center_index]
-        userinfo_all[center_index] = _current_user
-        userinfo_all[_current_user.index] = center_old
+        if _current_user.index isnt center_index
+            center_old = userinfo_all[center_index]
+            userinfo_all[center_index] = _current_user
+            userinfo_all[_current_user.index] = center_old
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
@@ -366,37 +362,6 @@ class User extends Widget
         if @password.type is "password" then @password.type = "text"
         else if @password.type is "text" then @password.type = "password"
 
-class Loading extends Widget
-    constructor: (@id)->
-        super
-        create_element("div", "ball", @element)
-        create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome")
-
-class SwitchUser extends Widget
-    constructor: (@id)->
-        super
-        clearInterval(draw_camera_id)
-        draw_camera_id = null
-
-    button_switch:->
-        @switch = create_element("div", "SwitchGreeter", @element)
-        @switch.innerText = _("Switch User")
-        @switch.addEventListener("click", =>
-            DCore.Lock.switch_user()
-        )
-
-    SwitchToGreeter:->
-        DCore.Lock.switch_user()
-
-    SwitchToUser:(username,session_name)->
-        try
-            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
-            switch_dbus.SwitchToUser_sync(username,session_name)
-            echo switch_dbus
-        catch error
-            echo "can not find the switch dbus,perhaps you only have one userAccount!"
-            return false
 
 class UserInfo extends Widget
     userimg = null
@@ -405,7 +370,7 @@ class UserInfo extends Widget
         super
         @is_recognizing = false
         @index = null
-
+        echo "new UserInfo :#{@id}"
         @userinfo_li = create_element("li","userinfo_li",@element)
         @userinfo_li.id = "#{@id}_li"
         @only_name = create_element("div","only_name",@userinfo_li)
@@ -444,7 +409,7 @@ class UserInfo extends Widget
         else
             @only_name.style.display = "none"
             @glass.style.display = "block"
-            @only_info.style.display = "-webkit-box"
+            @only_info.style.display = "block"
             
 
     draw_avatar: ->
@@ -506,6 +471,7 @@ class UserInfo extends Widget
         if is_greeter
             echo 'start session'
             DCore.Greeter.start_session(username, password, @session)
+            document.body.cursor = "wait"
             echo 'start session end'
         else
             DCore.Lock.start_session(username,password,@session)
@@ -518,6 +484,7 @@ class UserInfo extends Widget
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
         @login.password_error(msg)
+        document.body.cursor = "default"
 
 
     animate_prev: ->
@@ -552,6 +519,17 @@ class UserInfo extends Widget
             draw_camera_id = setInterval(=>
                 DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
+
+
+
+class Loading extends Widget
+    constructor: (@id)->
+        super
+        create_element("div", "ball", @element)
+        create_element("div", "ball1", @element)
+        create_element("span", "", @element).innerText = _("Welcome")
+
+
 
 DCore.signal_connect("draw", ->
     echo 'receive camera draw signal'

@@ -79,6 +79,7 @@ void lock_switch_user ()
         g_warning ("switch to greeter error:%s\n", error->message);
         g_error_free (error);
     } else {
+        /*gtk_main_quit();*/
         destroy_camera();
     }
 }
