@@ -387,22 +387,18 @@ msgid "Lock"
 msgstr "鎖定"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Suspend"
 msgstr "暫停"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Log out"
 msgstr "登出"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Restart"
 msgstr "重新啟動"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Shut down"
 msgstr "關機"
 
@@ -473,9 +469,8 @@ msgid "New directory"
 msgstr "新增資料夾"
 
 #: ../app/app_tray/tray.c:287
-#, fuzzy
 msgid "another systray is already running..."
-msgstr "另一個託盤程式正在運行...\n"
+msgstr "另一個託盤程式正在運行..."
 
 #: ../lib/dentry/entry.c:746
 #, c-format
