@@ -299,6 +299,9 @@ int main (int argc, char **argv)
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
+    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));*/
+    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));
 
     gchar* username_default = greeter_get_default_user();
     greeter_set_background(gtk_widget_get_window(webview), username_default, gdk_screen_width(), gdk_screen_height());

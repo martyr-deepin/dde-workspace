@@ -75,8 +75,8 @@ class PowerMenu extends Widget
                 title = _("restart")
                 img = img_before + "#{key}.png"
                 power_menu.insert(key, title, img)
-#            else if key == "shutdown"
-                #title = _("shutdown")
+            else if key == "shutdown"
+                title = _("shutdown")
             else
                 echo "invalid power option"
 

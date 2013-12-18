@@ -23,10 +23,11 @@
     display:-webkit-box;
     cursor:pointer;
 }
-
+.voice:hover{
+    background-image:url(images/mediacontrol/voice_hover.png) 
+}
 
 .VoiceControl{
-
 }
 
 .background{

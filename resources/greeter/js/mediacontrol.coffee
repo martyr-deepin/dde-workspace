@@ -209,7 +209,6 @@ class MediaControl extends Widget
             x = p.x + voice.clientWidth
             y = p.y + 11
             voicecontrol.show(x,y)
-            el.src = img_src_before + voice_status + "_hover.png"
             volume = audioplay.getVolume()
             voicecontrol.drawVolume(volume)
         )
@@ -217,11 +216,8 @@ class MediaControl extends Widget
             is_volume_control = false
             voicecontrol.hide()
             #voicecontrol.hide() if not voicecontrol.mouseover
-            el.src = img_src_before + voice_status + "_normal.png"
         )
-        #el.addEventListener("click",=>
-            #el.src = img_src_before + voice_status + "_press.png"
-        #)
+
         document.body.addEventListener("mousewheel",(e) =>
             if is_volume_control
                 voicecontrol.mousewheel(e)

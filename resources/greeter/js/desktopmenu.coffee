@@ -33,33 +33,40 @@ class DesktopMenu extends Widget
     new_desktop_menu: ->
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
+            #DCore.Greeter.set_selected_session(id)
         de_menu = new ComboBox("desktop", de_menu_cb)
         #de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
         
         sessions = DCore.Greeter.get_sessions()
         echo sessions
+        default_session = DCore.Greeter.get_default_session()
+        echo "default_session:#{default_session}"
+        if default_session is null then default_session = "deepin"
         for session in sessions
             id = session
             name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
             icon_path = img_before + "#{icon}"
-            de_menu.insert(id, name, icon_path)
-        default_session = DCore.Greeter.get_default_session()
+            echo icon_path
+            if session isnt default_session
+                de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
-        de_menu.set_current(default_session)
+        #de_menu.set_current(default_session)
         
-        de_menu.current_img.src = img_before + "deepin_normal.png"
+        de_menu.current_img.src = img_before + "#{default_session}_normal.png"
 
-        #DCore.Greeter.set_selected_session(default_session)
         de_menu.current_img.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "deepin.png"
+            echo "mouseover"
+            de_menu.current_img.src = img_before + "#{default_session}.png"
+            echo de_menu.current_img.src
         )
         de_menu.current_img.addEventListener("mouseout",=>
-            de_menu.current_img.src = img_before + "deepin_normal.png"
+            echo "mouseout"
+            de_menu.current_img.src = img_before + "#{default_session}_normal.png"
         )
         # de_menu.current_img.addEventListener("click", (e) =>
-        #     power_dict["deepin"]()
+        #     power_dict["#{default_session}"]()
         # )
         de_menu.menu.element.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "deepin.png"
+            de_menu.current_img.src = img_before + "#{default_session}.png"
         )

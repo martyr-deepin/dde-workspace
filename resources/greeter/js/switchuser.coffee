@@ -27,22 +27,30 @@ class SwitchUser extends Widget
     
     button_switch:->
         echo "button_switch"
-        @switch = create_img("switch", "images/userswitch/down_normal.png", @element)
+        @switch = create_img("switch", "images/userswitch/acount_switch_normal.png", @element)
         @switch.style.width = "60px"
         @switch.style.height = "60px"
         @switch.addEventListener("mouseover", =>
-            @switch.src = "images/userswitch/down_hover.png"
+            @switch.src = "images/userswitch/acount_switch_hover.png"
         )
         @switch.addEventListener("mouseout", =>
-            @switch.src = "images/userswitch/down_normal.png"
+            @switch.src = "images/userswitch/acount_switch_normal.png"
         )
         @switch.addEventListener("click", =>
-            @switch.src = "images/userswitch/down_press.png"
+            #document.body.style.opacity = "0.0"
+            #document.body.style.display = "none"
+            #DCore.Lock.quit()
             DCore.Lock.switch_user()
+            #@SwitchToGreeter()
         )
 
     SwitchToGreeter:->
-        DCore.Lock.switch_user()
+        try
+            switch_dbus = DCore.DBus.sys_object("org.freedesktop.DisplayManager","/org/freedesktop/DisplayManager/Seat0","org.freedesktop.DisplayManager.Seat")
+            switch_dbus.SwitchToGreeter()
+        catch error
+            echo "can not find the switch dbus,perhaps you only have one userAccount!"
+            return false
 
     SwitchToUser:(username,session_name)->
         try

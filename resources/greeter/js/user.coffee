@@ -471,6 +471,7 @@ class UserInfo extends Widget
         if is_greeter
             echo 'start session'
             DCore.Greeter.start_session(username, password, @session)
+            document.body.cursor = "wait"
             echo 'start session end'
         else
             DCore.Lock.start_session(username,password,@session)
@@ -483,6 +484,7 @@ class UserInfo extends Widget
         # message_tip = null
         # message_tip = new MessageTip(msg, user_ul.parentElement)
         @login.password_error(msg)
+        document.body.cursor = "default"
 
 
     animate_prev: ->
