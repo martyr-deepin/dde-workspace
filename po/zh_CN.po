@@ -150,13 +150,13 @@ msgstr "星期六"
 
 #: ../resources/greeter/js/user.coffee:109
 msgid "Administrator"
-msgstr ""
+msgstr "管理员"
 
 #: ../resources/greeter/js/user.coffee:110
 #: ../resources/greeter/js/user.coffee:111
 #: ../resources/greeter/js/user.coffee:112
 msgid "Standard user"
-msgstr ""
+msgstr "标准用户"
 
 #: ../resources/greeter/js/user.coffee:160
 msgid "guest"
@@ -177,11 +177,11 @@ msgstr "欢迎"
 #: ../resources/greeter/js/lock.coffee:62
 #: ../resources/greeter/js/greeter.coffee:88
 msgid "ShutDown"
-msgstr ""
+msgstr "关机"
 
 #: ../resources/greeter/js/powermenu.coffee:71
 msgid "suspend"
-msgstr "挂起"
+msgstr "待机"
 
 #: ../resources/greeter/js/powermenu.coffee:75
 msgid "restart"
@@ -258,7 +258,7 @@ msgstr "驻留(_D)"
 
 #: ../resources/dock/js/item.coffee:302
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "该项无效。您要将其从Dock删除吗？"
+msgstr "该项无效。您要把它从Dock删除吗？"
 
 #: ../resources/desktop/js/specialitem.coffee:34
 msgid "Computer"
@@ -384,17 +384,17 @@ msgstr "解散(_U)"
 
 #: ../resources/shutdown/js/utils.coffee:26
 msgid "Lock"
-msgstr ""
+msgstr "锁定"
 
 #: ../resources/shutdown/js/utils.coffee:26
 #, fuzzy
 msgid "Suspend"
-msgstr "挂起"
+msgstr "待机"
 
 #: ../resources/shutdown/js/utils.coffee:26
 #, fuzzy
 msgid "Log out"
-msgstr "登录"
+msgstr "注销"
 
 #: ../resources/shutdown/js/utils.coffee:26
 #, fuzzy
@@ -408,27 +408,27 @@ msgstr "关机"
 
 #: ../resources/shutdown/js/utils.coffee:28
 msgid "The system will be locked in %1 seconds."
-msgstr ""
+msgstr "系统将在 %1 秒后锁定"
 
 #: ../resources/shutdown/js/utils.coffee:29
 msgid "The system will be suspended in %1 seconds."
-msgstr ""
+msgstr "系统将在 %1 秒后待机"
 
 #: ../resources/shutdown/js/utils.coffee:30
 msgid "You will be automatically logged out in %1 seconds."
-msgstr ""
+msgstr "系统将在 %1 秒后注销当前用户"
 
 #: ../resources/shutdown/js/utils.coffee:31
 msgid "The system will restart in %1 seconds."
-msgstr ""
+msgstr "系统将在 %1 秒后重新启动"
 
 #: ../resources/shutdown/js/utils.coffee:32
 msgid "The system will shut down in %1 seconds."
-msgstr ""
+msgstr "系统将在 %1 秒后关闭"
 
 #: ../resources/shutdown/js/confirmdialog.coffee:63
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
 msgid "another instance of launcher is running...\n"
