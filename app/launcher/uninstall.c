@@ -31,8 +31,10 @@
 #include "dcore.h"
 #include "dentry/entry.h"
 #include "category.h"
+#include "jsextension.h"
 
 #define UNINSTALL_FAILED_TITLE "uninstall failed"
+#define UNINSTALL_FAILED_SIGNAL "uninstall-failed"
 
 #define SOFTWARE_CENTER_NAME "com.linuxdeepin.softwarecenter"
 #define SOFTWARE_CENTER_OBJECT_PATH "/com/linuxdeepin/softwarecenter"
@@ -112,6 +114,25 @@ void destroy_uninstall_info(struct UninstallInfo* info)
     g_free(info->path);
     g_free(info->package_names);
     g_slice_free(struct UninstallInfo, info);
+}
+
+
+static
+void post_failed_message(struct UninstallInfo* info)
+{
+    GRAB_CTX();
+    JSObjectRef info_json = json_create();
+    char* escaped_path = g_uri_escape_string(info->path,
+                                             G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                             FALSE);
+    char* uri = g_strdup_printf("file://%s", escaped_path);
+    g_free(escaped_path);
+    char* id = calc_id(uri);
+    g_free(uri);
+    json_append_string(info_json, "id", id);
+    g_free(id);
+    js_post_message(UNINSTALL_FAILED_SIGNAL, info_json);
+    UNGRAB_CTX();
 }
 
 
@@ -224,21 +245,27 @@ void iter_struct(DBusMessageIter* struct_iter,
         }
         case ACTION_FAILED: {
             // (sia(sbbb)s)
-            g_warning("failed");
+            g_warning("get failed signal");
             DBusMessageIter failed_iter;
             dbus_message_iter_recurse(struct_element_iter, &failed_iter);
+            g_warning("%s", dbus_message_iter_get_signature(struct_element_iter));
 
             while (dbus_message_iter_get_arg_type(&failed_iter) != DBUS_TYPE_ARRAY) {
                 dbus_message_iter_next(&failed_iter);
             }
 
             dbus_message_iter_next(&failed_iter);
-            DBusBasicValue value;
+            g_warning("%c", dbus_message_iter_get_arg_type(&failed_iter));
+            DBusBasicValue value = {0};
             dbus_message_iter_get_basic(&failed_iter, &value);
 
-            destroy_uninstall_info(info);
-            notify(UNINSTALL_FAILED_TITLE, value.str);
+            if (value.str == NULL || value.str[0] == '\0')
+                notify(UNINSTALL_FAILED_TITLE, value.str);
+            else
+                notify(UNINSTALL_FAILED_TITLE, "Unknown error, resources temporarily unavailable");
+            post_failed_message(info);
             set_uninstalling(FALSE);
+            destroy_uninstall_info(info);
             g_thread_exit(NULL);
         }
         case ACTION_INVALID:
@@ -463,6 +490,8 @@ void do_uninstall(gpointer _info)
         _uninstall_package(info);
     } else {
         notify(UNINSTALL_FAILED_TITLE, "package name is not found");
+        post_failed_message(info);
+        destroy_uninstall_info(info);
     }
 }
 

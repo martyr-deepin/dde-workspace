@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <glib.h>
 #include <stdlib.h>
+#include <string.h>
 #include <glib/gstdio.h>
 #include <glib/gprintf.h>
 #include <sys/types.h>

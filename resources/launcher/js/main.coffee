@@ -28,6 +28,10 @@ applications = {}
 # value: a list of category id to which key belongs
 hidden_icons = {}
 
+# key: id of app
+# value: Item class
+uninstalling_apps = {}
+
 
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
@@ -63,7 +67,11 @@ DCore.signal_connect("update_items", (info)->
     echo "core: #{info.core}"
     echo "categories: #{info.categories}"
 
+
     if info.status.match(/^deleted$/i)
+        if uninstalling_apps[info.id]
+            delete uninstalling_apps[info.id]
+
         if Widget.look_up(info.id)?
             echo 'deleted'
             applications[info.id].destroy()
@@ -90,6 +98,13 @@ DCore.signal_connect("update_items", (info)->
     # FIXME:
     # load what should be shown
     grid_load_category(selected_category_id)
+)
+DCore.signal_connect("uninstall-failed", (info)->
+    if (item = uninstalling_apps[info.id])?
+        echo "#{info.id} uninstall failed"
+        item.status = SOFTWARE_STATE.IDLE
+        item.show()
+    delete uninstalling_apps[info.id]
 )
 DCore.signal_connect("autostart-update", (info)->
     if (app = Widget.look_up(info.id))?
@@ -356,3 +371,4 @@ _init_hidden_icons()
 bind_events()
 DCore.Launcher.webview_ok()
 DCore.Launcher.test()
+

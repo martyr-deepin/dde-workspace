@@ -204,8 +204,10 @@ class Item extends Widget
             when 5 then @toggle_autostart()
             when 6
                 if confirm("Are you sure to uninstall Item?")
-                    @element.style.display = 'none'
+                    @hide()
                     @status = SOFTWARE_STATE.UNINSTALLING
+                    echo "add #{@id} to uninstalling_apps"
+                    uninstalling_apps[@id] = @
                     DCore.Launcher.uninstall(@core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
 

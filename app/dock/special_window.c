@@ -38,7 +38,7 @@ gboolean launcher_should_exit()
     Display* _dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
     XClassHint ch;
     if (XGetClassHint(_dsp, active_client_id, &ch)) {
-        if (g_strcmp0(ch.res_class, "DDELauncher") == 0) {
+        if (g_strcmp0(ch.res_name, "launcher") == 0) {
             is_launcher_sub_window = TRUE;
         }
     }

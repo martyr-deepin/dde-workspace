@@ -1536,7 +1536,7 @@ char* dentry_get_default_audio_player_name()
    GAppInfo* gappinfo = g_app_info_get_default_for_type("audio/mpeg",FALSE);
    const char* name = g_app_info_get_name(gappinfo);
    g_object_unref(gappinfo);
-   return name;
+   return g_strdup(name);
 }
 
 
@@ -1550,3 +1550,4 @@ char* dentry_get_default_audio_player_icon()
    g_object_unref(gappinfo);
    return icon_url;
 }
+
