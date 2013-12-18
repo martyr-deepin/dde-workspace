@@ -49,7 +49,6 @@ class DesktopMenu extends Widget
             icon_path = img_before + "#{icon}"
             echo icon_path
             if session isnt default_session
-                echo session
                 de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
         #de_menu.set_current(default_session)

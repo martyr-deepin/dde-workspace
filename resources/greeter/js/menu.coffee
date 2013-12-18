@@ -132,7 +132,10 @@ class ComboBox extends Widget
         return ret
 
     set_current: (id)->
-        find = @menu.items[id]
+        try
+            find = @menu.items[id]
+        catch error
+            echo "find items[#{id}] error"
         if not find?
             find = @get_useable_current()
         @menu.current = find[0]
