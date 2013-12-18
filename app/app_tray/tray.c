@@ -42,6 +42,8 @@
 static GHashTable* _icons = NULL;
 static gint _na_width = 0;
 static gboolean _TRY_ICON_INIT = FALSE;
+static GdkWindow* _deepin_tray = NULL;
+static gint _deepin_tray_width = 0;
 
 #define FCITX_TRAY_ICON "fcitx"
 #ifdef SPECIAL_FCITX
@@ -142,6 +144,18 @@ void safe_window_move(GdkWindow* wrapper, int x, int y)
 static int offset = 0;
 void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 {
+    if (wrapper == _deepin_tray)
+        return;
+    int icon_width = gdk_window_get_width(wrapper);
+    g_warning("[%s] window width is %d", __func__, icon_width);
+    _na_width += icon_width + PADDING;
+    if (_na_width < DEFAULT_WIDTH)
+        _na_width = DEFAULT_WIDTH + PADDING;
+}
+
+
+void set_position(GdkWindow* wrapper, gpointer width)
+{
 #ifdef SPECIAL_FCITX
     g_assert(wrapper != _fcitx_tray);
 #endif
@@ -159,9 +173,10 @@ void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 
 void _update_notify_area_width()
 {
-    _na_width = g_hash_table_size(_icons) * (PADDING + DEFAULT_WIDTH) + PADDING;
+    _na_width = PADDING + _deepin_tray_width;
     offset = PADDING;
     g_hash_table_foreach(_icons, (GHFunc)accumulate_na_width, NULL);
+    g_hash_table_foreach(_icons, (GHFunc)set_position, NULL);
     update_tray_guard_window_position(_na_width);
     update_tray_region(_na_width);
     gdk_window_invalidate_rect(TRAY_GDK_WINDOW(), NULL, FALSE);
@@ -202,6 +217,10 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 {
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
+        if (wrapper == _deepin_tray) {
+            _deepin_tray = NULL;
+            _deepin_tray_width = 0;
+        }
 #ifdef SPECIAL_FCITX
         if (_fcitx_tray == wrapper) {
             destroy_wrapper(_fcitx_tray);
@@ -220,6 +239,10 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
     } else if (xev->type == ConfigureNotify) {
         XConfigureEvent* xev = (XConfigureEvent*)xevent;
         int new_width = ((XConfigureEvent*)xev)->width;
+        if (wrapper == _deepin_tray) {
+            _deepin_tray_width = CLAMP_WIDTH(new_width);
+            g_warning("new deepin tray width is %d", new_width);
+        }
 #ifdef SPECIAL_FCITX
         if (wrapper == _fcitx_tray) {
             _fcitx_tray_width = CLAMP_WIDTH(new_width);
@@ -227,6 +250,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
         } else if (wrapper != _fcitx_tray) {
 #endif
             int new_height = ((XConfigureEvent*)xev)->height;
+            g_warning("=================%lf====================", CLAMP_WIDTH(new_width * 1.0/new_height * DEFAULT_HEIGHT));
             g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(CLAMP_WIDTH((new_width * 1.0 / new_height * DEFAULT_HEIGHT))));
             _update_notify_area_width();
 #ifdef SPECIAL_FCITX
@@ -260,6 +284,11 @@ void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container
 
     char *re_class = NULL;
     get_wmclass(icon, &re_class, NULL);
+    if (g_strcmp0(re_class, "DeepinTrayIcon") == 0) {
+        _deepin_tray = wrapper;
+        g_warning("%d ==? %d", gdk_window_get_width(icon), gdk_window_get_width(wrapper));
+        _deepin_tray_width = CLAMP_WIDTH(gdk_window_get_width(icon));
+    }
 #ifdef SPECIAL_FCITX
     if (g_strcmp0(re_class, FCITX_TRAY_ICON) == 0) {
         _fcitx_tray = wrapper;
