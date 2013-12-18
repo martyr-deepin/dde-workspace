@@ -2,7 +2,7 @@ body{
     background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
     cursor:default;
     overflow:hidden;
-    background-color:rgba(0,0,0,0.9)
+    /*background-color:rgba(0,0,0,0.7);*/
 }
 
 
@@ -22,11 +22,12 @@ body{
 }
 
 .frame_confirm{
+    background-color:rgba(122,122,100,0.2);
     display:-webkit-box;
+    /*margin-bottom:135px;*/
 }
 
 .left{
-    margin-left:135px;
 }
 .img_confirm{
     width:80px;
