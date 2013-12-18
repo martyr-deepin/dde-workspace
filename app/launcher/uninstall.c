@@ -34,7 +34,7 @@
 #include "jsextension.h"
 
 #define UNINSTALL_FAILED_TITLE "uninstall failed"
-#define UNINSTALL_FAILED_SIGNAL "uninstall-failed"
+#define UNINSTALL_FAILED_SIGNAL "uninstall_failed"
 
 #define SOFTWARE_CENTER_NAME "com.linuxdeepin.softwarecenter"
 #define SOFTWARE_CENTER_OBJECT_PATH "/com/linuxdeepin/softwarecenter"

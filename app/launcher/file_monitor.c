@@ -310,7 +310,7 @@ gboolean _update_autostart(gpointer user_data)
     g_debug("[%s] %s is changed", __func__, uri);
     JSObjectRef id_info = json_create();
     json_append_string(id_info, "id", id);
-    js_post_message("autostart-update", id_info);
+    js_post_message("autostart_update", id_info);
 
     g_free(id);
 

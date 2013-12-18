@@ -61,12 +61,11 @@ DCore.signal_connect("draw_background", (info)->
         _b.style.backgroundImage = "url(#{img.src})"
 )
 DCore.signal_connect("update_items", (info)->
-    echo "update items:"
-    echo "status: #{info.status}"
-    echo "id: #{info.id}"
-    echo "core: #{info.core}"
-    echo "categories: #{info.categories}"
-
+    # echo "update items:"
+    # echo "status: #{info.status}"
+    # echo "id: #{info.id}"
+    # echo "core: #{info.core}"
+    # echo "categories: #{info.categories}"
 
     if info.status.match(/^deleted$/i)
         if uninstalling_apps[info.id]
@@ -99,14 +98,14 @@ DCore.signal_connect("update_items", (info)->
     # load what should be shown
     grid_load_category(selected_category_id)
 )
-DCore.signal_connect("uninstall-failed", (info)->
+DCore.signal_connect("uninstall_failed", (info)->
     if (item = uninstalling_apps[info.id])?
         echo "#{info.id} uninstall failed"
         item.status = SOFTWARE_STATE.IDLE
         item.show()
     delete uninstalling_apps[info.id]
 )
-DCore.signal_connect("autostart-update", (info)->
+DCore.signal_connect("autostart_update", (info)->
     if (app = Widget.look_up(info.id))?
         if DCore.Launcher.is_autostart(app.core)
             # echo 'add'
