@@ -45,17 +45,13 @@ init_search_box = ->
     )
 
     s_box.addEventListener("keydown", (e) ->
-        e.stopPropagation()
         switch e.which
             when ESC_KEY
+                e.stopPropagation()
                 if s_box.value == ""
                     exit_launcher()
                 else
                     clean_search_bar()
-            when ENTER_KEY
-                s_box.blur()
-            when TAB_KEY
-                e.preventDefault()
     )
 
     $("#search").addEventListener('click', (e)->
