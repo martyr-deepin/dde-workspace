@@ -149,6 +149,11 @@ static void _bus_method_call (GDBusConnection * connection,
                  const gchar * method, GVariant * params,
                  GDBusMethodInvocation * invocation, gpointer user_data)
 {
+        (void)connection;
+        (void)sender;
+        (void)object_path;
+        (void)interface;
+        (void)user_data;
         GVariant * retval = NULL;
         if (0) { {{range .Methods}}{{if not .IsSignal}}
         } else if (g_strcmp0(method, "{{.Name}}") == 0) {
@@ -175,6 +180,7 @@ static void _bus_method_call (GDBusConnection * connection,
 }
 static void _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
 {
+    (void)name;
     static GDBusInterfaceVTable interface_table = {
         method_call:   _bus_method_call,
         get_property:   NULL, /* No properties */
