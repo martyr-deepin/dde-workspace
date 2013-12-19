@@ -457,7 +457,7 @@ JSObjectRef launcher_get_categories()
 {
     JSObjectRef categories = json_array_create();
 
-    _insert_category(categories, 0, ALL_CATEGORY_ID, ALL);
+    _insert_category(categories, 0, ALL_CATEGORY_ID, _(ALL));
 
     const char* names[] = {
         INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,

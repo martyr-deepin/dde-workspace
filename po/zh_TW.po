@@ -387,22 +387,18 @@ msgid "Lock"
 msgstr "鎖定"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Suspend"
 msgstr "暫停"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Log out"
 msgstr "登出"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Restart"
 msgstr "重新啟動"
 
 #: ../resources/shutdown/js/utils.coffee:26
-#, fuzzy
 msgid "Shut down"
 msgstr "關機"
 
