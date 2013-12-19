@@ -104,7 +104,7 @@ class ConfirmDialog extends Widget
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text_force[i]
-        @button_ok.style.textColor = "rgba(255,122,122,1.0)"
+        @button_ok.style.textColor = "rgba(255,128,114,1.0)"
     
     interval:(time)->
         i = @i
