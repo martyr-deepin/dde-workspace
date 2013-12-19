@@ -24,6 +24,7 @@ powerchoose = null
 frame_click = false
 option = ["lock","suspend","logout","restart","shutdown"]
 option_text = [_("Lock"),_("Suspend"),_("Log out"),_("Restart"),_("Shut down")]
+option_text_force = [_("Lock"),_("Suspend"),_("Force Log out"),_("Force Restart"),_("Force Shut down")]
 message_text = [
     _("The system will be locked in %1 seconds."),
     _("The system will be suspended in %1 seconds."),
@@ -38,6 +39,7 @@ destory_all = ->
     clearInterval(timeId) if timeId
     DCore.Shutdown.quit()
 
+can_power_direct = power_can(opt)
 
 confirm_ok = (i)->
     #destory_all()
@@ -46,7 +48,8 @@ confirm_ok = (i)->
         when "lock" then destory_all()
         when "suspend" then destory_all()
     clearInterval(timeId) if timeId
-    power_func(option[i])
+    if can_power_direct then power_request(option[i])
+    else power_force(option[i])
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth

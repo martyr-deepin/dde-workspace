@@ -35,7 +35,7 @@ class ConfirmDialog extends Widget
         if i < 2 or i > 4 then return
         @i = i
         powerchoose = null
-   
+
     destory:->
         document.body.removeChild(@element)
 
@@ -48,24 +48,20 @@ class ConfirmDialog extends Widget
         )
         
         left = create_element("div","left",frame_confirm)
-        img_url = "img/normal/#{option[i]}.png"
-        @img_confirm = create_img("img_confirm",img_url,left)
-        text_img = create_element("div","text_img",left)
-        text_img.textContent = option_text[i]
+        @img_confirm = create_img("img_confirm","img/normal/#{option[i]}.png",left)
+        @text_img = create_element("div","text_img",left)
         
         right = create_element("div","right",frame_confirm)
         @message_confirm = create_element("div","message_confirm",right)
-        @message_confirm.textContent = message_text[i].args(60)
 
         button_confirm = create_element("div","button_confirm",right)
         
         @button_cancel = create_element("div","button_cancel",button_confirm)
         @button_cancel.textContent = _("Cancel")
-        #@button_cancel.type = "button"
 
         @button_ok = create_element("div","button_ok",button_confirm)
-        @button_ok.textContent = option_text[i]
-        #@button_ok.type = "button"
+        if can_power_direct then @style_for_direct()
+        else @style_for_force()
 
         @button_cancel.addEventListener("click",->
             echo "button_cancel click"
@@ -96,8 +92,20 @@ class ConfirmDialog extends Widget
         right.addEventListener("webkitAnimationEnd",=>
             right.style.opacity = "1.0"
         ,false)
+    
+    style_for_direct:->
+        @text_img.textContent = option_text[i]
+        @img_confirm.src = "img/normal/#{option[i]}.png"
+        @message_confirm.textContent = message_text[i].args(60)
+        @button_ok.textContent = option_text[i]
 
-
+    style_for_force:->
+        @text_img.textContent = option_text[i]
+        @img_confirm.src = "img/normal/#{option[i]}.png"
+        @message_confirm.textContent = message_text[i].args(60)
+        @button_ok.textContent = option_text_force[i]
+        @button_ok.style.textColor = "rgba(255,122,122,1.0)"
+    
     interval:(time)->
         i = @i
         that = @
