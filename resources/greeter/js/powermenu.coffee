@@ -30,20 +30,15 @@ class PowerMenu extends Widget
         super
         parent = parent_el
         img_before = "images/powermenu/"
-        upower_obj = DCore.DBus.sys_object("org.freedesktop.UPower", "/org/freedesktop/UPower", "org.freedesktop.UPower")
-        consolekit_obj = DCore.DBus.sys_object("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", "org.freedesktop.ConsoleKit.Manager")
 
     suspend_cb : ->
-        power_func("suspend")
-
-    hibernate_cb : ->
-        power_func("hibernate")
+        power_force("suspend")
 
     restart_cb : ->
-        power_func("restart")
+        power_force("restart")
 
     shutdown_cb : ->
-        power_func("shutdown")
+        power_force("shutdown")
 
     signal_connect:->
         #DCore.signal_connect("power", (msg) ->
