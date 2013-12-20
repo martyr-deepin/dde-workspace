@@ -46,6 +46,6 @@ body {
     position: fixed;
     bottom: 0px;
     min-height: 30px;
-    max-height: 40px;
+    max-height: 60px;
     z-index: -1000;
 }

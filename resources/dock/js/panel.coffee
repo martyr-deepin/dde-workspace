@@ -24,6 +24,8 @@ class Panel
         @panel = $("##{@id}")
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
+        @panel.addEventListener('click', (e)=>
+        )
 
         @show_desktop_image = new Image()
         @show_desktop_image.addEventListener("load", @draw)
@@ -52,9 +54,11 @@ class Panel
         # echo 'draw panel
         ctx = @panel.getContext("2d")
         ctx.save()
-        ctx.drawImage(@show_desktop_image, 0, 1, @show_desktop_image.width, PANEL_HEIGHT)
-        ctx.drawImage(@middle_image, @show_desktop_image.width, 1, @panel.width - @show_desktop_image.width - right.width, PANEL_HEIGHT)
-        ctx.drawImage(right, @panel.width - @show_desktop_image.width, 1, right.width, PANEL_HEIGHT)
+        ctx.shadowBlur = 14
+        ctx.shadowColor = "gray"
+        ctx.drawImage(@show_desktop_image, 0, 0, @show_desktop_image.width, PANEL_HEIGHT)
+        ctx.drawImage(@middle_image, @show_desktop_image.width, 0, @panel.width - @show_desktop_image.width - right.width + 10, PANEL_HEIGHT)
+        ctx.drawImage(right, @panel.width - @show_desktop_image.width + 10, 0, right.width, PANEL_HEIGHT)
         ctx.restore()
         DCore.Dock.update_guard_window_width(@panel.width)
 
