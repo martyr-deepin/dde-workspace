@@ -41,7 +41,7 @@ body {
     /* border: solid 2px red; */
 }
 
-#board {
+#panel {
     /* border: solid 2px black; */
     position: fixed;
     bottom: 0px;

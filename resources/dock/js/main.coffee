@@ -22,9 +22,9 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
-$("#container").style.maxWidth = screen.width - 70  # force board to contain apps
-board = new Board("board")
-board.draw()
+$("#container").style.maxWidth = screen.width - PANEL_MARGIN * 2
+panel = new Panel("panel")
+panel.draw()
 
 
 _current_active_window = null

@@ -40,9 +40,9 @@ calc_app_item_size = ->
     update_dock_region(w * item_num)
 
 update_dock_region = (w)->
-    if board
-        board.set_width(w)
-        board.draw()
+    if panel
+        panel.set_width(w)
+        panel.draw()
     apps = $s(".AppItem")
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
@@ -166,8 +166,8 @@ class AppList extends Widget
 
         @is_insert_indicator_shown = true
         AppList.expand_panel_id = setTimeout(->
-            board.set_width(board.board.width)
-            board.draw()
+            panel.set_width(panel.panel.width)
+            panel.draw()
         , 50)
 
 app_list = new AppList("app_list")
@@ -277,7 +277,7 @@ class AppItem extends Widget
         e.stopPropagation()
         return if @is_fixed_pos
         app_list.hide_indicator()
-        # board.set_width(board.board.width + ITEM_WIDTH)
+        # panel.set_width(panel.panel.width + ITEM_WIDTH)
 
         @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
         if @_try_swaping_id == @app_id
