@@ -329,11 +329,18 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
     XGenericEvent* e = xevent;
 
 
-    if (xev->type == GenericEvent && e->evtype == EnterNotify) {
-        if (GD.config.hide_mode == AUTO_HIDE_MODE)
-            dock_show_real_now();
-        else if (GD.config.hide_mode != NO_HIDE_MODE)
-            dock_delay_show(50);
+    if (xev->type == GenericEvent) {
+        if (e->evtype == EnterNotify) {
+            if (GD.config.hide_mode == AUTO_HIDE_MODE)
+                dock_show_real_now();
+            else if (GD.config.hide_mode != NO_HIDE_MODE)
+                dock_delay_show(50);
+        } else if (e->evtype == LeaveNotify) {
+            if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
+                dock_delay_hide(50);
+            else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock())
+                dock_hide_real_now();
+        }
     }
     return GDK_FILTER_CONTINUE;
 }
