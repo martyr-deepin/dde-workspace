@@ -347,16 +347,14 @@ class User extends Widget
         @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
-        @loginbutton.style.background = "#fbd568"
 
     password_error:(msg)->
-        @password.style.color = "red"
+        @password.style.color = "#ff8a00"
         @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg
         @password.blur()
         @loginbutton.disable = true
-        @loginbutton.style.background = "#808080"
 
     show_hide_password:->
         if @password.type is "password" then @password.type = "text"
