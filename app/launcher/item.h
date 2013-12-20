@@ -18,4 +18,3 @@ GPtrArray* get_autostart_paths();
 JS_EXPORT_API gboolean launcher_is_autostart(Entry* _item);
 
 #endif /* end of include guard: ITEM_H */
-

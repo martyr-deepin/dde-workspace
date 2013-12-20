@@ -19,29 +19,10 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef FILE_MONITOR_H
-#define FILE_MONITOR_H
+#ifndef _UNINSTALL_H_
+#define _UNINSTALL_H_
 
-#include <glib.h>
-#include <gio/gdesktopappinfo.h>
+gboolean is_launcher_uninstalling();
 
-void add_monitors();
-void destroy_monitors();
-
-enum DesktopStatus {
-    UNKNOWN,
-    DELETED,
-    UPDATED
-};
-
-
-struct DesktopInfo {
-    char* id;
-    char* path;
-    enum DesktopStatus status;
-    GList* categories;
-    GDesktopAppInfo* core;
-};
-
-#endif /* end of include guard: FILE_MONITOR_H */
+#endif /* end of include guard: _UNINSTALL_H_ */
 

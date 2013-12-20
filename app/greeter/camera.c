@@ -147,8 +147,6 @@ void do_quit()
 }
 
 
-
-
 void reco()
 {
     // RESOURCE_DIR defined in CMakeLists.txt

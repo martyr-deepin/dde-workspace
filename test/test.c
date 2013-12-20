@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include <glib.h>
 #include "test.h"
 #include <sys/resource.h>
 
@@ -42,3 +41,4 @@ gboolean T(TestFunc f, const char* test_name)
     }
 
 }
+

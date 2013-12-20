@@ -43,6 +43,7 @@
 #include "background.h"
 #include "file_monitor.h"
 #include "item.h"
+#include "uninstall.h"
 #include "test.h"
 #include "DBUS_launcher.h"
 
@@ -234,11 +235,18 @@ void check_version()
 }
 
 
+static
+gboolean can_be_restart()
+{
+    return !is_launcher_shown && !is_launcher_uninstalling();
+}
+
+
 gboolean _launcher_size_monitor(gpointer user_data)
 {
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
-    if (usg.ru_maxrss > RES_IN_MB(180) && !is_launcher_shown) {
+    if (usg.ru_maxrss > RES_IN_MB(180) && can_be_restart()) {
         g_spawn_command_line_async("launcher -r", NULL);
         return FALSE;
     }

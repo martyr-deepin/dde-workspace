@@ -19,10 +19,16 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "item.h"
+#include <string.h>
+
+#include <gio/gdesktopappinfo.h>
+
 #include "jsextension.h"
+#include "dentry/entry.h"
 #include "utils.h"
 #include "xdg_misc.h"
+#include "item.h"
+#include "DBUS_launcher.h"
 
 
 PRIVATE GKeyFile* hidden_apps = NULL;
