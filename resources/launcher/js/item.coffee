@@ -203,9 +203,9 @@ class Item extends Widget
             when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
             when 5 then @toggle_autostart()
             when 6
-                if confirm("Are you sure to uninstall Item?")
-                    @hide()
+                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?")
                     @status = SOFTWARE_STATE.UNINSTALLING
+                    @hide()
                     uninstalling_apps[@id] = @
                     DCore.Launcher.uninstall(@core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
@@ -216,7 +216,8 @@ class Item extends Widget
     # use '->', Item.display_temp and @display_mode will be undifined when this
     # function is pass to some other functions like setTimeout
     show: =>
-        @element.style.display = "block" if Item.display_temp or @display_mode == 'display'
+        if (Item.display_temp or @display_mode == 'display') and @status == SOFTWARE_STATE.IDLE
+            @element.style.display = "block"
 
     is_shown: ->
         @element.style.display == "block"

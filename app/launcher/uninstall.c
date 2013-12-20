@@ -105,6 +105,7 @@ DBusConnection* get_dbus(DBusBusType type)
 struct UninstallInfo {
     char* path;
     char* package_names;
+    char* rules;
     gboolean is_purge;
 };
 
@@ -113,6 +114,7 @@ void destroy_uninstall_info(struct UninstallInfo* info)
 {
     g_free(info->path);
     g_free(info->package_names);
+    g_free(info->rules);
     g_slice_free(struct UninstallInfo, info);
 }
 
@@ -162,26 +164,29 @@ enum ACTION_TYPE get_action_type(const char* action_type)
 }
 
 
-typedef void (*ITERATOR_FUNC)(DBusMessageIter* parent_container_iter,
+typedef void (*ITERATOR_FUNC)(DBusConnection* conn,
+                              DBusMessageIter* parent_container_iter,
                               DBusMessageIter* iter,
                               gpointer user_data);
 
 static
-void iterate_container_message(DBusMessageIter* container,
+void iterate_container_message(DBusConnection* conn,
+                               DBusMessageIter* container,
                                ITERATOR_FUNC iterate_func,
                                gpointer user_data)
 {
     DBusMessageIter element_iter;
     dbus_message_iter_recurse(container, &element_iter);
     while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
-        iterate_func(container, &element_iter, user_data);
+        iterate_func(conn, container, &element_iter, user_data);
         dbus_message_iter_next(&element_iter);
     }
 }
 
 
 static
-void iter_struct(DBusMessageIter* struct_iter,
+void iter_struct(DBusConnection* conn,
+                 DBusMessageIter* struct_iter,
                  DBusMessageIter* struct_element_iter,
                  gpointer user_data
                  )
@@ -231,16 +236,17 @@ void iter_struct(DBusMessageIter* struct_iter,
         }
         case ACTION_FINISH: {
             // (sia(sbbb))
-            g_message("finish");
 
             // delete local file
             if (g_file_test(info->path, G_FILE_TEST_EXISTS)) {
                 g_unlink(info->path);
-                destroy_uninstall_info(info);
             }
 
             notify("uninstall finished", "uninstall finished");
             set_uninstalling(FALSE);
+            g_message("finish");
+            dbus_bus_remove_match(conn, info->rules, NULL);
+            destroy_uninstall_info(info);
             g_thread_exit(NULL);
         }
         case ACTION_FAILED: {
@@ -265,6 +271,7 @@ void iter_struct(DBusMessageIter* struct_iter,
                 notify(UNINSTALL_FAILED_TITLE, "Unknown error, resources temporarily unavailable");
             post_failed_message(info);
             set_uninstalling(FALSE);
+            dbus_bus_remove_match(conn, info->rules, NULL);
             destroy_uninstall_info(info);
             g_thread_exit(NULL);
         }
@@ -280,11 +287,12 @@ void iter_struct(DBusMessageIter* struct_iter,
 
 
 static
-void iter_array(DBusMessageIter* array_iter,
+void iter_array(DBusConnection* conn,
+                DBusMessageIter* array_iter,
                 DBusMessageIter* array_element_iter,
                 gpointer user_data)
 {
-    iterate_container_message(array_element_iter, iter_struct, user_data);
+    iterate_container_message(conn, array_element_iter, iter_struct, user_data);
 }
 
 
@@ -300,6 +308,7 @@ void uninstall_signal_handler(DBusConnection* conn, struct UninstallInfo* info)
             continue;
         }
 
+        g_debug("[%s] loop for signal", __func__);
         if (dbus_message_is_signal(message,
                                    SOFTWARE_CENTER_INTERFACE,
                                    UNINSTALL_LISTEN_SIGNAL)) {
@@ -313,7 +322,8 @@ void uninstall_signal_handler(DBusConnection* conn, struct UninstallInfo* info)
             DBusMessageIter array_iter;
             dbus_message_iter_recurse(&args, &array_iter);
 
-            iterate_container_message(&array_iter, iter_array, info);
+            g_debug("[%s] get signal", __func__);
+            iterate_container_message(conn, &array_iter, iter_array, info);
         }
         dbus_message_unref(message);
     }
@@ -354,6 +364,8 @@ gboolean invoke_uninstall_method(struct UninstallInfo* info)
         return FALSE;
     }
 
+    g_debug("[%s] invoke uninstall method: uninstall_pkg('%s', %d)", __func__, info->package_names, info->is_purge);
+
     return TRUE;
 }
 
@@ -361,14 +373,14 @@ gboolean invoke_uninstall_method(struct UninstallInfo* info)
 static
 void listen_update_signal(struct UninstallInfo* info)
 {
-    gchar *rules = g_strdup_printf("eavesdrop='true',"
-                                   "type='signal',"
-                                   "interface='%s',"
-                                   "member='%s',"
-                                   "path='%s'",
-                                   SOFTWARE_CENTER_INTERFACE,
-                                   UNINSTALL_LISTEN_SIGNAL,
-                                   SOFTWARE_CENTER_OBJECT_PATH);
+    info->rules = g_strdup_printf("eavesdrop='true',"
+                                  "type='signal',"
+                                  "interface='%s',"
+                                  "member='%s',"
+                                  "path='%s'",
+                                  SOFTWARE_CENTER_INTERFACE,
+                                  UNINSTALL_LISTEN_SIGNAL,
+                                  SOFTWARE_CENTER_OBJECT_PATH);
 
     DBusConnection* conn = get_dbus(DBUS_BUS_SYSTEM);
     if (conn == NULL) {
@@ -378,8 +390,7 @@ void listen_update_signal(struct UninstallInfo* info)
     DBusError error;
     dbus_error_init(&error);
 
-    dbus_bus_add_match(conn, rules, &error);
-    g_free (rules);
+    dbus_bus_add_match(conn, info->rules, &error);
 
     if (dbus_error_is_set(&error)) {
         g_warning("[%s] add match failed: %s", __func__, error.message);
@@ -389,6 +400,7 @@ void listen_update_signal(struct UninstallInfo* info)
 
     dbus_connection_flush(conn);
 
+    g_debug("[%s] listen update signal", __func__);
     uninstall_signal_handler(conn, info);
 }
 
@@ -465,14 +477,14 @@ char* get_package_names(const char* basename)
 
     package_names = get_package_names_from_database(basename);
     if (package_names != NULL) {
-        g_message("[%s] get package names from database: %s", __func__, package_names);
+        g_message("[%s] get package names from database: '%s'", __func__, package_names);
         return package_names;
     }
 
     package_names = get_package_names_from_command_line(basename);
 
     if (package_names != NULL)
-        g_message("[%s] get package names from command line: %s", __func__, package_names);
+        g_message("[%s] get package names from command line: '%s'", __func__, package_names);
 
     return package_names;
 }
