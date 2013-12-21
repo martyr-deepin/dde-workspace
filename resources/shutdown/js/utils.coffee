@@ -39,7 +39,6 @@ destory_all = ->
     clearInterval(timeId) if timeId
     DCore.Shutdown.quit()
 
-can_power_direct = power_can(opt)
 
 confirm_ok = (i)->
     #destory_all()
@@ -48,7 +47,7 @@ confirm_ok = (i)->
         when "lock" then destory_all()
         when "suspend" then destory_all()
     clearInterval(timeId) if timeId
-    if can_power_direct then power_request(option[i])
+    if power_can(option[i]) then power_request(option[i])
     else power_force(option[i])
 
 document.body.style.height = window.innerHeight

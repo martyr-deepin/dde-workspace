@@ -27,6 +27,7 @@ class ConfirmDialog extends Widget
     constructor: (opt)->
         super
         i = null
+        @opt = opt
         for tmp,j in option
             if tmp is opt then i  = j
         if i is null
@@ -60,7 +61,7 @@ class ConfirmDialog extends Widget
         @button_cancel.textContent = _("Cancel")
 
         @button_ok = create_element("div","button_ok",button_confirm)
-        if can_power_direct then @style_for_direct()
+        if power_can(@opt) then @style_for_direct()
         else @style_for_force()
 
         @button_cancel.addEventListener("click",->
