@@ -130,17 +130,33 @@ class User extends Widget
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
+                echo "_default_username:#{_default_username}; user:#{user}"
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
                 else
                     u.only_show_name(true)
+                echo "_current_user.id:#{_current_user.id}"
                 userinfo_all.push(u)
         for user,j in userinfo_all
             user.index = j
-        @sort_current_user_info_center()
+        if userinfo_all.length >= 3 then @sort_current_user_info_center()
+        else if userinfo_all.length = 1 then _current_user = userinfo_all[0]
+        for user,j in userinfo_all
+            user.index = j
+            user_ul.appendChild(user.userinfo_li)
+            if user is _current_user then _current_user.focus()
+
         return userinfo_all
 
+    sort_current_user_info_center:->
+        tmp_length = (userinfo_all.length - 1) / 2
+        center_index = Math.round(tmp_length)
+        if _current_user.index isnt center_index
+            center_old = userinfo_all[center_index]
+            userinfo_all[center_index] = _current_user
+            userinfo_all[_current_user.index] = center_old
+    
     new_userinfo_for_lock:->
         user_ul.style.height = "400px"
         user_ul.style.display = "-webkit-box"
@@ -163,18 +179,7 @@ class User extends Widget
                 if DCore.Greeter.is_guest_default()
                     u.focus()
        
-    sort_current_user_info_center:->
-        tmp_length = (userinfo_all.length - 1) / 2
-        center_index = Math.round(tmp_length)
-        if _current_user.index isnt center_index
-            center_old = userinfo_all[center_index]
-            userinfo_all[center_index] = _current_user
-            userinfo_all[_current_user.index] = center_old
-        for user,j in userinfo_all
-            user.index = j
-            user_ul.appendChild(user.userinfo_li)
-            if user is _current_user then _current_user.focus()
-
+    
     get_current_userinfo:->
         return _current_user
 
