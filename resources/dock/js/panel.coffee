@@ -25,6 +25,12 @@ class Panel
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
         @panel.addEventListener('click', (e)=>
+            echo e.offsetX
+            if e.offsetX < PANEL_MARGIN
+                # echo '[panel] toggle show desktop'
+                show_desktop.toggle()
+            else if e.offsetX > @panel.width - @right_image.width
+                echo 'show message'
         )
 
         @show_desktop_image = new Image()
@@ -54,8 +60,8 @@ class Panel
         # echo 'draw panel
         ctx = @panel.getContext("2d")
         ctx.save()
-        ctx.shadowBlur = 14
-        ctx.shadowColor = "gray"
+        ctx.shadowBlur = 20
+        ctx.shadowColor = "rgba(0, 0, 0, .5)"
         ctx.drawImage(@show_desktop_image, 0, 0, @show_desktop_image.width, PANEL_HEIGHT)
         ctx.drawImage(@middle_image, @show_desktop_image.width, 0, @panel.width - @show_desktop_image.width - right.width, PANEL_HEIGHT)
         ctx.drawImage(right, @panel.width - @show_desktop_image.width, 0, right.width, PANEL_HEIGHT)
@@ -80,3 +86,6 @@ class Panel
         @_set_width(w)
         @_set_height(h)
         @draw()
+
+    width: ->
+        @panel.width

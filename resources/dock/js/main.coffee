@@ -121,7 +121,6 @@ setTimeout(->
 
 
 DCore.Dock.emit_webview_ok()
-
-show_desktop.show(DCore.Dock.get_desktop_status())
+show_desktop.set_status(DCore.Dock.get_desktop_status())
 DCore.Dock.test()
 

@@ -23,7 +23,7 @@
 #include "region.h"
 #include "dwebview.h"
 
-#define BOARD_HEIGHT 40
+#define BOARD_HEIGHT 60
 
 cairo_region_t* _region = NULL;
 GdkWindow* _win = NULL;
@@ -51,13 +51,11 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
-/* #define DEBUG_REGION */
 #ifndef DEBUG_REGION
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
 #else
     gdk_window_shape_combine_region(_win, region, 0, 0);
 #endif
-#undef DEBUG_REGION
     return FALSE;
 }
 
@@ -80,16 +78,16 @@ void dock_require_all_region()
 
 
 JS_EXPORT_API
-void dock_force_set_region(double x, double y, double width_per, double number, double height)
+void dock_force_set_region(double x, double y, double items_width, double panel_width, double height)
 {
     cairo_region_destroy(_region);
-    cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)(width_per * number), (int)height};
+    cairo_rectangle_int_t tmp = {(int)x + _base_rect.x, (int)y + _base_rect.y, (int)items_width, (int)height};
 
     cairo_rectangle_int_t dock_board_rect = _base_rect;
-    dock_board_rect.x = tmp.x - width_per / 2;
+    dock_board_rect.x = tmp.x - (panel_width - items_width) / 2;
     dock_board_rect.y = gdk_screen_height() - BOARD_HEIGHT;
     dock_board_rect.height = BOARD_HEIGHT;
-    dock_board_rect.width = (int)(width_per * (number + 1));
+    dock_board_rect.width = (int)panel_width;
     _region = cairo_region_create_rectangle(&dock_board_rect);
 
     cairo_region_union_rectangle(_region, &tmp);
