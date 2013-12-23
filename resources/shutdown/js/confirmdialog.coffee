@@ -27,6 +27,7 @@ class ConfirmDialog extends Widget
     constructor: (opt)->
         super
         i = null
+        @opt = opt
         for tmp,j in option
             if tmp is opt then i  = j
         if i is null
@@ -60,7 +61,8 @@ class ConfirmDialog extends Widget
         @button_cancel.textContent = _("Cancel")
 
         @button_ok = create_element("div","button_ok",button_confirm)
-        if can_power_direct then @style_for_direct()
+        echo @opt + "," + power_can(@opt)
+        if power_can(@opt) then @style_for_direct()
         else @style_for_force()
 
         @button_cancel.addEventListener("click",->
@@ -94,17 +96,19 @@ class ConfirmDialog extends Widget
         ,false)
     
     style_for_direct:->
+        i = @i
         @text_img.textContent = option_text[i]
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text[i]
 
     style_for_force:->
+        i = @i
         @text_img.textContent = option_text[i]
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text_force[i]
-        @button_ok.style.textColor = "rgba(255,128,114,1.0)"
+        @button_ok.style.color = "rgba(255,128,114,1.0)"
     
     interval:(time)->
         i = @i

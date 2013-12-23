@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-18 10:28+0800\n"
+"POT-Creation-Date: 2013-12-23 11:15+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,25 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../resources/launcher/js/grid.coffee:87
-#: ../resources/desktop/js/specialitem.coffee:51
-#: ../resources/desktop/js/specialitem.coffee:138
-#: ../resources/desktop/js/specialitem.coffee:232
-#: ../resources/desktop/js/specialitem.coffee:284
-#: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:458
-msgid "_Open"
-msgstr "打开(_O)"
-
-#: ../resources/launcher/js/grid.coffee:91
-msgid "Send to d_esktop"
-msgstr "发送到桌面(_E)"
-
-#: ../resources/launcher/js/grid.coffee:92
-msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
 
 #: ../resources/launcher/js/search.coffee:29
 msgid "Type to search..."
@@ -71,6 +52,29 @@ msgstr "按使用率排序(_F)"
 #: ../resources/launcher/js/config.coffee:49
 msgid "Sort By _Name"
 msgstr "按名字排序(_N)"
+
+#: ../resources/launcher/js/item.coffee:99
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+msgid "_Open"
+msgstr "打开(_O)"
+
+#: ../resources/launcher/js/item.coffee:106
+msgid "Send to d_esktop"
+msgstr "发送到桌面(_E)"
+
+#: ../resources/launcher/js/item.coffee:107
+msgid "Send to do_ck"
+msgstr "添加到 Dock(_C)"
+
+#: ../resources/launcher/js/item.coffee:115
+msgid "_Uninstall"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -170,7 +174,7 @@ msgstr "登录"
 msgid "Unlock"
 msgstr "解锁"
 
-#: ../resources/greeter/js/user.coffee:530
+#: ../resources/greeter/js/user.coffee:528
 msgid "Welcome"
 msgstr "欢迎"
 
@@ -179,13 +183,18 @@ msgstr "欢迎"
 msgid "ShutDown"
 msgstr "关机"
 
-#: ../resources/greeter/js/powermenu.coffee:71
+#: ../resources/greeter/js/powermenu.coffee:66
 msgid "suspend"
 msgstr "待机"
 
-#: ../resources/greeter/js/powermenu.coffee:75
+#: ../resources/greeter/js/powermenu.coffee:70
 msgid "restart"
 msgstr "重启"
+
+#: ../resources/greeter/js/powermenu.coffee:74
+#, fuzzy
+msgid "shutdown"
+msgstr "关机"
 
 #: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
 msgid "_Run"
@@ -231,15 +240,15 @@ msgstr "时间设置(_D)"
 msgid "_View as digit"
 msgstr "显示数字时钟"
 
-#: ../resources/dock/js/deepin_item.coffee:290
+#: ../resources/dock/js/deepin_item.coffee:297
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/dock/js/deepin_item.coffee:291
+#: ../resources/dock/js/deepin_item.coffee:298
 msgid "Show/Hide Desktop"
 msgstr "显示/隐藏桌面"
 
-#: ../resources/dock/js/deepin_item.coffee:292
+#: ../resources/dock/js/deepin_item.coffee:299
 #: ../resources/desktop/js/specialitem.coffee:173
 msgid "Trash"
 msgstr "回收站"
@@ -383,10 +392,12 @@ msgid "_Ungroup"
 msgstr "解散(_U)"
 
 #: ../resources/shutdown/js/utils.coffee:26
+#: ../resources/shutdown/js/utils.coffee:27
 msgid "Lock"
 msgstr "锁定"
 
 #: ../resources/shutdown/js/utils.coffee:26
+#: ../resources/shutdown/js/utils.coffee:27
 msgid "Suspend"
 msgstr "待机"
 
@@ -402,31 +413,46 @@ msgstr "重启"
 msgid "Shut down"
 msgstr "关机"
 
-#: ../resources/shutdown/js/utils.coffee:28
+#: ../resources/shutdown/js/utils.coffee:27
+#, fuzzy
+msgid "Force Log out"
+msgstr "注销"
+
+#: ../resources/shutdown/js/utils.coffee:27
+#, fuzzy
+msgid "Force Restart"
+msgstr "重启"
+
+#: ../resources/shutdown/js/utils.coffee:27
+#, fuzzy
+msgid "Force Shut down"
+msgstr "关机"
+
+#: ../resources/shutdown/js/utils.coffee:29
 msgid "The system will be locked in %1 seconds."
 msgstr "系统将在 %1 秒后锁定"
 
-#: ../resources/shutdown/js/utils.coffee:29
+#: ../resources/shutdown/js/utils.coffee:30
 msgid "The system will be suspended in %1 seconds."
 msgstr "系统将在 %1 秒后待机"
 
-#: ../resources/shutdown/js/utils.coffee:30
+#: ../resources/shutdown/js/utils.coffee:31
 msgid "You will be automatically logged out in %1 seconds."
 msgstr "系统将在 %1 秒后注销当前用户"
 
-#: ../resources/shutdown/js/utils.coffee:31
+#: ../resources/shutdown/js/utils.coffee:32
 msgid "The system will restart in %1 seconds."
 msgstr "系统将在 %1 秒后重新启动"
 
-#: ../resources/shutdown/js/utils.coffee:32
+#: ../resources/shutdown/js/utils.coffee:33
 msgid "The system will shut down in %1 seconds."
 msgstr "系统将在 %1 秒后关闭"
 
-#: ../resources/shutdown/js/confirmdialog.coffee:63
+#: ../resources/shutdown/js/confirmdialog.coffee:61
 msgid "Cancel"
 msgstr "取消"
 
-#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+#: ../app/launcher/launcher.c:342 ../app/launcher/launcher.c:353
 msgid "another instance of launcher is running...\n"
 msgstr "已有一个程序启动器实例正在运行...\n"
 
@@ -439,11 +465,11 @@ msgstr "密码错误"
 msgid "Oops...I can't recognize your face. "
 msgstr "糟糕～无法识别您的面部信息。"
 
-#: ../app/greeter/camera.c:177
+#: ../app/greeter/camera.c:175
 msgid "Please login with your password or click your picture to retry."
 msgstr "请使用密码登录或点击头像重试。"
 
-#: ../app/greeter/camera.c:234
+#: ../app/greeter/camera.c:232
 #, c-format
 msgid "%sRetry automatically in %ds"
 msgstr "%s%d秒后自动重试"
@@ -468,32 +494,32 @@ msgstr "新建文件"
 msgid "New directory"
 msgstr "新建目录"
 
-#: ../app/app_tray/tray.c:287
+#: ../app/app_tray/tray.c:316
 msgid "another systray is already running..."
 msgstr "另一个托盘程序正在运行..."
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/dentry/entry.c:741
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
 msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
 msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:753
 msgid "The Item could not be renamed"
 msgstr "该项无法重命名"
 
-#: ../lib/dentry/entry.c:832 ../lib/dentry/fileops.c:804
+#: ../lib/dentry/entry.c:827 ../lib/dentry/fileops.c:804
 msgid "copy"
 msgstr "复制"
 
-#: ../lib/dentry/entry.c:1414
+#: ../lib/dentry/entry.c:1409
 msgid "App Group"
 msgstr "程序启动组"
 
