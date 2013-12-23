@@ -79,8 +79,6 @@ class User extends Widget
             _default_username = DCore.Greeter.get_default_user()
         else
             _default_username = DCore.Lock.get_username()
-        # if _current_user.face_login
-        #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
         return _default_username
 
     get_user_image:(user) ->
@@ -123,6 +121,7 @@ class User extends Widget
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
+        if _default_username is null then _default_username = users_name[0]
         users_name = @get_all_users()
         echo "_default_username:#{_default_username};"
         #users_name = DCore.Greeter.get_users()
