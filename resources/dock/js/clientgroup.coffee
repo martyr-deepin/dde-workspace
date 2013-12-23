@@ -103,11 +103,11 @@ class ClientGroup extends AppItem
     rightclick: =>
         Preview_close_now()
 
-        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', DCore.get_name_by_appid(@app_id) || _("_New Window")))
+        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', "_#{DCore.get_name_by_appid(@app_id)}" || _("_New Window")))
         menu.addSeparator()
 
         for i in [0...@actions.length]
-            menu.append(new MenuItem("#{i}", @actions[i].name))
+            menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
 
         if @actions.length != 0
             menu.addSeparator()
@@ -135,7 +135,7 @@ class ClientGroup extends AppItem
         index = id - 1
         action = @actions[index]
         if action?
-            # echo "#{action.name}, #{action.exec}"
+            echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 
