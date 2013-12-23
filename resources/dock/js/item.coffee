@@ -61,11 +61,11 @@ class AppList extends Widget
         $("#container").appendChild(@element)
         $("#container").addEventListener("click", (e)->
             e.stopPropagation()
-            if e.clientX <= (screen.width - panel.width())/2 + PANEL_MARGIN
+            if e.clientX <= (screen.width - panel.width()) / 2 + PANEL_MARGIN
                 # echo "[applist] toggle show desktop"
                 show_desktop.toggle()
             else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN
-                echo "show message"
+                echo "[applist] show message"
         )
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null

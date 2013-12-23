@@ -19,6 +19,12 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+class PanelImageInfo
+    constructor: (@img, @x, @width)->
+        @y = 0
+        @height = PANEL_HEIGHT
+
+
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
@@ -30,7 +36,7 @@ class Panel
                 # echo '[panel] toggle show desktop'
                 show_desktop.toggle()
             else if e.offsetX > @panel.width - @right_image.width
-                echo 'show message'
+                echo '[panel] show message'
         )
 
         @show_desktop_image = new Image()
@@ -48,28 +54,32 @@ class Panel
         @middle_image.addEventListener("load", @draw)
         @middle_image.src = PANEL_MIDDLE_IMAGE
 
+        @side_width = 0
+
     draw: =>
         if !(@show_desktop_image and @middle_image and @right_image and @notifications_image)
             return
 
-        if true
-            right = @right_image
-        else
-            right = @notifications_image
-
-        # echo 'draw panel
+        # echo "draw panel"
         ctx = @panel.getContext("2d")
         ctx.save()
         ctx.shadowBlur = 20
-        ctx.shadowColor = "rgba(0, 0, 0, .5)"
-        ctx.drawImage(@show_desktop_image, 0, 0, @show_desktop_image.width, PANEL_HEIGHT)
-        ctx.drawImage(@middle_image, @show_desktop_image.width, 0, @panel.width - @show_desktop_image.width - right.width, PANEL_HEIGHT)
-        ctx.drawImage(right, @panel.width - @show_desktop_image.width, 0, right.width, PANEL_HEIGHT)
+        ctx.shadowColor = "rgba(0, 0, 0, .4)"
+        left = new PanelImageInfo(@show_desktop_image, 0, @side_width)
+        middle = new PanelImageInfo(@middle_image, @side_width, @panel.width - @side_width * 2)
+        right = new PanelImageInfo(@right_image, @panel.width - @side_width, @side_width)
+        if false
+            right.img = @notifications_image
+        OFFSET_Y = 0
+        ctx.drawImage(left.img, left.x, OFFSET_Y, left.width, PANEL_HEIGHT)
+        ctx.drawImage(middle.img, middle.x, OFFSET_Y, middle.width, PANEL_HEIGHT)
+        ctx.drawImage(right.img, right.x, OFFSET_Y, right.width, PANEL_HEIGHT)
         ctx.restore()
         DCore.Dock.update_guard_window_width(@panel.width)
 
     _set_width: (w)->
         @panel.width = Math.min(w + @show_desktop_image.width + @right_image.width, screen.width)
+        @side_width = (@panel.width - w) / 2
 
     _set_height: (h)->
         @panel.height = Math.min(h, screen.height)
