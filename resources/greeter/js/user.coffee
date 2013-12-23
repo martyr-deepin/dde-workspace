@@ -141,7 +141,9 @@ class User extends Widget
         for user,j in userinfo_all
             user.index = j
         if userinfo_all.length >= 3 then @sort_current_user_info_center()
-        else if userinfo_all.length = 1 then _current_user = userinfo_all[0]
+        else if userinfo_all.length = 1
+            _current_user = userinfo_all[0]
+            _current_user.only_show_name(false)
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
