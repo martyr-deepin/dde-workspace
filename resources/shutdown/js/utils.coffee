@@ -46,9 +46,9 @@ confirm_ok = (i)->
     switch option[i]
         when "lock" then destory_all()
         when "suspend" then destory_all()
-    clearInterval(timeId) if timeId
-    if power_can(option[i]) then power_request(option[i])
+    if power_can(option[i]) and timeId == 0 then power_request(option[i])
     else power_force(option[i])
+    clearInterval(timeId) if timeId
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth

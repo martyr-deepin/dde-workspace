@@ -186,11 +186,13 @@ inject_css = (el,src)->
     css_element.rel = "stylesheet"
     css_element.href = src
 
+dbus_power = DCore.DBus.session("com.deepin.daemon.ShutdownManager")
+echo dbus_power
+echo dbus_power.CanLogout()
 power_request = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
     document.body.style.cursor = "wait"
     echo "Warning: The system will request ----#{power}----"
-    dbus_power = DCore.DBus.session("com.deepin.daemon.DShutdown")
     switch power
         when "lock" then dbus_power.RequestLock()
         when "suspend" then dbus_power.RequestSuspend()
@@ -200,12 +202,11 @@ power_request = (power) ->
         else return
 
 power_can = (power) ->
-    dbus_power = DCore.DBus.session("com.deepin.daemon.DShutdown")
     switch power
         when "lock" then return true
         when "suspend" then return dbus_power.CanSuspend()
-        when "logout" then return dbus_power.CanShutdown()
-        when "restart" then return dbus_power.CanShutdown()
+        when "logout" then return dbus_power.CanLogout()
+        when "restart" then return dbus_power.CanReboot()
         when "shutdown" then return dbus_power.CanShutdown()
         else return false
 
@@ -214,7 +215,6 @@ power_force = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
     document.body.style.cursor = "wait"
     echo "Warning: The system will ----#{power}---- Force!!"
-    dbus_power = DCore.DBus.session("com.deepin.daemon.DShutdown")
     switch power
         when "lock" then dbus_power.RequestLock()
         when "suspend" then dbus_power.RequestSuspend()
