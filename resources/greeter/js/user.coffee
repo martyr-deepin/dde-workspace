@@ -124,19 +124,19 @@ class User extends Widget
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
+        echo "_default_username:#{_default_username};"
         #users_name = DCore.Greeter.get_users()
        
         for user in users_name
+            echo "user:#{user}"
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
-                echo "_default_username:#{_default_username}; user:#{user}"
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
                 else
                     u.only_show_name(true)
-                echo "_current_user.id:#{_current_user.id}"
                 userinfo_all.push(u)
         for user,j in userinfo_all
             user.index = j
@@ -144,6 +144,8 @@ class User extends Widget
         else if userinfo_all.length = 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
+            _current_user.focus()
+            echo "_current_user.id:#{_current_user.id}"
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
