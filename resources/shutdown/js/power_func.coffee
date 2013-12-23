@@ -1,10 +1,8 @@
-dbus_power = DCore.DBus.session("com.deepin.daemon.ShutdownManager")
-echo dbus_power
-echo dbus_power.CanLogout()
 power_request = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
     document.body.style.cursor = "wait"
     echo "Warning: The system will request ----#{power}----"
+    dbus_power = DCore.DBus.session("com.deepin.daemon.ShutdownManager")
     switch power
         when "lock" then dbus_power.RequestLock()
         when "suspend" then dbus_power.RequestSuspend()
@@ -14,6 +12,7 @@ power_request = (power) ->
         else return
 
 power_can = (power) ->
+    dbus_power = DCore.DBus.session("com.deepin.daemon.ShutdownManager")
     switch power
         when "lock" then return true
         when "suspend" then return dbus_power.CanSuspend()
@@ -27,6 +26,7 @@ power_force = (power) ->
     # option = ["lock","suspend","logout","restart","shutdown"]
     document.body.style.cursor = "wait"
     echo "Warning: The system will ----#{power}---- Force!!"
+    dbus_power = DCore.DBus.session("com.deepin.daemon.ShutdownManager")
     switch power
         when "lock" then dbus_power.RequestLock()
         when "suspend" then dbus_power.RequestSuspend()
