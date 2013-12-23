@@ -48,7 +48,7 @@ class Launcher extends AppItem
         menu.addSeparator()
 
         for i in [0...@actions.length]
-            menu.append(new MenuItem("#{i}", @actions[i].name))
+            menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
 
         if @actions.length > 0
             menu.addSeparator()
