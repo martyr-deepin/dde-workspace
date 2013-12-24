@@ -62,15 +62,18 @@ class User extends Widget
 
 
     get_all_users:->
-        users_path = Dbus_Account.ListCachedUsers_sync()
-        for path in users_path
-            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
-            name = user_dbus.UserName
-            realname = user_dbus.RealName
-            type = user_dbus.AccountType
-            users_realname.push(realname)
-            users_name.push(name)
-            users_type.push(type)
+        if is_greeter
+            users_name = DCore.Greeter.get_users()
+        else
+            users_path = Dbus_Account.ListCachedUsers_sync()
+            for path in users_path
+                user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
+                name = user_dbus.UserName
+                realname = user_dbus.RealName
+                type = user_dbus.AccountType
+                users_realname.push(realname)
+                users_name.push(name)
+                users_type.push(type)
         echo users_name
         return users_name
 
@@ -121,10 +124,9 @@ class User extends Widget
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
-        if _default_username is null then _default_username = users_name[0]
         users_name = @get_all_users()
+        if _default_username is null then _default_username = users_name[0]
         echo "_default_username:#{_default_username};"
-        #users_name = DCore.Greeter.get_users()
        
         for user in users_name
             echo "user:#{user}"
