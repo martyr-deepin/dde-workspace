@@ -39,6 +39,9 @@ String::args = ->
 
     return o
 
+String::addSlashes = ->
+    @replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+
 echo = (log) ->
     console.log log
 
