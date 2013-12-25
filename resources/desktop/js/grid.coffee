@@ -981,45 +981,52 @@ gird_left_mousedown = (evt) ->
 
 
 grid_right_click = (evt) ->
+    evt.preventDefault()
     evt.stopPropagation()
     rightclick_pos.clientX = evt.clientX
     rightclick_pos.clientY = evt.clientY
     if evt.ctrlKey == false and evt.shiftKey == false
         cancel_all_selected_stats()
 
-    templates_menu = []
+    submenu_sort = new Menu(
+        DEEPIN_MENU_TYPE.NORMAL,
+        new MenuItem(11, _("_Name")),
+        new MenuItem(12, _("Last modified _time"))
+    )
+
+    submenu_new = new Menu(
+        DEEPIN_MENU_TYPE.NORMAL,
+        new MenuItem(20, _("_Folder")),
+        new MenuItem(21, _("_Text document"))
+    )
     templates_all = DCore.DEntry.get_templates_files()
     templates = DCore.DEntry.get_templates_filter(templates_all)
-    templates_menu.push([20, _("_Folder")])
-    templates_menu.push([21,_("_Text document")])
     if templates_all.length > 0
-        templates_menu.push([])
+        submenu_new.addSeparator()
         for i in [0...templates.length] by 1
             templates_name = DCore.DEntry.get_name(templates[i])
             templates_id = i + TEMPLATES_FILE_ID_FIRST
-            templates_menu.push([templates_id,templates_name])
+            submenu_new.append(new MenuItem(templates_id, templates_name))
 
-    menus = []
-    menus.push([_("_Sort by"), [
-                [11, _("_Name")],
-                [12, _("Last modified _time")]
-            ]
-        ])
-    menus.push([_("_New"),templates_menu])
     # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
-    menus.push([3, _("Open in _terminal")])
-    menus.push([4, _("_Paste"), DCore.DEntry.can_paste()])
-    menus.push([])
-    menus.push([5, _("_Display settings")])
-    menus.push([6, _("D_esktop settings")])
-    menus.push([7, _("Pe_rsonalize")])
-
-    div_grid.parentElement.contextMenu = build_menu(menus)
+    menu = new Menu(
+        DEEPIN_MENU_TYPE.NORMAL,
+        new MenuItem(1, _("_Sort by")).setSubMenu(submenu_sort),
+        new MenuItem(2, _("_New")).setSubMenu(submenu_new),
+        new MenuItem(3, _("Open in _terminal")),
+        new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
+        new MenuSeparator(),
+        new MenuItem(5, _("_Display settings")),
+        new MenuItem(6, _("D_esktop settings")),
+        new MenuItem(7, _("Pe_rsonalize"))
+    )
+    menu.addListener(grid_do_itemselected).showMenu(evt.clientX, evt.clientY)
     return
 
 
-grid_do_itemselected = (evt) ->
-    switch evt.id
+grid_do_itemselected = (id) ->
+    id = parseInt(id)
+    switch id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
         when 20 then menu_create_new_folder(name_add_before)
@@ -1192,7 +1199,6 @@ create_item_grid = ->
     init_grid_drop()
     div_grid.parentElement.addEventListener("mousedown", gird_left_mousedown)
     div_grid.parentElement.addEventListener("contextmenu", grid_right_click)
-    div_grid.parentElement.addEventListener("itemselected", grid_do_itemselected)
     div_grid.parentElement.addEventListener("keydown", grid_do_keydown_to_shortcut)
     div_grid.parentElement.addEventListener("keyup", grid_do_keyup_to_shrotcut)
     div_grid.parentElement.addEventListener("keypress", grid_do_keypress_to_shrotcut)
