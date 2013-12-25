@@ -58,3 +58,5 @@ ANALOG_CLOCK =
     'bg':'img/analog-clock.svg'
     'id':'dde_analog_clock'
     'type': "analog"
+
+OFFSET_DOWN = 7

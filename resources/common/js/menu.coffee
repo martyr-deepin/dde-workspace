@@ -239,6 +239,7 @@ class Menu
         if ori != null
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
+        # echo @menu
         @dbus.ShowMenu("#{@menu}")
 
     toString: ->

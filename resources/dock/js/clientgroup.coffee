@@ -133,10 +133,10 @@ class ClientGroup extends AppItem
 
         xy = get_page_xy(@element)
         # echo "#{menu}"
-        echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}(-5)"
+        # echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}(+#{OFFSET_DOWN})"
         @menu.addListener(@on_itemselected).showMenu(
             xy.x + @element.clientWidth / 2,
-            xy.y - 5,
+            xy.y + OFFSET_DOWN,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN
         )
 
@@ -147,7 +147,7 @@ class ClientGroup extends AppItem
         # echo "id: #{id}"
         action = @actions[id]
         if action?
-            echo "#{action.name}, #{action.exec}"
+            # echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 

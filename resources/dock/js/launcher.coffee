@@ -8,16 +8,16 @@ class Launcher extends AppItem
         @set_tooltip(DCore.DEntry.get_name(@core))
 
     try_swap_clientgroup: ->
-        @destroy_tooltip()
+        # @destroy_tooltip()
         group = Widget.look_up("le_"+@id)
         if group?
             swap_element(@element, group.element)
             group.destroy()
 
     do_click: (e)=>
-        @destroy_tooltip()
+        # @destroy_tooltip()
         @flash()
-        @_do_launch()
+        @_do_launch([])
 
     do_rightclick: =>
         Preview_close_now()
@@ -37,10 +37,10 @@ class Launcher extends AppItem
 
         @menu.append(new MenuItem('20', _("_Undock")))
         xy = get_page_xy(@element)
-        echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}"
+        # echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}(+#{OFFSET_DOWN})"
         @menu.addListener(@on_itemselected).showMenu(
             xy.x + @element.clientWidth / 2,
-            xy.y - 5,
+            xy.y + OFFSET_DOWN,
             DEEPIN_MENU_CORNER_DIRECTION.DOWN
         )
 
@@ -57,14 +57,12 @@ class Launcher extends AppItem
 
         switch id
             when 10
-                @destroy_tooltip()
-                @_do_launch()
+                # @destroy_tooltip()
+                @_do_launch([])
             when 20 then DCore.Dock.request_undock(@id)
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
-        t = @element.parentElement.removeChild(@element)
-        document.body.appendChild(t)
         calc_app_item_size()
         @rotate()
         setTimeout(=>

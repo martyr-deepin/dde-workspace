@@ -296,8 +296,7 @@ class AppItem extends Widget
         e.preventDefault()
         e.stopPropagation()
 
-    _do_launch: (list=[]) =>
-        echo @core
+    _do_launch: (list) =>
         run_successful = DCore.DEntry.launch(@core, list)
         if not run_successful
             is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock panel?"))
@@ -363,6 +362,8 @@ document.body.addEventListener("drop", (e)->
         s_widget.element.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
         s_widget.element.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
         DCore.Dock.request_undock(s_id)
+        t = s_widget.element.parentElement.removeChild(s_widget.element)
+        document.body.appendChild(t)
         s_widget.destroy_with_animation()
 )
 document.body.addEventListener("dragover", (e)->
