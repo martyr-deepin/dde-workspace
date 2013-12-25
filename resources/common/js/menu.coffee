@@ -98,7 +98,8 @@ class RadioBoxMenu extends CheckBoxMenu
 
 
 class MenuItem
-    constructor: (@itemId, @itemText, @itemSubMenu=new MenuContent)->
+    constructor: (itemId, @itemText, @itemSubMenu=new MenuContent)->
+        @itemId = "#{itemId}"
         @isCheckable = false
         @checked = false
         @itemIcon = ''

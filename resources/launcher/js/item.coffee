@@ -94,43 +94,38 @@ class Item extends Widget
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    _menu: ->
-        menu = [
-            [1, _("_Open")],
-            [],
-            # [],
-            # [id, _("Pin") / _("UNPin")],
-            # []
-            [2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]],
-            [],
-            [3, _("Send to d_esktop"), not DCore.Launcher.is_on_desktop(@core)],
-            [4, _("Send to do_ck"), s_dock!=null],
-            [],
-            [5, AUTOSTARTUP_MESSAGE[@is_autostart]],
-            [],
-            # [id, _("Update"), has_update?],
-            # if has_update?
-            #   [id, _("Update All")],
-            # [],
-            [6, _("_Uninstall")],
-        ]
+    do_rightclick: (e)->
+        e.preventDefault()
+        e.stopPropagation()
+        @menu = null
+        @menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("_Open")),
+            new MenuSeparator(),
+            new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]),
+            new MenuSeparator(),
+            # new MenuItem(id, _("_Pin")/_("_Unpin")),
+            # new MenuSeparator(),
+            new MenuItem(3, _("Send to d_esktop")).setActive(
+                not DCore.Launcher.is_on_desktop(@core)
+            ),
+            new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
+            new MenuSeparator(),
+            new MenuItem(5, AUTOSTARTUP_MESSAGE[@is_autostart]),
+            new MenuSeparator(),
+            # if has_update
+            #     new MenuItem(id, "Update"),
+            #     new MenuItem(id, "Update All"),
+            #     new MenuSeparator(),
+            new MenuItem(6, _("_Uninstall"))
+        )
 
         if DCore.DEntry.internal()
-            menu.push([])
-            menu.push([100, "report this bad icon"])
+            @menu.addSeparator().append(
+                new MenuItem(100, "report this bad icon")
+            )
 
-        menu
-
-    @_contextmenu_callback: do ->
-        _callback_func = null
-        (item)->
-            f = (e) ->
-                item.element.removeEventListener('contextmenu', _callback_func)
-                item.element.contextMenu = build_menu(item._menu())
-                _callback_func = f
-
-    do_buildmenu: (e)=>
-        @_menu()
+        @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     hide_icon: (e)=>
         @display_mode = 'hidden'
@@ -171,8 +166,6 @@ class Item extends Widget
         else
             @display_icon()
 
-        @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
-
     add_to_autostart: ->
         if DCore.Launcher.add_to_autostart(@core)
             @is_autostart = true
@@ -195,8 +188,9 @@ class Item extends Widget
         else
             @add_to_autostart()
 
-    do_itemselected: (e)=>
-        switch e.id
+    on_itemselected: (id)=>
+        id = parseInt(id)
+        switch id
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then @toggle_icon()
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
