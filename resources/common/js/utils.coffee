@@ -17,19 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-Storage.prototype.setObject = (key, value) ->
+Storage::setObject = (key, value) ->
     @setItem(key, JSON.stringify(value))
 
-Storage.prototype.getObject = (key) ->
+Storage::getObject = (key) ->
     JSON.parse(@getItem(key))
 
-String.prototype.endsWith = (suffix)->
+String::endsWith = (suffix)->
     return this.indexOf(suffix, this.length - suffix.length) != -1
-
-Array.prototype.remove = (el)->
-    i = this.indexOf(el)
-    if i != -1
-        this.splice(this.indexOf(el), 1)[0]
 
 String::args = ->
     o = this
@@ -41,6 +36,11 @@ String::args = ->
 
 String::addSlashes = ->
     @replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+
+Array.prototype.remove = (el)->
+    i = this.indexOf(el)
+    if i != -1
+        this.splice(this.indexOf(el), 1)[0]
 
 echo = (log) ->
     console.log log

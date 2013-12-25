@@ -4,14 +4,44 @@ DEEPIN_MENU_INTERFACE = "com.deepin.menu.Menu"
 DEEPIN_MENU_MANAGER_INTERFACE = "com.deepin.menu.Manager"
 
 
+DEEPIN_MENU_TYPE =
+    NORMAL: 0
+    CHECKBOX: 1
+    RADIOBOX: 2
+
+
 DEEPIN_MENU_CORNER_DIRECTION=
-    up: "up"
-    down: "down"
-    left: "left"
-    right: "right"
+    UP: "up"
+    DOWN: "down"
+    LEFT: "left"
+    RIGHT: "right"
 
 
-class Menu
+class NormalMenu
+    constructor: (items...)->
+        @x = 0
+        @y = 0
+        @isDockMenu = false
+        @cornerDirection = DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        if items.length == 1 and Array.isArray(items[0])
+            @menuJsonContent = new MenuContent(items[0])
+        else
+            @menuJsonContent = new MenuContent(items)
+
+    apply: (fn, items)->
+        MenuContent.prototype[fn].apply(@menuJsonContent, items)
+
+    append: (items...)->
+        @apply("append", items)
+
+    addSeparator: ->
+        @menuJsonContent.addSeparator()
+
+    toString: ->
+        "{\"x\": #{@x}, \"y\": #{@y}, \"isDockMenu\": #{@isDockMenu}, \"cornerDirection\": \"#{@cornerDirection}\", \"menuJsonContent\": \"#{@menuJsonContent.toString().addSlashes()}\"}"
+
+
+class MenuContent
     constructor: (item...)->
         @x = 0
         @y = 0
@@ -42,8 +72,8 @@ class MenuContent
         else
             MenuContent::append.apply(@, item)
 
-    append: (item...)->
-        item.forEach((el) =>
+    append: (items...)->
+        items.forEach((el) =>
             @items.push(el)
         )
         @
@@ -55,7 +85,7 @@ class MenuContent
         JSON.stringify(@)
 
 
-class CheckBoxMenu extends Menu
+class CheckBoxMenu extends NormalMenu
     constructor:->
         super
         @checkableMenu = true
@@ -68,9 +98,12 @@ class RadioBoxMenu extends CheckBoxMenu
 
 
 class MenuItem
-    constructor: (@itemId, @itemText, @itemIcon='', @itemIconHover='', @isActive=true, @itemSubMenu=new MenuContent)->
+    constructor: (@itemId, @itemText, @itemSubMenu=new MenuContent)->
         @isCheckable = false
         @checked = false
+        @itemIcon = ''
+        @itemIconHover = ''
+        @isActive = true
         @itemIconInactive = ""
         @showCheckmark = true
 
@@ -87,7 +120,13 @@ class MenuItem
         @
 
     setSubMenu: (subMenu)->
-        @itemSubMenu = subMenu.menuJsonContent
+        switch subMenu.constructor.name
+            when "Menu"
+                @itemSubMenu = subMenu.menu.menuJsonContent
+            when "MenuContent"
+                @itemSubMenu = subMenu
+            when "NormalMenu", "CheckBoxMenu", "RadioBoxMenu"
+                @itemSubMenu = subMenu.menuJsonContent
         @
 
     setActive: (isActive)->
@@ -104,7 +143,7 @@ class MenuItem
 
 class CheckBoxMenuItem extends MenuItem
     constructor: (itemId, itemText, checked=false, isActive=true)->
-        super(itemId, itemText, '', '', isActive)
+        super(itemId, itemText)
         @isCheckable = true
 
     setChecked: (checked)->
@@ -112,7 +151,7 @@ class CheckBoxMenuItem extends MenuItem
         @
 
 
-RadioBoxMenuItem = CheckBoxMenuItem
+class RadioBoxMenuItem extends CheckBoxMenuItem
 
 
 class MenuSeparator extends MenuItem
@@ -128,22 +167,34 @@ get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
             )
             return dbus
 
-        if not dbus?
-            return null
+    null
 
 
-class MenuHandler
-    constructor: (@menu)->
+class Menu
+    constructor: (@type, items...)->
+        switch @type
+            when DEEPIN_MENU_TYPE.NORMAL
+                @menu = new NormalMenu(items)
+            when DEEPIN_MENU_TYPE.CHECKBOX
+                @menu = new CheckBoxMenu(items)
+            when DEEPIN_MENU_TYPE.RADIOBOX
+                @menu = new RadioBoxMenu(items)
+            else
+                throw "Invalid DEEPIN_MENU_TYPE: #{@type}"
+        @_init_dbus()
+
+    apply: (fn, items)->
+        switch @menu.constructor.name
+            when "NormalMenu"
+                NormalMenu.prototype[fn].apply(@menu, items)
+            when "CheckBoxMenu"
+                CheckBoxMenu.prototype[fn].apply(@menu, items)
+            when "RadioBoxMenu"
+                RadioBoxMenu.prototype[fn].apply(@menu, items)
+        @
 
     append: (items...)->
-        switch @menu.constructor.name
-            when "Menu"
-                Menu::append.apply(@menu, items)
-            when "CheckBoxMenu"
-                CheckBoxMenu::append.apply(@menu, items)
-            when "RadioBoxMenuItem"
-                RadioBoxMenuItem::append.apply(@menu, items)
-        @
+        @apply("append", items)
 
     addSeparator: ->
         @menu.addSeparator()
@@ -151,14 +202,16 @@ class MenuHandler
 
     setDockMenuCornerDirection: (cornerDirection)->
         @menu.cornerDirection = cornerDirection
+        @
 
-    # addListener: (callback)->
-    #     try
-    #         @dbus.connect("ItemInvoked", callback)
-    #     catch e
-    #         echo "listenItemSelected: #{e}"
+    addListener: (@callback)->
+        try
+            @dbus.connect("ItemInvoked", @callback)
+            @
+        catch e
+            echo "listenItemSelected: #{e}"
 
-    init_dbus: (x, y)->
+    _init_dbus: ->
         manager = get_dbus(
             "session",
             DEEPIN_MENU_NAME,
@@ -171,16 +224,14 @@ class MenuHandler
 
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
-        dbus = get_dbus(
+        @dbus = get_dbus(
             "session",
             DEEPIN_MENU_NAME,
             menu_dbus_path,
             DEEPIN_MENU_INTERFACE)
 
-        if not dbus
+        if not @dbus
             throw "get Menu DBus failed"
-
-        dbus
 
     showMenu: (x, y, ori=null)->
         @menu.x = x
@@ -188,17 +239,11 @@ class MenuHandler
         if ori != null
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
-        @init_dbus(x, y).ShowMenu("#{@menu}")
+        @dbus.ShowMenu("#{@menu}")
 
     toString: ->
         "#{@menu}"
 
-
-create_menu = (type, items...)->
-    switch type
-        when MENU_TYPE_NORMAL
-            new MenuHandler(new Menu(items))
-        when MENU_TYPE_CHECKBOX
-            new MenuHandler(new CheckBoxMenu(items))
-        when MENU_TYPE_RADIOBOX
-            new MenuHandler(new RadioBoxMenu(items))
+    destroy: ->
+        try
+            @dbus.dis_connect("ItemInvoked", @callback)
