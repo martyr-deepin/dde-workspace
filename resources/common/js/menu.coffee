@@ -98,7 +98,7 @@ class RadioBoxMenu extends CheckBoxMenu
 
 
 class MenuItem
-    constructor: (itemId, @itemText, @itemSubMenu=new MenuContent)->
+    constructor: (itemId, @itemText, subMenu=null)->
         @itemId = "#{itemId}"
         @isCheckable = false
         @checked = false
@@ -107,6 +107,10 @@ class MenuItem
         @isActive = true
         @itemIconInactive = ""
         @showCheckmark = true
+        if subMenu == null
+            @itemSubMenu = new MenuContent
+        else
+            @itemSubMenu = subMenu.menu.menuJsonContent
 
     setIcon: (icon)->
         @itemIcon = icon
@@ -121,13 +125,7 @@ class MenuItem
         @
 
     setSubMenu: (subMenu)->
-        switch subMenu.constructor.name
-            when "Menu"
-                @itemSubMenu = subMenu.menu.menuJsonContent
-            when "MenuContent"
-                @itemSubMenu = subMenu
-            when "NormalMenu", "CheckBoxMenu", "RadioBoxMenu"
-                @itemSubMenu = subMenu.menuJsonContent
+        @itemSubMenu = subMenu.menu.menuJsonContent
         @
 
     setActive: (isActive)->

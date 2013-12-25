@@ -8,14 +8,14 @@ class Launcher extends AppItem
         @set_tooltip(DCore.DEntry.get_name(@core))
 
     try_swap_clientgroup: ->
-        # @destroy_tooltip()
+        @destroy_tooltip()
         group = Widget.look_up("le_"+@id)
         if group?
             swap_element(@element, group.element)
             group.destroy()
 
     do_click: (e)=>
-        # @destroy_tooltip()
+        @destroy_tooltip()
         @flash()
         @_do_launch([])
 
@@ -57,7 +57,7 @@ class Launcher extends AppItem
 
         switch id
             when 10
-                # @destroy_tooltip()
+                @destroy_tooltip()
                 @_do_launch([])
             when 20 then DCore.Dock.request_undock(@id)
 

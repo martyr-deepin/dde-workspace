@@ -345,10 +345,6 @@ class AppItem extends Widget
     on_itemselected: (e)=>
         @do_mouseout(e)
 
-    do_buildmenu: (e)=>
-        Preview_close_now()
-        []
-
     destroy_tooltip: ->
         @tooltip?.hide()
         @tooltip = null

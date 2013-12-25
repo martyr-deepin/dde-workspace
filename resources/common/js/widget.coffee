@@ -22,7 +22,6 @@ _events = [
     'change',
     'click',
     'contextmenu',
-    'buildmenu',
     'rightclick',
     'copy',
     'cut',
@@ -89,8 +88,6 @@ class Widget extends Module
             if key in _events
                 if key == "rightclick"
                     f_rclick = v.bind(this)
-                else if key == "buildmenu"
-                    f_menu = v.bind(this)
                 else if key == "contextmenu"
                     "nothing should do"
                 else

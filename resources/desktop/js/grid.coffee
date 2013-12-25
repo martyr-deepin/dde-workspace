@@ -1011,8 +1011,8 @@ grid_right_click = (evt) ->
     # warning: the templates id can > 30 ,so ,the menu 3 couldnot has child menu id 31\32\33
     menu = new Menu(
         DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(1, _("_Sort by")).setSubMenu(submenu_sort),
-        new MenuItem(2, _("_New")).setSubMenu(submenu_new),
+        new MenuItem(1, _("_Sort by"), submenu_sort),
+        new MenuItem(2, _("_New"), submenu_new),
         new MenuItem(3, _("Open in _terminal")),
         new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
         new MenuSeparator(),
