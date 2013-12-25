@@ -56,8 +56,6 @@ class ShowDesktop extends FixedItem
         )
     do_click: (e)=>
         DCore.Dock.show_desktop(!@__show)
-    do_buildmenu: =>
-        []
     do_dragenter: (e) =>
         e.stopPropagation()
         ShowDesktop.set_time_id = setTimeout(=>
@@ -80,9 +78,6 @@ class LauncherItem extends FixedItem
         )
     do_click: (e)=>
         DCore.Dock.toggle_launcher(!@__show)
-
-    do_buildmenu: =>
-        []
 
 
 class Trash extends FixedItem
@@ -278,7 +273,7 @@ class AnalogClock extends ClockBase
         @short_pointer.style.webkitTransform = "rotate(#{date.getHours() * AnalogClock.DEG_PER_HOUR + date.getMinutes()}deg)"
         @long_pointer.style.webkitTransform = "rotate(#{date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
-    do_buildmenu: =>
+    do_rightclick: =>
         xy = get_page_xy(@element)
         new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
