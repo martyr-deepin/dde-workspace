@@ -296,7 +296,8 @@ class AppItem extends Widget
         e.preventDefault()
         e.stopPropagation()
 
-    _do_launch: (list) =>
+    _do_launch: (list=[]) =>
+        echo @core
         run_successful = DCore.DEntry.launch(@core, list)
         if not run_successful
             is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock panel?"))
@@ -318,7 +319,7 @@ class AppItem extends Widget
                 tmp_list.push(entry)
             if tmp_list.length > 0
                 switch @constructor.name
-                    when "Launcher" then @_do_launch tmp_list
+                    when "Launcher" then @_do_launch(tmp_list)
                     when "ClientGroup"
                         if @n_clients.length == 1
                             DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
@@ -342,13 +343,16 @@ class AppItem extends Widget
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = 'opacity 1s ease-in'
 
-    # on_itemselected: (e)=>
-    do_itemselected: (e) =>
+    on_itemselected: (e)=>
         @do_mouseout(e)
 
     do_buildmenu: (e)=>
         Preview_close_now()
         []
+
+    destroy_tooltip: ->
+        @tooltip?.hide()
+        @tooltip = null
 
 
 document.body.addEventListener("drop", (e)->
