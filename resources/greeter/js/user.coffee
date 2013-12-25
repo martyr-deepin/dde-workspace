@@ -299,14 +299,14 @@ class User extends Widget
         @password.setAttribute("maxlength", 16)
         @password.setAttribute("autofocus", true)
         @eye = create_element("div","eye",@password_div)
-        @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+        @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
         @eye.addEventListener("click",=>
             @show_hide_password()
             if @password.type is "password"
-                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
                 icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
             else
-                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
                 icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
                 
         )
@@ -389,7 +389,8 @@ class UserInfo extends Widget
         @only_info_background = create_element("div","only_info_background",@only_info)
         userbase = create_element("div", "UserBase", @only_info_background)
         img_div = create_element("div","img_div",userbase)
-        userimg = create_img("userimg", @img_src, img_div)
+        img_border = create_element("div","img_border",img_div)
+        userimg = create_img("userimg", @img_src, img_border)
         recognize = create_element("div", "recognize", userbase)
         recognize_h1 = create_element("h1", "recognize_h1", recognize)
         @username = create_element("label", "UserName", recognize_h1)
