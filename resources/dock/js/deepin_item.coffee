@@ -93,16 +93,26 @@ class Trash extends FixedItem
             @update(info.value)
         )
 
-    do_buildmenu:=>
-        menu = [[1, _("_Clean up"), DCore.DEntry.get_trash_count() != 0]]
+    do_rightclick: (e)=>
+        e.preventDefault()
+        menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("_Clean up")).setActive(DCore.DEntry.get_trash_count() != 0)
+        )
         if @is_opened
-            menu.push([2, _("_Close")])
-        menu
+            menu.append(new MenuItem(2, _("_Close")))
+        xy = get_page_xy(@element)
+        menu.addListener(@on_itemselected).showMenu(
+            xy.x + (@element.clientWidth / 2),
+            xy.y + OFFSET_DOWN,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
 
-    do_itemselected: (e)=>
+    on_itemselected: (id)=>
         super
         calc_app_item_size()
-        switch e.id
+        id = parseInt(id)
+        switch id
             when 1
                 loop
                     try
@@ -220,14 +230,22 @@ class DigitClock extends ClockBase
         min = new Date().getMinutes()
         if twobit then @force2bit(min) else "#{min}"
 
-    do_buildmenu: =>
-        [
-            [1, _("_View as analog")],
-            [2, _("_Time settings")]
-        ]
+    do_rightclick: (e)=>
+        e.preventDefault()
+        xy = get_page_xy(@element)
+        new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("_View as analog")),
+            new MenuItem(2, _("_Time as settings"))
+        ).addListener(@on_itemselected).showMenu(
+            xy.x + @element.clientWidth / 2,
+            xy.y + OFFSET_DOWN,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
 
-    do_itemselected: (e)=>
-        switch e.id
+    on_itemselected: (e)=>
+        id = parseInt(e)
+        switch id
             when 1
                 @switch_to_analog()
             when 2
@@ -261,13 +279,20 @@ class AnalogClock extends ClockBase
         @long_pointer.style.webkitTransform = "rotate(#{date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
     do_buildmenu: =>
-        [
-            [1, _("_View as digit")],
-            [2, _("_Time settings")]
-        ]
+        xy = get_page_xy(@element)
+        new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("_View as digit")),
+            new MenuItem(2, _("_Time settings"))
+        ).addListener(@on_itemselected).showMenu(
+            xy.x + @element.clientWidth / 2,
+            xy.y + OFFSET_DOWN,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
 
-    do_itemselected: (e)=>
-        switch e.id
+    on_itemselected: (e)=>
+        id = parseInt(e)
+        switch id
             when 1
                 @switch_to_digit()
             when 2
