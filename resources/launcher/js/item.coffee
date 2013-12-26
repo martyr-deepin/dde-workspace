@@ -41,16 +41,21 @@ class Item extends Widget
         @load_image()
         @status = SOFTWARE_STATE.IDLE
         @name = create_element("div", "item_name", @element)
-        @name.innerText = DCore.DEntry.get_name(@core)
+        name = DCore.DEntry.get_name(@core)
+        @name.innerText = name
         @element.draggable = true
         @element.style.display = "none"
-        try_set_title(@element, DCore.DEntry.get_name(@core), 80)
+        try_set_title(@element, name, 80)
         @display_mode = 'display'
         @is_autostart = DCore.Launcher.is_autostart(@core)
         if @is_autostart
             Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
                 AUTOSTART_ICON_SIZE)
             create_img("autostart_flag", Item.theme_icon, @element)
+
+    destroy: ->
+        grid.removeChild(@element)
+        super
 
     update: (core)->
         # TODO: update category infos

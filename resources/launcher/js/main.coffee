@@ -71,23 +71,24 @@ DCore.signal_connect("update_items", (info)->
         if uninstalling_apps[info.id]
             delete uninstalling_apps[info.id]
 
-        if Widget.look_up(info.id)?
+        if (item = Widget.look_up(info.id))?
             echo 'deleted'
-            applications[info.id].status = SOFTWARE_STATE.UNINSTALLING
-            applications[info.id].hide()
-            applications[info.id].destroy()
-            delete applications[info.id]
-            for category_index in info.categories.concat([ALL_APPLICATION_CATEGORY_ID])
+            for category_index in info.categories
                 category_infos["#{category_index}"].remove(info.id)
+            item.status = SOFTWARE_STATE.UNINSTALLING
+            item.hide()
+            item.destroy()
+            delete applications[info.id]
     else if info.status.match(/^updated$/i)
         if not Widget.look_up(info.id)?
             echo 'added'
             # info.status = "added"
             applications[info.id] = new Item(info.id, info.core)
-            for category_index in info.categories.concat([ALL_APPLICATION_CATEGORY_ID])
+            for category_index in info.categories
                 category_infos["#{category_index}"].push(info.id)
             # TODO: may sort category_info which is changed.
             sort_category_info(sort_methods[sort_method])
+            grid.appendChild(applications[info.id].element)
         else
             echo 'updated'
             applications[info.id].update(info.core)
@@ -97,6 +98,8 @@ DCore.signal_connect("update_items", (info)->
     if s_box.value == ""
         update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
         grid_load_category(selected_category_id)
+    else
+        search()
 )
 DCore.signal_connect("uninstall_failed", (info)->
     if (item = uninstalling_apps[info.id])?
