@@ -76,6 +76,10 @@ class PWContainer extends Widget
         for k, v of @_current_pws
             @_current_pws[k] = true
 
+        if @_current_group?.n_clients?.length == 1
+            Preview_close_now()
+            return
+
         @_current_group?.n_clients?.forEach((w_id)=>
             pw = Widget.look_up("pw"+w_id)
             if not pw
@@ -217,6 +221,8 @@ class PreviewWindow extends Widget
         @close_button.addEventListener('click', (e)=>
             e.stopPropagation()
             DCore.Dock.close_window(@w_id)
+            # if Object.keys(Preview_container._current_pws).length == 1
+            #     Preview_close()
         )
 
         if get_active_window() == @w_id
@@ -289,3 +295,4 @@ document.body.addEventListener("mouseover", (e)->
     if (e.target == document.body)
         Preview_close()
 )
+

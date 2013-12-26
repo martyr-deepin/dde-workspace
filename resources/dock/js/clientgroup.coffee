@@ -198,8 +198,12 @@ class ClientGroup extends AppItem
         clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
-        if @n_clients.length != 0
+        if @n_clients.length > 1
             Preview_show(@)
+        else if @n_clients.length == 1
+            Preview_close_now()
+            @set_tooltip(DCore.get_name_by_appid(@app_id))
+            @tooltip.on_mouseover()
 
     do_dragleave: (e) =>
         super
