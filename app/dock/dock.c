@@ -477,3 +477,13 @@ void dock_set_clock_type(char const* type)
     g_key_file_unref(dock_config);
 }
 
+
+DBUS_EXPORT_API
+void dock_bus_message_notify(gchar* appid, gchar* itemid)
+{
+    JSObjectRef info = json_create();
+    json_append_string(info, "appid", appid);
+    json_append_string(info, "itemid", itemid);
+    js_post_message("message_notify", info);
+}
+

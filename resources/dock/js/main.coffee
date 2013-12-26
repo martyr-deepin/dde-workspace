@@ -24,7 +24,7 @@ document.body.addEventListener("contextmenu", (e) ->
 )
 $("#container").style.maxWidth = screen.width - PANEL_MARGIN * 2
 panel = new Panel("panel")
-panel.draw()
+panel.redraw()
 
 
 _current_active_window = null
@@ -110,6 +110,16 @@ DCore.signal_connect("close_window", (info)->
 DCore.signal_connect("active_window", (info)->
     echo "#{info.app_id}"
     Widget.look_up("le_" + info.app_id).do_click()
+)
+
+DCore.signal_connect("message_notify", (info)->
+    echo "#{info.appid}, #{info.itemid}"
+    if info.appid == "dapptray"
+        echo "show message"
+        panel.has_notifications = true
+        panel.redraw()
+    else
+        echo "not dapptray"
 )
 
 setTimeout(->

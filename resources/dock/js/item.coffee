@@ -42,7 +42,7 @@ calc_app_item_size = ->
 update_dock_region = (w)->
     if panel
         panel.set_width(w)
-        panel.draw()
+        panel.redraw()
     apps = $s(".AppItem")
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
@@ -65,6 +65,8 @@ class AppList extends Widget
                 # echo "[applist] toggle show desktop"
                 show_desktop.toggle()
             else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN
+                panel.has_notifications = false
+                panel.redraw()
                 echo "[applist] show message"
         )
         @insert_indicator = create_element("div", "InsertIndicator")
@@ -176,7 +178,7 @@ class AppList extends Widget
         @is_insert_indicator_shown = true
         AppList.expand_panel_id = setTimeout(->
             panel.set_width(panel.width())
-            panel.draw()
+            panel.redraw()
         , 50)
 
 

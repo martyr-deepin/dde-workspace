@@ -28,33 +28,35 @@ class PanelImageInfo
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
-        @panel.width = screen.width
+        @panel.width = 0
         @panel.height = PANEL_HEIGHT
         @panel.addEventListener('click', (e)=>
-            echo e.offsetX
             if e.offsetX < PANEL_MARGIN
                 # echo '[panel] toggle show desktop'
                 show_desktop.toggle()
             else if e.offsetX > @panel.width - @right_image.width
+                @has_notifications = false
+                @redraw()
                 echo '[panel] show message'
         )
 
-        @show_desktop_image = new Image()
-        @show_desktop_image.addEventListener("load", @draw)
-        @show_desktop_image.src = PANEL_SHOW_DESKTOP_IMAGE
-
-        @right_image = new Image()
-        @right_image.addEventListener("load", @draw)
-        @right_image.src = PANEL_RIGHT_IMAGE
-
-        @notifications_image = new Image()
-        @notifications_image.src = PANEL_NOTIFICATION_IMAGE
-
-        @middle_image = new Image()
-        @middle_image.addEventListener("load", @draw)
-        @middle_image.src = PANEL_MIDDLE_IMAGE
+        @show_desktop_image = @load_image(PANEL_SHOW_DESKTOP_IMAGE)
+        @right_image = @load_image(PANEL_RIGHT_IMAGE)
+        @notifications_image = @load_image(PANEL_NOTIFICATION_IMAGE)
+        @middle_image = @load_image(PANEL_MIDDLE_IMAGE)
+        @has_notifications = false
 
         @side_width = 0
+
+    load_image: (src)->
+        img = new Image()
+        img.src = src
+        img
+
+    redraw: =>
+        # ctx = @panel.getContext("2d")
+        # ctx.clearRect(0, 0, @panel.width, @panel.height)
+        @draw()
 
     draw: =>
         if !(@show_desktop_image and @middle_image and @right_image and @notifications_image)
@@ -63,12 +65,13 @@ class Panel
         # echo "draw panel"
         ctx = @panel.getContext("2d")
         ctx.save()
+        ctx.clearRect(0, 0, @panel.width, @panel.height)
         ctx.shadowBlur = 20
-        ctx.shadowColor = "rgba(0, 0, 0, .4)"
+        ctx.shadowColor = "rgba(0, 0, 0, 4)"
         left = new PanelImageInfo(@show_desktop_image, 0, @side_width)
         middle = new PanelImageInfo(@middle_image, @side_width, @panel.width - @side_width * 2)
         right = new PanelImageInfo(@right_image, @panel.width - @side_width, @side_width)
-        if false
+        if @has_notifications
             right.img = @notifications_image
         OFFSET_Y = 0
         ctx.drawImage(left.img, left.x, OFFSET_Y, left.width, PANEL_HEIGHT)
@@ -86,16 +89,16 @@ class Panel
 
     set_width: (w)->
         @_set_width(w)
-        @draw()
+        @redraw()
 
     set_height: (h)->
         @_set_height(h)
-        @draw()
+        @redraw()
 
     set_size: (w, h)->
         @_set_width(w)
         @_set_height(h)
-        @draw()
+        @redraw()
 
     width: ->
         @panel.width
