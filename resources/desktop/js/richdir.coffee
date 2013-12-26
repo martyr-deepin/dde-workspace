@@ -137,8 +137,9 @@ class RichDir extends DesktopEntry
         menus
 
 
-    do_itemselected : (evt) ->
-        switch evt.id
+    on_itemselected : (evt) =>
+        id = parseInt(evt)
+        switch id
             when 1 then @item_exec()
             when 3 then @item_rename()
             when 5 then @item_ungroup()
@@ -264,10 +265,10 @@ class RichDir extends DesktopEntry
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
-        
+
         menus_div_pop = []
         @div_pop.parentElement.contextMenu = build_menu(menus_div_pop)
-        
+
         # how many we can hold per line due to workarea width
         # 20px for ul padding, 2px for border, 8px for scrollbar
         num_max = Math.floor((s_width - 30) / _ITEM_WIDTH_)
@@ -445,9 +446,9 @@ class RichDir extends DesktopEntry
         @show_pop = false
 
         @display_selected()
-        
+
         @item_focus()
-        
+
         #@display_focus()
         #@display_full_name()
         return

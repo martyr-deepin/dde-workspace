@@ -318,7 +318,7 @@ class AppItem extends Widget
                 tmp_list.push(entry)
             if tmp_list.length > 0
                 switch @constructor.name
-                    when "Launcher" then @_do_launch tmp_list
+                    when "Launcher" then @_do_launch(tmp_list)
                     when "ClientGroup"
                         if @n_clients.length == 1
                             DCore.Dock.launch_by_app_id(@app_id, "", tmp_list)
@@ -342,13 +342,12 @@ class AppItem extends Widget
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = 'opacity 1s ease-in'
 
-    # on_itemselected: (e)=>
-    do_itemselected: (e) =>
+    on_itemselected: (e)=>
         @do_mouseout(e)
 
-    do_buildmenu: (e)=>
-        Preview_close_now()
-        []
+    destroy_tooltip: ->
+        @tooltip?.hide()
+        @tooltip = null
 
 
 document.body.addEventListener("drop", (e)->
@@ -359,6 +358,8 @@ document.body.addEventListener("drop", (e)->
         s_widget.element.style.left = (e.x + s_widget.element.clientWidth/2)+ "px"
         s_widget.element.style.top = (e.y + s_widget.element.clientHeight/2)+ "px"
         DCore.Dock.request_undock(s_id)
+        t = s_widget.element.parentElement.removeChild(s_widget.element)
+        document.body.appendChild(t)
         s_widget.destroy_with_animation()
 )
 document.body.addEventListener("dragover", (e)->

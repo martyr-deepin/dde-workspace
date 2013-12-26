@@ -53,7 +53,6 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.signal_connect("exit_launcher", ->
     reset()
 )
-inited = false
 DCore.signal_connect("draw_background", (info)->
     img = new Image()
     img.src = info.path
@@ -117,15 +116,20 @@ DCore.signal_connect("autostart_update", (info)->
             # echo 'delete'
             app.remove_from_autostart()
 )
-
-
 DCore.Launcher.notify_workarea_size()
+
 
 get_name_by_id = (id) ->
     if Widget.look_up(id)?
         DCore.DEntry.get_name(Widget.look_up(id).core)
     else
         ""
+
+
+compare_string = (s1, s2) ->
+    return 1 if s1 > s2
+    return 0 if s1 == s2
+    return -1
 
 
 sort_by_name = (items)->
@@ -176,6 +180,7 @@ sort_methods =
     "name": sort_by_name
     "rate": sort_by_rate
 
+
 reset = ->
     selected_category_id = ALL_APPLICATION_CATEGORY_ID
     clean_search_bar()
@@ -202,24 +207,7 @@ save_hidden_apps = ->
     DCore.Launcher.save_hidden_apps(_get_hidden_icons_ids())
 
 
-_contextmenu_callback = do ->
-    _callback_func = null
-    (icon_msg, sort_msg) ->
-        _b.removeEventListener('contextmenu', _callback_func)
-        _callback_func = (e) ->
-            # remove the useless callback function to get better performance
-            menu = [[1, sort_msg]]
-
-            hidden_icons_ids = _get_hidden_icons_ids()
-            if hidden_icons_ids.length
-                menu.push([2, icon_msg])
-
-            _b.contextMenu = build_menu(menu)
-
-
 is_show_hidden_icons = false
-
-
 _show_hidden_icons = (is_shown) ->
     if is_shown == is_show_hidden_icons
         return
@@ -235,38 +223,35 @@ _show_hidden_icons = (is_shown) ->
             hidden_icons[item].hide_icon()
 
 
-compare_string = (s1, s2) ->
-    return 1 if s1 > s2
-    return 0 if s1 == s2
-    return -1
-
-
 bind_events = ->
-    _b.addEventListener("contextmenu",
-                        _contextmenu_callback(HIDDEN_ICONS_MESSAGE[is_show_hidden_icons],
-                                              SORT_MESSAGE[sort_method]))
+    _b.addEventListener("contextmenu", (e)->
+        e.preventDefault()
+        menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, SORT_MESSAGE[sort_method])
+        )
+        hidden_icons_ids = _get_hidden_icons_ids()
+        if hidden_icons_ids.length
+            menu.append(new MenuItem(2, HIDDEN_ICONS_MESSAGE[is_show_hidden_icons]))
 
-    _b.addEventListener("itemselected", (e) ->
-        switch e.id
-            when 1
-                if sort_method == "rate"
-                    sort_method = "name"
-                else if sort_method == "name"
-                    sort_method = "rate"
+        menu.addListener((id) ->
+            id = parseInt(id)
+            switch id
+                when 1
+                    if sort_method == "rate"
+                        sort_method = "name"
+                    else if sort_method == "name"
+                        sort_method = "rate"
 
-                sort_category_info(sort_methods[sort_method])
-                update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-                grid_load_category(selected_category_id)
+                    sort_category_info(sort_methods[sort_method])
+                    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                    grid_load_category(selected_category_id)
 
-                DCore.Launcher.save_config('sort_method', sort_method)
-            when 2
-                grid_load_category(selected_category_id)
-                _show_hidden_icons(not is_show_hidden_icons)
-
-        _b.addEventListener("contextmenu",
-        _contextmenu_callback(HIDDEN_ICONS_MESSAGE[is_show_hidden_icons],
-        SORT_MESSAGE[sort_method]
-        ))
+                    DCore.Launcher.save_config('sort_method', sort_method)
+                when 2
+                    grid_load_category(selected_category_id)
+                    _show_hidden_icons(not is_show_hidden_icons)
+        ).showMenu(e.clientX, e.clientY)
     )
 
     _b.addEventListener("click", (e)->

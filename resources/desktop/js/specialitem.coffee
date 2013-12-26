@@ -54,8 +54,9 @@ class ComputerVDir extends DesktopEntry
         ]
 
 
-    do_itemselected : (evt) ->
-        switch evt.id
+    on_itemselected : (evt) =>
+        id = parseInt(evt)
+        switch id
             when 1
                 @item_exec()
             when 2
@@ -141,8 +142,9 @@ class HomeVDir extends DesktopEntry
         ]
 
 
-    do_itemselected : (evt) ->
-        switch evt.id
+    on_itemselected : (evt) =>
+        id = parseInt(evt)
+        switch id
             when 1
                 @item_exec()
             when 2
@@ -232,6 +234,7 @@ class TrashVDir extends DesktopEntry
         menus.push([1, _("_Open")])
         menus.push([])
         count = DCore.DEntry.get_trash_count()
+        echo count
         if count > 1
             menus.push([3, _("_Clean up %1 items").args(count)])
         else if count == 1
@@ -240,8 +243,9 @@ class TrashVDir extends DesktopEntry
             menus.push([3, _("_Clean up"), false])
         menus
 
-    do_itemselected : (evt) ->
-        switch evt.id
+    on_itemselected : (evt) =>
+        id = parsetInt(evt)
+        switch id
             when 1
                 @item_exec()
             when 3
