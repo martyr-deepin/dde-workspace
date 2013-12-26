@@ -63,7 +63,7 @@ bindtextdomain = (domain, locale_dir) ->
 build_menu = (info) ->
     len = info.length
     if len < 2
-        throw "at least two"
+        return null
     count = 10000
     menu = new Menu(info[0])
     for i in [1...len]
@@ -72,8 +72,8 @@ build_menu = (info) ->
             menu.addSeparator()
         else if typeof v[0] == "number"
             item = new MenuItem(v[0], v[1])
-            if v[3]
-                item.setActive(v[3])
+            if v[2]?
+                item.setActive(v[2])
             menu.append(item)
         else  # submenu
             echo "submenu"

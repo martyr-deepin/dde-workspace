@@ -166,7 +166,7 @@ get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
             )
             return dbus
 
-    null
+    throw "Get DBus \"#{dbus_name} #{dbus_path} #{dbus_interface}\" failed"
 
 
 class Menu
@@ -218,9 +218,6 @@ class Menu
             DEEPIN_MENU_MANAGER_INTERFACE
         )
 
-        if not manager
-            throw "get Menu Manager DBus failed"
-
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
         @dbus = get_dbus(
@@ -228,9 +225,6 @@ class Menu
             DEEPIN_MENU_NAME,
             menu_dbus_path,
             DEEPIN_MENU_INTERFACE)
-
-        if not @dbus
-            throw "get Menu DBus failed"
 
     showMenu: (x, y, ori=null)->
         @menu.x = x
