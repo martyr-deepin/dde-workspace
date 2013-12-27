@@ -54,6 +54,7 @@ PRIVATE GtkWidget* webview = NULL;
 PRIVATE GSettings* background_gsettings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
+PRIVATE gboolean force_show = FALSE;
 
 #ifndef NDEBUG
 PRIVATE gboolean is_daemonize = FALSE;
@@ -88,6 +89,13 @@ void _on_realize(GtkWidget* container)
 }
 
 
+JS_EXPORT_API
+void launcher_force_show(gboolean force)
+{
+    force_show = force;
+}
+
+
 DBUS_EXPORT_API
 void launcher_show()
 {
@@ -99,6 +107,8 @@ void launcher_show()
 DBUS_EXPORT_API
 void launcher_hide()
 {
+    if (force_show)
+        return;
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
     js_post_signal("exit_launcher");

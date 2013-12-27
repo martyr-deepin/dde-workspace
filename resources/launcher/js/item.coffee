@@ -102,6 +102,7 @@ class Item extends Widget
     do_rightclick: (e)->
         e.preventDefault()
         e.stopPropagation()
+        DCore.Launcher.force_show(true)
         @menu = null
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -147,6 +148,7 @@ class Item extends Widget
                     uninstalling_apps[@id] = @
                     DCore.Launcher.uninstall(@core, true)
             when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
+        DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
         @display_mode = 'hidden'
