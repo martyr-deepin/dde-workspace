@@ -159,6 +159,7 @@ class MenuSeparator extends MenuItem
 
 
 get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
+    # echo "#{dbus_name}, #{dbus_path}, #{dbus_interface}"
     for dump in [0...10]
         try
             dbus = DCore.DBus["#{type.toLowerCase()}_object"](

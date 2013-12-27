@@ -107,7 +107,7 @@ void parse_parms(const gchar **names, const gchar **values)
     while (*n_c) {
         if (g_strcmp0(*n_c, "type") == 0) {
             type = *v_c;
-        } 
+        }
         if (g_strcmp0(*n_c, "direction") == 0) {
             if (g_strcmp0(*v_c, "in") == 0)
                 in = TRUE;
@@ -231,10 +231,14 @@ void build_current_object_info(const char* xml, const char* interface)
         .error = NULL
     };
 
+
     GMarkupParseContext *context = g_markup_parse_context_new(&parser, 0, NULL, NULL);
-    if (g_markup_parse_context_parse(context, xml, strlen(xml), NULL)
+    GError* error = NULL;
+    if (g_markup_parse_context_parse(context, xml, strlen(xml), &error)
             == FALSE) {
         g_warning("introspect's xml content error!\n");
+        g_debug("%s\n\n%s", error->message, xml);
+        g_clear_error(&error);
     }
     g_markup_parse_context_free(context);
 }
@@ -290,3 +294,4 @@ void dbus_object_info_free(struct DBusObjectInfo* info)
     g_hash_table_unref(info->signals);
     g_free(info);
 }
+
