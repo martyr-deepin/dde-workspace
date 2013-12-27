@@ -234,6 +234,8 @@ bind_events = ->
         if hidden_icons_ids.length
             menu.append(new MenuItem(2, HIDDEN_ICONS_MESSAGE[is_show_hidden_icons]))
 
+        DCore.Launcher.force_show(true)
+        menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
         menu.addListener((id) ->
             id = parseInt(id)
             switch id
@@ -251,6 +253,7 @@ bind_events = ->
                 when 2
                     grid_load_category(selected_category_id)
                     _show_hidden_icons(not is_show_hidden_icons)
+            DCore.Launcher.force_show(false)
         ).showMenu(e.clientX, e.clientY)
     )
 
