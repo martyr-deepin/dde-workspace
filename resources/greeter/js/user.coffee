@@ -62,15 +62,18 @@ class User extends Widget
 
 
     get_all_users:->
-        users_path = Dbus_Account.ListCachedUsers_sync()
-        for path in users_path
-            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
-            name = user_dbus.UserName
-            realname = user_dbus.RealName
-            type = user_dbus.AccountType
-            users_realname.push(realname)
-            users_name.push(name)
-            users_type.push(type)
+        if is_greeter
+            users_name = DCore.Greeter.get_users()
+        else
+            users_path = Dbus_Account.ListCachedUsers_sync()
+            for path in users_path
+                user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
+                name = user_dbus.UserName
+                realname = user_dbus.RealName
+                type = user_dbus.AccountType
+                users_realname.push(realname)
+                users_name.push(name)
+                users_type.push(type)
         echo users_name
         return users_name
 
@@ -79,8 +82,6 @@ class User extends Widget
             _default_username = DCore.Greeter.get_default_user()
         else
             _default_username = DCore.Lock.get_username()
-        # if _current_user.face_login
-        #     message_tip = new MessageTip(SCANNING_TIP, user_ul.parentElement)
         return _default_username
 
     get_user_image:(user) ->
@@ -124,9 +125,11 @@ class User extends Widget
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
-        #users_name = DCore.Greeter.get_users()
+        if _default_username is null then _default_username = users_name[0]
+        echo "_default_username:#{_default_username};"
        
         for user in users_name
+            echo "user:#{user}"
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
@@ -138,9 +141,27 @@ class User extends Widget
                 userinfo_all.push(u)
         for user,j in userinfo_all
             user.index = j
-        @sort_current_user_info_center()
+        if userinfo_all.length >= 3 then @sort_current_user_info_center()
+        else if userinfo_all.length = 1
+            _current_user = userinfo_all[0]
+            _current_user.only_show_name(false)
+            _current_user.focus()
+            echo "_current_user.id:#{_current_user.id}"
+        for user,j in userinfo_all
+            user.index = j
+            user_ul.appendChild(user.userinfo_li)
+            if user is _current_user then _current_user.focus()
+
         return userinfo_all
 
+    sort_current_user_info_center:->
+        tmp_length = (userinfo_all.length - 1) / 2
+        center_index = Math.round(tmp_length)
+        if _current_user.index isnt center_index
+            center_old = userinfo_all[center_index]
+            userinfo_all[center_index] = _current_user
+            userinfo_all[_current_user.index] = center_old
+    
     new_userinfo_for_lock:->
         user_ul.style.height = "400px"
         user_ul.style.display = "-webkit-box"
@@ -163,18 +184,7 @@ class User extends Widget
                 if DCore.Greeter.is_guest_default()
                     u.focus()
        
-    sort_current_user_info_center:->
-        tmp_length = (userinfo_all.length - 1) / 2
-        center_index = Math.round(tmp_length)
-        if _current_user.index isnt center_index
-            center_old = userinfo_all[center_index]
-            userinfo_all[center_index] = _current_user
-            userinfo_all[_current_user.index] = center_old
-        for user,j in userinfo_all
-            user.index = j
-            user_ul.appendChild(user.userinfo_li)
-            if user is _current_user then _current_user.focus()
-
+    
     get_current_userinfo:->
         return _current_user
 
@@ -289,14 +299,14 @@ class User extends Widget
         @password.setAttribute("maxlength", 16)
         @password.setAttribute("autofocus", true)
         @eye = create_element("div","eye",@password_div)
-        @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+        @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
         @eye.addEventListener("click",=>
             @show_hide_password()
             if @password.type is "password"
-                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
                 icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
             else
-                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
+                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
                 icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
                 
         )
@@ -379,7 +389,8 @@ class UserInfo extends Widget
         @only_info_background = create_element("div","only_info_background",@only_info)
         userbase = create_element("div", "UserBase", @only_info_background)
         img_div = create_element("div","img_div",userbase)
-        userimg = create_img("userimg", @img_src, img_div)
+        img_border = create_element("div","img_border",img_div)
+        userimg = create_img("userimg", @img_src, img_border)
         recognize = create_element("div", "recognize", userbase)
         recognize_h1 = create_element("h1", "recognize_h1", recognize)
         @username = create_element("label", "UserName", recognize_h1)

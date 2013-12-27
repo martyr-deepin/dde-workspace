@@ -126,8 +126,9 @@ class DesktopEntry extends Item
         return menu
 
 
-    do_itemselected : (evt) ->
-        switch evt.id
+    on_itemselected : (evt) =>
+        id = parseInt(evt)
+        switch id
             when 1 then open_selected_items()
             when 3 then selected_cut_to_clipboard()
             when 4 then selected_copy_to_clipboard()

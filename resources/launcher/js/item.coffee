@@ -41,16 +41,21 @@ class Item extends Widget
         @load_image()
         @status = SOFTWARE_STATE.IDLE
         @name = create_element("div", "item_name", @element)
-        @name.innerText = DCore.DEntry.get_name(@core)
+        name = DCore.DEntry.get_name(@core)
+        @name.innerText = name
         @element.draggable = true
         @element.style.display = "none"
-        try_set_title(@element, DCore.DEntry.get_name(@core), 80)
+        try_set_title(@element, name, 80)
         @display_mode = 'display'
         @is_autostart = DCore.Launcher.is_autostart(@core)
         if @is_autostart
             Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
                 AUTOSTART_ICON_SIZE)
             create_img("autostart_flag", Item.theme_icon, @element)
+
+    destroy: ->
+        grid.removeChild(@element)
+        super
 
     update: (core)->
         # TODO: update category infos
@@ -94,43 +99,56 @@ class Item extends Widget
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    _menu: ->
-        menu = [
-            [1, _("_Open")],
-            [],
-            # [],
-            # [id, _("Pin") / _("UNPin")],
-            # []
-            [2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]],
-            [],
-            [3, _("Send to d_esktop"), not DCore.Launcher.is_on_desktop(@core)],
-            [4, _("Send to do_ck"), s_dock!=null],
-            [],
-            [5, AUTOSTARTUP_MESSAGE[@is_autostart]],
-            [],
-            # [id, _("Update"), has_update?],
-            # if has_update?
-            #   [id, _("Update All")],
-            # [],
-            [6, _("_Uninstall")],
-        ]
+    do_rightclick: (e)->
+        e.preventDefault()
+        e.stopPropagation()
+        DCore.Launcher.force_show(true)
+        @menu = null
+        @menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem(1, _("_Open")),
+            new MenuSeparator(),
+            new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]),
+            new MenuSeparator(),
+            # new MenuItem(id, _("_Pin")/_("_Unpin")),
+            # new MenuSeparator(),
+            new MenuItem(3, _("Send to d_esktop")).setActive(
+                not DCore.Launcher.is_on_desktop(@core)
+            ),
+            new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
+            new MenuSeparator(),
+            new MenuItem(5, AUTOSTARTUP_MESSAGE[@is_autostart]),
+            new MenuSeparator(),
+            # if has_update
+            #     new MenuItem(id, "Update"),
+            #     new MenuItem(id, "Update All"),
+            #     new MenuSeparator(),
+            new MenuItem(6, _("_Uninstall"))
+        )
 
         if DCore.DEntry.internal()
-            menu.push([])
-            menu.push([100, "report this bad icon"])
+            @menu.addSeparator().append(
+                new MenuItem(100, "report this bad icon")
+            )
 
-        menu
+        @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
-    @_contextmenu_callback: do ->
-        _callback_func = null
-        (item)->
-            f = (e) ->
-                item.element.removeEventListener('contextmenu', _callback_func)
-                item.element.contextMenu = build_menu(item._menu())
-                _callback_func = f
-
-    do_buildmenu: (e)=>
-        @_menu()
+    on_itemselected: (id)=>
+        id = parseInt(id)
+        switch id
+            when 1 then DCore.DEntry.launch(@core, [])
+            when 2 then @toggle_icon()
+            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
+            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 5 then @toggle_autostart()
+            when 6
+                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?")
+                    @status = SOFTWARE_STATE.UNINSTALLING
+                    @hide()
+                    uninstalling_apps[@id] = @
+                    DCore.Launcher.uninstall(@core, true)
+            when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
+        DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
         @display_mode = 'hidden'
@@ -171,8 +189,6 @@ class Item extends Widget
         else
             @display_icon()
 
-        @element.addEventListener('contextmenu', Item._contextmenu_callback(@))
-
     add_to_autostart: ->
         if DCore.Launcher.add_to_autostart(@core)
             @is_autostart = true
@@ -194,21 +210,6 @@ class Item extends Widget
             @remove_from_autostart()
         else
             @add_to_autostart()
-
-    do_itemselected: (e)=>
-        switch e.id
-            when 1 then DCore.DEntry.launch(@core, [])
-            when 2 then @toggle_icon()
-            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
-            when 5 then @toggle_autostart()
-            when 6
-                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?")
-                    @status = SOFTWARE_STATE.UNINSTALLING
-                    @hide()
-                    uninstalling_apps[@id] = @
-                    DCore.Launcher.uninstall(@core, true)
-            when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
 
     hide: ->
         @element.style.display = "none"

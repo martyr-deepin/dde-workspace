@@ -29,6 +29,7 @@
 #include "jsextension.h"
 #include "utils.h"
 #include "item.h"
+#include "category.h"
 #include "background.h"
 #include "file_monitor.h"
 #include "launcher_category.h"
@@ -171,6 +172,8 @@ gboolean _update_items(gpointer user_data)
 
     JSObjectRef categories = json_array_create();
     int i = 0;
+    json_array_insert(categories, i++,
+                      jsvalue_from_number(get_global_context(), ALL_CATEGORY_ID));
     for (GList* iter = g_list_first(info->categories); iter != NULL;
          iter = g_list_next(iter)) {
         double category_index = GPOINTER_TO_INT(iter->data);
@@ -238,7 +241,7 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
 #endif
         info->path = g_file_get_path(other_file);
         if (g_str_has_suffix(info->path, ".desktop")) {
-            escaped_uri = dentry_get_uri(file);
+            escaped_uri = dentry_get_uri(other_file);
             info->id = calc_id(escaped_uri);
             info->status = UPDATED;
 

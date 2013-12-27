@@ -360,11 +360,16 @@ class Item extends Widget
     item_exec : =>
         DCore.DEntry.launch(@_entry, [])
 
+    contextmenu_event_handler: (e)=>
+        if not @in_rename
+            e.preventDefault()
+        else
+            e.stopPropagation()
 
     item_rename : =>
         # first make the contextmenu not showed when is in_renaming
-        menu = []
-        @item_name.parentElement.contextMenu = build_menu(menu)
+        # menu = []
+        # @item_name.parentElement.contextMenu = build_menu(menu)
 
         input_x = _ITEM_WIDTH_ * @_position.x
         input_y = _ITEM_HEIGHT_ * @_position.y + im_below_input_pixel
@@ -382,7 +387,7 @@ class Item extends Widget
             @item_name.addEventListener("mouseup", @on_event_stoppropagation)
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
-            @item_name.addEventListener("contextmenu", @on_event_stoppropagation)
+            @item_name.addEventListener("contextmenu", @contextmenu_event_handler)
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
@@ -484,7 +489,7 @@ class Item extends Widget
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
         @item_name.removeEventListener("click", @on_event_stoppropagation)
         @item_name.removeEventListener("dblclick", @on_event_stoppropagation)
-        @item_name.removeEventListener("contextmenu", @on_event_preventdefault)
+        @item_name.removeEventListener("contextmenu", @contextmenu_event_handler)
         @item_name.removeEventListener("keydown", @on_item_rename_keydown)
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)

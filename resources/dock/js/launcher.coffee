@@ -6,64 +6,63 @@ class Launcher extends AppItem
         @update_scale()
 
         @set_tooltip(DCore.DEntry.get_name(@core))
-        @element.addEventListener('contextmenu', @rightclick)
 
     try_swap_clientgroup: ->
+        @destroy_tooltip()
         group = Widget.look_up("le_"+@id)
         if group?
             swap_element(@element, group.element)
             group.destroy()
 
     do_click: (e)=>
-        @tooltip?.hide()
-        @tooltip = null
+        @destroy_tooltip()
         @flash()
-        @_do_launch []
+        @_do_launch([])
 
-    # on_itemselected: (id)=>
-    do_itemselected: (e)=>
-        id = e.id
+    do_rightclick: =>
+        Preview_close_now()
+
+        @menu?.destroy()
+        @menu = null
+        @menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem("10", _("_Run"))
+        ).addSeparator()
+
+        for i in [0...@actions.length]
+            @menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
+
+        if @actions.length > 0
+            @menu.addSeparator()
+
+        @menu.append(new MenuItem('20', _("_Undock")))
+        xy = get_page_xy(@element)
+        # echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}(+#{OFFSET_DOWN})"
+        @menu.addListener(@on_itemselected).showMenu(
+            xy.x + @element.clientWidth / 2,
+            xy.y + OFFSET_DOWN,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
+
+    on_itemselected: (id, checked)=>
         super
 
         id = parseInt(id)
-        action = @actions[id - 1]
+        # echo "id: #{id}"
+        action = @actions[id]
         if action?
+            # echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 
         switch id
             when 10
-                @tooltip?.hide()
-                @tooltip = null
-                @_do_launch []
+                @destroy_tooltip()
+                @_do_launch([])
             when 20 then DCore.Dock.request_undock(@id)
-
-    # do_buildmenu: =>
-    #     []
-
-    # do_rightclick: =>
-    rightclick: =>
-        Preview_close_now()
-        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem("10", _("_Run")))
-        menu.addSeparator()
-
-        for i in [0...@actions.length]
-            menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
-
-        if @actions.length > 0
-            menu.addSeparator()
-
-        menu.append(new MenuItem('20', _("_Undock")))
-        menu.bind(@)
-
-        # xy = get_page_xy(@element)
-        # menu.listenItemSelected(@on_itemselected)
-        # menu.showDockMenu(xy.x + @element.clientWidth / 2, xy.y + 5, 'down')
 
     destroy_with_animation: ->
         @img.classList.remove("ReflectImg")
-        t = @element.parentElement.removeChild(@element)
-        document.body.appendChild(t)
         calc_app_item_size()
         @rotate()
         setTimeout(=>

@@ -10,8 +10,8 @@ body{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
     left:32%;
+    top:15%;
     width:40%;
-    height:70%;
     
     display:-webkit-box;
     -webkit-box-pack:center;

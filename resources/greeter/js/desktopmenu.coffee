@@ -42,6 +42,7 @@ class DesktopMenu extends Widget
         default_session = DCore.Greeter.get_default_session()
         echo "default_session:#{default_session}"
         if default_session is null then default_session = "deepin"
+        default_name = DCore.Greeter.get_session_name(default_session)
         for session in sessions
             id = session
             name = DCore.Greeter.get_session_name(id)
@@ -64,9 +65,10 @@ class DesktopMenu extends Widget
             echo "mouseout"
             de_menu.current_img.src = img_before + "#{default_session}_normal.png"
         )
-        # de_menu.current_img.addEventListener("click", (e) =>
-        #     power_dict["#{default_session}"]()
-        # )
+        de_menu.current_img.addEventListener("click", (e) =>
+            echo "click"
+            de_menu_cb(default_session,default_name)
+        )
         de_menu.menu.element.addEventListener("mouseover",=>
             de_menu.current_img.src = img_before + "#{default_session}.png"
         )

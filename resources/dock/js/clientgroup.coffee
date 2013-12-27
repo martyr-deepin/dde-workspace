@@ -11,7 +11,6 @@ class ClientGroup extends AppItem
 
             @open_indicator_short = create_img("OpenIndicator", SHORT_INDICATOR, @element)
             @open_indicator_long = create_img("OpenIndicator", LONG_INDICATOR, @element)
-            @element.addEventListener('contextmenu', @rightclick)
         catch error
             alert "Group constructor :#{error}"
 
@@ -80,6 +79,7 @@ class ClientGroup extends AppItem
         @leader = @n_clients[0]
 
     try_swap_launcher: ->
+        Preview_close_now()
         l = Widget.look_up(@app_id)
         if l?
             swap_element(@element, l.element)
@@ -99,43 +99,55 @@ class ClientGroup extends AppItem
         super
 
 
-    # do_rightclick: (e)=>
-    rightclick: =>
+    do_rightclick: (e)=>
         Preview_close_now()
 
-        menu = create_menu(MENU_TYPE_NORMAL, new MenuItem('10', "_#{DCore.get_name_by_appid(@app_id)}" || _("_New Window")))
-        menu.addSeparator()
+        @menu?.destroy()
+        @menu = null
+        app_name = DCore.get_name_by_appid(@app_id)
+        if app_name
+            app_name = "_#{app_name}"
+        else
+            app_name = _("_New Window")
+        @menu = new Menu(
+            DEEPIN_MENU_TYPE.NORMAL,
+            new MenuItem('10', app_name)
+        ).addSeparator()
 
-        for i in [0...@actions.length]
-            menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
+        action_len = @actions.length
+        for i in [0...action_len]
+            @menu.append(new MenuItem("#{i}", "_#{@actions[i].name}"))
 
-        if @actions.length != 0
-            menu.addSeparator()
+        if action_len != 0
+            @menu.addSeparator()
 
-        menu.append(
-            new MenuItem("20", _("_Close")),
-            new MenuItem("30", _("Close _All")).setActive(@n_clients.length > 1),
+        @menu.append(new MenuItem("20", _("_Close")))
+
+        if (@n_clients.length > 1)
+            @menu.append(new MenuItem("30", _("Close _All")))
+
+        @menu.append(
             new MenuSeparator,
             new MenuItem("40", _("_Dock me")).setActive(!DCore.Dock.has_launcher(@app_id))
-            )
-        menu.bind(@)
+        )
 
-        # menu.listenItemSelected(@on_itemselected)
-        # xy = get_page_xy(@element)
-        # menu.showDockMenu(xy.x + @element.clientWidth/2, xy.y + 5, 'down')
+        xy = get_page_xy(@element)
+        # echo "#{menu}"
+        # echo "#{xy.x}(+#{@element.clientWidth / 2})x#{xy.y}(+#{OFFSET_DOWN})"
+        @menu.addListener(@on_itemselected).showMenu(
+            xy.x + @element.clientWidth / 2,
+            xy.y + OFFSET_DOWN,
+            DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        )
 
-    ###
-    on_itemselected: (id)=>
-    ###
-    do_itemselected: (e)=>
-        id = e.id
+    on_itemselected: (id, checked)=>
         super
 
         id = parseInt(id)
-        index = id - 1
-        action = @actions[index]
+        # echo "id: #{id}"
+        action = @actions[id]
         if action?
-            echo "#{action.name}, #{action.exec}"
+            # echo "#{action.name}, #{action.exec}"
             DCore.Dock.launch_from_commandline(@app_id, action.exec)
             return
 

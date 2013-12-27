@@ -17,19 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-Storage.prototype.setObject = (key, value) ->
+Storage::setObject = (key, value) ->
     @setItem(key, JSON.stringify(value))
 
-Storage.prototype.getObject = (key) ->
+Storage::getObject = (key) ->
     JSON.parse(@getItem(key))
 
-String.prototype.endsWith = (suffix)->
+String::endsWith = (suffix)->
     return this.indexOf(suffix, this.length - suffix.length) != -1
-
-Array.prototype.remove = (el)->
-    i = this.indexOf(el)
-    if i != -1
-        this.splice(this.indexOf(el), 1)[0]
 
 String::args = ->
     o = this
@@ -38,6 +33,14 @@ String::args = ->
         o = o.replace(new RegExp("%" + i, "g"), "#{arguments[i - 1]}")
 
     return o
+
+String::addSlashes = ->
+    @replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+
+Array.prototype.remove = (el)->
+    i = this.indexOf(el)
+    if i != -1
+        this.splice(this.indexOf(el), 1)[0]
 
 echo = (log) ->
     console.log log
@@ -58,21 +61,27 @@ bindtextdomain = (domain, locale_dir) ->
     DCore.bindtextdomain(domain, locale_dir)
 
 build_menu = (info) ->
-    m = new DeepinMenu
-    for v in info
-        if v.length == 0  #separater item
-            i = new DeepinMenuItem(2, 0, 0, 0)
-        else if typeof v[0] == "number"  #normal item
-            i = new DeepinMenuItem(0, v[0], v[1], null)
-            if v.length > 2 and v[2] == false
-                i.enabled = false
-            else
-                i.enabled = true
-        else  #sub menu item
-            sm = build_menu(v[1])
-            i = new DeepinMenuItem(1, 0, v[0], sm)
-        m.appendItem(i)
-    return m
+    len = info.length
+    if len < 2
+        return null
+    count = 10000
+    menu = new Menu(info[0])
+    for i in [1...len]
+        v = info[i]
+        if v.length == 0  # separator
+            menu.addSeparator()
+        else if typeof v[0] == "number"
+            item = new MenuItem(v[0], v[1])
+            if v[2]?
+                item.setActive(v[2])
+            menu.append(item)
+        else  # submenu
+            echo "submenu"
+            submenu = build_menu(v[1])
+            menu.append(new MenuItem(count, v[1]).setSubMenu(build_menu(v[1])))
+            count += 1
+
+    return menu
 
 get_page_xy = (el, x=0, y=0) ->
     p = webkitConvertPointFromNodeToPage(el, new WebKitPoint(x, y))
