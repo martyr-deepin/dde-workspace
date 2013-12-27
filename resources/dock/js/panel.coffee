@@ -46,7 +46,7 @@ class Panel
         @middle_image = @load_image(PANEL_MIDDLE_IMAGE)
         @has_notifications = false
 
-        @side_width = 0
+        @side_width = -1
 
     load_image: (src)->
         img = new Image()
@@ -63,21 +63,30 @@ class Panel
             return
 
         # echo "draw panel"
-        ctx = @panel.getContext("2d")
-        ctx.save()
-        ctx.clearRect(0, 0, @panel.width, @panel.height)
-        ctx.shadowBlur = 20
-        ctx.shadowColor = "rgba(0, 0, 0, 4)"
-        left = new PanelImageInfo(@show_desktop_image, 0, @side_width)
-        middle = new PanelImageInfo(@middle_image, @side_width, @panel.width - @side_width * 2)
-        right = new PanelImageInfo(@right_image, @panel.width - @side_width, @side_width)
-        if @has_notifications
-            right.img = @notifications_image
-        OFFSET_Y = 0
-        ctx.drawImage(left.img, left.x, OFFSET_Y, left.width, PANEL_HEIGHT)
-        ctx.drawImage(middle.img, middle.x, OFFSET_Y, middle.width, PANEL_HEIGHT)
-        ctx.drawImage(right.img, right.x, OFFSET_Y, right.width, PANEL_HEIGHT)
-        ctx.restore()
+        # ctx = @panel.getContext("2d")
+        # ctx.save()
+        # ctx.clearRect(0, 0, @panel.width, @panel.height)
+        # ctx.shadowBlur = 20
+        # ctx.shadowColor = "rgba(0, 0, 0, 4)"
+        # left = new PanelImageInfo(@show_desktop_image, 0, @side_width)
+        # middle = new PanelImageInfo(@middle_image, @side_width, @panel.width - @side_width * 2)
+        # right = new PanelImageInfo(@right_image, @panel.width - @side_width, @side_width)
+        # if @has_notifications
+        #     right.img = @notifications_image
+        # OFFSET_Y = 0
+        # ctx.drawImage(left.img, left.x, OFFSET_Y, left.width, PANEL_HEIGHT)
+        # ctx.drawImage(middle.img, middle.x, OFFSET_Y, middle.width, PANEL_HEIGHT)
+        # ctx.drawImage(right.img, right.x, OFFSET_Y, right.width, PANEL_HEIGHT)
+        # ctx.restore()
+        DCore.Dock.draw_panel(
+            @panel,
+            PANEL_SHOW_DESKTOP_IMAGE,
+            PANEL_MIDDLE_IMAGE,
+            PANEL_RIGHT_IMAGE
+            @panel.width,
+            @side_width,
+            PANEL_HEIGHT
+        )
         DCore.Dock.update_guard_window_width(@panel.width)
 
     _set_width: (w)->

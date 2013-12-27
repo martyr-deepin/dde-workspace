@@ -36,11 +36,50 @@
 #define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
 #define GET_A(c) ((c & 0xff) / 100.0)
 
+
+GdkPixbuf* image_path(char const* name, double width, double height)
+{
+    char* path = g_strdup_printf(RESOURCE_DIR"dock/%s", name);
+    g_warning("[%s] path %s", __func__, path);
+    GdkPixbuf* img = gdk_pixbuf_new_from_file_at_scale(path, width, height, FALSE, NULL);
+    g_assert(img != NULL);
+    g_free(path);
+    return img;
+}
+
+
 JS_EXPORT_API
-void dock_draw_board(JSValueRef canvas)
+void dock_draw_panel(JSValueRef canvas,
+                     char const* left_image,
+                     char const* middle_image,
+                     char const* right_image,
+                     double panel_width,
+                     double side_width,
+                     double panel_height
+                     )
 {
     cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
+    if (cr == NULL)
+        g_warning("test");
+
+    // g_warning("side width: %lf, panel_width: %lf, panel height: %lf", side_width, panel_width, panel_height);
+
+    GdkPixbuf* left = image_path(left_image, side_width, panel_height);
+    // GdkPixbuf* middle = image_path(middle_image, panel_width - side_width, panel_height);
+    // GdkPixbuf* right = image_path(right_image, side_width, panel_height);
+
+    cairo_save(cr);
+    // gdk_cairo_set_source_pixbuf(cr, left, 0, 0);
+    // cairo_paint(cr);
+    // gdk_cairo_set_source_pixbuf(cr, middle, side_width, 0);
+    // cairo_paint(cr);
+    // gdk_cairo_set_source_pixbuf(cr, right, panel_width - side_width, 0);
+    canvas_custom_draw_did(cr, NULL);
+    g_object_unref(left);
+    // g_object_unref(middle);
+    // g_object_unref(right);
+    return;
     int w = gdk_screen_get_width(gdk_screen_get_default());
     // TODO: may pass a w.
 
