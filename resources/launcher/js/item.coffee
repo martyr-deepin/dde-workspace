@@ -131,6 +131,7 @@ class Item extends Widget
                 new MenuItem(100, "report this bad icon")
             )
 
+        @menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     on_itemselected: (id)=>
