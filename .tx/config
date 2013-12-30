@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+
+[deepin-destkop-environment.dde]
+file_filter = po/<lang>.po
+source_file = po/dde.pot
+source_lang = en
+type = PO
