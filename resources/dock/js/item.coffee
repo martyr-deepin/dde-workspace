@@ -64,7 +64,7 @@ class AppList extends Widget
             if e.clientX <= (screen.width - panel.width()) / 2 + PANEL_MARGIN
                 # echo "[applist] toggle show desktop"
                 show_desktop.toggle()
-            else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN
+            else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN and panel.has_notifications
                 panel.has_notifications = false
                 panel.redraw()
                 echo "[applist] show message"
