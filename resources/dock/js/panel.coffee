@@ -98,7 +98,7 @@ class Panel
             @redraw()
         else
             echo "not dapptray: #{itemid}"
-            if itemid == ""
-                Widget.look_up("le_#{appid}")?.notify()
+            if itemid != "" && (w = Widget.look_up("le_#{itemid}"))?
+                w.notify()
             else
-                Widget.look_up("le_#{itemid}")?.notify()
+                Widget.look_up("le_#{appid}")?.notify()
