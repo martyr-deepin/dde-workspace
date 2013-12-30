@@ -8,6 +8,7 @@
 #include "region.h"
 #include "X_misc.h"
 #include "i18n.h"
+#include "DBUS_dapptray.h"
 
 
 #define TRAY_ID_NAME "apptray.app.deepin"
@@ -104,6 +105,7 @@ int main(int argc, char *argv[])
 
     tray_delay_hide(1000/*ms*/);
 
+    setup_apptray_dbus_service();
     gtk_main();
     return 0;
 }

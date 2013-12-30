@@ -67,6 +67,11 @@ class AppList extends Widget
             else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN and panel.has_notifications
                 panel.has_notifications = false
                 panel.redraw()
+                DCore.DBus.session_object(
+                    "com.deepin.dde.apptray",
+                    "/com/deepin/dde/apptray",
+                    "com.deepin.dde.apptray",
+                ).Show()
                 echo "[applist] show message"
         )
         @insert_indicator = create_element("div", "InsertIndicator")

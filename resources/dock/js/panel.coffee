@@ -31,6 +31,12 @@ class Panel
             else if e.offsetX > @panel.width - @right_image.width and @has_notifications
                 @has_notifications = false
                 @redraw()
+                DCore.DBus.session_object(
+                    "com.deepin.dde.apptray",
+                    "/com/deepin/dde/apptray",
+                    "com.deepin.dde.apptray",
+                ).Show()
+
                 # echo '[panel] show message'
         )
 
