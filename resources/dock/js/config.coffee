@@ -70,3 +70,4 @@ ANALOG_CLOCK =
 
 OFFSET_DOWN = 7
 DEEPIN_APPTRAY = "dapptray"
+NOTIFY_FLAG = "img/bage.svg"

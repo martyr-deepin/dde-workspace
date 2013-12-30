@@ -225,6 +225,7 @@ class AppItem extends Widget
             return null
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
+
     rotate: (time) ->
         apply_animation(@img, "rotateOut", time or 1000)
 

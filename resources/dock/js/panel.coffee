@@ -91,12 +91,14 @@ class Panel
         @panel.width
 
     update: (appid, itemid)=>
-        # echo "#{appid}, #{itemid}"
+        echo "#{appid}, #{itemid}"
         if appid == DEEPIN_APPTRAY
             echo "show message"
             @has_notifications = true
             @redraw()
         else
-            echo "not dapptray"
-            try
-                Widget.look_up(itemid)?.notify()
+            echo "not dapptray: #{itemid}"
+            if itemid == ""
+                Widget.look_up("le_#{appid}")?.notify()
+            else
+                Widget.look_up("le_#{itemid}")?.notify()

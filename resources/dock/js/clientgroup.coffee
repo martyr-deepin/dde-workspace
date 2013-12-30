@@ -176,7 +176,12 @@ class ClientGroup extends AppItem
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
 
+    notify: =>
+        @notify_flag ?= create_img("NotifyFlag", NOTIFY_FLAG, @element)
+        @notify_flag.style.visibility = "visible"
+
     do_click: (e)=>
+        @notify_flag?.style.visibility = "hidden"
         if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
         else if @n_clients.length > 1 and DCore.Dock.get_active_window() == @leader
