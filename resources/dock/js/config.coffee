@@ -7,17 +7,11 @@ ICON_HEIGHT = 48.0
 
 DOCK_HEIGHT = 68.0
 PANEL_HEIGHT = 60
-PANEL_MARGIN = 60
+PANEL_MARGIN = 36
 
-PANEL_SHOW_DESKTOP_IMAGE = 'img/panel/panel_left.svg'
+PANEL_LEFT_IMAGE = 'img/panel/panel_left.svg'
 PANEL_MIDDLE_IMAGE = 'img/panel/panel.svg'
-PANEL_NORMAL_RIGHT_IMAGE = 'img/panel/panel_normal_right.svg'
-PANEL_NOTIFICATION_IMAGE = 'img/panel/panel_notifications_right.svg'
-
-# PANEL_SHOW_DESKTOP_IMAGE = 'img/panel_left.svg'
-# PANEL_MIDDLE_IMAGE = 'img/panel.svg'
-# PANEL_NORMAL_RIGHT_IMAGE = 'img/panel_normal_right.svg'
-# PANEL_NOTIFICATION_IMAGE = 'img/panel_notifications_right.svg'
+PANEL_RIGHT_IMAGE = 'img/panel/panel_right.svg'
 
 BOARD_IMG_PATH = "img/board.png"
 

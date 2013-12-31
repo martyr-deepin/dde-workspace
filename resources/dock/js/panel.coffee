@@ -22,28 +22,9 @@
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
-        @panel.width = screen.width - PANEL_MARGIN * 2
+        @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
-        @panel.addEventListener('click', (e)=>
-            if e.offsetX < PANEL_MARGIN
-                # echo '[panel] toggle show desktop'
-                show_desktop.toggle()
-            else if e.offsetX > @panel.width - @right_image.width and @has_notifications
-                @has_notifications = false
-                @redraw()
-                DCore.DBus.session_object(
-                    "com.deepin.dde.apptray",
-                    "/com/deepin/dde/apptray",
-                    "com.deepin.dde.apptray",
-                ).Show()
 
-                # echo '[panel] show message'
-        )
-
-        @show_desktop_image = @load_image(PANEL_SHOW_DESKTOP_IMAGE)
-        @right_image = @load_image(PANEL_NORMAL_RIGHT_IMAGE)
-        @notifications_image = @load_image(PANEL_NOTIFICATION_IMAGE)
-        @middle_image = @load_image(PANEL_MIDDLE_IMAGE)
         @has_notifications = false
 
     load_image: (src)->
@@ -55,17 +36,9 @@ class Panel
         @draw()
 
     draw: =>
-        if !(@show_desktop_image and @middle_image and @right_image and @notifications_image)
-            return
-
-        # echo "draw panel"
-        PANEL_RIGHT_IMAGE = PANEL_NORMAL_RIGHT_IMAGE
-        if @has_notifications
-            PANEL_RIGHT_IMAGE = PANEL_NOTIFICATION_IMAGE
-
         DCore.Dock.draw_panel(
             @panel,
-            PANEL_SHOW_DESKTOP_IMAGE,
+            PANEL_LEFT_IMAGE,
             PANEL_MIDDLE_IMAGE,
             PANEL_RIGHT_IMAGE,
             @panel.width,

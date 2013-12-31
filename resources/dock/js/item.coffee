@@ -59,21 +59,6 @@ class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").appendChild(@element)
-        $("#container").addEventListener("click", (e)->
-            e.stopPropagation()
-            if e.clientX <= (screen.width - panel.width()) / 2 + PANEL_MARGIN
-                # echo "[applist] toggle show desktop"
-                show_desktop.toggle()
-            else if e.clientX >= (screen.width + panel.width()) / 2 - PANEL_MARGIN and panel.has_notifications
-                panel.has_notifications = false
-                panel.redraw()
-                DCore.DBus.session_object(
-                    "com.deepin.dde.apptray",
-                    "/com/deepin/dde/apptray",
-                    "com.deepin.dde.apptray",
-                ).Show()
-                echo "[applist] show message"
-        )
         @insert_indicator = create_element("div", "InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false

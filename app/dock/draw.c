@@ -92,13 +92,13 @@ void dock_draw_panel(JSValueRef canvas,
     cairo_paint(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
-    gdk_cairo_set_source_pixbuf(cr, left, 0, 0);
+    gdk_cairo_set_source_pixbuf(cr, left, 1, 0);
     cairo_paint(cr);
 
-    gdk_cairo_set_source_pixbuf(cr, middle, margin_width, 0);
+    gdk_cairo_set_source_pixbuf(cr, middle, margin_width + 1, 0);
     cairo_paint(cr);
 
-    gdk_cairo_set_source_pixbuf(cr, right, panel_width - margin_width, 0);
+    gdk_cairo_set_source_pixbuf(cr, right, panel_width - margin_width + 1, 0);
     cairo_paint(cr);
 
     canvas_custom_draw_did(cr, NULL);
