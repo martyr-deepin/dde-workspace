@@ -47,17 +47,32 @@ class FixedItem extends Applet
             @open_indicator.style.display = "none"
 
 
-class ShowDesktop
+class ShowDesktop extends FixedItem
+    @set_time_id: null
     constructor:->
+        super
         DCore.signal_connect("desktop_status_changed", =>
             @set_status(DCore.Dock.get_desktop_status())
         )
 
-    set_status: (status)->
-        @__show = status
+    set_status: (status)=>
+        @show(status)
 
-    toggle: ()=>
+    toggle: =>
         DCore.Dock.show_desktop(!@__show)
+
+    do_click: (e)=>
+        DCore.Dock.show_desktop(!@__show)
+
+    do_dragenter: (e) =>
+        e.stopPropagation()
+        ShowDesktop.set_time_id = setTimeout(=>
+            DCore.Dock.show_desktop(true)
+        , 1000)
+    do_dragleave: (e) =>
+        e.stopPropagation()
+        clearTimeout(ShowDesktop.set_time_id)
+        ShowDesktop.set_time_id = null
 
 
 class LauncherItem extends FixedItem
@@ -305,8 +320,9 @@ create_clock = (type)->
 
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
+    icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-show_desktop = new ShowDesktop()
+show_desktop = new ShowDesktop("show_desktop", icon_desktop, _("Show/Hide Desktop"))
 trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 clock = create_clock(DCore.Dock.clock_type())
