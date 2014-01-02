@@ -147,7 +147,7 @@ void accumulate_na_width(GdkWindow* wrapper, gpointer width)
     if (wrapper == _deepin_tray)
         return;
     int icon_width = gdk_window_get_width(wrapper);
-    g_warning("[%s] window width is %d", __func__, icon_width);
+    g_debug("[%s] window width is %d", __func__, icon_width);
     _na_width += icon_width + PADDING;
     if (_na_width < DEFAULT_WIDTH)
         _na_width = DEFAULT_WIDTH + PADDING;
@@ -250,7 +250,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
         } else if (wrapper != _fcitx_tray) {
 #endif
             int new_height = ((XConfigureEvent*)xev)->height;
-            g_warning("=================%lf====================", CLAMP_WIDTH(new_width * 1.0/new_height * DEFAULT_HEIGHT));
+            g_debug("===================%lf===================", CLAMP_WIDTH(new_width * 1.0/new_height * DEFAULT_HEIGHT));
             g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(CLAMP_WIDTH((new_width * 1.0 / new_height * DEFAULT_HEIGHT))));
             _update_notify_area_width();
 #ifdef SPECIAL_FCITX
