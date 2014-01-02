@@ -137,6 +137,13 @@ body {
     overflow-y: 'scroll';
     margin-right: 20px;
     margin-bottom:30px;
+    -webkit-mask-image: -webkit-linear-gradient(top,
+                                                rgba(0,0,0,0),
+                                                /* rgba(0,0,0,0.3), */
+                                                rgba(0,0,0,1) 5%,
+                                                rgba(0,0,0,1) 90%,
+                                                rgba(0,0,0,0.3),
+                                                rgba(0,0,0,0));
 }
 
 .item {
