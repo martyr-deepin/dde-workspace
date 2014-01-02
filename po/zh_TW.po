@@ -416,17 +416,17 @@ msgstr "關機"
 #: ../resources/shutdown/js/utils.coffee:27
 #, fuzzy
 msgid "Force Log out"
-msgstr "登出"
+msgstr "強制登出"
 
 #: ../resources/shutdown/js/utils.coffee:27
 #, fuzzy
 msgid "Force Restart"
-msgstr "重新啟動"
+msgstr "強制重新啟動"
 
 #: ../resources/shutdown/js/utils.coffee:27
 #, fuzzy
 msgid "Force Shut down"
-msgstr "關機"
+msgstr "強制關機"
 
 #: ../resources/shutdown/js/utils.coffee:29
 msgid "The system will be locked in %1 seconds."
