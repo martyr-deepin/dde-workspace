@@ -1,6 +1,7 @@
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
 #include <gio/gio.h>
+#include <gdk/gdk.h>
 
 #include "display_info.h"
 
@@ -16,7 +17,7 @@ gboolean update_display_info(struct DisplayInfo* info)
                                                       NULL,
                                                       &error
                                                       );
-    if (proxy != NULL) {
+    if (error == NULL) {
         GVariant* res = g_dbus_proxy_get_cached_property(proxy, "PrimaryRect");
         g_variant_get(res, "(nnqq)", &info->x, &info->y, &info->width, &info->height);
         g_debug("%dx%d(%d,%d)", info->width, info->height, info->x, info->y);
