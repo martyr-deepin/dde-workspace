@@ -22,6 +22,7 @@
 #ifndef DOCK_H
 #define DOCK_H
 
+#include "display_info.h"
 #include "utils.h"
 
 #define DOCK_MAJOR_VERSION 0
@@ -30,6 +31,9 @@
 #define DOCK_VERSION STR(DOCK_MAJOR_VERSION)"."STR(DOCK_MINOR_VERSION)"."STR(DOCK_SUBMINOR_VERSION)
 
 #define DOCK_ID_NAME "dock.app.deepin"
+
+void update_position_info();
+extern struct DisplayInfo dock;
 
 #endif /* end of include guard: DOCK_H */
 

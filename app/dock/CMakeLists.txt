@@ -8,6 +8,7 @@ GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "dock")
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DTEST_INCLUDE_DIRS})
+include_directories(${DBUS_INCLUDE_DIRS})
 
 SET(SRC_LIST dock.c dock_hide.c dock_config.c handle_icon.c
     dominant_color.c tasklist.c draw.c launcher.c region.c
