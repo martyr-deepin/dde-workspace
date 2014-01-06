@@ -25,6 +25,10 @@ gboolean update_display_info(struct DisplayInfo* info)
     } else {
         g_warning("[%s] connection dbus failed: %s", __func__, error->message);
         g_clear_error(&error);
+        info->x = 0;
+        info->y = 0;
+        info->width = gdk_screen_width();
+        info->height = gdk_screen_height();
         return FALSE;
     }
 }
