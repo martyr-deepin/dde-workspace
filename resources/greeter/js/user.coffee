@@ -40,6 +40,8 @@ class User extends Widget
     users_name = []
     users_realname = []
     users_type = []
+    users_id = []
+    
     constructor:->
         super
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
@@ -59,7 +61,7 @@ class User extends Widget
             el.src = click
             click_cb?()
         ) if click
-
+    
 
     get_all_users:->
         if is_greeter
@@ -71,9 +73,11 @@ class User extends Widget
                 name = user_dbus.UserName
                 realname = user_dbus.RealName
                 type = user_dbus.AccountType
+                id = user_dbus.Uid
                 users_realname.push(realname)
                 users_name.push(name)
                 users_type.push(type)
+                users_id.push(id)
         echo users_name
         return users_name
 
@@ -112,6 +116,13 @@ class User extends Widget
                     else return _("Standard user")
         return _("Standard user")
 
+    get_user_id:(user)->
+        if users_id.length == 0 or users_name.length == 0 then @get_all_users()
+        for tmp,j in users_name
+            if user is tmp
+                id = users_id[j]
+                return id
+
     is_disable_user :(user)->
         disable = false
         users_path = Dbus_Account.ListCachedUsers_sync()
@@ -122,11 +133,21 @@ class User extends Widget
                 else if user_dbus.Locked is true then disable = true
                 return disable
 
+    set_blur_background:(user)->
+        path = []
+        userid = @get_user_id(user)
+        echo "user #{user}'s userid:#{userid}"
+        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.Accounts")
+        path.push[Dbus_Account_deepin.BackgroundBlurPictPath(userid,"")]
+        echo "BlurPictPath:#{path}"
+        #document.body.style.backgroundImage = path
+
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
         if _default_username is null then _default_username = users_name[0]
         echo "_default_username:#{_default_username};"
+        #@set_blur_background(_default_username)
        
         for user in users_name
             echo "user:#{user}"

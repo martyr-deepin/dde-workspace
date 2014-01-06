@@ -31,6 +31,8 @@
 
 #include <gtk/gtk.h>
 #include <gio/gdesktopappinfo.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 
 #include "launcher.h"
 #include "xdg_misc.h"
@@ -55,6 +57,7 @@ PRIVATE GSettings* background_gsettings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 PRIVATE gboolean force_show = FALSE;
+struct DisplayInfo launcher;
 
 #ifndef NDEBUG
 PRIVATE gboolean is_daemonize = FALSE;
@@ -72,18 +75,87 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 
 
 PRIVATE
-void _update_size(GdkScreen *screen, GtkWidget* conntainer)
+void _update_size(gint16 x, gint16 y, guint16 w, guint16 h)
 {
-    gtk_widget_set_size_request(container, gdk_screen_width(), gdk_screen_height());
+    gtk_widget_set_size_request(container, w, h);
+}
+
+
+static
+gboolean primary_changed_handler(gpointer data)
+{
+    DBusConnection* conn = (DBusConnection*)data;
+    dbus_connection_read_write(conn, 0);
+    DBusMessage* message = dbus_connection_pop_message(conn);
+
+    if (message == NULL) {
+        return G_SOURCE_CONTINUE;
+    }
+
+    g_debug("[%s] loop for signal", __func__);
+    if (dbus_message_is_signal(message,
+                               DISPLAY_INTERFACE,
+                               PRIMARY_CHANGED_SIGNAL)) {
+        DBusMessageIter args;
+        if (!dbus_message_iter_init(message, &args)) {
+            dbus_message_unref(message);
+            g_warning("init signal iter failed");
+            return G_SOURCE_CONTINUE;
+        }
+
+        DBusMessageIter element_iter;
+        dbus_message_iter_recurse(&args, &element_iter);
+
+        g_debug("[%s] get signal", __func__);
+        // iterate_container_message(conn, &array_iter, iter_array, info);
+        int count = 0;
+        gint16 x = 0, y = 0;
+        guint16 w = 0, h = 0;
+        while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
+            switch (count) {
+            case 0: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                x = value.i16;
+                break;
+            }
+            case 1: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                y = value.i16;
+                break;
+            }
+            case 2: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                w = value.u16;
+                break;
+            }
+            case 3: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                h = value.u16;
+                break;
+            }
+            }
+            ++count;
+            dbus_message_iter_next(&element_iter);
+        }
+
+        _update_size(x, y, w, h);
+    }
+    dbus_message_unref(message);
+
+    return G_SOURCE_CONTINUE;
 }
 
 
 PRIVATE
 void _on_realize(GtkWidget* container)
 {
-    GdkScreen* screen =  gdk_screen_get_default();
-    _update_size(screen, container);
-    g_signal_connect(screen, "size-changed", G_CALLBACK(_update_size), container);
+    update_display_info(&launcher);
+    _update_size(launcher.x, launcher.y, launcher.width, launcher.height);
+    listen_primary_changed_signal(primary_changed_handler);
     if (is_js_already)
         background_changed(background_gsettings, CURRENT_PCITURE, NULL);
 }
@@ -165,11 +237,12 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
+    update_display_info(&launcher);
     JSObjectRef workarea_info = json_create();
     json_append_number(workarea_info, "x", 0);
     json_append_number(workarea_info, "y", 0);
-    json_append_number(workarea_info, "width", gdk_screen_width());
-    json_append_number(workarea_info, "height", gdk_screen_height());
+    json_append_number(workarea_info, "width", launcher.width);
+    json_append_number(workarea_info, "height", launcher.height);
     js_post_message("workarea_changed", workarea_info);
 }
 
@@ -415,8 +488,9 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
+    update_display_info(&launcher);
     set_background(gtk_widget_get_window(webview), background_gsettings,
-                            gdk_screen_width(), gdk_screen_height());
+                            launcher.width, launcher.height);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);
@@ -424,7 +498,7 @@ int main(int argc, char* argv[])
     GtkIMContext* im_context = gtk_im_multicontext_new();
     gtk_im_context_set_client_window(im_context, gdkwindow);
     GdkRectangle area = {0, 60, 0, 0};
-    area.x = gdk_screen_width() * .5 - 150;
+    area.x = launcher.width * .5 - 150;
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);

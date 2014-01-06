@@ -3,7 +3,7 @@ pkg_check_modules(GTK REQUIRED gtk+-3.0)
 set(NAME dapptray)
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" ${NAME})
 
-include_directories(${GTK_INCLUDE_DIRS})
+include_directories(${GTK_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
 file(GLOB SRC *.c)
 add_executable(${NAME} ${SRC} ${DBUS_GEN})

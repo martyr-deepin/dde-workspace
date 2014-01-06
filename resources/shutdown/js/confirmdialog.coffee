@@ -61,7 +61,6 @@ class ConfirmDialog extends Widget
         @button_cancel.textContent = _("Cancel")
 
         @button_ok = create_element("div","button_ok",button_confirm)
-        echo @opt + "," + power_can(@opt)
         if power_can(@opt) then @style_for_direct()
         else @style_for_force()
 

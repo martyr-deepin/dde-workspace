@@ -77,7 +77,7 @@ static void set_state(enum State new_state)
 
 static int get_x()
 {
-    return (gdk_screen_width() - gdk_window_get_width(TRAY_GDK_WINDOW())) / 2;
+    return (apptray.width - gdk_window_get_width(TRAY_GDK_WINDOW())) / 2;
 }
 
 
