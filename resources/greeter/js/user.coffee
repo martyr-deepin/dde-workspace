@@ -74,6 +74,7 @@ class User extends Widget
                 realname = user_dbus.RealName
                 type = user_dbus.AccountType
                 id = user_dbus.Uid
+                echo "id:#{id}"
                 users_realname.push(realname)
                 users_name.push(name)
                 users_type.push(type)
@@ -118,9 +119,13 @@ class User extends Widget
 
     get_user_id:(user)->
         if users_id.length == 0 or users_name.length == 0 then @get_all_users()
+        echo users_name
+        echo users_id
         for tmp,j in users_name
             if user is tmp
+                echo "if #{user} j :#{j}"
                 id = users_id[j]
+                echo "id:#{id}"
                 return id
 
     is_disable_user :(user)->
@@ -138,8 +143,9 @@ class User extends Widget
         userid = @get_user_id(user)
         echo "user #{user}'s userid:#{userid}"
         Dbus_Account_deepin = DCore.DBus.sys("com.deepin.Accounts")
-        path.push[Dbus_Account_deepin.BackgroundBlurPictPath(userid,"")]
-        echo "BlurPictPath:#{path}"
+        echo "-------------"
+        echo Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid,"")
+        echo "-------------"
         #document.body.style.backgroundImage = path
 
     new_userinfo_for_greeter:->
