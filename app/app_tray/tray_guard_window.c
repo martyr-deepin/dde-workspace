@@ -89,13 +89,14 @@ void init_tray_guard_window()
 
 void update_tray_guard_window_position(double width)
 {
+    update_display_info(&apptray);
     if (width == 0)
         width = 1;
 
     g_debug("[%s] new width of guard window: %lf", __func__, width);
     GdkWindow* win = get_tray_guard_window();
     gdk_window_move_resize(win,
-                           (gdk_screen_width() - width) / 2,
+                           (apptray.width - width) / 2,
                            0,
                            width,
                            GUARD_WINDOW_HEIGHT);

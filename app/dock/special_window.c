@@ -41,9 +41,9 @@ gboolean launcher_should_exit()
         if (g_strcmp0(ch.res_name, "launcher") == 0) {
             is_launcher_sub_window = TRUE;
         }
+        XFree(ch.res_name);
+        XFree(ch.res_class);
     }
-    XFree(ch.res_name);
-    XFree(ch.res_class);
     return launcher_id != 0
         && active_client_id != get_dock_window()
         && active_client_id != launcher_id

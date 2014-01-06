@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include "dock.h"
 #include "dock_hide.h"
 #include "region.h"
 #include "dock_config.h"
@@ -302,10 +303,11 @@ void dock_toggle_show()
 
 GdkWindow* get_dock_guard_window()
 {
+    update_display_info(&dock);
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;
-        attributes.width = gdk_screen_width() - 10;
+        attributes.width = dock.width - 10;
         attributes.height = GUARD_WINDOW_HEIGHT;
         attributes.window_type = GDK_WINDOW_TEMP;
         attributes.wclass = GDK_INPUT_OUTPUT;
@@ -329,24 +331,30 @@ PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
     XGenericEvent* e = xevent;
 
 
-    if (xev->type == GenericEvent && e->evtype == EnterNotify) {
-        if (GD.config.hide_mode == AUTO_HIDE_MODE)
-            dock_show_real_now();
-        else if (GD.config.hide_mode != NO_HIDE_MODE)
-            dock_delay_show(50);
+    if (xev->type == GenericEvent) {
+        if (e->evtype == EnterNotify) {
+            if (GD.config.hide_mode == AUTO_HIDE_MODE)
+                dock_show_real_now();
+            else if (GD.config.hide_mode != NO_HIDE_MODE)
+                dock_delay_show(50);
+        } else if (e->evtype == LeaveNotify) {
+            if (GD.config.hide_mode == ALWAYS_HIDE_MODE)
+                dock_delay_hide(50);
+            else if (GD.config.hide_mode == AUTO_HIDE_MODE && dock_has_maximize_client() && !is_mouse_in_dock())
+                dock_hide_real_now();
+        }
     }
     return GDK_FILTER_CONTINUE;
 }
 
 void update_dock_guard_window_position(double width)
 {
-    if (width == 0)
-        width = gdk_screen_width();
-
     GdkWindow* win = get_dock_guard_window();
+    if (width == 0)
+        width = dock.width;
     gdk_window_move_resize(win,
-                           (gdk_screen_width() - width) / 2,
-                           gdk_screen_height() - GUARD_WINDOW_HEIGHT,
+                           (dock.width - width) / 2,
+                           dock.height - GUARD_WINDOW_HEIGHT,
                            width,
                            GUARD_WINDOW_HEIGHT);
 }
@@ -361,7 +369,7 @@ void init_dock_guard_window()
 {
     GdkWindow* win = get_dock_guard_window();
     gdk_window_add_filter(win, _monitor_guard_window, NULL);
-    update_dock_guard_window_position(gdk_screen_width());
+    update_dock_guard_window_position(dock.width);
 }
 
 void get_mouse_position(int* x, int* y)

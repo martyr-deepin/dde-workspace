@@ -147,7 +147,7 @@ void accumulate_na_width(GdkWindow* wrapper, gpointer width)
     if (wrapper == _deepin_tray)
         return;
     int icon_width = gdk_window_get_width(wrapper);
-    g_warning("[%s] window width is %d", __func__, icon_width);
+    g_debug("[%s] window width is %d", __func__, icon_width);
     _na_width += icon_width + PADDING;
     if (_na_width < DEFAULT_WIDTH)
         _na_width = DEFAULT_WIDTH + PADDING;
@@ -156,12 +156,13 @@ void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 
 void set_position(GdkWindow* wrapper, gpointer width)
 {
+    update_display_info(&apptray);
 #ifdef SPECIAL_FCITX
     g_assert(wrapper != _fcitx_tray);
 #endif
     int icon_width = gdk_window_get_width(wrapper);
     gdk_window_flush(wrapper);
-    gint _na_base_x = gdk_screen_width()/2 - _na_width/2 + offset;
+    gint _na_base_x = apptray.width/2 - _na_width/2 + offset;
     if (icon_width != GPOINTER_TO_INT(width))
         safe_window_move_resize(wrapper, _na_base_x, NA_BASE_Y, GPOINTER_TO_INT(width), DEFAULT_HEIGHT);
     else {
@@ -250,7 +251,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
         } else if (wrapper != _fcitx_tray) {
 #endif
             int new_height = ((XConfigureEvent*)xev)->height;
-            g_warning("=================%lf====================", CLAMP_WIDTH(new_width * 1.0/new_height * DEFAULT_HEIGHT));
+            g_debug("===================%lf===================", CLAMP_WIDTH(new_width * 1.0/new_height * DEFAULT_HEIGHT));
             g_hash_table_insert(_icons, wrapper, GINT_TO_POINTER(CLAMP_WIDTH((new_width * 1.0 / new_height * DEFAULT_HEIGHT))));
             _update_notify_area_width();
 #ifdef SPECIAL_FCITX
@@ -416,11 +417,12 @@ void cairo_image_surface_blur(cairo_surface_t* surface, double radius)
 
 void _draw_background(cairo_t* cr)
 {
+    update_display_info(&apptray);
     // draw shadow
     int shadow_width = _na_width + SHADOW_WIDTH * 2;
-    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, gdk_screen_width(), TRAY_HEIGHT);
+    cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, apptray.width, TRAY_HEIGHT);
     cairo_t* ctx = cairo_create(surface);
-    cairo_translate(ctx, (gdk_screen_width() - shadow_width) / 2, 0);
+    cairo_translate(ctx, (apptray.width - shadow_width) / 2, 0);
 
     // outter
     draw_tray_panel(ctx, shadow_width, TRAY_HEIGHT);
@@ -446,7 +448,7 @@ void _draw_background(cairo_t* cr)
 
     // draw main panel
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
-    cairo_translate(cr, (gdk_screen_width() - _na_width)/2, 0);
+    cairo_translate(cr, (apptray.width - _na_width)/2, 0);
     cairo_set_source_rgba(cr, 0, 0, 0, 0.5);
     draw_tray_panel(cr, _na_width, PANEL_HEIGHT);
     cairo_fill(cr);

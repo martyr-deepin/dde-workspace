@@ -40,15 +40,16 @@ calc_app_item_size = ->
     update_dock_region(w * item_num)
 
 update_dock_region = (w)->
-    if board
-        board.set_width(w)
-        board.draw()
+    if panel
+        panel.set_width(w)
+        panel.redraw()
     apps = $s(".AppItem")
     last = apps[apps.length-1]
     if last and last.clientWidth != 0
         app_len = ICON_SCALE * ITEM_WIDTH * apps.length
         left_offset = (screen.width - app_len) / 2
-        DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH, apps.length, DOCK_HEIGHT)
+        panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
+        DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
 
 document.body.onresize = ->
     calc_app_item_size()
@@ -166,9 +167,10 @@ class AppList extends Widget
 
         @is_insert_indicator_shown = true
         AppList.expand_panel_id = setTimeout(->
-            board.set_width(board.board.width)
-            board.draw()
+            panel.set_width(panel.width())
+            panel.redraw()
         , 50)
+
 
 app_list = new AppList("app_list")
 
@@ -195,6 +197,9 @@ class AppItem extends Widget
             app_list.append_app_item(@)
         calc_app_item_size()
         # update_dock_region()
+        @element.addEventListener("click", (e)->
+            e.stopPropagation()
+        )
 
     next: ->
         el = @element.nextElementSibling
@@ -210,6 +215,7 @@ class AppItem extends Widget
             return null
     flash: (time)->
         apply_animation(@img, "flash", time or 1000)
+
     rotate: (time) ->
         apply_animation(@img, "rotateOut", time or 1000)
 
@@ -277,7 +283,7 @@ class AppItem extends Widget
         e.stopPropagation()
         return if @is_fixed_pos
         app_list.hide_indicator()
-        # board.set_width(board.board.width + ITEM_WIDTH)
+        # panel.set_width(panel.width() + ITEM_WIDTH)
 
         @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
         if @_try_swaping_id == @app_id

@@ -14,6 +14,7 @@ func main() {
         Method("ListApps", Callback("dock_bus_list_apps"), Ret("clients:gchar*")),
         Method("Appid2Xid", Callback("dock_bus_app_id_2_xid"), Ret("xid:guint32"), Arg("appid:gchar*")),
         Method("CurrentFocusApp", Callback("dock_bus_current_focus_app"), Ret("appid:char*")),
+	Method("MessageNotify", Callback("dock_bus_message_notify"), Arg("appid:gchar*"), Arg("itemid:gchar*")),
     )
     DBusCall(
         SessionDBUS("com.deepin.dde.desktop"),

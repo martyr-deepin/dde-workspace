@@ -6,7 +6,12 @@ ICON_WIDTH = 48.0
 ICON_HEIGHT = 48.0
 
 DOCK_HEIGHT = 68.0
-BOARD_HEIGHT = 40
+PANEL_HEIGHT = 60
+PANEL_MARGIN = 36
+
+PANEL_LEFT_IMAGE = 'img/panel/panel_left.svg'
+PANEL_MIDDLE_IMAGE = 'img/panel/panel.svg'
+PANEL_RIGHT_IMAGE = 'img/panel/panel_right.svg'
 
 BOARD_IMG_PATH = "img/board.png"
 
@@ -40,8 +45,6 @@ FULL_TRASH_ICON = "user-trash-full"
 SHORT_INDICATOR = "img/indicator-short.svg"
 LONG_INDICATOR = "img/indicator-long.svg"
 
-PANEL_IMG = 'img/panel.svg'
-
 ITEM_TYPE_NULL = ''
 ITEM_TYPE_APP = "App"
 ITEM_TYPE_APPLET = "Applet"
@@ -60,3 +63,5 @@ ANALOG_CLOCK =
     'type': "analog"
 
 OFFSET_DOWN = 7
+DEEPIN_APPTRAY = "dapptray"
+NOTIFY_FLAG = "img/bage.svg"

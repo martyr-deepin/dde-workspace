@@ -357,7 +357,7 @@ Client* create_client_from_window(Window w)
     g_key_file_set_uint64(record_file, c->app_id, "StartNum", last_time + 1);
     save_app_config(record_file, RECORD_FILE);
 
-    g_debug("");
+    g_debug("\n");
 
     return c;
 }

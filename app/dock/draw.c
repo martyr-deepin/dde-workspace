@@ -36,54 +36,76 @@
 #define GET_B(c) TO_DOUBLE(c >> 8 & 0xff)
 #define GET_A(c) ((c & 0xff) / 100.0)
 
+
+GdkPixbuf* image_path(char const* name, double width, double height)
+{
+    char* path = g_strdup_printf(RESOURCE_DIR"dock/%s", name);
+    GError* error = NULL;
+    GdkPixbuf* img = gdk_pixbuf_new_from_file_at_scale(path, width, height, FALSE, &error);
+    if (error != NULL) {
+        g_warning("[%s] load file failed: %s", __func__, error->message);
+        g_clear_error(&error);
+    }
+    g_free(path);
+    return img;
+}
+
+
 JS_EXPORT_API
-void dock_draw_board(JSValueRef canvas)
+void dock_draw_panel(JSValueRef canvas,
+                     char const* left_image,
+                     char const* middle_image,
+                     char const* right_image,
+                     double panel_width,
+                     double margin_width,
+                     double panel_height
+                     )
 {
     cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
 
-    int w = gdk_screen_get_width(gdk_screen_get_default());
-    // TODO: may pass a w.
+    if (cr == NULL) {
+        g_warning("[%s] get cairo failed, maybe canvas is not ready or "
+                  "gets 0 width or 0 height.", __func__);
+        return;
+    }
+
+    double middle_width = panel_width - margin_width * 2;
+    if ((margin_width <= 0 && margin_width != -1)
+        || (middle_width <= 0 && middle_width != -1)) {
+        g_warning("[%s] width is invalid: margin_width: %lf, middle width: %lf",
+                  __func__, margin_width, middle_width);
+        return;
+    }
+
+    GdkPixbuf* left = image_path(left_image, margin_width, panel_height);
+    GdkPixbuf* middle = image_path(middle_image, middle_width, panel_height);
+    GdkPixbuf* right = image_path(right_image, margin_width, panel_height);
+
+    if (left == NULL || middle == NULL || right == NULL) {
+        g_warning("[%s] load image failed", __func__);
+        return ;
+    }
 
     cairo_save(cr);
-    cairo_set_source_rgba(cr,
-            GET_R(GD.config.color),
-            GET_G(GD.config.color),
-            GET_B(GD.config.color),
-            GET_A(GD.config.color)
-            );
+
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+    gdk_cairo_set_source_pixbuf(cr, left, 1, 0);
     cairo_paint(cr);
 
-    cairo_set_line_width(cr, 1);
-    cairo_set_source_rgba(cr, 0, 0, 0, 0.2);
-    cairo_move_to(cr, 0, 0.5);
-    cairo_line_to(cr, w, 0.5);
-    cairo_stroke(cr);
+    gdk_cairo_set_source_pixbuf(cr, middle, margin_width + 1, 0);
+    cairo_paint(cr);
 
-    cairo_set_source_rgba(cr, 1, 1, 1, 0.08);
-    cairo_move_to(cr, 0, 1.5);
-    cairo_line_to(cr, w, 1.5);
-    cairo_stroke(cr);
-
-
-    /*cairo_set_source_rgba(cr, 0, 0, 0, 0.05);*/
-
-    /*int l = h-4-3;*/
-    /*int b = w/2;*/
-    /*double r = (b*b+l*l) / (2.0 * l);*/
-    /*double e = asin(b / r);*/
-
-    /*cairo_move_to(cr, w, 3);*/
-    /*cairo_arc(cr, b, l-r , r, M_PI_2-e, M_PI_2+e);*/
-
-    /*cairo_line_to(cr, 0, h);*/
-    /*cairo_line_to(cr, w, h);*/
-    /*cairo_line_to(cr, w, 3);*/
-    /*cairo_close_path(cr);*/
-    /*cairo_clip(cr);*/
-    /*cairo_paint(cr);*/
-    /*cairo_restore(cr);*/
+    gdk_cairo_set_source_pixbuf(cr, right, panel_width - margin_width + 1, 0);
+    cairo_paint(cr);
 
     canvas_custom_draw_did(cr, NULL);
+
+    g_object_unref(left);
+    g_object_unref(middle);
+    g_object_unref(right);
 }
 
 void draw_app_icon(JSValueRef canvas, double id, double number)

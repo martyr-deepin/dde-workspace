@@ -41,11 +41,10 @@ body {
     /* border: solid 2px red; */
 }
 
-#board {
+#panel {
     /* border: solid 2px black; */
     position: fixed;
     bottom: 0px;
     min-height: 30px;
-    max-height: 40px;
-    z-index: -1000;
+    max-height: 60px;
 }

@@ -65,6 +65,12 @@ gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
 {
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
+
+#ifdef DEBUG_REGION
+    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_source_rgba(cr, 1, 1, 1, 0.3);
+    cairo_paint(cr);
+#endif
     return FALSE;
 }
 

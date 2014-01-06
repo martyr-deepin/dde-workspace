@@ -52,10 +52,18 @@ class ShowDesktop extends FixedItem
     constructor:->
         super
         DCore.signal_connect("desktop_status_changed", =>
-            @show(DCore.Dock.get_desktop_status())
+            @set_status(DCore.Dock.get_desktop_status())
         )
+
+    set_status: (status)=>
+        @show(status)
+
+    toggle: =>
+        DCore.Dock.show_desktop(!@__show)
+
     do_click: (e)=>
         DCore.Dock.show_desktop(!@__show)
+
     do_dragenter: (e) =>
         e.stopPropagation()
         ShowDesktop.set_time_id = setTimeout(=>

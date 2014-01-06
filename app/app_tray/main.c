@@ -1,6 +1,8 @@
 #include <stdlib.h>
 
 #include <gtk/gtk.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 
 #include "main.h"
 #include "tray.h"
@@ -8,12 +10,14 @@
 #include "region.h"
 #include "X_misc.h"
 #include "i18n.h"
+#include "DBUS_dapptray.h"
 
 
 #define TRAY_ID_NAME "apptray.app.deepin"
 
 
 static GtkWidget* container = NULL;
+struct DisplayInfo apptray;
 
 
 GdkWindow* TRAY_GDK_WINDOW()
@@ -94,7 +98,8 @@ int main(int argc, char *argv[])
     GdkWindow* window = gtk_widget_get_window(container);
     set_wmspec_dock_hint(window);
 
-    gtk_widget_set_size_request(container, gdk_screen_width(), TRAY_HEIGHT);
+    update_display_info(&apptray);
+    gtk_widget_set_size_request(container, apptray.width, TRAY_HEIGHT);
 
     gdk_error_trap_push();
     tray_init(container);
@@ -104,6 +109,7 @@ int main(int argc, char *argv[])
 
     tray_delay_hide(1000/*ms*/);
 
+    setup_apptray_dbus_service();
     gtk_main();
     return 0;
 }

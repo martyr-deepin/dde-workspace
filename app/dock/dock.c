@@ -21,6 +21,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 #include <cairo.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
+
 #include <dwebview.h>
 #include "dock.h"
 #include "X_misc.h"
@@ -34,12 +37,14 @@
 #include "dock_hide.h"
 #include "DBUS_dock.h"
 #include "monitor.h"
+#include "display_info.h"
 
 #define DOCK_CONFIG "dock/config.ini"
 
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
 
+struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
 
@@ -122,16 +127,17 @@ Window get_dock_window()
 
 void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
-    if (gtk_widget_get_realized(container) && (gdk_screen_width() != allocation->width || gdk_screen_height() != allocation->height)) {
+    update_display_info(&dock);
+    if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = DOCK_GDK_WINDOW();
         XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
-        gdk_window_move_resize(w, 0, 0, gdk_screen_width(), gdk_screen_height());
+        gdk_window_move_resize(w, 0, 0, dock.width, dock.height);
         gdk_flush();
         gdk_window_set_events(w, gdk_window_get_events(w));
 
         g_warning("size workaround run fix (%d,%d) to (%d,%d)\n",
                 allocation->width, allocation->height,
-                gdk_screen_width(), gdk_screen_height());
+                dock.width, dock.height);
     }
 }
 
@@ -171,26 +177,6 @@ void check_compiz_validity()
 {
     g_signal_connect(G_OBJECT(gdk_screen_get_default()), "composited-changed",
                      G_CALLBACK(is_compiz_valid), NULL);
-}
-
-void update_dock_size(GdkScreen* screen, GtkWidget* webview)
-{
-    GdkGeometry geo = {0};
-    geo.min_width = 0;
-    geo.min_height = 0;
-
-    gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_set_geometry_hints(DOCK_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
-    gdk_window_move_resize(gtk_widget_get_window(webview), 0, 0, gdk_screen_width(), gdk_screen_height());
-    gdk_window_move_resize(DOCK_GDK_WINDOW(), 0, 0, gdk_screen_width(), gdk_screen_height());
-    gdk_window_flush(gtk_widget_get_window(webview));
-    gdk_window_flush(DOCK_GDK_WINDOW());
-
-    dock_change_workarea_height(_dock_height);
-
-    init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
-
-    /* update_dock_guard_window_position(0); */
 }
 
 
@@ -278,78 +264,6 @@ void check_version()
 }
 
 
-int main(int argc, char* argv[])
-{
-    if (is_application_running(DOCK_ID_NAME)) {
-        g_warning(_("another instance of dock is running...\n"));
-        return 1;
-    }
-
-    singleton(DOCK_ID_NAME);
-
-    //remove  option -f
-    parse_cmd_line (&argc, &argv);
-
-    check_version();
-
-    init_i18n();
-    gtk_init(&argc, &argv);
-
-    /* check_compiz_validity(); */
-
-#ifndef NDEBUG
-    g_log_set_default_handler((GLogFunc)log_to_file, "dock");
-#endif
-    set_desktop_env_name("Deepin");
-    set_default_theme("Deepin");
-
-    container = create_web_container(FALSE, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
-
-    gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
-
-    webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
-
-    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
-
-    g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
-/* #define DEBUG_REGION */
-#ifndef DEBUG_REGION
-    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
-#endif
-#undef DEBUG_REGION
-    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
-    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
-    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
-
-
-    GdkScreen* screen = gdk_screen_get_default();
-    g_signal_connect_after(screen, "size-changed", G_CALLBACK(update_dock_size), webview);
-
-    gtk_widget_realize(container);
-    gtk_widget_realize(webview);
-    gtk_window_move(GTK_WINDOW(container), 0, 0);
-    gtk_widget_show_all(container);
-
-    update_dock_size(screen, webview);
-
-    set_wmspec_dock_hint(DOCK_GDK_WINDOW());
-
-#ifndef NDEBUG
-    monitor_resource_file("dock", webview);
-#endif
-
-    /*gdk_window_set_debug_updates(TRUE);*/
-
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
-
-    setup_dock_dbus_service();
-    GFileMonitor* m = monitor_trash();
-    gtk_main();
-    return 0;
-}
-
 void update_dock_color()
 {
     /*if (GD.is_webview_loaded)*/
@@ -405,10 +319,11 @@ void dock_emit_webview_ok()
 
 void _change_workarea_height(int height)
 {
+    update_display_info(&dock);
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, gdk_screen_width());
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, dock.width);
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, gdk_screen_width());
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, dock.width);
     }
 }
 
@@ -423,7 +338,7 @@ void dock_change_workarea_height(double height)
     else
         _dock_height = height;
     _change_workarea_height(height);
-    init_region(DOCK_GDK_WINDOW(), 0, gdk_screen_height() - _dock_height, gdk_screen_width(), _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, dock.height - _dock_height, dock.width, _dock_height);
 }
 
 JS_EXPORT_API
@@ -440,6 +355,16 @@ DBUS_EXPORT_API
 void dock_show_inspector()
 {
     dwebview_show_inspector(webview);
+}
+
+
+DBUS_EXPORT_API
+void dock_bus_message_notify(gchar* appid, gchar* itemid)
+{
+    JSObjectRef info = json_create();
+    json_append_string(info, "appid", appid);
+    json_append_string(info, "itemid", itemid);
+    js_post_message("message_notify", info);
 }
 
 
@@ -477,5 +402,165 @@ void dock_set_clock_type(char const* type)
     g_key_file_set_string(dock_config, "main", CLOCK_TYPE_KEY_NAME, type);
     save_app_config(dock_config, DOCK_CONFIG);
     g_key_file_unref(dock_config);
+}
+
+
+void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
+{
+    GdkGeometry geo = {0};
+    geo.min_width = 0;
+    geo.min_height = 0;
+
+    gdk_window_set_geometry_hints(gtk_widget_get_window(webview), &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_set_geometry_hints(DOCK_GDK_WINDOW(), &geo, GDK_HINT_MIN_SIZE);
+    g_debug("%dx%d(%d, %d)", w, h, x, y);
+    gdk_window_move_resize(gtk_widget_get_window(webview), x, y, w, h);
+    gdk_window_move_resize(DOCK_GDK_WINDOW(), x, y, w, h);
+    gdk_window_flush(gtk_widget_get_window(webview));
+    gdk_window_flush(DOCK_GDK_WINDOW());
+
+    dock_change_workarea_height(_dock_height);
+
+    init_region(DOCK_GDK_WINDOW(), x, h - _dock_height, w, _dock_height);
+}
+
+
+static
+gboolean primary_changed_handler(gpointer data)
+{
+    DBusConnection* conn = (DBusConnection*)data;
+    dbus_connection_read_write(conn, 0);
+    DBusMessage* message = dbus_connection_pop_message(conn);
+
+    if (message == NULL) {
+        return G_SOURCE_CONTINUE;
+    }
+
+    g_debug("[%s] loop for signal", __func__);
+    if (dbus_message_is_signal(message,
+                               DISPLAY_INTERFACE,
+                               PRIMARY_CHANGED_SIGNAL)) {
+        DBusMessageIter args;
+        if (!dbus_message_iter_init(message, &args)) {
+            dbus_message_unref(message);
+            g_warning("init signal iter failed");
+            return G_SOURCE_CONTINUE;
+        }
+
+        DBusMessageIter element_iter;
+        dbus_message_iter_recurse(&args, &element_iter);
+
+        g_debug("[%s] get signal", __func__);
+        // iterate_container_message(conn, &array_iter, iter_array, info);
+        int count = 0;
+        while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
+            switch (count) {
+            case 0: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                dock.x = value.i16;
+                break;
+            }
+            case 1: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                dock.y = value.i16;
+                break;
+            }
+            case 2: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                dock.width = value.u16;
+                break;
+            }
+            case 3: {
+                DBusBasicValue value;
+                dbus_message_iter_get_basic(&element_iter, &value);
+                dock.height = value.u16;
+                break;
+            }
+            }
+            ++count;
+            dbus_message_iter_next(&element_iter);
+        }
+
+        update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    }
+    dbus_message_unref(message);
+
+    return G_SOURCE_CONTINUE;
+}
+
+
+int main(int argc, char* argv[])
+{
+    if (is_application_running(DOCK_ID_NAME)) {
+        g_warning(_("another instance of dock is running...\n"));
+        return 1;
+    }
+
+    singleton(DOCK_ID_NAME);
+
+    //remove  option -f
+    parse_cmd_line (&argc, &argv);
+
+    check_version();
+
+    init_i18n();
+    gtk_init(&argc, &argv);
+
+    /* check_compiz_validity(); */
+
+#ifndef NDEBUG
+    g_log_set_default_handler((GLogFunc)log_to_file, "dock");
+#endif
+    set_desktop_env_name("Deepin");
+    set_default_theme("Deepin");
+
+    container = create_web_container(FALSE, TRUE);
+    gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
+
+    gdk_error_trap_push(); //we need remove this, but now it can ignore all X error so we would'nt crash.
+
+    webview = d_webview_new_with_uri(GET_HTML_PATH("dock"));
+
+    gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(webview));
+
+    g_signal_connect(container , "destroy", G_CALLBACK (gtk_main_quit), NULL);
+/* #define DEBUG_REGION */
+#ifndef DEBUG_REGION
+    g_signal_connect(webview, "draw", G_CALLBACK(erase_background), NULL);
+#endif
+#undef DEBUG_REGION
+    g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
+    g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
+    g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
+
+
+    gtk_widget_realize(container);
+    gtk_widget_realize(webview);
+
+    update_display_info(&dock);
+    gtk_window_move(GTK_WINDOW(container), dock.x, dock.y);
+    gtk_widget_show_all(container);
+
+    update_dock_size(dock.x, dock.y, dock.width, dock.height);
+    listen_primary_changed_signal(primary_changed_handler);
+
+    set_wmspec_dock_hint(DOCK_GDK_WINDOW());
+
+#ifndef NDEBUG
+    monitor_resource_file("dock", webview);
+#endif
+
+    /*gdk_window_set_debug_updates(TRUE);*/
+
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba(DOCK_GDK_WINDOW(), &rgba);
+
+    setup_dock_dbus_service();
+    GFileMonitor* m = monitor_trash();
+    gtk_main();
+    return 0;
 }
 

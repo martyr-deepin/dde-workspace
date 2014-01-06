@@ -22,9 +22,8 @@ document.body.addEventListener("contextmenu", (e) ->
     # forbid context menu
     e.preventDefault()
 )
-$("#container").style.maxWidth = screen.width - 70  # force board to contain apps
-board = new Board("board")
-board.draw()
+$("#container").style.maxWidth = screen.width - PANEL_MARGIN * 2
+panel = new Panel("panel")
 
 
 _current_active_window = null
@@ -112,6 +111,10 @@ DCore.signal_connect("active_window", (info)->
     Widget.look_up("le_" + info.app_id).do_click()
 )
 
+DCore.signal_connect("message_notify", (info)->
+    panel.update(info.appid, info.itemid)
+)
+
 setTimeout(->
     IN_INIT = false
     calc_app_item_size()
@@ -121,7 +124,6 @@ setTimeout(->
 
 
 DCore.Dock.emit_webview_ok()
-
-show_desktop.show(DCore.Dock.get_desktop_status())
+show_desktop.set_status(DCore.Dock.get_desktop_status())
 DCore.Dock.test()
 

@@ -46,6 +46,13 @@
     padding-top: 2px;
 }
 
+.NotifyFlag {
+  position: relative;
+  right: -2px;
+  float: right;
+  z-index: 1000;
+}
+
 .DigitClockTime {
     /* border: solid black 1; */
     position: absolute;
