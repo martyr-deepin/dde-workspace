@@ -153,9 +153,13 @@ gboolean primary_changed_handler(gpointer data)
 PRIVATE
 void _on_realize(GtkWidget* container)
 {
-    update_display_info(&launcher);
+    static inited = FALSE;
+    if (!inited) {
+        update_display_info(&launcher);
+        listen_primary_changed_signal(primary_changed_handler);
+        inited = TRUE;
+    }
     _update_size(launcher.x, launcher.y, launcher.width, launcher.height);
-    listen_primary_changed_signal(primary_changed_handler);
     if (is_js_already)
         background_changed(background_gsettings, CURRENT_PCITURE, NULL);
 }
@@ -237,7 +241,7 @@ void launcher_exit_gui()
 JS_EXPORT_API
 void launcher_notify_workarea_size()
 {
-    update_display_info(&launcher);
+    // update_display_info(&launcher);
     JSObjectRef workarea_info = json_create();
     json_append_number(workarea_info, "x", 0);
     json_append_number(workarea_info, "y", 0);
@@ -466,6 +470,10 @@ int main(int argc, char* argv[])
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
 
+#ifdef NDEBUG
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
+#endif
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -488,7 +496,7 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-    update_display_info(&launcher);
+    // update_display_info(&launcher);
     set_background(gtk_widget_get_window(webview), background_gsettings,
                             launcher.width, launcher.height);
 

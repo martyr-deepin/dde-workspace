@@ -303,7 +303,7 @@ void dock_toggle_show()
 
 GdkWindow* get_dock_guard_window()
 {
-    update_display_info(&dock);
+    // update_display_info(&dock);
     static GdkWindow* guard_window = NULL;
     if (guard_window == NULL) {
         GdkWindowAttr attributes;

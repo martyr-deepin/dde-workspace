@@ -127,7 +127,7 @@ Window get_dock_window()
 
 void size_workaround(GtkWidget* container, GdkRectangle* allocation)
 {
-    update_display_info(&dock);
+    // update_display_info(&dock);
     if (gtk_widget_get_realized(container) && (dock.width != allocation->width || dock.height != allocation->height)) {
         GdkWindow* w = DOCK_GDK_WINDOW();
         XSelectInput(gdk_x11_get_default_xdisplay(), GDK_WINDOW_XID(w), NoEventMask);
@@ -319,7 +319,7 @@ void dock_emit_webview_ok()
 
 void _change_workarea_height(int height)
 {
-    update_display_info(&dock);
+    // update_display_info(&dock);
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
         set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, dock.width);
     } else {
@@ -511,7 +511,8 @@ int main(int argc, char* argv[])
 
     /* check_compiz_validity(); */
 
-#ifndef NDEBUG
+#ifdef NDEBUG
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
     g_log_set_default_handler((GLogFunc)log_to_file, "dock");
 #endif
     set_desktop_env_name("Deepin");
