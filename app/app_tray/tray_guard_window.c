@@ -68,7 +68,9 @@ static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
             }
         } else if (e->evtype == LeaveNotify) {
             g_debug("[%s] LeaveNotify", __func__);
-            tray_delay_hide(100);
+            if (!tray_is_always_shown()) {
+                tray_delay_hide(100);
+            }
         }
     }
 

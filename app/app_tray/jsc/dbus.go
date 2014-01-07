@@ -7,6 +7,7 @@ func main() {
 		SessionDBUS("com.deepin.dde.apptray"),
 		Method("Show", Callback("tray_show_real_now")),
 		Method("Hide", Callback("tray_hide_real_now")),
+		Method("AlwaysShow", Callback("tray_always_show")),
 	)
 	OUTPUT_END()
 }
