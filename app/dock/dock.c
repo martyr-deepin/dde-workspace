@@ -337,8 +337,9 @@ void dock_change_workarea_height(double height)
         _dock_height = 30;
     else
         _dock_height = height;
-    _change_workarea_height(height);
-    init_region(DOCK_GDK_WINDOW(), 0, dock.height - _dock_height, dock.width, _dock_height);
+    int workarea_height = gdk_screen_height() - dock.height + height;
+    _change_workarea_height(workarea_height);
+    init_region(DOCK_GDK_WINDOW(), 0, dock.height - workarea_height, dock.width, workarea_height);
 }
 
 JS_EXPORT_API
