@@ -43,8 +43,12 @@ static
 gboolean leave_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
     // g_debug("[%s]", __func__);
-    if (!is_mouse_in_tray())
-        tray_delay_hide(100);
+    if (!is_mouse_in_tray()) {
+        if (!tray_is_always_shown()) {
+            g_warning("levae notify");
+            tray_delay_hide(100);
+        }
+    }
     return FALSE;
 }
 
@@ -150,9 +154,9 @@ gboolean primary_changed_handler(gpointer data)
 
 int main(int argc, char *argv[])
 {
+    parse_cmd(argc, argv);
     init_i18n();
     gtk_init(&argc, &argv);
-    parse_cmd(argc, argv);
 
     container = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
@@ -183,21 +187,18 @@ int main(int argc, char *argv[])
 
     gdk_error_trap_push();
     tray_init(container);
+    setup_apptray_dbus_service();
 
     update_display_info(&apptray);
     listen_primary_changed_signal(primary_changed_handler);
-    // apptray.width = gdk_screen_width();
-    // apptray.height = gdk_screen_height();
-    // apptray.x = 0;
-    // apptray.y = 0;
     gtk_widget_set_size_request(container, apptray.width, TRAY_HEIGHT);
-
-    gtk_widget_show_all(container);
     gtk_window_move(GTK_WINDOW(container), 0, 0);
+    gtk_widget_show_all(container);
 
-    tray_delay_hide(1000/*ms*/);
+    if (!tray_is_always_shown()) {
+        tray_delay_hide(1000/*ms*/);
+    }
 
-    setup_apptray_dbus_service();
     gtk_main();
     return 0;
 }

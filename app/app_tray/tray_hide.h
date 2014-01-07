@@ -46,5 +46,6 @@ void tray_update_hide_mode();
 void update_tray_guard_window_position(double width);
 
 gboolean is_mouse_in_tray();
+gboolean tray_is_always_shown();
 
 #endif

@@ -260,7 +260,9 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 
         return GDK_FILTER_REMOVE;
     } else if (xev->type == PropertyNotify) {
-        tray_delay_hide(2000/*ms*/);
+        if (!tray_is_always_shown()) {
+            tray_delay_hide(2000/*ms*/);
+        }
     }
 
     return GDK_FILTER_CONTINUE;

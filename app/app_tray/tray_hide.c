@@ -281,6 +281,23 @@ void tray_show_real_now()
 }
 
 
+DBUS_EXPORT_API
+void tray_always_show()
+{
+    system("touch ~/.tray_always_show");
+    tray_show_real_now();
+}
+
+
+gboolean tray_is_always_shown()
+{
+    char* path = g_build_filename(g_get_home_dir(), ".tray_always_show", NULL);
+    gboolean always_shown = g_file_test(path, G_FILE_TEST_EXISTS);
+    g_free(path);
+    return always_shown;
+}
+
+
 void tray_hide_now()
 {
     _cancel_detect_hide_mode();
@@ -291,6 +308,7 @@ void tray_hide_now()
 DBUS_EXPORT_API
 void tray_hide_real_now()
 {
+    system("rm ~/.tray_always_show");
     _cancel_detect_hide_mode();
     handle_event(HideNow);
 }
