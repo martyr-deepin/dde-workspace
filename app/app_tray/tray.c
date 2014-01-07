@@ -156,7 +156,7 @@ void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 
 void set_position(GdkWindow* wrapper, gpointer width)
 {
-    update_display_info(&apptray);
+    // update_display_info(&apptray);
 #ifdef SPECIAL_FCITX
     g_assert(wrapper != _fcitx_tray);
 #endif
@@ -417,7 +417,7 @@ void cairo_image_surface_blur(cairo_surface_t* surface, double radius)
 
 void _draw_background(cairo_t* cr)
 {
-    update_display_info(&apptray);
+    // update_display_info(&apptray);
     // draw shadow
     int shadow_width = _na_width + SHADOW_WIDTH * 2;
     cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, apptray.width, TRAY_HEIGHT);

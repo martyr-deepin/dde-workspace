@@ -56,7 +56,7 @@ void draw_tray_panel(cairo_t* cr, int width, int height)
 static
 cairo_region_t* create_tray_region(int width, int height)
 {
-    update_display_info(&apptray);
+    // update_display_info(&apptray);
     cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, apptray.width, height);
     cairo_t* cr = cairo_create(surface);
 
@@ -107,7 +107,7 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 
 void update_tray_region(double width)
 {
-    update_display_info(&apptray);
+    // update_display_info(&apptray);
     int x = (apptray.width - width) / 2;
     set_region(x, 0, width, PANEL_HEIGHT);
 }

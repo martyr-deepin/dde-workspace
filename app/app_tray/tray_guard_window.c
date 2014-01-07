@@ -89,7 +89,7 @@ void init_tray_guard_window()
 
 void update_tray_guard_window_position(double width)
 {
-    update_display_info(&apptray);
+    // update_display_info(&apptray);
     if (width == 0)
         width = 1;
 
