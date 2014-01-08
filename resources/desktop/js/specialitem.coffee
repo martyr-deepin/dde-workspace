@@ -244,7 +244,7 @@ class TrashVDir extends DesktopEntry
         menus
 
     on_itemselected : (evt) =>
-        id = parsetInt(evt)
+        id = parseInt(evt)
         switch id
             when 1
                 @item_exec()

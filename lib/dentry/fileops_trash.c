@@ -1,4 +1,6 @@
 //get a list of GVolumes
+#include <stdlib.h>
+
 #include <glib/gi18n.h>
 #include <gio/gio.h>
 #include <gtk/gtk.h>
@@ -7,10 +9,6 @@
 #include "fileops_trash.h"
 
 static GList *  _get_trash_dirs_for_mount       (GMount *mount);
-static gboolean _empty_trash_job                (GIOSchedulerJob *io_job,
-                                                 GCancellable* cancellable,
-                                                 gpointer user_data);
-static gboolean _empty_trash_job_done           (gpointer user_data);
 static void     _delete_trash_file              (GFile *file,
                                                  gboolean del_file,
                                                  gboolean del_children);
@@ -83,12 +81,34 @@ void fileops_confirm_trash ()
 
     if (result == GTK_RESPONSE_OK)
         fileops_empty_trash ();
+}
 
 
+static
+void _empty_trash_job(gpointer data, gpointer user_data)
+{
+    (void)user_data;
+    GList* trash_list = (GList*)data;
+
+    GList* l;
+    for (l = trash_list; l != NULL; l = l->next)
+        _delete_trash_file (l->data, FALSE, TRUE);
+
+    g_list_free_full(trash_list, g_object_unref);
+}
+
+static GThreadPool* pool = NULL;
+void destroy_thread_pool()
+{
+    g_thread_pool_free(pool, FALSE, TRUE);
 }
 
 void fileops_empty_trash ()
 {
+    if (pool == NULL) {
+        pool = g_thread_pool_new(_empty_trash_job, NULL, -1, FALSE, NULL);
+        atexit(destroy_thread_pool);
+    }
     GList* trash_list = NULL;
 
     GVolumeMonitor* vol_monitor = g_volume_monitor_get ();
@@ -107,11 +127,7 @@ void fileops_empty_trash ()
     trash_list = g_list_prepend (trash_list,
                                  g_file_new_for_uri ("trash:"));
 
-    g_io_scheduler_push_job (_empty_trash_job,
-                             trash_list,
-                             NULL,
-                             0,
-                             NULL);
+    g_thread_pool_push(pool, trash_list, NULL);
 }
 static GList *
 _get_trash_dirs_for_mount (GMount *mount)
@@ -151,30 +167,6 @@ _get_trash_dirs_for_mount (GMount *mount)
     return list;
 }
 
-static gboolean
-_empty_trash_job (GIOSchedulerJob *io_job,
-                  GCancellable* cancellable,
-                  gpointer user_data)
-{
-    (void)cancellable;
-    GList* trash_list = (GList*) user_data;
-
-    GList* l;
-    for (l = trash_list; l != NULL; l = l->next)
-        _delete_trash_file (l->data, FALSE, TRUE);
-
-    g_io_scheduler_job_send_to_mainloop_async (io_job,
-                                               _empty_trash_job_done,
-                                               user_data,
-                                               NULL);
-    return FALSE;
-}
-static gboolean
-_empty_trash_job_done (gpointer user_data)
-{
-    g_list_free_full (user_data, g_object_unref);
-    return FALSE;
-}
 static void
 _delete_trash_file (GFile *file,
                     gboolean del_file,
