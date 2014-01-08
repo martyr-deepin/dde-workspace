@@ -25,6 +25,8 @@
 #include <pwd.h>
 #include <sys/types.h>
 
+#include "utils.h"
+
 gchar *
 get_user_name ()
 {
@@ -192,6 +194,8 @@ switch_to_greeter (gchar *seat_path)
 
 int main (int argc, char **argv)
 {
+    UNUSED(argc);
+    UNUSED(argv);
     gchar *username = NULL;
     gchar *seat_path = NULL;
 

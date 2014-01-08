@@ -108,6 +108,8 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 
 void background_changed(GSettings* settings, char* key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     char* bg_path = g_settings_get_string(settings, CURRENT_PCITURE);
     char* blur_path = bg_blur_pict_get_dest_path(bg_path);
     g_free(bg_path);

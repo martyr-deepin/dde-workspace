@@ -188,8 +188,9 @@ void reco()
 }
 
 
-static void bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
+static void __attribute__((unused)) bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
 {
+    UNUSED(bus);
     gchar* msg_str;
     GError *error;
 
@@ -215,6 +216,7 @@ static void bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
 static
 gboolean recognized_handler(gpointer data)
 {
+    UNUSED(data);
     g_debug("[%s] recognized", __func__);
     js_post_signal("start-login");
     recognition_info.reco_state = RECOGNIZE_FINISH;
@@ -225,6 +227,7 @@ gboolean recognized_handler(gpointer data)
 static
 gboolean not_recognize_handler(gpointer data)
 {
+    UNUSED(data);
     g_debug("[%s] not recognized", __func__);
     g_debug("[%s] send auth-failed signal", __func__);
     JSObjectRef json = json_create();
@@ -244,6 +247,8 @@ gboolean not_recognize_handler(gpointer data)
 
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 {
+    UNUSED(img);
+    UNUSED(data);
     static gboolean inited = FALSE;
     static gboolean sended = FALSE;
 
@@ -328,6 +333,8 @@ static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data
         recognition_info.source_data = (guchar*)GST_BUFFER_DATA(copy_buffer);
         recognition_info.length = GST_BUFFER_SIZE(pure_buffer);
         recognition_info.has_data = TRUE;
+    case RECOGNIZING:
+        break;
     }
 
     return TRUE;
@@ -390,8 +397,6 @@ void destroy_pixels(guchar* pixels, gpointer user_data)
 
 void _draw(JSValueRef canvas, double dest_width, double dest_height)
 {
-    static gboolean not_draw = FALSE;
-
     if (recognition_info.reco_state == RECOGNIZING) {
         /* g_debug("[%s] recognizing", __func__); */
         return;

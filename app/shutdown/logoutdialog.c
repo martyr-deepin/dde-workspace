@@ -71,8 +71,10 @@ void shutdown_quit()
 }
 
 static gboolean
-prevent_exit (GtkWidget* w, GdkEvent* e)
+__attribute__((unused)) prevent_exit (GtkWidget* w, GdkEvent* e)
 {
+    UNUSED(w);
+    UNUSED(e);
     return TRUE;
 }
 
@@ -80,18 +82,23 @@ prevent_exit (GtkWidget* w, GdkEvent* e)
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
+    UNUSED(w);
+    UNUSED(e);
+    UNUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
 static void
-sigterm_cb (int signum)
+__attribute__((unused)) sigterm_cb (int signum)
 {
+    UNUSED(signum);
     gtk_main_quit ();
 }
 
 static void
 show_cb (GtkWindow* container, gpointer data)
 {
+    UNUSED(data);
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(container)),
                             gtk_window_get_screen (container),
@@ -138,6 +145,7 @@ x11_window_is_ours (Window window)
 static GdkFilterReturn
 xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
+    UNUSED(event);
     XEvent *ev = xevent;
 
     switch (ev->type) {

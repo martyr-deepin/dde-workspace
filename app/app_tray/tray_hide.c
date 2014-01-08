@@ -27,6 +27,7 @@
 #include "tray_hide.h"
 #include "tray_guard_window.h"
 #include "X_misc.h"
+#include "utils.h"
 
 
 #define SHOW_HIDE_ANIMATION_STEP 6
@@ -284,7 +285,7 @@ void tray_show_real_now()
 DBUS_EXPORT_API
 void tray_always_show()
 {
-    system("touch ~/.tray_always_show");
+    int noused __attribute__((unused)) = system("touch ~/.tray_always_show");
     tray_show_real_now();
 }
 
@@ -308,7 +309,7 @@ void tray_hide_now()
 DBUS_EXPORT_API
 void tray_hide_real_now()
 {
-    system("rm ~/.tray_always_show");
+    int noused __attribute__((unused)) = system("rm ~/.tray_always_show");
     _cancel_detect_hide_mode();
     handle_event(HideNow);
 }

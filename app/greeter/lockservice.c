@@ -31,6 +31,8 @@
 #include <errno.h>
 #include <crypt.h>
 
+#include "utils.h"
+
 #define LOCK_DBUS_NAME     "com.deepin.dde.lock"
 #define LOCK_DBUS_OBJ       "/com/deepin/dde/lock"
 #define LOCK_DBUS_IFACE     "com.deepin.dde.lock"
@@ -155,6 +157,7 @@ lock_setup_dbus_service ()
 static gboolean
 _retry_registration (gpointer user_data)
 {
+    UNUSED(user_data);
     lock_service_owner_id = g_bus_own_name (G_BUS_TYPE_SYSTEM,
                                             LOCK_DBUS_NAME,
                                             G_BUS_NAME_OWNER_FLAGS_NONE,
@@ -169,6 +172,7 @@ _retry_registration (gpointer user_data)
 static void
 _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
 {
+    UNUSED(name);
     GError* error = NULL;
 
     g_debug ("on_bus_acquired");
@@ -200,12 +204,17 @@ _on_bus_acquired (GDBusConnection * connection, const gchar * name, gpointer use
 static void
 _on_name_acquired (GDBusConnection * connection, const gchar * name, gpointer user_data)
 {
+    UNUSED(connection);
+    UNUSED(name);
+    UNUSED(user_data);
     g_debug ("Dbus name acquired");
 }
 
 static void
 _on_name_lost (GDBusConnection * connection, const gchar * name, gpointer user_data)
 {
+    UNUSED(name);
+    UNUSED(user_data);
     if (connection == NULL) {
         g_critical("Unable to get a connection to DBus");
 
@@ -223,6 +232,11 @@ static void
 _bus_method_call (GDBusConnection * connection, const gchar * sender, const gchar * object_path, const gchar * interface,
                  const gchar * method, GVariant * params, GDBusMethodInvocation * invocation, gpointer user_data)
 {
+    UNUSED(connection);
+    UNUSED(sender);
+    UNUSED(object_path);
+    UNUSED(interface);
+    UNUSED(user_data);
     g_debug ("bus_method_call");
     GVariant * retval = NULL;
     GError * error = NULL;
@@ -547,6 +561,7 @@ _bus_handle_remove_nopwdlogin (const gchar* username)
 static gboolean
 do_exit (gpointer user_data)
 {
+    UNUSED(user_data);
     g_main_loop_quit (loop);
 
     return FALSE;
@@ -554,6 +569,8 @@ do_exit (gpointer user_data)
 
 int main (int argc, char **argv)
 {
+    UNUSED(argc);
+    UNUSED(argv);
     loop = g_main_loop_new (NULL, FALSE);
 
     lock_setup_dbus_service ();

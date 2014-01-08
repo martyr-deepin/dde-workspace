@@ -33,7 +33,7 @@ void workaround_gtk_theme()
 
 GtkWidget* create_web_container(bool normal, bool above)
 {
-    (void)above;
+    UNUSED(above);
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     workaround_gtk_theme();
 
@@ -64,8 +64,8 @@ GtkWidget* create_web_container(bool normal, bool above)
 
 gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
 {
-    (void)widget;
-    (void)data;
+    UNUSED(widget);
+    UNUSED(data);
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
 
@@ -104,9 +104,9 @@ static void add_ddesktop_class(WebKitWebView *web_view,
         gpointer arg3,
         gpointer user_data)
 {
-    (void)context;
-    (void)arg3;
-    (void)user_data;
+    UNUSED(context);
+    UNUSED(arg3);
+    UNUSED(user_data);
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
 }
@@ -116,9 +116,9 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 WebKitWebView* inspector_create(WebKitWebInspector *inspector,
         WebKitWebView *web_view, gpointer user_data)
 {
-    (void)inspector;
-    (void)web_view;
-    (void)user_data;
+    UNUSED(inspector);
+    UNUSED(web_view);
+    UNUSED(user_data);
     GtkWidget* win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(win, 800, 500);
     GtkWidget* web = webkit_web_view_new();
@@ -141,7 +141,7 @@ void dwebview_show_inspector(GtkWidget* webview)
 static bool webview_key_release_cb(GtkWidget* webview,
         GdkEvent* event, gpointer data)
 {
-    (void)data;
+    UNUSED(data);
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
         case GDK_KEY_F5:
@@ -237,10 +237,10 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 static
 void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
 {
-    (void)m;
-    (void)f1;
-    (void)f2;
-    (void)et;
+    UNUSED(m);
+    UNUSED(f1);
+    UNUSED(f2);
+    UNUSED(et);
     webkit_web_view_reload(webview);
 }
 

@@ -90,6 +90,8 @@ static void
 na_tray_child_style_set (GtkWidget *widget,
                          GtkStyle  *previous_style)
 {
+    (void)widget;
+    (void)previous_style;
   /* The default handler resets the background according to the new style.
    * We either use a transparent background or a parent-relative background
    * and ignore the style background. So, just don't chain up.
@@ -219,6 +221,7 @@ na_tray_child_draw (GtkWidget *widget,
 static void
 na_tray_child_init (NaTrayChild *child)
 {
+    (void)child;
 }
 
 static void

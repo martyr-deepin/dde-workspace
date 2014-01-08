@@ -3,6 +3,7 @@
 #include <string.h>
 #include <glib.h>
 
+#include "utils.h"
 #include "dbus_object_info.h"
 
 
@@ -136,9 +137,9 @@ void parse_start(GMarkupParseContext* context,
         gpointer user_data,
         GError **error)
 {
-    (void)context;
-    (void)user_data;
-    (void)error;
+    UNUSED(context);
+    UNUSED(user_data);
+    UNUSED(error);
     const gchar **name_cursor = attribute_names;
     const gchar **value_cursor = attribute_values;
 
@@ -203,9 +204,9 @@ static
 void parse_end(GMarkupParseContext *context,
         const gchar* element_name, gpointer user_data, GError **error)
 {
-    (void)context;
-    (void)user_data;
-    (void)error;
+    UNUSED(context);
+    UNUSED(user_data);
+    UNUSED(error);
     if (g_strcmp0(element_name, "interface") == 0) {
         state = S_NONE;
     }
@@ -227,7 +228,7 @@ void parse_end(GMarkupParseContext *context,
 static
 void build_current_object_info(const char* xml, const char* interface)
 {
-    (void)interface;
+    UNUSED(interface);
     g_assert(xml != NULL);
     static GMarkupParser parser = {
         .start_element = parse_start,

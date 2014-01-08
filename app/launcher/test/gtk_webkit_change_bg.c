@@ -50,11 +50,14 @@ int main(int argc, char* argv[])
 
 static void destroyWindowCb(GtkWidget* widget, GtkWidget* window)
 {
+    (void)(window);
+    (void)(widget);
     gtk_main_quit();
 }
 
 static gboolean closeWebViewCb(WebKitWebView* webView, GtkWidget* window)
 {
+    (void)webView;
     gtk_widget_destroy(window);
     return TRUE;
 }

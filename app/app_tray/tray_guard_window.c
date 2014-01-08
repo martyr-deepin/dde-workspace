@@ -24,6 +24,7 @@
 #include "tray_guard_window.h"
 #include "tray_hide.h"
 #include "X_misc.h"
+#include "utils.h"
 
 
 GdkWindow* get_tray_guard_window()
@@ -55,6 +56,8 @@ GdkWindow* get_tray_guard_window()
 static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
         GdkEvent* event, gpointer data)
 {
+    UNUSED(event);
+    UNUSED(data);
     XEvent* xev = xevent;
     XGenericEvent* e = xevent;
 

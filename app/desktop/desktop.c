@@ -19,8 +19,12 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include <sys/stat.h>
+
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <gtk/gtk.h>
+#include <cairo/cairo-xlib.h>
 
 #include "xdg_misc.h"
 #include "X_misc.h"
@@ -30,12 +34,9 @@
 #include "inotify_item.h"
 #include "dcore.h"
 #include <dwebview.h>
-#include <utils.h>
-#include <gtk/gtk.h>
-#include <cairo/cairo-xlib.h>
+#include "utils.h"
 #include "DBUS_desktop.h"
 #include "desktop.h"
-#include <sys/stat.h>
 
 #define DESKTOP_SCHEMA_ID "com.deepin.dde.desktop"
 
@@ -259,6 +260,7 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
 
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
+    UNUSED(usr_data);
     if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
 
@@ -269,6 +271,9 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 
 PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
+    UNUSED(settings);
+    UNUSED(key);
+    UNUSED(usr_data);
     js_post_signal ("desktop_config_changed");
 }
 
@@ -295,6 +300,8 @@ void _change_to_json(gpointer key, gpointer value, gpointer user_data)
 
 PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     extern gchar * get_schema_id(GSettings* gsettings);
     extern void _init_state(gpointer key, gpointer value, gpointer user_data);
 
@@ -379,7 +386,7 @@ gboolean desktop_file_exist_in_desktop(char* name)
     GDir* dir = g_dir_open(DESKTOP_DIR(), 0, NULL);
     gboolean result = false;
     const char* file_name = NULL;
-    for (int i=0; NULL != (file_name = g_dir_read_name(dir));) {
+    while (NULL != (file_name = g_dir_read_name(dir))) {
         if(desktop_file_filter(file_name))
             continue;
         if(0 == g_strcmp0(name,file_name))
@@ -413,6 +420,8 @@ void screen_change_size(GdkScreen *screen, GdkWindow *w)
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 {
+    UNUSED(w);
+    UNUSED(e);
     return true;
 }
 
@@ -439,8 +448,9 @@ void desktop_focus_changed(gboolean focused)
 }
 
 PRIVATE
-void _do_im_commit(GtkIMContext *context, gchar* str)
+void __attribute__((unused)) _do_im_commit(GtkIMContext *context, gchar* str)
 {
+    UNUSED(context);
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
@@ -564,6 +574,7 @@ int main(int argc, char* argv[])
 
 PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
 {
+    UNUSED(event);
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
     if (xevt->type == PropertyNotify &&

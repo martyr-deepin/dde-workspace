@@ -37,18 +37,24 @@ const gchar* lock_get_username ()
 JS_EXPORT_API
 gchar *lock_get_user_realname (const gchar* name)
 {
+    // WHY NOT use name here???
+    UNUSED(name);
     return get_user_realname (username);
 }
 
 JS_EXPORT_API
 gchar* lock_get_user_icon (const gchar* name)
 {
+    // WHY NOT use name here???
+    UNUSED(name);
     return get_user_icon (username);
 }
 
 JS_EXPORT_API
 gboolean lock_need_password (const gchar* name)
 {
+    // WHY NOT use name here???
+    UNUSED(name);
     return is_need_pwd (username);
 }
 

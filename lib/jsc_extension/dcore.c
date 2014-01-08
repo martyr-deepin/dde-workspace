@@ -80,7 +80,7 @@ gboolean is_plugin(char const* path)
 
 void _init_state(gpointer key, gpointer value, gpointer user_data)
 {
-    (void)value;
+    UNUSED(value);
     g_hash_table_replace((GHashTable*)user_data, g_strdup(key), GINT_TO_POINTER(DISABLED_PLUGIN));
 }
 
@@ -197,7 +197,7 @@ JSValueRef dcore_get_plugins(const char* app_name)
 
 void create_strv(gpointer key, gpointer value, gpointer user_data)
 {
-    (void)key;
+    UNUSED(key);
     char* pos = strchr((char*)value, ':');
     char* plugin_name = g_strdup(pos + 1);
     g_ptr_array_add((GPtrArray*)user_data, plugin_name);

@@ -49,8 +49,8 @@
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
-static GtkWidget* container = NULL;
-static GtkWidget* webview = NULL;
+static GtkWidget* __attribute__((unused)) container = NULL;
+static GtkWidget* __attribute__((unused)) webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
@@ -108,6 +108,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    UNUSED(text);
     gchar *respond = NULL;
 
     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {
@@ -241,9 +242,9 @@ int main (int argc, char **argv)
     {
         username = argv[1];
         password = argv[2];
-        session = argv[3];        
+        session = argv[3];
     }
-   
+
 
     GError *error1 = NULL;
     const gchar *switchtogreeter_cmd = g_strdup_printf ("switchtogreeter");
@@ -269,9 +270,9 @@ int main (int argc, char **argv)
         g_warning ("No LIGHTDM_FROM_SERVER_FD environment variable");
         g_setenv("LIGHTDM_FROM_SERVER_FD","16",TRUE);
     }
- 
-    GdkScreen *screen;
-    GdkRectangle geometry;
+
+    // GdkScreen *screen;
+    // GdkRectangle geometry;
 
     init_i18n ();
     gtk_init (&argc, &argv);

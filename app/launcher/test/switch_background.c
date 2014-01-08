@@ -13,9 +13,11 @@ gboolean change_bg(char** bgs)
     int i = rand() % len;
     if (g_settings_set_string(s, CURRENT_PCITURE, bgs[i]))
         g_warning("change background to %s", bgs[i]);
+
+    return G_SOURCE_CONTINUE;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     /* GMainLoop* main_loop = g_main_loop_new(NULL, FALSE); */
     GKeyFile* conf = g_key_file_new();

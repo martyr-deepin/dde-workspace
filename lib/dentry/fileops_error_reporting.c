@@ -2,6 +2,7 @@
 #include <glib/gi18n.h>
 
 
+#include "utils.h"
 #include "enums.h"
 #include "fileops_error_dialog.h"
 #include "fileops_error_reporting.h"
@@ -162,9 +163,9 @@ static FileOpsResponse*
 _show_simple_error_message_dialog (const char* fileops_str, const char *error_message,
 				   GFile *file, GtkWindow* parent)
 {
-    (void)fileops_str;
-    (void)error_message;
-    (void)parent;
+    UNUSED(fileops_str);
+    UNUSED(error_message);
+    UNUSED(parent);
     if (file == NULL)
     {
 	//just show error_message and return.
@@ -180,8 +181,8 @@ static FileOpsResponse*
 _show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message,
 			      GFile* file, GtkWindow* parent)
 {
-    (void)file;
-    (void)parent;
+    UNUSED(file);
+    UNUSED(parent);
     GtkWidget* dialog;
     dialog = gtk_message_dialog_new (NULL,
 				     GTK_DIALOG_MODAL,
@@ -209,8 +210,8 @@ static FileOpsResponse*
 _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char *error_message,
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
-    (void)error_message;
-    (void)fileops_str;
+    UNUSED(error_message);
+    UNUSED(fileops_str);
     GtkWidget* dialog;
     FileOpsResponse* response;
 

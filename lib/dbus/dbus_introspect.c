@@ -5,6 +5,7 @@
 #include <string.h>
 #include <glib.h>
 
+#include "utils.h"
 #include "dbus_introspect.h"
 #include "dbus_object_info.h"
 #include "dbus_js_convert.h"
@@ -66,7 +67,7 @@ guint key_equal(struct ObjCacheKey* a, struct ObjCacheKey* b)
 
 void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusMessage *msg)
 {
-    (void)no_used_key;
+    UNUSED(no_used_key);
     DBusMessageIter iter;
     dbus_message_iter_init(msg, &iter);
 
@@ -87,8 +88,8 @@ void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusM
 DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
         void *no_use)
 {
-    (void)connection;
-    (void)no_use;
+    UNUSED(connection);
+    UNUSED(no_use);
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_SIGNAL)
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 
@@ -159,7 +160,7 @@ JSValueRef signal_connect(JSContextRef ctx,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
-    (void)function;
+    UNUSED(function);
     if (argumentCount != 2 ) {
         js_fill_exception(ctx, exception, "connect must have two params");
         return NULL;
@@ -214,7 +215,7 @@ JSValueRef signal_disconnect(JSContextRef ctx,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
-    (void)function;
+    UNUSED(function);
     struct DBusObjectInfo* info = JSObjectGetPrivate(this);
 
     if (argumentCount != 2) {
@@ -247,10 +248,10 @@ JSValueRef signal_emit(JSContextRef ctx,
                             const JSValueRef arguments[],
                             JSValueRef *exception)
 {
-    (void)function;
-    (void)this;
-    (void)argumentCount;
-    (void)arguments;
+    UNUSED(function);
+    UNUSED(this);
+    UNUSED(argumentCount);
+    UNUSED(arguments);
     /*obj_info;*/
     /*signal_name;*/
     /*signal_signature;*/
@@ -554,7 +555,7 @@ JSValueRef dynamic_function(JSContextRef ctx,
 
 JSClassRef get_cache_class(struct DBusObjectInfo* obj_info)
 {
-    (void)obj_info;
+    UNUSED(obj_info);
     //TODO: build cache;
     return NULL;
 }

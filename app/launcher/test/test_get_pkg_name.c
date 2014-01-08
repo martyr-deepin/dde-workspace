@@ -33,6 +33,8 @@ char* _get_pkg_name(const char* name)
 
 int main(int argc, char *argv[])
 {
+    (void)argc;
+    (void)argv;
     g_free(_get_pkg_name("google-chrome.desktop"));
 
     return 0;

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
+#include "utils.h"
 #include "i18n.h"
 #include "category.h"
 #include <stdlib.h>
@@ -54,7 +55,7 @@ void __attribute__((unused)) for_translate()
         _("other"),
         NULL
     };
-    (void)categories;
+    UNUSED(categories);
 }
 
 

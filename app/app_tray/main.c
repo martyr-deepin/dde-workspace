@@ -11,6 +11,7 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "DBUS_dapptray.h"
+#include "utils.h"
 
 
 #define TRAY_ID_NAME "apptray.app.deepin"
@@ -42,6 +43,9 @@ GdkWindow* TRAY_GDK_WINDOW()
 static
 gboolean leave_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
+    UNUSED(widget);
+    UNUSED(event);
+    UNUSED(user_data);
     // g_debug("[%s]", __func__);
     if (!is_mouse_in_tray()) {
         if (!tray_is_always_shown()) {
@@ -56,15 +60,23 @@ gboolean leave_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 static
 gboolean enter_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
+    UNUSED(widget);
+    UNUSED(event);
+    UNUSED(user_data);
     // g_debug("[%s]", __func__);
     tray_show_now();
+    return FALSE;
 }
 
 
 static
 gboolean motion_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
+    UNUSED(widget);
+    UNUSED(event);
+    UNUSED(user_data);
     tray_show_real_now();
+    return TRUE;
 }
 
 

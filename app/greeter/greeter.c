@@ -109,6 +109,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    UNUSED(text);
     gchar *respond = NULL;
 
     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {
@@ -248,7 +249,7 @@ int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-   
+
 
     GdkScreen *screen;
     GdkRectangle geometry;
@@ -280,7 +281,7 @@ int main (int argc, char **argv)
 
     greeter_keyfile = g_key_file_new ();
     g_key_file_load_from_file (greeter_keyfile, greeter_file, G_KEY_FILE_NONE, NULL);
-    
+
     container = create_web_container (FALSE, TRUE);
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
 
@@ -292,7 +293,7 @@ int main (int argc, char **argv)
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
     /*g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);*/
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
-    
+
     gtk_widget_realize (webview);
     gtk_widget_realize (container);
 
@@ -306,7 +307,7 @@ int main (int argc, char **argv)
     gchar* username_default = greeter_get_default_user();
     greeter_set_background(gtk_widget_get_window(webview), username_default, gdk_screen_width(), gdk_screen_height());
     g_free(username_default);
-    
+
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);

@@ -5,9 +5,11 @@
 
 void init_js_extension(JSGlobalContextRef c, void* t)
 {
+    (void)c;
+    (void)t;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     gtk_init(NULL, NULL);
     GtkWidget* container = create_web_container(FALSE, TRUE);

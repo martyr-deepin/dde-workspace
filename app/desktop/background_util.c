@@ -34,6 +34,7 @@
 
 #include "background_util.h"
 #include "jsextension.h"
+#include "utils.h"
 
 #define USEC_PER_SEC 1000000.0 // microseconds per second
 #define MSEC_PER_SEC 1000.0    // milliseconds per second
@@ -373,6 +374,7 @@ get_xformed_gdk_pixbuf (const char* pict_path)
 PRIVATE gboolean
 on_bg_duration_tick (gpointer user_data)
 {
+    UNUSED(user_data);
     xfade_data_t* fade_data = g_slice_new(xfade_data_t);
 
     fade_data->total_duration = gsettings_xfade_auto_interval/MSEC_PER_SEC;
@@ -415,6 +417,7 @@ on_bg_duration_tick (gpointer user_data)
 PRIVATE void
 on_bg_duration_finished (gpointer user_data)
 {
+    UNUSED(user_data);
 }
 
 PRIVATE void
@@ -562,6 +565,9 @@ destroy_picture_path (gpointer data)
 PRIVATE void
 bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(settings);
+    UNUSED(key);
+    UNUSED(user_data);
     g_hash_table_destroy (picture_paths_ht);
     g_ptr_array_free (picture_paths, TRUE);
 
@@ -584,6 +590,8 @@ bg_settings_picture_uris_changed (GSettings *settings, gchar *key, gpointer user
 PRIVATE void
 bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gchar* tmp_image_uri = g_settings_get_string (settings, BG_PICTURE_URI);
     if (strlen(tmp_image_uri) == 0)  return;
     gchar* tmp_image_path = g_filename_from_uri (tmp_image_uri, NULL, NULL);
@@ -606,6 +614,8 @@ bg_settings_picture_uri_changed (GSettings *settings, gchar *key, gpointer user_
 PRIVATE void
 bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gsettings_background_duration = g_settings_get_int (settings, BG_BG_DURATION);
 
     remove_timers ();
@@ -616,6 +626,8 @@ bg_settings_bg_duration_changed (GSettings *settings, gchar *key, gpointer user_
 PRIVATE void
 bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gsettings_xfade_manual_interval = g_settings_get_int (settings, BG_XFADE_MANUAL_INTERVAL);
 
     remove_timers ();
@@ -626,6 +638,8 @@ bg_settings_xfade_manual_interval_changed (GSettings *settings, gchar *key, gpoi
 PRIVATE void
 bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gsettings_xfade_auto_interval = g_settings_get_int (settings, BG_XFADE_AUTO_INTERVAL);
 
     remove_timers ();
@@ -637,6 +651,8 @@ bg_settings_xfade_auto_interval_changed (GSettings *settings, gchar *key, gpoint
 PRIVATE void
 bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gsettings_xfade_auto_mode = g_settings_get_enum (settings, BG_XFADE_AUTO_MODE);
 
     remove_timers ();
@@ -647,6 +663,8 @@ bg_settings_xfade_auto_mode_changed (GSettings *settings, gchar *key, gpointer u
 PRIVATE void
 bg_settings_draw_mode_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gsettings_draw_mode = g_settings_get_enum (settings, BG_DRAW_MODE);
 
     remove_timers ();
@@ -734,6 +752,8 @@ register_account_service_background_path (const char* current_picture)
 PRIVATE void
 bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer user_data)
 {
+    UNUSED(key);
+    UNUSED(user_data);
     gchar* cur_pict = g_settings_get_string (settings, BG_CURRENT_PICT);
     if (strlen(cur_pict) == 0)  return;
 
@@ -744,6 +764,7 @@ bg_settings_current_picture_changed (GSettings *settings, gchar *key, gpointer u
 PRIVATE void
 screen_size_changed_cb (GdkScreen* screen, gpointer user_data)
 {
+    UNUSED(user_data);
     //remove early to avoid fatal X errors
     int current_root_width = gdk_screen_width();
     int current_root_height = gdk_screen_height();
@@ -898,6 +919,8 @@ initial_setup (GSettings *settings)
 PRIVATE GdkFilterReturn
 expose_cb (GdkXEvent* xevent, GdkEvent* event, gpointer data)
 {
+    UNUSED(event);
+    UNUSED(data);
     //At least first running desktop and suspend/resume will trigger expose event
     if (((XEvent*)xevent)->type == Expose)
     {
