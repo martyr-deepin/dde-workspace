@@ -47,7 +47,10 @@
 
 #define SHUTDOWN_ID_NAME "desktop.app.shutdown"
 
-#define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/powerchoose.html"
+#define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/shutdown/powerchoose.html"
+#define LOGOUT_HTML_PATH "file://"RESOURCE_DIR"/shutdown/logoutdialog.html"
+#define REBOOT_HTML_PATH "file://"RESOURCE_DIR"/shutdown/rebootdialog.html"
+#define SHUTDOWN_HTML_PATH "file://"RESOURCE_DIR"/shutdown/shutdowndialog.html"
 
 #define SHUTDOWN_MAJOR_VERSION 2
 #define SHUTDOWN_MINOR_VERSION 0
@@ -61,6 +64,23 @@ PRIVATE GtkWidget* webview = NULL;
 static GSGrab* grab = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
+
+static struct {
+    gboolean is_logout;
+    gboolean is_reboot;
+    gboolean is_shutdown;
+    gboolean is_choice;
+    gboolean is_front;
+} option = {FALSE, FALSE, FALSE, TRUE, FALSE};
+static GOptionEntry entries[] = {
+    {"logout", 'l', 0, G_OPTION_ARG_NONE, &option.is_logout, "logout current session", NULL},
+    {"reboot", 'r', 0, G_OPTION_ARG_NONE, &option.is_reboot, "reboot computer", NULL},
+    {"shutdown", 's', 0, G_OPTION_ARG_NONE, &option.is_shutdown, "shutdown computer", NULL},
+    {"choice", 'c', 0, G_OPTION_ARG_NONE, &option.is_choice, "choice the action(default)", NULL},
+    {"front", 'f', 0, G_OPTION_ARG_NONE, &option.is_front, "not fork", NULL},
+    {NULL}
+};
+
 
 JS_EXPORT_API
 void shutdown_quit()
@@ -203,6 +223,22 @@ void check_version()
 }
 
 
+GtkWidget* new_webview()
+{
+    if (option.is_logout) {
+        return d_webview_new_with_uri (LOGOUT_HTML_PATH);
+    } else if (option.is_reboot) {
+        return d_webview_new_with_uri (REBOOT_HTML_PATH);
+    } else if (option.is_shutdown) {
+        return d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
+    } else if (option.is_choice) {
+        return d_webview_new_with_uri (CHOICE_HTML_PATH);
+    }
+
+    return NULL;
+}
+
+
 int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
@@ -214,15 +250,27 @@ int main (int argc, char **argv)
 
     singleton(SHUTDOWN_ID_NAME);
 
-    //remove  option -f
-    parse_cmd_line (&argc, &argv);
-
 
     check_version();
     init_i18n ();
+
+    GOptionContext* ctx = g_option_context_new(NULL);
+    g_option_context_add_main_entries(ctx, entries, NULL);
+    g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
+
+    GError* error = NULL;
+    if (!g_option_context_parse(ctx, &argc, &argv, &error)) {
+        g_warning("%s", error->message);
+        g_clear_error(&error);
+        g_option_context_free(ctx);
+        return 0;
+    }
+
+    if (!option.is_front) {
+        reparent_to_init();
+    }
+
     gtk_init (&argc, &argv);
-
-
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
@@ -246,7 +294,9 @@ int main (int argc, char **argv)
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
 
-    webview = d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
+    webview = new_webview();
+
+    g_option_context_free(ctx);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);

@@ -15,15 +15,9 @@ file(GLOB CFILES gs-grab.c background.c)
 SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(dpowerchoose ${SRC_LIST} powerchoose.c)
-add_executable(dshutdown ${SRC_LIST} shutdowndialog.c)
-add_executable(dreboot ${SRC_LIST} rebootdialog.c)
-add_executable(dlogout ${SRC_LIST} logoutdialog.c)
 
 set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(dpowerchoose dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS} ${GST_LIBRARIES})
-target_link_libraries(dshutdown dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS} ${GST_LIBRARIES})
-target_link_libraries(dreboot dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS} ${GST_LIBRARIES})
-target_link_libraries(dlogout dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS} ${GST_LIBRARIES})
 
 
 execute_process(
@@ -33,18 +27,6 @@ execute_process(
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/dpowerchoose
-    DESTINATION lib/deepin-daemon
-    )
-install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/dshutdown
-    DESTINATION lib/deepin-daemon
-    )
-install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/dreboot
-    DESTINATION lib/deepin-daemon
-    )
-install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/dlogout
     DESTINATION lib/deepin-daemon
     )
 
