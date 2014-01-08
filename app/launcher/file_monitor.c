@@ -154,6 +154,9 @@ gboolean _update_items(gpointer user_data)
     case DELETED:
         status = "deleted";
         break;
+    case UNKNOWN:
+        status = "unknown";
+        break;
     }
 
     g_message("status is %s", status);
@@ -193,6 +196,8 @@ PRIVATE
 void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                               GFileMonitorEvent event_type, gpointer data)
 {
+    UNUSED(monitor);
+    UNUSED(data);
 #if 0
     static char* names[] = {
         "changed",
@@ -271,6 +276,12 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
             g_message("[%s] '%s' is changed/added", __func__, escaped_uri);
         }
         break;
+    case G_FILE_MONITOR_EVENT_CHANGED:
+    case G_FILE_MONITOR_EVENT_CREATED:
+    case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+    case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+    case G_FILE_MONITOR_EVENT_UNMOUNTED:
+        break;
     }
 
     g_free(escaped_uri);
@@ -325,6 +336,8 @@ PRIVATE
 void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                                 GFileMonitorEvent event_type, gpointer data)
 {
+    UNUSED(monitor);
+    UNUSED(data);
     GFile* changed_file = file;
     static gulong timeout_id = 0;
     switch (event_type) {
@@ -351,6 +364,12 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
                                             g_free);
         }
         g_free(uri);
+    case G_FILE_MONITOR_EVENT_CHANGED:
+    case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+    case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+    case G_FILE_MONITOR_EVENT_UNMOUNTED:
+    case G_FILE_MONITOR_EVENT_CREATED:
+        break;
     }
 }
 
@@ -374,6 +393,9 @@ void gaussian_update(GFileMonitor* monitor,
                      GFileMonitorEvent event_type,
                      gpointer user_data)
 {
+    UNUSED(monitor);
+    UNUSED(origin_file);
+    UNUSED(user_data);
     switch (event_type) {
     case G_FILE_MONITOR_EVENT_MOVED: {
         // gaussian picture is generated.
@@ -390,6 +412,14 @@ void gaussian_update(GFileMonitor* monitor,
         g_free(blur_path);
         g_free(path);
     }
+    case G_FILE_MONITOR_EVENT_CHANGED:
+    case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
+    case G_FILE_MONITOR_EVENT_DELETED:
+    case G_FILE_MONITOR_EVENT_CREATED:
+    case G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED:
+    case G_FILE_MONITOR_EVENT_PRE_UNMOUNT:
+    case G_FILE_MONITOR_EVENT_UNMOUNTED:
+        break;
     }
 }
 

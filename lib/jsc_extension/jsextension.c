@@ -63,6 +63,7 @@ JSValueRef jsvalue_null()
 
 char* jsstring_to_cstr(JSContextRef ctx, JSStringRef js_string)
 {
+    (void)ctx;
   size_t len = JSStringGetMaximumUTF8CStringSize(js_string);
   char *c_str = g_new(char, len);
   JSStringGetUTF8CString(js_string, c_str, len);

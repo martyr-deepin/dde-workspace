@@ -22,6 +22,7 @@
  **/
 #include <gtk/gtk.h>
 #include "dock_config.h"
+#include "utils.h"
 
 #define SCHEMA_ID "com.deepin.dde.dock"
 
@@ -33,6 +34,7 @@ void dock_update_hide_mode();
 
 void setting_changed(GSettings* s, gchar* key, gpointer user_data)
 {
+    UNUSED(user_data);
     if (g_strcmp0(key, "active-mini-mode") == 0) {
         GD.config.mini_mode = g_settings_get_boolean(s, key);
         update_dock_size_mode();

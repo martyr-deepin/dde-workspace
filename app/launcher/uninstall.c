@@ -32,6 +32,7 @@
 #include "dentry/entry.h"
 #include "category.h"
 #include "jsextension.h"
+#include "utils.h"
 
 #define UNINSTALL_FAILED_TITLE "uninstall failed"
 #define UNINSTALL_FAILED_SIGNAL "uninstall_failed"
@@ -191,6 +192,7 @@ void iter_struct(DBusConnection* conn,
                  gpointer user_data
                  )
 {
+    UNUSED(struct_iter);
     struct UninstallInfo* info = (struct UninstallInfo*)user_data;
     switch (dbus_message_iter_get_arg_type(struct_element_iter)){
     case DBUS_TYPE_STRING: {
@@ -262,7 +264,7 @@ void iter_struct(DBusConnection* conn,
 
             dbus_message_iter_next(&failed_iter);
             g_warning("%c", dbus_message_iter_get_arg_type(&failed_iter));
-            DBusBasicValue value = {0};
+            DBusBasicValue value = {{0}};
             dbus_message_iter_get_basic(&failed_iter, &value);
 
             if (value.str == NULL || value.str[0] == '\0')
@@ -292,6 +294,8 @@ void iter_array(DBusConnection* conn,
                 DBusMessageIter* array_element_iter,
                 gpointer user_data)
 {
+    UNUSED(array_iter);
+    UNUSED(array_element_iter);
     iterate_container_message(conn, array_element_iter, iter_struct, user_data);
 }
 
@@ -416,6 +420,8 @@ void _uninstall_package(struct UninstallInfo* info)
 static
 int _get_package_names(char** package_name, int argc, char** argv, char** column_name)
 {
+    UNUSED(argc);
+    UNUSED(column_name);
     if (argv[0][0] != '\0') {
         g_debug("[%s] get package name: '%s'", __func__, argv[0]);
         *package_name = g_strdup(argv[0]);

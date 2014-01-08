@@ -147,6 +147,7 @@ char* get_name_by_pid(int pid)
         return NULL;
     } else {
         int dump = read(fd, content, LEN);
+        (void)dump;
         close(fd);
     }
     for (int i=0; i<LEN; i++) {
@@ -230,6 +231,8 @@ int reparent_to_init ()
 }
 static void _consolidate_cmd_line (int subargc, char*** subargv_ptr)
 {
+    (void)subargc;
+    (void)subargv_ptr;
     //recursively consolidate
 }
 void parse_cmd_line (int* argc_ptr, char*** argv_ptr)

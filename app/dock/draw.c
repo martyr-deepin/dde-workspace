@@ -110,5 +110,8 @@ void dock_draw_panel(JSValueRef canvas,
 
 void draw_app_icon(JSValueRef canvas, double id, double number)
 {
+    (void)canvas;
+    (void)id;
+    (void)number;
 }
 

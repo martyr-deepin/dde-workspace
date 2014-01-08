@@ -228,6 +228,7 @@ thumbnailer_try_exec (Thumbnailer *thumb)
 static gpointer
 init_thumbnailers_dirs (gpointer data)
 {
+    (void)data;
   const gchar * const *data_dirs;
   gchar **thumbs_dirs;
   guint i, length;
@@ -522,6 +523,7 @@ remove_thumbnailer_from_mime_type_map (gchar       *key,
                                        Thumbnailer *value,
                                        gchar       *path)
 {
+    (void)key;
   return (strcmp (value->path, path) == 0);
 }
 
@@ -600,6 +602,8 @@ thumbnailers_directory_changed (GFileMonitor                 *monitor,
                                 GFileMonitorEvent             event_type,
                                 GnomeDesktopThumbnailFactory *factory)
 {
+    (void)monitor;
+    (void)other_file;
   gchar *path;
 
   switch (event_type)
@@ -690,6 +694,8 @@ external_thumbnailers_disabled_all_changed_cb (GSettings                    *set
                                                const gchar                  *key,
                                                GnomeDesktopThumbnailFactory *factory)
 {
+    (void)settings;
+    (void)key;
   GnomeDesktopThumbnailFactoryPrivate *priv = factory->priv;
 
   g_mutex_lock (&priv->lock);
@@ -714,6 +720,8 @@ external_thumbnailers_disabled_changed_cb (GSettings                    *setting
                                            const gchar                  *key,
                                            GnomeDesktopThumbnailFactory *factory)
 {
+    (void)settings;
+    (void)key;
   GnomeDesktopThumbnailFactoryPrivate *priv = factory->priv;
 
   g_mutex_lock (&priv->lock);
@@ -878,6 +886,7 @@ gnome_desktop_thumbnail_factory_has_valid_failed_thumbnail (GnomeDesktopThumbnai
 							    const char            *uri,
 							    time_t                 mtime)
 {
+    (void)factory;
   char *path, *file;
   GdkPixbuf *pixbuf;
   gboolean res;
@@ -1264,6 +1273,7 @@ make_thumbnail_dirs (GnomeDesktopThumbnailFactory *factory)
 static gboolean
 make_thumbnail_fail_dirs (GnomeDesktopThumbnailFactory *factory)
 {
+    (void)factory;
   char *thumbnail_dir;
   char *fail_dir;
   char *app_dir;

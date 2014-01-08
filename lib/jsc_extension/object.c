@@ -11,6 +11,7 @@ struct _ObjectData {
 static
 void object_init(JSContextRef ctx, JSObjectRef object)
 {
+    (void)ctx;
     struct _ObjectData* data = JSObjectGetPrivate(object);
     g_assert(data != NULL);
     if (data->ref) {
@@ -43,7 +44,7 @@ JSClassRef obj_class()
             NULL, //static value
             NULL, //static function
 
-            object_init, 
+            object_init,
             object_finlize,
             NULL,
             NULL,
@@ -104,3 +105,4 @@ void* jsvalue_to_nobject(JSContextRef ctx, JSValueRef value)
         return NULL;
     }
 }
+

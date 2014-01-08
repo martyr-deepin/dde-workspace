@@ -25,6 +25,7 @@
 #include "jsextension.h"
 #include "special_window.h"
 #include "../launcher/DBUS_launcher.h"
+#include "utils.h"
 
 extern Window active_client_id;
 extern Window get_dock_window();
@@ -81,6 +82,8 @@ DesktopFocusState get_desktop_focus_state(Display* dsp)
 PRIVATE
 GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
+    UNUSED(event);
+    UNUSED(win);
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_signal("launcher_destroy");

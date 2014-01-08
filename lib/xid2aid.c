@@ -286,6 +286,7 @@ char* get_deepin_app_id_value(const char* app_id)
 
 char* get_exe(const char* app_id, int pid)
 {
+    (void)app_id;
     char buf[8095] = {0};
     char* path = g_strdup_printf("/proc/%d/exe", pid);
     // header doesn't work, add this to avoid warning

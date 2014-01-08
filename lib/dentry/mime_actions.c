@@ -56,6 +56,7 @@ gboolean exec_app_info (const char *executable)
     GAppInfo *appinfo = NULL;
     GError *error = NULL;
     gboolean is_ok = FALSE;
+    (void)is_ok;
 
     appinfo = gen_app_info (executable);
     if ( appinfo == NULL ) {

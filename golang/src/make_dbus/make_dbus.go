@@ -154,6 +154,7 @@ static void _bus_method_call (GDBusConnection * connection,
         (void)object_path;
         (void)interface;
         (void)user_data;
+        (void)params;
         GVariant * retval = NULL;
         if (0) { {{range .Methods}}{{if not .IsSignal}}
         } else if (g_strcmp0(method, "{{.Name}}") == 0) {
@@ -437,3 +438,4 @@ func init() {
     }
 
 }
+

@@ -112,10 +112,10 @@ JSValueRef build_app_info(const char* app_id)
                 double width = gdk_pixbuf_get_width(pixbuf);
                 g_object_unref(pixbuf);
                 pixbuf = NULL;
-                int operator_code = -1;
-                if (width == 48 || is_deepin_app_id(app_id)
-                    && (operator_code = get_deepin_app_id_operator(app_id)) == \
-                    ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD) {
+                if (width == 48
+                    || (is_deepin_app_id(app_id)
+                        && (get_deepin_app_id_operator(app_id))
+                        == ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD)) {
                     pixbuf = gdk_pixbuf_new_from_file_at_scale(icon_path,
                                                                BOARD_WIDTH,
                                                                BOARD_HEIGHT,
@@ -149,7 +149,7 @@ JSValueRef build_app_info(const char* app_id)
     GPtrArray* actions = get_app_actions(G_DESKTOP_APP_INFO(info));
 
     if (actions != NULL) {
-        for (int i = 0; i < actions->len; ++i) {
+        for (guint i = 0; i < actions->len; ++i) {
             struct Action* action = g_ptr_array_index(actions, i);
 
             JSObjectRef action_item = json_create();
@@ -477,7 +477,7 @@ gboolean request_by_info(const char* name, const char* cmdline, const char* icon
             GKeyFile* f = load_app_config(FILTER_FILE);
             gsize length = 0;
             char** groups = g_key_file_get_groups(f, &length);
-            for (int i = 0; i < length; ++i) {
+            for (guint i = 0; i < length; ++i) {
                 g_assert(groups[i] != NULL);
                 char* appid = g_key_file_get_string(f, groups[i], "appid", NULL);
                 /* g_warning("[%s] compare #%s# and #%s#", __func__, name, appid); */
@@ -523,6 +523,7 @@ void dock_launch_from_commandline(const char* name, const char* cmdline)
     GdkAppLaunchContext* launch_context = gdk_display_get_app_launch_context(gdk_display_get_default());
     gdk_app_launch_context_set_icon(launch_context, g_app_info_get_icon(app));
     gboolean ret = g_app_info_launch(app, NULL, (GAppLaunchContext*)launch_context, NULL);
+    (void)ret;
     g_object_unref(launch_context);
     g_object_unref(app);
 }

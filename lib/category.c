@@ -37,7 +37,7 @@
 
 
 static
-int for_translate(int argc, char *argv[])
+void __attribute__((unused)) for_translate()
 {
     const char* const categories[] = {
         _("all"),
@@ -54,8 +54,7 @@ int for_translate(int argc, char *argv[])
         _("other"),
         NULL
     };
-
-    return 0;
+    (void)categories;
 }
 
 

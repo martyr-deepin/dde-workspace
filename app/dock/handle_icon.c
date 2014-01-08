@@ -87,6 +87,7 @@ guchar* __data_base64 = NULL;
 size_t __data_size = 0;
 cairo_status_t write_func(void* store, unsigned char* data, unsigned int length)
 {
+    UNUSED(store);
     __data_size = length + __data_size;
     __data_base64 = g_renew(guchar, __data_base64, __data_size);
     memmove((void*)(__data_base64 + __data_size - length), (void*)data, (size_t)length);

@@ -184,6 +184,7 @@ PRIVATE void _update_task_list(Window root);
 PRIVATE
 void _update_window_viewport_callback(gpointer data, gulong n_item, gpointer res, gulong index)
 {
+    UNUSED(index);
     Client* c = (Client*)res;
     c->cross_workspace_num = (int)X_FETCH_32(data, 0);
     for (guint i = 0, j = 1; j < n_item; ++i, j += 2) {
@@ -412,6 +413,7 @@ void notify_desktop(DesktopFocusState current_state)
 
 void active_window_changed(Display* dsp, Window w)
 {
+    UNUSED(dsp);
     if (active_client_id != w) {
         active_client_id = w;
         Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((int)w));
@@ -909,6 +911,8 @@ void _update_current_viewport(Workspace* vp)
 
 GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer _nouse)
 {
+    UNUSED(event);
+    UNUSED(_nouse);
     switch (((XEvent*)xevent)->type) {
     case PropertyNotify: {
         XPropertyEvent* ev = xevent;
@@ -930,6 +934,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
 
 GdkFilterReturn monitor_client_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
+    UNUSED(event);
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         g_hash_table_remove(_clients_table, GINT_TO_POINTER(win));
@@ -973,6 +978,7 @@ gboolean cross_workspaces_contain_current_workspace(Client* c)
 PRIVATE
 gboolean _find_maximize_client(gpointer key, Client* c)
 {
+    UNUSED(key);
     return cross_workspaces_contain_current_workspace(c) && !c->is_hidden && c->is_maximize;
 }
 
@@ -1008,6 +1014,7 @@ void _update_is_overlay_client(Client* c)
 PRIVATE
 gboolean _find_overlay_window(gpointer key, Client* c)
 {
+    UNUSED(key);
     return cross_workspaces_contain_current_workspace(c) && c->is_overlay_dock;
 }
 
@@ -1198,6 +1205,7 @@ gboolean dock_request_dock_by_client_id(double id)
 PRIVATE
 gboolean _find_app_id(gpointer key, Client* c, const char* app_id)
 {
+    UNUSED(key);
     return g_strcmp0(c->app_id, app_id) == 0;
 }
 
@@ -1230,6 +1238,7 @@ void dock_set_compiz_workaround_preview(gboolean v)
 static
 void _append(gpointer key, gpointer value, gpointer user_data)
 {
+    UNUSED(key);
     gchar* appids = *(gchar**)user_data;
     if (appids == NULL)
         *(gchar**)user_data = g_strconcat(((Client*)value)->app_id, NULL);

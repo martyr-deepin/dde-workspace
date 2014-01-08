@@ -32,6 +32,8 @@
 PRIVATE
 int _get_category_name_index_map(GHashTable* infos, int argc, char** argv, char** colname)
 {
+    UNUSED(argc);
+    UNUSED(colname);
     if (argv[1][0] != '\0') {
         int id = (int)g_strtod(argv[1], NULL);
         g_hash_table_insert(infos, g_strdup(argv[0]), GINT_TO_POINTER(id));
@@ -121,6 +123,8 @@ GList* _get_x_category(GDesktopAppInfo* info)
 PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
+    UNUSED(argc);
+    UNUSED(colname);
     if (argv[0][0] != '\0') {
         int category_id = find_category_id(argv[0]);
         g_debug("[%s] %s:%d", __func__, argv[0], category_id);
@@ -163,6 +167,8 @@ GList* get_categories(GDesktopAppInfo* info)
 static
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
+    UNUSED(argc);
+    UNUSED(colname);
     if (argv[0][0] != '\0')
         g_ptr_array_add(infos, g_strdup(argv[0]));
     return 0;

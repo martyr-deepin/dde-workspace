@@ -41,6 +41,8 @@ double fileops_get_trash_count()
 static gboolean
 focus_cb (GtkWidget* widget, GtkDirectionType direction, gpointer user_data)
 {
+    (void)direction;
+    (void)user_data;
     GdkWindow* gdk_dialog = gtk_widget_get_window (widget);
     gdk_window_raise (gdk_dialog);
     return FALSE;
@@ -154,6 +156,7 @@ _empty_trash_job (GIOSchedulerJob *io_job,
                   GCancellable* cancellable,
                   gpointer user_data)
 {
+    (void)cancellable;
     GList* trash_list = (GList*) user_data;
 
     GList* l;

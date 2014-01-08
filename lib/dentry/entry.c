@@ -161,8 +161,9 @@ double dentry_get_type(Entry* e)
                 }
         }
     TEST_GAPP(e, app)
-        return 0;
+        (void)app;
     TEST_END
+        return 0;
 }
 
 //TODO:
@@ -206,6 +207,7 @@ char* dentry_get_name(Entry* e)
     TEST_GAPP(e, app)
         return g_strdup(g_app_info_get_name(app));
     TEST_END
+        return g_strdup("");
 }
 
 JS_EXPORT_API
@@ -241,6 +243,7 @@ char* dentry_get_uri(Entry* e)
         g_free(encode);
         return uri;
     TEST_END
+        return g_strdup("");
 }
 
 JS_EXPORT_API
@@ -316,8 +319,9 @@ gboolean dentry_can_thumbnail(Entry* e)
     TEST_GFILE(e, f)
         return gfile_can_thumbnail (f);
     TEST_GAPP(e, app)
-        return FALSE;
+        (void)app;
     TEST_END
+        return FALSE;
 }
 
 JS_EXPORT_API
@@ -769,7 +773,6 @@ gboolean dentry_set_name(Entry* e, const char* name)
             return FALSE;
         } else {
             g_object_unref(new_file);
-            return TRUE;
         }
     TEST_GAPP(e, app)
         const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
@@ -778,11 +781,8 @@ gboolean dentry_set_name(Entry* e, const char* name)
             show_rename_error_dialog (name, TRUE);
             return FALSE;
         }
-        else
-        {
-            return TRUE;
-        }
     TEST_END
+        return TRUE;
 }
 
 static ArrayContainer _normalize_array_container(ArrayContainer pfs)
@@ -1193,6 +1193,7 @@ JS_EXPORT_API
 GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = FALSE;
+    (void)result;
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
@@ -1448,6 +1449,8 @@ out:
 PRIVATE
 int _get_category_name(void* _basename, int argc, char** argv, char** columnname)
 {
+    (void)argc;
+    (void)columnname;
     char** basename = (char**)_basename;
     if (argv[0][0] != '\0')
         *basename = g_strdup(argv[0]);

@@ -82,6 +82,8 @@ gboolean get_leave_enter_guard()
 
 gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
+    UNUSED(w);
+    UNUSED(u);
     if (!get_leave_enter_guard())
         return FALSE;
 
@@ -108,6 +110,9 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 }
 gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
+    UNUSED(w);
+    UNUSED(e);
+    UNUSED(u);
     if (!get_leave_enter_guard())
         return FALSE;
 
@@ -162,6 +167,7 @@ gboolean is_compiz_plugin_valid()
 static
 void is_compiz_valid(GdkScreen* screen, gpointer data)
 {
+    UNUSED(data);
     if (!gdk_screen_is_composited(screen)) {
         GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
                                                    GTK_MESSAGE_ERROR,
@@ -321,9 +327,9 @@ void _change_workarea_height(int height)
 {
     // update_display_info(&dock);
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, dock.width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, dock.width - 10);
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, dock.width);
+        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, dock.width - 10);
     }
 }
 
@@ -562,6 +568,7 @@ int main(int argc, char* argv[])
 
     setup_dock_dbus_service();
     GFileMonitor* m = monitor_trash();
+    UNUSED(m);
     gtk_main();
     return 0;
 }

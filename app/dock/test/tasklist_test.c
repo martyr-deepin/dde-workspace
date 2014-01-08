@@ -40,7 +40,9 @@ void dock_test_tasklist()
 {
     Window xid = 0x260003b;  // ATTENTION!! change it yourself when you need to test.
     Display *_dsp = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
+    (void)_dsp;
     GdkWindow* root = gdk_get_default_root_window();
+    (void)root;
 
     /* Test({ */
     /*         _update_task_list(GDK_WINDOW_XID(root)); */

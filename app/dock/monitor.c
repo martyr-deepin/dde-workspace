@@ -24,6 +24,7 @@
 #include <gio/gio.h>
 
 #include "jsextension.h"
+#include "utils.h"
 
 static GFile* trash_can = NULL;
 static GFileMonitor* m = NULL;
@@ -39,6 +40,11 @@ void destroy_monitor()
 void trash_changed(GFileMonitor* monitor, GFile* file, GFile* other_file,
                    GFileMonitorEvent event_type, gpointer data)
 {
+    UNUSED(monitor);
+    UNUSED(file);
+    UNUSED(other_file);
+    UNUSED(event_type);
+    UNUSED(data);
     GFileInfo* info = g_file_query_info(trash_can, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT, G_FILE_QUERY_INFO_NONE, NULL, NULL);
     int count = g_file_info_get_attribute_uint32(info, G_FILE_ATTRIBUTE_TRASH_ITEM_COUNT);
     g_object_unref(info);

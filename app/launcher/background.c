@@ -155,6 +155,7 @@ void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
 
 void background_changed(GSettings* settings, char* key, gpointer user_data)
 {
+    UNUSED(user_data);
     char* bg_path = g_settings_get_string(settings, key);
     if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
         g_warning("[%s] the background image(\"%s\") is not existed,"
