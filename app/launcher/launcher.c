@@ -57,7 +57,12 @@ PRIVATE GSettings* background_gsettings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 PRIVATE gboolean force_show = FALSE;
-struct DisplayInfo launcher;
+GdkRectangle launcher;
+struct {
+    GdkScreen* screen;
+    int index;
+    int handler_id;
+} current_screen = {0};
 
 #ifndef NDEBUG
 PRIVATE gboolean is_daemonize = FALSE;
@@ -68,6 +73,7 @@ PRIVATE gboolean not_exit = FALSE;
 PRIVATE
 void _do_im_commit(GtkIMContext *context, gchar* str)
 {
+    UNUSED(context);
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
@@ -75,91 +81,63 @@ void _do_im_commit(GtkIMContext *context, gchar* str)
 
 
 PRIVATE
-void _update_size(gint16 x, gint16 y, guint16 w, guint16 h)
+void _update_size(GdkScreen* screen, gpointer userdata);
+
+
+void update_display_info()
 {
-    gtk_widget_set_size_request(container, w, h);
+    if (current_screen.screen != NULL) {
+        g_signal_handler_disconnect(current_screen.screen, current_screen.handler_id);
+        current_screen.screen = NULL;
+        current_screen.handler_id = -1;
+    }
+
+    GdkDisplay* display = gdk_display_get_default();
+    GdkDeviceManager* device_manager = gdk_display_get_device_manager(display);
+    GdkDevice* pointer = gdk_device_manager_get_client_pointer(device_manager);
+    gint x = 0, y = 0;
+    gdk_device_get_position(pointer, &current_screen.screen, &x, &y);
+    if (current_screen.screen == NULL) {
+        return;
+    }
+    current_screen.handler_id = g_signal_connect(G_OBJECT(current_screen.screen), "size-changed", G_CALLBACK(_update_size), NULL);
+    current_screen.index = gdk_screen_get_monitor_at_point(current_screen.screen, x, y);
+    g_debug("monitor:%d", current_screen.index);
+    gdk_screen_get_monitor_geometry(current_screen.screen, current_screen.index, &launcher);
+    g_warning("[%s] new geometry: %dx%d+%d+%d", __func__, launcher.width, launcher.height, launcher.x, launcher.y);
 }
 
 
-static
-gboolean primary_changed_handler(gpointer data)
+PRIVATE
+void _update_size(GdkScreen* screen, gpointer userdata)
 {
-    DBusConnection* conn = (DBusConnection*)data;
-    dbus_connection_read_write(conn, 0);
-    DBusMessage* message = dbus_connection_pop_message(conn);
+    UNUSED(screen);
+    UNUSED(userdata);
+    update_display_info();
+    GdkGeometry geo = {0};
+    GdkWindow* gdk = gtk_widget_get_window(container);
+    gdk_window_set_geometry_hints(gdk, &geo, GDK_HINT_MIN_SIZE);
+    gdk_window_flush(gdk);
+    Window xid = gdk_x11_window_get_xid(gdk);
 
-    if (message == NULL) {
-        return G_SOURCE_CONTINUE;
-    }
+#ifndef NDEBUG
+    int width = 0, height = 0;
+    gtk_window_get_size(GTK_WINDOW(container), &width, &height);
+    g_warning("[%s] change window(0x%lx) size from %dx%d to %dx%d", __func__, xid, width, height, launcher.width, launcher.height);
+#endif
 
-    g_debug("[%s] loop for signal", __func__);
-    if (dbus_message_is_signal(message,
-                               DISPLAY_INTERFACE,
-                               PRIMARY_CHANGED_SIGNAL)) {
-        DBusMessageIter args;
-        if (!dbus_message_iter_init(message, &args)) {
-            dbus_message_unref(message);
-            g_warning("init signal iter failed");
-            return G_SOURCE_CONTINUE;
-        }
+    int error = XResizeWindow(gdk_x11_get_default_xdisplay(), xid, launcher.width, launcher.height);
 
-        DBusMessageIter element_iter;
-        dbus_message_iter_recurse(&args, &element_iter);
-
-        g_debug("[%s] get signal", __func__);
-        // iterate_container_message(conn, &array_iter, iter_array, info);
-        int count = 0;
-        gint16 x = 0, y = 0;
-        guint16 w = 0, h = 0;
-        while (dbus_message_iter_get_arg_type(&element_iter) != DBUS_TYPE_INVALID) {
-            switch (count) {
-            case 0: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                x = value.i16;
-                break;
-            }
-            case 1: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                y = value.i16;
-                break;
-            }
-            case 2: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                w = value.u16;
-                break;
-            }
-            case 3: {
-                DBusBasicValue value;
-                dbus_message_iter_get_basic(&element_iter, &value);
-                h = value.u16;
-                break;
-            }
-            }
-            ++count;
-            dbus_message_iter_next(&element_iter);
-        }
-
-        _update_size(x, y, w, h);
-    }
-    dbus_message_unref(message);
-
-    return G_SOURCE_CONTINUE;
+#ifndef NDEBUG
+    g_debug("[%s] resize successful?: %d", __func__, (error != BadValue && error != BadWindow));
+#endif
 }
 
 
 PRIVATE
 void _on_realize(GtkWidget* container)
 {
-    static inited = FALSE;
-    if (!inited) {
-        update_display_info(&launcher);
-        listen_primary_changed_signal(primary_changed_handler);
-        inited = TRUE;
-    }
-    _update_size(launcher.x, launcher.y, launcher.width, launcher.height);
+    _update_size(current_screen.screen, container);
     if (is_js_already)
         background_changed(background_gsettings, CURRENT_PCITURE, NULL);
 }
@@ -175,8 +153,9 @@ void launcher_force_show(gboolean force)
 DBUS_EXPORT_API
 void launcher_show()
 {
-    is_launcher_shown = TRUE;
     gtk_widget_show_all(container);
+    _update_size(current_screen.screen, container);
+    is_launcher_shown = TRUE;
 }
 
 
@@ -331,6 +310,7 @@ gboolean can_be_restart()
 
 gboolean _launcher_size_monitor(gpointer user_data)
 {
+    UNUSED(user_data);
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(180) && can_be_restart()) {
@@ -496,7 +476,6 @@ int main(int argc, char* argv[])
     GdkWindow* gdkwindow = gtk_widget_get_window(container);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-    // update_display_info(&launcher);
     set_background(gtk_widget_get_window(webview), background_gsettings,
                             launcher.width, launcher.height);
 
@@ -515,6 +494,7 @@ int main(int argc, char* argv[])
 
 #ifndef NDEBUG
     monitor_resource_file("launcher", webview);
+    g_debug("xid: 0x%lx", gdk_x11_window_get_xid(gtk_widget_get_window(container)));
 #endif
 
     add_monitors();

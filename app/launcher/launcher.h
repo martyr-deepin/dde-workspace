@@ -23,7 +23,6 @@
 #define LAUNCHER_H
 
 #include "utils.h"
-#include "display_info.h"
 
 #define LAUNCHER_MAJOR_VERSION 0
 #define LAUNCHER_MINOR_VERSION 0
@@ -31,7 +30,6 @@
 #define LAUNCHER_VERSION STR(LAUNCHER_MAJOR_VERSION)"."STR(LAUNCHER_MINOR_VERSION)"."STR(LAUNCHER_SUBMINOR_VERSION)
 
 #define LAUNCHER_ID_NAME "launcher.app.deepin"
-extern struct DisplayInfo launcher;
 
 #endif /* end of include guard: LAUNCHER_H */
 
