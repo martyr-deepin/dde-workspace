@@ -130,6 +130,8 @@
     width: 150px;
     height: 140px;
     overflow:hidden;
+    border-right:1px solid rgba(0,0,0,0.05);
+    box-shadow:1px 0 0 rgba(255,255,255,0.5);
 }
 
 .img_div{
