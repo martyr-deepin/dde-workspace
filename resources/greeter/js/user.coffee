@@ -79,7 +79,7 @@ class User extends Widget
                 users_name.push(name)
                 users_type.push(type)
                 users_id.push(id)
-        echo users_name
+        #echo users_name
         return users_name
 
     get_default_username:->
@@ -160,20 +160,21 @@ class User extends Widget
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
+                userinfo_all.push(u)
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
+                    _current_user.focus()
                 else
                     u.only_show_name(true)
-                userinfo_all.push(u)
         for user,j in userinfo_all
             user.index = j
-        if userinfo_all.length >= 3 then @sort_current_user_info_center()
-        else if userinfo_all.length = 1
+        if userinfo_all.length >= 3
+            @sort_current_user_info_center()
+        else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
             _current_user.focus()
-            echo "_current_user.id:#{_current_user.id}"
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
@@ -182,6 +183,7 @@ class User extends Widget
         return userinfo_all
 
     sort_current_user_info_center:->
+        echo "sort_current_user_info_center"
         tmp_length = (userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
         if _current_user.index isnt center_index
@@ -264,6 +266,7 @@ class User extends Widget
             tilt: 2.3,
             minZ: 180,
             minOpacity: 0.0,
+            #startingChild: 1,
             startingChild: _current_user.index,
             clickToFocus: true,
             enableDrag: false,
