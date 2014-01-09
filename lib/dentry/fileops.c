@@ -445,8 +445,8 @@ fileops_copy (GFile* file_list[], guint num, GFile* dest_dir)
 static gboolean
 _dummy_func (GFile* file, gpointer data)
 {
-    UNUSED(file);
-    UNUSED(data);
+    NOUSED(file);
+    NOUSED(data);
     return TRUE;
 }
 //NOTE: src: source file
@@ -683,8 +683,8 @@ static void g_file_copy_async_finish_handler(GObject *source_object,
 
 void progress_bar_delete_event(GtkWidget *progress_bar, GdkEvent *event, gpointer data)
 {
-    UNUSED(event);
-    UNUSED(data);
+    NOUSED(event);
+    NOUSED(data);
     g_message("progress_bar_delete_event");
     g_cancellable_cancel(_copy_cancellable);
     GtkWidget *parent = gtk_widget_get_parent((GtkWidget *)progress_bar);
@@ -931,7 +931,7 @@ static void
 dbus_call_method_cb (GObject *source_object,
         GAsyncResult *res, gpointer user_data)
 {
-    UNUSED(user_data);
+    NOUSED(user_data);
     GError *error = NULL;
     GVariant *retval = NULL;
     GDBusProxy *proxy = (GDBusProxy*)source_object;

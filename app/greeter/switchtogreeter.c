@@ -194,8 +194,8 @@ switch_to_greeter (gchar *seat_path)
 
 int main (int argc, char **argv)
 {
-    UNUSED(argc);
-    UNUSED(argv);
+    NOUSED(argc);
+    NOUSED(argv);
     gchar *username = NULL;
     gchar *seat_path = NULL;
 

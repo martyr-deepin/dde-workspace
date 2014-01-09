@@ -219,9 +219,9 @@ _clipboard_owner_change_cb (GtkClipboard*		clipboard,
 			    GdkEventOwnerChange*	event,
 			    gpointer		        callback_data)
 {
-    UNUSED(clipboard);
-    UNUSED(event);
-    UNUSED(callback_data);
+    NOUSED(clipboard);
+    NOUSED(event);
+    NOUSED(callback_data);
 #if 0
 	if (is_clipboard_owner)
 	{
@@ -246,9 +246,9 @@ _get_clipboard_callback	(GtkClipboard*		clipboard,
 			 guint			info,
 			 gpointer               user_data)
 {
-    UNUSED(clipboard);
-    UNUSED(info);
-    UNUSED(user_data);
+    NOUSED(clipboard);
+    NOUSED(info);
+    NOUSED(user_data);
     g_debug ("_get_clipboard_callback: begin");
     GdkAtom target;
     target = gtk_selection_data_get_target (selection_data);
@@ -300,8 +300,8 @@ static void
 _clear_clipboard_callback (GtkClipboard *clipboard,
 			   gpointer      user_data)
 {
-    UNUSED(clipboard);
-    UNUSED(user_data);
+    NOUSED(clipboard);
+    NOUSED(user_data);
     g_debug ("_clear_clipboard_callback: begin");
 
     GList* file_list = NULL;
@@ -431,7 +431,7 @@ __clipboard_contents_received_callback (GtkClipboard     *clipboard,
 				        GtkSelectionData *selection_data,
 				        gpointer          info)
 {
-    UNUSED(clipboard);
+    NOUSED(clipboard);
     g_debug ("__clipboard_contents_received_callback: begin");
     FileOpsClipboardInfo* _info = (FileOpsClipboardInfo*) info;
 

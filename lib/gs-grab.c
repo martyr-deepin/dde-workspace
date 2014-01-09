@@ -60,7 +60,8 @@ gs_grab_get_keyboard (GSGrab    *grab,
         g_return_val_if_fail (window != NULL, FALSE);
         g_return_val_if_fail (screen != NULL, FALSE);
 
-        GdkGrabStatus status;
+        // FIXME: is this value ok?
+        GdkGrabStatus status = GDK_GRAB_SUCCESS;
 //gdk_keyboard_grab.
         GdkDisplay *display;
         GdkDeviceManager *device_manager;
@@ -86,7 +87,7 @@ gs_grab_get_keyboard (GSGrab    *grab,
                                       );
         }
         g_list_free (devices);
-//
+
         if (status == GDK_GRAB_SUCCESS) {
                 if (grab->priv->keyboard_grab_window != NULL) {
                         g_object_remove_weak_pointer (G_OBJECT (grab->priv->keyboard_grab_window),
@@ -112,7 +113,8 @@ gs_grab_get_mouse (GSGrab    *grab,
         g_return_val_if_fail (window != NULL, FALSE);
         g_return_val_if_fail (screen != NULL, FALSE);
 
-        GdkGrabStatus status;
+        // FIXME: is this value ok?
+        GdkGrabStatus status = GDK_GRAB_SUCCESS;
         GdkCursor    *cursor;
 
         cursor = gdk_cursor_new (GDK_BLANK_CURSOR);
@@ -514,3 +516,4 @@ gs_grab_new (void)
 
         return GS_GRAB (grab_object);
 }
+

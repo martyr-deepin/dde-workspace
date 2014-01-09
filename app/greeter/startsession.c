@@ -49,8 +49,8 @@
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
-static GtkWidget* __attribute__((unused)) container = NULL;
-static GtkWidget* __attribute__((unused)) webview = NULL;
+static GtkWidget* UNUSED container = NULL;
+static GtkWidget* UNUSED webview = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;
@@ -108,7 +108,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-    UNUSED(text);
+    NOUSED(text);
     gchar *respond = NULL;
 
     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {
@@ -233,9 +233,9 @@ int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    const gchar *username;
-    const gchar *password;
-    const gchar *session;
+    const gchar *username = NULL;
+    const gchar *password = NULL;
+    const gchar *session = NULL;
     if(argc < 4)
         return 0;
     if(argc == 4)

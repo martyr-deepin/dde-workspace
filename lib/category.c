@@ -38,9 +38,9 @@
 
 
 static
-void __attribute__((unused)) for_translate()
+void UNUSED for_translate()
 {
-    const char* const categories[] = {
+    const char* const categories[] UNUSED = {
         _("all"),
         _("internet"),
         _("multimedia"),
@@ -55,7 +55,6 @@ void __attribute__((unused)) for_translate()
         _("other"),
         NULL
     };
-    UNUSED(categories);
 }
 
 

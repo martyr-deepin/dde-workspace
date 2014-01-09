@@ -188,9 +188,9 @@ void reco()
 }
 
 
-static void __attribute__((unused)) bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
+static void UNUSED bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
 {
-    UNUSED(bus);
+    NOUSED(bus);
     gchar* msg_str;
     GError *error;
 
@@ -216,7 +216,7 @@ static void __attribute__((unused)) bus_callback(GstBus* bus, GstMessage* msg, g
 static
 gboolean recognized_handler(gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     g_debug("[%s] recognized", __func__);
     js_post_signal("start-login");
     recognition_info.reco_state = RECOGNIZE_FINISH;
@@ -227,7 +227,7 @@ gboolean recognized_handler(gpointer data)
 static
 gboolean not_recognize_handler(gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     g_debug("[%s] not recognized", __func__);
     g_debug("[%s] send auth-failed signal", __func__);
     JSObjectRef json = json_create();
@@ -247,8 +247,8 @@ gboolean not_recognize_handler(gpointer data)
 
 static gboolean _frame_handler(GstElement *img, GstBuffer *buffer, gpointer data)
 {
-    UNUSED(img);
-    UNUSED(data);
+    NOUSED(img);
+    NOUSED(data);
     static gboolean inited = FALSE;
     static gboolean sended = FALSE;
 

@@ -73,7 +73,7 @@ PRIVATE gboolean not_exit = FALSE;
 PRIVATE
 void _do_im_commit(GtkIMContext *context, gchar* str)
 {
-    UNUSED(context);
+    NOUSED(context);
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
@@ -111,8 +111,8 @@ void update_display_info()
 PRIVATE
 void _update_size(GdkScreen* screen, gpointer userdata)
 {
-    UNUSED(screen);
-    UNUSED(userdata);
+    NOUSED(screen);
+    NOUSED(userdata);
     update_display_info();
     GdkGeometry geo = {0};
     GdkWindow* gdk = gtk_widget_get_window(container);
@@ -126,10 +126,10 @@ void _update_size(GdkScreen* screen, gpointer userdata)
     g_warning("[%s] change window(0x%lx) size from %dx%d to %dx%d", __func__, xid, width, height, launcher.width, launcher.height);
 #endif
 
-    int error = XResizeWindow(gdk_x11_get_default_xdisplay(), xid, launcher.width, launcher.height);
+    int error UNUSED = XResizeWindow(gdk_x11_get_default_xdisplay(), xid, launcher.width, launcher.height);
 
 #ifndef NDEBUG
-    g_debug("[%s] resize successful?: %d", __func__, (error != BadValue && error != BadWindow));
+    g_warning("[%s] resize successful?: %d", __func__, (error != BadValue && error != BadWindow));
 #endif
 }
 
@@ -249,6 +249,11 @@ PRIVATE
 void daemonize()
 {
     g_debug("daemonize");
+
+#ifdef NDEBUG
+    close_std_stream();
+#endif
+
     pid_t pid = 0;
     if ((pid = fork()) == -1) {
         g_warning("fork error");
@@ -293,7 +298,7 @@ void check_version()
         g_key_file_set_string(launcher_config, "main", "version", LAUNCHER_VERSION);
         save_app_config(launcher_config, LAUNCHER_CONF);
 
-        system("sed -i 's/__Config__/"HIDDEN_APP_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        int noused UNUSED = system("sed -i 's/__Config__/"HIDDEN_APP_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
     }
 
     if (version != NULL)
@@ -310,7 +315,7 @@ gboolean can_be_restart()
 
 gboolean _launcher_size_monitor(gpointer user_data)
 {
-    UNUSED(user_data);
+    NOUSED(user_data);
     struct rusage usg;
     getrusage(RUSAGE_SELF, &usg);
     if (usg.ru_maxrss > RES_IN_MB(180) && can_be_restart()) {
@@ -436,7 +441,7 @@ int main(int argc, char* argv[])
     signal(SIGKILL, exit_signal_handler);
     signal(SIGTERM, exit_signal_handler);
 
-    pid_t p = getpid();
+    pid_t p UNUSED = getpid();
 #ifndef NDEBUG
     g_debug("No. #%d#", p);
 #endif

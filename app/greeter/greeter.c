@@ -109,7 +109,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-    UNUSED(text);
+    NOUSED(text);
     gchar *respond = NULL;
 
     if (type == LIGHTDM_PROMPT_TYPE_QUESTION) {

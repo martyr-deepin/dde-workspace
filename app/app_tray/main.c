@@ -43,9 +43,9 @@ GdkWindow* TRAY_GDK_WINDOW()
 static
 gboolean leave_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
-    UNUSED(widget);
-    UNUSED(event);
-    UNUSED(user_data);
+    NOUSED(widget);
+    NOUSED(event);
+    NOUSED(user_data);
     // g_debug("[%s]", __func__);
     if (!is_mouse_in_tray()) {
         if (!tray_is_always_shown()) {
@@ -60,9 +60,9 @@ gboolean leave_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 static
 gboolean enter_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
-    UNUSED(widget);
-    UNUSED(event);
-    UNUSED(user_data);
+    NOUSED(widget);
+    NOUSED(event);
+    NOUSED(user_data);
     // g_debug("[%s]", __func__);
     tray_show_now();
     return FALSE;
@@ -72,9 +72,9 @@ gboolean enter_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 static
 gboolean motion_notify(GtkWidget* widget, GdkEvent* event, gpointer user_data)
 {
-    UNUSED(widget);
-    UNUSED(event);
-    UNUSED(user_data);
+    NOUSED(widget);
+    NOUSED(event);
+    NOUSED(user_data);
     tray_show_real_now();
     return TRUE;
 }
