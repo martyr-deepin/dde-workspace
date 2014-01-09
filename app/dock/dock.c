@@ -203,7 +203,7 @@ void check_version()
         g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
         save_app_config(dock_config, DOCK_CONFIG);
 
-        int noused UNUSED;
+        int noused G_GNUC_UNUSED;
         noused = system("sed -i 's/DockedItems/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
         GKeyFile* f = load_app_config(APPS_INI);
         gsize len = 0;

@@ -49,8 +49,8 @@
 
 #define GREETER_HTML_PATH "file://"RESOURCE_DIR"/greeter/greeter.html"
 
-static GtkWidget* UNUSED container = NULL;
-static GtkWidget* UNUSED webview = NULL;
+static GtkWidget* container G_GNUC_UNUSED = NULL;
+static GtkWidget* webview G_GNUC_UNUSED = NULL;
 LightDMGreeter *greeter;
 GKeyFile *greeter_keyfile;
 gchar* greeter_file;

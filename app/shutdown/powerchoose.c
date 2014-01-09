@@ -55,7 +55,7 @@
 #define SHUTDOWN_MAJOR_VERSION 2
 #define SHUTDOWN_MINOR_VERSION 0
 #define SHUTDOWN_SUBMINOR_VERSION 0
-#define SHUTDOWN_VERSION STR(SHUTDOWN_MAJOR_VERSION)"."STR(SHUTDOWN_MINOR_VERSION)"."STR(SHUTDOWN_SUBMINOR_VERSION)
+#define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
 #define SHUTDOWN_CONF "shutdown/config.ini"
 static GKeyFile* shutdown_config = NULL;
 
@@ -90,8 +90,9 @@ void shutdown_quit()
     gtk_main_quit();
 }
 
+G_GNUC_UNUSED
 static gboolean
-UNUSED prevent_exit (GtkWidget* w, GdkEvent* e)
+prevent_exit (GtkWidget* w, GdkEvent* e)
 {
     NOUSED(w);
     NOUSED(e);
@@ -109,7 +110,7 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 }
 
 static void
-UNUSED sigterm_cb (int signum)
+G_GNUC_UNUSED sigterm_cb (int signum)
 {
     NOUSED(signum);
     gtk_main_quit ();

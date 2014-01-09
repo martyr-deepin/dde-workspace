@@ -26,11 +26,8 @@
 #include <gio/gdesktopappinfo.h>
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
-#define STR_EXP(__A) #__A
-#define STR(A) STR_EXP(A)
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
 #define NOUSED(p) do { (void)(p); } while (0)
-#define UNUSED __attribute__((unused))
 
 #ifndef M_PI
 #define M_PI 3.141592653589793

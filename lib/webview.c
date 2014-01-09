@@ -138,7 +138,8 @@ void dwebview_show_inspector(GtkWidget* webview)
     webkit_web_inspector_inspect_node(inspector, node);
 }
 
-static bool UNUSED webview_key_release_cb(GtkWidget* webview,
+G_GNUC_UNUSED
+static bool webview_key_release_cb(GtkWidget* webview,
         GdkEvent* event, gpointer data)
 {
     NOUSED(data);
