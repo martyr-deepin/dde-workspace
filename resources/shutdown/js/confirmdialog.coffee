@@ -50,7 +50,6 @@ class ConfirmDialog extends Widget
         
         left = create_element("div","left",frame_confirm)
         @img_confirm = create_img("img_confirm","img/normal/#{option[i]}.png",left)
-        @text_img = create_element("div","text_img",left)
         
         right = create_element("div","right",frame_confirm)
         @message_confirm = create_element("div","message_confirm",right)
@@ -96,14 +95,12 @@ class ConfirmDialog extends Widget
     
     style_for_direct:->
         i = @i
-        @text_img.textContent = option_text[i]
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text[i]
 
     style_for_force:->
         i = @i
-        @text_img.textContent = option_text[i]
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text_force[i]
