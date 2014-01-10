@@ -145,6 +145,10 @@ class ComboBox extends Widget
 
     set_current: (id)->
         try
+            sessions = DCore.Greeter.get_sessions()
+            if sessions.length == 1
+                @menu.current = sessions[0]
+                return @menu.current
             echo "------@menu.items:---------------"
             echo @menu.items
             echo "id:#{id}"

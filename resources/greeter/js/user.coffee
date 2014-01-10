@@ -164,7 +164,7 @@ class User extends Widget
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
-                    _current_user.focus()
+                    #_current_user.focus()
                 else
                     u.only_show_name(true)
         for user,j in userinfo_all
@@ -174,7 +174,7 @@ class User extends Widget
         else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
-            _current_user.focus()
+            #_current_user.focus()
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
@@ -432,7 +432,6 @@ class UserInfo extends Widget
 
         @glass = create_element("p","glass",@only_info)
         
-        @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
@@ -476,13 +475,18 @@ class UserInfo extends Widget
         @draw_avatar()
         @login.password.focus()
         
+        @session = DCore.Greeter.get_user_session(@id) if is_greeter
+        echo "--Greeter.get_user_sessiobn(#{@id}):---#{@session}---------------------"
         if @id != "guest"
             if is_greeter
                 sessions = DCore.Greeter.get_sessions()
                 #sessions = ["deepin"]
+                echo "-----@session:#{@sessio}------"
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
+                    @session = "deepin"
+                    de_menu.set_current(@session)
                     echo "#{@id} in focus invalid user session,will not set_current session"
 
         #if is_greeter
@@ -512,7 +516,11 @@ class UserInfo extends Widget
         echo "on_verify:#{username},#{password}"
 
         if is_greeter
+            sessions = DCore.Greeter.get_sessions()
+            if sessions.length == 1
+                de_menu.current = sessions[0]
             session = de_menu.get_current()
+            echo "------on_verify:session:#{session}-----------------------"
             if not session?
                 echo "get session failed"
                 session = "deepin"
