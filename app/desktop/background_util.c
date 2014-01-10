@@ -176,7 +176,7 @@ bg_settings_draw_mode_changed (GSettings *settings,
 {
     NOUSED(key);
     NOUSED(user_data);
-    gsettings_draw_mode = g_settings_get_enum(Settings, BG_DRAW_MODE);
+    gsettings_draw_mode = g_settings_get_enum(settings, BG_DRAW_MODE);
 }
 
 PRIVATE GdkFilterReturn
@@ -212,12 +212,11 @@ start_cross_timer(void)
     fade_data->pixmap = prev_pixmap;
     fade_data->fading_surface = get_surface(prev_pixmap);
     fade_data->alpha = 0;
-    char *cur_pict = get_current_picture_path();
+    const char *cur_pict = get_current_picture_path();
     fade_data->end_pixbuf = get_xformed_gdk_pixbuf(cur_pict);
     fade_data->total_duration = gsettings_xfade_interval / MSEC_PER_SEC;
     fade_data->interval = TIME_PER_FRAME;
     fade_data->start_time = get_current_time();
-    g_free (cur_pict);
 
     GSource *source = g_timeout_source_new (fade_data->interval * MSEC_PER_SEC);
     g_source_set_callback(source, (GSourceFunc)on_tick,
@@ -407,9 +406,8 @@ initial_setup(GSettings *settings)
                                        root_depth);
     _update_rootpmap (new_pixmap);
 
-    char *cur_pict = get_current_picture_path();
+    const char *cur_pict = get_current_picture_path();
     GdkPixbuf *pb = get_xformed_gdk_pixbuf (cur_pict);
-    g_free(cur_pict);
 
     xfade_data_t *fade_data = g_slice_new(xfade_data_t);
 
@@ -523,13 +521,12 @@ screen_size_changed_cb (GdkScreen *screen, gpointer user_data)
     root_height = gdk_screen_get_height(screen);
     gdk_window_move_resize(background_window, 0, 0, root_width, root_height);
 
-    char *current_picture = get_current_picture_path ();
+    const char *current_picture = get_current_picture_path ();
     //g_debug ("screen_size_changed_cb: end set string");
     //start_gaussian_helper (current_picture);
     //g_debug ("screen_size_changed_cb: end helper");
 
     GdkPixbuf *pb = get_xformed_gdk_pixbuf (current_picture);
-    g_free(current_picture);
 
     g_assert (pb != NULL);
 
