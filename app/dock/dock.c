@@ -329,9 +329,17 @@ void _change_workarea_height(int height)
     // update_display_info(&dock);
     int workarea_width = (dock.width - dock_panel_width) / 2;
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, workarea_width, dock.width - workarea_width);
+        set_struct_partial(DOCK_GDK_WINDOW(),
+                           ORIENTATION_BOTTOM,
+                           height,
+                           dock.x + workarea_width,
+                           dock.x + dock.width - workarea_width);
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, workarea_width, dock.width - workarea_width);
+        set_struct_partial(DOCK_GDK_WINDOW(),
+                           ORIENTATION_BOTTOM,
+                           0,
+                           dock.x + workarea_width,
+                           dock.x + dock.width - workarea_width);
     }
 }
 
