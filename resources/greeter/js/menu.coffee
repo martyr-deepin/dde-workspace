@@ -35,7 +35,8 @@ class Menu extends Widget
         _title = @title
         _img = @img
         menuimg = create_img("menuimg", @img, @element)
-        menuimg.title = @title
+        #tooltip = new ToolTip(menuimg,@title)
+        #menuimg.title = @title
         menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
         )
@@ -103,21 +104,18 @@ class ComboBox extends Widget
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img)->
-        #@current_img.src = img
         @menu.insert(id, title, img)
 
     insert_noimg: (id, title)->
         @menu.insert_noimg(id, title)
 
     do_mouseover: (e)->
-        #echo "box over"
         p = get_page_xy(@current_img, 0, 0)
         x = p.x
         y = document.body.clientHeight - p.y
         @menu.show(x, y)
     
     do_mouseout: (e)->
-        #echo "box out"
         @menu.hide()
     
     get_current: ->

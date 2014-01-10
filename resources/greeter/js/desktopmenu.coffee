@@ -35,7 +35,6 @@ class DesktopMenu extends Widget
             id = de_menu.set_current(id)
             #DCore.Greeter.set_selected_session(id)
         de_menu = new ComboBox("desktop", de_menu_cb)
-        #de_menu.show_item.style.background = "rgba(255,255,255, 0.3)"
         
         sessions = DCore.Greeter.get_sessions()
         echo sessions
