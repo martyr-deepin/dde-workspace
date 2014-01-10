@@ -36,19 +36,24 @@ class DesktopMenu extends Widget
         
         de_menu = new ComboBox("desktop", de_menu_cb)
         
-        sessions = DCore.Greeter.get_sessions()
-        echo "-------sessions-------------"
-        echo sessions
         default_session = DCore.Greeter.get_default_session()
         echo "default_session:#{default_session}"
+        #default_session = de_menu.get_current()
         if default_session is null then default_session = "deepin"
+        echo "default_session:#{default_session}"
         default_name = DCore.Greeter.get_session_name(default_session)
+        
+        sessions = DCore.Greeter.get_sessions()
+        #sessions = ["deepin"]
+        echo "-------sessions-------------"
+        echo sessions
+        
         for session in sessions
+            echo session
             id = session
             name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
             icon_path = img_before + "#{icon}"
-            echo icon_path
             if session isnt default_session
                 de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
@@ -57,8 +62,6 @@ class DesktopMenu extends Widget
         echo "--------------de_menu---------------"
         #de_menu.set_current(default_session)
         
-        default_session = de_menu.get_current()
-        if default_session is null then default_session = "deepin"
         de_menu.current_img.src = img_before + "#{default_session}_normal.png"
 
         de_menu.current_img.addEventListener("mouseover",=>

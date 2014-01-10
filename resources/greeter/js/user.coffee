@@ -479,10 +479,11 @@ class UserInfo extends Widget
         if @id != "guest"
             if is_greeter
                 sessions = DCore.Greeter.get_sessions()
+                #sessions = ["deepin"]
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
-                    echo "#{@id} in focus invalid user session"
+                    echo "#{@id} in focus invalid user session,will not set_current session"
 
         #if is_greeter
             #remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")

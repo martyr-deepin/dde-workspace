@@ -35,7 +35,17 @@ class Menu extends Widget
         _title = @title
         _img = @img
         menuimg = create_img("menuimg", @img, @element)
-        #tooltip = new ToolTip(menuimg,@title)
+#        tooltip = new ToolTip(menuimg,@title)
+        #tooltip.element.style.zIndex = 65535
+        #left = tooltip.element.style.left
+        #top = tooltip.element.style.top
+        #echo "-----------#{left},#{top}--------------"
+        #tooltip.element.style.left = left + menuimg.clientWidth
+        #tooltip.element.style.top = top + menuimg.clientHeight/2
+        #echo tooltip.element
+        #tooltip.element.style.display = "none"
+        #tooltip.element.style.display = "block"
+
         menuimg.title = @title
         menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
@@ -135,10 +145,11 @@ class ComboBox extends Widget
 
     set_current: (id)->
         try
+            echo "------@menu.items:---------------"
             echo @menu.items
             echo "id:#{id}"
             find = @menu.items[id]
-            echo "find:"
+            echo "----------find:------------"
             echo find
         catch error
             echo "find items[#{id}] error"
