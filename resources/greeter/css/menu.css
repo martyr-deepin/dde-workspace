@@ -51,8 +51,10 @@
 }
 
 .ToolTip{
-    /*position:fixed;*/
-    /*z-index:65535;*/
+    position:absolute;
+    z-index:65535;
+    /*left:90px;*/
+    /*top:15px;*/
     box-shadow:0 0 0 white;
     border-radius:0px;
 }
