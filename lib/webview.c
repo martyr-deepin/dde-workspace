@@ -33,7 +33,7 @@ void workaround_gtk_theme()
 
 GtkWidget* create_web_container(bool normal, bool above)
 {
-    UNUSED(above);
+    NOUSED(above);
     GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     workaround_gtk_theme();
 
@@ -64,8 +64,8 @@ GtkWidget* create_web_container(bool normal, bool above)
 
 gboolean erase_background(GtkWidget* widget, cairo_t *cr, gpointer data)
 {
-    UNUSED(widget);
-    UNUSED(data);
+    NOUSED(widget);
+    NOUSED(data);
     cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
     cairo_paint(cr);
 
@@ -104,9 +104,9 @@ static void add_ddesktop_class(WebKitWebView *web_view,
         gpointer arg3,
         gpointer user_data)
 {
-    UNUSED(context);
-    UNUSED(arg3);
-    UNUSED(user_data);
+    NOUSED(context);
+    NOUSED(arg3);
+    NOUSED(user_data);
     JSGlobalContextRef jsContext = webkit_web_frame_get_global_context(frame);
     init_js_extension(jsContext, (void*)web_view);
 }
@@ -116,9 +116,9 @@ static void add_ddesktop_class(WebKitWebView *web_view,
 WebKitWebView* inspector_create(WebKitWebInspector *inspector,
         WebKitWebView *web_view, gpointer user_data)
 {
-    UNUSED(inspector);
-    UNUSED(web_view);
-    UNUSED(user_data);
+    NOUSED(inspector);
+    NOUSED(web_view);
+    NOUSED(user_data);
     GtkWidget* win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_set_size_request(win, 800, 500);
     GtkWidget* web = webkit_web_view_new();
@@ -138,10 +138,11 @@ void dwebview_show_inspector(GtkWidget* webview)
     webkit_web_inspector_inspect_node(inspector, node);
 }
 
+G_GNUC_UNUSED
 static bool webview_key_release_cb(GtkWidget* webview,
         GdkEvent* event, gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     GdkEventKey *ev = (GdkEventKey*)event;
     switch (ev->keyval) {
         case GDK_KEY_F5:
@@ -237,10 +238,10 @@ GtkWidget* d_webview_new_with_uri(const char* uri)
 static
 void reload_webview(GFileMonitor* m, GFile* f1, GFile* f2, GFileMonitorEvent et, WebKitWebView* webview)
 {
-    UNUSED(m);
-    UNUSED(f1);
-    UNUSED(f2);
-    UNUSED(et);
+    NOUSED(m);
+    NOUSED(f1);
+    NOUSED(f2);
+    NOUSED(et);
     webkit_web_view_reload(webview);
 }
 

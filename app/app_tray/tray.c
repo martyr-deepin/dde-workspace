@@ -144,7 +144,7 @@ void safe_window_move(GdkWindow* wrapper, int x, int y)
 static int offset = 0;
 void accumulate_na_width(GdkWindow* wrapper, gpointer width)
 {
-    UNUSED(width);
+    NOUSED(width);
     if (wrapper == _deepin_tray)
         return;
     int icon_width = gdk_window_get_width(wrapper);
@@ -217,7 +217,7 @@ void destroy_wrapper(GdkWindow* wrapper)
 GdkFilterReturn
 monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 {
-    UNUSED(event);
+    NOUSED(event);
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         if (wrapper == _deepin_tray) {
@@ -273,7 +273,7 @@ monitor_icon_event(GdkXEvent* xevent, GdkEvent* event, GdkWindow* wrapper)
 
 void tray_icon_added (NaTrayManager *manager, Window child, GtkWidget* container)
 {
-    UNUSED(manager);
+    NOUSED(manager);
     GdkWindow* wrapper = create_wrapper(gtk_widget_get_window(container), child);
     if (wrapper == NULL)
         return;
@@ -340,7 +340,7 @@ void tray_init(GtkWidget* container)
 void
 draw_tray_icon(GdkWindow* wrapper, gpointer no_use, cairo_t* cr)
 {
-    UNUSED(no_use);
+    NOUSED(no_use);
     GdkWindow* icon = get_icon_window(wrapper);
     g_assert(GDK_IS_WINDOW(wrapper));
     if (!gdk_window_is_destroyed(icon)) {
@@ -466,7 +466,7 @@ void _draw_background(cairo_t* cr)
 
 gboolean draw_tray_icons(GtkWidget* w, cairo_t *cr)
 {
-    UNUSED(w);
+    NOUSED(w);
     if (_na_width < DEFAULT_WIDTH) {
         cairo_save(cr);
         cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);

@@ -14,7 +14,7 @@ add_executable(${NAME} background.c greeter.c user.c session.c mutils.c greeter_
 add_executable(startsession startsession.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
-add_executable(dlock background.c dlock.c gs-grab.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(dlock background.c dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
 add_executable(switchtogreeter switchtogreeter.c)

@@ -285,7 +285,7 @@ void tray_show_real_now()
 DBUS_EXPORT_API
 void tray_always_show()
 {
-    int noused __attribute__((unused)) = system("touch ~/.tray_always_show");
+    int noused G_GNUC_UNUSED = system("touch ~/.tray_always_show");
     tray_show_real_now();
 }
 
@@ -309,7 +309,7 @@ void tray_hide_now()
 DBUS_EXPORT_API
 void tray_hide_real_now()
 {
-    int noused __attribute__((unused)) = system("rm ~/.tray_always_show");
+    int noused G_GNUC_UNUSED = system("rm ~/.tray_always_show");
     _cancel_detect_hide_mode();
     handle_event(HideNow);
 }

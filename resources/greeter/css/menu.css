@@ -49,3 +49,10 @@
 .MenuTitle:hover {
     color:black;
 }
+
+.ToolTip{
+    /*position:fixed;*/
+    /*z-index:65535;*/
+    box-shadow:0 0 0 white;
+    border-radius:0px;
+}

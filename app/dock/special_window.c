@@ -82,8 +82,8 @@ DesktopFocusState get_desktop_focus_state(Display* dsp)
 PRIVATE
 GdkFilterReturn _monitor_launcher_window(GdkXEvent* xevent, GdkEvent* event, Window win)
 {
-    UNUSED(event);
-    UNUSED(win);
+    NOUSED(event);
+    NOUSED(win);
     XEvent* xev = xevent;
     if (xev->type == DestroyNotify) {
         js_post_signal("launcher_destroy");

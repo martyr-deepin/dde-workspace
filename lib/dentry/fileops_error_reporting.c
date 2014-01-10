@@ -163,9 +163,9 @@ static FileOpsResponse*
 _show_simple_error_message_dialog (const char* fileops_str, const char *error_message,
 				   GFile *file, GtkWindow* parent)
 {
-    UNUSED(fileops_str);
-    UNUSED(error_message);
-    UNUSED(parent);
+    NOUSED(fileops_str);
+    NOUSED(error_message);
+    NOUSED(parent);
     if (file == NULL)
     {
 	//just show error_message and return.
@@ -181,8 +181,8 @@ static FileOpsResponse*
 _show_skip_cancel_all_dialog (const char* fileops_str, const char *error_message,
 			      GFile* file, GtkWindow* parent)
 {
-    UNUSED(file);
-    UNUSED(parent);
+    NOUSED(file);
+    NOUSED(parent);
     GtkWidget* dialog;
     dialog = gtk_message_dialog_new (NULL,
 				     GTK_DIALOG_MODAL,
@@ -210,8 +210,8 @@ static FileOpsResponse*
 _show_skip_cancel_replace_rename_all_dialog (const char *fileops_str, const char *error_message,
 					     GFile *src, GFile *dest, GtkWindow* parent)
 {
-    UNUSED(error_message);
-    UNUSED(fileops_str);
+    NOUSED(error_message);
+    NOUSED(fileops_str);
     GtkWidget* dialog;
     FileOpsResponse* response;
 

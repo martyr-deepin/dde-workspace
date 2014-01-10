@@ -260,7 +260,7 @@ PRIVATE gboolean update_workarea_size(GSettings* dock_gsettings)
 
 PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    UNUSED(usr_data);
+    NOUSED(usr_data);
     if (g_strcmp0 (key, DOCK_HIDE_MODE))
         return;
 
@@ -271,9 +271,9 @@ PRIVATE void dock_config_changed(GSettings* settings, char* key, gpointer usr_da
 
 PRIVATE void desktop_config_changed(GSettings* settings, char* key, gpointer usr_data)
 {
-    UNUSED(settings);
-    UNUSED(key);
-    UNUSED(usr_data);
+    NOUSED(settings);
+    NOUSED(key);
+    NOUSED(usr_data);
     js_post_signal ("desktop_config_changed");
 }
 
@@ -300,8 +300,8 @@ void _change_to_json(gpointer key, gpointer value, gpointer user_data)
 
 PRIVATE void desktop_plugins_changed(GSettings* settings, char* key, gpointer user_data)
 {
-    UNUSED(key);
-    UNUSED(user_data);
+    NOUSED(key);
+    NOUSED(user_data);
     extern gchar * get_schema_id(GSettings* gsettings);
     extern void _init_state(gpointer key, gpointer value, gpointer user_data);
 
@@ -420,8 +420,8 @@ void screen_change_size(GdkScreen *screen, GdkWindow *w)
 
 gboolean prevent_exit(GtkWidget* w, GdkEvent* e)
 {
-    UNUSED(w);
-    UNUSED(e);
+    NOUSED(w);
+    NOUSED(e);
     return true;
 }
 
@@ -448,9 +448,10 @@ void desktop_focus_changed(gboolean focused)
 }
 
 PRIVATE
-void __attribute__((unused)) _do_im_commit(GtkIMContext *context, gchar* str)
+G_GNUC_UNUSED
+void _do_im_commit(GtkIMContext *context, gchar* str)
 {
-    UNUSED(context);
+    NOUSED(context);
     JSObjectRef json = json_create();
     json_append_string(json, "Content", str);
     js_post_message("im_commit", json);
@@ -574,7 +575,7 @@ int main(int argc, char* argv[])
 
 PRIVATE GdkFilterReturn watch_workarea(GdkXEvent *gxevent, GdkEvent* event, gpointer user_data)
 {
-    UNUSED(event);
+    NOUSED(event);
     XPropertyEvent *xevt = (XPropertyEvent*)gxevent;
 
     if (xevt->type == PropertyNotify &&

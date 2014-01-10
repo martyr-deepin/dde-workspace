@@ -54,6 +54,9 @@ enum State {
     StateHidding,
 } CURRENT_STATE = StateShow;
 
+
+int dock_panel_width = 0;
+
 gboolean dock_is_hidden()
 {
     if (CURRENT_STATE == StateHidding)
@@ -327,8 +330,8 @@ GdkWindow* get_dock_guard_window()
 PRIVATE GdkFilterReturn _monitor_guard_window(GdkXEvent* xevent,
         GdkEvent* event, gpointer data)
 {
-    UNUSED(event);
-    UNUSED(data);
+    NOUSED(event);
+    NOUSED(data);
     XEvent* xev = xevent;
     XGenericEvent* e = xevent;
 
@@ -354,6 +357,7 @@ void update_dock_guard_window_position(double width)
     GdkWindow* win = get_dock_guard_window();
     if (width == 0)
         width = dock.width;
+    dock_panel_width = width;
     gdk_window_move_resize(win,
                            (dock.width - width) / 2,
                            dock.height - GUARD_WINDOW_HEIGHT,

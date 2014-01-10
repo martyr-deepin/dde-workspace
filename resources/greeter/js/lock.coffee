@@ -59,7 +59,7 @@ timedate.show()
 
 
 
-$("#div_power").title = _("ShutDown")
+#$("#div_power").title = _("ShutDown")
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 

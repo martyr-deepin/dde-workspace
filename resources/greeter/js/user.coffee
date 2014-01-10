@@ -79,7 +79,7 @@ class User extends Widget
                 users_name.push(name)
                 users_type.push(type)
                 users_id.push(id)
-        echo users_name
+        #echo users_name
         return users_name
 
     get_default_username:->
@@ -160,20 +160,21 @@ class User extends Widget
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage,@get_user_type(user))
+                userinfo_all.push(u)
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
+                    _current_user.focus()
                 else
                     u.only_show_name(true)
-                userinfo_all.push(u)
         for user,j in userinfo_all
             user.index = j
-        if userinfo_all.length >= 3 then @sort_current_user_info_center()
-        else if userinfo_all.length = 1
+        if userinfo_all.length >= 3
+            @sort_current_user_info_center()
+        else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
             _current_user.focus()
-            echo "_current_user.id:#{_current_user.id}"
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.userinfo_li)
@@ -182,6 +183,7 @@ class User extends Widget
         return userinfo_all
 
     sort_current_user_info_center:->
+        echo "sort_current_user_info_center"
         tmp_length = (userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
         if _current_user.index isnt center_index
@@ -264,6 +266,7 @@ class User extends Widget
             tilt: 2.3,
             minZ: 180,
             minOpacity: 0.0,
+            #startingChild: 1,
             startingChild: _current_user.index,
             clickToFocus: true,
             enableDrag: false,
@@ -429,8 +432,7 @@ class UserInfo extends Widget
 
         @glass = create_element("p","glass",@only_info)
         
-        if is_greeter then @session = DCore.Greeter.get_user_session(@id)
-        else @session = "deepin"
+        @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
@@ -474,11 +476,19 @@ class UserInfo extends Widget
         @draw_avatar()
         @login.password.focus()
         
-        if is_greeter
-            remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
+        if @id != "guest"
+            if is_greeter
+                sessions = DCore.Greeter.get_sessions()
+                if @session? and @session in sessions
+                    de_menu.set_current(@session)
+                else
+                    echo "#{@id} in focus invalid user session"
+
+        #if is_greeter
+            #remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
             #if @session then de_menu.set_current(@session)
-            desktopmenu = new DesktopMenu($("div_desktop"))
-            desktopmenu.new_desktop_menu()
+            #desktopmenu = new DesktopMenu($("div_desktop"))
+            #desktopmenu.new_desktop_menu()
     
     
     blur: ->
@@ -500,11 +510,12 @@ class UserInfo extends Widget
         #@only_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
-        if not @session?
-            echo "get session failed and session default deepin"
-            @session = "deepin"
-
         if is_greeter
+            session = de_menu.get_current()
+            if not session?
+                echo "get session failed"
+                session = "deepin"
+            @session = session
             echo 'start session'
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"

@@ -40,12 +40,6 @@ class PowerMenu extends Widget
     shutdown_cb : ->
         power_force("shutdown")
 
-    signal_connect:->
-        #DCore.signal_connect("power", (msg) ->
-        #    status_div = create_element("div", " ", $("#Debug"))
-        #    status_div.innerText = "status:" + msg.status
-        #)
-
     get_power_dict : ->
         power_dict["suspend"] = @suspend_cb
         power_dict["restart"] = @restart_cb
@@ -71,9 +65,8 @@ class PowerMenu extends Widget
                 img = img_before + "#{key}.png"
                 power_menu.insert(key, title, img)
             else if key == "shutdown"
-                title = _("shutdown")
-            else
-                echo "invalid power option"
+                echo "shutdown"
+                #title = _("shutdown")
 
         power_menu.current_img.src = img_before + "shutdown_normal.png"
         parent.appendChild(power_menu.element) if parent

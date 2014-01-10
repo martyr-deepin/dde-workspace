@@ -161,7 +161,7 @@ double dentry_get_type(Entry* e)
                 }
         }
     TEST_GAPP(e, app)
-        UNUSED(app);
+        NOUSED(app);
     TEST_END
         return 0;
 }
@@ -319,7 +319,7 @@ gboolean dentry_can_thumbnail(Entry* e)
     TEST_GFILE(e, f)
         return gfile_can_thumbnail (f);
     TEST_GAPP(e, app)
-        UNUSED(app);
+        NOUSED(app);
     TEST_END
         return FALSE;
 }
@@ -484,7 +484,7 @@ gboolean dentry_is_fileroller_exist()
 JS_EXPORT_API
 double dentry_files_compressibility(ArrayContainer fs)
 {
-    ArrayContainer _fs;
+    ArrayContainer _fs = {0};
     GFile** files = NULL;
 
     if (fs.num != 0)
@@ -1193,7 +1193,7 @@ JS_EXPORT_API
 GFile* dentry_create_templates(GFile* src, char* name_add_before)
 {
     gboolean result = FALSE;
-    UNUSED(result);
+    NOUSED(result);
     char* basename = dentry_get_name(src);
     g_debug("choose templates name :---%s---",basename);
 
@@ -1449,8 +1449,8 @@ out:
 PRIVATE
 int _get_category_name(void* _basename, int argc, char** argv, char** columnname)
 {
-    UNUSED(argc);
-    UNUSED(columnname);
+    NOUSED(argc);
+    NOUSED(columnname);
     char** basename = (char**)_basename;
     if (argv[0][0] != '\0')
         *basename = g_strdup(argv[0]);

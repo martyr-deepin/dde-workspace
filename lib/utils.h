@@ -26,10 +26,8 @@
 #include <gio/gdesktopappinfo.h>
 
 #define GET_HTML_PATH(name) "file://"RESOURCE_DIR"/"name"/index.html"
-#define STR_EXP(__A) #__A
-#define STR(A) STR_EXP(A)
 #define BG_BLUR_PICT_CACHE_DIR "gaussian-background"
-#define UNUSED(p) do { (void)p; } while (0)
+#define NOUSED(p) do { (void)(p); } while (0)
 
 #ifndef M_PI
 #define M_PI 3.141592653589793
@@ -55,6 +53,7 @@ GKeyFile* load_app_config(const char* name);
 void save_key_file(GKeyFile*, const char* path); /*careful, this function didn't free the key file*/
 void save_app_config(GKeyFile*, const char* name); /*careful, this function didn't free the key file*/
 
+int close_std_stream();
 int reparent_to_init();
 void parse_cmd_line (int* argc, char*** argv);
 char* to_lower_inplace(char* str);

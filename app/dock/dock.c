@@ -82,8 +82,8 @@ gboolean get_leave_enter_guard()
 
 gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    UNUSED(w);
-    UNUSED(u);
+    NOUSED(w);
+    NOUSED(u);
     if (!get_leave_enter_guard())
         return FALSE;
 
@@ -110,9 +110,9 @@ gboolean leave_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 }
 gboolean enter_notify(GtkWidget* w, GdkEventCrossing* e, gpointer u)
 {
-    UNUSED(w);
-    UNUSED(e);
-    UNUSED(u);
+    NOUSED(w);
+    NOUSED(e);
+    NOUSED(u);
     if (!get_leave_enter_guard())
         return FALSE;
 
@@ -167,7 +167,7 @@ gboolean is_compiz_plugin_valid()
 static
 void is_compiz_valid(GdkScreen* screen, gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     if (!gdk_screen_is_composited(screen)) {
         GtkWidget* dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL,
                                                    GTK_MESSAGE_ERROR,
@@ -203,7 +203,8 @@ void check_version()
         g_key_file_set_string(dock_config, "main", "version", DOCK_VERSION);
         save_app_config(dock_config, DOCK_CONFIG);
 
-        system("sed -i 's/DockedItems/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
+        int noused G_GNUC_UNUSED;
+        noused = system("sed -i 's/DockedItems/"DOCKED_ITEM_GROUP_NAME"/g' $HOME/.config/"APPS_INI);
         GKeyFile* f = load_app_config(APPS_INI);
         gsize len = 0;
         char** list = g_key_file_get_groups(f, &len);
@@ -258,9 +259,9 @@ void check_version()
             g_strfreev(list);
         }
         save_app_config(f, APPS_INI);
-        system("sed -i 's/\\[wps\\]/\\[wps-office-wps\\]/g' $HOME/.config/"APPS_INI);
-        system("sed -i 's/\\[wpp\\]/\\[wps-office-wpp\\]/g' $HOME/.config/"APPS_INI);
-        system("sed -i 's/\\[et\\]/\\[wps-office-et\\]/g' $HOME/.config/"APPS_INI);
+        noused = system("sed -i 's/\\[wps\\]/\\[wps-office-wps\\]/g' $HOME/.config/"APPS_INI);
+        noused = system("sed -i 's/\\[wpp\\]/\\[wps-office-wpp\\]/g' $HOME/.config/"APPS_INI);
+        noused = system("sed -i 's/\\[et\\]/\\[wps-office-et\\]/g' $HOME/.config/"APPS_INI);
         g_key_file_unref(f);
     }
 
@@ -326,10 +327,19 @@ void dock_emit_webview_ok()
 void _change_workarea_height(int height)
 {
     // update_display_info(&dock);
+    int workarea_width = (dock.width - dock_panel_width) / 2;
     if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, height, 0, dock.width - 10);
+        set_struct_partial(DOCK_GDK_WINDOW(),
+                           ORIENTATION_BOTTOM,
+                           height,
+                           dock.x + workarea_width,
+                           dock.x + dock.width - workarea_width);
     } else {
-        set_struct_partial(DOCK_GDK_WINDOW(), ORIENTATION_BOTTOM, 0, 0, dock.width - 10);
+        set_struct_partial(DOCK_GDK_WINDOW(),
+                           ORIENTATION_BOTTOM,
+                           0,
+                           dock.x + workarea_width,
+                           dock.x + dock.width - workarea_width);
     }
 }
 
@@ -568,7 +578,7 @@ int main(int argc, char* argv[])
 
     setup_dock_dbus_service();
     GFileMonitor* m = monitor_trash();
-    UNUSED(m);
+    NOUSED(m);
     gtk_main();
     return 0;
 }

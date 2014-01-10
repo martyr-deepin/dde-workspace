@@ -82,7 +82,7 @@ cairo_region_t* create_tray_region(int width, int height)
 
 void set_region(double _x, double _y, double _width, double _height)
 {
-    int x __attribute__((unused)) = (int)_x, y __attribute__((unused)) = (int)_y, width = (int)_width, height = (int)_height;
+    int x G_GNUC_UNUSED = (int)_x, y G_GNUC_UNUSED = (int)_y, width = (int)_width, height = (int)_height;
 
     gdk_window_input_shape_combine_region(_win, NULL, 0, 0);
     gdk_window_shape_combine_region(_win, NULL, 0, 0);

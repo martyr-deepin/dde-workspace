@@ -100,8 +100,8 @@ void desktop_run_in_terminal(char* executable)
 static void
 run_file  (GFile* file, GFile* _file_arg)
 {
-    char* cmd_line;
-    char* file_path;
+    char* cmd_line = NULL;
+    char* file_path = NULL;
 
 
     //here we should check the file type

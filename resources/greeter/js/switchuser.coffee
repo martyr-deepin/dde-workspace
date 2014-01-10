@@ -38,9 +38,6 @@ class SwitchUser extends Widget
             @switch.src = "images/userswitch/acount_switch_normal.png"
         )
         @switch.addEventListener("click", =>
-            #document.body.style.opacity = "0.0"
-            #document.body.style.display = "none"
-            #DCore.Lock.quit()
             DCore.Lock.switch_user()
             #@SwitchToGreeter()
         )

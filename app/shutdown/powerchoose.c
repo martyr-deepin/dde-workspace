@@ -55,7 +55,7 @@
 #define SHUTDOWN_MAJOR_VERSION 2
 #define SHUTDOWN_MINOR_VERSION 0
 #define SHUTDOWN_SUBMINOR_VERSION 0
-#define SHUTDOWN_VERSION STR(SHUTDOWN_MAJOR_VERSION)"."STR(SHUTDOWN_MINOR_VERSION)"."STR(SHUTDOWN_SUBMINOR_VERSION)
+#define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
 #define SHUTDOWN_CONF "shutdown/config.ini"
 static GKeyFile* shutdown_config = NULL;
 
@@ -90,11 +90,12 @@ void shutdown_quit()
     gtk_main_quit();
 }
 
+G_GNUC_UNUSED
 static gboolean
-__attribute__((unused)) prevent_exit (GtkWidget* w, GdkEvent* e)
+prevent_exit (GtkWidget* w, GdkEvent* e)
 {
-    UNUSED(w);
-    UNUSED(e);
+    NOUSED(w);
+    NOUSED(e);
     return TRUE;
 }
 
@@ -102,23 +103,23 @@ __attribute__((unused)) prevent_exit (GtkWidget* w, GdkEvent* e)
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
-    UNUSED(w);
-    UNUSED(e);
-    UNUSED(user_data);
+    NOUSED(w);
+    NOUSED(e);
+    NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
 
 static void
-__attribute__((unused)) sigterm_cb (int signum)
+G_GNUC_UNUSED sigterm_cb (int signum)
 {
-    UNUSED(signum);
+    NOUSED(signum);
     gtk_main_quit ();
 }
 
 static void
 show_cb (GtkWindow* container, gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(container)),
                             gtk_window_get_screen (container),
@@ -165,7 +166,7 @@ x11_window_is_ours (Window window)
 static GdkFilterReturn
 xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
-    UNUSED(event);
+    NOUSED(event);
     XEvent *ev = xevent;
 
     switch (ev->type) {
@@ -267,6 +268,9 @@ int main (int argc, char **argv)
     }
 
     if (!option.is_front) {
+#ifdef NDEBUG
+        close_std_stream();
+#endif
         reparent_to_init();
     }
 

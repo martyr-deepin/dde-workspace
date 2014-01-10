@@ -196,8 +196,8 @@ PRIVATE
 void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                               GFileMonitorEvent event_type, gpointer data)
 {
-    UNUSED(monitor);
-    UNUSED(data);
+    NOUSED(monitor);
+    NOUSED(data);
 #if 0
     static char* names[] = {
         "changed",
@@ -336,8 +336,8 @@ PRIVATE
 void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_file,
                                 GFileMonitorEvent event_type, gpointer data)
 {
-    UNUSED(monitor);
-    UNUSED(data);
+    NOUSED(monitor);
+    NOUSED(data);
     GFile* changed_file = file;
     static gulong timeout_id = 0;
     switch (event_type) {
@@ -393,9 +393,9 @@ void gaussian_update(GFileMonitor* monitor,
                      GFileMonitorEvent event_type,
                      gpointer user_data)
 {
-    UNUSED(monitor);
-    UNUSED(origin_file);
-    UNUSED(user_data);
+    NOUSED(monitor);
+    NOUSED(origin_file);
+    NOUSED(user_data);
     switch (event_type) {
     case G_FILE_MONITOR_EVENT_MOVED: {
         // gaussian picture is generated.

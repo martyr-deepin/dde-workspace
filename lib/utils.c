@@ -215,6 +215,21 @@ gboolean write_to_file(const char* path, const char* content, size_t size/* if 0
         return FALSE;
     }
 }
+int close_std_stream()
+{
+    //close stdin, stdout, stderr
+    //redirect them to /dev/null
+    int fd;
+    close(STDIN_FILENO);
+    fd=open("/dev/null", O_RDWR);
+    if(fd!=STDIN_FILENO)
+        return 1;
+    if(dup2(STDIN_FILENO, STDOUT_FILENO)!=STDOUT_FILENO)
+        return 1;
+    if(dup2(STDIN_FILENO, STDERR_FILENO)!=STDERR_FILENO)
+        return 1;
+    return 0;
+}
 // reparent to init process.
 int reparent_to_init ()
 {
@@ -230,8 +245,8 @@ int reparent_to_init ()
 }
 static void _consolidate_cmd_line (int subargc, char*** subargv_ptr)
 {
-    UNUSED(subargc);
-    UNUSED(subargv_ptr);
+    NOUSED(subargc);
+    NOUSED(subargv_ptr);
     //recursively consolidate
 }
 void parse_cmd_line (int* argc_ptr, char*** argv_ptr)
@@ -266,18 +281,9 @@ void parse_cmd_line (int* argc_ptr, char*** argv_ptr)
 
     if (should_reparent)
     {
-	//close stdin, stdout, stderr
-	//redirect them to /dev/null
-	int fd;
-	close(STDIN_FILENO);
-	fd=open("/dev/null", O_RDWR);
-	//FIXME: shall we exit?
-	if(fd!=STDIN_FILENO)
-	    return;
-	if(dup2(STDIN_FILENO, STDOUT_FILENO)!=STDOUT_FILENO)
-	    return;
-	if(dup2(STDIN_FILENO, STDERR_FILENO)!=STDERR_FILENO)
-	    return;
+        //FIXME: shall we exit?
+        if (close_std_stream())
+            return;
 	reparent_to_init();
     }
     if (enable_debug)

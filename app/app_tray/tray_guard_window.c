@@ -56,8 +56,8 @@ GdkWindow* get_tray_guard_window()
 static GdkFilterReturn _monitor_tray_guard_window(GdkXEvent* xevent,
         GdkEvent* event, gpointer data)
 {
-    UNUSED(event);
-    UNUSED(data);
+    NOUSED(event);
+    NOUSED(data);
     XEvent* xev = xevent;
     XGenericEvent* e = xevent;
 

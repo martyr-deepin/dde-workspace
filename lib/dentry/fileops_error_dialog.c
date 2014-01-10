@@ -159,7 +159,7 @@ GtkWidget* fileops_error_conflict_dialog_new (GtkWindow* parent, GFile* src,
 static void
 _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 {
-    UNUSED(dialog);
+    NOUSED(dialog);
     //details.handle = NULL;
     g_debug ("__setup_dialog_labels");
 
@@ -389,7 +389,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 static void
 _expander_activated_cb (GtkExpander *w, GtkWidget *dialog)
 {
-    UNUSED(dialog);
+    NOUSED(dialog);
     int start_pos, end_pos;
 
     if (!gtk_expander_get_expanded (w))
@@ -437,8 +437,8 @@ _entry_text_changed_cb (GtkEditable *entry, GtkWidget *dialog)
 static void
 _reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
 {
-    UNUSED(w);
-    UNUSED(dialog);
+    NOUSED(w);
+    NOUSED(dialog);
     int start_pos, end_pos;
 
     gtk_entry_set_text (GTK_ENTRY (details.entry), details.conflict_name);
@@ -451,7 +451,7 @@ _reset_button_clicked_cb (GtkButton *w, GtkWidget*dialog)
 static void
 _checkbox_toggled_cb (GtkToggleButton *t, GtkWidget *dialog)
 {
-    UNUSED(dialog);
+    NOUSED(dialog);
     FileOpsResponse* response = details.response;
     response->apply_to_all = gtk_toggle_button_get_active (t);
 

@@ -156,31 +156,31 @@ gboolean lock_start_session(const gchar *username,const gchar *password,const gc
 static gboolean
 prevent_exit (GtkWidget* w, GdkEvent* e)
 {
-    UNUSED(w);
-    UNUSED(e);
+    NOUSED(w);
+    NOUSED(e);
     return TRUE;
 }
 
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
-    UNUSED(w);
-    UNUSED(e);
-    UNUSED(user_data);
+    NOUSED(w);
+    NOUSED(e);
+    NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (lock_container), 0);
 }
 
 static void
 sigterm_cb (int signum)
 {
-    UNUSED(signum);
+    NOUSED(signum);
     gtk_main_quit ();
 }
 
 static void
 lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
-    UNUSED(data);
+    NOUSED(data);
     gs_grab_move_to_window (grab,
                             gtk_widget_get_window (GTK_WIDGET(lock_container)),
                             gtk_window_get_screen (lock_container),
@@ -224,7 +224,7 @@ x11_window_is_ours (Window window)
 static GdkFilterReturn
 xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 {
-    UNUSED(event);
+    NOUSED(event);
     XEvent *ev = xevent;
 
     switch (ev->type) {
