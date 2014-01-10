@@ -31,9 +31,10 @@ class DesktopMenu extends Widget
         #detext.innerText = _("Session")
     
     new_desktop_menu: ->
+        echo "-------new_desktop_menu-------------"
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
-            #DCore.Greeter.set_selected_session(id)
+        
         de_menu = new ComboBox("desktop", de_menu_cb)
         
         sessions = DCore.Greeter.get_sessions()
@@ -51,21 +52,20 @@ class DesktopMenu extends Widget
             if session isnt default_session
                 de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
+        echo "--------------de_menu---------------"
+        echo de_menu
+        echo "--------------de_menu---------------"
         #de_menu.set_current(default_session)
         
         de_menu.current_img.src = img_before + "#{default_session}_normal.png"
 
         de_menu.current_img.addEventListener("mouseover",=>
-            echo "mouseover"
             de_menu.current_img.src = img_before + "#{default_session}.png"
-            echo de_menu.current_img.src
         )
         de_menu.current_img.addEventListener("mouseout",=>
-            echo "mouseout"
             de_menu.current_img.src = img_before + "#{default_session}_normal.png"
         )
         de_menu.current_img.addEventListener("click", (e) =>
-            echo "click"
             de_menu_cb(default_session,default_name)
         )
         de_menu.menu.element.addEventListener("mouseover",=>

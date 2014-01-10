@@ -432,8 +432,7 @@ class UserInfo extends Widget
 
         @glass = create_element("p","glass",@only_info)
         
-        if is_greeter then @session = DCore.Greeter.get_user_session(@id)
-        else @session = "deepin"
+        @session = DCore.Greeter.get_user_session(@id) if is_greeter
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
@@ -477,11 +476,19 @@ class UserInfo extends Widget
         @draw_avatar()
         @login.password.focus()
         
-        if is_greeter
-            remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
+        if @id != "guest"
+            if is_greeter
+                sessions = DCore.Greeter.get_sessions()
+                if @session? and @session in sessions
+                    de_menu.set_current(@session)
+                else
+                    echo "#{@id} in focus invalid user session"
+
+        #if is_greeter
+            #remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
             #if @session then de_menu.set_current(@session)
-            desktopmenu = new DesktopMenu($("div_desktop"))
-            desktopmenu.new_desktop_menu()
+            #desktopmenu = new DesktopMenu($("div_desktop"))
+            #desktopmenu.new_desktop_menu()
     
     
     blur: ->
@@ -503,11 +510,12 @@ class UserInfo extends Widget
         #@only_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
-        if not @session?
-            echo "get session failed and session default deepin"
-            @session = "deepin"
-
         if is_greeter
+            session = de_menu.get_current()
+            if not session?
+                echo "get session failed"
+                session = "deepin"
+            @session = session
             echo 'start session'
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"

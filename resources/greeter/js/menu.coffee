@@ -36,7 +36,7 @@ class Menu extends Widget
         _img = @img
         menuimg = create_img("menuimg", @img, @element)
         #tooltip = new ToolTip(menuimg,@title)
-        #menuimg.title = @title
+        menuimg.title = @title
         menuimg.addEventListener("click", (e)=>
             @cb(_id, _title)
         )
@@ -49,6 +49,7 @@ class Menu extends Widget
         _title = @title
         item = create_element("div", "menuitem", @element)
         item.addEventListener("click", (e)=>
+            echo "----------------"
             @cb(_id, _title)
         )
         title = create_element("div", "menutitle", item)
@@ -122,7 +123,10 @@ class ComboBox extends Widget
         return @menu.current
 
     get_useable_current : ->
+        echo "current:#{@menu.current}"
         ret = @menu.items[@menu.current]
+        echo "ret:"
+        echo ret
         if not ret?
             for key, val of @menu.items
                 ret = val
@@ -131,7 +135,11 @@ class ComboBox extends Widget
 
     set_current: (id)->
         try
+            echo @menu.items
+            echo "id:#{id}"
             find = @menu.items[id]
+            echo "find:"
+            echo find
         catch error
             echo "find items[#{id}] error"
         
