@@ -51,11 +51,12 @@ class DesktopMenu extends Widget
         for session in sessions
             echo session
             id = session
-            name = DCore.Greeter.get_session_name(id)
+            name = id
+            #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
             icon_path = img_before + "#{icon}"
-            if session isnt default_session
-                de_menu.insert(id, name, icon_path)
+            #if session isnt default_session
+            de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
         echo "--------------de_menu---------------"
         echo de_menu
@@ -71,7 +72,7 @@ class DesktopMenu extends Widget
             de_menu.current_img.src = img_before + "#{default_session}_normal.png"
         )
         de_menu.current_img.addEventListener("click", (e) =>
-            de_menu_cb(default_session,default_name)
+            #de_menu_cb(default_session,default_name)
         )
         de_menu.menu.element.addEventListener("mouseover",=>
             de_menu.current_img.src = img_before + "#{default_session}.png"
