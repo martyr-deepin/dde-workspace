@@ -34,7 +34,7 @@ class DesktopMenu extends Widget
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
         
-        de_menu = new ComboBox("desktop", de_menu_cb)
+        de_menu = new ComboBox("deepin", de_menu_cb)
         
         default_session = DCore.Greeter.get_default_session()
         echo "default_session:#{default_session}"

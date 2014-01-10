@@ -151,12 +151,12 @@ class ComboBox extends Widget
             find = @menu.items[id]
             echo "----------find:------------"
             echo find
+        
+            if not find?
+                find = @get_useable_current()
+            @menu.current = find[0]
+            @current_img.src = find[2]
+            find[0]
         catch error
             echo "find items[#{id}] error"
-        
-        if not find?
-            find = @get_useable_current()
-        @menu.current = find[0]
-        @current_img.src = find[2]
-        find[0]
 
