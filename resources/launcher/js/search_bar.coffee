@@ -18,9 +18,11 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class Config
-    constructor: ->
+class SearchBar
+    value: ->
+        ""
 
-    load: ->
+    empty: ->
+        @value() == ""
 
-    save: ->
+    clean:->

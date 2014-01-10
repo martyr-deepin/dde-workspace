@@ -1,3 +1,99 @@
+#Copyright (c) 2011 ~  Deepin, Inc.
+#              2013 ~ Lee Liqiang
+#
+#Author:      Lee Liqiang <liliqiang@linuxdeepin.com>
+#Maintainer:  Lee Liqiang <liliqiang@linuxdeepin.com>
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 3 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+class CategoryItem
+    constructor:->
+
+    show:->
+
+    hide:->
+
+    select: ->
+
+    unselect: ->
+
+
+class CategoryInfo
+    constructor:->
+        # key: category id
+        # value: a list of item id.
+        @category_infos = {}
+
+        if (_sort_method = DCore.Launcher.sort_method())?
+            sort_method = _sort_method
+        else
+            DCore.Launcher.save_config('sort_method', sort_method)
+
+        frag = document.createDocumentFragment()
+        for info in DCore.Launcher.get_categories()
+            c = _create_category(info)
+            frag.appendChild(c)
+            _load_category_infos(info.ID, sort_methods[sort_method])
+
+        _category.appendChild(frag)
+
+        category_column_adaptive_height()
+
+
+    load: ->
+
+    sort: (id=null)->
+        if id
+            ""
+        else
+            ""
+
+
+class CategoryBar
+    constructor:->
+        @select_timer = -1
+        @selected_id = ALL_APPLICATION_CATEGORY_ID
+
+        @category = $("#category")
+        @category.addEventListener("click", (e) ->
+            e.stopPropagation()
+        )
+
+        @category_infos = new CategoryInfo()
+
+    load: ->
+
+    addItem: (id)->
+
+    removeItem: (id)->
+
+    hide_empty_category:->
+
+    show_nonempty_category:->
+
+    show: ->
+
+    hide: ->
+
+    pin: =>
+
+    unpin: =>
+
+    update_scroll_bar: ->
+
+
 _category = $("#category")
 
 _select_category_timeout_id = 0
@@ -101,3 +197,4 @@ init_category_list = ->
     _category.appendChild(frag)
 
     category_column_adaptive_height()
+
