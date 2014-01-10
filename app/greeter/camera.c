@@ -83,7 +83,7 @@ void init_camera(int argc, char* argv[])
 void connect_camera()
 {
     const gchar camera_launch[] = "v4l2src ! video/x-raw-rgb,"
-        "width="STR(CAMERA_WIDTH)",height="STR(CAMERA_HEIGHT)
+        "width="G_STRINGIFY(CAMERA_WIDTH)",height="G_STRINGIFY(CAMERA_HEIGHT)
         " ! ffmpegcolorspace ! videoflip method=horizontal-flip !"
         " fakesink name=\"imgSink\"";
 
@@ -188,7 +188,7 @@ void reco()
 }
 
 
-static void UNUSED bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
+G_GNUC_UNUSED static void bus_callback(GstBus* bus, GstMessage* msg, gpointer data)
 {
     NOUSED(bus);
     gchar* msg_str;

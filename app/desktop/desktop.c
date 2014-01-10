@@ -448,7 +448,8 @@ void desktop_focus_changed(gboolean focused)
 }
 
 PRIVATE
-void UNUSED _do_im_commit(GtkIMContext *context, gchar* str)
+G_GNUC_UNUSED
+void _do_im_commit(GtkIMContext *context, gchar* str)
 {
     NOUSED(context);
     JSObjectRef json = json_create();
