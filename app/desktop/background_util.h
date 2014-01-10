@@ -6,7 +6,7 @@
 #define DEEPIN_EXPORT
 
 // all schema related information.
-#define	BG_SCHEMA_ID		"com.deepin.dde.background"
+#define	BG_SCHEMA_ID		"com.deepin.dde.individuate"
 
 #define BG_FPS			30		//in my implementation, the actual fps may not be 30.
 
@@ -15,6 +15,7 @@
 #define BG_PICTURE_URI		"picture-uri"  //temporary picture path
 #define DELIMITER		';'		//picture-uri string delimiter 
 #define BG_BG_DURATION		"background-duration"
+#define BG_XFADE_INTERVAL	 "cross-fade-interval"       //automatically change background
 #define BG_XFADE_MANUAL_INTERVAL "cross-fade-manual-interval"     //manually change background
 #define BG_XFADE_AUTO_INTERVAL	 "cross-fade-auto-interval"       //automatically change background
 #define BG_XFADE_AUTO_MODE	 "cross-fade-auto-mode"		  //how next picture is chosen, random, or 
