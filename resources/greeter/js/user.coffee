@@ -518,7 +518,7 @@ class UserInfo extends Widget
         if is_greeter
             sessions = DCore.Greeter.get_sessions()
             if sessions.length == 1
-                de_menu.current = sessions[0]
+                de_menu.menu.current = sessions[0]
             session = de_menu.get_current()
             echo "------on_verify:session:#{session}-----------------------"
             if not session?
