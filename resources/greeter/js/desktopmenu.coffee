@@ -26,25 +26,23 @@ class DesktopMenu extends Widget
         super
         parent = parent_el
         img_before = "images/desktopmenu/"
-
-        #detext = create_element("div", "Detext", parent)
-        #detext.innerText = _("Session")
-    
+   
     new_desktop_menu: ->
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
         
         de_menu = new ComboBox("deepin", de_menu_cb)
         
-        default_session = DCore.Greeter.get_default_session()
+        de_current_id = localStorage.getItem("de_current_id")
+        if not de_current_id?
+            de_current_id = DCore.Greeter.get_default_session()
+            if de_current_id is null then de_current_id = "deepin"
+            localStorage.setItem("de_current_id",de_current_id)
+        default_session = de_current_id
         echo "default_session:#{default_session}"
-        #default_session = de_menu.get_current()
-        if default_session is null then default_session = "deepin"
-        echo "default_session:#{default_session}"
-        default_name = DCore.Greeter.get_session_name(default_session)
+        current_session_icon_name = DCore.Greeter.get_session_icon(session)
         
         sessions = DCore.Greeter.get_sessions()
-        #sessions = ["deepin"]
         echo "-------sessions-------------"
         echo sessions
         
@@ -54,26 +52,22 @@ class DesktopMenu extends Widget
             name = id
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = img_before + "#{icon}"
+            icon_path = img_before + "#{icon}.png"
             #if session isnt default_session
             de_menu.insert(id, name, icon_path)
         parent.appendChild(de_menu.element) if parent
-        echo "--------------de_menu---------------"
-        echo de_menu
-        echo "--------------de_menu---------------"
-        #de_menu.set_current(default_session)
         
-        de_menu.current_img.src = img_before + "#{default_session}_normal.png"
+        de_menu.current_img.src = img_before + "#{current_session_icon_name}_normal.png"
 
         de_menu.current_img.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "#{default_session}.png"
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}.png"
         )
         de_menu.current_img.addEventListener("mouseout",=>
-            de_menu.current_img.src = img_before + "#{default_session}_normal.png"
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}_normal.png"
         )
         de_menu.current_img.addEventListener("click", (e) =>
             #de_menu_cb(default_session,default_name)
         )
         de_menu.menu.element.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "#{default_session}.png"
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}.png"
         )

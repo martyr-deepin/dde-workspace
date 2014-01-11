@@ -27,7 +27,7 @@ class Menu extends Widget
     constructor: (@id) ->
         super
         @current = @id
-        @items = {}
+        @items = new Array()
         @element.style.display = "none"
 
     insert: (@id, @title, @img)->
@@ -51,7 +51,7 @@ class Menu extends Widget
             @cb(_id, _title)
         )
 
-        @items[_id] = [_id, _title, _img]
+        @items.push({"id":_id, "title":_title,"img":_img})
         @current = @id
 
     insert_noimg: (@id, @title)->
@@ -65,7 +65,7 @@ class Menu extends Widget
         title = create_element("div", "menutitle", item)
         title.innerText = @title
 
-        @items[_id] = [_id, _title]
+        @items.push({"id":_id, "title":_title})
         @current = @id
 
     set_callback: (@cb)->
@@ -111,7 +111,15 @@ class ComboBox extends Widget
     constructor: (@id, @on_click_cb) ->
         super
         @current_img = create_img("current_img", "", @element)
-        @menu = new Menu(@id+"_menu")
+        
+        de_current_id = localStorage.getItem("de_current_id")
+        echo "-------------de_current_id:#{de_current_id}"
+        if not de_current_id?
+            echo "not de_current_id"
+            de_current_id = DCore.Greeter.get_default_session()
+            if de_current_id is null then de_current_id = "deepin"
+            localStorage.setItem("de_current_id",de_current_id)
+        @menu = new Menu(de_current_id)
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img)->
@@ -130,37 +138,30 @@ class ComboBox extends Widget
         @menu.hide()
     
     get_current: ->
+        de_current_id = localStorage.getItem("de_current_id")
+        @menu.current = de_current_id
         return @menu.current
-
-    get_useable_current : ->
-        echo "current:#{@menu.current}"
-        ret = @menu.items[@menu.current]
-        echo "ret:"
-        echo ret
-        if not ret?
-            for key, val of @menu.items
-                ret = val
-                break
-        return ret
 
     set_current: (id)->
         try
-            sessions = DCore.Greeter.get_sessions()
-            if sessions.length == 1
-                @menu.current = sessions[0]
-                return @menu.current
+            echo "set_current(id) :---------#{id}----------------"
+            localStorage.setItem("de_current_id",id)
+            @menu.current = id
             echo "------@menu.items:---------------"
             echo @menu.items
-            echo "id:#{id}"
-            find = @menu.items[id]
-            echo "----------find:------------"
-            echo find
-        
-            if not find?
-                find = @get_useable_current()
-            @menu.current = find[0]
-            @current_img.src = find[2]
-            find[0]
+            item_set = null
+            for item,i in @menu.items
+                if id == item.id
+                    item_set = item
+            echo "----item_set:-----------"
+            echo item_set
+            @current_img.src = item_set.img
+            return item_set.id
         catch error
-            echo "find items[#{id}] error"
+            echo "set_current(#{id}) error:#{error}"
+            localStorage.setItem("de_current_id",id)
+            @menu.current = id
+            img_before = "images/desktopmenu/"
+            @current_img.src = img_before + "unknown.png"
+            return id
 
