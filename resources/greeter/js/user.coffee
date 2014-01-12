@@ -475,26 +475,19 @@ class UserInfo extends Widget
         @draw_avatar()
         @login.password.focus()
         
-        @session = DCore.Greeter.get_user_session(@id) if is_greeter
-        echo "--Greeter.get_user_sessiobn(#{@id}):---#{@session}---------------------"
         if @id != "guest"
             if is_greeter
+                @session = DCore.Greeter.get_user_session(@id)
+                echo "----------Greeter.get_user_sessiobn(#{@id}):---#{@session}---------------------"
                 sessions = DCore.Greeter.get_sessions()
-                #sessions = ["deepin"]
-                echo "-----@session:#{@sessio}------"
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
+                    echo "----------Greeter.get_user_sessiobn(#{@id}) failed! set_current(deepin)---------"
                     @session = "deepin"
                     de_menu.set_current(@session)
                     echo "#{@id} in focus invalid user session,will not set_current session"
-
-        #if is_greeter
-            #remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
-            #if @session then de_menu.set_current(@session)
-            #desktopmenu = new DesktopMenu($("div_desktop"))
-            #desktopmenu.new_desktop_menu()
-    
+   
     
     blur: ->
         #@loading?.destroy()
