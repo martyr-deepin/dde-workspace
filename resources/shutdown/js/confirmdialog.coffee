@@ -70,7 +70,7 @@ class ConfirmDialog extends Widget
         )
         @button_ok.addEventListener("click",->
             echo "button_ok click"
-            confirm_ok(option{i})
+            confirm_ok(option[i])
         )
 
         @button_cancel.addEventListener("mouseover",=>
