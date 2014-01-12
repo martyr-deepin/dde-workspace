@@ -70,7 +70,7 @@ class ConfirmDialog extends Widget
         )
         @button_ok.addEventListener("click",->
             echo "button_ok click"
-            confirm_ok(i)
+            confirm_ok(option{i})
         )
 
         @button_cancel.addEventListener("mouseover",=>
@@ -118,7 +118,7 @@ class ConfirmDialog extends Widget
             that.message_confirm.textContent = message_text[i].args(time)
             if time == 0
                 clearInterval(timeId)
-                if 2 <= i <= 4 then confirm_ok(i)
+                if 2 <= i <= 4 then confirm_ok(option[i])
         ,1000)
 
     hover_state: (choose_num)->
@@ -151,7 +151,7 @@ class ConfirmDialog extends Widget
             i = @i
             switch choose_num
                 when OK
-                    if 2 <= i <= 4 then confirm_ok(i)
+                    if 2 <= i <= 4 then confirm_ok(option[i])
                 when CANCEL
                     destory_all()
                 else return

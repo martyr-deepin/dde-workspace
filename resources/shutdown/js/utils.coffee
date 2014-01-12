@@ -40,14 +40,14 @@ destory_all = ->
     DCore.Shutdown.quit()
 
 
-confirm_ok = (i)->
+confirm_ok = (power)->
     #destory_all()
-    echo option[i]
-    switch option[i]
+    echo "--------------confirm_ok(#{power})-------------"
+    switch power
         when "lock" then destory_all()
         when "suspend" then destory_all()
-    if power_can(option[i]) and timeId == 0 then power_request(option[i])
-    else power_force(option[i])
+    if power_can(power) and timeId == 0 then power_request(power)
+    else power_force(power)
     clearInterval(timeId) if timeId
 
 document.body.style.height = window.innerHeight

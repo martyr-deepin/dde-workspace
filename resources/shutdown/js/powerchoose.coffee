@@ -75,7 +75,7 @@ class PowerChoose extends Widget
                 frame_click = true
                 opt_img[i].src = "img/click/#{option[i]}.png"
                 if 2 <= i <= 4 then that.fade(i)
-                else if 0 <= i <= 1 then confirm_ok(i)
+                else if 0 <= i <= 1 then confirm_ok(option[i])
                 
             )
     
@@ -101,7 +101,7 @@ class PowerChoose extends Widget
     fade:(i)->
         echo "--------------fade:#{option[i]}---------------"
         if power_can(option[i])
-            #confirm_ok(i)
+            #confirm_ok(option[i])
             echo "power_can true ,power_request"
             power_request(option[i])
         else
@@ -142,7 +142,7 @@ class PowerChoose extends Widget
             when ENTER_KEY
                 i = choose_num
                 if 2 <= i <= 4 then @fade(i)
-                else if 0 <= i <= 1 then confirm_ok(i)
+                else if 0 <= i <= 1 then confirm_ok(option[i])
             when ESC_KEY
                 destory_all()
 
