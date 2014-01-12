@@ -21,7 +21,7 @@ power_can = (power) ->
         when "restart" then result = dbus_power.CanReboot_sync()
         when "shutdown" then result = dbus_power.CanShutdown_sync()
         else result = false
-    echo "Can#{power} :#{result}"
+    echo "power_can : -----------Can_#{power} :#{result}------------"
     if result is undefined then result = true
     return result
 

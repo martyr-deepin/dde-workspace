@@ -85,8 +85,8 @@ class PowerChoose extends Widget
         confirmdialog.frame_build()
         document.body.appendChild(confirmdialog.element)
         confirmdialog.interval(60)
-
-    fade:(i)->
+    
+    switchToConfirmDialog:(i)->
         opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
         opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
         opt[i].style.borderRadius = null
@@ -96,7 +96,18 @@ class PowerChoose extends Widget
         opt[i].addEventListener("webkitAnimationEnd",=>
             @timefunc(i)
         ,false)
-    
+ 
+
+    fade:(i)->
+        echo "--------------fade:#{option[i]}---------------"
+        if power_can(option[i])
+            #confirm_ok(i)
+            echo "power_can true ,power_request"
+            power_request(option[i])
+        else
+            echo "power_can false ,switchToConfirmDialog"
+            @switchToConfirmDialog(i)
+
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)

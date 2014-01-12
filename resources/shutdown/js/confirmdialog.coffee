@@ -60,6 +60,7 @@ class ConfirmDialog extends Widget
         @button_cancel.textContent = _("Cancel")
 
         @button_ok = create_element("div","button_ok",button_confirm)
+        echo "----------------power_can check-------------"
         if power_can(@opt) then @style_for_direct()
         else @style_for_force()
 
@@ -94,12 +95,14 @@ class ConfirmDialog extends Widget
         ,false)
     
     style_for_direct:->
+        echo "style_for_direct:power_can true!"
         i = @i
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
         @button_ok.textContent = option_text[i]
 
     style_for_force:->
+        echo "style_for_force:power_can false!"
         i = @i
         @img_confirm.src = "img/normal/#{option[i]}.png"
         @message_confirm.textContent = message_text[i].args(60)
