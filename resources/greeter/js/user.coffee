@@ -74,7 +74,6 @@ class User extends Widget
                 realname = user_dbus.RealName
                 type = user_dbus.AccountType
                 id = user_dbus.Uid
-                echo "id:#{id}"
                 users_realname.push(realname)
                 users_name.push(name)
                 users_type.push(type)
@@ -145,7 +144,7 @@ class User extends Widget
         if not BackgroundBlurPictPath?
             userid = new String()
             userid = @get_user_id(user)
-            echo "user #{user}'s userid:#{userid}"
+            echo "current user #{user}'s userid:#{userid}"
             Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
             path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
             if path[0]
@@ -153,7 +152,7 @@ class User extends Widget
             else
                 BackgroundBlurPictPath = path[1]
         echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
-        document.body.style.backgroundImage = "url(file://#{BackgroundBlurPictPath})"
+        document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
         localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
 
     new_userinfo_for_greeter:->

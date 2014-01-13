@@ -1,12 +1,21 @@
 body{
     cursor:default;
     overflow:hidden;
-    /*background-color:rgba(0,0,0,0.3)*/
+    background-image: url(/usr/share/backgrounds/default_background.jpg);
+    
+    background-origin:padding-box;
+    background-clip:border-box;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
 }
 
-
+.Lock{
+    /*background-color:rgba(0,0,0,0.3)*/
+}
 .div_users{
-    /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
     left:32%;
     top:15%;

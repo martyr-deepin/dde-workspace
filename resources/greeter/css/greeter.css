@@ -1,9 +1,19 @@
 body{
     cursor:text;
     overflow:hidden;
-    /*background-color:rgba(0,0,0,0.6)*/
+    background-image: url(/usr/share/backgrounds/default_background.jpg);
+    
+    background-origin:padding-box;
+    background-clip:border-box;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
 }
 
+.Greeter{
+    /*background-color:rgba(0,0,0,0.6)*/
+}
 
 .div_users{
     /*background-color:rgba(0,255,120,0.2);*/
