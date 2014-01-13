@@ -1554,3 +1554,9 @@ char* dentry_get_default_audio_player_icon()
    return icon_url;
 }
 
+JS_EXPORT_API
+const char* dentry_get_username()
+{
+    const gchar *username = g_get_user_name();
+    return username;
+}

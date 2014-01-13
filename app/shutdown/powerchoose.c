@@ -238,6 +238,12 @@ GtkWidget* new_webview()
     return NULL;
 }
 
+JS_EXPORT_API
+const char* shutdown_get_username()
+{
+    const gchar *username = g_get_user_name();
+    return username;
+}
 
 int main (int argc, char **argv)
 {

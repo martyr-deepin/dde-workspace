@@ -52,6 +52,9 @@ confirm_ok = (power)->
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
+background = new Background()
+background.set_current_user_blur_background()
+
 #DCore.signal_connect("draw_background", (info)->
     #echo "draw_background:url(#{info.path})"
     #document.body.style.backgroundImage = "url(#{info.path})"
