@@ -150,17 +150,22 @@ class User extends Widget
             if path[0]
                 BackgroundBlurPictPath = path[1]
             else
+                # here should getPath by other methods!
                 BackgroundBlurPictPath = path[1]
         echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
-        document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
         localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
+        try
+            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
+        catch e
+            echo e
+            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
         if _default_username is null then _default_username = users_name[0]
         echo "_default_username:#{_default_username};"
-        @set_blur_background(_default_username)
+        #@set_blur_background(_default_username)
         
         for user in users_name
             echo "user:#{user}"
