@@ -119,14 +119,15 @@ class User extends Widget
 
     get_user_id:(user)->
         if users_id.length == 0 or users_name.length == 0 then @get_all_users()
-        echo users_name
-        echo users_id
+        id = null
         for tmp,j in users_name
             if user is tmp
-                echo "if #{user} j :#{j}"
                 id = users_id[j]
-                echo "id:#{id}"
-                return id
+        if not id?
+            id = users_id[0]
+        if not id?
+            id = "1000"
+        return id
 
     is_disable_user :(user)->
         disable = false
@@ -139,22 +140,28 @@ class User extends Widget
                 return disable
 
     set_blur_background:(user)->
-        path = []
-        userid = @get_user_id(user)
-        echo "user #{user}'s userid:#{userid}"
-        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.Accounts")
-        echo "-------------"
-        echo Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid,"")
-        echo "-------------"
-        #document.body.style.backgroundImage = path
+        BackgroundBlurPictPath = localStorage.getItem("BackgroundBlurPictPath")
+        if not BackgroundBlurPictPath?
+            userid = new String()
+            userid = @get_user_id(user)
+            echo "user #{user}'s userid:#{userid}"
+            Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
+            path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
+            if path[0]
+                BackgroundBlurPictPath = path[1]
+            else
+                BackgroundBlurPictPath = path[1]
+        echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
+        document.body.style.backgroundImage = "url(file://#{BackgroundBlurPictPath})"
+        localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
         users_name = @get_all_users()
         if _default_username is null then _default_username = users_name[0]
         echo "_default_username:#{_default_username};"
-        #@set_blur_background(_default_username)
-       
+        @set_blur_background(_default_username)
+        
         for user in users_name
             echo "user:#{user}"
             if not @is_disable_user(user)
@@ -192,12 +199,14 @@ class User extends Widget
             userinfo_all[_current_user.index] = center_old
     
     new_userinfo_for_lock:->
+        echo "new_userinfo_for_lock"
         user_ul.style.height = "400px"
         user_ul.style.display = "-webkit-box"
         user_ul.style.WebkitBoxAlign = "center"
         user_ul.style.WebkitBoxPack = "center"
         
         user = @get_default_username()
+        @set_blur_background(user)
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
         _current_user.only_show_name(false)
