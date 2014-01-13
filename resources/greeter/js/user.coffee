@@ -139,26 +139,31 @@ class User extends Widget
                 return disable
 
     set_blur_background:(user)->
-        #BackgroundBlurPictPath = localStorage.getItem("BackgroundBlurPictPath")
-        BackgroundBlurPictPath = null
-        if not BackgroundBlurPictPath?
-            userid = new String()
-            userid = @get_user_id(user)
-            echo "current user #{user}'s userid:#{userid}"
-            Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
-            path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
-            if path[0]
-                BackgroundBlurPictPath = path[1]
-            else
-                # here should getPath by other methods!
-                BackgroundBlurPictPath = path[1]
+        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
+        userid = new String()
+        userid = @get_user_id(user)
+        echo "current user #{user}'s userid:#{userid}"
+        path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
+        if path[0]
+            BackgroundBlurPictPath = path[1]
+        else
+            # here should getPath by other methods!
+            BackgroundBlurPictPath = path[1]
         echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
         localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
-        try
-            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
-        catch e
-            echo e
-            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
+        if is_greeter
+            try
+                currentBackgroundPictPath = Dbus_Account_deepin.GetCurrentBackgroundPictPath()
+            catch e
+                echo e
+                currentBackgroundPictPath = "/usr/share/backgrounds/default_background.jpg"
+            document.body.style.backgroundImage = "url(#{currentBackgroundPictPath})"
+        else
+            try
+                document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
+            catch e
+                echo e
+                document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
