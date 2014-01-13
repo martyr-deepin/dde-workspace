@@ -1,5 +1,5 @@
 body{
-    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
+    background-image: url(file:///usr/share/backgrounds/default_background.jpg);
     cursor:default;
     overflow:hidden;
     background-color:rgba(0,0,0,0.85);

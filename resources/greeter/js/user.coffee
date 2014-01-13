@@ -140,7 +140,8 @@ class User extends Widget
                 return disable
 
     set_blur_background:(user)->
-        BackgroundBlurPictPath = localStorage.getItem("BackgroundBlurPictPath")
+        #BackgroundBlurPictPath = localStorage.getItem("BackgroundBlurPictPath")
+        BackgroundBlurPictPath = null
         if not BackgroundBlurPictPath?
             userid = new String()
             userid = @get_user_id(user)
