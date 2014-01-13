@@ -42,7 +42,6 @@
 #include "mutils.h"
 
 #include "settings.h"
-#include "background.h"
 #include "camera.h"
 
 #include "X_misc.h"
@@ -322,11 +321,6 @@ int main (int argc, char **argv)
     /*gdk_window_set_override_redirect (gdkwindow, TRUE);*/
     /*select_popup_events ();*/
     /*gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);*/
-
-
-    dde_bg_g_settings = g_settings_new(SCHEMA_ID);
-    set_background(gtk_widget_get_window(webview), dde_bg_g_settings,
-                            gdk_screen_width(), gdk_screen_height());
 
     grab = gs_grab_new ();
     gtk_widget_show_all (lock_container);
