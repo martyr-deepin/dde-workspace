@@ -10,9 +10,7 @@ pkg_check_modules(GST REQUIRED gstreamer-0.10)
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
     ${OPENCV_INCLUDE_DIRES} ${GST_INCLUDE_DIRS})
 
-file(GLOB CFILES background.c)
-
-SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
+SET(SRC_LIST  ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(dpowerchoose ${SRC_LIST} powerchoose.c)
 
