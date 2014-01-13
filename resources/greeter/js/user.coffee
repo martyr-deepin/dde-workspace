@@ -151,19 +151,11 @@ class User extends Widget
             BackgroundBlurPictPath = path[1]
         echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
         localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
-        if is_greeter
-            try
-                currentBackgroundPictPath = Dbus_Account_deepin.GetCurrentBackgroundPictPath()
-            catch e
-                echo e
-                currentBackgroundPictPath = "/usr/share/backgrounds/default_background.jpg"
-            document.body.style.backgroundImage = "url(#{currentBackgroundPictPath})"
-        else
-            try
-                document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
-            catch e
-                echo e
-                document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
+        try
+            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
+        catch e
+            echo e
+            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
