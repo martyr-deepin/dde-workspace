@@ -19,17 +19,23 @@
 .TimeDate span{
     color: #fff;
     text-shadow:0 0 2px #333;
-    font-size:90px;
+    font-size:8em;
+    /*font-size:90px;*/
     font-family: MavenProLight;
 }
 
 .date{
     margin-top:20px;
     display: block;
-    font-size:15px;
+    font-size:2em;
+    /*font-size:15px;*/
     color: #fff;
     /*font-family: MavenProLight;*/
     text-shadow:0 0 2px #333;
     text-align:left;
+    margin-left:10px;
+}
+
+.date:lang(zh){
     margin-left:15px;
 }

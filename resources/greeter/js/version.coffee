@@ -21,6 +21,6 @@ class Version extends Widget
     constructor:->
         super
         @element.innerHTML = "
-                    <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span> 
+                    <span> #{_("Deepin 2014")}<sup>#{_(VERSION)}</sup></span> 
                     "
 
