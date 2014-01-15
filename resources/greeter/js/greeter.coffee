@@ -80,16 +80,11 @@ greeter.webview_ok(_current_user)
 greeter.keydown_listener(userinfo)
 greeter.mousewheel_listener(_current_user)
 
-timedate = new TimeDate()
-$("#div_time").appendChild(timedate.element)
-timedate.show()
-
-
-#$("#div_power").title = _("ShutDown")
-powermenu = new PowerMenu($("#div_power"))
-powermenu.new_power_menu()
-
 
 version = new Version()
 $("#div_version").appendChild(version.element)
+
+powermenu = new PowerMenu($("#div_power"))
+powermenu.new_power_menu()
+
 

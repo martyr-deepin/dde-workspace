@@ -29,13 +29,26 @@ body{
     -webkit-box-align:center;
 }
 
-.div_time {
+
+.div_version{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:50px;
     left:30px;
-    width:250px;
-    /*height:150px;*/
+    width:188px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
+
+.div_desktop{
+    /*background-color:rgba(125,0,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:120px;
+    width:60px;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -55,30 +68,3 @@ body{
 }
 
 
-
-
-
-.div_version{
-    /*background-color:rgba(125,255,120,0.2);*/
-    position:absolute;
-    bottom:40px;
-    right:200px;
-    width:150px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
-
-
-.div_desktop{
-    /*background-color:rgba(125,0,120,0.2);*/
-    position:absolute;
-    bottom:40px;
-    right:120px;
-    width:60px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
