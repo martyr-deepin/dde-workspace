@@ -166,6 +166,7 @@
     background-color:rgba(0,0,0,0.5);
     
     font-size: 1.4em;
+    color:rgba(0,0,0,0.5);
     display: block;
     z-index:4;
 }
