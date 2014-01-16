@@ -846,7 +846,7 @@ void _update_window_appid(Client* c)
 
 void _update_window_class(Client* c)
 {
-    g_clear_pointer(&c->class, g_free);
+    g_clear_pointer(&c->clss, g_free);
     g_clear_pointer(&c->instance_name, g_free);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
