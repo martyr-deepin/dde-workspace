@@ -21,24 +21,19 @@
 
 #include <string.h>
 
+#include "utils.h"
 #include "category.h"
 #include "x_category.h"
 #include "launcher_category.h"
 #include "i18n.h"
 #include "jsextension.h"
-#include "dentry/entry.h"
-
-
-PRIVATE
-const char* _get_x_category_db_path()
-{
-    return DATA_DIR"/x_category.sqlite";
-}
 
 
 PRIVATE
 int _get_category_name_index_map(GHashTable* infos, int argc, char** argv, char** colname)
 {
+    NOUSED(argc);
+    NOUSED(colname);
     if (argv[1][0] != '\0') {
         int id = (int)g_strtod(argv[1], NULL);
         g_hash_table_insert(infos, g_strdup(argv[0]), GINT_TO_POINTER(id));
@@ -128,6 +123,8 @@ GList* _get_x_category(GDesktopAppInfo* info)
 PRIVATE
 int _get_all_possible_categories(GList** categories, int argc, char** argv, char** colname)
 {
+    NOUSED(argc);
+    NOUSED(colname);
     if (argv[0][0] != '\0') {
         int category_id = find_category_id(argv[0]);
         g_debug("[%s] %s:%d", __func__, argv[0], category_id);
@@ -142,21 +139,26 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 {
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
     GList* categories = NULL;
-    GString* sql = g_string_new("select first_category_name from desktop where desktop_name = \"");
-    char** app_name = g_strsplit(basename, ".", -1);
+    char* sql = g_strdup_printf("select first_category_name "
+                                "from desktop "
+                                "where desktop_name like \"%s\";", basename);
+    g_debug("[%s] app: %s", __func__, basename);
     g_free(basename);
-
-    g_string_append(sql, app_name[0]);
-    g_debug("[%s] app: %s", __func__, app_name[0]);
-    g_strfreev(app_name);
-    g_string_append(sql, "\";");
-    search_database(get_category_name_db_path(), sql->str,
+    search_database(get_category_name_db_path(), sql,
                     (SQLEXEC_CB)_get_all_possible_categories,
                     &categories);
-    g_string_free(sql, TRUE);
+    g_free(sql);
+
+    return categories;
+}
+
+
+GList* get_categories(GDesktopAppInfo* info)
+{
+    GList* categories = get_deepin_categories(info);
 
     if (categories == NULL)
-        categories = _get_x_category(info);
+        return _get_x_category(info);
 
     return categories;
 }
@@ -165,6 +167,8 @@ GList* get_deepin_categories(GDesktopAppInfo* info)
 static
 int _fill_category_info(GPtrArray* infos, int argc, char** argv, char** colname)
 {
+    NOUSED(argc);
+    NOUSED(colname);
     if (argv[0][0] != '\0')
         g_ptr_array_add(infos, g_strdup(argv[0]));
     return 0;
@@ -204,7 +208,7 @@ const GPtrArray* get_all_categories_array()
 
 /**
  * @brief - key: the category id
- *          value: a set of applications id (md5 basename of path)
+ *          value: a set of application's id (md5 value of basename)
  */
 PRIVATE GHashTable* _category_table = NULL;
 
@@ -212,12 +216,12 @@ PRIVATE GHashTable* _category_table = NULL;
 void destroy_category_table()
 {
     if (_category_table != NULL)
-        g_hash_table_destroy(_category_table);
+        g_clear_pointer(&_category_table, g_hash_table_destroy);
 }
 
 
 PRIVATE
-void _append_to_category(const char* path, GList* cs)
+void _append_to_category(const char* id, GList* categories)
 {
     if (_category_table == NULL) {
         _category_table =
@@ -229,27 +233,63 @@ void _append_to_category(const char* path, GList* cs)
     // same value.
     GHashTable* l = NULL;
 
-    for (GList* iter = g_list_first(cs); iter != NULL; iter = g_list_next(iter)) {
-        gpointer id = iter->data;
-        l = g_hash_table_lookup(_category_table, id);
+    for (GList* iter = g_list_first(categories); iter != NULL; iter = g_list_next(iter)) {
+        gpointer category_id = iter->data;
+        l = g_hash_table_lookup(_category_table, category_id);
         if (l == NULL) {
             // Using GHashTable as a set, just one destroy function is needed,
             // otherwise, double free occurs.
             l = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-            g_hash_table_insert(_category_table, id, l);
+            g_hash_table_insert(_category_table, category_id, l);
         }
 
-        g_hash_table_add(l, g_strdup(path));
+        // This function will replace the original value if existd.
+        g_hash_table_add(l, g_strdup(id));
     }
 }
 
 
-PRIVATE
-void _record_category_info(const char* id, GDesktopAppInfo* info)
+void record_category_info(GDesktopAppInfo* info)
 {
-    GList* categories = get_deepin_categories(info);
+    char* id = dentry_get_id(info);
+    GList* categories = get_categories(info);
     _append_to_category(id, categories);
+    g_free(id);
     g_list_free(categories);
+}
+
+
+static
+void do_remove_category_info(gpointer key, gpointer value, gpointer user_data)
+{
+    NOUSED(key);
+    GHashTable* l = (GHashTable*)value;
+    char* id = (char*)user_data;
+    g_hash_table_remove(l, id);
+}
+
+
+void remove_category_info(Entry* info)
+{
+    char* id = dentry_get_id(info);
+    g_hash_table_foreach(_category_table, do_remove_category_info, id);
+    g_free(id);
+}
+
+
+GList* lookup_categories(const char* id)
+{
+    GList* categories = NULL;
+    GHashTableIter iter;
+    gpointer key = NULL, value = NULL;
+    g_hash_table_iter_init(&iter, _category_table);
+
+    while (g_hash_table_iter_next(&iter, &key, &value)) {
+        if (g_hash_table_contains((GHashTable*)value, id))
+            categories = g_list_append(categories, key);
+    }
+
+    return categories;
 }
 
 
@@ -268,9 +308,7 @@ JSObjectRef _init_category_table()
             continue;
         }
 
-        char* id = dentry_get_id(info);
-        _record_category_info(id, G_DESKTOP_APP_INFO(info));
-        g_free(id);
+        record_category_info(G_DESKTOP_APP_INFO(info));
 
         json_array_insert_nobject(items, i - skip,
                                   info, g_object_ref, g_object_unref);
@@ -352,12 +390,9 @@ double launcher_weight(GDesktopAppInfo* info, const char* key)
     /* desktop file information */
     const char* path = g_desktop_app_info_get_filename(info);
     char* basename = g_path_get_basename(path);
-    char* dot = strchr(basename, '.');
-    char* filename = g_strndup(basename, dot - basename);
+    *strchr(basename, '.') = '\0';
+    weight += _get_weight(basename, key, _pred, FILENAME_WEIGHT);
     g_free(basename);
-    g_debug("[%s:%s] filename: %s", __FILE__, __func__, filename);
-    weight += _get_weight(filename, key, _pred, FILENAME_WEIGHT);
-    g_free(filename);
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
     weight += _get_weight(gname, key, _pred, GENERIC_NAME_WEIGHT);

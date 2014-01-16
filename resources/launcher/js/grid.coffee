@@ -69,6 +69,10 @@ class Item extends Widget
                 AUTOSTART_ICON_SIZE)
             create_img("autostart_flag", Item.theme_icon, @element)
 
+    destroy: ->
+        grid.removeChild(@element)
+        super
+
     do_click : (e)=>
         e?.stopPropagation()
         @element.style.cursor = "wait"

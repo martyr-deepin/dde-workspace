@@ -20,6 +20,7 @@ void dentry_decompress_files_here(const ArrayContainer fs);
 gboolean dentry_set_name(Entry* e, const char* name);
 char* calc_id(const char* uri);
 char* dentry_get_id(Entry* e);
+char* dentry_get_uri(Entry*);
 ArrayContainer dentry_list_files(GFile* f);
 char* dentry_get_icon(Entry* e);
 char* dentry_get_icon_path(Entry* e);
@@ -36,3 +37,4 @@ GFile* dentry_create_templates(GFile* src, char* name_add_before);
 char* dentry_get_rich_dir_group_name(ArrayContainer const _fs);
 void do_dereference_symlink_copy(GFile* src, GFile* dest, GFileCopyFlags copy_flag);
 #endif
+

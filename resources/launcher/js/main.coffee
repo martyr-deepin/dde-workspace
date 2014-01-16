@@ -49,28 +49,57 @@ DCore.signal_connect("lost_focus", (info)->
 DCore.signal_connect("exit_launcher", ->
     reset()
 )
-inited = false
 DCore.signal_connect("draw_background", (info)->
-    _b.style.backgroundImage = "url(#{info.path})"
-    # if inited
-    #     DCore.Launcher.clear()
-    # inited = true
+    img = new Image()
+    img.src = info.path
+    img.onload = ->
+        _b.style.backgroundImage = "url(#{img.src})"
 )
-DCore.signal_connect("update_items", ->
-    echo "update items"
+DCore.signal_connect("update_items", (info)->
+    # echo "update items:"
+    # echo "status: #{info.status}"
+    # echo "id: #{info.id}"
+    # echo "core: #{info.core}"
+    # echo "categories: #{info.categories}"
 
-    applications = {}
-    hidden_icons = {}
-    category_infos = []
-    _category.innerHTML = ""
-    grid.innerHTML = ""
+    if info.status.match(/^deleted$/i)
+        if (item = Widget.look_up(info.id))?
+            echo 'deleted'
+            for category_index in info.categories
+                category_infos["#{category_index}"].remove(info.id)
+            item.hide()
+            item.destroy()
+            delete applications[info.id]
+    else if info.status.match(/^updated$/i)
+        if not Widget.look_up(info.id)?
+            echo 'added'
+            # info.status = "added"
+            applications[info.id] = new Item(info.id, info.core)
+            for category_index in info.categories
+                category_infos["#{category_index}"].push(info.id)
+            # TODO: may sort category_info which is changed.
+            sort_category_info(sort_methods[sort_method])
+            grid.appendChild(applications[info.id].element)
+        else
+            echo 'updated'
+            applications[info.id].update(info.core)
 
-    init_all_applications()
-    init_category_list()
-    init_grid()
-    _init_hidden_icons()
+    # FIXME:
+    # load what should be shown, not forbidden reloading on searching.
+    if s_box.value == ""
+        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+        grid_load_category(selected_category_id)
+    else
+        search()
 )
-DCore.signal_connect("autostart-update", (info)->
+DCore.signal_connect("uninstall_failed", (info)->
+    if (item = uninstalling_apps[info.id])?
+        echo "#{info.id} uninstall failed"
+        item.status = SOFTWARE_STATE.IDLE
+        item.show()
+    delete uninstalling_apps[info.id]
+)
+DCore.signal_connect("autostart_update", (info)->
     if (app = Widget.look_up(info.id))?
         if DCore.Launcher.is_autostart(app.core)
             # echo 'add'
@@ -79,15 +108,20 @@ DCore.signal_connect("autostart-update", (info)->
             # echo 'delete'
             app.remove_from_autostart()
 )
-
-
 DCore.Launcher.notify_workarea_size()
+
 
 get_name_by_id = (id) ->
     if Widget.look_up(id)?
         DCore.DEntry.get_name(Widget.look_up(id).core)
     else
         ""
+
+
+compare_string = (s1, s2) ->
+    return 1 if s1 > s2
+    return 0 if s1 == s2
+    return -1
 
 
 sort_by_name = (items)->
@@ -200,10 +234,6 @@ _show_hidden_icons = (is_shown) ->
             hidden_icons[item].hide_icon()
 
 
-compare_string = (s1, s2) ->
-    return 1 if s1 > s2
-    return 0 if s1 == s2
-    return -1
 bind_events = ->
     _b.addEventListener("contextmenu",
                         _contextmenu_callback(HIDDEN_ICONS_MESSAGE[is_show_hidden_icons],
