@@ -811,10 +811,12 @@ void _update_window_appid(Client* c)
             if (desktop_file != NULL) {
                 c->exec = g_desktop_app_info_get_string(desktop_file,
                                                         G_KEY_FILE_DESKTOP_KEY_EXEC);
+                g_debug("[%s] get exec from desktop: %s", __func__, c->exec);
 
                 g_object_unref(desktop_file);
             } else {
                 c->exec = get_exe(app_id, *s_pid);
+                g_debug("[%s] get exec from /proc/pid/exe: %s", __func__, c->exec);
             }
         }
 
@@ -1176,7 +1178,8 @@ gboolean dock_request_dock_by_client_id(double id)
         g_warning("[%s] cannot dock app, because app_id, command line or icon maybe NULL", __func__);
         return FALSE;
     } else {
-        g_debug("[%s] request_by_info", __func__);
+        g_debug("[%s] request_by_info: appid: %s, exec: %s, icon: %s",
+                __func__, c->app_id, c->exec, c->icon);
         request_by_info(c->app_id, c->exec, c->icon);
         return TRUE;
     }
