@@ -69,11 +69,13 @@ DCore.signal_connect("update_items", (info)->
                 category_infos["#{category_index}"].remove(info.id)
             item.hide()
             item.destroy()
-            delete applications[info.id]
+            echo "delete #{info.id} #{delete applications[info.id]}"
     else if info.status.match(/^updated$/i)
         if not Widget.look_up(info.id)?
             echo 'added'
             # info.status = "added"
+            delete applications[info.id]
+            applications[info.id] = null
             applications[info.id] = new Item(info.id, info.core)
             for category_index in info.categories
                 category_infos["#{category_index}"].push(info.id)

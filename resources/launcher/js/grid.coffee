@@ -274,7 +274,10 @@ grid_show_items = (items) ->
     count = 0
     for id in items
         group_num = parseInt(count++ / NUM_SHOWN_ONCE)
-        setTimeout(applications[id].show, 4 + group_num)
+        try
+            setTimeout(applications[id].show, 4 + group_num)
+        catch e
+            echo "#{id} #{e}"
 
     return  # some return like here will keep js converted by coffeescript returning stupid things
 
