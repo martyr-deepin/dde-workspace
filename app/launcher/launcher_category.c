@@ -105,8 +105,8 @@ GList* _get_x_category(GDesktopAppInfo* info)
     for (int i = 0; x_categories[i] != NULL && x_categories[i][0] != '\0'; ++i) {
         char* lower_case = g_utf8_casefold(x_categories[i], -1);
         int id = find_category_id(lower_case);
-        g_free(lower_case);
         g_debug("[%s] #%s#:category name:#%s#:%d", __func__, x_categories[i], lower_case, id);
+        g_free(lower_case);
         if (id == OTHER_CATEGORY_ID)
             has_other_id = TRUE;
         categories = g_list_append(categories, GINT_TO_POINTER(id));
