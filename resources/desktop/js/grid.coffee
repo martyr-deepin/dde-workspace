@@ -610,6 +610,7 @@ item_dragstart_handler = (widget, evt) ->
             w = Widget.look_up(selected_item[i])
             if not w? or w.modifiable == false then continue
             path = w.get_path()
+            echo path
             if path.length > 0
                 all_selected_items_path += path + "\r\n"
         if all_selected_items_path.length > 2
