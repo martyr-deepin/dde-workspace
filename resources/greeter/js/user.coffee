@@ -159,7 +159,6 @@ class User extends Widget
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
-                    #_current_user.focus()
                 else
                     u.only_show_name(true)
         for user,j in userinfo_all
@@ -169,7 +168,6 @@ class User extends Widget
         else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
-            #_current_user.focus()
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.element)
@@ -208,18 +206,6 @@ class User extends Widget
     get_current_userinfo:->
         return _current_user
 
-    username_font_animation:(FocusChildIndex)->
-        prev = @check_index(FocusChildIndex - 1)
-        next = @check_index(FocusChildIndex + 1)
-        
-        for i in [0 ... (userinfo_all.length) / 2]
-            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
-            size = 26 - i * 6
-            if size < 13 then size = 13
-            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
-            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
-
-
     check_index:(index)->
         if index >= userinfo_all.length then index = 0
         else if index < 0 then index = userinfo_all.length - 1
@@ -228,12 +214,8 @@ class User extends Widget
     prev_next_userinfo_create:->
         prevuserinfo = create_element("div","prevuserinfo",@element)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
-        #@username_font_animation(_current_user.index)
         nextuserinfo = create_element("div","nextuserinfo",@element)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
-#        if user_ul.children.length > 5
-            #@prevuserinfo.style.display = "block"
-            #@nextuserinfo.style.display = "block"
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "up_normal.png",
             img_src_before + "up_hover.png",
