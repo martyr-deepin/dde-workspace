@@ -39,7 +39,6 @@ class User extends Widget
     users_path = []
     users_name = []
     users_realname = []
-    users_type = []
     users_id = []
     
     constructor:->
@@ -72,11 +71,9 @@ class User extends Widget
                 user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
                 name = user_dbus.UserName
                 realname = user_dbus.RealName
-                type = user_dbus.AccountType
                 id = user_dbus.Uid
                 users_realname.push(realname)
                 users_name.push(name)
-                users_type.push(type)
                 users_id.push(id)
         #echo users_name
         return users_name
@@ -175,7 +172,7 @@ class User extends Widget
             #_current_user.focus()
         for user,j in userinfo_all
             user.index = j
-            user_ul.appendChild(user.userinfo_li)
+            user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
         return userinfo_all
@@ -201,7 +198,7 @@ class User extends Widget
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.only_show_name(false)
-        user_ul.appendChild(_current_user.userinfo_li)
+        user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
     is_support_guest:->
@@ -209,7 +206,7 @@ class User extends Widget
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
                 u.only_show_name(true)
-                user_ul.appendChild(u.userinfo_li)
+                user_ul.appendChild(u.elment)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
        
@@ -254,66 +251,7 @@ class User extends Widget
             img_src_before + "down_press.png"
         )
 
-
-    roundabout_animation:->
-        echo "roundabout_animation"
-        #inject_js("js/roundabout/jquery.roundabout.js")
-        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
-        @prev_next_userinfo_create()
-
-        jQuery("#user_ul").roundabout({
-            shape: 'waterWheel',
-            tilt: 2.3,
-            minZ: 180,
-            minOpacity: 0.0,
-            #startingChild: 1,
-            startingChild: _current_user.index,
-            clickToFocus: true,
-            enableDrag: false,
-            triggerFocusEvents: true,
-            triggerBlurEvents: true,
-            
-            btnNext: jQuery(".prevuserinfo_img"),
-            btnPrev: jQuery(".nextuserinfo_img")
-        })
-        .bind("animationStart",=>
-            index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
-            index_prev = @check_index(index_prev)
-            userinfo_all[index_prev].blur()
-            userinfo_all[index_prev].only_show_name(true)
-        )
-
-        .bind("animationEnd",=>
-            index_target = jQuery("#user_ul").roundabout("getChildInFocus")
-            index_target = @check_index(index_target)
-            _current_user = userinfo_all[index_target]
-            userinfo_all[index_target].only_show_name(false)
-            userinfo_all[index_target].focus()
-            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
-            #@username_font_animation(_current_user.index)
-        )
- 
-    jCarousel_animation:->
-        echo "jCarousel_animation"
-        @prev_next_userinfo_create()
-        # @element.style.overflow = "hidden"
-        #@prev_next_userinfo_create()
-
-        jQuery(".User").jcarousel({
-            vertical: true,
-            rtl: false,
-            list: '.user_ul',
-            items: '.userinfo_li',
-            animation: 'slow',
-            wrap: 'circular',
-            center: true
-        })
-        jQuery(".User").jcarousel('scroll','+=2')
-        jQuery(".User").jcarousel('reload')
-        echo jQuery(".User")
-        @username_font_animation(_current_user.index)
-
- class LoginEntry extends Widget
+class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
     constructor: (@id, @loginuser,@on_active)->
         super
@@ -397,13 +335,18 @@ class UserInfo extends Widget
         @username = create_element("label", "username", @userbase)
         @username.innerText = name
 
-        @login_div = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
-        @element.appendChild(@login_div.element)
+        @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
+        @element.appendChild(@login.element)
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         @face_login =false
 
+    only_show_name:(hide)->
+        if !hide
+            @element.style.display= "block"
+        else
+            @element.style.display= "none"
 
     draw_avatar: ->
         if @face_login
@@ -490,7 +433,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        jQuery("#user_ul").roundabout("animateToPreviousChild")
+        #jQuery("#user_ul").roundabout("animateToPreviousChild")
 
     animate_next: ->
         if @face_login
@@ -499,7 +442,7 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        jQuery("#user_ul").roundabout("animateToNextChild")
+        #jQuery("#user_ul").roundabout("animateToNextChild")
 
     animate_near: ->
         if @face_login
@@ -507,7 +450,7 @@ class UserInfo extends Widget
 
         if @is_recognizing
             return
-        jQuery("#user_ul").roundabout("animateToNearestChild")
+        #jQuery("#user_ul").roundabout("animateToNearestChild")
 
     draw_camera: ->
         if @face_login
