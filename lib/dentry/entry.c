@@ -230,8 +230,9 @@ char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
         char* uri = g_file_get_uri(f);
+    // '%' needs to be filtered from uri.
         char* escaped_uri = g_uri_escape_string(uri,
-                                                G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                                G_URI_RESERVED_CHARS_ALLOWED_IN_PATH"%",
                                                 FALSE);
         g_free(uri);
         return escaped_uri;
@@ -1560,3 +1561,4 @@ const char* dentry_get_username()
     const gchar *username = g_get_user_name();
     return username;
 }
+
