@@ -105,17 +105,6 @@ class User extends Widget
 
         return user_image
 
-    get_user_type:(user)->
-        if users_type.length == 0 or users_name.length == 0 then @get_all_users()
-        for tmp,j in users_name
-            if user is tmp
-                type = users_type[j]
-                switch type
-                    when 1 then return _("Administrator")
-                    when 0 then return _("Standard user")
-                    else return _("Standard user")
-        return _("Standard user")
-
     get_user_id:(user)->
         if users_id.length == 0 or users_name.length == 0 then @get_all_users()
         id = null
@@ -168,7 +157,7 @@ class User extends Widget
             echo "user:#{user}"
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
-                u = new UserInfo(user, user, userimage,@get_user_type(user))
+                u = new UserInfo(user, user, userimage)
                 userinfo_all.push(u)
                 if user is _default_username
                     _current_user = u
@@ -210,7 +199,7 @@ class User extends Widget
         user = @get_default_username()
         @set_blur_background(user)
         userimage = @get_user_image(user)
-        _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+        _current_user = new UserInfo(user, user, userimage)
         _current_user.only_show_name(false)
         user_ul.appendChild(_current_user.userinfo_li)
         _current_user.focus()
@@ -218,7 +207,7 @@ class User extends Widget
     is_support_guest:->
         if is_greeter
             if DCore.Greeter.is_support_guest()
-                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg")
                 u.only_show_name(true)
                 user_ul.appendChild(u.userinfo_li)
                 if DCore.Greeter.is_guest_default()
@@ -325,42 +314,24 @@ class User extends Widget
         @username_font_animation(_current_user.index)
 
  class LoginEntry extends Widget
-    constructor: (@id, @loginuser,@type ,@on_active)->
+    img_src_before = "images/userinfo/"
+    constructor: (@id, @loginuser,@on_active)->
         super
-        # echo "new LoginEntry"
-        @usertype = create_element("div","usertype",@element)
-        icon_lock = create_element("div","icon_lock",@usertype)
-        icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
-        type_text = create_element("div","type_text",@usertype)
-        type_text.textContent = @type
-
+        if is_greeter then @id = "login"
+        else @id = "lock"
+        echo "new LoginEntry:#{@id}"
+        
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", 16)
         @password.setAttribute("autofocus", true)
-        @eye = create_element("div","eye",@password_div)
-        @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
-        @eye.addEventListener("click",=>
-            @show_hide_password()
-            if @password.type is "password"
-                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
-                icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
-            else
-                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
-                icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
-                
+       
+        @loginbutton = create_img("loginbutton", "", @password_div)
+        @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
+        @loginbutton.addEventListener("mouseout", =>
+            @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
-        
-
-        @loginbutton = create_element("button", "loginbutton", @element)
-        @loginbutton.type = "submit"
-        if is_greeter
-            @loginbutton.innerText = _("Log In")
-        else
-            @loginbutton.innerText = _("Unlock")
-   
-
         @password_eventlistener()
     
 
@@ -378,6 +349,7 @@ class User extends Widget
         )
 
         @loginbutton.addEventListener("click", =>
+            @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
                 @on_active(@loginuser, @password.value)
         )
@@ -407,58 +379,31 @@ class User extends Widget
         @password.blur()
         @loginbutton.disable = true
 
-    show_hide_password:->
-        if @password.type is "password" then @password.type = "text"
-        else if @password.type is "text" then @password.type = "password"
-
 
 class UserInfo extends Widget
     userimg = null
     recognize = null
-    constructor: (@id, name, @img_src,@type)->
+    constructor: (@id, name, @img_src)->
         super
         @is_recognizing = false
         @index = null
         echo "new UserInfo :#{@id}"
-        @userinfo_li = create_element("li","userinfo_li",@element)
-        @userinfo_li.id = "#{@id}_li"
-        @only_name = create_element("div","only_name",@userinfo_li)
-        @only_name.innerText = name
+        @userbase = create_element("div", "UserBase", @element)
         
-        
-        @only_info = create_element("div","only_info",@userinfo_li)
-        @only_info_background = create_element("div","only_info_background",@only_info)
-        userbase = create_element("div", "UserBase", @only_info_background)
-        img_div = create_element("div","img_div",userbase)
-        img_border = create_element("div","img_border",img_div)
-        userimg = create_img("userimg", @img_src, img_border)
-        recognize = create_element("div", "recognize", userbase)
-        recognize_h1 = create_element("h1", "recognize_h1", recognize)
-        @username = create_element("label", "UserName", recognize_h1)
+        @userimg_div = create_element("div","userimg_div",@userbase)
+        userimg_border = create_element("div","userimg_border",@userimg_div)
+        userimg = create_img("userimg", @img_src, userimg_border)
+       
+        @username = create_element("label", "username", @userbase)
         @username.innerText = name
 
-        login_div = create_element("div", "login_div", @only_info_background)
-        @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
-        login_div.appendChild(@login.element)
-
-        @glass = create_element("p","glass",@only_info)
-        
+        @login_div = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
+        @element.appendChild(@login_div.element)
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         @face_login =false
 
-
-    only_show_name:(only_show_name)->
-        if only_show_name
-            @only_name.style.display = "block"
-            @glass.style.display = "none"
-            @only_info.style.display = "none"
-        else
-            @only_name.style.display = "none"
-            @glass.style.display = "block"
-            @only_info.style.display = "block"
-            
 
     draw_avatar: ->
         if @face_login
@@ -501,8 +446,6 @@ class UserInfo extends Widget
    
     
     blur: ->
-        #@loading?.destroy()
-        #@loading = null
         @stop_avatar()
 
 
@@ -515,8 +458,6 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
     on_verify: (username, password)->
-        #@loading = new Loading("loading")
-        #@only_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
         if is_greeter
@@ -538,11 +479,6 @@ class UserInfo extends Widget
     
     auth_failed: (msg) ->
         @stop_avatar()
-        #@loading?.destroy()
-        #@loading = null
-        # message_tip?.remove()
-        # message_tip = null
-        # message_tip = new MessageTip(msg, user_ul.parentElement)
         @login.password_error(msg)
         document.body.cursor = "default"
 

@@ -74,58 +74,6 @@
     width: 400px;
     height: 180px;
 }
-
-.userinfo_li{
-    float:left;
-    width: 350px;
-    height: 140px;
-    display:-webkit-box;
-    /*box-shadow:0 0 0 5px rgba(255,255,255,0.2);*/
-}
-.only_name{
-    position:relative;
-    top:45%;
-    font-size:15px;
-    /*font-size:36px;*/
-    font-weight:normal; 
-    color:rgb(255,255,255);
-    cursor: pointer;
-}
-
-.only_info{
-    width: 350px;
-    height: 140px;
-
-    overflow:hidden;
-
-    border-radius:4px;
-    box-shadow:0 0 0 5px rgba(255,255,255,0.2);
-}
-
-.only_info_background{
-    width: 350px;
-    height: 140px;
-    position: relative;
-    z-index:3;
-    display:-webkit-box;
-    
-    background:rgba(255,250,246,0.5);
-    color:#7E7975;
-}
-
-.glass{
-    content:"";
-    width:300px;
-    height:180px;
-    position: relative;
-    bottom:180px;
-    left:190px;
-    -webkit-transform: rotate(65deg);
-    background: -webkit-linear-gradient(50deg, rgba(255,255,255,0.5), rgba(0,0,0,0.2));
-    pointer-events:none;
-    z-index:0;
-}
-
 .UserBase {
     width: 150px;
     height: 140px;
@@ -134,7 +82,7 @@
     box-shadow:1px 0 0 rgba(255,255,255,0.5);
 }
 
-.img_div{
+.userimg_div{
     width:100%; 
     height:110px; 
     display:-webkit-box;
@@ -143,7 +91,7 @@
 }
 
 
-.img_border{
+.userimg_border{
     width:90px; 
     height:90px; 
     border:rgba(255,255,246,0.9) 4px solid;
@@ -151,25 +99,12 @@
     overflow:hidden;
     box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
 }
-.UserImg {
+.userimg {
     width:90px; 
     height:90px; 
 }
-.recognize{
-    /*position:relative;*/
-    width:100%;
-    height:20px;
-    /*-webkit-text-fill-color: transparent;*/
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-} 
-.recognize_h1{
-    height:20px;
-    margin-top:0px;
-}
 
-.UserName {
+.username {
     width:100%;
     height:20px;
     font-size:13px;
@@ -211,24 +146,6 @@
     height:105px;
     border-radius:5px;
 }
-
-.usertype{
-    cursor: pointer;
-    display: -webkit-box;
-    -webkit-box-align:center;
-}
-.icon_lock{
-    width:15px;
-    height:15px;
-}
-.type_text{
-    margin-left: 5px;
-    font-weight: 400;
-    color:#333;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
-    font-size: 11px;
-}
-
 .password_div {
     margin-top: 15px;
     background:#fff;
@@ -260,111 +177,12 @@
     border-color: #BBB;
     outline: none; /* Remove Chrome's outline */
 }
-.eye{
-    position:relative;
-    margin-top:3px;
-    right:20px;
-    width:16px;
-    height:16px;
-    z-index:15;
-}
-
-
-
 
 .loginbutton{
-    margin-top: 15px;
-    
-    width: 98%;
-    height: 29px;
-
-    box-shadow: inset 0 1px rgba(255,255,255,0.3);
-    border-radius: 4px;
-    cursor: pointer;
-
-    font-family: 'Lato', Calibri, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 29px; /* Same as height */
-    text-indent:10px;
-    text-align: center;
-    font-weight: bold;
-
-    background: #fbd568; /* Fallback */
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fbd568), to(#ffb347));
-    background: -webkit-linear-gradient(#fbd568, #ffb347);
-    background: linear-gradient(#fbd568, #ffb347);
-    border: 1px solid #f4ab4c;
-    color: #996319;
-    text-shadow: 0 1px rgba(255,255,255,0.3);
-}
-.LoginButton:hover, .LoginButton:focus{
-    background: #F60;
+    width:36px;
+    height:36px;
 }
 
-.loginbutton:lang(zh){
-    letter-spacing:10px;
-}
-
-
-
-
-
-
-
-.Loading {
-    display: block;
-    width: auto;
-    padding: 0px 5px 10px 0px;
-    background:-webkit-gradient(linear, 0 0, 0 100%, from(#333), to(#000));
-    margin: auto;
-    text-align:center;
-    border-radius:3px;
-}
-
-.Loading span{
-    color:#00b7e5;
-    font-size:16px;
-    margin-top: -5px;
-    margin-bottom: 4px;
-    display:block;
-    opacity: 0.9;
-    text-shadow: 0 0 10px #00b7e5,
-    0 0 20px #00b7e5,
-    0 0 30px #00b7e5,
-    0 0 40px #00b7e5,
-    0 0 70px #00b7e5,
-    0 0 80px #00b7e5,
-    0 0 100px #00b7e5,
-    0 0 150px #00b7e5;
-}
-
-.ball {
-    background-color: rgba(0,0,0,0);
-    border:3px solid rgba(0,183,229,0.9);
-    opacity: 0.9;
-    border-top:3px solid rgba(0,0,0,0);
-    border-left:3px solid rgba(0,0,0,0);
-    border-radius:25px;
-    width:25px;
-    height:25px;
-    margin:0 auto;
-    -webkit-animation:spin 1.5s infinite linear;
-}
-
-.ball1 {
-    background-color: rgba(0,0,0,0);
-    border:3px solid rgba(0,183,229,0.9);
-    opacity: 0.9;
-    border-top:3px solid rgba(0,0,0,0);
-    border-left:3px solid rgba(0,0,0,0);
-    border-radius:25px;
-    width:15px;
-    height:15px;
-    margin:0 auto;
-    position:relative;
-    top:-25px;
-    -webkit-animation:spinoff 1.5s infinite linear;
-}
 
 @-webkit-keyframes spin {
     0% { -webkit-transform:rotate(0deg); }
