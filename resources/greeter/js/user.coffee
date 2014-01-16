@@ -188,11 +188,6 @@ class User extends Widget
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
-        user_ul.style.height = "400px"
-        user_ul.style.display = "-webkit-box"
-        user_ul.style.WebkitBoxAlign = "center"
-        user_ul.style.WebkitBoxPack = "center"
-        
         user = @get_default_username()
         @set_blur_background(user)
         userimage = @get_user_image(user)
@@ -206,10 +201,9 @@ class User extends Widget
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
                 u.only_show_name(true)
-                user_ul.appendChild(u.elment)
+                user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
-       
     
     get_current_userinfo:->
         return _current_user

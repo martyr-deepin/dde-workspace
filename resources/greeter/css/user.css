@@ -3,8 +3,6 @@
     /*background: rgba(255,0,0,0.3);*/
     position:relative;
     /*overflow:hidden;*/
-    width:400px;
-    height:550px;
     display:-webkit-box;
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
@@ -37,12 +35,16 @@
     /*background: rgba(255,0,246,0.3);*/
     position:absolute;
     width:400px;
-    height:550px;
+    height:200px;
     z-index:3;
     position:relative;
     list-style: none;
     margin:0;
     padding:0;
+    
+    display:-webkit-box;
+    -webkit-box-align:center;
+    -webkit-box-orient:vertical;
 }
 
 .nextuserinfo{
