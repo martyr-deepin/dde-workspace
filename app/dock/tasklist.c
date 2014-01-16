@@ -731,7 +731,7 @@ void _update_window_icon(Client* c)
 
 void _update_window_title(Client* c)
 {
-    g_free(c->title);
+    g_clear_pointer(&(c->title), g_free);
     gulong item;
     char* name = get_window_property(_dsp, c->window, ATOM_WINDOW_NAME, &item);
     if (name != NULL)
@@ -752,6 +752,7 @@ void _update_window_appid(Client* c)
     s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
 
     if (s_pid != NULL) {
+        g_debug("[%s:%s] s_pid is %ld", __FILE__, __func__, s_pid);
         char* exec_name = NULL;
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
@@ -845,17 +846,14 @@ void _update_window_appid(Client* c)
 
 void _update_window_class(Client* c)
 {
-    g_free(c->clss);
-    g_free(c->instance_name);
+    g_clear_pointer(&c->class, g_free);
+    g_clear_pointer(&c->instance_name, g_free);
     XClassHint ch;
     if (XGetClassHint(_dsp, c->window, &ch)) {
         c->instance_name = g_strdup(ch.res_name);
         c->clss = g_strdup(ch.res_class);
         XFree(ch.res_name);
         XFree(ch.res_class);
-    } else {
-        c->clss = NULL;
-        c->instance_name = NULL;
     }
 
     if (c->title && 0 == g_strcmp0(c->title, "Unknow Name") && c->clss) {
