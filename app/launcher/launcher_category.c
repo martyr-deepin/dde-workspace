@@ -352,9 +352,12 @@ double launcher_weight(GDesktopAppInfo* info, const char* key)
     /* desktop file information */
     const char* path = g_desktop_app_info_get_filename(info);
     char* basename = g_path_get_basename(path);
-    *strchr(basename, '.') = '\0';
-    weight += _get_weight(basename, key, _pred, FILENAME_WEIGHT);
+    char* dot = strchr(basename, '.');
+    char* filename = g_strndup(basename, dot - basename);
     g_free(basename);
+    g_debug("[%s:%s] filename: %s", __FILE__, __func__, filename);
+    weight += _get_weight(filename, key, _pred, FILENAME_WEIGHT);
+    g_free(filename);
 
     const char* gname = g_desktop_app_info_get_generic_name(info);
     weight += _get_weight(gname, key, _pred, GENERIC_NAME_WEIGHT);
@@ -370,9 +373,10 @@ double launcher_weight(GDesktopAppInfo* info, const char* key)
     const char* categories = g_desktop_app_info_get_categories(info);
     if (categories) {
         gchar** category_names = g_strsplit(categories, ";", -1);
-        gsize len = g_strv_length(category_names) - 1;
-        for (gsize i = 0; i < len; ++i) {
-            weight += _get_weight(category_names[i], key, _pred, CATEGORY_WEIGHT);
+        for (gsize i = 0; category_names[i] != NULL; ++i) {
+            if (category_names[i][0] != '\0') {
+                weight += _get_weight(category_names[i], key, _pred, CATEGORY_WEIGHT);
+            }
         }
         g_strfreev(category_names);
     }
