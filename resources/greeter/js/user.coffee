@@ -35,6 +35,7 @@ class User extends Widget
     userimage = null
     userinfo = null
     userinfo_all = []
+    userinfo_show_index = 0
         
     users_path = []
     users_name = []
@@ -173,6 +174,8 @@ class User extends Widget
             user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
+        userinfo_show_index =_current_user.index
+        @prev_next_userinfo_create()
         return userinfo_all
 
     sort_current_user_info_center:->
@@ -219,13 +222,37 @@ class User extends Widget
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "up_normal.png",
             img_src_before + "up_hover.png",
-            img_src_before + "up_press.png"
+            img_src_before + "up_press.png",
+            @switchtoprev_userinfo
         )
         @normal_hover_click_cb(@nextuserinfo_img,
             img_src_before + "down_normal.png",
             img_src_before + "down_hover.png",
-            img_src_before + "down_press.png"
+            img_src_before + "down_press.png",
+            @switchtonext_userinfo
         )
+
+    switchtoprev_userinfo:=>
+        echo "switchtoprev_userinfo"
+        for user in userinfo_all
+            if user.element.style.display is "block"
+                user.only_show_name(true)
+        userinfo_show_index = @check_index(userinfo_show_index++)
+        for user in userinfo_all
+            if user.index == userinfo_show_index
+                user.only_show_name(false)
+
+
+    switchtonext_userinfo:=>
+        echo "switchtonext_userinfo"
+        for user in userinfo_all
+            if user.element.style.display is "block"
+                user.only_show_name(true)
+        userinfo_show_index = @check_index(userinfo_show_index--)
+        for user in userinfo_all
+            if user.index == userinfo_show_index
+                user.only_show_name(false)
+
 
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
