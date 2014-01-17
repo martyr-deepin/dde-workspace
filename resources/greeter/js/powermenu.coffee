@@ -67,6 +67,8 @@ class PowerMenu extends Widget
             else if key == "shutdown"
                 echo "shutdown"
                 #title = _("shutdown")
+        power_menu.frame_build()
+        document.body.appendChild(power_menu.element)
 
         power_menu.current_img.src = img_before + "shutdown_normal.png"
         parent.appendChild(power_menu.element) if parent
@@ -82,3 +84,8 @@ class PowerMenu extends Widget
         power_menu.menu.element.addEventListener("mouseover",=>
             power_menu.current_img.src = img_before + "shutdown.png"
         )
+        
+        document.body.addEventListener("keydown",(e)->
+            if power_menu then power_menu.menu.keydown(e.which)
+        )
+
