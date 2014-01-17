@@ -25,6 +25,7 @@
 #include <gio/gio.h>
 #include <gio/gdesktopappinfo.h>
 
+#include "i18n.h"
 #include "dentry/entry.h"
 #include "jsextension.h"
 #include "utils.h"
@@ -177,14 +178,25 @@ gboolean _update_items(gpointer user_data)
     int i = 0;
     json_array_insert(categories, i++,
                       jsvalue_from_number(get_global_context(), ALL_CATEGORY_ID));
+    const char* names[] = {
+        INTERNET, MULTIMEDIA, GAMES, GRAPHICS, PRODUCTIVITY,
+        INDUSTRY, EDUCATION, DEVELOPMENT, SYSTEM, UTILITIES,
+        OTHER
+    };
     for (GList* iter = g_list_first(info->categories); iter != NULL;
          iter = g_list_next(iter)) {
-        double category_index = GPOINTER_TO_INT(iter->data);
-        json_array_insert(categories, i++,
-                          jsvalue_from_number(get_global_context(), category_index));
+        int category_index = GPOINTER_TO_INT(iter->data);
+        JSObjectRef category = json_create();
+        if (category_index == OTHER_CATEGORY_ID) {
+            json_append_string(category, "name", _(names[10]));
+        } else {
+            json_append_string(category, "name", _(names[category_index]));
+        }
+        json_append_number(category, "id", (double)category_index);
+        json_array_insert(categories, i++, categories);
     }
-    json_append_value(update_info, "categories", categories);
 
+    json_append_value(update_info, "categories", categories);
     js_post_message("update_items", update_info);
 
     return G_SOURCE_REMOVE;

@@ -1,5 +1,5 @@
 #Copyright (c) 2011 ~  Deepin, Inc.
-#              2013 ~ Lee Liqiang
+#              2013 ~  Lee Liqiang
 #
 #Author:      Lee Liqiang <liliqiang@linuxdeepin.com>
 #Maintainer:  Lee Liqiang <liliqiang@linuxdeepin.com>
@@ -19,46 +19,33 @@
 
 
 class CategoryItem
-    constructor:->
+    constructor: (@id, name)->
+        @element = create_element('div', 'category_name', null)
+        @element.setAttribute('id', @id)
+        @element.innerText = name
+
+        @info = DCore.Launcher.get_items_by_category(@id)
+        @sort()
 
     show:->
+        @element.style.display = "block"
 
     hide:->
+        @element.style.display = "none"
 
-    select: ->
+    focus: ->
+        @element.classList.add("category_selected")
+        # TODO
+        # grid.load(@selected_id)
 
-    unselect: ->
+    blur: ->
+        @element.classList.remove("category_selected")
+        # TODO
+        # grid.load(@selected_id)
 
-
-class CategoryInfo
-    constructor:->
-        # key: category id
-        # value: a list of item id.
-        @category_infos = {}
-
-        if (_sort_method = DCore.Launcher.sort_method())?
-            sort_method = _sort_method
-        else
-            DCore.Launcher.save_config('sort_method', sort_method)
-
-        frag = document.createDocumentFragment()
-        for info in DCore.Launcher.get_categories()
-            c = _create_category(info)
-            frag.appendChild(c)
-            _load_category_infos(info.ID, sort_methods[sort_method])
-
-        _category.appendChild(frag)
-
-        category_column_adaptive_height()
-
-
-    load: ->
-
-    sort: (id=null)->
-        if id
-            ""
-        else
-            ""
+    sort: ->
+        # echo "#{config.sort_method}"
+        SORT_METHOD[config.sort_method](@info)
 
 
 class CategoryBar
@@ -71,130 +58,118 @@ class CategoryBar
             e.stopPropagation()
         )
 
-        @category_infos = new CategoryInfo()
+        @category.addEventListener("mouseover", (e)=>
+            target = e.target
+            id = parseInt(target.id)
+            if !isNaN(id)
+                @select_timer = setTimeout(=>
+                    @category_items[@selected_id].blur()
+                    @category_items[id].focus()
+                    @selected_id = id
+                )
+        )
+
+        @category.addEventListener("mouseout", (e)=>
+            target = e.target
+            if !isNaN(target.id) and @select_timer != 0
+                clearTimeout(@select_timer)
+                @select_timer = 0
+        )
+
+        @category_items = {}
+        @load()
+
+        # TODO
+        # assgin
+        # if (@is_pinned = DCore.Launcher.is_pinned())
+        #     @show()
+        #     @pin()
+        # else
+        #     # those are not needed.
+        #     @unpin()
+        #     @hide()
+        # set animation effect
+
+        @update_scroll_bar()
 
     load: ->
+        frag = document.createDocumentFragment()
+        for info in DCore.Launcher.get_categories()
+            id = parseInt(info.ID)
+            @category_items[id] = new CategoryItem(id, info.Name)
+            frag.appendChild(@category_items[id].element)
+        @category.appendChild(frag)
+        @
 
-    addItem: (id)->
+    addItem: (id, name)->
+        id = parsetInt(id, 10)
+        if @category_items[id]?
+            echo "category ##{id}# is existed"
+            return @
+
+        indicator = @category.lastChild
+        for own _id, item of @category_items
+            if _id != CATEGORY_ID.ALL and _id != CATEGORY_ID.OTHER and _id == id
+                indicator = item.element
+        @category_items[id] = new CategoryItem(id, name)
+        @category.insertBefore(@category_items[id].element, indicator)
+        @
 
     removeItem: (id)->
+        if not @category_items[id]?
+            echo "category ##{id} doesn't exist"
+            return @
+
+        @category_items[id].hide()
+        target = @category_items[id].element
+        target.parentNode.removeChild(target)
+        @
 
     hide_empty_category:->
+        for own id, item of @category_items
+            all_is_hidden = item.info.every((el) ->
+                applications[el].display_mode == "hidden"
+            )
+            if all_is_hidden and not Item.display_temp
+                item.hide()
+                if @selected_id == id
+                    @selected_id = CATEGORY_ID.ALL
+                grid_load_category(@selected_id)
+        @
 
     show_nonempty_category:->
+        for own id, item of @category_items
+            not_all_is_hidden = item.some((el) ->
+                applications[el].display_mode != "hidden"
+            )
+            if not_all_is_hidden or Item.display_temp
+                item.show()
+        @
 
     show: ->
+        @
 
     hide: ->
+        @
 
     pin: =>
+        if not @is_pinned
+            DCore.Launcher.pin(true)
+            @is_pinned = true
+        @
 
     unpin: =>
+        if @is_pinned
+            DCore.Launcher.pin(false)
+            @is_pinned = false
+        @
 
     update_scroll_bar: ->
-
-
-_category = $("#category")
-
-_select_category_timeout_id = 0
-selected_category_id = ALL_APPLICATION_CATEGORY_ID
-_create_category = (info) ->
-    el = document.createElement('div')
-
-    el.setAttribute('class', 'category_name')
-    el.setAttribute('cat_id', info.ID)
-    el.setAttribute('id', info.ID)
-    el.innerText = info.Name
-
-    el.addEventListener('click', (e) ->
-        e.stopPropagation()
-    )
-    el.addEventListener('mouseover', (e)->
-        e.stopPropagation()
-        if info.ID != selected_category_id
-            s_box.value = "" if s_box.value != ""
-            _select_category_timeout_id = setTimeout(
-                ->
-                    grid_load_category(info.ID)
-                    selected_category_id = info.ID
-                , 25)
-    )
-    el.addEventListener('mouseout', (e)->
-        if _select_category_timeout_id != 0
-            clearTimeout(_select_category_timeout_id)
-    )
-    return el
-
-
-category_column_adaptive_height = ->
-    warp = _category.parentNode
-    # add 20px for margin
-    categories_height = _category.children.length * (_category.lastElementChild.clientHeight + 20)
-    warp_height = window.screen.height - 100
-    if categories_height > warp_height
-        warp.style.overflowY = "scroll"
-        warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
-
-# key: category id
-# value: a list of Item's id which is in category
-category_infos = []
-_load_category_infos = (cat_id, sort_func)->
-    if cat_id == ALL_APPLICATION_CATEGORY_ID
-        frag = document.createDocumentFragment()
-        category_infos[cat_id] = []
-        for own key, value of applications
-            frag.appendChild(value.element)
-            category_infos[cat_id].push(key)
-        grid.appendChild(frag)
-    else
-        info = DCore.Launcher.get_items_by_category(cat_id)
-        category_infos[cat_id] = info
-
-    sort_func(category_infos[cat_id])
-
-hide_category = ->
-    for own i of category_infos
-        all_is_hidden = category_infos["#{i}"].every((el, idx, arr) ->
-            applications[el].display_mode == "hidden"
-        )
-        if all_is_hidden and not Item.display_temp
-            $("##{i}").style.display = "none"
-            # i is a string, selected_category_id is a number
-            # "==" in coffee is "===" in js
-            if "" + selected_category_id == i
-                selected_category_id = ALL_APPLICATION_CATEGORY_ID
-            grid_load_category(selected_category_id)
-
-
-show_category = ->
-    for own i of category_infos
-        not_all_is_hidden = category_infos["#{i}"].some((el, idx, arr) ->
-            applications[el].display_mode != "hidden"
-        )
-        if not_all_is_hidden or Item.display_temp
-            $("##{i}").style.display = "block"
-
-sort_category_info = (sort_func)->
-    sort_func(category_infos[ALL_APPLICATION_CATEGORY_ID], true)
-    for own i of category_infos
-        if i != "" + ALL_APPLICATION_CATEGORY_ID
-            sort_func(category_infos[i])
-    return
-
-sort_method = "name"
-init_category_list = ->
-    if (_sort_method = DCore.Launcher.sort_method())?
-        sort_method = _sort_method
-    else
-        DCore.Launcher.save_config('sort_method', sort_method)
-
-    frag = document.createDocumentFragment()
-    for info in DCore.Launcher.get_categories()
-        c = _create_category(info)
-        frag.appendChild(c)
-        _load_category_infos(info.ID, sort_methods[sort_method])
-
-    _category.appendChild(frag)
-
-    category_column_adaptive_height()
-
+        warp = @category.parentNode
+        # add 20px for margin
+        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 20)
+        warp_height = window.screen.height - 100  # height of search bar
+        if categories_height > warp_height
+            warp.style.overflowY = "scroll"
+            warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
+        @

@@ -115,5 +115,15 @@ DCore.signal_connect("autostart_update", (info)->
 )
 
 
+DCore.signal_connect("pin_status_changed", (info)->
+    if info.is_pin
+        category_bar.show()
+        category_bar.pin()
+    else
+        category_bar.unpin()
+        category_bar.hide()
+)
+
+
 DCore.Launcher.notify_workarea_size()
 

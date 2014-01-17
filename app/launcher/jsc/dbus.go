@@ -2,20 +2,25 @@ package main
 import . "make_dbus"
 
 func main() {
-    DBusInstall(
-        "setup_launcher_dbus_service",
-        SessionDBUS("com.deepin.dde.launcher"),
-        Method("Show", Callback("launcher_show")),
-        Method("Hide", Callback("launcher_hide")),
-        Method("Toggle", Callback("launcher_toggle")),
-        Method("Exit", Callback("launcher_quit")),
-    )
-    DBusCall(
-        SessionDBUS("com.deepin.dde.launcher"),
-        FLAGS_NONE,
-        Method("dbus_launcher_show", Callback("Show")),
-        Method("dbus_launcher_hide", Callback("Hide")),
-        Method("dbus_launcher_toggle", Callback("Toggle")),
-    )
-    OUTPUT_END()
+	DBusInstall(
+		"setup_launcher_dbus_service",
+		SessionDBUS("com.deepin.dde.launcher"),
+		Method("Show", Callback("launcher_show")),
+		Method("Hide", Callback("launcher_hide")),
+		Method("Toggle", Callback("launcher_toggle")),
+		Method("Exit", Callback("launcher_quit")),
+		Method("IsPinned", Callback("launcher_is_pinned"), Ret("is_pinned:gboolean")),
+		Method("Pin", Callback("launcher_pin"), Ret("success:gboolean"), Arg("is_pin:gboolean")),
+		Method("GetSortMethod", Callback("launcher_get_sort_method"), Ret("method_name:gchar*")),
+		Method("SetSortMethod", Callback("launcher_set_sort_method"),
+		Ret("success:gboolean"), Arg("method_name:gchar*")),
+	)
+	DBusCall(
+		SessionDBUS("com.deepin.dde.launcher"),
+		FLAGS_NONE,
+		Method("dbus_launcher_show", Callback("Show")),
+		Method("dbus_launcher_hide", Callback("Hide")),
+		Method("dbus_launcher_toggle", Callback("Toggle")),
+	)
+	OUTPUT_END()
 }

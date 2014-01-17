@@ -332,7 +332,7 @@ bind_events = ->
 
 init_all_applications = ->
     # get all applications and sort them by name
-    _all_items = DCore.Launcher.get_items_by_category(ALL_APPLICATION_CATEGORY_ID)
+    _all_items = DCore.Launcher.get_items_by_category(CATEGORY_ID.ALL)
 
     for core in _all_items
         id = DCore.DEntry.get_id(core)
@@ -353,12 +353,14 @@ _init_hidden_icons = ->
                 hidden_icons[id].hide_icon()
 
 
-init_search_box()
+# init_search_box()
 init_all_applications()
-init_category_list()
-init_grid()
-_init_hidden_icons()
+# init_category_list()
+# init_grid()
+# _init_hidden_icons()
 bind_events()
 DCore.Launcher.webview_ok()
 DCore.Launcher.test()
 
+config = new Config()
+category_bar = new CategoryBar()

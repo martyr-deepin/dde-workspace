@@ -61,17 +61,7 @@ grid_show_items = (items) ->
 
     return  # some return like here will keep js converted by coffeescript returning stupid things
 
-_show_grid_selected = (id)->
-    cns = $s(".category_name")
-    for c in cns
-        if `id == c.getAttribute("cat_id")`
-            c.classList.add('category_selected')
-        else
-            c.classList.remove('category_selected')
-    return
-
 grid_load_category = (cat_id) ->
-    _show_grid_selected(cat_id)
     grid_show_items(category_infos[cat_id])
     update_selected(null)
 

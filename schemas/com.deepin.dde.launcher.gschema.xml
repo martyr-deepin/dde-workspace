@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <enum id="com.deepin.dde.launcher.SortMethod">
+        <value value="0" nick="rate"/>
+        <value value="1" nick="name"/>
+    </enum>
+
+    <schema path="/com/deepin/dde/launcher/" id="com.deepin.dde.launcher">
+        <key name="pin" type="b">
+            <default>false</default>
+            <summary>pin or unpin the category bar of launcher.</summary>
+            <description>The category bar of launcher can be hidden, if you want it to be shown, pin it.</description>
+        </key>
+
+        <key name="sort-method" enum="com.deepin.dde.launcher.SortMethod">
+            <default>"rate"</default>
+            <summary>The method to sort items on launcher.</summary>
+            <description>The items on launcher can be sorted by 'name' or by 'rate'.</description>
+        </key>
+    </schema>
+</schemalist>
+

@@ -20,7 +20,14 @@
 
 class Config
     constructor: ->
-
-    load: ->
+        @dbus = DCore.DBus.session("com.deepin.dde.launcher")
+        for own k of @dbus
+            if (match = k.match(/(.*)_sync/))
+                echo m = match[1]
+                @[m] = ->
+                    @dbus[match[0]](arguments)
+                # echo k
+        @config = @dbus.IsPinned()
+        @sort_method = @dbus.GetSortMethod() || DCore.Launcher.sort_method() || DEFAULT_SORT_METHOD
 
     save: ->

@@ -11,6 +11,10 @@
         <value value="1" nick="slower"/>
         <value value="2" nick="no"/>
       </enum>
+      <enum id="com.deepin.dde.dock.ClockType">
+        <value value="0" nick="digit" />
+        <value value="1" nick="analog" />
+      </enum>
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
         <key name="preview-mode" enum="com.deepin.dde.dock.PreviewMode">
@@ -33,6 +37,11 @@
             <default>0xbcbcbc32</default>
             <summary>dock color</summary>
             <description>The dock board color value contain in an guint32 with format RGBA.</description>
+        </key>
+        <key enum="com.deepin.dde.dock.ClockType" name="clock-type">
+            <default>'digit'</default>
+            <summary>change the clock view.</summary>
+            <description>The dock clock plugin has two types of view, one is digit, the other is analog.</description>
         </key>
     </schema>
 </schemalist>

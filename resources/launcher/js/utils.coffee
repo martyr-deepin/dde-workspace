@@ -75,10 +75,9 @@ sort_by_rate = do ->
         )
 
 
-sort_methods =
-    "name": sort_by_name
-    "rate": sort_by_rate
-
+SORT_METHOD =
+    name: sort_by_name
+    rate: sort_by_rate
 
 exit_launcher = ->
     DCore.Launcher.exit_gui()
