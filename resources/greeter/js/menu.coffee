@@ -116,7 +116,7 @@ class ComboBox extends Widget
         echo "-------------de_current_id:#{de_current_id}"
         if not de_current_id?
             echo "not de_current_id"
-            de_current_id = DCore.Greeter.get_default_session()
+            de_current_id = DCore.Greeter.get_default_session() if is_greeter
             if de_current_id is null then de_current_id = "deepin"
             localStorage.setItem("de_current_id",de_current_id)
         @menu = new Menu(de_current_id)

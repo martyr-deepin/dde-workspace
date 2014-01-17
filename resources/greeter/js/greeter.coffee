@@ -53,9 +53,7 @@ class Greeter extends Widget
             else if e.which == DOWN_ARROW
                 # echo "next"
                 _current_user?.animate_prev()
-
         )
-
 
 
 document.body.style.height = window.innerHeight
@@ -69,8 +67,9 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
+#user.is_support_guest()
 user.new_userinfo_for_greeter()
-user.roundabout_animation()
+#user.roundabout_animation()
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
