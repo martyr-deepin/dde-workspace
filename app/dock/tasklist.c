@@ -747,7 +747,7 @@ void _update_window_appid(Client* c)
     s_pid = get_window_property(_dsp, c->window, ATOM_WINDOW_PID, &item);
 
     if (s_pid != NULL) {
-        g_debug("[%s:%s] s_pid is %ld", __FILE__, __func__, s_pid);
+        g_debug("[%s:%s] s_pid is %ld", __FILE__, __func__, *s_pid);
         char* exec_name = NULL;
         char* exec_args = NULL;
         get_pid_info(*s_pid, &exec_name, &exec_args);
