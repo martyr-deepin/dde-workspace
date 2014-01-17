@@ -14,12 +14,13 @@
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:400px;
-    height:60px;
+    width:60px;
+    /*height:100px;*/
     
-    position:absolute;
+    position:relative;
     z-index:10;
-    top:50px;
+    bottom:170px;
+    right:180px;
 }
 .prevuserinfo_img{
     margin-left:80px;
@@ -53,12 +54,13 @@
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:400px;
-    height:60px;
+    width:60px;
+    /*height:100px;*/
     
-    position:absolute;
+    position:relative;
     z-index:10;
-    bottom:45px;
+    bottom:230px;
+    right:-20px;
 }
 .nextuserinfo_img{
     margin-left:80px;
