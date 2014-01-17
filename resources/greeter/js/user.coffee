@@ -237,7 +237,8 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-        userinfo_show_index = @check_index(userinfo_show_index++)
+        userinfo_show_index = @check_index(userinfo_show_index + 1)
+        echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
@@ -248,7 +249,8 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-        userinfo_show_index = @check_index(userinfo_show_index--)
+        userinfo_show_index = @check_index(userinfo_show_index - 1)
+        echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
