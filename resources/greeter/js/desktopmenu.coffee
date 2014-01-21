@@ -53,7 +53,7 @@ class DesktopMenu extends Widget
         
         current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
         echo "current_session_icon_name:#{current_session_icon_name}"
-        de_menu.current_img.src = img_before + "#{current_session_icon_name}_normal.png"
+        de_menu.current_img.src = img_before + "#{current_session_icon_name}_hover.png"
         de_menu.current_img.title = current_session_icon_name
         
         de_menu.current_img.addEventListener("mouseover",=>
@@ -64,15 +64,16 @@ class DesktopMenu extends Widget
         de_menu.current_img.addEventListener("mouseout",=>
             current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
             echo "current_session_icon_name:#{current_session_icon_name}"
-            de_menu.current_img.src = img_before + "#{current_session_icon_name}_normal.png"
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}_hover.png"
         )
         de_menu.current_img.addEventListener("click", (e) =>
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}_hover.png"
             #de_menu_cb(default_session,default_name)
         )
         de_menu.menu.element.addEventListener("mouseover",=>
             current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
             echo "current_session_icon_name:#{current_session_icon_name}"
-            de_menu.current_img.src = img_before + "#{current_session_icon_name}.png"
+            de_menu.current_img.src = img_before + "#{current_session_icon_name}_hover.png"
         )
         
         document.body.addEventListener("keydown",(e)->

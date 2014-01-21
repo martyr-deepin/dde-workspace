@@ -87,6 +87,7 @@ class MenuChoose extends Widget
             opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
+                echo img_url_hover[i]
                 opt_img[i].src = img_url_hover[i]
                 that.hover_state(i)
             )
