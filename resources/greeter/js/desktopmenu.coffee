@@ -42,9 +42,11 @@ class DesktopMenu extends Widget
             name = id
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = img_before + "#{icon}.png"
+            icon_path_normal = img_before + "#{icon}_normal.png"
+            icon_path_hover = img_before + "#{icon}_hover.png"
+            icon_path_click = img_before + "#{icon}_hover.png"
             #if session isnt default_session
-            de_menu.insert(id, name, icon_path)
+            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_click)
         de_menu.frame_build()
         document.body.appendChild(de_menu.element)
         

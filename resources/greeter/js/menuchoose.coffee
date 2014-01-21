@@ -21,7 +21,6 @@
 
 class MenuChoose extends Widget
     opt = []
-    img_url = []
     opt_img = []
     opt_text = []
     choose_num = -1
@@ -29,7 +28,9 @@ class MenuChoose extends Widget
    
     option = []
     option_text = []
-    img_url = []
+    img_url_normal = []
+    img_url_hover = []
+    img_url_click = []
     frame_click = true
 
     constructor: (@id)->
@@ -51,10 +52,12 @@ class MenuChoose extends Widget
     hide:->
         @element.style.display = "none"
 
-    insert: (id, title, img)->
+    insert: (id, title, img_normal,img_hover,img_click)->
         option.push(id)
         option_text.push(title)
-        img_url.push(img)
+        img_url_normal.push(img_normal)
+        img_url_hover.push(img_hover)
+        img_url_click.push(img_click)
     
     frame_build:(id,title,img)->
         frame = create_element("div", "frame", @element)
@@ -74,7 +77,7 @@ class MenuChoose extends Widget
             opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             opt[i].value = i
-            opt_img[i] = create_img("opt_img",img_url[i],opt[i])
+            opt_img[i] = create_img("opt_img",img_url_normal[i],opt[i])
             opt_text[i] = create_element("div","opt_text",opt[i])
             opt_text[i].textContent = option_text[i]
 
@@ -89,18 +92,18 @@ class MenuChoose extends Widget
             #normal
             opt[i].addEventListener("mouseout",->
                 i = this.value
-                opt_img[i].src = "img/normal/#{option[i]}.png"
+                opt_img[i].src = img_url_normal[i]
             )
 
             #click
             opt[i].addEventListener("mousedown",->
                 i = this.value
-                opt_img[i].src = "img/click/#{option[i]}.png"
+                opt_img[i].src = img_url_click[i]
             )
             opt[i].addEventListener("click",->
                 i = this.value
                 frame_click = true
-                opt_img[i].src = "img/click/#{option[i]}.png"
+                opt_img[i].src = img_url_click[i]
                 that.fade(i)
                 @cb(option[i], option_text[i])
             )
@@ -141,8 +144,8 @@ class MenuChoose extends Widget
         choose_num = i
         if select_state_confirm then @select_state(i)
         for tmp,j in opt_img
-            if j == i then tmp.src = "img/hover/#{option[i]}.png"
-            else tmp.src = "img/normal/#{option[j]}.png"
+            if j == i then tmp.src = img_url_hover[i]
+            else tmp.src = img_url_normal[i]
    
     select_state:(i)->
         select_state_confirm = true
