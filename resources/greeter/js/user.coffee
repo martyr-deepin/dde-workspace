@@ -464,15 +464,6 @@ class UserInfo extends Widget
 
 
 
-class Loading extends Widget
-    constructor: (@id)->
-        super
-        create_element("div", "ball", @element)
-        create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome")
-
-
-
 DCore.signal_connect("draw", ->
     echo 'receive camera draw signal'
     clearInterval(draw_camera_id)
