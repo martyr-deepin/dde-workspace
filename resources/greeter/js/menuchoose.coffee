@@ -39,8 +39,9 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
 
-    destory:->
-        document.body.removeChild(@element)
+    destory:=>
+        that = @
+        document.body.removeChild(that.element)
     
     show:(x,y)->
         document.body.appendChild(@element)
@@ -66,11 +67,11 @@ class MenuChoose extends Widget
         frame.addEventListener("click",->
             frame_click = true
         )
-#        document.body.addEventListener("click",=>
-            #if !frame_click
-                #@destory()
-            #frame_click = false
-        #)
+        document.body.addEventListener("click",=>
+            if !frame_click
+                @destory()
+            frame_click = false
+        )
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
@@ -86,6 +87,7 @@ class MenuChoose extends Widget
             opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
+                opt_img[i].src = img_url_hover[i]
                 that.hover_state(i)
             )
             
@@ -143,6 +145,7 @@ class MenuChoose extends Widget
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
+        echo img_url_hover
         for tmp,j in opt_img
             if j == i then tmp.src = img_url_hover[i]
             else tmp.src = img_url_normal[i]
@@ -165,16 +168,15 @@ class MenuChoose extends Widget
         switch keyCode
             when LEFT_ARROW
                 choose_num--
-                if choose_num == -1 then choose_num = 4
+                if choose_num == -1 then choose_num = 2
                 @select_state(choose_num)
             when RIGHT_ARROW
                 choose_num++
-                if choose_num == 5 then choose_num = 0
+                if choose_num == 3 then choose_num = 0
                 @select_state(choose_num)
             when ENTER_KEY
                 i = choose_num
-                if 2 <= i <= 4 then @fade(i)
-                else if 0 <= i <= 1 then confirm_ok(option[i])
+                @fade(i)
             when ESC_KEY
                 destory_all()
 
