@@ -64,20 +64,20 @@ class PowerMenu extends Widget
         power_menu.frame_build()
         document.body.appendChild(power_menu.element)
 
-        power_menu.current_img.src = img_before + "shutdown_hover.png"
+        power_menu.current_img.src = img_before + "powermenu_hover.png"
         parent.appendChild(power_menu.element) if parent
         power_menu.current_img.addEventListener("mouseover",=>
-            power_menu.current_img.src = img_before + "shutdown_hover.png"
+            power_menu.current_img.src = img_before + "powermenu_hover.png"
         )
         power_menu.current_img.addEventListener("mouseout",=>
-            power_menu.current_img.src = img_before + "shutdown_hover.png"
+            power_menu.current_img.src = img_before + "powermenu_hover.png"
         )
         power_menu.current_img.addEventListener("click", (e) =>
-            power_menu.current_img.src = img_before + "shutdown_click.png"
+            power_menu.current_img.src = img_before + "powermenu_click.png"
             #power_dict["shutdown"]()
         )
         power_menu.menu.element.addEventListener("mouseover",=>
-            power_menu.current_img.src = img_before + "shutdown.png"
+            power_menu.current_img.src = img_before + "powermenu_hover.png"
         )
         
         document.body.addEventListener("keydown",(e)->
