@@ -73,7 +73,8 @@ class PowerMenu extends Widget
             power_menu.current_img.src = img_before + "shutdown_normal.png"
         )
         power_menu.current_img.addEventListener("click", (e) =>
-            power_dict["shutdown"]()
+            power_menu.current_img.src = img_before + "shutdown_click.png"
+            #power_dict["shutdown"]()
         )
         power_menu.menu.element.addEventListener("mouseover",=>
             power_menu.current_img.src = img_before + "shutdown.png"
