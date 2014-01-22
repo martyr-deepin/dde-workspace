@@ -340,7 +340,7 @@ class UserInfo extends Widget
         userimg_background = create_element("div","userimg_background",userimg_border)
         userimg = create_img("userimg", @img_src, userimg_background)
        
-        @username = create_element("label", "username", @userbase)
+        @username = create_element("div", "username", @userbase)
         @username.innerText = name
 
         @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
