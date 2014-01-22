@@ -216,19 +216,19 @@ class User extends Widget
 
     prev_next_userinfo_create:->
         prevuserinfo = create_element("div","prevuserinfo",@element)
-        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",prevuserinfo)
         nextuserinfo = create_element("div","nextuserinfo",@element)
-        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",nextuserinfo)
         @normal_hover_click_cb(@prevuserinfo_img,
-            img_src_before + "up_normal.png",
-            img_src_before + "up_hover.png",
-            img_src_before + "up_press.png",
+            img_src_before + "left_normal.png",
+            img_src_before + "left_hover.png",
+            img_src_before + "left_press.png",
             @switchtoprev_userinfo
         )
         @normal_hover_click_cb(@nextuserinfo_img,
-            img_src_before + "down_normal.png",
-            img_src_before + "down_hover.png",
-            img_src_before + "down_press.png",
+            img_src_before + "right_normal.png",
+            img_src_before + "right_hover.png",
+            img_src_before + "right_press.png",
             @switchtonext_userinfo
         )
 
