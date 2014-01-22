@@ -384,7 +384,7 @@ class UserInfo extends Widget
         if @id != "guest"
             if is_greeter
                 @session = DCore.Greeter.get_user_session(@id)
-                echo "----------Greeter.get_user_sessiobn(#{@id}):---#{@session}---------------------"
+                echo "----------Greeter.get_user_session(#{@id}):---#{@session}---------------------"
                 sessions = DCore.Greeter.get_sessions()
                 if @session? and @session in sessions
                     de_menu.set_current(@session)

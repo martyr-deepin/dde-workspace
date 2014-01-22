@@ -41,7 +41,7 @@ class MenuChoose extends Widget
 
     destory:=>
         that = @
-        document.body.removeChild(that.element)
+        that.element.style.display = "none"
     
     show:(x,y)->
         document.body.appendChild(@element)
@@ -69,7 +69,7 @@ class MenuChoose extends Widget
         )
         document.body.addEventListener("click",=>
             if !frame_click
-                @destory()
+                @hide()
             frame_click = false
         )
         
@@ -197,8 +197,8 @@ class ComboBox extends Widget
         @menu = new MenuChoose(de_current_id)
         @menu.set_callback(@on_click_cb)
 
-    insert: (id, title, img)->
-        @menu.insert(id, title, img)
+    insert: (id, title, img_normal,img_hover,img_click)->
+        @menu.insert(id, title, img_normal,img_hover,img_click)
     
     frame_build:->
         @menu.frame_build()
@@ -222,23 +222,19 @@ class ComboBox extends Widget
     set_current: (id)->
         try
             echo "set_current(id) :---------#{id}----------------"
-            localStorage.setItem("de_current_id",id)
-            @menu.current = id
-            echo "------@menu.items:---------------"
-            echo @menu.items
-            item_set = null
-            for item,i in @menu.items
-                if id == item.id
-                    item_set = item
-            echo "----item_set:-----------"
-            echo item_set
-            @current_img.src = item_set.img
-            return item_set.id
+            if @id is "desktop"
+                current_img_src = "images/desktopmenu/current/#{id}.png"
+            else if @id is "power"
+                current_img_src = "images/powermenu/#{id}.png"
+            @current_img.src = current_img_src
         catch error
             echo "set_current(#{id}) error:#{error}"
-            localStorage.setItem("de_current_id",id)
-            @menu.current = id
-            img_before = "images/desktopmenu/"
-            @current_img.src = img_before + "unknown.png"
-            return id
+            if @id is "desktop"
+                current_img_error = "images/desktopmenu/current/unkown.png"
+            else if @id is "power"
+                current_img_error = "images/powermenu/powermenu.png"
+            @current_img.src = current_img_error
+        localStorage.setItem("de_current_id",id)
+        @menu.current = id
+        return id
 
