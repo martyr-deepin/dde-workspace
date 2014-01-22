@@ -36,7 +36,7 @@
 
 #define APP_DIR "applications"
 #define DELAY_TIME 3
-#define AUTOSTART_DELAY_TIME 100
+#define AUTOSTART_DELAY_TIME 0
 
 
 static GPtrArray* desktop_monitors = NULL;
@@ -216,7 +216,6 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
     g_free(other_file_path);
 #endif
 
-    static gulong timeout_id = 0;
     char* escaped_uri = NULL;
 
     struct DesktopInfo* info = desktop_info_create();
@@ -287,19 +286,9 @@ void desktop_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other_f
     g_free(escaped_uri);
 
     if (info->status != UNKNOWN) {
-        if (timeout_id != 0) {
-            g_source_remove(timeout_id);
-            timeout_id = 0;
-        }
-
-        timeout_id = g_timeout_add_full(G_PRIORITY_DEFAULT,
-                                        AUTOSTART_DELAY_TIME,
-                                        _update_items,
-                                        info,
-                                        (GDestroyNotify)desktop_info_destroy);
-    } else {
-        desktop_info_destroy(info);
+        _update_items(info);
     }
+    desktop_info_destroy(info);
 }
 
 
@@ -339,29 +328,20 @@ void autostart_monitor_callback(GFileMonitor* monitor, GFile* file, GFile* other
     NOUSED(monitor);
     NOUSED(data);
     GFile* changed_file = file;
-    static gulong timeout_id = 0;
     switch (event_type) {
         // fall through
     case G_FILE_MONITOR_EVENT_MOVED:  // compatibility for gnome-session-properties
         changed_file = other_file;
     case G_FILE_MONITOR_EVENT_DELETED:
     case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
-        if (timeout_id != 0) {
-            g_source_remove(timeout_id);
-            timeout_id = 0;
-        }
-
         g_debug("[%s] delete or changed", __func__);
         char* uri = g_file_get_uri(changed_file);
         if (g_str_has_suffix(uri, ".desktop")) {
             char* escaped_uri = g_uri_escape_string(uri,
                                                     G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
                                                     FALSE);
-            timeout_id = g_timeout_add_full(G_PRIORITY_DEFAULT,
-                                            AUTOSTART_DELAY_TIME,
-                                            _update_autostart,
-                                            escaped_uri,
-                                            g_free);
+            _update_autostart(escaped_uri);
+            g_free(escaped_uri);
         }
         g_free(uri);
     case G_FILE_MONITOR_EVENT_CHANGED:
