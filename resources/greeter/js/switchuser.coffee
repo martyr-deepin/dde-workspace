@@ -27,7 +27,7 @@ class SwitchUser extends Widget
     
     button_switch:->
         echo "button_switch"
-        @switch = create_img("switch", "images/userswitch/acount_switch_normal.png", @element)
+        @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
         @switch.style.width = "60px"
         @switch.style.height = "60px"
@@ -35,7 +35,7 @@ class SwitchUser extends Widget
             @switch.src = "images/userswitch/acount_switch_hover.png"
         )
         @switch.addEventListener("mouseout", =>
-            @switch.src = "images/userswitch/acount_switch_normal.png"
+            @switch.src = "images/userswitch/acount_switch_hover.png"
         )
         @switch.addEventListener("click", =>
             @SwitchToGreeter()
