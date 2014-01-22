@@ -104,7 +104,7 @@ gchar* greeter_get_session_icon (const gchar *key)
 
     if (session == NULL) {
         g_warning ("get session icon:session is NULL\n");
-        icon = g_strdup ("unknown");
+        icon = g_strdup ("unkown");
 
     } else if (g_str_has_prefix (session, "gnome")){
         icon = g_strdup ("gnome");
@@ -129,7 +129,7 @@ gchar* greeter_get_session_icon (const gchar *key)
         icon = g_strdup ("fluxbox");
 
     } else {
-        icon = g_strdup ("unknown");
+        icon = g_strdup ("unkown");
     }
 
     g_free (session);
