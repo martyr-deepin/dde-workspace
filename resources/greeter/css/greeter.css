@@ -45,15 +45,17 @@ body{
 
 
 .div_desktop{
-    /*background-color:rgba(125,0,120,0.2);*/
+    /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:40px;
-    right:120px;
+    right:110px;
     width:60px;
+    /*height:60px;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
+
 }
 
 .div_power {

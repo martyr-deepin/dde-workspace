@@ -18,25 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  **/
-
-body{
-    cursor:default;
-    overflow:hidden;
-    
-    background-image: url(/usr/share/backgrounds/default_background.jpg);
-    
-    background-origin:padding-box;
-    background-clip:border-box;
-    background-position:center;
-    background-size:cover;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
-}
-
 .ComboBox {
     /*background-color:rgba(125,0,120,0.2);*/
     cursor:pointer;
     width:60px;
+    height:60px;
 }
 
 .current_img{
