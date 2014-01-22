@@ -337,7 +337,8 @@ class UserInfo extends Widget
         
         @userimg_div = create_element("div","userimg_div",@userbase)
         userimg_border = create_element("div","userimg_border",@userimg_div)
-        userimg = create_img("userimg", @img_src, userimg_border)
+        userimg_background = create_element("div","userimg_background",userimg_border)
+        userimg = create_img("userimg", @img_src, userimg_background)
        
         @username = create_element("label", "username", @userbase)
         @username.innerText = name

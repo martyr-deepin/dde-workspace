@@ -102,16 +102,32 @@
 
 
 .userimg_border{
-    width:90px; 
-    height:90px; 
-    border:rgba(255,255,246,0.9) 4px solid;
+    width:116px; 
+    height:116px; 
     border-radius:50%; 
     overflow:hidden;
-    box-shadow: 0 4px 2px rgba(0, 0, 0, 0.2);
+    border:rgba(0,0,0,0.3) 3px solid;
+
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
 }
+
+.userimg_background{
+    width:116px; 
+    height:116px; 
+    background-color:white;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+}
+
 .userimg {
-    width:90px; 
-    height:90px; 
+    border-radius:50%; 
+    overflow:hidden;
+    width:110px; 
+    height:110px; 
 }
 
 .username {
