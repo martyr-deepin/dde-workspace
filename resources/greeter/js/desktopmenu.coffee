@@ -42,16 +42,20 @@ class DesktopMenu extends Widget
             name = id
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = img_before + "#{icon}.png"
+            icon_path_normal = img_before + "#{icon}_normal.png"
+            icon_path_hover = img_before + "#{icon}_hover.png"
+            icon_path_click = img_before + "#{icon}_hover.png"
             #if session isnt default_session
-            de_menu.insert(id, name, icon_path)
-        parent.appendChild(de_menu.element) if parent
+            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_click)
+        de_menu.frame_build()
+        document.body.appendChild(de_menu.element)
         
         
         current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
         echo "current_session_icon_name:#{current_session_icon_name}"
         de_menu.current_img.src = img_before + "#{current_session_icon_name}_normal.png"
-
+        de_menu.current_img.title = current_session_icon_name
+        
         de_menu.current_img.addEventListener("mouseover",=>
             current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
             echo "current_session_icon_name:#{current_session_icon_name}"
@@ -69,4 +73,8 @@ class DesktopMenu extends Widget
             current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
             echo "current_session_icon_name:#{current_session_icon_name}"
             de_menu.current_img.src = img_before + "#{current_session_icon_name}.png"
+        )
+        
+        document.body.addEventListener("keydown",(e)->
+            if de_menu then de_menu.menu.keydown(e.which)
         )

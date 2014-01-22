@@ -242,6 +242,7 @@ class User extends Widget
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
+                user.animate_prev()
 
 
     switchtonext_userinfo:=>
@@ -254,6 +255,7 @@ class User extends Widget
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
+                user.animate_next()
 
 
 class LoginEntry extends Widget
@@ -438,7 +440,6 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        #jQuery("#user_ul").roundabout("animateToPreviousChild")
 
     animate_next: ->
         if @face_login
@@ -447,15 +448,12 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        #jQuery("#user_ul").roundabout("animateToNextChild")
-
     animate_near: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
 
         if @is_recognizing
             return
-        #jQuery("#user_ul").roundabout("animateToNearestChild")
 
     draw_camera: ->
         if @face_login
@@ -463,15 +461,6 @@ class UserInfo extends Widget
             draw_camera_id = setInterval(=>
                 DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
-
-
-
-class Loading extends Widget
-    constructor: (@id)->
-        super
-        create_element("div", "ball", @element)
-        create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome")
 
 
 
