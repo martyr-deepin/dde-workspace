@@ -190,7 +190,7 @@ class User extends Widget
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         user = @get_default_username()
-        @set_blur_background(user)
+        #@set_blur_background(user)
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.only_show_name(false)
