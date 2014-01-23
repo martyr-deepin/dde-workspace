@@ -205,6 +205,8 @@ class MediaControl extends Widget
     voice_normal_hover_click_cb: (el) ->
         el.addEventListener("mouseover",(e)=>
             is_volume_control = true
+            voice.src = img_src_before + voice_status + "_hover.png"
+            if voicecontrol.element.style.display isnt "none" then return
             p = e.srcElement
             x = p.x + voice.clientWidth
             y = p.y + 11
@@ -214,6 +216,7 @@ class MediaControl extends Widget
         )
         el.addEventListener("mouseout",->
             is_volume_control = false
+            voice.src = img_src_before + voice_status + "_normal.png"
             voicecontrol.hide()
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
