@@ -68,7 +68,8 @@ class MenuChoose extends Widget
             e.stopPropagation()
             frame_click = true
         )
-        document.body.addEventListener("click",=>
+        document.body.addEventListener("click",(e)=>
+            e.stopPropagation()
             if !frame_click
                 @hide()
             else
@@ -104,7 +105,8 @@ class MenuChoose extends Widget
                 i = this.value
                 opt_img[i].src = img_url_click[i]
             )
-            opt[i].addEventListener("click",->
+            opt[i].addEventListener("click",(e)->
+                e.stopPropagation()
                 i = this.value
                 echo "i:#{i}"
                 frame_click = true
@@ -136,6 +138,7 @@ class MenuChoose extends Widget
 
     fade:(i)->
         echo "--------------fade:#{option[i]}---------------"
+        @hide()
         #@cb(option[i], option_text[i])
 #        if is_greeter
             #echo "is greeter"
