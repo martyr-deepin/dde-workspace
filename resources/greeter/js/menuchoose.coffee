@@ -158,7 +158,7 @@ class MenuChoose extends Widget
         if select_state_confirm then @select_state(i)
         for tmp,j in opt_img
             if j == i then tmp.src = img_url_hover[i]
-            else tmp.src = img_url_normal[i]
+            else tmp.src = img_url_normal[j]
    
     select_state:(i)->
         select_state_confirm = true
