@@ -67,11 +67,11 @@ class MenuChoose extends Widget
         frame.addEventListener("click",->
             frame_click = true
         )
-        document.body.addEventListener("click",=>
-            if !frame_click
-                @hide()
-            frame_click = false
-        )
+#        document.body.addEventListener("click",=>
+            #if !frame_click
+                #@hide()
+            #frame_click = false
+        #)
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
@@ -105,10 +105,12 @@ class MenuChoose extends Widget
             )
             opt[i].addEventListener("click",->
                 i = this.value
+                echo "i:#{i}"
                 frame_click = true
                 opt_img[i].src = img_url_click[i]
-                that.fade(i)
-                @cb(option[i], option_text[i])
+                #that.fade(i)
+                that.current = option[i]
+                that.cb(option[i], option_text[i])
             )
     
     set_callback: (@cb)->
@@ -195,7 +197,7 @@ class ComboBox extends Widget
             if de_current_id is null then de_current_id = "deepin"
             localStorage.setItem("de_current_id",de_current_id)
         @menu = new MenuChoose(de_current_id)
-        @menu.set_callback(@on_click_cb)
+        @menu.set_callback(@on_clic_cb)
 
     insert: (id, title, img_normal,img_hover,img_click)->
         @menu.insert(id, title, img_normal,img_hover,img_click)
