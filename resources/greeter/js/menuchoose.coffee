@@ -64,14 +64,16 @@ class MenuChoose extends Widget
         frame = create_element("div", "frame", @element)
         button = create_element("div","button",frame)
        
-        frame.addEventListener("click",->
+        frame.addEventListener("click",(e)->
+            e.stopPropagation()
             frame_click = true
         )
-#        document.body.addEventListener("click",=>
-            #if !frame_click
-                #@hide()
-            #frame_click = false
-        #)
+        document.body.addEventListener("click",=>
+            if !frame_click
+                @hide()
+            else
+                frame_click = false
+        )
         
         for tmp ,i in option
             opt[i] = create_element("div","opt",button)
@@ -189,13 +191,16 @@ class ComboBox extends Widget
         super
         @current_img = create_img("current_img", "", @element)
         
-        de_current_id = localStorage.getItem("de_current_id")
-        echo "-------------de_current_id:#{de_current_id}"
-        if not de_current_id?
-            echo "not de_current_id"
-            de_current_id = DCore.Greeter.get_default_session() if is_greeter
-            if de_current_id is null then de_current_id = "deepin"
-            localStorage.setItem("de_current_id",de_current_id)
+        if is_greeter
+            de_current_id = localStorage.getItem("de_current_id")
+            echo "-------------de_current_id:#{de_current_id}"
+            if not de_current_id?
+                echo "not de_current_id"
+                de_current_id = DCore.Greeter.get_default_session() if is_greeter
+                if de_current_id is null then de_current_id = "deepin"
+                localStorage.setItem("de_current_id",de_current_id)
+        else
+            de_current_id = "shutdown"
         @menu = new MenuChoose(de_current_id)
         @menu.set_callback(@on_click_cb)
 
@@ -209,6 +214,7 @@ class ComboBox extends Widget
         @menu.insert_noimg(id, title)
 
     do_click: (e)->
+        e.stopPropagation()
         if @menu.element.style.display is "none"
             x = document.body.clientWidth * 0.3
             y = document.body.clientHeight * 0.3
