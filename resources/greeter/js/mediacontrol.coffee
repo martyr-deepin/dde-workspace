@@ -240,15 +240,13 @@ class MediaControl extends Widget
             el.src = img_src_before + play_status + "_press.png"
             click_cb?()
         )
-    keydown_listener:->
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == LEFT_ARROW
-                # echo "prev"
-                @media_up()
-            else if e.which == RIGHT_ARROW
-                # echo "next"
-                @media_next()
-            else if e.which == SPACE_KEY
-                # echo "next"
-                @media_play()
-        )
+    keydown_listener:(e)->
+        if e.which == LEFT_ARROW
+            # echo "prev"
+            @media_up()
+        else if e.which == RIGHT_ARROW
+            # echo "next"
+            @media_next()
+        else if e.which == SPACE_KEY
+            # echo "next"
+            @media_play()

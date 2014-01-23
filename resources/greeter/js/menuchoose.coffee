@@ -36,22 +36,25 @@ class MenuChoose extends Widget
     constructor: (@id)->
         super
         @current = @id
+        opt = []
+        opt_img = []
+        opt_text = []
+        
+        option = []
+        option_text = []
+        img_url_normal = []
+        img_url_hover = []
+        img_url_click = []
+        
+        document.body.appendChild(@element)
         @element.style.display = "none"
 
-
-    destory:=>
-        that = @
-        that.element.style.display = "none"
-    
-    show:(x,y)->
-        document.body.appendChild(@element)
-        @element.style.position = "absolute"
-        @element.style.left = x
-        @element.style.top = y
+    show:->
         @element.style.display = "block"
 
     hide:->
         @element.style.display = "none"
+        #remove_element(@element)
 
     insert: (id, title, img_normal,img_hover,img_click)->
         option.push(id)
@@ -114,13 +117,12 @@ class MenuChoose extends Widget
                 that.current = option[i]
                 echo that.cb
                 that.fade(i)
-                that.cb(option[i], option_text[i])
             )
     
     set_callback: (@cb)->
 
     show_confirm_message:(i) ->
-        @destory()
+        @hide()
         confirm_message = _("please input password to 1% your computer",option[i])
 
         
@@ -139,7 +141,7 @@ class MenuChoose extends Widget
     fade:(i)->
         echo "--------------fade:#{option[i]}---------------"
         @hide()
-        #@cb(option[i], option_text[i])
+        @cb(option[i], option_text[i])
 #        if is_greeter
             #echo "is greeter"
             #power_force(option[i])
@@ -172,8 +174,8 @@ class MenuChoose extends Widget
                 tmp.style.borderRadius = null
 
     
-    keydown:(keyCode)->
-        switch keyCode
+    keydown:(e)->
+        switch e.which
             when LEFT_ARROW
                 choose_num--
                 if choose_num == -1 then choose_num = 2
@@ -204,7 +206,7 @@ class ComboBox extends Widget
                 localStorage.setItem("de_current_id",de_current_id)
         else
             de_current_id = "shutdown"
-        @menu = new MenuChoose(de_current_id)
+        @menu = new MenuChoose("#{@id}_menuchoose")
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img_normal,img_hover,img_click)->
@@ -218,10 +220,13 @@ class ComboBox extends Widget
 
     do_click: (e)->
         e.stopPropagation()
+        if is_greeter
+            if @menu.id is "power_menuchoose"
+                $("#desktop_menuchoose").style.display = "none"
+            else if @menu.id is "desktop_menuchoose"
+             $("#power_menuchoose").style.display = "none"
         if @menu.element.style.display is "none"
-            x = document.body.clientWidth * 0.3
-            y = document.body.clientHeight * 0.3
-            @menu.show(x, y)
+            @menu.show()
         else
             @menu.hide()
     

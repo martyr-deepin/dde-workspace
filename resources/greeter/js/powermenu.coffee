@@ -62,13 +62,10 @@ class PowerMenu extends Widget
             power_menu.insert(key, title, img_normal,img_hover,img_click)
         
         power_menu.frame_build()
-        document.body.appendChild(power_menu.element)
-
-        power_menu.current_img.src = img_before + "powermenu.png"
         if not parent? then parent = document.body
         parent.appendChild(power_menu.element)
-       
-        document.body.addEventListener("keydown",(e)->
-            if power_menu then power_menu.menu.keydown(e.which)
-        )
 
+        power_menu.current_img.src = img_before + "powermenu.png"
+    
+    keydown_listener:(e)->
+        power_menu.menu.keydown(e)
