@@ -87,7 +87,6 @@ class MenuChoose extends Widget
             opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
-                echo img_url_hover[i]
                 opt_img[i].src = img_url_hover[i]
                 that.hover_state(i)
             )
@@ -108,13 +107,14 @@ class MenuChoose extends Widget
                 echo "i:#{i}"
                 frame_click = true
                 opt_img[i].src = img_url_click[i]
-                #that.fade(i)
                 that.current = option[i]
+                echo that.cb
+                that.fade(i)
                 that.cb(option[i], option_text[i])
             )
     
     set_callback: (@cb)->
-     
+
     show_confirm_message:(i) ->
         @destory()
         confirm_message = _("please input password to 1% your computer",option[i])
@@ -134,21 +134,21 @@ class MenuChoose extends Widget
 
     fade:(i)->
         echo "--------------fade:#{option[i]}---------------"
-        if is_greeter
-            echo "is greeter"
-            power_force(option[i])
-        else
-            if power_can(option[i])
-                echo "power_can true ,power_request"
-                power_request(option[i])
-            else
-                echo "power_can false ,switchToConfirmDialog"
-                @switchToConfirmDialog(i)
+        #@cb(option[i], option_text[i])
+#        if is_greeter
+            #echo "is greeter"
+            #power_force(option[i])
+        #else
+            #if power_can(option[i])
+                #echo "power_can true ,power_request"
+                #power_request(option[i])
+            #else
+                #echo "power_can false ,switchToConfirmDialog"
+                #@switchToConfirmDialog(i)
 
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
-        echo img_url_hover
         for tmp,j in opt_img
             if j == i then tmp.src = img_url_hover[i]
             else tmp.src = img_url_normal[i]
@@ -197,7 +197,7 @@ class ComboBox extends Widget
             if de_current_id is null then de_current_id = "deepin"
             localStorage.setItem("de_current_id",de_current_id)
         @menu = new MenuChoose(de_current_id)
-        @menu.set_callback(@on_clic_cb)
+        @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img_normal,img_hover,img_click)->
         @menu.insert(id, title, img_normal,img_hover,img_click)
