@@ -36,6 +36,7 @@ class DesktopMenu extends Widget
         sessions = DCore.Greeter.get_sessions()
         echo "-------sessions-------------"
         echo sessions
+        if sessions.length <= 1 then return
         
         for session in sessions
             id = session
