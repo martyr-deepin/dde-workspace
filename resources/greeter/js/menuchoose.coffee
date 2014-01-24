@@ -20,31 +20,23 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class MenuChoose extends Widget
-    opt = []
-    opt_img = []
-    opt_text = []
     choose_num = -1
     select_state_confirm = false
-   
-    option = []
-    option_text = []
-    img_url_normal = []
-    img_url_hover = []
-    img_url_click = []
     frame_click = true
 
     constructor: (@id)->
         super
         @current = @id
-        opt = []
-        opt_img = []
-        opt_text = []
         
-        option = []
-        option_text = []
-        img_url_normal = []
-        img_url_hover = []
-        img_url_click = []
+        @option = []
+        @option_text = []
+        @img_url_normal = []
+        @img_url_hover = []
+        @img_url_click = []
+
+        @opt = []
+        @opt_img = []
+        @opt_text = []
         
         document.body.appendChild(@element)
         @element.style.display = "none"
@@ -57,11 +49,11 @@ class MenuChoose extends Widget
         #remove_element(@element)
 
     insert: (id, title, img_normal,img_hover,img_click)->
-        option.push(id)
-        option_text.push(title)
-        img_url_normal.push(img_normal)
-        img_url_hover.push(img_hover)
-        img_url_click.push(img_click)
+        @option.push(id)
+        @option_text.push(title)
+        @img_url_normal.push(img_normal)
+        @img_url_hover.push(img_hover)
+        @img_url_click.push(img_click)
     
     frame_build:(id,title,img)->
         frame = create_element("div", "frame", @element)
@@ -79,43 +71,42 @@ class MenuChoose extends Widget
                 frame_click = false
         )
         
-        for tmp ,i in option
-            opt[i] = create_element("div","opt",button)
-            opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-            opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-            opt[i].value = i
-            opt_img[i] = create_img("opt_img",img_url_normal[i],opt[i])
-            opt_text[i] = create_element("div","opt_text",opt[i])
-            opt_text[i].textContent = option_text[i]
+        for tmp ,i in @option
+            @opt[i] = create_element("div","opt",button)
+            @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+            @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
+            @opt[i].value = i
+            
+            @opt_img[i] = create_img("opt_img",@img_url_normal[i],@opt[i])
+            @opt_text[i] = create_element("div","opt_text",@opt[i])
+            @opt_text[i].textContent = @option_text[i]
 
             that = @
             #hover
-            opt[i].addEventListener("mouseover",->
+            @opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
-                opt_img[i].src = img_url_hover[i]
+                that.opt_img[i].src = that.img_url_hover[i]
                 that.hover_state(i)
             )
             
             #normal
-            opt[i].addEventListener("mouseout",->
+            @opt[i].addEventListener("mouseout",->
                 i = this.value
-                opt_img[i].src = img_url_normal[i]
+                that.opt_img[i].src = that.img_url_normal[i]
             )
 
             #click
-            opt[i].addEventListener("mousedown",->
+            @opt[i].addEventListener("mousedown",->
                 i = this.value
-                opt_img[i].src = img_url_click[i]
+                that.opt_img[i].src = that.img_url_click[i]
             )
-            opt[i].addEventListener("click",(e)->
+            @opt[i].addEventListener("click",(e)->
                 e.stopPropagation()
                 i = this.value
-                echo "i:#{i}"
                 frame_click = true
-                opt_img[i].src = img_url_click[i]
-                that.current = option[i]
-                echo that.cb
+                that.opt_img[i].src = that.img_url_click[i]
+                that.current = that.option[i]
                 that.fade(i)
             )
     
@@ -123,25 +114,25 @@ class MenuChoose extends Widget
 
     show_confirm_message:(i) ->
         @hide()
-        confirm_message = _("please input password to 1% your computer",option[i])
+        confirm_message = _("please input password to 1% your computer",@option[i])
 
         
     switchToConfirmDialog:(i)->
-        opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-        opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-        opt[i].style.borderRadius = null
+        @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+        @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
+        @opt[i].style.borderRadius = null
         time = 0.5
-        for el,j in opt
+        for el,j in @opt
             apply_animation(el,"fade_animation#{j}","#{time}s")
-        opt[i].addEventListener("webkitAnimationEnd",=>
+        @opt[i].addEventListener("webkitAnimationEnd",=>
             @show_confirm_message(i)
         ,false)
  
 
     fade:(i)->
-        echo "--------------fade:#{option[i]}---------------"
+        echo "--------------fade:#{@option[i]}---------------"
         @hide()
-        @cb(option[i], option_text[i])
+        @cb(@option[i], @option_text[i])
 #        if is_greeter
             #echo "is greeter"
             #power_force(option[i])
@@ -156,14 +147,14 @@ class MenuChoose extends Widget
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
-        for tmp,j in opt_img
-            if j == i then tmp.src = img_url_hover[i]
-            else tmp.src = img_url_normal[j]
+        for tmp,j in @opt_img
+            if j == i then tmp.src = @img_url_hover[i]
+            else tmp.src = @img_url_normal[j]
    
     select_state:(i)->
         select_state_confirm = true
         choose_num = i
-        for tmp,j in opt
+        for tmp,j in @opt
             if j == i
                 tmp.style.backgroundColor = "rgba(255,255,255,0.1)"
                 tmp.style.border = "1px solid rgba(255,255,255,0.15)"

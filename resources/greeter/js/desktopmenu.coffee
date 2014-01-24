@@ -44,8 +44,8 @@ class DesktopMenu extends Widget
             icon = DCore.Greeter.get_session_icon(session)
             icon_path_normal = img_before + "#{icon}_normal.png"
             icon_path_hover = img_before + "#{icon}_hover.png"
-            icon_path_click = img_before + "#{icon}_press.png"
-            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_click)
+            icon_path_press = img_before + "#{icon}_press.png"
+            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
         de_menu.frame_build()
         if not parent? then parent = document.body
         parent.appendChild(de_menu.element)
