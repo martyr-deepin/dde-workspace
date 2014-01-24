@@ -58,7 +58,7 @@ class PowerMenu extends Widget
             title = key
             img_normal = img_before + "#{key}_normal.png"
             img_hover = img_before + "#{key}_hover.png"
-            img_click = img_before + "#{key}_click.png"
+            img_click = img_before + "#{key}_press.png"
             power_menu.insert(key, title, img_normal,img_hover,img_click)
         
         power_menu.frame_build()
