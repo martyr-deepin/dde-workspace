@@ -56,10 +56,10 @@ class MenuChoose extends Widget
         @img_url_click.push(img_click)
     
     frame_build:(id,title,img)->
-        frame = create_element("div", "frame", @element)
-        button = create_element("div","button",frame)
+        @frame = create_element("div", "frame", @element)
+        @button = create_element("div","button",@frame)
        
-        frame.addEventListener("click",(e)->
+        @frame.addEventListener("click",(e)->
             e.stopPropagation()
             frame_click = true
         )
@@ -72,7 +72,7 @@ class MenuChoose extends Widget
         )
         
         for tmp ,i in @option
-            @opt[i] = create_element("div","opt",button)
+            @opt[i] = create_element("div","opt",@button)
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].value = i
