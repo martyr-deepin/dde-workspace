@@ -44,6 +44,10 @@ lock = new Lock()
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_lock()
+left = (screen.width  - $("#div_users").clientWidth) / 2
+top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
+$("#div_users").style.left = "#{left}px"
+$("#div_users").style.top = "#{top}px"
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
