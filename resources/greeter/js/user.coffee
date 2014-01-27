@@ -291,8 +291,22 @@ class LoginEntry extends Widget
                 if _current_user.id is @loginuser
                     if @check_completeness()
                         @on_active(@loginuser, @password.value)
+            #echo "keyup:#{@password.value}"
         )
+#        point = "●"
+        #show_text = ""
+        #@password.addEventListener("keydown",(e)=>
+            #echo e.which
+            ##012...9    abc...xyz ABC...xyz  ,./
+            ##48---57
+            #if e.which == 8
+                #show_text = show_text - point
+            #else if e.which != ENTER_KEY
+                #show_text = show_text + point
+            #echo "show_text:#{show_text}"
+            #@password.value = show_text
 
+        #)
         @loginbutton.addEventListener("click", =>
             @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
