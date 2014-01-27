@@ -286,7 +286,12 @@ class LoginEntry extends Widget
                 @input_password_again()
         )
         
-        document.body.addEventListener("keyup",(e)=>
+        @password.addEventListener("focus",=>
+            if @password.value is password_error_msg
+                @input_password_again()
+        )
+
+        @password.addEventListener("keyup",(e)=>
             if e.which == ENTER_KEY
                 if _current_user.id is @loginuser
                     if @check_completeness()
@@ -326,10 +331,10 @@ class LoginEntry extends Widget
     input_password_again:->
         @password.style.color = "rgba(255,255,255,0.5)"
         @password.style.fontSize = "2.0em"
-        @password.value = null
         @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
+        @password.value = null
 
     password_error:(msg)->
         @password.style.color = "#ff8a00"
