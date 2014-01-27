@@ -324,7 +324,8 @@ class LoginEntry extends Widget
         return true
 
     input_password_again:->
-        @password.style.color = "black"
+        @password.style.color = "rgba(255,255,255,0.5)"
+        @password.style.fontSize = "2.0em"
         @password.value = null
         @password.type = "password"
         @password.focus()
@@ -332,6 +333,7 @@ class LoginEntry extends Widget
 
     password_error:(msg)->
         @password.style.color = "#ff8a00"
+        @password.style.fontSize = "1.5em"
         @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg

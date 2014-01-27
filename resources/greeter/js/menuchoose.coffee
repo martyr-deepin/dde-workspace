@@ -43,9 +43,16 @@ class MenuChoose extends Widget
 
     show:->
         @element.style.display = "block"
+        #animation_moveX_scale($("#div_users"),-250,0.6,"0.5s")
+        animation_moveX($("#div_users"),-200,"0.5s")
+        animation_moveX(@menu.element,-250,"1.0s")
+        #apply_animation($("#div_users"),"div_users_hide_move","500")
 
     hide:->
         @element.style.display = "none"
+        #animation_moveX_scale($("#div_users"),250,1.0,"0.5s")
+        animation_moveX($("#div_users"),0,"0.5s")
+        animation_moveX(@menu.element,0,"1.0s")
         #remove_element(@element)
 
     insert: (id, title, img_normal,img_hover,img_click)->

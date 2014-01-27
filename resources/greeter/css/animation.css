@@ -1,0 +1,43 @@
+ 
+@-webkit-keyframes recognize_animation {
+    0% {background-position: left bottom;}
+    100% {background-position: right bottom;}
+}
+
+@-webkit-keyframes menu_show_move {
+    0% {opacity: 0.0;margin-left:100%;}
+    100% {opacity: 1.0;margin-left:0;}
+}
+@-webkit-keyframes menu_hide_move {
+    0% {opacity: 1.0;margin-left:0;}
+    100% {opacity: 0.0;margin-left:100%}
+}
+
+@-webkit-keyframes div_users_hide_move {
+    0% {opacity: 1.0;margin-left:20%;}
+    100% {opacity: 0.5;margin-left:0;}
+}
+@-webkit-keyframes div_users_restore_move {
+    0% {opacity: 0.5;margin-left:0;}
+    100% {opacity: 1.0;margin-left:20%}
+}
+
+@-webkit-keyframes login_hide_move {
+    0% {opacity: 1.0;margin-left:20%;}
+    100% {opacity: 0.0;margin-left:0;}
+}
+@-webkit-keyframes userinfo_restore_move {
+    0% {opacity: 0.0;margin-left:0;}
+    100% {opacity: 1.0;margin-left:20%}
+}
+
+
+@-webkit-keyframes hide_animation {
+    from { opacity: 0;}
+    to { opacity: 1; }
+}
+@-webkit-keyframes show_animation {
+    from { opacity: 0;}
+    to { opacity: 1; }
+}
+
