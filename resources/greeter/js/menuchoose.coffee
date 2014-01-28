@@ -47,18 +47,34 @@ class MenuChoose extends Widget
         @element.style.display = "block"
         $(".LoginEntry").style.display = "none"
         apply_animation(@element,"menu_show_move",time_show_hide_animation)
-        apply_animation($("#div_users"),"div_users_hide_move",time_show_hide_animation)
+        animation_scale($(".userimg_div"),0.4,"0.5s")
+        apply_animation($(".username"),"username_up_animation",time_show_hide_animation)
+        if is_greeter
+            apply_animation($("#div_users"),"div_users_hide_move_greeter",time_show_hide_animation)
+            $(".prevuserinfo").style.display = "none"
+            $(".nextuserinfo").style.display = "none"
+        else
+            apply_animation($("#div_users"),"div_users_hide_move_lock",time_show_hide_animation)
 
     hide:->
         echo "hide"
         $(".LoginEntry").style.display = "block"
         apply_animation(@element,"menu_hide_move",time_show_hide_animation)
         apply_animation($("#div_users"),"div_users_restore_move",time_show_hide_animation)
-        @element.addEventListener("webkitAnimationEnd",@handler ,false)
+        animation_scale($(".userimg_div"),1.0,"0.5s")
+        apply_animation($(".username"),"username_down_animation",time_show_hide_animation)
+        @element.addEventListener("webkitAnimationEnd",@animationEnd ,false)
+        if is_greeter
+            apply_animation($("#div_users"),"div_users_restore_move_greeter",time_show_hide_animation)
+        else
+            apply_animation($("#div_users"),"div_users_restore_move_lock",time_show_hide_animation)
 
-    handler:=>
+    animationEnd:=>
         @element.style.display = "none" # set it in css
-        @element.removeEventListener("webkitAnimationEnd",@handler,false)
+        if is_greeter
+            $(".prevuserinfo").style.display = "block"
+            $(".nextuserinfo").style.display = "block"
+        @element.removeEventListener("webkitAnimationEnd",@animationEnd,false)
     
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)
