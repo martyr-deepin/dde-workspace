@@ -23,6 +23,7 @@ class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
     frame_click = true
+    time_show_hide_animation = "500"
 
     constructor: (@id)->
         super
@@ -43,17 +44,17 @@ class MenuChoose extends Widget
 
     show:->
         @element.style.display = "block"
-        #animation_moveX_scale($("#div_users"),-250,0.6,"0.5s")
-        animation_moveX($("#div_users"),-200,"0.5s")
-        animation_moveX(@menu.element,-250,"1.0s")
-        #apply_animation($("#div_users"),"div_users_hide_move","500")
+        $(".LoginEntry").style.display = "none"
+        apply_animation(@element,"menu_show_move",time_show_hide_animation)
+        apply_animation($("#div_users"),"div_users_hide_move",time_show_hide_animation)
 
     hide:->
-        @element.style.display = "none"
-        #animation_moveX_scale($("#div_users"),250,1.0,"0.5s")
-        animation_moveX($("#div_users"),0,"0.5s")
-        animation_moveX(@menu.element,0,"1.0s")
-        #remove_element(@element)
+        $(".LoginEntry").style.display = "block"
+        apply_animation(@element,"menu_hide_move",time_show_hide_animation)
+        apply_animation($("#div_users"),"div_users_restore_move",time_show_hide_animation)
+        @element.addEventListener("webkitAnimationEnd",=>
+            @element.style.display = "none" # set it in css
+        ,false)
 
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)
@@ -70,13 +71,13 @@ class MenuChoose extends Widget
             e.stopPropagation()
             frame_click = true
         )
-        document.body.addEventListener("click",(e)=>
-            e.stopPropagation()
-            if !frame_click
-                @hide()
-            else
-                frame_click = false
-        )
+#        document.body.addEventListener("click",(e)=>
+            #e.stopPropagation()
+            #if !frame_click and @element.style.display isnt "none"
+                #@hide()
+            #else
+                #frame_click = false
+        #)
         
         for tmp ,i in @option
             @opt[i] = create_element("div","opt",@button)
@@ -120,7 +121,6 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
     show_confirm_message:(i) ->
-        @hide()
         confirm_message = _("please input password to 1% your computer",@option[i])
 
         
@@ -128,9 +128,7 @@ class MenuChoose extends Widget
         @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
         @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
         @opt[i].style.borderRadius = null
-        time = 0.5
-        for el,j in @opt
-            apply_animation(el,"fade_animation#{j}","#{time}s")
+        @hide()
         @opt[i].addEventListener("webkitAnimationEnd",=>
             @show_confirm_message(i)
         ,false)
@@ -218,6 +216,7 @@ class ComboBox extends Widget
 
     do_click: (e)->
         e.stopPropagation()
+        echo "do_click"
         if is_greeter
             if @menu.id is "power_menuchoose"
                 $("#desktop_menuchoose").style.display = "none"

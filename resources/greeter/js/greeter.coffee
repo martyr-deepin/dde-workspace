@@ -68,7 +68,6 @@ left = (screen.width  - $("#div_users").clientWidth) / 2
 top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
 $("#div_users").style.left = "#{left}px"
 $("#div_users").style.top = "#{top}px"
-#user.roundabout_animation()
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()

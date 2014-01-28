@@ -379,7 +379,7 @@ class UserInfo extends Widget
 
     draw_avatar: ->
         if @face_login
-            recognize.style.background = "url(images/light.png) repeat black"
+            #recognize.style.background = "url(images/light.png) repeat black"
             recognize.style.webkitBackgroundClip = "text"
             recognize.style.webkitTextFill = "transparent"
             recognize.style.webkitAnimationName = "recognize_animation"
