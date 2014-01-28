@@ -290,9 +290,14 @@ class LoginEntry extends Widget
             if @password.value is password_error_msg
                 @input_password_again()
         )
+        
+        document.body.addEventListener("keydown",(e)=>
+            if $(".MenuChoose").style.display is "none"
+                @password.focus()
+        )
 
-        @password.addEventListener("keyup",(e)=>
-            if e.which == ENTER_KEY
+        document.body.addEventListener("keyup",(e)=>
+            if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
                 if _current_user.id is @loginuser
                     if @check_completeness()
                         @on_active(@loginuser, @password.value)
