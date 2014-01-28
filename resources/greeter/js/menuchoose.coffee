@@ -63,6 +63,16 @@ class MenuChoose extends Widget
         @img_url_hover.push(img_hover)
         @img_url_click.push(img_click)
     
+    body_click_to_hide:->
+        document.body.addEventListener("click",(e)=>
+            e.stopPropagation()
+            if !frame_click and @element.style.display isnt "none"
+                @hide()
+            else
+                frame_click = false
+        )
+ 
+
     frame_build:(id,title,img)->
         @frame = create_element("div", "frame", @element)
         @button = create_element("div","button",@frame)
@@ -71,14 +81,8 @@ class MenuChoose extends Widget
             e.stopPropagation()
             frame_click = true
         )
-#        document.body.addEventListener("click",(e)=>
-            #e.stopPropagation()
-            #if !frame_click and @element.style.display isnt "none"
-                #@hide()
-            #else
-                #frame_click = false
-        #)
-        
+        @body_click_to_hide()
+
         for tmp ,i in @option
             @opt[i] = create_element("div","opt",@button)
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
