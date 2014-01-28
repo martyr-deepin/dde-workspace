@@ -50,6 +50,7 @@ class PowerMenu extends Widget
         power_dict = @get_power_dict()
         power_menu_cb = (id, title)->
             power_dict[id]()
+                
 
         power_menu = new ComboBox("power", power_menu_cb)
 

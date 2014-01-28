@@ -142,35 +142,12 @@ class MenuChoose extends Widget
     
     set_callback: (@cb)->
 
-    show_confirm_message:(i) ->
-        confirm_message = _("please input password to 1% your computer",@option[i])
-
-        
-    switchToConfirmDialog:(i)->
-        @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-        @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-        @opt[i].style.borderRadius = null
-        @hide()
-        @opt[i].addEventListener("webkitAnimationEnd",=>
-            @show_confirm_message(i)
-        ,false)
- 
-
+       
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
         @cb(@option[i], @option_text[i])
-#        if is_greeter
-            #echo "is greeter"
-            #power_force(option[i])
-        #else
-            #if power_can(option[i])
-                #echo "power_can true ,power_request"
-                #power_request(option[i])
-            #else
-                #echo "power_can false ,switchToConfirmDialog"
-                #@switchToConfirmDialog(i)
-
+    
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
