@@ -43,7 +43,6 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
-        echo "show"
         @element.style.display = "block"
         $(".LoginEntry").style.display = "none"
         apply_animation(@element,"menu_show_move",time_show_hide_animation)
@@ -57,7 +56,6 @@ class MenuChoose extends Widget
             apply_animation($("#div_users"),"div_users_hide_move_lock",time_show_hide_animation)
 
     hide:->
-        echo "hide"
         $(".LoginEntry").style.display = "block"
         apply_animation(@element,"menu_hide_move",time_show_hide_animation)
         apply_animation($("#div_users"),"div_users_restore_move",time_show_hide_animation)
@@ -240,7 +238,6 @@ class ComboBox extends Widget
 
     do_click: (e)->
         e.stopPropagation()
-        echo "do_click"
         if is_greeter
             if @menu.id is "power_menuchoose"
                 $("#desktop_menuchoose").style.display = "none"
