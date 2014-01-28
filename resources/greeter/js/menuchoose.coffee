@@ -43,19 +43,23 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
+        echo "show"
         @element.style.display = "block"
         $(".LoginEntry").style.display = "none"
         apply_animation(@element,"menu_show_move",time_show_hide_animation)
         apply_animation($("#div_users"),"div_users_hide_move",time_show_hide_animation)
 
     hide:->
+        echo "hide"
         $(".LoginEntry").style.display = "block"
         apply_animation(@element,"menu_hide_move",time_show_hide_animation)
         apply_animation($("#div_users"),"div_users_restore_move",time_show_hide_animation)
-        @element.addEventListener("webkitAnimationEnd",=>
-            @element.style.display = "none" # set it in css
-        ,false)
+        @element.addEventListener("webkitAnimationEnd",@handler ,false)
 
+    handler:=>
+        @element.style.display = "none" # set it in css
+        @element.removeEventListener("webkitAnimationEnd",@handler,false)
+    
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)
         @option_text.push(title)
@@ -226,10 +230,10 @@ class ComboBox extends Widget
                 $("#desktop_menuchoose").style.display = "none"
             else if @menu.id is "desktop_menuchoose"
              $("#power_menuchoose").style.display = "none"
-        if @menu.element.style.display is "none"
-            @menu.show()
-        else
+        if @menu.element.style.display isnt "none"
             @menu.hide()
+        else
+            @menu.show()
     
     get_current: ->
         de_current_id = localStorage.getItem("de_current_id")
