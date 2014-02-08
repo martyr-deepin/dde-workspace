@@ -110,6 +110,10 @@ class MenuChoose extends Widget
             @opt_img[i] = create_img("opt_img",@img_url_normal[i],@opt[i])
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
+            
+            if i%3 == 0
+                @opt[i].style.left = @opt[0].offsetLeft
+                @opt[i].style.height = @opt[0].offsetTop + @opt[0].offsetHeight
 
             that = @
             #hover
