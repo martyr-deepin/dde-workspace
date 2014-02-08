@@ -46,8 +46,9 @@ class MenuChoose extends Widget
         @element.style.display = "block"
         @setmaxbutton_in_oneline(4)
 
-        $(".LoginEntry").style.display = "none"
         apply_animation(@element,"menu_show_move",time_show_hide_animation)
+        echo $(".LoginEntry")
+        $(".LoginEntry").style.display = "none"
         animation_scale($(".userimg_div"),0.4,"0.5s")
         apply_animation($(".username"),"username_up_animation",time_show_hide_animation)
         if is_greeter
