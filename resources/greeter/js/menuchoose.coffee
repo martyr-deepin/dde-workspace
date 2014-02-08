@@ -145,7 +145,6 @@ class MenuChoose extends Widget
     setmaxbutton_in_oneline:(maxnum)->
         j = 0
         for tmp ,i in @opt
-            echo i + ":" + i%3
             if i%maxnum == 0
                 @opt[i].style.left = 0
                 if i > 0
