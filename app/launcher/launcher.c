@@ -41,14 +41,14 @@
 #include "X_misc.h"
 #include "i18n.h"
 #include "category.h"
-#include "launcher_category.h"
 #include "background.h"
-#include "file_monitor.h"
-#include "item.h"
 #include "uninstall.h"
 #include "test.h"
 #include "DBUS_launcher.h"
 
+#define LAUNCHER_CONF "launcher/config.ini"
+#define HIDDEN_APP_GROUP_NAME "HiddenApps"
+#define APPS_INI "launcher/apps.ini"
 
 static GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
@@ -216,9 +216,6 @@ DBUS_EXPORT_API
 void launcher_quit()
 {
     g_debug("#%d# quit", getpid());
-    destroy_monitors();
-    destroy_item_config();
-    destroy_category_table();
     g_key_file_free(launcher_config);
     g_object_unref(background_gsettings);
     gtk_main_quit();
@@ -535,7 +532,6 @@ int main(int argc, char* argv[])
     g_debug("xid: 0x%lx", gdk_x11_window_get_xid(gtk_widget_get_window(container)));
 #endif
 
-    add_monitors();
     gtk_widget_show_all(webview);
     if (!not_shows_launcher) {
         launcher_show();

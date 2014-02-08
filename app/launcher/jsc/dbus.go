@@ -1,4 +1,5 @@
 package main
+
 import . "make_dbus"
 
 func main() {
@@ -9,11 +10,6 @@ func main() {
 		Method("Hide", Callback("launcher_hide")),
 		Method("Toggle", Callback("launcher_toggle")),
 		Method("Exit", Callback("launcher_quit")),
-		Method("IsPinned", Callback("launcher_is_pinned"), Ret("is_pinned:gboolean")),
-		Method("Pin", Callback("launcher_pin"), Ret("success:gboolean"), Arg("is_pin:gboolean")),
-		Method("GetSortMethod", Callback("launcher_get_sort_method"), Ret("method_name:gchar*")),
-		Method("SetSortMethod", Callback("launcher_set_sort_method"),
-		Ret("success:gboolean"), Arg("method_name:gchar*")),
 	)
 	DBusCall(
 		SessionDBUS("com.deepin.dde.launcher"),
