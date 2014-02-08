@@ -1,4 +1,5 @@
-SET(NAME "greeter")
+SET(NAME "lightdm-deepin-greeter")
+SET(NAME_SIMPLE "greeter")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
 GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
@@ -31,7 +32,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
 
 execute_process(
     COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}/js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SIMPLE}/js
     )
 
 install(
@@ -55,7 +56,7 @@ install(
     )
 
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME}
+    DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SIMPLE}
     DESTINATION ${RESOURCE_DIR}
     )
 
