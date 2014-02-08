@@ -67,3 +67,22 @@
     from {margin-top:-10%;}
     to {margin-top:0;}
 }
+
+
+@-webkit-keyframes userswitch_hide_to_left_animation {
+    0% {opacity: 1.0;margin-left:0;}
+    100% {opacity: 0.0;margin-left:-50%;}
+}
+@-webkit-keyframes userswitch_hide_to_right_animation {
+    0% {opacity: 1.0;margin-left:0;}
+    100% {opacity: 0.0;margin-left:50%;}
+}
+@-webkit-keyframes userswitch_show_to_left_animation {
+    0% {opacity: 0.0;margin-left:50%;}
+    100% {opacity: 1.0;margin-left:0;}
+}
+@-webkit-keyframes userswitch_show_to_right_animation {
+    0% {opacity: 0.0;margin-left:-50%;}
+    100% {opacity: 1.0;margin-left:0;}
+}
+

@@ -42,6 +42,8 @@ class User extends Widget
     users_realname = []
     users_id = []
     
+    time_show_hide_animation = "500"
+    
     constructor:->
         super
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
@@ -237,12 +239,14 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
+                apply_animation(user.userbase,"userswitch_hide_to_left_animation",time_show_hide_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_prev()
+                apply_animation(user.userbase,"userswitch_show_to_left_animation",time_show_hide_animation)
 
 
     switchtonext_userinfo:=>
@@ -250,12 +254,14 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
+                apply_animation(user.userbase,"userswitch_hide_to_right_animation",time_show_hide_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_next()
+                apply_animation(user.userbase,"userswitch_show_to_right_animation",time_show_hide_animation)
 
 
 class LoginEntry extends Widget
