@@ -89,6 +89,7 @@ class MenuChoose extends Widget
             e.stopPropagation()
             if !frame_click and @element.style.display isnt "none"
                 @hide()
+                $(".password").focus()
             else
                 frame_click = false
         )
