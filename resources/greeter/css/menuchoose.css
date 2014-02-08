@@ -57,9 +57,9 @@
 
 
 .opt{
-    position:relative;
+    position:absolute;
     cursor: pointer;
-    margin:0 10px 0 10px;
+    /*margin:0 10px 0 10px;*/
     width:100px;
     display:-webkit-box;
     -webkit-box-orient:vertical;

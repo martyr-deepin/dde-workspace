@@ -28,6 +28,7 @@ class DesktopMenu extends Widget
         img_before = "images/desktopmenu/"
    
     new_desktop_menu: ->
+        echo "new_desktop_menu"
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
         

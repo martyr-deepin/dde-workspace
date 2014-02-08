@@ -44,6 +44,8 @@ class MenuChoose extends Widget
 
     show:->
         @element.style.display = "block"
+        @setmaxbutton_in_oneline(4)
+
         $(".LoginEntry").style.display = "none"
         apply_animation(@element,"menu_show_move",time_show_hide_animation)
         animation_scale($(".userimg_div"),0.4,"0.5s")
@@ -111,10 +113,6 @@ class MenuChoose extends Widget
             @opt_text[i] = create_element("div","opt_text",@opt[i])
             @opt_text[i].textContent = @option_text[i]
             
-            if i%3 == 0
-                @opt[i].style.left = @opt[0].offsetLeft
-                @opt[i].style.height = @opt[0].offsetTop + @opt[0].offsetHeight
-
             that = @
             #hover
             @opt[i].addEventListener("mouseover",->
@@ -144,6 +142,22 @@ class MenuChoose extends Widget
                 that.fade(i)
             )
     
+    setmaxbutton_in_oneline:(maxnum)->
+        j = 0
+        for tmp ,i in @opt
+            echo i + ":" + i%3
+            if i%maxnum == 0
+                @opt[i].style.left = 0
+                if i > 0
+                    j++
+                    for k in [0...maxnum]
+                        if i + k > @opt.length - 1 then break
+                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
+            else
+                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
+
+ 
+
     set_callback: (@cb)->
 
        
@@ -177,11 +191,11 @@ class MenuChoose extends Widget
         switch e.which
             when LEFT_ARROW
                 choose_num--
-                if choose_num == -1 then choose_num = 2
+                if choose_num == -1 then choose_num = @opt.length - 1
                 @select_state(choose_num)
             when RIGHT_ARROW
                 choose_num++
-                if choose_num == 3 then choose_num = 0
+                if choose_num == @opt.length then choose_num = 0
                 @select_state(choose_num)
             when ENTER_KEY
                 i = choose_num
