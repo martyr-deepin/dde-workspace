@@ -79,17 +79,6 @@ class CategoryBar
         @category_items = {}
         @load()
 
-        # TODO
-        # assgin
-        # if (@is_pinned = DCore.Launcher.is_pinned())
-        #     @show()
-        #     @pin()
-        # else
-        #     # those are not needed.
-        #     @unpin()
-        #     @hide()
-        # set animation effect
-
         @update_scroll_bar()
 
     load: ->
@@ -150,18 +139,6 @@ class CategoryBar
         @
 
     hide: ->
-        @
-
-    pin: =>
-        if not @is_pinned
-            DCore.Launcher.pin(true)
-            @is_pinned = true
-        @
-
-    unpin: =>
-        if @is_pinned
-            DCore.Launcher.pin(false)
-            @is_pinned = false
         @
 
     update_scroll_bar: ->

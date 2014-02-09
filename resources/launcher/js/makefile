@@ -6,7 +6,6 @@ com_coffee = ${com_dir}/strict_mode.coffee ${com_dir}/config.coffee \
 all: ${com_coffee} \
 	const.coffee \
 	utils.coffee \
-	config.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
 	item.coffee \

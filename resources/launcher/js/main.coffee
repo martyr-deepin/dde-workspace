@@ -63,11 +63,9 @@ init_all_applications = ->
 
 
 search_bar = new SearchBar()
-init_search_box()
 init_all_applications()
 hidden_icons = new HiddenIcons()
 hidden_icons.hide()
-init_category_list()
 init_grid()
 bind_events()
 DCore.Launcher.webview_ok()
