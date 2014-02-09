@@ -18,12 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-try_set_title = (el, text, width)->
-    setTimeout(->
-        height = calc_text_size(text, width)
-        if height > 38
-            el.setAttribute('title', text)
-    , 200)
 
 try
     s_dock = DCore.DBus.session("com.deepin.dde.dock")
@@ -32,7 +26,7 @@ catch error
 
 
 class Item extends Widget
-    @theme_icon: null
+    @autostart_flag: null
     @hover_item_id: null
     @clean_hover_temp: false
     @display_temp: false
@@ -45,13 +39,20 @@ class Item extends Widget
         @name.innerText = name
         @element.draggable = true
         @element.style.display = "none"
-        try_set_title(@element, name, 80)
+        @try_set_title(@element, name, 80)
         @display_mode = 'display'
         @is_autostart = DCore.Launcher.is_autostart(@core)
         if @is_autostart
-            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
                 AUTOSTART_ICON_SIZE)
-            create_img("autostart_flag", Item.theme_icon, @element)
+            create_img("autostart_flag", Item.autostart_flag, @element)
+
+    try_set_title: (el, text, width)->
+        setTimeout(->
+            height = calc_text_size(text, width)
+            if height > 38
+                el.setAttribute('title', text)
+        , 200)
 
     destroy: ->
         grid.removeChild(@element)
@@ -140,7 +141,7 @@ class Item extends Widget
             when 1 then DCore.DEntry.launch(@core, [])
             when 2 then @toggle_icon()
             when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 4 then s_dock.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
             when 5 then @toggle_autostart()
             when 6
                 if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?")
@@ -158,11 +159,11 @@ class Item extends Widget
         if not Item.display_temp and not is_show_hidden_icons
             @element.style.display = 'none'
             Item.display_temp = false
-        hidden_icons[@id] = @
-        save_hidden_apps()
+        hidden_icons.add(@id, @).save()
         hide_category()
-        if _get_hidden_icons_ids().length == 0
-            _update_scroll_bar(category_infos[selected_category_id].length - _get_hidden_icons_ids().length)
+        hidden_icons_num = hidden_icons.number()
+        if hidden_icons_num == 0
+            _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
             Item.display_temp = false
 
     display_icon: (e)=>
@@ -170,9 +171,7 @@ class Item extends Widget
         @element.style.display = 'block'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
-        delete hidden_icons[@id]
-        save_hidden_apps()
-        hidden_icons_num = _get_hidden_icons_ids().length
+        hidden_icons_num = hidden_icons.remove(@id).save().number()
         show_category()
         if hidden_icons_num == 0
             is_show_hidden_icons = false
@@ -193,11 +192,11 @@ class Item extends Widget
     add_to_autostart: ->
         if DCore.Launcher.add_to_autostart(@core)
             @is_autostart = true
-            Item.theme_icon ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
+            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
                 AUTOSTART_ICON_SIZE)
             last = @element.lastChild
             if last.tagName != 'IMG'
-                create_img("autostart_flag", Item.theme_icon, @element)
+                create_img("autostart_flag", Item.autostart_flag, @element)
 
     remove_from_autostart: ->
         if DCore.Launcher.remove_from_autostart(@core)

@@ -43,7 +43,7 @@ _update_scroll_bar = (len) ->
 grid_show_items = (items) ->
     update_selected(null)
 
-    hidden_icon_ids = _get_hidden_icons_ids()
+    hidden_icon_ids = hidden_icons.id_list()
     count = 0
     for i in items
         if i not in hidden_icon_ids
