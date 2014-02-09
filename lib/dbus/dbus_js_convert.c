@@ -397,6 +397,11 @@ static JSValueRef build_number_value(JSContextRef ctx, DBusMessageIter* iter, in
 {
     switch (type) {
     case DBUS_TYPE_BYTE:
+	{
+                char value = 0;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                return JSValueMakeNumber(ctx, value);
+	}
     case DBUS_TYPE_INT16:
     case DBUS_TYPE_UINT16:
 	{
@@ -421,6 +426,7 @@ static JSValueRef build_number_value(JSContextRef ctx, DBusMessageIter* iter, in
 	}
 	break;
     }
+    return JSValueMakeNumber(ctx, 0);
 }
 
 
