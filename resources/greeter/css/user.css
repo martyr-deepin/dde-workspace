@@ -35,7 +35,7 @@
 .user_ul{
     /*background: rgba(255,0,246,0.3);*/
     position:absolute;
-    width:400px;
+    /*width:400px;*/
     height:200px;
     z-index:3;
     position:relative;
@@ -102,8 +102,6 @@
 
 
 .userimg_border{
-    width:116px; 
-    height:116px; 
     border-radius:50%; 
     overflow:hidden;
     border:rgba(0,0,0,0.3) 2px solid;
@@ -114,9 +112,10 @@
 }
 
 .userimg_background{
-    width:116px; 
-    height:116px; 
-    background-color:white;
+    border-radius:50%; 
+    overflow:hidden;
+    border:white 3px solid;
+    /*background-color:white;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -126,8 +125,6 @@
 .userimg {
     border-radius:50%; 
     overflow:hidden;
-    width:110px; 
-    height:110px; 
 }
 
 .username {
@@ -145,20 +142,6 @@
     overflow:hidden;
     text-overflow:clip;
 }
- 
-@-webkit-keyframes recognize_animation {
-    0% {background-position: left bottom;}
-    100% {background-position: right bottom;}
-}
-@-webkit-keyframes show_animation {
-    0% {opacity: 0.0;}
-    100% {opacity: 1.0;}
-}
-@-webkit-keyframes hide_animation {
-    0% {opacity: 1.0;}
-    100% {opacity: 0.0;}
-}
-
 
 
 .LoginEntry{
@@ -209,4 +192,5 @@
     z-index:5;
     cursor: pointer;
 }
+
 

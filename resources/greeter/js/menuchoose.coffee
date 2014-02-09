@@ -20,141 +20,188 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class MenuChoose extends Widget
-    opt = []
-    opt_img = []
-    opt_text = []
     choose_num = -1
     select_state_confirm = false
-   
-    option = []
-    option_text = []
-    img_url_normal = []
-    img_url_hover = []
-    img_url_click = []
     frame_click = true
+    time_animation = 500
 
     constructor: (@id)->
         super
         @current = @id
+        
+        @option = []
+        @option_text = []
+        @img_url_normal = []
+        @img_url_hover = []
+        @img_url_click = []
+
+        @opt = []
+        @opt_img = []
+        @opt_text = []
+        
+        document.body.appendChild(@element)
         @element.style.display = "none"
 
-
-    destory:=>
-        that = @
-        that.element.style.display = "none"
-    
-    show:(x,y)->
-        document.body.appendChild(@element)
-        @element.style.position = "absolute"
-        @element.style.left = x
-        @element.style.top = y
-        @element.style.display = "block"
+    show:->
+        apply_animation($("#div_users"),"hide_animation","200")
+        $("#div_users").addEventListener("webkitAnimationEnd",@animationEnd_div_users_hide ,false)
 
     hide:->
-        @element.style.display = "none"
+        for tmp ,i in @option
+            @opt_text[i].style.display = "block"
+            apply_animation(@opt_text[i],"hide_animation","200")
+        @animationEnd_opt_text_hide()
+        #@opt_text[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
+    
+    animationEnd_div_users_hide:=>
+        $("#div_users").style.display = "none" # set it in css
+        if is_greeter
+            $(".prevuserinfo").style.display = "none"
+            $(".nextuserinfo").style.display = "none"
+        
+       
+        @element.style.display = "block"
+        @setmaxbutton_in_oneline(4)
+        for tmp ,i in @option
+            @opt_text[i].style.display = "none"
+            apply_animation(@opt_img[i],"opt_img_scale_large",time_animation)
+            #apply_animation(@opt_img[i],"opt_img_show_move",time_animation - i * 50)
+        apply_animation(@element,"menu_show_move",time_animation)
+        @opt_img[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
+        
+        $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
+    
+    animationEnd_menu_hide:=>
+        echo "animationEnd_menu_hide"
+        @element.style.display = "none" # set it in css
+        
+        $("#div_users").style.display = "block" # set it in css
+        apply_animation($("#div_users"),"show_animation","200")
+        if is_greeter
+            $(".prevuserinfo").style.display = "block"
+            $(".nextuserinfo").style.display = "block"
+        
+        @element.removeEventListener("webkitAnimationEnd",@animationEnd_menu_hide,false)
+    
+    animationEnd_opt_text_hide:=>
+        echo "animationEnd_menu_hide"
+        for tmp ,i in @option
+            @opt_text[i].style.display = "none"
+            apply_animation(@opt_img[i],"opt_img_scale_small",time_animation)
+            #apply_animation(@opt_img[i],"opt_img_hide_move",time_animation - i * 50)
+        apply_animation(@element,"menu_hide_move",time_animation)
+        
+        @element.addEventListener("webkitAnimationEnd",@animationEnd_menu_hide ,false)
+        @opt_text[0].removeEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
+
+    
+    animationEnd_opt_img_large:=>
+        for tmp ,i in @option
+            @opt_text[i].style.display = "block"
+            apply_animation(@opt_text[i],"show_animation","200")
+        @opt_img[@opt_img.length - 1].removeEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
 
     insert: (id, title, img_normal,img_hover,img_click)->
-        option.push(id)
-        option_text.push(title)
-        img_url_normal.push(img_normal)
-        img_url_hover.push(img_hover)
-        img_url_click.push(img_click)
+        @option.push(id)
+        @option_text.push(title)
+        @img_url_normal.push(img_normal)
+        @img_url_hover.push(img_hover)
+        @img_url_click.push(img_click)
     
+    body_click_to_hide:->
+        document.body.addEventListener("click",(e)=>
+            e.stopPropagation()
+            if !frame_click and @element.style.display isnt "none"
+                @hide()
+                $(".password").focus()
+            else
+                frame_click = false
+        )
+ 
+
     frame_build:(id,title,img)->
-        frame = create_element("div", "frame", @element)
-        button = create_element("div","button",frame)
+        @frame = create_element("div", "frame", @element)
+        @button = create_element("div","button",@frame)
        
-        frame.addEventListener("click",->
+        @frame.addEventListener("click",(e)->
+            e.stopPropagation()
             frame_click = true
         )
-        document.body.addEventListener("click",=>
-            if !frame_click
-                @hide()
-            frame_click = false
-        )
-        
-        for tmp ,i in option
-            opt[i] = create_element("div","opt",button)
-            opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-            opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-            opt[i].value = i
-            opt_img[i] = create_img("opt_img",img_url_normal[i],opt[i])
-            opt_text[i] = create_element("div","opt_text",opt[i])
-            opt_text[i].textContent = option_text[i]
+        @body_click_to_hide()
 
+        for tmp ,i in @option
+            @opt[i] = create_element("div","opt",@button)
+            @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+            @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
+            @opt[i].value = i
+            
+            @opt_img[i] = create_img("opt_img",@img_url_normal[i],@opt[i])
+            @opt_text[i] = create_element("div","opt_text",@opt[i])
+            @opt_text[i].textContent = @option_text[i]
+            
             that = @
             #hover
-            opt[i].addEventListener("mouseover",->
+            @opt[i].addEventListener("mouseover",->
                 i = this.value
                 choose_num = i
-                echo img_url_hover[i]
-                opt_img[i].src = img_url_hover[i]
+                that.opt_img[i].src = that.img_url_hover[i]
                 that.hover_state(i)
             )
             
             #normal
-            opt[i].addEventListener("mouseout",->
+            @opt[i].addEventListener("mouseout",->
                 i = this.value
-                opt_img[i].src = img_url_normal[i]
+                that.opt_img[i].src = that.img_url_normal[i]
             )
 
             #click
-            opt[i].addEventListener("mousedown",->
+            @opt[i].addEventListener("mousedown",->
                 i = this.value
-                opt_img[i].src = img_url_click[i]
+                that.opt_img[i].src = that.img_url_click[i]
             )
-            opt[i].addEventListener("click",->
+            @opt[i].addEventListener("click",(e)->
+                e.stopPropagation()
                 i = this.value
                 frame_click = true
-                opt_img[i].src = img_url_click[i]
+                that.opt_img[i].src = that.img_url_click[i]
+                that.current = that.option[i]
                 that.fade(i)
-                @cb(option[i], option_text[i])
             )
     
-    set_callback: (@cb)->
-     
-    show_confirm_message:(i) ->
-        @destory()
-        confirm_message = _("please input password to 1% your computer",option[i])
+    setmaxbutton_in_oneline:(maxnum)->
+        j = 0
+        for tmp ,i in @opt
+            if i%maxnum == 0
+                @opt[i].style.left = 0
+                if i > 0
+                    j++
+                    for k in [0...maxnum]
+                        if i + k > @opt.length - 1 then break
+                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
+            else
+                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
 
-        
-    switchToConfirmDialog:(i)->
-        opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
-        opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
-        opt[i].style.borderRadius = null
-        time = 0.5
-        for el,j in opt
-            apply_animation(el,"fade_animation#{j}","#{time}s")
-        opt[i].addEventListener("webkitAnimationEnd",=>
-            @show_confirm_message(i)
-        ,false)
  
 
-    fade:(i)->
-        echo "--------------fade:#{option[i]}---------------"
-        if is_greeter
-            echo "is greeter"
-            power_force(option[i])
-        else
-            if power_can(option[i])
-                echo "power_can true ,power_request"
-                power_request(option[i])
-            else
-                echo "power_can false ,switchToConfirmDialog"
-                @switchToConfirmDialog(i)
+    set_callback: (@cb)->
 
+       
+    fade:(i)->
+        echo "--------------fade:#{@option[i]}---------------"
+        @hide()
+        @cb(@option[i], @option_text[i])
+    
     hover_state:(i)->
         choose_num = i
         if select_state_confirm then @select_state(i)
-        echo img_url_hover
-        for tmp,j in opt_img
-            if j == i then tmp.src = img_url_hover[i]
-            else tmp.src = img_url_normal[i]
+        for tmp,j in @opt_img
+            if j == i then tmp.src = @img_url_hover[i]
+            else tmp.src = @img_url_normal[j]
    
     select_state:(i)->
         select_state_confirm = true
         choose_num = i
-        for tmp,j in opt
+        for tmp,j in @opt
             if j == i
                 tmp.style.backgroundColor = "rgba(255,255,255,0.1)"
                 tmp.style.border = "1px solid rgba(255,255,255,0.15)"
@@ -165,15 +212,15 @@ class MenuChoose extends Widget
                 tmp.style.borderRadius = null
 
     
-    keydown:(keyCode)->
-        switch keyCode
+    keydown:(e)->
+        switch e.which
             when LEFT_ARROW
                 choose_num--
-                if choose_num == -1 then choose_num = 2
+                if choose_num == -1 then choose_num = @opt.length - 1
                 @select_state(choose_num)
             when RIGHT_ARROW
                 choose_num++
-                if choose_num == 3 then choose_num = 0
+                if choose_num == @opt.length then choose_num = 0
                 @select_state(choose_num)
             when ENTER_KEY
                 i = choose_num
@@ -187,14 +234,17 @@ class ComboBox extends Widget
         super
         @current_img = create_img("current_img", "", @element)
         
-        de_current_id = localStorage.getItem("de_current_id")
-        echo "-------------de_current_id:#{de_current_id}"
-        if not de_current_id?
-            echo "not de_current_id"
-            de_current_id = DCore.Greeter.get_default_session() if is_greeter
-            if de_current_id is null then de_current_id = "deepin"
-            localStorage.setItem("de_current_id",de_current_id)
-        @menu = new MenuChoose(de_current_id)
+        if is_greeter
+            de_current_id = localStorage.getItem("de_current_id")
+            echo "-------------de_current_id:#{de_current_id}"
+            if not de_current_id?
+                echo "not de_current_id"
+                de_current_id = DCore.Greeter.get_default_session() if is_greeter
+                if de_current_id is null then de_current_id = "deepin"
+                localStorage.setItem("de_current_id",de_current_id)
+        else
+            de_current_id = "shutdown"
+        @menu = new MenuChoose("#{@id}_menuchoose")
         @menu.set_callback(@on_click_cb)
 
     insert: (id, title, img_normal,img_hover,img_click)->
@@ -207,12 +257,16 @@ class ComboBox extends Widget
         @menu.insert_noimg(id, title)
 
     do_click: (e)->
-        if @menu.element.style.display is "none"
-            x = document.body.clientWidth * 0.3
-            y = document.body.clientHeight * 0.3
-            @menu.show(x, y)
-        else
+        e.stopPropagation()
+        if is_greeter
+            if @menu.id is "power_menuchoose"
+                $("#desktop_menuchoose").style.display = "none"
+            else if @menu.id is "desktop_menuchoose"
+             $("#power_menuchoose").style.display = "none"
+        if @menu.element.style.display isnt "none"
             @menu.hide()
+        else
+            @menu.show()
     
     get_current: ->
         de_current_id = localStorage.getItem("de_current_id")

@@ -205,6 +205,8 @@ class MediaControl extends Widget
     voice_normal_hover_click_cb: (el) ->
         el.addEventListener("mouseover",(e)=>
             is_volume_control = true
+            voice.src = img_src_before + voice_status + "_hover.png"
+            if voicecontrol.element.style.display isnt "none" then return
             p = e.srcElement
             x = p.x + voice.clientWidth
             y = p.y + 11
@@ -214,6 +216,7 @@ class MediaControl extends Widget
         )
         el.addEventListener("mouseout",->
             is_volume_control = false
+            voice.src = img_src_before + voice_status + "_normal.png"
             voicecontrol.hide()
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
@@ -237,15 +240,13 @@ class MediaControl extends Widget
             el.src = img_src_before + play_status + "_press.png"
             click_cb?()
         )
-    keydown_listener:->
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == LEFT_ARROW
-                # echo "prev"
-                @media_up()
-            else if e.which == RIGHT_ARROW
-                # echo "next"
-                @media_next()
-            else if e.which == SPACE_KEY
-                # echo "next"
-                @media_play()
-        )
+    keydown_listener:(e)->
+        if e.which == LEFT_ARROW
+            # echo "prev"
+            @media_up()
+        else if e.which == RIGHT_ARROW
+            # echo "next"
+            @media_next()
+        else if e.which == SPACE_KEY
+            # echo "next"
+            @media_play()

@@ -44,6 +44,10 @@ lock = new Lock()
 user = new User()
 $("#div_users").appendChild(user.element)
 user.new_userinfo_for_lock()
+left = (screen.width  - $("#div_users").clientWidth) / 2
+top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
+$("#div_users").style.left = "#{left}px"
+$("#div_users").style.top = "#{top}px"
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
@@ -65,10 +69,27 @@ powermenu.new_power_menu()
 if audio_play_status
     mediacontrol = new MediaControl()
     $("#div_media_control").appendChild(mediacontrol.element)
-    mediacontrol.keydown_listener()
 
 
 if not is_livecd
     s = new SwitchUser()
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
+
+document.body.addEventListener("keydown",(e)->
+    if is_greeter
+        if $("#power_menuchoose") or $("#desktop_menuchoose")
+            if $("#power_menuchoose").style.display isnt "none"
+                powermenu.keydown_listener(e)
+            else if $("#desktop_menuchoose").style.display isnt "none"
+                desktopmenu.keydown_listener(e)
+            else if is_greeter and greeter and user
+                greeter.keydown_listener(e,user)
+        else if is_greeter and greeter and user
+            greeter.keydown_listener(e,user)
+    else
+        if $("#power_menuchoose") and $("#power_menuchoose").style.display isnt "none"
+                powermenu.keydown_listener(e)
+        else if is_greeter and greeter and user
+            greeter.keydown_listener(e,user)
+)

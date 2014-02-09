@@ -28,6 +28,7 @@ class DesktopMenu extends Widget
         img_before = "images/desktopmenu/"
    
     new_desktop_menu: ->
+        echo "new_desktop_menu"
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
         
@@ -36,6 +37,7 @@ class DesktopMenu extends Widget
         sessions = DCore.Greeter.get_sessions()
         echo "-------sessions-------------"
         echo sessions
+        if sessions.length <= 1 then return
         
         for session in sessions
             id = session
@@ -44,22 +46,23 @@ class DesktopMenu extends Widget
             icon = DCore.Greeter.get_session_icon(session)
             icon_path_normal = img_before + "#{icon}_normal.png"
             icon_path_hover = img_before + "#{icon}_hover.png"
-            icon_path_click = img_before + "#{icon}_press.png"
-            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_click)
+            icon_path_press = img_before + "#{icon}_press.png"
+            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
         de_menu.frame_build()
-        document.body.appendChild(de_menu.element)
+        if not parent? then parent = document.body
+        parent.appendChild(de_menu.element)
         
         
         current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
         echo "current_session_icon_name:#{current_session_icon_name}"
-        de_menu.current_img.title = current_session_icon_name
+        #de_menu.current_img.title = current_session_icon_name
+        
         try
             de_menu.current_img.src = img_before + "current/#{current_session_icon_name}.png"
         catch e
             echo "de_menu.current_img.src:#{e}"
             de_menu.current_img.src = img_before + "current/unkown.png"
 
-        
-        document.body.addEventListener("keydown",(e)->
-            if de_menu then de_menu.menu.keydown(e.which)
-        )
+    keydown_listener:(e)->
+        echo "de_menu keydown_listener"
+        de_menu.menu.keydown(e)

@@ -476,8 +476,10 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
 
                         JSStringRelease(key_str);
                     } else {
-                        JSObjectSetPropertyAtIndex(ctx, (JSObjectRef)jsvalue,
-                                i++, dbus_to_js(ctx, &c_iter), NULL);
+			if (dbus_message_iter_get_arg_type(&c_iter) != DBUS_TYPE_INVALID) {
+			    JSObjectSetPropertyAtIndex(ctx, (JSObjectRef)jsvalue,
+				    i++, dbus_to_js(ctx, &c_iter), NULL);
+			}
                     }
                 } while(dbus_message_iter_next(&c_iter));
                 break;

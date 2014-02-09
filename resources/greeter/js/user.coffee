@@ -42,6 +42,8 @@ class User extends Widget
     users_realname = []
     users_id = []
     
+    time_animation = 1800
+    
     constructor:->
         super
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
@@ -190,7 +192,7 @@ class User extends Widget
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         user = @get_default_username()
-        @set_blur_background(user)
+        #@set_blur_background(user)
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.only_show_name(false)
@@ -237,12 +239,16 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
+                apply_animation(user.userimg,"hide_animation",time_animation)
+                apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_prev()
+                apply_animation(user.userimg,"show_animation",time_animation)
+                apply_animation(user.username,"show_animation",time_animation)
 
 
     switchtonext_userinfo:=>
@@ -250,12 +256,16 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
+                apply_animation(user.userimg,"hide_animation",time_animation)
+                apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_next()
+                apply_animation(user.userimg,"show_animation",time_animation)
+                apply_animation(user.username,"show_animation",time_animation)
 
 
 class LoginEntry extends Widget
@@ -286,13 +296,37 @@ class LoginEntry extends Widget
                 @input_password_again()
         )
         
+        @password.addEventListener("focus",=>
+            if @password.value is password_error_msg
+                @input_password_again()
+        )
+        
+        document.body.addEventListener("keydown",(e)=>
+            if $(".MenuChoose").style.display is "none"
+                @password.focus()
+        )
+
         document.body.addEventListener("keyup",(e)=>
-            if e.which == ENTER_KEY
+            if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
                 if _current_user.id is @loginuser
                     if @check_completeness()
                         @on_active(@loginuser, @password.value)
+            #echo "keyup:#{@password.value}"
         )
+#        point = "●"
+        #show_text = ""
+        #@password.addEventListener("keydown",(e)=>
+            #echo e.which
+            ##012...9    abc...xyz ABC...xyz  ,./
+            ##48---57
+            #if e.which == 8
+                #show_text = show_text - point
+            #else if e.which != ENTER_KEY
+                #show_text = show_text + point
+            #echo "show_text:#{show_text}"
+            #@password.value = show_text
 
+        #)
         @loginbutton.addEventListener("click", =>
             @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
@@ -310,14 +344,16 @@ class LoginEntry extends Widget
         return true
 
     input_password_again:->
-        @password.style.color = "black"
-        @password.value = null
+        @password.style.color = "rgba(255,255,255,0.5)"
+        @password.style.fontSize = "2.0em"
         @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
+        @password.value = null
 
     password_error:(msg)->
         @password.style.color = "#ff8a00"
+        @password.style.fontSize = "1.5em"
         @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg
@@ -326,7 +362,6 @@ class LoginEntry extends Widget
 
 
 class UserInfo extends Widget
-    userimg = null
     recognize = null
     constructor: (@id, name, @img_src)->
         super
@@ -336,10 +371,17 @@ class UserInfo extends Widget
         @userbase = create_element("div", "UserBase", @element)
         
         @userimg_div = create_element("div","userimg_div",@userbase)
-        userimg_border = create_element("div","userimg_border",@userimg_div)
-        userimg_background = create_element("div","userimg_background",userimg_border)
-        userimg = create_img("userimg", @img_src, userimg_background)
+        @userimg_border = create_element("div","userimg_border",@userimg_div)
+        @userimg_background = create_element("div","userimg_background",@userimg_border)
+        @userimg = create_img("userimg", @img_src, @userimg_background)
        
+        @userimg.style.width = 110
+        @userimg.style.height = 110
+        @userimg_border.style.width = @userimg.style.width + 16
+        @userimg_border.style.height = @userimg.style.height + 16
+        @userimg_background.style.width = @userimg_border.style.width - 3
+        @userimg_background.style.height = @userimg_border.style.height - 3
+
         @username = create_element("div", "username", @userbase)
         @username.innerText = name
 
@@ -358,7 +400,7 @@ class UserInfo extends Widget
 
     draw_avatar: ->
         if @face_login
-            recognize.style.background = "url(images/light.png) repeat black"
+            #recognize.style.background = "url(images/light.png) repeat black"
             recognize.style.webkitBackgroundClip = "text"
             recognize.style.webkitTextFill = "transparent"
             recognize.style.webkitAnimationName = "recognize_animation"
@@ -460,7 +502,7 @@ class UserInfo extends Widget
         if @face_login
             clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
+                DCore[APP_NAME].draw_camera(@userimg, @userimg.width, @userimg.height)
             , 20)
 
 

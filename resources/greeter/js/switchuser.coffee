@@ -26,7 +26,6 @@ class SwitchUser extends Widget
         draw_camera_id = null
     
     button_switch:->
-        echo "button_switch"
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
         @switch.style.width = "60px"

@@ -44,13 +44,11 @@ class Greeter extends Widget
         )
 
 
-    keydown_listener:(User)->
-        document.body.addEventListener("keydown", (e)=>
-            if e.which == UP_ARROW
-                User?.switchtonext_userinfo()
-            else if e.which == DOWN_ARROW
-                User?.switchtoprev_userinfo()
-        )
+    keydown_listener:(e,User)->
+        if e.which == LEFT_ARROW
+            User?.switchtonext_userinfo()
+        else if e.which == RIGHT_ARROW
+            User?.switchtoprev_userinfo()
 
 
 document.body.style.height = window.innerHeight
@@ -66,15 +64,17 @@ user = new User()
 $("#div_users").appendChild(user.element)
 #user.is_support_guest()
 user.new_userinfo_for_greeter()
-#user.roundabout_animation()
+left = (screen.width  - $("#div_users").clientWidth) / 2
+top = (screen.height  - $("#div_users").clientHeight) / 2 * 0.8
+$("#div_users").style.left = "#{left}px"
+$("#div_users").style.top = "#{top}px"
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
-greeter.keydown_listener(user)
-greeter.mousewheel_listener(user)
+#greeter.mousewheel_listener(user)
 
 
 version = new Version()
@@ -83,4 +83,20 @@ $("#div_version").appendChild(version.element)
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
-
+document.body.addEventListener("keydown",(e)->
+    if is_greeter
+        if $("#power_menuchoose") or $("#desktop_menuchoose")
+            if $("#power_menuchoose").style.display isnt "none"
+                powermenu.keydown_listener(e)
+            else if $("#desktop_menuchoose").style.display isnt "none"
+                desktopmenu.keydown_listener(e)
+            else if is_greeter and greeter and user
+                greeter.keydown_listener(e,user)
+        else if is_greeter and greeter and user
+            greeter.keydown_listener(e,user)
+    else
+        if $("#power_menuchoose") and $("#power_menuchoose").style.display isnt "none"
+                powermenu.keydown_listener(e)
+        else if is_greeter and greeter and user
+            greeter.keydown_listener(e,user)
+)

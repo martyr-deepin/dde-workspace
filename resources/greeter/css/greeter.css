@@ -1,8 +1,9 @@
 body{
     cursor:default;
     overflow:hidden;
-    background-image: url(/usr/share/backgrounds/default_background.jpg);
-    
+    background-image: url(../images/background1.jpg);
+    /*background-image: url(../js/skyThree/sky.jpg);*/
+
     background-origin:padding-box;
     background-clip:border-box;
     background-position:center;
@@ -21,9 +22,9 @@ body{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
     /*left:52%;*/
-    left:32%;
-    top:30%;
-    width:40%;
+    /*left:35%;*/
+    /*top:30%;*/
+    /*width:40%;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -36,7 +37,7 @@ body{
     position:absolute;
     bottom:50px;
     left:30px;
-    width:188px;
+    /*width:188px;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -49,7 +50,7 @@ body{
     position:absolute;
     bottom:40px;
     right:110px;
-    width:60px;
+    /*width:60px;*/
     /*height:60px;*/
     
     display:-webkit-box;
@@ -63,7 +64,7 @@ body{
     position:absolute;
     bottom:40px;
     right:30px;
-    width:60px;
+    /*width:60px;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;

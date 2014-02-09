@@ -47,9 +47,11 @@ class PowerMenu extends Widget
         return power_dict
 
     new_power_menu:->
+        echo "new_power_menu"
         power_dict = @get_power_dict()
         power_menu_cb = (id, title)->
             power_dict[id]()
+                
 
         power_menu = new ComboBox("power", power_menu_cb)
 
@@ -58,16 +60,14 @@ class PowerMenu extends Widget
             title = key
             img_normal = img_before + "#{key}_normal.png"
             img_hover = img_before + "#{key}_hover.png"
-            img_click = img_before + "#{key}_click.png"
+            img_click = img_before + "#{key}_press.png"
             power_menu.insert(key, title, img_normal,img_hover,img_click)
         
         power_menu.frame_build()
-        document.body.appendChild(power_menu.element)
+        if not parent? then parent = document.body
+        parent.appendChild(power_menu.element)
 
         power_menu.current_img.src = img_before + "powermenu.png"
-        parent.appendChild(power_menu.element) if parent
-       
-        document.body.addEventListener("keydown",(e)->
-            if power_menu then power_menu.menu.keydown(e.which)
-        )
-
+    
+    keydown_listener:(e)->
+        power_menu.menu.keydown(e)
