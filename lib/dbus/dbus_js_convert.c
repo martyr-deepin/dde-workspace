@@ -393,6 +393,42 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
 }
 
 
+static JSValueRef build_number_value(JSContextRef ctx, DBusMessageIter* iter, int type)
+{
+    switch (type) {
+    case DBUS_TYPE_BYTE:
+	{
+                char value = 0;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                return JSValueMakeNumber(ctx, value);
+	}
+    case DBUS_TYPE_INT16:
+    case DBUS_TYPE_UINT16:
+	{
+                dbus_int16_t value = 0;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                return JSValueMakeNumber(ctx, value);
+	}
+    case DBUS_TYPE_UNIX_FD:
+    case DBUS_TYPE_INT32:
+    case DBUS_TYPE_UINT32:
+	{
+                dbus_int32_t value = 0;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                return JSValueMakeNumber(ctx, value);
+	}
+    case DBUS_TYPE_INT64:
+    case DBUS_TYPE_UINT64:
+	{
+                dbus_int64_t value = 0;
+                dbus_message_iter_get_basic(iter, (void*)&value);
+                return JSValueMakeNumber(ctx, value);
+	}
+	break;
+    }
+    return JSValueMakeNumber(ctx, 0);
+}
+
 
 JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
 {
@@ -411,9 +447,7 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
             }
         CASE_NUMBER
             {
-                dbus_uint64_t value = 0;
-                dbus_message_iter_get_basic(iter, (void*)&value);
-                jsvalue = JSValueMakeNumber(ctx, value);
+		jsvalue = build_number_value(ctx, iter, type);
                 break;
             }
         case DBUS_TYPE_DOUBLE:
@@ -476,8 +510,10 @@ JSValueRef dbus_to_js(JSContextRef ctx, DBusMessageIter *iter)
 
                         JSStringRelease(key_str);
                     } else {
-                        JSObjectSetPropertyAtIndex(ctx, (JSObjectRef)jsvalue,
-                                i++, dbus_to_js(ctx, &c_iter), NULL);
+			if (dbus_message_iter_get_arg_type(&c_iter) != DBUS_TYPE_INVALID) {
+			    JSObjectSetPropertyAtIndex(ctx, (JSObjectRef)jsvalue,
+				    i++, dbus_to_js(ctx, &c_iter), NULL);
+			}
                     }
                 } while(dbus_message_iter_next(&c_iter));
                 break;
