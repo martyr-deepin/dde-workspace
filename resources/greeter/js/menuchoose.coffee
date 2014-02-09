@@ -23,7 +23,7 @@ class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
     frame_click = true
-    time_animation = "500"
+    time_animation = 500
 
     constructor: (@id)->
         super
@@ -43,7 +43,7 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
-        apply_animation($("#div_users"),"div_users_hide","200")
+        apply_animation($("#div_users"),"hide_animation","200")
         $("#div_users").addEventListener("webkitAnimationEnd",@animationEnd_div_users_hide ,false)
 
     hide:->
@@ -65,9 +65,9 @@ class MenuChoose extends Widget
         for tmp ,i in @option
             @opt_text[i].style.display = "none"
             apply_animation(@opt_img[i],"opt_img_scale_large",time_animation)
-            #apply_animation(@opt_img[i],"menu_show_move",time_animation + i * 0.1)
-        @opt_img[@opt_img.length - 1].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
+            #apply_animation(@opt_img[i],"opt_img_show_move",time_animation - i * 50)
         apply_animation(@element,"menu_show_move",time_animation)
+        @opt_img[@opt_img.length - 1].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
         
         $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
     
@@ -76,7 +76,7 @@ class MenuChoose extends Widget
         @element.style.display = "none" # set it in css
         
         $("#div_users").style.display = "block" # set it in css
-        apply_animation($("#div_users"),"div_users_show","200")
+        apply_animation($("#div_users"),"show_animation","200")
         if is_greeter
             $(".prevuserinfo").style.display = "block"
             $(".nextuserinfo").style.display = "block"
@@ -88,7 +88,7 @@ class MenuChoose extends Widget
         for tmp ,i in @option
             @opt_text[i].style.display = "none"
             apply_animation(@opt_img[i],"opt_img_scale_small",time_animation)
-            #apply_animation(@opt_img[i],"menu_hide_move",time_animation + i * 0.1)
+            #apply_animation(@opt_img[i],"opt_img_hide_move",time_animation - i * 50)
         apply_animation(@element,"menu_hide_move",time_animation)
         
         @element.addEventListener("webkitAnimationEnd",@animationEnd_menu_hide ,false)

@@ -42,7 +42,7 @@ class User extends Widget
     users_realname = []
     users_id = []
     
-    time_animation = "500"
+    time_animation = 1000
     
     constructor:->
         super
@@ -239,14 +239,14 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-                apply_animation(user.userbase,"userswitch_hide_animation",time_animation)
+                apply_animation(user.userbase,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_prev()
-                apply_animation(user.userbase,"userswitch_show_animation",time_animation)
+                apply_animation(user.userbase,"show_animation",time_animation)
 
 
     switchtonext_userinfo:=>
@@ -254,14 +254,14 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-                apply_animation(user.userbase,"userswitch_hide_animation",time_animation)
+                apply_animation(user.userbase,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_next()
-                apply_animation(user.userbase,"userswitch_show_animation",time_animation)
+                apply_animation(user.userbase,"show_animation",time_animation)
 
 
 class LoginEntry extends Widget
