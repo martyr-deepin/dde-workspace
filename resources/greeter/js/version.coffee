@@ -20,7 +20,8 @@
 class Version extends Widget
     constructor:->
         super
-        @element.innerHTML = "
-                    <span> #{_("Linux Deepin 2013")}<sup>#{_(VERSION)}</sup></span> 
-                    "
-
+        img_src_before = "images/"
+        logo_img = create_img("version_img","",@element)
+        logo_img.src = "#{img_src_before}/logo.png"
+        logo_img.style.width = "188px"
+        logo_img.style.height = "47px"

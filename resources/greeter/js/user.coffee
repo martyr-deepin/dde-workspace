@@ -35,11 +35,11 @@ class User extends Widget
     userimage = null
     userinfo = null
     userinfo_all = []
+    userinfo_show_index = 0
         
     users_path = []
     users_name = []
     users_realname = []
-    users_type = []
     users_id = []
     
     constructor:->
@@ -72,12 +72,9 @@ class User extends Widget
                 user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
                 name = user_dbus.UserName
                 realname = user_dbus.RealName
-                type = user_dbus.AccountType
                 id = user_dbus.Uid
-                echo "id:#{id}"
                 users_realname.push(realname)
                 users_name.push(name)
-                users_type.push(type)
                 users_id.push(id)
         #echo users_name
         return users_name
@@ -106,27 +103,17 @@ class User extends Widget
 
         return user_image
 
-    get_user_type:(user)->
-        if users_type.length == 0 or users_name.length == 0 then @get_all_users()
-        for tmp,j in users_name
-            if user is tmp
-                type = users_type[j]
-                switch type
-                    when 1 then return _("Administrator")
-                    when 0 then return _("Standard user")
-                    else return _("Standard user")
-        return _("Standard user")
-
     get_user_id:(user)->
         if users_id.length == 0 or users_name.length == 0 then @get_all_users()
-        echo users_name
-        echo users_id
+        id = null
         for tmp,j in users_name
             if user is tmp
-                echo "if #{user} j :#{j}"
                 id = users_id[j]
-                echo "id:#{id}"
-                return id
+        if not id?
+            id = users_id[0]
+        if not id?
+            id = "1000"
+        return id
 
     is_disable_user :(user)->
         disable = false
@@ -139,14 +126,23 @@ class User extends Widget
                 return disable
 
     set_blur_background:(user)->
-        path = []
+        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
+        userid = new String()
         userid = @get_user_id(user)
-        echo "user #{user}'s userid:#{userid}"
-        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.Accounts")
-        echo "-------------"
-        echo Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid,"")
-        echo "-------------"
-        #document.body.style.backgroundImage = path
+        echo "current user #{user}'s userid:#{userid}"
+        path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
+        if path[0]
+            BackgroundBlurPictPath = path[1]
+        else
+            # here should getPath by other methods!
+            BackgroundBlurPictPath = path[1]
+        echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
+        localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
+        try
+            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
+        catch e
+            echo e
+            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
         _default_username = @get_default_username()
@@ -154,17 +150,16 @@ class User extends Widget
         if _default_username is null then _default_username = users_name[0]
         echo "_default_username:#{_default_username};"
         #@set_blur_background(_default_username)
-       
+        
         for user in users_name
             echo "user:#{user}"
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
-                u = new UserInfo(user, user, userimage,@get_user_type(user))
+                u = new UserInfo(user, user, userimage)
                 userinfo_all.push(u)
                 if user is _default_username
                     _current_user = u
                     _current_user.only_show_name(false)
-                    _current_user.focus()
                 else
                     u.only_show_name(true)
         for user,j in userinfo_all
@@ -174,12 +169,13 @@ class User extends Widget
         else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
             _current_user.only_show_name(false)
-            _current_user.focus()
         for user,j in userinfo_all
             user.index = j
-            user_ul.appendChild(user.userinfo_li)
+            user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
+        userinfo_show_index =_current_user.index
+        @prev_next_userinfo_create()
         return userinfo_all
 
     sort_current_user_info_center:->
@@ -192,42 +188,26 @@ class User extends Widget
             userinfo_all[_current_user.index] = center_old
     
     new_userinfo_for_lock:->
-        user_ul.style.height = "400px"
-        user_ul.style.display = "-webkit-box"
-        user_ul.style.WebkitBoxAlign = "center"
-        user_ul.style.WebkitBoxPack = "center"
-        
+        echo "new_userinfo_for_lock"
         user = @get_default_username()
+        @set_blur_background(user)
         userimage = @get_user_image(user)
-        _current_user = new UserInfo(user, user, userimage,@get_user_type(user))
+        _current_user = new UserInfo(user, user, userimage)
         _current_user.only_show_name(false)
-        user_ul.appendChild(_current_user.userinfo_li)
+        user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
     is_support_guest:->
         if is_greeter
             if DCore.Greeter.is_support_guest()
-                u = new UserInfo("guest", _("guest"), "images/guest.jpg",@get_user_type("guest"))
+                u = new UserInfo("guest", _("guest"), "images/guest.jpg")
                 u.only_show_name(true)
-                user_ul.appendChild(u.userinfo_li)
+                user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
-       
     
     get_current_userinfo:->
         return _current_user
-
-    username_font_animation:(FocusChildIndex)->
-        prev = @check_index(FocusChildIndex - 1)
-        next = @check_index(FocusChildIndex + 1)
-        
-        for i in [0 ... (userinfo_all.length) / 2]
-            #if @check_index(FocusChildIndex - i) is FocusChildIndex or @check_index(FocusChildIndex + i) is @FocusChildIndex then break
-            size = 26 - i * 6
-            if size < 13 then size = 13
-            userinfo_all[@check_index(FocusChildIndex - i)].only_name.style.fontSize = size
-            userinfo_all[@check_index(FocusChildIndex + i)].only_name.style.fontSize = size
-
 
     check_index:(index)->
         if index >= userinfo_all.length then index = 0
@@ -236,120 +216,67 @@ class User extends Widget
 
     prev_next_userinfo_create:->
         prevuserinfo = create_element("div","prevuserinfo",@element)
-        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "up_normal.png",prevuserinfo)
-        #@username_font_animation(_current_user.index)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",prevuserinfo)
         nextuserinfo = create_element("div","nextuserinfo",@element)
-        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "down_normal.png",nextuserinfo)
-#        if user_ul.children.length > 5
-            #@prevuserinfo.style.display = "block"
-            #@nextuserinfo.style.display = "block"
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",nextuserinfo)
         @normal_hover_click_cb(@prevuserinfo_img,
-            img_src_before + "up_normal.png",
-            img_src_before + "up_hover.png",
-            img_src_before + "up_press.png"
+            img_src_before + "left_normal.png",
+            img_src_before + "left_hover.png",
+            img_src_before + "left_press.png",
+            @switchtoprev_userinfo
         )
         @normal_hover_click_cb(@nextuserinfo_img,
-            img_src_before + "down_normal.png",
-            img_src_before + "down_hover.png",
-            img_src_before + "down_press.png"
+            img_src_before + "right_normal.png",
+            img_src_before + "right_hover.png",
+            img_src_before + "right_press.png",
+            @switchtonext_userinfo
         )
 
+    switchtoprev_userinfo:=>
+        echo "switchtoprev_userinfo"
+        for user in userinfo_all
+            if user.element.style.display is "block"
+                user.only_show_name(true)
+        userinfo_show_index = @check_index(userinfo_show_index + 1)
+        echo userinfo_show_index
+        for user in userinfo_all
+            if user.index == userinfo_show_index
+                user.only_show_name(false)
+                user.animate_prev()
 
-    roundabout_animation:->
-        echo "roundabout_animation"
-        #inject_js("js/roundabout/jquery.roundabout.js")
-        #inject_js("js/roundabout/jquery.roundabout-shapes.js")
-        @prev_next_userinfo_create()
 
-        jQuery("#user_ul").roundabout({
-            shape: 'waterWheel',
-            tilt: 2.3,
-            minZ: 180,
-            minOpacity: 0.0,
-            #startingChild: 1,
-            startingChild: _current_user.index,
-            clickToFocus: true,
-            enableDrag: false,
-            triggerFocusEvents: true,
-            triggerBlurEvents: true,
-            
-            btnNext: jQuery(".prevuserinfo_img"),
-            btnPrev: jQuery(".nextuserinfo_img")
-        })
-        .bind("animationStart",=>
-            index_prev = jQuery("#user_ul").roundabout("getChildInFocus")
-            index_prev = @check_index(index_prev)
-            userinfo_all[index_prev].blur()
-            userinfo_all[index_prev].only_show_name(true)
-        )
+    switchtonext_userinfo:=>
+        echo "switchtonext_userinfo"
+        for user in userinfo_all
+            if user.element.style.display is "block"
+                user.only_show_name(true)
+        userinfo_show_index = @check_index(userinfo_show_index - 1)
+        echo userinfo_show_index
+        for user in userinfo_all
+            if user.index == userinfo_show_index
+                user.only_show_name(false)
+                user.animate_next()
 
-        .bind("animationEnd",=>
-            index_target = jQuery("#user_ul").roundabout("getChildInFocus")
-            index_target = @check_index(index_target)
-            _current_user = userinfo_all[index_target]
-            userinfo_all[index_target].only_show_name(false)
-            userinfo_all[index_target].focus()
-            apply_animation(userinfo_all[index_target].userinfo_li,"show_animation","1.5s")
-            #@username_font_animation(_current_user.index)
-        )
- 
-    jCarousel_animation:->
-        echo "jCarousel_animation"
-        @prev_next_userinfo_create()
-        # @element.style.overflow = "hidden"
-        #@prev_next_userinfo_create()
 
-        jQuery(".User").jcarousel({
-            vertical: true,
-            rtl: false,
-            list: '.user_ul',
-            items: '.userinfo_li',
-            animation: 'slow',
-            wrap: 'circular',
-            center: true
-        })
-        jQuery(".User").jcarousel('scroll','+=2')
-        jQuery(".User").jcarousel('reload')
-        echo jQuery(".User")
-        @username_font_animation(_current_user.index)
-
- class LoginEntry extends Widget
-    constructor: (@id, @loginuser,@type ,@on_active)->
+class LoginEntry extends Widget
+    img_src_before = "images/userinfo/"
+    constructor: (@id, @loginuser,@on_active)->
         super
-        # echo "new LoginEntry"
-        @usertype = create_element("div","usertype",@element)
-        icon_lock = create_element("div","icon_lock",@usertype)
-        icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
-        type_text = create_element("div","type_text",@usertype)
-        type_text.textContent = @type
-
+        if is_greeter then @id = "login"
+        else @id = "lock"
+        echo "new LoginEntry:#{@id}"
+        
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", 16)
         @password.setAttribute("autofocus", true)
-        @eye = create_element("div","eye",@password_div)
-        @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
-        @eye.addEventListener("click",=>
-            @show_hide_password()
-            if @password.type is "password"
-                @eye.style.backgroundImage = "url(images/userswitch/eye_hide.png)"
-                icon_lock.style.backgroundImage = "url(images/userswitch/lock.png)"
-            else
-                @eye.style.backgroundImage = "url(images/userswitch/eye_show.png)"
-                icon_lock.style.backgroundImage = "url(images/userswitch/unlock.png)"
-                
+       
+        @loginbutton = create_img("loginbutton", "", @password_div)
+        @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
+        @loginbutton.addEventListener("mouseout", =>
+            @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
-        
-
-        @loginbutton = create_element("button", "loginbutton", @element)
-        @loginbutton.type = "submit"
-        if is_greeter
-            @loginbutton.innerText = _("Log In")
-        else
-            @loginbutton.innerText = _("Unlock")
-   
-
         @password_eventlistener()
     
 
@@ -367,6 +294,7 @@ class User extends Widget
         )
 
         @loginbutton.addEventListener("click", =>
+            @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
                 @on_active(@loginuser, @password.value)
         )
@@ -396,59 +324,37 @@ class User extends Widget
         @password.blur()
         @loginbutton.disable = true
 
-    show_hide_password:->
-        if @password.type is "password" then @password.type = "text"
-        else if @password.type is "text" then @password.type = "password"
-
 
 class UserInfo extends Widget
     userimg = null
     recognize = null
-    constructor: (@id, name, @img_src,@type)->
+    constructor: (@id, name, @img_src)->
         super
         @is_recognizing = false
         @index = null
         echo "new UserInfo :#{@id}"
-        @userinfo_li = create_element("li","userinfo_li",@element)
-        @userinfo_li.id = "#{@id}_li"
-        @only_name = create_element("div","only_name",@userinfo_li)
-        @only_name.innerText = name
+        @userbase = create_element("div", "UserBase", @element)
         
-        
-        @only_info = create_element("div","only_info",@userinfo_li)
-        @only_info_background = create_element("div","only_info_background",@only_info)
-        userbase = create_element("div", "UserBase", @only_info_background)
-        img_div = create_element("div","img_div",userbase)
-        img_border = create_element("div","img_border",img_div)
-        userimg = create_img("userimg", @img_src, img_border)
-        recognize = create_element("div", "recognize", userbase)
-        recognize_h1 = create_element("h1", "recognize_h1", recognize)
-        @username = create_element("label", "UserName", recognize_h1)
+        @userimg_div = create_element("div","userimg_div",@userbase)
+        userimg_border = create_element("div","userimg_border",@userimg_div)
+        userimg_background = create_element("div","userimg_background",userimg_border)
+        userimg = create_img("userimg", @img_src, userimg_background)
+       
+        @username = create_element("div", "username", @userbase)
         @username.innerText = name
 
-        login_div = create_element("div", "login_div", @only_info_background)
-        @login = new LoginEntry("login", @id,@type, (u, p)=>@on_verify(u, p))
-        login_div.appendChild(@login.element)
-
-        @glass = create_element("p","glass",@only_info)
-        
-        @session = DCore.Greeter.get_user_session(@id) if is_greeter
+        @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
+        @element.appendChild(@login.element)
 
         @show_login()
         @face_login = DCore[APP_NAME].use_face_recognition_login(name)
         @face_login =false
 
-
-    only_show_name:(only_show_name)->
-        if only_show_name
-            @only_name.style.display = "block"
-            @glass.style.display = "none"
-            @only_info.style.display = "none"
+    only_show_name:(hide)->
+        if !hide
+            @element.style.display= "block"
         else
-            @only_name.style.display = "none"
-            @glass.style.display = "block"
-            @only_info.style.display = "block"
-            
+            @element.style.display= "none"
 
     draw_avatar: ->
         if @face_login
@@ -478,22 +384,19 @@ class UserInfo extends Widget
         
         if @id != "guest"
             if is_greeter
+                @session = DCore.Greeter.get_user_session(@id)
+                echo "----------Greeter.get_user_session(#{@id}):---#{@session}---------------------"
                 sessions = DCore.Greeter.get_sessions()
                 if @session? and @session in sessions
                     de_menu.set_current(@session)
                 else
-                    echo "#{@id} in focus invalid user session"
-
-        #if is_greeter
-            #remove_element(jQuery(".DesktopMenu")) if jQuery(".DesktopMenu")
-            #if @session then de_menu.set_current(@session)
-            #desktopmenu = new DesktopMenu($("div_desktop"))
-            #desktopmenu.new_desktop_menu()
-    
+                    echo "----------Greeter.get_user_sessiobn(#{@id}) failed! set_current(deepin)---------"
+                    @session = "deepin"
+                    de_menu.set_current(@session)
+                    echo "#{@id} in focus invalid user session,will not set_current session"
+   
     
     blur: ->
-        #@loading?.destroy()
-        #@loading = null
         @stop_avatar()
 
 
@@ -506,12 +409,14 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
     on_verify: (username, password)->
-        #@loading = new Loading("loading")
-        #@only_info.appendChild(@loading.element)
         echo "on_verify:#{username},#{password}"
 
         if is_greeter
+            sessions = DCore.Greeter.get_sessions()
+            if sessions.length == 1
+                de_menu.menu.current = sessions[0]
             session = de_menu.get_current()
+            echo "------on_verify:session:#{session}-----------------------"
             if not session?
                 echo "get session failed"
                 session = "deepin"
@@ -525,11 +430,6 @@ class UserInfo extends Widget
     
     auth_failed: (msg) ->
         @stop_avatar()
-        #@loading?.destroy()
-        #@loading = null
-        # message_tip?.remove()
-        # message_tip = null
-        # message_tip = new MessageTip(msg, user_ul.parentElement)
         @login.password_error(msg)
         document.body.cursor = "default"
 
@@ -541,7 +441,6 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        jQuery("#user_ul").roundabout("animateToPreviousChild")
 
     animate_next: ->
         if @face_login
@@ -550,15 +449,12 @@ class UserInfo extends Widget
         if @is_recognizing
             return
 
-        jQuery("#user_ul").roundabout("animateToNextChild")
-
     animate_near: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
 
         if @is_recognizing
             return
-        jQuery("#user_ul").roundabout("animateToNearestChild")
 
     draw_camera: ->
         if @face_login
@@ -566,15 +462,6 @@ class UserInfo extends Widget
             draw_camera_id = setInterval(=>
                 DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
             , 20)
-
-
-
-class Loading extends Widget
-    constructor: (@id)->
-        super
-        create_element("div", "ball", @element)
-        create_element("div", "ball1", @element)
-        create_element("span", "", @element).innerText = _("Welcome")
 
 
 

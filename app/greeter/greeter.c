@@ -40,7 +40,6 @@
 #include "mutils.h"
 
 #include "settings.h"
-#include "background.h"
 #include "camera.h"
 
 #include "user.h"
@@ -229,22 +228,6 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
     return ret;
 }
 
-void greeter_set_background(GdkWindow* win, gchar* username, double width, double height)
-{
-    gchar* bg_path = get_user_background (username);
-    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
-    g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
-
-    if (!_set_background_aux(win, blur_path, width, height)) {
-        g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
-        _set_background_aux(win, bg_path, width, height);
-    }
-
-    g_free(blur_path);
-    g_free(bg_path);
-
-}
-
 int main (int argc, char **argv)
 {
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
@@ -291,7 +274,6 @@ int main (int argc, char **argv)
     gtk_window_move (GTK_WINDOW (container), geometry.x, geometry.y);
 
     webview = d_webview_new_with_uri (GREETER_HTML_PATH);
-    /*g_signal_connect (webview, "draw", G_CALLBACK (erase_background), NULL);*/
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
     gtk_widget_realize (webview);
@@ -301,12 +283,8 @@ int main (int argc, char **argv)
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));*/
-    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));
-
-    gchar* username_default = greeter_get_default_user();
-    greeter_set_background(gtk_widget_get_window(webview), username_default, gdk_screen_width(), gdk_screen_height());
-    g_free(username_default);
+    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
+    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_XTERM));*/
 
     gtk_widget_show_all (container);
 

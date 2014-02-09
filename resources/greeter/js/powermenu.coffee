@@ -54,31 +54,20 @@ class PowerMenu extends Widget
         power_menu = new ComboBox("power", power_menu_cb)
 
         for key, value of power_dict
-            # power_menu.insert(key, key, "images/control-power.png")
             title = null
-            if key == "suspend"
-                title = _("suspend")
-                img = img_before + "#{key}.png"
-                power_menu.insert(key, title, img)
-            else if key == "restart"
-                title = _("restart")
-                img = img_before + "#{key}.png"
-                power_menu.insert(key, title, img)
-            else if key == "shutdown"
-                echo "shutdown"
-                #title = _("shutdown")
+            title = key
+            img_normal = img_before + "#{key}_normal.png"
+            img_hover = img_before + "#{key}_hover.png"
+            img_click = img_before + "#{key}_click.png"
+            power_menu.insert(key, title, img_normal,img_hover,img_click)
+        
+        power_menu.frame_build()
+        document.body.appendChild(power_menu.element)
 
-        power_menu.current_img.src = img_before + "shutdown_normal.png"
+        power_menu.current_img.src = img_before + "powermenu.png"
         parent.appendChild(power_menu.element) if parent
-        power_menu.current_img.addEventListener("mouseover",=>
-            power_menu.current_img.src = img_before + "shutdown.png"
+       
+        document.body.addEventListener("keydown",(e)->
+            if power_menu then power_menu.menu.keydown(e.which)
         )
-        power_menu.current_img.addEventListener("mouseout",=>
-            power_menu.current_img.src = img_before + "shutdown_normal.png"
-        )
-        power_menu.current_img.addEventListener("click", (e) =>
-            power_dict["shutdown"]()
-        )
-        power_menu.menu.element.addEventListener("mouseover",=>
-            power_menu.current_img.src = img_before + "shutdown.png"
-        )
+

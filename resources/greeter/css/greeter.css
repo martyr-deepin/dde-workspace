@@ -1,34 +1,61 @@
 body{
-    cursor:text;
+    cursor:default;
     overflow:hidden;
-    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
-    /*background-color:rgba(0,0,0,0.6)*/
+    background-image: url(/usr/share/backgrounds/default_background.jpg);
+    
+    background-origin:padding-box;
+    background-clip:border-box;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    
+    font-size:62.5%;
 }
 
+.Greeter{
+    /*background-color:rgba(0,0,0,0.6)*/
+}
 
 .div_users{
     /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
-    left:27%;
+    /*left:52%;*/
+    left:32%;
+    top:30%;
     width:40%;
-    height:70%;
     
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 
-.div_time {
+
+.div_version{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
     bottom:50px;
     left:30px;
-    width:250px;
-    /*height:150px;*/
+    width:188px;
     
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
+}
+
+
+.div_desktop{
+    /*background-color:rgba(125,255,120,0.2);*/
+    position:absolute;
+    bottom:40px;
+    right:110px;
+    width:60px;
+    /*height:60px;*/
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
 }
 
 .div_power {
@@ -44,30 +71,3 @@ body{
 }
 
 
-
-
-
-.div_version{
-    /*background-color:rgba(125,255,120,0.2);*/
-    position:absolute;
-    bottom:40px;
-    right:200px;
-    width:150px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
-
-
-.div_desktop{
-    /*background-color:rgba(125,0,120,0.2);*/
-    position:absolute;
-    bottom:40px;
-    right:120px;
-    width:60px;
-    
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}

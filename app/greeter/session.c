@@ -104,32 +104,32 @@ gchar* greeter_get_session_icon (const gchar *key)
 
     if (session == NULL) {
         g_warning ("get session icon:session is NULL\n");
-        icon = g_strdup ("unknown.png");
+        icon = g_strdup ("unkown");
 
     } else if (g_str_has_prefix (session, "gnome")){
-        icon = g_strdup ("gnome.png");
+        icon = g_strdup ("gnome");
 
     } else if (g_str_has_prefix (session, "deepin")){
-        icon = g_strdup ("deepin.png");
+        icon = g_strdup ("deepin");
 
     } else if (g_str_has_prefix (session, "kde")){
-        icon = g_strdup ("kde.png");
+        icon = g_strdup ("kde");
 
     } else if (g_str_has_prefix (session, "ubuntu")){
-        icon = g_strdup ("ubuntu.png");
+        icon = g_strdup ("ubuntu");
 
     } else if (g_str_has_prefix (session, "xfce")){
-        icon = g_strdup ("xfce.png");
+        icon = g_strdup ("xfce");
 
     } else if (g_str_has_prefix (session, "lxde")){
-        icon = g_strdup ("lxde.png");
+        icon = g_strdup ("lxde");
     } else if (g_str_has_prefix (session, "enlightenment")){
-        icon = g_strdup ("enlightenment.png");
+        icon = g_strdup ("enlightenment");
     } else if (g_str_has_prefix (session, "fluxbox")){
-        icon = g_strdup ("fluxbox.png");
+        icon = g_strdup ("fluxbox");
 
     } else {
-        icon = g_strdup ("unknown.png");
+        icon = g_strdup ("unkown");
     }
 
     g_free (session);

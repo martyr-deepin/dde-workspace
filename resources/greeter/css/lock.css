@@ -1,16 +1,25 @@
 body{
     cursor:default;
     overflow:hidden;
-    background-image: url(/usr/share/backgrounds/default_background.jpg) center no-repeat;
-    /*background-color:rgba(0,0,0,0.3)*/
+    background-image: url(/usr/share/backgrounds/default_background.jpg);
+    
+    background-origin:padding-box;
+    background-clip:border-box;
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
+    font-size:62.5%;
 }
 
-
+.Lock{
+    /*background-color:rgba(0,0,0,0.3)*/
+}
 .div_users{
-    /*background-color:rgba(0,255,120,0.2);*/
     position:absolute;
     left:32%;
-    top:15%;
+    top:30%;
     width:40%;
     
     display:-webkit-box;

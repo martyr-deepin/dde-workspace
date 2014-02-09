@@ -36,26 +36,21 @@ class Greeter extends Widget
             DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
         )
 
-    mousewheel_listener:(_current_user)->
+    mousewheel_listener:(User)->
         document.body.addEventListener("mousewheel", (e) =>
             if not is_volume_control
-                if e.wheelDelta >= 120 then _current_user?.animate_next()
-                else if e.wheelDelta <= -120 then _current_user?.animate_prev()
+                if e.wheelDelta >= 120 then User?.switchtonext_userinfo()
+                else if e.wheelDelta <= -120 then User?.switchtoprev_userinfo()
         )
 
 
-    keydown_listener:(_current_user)->
+    keydown_listener:(User)->
         document.body.addEventListener("keydown", (e)=>
             if e.which == UP_ARROW
-                # echo "prev"
-                _current_user?.animate_next()
-
+                User?.switchtonext_userinfo()
             else if e.which == DOWN_ARROW
-                # echo "next"
-                _current_user?.animate_prev()
-
+                User?.switchtoprev_userinfo()
         )
-
 
 
 document.body.style.height = window.innerHeight
@@ -69,27 +64,23 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
+#user.is_support_guest()
 user.new_userinfo_for_greeter()
-user.roundabout_animation()
+#user.roundabout_animation()
 
 userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
-greeter.keydown_listener(userinfo)
-greeter.mousewheel_listener(_current_user)
-
-timedate = new TimeDate()
-$("#div_time").appendChild(timedate.element)
-timedate.show()
-
-
-#$("#div_power").title = _("ShutDown")
-powermenu = new PowerMenu($("#div_power"))
-powermenu.new_power_menu()
+greeter.keydown_listener(user)
+greeter.mousewheel_listener(user)
 
 
 version = new Version()
 $("#div_version").appendChild(version.element)
+
+powermenu = new PowerMenu($("#div_power"))
+powermenu.new_power_menu()
+
 

@@ -26,10 +26,7 @@ class DesktopMenu extends Widget
         super
         parent = parent_el
         img_before = "images/desktopmenu/"
-
-        #detext = create_element("div", "Detext", parent)
-        #detext.innerText = _("Session")
-    
+   
     new_desktop_menu: ->
         de_menu_cb = (id, title)->
             id = de_menu.set_current(id)
@@ -39,37 +36,30 @@ class DesktopMenu extends Widget
         sessions = DCore.Greeter.get_sessions()
         echo "-------sessions-------------"
         echo sessions
-        default_session = DCore.Greeter.get_default_session()
-        echo "default_session:#{default_session}"
-        if default_session is null then default_session = "deepin"
-        default_name = DCore.Greeter.get_session_name(default_session)
+        
         for session in sessions
             id = session
-            name = DCore.Greeter.get_session_name(id)
+            name = id
+            #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path = img_before + "#{icon}"
-            echo icon_path
-            if session isnt default_session
-                de_menu.insert(id, name, icon_path)
-        parent.appendChild(de_menu.element) if parent
-        echo "--------------de_menu---------------"
-        echo de_menu
-        echo "--------------de_menu---------------"
-        #de_menu.set_current(default_session)
+            icon_path_normal = img_before + "#{icon}_normal.png"
+            icon_path_hover = img_before + "#{icon}_hover.png"
+            icon_path_click = img_before + "#{icon}_press.png"
+            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_click)
+        de_menu.frame_build()
+        document.body.appendChild(de_menu.element)
         
-        default_session = de_menu.get_current()
-        if default_session is null then default_session = "deepin"
-        de_menu.current_img.src = img_before + "#{default_session}_normal.png"
+        
+        current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
+        echo "current_session_icon_name:#{current_session_icon_name}"
+        de_menu.current_img.title = current_session_icon_name
+        try
+            de_menu.current_img.src = img_before + "current/#{current_session_icon_name}.png"
+        catch e
+            echo "de_menu.current_img.src:#{e}"
+            de_menu.current_img.src = img_before + "current/unkown.png"
 
-        de_menu.current_img.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "#{default_session}.png"
-        )
-        de_menu.current_img.addEventListener("mouseout",=>
-            de_menu.current_img.src = img_before + "#{default_session}_normal.png"
-        )
-        de_menu.current_img.addEventListener("click", (e) =>
-            de_menu_cb(default_session,default_name)
-        )
-        de_menu.menu.element.addEventListener("mouseover",=>
-            de_menu.current_img.src = img_before + "#{default_session}.png"
+        
+        document.body.addEventListener("keydown",(e)->
+            if de_menu then de_menu.menu.keydown(e.which)
         )

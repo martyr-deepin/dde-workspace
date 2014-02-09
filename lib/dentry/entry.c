@@ -230,8 +230,9 @@ char* dentry_get_uri(Entry* e)
 {
     TEST_GFILE(e, f)
         char* uri = g_file_get_uri(f);
+    // '%' needs to be filtered from uri.
         char* escaped_uri = g_uri_escape_string(uri,
-                                                G_URI_RESERVED_CHARS_ALLOWED_IN_PATH,
+                                                G_URI_RESERVED_CHARS_ALLOWED_IN_PATH"%",
                                                 FALSE);
         g_free(uri);
         return escaped_uri;
@@ -1552,5 +1553,12 @@ char* dentry_get_default_audio_player_icon()
    g_object_unref(icon);
    g_object_unref(gappinfo);
    return icon_url;
+}
+
+JS_EXPORT_API
+const char* dentry_get_username()
+{
+    const gchar *username = g_get_user_name();
+    return username;
 }
 

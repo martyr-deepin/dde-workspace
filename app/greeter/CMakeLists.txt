@@ -8,13 +8,10 @@ pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
 pkg_check_modules(OPENCV REQUIRED opencv)
 pkg_check_modules(GST REQUIRED gstreamer-0.10)
 
-add_executable(${NAME} background.c greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
+add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
-add_executable(startsession startsession.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
-    camera.c settings.c ${DBUS_GEN}
-    )
-add_executable(dlock background.c dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
+add_executable(dlock dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
 add_executable(switchtogreeter switchtogreeter.c)
@@ -22,9 +19,6 @@ add_executable(lockservice lockservice.c)
 
 set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
-    ${OPENCV_LIBS} ${GST_LIBRARIES}
-    )
-target_link_libraries(startsession dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
     ${OPENCV_LIBS} ${GST_LIBRARIES}
     )
 target_link_libraries(dlock dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS}
@@ -44,12 +38,6 @@ install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION bin
     )
-
-install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/startsession
-    DESTINATION bin
-    )
-
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/switchtogreeter
     DESTINATION bin

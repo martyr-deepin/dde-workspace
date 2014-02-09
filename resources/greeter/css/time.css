@@ -1,6 +1,8 @@
 .TimeDate {
-    /*background-color:rgba(125,255,120,0.2);*/
-    width:200px;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-box-pack:center;
+    /*width:200px;*/
     /*height:100px;*/
 }
 
@@ -13,23 +15,27 @@
 .time{
     padding-top:30px;
     display: block;
-    text-align:left;
+    text-align:center;
 }
 
 .TimeDate span{
     color: #fff;
     text-shadow:0 0 2px #333;
-    font-size:90px;
+    font-size:8em;
     font-family: MavenProLight;
 }
 
 .date{
     margin-top:20px;
     display: block;
-    font-size:15px;
+    font-size:2em;
     color: #fff;
     /*font-family: MavenProLight;*/
     text-shadow:0 0 2px #333;
     text-align:left;
-    margin-left:15px;
+    /*margin-left:10px;*/
+}
+
+.date:lang(zh){
+    /*margin-left:15px;*/
 }
