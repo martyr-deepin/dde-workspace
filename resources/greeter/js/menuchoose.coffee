@@ -67,7 +67,7 @@ class MenuChoose extends Widget
             apply_animation(@opt_img[i],"opt_img_scale_large",time_animation)
             #apply_animation(@opt_img[i],"opt_img_show_move",time_animation - i * 50)
         apply_animation(@element,"menu_show_move",time_animation)
-        @opt_img[@opt_img.length - 1].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
+        @opt_img[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
         
         $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
     
