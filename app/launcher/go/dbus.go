@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"os"
 	"path"
 	"time"
@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	launcherObject            string = "com.deepin.dde.daemon.launcher"
-	launcherPath              string = "/com/deepin/dde/daemon/launcher"
+	launcherObject            string = "com.deepin.dde.daemon.Launcher"
+	launcherPath              string = "/com/deepin/dde/daemon/Launcher"
 	launcherInterface         string = launcherObject
 	launcherCategoryInterface string = launcherObject + ".category"
 	launcherConfigInterface   string = launcherObject + ".config"
@@ -45,25 +45,11 @@ func (d *LauncherDBus) GetDBusInfo() dbus.DBusInfo {
 }
 
 func (d *LauncherDBus) CategoryInfos() []CategoryInfo {
-	categoryInfos := make([]CategoryInfo, 0)
-	for _, v := range categoryTable {
-		categoryInfos = append(categoryInfos, *v)
-	}
-	return categoryInfos
+	return getCategoryInfos()
 }
 
 func (d *LauncherDBus) ItemInfos(id int32) []ItemInfo {
-	// fmt.Println(id)
-	itemInfos := make([]ItemInfo, 0)
-	if _, ok := categoryTable[CategoryId(id)]; ok {
-		return itemInfos
-	}
-
-	for k, _ := range categoryTable[CategoryId(id)].items {
-		itemInfos = append(itemInfos, *itemTable[k])
-	}
-
-	return itemInfos
+	return getItemInfos(CategoryId(id))
 }
 
 func (d *LauncherDBus) emitItemChanged(name, status string, info map[string]ItemChangedStatus) {
@@ -207,6 +193,16 @@ func (d *LauncherDBus) IsOnDesktop(name string) bool {
 
 func (d *LauncherDBus) SendToDesktop(name string) {
 	sendToDesktop(name)
+}
+
+func (d *LauncherDBus) LoadHiddenApps() []ItemId {
+	ids := make([]ItemId, 0)
+	return ids
+}
+
+func (d *LauncherDBus) SaveHiddenApps(ids []string) bool {
+	fmt.Println(ids)
+	return true
 }
 
 func initDBus() {

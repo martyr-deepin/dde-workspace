@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"dbus/com/deepin/dde/api/pinyin"
+	"dbus/com/deepin/api/pinyin"
 )
 
 var tree *pinyin.PinyinTrie = nil
@@ -104,21 +104,21 @@ func searchInstalled(key string, res chan<- SearchResult, end chan<- bool) {
 				// fmt.Println(v.Name)
 				score += s * weight
 			}
-			for _, keyword := range v.keywords {
+			for _, keyword := range v.xinfo.keywords {
 				if matcher.MatchString(keyword) {
 					// fmt.Println(keyword)
 					score += s * weight
 				}
 			}
-			if matcher.MatchString(v.exec) {
+			if matcher.MatchString(v.xinfo.exec) {
 				// fmt.Println(v.exec)
 				score += s * weight
 			}
-			if matcher.MatchString(v.genericName) {
+			if matcher.MatchString(v.xinfo.genericName) {
 				// fmt.Println(v.genericName)
 				score += s * weight
 			}
-			if matcher.MatchString(v.description) {
+			if matcher.MatchString(v.xinfo.description) {
 				// fmt.Println(v.description)
 				score += s * weight
 			}

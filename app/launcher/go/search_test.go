@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"dbus/com/deepin/dde/api/pinyin"
+	"dbus/com/deepin/api/pinyin"
 	"dlib/gio-2.0"
 )
 
@@ -25,8 +25,9 @@ func TestSearch(t *testing.T) {
 		GenericName: %s
 		Description: %s
 		Exec: %s
-		`, id, item.Name, item.Path, item.keywords, item.genericName,
-			item.description, item.exec)
+		`, id, item.Name, item.Path, item.xinfo.keywords,
+			item.xinfo.genericName, item.xinfo.description,
+			item.xinfo.exec)
 	}
 }
 

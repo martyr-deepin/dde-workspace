@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"sort"
 	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -119,4 +120,33 @@ func findCategoryId(categoryName string) CategoryId {
 		return OtherID
 	}
 	return id
+}
+
+type CategoryInfosResult []CategoryInfo
+
+func (res CategoryInfosResult) Len() int {
+	return len(res)
+}
+
+func (res CategoryInfosResult) Swap(i, j int) {
+	res[i], res[j] = res[j], res[i]
+}
+
+func (res CategoryInfosResult) Less(i, j int) bool {
+	if res[i].Id == -1 || res[j].Id == -2 {
+		return true
+	} else if res[i].Id == -2 || res[j].Id == -1 {
+		return false
+	} else {
+		return res[i].Id < res[j].Id
+	}
+}
+
+func getCategoryInfos() []CategoryInfo {
+	infos := make([]CategoryInfo, 0)
+	for _, v := range categoryTable {
+		infos = append(infos, *v)
+	}
+	sort.Sort(CategoryInfosResult(infos))
+	return infos
 }

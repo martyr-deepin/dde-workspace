@@ -10,13 +10,13 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"dbus/com/deepin/dde/api/pinyin"
+	"dbus/com/deepin/api/pinyin"
 	"dlib/gio-2.0"
 )
 
 type ItemId string
 
-type xinfo struct {
+type Xinfo struct {
 	keywords    []string
 	exec        string
 	genericName string
@@ -36,7 +36,7 @@ type ItemInfo struct {
 	Name        string
 	Id          ItemId
 	categoryIds map[CategoryId]bool
-	xinfo
+	xinfo       Xinfo
 }
 
 var itemTable = map[ItemId]*ItemInfo{}
@@ -147,7 +147,7 @@ func initItems() {
 	}
 
 	var err error
-	tree, err = pinyin.NewPinyinTrie("/com/deepin/dde/api/PinyinTrie")
+	tree, err = pinyin.NewPinyinTrie("/com/deepin/api/PinyinTrie")
 	if err != nil {
 		return
 	}
@@ -156,4 +156,19 @@ func initItems() {
 		names[v.Name] = v.Name
 	}
 	treeId, _ = tree.NewTrieWithString(names, "DDELauncherDaemon")
+}
+
+func getItemInfos(id CategoryId) []ItemInfo {
+	// fmt.Println(id)
+	infos := make([]ItemInfo, 0)
+	if _, ok := categoryTable[id]; !ok {
+		fmt.Println("category id:", id, "not exist")
+		return infos
+	}
+
+	for k, _ := range categoryTable[id].items {
+		infos = append(infos, *itemTable[k])
+	}
+
+	return infos
 }
