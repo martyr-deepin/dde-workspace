@@ -47,9 +47,12 @@ class MenuChoose extends Widget
         $("#div_users").addEventListener("webkitAnimationEnd",@animationEnd_div_users_hide ,false)
 
     hide:->
-        apply_animation(@element,"menu_hide_move",time_animation)
-        @element.addEventListener("webkitAnimationEnd",@animationEnd_menu_hide ,false)
-
+        for tmp ,i in @option
+            @opt_text[i].style.display = "block"
+            apply_animation(@opt_text[i],"hide_animation","200")
+        @animationEnd_opt_text_hide()
+        #@opt_text[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
+    
     animationEnd_div_users_hide:=>
         $("#div_users").style.display = "none" # set it in css
         if is_greeter
@@ -59,22 +62,45 @@ class MenuChoose extends Widget
        
         @element.style.display = "block"
         @setmaxbutton_in_oneline(4)
+        for tmp ,i in @option
+            @opt_text[i].style.display = "none"
+            apply_animation(@opt_img[i],"opt_img_scale_large",time_animation)
+            #apply_animation(@opt_img[i],"menu_show_move",time_animation + i * 0.1)
+        @opt_img[@opt_img.length - 1].addEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
         apply_animation(@element,"menu_show_move",time_animation)
         
         $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
     
     animationEnd_menu_hide:=>
+        echo "animationEnd_menu_hide"
         @element.style.display = "none" # set it in css
         
         $("#div_users").style.display = "block" # set it in css
         apply_animation($("#div_users"),"div_users_show","200")
-        #apply_animation($("#div_users"),"show_animation","200")
         if is_greeter
             $(".prevuserinfo").style.display = "block"
             $(".nextuserinfo").style.display = "block"
         
         @element.removeEventListener("webkitAnimationEnd",@animationEnd_menu_hide,false)
     
+    animationEnd_opt_text_hide:=>
+        echo "animationEnd_menu_hide"
+        for tmp ,i in @option
+            @opt_text[i].style.display = "none"
+            apply_animation(@opt_img[i],"opt_img_scale_small",time_animation)
+            #apply_animation(@opt_img[i],"menu_hide_move",time_animation + i * 0.1)
+        apply_animation(@element,"menu_hide_move",time_animation)
+        
+        @element.addEventListener("webkitAnimationEnd",@animationEnd_menu_hide ,false)
+        @opt_text[0].removeEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
+
+    
+    animationEnd_opt_img_large:=>
+        for tmp ,i in @option
+            @opt_text[i].style.display = "block"
+            apply_animation(@opt_text[i],"show_animation","200")
+        @opt_img[@opt_img.length - 1].removeEventListener("webkitAnimationEnd",@animationEnd_opt_img_large,false)
+
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)
         @option_text.push(title)
