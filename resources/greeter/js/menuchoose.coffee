@@ -23,7 +23,7 @@ class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
     frame_click = true
-    time_show_hide_animation = "500"
+    time_animation = "500"
 
     constructor: (@id)->
         super
@@ -43,39 +43,37 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
-        @element.style.display = "block"
-        @setmaxbutton_in_oneline(4)
-
-        apply_animation(@element,"menu_show_move",time_show_hide_animation)
-        echo $(".LoginEntry")
-        $(".LoginEntry").style.display = "none"
-        animation_scale($(".userimg_div"),0.4,"0.5s")
-        apply_animation($(".username"),"username_up_animation",time_show_hide_animation)
-        if is_greeter
-            apply_animation($("#div_users"),"div_users_hide_move_greeter",time_show_hide_animation)
-            $(".prevuserinfo").style.display = "none"
-            $(".nextuserinfo").style.display = "none"
-        else
-            apply_animation($("#div_users"),"div_users_hide_move_lock",time_show_hide_animation)
+        apply_animation($("#div_users"),"div_users_hide","200")
+        $("#div_users").addEventListener("webkitAnimationEnd",@animationEnd_div_users_hide ,false)
 
     hide:->
-        $(".LoginEntry").style.display = "block"
-        apply_animation(@element,"menu_hide_move",time_show_hide_animation)
-        apply_animation($("#div_users"),"div_users_restore_move",time_show_hide_animation)
-        animation_scale($(".userimg_div"),1.0,"0.5s")
-        apply_animation($(".username"),"username_down_animation",time_show_hide_animation)
-        @element.addEventListener("webkitAnimationEnd",@animationEnd ,false)
-        if is_greeter
-            apply_animation($("#div_users"),"div_users_restore_move_greeter",time_show_hide_animation)
-        else
-            apply_animation($("#div_users"),"div_users_restore_move_lock",time_show_hide_animation)
+        apply_animation(@element,"menu_hide_move",time_animation)
+        @element.addEventListener("webkitAnimationEnd",@animationEnd_menu_hide ,false)
 
-    animationEnd:=>
+    animationEnd_div_users_hide:=>
+        $("#div_users").style.display = "none" # set it in css
+        if is_greeter
+            $(".prevuserinfo").style.display = "none"
+            $(".nextuserinfo").style.display = "none"
+        
+       
+        @element.style.display = "block"
+        @setmaxbutton_in_oneline(4)
+        apply_animation(@element,"menu_show_move",time_animation)
+        
+        $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
+    
+    animationEnd_menu_hide:=>
         @element.style.display = "none" # set it in css
+        
+        $("#div_users").style.display = "block" # set it in css
+        apply_animation($("#div_users"),"div_users_show","200")
+        #apply_animation($("#div_users"),"show_animation","200")
         if is_greeter
             $(".prevuserinfo").style.display = "block"
             $(".nextuserinfo").style.display = "block"
-        @element.removeEventListener("webkitAnimationEnd",@animationEnd,false)
+        
+        @element.removeEventListener("webkitAnimationEnd",@animationEnd_menu_hide,false)
     
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)

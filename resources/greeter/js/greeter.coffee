@@ -74,7 +74,7 @@ _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
 greeter.webview_ok(_current_user)
-greeter.mousewheel_listener(user)
+#greeter.mousewheel_listener(user)
 
 
 version = new Version()
