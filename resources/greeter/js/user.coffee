@@ -42,7 +42,7 @@ class User extends Widget
     users_realname = []
     users_id = []
     
-    time_animation = 1000
+    time_animation = 1800
     
     constructor:->
         super
@@ -239,14 +239,16 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-                apply_animation(user.userbase,"hide_animation",time_animation)
+                apply_animation(user.userimg,"hide_animation",time_animation)
+                apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_prev()
-                apply_animation(user.userbase,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",time_animation)
+                apply_animation(user.username,"show_animation",time_animation)
 
 
     switchtonext_userinfo:=>
@@ -254,14 +256,16 @@ class User extends Widget
         for user in userinfo_all
             if user.element.style.display is "block"
                 user.only_show_name(true)
-                apply_animation(user.userbase,"hide_animation",time_animation)
+                apply_animation(user.userimg,"hide_animation",time_animation)
+                apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
                 user.only_show_name(false)
                 user.animate_next()
-                apply_animation(user.userbase,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",time_animation)
+                apply_animation(user.username,"show_animation",time_animation)
 
 
 class LoginEntry extends Widget
@@ -358,7 +362,6 @@ class LoginEntry extends Widget
 
 
 class UserInfo extends Widget
-    userimg = null
     recognize = null
     constructor: (@id, name, @img_src)->
         super
@@ -368,10 +371,17 @@ class UserInfo extends Widget
         @userbase = create_element("div", "UserBase", @element)
         
         @userimg_div = create_element("div","userimg_div",@userbase)
-        userimg_border = create_element("div","userimg_border",@userimg_div)
-        userimg_background = create_element("div","userimg_background",userimg_border)
-        userimg = create_img("userimg", @img_src, userimg_background)
+        @userimg_border = create_element("div","userimg_border",@userimg_div)
+        @userimg_background = create_element("div","userimg_background",@userimg_border)
+        @userimg = create_img("userimg", @img_src, @userimg_background)
        
+        @userimg.style.width = 110
+        @userimg.style.height = 110
+        @userimg_border.style.width = @userimg.style.width + 16
+        @userimg_border.style.height = @userimg.style.height + 16
+        @userimg_background.style.width = @userimg_border.style.width - 3
+        @userimg_background.style.height = @userimg_border.style.height - 3
+
         @username = create_element("div", "username", @userbase)
         @username.innerText = name
 
@@ -492,7 +502,7 @@ class UserInfo extends Widget
         if @face_login
             clearInterval(draw_camera_id)
             draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(userimg, userimg.width, userimg.height)
+                DCore[APP_NAME].draw_camera(@userimg, @userimg.width, @userimg.height)
             , 20)
 
 
