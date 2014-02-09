@@ -1,8 +1,8 @@
 body{
     cursor:default;
     overflow:hidden;
-    /*background-image: url(../images/background1.jpg);*/
-    background-image: url(../js/skyThree/sky.jpg);
+    background-image: url(../images/background1.jpg);
+    /*background-image: url(../js/skyThree/sky.jpg);*/
 
     
     background-origin:padding-box;
