@@ -5,6 +5,7 @@ animation_moveX = (el,moveX,time)->
     
     el.style.webkitTransform = "translateX(#{moveX}px)"
     el.style.webkitTransition = "-webkit-transform #{time} linear"
+    el.style.webkitAnimationFillMode = "both"
 
 animation_scale = (el,scale,time)->
     el.style.webkitTransform = "scale(#{scale})"
