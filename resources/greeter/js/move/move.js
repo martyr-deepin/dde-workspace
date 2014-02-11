@@ -1044,7 +1044,9 @@ Move.prototype.duration = function(n){
   n = this._duration = 'string' == typeof n
     ? parseFloat(n) * 1000
     : n;
-  return this.setVendorProperty('transition-duration', n + 'ms');
+  
+    console.log("transition-duration" + n);
+    return this.setVendorProperty('transition-duration', n + 'ms');
 };
 
 /**
@@ -1107,7 +1109,7 @@ Move.prototype.set = function(prop, val){
   this.transition(prop);
   this._props[prop] = val;
   return this;
-};
+}
 
 /**
  * Increment `prop` by `val`, deferred until `.end()` is invoked
@@ -1183,7 +1185,15 @@ Move.prototype.transition = function(prop){
 
 Move.prototype.applyProperties = function(){
   for (var prop in this._props) {
-    this.el.style.setProperty(prop, this._props[prop]);
+    if(!this.el.style.setProperty){
+        console.log("setProperty");
+        this.el.style.setProperty(prop, this._props[prop],null);
+    }
+    else{
+        console.log("setAttribute");
+        //this.el.setAttribute('style',prop+': '+this._props[prop]+';');
+        this.el.style[prop] = this._props[prop];
+    }
   }
   return this;
 };

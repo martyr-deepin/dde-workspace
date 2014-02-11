@@ -24,7 +24,10 @@ class MenuChoose extends Widget
     select_state_confirm = false
     frame_click = true
     time_animation = 500
-
+    t_max = 1000
+    t_mid = 500
+    t_min = 200
+    
     constructor: (@id)->
         super
         @current = @id
@@ -43,65 +46,97 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
-        apply_animation($("#div_users"),"hide_animation","200")
-        $("#div_users").addEventListener("webkitAnimationEnd",@animationEnd_div_users_hide ,false)
+        animation_opt_move_show = (i,time_max,time_min)=>
+            text_el = @opt_text[i]
+            img_el = @opt_img[i]
+            
+            #init el css and then can animate
+            text_el.style.opacity = "0.0"
+            text_el.style.display = "none"
+            
+            img_el.style.opacity = "0.0"
+            img_el.style.width = "40px"
+            img_el.style.height = "40px"
+            img_el.style.left = "0"
+            
+            jQuery(img_el).animate(
+                {opacity: 1.0;left:'-300px'; width:'80px';height:'80px';},
+                time_max / 4 + i * 100,
+                'linear',=>
+                    jQuery(img_el).animate(
+                        {left:'-280px';},
+                        t_min,
+                        'linear',=>
+                            text_el.style.display = "block"
+                            text_el.style.left = "-280px"
+                            jQuery(text_el).animate(
+                                {opacity:'1.0';},
+                                t_min
+                            )
+                    )
+            )
 
-    hide:->
-        for tmp ,i in @option
-            @opt_text[i].style.display = "block"
-            apply_animation(@opt_text[i],"hide_animation","200")
-        @animationEnd_opt_text_hide()
-        #@opt_text[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
-    
-    animationEnd_div_users_hide:=>
-        echo "animationEnd_div_users_hide"
-        $("#div_users").style.display = "none" # set it in css
-        if is_greeter
-            $(".prevuserinfo").style.display = "none"
-            $(".nextuserinfo").style.display = "none"
-        
-       
-        @element.style.display = "block"
-        @setmaxbutton_in_oneline(4)
-        for tmp ,i in @option
-            @opt_text[i].style.display = "none"
-            if i > 0
-                apply_animation(@opt[i],"opt_show_move",time_animation / 4 + i * 100)
-        apply_animation(@opt[0],"menu_show_move",time_animation / 4)
-        @opt[@opt.length - 1].addEventListener("webkitAnimationEnd",@animationEnd_opt_show,false)
-        
-        $("#div_users").removeEventListener("webkitAnimationEnd",@animationEnd_div_users_hide,false)
-    
+        jQuery('.div_users').animate(
+            {opacity:'0.0';},
+            t_mid,
+            'linear',=>
+                $("#div_users").style.display = "none"
+                if is_greeter
+                    $(".prevuserinfo").style.display = "none"
+                    $(".nextuserinfo").style.display = "none"
+                @element.style.display = "block"
+                @setmaxbutton_in_oneline(4)
+                for tmp ,i in @opt
+                    animation_opt_move_show(i,t_max,t_min)
+        )
+
+
    
-    animationEnd_opt_text_hide:=>
-        echo "animationEnd_opt_text_hide"
-        for tmp ,i in @option
-            @opt_text[i].style.display = "none"
-            if i < @opt.length - 1
-                apply_animation(@opt[i],"opt_hide_move",time_animation - i * 100)
-        max = @opt.length - 1
-        apply_animation(@opt[max],"menu_hide_move",time_animation / 4 - max * 100 )
-        @opt[0].addEventListener("webkitAnimationEnd",@animationEnd_opt_hide ,false)
-        #@opt_text[0].removeEventListener("webkitAnimationEnd",@animationEnd_opt_text_hide,false)
+    hide:->
 
-    animationEnd_opt_hide:=>
-        echo "animationEnd_opt_hide"
-        @element.style.display = "none" # set it in css
-        
-        $("#div_users").style.display = "block" # set it in css
-        apply_animation($("#div_users"),"show_animation","200")
-        if is_greeter
-            $(".prevuserinfo").style.display = "block"
-            $(".nextuserinfo").style.display = "block"
-        
-        @opt[0].removeEventListener("webkitAnimationEnd",@animationEnd_opt_hide,false)
-     
-    animationEnd_opt_show:=>
-        echo "animationEnd_opt_show"
-        for tmp ,i in @option
-            @opt_text[i].style.display = "block"
-            apply_animation(@opt_text[i],"show_animation","200")
-        @opt[@opt.length - 1].removeEventListener("webkitAnimationEnd",@animationEnd_opt_show,false)
+        animation_user_show = (i)=>
+            echo i
+            if i != 0  then return
+            echo "animation_user_show"
+            $("#div_users").style.display = "block"
+            jQuery('.div_users').animate(
+                {opacity:'1.0';},
+                t_mid
+            )
+
+        animation_opt_move_hide = (i,time_max,time_min)=>
+            text_el = @opt_text[i]
+            img_el = @opt_img[i]
+            opt_el = @opt[i]
+
+            jQuery(text_el).animate(
+                {opacity:'0.0';},
+                t_min,
+                'linear',=>
+                    text_el.style.display = "none"
+                    jQuery(img_el).animate(
+                        {left:'-300px';},
+                        t_min,
+                        'linear',=>
+                            jQuery(img_el).animate(
+                                {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
+                                time_max - i * 100,
+                                'linear',=>
+                                    opt_el.style.display = "none"
+                                    animation_user_show(i)
+                            )
+                    )
+            )
+
+
+        for tmp ,i in @opt
+            #delete select_state and then start animate
+            tmp.style.backgroundColor = "rgba(255,255,255,0.0)"
+            tmp.style.border = "1px solid rgba(255,255,255,0.0)"
+            tmp.style.borderRadius = null
+
+            animation_opt_move_hide(i,t_max,t_min)
+
 
     insert: (id, title, img_normal,img_hover,img_click)->
         @option.push(id)
