@@ -19,13 +19,10 @@
 
 
 class CategoryItem
-    constructor: (@id, name)->
+    constructor: (@id, @name)->
         @element = create_element('div', 'category_name', null)
         @element.setAttribute('id', @id)
-        @element.innerText = name
-
-        @info = DCore.Launcher.get_items_by_category(@id)
-        @sort()
+        @element.innerText = @name
 
     show:->
         @element.style.display = "block"
@@ -43,17 +40,13 @@ class CategoryItem
         # TODO
         # grid.load(@selected_id)
 
-    sort: ->
-        # echo "#{config.sort_method}"
-        SORT_METHOD[config.sort_method](@info)
-
-
 class CategoryBar
-    constructor:->
+    constructor: (infos)->
         @select_timer = -1
-        @selected_id = ALL_APPLICATION_CATEGORY_ID
+        @selected_id = CATEGORY_ID.FAVOR
 
         @category = $("#category")
+        @category.style.display = 'none'
         @category.addEventListener("click", (e) ->
             e.stopPropagation()
         )
@@ -63,8 +56,8 @@ class CategoryBar
             id = parseInt(target.id)
             if !isNaN(id)
                 @select_timer = setTimeout(=>
-                    @category_items[@selected_id].blur()
-                    @category_items[id].focus()
+                    @category_items[@selected_id]?.blur()
+                    @category_items[id]?.focus()
                     @selected_id = id
                 )
         )
@@ -77,42 +70,46 @@ class CategoryBar
         )
 
         @category_items = {}
-        @load()
+        @load(infos)
 
         @update_scroll_bar()
 
-    load: ->
+    load: (infos)->
         frag = document.createDocumentFragment()
-        for info in DCore.Launcher.get_categories()
-            id = parseInt(info.ID)
-            @category_items[id] = new CategoryItem(id, info.Name)
+        for info in infos
+            id = info[0]
+            name = info[1]
+            items = info[2]
+            @category_items[id] = new CategoryItem(id, name)
             frag.appendChild(@category_items[id].element)
+            if items.length == 0
+                @category_items[id].hide()
         @category.appendChild(frag)
         @
 
-    addItem: (id, name)->
-        id = parsetInt(id, 10)
-        if @category_items[id]?
-            echo "category ##{id}# is existed"
-            return @
-
-        indicator = @category.lastChild
-        for own _id, item of @category_items
-            if _id != CATEGORY_ID.ALL and _id != CATEGORY_ID.OTHER and _id == id
-                indicator = item.element
-        @category_items[id] = new CategoryItem(id, name)
-        @category.insertBefore(@category_items[id].element, indicator)
-        @
-
-    removeItem: (id)->
-        if not @category_items[id]?
-            echo "category ##{id} doesn't exist"
-            return @
-
-        @category_items[id].hide()
-        target = @category_items[id].element
-        target.parentNode.removeChild(target)
-        @
+    # addItem: (id, name)->
+    #     id = parsetInt(id, 10)
+    #     if @category_items[id]?
+    #         echo "category ##{id}# is existed"
+    #         return @
+    #
+    #     indicator = @category.lastChild
+    #     for own _id, item of @category_items
+    #         if _id != CATEGORY_ID.ALL and _id != CATEGORY_ID.OTHER and _id == id
+    #             indicator = item.element
+    #     @category_items[id] = new CategoryItem(id, name)
+    #     @category.insertBefore(@category_items[id].element, indicator)
+    #     @
+    #
+    # removeItem: (id)->
+    #     if not @category_items[id]?
+    #         echo "category ##{id} doesn't exist"
+    #         return @
+    #
+    #     @category_items[id].hide()
+    #     target = @category_items[id].element
+    #     target.parentNode.removeChild(target)
+    #     @
 
     hide_empty_category:->
         for own id, item of @category_items

@@ -28,6 +28,7 @@ const (
 
 	AllID   = -1
 	OtherID = -2
+	FavorID = -3
 
 	DataDir      = "/usr/share/deepin-software-center/data"
 	DataNewestId = DataDir + "/data_newest_id.ini"
@@ -113,7 +114,6 @@ func initCategory() {
 func findCategoryId(categoryName string) CategoryId {
 	lowerCategoryName := strings.ToLower(categoryName)
 	// fmt.Println("categoryName:", lowerCategoryName)
-	// nameIdMap[lowerCategoryName]
 	id, ok := nameIdMap[lowerCategoryName]
 	// fmt.Printf("nameIdMap[\"%s\"]=%d\n", lowerCategoryName, id)
 	if !ok {
@@ -122,7 +122,13 @@ func findCategoryId(categoryName string) CategoryId {
 	return id
 }
 
-type CategoryInfosResult []CategoryInfo
+type CategoryInfoExport struct {
+	Id    CategoryId
+	Name  string
+	Items []string
+}
+
+type CategoryInfosResult []CategoryInfoExport
 
 func (res CategoryInfosResult) Len() int {
 	return len(res)
@@ -142,11 +148,33 @@ func (res CategoryInfosResult) Less(i, j int) bool {
 	}
 }
 
-func getCategoryInfos() []CategoryInfo {
-	infos := make([]CategoryInfo, 0)
+type ItemIdList []string
+
+func (l ItemIdList) Len() int {
+	return len(l)
+}
+
+func (l ItemIdList) Swap(i, j int) {
+	l[i], l[j] = l[j], l[i]
+}
+
+func (l ItemIdList) Less(i, j int) bool {
+	return itemTable[ItemId(l[i])].Name < itemTable[ItemId(l[j])].Name
+}
+
+func getCategoryInfos() CategoryInfosResult {
+	infos := make(CategoryInfosResult, 0)
 	for _, v := range categoryTable {
-		infos = append(infos, *v)
+		if v.Id == AllID {
+			continue
+		}
+		info := CategoryInfoExport{v.Id, v.Name, make([]string, 0)}
+		for k, _ := range v.items {
+			info.Items = append(info.Items, string(k))
+		}
+		sort.Sort(ItemIdList(info.Items))
+		infos = append(infos, info)
 	}
-	sort.Sort(CategoryInfosResult(infos))
+	sort.Sort(infos)
 	return infos
 }

@@ -38,7 +38,7 @@ contextmenu_callback = (e)->
                     sort_method = "rate"
 
                 sort_category_info(sort_methods[sort_method])
-                update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+                update_items(category_infos[CATEGORY_ID.ALL])
                 grid_load_category(selected_category_id)
 
                 DCore.Launcher.save_config('sort_method', sort_method)
@@ -53,53 +53,54 @@ contextmenu_callback = (e)->
 
 keydown_callback = (e) ->
     e.stopPropagation()
-    if e.ctrlKey and e.shiftKey and e.which == TAB_KEY
+    if e.ctrlKey and e.shiftKey and e.which == KEYCODE.TAB
         e.preventDefault()
         selected_up()
     else if e.ctrlKey
         e.preventDefault()
         switch e.which
-            when P_KEY
+            when KEYCODE.P
                 selected_up()
-            when F_KEY
+            when KEYCODE.F
                 selected_next()
-            when B_KEY
+            when KEYCODE.B
                 selected_prev()
-            when N_KEY, TAB_KEY
+            when KEYCODE.N, KEYCODE.TAB
                 selected_down()
-            when ENTER_KEY, SPACE_KEY
+            when KEYCODE.ENTER, KEYCODE.SPACE
                 s_box.focus()
-    else if String.fromCharCode(e.which).match(/\w/) or e.which == BACKSPACE_KEY
+    else if String.fromCharCode(e.which).match(/\w/) or e.which == KEYCODE.BACKSPACE
         s_box.focus()
     else
         switch e.which
-            when ESC_KEY
+            when KEYCODE.ESC
                 e.preventDefault()
                 e.stopPropagation()
-                if s_box.value == ""
-                    exit_launcher()
-                else
-                    s_box.focus()
-                    clean_search_bar()
-            when ENTER_KEY
+                exit_launcher()
+                # if s_box.value == ""
+                #     exit_launcher()
+                # else
+                #     s_box.focus()
+                #     clean_search_bar()
+            when KEYCODE.ENTER
                 e.preventDefault()
                 if item_selected
                     item_selected.do_click()
                 else
                     get_first_shown()?.do_click()
-            when UP_ARROW
+            when KEYCODE.UP_ARROW
                 e.preventDefault()
                 selected_up()
-            when DOWN_ARROW
+            when KEYCODE.DOWN_ARROW
                 e.preventDefault()
                 selected_down()
-            when LEFT_ARROW
+            when KEYCODE.LEFT_ARROW
                 e.preventDefault()
                 selected_prev()
-            when RIGHT_ARROW
+            when KEYCODE.RIGHT_ARROW
                 e.preventDefault()
                 selected_next()
-            when TAB_KEY
+            when KEYCODE.TAB
                 e.preventDefault()
                 if e.shiftKey
                     selected_prev()
@@ -118,6 +119,6 @@ bind_events = ->
     _b.addEventListener('keypress', (e) ->
         e.preventDefault()
         e.stopPropagation()
-        if e.which != ESC_KEY and e.which != BACKSPACE_KEY and e.which != ENTER_KEY and e.whicn != SPACE_KEY
+        if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
             s_box.value += String.fromCharCode(e.which)
     )

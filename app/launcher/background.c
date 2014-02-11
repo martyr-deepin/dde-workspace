@@ -28,7 +28,7 @@
 #define DEFAULT_BACKGROUND_IMAGE "/usr/share/backgrounds/default_background.jpg"
 // get these macros from deepin-settings-deamon/plugins/background/
 #define GSD_LIBEXECDIR "/usr/lib/gnome-settings-daemon"
-#define BG_GAUSSIAN_SIGMA 10.0
+#define BG_GAUSSIAN_SIGMA 50.0
 #define BG_GAUSSIAN_NSTEPS 10UL
 
 

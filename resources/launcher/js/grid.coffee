@@ -62,14 +62,14 @@ grid_show_items = (items) ->
     return  # some return like here will keep js converted by coffeescript returning stupid things
 
 grid_load_category = (cat_id) ->
-    grid_show_items(category_infos[cat_id])
+    grid_show_items(category_bar.items(cat_id))
     update_selected(null)
 
 
 init_grid = ->
-    sort_category_info(sort_methods[sort_method])
-    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
-    grid_load_category(ALL_APPLICATION_CATEGORY_ID)
+    # sort_category_info(sort_methods[sort_method])
+    update_items(category_infos[CATEGORY_ID.ALL])
+    grid_load_category(CATEGORY_ID.ALL)
 
 show_grid_dom_child = ->
     c = grid.children

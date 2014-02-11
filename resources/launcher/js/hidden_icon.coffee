@@ -31,7 +31,7 @@ class HiddenIcons
         @load()
 
     load: ->
-        if (origin_ids = DCore.Launcher.load_hidden_apps())?
+        if (origin_ids = daemon.LoadHiddenApps_sync())?
             valid_ids = origin_ids.filter((elem) ->
                 applications[elem]?
             )
@@ -39,13 +39,14 @@ class HiddenIcons
             @hidden_icon_number = valid_ids.length
             @update_cache = false
             for id in valid_ids
+                # echo applications[id].name
                 @hidden_icons[id] = applications[id]
 
         @
 
     save: ->
         # echo "save #{Object.keys(@hidden_icons)}"
-        DCore.Launcher.save_hidden_apps(Object.keys(@hidden_icons))
+        # daemon.SaveHiddenApps(Object.keys(@hidden_icons))
         @
 
     reset: ->

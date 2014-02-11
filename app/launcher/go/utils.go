@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path"
+
+	"dlib/glib-2.0"
 )
 
 func exist(name string) bool {
@@ -98,4 +101,35 @@ func copyFile(src, dst string, copyFlag CopyFlag) error {
 	}
 
 	return copyFileAux(src, dst, copyFlag)
+}
+
+func saveKeyFile(file *glib.KeyFile, path string) error {
+	_, content, err := file.ToData()
+	if err != nil {
+		return err
+	}
+
+	stat, err := os.Lstat(path)
+	if err != nil {
+		return err
+	}
+
+	err = ioutil.WriteFile(path, []byte(content), stat.Mode())
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func configFilePath(name string) string {
+	return path.Join(glib.GetUserConfigDir(), name)
+}
+
+func configFile(name string) (*glib.KeyFile, error) {
+	file := glib.NewKeyFile()
+	conf := configFilePath(name)
+	if ok, err := file.LoadFromFile(conf, glib.KeyFileFlagsNone); !ok {
+		return nil, err
+	}
+	return file, nil
 }

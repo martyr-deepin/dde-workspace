@@ -8,6 +8,8 @@ all: ${com_coffee} \
 	utils.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
+	category.coffee \
+	category_list.coffee \
 	item.coffee \
 	hidden_icon.coffee \
 	grid.coffee \

@@ -6,7 +6,11 @@
     </head>
     <body>
         <div id="search">
-            <input id="s_box" type=search results=5 autofocus=true>
+            <div>
+                <img id="searchFlag" src="" alt="search flag" title="search flag">
+                <span id="searchKey"></span>
+            </div>
+            <!-- <input id="s_box" type=search results=5 autofocus=true> -->
         </div>
         <div id="container">
             <!--
@@ -14,7 +18,8 @@
             warp category div
             -->
             <div><div id="category"></div></div>
-            <div id="grid"> </div>
+            <div class="page" id="grid"></div>
+            <div class="page" id="searchResult"></div>
         </div>
 
         <script src="js/launcher.js"> </script>

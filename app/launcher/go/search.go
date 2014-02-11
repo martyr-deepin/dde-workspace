@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"dbus/com/deepin/api/pinyin"
+	pinyin "dbus/com/deepin/api/search"
 )
 
-var tree *pinyin.PinyinTrie = nil
+var tree *pinyin.Search = nil
 var treeId string
 
 type SearchFunc func(key string, res chan<- SearchResult, end chan<- bool)

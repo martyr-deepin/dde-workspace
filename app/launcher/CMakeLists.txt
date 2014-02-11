@@ -2,6 +2,7 @@ SET(NAME "launcher")
 
 
 add_subdirectory(test)
+add_subdirectory(go)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "launcher")
@@ -14,7 +15,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
 message(${SRC_LIST})
 add_executable(${NAME} ${SRC_LIST})
-add_dependencies(${NAME} ${NAME}_js)
+add_dependencies(${NAME} ${NAME}_js ${NAME}-daemon)
 
 target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
     dlauncher_test notify)

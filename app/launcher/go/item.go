@@ -10,7 +10,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"dbus/com/deepin/api/pinyin"
+	pinyin "dbus/com/deepin/api/search"
 	"dlib/gio-2.0"
 )
 
@@ -35,6 +35,7 @@ type ItemInfo struct {
 	Path        string
 	Name        string
 	Id          ItemId
+	Icon        string
 	categoryIds map[CategoryId]bool
 	xinfo       Xinfo
 }
@@ -45,6 +46,14 @@ func (i *ItemInfo) init(app *gio.DesktopAppInfo) {
 	i.Id = getId(app)
 	i.Path = app.GetFilename()
 	i.Name = app.GetDisplayName()
+	icon := app.GetIcon()
+	if icon != nil {
+		i.Icon = icon.ToString()
+		if path.IsAbs(i.Icon) && !exist(i.Icon) {
+			i.Icon = ""
+		}
+	}
+
 	i.categoryIds = map[CategoryId]bool{}
 	i.xinfo.keywords = app.GetKeywords()
 	i.xinfo.exec = app.GetExecutable()
@@ -147,7 +156,7 @@ func initItems() {
 	}
 
 	var err error
-	tree, err = pinyin.NewPinyinTrie("/com/deepin/api/PinyinTrie")
+	tree, err = pinyin.NewSearch("/com/deepin/api/Search")
 	if err != nil {
 		return
 	}

@@ -110,16 +110,28 @@ run_post = (f, self)->
     f2 = f.bind(self or this)
     setTimeout(f2, 0)
 
-create_element = (type, clss, parent)->
-    el = document.createElement(type)
-    el.setAttribute("class", clss) if clss
+create_element = (opt, parent, compatible)->
+    if typeof compatible != 'undefined'
+        opt = tag:opt, class: parent
+        parent = compatible
+
+    if not opt.tag?
+        return null
+    el = document.createElement(opt.tag)
+    delete opt.tag
+    for own k, v of opt
+        el.setAttribute(k, v)
+
     if parent
         parent.appendChild(el)
+
     return el
 
-create_img = (clss, src, parent)->
-    el = create_element('img', clss, parent)
-    el.src = src
+create_img = (opt, parent, compatible)->
+    if typeof compatible != 'undefined'
+        opt = tag:'img', class:opt, src: parent
+        parent = compatible
+    el = create_element(opt, parent)
     el.draggable = false
     return el
 

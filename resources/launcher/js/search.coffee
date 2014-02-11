@@ -22,7 +22,7 @@ s_box = $('#s_box')
 
 clean_search_bar = ->
     s_box.value = ""
-    update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+    update_items(category_infos[CATEGORY_ID.ALL])
     grid_load_category(selected_category_id)
 
 init_search_box = ->
@@ -46,7 +46,7 @@ init_search_box = ->
 
     s_box.addEventListener("keydown", (e) ->
         switch e.which
-            when ESC_KEY
+            when KEYCODE.ESC
                 e.stopPropagation()
                 if s_box.value == ""
                     exit_launcher()

@@ -1,5 +1,5 @@
 #Copyright (c) 2011 ~  Deepin, Inc.
-#              2013 ~ Lee Liqiang
+#              2013 ~  Lee Liqiang
 #
 #Author:      Lee Liqiang <liliqiang@linuxdeepin.com>
 #Maintainer:  Lee Liqiang <liliqiang@linuxdeepin.com>
@@ -16,5 +16,23 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-exit_launcher = ->
-    DCore.Launcher.exit_gui()
+
+class CategoryList
+    constructor:(infos)->
+        @categories = {}
+
+        frag = document.createDocumentFragment()
+        for info in category_infos
+            id = info[0]
+            name = info[1]
+            items = info[2]
+            @categories[id] = new Category(id, name, items)
+            frag.appendChild(@categories[id].element)
+            if items.length == 0
+                @categories[id].hide()
+
+        create_element(tag:'div', id:'blank', frag)
+        $("#grid").appendChild(frag)
+        for info in category_infos
+            id = info[0]
+            @categories[id].setNameDecoration()

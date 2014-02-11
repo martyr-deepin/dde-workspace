@@ -28,6 +28,7 @@ calc_app_item_size = ->
     item_num = list.children.length
     w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
+    echo "new ICON_SCALE: #{ICON_SCALE}"
 
     for i in apps
         Widget.look_up(i.id)?.update_scale()

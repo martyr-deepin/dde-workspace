@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"os"
 	"path"
 	"time"
@@ -44,7 +44,7 @@ func (d *LauncherDBus) GetDBusInfo() dbus.DBusInfo {
 	}
 }
 
-func (d *LauncherDBus) CategoryInfos() []CategoryInfo {
+func (d *LauncherDBus) CategoryInfos() CategoryInfosResult {
 	return getCategoryInfos()
 }
 
@@ -196,13 +196,11 @@ func (d *LauncherDBus) SendToDesktop(name string) {
 }
 
 func (d *LauncherDBus) LoadHiddenApps() []ItemId {
-	ids := make([]ItemId, 0)
-	return ids
+	return getHiddenApps()
 }
 
 func (d *LauncherDBus) SaveHiddenApps(ids []string) bool {
-	fmt.Println(ids)
-	return true
+	return saveHiddenApps(ids)
 }
 
 func initDBus() {

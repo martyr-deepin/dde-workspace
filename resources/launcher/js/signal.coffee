@@ -21,15 +21,16 @@
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     _b.style.maxHeight = "#{height}px"
-    $('#grid').style.maxHeight = "#{height-60}px"
+    # $('#grid').style.maxHeight = "#{height-60}px"
+    $('#container').style.maxHeight = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     category_column_adaptive_height()
 
-    hidden_icon_ids = _get_hidden_icons_ids()
-    count = 0
-    for i in category_infos[ALL_APPLICATION_CATEGORY_ID]
-        if i not in hidden_icon_ids
-            count += 1
-    _update_scroll_bar(count)
+    # hidden_icon_ids = _get_hidden_icons_ids()
+    # count = 0
+    # for i in category_infos[CATEGORY_ID.ALL]
+    #     if i not in hidden_icon_ids
+    #         count += 1
+    # _update_scroll_bar(count)
 )
 
 
@@ -87,8 +88,8 @@ DCore.signal_connect("update_items", (info)->
 
     # FIXME:
     # load what should be shown, not forbidden reloading on searching.
-    if s_box.value == ""
-        update_items(category_infos[ALL_APPLICATION_CATEGORY_ID])
+    if s_box?.value == ""
+        update_items(category_infos[CATEGORY_ID.ALL])
         grid_load_category(selected_category_id)
     else
         search()

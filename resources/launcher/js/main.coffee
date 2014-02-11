@@ -29,9 +29,9 @@ uninstalling_apps = {}
 
 
 reset = ->
-    selected_category_id = ALL_APPLICATION_CATEGORY_ID
+    selected_category_id = CATEGORY_ID.ALL
     clean_search_bar()
-    s_box.focus()
+    # s_box.focus()
     hidden_icons.save()
     _show_hidden_icons(false)
     get_first_shown()?.scroll_to_view()
@@ -55,21 +55,27 @@ _show_hidden_icons = (is_shown) ->
 
 init_all_applications = ->
     # get all applications and sort them by name
-    _all_items = DCore.Launcher.get_items_by_category(CATEGORY_ID.ALL)
+    _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
 
+    frag = document.createDocumentFragment()
     for core in _all_items
-        id = DCore.DEntry.get_id(core)
-        applications[id] = new Item(id, core)
+        path = core[0]
+        name = core[1]
+        id = core[2]
+        icon = core[3]
+        applications[id] = new Item(id, name, path, icon)
+        frag.appendChild(applications[id].searchElement)
+    $("#searchResult").appendChild(frag)
 
 
 search_bar = new SearchBar()
 init_all_applications()
+category_infos = daemon.CategoryInfos_sync()
+category_bar = new CategoryBar(category_infos)
+category_list = new CategoryList(category_infos)
 hidden_icons = new HiddenIcons()
 hidden_icons.hide()
-init_grid()
 bind_events()
 DCore.Launcher.webview_ok()
 DCore.Launcher.test()
 
-config = new Config()
-category_bar = new CategoryBar()

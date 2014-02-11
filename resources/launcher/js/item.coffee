@@ -30,22 +30,37 @@ class Item extends Widget
     @hover_item_id: null
     @clean_hover_temp: false
     @display_temp: false
-    constructor: (@id, @core)->
+    constructor: (@id, @name, @path, @icon)->
         super
+        @updateHorizontalMargin()
         @load_image()
         @status = SOFTWARE_STATE.IDLE
-        @name = create_element("div", "item_name", @element)
-        name = DCore.DEntry.get_name(@core)
-        @name.innerText = name
+        @itemName = create_element("div", "item_name", @element)
+        @itemName.innerText = @name
         @element.draggable = true
-        @element.style.display = "none"
-        @try_set_title(@element, name, 80)
+        # @element.style.display = "none"
+        @try_set_title(@element, @name, 80)
         @display_mode = 'display'
-        @is_autostart = DCore.Launcher.is_autostart(@core)
-        if @is_autostart
-            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
-                AUTOSTART_ICON_SIZE)
-            create_img("autostart_flag", Item.autostart_flag, @element)
+        # @is_autostart = DCore.Launcher.is_autostart(@path)
+        # if @is_autostart
+        #     Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
+        #         AUTOSTART_ICON.SIZE)
+        #     create_img("autostart_flag", Item.autostart_flag, @element)
+
+        # TODO: (maybe create some new classes)
+        # 1. delay
+        # 2. bind events
+        @searchElement = @element.cloneNode(true)
+        @searchElement.setAttribute("id", "se_#{@searchElement.id}")
+        @favorElement = @element.cloneNode(true)
+        @favorElement.setAttribute("id", "fa_#{@searchElement.id}")
+
+    updateHorizontalMargin:->
+        containerWidth = $("#container").clientWidth
+        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
+        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
+        @element.style.marginLeft = "#{Item.horizontalMargin}px"
+        @element.style.marginRight = "#{Item.horizontalMargin}px"
 
     try_set_title: (el, text, width)->
         setTimeout(->
@@ -60,17 +75,25 @@ class Item extends Widget
 
     update: (core)->
         # TODO: update category infos
-        @core = core
-        @name.innerText = DCore.DEntry.get_name(@core)
-        im = DCore.DEntry.get_icon(@core)
-        if im == null
-            im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
+        # update it.
+        @path = core
+        @itemName.innerText = DCore.DEntry.get_name(@path)
+        im = @get_img()
         @img.src = im
 
-    load_image: ->
-        im = DCore.DEntry.get_icon(@core)
+    get_img: ->
+        im = DCore.get_theme_icon(@icon, 48)
+        if im == null
+            @icon = get_path_name(@path)
+
+        im = DCore.get_theme_icon(@icon, 48)
         if im == null
             im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
+
+        return im
+
+    load_image: ->
+        im = @get_img()
         @img = create_img("", im, @element)
         @img.onload = (e) =>
             if @img.width == @img.height
@@ -90,13 +113,14 @@ class Item extends Widget
     do_click : (e)=>
         e?.stopPropagation()
         @element.style.cursor = "wait"
-        DCore.DEntry.launch(@core, [])
+        DCore.DEntry.launch(@path, [])
         Item.hover_item_id = @id
         @element.style.cursor = "auto"
         exit_launcher()
 
     do_dragstart: (e)=>
-        e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@core))
+        # TODO get_uri
+        e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@path))
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
@@ -114,11 +138,12 @@ class Item extends Widget
             # new MenuItem(id, _("_Pin")/_("_Unpin")),
             # new MenuSeparator(),
             new MenuItem(3, _("Send to d_esktop")).setActive(
-                not DCore.Launcher.is_on_desktop(@core)
+                true
+                # not DCore.Launcher.is_on_desktop(@path)
             ),
             new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
             new MenuSeparator(),
-            new MenuItem(5, AUTOSTARTUP_MESSAGE[@is_autostart]),
+            new MenuItem(5, AUTOSTART_MESSAGE[@is_autostart]),
             new MenuSeparator(),
             # if has_update
             #     new MenuItem(id, "Update"),
@@ -138,18 +163,20 @@ class Item extends Widget
     on_itemselected: (id)=>
         id = parseInt(id)
         switch id
-            when 1 then DCore.DEntry.launch(@core, [])
+            when 1 then DCore.DEntry.launch(@path, [])
             when 2 then @toggle_icon()
-            when 3 then DCore.DEntry.copy_dereference_symlink([@core], DCore.Launcher.get_desktop_entry())
-            when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@core).substring(7))
+            when 3 then daemon.SendToDesktop(@path)
+            # TODO get_uri
+            when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@path).substring(7))
             when 5 then @toggle_autostart()
             when 6
-                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?")
+                return
+                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher")
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
-                    DCore.Launcher.uninstall(@core, true)
-            when 100 then DCore.DEntry.report_bad_icon(@core)  # internal
+                    DCore.Launcher.uninstall(@path, true)
+            when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
@@ -160,7 +187,7 @@ class Item extends Widget
             @element.style.display = 'none'
             Item.display_temp = false
         hidden_icons.add(@id, @).save()
-        hide_category()
+        # hide_category()
         hidden_icons_num = hidden_icons.number()
         if hidden_icons_num == 0
             _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
@@ -190,16 +217,18 @@ class Item extends Widget
             @display_icon()
 
     add_to_autostart: ->
-        if DCore.Launcher.add_to_autostart(@core)
+        return
+        if DCore.Launcher.add_to_autostart(@path)
             @is_autostart = true
-            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON_NAME,
-                AUTOSTART_ICON_SIZE)
+            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
+                AUTOSTART_ICON.SIZE)
             last = @element.lastChild
             if last.tagName != 'IMG'
                 create_img("autostart_flag", Item.autostart_flag, @element)
 
     remove_from_autostart: ->
-        if DCore.Launcher.remove_from_autostart(@core)
+        return
+        if DCore.Launcher.remove_from_autostart(@path)
             @is_autostart = false
             last = @element.lastChild
             if last.tagName == 'IMG'
