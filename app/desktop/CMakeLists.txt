@@ -9,6 +9,7 @@ SET(SRC_LIST desktop.c background.c background_util.c background_util.h
     inotify_item.c utils.c ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
+add_dependencies(${NAME} ${NAME}_js)
 
 target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
     desktop_test dtest)

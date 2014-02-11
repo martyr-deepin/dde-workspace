@@ -15,6 +15,7 @@ SET(SRC_LIST dock.c dock_hide.c dock_config.c handle_icon.c
     special_window.c monitor.c ${JSC_GEN} ${DBUS_GEN})
 
 add_executable(${NAME} ${SRC_LIST})
+add_dependencies(${NAME} ${NAME}_js)
 
 
 target_link_libraries(${NAME} dcom dentry dbus
