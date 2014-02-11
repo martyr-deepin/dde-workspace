@@ -46,17 +46,25 @@ class AudioPlay
             if index != -1
                 name = dbus.substring(index + @mpris_dbus_min.length)
                 @mpris_dbus_all.push({"mpris":dbus,"name":name})
-        
+        echo @mpris_dbus_all
+
         switch(@mpris_dbus_all.length)
             when 0 then return null
             when 1 then return @mpris_dbus_all[0].mpris
             else
                 for dbus in @mpris_dbus_all
-                    mpris = dbus.mpris
-                    #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
                     if dbus.name is "dmusic" then return dbus.mpris
-                    return mpris
-
+                
+                for dbus in @mpris_dbus_all
+                    mpris = dbus.mpris
+                    try
+                        mpris_dbus = DCore.DBus.session_object("#{mpris}", "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player")
+                        #if dbus.name is DCore.DEntry.get_default_audio_player_name().toLowerCase() return dbus.mpris
+                        if mpris_dbus.PlaybackStatus isnt "Stopped" then return mpris
+                    catch e
+                        echo "get_mpris_dbus #{e}"
+                        return null
+                return null
 
     get_launched_status:->
         return launched_status

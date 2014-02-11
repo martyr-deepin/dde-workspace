@@ -33,7 +33,7 @@ power_can = (power) ->
         return result
     else
         try
-            dbus_power = DCore.DBus.session_object("com.deepin.SessionManager","/com/deepin/dde/SessionManager","com.deepin.dde.SessionManager")
+            dbus_power = DCore.DBus.session_object("com.deepin.SessionManager","/com/deepin/SessionManager","com.deepin.SessionManager")
             echo dbus_power
         catch e
             echo "dbus_power error:#{e}"
