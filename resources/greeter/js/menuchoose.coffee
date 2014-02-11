@@ -24,9 +24,17 @@ class MenuChoose extends Widget
     select_state_confirm = false
     frame_click = true
     time_animation = 500
+    
+    max_opt_in_oneline = 4
+    
     t_max = 1000
     t_mid = 500
     t_min = 50
+    t_delay = 80
+    
+    XMove = -300
+    XBack = 20
+
     
     constructor: (@id)->
         super
@@ -44,10 +52,24 @@ class MenuChoose extends Widget
         
         document.body.appendChild(@element)
         @element.style.display = "none"
+    
+    setmaxbutton_in_oneline:(maxnum)->
+        j = 0
+        for tmp ,i in @opt
+            if i%maxnum == 0
+                @opt[i].style.left = 0
+                if i > 0
+                    j++
+                    for k in [0...maxnum]
+                        if i + k > @opt.length - 1 then break
+                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
+            else
+                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
 
+ 
     show:->
         echo "show"
-        
+
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
             echo "opt_text[#{i}] show"
@@ -67,16 +89,16 @@ class MenuChoose extends Widget
             text_el.style.opacity = "0.0"
             
             img_el.style.opacity = "0.0"
-            img_el.style.width = "40px"
-            img_el.style.height = "40px"
+            img_el.style.width = "80px"
+            img_el.style.height = "80px"
             img_el.style.left = "0"
             
             jQuery(img_el).animate(
-                {opacity: 1.0;left:'-300px'; width:'80px';height:'80px';},
-                time_min + i * 80,
+                {opacity: 1.0;left:"#{XMove}px"; width:'100px';height:'100px';},
+                time_min + i * t_delay,
                 'linear',=>
                     jQuery(img_el).animate(
-                        {left:'-280px';},
+                        {left:"#{XMove + XBack}px";},
                         t_min,
                         'linear',
                         animation_opt_text_show(i)
@@ -93,8 +115,10 @@ class MenuChoose extends Widget
                     $(".nextuserinfo").style.display = "none"
                 
                 @element.style.display = "block"
-                @setmaxbutton_in_oneline(4)
-                for tmp ,i in @opt
+                @setmaxbutton_in_oneline(max_opt_in_oneline)
+                for tmp,i in @opt
+                    #i++
+                    #if i%max_opt_in_oneline == 0 then i = 0
                     animation_opt_move_show(i,t_max,t_min)
         )
 
@@ -125,12 +149,12 @@ class MenuChoose extends Widget
                 t_min,
                 'linear',=>
                     jQuery(img_el).animate(
-                        {left:'-300px';},
+                        {left:"#{XMove}px";},
                         t_min,
                         'linear',=>
                             jQuery(img_el).animate(
                                 {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
-                                time_min + i * 80,
+                                time_min + i * t_delay,
                                 'linear',=>
                                     animation_user_show(i)
                             )
@@ -213,21 +237,7 @@ class MenuChoose extends Widget
                 that.current = that.option[i]
                 that.fade(i)
             )
-    
-    setmaxbutton_in_oneline:(maxnum)->
-        j = 0
-        for tmp ,i in @opt
-            if i%maxnum == 0
-                @opt[i].style.left = 0
-                if i > 0
-                    j++
-                    for k in [0...maxnum]
-                        if i + k > @opt.length - 1 then break
-                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
-            else
-                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
 
- 
 
     set_callback: (@cb)->
 
