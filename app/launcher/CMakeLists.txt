@@ -13,7 +13,6 @@ SET(SRC_LIST ${CFILES} ${JSC_GEN} ${DBUS_GEN})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 
-message(${SRC_LIST})
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js ${NAME}-daemon)
 
