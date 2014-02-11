@@ -143,8 +143,8 @@ class Item extends Widget
             ),
             new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
             new MenuSeparator(),
-            new MenuItem(5, AUTOSTART_MESSAGE[@is_autostart]),
-            new MenuSeparator(),
+            # new MenuItem(5, AUTOSTART_MESSAGE[@is_autostart]),
+            # new MenuSeparator(),
             # if has_update
             #     new MenuItem(id, "Update"),
             #     new MenuItem(id, "Update All"),
@@ -157,13 +157,15 @@ class Item extends Widget
                 new MenuItem(100, "report this bad icon")
             )
 
+        # echo @menu
+        # return
         @menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     on_itemselected: (id)=>
         id = parseInt(id)
         switch id
-            when 1 then DCore.DEntry.launch(@path, [])
+            # when 1 then DCore.DEntry.launch(@path, [])
             when 2 then @toggle_icon()
             when 3 then daemon.SendToDesktop(@path)
             # TODO get_uri

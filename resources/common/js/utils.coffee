@@ -42,6 +42,24 @@ Array.prototype.remove = (el)->
     if i != -1
         this.splice(this.indexOf(el), 1)[0]
 
+if typeof Object.clone != 'function'
+    Object::clone = ->
+        o = {}
+        for i of @
+            if @.hasOwnProperty(i)
+                o[i] = @[i]
+        o
+
+Array::clone = (deep)->
+    deep = deep || false
+    if deep && typeof @[0] == 'object' && @[0].clone?
+        res = []
+        for i of @
+            res.push(i.clone())
+        res
+    else
+        @.slice(0)
+
 echo = (log) ->
     console.log log
 

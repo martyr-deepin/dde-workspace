@@ -11,8 +11,8 @@ func TestInitCategoryTable(t *testing.T) {
 
 func TestGetCategoryInfos(t *testing.T) {
 	infos := getCategoryInfos()
-	if !(infos[0].Id == -1 && infos[len(infos)-1].Id == -2 &&
+	if !(infos[len(infos)-1].Id == -2 &&
 		sort.IsSorted(CategoryInfosResult(infos[1:len(infos)-1]))) {
-		t.Error("Not Sorted Correctly")
+		t.Error("Not Sorted Correctly", infos)
 	}
 }

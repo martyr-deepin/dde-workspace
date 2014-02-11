@@ -133,3 +133,15 @@ func configFile(name string) (*glib.KeyFile, error) {
 	}
 	return file, nil
 }
+
+func uniqueStringList(l []string) []string {
+	m := make(map[string]bool, 0)
+	for _, v := range l {
+		m[v] = true
+	}
+	n := make([]string, 0)
+	for k, _ := range m {
+		n = append(n, k)
+	}
+	return n
+}

@@ -35,18 +35,24 @@ class HiddenIcons
             valid_ids = origin_ids.filter((elem) ->
                 applications[elem]?
             )
-            @save()
+            @hidden_icons = {}
             @hidden_icon_number = valid_ids.length
             @update_cache = false
             for id in valid_ids
                 # echo applications[id].name
                 @hidden_icons[id] = applications[id]
 
+            if origin_ids.length != valid_ids.length
+                @save()
+
         @
 
     save: ->
-        # echo "save #{Object.keys(@hidden_icons)}"
-        # daemon.SaveHiddenApps(Object.keys(@hidden_icons))
+        keys = Object.keys(@hidden_icons)
+        # echo "save #{keys}, is array: #{Array.isArray(keys)}, is string: #{typeof keys[0] == 'string'}"
+        # daemon.SaveHiddenApps(keys)
+        # daemon.SaveHiddenApps_sync(keys)
+        daemon.SaveHiddenApps_sync(['0'])
         @
 
     reset: ->
@@ -62,17 +68,20 @@ class HiddenIcons
             @update_cache = true
         @
 
-    id_list: ->
-        if @update_cache
+    update: ->
             @list = Object.keys(@hidden_icons)
             @hidden_icon_numbe = @list.length
             @update_cache = false
+
+    id_list: ->
+        if @update_cache
+            @update()
 
         @list
 
     number: ->
         if @update_cache
-            @hidden_icon_number = @id_list().length
+            @update()
         @hidden_icon_number
 
     show: ->
@@ -93,6 +102,8 @@ class HiddenIcons
                 @hidden_icons[id]?.hide_icon()
         else
             # re-search
+
+        @
 
     toggle: ->
         if @is_shown

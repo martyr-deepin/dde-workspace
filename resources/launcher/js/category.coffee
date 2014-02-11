@@ -35,7 +35,7 @@ class Category
 
         frag = document.createDocumentFragment()
         for id in @items
-            if @id == -1
+            if @id == CATEGORY_ID.FAVOR
                 echo applications[id].name
                 frag.appendChild(applications[id].favorElement)
             else

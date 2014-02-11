@@ -203,6 +203,14 @@ func (d *LauncherDBus) SaveHiddenApps(ids []string) bool {
 	return saveHiddenApps(ids)
 }
 
+func (d *LauncherDBus) GetFavors() FavorItemList {
+	return getFavors()
+}
+
+func (d *LauncherDBus) SaveFavors(items FavorItemList) bool {
+	return saveFavors(items)
+}
+
 func initDBus() {
 	launcherDbus := LauncherDBus{}
 	dbus.InstallOnSession(&launcherDbus)

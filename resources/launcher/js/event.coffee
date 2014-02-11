@@ -18,6 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 contextmenu_callback = (e)->
     e.preventDefault()
+    return
     menu = new Menu(
         DEEPIN_MENU_TYPE.NORMAL,
         new MenuItem(1, SORT_MESSAGE[sort_method])
