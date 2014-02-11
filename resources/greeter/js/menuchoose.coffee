@@ -26,7 +26,7 @@ class MenuChoose extends Widget
     time_animation = 500
     t_max = 1000
     t_mid = 500
-    t_min = 200
+    t_min = 50
     
     constructor: (@id)->
         super
@@ -73,7 +73,7 @@ class MenuChoose extends Widget
             
             jQuery(img_el).animate(
                 {opacity: 1.0;left:'-300px'; width:'80px';height:'80px';},
-                time_min + i * 100,
+                time_min + i * 80,
                 'linear',=>
                     jQuery(img_el).animate(
                         {left:'-280px';},
@@ -130,7 +130,7 @@ class MenuChoose extends Widget
                         'linear',=>
                             jQuery(img_el).animate(
                                 {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
-                                time_min + i * 100,
+                                time_min + i * 80,
                                 'linear',=>
                                     animation_user_show(i)
                             )
