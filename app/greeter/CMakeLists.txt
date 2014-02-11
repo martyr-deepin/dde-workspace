@@ -12,11 +12,15 @@ pkg_check_modules(GST REQUIRED gstreamer-0.10)
 add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
+add_dependencies(${NAME} ${NAME}_js)
 add_executable(dlock dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
     camera.c settings.c ${DBUS_GEN}
     )
+add_dependencies(dlock ${NAME}_js)
 add_executable(switchtogreeter switchtogreeter.c)
+add_dependencies(switchtogreeter ${NAME}_js)
 add_executable(lockservice lockservice.c)
+add_dependencies(lockservice ${NAME}_js)
 
 set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
@@ -29,11 +33,6 @@ target_link_libraries(lockservice crypt dcom dbus ${DWEBVIEW_LIBRARIES})
 
 include_directories(${DWEBVIEW_INCLUDE_DIRS} ${LIGHTDM_INCLUDE_DIRS}
     ${OPENCV_INCLUDE_DIRES} ${GST_INCLUDE_DIRS})
-
-execute_process(
-    COMMAND make
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/resources/${NAME_SIMPLE}/js
-    )
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
