@@ -48,10 +48,20 @@ class MenuChoose extends Widget
     show:->
         echo "show"
         
+        animation_opt_text_show = (i)=>
+            if i != @opt.length - 1 then return
+            echo "opt_text[#{i}] show"
+            for tmp in @opt_text
+                jQuery(tmp).animate(
+                    {opacity:'1.0';},
+                    t_min
+                )
+
+
         animation_opt_move_show = (i,time_max,time_min)=>
             echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
-            img_el = @opt_img[i]
+            img_el = @opt[i]
             
             #init el css and then can animate
             text_el.style.opacity = "0.0"
@@ -63,17 +73,13 @@ class MenuChoose extends Widget
             
             jQuery(img_el).animate(
                 {opacity: 1.0;left:'-300px'; width:'80px';height:'80px';},
-                time_max / 4 + i * 100,
+                time_min + i * 100,
                 'linear',=>
                     jQuery(img_el).animate(
                         {left:'-280px';},
                         t_min,
-                        'linear',=>
-                            text_el.style.left = "-280px"
-                            jQuery(text_el).animate(
-                                {opacity:'1.0';},
-                                t_min
-                            )
+                        'linear',
+                        animation_opt_text_show(i)
                     )
             )
 
@@ -98,7 +104,7 @@ class MenuChoose extends Widget
         echo "hide"
         
         animation_user_show = (i)=>
-            if i != 0  then return
+            if i != @opt.length - 1 then return
             echo "animation_user_show(#{i})"
             $("#div_users").style.display = "block"
             jQuery('.div_users').animate(
@@ -111,7 +117,7 @@ class MenuChoose extends Widget
         animation_opt_move_hide = (i,time_max,time_min)=>
             echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
-            img_el = @opt_img[i]
+            img_el = @opt[i]
             opt_el = @opt[i]
 
             jQuery(text_el).animate(
@@ -124,7 +130,7 @@ class MenuChoose extends Widget
                         'linear',=>
                             jQuery(img_el).animate(
                                 {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
-                                time_max - i * 100,
+                                time_min + i * 100,
                                 'linear',=>
                                     animation_user_show(i)
                             )
@@ -132,11 +138,11 @@ class MenuChoose extends Widget
             )
 
 
-        for tmp ,i in @opt
+        for i in [@opt.length - 1..0]
             #delete select_state and then start animate
-            tmp.style.backgroundColor = "rgba(255,255,255,0.0)"
-            tmp.style.border = "1px solid rgba(255,255,255,0.0)"
-            tmp.style.borderRadius = null
+            @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
+            @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
+            @opt[i].style.borderRadius = "0px"
 
             animation_opt_move_hide(i,t_max,t_min)
 
@@ -249,7 +255,7 @@ class MenuChoose extends Widget
             else
                 tmp.style.backgroundColor = "rgba(255,255,255,0.0)"
                 tmp.style.border = "1px solid rgba(255,255,255,0.0)"
-                tmp.style.borderRadius = null
+                tmp.style.borderRadius = "0px"
 
     
     keydown:(e)->

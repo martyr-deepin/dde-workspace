@@ -57,9 +57,9 @@
 
 
 .opt{
-    /*position:fixed;*/
+    position:relative;
     cursor: pointer;
-    margin:0 0 0 0;
+    margin:0 0 0 20px;
     width:100px;
     display:-webkit-box;
     -webkit-box-orient:vertical;
@@ -71,13 +71,11 @@
 }
 
 .opt_img{
-    position:relative;
     width:80px;
     height:80px;
 }
 
 .opt_text{
-    position:relative;
     width:80px;
     height:30px;
     text-align:center;
