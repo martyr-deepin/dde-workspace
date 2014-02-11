@@ -32,9 +32,10 @@ class MenuChoose extends Widget
     t_min = 50
     t_delay = 80
     
-    XMove = -300
+    XMove = -350
     XBack = 20
-
+    XStartShow = "80%"
+    XEndHide = "80%"
     
     constructor: (@id)->
         super
@@ -57,14 +58,15 @@ class MenuChoose extends Widget
         j = 0
         for tmp ,i in @opt
             if i%maxnum == 0
-                @opt[i].style.left = 0
+                #@opt[i].style.left = 0
                 if i > 0
                     j++
                     for k in [0...maxnum]
                         if i + k > @opt.length - 1 then break
                         @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
             else
-                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
+                echo "not % #{maxnum}"
+                #@opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
 
  
     show:->
@@ -91,7 +93,7 @@ class MenuChoose extends Widget
             img_el.style.opacity = "0.0"
             img_el.style.width = "80px"
             img_el.style.height = "80px"
-            img_el.style.left = "0"
+            img_el.style.left = "XStartShow"
             
             jQuery(img_el).animate(
                 {opacity: 1.0;left:"#{XMove}px"; width:'100px';height:'100px';},
@@ -117,8 +119,6 @@ class MenuChoose extends Widget
                 @element.style.display = "block"
                 @setmaxbutton_in_oneline(max_opt_in_oneline)
                 for tmp,i in @opt
-                    #i++
-                    #if i%max_opt_in_oneline == 0 then i = 0
                     animation_opt_move_show(i,t_max,t_min)
         )
 
@@ -152,8 +152,9 @@ class MenuChoose extends Widget
                         {left:"#{XMove}px";},
                         t_min,
                         'linear',=>
+                            img_el.style.opacity = "0.6"
                             jQuery(img_el).animate(
-                                {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
+                                {opacity: 0.0;left:"#{XEndHide}"; width:'40px';height:'40px';},
                                 time_min + i * t_delay,
                                 'linear',=>
                                     animation_user_show(i)

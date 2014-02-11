@@ -33,7 +33,7 @@
 
 .MenuChoose{
     /*background-color:rgba(0,0,0,0.85);*/
-    width:400px;
+    width:500px;
     /*maxwidth:400px;*/
     /*height:100%;*/
     position:absolute;
@@ -59,7 +59,7 @@
 .opt{
     position:relative;
     cursor: pointer;
-    margin:0 0 0 20px;
+    margin:0 0 0 10px;
     width:100px;
     display:-webkit-box;
     -webkit-box-orient:vertical;
