@@ -46,13 +46,15 @@ class MenuChoose extends Widget
         @element.style.display = "none"
 
     show:->
+        echo "show"
+        
         animation_opt_move_show = (i,time_max,time_min)=>
+            echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             
             #init el css and then can animate
             text_el.style.opacity = "0.0"
-            text_el.style.display = "none"
             
             img_el.style.opacity = "0.0"
             img_el.style.width = "40px"
@@ -84,6 +86,7 @@ class MenuChoose extends Widget
                 if is_greeter
                     $(".prevuserinfo").style.display = "none"
                     $(".nextuserinfo").style.display = "none"
+                
                 @element.style.display = "block"
                 @setmaxbutton_in_oneline(4)
                 for tmp ,i in @opt
@@ -93,18 +96,21 @@ class MenuChoose extends Widget
 
    
     hide:->
-
+        echo "hide"
+        
         animation_user_show = (i)=>
-            echo i
             if i != 0  then return
-            echo "animation_user_show"
+            echo "animation_user_show(#{i})"
             $("#div_users").style.display = "block"
             jQuery('.div_users').animate(
                 {opacity:'1.0';},
-                t_mid
+                t_mid,
+                "linear",=>
+                    @element.style.display = "none"
             )
 
         animation_opt_move_hide = (i,time_max,time_min)=>
+            echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -113,7 +119,6 @@ class MenuChoose extends Widget
                 {opacity:'0.0';},
                 t_min,
                 'linear',=>
-                    text_el.style.display = "none"
                     jQuery(img_el).animate(
                         {left:'-300px';},
                         t_min,
@@ -122,7 +127,6 @@ class MenuChoose extends Widget
                                 {opacity: 0.0;left:'0px'; width:'40px';height:'40px';},
                                 time_max - i * 100,
                                 'linear',=>
-                                    opt_el.style.display = "none"
                                     animation_user_show(i)
                             )
                     )
