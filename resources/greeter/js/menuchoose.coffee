@@ -85,21 +85,21 @@ class MenuChoose extends Widget
         animation_opt_move_show = (i,time_max,time_min)=>
             echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
-            img_el = @opt[i]
+            opt_el = @opt[i]
             
             #init el css and then can animate
             text_el.style.opacity = "0.0"
             
-            img_el.style.opacity = "0.0"
-            img_el.style.width = "80px"
-            img_el.style.height = "80px"
-            img_el.style.left = "XStartShow"
+            opt_el.style.opacity = "0.0"
+            opt_el.style.width = "80px"
+            opt_el.style.height = "80px"
+            opt_el.style.left = "XStartShow"
             
-            jQuery(img_el).animate(
+            jQuery(opt_el).animate(
                 {opacity: 1.0;left:"#{XMove}px"; width:'100px';height:'100px';},
                 time_min + i * t_delay,
                 'linear',=>
-                    jQuery(img_el).animate(
+                    jQuery(opt_el).animate(
                         {left:"#{XMove + XBack}px";},
                         t_min,
                         'linear',
@@ -141,19 +141,18 @@ class MenuChoose extends Widget
         animation_opt_move_hide = (i,time_max,time_min)=>
             echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
-            img_el = @opt[i]
             opt_el = @opt[i]
 
             jQuery(text_el).animate(
                 {opacity:'0.0';},
                 t_min,
                 'linear',=>
-                    jQuery(img_el).animate(
+                    jQuery(opt_el).animate(
                         {left:"#{XMove}px";},
                         t_min,
                         'linear',=>
-                            img_el.style.opacity = "0.6"
-                            jQuery(img_el).animate(
+                            opt_el.style.opacity = "0.6"
+                            jQuery(opt_el).animate(
                                 {opacity: 0.0;left:"#{XEndHide}"; width:'40px';height:'40px';},
                                 time_min + i * t_delay,
                                 'linear',=>
