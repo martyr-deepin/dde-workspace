@@ -69,7 +69,6 @@ class MenuChoose extends Widget
                         {left:'-280px';},
                         t_min,
                         'linear',=>
-                            text_el.style.display = "block"
                             text_el.style.left = "-280px"
                             jQuery(text_el).animate(
                                 {opacity:'1.0';},
