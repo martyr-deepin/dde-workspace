@@ -33,7 +33,7 @@ class MenuChoose extends Widget
     t_min = 50
     t_delay = 80
     
-    XMove = -600
+    XMove = -350
     XBack = 20
     XStartShow = "80%"
     XEndHide = "80%"
@@ -62,15 +62,15 @@ class MenuChoose extends Widget
         j = 0
         for tmp ,i in @opt
             if i%maxnum == 0
-                #@opt[i].style.left = 0
+                @opt[i].style.left = 0
                 if i > 0
                     j++
                     for k in [0...maxnum]
                         if i + k > @opt.length - 1 then break
                         @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
             else
-                echo "not % #{maxnum}"
-                #@opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
+                #echo " #{i} is  not % #{maxnum}"
+                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
 
  
     show:->
@@ -99,14 +99,18 @@ class MenuChoose extends Widget
             img_el.style.height = "#{init_width}px"
             
             opt_el.style.opacity = "0.0"
-            opt_el.style.left = "XStartShow"
+            #opt_el.style.left = "XStartShow"
             
-            animation_scale(img_el,final_width / init_width,"#{(time_min + i * t_delay) / 1000}s")
+            time = time_min + i * t_delay
+            animation_scale(img_el,final_width / init_width,"#{time / 1000}s")
+            animation_moveX(opt_el,XMove,"0.3s", "cubic-bezier(0,1,1,0)",i * t_delay)
+
 
             jQuery(opt_el).animate(
-                {opacity: 1.0;left:"#{XMove}px";},
-                time_min + i * t_delay,
+                {opacity: 1.0;},
+                time,
                 'linear',=>
+                    #animation_moveX(opt_el, XMove - XBack,"#{(time_min + i * t_delay) / 1000}s")
                     jQuery(opt_el).animate(
                         {left:"#{XMove + XBack}px";},
                         t_min,
@@ -124,7 +128,7 @@ class MenuChoose extends Widget
                     $(".prevuserinfo").style.display = "none"
                     $(".nextuserinfo").style.display = "none"
                 
-                @element.style.display = "block"
+                @element.style.display = "-webkit-box"
                 @setmaxbutton_in_oneline(max_opt_in_oneline)
                 for tmp,i in @opt
                     animation_opt_move_show(i,t_max,t_min)
@@ -138,7 +142,7 @@ class MenuChoose extends Widget
         animation_user_show = (i)=>
             if i != @opt.length - 1 then return
             echo "animation_user_show(#{i})"
-            $("#div_users").style.display = "block"
+            $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').animate(
                 {opacity:'1.0';},
                 t_mid,
@@ -152,6 +156,7 @@ class MenuChoose extends Widget
             img_el = @opt_img[i]
             opt_el = @opt[i]
 
+            time = time_min + i * t_delay
             jQuery(text_el).animate(
                 {opacity:'0.0';},
                 t_min,
@@ -161,10 +166,11 @@ class MenuChoose extends Widget
                         t_min,
                         'linear',=>
                             opt_el.style.opacity = "0.6"
-                            animation_scale(img_el,1.0,"#{(time_min + i * t_delay) / 1000}s")
+                            animation_scale(img_el,1.0,"#{time / 1000}s")
+                            animation_moveX(opt_el, 0,"#{time / 1000}s")
                             jQuery(opt_el).animate(
-                                {opacity: 0.0;left:"#{XEndHide}";},
-                                time_min + i * t_delay,
+                                {opacity: 0.0;},
+                                time,
                                 'linear',=>
                                     animation_user_show(i)
                             )
