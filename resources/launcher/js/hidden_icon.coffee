@@ -22,92 +22,95 @@ class HiddenIcons
     constructor: ->
         # key: id of app
         # value: a list of category id to which key belongs
-        @hidden_icons = {}
+        @hiddenIcons = {}
 
-        @update_cache = true
-        @hidden_icon_number = 0
-        @is_shown = false
+        @updateCache = true
+        @hiddenIconNumber = 0
+        @isShown = false
 
         @load()
 
     load: ->
-        if (origin_ids = daemon.LoadHiddenApps_sync())?
-            valid_ids = origin_ids.filter((elem) ->
+        if (originIds = daemon.LoadHiddenApps_sync())?
+            validIds = originIds.filter((elem) ->
                 applications[elem]?
             )
-            @hidden_icons = {}
-            @hidden_icon_number = valid_ids.length
-            @update_cache = false
-            for id in valid_ids
+            @hiddenIcons = {}
+            @hiddenIconNumber = validIds.length
+            @updateCache = false
+            for id in validIds
                 # echo applications[id].name
-                @hidden_icons[id] = applications[id]
+                @hiddenIcons[id] = applications[id].observers.item
 
-            if origin_ids.length != valid_ids.length
+            if originIds.length != validIds.length
+                echo 'save'
                 @save()
 
         @
 
     save: ->
-        keys = Object.keys(@hidden_icons)
+        keys = Object.keys(@hiddenIcons)
         # echo "save #{keys}, is array: #{Array.isArray(keys)}, is string: #{typeof keys[0] == 'string'}"
         # daemon.SaveHiddenApps(keys)
-        # daemon.SaveHiddenApps_sync(keys)
-        daemon.SaveHiddenApps_sync(['0'])
+        daemon.SaveHiddenApps_sync(keys)
         @
 
     reset: ->
         @hide()
 
     add: (id, item)->
-        @hidden_icons[id] = item
-        @update_cache = true
+        @hiddenIcons[id] = item
+        @updateCache = true
         @
 
     remove: (id)->
-        if delete @hidden_icons[id]
-            @update_cache = true
+        if delete @hiddenIcons[id]
+            @updateCache = true
         @
 
     update: ->
-            @list = Object.keys(@hidden_icons)
-            @hidden_icon_numbe = @list.length
-            @update_cache = false
+            @list = Object.keys(@hiddenIcons)
+            @hiddenIconNumbe = @list.length
+            @updateCache = false
 
-    id_list: ->
-        if @update_cache
+    idList: ->
+        if @updateCache
             @update()
 
         @list
 
     number: ->
-        if @update_cache
+        if @updateCache
             @update()
-        @hidden_icon_number
+        @hiddenIconNumber
 
     show: ->
-        @is_shown = true
-        if search_bar.empty()
+        @isShown = true
+        if searchBar.empty()
             # show category
-            for own id of @hidden_icons
-                if id in category_infos[selected_category_id]
-                    @hidden_icons[id].display_icon_temp()
+            for own id of @hiddenIcons
+                if id in categoryInfos[selectedCategoryId]
+                    @hiddenIcons[id].displayIconTemp()
         else
             # re-search
 
     hide: ->
-        @is_shown = false
-        if search_bar.empty()
+        @isShown = false
+        if searchBar.empty()
             # hide category
-            for own id of @hidden_icons
-                @hidden_icons[id]?.hide_icon()
+            for own id of @hiddenIcons
+                @hiddenIcons[id]?.hide_icon()
         else
             # re-search
 
         @
 
     toggle: ->
-        if @is_shown
+        if @isShown
             @hide()
         else
             @show()
         @
+
+    contains: (id)->
+        @hiddenIcons.hasOwnProperty(id)

@@ -147,8 +147,9 @@ create_element = (opt, parent, compatible)->
 
 create_img = (opt, parent, compatible)->
     if typeof compatible != 'undefined'
-        opt = tag:'img', class:opt, src: parent
+        opt = class:opt, src: parent
         parent = compatible
+    opt.tag = 'img'
     el = create_element(opt, parent)
     el.draggable = false
     return el

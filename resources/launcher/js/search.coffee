@@ -21,34 +21,34 @@ s_box = $('#s_box')
 
 
 clean_search_bar = ->
-    s_box.value = ""
+    s_box?.value = ""
     update_items(category_infos[CATEGORY_ID.ALL])
     grid_load_category(selected_category_id)
 
 init_search_box = ->
-    s_box.setAttribute("placeholder", _("Type to search..."))
+    s_box?.setAttribute("placeholder", _("Type to search..."))
 
     # stop propagation to body
-    s_box.addEventListener('keypress', (e)->
+    s_box?.addEventListener('keypress', (e)->
         e.stopPropagation()
     )
 
-    s_box.addEventListener("input", (e) ->
-        if s_box.value == ""
+    s_box?.addEventListener("input", (e) ->
+        if s_box?.value == ""
             clean_search_bar()
-        else if s_box.value.match(/^\s/)
-            s_box.value = s_box.value.trim()
+        else if s_box?.value.match(/^\s/)
+            s_box?.value = s_box?.value.trim()
         else
             search()
         e.stopPropagation()
         e.preventDefault()
     )
 
-    s_box.addEventListener("keydown", (e) ->
+    s_box?.addEventListener("keydown", (e) ->
         switch e.which
             when KEYCODE.ESC
                 e.stopPropagation()
-                if s_box.value == ""
+                if s_box?.value == ""
                     exit_launcher()
                 else
                     clean_search_bar()
@@ -61,7 +61,7 @@ init_search_box = ->
 
 do_search = ->
     ret = []
-    key = s_box.value.trim().toLowerCase()
+    key = s_box?.value.trim().toLowerCase()
 
     for k,v of applications
         if key == ""

@@ -32,17 +32,19 @@ class Item extends Widget
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
+        @isAutostart = false
+        @status = SOFTWARE_STATE.IDLE
+        @displayMode = 'display'
+
         @updateHorizontalMargin()
         @load_image()
-        @status = SOFTWARE_STATE.IDLE
         @itemName = create_element("div", "item_name", @element)
         @itemName.innerText = @name
         @element.draggable = true
         # @element.style.display = "none"
         @try_set_title(@element, @name, 80)
-        @display_mode = 'display'
-        # @is_autostart = DCore.Launcher.is_autostart(@path)
-        # if @is_autostart
+        # @info.isAutostart = DCore.Launcher.is_autostart(@info.path)
+        # if @info.isAutostart
         #     Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
         #         AUTOSTART_ICON.SIZE)
         #     create_img("autostart_flag", Item.autostart_flag, @element)
@@ -73,14 +75,6 @@ class Item extends Widget
         grid.removeChild(@element)
         super
 
-    update: (core)->
-        # TODO: update category infos
-        # update it.
-        @path = core
-        @itemName.innerText = DCore.DEntry.get_name(@path)
-        im = @get_img()
-        @img.src = im
-
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
         if im == null
@@ -88,9 +82,34 @@ class Item extends Widget
 
         im = DCore.get_theme_icon(@icon, 48)
         if im == null
-            im = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
+            im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
 
-        return im
+        im
+
+    update: (info)->
+        # TODO: update category infos
+        # update it.
+        if @name != info.name
+            @name = info.name
+            @itemName.innerText = @name
+
+        if @path != info.path
+            @path = info.path
+
+        if @icon != info.icon
+            @icon = info.icon
+            im = @get_img()
+            @img.src = im
+
+        if @isAutostart != info.isAutostart
+            @toggle_autostart()
+
+        if @status != info.status
+            @status = info.status
+
+        if @displayMode != info.displayMode
+            @toggle_icon()
+            # @displayMode = info.displayMode
 
     load_image: ->
         im = @get_img()
@@ -133,7 +152,7 @@ class Item extends Widget
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
-            new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@display_mode]),
+            new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@displayMode]),
             new MenuSeparator(),
             # new MenuItem(id, _("_Pin")/_("_Unpin")),
             # new MenuSeparator(),
@@ -143,8 +162,8 @@ class Item extends Widget
             ),
             new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
             new MenuSeparator(),
-            # new MenuItem(5, AUTOSTART_MESSAGE[@is_autostart]),
-            # new MenuSeparator(),
+            new MenuItem(5, AUTOSTART_MESSAGE[@isAutostart]),
+            new MenuSeparator(),
             # if has_update
             #     new MenuItem(id, "Update"),
             #     new MenuItem(id, "Update All"),
@@ -182,26 +201,29 @@ class Item extends Widget
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
-        @display_mode = 'hidden'
+        @displayMode = 'hidden'
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
         if not Item.display_temp and not is_show_hidden_icons
             @element.style.display = 'none'
             Item.display_temp = false
-        hidden_icons.add(@id, @).save()
-        # hide_category()
-        hidden_icons_num = hidden_icons.number()
+         if !hiddenIcons.contains(@id)
+             # echo 'save'
+            hiddenIcons.add(@id, @).save()
+        categoryBar.hideEmptyCategory()
+        categoryList.hideEmptyCategory()
+        hidden_icons_num = hiddenIcons.number()
         if hidden_icons_num == 0
             _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
             Item.display_temp = false
 
     display_icon: (e)=>
-        @display_mode = 'display'
+        @displayMode = 'display'
         @element.style.display = 'block'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
-        hidden_icons_num = hidden_icons.remove(@id).save().number()
-        show_category()
+        hidden_icons_num = hiddenIcons.remove(@id).save().number()
+        categoryList.showNonemtpyCategory()
         if hidden_icons_num == 0
             is_show_hidden_icons = false
             _show_hidden_icons(is_show_hidden_icons)
@@ -210,34 +232,33 @@ class Item extends Widget
     display_icon_temp: ->
         @element.style.display = 'block'
         Item.display_temp = true
-        show_category()
+        categoryList.showNonemtpyCategory()
 
     toggle_icon: ->
-        if @display_mode == 'display'
+        if @displayMode == 'display'
             @hide_icon()
         else
             @display_icon()
 
     add_to_autostart: ->
-        return
-        if DCore.Launcher.add_to_autostart(@path)
-            @is_autostart = true
+        if startManager.AddAutostart_sync(@path)
+            @isAutostart = true
             Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
                 AUTOSTART_ICON.SIZE)
             last = @element.lastChild
             if last.tagName != 'IMG'
                 create_img("autostart_flag", Item.autostart_flag, @element)
+            last.style.visibility = 'visible'
 
     remove_from_autostart: ->
-        return
-        if DCore.Launcher.remove_from_autostart(@path)
-            @is_autostart = false
+        if startManager.RemoveAutostart_sync(@path)
+            @isAutostart = false
             last = @element.lastChild
             if last.tagName == 'IMG'
-                @element.removeChild(last)
+                last.style.visibility = 'hidden'
 
     toggle_autostart: ->
-        if @is_autostart
+        if @isAutostart
             @remove_from_autostart()
         else
             @add_to_autostart()
@@ -245,10 +266,10 @@ class Item extends Widget
     hide: ->
         @element.style.display = "none"
 
-    # use '->', Item.display_temp and @display_mode will be undifined when this
-    # function is pass to some other functions like setTimeout
+    # use '->', Item.display_temp and @displayMode will be undifined when
+    # this function is pass to some other functions like setTimeout
     show: =>
-        if (Item.display_temp or @display_mode == 'display') and @status == SOFTWARE_STATE.IDLE
+        if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
             @element.style.display = "block"
 
     is_shown: ->

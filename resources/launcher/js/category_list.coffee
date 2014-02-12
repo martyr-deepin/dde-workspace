@@ -20,10 +20,14 @@
 class CategoryList
     constructor:(infos)->
         @categories = {}
+        @favor = null
 
         frag = document.createDocumentFragment()
         favors = daemon.GetFavors_sync()
-        infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
+        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors)
+        @favor.show().hideHeader()
+        frag.appendChild(@favor.element)
+        # infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
 
         for info in infos
             id = info[0]
@@ -31,14 +35,56 @@ class CategoryList
             items = info[2]
             @categories[id] = new Category(id, name, items)
             frag.appendChild(@categories[id].element)
-            if items.length == 0 && id != CATEGORY_ID.FAVOR
+            if items.length == 0
                 @categories[id].hide()
 
-        create_element(tag:'div', id:'blank', frag)
+        @categories[CATEGORY_ID.FAVOR] = @favor
+        @blank = create_element(tag:'div', id:'blank', frag)
         $("#grid").appendChild(frag)
 
+        @favor.setNameDecoration()
         for info in infos
             id = info[0]
             @categories[id].setNameDecoration()
 
-        infos.shift()
+    updateBlankHeight:->
+        containerHeight = $("#container").clientHeight
+        otherHeight = @categories[CATEGORY_ID.OTHER].element.clientHeight
+        @blank.style.height = containerHeight - otherHeight - 40
+        @
+
+    showBlank: ->
+        if @blank.style.display != 'block'
+            @blank.style.display = 'block'
+
+    hideEmptyCategory:->
+        for own id, item of @categories
+            all_is_hidden = item.every((el) ->
+                applications[el].display_mode == "hidden"
+            )
+            if all_is_hidden and not Item.display_temp
+                item.hide()
+                # if @selected_id == id
+                #     @selected_id = CATEGORY_ID.ALL
+                # grid_load_category(@selected_id)
+        @
+
+    showNonemtpyCategory:->
+        if @favor.element.style.display == 'none'
+            @favor.element.style.display = 'block'
+        for own id, item of @categories
+            not_all_is_hidden = item.some((el) ->
+                applications[el].display_mode != "hidden"
+            )
+            if not_all_is_hidden or Item.display_temp
+                item.show()
+        @
+
+    showFavorOnly:->
+        for own k, v of @categories
+            if k == CATEGORY_ID.FAVOR
+                v.show().hideHeader()
+            else
+                v.hide()
+
+        @blank.style.display = 'none'

@@ -32,7 +32,7 @@ reset = ->
     selected_category_id = CATEGORY_ID.ALL
     clean_search_bar()
     # s_box.focus()
-    hidden_icons.save()
+    # hidden_icons.save()
     _show_hidden_icons(false)
     get_first_shown()?.scroll_to_view()
     if Item.hover_item_id
@@ -56,6 +56,7 @@ _show_hidden_icons = (is_shown) ->
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
+    autostartList = startManager.AutostartList_sync()
 
     frag = document.createDocumentFragment()
     for core in _all_items
@@ -63,19 +64,27 @@ init_all_applications = ->
         name = core[1]
         id = core[2]
         icon = core[3]
-        applications[id] = new Item(id, name, path, icon)
+        basename = get_path_name(path) + ".desktop"
+        info = new ItemInfo(id, name, basename, icon)
+        applications[id] = info
+        if autostartList.filter((e)-> e.match("#{basename}$")).length != 0
+            info.setAutostart(true).notify()
+        item = new Item(id, name, path, icon)
+        info.element = item.element
+        info.searchElement = item.searchElement
+        info.register('item', item).notify()
         frag.appendChild(applications[id].searchElement)
     $("#searchResult").appendChild(frag)
 
 
-search_bar = new SearchBar()
+searchBar = new SearchBar()
 init_all_applications()
-category_infos = daemon.CategoryInfos_sync()
-category_bar = new CategoryBar(category_infos)
-category_list = new CategoryList(category_infos)
-hidden_icons = new HiddenIcons()
-hidden_icons.hide()
+categoryInfos = daemon.CategoryInfos_sync()
+categoryBar = new CategoryBar(categoryInfos)
+categoryList = new CategoryList(categoryInfos)
+switcher = new Switcher()
+hiddenIcons = new HiddenIcons()
+hiddenIcons.hide()
 bind_events()
 DCore.Launcher.webview_ok()
 DCore.Launcher.test()
-

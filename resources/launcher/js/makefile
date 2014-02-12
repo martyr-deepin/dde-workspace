@@ -6,10 +6,13 @@ com_coffee = ${com_dir}/strict_mode.coffee ${com_dir}/config.coffee \
 all: ${com_coffee} \
 	const.coffee \
 	utils.coffee \
+	dbus.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
 	category.coffee \
 	category_list.coffee \
+	switcher.coffee \
+	item_info.coffee \
 	item.coffee \
 	hidden_icon.coffee \
 	grid.coffee \

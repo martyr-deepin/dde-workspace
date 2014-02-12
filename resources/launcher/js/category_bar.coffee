@@ -40,13 +40,13 @@ class CategoryItem
         # TODO
         # grid.load(@selected_id)
 
+
 class CategoryBar
     constructor: (infos)->
         @select_timer = -1
         @selected_id = CATEGORY_ID.FAVOR
 
         @category = $("#category")
-        @category.style.display = 'none'
         @category.addEventListener("click", (e) ->
             e.stopPropagation()
         )
@@ -111,31 +111,35 @@ class CategoryBar
     #     target.parentNode.removeChild(target)
     #     @
 
-    hide_empty_category:->
-        for own id, item of @category_items
-            all_is_hidden = item.info.every((el) ->
-                applications[el].display_mode == "hidden"
-            )
-            if all_is_hidden and not Item.display_temp
-                item.hide()
-                if @selected_id == id
-                    @selected_id = CATEGORY_ID.ALL
-                grid_load_category(@selected_id)
+    hideEmptyCategory:->
+        # for own id, item of @category_items
+        #     all_is_hidden = item.info.every((el) ->
+        #         applications[el].setDisplayMode("hidden").notify()
+        #     )
+        #     if all_is_hidden and not Item.display_temp
+        #         item.hide()
+                # if @selected_id == id
+                #     @selected_id = CATEGORY_ID.ALL
+                # grid_load_category(@selected_id)
         @
 
-    show_nonempty_category:->
-        for own id, item of @category_items
-            not_all_is_hidden = item.some((el) ->
-                applications[el].display_mode != "hidden"
-            )
-            if not_all_is_hidden or Item.display_temp
-                item.show()
+    showNonemptyCategory:->
+        # for own id, item of @category_items
+        #     not_all_is_hidden = item.some((el) ->
+        #         applications[el].display_mode != "hidden"
+        #     )
+        #     if not_all_is_hidden or Item.display_temp
+        #         item.show()
         @
 
     show: ->
+        if @category.style.display != 'block'
+            @category.style.display = 'block'
         @
 
     hide: ->
+        if @category.style.display != 'none'
+            @category.style.display = 'none'
         @
 
     update_scroll_bar: ->

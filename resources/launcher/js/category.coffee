@@ -22,7 +22,7 @@ class Category
     constructor:(@id, @name, @items)->
         if @id == -1
             echo @items
-        @element = create_element(tag:"div", id:"c#{@id}")
+        @element = create_element(tag:"div", class:"category", id:"c#{@id}")
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
         @nameNode = create_element(tag:"h4", id:"cat#{@id}", class:"categoryName", @header)
@@ -50,7 +50,27 @@ class Category
         @decoration.lastChild.style.width = width
 
     hide: ->
-        @element.style.display = 'none'
+        if @element.style.display != 'none'
+            @element.style.display = 'none'
+        @
 
     show:->
-        @element.style.display = 'block'
+        if @element.style.display != 'block'
+            @element.style.display = 'block'
+        @
+
+    hideHeader:->
+        if @header.style.display != 'none'
+            @header.style.display = 'none'
+        @
+
+    showHeader:->
+        if @header.style.display != 'block'
+            @header.style.display = 'block'
+        @
+
+    some: (fn)->
+        @items.some(fn)
+
+    every:(fn)->
+        @items.every(fn)

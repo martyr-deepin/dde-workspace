@@ -69,19 +69,19 @@ keydown_callback = (e) ->
             when KEYCODE.N, KEYCODE.TAB
                 selected_down()
             when KEYCODE.ENTER, KEYCODE.SPACE
-                s_box.focus()
+                s_box?.focus()
     else if String.fromCharCode(e.which).match(/\w/) or e.which == KEYCODE.BACKSPACE
-        s_box.focus()
+        s_box?.focus()
     else
         switch e.which
             when KEYCODE.ESC
                 e.preventDefault()
                 e.stopPropagation()
                 exit_launcher()
-                # if s_box.value == ""
+                # if s_box?.value == ""
                 #     exit_launcher()
                 # else
-                #     s_box.focus()
+                #     s_box?.focus()
                 #     clean_search_bar()
             when KEYCODE.ENTER
                 e.preventDefault()
@@ -121,5 +121,5 @@ bind_events = ->
         e.preventDefault()
         e.stopPropagation()
         if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
-            s_box.value += String.fromCharCode(e.which)
+            s_box?.value += String.fromCharCode(e.which)
     )
