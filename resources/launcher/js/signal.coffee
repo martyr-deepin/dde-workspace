@@ -23,6 +23,7 @@ DCore.signal_connect('workarea_changed', (alloc)->
     _b.style.maxHeight = "#{height}px"
     # $('#grid').style.maxHeight = "#{height-60}px"
     $('#container').style.maxHeight = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
+    $('#grid').style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     category_column_adaptive_height()
 
     # hidden_icon_ids = _get_hidden_icons_ids()

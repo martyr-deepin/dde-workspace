@@ -20,7 +20,7 @@
 class Switcher
     constructor:->
         @isShowCategory = false
-        @switcher = create_element(tag:'div', id:'switcher', $("#container"))
+        @switcher = create_element(tag:'div', id:'switcher', document.body)
         @favor = create_img(src:'img/favor.png', title: 'favor', alt:'favor', @switcher)
         @category = create_img(src:'img/category.png', title: 'all', alt:'all', @switcher)
         @switcher.addEventListener('click', (e)=>
@@ -39,6 +39,7 @@ class Switcher
         @category.style.display = 'none'
         container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
         categoryList.showNonemtpyCategory().updateBlankHeight().showBlank()
+        Item.updateHorizontalMargin()
 
     hideCategory:->
         @isShowCategory = false
@@ -47,5 +48,4 @@ class Switcher
         @favor.style.display = 'none'
         @category.style.display = 'inline'
         container.style.marginLeft = "110px"
-        for own k, v of applications
-            Widget.look_up(k).updateHorizontalMargin()
+        # Item.updateHorizontalMargin()

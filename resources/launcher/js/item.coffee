@@ -36,7 +36,6 @@ class Item extends Widget
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
 
-        @updateHorizontalMargin()
         @load_image()
         @itemName = create_element("div", "item_name", @element)
         @itemName.innerText = @name
@@ -57,12 +56,17 @@ class Item extends Widget
         @favorElement = @element.cloneNode(true)
         @favorElement.setAttribute("id", "fa_#{@searchElement.id}")
 
-    updateHorizontalMargin:->
+    @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
+        echo "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
+        echo "itemNumPerLine: #{Item.itemNumPerLine}"
         Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
-        @element.style.marginLeft = "#{Item.horizontalMargin}px"
-        @element.style.marginRight = "#{Item.horizontalMargin}px"
+        echo "horizontalMargin: #{Item.horizontalMargin}"
+        for own k, v of applications
+            item = Widget.look_up(k)
+            item.element.style.marginLeft = "#{Item.horizontalMargin}px"
+            item.element.style.marginRight = "#{Item.horizontalMargin}px"
 
     try_set_title: (el, text, width)->
         setTimeout(->
@@ -132,7 +136,7 @@ class Item extends Widget
     do_click : (e)=>
         e?.stopPropagation()
         @element.style.cursor = "wait"
-        DCore.DEntry.launch(@path, [])
+        startManager.Launch(@path)
         Item.hover_item_id = @id
         @element.style.cursor = "auto"
         exit_launcher()
@@ -184,7 +188,9 @@ class Item extends Widget
     on_itemselected: (id)=>
         id = parseInt(id)
         switch id
-            # when 1 then DCore.DEntry.launch(@path, [])
+            when 1
+                startManager.Launch(@path)
+                # exit_launcher()
             when 2 then @toggle_icon()
             when 3 then daemon.SendToDesktop(@path)
             # TODO get_uri

@@ -89,3 +89,31 @@ hiddenIcons.hide()
 bind_events()
 DCore.Launcher.webview_ok()
 DCore.Launcher.test()
+
+fn = (e)->
+    offset = 0
+    id = -2
+    l = this.childNodes.length
+    for i in [0...l]
+        candidateId = this.childNodes[i].id
+        if this.scrollTop - offset < 0
+            echo id
+            # TODO: category bar
+            $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            return
+        else if this.scrollTop - offset == 0
+            id = this.childNodes[i].id
+            echo id
+            # TODO: category bar
+            if id == "c-2"
+                this.style.webkitMaskImage =  ""
+            else
+                this.style.webkitMaskImage =  "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            return
+        else
+            id = candidateId
+            if this.childNodes[i].style.display != 'none'
+                offset += this.childNodes[i].clientHeight + 40
+
+$("#grid").addEventListener("scroll", fn)
+# $("#container").addEventListener("whell", fn)

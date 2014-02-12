@@ -528,7 +528,7 @@ int main(int argc, char* argv[])
     setup_launcher_dbus_service();
 
 #ifndef NDEBUG
-    monitor_resource_file("launcher", webview);
+    // monitor_resource_file("launcher", webview);
     g_debug("xid: 0x%lx", gdk_x11_window_get_xid(gtk_widget_get_window(container)));
 #endif
 
