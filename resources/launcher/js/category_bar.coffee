@@ -26,9 +26,11 @@ class CategoryItem
 
     show:->
         @element.style.display = "block"
+        @
 
     hide:->
         @element.style.display = "none"
+        @
 
     focus: ->
         @element.classList.add("category_selected")

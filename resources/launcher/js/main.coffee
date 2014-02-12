@@ -72,6 +72,7 @@ init_all_applications = ->
         item = new Item(id, name, path, icon)
         info.element = item.element
         info.searchElement = item.searchElement
+        info.favorElement = item.favorElement
         info.register('item', item).notify()
         frag.appendChild(applications[id].searchElement)
     $("#searchResult").appendChild(frag)

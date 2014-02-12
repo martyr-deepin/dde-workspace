@@ -128,6 +128,13 @@ func configFilePath(name string) string {
 func configFile(name string) (*glib.KeyFile, error) {
 	file := glib.NewKeyFile()
 	conf := configFilePath(name)
+	if !exist(conf) {
+		f, err := os.Create(conf)
+		if err != nil {
+			return nil, err
+		}
+		defer f.Close()
+	}
 	if ok, err := file.LoadFromFile(conf, glib.KeyFileFlagsNone); !ok {
 		return nil, err
 	}

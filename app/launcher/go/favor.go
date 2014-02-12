@@ -26,7 +26,7 @@ type FavorItemList []FavorItem
 func getFavorIdList(file *glib.KeyFile) []string {
 	_, list, err := file.GetStringList(FavorConfigGroup, FavorConfigKey)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(fmt.Errorf("getFavorIdList: %s", err))
 		return make([]string, 0)
 	}
 	return uniqueStringList(list)
@@ -35,11 +35,11 @@ func getFavorIdList(file *glib.KeyFile) []string {
 func getFavors() FavorItemList {
 	favors := make(FavorItemList, 0)
 	file, err := configFile(FavorConfigFile)
+	defer file.Free()
 	if err != nil {
 		fmt.Println(fmt.Errorf("getFavors: %s", err))
 		return favors
 	}
-	defer file.Free()
 
 	ids := getFavorIdList(file)
 	for _, id := range ids {
@@ -60,11 +60,11 @@ func getFavors() FavorItemList {
 
 func saveFavors(items FavorItemList) bool {
 	file, err := configFile(FavorConfigFile)
+	defer file.Free()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(fmt.Errorf("saveFavors: %s", err))
 		return false
 	}
-	defer file.Free()
 
 	previousIds := getFavorIdList(file)
 	previousIdMap := make(map[string]bool, 0)

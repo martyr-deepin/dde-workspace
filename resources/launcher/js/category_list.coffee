@@ -24,7 +24,7 @@ class CategoryList
 
         frag = document.createDocumentFragment()
         favors = daemon.GetFavors_sync()
-        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors)
+        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->e[0]))
         @favor.show().hideHeader()
         frag.appendChild(@favor.element)
         # infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
@@ -72,19 +72,19 @@ class CategoryList
     showNonemtpyCategory:->
         if @favor.element.style.display == 'none'
             @favor.element.style.display = 'block'
-        for own id, item of @categories
-            not_all_is_hidden = item.some((el) ->
+        @favor.showHeader().setNameDecoration()
+        for own id, category of @categories
+            not_all_is_hidden = category.some((el) ->
                 applications[el].display_mode != "hidden"
             )
             if not_all_is_hidden or Item.display_temp
-                item.show()
+                category.show()
+                category.setNameDecoration()
         @
 
     showFavorOnly:->
         for own k, v of @categories
-            if k == CATEGORY_ID.FAVOR
-                v.show().hideHeader()
-            else
                 v.hide()
 
+        @favor.show().hideHeader()
         @blank.style.display = 'none'

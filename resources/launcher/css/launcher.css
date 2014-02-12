@@ -270,6 +270,7 @@ body {
 }
 .category{
   display:none;
+  width:100%;
 }
 .categoryHeader{
   display: -webkit-box;
@@ -354,4 +355,7 @@ body {
 }
 #switcher img[title='favor']{
   display:none;
+}
+.page{
+  width:100%;
 }

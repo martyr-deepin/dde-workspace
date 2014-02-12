@@ -14,10 +14,10 @@ const (
 
 func getHiddenApps() []ItemId {
 	file, err := configFile(HiddenAppsConf)
+	defer file.Free()
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer file.Free()
 
 	ids := make([]ItemId, 0)
 	_, list, err := file.GetStringList(HiddenAppsGroupName,
@@ -33,11 +33,11 @@ func getHiddenApps() []ItemId {
 
 func saveHiddenApps(ids []string) bool {
 	file, err := configFile(HiddenAppsConf)
+	defer file.Free()
 	if err != nil {
 		fmt.Println(fmt.Errorf("saveHiddenApps: %s", err))
 		return false
 	}
-	defer file.Free()
 	file.SetStringList(HiddenAppsGroupName, HiddenAppsKeyName,
 		uniqueStringList(ids))
 	if err = saveKeyFile(file, configFilePath(HiddenAppsConf)); err != nil {

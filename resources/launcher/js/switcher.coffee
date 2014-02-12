@@ -35,9 +35,10 @@ class Switcher
     showCategory:->
         @isShowCategory = true
         categoryBar.show()
-        categoryList.showNonemtpyCategory().updateBlankHeight().showBlank()
         @favor.style.display = 'inline'
         @category.style.display = 'none'
+        container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
+        categoryList.showNonemtpyCategory().updateBlankHeight().showBlank()
 
     hideCategory:->
         @isShowCategory = false
@@ -45,3 +46,6 @@ class Switcher
         categoryList.showFavorOnly()
         @favor.style.display = 'none'
         @category.style.display = 'inline'
+        container.style.marginLeft = "110px"
+        for own k, v of applications
+            Widget.look_up(k).updateHorizontalMargin()

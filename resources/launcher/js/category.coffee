@@ -20,8 +20,6 @@
 
 class Category
     constructor:(@id, @name, @items)->
-        if @id == -1
-            echo @items
         @element = create_element(tag:"div", class:"category", id:"c#{@id}")
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
@@ -36,7 +34,6 @@ class Category
         frag = document.createDocumentFragment()
         for id in @items
             if @id == CATEGORY_ID.FAVOR
-                echo applications[id].name
                 frag.appendChild(applications[id].favorElement)
             else
                 frag.appendChild(applications[id].element)
@@ -48,6 +45,7 @@ class Category
         @decoration.style.width = width
         @decoration.firstChild.style.width = width
         @decoration.lastChild.style.width = width
+        @
 
     hide: ->
         if @element.style.display != 'none'
@@ -65,8 +63,8 @@ class Category
         @
 
     showHeader:->
-        if @header.style.display != 'block'
-            @header.style.display = 'block'
+        if @header.style.display != '-webkit-box'
+            @header.style.display = '-webkit-box'
         @
 
     some: (fn)->
