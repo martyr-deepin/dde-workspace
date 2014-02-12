@@ -23,8 +23,9 @@ class MenuChoose extends Widget
     choose_num = -1
     select_state_confirm = false
     frame_click = true
-    time_animation = 500
     
+    
+    #var for animation
     max_opt_in_oneline = 4
     
     t_max = 1000
@@ -36,6 +37,9 @@ class MenuChoose extends Widget
     XBack = 20
     XStartShow = "80%"
     XEndHide = "80%"
+    
+    init_width = 80
+    final_width = 100
     
     constructor: (@id)->
         super
@@ -91,8 +95,6 @@ class MenuChoose extends Widget
             #init el css and then can animate
             text_el.style.opacity = "0.0"
             
-            init_width = 80
-            final_width = 100
             img_el.style.width = "#{init_width}px"
             img_el.style.height = "#{init_width}px"
             
