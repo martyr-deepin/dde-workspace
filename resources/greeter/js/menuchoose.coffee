@@ -28,18 +28,18 @@ class MenuChoose extends Widget
     #var for animation
     max_opt_in_oneline = 4
     
-    t_max = 1000
-    t_mid = 500
-    t_min = 50
-    t_delay = 80
+    t_max = 300
+    t_mid = 600
+    t_min = 100
+    t_delay = 50
     
-    XMove = -350
-    XBack = 20
-    XStartShow = "80%"
-    XEndHide = "80%"
+    XMove = "-50px"
+    XBack = "0"
+    XStartShow = "800px"
+    XEndHide = "800px"
     
-    init_width = 80
-    final_width = 100
+    init_width = 80 * 0.8
+    final_width = 80
     
     constructor: (@id)->
         super
@@ -58,20 +58,6 @@ class MenuChoose extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
     
-    setmaxbutton_in_oneline:(maxnum)->
-        j = 0
-        for tmp ,i in @opt
-            if i%maxnum == 0
-                @opt[i].style.left = 0
-                if i > 0
-                    j++
-                    for k in [0...maxnum]
-                        if i + k > @opt.length - 1 then break
-                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
-            else
-                #echo " #{i} is  not % #{maxnum}"
-                @opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
-
  
     show:->
         echo "show"
@@ -86,7 +72,7 @@ class MenuChoose extends Widget
                 )
 
 
-        animation_opt_move_show = (i,time_max,time_min)=>
+        animation_opt_move_show = (i,t_delay)=>
             echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
@@ -99,20 +85,15 @@ class MenuChoose extends Widget
             img_el.style.height = "#{init_width}px"
             
             opt_el.style.opacity = "0.0"
-            #opt_el.style.left = "XStartShow"
+            opt_el.style.left = XStartShow
             
-            time = time_min + i * t_delay
-            animation_scale(img_el,final_width / init_width,"#{time / 1000}s")
-            animation_moveX(opt_el,XMove,"0.3s", "cubic-bezier(0,1,1,0)",i * t_delay)
-
-
+            animation_scale(img_el,final_width / init_width,t_max)
             jQuery(opt_el).animate(
-                {opacity: 1.0;},
-                time,
+                {opacity: 1.0;left:XMove},
+                t_max + t_delay,
                 'linear',=>
-                    #animation_moveX(opt_el, XMove - XBack,"#{(time_min + i * t_delay) / 1000}s")
                     jQuery(opt_el).animate(
-                        {left:"#{XMove + XBack}px";},
+                        {left:XBack;},
                         t_min,
                         'linear',
                         animation_opt_text_show(i)
@@ -129,9 +110,9 @@ class MenuChoose extends Widget
                     $(".nextuserinfo").style.display = "none"
                 
                 @element.style.display = "-webkit-box"
-                @setmaxbutton_in_oneline(max_opt_in_oneline)
                 for tmp,i in @opt
-                    animation_opt_move_show(i,t_max,t_min)
+                    echo i
+                    animation_opt_move_show(i,i * t_delay)
         )
 
 
@@ -150,29 +131,26 @@ class MenuChoose extends Widget
                     @element.style.display = "none"
             )
 
-        animation_opt_move_hide = (i,time_max,time_min)=>
+        animation_opt_move_hide = (i,t_delay)=>
             echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
 
-            time = time_min + i * t_delay
             jQuery(text_el).animate(
                 {opacity:'0.0';},
                 t_min,
                 'linear',=>
                     jQuery(opt_el).animate(
-                        {left:"#{XMove}px";},
-                        t_min,
-                        'linear',=>
-                            opt_el.style.opacity = "0.6"
-                            animation_scale(img_el,1.0,"#{time / 1000}s")
-                            animation_moveX(opt_el, 0,"#{time / 1000}s")
+                        {left:XMove;},
+                        t_max + t_delay,
+                        'linear',
+                            animation_scale(img_el,1.0,t_max)
                             jQuery(opt_el).animate(
-                                {opacity: 0.0;},
-                                time,
-                                'linear',=>
-                                    animation_user_show(i)
+                                {opacity:'0.0';left:XEndHide;},
+                                t_max + t_delay,
+                                'linear',
+                                animation_user_show(i)
                             )
                     )
             )
@@ -184,7 +162,7 @@ class MenuChoose extends Widget
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].style.borderRadius = "0px"
 
-            animation_opt_move_hide(i,t_max,t_min)
+            animation_opt_move_hide(i,i * t_delay)
 
 
     insert: (id, title, img_normal,img_hover,img_click)->

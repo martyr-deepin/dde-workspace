@@ -33,14 +33,11 @@
 
 .MenuChoose{
     /*background-color:rgba(0,0,0,0.85);*/
-    width:500px;
-    /*overflow:hidden;*/
+    width:100%;
+    height:100%;
+    overflow:hidden;
     
-    /*maxwidth:400px;*/
-    /*height:100%;*/
-    position:absolute;
-    left:80%;
-    top:31%;
+    /*position:absolute;*/
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
@@ -61,8 +58,9 @@
 .opt{
     position:relative;
     cursor: pointer;
-    margin:0 0 0 20px;
+    margin:0 0 0 10px;
     width:100px;
+    margin-bottom:150px;
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
@@ -79,12 +77,13 @@
 
 .opt_text{
     width:80px;
-    height:30px;
+    height:40px;
+    margin-top:10px;
     text-align:center;
     color: #FFF;
-    font-size:14px;
+    font-size:1.5em;
     text-shadow: 0 2px 2px rgba(0,0,0,0.5);
-    white-space:nowrap; 
+    white-space:pre-wrap; 
     overflow:hidden;
     text-overflow:ellipsis;
 }
