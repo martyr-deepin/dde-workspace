@@ -238,7 +238,31 @@ class MenuChoose extends Widget
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
-        @cb(@option[i], @option_text[i])
+        if is_greeter
+            echo "is_greeter"
+            @cb(@option[i], @option_text[i])
+        else
+            echo "is_lock"
+            if @id is "power_menuchoose" and @option[i] isnt "suspend"
+                localStorage.setItem("shutdown_from_lock",1)
+                
+                img_src_before = "images/userinfo/"
+                value = _("Input password")
+                localStorage.setItem("password_value_shutdown",value)
+                @password = $(".password")
+                @loginbutton = $(".loginbutton")
+                echo @password
+                echo @loginbutton
+
+                @password.style.color = "#ff8a00"
+                @password.style.fontSize = "1.5em"
+                @password.type = "text"
+                @password.value = value
+                @loginbutton.src = "#{img_src_before}#{@option[i]}_normal.png"
+                @loginbutton.disable = true
+            else
+                @cb(@option[i], @option_text[i])
+
     
     hover_state:(i)->
         choose_num = i

@@ -178,6 +178,7 @@ class User extends Widget
             if user is _current_user then _current_user.focus()
 
         userinfo_show_index =_current_user.index
+        localStorage.setItem("current_user_index",userinfo_show_index)
         @prev_next_userinfo_create()
         return userinfo_all
 
@@ -243,6 +244,7 @@ class User extends Widget
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
+        localStorage.setItem("current_user_index",userinfo_show_index)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
@@ -260,6 +262,7 @@ class User extends Widget
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
+        localStorage.setItem("current_user_index",userinfo_show_index)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
@@ -293,12 +296,12 @@ class LoginEntry extends Widget
 
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
-            if @password.value is password_error_msg
+            if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("focus",=>
-            if @password.value is password_error_msg
+            if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
@@ -339,7 +342,7 @@ class LoginEntry extends Widget
         if not @password.value
             @password.focus()
             return false
-        else if @password.value is password_error_msg
+        else if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
             @input_password_again()
             return false
         return true
