@@ -39,12 +39,14 @@ class DesktopMenu extends Widget
         echo sessions
         if sessions.length <= 1 then return
         
+        if "deepin_test" in sessions
+        #if id is "deepin_test"
+            echo "set session is deepin_test default"
+            localStorage.setItem("de_current_id","deepin_test")
+        
         for session in sessions
             id = session
             name = id
-            if id is "deepin_test"
-                echo "set session is deepin_test default"
-                localStorage.setItem("de_current_id","deepin_test")
 
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
