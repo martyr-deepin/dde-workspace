@@ -290,9 +290,12 @@ class LoginEntry extends Widget
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         @loginbutton.addEventListener("mouseout", =>
+            power_flag = false
             if (power = localStorage.getObject("shutdown_from_lock"))?
                 if power.lock is true
-                    @loginbutton.src = "#{img_src_before}#{power.value}_normal.png"
+                    power_flag = true
+            if power_flag
+                @loginbutton.src = "#{img_src_before}#{power.value}_normal.png"
             else
                 @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
@@ -337,7 +340,14 @@ class LoginEntry extends Widget
 
         #)
         @loginbutton.addEventListener("click", =>
-            @loginbutton.src = "#{img_src_before}#{@id}_press.png"
+            power_flag = false
+            if (power = localStorage.getObject("shutdown_from_lock"))?
+                if power.lock is true
+                    power_flag = true
+            if power_flag
+                @loginbutton.src = "#{img_src_before}#{power.value}_press.png"
+            else
+                @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
                 @on_active(@loginuser, @password.value)
         )
@@ -477,8 +487,11 @@ class UserInfo extends Widget
             document.body.cursor = "wait"
             echo 'start session end'
         else
-            power = localStorage.getObject("shutdown_from_lock")
-            if power.lock is true
+            power_flag = false
+            if (power = localStorage.getObject("shutdown_from_lock"))?
+                if power.lock is true
+                    power_flag = true
+            if power_flag
                 power.lock = false
                 localStorage.setObject("shutdown_from_lock",power)
                 if power_can(power.value)

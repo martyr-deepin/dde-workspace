@@ -37,6 +37,7 @@ class SwitchUser extends Widget
             @switch.src = "images/userswitch/acount_switch_hover.png"
         )
         @switch.addEventListener("click", =>
+            localStorage.setItem("from_lock",true)
             @SwitchToGreeter()
         )
 

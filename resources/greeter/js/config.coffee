@@ -42,4 +42,12 @@ try
     is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
 catch error
     is_livecd = false
- 
+     
+detect_is_from_lock = ->
+    from_lock = false
+    if is_greeter
+        from_lock = localStorage.getItem("from_lock")
+    localStorage.setItem("from_lock",false)
+    return from_lock
+
+

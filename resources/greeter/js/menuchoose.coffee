@@ -307,6 +307,7 @@ class ComboBox extends Widget
         @current_img = create_img("current_img", "", @element)
         
         if is_greeter
+           
             de_current_id = localStorage.getItem("de_current_id")
             echo "-------------de_current_id:#{de_current_id}"
             if not de_current_id?
@@ -329,12 +330,14 @@ class ComboBox extends Widget
         @menu.insert_noimg(id, title)
 
     do_click: (e)->
-        e.stopPropagation()
+        #e.stopPropagation()
         if is_greeter
             if @menu.id is "power_menuchoose"
                 $("#desktop_menuchoose").style.display = "none"
             else if @menu.id is "desktop_menuchoose"
-             $("#power_menuchoose").style.display = "none"
+                #if detect_is_from_lock() then return
+                $("#power_menuchoose").style.display = "none"
+            
         if @menu.element.style.display isnt "none"
             @menu.hide()
         else
