@@ -1,6 +1,7 @@
 SET(NAME "lightdm-deepin-greeter")
 SET(NAME_RESOURCE "greeter")
 
+GEN_JS_FILE(${NAME_RESOURCE})
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
 GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")

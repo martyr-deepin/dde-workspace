@@ -39,6 +39,7 @@ endmacro()
 
 macro(GEN_JS_FILE NAME)
     set(_DIR ${PROJECT_SOURCE_DIR}/resources/${NAME}/js)
+    message(${NAME}=======================)
     add_custom_target(${NAME}_js
         COMMAND make -C ${_DIR}
         DEPENDS ${_DIR}/makefile
