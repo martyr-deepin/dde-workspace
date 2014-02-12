@@ -40,7 +40,6 @@ class DesktopMenu extends Widget
         if sessions.length <= 1 then return
         
         if "deepin_test" in sessions
-        #if id is "deepin_test"
             echo "set session is deepin_test default"
             localStorage.setItem("de_current_id","deepin_test")
         
