@@ -64,7 +64,7 @@ class MenuChoose extends Widget
 
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
-            echo "opt_text[#{i}] show"
+            #echo "opt_text[#{i}] show"
             for tmp in @opt_text
                 jQuery(tmp).animate(
                     {opacity:'1.0';},
@@ -73,7 +73,7 @@ class MenuChoose extends Widget
 
 
         animation_opt_move_show = (i,t_delay)=>
-            echo "animation_opt_move_show(#{i})"
+            #echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -121,7 +121,7 @@ class MenuChoose extends Widget
         
         animation_user_show = (i)=>
             if i != @opt.length - 1 then return
-            echo "animation_user_show(#{i})"
+            #echo "animation_user_show(#{i})"
             $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').animate(
                 {opacity:'1.0';},
@@ -131,7 +131,7 @@ class MenuChoose extends Widget
             )
 
         animation_opt_move_hide = (i,t_delay)=>
-            echo "animation_opt_move_hide(#{i})"
+            #echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -244,15 +244,14 @@ class MenuChoose extends Widget
         else
             echo "is_lock"
             if @id is "power_menuchoose" and @option[i] isnt "suspend"
-                localStorage.setItem("shutdown_from_lock",1)
+                power = {"lock":true,"value":@option[i]}
+                localStorage.setObject("shutdown_from_lock",power)
                 
                 img_src_before = "images/userinfo/"
                 value = _("Input password")
                 localStorage.setItem("password_value_shutdown",value)
                 @password = $(".password")
                 @loginbutton = $(".loginbutton")
-                echo @password
-                echo @loginbutton
 
                 @password.style.color = "#ff8a00"
                 @password.style.fontSize = "1.5em"

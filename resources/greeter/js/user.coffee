@@ -290,7 +290,11 @@ class LoginEntry extends Widget
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         @loginbutton.addEventListener("mouseout", =>
-            @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
+            if (power = localStorage.getObject("shutdown_from_lock"))?
+                if power.lock is true
+                    @loginbutton.src = "#{img_src_before}#{power.value}_normal.png"
+            else
+                @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
         @password_eventlistener()
     
@@ -473,7 +477,19 @@ class UserInfo extends Widget
             document.body.cursor = "wait"
             echo 'start session end'
         else
-            DCore.Lock.start_session(username,password,@session)
+            power = localStorage.getObject("shutdown_from_lock")
+            if power.lock is true
+                power.lock = false
+                localStorage.setObject("shutdown_from_lock",power)
+                if power_can(power.value)
+                    power_force(power.value)
+                else
+                    confirmdialog = new ConfirmDialog(power.value)
+                    confirmdialog.frame_build()
+                    document.body.appendChild(confirmdialog.element)
+                    confirmdialog.interval(60)
+            else
+                DCore.Lock.start_session(username,password,@session)
     
     auth_failed: (msg) ->
         @stop_avatar()
