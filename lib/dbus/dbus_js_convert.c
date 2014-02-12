@@ -114,6 +114,21 @@ const char* jsvalue_to_signature(JSContextRef ctx, JSValueRef jsvalue)
   return NULL;
 }
 
+gboolean is_array_key_item(JSContextRef ctx, JSPropertyNameArrayRef array, int index)
+{
+    //check and filter user defined property(user js defined properties).
+    JSStringRef key = JSPropertyNameArrayGetNameAtIndex(array, index);
+    char* c_key = jsstring_to_cstr(ctx, key);
+    char* endptr = NULL;
+    g_ascii_strtoll(c_key, &endptr, 10);
+    if (endptr == c_key) {
+	return FALSE;
+    }
+    g_free(c_key);
+    return TRUE;
+}
+
+
 gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
     DBusMessageIter *iter, const char* sig, JSValueRef* exception)
 {
@@ -146,7 +161,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return TRUE;
                 }
             }
-            CASE_NUMBER
+        CASE_NUMBER
             {
                 if (!JSValueIsNumber(ctx, jsvalue)) {
                     js_fill_exception(ctx, exception, "jsvalue is not an number!");
@@ -160,7 +175,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     return TRUE;
                 }
             }
-            CASE_STRING
+        CASE_STRING
             {
                 char* value = jsvalue_to_cstr(ctx, jsvalue);
                 if (value == NULL ||
@@ -343,6 +358,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 int p_num = JSPropertyNameArrayGetCount(prop_names);
 
                 for (int i=0; i<p_num; i++) {
+		    if (!is_array_key_item(ctx, prop_names, i))continue;
                     JSValueRef value = JSObjectGetPropertyAtIndex(ctx,
                             (JSObjectRef)jsvalue, i, NULL);
                     js_to_dbus(ctx, value,
