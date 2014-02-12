@@ -88,9 +88,9 @@ class MenuChoose extends Widget
             opt_el.style.left = XStartShow
             
             animation_scale(img_el,final_width / init_width,t_max)
-            jQuery(opt_el).animate(
+            jQuery(opt_el).delay(t_delay).animate(
                 {opacity: 1.0;left:XMove},
-                t_max + t_delay,
+                t_max,
                 'linear',=>
                     jQuery(opt_el).animate(
                         {left:XBack;},
@@ -111,7 +111,6 @@ class MenuChoose extends Widget
                 
                 @element.style.display = "-webkit-box"
                 for tmp,i in @opt
-                    echo i
                     animation_opt_move_show(i,i * t_delay)
         )
 
@@ -148,7 +147,7 @@ class MenuChoose extends Widget
                             animation_scale(img_el,1.0,t_max)
                             jQuery(opt_el).animate(
                                 {opacity:'0.0';left:XEndHide;},
-                                t_max + t_delay,
+                                t_max,
                                 'linear',
                                 animation_user_show(i)
                             )
