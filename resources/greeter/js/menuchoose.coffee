@@ -246,7 +246,7 @@ class MenuChoose extends Widget
             if @id is "power_menuchoose" and @option[i] isnt "suspend"
                 power = {"lock":true,"value":@option[i]}
                 localStorage.setObject("shutdown_from_lock",power)
-                
+ 
                 img_src_before = "images/userinfo/"
                 value = _("Input password")
                 localStorage.setItem("password_value_shutdown",value)
@@ -259,6 +259,24 @@ class MenuChoose extends Widget
                 @password.value = value
                 @loginbutton.src = "#{img_src_before}#{@option[i]}_normal.png"
                 @loginbutton.disable = true
+                
+                remove_elment(@to_unlock) if @to_unlock
+                @to_unlock = create_img("to_unlock","images/userinfo/back.png",document.body)
+                @to_unlock.style.display = "block"
+                @to_unlock.addEventListener("click",=>
+                    @to_unlock.style.display = "none"
+                    power.lock = false
+                    localStorage.setObject("shutdown_from_lock",power)
+                    
+                    @password.style.color = "rgba(255,255,255,0.5)"
+                    @password.style.fontSize = "2.0em"
+                    @password.type = "password"
+                    @password.focus()
+                    @loginbutton.disable = false
+                    @loginbutton.src = "#{img_src_before}/lock_normal.png"
+                    @password.value = null
+                )
+
             else
                 @cb(@option[i], @option_text[i])
 
