@@ -55,6 +55,7 @@ class User extends Widget
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
+            el.style.opacity = "0.8"
         ) if hover
         el.addEventListener("mouseout",->
             el.src = normal
