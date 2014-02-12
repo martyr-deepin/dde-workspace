@@ -61,6 +61,7 @@ class User extends Widget
             el.src = normal
         ) if normal
         el.addEventListener("click",=>
+            el.style.opacity = "0.8"
             el.src = click
             click_cb?()
         ) if click
