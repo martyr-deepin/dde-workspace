@@ -32,7 +32,7 @@ class MenuChoose extends Widget
     t_min = 50
     t_delay = 80
     
-    XMove = -350
+    XMove = -600
     XBack = 20
     XStartShow = "80%"
     XEndHide = "80%"
@@ -85,18 +85,24 @@ class MenuChoose extends Widget
         animation_opt_move_show = (i,time_max,time_min)=>
             echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
+            img_el = @opt_img[i]
             opt_el = @opt[i]
             
             #init el css and then can animate
             text_el.style.opacity = "0.0"
             
+            init_width = 80
+            final_width = 100
+            img_el.style.width = "#{init_width}px"
+            img_el.style.height = "#{init_width}px"
+            
             opt_el.style.opacity = "0.0"
-            opt_el.style.width = "80px"
-            opt_el.style.height = "80px"
             opt_el.style.left = "XStartShow"
             
+            animation_scale(img_el,final_width / init_width,"#{(time_min + i * t_delay) / 1000}s")
+
             jQuery(opt_el).animate(
-                {opacity: 1.0;left:"#{XMove}px"; width:'100px';height:'100px';},
+                {opacity: 1.0;left:"#{XMove}px";},
                 time_min + i * t_delay,
                 'linear',=>
                     jQuery(opt_el).animate(
@@ -141,6 +147,7 @@ class MenuChoose extends Widget
         animation_opt_move_hide = (i,time_max,time_min)=>
             echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
+            img_el = @opt_img[i]
             opt_el = @opt[i]
 
             jQuery(text_el).animate(
@@ -152,8 +159,9 @@ class MenuChoose extends Widget
                         t_min,
                         'linear',=>
                             opt_el.style.opacity = "0.6"
+                            animation_scale(img_el,1.0,"#{(time_min + i * t_delay) / 1000}s")
                             jQuery(opt_el).animate(
-                                {opacity: 0.0;left:"#{XEndHide}"; width:'40px';height:'40px';},
+                                {opacity: 0.0;left:"#{XEndHide}";},
                                 time_min + i * t_delay,
                                 'linear',=>
                                     animation_user_show(i)
