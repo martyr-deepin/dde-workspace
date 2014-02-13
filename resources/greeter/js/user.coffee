@@ -284,7 +284,7 @@ class LoginEntry extends Widget
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
-        @password.setAttribute("maxlength", 16)
+        @password.setAttribute("maxlength", PasswordMaxlength)
         @password.setAttribute("autofocus", true)
        
         @loginbutton = create_img("loginbutton", "", @password_div)

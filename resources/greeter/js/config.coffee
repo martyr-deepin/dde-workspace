@@ -1,4 +1,6 @@
-VERSION = " "  #RC Beta
+VERSION = "2.0"  #RC Beta
+
+PasswordMaxlength = 16
 
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
