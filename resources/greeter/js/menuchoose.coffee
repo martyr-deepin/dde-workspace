@@ -245,7 +245,7 @@ class MenuChoose extends Widget
             localStorage.setObject("shutdown_from_lock",power)
 
             img_src_before = "images/userinfo/"
-            value = _("Input password")
+            value = _("Input password to #{powervalue}")
             localStorage.setItem("password_value_shutdown",value)
             @password = $(".password")
             @loginbutton = $(".loginbutton")
@@ -259,6 +259,9 @@ class MenuChoose extends Widget
             
             remove_elment(@to_unlock) if @to_unlock
             @to_unlock = create_img("to_unlock","images/userinfo/back.png",document.body)
+            jQuery(@to_unlock).animation(
+                
+            )
             @to_unlock.style.display = "block"
             @to_unlock.addEventListener("click",=>
                 @to_unlock.style.display = "none"
@@ -284,8 +287,8 @@ class MenuChoose extends Widget
             @cb(@option[i], @option_text[i])
         else
             echo "is_lock"
-            if @id is "power_menuchoose"
-                shutdown_to_unlock(option[i])
+            if @id is "power_menuchoose" and @option[i] isnt "suspend"
+                @shutdown_to_unlock(@option[i])
             else
                 @cb(@option[i], @option_text[i])
 
