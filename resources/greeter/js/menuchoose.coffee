@@ -239,27 +239,26 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
        
-    shutdown_to_unlock:(powervalue)->
-        if powervalue isnt "suspend"
-            power = {"lock":true,"value":powervalue}
-            localStorage.setObject("shutdown_from_lock",power)
-            #$("#desktop_menuchoose").disable = true
-            #$("#power_menuchoose").disable = true
+    confirm_shutdown_show:(powervalue)=>
+        power = {"lock":true,"value":powervalue}
+        localStorage.setObject("shutdown_from_lock",power)
+        #$("#desktop_menuchoose").disable = true
+        #$("#power_menuchoose").disable = true
 
-            value = _("Input password to #{powervalue}")
-            localStorage.setItem("password_value_shutdown",value)
-            @password = $(".password")
-            @loginbutton = $(".loginbutton")
+        value = _("Input password to #{powervalue}")
+        localStorage.setItem("password_value_shutdown",value)
+        @password = $(".password")
+        @loginbutton = $(".loginbutton")
 
-            @password.style.color = "#ff8a00"
-            @password.style.fontSize = "1.5em"
-            @password.type = "text"
-            @password.value = value
-            @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
-            @loginbutton.disable = true
-            
+        @password.style.color = "#ff8a00"
+        @password.style.fontSize = "1.5em"
+        @password.type = "text"
+        @password.value = value
+        @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
+        @loginbutton.disable = true
+        
 
-    delete_to_unlock_button:=>
+    confirm_shutdown_hide:=>
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         #$("#desktop_menuchoose").disable = false
@@ -294,7 +293,7 @@ class MenuChoose extends Widget
         else
             echo "is_lock"
             if @id is "power_menuchoose" and @option[i] isnt "suspend"
-                @shutdown_to_unlock(@option[i])
+                @confirm_shutdown_show(@option[i])
             else
                 @cb(@option[i], @option_text[i])
 
