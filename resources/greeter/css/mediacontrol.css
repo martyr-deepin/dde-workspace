@@ -26,6 +26,7 @@
     cursor:pointer;
 }
 .voice:hover{
+    cursor:default;
     background-image:url(../images/mediacontrol/voice_hover.png) 
 }
 
