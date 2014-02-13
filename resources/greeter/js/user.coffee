@@ -489,22 +489,7 @@ class UserInfo extends Widget
             document.body.cursor = "wait"
             echo 'start session end'
         else
-            power_flag = false
-            if (power = localStorage.getObject("shutdown_from_lock"))?
-                if power.lock is true
-                    power_flag = true
-            if power_flag
-                power.lock = false
-                localStorage.setObject("shutdown_from_lock",power)
-                if power_can(power.value)
-                    power_force(power.value)
-                else
-                    confirmdialog = new ConfirmDialog(power.value)
-                    confirmdialog.frame_build()
-                    document.body.appendChild(confirmdialog.element)
-                    confirmdialog.interval(60)
-            else
-                DCore.Lock.start_session(username,password,@session)
+            DCore.Lock.start_session(username,password,@session)
     
     auth_failed: (msg) ->
         @stop_avatar()
@@ -568,5 +553,25 @@ DCore.signal_connect("failed-too-much", (msg)->
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
     message_tip.adjust_show_login()
+)
+
+DCore.signal_connect("auth-succeed", ->
+    echo "password_succeed!"
+    power_flag = false
+    if (power = localStorage.getObject("shutdown_from_lock"))?
+        if power.lock is true
+            power_flag = true
+    if power_flag
+        power.lock = false
+        localStorage.setObject("shutdown_from_lock",power)
+        if power_can(power.value)
+            power_force(power.value)
+        else
+            confirmdialog = new ConfirmDialog(power.value)
+            confirmdialog.frame_build()
+            document.body.appendChild(confirmdialog.element)
+            confirmdialog.interval(60)
+    else
+        DCore.Lock.quit()
 )
 
