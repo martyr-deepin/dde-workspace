@@ -26,7 +26,7 @@ class MenuChoose extends Widget
     
     
     #var for animation
-    t_mid = 600
+    t_userinfo_show_hide = 600
     t_userinfo_show_delay = 500
 
     t_max = 200
@@ -102,7 +102,7 @@ class MenuChoose extends Widget
 
         jQuery('.div_users').animate(
             {opacity:'0.0';},
-            t_mid,
+            t_userinfo_show_hide,
             'linear',=>
                 $("#div_users").style.display = "none"
                 if is_greeter
@@ -125,7 +125,7 @@ class MenuChoose extends Widget
             $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
-                t_mid,
+                t_userinfo_show_hide,
                 "linear",=>
                     @element.style.display = "none"
             )
@@ -243,6 +243,8 @@ class MenuChoose extends Widget
         if powervalue isnt "suspend"
             power = {"lock":true,"value":powervalue}
             localStorage.setObject("shutdown_from_lock",power)
+            $("#desktop_menuchoose").disable = true
+            $("#power_menuchoose").disable = true
 
             value = _("Input password to #{powervalue}")
             localStorage.setItem("password_value_shutdown",value)
@@ -262,7 +264,7 @@ class MenuChoose extends Widget
             time_delay = t_userinfo_show_delay + t_max + (@opt.length - 1) * t_delay
             jQuery(@to_unlock).delay(time_delay).animate(
                 {opacity:'1.0';},
-                t_mid
+                t_userinfo_show_hide
             )
             @to_unlock.style.display = "block"
             @to_unlock.addEventListener("click",=>
@@ -272,7 +274,9 @@ class MenuChoose extends Widget
     delete_to_unlock_button:=>
             power = {"lock":false,"value":null}
             localStorage.setObject("shutdown_from_lock",power)
-                
+            $("#desktop_menuchoose").disable = false
+            $("#power_menuchoose").disable = false
+
             @password = $(".password")
             @loginbutton = $(".loginbutton")
             @password.style.color = "rgba(255,255,255,0.5)"
@@ -284,19 +288,19 @@ class MenuChoose extends Widget
             
             jQuery(@to_unlock).animate(
                 {opacity:'0.0';},
-                t_mid,
+                t_userinfo_show_hide,
                 "linear",=>
                     @to_unlock.style.display = "none"
                     remove_element(@to_unlock) if @to_unlock
             )
             jQuery(@loginbutton).animate(
                 {opacity:'0.0';},
-                t_mid,
+                t_userinfo_show_hide,
                 "linear",=>
                     @loginbutton.src = "images/userinfo/lock_normal.png"
                     jQuery(@loginbutton).animate(
                         {opacity:'1.0';},
-                        t_mid
+                        t_userinfo_show_hide
                     )
             )
 
