@@ -1,6 +1,6 @@
 VERSION = "2.0"  #RC Beta
 
-PasswordMaxlength = null
+PasswordMaxlength = null #default 16
 
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
