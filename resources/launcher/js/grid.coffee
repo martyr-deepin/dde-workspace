@@ -18,7 +18,59 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 grid = $('#grid')
+grid.addEventListener("contextmenu", (e)->
+    target = e.target
+    id = null
+    # echo target.tagName
+    if target.tagName == "IMG"
+        id = target.parentNode.id
+    else if target.tagName == "DIV"
+        if target.className.match(/Item/)
+            id = target.id
+        else if target.parentNode.className.match(/Item/)
+            id = target.parentNode.id
 
+    if id? && (item = Widget.look_up(id))?
+        # echo id
+        item.on_rightclick(e)
+)
+
+fn = (e)->
+    offset = 0
+    id = -2
+    l = this.childNodes.length
+    # TODO:
+    # 1. category bar
+    # 2. the last shown category's id
+    # 3. top only mask when the scroll bar is almost on the # bottom.
+    for i in [0...l]
+        if this.childNodes[i].style.display == 'none'
+            continue
+        candidateId = this.childNodes[i].id
+        if this.scrollTop - offset < 0
+            # echo "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            categoryBar.showCategory(id.substr(Category.PREFIX.length))
+            break
+        else if this.scrollTop - offset == 0
+            id = this.childNodes[i].id
+            # echo "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            if id == "c-2"
+                this.style.webkitMask = "none"
+            else
+                this.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
+            categoryBar.showCategory(id.substr(Category.PREFIX.length))
+            break
+        else
+            id = candidateId
+            offset += this.childNodes[i].clientHeight + CATEGORY_CONTENT_MARGIN
+
+
+    return
+
+$("#grid").addEventListener("scroll", fn)
+
+###
 update_items = (items) ->
     for id in items
         item_to_be_shown = grid.removeChild($("#"+id))
@@ -77,3 +129,4 @@ show_grid_dom_child = ->
     while i < c.length
         echo "#{get_name_by_id(c[i].id)}"
         i = i + 1
+###

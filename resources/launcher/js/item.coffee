@@ -32,6 +32,7 @@ class Item extends Widget
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
+        @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
@@ -52,17 +53,19 @@ class Item extends Widget
         # 1. delay
         # 2. bind events
         @searchElement = @element.cloneNode(true)
-        @searchElement.setAttribute("id", "se_#{@searchElement.id}")
+        @searchElement.setAttribute("id", "se_#{@element.id}")
+        Widget.object_table[@searchElement.id] = @
         @favorElement = @element.cloneNode(true)
-        @favorElement.setAttribute("id", "fa_#{@searchElement.id}")
+        @favorElement.setAttribute("id", "fa_#{@element.id}")
+        Widget.object_table[@favorElement.id] = @
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
-        echo "containerWidth:#{containerWidth}"
+        # echo "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        echo "itemNumPerLine: #{Item.itemNumPerLine}"
+        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
         Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
-        echo "horizontalMargin: #{Item.horizontalMargin}"
+        # echo "horizontalMargin: #{Item.horizontalMargin}"
         for own k, v of applications
             item = Widget.look_up(k)
             item.element.style.marginLeft = "#{Item.horizontalMargin}px"
@@ -100,6 +103,9 @@ class Item extends Widget
         if @path != info.path
             @path = info.path
 
+        if @basename != info.basename
+            @basename = info.basename
+
         if @icon != info.icon
             @icon = info.icon
             im = @get_img()
@@ -136,18 +142,18 @@ class Item extends Widget
     do_click : (e)=>
         e?.stopPropagation()
         @element.style.cursor = "wait"
-        startManager.Launch(@path)
+        startManager.Launch(@basename)
         Item.hover_item_id = @id
         @element.style.cursor = "auto"
         exit_launcher()
 
     do_dragstart: (e)=>
         # TODO get_uri
-        e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@path))
+        # e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@path))
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    do_rightclick: (e)->
+    on_rightclick: (e)->
         e.preventDefault()
         e.stopPropagation()
         DCore.Launcher.force_show(true)
@@ -161,8 +167,7 @@ class Item extends Widget
             # new MenuItem(id, _("_Pin")/_("_Unpin")),
             # new MenuSeparator(),
             new MenuItem(3, _("Send to d_esktop")).setActive(
-                true
-                # not DCore.Launcher.is_on_desktop(@path)
+                not daemon.IsOnDesktop_sync(@path)
             ),
             new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
             new MenuSeparator(),
@@ -189,12 +194,12 @@ class Item extends Widget
         id = parseInt(id)
         switch id
             when 1
-                startManager.Launch(@path)
+                startManager.Launch(@basename)
                 # exit_launcher()
             when 2 then @toggle_icon()
             when 3 then daemon.SendToDesktop(@path)
             # TODO get_uri
-            when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@path).substring(7))
+            # when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@path).substring(7))
             when 5 then @toggle_autostart()
             when 6
                 return
@@ -202,7 +207,7 @@ class Item extends Widget
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
-                    DCore.Launcher.uninstall(@path, true)
+                    DCore.Launcher.uninstall(@basename, true)
             when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
@@ -247,7 +252,7 @@ class Item extends Widget
             @display_icon()
 
     add_to_autostart: ->
-        if startManager.AddAutostart_sync(@path)
+        if startManager.AddAutostart_sync(@basename)
             @isAutostart = true
             Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
                 AUTOSTART_ICON.SIZE)
@@ -257,7 +262,7 @@ class Item extends Widget
             last.style.visibility = 'visible'
 
     remove_from_autostart: ->
-        if startManager.RemoveAutostart_sync(@path)
+        if startManager.RemoveAutostart_sync(@basename)
             @isAutostart = false
             last = @element.lastChild
             if last.tagName == 'IMG'

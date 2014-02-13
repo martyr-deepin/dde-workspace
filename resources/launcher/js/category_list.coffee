@@ -64,6 +64,7 @@ class CategoryList
             )
             if all_is_hidden and not Item.display_temp
                 item.hide()
+                $("##{CategoryItem.PREFIX}#{item.id}").style.display = "none"
                 # if @selected_id == id
                 #     @selected_id = CATEGORY_ID.ALL
                 # grid_load_category(@selected_id)
@@ -80,6 +81,7 @@ class CategoryList
             if not_all_is_hidden or Item.display_temp
                 category.show()
                 category.setNameDecoration()
+                $("##{CategoryItem.PREFIX}#{category.id}").style.display = "block"
         @
 
     showFavorOnly:->

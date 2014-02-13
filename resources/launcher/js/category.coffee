@@ -19,8 +19,9 @@
 
 
 class Category
+    @PREFIX:"ci"
     constructor:(@id, @name, @items)->
-        @element = create_element(tag:"div", class:"category", id:"c#{@id}")
+        @element = create_element(tag:"div", class:"category", id:"#{Category.PREFIX}#{@id}", catId:"#{@id}")
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
         @nameNode = create_element(tag:"h4", id:"cat#{@id}", class:"categoryName", @header)

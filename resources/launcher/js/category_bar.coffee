@@ -19,10 +19,18 @@
 
 
 class CategoryItem
+    @PREFIX: "cbi"
     constructor: (@id, @name)->
-        @element = create_element('div', 'category_name', null)
-        @element.setAttribute('id', @id)
+        @element = create_element(
+            tag:'div',
+            class:'category_name',
+            id: "#{CategoryItem.PREFIX}#{@id}",
+            catId: "#{@id}"
+        )
         @element.innerText = @name
+
+    categoryId: ->
+        parseInt(@element.getAttribute("catId"))
 
     show:->
         @element.style.display = "block"
@@ -49,35 +57,27 @@ class CategoryBar
         @selected_id = CATEGORY_ID.FAVOR
 
         @category = $("#category")
-        @category.addEventListener("click", (e) ->
+        @category.addEventListener("click", (e) =>
             e.stopPropagation()
-        )
-
-        @category.addEventListener("mouseover", (e)=>
             target = e.target
-            id = parseInt(target.id)
+            id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
-                @select_timer = setTimeout(=>
-                    @category_items[@selected_id]?.blur()
-                    @category_items[id]?.focus()
-                    @selected_id = id
-                )
-        )
-
-        @category.addEventListener("mouseout", (e)=>
-            target = e.target
-            if !isNaN(target.id) and @select_timer != 0
-                clearTimeout(@select_timer)
-                @select_timer = 0
+                offset = $("##{Category.PREFIX}#{id}").offsetTop
+                # the scrollParent is body, so minus the search bar's height
+                $("#grid").scrollTop = offset - SEARCH_BAR_HEIGHT
+                # @showCategory(id)
         )
 
         @category_items = {}
         @load(infos)
 
+        @category_items[@selected_id]?.focus()
         @update_scroll_bar()
 
     load: (infos)->
         frag = document.createDocumentFragment()
+        @category_items[CATEGORY_ID.FAVOR] = new CategoryItem(CATEGORY_ID.FAVOR, "favor")
+        frag.appendChild(@category_items[CATEGORY_ID.FAVOR].element)
         for info in infos
             id = info[0]
             name = info[1]
@@ -148,8 +148,15 @@ class CategoryBar
         warp = @category.parentNode
         # add 20px for margin
         categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 20)
-        warp_height = window.screen.height - 100  # height of search bar
+        warp_height = window.screen.height - 120  # height of search bar
         if categories_height > warp_height
             warp.style.overflowY = "scroll"
             warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
         @
+
+    showCategory: (id) =>
+        # echo "selected_id: #{@selected_id}, id: #{id}"
+        if @selected_id != id
+            @category_items[@selected_id]?.blur()
+            @category_items[id]?.focus()
+            @selected_id = id
