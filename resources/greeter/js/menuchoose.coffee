@@ -31,7 +31,7 @@ class MenuChoose extends Widget
     t_max = 300
     t_mid = 600
     t_min = 100
-    t_delay = 50
+    t_delay = 500
     
     XMove = "-50px"
     XBack = "0"
@@ -140,9 +140,9 @@ class MenuChoose extends Widget
                 {opacity:'0.0';},
                 t_min,
                 'linear',=>
-                    jQuery(opt_el).animate(
+                    jQuery(opt_el).delay(t_delay).animate(
                         {left:XMove;},
-                        t_max + t_delay,
+                        t_max,
                         'linear',
                             animation_scale(img_el,1.0,t_max)
                             jQuery(opt_el).animate(
@@ -155,13 +155,14 @@ class MenuChoose extends Widget
             )
 
 
+        j = 0
         for i in [@opt.length - 1..0]
             #delete select_state and then start animate
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].style.borderRadius = "0px"
-
-            animation_opt_move_hide(i,i * t_delay)
+            j++
+            animation_opt_move_hide(i,j * t_delay)
 
 
     insert: (id, title, img_normal,img_hover,img_click)->
@@ -235,6 +236,43 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
        
+    shutdown_to_unlock:(powervalue)->
+        if powervalue isnt "suspend"
+            power = {"lock":true,"value":powervalue}
+            localStorage.setObject("shutdown_from_lock",power)
+
+            img_src_before = "images/userinfo/"
+            value = _("Input password")
+            localStorage.setItem("password_value_shutdown",value)
+            @password = $(".password")
+            @loginbutton = $(".loginbutton")
+
+            @password.style.color = "#ff8a00"
+            @password.style.fontSize = "1.5em"
+            @password.type = "text"
+            @password.value = value
+            @loginbutton.src = "#{img_src_before}#{powervalue}_normal.png"
+            @loginbutton.disable = true
+            
+            remove_elment(@to_unlock) if @to_unlock
+            @to_unlock = create_img("to_unlock","images/userinfo/back.png",document.body)
+            @to_unlock.style.display = "block"
+            @to_unlock.addEventListener("click",=>
+                @to_unlock.style.display = "none"
+                power.lock = false
+                localStorage.setObject("shutdown_from_lock",power)
+                
+                @password.style.color = "rgba(255,255,255,0.5)"
+                @password.style.fontSize = "2.0em"
+                @password.type = "password"
+                @password.focus()
+                @loginbutton.disable = false
+                @loginbutton.src = "#{img_src_before}/lock_normal.png"
+                @password.value = null
+            )
+
+
+
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
@@ -243,40 +281,8 @@ class MenuChoose extends Widget
             @cb(@option[i], @option_text[i])
         else
             echo "is_lock"
-            if @id is "power_menuchoose" and @option[i] isnt "suspend"
-                power = {"lock":true,"value":@option[i]}
-                localStorage.setObject("shutdown_from_lock",power)
- 
-                img_src_before = "images/userinfo/"
-                value = _("Input password")
-                localStorage.setItem("password_value_shutdown",value)
-                @password = $(".password")
-                @loginbutton = $(".loginbutton")
-
-                @password.style.color = "#ff8a00"
-                @password.style.fontSize = "1.5em"
-                @password.type = "text"
-                @password.value = value
-                @loginbutton.src = "#{img_src_before}#{@option[i]}_normal.png"
-                @loginbutton.disable = true
-                
-                remove_elment(@to_unlock) if @to_unlock
-                @to_unlock = create_img("to_unlock","images/userinfo/back.png",document.body)
-                @to_unlock.style.display = "block"
-                @to_unlock.addEventListener("click",=>
-                    @to_unlock.style.display = "none"
-                    power.lock = false
-                    localStorage.setObject("shutdown_from_lock",power)
-                    
-                    @password.style.color = "rgba(255,255,255,0.5)"
-                    @password.style.fontSize = "2.0em"
-                    @password.type = "password"
-                    @password.focus()
-                    @loginbutton.disable = false
-                    @loginbutton.src = "#{img_src_before}/lock_normal.png"
-                    @password.value = null
-                )
-
+            if @id is "power_menuchoose"
+                shutdown_to_unlock(option[i])
             else
                 @cb(@option[i], @option_text[i])
 
