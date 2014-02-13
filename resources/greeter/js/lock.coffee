@@ -38,6 +38,8 @@ class Lock extends Widget
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
+power = {"lock":false,"value":null}
+localStorage.setObject("shutdown_from_lock",power)
 
 lock = new Lock()
 
