@@ -1,0 +1,729 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: Deepin Destkop Environment\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-12-18 10:28+0800\n"
+"PO-Revision-Date: 2014-02-10 03:25+0000\n"
+"Last-Translator: cxbii <mycxbii@gmail.com>\n"
+"Language-Team: Armenian (Armenia) (http://www.transifex.com/projects/p/deepin-destkop-environment/language/hy_AM/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hy_AM\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../resources/launcher/js/grid.coffee:87
+#: ../resources/desktop/js/specialitem.coffee:51
+#: ../resources/desktop/js/specialitem.coffee:138
+#: ../resources/desktop/js/specialitem.coffee:232
+#: ../resources/desktop/js/specialitem.coffee:284
+#: ../resources/desktop/js/desktopentry.coffee:101
+#: ../resources/desktop/js/richdir.coffee:130
+#: ../resources/desktop/js/richdir.coffee:458
+msgid "_Open"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:91
+msgid "Send to d_esktop"
+msgstr ""
+
+#: ../resources/launcher/js/grid.coffee:92
+msgid "Send to do_ck"
+msgstr ""
+
+#: ../resources/launcher/js/search.coffee:29
+msgid "Type to search..."
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:31
+msgid "_Hide hidden icons"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:32
+msgid "_Display hidden icons"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:35
+msgid "_Hide this icon"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:36
+msgid "_Display this icon"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:41
+msgid "_Add to autostart"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:42
+msgid "_Remove from autostart"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:48
+msgid "Sort By _Frequency"
+msgstr ""
+
+#: ../resources/launcher/js/config.coffee:49
+msgid "Sort By _Name"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Jan"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Feb"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Mar"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Apr"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "May"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Jun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Jul"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Aug"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Sep"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Oct"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Nov"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:42
+msgid "Dec"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sun"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Mon"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Tue"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Wed"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Thu"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Fri"
+msgstr ""
+
+#: ../resources/greeter/js/time.coffee:43
+msgid "Sat"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:109
+msgid "Administrator"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:110
+#: ../resources/greeter/js/user.coffee:111
+#: ../resources/greeter/js/user.coffee:112
+msgid "Standard user"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:160
+msgid "guest"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:308
+msgid "Log In"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:310
+msgid "Unlock"
+msgstr ""
+
+#: ../resources/greeter/js/user.coffee:530
+msgid "Welcome"
+msgstr ""
+
+#: ../resources/greeter/js/lock.coffee:62
+#: ../resources/greeter/js/greeter.coffee:88
+msgid "ShutDown"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:71
+msgid "suspend"
+msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:75
+msgid "restart"
+msgstr ""
+
+#: ../resources/dock/js/launcher.coffee:47 ../lib/dentry/mime_actions.c:213
+msgid "_Run"
+msgstr ""
+
+#: ../resources/dock/js/launcher.coffee:56
+msgid "_Undock"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:97
+#: ../resources/desktop/js/specialitem.coffee:240
+msgid "_Clean up"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:99
+#: ../resources/dock/js/clientgroup.coffee:116
+msgid "_Close"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:150
+msgid "Can not open this file."
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:119
+#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/desktopentry.coffee:150
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+msgid "Warning"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:225
+msgid "_View as analog"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:226
+#: ../resources/dock/js/deepin_item.coffee:266
+msgid "_Time settings"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:265
+msgid "_View as digit"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:290
+msgid "Launcher"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:291
+msgid "Show/Hide Desktop"
+msgstr ""
+
+#: ../resources/dock/js/deepin_item.coffee:292
+#: ../resources/desktop/js/specialitem.coffee:173
+msgid "Trash"
+msgstr ""
+
+#: ../resources/dock/js/clientgroup.coffee:106
+msgid "_New Window"
+msgstr ""
+
+#: ../resources/dock/js/clientgroup.coffee:117
+msgid "Close _All"
+msgstr ""
+
+#: ../resources/dock/js/clientgroup.coffee:119
+msgid "_Dock me"
+msgstr ""
+
+#: ../resources/dock/js/item.coffee:302
+msgid "The item is invalid. Do you want to remove it from the dock panel?"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:34
+msgid "Computer"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:53
+#: ../resources/desktop/js/specialitem.coffee:140
+#: ../resources/desktop/js/desktopentry.coffee:109
+#: ../resources/desktop/js/richdir.coffee:465
+msgid "_Properties"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:83
+msgid "Home"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:236
+msgid "_Clean up %1 items"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:238
+msgid "_Clean up 1 item"
+msgstr ""
+
+#: ../resources/desktop/js/specialitem.coffee:268
+msgid "Software Center"
+msgstr ""
+
+#: ../resources/desktop/js/invalidlink.coffee:34
+#: ../resources/desktop/js/desktopentry.coffee:107
+#: ../resources/desktop/js/richdir.coffee:136
+#: ../resources/desktop/js/richdir.coffee:463
+msgid "_Delete"
+msgstr ""
+
+#: ../resources/desktop/js/application.coffee:177
+#: ../resources/desktop/js/richdir.coffee:351
+#: ../resources/desktop/js/richdir.coffee:476
+msgid "The link has expired. Do you want to delete it?"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:402
+msgid "Untitled"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:993
+msgid "_Folder"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:994
+msgid "_Text document"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1003
+msgid "_Sort by"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1004
+msgid "_Name"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1005
+msgid "Last modified _time"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1008
+msgid "_New"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1010
+msgid "Open in _terminal"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1011
+msgid "_Paste"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1013
+msgid "_Display settings"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1014
+msgid "D_esktop settings"
+msgstr ""
+
+#: ../resources/desktop/js/grid.coffee:1015
+msgid "Pe_rsonalize"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:103
+#: ../resources/desktop/js/richdir.coffee:460
+msgid "Cu_t"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:104
+#: ../resources/desktop/js/richdir.coffee:461
+msgid "_Copy"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:106
+#: ../resources/desktop/js/richdir.coffee:132
+msgid "_Rename"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:115
+#: ../resources/desktop/js/desktopentry.coffee:122
+msgid "Co_mpress"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:118
+#: ../resources/desktop/js/desktopentry.coffee:123
+msgid "_Extract"
+msgstr ""
+
+#: ../resources/desktop/js/desktopentry.coffee:119
+#: ../resources/desktop/js/desktopentry.coffee:124
+msgid "Extract _Here"
+msgstr ""
+
+#: ../resources/desktop/js/richdir.coffee:134
+msgid "_Ungroup"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Lock"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Suspend"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Log out"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Restart"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:26
+msgid "Shut down"
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:28
+msgid "The system will be locked in %1 seconds."
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:29
+msgid "The system will be suspended in %1 seconds."
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:30
+msgid "You will be automatically logged out in %1 seconds."
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:31
+msgid "The system will restart in %1 seconds."
+msgstr ""
+
+#: ../resources/shutdown/js/utils.coffee:32
+msgid "The system will shut down in %1 seconds."
+msgstr ""
+
+#: ../resources/shutdown/js/confirmdialog.coffee:63
+msgid "Cancel"
+msgstr ""
+
+#: ../app/launcher/launcher.c:334 ../app/launcher/launcher.c:345
+msgid "another instance of launcher is running...\n"
+msgstr ""
+
+#: ../app/greeter/startsession.c:152 ../app/greeter/dlock.c:126
+#: ../app/greeter/greeter.c:153
+msgid "Invalid Password"
+msgstr ""
+
+#: ../app/greeter/camera.c:47
+msgid "Oops...I can't recognize your face. "
+msgstr ""
+
+#: ../app/greeter/camera.c:177
+msgid "Please login with your password or click your picture to retry."
+msgstr ""
+
+#: ../app/greeter/camera.c:234
+#, c-format
+msgid "%sRetry automatically in %ds"
+msgstr ""
+
+#: ../app/greeter/mutils.c:83
+msgid "%a, %b %d, %Y"
+msgstr ""
+
+#: ../app/dock/dock.c:284
+msgid "another instance of dock is running...\n"
+msgstr ""
+
+#: ../app/dock/dock.c:378
+msgid "Dock failed to start, because the plugin of compiz is not enabled"
+msgstr ""
+
+#: ../app/desktop/desktop.c:213
+msgid "New file"
+msgstr ""
+
+#: ../app/desktop/desktop.c:224
+msgid "New directory"
+msgstr ""
+
+#: ../app/app_tray/tray.c:287
+msgid "another systray is already running..."
+msgstr ""
+
+#: ../lib/dentry/entry.c:746
+#, c-format
+msgid ""
+"This *.desktop file cannot be changed to the name \"%s\".You may not have "
+"such permission"
+msgstr ""
+
+#: ../lib/dentry/entry.c:752
+#, c-format
+msgid ""
+"The name \"%s\" is already used in this folder. Please use a different name."
+msgstr ""
+
+#: ../lib/dentry/entry.c:758
+msgid "The Item could not be renamed"
+msgstr ""
+
+#: ../lib/dentry/entry.c:832 ../lib/dentry/fileops.c:804
+msgid "copy"
+msgstr ""
+
+#: ../lib/dentry/entry.c:1414
+msgid "App Group"
+msgstr ""
+
+#: ../lib/dentry/fileops.c:565
+msgid "move"
+msgstr ""
+
+#: ../lib/dentry/fileops.c:771
+msgid "Copy"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:27
+msgid "Delete File"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:30
+msgid "Are you sure you want to permanently delete the files?"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:31
+msgid "If you delete an item, it will be permanently lost"
+msgstr ""
+
+#: ../lib/dentry/fileops_delete.c:34
+msgid "Delete"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:62
+msgid "File conflict"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:106
+msgid "_Select a new name for the destination"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:117
+msgid "Reset"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:126
+msgid "Apply this action to all files"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:133
+msgid "_Skip"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:136
+msgid "Re_name"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:141
+msgid "Replace"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:218
+#, c-format
+msgid "Merge folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:220
+msgid ""
+"Merging will ask for confirmation before replacing any files in the folder "
+"that conflict with the files being copied."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:224
+#, c-format
+msgid "An older folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:228
+#, c-format
+msgid "A newer folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:232
+#, c-format
+msgid "Another folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:238
+msgid "Replacing it will remove all files in the folder."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:240
+#, c-format
+msgid "Replace folder \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:242
+#, c-format
+msgid "A folder with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:248
+#, c-format
+msgid "Replace file \"%s\"?"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:249
+msgid "Replacing it will overwrite its content."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:251
+#, c-format
+msgid "An older file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:255
+#, c-format
+msgid "A newer file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:259
+#, c-format
+msgid "Another file with the same name already exists in \"%s\"."
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:331
+msgid "Original file"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:332
+#: ../lib/dentry/fileops_error_dialog.c:360
+msgid "Size:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:336
+#: ../lib/dentry/fileops_error_dialog.c:364
+msgid "Type:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:340
+#: ../lib/dentry/fileops_error_dialog.c:368
+msgid "Last modified:"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:359
+msgid "Replace with"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_dialog.c:385
+msgid "Merge"
+msgstr ""
+
+#: ../lib/dentry/fileops_error_reporting.c:105
+#: ../lib/dentry/fileops_error_reporting.c:187
+#, c-format
+msgid "Error while %s files"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:58
+msgid "Empty Trash"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:67
+msgid "Empty all items from Trash?"
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:68
+msgid "All items in the Trash will be permanently deleted."
+msgstr ""
+
+#: ../lib/dentry/fileops_trash.c:71
+msgid "Empty _Trash"
+msgstr ""
+
+#: ../lib/dentry/mime_actions.c:198
+#, c-format
+msgid "Do you want to run \"%s\", or display its contents?"
+msgstr ""
+
+#: ../lib/dentry/mime_actions.c:199
+#, c-format
+msgid "\"%s\" is an executable text file."
+msgstr ""
+
+#: ../lib/dentry/mime_actions.c:210
+msgid "Run in _Terminal"
+msgstr ""
+
+#: ../lib/dentry/mime_actions.c:211
+msgid "_Display"
+msgstr ""
+
+#: ../lib/category.c:43
+msgid "all"
+msgstr ""
+
+#: ../lib/category.c:44
+msgid "internet"
+msgstr ""
+
+#: ../lib/category.c:45
+msgid "multimedia"
+msgstr ""
+
+#: ../lib/category.c:46
+msgid "games"
+msgstr ""
+
+#: ../lib/category.c:47
+msgid "graphics"
+msgstr ""
+
+#: ../lib/category.c:48
+msgid "productivity"
+msgstr ""
+
+#: ../lib/category.c:49
+msgid "industry"
+msgstr ""
+
+#: ../lib/category.c:50
+msgid "education"
+msgstr ""
+
+#: ../lib/category.c:51
+msgid "development"
+msgstr ""
+
+#: ../lib/category.c:52
+msgid "system"
+msgstr ""
+
+#: ../lib/category.c:53
+msgid "utilities"
+msgstr ""
+
+#: ../lib/category.c:54
+msgid "other"
+msgstr ""
