@@ -16,6 +16,7 @@ all: ${com_coffee} \
 	item.coffee \
 	hidden_icon.coffee \
 	grid.coffee \
+	search_result.coffee \
 	event.coffee \
 	signal.coffee \
 	main.coffee

@@ -148,8 +148,7 @@ class Item extends Widget
         exit_launcher()
 
     do_dragstart: (e)=>
-        # TODO get_uri
-        # e.dataTransfer.setData("text/uri-list", DCore.DEntry.get_uri(@path))
+        e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
@@ -164,8 +163,6 @@ class Item extends Widget
             new MenuSeparator(),
             new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@displayMode]),
             new MenuSeparator(),
-            # new MenuItem(id, _("_Pin")/_("_Unpin")),
-            # new MenuSeparator(),
             new MenuItem(3, _("Send to d_esktop")).setActive(
                 not daemon.IsOnDesktop_sync(@path)
             ),
@@ -173,10 +170,6 @@ class Item extends Widget
             new MenuSeparator(),
             new MenuItem(5, AUTOSTART_MESSAGE[@isAutostart]),
             new MenuSeparator(),
-            # if has_update
-            #     new MenuItem(id, "Update"),
-            #     new MenuItem(id, "Update All"),
-            #     new MenuSeparator(),
             new MenuItem(6, _("_Uninstall"))
         )
 
@@ -198,8 +191,7 @@ class Item extends Widget
                 # exit_launcher()
             when 2 then @toggle_icon()
             when 3 then daemon.SendToDesktop(@path)
-            # TODO get_uri
-            # when 4 then s_dock?.RequestDock_sync(DCore.DEntry.get_uri(@path).substring(7))
+            when 4 then s_dock?.RequestDock_sync(escape(@path))
             when 5 then @toggle_autostart()
             when 6
                 return
