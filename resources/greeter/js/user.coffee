@@ -304,6 +304,7 @@ class LoginEntry extends Widget
 
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
+            e.stopPropagation()
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
