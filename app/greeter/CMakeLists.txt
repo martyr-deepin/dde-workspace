@@ -1,4 +1,4 @@
-SET(NAME "lightdm-deepin-greeter")
+SET(NAME "greeter")
 SET(NAME_SIMPLE "greeter")
 
 GEN_JSC_SOURCE2(JSC_GEN "jsc" "greeter" "greeter.cfg" "dbus.cfg")
