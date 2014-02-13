@@ -288,6 +288,7 @@ class LoginEntry extends Widget
         @password.setAttribute("autofocus", true)
        
         @loginbutton = create_img("loginbutton", "", @password_div)
+        @loginbutton.type = "button"
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         @loginbutton.addEventListener("mouseout", =>
             power_flag = false
