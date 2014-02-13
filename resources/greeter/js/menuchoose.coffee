@@ -243,8 +243,6 @@ class MenuChoose extends Widget
     confirm_shutdown_show:(powervalue)=>
         power = {"lock":true,"value":powervalue}
         localStorage.setObject("shutdown_from_lock",power)
-        #$("#desktop_menuchoose").disable = true
-        #$("#power_menuchoose").disable = true
 
         value = _("Input password to #{powervalue}")
         localStorage.setItem("password_value_shutdown",value)
@@ -264,8 +262,6 @@ class MenuChoose extends Widget
         if !power.lock then return
         power.lock = false
         localStorage.setObject("shutdown_from_lock",power)
-        #$("#desktop_menuchoose").disable = false
-        #$("#power_menuchoose").disable = false
 
         @password = $(".password")
         @loginbutton = $(".loginbutton")
