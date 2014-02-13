@@ -183,6 +183,7 @@ class MenuChoose extends Widget
                 $(".password").focus()
             else
                 frame_click = false
+                @confirm_shutdown_hide()
         )
  
 
@@ -259,7 +260,9 @@ class MenuChoose extends Widget
         
 
     confirm_shutdown_hide:=>
-        power = {"lock":false,"value":null}
+        power = localStorage.getObject("shutdown_from_lock")
+        if !power.lock then return
+        power.lock = false
         localStorage.setObject("shutdown_from_lock",power)
         #$("#desktop_menuchoose").disable = false
         #$("#power_menuchoose").disable = false
