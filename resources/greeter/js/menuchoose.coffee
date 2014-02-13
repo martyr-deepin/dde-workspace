@@ -31,7 +31,7 @@ class MenuChoose extends Widget
     t_max = 300
     t_mid = 600
     t_min = 100
-    t_delay = 500
+    t_delay = 50
     
     XMove = "-50px"
     XBack = "0"
@@ -140,14 +140,14 @@ class MenuChoose extends Widget
                 {opacity:'0.0';},
                 t_min,
                 'linear',=>
-                    jQuery(opt_el).delay(t_delay).animate(
+                    jQuery(opt_el).animate(
                         {left:XMove;},
                         t_max,
                         'linear',
-                            animation_scale(img_el,1.0,t_max)
+                            animation_scale(img_el,1.0,t_max + t_delay)
                             jQuery(opt_el).animate(
                                 {opacity:'0.0';left:XEndHide;},
-                                t_max,
+                                t_max + t_delay,
                                 'linear',
                                 animation_user_show(i)
                             )
