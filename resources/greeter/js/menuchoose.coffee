@@ -27,11 +27,11 @@ class MenuChoose extends Widget
     
     #var for animation
     max_opt_in_oneline = 4
-    
-    t_max = 300
     t_mid = 600
+    
+    t_max = 200
     t_min = 100
-    t_delay = 50
+    t_delay = 30
     
     XMove = "-50px"
     XBack = "0"
@@ -95,7 +95,7 @@ class MenuChoose extends Widget
                     jQuery(opt_el).animate(
                         {left:XBack;},
                         t_min,
-                        'linear',
+                        'linear',=>
                         animation_opt_text_show(i)
                     )
             )
@@ -120,10 +120,10 @@ class MenuChoose extends Widget
         echo "hide"
         
         animation_user_show = (i)=>
-            if i != @opt.length - 1 then return
-            #echo "animation_user_show(#{i})"
+            if i != 0 then return
+            echo "animation_user_show(#{i})"
             $("#div_users").style.display = "-webkit-box"
-            jQuery('.div_users').animate(
+            jQuery('.div_users').delay(500).animate(
                 {opacity:'1.0';},
                 t_mid,
                 "linear",=>
@@ -141,14 +141,16 @@ class MenuChoose extends Widget
                 t_min,
                 'linear',=>
                     jQuery(opt_el).animate(
-                        {left:XMove;},
-                        t_max,
-                        'linear',
-                            animation_scale(img_el,1.0,t_max + t_delay)
+                        {opacity:'0.5';left:XMove;},
+                        t_min,
+                        'linear',=>
+                            #echo "opt_el[#{i}] Move From #{opt_el.style.left} To #{XEndHide}"
+                            time = (t_min + t_delay) / 2
+                            animation_scale(img_el,1.0,time)
                             jQuery(opt_el).animate(
                                 {opacity:'0.0';left:XEndHide;},
-                                t_max + t_delay,
-                                'linear',
+                                time,
+                                'linear',=>
                                 animation_user_show(i)
                             )
                     )
@@ -176,6 +178,7 @@ class MenuChoose extends Widget
         document.body.addEventListener("click",(e)=>
             e.stopPropagation()
             if !frame_click and @element.style.display isnt "none"
+                echo "body_click_to_hide"
                 @hide()
                 $(".password").focus()
             else
@@ -354,7 +357,8 @@ class ComboBox extends Widget
         @menu.insert_noimg(id, title)
 
     do_click: (e)->
-        #e.stopPropagation()
+        e.stopPropagation()
+        echo "current_img do_click:#{@id}"
         if is_greeter
             if @menu.id is "power_menuchoose"
                 $("#desktop_menuchoose").style.display = "none"
