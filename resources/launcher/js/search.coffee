@@ -17,6 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+###
 s_box = $('#s_box')
 
 
@@ -88,6 +89,4 @@ search = do ->
             grid_show_items(update_items(do_search()))
         , 20)
 
-
-# cursor = create_element("span", "cursor", document.body)
-# cursor.innerText = "|"
+###
