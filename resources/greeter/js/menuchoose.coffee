@@ -26,9 +26,9 @@ class MenuChoose extends Widget
     
     
     #var for animation
-    max_opt_in_oneline = 4
     t_mid = 600
-    
+    t_userinfo_show_delay = 500
+
     t_max = 200
     t_min = 100
     t_delay = 30
@@ -118,12 +118,12 @@ class MenuChoose extends Widget
    
     hide:->
         echo "hide"
-        
+
         animation_user_show = (i)=>
             if i != 0 then return
             echo "animation_user_show(#{i})"
             $("#div_users").style.display = "-webkit-box"
-            jQuery('.div_users').delay(500).animate(
+            jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
                 t_mid,
                 "linear",=>
@@ -244,7 +244,6 @@ class MenuChoose extends Widget
             power = {"lock":true,"value":powervalue}
             localStorage.setObject("shutdown_from_lock",power)
 
-            img_src_before = "images/userinfo/"
             value = _("Input password to #{powervalue}")
             localStorage.setItem("password_value_shutdown",value)
             @password = $(".password")
@@ -254,30 +253,52 @@ class MenuChoose extends Widget
             @password.style.fontSize = "1.5em"
             @password.type = "text"
             @password.value = value
-            @loginbutton.src = "#{img_src_before}#{powervalue}_normal.png"
+            @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
             @loginbutton.disable = true
             
-            remove_elment(@to_unlock) if @to_unlock
+            remove_element(@to_unlock) if @to_unlock
             @to_unlock = create_img("to_unlock","images/userinfo/back.png",document.body)
-            jQuery(@to_unlock).animation(
-                
+            @to_unlock.style.opacity = '0.0'
+            time_delay = t_userinfo_show_delay + t_max + (@opt.length - 1) * t_delay
+            jQuery(@to_unlock).delay(time_delay).animate(
+                {opacity:'1.0';},
+                t_mid
             )
             @to_unlock.style.display = "block"
             @to_unlock.addEventListener("click",=>
-                @to_unlock.style.display = "none"
-                power.lock = false
-                localStorage.setObject("shutdown_from_lock",power)
-                
-                @password.style.color = "rgba(255,255,255,0.5)"
-                @password.style.fontSize = "2.0em"
-                @password.type = "password"
-                @password.focus()
-                @loginbutton.disable = false
-                @loginbutton.src = "#{img_src_before}/lock_normal.png"
-                @password.value = null
+                @delete_to_unlock_button()
             )
 
-
+    delete_to_unlock_button:=>
+            power = {"lock":false,"value":null}
+            localStorage.setObject("shutdown_from_lock",power)
+                
+            @password = $(".password")
+            @loginbutton = $(".loginbutton")
+            @password.style.color = "rgba(255,255,255,0.5)"
+            @password.style.fontSize = "2.0em"
+            @password.type = "password"
+            @password.focus()
+            @loginbutton.disable = false
+            @password.value = null
+            
+            jQuery(@to_unlock).animate(
+                {opacity:'0.0';},
+                t_mid,
+                "linear",=>
+                    @to_unlock.style.display = "none"
+                    remove_element(@to_unlock) if @to_unlock
+            )
+            jQuery(@loginbutton).animate(
+                {opacity:'0.0';},
+                t_mid,
+                "linear",=>
+                    @loginbutton.src = "images/userinfo/lock_normal.png"
+                    jQuery(@loginbutton).animate(
+                        {opacity:'1.0';},
+                        t_mid
+                    )
+            )
 
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
