@@ -557,6 +557,7 @@ DCore.signal_connect("failed-too-much", (msg)->
 
 DCore.signal_connect("auth-succeed", ->
     echo "password_succeed!"
+    if !is_greeter then return
     power_flag = false
     if (power = localStorage.getObject("shutdown_from_lock"))?
         if power.lock is true
