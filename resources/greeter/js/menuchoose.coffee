@@ -54,21 +54,24 @@ class MenuChoose extends Widget
         @opt = []
         @opt_img = []
         @opt_text = []
+        @animation_end = true
         
         document.body.appendChild(@element)
         @element.style.display = "none"
     
  
     show:->
+        @animation_end = false
         echo "show"
-
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
             #echo "opt_text[#{i}] show"
             for tmp in @opt_text
                 jQuery(tmp).animate(
                     {opacity:'1.0';},
-                    t_min
+                    t_min,
+                    "linear",=>
+                        @animation_end = true
                 )
 
 
@@ -118,7 +121,8 @@ class MenuChoose extends Widget
    
     hide:->
         echo "hide"
-
+        @animation_end = false
+        
         animation_user_show = (i)=>
             if i != 0 then return
             echo "animation_user_show(#{i})"
@@ -128,6 +132,7 @@ class MenuChoose extends Widget
                 t_userinfo_show_hide,
                 "linear",=>
                     @element.style.display = "none"
+                    @animation_end = true
             )
 
         animation_opt_move_hide = (i,t_delay)=>
@@ -372,7 +377,7 @@ class ComboBox extends Widget
             else if @menu.id is "desktop_menuchoose"
                 #if detect_is_from_lock() then return
                 $("#power_menuchoose").style.display = "none"
-            
+        if !@menu.animation_end then return
         if @menu.element.style.display isnt "none"
             @menu.hide()
         else
