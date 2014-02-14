@@ -14,7 +14,7 @@ func _TestGetMatchers(t *testing.T) {
 	}
 }
 
-func _TestSearch(t *testing.T) {
+func _TestSearchContent(t *testing.T) {
 	r := search("chome")
 	for _, id := range r {
 		item := itemTable[id]
@@ -28,6 +28,27 @@ func _TestSearch(t *testing.T) {
 		`, id, item.Name, item.Path, item.xinfo.keywords,
 			item.xinfo.genericName, item.xinfo.description,
 			item.xinfo.exec)
+	}
+}
+
+func TestSearch(t *testing.T) {
+	r := search("chrome")
+	j := search("chrome")
+	if len(r) != len(j) {
+		t.Error("not equal: get different length.")
+	}
+	title := false
+	for i := 0; i < len(r); i++ {
+		if itemTable[r[i]].Id != itemTable[j[i]].Id {
+			if !title {
+				t.Error("not equal: get different sequence.")
+				title = true
+			}
+			item := itemTable[r[i]]
+			t.Errorf("\tindex: %d, the first search: Id: %s, Name: %s", i, r[i], item.Name)
+			item = itemTable[j[i]]
+			t.Errorf("\tindex: %d, the second search: Id: %s, Name: %s", i, j[i], item.Name)
+		}
 	}
 }
 

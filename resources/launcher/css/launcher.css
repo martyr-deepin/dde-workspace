@@ -38,6 +38,7 @@ body {
   -webkit-box-align:center;
   height:120px;
   padding:0;
+  visibility: hidden;
 }
 
 
@@ -87,7 +88,7 @@ body {
 
 
 #container{
-  /* display: -webkit-box; */
+  display: -webkit-box;
   overflow: hidden;
   margin: auto 110px;
 }
@@ -100,6 +101,7 @@ body {
 }
 
 #grid {
+  /* display:none; */
 }
 
 .category{

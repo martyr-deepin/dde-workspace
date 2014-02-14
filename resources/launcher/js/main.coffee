@@ -31,7 +31,6 @@ uninstalling_apps = {}
 reset = ->
     selected_category_id = CATEGORY_ID.ALL
     clean_search_bar()
-    # s_box.focus()
     # hidden_icons.save()
     _show_hidden_icons(false)
     get_first_shown()?.scroll_to_view()
@@ -70,9 +69,11 @@ init_all_applications = ->
         if autostartList.filter((el)-> el.match("#{basename}$")).length != 0
             info.setAutostart(true).notify()
         item = new Item(id, name, path, icon)
+        seItem = new SearchItem("se_#{id}", name, path, icon)
+        faItem = new FavorItem("fa_#{id}", name, path, icon)
         info.element = item.element
-        info.searchElement = item.searchElement
-        info.favorElement = item.favorElement
+        info.searchElement = seItem.element
+        info.favorElement = faItem.element
         info.register('item', item).notify()
         frag.appendChild(applications[id].searchElement)
     $("#searchResult").appendChild(frag)

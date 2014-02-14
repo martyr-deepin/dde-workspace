@@ -50,8 +50,6 @@ contextmenu_callback = (e)->
     ).showMenu(e.clientX, e.clientY)
 
 
-
-
 keydown_callback = (e) ->
     e.stopPropagation()
     if e.ctrlKey and e.shiftKey and e.which == KEYCODE.TAB
@@ -68,21 +66,31 @@ keydown_callback = (e) ->
                 selected_prev()
             when KEYCODE.N, KEYCODE.TAB
                 selected_down()
-            when KEYCODE.ENTER, KEYCODE.SPACE
-                s_box?.focus()
-    else if String.fromCharCode(e.which).match(/\w/) or e.which == KEYCODE.BACKSPACE
-        s_box?.focus()
     else
         switch e.which
+            when KEYCODE.BACKSPACE
+                e.stopPropagation()
+                e.preventDefault()
+                v = searchBar.value()
+                if searchBar.value(v.substr(0, v.length - 1))
+                    searchBar.show()
+                    searchBar.search()
+                else
+                    searchBar.hide()
+                    $("#grid").style.display = 'block'
+                    $("#searchResult").style.display = 'none'
+                    switcher.hideCategory()
             when KEYCODE.ESC
                 e.preventDefault()
                 e.stopPropagation()
-                exit_launcher()
-                # if s_box?.value == ""
-                #     exit_launcher()
-                # else
-                #     s_box?.focus()
-                #     clean_search_bar()
+                if searchBar.empty()
+                    exit_launcher()
+                else
+                    searchBar.hide()
+                    searchBar.clean()
+                    $("#grid").style.display = 'block'
+                    $("#searchResult").style.display = 'none'
+                    switcher.hideCategory()
             when KEYCODE.ENTER
                 e.preventDefault()
                 if item_selected
@@ -121,5 +129,10 @@ bind_events = ->
         e.preventDefault()
         e.stopPropagation()
         if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
-            s_box?.value += String.fromCharCode(e.which)
+            # switcher.hideCategory()
+            # $("#grid").style.display = 'none'
+            # $("#searchResult").style.display = 'block'
+            searchBar.show()
+            searchBar.value(searchBar.value() + String.fromCharCode(e.which))
+            searchBar.search()
     )

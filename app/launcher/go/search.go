@@ -34,8 +34,13 @@ func (res Result) Swap(i, j int) {
 }
 
 func (res Result) Less(i, j int) bool {
-	return !(res[i].Score < res[j].Score) ||
-		itemTable[res[i].Id].Name < itemTable[res[j].Id].Name
+	if res[i].Score > res[j].Score {
+		return true
+	} else if res[i].Score == res[j].Score {
+		return itemTable[res[i].Id].Name < itemTable[res[j].Id].Name
+	} else {
+		return false
+	}
 }
 
 // TODO:
@@ -75,7 +80,7 @@ func search(key string) []ItemId {
 		for _ = range searchFuncs {
 			select {
 			case <-done:
-				fmt.Println("done")
+				// fmt.Println("done")
 			case <-time.After(1 * time.Second):
 				fmt.Println("time out")
 			}
@@ -104,24 +109,24 @@ func searchInstalled(key string, res chan<- SearchResult, end chan<- bool) {
 				// fmt.Println(v.Name)
 				score += s * weight
 			}
-			for _, keyword := range v.xinfo.keywords {
-				if matcher.MatchString(keyword) {
-					// fmt.Println(keyword)
-					score += s * weight
-				}
-			}
-			if matcher.MatchString(v.xinfo.exec) {
-				// fmt.Println(v.exec)
-				score += s * weight
-			}
-			if matcher.MatchString(v.xinfo.genericName) {
-				// fmt.Println(v.genericName)
-				score += s * weight
-			}
-			if matcher.MatchString(v.xinfo.description) {
-				// fmt.Println(v.description)
-				score += s * weight
-			}
+			// for _, keyword := range v.xinfo.keywords {
+			// 	if matcher.MatchString(keyword) {
+			// 		// fmt.Println(keyword)
+			// 		score += s * weight
+			// 	}
+			// }
+			// if matcher.MatchString(v.xinfo.exec) {
+			// 	// fmt.Println(v.exec)
+			// 	score += s * weight
+			// }
+			// if matcher.MatchString(v.xinfo.genericName) {
+			// 	// fmt.Println(v.genericName)
+			// 	score += s * weight
+			// }
+			// if matcher.MatchString(v.xinfo.description) {
+			// 	// fmt.Println(v.description)
+			// 	score += s * weight
+			// }
 		}
 
 		if score > 0 {

@@ -18,7 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-
 try
     s_dock = DCore.DBus.session("com.deepin.dde.dock")
 catch error
@@ -42,12 +41,8 @@ class Item extends Widget
         @itemName.innerText = @name
         @element.draggable = true
         # @element.style.display = "none"
-        @try_set_title(@element, @name, 80)
-        # @info.isAutostart = DCore.Launcher.is_autostart(@info.path)
-        # if @info.isAutostart
-        #     Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
-        #         AUTOSTART_ICON.SIZE)
-        #     create_img("autostart_flag", Item.autostart_flag, @element)
+        # @try_set_title(@element, @name, 80)
+        # @element.setAttribute("title", @name)
 
         # TODO: (maybe create some new classes)
         # 1. delay
@@ -66,10 +61,12 @@ class Item extends Widget
         # echo "itemNumPerLine: #{Item.itemNumPerLine}"
         Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
         # echo "horizontalMargin: #{Item.horizontalMargin}"
-        for own k, v of applications
-            item = Widget.look_up(k)
-            item.element.style.marginLeft = "#{Item.horizontalMargin}px"
-            item.element.style.marginRight = "#{Item.horizontalMargin}px"
+        for own id, info of applications
+            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
+            info.element.style.marginRight = "#{Item.horizontalMargin}px"
+            if info.favorElement
+                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
+                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
 
     try_set_title: (el, text, width)->
         setTimeout(->
@@ -152,9 +149,7 @@ class Item extends Widget
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
-    on_rightclick: (e)->
-        e.preventDefault()
-        e.stopPropagation()
+    createMenu:->
         DCore.Launcher.force_show(true)
         @menu = null
         @menu = new Menu(
@@ -177,6 +172,11 @@ class Item extends Widget
             @menu.addSeparator().append(
                 new MenuItem(100, "report this bad icon")
             )
+
+    on_rightclick: (e)->
+        e.preventDefault()
+        e.stopPropagation()
+        @createMenu()
 
         # echo @menu
         # return
@@ -222,7 +222,7 @@ class Item extends Widget
 
     display_icon: (e)=>
         @displayMode = 'display'
-        @element.style.display = 'block'
+        @element.style.display = '-webkit-box'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
         hidden_icons_num = hiddenIcons.remove(@id).save().number()
@@ -233,7 +233,7 @@ class Item extends Widget
         _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
 
     display_icon_temp: ->
-        @element.style.display = 'block'
+        @element.style.display = '-webkit-box'
         Item.display_temp = true
         categoryList.showNonemtpyCategory()
 
@@ -273,10 +273,10 @@ class Item extends Widget
     # this function is pass to some other functions like setTimeout
     show: =>
         if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
-            @element.style.display = "block"
+            @element.style.display = "-webkit-box"
 
     is_shown: ->
-        @element.style.display == "block"
+        @element.style.display == "-webkit-box"
 
     select: ->
         @element.setAttribute("class", "item item_selected")
@@ -316,3 +316,63 @@ class Item extends Widget
         @element.style.borderRadius = ""
         # Item.hover_item_id = null
 
+
+class SearchItem extends Item
+    constructor: (@id, @name, @path, @icon)->
+        # @id = "se_#{@id}"
+        super(@id, @name, @path, @icon)
+        # @element.setAttribute("id", @id)
+        @element.classList.add("Item")
+
+    @updateHorizontalMargin: ->
+        containerWidth = $("#container").clientWidth
+        # echo "containerWidth:#{containerWidth}"
+        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
+        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
+        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
+        # echo "horizontalMargin: #{Item.horizontalMargin}"
+        for own id, info of applications
+            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
+            info.element.style.marginRight = "#{Item.horizontalMargin}px"
+            if info.favorElement
+                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
+                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+
+
+class FavorItem extends Item
+    constructor: (@id, @name, @path, @icon)->
+        # @id = "fa_#{@id}"
+        super(@id, @name, @path, @icon)
+        # @element.setAttribute("id", @id)
+        @element.classList.add("Item")
+
+    @updateHorizontalMargin: ->
+        containerWidth = $("#container").clientWidth
+        # echo "containerWidth:#{containerWidth}"
+        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
+        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
+        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
+        # echo "horizontalMargin: #{Item.horizontalMargin}"
+        for own id, info of applications
+            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
+            info.element.style.marginRight = "#{Item.horizontalMargin}px"
+            if info.favorElement
+                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
+                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+
+
+menuDelegate= (e)->
+    target = e.target
+    id = null
+    # echo target.tagName
+    if target.tagName == "IMG"
+        id = target.parentNode.id
+    else if target.tagName == "DIV"
+        if target.className.match(/Item/)
+            id = target.id
+        else if target.parentNode.className.match(/Item/)
+            id = target.parentNode.id
+
+    if id? && (item = Widget.look_up(id))?
+        # echo id
+        item.on_rightclick(e)

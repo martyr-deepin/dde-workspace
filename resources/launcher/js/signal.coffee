@@ -90,7 +90,7 @@ DCore.signal_connect("update_items", (info)->
 
     # FIXME:
     # load what should be shown, not forbidden reloading on searching.
-    if s_box?.value == ""
+    if searchBar.empty()
         update_items(category_infos[CATEGORY_ID.ALL])
         grid_load_category(selected_category_id)
     else

@@ -19,10 +19,52 @@
 
 
 class SearchBar
-    value: ->
-        ""
+    constructor:->
+        @searchBar = $("#search")
+        @key = $("#searchKey")
+        DCore.signal_connect("im_commit", (info)->
+            s_box.textContent += info.Content
+        )
+        @searchTimer = null
+
+    hide: ->
+        if @searchBar.style.visibility != 'hidden'
+            @searchBar.style.visibility = 'hidden'
+
+    show: ->
+        if @searchBar.style.visibility != 'visible'
+            @searchBar.style.visibility = 'visible'
+
+    value: (t)->
+        if t?
+            @key.textContent = t
+        else
+            @key.textContent
 
     empty: ->
         @value() == ""
 
     clean:->
+        @key.textContent = ""
+
+    search: ->
+        clearTimeout(@searchTimer)
+        @searchTimer = setTimeout(=>
+            ids = daemon.Search_sync(@value())
+            # echo ids
+            res = $("#searchResult")
+            for i in [0...res.children.length]
+                if res.children[i].style.display != 'none'
+                    res.children[i].style.display = 'none'
+
+            for i in [ids.length-1..0]
+                if (item = $("#se_#{ids[i]}"))?
+                    res.removeChild(item)
+                    item.style.display = '-webkit-box'
+                    res.insertBefore(item, res.firstChild)
+
+            if $("#searchResult").style.display != 'block'
+                switcher.hideCategory()
+                $("#grid").style.display = 'none'
+                $("#searchResult").style.display = 'block'
+        , 200)

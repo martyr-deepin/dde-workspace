@@ -18,22 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 grid = $('#grid')
-grid.addEventListener("contextmenu", (e)->
-    target = e.target
-    id = null
-    # echo target.tagName
-    if target.tagName == "IMG"
-        id = target.parentNode.id
-    else if target.tagName == "DIV"
-        if target.className.match(/Item/)
-            id = target.id
-        else if target.parentNode.className.match(/Item/)
-            id = target.parentNode.id
-
-    if id? && (item = Widget.look_up(id))?
-        # echo id
-        item.on_rightclick(e)
-)
+grid.addEventListener("contextmenu", menuDelegate)
 
 fn = (e)->
     offset = 0
