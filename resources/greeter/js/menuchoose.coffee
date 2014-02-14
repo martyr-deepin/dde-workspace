@@ -258,7 +258,7 @@ class MenuChoose extends Widget
         
 
     confirm_shutdown_hide:=>
-        power = localStorage.getObject("shutdown_from_lock")
+        if not (power = localStorage.getObject("shutdown_from_lock"))? then return
         if !power.lock then return
         power.lock = false
         localStorage.setObject("shutdown_from_lock",power)

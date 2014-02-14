@@ -85,8 +85,10 @@ class User extends Widget
 
     get_default_username:->
         if is_greeter
+            echo "is_greeter"
             _default_username = DCore.Greeter.get_default_user()
         else
+            echo "is_lock"
             _default_username = DCore.Lock.get_username()
         return _default_username
 
