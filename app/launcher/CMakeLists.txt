@@ -1,7 +1,10 @@
 SET(NAME "launcher")
 
 
-add_subdirectory(test)
+if (TEST)
+  add_subdirectory(test)
+endif()
+
 add_subdirectory(go)
 
 GEN_JSC_SOURCE(JSC_GEN "jsc")
@@ -16,8 +19,12 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS} ${DBUS_INCLUDE_DIRS})
 add_executable(${NAME} ${SRC_LIST})
 add_dependencies(${NAME} ${NAME}_js ${NAME}-daemon)
 
-target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
+if (TEST)
+  target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES}
     dlauncher_test notify)
+else()
+  target_link_libraries(${NAME} dcom dentry dbus ${DWEBVIEW_LIBRARIES} notify)
+endif()
 
 install(
     PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
