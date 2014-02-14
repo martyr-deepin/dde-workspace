@@ -28,8 +28,8 @@ class SwitchUser extends Widget
     button_switch:->
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
-        @switch.style.width = "60px"
-        @switch.style.height = "60px"
+        @switch.style.width = "#{6 * scaleFinal}em"
+        @switch.style.height = "#{6 * scaleFinal}em"
         @switch.addEventListener("mouseover", =>
             @switch.src = "images/userswitch/acount_switch_hover.png"
         )

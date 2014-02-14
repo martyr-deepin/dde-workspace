@@ -35,9 +35,8 @@ body{
 .div_version{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:50px;
-    left:30px;
-    /*width:188px;*/
+    bottom:5em;
+    left:3em;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -48,10 +47,8 @@ body{
 .div_desktop{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:40px;
-    right:110px;
-    /*width:60px;*/
-    /*height:60px;*/
+    bottom:4em;
+    right:11em;
     
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -62,9 +59,8 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:40px;
-    right:30px;
-    /*width:60px;*/
+    bottom:4em;
+    right:3em;
     
     display:-webkit-box;
     -webkit-box-pack:center;

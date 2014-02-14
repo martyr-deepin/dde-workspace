@@ -42,6 +42,8 @@ class VoiceControl extends Widget
         @element.style.display = "none"
      
     drawVolume:(vol,width = 50,height = 50)->
+        #width = width * scaleFinal
+        #height = height * scaleFinal
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
@@ -73,9 +75,9 @@ class VoiceControl extends Widget
         num = create_element("div","num",@element)
         num.style.position = "relative"
         fontSize = 10
-        num.style.fontSize = fontSize
-        num.style.left = -25
-        num.style.top = -80
+        num.style.fontSize = "1em"
+        num.style.left = "-3.8em"
+        num.style.top = "-8em"
         num.textContent = Math.round(vol * 100)
 
         @element.style.display = "block"

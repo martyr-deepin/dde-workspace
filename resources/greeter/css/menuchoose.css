@@ -20,8 +20,8 @@
  **/
 .to_unlock{
     position:absolute;
-    width:23px;
-    height:23px;
+    width:2.3em;
+    height:2.3em;
     left:45%;
     top:47.5%;
     z-index:65500;
@@ -30,13 +30,11 @@
 .ComboBox {
     /*background-color:rgba(125,0,120,0.2);*/
     cursor:pointer;
-    width:60px;
-    height:60px;
 }
 
 .current_img{
-    width:60px;
-    height:60px;
+    width:5em;
+    height:5em;
 }
 
 
@@ -67,9 +65,7 @@
 .opt{
     position:relative;
     cursor: pointer;
-    margin:0 0 0 10px;
-    width:100px;
-    margin-bottom:150px;
+    margin-bottom:15em;
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
@@ -80,14 +76,15 @@
 }
 
 .opt_img{
-    width:80px;
-    height:80px;
+    margin-top:1em;
+    width:8em;
+    height:8em;
 }
 
 .opt_text{
-    width:80px;
-    height:40px;
-    margin-top:10px;
+    width:8em;
+    height:2.8em;
+    margin-top:1em;
     text-align:center;
     color: #FFF;
     font-size:1.5em;

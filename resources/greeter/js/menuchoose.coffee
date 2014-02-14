@@ -33,7 +33,7 @@ class MenuChoose extends Widget
     t_min = 100
     t_delay = 30
     
-    XMove = "-50px"
+    XMove = "-#{50 * scaleWidth}px"
     XBack = "0"
     XStartShow = "800px"
     XEndHide = "800px"

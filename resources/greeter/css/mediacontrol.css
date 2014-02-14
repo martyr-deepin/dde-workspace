@@ -1,6 +1,6 @@
 .MediaControl{
-    width:250px;
-    height:100px;
+    width:20em;
+    height:7.8em;
     
     display:-webkit-box;
     -webkit-box-orient:vertical;
@@ -9,8 +9,8 @@
 .name{
     width:100%;
     /*padding-left:20px;*/
-    padding-right:-20px;
-    font-size:16px;
+    padding-right:-2em;
+    font-size:1.3em;
     color:#fff;
     text-align:center;
     text-shadow: 0 2px 2px rgba(0,0,0,0.5);
@@ -21,13 +21,27 @@
 
 
 .control{
-    margin-top:10px;
+    margin-top:1em;
     display:-webkit-box;
     cursor:pointer;
 }
-.voice:hover{
+
+.up{
+    width:5em;
+    height:5em;
+}
+ .play{
+    width:5em;
+    height:5em;
+}
+.next{
+    width:5em;
+    height:5em;
+}
+.voice{
     cursor:default;
-    background-image:url(../images/mediacontrol/voice_hover.png) 
+    width:5em;
+    height:5em;
 }
 
 .VoiceControl{
@@ -37,8 +51,8 @@
     position:absolute;
     left:0px;
     top:0px;
-    width:18;
-    height:35px;
+    width:1.8px;
+    height:3.5em;
 }
 
 .myCanvas{

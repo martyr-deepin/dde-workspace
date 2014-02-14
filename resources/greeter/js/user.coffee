@@ -398,10 +398,10 @@ class UserInfo extends Widget
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
        
-        @userimg.style.width = 110
-        @userimg.style.height = 110
-        @userimg_border.style.width = @userimg.style.width + 16
-        @userimg_border.style.height = @userimg.style.height + 16
+        @userimg.style.width = 110 * scaleFinal
+        @userimg.style.height = 110 * scaleFinal
+        @userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
+        @userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
         @userimg_background.style.width = @userimg_border.style.width - 3
         @userimg_background.style.height = @userimg_border.style.height - 3
 
