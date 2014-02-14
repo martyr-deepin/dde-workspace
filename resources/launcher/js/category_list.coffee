@@ -86,7 +86,7 @@ class CategoryList
 
     showFavorOnly:->
         for own k, v of @categories
-                v.hide()
+            v.hide()
 
         @favor.show().hideHeader()
         @blank.style.display = 'none'

@@ -61,11 +61,13 @@ class Category
     hideHeader:->
         if @header.style.display != 'none'
             @header.style.display = 'none'
+            @grid.style.marginTop = "10px"
         @
 
     showHeader:->
         if @header.style.display != '-webkit-box'
             @header.style.display = '-webkit-box'
+            @grid.style.marginTop = "40px"
         @
 
     some: (fn)->

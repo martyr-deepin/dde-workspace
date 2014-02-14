@@ -72,7 +72,7 @@ keydown_callback = (e) ->
                 e.stopPropagation()
                 e.preventDefault()
                 v = searchBar.value()
-                if searchBar.value(v.substr(0, v.length - 1))
+                if searchBar.cancel().value(v.substr(0, v.length - 1))
                     searchBar.show()
                     searchBar.search()
                 else

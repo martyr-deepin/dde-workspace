@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	pinyin "dbus/com/deepin/api/search"
@@ -23,17 +24,22 @@ type SearchResult struct {
 	Score uint32
 }
 
-type Result []SearchResult
+type Result struct {
+	sync.RWMutex
+	Res map[ItemId]SearchResult
+}
 
-func (res Result) Len() int {
+type ResultList []SearchResult
+
+func (res ResultList) Len() int {
 	return len(res)
 }
 
-func (res Result) Swap(i, j int) {
+func (res ResultList) Swap(i, j int) {
 	res[i], res[j] = res[j], res[i]
 }
 
-func (res Result) Less(i, j int) bool {
+func (res ResultList) Less(i, j int) bool {
 	if res[i].Score > res[j].Score {
 		return true
 	} else if res[i].Score == res[j].Score {
@@ -47,13 +53,20 @@ func (res Result) Less(i, j int) bool {
 // 1. cancellable
 func search(key string) []ItemId {
 	key = strings.TrimSpace(key)
-	res := make(Result, 0)
+	res := Result{Res: make(map[ItemId]SearchResult, 0)}
 	resChan := make(chan SearchResult)
 	go func(r *Result, c <-chan SearchResult) {
 		for {
 			select {
 			case d := <-c:
-				*r = append(*r, d)
+				r.Lock()
+				if _, ok := r.Res[d.Id]; !ok {
+					r.Res[d.Id] = d
+				} else {
+					d.Score = r.Res[d.Id].Score + d.Score
+					r.Res[d.Id] = d
+				}
+				r.Unlock()
 			case <-time.After(2 * time.Second):
 				return
 			}
@@ -65,8 +78,10 @@ func search(key string) []ItemId {
 		keys, _ = tree.SearchKeys(key, treeId)
 	}
 
-	if len(keys) == 0 {
-		keys = append(keys, key)
+	for _, v := range keys {
+		if v != key {
+			keys = append(keys, key)
+		}
 	}
 
 	done := make(chan bool, 1)
@@ -82,16 +97,20 @@ func search(key string) []ItemId {
 			case <-done:
 				// fmt.Println("done")
 			case <-time.After(1 * time.Second):
-				fmt.Println("time out")
+				// fmt.Println("wait search result time out")
 			}
 		}
 	}
 
-	sort.Sort(res)
+	resList := make(ResultList, 0)
+	for _, v := range res.Res {
+		resList = append(resList, v)
+	}
+	sort.Sort(resList)
 
 	ids := make([]ItemId, 0)
-	for _, v := range res {
-		// fmt.Println(itemTable[v.Id].Name, v.Score)
+	for _, v := range resList {
+		fmt.Println(itemTable[v.Id].Name, v.Score)
 		ids = append(ids, v.Id)
 	}
 	return ids
@@ -106,25 +125,20 @@ func searchInstalled(key string, res chan<- SearchResult, end chan<- bool) {
 
 		for matcher, s := range matchers {
 			if matcher.MatchString(v.Name) {
-				// fmt.Println(v.Name)
 				score += s * weight
 			}
-			// for _, keyword := range v.xinfo.keywords {
-			// 	if matcher.MatchString(keyword) {
-			// 		// fmt.Println(keyword)
-			// 		score += s * weight
-			// 	}
-			// }
+			for _, keyword := range v.xinfo.keywords {
+				if matcher.MatchString(keyword) {
+					score += s * weight
+				}
+			}
 			// if matcher.MatchString(v.xinfo.exec) {
-			// 	// fmt.Println(v.exec)
 			// 	score += s * weight
 			// }
 			// if matcher.MatchString(v.xinfo.genericName) {
-			// 	// fmt.Println(v.genericName)
 			// 	score += s * weight
 			// }
 			// if matcher.MatchString(v.xinfo.description) {
-			// 	// fmt.Println(v.description)
 			// 	score += s * weight
 			// }
 		}
@@ -132,7 +146,6 @@ func searchInstalled(key string, res chan<- SearchResult, end chan<- bool) {
 		if score > 0 {
 			res <- SearchResult{id, score}
 		}
-		// res <- SearchResult{id, score}
 	}
 	end <- true
 }

@@ -14,8 +14,9 @@ func _TestGetMatchers(t *testing.T) {
 	}
 }
 
-func _TestSearchContent(t *testing.T) {
-	r := search("chome")
+func TestSearchContent(t *testing.T) {
+	r := search("fi")
+	// r := search("chome")
 	for _, id := range r {
 		item := itemTable[id]
 		t.Logf(`id: %s
@@ -31,7 +32,7 @@ func _TestSearchContent(t *testing.T) {
 	}
 }
 
-func TestSearch(t *testing.T) {
+func _TestSearch(t *testing.T) {
 	r := search("chrome")
 	j := search("chrome")
 	if len(r) != len(j) {
@@ -52,7 +53,7 @@ func TestSearch(t *testing.T) {
 	}
 }
 
-func TestPinYin(t *testing.T) {
+func _TestPinYin(t *testing.T) {
 	tree, err := pinyin.NewSearch("/com/deepin/dde/api/Search")
 	if err != nil {
 		return

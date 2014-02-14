@@ -47,8 +47,13 @@ class SearchBar
     clean:->
         @key.textContent = ""
 
-    search: ->
+    cancel: ->
         clearTimeout(@searchTimer)
+        @searchTimer = null
+        @
+
+    search: ->
+        @cancel()
         @searchTimer = setTimeout(=>
             ids = daemon.Search_sync(@value())
             # echo ids
