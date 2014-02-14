@@ -12,8 +12,8 @@ animation_moveX = (el,moveX,time,easing = "linear",delay = 0,cb)->
         #el.removeEventListener("webkitTransitionEnd",cb?(),false)
     ,false)
 
-animation_scale = (el,scale,time)->
-    el.style.webkitTransform = "scale(#{scale})"
+animation_scale = (el,scaleN,time)->
+    el.style.webkitTransform = "scale(#{scaleN})"
     el.style.webkitTransition = "-webkit-transform #{time}ms linear"
 
 apply_animation = (el, name, duration, timefunc)->

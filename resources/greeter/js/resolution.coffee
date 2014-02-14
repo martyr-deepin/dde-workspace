@@ -4,3 +4,11 @@ WindowWidth = window.innerWidth or document.documentElement.clientWidth or docum
 WindowSize = {"width":WindowWidth,"height":WindowHeight}
 localStorage.setObject("WindowSize",WindowSize)
 echo WindowSize
+
+StandardWidth = 1
+
+scale = null
+
+
+
+
