@@ -4,7 +4,7 @@ com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/audiopla
 
 init_coffee = config.coffee resolution.coffee animation.coffee 
 power_coffee = power_func.coffee 
-com_module_coffee = background.coffee time.coffee version.coffee user.coffee menuchoose.coffee powermenu.coffee
+com_module_coffee = time.coffee version.coffee user.coffee menuchoose.coffee powermenu.coffee
 common_coffee = ${com_coffee} ${init_coffee} ${power_coffee} ${com_module_coffee}
 
 
