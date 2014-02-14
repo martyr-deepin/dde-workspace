@@ -38,11 +38,7 @@ class DesktopMenu extends Widget
         echo "-------sessions-------------"
         echo sessions
         if sessions.length <= 1 then return
-        
-        if "deepin_test" in sessions
-            echo "set session is deepin_test default"
-            localStorage.setItem("de_current_id","deepin_test")
-        
+       
         for session in sessions
             id = session
             name = id
