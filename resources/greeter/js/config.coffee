@@ -12,9 +12,11 @@ is_hide_users = null
 
 try
     DCore.Greeter.get_date()
+    echo "check is_greeter succeed!"
     is_greeter = true
     APP_NAME = "Greeter"
 catch error
+    echo "check is_greeter error:#{error}"
     is_greeter = false
     APP_NAME = "Lock"
 

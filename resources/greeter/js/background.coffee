@@ -3,11 +3,13 @@ class Background extends Widget
     users_path = []
     users_name = []
     users_id = []
-    is_greeter = false
+    #is_greeter = false
 
     constructor:->
         super
         Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
+        
+   check_is_greeter:->
         try
             DCore.Greeter.get_date()
             is_greeter = true
