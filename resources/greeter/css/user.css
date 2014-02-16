@@ -152,9 +152,9 @@
 
 .password_div {
     margin-top:0.6em;
-    height:3.3em;
-    width:25em;
-    border-radius:4px;
+    height:3.0em;
+    width:24em;
+    border-radius:0.4em;
     border-top:1px solid rgba(0,0,0,0.7);
     border-left:1px solid rgba(0,0,0,0.7);
     border-right:1px solid rgba(0,0,0,0.7);
@@ -169,8 +169,8 @@
 .password {
     height:100%;
     width: 100%;
-    padding-top:2px;
-    padding-bottom:2px;
+    padding-top:0.2em;
+    padding-bottom:0.2em;
     padding-left:8px;
     border-style:none;
     outline-style:none;
@@ -185,10 +185,10 @@
 
 .loginbutton{
     position:relative;
-    right:3.4em;
+    right:3.1em;
     bottom:0.2em;
-    width:3.6em;
-    height:3.6em;
+    width:3.3em;
+    height:3.3em;
     z-index:5;
     cursor: pointer;
 }
