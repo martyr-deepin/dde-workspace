@@ -219,7 +219,10 @@ class MediaControl extends Widget
         el.addEventListener("mouseout",->
             is_volume_control = false
             voice.src = img_src_before + voice_status + "_normal.png"
-            voicecontrol.hide()
+            clearTimeout(t) if t
+            t = setTimeout(->
+                voicecontrol.hide()
+            ,500)
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
 
