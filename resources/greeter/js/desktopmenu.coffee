@@ -40,7 +40,7 @@ class DesktopMenu extends Widget
         if sessions.length <= 1 then return
        
         for session in sessions
-            id = session
+            id = session.toLowerCase()
             name = id
 
             #name = DCore.Greeter.get_session_name(id)

@@ -389,10 +389,13 @@ class ComboBox extends Widget
         return @menu.current
 
     set_current: (id)->
+        id = id.toLowerCase()
         try
             echo "set_current(id) :---------#{id}----------------"
             if @id is "desktop"
-                current_img_src = "images/desktopmenu/current/#{id}.png"
+                icon = DCore.Greeter.get_session_icon(id)
+                current_img_src = "images/desktopmenu/current/#{icon}.png"
+                echo current_img_src
             else if @id is "power"
                 current_img_src = "images/powermenu/#{id}.png"
             @current_img.src = current_img_src
