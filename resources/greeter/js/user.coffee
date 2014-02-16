@@ -358,7 +358,8 @@ class LoginEntry extends Widget
  
 
     check_completeness: ->
-        if not @password.value
+        if is_livecd then return true
+        else if not @password.value
             @password.focus()
             return false
         else if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
