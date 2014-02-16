@@ -26,6 +26,7 @@ _default_username = null
 _drag_flag = false
 password_error_msg = null
 
+
 class User extends Widget
     Dbus_Account = null
     img_src_before = null
@@ -391,21 +392,12 @@ class UserInfo extends Widget
         @index = null
         echo "new UserInfo :#{@id}"
         @userbase = create_element("div", "UserBase", @element)
-        
-        @face_recognize_div = create_element("div","face_recognize_div",@userbase)
-        @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
-        @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
-        
+        @face_recognize_div =  
         @userimg_div = create_element("div","userimg_div",@userbase)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
        
-        @face_recognize_div.style.width = 137 * scaleFinal
-        @face_recognize_div.style.height = 137 * scaleFinal
-        @face_recognize_div.style.left = @userimg_div.style.left
-        @face_recognize_div.style.display = "none"
-        
         @userimg.style.width = 110 * scaleFinal
         @userimg.style.height = 110 * scaleFinal
         @userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
@@ -431,20 +423,19 @@ class UserInfo extends Widget
 
     draw_avatar: ->
         if @face_login
-            rotate = 0
-            @face_recognize_div.style.display = "block"
-            @face_animation_interval = setInterval(=>
-                @face_recognize_div.style.left = @userimg_div.style.left
-                rotate = (rotate + 5) % 360
-                animation_rotate(@face_recognize_img,rotate)
-            ,50)
+            #recognize.style.background = "url(images/light.png) repeat black"
+            recognize.style.webkitBackgroundClip = "text"
+            recognize.style.webkitTextFill = "transparent"
+            recognize.style.webkitAnimationName = "recognize_animation"
+            recognize.style.webkitAnimationDuration = "10s"
+            recognize.style.webkitAnimationIteration = "infinite"
+            recognize.style.webkitAnimationTimingFunction = "linear"
             enable_detection(true)
 
     stop_avatar:->
         clearInterval(draw_camera_id)
         draw_camera_id = null
-        clearInterval(@face_animation_interval) if @face_animation_interval
-        @face_recognize_div.style.display = "none"
+        apply_animation(recognize,"","") if @face_login
         enable_detection(false) if @face_login
         #DCore[APP_NAME].cancel_detect()
    

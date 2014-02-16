@@ -89,8 +89,29 @@
     -webkit-box-orient:vertical;
 }
 
+.face_recognize_div{
+    position:absolute;
+    left:19.95%;
+    top:-1.9%;
+    z-index:100;
+}
+
+.face_recognize_border{
+    position:absolute;
+    z-index:101;
+}
+
+.face_recognize_img{
+    position:absolute;
+    left:19.95%;
+    z-index:102;
+}
+
+
+
 .userimg_div{
-    width: 100%;
+    position:relative;
+    /*width 100%;*/
     
     display:-webkit-box;
     -webkit-box-pack:center;
