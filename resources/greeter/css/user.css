@@ -14,18 +14,17 @@
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:60px;
-    /*height:100px;*/
+    width:6em;
     
     position:relative;
     z-index:10;
-    bottom:170px;
-    right:180px;
+    bottom:17em;
+    right:18em;
 }
 .prevuserinfo_img{
-    margin-left:80px;
-    width:60px;
-    height:60px;
+    margin-left:8em;
+    width:6em;
+    height:6em;
     cursor:pointer;
 }
 .prevuserinfo:hover{
@@ -35,8 +34,7 @@
 .user_ul{
     /*background: rgba(255,0,246,0.3);*/
     position:absolute;
-    /*width:400px;*/
-    height:200px;
+    height:20em;
     z-index:3;
     position:relative;
     list-style: none;
@@ -54,18 +52,17 @@
     -webkit-box-align:center;
     -webkit-box-orient:vertical;
     opacity:0.0;
-    width:60px;
-    /*height:100px;*/
+    width:6em;
     
     position:relative;
     z-index:10;
-    bottom:230px;
-    right:-20px;
+    bottom:23em;
+    right:-2em;
 }
 .nextuserinfo_img{
-    margin-left:80px;
-    width:60px;
-    height:60px;
+    margin-left:8em;
+    width:6em;
+    height:6em;
     cursor:pointer;
 }
 .nextuserinfo:hover{
@@ -75,8 +72,8 @@
 
 
 .UserInfo {
-    width: 250px;
-    height: 180px;
+    width: 25em;
+    height: 18em;
     
     display:-webkit-box;
     -webkit-box-align:center;
@@ -104,7 +101,7 @@
 .userimg_border{
     border-radius:50%; 
     overflow:hidden;
-    border:rgba(0,0,0,0.3) 2px solid;
+    border:rgba(0,0,0,0.3) 0.2em solid;
 
     display:-webkit-box;
     -webkit-box-pack:center;
@@ -114,7 +111,7 @@
 .userimg_background{
     border-radius:50%; 
     overflow:hidden;
-    border:white 3px solid;
+    border:white 0.3em solid;
     /*background-color:white;*/
     
     display:-webkit-box;
@@ -171,7 +168,7 @@
     width: 100%;
     padding-top:0.2em;
     padding-bottom:0.2em;
-    padding-left:8px;
+    padding-left:0.8em;
     border-style:none;
     outline-style:none;
 
@@ -185,7 +182,7 @@
 
 .loginbutton{
     position:relative;
-    right:3.1em;
+    right:3.15em;
     bottom:0.2em;
     width:3.3em;
     height:3.3em;
