@@ -243,13 +243,17 @@ class MediaControl extends Widget
             ,50)
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
+        volume_old = 0.5
         el.addEventListener("click",->
             echo "click"
             voice.src = img_src_before + voice_status + "_hover.png"
             if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
             else voice_status = "voice"
-            if voice_status is "mute" then voicecontrol.setVolume(0.5)
-            else voicecontrol.setVolume(0)
+            if voice_status is "mute"
+                voicecontrol.setVolume(volume_old)
+            else
+                volume_old = voicecontrol.getVolume()
+                voicecontrol.setVolume(0)
             if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
             else voice_status = "voice"
             voice.src = img_src_before + voice_status + "_hover.png"
