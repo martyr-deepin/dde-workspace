@@ -40,7 +40,7 @@ body{
 .div_switchuser {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:4em;
+    bottom:3.5em;
     right:10em;
     
     display:-webkit-box;
@@ -52,7 +52,7 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:4em;
+    bottom:3.5em;
     right:3em;
     
     display:-webkit-box;
@@ -66,7 +66,7 @@ body{
 .div_media_control{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:3.5em;
+    bottom:3.0em;
     right:19em;
     
     display:-webkit-box;

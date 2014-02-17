@@ -35,7 +35,7 @@ body{
 .div_version{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:5em;
+    bottom:3.5em;
     left:3em;
     
     display:-webkit-box;
@@ -47,7 +47,7 @@ body{
 .div_desktop{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:4em;
+    bottom:3.5em;
     right:11em;
     
     display:-webkit-box;
@@ -59,7 +59,7 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:4em;
+    bottom:3.5em;
     right:3em;
     
     display:-webkit-box;
