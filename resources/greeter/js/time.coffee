@@ -38,13 +38,14 @@ class TimeDate extends Widget
     get_min : ->
         return @format_two_bit new Date().getMinutes()
 
-    get_date_str :(type = 0) ->
+    get_date_str :(type = 1) ->
         month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
         day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
 
         # 20140217
         year = new Date().getFullYear()
-        mon = month_list[new Date().getMonth()]
+        mon = new Date().getMonth() + 1
+        #mon = month_list[new Date().getMonth()]
         date = new Date().getDate()
         
         # Monday
@@ -85,7 +86,8 @@ class TimeDate extends Widget
             , 1000)
 
         setInterval( =>
-                date.innerText = @get_c_date_str()
+                date.innerText = @get_date_str()
+                #date.innerText = @get_c_date_str()
                 return true
             , 1000)
 
