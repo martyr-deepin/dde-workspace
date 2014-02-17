@@ -52,6 +52,8 @@
 }
 
 .frame{
+    position:relative;
+    bottom:8em;
     display:-webkit-box;
     -webkit-box-orient:vertical;
 }
@@ -65,7 +67,6 @@
 .opt{
     position:relative;
     cursor: pointer;
-    margin-bottom:15em;
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
