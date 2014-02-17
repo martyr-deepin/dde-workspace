@@ -38,16 +38,20 @@ class TimeDate extends Widget
     get_min : ->
         return @format_two_bit new Date().getMinutes()
 
-    get_date_str : ->
+    get_date_str :(type = 0) ->
         month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
         day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
 
-        day = day_list[new Date().getDay()]
+        # 20140217
+        year = new Date().getFullYear()
         mon = month_list[new Date().getMonth()]
         date = new Date().getDate()
-        year = new Date().getFullYear()
-
-        return "#{day}, #{mon} #{date}, #{year}"
+        
+        # Monday
+        day = day_list[new Date().getDay()]
+        switch(type)
+            when 1 then return "#{year}-#{mon}-#{date} #{day}"
+            when 2 then return "#{year},#{mon},#{date} #{day}"
 
     get_c_date_str : ->
         if is_greeter
@@ -71,8 +75,8 @@ class TimeDate extends Widget
         min = create_element("span", "min", time)
         min.innerText = @get_min()
 
-        #date.innerText = @get_date_str()
-        date.innerText = @get_c_date_str()
+        date.innerText = @get_date_str()
+        #date.innerText = @get_c_date_str()
 
         setInterval( =>
                 hours.innerText = @get_hours()
