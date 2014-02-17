@@ -55,7 +55,6 @@
 static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
-PRIVATE GtkWidget* webview = NULL;
 static GSGrab* grab = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
@@ -201,28 +200,12 @@ void check_version()
         g_free(version);
 }
 
-
-GtkWidget* new_webview()
-{
-    if (option.is_logout) {
-        return d_webview_new_with_uri (LOGOUT_HTML_PATH);
-    } else if (option.is_reboot) {
-        return d_webview_new_with_uri (REBOOT_HTML_PATH);
-    } else if (option.is_shutdown) {
-        return d_webview_new_with_uri (SHUTDOWN_HTML_PATH);
-    } else if (option.is_choice) {
-        return d_webview_new_with_uri (CHOICE_HTML_PATH);
-    }
-
-    return NULL;
-}
-
 int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
     if (is_application_running(SHUTDOWN_ID_NAME)) {
-        g_warning("another instance of application shutdown is running...\n");
+        g_warning("another instance of application dzone is running...\n");
         return 0;
     }
 
@@ -256,10 +239,9 @@ int main (int argc, char **argv)
                            | GDK_ENTER_NOTIFY_MASK
                            | GDK_LEAVE_NOTIFY_MASK);
 
-    webview = new_webview();
-
-    g_option_context_free(ctx);
+    GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
+
 #ifdef NDEBUG
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);

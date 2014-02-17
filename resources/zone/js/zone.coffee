@@ -22,6 +22,7 @@ class Zone extends Widget
     constructor:->
         super
         echo "zone"
+        document.body.appendChild(@element)
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
