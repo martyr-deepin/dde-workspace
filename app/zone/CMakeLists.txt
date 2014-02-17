@@ -27,7 +27,7 @@ install(
     )
 
 install(
-    FILES ${PROJECT_SOURCE_DIR}/app/shutdown/com.deepin.dde.zone.service
+    FILES ${PROJECT_SOURCE_DIR}/app/zone/com.deepin.dde.zone.service
     DESTINATION /usr/share/dbus-1/services/
     )
 
