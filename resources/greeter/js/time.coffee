@@ -80,10 +80,8 @@ class TimeDate extends Widget
         #date.innerText = @get_c_date_str()
 
         setInterval( =>
-                hours.innerText = "24"
-                min.innerText = "59"
-                #hours.innerText = @get_hours()
-                #min.innerText = @get_min()
+                hours.innerText = @get_hours()
+                min.innerText = @get_min()
                 return true
             , 1000)
 
