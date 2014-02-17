@@ -263,6 +263,7 @@ int main (int argc, char **argv)
 
     grab = gs_grab_new ();
     gtk_widget_show_all (container);
+    gtk_widget_set_opacity (container,0.9);
 
     gdk_window_focus (gtk_widget_get_window (container), 0);
     gdk_window_stick (gdkwindow);
