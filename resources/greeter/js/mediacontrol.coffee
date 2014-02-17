@@ -42,6 +42,7 @@ class VoiceControl extends Widget
         @element.style.display = "none"
      
     drawVolume:(vol,width = 50,height = 50)->
+        return
         #width = width * scaleFinal
         #height = height * scaleFinal
         remove_element(myCanvas) if myCanvas
@@ -206,6 +207,7 @@ class MediaControl extends Widget
 
     voice_normal_hover_click_cb: (el) ->
         el.addEventListener("mouseover",(e)=>
+            echo "mouseover"
             is_volume_control = true
             voice.src = img_src_before + voice_status + "_hover.png"
             if voicecontrol.element.style.display isnt "none" then return
@@ -217,6 +219,7 @@ class MediaControl extends Widget
             voicecontrol.drawVolume(volume)
         )
         el.addEventListener("mouseout",->
+            echo "mouseout"
             is_volume_control = false
             voice.src = img_src_before + voice_status + "_normal.png"
             clearTimeout(t) if t
