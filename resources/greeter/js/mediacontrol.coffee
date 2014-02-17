@@ -164,6 +164,10 @@ class MediaControl extends Widget
         next = create_img("next",img_src_before + "next_hover.png",control)
         voice = create_img("voice",img_src_before + "voice_hover.png",control)
         voicecontrol = new VoiceControl()
+        if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+        else voice_status = "voice"
+        voice.src = img_src_before + voice_status + "_hover.png"
+
        
         setInterval(->
             if audioplay.getArtist() isnt undefined
@@ -236,14 +240,26 @@ class MediaControl extends Widget
             clearTimeout(t) if t
             t = setTimeout(->
                 voicecontrol.hide()
-            ,500)
+            ,50)
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
+        el.addEventListener("click",->
+            echo "click"
+            voice.src = img_src_before + voice_status + "_hover.png"
+            if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+            else voice_status = "voice"
+            if voice_status is "mute" then voicecontrol.setVolume(0.5)
+            else voicecontrol.setVolume(0)
+            if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+            else voice_status = "voice"
+            voice.src = img_src_before + voice_status + "_hover.png"
+        )
+
 
         document.body.addEventListener("mousewheel",(e) =>
             if is_volume_control
                 voicecontrol.mousewheel(e)
-                if audioplay.getVolume() < 0.01 then voice_status = "mute"
+                if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
                 else voice_status = "voice"
                 voice.src = img_src_before + voice_status + "_hover.png"
         )
