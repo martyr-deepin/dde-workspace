@@ -42,7 +42,7 @@ class TimeDate extends Widget
         month_list = [_("Jan"),_("Feb"),_("Mar"),_("Apr"),_("May"),_("Jun"),_("Jul"),_("Aug"),_("Sep"),_("Oct"),_("Nov"),_("Dec")]
         day_list = [_("Sun"),_("Mon"),_("Tue"),_("Wed"),_("Thu"),_("Fri"),_("Sat")]
 
-        # 20140217
+        # 2014-2-17
         year = new Date().getFullYear()
         mon = new Date().getMonth() + 1
         #mon = month_list[new Date().getMonth()]
