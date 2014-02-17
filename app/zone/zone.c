@@ -51,7 +51,7 @@
 #define SHUTDOWN_MINOR_VERSION 0
 #define SHUTDOWN_SUBMINOR_VERSION 0
 #define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
-#define SHUTDOWN_CONF "shutdown/config.ini"
+#define SHUTDOWN_CONF "zone/config.ini"
 static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
@@ -60,25 +60,8 @@ static GSGrab* grab = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 
-static struct {
-    gboolean is_logout;
-    gboolean is_reboot;
-    gboolean is_shutdown;
-    gboolean is_choice;
-    gboolean is_front;
-} option = {FALSE, FALSE, FALSE, TRUE, FALSE};
-static GOptionEntry entries[] = {
-    {"logout", 'l', 0, G_OPTION_ARG_NONE, &option.is_logout, "logout current session", NULL},
-    {"reboot", 'r', 0, G_OPTION_ARG_NONE, &option.is_reboot, "reboot computer", NULL},
-    {"shutdown", 's', 0, G_OPTION_ARG_NONE, &option.is_shutdown, "shutdown computer", NULL},
-    {"choice", 'c', 0, G_OPTION_ARG_NONE, &option.is_choice, "choice the action(default)", NULL},
-    {"front", 'f', 0, G_OPTION_ARG_NONE, &option.is_front, "not fork", NULL},
-    {NULL}
-};
-
-
 JS_EXPORT_API
-void shutdown_quit()
+void zone_quit()
 {
     g_key_file_free(shutdown_config);
     g_object_unref(dde_bg_g_settings);
@@ -234,17 +217,10 @@ GtkWidget* new_webview()
     return NULL;
 }
 
-JS_EXPORT_API
-const char* shutdown_get_username()
-{
-    const gchar *username = g_get_user_name();
-    return username;
-}
-
 int main (int argc, char **argv)
 {
-    /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
-    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
     if (is_application_running(SHUTDOWN_ID_NAME)) {
         g_warning("another instance of application shutdown is running...\n");
         return 0;
@@ -255,25 +231,6 @@ int main (int argc, char **argv)
 
     check_version();
     init_i18n ();
-
-    GOptionContext* ctx = g_option_context_new(NULL);
-    g_option_context_add_main_entries(ctx, entries, NULL);
-    g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
-
-    GError* error = NULL;
-    if (!g_option_context_parse(ctx, &argc, &argv, &error)) {
-        g_warning("%s", error->message);
-        g_clear_error(&error);
-        g_option_context_free(ctx);
-        return 0;
-    }
-
-    if (!option.is_front) {
-#ifdef NDEBUG
-        close_std_stream();
-#endif
-        reparent_to_init();
-    }
 
     gtk_init (&argc, &argv);
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
