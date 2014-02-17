@@ -27,8 +27,8 @@ class VoiceControl extends Widget
         super
         document.body.appendChild(@element)
         @element.style.display = "none"
-        remove_element(background) if background
-        background = create_img("background","images/voicecontrol/background.png",@element)
+        #remove_element(background) if background
+        #background = create_img("background","images/voicecontrol/background.png",@element)
     
     show:(x,y,position = "absolute")->
         @element.style.position = position
@@ -42,6 +42,17 @@ class VoiceControl extends Widget
         @element.style.display = "none"
      
     drawVolume:(vol,width = 50,height = 50)->
+        remove_element(num) if num
+        num = create_element("div","num",@element)
+        num.style.position = "relative"
+        fontSize = 10
+        num.style.fontSize = "1em"
+        #num.style.left = "-3.8em"
+        num.style.top = "0.6em"
+        num.textContent = Math.round(vol * 100)
+
+        @element.style.display = "block"
+
         return
         #width = width * scaleFinal
         #height = height * scaleFinal
