@@ -32,5 +32,17 @@ startManager = DCore.DBus.session_object(
     START_MANAGER.path,
     START_MANAGER.interface
 )
+startManager.connect("AutostartChanged", (a, b)->
+    echo a
+    echo b
+)
 
 softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
+# softwareManager.connect("", (info)->
+#     # TODO: uninstall failed
+#     if (item = uninstalling_apps[info.id])?
+#         echo "#{info.id} uninstall failed"
+#         item.status = SOFTWARE_STATE.IDLE
+#         item.show()
+#     delete uninstalling_apps[info.id]
+# )

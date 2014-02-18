@@ -136,7 +136,7 @@ class Item extends Widget
             if src != @img.src
                 @img.src = src
 
-    do_click : (e)=>
+    on_click: (e)->
         e?.stopPropagation()
         @element.style.cursor = "wait"
         startManager.Launch(@basename)
@@ -144,7 +144,7 @@ class Item extends Widget
         @element.style.cursor = "auto"
         exit_launcher()
 
-    do_dragstart: (e)=>
+    on_dragstart: (e)=>
         e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
@@ -302,14 +302,14 @@ class Item extends Widget
     scroll_to_view: ->
         @element.scrollIntoViewIfNeeded()
 
-    do_mouseover: =>
+    on_mouseover: =>
         Item.hover_item_id = @id
         if not Item.clean_hover_temp
             @element.style.background = "rgba(255, 255, 255, 0.15)"
             @element.style.border = "1px rgba(255, 255, 255, 0.25) solid"
             @element.style.borderRadius = "4px"
 
-    do_mouseout: =>
+    on_mouseout: =>
         @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
         @element.style.background = ""
         @element.style.borderRadius = ""
@@ -318,9 +318,7 @@ class Item extends Widget
 
 class SearchItem extends Item
     constructor: (@id, @name, @path, @icon)->
-        # @id = "se_#{@id}"
         super(@id, @name, @path, @icon)
-        # @element.setAttribute("id", @id)
         @element.classList.add("Item")
 
     destroy: ->
@@ -366,20 +364,3 @@ class FavorItem extends Item
             if info.favorElement
                 info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
                 info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
-
-
-menuDelegate= (e)->
-    target = e.target
-    id = null
-    # echo target.tagName
-    if target.tagName == "IMG"
-        id = target.parentNode.id
-    else if target.tagName == "DIV"
-        if target.className.match(/Item/)
-            id = target.id
-        else if target.parentNode.className.match(/Item/)
-            id = target.parentNode.id
-
-    if id? && (item = Widget.look_up(id))?
-        # echo id
-        item.on_rightclick(e)

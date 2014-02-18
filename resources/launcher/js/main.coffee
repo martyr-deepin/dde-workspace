@@ -30,10 +30,10 @@ uninstalling_apps = {}
 
 reset = ->
     selected_category_id = CATEGORY_ID.ALL
-    clean_search_bar()
+    searchBar.clean()
     # hidden_icons.save()
     _show_hidden_icons(false)
-    get_first_shown()?.scroll_to_view()
+    # get_first_shown()?.scroll_to_view()
     if Item.hover_item_id
         event = new Event("mouseout")
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)

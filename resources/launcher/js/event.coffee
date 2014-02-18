@@ -16,38 +16,17 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-contextmenu_callback = (e)->
+
+
+forbidenDefault = (e)->
+    e.stopPropagation()
     e.preventDefault()
-    return
-    menu = new Menu(
-        DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(1, SORT_MESSAGE[sort_method])
-    )
-    hidden_icons_ids = _get_hidden_icons_ids()
-    if hidden_icons_ids.length
-        menu.append(new MenuItem(2, HIDDEN_ICONS_MESSAGE[is_show_hidden_icons]))
 
-    DCore.Launcher.force_show(true)
-    menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
-    menu.addListener((id) ->
-        id = parseInt(id)
-        switch id
-            when 1
-                if sort_method == "rate"
-                    sort_method = "name"
-                else if sort_method == "name"
-                    sort_method = "rate"
 
-                sort_category_info(sort_methods[sort_method])
-                update_items(category_infos[CATEGORY_ID.ALL])
-                grid_load_category(selected_category_id)
-
-                DCore.Launcher.save_config('sort_method', sort_method)
-            when 2
-                grid_load_category(selected_category_id)
-                _show_hidden_icons(not is_show_hidden_icons)
-        DCore.Launcher.force_show(false)
-    ).showMenu(e.clientX, e.clientY)
+click_callback = (e)->
+    e.stopPropagation()
+    if e.target != $("#category")
+        exit_launcher()
 
 
 keydown_callback = (e) ->
@@ -118,24 +97,18 @@ keydown_callback = (e) ->
                 else
                     selected_next()
 
+keypress_callback = (e) ->
+    e.preventDefault()
+    e.stopPropagation()
+    if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
+        switcher.hide()
+        searchBar.show()
+        searchBar.value(searchBar.value() + String.fromCharCode(e.which))
+        searchBar.search()
+
 bind_events = ->
-    _b.addEventListener("contextmenu", contextmenu_callback)
+    _b.addEventListener("contextmenu", forbidenDefault)
+    _b.addEventListener("click", click_callback)
     # this does not work on keypress
     _b.addEventListener("keydown", keydown_callback)
-    _b.addEventListener("click", (e)->
-        e.stopPropagation()
-        if e.target != $("#category")
-            exit_launcher()
-    )
-    _b.addEventListener('keypress', (e) ->
-        e.preventDefault()
-        e.stopPropagation()
-        if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
-            # switcher.hideCategory()
-            # $("#grid").style.display = 'none'
-            # $("#searchResult").style.display = 'block'
-            switcher.hide()
-            searchBar.show()
-            searchBar.value(searchBar.value() + String.fromCharCode(e.which))
-            searchBar.search()
-    )
+    _b.addEventListener('keypress', keypress_callback)

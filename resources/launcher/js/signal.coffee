@@ -55,78 +55,24 @@ DCore.signal_connect("draw_background", (info)->
 )
 
 
-DCore.signal_connect("update_items", (info)->
-    return
-    # echo "update items:"
-    # echo "status: #{info.status}"
-    # echo "id: #{info.id}"
-    # echo "core: #{info.core}"
-    # echo "categories: #{info.categories}"
-
-    if info.status.match(/^deleted$/i)
-        if uninstalling_apps[info.id]
-            delete uninstalling_apps[info.id]
-
-        if (item = Widget.look_up(info.id))?
-            echo 'deleted'
-            for category_index in info.categories
-                category_infos["#{category_index}"].remove(info.id)
-            item.status = SOFTWARE_STATE.UNINSTALLING
-            item.hide()
-            item.destroy()
-            delete applications[info.id]
-    else if info.status.match(/^updated$/i)
-        if not Widget.look_up(info.id)?
-            echo 'added'
-            # info.status = "added"
-            applications[info.id] = new Item(info.id, info.core)
-            for category_index in info.categories
-                category_infos["#{category_index}"].push(info.id)
-            # TODO: may sort category_info which is changed.
-            sort_category_info(sort_methods[sort_method])
-            grid.appendChild(applications[info.id].element)
-        else
-            echo 'updated'
-            applications[info.id].update(info.core)
-
-    # FIXME:
-    # load what should be shown, not forbidden reloading on searching.
-    if searchBar.empty()
-        update_items(category_infos[CATEGORY_ID.ALL])
-        grid_load_category(selected_category_id)
-    else
-        search()
-)
+# DCore.signal_connect("uninstall_failed", (info)->
+#     if (item = uninstalling_apps[info.id])?
+#         echo "#{info.id} uninstall failed"
+#         item.status = SOFTWARE_STATE.IDLE
+#         item.show()
+#     delete uninstalling_apps[info.id]
+# )
 
 
-DCore.signal_connect("uninstall_failed", (info)->
-    if (item = uninstalling_apps[info.id])?
-        echo "#{info.id} uninstall failed"
-        item.status = SOFTWARE_STATE.IDLE
-        item.show()
-    delete uninstalling_apps[info.id]
-)
-
-
-DCore.signal_connect("autostart_update", (info)->
-    if (app = Widget.look_up(info.id))?
-        if DCore.Launcher.is_autostart(app.core)
-            # echo 'add'
-            app.add_to_autostart()
-        else
-            # echo 'delete'
-            app.remove_from_autostart()
-)
-
-
-DCore.signal_connect("pin_status_changed", (info)->
-    if info.is_pin
-        category_bar.show()
-        category_bar.pin()
-    else
-        category_bar.unpin()
-        category_bar.hide()
-)
+# DCore.signal_connect("autostart_update", (info)->
+#     if (app = Widget.look_up(info.id))?
+#         if DCore.Launcher.is_autostart(app.core)
+#             # echo 'add'
+#             app.add_to_autostart()
+#         else
+#             # echo 'delete'
+#             app.remove_from_autostart()
+# )
 
 
 DCore.Launcher.notify_workarea_size()

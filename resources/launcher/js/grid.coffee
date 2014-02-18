@@ -17,10 +17,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-grid = $('#grid')
-grid.addEventListener("contextmenu", menuDelegate)
 
-fn = (e)->
+gridScrollCallback = (e)->
     offset = 0
     id = -2
     l = this.childNodes.length
@@ -50,7 +48,12 @@ fn = (e)->
             id = candidateId
             offset += this.childNodes[i].clientHeight + CATEGORY_CONTENT_MARGIN
 
-
     return
 
-$("#grid").addEventListener("scroll", fn)
+
+grid = $('#grid')
+grid.addEventListener("scroll", gridScrollCallback)
+grid.addEventListener("contextmenu", menuDelegate)
+grid.addEventListener("click", clickDelegate)
+grid.addEventListener("mouseout", mouseOutDelegate)
+grid.addEventListener("mouseover", mouseOverDelegate)

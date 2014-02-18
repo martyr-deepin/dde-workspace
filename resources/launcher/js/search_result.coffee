@@ -17,12 +17,18 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-$("#searchResult").addEventListener('scroll', (e)->
+
+searchScrollCallback = (e)->
     if this.scrollTop == 0
         this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-    else if this.scrollBottom == 0
-        this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%"
+    else if this.scrollTop + this.clientHeight == this.scrollHeight
+        this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%)"
     else
         this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-)
-$("#searchResult").addEventListener("contextmenu", menuDelegate)
+
+
+searchResult = $("#searchResult")
+searchResult.addEventListener('scroll', searchScrollCallback)
+searchResult.addEventListener("contextmenu", menuDelegate)
+searchResult.addEventListener("mouseout", mouseOutDelegate)
+searchResult.addEventListener("mouseover", mouseOverDelegate)
