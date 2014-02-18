@@ -188,10 +188,10 @@ func getItemInfos(id CategoryId) []ItemInfo {
 	}
 
 	for k, _ := range categoryTable[id].items {
-		fmt.Println("get item", k, "from category#", id)
-		// if _, ok := itemTable[k]; ok {
-		infos = append(infos, *itemTable[k])
-		// }
+		// fmt.Println("get item", k, "from category#", id)
+		if _, ok := itemTable[k]; ok {
+			infos = append(infos, *itemTable[k])
+		}
 	}
 
 	return infos

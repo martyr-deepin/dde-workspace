@@ -113,11 +113,11 @@ func (d *LauncherDBus) itemChangedHandler(ev *fsnotify.FileEvent, name string, i
 		go func() {
 			select {
 			case <-info[name].renamed:
-				fmt.Println("not renamed")
+				// fmt.Println("not renamed")
 				info[name].notRenamed <- true
 				info[name].renamed <- true
 			default:
-				fmt.Println("default")
+				// fmt.Println("default")
 			}
 			select {
 			case <-info[name].notCreated:
