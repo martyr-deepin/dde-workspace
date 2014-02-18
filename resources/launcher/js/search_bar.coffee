@@ -22,8 +22,10 @@ class SearchBar
     constructor:->
         @searchBar = $("#search")
         @key = $("#searchKey")
-        DCore.signal_connect("im_commit", (info)->
-            s_box.textContent += info.Content
+        DCore.signal_connect("im_commit", (info)=>
+            if @value(@value() + info.Content)
+                @show()
+                @search()
         )
         @searchTimer = null
 

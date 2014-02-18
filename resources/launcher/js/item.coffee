@@ -346,16 +346,18 @@ class SearchItem extends Item
     @updateHorizontalMargin: ->
         containerWidth = $("#container").clientWidth
         # echo "containerWidth:#{containerWidth}"
-        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
+        SearchItem.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
         # echo "itemNumPerLine: #{Item.itemNumPerLine}"
-        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
+        SearchItem.horizontalMargin =  (containerWidth - SearchItem.itemNumPerLine * ITEM_WIDTH) / 2 / SearchItem.itemNumPerLine
         # echo "horizontalMargin: #{Item.horizontalMargin}"
         for own id, info of applications
-            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
-            info.element.style.marginRight = "#{Item.horizontalMargin}px"
-            if info.favorElement
-                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
-                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+            if !(i = Widget.look_up("se_#{id}"))
+                continue
+            i.element.style.marginLeft = "#{SearchItem.horizontalMargin}px"
+            i.element.style.marginRight = "#{SearchItem.horizontalMargin}px"
+            if i.favorElement
+                i.favorElement.style.marginLeft = "#{SearchItem.horizontalMargin}px"
+                i.favorElement.style.marginRight = "#{SearchItem.horizontalMargin}px"
 
     next_shown: ->
         next_sibling_id = @element.nextElementSibling?.id

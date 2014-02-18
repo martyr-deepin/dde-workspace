@@ -797,7 +797,7 @@ void _update_window_appid(Client* c)
                     app_id = find_app_id(exec_name, icon_name, APPID_FILTER_ICON_NAME);
                     g_free(icon_name);
                 }
-                g_debug("[%s] get app id from _NET_WM_ICON_NAME", __func__);
+                g_debug("[%s] get app id from _NET_WM_ICON_NAME: %s", __func__, app_id);
             }
             if (app_id == NULL && exec_name != NULL) {
                 app_id = find_app_id(exec_name, exec_name, APPID_FILTER_EXEC_NAME);

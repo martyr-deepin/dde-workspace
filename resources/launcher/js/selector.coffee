@@ -95,7 +95,6 @@ class Selector
         if el?
             @box = el
             @clear()
-            echo "set container to #{el.id}"
         @box
 
     clear:->

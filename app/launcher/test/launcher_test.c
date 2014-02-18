@@ -7,8 +7,6 @@ int TEST_MAX_MEMORY= RES_IN_MB(400);
 
 extern void monitor_test();
 extern void background_test();
-extern void item_test();
-extern void launcher_category_test();
 
 #endif
 
@@ -21,8 +19,6 @@ void launcher_test()
 
     /* monitor_test(); */
     /* background_test(); */
-    /* item_test(); */
-    launcher_category_test();
 
     g_message("All Passed!!!");
 #endif

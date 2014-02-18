@@ -449,6 +449,18 @@ int main(int argc, char* argv[])
 #endif
     }
 
+#ifndef NDEBUG
+    if (argc == 2 && 0 == g_strcmp0("-l", argv[1])) {
+        if (fork() == 0) {
+            // child process
+            int res G_GNUC_UNUSED = system("killall launcher-daemon");
+            res = execl(DATA_DIR"/../build/launcher-daemon", DATA_DIR"/../build/launcher-daemon", NULL);
+        } else {
+            sleep(1);
+        }
+    }
+#endif
+
     if (is_application_running(LAUNCHER_ID_NAME)) {
         g_warning(_("another instance of launcher is running...\n"));
 

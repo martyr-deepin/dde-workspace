@@ -168,8 +168,8 @@ body {
     font-size: 13px;
 }
 .item_selected {
-    background: rgba(255, 255, 255, 0.35);
-    border: 1px rgba(255, 255, 255, 0.45) solid;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px rgba(255, 255, 255, 0.25) solid;
     border-radius: 4px;
 }
 .item img {
