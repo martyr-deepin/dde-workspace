@@ -76,7 +76,7 @@ class Item extends Widget
         , 200)
 
     destroy: ->
-        grid.removeChild(@element)
+        categoryList.removeItem(@id)
         super
 
     get_img: ->
@@ -93,28 +93,28 @@ class Item extends Widget
     update: (info)->
         # TODO: update category infos
         # update it.
-        if @name != info.name
+        if @name != info?.name
             @name = info.name
             @itemName.innerText = @name
 
-        if @path != info.path
+        if @path != info?.path
             @path = info.path
 
-        if @basename != info.basename
+        if @basename != info?.basename
             @basename = info.basename
 
-        if @icon != info.icon
+        if @icon != info?.icon
             @icon = info.icon
             im = @get_img()
             @img.src = im
 
-        if @isAutostart != info.isAutostart
+        if @isAutostart != info?.isAutostart
             @toggle_autostart()
 
-        if @status != info.status
+        if @status != info?.status
             @status = info.status
 
-        if @displayMode != info.displayMode
+        if @displayMode != info?.displayMode
             @toggle_icon()
             # @displayMode = info.displayMode
 
@@ -194,12 +194,11 @@ class Item extends Widget
             when 4 then s_dock?.RequestDock_sync(escape(@path))
             when 5 then @toggle_autostart()
             when 6
-                return
                 if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher")
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
-                    DCore.Launcher.uninstall(@basename, true)
+                    uninstall(path:@path, purge:true)
             when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
@@ -213,8 +212,8 @@ class Item extends Widget
          if !hiddenIcons.contains(@id)
              # echo 'save'
             hiddenIcons.add(@id, @).save()
-        categoryBar.hideEmptyCategory()
-        categoryList.hideEmptyCategory()
+        categoryBar.hideEmptyCategories()
+        categoryList.hideEmptyCategories()
         hidden_icons_num = hiddenIcons.number()
         if hidden_icons_num == 0
             _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
@@ -226,7 +225,7 @@ class Item extends Widget
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
         hidden_icons_num = hiddenIcons.remove(@id).save().number()
-        categoryList.showNonemtpyCategory()
+        categoryList.showNonemptyCategories()
         if hidden_icons_num == 0
             is_show_hidden_icons = false
             _show_hidden_icons(is_show_hidden_icons)
@@ -235,7 +234,7 @@ class Item extends Widget
     display_icon_temp: ->
         @element.style.display = '-webkit-box'
         Item.display_temp = true
-        categoryList.showNonemtpyCategory()
+        categoryList.showNonemptyCategories()
 
     toggle_icon: ->
         if @displayMode == 'display'
@@ -324,6 +323,10 @@ class SearchItem extends Item
         # @element.setAttribute("id", @id)
         @element.classList.add("Item")
 
+    destroy: ->
+        $("#searchResult").removeChild(@element)
+        super
+
     @updateHorizontalMargin: ->
         containerWidth = $("#container").clientWidth
         # echo "containerWidth:#{containerWidth}"
@@ -345,6 +348,10 @@ class FavorItem extends Item
         super(@id, @name, @path, @icon)
         # @element.setAttribute("id", @id)
         @element.classList.add("Item")
+
+    destroy: ->
+        categoryList.favor.removeItem(@id)
+        super
 
     @updateHorizontalMargin: ->
         containerWidth = $("#container").clientWidth

@@ -56,6 +56,7 @@ DCore.signal_connect("draw_background", (info)->
 
 
 DCore.signal_connect("update_items", (info)->
+    return
     # echo "update items:"
     # echo "status: #{info.status}"
     # echo "id: #{info.id}"

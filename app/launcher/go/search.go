@@ -97,7 +97,7 @@ func search(key string) []ItemId {
 			case <-done:
 				// fmt.Println("done")
 			case <-time.After(1 * time.Second):
-				// fmt.Println("wait search result time out")
+				fmt.Println("wait search result time out")
 			}
 		}
 	}
@@ -110,7 +110,7 @@ func search(key string) []ItemId {
 
 	ids := make([]ItemId, 0)
 	for _, v := range resList {
-		fmt.Println(itemTable[v.Id].Name, v.Score)
+		// fmt.Println(itemTable[v.Id].Name, v.Score)
 		ids = append(ids, v.Id)
 	}
 	return ids

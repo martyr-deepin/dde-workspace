@@ -75,3 +75,18 @@ class Category
 
     every:(fn)->
         @items.every(fn)
+
+    addItem: (id)->
+        if (item = Widget.look_up(id))? && @items.indexOf(id) == -1
+            @items.push(id)
+            @grid.appendChild(item.element)
+            @sort()
+
+    removeItem:(id)->
+        if (item = Widget.look_up(id))?
+            @grid.removeChild(item.element)
+        if @items.indexOf(id) != -1
+            @items.remove(id)
+
+    sort:->
+        # TODO: sort by name

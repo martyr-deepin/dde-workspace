@@ -32,13 +32,16 @@ class Switcher
                 @showCategory()
         )
 
+    isInSearch:->
+        @switcher.style.visibility == 'hidden'
+
     showCategory:->
         @isShowCategory = true
         categoryBar.show()
         @favor.style.display = 'inline'
         @category.style.display = 'none'
         container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
-        categoryList.showNonemtpyCategory().updateBlankHeight().showBlank()
+        categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         Item.updateHorizontalMargin()
 
     hideCategory:->
@@ -49,3 +52,9 @@ class Switcher
         @category.style.display = 'inline'
         container.style.marginLeft = "110px"
         # Item.updateHorizontalMargin()
+
+    hide:->
+        @switcher.style.visibility = 'hidden'
+
+    show:->
+        @switcher.style.visibility = 'visible'

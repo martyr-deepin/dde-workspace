@@ -40,6 +40,9 @@ type ItemInfo struct {
 	xinfo       Xinfo
 }
 
+// TODO: add some method to ItemTable like remove/add
+// type ItemTable map[ItemId]*ItemId
+
 var itemTable = map[ItemId]*ItemInfo{}
 
 func (i *ItemInfo) init(app *gio.DesktopAppInfo) {
@@ -73,6 +76,15 @@ func (i *ItemInfo) getCategoryIds() []CategoryId {
 		ids = append(ids, k)
 	}
 	return ids
+}
+
+func (i *ItemInfo) destroy() {
+	for _, cid := range i.getCategoryIds() {
+		// fmt.Printf("delete id from category#%d\n", cid)
+		delete(categoryTable[cid].items, id)
+	}
+	// fmt.Println("delete id from category#-1")
+	delete(categoryTable[OtherID].items, id)
 }
 
 func getDeepinCategory(app *gio.DesktopAppInfo) (CategoryId, error) {
@@ -176,7 +188,10 @@ func getItemInfos(id CategoryId) []ItemInfo {
 	}
 
 	for k, _ := range categoryTable[id].items {
+		fmt.Println("get item", k, "from category#", id)
+		// if _, ok := itemTable[k]; ok {
 		infos = append(infos, *itemTable[k])
+		// }
 	}
 
 	return infos

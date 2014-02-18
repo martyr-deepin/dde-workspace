@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "fmt"
+	"fmt"
 	"os"
 	"path"
 	"time"
@@ -53,58 +53,81 @@ func (d *LauncherDBus) ItemInfos(id int32) []ItemInfo {
 }
 
 func (d *LauncherDBus) emitItemChanged(name, status string, info map[string]ItemChangedStatus) {
+	defer delete(info, name)
 	id := genId(name)
 
-	if status != "delete" {
-		itemTable[id] = &ItemInfo{}
+	fmt.Println("Status:", status)
+	if status != SOFTWARE_STATUS_DELETED {
 		app := gio.NewDesktopAppInfoFromFilename(name)
+		if app == nil {
+			fmt.Println("create DesktopAppInfo failed")
+			return
+		}
+		itemTable[id] = &ItemInfo{}
 		itemTable[id].init(app)
 		app.Unref()
 	}
+	if _, ok := itemTable[id]; !ok {
+		fmt.Println("get item from itemTable failed")
+		return
+	}
 	d.ItemChanged(status, *itemTable[id], itemTable[id].getCategoryIds())
 
-	if status == "delete" {
+	if status == SOFTWARE_STATUS_DELETED {
+		itemTable[id].destroy()
 		delete(itemTable, id)
+	} else {
+		for _, cid := range itemTable[id].getCategoryIds() {
+			fmt.Printf("add id to category#%d\n", cid)
+			categoryTable[cid].items[id] = true
+		}
 	}
-	delete(info, name)
+	fmt.Println(status, "successful")
 }
 
 func (d *LauncherDBus) itemChangedHandler(ev *fsnotify.FileEvent, name string, info map[string]ItemChangedStatus) {
-	// fmt.Println(ev)
+	if _, ok := info[name]; !ok {
+		info[name] = ItemChangedStatus{
+			make(chan bool),
+			make(chan bool),
+			make(chan bool),
+			make(chan bool),
+		}
+	}
 	if ev.IsRename() {
 		select {
 		case <-info[name].renamed:
 		default:
 		}
-		info[name].renamed <- true
 		go func() {
 			select {
 			case <-info[name].notRenamed:
 				return
 			case <-time.After(time.Second):
 				<-info[name].renamed
-				d.emitItemChanged(name, "deleted", info)
-				// fmt.Println("deleted")
+				d.emitItemChanged(name, SOFTWARE_STATUS_DELETED, info)
 			}
 		}()
+		info[name].renamed <- true
 	} else if ev.IsCreate() {
-		info[name].created <- true
 		go func() {
 			select {
 			case <-info[name].renamed:
+				fmt.Println("not renamed")
 				info[name].notRenamed <- true
 				info[name].renamed <- true
 			default:
+				fmt.Println("default")
 			}
 			select {
 			case <-info[name].notCreated:
 				return
 			case <-time.After(time.Second):
 				<-info[name].created
-				d.emitItemChanged(name, "added", info)
-				// fmt.Println("create added")
+				d.emitItemChanged(name, SOFTWARE_STATUS_CREATED, info)
 			}
 		}()
+		info[name].created <- true
 	} else if ev.IsModify() && !ev.IsAttrib() {
 		go func() {
 			select {
@@ -113,11 +136,9 @@ func (d *LauncherDBus) itemChangedHandler(ev *fsnotify.FileEvent, name string, i
 			}
 			select {
 			case <-info[name].renamed:
-				// fmt.Println("modified")
-				d.emitItemChanged(name, "modified", info)
+				d.emitItemChanged(name, SOFTWARE_STATUS_MODIFIED, info)
 			default:
-				d.emitItemChanged(name, "added", info)
-				// fmt.Println("modify added")
+				d.emitItemChanged(name, SOFTWARE_STATUS_CREATED, info)
 			}
 		}()
 	} else if ev.IsAttrib() {
@@ -130,8 +151,7 @@ func (d *LauncherDBus) itemChangedHandler(ev *fsnotify.FileEvent, name string, i
 			}
 		}()
 	} else if ev.IsDelete() {
-		d.emitItemChanged(name, "deleted", info)
-		// fmt.Println("deleted")
+		d.emitItemChanged(name, SOFTWARE_STATUS_DELETED, info)
 	}
 }
 
@@ -177,6 +197,7 @@ func (d *LauncherDBus) listenItemChanged() {
 	}
 	// FIXME: close watcher.
 	for _, dir := range dirs {
+		fmt.Println("monitor:", dir)
 		watcher.Watch(dir)
 	}
 
@@ -209,6 +230,10 @@ func (d *LauncherDBus) GetFavors() FavorItemList {
 
 func (d *LauncherDBus) SaveFavors(items FavorItemList) bool {
 	return saveFavors(items)
+}
+
+func (d *LauncherDBus) GetPackageNames(path string) []string {
+	return getPackageNames(path)
 }
 
 func initDBus() {

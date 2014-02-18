@@ -57,7 +57,7 @@ class CategoryList
         if @blank.style.display != 'block'
             @blank.style.display = 'block'
 
-    hideEmptyCategory:->
+    hideEmptyCategories:->
         for own id, item of @categories
             all_is_hidden = item.every((el) ->
                 applications[el].display_mode == "hidden"
@@ -70,7 +70,7 @@ class CategoryList
                 # grid_load_category(@selected_id)
         @
 
-    showNonemtpyCategory:->
+    showNonemptyCategories:->
         if @favor.element.style.display == 'none'
             @favor.element.style.display = 'block'
         @favor.showHeader().setNameDecoration()
@@ -90,3 +90,21 @@ class CategoryList
 
         @favor.show().hideHeader()
         @blank.style.display = 'none'
+
+    addItem: (categories, id)->
+        if !Array.isArray(categories)
+            categories = [categories]
+        for cat_id in categories
+            @categories[cat_id].addItem(id)
+
+    removeItem:(categories, id)->
+        if typeof id == 'undefined'
+            id = categories
+            for v in @categories
+                v.removeItem(id)
+            return
+
+        if !Array.isArray(categories)
+            categories = [categories]
+        for cat_id in categories
+            @categories[cat_id].removeItem(id)

@@ -89,51 +89,6 @@ class CategoryBar
         @category.appendChild(frag)
         @
 
-    # addItem: (id, name)->
-    #     id = parsetInt(id, 10)
-    #     if @category_items[id]?
-    #         echo "category ##{id}# is existed"
-    #         return @
-    #
-    #     indicator = @category.lastChild
-    #     for own _id, item of @category_items
-    #         if _id != CATEGORY_ID.ALL and _id != CATEGORY_ID.OTHER and _id == id
-    #             indicator = item.element
-    #     @category_items[id] = new CategoryItem(id, name)
-    #     @category.insertBefore(@category_items[id].element, indicator)
-    #     @
-    #
-    # removeItem: (id)->
-    #     if not @category_items[id]?
-    #         echo "category ##{id} doesn't exist"
-    #         return @
-    #
-    #     @category_items[id].hide()
-    #     target = @category_items[id].element
-    #     target.parentNode.removeChild(target)
-    #     @
-
-    hideEmptyCategory:->
-        # for own id, item of @category_items
-        #     all_is_hidden = item.info.every((el) ->
-        #         applications[el].setDisplayMode("hidden").notify()
-        #     )
-        #     if all_is_hidden and not Item.display_temp
-        #         item.hide()
-                # if @selected_id == id
-                #     @selected_id = CATEGORY_ID.ALL
-                # grid_load_category(@selected_id)
-        @
-
-    showNonemptyCategory:->
-        # for own id, item of @category_items
-        #     not_all_is_hidden = item.some((el) ->
-        #         applications[el].display_mode != "hidden"
-        #     )
-        #     if not_all_is_hidden or Item.display_temp
-        #         item.show()
-        @
-
     show: ->
         if @category.style.display != 'block'
             @category.style.display = 'block'

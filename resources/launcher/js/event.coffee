@@ -77,6 +77,7 @@ keydown_callback = (e) ->
                     searchBar.search()
                 else
                     searchBar.hide()
+                    switcher.show()
                     $("#grid").style.display = 'block'
                     $("#searchResult").style.display = 'none'
                     switcher.hideCategory()
@@ -88,6 +89,7 @@ keydown_callback = (e) ->
                 else
                     searchBar.hide()
                     searchBar.clean()
+                    switcher.show()
                     $("#grid").style.display = 'block'
                     $("#searchResult").style.display = 'none'
                     switcher.hideCategory()
@@ -132,6 +134,7 @@ bind_events = ->
             # switcher.hideCategory()
             # $("#grid").style.display = 'none'
             # $("#searchResult").style.display = 'block'
+            switcher.hide()
             searchBar.show()
             searchBar.value(searchBar.value() + String.fromCharCode(e.which))
             searchBar.search()

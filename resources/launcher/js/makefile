@@ -12,6 +12,7 @@ all: ${com_coffee} \
 	category.coffee \
 	category_list.coffee \
 	switcher.coffee \
+	softwaremanager.coffee \
 	item_info.coffee \
 	item.coffee \
 	hidden_icon.coffee \

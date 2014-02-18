@@ -16,9 +16,21 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
+
+
+LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
+START_MANAGER =
+    obj: "com.deepin.SessionManager"
+    path: "/com/deepin/StartManager"
+    interface: "com.deepin.StartManager"
+
+SORTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
+
 daemon = DCore.DBus.session(LAUNCHER_DAEMON)
 startManager = DCore.DBus.session_object(
     START_MANAGER.obj,
     START_MANAGER.path,
     START_MANAGER.interface
 )
+
+softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
