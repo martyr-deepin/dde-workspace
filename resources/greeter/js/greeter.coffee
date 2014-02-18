@@ -83,6 +83,12 @@ $("#div_version").appendChild(version.element)
 powermenu = new PowerMenu($("#div_power"))
 powermenu.new_power_menu()
 
+
+for i in [1...5]
+    gradient = new Gradient(i)
+    document.body.appendChild(gradient.element)
+
+
 document.body.addEventListener("keydown",(e)->
     if is_greeter
         if $("#power_menuchoose") or $("#desktop_menuchoose")
