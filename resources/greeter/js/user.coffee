@@ -104,7 +104,8 @@ class User extends Widget
             try
                 user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
             catch error
-                user_image = "images/img01.jpg"
+                echo error
+                user_image = "images/userimg_default.jpg"
 
         return user_image
 

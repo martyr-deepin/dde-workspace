@@ -1,6 +1,6 @@
 .MediaControl{
-    width:20em;
-    height:7.8em;
+    /*width:20em;*/
+    /*height:7.8em;*/
     
     display:-webkit-box;
     -webkit-box-orient:vertical;
@@ -10,7 +10,7 @@
     width:100%;
     /*padding-left:20px;*/
     padding-right:-2em;
-    font-size:1.3em;
+    font-size:1.2em;
     color:#fff;
     text-align:center;
     text-shadow: 0 2px 2px rgba(0,0,0,0.5);
@@ -27,21 +27,21 @@
 }
 
 .up{
-    width:5em;
-    height:5em;
+    /*width:5em;*/
+    /*height:5em;*/
 }
  .play{
-    width:5em;
-    height:5em;
+    /*width:5em;*/
+    /*height:5em;*/
 }
 .next{
-    width:5em;
-    height:5em;
+    /*width:5em;*/
+    /*height:5em;*/
 }
 .voice{
     cursor:pointer;
-    width:5em;
-    height:5em;
+    /*width:5em;*/
+    /*height:5em;*/
 }
 
 .VoiceControl{

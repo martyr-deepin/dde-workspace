@@ -47,8 +47,7 @@ class VoiceControl extends Widget
         num.style.position = "relative"
         fontSize = 10
         num.style.fontSize = "1em"
-        #num.style.left = "-3.8em"
-        num.style.top = "0.6em"
+        num.style.top = "0"
         num.textContent = Math.round(vol * 100)
 
         @element.style.display = "block"
@@ -63,8 +62,7 @@ class VoiceControl extends Widget
         y0 = 0
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
-        c = document.getElementById("myCanvas")
-        ctx = c.getContext("2d")
+        ctx = myCanvas.getContext("2d")
        
         #dest
         ctx.beginPath()
