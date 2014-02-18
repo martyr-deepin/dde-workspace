@@ -155,18 +155,18 @@ class MediaControl extends Widget
         name.textContent = name_text
         control = create_element("div","control",@element)
         
-        up = create_img("up",img_src_before + "up_hover.png",control)
+        up = create_img("up",img_src_before + "up_normal.png",control)
         
         if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
         else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
         else play_status = "play"
-        play = create_img("play",img_src_before + "#{play_status}_hover.png",control)
-        next = create_img("next",img_src_before + "next_hover.png",control)
-        voice = create_img("voice",img_src_before + "voice_hover.png",control)
+        play = create_img("play",img_src_before + "#{play_status}_normal.png",control)
+        next = create_img("next",img_src_before + "next_normal.png",control)
+        voice = create_img("voice",img_src_before + "voice_normal.png",control)
         voicecontrol = new VoiceControl()
         if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
         else voice_status = "voice"
-        voice.src = img_src_before + voice_status + "_hover.png"
+        voice.src = img_src_before + voice_status + "_normal.png"
 
        
         setInterval(->
@@ -177,15 +177,15 @@ class MediaControl extends Widget
         ,1000)
 
         @normal_hover_click_cb(up,
-            img_src_before + "up_hover.png",
-            img_src_before + "up_hover.png",
-            img_src_before + "up_hover.png",
+            img_src_before + "up_normal.png",
+            img_src_before + "up_normal.png",
+            img_src_before + "up_normal.png",
             @media_up
         )
         @normal_hover_click_cb(next,
-            img_src_before + "next_hover.png",
-            img_src_before + "next_hover.png",
-            img_src_before + "next_hover.png",
+            img_src_before + "next_normal.png",
+            img_src_before + "next_normal.png",
+            img_src_before + "next_normal.png",
             @media_next
         )
         @play_normal_hover_click_cb(play,@media_play)
@@ -213,7 +213,7 @@ class MediaControl extends Widget
         if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
         else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
         else play_status = "play"
-        play.src = img_src_before + "#{play_status}_hover.png"
+        play.src = img_src_before + "#{play_status}_normal.png"
         
 
     media_next:->
@@ -224,7 +224,7 @@ class MediaControl extends Widget
         el.addEventListener("mouseover",(e)=>
             echo "mouseover"
             is_volume_control = true
-            voice.src = img_src_before + voice_status + "_hover.png"
+            voice.src = img_src_before + voice_status + "_normal.png"
             if voicecontrol.element.style.display isnt "none" then return
             p = e.srcElement
             x = p.x + voice.clientWidth
@@ -236,7 +236,7 @@ class MediaControl extends Widget
         el.addEventListener("mouseout",->
             echo "mouseout"
             is_volume_control = false
-            voice.src = img_src_before + voice_status + "_hover.png"
+            voice.src = img_src_before + voice_status + "_normal.png"
             clearTimeout(t) if t
             t = setTimeout(->
                 voicecontrol.hide()
@@ -246,7 +246,7 @@ class MediaControl extends Widget
         volume_old = 0.5
         el.addEventListener("click",->
             echo "click"
-            voice.src = img_src_before + voice_status + "_hover.png"
+            voice.src = img_src_before + voice_status + "_normal.png"
             if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
             else voice_status = "voice"
             if voice_status is "mute"
@@ -256,7 +256,7 @@ class MediaControl extends Widget
                 voicecontrol.setVolume(0)
             if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
             else voice_status = "voice"
-            voice.src = img_src_before + voice_status + "_hover.png"
+            voice.src = img_src_before + voice_status + "_normal.png"
         )
 
 
@@ -265,18 +265,18 @@ class MediaControl extends Widget
                 voicecontrol.mousewheel(e)
                 if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
                 else voice_status = "voice"
-                voice.src = img_src_before + voice_status + "_hover.png"
+                voice.src = img_src_before + voice_status + "_normal.png"
         )
         
     play_normal_hover_click_cb: (el,click_cb) ->
         el.addEventListener("mouseover",->
-            el.src = img_src_before + play_status + "_hover.png"
+            el.src = img_src_before + play_status + "_normal.png"
         )
         el.addEventListener("mouseout",->
-            el.src = img_src_before + play_status + "_hover.png"
+            el.src = img_src_before + play_status + "_normal.png"
         )
         el.addEventListener("click",=>
-            el.src = img_src_before + play_status + "_hover.png"
+            el.src = img_src_before + play_status + "_normal.png"
             click_cb?()
         )
     keydown_listener:(e)->
