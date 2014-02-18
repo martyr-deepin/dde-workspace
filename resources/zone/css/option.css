@@ -1,0 +1,22 @@
+.Option{
+}
+
+
+.current_img{
+    width:10.1em;
+    height:10.1em;
+    overflow:hidden;
+}
+
+.current_text{
+    font-size:1.6em;
+}
+
+
+.opt_text{
+    font-size:1.3em;
+}
+.opt_texti:hover{
+    background-color:rgba(0,0,0,0.9);
+    border-radius:0.3em; 
+}
