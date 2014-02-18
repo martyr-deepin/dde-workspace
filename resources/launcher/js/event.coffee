@@ -33,18 +33,18 @@ keydown_callback = (e) ->
     e.stopPropagation()
     if e.ctrlKey and e.shiftKey and e.which == KEYCODE.TAB
         e.preventDefault()
-        selected_up()
+        selector.up()
     else if e.ctrlKey
         e.preventDefault()
         switch e.which
             when KEYCODE.P
-                selected_up()
+                selector.up()
             when KEYCODE.F
-                selected_next()
+                selector.right()
             when KEYCODE.B
-                selected_prev()
+                selector.left()
             when KEYCODE.N, KEYCODE.TAB
-                selected_down()
+                selector.down()
     else
         switch e.which
             when KEYCODE.BACKSPACE
@@ -80,27 +80,29 @@ keydown_callback = (e) ->
                     get_first_shown()?.do_click()
             when KEYCODE.UP_ARROW
                 e.preventDefault()
-                selected_up()
+                selector.up()
             when KEYCODE.DOWN_ARROW
                 e.preventDefault()
-                selected_down()
+                selector.down()
             when KEYCODE.LEFT_ARROW
                 e.preventDefault()
-                selected_prev()
+                selector.left()
             when KEYCODE.RIGHT_ARROW
                 e.preventDefault()
-                selected_next()
+                selector.right()
             when KEYCODE.TAB
                 e.preventDefault()
                 if e.shiftKey
-                    selected_prev()
+                    selector.left()
                 else
-                    selected_next()
+                    selector.right()
 
 keypress_callback = (e) ->
     e.preventDefault()
     e.stopPropagation()
     if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
+        if switcher.isShowCategory
+            switcher.hideCategory()
         switcher.hide()
         searchBar.show()
         searchBar.value(searchBar.value() + String.fromCharCode(e.which))

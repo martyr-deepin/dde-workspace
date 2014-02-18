@@ -12,6 +12,7 @@ all: ${com_coffee} \
 	category.coffee \
 	category_list.coffee \
 	switcher.coffee \
+	selector.coffee \
 	softwaremanager.coffee \
 	delegate.coffee \
 	item_info.coffee \

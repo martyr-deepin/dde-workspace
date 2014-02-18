@@ -74,13 +74,15 @@ init_all_applications = ->
         info.element = item.element
         info.searchElement = seItem.element
         info.favorElement = faItem.element
-        info.register(id, item).notify()
+        info.register(id, item)
         info.register("se_#{id}", seItem)
         info.register("fa_#{id}", faItem)
+        info.notify()
         frag.appendChild(applications[id].searchElement)
     $("#searchResult").appendChild(frag)
 
 
+selector = new Selector()
 searchBar = new SearchBar()
 init_all_applications()
 categoryInfos = daemon.CategoryInfos_sync()

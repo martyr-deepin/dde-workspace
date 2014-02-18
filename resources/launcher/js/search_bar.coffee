@@ -34,6 +34,7 @@ class SearchBar
     show: ->
         if @searchBar.style.visibility != 'visible'
             @searchBar.style.visibility = 'visible'
+            selector.container($("#searchResult"))
 
     value: (t)->
         if t?
@@ -55,6 +56,7 @@ class SearchBar
     search: ->
         @cancel()
         @searchTimer = setTimeout(=>
+            selector.clear()
             ids = daemon.Search_sync(@value())
             # echo ids
             res = $("#searchResult")
@@ -69,7 +71,7 @@ class SearchBar
                     res.insertBefore(item, res.firstChild)
 
             if $("#searchResult").style.display != 'block'
-                switcher.hideCategory()
                 $("#grid").style.display = 'none'
                 $("#searchResult").style.display = 'block'
+                SearchItem.updateHorizontalMargin()
         , 200)

@@ -36,6 +36,7 @@ class Switcher
         @switcher.style.visibility == 'hidden'
 
     showCategory:->
+        selector.container($("#grid"))
         @isShowCategory = true
         categoryBar.show()
         @favor.style.display = 'inline'
@@ -45,6 +46,7 @@ class Switcher
         Item.updateHorizontalMargin()
 
     hideCategory:->
+        selector.container(categoryList.favor.element)
         @isShowCategory = false
         categoryBar.hide()
         categoryList.showFavorOnly()
@@ -58,3 +60,4 @@ class Switcher
 
     show:->
         @switcher.style.visibility = 'visible'
+        selector.container(categoryList.favor.element)

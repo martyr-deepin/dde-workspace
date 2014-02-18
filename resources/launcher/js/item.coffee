@@ -278,15 +278,16 @@ class Item extends Widget
         @element.style.display == "-webkit-box"
 
     select: ->
-        @element.setAttribute("class", "item item_selected")
+        @element.classList.add("item_selected")
 
     unselect: ->
-        @element.setAttribute("class", "item")
+        @element.classList.remove("item_selected")
 
     next_shown: ->
         next_sibling_id = @element.nextElementSibling?.id
         if next_sibling_id
-            n = applications[next_sibling_id]
+            echo next_sibling_id
+            n = Widget.look_up(next_sibling_id)
             if n.is_shown() then n else n.next_shown()
         else
             null
@@ -294,17 +295,35 @@ class Item extends Widget
     prev_shown: ->
         prev_sibling_id = @element.previousElementSibling?.id
         if prev_sibling_id
-            n = applications[prev_sibling_id]
+            n = Widget.look_up(prev_sibling_id)
             if n.is_shown() then n else n.prev_shown()
         else
             null
 
-    scroll_to_view: ->
-        @element.scrollIntoViewIfNeeded()
+    scroll_to_view: (p)->
+        if !@inView(p)
+            rect = @element.getBoundingClientRect()
+            prect = p.getBoundingClientRect()
+            if rect.top < prect.top
+                offset = rect.top - prect.top
+                p.scrollTop += offset - 20 # for search
+            else if rect.bottom > prect.bottom
+                offset = rect.bottom - prect.bottom
+                p.scrollTop += offset + 20 # for search
+        # @element.scrollIntoViewIfNeeded()
+
+    inView:(p)->
+        rect = @element.getBoundingClientRect()
+        prect = p.getBoundingClientRect()
+        rect.top > prect.top && rect.bottom < prect.bottom
+
+    sameLine: (o)->
+        @element.getBoundingClientRect().top == o.element.getBoundingClientRect().top
 
     on_mouseover: =>
         Item.hover_item_id = @id
         if not Item.clean_hover_temp
+            # not use @select() for storing status.
             @element.style.background = "rgba(255, 255, 255, 0.15)"
             @element.style.border = "1px rgba(255, 255, 255, 0.25) solid"
             @element.style.borderRadius = "4px"
@@ -313,7 +332,6 @@ class Item extends Widget
         @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
         @element.style.background = ""
         @element.style.borderRadius = ""
-        # Item.hover_item_id = null
 
 
 class SearchItem extends Item
@@ -338,6 +356,22 @@ class SearchItem extends Item
             if info.favorElement
                 info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
                 info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+
+    next_shown: ->
+        next_sibling_id = @element.nextElementSibling?.id
+        if next_sibling_id
+            n = Widget.look_up(next_sibling_id)
+            if n.is_shown() then n else n.next_shown()
+        else
+            null
+
+    prev_shown: ->
+        prev_sibling_id = @element.previousElementSibling?.id
+        if prev_sibling_id
+            n = Widget.look_up(prev_sibling_id)
+            if n.is_shown() then n else n.prev_shown()
+        else
+            null
 
 
 class FavorItem extends Item
@@ -364,3 +398,18 @@ class FavorItem extends Item
             if info.favorElement
                 info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
                 info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+    next_shown: ->
+        next_sibling_id = @element.nextElementSibling?.id
+        if next_sibling_id
+            n = Widget.look_up(next_sibling_id)
+            if n.is_shown() then n else n.next_shown()
+        else
+            null
+
+    prev_shown: ->
+        prev_sibling_id = @element.previousElementSibling?.id
+        if prev_sibling_id
+            n = Widget.look_up(prev_sibling_id)
+            if n.is_shown() then n else n.prev_shown()
+        else
+            null
