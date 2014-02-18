@@ -81,10 +81,10 @@ func (i *ItemInfo) getCategoryIds() []CategoryId {
 func (i *ItemInfo) destroy() {
 	for _, cid := range i.getCategoryIds() {
 		// fmt.Printf("delete id from category#%d\n", cid)
-		delete(categoryTable[cid].items, id)
+		delete(categoryTable[cid].items, i.Id)
 	}
 	// fmt.Println("delete id from category#-1")
-	delete(categoryTable[OtherID].items, id)
+	delete(categoryTable[OtherID].items, i.Id)
 }
 
 func getDeepinCategory(app *gio.DesktopAppInfo) (CategoryId, error) {
