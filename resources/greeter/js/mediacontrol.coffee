@@ -179,13 +179,13 @@ class MediaControl extends Widget
         @normal_hover_click_cb(up,
             img_src_before + "up_hover.png",
             img_src_before + "up_hover.png",
-            img_src_before + "up_press.png",
+            img_src_before + "up_hover.png",
             @media_up
         )
         @normal_hover_click_cb(next,
             img_src_before + "next_hover.png",
             img_src_before + "next_hover.png",
-            img_src_before + "next_press.png",
+            img_src_before + "next_hover.png",
             @media_next
         )
         @play_normal_hover_click_cb(play,@media_play)
@@ -276,7 +276,7 @@ class MediaControl extends Widget
             el.src = img_src_before + play_status + "_hover.png"
         )
         el.addEventListener("click",=>
-            el.src = img_src_before + play_status + "_press.png"
+            el.src = img_src_before + play_status + "_hover.png"
             click_cb?()
         )
     keydown_listener:(e)->
