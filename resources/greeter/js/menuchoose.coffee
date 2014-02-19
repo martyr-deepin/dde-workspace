@@ -56,6 +56,7 @@ class MenuChoose extends Widget
         @opt_text = []
         @animation_end = true
         
+        document.body.style.fontSize = "62.5%"
         document.body.appendChild(@element)
         @element.style.display = "none"
     
