@@ -18,13 +18,23 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-item_selected = null
-
-
 class Selector
     constructor:->
         @box = null
         @selectedItem = null
+
+    container:(el)->
+        if el?
+            @box = el
+            @clear()
+            if el.id
+                echo "set container to #{el.tagName}##{el.id}"
+            else
+                echo "set container to #{el.tagName}.\"#{el.className}\", parentNode: #{el.parentNode.id}"
+        @box
+
+    clear:->
+        @update(null)
 
     rowNumber:->
         Math.floor(@box.clientWidth / ITEM_WIDTH)
@@ -35,70 +45,95 @@ class Selector
         @selectedItem?.select()
 
     firstShown:->
-        if @box && (item = Widget.look_up(@box.firstElementChild.id))?
-            if item.is_shown()
-                return item
+        if @box
+            if switcher.isShowCategory
+                if (i = categoryList.firstCategory())?
+                    return i.firstItem()
             else
-                item.next_shown()
+                if (item = Widget.look_up(@box.firstElementChild.id))?
+                    if item.is_shown()
+                        return item
+                    else
+                        return item.next_shown()
         null
 
-    initSelectedItem:->
-        selectedItem = @firstShown()
-        @update(selectedItem)
-        selectedItem?.scroll_to_view(@box)
+    select: (fn)->
+        if @selectedItem == null
+            selectedItem = @firstShown()
+            @update(selectedItem)
+            selectedItem?.scroll_to_view(@box)
+            return
+        fn(@)
 
     right:->
-        if @selectedItem == null
-            @initSelectedItem()
-            return
-        if (n = @selectedItem.next_shown())?
-            n.scroll_to_view(@box)
-            @update(n)
+        @select((o)->
+            item = o.selectedItem
+            if not (n = item.next_shown())? && switcher.isShowCategory
+                if (c = categoryList.nextCategory(item.focusedCategory().id))?
+                    n = c.firstItem()
+
+            if n?
+                n.scroll_to_view(o.box)
+                o.update(n)
+        )
 
     left:->
-        if @selectedItem == null
-            @initSelectedItem()
-            return
-        if (n = @selectedItem.prev_shown())?
-            n.scroll_to_view(@box)
-            @update(n)
+        @select((o)->
+            item = o.selectedItem
+            if not (n = o.selectedItem.prev_shown())? && switcher.isShowCategory
+                if (c = categoryList.previousCategory(item.focusedCategory().id))?
+                    n = c.lastItem()
+
+            if n?
+                n.scroll_to_view(o.box)
+                o.update(n)
+        )
 
     down:->
-        if @selectedItem == null
-            @initSelectedItem()
-            return
-        n = @selectedItem
-        for i in [0...@rowNumber()]
-            if n && (m = n.next_shown())?
+        @select((o)->
+            item = o.selectedItem
+            n = item
+            count = o.rowNumber()
+
+            if switcher.isShowCategory && item.isLastLine()
+                if (c = categoryList.nextCategory(item.focusedCategory().id))?
+                    n = c.firstItem()
+                    count = item.indexOnLine()
+
+            for i in [0...count]
+                if !n? || !(m = n.next_shown())?
+                    break
                 n = m
-            else
-                break
-        if n && not n.sameLine(@selectedItem)
-            n.scroll_to_view(@box)
-            @update(n)
+
+            if n && not n.isSameLine(item)
+                n.scroll_to_view(o.box)
+                o.update(n)
+        )
 
     up:->
-        if @selectedItem == null
-            @initSelectedItem()
-            return
-        n = @selectedItem
-        for i in [0...@rowNumber()]
-            if n && (m = n.prev_shown())?
+        @select((o)->
+            item = o.selectedItem
+            n = item
+            count = o.rowNumber()
+
+            if switcher.isShowCategory && item.isFirstLine()
+                if (c = categoryList.previousCategory(item.focusedCategory().id))?
+                    count = 0
+                    n = c.lastItem()
+                    selectedIndex = item.indexOnLine()
+                    candidateIndex = n.indexOnLine()
+                    if candidateIndex > selectedIndex
+                        count = candidateIndex - selectedIndex
+
+            for i in [0...count]
+                if !(n && (m = n.prev_shown())?)
+                    break
                 n = m
-            else
-                break
-        if n && not n.sameLine(@selectedItem)
-            n.scroll_to_view(@box)
-            @update(n)
 
-    container:(el)->
-        if el?
-            @box = el
-            @clear()
-        @box
-
-    clear:->
-        @update(null)
+            if n && not n.isSameLine(item)
+                n.scroll_to_view(o.box)
+                o.update(n)
+        )
 
 
 clean_hover_state = do ->
@@ -113,73 +148,3 @@ clean_hover_state = do ->
             event = new Event("mouseover")
             Widget.look_up(Item.hover_item_id)?.element.dispatchEvent(event)
         , 1100)
-
-get_item_row_count = ->
-    parseInt(grid.clientWidth / ITEM_WIDTH)
-
-update_selected = (el)->
-    item_selected?.unselect()
-    item_selected = el
-    item_selected?.select()
-
-get_first_shown = ->
-    if (first_item = applications[$(".SearchItem").id])?
-        if first_item.is_shown()
-            first_item
-        else
-            first_item.next_shown()
-    else
-        null
-
-selected_next = ->
-    clean_hover_state()
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        item_selected?.scroll_to_view()
-        return
-    n = item_selected.next_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-selected_prev = ->
-    clean_hover_state()
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        item_selected?.scroll_to_view()
-        return
-    n = item_selected.prev_shown()
-    if n
-        n.scroll_to_view()
-        update_selected(n)
-
-selected_down = ->
-    clean_hover_state()
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        item_selected?.scroll_to_view()
-        return
-    n = item_selected
-    for i in [0..get_item_row_count()-1]
-        if n
-            n = n.next_shown()
-    if n
-        grid.scrollTop += SCROLL_STEP_LEN
-        update_selected(n)
-
-selected_up = ->
-    clean_hover_state()
-    if not item_selected
-        item_selected = get_first_shown()
-        update_selected(item_selected)
-        item_selected?.scroll_to_view()
-        return
-    n = item_selected
-    for i in [0..get_item_row_count()-1]
-        if n
-            n = n.prev_shown()
-    if n
-        grid.scrollTop -= SCROLL_STEP_LEN
-        update_selected(n)

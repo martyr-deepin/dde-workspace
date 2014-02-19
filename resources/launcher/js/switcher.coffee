@@ -46,7 +46,7 @@ class Switcher
         Item.updateHorizontalMargin()
 
     hideCategory:->
-        selector.container(categoryList.favor.element)
+        selector.container(categoryList.favor.element.lastElementChild)
         @isShowCategory = false
         categoryBar.hide()
         categoryList.showFavorOnly()

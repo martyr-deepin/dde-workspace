@@ -35,7 +35,8 @@ class Category
         frag = document.createDocumentFragment()
         for id in @items
             if @id == CATEGORY_ID.FAVOR
-                frag.appendChild(applications[id].favorElement)
+                # prefix "fa_"
+                frag.appendChild(applications[id.substr(3)].favorElement)
             else
                 frag.appendChild(applications[id].element)
         @grid.appendChild(frag)
@@ -47,6 +48,9 @@ class Category
         @decoration.firstChild.style.width = width
         @decoration.lastChild.style.width = width
         @
+
+    isShown: ->
+        @element.style.display != "none"
 
     hide: ->
         if @element.style.display != 'none'
@@ -90,3 +94,21 @@ class Category
 
     sort:->
         # TODO: sort by name
+
+    firstItem:->
+        el = @grid.firstElementChild
+        if el.style.display != 'none'
+            return Widget.look_up(el.id)
+        while (el = el.nextElementSibling)?
+            if el.style.display != 'none'
+                return Widget.look_up(el.id)
+        null
+
+    lastItem:->
+        el = @grid.lastElementChild
+        if el.style.display != 'none'
+            return Widget.look_up(el.id)
+        while (el = el.previousElementSibling)?
+            if el.style.display != 'none'
+                return Widget.look_up(el.id)
+        null

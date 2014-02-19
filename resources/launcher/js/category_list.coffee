@@ -17,14 +17,16 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
 class CategoryList
     constructor:(infos)->
         @categories = {}
         @favor = null
+        @container = $("#grid")
 
         frag = document.createDocumentFragment()
         favors = daemon.GetFavors_sync()
-        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->e[0]))
+        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->"fa_#{e[0]}"))
         @favor.show().hideHeader()
         frag.appendChild(@favor.element)
         # infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
@@ -60,7 +62,7 @@ class CategoryList
     hideEmptyCategories:->
         for own id, item of @categories
             all_is_hidden = item.every((el) ->
-                applications[el].display_mode == "hidden"
+                Widget.look_up(el).display_mode == "hidden"
             )
             if all_is_hidden and not Item.display_temp
                 item.hide()
@@ -76,7 +78,7 @@ class CategoryList
         @favor.showHeader().setNameDecoration()
         for own id, category of @categories
             not_all_is_hidden = category.some((el) ->
-                applications[el].display_mode != "hidden"
+                Widget.look_up(el)?.display_mode != "hidden"
             )
             if not_all_is_hidden or Item.display_temp
                 category.show()
@@ -91,15 +93,14 @@ class CategoryList
         @favor.show().hideHeader()
         @blank.style.display = 'none'
 
-    addItem: (categories, id)->
+    addItem: (id, categories)->
         if !Array.isArray(categories)
             categories = [categories]
         for cat_id in categories
             @categories[cat_id].addItem(id)
 
-    removeItem:(categories, id)->
-        if typeof id == 'undefined'
-            id = categories
+    removeItem:(id, categories)->
+        if typeof categories == 'undefined'
             for v in @categories
                 v.removeItem(id)
             return
@@ -108,3 +109,55 @@ class CategoryList
             categories = [categories]
         for cat_id in categories
             @categories[cat_id].removeItem(id)
+
+    category:(id)->
+        return @categories[id] if @categories[id]?
+        null
+
+    firstCategory:->
+        return @favor if @favor.isShown()
+        echo "the first category is not favor"
+        for id in [CATEGORY_ID.INTERNET..CATEGORY_ID.UTILITIES]
+            if @categories[id].isShown()
+                return @categories[id]
+        return null
+
+    lastCategory:->
+        for id in [CATEGORY_ID.UTILITIES..CATEGORY_ID.INTERNET]
+            if @categories[id].isShown()
+                return @categories[id]
+        return null
+
+    nextCategory:(id)->
+        return null if id == CATEGORY_ID.OTHER
+
+        if id == CATEGORY_ID.FAVOR
+            id = CATEGORY_ID.INTERNET - 1
+
+        i = id + 1
+        while i <= CATEGORY_ID.UTILITIES
+            if @categories[i].isShown()
+                return @categories[i]
+            i += 1
+
+        if @categories[CATEGORY_ID.OTHER].isShown()
+            return @categories[CATEGORY_ID.OTHER]
+
+        return null
+
+    previousCategory:(id)->
+        return null if id == CATEGORY_ID.FAVOR
+
+        if id == CATEGORY_ID.OTHER
+            id = CATEGORY_ID.UTILITIES + 1
+
+        i = id - 1
+        while i >= CATEGORY_ID.INTERNET
+            if @categories[i].isShown()
+                return @categories[i]
+            --i
+
+        if @favor.isShown()
+            return @favor
+
+        return null

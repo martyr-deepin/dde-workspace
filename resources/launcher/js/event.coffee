@@ -56,6 +56,7 @@ keydown_callback = (e) ->
                     searchBar.search()
                 else
                     searchBar.hide()
+                    selector.clear()
                     switcher.show()
                     $("#grid").style.display = 'block'
                     $("#searchResult").style.display = 'none'
@@ -67,6 +68,7 @@ keydown_callback = (e) ->
                     exit_launcher()
                 else
                     searchBar.hide()
+                    selector.clear()
                     searchBar.clean()
                     switcher.show()
                     $("#grid").style.display = 'block'

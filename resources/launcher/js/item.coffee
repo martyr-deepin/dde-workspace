@@ -275,7 +275,12 @@ class Item extends Widget
             @element.style.display = "-webkit-box"
 
     is_shown: ->
-        @element.style.display == "-webkit-box"
+        @element.style.display != "none"
+
+    # just working for categories, not searching and favor.
+    focusedCategory:->
+        cid = parseInt(@element.parentNode.parentNode.getAttribute("catid"))
+        categoryList.category(cid)
 
     select: ->
         @element.classList.add("item_selected")
@@ -286,7 +291,6 @@ class Item extends Widget
     next_shown: ->
         next_sibling_id = @element.nextElementSibling?.id
         if next_sibling_id
-            echo next_sibling_id
             n = Widget.look_up(next_sibling_id)
             if n.is_shown() then n else n.next_shown()
         else
@@ -317,8 +321,34 @@ class Item extends Widget
         prect = p.getBoundingClientRect()
         rect.top > prect.top && rect.bottom < prect.bottom
 
-    sameLine: (o)->
-        @element.getBoundingClientRect().top == o.element.getBoundingClientRect().top
+    isSameLineAux: (el)->
+        @element.getBoundingClientRect().top == el.getBoundingClientRect().top
+
+    isSameLine: (o)->
+        @isSameLineAux(o.element)
+
+    isLastLine: (o)->
+        el = @element
+        while (el = el.nextElementSibling)?
+            if not @isSameLineAux(el)
+                return false
+        return true
+
+    isFirstLine: (o)->
+        el = @element
+        while (el = el.previousElementSibling)?
+            if not @isSameLineAux(el)
+                return false
+        return true
+
+    indexOnLine: ->
+        el = @element
+        i = 0
+        while (el = el.previousElementSibling)?
+            if !@isSameLineAux(el)
+                break
+            i += 1
+        i
 
     on_mouseover: =>
         Item.hover_item_id = @id
@@ -359,28 +389,10 @@ class SearchItem extends Item
                 i.favorElement.style.marginLeft = "#{SearchItem.horizontalMargin}px"
                 i.favorElement.style.marginRight = "#{SearchItem.horizontalMargin}px"
 
-    next_shown: ->
-        next_sibling_id = @element.nextElementSibling?.id
-        if next_sibling_id
-            n = Widget.look_up(next_sibling_id)
-            if n.is_shown() then n else n.next_shown()
-        else
-            null
-
-    prev_shown: ->
-        prev_sibling_id = @element.previousElementSibling?.id
-        if prev_sibling_id
-            n = Widget.look_up(prev_sibling_id)
-            if n.is_shown() then n else n.prev_shown()
-        else
-            null
-
 
 class FavorItem extends Item
     constructor: (@id, @name, @path, @icon)->
-        # @id = "fa_#{@id}"
         super(@id, @name, @path, @icon)
-        # @element.setAttribute("id", @id)
         @element.classList.add("Item")
 
     destroy: ->
@@ -400,18 +412,3 @@ class FavorItem extends Item
             if info.favorElement
                 info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
                 info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
-    next_shown: ->
-        next_sibling_id = @element.nextElementSibling?.id
-        if next_sibling_id
-            n = Widget.look_up(next_sibling_id)
-            if n.is_shown() then n else n.next_shown()
-        else
-            null
-
-    prev_shown: ->
-        prev_sibling_id = @element.previousElementSibling?.id
-        if prev_sibling_id
-            n = Widget.look_up(prev_sibling_id)
-            if n.is_shown() then n else n.prev_shown()
-        else
-            null

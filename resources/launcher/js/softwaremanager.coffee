@@ -49,7 +49,7 @@ update = (status, info, categories)->
             seItem = Widget.look_up("se_#{id}")
             faItem = Widget.look_up("fa_#{id}")
             $("#searchResult").removeChild(seItem.element)
-            categoryList.removeItem(categories, id)
+            categoryList.removeItem(id, categories)
             categoryList.hideEmptyCategories()
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
