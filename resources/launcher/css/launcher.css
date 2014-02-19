@@ -20,12 +20,12 @@
  **/
 @import url("../../common/css/animation.css");
 body {
-    -webkit-user-select: none;
-    background: rgba(0, 0, 0, 0.15);
-    background-size: 100% 100%;
-    color: white;
-    overflow-y: hidden;
-    font-size:100%;
+  -webkit-user-select: none;
+  background: rgba(0, 0, 0, 0.15);
+  background-size: 100% 100%;
+  color: white;
+  overflow-y: hidden;
+  font-size:100%;
 }
 ::-webkit-scrollbar{
   visibility:hidden;
@@ -54,36 +54,36 @@ body {
 #category {
   position: absolute;
   left: 0;
-    margin-top: 25px;
-    min-width: 180px;
-    display: none;
+  margin-top: 25px;
+  min-width: 180px;
+  display: none;
 }
 #category:lang(zh) {
-    max-width: 180px;
-    min-width: 180px;
+  max-width: 180px;
+  min-width: 180px;
 }
 #category:lang(en) {
-    max-width: 220px;
-    min-width: 220px;
+  max-width: 220px;
+  min-width: 220px;
 }
 .category_name {
-    border: rgba(255,255,255, 0) 1px solid;
-    margin: 10px 0px 10px 15px;
+  border: rgba(255,255,255, 0) 1px solid;
+  margin: 10px 0px 10px 15px;
 
-    text-indent: 15px;
-    padding: 10px 0px 5px 15px;
+  text-indent: 15px;
+  padding: 10px 0px 5px 15px;
 
-    cursor: pointer;
-    line-height: 30px;
-    font-size: 22px;
-    text-shadow: 0px 1px 2px rgba(0,0,0,0.4), 0px 1px 2px rgba(0,0,0,0.4), 1px 0px 2px rgba(0,0,0,0.4), -0px 0px 2px rgba(0,0,0,0.4);
-    border-radius: 5px;
-    text-transform: capitalize;
+  cursor: pointer;
+  line-height: 30px;
+  font-size: 22px;
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.4), 0px 1px 2px rgba(0,0,0,0.4), 1px 0px 2px rgba(0,0,0,0.4), -0px 0px 2px rgba(0,0,0,0.4);
+  border-radius: 5px;
+  text-transform: capitalize;
 }
 .category_selected {
-    background: rgba(255, 255, 255, 0.1);
-    border: rgba(255,255,255, 0.5) 1px solid;
-    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  border: rgba(255,255,255, 0.5) 1px solid;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 
@@ -132,9 +132,9 @@ body {
   background:-webkit-linear-gradient(left, rgba(255,255,255,0.3), rgba(255,255,255,0));
 }
 .grid {
-    width: 100%;
-    overflow-y: scroll;
-    margin: 40px auto;
+  width: 100%;
+  overflow-y: scroll;
+  margin: 40px auto;
 }
 #blank{
   /* background:red; */
@@ -158,45 +158,46 @@ body {
   border: 1px rgba(255, 255, 255, 0.0) solid;
 }
 .item_name {
-    word-wrap: break-word;
-    -webkit-line-clamp: 2;
+  max-width: 140px;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
 
-    text-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+  text-shadow: 0px 2px 2px rgba(0,0,0,0.5);
 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
 }
 .item_selected {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px rgba(255, 255, 255, 0.25) solid;
-    border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px rgba(255, 255, 255, 0.25) solid;
+  border-radius: 4px;
 }
 .item img {
-    border-radius: 6px;
-    margin-bottom: 10px;
-    max-height: 48px;
-    max-width: 48px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  max-height: 48px;
+  max-width: 48px;
 }
 .square_img {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
 .hbar_img {
-    width: 48px;
+  width: 48px;
 }
 .vbar_img {
-    height: 48px;
+  height: 48px;
 }
 
 .hide_icon img {
-    opacity: 0.3;
+  opacity: 0.3;
 }
 
 .autostart_flag {
-    position: absolute;
-    top: 71px;
-    left: 56px;
+  position: absolute;
+  top: 71px;
+  left: 56px;
 }
 
 
