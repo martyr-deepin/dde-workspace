@@ -63,9 +63,13 @@ func (d *LauncherDBus) emitItemChanged(name, status string, info map[string]Item
 			fmt.Println("create DesktopAppInfo failed")
 			return
 		}
+		defer app.Unref()
+		if app.ShouldShow() {
+			fmt.Println(app.GetFilename(), "should NOT show")
+			return
+		}
 		itemTable[id] = &ItemInfo{}
 		itemTable[id].init(app)
-		app.Unref()
 	}
 	if _, ok := itemTable[id]; !ok {
 		fmt.Println("get item from itemTable failed")
