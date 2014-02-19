@@ -78,10 +78,6 @@ if not is_livecd
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
 
-for i in [1...5]
-    gradient = new Gradient(i)
-    document.body.appendChild(gradient.element)
-
 
 document.body.addEventListener("keydown",(e)->
     if is_greeter
