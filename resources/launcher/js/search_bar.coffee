@@ -58,7 +58,7 @@ class SearchBar
     search: ->
         @cancel()
         @searchTimer = setTimeout(=>
-            selector.clear()
+            selector.clean()
             ids = daemon.Search_sync(@value())
             # echo ids
             res = $("#searchResult")

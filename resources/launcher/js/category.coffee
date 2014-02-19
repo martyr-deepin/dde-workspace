@@ -34,11 +34,12 @@ class Category
 
         frag = document.createDocumentFragment()
         for id in @items
-            if @id == CATEGORY_ID.FAVOR
-                # prefix "fa_"
-                frag.appendChild(applications[id.substr(3)].favorElement)
-            else
-                frag.appendChild(applications[id].element)
+            frag.appendChild(Widget.look_up(id).element)
+            # if @id == CATEGORY_ID.FAVOR
+            #     # prefix "fa_"
+            #     frag.appendChild(applications[id.substr(3)].favorElement)
+            # else
+            #     frag.appendChild(applications[id].element)
         @grid.appendChild(frag)
 
     setNameDecoration: ->
@@ -98,17 +99,17 @@ class Category
     firstItem:->
         el = @grid.firstElementChild
         if el.style.display != 'none'
-            return Widget.look_up(el.id)
+            return Widget.look_up(el.getAttribute("appid"))
         while (el = el.nextElementSibling)?
             if el.style.display != 'none'
-                return Widget.look_up(el.id)
+                return Widget.look_up(el.getAttribute("appid"))
         null
 
     lastItem:->
         el = @grid.lastElementChild
         if el.style.display != 'none'
-            return Widget.look_up(el.id)
+            return Widget.look_up(el.getAttribute("appid"))
         while (el = el.previousElementSibling)?
             if el.style.display != 'none'
-                return Widget.look_up(el.id)
+                return Widget.look_up(el.getAttribute("appid"))
         null

@@ -31,6 +31,8 @@ class Item extends Widget
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
+        # @element.removeAttribute("id")
+        @element.setAttribute("appid", @id)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
@@ -40,19 +42,8 @@ class Item extends Widget
         @itemName = create_element("div", "item_name", @element)
         @itemName.innerText = @name
         @element.draggable = true
-        # @element.style.display = "none"
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
-
-        # TODO: (maybe create some new classes)
-        # 1. delay
-        # 2. bind events
-        @searchElement = @element.cloneNode(true)
-        @searchElement.setAttribute("id", "se_#{@element.id}")
-        Widget.object_table[@searchElement.id] = @
-        @favorElement = @element.cloneNode(true)
-        @favorElement.setAttribute("id", "fa_#{@element.id}")
-        Widget.object_table[@favorElement.id] = @
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -289,17 +280,17 @@ class Item extends Widget
         @element.classList.remove("item_selected")
 
     next_shown: ->
-        next_sibling_id = @element.nextElementSibling?.id
-        if next_sibling_id
-            n = Widget.look_up(next_sibling_id)
+        appid = @element.nextElementSibling?.getAttribute("appid")
+        if appid
+            n = Widget.look_up(appid)
             if n.is_shown() then n else n.next_shown()
         else
             null
 
     prev_shown: ->
-        prev_sibling_id = @element.previousElementSibling?.id
-        if prev_sibling_id
-            n = Widget.look_up(prev_sibling_id)
+        appid = @element.previousElementSibling?.getAttribute("appid")
+        if appid
+            n = Widget.look_up(appid)
             if n.is_shown() then n else n.prev_shown()
         else
             null
@@ -412,3 +403,6 @@ class FavorItem extends Item
             if info.favorElement
                 info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
                 info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+
+
+createItem=->

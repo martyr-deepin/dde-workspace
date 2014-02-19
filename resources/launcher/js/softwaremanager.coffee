@@ -33,19 +33,19 @@ update = (status, info, categories)->
     name = info[1]
     id = info[2]
     icon = info[3]
-    echo "status: #{status}"
-    echo "path: #{path}"
-    echo "name: #{name}"
-    echo "id: #{id}"
-    echo "icon: #{icon}"
-    echo "categories: #{categories}"
+    # echo "status: #{status}"
+    # echo "path: #{path}"
+    # echo "name: #{name}"
+    # echo "id: #{id}"
+    # echo "icon: #{icon}"
+    # echo "categories: #{categories}"
 
     if status.match(/^deleted$/i)
         if uninstalling_apps[id]
             delete uninstalling_apps[id]
 
         if (item = Widget.look_up(id))?
-            echo 'deleted'
+            # echo 'deleted'
             seItem = Widget.look_up("se_#{id}")
             faItem = Widget.look_up("fa_#{id}")
             $("#searchResult").removeChild(seItem.element)
@@ -58,7 +58,7 @@ update = (status, info, categories)->
             faItem?.destroy()
             delete applications[id]
     else if status.match(/^created$/i)
-        echo 'added'
+        # echo 'added'
         # status = "added"
         info = new ItemInfo(id, name, path, icon)
         applications[id] = info
@@ -68,13 +68,10 @@ update = (status, info, categories)->
         info.element = item.element
         info.searchElement = seItem.element
         info.favorElement = faItem.element
-        try
-            info.register(id, item)
-            info.register("se_#{id}", seItem)
-            info.register("fa_#{id}", faItem)
-            info.notify()
-        catch e
-            echo e
+        info.register(id, item)
+        info.register("se_#{id}", seItem)
+        info.register("fa_#{id}", faItem)
+        info.notify()
         $("#searchResult").appendChild(info.searchElement)
 
         categoryList.addItem(categories, id)
@@ -85,13 +82,13 @@ update = (status, info, categories)->
             else
                 categoryList.showFavorOnly()
     else
-        echo 'updated'
+        # echo 'updated'
         applications[id].update(name:name, path:path, basename:get_path_name(path), icon:icon)
 
     # FIXME:
     # load what should be shown, not forbidden reloading on searching.
     if !searchBar.empty()
-        echo 'search'
+        # echo 'search'
         searchBar.search()
 
 

@@ -23,12 +23,12 @@ targetId = (e)->
     id = null
     # echo target.tagName
     if target.tagName == "IMG"
-        id = target.parentNode.id
+        id = target.parentNode.getAttribute("appid")
     else if target.tagName == "DIV"
         if target.classList.contains("Item")
-            id = target.id
+            id = target.getAttribute("appid")
         else if target.parentNode.classList.contains("Item")
-            id = target.parentNode.id
+            id = target.parentNode.getAttribute("appid")
 
     id
 

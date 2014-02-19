@@ -26,14 +26,14 @@ class Selector
     container:(el)->
         if el?
             @box = el
-            @clear()
+            @clean()
             if el.id
                 echo "set container to #{el.tagName}##{el.id}"
             else
                 echo "set container to #{el.tagName}.\"#{el.className}\", parentNode: #{el.parentNode.id}"
         @box
 
-    clear:->
+    clean:->
         @update(null)
 
     rowNumber:->
@@ -50,7 +50,8 @@ class Selector
                 if (i = categoryList.firstCategory())?
                     return i.firstItem()
             else
-                if (item = Widget.look_up(@box.firstElementChild.id))?
+                id = @box.firstElementChild.getAttribute("appid")
+                if (item = Widget.look_up(id))?
                     if item.is_shown()
                         return item
                     else

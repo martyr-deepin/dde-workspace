@@ -55,31 +55,21 @@ keydown_callback = (e) ->
                     searchBar.show()
                     searchBar.search()
                 else
-                    searchBar.hide()
-                    selector.clear()
-                    switcher.show()
-                    $("#grid").style.display = 'block'
-                    $("#searchResult").style.display = 'none'
-                    switcher.hideCategory()
+                    reset()
             when KEYCODE.ESC
                 e.preventDefault()
                 e.stopPropagation()
                 if searchBar.empty()
                     exit_launcher()
                 else
-                    searchBar.hide()
-                    selector.clear()
-                    searchBar.clean()
-                    switcher.show()
-                    $("#grid").style.display = 'block'
-                    $("#searchResult").style.display = 'none'
-                    switcher.hideCategory()
+                    reset()
             when KEYCODE.ENTER
                 e.preventDefault()
                 if selector.selectedItem
                     selector.selectedItem.on_click()
                 else
                     selector.firstShown()?.on_click()
+                reset()
             when KEYCODE.UP_ARROW
                 e.preventDefault()
                 selector.up()

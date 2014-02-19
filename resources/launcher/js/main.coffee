@@ -29,11 +29,13 @@ uninstalling_apps = {}
 
 
 reset = ->
-    selected_category_id = CATEGORY_ID.ALL
+    searchBar.hide()
     searchBar.clean()
-    # hidden_icons.save()
-    _show_hidden_icons(false)
-    # get_first_shown()?.scroll_to_view()
+    selector.clean()
+    switcher.show()
+    $("#grid").style.display = 'block'
+    $("#searchResult").style.display = 'none'
+    switcher.hideCategory()
     if Item.hover_item_id
         event = new Event("mouseout")
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
