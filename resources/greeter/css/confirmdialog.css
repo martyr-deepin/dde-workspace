@@ -18,48 +18,46 @@
 .frame_confirm{
     /*background-color:rgba(122,122,100,0.2);*/
     display:-webkit-box;
-    /*margin-bottom:135px;*/
 }
 
 .left{
 }
 .img_confirm{
-    width:80px;
-    height:80px;
+    width:8em;
+    height:8em;
 }
 .right{
     opacity:0.0;
-    margin-left:50px;
-    margin-top:10px;
+    margin-left:5em;
+    margin-top:1em;
 }
 .message_confirm{
-    /*margin-top:5px;*/
     text-align:center;
     color: #FFF;
     
-    font-size:13px;
+    font-size:1.3em;
     word-wrap:break-word;
     white-space:pre;
     overflow:visible;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
 }
 
 .button_confirm{
-    margin-top:20px;
+    margin-top:2em;
     width:100%;
     display:-webkit-box;
     -webkit-box-pack:end;
     -webkit-box-align:end;
     
-    font-size:14px;
+    font-size:1.4em;
 }
 
 
 .button_cancel{
-    width:70px;
-    height:30px;
+    width:7em;
+    height:3em;
     cursor:pointer;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
     color:rgba(255,255,255,0.5)
 }
 .button_cancel:hover{
@@ -69,11 +67,11 @@
 
 
 .button_ok{
-    width:70x;
-    height:30px;
-    margin-left:40px;
+    width:7em;
+    height:3em;
+    margin-left:4em;
     cursor:pointer;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
     color:rgba(255,255,255,1.0)
 }
 .button_ok:hover{

@@ -8,12 +8,11 @@
 
 .name{
     width:100%;
-    /*padding-left:20px;*/
     padding-right:-2em;
     font-size:1.2em;
     color:#fff;
     text-align:center;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
     white-space:nowrap; 
     overflow:hidden;
     text-overflow:ellipsis;
@@ -49,9 +48,9 @@
 
 .background{
     position:absolute;
-    left:0px;
-    top:0px;
-    width:1.8px;
+    left:0;
+    top:0;
+    width:1.8em;
     height:3.5em;
 }
 
@@ -62,5 +61,5 @@
     position:relative;
     color:#fff;
     text-align:center;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
 }

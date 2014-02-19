@@ -18,7 +18,7 @@
 
 .TimeDate span{
     color: #fff;
-    text-shadow:0 0 2px #333;
+    text-shadow:0 0 0.2em #333;
     font-size:8em;
     font-family: MavenProLight;
 }
@@ -29,7 +29,7 @@
     font-size:2em;
     color: #fff;
     /*font-family: MavenProLight;*/
-    text-shadow:0 0 2px #333;
+    text-shadow:0 0 0.2em #333;
     text-align:center;
 }
 

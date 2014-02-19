@@ -89,27 +89,27 @@
     text-align:center;
     color: #FFF;
     font-size:1.5em;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    text-shadow: 0 0.2em 0.2em rgba(0,0,0,0.5);
     white-space:pre-wrap; 
     overflow:hidden;
     text-overflow:ellipsis;
 }
 
 @-webkit-keyframes fade_animation0{
-    to{left:120px;opacity:0.0;}
+    to{left:12em;opacity:0.0;}
 }
 
 @-webkit-keyframes fade_animation1{
-    to{right:0px;opacity:0.0;}
+    to{right:0;opacity:0.0;}
 }
 
 @-webkit-keyframes fade_animation2{
-    to{right:120px;opacity:0.0;}
+    to{right:12em;opacity:0.0;}
 }
 
 @-webkit-keyframes fade_animation3{
-    to{right:240px;opacity:0.0;}
+    to{right:24em;opacity:0.0;}
 }
 @-webkit-keyframes fade_animation4{
-    to{right:360px;opacity:0.0;}
+    to{right:36em;opacity:0.0;}
 }
