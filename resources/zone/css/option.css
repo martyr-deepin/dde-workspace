@@ -1,3 +1,6 @@
+body{
+    font-size:62.5%;
+}
 .Option{
 }
 
@@ -9,12 +12,18 @@
 }
 
 .current_text{
-    font-size:1.6em;
+    font-size:2.6em;
+    font-weight:normal; 
+    color:#fff;
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
 }
 
 
 .opt_text{
-    font-size:1.3em;
+    font-size:2.0em;
+    font-weight:normal; 
+    color:#fff;
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
 }
 .opt_texti:hover{
     background-color:rgba(0,0,0,0.9);

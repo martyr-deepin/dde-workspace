@@ -1,9 +1,13 @@
 class Option extends Widget
-    constructor(@id,@current):->
-        echo "new Option:#{@id}"
+    constructor:(@id,@current)->
+        super
+        echo "new Option:#{@id},#{@current}"
         @opt = []
         @opt_div = []
-
+        @opt_text = []
+        document.body.style.fontSize = "62.5%"
+        @element.style.position = "absolute"
+    
     insert:(opt)->
         @opt.push(opt)
 
@@ -19,28 +23,38 @@ class Option extends Widget
         switch @id
             when "LEFTUP"
                 # up right down left
-                @textAlign = "right"
+                @element.style.left = 0
+                @element.style.top = 0
+                @textAlign = "left"
                 @margin = "0 margin 0 0"
+            
             when "LEFTDOWN"
+                @element.style.right = 0
+                @element.style.top = 0
                 @textAlign = "right"
                 @margin = "0 margin 0 0"
             
             when "RIGHTUP"
+                @element.style.left = 0
+                @element.style.bottom= 0
                 @textAlign = "left"
                 @margin = "0 0 0 margin"
 
             when "RIGHTDOWN"
-                @textAlign = "left"
+                @element.style.right = 0
+                @element.style.bottom = 0
+                @textAlign = "right"
                 @margin = "0 0 0 margin"
          
         @opt_choose.style.textAlign = @textAlign
         @opt_choose.style.marginRight = @margin
+        
         for opt,i in @opt
             @opt_text[i] = create_element("div","opt_text",@opt_choose)
-            @opt_text[i].textContent = opt
+            @opt_text[i].innerText = opt
             if opt is @current then @opt_text[i].style.fontColor = "green"
             
-           @opt_text[i].addEventListener("click",=>
+            @opt_text[i].addEventListener("click",=>
                 @current = @opt_text[i].textContent
                 @opt_choose.style.display = "none"
             )
