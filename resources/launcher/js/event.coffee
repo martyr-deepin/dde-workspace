@@ -76,10 +76,10 @@ keydown_callback = (e) ->
                     switcher.hideCategory()
             when KEYCODE.ENTER
                 e.preventDefault()
-                if item_selected
-                    item_selected.do_click()
+                if selector.selectedItem
+                    selector.selectedItem.on_click()
                 else
-                    get_first_shown()?.do_click()
+                    selector.firstShown()?.on_click()
             when KEYCODE.UP_ARROW
                 e.preventDefault()
                 selector.up()
