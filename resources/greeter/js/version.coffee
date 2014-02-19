@@ -23,5 +23,5 @@ class Version extends Widget
         img_src_before = "images/"
         logo_img = create_img("version_img","",@element)
         logo_img.src = "#{img_src_before}/logo.png"
-        logo_img.style.width = "#{188 * scaleFinal}px"
-        logo_img.style.height = "#{47 * scaleFinal}px"
+        logo_img.style.width = "15.3em"
+        logo_img.style.height = "3.76em"

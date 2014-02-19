@@ -33,10 +33,10 @@ class MenuChoose extends Widget
     t_min = 100
     t_delay = 30
     
-    XMove = "-#{50 * scaleWidth}px"
+    XMove = "-5em"
     XBack = "0"
-    XStartShow = "800px"
-    XEndHide = "800px"
+    XStartShow = "80em"
+    XEndHide = "80em"
     
     init_width = 80 * 0.8
     final_width = 80
@@ -84,8 +84,8 @@ class MenuChoose extends Widget
             #init el css and then can animate
             text_el.style.opacity = "0.0"
             
-            img_el.style.width = "#{init_width}px"
-            img_el.style.height = "#{init_width}px"
+            img_el.style.width = "#{init_width / 10}em"
+            img_el.style.height = "#{init_width / 10}em"
             
             opt_el.style.opacity = "0.0"
             opt_el.style.left = XStartShow
