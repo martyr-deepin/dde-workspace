@@ -21,7 +21,7 @@ class Zone extends Widget
 
     constructor:->
         super
-        echo "zone"
+        echo "Zone"
         document.body.appendChild(@element)
         
     option_build:->

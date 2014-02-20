@@ -11,16 +11,16 @@ body{
     position:relative;
     background-color:rgba(200,200,200,0.9);
     display:-webkit-box;
+    overflow:hidden;
 }
 .current_img{
     position:relative;
-    background-color:rgba(0,200,200,0.5);
-    width:4em;
-    /*width:10.1em;*/
-    /*height:10.1em;*/
+    height:10.1em;
+    width:5em;
     overflow:hidden;
 }
 .current_text{
+    background-color:rgba(0,200,200,0.5);
     position:relative;
     height:3em;
     line-height:3em;
@@ -32,7 +32,10 @@ body{
 
 
 .opt_choose{
-
+    background-color:rgba(50,0,50,0.5);
+    /*width:100%;*/
+    /*display:-webkit-box;*/
+    /*-webkit-box-orient:vertical;*/
 }
 
 .opt_text{
