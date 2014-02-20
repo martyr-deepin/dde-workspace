@@ -70,7 +70,7 @@ class SearchBar
                 if (item = Widget.look_up("se_#{ids[i]}"))?
                     res.removeChild(item.element)
                     item.element.style.display = '-webkit-box'
-                    res.insertBefore(item, res.firstChild)
+                    res.insertBefore(item.element, res.firstChild)
 
             if $("#searchResult").style.display != 'block'
                 echo 'show result'
