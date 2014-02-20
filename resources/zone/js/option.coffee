@@ -59,13 +59,11 @@ class Option extends Widget
         margin = "10.1em"
         if @current_left
             #up left down right
-            #@opt_choose.style.margin = "0 #{margin} 0 0"
+            @opt_choose.style.marginLeft = margin
             @opt_choose.style.textAlign = "left"
-            #@opt_choose.style.webkitBoxPack = "start"
         else
-            #@opt_choose.style.margin = "0 0 0 #{margin}"
+            @opt_choose.style.marginRight = margin
             @opt_choose.style.textAlign = "right"
-            #@opt_choose.style.webkitBoxPack = "end"
         
         if !@current_up then @opt.reverse()
         for opt,i in @opt
@@ -93,6 +91,7 @@ class Option extends Widget
         )
         @element.addEventListener("mouseout",=>
             @timeOut = setTimeout(=>
+                #@opt_choose.style.display = "block"
                 @opt_choose.style.display = "none"
             ,50)
         )
