@@ -47,13 +47,15 @@ startManager.connect("AutostartChanged", (status, path)->
 )
 
 softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
-softwareManager.connect("update_signal", ->
+softwareManager.connect("update_signal", (info)->
     echo "test"
+    status = info[0][0]
+    if status == UNINSTALL_STATUS.FALIED
+        message = info[1][3]
+        # item.status = SOFTWARE_STATE.IDLE
+        # item.show()
+        # delete uninstalling_apps[info.id]
+    else if status == UNINSTALL_STATUS.SUCCESS
+        message = "success"
+        # delete uninstalling_apps[info.id]
 )
-    # echo JSON.stringify(info)
-    # TODO: uninstall failed
-    # if (infoitem = uninstalling_apps[info.id])?
-    #     echo "#{info.id} uninstall failed"
-    #     item.status = SOFTWARE_STATE.IDLE
-    #     item.show()
-    # delete uninstalling_apps[info.id]

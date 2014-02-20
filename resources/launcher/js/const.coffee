@@ -80,3 +80,8 @@ SOFTWARE_STATE =
     INSTALLING: 2
 
 _b = document.body
+
+UNINSTALL_STATUS =
+    FAILED: "action-failed"
+    SUCCESS: "action-finish"
+
