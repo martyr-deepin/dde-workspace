@@ -1,4 +1,6 @@
-VERSION = " "  #RC Beta
+VERSION = "2.0"  #RC Beta
+
+PasswordMaxlength = 25 #default 16
 
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
@@ -10,9 +12,11 @@ is_hide_users = null
 
 try
     DCore.Greeter.get_date()
+    echo "check is_greeter succeed!"
     is_greeter = true
     APP_NAME = "Greeter"
 catch error
+    echo "check is_greeter error:#{error}"
     is_greeter = false
     APP_NAME = "Lock"
 
@@ -42,4 +46,12 @@ try
     is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
 catch error
     is_livecd = false
- 
+     
+detect_is_from_lock = ->
+    from_lock = false
+    if is_greeter
+        from_lock = localStorage.getItem("from_lock")
+    localStorage.setItem("from_lock",false)
+    return from_lock
+
+

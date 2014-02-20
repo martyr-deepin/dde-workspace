@@ -1,15 +1,17 @@
 com_dir = ../../common/js
+com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/audioplay.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee
 
-com_coffee =${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/audioplay.coffee ${com_dir}/module.coffee ${com_dir}/widget.coffee ${com_dir}/selector.coffee ${com_dir}/tooltip.coffee
 
-#power_coffee = ../../shutdown/js/power_func.coffee 
-power_coffee = power_func.coffee animation.coffee
+init_coffee = config.coffee resolution.coffee animation.coffee 
+power_coffee = power_func.coffee 
+com_module_coffee = time.coffee version.coffee user.coffee menuchoose.coffee powermenu.coffee
+common_coffee = ${com_coffee} ${init_coffee} ${power_coffee} ${com_module_coffee}
 
-greeter_coffee = ${power_coffee} config.coffee messagetip.coffee time.coffee version.coffee  user.coffee menuchoose.coffee desktopmenu.coffee powermenu.coffee greeter.coffee
 
-lock_coffee = ${power_coffee} config.coffee messagetip.coffee time.coffee switchuser.coffee user.coffee mediacontrol.coffee menuchoose.coffee desktopmenu.coffee powermenu.coffee lock.coffee 
+greeter_coffee = ${common_coffee} gradient.coffee desktopmenu.coffee greeter.coffee
+lock_coffee = ${common_coffee} gradient.coffee powerchoose.coffee switchuser.coffee mediacontrol.coffee lock.coffee 
 
-all: ${com_coffee} ${greeter_coffee} ${lock_coffee}
-	coffee -cj greeter.js ${com_coffee} ${greeter_coffee}
-	coffee -cj lock.js ${com_coffee} ${lock_coffee}
+all: ${greeter_coffee} ${lock_coffee}
+	coffee -cj greeter.js ${greeter_coffee}
+	coffee -cj lock.js ${lock_coffee}
 

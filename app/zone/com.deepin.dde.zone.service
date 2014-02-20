@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.deepin.dde.zone
+Exec=/usr/lib/deepin-daemon/dzone

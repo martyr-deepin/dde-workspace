@@ -118,7 +118,7 @@ gboolean lock_try_unlock (const gchar *username,const gchar *password)
     g_object_unref (lock_proxy);
 
     if (succeed) {
-        gtk_main_quit ();
+        js_post_signal("auth-succeed");
 
     } else {
         JSObjectRef error_message = json_create();

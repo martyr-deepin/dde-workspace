@@ -16,17 +16,18 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-class MessageTip
-    constructor:(text, @parent)->
-        @message_tip = null
-        @message_tip = create_element("div", "failed-tip", @parent)
-        @message_tip.appendChild(document.createTextNode(text))
-        @message_tip.style.top = "#{.15 * window.innerHeight + 310}px"
 
-    adjust_show_login: ->
-        @message_tip.style.top = "#{.15 * window.innerHeight + 390}px"
+class Zone extends Widget
 
-    remove: =>
-        if @message_tip
-            @parent.removeChild(@message_tip)
-            @message_tip = null
+    constructor:->
+        super
+        echo "zone"
+        document.body.appendChild(@element)
+
+
+
+document.body.style.height = window.innerHeight
+document.body.style.width = window.innerWidth
+
+zone = new Zone()
+

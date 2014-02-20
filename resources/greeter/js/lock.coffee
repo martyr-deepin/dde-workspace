@@ -22,6 +22,8 @@ class Lock extends Widget
     constructor:->
         super
         echo "Lock"
+        power = {"lock":false,"value":null}
+        localStorage.setObject("shutdown_from_lock",power)
 
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id)
@@ -75,6 +77,11 @@ if not is_livecd
     s = new SwitchUser()
     s.button_switch()
     $("#div_switchuser").appendChild(s.element)
+
+for i in [1...5]
+    gradient = new Gradient(i)
+    document.body.appendChild(gradient.element)
+
 
 document.body.addEventListener("keydown",(e)->
     if is_greeter

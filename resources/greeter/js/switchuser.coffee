@@ -24,12 +24,13 @@ class SwitchUser extends Widget
         super
         clearInterval(draw_camera_id)
         draw_camera_id = null
+        document.body.style.fontSize = "62.5%"
     
     button_switch:->
         @switch = create_img("switch", "images/userswitch/acount_switch_hover.png", @element)
         @switch.style.cursor = "pointer"
-        @switch.style.width = "60px"
-        @switch.style.height = "60px"
+        @switch.style.width = "5em"
+        @switch.style.height = "5em"
         @switch.addEventListener("mouseover", =>
             @switch.src = "images/userswitch/acount_switch_hover.png"
         )
@@ -37,6 +38,7 @@ class SwitchUser extends Widget
             @switch.src = "images/userswitch/acount_switch_hover.png"
         )
         @switch.addEventListener("click", =>
+            localStorage.setItem("from_lock",true)
             @SwitchToGreeter()
         )
 

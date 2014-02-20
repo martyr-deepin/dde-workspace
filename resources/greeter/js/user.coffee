@@ -26,7 +26,6 @@ _default_username = null
 _drag_flag = false
 password_error_msg = null
 
-
 class User extends Widget
     Dbus_Account = null
     img_src_before = null
@@ -55,11 +54,13 @@ class User extends Widget
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
+            el.style.opacity = "0.8"
         ) if hover
         el.addEventListener("mouseout",->
             el.src = normal
         ) if normal
         el.addEventListener("click",=>
+            el.style.opacity = "0.8"
             el.src = click
             click_cb?()
         ) if click
@@ -83,8 +84,10 @@ class User extends Widget
 
     get_default_username:->
         if is_greeter
+            echo "is_greeter"
             _default_username = DCore.Greeter.get_default_user()
         else
+            echo "is_lock"
             _default_username = DCore.Lock.get_username()
         return _default_username
 
@@ -101,7 +104,8 @@ class User extends Widget
             try
                 user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
             catch error
-                user_image = "images/img01.jpg"
+                echo error
+                user_image = "images/userimg_default.jpg"
 
         return user_image
 
@@ -177,6 +181,7 @@ class User extends Widget
             if user is _current_user then _current_user.focus()
 
         userinfo_show_index =_current_user.index
+        localStorage.setItem("current_user_index",userinfo_show_index)
         @prev_next_userinfo_create()
         return userinfo_all
 
@@ -242,6 +247,7 @@ class User extends Widget
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
+        localStorage.setItem("current_user_index",userinfo_show_index)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
@@ -259,6 +265,7 @@ class User extends Widget
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
+        localStorage.setItem("current_user_index",userinfo_show_index)
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
@@ -279,25 +286,34 @@ class LoginEntry extends Widget
         @password_div = create_element("div", "password_div", @element)
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
-        @password.setAttribute("maxlength", 16)
+        @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
         @password.setAttribute("autofocus", true)
        
         @loginbutton = create_img("loginbutton", "", @password_div)
+        @loginbutton.type = "button"
         @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         @loginbutton.addEventListener("mouseout", =>
-            @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
+            power_flag = false
+            if (power = localStorage.getObject("shutdown_from_lock"))?
+                if power.lock is true
+                    power_flag = true
+            if power_flag
+                @loginbutton.src = "#{img_src_before}#{power.value}_normal.png"
+            else
+                @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
         @password_eventlistener()
     
 
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
-            if @password.value is password_error_msg
+            e.stopPropagation()
+            if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("focus",=>
-            if @password.value is password_error_msg
+            if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
@@ -328,17 +344,25 @@ class LoginEntry extends Widget
 
         #)
         @loginbutton.addEventListener("click", =>
-            @loginbutton.src = "#{img_src_before}#{@id}_press.png"
+            power_flag = false
+            if (power = localStorage.getObject("shutdown_from_lock"))?
+                if power.lock is true
+                    power_flag = true
+            if power_flag
+                @loginbutton.src = "#{img_src_before}#{power.value}_press.png"
+            else
+                @loginbutton.src = "#{img_src_before}#{@id}_press.png"
             if @check_completeness
                 @on_active(@loginuser, @password.value)
         )
  
 
     check_completeness: ->
-        if not @password.value
+        if is_livecd then return true
+        else if not @password.value
             @password.focus()
             return false
-        else if @password.value is password_error_msg
+        else if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
             @input_password_again()
             return false
         return true
@@ -362,7 +386,6 @@ class LoginEntry extends Widget
 
 
 class UserInfo extends Widget
-    recognize = null
     constructor: (@id, name, @img_src)->
         super
         @is_recognizing = false
@@ -370,15 +393,24 @@ class UserInfo extends Widget
         echo "new UserInfo :#{@id}"
         @userbase = create_element("div", "UserBase", @element)
         
+        @face_recognize_div = create_element("div","face_recognize_div",@userbase)
+        @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
+        @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
+        
         @userimg_div = create_element("div","userimg_div",@userbase)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
        
-        @userimg.style.width = 110
-        @userimg.style.height = 110
-        @userimg_border.style.width = @userimg.style.width + 16
-        @userimg_border.style.height = @userimg.style.height + 16
+        @face_recognize_div.style.width = 137 * scaleFinal
+        @face_recognize_div.style.height = 137 * scaleFinal
+        @face_recognize_div.style.left = @userimg_div.style.left
+        @face_recognize_div.style.display = "none"
+        
+        @userimg.style.width = 110 * scaleFinal
+        @userimg.style.height = 110 * scaleFinal
+        @userimg_border.style.width = @userimg.style.width + 16 * scaleFinal
+        @userimg_border.style.height = @userimg.style.height + 16 * scaleFinal
         @userimg_background.style.width = @userimg_border.style.width - 3
         @userimg_background.style.height = @userimg_border.style.height - 3
 
@@ -400,19 +432,20 @@ class UserInfo extends Widget
 
     draw_avatar: ->
         if @face_login
-            #recognize.style.background = "url(images/light.png) repeat black"
-            recognize.style.webkitBackgroundClip = "text"
-            recognize.style.webkitTextFill = "transparent"
-            recognize.style.webkitAnimationName = "recognize_animation"
-            recognize.style.webkitAnimationDuration = "10s"
-            recognize.style.webkitAnimationIteration = "infinite"
-            recognize.style.webkitAnimationTimingFunction = "linear"
+            rotate = 0
+            @face_recognize_div.style.display = "block"
+            @face_animation_interval = setInterval(=>
+                @face_recognize_div.style.left = @userimg_div.style.left
+                rotate = (rotate + 5) % 360
+                animation_rotate(@face_recognize_img,rotate)
+            ,50)
             enable_detection(true)
 
     stop_avatar:->
         clearInterval(draw_camera_id)
         draw_camera_id = null
-        apply_animation(recognize,"","") if @face_login
+        clearInterval(@face_animation_interval) if @face_animation_interval
+        @face_recognize_div.style.display = "none"
         enable_detection(false) if @face_login
         #DCore[APP_NAME].cancel_detect()
    
@@ -532,5 +565,26 @@ DCore.signal_connect("failed-too-much", (msg)->
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
     message_tip.adjust_show_login()
+)
+
+DCore.signal_connect("auth-succeed", ->
+    echo "password_succeed!"
+    power_flag = false
+    if (power = localStorage.getObject("shutdown_from_lock"))?
+        if power.lock is true
+            power_flag = true
+    if power_flag
+        power.lock = false
+        localStorage.setObject("shutdown_from_lock",power)
+        if power_can(power.value)
+            power_force(power.value)
+        else
+            confirmdialog = new ConfirmDialog(power.value)
+            confirmdialog.frame_build()
+            document.body.appendChild(confirmdialog.element)
+            confirmdialog.interval(60)
+    else
+        if is_greeter then return
+        DCore.Lock.quit()
 )
 

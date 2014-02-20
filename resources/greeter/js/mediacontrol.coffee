@@ -27,8 +27,8 @@ class VoiceControl extends Widget
         super
         document.body.appendChild(@element)
         @element.style.display = "none"
-        remove_element(background) if background
-        background = create_img("background","images/voicecontrol/background.png",@element)
+        #remove_element(background) if background
+        #background = create_img("background","images/voicecontrol/background.png",@element)
     
     show:(x,y,position = "absolute")->
         @element.style.position = position
@@ -42,6 +42,19 @@ class VoiceControl extends Widget
         @element.style.display = "none"
      
     drawVolume:(vol,width = 50,height = 50)->
+        remove_element(num) if num
+        num = create_element("div","num",@element)
+        num.style.position = "relative"
+        fontSize = 10
+        num.style.fontSize = "1em"
+        num.style.top = "0"
+        num.textContent = Math.round(vol * 100)
+
+        @element.style.display = "block"
+
+        return
+        #width = width * scaleFinal
+        #height = height * scaleFinal
         remove_element(myCanvas) if myCanvas
         myCanvas = create_element("canvas","myCanvas",@element)
         myCanvas.id = "myCanvas"
@@ -49,8 +62,7 @@ class VoiceControl extends Widget
         y0 = 0
         myCanvas.style.width = width * 2
         myCanvas.style.height = height * 2
-        c = document.getElementById("myCanvas")
-        ctx = c.getContext("2d")
+        ctx = myCanvas.getContext("2d")
        
         #dest
         ctx.beginPath()
@@ -73,9 +85,9 @@ class VoiceControl extends Widget
         num = create_element("div","num",@element)
         num.style.position = "relative"
         fontSize = 10
-        num.style.fontSize = fontSize
-        num.style.left = -25
-        num.style.top = -80
+        num.style.fontSize = "1em"
+        num.style.left = "-3.8em"
+        num.style.top = "-8em"
         num.textContent = Math.round(vol * 100)
 
         @element.style.display = "block"
@@ -150,6 +162,10 @@ class MediaControl extends Widget
         next = create_img("next",img_src_before + "next_normal.png",control)
         voice = create_img("voice",img_src_before + "voice_normal.png",control)
         voicecontrol = new VoiceControl()
+        if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+        else voice_status = "voice"
+        voice.src = img_src_before + voice_status + "_normal.png"
+
        
         setInterval(->
             if audioplay.getArtist() isnt undefined
@@ -160,14 +176,14 @@ class MediaControl extends Widget
 
         @normal_hover_click_cb(up,
             img_src_before + "up_normal.png",
-            img_src_before + "up_hover.png",
-            img_src_before + "up_press.png",
+            img_src_before + "up_normal.png",
+            img_src_before + "up_normal.png",
             @media_up
         )
         @normal_hover_click_cb(next,
             img_src_before + "next_normal.png",
-            img_src_before + "next_hover.png",
-            img_src_before + "next_press.png",
+            img_src_before + "next_normal.png",
+            img_src_before + "next_normal.png",
             @media_next
         )
         @play_normal_hover_click_cb(play,@media_play)
@@ -195,7 +211,7 @@ class MediaControl extends Widget
         if audioplay.getPlaybackStatus() is "Playing" then play_status = "pause"
         else if audioplay.getPlaybackStatus() is "Paused" then play_status = "play"
         else play_status = "play"
-        play.src = img_src_before + "#{play_status}_hover.png"
+        play.src = img_src_before + "#{play_status}_normal.png"
         
 
     media_next:->
@@ -204,8 +220,9 @@ class MediaControl extends Widget
 
     voice_normal_hover_click_cb: (el) ->
         el.addEventListener("mouseover",(e)=>
+            echo "mouseover"
             is_volume_control = true
-            voice.src = img_src_before + voice_status + "_hover.png"
+            voice.src = img_src_before + voice_status + "_normal.png"
             if voicecontrol.element.style.display isnt "none" then return
             p = e.srcElement
             x = p.x + voice.clientWidth
@@ -215,29 +232,49 @@ class MediaControl extends Widget
             voicecontrol.drawVolume(volume)
         )
         el.addEventListener("mouseout",->
+            echo "mouseout"
             is_volume_control = false
             voice.src = img_src_before + voice_status + "_normal.png"
-            voicecontrol.hide()
+            clearTimeout(t) if t
+            t = setTimeout(->
+                voicecontrol.hide()
+            ,50)
             #voicecontrol.hide() if not voicecontrol.mouseover
         )
+        volume_old = 0.5
+        el.addEventListener("click",->
+            echo "click"
+            voice.src = img_src_before + voice_status + "_normal.png"
+            if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+            else voice_status = "voice"
+            if voice_status is "mute"
+                voicecontrol.setVolume(volume_old)
+            else
+                volume_old = voicecontrol.getVolume()
+                voicecontrol.setVolume(0)
+            if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
+            else voice_status = "voice"
+            voice.src = img_src_before + voice_status + "_normal.png"
+        )
+
 
         document.body.addEventListener("mousewheel",(e) =>
             if is_volume_control
                 voicecontrol.mousewheel(e)
-                if audioplay.getVolume() < 0.01 then voice_status = "mute"
+                if voicecontrol.getVolume() < 0.01 then voice_status = "mute"
                 else voice_status = "voice"
-                voice.src = img_src_before + voice_status + "_hover.png"
+                voice.src = img_src_before + voice_status + "_normal.png"
         )
         
     play_normal_hover_click_cb: (el,click_cb) ->
         el.addEventListener("mouseover",->
-            el.src = img_src_before + play_status + "_hover.png"
+            el.src = img_src_before + play_status + "_normal.png"
         )
         el.addEventListener("mouseout",->
             el.src = img_src_before + play_status + "_normal.png"
         )
         el.addEventListener("click",=>
-            el.src = img_src_before + play_status + "_press.png"
+            el.src = img_src_before + play_status + "_normal.png"
             click_cb?()
         )
     keydown_listener:(e)->

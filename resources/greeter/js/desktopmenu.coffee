@@ -38,10 +38,11 @@ class DesktopMenu extends Widget
         echo "-------sessions-------------"
         echo sessions
         if sessions.length <= 1 then return
-        
+       
         for session in sessions
-            id = session
+            id = session.toLowerCase()
             name = id
+
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
             icon_path_normal = img_before + "#{icon}_normal.png"

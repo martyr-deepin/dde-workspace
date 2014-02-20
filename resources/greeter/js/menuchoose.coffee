@@ -26,20 +26,20 @@ class MenuChoose extends Widget
     
     
     #var for animation
-    max_opt_in_oneline = 4
+    t_userinfo_show_hide = 600
+    t_userinfo_show_delay = 500
+
+    t_max = 200
+    t_min = 100
+    t_delay = 30
     
-    t_max = 1000
-    t_mid = 500
-    t_min = 50
-    t_delay = 80
+    XMove = "-5em"
+    XBack = "0"
+    XStartShow = "80em"
+    XEndHide = "80em"
     
-    XMove = -600
-    XBack = 20
-    XStartShow = "80%"
-    XEndHide = "80%"
-    
-    init_width = 80
-    final_width = 100
+    init_width = 80 * 0.8
+    final_width = 80
     
     constructor: (@id)->
         super
@@ -54,40 +54,30 @@ class MenuChoose extends Widget
         @opt = []
         @opt_img = []
         @opt_text = []
+        @animation_end = true
         
+        document.body.style.fontSize = "62.5%"
         document.body.appendChild(@element)
         @element.style.display = "none"
     
-    setmaxbutton_in_oneline:(maxnum)->
-        j = 0
-        for tmp ,i in @opt
-            if i%maxnum == 0
-                #@opt[i].style.left = 0
-                if i > 0
-                    j++
-                    for k in [0...maxnum]
-                        if i + k > @opt.length - 1 then break
-                        @opt[i + k].style.top = @opt[0].offsetTop + @opt[0].offsetHeight * j
-            else
-                echo "not % #{maxnum}"
-                #@opt[i].style.left = @opt[i- 1].offsetLeft + @opt[i - 1].offsetWidth
-
  
     show:->
+        @animation_end = false
         echo "show"
-
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
-            echo "opt_text[#{i}] show"
+            #echo "opt_text[#{i}] show"
             for tmp in @opt_text
                 jQuery(tmp).animate(
                     {opacity:'1.0';},
-                    t_min
+                    t_min,
+                    "linear",=>
+                        @animation_end = true
                 )
 
 
-        animation_opt_move_show = (i,time_max,time_min)=>
-            echo "animation_opt_move_show(#{i})"
+        animation_opt_move_show = (i,t_delay)=>
+            #echo "animation_opt_move_show(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -95,59 +85,59 @@ class MenuChoose extends Widget
             #init el css and then can animate
             text_el.style.opacity = "0.0"
             
-            img_el.style.width = "#{init_width}px"
-            img_el.style.height = "#{init_width}px"
+            img_el.style.width = "#{init_width / 10}em"
+            img_el.style.height = "#{init_width / 10}em"
             
             opt_el.style.opacity = "0.0"
-            opt_el.style.left = "XStartShow"
+            opt_el.style.left = XStartShow
             
-            animation_scale(img_el,final_width / init_width,"#{(time_min + i * t_delay) / 1000}s")
-
-            jQuery(opt_el).animate(
-                {opacity: 1.0;left:"#{XMove}px";},
-                time_min + i * t_delay,
+            animation_scale(img_el,final_width / init_width,t_max)
+            jQuery(opt_el).delay(t_delay).animate(
+                {opacity: 1.0;left:XMove},
+                t_max,
                 'linear',=>
                     jQuery(opt_el).animate(
-                        {left:"#{XMove + XBack}px";},
+                        {left:XBack;},
                         t_min,
-                        'linear',
+                        'linear',=>
                         animation_opt_text_show(i)
                     )
             )
 
         jQuery('.div_users').animate(
             {opacity:'0.0';},
-            t_mid,
+            t_userinfo_show_hide,
             'linear',=>
                 $("#div_users").style.display = "none"
                 if is_greeter
                     $(".prevuserinfo").style.display = "none"
                     $(".nextuserinfo").style.display = "none"
                 
-                @element.style.display = "block"
-                @setmaxbutton_in_oneline(max_opt_in_oneline)
+                @element.style.display = "-webkit-box"
                 for tmp,i in @opt
-                    animation_opt_move_show(i,t_max,t_min)
+                    animation_opt_move_show(i,i * t_delay)
         )
 
 
    
     hide:->
         echo "hide"
+        @animation_end = false
         
         animation_user_show = (i)=>
-            if i != @opt.length - 1 then return
+            if i != 0 then return
             echo "animation_user_show(#{i})"
-            $("#div_users").style.display = "block"
-            jQuery('.div_users').animate(
+            $("#div_users").style.display = "-webkit-box"
+            jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
-                t_mid,
+                t_userinfo_show_hide,
                 "linear",=>
                     @element.style.display = "none"
+                    @animation_end = true
             )
 
-        animation_opt_move_hide = (i,time_max,time_min)=>
-            echo "animation_opt_move_hide(#{i})"
+        animation_opt_move_hide = (i,t_delay)=>
+            #echo "animation_opt_move_hide(#{i})"
             text_el = @opt_text[i]
             img_el = @opt_img[i]
             opt_el = @opt[i]
@@ -157,28 +147,30 @@ class MenuChoose extends Widget
                 t_min,
                 'linear',=>
                     jQuery(opt_el).animate(
-                        {left:"#{XMove}px";},
+                        {opacity:'0.5';left:XMove;},
                         t_min,
                         'linear',=>
-                            opt_el.style.opacity = "0.6"
-                            animation_scale(img_el,1.0,"#{(time_min + i * t_delay) / 1000}s")
+                            #echo "opt_el[#{i}] Move From #{opt_el.style.left} To #{XEndHide}"
+                            time = (t_min + t_delay) / 2
+                            animation_scale(img_el,1.0,time)
                             jQuery(opt_el).animate(
-                                {opacity: 0.0;left:"#{XEndHide}";},
-                                time_min + i * t_delay,
+                                {opacity:'0.0';left:XEndHide;},
+                                time,
                                 'linear',=>
-                                    animation_user_show(i)
+                                animation_user_show(i)
                             )
                     )
             )
 
 
+        j = 0
         for i in [@opt.length - 1..0]
             #delete select_state and then start animate
             @opt[i].style.backgroundColor = "rgba(255,255,255,0.0)"
             @opt[i].style.border = "1px solid rgba(255,255,255,0.0)"
             @opt[i].style.borderRadius = "0px"
-
-            animation_opt_move_hide(i,t_max,t_min)
+            j++
+            animation_opt_move_hide(i,j * t_delay)
 
 
     insert: (id, title, img_normal,img_hover,img_click)->
@@ -192,10 +184,13 @@ class MenuChoose extends Widget
         document.body.addEventListener("click",(e)=>
             e.stopPropagation()
             if !frame_click and @element.style.display isnt "none"
+                echo "body_click_to_hide"
+                if !@animation_end then return
                 @hide()
                 $(".password").focus()
             else
                 frame_click = false
+                @confirm_shutdown_hide()
         )
  
 
@@ -252,10 +247,62 @@ class MenuChoose extends Widget
     set_callback: (@cb)->
 
        
+    confirm_shutdown_show:(powervalue)=>
+        power = {"lock":true,"value":powervalue}
+        localStorage.setObject("shutdown_from_lock",power)
+
+        value = _("Input password to #{powervalue}")
+        localStorage.setItem("password_value_shutdown",value)
+        @password = $(".password")
+        @loginbutton = $(".loginbutton")
+
+        @password.style.color = "#ff8a00"
+        @password.style.fontSize = "1.5em"
+        @password.type = "text"
+        @password.value = value
+        @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
+        @loginbutton.disable = true
+        
+
+    confirm_shutdown_hide:=>
+        if not (power = localStorage.getObject("shutdown_from_lock"))? then return
+        if !power.lock then return
+        power.lock = false
+        localStorage.setObject("shutdown_from_lock",power)
+
+        @password = $(".password")
+        @loginbutton = $(".loginbutton")
+        @password.style.color = "rgba(255,255,255,0.5)"
+        @password.style.fontSize = "2.0em"
+        @password.type = "password"
+        @password.focus()
+        @loginbutton.disable = false
+        @password.value = null
+        
+        jQuery(@loginbutton).animate(
+            {opacity:'0.0';},
+            t_userinfo_show_hide,
+            "linear",=>
+                @loginbutton.src = "images/userinfo/lock_normal.png"
+                jQuery(@loginbutton).animate(
+                    {opacity:'1.0';},
+                    t_userinfo_show_hide
+                )
+        )
+
     fade:(i)->
         echo "--------------fade:#{@option[i]}---------------"
         @hide()
-        @cb(@option[i], @option_text[i])
+        if is_greeter
+            echo "is_greeter"
+            @cb(@option[i], @option_text[i])
+        else
+            echo "is_lock"
+            if @id is "power_menuchoose" and @option[i] isnt "suspend"
+                @confirm_shutdown_show(@option[i])
+            else
+                @cb(@option[i], @option_text[i])
+
     
     hover_state:(i)->
         choose_num = i
@@ -301,6 +348,7 @@ class ComboBox extends Widget
         @current_img = create_img("current_img", "", @element)
         
         if is_greeter
+           
             de_current_id = localStorage.getItem("de_current_id")
             echo "-------------de_current_id:#{de_current_id}"
             if not de_current_id?
@@ -324,11 +372,14 @@ class ComboBox extends Widget
 
     do_click: (e)->
         e.stopPropagation()
+        echo "current_img do_click:#{@id}"
         if is_greeter
             if @menu.id is "power_menuchoose"
                 $("#desktop_menuchoose").style.display = "none"
             else if @menu.id is "desktop_menuchoose"
-             $("#power_menuchoose").style.display = "none"
+                #if detect_is_from_lock() then return
+                $("#power_menuchoose").style.display = "none"
+        if !@menu.animation_end then return
         if @menu.element.style.display isnt "none"
             @menu.hide()
         else
@@ -340,10 +391,13 @@ class ComboBox extends Widget
         return @menu.current
 
     set_current: (id)->
+        id = id.toLowerCase()
         try
             echo "set_current(id) :---------#{id}----------------"
             if @id is "desktop"
-                current_img_src = "images/desktopmenu/current/#{id}.png"
+                icon = DCore.Greeter.get_session_icon(id)
+                current_img_src = "images/desktopmenu/current/#{icon}.png"
+                echo current_img_src
             else if @id is "power"
                 current_img_src = "images/powermenu/#{id}.png"
             @current_img.src = current_img_src

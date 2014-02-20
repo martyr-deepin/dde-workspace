@@ -2,8 +2,6 @@
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-box-pack:center;
-    /*width:200px;*/
-    /*height:100px;*/
 }
 
 @font-face {
@@ -13,29 +11,25 @@
 
 
 .time{
-    padding-top:30px;
+    padding-top:3em;
     display: block;
     text-align:center;
 }
 
 .TimeDate span{
     color: #fff;
-    text-shadow:0 0 2px #333;
+    text-shadow:0 0 0.2em #333;
     font-size:8em;
     font-family: MavenProLight;
 }
 
 .date{
-    margin-top:20px;
+    margin-top:0.8em;
     display: block;
     font-size:2em;
     color: #fff;
     /*font-family: MavenProLight;*/
-    text-shadow:0 0 2px #333;
+    text-shadow:0 0 0.2em #333;
     text-align:center;
-    /*margin-left:10px;*/
 }
 
-.date:lang(zh){
-    /*margin-left:15px;*/
-}
