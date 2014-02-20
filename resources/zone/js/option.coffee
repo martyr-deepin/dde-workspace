@@ -74,11 +74,10 @@ class Option extends Widget
             @opt_text[i].textContent = opt
             @opt_text[i].value = i
             if opt is @current then @opt_text[i].style.color = "green"
+            else @opt_text[i].style.color = "#fff"
             
             that = @
             @opt_text[i].addEventListener("click",->
-                echo that
-                echo this
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
@@ -86,8 +85,11 @@ class Option extends Widget
             
         @opt_choose.style.display = "none"
         @element.addEventListener("mouseover",=>
-            @opt_choose.style.display = "block"
             clearInterval(@timeOut) if @timeOut
+            @opt_choose.style.display = "block"
+            for opt,i in @opt
+                if opt is @current then @opt_text[i].style.color = "green"
+                else @opt_text[i].style.color = "#fff"
         )
         @element.addEventListener("mouseout",=>
             @timeOut = setTimeout(=>
