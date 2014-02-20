@@ -8,20 +8,17 @@ body{
 }
 
 .current_div{
-    position:relative;
     background-color:rgba(200,200,200,0.9);
     display:-webkit-box;
     overflow:hidden;
 }
 .current_img{
-    position:relative;
     height:10.1em;
     width:5em;
     overflow:hidden;
 }
 .current_text{
     background-color:rgba(0,200,200,0.5);
-    position:relative;
     height:3em;
     line-height:3em;
     font-size:2.0em;
