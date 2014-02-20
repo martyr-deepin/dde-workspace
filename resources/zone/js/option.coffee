@@ -43,20 +43,30 @@ class Option extends Widget
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
         if @current_left
-            @current_img = create_img("current_img","",@current_div)
+            @current_img = create_element("div","current_img",@current_div)
             @current_text = create_element("div","current_text",@current_div)
             @current_div.style.webkitBoxPack = "start"
         else
             @current_text = create_element("div","current_text",@current_div)
             @current_img = create_img("current_img","",@current_div)
             @current_div.style.webkitBoxPack = "end"
-
-        @current_img.src = "img/set.png"
         @current_text.textContent = @current
+        @bg_pos_normal = null
+        @bg_pos_hover = null
+        switch @id
+            when "LEFTUP"
+                @bg_pos_normal = ""
+                echo @id
+            when "LEFTDOWN"
+                echo @id
+            when "RIGHTUP"
+                echo @id
+            when "RIGHTDOWN"
+                echo @id
         
     opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
-        margin = "10.1em"
+        margin = "101px"
         if @current_left
             #up left down right
             @opt_choose.style.marginLeft = margin

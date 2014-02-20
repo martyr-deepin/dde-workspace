@@ -12,11 +12,15 @@ body{
     display:-webkit-box;
     overflow:hidden;
 }
+
 .current_img{
     height:10.1em;
-    width:5em;
+    width:10.1em;
+    background-image:url("../img/setBackgroud.png");
     overflow:hidden;
+    background-position:right 101px;
 }
+
 .current_text{
     background-color:rgba(0,200,200,0.5);
     height:3em;
