@@ -40,6 +40,20 @@ class Option extends Widget
             @opt_choose_div_build()
             @current_div_build()
 
+        @element.addEventListener("mouseover",=>
+            clearInterval(@timeOut) if @timeOut
+            @opt_choose.style.display = "block"
+            for opt,i in @opt
+                if opt is @current then @opt_text[i].style.color = "green"
+                else @opt_text[i].style.color = "#fff"
+        )
+        @element.addEventListener("mouseout",=>
+            @timeOut = setTimeout(=>
+                #@opt_choose.style.display = "block"
+                @opt_choose.style.display = "none"
+            ,50)
+        )
+
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
         if @current_left
@@ -51,19 +65,21 @@ class Option extends Widget
             @current_img = create_img("current_img","",@current_div)
             @current_div.style.webkitBoxPack = "end"
         @current_text.textContent = @current
-        @bg_pos_normal = null
-        @bg_pos_hover = null
         switch @id
             when "LEFTUP"
-                @bg_pos_normal = ""
-                echo @id
+                @bg_pos_normal = "top right 101px 101px"
+                @bg_pos_hover = "bottom right 101px 101px"
             when "LEFTDOWN"
-                echo @id
+                @bg_pos_normal = "center left 101px 101px"
+                @bg_pos_hover = "center left 101px 101px"
             when "RIGHTUP"
-                echo @id
+                @bg_pos_normal = "top right 101px 101px"
+                @bg_pos_hover = "bottom right 101px 101px"
             when "RIGHTDOWN"
-                echo @id
-        
+                @bg_pos_normal = "top right 101px 202px"
+                @bg_pos_hover = "bottom right 101px 101px"
+        @current_img.style.backgroundPosition = @bg_pos_normal
+    
     opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
         margin = "101px"
@@ -90,20 +106,4 @@ class Option extends Widget
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
-            
         @opt_choose.style.display = "none"
-        @element.addEventListener("mouseover",=>
-            clearInterval(@timeOut) if @timeOut
-            @opt_choose.style.display = "block"
-            for opt,i in @opt
-                if opt is @current then @opt_text[i].style.color = "green"
-                else @opt_text[i].style.color = "#fff"
-        )
-        @element.addEventListener("mouseout",=>
-            @timeOut = setTimeout(=>
-                #@opt_choose.style.display = "block"
-                @opt_choose.style.display = "none"
-            ,50)
-        )
-
-

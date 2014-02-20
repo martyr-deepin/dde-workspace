@@ -3,26 +3,26 @@ body{
 }
 
 .Option{
-    background-color:rgba(0,0,100,0.5);
-    width:20em;
+    /*background-color:rgba(0,0,100,0.5);*/
+    /*width:20em;*/
 }
 
 .current_div{
-    background-color:rgba(200,200,200,0.9);
+    /*background-color:rgba(200,200,200,0.9);*/
     display:-webkit-box;
     overflow:hidden;
 }
 
 .current_img{
-    height:10.1em;
-    width:10.1em;
+    height:101px;
+    width:101px;
     background-image:url("../img/setBackgroud.png");
     overflow:hidden;
-    background-position:right 101px;
+    /*background-position:right 101px;*/
 }
 
 .current_text{
-    background-color:rgba(0,200,200,0.5);
+    /*background-color:rgba(0,200,200,0.5);*/
     height:3em;
     line-height:3em;
     font-size:2.0em;
@@ -33,7 +33,7 @@ body{
 
 
 .opt_choose{
-    background-color:rgba(50,0,50,0.5);
+    /*background-color:rgba(50,0,50,0.5);*/
     width:9.2em;
     /*display:-webkit-box;*/
     /*-webkit-box-orient:vertical;*/
