@@ -26,16 +26,19 @@ class Zone extends Widget
         
     option_build:->
         @opt = []
-        @option = ["Launcher","System Setup","Workspace","Desktop","None"]
+        #set default zone
         @ids = ["LEFTUP","LEFTDOWN","RIGHTUP","RIGHTDOWN"]
-        @currents = ["Launcher","System Setup","Workspace","Desktop","None"]
+        @currents = ["Launcher","Workspace","Desktop","System Setup","None"]
+        
+        #provide zone setting option
+        @option = ["Launcher","System Setup","Workspace","Desktop","None"]
         
         for id,i in @ids
             @opt[i] = new Option(@ids[i],@currents[i])
             @element.appendChild(@opt[i].element)
             for tmp in @option
                 @opt[i].insert(tmp)
-            @opt[i].opt_build()
+            @opt[i].option_build()
 
 
 document.body.style.height = window.innerHeight
