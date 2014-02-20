@@ -67,7 +67,7 @@ class SearchBar
 
             for i in [ids.length-1..0]
                 echo ids[i]
-                if (item = Widget.look_up("se_#{ids[i]}")?)
+                if (item = Widget.look_up("se_#{ids[i]}"))?
                     res.removeChild(item.element)
                     item.element.style.display = '-webkit-box'
                     res.insertBefore(item, res.firstChild)
