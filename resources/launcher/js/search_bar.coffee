@@ -60,19 +60,20 @@ class SearchBar
         @searchTimer = setTimeout(=>
             selector.clean()
             ids = daemon.Search_sync(@value())
-            # echo ids
             res = $("#searchResult")
             for i in [0...res.children.length]
                 if res.children[i].style.display != 'none'
                     res.children[i].style.display = 'none'
 
             for i in [ids.length-1..0]
-                if (item = $("#se_#{ids[i]}"))?
-                    res.removeChild(item)
-                    item.style.display = '-webkit-box'
+                echo ids[i]
+                if (item = Widget.look_up("se_#{ids[i]}")?)
+                    res.removeChild(item.element)
+                    item.element.style.display = '-webkit-box'
                     res.insertBefore(item, res.firstChild)
 
             if $("#searchResult").style.display != 'block'
+                echo 'show result'
                 $("#grid").style.display = 'none'
                 $("#searchResult").style.display = 'block'
                 SearchItem.updateHorizontalMargin()

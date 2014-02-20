@@ -24,13 +24,13 @@ class Selector
         @selectedItem = null
 
     container:(el)->
-        if el?
+        if el? && (not @box? || not @box.isSameNode(el))
             @box = el
             @clean()
-            if el.id
-                echo "set container to #{el.tagName}##{el.id}"
-            else
-                echo "set container to #{el.tagName}.\"#{el.className}\", parentNode: #{el.parentNode.id}"
+            # if el.id
+            #     echo "set container to #{el.tagName}##{el.id}"
+            # else
+            #     echo "set container to #{el.tagName}.\"#{el.className}\", parentNode: #{el.parentNode.id}"
         @box
 
     clean:->

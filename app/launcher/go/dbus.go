@@ -64,7 +64,7 @@ func (d *LauncherDBus) emitItemChanged(name, status string, info map[string]Item
 			return
 		}
 		defer app.Unref()
-		if app.ShouldShow() {
+		if !app.ShouldShow() {
 			fmt.Println(app.GetFilename(), "should NOT show")
 			return
 		}

@@ -31,7 +31,7 @@ class Item extends Widget
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
-        # @element.removeAttribute("id")
+        @element.removeAttribute("id")
         @element.setAttribute("appid", @id)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
@@ -67,8 +67,14 @@ class Item extends Widget
         , 200)
 
     destroy: ->
-        categoryList.removeItem(@id)
-        super
+        switch @constructor.name
+            when "Item"
+                categoryList.removeItem(@id)
+            when "SearchItem"
+                $("#searchResult").removeChild(@element)
+            when "FavorItem"
+                categoryList.favor.removeItem(@id)
+        delete Widget.object_table[@id]
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -194,7 +200,8 @@ class Item extends Widget
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
-        @displayMode = 'hidden'
+        @displayMode = "hidden"
+        applications[@id].setDisplayMode("hidden").notify()
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
         if not Item.display_temp and not is_show_hidden_icons
@@ -207,11 +214,11 @@ class Item extends Widget
         categoryList.hideEmptyCategories()
         hidden_icons_num = hiddenIcons.number()
         if hidden_icons_num == 0
-            _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
             Item.display_temp = false
 
     display_icon: (e)=>
-        @displayMode = 'display'
+        @displayMode = "display"
+        applications[@id].setDisplayMode("display").notify()
         @element.style.display = '-webkit-box'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
@@ -220,7 +227,6 @@ class Item extends Widget
         if hidden_icons_num == 0
             is_show_hidden_icons = false
             _show_hidden_icons(is_show_hidden_icons)
-        _update_scroll_bar(category_infos[selected_category_id].length - hidden_icons_num)
 
     display_icon_temp: ->
         @element.style.display = '-webkit-box'
@@ -236,6 +242,7 @@ class Item extends Widget
     add_to_autostart: ->
         if startManager.AddAutostart_sync(@basename)
             @isAutostart = true
+            applications[@id].setAutostart(true).notify()
             Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
                 AUTOSTART_ICON.SIZE)
             last = @element.lastChild
@@ -246,6 +253,7 @@ class Item extends Widget
     remove_from_autostart: ->
         if startManager.RemoveAutostart_sync(@basename)
             @isAutostart = false
+            applications[@id].setAutostart(false).notify()
             last = @element.lastChild
             if last.tagName == 'IMG'
                 last.style.visibility = 'hidden'
@@ -360,9 +368,9 @@ class SearchItem extends Item
         super(@id, @name, @path, @icon)
         @element.classList.add("Item")
 
-    destroy: ->
-        $("#searchResult").removeChild(@element)
-        super
+    # destroy: ->
+    #     $("#searchResult").removeChild(@element)
+    #     super
 
     @updateHorizontalMargin: ->
         containerWidth = $("#container").clientWidth
@@ -386,9 +394,9 @@ class FavorItem extends Item
         super(@id, @name, @path, @icon)
         @element.classList.add("Item")
 
-    destroy: ->
-        categoryList.favor.removeItem(@id)
-        super
+    # destroy: ->
+    #     categoryList.favor.removeItem(@id)
+    #     super
 
     @updateHorizontalMargin: ->
         containerWidth = $("#container").clientWidth

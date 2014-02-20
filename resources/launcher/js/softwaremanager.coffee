@@ -24,7 +24,7 @@ uninstall = (opt) ->
     if packages.length == 0
         echo "get packages failed"
         return
-    echo packages.join()
+    # echo packages.join()
     softwareManager.uninstall_pkg(packages.join(" "), opt.purge)
 
 
@@ -45,20 +45,16 @@ update = (status, info, categories)->
             delete uninstalling_apps[id]
 
         if (item = Widget.look_up(id))?
-            # echo 'deleted'
-            seItem = Widget.look_up("se_#{id}")
-            faItem = Widget.look_up("fa_#{id}")
-            $("#searchResult").removeChild(seItem.element)
-            categoryList.removeItem(id, categories)
-            categoryList.hideEmptyCategories()
+            echo 'deleted'
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
             item.destroy()
-            seItem?.destroy()
-            faItem?.destroy()
+            Widget.look_up("se_#{id}")?.destroy()
+            Widget.look_up("fa_#{id}")?.destroy()
             delete applications[id]
+            categoryList.hideEmptyCategories()
     else if status.match(/^created$/i)
-        # echo 'added'
+        echo 'added'
         # status = "added"
         info = new ItemInfo(id, name, path, icon)
         applications[id] = info
@@ -74,7 +70,7 @@ update = (status, info, categories)->
         info.notify()
         $("#searchResult").appendChild(info.searchElement)
 
-        categoryList.addItem(categories, id)
+        categoryList.addItem(id, categories)
         # categoryList.showNonemptyCategories()
         if !switcher.isInSearch()
             if switcher.isShowCategory
@@ -82,7 +78,7 @@ update = (status, info, categories)->
             else
                 categoryList.showFavorOnly()
     else
-        # echo 'updated'
+        echo 'updated'
         applications[id].update(name:name, path:path, basename:get_path_name(path), icon:icon)
 
     # FIXME:

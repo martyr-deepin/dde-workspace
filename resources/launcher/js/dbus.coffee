@@ -32,17 +32,28 @@ startManager = DCore.DBus.session_object(
     START_MANAGER.path,
     START_MANAGER.interface
 )
-startManager.connect("AutostartChanged", (a, b)->
-    echo a
-    echo b
+startManager.connect("AutostartChanged", (status, path)->
+    echo 'autostart changed'
+    item = null
+    for own k, v of hiddenIcons.hiddenIcons
+        if v.basename == get_path_name(path)
+            item = v
+            break
+    if item?
+        if status == "added"
+            item.add_to_autostart()
+        else if status == "deleted"
+            item.remove_from_autostart()
 )
 
 softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
-# softwareManager.connect("", (info)->
-#     # TODO: uninstall failed
-#     if (item = uninstalling_apps[info.id])?
-#         echo "#{info.id} uninstall failed"
-#         item.status = SOFTWARE_STATE.IDLE
-#         item.show()
-#     delete uninstalling_apps[info.id]
-# )
+softwareManager.connect("update_signal", ->
+    echo "test"
+)
+    # echo JSON.stringify(info)
+    # TODO: uninstall failed
+    # if (infoitem = uninstalling_apps[info.id])?
+    #     echo "#{info.id} uninstall failed"
+    #     item.status = SOFTWARE_STATE.IDLE
+    #     item.show()
+    # delete uninstalling_apps[info.id]

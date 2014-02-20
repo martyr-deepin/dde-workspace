@@ -61,9 +61,18 @@ class CategoryList
 
     hideEmptyCategories:->
         for own id, item of @categories
-            all_is_hidden = item.every((el) ->
-                Widget.look_up(el).display_mode == "hidden"
-            )
+            try
+                all_is_hidden = item.every((el) ->
+                    i = Widget.look_up(el)
+                    if i?
+                        echo "#{el}, #{i.name}"
+                        i.display_mode == "hidden"
+                    else
+                        echo "#{el}, #{i}"
+                        true
+                )
+            catch e
+                echo "hideEmptyCategories: #{e}"
             if all_is_hidden and not Item.display_temp
                 item.hide()
                 $("##{CategoryItem.PREFIX}#{item.id}").style.display = "none"
@@ -101,14 +110,19 @@ class CategoryList
 
     removeItem:(id, categories)->
         if typeof categories == 'undefined'
-            for v in @categories
-                v.removeItem(id)
+            echo 'remove from all categories'
+            for own cid, item of @categories
+                echo "remove from category##{cid}"
+                item.removeItem(id)
             return
 
         if !Array.isArray(categories)
             categories = [categories]
         for cat_id in categories
-            @categories[cat_id].removeItem(id)
+            try
+                @categories[cat_id].removeItem(id)
+            catch e
+                echo "CategoryList.removeItem: #{e}"
 
     category:(id)->
         return @categories[id] if @categories[id]?

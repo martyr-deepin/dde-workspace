@@ -89,9 +89,9 @@ class Category
 
     removeItem:(id)->
         if (item = Widget.look_up(id))?
-            @grid.removeChild(item.element)
-        if @items.indexOf(id) != -1
-            @items.remove(id)
+            @grid.removeChild(item.element) if not item.element?
+
+        @items.remove(id)
 
     sort:->
         # TODO: sort by name
