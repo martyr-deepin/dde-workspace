@@ -1,63 +1,100 @@
 class Option extends Widget
-    constructor(@id,@current):->
-        echo "new Option:#{@id}"
+    constructor:(@id,@current)->
+        super
+        echo "new Option:#{@id}, current:#{@current}"
         @opt = []
         @opt_div = []
-
+        @opt_text = []
+        document.body.style.fontSize = "62.5%"
+        @element.style.position = "absolute"
+        switch @id
+            when "LEFTUP"
+                @current_up = true
+                @current_left = true
+                @element.style.left = 0
+                @element.style.top = 0
+            when "LEFTDOWN"
+                @current_up = false
+                @current_left = true
+                @element.style.left = 0
+                @element.style.bottom= 0
+            when "RIGHTUP"
+                @current_up = true
+                @current_left = false
+                @element.style.right = 0
+                @element.style.top = 0
+            when "RIGHTDOWN"
+                @current_up = false
+                @current_left = false
+                @element.style.right = 0
+                @element.style.bottom = 0
+     
     insert:(opt)->
         @opt.push(opt)
 
-    opt_build:->
+    option_build:->
+        if @current_up
+            @current_div_build()
+            @opt_choose_div_build()
+        else
+            @opt_choose_div_build()
+            @current_div_build()
+
+    current_div_build :->
         @current_div = create_element("div","current_div",@element)
-        @current_img = create_element("current_img","",@current_div)
+        if @current_left
+            @current_img = create_img("current_img","",@current_div)
+            @current_text = create_element("div","current_text",@current_div)
+            @current_div.style.webkitBoxPack = "start"
+        else
+            @current_text = create_element("div","current_text",@current_div)
+            @current_img = create_img("current_img","",@current_div)
+            @current_div.style.webkitBoxPack = "end"
+
         @current_img.src = "img/set.png"
-        @current_text = create_element("div","current_text",@current_div)
         @current_text.textContent = @current
         
+    opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
         margin = "10.1em"
-        switch @id
-            when "LEFTUP"
-                # up right down left
-                @textAlign = "right"
-                @margin = "0 margin 0 0"
-            when "LEFTDOWN"
-                @textAlign = "right"
-                @margin = "0 margin 0 0"
-            
-            when "RIGHTUP"
-                @textAlign = "left"
-                @margin = "0 0 0 margin"
-
-            when "RIGHTDOWN"
-                @textAlign = "left"
-                @margin = "0 0 0 margin"
-         
-        @opt_choose.style.textAlign = @textAlign
-        @opt_choose.style.marginRight = @margin
+        if @current_left
+            #up left down right
+            #@opt_choose.style.margin = "0 #{margin} 0 0"
+            @opt_choose.style.textAlign = "left"
+            #@opt_choose.style.webkitBoxPack = "start"
+        else
+            #@opt_choose.style.margin = "0 0 0 #{margin}"
+            @opt_choose.style.textAlign = "right"
+            #@opt_choose.style.webkitBoxPack = "end"
+        
+        if !@current_up then @opt.reverse()
         for opt,i in @opt
+            echo i + ":" + opt
             @opt_text[i] = create_element("div","opt_text",@opt_choose)
             @opt_text[i].textContent = opt
-            if opt is @current then @opt_text[i].style.fontColor = "green"
+            @opt_text[i].value = i
+            if opt is @current then @opt_text[i].style.color = "green"
+            else @opt_text[i].style.color = "#fff"
             
-           @opt_text[i].addEventListener("click",=>
-                @current = @opt_text[i].textContent
-                @opt_choose.style.display = "none"
+            that = @
+            @opt_text[i].addEventListener("click",->
+                that.current = this.textContent
+                that.opt_choose.style.display = "none"
+                that.current_text.textContent = that.current
             )
             
-            
-            
-            
-            
-        @opt_choose.addEventListener("mouseover",=>
-            @opt_choose.style.display = "block"
+        @opt_choose.style.display = "none"
+        @element.addEventListener("mouseover",=>
             clearInterval(@timeOut) if @timeOut
-        )
-        @current_div.addEventListener("mouseover",=>
             @opt_choose.style.display = "block"
+            for opt,i in @opt
+                if opt is @current then @opt_text[i].style.color = "green"
+                else @opt_text[i].style.color = "#fff"
         )
-        @current_div.addEventListener("mouseout",=>
+        @element.addEventListener("mouseout",=>
             @timeOut = setTimeout(=>
                 @opt_choose.style.display = "none"
-            ,500)
+            ,50)
         )
+
+

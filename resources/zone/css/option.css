@@ -1,22 +1,51 @@
-.Option{
+body{
+    font-size:62.5%;
 }
 
+.Option{
+    background-color:rgba(0,0,100,0.5);
+    width:20em;
+}
 
-.current_img{
-    width:10.1em;
-    height:10.1em;
+.current_div{
+    background-color:rgba(200,200,200,0.9);
+    display:-webkit-box;
     overflow:hidden;
 }
-
+.current_img{
+    height:10.1em;
+    width:5em;
+    overflow:hidden;
+}
 .current_text{
-    font-size:1.6em;
+    background-color:rgba(0,200,200,0.5);
+    height:3em;
+    line-height:3em;
+    font-size:2.0em;
+    font-weight:normal; 
+    color:#fff;
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
 }
 
+
+.opt_choose{
+    background-color:rgba(50,0,50,0.5);
+    /*width:100%;*/
+    /*display:-webkit-box;*/
+    /*-webkit-box-orient:vertical;*/
+}
 
 .opt_text{
-    font-size:1.3em;
+    margin-top:0.5em;
+    height:2em;
+    line-height:2em;
+    overflow:hidden;
+    font-size:1.4em;
+    font-weight:normal; 
+    color:#fff;
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
 }
-.opt_texti:hover{
+.opt_text:hover{
     background-color:rgba(0,0,0,0.9);
     border-radius:0.3em; 
 }
