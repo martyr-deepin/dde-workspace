@@ -21,13 +21,28 @@ class Zone extends Widget
 
     constructor:->
         super
-        echo "zone"
+        echo "Zone"
         document.body.appendChild(@element)
-
+        
+    option_build:->
+        @opt = []
+        #set default zone
+        @ids = ["LEFTUP","LEFTDOWN","RIGHTUP","RIGHTDOWN"]
+        @currents = ["Launcher","Workspace","Desktop","System Setup","None"]
+        
+        #provide zone setting option
+        @option = ["Launcher","System Setup","Workspace","Desktop","None"]
+        
+        for id,i in @ids
+            @opt[i] = new Option(@ids[i],@currents[i])
+            @element.appendChild(@opt[i].element)
+            for tmp in @option
+                @opt[i].insert(tmp)
+            @opt[i].option_build()
 
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
 zone = new Zone()
-
+zone.option_build()

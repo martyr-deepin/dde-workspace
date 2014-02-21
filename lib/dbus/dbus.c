@@ -8,9 +8,8 @@
 #include "dbus_introspect.h"
 
 PRIVATE gboolean init = FALSE;
-PRIVATE DBusGConnection* sys_con = NULL;
-PRIVATE DBusGConnection* session_con = NULL;
 
+DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg, void *no_use);
 
 void dbus_init()
 {
@@ -27,14 +26,16 @@ JSValueRef dbus_sys_object(
 {
     if (!init) dbus_init();
 
+    static DBusGConnection* sys_con = NULL;
     if (sys_con == NULL) {
-        GError *error = NULL;
-        sys_con = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
-        if (error != NULL) {
-            g_warning("ERROR:%s\n", error->message);
-            g_error_free(error);
-        }
-        g_assert(sys_con != NULL);
+	GError *error = NULL;
+	sys_con = dbus_g_bus_get(DBUS_BUS_SYSTEM, &error);
+	if (error != NULL) {
+	    g_warning("ERROR:%s\n", error->message);
+	    g_error_free(error);
+	}
+	g_assert(sys_con != NULL);
+	dbus_connection_add_filter( dbus_g_connection_get_connection(sys_con), watch_signal, NULL, NULL);
     }
     JSValueRef value = get_dbus_object(get_global_context(), sys_con,
             bus_name, object_path, interface);
@@ -68,14 +69,16 @@ JSValueRef dbus_session_object(
 { 
     if (!init) dbus_init();
 
+    static DBusGConnection* session_con = NULL;
     if (session_con == NULL) {
-        GError *error = NULL;
-        session_con = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
-        if (error != NULL) {
-            g_warning("ERROR:%s\n", error->message);
-            g_error_free(error);
-        }
-        g_assert(session_con != NULL);
+	GError *error = NULL;
+	session_con = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
+	if (error != NULL) {
+	    g_warning("ERROR:%s\n", error->message);
+	    g_error_free(error);
+	}
+	g_assert(session_con != NULL);
+	dbus_connection_add_filter(dbus_g_connection_get_connection(session_con), watch_signal, NULL, NULL);
     }
     JSValueRef value = get_dbus_object(get_global_context(), session_con,
             bus_name, object_path, interface);

@@ -88,7 +88,6 @@ void handle_signal_callback(gpointer no_used_key, struct SignalInfo* info, DBusM
 DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
         void *no_use)
 {
-    NOUSED(connection);
     NOUSED(no_use);
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_SIGNAL)
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
@@ -98,7 +97,10 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     const char* s_name = dbus_message_get_member(msg);
     const char* path = dbus_message_get_path(msg);
 
-    char* key = g_strdup_printf("%s%s%s", path, iface, s_name);
+    char* server_id = dbus_connection_get_server_id(connection);
+    char* key = g_strdup_printf("%s:%s:%s@%s", path, iface, s_name, server_id);
+    free(server_id);
+
     GHashTable* cbs_info  = g_hash_table_lookup(__sig_info_hash, key);
     g_free(key);
 
@@ -129,7 +131,10 @@ SIGNAL_CALLBACK_ID add_signal_callback(JSContextRef ctx, struct DBusObjectInfo *
     if (__sig_info_hash == NULL) {
         __sig_info_hash = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, (GDestroyNotify)g_hash_table_destroy);
     }
-    char* key = g_strdup_printf("%s%s%s", info->path, info->iface, sig->name);
+
+    char* server_id = dbus_connection_get_server_id(info->connection);
+    char* key = g_strdup_printf("%s:%s:%s@%s", info->path, info->iface, sig->name, server_id);
+    free(server_id);
 
     GHashTable *cbs = g_hash_table_lookup(__sig_info_hash, key);
     if (cbs == NULL) {
@@ -166,10 +171,6 @@ JSValueRef signal_connect(JSContextRef ctx,
         return NULL;
     }
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(this);
-
-    if (__sig_info_hash == NULL) {
-        dbus_connection_add_filter(obj_info->connection, watch_signal, NULL, NULL);
-    }
 
     if (!JSValueIsString(ctx, arguments[0])) {
         js_fill_exception(ctx, exception, "the first params must the signal name");
