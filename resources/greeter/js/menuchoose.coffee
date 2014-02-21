@@ -93,7 +93,7 @@ class MenuChoose extends Widget
             
             animation_scale(img_el,final_width / init_width,t_max)
             jQuery(opt_el).delay(t_delay).animate(
-                {opacity: 1.0;left:XMove},
+                {opacity: '1.0';left:XMove},
                 t_max,
                 'linear',=>
                     jQuery(opt_el).animate(

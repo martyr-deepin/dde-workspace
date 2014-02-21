@@ -36,7 +36,7 @@ body{
 .opt_choose{
     /*background-color:rgba(50,0,50,0.2);*/
     position:relative;
-    width:9.2em;
+    width:9.5em;
 }
 
 .opt_text{
@@ -45,6 +45,8 @@ body{
     height:2em;
     line-height:2em;
     overflow:hidden;
+    padding-left:0.3em;
+    padding-right:0.3em;
     font-size:1.4em;
     font-weight:normal; 
     color:#fff;
@@ -52,6 +54,6 @@ body{
     cursor:pointer;
 }
 .opt_text:hover{
-    background-color:rgba(0,0,0,0.9);
+    background-color:rgba(41,36,33,0.7);
     border-radius:0.3em; 
 }

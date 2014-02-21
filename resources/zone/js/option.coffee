@@ -33,24 +33,38 @@ class Option extends Widget
         @opt.push(opt)
 
     option_build:->
+        @YStartShow = -200
+        @YMove = 0
+        @t_show = 1000
         if @current_up
+            @YStartShow = -200
             @current_div_build()
             @opt_choose_div_build()
         else
+            @YStartShow = 200
             @opt_choose_div_build()
             @current_div_build()
 
+        
         @element.addEventListener("mouseover",=>
             clearInterval(@timeOut) if @timeOut
-            @opt_choose.style.display = "block"
             @current_img.style.backgroundPosition = @bg_pos_hover
+            
             for opt,i in @opt
                 if opt is @current then @opt_text[i].style.color = "green"
                 else @opt_text[i].style.color = "#fff"
+            
+            @opt_choose.style.display = "block"
+            jQuery(@opt_choose).animate(
+                {opacity: '1.0';top:@YMove;},
+                @t_show
+            )
         )
         @element.addEventListener("mouseout",=>
             @timeOut = setTimeout(=>
                 @current_img.style.backgroundPosition = @bg_pos_normal
+                @opt_choose.style.opacity = "0.0"
+                @opt_choose.style.top = @YStartShow
                 @opt_choose.style.display = "none"
             ,50)
         )
@@ -115,3 +129,5 @@ class Option extends Widget
                 that.current_text.textContent = that.current
             )
         @opt_choose.style.display = "none"
+        @opt_choose.style.opacity = "0.0"
+        @opt_choose.style.top = @YStartShow
