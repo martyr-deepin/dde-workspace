@@ -47,7 +47,7 @@ class Option extends Widget
         @opt_choose.style.opacity = "0.0"
         @opt_choose.style.top = @YStartShow
         
-        @element.addEventListener("mouseover",=>
+        mouseover = =>
             echo "mouseover"
             clearInterval(@timeOut) if @timeOut
             @current_img.style.backgroundPosition = @bg_pos_hover
@@ -63,8 +63,8 @@ class Option extends Widget
                 "linear",=>
                     echo "Animation End"
             )
-        )
-        @element.addEventListener("mouseout",=>
+        
+        mouseout = =>
             echo "mouseout"
             @timeOut = setTimeout(=>
                 @current_img.style.backgroundPosition = @bg_pos_normal
@@ -72,7 +72,8 @@ class Option extends Widget
                 @opt_choose.style.top = @YStartShow
                 @opt_choose.style.display = "none"
             ,50)
-        )
+        
+        jQuery(@element).hover(mouseover,mouseout)
 
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
