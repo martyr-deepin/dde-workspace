@@ -90,10 +90,12 @@ class Option extends Widget
         @opt_choose = create_element("div","opt_choose",@element)
         margin = "101px"
         if @current_left
-            @opt_choose.style.marginLeft = margin
+            @opt_choose.style.left = margin
+            #@opt_choose.style.marginLeft = margin
             @opt_choose.style.textAlign = "left"
         else
-            @opt_choose.style.marginRight = margin
+            @opt_choose.style.right = "-37px"
+            #@opt_choose.style.marginRight = "-10em"
             @opt_choose.style.textAlign = "right"
         
         if !@current_up then @opt.reverse()

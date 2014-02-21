@@ -4,7 +4,7 @@ body{
 
 .Option{
     background-color:rgba(0,0,100,0.2);
-    /*width:20em;*/
+    width:230px;
 }
 
 .current_div{
@@ -34,6 +34,7 @@ body{
 
 
 .opt_choose{
+    position:relative;
     background-color:rgba(50,0,50,0.2);
     width:9.2em;
     /*display:-webkit-box;*/
