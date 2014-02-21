@@ -248,7 +248,7 @@ func (d *LauncherDBus) GetBackgroundPict() string {
 	if err != nil {
 		return ""
 	}
-	i.BackgroundBlurPictPath(fmt.Spfintf("%d", os.Getuid()), d.background.Current())
+	i.BackgroundBlurPictPath(fmt.Sprintf("%d", os.Getuid()), d.background.Current())
 }
 
 func (d *LauncherDBus) listenBackgroundChanged() {

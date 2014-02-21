@@ -63,8 +63,8 @@ body {
   min-width: 180px;
 }
 #category:lang(en) {
-  max-width: 220px;
-  min-width: 220px;
+  max-width: 200px;
+  min-width: 200px;
 }
 .category_name {
   border: rgba(255,255,255, 0) 1px solid;
