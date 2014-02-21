@@ -20,6 +20,10 @@
  **/
 
 #include <string.h>
+
+#include <glib.h>
+#include <glib/gprintf.h>
+
 #include "background.h"
 #include "jsextension.h"
 #include "utils.h"
@@ -41,28 +45,45 @@ GSettings* get_background_gsettings()
 }
 
 
-void start_gaussian_helper(const char* cur_pict_path)
+GVariant* start_gaussian_helper(const char* cur_pict_path)
 {
     if (cur_pict_path == NULL)
-        return;
+        return NULL;
 
-    char* command = NULL;
-    command = g_strdup_printf(GSD_LIBEXECDIR"/gsd-background-helper "
-                              "%lf %lu %s",
-                              BG_GAUSSIAN_SIGMA,
-                              BG_GAUSSIAN_NSTEPS,
-                              cur_pict_path);
-    g_debug("[%s] command: %s", __func__, command);
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      NULL,
+                                                      "com.deepin.api.Image",
+                                                      "/com/deepin/api/Image",
+                                                      "com.deepin.api.Image",
+                                                      NULL,
+                                                      NULL
+                                                      );
 
-    GError* error = NULL;
-    gboolean ret = FALSE;
-    if ((ret = g_spawn_command_line_async(command, &error)) == FALSE) {
-        g_debug("Failed to launch '%s': '%s'", command, error->message);
-        g_error_free(error);
+    if (proxy == NULL)
+        return NULL;
+
+    char uid[10] = {0};
+    g_snprintf(uid, 10, "%d", getuid());
+    GError* err = NULL;
+    GVariant* res =  g_dbus_proxy_call_sync(proxy,
+                                            "BackgroundBlurPictPath",
+                                            g_variant_new("(ss)",
+                                                          uid,
+                                                          cur_pict_path),
+                                            G_DBUS_CALL_FLAGS_NONE,
+                                            -1,  // timeout
+                                            NULL,  // cancellable
+                                            &err
+                                           );
+    g_object_unref(proxy);
+
+    if (err != NULL) {
+        g_warning("[%s:%s] %s", __FILE__, __func__, err->message);
+        g_error_free(err);
     }
 
-    g_debug("gsd-background-helper started");
-    g_free(command);
+    return res;
 }
 
 
@@ -165,30 +186,19 @@ void background_changed(GSettings* settings, char* key, gpointer user_data)
         bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
     }
 
-    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
-    g_debug("[%s] blur_path: %s", __func__, blur_path);
-
-    if (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        start_gaussian_helper(bg_path);
+    GVariant* res = start_gaussian_helper(bg_path);
+    if (res == NULL) {
+        return;
     }
 
-    int duration = 2;
-    while (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        if (duration > 400)
-            break;
-        g_usleep(duration);
-        duration += 2;
-    }
+    char* blur_path = NULL;
+    gboolean has_blur_path = FALSE;
+    g_variant_get(res, "((bs))", &has_blur_path, &blur_path);
+    g_variant_unref(res);
+
+    g_warning("has: %d, path: %s", has_blur_path, blur_path);
 
     JSObjectRef path = json_create();
-    if (!g_file_test(blur_path, G_FILE_TEST_EXISTS)) {
-        g_warning("[%s] the blur image(\"%s\") is not existed, "
-                  "using the default background image(\"%s\")",
-                  __func__, blur_path, bg_path);
-        g_free(blur_path);
-        blur_path = g_strdup(bg_path);
-    }
-
     g_debug("background changed");
     json_append_string(path, "path", blur_path);
     js_post_message("draw_background", path);

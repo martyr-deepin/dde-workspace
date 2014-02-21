@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dbus/com/deepin/api/graph"
 	"fmt"
 	"os"
 	"path"
@@ -29,11 +30,13 @@ type ItemChangedStatus struct {
 }
 
 type LauncherDBus struct {
+	background  *Background
 	ItemChanged func(
 		status string,
 		itemInfo ItemInfo,
 		categoryIds []CategoryId,
 	)
+	BackgroundChanged func(path string)
 }
 
 func (d *LauncherDBus) GetDBusInfo() dbus.DBusInfo {
@@ -240,8 +243,32 @@ func (d *LauncherDBus) GetPackageNames(path string) []string {
 	return getPackageNames(path)
 }
 
+func (d *LauncherDBus) GetBackgroundPict() string {
+	i, err := graph.NewGraph("/com/deepin/api/Image")
+	if err != nil {
+		return ""
+	}
+	i.BackgroundBlurPictPath(fmt.Spfintf("%d", os.Getuid()), d.background.Current())
+}
+
+func (d *LauncherDBus) listenBackgroundChanged() {
+	go func(d *LauncherDBus) {
+		d.background.ConnectSignal(
+			BackgroundChangedSignal,
+			func(setting *gio.Settings, key string, userdata string) {
+				c := setting.GetString(CurrentBackground)
+				if d.BackgroundChanged != nil {
+					d.BackgroundChanged(c)
+				}
+			},
+		)
+	}(d)
+}
+
 func initDBus() {
 	launcherDbus := LauncherDBus{}
+	launcherDbus.background = NewBackground()
 	dbus.InstallOnSession(&launcherDbus)
 	launcherDbus.listenItemChanged()
+	launcherDbus.listenBackgroundChanged()
 }
