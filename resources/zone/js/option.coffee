@@ -108,7 +108,8 @@ class Option extends Widget
             else @opt_text[i].style.color = "#fff"
             
             that = @
-            @opt_text[i].addEventListener("click",->
+            @opt_text[i].addEventListener("click",(e)->
+                e.stopPropagation()
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current

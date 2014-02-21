@@ -46,3 +46,9 @@ document.body.style.width = window.innerWidth
 
 zone = new Zone()
 zone.option_build()
+
+document.body.addEventListener("click",(e)=>
+    e.stopPropagation()
+    DCore.Zone.quit()
+)
+ 
