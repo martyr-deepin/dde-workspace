@@ -90,7 +90,6 @@ class Option extends Widget
         @opt_choose = create_element("div","opt_choose",@element)
         margin = "101px"
         if @current_left
-            #up left down right
             @opt_choose.style.marginLeft = margin
             @opt_choose.style.textAlign = "left"
         else
@@ -99,7 +98,7 @@ class Option extends Widget
         
         if !@current_up then @opt.reverse()
         for opt,i in @opt
-            echo i + ":" + opt
+            #echo i + ":" + opt
             @opt_text[i] = create_element("div","opt_text",@opt_choose)
             @opt_text[i].textContent = opt
             @opt_text[i].value = i
