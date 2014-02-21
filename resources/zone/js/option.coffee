@@ -40,32 +40,56 @@ class Option extends Widget
             @opt_choose_div_build()
             @current_div_build()
 
+        @element.addEventListener("mouseover",=>
+            clearInterval(@timeOut) if @timeOut
+            @opt_choose.style.display = "block"
+            for opt,i in @opt
+                if opt is @current then @opt_text[i].style.color = "green"
+                else @opt_text[i].style.color = "#fff"
+        )
+        @element.addEventListener("mouseout",=>
+            @timeOut = setTimeout(=>
+                #@opt_choose.style.display = "block"
+                @opt_choose.style.display = "none"
+            ,50)
+        )
+
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
         if @current_left
-            @current_img = create_img("current_img","",@current_div)
+            @current_img = create_element("div","current_img",@current_div)
             @current_text = create_element("div","current_text",@current_div)
             @current_div.style.webkitBoxPack = "start"
         else
             @current_text = create_element("div","current_text",@current_div)
             @current_img = create_img("current_img","",@current_div)
             @current_div.style.webkitBoxPack = "end"
-
-        @current_img.src = "img/set.png"
         @current_text.textContent = @current
-        
+        switch @id
+            when "LEFTUP"
+                @bg_pos_normal = "top right 101px 101px"
+                @bg_pos_hover = "bottom right 101px 101px"
+            when "LEFTDOWN"
+                @bg_pos_normal = "center left 101px 101px"
+                @bg_pos_hover = "center left 101px 101px"
+            when "RIGHTUP"
+                @bg_pos_normal = "top right 101px 101px"
+                @bg_pos_hover = "bottom right 101px 101px"
+            when "RIGHTDOWN"
+                @bg_pos_normal = "top right 101px 202px"
+                @bg_pos_hover = "bottom right 101px 101px"
+        @current_img.style.backgroundPosition = @bg_pos_normal
+    
     opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
-        margin = "10.1em"
+        margin = "101px"
         if @current_left
             #up left down right
-            #@opt_choose.style.margin = "0 #{margin} 0 0"
+            @opt_choose.style.marginLeft = margin
             @opt_choose.style.textAlign = "left"
-            #@opt_choose.style.webkitBoxPack = "start"
         else
-            #@opt_choose.style.margin = "0 0 0 #{margin}"
+            @opt_choose.style.marginRight = margin
             @opt_choose.style.textAlign = "right"
-            #@opt_choose.style.webkitBoxPack = "end"
         
         if !@current_up then @opt.reverse()
         for opt,i in @opt
@@ -82,19 +106,4 @@ class Option extends Widget
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
-            
         @opt_choose.style.display = "none"
-        @element.addEventListener("mouseover",=>
-            clearInterval(@timeOut) if @timeOut
-            @opt_choose.style.display = "block"
-            for opt,i in @opt
-                if opt is @current then @opt_text[i].style.color = "green"
-                else @opt_text[i].style.color = "#fff"
-        )
-        @element.addEventListener("mouseout",=>
-            @timeOut = setTimeout(=>
-                @opt_choose.style.display = "none"
-            ,50)
-        )
-
-

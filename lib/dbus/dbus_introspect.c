@@ -167,10 +167,6 @@ JSValueRef signal_connect(JSContextRef ctx,
     }
     struct DBusObjectInfo* obj_info = JSObjectGetPrivate(this);
 
-    if (__sig_info_hash == NULL) {
-        dbus_connection_add_filter(obj_info->connection, watch_signal, NULL, NULL);
-    }
-
     if (!JSValueIsString(ctx, arguments[0])) {
         js_fill_exception(ctx, exception, "the first params must the signal name");
         return NULL;
