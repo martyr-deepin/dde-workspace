@@ -43,13 +43,14 @@ class Option extends Widget
         @element.addEventListener("mouseover",=>
             clearInterval(@timeOut) if @timeOut
             @opt_choose.style.display = "block"
+            @current_img.style.backgroundPosition = @bg_pos_hover
             for opt,i in @opt
                 if opt is @current then @opt_text[i].style.color = "green"
                 else @opt_text[i].style.color = "#fff"
         )
         @element.addEventListener("mouseout",=>
             @timeOut = setTimeout(=>
-                #@opt_choose.style.display = "block"
+                @current_img.style.backgroundPosition = @bg_pos_normal
                 @opt_choose.style.display = "none"
             ,50)
         )
@@ -65,19 +66,24 @@ class Option extends Widget
             @current_img = create_img("current_img","",@current_div)
             @current_div.style.webkitBoxPack = "end"
         @current_text.textContent = @current
+        
+        Delta=(n)->
+            return "#{n * 101}px"
+        Hover_X = 0
+        Hover_Y = 2
         switch @id
             when "LEFTUP"
-                @bg_pos_normal = "top right 101px 101px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(-1)} #{Delta(-1)}"
+                @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(-1 + Hover_Y)}"
             when "LEFTDOWN"
-                @bg_pos_normal = "center left 101px 101px"
-                @bg_pos_hover = "center left 101px 101px"
+                @bg_pos_normal = "#{Delta(-1)} #{Delta(0)}"
+                @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(0 + Hover_Y)}"
             when "RIGHTUP"
-                @bg_pos_normal = "top right 101px 101px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(0)} #{Delta(-1)}"
+                @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(-1 + Hover_Y)}"
             when "RIGHTDOWN"
-                @bg_pos_normal = "top right 101px 202px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(0)} #{Delta(0)}"
+                @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(0 + Hover_Y)}"
         @current_img.style.backgroundPosition = @bg_pos_normal
     
     opt_choose_div_build :->
