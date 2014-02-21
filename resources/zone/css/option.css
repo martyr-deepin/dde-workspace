@@ -9,10 +9,12 @@ body{
 
 .current_div{
     /*background-color:rgba(200,200,200,0.2);*/
+    position:relative;
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
     overflow:hidden;
+    z-index:5;
 }
 
 .current_img{
@@ -37,6 +39,7 @@ body{
     /*background-color:rgba(50,0,50,0.2);*/
     position:relative;
     width:9.5em;
+    z-index:1;
 }
 
 .opt_text{
