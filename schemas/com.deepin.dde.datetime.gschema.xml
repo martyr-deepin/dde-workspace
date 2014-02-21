@@ -21,5 +21,10 @@
       <summary>Is Auto Set DateTime</summary>
       <description>Is Auto Set DateTime</description>
     </key>
+    <key type="as" name="user-timezone-list">
+        <default>['Asia/Shanghai']</default>
+        <summary>User Timezone List</summary>
+        <description>Timezone List By User Selected</description>
+    </key>
   </schema>
 </schemalist>
