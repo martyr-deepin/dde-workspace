@@ -25,12 +25,7 @@
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 
-#define SCHEMA_ID "com.deepin.dde.background"
-#define CURRENT_PCITURE "current-picture"
-
-GSettings* get_background_gsettings();
-void set_background(GdkWindow* win, GSettings* settings, double width, double height);
-void background_changed(GSettings* settings, char* key, gpointer user_data);
+void set_background(GdkWindow* win, double width, double height);
 
 #endif /* end of include guard: BACKGROUND_H */
 

@@ -47,12 +47,12 @@ DCore.signal_connect("exit_launcher", ->
 )
 
 
-DCore.signal_connect("draw_background", (info)->
-    img = new Image()
-    img.src = info.path
-    img.onload = ->
-        _b.style.backgroundImage = "url(#{img.src})"
-)
+# DCore.signal_connect("draw_background", (info)->
+#     img = new Image()
+#     img.src = info.path
+#     img.onload = ->
+#         _b.style.backgroundImage = "url(#{img.src})"
+# )
 
 
 # DCore.signal_connect("uninstall_failed", (info)->

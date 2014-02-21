@@ -30,32 +30,16 @@
 
 
 #define DEFAULT_BACKGROUND_IMAGE "/usr/share/backgrounds/default_background.jpg"
-// get these macros from deepin-settings-deamon/plugins/background/
-#define GSD_LIBEXECDIR "/usr/lib/gnome-settings-daemon"
-#define BG_GAUSSIAN_SIGMA 50.0
-#define BG_GAUSSIAN_NSTEPS 10UL
 
 
-GSettings* get_background_gsettings()
+char* get_blur_path()
 {
-    static GSettings* settings = NULL;
-    if (settings == NULL)
-        settings = g_settings_new(SCHEMA_ID);
-    return settings;
-}
-
-
-GVariant* start_gaussian_helper(const char* cur_pict_path)
-{
-    if (cur_pict_path == NULL)
-        return NULL;
-
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
-                                                      "com.deepin.api.Image",
-                                                      "/com/deepin/api/Image",
-                                                      "com.deepin.api.Image",
+                                                      "com.deepin.api.Graph",
+                                                      "/com/deepin/api/Graph",
+                                                      "com.deepin.api.Graph",
                                                       NULL,
                                                       NULL
                                                       );
@@ -70,7 +54,7 @@ GVariant* start_gaussian_helper(const char* cur_pict_path)
                                             "BackgroundBlurPictPath",
                                             g_variant_new("(ss)",
                                                           uid,
-                                                          cur_pict_path),
+                                                          ""),
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,  // timeout
                                             NULL,  // cancellable
@@ -83,7 +67,15 @@ GVariant* start_gaussian_helper(const char* cur_pict_path)
         g_error_free(err);
     }
 
-    return res;
+    if (res == NULL) {
+        return NULL;
+    }
+
+    char* blur_path = NULL;
+    gboolean has_blur_path = FALSE;
+    g_variant_get(res, "((bs))", &has_blur_path, &blur_path);
+    g_variant_unref(res);
+    return blur_path;
 }
 
 
@@ -149,61 +141,17 @@ gboolean _set_background_aux(GdkWindow* win, const char* bg_path, double width,
 }
 
 
-void set_background(GdkWindow* win, GSettings* dde_bg_g_settings, double width,
-                    double height)
+void set_background(GdkWindow* win,  double width, double height)
 {
-    char* bg_path = g_settings_get_string(dde_bg_g_settings, CURRENT_PCITURE);
-
-    if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
-        g_warning("[%s] the image(\"%s\") is not existed, use the default image", __func__, bg_path);
-        g_free(bg_path);
-        bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
+    char* blur_path = get_blur_path();
+    if (blur_path == NULL) {
+        blur_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
     }
-
-    char* blur_path = bg_blur_pict_get_dest_path(bg_path);
 
     g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
 
-    if (!_set_background_aux(win, blur_path, width, height)) {
-        g_debug("[%s] no blur pic, use current bg: %s\n", __func__, bg_path);
-        _set_background_aux(win, bg_path, width, height);
-    }
+    _set_background_aux(win, blur_path, width, height);
 
-    g_free(blur_path);
-    g_free(bg_path);
-}
-
-
-void background_changed(GSettings* settings, char* key, gpointer user_data)
-{
-    NOUSED(user_data);
-    char* bg_path = g_settings_get_string(settings, key);
-    if (!g_file_test(bg_path, G_FILE_TEST_EXISTS)) {
-        g_warning("[%s] the background image(\"%s\") is not existed,"
-                  " using the default background image(\"%s\")",
-                  __func__, bg_path, DEFAULT_BACKGROUND_IMAGE);
-        g_free(bg_path);
-        bg_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
-    }
-
-    GVariant* res = start_gaussian_helper(bg_path);
-    if (res == NULL) {
-        return;
-    }
-
-    char* blur_path = NULL;
-    gboolean has_blur_path = FALSE;
-    g_variant_get(res, "((bs))", &has_blur_path, &blur_path);
-    g_variant_unref(res);
-
-    g_warning("has: %d, path: %s", has_blur_path, blur_path);
-
-    JSObjectRef path = json_create();
-    g_debug("background changed");
-    json_append_string(path, "path", blur_path);
-    js_post_message("draw_background", path);
-
-    g_free(bg_path);
     g_free(blur_path);
 }
 

@@ -19,14 +19,13 @@
 
 
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
+daemon = DCore.DBus.session(LAUNCHER_DAEMON)
+
+
 START_MANAGER =
     obj: "com.deepin.SessionManager"
     path: "/com/deepin/StartManager"
     interface: "com.deepin.StartManager"
-
-SORTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
-
-daemon = DCore.DBus.session(LAUNCHER_DAEMON)
 startManager = DCore.DBus.session_object(
     START_MANAGER.obj,
     START_MANAGER.path,
@@ -34,7 +33,6 @@ startManager = DCore.DBus.session_object(
 )
 startManager.connect("AutostartChanged", (status, path)->
     echo 'autostart changed'
-    item = null
     for own k, v of hiddenIcons.hiddenIcons
         if v.basename == get_path_name(path)
             item = v
@@ -46,16 +44,24 @@ startManager.connect("AutostartChanged", (status, path)->
             item.remove_from_autostart()
 )
 
+
+SORTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
 softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
 softwareManager.connect("update_signal", (info)->
-    echo "test"
+    # echo info
     status = info[0][0]
     if status == UNINSTALL_STATUS.FALIED
         message = info[1][3]
-        # item.status = SOFTWARE_STATE.IDLE
-        # item.show()
-        # delete uninstalling_apps[info.id]
+        item = Widget.look_up(deamon.GetAppId_sync())
+        item.status = SOFTWARE_STATE.IDLE
+        item.show()
+        delete uninstalling_apps[item.id]
     else if status == UNINSTALL_STATUS.SUCCESS
         message = "success"
-        # delete uninstalling_apps[info.id]
+        delete uninstalling_apps[deamon.GetAppId_sync()]
 )
+
+
+GRAPH_API = "com.deepin.api.Graph"
+background = DCore.DBus.session(GRAPH_API)
+background.connect("BlurPictChanged", setBackground)

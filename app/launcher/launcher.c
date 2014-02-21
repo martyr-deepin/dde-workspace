@@ -53,7 +53,6 @@
 static GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
-PRIVATE GSettings* background_gsettings = NULL;
 PRIVATE gboolean is_js_already = FALSE;
 PRIVATE gboolean is_launcher_shown = FALSE;
 PRIVATE gboolean force_show = FALSE;
@@ -169,8 +168,6 @@ void _on_realize(GtkWidget* container)
 {
     g_debug("[%s] realize signal", __func__);
     _update_size(current_screen.screen, container);
-    if (is_js_already)
-        background_changed(background_gsettings, CURRENT_PCITURE, NULL);
     g_debug("[%s] realize signal end", __func__);
 }
 
@@ -217,7 +214,6 @@ void launcher_quit()
 {
     g_debug("#%d# quit", getpid());
     g_key_file_free(launcher_config);
-    g_object_unref(background_gsettings);
     gtk_main_quit();
 }
 
@@ -268,7 +264,6 @@ GFile* launcher_get_desktop_entry()
 JS_EXPORT_API
 void launcher_webview_ok()
 {
-    background_changed(background_gsettings, CURRENT_PCITURE, NULL);
     is_js_already = TRUE;
 }
 
@@ -512,9 +507,6 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     g_signal_connect(container, "delete-event", G_CALLBACK(empty), NULL);
 #endif
-    background_gsettings = get_background_gsettings();
-    g_signal_connect(background_gsettings, "changed::"CURRENT_PCITURE,
-                     G_CALLBACK(background_changed), NULL);
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -523,8 +515,7 @@ int main(int argc, char* argv[])
     gdk_window_add_filter(gdkwindow, launcher_ensure_fullscreen, NULL);
     GdkRGBA rgba = {0, 0, 0, 0.0 };
     gdk_window_set_background_rgba(gdkwindow, &rgba);
-    set_background(gtk_widget_get_window(webview), background_gsettings,
-                            launcher.width, launcher.height);
+    set_background(gtk_widget_get_window(webview), launcher.width, launcher.height);
 
     gdk_window_set_skip_taskbar_hint(gdkwindow, TRUE);
     gdk_window_set_skip_pager_hint(gdkwindow, TRUE);

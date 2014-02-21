@@ -20,3 +20,19 @@
 
 exit_launcher = ->
     DCore.Launcher.exit_gui()
+
+
+setBackground = (uid, path)->
+    callback = (path)->
+        echo "set background to #{path}"
+        _b.style.backgroundImage = "url(#{path})"
+
+    path = path || uid
+    img = new Image()
+    img.src = path
+    if img.complete
+        callback(path)
+    else
+        img.onload = ->
+            callback(path)
+            img.onload = null

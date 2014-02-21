@@ -19,7 +19,7 @@
 
 class ItemInfo
     constructor:(@id, @name, @path, @icon)->
-        @basename = get_path_name(@path)
+        @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
