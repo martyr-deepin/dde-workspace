@@ -33,20 +33,22 @@ class Option extends Widget
         @opt.push(opt)
 
     option_build:->
-        @YStartShow = -200
+        @YStartShow = -148
         @YMove = 0
-        @t_show = 1000
+        @t_show = 250
         if @current_up
-            @YStartShow = -200
             @current_div_build()
             @opt_choose_div_build()
         else
-            @YStartShow = 200
+            @YStartShow = -1 * @YStartShow
             @opt_choose_div_build()
             @current_div_build()
 
+        @opt_choose.style.opacity = "0.0"
+        @opt_choose.style.top = @YStartShow
         
         @element.addEventListener("mouseover",=>
+            echo "mouseover"
             clearInterval(@timeOut) if @timeOut
             @current_img.style.backgroundPosition = @bg_pos_hover
             
@@ -57,10 +59,13 @@ class Option extends Widget
             @opt_choose.style.display = "block"
             jQuery(@opt_choose).animate(
                 {opacity: '1.0';top:@YMove;},
-                @t_show
+                @t_show,
+                "linear",=>
+                    echo "Animation End"
             )
         )
         @element.addEventListener("mouseout",=>
+            echo "mouseout"
             @timeOut = setTimeout(=>
                 @current_img.style.backgroundPosition = @bg_pos_normal
                 @opt_choose.style.opacity = "0.0"
