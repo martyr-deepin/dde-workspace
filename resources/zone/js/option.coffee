@@ -63,7 +63,7 @@ class Option extends Widget
             @current_div.style.webkitBoxPack = "start"
         else
             @current_text = create_element("div","current_text",@current_div)
-            @current_img = create_img("current_img","",@current_div)
+            @current_img = create_element("div","current_img",@current_div)
             @current_div.style.webkitBoxPack = "end"
         @current_text.textContent = @current
         
