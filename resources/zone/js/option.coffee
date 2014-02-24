@@ -100,6 +100,7 @@ class Option extends Widget
         Hover_Y = 2
         left = "60px"
         top = "13px"
+        bottom = "17px"
         
         switch @id
             when "LEFTUP"
@@ -111,7 +112,7 @@ class Option extends Widget
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(0 + Hover_Y)}"
                 @current_text.style.left = left
-                @current_text.style.bottom = top
+                @current_text.style.bottom = bottom
             when "RIGHTUP"
                 @bg_pos_normal = "#{Delta(0)} #{Delta(-1)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(-1 + Hover_Y)}"
@@ -121,7 +122,7 @@ class Option extends Widget
                 @bg_pos_normal = "#{Delta(0)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(0 + Hover_Y)}"
                 @current_text.style.right = left
-                @current_text.style.bottom = top
+                @current_text.style.bottom = bottom
         @current_img.style.backgroundPosition = @bg_pos_normal
     
     opt_choose_div_build :->
