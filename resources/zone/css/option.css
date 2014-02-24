@@ -3,31 +3,28 @@ body{
 }
 
 .Option{
-    /*background-color:rgba(0,0,100,0.2);*/
+    background-color:rgba(0,0,100,0.2);
     width:230px;
 }
 
 .current_div{
-    /*background-color:rgba(200,200,200,0.2);*/
-    position:relative;
+    background-color:rgba(200,200,200,0.2);
+    /*position:relative;*/
     display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
     overflow:hidden;
     z-index:5;
 }
 
 .current_img{
-    height:101px;
-    width:101px;
+    height:102px;
+    width:102px;
     background-image:url("../img/setBackgroud.png");
     overflow:hidden;
 }
 
 .current_text{
-    /*background-color:rgba(0,200,200,0.2);*/
-    height:3em;
-    line-height:3em;
+    background-color:rgba(0,200,200,0.2);
+    position:absolute;
     font-size:2.0em;
     font-weight:normal; 
     color:#fff;
@@ -36,9 +33,10 @@ body{
 
 
 .opt_choose{
-    /*background-color:rgba(50,0,50,0.2);*/
-    position:relative;
+    background-color:rgba(50,0,50,0.2);
+    position:absolute;
     width:9.5em;
+    height:15.2em;
     z-index:1;
 }
 

@@ -33,19 +33,16 @@ class Option extends Widget
         @opt.push(opt)
 
     option_build:->
-        @YStartShow = -148
-        @YMove = 0
+        @YStartShow = -100
+        @YEnd = 70
         @t_show = 250
         if @current_up
             @current_div_build()
             @opt_choose_div_build()
         else
-            @YStartShow = -1 * @YStartShow
             @opt_choose_div_build()
             @current_div_build()
 
-        @opt_choose.style.opacity = "0.0"
-        @opt_choose.style.top = @YStartShow
         
         mouseenter = =>
             echo "mouseenter"
@@ -57,19 +54,29 @@ class Option extends Widget
                 else @opt_text[i].style.color = "#fff"
             
             @opt_choose.style.display = "block"
-            jQuery(@opt_choose).animate(
-                {opacity: '1.0';top:@YMove;},
-                @t_show,
-                "linear",=>
-                    echo "Animation End"
-            )
+            @opt_choose.style.opacity = "0.0"
+            if @current_up
+                @opt_choose.style.top = @YStartShow
+                jQuery(@opt_choose).animate(
+                    {opacity: '1.0';top:@YEnd;},
+                    @t_show,
+                    "linear",=>
+                        echo "Animation End"
+                )
+            else
+                @opt_choose.style.bottom = @YStartShow
+                jQuery(@opt_choose).animate(
+                    {opacity: '1.0';bottom:@YEnd;},
+                    @t_show,
+                    "linear",=>
+                        echo "Animation End"
+                )
+
         
         mouseleave = =>
             echo "mouseleave"
             @timeOut = setTimeout(=>
                 @current_img.style.backgroundPosition = @bg_pos_normal
-                @opt_choose.style.opacity = "0.0"
-                @opt_choose.style.top = @YStartShow
                 @opt_choose.style.display = "none"
             ,50)
         
@@ -88,34 +95,43 @@ class Option extends Widget
         @current_text.textContent = @current
         
         Delta=(n)->
-            return "#{n * 101}px"
+            return "#{n * 102}px"
         Hover_X = 0
         Hover_Y = 2
+        left = "60px"
+        top = "13px"
+        
         switch @id
             when "LEFTUP"
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(-1)}"
                 @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(-1 + Hover_Y)}"
+                @current_text.style.left = left
+                @current_text.style.top = top
             when "LEFTDOWN"
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(0 + Hover_Y)}"
+                @current_text.style.left = left
+                @current_text.style.bottom = top
             when "RIGHTUP"
                 @bg_pos_normal = "#{Delta(0)} #{Delta(-1)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(-1 + Hover_Y)}"
+                @current_text.style.right = left
+                @current_text.style.top = top
             when "RIGHTDOWN"
                 @bg_pos_normal = "#{Delta(0)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(0 + Hover_Y)}"
+                @current_text.style.right = left
+                @current_text.style.bottom = top
         @current_img.style.backgroundPosition = @bg_pos_normal
     
     opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
-        margin = "101px"
+        left = "60px"
         if @current_left
-            @opt_choose.style.left = margin
-            #@opt_choose.style.marginLeft = margin
+            @opt_choose.style.left = left
             @opt_choose.style.textAlign = "left"
         else
-            @opt_choose.style.right = "-37px"
-            #@opt_choose.style.marginRight = "-10em"
+            @opt_choose.style.right = left
             @opt_choose.style.textAlign = "right"
         
         if !@current_up then @opt.reverse()
