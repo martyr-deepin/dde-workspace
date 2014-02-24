@@ -399,7 +399,7 @@ gboolean dentry_launch(Entry* e, const ArrayContainer fs)
             const char* path = g_desktop_app_info_get_filename(G_DESKTOP_APP_INFO(app));
             char* appid = get_basename_without_extend_name(path);
             g_strdelimit(appid, "_", '-');
-            /* g_warning("[%s] save %s", __func__, appid); */
+            // g_warning("[%s] save %s", __func__, appid);
             g_key_file_set_string(f, startup_wm_class, "appid", appid);
             g_key_file_set_string(f, startup_wm_class, "path", path);
             g_free(appid);
