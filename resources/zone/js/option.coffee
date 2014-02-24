@@ -33,26 +33,47 @@ class Option extends Widget
         @opt.push(opt)
 
     option_build:->
+        @YStartShow = -148
+        @YMove = 0
+        @t_show = 250
         if @current_up
             @current_div_build()
             @opt_choose_div_build()
         else
+            @YStartShow = -1 * @YStartShow
             @opt_choose_div_build()
             @current_div_build()
 
-        @element.addEventListener("mouseover",=>
+        @opt_choose.style.opacity = "0.0"
+        @opt_choose.style.top = @YStartShow
+        
+        mouseenter = =>
+            echo "mouseenter"
             clearInterval(@timeOut) if @timeOut
-            @opt_choose.style.display = "block"
+            @current_img.style.backgroundPosition = @bg_pos_hover
+            
             for opt,i in @opt
                 if opt is @current then @opt_text[i].style.color = "green"
                 else @opt_text[i].style.color = "#fff"
-        )
-        @element.addEventListener("mouseout",=>
+            
+            @opt_choose.style.display = "block"
+            jQuery(@opt_choose).animate(
+                {opacity: '1.0';top:@YMove;},
+                @t_show,
+                "linear",=>
+                    echo "Animation End"
+            )
+        
+        mouseleave = =>
+            echo "mouseleave"
             @timeOut = setTimeout(=>
-                #@opt_choose.style.display = "block"
+                @current_img.style.backgroundPosition = @bg_pos_normal
+                @opt_choose.style.opacity = "0.0"
+                @opt_choose.style.top = @YStartShow
                 @opt_choose.style.display = "none"
             ,50)
-        )
+        
+        jQuery(@element).hover(mouseenter,mouseleave)
 
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
@@ -62,38 +83,44 @@ class Option extends Widget
             @current_div.style.webkitBoxPack = "start"
         else
             @current_text = create_element("div","current_text",@current_div)
-            @current_img = create_img("current_img","",@current_div)
+            @current_img = create_element("div","current_img",@current_div)
             @current_div.style.webkitBoxPack = "end"
         @current_text.textContent = @current
+        
+        Delta=(n)->
+            return "#{n * 101}px"
+        Hover_X = 0
+        Hover_Y = 2
         switch @id
             when "LEFTUP"
-                @bg_pos_normal = "top right 101px 101px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(-1)} #{Delta(-1)}"
+                @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(-1 + Hover_Y)}"
             when "LEFTDOWN"
-                @bg_pos_normal = "center left 101px 101px"
-                @bg_pos_hover = "center left 101px 101px"
+                @bg_pos_normal = "#{Delta(-1)} #{Delta(0)}"
+                @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(0 + Hover_Y)}"
             when "RIGHTUP"
-                @bg_pos_normal = "top right 101px 101px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(0)} #{Delta(-1)}"
+                @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(-1 + Hover_Y)}"
             when "RIGHTDOWN"
-                @bg_pos_normal = "top right 101px 202px"
-                @bg_pos_hover = "bottom right 101px 101px"
+                @bg_pos_normal = "#{Delta(0)} #{Delta(0)}"
+                @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(0 + Hover_Y)}"
         @current_img.style.backgroundPosition = @bg_pos_normal
     
     opt_choose_div_build :->
         @opt_choose = create_element("div","opt_choose",@element)
         margin = "101px"
         if @current_left
-            #up left down right
-            @opt_choose.style.marginLeft = margin
+            @opt_choose.style.left = margin
+            #@opt_choose.style.marginLeft = margin
             @opt_choose.style.textAlign = "left"
         else
-            @opt_choose.style.marginRight = margin
+            @opt_choose.style.right = "-37px"
+            #@opt_choose.style.marginRight = "-10em"
             @opt_choose.style.textAlign = "right"
         
         if !@current_up then @opt.reverse()
         for opt,i in @opt
-            echo i + ":" + opt
+            #echo i + ":" + opt
             @opt_text[i] = create_element("div","opt_text",@opt_choose)
             @opt_text[i].textContent = opt
             @opt_text[i].value = i
@@ -101,9 +128,12 @@ class Option extends Widget
             else @opt_text[i].style.color = "#fff"
             
             that = @
-            @opt_text[i].addEventListener("click",->
+            @opt_text[i].addEventListener("click",(e)->
+                e.stopPropagation()
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
         @opt_choose.style.display = "none"
+        @opt_choose.style.opacity = "0.0"
+        @opt_choose.style.top = @YStartShow

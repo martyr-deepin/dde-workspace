@@ -36,6 +36,8 @@ _events = [
     'mousemove',
     'mouseout',
     'mouseover',
+    'mouseenter',
+    'mouseleave',
     'mouseup',
     'mousewheel',
     'paste',

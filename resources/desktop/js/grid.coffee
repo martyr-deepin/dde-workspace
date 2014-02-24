@@ -1018,7 +1018,7 @@ grid_right_click = (evt) ->
         new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
         new MenuSeparator(),
         new MenuItem(5, _("_Display settings")),
-        new MenuItem(6, _("D_esktop settings")),
+        new MenuItem(6, _("_Zone settings")),
         new MenuItem(7, _("Pe_rsonalize"))
     )
     menu.addListener(grid_do_itemselected).showMenu(evt.clientX, evt.clientY)
@@ -1035,7 +1035,7 @@ grid_do_itemselected = (id) ->
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
         when 5 then DCore.Desktop.run_deepin_settings("display")
-        when 6 then DCore.Desktop.run_deepin_settings("desktop")
+        when 6 then DCore.Desktop.run_deepin_settings("zone")
         when 7 then DCore.Desktop.run_deepin_settings("individuation")
         else
             # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 .
