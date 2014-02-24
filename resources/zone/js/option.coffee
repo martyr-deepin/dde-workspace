@@ -41,11 +41,14 @@ class Option extends Widget
             @opt_choose_div_build()
             @current_div_build()
         jQuery(@element).hover(@mouseenter,@mouseleave)
-        
+        @element.addEventListener("mouseout",=>
+            echo "mouseout"
+            @current_img.style.backgroundPosition = @bg_pos_normal
+            @opt_choose.style.display = "none"
+        )
     mouseenter : =>
         echo "mouseenter"
         @Animation_End = false
-        clearInterval(@timeOut) if @timeOut
         @current_img.style.backgroundPosition = @bg_pos_hover
         
         for opt,i in @opt
@@ -58,28 +61,36 @@ class Option extends Widget
         if @current_up
             @opt_choose.style.top = "-100px"
             jQuery(@opt_choose).animate(
-                {opacity: '1.0';top:'60px';},
-                t_show,
+                {top:'40px';},
+                50,
                 "linear",=>
-                    echo "Animation End"
-                    @Animation_End = true
+                    jQuery(@opt_choose).animate(
+                        {opacity: '1.0';top:'60px';},
+                        150,
+                        "linear",=>
+                            echo "Animation End"
+                            @Animation_End = true
+                    )
             )
         else
             @opt_choose.style.bottom = "-100px"
             jQuery(@opt_choose).animate(
-                {opacity: '1.0';bottom:'67px';},
-                t_show,
+                {bottom:'30px';},
+                50,
                 "linear",=>
-                    echo "Animation End"
-                    @Animation_End = true
+                    jQuery(@opt_choose).animate(
+                        {opacity: '1.0';bottom:'60px';},
+                        150,
+                        "linear",=>
+                            echo "Animation End"
+                            @Animation_End = true
+                    )
             )
-        
+       
     mouseleave : =>
         echo "mouseleave"
-        @timeOut = setTimeout(=>
-            @current_img.style.backgroundPosition = @bg_pos_normal
-            @opt_choose.style.display = "none"
-        ,50)
+        @current_img.style.backgroundPosition = @bg_pos_normal
+        @opt_choose.style.display = "none"
 
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
@@ -134,7 +145,6 @@ class Option extends Widget
        
         if !@current_up then @opt.reverse()
         for opt,i in @opt
-            #echo i + ":" + opt
             @opt_text_li[i] = create_element("li","opt_text_li",@opt_choose)
             @opt_text_span[i] = create_element("span","opt_text_span",@opt_text_li[i])
             @opt_text_span[i].textContent = opt
@@ -147,13 +157,11 @@ class Option extends Widget
                 that.current_text.textContent = that.current
             )
             jQuery(@opt_text_span[i]).hover((e)->
-                e.stopPropagation()
                 echo "enter"
                 echo that.Animation_End
                 if !that.Animation_End then this.style.backgroundColor = null
                 else this.style.backgroundColor = "rgba(0,0,0,1.0)"
             ,(e)->
-                e.stopPropagation()
                 echo "leave"
                 this.style.backgroundColor = null
             )
