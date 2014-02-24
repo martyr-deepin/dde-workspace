@@ -309,6 +309,8 @@ Client* create_client_from_window(Window w)
     c->clss = NULL;
     c->exec = NULL;
     c->is_maximize = FALSE;
+    c->icon = NULL;
+    c->need_update_icon = FALSE;
     c->use_board = TRUE;
     // initialize workspace
     _update_window_viewport(c);
@@ -328,8 +330,6 @@ Client* create_client_from_window(Window w)
         return NULL;
     }
 
-    c->icon = NULL;
-    c->need_update_icon = FALSE;
     int operator_code = 0;
     try_get_deepin_icon(c->app_id, &c->icon, &operator_code);
     if (operator_code == ICON_OPERATOR_USE_RUNTIME_WITHOUT_BOARD)
@@ -343,13 +343,13 @@ Client* create_client_from_window(Window w)
             _get_launcher_icon(c);
     }
 
-    g_debug("[%s] icon path is %s", __func__, c->icon);
-
     if (c->icon == NULL) {
-        g_debug("[%s] get launcher icon failed", __func__);
+        g_debug("[%s] get launcher icon failed, use update icon.", __func__);
         c->need_update_icon = TRUE;
         _update_window_icon(c);
     }
+
+    g_debug("[%s] icon path is %s", __func__, c->icon);
 
     if (record_file == NULL)
         record_file = load_app_config(RECORD_FILE);
@@ -766,8 +766,18 @@ void _update_window_appid(Client* c)
 
                     if (app_id != NULL) {
                         char* path = g_key_file_get_string(f, c->instance_name, "path", NULL);
-                        if (path != NULL)
+                        if (path != NULL) {
                             desktop_file = g_desktop_app_info_new_from_filename(path);
+                            GKeyFile* k = g_key_file_new();
+                            g_key_file_load_from_file(k, path, G_KEY_FILE_NONE, NULL);
+                            if (c->icon != NULL) {
+                                g_free(c->icon);
+                            }
+                            char* icon = g_key_file_get_string(k, G_KEY_FILE_DESKTOP_GROUP, "Icon", NULL);
+                            c->icon = icon_name_to_path(icon, 48);
+                            g_free(icon);
+                            g_key_file_unref(k);
+                        }
                         g_free(path);
                     }
                 }
@@ -776,19 +786,19 @@ void _update_window_appid(Client* c)
             }
             if (app_id == NULL) {
                 app_id = find_app_id(exec_name, c->title, APPID_FILTER_WMNAME);
-                g_debug("[%s] get app id from WMNAME: %s", __func__, app_id);
+                g_debug("[%s] get app id from WMNAME(%s): %s", __func__, c->title, app_id);
             }
             if (app_id == NULL && c->instance_name != NULL) {
                 app_id = find_app_id(exec_name, c->instance_name, APPID_FILTER_WMINSTANCE);
-                g_debug("[%s] get app id from instance name: %s", __func__, app_id);
+                g_debug("[%s] get app id from instance name(%s): %s", __func__, c->instance_name, app_id);
             }
             if (app_id == NULL && c->clss != NULL) {
                 app_id = find_app_id(exec_name, c->clss, APPID_FILTER_WMCLASS);
-                g_debug("[%s] get app id from class name: %s", __func__, app_id);
+                g_debug("[%s] get app id from class name(%s): %s", __func__, c->clss, app_id);
             }
             if (app_id == NULL && exec_args != NULL && exec_args[0] != '\0') {
                 app_id = find_app_id(exec_name, exec_args, APPID_FILTER_ARGS);
-                g_debug("[%s] get app id from exec args: %s", __func__, app_id);
+                g_debug("[%s] get app id from exec args(%s): %s", __func__, exec_args, app_id);
             }
             if (app_id == NULL) {
                 gulong item = 0;
@@ -801,7 +811,7 @@ void _update_window_appid(Client* c)
             }
             if (app_id == NULL && exec_name != NULL) {
                 app_id = find_app_id(exec_name, exec_name, APPID_FILTER_EXEC_NAME);
-                g_debug("[%s] get app id from exec name: %s", __func__, app_id);
+                g_debug("[%s] get app id from exec name(%s): %s", __func__, exec_name, app_id);
             }
         } else {
             app_id = g_strdup(c->clss);
