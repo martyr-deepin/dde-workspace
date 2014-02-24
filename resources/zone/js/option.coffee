@@ -4,8 +4,8 @@ class Option extends Widget
         echo "new Option:#{@id}, current:#{@current}"
         @opt = []
         @opt_div = []
-        @opt_text = []
-        document.body.style.fontSize = "62.5%"
+        @opt_text_li = []
+        @opt_text_span = []
         @element.style.position = "absolute"
         switch @id
             when "LEFTUP"
@@ -33,54 +33,49 @@ class Option extends Widget
         @opt.push(opt)
 
     option_build:->
-        @YStartShow = -100
-        @YEnd = 70
-        @t_show = 250
         if @current_up
             @current_div_build()
             @opt_choose_div_build()
         else
             @opt_choose_div_build()
             @current_div_build()
-
+        jQuery(@element).hover(@mouseenter,@mouseleave)
         
-        mouseenter = =>
-            echo "mouseenter"
-            clearInterval(@timeOut) if @timeOut
-            @current_img.style.backgroundPosition = @bg_pos_hover
-            
-            for opt,i in @opt
-                if opt is @current then @opt_text[i].style.color = "green"
-                else @opt_text[i].style.color = "#fff"
-            
-            @opt_choose.style.display = "block"
-            @opt_choose.style.opacity = "0.0"
-            if @current_up
-                @opt_choose.style.top = @YStartShow
-                jQuery(@opt_choose).animate(
-                    {opacity: '1.0';top:@YEnd;},
-                    @t_show,
-                    "linear",=>
-                        echo "Animation End"
-                )
-            else
-                @opt_choose.style.bottom = @YStartShow
-                jQuery(@opt_choose).animate(
-                    {opacity: '1.0';bottom:@YEnd;},
-                    @t_show,
-                    "linear",=>
-                        echo "Animation End"
-                )
-
+    mouseenter : =>
+        echo "mouseenter"
+        clearInterval(@timeOut) if @timeOut
+        @current_img.style.backgroundPosition = @bg_pos_hover
         
-        mouseleave = =>
-            echo "mouseleave"
-            @timeOut = setTimeout(=>
-                @current_img.style.backgroundPosition = @bg_pos_normal
-                @opt_choose.style.display = "none"
-            ,50)
+        for opt,i in @opt
+            if opt is @current then @opt_text_span[i].style.color = "#00bbfe"
+            else @opt_text_span[i].style.color = "#afafaf"
         
-        jQuery(@element).hover(mouseenter,mouseleave)
+        @opt_choose.style.display = "block"
+        @opt_choose.style.opacity = "0.0"
+        t_show = 200
+        if @current_up
+            @opt_choose.style.top = "-100px"
+            jQuery(@opt_choose).animate(
+                {opacity: '1.0';top:'60px';},
+                t_show,
+                "linear",=>
+                    echo "Animation End"
+            )
+        else
+            @opt_choose.style.bottom = "-100px"
+            jQuery(@opt_choose).animate(
+                {opacity: '1.0';bottom:'67px';},
+                t_show,
+                "linear",=>
+                    echo "Animation End"
+            )
+        
+    mouseleave : =>
+        echo "mouseleave"
+        @timeOut = setTimeout(=>
+            @current_img.style.backgroundPosition = @bg_pos_normal
+            @opt_choose.style.display = "none"
+        ,50)
 
     current_div_build :->
         @current_div = create_element("div","current_div",@element)
@@ -126,31 +121,25 @@ class Option extends Widget
         @current_img.style.backgroundPosition = @bg_pos_normal
     
     opt_choose_div_build :->
-        @opt_choose = create_element("div","opt_choose",@element)
-        left = "60px"
+        @opt_choose = create_element("ul","opt_choose",@element)
+        left = "50px"
         if @current_left
             @opt_choose.style.left = left
-            @opt_choose.style.textAlign = "left"
         else
             @opt_choose.style.right = left
-            @opt_choose.style.textAlign = "right"
-        
+       
         if !@current_up then @opt.reverse()
         for opt,i in @opt
             #echo i + ":" + opt
-            @opt_text[i] = create_element("div","opt_text",@opt_choose)
-            @opt_text[i].textContent = opt
-            @opt_text[i].value = i
-            if opt is @current then @opt_text[i].style.color = "green"
-            else @opt_text[i].style.color = "#fff"
-            
+            @opt_text_li[i] = create_element("li","opt_text_li",@opt_choose)
+            @opt_text_span[i] = create_element("span","opt_text_span",@opt_text_li[i])
+            @opt_text_span[i].textContent = opt
+            if !@current_left then @opt_text_span[i].style.float = "right"
             that = @
-            @opt_text[i].addEventListener("click",(e)->
+            @opt_text_span[i].addEventListener("click",(e)->
                 e.stopPropagation()
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
         @opt_choose.style.display = "none"
-        @opt_choose.style.opacity = "0.0"
-        @opt_choose.style.top = @YStartShow
