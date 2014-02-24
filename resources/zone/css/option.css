@@ -11,7 +11,6 @@ body{
     /*background-color:rgba(200,200,200,0.2);*/
     display:-webkit-box;
     overflow:hidden;
-    z-index:5;
 }
 
 .current_img{
@@ -37,7 +36,6 @@ body{
     margin:0;
     padding:0;
     height:15.2em;
-    z-index:1;
 }
 
 .opt_text_li{
@@ -51,9 +49,7 @@ body{
     font-size:1.6em;
     font-weight:normal; 
     color:#afafaf;
-}
-
-.opt_text_li span:hover{
-    background-color:rgba(0,0,0,1.0);
     border-radius:4px; 
 }
+
+

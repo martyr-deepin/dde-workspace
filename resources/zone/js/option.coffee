@@ -6,6 +6,7 @@ class Option extends Widget
         @opt_div = []
         @opt_text_li = []
         @opt_text_span = []
+        @Animation_End = false
         @element.style.position = "absolute"
         switch @id
             when "LEFTUP"
@@ -43,6 +44,7 @@ class Option extends Widget
         
     mouseenter : =>
         echo "mouseenter"
+        @Animation_End = false
         clearInterval(@timeOut) if @timeOut
         @current_img.style.backgroundPosition = @bg_pos_hover
         
@@ -60,6 +62,7 @@ class Option extends Widget
                 t_show,
                 "linear",=>
                     echo "Animation End"
+                    @Animation_End = true
             )
         else
             @opt_choose.style.bottom = "-100px"
@@ -68,6 +71,7 @@ class Option extends Widget
                 t_show,
                 "linear",=>
                     echo "Animation End"
+                    @Animation_End = true
             )
         
     mouseleave : =>
@@ -142,4 +146,16 @@ class Option extends Widget
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
+            jQuery(@opt_text_span[i]).hover((e)->
+                e.stopPropagation()
+                echo "enter"
+                echo that.Animation_End
+                if !that.Animation_End then this.style.backgroundColor = null
+                else this.style.backgroundColor = "rgba(0,0,0,1.0)"
+            ,(e)->
+                e.stopPropagation()
+                echo "leave"
+                this.style.backgroundColor = null
+            )
+
         @opt_choose.style.display = "none"
