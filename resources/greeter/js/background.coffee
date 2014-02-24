@@ -7,7 +7,7 @@ class Background extends Widget
 
     constructor:->
         super
-        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
+        Dbus_Account = DCore.DBus.sys("com.deepin.daemon.Accounts")
         
    check_is_greeter:->
         try
@@ -22,9 +22,9 @@ class Background extends Widget
         if is_greeter
             users_name = DCore.Greeter.get_users()
         else
-            users_path = Dbus_Account.ListCachedUsers_sync()
+            users_path = Dbus_Account.UserList
             for path in users_path
-                user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
+                user_dbus = DCore.DBus.sys_object("com.deepin.daemon.Accounts",path,"com.deepin.daemon.Accounts.User")
                 name = user_dbus.UserName
                 id = user_dbus.Uid
                 users_name.push(name)
