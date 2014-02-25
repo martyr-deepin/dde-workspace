@@ -49,6 +49,6 @@ zone.option_build()
 
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
-    DCore.Zone.quit()
+    #DCore.Zone.quit()
 )
  
