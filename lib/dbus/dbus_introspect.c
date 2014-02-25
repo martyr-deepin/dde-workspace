@@ -92,6 +92,9 @@ DBusHandlerResult watch_signal(DBusConnection* connection, DBusMessage *msg,
     if (dbus_message_get_type(msg) != DBUS_MESSAGE_TYPE_SIGNAL)
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 
+    if (__sig_info_hash == NULL)
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+
 
     const char* iface = dbus_message_get_interface(msg);
     const char* s_name = dbus_message_get_member(msg);

@@ -268,13 +268,15 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
 
 
                 for (int i=0; i<p_num; i++) {
-                    DBusMessageIter dict_iter;
-                    OPEN_CONTAINER(&sub_iter, DBUS_TYPE_DICT_ENTRY,
-                            NULL, &dict_iter);
+		    JSStringRef key_str = JSPropertyNameArrayGetNameAtIndex(prop_names, i);
+		    if (JSObjectIsFunction(ctx, JSValueToObject(ctx, JSObjectGetProperty(ctx, JSValueToObject(ctx, jsvalue, NULL), key_str, NULL), NULL))) {
+			continue;
+		    }
+		    DBusMessageIter dict_iter;
+		    OPEN_CONTAINER(&sub_iter, DBUS_TYPE_DICT_ENTRY,
+			    NULL, &dict_iter);
 
-                    JSStringRef key_str = JSPropertyNameArrayGetNameAtIndex(prop_names, i);
-
-                    //TODO: fetch key type
+		    //TODO: fetch key type
                     switch (key_type) {
                         CASE_STRING
                         {
@@ -324,8 +326,7 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                         }
                     }
 
-
-
+		    
                     js_to_dbus(ctx,
                             JSObjectGetProperty(ctx, (JSObjectRef)jsvalue,
                                 key_str, NULL),
