@@ -32,16 +32,21 @@ startManager = DCore.DBus.session_object(
     START_MANAGER.interface
 )
 startManager.connect("AutostartChanged", (status, path)->
-    echo 'autostart changed'
-    for own k, v of hiddenIcons.hiddenIcons
-        if v.basename == get_path_name(path)
+    echo "autostart changed: #{status}"
+    for own k, v of applications
+        if v.basename == "#{get_path_name(path)}.desktop"
             item = v
             break
-    if item?
-        if status == "added"
-            item.add_to_autostart()
-        else if status == "deleted"
-            item.remove_from_autostart()
+
+    if status == "deleted"
+        echo "deleted"
+        item?.setAutostart(false).notify()
+    else if status = "modified"
+        echo "modified"
+        item?.setAutostart(!item.isAutostart).notify()
+    else
+        echo "add"
+        item?.setAutostart(true).notify()
 )
 
 

@@ -26,16 +26,17 @@ gridScrollCallback = (e)->
     # 1. category bar
     # 2. the last shown category's id
     # 3. top only mask when the scroll bar is almost on the # bottom.
+    scrollTop = this.scrollTop
     for i in [0...l]
         if this.childNodes[i].style.display == 'none'
             continue
         candidateId = this.childNodes[i].id
-        if this.scrollTop - offset < 0
+        if scrollTop - offset < 0
             # echo "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
             $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
             categoryBar.showCategory(cid.substr(Category.PREFIX.length))
             break
-        else if this.scrollTop - offset == 0
+        else if scrollTop - offset == 0
             cid = this.childNodes[i].id
             # echo "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
             if cid == "c-2"

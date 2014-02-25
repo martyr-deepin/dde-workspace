@@ -240,9 +240,14 @@ class Item extends Widget
             @display_icon()
 
     add_to_autostart: ->
-        if startManager.AddAutostart_sync(@basename)
+        echo @basename
+        if startManager.AddAutostart_sync(@path)
+            echo 'add success'
             @isAutostart = true
-            applications[@id].setAutostart(true).notify()
+            # if @id.indexOf("_") != -1
+            #     applications[@id.substr(3)].setAutostart(true).notify()
+            # else
+            #     applications[@id].setAutostart(true).notify()
             Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
                 AUTOSTART_ICON.SIZE)
             last = @element.lastChild
@@ -251,9 +256,9 @@ class Item extends Widget
             last.style.visibility = 'visible'
 
     remove_from_autostart: ->
-        if startManager.RemoveAutostart_sync(@basename)
+        if startManager.RemoveAutostart_sync(@path)
             @isAutostart = false
-            applications[@id].setAutostart(false).notify()
+            # applications[@id].setAutostart(false).notify()
             last = @element.lastChild
             if last.tagName == 'IMG'
                 last.style.visibility = 'hidden'
