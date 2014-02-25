@@ -149,14 +149,13 @@ class Option extends Widget
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
-#            jQuery(@opt_text_span[i]).hover((e)->
-                #echo "span enter"
-                #echo that.Animation_End
-                #if !that.Animation_End then this.style.backgroundColor = null
-                #else this.style.backgroundColor = "rgb(0,0,0)"
-            #,(e)->
-                #echo "span leave"
-                #this.style.backgroundColor = null
-            #)
+            jQuery(@opt_text_span[i]).hover((e)->
+                echo "span enter"
+                if !that.Animation_End then this.style.backgroundColor = null
+                else this.style.backgroundColor = "rgb(0,0,0)"
+            ,(e)->
+                echo "span leave"
+                this.style.backgroundColor = null
+            )
 
         @opt_choose.style.display = "none"
