@@ -145,7 +145,6 @@ body {
   padding:0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-box-pack: center;
   -webkit-box-align: center;
   position: relative;
   margin: 10px 0;
@@ -157,17 +156,6 @@ body {
   text-align: center;
   border: 1px rgba(255, 255, 255, 0.0) solid;
 }
-.item_name {
-  max-width: 140px;
-  word-wrap: break-word;
-  -webkit-line-clamp: 2;
-
-  text-shadow: 0px 2px 2px rgba(0,0,0,0.7);
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 13px;
-}
 .item_selected {
   background: rgba(255, 255, 255, 0.15);
   border: 1px rgba(255, 255, 255, 0.25) solid;
@@ -175,6 +163,7 @@ body {
 }
 .item img {
   border-radius: 6px;
+  margin-top: 40px;
   margin-bottom: 10px;
   max-height: 48px;
   max-width: 48px;
@@ -189,6 +178,17 @@ body {
 .vbar_img {
   height: 48px;
 }
+.item_name {
+  max-width: 140px;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
+
+  text-shadow: 0px 2px 2px rgba(0,0,0,0.7);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
 
 .hide_icon img {
   opacity: 0.3;
@@ -196,7 +196,7 @@ body {
 
 .autostart_flag {
   position: absolute;
-  top: 71px;
+  top: 30px;
   left: 56px;
 }
 
