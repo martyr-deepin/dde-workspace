@@ -53,7 +53,6 @@
 
 static GSGrab* grab = NULL;
 static GtkWidget* lock_container = NULL;
-static GSettings* dde_bg_g_settings = NULL;
 const gchar *username = NULL;
 
 JS_EXPORT_API
@@ -160,6 +159,7 @@ prevent_exit (GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
+#ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
@@ -168,6 +168,7 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
     NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (lock_container), 0);
 }
+#endif
 
 static void
 sigterm_cb (int signum)
@@ -176,6 +177,7 @@ sigterm_cb (int signum)
     gtk_main_quit ();
 }
 
+#ifdef NDEBUG
 static void
 lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
@@ -259,6 +261,7 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
     return GDK_FILTER_CONTINUE;
 }
+#endif
 
 int main (int argc, char **argv)
 {
