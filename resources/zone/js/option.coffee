@@ -101,9 +101,9 @@ class Option extends Widget
             return "#{n * 102}px"
         Hover_X = 0
         Hover_Y = 2
-        left = "60px"
-        top = "13px"
-        bottom = "17px"
+        left = 60
+        top = 13
+        bottom = top + 5
         
         switch @id
             when "LEFTUP"
@@ -130,7 +130,7 @@ class Option extends Widget
     
     opt_choose_div_build :->
         @opt_choose = create_element("ul","opt_choose",@element)
-        left = "50px"
+        left = 50
         if @current_left
             @opt_choose.style.left = left
         else
