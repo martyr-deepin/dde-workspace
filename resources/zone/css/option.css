@@ -39,6 +39,7 @@ body{
 }
 
 .opt_text_li{
+    /*position:relative;*/
     list-style:none;
 }
 .opt_text_li span{
@@ -52,4 +53,6 @@ body{
     border-radius:4px; 
 }
 
-
+.opt_text_li span:hover{
+    background-color:rgb(0,0,0);
+}

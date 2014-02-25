@@ -41,50 +41,43 @@ class Option extends Widget
             @opt_choose_div_build()
             @current_div_build()
         jQuery(@element).hover(@mouseenter,@mouseleave)
-        @element.addEventListener("mouseout",=>
-            echo "mouseout"
-            @current_img.style.backgroundPosition = @bg_pos_normal
-            @opt_choose.style.display = "none"
-        )
+    
     mouseenter : =>
         echo "mouseenter"
-        @Animation_End = false
         @current_img.style.backgroundPosition = @bg_pos_hover
         
         for opt,i in @opt
             if opt is @current then @opt_text_span[i].style.color = "#00bbfe"
             else @opt_text_span[i].style.color = "#afafaf"
-        
         @opt_choose.style.display = "block"
-        @opt_choose.style.opacity = "0.0"
-        t_show = 200
-        if @current_up
-            @opt_choose.style.top = "-100px"
-            jQuery(@opt_choose).animate(
-                {top:'40px';},
-                50,
+        @animation_show(@opt_choose,@current_up)
+        
+    animation_show:(el,current_up)->
+        @Animation_End = false
+        t_show = 150
+        YStartTop = 20
+        YEndTop = 60
+        YStartBottom = YStartTop + 7
+        YEndTopBottom = YEndTop + 7
+        
+        el.style.opacity = "0.0"
+        if current_up
+            el.style.top = YStartTop
+            jQuery(el).animate(
+                {opacity: '1.0';top:YEndTop;},
+                t_show,
                 "linear",=>
-                    jQuery(@opt_choose).animate(
-                        {opacity: '1.0';top:'60px';},
-                        150,
-                        "linear",=>
-                            echo "Animation End"
-                            @Animation_End = true
-                    )
+                    echo "Animation End"
+                    @Animation_End = true
             )
         else
-            @opt_choose.style.bottom = "-100px"
-            jQuery(@opt_choose).animate(
-                {bottom:'30px';},
-                50,
+            el.style.bottom = YStartBottom
+            jQuery(el).animate(
+                {opacity: '1.0';bottom:YEndTopBottom;},
+                t_show,
                 "linear",=>
-                    jQuery(@opt_choose).animate(
-                        {opacity: '1.0';bottom:'60px';},
-                        150,
-                        "linear",=>
-                            echo "Animation End"
-                            @Animation_End = true
-                    )
+                    echo "Animation End"
+                    @Animation_End = true
             )
        
     mouseleave : =>
@@ -156,14 +149,14 @@ class Option extends Widget
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
             )
-            jQuery(@opt_text_span[i]).hover((e)->
-                echo "enter"
-                echo that.Animation_End
-                if !that.Animation_End then this.style.backgroundColor = null
-                else this.style.backgroundColor = "rgba(0,0,0,1.0)"
-            ,(e)->
-                echo "leave"
-                this.style.backgroundColor = null
-            )
+#            jQuery(@opt_text_span[i]).hover((e)->
+                #echo "span enter"
+                #echo that.Animation_End
+                #if !that.Animation_End then this.style.backgroundColor = null
+                #else this.style.backgroundColor = "rgb(0,0,0)"
+            #,(e)->
+                #echo "span leave"
+                #this.style.backgroundColor = null
+            #)
 
         @opt_choose.style.display = "none"
