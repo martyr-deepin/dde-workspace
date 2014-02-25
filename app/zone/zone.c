@@ -77,6 +77,7 @@ prevent_exit (GtkWidget* w, GdkEvent* e)
 }
 
 
+#ifdef NDEBUG
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
@@ -85,6 +86,7 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
     NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
+#endif
 
 static void
 G_GNUC_UNUSED sigterm_cb (int signum)
@@ -93,6 +95,7 @@ G_GNUC_UNUSED sigterm_cb (int signum)
     gtk_main_quit ();
 }
 
+#ifdef NDEBUG
 static void
 show_cb (GtkWindow* container, gpointer data)
 {
@@ -179,6 +182,7 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 
     return GDK_FILTER_CONTINUE;
 }
+#endif
 
 
 PRIVATE
