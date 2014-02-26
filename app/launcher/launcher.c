@@ -435,8 +435,6 @@ void start_check()
 
 int main(int argc, char* argv[])
 {
-    start_check();
-    g_warning("start check done");
     gboolean not_shows_launcher = FALSE;
 
     if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))
@@ -500,12 +498,16 @@ int main(int argc, char* argv[])
         }
     }
 
+    start_check();
+    g_warning("start check done");
+
 #ifndef NDEBUG
     if (is_daemonize)
 #endif
         daemonize();
 
     singleton(LAUNCHER_ID_NAME);
+    g_warning("singleton")
     check_version();
 
     signal(SIGKILL, exit_signal_handler);
