@@ -104,4 +104,5 @@ bind_events()
 path = daemon.GetBackgroundPict_sync()
 setBackground(path)
 DCore.Launcher.webview_ok()
+echo "webview ok"
 DCore.Launcher.test()
