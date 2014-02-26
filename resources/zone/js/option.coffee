@@ -54,7 +54,7 @@ class Option extends Widget
         
     animation_show:(el,current_up)->
         @Animation_End = false
-        t_show = 150
+        t_show = 80
         YStartTop = 20
         YEndTop = 60
         YStartBottom = YStartTop + 7

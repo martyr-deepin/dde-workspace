@@ -3,12 +3,12 @@ body{
 }
 
 .Option{
-    background-color:rgba(0,0,100,0.2);
+    /*background-color:rgba(0,0,100,0.2);*/
     width:180px;
 }
 
 .current_div{
-    background-color:rgba(200,200,200,0.2);
+    /*background-color:rgba(200,200,200,0.2);*/
     display:-webkit-box;
     overflow:hidden;
 }
@@ -21,7 +21,7 @@ body{
 }
 
 .current_text{
-    background-color:rgba(0,200,200,0.2);
+    /*background-color:rgba(0,200,200,0.2);*/
     position:absolute;
     /*margin-top:0;*/
     /*height:60px;*/
