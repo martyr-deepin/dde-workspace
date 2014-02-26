@@ -7,6 +7,7 @@ add_subdirectory(app_tray)
 #add_subdirectory(dominant_color)
 add_subdirectory(greeter)
 add_subdirectory(zone)
+add_subdirectory(osd)
 
 install(
     DIRECTORY ${PROJECT_SOURCE_DIR}/resources/common
