@@ -47,19 +47,23 @@ char* get_blur_path()
     if (proxy == NULL)
         return NULL;
 
-    char uid[10] = {0};
-    g_snprintf(uid, 10, "%d", getuid());
     GError* err = NULL;
+    GSettings* settings = g_settings_new("com.deepin.dde.personalization");
+    char* pic = g_settings_get_string(settings, "current-picture");
     GVariant* res =  g_dbus_proxy_call_sync(proxy,
                                             "BackgroundBlurPictPath",
-                                            g_variant_new("(ss)",
-                                                          uid,
-                                                          ""),
+                                            g_variant_new("(ssdd)",
+                                                          pic,
+                                                          "",
+                                                          30,
+                                                          1
+                                                          ),
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,  // timeout
                                             NULL,  // cancellable
                                             &err
                                            );
+    g_free(pic);
     g_object_unref(proxy);
 
     if (err != NULL) {
@@ -72,8 +76,8 @@ char* get_blur_path()
     }
 
     char* blur_path = NULL;
-    gboolean has_blur_path = FALSE;
-    g_variant_get(res, "((bs))", &has_blur_path, &blur_path);
+    gint32 status = -1;
+    g_variant_get(res, "(is)", &status, &blur_path);
     g_variant_unref(res);
     return blur_path;
 }

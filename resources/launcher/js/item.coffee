@@ -244,9 +244,9 @@ class Item extends Widget
             @display_icon()
 
     add_to_autostart: ->
-        echo @basename
+        # echo @basename
         if startManager.AddAutostart_sync(@path)
-            echo 'add success'
+            # echo 'add success'
             @isAutostart = true
             # if @id.indexOf("_") != -1
             #     applications[@id.substr(3)].setAutostart(true).notify()
