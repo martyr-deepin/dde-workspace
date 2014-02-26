@@ -18,12 +18,30 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+uninstallReport = (status, msg)->
+    notification = DCore.DBus.session(NOTIFICATIONS)
+
+    if status == UNINSTALL_STATUS.FAILED
+        message = "FAILED"
+    else if status == UNINSTALL_STATUS.SUCCESS
+        message = "SUCCESSFUL"
+
+    echo "uninstall #{message}, #{msg}"
+    icon_launcher = DCore.get_theme_icon("start-here", 48)
+    notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
+
+
 uninstall = (opt) ->
-    # echo JSON.stringify(opt)
-    packages = daemon.GetPackageNames_sync(opt.path)
+    echo "#{opt.item.path}, #{opt.purge}"
+    item = opt.item
+    packages = daemon.GetPackageNames_sync(item.path)
     if packages.length == 0
-        echo "get packages failed"
+        uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
+        item.status = SOFTWARE_STATE.IDLE
+        item.show()
+        delete uninstalling_apps[item.id]
         return
+    opt.item.packages = packages
     # echo packages.join()
     softwareManager.uninstall_pkg(packages.join(" "), opt.purge)
 

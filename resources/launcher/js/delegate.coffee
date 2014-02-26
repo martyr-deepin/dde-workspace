@@ -18,43 +18,48 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-targetId = (e)->
+Event = (e)->
     target = e.target
+    parent = target.parentNode
+    element = null
     id = null
     # echo target.tagName
     if target.tagName == "IMG"
-        id = target.parentNode.getAttribute("appid")
+        id = parent.getAttribute("appid")
+        element = parent
     else if target.tagName == "DIV"
         if target.classList.contains("Item")
             id = target.getAttribute("appid")
-        else if target.parentNode.classList.contains("Item")
-            id = target.parentNode.getAttribute("appid")
+            element = target
+        else if parent.classList.contains("Item")
+            id = parent.getAttribute("appid")
+            element = parent
 
-    id
+    id: id, target: element, originalEvent: e
 
 
 delegateFactory = (fn)->
     (e)->
-        id = targetId(e)
-        if id? && (item = Widget.look_up(id))?
-            fn(e, id, item)
+        event = Event(e)
+        if event.id? && (item = Widget.look_up(event.id))?
+            fn(event, item)
 
-clickDelegate = delegateFactory((e, id, item)->
-        item.on_click(e)
+clickDelegate = delegateFactory((e, item)->
+    item.on_click(e)
 )
 
-menuDelegate = delegateFactory((e, id, item)->
-        item.on_rightclick(e)
+menuDelegate = delegateFactory((e, item)->
+    item.on_rightclick(e)
 )
 
-mouseOutDelegate = delegateFactory((e, id, item)->
+mouseOutDelegate = delegateFactory((e, item)->
     item.on_mouseout(e)
 )
 
-mouseOverDelegate = delegateFactory((e, id, item)->
+mouseOverDelegate = delegateFactory((e, item)->
     item.on_mouseover(e)
 )
 
-dragStartDelegate = delegateFactory((e, id, item)->
+dragStartDelegate = delegateFactory((e, item)->
     item.on_dragstart(e)
 )

@@ -18,6 +18,7 @@ all: ${com_coffee} \
 	item_info.coffee \
 	item.coffee \
 	hidden_icon.coffee \
+	favor_list.coffee \
 	grid.coffee \
 	search_result.coffee \
 	event.coffee \
