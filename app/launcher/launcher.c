@@ -399,9 +399,43 @@ void exit_signal_handler(int signum)
     }
 }
 
+void start_check()
+{
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      NULL,
+                                                      "com.deepin.dde.daemon.Launcher",
+                                                      "/com/deepin/dde/daemon/Launcher",
+                                                      "com.deepin.dde.daemon.Launcher",
+                                                      NULL,
+                                                      NULL
+                                                      );
+
+    if (proxy == NULL)
+        exit(0);
+
+    GError* err = NULL;
+    g_variant_unref(g_dbus_proxy_call_sync(proxy,
+                                           "GetBackgroundPict",
+                                           NULL,
+                                           G_DBUS_CALL_FLAGS_NONE,
+                                           -1,  // timeout
+                                           NULL,  // cancellable
+                                           &err
+                                          ));
+    g_object_unref(proxy);
+
+    if (err != NULL) {
+        g_warning("[%s:%s] %s", __FILE__, __func__, err->message);
+        g_error_free(err);
+        exit(0);
+    }
+}
+
 
 int main(int argc, char* argv[])
 {
+    start_check();
     gboolean not_shows_launcher = FALSE;
 
     if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))

@@ -55,18 +55,29 @@ softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
 softwareManager.connect("update_signal", (info)->
     # echo info
     status = info[0][0]
-    if status == UNINSTALL_STATUS.FALIED
-        message = info[1][3]
-        item = Widget.look_up(deamon.GetAppId_sync())
-        item.status = SOFTWARE_STATE.IDLE
-        item.show()
-        delete uninstalling_apps[item.id]
+    package_name = info[0][1][0]
+    echo status
+    if status == UNINSTALL_STATUS.FAILED
+        message = info[0][1][3]
+        for own id, item of uninstalling_apps
+            if item.packages.indexOf(package_name) != -1
+                item.status = SOFTWARE_STATE.IDLE
+                item.show()
+                delete uninstalling_apps[item.id]
+                break
     else if status == UNINSTALL_STATUS.SUCCESS
         message = "success"
-        delete uninstalling_apps[deamon.GetAppId_sync()]
+        for own id, item of uninstalling_apps
+            if item.packages.indexOf(packages) != -1
+                delete uninstalling_apps[item.id]
+    if message
+        uninstallReport(status, "#{message}")
 )
 
 
 GRAPH_API = "com.deepin.api.Graph"
 background = DCore.DBus.session(GRAPH_API)
 background.connect("BlurPictChanged", setBackground)
+
+
+NOTIFICATIONS = "org.freedesktop.Notifications"

@@ -134,6 +134,7 @@ class Item extends Widget
                 @img.src = src
 
     on_click: (e)->
+        e = e.originalEvent
         e?.stopPropagation()
         @element.style.cursor = "wait"
         startManager.Launch(@basename)
@@ -142,6 +143,7 @@ class Item extends Widget
         exit_launcher()
 
     on_dragstart: (e)=>
+        e = e.originalEvent
         e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
@@ -154,6 +156,7 @@ class Item extends Widget
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
             new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@displayMode]),
+            # new MenuItem(7, FAVOR_MESSAGE[@isFavof]),
             new MenuSeparator(),
             new MenuItem(3, _("Send to d_esktop")).setActive(
                 not daemon.IsOnDesktop_sync(@path)
@@ -195,7 +198,8 @@ class Item extends Widget
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
-                    uninstall(path:@path, purge:true)
+                    echo 'start uninstall'
+                    uninstall(item:@, purge:true)
             when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
@@ -240,9 +244,9 @@ class Item extends Widget
             @display_icon()
 
     add_to_autostart: ->
-        echo @basename
+        # echo @basename
         if startManager.AddAutostart_sync(@path)
-            echo 'add success'
+            # echo 'add success'
             @isAutostart = true
             # if @id.indexOf("_") != -1
             #     applications[@id.substr(3)].setAutostart(true).notify()
@@ -354,18 +358,21 @@ class Item extends Widget
             i += 1
         i
 
-    on_mouseover: =>
+    on_mouseover: (e)=>
+        # this event is a wrap, use e.originalEvent to get the original event
+        target = e.target
         Item.hover_item_id = @id
         if not Item.clean_hover_temp
             # not use @select() for storing status.
-            @element.style.background = "rgba(255, 255, 255, 0.15)"
-            @element.style.border = "1px rgba(255, 255, 255, 0.25) solid"
-            @element.style.borderRadius = "4px"
+            target.style.background = "rgba(255, 255, 255, 0.15)"
+            target.style.border = "1px rgba(255, 255, 255, 0.25) solid"
+            target.style.borderRadius = "4px"
 
-    on_mouseout: =>
-        @element.style.border = "1px rgba(255, 255, 255, 0.0) solid"
-        @element.style.background = ""
-        @element.style.borderRadius = ""
+    on_mouseout: (e)=>
+        target = e.target
+        target.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        target.style.background = ""
+        target.style.borderRadius = ""
 
 
 class SearchItem extends Item

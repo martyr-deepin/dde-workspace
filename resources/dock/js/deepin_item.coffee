@@ -323,6 +323,5 @@ try
     icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-show_desktop = new ShowDesktop("show_desktop", icon_desktop, _("Show/Hide Desktop"))
 trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 clock = create_clock(DCore.Dock.clock_type())

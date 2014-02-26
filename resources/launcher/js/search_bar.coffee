@@ -65,8 +65,11 @@ class SearchBar
                 if res.children[i].style.display != 'none'
                     res.children[i].style.display = 'none'
 
+            if ids.length == 0
+                return
+
             for i in [ids.length-1..0]
-                echo ids[i]
+                echo "search Item id: #{ids[i]}"
                 if (item = Widget.look_up("se_#{ids[i]}"))?
                     res.removeChild(item.element)
                     item.element.style.display = '-webkit-box'

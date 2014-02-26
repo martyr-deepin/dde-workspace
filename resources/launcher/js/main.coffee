@@ -87,12 +87,18 @@ init_all_applications = ->
 selector = new Selector()
 searchBar = new SearchBar()
 init_all_applications()
+echo "loading all applications done"
 categoryInfos = daemon.CategoryInfos_sync()
+echo "get category infos done"
 categoryBar = new CategoryBar(categoryInfos)
+echo "load category bar done"
 categoryList = new CategoryList(categoryInfos)
+echo "load category list done"
 switcher = new Switcher()
+echo "load switcher done"
 switcher.hideCategory()
 hiddenIcons = new HiddenIcons()
+echo "load hidden icons done"
 hiddenIcons.hide()
 bind_events()
 path = daemon.GetBackgroundPict_sync()
