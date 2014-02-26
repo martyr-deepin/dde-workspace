@@ -17,7 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class osd extends Widget
+class OSD extends Widget
 
     constructor:->
         super
@@ -39,7 +39,7 @@ document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
 osd = new OSD()
-osd.option_build()
+#osd.option_build()
 
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
