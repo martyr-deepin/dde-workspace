@@ -5,8 +5,6 @@ if (TEST)
   add_subdirectory(test)
 endif()
 
-add_subdirectory(go)
-
 GEN_JSC_SOURCE(JSC_GEN "jsc")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "launcher")
 
