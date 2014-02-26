@@ -50,14 +50,14 @@ char* get_blur_path()
     GError* err = NULL;
     GSettings* settings = g_settings_new("com.deepin.dde.personalization");
     char* pic = g_settings_get_string(settings, "current-picture");
-    GVariant* res =  g_dbus_proxy_call_sync(proxy,
-                                            "BackgroundBlurPictPath",
-                                            g_variant_new("(ssdd)",
-                                                          pic,
-                                                          "",
-                                                          30,
-                                                          1
-                                                          ),
+    GVariant* res = g_dbus_proxy_call_sync(proxy,
+                                           "BackgroundBlurPictPath",
+                                           g_variant_new("(ssdd)",
+                                                         pic + strlen("file://"),
+                                                         "",
+                                                         30,
+                                                         1
+                                                        ),
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,  // timeout
                                             NULL,  // cancellable
