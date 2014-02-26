@@ -65,8 +65,10 @@ struct {
 
 #ifndef NDEBUG
 PRIVATE gboolean is_daemonize = FALSE;
-PRIVATE gboolean not_exit = FALSE;
+#else
+PRIVATE gboolean is_daemonize = TRUE;
 #endif
+PRIVATE gboolean not_exit = FALSE;
 
 
 PRIVATE
@@ -227,17 +229,11 @@ void empty()
 JS_EXPORT_API
 void launcher_exit_gui()
 {
-#ifndef NDEBUG
     if (is_daemonize || not_exit) {
-#endif
-
         launcher_hide();
-
-#ifndef NDEBUG
     } else {
         launcher_quit();
     }
-#endif
 }
 
 
@@ -443,12 +439,19 @@ int main(int argc, char* argv[])
 #ifndef NDEBUG
     if (argc == 2 && 0 == g_strcmp0("-D", argv[1]))
         is_daemonize = TRUE;
+#endif
 
     if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
+#ifndef NDEBUG
         not_shows_launcher = TRUE;
-        not_exit = TRUE;
-    }
+#else
+        not_shows_launcher = FALSE;
 #endif
+        not_exit = TRUE;
+#ifdef NDEBUG
+        is_daemonize = FALSE;
+#endif
+    }
 
     if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
         pid_t pid = read_pid();
@@ -501,13 +504,11 @@ int main(int argc, char* argv[])
     start_check();
     g_warning("start check done");
 
-#ifndef NDEBUG
     if (is_daemonize)
-#endif
         daemonize();
 
     singleton(LAUNCHER_ID_NAME);
-    g_warning("singleton")
+    g_warning("singleton");
     check_version();
 
     signal(SIGKILL, exit_signal_handler);
@@ -566,6 +567,7 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     setup_launcher_dbus_service();
+    g_warning("start launcher dbus service done");
 
 #ifndef NDEBUG
     // monitor_resource_file("launcher", webview);
@@ -573,7 +575,10 @@ int main(int argc, char* argv[])
 #endif
 
     gtk_widget_show_all(webview);
+    g_warning("show all widget done");
+    g_warning("show launcher: %d", not_shows_launcher);
     if (!not_shows_launcher) {
+        g_warning("show launcher");
         launcher_show();
     }
     gtk_main();
