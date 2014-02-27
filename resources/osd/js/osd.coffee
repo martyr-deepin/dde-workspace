@@ -43,6 +43,6 @@ osd = new OSD()
 
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
-    DCore.osd.quit()
+    #DCore.Osd.quit()
 )
  
