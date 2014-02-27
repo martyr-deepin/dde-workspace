@@ -96,7 +96,7 @@ void update_display_info()
         return;
     }
     current_screen.index = gdk_screen_get_monitor_at_point(current_screen.screen, x, y);
-    g_debug("monitor:%d", current_screen.index);
+    g_debug("[%s] monitor:%d", __func__, current_screen.index);
     gdk_screen_get_monitor_geometry(current_screen.screen, current_screen.index, &launcher);
     g_debug("[%s] new geometry: %dx%d+%d+%d", __func__, launcher.width, launcher.height, launcher.x, launcher.y);
 }
@@ -135,6 +135,7 @@ PRIVATE
 void _update_size(GdkScreen* screen G_GNUC_UNUSED,
                   gpointer userdata G_GNUC_UNUSED)
 {
+    g_debug("[%s]", __func__);
     update_display_info();
     set_size();
 }
@@ -470,7 +471,7 @@ int main(int argc, char* argv[])
 
     if (argc == 2 && 0 == g_strcmp0("-H", argv[1])) {
         if (is_application_running(LAUNCHER_ID_NAME)) {
-            g_warning(_("another instance of launcher is running...\n"));
+            g_message(_("another instance of launcher is running...\n"));
             return 0;
         }
 
@@ -493,7 +494,7 @@ int main(int argc, char* argv[])
 #endif
 
     if (is_application_running(LAUNCHER_ID_NAME)) {
-        g_warning(_("another instance of launcher is running...\n"));
+        g_message(_("another instance of launcher is running...\n"));
 
         if (!not_shows_launcher) {
             dbus_launcher_toggle();
@@ -501,15 +502,24 @@ int main(int argc, char* argv[])
         }
     }
 
-    start_check();
-    g_warning("start check done");
-
     if (is_daemonize)
         daemonize();
 
+    gtk_init(&argc, &argv);
+    g_message("gtk init done");
+
+#ifdef NDEBUG
+    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
+#endif
+
+    start_check();
+    g_message("start check done");
+
     singleton(LAUNCHER_ID_NAME);
-    g_warning("singleton");
+    g_message("singleton done");
     check_version();
+    g_message("check version done");
 
     signal(SIGKILL, exit_signal_handler);
     signal(SIGTERM, exit_signal_handler);
@@ -520,18 +530,14 @@ int main(int argc, char* argv[])
 #endif
     save_pid();
 
+    init_i18n();
+    g_message("init i18n done");
+
     g_timeout_add_seconds(3, _launcher_size_monitor, NULL);
 
-    init_i18n();
-    gtk_init(&argc, &argv);
     container = create_web_container(FALSE, TRUE);
     gtk_window_set_decorated(GTK_WINDOW(container), FALSE);
     gtk_window_set_wmclass(GTK_WINDOW(container), "dde-launcher", "DDELauncher");
-
-#ifdef NDEBUG
-    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
-#endif
     set_default_theme("Deepin");
     set_desktop_env_name("Deepin");
 
@@ -567,7 +573,7 @@ int main(int argc, char* argv[])
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
 
     setup_launcher_dbus_service();
-    g_warning("start launcher dbus service done");
+    g_message("start launcher dbus service done");
 
 #ifndef NDEBUG
     // monitor_resource_file("launcher", webview);
@@ -575,10 +581,7 @@ int main(int argc, char* argv[])
 #endif
 
     gtk_widget_show_all(webview);
-    g_warning("show all widget done");
-    g_warning("show launcher: %d", not_shows_launcher);
     if (!not_shows_launcher) {
-        g_warning("show launcher");
         launcher_show();
     }
     gtk_main();

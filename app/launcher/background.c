@@ -37,9 +37,9 @@ char* get_blur_path()
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
-                                                      "com.deepin.api.Graph",
-                                                      "/com/deepin/api/Graph",
-                                                      "com.deepin.api.Graph",
+                                                      "com.deepin.api.Graphic",
+                                                      "/com/deepin/api/Graphic",
+                                                      "com.deepin.api.Graphic",
                                                       NULL,
                                                       NULL
                                                       );
@@ -158,4 +158,3 @@ void set_background(GdkWindow* win,  double width, double height)
 
     g_free(blur_path);
 }
-

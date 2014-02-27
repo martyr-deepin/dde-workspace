@@ -758,6 +758,11 @@ void _update_window_appid(Client* c)
         get_pid_info(*s_pid, &exec_name, &exec_args);
         if (exec_name != NULL) {
             g_debug("[%s] exec_name: %s, exec_args: %s", __func__, exec_name, exec_args);
+            if (g_str_has_prefix(exec_name, "google-chrome-")) {
+                g_warning("[%s] map google-chrome-* to google-chrome", __func__);
+                g_free(exec_name);
+                exec_name = g_strdup("google-chrome");
+            }
             g_assert(c->title != NULL);
             if (app_id == NULL) {
                 GKeyFile* f = load_app_config(FILTER_FILE);
