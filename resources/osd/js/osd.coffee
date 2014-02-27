@@ -17,6 +17,9 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+set_el_bg =(el,src)->
+    el.style.backgroundImage = "url(#{src})"
+
 class OSD extends Widget
 
     constructor:->
@@ -33,16 +36,24 @@ class OSD extends Widget
             @opt[i] = new Option(@option[i])
             @opt[i].option_build()
             @element.appendChild(@opt[i].element)
+    
+    get_option:->
+        return DCore.Osd.get_args()
 
+    set_bg:(option)->
+        set_el_bg(@element,"img/#{option}.png")
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
 osd = new OSD()
 #osd.option_build()
+osd.set_bg("VoiceAjust")
 
+click_time = 0
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
-    #DCore.Osd.quit()
+    click_time++
+    DCore.Osd.quit() if click_time % 2 == 0
 )
  

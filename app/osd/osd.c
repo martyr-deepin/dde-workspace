@@ -57,6 +57,29 @@ PRIVATE GtkWidget* container = NULL;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 
+static struct {
+    gboolean is_CapsLock;
+    gboolean is_NumLock;
+    gboolean is_LightAjust;
+    gboolean is_VoiceAjust;
+    gboolean is_WifiOn;
+    gboolean is_InputSwitch;
+    gboolean is_KeyLayout;
+    gboolean is_ShowMode;
+} option = {FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE};
+static GOptionEntry entries[] = {
+    {"CapsLock", 'c', 0, G_OPTION_ARG_NONE, &option.is_CapsLock, "CapsLock", NULL},
+    {"NumLock", 'n', 0, G_OPTION_ARG_NONE, &option.is_NumLock, "NumLock", NULL},
+    {"LightAjust", 'l', 0, G_OPTION_ARG_NONE, &option.is_LightAjust, "LightAjust", NULL},
+    {"VoiceAjust", 'v', 0, G_OPTION_ARG_NONE, &option.is_VoiceAjust, "VoiceAjust", NULL},
+    {"WifiOn", 'w', 0, G_OPTION_ARG_NONE, &option.is_WifiOn, "WifiOn or off", NULL},
+    {"InputSwitch", 'i', 0, G_OPTION_ARG_NONE, &option.is_InputSwitch, "InputSwitch", NULL},
+    {"KeyLayout", 'k', 0, G_OPTION_ARG_NONE, &option.is_KeyLayout, "KeyLayout", NULL},
+    {"ShowMode", 's', 0, G_OPTION_ARG_NONE, &option.is_ShowMode, "ShowMode", NULL}
+};
+
+
+
 JS_EXPORT_API
 void osd_quit()
 {
@@ -99,6 +122,15 @@ void check_version()
     if (version != NULL)
         g_free(version);
 }
+
+JS_EXPORT_API
+void osd_get_args()
+{
+    return input_args;
+}
+
+
+
 
 int main (int argc, char **argv)
 {
@@ -146,13 +178,13 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    GdkRGBA rgba = { 0, 0, 0, 0.85 };
+    GdkRGBA rgba = { 0, 0, 0, 0.8 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
     
     gtk_widget_show_all (container);
-    gtk_widget_set_opacity (container,0.99);
+    gtk_widget_set_opacity (container,0.8);
 
     /*gdk_window_focus (gtk_widget_get_window (container), 0);*/
     gdk_window_stick (gdkwindow);
