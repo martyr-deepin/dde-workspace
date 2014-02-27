@@ -126,7 +126,7 @@ void check_version()
 JS_EXPORT_API
 void osd_get_args()
 {
-    return input_args;
+    /*return input_args;*/
 }
 
 
