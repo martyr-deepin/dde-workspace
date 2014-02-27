@@ -44,6 +44,9 @@ class Item extends Widget
         @element.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
+        @elements = favor: null, search: null
+        @favorElement = null
+        @searchElement = null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -75,6 +78,12 @@ class Item extends Widget
             when "FavorItem"
                 categoryList.favor.removeItem(@id)
         delete Widget.object_table[@id]
+
+    add:(parent, pid)->
+        el = @element.cloneNode(true)
+        @elements[pid] = el
+        parent.appendChild(el)
+        el
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -205,7 +214,7 @@ class Item extends Widget
 
     hide_icon: (e)=>
         @displayMode = "hidden"
-        applications[@id].setDisplayMode("hidden").notify()
+        # applications[@id].setDisplayMode("hidden").notify()
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
         if not Item.display_temp and not is_show_hidden_icons
@@ -214,7 +223,6 @@ class Item extends Widget
          if !hiddenIcons.contains(@id)
              # echo 'save'
             hiddenIcons.add(@id, @).save()
-        categoryBar.hideEmptyCategories()
         categoryList.hideEmptyCategories()
         hidden_icons_num = hiddenIcons.number()
         if hidden_icons_num == 0
@@ -222,7 +230,7 @@ class Item extends Widget
 
     display_icon: (e)=>
         @displayMode = "display"
-        applications[@id].setDisplayMode("display").notify()
+        # applications[@id].setDisplayMode("display").notify()
         @element.style.display = '-webkit-box'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)

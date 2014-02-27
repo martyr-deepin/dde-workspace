@@ -27,15 +27,15 @@ class Switcher
             e.stopPropagation()
             e.preventDefault()
             if @isShowCategory
-                @hideCategory()
+                @switchToFavor()
             else
-                @showCategory()
+                @switchToCategory()
         )
 
     isInSearch:->
         @switcher.style.visibility == 'hidden'
 
-    showCategory:->
+    switchToCategory:->
         selector.container($("#grid"))
         @isShowCategory = true
         categoryBar.show()
@@ -45,7 +45,7 @@ class Switcher
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         Item.updateHorizontalMargin()
 
-    hideCategory:->
+    switchToFavor:->
         selector.container(categoryList.favor.element.lastElementChild)
         @isShowCategory = false
         categoryBar.hide()
@@ -54,6 +54,12 @@ class Switcher
         @category.style.display = 'inline'
         container.style.marginLeft = "110px"
         # Item.updateHorizontalMargin()
+
+    switchToSearch: ->
+        $("#grid").style.display = 'none'
+        if @isShowCategory
+            @switchToFavor()
+        @hide()
 
     hide:->
         @switcher.style.visibility = 'hidden'

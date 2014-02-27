@@ -93,9 +93,11 @@ keypress_callback = (e) ->
     e.preventDefault()
     e.stopPropagation()
     if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
-        if switcher.isShowCategory
-            switcher.hideCategory()
-        switcher.hide()
+        if !searchResult?
+            echo "create result"
+            searchResult = new SearchResult()
+
+        switcher.switchToSearch()
         searchBar.show()
         searchBar.value(searchBar.value() + String.fromCharCode(e.which))
         searchBar.search()

@@ -58,6 +58,13 @@ class SearchBar
     search: ->
         @cancel()
         @searchTimer = setTimeout(=>
+            if !SearchResult.inited
+                id = setInterval(->
+                    echo 'search result not inited'
+                    if SearchResult.inited
+                        echo 'search result inited'
+                        clearInterval(id)
+                , 10)
             selector.clean()
             ids = daemon.Search_sync(@value())
             res = $("#searchResult")
@@ -69,15 +76,15 @@ class SearchBar
                 return
 
             for i in [ids.length-1..0]
-                echo "search Item id: #{ids[i]}"
-                if (item = Widget.look_up("se_#{ids[i]}"))?
-                    res.removeChild(item.element)
-                    item.element.style.display = '-webkit-box'
-                    res.insertBefore(item.element, res.firstChild)
+                if (item = Widget.look_up("#{ids[i]}"))?
+                    echo "search Item id: #{ids[i]}"
+                    target = item.elements.search
+                    res.removeChild(target)
+                    res.insertBefore(target, res.firstChild)
+                    target.style.display = '-webkit-box'
 
-            if $("#searchResult").style.display != 'block'
+            if !searchResult.isShow()
                 echo 'show result'
-                $("#grid").style.display = 'none'
-                $("#searchResult").style.display = 'block'
+                searchResult.show()
                 SearchItem.updateHorizontalMargin()
         , 200)

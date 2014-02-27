@@ -34,8 +34,8 @@ reset = ->
     selector.clean()
     switcher.show()
     $("#grid").style.display = 'block'
-    $("#searchResult").style.display = 'none'
-    switcher.hideCategory()
+    searchResult?.hide()
+    switcher.switchToFavor()
     if Item.hover_item_id
         event = new Event("mouseout")
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
@@ -59,50 +59,53 @@ init_all_applications = ->
     _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
     autostartList = startManager.AutostartList_sync()
 
-    frag = document.createDocumentFragment()
     for core in _all_items
         path = core[0]
         name = core[1]
         id = core[2]
         icon = core[3]
-        basename = get_path_name(path) + ".desktop"
-        info = new ItemInfo(id, name, path, icon)
-        applications[id] = info
-        if autostartList.filter((el)-> el.match("#{basename}$")).length != 0
-            info.setAutostart(true).notify()
-        item = new Item(id, name, path, icon)
-        seItem = new SearchItem("se_#{id}", name, path, icon)
-        faItem = new FavorItem("fa_#{id}", name, path, icon)
-        info.element = item.element
-        info.searchElement = seItem.element
-        info.favorElement = faItem.element
-        info.register(id, item)
-        info.register("se_#{id}", seItem)
-        info.register("fa_#{id}", faItem)
-        info.notify()
-        frag.appendChild(applications[id].searchElement)
-    $("#searchResult").appendChild(frag)
 
+        basename = get_path_name(path) + ".desktop"
+        item = new Item(id, name, path, icon)
+        applications[id] = item
+        autostart = autostartList.filter((el)-> el.match("#{basename}$"))
+        if autostart.length != 0
+            autostartList.remove(autostart[0])
+            item.add_to_autostart()
+
+path = localStorage.getItem("bg")
+setBackground(path)
+setTimeout(->
+    p = daemon.GetBackgroundPict_sync()
+    if p != path
+        setBackground(path)
+, 1000)
 
 selector = new Selector()
 searchBar = new SearchBar()
+
 init_all_applications()
-echo "loading all applications done"
+echo "load all applications done"
+
 categoryInfos = daemon.CategoryInfos_sync()
 echo "get category infos done"
+
 categoryBar = new CategoryBar(categoryInfos)
 echo "load category bar done"
+
 categoryList = new CategoryList(categoryInfos)
 echo "load category list done"
+
 switcher = new Switcher()
 echo "load switcher done"
-switcher.hideCategory()
+
 hiddenIcons = new HiddenIcons()
-echo "load hidden icons done"
 hiddenIcons.hide()
+echo "load hidden icons done"
+
 bind_events()
-path = daemon.GetBackgroundPict_sync()
-setBackground(path)
+echo "bind event done"
+
 DCore.Launcher.webview_ok()
 echo "webview ok"
 DCore.Launcher.test()

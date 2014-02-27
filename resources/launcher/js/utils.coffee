@@ -25,6 +25,7 @@ exit_launcher = ->
 setBackground = (uid, path)->
     callback = (path)->
         echo "set background to #{path}"
+        localStorage.setItem("bg", path)
         _b.style.backgroundImage = "url(#{path})"
 
     path = path || uid
