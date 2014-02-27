@@ -66,9 +66,12 @@ keydown_callback = (e) ->
             when KEYCODE.ENTER
                 e.preventDefault()
                 if selector.selectedItem
-                    selector.selectedItem.on_click()
+                    item = selector.selectedItem
                 else
-                    selector.firstShown()?.on_click()
+                    item = selector.firstShown()
+                id = item.getAttribute("appid")
+                Widget.look_up(id)?.on_click()
+
                 reset()
             when KEYCODE.UP_ARROW
                 e.preventDefault()
