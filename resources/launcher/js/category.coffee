@@ -95,17 +95,21 @@ class Category
     firstItem:->
         el = @grid.firstElementChild
         if el.style.display != 'none'
-            return Widget.look_up(el.getAttribute("appid"))
+            return el
+            # return Widget.look_up(el.getAttribute("appid"))
         while (el = el.nextElementSibling)?
             if el.style.display != 'none'
-                return Widget.look_up(el.getAttribute("appid"))
+                return el
+                # return Widget.look_up(el.getAttribute("appid"))
         null
 
     lastItem:->
         el = @grid.lastElementChild
         if el.style.display != 'none'
-            return Widget.look_up(el.getAttribute("appid"))
+            return el
+            # return Widget.look_up(el.getAttribute("appid"))
         while (el = el.previousElementSibling)?
             if el.style.display != 'none'
-                return Widget.look_up(el.getAttribute("appid"))
+                return el
+                # return Widget.look_up(el.getAttribute("appid"))
         null

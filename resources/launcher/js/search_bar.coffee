@@ -77,7 +77,7 @@ class SearchBar
 
             for i in [ids.length-1..0]
                 if (item = Widget.look_up("#{ids[i]}"))?
-                    echo "search Item id: #{ids[i]}"
+                    # echo "search Item id: #{ids[i]}"
                     target = item.elements.search
                     res.removeChild(target)
                     res.insertBefore(target, res.firstChild)
@@ -86,5 +86,5 @@ class SearchBar
             if !searchResult.isShow()
                 echo 'show result'
                 searchResult.show()
-                SearchItem.updateHorizontalMargin()
+                Item.updateHorizontalMargin()
         , 200)

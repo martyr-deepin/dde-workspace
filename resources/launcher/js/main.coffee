@@ -41,19 +41,6 @@ reset = ->
         Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
 
 
-is_show_hidden_icons = false
-_show_hidden_icons = (is_shown) ->
-    if is_shown == is_show_hidden_icons
-        return
-    is_show_hidden_icons = is_shown
-
-    Item.display_temp = false
-    if is_shown
-        hidden_icons.show()
-    else
-        hidden_icons.hide()
-
-
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
@@ -81,8 +68,8 @@ setTimeout(->
         setBackground(path)
 , 1000)
 
-selector = new Selector()
 searchBar = new SearchBar()
+echo "create search bar done"
 
 init_all_applications()
 echo "load all applications done"
@@ -95,6 +82,10 @@ echo "load category bar done"
 
 categoryList = new CategoryList(categoryInfos)
 echo "load category list done"
+
+selector = new Selector()
+selector.container(categoryList.favor.element.lastElementChild)
+echo "create selector done"
 
 switcher = new Switcher()
 echo "load switcher done"

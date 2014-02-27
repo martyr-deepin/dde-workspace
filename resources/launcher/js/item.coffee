@@ -45,8 +45,6 @@ class Item extends Widget
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
         @elements = favor: null, search: null
-        @favorElement = null
-        @searchElement = null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -70,18 +68,15 @@ class Item extends Widget
         , 200)
 
     destroy: ->
-        switch @constructor.name
-            when "Item"
-                categoryList.removeItem(@id)
-            when "SearchItem"
-                $("#searchResult").removeChild(@element)
-            when "FavorItem"
-                categoryList.favor.removeItem(@id)
+        categoryList.removeItem(@id)
         delete Widget.object_table[@id]
 
     add:(parent, pid)->
         el = @element.cloneNode(true)
         @elements[pid] = el
+        if pid == 'search'
+            el.style.marginTop = '20px'
+            el.style.marginBottom = 0
         parent.appendChild(el)
         el
 
@@ -290,81 +285,7 @@ class Item extends Widget
         if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
             @element.style.display = "-webkit-box"
 
-    is_shown: ->
-        @element.style.display != "none"
-
     # just working for categories, not searching and favor.
-    focusedCategory:->
-        cid = parseInt(@element.parentNode.parentNode.getAttribute("catid"))
-        categoryList.category(cid)
-
-    select: ->
-        @element.classList.add("item_selected")
-
-    unselect: ->
-        @element.classList.remove("item_selected")
-
-    next_shown: ->
-        appid = @element.nextElementSibling?.getAttribute("appid")
-        if appid
-            n = Widget.look_up(appid)
-            if n.is_shown() then n else n.next_shown()
-        else
-            null
-
-    prev_shown: ->
-        appid = @element.previousElementSibling?.getAttribute("appid")
-        if appid
-            n = Widget.look_up(appid)
-            if n.is_shown() then n else n.prev_shown()
-        else
-            null
-
-    scroll_to_view: (p)->
-        if !@inView(p)
-            rect = @element.getBoundingClientRect()
-            prect = p.getBoundingClientRect()
-            if rect.top < prect.top
-                offset = rect.top - prect.top
-                p.scrollTop += offset - 20 # for search
-            else if rect.bottom > prect.bottom
-                offset = rect.bottom - prect.bottom
-                p.scrollTop += offset + 20 # for search
-        # @element.scrollIntoViewIfNeeded()
-
-    inView:(p)->
-        rect = @element.getBoundingClientRect()
-        prect = p.getBoundingClientRect()
-        rect.top > prect.top && rect.bottom < prect.bottom
-
-    isSameLineAux: (el)->
-        @element.getBoundingClientRect().top == el.getBoundingClientRect().top
-
-    isSameLine: (o)->
-        @isSameLineAux(o.element)
-
-    isLastLine: (o)->
-        el = @element
-        while (el = el.nextElementSibling)?
-            if not @isSameLineAux(el)
-                return false
-        return true
-
-    isFirstLine: (o)->
-        el = @element
-        while (el = el.previousElementSibling)?
-            if not @isSameLineAux(el)
-                return false
-        return true
-
-    indexOnLine: ->
-        el = @element
-        i = 0
-        while (el = el.previousElementSibling)?
-            if !@isSameLineAux(el)
-                break
-            i += 1
-        i
 
     on_mouseover: (e)=>
         # this event is a wrap, use e.originalEvent to get the original event
@@ -382,55 +303,3 @@ class Item extends Widget
         target.style.background = ""
         target.style.borderRadius = ""
 
-
-class SearchItem extends Item
-    constructor: (@id, @name, @path, @icon)->
-        super(@id, @name, @path, @icon)
-        @element.classList.add("Item")
-
-    # destroy: ->
-    #     $("#searchResult").removeChild(@element)
-    #     super
-
-    @updateHorizontalMargin: ->
-        containerWidth = $("#container").clientWidth
-        # echo "containerWidth:#{containerWidth}"
-        SearchItem.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
-        SearchItem.horizontalMargin =  (containerWidth - SearchItem.itemNumPerLine * ITEM_WIDTH) / 2 / SearchItem.itemNumPerLine
-        # echo "horizontalMargin: #{Item.horizontalMargin}"
-        for own id, info of applications
-            if !(i = Widget.look_up("se_#{id}"))
-                continue
-            i.element.style.marginLeft = "#{SearchItem.horizontalMargin}px"
-            i.element.style.marginRight = "#{SearchItem.horizontalMargin}px"
-            if i.favorElement
-                i.favorElement.style.marginLeft = "#{SearchItem.horizontalMargin}px"
-                i.favorElement.style.marginRight = "#{SearchItem.horizontalMargin}px"
-
-
-class FavorItem extends Item
-    constructor: (@id, @name, @path, @icon)->
-        super(@id, @name, @path, @icon)
-        @element.classList.add("Item")
-
-    # destroy: ->
-    #     categoryList.favor.removeItem(@id)
-    #     super
-
-    @updateHorizontalMargin: ->
-        containerWidth = $("#container").clientWidth
-        # echo "containerWidth:#{containerWidth}"
-        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
-        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
-        # echo "horizontalMargin: #{Item.horizontalMargin}"
-        for own id, info of applications
-            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
-            info.element.style.marginRight = "#{Item.horizontalMargin}px"
-            if info.favorElement
-                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
-                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
-
-
-createItem=->

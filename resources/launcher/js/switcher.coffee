@@ -66,4 +66,4 @@ class Switcher
 
     show:->
         @switcher.style.visibility = 'visible'
-        selector.container(categoryList.favor.element)
+        selector.container(categoryList.favor.element.lastElementChild)

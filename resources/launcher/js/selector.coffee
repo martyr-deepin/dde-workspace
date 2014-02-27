@@ -21,16 +21,16 @@
 class Selector
     constructor:->
         @box = null
-        @selectedItem = null
+        @selectedItem = null # DOM
 
     container:(el)->
         if el? && (not @box? || not @box.isSameNode(el))
             @box = el
             @clean()
-            # if el.id
-            #     echo "set container to #{el.tagName}##{el.id}"
-            # else
-            #     echo "set container to #{el.tagName}.\"#{el.className}\", parentNode: #{el.parentNode.id}"
+            if el.id
+                echo "set container to #{el.tagName}##{el.id}"
+            else
+                echo "set container to Favor"
         @box
 
     clean:->
@@ -39,10 +39,16 @@ class Selector
     rowNumber:->
         Math.floor(@box.clientWidth / ITEM_WIDTH)
 
+    getItem:->
+        item = null
+        if @selectedItem
+            item = Widget.look_up(@selectedItem.getAttribute("appid"))
+        item
+
     update:(el)->
-        @selectedItem?.unselect()
+        @selectedItem?.classList.remove("item_selected")
         @selectedItem = el
-        @selectedItem?.select()
+        @selectedItem?.classList.add("item_selected")
 
     firstShown:->
         if @box
@@ -50,89 +56,153 @@ class Selector
                 if (i = categoryList.firstCategory())?
                     return i.firstItem()
             else
-                id = @box.firstElementChild.getAttribute("appid")
-                if (item = Widget.look_up(id))?
-                    if item.is_shown()
-                        return item
-                    else
-                        return item.next_shown()
+                el = @box.firstElementChild
+                if el.style.display != 'none'
+                    return el
+                else
+                    return @nextShown(el)
         null
+
+    nextShown: (el)->
+        while el = el.nextElementSibling
+            if el.style.display != 'none'
+                break
+        el
+
+    previousShown: (el)->
+        while el = el.previousElementSibling
+            if el.style.display != 'none'
+                break
+        el
+
+    focusedCategory:(el)->
+        cid = parseInt(el.parentNode.parentNode.getAttribute("catid"))
+        categoryList.category(cid)
+
+    scroll_to_view: (el)->
+        p = @box
+        if !@inView(el)
+            rect = el.getBoundingClientRect()
+            prect = p.getBoundingClientRect()
+            if rect.top < prect.top
+                offset = rect.top - prect.top
+                p.scrollTop += offset - 20 # for search
+            else if rect.bottom > prect.bottom
+                offset = rect.bottom - prect.bottom
+                p.scrollTop += offset + 20 # for search
+
+    inView:(el)->
+        p = @box
+        rect = el.getBoundingClientRect()
+        prect = p.getBoundingClientRect()
+        rect.top > prect.top && rect.bottom < prect.bottom
+
+    isSameLine: (lhs, rhs)->
+        lhs.getBoundingClientRect().top == rhs.getBoundingClientRect().top
+
+    isLastLine: (e)->
+        el = e
+        while (el = el.nextElementSibling)?
+            if not @isSameLine(e, el)
+                return false
+        return true
+
+    isFirstLine: (e)->
+        el = e
+        while (el = el.previousElementSibling)?
+            if not @isSameLine(e, el)
+                return false
+        return true
+
+    indexOnLine: (e)->
+        el = e
+        i = 0
+        while (el = el.previousElementSibling)?
+            if !@isSameLine(e, el)
+                break
+            i += 1
+        i
 
     select: (fn)->
         if @selectedItem == null
             selectedItem = @firstShown()
+            echo selectedItem
             @update(selectedItem)
-            selectedItem?.scroll_to_view(@box)
+            @scroll_to_view(selectedItem)
             return
         fn(@)
 
     right:->
+        echo "right"
         @select((o)->
             item = o.selectedItem
-            if not (n = item.next_shown())? && switcher.isShowCategory
-                if (c = categoryList.nextCategory(item.focusedCategory().id))?
+            if not (n = o.nextShown(item))? && switcher.isShowCategory
+                if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
 
             if n?
-                n.scroll_to_view(o.box)
+                o.scroll_to_view(n)
                 o.update(n)
         )
 
     left:->
+        echo "left"
         @select((o)->
             item = o.selectedItem
-            if not (n = o.selectedItem.prev_shown())? && switcher.isShowCategory
-                if (c = categoryList.previousCategory(item.focusedCategory().id))?
+            if not (n = o.previousShown(item))? && switcher.isShowCategory
+                if (c = categoryList.previousCategory(o.focusedCategory(item).id))?
                     n = c.lastItem()
 
             if n?
-                n.scroll_to_view(o.box)
+                o.scroll_to_view(n)
                 o.update(n)
         )
 
     down:->
+        echo "down"
         @select((o)->
             item = o.selectedItem
             n = item
             count = o.rowNumber()
 
-            if switcher.isShowCategory && item.isLastLine()
-                if (c = categoryList.nextCategory(item.focusedCategory().id))?
+            if switcher.isShowCategory && o.isLastLine(item)
+                if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
-                    count = item.indexOnLine()
+                    count = o.indexOnLine(item)
 
             for i in [0...count]
-                if !n? || !(m = n.next_shown())?
+                if !n? || !(m = o.nextShown(n))?
                     break
                 n = m
 
-            if n && not n.isSameLine(item)
-                n.scroll_to_view(o.box)
+            if n && not o.isSameLine(n, item)
+                o.scroll_to_view(n)
                 o.update(n)
         )
 
     up:->
+        echo "up"
         @select((o)->
             item = o.selectedItem
             n = item
             count = o.rowNumber()
 
-            if switcher.isShowCategory && item.isFirstLine()
-                if (c = categoryList.previousCategory(item.focusedCategory().id))?
+            if switcher.isShowCategory && o.isFirstLine(item)
+                if (c = categoryList.previousCategory(o.focusedCategory(item).id))?
                     count = 0
                     n = c.lastItem()
-                    selectedIndex = item.indexOnLine()
-                    candidateIndex = n.indexOnLine()
+                    selectedIndex = o.indexOnLine(item)
+                    candidateIndex = o.indexOnLine(n)
                     if candidateIndex > selectedIndex
                         count = candidateIndex - selectedIndex
 
             for i in [0...count]
-                if !(n && (m = n.prev_shown())?)
+                if !(n && (m = o.previousShown(n))?)
                     break
                 n = m
 
-            if n && not n.isSameLine(item)
-                n.scroll_to_view(o.box)
+            if n && not o.isSameLine(n, item)
+                o.scroll_to_view(n)
                 o.update(n)
         )
 
