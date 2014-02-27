@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
@@ -50,6 +51,19 @@
 #define HIDDEN_APP_GROUP_NAME "HiddenApps"
 #define APPS_INI "launcher/apps.ini"
 
+int kill(pid_t, int);  // avoid warning
+
+static gboolean is_debug = FALSE;
+static gboolean is_replace = FALSE;
+static gboolean is_hidden = FALSE;
+
+static GOptionEntry entries[] = {
+    {"debug", 'd', 0, G_OPTION_ARG_NONE, &is_debug, "output debug message", NULL},
+    {"replace", 'r', 0, G_OPTION_ARG_NONE, &is_replace, "replace launcher", NULL},
+    {"hidden", 'h', 0, G_OPTION_ARG_NONE, &is_hidden, "start and hide launcher", NULL},
+};
+
+
 static GKeyFile* launcher_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkWidget* webview = NULL;
@@ -62,13 +76,6 @@ struct {
     GdkScreen* screen;
     int index;
 } current_screen = {0};
-
-#ifndef NDEBUG
-PRIVATE gboolean is_daemonize = FALSE;
-#else
-PRIVATE gboolean is_daemonize = TRUE;
-#endif
-PRIVATE gboolean not_exit = FALSE;
 
 
 PRIVATE
@@ -151,7 +158,6 @@ void resize(GtkWidget* widget G_GNUC_UNUSED,
 }
 
 
-
 PRIVATE
 G_GNUC_UNUSED
 GdkFilterReturn launcher_ensure_fullscreen(GdkXEvent *xevent,
@@ -213,6 +219,7 @@ void launcher_toggle()
 
 
 DBUS_EXPORT_API
+JS_EXPORT_API
 void launcher_quit()
 {
     g_debug("#%d# quit", getpid());
@@ -230,7 +237,7 @@ void empty()
 JS_EXPORT_API
 void launcher_exit_gui()
 {
-    if (is_daemonize || not_exit) {
+    if (!is_debug) {
         launcher_hide();
     } else {
         launcher_quit();
@@ -265,20 +272,22 @@ void launcher_webview_ok()
 }
 
 
+#if 0
 PRIVATE
 void daemonize()
 {
-    g_debug("daemonize");
-
 #ifdef NDEBUG
     close_std_stream();
 #endif
+
+    g_debug("daemonize");
 
     pid_t pid = 0;
     if ((pid = fork()) == -1) {
         g_warning("fork error");
         exit(0);
     } else if (pid != 0){
+        // parent
         exit(0);
     }
 
@@ -288,16 +297,11 @@ void daemonize()
         g_warning("fork error");
         exit(0);
     } else if (pid != 0){
+        // parent
         exit(0);
     }
 }
-
-
-JS_EXPORT_API
-void launcher_clear()
-{
-    webkit_web_view_reload_bypass_cache((WebKitWebView*)webview);
-}
+#endif
 
 
 void check_version()
@@ -379,47 +383,66 @@ pid_t read_pid()
         g_error_free(err);
         return -1;
     }
-    g_warning("[%s] %s", __func__, content);
+    g_message("[%s] %s", __func__, content);
     pid_t pid = atoi(content);
     g_free(content);
     return pid;
 }
 
 
-void exit_signal_handler(int signum)
+void signal_handler(int signum)
 {
     switch (signum)
     {
     case SIGKILL:
     case SIGTERM:
         launcher_quit();
+        break;
+    case SIGUSR1:
+        launcher_show();
+        break;
     }
 }
 
+#if 0
 void start_check()
 {
+    g_message("%s", g_getenv("DBUS_SESSION_BUS_ADDRESS"));
+    GError* err = NULL;
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
-                                                      "com.deepin.dde.daemon.Launcher",
-                                                      "/com/deepin/dde/daemon/Launcher",
-                                                      "com.deepin.dde.daemon.Launcher",
+                                                      "org.freedesktop.DBus",
+                                                      "/",
+                                                      "org.freedesktop.DBus",
+                                                      // "com.deepin.dde.daemon.Launcher",
+                                                      // "/com/deepin/dde/daemon/Launcher",
+                                                      // "com.deepin.dde.daemon.Launcher",
                                                       NULL,
-                                                      NULL
+                                                      &err
                                                       );
 
-    if (proxy == NULL)
+    if (proxy == NULL) {
+        g_warning("get dbus proxy failed: %s", err->message);
+        g_error_free(err);
         exit(0);
+    }
 
-    GError* err = NULL;
-    g_variant_unref(g_dbus_proxy_call_sync(proxy,
-                                           "GetBackgroundPict",
-                                           NULL,
+    GVariant* ret = g_dbus_proxy_call_sync(proxy,
+                                           // "GetBackgroundPict",
+                                           // NULL,
+                                           "StartServiceByName",
+                                           g_variant_new("(su)",
+                                                         "com.deepin.dde.daemon.Launcher",
+                                                         1
+                                                        ),
                                            G_DBUS_CALL_FLAGS_NONE,
                                            -1,  // timeout
                                            NULL,  // cancellable
                                            &err
-                                          ));
+                                          );
+    if (ret != NULL)
+        g_variant_unref(ret);
     g_object_unref(proxy);
 
     if (err != NULL) {
@@ -428,107 +451,77 @@ void start_check()
         exit(0);
     }
 }
+#endif
 
 
 int main(int argc, char* argv[])
 {
-    gboolean not_shows_launcher = FALSE;
+    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
 
-    if (argc == 2 && 0 == g_strcmp0("-d", argv[1]))
-        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-
-#ifndef NDEBUG
-    if (argc == 2 && 0 == g_strcmp0("-D", argv[1]))
-        is_daemonize = TRUE;
-#endif
-
-    if (argc == 2 && 0 == g_strcmp0("-f", argv[1])) {
-#ifndef NDEBUG
-        not_shows_launcher = TRUE;
-#else
-        not_shows_launcher = FALSE;
-#endif
-        not_exit = TRUE;
-#ifdef NDEBUG
-        is_daemonize = FALSE;
-#endif
+    GOptionContext* ctx = g_option_context_new("launcher");
+    g_option_context_add_main_entries(ctx, entries, NULL);
+    g_option_context_add_group(ctx, gtk_get_option_group(TRUE));
+    GError* error = NULL;
+    if (!g_option_context_parse(ctx, &argc, &argv, &error)) {
+        g_print("option parsing failed: %s\n", error->message);
+        g_error_free(error);
+        return 1;
     }
+    g_option_context_free(ctx);
 
-    if (argc == 2 && 0 == g_strcmp0("-r", argv[1])) {
+    g_debug("is_debug:%d", is_debug);
+    g_debug("is_replace:%d", is_replace);
+    g_debug("is_hidden:%d", is_hidden);
+
+    if (is_replace) {
         pid_t pid = read_pid();
+
 #ifndef NDEBUG
-        g_warning("kill previous launcher");
-        g_warning("[%s] launcher's pid: #%d#", __func__, pid);
+        g_message("kill previous launcher");
+        g_message("[%s] launcher's pid: #%d#", __func__, pid);
 #endif
-        int kill(pid_t, int);  // avoid warning
-        if (pid != -1)
+
+        if (pid != -1) {
             kill(pid, SIGKILL);
-        not_shows_launcher = TRUE;
-#ifndef NDEBUG
-        is_daemonize = TRUE;
-#endif
-    }
-
-    if (argc == 2 && 0 == g_strcmp0("-H", argv[1])) {
-        if (is_application_running(LAUNCHER_ID_NAME)) {
-            g_message(_("another instance of launcher is running...\n"));
-            return 0;
-        }
-
-        not_shows_launcher = TRUE;
-#ifndef NDEBUG
-        is_daemonize = TRUE;
-#endif
-    }
-
-#ifndef NDEBUG
-    if (argc == 2 && 0 == g_strcmp0("-l", argv[1])) {
-        if (fork() == 0) {
-            // child process
-            int res G_GNUC_UNUSED = system("killall launcher-daemon");
-            res = execl(DATA_DIR"/../build/launcher-daemon", DATA_DIR"/../build/launcher-daemon", NULL);
-        } else {
             sleep(1);
         }
     }
-#endif
 
     if (is_application_running(LAUNCHER_ID_NAME)) {
-        g_message(_("another instance of launcher is running...\n"));
+        g_message(_("another instance of launcher is running..."));
 
-        if (!not_shows_launcher) {
+        if (!is_hidden) {
             dbus_launcher_toggle();
-            return 0;
+            // pid_t pid = read_pid();
+            // kill(pid, SIGUSR1);
         }
+        return 0;
     }
-
-    if (is_daemonize)
-        daemonize();
 
     gtk_init(&argc, &argv);
     g_message("gtk init done");
 
+    if (is_debug) {
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
+    }
 #ifdef NDEBUG
-    g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    g_log_set_default_handler((GLogFunc)log_to_file, "launcher");
+        g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 #endif
-
-    start_check();
-    g_message("start check done");
 
     singleton(LAUNCHER_ID_NAME);
     g_message("singleton done");
     check_version();
     g_message("check version done");
 
-    signal(SIGKILL, exit_signal_handler);
-    signal(SIGTERM, exit_signal_handler);
+    signal(SIGUSR1, signal_handler);
+    signal(SIGKILL, signal_handler);
+    signal(SIGTERM, signal_handler);
 
-    pid_t p G_GNUC_UNUSED = getpid();
 #ifndef NDEBUG
-    g_debug("No. #%d#", p);
+    g_debug("No. #%d#", getpid());
 #endif
     save_pid();
+    g_message("save pid done");
 
     init_i18n();
     g_message("init i18n done");
@@ -571,6 +564,7 @@ int main(int argc, char* argv[])
     gtk_im_context_set_cursor_location(im_context, &area);
     gtk_im_context_focus_in(im_context);
     g_signal_connect(im_context, "commit", G_CALLBACK(_do_im_commit), NULL);
+    g_message("set im done");
 
     setup_launcher_dbus_service();
     g_message("start launcher dbus service done");
@@ -581,8 +575,9 @@ int main(int argc, char* argv[])
 #endif
 
     gtk_widget_show_all(webview);
-    if (!not_shows_launcher) {
+    if (!is_hidden) {
         launcher_show();
+        g_message("show launcher done");
     }
     gtk_main();
     return 0;
