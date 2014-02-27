@@ -175,9 +175,11 @@ char* get_app_id(GDesktopAppInfo* info)
 {
     char* app_id = NULL;
     char* basename = g_path_get_basename(g_desktop_app_info_get_filename(info));
+    char* t = basename;
+    basename = g_strndup(basename, strlen(basename) - 8 /*strlen(".desktop")*/);
+    g_free(t);
     g_debug("[%s] basename: %s", __func__, basename);
-    basename[strlen(basename) - 8 /*strlen(".desktop")*/] = '\0';
-    if (is_app_in_white_list(basename)) {
+    if (g_strcmp0(basename, "google-chrome") == 0 || is_app_in_white_list(basename)) {
         app_id = basename;
         g_debug("[%s] is_app_in_white_list: %s", __func__, app_id);
     } else {
