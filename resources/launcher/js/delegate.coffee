@@ -18,7 +18,7 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-Event = (e)->
+DEvent = (e)->
     target = e.target
     parent = target.parentNode
     element = null
@@ -40,7 +40,7 @@ Event = (e)->
 
 delegateFactory = (fn)->
     (e)->
-        event = Event(e)
+        event = DEvent(e)
         if event.id? && (item = Widget.look_up(event.id))?
             fn(event, item)
 
