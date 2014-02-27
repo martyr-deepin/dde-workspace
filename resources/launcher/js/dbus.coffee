@@ -75,7 +75,7 @@ softwareManager.connect("update_signal", (info)->
 )
 
 
-GRAPH_API = "com.deepin.api.Graph"
+GRAPH_API = "com.deepin.api.Graphic"
 background = DCore.DBus.session(GRAPH_API)
 background.connect("BlurPictChanged", setBackground)
 
