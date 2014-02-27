@@ -134,7 +134,7 @@ class Item extends Widget
                 @img.src = src
 
     on_click: (e)->
-        e = e.originalEvent
+        e = e && e.originalEvent || e
         e?.stopPropagation()
         @element.style.cursor = "wait"
         startManager.Launch(@basename)
@@ -143,7 +143,7 @@ class Item extends Widget
         exit_launcher()
 
     on_dragstart: (e)=>
-        e = e.originalEvent
+        e = e.originalEvent || e
         e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
