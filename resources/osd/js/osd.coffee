@@ -30,13 +30,22 @@ class OSD extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
         #provide osd setting option
-        @option = ["CapsLock","NumLock","LightAjust","VoiceAjust","WifiOn","InputSwitch","KeyLayout","ShowMode"]
-        @MediaKey = ["mod4-c","mod4-n","mod4-a","mod4-v","mod4-f","mod4-i","mod4-k","mod4-m"]
-    
-    option_build:->
+        @option_key = [
+            {opt:"CapsLock",key:"mod4-c"},
+            {opt:"NumLock",key:"mod4-n"},
+            {opt:"LightAjust",key:"mod4-g"},
+            {opt:"VoiceAjust",key:"mod4-v"},
+            {opt:"WifiOn",key:"mod4-f"},
+            {opt:"InputSwitch",key:"mod4-i"},
+            {opt:"KeyLayout",key:"mod4-k"},
+            {opt:"ShowMode",key:"mod4-o"}
+        ]
+        echo @option_key
         @opt = []
-        for id,i in @option
-            @opt[i] = new Option(id)
+        
+    option_build:->
+        for option,i in @option_key
+            @opt[i] = new Option(option.opt)
             @opt[i].append(@element)
             @opt[i].hide()
         @element.style.display = "none"
@@ -51,7 +60,7 @@ class OSD extends Widget
             else opt.hide()
         @timeout = setTimeout(=>
             @hide()
-        ,2000)
+        ,4000)
     
     hide:->
         @element.style.display = "none"
@@ -61,8 +70,8 @@ class OSD extends Widget
     dbus_signal:->
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
-            for key in @MediaKey
-                echo key
+            for option in @option_key
+                key = option.key
                 DBusMediaKey.UnregisterAccelKey_sync(key)
                 DBusMediaKey.RegisterAccelKey_sync(key)
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
@@ -71,16 +80,13 @@ class OSD extends Widget
     
     keyChanged:(type,key)=>
         clearTimeout(@timeout) if @timeout
-        
-        #here should resolve the key StringArray
-        echo key
-        if not (key in @MediaKey)
-            echo "#{key} not in @MediaKey,return"
+        option = null
+        for tmp in @option_key
+            if tmp.key is key then option = tmp.opt
+        if not option?
+            echo "#{key} not in @option_key.key,return"
             @hide()
             return
-        option = null
-        for tmp,j in @MediaKey
-            if tmp is key then option = @option[j]
         echo "KeyChanged:#{key}:----#{option}----will show"
         @show(option)
 
@@ -88,7 +94,7 @@ click_time = 0
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
     click_time++
-    DCore.Osd.quit() if click_time % 4 == 0
+    DCore.Osd.quit() if click_time % 3 == 0
 )
  
 

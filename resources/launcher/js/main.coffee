@@ -34,18 +34,7 @@ init_all_applications = ->
     autostartList = startManager.AutostartList_sync()
 
     for core in _all_items
-        path = core[0]
-        name = core[1]
-        id = core[2]
-        icon = core[3]
-
-        basename = get_path_name(path) + ".desktop"
-        item = new Item(id, name, path, icon)
-        applications[id] = item
-        autostart = autostartList.filter((el)-> el.match("#{basename}$"))
-        if autostart.length != 0
-            autostartList.remove(autostart[0])
-            item.add_to_autostart()
+        createItem(core, autostartList)
 
 path = localStorage.getItem("bg")
 setBackground(path)

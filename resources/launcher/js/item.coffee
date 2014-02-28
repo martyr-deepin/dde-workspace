@@ -33,13 +33,16 @@ class Item extends Widget
         super
         @element.removeAttribute("id")
         @element.setAttribute("appid", @id)
+        @hoverBoxOutter = create_element("div", "hoverBoxOutter", @element)
+        @hoverBoxOutter.setAttribute("appid", @id)
+        @hoverBox = create_element("div", "hoverBox", @hoverBoxOutter)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
 
         @load_image()
-        @itemName = create_element("div", "item_name", @element)
+        @itemName = create_element("div", "item_name", @hoverBox)
         @itemName.innerText = @name
         @element.draggable = true
         # @try_set_title(@element, @name, 80)
@@ -73,9 +76,10 @@ class Item extends Widget
 
     add:(parent, pid)->
         el = @element.cloneNode(true)
-        im = el.firstElementChild
+        inner = el.firstElementChild.firstElementChild
+        im = inner.firstElementChild
         # img may not be loaded.
-        if im.classList.length == 0
+        if im.classList.length == 1
             im.onload = (e)=>
                 @setImageSize(im)
         @elements[pid] = el
@@ -133,18 +137,19 @@ class Item extends Widget
     setImageSize: (img)=>
         if img.width == img.height
             # echo 'set class name to square img'
-            img.className = 'square_img'
+            img.classList.add('square_img')
         else if img.width > img.height
-            img.className = 'hbar_img'
+            img.classList.add('hbar_img')
             new_height = ITEM_IMG_SIZE * img.height / img.width
             grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
             img.style.padding = "#{grap}px 0px"
         else
-            img.className = 'vbar_img'
+            img.classList.add('vbar_img')
 
     load_image: ->
         im = @get_img()
-        @img = create_img("", im, @element)
+        @img = create_img("item_img", im, @hoverBox)
+        # @img.draggable = true
         @img.onload = (e) =>
             @setImageSize(@img)
 
@@ -159,10 +164,13 @@ class Item extends Widget
         exit_launcher()
 
     on_dragstart: (e)=>
+        echo 'drag'
         e = e.originalEvent || e
+        echo @path
+        e.dataTransfer.setData("text/plain", @id)
         e.dataTransfer.setData("text/uri-list", "file://#{@path}")
         e.dataTransfer.setDragImage(@img, 20, 20)
-        e.dataTransfer.effectAllowed = "all"
+        e.dataTransfer.effectAllowed = "copy"
 
     createMenu:->
         @menu = null
@@ -274,15 +282,15 @@ class Item extends Widget
             AUTOSTART_ICON.SIZE)}"
 
         @updateProperty((k, v)->
-            last = v.lastElementChild
+            last = v.firstElementChild.firstElementChild.lastElementChild
             if last.tagName != 'IMG'
-                create_img("autostart_flag", Item.autostart_flag, v)
+                create_img("autostart_flag", Item.autostart_flag, v.firstElementChild.firstElementChild)
             last.style.visibility = 'visible'
         )
 
     hideAutostartFlag:->
         @updateProperty((k, v)->
-            last = v.lastElementChild
+            last = v.firstElementChild.firstElementChild.lastElementChild
             if last.tagName == 'IMG'
                 last.style.visibility = 'hidden'
         )
@@ -325,15 +333,18 @@ class Item extends Widget
         target = e.target
         Item.hoverItem = target
         if not Item.clean_hover_temp
+            inner = target.firstElementChild
             # not use @select() for storing status.
-            target.style.background = "rgba(255, 255, 255, 0.15)"
-            target.style.border = "1px rgba(255, 255, 255, 0.25) solid"
-            target.style.borderRadius = "4px"
+            inner.style.background = "rgba(255, 255, 255, 0.15)"
+            inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
+            target.style.border = "1px rgba(0, 0, 0, 0.25) solid"
 
     on_mouseout: (e)=>
         target = e.target
-        target.style.border = "1px rgba(255, 255, 255, 0.0) solid"
-        target.style.background = ""
-        target.style.borderRadius = ""
-        Item.hoverItem = null
+        target.style.border = ""
 
+        inner = target.firstElementChild
+        inner.style.border = ""
+        inner.style.background = ""
+
+        Item.hoverItem = null

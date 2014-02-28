@@ -142,6 +142,8 @@ body {
 }
 
 .item {
+  background: url('../img/shadow.png') no-repeat;
+  background-position: center center;
   padding:0;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -150,20 +152,34 @@ body {
   margin: 10px 0;
   cursor: default;
   float: left;
-  /* 2px border */
-  height: 158px;
-  width: 158px;
+  height: 160px;
+  width: 160px;
   text-align: center;
+}
+.hoverBoxOutter{
+  margin: 10px;
+  /* 4px border */
+  height: 138px;
+  width: 138px;
   border: 1px rgba(255, 255, 255, 0.0) solid;
+  border-radius: 9px;
 }
-.item_selected {
+.hoverBox{
+  height: 134px;
+  width: 134px;
+  border: 2px rgba(255, 255, 255, 0.0) solid;
+  border-radius: 8px;
+}
+.item_selected > div {
+  border: 1px rgba(0,0,0,0.2) solid;
+}
+.item_selected > div > div {
   background: rgba(255, 255, 255, 0.15);
-  border: 1px rgba(255, 255, 255, 0.25) solid;
-  border-radius: 4px;
+  border: 2px rgba(255,255,255,0.2) solid;
 }
-.item img {
+.item_img {
   border-radius: 6px;
-  margin-top: 40px;
+  margin-top: 30px;
   margin-bottom: 10px;
   max-height: 48px;
   max-width: 48px;
@@ -196,8 +212,8 @@ body {
 
 .autostart_flag {
   position: absolute;
-  top: 30px;
-  left: 56px;
+  top: 74px;
+  left: 58px;
 }
 
 

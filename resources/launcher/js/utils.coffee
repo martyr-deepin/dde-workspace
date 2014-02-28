@@ -59,3 +59,20 @@ setBackground = (uid, path)->
         img.onload = ->
             callback(path)
             img.onload = null
+
+
+createItem = (core, autostartList)->
+    path = core[0]
+    name = core[1]
+    id = core[2]
+    icon = core[3]
+
+    basename = get_path_name(path) + ".desktop"
+    item = new Item(id, name, path, icon)
+    applications[id] = item
+    autostart = autostartList.filter((el)-> el.match("#{basename}$"))
+    if autostart.length != 0
+        autostartList.remove(autostart[0])
+        item.add_to_autostart()
+
+    item
