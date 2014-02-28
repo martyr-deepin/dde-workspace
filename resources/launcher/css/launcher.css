@@ -174,7 +174,7 @@ body {
   border: 1px rgba(0,0,0,0.2) solid;
 }
 .item_selected > div > div {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
   border: 2px rgba(255,255,255,0.2) solid;
 }
 .item_img {

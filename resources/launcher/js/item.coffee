@@ -164,9 +164,7 @@ class Item extends Widget
         exit_launcher()
 
     on_dragstart: (e)=>
-        echo 'drag'
         e = e.originalEvent || e
-        echo @path
         e.dataTransfer.setData("text/plain", @id)
         e.dataTransfer.setData("text/uri-list", "file://#{@path}")
         e.dataTransfer.setDragImage(@img, 20, 20)
@@ -335,7 +333,7 @@ class Item extends Widget
         if not Item.clean_hover_temp
             inner = target.firstElementChild
             # not use @select() for storing status.
-            inner.style.background = "rgba(255, 255, 255, 0.15)"
+            inner.style.background = "rgba(255, 255, 255, 0.1)"
             inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
             target.style.border = "1px rgba(0, 0, 0, 0.25) solid"
 
