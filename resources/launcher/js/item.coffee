@@ -160,7 +160,6 @@ class Item extends Widget
         e.dataTransfer.effectAllowed = "all"
 
     createMenu:->
-        DCore.Launcher.force_show(true)
         @menu = null
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -185,14 +184,20 @@ class Item extends Widget
         #     )
 
     on_rightclick: (e)->
+        DCore.Launcher.force_show(true)
         e = e && e.originalEvent || e
         e.preventDefault()
         e.stopPropagation()
+
         @createMenu()
 
         # echo @menu
         # return
-        @menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
+        @menu.dbus.connect("MenuUnregistered", ->
+            setTimeout(->
+                DCore.Launcher.force_show(false)
+            , 100)
+        )
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     on_itemselected: (id)=>
