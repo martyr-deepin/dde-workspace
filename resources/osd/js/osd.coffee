@@ -31,7 +31,7 @@ class OSD extends Widget
         @element.style.display = "none"
         #provide osd setting option
         @option = ["CapsLock","NumLock","LightAjust","VoiceAjust","WifiOn","InputSwitch","KeyLayout","ShowMode"]
-        @MediaKey = ["mode4-c","mode4-n","mode4-a","mode4-v","mode4-w","mode4-i","mode4-k","mode4-m"]
+        @MediaKey = ["mod4-c","mod4-n","mod4-a","mod4-v","mod4-f","mod4-i","mod4-k","mod4-m"]
     
     option_build:->
         @opt = []
@@ -62,13 +62,14 @@ class OSD extends Widget
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
             for key in @MediaKey
-                DBusMediaKey.UnregisterAccelKey(key)
-                DBusMediaKey.RegisterAccelKey(key)
+                echo key
+                DBusMediaKey.UnregisterAccelKey_sync(key)
+                DBusMediaKey.RegisterAccelKey_sync(key)
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
-    keyChanged:(key)=>
+    keyChanged:(type,key)=>
         clearTimeout(@timeout) if @timeout
         
         #here should resolve the key StringArray
@@ -83,14 +84,11 @@ class OSD extends Widget
         echo "KeyChanged:#{key}:----#{option}----will show"
         @show(option)
 
-document.body.style.height = window.innerHeight
-document.body.style.width = window.innerWidth
-
 click_time = 0
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
     click_time++
-    DCore.Osd.quit() if click_time % 2 == 0
+    DCore.Osd.quit() if click_time % 4 == 0
 )
  
 
