@@ -136,12 +136,10 @@ int main (int argc, char **argv)
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
-    #ifndef NDEBUG
-    gtk_window_set_focus_on_map (GTK_WINDOW (container), FALSE);
+    /*gtk_window_set_focus_on_map (GTK_WINDOW (container), FALSE);*/
     gtk_window_set_accept_focus (GTK_WINDOW (container), FALSE);
     /*gtk_window_set_focus (GTK_WINDOW (container), NULL);*/
     /*gtk_window_set_focus_visible (GTK_WINDOW (container), FALSE);*/
-    #endif
     gtk_widget_set_events (GTK_WIDGET (container),
                            gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
