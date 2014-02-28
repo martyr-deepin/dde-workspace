@@ -63,7 +63,7 @@ class OSD extends Widget
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
             for key in @MediaKey
                 DBusMediaKey.RegisterAccelKey(key)
-            DBusMediaKey.connect("AccelKeyChanged",KeyChanged)
+            DBusMediaKey.connect("AccelKeyChanged",@KeyChanged)
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
