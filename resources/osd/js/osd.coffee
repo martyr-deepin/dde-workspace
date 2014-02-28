@@ -62,6 +62,7 @@ class OSD extends Widget
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
             for key in @MediaKey
+                DBusMediaKey.UnregisterAccelKey(key)
                 DBusMediaKey.RegisterAccelKey(key)
             DBusMediaKey.connect("AccelKeyChanged",@KeyChanged)
         catch e
@@ -85,9 +86,6 @@ class OSD extends Widget
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
-osd = new OSD()
-osd.option_build()
-
 click_time = 0
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
@@ -95,3 +93,8 @@ document.body.addEventListener("click",(e)=>
     DCore.Osd.quit() if click_time % 2 == 0
 )
  
+
+osd = new OSD()
+osd.option_build()
+osd.dbus_signal()
+
