@@ -73,6 +73,11 @@ class Item extends Widget
 
     add:(parent, pid)->
         el = @element.cloneNode(true)
+        im = el.firstElementChild
+        # img may not be loaded.
+        if im.classList.length == 0
+            im.onload = (e)=>
+                @setImageSize(im)
         @elements[pid] = el
         if pid == 'search'
             el.style.marginTop = '20px'
@@ -125,23 +130,23 @@ class Item extends Widget
             @toggle_icon()
             # @displayMode = info.displayMode
 
+    setImageSize: (img)=>
+        if img.width == img.height
+            # echo 'set class name to square img'
+            img.className = 'square_img'
+        else if img.width > img.height
+            img.className = 'hbar_img'
+            new_height = ITEM_IMG_SIZE * img.height / img.width
+            grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
+            img.style.padding = "#{grap}px 0px"
+        else
+            img.className = 'vbar_img'
+
     load_image: ->
         im = @get_img()
         @img = create_img("", im, @element)
         @img.onload = (e) =>
-            if @img.width == @img.height
-                @img.className = 'square_img'
-            else if @img.width > @img.height
-                @img.className = 'hbar_img'
-                new_height = ITEM_IMG_SIZE * @img.height / @img.width
-                grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
-                @img.style.padding = "#{grap}px 0px"
-            else
-                @img.className = 'vbar_img'
-        @img.onerror = (e) =>
-            src = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
-            if src != @img.src
-                @img.src = src
+            @setImageSize(@img)
 
     on_click: (e)->
         target = e?.target
@@ -160,7 +165,6 @@ class Item extends Widget
         e.dataTransfer.effectAllowed = "all"
 
     createMenu:->
-        DCore.Launcher.force_show(true)
         @menu = null
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -185,14 +189,20 @@ class Item extends Widget
         #     )
 
     on_rightclick: (e)->
+        DCore.Launcher.force_show(true)
         e = e && e.originalEvent || e
         e.preventDefault()
         e.stopPropagation()
+
         @createMenu()
 
         # echo @menu
         # return
-        @menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
+        @menu.dbus.connect("MenuUnregistered", ->
+            setTimeout(->
+                DCore.Launcher.force_show(false)
+            , 100)
+        )
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     on_itemselected: (id)=>
@@ -256,18 +266,14 @@ class Item extends Widget
 
     updateProperty: (fn)->
         for own k, v of @elements
-            echo "#{k}, #{v}"
             if v
                 fn(k, v)
 
     showAutostartFlag:->
         Item.autostart_flag ?= "file://#{DCore.get_theme_icon(AUTOSTART_ICON.NAME,
             AUTOSTART_ICON.SIZE)}"
-        echo Item.autostart_flag
 
         @updateProperty((k, v)->
-            echo "show flag"
-            echo v
             last = v.lastElementChild
             if last.tagName != 'IMG'
                 create_img("autostart_flag", Item.autostart_flag, v)

@@ -130,18 +130,18 @@ int main (int argc, char **argv)
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));
 
     container = create_web_container (FALSE, TRUE);
-    /*ensure_fullscreen (container);*/
 
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
-    // gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
-    // gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
+    gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
+    gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
+    #ifndef NDEBUG
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FALSE);
     gtk_window_set_accept_focus (GTK_WINDOW (container), FALSE);
     /*gtk_window_set_focus (GTK_WINDOW (container), NULL);*/
     /*gtk_window_set_focus_visible (GTK_WINDOW (container), FALSE);*/
-    
+    #endif
     gtk_widget_set_events (GTK_WIDGET (container),
                            gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
@@ -161,10 +161,10 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    /*GdkRGBA rgba = { 0, 0, 0, 0.8 };*/
-    /*gdk_window_set_background_rgba (gdkwindow, &rgba);*/
-    /*gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);*/
-    /*gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));*/
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
+    gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
+    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
     
     gtk_widget_show_all (container);
     gtk_widget_set_opacity (container,0.93);
