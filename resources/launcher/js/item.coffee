@@ -44,7 +44,7 @@ class Item extends Widget
         @element.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
-        @elements = {}#favor: null, search: null
+        @elements = {'element': @element}#favor: null, search: null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -261,10 +261,13 @@ class Item extends Widget
                 fn(k, v)
 
     showAutostartFlag:->
-        Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
-            AUTOSTART_ICON.SIZE)
+        Item.autostart_flag ?= "file://#{DCore.get_theme_icon(AUTOSTART_ICON.NAME,
+            AUTOSTART_ICON.SIZE)}"
+        echo Item.autostart_flag
 
         @updateProperty((k, v)->
+            echo "show flag"
+            echo v
             last = v.lastElementChild
             if last.tagName != 'IMG'
                 create_img("autostart_flag", Item.autostart_flag, v)

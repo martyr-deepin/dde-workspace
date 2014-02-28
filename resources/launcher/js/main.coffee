@@ -52,7 +52,7 @@ setBackground(path)
 setTimeout(->
     p = daemon.GetBackgroundPict_sync()
     if p != path
-        setBackground(path)
+        setBackground(p)
 , 1000)
 
 searchBar = new SearchBar()
