@@ -70,7 +70,8 @@ keydown_callback = (e) ->
                 else
                     item = selector.firstShown()
                 id = item.getAttribute("appid")
-                Widget.look_up(id)?.on_click()
+                o = target:item, originalEvent: e
+                Widget.look_up(id)?.on_click(o)
 
                 reset()
             when KEYCODE.UP_ARROW

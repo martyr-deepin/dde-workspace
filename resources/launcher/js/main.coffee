@@ -28,19 +28,6 @@ applications = {}
 uninstalling_apps = {}
 
 
-reset = ->
-    searchBar.hide()
-    searchBar.clean()
-    selector.clean()
-    switcher.show()
-    $("#grid").style.display = 'block'
-    searchResult?.hide()
-    switcher.switchToFavor()
-    if Item.hover_item_id
-        event = new Event("mouseout")
-        Widget.look_up(Item.hover_item_id).element.dispatchEvent(event)
-
-
 init_all_applications = ->
     # get all applications and sort them by name
     _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)

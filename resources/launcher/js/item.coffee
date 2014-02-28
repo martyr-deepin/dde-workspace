@@ -26,7 +26,7 @@ catch error
 
 class Item extends Widget
     @autostart_flag: null
-    @hover_item_id: null
+    @hoverItem: null
     @clean_hover_temp: false
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
@@ -44,7 +44,7 @@ class Item extends Widget
         @element.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
-        @elements = favor: null, search: null
+        @elements = {}#favor: null, search: null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -79,6 +79,12 @@ class Item extends Widget
             el.style.marginBottom = 0
         parent.appendChild(el)
         el
+
+    remove:(pid)->
+        el = @elements[pid]
+        delete @elements[pid]
+        pNode = el.parentNode
+        pNode.removeChild(el)
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -138,17 +144,18 @@ class Item extends Widget
                 @img.src = src
 
     on_click: (e)->
+        target = e?.target
+        target?.style.cursor = "wait"
         e = e && e.originalEvent || e
         e?.stopPropagation()
-        @element.style.cursor = "wait"
         startManager.Launch(@basename)
-        Item.hover_item_id = @id
-        @element.style.cursor = "auto"
+        Item.hoverItem = target
+        target?.style.cursor = "auto"
         exit_launcher()
 
     on_dragstart: (e)=>
         e = e.originalEvent || e
-        e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
+        e.dataTransfer.setData("text/uri-list", "file://#{@path}")
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "all"
 
@@ -172,12 +179,13 @@ class Item extends Widget
             new MenuItem(6, _("_Uninstall"))
         )
 
-        if DCore.DEntry.internal()
-            @menu.addSeparator().append(
-                new MenuItem(100, "report this bad icon")
-            )
+        # if DCore.DEntry.internal()
+        #     @menu.addSeparator().append(
+        #         new MenuItem(100, "report this bad icon")
+        #     )
 
     on_rightclick: (e)->
+        e = e && e.originalEvent || e
         e.preventDefault()
         e.stopPropagation()
         @createMenu()
@@ -204,7 +212,7 @@ class Item extends Widget
                     uninstalling_apps[@id] = @
                     echo 'start uninstall'
                     uninstall(item:@, purge:true)
-            when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
+            # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
@@ -246,29 +254,41 @@ class Item extends Widget
         else
             @display_icon()
 
+    updateProperty: (fn)->
+        for own k, v of @elements
+            echo "#{k}, #{v}"
+            if v
+                fn(k, v)
+
+    showAutostartFlag:->
+        Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
+            AUTOSTART_ICON.SIZE)
+
+        @updateProperty((k, v)->
+            last = v.lastElementChild
+            if last.tagName != 'IMG'
+                create_img("autostart_flag", Item.autostart_flag, v)
+            last.style.visibility = 'visible'
+        )
+
+    hideAutostartFlag:->
+        @updateProperty((k, v)->
+            last = v.lastElementChild
+            if last.tagName == 'IMG'
+                last.style.visibility = 'hidden'
+        )
+
     add_to_autostart: ->
         # echo @basename
         if startManager.AddAutostart_sync(@path)
             # echo 'add success'
             @isAutostart = true
-            # if @id.indexOf("_") != -1
-            #     applications[@id.substr(3)].setAutostart(true).notify()
-            # else
-            #     applications[@id].setAutostart(true).notify()
-            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
-                AUTOSTART_ICON.SIZE)
-            last = @element.lastChild
-            if last.tagName != 'IMG'
-                create_img("autostart_flag", Item.autostart_flag, @element)
-            last.style.visibility = 'visible'
+            @showAutostartFlag()
 
     remove_from_autostart: ->
         if startManager.RemoveAutostart_sync(@path)
             @isAutostart = false
-            # applications[@id].setAutostart(false).notify()
-            last = @element.lastChild
-            if last.tagName == 'IMG'
-                last.style.visibility = 'hidden'
+            @hideAutostartFlag()
 
     toggle_autostart: ->
         if @isAutostart
@@ -277,20 +297,24 @@ class Item extends Widget
             @add_to_autostart()
 
     hide: ->
-        @element.style.display = "none"
+        @updateProperty((k, v)->
+            v.style.display = "none"
+        )
 
     # use '->', Item.display_temp and @displayMode will be undifined when
     # this function is pass to some other functions like setTimeout
     show: =>
         if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
-            @element.style.display = "-webkit-box"
+            @updateProperty((k, v)->
+                v.style.display = "-webkit-box"
+            )
 
     # just working for categories, not searching and favor.
 
     on_mouseover: (e)=>
         # this event is a wrap, use e.originalEvent to get the original event
         target = e.target
-        Item.hover_item_id = @id
+        Item.hoverItem = target
         if not Item.clean_hover_temp
             # not use @select() for storing status.
             target.style.background = "rgba(255, 255, 255, 0.15)"
@@ -302,4 +326,5 @@ class Item extends Widget
         target.style.border = "1px rgba(255, 255, 255, 0.0) solid"
         target.style.background = ""
         target.style.borderRadius = ""
+        Item.hoverItem = null
 

@@ -18,6 +18,28 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+reset = ->
+    searchBar.hide()
+    searchBar.clean()
+    selector.clean()
+    switcher.show()
+    $("#grid").style.display = 'block'
+    searchResult?.hide()
+    switcher.switchToFavor()
+
+    if selector.selectedItem
+        item = selector.selectedItem
+        item?.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        item?.style.background = ""
+        item?.style.borderRadius = ""
+
+    if Item.hoverItem
+        item = Item.hoverItem
+        item.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        item.style.background = ""
+        item.style.borderRadius = ""
+
+
 exit_launcher = ->
     DCore.Launcher.exit_gui()
 

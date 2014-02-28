@@ -63,3 +63,9 @@ mouseOverDelegate = delegateFactory((e, item)->
 dragStartDelegate = delegateFactory((e, item)->
     item.on_dragstart(e)
 )
+
+c = $("#container")
+c.addEventListener("contextmenu", menuDelegate)
+c.addEventListener("click", clickDelegate)
+c.addEventListener("mouseout", mouseOutDelegate)
+c.addEventListener("mouseover", mouseOverDelegate)

@@ -158,16 +158,16 @@ class MenuSeparator extends MenuItem
         super('', '')
 
 
-get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
-    # echo "#{dbus_name}, #{dbus_path}, #{dbus_interface}"
-    for dump in [0...10]
-        try
-            dbus = DCore.DBus["#{type.toLowerCase()}_object"](
-                dbus_name, dbus_path, dbus_interface
-            )
-            return dbus
-
-    throw "Get DBus \"#{dbus_name} #{dbus_path} #{dbus_interface}\" failed"
+# get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
+#     # echo "#{dbus_name}, #{dbus_path}, #{dbus_interface}"
+#     for dump in [0...10]
+#         try
+#             dbus = DCore.DBus["#{type.toLowerCase()}_object"](
+#                 dbus_name, dbus_path, dbus_interface
+#             )
+#             return dbus
+#
+#     throw "Get DBus \"#{dbus_name} #{dbus_path} #{dbus_interface}\" failed"
 
 
 class Menu
@@ -214,18 +214,18 @@ class Menu
     _init_dbus: ->
         manager = get_dbus(
             "session",
-            DEEPIN_MENU_NAME,
-            DEEPIN_MENU_PATH,
-            DEEPIN_MENU_MANAGER_INTERFACE
+            name:DEEPIN_MENU_NAME,
+            path:DEEPIN_MENU_PATH,
+            interface:DEEPIN_MENU_MANAGER_INTERFACE
         )
 
         menu_dbus_path = manager.RegisterMenu_sync()
         # echo "menu path is: #{menu_dbus_path}"
         @dbus = get_dbus(
             "session",
-            DEEPIN_MENU_NAME,
-            menu_dbus_path,
-            DEEPIN_MENU_INTERFACE)
+            name:DEEPIN_MENU_NAME,
+            path:menu_dbus_path,
+            interface:DEEPIN_MENU_INTERFACE)
 
     showMenu: (x, y, ori=null)->
         @menu.x = x

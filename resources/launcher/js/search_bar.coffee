@@ -87,4 +87,4 @@ class SearchBar
                 echo 'show result'
                 searchResult.show()
                 Item.updateHorizontalMargin()
-        , 200)
+        , 100)

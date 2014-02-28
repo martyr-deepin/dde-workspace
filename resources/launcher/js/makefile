@@ -15,7 +15,6 @@ all: ${com_coffee} \
 	selector.coffee \
 	softwaremanager.coffee \
 	delegate.coffee \
-	item_info.coffee \
 	item.coffee \
 	hidden_icon.coffee \
 	favor_list.coffee \

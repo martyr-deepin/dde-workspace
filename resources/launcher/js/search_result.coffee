@@ -35,9 +35,6 @@ class SearchResult
         searchTimer = null
         @element = $("#searchResult")
         @element.addEventListener('scroll', searchScrollCallback)
-        @element.addEventListener("contextmenu", menuDelegate)
-        @element.addEventListener("mouseout", mouseOutDelegate)
-        @element.addEventListener("mouseover", mouseOverDelegate)
 
         frag = document.createDocumentFragment()
         for own k, v of applications

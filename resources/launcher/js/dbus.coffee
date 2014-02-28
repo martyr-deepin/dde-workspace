@@ -18,28 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-get_dbus = (type, opt)->
-    type = type.toLowerCase()
-    if type == "system"
-        type = "sys"
-
-    if typeof opt == 'string'
-        opt = [opt]
-        func = DCore.DBus[type]
-    else
-        opt = [opt.name, opt.path, opt.interface]
-        func = DCore.DBus["#{type}_object"]
-
-    d = null
-    count = 0
-    while count < 20
-        if (d = func.apply(null, opt))?
-            break
-        count += 1
-
-    d
-
-
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 daemon = get_dbus("session", LAUNCHER_DAEMON)
 if daemon == null
