@@ -17,12 +17,16 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+set_el_bg =(el,src)->
+    el.style.backgroundImage = "url(#{src})"
+
 class OSD extends Widget
 
     constructor:->
         super
         echo "osd"
         document.body.appendChild(@element)
+        @element.style.display = "none"
         
     option_build:->
         @opt = []
@@ -30,19 +34,41 @@ class OSD extends Widget
         @option = ["CapsLock","NumLock","LightAjust","VoiceAjust","WifiOn","InputSwitch","KeyLayout","ShowMode"]
         
         for id,i in @option
-            @opt[i] = new Option(@option[i])
-            @opt[i].option_build()
-            @element.appendChild(@opt[i].element)
+            @opt[i] = new Option(id)
+            @opt[i].append(@element)
+            @opt[i].hide()
 
+    get_argv:->
+        return DCore.Osd.get_argv()
+
+    
+    show:->
+        argv = @get_argv()
+        echo "------osd argv :--#{argv}--"
+        if not (argv in @option)
+            @hide()
+            return
+        @element.style.display = "-webkit-box"
+        for opt in @opt
+            if opt.id is argv then opt.show()
+            else opt.hide()
+    
+    hide:->
+        @element.style.display = "none"
+        for opt in @opt
+            opt.hide()
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
 osd = new OSD()
-#osd.option_build()
+osd.option_build()
+osd.show()
 
+click_time = 0
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
-    DCore.osd.quit()
+    click_time++
+    DCore.Osd.quit() if click_time % 2 == 0
 )
  

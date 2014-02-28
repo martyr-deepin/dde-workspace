@@ -80,6 +80,7 @@ if not is_livecd
 
 
 document.body.addEventListener("keydown",(e)->
+    echo "keydown:#{e.which}"
     if is_greeter
         if $("#power_menuchoose") or $("#desktop_menuchoose")
             if $("#power_menuchoose").style.display isnt "none"
