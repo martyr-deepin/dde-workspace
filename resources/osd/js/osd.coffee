@@ -21,49 +21,72 @@ set_el_bg =(el,src)->
     el.style.backgroundImage = "url(#{src})"
 
 class OSD extends Widget
-
+    
+    MEDIAKEY = "com.deepin.daemon.MediaKey"
+    
     constructor:->
         super
         echo "osd"
         document.body.appendChild(@element)
         @element.style.display = "none"
-        
-    option_build:->
-        @opt = []
         #provide osd setting option
         @option = ["CapsLock","NumLock","LightAjust","VoiceAjust","WifiOn","InputSwitch","KeyLayout","ShowMode"]
-        
+        @MediaKey = ["mode4-c","mode4-n","mode4-l","mode4-v","mode4-w","mode4-i","mode4-k","mode4-m"]
+    
+    option_build:->
+        @opt = []
         for id,i in @option
             @opt[i] = new Option(id)
             @opt[i].append(@element)
             @opt[i].hide()
+        @element.style.display = "none"
 
     get_argv:->
         return DCore.Osd.get_argv()
 
     
-    show:->
-        argv = @get_argv()
-        echo "------osd argv :--#{argv}--"
-        if not (argv in @option)
-            @hide()
-            return
+    show:(option)->
         @element.style.display = "-webkit-box"
         for opt in @opt
-            if opt.id is argv then opt.show()
+            if opt.id is option then opt.show()
             else opt.hide()
-    
+        @timeout = setTimeout(=>
+            @hide()
+        ,2000)
     hide:->
         @element.style.display = "none"
         for opt in @opt
             opt.hide()
+    
+    dbus_signal:->
+        try
+            DBusMediaKey = DCore.DBus.session(MEDIAKEY)
+            for key in @MediaKey
+                DBusMediaKey.RegisterAccelKey(key)
+            DBusMediaKey.connect("AccelKeyChanged",KeyChanged)
+        catch e
+            echo "Error:-----DBusMediaKey:#{e}"
+    
+    KeyChanged:(key)=>
+        clearTimeout(@timeout) if @timeout
+        
+        #here should resolve the key StringArray
+        echo key
+        if not (key in @MediaKey)
+            echo "#{key} not in @MediaKey,return"
+            @hide()
+            return
+        option = null
+        for tmp,j in @MediaKey
+            if tmp is key then option = @option[j]
+        echo "KeyChanged:#{key}:----#{option}----will show"
+        @show(option)
 
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
 osd = new OSD()
 osd.option_build()
-osd.show()
 
 click_time = 0
 document.body.addEventListener("click",(e)=>
