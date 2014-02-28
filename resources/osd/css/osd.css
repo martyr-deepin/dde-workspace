@@ -3,6 +3,9 @@ body{
     cursor:default;
     overflow:hidden;
 
+    width:212px;
+    height:212px;
+    
     font-size:62.5%;
 }
 
