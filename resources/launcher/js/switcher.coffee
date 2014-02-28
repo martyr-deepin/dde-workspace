@@ -32,10 +32,24 @@ class Switcher
                 @switchToCategory()
         )
 
+        @switcherTimer = null
+        @switcher.addEventListener("drop", (e)=>
+            if !@isShowCategory
+                return
+            id = e.getData("text/plain")
+            echo id
+        )
+        # @switcher.addEventListener('dragenter', (e)=>
+        #     @switcherTimer = setTimeout(@switchToFavor, 500)
+        # )
+        # @switcher.addEventListener("dragleave", (e)=>
+        #     clearTimeout(@switcherTimer)
+        # )
+
     isInSearch:->
         @switcher.style.visibility == 'hidden'
 
-    switchToCategory:->
+    switchToCategory:=>
         selector.container($("#grid"))
         @isShowCategory = true
         categoryBar.show()
@@ -45,7 +59,7 @@ class Switcher
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         Item.updateHorizontalMargin()
 
-    switchToFavor:->
+    switchToFavor:=>
         selector.container(categoryList.favor.element.lastElementChild)
         @isShowCategory = false
         categoryBar.hide()
@@ -55,7 +69,7 @@ class Switcher
         container.style.marginLeft = "110px"
         # Item.updateHorizontalMargin()
 
-    switchToSearch: ->
+    switchToSearch:=>
         $("#grid").style.display = 'none'
         if @isShowCategory
             @switchToFavor()

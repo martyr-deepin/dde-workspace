@@ -239,11 +239,9 @@ get_dbus = (type, opt)->
         func = DCore.DBus["#{type}_object"]
 
     d = null
-    count = 0
-    while count < 20
+    for dump in [0..20]
         if (d = func.apply(null, opt))?
             break
-        count += 1
 
     if !d
         throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
