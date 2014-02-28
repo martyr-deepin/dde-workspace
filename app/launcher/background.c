@@ -34,30 +34,28 @@
 
 char* get_blur_path()
 {
+    GError* err = NULL;
     GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
                                                       G_DBUS_PROXY_FLAGS_NONE,
                                                       NULL,
-                                                      "com.deepin.api.Graphic",
-                                                      "/com/deepin/api/Graphic",
-                                                      "com.deepin.api.Graphic",
+                                                      "com.deepin.dde.daemon.Launcher",
+                                                      "/com/deepin/dde/daemon/Launcher",
+                                                      "com.deepin.dde.daemon.Launcher",
                                                       NULL,
-                                                      NULL
+                                                      &err
                                                       );
 
-    if (proxy == NULL)
+    if (err != NULL) {
+        g_warning("[%s] get dbus proxy failed: %s", __func__, err->message);
+        g_error_free(err);
         return NULL;
+    }
 
-    GError* err = NULL;
     GSettings* settings = g_settings_new("com.deepin.dde.personalization");
     char* pic = g_settings_get_string(settings, "current-picture");
     GVariant* res = g_dbus_proxy_call_sync(proxy,
-                                           "BackgroundBlurPictPath",
-                                           g_variant_new("(ssdd)",
-                                                         pic + strlen("file://"),
-                                                         "",
-                                                         30,
-                                                         1
-                                                        ),
+                                           "GetBackgroundPict",
+                                           NULL,
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,  // timeout
                                             NULL,  // cancellable
@@ -76,8 +74,7 @@ char* get_blur_path()
     }
 
     char* blur_path = NULL;
-    gint32 status = -1;
-    g_variant_get(res, "(is)", &status, &blur_path);
+    g_variant_get(res, "(s)", &blur_path);
     g_variant_unref(res);
     return blur_path;
 }
@@ -158,3 +155,4 @@ void set_background(GdkWindow* win,  double width, double height)
 
     g_free(blur_path);
 }
+

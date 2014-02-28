@@ -19,18 +19,16 @@
 
 
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
-daemon = DCore.DBus.session(LAUNCHER_DAEMON)
+daemon = get_dbus("session", LAUNCHER_DAEMON)
+if daemon == null
+    DCore.Launcher.quit()
 
 
 START_MANAGER =
-    obj: "com.deepin.SessionManager"
+    name: "com.deepin.SessionManager"
     path: "/com/deepin/StartManager"
     interface: "com.deepin.StartManager"
-startManager = DCore.DBus.session_object(
-    START_MANAGER.obj,
-    START_MANAGER.path,
-    START_MANAGER.interface
-)
+startManager = get_dbus("session", START_MANAGER)
 startManager.connect("AutostartChanged", (status, path)->
     echo "autostart changed: #{status}"
     for own k, v of applications
@@ -40,18 +38,18 @@ startManager.connect("AutostartChanged", (status, path)->
 
     if status == "deleted"
         echo "deleted"
-        item?.setAutostart(false).notify()
+        # item?.setAutostart(false).notify()
     else if status = "modified"
         echo "modified"
-        item?.setAutostart(!item.isAutostart).notify()
+        # item?.setAutostart(!item.isAutostart).notify()
     else
         echo "add"
-        item?.setAutostart(true).notify()
+        # item?.setAutostart(true).notify()
 )
 
 
-SORTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
-softwareManager = DCore.DBus.sys(SORTWARE_MANAGER)
+SOFTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
+softwareManager = get_dbus("system", SOFTWARE_MANAGER)
 softwareManager.connect("update_signal", (info)->
     # echo info
     status = info[0][0]

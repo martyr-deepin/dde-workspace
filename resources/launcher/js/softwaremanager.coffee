@@ -74,25 +74,25 @@ update = (status, info, categories)->
     else if status.match(/^created$/i)
         echo 'added'
         # status = "added"
-        info = new ItemInfo(id, name, path, icon)
-        applications[id] = info
-        item = new Item(id, name, path, icon)
-        seItem = new SearchItem("se_#{id}", name, path, icon)
-        faItem = new FavorItem("fa_#{id}", name, path, icon)
-        info.element = item.element
-        info.searchElement = seItem.element
-        info.favorElement = faItem.element
-        info.register(id, item)
-        info.register("se_#{id}", seItem)
-        info.register("fa_#{id}", faItem)
-        info.notify()
+        # info = new ItemInfo(id, name, path, icon)
+        # applications[id] = info
+        # item = new Item(id, name, path, icon)
+        # seItem = new SearchItem("se_#{id}", name, path, icon)
+        # faItem = new FavorItem("fa_#{id}", name, path, icon)
+        # info.element = item.element
+        # info.searchElement = seItem.element
+        # info.favorElement = faItem.element
+        # info.register(id, item)
+        # info.register("se_#{id}", seItem)
+        # info.register("fa_#{id}", faItem)
+        # info.notify()
         $("#searchResult").appendChild(info.searchElement)
 
         categoryList.addItem(id, categories)
         # categoryList.showNonemptyCategories()
         if !switcher.isInSearch()
             if switcher.isShowCategory
-                switcher.showCategory()
+                switcher.switchToCategory()
             else
                 categoryList.showFavorOnly()
     else

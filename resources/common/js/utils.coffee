@@ -226,3 +226,26 @@ inject_css = (el,src)->
     css_element.rel = "stylesheet"
     css_element.href = src
 
+get_dbus = (type, opt)->
+    type = type.toLowerCase()
+    if type == "system"
+        type = "sys"
+
+    if typeof opt == 'string'
+        opt = [opt]
+        func = DCore.DBus[type]
+    else
+        opt = [opt.name, opt.path, opt.interface]
+        func = DCore.DBus["#{type}_object"]
+
+    d = null
+    count = 0
+    while count < 20
+        if (d = func.apply(null, opt))?
+            break
+        count += 1
+
+    if !d
+        throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed"
+    d
+

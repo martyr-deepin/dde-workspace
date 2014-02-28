@@ -26,9 +26,28 @@ searchScrollCallback = (e)->
     else
         this.style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
 
+searchResult = null
+class SearchResult
+    inited: false
+    constructor: ->
+        echo 'create search result'
+        clearTimeout(searchTimer)
+        searchTimer = null
+        @element = $("#searchResult")
+        @element.addEventListener('scroll', searchScrollCallback)
 
-searchResult = $("#searchResult")
-searchResult.addEventListener('scroll', searchScrollCallback)
-searchResult.addEventListener("contextmenu", menuDelegate)
-searchResult.addEventListener("mouseout", mouseOutDelegate)
-searchResult.addEventListener("mouseover", mouseOverDelegate)
+        frag = document.createDocumentFragment()
+        for own k, v of applications
+            el = v.add(frag, 'search')
+        @element.appendChild(frag)
+        SearchResult.inited = true
+        echo 'create search result done'
+
+    hide:->
+        @element.style.display = "none"
+
+    show:->
+        @element.style.display = 'block'
+
+    isShow:->
+        @element.style.display == 'block'
