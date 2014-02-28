@@ -31,7 +31,7 @@ class OSD extends Widget
         @element.style.display = "none"
         #provide osd setting option
         @option = ["CapsLock","NumLock","LightAjust","VoiceAjust","WifiOn","InputSwitch","KeyLayout","ShowMode"]
-        @MediaKey = ["mode4-c","mode4-n","mode4-l","mode4-v","mode4-w","mode4-i","mode4-k","mode4-m"]
+        @MediaKey = ["mode4-c","mode4-n","mode4-a","mode4-v","mode4-w","mode4-i","mode4-k","mode4-m"]
     
     option_build:->
         @opt = []
@@ -43,7 +43,6 @@ class OSD extends Widget
 
     get_argv:->
         return DCore.Osd.get_argv()
-
     
     show:(option)->
         @element.style.display = "-webkit-box"
@@ -53,6 +52,7 @@ class OSD extends Widget
         @timeout = setTimeout(=>
             @hide()
         ,2000)
+    
     hide:->
         @element.style.display = "none"
         for opt in @opt
@@ -64,11 +64,11 @@ class OSD extends Widget
             for key in @MediaKey
                 DBusMediaKey.UnregisterAccelKey(key)
                 DBusMediaKey.RegisterAccelKey(key)
-            DBusMediaKey.connect("AccelKeyChanged",@KeyChanged)
+            DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
-    KeyChanged:(key)=>
+    keyChanged:(key)=>
         clearTimeout(@timeout) if @timeout
         
         #here should resolve the key StringArray
