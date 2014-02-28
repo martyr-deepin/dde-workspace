@@ -341,8 +341,10 @@ class Item extends Widget
 
     on_mouseout: (e)=>
         target = e.target
-        target.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        target.style.border = ""
+
         inner = target.firstElementChild
-        inner.style.border = "2px rgba(255, 255, 255, 0.0) solid"
+        inner.style.border = ""
         inner.style.background = ""
+
         Item.hoverItem = null

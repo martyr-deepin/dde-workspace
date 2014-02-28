@@ -170,12 +170,11 @@ body {
   border: 2px rgba(255, 255, 255, 0.0) solid;
   border-radius: 8px;
 }
-.item_selected {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px rgba(0,0,0,0.2) solid;
-  border-radius: 8px;
-}
 .item_selected > div {
+  border: 1px rgba(0,0,0,0.2) solid;
+}
+.item_selected > div > div {
+  background: rgba(255, 255, 255, 0.15);
   border: 2px rgba(255,255,255,0.2) solid;
 }
 .item_img {
