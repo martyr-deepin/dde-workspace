@@ -60,7 +60,7 @@ class AppList extends Widget
     constructor: (@id) ->
         super
         $("#container").appendChild(@element)
-        @insert_indicator = create_element("div", "InsertIndicator")
+        @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
         @last_fixed = null
