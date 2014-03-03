@@ -27,7 +27,7 @@ class OSD extends Widget
         @opt = []
 
     option_build:->
-        for option,i in key_NameValue
+        for option,i in MediaKey_NameValue
             @opt[i] = new Option(option.Name)
             @opt[i].append(@element)
             @opt[i].hide()
@@ -53,13 +53,13 @@ class OSD extends Widget
     dbus_signal:->
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
-            # for option in key_NameValue
-            #     keyValue = option.Value
+            # for key in MediaKey_NameValue
+            #     keyValue = key.Value
             #     DBusMediaKey.UnregisterAccelKey_sync(keyValue)
             #     DBusMediaKey.RegisterAccelKey_sync(keyValue)
-            MediaKeyList = []
-            MediaKeyList = DBusMediaKey.MediaKeyList
-            echo MediaKeyList
+            #MediaKeyList = []
+            #MediaKeyList = DBusMediaKey.MediaKeyList
+            #echo MediaKeyList
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
             echo "DBusMediaKey #{MEDIAKEY}"
         catch e
@@ -69,10 +69,10 @@ class OSD extends Widget
         echo "KeyChanged:#{keyValue}"
         clearTimeout(@timeout) if @timeout
         option = null
-        for tmp in key_NameValue
+        for tmp in MediaKey_NameValue
             if tmp.Value is keyValue then option = tmp.Name
         if not option?
-            echo "#{key} not in key_NameValue.Value,return"
+            echo "#{key} not in MediaKey_NameValue.Value,return"
             @hide()
             return
         @show(option)

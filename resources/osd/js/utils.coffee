@@ -17,7 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-key_NameValue = [
+MediaKey_NameValue = [
     {Name:"CapsLock_on",Value:"Caps_Lock"},
     {Name:"CapsLock_off",Value:"caps_lock-Caps_Lock"},
     {Name:"NumLock_on",Value:"Num_Lock"},
@@ -38,7 +38,7 @@ key_NameValue = [
 #org/gonome/settings-daemon/plugins/media-keys/active false
 #com/deepin/dde/key-binding/mediakey
 #dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"           
-echo key_NameValue
+#echo MediaKey_NameValue
 
 set_el_bg =(el,src)->
     el.style.backgroundImage = "url(#{src})"
