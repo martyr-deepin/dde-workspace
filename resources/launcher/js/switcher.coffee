@@ -77,6 +77,7 @@ class Switcher
         if @isShowCategory
             @switchToFavor()
         @hide()
+        searchBar.show()
 
     hide:->
         @switcher.style.visibility = 'hidden'

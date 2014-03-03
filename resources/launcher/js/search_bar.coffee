@@ -24,7 +24,11 @@ class SearchBar
         @key = $("#searchKey")
         DCore.signal_connect("im_commit", (info)=>
             if @value(@value() + info.Content)
-                @show()
+                echo 'search from im'
+                if !searchResult?
+                    echo "create result"
+                    searchResult = new SearchResult()
+                switcher.switchToSearch()
                 @search()
         )
         @searchTimer = null
@@ -73,6 +77,7 @@ class SearchBar
                     res.children[i].style.display = 'none'
 
             if ids.length == 0
+                echo 'search: get nothing'
                 return
 
             for i in [ids.length-1..0]
