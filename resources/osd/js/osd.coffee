@@ -1,8 +1,8 @@
 #Copyright (c) 2011 ~ 2013 Deepin, Inc.
 #              2011 ~ 2013 yilang
 #
-#Author:      LongWei <yilang2007lw@gmail.com>
-#Maintainer:  LongWei <yilang2007lw@gmail.com>
+#Author:      YuanChenglu <yuanchenglu001@gmail.com>
+#Maintainer:  YuanChenglu <yuanchenglu001@gmail.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -17,35 +17,18 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-set_el_bg =(el,src)->
-    el.style.backgroundImage = "url(#{src})"
-
 class OSD extends Widget
-    
-    MEDIAKEY = "com.deepin.daemon.MediaKey"
     
     constructor:->
         super
         echo "osd"
         document.body.appendChild(@element)
         @element.style.display = "none"
-        #provide osd setting option
-        @option_key = [
-            {opt:"CapsLock",key:"mod4-c"},
-            {opt:"NumLock",key:"mod4-n"},
-            {opt:"LightAjust",key:"mod4-g"},
-            {opt:"VoiceAjust",key:"mod4-v"},
-            {opt:"WifiOn",key:"mod4-f"},
-            {opt:"InputSwitch",key:"mod4-i"},
-            {opt:"KeyLayout",key:"mod4-k"},
-            {opt:"ShowMode",key:"mod4-o"}
-        ]
-        echo @option_key
         @opt = []
-        
+
     option_build:->
-        for option,i in @option_key
-            @opt[i] = new Option(option.opt)
+        for option,i in MediaKey_NameValue
+            @opt[i] = new Option(option.Name)
             @opt[i].append(@element)
             @opt[i].hide()
         @element.style.display = "none"
@@ -60,7 +43,7 @@ class OSD extends Widget
             else opt.hide()
         @timeout = setTimeout(=>
             @hide()
-        ,4000)
+        ,TIME_HIDE)
     
     hide:->
         @element.style.display = "none"
@@ -70,24 +53,28 @@ class OSD extends Widget
     dbus_signal:->
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
-            for option in @option_key
-                key = option.key
-                DBusMediaKey.UnregisterAccelKey_sync(key)
-                DBusMediaKey.RegisterAccelKey_sync(key)
+            # for key in MediaKey_NameValue
+            #     keyValue = key.Value
+            #     DBusMediaKey.UnregisterAccelKey_sync(keyValue)
+            #     DBusMediaKey.RegisterAccelKey_sync(keyValue)
+            #MediaKeyList = []
+            #MediaKeyList = DBusMediaKey.MediaKeyList
+            #echo MediaKeyList
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
+            echo "DBusMediaKey #{MEDIAKEY}"
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
-    keyChanged:(type,key)=>
+    keyChanged:(type,keyValue)=>
+        echo "KeyChanged:#{keyValue}"
         clearTimeout(@timeout) if @timeout
         option = null
-        for tmp in @option_key
-            if tmp.key is key then option = tmp.opt
+        for tmp in MediaKey_NameValue
+            if tmp.Value is keyValue then option = tmp.Name
         if not option?
-            echo "#{key} not in @option_key.key,return"
+            echo "#{key} not in MediaKey_NameValue.Value,return"
             @hide()
             return
-        echo "KeyChanged:#{key}:----#{option}----will show"
         @show(option)
 
 click_time = 0
