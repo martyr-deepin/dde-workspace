@@ -18,6 +18,28 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+reset = ->
+    searchBar.hide()
+    searchBar.clean()
+    selector.clean()
+    switcher.show()
+    $("#grid").style.display = 'block'
+    searchResult?.hide()
+    switcher.switchToFavor()
+
+    if selector.selectedItem
+        item = selector.selectedItem
+        item?.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        item?.style.background = ""
+        item?.style.borderRadius = ""
+
+    if Item.hoverItem
+        item = Item.hoverItem
+        item.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        item.style.background = ""
+        item.style.borderRadius = ""
+
+
 exit_launcher = ->
     DCore.Launcher.exit_gui()
 
@@ -25,6 +47,7 @@ exit_launcher = ->
 setBackground = (uid, path)->
     callback = (path)->
         echo "set background to #{path}"
+        localStorage.setItem("bg", path)
         _b.style.backgroundImage = "url(#{path})"
 
     path = path || uid
@@ -36,3 +59,20 @@ setBackground = (uid, path)->
         img.onload = ->
             callback(path)
             img.onload = null
+
+
+createItem = (core, autostartList)->
+    path = core[0]
+    name = core[1]
+    id = core[2]
+    icon = core[3]
+
+    basename = get_path_name(path) + ".desktop"
+    item = new Item(id, name, path, icon)
+    applications[id] = item
+    autostart = autostartList.filter((el)-> el.match("#{basename}$"))
+    if autostart.length != 0
+        autostartList.remove(autostart[0])
+        item.add_to_autostart()
+
+    item

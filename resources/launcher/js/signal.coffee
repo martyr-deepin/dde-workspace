@@ -47,33 +47,5 @@ DCore.signal_connect("exit_launcher", ->
 )
 
 
-# DCore.signal_connect("draw_background", (info)->
-#     img = new Image()
-#     img.src = info.path
-#     img.onload = ->
-#         _b.style.backgroundImage = "url(#{img.src})"
-# )
-
-
-# DCore.signal_connect("uninstall_failed", (info)->
-#     if (item = uninstalling_apps[info.id])?
-#         echo "#{info.id} uninstall failed"
-#         item.status = SOFTWARE_STATE.IDLE
-#         item.show()
-#     delete uninstalling_apps[info.id]
-# )
-
-
-# DCore.signal_connect("autostart_update", (info)->
-#     if (app = Widget.look_up(info.id))?
-#         if DCore.Launcher.is_autostart(app.core)
-#             # echo 'add'
-#             app.add_to_autostart()
-#         else
-#             # echo 'delete'
-#             app.remove_from_autostart()
-# )
-
-
 DCore.Launcher.notify_workarea_size()
 

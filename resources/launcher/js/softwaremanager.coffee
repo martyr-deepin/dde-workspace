@@ -67,37 +67,24 @@ update = (status, info, categories)->
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
             item.destroy()
-            Widget.look_up("se_#{id}")?.destroy()
-            Widget.look_up("fa_#{id}")?.destroy()
             delete applications[id]
             categoryList.hideEmptyCategories()
     else if status.match(/^created$/i)
         echo 'added'
-        # status = "added"
-        info = new ItemInfo(id, name, path, icon)
-        applications[id] = info
-        item = new Item(id, name, path, icon)
-        seItem = new SearchItem("se_#{id}", name, path, icon)
-        faItem = new FavorItem("fa_#{id}", name, path, icon)
-        info.element = item.element
-        info.searchElement = seItem.element
-        info.favorElement = faItem.element
-        info.register(id, item)
-        info.register("se_#{id}", seItem)
-        info.register("fa_#{id}", faItem)
-        info.notify()
-        $("#searchResult").appendChild(info.searchElement)
+        autostartList = startManager.AutostartList_sync()
+        item = createItem(info, autostartList)
+        $("#searchResult").appendChild(item.elements.search)
 
         categoryList.addItem(id, categories)
         # categoryList.showNonemptyCategories()
         if !switcher.isInSearch()
             if switcher.isShowCategory
-                switcher.showCategory()
+                switcher.switchToCategory()
             else
                 categoryList.showFavorOnly()
     else
         echo 'updated'
-        applications[id].update(name:name, path:path, basename:get_path_name(path), icon:icon)
+        applications[id].update(name:name, path:path, basename:"#{get_path_name(path)}.desktop", icon:icon)
 
     # FIXME:
     # load what should be shown, not forbidden reloading on searching.

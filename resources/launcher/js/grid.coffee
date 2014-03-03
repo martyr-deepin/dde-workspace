@@ -54,7 +54,3 @@ gridScrollCallback = (e)->
 
 grid = $('#grid')
 grid.addEventListener("scroll", gridScrollCallback)
-grid.addEventListener("contextmenu", menuDelegate)
-grid.addEventListener("click", clickDelegate)
-grid.addEventListener("mouseout", mouseOutDelegate)
-grid.addEventListener("mouseover", mouseOverDelegate)

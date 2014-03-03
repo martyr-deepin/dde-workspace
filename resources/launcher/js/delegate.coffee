@@ -24,16 +24,24 @@ DEvent = (e)->
     element = null
     id = null
     # echo target.tagName
+    # target is hoverBoxOutter
     if target.tagName == "IMG"
-        id = parent.getAttribute("appid")
-        element = parent
+        p = parent.parentNode
+        id = p.getAttribute("appid")
+        element = p
     else if target.tagName == "DIV"
         if target.classList.contains("Item")
             id = target.getAttribute("appid")
-            element = target
+            element = target.firstElementChild
         else if parent.classList.contains("Item")
             id = parent.getAttribute("appid")
+            element = target
+        else if target.classList.contains("hoverBox")
+            id = parent.getAttribute("appid")
             element = parent
+        else if target.classList.contains("item_name")
+            id = parent.parentNode.getAttribute("appid")
+            element = parent.parentNode
 
     id: id, target: element, originalEvent: e
 
@@ -63,3 +71,10 @@ mouseOverDelegate = delegateFactory((e, item)->
 dragStartDelegate = delegateFactory((e, item)->
     item.on_dragstart(e)
 )
+
+c = $("#container")
+c.addEventListener("contextmenu", menuDelegate)
+c.addEventListener("click", clickDelegate)
+c.addEventListener("mouseout", mouseOutDelegate)
+c.addEventListener("mouseover", mouseOverDelegate)
+c.addEventListener("dragstart", dragStartDelegate)

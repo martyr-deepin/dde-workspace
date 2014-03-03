@@ -66,9 +66,13 @@ keydown_callback = (e) ->
             when KEYCODE.ENTER
                 e.preventDefault()
                 if selector.selectedItem
-                    selector.selectedItem.on_click()
+                    item = selector.selectedItem
                 else
-                    selector.firstShown()?.on_click()
+                    item = selector.firstShown()
+                id = item.getAttribute("appid")
+                o = target:item, originalEvent: e
+                Widget.look_up(id)?.on_click(o)
+
                 reset()
             when KEYCODE.UP_ARROW
                 e.preventDefault()
@@ -93,9 +97,11 @@ keypress_callback = (e) ->
     e.preventDefault()
     e.stopPropagation()
     if e.which != KEYCODE.ESC and e.which != KEYCODE.BACKSPACE and e.which != KEYCODE.ENTER and e.whicn != KEYCODE.SPACE
-        if switcher.isShowCategory
-            switcher.hideCategory()
-        switcher.hide()
+        if !searchResult?
+            echo "create result"
+            searchResult = new SearchResult()
+
+        switcher.switchToSearch()
         searchBar.show()
         searchBar.value(searchBar.value() + String.fromCharCode(e.which))
         searchBar.search()

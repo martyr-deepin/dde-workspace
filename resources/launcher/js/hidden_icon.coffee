@@ -40,7 +40,7 @@ class HiddenIcons
             @updateCache = false
             for id in validIds
                 # echo applications[id].name
-                @hiddenIcons[id] = applications[id].observers.item
+                @hiddenIcons[id] = applications[id]
 
             if originIds.length != validIds.length
                 echo 'save'

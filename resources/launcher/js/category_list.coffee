@@ -26,7 +26,7 @@ class CategoryList
 
         frag = document.createDocumentFragment()
         favors = daemon.GetFavors_sync()
-        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->"fa_#{e[0]}"))
+        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->"#{e[0]}"))
         @favor.show().hideHeader()
         frag.appendChild(@favor.element)
         # infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
@@ -51,8 +51,11 @@ class CategoryList
 
     updateBlankHeight:->
         containerHeight = $("#container").clientHeight
-        otherHeight = @categories[CATEGORY_ID.OTHER].element.clientHeight
-        @blank.style.height = containerHeight - otherHeight - 40
+        c = @container.lastElementChild
+        while (c = c.previousElementSibling)
+            if c.style.display != 'none'
+                lastHeight = c.clientHeight
+        @blank.style.height = containerHeight - lastHeight - 40
         @
 
     showBlank: ->
@@ -61,38 +64,33 @@ class CategoryList
 
     hideEmptyCategories:->
         for own id, item of @categories
-            try
-                all_is_hidden = item.every((el) ->
-                    i = Widget.look_up(el)
-                    if i?
-                        echo "#{el}, #{i.name}"
-                        i.display_mode == "hidden"
-                    else
-                        echo "#{el}, #{i}"
-                        true
-                )
-            catch e
-                echo "hideEmptyCategories: #{e}"
+            all_is_hidden = item.every((el) ->
+                i = Widget.look_up(el)
+                if i?
+                    return i.displayMode == "hidden"
+                else
+                    return true
+            )
             if all_is_hidden and not Item.display_temp
                 item.hide()
-                $("##{CategoryItem.PREFIX}#{item.id}").style.display = "none"
-                # if @selected_id == id
-                #     @selected_id = CATEGORY_ID.ALL
-                # grid_load_category(@selected_id)
+                # hide category bar
+                $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
         @
 
     showNonemptyCategories:->
-        if @favor.element.style.display == 'none'
-            @favor.element.style.display = 'block'
-        @favor.showHeader().setNameDecoration()
         for own id, category of @categories
+            @favor
             not_all_is_hidden = category.some((el) ->
-                Widget.look_up(el)?.display_mode != "hidden"
+                Widget.look_up(el).displayMode != "hidden"
             )
             if not_all_is_hidden or Item.display_temp
                 category.show()
+                category.showHeader()
                 category.setNameDecoration()
-                $("##{CategoryItem.PREFIX}#{category.id}").style.display = "block"
+                # show category bar
+                $("##{CategoryItem.PREFIX}#{id}").style.display = "block"
+            else
+                category.hide()
         @
 
     showFavorOnly:->

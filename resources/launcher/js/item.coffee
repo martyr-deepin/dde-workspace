@@ -26,24 +26,28 @@ catch error
 
 class Item extends Widget
     @autostart_flag: null
-    @hover_item_id: null
+    @hoverItem: null
     @clean_hover_temp: false
     @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
         @element.removeAttribute("id")
         @element.setAttribute("appid", @id)
+        @hoverBoxOutter = create_element("div", "hoverBoxOutter", @element)
+        @hoverBoxOutter.setAttribute("appid", @id)
+        @hoverBox = create_element("div", "hoverBox", @hoverBoxOutter)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
 
         @load_image()
-        @itemName = create_element("div", "item_name", @element)
+        @itemName = create_element("div", "item_name", @hoverBox)
         @itemName.innerText = @name
         @element.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
+        @elements = {'element': @element}#favor: null, search: null
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
@@ -67,14 +71,29 @@ class Item extends Widget
         , 200)
 
     destroy: ->
-        switch @constructor.name
-            when "Item"
-                categoryList.removeItem(@id)
-            when "SearchItem"
-                $("#searchResult").removeChild(@element)
-            when "FavorItem"
-                categoryList.favor.removeItem(@id)
+        categoryList.removeItem(@id)
         delete Widget.object_table[@id]
+
+    add:(parent, pid)->
+        el = @element.cloneNode(true)
+        inner = el.firstElementChild.firstElementChild
+        im = inner.firstElementChild
+        # img may not be loaded.
+        if im.classList.length == 1
+            im.onload = (e)=>
+                @setImageSize(im)
+        @elements[pid] = el
+        if pid == 'search'
+            el.style.marginTop = '20px'
+            el.style.marginBottom = 0
+        parent.appendChild(el)
+        el
+
+    remove:(pid)->
+        el = @elements[pid]
+        delete @elements[pid]
+        pNode = el.parentNode
+        pNode.removeChild(el)
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -115,41 +134,45 @@ class Item extends Widget
             @toggle_icon()
             # @displayMode = info.displayMode
 
+    setImageSize: (img)=>
+        if img.width == img.height
+            # echo 'set class name to square img'
+            img.classList.add('square_img')
+        else if img.width > img.height
+            img.classList.add('hbar_img')
+            new_height = ITEM_IMG_SIZE * img.height / img.width
+            grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
+            img.style.padding = "#{grap}px 0px"
+        else
+            img.classList.add('vbar_img')
+
     load_image: ->
         im = @get_img()
-        @img = create_img("", im, @element)
+        @img = create_img("item_img", im, @hoverBox)
+        # @img.draggable = true
         @img.onload = (e) =>
-            if @img.width == @img.height
-                @img.className = 'square_img'
-            else if @img.width > @img.height
-                @img.className = 'hbar_img'
-                new_height = ITEM_IMG_SIZE * @img.height / @img.width
-                grap = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
-                @img.style.padding = "#{grap}px 0px"
-            else
-                @img.className = 'vbar_img'
-        @img.onerror = (e) =>
-            src = DCore.get_theme_icon('invalid-dock_app', ITEM_IMG_SIZE)
-            if src != @img.src
-                @img.src = src
+            @setImageSize(@img)
 
     on_click: (e)->
+        target = e?.target
+        target?.style.cursor = "wait"
         e = e && e.originalEvent || e
         e?.stopPropagation()
-        @element.style.cursor = "wait"
         startManager.Launch(@basename)
-        Item.hover_item_id = @id
-        @element.style.cursor = "auto"
+        Item.hoverItem = target
+        target?.style.cursor = "auto"
         exit_launcher()
 
     on_dragstart: (e)=>
+        echo 'drag'
         e = e.originalEvent || e
-        e.dataTransfer.setData("text/uri-list", "file://#{escape(@path)}")
+        echo @path
+        e.dataTransfer.setData("text/plain", @id)
+        e.dataTransfer.setData("text/uri-list", "file://#{@path}")
         e.dataTransfer.setDragImage(@img, 20, 20)
-        e.dataTransfer.effectAllowed = "all"
+        e.dataTransfer.effectAllowed = "copy"
 
     createMenu:->
-        DCore.Launcher.force_show(true)
         @menu = null
         @menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -168,19 +191,26 @@ class Item extends Widget
             new MenuItem(6, _("_Uninstall"))
         )
 
-        if DCore.DEntry.internal()
-            @menu.addSeparator().append(
-                new MenuItem(100, "report this bad icon")
-            )
+        # if DCore.DEntry.internal()
+        #     @menu.addSeparator().append(
+        #         new MenuItem(100, "report this bad icon")
+        #     )
 
     on_rightclick: (e)->
+        DCore.Launcher.force_show(true)
+        e = e && e.originalEvent || e
         e.preventDefault()
         e.stopPropagation()
+
         @createMenu()
 
         # echo @menu
         # return
-        @menu.dbus.connect("MenuUnregistered", -> DCore.Launcher.force_show(false))
+        @menu.dbus.connect("MenuUnregistered", ->
+            setTimeout(->
+                DCore.Launcher.force_show(false)
+            , 100)
+        )
         @menu.addListener(@on_itemselected).showMenu(e.screenX, e.screenY)
 
     on_itemselected: (id)=>
@@ -200,12 +230,12 @@ class Item extends Widget
                     uninstalling_apps[@id] = @
                     echo 'start uninstall'
                     uninstall(item:@, purge:true)
-            when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
+            # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
         @displayMode = "hidden"
-        applications[@id].setDisplayMode("hidden").notify()
+        # applications[@id].setDisplayMode("hidden").notify()
         if HIDE_ICON_CLASS not in @element.classList
             @add_css_class(HIDE_ICON_CLASS, @element)
         if not Item.display_temp and not is_show_hidden_icons
@@ -214,7 +244,6 @@ class Item extends Widget
          if !hiddenIcons.contains(@id)
              # echo 'save'
             hiddenIcons.add(@id, @).save()
-        categoryBar.hideEmptyCategories()
         categoryList.hideEmptyCategories()
         hidden_icons_num = hiddenIcons.number()
         if hidden_icons_num == 0
@@ -222,7 +251,7 @@ class Item extends Widget
 
     display_icon: (e)=>
         @displayMode = "display"
-        applications[@id].setDisplayMode("display").notify()
+        # applications[@id].setDisplayMode("display").notify()
         @element.style.display = '-webkit-box'
         if HIDE_ICON_CLASS in @element.classList
             @remove_css_class(HIDE_ICON_CLASS, @element)
@@ -243,29 +272,40 @@ class Item extends Widget
         else
             @display_icon()
 
+    updateProperty: (fn)->
+        for own k, v of @elements
+            if v
+                fn(k, v)
+
+    showAutostartFlag:->
+        Item.autostart_flag ?= "file://#{DCore.get_theme_icon(AUTOSTART_ICON.NAME,
+            AUTOSTART_ICON.SIZE)}"
+
+        @updateProperty((k, v)->
+            last = v.firstElementChild.firstElementChild.lastElementChild
+            if last.tagName != 'IMG'
+                create_img("autostart_flag", Item.autostart_flag, v.firstElementChild.firstElementChild)
+            last.style.visibility = 'visible'
+        )
+
+    hideAutostartFlag:->
+        @updateProperty((k, v)->
+            last = v.firstElementChild.firstElementChild.lastElementChild
+            if last.tagName == 'IMG'
+                last.style.visibility = 'hidden'
+        )
+
     add_to_autostart: ->
         # echo @basename
         if startManager.AddAutostart_sync(@path)
             # echo 'add success'
             @isAutostart = true
-            # if @id.indexOf("_") != -1
-            #     applications[@id.substr(3)].setAutostart(true).notify()
-            # else
-            #     applications[@id].setAutostart(true).notify()
-            Item.autostart_flag ?= DCore.get_theme_icon(AUTOSTART_ICON.NAME,
-                AUTOSTART_ICON.SIZE)
-            last = @element.lastChild
-            if last.tagName != 'IMG'
-                create_img("autostart_flag", Item.autostart_flag, @element)
-            last.style.visibility = 'visible'
+            @showAutostartFlag()
 
     remove_from_autostart: ->
         if startManager.RemoveAutostart_sync(@path)
             @isAutostart = false
-            # applications[@id].setAutostart(false).notify()
-            last = @element.lastChild
-            if last.tagName == 'IMG'
-                last.style.visibility = 'hidden'
+            @hideAutostartFlag()
 
     toggle_autostart: ->
         if @isAutostart
@@ -274,155 +314,37 @@ class Item extends Widget
             @add_to_autostart()
 
     hide: ->
-        @element.style.display = "none"
+        @updateProperty((k, v)->
+            v.style.display = "none"
+        )
 
     # use '->', Item.display_temp and @displayMode will be undifined when
     # this function is pass to some other functions like setTimeout
     show: =>
         if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
-            @element.style.display = "-webkit-box"
-
-    is_shown: ->
-        @element.style.display != "none"
+            @updateProperty((k, v)->
+                v.style.display = "-webkit-box"
+            )
 
     # just working for categories, not searching and favor.
-    focusedCategory:->
-        cid = parseInt(@element.parentNode.parentNode.getAttribute("catid"))
-        categoryList.category(cid)
-
-    select: ->
-        @element.classList.add("item_selected")
-
-    unselect: ->
-        @element.classList.remove("item_selected")
-
-    next_shown: ->
-        appid = @element.nextElementSibling?.getAttribute("appid")
-        if appid
-            n = Widget.look_up(appid)
-            if n.is_shown() then n else n.next_shown()
-        else
-            null
-
-    prev_shown: ->
-        appid = @element.previousElementSibling?.getAttribute("appid")
-        if appid
-            n = Widget.look_up(appid)
-            if n.is_shown() then n else n.prev_shown()
-        else
-            null
-
-    scroll_to_view: (p)->
-        if !@inView(p)
-            rect = @element.getBoundingClientRect()
-            prect = p.getBoundingClientRect()
-            if rect.top < prect.top
-                offset = rect.top - prect.top
-                p.scrollTop += offset - 20 # for search
-            else if rect.bottom > prect.bottom
-                offset = rect.bottom - prect.bottom
-                p.scrollTop += offset + 20 # for search
-        # @element.scrollIntoViewIfNeeded()
-
-    inView:(p)->
-        rect = @element.getBoundingClientRect()
-        prect = p.getBoundingClientRect()
-        rect.top > prect.top && rect.bottom < prect.bottom
-
-    isSameLineAux: (el)->
-        @element.getBoundingClientRect().top == el.getBoundingClientRect().top
-
-    isSameLine: (o)->
-        @isSameLineAux(o.element)
-
-    isLastLine: (o)->
-        el = @element
-        while (el = el.nextElementSibling)?
-            if not @isSameLineAux(el)
-                return false
-        return true
-
-    isFirstLine: (o)->
-        el = @element
-        while (el = el.previousElementSibling)?
-            if not @isSameLineAux(el)
-                return false
-        return true
-
-    indexOnLine: ->
-        el = @element
-        i = 0
-        while (el = el.previousElementSibling)?
-            if !@isSameLineAux(el)
-                break
-            i += 1
-        i
 
     on_mouseover: (e)=>
         # this event is a wrap, use e.originalEvent to get the original event
         target = e.target
-        Item.hover_item_id = @id
+        Item.hoverItem = target
         if not Item.clean_hover_temp
+            inner = target.firstElementChild
             # not use @select() for storing status.
-            target.style.background = "rgba(255, 255, 255, 0.15)"
-            target.style.border = "1px rgba(255, 255, 255, 0.25) solid"
-            target.style.borderRadius = "4px"
+            inner.style.background = "rgba(255, 255, 255, 0.15)"
+            inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
+            target.style.border = "1px rgba(0, 0, 0, 0.25) solid"
 
     on_mouseout: (e)=>
         target = e.target
-        target.style.border = "1px rgba(255, 255, 255, 0.0) solid"
-        target.style.background = ""
-        target.style.borderRadius = ""
+        target.style.border = ""
 
+        inner = target.firstElementChild
+        inner.style.border = ""
+        inner.style.background = ""
 
-class SearchItem extends Item
-    constructor: (@id, @name, @path, @icon)->
-        super(@id, @name, @path, @icon)
-        @element.classList.add("Item")
-
-    # destroy: ->
-    #     $("#searchResult").removeChild(@element)
-    #     super
-
-    @updateHorizontalMargin: ->
-        containerWidth = $("#container").clientWidth
-        # echo "containerWidth:#{containerWidth}"
-        SearchItem.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
-        SearchItem.horizontalMargin =  (containerWidth - SearchItem.itemNumPerLine * ITEM_WIDTH) / 2 / SearchItem.itemNumPerLine
-        # echo "horizontalMargin: #{Item.horizontalMargin}"
-        for own id, info of applications
-            if !(i = Widget.look_up("se_#{id}"))
-                continue
-            i.element.style.marginLeft = "#{SearchItem.horizontalMargin}px"
-            i.element.style.marginRight = "#{SearchItem.horizontalMargin}px"
-            if i.favorElement
-                i.favorElement.style.marginLeft = "#{SearchItem.horizontalMargin}px"
-                i.favorElement.style.marginRight = "#{SearchItem.horizontalMargin}px"
-
-
-class FavorItem extends Item
-    constructor: (@id, @name, @path, @icon)->
-        super(@id, @name, @path, @icon)
-        @element.classList.add("Item")
-
-    # destroy: ->
-    #     categoryList.favor.removeItem(@id)
-    #     super
-
-    @updateHorizontalMargin: ->
-        containerWidth = $("#container").clientWidth
-        # echo "containerWidth:#{containerWidth}"
-        Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
-        Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
-        # echo "horizontalMargin: #{Item.horizontalMargin}"
-        for own id, info of applications
-            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
-            info.element.style.marginRight = "#{Item.horizontalMargin}px"
-            if info.favorElement
-                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
-                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
-
-
-createItem=->
+        Item.hoverItem = null
