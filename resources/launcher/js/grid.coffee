@@ -34,7 +34,7 @@ gridScrollCallback = (e)->
         if scrollTop - offset < 0
             # echo "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
             $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-            categoryBar.showCategory(cid.substr(Category.PREFIX.length))
+            categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
             break
         else if scrollTop - offset == 0
             cid = this.childNodes[i].id
@@ -43,7 +43,7 @@ gridScrollCallback = (e)->
                 this.style.webkitMask = "none"
             else
                 this.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
-            categoryBar.showCategory(cid.substr(Category.PREFIX.length))
+            categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
             break
         else
             cid = candidateId

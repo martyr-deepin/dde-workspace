@@ -27,14 +27,17 @@ applications = {}
 # value: Item class
 uninstalling_apps = {}
 
+is_show_hidden_icons = false
+_show_hidden_icons = (is_shown) ->
+    if is_shown == is_show_hidden_icons
+        return
+    is_show_hidden_icons = is_shown
 
-init_all_applications = ->
-    # get all applications and sort them by name
-    _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
-    autostartList = startManager.AutostartList_sync()
-
-    for core in _all_items
-        createItem(core, autostartList)
+    Item.display_temp = false
+    if is_shown
+        hiddenIcons.show()
+    else
+        hiddenIcons.hide()
 
 path = localStorage.getItem("bg")
 setBackground(path)
@@ -44,11 +47,23 @@ setTimeout(->
         setBackground(p)
 , 1000)
 
-searchBar = new SearchBar()
-echo "create search bar done"
+init_all_applications = ->
+    # get all applications and sort them by name
+    _all_items = daemon.ItemInfos_sync(CATEGORY_ID.ALL)
+    autostartList = startManager.AutostartList_sync()
+
+    for core in _all_items
+        createItem(core, autostartList)
+
 
 init_all_applications()
 echo "load all applications done"
+
+searchBar = new SearchBar()
+echo "create search bar done"
+
+switcher = new Switcher()
+echo "load switcher done"
 
 categoryInfos = daemon.CategoryInfos_sync()
 echo "get category infos done"
@@ -59,12 +74,8 @@ echo "load category bar done"
 categoryList = new CategoryList(categoryInfos)
 echo "load category list done"
 
-selector = new Selector()
-selector.container(categoryList.favor.element.lastElementChild)
-echo "create selector done"
-
-switcher = new Switcher()
-echo "load switcher done"
+favorList = new FavorList()
+echo 'load favor app done'
 
 hiddenIcons = new HiddenIcons()
 hiddenIcons.hide()
@@ -72,6 +83,10 @@ echo "load hidden icons done"
 
 bind_events()
 echo "bind event done"
+
+selector = new Selector()
+selector.container(categoryList.favor.element.lastElementChild)
+echo "create selector done"
 
 DCore.Launcher.webview_ok()
 echo "webview ok"
