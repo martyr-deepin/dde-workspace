@@ -21,9 +21,12 @@ class Display extends Option
     constructor:(@id)->
         super
         echo "New Display :#{@id}"
+        @Monitors = []
+        @DBusMonitors = []
+        @DBusOpenedMonitors = []
+        @OpenedMonitorsName = []
         try
             @DBusDisplay = DCore.DBus.session(DISPLAY)
-            @Monitors = []
             @Monitors = @DBusDisplay.Monitors
             @DisplayMode = @DBusDisplay.DisplayMode
             @HasChanged = @DBusDisplay.HasChanged
@@ -31,9 +34,7 @@ class Display extends Option
         catch e
             echo "Display DBus :#{DISPLAY} ---#{e}---"
 
-
     getDBusMonitors:->
-        @DBusMonitors = []
         try
             for path in @Monitors
                 DISPLAY_MONITORS.path = path
@@ -42,32 +43,31 @@ class Display extends Option
                     DISPLAY_MONITORS.path,
                     DISPLAY_MONITORS.interface
                 )
-                FullName = DBusMonitor.FullName
-                Name = DBusMonitor.Name
-                Opened = DBusMonitor.Opened
-                IsComposited = DBusMonitor.IsComposited
-                IsPrimary = DBusMonitor.IsPrimary
-                Brightness = DBusMonitor.Brightness
-                BestMode = DBusMonitor.BestMode
-                CurrentMode = DBusMonitor.CurrentMode
-                Rotation = DBusMonitor.Rotation
-                monitor =
-                    DBusMonitor: DBusMonitor,
-                    FullName: FullName,
-                    Name: Name,
-                    Opened: Opened,
-                    IsComposited: IsComposited,
-                    IsPrimary: IsPrimary,
-                    Brightness: Brightness,
-                    BestMode: BestMode,
-                    CurrentMode: CurrentMode,
-                    Rotation: Rotation
-                @DBusMonitors.push(monitor)
+                @DBusMonitors.push(DBusMonitor)
+                if DBusMonitor.Opened
+                    @OpenedMonitorsName.push(DBusMonitor.FullName)
+                    @DBusOpenedMonitors.push(DBusMonitor)
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
-        finally
-            echo @DBusMonitors
-            return @DBusMonitors
+    
+    getDBusMonitor:(name)->
+        return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
+    
+    getBrightness:(name)->
+        #@getDBusMonitor(name).BackgroundBright()
+        @getDBusMonitor(name).Brightness
+    
+    setBrightness:(name,bright)->
+        #@getDBusMonitor(name).BackgroundBright()
+        @getDBusMonitor(name).Brightness = bright
 
-
-
+    SwitchMode:(mode)->
+        #-1 onlyCurrentScreen
+        #0 copy
+        #1 onlySecondScreen
+        #2 expand
+        if Math.abs(mode) > @DBusMonitors.length
+            echo "the SwitchMode mode #{mode} input outof @DBusMonitors.length:#{@DBusMonitors.length}"
+            if mode < 0 then mode = @DBusMonitors.length * -1
+            if mode > 0 then mode = @DBusMonitors.length
+        @DBusDisplay.SwitchMode(mode)
