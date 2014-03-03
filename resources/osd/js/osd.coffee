@@ -57,12 +57,16 @@ class OSD extends Widget
             #     keyValue = option.Value
             #     DBusMediaKey.UnregisterAccelKey_sync(keyValue)
             #     DBusMediaKey.RegisterAccelKey_sync(keyValue)
+            MediaKeyList = []
+            MediaKeyList = DBusMediaKey.MediaKeyList
+            echo MediaKeyList
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
             echo "DBusMediaKey #{MEDIAKEY}"
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
     keyChanged:(type,keyValue)=>
+        echo "KeyChanged:#{keyValue}"
         clearTimeout(@timeout) if @timeout
         option = null
         for tmp in key_NameValue
@@ -71,7 +75,6 @@ class OSD extends Widget
             echo "#{key} not in key_NameValue.Value,return"
             @hide()
             return
-        echo "KeyChanged:#{key}:----#{option}----will show"
         @show(option)
 
 click_time = 0
