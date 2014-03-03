@@ -55,7 +55,7 @@ class CategoryList
         while (c = c.previousElementSibling)
             if c.style.display != 'none'
                 lastHeight = c.clientHeight
-        @blank.style.height = containerHeight - lastHeight - 40
+        @blank.style.height = containerHeight - lastHeight - 20
         @
 
     showBlank: ->
@@ -63,6 +63,7 @@ class CategoryList
             @blank.style.display = 'block'
 
     hideEmptyCategories:->
+        # TODO:
         for own id, item of @categories
             all_is_hidden = item.every((el) ->
                 i = Widget.look_up(el)
@@ -78,12 +79,15 @@ class CategoryList
         @
 
     showNonemptyCategories:->
+        # TODO
+        minId = 100
         for own id, category of @categories
-            @favor
             not_all_is_hidden = category.some((el) ->
                 Widget.look_up(el).displayMode != "hidden"
             )
             if not_all_is_hidden or Item.display_temp
+                if id < minId
+                    minId = id
                 category.show()
                 category.showHeader()
                 category.setNameDecoration()
@@ -91,6 +95,8 @@ class CategoryList
                 $("##{CategoryItem.PREFIX}#{id}").style.display = "block"
             else
                 category.hide()
+                $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
+        categoryBar.focusCategory(minId)
         @
 
     showFavorOnly:->

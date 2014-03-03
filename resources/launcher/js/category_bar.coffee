@@ -65,7 +65,6 @@ class CategoryBar
                 offset = $("##{Category.PREFIX}#{id}").offsetTop
                 # the scrollParent is body, so minus the search bar's height
                 $("#grid").scrollTop = offset - SEARCH_BAR_HEIGHT
-                # @showCategory(id)
         )
 
         @category_items = {}
@@ -109,7 +108,7 @@ class CategoryBar
             warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
         @
 
-    showCategory: (id) =>
+    focusCategory: (id) =>
         # echo "selected_id: #{@selected_id}, id: #{id}"
         if @selected_id != id
             @category_items[@selected_id]?.blur()

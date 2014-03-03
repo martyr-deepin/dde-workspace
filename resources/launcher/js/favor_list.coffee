@@ -40,32 +40,51 @@ class FavorList
             @updateCache = false
             for id in validIds
                 # echo applications[id].name
-                @favors[id] = applications[id].observers.item
+                @favors[id] = applications[id]
+                @favors[id].isFavor = true
 
-            if originIds.length != validIds.length
+            echo "originIds: ##{originIds.length}#, typeof: #{typeof originIds.length}"
+            echo "validIds: ##{originIds.length}#, typeof: #{typeof validIds.length}"
+            echo "#{originIds.length != validIds.length}"
+            if parseInt(originIds.length) != parseInt(validIds.length)
+                echo "originIds: ##{originIds.length}#"
+                echo "validIds: ##{originIds.length}#"
                 echo 'save'
                 @save()
 
         @
 
     save: ->
-        keys = Object.keys(@favors)
-        # echo "save #{keys}, is array: #{Array.isArray(keys)}, is string: #{typeof keys[0] == 'string'}"
-        # daemon.SaveHiddenApps(keys)
-        daemon.SaveFavors_sync(keys)
+        apps = []
+        # TODO
+        container = categoryList.favor.grid
+        for i in [0...container.children.length]
+            el = container.children[i]
+            echo "save favor: "
+            echo el
+            apps.push([el.getAttribute('appid'), i, false])
+        try
+            daemon.SaveFavors_sync(apps)
         @
 
     reset: ->
         @
 
-    add: (id, item)->
+    add: (id)->
+        item = Widget.look_up(id)
+        item.add("favor")
+        categoryList.showNonemptyCategories()
         @favors[id] = item
         @updateCache = true
+        @save()
         @
 
     remove: (id)->
         if delete @favors[id]
+            item = Widget.look_up(id)
+            item.remove('favor')
             @updateCache = true
+            @save()
         @
 
     update: ->

@@ -21,8 +21,8 @@ class Switcher
     constructor:->
         @isShowCategory = false
         @switcher = create_element(tag:'div', id:'switcher', document.body)
-        @favor = create_img(src:'img/favor.png', title: 'favor', alt:'favor', @switcher)
-        @category = create_img(src:'img/category.png', title: 'all', alt:'all', @switcher)
+        @toFavor = create_img(src:'img/favor.png', title: 'favor', alt:'favor', @switcher)
+        @toCategory = create_img(src:'img/category.png', title: 'all', alt:'all', @switcher)
         @switcher.addEventListener('click', (e)=>
             e.stopPropagation()
             e.preventDefault()
@@ -32,19 +32,18 @@ class Switcher
                 @switchToCategory()
         )
 
-        @switcherTimer = null
+        @switcher.addEventListener("dragover", (e)=>
+            e.preventDefault()
+        )
         @switcher.addEventListener("drop", (e)=>
+            echo 'drop'
+            e.preventDefault()
+            e.stopPropagation()
             if !@isShowCategory
                 return
-            id = e.getData("text/plain")
-            echo id
+            id = e.dataTransfer.getData("text/plain")
+            favorList.add(id)
         )
-        # @switcher.addEventListener('dragenter', (e)=>
-        #     @switcherTimer = setTimeout(@switchToFavor, 500)
-        # )
-        # @switcher.addEventListener("dragleave", (e)=>
-        #     clearTimeout(@switcherTimer)
-        # )
 
     isInSearch:->
         @switcher.style.visibility == 'hidden'
@@ -53,8 +52,10 @@ class Switcher
         selector.container($("#grid"))
         @isShowCategory = true
         categoryBar.show()
-        @favor.style.display = 'inline'
-        @category.style.display = 'none'
+        if @toFavor.style.display != 'inline'
+            @toFavor.style.display = 'inline'
+        if @toCategory.style.display != 'none'
+            @toCategory.style.display = 'none'
         container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         Item.updateHorizontalMargin()
@@ -64,8 +65,10 @@ class Switcher
         @isShowCategory = false
         categoryBar.hide()
         categoryList.showFavorOnly()
-        @favor.style.display = 'none'
-        @category.style.display = 'inline'
+        if @toFavor.style.display != 'none'
+            @toFavor.style.display = 'none'
+        if @toCategory != 'inline'
+            @toCategory.style.display = 'inline'
         container.style.marginLeft = "110px"
         # Item.updateHorizontalMargin()
 
@@ -74,6 +77,7 @@ class Switcher
         if @isShowCategory
             @switchToFavor()
         @hide()
+        searchBar.show()
 
     hide:->
         @switcher.style.visibility = 'hidden'
