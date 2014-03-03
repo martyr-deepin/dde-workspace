@@ -108,13 +108,13 @@ class AppList extends Widget
     do_dragover: (e) =>
         e.preventDefault()
         e.stopPropagation()
-        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        min_x = get_page_xy($("#show_launcher"), 0, 0).x
         max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
         if e.screenX > min_x and e.screenX < max_x
             if dnd_is_deepin_item(e) or dnd_is_desktop(e)
                 e.dataTransfer.dropEffect="copy"
                 n = e.x / (ITEM_WIDTH * ICON_SCALE)
-                if n > 2  # skip the show_desktop and show launcher AppItem
+                if n > 2  # skip the show_launcher and show launcher AppItem
                     @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
                 else
                     @hide_indicator()
@@ -130,7 +130,7 @@ class AppList extends Widget
     do_dragenter: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        min_x = get_page_xy($("#show_desktop"), 0, 0).x
+        min_x = get_page_xy($("#show_launcher"), 0, 0).x
         max_x = get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
         if e.screenX > min_x and e.screenX < max_x
             DCore.Dock.require_all_region()
@@ -246,7 +246,7 @@ class AppItem extends Widget
     do_dragover: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        if e.screenX > get_page_xy($("#show_desktop"), 0, 0).x and e.screenX < get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
+        if e.screenX > get_page_xy($("#show_launcher"), 0, 0).x and e.screenX < get_page_xy($("#app_list").lastChild.previousSibling, 0, 0).x
             return if @is_fixed_pos or (not dnd_is_file(e) and not dnd_is_deepin_item(e))
             app_list.record_last_over_item(@)
 
