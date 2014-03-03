@@ -35,7 +35,7 @@ class Category
         frag = document.createDocumentFragment()
         for id in @items
             if (item = Widget.look_up(id))?
-                item.add(frag, @id)
+                item.add(@id, frag)
         @grid.appendChild(frag)
 
     setNameDecoration: ->
@@ -62,13 +62,13 @@ class Category
     hideHeader:->
         if @header.style.display != 'none'
             @header.style.display = 'none'
-            @grid.style.marginTop = "10px"
+            @grid.style.marginTop = "15px"
         @
 
     showHeader:->
         if @header.style.display != '-webkit-box'
             @header.style.display = '-webkit-box'
-            @grid.style.marginTop = "40px"
+            @grid.style.marginTop = "20px"
         @
 
     some: (fn)->

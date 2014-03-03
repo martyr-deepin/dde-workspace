@@ -129,7 +129,7 @@ run_post = (f, self)->
     setTimeout(f2, 0)
 
 create_element = (opt, parent, compatible)->
-    if typeof compatible != 'undefined'
+    if typeof compatible != 'undefined' || typeof parent == 'string'
         opt = tag:opt, class: parent
         parent = compatible
 

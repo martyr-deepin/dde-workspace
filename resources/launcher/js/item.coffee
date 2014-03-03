@@ -38,6 +38,7 @@ class Item extends Widget
         @hoverBox = create_element("div", "hoverBox", @hoverBoxOutter)
         @basename = get_path_name(@path) + ".desktop"
         @isAutostart = false
+        @isFavor = false
         @status = SOFTWARE_STATE.IDLE
         @displayMode = 'display'
 
@@ -74,7 +75,11 @@ class Item extends Widget
         categoryList.removeItem(@id)
         delete Widget.object_table[@id]
 
-    add:(parent, pid)->
+    # TODO: remove parent, connect to categoryList.
+    add:(pid, parent)->
+        if @elements[pid]
+            return null
+
         el = @element.cloneNode(true)
         inner = el.firstElementChild.firstElementChild
         im = inner.firstElementChild
@@ -86,7 +91,15 @@ class Item extends Widget
         if pid == 'search'
             el.style.marginTop = '20px'
             el.style.marginBottom = 0
-        parent.appendChild(el)
+        else if pid == 'favor'
+            echo 'add to favor'
+            @isFavor = true
+            if !parent?
+                categoryList.addItem(@id, CATEGORY_ID.FAVOR)
+        else
+            if !parent?
+                categoryList.addItem(@id, pid)
+        parent?.appendChild(el)
         el
 
     remove:(pid)->
@@ -94,6 +107,11 @@ class Item extends Widget
         delete @elements[pid]
         pNode = el.parentNode
         pNode.removeChild(el)
+        if pid == 'favor'
+            @isFavor = false
+            cateoryList.removeItem(@id, CATEGORY_ID.FAVOR)
+        else if pid != 'search'
+            cateoryList.removeItem(@id, pid)
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -170,6 +188,10 @@ class Item extends Widget
         e.dataTransfer.setDragImage(@img, 20, 20)
         e.dataTransfer.effectAllowed = "copy"
 
+    on_dragend: (e)=>
+        e = e.originalEvent || e
+        e.preventDefault()
+
     createMenu:->
         @menu = null
         @menu = new Menu(
@@ -177,7 +199,7 @@ class Item extends Widget
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
             new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@displayMode]),
-            # new MenuItem(7, FAVOR_MESSAGE[@isFavof]),
+            new MenuItem(7, FAVOR_MESSAGE[@isFavor]),
             new MenuSeparator(),
             new MenuItem(3, _("Send to d_esktop")).setActive(
                 not daemon.IsOnDesktop_sync(@path)
@@ -228,16 +250,24 @@ class Item extends Widget
                     uninstalling_apps[@id] = @
                     echo 'start uninstall'
                     uninstall(item:@, purge:true)
+            when 7
+                if @isFavor
+                    favorList.remove(@id)
+                else
+                    favorList.add(@id)
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
+        echo 'hide icon'
         @displayMode = "hidden"
         # applications[@id].setDisplayMode("hidden").notify()
-        if HIDE_ICON_CLASS not in @element.classList
-            @add_css_class(HIDE_ICON_CLASS, @element)
+        if !@element.classList.contains(HIDE_ICON_CLASS)
+            @updateProperty((k, v)->
+                v.classList.add(HIDE_ICON_CLASS)
+            )
         if not Item.display_temp and not is_show_hidden_icons
-            @element.style.display = 'none'
+            @hide()
             Item.display_temp = false
          if !hiddenIcons.contains(@id)
              # echo 'save'
@@ -250,9 +280,11 @@ class Item extends Widget
     display_icon: (e)=>
         @displayMode = "display"
         # applications[@id].setDisplayMode("display").notify()
-        @element.style.display = '-webkit-box'
-        if HIDE_ICON_CLASS in @element.classList
-            @remove_css_class(HIDE_ICON_CLASS, @element)
+        @show()
+        if @element.classList.contains(HIDE_ICON_CLASS)
+            @updateProperty((k, v)->
+                v.classList.remove(HIDE_ICON_CLASS)
+            )
         hidden_icons_num = hiddenIcons.remove(@id).save().number()
         categoryList.showNonemptyCategories()
         if hidden_icons_num == 0
@@ -260,7 +292,7 @@ class Item extends Widget
             _show_hidden_icons(is_show_hidden_icons)
 
     display_icon_temp: ->
-        @element.style.display = '-webkit-box'
+        @show()
         Item.display_temp = true
         categoryList.showNonemptyCategories()
 

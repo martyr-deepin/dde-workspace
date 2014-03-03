@@ -22,7 +22,7 @@ ITEM_HEIGHT = 160
 
 CONTAINER_BOTTOM_MARGIN = 70
 SEARCH_BAR_HEIGHT = 120
-CATEGORY_CONTENT_MARGIN = 40
+CATEGORY_CONTENT_MARGIN = 20
 
 INVALID_IMG = "invalid-dock_app"
 
@@ -73,6 +73,10 @@ AUTOSTART_MESSAGE =
 AUTOSTART_ICON =
     NAME: "emblem-autostart"
     SIZE: 16
+
+FAVOR_MESSAGE =
+    false: _("Add to _favor")
+    true: _("Remove from _favor")
 
 SOFTWARE_STATE =
     IDLE: 0

@@ -87,6 +87,7 @@ class HiddenIcons
     show: ->
         @isShown = true
         if searchBar.empty()
+            echo 'show hidden icon'
             # show category
             for own id of @hiddenIcons
                 if id in categoryInfos[selectedCategoryId]
@@ -97,6 +98,7 @@ class HiddenIcons
     hide: ->
         @isShown = false
         if searchBar.empty()
+            echo 'hide hidden icon'
             # hide category
             for own id of @hiddenIcons
                 @hiddenIcons[id]?.hide_icon()
