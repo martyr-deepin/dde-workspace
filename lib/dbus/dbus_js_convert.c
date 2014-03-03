@@ -211,7 +211,9 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                 DBusSignatureIter sub_s_iter;
                 dbus_signature_iter_recurse(&s_iter, &sub_s_iter);
 
-                for (int i=0; i<p_num; i++) {
+                for (int i=0, handle=0; i<p_num; i++) {
+		    if (!is_array_key_item(ctx, prop_names, i))continue;
+		    handle++;
                     JSValueRef value = JSObjectGetProperty(ctx,
                             (JSObjectRef)jsvalue,
                             JSPropertyNameArrayGetNameAtIndex(prop_names, i),
@@ -225,12 +227,12 @@ gboolean js_to_dbus(JSContextRef ctx, const JSValueRef jsvalue,
                     }
                     dbus_free(sig);
 
-                    if (i != p_num-1 && !dbus_signature_iter_next(&sub_s_iter)) {
-                        JSPropertyNameArrayRelease(prop_names);
-                        CLOSE_CONTAINER(iter, &sub_iter);
-                        js_fill_exception(ctx, exception, "to many params filled to struct");
-                        return FALSE;
-                    }
+		    if ((handle != p_num -1) && !dbus_signature_iter_next(&sub_s_iter)) {
+			JSPropertyNameArrayRelease(prop_names);
+			CLOSE_CONTAINER(iter, &sub_iter);
+			js_fill_exception(ctx, exception, "to many params filled to struct");
+			return FALSE;
+		    }
                 }
 
                 if (dbus_signature_iter_next(&sub_s_iter)) {
