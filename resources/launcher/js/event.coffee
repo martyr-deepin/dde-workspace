@@ -102,7 +102,6 @@ keypress_callback = (e) ->
             searchResult = new SearchResult()
 
         switcher.switchToSearch()
-        searchBar.show()
         searchBar.value(searchBar.value() + String.fromCharCode(e.which))
         searchBar.search()
 
