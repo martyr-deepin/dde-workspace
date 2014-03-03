@@ -18,3 +18,56 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Display extends Option
+    constructor:(@id)->
+        super
+        echo "New Display :#{@id}"
+        @Monitors = []
+        @DBusMonitors = []
+        @DBusOpenedMonitors = []
+        @OpenedMonitorsName = []
+        try
+            @DBusDisplay = DCore.DBus.session(DISPLAY)
+            @Monitors = @DBusDisplay.Monitors
+            @DisplayMode = @DBusDisplay.DisplayMode
+            @HasChanged = @DBusDisplay.HasChanged
+            @getDBusMonitors()
+        catch e
+            echo "Display DBus :#{DISPLAY} ---#{e}---"
+
+    getDBusMonitors:->
+        try
+            for path in @Monitors
+                DISPLAY_MONITORS.path = path
+                DBusMonitor = DCore.DBus.session_object(
+                    DISPLAY_MONITORS.obj,
+                    DISPLAY_MONITORS.path,
+                    DISPLAY_MONITORS.interface
+                )
+                @DBusMonitors.push(DBusMonitor)
+                if DBusMonitor.Opened
+                    @OpenedMonitorsName.push(DBusMonitor.FullName)
+                    @DBusOpenedMonitors.push(DBusMonitor)
+        catch e
+            echo "getDBusMonitors ERROR: ---#{e}---"
+    
+    getDBusMonitor:(name)->
+        return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
+    
+    getBrightness:(name)->
+        #@getDBusMonitor(name).BackgroundBright()
+        @getDBusMonitor(name).Brightness
+    
+    setBrightness:(name,bright)->
+        #@getDBusMonitor(name).BackgroundBright()
+        @getDBusMonitor(name).Brightness = bright
+
+    SwitchMode:(mode)->
+        #-1 onlyCurrentScreen
+        #0 copy
+        #1 onlySecondScreen
+        #2 expand
+        if Math.abs(mode) > @DBusMonitors.length
+            echo "the SwitchMode mode #{mode} input outof @DBusMonitors.length:#{@DBusMonitors.length}"
+            if mode < 0 then mode = @DBusMonitors.length * -1
+            if mode > 0 then mode = @DBusMonitors.length
+        @DBusDisplay.SwitchMode(mode)

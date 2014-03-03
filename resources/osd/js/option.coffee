@@ -29,7 +29,6 @@ class Option extends Widget
         @element.style.display = "none"
     
     show:->
-        echo "Option show :--#{@id}--"
         @element.style.display = "block"
 
     set_bg:->

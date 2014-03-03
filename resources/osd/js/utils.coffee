@@ -43,6 +43,13 @@ MediaKey_NameValue = [
 set_el_bg =(el,src)->
     el.style.backgroundImage = "url(#{src})"
 
-
+#MediaKey DBus
 MEDIAKEY = "com.deepin.daemon.MediaKey"
 TIME_HIDE = 4000
+
+#Display DBus
+DISPLAY = "com.deepin.daemon.Display"
+DISPLAY_MONITORS =
+    obj: DISPLAY
+    path: "/com/deepin/daemon/Display/MonitorLVDS1"
+    interface: "com.deepin.daemon.Display.Monitor"
