@@ -58,6 +58,7 @@ class OSD extends Widget
             #     DBusMediaKey.UnregisterAccelKey_sync(keyValue)
             #     DBusMediaKey.RegisterAccelKey_sync(keyValue)
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
+            echo "DBusMediaKey #{MEDIAKEY}"
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     

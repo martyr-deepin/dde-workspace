@@ -137,7 +137,7 @@ int main (int argc, char **argv)
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FALSE);
-    gdk_window_set_override_redirect(GDK_WINDOW(container), TRUE);
+    /*gdk_window_set_override_redirect(GDK_WINDOW(container), TRUE);*/
     gtk_window_set_accept_focus (GTK_WINDOW (container), FALSE);
     gtk_window_set_focus (GTK_WINDOW (container), NULL);
     gtk_window_set_focus_visible (GTK_WINDOW (container), FALSE);
