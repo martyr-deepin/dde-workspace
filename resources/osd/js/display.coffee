@@ -18,3 +18,56 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Display extends Option
+    constructor:(@id)->
+        super
+        echo "New Display :#{@id}"
+        try
+            @DBusDisplay = DCore.DBus.session(DISPLAY)
+            @Monitors = []
+            @Monitors = @DBusDisplay.Monitors
+            @DisplayMode = @DBusDisplay.DisplayMode
+            @HasChanged = @DBusDisplay.HasChanged
+            @getDBusMonitors()
+        catch e
+            echo "Display DBus :#{DISPLAY} ---#{e}---"
+
+
+    getDBusMonitors:->
+        @DBusMonitors = []
+        try
+            for path in @Monitors
+                DISPLAY_MONITORS.path = path
+                DBusMonitor = DCore.DBus.session_object(
+                    DISPLAY_MONITORS.obj,
+                    DISPLAY_MONITORS.path,
+                    DISPLAY_MONITORS.interface
+                )
+                FullName = DBusMonitor.FullName
+                Name = DBusMonitor.Name
+                Opened = DBusMonitor.Opened
+                IsComposited = DBusMonitor.IsComposited
+                IsPrimary = DBusMonitor.IsPrimary
+                Brightness = DBusMonitor.Brightness
+                BestMode = DBusMonitor.BestMode
+                CurrentMode = DBusMonitor.CurrentMode
+                Rotation = DBusMonitor.Rotation
+                monitor =
+                    DBusMonitor: DBusMonitor,
+                    FullName: FullName,
+                    Name: Name,
+                    Opened: Opened,
+                    IsComposited: IsComposited,
+                    IsPrimary: IsPrimary,
+                    Brightness: Brightness,
+                    BestMode: BestMode,
+                    CurrentMode: CurrentMode,
+                    Rotation: Rotation
+                @DBusMonitors.push(monitor)
+        catch e
+            echo "getDBusMonitors ERROR: ---#{e}---"
+        finally
+            echo @DBusMonitors
+            return @DBusMonitors
+
+
+
