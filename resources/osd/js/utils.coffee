@@ -1,8 +1,8 @@
 #Copyright (c) 2011 ~ 2013 Deepin, Inc.
 #              2011 ~ 2013 yilang
 #
-#Author:      LongWei <yilang2007lw@gmail.com>
-#Maintainer:  LongWei <yilang2007lw@gmail.com>
+#Author:      YuanChenglu <yuanchenglu001@gmail.com>
+#Maintainer:  YuanChenglu <yuanchenglu001@gmail.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
