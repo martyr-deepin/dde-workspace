@@ -3,15 +3,15 @@ body{
     cursor:default;
     overflow:hidden;
 
-    width:212px;
-    height:212px;
+    width:160px;
+    height:160px;
     
     font-size:62.5%;
 }
 
 .OSD{
-    width:212px;
-    height:212px;
+    width:160px;
+    height:160px;
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
