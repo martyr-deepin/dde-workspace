@@ -53,3 +53,9 @@ DISPLAY_MONITORS =
     obj: DISPLAY
     path: "/com/deepin/daemon/Display/MonitorLVDS1"
     interface: "com.deepin.daemon.Display.Monitor"
+#-1 copy 
+#0 expand
+#1 onlyCurrentScreen
+#2 onlySecondScreen
+DEFAULT_DISPLAY_MODE = -1
+

@@ -20,7 +20,6 @@ class Option extends Widget
     constructor:(@id)->
         super
         echo "new Option:#{@id}"
-        @set_bg()
     
     append:(el)->
         el.appendChild(@element)
@@ -29,7 +28,8 @@ class Option extends Widget
         @element.style.display = "none"
     
     show:->
+        @set_bg(@id)
         @element.style.display = "block"
 
-    set_bg:->
-        @element.style.backgroundImage = "url(img/#{@id}.png)"
+    set_bg:(imgName)->
+        @element.style.backgroundImage = "url(img/#{imgName}.png)"

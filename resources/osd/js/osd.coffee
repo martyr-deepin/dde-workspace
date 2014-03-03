@@ -29,9 +29,9 @@ class OSD extends Widget
     option_build:->
         for option,i in MediaKey_NameValue
             name = option.Name
-            index1 = name.indexOf("Display")
-            index2 = name.indexOf("Bright")
-            if  index1 >= 0 or index2 >= 0
+            @index1 = name.indexOf("Display")
+            @index2 = name.indexOf("Bright")
+            if  @index1 >= 0 or @index2 >= 0
                 @opt[i] = new Display(name)
             else
                 @opt[i] = new Option(name)

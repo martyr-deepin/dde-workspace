@@ -47,6 +47,7 @@ class Display extends Option
                 if DBusMonitor.Opened
                     @OpenedMonitorsName.push(DBusMonitor.FullName)
                     @DBusOpenedMonitors.push(DBusMonitor)
+            echo @DBusMonitors
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
     
@@ -61,13 +62,24 @@ class Display extends Option
         #@getDBusMonitor(name).BackgroundBright()
         @getDBusMonitor(name).Brightness = bright
 
-    SwitchMode:(mode)->
-        #-1 onlyCurrentScreen
-        #0 copy
-        #1 onlySecondScreen
-        #2 expand
-        if Math.abs(mode) > @DBusMonitors.length
-            echo "the SwitchMode mode #{mode} input outof @DBusMonitors.length:#{@DBusMonitors.length}"
-            if mode < 0 then mode = @DBusMonitors.length * -1
-            if mode > 0 then mode = @DBusMonitors.length
-        @DBusDisplay.SwitchMode(mode)
+    switchMode:->
+        #-1 copy 
+        #0 expand
+        #1 onlyCurrentScreen
+        #2 onlySecondScreen
+        #@DisplayMode = @DBusDisplay.DisplayMode
+        if not @DisplayMode? then @DisplayMode = DEFAULT_DISPLAY_MODE
+        @DisplayMode++
+        if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
+        echo "SwitchMode(#{@DisplayMode})"
+        ImgIndex = @DisplayMode
+        if ImgIndex >= 2 then ImgIndex = 2
+        @set_bg("#{@id}_#{ImgIndex}")
+        @DBusDisplay.SwitchMode(@DisplayMode)
+
+    show:->
+        echo "Display Class . show"
+        if @id is "DisplayMode"
+            @switchMode()
+        else
+            echo @id
