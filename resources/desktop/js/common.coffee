@@ -1,7 +1,8 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 snyh
+#Copyright (c) 2011 ~ 2014 Deepin, Inc.
+#              2011 ~ 2014 snyh
 #
 #Author:      Cole <phcourage@gmail.com>
+#             bluth <yuanchenglu001@gmail.com>
 #Maintainer:  Cole <phcourage@gmail.com>
 #
 #This program is free software; you can redistribute it and/or modify

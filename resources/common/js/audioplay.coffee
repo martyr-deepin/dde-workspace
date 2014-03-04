@@ -1,8 +1,8 @@
-#Copyright (c) 2011 ~ 2012 Deepin, Inc.
-#              2011 ~ 2012 snyh
+#Copyright (c) 2011 ~ 2014 Deepin, Inc.
+#              2011 ~ 2014 bluth
 #
-#Author:      snyh <snyh@snyh.org>
-#Maintainer:  snyh <snyh@snyh.org>
+#Author:      bluth <yuanchenglu001@gmail.com>
+#Maintainer:  bluth <yuanchenglu001@gmail.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by

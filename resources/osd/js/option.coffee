@@ -1,8 +1,9 @@
-#Copyright (c) 2011 ~ 2013 Deepin, Inc.
-#              2011 ~ 2013 yilang
+#Copyright (c) 2011 ~ 2014 Deepin, Inc.
+#              2011 ~ 2014 bluth
 #
-#Author:      YuanChenglu <yuanchenglu001@gmail.com>
-#Maintainer:  YuanChenglu <yuanchenglu001@gmail.com>
+#encoding: utf-8
+#Author:      bluth <yuanchenglu@linuxdeepin.com>
+#Maintainer:  bluth <yuanchenglu@linuxdeepin.com>
 #
 #This program is free software; you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -16,6 +17,7 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
+
 class Option extends Widget
     constructor:(@id)->
         super
@@ -27,10 +29,11 @@ class Option extends Widget
     hide:->
         @element.style.display = "none"
     
+    set_bg:(imgName)->
+        @element.style.backgroundImage = "url(img/#{imgName}.png)"
+    
     show:->
         echo "Option #{@id} show"
         @set_bg(@id)
         @element.style.display = "block"
 
-    set_bg:(imgName)->
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"

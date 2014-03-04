@@ -3,6 +3,7 @@
  *               2011 ~ 2012 Liqiang Lee
  *
  * Author:      Liqiang Lee <liliqiang@linuxdeepin.com>
+ *              bluth <yuanchenglu001@gmail.com>
  * Maintainer:  Liqiang Lee <liliqiang@linuxdeepin.com>
  *
  * This program is free software; you can redistribute it and/or modify

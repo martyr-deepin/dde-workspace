@@ -1,8 +1,9 @@
 /**
- * Copyright (c) 2011 ~ 2013 Deepin, Inc.
- *               2011 ~ 2013 Long Wei
+ * Copyright (c) 2011 ~ 2014 Deepin, Inc.
+ *               2011 ~ 2014 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
+ *              bluth <yuanchenglu001@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
  *
  * This program is free software; you can redistribute it and/or modify

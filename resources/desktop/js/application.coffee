@@ -1,5 +1,5 @@
-#Copyright (c) 2012 ~ 2013 Deepin, Inc.
-#              2012 ~ 2013 snyh
+#Copyright (c) 2012 ~ 2014 Deepin, Inc.
+#              2012 ~ 2014 snyh
 #
 #Author:      snyh <snyh@snyh.org>
 #             Cole <phcourage@gmail.com>

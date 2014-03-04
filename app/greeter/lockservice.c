@@ -2,6 +2,7 @@
  *               2011 ~ 2012 Long Wei
  *
  * Author:      Long Wei <yilang2007lw@gmail.com>
+ *              bluth <yuanchenglu001@gmail.com>
  * Maintainer:  Long Wei <yilang2007lw@gamil.com>
  *
  * This program is free software; you can redistribute it and/or modify
