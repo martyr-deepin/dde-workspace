@@ -24,9 +24,9 @@ MediaKey_NameValue = [
     {Name:"NumLock_off",Value:"num_lock-Num_Lock"},
     {Name:"Light_Up",Value:"XF86MonBrightnessUp"},
     {Name:"Light_Down",Value:"XF86MonBrightnessDown"},
-    {Name:"Voice_Up",Value:"XF86AudioRaiseVolume"},
-    {Name:"Voice_Down",Value:"XF86AudioLowerVolume"},
-    {Name:"Voice_Mute",Value:"XF86AudioMute"},
+    {Name:"Audio_Up",Value:"XF86AudioRaiseVolume"},
+    {Name:"Audio_Down",Value:"XF86AudioLowerVolume"},
+    {Name:"Audio_Mute",Value:"XF86AudioMute"},
     {Name:"DisplayMode",Value:"XF86Display"}
     {Name:"Wifi_On",Value:"XF86WifiOn"},
     {Name:"Wifi_Off",Value:"XF86WifiOff"},
