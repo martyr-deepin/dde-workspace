@@ -30,7 +30,7 @@ class OSD extends Widget
         for option,i in MediaKey_NameValue
             name = option.Name
             @index1 = name.indexOf("Display")
-            @index2 = name.indexOf("Bright")
+            @index2 = name.indexOf("Light")
             if  @index1 >= 0 or @index2 >= 0
                 @opt[i] = new Display(name)
             else
