@@ -44,11 +44,12 @@ body {
 }
 
 .DesktopEntry {
-    width:80px;
+    width:70px;
+    /*height:80px;*/
     padding:2px 4px;
     margin:1px 1px;
-    border:1px solid transparent;
-    border-radius:3px;
+    border:2px solid transparent;
+    border-radius:4px;
     text-align:center;
     font-size:small;
     color:white;
@@ -59,12 +60,13 @@ body {
     text-overflow:ellipsis;
     display:-webkit-box;
     -webkit-box-orient:vertical;
+    -webkit-box-align:center;
     overflow:hidden;
     -webkit-transition:background-color 0.15s ease-out;
 }
 
 .DesktopEntry .item_icon {
-    padding:0 16px;
+    /*padding:0 16px;*/
     width:48px;
     height:48px;
     vertical-align:middle;
@@ -115,7 +117,7 @@ body {
     background-color:#FFF;
     outline:#000 solid 1px;
     cursor:text;
-    -webkit-user-select:text;
+    -ebkit-user-select:text;
     -webkit-user-modify:read-write-plaintext-only;
 }
 
@@ -124,19 +126,20 @@ body {
     background:#39F;
 }
 .item_hover {
-    border:1px solid rgba(255,255,255,0.5);
-    background-color:rgba(255, 255, 255, 0.1);
+    border:2px solid rgba(255,255,255,0.15);
+    background-color:rgba(0, 0, 0, 0.15);
     -webkit-transition:background-color 0.15s ease-in;
 }
 
 .item_focus {
-    box-shadow: 0px 0px 1px 1px rgba(255,255,255,0.35);
+    border:2px solid rgba(255,255,255,0.65);
+    background-color:rgba(0, 0, 0, 0.65);
     z-index:10;
 }
 
 .item_selected {
-    border:1px solid rgba(255,255,255,0.5);
-    background-color:rgba(255, 255, 255, 0.3);
+    border:2px solid rgba(255,255,255,0.4);
+    background-color:rgba(0, 0, 0, 0.4);
 }
 
 .full_name {
