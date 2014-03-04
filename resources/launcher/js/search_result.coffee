@@ -39,6 +39,7 @@ class SearchResult
         frag = document.createDocumentFragment()
         for own k, v of applications
             el = v.add('search', frag)
+            el.style.display = 'none'
         @element.appendChild(frag)
         SearchResult.inited = true
         echo 'create search result done'

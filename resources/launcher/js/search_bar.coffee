@@ -59,10 +59,10 @@ class SearchBar
     search: ->
         @cancel()
         @searchTimer = setTimeout(=>
+            selector.clean()
             if !SearchResult.inited
                 echo "create result"
                 searchResult = new SearchResult()
-            selector.clean()
             ids = daemon.Search_sync(@value())
             res = $("#searchResult")
             for i in [0...res.children.length]
