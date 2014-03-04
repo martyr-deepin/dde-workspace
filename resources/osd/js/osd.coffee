@@ -26,23 +26,29 @@ class OSD extends Widget
         @element.style.display = "none"
         @opt = []
 
+    newClass:(id)->
+        cls = null
+        switch id
+            when "Light_Up", "Light_Down", "DisplayMode"
+                cls = new Display(id)
+            when "Audio_Up", "Audio_Down", "Audio_Mute"
+                cls = new Audio(id)
+            else cls = new Option(id)
+        return cls
+    
     option_build:->
         for option,i in MediaKey_NameValue
             name = option.Name
-            @index1 = name.indexOf("Display")
-            @index2 = name.indexOf("Light")
-            if  @index1 >= 0 or @index2 >= 0
-                @opt[i] = new Display(name)
-            else
-                @opt[i] = new Option(name)
+            @opt[i] = @newClass(name)
             @opt[i].append(@element)
             @opt[i].hide()
         @element.style.display = "none"
-
+    
     get_argv:->
         return DCore.Osd.get_argv()
     
     show:(option)->
+        echo "osd show"
         @element.style.display = "-webkit-box"
         for opt in @opt
             if opt.id is option then opt.show()
@@ -59,13 +65,6 @@ class OSD extends Widget
     dbus_signal:->
         try
             DBusMediaKey = DCore.DBus.session(MEDIAKEY)
-            # for key in MediaKey_NameValue
-            #     keyValue = key.Value
-            #     DBusMediaKey.UnregisterAccelKey_sync(keyValue)
-            #     DBusMediaKey.RegisterAccelKey_sync(keyValue)
-            #MediaKeyList = []
-            #MediaKeyList = DBusMediaKey.MediaKeyList
-            #echo MediaKeyList
             DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
             echo "DBusMediaKey #{MEDIAKEY}"
         catch e

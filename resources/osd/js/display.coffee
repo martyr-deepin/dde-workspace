@@ -50,7 +50,6 @@ class Display extends Option
                 if DBusMonitor.isPrimary
                     @DBusPrimarMonitor = DBusMonitor
                     @PrimarMonitorName = DBusMonitor.FullName
-            echo @DBusMonitors
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
     
@@ -63,7 +62,7 @@ class Display extends Option
     
     switchMode:->
         @DisplayMode = @DBusDisplay.DisplayMode
-        if not @DisplayMode? then @DisplayMode = DEFAULT_DISPLAY_MODE
+        if not @DisplayMode? then @DisplayMode = 0
         @DisplayMode++
         if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
         echo "SwitchMode(#{@DisplayMode})"
