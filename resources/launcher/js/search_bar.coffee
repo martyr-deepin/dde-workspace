@@ -25,9 +25,6 @@ class SearchBar
         DCore.signal_connect("im_commit", (info)=>
             if @value(@value() + info.Content)
                 echo 'search from im'
-                if !searchResult?
-                    echo "create result"
-                    searchResult = new SearchResult()
                 switcher.switchToSearch()
                 @search()
         )
@@ -62,14 +59,10 @@ class SearchBar
     search: ->
         @cancel()
         @searchTimer = setTimeout(=>
-            if !SearchResult.inited
-                id = setInterval(->
-                    echo 'search result not inited'
-                    if SearchResult.inited
-                        echo 'search result inited'
-                        clearInterval(id)
-                , 10)
             selector.clean()
+            if !SearchResult.inited
+                echo "create result"
+                searchResult = new SearchResult()
             ids = daemon.Search_sync(@value())
             res = $("#searchResult")
             for i in [0...res.children.length]
