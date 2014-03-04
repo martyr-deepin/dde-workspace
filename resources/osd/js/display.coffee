@@ -47,6 +47,10 @@ class Display extends Option
                 if DBusMonitor.Opened
                     @OpenedMonitorsName.push(DBusMonitor.FullName)
                     @DBusOpenedMonitors.push(DBusMonitor)
+                if DBusMonitor.isPrimary
+                    @DBusPrimarMonitor = DBusMonitor
+                    @PrimarMonitorName = DBusMonitor.FullName
+            echo @DBusMonitors
         catch e
             echo "getDBusMonitors ERROR: ---#{e}---"
     
@@ -54,20 +58,33 @@ class Display extends Option
         return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
     
     getBrightness:(name)->
-        #@getDBusMonitor(name).BackgroundBright()
+        @getDBusMonitor(name).WorkaroundBacklight()
         @getDBusMonitor(name).Brightness
     
-    setBrightness:(name,bright)->
-        #@getDBusMonitor(name).BackgroundBright()
-        @getDBusMonitor(name).Brightness = bright
+    switchMode:->
+        @DisplayMode = @DBusDisplay.DisplayMode
+        if not @DisplayMode? then @DisplayMode = DEFAULT_DISPLAY_MODE
+        @DisplayMode++
+        if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
+        echo "SwitchMode(#{@DisplayMode})"
+        ImgIndex = @DisplayMode
+        if ImgIndex >= 2 then ImgIndex = 2
+        @DBusDisplay.SwitchMode_sync(@DisplayMode)
+        @set_bg("#{@id}_#{ImgIndex}")
 
-    SwitchMode:(mode)->
-        #-1 onlyCurrentScreen
-        #0 copy
-        #1 onlySecondScreen
-        #2 expand
-        if Math.abs(mode) > @DBusMonitors.length
-            echo "the SwitchMode mode #{mode} input outof @DBusMonitors.length:#{@DBusMonitors.length}"
-            if mode < 0 then mode = @DBusMonitors.length * -1
-            if mode > 0 then mode = @DBusMonitors.length
-        @DBusDisplay.SwitchMode(mode)
+    showBrightValue:->
+        white = @getBrightness(@PrimarMonitorName) * 10
+        echo "showBrightValue:#{white}."
+        @set_bg(@id)
+        for i in [0...10]
+            @valueDiv = create_elment("div","valueDiv",@element) if not @valueAll?
+            @valueEachDiv[i] = create_elment("div","valueEachDiv",@valueDiv) if not @valueEachDiv[i]?
+            if i <= white then @valueEachDiv[i].style.backgroundImage = "../img/black.png"
+            else @valueEachDiv[i].style.backgroundImage = "../img/white.png"
+
+    show:->
+        echo "Display Class  show :#{@id}"
+        @element.style.display = "block"
+        if @id is "DisplayMode" then @switchMode()
+        #else if @id is "Light_Up" or @id is "Light_Down"
+        else @showBrightValue()
