@@ -28,7 +28,7 @@ class Option extends Widget
         @element.style.display = "none"
     
     set_bg:(imgName)->
-        _b.style.backgroundImage = "url(img/#{imgName}.png)"
+        @element.style.backgroundImage = "url(img/#{imgName}.png)"
     
     show:->
         echo "Option #{@id} show"

@@ -21,7 +21,6 @@
 _b = document.body
 
 #MediaKey DBus
-MEDIAKEY = "com.deepin.daemon.MediaKey"
 MEDIAKEY =
     obj: "com.deepin.daemon.KeyBinding"
     path: "/com/deepin/daemon/MediaKey"
@@ -36,6 +35,7 @@ try
     )
 catch e
     echo "Error:-----DBusMediaKey:#{e}"
+echo DBusMediaKey
 
 #dconf-tools  
 #org/gonome/settings-daemon/plugins/media-keys/active false

@@ -162,6 +162,8 @@ int main (int argc, char **argv)
     gtk_widget_realize (webview);
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    GdkRGBA rgba = { 0, 0, 0, 0.85 };
+    gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
     
@@ -169,9 +171,7 @@ int main (int argc, char **argv)
     gdk_window_set_accept_focus (gdkwindow, FOCUS);
     
     gtk_widget_show_all (container);
-    gtk_widget_set_opacity (container,0.95);
-    GdkRGBA rgba = { 0, 0, 0, 0.0 };
-    gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gtk_widget_set_opacity (container,0.9);
 
     gdk_window_stick (gdkwindow);
 

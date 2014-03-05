@@ -2,36 +2,57 @@
 body{
     cursor:default;
     overflow:hidden;
-
-    width:160px;
-    height:160px;
     
-    font-size:62.5%;
-}
+    /*width:160px;*/
+    /*height:160px;*/
 
-.OSD{
-    width:160px;
-    height:160px;
-    border-radius:5px;
+    border-radius:15px;
+    background-color:rgba(0,0,0,0.7);
+     
+    font-size:62.5%;
+    
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
 }
 
 .Option{
+    position:absolute;
     width:160px;
     height:160px;
     border-radius:5px;
-    background-origin:padding-box;
-    background-clip:border-box;
-    background-position:center;
-    background-size:cover;
-    background-repeat:no-repeat;
-    background-attachment:fixed;
     
-    display:-webkit-box;
-    -webkit-box-align:center;
+    /*background-image:url("../img/Audio_10.png");*/
+    
+/*    background-origin:padding-box;*/
+    /*background-clip:border-box;*/
+    /*background-position:center;*/
+    /*background-size:cover;*/
+    /*background-repeat:no-repeat;*/
+    /*background-attachment:fixed;*/
+    
+    /*display:-webkit-box;*/
+    /*-webkit-box-align:center;*/
 }
+.Audio{
+    position:absolute;
+    width:160px;
+    height:160px;
+    border-radius:5px;
+    
+    /*background-image:url("../img/Audio_10.png");*/
+    
+/*    background-origin:padding-box;*/
+    /*background-clip:border-box;*/
+    /*background-position:center;*/
+    /*background-size:cover;*/
+    /*background-repeat:no-repeat;*/
+    /*background-attachment:fixed;*/
+    
+    /*display:-webkit-box;*/
+    /*-webkit-box-align:center;*/
+}
+
 
 .valueDiv{
     position:absolute;
@@ -40,7 +61,7 @@ body{
     bottom:20px;
 }
 
-.valueEachDiv{
+.valueEach{
     width:8px;
     height:10px;
     margin: 0.9px 0 0.9px 0;

@@ -101,18 +101,25 @@ class Display extends Option
         white = @getBrightness(@PrimarMonitorName) * 10
         echo "showBrightValue:#{white}."
         @set_bg(@id)
+        
+        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
         for i in [0...10]
-            @valueDiv = create_elment("div","valueDiv",@element) if not @valueAll?
-            @valueEachDiv[i] = create_elment("div","valueEachDiv",@valueDiv) if not @valueEachDiv[i]?
-            if i <= white then @valueEachDiv[i].style.backgroundImage = "../img/black.png"
-            else @valueEachDiv[i].style.backgroundImage = "../img/white.png"
+            @valueEachDiv[i] = create_element("div","valueEachDiv",@valueDiv) if not @valueEachDiv[i]?
+            if i <= white then bg = "white"
+            else bg = "black"
+            echo i + ":" + bg
+            @valueEachDiv[i].style.backgroundImage = "../img/#{bg}.png"
 
     show:->
+        clearTimeout(@timeout) if @timeout
         echo "Display Class  show :#{@id}"
         @element.style.display = "block"
         if @id is "DisplayMode" then @switchMode()
         else @showBrightValue()
 
+        @timeout = setTimeout(=>
+            @hide()
+        ,TIME_HIDE)
 
 
 

@@ -29,7 +29,6 @@ class Audio extends Widget
 
     constructor:(@id)->
         super
-        echo "New Audio :#{@id}"
         @Cards = []
         @Sinks = []
         @Sources = []
@@ -43,9 +42,8 @@ class Audio extends Widget
         @element.style.display = "none"
     
     set_bg:(imgName)->
-        _b.style.backgroundImage = "url(img/#{imgName}.png)"
-  
-
+        @element.style.backgroundImage = "url(img/#{imgName}.png)"
+    
     getDBus:->
         try
             @DBusAudio = DCore.DBus.session(AUDIO)
@@ -73,10 +71,15 @@ class Audio extends Widget
             echo "getDBusSinks ERROR: ---#{e}---"
    
     getVolume:->
-        Math.round(@DBusDefaultSink.Volume / 10)
+        volume = @DBusDefaultSink.Volume
+        if volume > 100 then volume = 100
+        else if volume < 0 then volume = 0
+        return Math.round( volume / 10)
         
     setVolume:(volume)->
-        @DBusDefaultSink.setSinkVolume(volume * 10)
+        if volume > 10 then volume = 10
+        else if volume < 0 then volume = 0
+        @DBusDefaultSink.SetSinkVolume_sync(volume * 10)
 
     getMute:->
         mute = @DBusDefaultSink.Mute
@@ -84,7 +87,7 @@ class Audio extends Widget
         return mute
     
     setMute:(mute)->
-        @DBusDefaultSink.setSinkMute(mute)
+        @DBusDefaultSink.SetSinkMute_sync(mute)
 
     changeMute:->
         muteSet = null
@@ -92,19 +95,34 @@ class Audio extends Widget
         else muteSetf = 0
         @setMute(muteSet)
 
+    getBgName:(white)->
+        bg = "Audio_7"
+        if white == 0 then bg = "Audio_0"
+        else if white <= 4 then bg = "Audio_1"
+        else if white <= 7 then bg = "Audio_2"
+        else if white <= 10 then bg = "Audio_3"
+        return bg
+    
     show:(white)->
-        @element.style.display = "block"
+        if white > 10 then white = 10
+        else if white < 0 then white = 0
         clearTimeout(@timeout) if @timeout
-        echo "show Audio Volume:#{white}."
-        if white == 0 then @set_bg("Audio_Mute")
-        else if white <=4 then @set_bg("Audio_2")
-        else if white <=7 then @set_bg("Audio_7")
-        else if white <=10 then @set_bg("Audio_10")
+        
+        @element.style.display = "block"
+        bg = @getBgName(white)
+        echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
+        @set_bg(bg)
+        
+        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
         for i in [0...10]
-            @valueDiv = create_elment("div","valueDiv",@element) if not @valueAll?
-            @valueEachDiv[i] = create_elment("div","valueEachDiv",@valueDiv) if not @valueEachDiv[i]?
-            if i <= white then @valueEachDiv[i].style.backgroundImage = "../img/black.png"
-            else @valueEachDiv[i].style.backgroundImage = "../img/white.png"
+            echo i
+            @valueEach[i] = create_element("div","valueEach",@valueDiv) if not @valueEach[i]?
+            valueBg = "white"
+            echo valueBg
+            if i <= white then valueBg = "white"
+            else valueBg = "black"
+            echo i + ":" + valueBg
+            @valueEach[i].style.backgroundImage = "../img/#{valueBg}.png"
 
         @timeout = setTimeout(=>
             @hide()
@@ -112,31 +130,38 @@ class Audio extends Widget
 
 
 
-AudioUpCls = null
-AudioDownCls = null
-AudioMuteCls = null
+AudioCls = null
 
-AudioUp = ->
-    AudioUpCls  = new Audio("AudioUp") if not AudioUpCls?
-    white = AudioUpCls.getVolume()
+AudioUp =(type) ->
+    if !type then return
+    echo "AudioUp"
+    AudioCls = new Audio("Audio") if not AudioCls?
+    AudioCls.id = "AudioUp"
+    white = AudioCls.getVolume()
     white++
-    AudioUpCls.setVolume(white)
-    AudioUpCls.show(white)
+    AudioCls.setVolume(white)
+    AudioCls.show(white)
 
-AudioDown = ->
-    AudioDownCls  = new Audio("AudioDown") if not AudioDownCls?
-    white = AudioDownCls.getVolume()
+AudioDown =(type) ->
+    if !type then return
+    echo "AudioDown"
+    AudioCls = new Audio("Audio") if not AudioCls?
+    AudioCls.id = "AudioDown"
+    white = AudioCls.getVolume()
     white--
-    AudioDownCls.setVolume(white)
-    AudioDownCls.show(white)
+    AudioCls.setVolume(white)
+    AudioCls.show(white)
 
-AudioMute = ->
-    AudioMuteCls  = new Audio("AudioMute") if not AudioMuteCls?
-    AudioMuteCls.changeMute()
-    if AudioMuteCls.getMute() then white = 0
-    else white = AudioMuteCls.getVolume()
-    AudioMuteCls.show(white)
+AudioMute =(type) ->
+    if !type then return
+    echo "AudioMute"
+    AudioCls = new Audio("Audio") if not AudioCls?
+    AudioCls.id = "AudioMute"
+    AudioCls.changeMute()
+    if AudioCls.getMute() then white = 0
+    else white = AudioCls.getVolume()
+    AudioCls.show(white)
 
-DBusMediaKey.connect("AudioUp",AudioUp) if not DBusMediaKey?
-DBusMediaKey.connect("AudioDown",AudioDown) if not DBusMediaKey?
-DBusMediaKey.connect("AudioMute",AudioMute) if not DBusMediaKey?
+DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
+DBusMediaKey.connect("AudioDown",AudioDown) if DBusMediaKey?
+DBusMediaKey.connect("AudioMute",AudioMute) if DBusMediaKey?
