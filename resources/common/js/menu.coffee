@@ -211,6 +211,9 @@ class Menu
         catch e
             echo "listenItemSelected: #{e}"
 
+    unregisterHook: (fn)->
+        @dbus?.connect("MenuUnregistered", fn)
+
     _init_dbus: ->
         manager = get_dbus(
             "session",

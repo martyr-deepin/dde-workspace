@@ -31,7 +31,6 @@ class Item extends Widget
     @autostart_flag: null
     @hoverItem: null
     @clean_hover_temp: false
-    @display_temp: false
     constructor: (@id, @name, @path, @icon)->
         super
         @element.removeAttribute("id")
@@ -222,6 +221,8 @@ class Item extends Widget
         #         target.style.display = 'none'
         #     , 100)
         #     return
+        item = target.parentNode
+        item.classList.add("item_dragged")
         dt.setData("text/plain", @id)
         dt.setData("text/uri-list", "file://#{@path}")
         dt.effectAllowed = "copy"
@@ -229,6 +230,10 @@ class Item extends Widget
         switcher.bright()
 
     on_dragend: (e)=>
+        target = e.target
+        item = target.parentNode
+        item.classList.remove("item_dragged")
+
         e = e.originalEvent || e
         e.preventDefault()
         # FIXME: why this???
@@ -271,7 +276,7 @@ class Item extends Widget
 
         # echo @menu
         # return
-        @menu.dbus.connect("MenuUnregistered", ->
+        @menu.unregisterHook(->
             setTimeout(->
                 DCore.Launcher.force_show(false)
             , 100)
@@ -307,39 +312,31 @@ class Item extends Widget
 
     hide_icon: (e)=>
         @displayMode = "hidden"
+
+        if not hiddenIcons.isShown
+            @hide()
+
         if !@element.classList.contains(HIDE_ICON_CLASS)
             @updateProperty((k, v)->
                 v.classList.add(HIDE_ICON_CLASS)
             )
-        if not Item.display_temp and not is_show_hidden_icons
-            @hide()
-            Item.display_temp = false
+
          if !hiddenIcons.contains(@id)
              # echo 'save'
             hiddenIcons.add(@id, @).save()
-        categoryList.hideEmptyCategories()
-        # FIXME:
-        # hidden_icons_num = hiddenIcons.number()
-        # if hidden_icons_num == 0
-        #     Item.display_temp = false
 
     display_icon: (e)=>
         @displayMode = "display"
         @show()
         if @element.classList.contains(HIDE_ICON_CLASS)
             @updateProperty((k, v)->
+                echo 'Item: show icon'
                 v.classList.remove(HIDE_ICON_CLASS)
             )
         hidden_icons_num = hiddenIcons.remove(@id).save().number()
-        categoryList.showNonemptyCategories()
-        # FIXME:
-        # if hidden_icons_num == 0
-        #     is_show_hidden_icons = false
-        #     _show_hidden_icons(is_show_hidden_icons)
 
-    display_icon_temp: ->
+    displayIconTemp: ->
         @show()
-        Item.display_temp = true
         categoryList.showNonemptyCategories()
 
     toggle_icon: ->
@@ -396,15 +393,11 @@ class Item extends Widget
             v.style.display = "none"
         )
 
-    # use '->', Item.display_temp and @displayMode will be undifined when
-    # this function is pass to some other functions like setTimeout
     show: =>
-        if (Item.display_temp or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
+        if (hiddenIcons.isShown or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
             @updateProperty((k, v)->
                 v.style.display = "-webkit-box"
             )
-
-    # just working for categories, not searching and favor.
 
     on_mouseover: (e)=>
         # this event is a wrap, use e.originalEvent to get the original event

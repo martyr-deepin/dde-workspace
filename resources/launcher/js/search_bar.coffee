@@ -63,23 +63,23 @@ class SearchBar
             selector.clean()
             if !SearchResult.inited
                 searchResult = new SearchResult()
-            ids = daemon.Search_sync(@value())
+            searchResult.result = daemon.Search_sync(@value())
             res = $("#searchResult")
             for i in [0...res.children.length]
                 if res.children[i].style.display != 'none'
                     res.children[i].style.display = 'none'
 
-            if ids.length == 0
+            if searchResult.result.length == 0
                 echo 'search: get nothing'
                 return
 
-            for i in [ids.length-1..0]
-                if (item = Widget.look_up("#{ids[i]}"))?
-                    # echo "search Item id: #{ids[i]}"
+            for i in [searchResult.result.length-1..0]
+                if (item = Widget.look_up("#{searchResult.result[i]}"))?
+                    # echo "search Item id: #{searchResult.result[i]}"
                     target = item.elements.search
                     res.removeChild(target)
                     res.insertBefore(target, res.firstChild)
-                    target.style.display = '-webkit-box'
+                    item.show()
 
             if !searchResult.isShow()
                 echo 'show result'

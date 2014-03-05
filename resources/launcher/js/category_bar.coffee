@@ -73,8 +73,7 @@ class CategoryItem
 
 class CategoryBar
     constructor: (infos)->
-        @select_timer = -1
-        @selected_id = null
+        @selectedId = null
 
         @category = $("#category")
         @category.addEventListener("click", (e) =>
@@ -128,11 +127,11 @@ class CategoryBar
         @
 
     focusCategory: (id) =>
-        # echo "selected_id: #{@selected_id}, id: #{id}"
-        if @selected_id != id
-            @category_items[@selected_id]?.blur()
+        # echo "selectedId: #{@selectedId}, id: #{id}"
+        if @selectedId != id
+            @category_items[@selectedId]?.blur()
             @category_items[id]?.focus()
-            @selected_id = id
+            @selectedId = id
 
     dark:->
         for own k, v of @category_items

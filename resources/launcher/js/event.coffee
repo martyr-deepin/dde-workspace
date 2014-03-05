@@ -18,13 +18,33 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-forbidenDefault = (e)->
+bodyContextmenuCallback = (e)->
     e.stopPropagation()
     e.preventDefault()
 
+    if switcher.isFavor()
+        return
+
+    DCore.Launcher.force_show(true)
+    menu = new Menu(
+        DEEPIN_MENU_TYPE.NORMAL,
+        new MenuItem(1, HIDDEN_ICONS_MESSAGE[hiddenIcons.isShown])
+    )
+
+    menu.unregisterHook(->
+        setTimeout(->
+            DCore.Launcher.force_show(false)
+        , 100)
+    )
+    menu.addListener(->
+        hiddenIcons.toggle()
+        DCore.Launcher.force_show(false)
+        menu.destroy()
+    ).showMenu(e.screenX, e.screenY)
+
 
 click_callback = (e)->
-    return
+    # return
     e.stopPropagation()
     if e.target != $("#category")
         exit_launcher()
@@ -103,7 +123,7 @@ keypress_callback = (e) ->
         searchBar.search()
 
 bind_events = ->
-    _b.addEventListener("contextmenu", forbidenDefault)
+    _b.addEventListener("contextmenu", bodyContextmenuCallback)
     _b.addEventListener("click", click_callback)
     # this does not work on keypress
     _b.addEventListener("keydown", keydown_callback)

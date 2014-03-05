@@ -27,18 +27,6 @@ applications = {}
 # value: Item class
 uninstalling_apps = {}
 
-is_show_hidden_icons = false
-_show_hidden_icons = (is_shown) ->
-    if is_shown == is_show_hidden_icons
-        return
-    is_show_hidden_icons = is_shown
-
-    Item.display_temp = false
-    if is_shown
-        hiddenIcons.show()
-    else
-        hiddenIcons.hide()
-
 path = localStorage.getItem("bg")
 setBackground(path)
 setTimeout(->
