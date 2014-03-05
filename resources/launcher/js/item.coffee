@@ -221,6 +221,8 @@ class Item extends Widget
         #         target.style.display = 'none'
         #     , 100)
         #     return
+        item = target.parentNode
+        item.classList.add("item_dragged")
         dt.setData("text/plain", @id)
         dt.setData("text/uri-list", "file://#{@path}")
         dt.effectAllowed = "copy"
@@ -228,6 +230,10 @@ class Item extends Widget
         switcher.bright()
 
     on_dragend: (e)=>
+        target = e.target
+        item = target.parentNode
+        item.classList.remove("item_dragged")
+
         e = e.originalEvent || e
         e.preventDefault()
         # FIXME: why this???
