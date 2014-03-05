@@ -94,10 +94,7 @@ class Item extends Widget
                 @setImageSize(im)
 
         @elements[pid] = el
-        if pid == 'search'
-            el.style.marginTop = '20px'
-            el.style.marginBottom = 0
-        else if pid == 'favor'
+        if pid == 'favor'
             @isFavor = true
         else
             if !parent?
