@@ -59,6 +59,9 @@ init_all_applications = ->
 init_all_applications()
 echo "load all applications done"
 
+favor = new FavorPage()
+echo 'load favor done'
+
 searchBar = new SearchBar()
 echo "create search bar done"
 
@@ -74,9 +77,6 @@ echo "load category bar done"
 categoryList = new CategoryList(categoryInfos)
 echo "load category list done"
 
-favorList = new FavorList()
-echo 'load favor app done'
-
 hiddenIcons = new HiddenIcons()
 hiddenIcons.hide()
 echo "load hidden icons done"
@@ -85,7 +85,7 @@ bind_events()
 echo "bind event done"
 
 selector = new Selector()
-selector.container(categoryList.favor.element.lastElementChild)
+selector.container($("#searchResult"))
 echo "create selector done"
 
 DCore.Launcher.webview_ok()

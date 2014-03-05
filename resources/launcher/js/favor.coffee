@@ -18,11 +18,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class FavorList
+class FavorPage
     constructor: ->
         # key: id of app
         # value: a list of category id to which key belongs
         @favors = {}
+
+        @element = $("#favor")
 
         @updateCache = true
         @favorNumber = 0
@@ -33,23 +35,20 @@ class FavorList
     load: ->
         if (originIds = daemon.GetFavors_sync())?
             validIds = originIds.filter((elem) ->
-                applications[elem]?
+                id = elem[0]
+                applications[id]?
             )
             @favors = {}
             @favorNumber = validIds.length
             @updateCache = false
-            for id in validIds
-                # echo applications[id].name
-                @favors[id] = applications[id]
-                @favors[id].isFavor = true
+            frag = document.createDocumentFragment()
+            for i in validIds
+                @doAdded(i[0], i[1], i[2])
+                # el = categoryList.favor.addItem(i[0])
+                # el?.setAttribute("index", i[1])
+                # el?.setAttribute("fixed", i[2])
 
-            echo "originIds: ##{originIds.length}#, typeof: #{typeof originIds.length}"
-            echo "validIds: ##{originIds.length}#, typeof: #{typeof validIds.length}"
-            echo "#{originIds.length != validIds.length}"
-            if parseInt(originIds.length) != parseInt(validIds.length)
-                echo "originIds: ##{originIds.length}#"
-                echo "validIds: ##{originIds.length}#"
-                echo 'save'
+            if originIds.length != validIds.length
                 @save()
 
         @
@@ -57,33 +56,45 @@ class FavorList
     save: ->
         apps = []
         # TODO
-        container = categoryList.favor.grid
+        container = favor.element
         for i in [0...container.children.length]
             el = container.children[i]
-            echo "save favor: "
+            # echo "save favor: "
             echo el
             apps.push([el.getAttribute('appid'), i, false])
-        try
-            daemon.SaveFavors_sync(apps)
-        @
+        echo 'save favor list'
+        echo apps
+        echo daemon.SaveFavors_sync(apps)
 
     reset: ->
         @
 
-    add: (id)->
+    doAdded: (id, index, fixed=false)->
+        index = @element.childElementCount if not index?
         item = Widget.look_up(id)
-        item.add("favor")
-        categoryList.showNonemptyCategories()
+        echo "add #{item.name} to favor"
+        el = item.add('favor', @element)
+        el.setAttribute("index", index)
+        el.setAttribute("fixed", fixed)
+        # echo el
         @favors[id] = item
         @updateCache = true
-        @save()
+        true
+
+    add: (id, index, fixed)->
+        if @doAdded(id, index, fixed)
+            @save()
         @
 
-    remove: (id)->
+    doRemove:(id)->
         if delete @favors[id]
-            item = Widget.look_up(id)
-            item.remove('favor')
+            Widget.look_up(id).remove('favor')
             @updateCache = true
+            return true
+        false
+
+    remove: (id)->
+        if @doRemove(id)
             @save()
         @
 
@@ -105,3 +116,11 @@ class FavorList
 
     contains: (id)->
         @favors.hasOwnProperty(id)
+
+    hide:->
+        if @element.style.display != 'none'
+            @element.style.display = 'none'
+
+    show:->
+        if @element.style.display != 'block'
+            @element.style.display = 'block'

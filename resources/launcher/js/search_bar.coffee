@@ -50,6 +50,7 @@ class SearchBar
 
     clean:->
         @key.textContent = ""
+        @
 
     cancel: ->
         clearTimeout(@searchTimer)

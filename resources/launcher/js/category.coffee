@@ -78,14 +78,17 @@ class Category
         @items.every(fn)
 
     addItem: (id)->
-        if (item = Widget.look_up(id))? && @items.indexOf(id) == -1
+        item = Widget.look_up(id)
+        if item? && @items.indexOf(id) == -1
             @items.push(id)
-            @grid.appendChild(item.element)
+            el = item.add(@id, @grid)
             @sort()
+            return el
+        null
 
     removeItem:(id)->
         if (item = Widget.look_up(id))?
-            @grid.removeChild(item.element) if not item.element?
+            item.remove(@id)
 
         @items.remove(id)
 

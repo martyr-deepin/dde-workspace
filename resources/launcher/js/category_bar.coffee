@@ -27,7 +27,13 @@ class CategoryItem
             id: "#{CategoryItem.PREFIX}#{@id}",
             catId: "#{@id}"
         )
-        @element.innerText = @name
+        # @element.innerText = @name
+        @ignore = create_img(src:"img/category/#{name}10.png", @element)
+        @ignore.style.display = 'none'
+        @normal = create_img(src:"img/category/#{name}50.png", @element)
+        @selected = create_img(src:"img/category/#{name}100.png", @element)
+        @selected.style.display = 'none'
+        @isFocus = false
 
     categoryId: ->
         parseInt(@element.getAttribute("catId"))
@@ -41,25 +47,47 @@ class CategoryItem
         @
 
     focus: ->
-        @element.classList.add("category_selected")
+        @isFocus = true
+        @normal.style.display = 'none'
+        @selected.style.display = 'inline'
+        # @element.classList.add("category_selected")
         # TODO
         # grid.load(@selected_id)
 
     blur: ->
-        @element.classList.remove("category_selected")
+        @isFocus = false
+        @normal.style.display = 'inline'
+        @selected.style.display = 'none'
+        # @element.classList.remove("category_selected")
         # TODO
         # grid.load(@selected_id)
+
+    dark: ->
+        @ignore.style.display = 'inline'
+        if @isFocus
+            @selected.style.display = 'none'
+        else
+            @normal.style.display = 'none'
+
+    bright:->
+        @ignore.style.display = 'none'
+        if @isFocus
+            @selected.style.display = 'inline'
+        else
+            @normal.style.display = 'inline'
 
 
 class CategoryBar
     constructor: (infos)->
         @select_timer = -1
-        @selected_id = CATEGORY_ID.FAVOR
+        @selected_id = null
 
         @category = $("#category")
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
             target = e.target
+            if target.tagName == "IMG"
+                target = target.parentNode
             id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
                 offset = $("##{Category.PREFIX}#{id}").offsetTop
@@ -70,13 +98,12 @@ class CategoryBar
         @category_items = {}
         @load(infos)
 
-        @category_items[@selected_id]?.focus()
+        # TODO: focus the first shown
+        # @category_items[@selected_id]?.focus()
         @update_scroll_bar()
 
     load: (infos)->
         frag = document.createDocumentFragment()
-        @category_items[CATEGORY_ID.FAVOR] = new CategoryItem(CATEGORY_ID.FAVOR, "favor")
-        frag.appendChild(@category_items[CATEGORY_ID.FAVOR].element)
         for info in infos
             id = info[0]
             name = info[1]
@@ -114,3 +141,11 @@ class CategoryBar
             @category_items[@selected_id]?.blur()
             @category_items[id]?.focus()
             @selected_id = id
+
+    dark:->
+        for own k, v of @category_items
+            v.dark()
+
+    bright:->
+        for own k, v of @category_items
+            v.bright()

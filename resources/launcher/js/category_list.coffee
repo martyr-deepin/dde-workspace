@@ -21,16 +21,9 @@
 class CategoryList
     constructor:(infos)->
         @categories = {}
-        @favor = null
         @container = $("#grid")
 
         frag = document.createDocumentFragment()
-        favors = daemon.GetFavors_sync()
-        @favor = new Category(CATEGORY_ID.FAVOR, "favor", favors.map((e)->"#{e[0]}"))
-        @favor.show().hideHeader()
-        frag.appendChild(@favor.element)
-        # infos.unshift([CATEGORY_ID.FAVOR, "favor", favors])
-
         for info in infos
             id = info[0]
             name = info[1]
@@ -40,11 +33,9 @@ class CategoryList
             if items.length == 0
                 @categories[id].hide()
 
-        @categories[CATEGORY_ID.FAVOR] = @favor
         @blank = create_element(tag:'div', id:'blank', frag)
         $("#grid").appendChild(frag)
 
-        @favor.setNameDecoration()
         for info in infos
             id = info[0]
             @categories[id].setNameDecoration()
@@ -99,13 +90,6 @@ class CategoryList
         categoryBar.focusCategory(minId)
         @
 
-    showFavorOnly:->
-        for own k, v of @categories
-            v.hide()
-
-        @favor.show().hideHeader()
-        @blank.style.display = 'none'
-
     addItem: (id, categories)->
         if !Array.isArray(categories)
             categories = [categories]
@@ -133,8 +117,6 @@ class CategoryList
         null
 
     firstCategory:->
-        return @favor if @favor.isShown()
-        echo "the first category is not favor"
         for id in [CATEGORY_ID.INTERNET..CATEGORY_ID.UTILITIES]
             if @categories[id].isShown()
                 return @categories[id]
@@ -174,8 +156,5 @@ class CategoryList
             if @categories[i].isShown()
                 return @categories[i]
             --i
-
-        if @favor.isShown()
-            return @favor
 
         return null

@@ -18,6 +18,34 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+NOTIFICATIONS = "org.freedesktop.Notifications"
+
+SOFTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
+softwareManager = get_dbus("system", SOFTWARE_MANAGER)
+
+
+uninstallSignalHandler = (info)->
+    # echo info
+    status = info[0][0]
+    package_name = info[0][1][0]
+    # echo status
+    if status == UNINSTALL_STATUS.FAILED
+        message = info[0][1][3]
+        for own id, item of uninstalling_apps
+            if item.packages.indexOf(package_name) != -1
+                item.status = SOFTWARE_STATE.IDLE
+                item.show()
+                delete uninstalling_apps[item.id]
+                break
+    else if status == UNINSTALL_STATUS.SUCCESS
+        message = "success"
+        for own id, item of uninstalling_apps
+            if item.packages.indexOf(packages) != -1
+                delete uninstalling_apps[item.id]
+    if message
+        uninstallReport(status, "#{message}")
+
+
 uninstallReport = (status, msg)->
     notification = DCore.DBus.session(NOTIFICATIONS)
 
@@ -29,17 +57,33 @@ uninstallReport = (status, msg)->
     echo "uninstall #{message}, #{msg}"
     icon_launcher = DCore.get_theme_icon("start-here", 48)
     notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
+    if Object.keys(uninstalling_apps).length == 0
+        echo 'uninstall: disconnect signal'
+        softwareManager.dis_connect("update_signal", uninstallSignalHandler)
 
 
 uninstall = (opt) ->
     echo "#{opt.item.path}, #{opt.purge}"
     item = opt.item
-    packages = daemon.GetPackageNames_sync(item.path)
-    if packages.length == 0
-        uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
+
+    if not softwareManager?
+        notification = DCore.DBus.session(NOTIFICATIONS)
+        notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall failed", "Deepin Software Center is Not Found", [], {}, 0)
         item.status = SOFTWARE_STATE.IDLE
         item.show()
         delete uninstalling_apps[item.id]
+        return
+
+    if Object.keys(uninstalling_apps).length == 1
+        echo 'uninstall: connect signal'
+        softwareManager.connect("update_signal", uninstallSignalHandler)
+
+    packages = daemon.GetPackageNames_sync(item.path)
+    if packages.length == 0
+        item.status = SOFTWARE_STATE.IDLE
+        item.show()
+        delete uninstalling_apps[item.id]
+        uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
         return
     opt.item.packages = packages
     # echo packages.join()
