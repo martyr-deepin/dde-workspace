@@ -31,6 +31,7 @@ class FavorPage
         @isShown = false
 
         @load()
+        Item.updateHorizontalMargin()
 
     load: ->
         if (originIds = daemon.GetFavors_sync())?
@@ -63,8 +64,8 @@ class FavorPage
             echo el
             apps.push([el.getAttribute('appid'), i, false])
         echo 'save favor list'
-        echo apps
-        echo daemon.SaveFavors_sync(apps)
+        # echo apps
+        daemon.SaveFavors_sync(apps)
 
     reset: ->
         @

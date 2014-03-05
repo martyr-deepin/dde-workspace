@@ -55,17 +55,18 @@ class Item extends Widget
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
+        if switcher.inCategory()
+            containerWidth -= CATEGORY_LIST_EXTRA_LEFT_MARGIN
         # echo "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
         # echo "itemNumPerLine: #{Item.itemNumPerLine}"
         Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
         # echo "horizontalMargin: #{Item.horizontalMargin}"
         for own id, info of applications
-            info.element.style.marginLeft = "#{Item.horizontalMargin}px"
-            info.element.style.marginRight = "#{Item.horizontalMargin}px"
-            if info.favorElement
-                info.favorElement.style.marginLeft = "#{Item.horizontalMargin}px"
-                info.favorElement.style.marginRight = "#{Item.horizontalMargin}px"
+            info.updateProperty((k, v)->
+                v.style.marginLeft = "#{Item.horizontalMargin}px"
+                v.style.marginRight = "#{Item.horizontalMargin}px"
+            )
 
     try_set_title: (el, text, width)->
         setTimeout(->
@@ -83,7 +84,6 @@ class Item extends Widget
                 categoryList.category(k).removeItem(@id)
         delete Widget.object_table[@id]
 
-    # TODO: remove parent, connect to categoryList.
     add:(pid, parent)->
         if @elements[pid]
             return null
@@ -123,11 +123,11 @@ class Item extends Widget
         @elements[pid]
 
     get_img: ->
-        im = DCore.get_theme_icon(@icon, 48)
+        im = DCore.get_theme_icon(@icon, ITEM_IMG_SIZE)
         if im == null
             @icon = get_path_name(@path)
 
-        im = DCore.get_theme_icon(@icon, 48)
+        im = DCore.get_theme_icon(@icon, ITEM_IMG_SIZE)
         if im == null
             im = DCore.get_theme_icon(INVALID_IMG, ITEM_IMG_SIZE)
 
@@ -201,10 +201,12 @@ class Item extends Widget
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(@img, 0, 0, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
         dt = e.dataTransfer
+        # extra 3px for mouse offset
         dt.setDragCanvas(canvas, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         if switcher.isFavor()
             return
+        # TODO: drag between favor items
         # echo 'drag start'
         # grid = target.parentNode.parentNode
         # echo grid.parentNode.getAttribute("catId")
@@ -229,8 +231,9 @@ class Item extends Widget
     on_dragend: (e)=>
         e = e.originalEvent || e
         e.preventDefault()
-        if true
-            @elements.favor?.style.display = 'block'
+        # FIXME: why this???
+        # if true
+        #     @elements.favor?.style.display = 'block'
         categoryBar.bright()
         switcher.normal()
 
@@ -286,7 +289,7 @@ class Item extends Widget
             when 4 then s_dock?.RequestDock_sync(escape(@path))
             when 5 then @toggle_autostart()
             when 6
-                if confirm("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher")
+                if confirm(_("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher"))
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
@@ -304,7 +307,6 @@ class Item extends Widget
 
     hide_icon: (e)=>
         @displayMode = "hidden"
-        # applications[@id].setDisplayMode("hidden").notify()
         if !@element.classList.contains(HIDE_ICON_CLASS)
             @updateProperty((k, v)->
                 v.classList.add(HIDE_ICON_CLASS)
@@ -316,13 +318,13 @@ class Item extends Widget
              # echo 'save'
             hiddenIcons.add(@id, @).save()
         categoryList.hideEmptyCategories()
-        hidden_icons_num = hiddenIcons.number()
-        if hidden_icons_num == 0
-            Item.display_temp = false
+        # FIXME:
+        # hidden_icons_num = hiddenIcons.number()
+        # if hidden_icons_num == 0
+        #     Item.display_temp = false
 
     display_icon: (e)=>
         @displayMode = "display"
-        # applications[@id].setDisplayMode("display").notify()
         @show()
         if @element.classList.contains(HIDE_ICON_CLASS)
             @updateProperty((k, v)->
@@ -330,9 +332,10 @@ class Item extends Widget
             )
         hidden_icons_num = hiddenIcons.remove(@id).save().number()
         categoryList.showNonemptyCategories()
-        if hidden_icons_num == 0
-            is_show_hidden_icons = false
-            _show_hidden_icons(is_show_hidden_icons)
+        # FIXME:
+        # if hidden_icons_num == 0
+        #     is_show_hidden_icons = false
+        #     _show_hidden_icons(is_show_hidden_icons)
 
     display_icon_temp: ->
         @show()
@@ -355,15 +358,17 @@ class Item extends Widget
             AUTOSTART_ICON.SIZE)}"
 
         @updateProperty((k, v)->
-            last = v.firstElementChild.firstElementChild.lastElementChild
+            innerBox = v.firstElementChild.firstElementChild
+            last = innerBox.lastElementChild
             if last.tagName != 'IMG'
-                create_img("autostart_flag", Item.autostart_flag, v.firstElementChild.firstElementChild)
+                create_img("autostart_flag", Item.autostart_flag, innerBox)
             last.style.visibility = 'visible'
         )
 
     hideAutostartFlag:->
         @updateProperty((k, v)->
-            last = v.firstElementChild.firstElementChild.lastElementChild
+            innerBox = v.firstElementChild.firstElementChild
+            last = innerBox.lastElementChild
             if last.tagName == 'IMG'
                 last.style.visibility = 'hidden'
         )

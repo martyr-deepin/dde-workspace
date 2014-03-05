@@ -124,8 +124,6 @@ class Switcher
 
     switchToSearch:=>
         $("#grid").style.display = 'none'
-        # if @isShowCategory
-        #     @switchToFavor()
         categoryBar.hide()
         favor.hide()
         if @toFavor.style.display != 'block'

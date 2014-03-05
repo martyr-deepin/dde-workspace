@@ -85,7 +85,7 @@ bind_events()
 echo "bind event done"
 
 selector = new Selector()
-selector.container($("#searchResult"))
+selector.container($("#favor"))
 echo "create selector done"
 
 DCore.Launcher.webview_ok()

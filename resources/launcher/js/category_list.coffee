@@ -54,7 +54,6 @@ class CategoryList
             @blank.style.display = 'block'
 
     hideEmptyCategories:->
-        # TODO:
         for own id, item of @categories
             all_is_hidden = item.every((el) ->
                 i = Widget.look_up(el)
@@ -70,7 +69,6 @@ class CategoryList
         @
 
     showNonemptyCategories:->
-        # TODO
         minId = 100
         for own id, category of @categories
             not_all_is_hidden = category.some((el) ->

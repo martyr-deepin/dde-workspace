@@ -57,6 +57,8 @@ class Selector
                     return i.firstItem()
             else
                 el = @box.firstElementChild
+                if not el
+                    return null
                 if el.style.display != 'none'
                     return el
                 else
@@ -80,16 +82,18 @@ class Selector
         categoryList.category(cid)
 
     scroll_to_view: (el)->
+        if not el
+            return
         p = @box
         if !@inView(el)
             rect = el.getBoundingClientRect()
             prect = p.getBoundingClientRect()
             if rect.top < prect.top
                 offset = rect.top - prect.top
-                p.scrollTop += offset - 20 # for search
+                p.scrollTop += offset
             else if rect.bottom > prect.bottom
                 offset = rect.bottom - prect.bottom
-                p.scrollTop += offset + 20 # for search
+                p.scrollTop += offset
 
     inView:(el)->
         p = @box
@@ -126,14 +130,14 @@ class Selector
     select: (fn)->
         if @selectedItem == null
             selectedItem = @firstShown()
-            echo selectedItem
+            # echo "selector: #{selectedItem}"
             @update(selectedItem)
             @scroll_to_view(selectedItem)
             return
         fn(@)
 
     right:->
-        echo "right"
+        # echo "right"
         @select((o)->
             item = o.selectedItem
             if not (n = o.nextShown(item))? && switcher.isShowCategory
@@ -146,7 +150,7 @@ class Selector
         )
 
     left:->
-        echo "left"
+        # echo "left"
         @select((o)->
             item = o.selectedItem
             if not (n = o.previousShown(item))? && switcher.isShowCategory
@@ -159,7 +163,7 @@ class Selector
         )
 
     down:->
-        echo "down"
+        # echo "down"
         @select((o)->
             item = o.selectedItem
             n = item
@@ -181,7 +185,7 @@ class Selector
         )
 
     up:->
-        echo "up"
+        # echo "up"
         @select((o)->
             item = o.selectedItem
             n = item

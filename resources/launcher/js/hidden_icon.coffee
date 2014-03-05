@@ -51,7 +51,6 @@ class HiddenIcons
     save: ->
         keys = Object.keys(@hiddenIcons)
         # echo "save #{keys}, is array: #{Array.isArray(keys)}, is string: #{typeof keys[0] == 'string'}"
-        # daemon.SaveHiddenApps(keys)
         daemon.SaveHiddenApps_sync(keys)
         @
 
@@ -69,9 +68,9 @@ class HiddenIcons
         @
 
     update: ->
-            @list = Object.keys(@hiddenIcons)
-            @hiddenIconNumbe = @list.length
-            @updateCache = false
+        @list = Object.keys(@hiddenIcons)
+        @hiddenIconNumbe = @list.length
+        @updateCache = false
 
     idList: ->
         if @updateCache
@@ -85,6 +84,7 @@ class HiddenIcons
         @hiddenIconNumber
 
     show: ->
+        # TODO:
         @isShown = true
         if searchBar.empty()
             # show category
@@ -95,6 +95,7 @@ class HiddenIcons
             # re-search
 
     hide: ->
+        # TODO:
         @isShown = false
         if searchBar.empty()
             # hide category

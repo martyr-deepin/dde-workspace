@@ -65,11 +65,11 @@ body {
   margin-top: 36px;
   display: none;
 }
-.category_name img {
+.category_item img {
   border-radius: 50%;
   background: rgba(0,0,0,0.05);
 }
-.category_name {
+.category_item {
   text-align: center;
   border: rgba(255,255,255, 0) 1px solid;
   margin: 10px 0px;

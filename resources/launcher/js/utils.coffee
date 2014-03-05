@@ -22,8 +22,6 @@ reset = ->
     searchBar.hide()
     searchBar.clean()
     selector.clean()
-    switcher.show()
-    $("#grid").style.display = 'block'
     searchResult?.hide()
     switcher.switchToFavor()
 

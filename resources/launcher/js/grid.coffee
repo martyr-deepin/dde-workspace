@@ -22,10 +22,6 @@ gridScrollCallback = (e)->
     offset = 0
     cid = -2
     l = this.childNodes.length
-    # TODO:
-    # 1. category bar
-    # 2. the last shown category's id
-    # 3. top only mask when the scroll bar is almost on the # bottom.
     scrollTop = this.scrollTop
     for i in [0...l]
         if this.childNodes[i].style.display == 'none'

@@ -24,6 +24,7 @@ forbidenDefault = (e)->
 
 
 click_callback = (e)->
+    return
     e.stopPropagation()
     if e.target != $("#category")
         exit_launcher()

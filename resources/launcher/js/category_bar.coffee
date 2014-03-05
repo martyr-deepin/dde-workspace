@@ -23,7 +23,7 @@ class CategoryItem
     constructor: (@id, @name)->
         @element = create_element(
             tag:'div',
-            class:'category_name',
+            class:'category_item',
             id: "#{CategoryItem.PREFIX}#{@id}",
             catId: "#{@id}"
         )
@@ -50,17 +50,11 @@ class CategoryItem
         @isFocus = true
         @normal.style.display = 'none'
         @selected.style.display = 'inline'
-        # @element.classList.add("category_selected")
-        # TODO
-        # grid.load(@selected_id)
 
     blur: ->
         @isFocus = false
         @normal.style.display = 'inline'
         @selected.style.display = 'none'
-        # @element.classList.remove("category_selected")
-        # TODO
-        # grid.load(@selected_id)
 
     dark: ->
         @ignore.style.display = 'inline'
@@ -98,8 +92,6 @@ class CategoryBar
         @category_items = {}
         @load(infos)
 
-        # TODO: focus the first shown
-        # @category_items[@selected_id]?.focus()
         @update_scroll_bar()
 
     load: (infos)->
@@ -127,9 +119,9 @@ class CategoryBar
 
     update_scroll_bar: ->
         warp = @category.parentNode
-        # add 20px for margin
-        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 20)
-        warp_height = window.screen.height - 120  # height of search bar
+        # top/bottom margin
+        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 2*CATEGORY_CONTENT_MARGIN)
+        warp_height = window.screen.height - SEARCH_BAR_HEIGHT  # height of search bar
         if categories_height > warp_height
             warp.style.overflowY = "scroll"
             warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
