@@ -75,7 +75,12 @@ class Item extends Widget
         , 200)
 
     destroy: ->
-        categoryList.removeItem(@id)
+        delete @elements['element']
+        for own k, v of @elements
+            if k == 'favor' or k == 'search'
+                @remove(k)
+            else
+                categoryList.category(k).removeItem(@id)
         delete Widget.object_table[@id]
 
     # TODO: remove parent, connect to categoryList.
@@ -96,7 +101,7 @@ class Item extends Widget
         @elements[pid] = el
         if pid == 'favor'
             @isFavor = true
-        else
+        else if pid != "search"
             if !parent?
                 categoryList.addItem(@id, pid)
         parent?.appendChild(el)
@@ -104,6 +109,8 @@ class Item extends Widget
 
     remove:(pid)->
         el = @elements[pid]
+        if not el
+            return
         delete @elements[pid]
         pNode = el.parentNode
         pNode.removeChild(el)

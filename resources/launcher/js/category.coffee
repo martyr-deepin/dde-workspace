@@ -79,7 +79,10 @@ class Category
 
     addItem: (id)->
         item = Widget.look_up(id)
+        # echo item
+        # echo @items.indexOf(id)
         if item? && @items.indexOf(id) == -1
+            echo "add to category##{@id}"
             @items.push(id)
             el = item.add(@id, @grid)
             @sort()
@@ -88,6 +91,7 @@ class Category
 
     removeItem:(id)->
         if (item = Widget.look_up(id))?
+            echo "remove from category##{@id}"
             item.remove(@id)
 
         @items.remove(id)

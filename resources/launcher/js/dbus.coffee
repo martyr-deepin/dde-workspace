@@ -43,12 +43,7 @@ startManager.connect("AutostartChanged", (status, path)->
     if status == "deleted"
         echo "deleted"
         item.remove_from_autostart()
-        # item?.setAutostart(false).notify()
-    else if status == "modified"
-        echo "modified"
-        # item?.setAutostart(!item.isAutostart).notify()
     else
         echo "add"
         item.add_to_autostart()
-        # item?.setAutostart(true).notify()
 )

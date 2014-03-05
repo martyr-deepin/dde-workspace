@@ -117,15 +117,16 @@ update = (status, info, categories)->
         echo 'added'
         autostartList = startManager.AutostartList_sync()
         item = createItem(info, autostartList)
+        item.add('search')
         $("#searchResult").appendChild(item.elements.search)
 
         categoryList.addItem(id, categories)
-        # categoryList.showNonemptyCategories()
+        categoryList.showNonemptyCategories()
         if !switcher.isInSearch()
             if switcher.isShowCategory
                 switcher.switchToCategory()
             else
-                categoryList.showFavorOnly()
+                switcher.switchToFavor()
     else
         echo 'updated'
         applications[id].update(name:name, path:path, basename:"#{get_path_name(path)}.desktop", icon:icon)

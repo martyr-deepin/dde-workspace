@@ -100,7 +100,6 @@ class CategoryList
         if typeof categories == 'undefined'
             echo 'remove from all categories'
             for own cid, item of @categories
-                echo "remove from category##{cid}"
                 item.removeItem(id)
             return
 
