@@ -42,11 +42,15 @@ class CategoryList
 
     updateBlankHeight:->
         containerHeight = $("#container").clientHeight
-        c = @container.lastElementChild
+        c = @blank
         while (c = c.previousElementSibling)
             if c.style.display != 'none'
                 lastHeight = c.clientHeight
-        @blank.style.height = containerHeight - lastHeight - 20
+                break
+        if containerHeight > lastHeight
+            @blank.style.height = containerHeight - lastHeight - CATEGORY_LIST_ITEM_MARGIN
+        else
+            @blank.style.height = containerHeight - ITEM_HEIGHT
         @
 
     showBlank: ->

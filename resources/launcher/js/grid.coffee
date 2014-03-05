@@ -43,7 +43,7 @@ gridScrollCallback = (e)->
             break
         else
             cid = candidateId
-            offset += this.childNodes[i].clientHeight + CATEGORY_CONTENT_MARGIN
+            offset += this.childNodes[i].clientHeight + CATEGORY_LIST_ITEM_MARGIN
 
     return
 

@@ -120,7 +120,7 @@ class CategoryBar
     update_scroll_bar: ->
         warp = @category.parentNode
         # top/bottom margin
-        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 2*CATEGORY_CONTENT_MARGIN)
+        categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 2*CATEGORY_BAR_ITEM_MARGIN)
         warp_height = window.screen.height - SEARCH_BAR_HEIGHT  # height of search bar
         if categories_height > warp_height
             warp.style.overflowY = "scroll"

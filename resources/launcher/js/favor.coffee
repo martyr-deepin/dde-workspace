@@ -73,7 +73,7 @@ class FavorPage
     doAdded: (id, index, fixed=false)->
         index = @element.childElementCount if not index?
         item = Widget.look_up(id)
-        echo "add #{item.name} to favor"
+        # echo "add #{item.name} to favor"
         el = item.add('favor', @element)
         el.setAttribute("index", index)
         el.setAttribute("fixed", fixed)
