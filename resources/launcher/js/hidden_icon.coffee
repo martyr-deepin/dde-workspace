@@ -84,25 +84,27 @@ class HiddenIcons
         @hiddenIconNumber
 
     show: ->
-        # TODO:
+        echo "show hidden icons"
         @isShown = true
         if searchBar.empty()
-            # show category
-            for own id of @hiddenIcons
-                if id in categoryInfos[selectedCategoryId]
-                    @hiddenIcons[id].displayIconTemp()
+            for own id, item of @hiddenIcons
+                item.displayIconTemp()
+            categoryList.showNonemptyCategories()
         else
-            # re-search
+            for own id, item of @hiddenIcons
+                if id in searchResult.result
+                    item.displayIconTemp()
 
     hide: ->
-        # TODO:
         @isShown = false
         if searchBar.empty()
-            # hide category
-            for own id of @hiddenIcons
-                @hiddenIcons[id]?.hide_icon()
+            for own id, item of @hiddenIcons
+                item.hide_icon()
+            categoryList.hideEmptyCategories()
         else
-            # re-search
+            for own id, item of @hiddenIcons
+                if id in searchResult.result
+                    item.hide_icon()
 
         @
 

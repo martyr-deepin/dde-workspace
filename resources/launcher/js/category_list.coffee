@@ -50,7 +50,7 @@ class CategoryList
         if containerHeight > lastHeight
             @blank.style.height = containerHeight - lastHeight - CATEGORY_LIST_ITEM_MARGIN
         else
-            @blank.style.height = containerHeight - ITEM_HEIGHT
+            @blank.style.height = 0
         @
 
     showBlank: ->
@@ -61,14 +61,10 @@ class CategoryList
         for own id, item of @categories
             all_is_hidden = item.every((el) ->
                 i = Widget.look_up(el)
-                if i?
-                    return i.displayMode == "hidden"
-                else
-                    return true
+                i.displayMode == "hidden" && not hiddenIcons.isShown
             )
-            if all_is_hidden and not Item.display_temp
+            if all_is_hidden
                 item.hide()
-                # hide category bar
                 $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
         @
 
@@ -76,9 +72,10 @@ class CategoryList
         minId = 100
         for own id, category of @categories
             not_all_is_hidden = category.some((el) ->
-                Widget.look_up(el).displayMode != "hidden"
+                item = Widget.look_up(el)
+                item.displayMode != "hidden" || hiddenIcons.isShown
             )
-            if not_all_is_hidden or Item.display_temp
+            if not_all_is_hidden
                 if id < minId
                     minId = id
                 category.show()

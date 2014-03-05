@@ -56,7 +56,6 @@ body {
 .tipImage {
   display:none;
   border-radius: 50%;
-  background: rgba(0,0,0,0.05);
 }
 
 #category {

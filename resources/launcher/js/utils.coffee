@@ -24,6 +24,7 @@ reset = ->
     selector.clean()
     searchResult?.hide()
     switcher.switchToFavor()
+    hiddenIcons.hide()
 
     if selector.selectedItem
         item = selector.selectedItem
