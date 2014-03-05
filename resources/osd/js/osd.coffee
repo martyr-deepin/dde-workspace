@@ -27,26 +27,79 @@ class OSD extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
         @opt = []
-
+        @MediaKey_SignalFunc = []
+        @setMediaKeyDict()
+    
+ 
+    setMediaKeyDict : ->
+        @MediaKey_SignalFunc = [
+            {Signal:"AudioDown",Func:@createAudioDown},
+            {Signal:"AudioMute",Func:@createAudioMute},
+            {Signal:"AudioUp",Func:@createAudioUp},
+            {Signal:"BrightnessUp",Func:@createBrightnessUp},
+            {Signal:"BrightnessDown",Func:@createBrightnessDown},
+            {Signal:"CapsLockOn",Func:@createCapsLockOn},
+            {Signal:"CapsLockOff",Func:@createLockOff},
+            {Signal:"DisplaySwitch",Func:@createDisplaySwitch},
+            {Signal:"NumLockOn",Func:@createNumLockOn},
+            {Signal:"NumLockOff",Func:@createNumLockOff}
+        ]
+    
+    createAudioDown:(type)->
+        @AudioDown = new Audio("AudioDown") if not @AudioDown?
+        @AudioDown.show()
+    
+    createAudioDown:(type)->
+        @AudioMute = new Audio("AudioMute") if not @AudioMute?
+        @AudioMute.show()
+    
+    createAudioDown:(type)->
+        @AudioUp = new Audio("AudioUp") if not @AudioUp?
+        @AudioUp.show()
+    
+    createBrightnessUp:(type)->
+        @BrightnessUp = new Display("BrightnessUp") if not @BrightnessUp?
+        @BrightnessUp.show()
+    
+    createBrightnessDown:(type)->
+        @BrightnessDown = new Display("BrightnessDown") if not @BrightnessDown?
+        @BrightnessDown.show()
+    
+    createDisplaySwitch:(type)->
+        @DisplaySwitch = new Display("DisplaySwitch") if not @DisplaySwitch?
+        @DisplaySwitch.show()        
+    
+    createBrightnessDown:(type)->
+        @BrightnessDown = new Display("BrightnessDown") if not @BrightnessDown?
+        @BrightnessDown.show()    
+    
+    createBrightnessDown:(type)->
+        @BrightnessDown = new Display("BrightnessDown") if not @BrightnessDown?
+        @BrightnessDown.show()    
+    
+    createDisplaySwitch:(type)->
+        @DisplaySwitch = new Display("DisplaySwitch") if not @DisplaySwitch?
+        @DisplaySwitch.show()        
+    
     newClass:(id)->
         cls = null
         switch id
-            when "Light_Up", "Light_Down", "DisplayMode"
+            when "BrightnessUp", "BrightnessDown", "DisplaySwitch"
                 cls = new Display(id)
-            when "Audio_Up", "Audio_Down", "Audio_Mute"
+            when "AudioUp", "AudioDown", "AudioMute"
                 cls = new Audio(id)
             else cls = new Option(id)
         return cls
     
-    option_build:->
-        for option,i in MediaKey_NameValue
-            name = option.Name
+    optionBuild:->
+        for option,i in @MediaKey_SignalFunc
+            name = option.Signal
             @opt[i] = @newClass(name)
             @opt[i].append(@element)
             @opt[i].hide()
         @element.style.display = "none"
     
-    get_argv:->
+    getArgv:->
         return DCore.Osd.get_argv()
     
     show:(option)->
@@ -64,35 +117,23 @@ class OSD extends Widget
         for opt in @opt
             opt.hide()
     
-    dbus_signal:->
+    dbuSignalsConnect:->
         try
-            DBusMediaKey = DCore.DBus.session(MEDIAKEY)
-            DBusMediaKey.connect("AccelKeyChanged",@keyChanged)
-            echo "DBusMediaKey #{MEDIAKEY}"
+            DBusMediaKey = DCore.DBus.session_object(
+                MEDIAKEY.obj,
+                MEDIAKEY.path,
+                MEDIAKEY.interface
+            )
+            for MediaKey in @MediaKey_SignalFunc
+                DBusMediaKey.connect(MediaKey.Signal,MediaKey.Func)
         catch e
             echo "Error:-----DBusMediaKey:#{e}"
     
-    keyChanged:(type,keyValue)=>
+    keyChanged:(type)=>
         echo "KeyChanged:#{keyValue}"
         clearTimeout(@timeout) if @timeout
-        option = null
-        for tmp in MediaKey_NameValue
-            if tmp.Value is keyValue then option = tmp.Name
-        if not option?
-            echo "#{key} not in MediaKey_NameValue.Value,return"
-            @hide()
-            return
-        @show(option)
+        @show(signal)
 
-click_time = 0
-document.body.addEventListener("click",(e)=>
-    e.stopPropagation()
-    click_time++
-    DCore.Osd.quit() if click_time % 3 == 0
-)
- 
-
-osd = new OSD()
-osd.option_build()
-osd.dbus_signal()
-
+#osd = new OSD()
+#osd.optionBuild()
+#osd.dbuSignalsConnect()

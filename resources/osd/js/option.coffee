@@ -22,15 +22,13 @@ class Option extends Widget
     constructor:(@id)->
         super
         echo "new Option:#{@id}"
-    
-    append:(el)->
-        el.appendChild(@element)
+        _b.appendChild(@element)
 
     hide:->
         @element.style.display = "none"
     
     set_bg:(imgName)->
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
+        _b.style.backgroundImage = "url(img/#{imgName}.png)"
     
     show:->
         echo "Option #{@id} show"
