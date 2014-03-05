@@ -173,11 +173,11 @@ body {
   border: 2px rgba(255, 255, 255, 0.0) solid;
   border-radius: 8px;
 }
-.item_selected > div {
-  border: 1px rgba(0,0,0,0.2) solid;
+.item_hovered > div {
+  border: 1px rgba(0,0,0,0.25) solid;
 }
-.item_selected > div > div {
-  background: rgba(0, 0, 0, 0.4);
+.item_hovered > div > div {
+  background: rgba(0, 0, 0, 0.2);
   border: 2px rgba(255,255,255,0.2) solid;
 }
 .item_img {

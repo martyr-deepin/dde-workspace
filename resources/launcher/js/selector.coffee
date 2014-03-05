@@ -21,7 +21,7 @@
 class Selector
     constructor:->
         @box = null
-        @selectedItem = null # DOM
+        @selectedItem = null # Item
 
     container:(el)->
         if el? && (not @box? || not @box.isSameNode(el))
@@ -46,9 +46,20 @@ class Selector
         item
 
     update:(el)->
-        @selectedItem?.classList.remove("item_selected")
+        # selected style must overwrite the hovered style, so style is set.
+        if @selectedItem
+            outter = @selectedItem.firstElementChild
+            inner = outter.firstElementChild
+            outter.style.border = ""
+            inner.style.border = ""
+            inner.style.background = ""
         @selectedItem = el
-        @selectedItem?.classList.add("item_selected")
+        if @selectedItem
+            outter = @selectedItem.firstElementChild
+            inner = outter.firstElementChild
+            inner.style.background = "rgba(0, 0, 0, 0.4)"
+            inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
+            outter.style.border = "1px rgba(0, 0, 0, 0.2) solid"
 
     firstShown:->
         if @box

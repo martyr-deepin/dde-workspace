@@ -59,14 +59,14 @@ init_all_applications = ->
 init_all_applications()
 echo "load all applications done"
 
+switcher = new Switcher()
+echo "load switcher done"
+
 favor = new FavorPage()
 echo 'load favor done'
 
 searchBar = new SearchBar()
 echo "create search bar done"
-
-switcher = new Switcher()
-echo "load switcher done"
 
 categoryInfos = daemon.CategoryInfos_sync()
 echo "get category infos done"

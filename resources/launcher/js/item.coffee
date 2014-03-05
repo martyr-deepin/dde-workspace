@@ -55,7 +55,7 @@ class Item extends Widget
 
     @updateHorizontalMargin:->
         containerWidth = $("#container").clientWidth
-        if switcher.inCategory()
+        if switcher.isShowCategory
             containerWidth -= CATEGORY_LIST_EXTRA_LEFT_MARGIN
         # echo "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
@@ -408,21 +408,16 @@ class Item extends Widget
 
     on_mouseover: (e)=>
         # this event is a wrap, use e.originalEvent to get the original event
+        # the target is hoverBoxOutter
         target = e.target
         Item.hoverItem = target
         if not Item.clean_hover_temp
-            inner = target.firstElementChild
-            # not use @select() for storing status.
-            inner.style.background = "rgba(0, 0, 0, 0.1)"
-            inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
-            target.style.border = "1px rgba(0, 0, 0, 0.25) solid"
+            item = target.parentNode
+            item.classList.add("item_hovered")
 
     on_mouseout: (e)=>
         target = e.target
-        target.style.border = ""
-
-        inner = target.firstElementChild
-        inner.style.border = ""
-        inner.style.background = ""
+        item = target.parentNode
+        item.classList.remove("item_hovered")
 
         Item.hoverItem = null
