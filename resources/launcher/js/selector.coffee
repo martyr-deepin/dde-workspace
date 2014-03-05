@@ -27,10 +27,7 @@ class Selector
         if el? && (not @box? || not @box.isSameNode(el))
             @box = el
             @clean()
-            if el.id
-                echo "set container to #{el.tagName}##{el.id}"
-            else
-                echo "set container to Favor"
+            echo "set container to #{el.id}"
         @box
 
     clean:->
@@ -118,6 +115,8 @@ class Selector
     isLastLine: (e)->
         el = e
         while (el = el.nextElementSibling)?
+            if el.classList.contains("hide_icon") && not Item.display_temp
+                continue
             if not @isSameLine(e, el)
                 return false
         return true
@@ -125,6 +124,8 @@ class Selector
     isFirstLine: (e)->
         el = e
         while (el = el.previousElementSibling)?
+            if el.classList.contains("hide_icon") && not Item.display_temp
+                continue
             if not @isSameLine(e, el)
                 return false
         return true
@@ -133,6 +134,8 @@ class Selector
         el = e
         i = 0
         while (el = el.previousElementSibling)?
+            if el.classList.contains("hide_icon") && not Item.display_temp
+                continue
             if !@isSameLine(e, el)
                 break
             i += 1
@@ -181,6 +184,7 @@ class Selector
             count = o.rowNumber()
 
             if switcher.isShowCategory && o.isLastLine(item)
+                # echo 'get next category'
                 if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
                     count = o.indexOnLine(item)
