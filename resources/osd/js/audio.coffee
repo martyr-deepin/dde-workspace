@@ -18,7 +18,15 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Audio extends Option
+class Audio extends Widget
+    #Audio DBus
+    AUDIO = "com.deepin.daemon.Audio"
+    AUDIO_SINKS =
+        obj: AUDIO
+        path: "/com/deepin/daemon/Audio/Sink0"
+        interface: "com.deepin.daemon.Audio.Sink"
+    DEFAULT_SINK = 0
+
     constructor:(@id)->
         super
         echo "New Audio :#{@id}"
@@ -27,7 +35,18 @@ class Audio extends Option
         @Sources = []
         @DBusSinks = []
         @OpenedAudiosName = []
+        @getDBus()
+        _b.appendChild(@element)
         
+   
+    hide:->
+        @element.style.display = "none"
+    
+    set_bg:(imgName)->
+        _b.style.backgroundImage = "url(img/#{imgName}.png)"
+  
+
+    getDBus:->
         try
             @DBusAudio = DCore.DBus.session(AUDIO)
             @Cards = @DBusAudio.Cards
@@ -37,11 +56,9 @@ class Audio extends Option
             if not @DefaultSink? then @DefaultSink = 0
             @DefaultSource = @DBusAudio.DefaultSource
             if not @DefaultSource? then @DefaultSource = 0
-            @getDBusSinks()
         catch e
             echo " DBusAudio :#{AUDIO} ---#{e}---"
-
-    getDBusSinks:->
+        
         try
             for path in @Sinks
                 AUDIO_SINKS.path = path
@@ -54,7 +71,7 @@ class Audio extends Option
                 @DBusDefaultSink = @DBusSinks[@DefaultSink]
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
-    
+   
     getVolume:->
         Math.round(@DBusDefaultSink.Volume / 10)
         
@@ -75,19 +92,9 @@ class Audio extends Option
         else muteSetf = 0
         @setMute(muteSet)
 
-    getWhite:->
-        white = @getVolume()
-        switch @id
-            when "Audio_Up" then white++
-            when "Audio_Up" then white--
-            when "Audio_Mute"
-                white = 0
-                @setMute()
-        @setVolume(white)
-        return white
-    
-    show:->
-        white = @getWhite()
+    show:(white)->
+        @element.style.display = "block"
+        clearTimeout(@timeout) if @timeout
         echo "show Audio Volume:#{white}."
         if white == 0 then @set_bg("Audio_Mute")
         else if white <=4 then @set_bg("Audio_2")
@@ -99,3 +106,37 @@ class Audio extends Option
             if i <= white then @valueEachDiv[i].style.backgroundImage = "../img/black.png"
             else @valueEachDiv[i].style.backgroundImage = "../img/white.png"
 
+        @timeout = setTimeout(=>
+            @hide()
+        ,TIME_HIDE)
+
+
+
+AudioUpCls = null
+AudioDownCls = null
+AudioMuteCls = null
+
+AudioUp = ->
+    AudioUpCls  = new Audio("AudioUp") if not AudioUpCls?
+    white = AudioUpCls.getVolume()
+    white++
+    AudioUpCls.setVolume(white)
+    AudioUpCls.show(white)
+
+AudioDown = ->
+    AudioDownCls  = new Audio("AudioDown") if not AudioDownCls?
+    white = AudioDownCls.getVolume()
+    white--
+    AudioDownCls.setVolume(white)
+    AudioDownCls.show(white)
+
+AudioMute = ->
+    AudioMuteCls  = new Audio("AudioMute") if not AudioMuteCls?
+    AudioMuteCls.changeMute()
+    if AudioMuteCls.getMute() then white = 0
+    else white = AudioMuteCls.getVolume()
+    AudioMuteCls.show(white)
+
+DBusMediaKey.connect("AudioUp",AudioUp) if not DBusMediaKey?
+DBusMediaKey.connect("AudioDown",AudioDown) if not DBusMediaKey?
+DBusMediaKey.connect("AudioMute",AudioMute) if not DBusMediaKey?

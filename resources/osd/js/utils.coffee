@@ -18,55 +18,36 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+_b = document.body
 
-MediaKey_NameValue = [
-    {Name:"Light_Up",Value:"XF86MonBrightnessUp"},
-    {Name:"Light_Down",Value:"XF86MonBrightnessDown"},
-    {Name:"DisplayMode",Value:"XF86Display"},
-    {Name:"Audio_Up",Value:"XF86AudioRaiseVolume"},
-    {Name:"Audio_Down",Value:"XF86AudioLowerVolume"},
-    {Name:"Audio_Mute",Value:"XF86AudioMute"},
-    
-    {Name:"CapsLock_on",Value:"Caps_Lock"},
-    {Name:"CapsLock_off",Value:"caps_lock-Caps_Lock"},
-    {Name:"NumLock_on",Value:"Num_Lock"},
-    {Name:"NumLock_off",Value:"num_lock-Num_Lock"},
-    {Name:"Wifi_On",Value:"XF86WifiOn"},
-    {Name:"Wifi_Off",Value:"XF86WifiOff"},
-    
-    {Name:"InputSwitch",Value:"mod4-i"},
-    {Name:"KeyLayout",Value:"mod4-k"}
-]
+#MediaKey DBus
+MEDIAKEY = "com.deepin.daemon.MediaKey"
+MEDIAKEY =
+    obj: "com.deepin.daemon.KeyBinding"
+    path: "/com/deepin/daemon/MediaKey"
+    interface: "com.deepin.daemon.MediaKey"
+TIME_HIDE = 4000
+DBusMediaKey = null
+try
+    DBusMediaKey = DCore.DBus.session_object(
+        MEDIAKEY.obj,
+        MEDIAKEY.path,
+        MEDIAKEY.interface
+    )
+catch e
+    echo "Error:-----DBusMediaKey:#{e}"
 
 #dconf-tools  
 #org/gonome/settings-daemon/plugins/media-keys/active false
 #com/deepin/dde/key-binding/mediakey
-#dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"           
-echo MediaKey_NameValue
+#dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
 
-set_el_bg =(el,src)->
-    el.style.backgroundImage = "url(#{src})"
 
-#MediaKey DBus
-MEDIAKEY = "com.deepin.daemon.MediaKey"
-TIME_HIDE = 4000
+click_time = 0
+_b.addEventListener("click",(e)=>
+    e.stopPropagation()
+    click_time++
+    DCore.Osd.quit() if click_time % 3 == 0
+)
 
-#Display DBus
-DISPLAY = "com.deepin.daemon.Display"
-DISPLAY_MONITORS =
-    obj: DISPLAY
-    path: "/com/deepin/daemon/Display/MonitorLVDS1"
-    interface: "com.deepin.daemon.Display.Monitor"
-#-1 copy 
-#0 expand
-#1 onlyCurrentScreen
-#2 onlySecondScreen
-DEFAULT_DISPLAY_MODE = 0
 
-#Audio DBus
-AUDIO = "com.deepin.daemon.Audio"
-AUDIO_SINKS =
-    obj: AUDIO
-    path: "/com/deepin/daemon/Audio/Sink0"
-    interface: "com.deepin.daemon.Audio.Sink"
-DEFAULT_SINK = 0

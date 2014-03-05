@@ -18,8 +18,19 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-
 class Display extends Option
+    #Display DBus
+    DISPLAY = "com.deepin.daemon.Display"
+    DISPLAY_MONITORS =
+        obj: DISPLAY
+        path: "/com/deepin/daemon/Display/MonitorLVDS1"
+        interface: "com.deepin.daemon.Display.Monitor"
+    #-1 copy 
+    #0 expand
+    #1 onlyCurrentScreen
+    #2 onlySecondScreen
+    DEFAULT_DISPLAY_MODE = 0
+
     constructor:(@id)->
         super
         echo "New Display :#{@id}"
@@ -27,16 +38,26 @@ class Display extends Option
         @DBusMonitors = []
         @DBusOpenedMonitors = []
         @OpenedMonitorsName = []
+        @getDBus()
+        _b.appendChild(@element)
+        
+   
+    hide:->
+        @element.style.display = "none"
+    
+    set_bg:(imgName)->
+        _b.style.backgroundImage = "url(img/#{imgName}.png)"
+  
+    
+    getDBus:->
         try
             @DBusDisplay = DCore.DBus.session(DISPLAY)
             @Monitors = @DBusDisplay.Monitors
             @DisplayMode = @DBusDisplay.DisplayMode
             @HasChanged = @DBusDisplay.HasChanged
-            @getDBusMonitors()
         catch e
             echo "Display DBus :#{DISPLAY} ---#{e}---"
 
-    getDBusMonitors:->
         try
             for path in @Monitors
                 DISPLAY_MONITORS.path = path
@@ -59,9 +80,12 @@ class Display extends Option
         return dbus = monitor for monitor in @DBusMonitors when monitor.FullName is name
     
     getBrightness:(name)->
-        @getDBusMonitor(name).WorkaroundBacklight()
         @getDBusMonitor(name).Brightness
     
+    getPrimarBrightness:->
+        white = @getBrightness(@PrimarMonitorName) * 10
+
+
     switchMode:->
         @DisplayMode = @DBusDisplay.DisplayMode
         if not @DisplayMode? then @DisplayMode = 0
@@ -87,5 +111,36 @@ class Display extends Option
         echo "Display Class  show :#{@id}"
         @element.style.display = "block"
         if @id is "DisplayMode" then @switchMode()
-        #else if @id is "Light_Up" or @id is "Light_Down"
         else @showBrightValue()
+
+
+
+
+BrightnessUpCls = null
+BrightnessDownCls = null
+DisplaySwitchCls = null
+
+BrightnessUp = ->
+    BrightnessUpCls  = new Display("BrightnessUp") if not BrightnessUpCls?
+    white = BrightnessUpCls.getVolume()
+    white++
+    BrightnessUpCls.setVolume(white)
+    BrightnessUpCls.show(white)
+
+BrightnessDown = ->
+    BrightnessDownCls  = new Display("BrightnessDown") if not BrightnessDownCls?
+    white = BrightnessDownCls.getVolume()
+    white--
+    BrightnessDownCls.setVolume(white)
+    BrightnessDownCls.show(white)
+
+DisplaySwitch = ->
+    DisplaySwitchCls  = new Display("DisplaySwitch") if not DisplaySwitchCls?
+    DisplaySwitchCls.changeMute()
+    if DisplaySwitchCls.getMute() then white = 0
+    else white = DisplaySwitchCls.getVolume()
+    DisplaySwitchCls.show(white)
+
+DBusMediaKey.connect("BrightnessDown",BrightnessDown) if not DBusMediaKey?
+DBusMediaKey.connect("BrightnessUp",BrightnessUp) if not DBusMediaKey?
+DBusMediaKey.connect("DisplaySwitch",DisplaySwitch) if not DBusMediaKey?
