@@ -206,7 +206,7 @@ class Menu
 
     addListener: (@callback)->
         try
-            @dbus.connect("ItemInvoked", @callback)
+            @dbus?.connect("ItemInvoked", @callback)
             @
         catch e
             echo "listenItemSelected: #{e}"
@@ -227,6 +227,9 @@ class Menu
             path:menu_dbus_path,
             interface:DEEPIN_MENU_INTERFACE)
 
+        if not @dbus?
+            echo "get deepin dbus menu failed"
+
     showMenu: (x, y, ori=null)->
         @menu.x = x
         @menu.y = y
@@ -234,11 +237,11 @@ class Menu
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
         # echo @menu
-        @dbus.ShowMenu("#{@menu}")
+        @dbus?.ShowMenu("#{@menu}")
 
     toString: ->
         "#{@menu}"
 
     destroy: ->
         try
-            @dbus.dis_connect("ItemInvoked", @callback)
+            @dbus?.dis_connect("ItemInvoked", @callback)

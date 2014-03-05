@@ -28,7 +28,11 @@ START_MANAGER =
     name: "com.deepin.SessionManager"
     path: "/com/deepin/StartManager"
     interface: "com.deepin.StartManager"
+
 startManager = get_dbus("session", START_MANAGER)
+if startManager == null
+    DCore.Launcher.quit()
+
 startManager.connect("AutostartChanged", (status, path)->
     echo "autostart changed: #{status}"
     for own k, v of applications
@@ -38,44 +42,13 @@ startManager.connect("AutostartChanged", (status, path)->
 
     if status == "deleted"
         echo "deleted"
+        item.remove_from_autostart()
         # item?.setAutostart(false).notify()
-    else if status = "modified"
+    else if status == "modified"
         echo "modified"
         # item?.setAutostart(!item.isAutostart).notify()
     else
         echo "add"
+        item.add_to_autostart()
         # item?.setAutostart(true).notify()
 )
-
-
-SOFTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
-softwareManager = get_dbus("system", SOFTWARE_MANAGER)
-softwareManager.connect("update_signal", (info)->
-    # echo info
-    status = info[0][0]
-    package_name = info[0][1][0]
-    echo status
-    if status == UNINSTALL_STATUS.FAILED
-        message = info[0][1][3]
-        for own id, item of uninstalling_apps
-            if item.packages.indexOf(package_name) != -1
-                item.status = SOFTWARE_STATE.IDLE
-                item.show()
-                delete uninstalling_apps[item.id]
-                break
-    else if status == UNINSTALL_STATUS.SUCCESS
-        message = "success"
-        for own id, item of uninstalling_apps
-            if item.packages.indexOf(packages) != -1
-                delete uninstalling_apps[item.id]
-    if message
-        uninstallReport(status, "#{message}")
-)
-
-
-GRAPH_API = "com.deepin.api.Graphic"
-background = DCore.DBus.session(GRAPH_API)
-background.connect("BlurPictChanged", setBackground)
-
-
-NOTIFICATIONS = "org.freedesktop.Notifications"

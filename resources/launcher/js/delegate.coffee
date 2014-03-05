@@ -31,10 +31,10 @@ DEvent = (e)->
         element = p
     else if target.tagName == "DIV"
         if target.classList.contains("Item")
-            id = target.getAttribute("appid")
-            element = target.firstElementChild
+            # id = target.getAttribute("appid")
+            # element = target.firstElementChild
         else if parent.classList.contains("Item")
-            id = parent.getAttribute("appid")
+            id = parent.firstElementChild.getAttribute("appid")
             element = target
         else if target.classList.contains("hoverBox")
             id = parent.getAttribute("appid")

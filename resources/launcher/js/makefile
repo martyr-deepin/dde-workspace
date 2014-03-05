@@ -7,10 +7,12 @@ all: ${com_coffee} \
 	const.coffee \
 	utils.coffee \
 	dbus.coffee \
+	background.coffee \
 	search_result.coffee \
 	search_bar.coffee \
 	category_bar.coffee \
 	category.coffee \
+	favor.coffee \
 	category_list.coffee \
 	switcher.coffee \
 	selector.coffee \
@@ -18,7 +20,6 @@ all: ${com_coffee} \
 	delegate.coffee \
 	item.coffee \
 	hidden_icon.coffee \
-	favor_list.coffee \
 	grid.coffee \
 	event.coffee \
 	signal.coffee \

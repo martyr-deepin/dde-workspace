@@ -24,6 +24,9 @@ catch error
     s_dock = null
 
 
+# to resize the drag image.
+canvas = null
+
 class Item extends Widget
     @autostart_flag: null
     @hoverItem: null
@@ -45,7 +48,7 @@ class Item extends Widget
         @load_image()
         @itemName = create_element("div", "item_name", @hoverBox)
         @itemName.innerText = @name
-        @element.draggable = true
+        @hoverBoxOutter.draggable = true
         # @try_set_title(@element, @name, 80)
         # @element.setAttribute("title", @name)
         @elements = {'element': @element}#favor: null, search: null
@@ -79,6 +82,8 @@ class Item extends Widget
     add:(pid, parent)->
         if @elements[pid]
             return null
+        if pid == CATEGORY_ID.FAVOR
+            pid = 'favor'
 
         el = @element.cloneNode(true)
         inner = el.firstElementChild.firstElementChild
@@ -87,15 +92,13 @@ class Item extends Widget
         if im.classList.length == 1
             im.onload = (e)=>
                 @setImageSize(im)
+
         @elements[pid] = el
         if pid == 'search'
             el.style.marginTop = '20px'
             el.style.marginBottom = 0
         else if pid == 'favor'
-            echo 'add to favor'
             @isFavor = true
-            if !parent?
-                categoryList.addItem(@id, CATEGORY_ID.FAVOR)
         else
             if !parent?
                 categoryList.addItem(@id, pid)
@@ -107,11 +110,13 @@ class Item extends Widget
         delete @elements[pid]
         pNode = el.parentNode
         pNode.removeChild(el)
-        if pid == 'favor'
+        if pid == 'favor' || pid == CATEGORY_ID.FAVOR
             @isFavor = false
-            cateoryList.removeItem(@id, CATEGORY_ID.FAVOR)
-        else if pid != 'search'
-            cateoryList.removeItem(@id, pid)
+
+    getElement:(pid)->
+        if pid == CATEGORY_ID.FAVOR
+            pid = 'favor'
+        @elements[pid]
 
     get_img: ->
         im = DCore.get_theme_icon(@icon, 48)
@@ -182,15 +187,48 @@ class Item extends Widget
         exit_launcher()
 
     on_dragstart: (e)=>
+        # target is hoverBoxOutter
+        target = e.target
+        o = e
         e = e.originalEvent || e
-        e.dataTransfer.setData("text/plain", @id)
-        e.dataTransfer.setData("text/uri-list", "file://#{@path}")
-        e.dataTransfer.setDragImage(@img, 20, 20)
-        e.dataTransfer.effectAllowed = "copy"
+        if canvas == null
+            canvas = create_element(tag: 'canvas', width: ITEM_IMG_SIZE, height: ITEM_IMG_SIZE)
+        ctx = canvas.getContext("2d")
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(@img, 0, 0, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
+        dt = e.dataTransfer
+        dt.setDragCanvas(canvas, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
+
+        if switcher.isFavor()
+            return
+        # echo 'drag start'
+        # grid = target.parentNode.parentNode
+        # echo grid.parentNode.getAttribute("catId")
+        # if grid.parentNode.getAttribute("catId") == "#{CATEGORY_ID.FAVOR}"
+        #     echo 'drag favor'
+        #     target = target.parentNode
+        #     dt.effectAllowed = "move"
+        #     dragSrcEl = target
+        #     categoryList.favor.indicatorItem = @
+        #     # dt.setData("text/html", target.innerHtml)
+        #     # TODO: change to animation.
+        #     setTimeout(->
+        #         target.style.display = 'none'
+        #     , 100)
+        #     return
+        dt.setData("text/plain", @id)
+        dt.setData("text/uri-list", "file://#{@path}")
+        dt.effectAllowed = "copy"
+        categoryBar.dark()
+        switcher.bright()
 
     on_dragend: (e)=>
         e = e.originalEvent || e
         e.preventDefault()
+        if true
+            @elements.favor?.style.display = 'block'
+        categoryBar.bright()
+        switcher.normal()
 
     createMenu:->
         @menu = null
@@ -252,14 +290,15 @@ class Item extends Widget
                     uninstall(item:@, purge:true)
             when 7
                 if @isFavor
-                    favorList.remove(@id)
+                    echo 'remove from favor'
+                    favor.remove(@id)
                 else
-                    favorList.add(@id)
+                    echo 'add to favor'
+                    favor.add(@id)
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
 
     hide_icon: (e)=>
-        echo 'hide icon'
         @displayMode = "hidden"
         # applications[@id].setDisplayMode("hidden").notify()
         if !@element.classList.contains(HIDE_ICON_CLASS)
@@ -365,7 +404,7 @@ class Item extends Widget
         if not Item.clean_hover_temp
             inner = target.firstElementChild
             # not use @select() for storing status.
-            inner.style.background = "rgba(255, 255, 255, 0.1)"
+            inner.style.background = "rgba(0, 0, 0, 0.1)"
             inner.style.border = "2px rgba(255, 255, 255, 0.2) solid"
             target.style.border = "1px rgba(0, 0, 0, 0.25) solid"
 
