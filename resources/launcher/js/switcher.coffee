@@ -50,7 +50,7 @@ class Switcher
             echo 'drop'
             e.preventDefault()
             e.stopPropagation()
-            if !@isShowCategory
+            if @isCategory()
                 return
             id = e.dataTransfer.getData("text/plain")
             favor.add(id)
@@ -89,7 +89,7 @@ class Switcher
         @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH * 2}px 0px"
 
     switchToCategory:=>
-        searchBar.clean().hide()
+        searchBar.hide().clean()
         selector.container($("#grid"))
         $("#grid").style.display = 'block'
         favor.hide()
@@ -107,7 +107,7 @@ class Switcher
         @page = "Category"
 
     switchToFavor:=>
-        searchBar.clean()
+        searchBar.hide().clean()
         selector.container(favor.element)
         @isShowCategory = false
         categoryBar.hide()

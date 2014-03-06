@@ -43,7 +43,7 @@ class FavorPage
             @updateCache = false
             frag = document.createDocumentFragment()
             for i in validIds
-                @doAdded(i[0], i[1], i[2])
+                @doAdd(i[0], i[1], i[2])
                 # el = categoryList.favor.addItem(i[0])
                 # el?.setAttribute("index", i[1])
                 # el?.setAttribute("fixed", i[2])
@@ -69,7 +69,7 @@ class FavorPage
     reset: ->
         @
 
-    doAdded: (id, index, fixed=false)->
+    doAdd: (id, index, fixed=false)->
         index = @element.childElementCount if not index?
         item = Widget.look_up(id)
         # echo "add #{item.name} to favor"
@@ -83,7 +83,7 @@ class FavorPage
         true
 
     add: (id, index, fixed)->
-        if @doAdded(id, index, fixed)
+        if @doAdd(id, index, fixed)
             @save()
         @
 
