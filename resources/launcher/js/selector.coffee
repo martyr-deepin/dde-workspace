@@ -115,8 +115,6 @@ class Selector
     isLastLine: (e)->
         el = e
         while (el = el.nextElementSibling)?
-            if el.classList.contains(HIDE_ICON_CLASS) && not hiddenIcons.isShown
-                continue
             if not @isSameLine(e, el)
                 return false
         return true
@@ -124,8 +122,6 @@ class Selector
     isFirstLine: (e)->
         el = e
         while (el = el.previousElementSibling)?
-            if el.classList.contains(HIDE_ICON_CLASS) && not hiddenIcons.isShown
-                continue
             if not @isSameLine(e, el)
                 return false
         return true
@@ -134,8 +130,6 @@ class Selector
         el = e
         i = 0
         while (el = el.previousElementSibling)?
-            if el.classList.contains(HIDE_ICON_CLASS) && not hiddenIcons.isShown
-                continue
             if !@isSameLine(e, el)
                 break
             i += 1

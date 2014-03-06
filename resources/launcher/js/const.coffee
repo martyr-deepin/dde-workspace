@@ -66,8 +66,6 @@ ITEM_HIDDEN_ICON_MESSAGE =
     'display': _("_Hide this icon")
     'hidden': _("_Display this icon")
 
-HIDE_ICON_CLASS = 'hide_icon'
-
 AUTOSTART_MESSAGE =
     false: _("_Add to autostart")
     true: _("_Remove from autostart")

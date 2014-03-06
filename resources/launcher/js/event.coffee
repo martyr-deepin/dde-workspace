@@ -22,27 +22,6 @@ bodyContextmenuCallback = (e)->
     e.stopPropagation()
     e.preventDefault()
 
-    if switcher.isFavor()
-        return
-
-    DCore.Launcher.force_show(true)
-    menu = new Menu(
-        DEEPIN_MENU_TYPE.NORMAL,
-        new MenuItem(1, HIDDEN_ICONS_MESSAGE[hiddenIcons.isShown])
-    )
-
-    menu.unregisterHook(->
-        setTimeout(->
-            DCore.Launcher.force_show(false)
-        , 100)
-    )
-    menu.addListener(->
-        hiddenIcons.toggle()
-        DCore.Launcher.force_show(false)
-        menu.destroy()
-    ).showMenu(e.screenX, e.screenY)
-
-
 click_callback = (e)->
     # return
     e.stopPropagation()

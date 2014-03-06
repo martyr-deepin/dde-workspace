@@ -77,6 +77,9 @@ class Category
     every:(fn)->
         @items.every(fn)
 
+    number: ->
+        @items.length
+
     addItem: (id)->
         item = Widget.look_up(id)
         # echo item

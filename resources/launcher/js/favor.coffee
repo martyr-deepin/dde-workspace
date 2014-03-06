@@ -28,7 +28,6 @@ class FavorPage
 
         @updateCache = true
         @favorNumber = 0
-        @isShown = false
 
         @load()
         Item.updateHorizontalMargin()
@@ -61,7 +60,7 @@ class FavorPage
         for i in [0...container.children.length]
             el = container.children[i]
             # echo "save favor: "
-            echo el
+            # echo el
             apps.push([el.getAttribute('appid'), i, false])
         echo 'save favor list'
         # echo apps
@@ -80,6 +79,7 @@ class FavorPage
         # echo el
         @favors[id] = item
         @updateCache = true
+        Item.updateHorizontalMargin()
         true
 
     add: (id, index, fixed)->
@@ -101,7 +101,7 @@ class FavorPage
 
     update: ->
             @list = Object.keys(@favors)
-            @hiddenIconNumbe = @list.length
+            @favorNumber = @list.length
             @updateCache = false
 
     idList: ->
