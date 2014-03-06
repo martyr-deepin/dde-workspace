@@ -51,6 +51,21 @@ body {
   position: fixed;
   top: 25px;
   left: 25px;
+  width:64px;
+  height:64px;
+  border-radius: 50%;
+  background-attachment: fixed;
+  background: no-repeat url(../img/switcher_bg.png);
+  -webkit-transform: translateZ(0);
+}
+#switcher_hover {
+  top: 39px;
+  left: 39px;
+  position: fixed;
+  width:34px;
+  height:34px;
+  border-radius: 50%;
+  -webkit-transform: translateZ(1);
 }
 
 .tipImage {

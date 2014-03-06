@@ -17,6 +17,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+SWITCHER_WIDTH = 64
 ITEM_WIDTH = 160
 ITEM_HEIGHT = 160
 

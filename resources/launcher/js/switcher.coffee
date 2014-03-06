@@ -21,38 +21,32 @@ class Switcher
     constructor:->
         @isShowCategory = false
         @switcher = create_element(tag:'div', id:'switcher', document.body)
-        @toFavor = create_img(src:'img/favor_normal.png', class:"tipImage", title:'favor', alt:'favor', @switcher)
-        @toFavorHover = create_img(src: "img/favor_hover.png", class:"tipImage", title:'favor', alt:'favor', @switcher)
-        @toFavorGlow = create_img(src: "img/favor_glow.png", class:"tipImage", title:'favor', alt:'favor', @switcher)
-        @toCategory = create_img(src:'img/category_normal.png', class:"tipImage", title:'all', alt:'all', @switcher)
-        @toCategory.style.display = 'block'
-        @toCategoryHover = create_img(src:'img/category_hover.png', class:"tipImage",title:'all', alt:'all', @switcher)
+        @switcherHover = create_element(tag:'div', id:"switcher_hover", document.body)
+        @showCategory()
         @page = 'Favor'
-        # TODO: mouse event is lost
-        @switcher.addEventListener('click', @on_click)
-        @switcher.addEventListener("mouseover", (e)=>
+        @isHovered = false
+        @switcherHover.addEventListener('click', @on_click)
+        @switcherHover.addEventListener("mouseover", (e)=>
+            @isHovered = true
             switch @page
                 when "Search", "Category"
-                    @toFavor.style.display = 'none'
-                    @toFavorHover.style.display = 'block'
+                    @showFavorHover()
                 when "Favor"
-                    @toCategory.style.display = 'none'
-                    @toCategoryHover.style.display = 'block'
+                    @showCategoryHover()
         )
-        @switcher.addEventListener("mouseout", (e)=>
+        @switcherHover.addEventListener("mouseout", (e)=>
+            @isHovered = false
             switch @page
                 when "Search", "Category"
-                    @toFavor.style.display = 'block'
-                    @toFavorHover.style.display = 'none'
+                    @showFavor()
                 when "Favor"
-                    @toCategory.style.display = 'block'
-                    @toCategoryHover.style.display = 'none'
+                    @showCategory()
         )
 
-        @switcher.addEventListener("dragover", (e)=>
+        @switcherHover.addEventListener("dragover", (e)=>
             e.preventDefault()
         )
-        @switcher.addEventListener("drop", (e)=>
+        @switcherHover.addEventListener("drop", (e)=>
             echo 'drop'
             e.preventDefault()
             e.stopPropagation()
@@ -79,22 +73,32 @@ class Switcher
     isCategory:->
         @page == "Category"
 
+    showCategory:->
+        @switcher.style.backgroundPosition = "0 -#{SWITCHER_WIDTH}px"
+
+    showCategoryHover:->
+        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH}px -#{SWITCHER_WIDTH}px"
+
+    showFavor:->
+        @switcher.style.backgroundPosition = ""
+
+    showFavorHover:->
+        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH}px 0px"
+
+    showFavorGlow:->
+        @switcher.style.backgroundPosition = "-#{SWITCHER_WIDTH * 2}px 0px"
+
     switchToCategory:=>
         searchBar.clean().hide()
         selector.container($("#grid"))
         $("#grid").style.display = 'block'
         favor.hide()
         @isShowCategory = true
+        if @isHovered
+            @showFavorHover()
+        else
+            @showFavor()
         categoryBar.show()
-        if @toFavor.style.display != 'block'
-            @toFavor.style.display = 'block'
-        if @toFavorHover.style.display != 'none'
-            @toFavorHover.style.display = 'none'
-        if @toCategory.style.display != 'none'
-            @toCategory.style.display = 'none'
-        if @toCategoryHover.style.display != 'none'
-            @toCategoryHover.style.display = 'none'
-        # container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
         # e = new Event("mouseover")
         # @switcher.dispatchEvent(e)
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
@@ -109,14 +113,10 @@ class Switcher
         categoryBar.hide()
         favor.show()
         $("#grid").style.display = 'none'
-        if @toFavor.style.display != 'none'
-            @toFavor.style.display = 'none'
-        if @toFavorHover.style.display != 'none'
-            @toFavorHover.style.display = 'none'
-        if @toCategory != 'block'
-            @toCategory.style.display = 'block'
-        # e = new Event("mouseover")
-        # @switcher.dispatchEvent(e)
+        if @isHovered
+            @showCategoryHover()
+        else
+            @showCategory()
         # container.style.marginLeft = "110px"
         # Item.updateHorizontalMargin()
         searchResult?.hide()
@@ -126,12 +126,10 @@ class Switcher
         $("#grid").style.display = 'none'
         categoryBar.hide()
         favor.hide()
-        if @toFavor.style.display != 'block'
-            @toFavor.style.display = 'block'
-        if @toCategory.style.display != 'none'
-            @toCategory.style.display = 'none'
-        if @toCategoryHover.style.display != 'none'
-            @toCategoryHover.style.display = 'none'
+        if @isHovered
+            @showFavorHover()
+        else
+            @showFavor()
         searchBar.show()
         @page = "Search"
 
@@ -144,9 +142,7 @@ class Switcher
 
     normal:->
         if @page == "Category"
-            @toFavor.style.display = 'block'
-            @toFavorGlow.style.display = 'none'
+            @showFavor()
 
     bright:->
-        @toFavor.style.display = 'none'
-        @toFavorGlow.style.display = 'block'
+        @showFavorGlow()
