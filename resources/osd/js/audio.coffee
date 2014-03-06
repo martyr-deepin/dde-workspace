@@ -98,23 +98,16 @@ class Audio extends Widget
         @setMute(muteSet)
 
     getBgName:(white)->
-        bg = "Audio_7"
-        if white == 0 then bg = "Audio_0"
+        bg = "Audio_2"
+        if white <= 0 then bg = "Audio_0"
         else if white <= 4 then bg = "Audio_1"
         else if white <= 7 then bg = "Audio_2"
-        else if white <= 10 then bg = "Audio_3"
+        else bg = "Audio_3"
         return bg
     
-    show:(white)->
+    showValue:(white)->
         if white > 10 then white = 10
         else if white < 0 then white = 0
-        clearTimeout(@timeout) if @timeout
-        
-        @element.style.display = "block"
-        bg = @getBgName(white)
-        echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
-        @set_bg(bg)
-        
         @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
         @valueDiv.style.display = "-webkit-box"
         for i in [0...10]
@@ -123,7 +116,16 @@ class Audio extends Widget
             else valueBg = "black"
             @valueEach[i].src = "img/#{valueBg}.png"
             @valueEach[i].style.display = "block"
+
+    show:(white)->
+        clearTimeout(@timeout) if @timeout
         
+        @element.style.display = "block"
+        bg = @getBgName(white)
+        echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
+        @set_bg(bg)
+        @showValue(white)
+
         @timeout = setTimeout(=>
             echo "hide"
             #@hide()
