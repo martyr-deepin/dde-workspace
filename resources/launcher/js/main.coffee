@@ -65,10 +65,6 @@ echo "load category bar done"
 categoryList = new CategoryList(categoryInfos)
 echo "load category list done"
 
-hiddenIcons = new HiddenIcons()
-hiddenIcons.hide()
-echo "load hidden icons done"
-
 bind_events()
 echo "bind event done"
 

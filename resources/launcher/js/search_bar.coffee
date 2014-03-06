@@ -33,11 +33,13 @@ class SearchBar
     hide: ->
         if @searchBar.style.visibility != 'hidden'
             @searchBar.style.visibility = 'hidden'
+        @
 
     show: ->
         if @searchBar.style.visibility != 'visible'
             @searchBar.style.visibility = 'visible'
             selector.container($("#searchResult"))
+        @
 
     value: (t)->
         if t?

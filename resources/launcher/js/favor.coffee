@@ -28,28 +28,27 @@ class FavorPage
 
         @updateCache = true
         @favorNumber = 0
-        @isShown = false
 
         @load()
         Item.updateHorizontalMargin()
 
     load: ->
-        if (originIds = daemon.GetFavors_sync())?
-            validIds = originIds.filter((elem) ->
+        if (origins = daemon.GetFavors_sync())?
+            valids = origins.filter((elem) ->
                 id = elem[0]
                 applications[id]?
             )
             @favors = {}
-            @favorNumber = validIds.length
+            @favorNumber = valids.length
             @updateCache = false
             frag = document.createDocumentFragment()
-            for i in validIds
-                @doAdded(i[0], i[1], i[2])
-                # el = categoryList.favor.addItem(i[0])
-                # el?.setAttribute("index", i[1])
-                # el?.setAttribute("fixed", i[2])
+            valids.sort((lhs, rhs)->
+                parseInt(lhs[1]) - parseInt(rhs[1])
+            )
+            for i in valids
+                @doAdd(i[0], i[1], i[2])
 
-            if originIds.length != validIds.length
+            if origins.length != valids.length
                 @save()
 
         @
@@ -61,7 +60,7 @@ class FavorPage
         for i in [0...container.children.length]
             el = container.children[i]
             # echo "save favor: "
-            echo el
+            # echo el
             apps.push([el.getAttribute('appid'), i, false])
         echo 'save favor list'
         # echo apps
@@ -70,7 +69,7 @@ class FavorPage
     reset: ->
         @
 
-    doAdded: (id, index, fixed=false)->
+    doAdd: (id, index, fixed=false)->
         index = @element.childElementCount if not index?
         item = Widget.look_up(id)
         # echo "add #{item.name} to favor"
@@ -80,10 +79,11 @@ class FavorPage
         # echo el
         @favors[id] = item
         @updateCache = true
+        Item.updateHorizontalMargin()
         true
 
     add: (id, index, fixed)->
-        if @doAdded(id, index, fixed)
+        if @doAdd(id, index, fixed)
             @save()
         @
 
@@ -101,7 +101,7 @@ class FavorPage
 
     update: ->
             @list = Object.keys(@favors)
-            @hiddenIconNumbe = @list.length
+            @favorNumber = @list.length
             @updateCache = false
 
     idList: ->

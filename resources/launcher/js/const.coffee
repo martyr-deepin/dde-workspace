@@ -17,13 +17,14 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+SWITCHER_WIDTH = 64
 ITEM_WIDTH = 160
 ITEM_HEIGHT = 160
 
 CONTAINER_BOTTOM_MARGIN = 70
 SEARCH_BAR_HEIGHT = 50
 CATEGORY_LIST_ITEM_MARGIN = 20
-CATEGORY_LIST_EXTRA_LEFT_MARGIN = 30
+CATEGORY_LIST_EXTRA_LEFT_MARGIN = 45
 CATEGORY_BAR_ITEM_MARGIN = 10
 
 INVALID_IMG = "invalid-dock_app"
@@ -65,8 +66,6 @@ HIDDEN_ICONS_MESSAGE =
 ITEM_HIDDEN_ICON_MESSAGE =
     'display': _("_Hide this icon")
     'hidden': _("_Display this icon")
-
-HIDE_ICON_CLASS = 'hide_icon'
 
 AUTOSTART_MESSAGE =
     false: _("_Add to autostart")

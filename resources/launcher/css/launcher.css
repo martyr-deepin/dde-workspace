@@ -51,6 +51,21 @@ body {
   position: fixed;
   top: 25px;
   left: 25px;
+  width:64px;
+  height:64px;
+  border-radius: 50%;
+  background-attachment: fixed;
+  background: no-repeat url(../img/switcher_bg.png);
+  -webkit-transform: translateZ(0);
+}
+#switcher_hover {
+  top: 39px;
+  left: 39px;
+  position: fixed;
+  width:34px;
+  height:34px;
+  border-radius: 50%;
+  -webkit-transform: translateZ(1);
 }
 
 .tipImage {
@@ -58,30 +73,33 @@ body {
   border-radius: 50%;
 }
 
-#category {
+#categoryWarp {
   position: absolute;
-  left: 29px;
-  margin-top: 36px;
+  top:110px;
+  left: 39px;
+  display: -webkit-box;
+  -webkit-box-pack:center;
+  -webkit-box-align:center;
+}
+#category {
   display: none;
 }
-.category_item img {
+.category_item_base {
+  width: 34px;
+  height:34px;
   border-radius: 50%;
+}
+.category_item_bottom {
   background: rgba(0,0,0,0.05);
 }
 .category_item {
-  text-align: center;
   border: rgba(255,255,255, 0) 1px solid;
-  margin: 10px 0px;
-  width: 54px;
-
-  padding: 10px 0;
+  margin: 20px 0px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.3));
 
   cursor: pointer;
-  border-radius: 5px;
-}
-.category_selected {
-  background: rgba(0, 0, 0, 0.3);
-  border: rgba(255,255,255, 0.2) 1px solid;
 }
 
 
@@ -99,7 +117,7 @@ body {
 }
 
 #grid {
-  margin-left: 30px;
+  margin-left: 45px;
   display:none;
 }
 
@@ -207,23 +225,16 @@ body {
   -webkit-line-clamp: 2;
 
   text-shadow: 0px 2px 1px rgba(0,0,0,1);
-   /* 2px 0px 3px rgba(0,0,0,0.4), */
-   /* 0px 3px 3px rgba(0,0,0,0.4), */
-   /* 0px -1px 3px rgba(0,0,0,0.4); */
 
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 12px;
 }
 .item_name[en] {
-  font-family: 'FZXingKai-S04'; 
+  /* font-family: sans; */
 }
 .item_name[zh]{
   font-family: 'WenQuanYi Micro Hei';
-}
-
-.hide_icon img {
-  opacity: 0.3;
 }
 
 .autostart_flag {
