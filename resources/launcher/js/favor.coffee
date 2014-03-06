@@ -56,7 +56,7 @@ class FavorPage
     save: ->
         apps = []
         # TODO
-        container = favor.element
+        container = @element
         for i in [0...container.children.length]
             el = container.children[i]
             # echo "save favor: "

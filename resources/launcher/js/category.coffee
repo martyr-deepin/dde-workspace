@@ -100,7 +100,11 @@ class Category
         @items.remove(id)
 
     sort:->
-        # TODO: sort by name
+        @items.sort((lhs, rhs)->
+            l = Widget.look_up(lhs)
+            r = Widget.look_up(rhs)
+            l.name - r.name
+        )
 
     firstItem:->
         el = @grid.firstElementChild
