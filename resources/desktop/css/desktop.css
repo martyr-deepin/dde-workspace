@@ -159,10 +159,13 @@ body {
     background-color: #F0E68C;
     z-index:20000;
     position:fixed;
-    background:url(../img/preview_background.png);
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    border-radius: 6px 6px 6px 6px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    /*background:url(../img/preview_background.png);*/
+    background-color:rgba(0,0,0,0.7);
+    /*border: 2px solid rgba(255, 255, 255, 0.3);*/
+    outline:rgba(255,255,255,0.3) solid 2px;
+    -webkit-outline-radius:8px;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
 }
 
 #pop_grid ul {
