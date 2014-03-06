@@ -65,6 +65,7 @@ class SearchBar
             selector.clean()
             if !SearchResult.inited
                 searchResult = new SearchResult()
+            echo "searchKey is : #{@value()}"
             searchResult.result = daemon.Search_sync(@value())
             res = $("#searchResult")
             for i in [0...res.children.length]

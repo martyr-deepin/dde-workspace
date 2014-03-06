@@ -102,6 +102,7 @@ class Switcher
         # e = new Event("mouseover")
         # @switcher.dispatchEvent(e)
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
+        categoryBar.focusCategory(categoryList.firstCategory()?.id)
         Item.updateHorizontalMargin()
         searchResult?.hide()
         @page = "Category"
