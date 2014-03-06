@@ -33,9 +33,7 @@ reset = ->
 
     if Item.hoverItem
         item = Item.hoverItem
-        item.style.border = "1px rgba(255, 255, 255, 0.0) solid"
-        item.style.background = ""
-        item.style.borderRadius = ""
+        item.classList.remove("item_hovered")
 
 
 exit_launcher = ->
