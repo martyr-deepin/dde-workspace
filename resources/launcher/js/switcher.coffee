@@ -50,7 +50,7 @@ class Switcher
             echo 'drop'
             e.preventDefault()
             e.stopPropagation()
-            if @isCategory()
+            if @isFavor()
                 return
             id = e.dataTransfer.getData("text/plain")
             favor.add(id)
