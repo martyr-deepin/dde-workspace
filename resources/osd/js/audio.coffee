@@ -128,7 +128,7 @@ class Audio extends Widget
         @showValue(white)
 
         @timeout = setTimeout(=>
-            @hide()
+            osdHide()
         ,TIME_HIDE)
 
 
@@ -137,6 +137,7 @@ AudioCls = null
 
 AudioUp =(type) ->
     if !type then return
+    osdShow()
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
@@ -147,6 +148,7 @@ AudioUp =(type) ->
 
 AudioDown =(type) ->
     if !type then return
+    osdShow()
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
@@ -157,6 +159,7 @@ AudioDown =(type) ->
 
 AudioMute =(type) ->
     if !type then return
+    osdShow()
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"

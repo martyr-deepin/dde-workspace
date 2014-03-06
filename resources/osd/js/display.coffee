@@ -144,8 +144,7 @@ class Display extends Widget
         @set_bg(@id)
         @showValue(white)
         @timeout = setTimeout(=>
-            echo "hide"
-            #@hide()
+            osdHide()
         ,TIME_HIDE)
 
 
@@ -153,6 +152,7 @@ BrightCls = null
 
 BrightnessUp =(type)->
     if !type then return
+    osdShow()
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
@@ -160,6 +160,7 @@ BrightnessUp =(type)->
 
 BrightnessDown =(type)->
     if !type then return
+    osdShow()
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessDown"
@@ -167,6 +168,7 @@ BrightnessDown =(type)->
 
 DisplaySwitch = (type)->
     if !type then return
+    osdShow()
     echo "DisplaySwitch"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
