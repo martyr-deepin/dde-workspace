@@ -23,16 +23,16 @@ class CategoryItem
     constructor: (@id, @name)->
         @element = create_element(
             tag:'div',
-            class:'category_item',
+            class:'category_item_base category_item',
             id: "#{CategoryItem.PREFIX}#{@id}",
             catId: "#{@id}"
         )
-        # @element.innerText = @name
-        @ignore = create_img(src:"img/category/#{name}10.png", @element)
-        @ignore.style.display = 'none'
-        @normal = create_img(src:"img/category/#{name}50.png", @element)
-        @selected = create_img(src:"img/category/#{name}100.png", @element)
-        @selected.style.display = 'none'
+        create_element(
+            tag:'div',
+            class:"category_item_base category_item_bottom",
+            parent: @element
+        )
+        @element.style.backgroundImage = "url(img/category/#{name}100.png)"
         @isFocus = false
 
     categoryId: ->
@@ -48,27 +48,20 @@ class CategoryItem
 
     focus: ->
         @isFocus = true
-        @normal.style.display = 'none'
-        @selected.style.display = 'inline'
+        @element.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1))"
 
     blur: ->
         @isFocus = false
-        @normal.style.display = 'inline'
-        @selected.style.display = 'none'
+        @element.style.webkitMask = ""
 
     dark: ->
-        @ignore.style.display = 'inline'
-        if @isFocus
-            @selected.style.display = 'none'
-        else
-            @normal.style.display = 'none'
+        @element.style.webkitMask = "-webkit-linear-gradient(top, rgba(0,0,0,0.3), rgba(0,0,0,0.1))"
 
-    bright:->
-        @ignore.style.display = 'none'
+    normal:->
         if @isFocus
-            @selected.style.display = 'inline'
+            @focus()
         else
-            @normal.style.display = 'inline'
+            @blur()
 
 
 class CategoryBar
@@ -120,7 +113,7 @@ class CategoryBar
         warp = @category.parentNode
         # top/bottom margin
         categories_height = @category.children.length * (@category.lastElementChild.clientHeight + 2*CATEGORY_BAR_ITEM_MARGIN)
-        warp_height = window.screen.height - SEARCH_BAR_HEIGHT  # height of search bar
+        warp_height = window.screen.height - SEARCH_BAR_HEIGHT - GRID_MARGIN_BOTTOM  # height of search bar
         if categories_height > warp_height
             warp.style.overflowY = "scroll"
             warp.style.marginBottom = "#{GRID_MARGIN_BOTTOM}px"
@@ -137,6 +130,6 @@ class CategoryBar
         for own k, v of @category_items
             v.dark()
 
-    bright:->
+    normal:->
         for own k, v of @category_items
-            v.bright()
+            v.normal()
