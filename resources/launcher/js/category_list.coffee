@@ -65,11 +65,8 @@ class CategoryList
         @
 
     showNonemptyCategories:->
-        minId = 100
         for own id, category of @categories
             if category.number() != 0
-                if id < minId
-                    minId = id
                 category.show()
                 category.showHeader()
                 category.setNameDecoration()
@@ -78,7 +75,6 @@ class CategoryList
             else
                 category.hide()
                 $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
-        categoryBar.focusCategory(minId)
         @
 
     addItem: (id, categories)->
@@ -110,9 +106,14 @@ class CategoryList
         for id in [CATEGORY_ID.INTERNET..CATEGORY_ID.UTILITIES]
             if @categories[id].isShown()
                 return @categories[id]
+
+        if @categories[CATEGORY_ID.OTHER].isShown()
+            return @categories[CATEGORY_ID.OTHER]
         return null
 
     lastCategory:->
+        if @categories[CATEGORY_ID.OTHER].isShown()
+            return @categories[CATEGORY_ID.OTHER]
         for id in [CATEGORY_ID.UTILITIES..CATEGORY_ID.INTERNET]
             if @categories[id].isShown()
                 return @categories[id]
