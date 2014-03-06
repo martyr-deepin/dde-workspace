@@ -33,22 +33,22 @@ class FavorPage
         Item.updateHorizontalMargin()
 
     load: ->
-        if (originIds = daemon.GetFavors_sync())?
-            validIds = originIds.filter((elem) ->
+        if (origins = daemon.GetFavors_sync())?
+            valids = origins.filter((elem) ->
                 id = elem[0]
                 applications[id]?
             )
             @favors = {}
-            @favorNumber = validIds.length
+            @favorNumber = valids.length
             @updateCache = false
             frag = document.createDocumentFragment()
-            for i in validIds
+            valids.sort((lhs, rhs)->
+                parseInt(lhs[1]) - parseInt(rhs[1])
+            )
+            for i in valids
                 @doAdd(i[0], i[1], i[2])
-                # el = categoryList.favor.addItem(i[0])
-                # el?.setAttribute("index", i[1])
-                # el?.setAttribute("fixed", i[2])
 
-            if originIds.length != validIds.length
+            if origins.length != valids.length
                 @save()
 
         @
