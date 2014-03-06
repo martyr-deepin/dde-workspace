@@ -121,13 +121,13 @@ class Display extends Widget
 
     showDisplayMode:->
         clearTimeout(@timeout) if @timeout
+        @valueDiv.style.display = "none" if @valueDiv
         if @DBusMonitors.length == 1 then return
 
         # @DisplayMode = @DBusDisplay.DisplayMode
         ImgIndex = @DisplayMode
         if ImgIndex >= 2 then ImgIndex = 2
         @set_bg("#{@id}_#{ImgIndex}")
-        @valueDiv.style.display = "none" if @valueDiv
 
         @timeout = setTimeout(=>
             @hide()
@@ -144,7 +144,8 @@ class Display extends Widget
         @set_bg(@id)
         @showValue(white)
         @timeout = setTimeout(=>
-            @hide()
+            echo "hide"
+            #@hide()
         ,TIME_HIDE)
 
 
