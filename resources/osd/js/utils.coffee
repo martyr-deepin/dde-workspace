@@ -19,7 +19,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
-
 #MediaKey DBus
 MEDIAKEY =
     obj: "com.deepin.daemon.KeyBinding"
@@ -41,7 +40,21 @@ echo DBusMediaKey
 #org/gonome/settings-daemon/plugins/media-keys/active false
 #com/deepin/dde/key-binding/mediakey
 #dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
+allElsHide=->
+    els = _b.childNodes
+    echo els
+    for el in els
+        el.style.display = "none"
 
+osdHide=->
+    #allElsHide()
+    DCore.Osd.hide()
+
+osdShow=->
+    #allElsHide()
+    DCore.Osd.show()
+
+osdHide()
 
 click_time = 0
 _b.addEventListener("click",(e)=>

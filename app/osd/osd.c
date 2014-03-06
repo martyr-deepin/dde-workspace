@@ -66,6 +66,18 @@ void osd_quit()
     gtk_main_quit();
 }
 
+JS_EXPORT_API
+void osd_hide()
+{
+    gtk_widget_hide(container);
+}
+
+JS_EXPORT_API
+void osd_show()
+{
+    gtk_widget_show_all(container);
+}
+
 G_GNUC_UNUSED
 static gboolean
 prevent_exit (GtkWidget* w, GdkEvent* e)
@@ -136,6 +148,7 @@ int main (int argc, char **argv)
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
+    gtk_window_resize (GTK_WINDOW (container), 160,160);
     
     gboolean FOCUS = TRUE;
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FOCUS);

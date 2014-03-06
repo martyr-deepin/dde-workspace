@@ -30,13 +30,19 @@ body{
     border-radius:5px;
 }
 
+.Display{
+    position:absolute;
+    width:160px;
+    height:160px;
+    border-radius:5px;
+}
 
 .valueDiv{
     position:absolute;
-    width:98px; 
-    height:10px;
     left:31px;
     bottom:20px;
+    width:98px; 
+    height:10px;
     display:-webkit-box;
     -webkit-box-pack:justify;
 }
