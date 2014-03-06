@@ -34,6 +34,8 @@ class Audio extends Widget
         @Sources = []
         @DBusSinks = []
         @OpenedAudiosName = []
+        @valueEach = []
+        
         @getDBus()
         _b.appendChild(@element)
         
@@ -114,18 +116,17 @@ class Audio extends Widget
         @set_bg(bg)
         
         @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
+        @valueDiv.style.display = "-webkit-box"
         for i in [0...10]
-            echo i
-            @valueEach[i] = create_element("div","valueEach",@valueDiv) if not @valueEach[i]?
-            valueBg = "white"
-            echo valueBg
-            if i <= white then valueBg = "white"
+            @valueEach[i] = create_img("valueEach","",@valueDiv) if @valueEach[i] is undefined
+            if i < white then valueBg = "white"
             else valueBg = "black"
-            echo i + ":" + valueBg
-            @valueEach[i].style.backgroundImage = "../img/#{valueBg}.png"
-
+            @valueEach[i].src = "img/#{valueBg}.png"
+            @valueEach[i].style.display = "block"
+        
         @timeout = setTimeout(=>
-            @hide()
+            echo "hide"
+            #@hide()
         ,TIME_HIDE)
 
 
