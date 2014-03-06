@@ -234,7 +234,7 @@ class Item extends Widget
         # FIXME: why this???
         # if true
         #     @elements.favor?.style.display = 'block'
-        categoryBar.bright()
+        categoryBar.normal()
         switcher.normal()
 
     createMenu:->

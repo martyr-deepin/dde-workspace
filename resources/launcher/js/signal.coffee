@@ -21,18 +21,11 @@
 DCore.signal_connect('workarea_changed', (alloc)->
     height = alloc.height
     _b.style.maxHeight = "#{height}px"
-    # $('#grid').style.maxHeight = "#{height-60}px"
     $('#container').style.maxHeight = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     $('#grid').style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
     $('#searchResult').style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT}px"
+    $("#categoryWarp").style.height = "#{height - CONTAINER_BOTTOM_MARGIN - SEARCH_BAR_HEIGHT - 110}px"
     category_column_adaptive_height()
-
-    # hidden_icon_ids = _get_hidden_icons_ids()
-    # count = 0
-    # for i in category_infos[CATEGORY_ID.ALL]
-    #     if i not in hidden_icon_ids
-    #         count += 1
-    # _update_scroll_bar(count)
 )
 
 
