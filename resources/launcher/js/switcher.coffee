@@ -97,8 +97,6 @@ class Switcher
         # container.style.marginLeft = "#{categoryBar.category.clientWidth + 10}px"
         # e = new Event("mouseover")
         # @switcher.dispatchEvent(e)
-        if hiddenIcons.isShown
-            hiddenIcons.show()
         categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         Item.updateHorizontalMargin()
         searchResult?.hide()

@@ -42,7 +42,6 @@ class Item extends Widget
         @isAutostart = false
         @isFavor = false
         @status = SOFTWARE_STATE.IDLE
-        @displayMode = 'display'
 
         @load_image()
         @itemName = create_element("div", "item_name", @hoverBox)
@@ -156,10 +155,6 @@ class Item extends Widget
         if @status != info?.status
             @status = info.status
 
-        if @displayMode != info?.displayMode
-            @toggle_icon()
-            # @displayMode = info.displayMode
-
     setImageSize: (img)=>
         if img.width == img.height
             # echo 'set class name to square img'
@@ -248,16 +243,13 @@ class Item extends Widget
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Open")),
             new MenuSeparator(),
-            new MenuItem(2, ITEM_HIDDEN_ICON_MESSAGE[@displayMode]),
-            new MenuItem(7, FAVOR_MESSAGE[@isFavor]),
-            new MenuSeparator(),
+            new MenuItem(2, FAVOR_MESSAGE[@isFavor]),
             new MenuItem(3, _("Send to d_esktop")).setActive(
                 not daemon.IsOnDesktop_sync(@path)
             ),
             new MenuItem(4, _("Send to do_ck")).setActive(s_dock != null),
             new MenuSeparator(),
             new MenuItem(5, AUTOSTART_MESSAGE[@isAutostart]),
-            new MenuSeparator(),
             new MenuItem(6, _("_Uninstall"))
         )
 
@@ -289,7 +281,13 @@ class Item extends Widget
             when 1
                 startManager.Launch(@basename)
                 # exit_launcher()
-            when 2 then @toggle_icon()
+            when 2
+                if @isFavor
+                    echo 'remove from favor'
+                    favor.remove(@id)
+                else
+                    echo 'add to favor'
+                    favor.add(@id)
             when 3 then daemon.SendToDesktop(@path)
             when 4 then s_dock?.RequestDock_sync(escape(@path))
             when 5 then @toggle_autostart()
@@ -300,50 +298,8 @@ class Item extends Widget
                     uninstalling_apps[@id] = @
                     echo 'start uninstall'
                     uninstall(item:@, purge:true)
-            when 7
-                if @isFavor
-                    echo 'remove from favor'
-                    favor.remove(@id)
-                else
-                    echo 'add to favor'
-                    favor.add(@id)
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
-
-    hide_icon: (e)=>
-        @displayMode = "hidden"
-
-        if not hiddenIcons.isShown
-            @hide()
-
-        if !@element.classList.contains(HIDE_ICON_CLASS)
-            @updateProperty((k, v)->
-                v.classList.add(HIDE_ICON_CLASS)
-            )
-
-         if !hiddenIcons.contains(@id)
-             # echo 'save'
-            hiddenIcons.add(@id, @).save()
-
-    display_icon: (e)=>
-        @displayMode = "display"
-        @show()
-        if @element.classList.contains(HIDE_ICON_CLASS)
-            @updateProperty((k, v)->
-                echo 'Item: show icon'
-                v.classList.remove(HIDE_ICON_CLASS)
-            )
-        hidden_icons_num = hiddenIcons.remove(@id).save().number()
-
-    displayIconTemp: ->
-        @show()
-        categoryList.showNonemptyCategories()
-
-    toggle_icon: ->
-        if @displayMode == 'display'
-            @hide_icon()
-        else
-            @display_icon()
 
     updateProperty: (fn)->
         for own k, v of @elements
@@ -394,7 +350,7 @@ class Item extends Widget
         )
 
     show: =>
-        if (hiddenIcons.isShown or @displayMode == 'display') and @status == SOFTWARE_STATE.IDLE
+        if @status == SOFTWARE_STATE.IDLE
             @updateProperty((k, v)->
                 v.style.display = "-webkit-box"
             )

@@ -58,24 +58,16 @@ class CategoryList
             @blank.style.display = 'block'
 
     hideEmptyCategories:->
-        for own id, item of @categories
-            all_is_hidden = item.every((el) ->
-                i = Widget.look_up(el)
-                i.displayMode == "hidden" && not hiddenIcons.isShown
-            )
-            if all_is_hidden
-                item.hide()
+        for own id, category of @categories
+            if category.number() != 0
+                category.hide()
                 $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
         @
 
     showNonemptyCategories:->
         minId = 100
         for own id, category of @categories
-            not_all_is_hidden = category.some((el) ->
-                item = Widget.look_up(el)
-                item.displayMode != "hidden" || hiddenIcons.isShown
-            )
-            if not_all_is_hidden
+            if category.number() != 0
                 if id < minId
                     minId = id
                 category.show()

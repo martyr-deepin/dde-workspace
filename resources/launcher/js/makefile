@@ -19,7 +19,6 @@ all: ${com_coffee} \
 	softwaremanager.coffee \
 	delegate.coffee \
 	item.coffee \
-	hidden_icon.coffee \
 	grid.coffee \
 	event.coffee \
 	signal.coffee \
