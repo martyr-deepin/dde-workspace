@@ -3,8 +3,8 @@ body{
     cursor:default;
     overflow:hidden;
     
-    /*width:160px;*/
-    /*height:160px;*/
+    width:160px;
+    height:160px;
 
     border-radius:15px;
     background-color:rgba(0,0,0,0.7);
@@ -21,36 +21,13 @@ body{
     width:160px;
     height:160px;
     border-radius:5px;
-    
-    /*background-image:url("../img/Audio_10.png");*/
-    
-/*    background-origin:padding-box;*/
-    /*background-clip:border-box;*/
-    /*background-position:center;*/
-    /*background-size:cover;*/
-    /*background-repeat:no-repeat;*/
-    /*background-attachment:fixed;*/
-    
-    /*display:-webkit-box;*/
-    /*-webkit-box-align:center;*/
+
 }
 .Audio{
     position:absolute;
     width:160px;
     height:160px;
     border-radius:5px;
-    
-    /*background-image:url("../img/Audio_10.png");*/
-    
-/*    background-origin:padding-box;*/
-    /*background-clip:border-box;*/
-    /*background-position:center;*/
-    /*background-size:cover;*/
-    /*background-repeat:no-repeat;*/
-    /*background-attachment:fixed;*/
-    
-    /*display:-webkit-box;*/
-    /*-webkit-box-align:center;*/
 }
 
 
@@ -58,11 +35,14 @@ body{
     position:absolute;
     width:98px; 
     height:10px;
+    left:31px;
     bottom:20px;
+    display:-webkit-box;
+    -webkit-box-pack:justify;
 }
 
 .valueEach{
     width:8px;
     height:10px;
-    margin: 0.9px 0 0.9px 0;
+    display:block;
 }
