@@ -101,8 +101,8 @@ void test_background_util()
     }, "on_bg_duration_tick");
 
     // bg_settings_picture_uri_changed
-    GSettings *setting = NULL;
-    setting = g_settings_new(BG_SCHEMA_ID);
+    /*GSettings *setting = NULL;*/
+    /*setting = g_settings_new(BG_SCHEMA_ID);*/
 
     // haven't test.
     /* Test({ */
@@ -178,7 +178,7 @@ void test_background_util()
         screen_size_changed_cb(screen, NULL);
     }, "screen_size_changed_cb ");
 
-    g_object_unref(setting);
+    /*g_object_unref(setting);*/
 
     // setup_background_timer
     void setup_background_timer();

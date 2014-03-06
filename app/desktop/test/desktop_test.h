@@ -15,7 +15,6 @@
 #include "test.h"
 
 #include "../../../lib/jsc_extension/jsextension.h"
-#include "../background_util.h"
 #include "../inotify_item.h"
 
 #include "../../../lib/xdg_misc.h"
