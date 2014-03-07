@@ -121,7 +121,7 @@ class Audio extends Widget
     show:(white)->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
-            clearTimeout(@timeout) if @timeout
+            clearTimeout(timeout_osdHide) if timeout_osdHide
             
             osdShow()
             @element.style.display = "block"
@@ -130,7 +130,7 @@ class Audio extends Widget
             @set_bg(bg)
             @showValue(white)
 
-            @timeout = setTimeout(=>
+            timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
         ,TIME_PRESS)

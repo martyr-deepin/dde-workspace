@@ -33,14 +33,14 @@ class Option extends Widget
     show:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
-            clearTimeout(@timeout) if @timeout
+            clearTimeout(timeout_osdHide) if timeout_osdHide
             
             echo "Option #{@id} show"
             osdShow()
             @element.style.display = "block"
             @set_bg(@id)
 
-            @timeout = setTimeout(=>
+            timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
         ,TIME_PRESS)

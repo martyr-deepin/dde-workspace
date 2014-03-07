@@ -123,7 +123,7 @@ class Display extends Widget
     showDisplayMode:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
-            clearTimeout(@timeout) if @timeout
+            clearTimeout(timeout_osdHide) if timeout_osdHide
             
             @valueDiv.style.display = "none" if @valueDiv
             if @DBusMonitors.length == 1 then return
@@ -135,7 +135,7 @@ class Display extends Widget
             if ImgIndex >= 2 then ImgIndex = 2
             @set_bg("#{@id}_#{ImgIndex}")
 
-            @timeout = setTimeout(=>
+            timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
         ,TIME_PRESS)
@@ -143,7 +143,7 @@ class Display extends Widget
     showBrightness:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
-            clearTimeout(@timeout) if @timeout
+            clearTimeout(timeout_osdHide) if timeout_osdHide
 
             echo "#{@id} Class  show"
             osdShow()
@@ -152,7 +152,7 @@ class Display extends Widget
             echo "showBrightValue:#{white}"
             @set_bg(@id)
             @showValue(white)
-            @timeout = setTimeout(=>
+            timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
         ,TIME_PRESS)
