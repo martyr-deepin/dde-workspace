@@ -24,13 +24,11 @@ catch error
     s_dock = null
 
 
-# to resize the drag image.
-canvas = null
-
 class Item extends Widget
     @autostart_flag: null
     @hoverItem: null
     @clean_hover_temp: false
+    @dragCanvas: null  # to resize the drag image.
     constructor: (@id, @name, @path, @icon)->
         super
         @element.removeAttribute("id")
@@ -52,9 +50,9 @@ class Item extends Widget
         @elements = {'element': @element}#favor: null, search: null
 
     @updateHorizontalMargin:->
-        containerWidth = $("#container").clientWidth
+        containerWidth = $("#container").clientWidth - GRID_PADDING * 2
         if switcher.isShowCategory
-            containerWidth -= CATEGORY_LIST_EXTRA_LEFT_MARGIN
+            containerWidth -= GRID_EXTRA_LEFT_PADDING
         # echo "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
         # echo "itemNumPerLine: #{Item.itemNumPerLine}"
@@ -84,7 +82,8 @@ class Item extends Widget
 
     add:(pid, parent)->
         if @elements[pid]
-            return null
+            echo 'exist'
+            return @elements[pid]
         if pid == CATEGORY_ID.FAVOR
             pid = 'favor'
 
@@ -184,19 +183,35 @@ class Item extends Widget
         target?.style.cursor = "auto"
         exit_launcher()
 
+    setCanvas:(dt, width, height, xoffset=0, yoffset=0)->
+        if Item.dragCanvas == null
+            Item.dragCanvas = create_element(tag: 'canvas', width: ITEM_IMG_SIZE, height: ITEM_IMG_SIZE)
+        ctx = Item.dragCanvas.getContext("2d")
+        ctx.clearRect(0, 0, Item.dragCanvas.width, Item.dragCanvas.height)
+        ctx.drawImage(@img, xoffset, yoffset, width, height)
+        # extra 3px for mouse offset
+        dt.setDragCanvas(Item.dragCanvas, ITEM_IMG_SIZE/2+3, ITEM_IMG_SIZE/2)
+
     on_dragstart: (e)=>
         # target is hoverBoxOutter
         target = e.target
         o = e
         e = e.originalEvent || e
-        if canvas == null
-            canvas = create_element(tag: 'canvas', width: ITEM_IMG_SIZE, height: ITEM_IMG_SIZE)
-        ctx = canvas.getContext("2d")
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(@img, 0, 0, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
         dt = e.dataTransfer
-        # extra 3px for mouse offset
-        dt.setDragCanvas(canvas, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
+
+        if @img.width < @img.height
+            new_width = ITEM_IMG_SIZE * @img.width / @img.height
+            offset = (ITEM_IMG_SIZE - Math.floor(new_width)) / 2
+            @setCanvas(dt, new_width, ITEM_IMG_SIZE, offse)
+        else if @img.width > @img.height
+            @img.classList.add('hbar_img')
+            new_height = ITEM_IMG_SIZE * @img.height / @img.width
+            offset = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
+            @setCanvas(dt, ITEM_IMG_SIZE, new_height, 0, offset)
+        else if @img.width != 48
+            @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
+        else
+            dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         if switcher.isFavor()
             return
@@ -216,6 +231,7 @@ class Item extends Widget
         #         target.style.display = 'none'
         #     , 100)
         #     return
+        switcher.addedToFavor = false
         item = target.parentNode
         item.classList.add("item_dragged")
         dt.setData("text/plain", @id)
@@ -231,11 +247,14 @@ class Item extends Widget
 
         e = e.originalEvent || e
         e.preventDefault()
-        # FIXME: why this???
-        # if true
-        #     @elements.favor?.style.display = 'block'
+
         categoryBar.normal()
         switcher.normal()
+
+        if !switcher.isShowCategory or !switcher.addedToFavor
+            return
+
+        switcher.separate()
 
     createMenu:->
         @menu = null
