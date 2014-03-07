@@ -29,7 +29,7 @@ class CategoryItem
         )
         create_element(
             tag:'div',
-            class:"category_item_base category_item_bottom",
+            class:"category_item_base category_item_board",
             parent: @element
         )
         @element.style.backgroundImage = "url(img/category/#{name}100.png)"
@@ -68,7 +68,7 @@ class CategoryBar
     constructor: (infos)->
         @selectedId = null
 
-        @category = $("#category")
+        @category = $("#categoryBar")
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
             target = e.target

@@ -56,7 +56,6 @@ body {
   border-radius: 50%;
   background-attachment: fixed;
   background: no-repeat url(../img/switcher_bg.png);
-  -webkit-transform: translateZ(0);
 }
 #switcher_hover {
   top: 39px;
@@ -65,7 +64,13 @@ body {
   width:34px;
   height:34px;
   border-radius: 50%;
-  -webkit-transform: translateZ(1);
+}
+.switcher_board {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  border-radius: 50%;
+  z-index: -9
 }
 
 .tipImage {
@@ -80,8 +85,9 @@ body {
   display: -webkit-box;
   -webkit-box-pack:center;
   -webkit-box-align:center;
+  z-index:9;
 }
-#category {
+#categoryBar {
   display: none;
 }
 .category_item_base {
@@ -89,7 +95,7 @@ body {
   height:34px;
   border-radius: 50%;
 }
-.category_item_bottom {
+.category_item_board {
   background: rgba(0,0,0,0.05);
 }
 .category_item {
@@ -106,18 +112,19 @@ body {
 #container{
   display: -webkit-box;
   overflow: hidden;
-  margin: auto 110px;
+  margin: 0 1px;
 }
 
 .page{
-  width:100%;
+  /* width:100%; */
   height: 100%;
   -webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0));
   overflow-y:scroll;
+  padding: 0 110px;
 }
 
 #grid {
-  margin-left: 45px;
+  padding-left: 155px;
   display:none;
 }
 
