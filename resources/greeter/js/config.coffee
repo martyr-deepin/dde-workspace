@@ -9,6 +9,7 @@ ANIMATION_TIME = 2
 APP_NAME = ''
 is_greeter = null
 is_hide_users = null
+hide_face_login = null
 
 try
     DCore.Greeter.get_date()
@@ -37,9 +38,24 @@ is_volume_control = false
 echo "audio_play_status:#{audio_play_status}"
 
 enable_detection = (enabled)->
-    DCore[APP_NAME].enable_detection(enabled)
-    
- 
+    try
+        DCore[APP_NAME].enable_detection(enabled)
+    catch e
+        echo "enable_detection #{e}"
+    finally
+        return null
+
+hideFaceLogin = ->
+    try
+        face = DCore[APP_NAME].enable_detection()
+        return face
+    catch e
+        echo "face_login #{e}"
+        return false
+    finally
+        return false
+hide_face_login = hideFaceLogin()
+
 is_livecd = false
 try
     dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")

@@ -42,8 +42,8 @@
 #include "utils.h"
 #include "mutils.h"
 
-#include "settings.h"
-#include "camera.h"
+/*#include "settings.h"*/
+/*#include "camera.h"*/
 
 #include "X_misc.h"
 #include "gs-grab.h"
@@ -67,10 +67,11 @@ void lock_quit()
 JS_EXPORT_API
 gboolean lock_try_unlock (const gchar *username,const gchar *password)
 {
-    if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {
-        gtk_main_quit();
-        return TRUE;
-    }
+    g_message("face_login hide");
+/*    if (lock_use_face_recognition_login(lock_get_username()) && recognition_info.detect_is_enabled) {*/
+        /*gtk_main_quit();*/
+        /*return TRUE;*/
+    /*}*/
 
     gboolean succeed = FALSE;
 
@@ -335,10 +336,10 @@ int main (int argc, char **argv)
     gdk_window_focus (gtk_widget_get_window (lock_container), 0);
     gdk_window_stick (gdkwindow);
 
-    init_camera(argc, argv);
+    /*init_camera(argc, argv);*/
     turn_numlock_on ();
     gtk_main ();
-    destroy_camera();
+    /*destroy_camera();*/
 
     return 0;
 }
