@@ -153,24 +153,24 @@ class Display extends Widget
 
 BrightCls = null
 
-BrightnessUp =(type)->
-    if type then return
+BrightnessUp = (keydown)->
+    if keydown then return
     osdShow()
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
     BrightCls.showBrightness()
 
-BrightnessDown =(type)->
-    if type then return
+BrightnessDown = (keydown)->
+    if keydown then return
     osdShow()
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessDown"
     BrightCls.showBrightness()
 
-DisplaySwitch = (type)->
-    if type then return
+DisplaySwitch = (keydown)->
+    if keydown then return
     osdShow()
     echo "DisplaySwitch"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?

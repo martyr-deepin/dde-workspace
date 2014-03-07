@@ -138,8 +138,8 @@ class Audio extends Widget
 
 AudioCls = null
 
-AudioUp =(type) ->
-    if type then return
+AudioUp = (keydown) ->
+    if keydown then return
     osdShow()
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
@@ -149,8 +149,8 @@ AudioUp =(type) ->
     AudioCls.setVolume(white)
     AudioCls.show(white)
 
-AudioDown =(type) ->
-    if type then return
+AudioDown = (keydown) ->
+    if keydown then return
     osdShow()
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
@@ -160,8 +160,8 @@ AudioDown =(type) ->
     AudioCls.setVolume(white)
     AudioCls.show(white)
 
-AudioMute =(type) ->
-    if type then return
+AudioMute = (keydown) ->
+    if keydown then return
     osdShow()
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
