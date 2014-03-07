@@ -89,6 +89,7 @@ class Display extends Widget
         bright = @getBrightness(name) if name?
         value = null
         try
+            echo "#{name}:#{bright[name]}"
             value = bright[name] * 10
         catch e
             echo "getPrimarBrightnessValue: ERROR: #{e}"
@@ -134,22 +135,26 @@ class Display extends Widget
         ,TIME_HIDE)
     
     showBrightness:->
-        clearTimeout(@timeout) if @timeout
+        clearTimeout(@timepress) if @timepress
+        @timepress = setTimeout(=>
+            clearTimeout(@timeout) if @timeout
 
-        echo "#{@id} Class  show"
-        @element.style.display = "block"
-        white = @getPrimarBrightnessValue()
-        echo "showBrightValue:#{white}"
-        @set_bg(@id)
-        @showValue(white)
-        @timeout = setTimeout(=>
-            osdHide()
-        ,TIME_HIDE)
+            echo "#{@id} Class  show"
+            @element.style.display = "block"
+            white = @getPrimarBrightnessValue()
+            echo "showBrightValue:#{white}"
+            @set_bg(@id)
+            @showValue(white)
+            @timeout = setTimeout(=>
+                osdHide()
+            ,TIME_HIDE)
+        ,TIME_PRESS)
 
 
 BrightCls = null
 
 BrightnessUp =(type)->
+    echo new Date().getTime()
     if type then return
     osdShow()
     echo "BrightnessUp"
@@ -158,6 +163,7 @@ BrightnessUp =(type)->
     BrightCls.showBrightness()
 
 BrightnessDown =(type)->
+    echo new Date().getTime()
     if type then return
     osdShow()
     echo "BrightnessDown"
@@ -166,6 +172,7 @@ BrightnessDown =(type)->
     BrightCls.showBrightness()
 
 DisplaySwitch = (type)->
+    echo new Date().getTime()
     if type then return
     osdShow()
     echo "DisplaySwitch"

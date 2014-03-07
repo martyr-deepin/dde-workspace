@@ -19,12 +19,15 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
+date = new Date()
+
 #MediaKey DBus
 MEDIAKEY =
     obj: "com.deepin.daemon.KeyBinding"
     path: "/com/deepin/daemon/MediaKey"
     interface: "com.deepin.daemon.MediaKey"
 TIME_HIDE = 4000
+TIME_PRESS = 10
 DBusMediaKey = null
 try
     DBusMediaKey = DCore.DBus.session_object(

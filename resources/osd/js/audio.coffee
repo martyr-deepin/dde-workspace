@@ -119,17 +119,20 @@ class Audio extends Widget
             @valueEach[i].style.display = "block"
 
     show:(white)->
-        clearTimeout(@timeout) if @timeout
-        
-        @element.style.display = "block"
-        bg = @getBgName(white)
-        echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
-        @set_bg(bg)
-        @showValue(white)
+        clearTimeout(@timepress) if @timepress
+        @timepress = setTimeout(=>
+            clearTimeout(@timeout) if @timeout
+            
+            @element.style.display = "block"
+            bg = @getBgName(white)
+            echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
+            @set_bg(bg)
+            @showValue(white)
 
-        @timeout = setTimeout(=>
-            osdHide()
-        ,TIME_HIDE)
+            @timeout = setTimeout(=>
+                osdHide()
+            ,TIME_HIDE)
+        ,TIME_PRESS)
 
 
 

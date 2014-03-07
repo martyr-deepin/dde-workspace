@@ -25,13 +25,49 @@ class Option extends Widget
         _b.appendChild(@element)
 
     hide:->
-        @element.style.display = "none"
+        @element.style.Option = "none"
     
     set_bg:(imgName)->
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
     
     show:->
+        clearTimeout(@timeout) if @timeout
         echo "Option #{@id} show"
-        @element.style.display = "block"
+        @element.style.Option = "block"
         @set_bg(@id)
 
+        @timeout = setTimeout(=>
+            osdHide()
+        ,TIME_HIDE)
+
+
+OptionCls = null
+
+CapsLockOn =(type)->
+    if !type then return
+    osdShow()
+    echo "CapsLockOn"
+    OptionCls  = new Option("Option") if not OptionCls?
+    OptionCls.id = "CapsLockOn"
+    OptionCls.show()
+
+CapsLockOff =(type)->
+    if !type then return
+    osdShow()
+    echo "CapsLockOff"
+    OptionCls  = new Option("Option") if not OptionCls?
+    OptionCls.id = "CapsLockOff"
+    OptionCls.show()
+
+NumLockOn = (type)->
+    if !type then return
+    osdShow()
+    echo "NumLockOn"
+    OptionCls  = new Option("OptionSwitch") if not OptionCls?
+    OptionCls.id = "NumLockOn"
+    OptionCls.show()
+
+DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
+DBusMediaKey.connect("CapsLockOff",CapsLockOff) if DBusMediaKey?
+DBusMediaKey.connect("NumLockOn",NumLockOn) if DBusMediaKey?
+DBusMediaKey.connect("NumLockOff",NumLockOff) if DBusMediaKey?
