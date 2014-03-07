@@ -36,8 +36,8 @@ class Audio extends Widget
         @OpenedAudiosName = []
         @valueEach = []
         
-        @getDBus()
         _b.appendChild(@element)
+        @getDBus()
         
    
     hide:->
@@ -106,7 +106,8 @@ class Audio extends Widget
         return bg
     
     showValue:(white)->
-        if white > 10 then white = 10
+        if white is null then return
+        else if white > 10 then white = 10
         else if white < 0 then white = 0
         @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
         @valueDiv.style.display = "-webkit-box"
@@ -127,8 +128,7 @@ class Audio extends Widget
         @showValue(white)
 
         @timeout = setTimeout(=>
-            echo "hide"
-            #@hide()
+            osdHide()
         ,TIME_HIDE)
 
 
@@ -137,6 +137,7 @@ AudioCls = null
 
 AudioUp =(type) ->
     if !type then return
+    osdShow()
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
@@ -147,6 +148,7 @@ AudioUp =(type) ->
 
 AudioDown =(type) ->
     if !type then return
+    osdShow()
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
@@ -157,6 +159,7 @@ AudioDown =(type) ->
 
 AudioMute =(type) ->
     if !type then return
+    osdShow()
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
