@@ -5,8 +5,8 @@ body{
     
     width:160px;
     height:160px;
-
-    border-radius:15px;
+    border-radius:18px;
+    
     background-color:rgba(0,0,0,0.7);
      
     font-size:62.5%;
@@ -20,21 +20,21 @@ body{
     position:absolute;
     width:160px;
     height:160px;
-    border-radius:5px;
+    border-radius:18px;
 
 }
 .Audio{
     position:absolute;
     width:160px;
     height:160px;
-    border-radius:5px;
+    border-radius:18px;
 }
 
 .Display{
     position:absolute;
     width:160px;
     height:160px;
-    border-radius:5px;
+    border-radius:18px;
 }
 
 .valueDiv{
