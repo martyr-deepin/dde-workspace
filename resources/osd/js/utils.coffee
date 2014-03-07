@@ -43,17 +43,18 @@ echo DBusMediaKey
 #com/deepin/dde/key-binding/mediakey
 #dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
 allElsHide=->
-    els = _b.childNodes
-    echo els
+    els = _b.children
     for el in els
-        el.style.display = "none"
+        if el.tagName = "DIV" then el.style.display = "none"
 
 osdHide=->
-    #allElsHide()
+    echo "osdHide"
+    allElsHide()
     DCore.Osd.hide()
 
 osdShow=->
-    #allElsHide()
+    echo "osdShow"
+    allElsHide()
     DCore.Osd.show()
 
 osdHide()
