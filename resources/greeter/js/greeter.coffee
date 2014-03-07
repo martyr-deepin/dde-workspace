@@ -26,7 +26,7 @@ class Greeter extends Widget
 
 
     webview_ok:(_current_user)->
-        DCore.Greeter.webview_ok(_current_user.id)
+        DCore.Greeter.webview_ok(_current_user.id) if hide_face_login
 
     start_login_connect:(_current_user)->
         DCore.signal_connect("start-login", ->
@@ -73,7 +73,7 @@ userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
 greeter.start_login_connect(userinfo)
-greeter.webview_ok(_current_user)
+greeter.webview_ok(_current_user) if hide_face_login
 #greeter.mousewheel_listener(user)
 
 

@@ -391,7 +391,7 @@ class UserInfo extends Widget
         @is_recognizing = false
         @index = null
         echo "new UserInfo :#{@id}"
-        @face_login = face_login()
+        @face_login = @userFaceLogin(name)
         
         @userbase = create_element("div", "UserBase", @element)
         
@@ -432,6 +432,16 @@ class UserInfo extends Widget
         else
             @element.style.display= "none"
 
+    userFaceLogin: (name)->
+        face = false
+        try
+            face = DCore[APP_NAME].use_face_recognition_login(name) if hide_face_login
+        catch e
+            echo "face_login #{e}"
+        finally
+            return face
+
+
     draw_avatar: ->
         if @face_login
             rotate = 0
@@ -453,7 +463,7 @@ class UserInfo extends Widget
    
     focus:->
         echo "#{@id} focus"
-        DCore[APP_NAME].set_username(@id)
+        DCore[APP_NAME].set_username(@id) if @face_login
         #@element.focus()
         @draw_camera()
         @draw_avatar()

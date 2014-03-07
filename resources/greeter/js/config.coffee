@@ -9,6 +9,7 @@ ANIMATION_TIME = 2
 APP_NAME = ''
 is_greeter = null
 is_hide_users = null
+hide_face_login = null
 
 try
     DCore.Greeter.get_date()
@@ -44,16 +45,17 @@ enable_detection = (enabled)->
     finally
         return null
 
-face_login = ->
+hideFaceLogin = ->
     try
-        face = DCore[APP_NAME].use_face_recognition_login(name)
+        face = DCore[APP_NAME].enable_detection()
         return face
     catch e
         echo "face_login #{e}"
         return false
     finally
         return false
- 
+hide_face_login = hideFaceLogin()
+
 is_livecd = false
 try
     dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
