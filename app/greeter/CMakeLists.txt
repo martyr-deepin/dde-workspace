@@ -7,15 +7,17 @@ GEN_JSC_SOURCE2(JSC_LOCK_GEN "jsc" "lock" "lock.cfg" "dbus.cfg")
 GEN_DBUS_SOURCE(DBUS_GEN "jsc/dbus.go" "greeter")
 
 pkg_check_modules(LIGHTDM REQUIRED liblightdm-gobject-1)
-pkg_check_modules(OPENCV REQUIRED opencv)
+#pkg_check_modules(OPENCV REQUIRED opencv)
 pkg_check_modules(GST REQUIRED gstreamer-0.10)
 
 add_executable(${NAME} greeter.c user.c session.c mutils.c greeter_util.c ${JSC_GEN}
-    camera.c settings.c ${DBUS_GEN}
+    ${DBUS_GEN}
+    #camera.c settings.c ${DBUS_GEN}
     )
 add_dependencies(${NAME} ${NAME_RESOURCE}_js)
 add_executable(dlock dlock.c user.c lock_util.c mutils.c ${JSC_LOCK_GEN}
-    camera.c settings.c ${DBUS_GEN}
+    ${DBUS_GEN}
+    #camera.c settings.c ${DBUS_GEN}
     )
 add_dependencies(dlock ${NAME_RESOURCE}_js)
 add_executable(switchtogreeter switchtogreeter.c)
@@ -23,12 +25,14 @@ add_dependencies(switchtogreeter ${NAME_RESOURCE}_js)
 add_executable(lockservice lockservice.c)
 add_dependencies(lockservice ${NAME_RESOURCE}_js)
 
-set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
+#set(OPENCV_LIBS opencv_core opencv_imgproc opencv_objdetect)
 target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES} ${LIGHTDM_LIBRARIES}
-    ${OPENCV_LIBS} ${GST_LIBRARIES}
+    ${GST_LIBRARIES}
+    #${OPENCV_LIBS} ${GST_LIBRARIES}
     )
-target_link_libraries(dlock dcom dbus ${DWEBVIEW_LIBRARIES} ${OPENCV_LIBS}
+target_link_libraries(dlock dcom dbus ${DWEBVIEW_LIBRARIES} 
     ${GST_LIBRARIES})
+    #${OPENCV_LIBS} ${GST_LIBRARIES})
 target_link_libraries(switchtogreeter ${DWEBVIEW_LIBRARIES})
 target_link_libraries(lockservice crypt dcom dbus ${DWEBVIEW_LIBRARIES})
 
