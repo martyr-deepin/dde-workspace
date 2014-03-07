@@ -176,7 +176,7 @@ BrightnessDown = (keydown)->
 
 DisplaySwitch = (keydown)->
     if keydown then return
-    echo "DisplaySwitch"
+    echo "MonitorsSwitch"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
     BrightCls.switchDisplayMode()
@@ -184,4 +184,4 @@ DisplaySwitch = (keydown)->
 
 DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
 DBusMediaKey.connect("BrightnessUp",BrightnessUp) if DBusMediaKey?
-DBusMediaKey.connect("DisplaySwitch",DisplaySwitch) if DBusMediaKey?
+DBusMediaKey.connect("MonitorsSwitch",DisplaySwitch) if DBusMediaKey?
