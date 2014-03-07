@@ -50,7 +50,7 @@ void desktop_run_deepin_settings(const char* mod)
     static char* zone = "zone";
     if (g_str_equal(mod,zone)){
         g_message("start zone settings!");
-        cmd_line=g_strdup_printf("/usr/lib/deepin-daemon/dzone\n");
+        cmd_line=g_strdup_printf("/usr/lib/deepin-daemon/zone\n");
     }
     GAppInfo* appinfo=g_app_info_create_from_commandline(cmd_line, NULL,
                                                            G_APP_INFO_CREATE_NONE,
