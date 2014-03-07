@@ -19,7 +19,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
-date = new Date()
 
 #MediaKey DBus
 MEDIAKEY =

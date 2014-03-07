@@ -154,7 +154,6 @@ class Display extends Widget
 BrightCls = null
 
 BrightnessUp =(type)->
-    echo new Date().getTime()
     if type then return
     osdShow()
     echo "BrightnessUp"
@@ -163,7 +162,6 @@ BrightnessUp =(type)->
     BrightCls.showBrightness()
 
 BrightnessDown =(type)->
-    echo new Date().getTime()
     if type then return
     osdShow()
     echo "BrightnessDown"
@@ -172,7 +170,6 @@ BrightnessDown =(type)->
     BrightCls.showBrightness()
 
 DisplaySwitch = (type)->
-    echo new Date().getTime()
     if type then return
     osdShow()
     echo "DisplaySwitch"
