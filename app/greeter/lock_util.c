@@ -23,7 +23,7 @@
 #include "lock_util.h"
 #include "user.h"
 #include "mutils.h"
-#include "camera.h"
+/*#include "camera.h"*/
 
 extern const gchar *username;
 
@@ -87,7 +87,8 @@ void lock_switch_user ()
         g_error_free (error);
     } else {
         /*gtk_main_quit();*/
-        destroy_camera();
+        g_message("face_login hide");
+        /*destroy_camera();*/
     }
 }
 

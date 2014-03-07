@@ -26,7 +26,7 @@ class Lock extends Widget
         localStorage.setObject("shutdown_from_lock",power)
 
     webview_ok:(_current_user)->
-        DCore.Lock.webview_ok(_current_user.id)
+        DCore.Lock.webview_ok(_current_user.id) if hide_face_login
 
 
     start_login_connect:(userinfo)->
@@ -55,7 +55,7 @@ userinfo = user.get_current_userinfo()
 _current_user = user.get_current_userinfo()
 
 lock.start_login_connect(userinfo)
-lock.webview_ok(_current_user)
+lock.webview_ok(_current_user) if hide_face_login
 
 timedate = new TimeDate()
 $("#div_time").appendChild(timedate.element)

@@ -6,9 +6,9 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 
 SET(SRC_LIST  ${JSC_GEN} )
 
-add_executable(dosd ${SRC_LIST} osd.c)
+add_executable(${NAME} ${SRC_LIST} osd.c)
 
-target_link_libraries(dosd dcom dbus ${DWEBVIEW_LIBRARIES})
+target_link_libraries(${NAME} dcom dbus ${DWEBVIEW_LIBRARIES})
 
 
 execute_process(
@@ -17,7 +17,7 @@ execute_process(
     )
 
 install(
-    PROGRAMS ${PROJECT_BINARY_DIR}/dosd
+    PROGRAMS ${PROJECT_BINARY_DIR}/${NAME}
     DESTINATION lib/deepin-daemon
     )
 
@@ -31,3 +31,4 @@ install(
     DESTINATION /usr/share/dbus-1/services/
     )
 
+GEN_JS_FILE(${NAME})

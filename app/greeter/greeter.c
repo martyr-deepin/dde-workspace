@@ -40,8 +40,8 @@
 #include "utils.h"
 #include "mutils.h"
 
-#include "settings.h"
-#include "camera.h"
+/*#include "settings.h"*/
+/*#include "camera.h"*/
 
 #include "user.h"
 #include "session.h"
@@ -181,7 +181,8 @@ start_session (LightDMGreeter *greeter)
 JS_EXPORT_API
 gboolean greeter_start_session (const gchar *username, const gchar *password, const gchar *session)
 {
-    gboolean use_face_login = greeter_use_face_recognition_login(username);
+/*    gboolean use_face_login = greeter_use_face_recognition_login(username);*/
+    gboolean use_face_login = FALSE;
     if (use_face_login)
         dbus_add_nopwdlogin((char*)username);
 
@@ -290,10 +291,10 @@ int main (int argc, char **argv)
     gtk_widget_show_all (container);
 
  //   monitor_resource_file("greeter", webview);
-    init_camera(argc, argv);
+    /*init_camera(argc, argv);*/
     turn_numlock_on ();
     gtk_main ();
-    destroy_camera();
+    /*destroy_camera();*/
     return 0;
 }
 
