@@ -391,21 +391,25 @@ class UserInfo extends Widget
         @is_recognizing = false
         @index = null
         echo "new UserInfo :#{@id}"
+        @face_login = face_login()
+        
         @userbase = create_element("div", "UserBase", @element)
         
-        @face_recognize_div = create_element("div","face_recognize_div",@userbase)
-        @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
-        @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
+        if @face_login
+            @face_recognize_div = create_element("div","face_recognize_div",@userbase)
+            @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
+            @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
         
         @userimg_div = create_element("div","userimg_div",@userbase)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
        
-        @face_recognize_div.style.width = 137 * scaleFinal
-        @face_recognize_div.style.height = 137 * scaleFinal
-        @face_recognize_div.style.left = @userimg_div.style.left
-        @face_recognize_div.style.display = "none"
+        if @face_login
+            @face_recognize_div.style.width = 137 * scaleFinal
+            @face_recognize_div.style.height = 137 * scaleFinal
+            @face_recognize_div.style.left = @userimg_div.style.left
+            @face_recognize_div.style.display = "none"
         
         @userimg.style.width = 110 * scaleFinal
         @userimg.style.height = 110 * scaleFinal
@@ -421,8 +425,6 @@ class UserInfo extends Widget
         @element.appendChild(@login.element)
 
         @show_login()
-        @face_login = DCore[APP_NAME].use_face_recognition_login(name)
-        @face_login =false
 
     only_show_name:(hide)->
         if !hide

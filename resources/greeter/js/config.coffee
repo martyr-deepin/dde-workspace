@@ -37,8 +37,22 @@ is_volume_control = false
 echo "audio_play_status:#{audio_play_status}"
 
 enable_detection = (enabled)->
-    DCore[APP_NAME].enable_detection(enabled)
-    
+    try
+        DCore[APP_NAME].enable_detection(enabled)
+    catch e
+        echo "enable_detection #{e}"
+    finally
+        return null
+
+face_login = ->
+    try
+        face = DCore[APP_NAME].use_face_recognition_login(name)
+        return face
+    catch e
+        echo "face_login #{e}"
+        return false
+    finally
+        return false
  
 is_livecd = false
 try
