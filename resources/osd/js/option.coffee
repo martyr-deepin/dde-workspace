@@ -32,6 +32,6 @@ class Option extends Widget
     
     show:->
         echo "Option #{@id} show"
-        @set_bg(@id)
         @element.style.display = "block"
+        @set_bg(@id)
 

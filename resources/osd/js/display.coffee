@@ -140,7 +140,6 @@ class Display extends Widget
         @element.style.display = "block"
         white = @getPrimarBrightnessValue()
         echo "showBrightValue:#{white}"
-        white = Math.round(white)
         @set_bg(@id)
         @showValue(white)
         @timeout = setTimeout(=>
@@ -151,7 +150,7 @@ class Display extends Widget
 BrightCls = null
 
 BrightnessUp =(type)->
-    if !type then return
+    if type then return
     osdShow()
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
@@ -159,7 +158,7 @@ BrightnessUp =(type)->
     BrightCls.showBrightness()
 
 BrightnessDown =(type)->
-    if !type then return
+    if type then return
     osdShow()
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
@@ -167,7 +166,7 @@ BrightnessDown =(type)->
     BrightCls.showBrightness()
 
 DisplaySwitch = (type)->
-    if !type then return
+    if type then return
     osdShow()
     echo "DisplaySwitch"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?

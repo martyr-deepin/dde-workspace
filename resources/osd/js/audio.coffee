@@ -76,7 +76,7 @@ class Audio extends Widget
         volume = @DBusDefaultSink.Volume
         if volume > 100 then volume = 100
         else if volume < 0 then volume = 0
-        return Math.round( volume / 10)
+        return volume / 10
         
     setVolume:(volume)->
         if volume > 10 then volume = 10
