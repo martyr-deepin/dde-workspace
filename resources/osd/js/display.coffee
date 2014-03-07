@@ -121,18 +121,24 @@ class Display extends Widget
             @valueEach[i].style.display = "block"
 
     showDisplayMode:->
-        clearTimeout(@timeout) if @timeout
-        @valueDiv.style.display = "none" if @valueDiv
-        if @DBusMonitors.length == 1 then return
+        clearTimeout(@timepress) if @timepress
+        @timepress = setTimeout(=>
+            clearTimeout(@timeout) if @timeout
+            
+            @valueDiv.style.display = "none" if @valueDiv
+            if @DBusMonitors.length == 1 then return
 
-        # @DisplayMode = @DBusDisplay.DisplayMode
-        ImgIndex = @DisplayMode
-        if ImgIndex >= 2 then ImgIndex = 2
-        @set_bg("#{@id}_#{ImgIndex}")
+            osdShow()
+            @element.style.display = "block"
+            # @DisplayMode = @DBusDisplay.DisplayMode
+            ImgIndex = @DisplayMode
+            if ImgIndex >= 2 then ImgIndex = 2
+            @set_bg("#{@id}_#{ImgIndex}")
 
-        @timeout = setTimeout(=>
-            @hide()
-        ,TIME_HIDE)
+            @timeout = setTimeout(=>
+                osdHide()
+            ,TIME_HIDE)
+        ,TIME_PRESS)
     
     showBrightness:->
         clearTimeout(@timepress) if @timepress
@@ -140,6 +146,7 @@ class Display extends Widget
             clearTimeout(@timeout) if @timeout
 
             echo "#{@id} Class  show"
+            osdShow()
             @element.style.display = "block"
             white = @getPrimarBrightnessValue()
             echo "showBrightValue:#{white}"
@@ -155,7 +162,6 @@ BrightCls = null
 
 BrightnessUp = (keydown)->
     if keydown then return
-    osdShow()
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
@@ -163,7 +169,6 @@ BrightnessUp = (keydown)->
 
 BrightnessDown = (keydown)->
     if keydown then return
-    osdShow()
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessDown"
@@ -171,7 +176,6 @@ BrightnessDown = (keydown)->
 
 DisplaySwitch = (keydown)->
     if keydown then return
-    osdShow()
     echo "DisplaySwitch"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"

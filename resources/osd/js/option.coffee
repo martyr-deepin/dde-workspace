@@ -34,8 +34,10 @@ class Option extends Widget
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
             clearTimeout(@timeout) if @timeout
+            
             echo "Option #{@id} show"
-            @element.style.Option = "block"
+            osdShow()
+            @element.style.display = "block"
             @set_bg(@id)
 
             @timeout = setTimeout(=>
@@ -47,27 +49,31 @@ class Option extends Widget
 OptionCls = null
 
 CapsLockOn = (keydown)->
-    if keydown then return
-    osdShow()
+    if !keydown then return
     echo "CapsLockOn"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "CapsLockOn"
     OptionCls.show()
 
 CapsLockOff = (keydown)->
-    if keydown then return
-    osdShow()
+    if !keydown then return
     echo "CapsLockOff"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "CapsLockOff"
     OptionCls.show()
 
 NumLockOn = (keydown)->
-    if keydown then return
-    osdShow()
+    if !keydown then return
     echo "NumLockOn"
-    OptionCls  = new Option("OptionSwitch") if not OptionCls?
+    OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "NumLockOn"
+    OptionCls.show()
+
+NumLockOff = (keydown)->
+    if !keydown then return
+    echo "NumLockOff"
+    OptionCls  = new Option("Option") if not OptionCls?
+    OptionCls.id = "NumLockOff"
     OptionCls.show()
 
 DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
