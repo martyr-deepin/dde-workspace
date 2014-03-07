@@ -21,7 +21,24 @@
 NOTIFICATIONS = "org.freedesktop.Notifications"
 
 SOFTWARE_MANAGER = "com.linuxdeepin.softwarecenter"
-softwareManager = get_dbus("system", SOFTWARE_MANAGER)
+
+
+uninstallReport = (status, msg)->
+    if status == UNINSTALL_STATUS.FAILED
+        message = "FAILED"
+    else if status == UNINSTALL_STATUS.SUCCESS
+        message = "SUCCESSFUL"
+
+    echo "uninstall #{message}, #{msg}"
+    icon_launcher = DCore.get_theme_icon("start-here", 48)
+    try
+        notification = get_dbus("session", NOTIFICATIONS)
+        notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
+    catch e
+        echo e
+    if Object.keys(uninstalling_apps).length == 0
+        echo 'uninstall: disconnect signal'
+        softwareManager.dis_connect("update_signal", uninstallSignalHandler)
 
 
 uninstallSignalHandler = (info)->
@@ -43,23 +60,7 @@ uninstallSignalHandler = (info)->
             if item.packages.indexOf(packages) != -1
                 delete uninstalling_apps[item.id]
     if message
-        uninstallReport(status, "#{message}")
-
-
-uninstallReport = (status, msg)->
-    notification = DCore.DBus.session(NOTIFICATIONS)
-
-    if status == UNINSTALL_STATUS.FAILED
-        message = "FAILED"
-    else if status == UNINSTALL_STATUS.SUCCESS
-        message = "SUCCESSFUL"
-
-    echo "uninstall #{message}, #{msg}"
-    icon_launcher = DCore.get_theme_icon("start-here", 48)
-    notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
-    if Object.keys(uninstalling_apps).length == 0
-        echo 'uninstall: disconnect signal'
-        softwareManager.dis_connect("update_signal", uninstallSignalHandler)
+        uninstallReport(status, message)
 
 
 uninstall = (opt) ->
@@ -67,12 +68,19 @@ uninstall = (opt) ->
     item = opt.item
 
     if not softwareManager?
-        notification = DCore.DBus.session(NOTIFICATIONS)
-        notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall failed", "Deepin Software Center is Not Found", [], {}, 0)
-        item.status = SOFTWARE_STATE.IDLE
-        item.show()
-        delete uninstalling_apps[item.id]
-        return
+        try
+            softwareManager = get_dbus("system", SOFTWARE_MANAGER)
+        catch e
+            echo e
+            try
+                notification = get_dbus("session", NOTIFICATIONS)
+                notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Deepin Software Center is Not Found"), [], {}, 0)
+            catch e
+                echo e
+            item.status = SOFTWARE_STATE.IDLE
+            item.show()
+            delete uninstalling_apps[item.id]
+            return
 
     if Object.keys(uninstalling_apps).length == 1
         echo 'uninstall: connect signal'

@@ -19,8 +19,10 @@
 
 
 LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
-daemon = get_dbus("session", LAUNCHER_DAEMON)
-if daemon == null
+try
+    daemon = get_dbus("session", LAUNCHER_DAEMON)
+catch e
+    echo e
     DCore.Launcher.quit()
 
 
@@ -29,8 +31,10 @@ START_MANAGER =
     path: "/com/deepin/StartManager"
     interface: "com.deepin.StartManager"
 
-startManager = get_dbus("session", START_MANAGER)
-if startManager == null
+try
+    startManager = get_dbus("session", START_MANAGER)
+catch e
+    echo e
     DCore.Launcher.quit()
 
 startManager.connect("AutostartChanged", (status, path)->
