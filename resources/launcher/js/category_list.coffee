@@ -149,3 +149,58 @@ class CategoryList
             --i
 
         return null
+
+    doListScroll:=>
+        if @direction == "up"
+            if @currentOffset >= @finalOffset
+                @finishScroll()
+                return
+        else
+            if @currentOffset <= @finalOffset
+                @finishScroll()
+                return
+
+        $("#grid").scrollTop = @currentOffset - SEARCH_BAR_HEIGHT
+        # @currentOffset += @step
+        if @direction == "up"
+            @currentOffset += @step
+        else
+            @currentOffset -= @step
+
+        @scrollId = webkitRequestAnimationFrame(@doListScroll)
+
+    fixOffset:(id)->
+        echo "fixOffset"
+        children = $("#grid").childNodes
+        offset = 0
+        for i in [0...children.length]
+            if children[i].style.display == 'none'
+                continue
+
+            if children[i].getAttribute("catId") == "#{id}"
+                @finalOffset = offset
+                break
+
+            offset += children[i].clientHeight + CATEGORY_LIST_ITEM_MARGIN
+
+    scroll: (currentId, targetId)->
+        @currentOffset = $("##{Category.PREFIX}#{currentId}").offsetTop
+        if "#{currentId}" == "#{targetId}"
+            @fixOffset(targetId)
+        else
+            @finalOffset = $("##{Category.PREFIX}#{targetId}").offsetTop
+        offset = @finalOffset - @currentOffset
+        if Math.abs(offset) > ITEM_HEIGHT*2 then @step = 80 else @step = 40
+        # @step = offset / 40
+        @direction = if offset > 0 then "up" else "down"
+        @doListScroll()
+
+    cancelScroll:->
+        if @scrollId
+            webkitCancelAnimationFrame(@scrollId)
+            @scrollId = null
+
+    finishScroll:->
+        @cancelScroll()
+        if @currentOffset != @finalOffset
+            $("#grid").scrollTop = @finalOffset - SEARCH_BAR_HEIGHT

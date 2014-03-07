@@ -72,13 +72,10 @@ class CategoryBar
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
             target = e.target
-            if target.tagName == "IMG"
-                target = target.parentNode
             id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
-                offset = $("##{Category.PREFIX}#{id}").offsetTop
-                # the scrollParent is body, so minus the search bar's height
-                $("#grid").scrollTop = offset - SEARCH_BAR_HEIGHT
+                categoryList.cancelScroll()
+                categoryList.scroll(@selectedId, id)
         )
 
         @category_items = {}
