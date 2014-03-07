@@ -123,6 +123,7 @@ class Audio extends Widget
         @timepress = setTimeout(=>
             clearTimeout(@timeout) if @timeout
             
+            osdShow()
             @element.style.display = "block"
             bg = @getBgName(white)
             echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
@@ -138,9 +139,8 @@ class Audio extends Widget
 
 AudioCls = null
 
-AudioUp =(type) ->
-    if type then return
-    osdShow()
+AudioUp = (keydown) ->
+    if keydown then return
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
@@ -149,9 +149,8 @@ AudioUp =(type) ->
     AudioCls.setVolume(white)
     AudioCls.show(white)
 
-AudioDown =(type) ->
-    if type then return
-    osdShow()
+AudioDown = (keydown) ->
+    if keydown then return
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
@@ -160,9 +159,8 @@ AudioDown =(type) ->
     AudioCls.setVolume(white)
     AudioCls.show(white)
 
-AudioMute =(type) ->
-    if type then return
-    osdShow()
+AudioMute = (keydown) ->
+    if keydown then return
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
