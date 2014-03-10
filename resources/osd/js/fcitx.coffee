@@ -73,8 +73,9 @@ class Fcitx extends Widget
                 FCITX_INPUTMETHOD.interface
             )
             @IMList = @DBusIM.IMList
-            @IMTrueList.push(im) for im in @IMList when im[4]
+            @IMTrueList.push(im) for im in @IMList when im[3]
             echo @IMTrueList
+            @getCurrentIM()
         catch e
             echo "DBusIM :#{FCITX_INPUTMETHOD.interface} ---#{e}---"
 
@@ -90,11 +91,12 @@ class Fcitx extends Widget
 
         
     getCurrentIM: ->
-        @CurrentIM = @DBusIM.getCurrentIM_sync()
-        @CurrentState = @DBusIM.getCurrentState_sync()
-
+        @CurrentIM = @DBusIM.GetCurrentIM_sync()
+        @CurrentState = @DBusIM.GetCurrentState_sync()
+        echo "@CurrentIM:#{@CurrentIM},@CurrentState:#{@CurrentState}"
+    
     setCurrentIM: (im)->
-        @DBusIM.setCurrentIM_sync(im)
+        @DBusIM.SetCurrentIM_sync(im)
 
 
     getLayouts: ->
@@ -108,11 +110,12 @@ class Fcitx extends Widget
 
 
     fcitxSignalsConnect: ->
+        @DBusStatus.connect("NewAttentionIcon",@fcitxSwitch)
         @DBusStatus.connect("NewIcon",@fcitxSwitch)
 
-    fcitxSwitch: ->
+    fcitxSwitch: =>
+        echo "fcitxSwitch"
         @getCurrentIM()
-        echo "@CurrentIM:#{@CurrentIM},@CurrentState:#{@CurrentState}"
 
 
 fcitx = new Fcitx("fcitx")
