@@ -76,7 +76,24 @@ NumLockOff = (keydown)->
     OptionCls.id = "NumLockOff"
     OptionCls.show()
 
+TouchPadOn = (keydown)->
+    if !keydown then return
+    echo "TouchPadOn"
+    OptionCls  = new Option("Option") if not OptionCls?
+    OptionCls.id = "TouchPadOn"
+    OptionCls.show()
+
+TouchPadOff = (keydown)->
+    if !keydown then return
+    echo "TouchPadOff"
+    OptionCls  = new Option("Option") if not OptionCls?
+    OptionCls.id = "TouchPadOff"
+    OptionCls.show()
+
+
 DBusMediaKey.connect("CapsLockOn",CapsLockOn) if DBusMediaKey?
 DBusMediaKey.connect("CapsLockOff",CapsLockOff) if DBusMediaKey?
 DBusMediaKey.connect("NumLockOn",NumLockOn) if DBusMediaKey?
 DBusMediaKey.connect("NumLockOff",NumLockOff) if DBusMediaKey?
+DBusMediaKey.connect("TouchPadOff",TouchPadOff) if DBusMediaKey?
+DBusMediaKey.connect("TouchPadOn",TouchPadOn) if DBusMediaKey?
