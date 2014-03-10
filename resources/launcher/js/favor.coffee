@@ -85,7 +85,8 @@ class FavorPage
     add: (id, index, fixed)->
         if @doAdd(id, index, fixed)
             @save()
-        @
+            return true
+        false
 
     doRemove:(id)->
         if delete @favors[id]
@@ -97,7 +98,8 @@ class FavorPage
     remove: (id)->
         if @doRemove(id)
             @save()
-        @
+            return true
+        false
 
     update: ->
             @list = Object.keys(@favors)
