@@ -26,7 +26,7 @@ MEDIAKEY =
     path: "/com/deepin/daemon/MediaKey"
     interface: "com.deepin.daemon.MediaKey"
 
-TIME_HIDE = 4000
+TIME_HIDE = 1500
 TIME_PRESS = 10
 timeout_osdHide = null
 DBusMediaKey = null
