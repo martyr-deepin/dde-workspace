@@ -50,13 +50,13 @@ allElsHide = ->
         if el.tagName = "DIV" then el.style.display = "none"
 
 osdHide = ->
-    #return
-    echo "osdHide"
+    return
+    #echo "osdHide"
     allElsHide()
     DCore.Osd.hide()
 
 osdShow = ->
-    echo "osdShow"
+    #echo "osdShow"
     allElsHide()
     DCore.Osd.show()
 
