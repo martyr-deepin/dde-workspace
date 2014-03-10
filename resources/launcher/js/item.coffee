@@ -213,6 +213,7 @@ class Item extends Widget
         else
             dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
+        dt.setData("text/uri-list", "file://#{@path}")
         if switcher.isFavor()
             return
         # TODO: drag between favor items
@@ -235,7 +236,6 @@ class Item extends Widget
         item = target.parentNode
         item.classList.add("item_dragged")
         dt.setData("text/plain", @id)
-        dt.setData("text/uri-list", "file://#{@path}")
         dt.effectAllowed = "copy"
         categoryBar.dark()
         switcher.bright()
