@@ -29,6 +29,7 @@
 #include "utils.h"
 
 
+#define SCHEME_LEN 7 // "file://"
 #define DEFAULT_BACKGROUND_IMAGE "/usr/share/backgrounds/default_background.jpg"
 
 
@@ -146,12 +147,14 @@ void set_background(GdkWindow* win,  double width, double height)
 {
     char* blur_path = get_blur_path();
     if (blur_path == NULL) {
-        blur_path = g_strdup(DEFAULT_BACKGROUND_IMAGE);
+        g_debug("[%s] get blur pic failed, use default background: %s", __func__, DEFAULT_BACKGROUND_IMAGE);
+        _set_background_aux(win, DEFAULT_BACKGROUND_IMAGE, width, height);
+        return;
     }
 
-    g_debug("[%s] blur pic path: %s\n", __func__, blur_path);
+    g_debug("[%s] blur pic path: %s", __func__, blur_path);
 
-    _set_background_aux(win, blur_path, width, height);
+    _set_background_aux(win, &blur_path[SCHEME_LEN], width, height);
 
     g_free(blur_path);
 }
