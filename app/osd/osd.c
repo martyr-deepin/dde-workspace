@@ -54,6 +54,7 @@
 static GKeyFile* shutdown_config = NULL;
 
 PRIVATE GtkWidget* container = NULL;
+PRIVATE GtkStyleContext *style_context;
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE char **input_argv = NULL;
@@ -169,13 +170,18 @@ int main (int argc, char **argv)
                            | GDK_LEAVE_NOTIFY_MASK
                            );
 
+
+
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
+    style_context = gtk_widget_get_style_context(webview);
+    gtk_style_context_add_class(style_context,GTK_STYLE_CLASS_OSD);
+    /*gtk_render_background()*/
 
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
-    GdkRGBA rgba = { 0, 0, 0, 0.85 };
+    GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));

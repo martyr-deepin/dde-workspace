@@ -25,8 +25,10 @@ MEDIAKEY =
     obj: "com.deepin.daemon.KeyBinding"
     path: "/com/deepin/daemon/MediaKey"
     interface: "com.deepin.daemon.MediaKey"
+
 TIME_HIDE = 4000
 TIME_PRESS = 10
+timeout_osdHide = null
 DBusMediaKey = null
 try
     DBusMediaKey = DCore.DBus.session_object(
@@ -42,17 +44,18 @@ echo DBusMediaKey
 #org/gonome/settings-daemon/plugins/media-keys/active false
 #com/deepin/dde/key-binding/mediakey
 #dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
-allElsHide=->
+allElsHide = ->
     els = _b.children
     for el in els
         if el.tagName = "DIV" then el.style.display = "none"
 
-osdHide=->
+osdHide = ->
+    #return
     echo "osdHide"
     allElsHide()
     DCore.Osd.hide()
 
-osdShow=->
+osdShow = ->
     echo "osdShow"
     allElsHide()
     DCore.Osd.show()
