@@ -19,21 +19,13 @@
 
 class Switcher
     constructor:->
-        @o = x: 32, y:32
-        @animationCanvas = null
-        # @animationCanvas = create_element(
-        #     tag:"canvas",
-        #     class:"switcher_board",
-        #     width: 64,
-        #     height: 64,
-        #     document.body
-        # )
-        # @ctx = @animationCanvas.getContext("2d")
-        # info = lineWidth: 2, alpha:5, radius: 17
-        # @drawCircle(info)
         @isShowCategory = false
         @switcher = create_element(tag:'div', id:'switcher', document.body)
         @switcherHover = create_element(tag:'div', id:"switcher_hover", document.body)
+        @img = create_img(src: 'img/favor_normal.png', id:'notify',class:"switcher_hover", document.body)
+        @img.addEventListener("webkitAnimationEnd", =>
+            @img.style.webkitAnimationName = ''
+        )
         @showCategory()
         @page = 'Favor'
         @isHovered = false
@@ -65,8 +57,9 @@ class Switcher
             if @isFavor()
                 return
             id = e.dataTransfer.getData("text/plain")
-            favor.add(id)
-            @addedToFavor = true
+            if favor.add(id)
+                @addedToFavor = true
+                @notify()
         )
 
     on_click:(e)=>
@@ -159,55 +152,5 @@ class Switcher
     bright:->
         @showFavorGlow()
 
-    separate:->
-        if @animationCanvas == null
-            @animationCanvas = create_element(
-                tag:"canvas",
-                class:"switcher_board",
-                width: 64,
-                height: 64,
-                document.body
-            )
-
-            @ctx = @animationCanvas.getContext("2d")
-        info1 = lineWidth: 2, alpha:5, radius: 17
-        info2 = lineWidth: 2, alpha:5, radius: 17
-        @animationTimer = setInterval(=>
-            @doSeparate([info1, info2])
-        , 90)
-
-    doSeparate:(infos)=>
-        @ctx.clearRect(0, 0, @animationCanvas.width, @animationCanvas.height)
-
-        info1 = infos[0]
-        info2 = infos[1]
-
-        if info2.radius < 20
-            # echo 'draw first'
-            if info1.radius == 19
-                info1.lineWidth = 1
-
-            @drawCircle(info1)
-            info1.radius += 1
-            info1.alpha -= 1
-
-        if info1.radius > 20
-            # echo 'draw second'
-            if info2.radius == 19
-                info2.lineWidth = 1
-
-            @drawCircle(info1)
-            info2.radius += 1
-            info2.alpha -= 1
-
-        if info2.radius > 22
-            # echo 'stop'
-            clearInterval(@animationTimer)
-            @ctx.clearRect(0,0,@animationCanvas.width,@animationCanvas.height)
-
-    drawCircle:(info)->
-        @ctx.beginPath()
-        @ctx.arc(@o.x, @o.y, info.radius, 0, 2 * Math.PI)
-        @ctx.lineWidth = info.lineWidth
-        @ctx.strokeStyle = 'rgba(255,255,255,0.'+info.alpha+')'
-        @ctx.stroke()
+    notify:->
+        @img.style.webkitAnimationName = 'Separate'

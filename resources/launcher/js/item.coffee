@@ -254,7 +254,7 @@ class Item extends Widget
         if !switcher.isShowCategory or !switcher.addedToFavor
             return
 
-        switcher.separate()
+        switcher.notify()
 
     createMenu:->
         @menu = null
@@ -306,7 +306,8 @@ class Item extends Widget
                     favor.remove(@id)
                 else
                     echo 'add to favor'
-                    favor.add(@id)
+                    if favor.add(@id)
+                        switcher.notify()
             when 3 then daemon.SendToDesktop(@path)
             when 4 then s_dock?.RequestDock_sync(escape(@path))
             when 5 then @toggle_autostart()

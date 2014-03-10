@@ -57,6 +57,19 @@ body {
   background-attachment: fixed;
   background: no-repeat url(../img/switcher_bg.png);
 }
+.switcher_hover{
+  top: 25px;
+  left: 25px;
+  position: fixed;
+  width:64px;
+  height:64px;
+  border-radius: 50%;
+  visibility: hidden;
+  z-index: 4;
+}
+#notify {
+  -webkit-animation-duration: 400ms;
+}
 #switcher_hover {
   top: 39px;
   left: 39px;
@@ -64,6 +77,7 @@ body {
   width:34px;
   height:34px;
   border-radius: 50%;
+  z-index: 9;
 }
 .switcher_board {
   position: fixed;
@@ -71,6 +85,10 @@ body {
   left: 25px;
   border-radius: 50%;
   z-index: -9
+}
+@-webkit-keyframes Separate {
+  0% {opacity: 1; visibility: visible;}
+  100%{opacity:0; -webkit-transform: scale(2);}
 }
 
 .tipImage {
