@@ -21,6 +21,7 @@
 
 #include <gtk/gtk.h>
 #include <cairo-xlib.h>
+#include <cairo.h>
 #include <gdk/gdkx.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <unistd.h>
@@ -52,6 +53,9 @@
 #define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
 #define SHUTDOWN_CONF "osd/config.ini"
 static GKeyFile* shutdown_config = NULL;
+static int radius = 18;
+static int width = 160;
+static int height = 160;
 
 PRIVATE GtkWidget* container = NULL;
 PRIVATE GtkStyleContext *style_context;
@@ -149,9 +153,9 @@ int main (int argc, char **argv)
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
-    gtk_window_resize (GTK_WINDOW (container), 160,160);
+    gtk_window_resize (GTK_WINDOW (container), width,height);
     
-    gboolean FOCUS = FALSE;
+    gboolean FOCUS = TRUE;
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FOCUS);
     gtk_window_set_accept_focus (GTK_WINDOW (container), FOCUS);
     gtk_window_set_focus (GTK_WINDOW (container), NULL);
@@ -176,17 +180,32 @@ int main (int argc, char **argv)
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
     gtk_widget_realize (container);
     gtk_widget_realize (webview);
-    style_context = gtk_widget_get_style_context(webview);
-    gtk_style_context_add_class(style_context,GTK_STYLE_CLASS_OSD);
-    /*gtk_render_background()*/
-
+    
+/*    style_context = gtk_widget_get_style_context(webview);*/
+    /*gtk_style_context_add_class(style_context,GTK_STYLE_CLASS_OSD);*/
+    /*gtk_style_context_add_class(style_context,GTK_STYLE_PROPERTY_BORDER_RADIUS);*/
+    /*cairo_t *cr;*/
+    /*cairo_surface_t *surface;*/
+    /*surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);*/
+    /*cr = cairo_create(surface);*/
+    /*[>cairo_set_source_rgba (cr, 1, 0, 0, 0.80);<]*/
+    /*[>cairo_fill (cr);<]*/
+    /*gtk_render_background(style_context,cr,radius,radius,width,height);*/
+    /*[>gtk_style_context_set_background(style_context,gdkwindow);<]*/
+    /*gtk_style_context_restore(style_context);*/
+    /*[>cairo_destory(cr);<]*/
+    /*[>cairo_surface_write_to_png(surface,"gtkbackground.png");<]*/
+    /*[>cairo_surface_destory(surface);<]*/
+    
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
+    gdk_window_set_opacity (gdkwindow, 0.0);
+    gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-    
     gdk_window_set_override_redirect(gdkwindow, !FOCUS);
+    gdk_window_set_focus_on_map (gdkwindow, FOCUS);
     gdk_window_set_accept_focus (gdkwindow, FOCUS);
     
     gtk_widget_show_all (container);
