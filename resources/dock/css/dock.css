@@ -32,13 +32,24 @@ body {
     margin: auto;
 }
 
-#container {
+#containerWarp{
     position:fixed;
     bottom: 9px;
     display: -webkit-box;
+    -webkit-box-pack:center;
     min-height: 60px;
     max-height: 60px;
-    /* border: solid 2px red; */
+}
+#container {
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  /* width:100%; */
+  /* border: solid 2px red; */
+}
+
+.item_container {
+  display: -webkit-box;
+  -webkit-box-pack: center;
 }
 
 #panel {
@@ -47,4 +58,5 @@ body {
     bottom: 0px;
     min-height: 30px;
     max-height: 60px;
+    z-index: -9;
 }
