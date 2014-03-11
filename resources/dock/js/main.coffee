@@ -122,6 +122,14 @@ setTimeout(->
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
 
+try
+    icon_launcher = DCore.get_theme_icon("start-here", 48)
+    # icon_desktop = DCore.get_theme_icon("show_desktop", 48)
+
+show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
+clock = create_clock(DCore.Dock.clock_type())
+trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
+show_desktop = new ShowDesktop()
 
 DCore.Dock.emit_webview_ok()
 DCore.Dock.test()

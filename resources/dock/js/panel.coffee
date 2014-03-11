@@ -30,11 +30,10 @@ class Panel
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
         @panel.addEventListener("click", ->
-            echo 'show desktop'
+            show_desktop.toggle()
         )
 
         $("#containerWarp").addEventListener("click", (e)->
-            echo 'containerWarp'
             passToPanel()
         )
 
