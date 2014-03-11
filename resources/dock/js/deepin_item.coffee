@@ -164,7 +164,7 @@ class ClockBase extends SystemItem
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = ''
         # @element.style.webkitTransform = 'scale(1.1)'
-        @element.style.webkitTransform = 'translateY(4px)'
+        @element.style.webkitTransform = 'translateY(-5px)'
         @element.style.webkitTransition = 'all 100ms'
         @set_tooltip((new Date()).toLocaleDateString())
 
