@@ -47,11 +47,13 @@ echo DBusMediaKey
 allElsHide = ->
     els = _b.children
     for el in els
-        if el.tagName = "DIV" then el.style.display = "none"
+        if el.tagName = "DIV"
+            echo el
+            el.style.display = "none"
 
 osdHide = ->
-    return
-    #echo "osdHide"
+    #return
+    echo "osdHide"
     allElsHide()
     DCore.Osd.hide()
 

@@ -155,7 +155,7 @@ int main (int argc, char **argv)
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_resize (GTK_WINDOW (container), width,height);
     
-    gboolean FOCUS = TRUE;
+    gboolean FOCUS = FALSE;
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FOCUS);
     gtk_window_set_accept_focus (GTK_WINDOW (container), FOCUS);
     gtk_window_set_focus (GTK_WINDOW (container), NULL);
@@ -198,6 +198,7 @@ int main (int argc, char **argv)
     /*[>cairo_surface_destory(surface);<]*/
     
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_opacity (gdkwindow, 0.0);
