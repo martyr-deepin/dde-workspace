@@ -84,6 +84,7 @@ clear_speical_desktop_items = ->
 
 
 load_speical_desktop_items = ->
+    return
     clear_speical_desktop_items()
 
     if _GET_CFG_BOOL_(_CFG_SHOW_COMPUTER_ICON_)
