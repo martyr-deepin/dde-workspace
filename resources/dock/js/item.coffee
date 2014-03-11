@@ -341,7 +341,7 @@ class AppItem extends Widget
         DCore.Dock.require_all_region()
         # not use element for fixing open indicator
         # @img.style.webkitTransform = 'scale(1.1)'
-        @img.style.webkitTransform = 'translateY(4px)'
+        @img.style.webkitTransform = 'translateY(-5px)'
         @img.style.webkitTransition = 'all 100ms'
 
     do_mouseout: (e)=>
