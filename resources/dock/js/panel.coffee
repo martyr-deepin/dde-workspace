@@ -19,11 +19,25 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
+passToPanel = ->
+    ev = new Event("click")
+    $("#panel").dispatchEvent(ev)
+
+
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
+        @panel.addEventListener("click", ->
+            echo 'show desktop'
+        )
+
+        $("#containerWarp").addEventListener("click", (e)->
+            echo 'containerWarp'
+            passToPanel()
+        )
+
 
         @has_notifications = false
 
