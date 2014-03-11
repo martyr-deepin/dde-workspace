@@ -50,12 +50,11 @@ allElsHide = ->
     els = _b.children
     for el in els
         if el.tagName = "DIV"
-            echo el
             el.style.display = "none"
 
 osdHide = ->
     return if FOCUS
-    echo "osdHide"
+    #echo "osdHide"
     allElsHide()
     DCore.Osd.hide()
 
