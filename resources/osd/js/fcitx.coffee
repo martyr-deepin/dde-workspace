@@ -17,8 +17,7 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-class Fcitx extends Widget
+class Fcitx
     FCITX = "org.fcitx.Fcitx-0"
     FCITX_STATUS =
         obj: FCITX
@@ -35,31 +34,14 @@ class Fcitx extends Widget
         path: "/keyboard"
         interface: "org.fcitx.Fcitx.Keyboard"
 
-    IM_HIDE = 0
-    IM_SHOW = 1
-    IM_CHANGED = 2
-    IM_OTHER = 3
-    
-    constructor:(@id)->
-        super
-        echo "New Fcitx :#{@id}"
+    constructor: ->
+        echo "New Fcitx"
         @IMList = []
         @IMTrueList = []
-
         @Layouts = []
-
-        @valueEach = []
         
-        _b.appendChild(@element)
         @getDBus()
    
-    hide:->
-        @element.style.display = "none"
-    
-    set_bg:(imgName)->
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
-  
-    
     getDBus:->
         try
             @DBusStatus = DCore.DBus.session_object(
@@ -105,11 +87,12 @@ class Fcitx extends Widget
 
     getIMState: ->
         @getCurrentIMState()
-        if @CurrentState == 0 then return "IM_HIDE"
-        else if @PrevState != @CurrentState and @PrevIM isnt @CurrentIM and @CurrentState != 0 then return "IM_CHANGED"
-        else if @CurrentState != 0  then return "IM_SHOW"
-        else return "IM_OTHER"
- 
+        if @CurrentState == 0 then @IMState = "IM_HIDE"
+        else if @PrevState != @CurrentState and @PrevIM isnt @CurrentIM and @CurrentState != 0 then @IMState = "IM_CHANGED"
+        else if @CurrentState != 0  then @IMState = "IM_SHOW"
+        else @IMState = "IM_OTHER"
+        return @IMState
+    
     setCurrentIM: (im)->
         @DBusIM.SetCurrentIM_sync(im)
 
@@ -124,15 +107,30 @@ class Fcitx extends Widget
         @DBusLayout.SetDefaultLayout_sync(layout.variant)
 
 
-    fcitxSignalsConnect: ->
-        @DBusStatus.connect("NewIcon",@fcitxSwitch)
+    fcitxSignalsConnect:(cbIMState) ->
+        @DBusStatus.connect("NewIcon",cbIMState)
         #@DBusStatus.connect("NewToolTip",@fcitxSwitch)
+
+class FcitxOSD extends Widget
+    constructor:(@id)->
+        super
+        echo "New FcitxOSD :#{@id}"
+        _b.appendChild(@element)
+
+        @fcitx = new Fcitx()
+        @fcitx.fcitxSignalsConnect(@cbIMState)
     
+    hide:->
+        @element.style.display = "none"
     
-    fcitxSwitch: =>
-        echo "fcitxSwitch"
-        @state = @getIMState()
-        switch @state
+    set_bg:(imgName)->
+        @element.style.backgroundImage = "url(img/#{imgName}.png)"
+  
+     
+    cbIMState: =>
+        echo "cbIMState"
+        @IMState = @fcitx.getIMState()
+        switch @IMState
             when "IM_HIDE" then @IMHide()
             when "IM_SHOW" then @IMShow()
             when "IM_CHANGED" then @IMChanged()
@@ -140,6 +138,7 @@ class Fcitx extends Widget
 
     IMHide: ->
         echo "IMHide"
+        @hide()
 
     IMShow: ->
         echo "IMShow"
@@ -151,6 +150,4 @@ class Fcitx extends Widget
         echo "IMOther"
 
 
-
-fcitx = new Fcitx("fcitx")
-fcitx.fcitxSignalsConnect()
+fcitxOSD = new FcitxOSD("FcitxOSD")
