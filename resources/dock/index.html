@@ -6,7 +6,12 @@
     </head>
     <body>
         <canvas id="panel" class='fixed_center'></canvas>
-        <div id="container" class="fixed_center">
+        <div id="containerWarp" class="fixed_center">
+            <div id='container'>
+                <!-- maybe use separator is better -->
+                <div class='item_container' id='pre_fixed'></div>
+                <div class='item_container' id='system'></div>
+            </div>
         </div>
         <script src="js/dock.js"> </script>
     </body>

@@ -567,9 +567,9 @@ int main(int argc, char* argv[])
 
     set_wmspec_dock_hint(DOCK_GDK_WINDOW());
 
-#ifndef NDEBUG
-    monitor_resource_file("dock", webview);
-#endif
+// #ifndef NDEBUG
+//     monitor_resource_file("dock", webview);
+// #endif
 
     /*gdk_window_set_debug_updates(TRUE);*/
 

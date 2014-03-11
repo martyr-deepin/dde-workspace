@@ -34,7 +34,8 @@ class Selector
         @update(null)
 
     rowNumber:->
-        Math.floor(@box.clientWidth / ITEM_WIDTH)
+        width = @box.clientWidth - GRID_PADDING * 2
+        Math.floor(width / ITEM_WIDTH)
 
     getItem:->
         item = null
@@ -178,7 +179,7 @@ class Selector
             count = o.rowNumber()
 
             if switcher.isShowCategory && o.isLastLine(item)
-                # echo 'get next category'
+                echo 'get next category'
                 if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
                     count = o.indexOnLine(item)

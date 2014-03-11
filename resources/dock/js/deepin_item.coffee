@@ -34,48 +34,21 @@ class Applet extends AppItem
 
 class FixedItem extends Applet
     is_fixed_pos: true
-    __show: false
-    constructor: ->
-        super
-        @element.draggable=false
-
-    show: (v)->
-        @__show = v
-        if @__show
-            @open_indicator.style.display = "block"
-        else
-            @open_indicator.style.display = "none"
 
 
-class ShowDesktop extends FixedItem
-    @set_time_id: null
+class PrefixedItem extends FixedItem
     constructor:->
         super
-        DCore.signal_connect("desktop_status_changed", =>
-            @set_status(DCore.Dock.get_desktop_status())
-        )
-
-    set_status: (status)=>
-        @show(status)
-
-    toggle: =>
-        DCore.Dock.show_desktop(!@__show)
-
-    do_click: (e)=>
-        DCore.Dock.show_desktop(!@__show)
-
-    do_dragenter: (e) =>
-        e.stopPropagation()
-        ShowDesktop.set_time_id = setTimeout(=>
-            DCore.Dock.show_desktop(true)
-        , 1000)
-    do_dragleave: (e) =>
-        e.stopPropagation()
-        clearTimeout(ShowDesktop.set_time_id)
-        ShowDesktop.set_time_id = null
+        $("#pre_fixed").appendChild(@element)
 
 
-class LauncherItem extends FixedItem
+class SystemItem extends FixedItem
+    constructor:->
+        super
+        $("#system").appendChild(@element)
+
+
+class LauncherItem extends PrefixedItem
     constructor: ->
         super
         DCore.signal_connect("launcher_running", =>
@@ -88,7 +61,7 @@ class LauncherItem extends FixedItem
         DCore.Dock.toggle_launcher(!@__show)
 
 
-class Trash extends FixedItem
+class Trash extends SystemItem
     constructor: ->
         super
         @entry = DCore.DEntry.get_trash_entry()
@@ -182,19 +155,24 @@ class Trash extends FixedItem
 
 
 
-class ClockBase extends FixedItem
+class ClockBase extends SystemItem
+    constructor:->
+        super
+
     do_mouseover: =>
         super
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = ''
-        @element.style.webkitTransform = 'scale(1.1)'
-        @element.style.webkitTransition = 'all 0.2s ease-out'
+        # @element.style.webkitTransform = 'scale(1.1)'
+        @element.style.webkitTransform = 'translateY(4px)'
+        @element.style.webkitTransition = 'all 100ms'
         @set_tooltip((new Date()).toLocaleDateString())
 
     do_mouseout: (e)=>
         super
         @element.style.webkitTransform = ''
-        @element.style.webkitTransition = 'opacity 1s ease-in'
+        # @element.style.webkitTransition = 'opacity 1s ease-in'
+        @element.style.webkitTransition = 'all 0.2s'
 
     start_time_settings: ->
         echo 'time settings'
@@ -260,8 +238,8 @@ class DigitClock extends ClockBase
 
     switch_to_analog: ->
         analog_clock = new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
+        swap_element(analog_clock.element, @element)
         @destroy()
-        swap_element(@element, analog_clock.element)
 
 
 class AnalogClock extends ClockBase
@@ -307,8 +285,8 @@ class AnalogClock extends ClockBase
 
     switch_to_digit: ->
         digit_clock = new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
-        @destroy()
         swap_element(@element, digit_clock.element)
+        @destroy()
 
 
 create_clock = (type)->
@@ -323,5 +301,5 @@ try
     # icon_desktop = DCore.get_theme_icon("show_desktop", 48)
 
 show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
 clock = create_clock(DCore.Dock.clock_type())
+trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))

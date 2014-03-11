@@ -23,12 +23,16 @@ calc_app_item_size = ->
     apps = $s(".AppItem")
     return if apps.length = 0
 
-    list = $("#app_list")
-    client_width = list.clientWidth
-    item_num = list.children.length
+    container = $("#container")
+    list_width = container.clientWidth
+    container_list = container.children
+    item_num = 0
+    for i in [0...container_list.length]
+        item_num += container_list[i].children.length
+    client_width = $("#containerWarp").clientWidth
     w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
-    echo "new ICON_SCALE: #{ICON_SCALE}"
+    # echo "new ICON_SCALE: #{ICON_SCALE}"
 
     for i in apps
         Widget.look_up(i.id)?.update_scale()
@@ -59,11 +63,11 @@ class AppList extends Widget
     @expand_panel_id: null
     constructor: (@id) ->
         super
-        $("#container").appendChild(@element)
+        @element.classList.add("item_container")
+        $("#container").insertBefore(@element, $("#system"))
         @insert_indicator = create_element(tag:"div", class:"InsertIndicator")
         @_insert_anchor_item = null
         @is_insert_indicator_shown = false
-        @last_fixed = null
 
     append: (c)->
         if @_insert_anchor_item and @_insert_anchor_item.element.parentNode == @element
@@ -78,14 +82,7 @@ class AppList extends Widget
         run_post(calc_app_item_size)
 
     append_app_item: (c)->
-        if @last_fixed == null
-            @element.appendChild(c.element)
-            if c.id == "trash"
-                @last_fixed = c.element
-        else
-            @element.insertBefore(c.element, @last_fixed)
-            if c.id == 'dde_digit_clock' || c.id == 'dde_analog_clock'
-                @last_fixed = c.element
+        @element.appendChild(c.element)
 
     record_last_over_item: (item)->
         @_insert_anchor_item = item
@@ -113,11 +110,12 @@ class AppList extends Widget
         if e.screenX > min_x and e.screenX < max_x
             if dnd_is_deepin_item(e) or dnd_is_desktop(e)
                 e.dataTransfer.dropEffect="copy"
-                n = e.x / (ITEM_WIDTH * ICON_SCALE)
-                if n > 2  # skip the show_launcher and show launcher AppItem
-                    @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
-                else
-                    @hide_indicator()
+                # n = e.x / (ITEM_WIDTH * ICON_SCALE)
+                @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
+                # if n > 1  # skip the show_launcher
+                #     @show_indicator(e.x, e.dataTransfer.getData(DEEPIN_ITEM_ID))
+                # else
+                #     @hide_indicator()
 
     do_dragleave: (e)=>
         @hide_indicator()
@@ -164,7 +162,7 @@ class AppList extends Widget
         if @_insert_anchor_item
             @element.insertBefore(@insert_indicator, @_insert_anchor_item.element)
         else
-            @element.insertBefore(@insert_indicator, @last_fixed)
+            @element.appendChild(@insert_indicator)
 
         @is_insert_indicator_shown = true
         AppList.expand_panel_id = setTimeout(->
@@ -256,7 +254,7 @@ class AppItem extends Widget
         app_list.record_last_over_item(@)
         Preview_close_now()
         return if @is_fixed_pos
-        e.dataTransfer.setDragImage(@img, 6, 4)
+        e.dataTransfer.setDragImage(@img, 24, 24)
         e.dataTransfer.setData(DEEPIN_ITEM_ID, @app_id)
 
         # flag for doing swap between launcher and clientgroup
@@ -342,12 +340,14 @@ class AppItem extends Widget
     do_mouseover: (e)=>
         DCore.Dock.require_all_region()
         # not use element for fixing open indicator
-        @img.style.webkitTransform = 'scale(1.1)'
-        @img.style.webkitTransition = 'all 0.2s ease-out'
+        # @img.style.webkitTransform = 'scale(1.1)'
+        @img.style.webkitTransform = 'translateY(4px)'
+        @img.style.webkitTransition = 'all 100ms'
 
     do_mouseout: (e)=>
         @img.style.webkitTransform = ''
-        @img.style.webkitTransition = 'opacity 1s ease-in'
+        # @img.style.webkitTransition = 'opacity 1s ease-in'
+        @img.style.webkitTransition = 'all 0.2s'
 
     on_itemselected: (e)=>
         @do_mouseout(e)
