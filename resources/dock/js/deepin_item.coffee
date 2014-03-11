@@ -294,12 +294,3 @@ create_clock = (type)->
         new DigitClock(DIGIT_CLOCK['id'], DIGIT_CLOCK['bg'], '')
     else
         new AnalogClock(ANALOG_CLOCK['id'], ANALOG_CLOCK['bg'], '')
-
-
-try
-    icon_launcher = DCore.get_theme_icon("start-here", 48)
-    # icon_desktop = DCore.get_theme_icon("show_desktop", 48)
-
-show_launcher = new LauncherItem("show_launcher", icon_launcher, _("Launcher"))
-clock = create_clock(DCore.Dock.clock_type())
-trash = new Trash("trash", Trash.get_icon(DCore.DEntry.get_trash_count()), _("Trash"))
