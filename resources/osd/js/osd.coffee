@@ -79,7 +79,7 @@ class OSD extends Widget
     
     createDisplaySwitch:(type)->
         @DisplaySwitch = new Display("DisplaySwitch") if not @DisplaySwitch?
-        @DisplaySwitch.show()        
+        @DisplaySwitch.show()
     
     newClass:(id)->
         cls = null

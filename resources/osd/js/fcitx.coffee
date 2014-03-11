@@ -116,17 +116,46 @@ class FcitxOSD extends Widget
         super
         echo "New FcitxOSD :#{@id}"
         _b.appendChild(@element)
-
+    
         @fcitx = new Fcitx()
         @fcitx.fcitxSignalsConnect(@cbIMState)
     
     hide:->
         @element.style.display = "none"
     
+    show:->
+        @element.style.display = "-webkit-box"
+    
+    
     set_bg:(imgName)->
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
   
-     
+    imListBackgroundChange: ->
+        clearTimeout(timeout_osdHide) if timeout_osdHide
+        osdShow()
+        @show()
+        
+        if not @IMListul?
+            @IMli = []
+            @IMli_span = []
+            @IMListul = create_element("ul","IMListul",@element)
+            for im,i in @fcitx.IMTrueList
+                @IMli[i] = create_element("li","IMli",@IMListul)
+                @IMli_span[i] = create_element("span","IMli_span",@IMli[i])
+                @IMli_span[i].textContent = im[1]
+        
+        @fcitx.getIMState()
+        @currentIMIndex = @fcitx.CurrentState - 1
+        @currentIMIndex = @fcitx.PrevState if @currentIMIndex == -1
+        
+        for li,i in @IMli
+            if i == @currentIMIndex then li.style.backgroundColor = "rgb(0,0,0)"
+            else li.style.backgroundColor = null
+        
+        timeout_osdHide = setTimeout(=>
+            osdHide()
+        ,TIME_HIDE)
+        
     cbIMState: =>
         echo "cbIMState"
         @IMState = @fcitx.getIMState()
@@ -145,6 +174,7 @@ class FcitxOSD extends Widget
 
     IMChanged: ->
         echo "IMChanged"
+        @imListBackgroundChange()
 
     IMOther: ->
         echo "IMOther"

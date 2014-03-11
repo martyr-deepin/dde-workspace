@@ -1,0 +1,35 @@
+
+.IMListul{
+    /*background-color:rgba(50,0,50,0.2);*/
+    /*position:absolute;*/
+    margin:0;
+    padding:0;
+    width:150px;
+    height:80px;
+    /*height:15.2em;*/
+}
+
+.IMli{
+    /*position:relative;*/
+    height:50%;
+    width:100%;
+    border-radius:4px; 
+    list-style:none;
+    overflow:hidden;
+    text-align:center;
+}
+.IMli span{
+    height:100%;
+    width:100%;
+    line-height:40px;
+    /*display:table-cell;*/
+    /*padding:7px 10px;*/
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
+    font-size:1.6em;
+    font-weight:normal; 
+    color:#afafaf;
+
+    overflow:hidden;
+
+}
+
