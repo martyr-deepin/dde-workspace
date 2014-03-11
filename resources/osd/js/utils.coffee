@@ -19,6 +19,8 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
+FOCUS = false
+
 
 #MediaKey DBus
 MEDIAKEY =
@@ -52,7 +54,7 @@ allElsHide = ->
             el.style.display = "none"
 
 osdHide = ->
-    #return
+    return if FOCUS
     echo "osdHide"
     allElsHide()
     DCore.Osd.hide()
@@ -68,7 +70,7 @@ click_time = 0
 _b.addEventListener("click",(e)=>
     e.stopPropagation()
     click_time++
-    DCore.Osd.quit() if click_time % 3 == 0
+    #DCore.Osd.quit() if click_time % 3 == 0
 )
 
 
