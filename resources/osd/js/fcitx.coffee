@@ -131,10 +131,6 @@ class FcitxOSD extends Widget
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
   
     imListBackgroundChange: ->
-        clearTimeout(timeout_osdHide) if timeout_osdHide
-        osdShow()
-        @show()
-        
         if not @IMListul?
             @IMli = []
             @IMli_span = []
@@ -142,19 +138,19 @@ class FcitxOSD extends Widget
             for im,i in @fcitx.IMTrueList
                 @IMli[i] = create_element("li","IMli",@IMListul)
                 @IMli_span[i] = create_element("span","IMli_span",@IMli[i])
-                @IMli_span[i].textContent = im[1]
+                @IMli_span[i].textContent = im[0]
         
         @fcitx.getIMState()
         @currentIMIndex = @fcitx.CurrentState - 1
         @currentIMIndex = @fcitx.PrevState if @currentIMIndex == -1
         
         for li,i in @IMli
-            if i == @currentIMIndex then li.style.backgroundColor = "rgb(0,0,0)"
-            else li.style.backgroundColor = null
-        
-        timeout_osdHide = setTimeout(=>
-            osdHide()
-        ,TIME_HIDE)
+            if i == @currentIMIndex
+                li.style.border = "rgba(255,255,255,0.5) 2px solid"
+                li.style.backgroundColor = "rgb(0,0,0)"
+            else
+                li.style.border = "rgba(255,255,255,0.0) 2px solid"
+                li.style.backgroundColor = null
         
     cbIMState: =>
         echo "cbIMState"
@@ -174,7 +170,14 @@ class FcitxOSD extends Widget
 
     IMChanged: ->
         echo "IMChanged"
+        clearTimeout(timeout_osdHide) if timeout_osdHide
+        osdShow()
+        @show()
         @imListBackgroundChange()
+        
+        timeout_osdHide = setTimeout(=>
+            osdHide()
+        ,TIME_HIDE)
 
     IMOther: ->
         echo "IMOther"
