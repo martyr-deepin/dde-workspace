@@ -53,12 +53,12 @@
 #define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
 #define SHUTDOWN_CONF "osd/config.ini"
 static GKeyFile* shutdown_config = NULL;
-static int radius = 18;
+/*static int radius = 18;*/
 static int width = 160;
 static int height = 160;
 
 PRIVATE GtkWidget* container = NULL;
-PRIVATE GtkStyleContext *style_context;
+/*PRIVATE GtkStyleContext *style_context;*/
 
 PRIVATE GSettings* dde_bg_g_settings = NULL;
 PRIVATE char **input_argv = NULL;
