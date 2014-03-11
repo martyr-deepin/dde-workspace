@@ -198,6 +198,8 @@ int main (int argc, char **argv)
     /*[>cairo_surface_destory(surface);<]*/
     
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    gtk_widget_show_all (container);
+    
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_opacity (gdkwindow, 0.0);
@@ -208,7 +210,6 @@ int main (int argc, char **argv)
     gdk_window_set_focus_on_map (gdkwindow, FOCUS);
     gdk_window_set_accept_focus (gdkwindow, FOCUS);
     
-    gtk_widget_show_all (container);
     gtk_widget_set_opacity (container,0.9);
 
     gdk_window_stick (gdkwindow);
