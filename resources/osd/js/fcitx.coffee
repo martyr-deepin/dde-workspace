@@ -35,7 +35,11 @@ class Fcitx extends Widget
         path: "/keyboard"
         interface: "org.fcitx.Fcitx.Keyboard"
 
-
+    IM_HIDE = 0
+    IM_SHOW = 1
+    IM_CHANGED = 2
+    IM_OTHER = 3
+    
     constructor:(@id)->
         super
         echo "New Fcitx :#{@id}"
@@ -75,7 +79,8 @@ class Fcitx extends Widget
             @IMList = @DBusIM.IMList
             @IMTrueList.push(im) for im in @IMList when im[3]
             echo @IMTrueList
-            @getCurrentIM()
+            @CurrentIM = @DBusIM.GetCurrentIM_sync()
+            @CurrentState = @DBusIM.GetCurrentState_sync()
         catch e
             echo "DBusIM :#{FCITX_INPUTMETHOD.interface} ---#{e}---"
 
@@ -90,11 +95,21 @@ class Fcitx extends Widget
             echo "DBusLayout :#{FCITX_KEYBOARD.interface} ---#{e}---"
 
         
-    getCurrentIM: ->
+    getCurrentIMState: ->
+        @PrevIM = @CurrentIM
         @CurrentIM = @DBusIM.GetCurrentIM_sync()
+        @PrevState = @CurrentState
         @CurrentState = @DBusIM.GetCurrentState_sync()
         echo "@CurrentIM:#{@CurrentIM},@CurrentState:#{@CurrentState}"
-    
+   
+
+    getIMState: ->
+        @getCurrentIMState()
+        if @CurrentState == 0 then return "IM_HIDE"
+        else if @PrevState != @CurrentState and @PrevIM isnt @CurrentIM and @CurrentState != 0 then return "IM_CHANGED"
+        else if @CurrentState != 0  then return "IM_SHOW"
+        else return "IM_OTHER"
+ 
     setCurrentIM: (im)->
         @DBusIM.SetCurrentIM_sync(im)
 
@@ -110,12 +125,31 @@ class Fcitx extends Widget
 
 
     fcitxSignalsConnect: ->
-        @DBusStatus.connect("NewAttentionIcon",@fcitxSwitch)
         @DBusStatus.connect("NewIcon",@fcitxSwitch)
-
+        #@DBusStatus.connect("NewToolTip",@fcitxSwitch)
+    
+    
     fcitxSwitch: =>
         echo "fcitxSwitch"
-        @getCurrentIM()
+        @state = @getIMState()
+        switch @state
+            when "IM_HIDE" then @IMHide()
+            when "IM_SHOW" then @IMShow()
+            when "IM_CHANGED" then @IMChanged()
+            when "IM_OTHER" then @IMOther()
+
+    IMHide: ->
+        echo "IMHide"
+
+    IMShow: ->
+        echo "IMShow"
+
+    IMChanged: ->
+        echo "IMChanged"
+
+    IMOther: ->
+        echo "IMOther"
+
 
 
 fcitx = new Fcitx("fcitx")
