@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Deepin OSD 
+Comment[zh_CN]=深度OSD
+Exec=/usr/lib/deepin-daemon/osd
+NoDisplay=true
+OnlyShowIn=Deepin
+
