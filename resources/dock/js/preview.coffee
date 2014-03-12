@@ -18,18 +18,6 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-class Arrow extends Widget
-    constructor: (@id)->
-        super
-        @arrow_outter = create_element("div", "pop_arrow_up_outer", @element)
-        @arrow_mid = create_element("div", "pop_arrow_up_mid", @element)
-        @arrow_inner = create_element("div", "pop_arrow_up_inner", @element)
-
-    move_to: (x, y)->
-        @element.style.left = "#{x}px"
-        if y
-            @element.style.top = "#{y}px"
-
 
 #TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
 class PWContainer extends Widget
@@ -38,13 +26,14 @@ class PWContainer extends Widget
     constructor: (@id)->
         super
         @border = create_element("div", "PWBorder", document.body)
+        @bg = create_element(tag:'canvas', class:"bg", @border)
         @element.style.maxWidth = screen.width - 30
         @border.appendChild(@element)
+        @element.addEventListener("mouseover", @on_mouseover)
+        @element.addEventListener("mouseout", @on_mouseout)
         @is_showing = false
         @_current_group = null
         @_update_id = -1
-        @arrow = new Arrow("PreviewArrow")
-        @border.appendChild(@arrow.element)
         @_current_pws = {}
 
     hide: ->
@@ -92,30 +81,128 @@ class PWContainer extends Widget
             if v == true
                 Widget.look_up("pw"+k)?.destroy()
 
+    drawPanel:->
+        ctx = @bg.getContext('2d')
+        ctx.clearRect(0, 0, @bg.width, @bg.height)
+        ctx.save()
+
+        ctx.shadowBlur = 6
+        ctx.shadowColor = 'black'
+        ctx.shadowOffsetY = 2
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)'
+        ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
+
+        ctx.fillStyle = "rgba(0,0,0,0.4)"
+
+        radius = 4
+        contentWidth = @bg.width - radius * 2 - ctx.lineWidth*2 - ctx.shadowBlur * 2
+        topY = radius
+        bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
+        leftX = radius
+        rightX = leftX + contentWidth
+
+        arch =
+            TopLeft:
+                ox: leftX
+                oy: topY
+                radius: radius
+                startAngle: Math.PI
+                endAngle: Math.PI * 1.5
+            TopRight:
+                ox: rightX
+                oy: topY
+                radius: radius
+                startAngle: Math.PI * 1.5
+                endAngle: Math.PI * 2
+            BottomRight:
+                ox: rightX
+                oy: bottomY
+                radius: radius
+                startAngle: 0
+                endAngle: Math.PI * 0.5
+            BottomLeft:
+                ox: leftX
+                oy: bottomY
+                radius: radius
+                startAngle: Math.PI * 0.5
+                endAngle: Math.PI
+        ctx.beginPath()
+        ctx.moveTo(0, topY)
+        ctx.arc(arch['TopLeft'].ox, arch['TopLeft'].oy, arch['TopLeft'].radius,
+                arch['TopLeft'].startAngle, arch['TopLeft'].endAngle)
+
+        ctx.lineTo(rightX, 0)
+
+        ctx.arc(arch['TopRight'].ox, arch['TopRight'].oy, arch['TopRight'].radius,
+                arch['TopRight'].startAngle, arch['TopRight'].endAngle)
+
+        ctx.lineTo(rightX + radius, bottomY)
+
+        ctx.arc(arch['BottomRight'].ox, arch['BottomRight'].oy, arch['BottomRight'].radius,
+                arch['BottomRight'].startAngle, arch['BottomRight'].endAngle)
+
+        # bottom line
+        ctx.lineTo(leftX + (contentWidth + PREVIEW_TRIANGLE.width) / 2,
+                   bottomY + radius)
+
+        # triangle
+        ctx.lineTo(leftX + contentWidth / 2,
+                   bottomY + radius + PREVIEW_TRIANGLE.height)
+
+        ctx.lineTo(leftX + (contentWidth - PREVIEW_TRIANGLE.width)/2,
+                   bottomY + radius)
+
+        # bottom line
+        ctx.lineTo(leftX, bottomY + radius)
+
+        ctx.arc(arch['BottomLeft'].ox, arch['BottomLeft'].oy, arch['BottomLeft'].radius,
+                arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle)
+
+        ctx.closePath()
+
+        ctx.stroke()
+        ctx.fill()
+
+        ctx.restore()
+
     _calc_size: ->
         return if @_current_group == null
+
+        if PWContainer._need_move_animation
+            echo 'need move animation'
+            @border.classList.add('moveAnimation')
+            @border.style.display = "block"
+        else
+            @border.classList.remove('moveAnimation')
+            @border.style.display = "none"
+
         n = @_current_group.n_clients.length
         pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
         new_scale = pw_width / PREVIEW_WINDOW_WIDTH
+        echo "pw_width: #{pw_width}, new_scale: #{new_scale}"
         @scale = new_scale
+        window_width = pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+        # 6 for shadow blur
+        @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + 6 * 2
+        @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
+        @border.style.width = @bg.width
+        @border.style.height = @bg.height
+
+        @drawPanel()
 
         group_element = @_current_group.element
-        # FIXME: why need 5 external???
-        x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2 - 5
+        x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2
 
-        center_position = x - (pw_width * n / 2)
+        center_position = x - window_width * n / 2
         offset = clamp(center_position, 5, screen.width - pw_width)
-        @arrow.move_to(x.toFixed() - offset - 3) # 3 is the half length of arrow width
 
         if @element.clientWidth == screen.width
-            @border.style.left = 0
+            # echo '0'
+            @border.style.webkitTransform = "translateX(0)"
         else
-            @border.style.left = offset
-
-        if PWContainer._need_move_animation
-            @border.style.display = "block"
-        else
-            @border.style.display = "none"
+            # echo 'offset'
+            @border.style.webkitTransform = "translateX(#{offset}px)"
 
         DCore.Dock.require_all_region()
 
@@ -149,12 +236,13 @@ class PWContainer extends Widget
         @_current_group = group
         @_update()
 
-    do_mouseover: =>
+    on_mouseover: (e)=>
         __clear_timeout()
         clearTimeout(tooltip_hide_id)
         clearTimeout(hide_id)
         DCore.Dock.require_all_region()
-    do_mouseout: =>
+
+    on_mouseout: =>
         Preview_close()
 
 
@@ -177,6 +265,8 @@ Preview_show = (group) ->
 
 Preview_close_now = ->
     __clear_timeout()
+    # calc_app_item_size()
+    # return
     return if Preview_container.is_showing == false
     Preview_container.hide()
     setTimeout(->
@@ -191,6 +281,7 @@ Preview_close_now = ->
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
+        echo 'showing'
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_close_now()
         , 500)
@@ -204,20 +295,24 @@ Preview_active_window_changed = (w_id) ->
 class PreviewWindow extends Widget
     constructor: (@id, @w_id, @title_str)->
         super
-        @title = create_element("div", "PWTitle", @element)
-        @title.setAttribute("title", @title_str)
-        @title.innerText = @title_str
+        @innerBorder = create_element(tag:'div', class:'PreviewWindowInner', @element)
+        container = @innerBorder
 
-        @canvas_container = create_element("div", "PWCanvas", @element)
+        @canvas_container = create_element("div", "PWCanvas", container)
         @canvas = create_element("canvas", "", @canvas_container)
 
-        @update_size()
-
         @close_button = create_element("div", "PWClose", @canvas_container)
+        @close_button.innerText = "X"
         @close_button.addEventListener('click', (e)=>
             e.stopPropagation()
             DCore.Dock.close_window(@w_id)
         )
+
+        @titleContainer = create_element(tag:"div", class:"PWTitleContainer", container)
+        @title = create_element(tag:"div", class:"PWTitle", @titleContainer)
+        @title.setAttribute("title", @title_str)
+        @title.innerText = @title_str
+        @update_size()
 
         if get_active_window() == @w_id
             @to_active()
@@ -247,6 +342,7 @@ class PreviewWindow extends Widget
         @canvas.setAttribute("height", @canvas_height)
         @canvas_container.style.width = @canvas_width
         @canvas_container.style.height = @canvas_height
+        @titleContainer.style.width = @canvas_width
 
     to_active: ->
         _current_active_pw_window = @

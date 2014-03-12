@@ -27,9 +27,9 @@ reset = ->
 
     if selector.selectedItem
         item = selector.selectedItem
-        item?.style.border = "1px rgba(255, 255, 255, 0.0) solid"
-        item?.style.background = ""
-        item?.style.borderRadius = ""
+        item.style.border = "1px rgba(255, 255, 255, 0.0) solid"
+        item.style.background = ""
+        item.style.borderRadius = ""
 
     if Item.hoverItem
         item = Item.hoverItem
