@@ -179,7 +179,7 @@ class Item extends Widget
         e = e && e.originalEvent || e
         e?.stopPropagation()
         startManager.Launch(@basename)
-        Item.hoverItem = target
+        Item.hoverItem = target.parentNode
         target?.style.cursor = "auto"
         exit_launcher()
 
@@ -379,7 +379,7 @@ class Item extends Widget
         # this event is a wrap, use e.originalEvent to get the original event
         # the target is hoverBoxOutter
         target = e.target
-        Item.hoverItem = target
+        Item.hoverItem = target.parentNode
         if not Item.clean_hover_temp
             item = target.parentNode
             item.classList.add("item_hovered")
@@ -388,5 +388,3 @@ class Item extends Widget
         target = e.target
         item = target.parentNode
         item.classList.remove("item_hovered")
-
-        Item.hoverItem = null
