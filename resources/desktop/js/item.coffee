@@ -367,6 +367,7 @@ class Item extends Widget
             e.stopPropagation()
 
     item_rename : =>
+        echo "item_name 1"
         # first make the contextmenu not showed when is in_renaming
         # menu = []
         # @item_name.parentElement.contextMenu = build_menu(menu)
@@ -377,6 +378,7 @@ class Item extends Widget
         if @delay_rename_tid != -1 then
         if @selected == false then return
         if @in_rename == false
+            echo "item_name 2"
             move_widget_to_rename_div(@)
             @display_full_name()
             @display_not_selected()
@@ -387,7 +389,7 @@ class Item extends Widget
             @item_name.addEventListener("mouseup", @on_event_stoppropagation)
             @item_name.addEventListener("click", @on_event_stoppropagation)
             @item_name.addEventListener("dblclick", @on_event_stoppropagation)
-            @item_name.addEventListener("contextmenu", @contextmenu_event_handler)
+            #@item_name.addEventListener("contextmenu", @contextmenu_event_handler)
             @item_name.addEventListener("keydown", @on_item_rename_keydown)
             @item_name.addEventListener("keypress", @on_item_rename_keypress)
             @item_name.addEventListener("keyup", @on_item_rename_keyup)
@@ -417,7 +419,8 @@ class Item extends Widget
 
     on_item_rename_keydown : (evt) =>
         evt.stopPropagation()
-
+        echo "on_item_rename_keydown"
+        echo "#{@item_name.innerText}"
         switch evt.keyCode
             when 35 # 'End' key, cant't handled in keypress; set caret to the end of whole name
                 evt.preventDefault()
@@ -446,9 +449,11 @@ class Item extends Widget
 
     on_item_rename_keypress : (evt) =>
         evt.stopPropagation()
+        echo "on_item_rename_keypress #{evt.keyCode}"
         switch evt.keyCode
             when 13   # enter
                 evt.preventDefault()
+                echo "enter"
                 @item_complete_rename(true)
 
                 # tell grid to ingore the same event after this event handler has been unregisterd
@@ -467,23 +472,29 @@ class Item extends Widget
 
     on_item_rename_input : (evt) =>
         evt.stopPropagation()
-
+        echo "on_item_rename_input"
         return
 
 
     item_complete_rename : (modify = true) =>
+        echo "item_complete_rename 1"
         if modify == true
             new_name = cleanup_filename(@item_name.innerText)
+            echo new_name
             if new_name.length > 0 and new_name != @get_name()
+                echo "3"
                 if not @on_rename(new_name)
+                    echo "4"
                     @in_rename = false
                     move_widget_to_grid_after_rename(@)
                     return
 
+        echo "item_complete_rename 2"
         move_widget_to_grid_after_rename(@)
         @element.draggable = true
         @item_name.contentEditable = "false"
         @item_name.className = "item_name"
+        echo @get_name()
         @item_name.innerText = @get_name()
         @item_name.removeEventListener("mousedown", @on_event_stoppropagation)
         @item_name.removeEventListener("mouseup", @on_event_stoppropagation)
@@ -494,7 +505,7 @@ class Item extends Widget
         @item_name.removeEventListener("keypress", @on_item_rename_keypress)
         @item_name.removeEventListener("keyup", @on_item_rename_keyup)
         #XXX: workaround -> fix up get Enter keys before begining of rename
-        #@item_name.removeEventListener("input", @on_item_rename_input)
+        @item_name.removeEventListener("input", @on_item_rename_input)
 
         @display_selected()
 
