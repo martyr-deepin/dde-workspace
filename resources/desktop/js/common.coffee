@@ -96,3 +96,6 @@ _CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 # wrapper func to get configs
 _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
+
+_SET_CFG_BOOL_ = (val,value) ->
+    DCore.Desktop.set_config_boolean(val,value)

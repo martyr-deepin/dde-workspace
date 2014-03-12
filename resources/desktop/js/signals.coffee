@@ -53,6 +53,8 @@ do_item_update = (data) ->
     else if (w = create_item(data.entry))?
         all_item.push(w.get_id())
         move_to_anywhere(w)
+        if(id == dsc_id)
+            DCore.Desktop.set_config_boolean("show-dsc-icon",true)
 
     if w? then w.item_hint?()
 
