@@ -27,8 +27,7 @@ install(
     )
 
 install(
-    FILES ${PROJECT_SOURCE_DIR}/app/osd/com.deepin.dde.osd.service
-    DESTINATION /usr/share/dbus-1/services/
+    FILES ${CMAKE_CURRENT_SOURCE_DIR}/deepin-osd.desktop
+    DESTINATION /etc/xdg/autostart/ 
     )
-
 GEN_JS_FILE(${NAME})
