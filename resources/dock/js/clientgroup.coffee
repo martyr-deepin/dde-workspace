@@ -121,10 +121,7 @@ class ClientGroup extends AppItem
         if action_len != 0
             @menu.addSeparator()
 
-        @menu.append(new MenuItem("20", _("_Close")))
-
-        if (@n_clients.length > 1)
-            @menu.append(new MenuItem("30", _("Close _All")))
+        @menu.append(new MenuItem("30", _("Close _All")))
 
         @menu.append(
             new MenuSeparator,
@@ -154,24 +151,18 @@ class ClientGroup extends AppItem
         switch id
             when 10
                 DCore.Dock.launch_by_app_id(@app_id, @exec, [])
-            when 20
-                Preview_close_now()
-                DCore.Dock.close_window(@leader)
             when 30
                 @close_all_windows()
             when 40 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
     close_all_windows: ->
             Preview_close_now()
-            i = 0
-            size = @n_clients.length
-            while i < size
+            for i in [0...@n_clients.length]
                 leader = @leader
                 @next_leader()
                 error = DCore.Dock.close_window(leader)
                 if not error
                     @remove_client(leader)
-                i += 1
 
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
