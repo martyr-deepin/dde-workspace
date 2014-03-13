@@ -27,7 +27,7 @@ richdir_drag_context = richdir_drag_canvas.getContext('2d')
 
 class RichDir extends DesktopEntry
     constructor : (entry) ->
-        super(entry, false, true)
+        super(entry, true, true)
         @div_pop = null
         @show_pop = false
 
