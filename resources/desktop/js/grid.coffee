@@ -615,7 +615,7 @@ item_dragstart_handler = (widget, evt) ->
             if path.length > 0
                 all_selected_items_path += path + "\r\n"
         if all_selected_items_path.length > 2
-            all_selected_items_path = all_selected_items_path.substring(0,all_selected_items_path.length-2)
+            all_selected_items_path = all_selected_items_path.substring(0,all_selected_items_path.length - 2)
         else
             echo "warning:items path is null"
         evt.dataTransfer.setData("text/uri-list", all_selected_items_path)
