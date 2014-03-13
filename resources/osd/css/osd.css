@@ -1,12 +1,16 @@
-
+html{
+    /*border-radius:18px;*/
+    background-color:rgba(0,0,0,0.0);
+}
 body{
     cursor:default;
     overflow:hidden;
-    
+    margin:0;
     width:160px;
     height:160px;
     
-    background-color:rgba(0,0,0,0.7);
+    border-radius:18px;
+    background-color:rgba(0,0,0,1.0);
      
     font-size:62.5%;
     
