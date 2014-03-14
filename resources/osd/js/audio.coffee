@@ -141,6 +141,7 @@ AudioCls = null
 
 AudioUp = (keydown) ->
     if keydown then return
+    setFocus(false)
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
@@ -151,6 +152,7 @@ AudioUp = (keydown) ->
 
 AudioDown = (keydown) ->
     if keydown then return
+    setFocus(false)
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
@@ -161,6 +163,7 @@ AudioDown = (keydown) ->
 
 AudioMute = (keydown) ->
     if keydown then return
+    setFocus(false)
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"

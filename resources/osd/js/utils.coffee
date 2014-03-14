@@ -21,6 +21,9 @@
 _b = document.body
 FOCUS = false
 
+setFocus = (focus)->
+    FOCUS = focus
+    DCore.Osd.set_focus(FOCUS)
 
 #MediaKey DBus
 MEDIAKEY =
@@ -68,8 +71,9 @@ osdHide()
 click_time = 0
 _b.addEventListener("click",(e)=>
     e.stopPropagation()
+    echo click_time
     click_time++
-    #DCore.Osd.quit() if click_time % 3 == 0
+    DCore.Osd.quit() if click_time % 3 == 0
 )
 
 _b.addEventListener("contextmenu",(e)=>

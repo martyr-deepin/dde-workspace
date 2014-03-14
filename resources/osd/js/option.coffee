@@ -50,6 +50,7 @@ OptionCls = null
 
 CapsLockOn = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "CapsLockOn"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "CapsLockOn"
@@ -57,6 +58,7 @@ CapsLockOn = (keydown)->
 
 CapsLockOff = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "CapsLockOff"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "CapsLockOff"
@@ -64,6 +66,7 @@ CapsLockOff = (keydown)->
 
 NumLockOn = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "NumLockOn"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "NumLockOn"
@@ -71,6 +74,7 @@ NumLockOn = (keydown)->
 
 NumLockOff = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "NumLockOff"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "NumLockOff"
@@ -78,6 +82,7 @@ NumLockOff = (keydown)->
 
 TouchPadOn = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "TouchPadOn"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "TouchPadOn"
@@ -85,6 +90,7 @@ TouchPadOn = (keydown)->
 
 TouchPadOff = (keydown)->
     if !keydown then return
+    setFocus(false)
     echo "TouchPadOff"
     OptionCls  = new Option("Option") if not OptionCls?
     OptionCls.id = "TouchPadOff"
