@@ -42,6 +42,10 @@ class Display extends Widget
         
         _b.appendChild(@element)
         @getDBus()
+        _b.addEventListener("keydown",(e)=>
+            echo "-------------#{e.which}-----------------"
+        )
+        
    
     hide:->
         @element.style.display = "none"
@@ -99,12 +103,15 @@ class Display extends Widget
     
     switchDisplayMode:->
         if @DBusMonitors.length == 1 then return
+        
         @DisplayMode = @DBusDisplay.DisplayMode
         if not @DisplayMode? then @DisplayMode = 0
         @DisplayMode++
         if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
-        echo "SwitchMode to (#{@DisplayMode})"
-        @DBusDisplay.SwitchMode_sync(@DisplayMode)
+        
+        @ModeChoose = @DisplayMode
+        echo "SwitchMode to (#{@ModeChoose})"
+        @DBusDisplay.SwitchMode_sync(@ModeChoose)
 
 
     showValue:(white)->
@@ -122,6 +129,7 @@ class Display extends Widget
 
     showDisplayMode:->
         clearTimeout(@timepress) if @timepress
+        
         @timepress = setTimeout(=>
             clearTimeout(timeout_osdHide) if timeout_osdHide
             
@@ -179,8 +187,8 @@ DisplaySwitch = (keydown)->
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    BrightCls.switchDisplayMode()
     BrightCls.showDisplayMode()
+    BrightCls.switchDisplayMode()
 
 DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
 DBusMediaKey.connect("BrightnessUp",BrightnessUp) if DBusMediaKey?
