@@ -72,4 +72,14 @@ _b.addEventListener("click",(e)=>
     #DCore.Osd.quit() if click_time % 3 == 0
 )
 
+_b.addEventListener("keydown",(e)=>
+    e.stopPropagation()
+    echo "-------------#{e.which}-----------------"
+)
+        
+_b.addEventListener("contextmenu",(e)=>
+    e.preventDefault()
+    e.stopPropagation()
+)
+        
 
