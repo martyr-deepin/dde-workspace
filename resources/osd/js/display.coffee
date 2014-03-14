@@ -42,10 +42,6 @@ class Display extends Widget
         
         _b.appendChild(@element)
         @getDBus()
-        _b.addEventListener("keydown",(e)=>
-            echo "-------------#{e.which}-----------------"
-        )
-        
    
     hide:->
         @element.style.display = "none"
