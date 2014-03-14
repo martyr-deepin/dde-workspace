@@ -39,10 +39,14 @@ class Display extends Widget
         @DBusOpenedMonitors = []
         @OpenedMonitorsName = []
         @valueEach = []
+        @ModeChoose = DEFAULT_DISPLAY_MODE
         
         _b.appendChild(@element)
         @getDBus()
-        _b.addEventListener("keyup",@switchDisplayMode)
+        _b.addEventListener("keyup",(e)=>
+            if e.which == KEYCODE.WIN and @FromSwitchMonitors
+                @switchDisplayMode(@ModeChoose)
+        )
 
     hide:->
         @element.style.display = "none"
@@ -98,9 +102,7 @@ class Display extends Widget
         finally
             return value
     
-    switchDisplayMode:(e)->
-        echo e.which
-        if e.which != KEYCODE.WIN then return
+    switchDisplayMode:(ModeChoose)->
         setFocus(false)
         osdHide()
         
@@ -110,9 +112,11 @@ class Display extends Widget
         @DisplayMode++
         if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
         
-        @ModeChoose = @DisplayMode
-        echo "SwitchMode to (#{@ModeChoose})"
-        @DBusDisplay.SwitchMode_sync(@ModeChoose)
+        ModeChoose = @DisplayMode
+        echo "SwitchMode to (#{ModeChoose})"
+        @DBusDisplay.SwitchMode_sync(ModeChoose)
+        @FromSwitchMonitors = false
+
 
     showValue:(white)->
         if white is null then return
@@ -133,12 +137,15 @@ class Display extends Widget
         @timepress = setTimeout(=>
             clearTimeout(timeout_osdHide) if timeout_osdHide
             
+            @FromSwitchMonitors = true
             @valueDiv.style.display = "none" if @valueDiv
             if @DBusMonitors.length == 1 then return
 
             osdShow()
             @element.style.display = "block"
             # @DisplayMode = @DBusDisplay.DisplayMode
+            #@SwitchMode++
+            #if @SwitchMode > @DBusMonitors.length then @DisplayMode = -1
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
             @set_bg("#{@id}_#{ImgIndex}")
@@ -191,7 +198,6 @@ DisplaySwitch = (keydown)->
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
     BrightCls.showDisplayMode()
-    #BrightCls.switchDisplayMode()
 
 DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
 DBusMediaKey.connect("BrightnessUp",BrightnessUp) if DBusMediaKey?
