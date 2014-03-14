@@ -57,6 +57,8 @@ static GKeyFile* shutdown_config = NULL;
 static int width = 160;
 static int height = 160;
 
+PRIVATE gboolean FOCUS = FALSE;
+
 PRIVATE GtkWidget* container = NULL;
 /*PRIVATE GtkStyleContext *style_context;*/
 
@@ -155,7 +157,6 @@ int main (int argc, char **argv)
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_resize (GTK_WINDOW (container), width,height);
     
-    gboolean FOCUS = FALSE;
     gtk_window_set_focus_on_map (GTK_WINDOW (container), FOCUS);
     gtk_window_set_accept_focus (GTK_WINDOW (container), FOCUS);
     gtk_window_set_focus (GTK_WINDOW (container), NULL);
@@ -197,7 +198,6 @@ int main (int argc, char **argv)
     /*[>cairo_surface_write_to_png(surface,"gtkbackground.png");<]*/
     /*[>cairo_surface_destory(surface);<]*/
     
-    gtk_widget_show_all (container);
     
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     
@@ -205,13 +205,14 @@ int main (int argc, char **argv)
     gdk_window_set_background_rgba (gdkwindow, &rgba);
     gdk_window_set_opacity (gdkwindow, 0.9);
     
-    /*gdk_window_set_override_redirect(gdkwindow, !FOCUS);*/
+    gdk_window_set_override_redirect(gdkwindow, !FOCUS);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     
     gdk_window_set_focus_on_map (gdkwindow, FOCUS);
     gdk_window_set_accept_focus (gdkwindow, FOCUS);
     
     gdk_window_show(gdkwindow);
+    gtk_widget_show_all (container);
 
     gtk_main ();
 
