@@ -53,3 +53,7 @@ document.body.addEventListener("click",(e)=>
     DCore.Zone.quit()
 )
  
+document.body.addEventListener("contextmenu",(e)=>
+    e.preventDefault()
+    e.stopPropagation()
+)
