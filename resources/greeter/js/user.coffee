@@ -22,12 +22,18 @@ user_ul = null
 message_tip = null
 draw_camera_id = null
 _current_user = null
-_default_username = null
 _drag_flag = false
 password_error_msg = null
 
 class User extends Widget
-    Dbus_Account = null
+    ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
+    ACCOUNTS_USER =
+        obj: ACCOUNTS_DAEMON
+        path: "/com/deepin/daemon/Accounts/User1000"
+        interface: "com.deepin.daemon.Accounts.User"
+    
+    GRAPHIC = "com.deepin.api.Graphic"
+
     img_src_before = null
 
     username = null
@@ -36,21 +42,44 @@ class User extends Widget
     userinfo_all = []
     userinfo_show_index = 0
         
-    users_path = []
-    users_name = []
-    users_realname = []
-    users_id = []
-    
     time_animation = 1800
     
     constructor:->
         super
-        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
         img_src_before = "images/userswitch/"
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
+        
+        @users_dbus = []
+        @users_id = []
+        @users_id_dbus = []
+        @users_name_dbus = []
     
-   
+        @getDBus()
+
+    getDBus:->
+        try
+            @Dbus_Account = DCore.DBus.sys(ACCOUNTS_DAEMON)
+            for path in @Dbus_Account.UserList
+                ACCOUNTS_USER.path = path
+                user_dbus = DCore.DBus.sys_object(
+                    ACCOUNTS_USER.obj,
+                    ACCOUNTS_USER.path,
+                    ACCOUNTS_USER.interface
+                )
+                @users_dbus.push(user_dbus)
+                @users_id.push(user_dbus.Uid)
+                @users_id_dbus[user_dbus.Uid] = user_dbus
+                @users_name_dbus[user_dbus.UserName] = user_dbus
+        catch e
+            echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
+
+        try
+            @Dbus_Graphic = DCore.DBus.session(GRAPHIC)
+        catch e
+            echo "#{GRAPHIC} dbus ERROR: #{e}"
+
+
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -67,72 +96,58 @@ class User extends Widget
     
 
     get_all_users:->
-        if is_greeter
-            users_name = DCore.Greeter.get_users()
-        else
-            users_path = Dbus_Account.ListCachedUsers_sync()
-            for path in users_path
-                user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
-                name = user_dbus.UserName
-                realname = user_dbus.RealName
-                id = user_dbus.Uid
-                users_realname.push(realname)
-                users_name.push(name)
-                users_id.push(id)
-        #echo users_name
-        return users_name
+#        if is_greeter
+            #@users_name = DCore.Greeter.get_users()
+        #else
+        for dbus in @users_dbus
+            @users_name.push(dbus.UserName)
+        return @users_name
 
     get_default_username:->
         if is_greeter
-            echo "is_greeter"
-            _default_username = DCore.Greeter.get_default_user()
+            @_default_username = DCore.Greeter.get_default_user()
         else
-            echo "is_lock"
-            _default_username = DCore.Lock.get_username()
-        return _default_username
+            @_default_username = DCore.Lock.get_username()
+        return @_default_username
 
     get_user_image:(user) ->
         try
+            user_image = @users_name_dbus[user].IconFile
+        catch e
+            echo "#{e}"
+            
+        if not user_image?
             if is_greeter
                 user_image = DCore.Greeter.get_user_icon(user)
             else
                 user_image = DCore.Lock.get_user_icon(username)
-        catch error
-            echo error
-
-        if not user_image?
-            user_image = "images/userimg_default.jpg"
-        echo "-----------#{user_image}------------"
+        if not user_image? then user_image = "images/userimg_default.jpg"
+        echo "user_image:#{user}-----------#{user_image}------------"
         return user_image
 
     get_user_id:(user)->
-        if users_id.length == 0 or users_name.length == 0 then @get_all_users()
-        id = null
-        for tmp,j in users_name
-            if user is tmp
-                id = users_id[j]
-        if not id?
-            id = users_id[0]
-        if not id?
-            id = "1000"
+        try
+            id = dbus.Uid for dbus in @users_dbus when @users_dbus.UserName is user
+        catch e
+            echo "#{e}"
+        if not id? then id = "1000"
         return id
 
     is_disable_user :(user)->
         disable = false
-        users_path = Dbus_Account.ListCachedUsers_sync()
-        for u in users_path
-            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-            if user is user_dbus.UserName
-                if user_dbus.Locked is null then disable = false
-                else if user_dbus.Locked is true then disable = true
-                return disable
+        user_dbus = @users_name_dbus[user]
+        if user_dbus.Locked is null then disable = false
+        else if user_dbus.Locked is true then disable = true
+        return disable
 
     set_blur_background:(user)->
-        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
         userid = new String()
         userid = @get_user_id(user)
         echo "current user #{user}'s userid:#{userid}"
-        path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
+        try
+            path = @Dbus_Graphic.BackgroundBlurPictPath_sync(userid.toString(),"")
+        catch e
+            echo "#{GRAPHIC} dbus ERROR:#{e}"
         if path[0]
             BackgroundBlurPictPath = path[1]
         else
@@ -143,23 +158,21 @@ class User extends Widget
         try
             document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
         catch e
-            echo e
+            echo "#{e}"
             document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
-        _default_username = @get_default_username()
-        users_name = @get_all_users()
-        if _default_username is null then _default_username = users_name[0]
-        echo "_default_username:#{_default_username};"
-        #@set_blur_background(_default_username)
-        
-        for user in users_name
-            echo "user:#{user}"
+        @get_default_username()
+        @get_all_users()
+        if @_default_username is null then @_default_username = @users_name[0]
+        echo "_default_username:#{@_default_username};"
+        #@set_blur_background(@_default_username)
+        for user in @users_name
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage)
                 userinfo_all.push(u)
-                if user is _default_username
+                if user is @_default_username
                     _current_user = u
                     _current_user.only_show_name(false)
                 else
