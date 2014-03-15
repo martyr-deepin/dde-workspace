@@ -101,12 +101,8 @@ class User extends Widget
             echo error
 
         if not user_image?
-            try
-                user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-            catch error
-                echo error
-                user_image = "images/userimg_default.jpg"
-
+            user_image = "images/userimg_default.jpg"
+        echo "-----------#{user_image}------------"
         return user_image
 
     get_user_id:(user)->
