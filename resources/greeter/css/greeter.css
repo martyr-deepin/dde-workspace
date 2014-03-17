@@ -42,7 +42,7 @@ body{
 .div_desktop{
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:3.5em;
+    bottom:3.0em;
     right:11em;
     
     display:-webkit-box;
@@ -54,7 +54,7 @@ body{
 .div_power {
     /*background-color:rgba(125,255,120,0.2);*/
     position:absolute;
-    bottom:3.5em;
+    bottom:3.0em;
     right:3em;
     
     display:-webkit-box;
