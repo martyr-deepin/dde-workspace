@@ -57,3 +57,24 @@ document.body.addEventListener("contextmenu",(e)=>
     e.preventDefault()
     e.stopPropagation()
 )
+
+bgRadial = ->
+    wWidth = window.innerWidth
+    wHeight = window.innerHeight
+    canvas = create_element("canvas","canvas",document.body)
+    context = canvas.getContext("2d")
+    x = wWidth / 2
+    y = wHeight / 2
+    r = wWidth / 2
+    echo wWidth + "------" + wHeight + ";" + x + "-----" + y + "r:#{r}"
+    
+    rg = context.createRadialGradient(x,y,0,x,y,r)
+    rg.addColorStop(0,'#FFFFFF')
+    rg.addColorStop(1,'#000000')
+    
+    context.fillStyle = rg
+    context.beginPath()
+    context.arc(x,y,r,0,2 * Math.PI)
+    context.fill()
+
+#bgRadial()
