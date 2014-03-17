@@ -51,6 +51,7 @@ class User extends Widget
         user_ul.id = "user_ul"
         
         @users_dbus = []
+        @users_name = []
         @users_id = []
         @users_id_dbus = []
         @users_name_dbus = []
@@ -379,14 +380,18 @@ class LoginEntry extends Widget
     input_password_again:->
         @password.style.color = "rgba(255,255,255,0.5)"
         @password.style.fontSize = "2.0em"
+        @password.style.paddingBottom = "0.2em"
+        @password.style.letterSpacing = "5px"
         @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
         @password.value = null
 
     password_error:(msg)->
-        @password.style.color = "#ff8a00"
+        @password.style.color = "#F4AF53"
         @password.style.fontSize = "1.5em"
+        @password.style.paddingBottom = "0.4em"
+        @password.style.letterSpacing = "0px"
         @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg
@@ -463,12 +468,13 @@ class UserInfo extends Widget
             enable_detection(true)
 
     stop_avatar:->
-        clearInterval(draw_camera_id)
-        draw_camera_id = null
-        clearInterval(@face_animation_interval) if @face_animation_interval
-        @face_recognize_div.style.display = "none"
-        enable_detection(false) if @face_login
-        #DCore[APP_NAME].cancel_detect()
+        if @face_login
+            clearInterval(draw_camera_id)
+            draw_camera_id = null
+            clearInterval(@face_animation_interval) if @face_animation_interval
+            @face_recognize_div.style.display = "none"
+            enable_detection(false)
+            #DCore[APP_NAME].cancel_detect()
    
     focus:->
         echo "#{@id} focus"
@@ -524,7 +530,7 @@ class UserInfo extends Widget
         else
             DCore.Lock.start_session(username,password,@session)
     
-    auth_failed: (msg) ->
+    auth_failed: (msg) =>
         @stop_avatar()
         @login.password_error(msg)
         document.body.cursor = "default"
