@@ -173,6 +173,8 @@
     height:3.0em;
     width:24em;
     border-radius:0.4em;
+    border-bottom-right-radius:0.5em;
+    border-bottom-left-radius:0.5em;
     border-top:0.1em solid rgba(0,0,0,0.7);
     border-left:0.1em solid rgba(0,0,0,0.7);
     border-right:0.1em solid rgba(0,0,0,0.7);
