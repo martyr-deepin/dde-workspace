@@ -77,4 +77,6 @@ _b.addEventListener("contextmenu",(e)=>
     e.stopPropagation()
 )
         
-
+setBodySize = (width,height)->
+    _b.style.width = width
+    _b.style.height = height
