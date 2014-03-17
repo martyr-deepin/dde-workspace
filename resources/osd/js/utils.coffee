@@ -32,7 +32,7 @@ MEDIAKEY =
     interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
-TIME_PRESS = 10
+TIME_PRESS = 5 
 timeout_osdHide = null
 DBusMediaKey = null
 try
@@ -45,10 +45,6 @@ catch e
     echo "Error:-----DBusMediaKey:#{e}"
 echo DBusMediaKey
 
-#dconf-tools  
-#org/gonome/settings-daemon/plugins/media-keys/active false
-#com/deepin/dde/key-binding/mediakey
-#dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
 allElsHide = ->
     els = _b.children
     for el in els

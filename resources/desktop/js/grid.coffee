@@ -1028,6 +1028,7 @@ grid_right_click = (evt) ->
 
 grid_do_itemselected = (id) ->
     id = parseInt(id)
+    echo "grid_do_itemselected id #{id}"
     switch id
         when 11 then menu_sort_desktop_item_by_name()
         when 12 then menu_sort_desktop_item_by_mtime()
@@ -1041,8 +1042,8 @@ grid_do_itemselected = (id) ->
         else
             # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 .
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
-            if evt.id >= TEMPLATES_FILE_ID_FIRST && evt.id < templates.length + TEMPLATES_FILE_ID_FIRST
-                menu_create_templates(evt.id)
+            if id >= TEMPLATES_FILE_ID_FIRST && id <= templates.length + TEMPLATES_FILE_ID_FIRST
+                menu_create_templates(id)
             else
                 echo "not implemented function #{evt.id},#{evt.title}"
     return
