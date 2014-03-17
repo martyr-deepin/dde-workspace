@@ -18,15 +18,28 @@ class ToolTipBase extends Widget
         @buddy.addEventListener('dragend', @hide)
         @buddy.addEventListener('contextmenu', @hide)
         @buddy.addEventListener('mouseout', @hide)
-        @buddy.addEventListener('mouseover', =>
-            if @text == ''
-                return
-            clearTimeout(tooltip_hide_id)
-            tooltip_hide_id = setTimeout(=>
-                @show()
-            , ToolTipBase.delay_time)
-        )
+        @buddy.addEventListener('mouseover', @on_mouseover)
         @buddy.addEventListener('click', @hide)
+
+    destroy:->
+        @buddy.removeEventListener('dragstart', @hide)
+        @buddy.removeEventListener('dragenter', @hide)
+        @buddy.removeEventListener('dragover', @hide)
+        @buddy.removeEventListener('dragleave', @hide)
+        @buddy.removeEventListener('dragend', @hide)
+        @buddy.removeEventListener('contextmenu', @hide)
+        @buddy.removeEventListener('mouseout', @hide)
+        @buddy.removeEventListener('mouseover', @on_mouseover)
+        @buddy.removeEventListener('click', @hide)
+        @buddy = null
+
+    on_mouseover:=>
+        if @text == ''
+            return
+        clearTimeout(tooltip_hide_id)
+        tooltip_hide_id = setTimeout(=>
+            @show()
+        , ToolTipBase.delay_time)
 
     hide: =>
         clearTimeout(tooltip_hide_id)

@@ -232,16 +232,18 @@ get_dbus = (type, opt)->
         type = "sys"
 
     if typeof opt == 'string'
-        opt = [opt]
+        console.log "get dbus: #{type}"
+        dbusArg = [opt]
         func = DCore.DBus[type]
     else
-        opt = [opt.name, opt.path, opt.interface]
+        console.log "get dbus: #{type}_object"
+        dbusArg = [opt.name, opt.path, opt.interface]
         func = DCore.DBus["#{type}_object"]
 
     d = null
     try
         for dump in [0..20]
-            if (d = func.apply(null, opt))?
+            if (d = func.apply(null, dbusArg))?
                 break
     catch e
         throw "Get DBus \"#{opt.name} #{opt.path} #{opt.interface}\" failed: #{e}"

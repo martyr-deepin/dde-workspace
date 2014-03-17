@@ -1,20 +1,20 @@
-class Applet extends AppItem
+class Applet extends Item
     is_fixed_pos: false
-    constructor: (@id, @icon, title)->
-        super
+    constructor: (@id, @icon, title, @container)->
+        super(@id, @icon, @container)
         @type = ITEM_TYPE_APPLET
 
-        @open_indicator = create_img("OpenIndicator", SHORT_INDICATOR, @element)
+        @open_indicator = create_img("OpenIndicator", OPEN_INDICATOR, @element)
         @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
         @open_indicator.style.display = "none"
         @set_tooltip(title)
 
-    do_mouseover: (e) =>
+    on_mouseover: (e) =>
         super
         Preview_close_now()
         clearTimeout(hide_id)
 
-    do_mouseout: (e)=>
+    on_mouseout: (e)=>
         super
         if Preview_container.is_showing
             __clear_timeout()
@@ -34,34 +34,55 @@ class Applet extends AppItem
 
 class FixedItem extends Applet
     is_fixed_pos: true
+    __show: false
+    constructor:(@id, @icon, title, @container)->
+        super
+
+    show: (v)->
+        @__show = v
+        # if @__show
+        #     @open_indicator.style.display = "block"
+        # else
+        #     @open_indicator.style.display = "none"
+
+    set_status: (status)=>
+        @show(status)
 
 
 class PrefixedItem extends FixedItem
-    constructor:->
-        super
-        $("#pre_fixed").appendChild(@element)
+    constructor:(@id, @icon, title)->
+        super(@id, @icon, title, $("#pre_fixed"))
+        # $("#pre_fixed").appendChild(@element)
 
 
 class SystemItem extends FixedItem
-    constructor:->
-        super
-        $("#system").appendChild(@element)
+    constructor:(@id, @icon, title)->
+        super(@id, @icon, title, $("#system"))
+        # $("#system").appendChild(@element)
+
+
+class PostfixedItem extends FixedItem
+    constructor:(@id, @icon, title)->
+        super(@id, @icon, title, $("#post_fixed"))
 
 
 class LauncherItem extends PrefixedItem
-    constructor: ->
+    constructor: (@id, @icon, title)->
         super
+        @set_tooltip("#{title}")
         DCore.signal_connect("launcher_running", =>
             @show(true)
         )
         DCore.signal_connect("launcher_destroy", =>
             @show(false)
         )
-    do_click: (e)=>
+
+    on_click: (e)=>
+        super
         DCore.Dock.toggle_launcher(!@__show)
 
 
-class Trash extends SystemItem
+class Trash extends PostfixedItem
     constructor: ->
         super
         @entry = DCore.DEntry.get_trash_entry()
@@ -69,7 +90,7 @@ class Trash extends SystemItem
             @update(info.value)
         )
 
-    do_rightclick: (e)=>
+    on_rightclick: (e)=>
         e.preventDefault()
         menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -78,6 +99,7 @@ class Trash extends SystemItem
         if @is_opened
             menu.append(new MenuItem(2, _("_Close")))
         xy = get_page_xy(@element)
+        echo menu
         menu.addListener(@on_itemselected).showMenu(
             xy.x + (@element.clientWidth / 2),
             xy.y + OFFSET_DOWN,
@@ -85,9 +107,10 @@ class Trash extends SystemItem
         )
 
     on_itemselected: (id)=>
-        super
+        # super
         calc_app_item_size()
         id = parseInt(id)
+        console.log(id)
         switch id
             when 1
                 loop
@@ -100,7 +123,8 @@ class Trash extends SystemItem
             when 2
                 DCore.Dock.close_window(@id)
 
-    do_click: =>
+    on_click: (e)=>
+        super
         if !DCore.DEntry.launch(@entry, [])
             confirm(_("Can not open this file."), _("Warning"))
 
@@ -159,7 +183,7 @@ class ClockBase extends SystemItem
     constructor:->
         super
 
-    do_mouseover: =>
+    on_mouseover: =>
         super
         @img.style.webkitTransform = ''
         @img.style.webkitTransition = ''
@@ -168,11 +192,14 @@ class ClockBase extends SystemItem
         @element.style.webkitTransition = 'all 100ms'
         @set_tooltip((new Date()).toLocaleDateString())
 
-    do_mouseout: (e)=>
+    on_mouseout: (e)=>
         super
         @element.style.webkitTransform = ''
         # @element.style.webkitTransition = 'opacity 1s ease-in'
         @element.style.webkitTransition = 'all 0.2s'
+
+    on_click: (e)=>
+        super
 
     start_time_settings: ->
         echo 'time settings'
@@ -211,7 +238,7 @@ class DigitClock extends ClockBase
         min = new Date().getMinutes()
         if twobit then @force2bit(min) else "#{min}"
 
-    do_rightclick: (e)=>
+    on_rightclick: (e)=>
         e.preventDefault()
         xy = get_page_xy(@element)
         new Menu(
@@ -232,7 +259,8 @@ class DigitClock extends ClockBase
             when 2
                 @start_time_settings()
 
-    do_click: (e) =>
+    on_click: (e) =>
+        super
         if e.altKey
             @switch_to_analog()
 
@@ -259,7 +287,7 @@ class AnalogClock extends ClockBase
         @short_pointer.style.webkitTransform = "rotate(#{date.getHours() * AnalogClock.DEG_PER_HOUR + date.getMinutes()}deg)"
         @long_pointer.style.webkitTransform = "rotate(#{date.getMinutes() * AnalogClock.DEG_PER_MIN}deg)"
 
-    do_rightclick: =>
+    on_rightclick: =>
         xy = get_page_xy(@element)
         new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
@@ -279,7 +307,8 @@ class AnalogClock extends ClockBase
             when 2
                 @start_time_settings()
 
-    do_click: (e) =>
+    on_click: (e) =>
+        super
         if e.altKey
             @switch_to_digit()
 

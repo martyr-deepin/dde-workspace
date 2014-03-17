@@ -29,14 +29,19 @@ class Panel
         @panel = $("##{@id}")
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
-        @panel.addEventListener("click", ->
+        @panel.addEventListener("click", (e)->
+            e.stopPropagation()
+            e.preventDefault()
+            echo 'panel click'
             show_desktop.toggle()
         )
 
         $("#containerWarp").addEventListener("click", (e)->
+            e.stopPropagation()
+            e.preventDefault()
+            echo "containerWarp"
             passToPanel()
         )
-
 
         @has_notifications = false
 

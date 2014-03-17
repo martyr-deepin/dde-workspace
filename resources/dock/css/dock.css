@@ -34,7 +34,7 @@ body {
 
 #containerWarp{
     position:fixed;
-    bottom: 9px;
+    bottom: 5px;
     display: -webkit-box;
     -webkit-box-pack:center;
     min-height: 60px;

@@ -68,8 +68,8 @@ class PWContainer extends Widget
         @_current_group?.n_clients?.forEach((w_id)=>
             pw = Widget.look_up("pw"+w_id)
             if not pw
-                info = @_current_group.client_infos[w_id]
-                pw = new PreviewWindow("pw"+info.id, info.id, info.title)
+                info = @_current_group.dbus
+                pw = new PreviewWindow("pw"+info.ID, info.ID, info.Title)
 
             setTimeout(->
                 pw.update_content()
@@ -303,9 +303,20 @@ class PreviewWindow extends Widget
 
         @close_button = create_element("div", "PWClose", @canvas_container)
         @close_button.innerText = "X"
+        @normalImg = create_img(src:"img/close_normal.png", @close_button)
+        @hoverImg = create_img(src:"img/close_hover.png", @close_button)
+        @hoverImg.style.display = 'none'
         @close_button.addEventListener('click', (e)=>
             e.stopPropagation()
             DCore.Dock.close_window(@w_id)
+        )
+        @close_button.addEventListener("mouseover", (e)=>
+            @hoverImg.style.display = 'inline'
+            @normalImg.style.display = 'none'
+        )
+        @close_button.addEventListener("mouseout", (e)=>
+            @hoverImg.style.display = 'none'
+            @normalImg.style.display = 'inline'
         )
 
         @titleContainer = create_element(tag:"div", class:"PWTitleContainer", container)

@@ -28,10 +28,10 @@ class ShowDesktop
 
     show: (v)->
         @__show = v
-        if @__show
-            @open_indicator.style.display = "block"
-        else
-            @open_indicator.style.display = "none"
+        # if @__show
+        #     @open_indicator.style.display = "block"
+        # else
+        #     @open_indicator.style.display = "none"
 
     set_status: (status)=>
         @show(status)
