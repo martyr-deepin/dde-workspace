@@ -69,7 +69,9 @@ class PWContainer extends Widget
             pw = Widget.look_up("pw"+w_id)
             if not pw
                 info = @_current_group.dbus
-                pw = new PreviewWindow("pw"+info.ID, info.ID, info.Title)
+                infos = @_current_group.client_infos
+                console.log("create PreviewWindow, #{info.Id}##{infos[w_id].id}")
+                pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title)
 
             setTimeout(->
                 pw.update_content()
@@ -177,6 +179,8 @@ class PWContainer extends Widget
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
+        console.log(allocation)
+
         pw_width = 0
         if allocation
             echo 'use pw-width'
@@ -186,17 +190,21 @@ class PWContainer extends Widget
             echo 'calculate'
             n = @_current_group.n_clients.length
             pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
+
         new_scale = pw_width / PREVIEW_WINDOW_WIDTH
         echo "pw_width: #{pw_width}, new_scale: #{new_scale}"
         @scale = new_scale
         window_width = pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+
         # 6 for shadow blur
         @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + 6 * 2
+
         extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
         if allocation
             @bg.height = allocation.height + extraHeight + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
+
         console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
         @border.style.width = @bg.width
         @border.style.height = @bg.height
@@ -293,7 +301,6 @@ Preview_close_now = ->
 Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
-        echo 'showing'
         __CLOSE_PREVIEW_ID = setTimeout(->
             Preview_close_now()
         , 500)
@@ -314,7 +321,6 @@ class PreviewWindow extends Widget
         @canvas = create_element("canvas", "", @canvas_container)
 
         @close_button = create_element("div", "PWClose", @canvas_container)
-        @close_button.innerText = "X"
         @normalImg = create_img(src:"img/close_normal.png", @close_button)
         @hoverImg = create_img(src:"img/close_hover.png", @close_button)
         @hoverImg.style.display = 'none'
@@ -337,10 +343,10 @@ class PreviewWindow extends Widget
         @title.innerText = @title_str
         @update_size()
 
-        if get_active_window() == @w_id
-            @to_active()
-        else
-            @to_normal()
+        # if get_active_window() == @w_id
+        #     @to_active()
+        # else
+        #     @to_normal()
 
         Preview_container.append(@)
         Preview_container._calc_size()
@@ -352,6 +358,7 @@ class PreviewWindow extends Widget
 
     destroy: ->
         super
+        console.log("PreviewWindow destroy")
         Preview_container.remove(@)
         Preview_container._calc_size()
 

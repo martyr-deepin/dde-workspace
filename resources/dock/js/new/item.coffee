@@ -54,7 +54,6 @@ class Item extends Widget
         @imgWarp.style.webkitTransition = 'all 100ms'
 
     on_mouseout:(e)=>
-        console.log "mouseout"
         @imgWarp.style.webkitTransform = 'translateY(0px)'
         @imgWarp.style.webkitTransition = 'all 400ms'
         calc_app_item_size()
@@ -86,16 +85,11 @@ class AppItem extends Item
 
         @properties = get_dbus("session", propertiesDBus(@id))
         @properties.connect("PropertiesChanged", (info, d, a)->
-            console.log("properties: #{info}, #{typeof info}, #{d}, #{typeof d}, #{a}, #{Array.isArray a}")
+            for own k, v of b
+                console.log("Key: #{k}, Value:#{v}")
         )
     on_mouseover:(e)=>
         super
-        xy = get_page_xy(@element)
-        # if @dbus.QuickWindowVieable and @dbus.Allocation[3] != 0
-        #     @dbus.QuickWindow(xy.x , xy.y)
-        # else
-        #     console.log 'fallback preview'
-        #     console.log @dbus.Data
 
     on_mouseout:(e)=>
         super
@@ -104,10 +98,10 @@ class AppItem extends Item
         super
         console.log("rightclick")
         xy = get_page_xy(@element)
-        @dbus.ContextMenu(
-            xy.x + @element.clientWidth / 2,
-            xy.y + OFFSET_DOWN,
-        )
+        # @dbus.ContextMenu(
+        #     xy.x + @element.clientWidth / 2,
+        #     xy.y + OFFSET_DOWN,
+        # )
 
     on_click:(e)=>
         super
