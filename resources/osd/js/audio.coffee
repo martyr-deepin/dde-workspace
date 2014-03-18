@@ -146,8 +146,8 @@ AudioUp = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     white = AudioCls.getVolume()
-    white++
-    AudioCls.setVolume(white)
+    #white++
+    #AudioCls.setVolume(white)
     AudioCls.show(white)
 
 AudioDown = (keydown) ->
@@ -157,8 +157,8 @@ AudioDown = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     white = AudioCls.getVolume()
-    white--
-    AudioCls.setVolume(white)
+    #white--
+    #AudioCls.setVolume(white)
     AudioCls.show(white)
 
 AudioMute = (keydown) ->
