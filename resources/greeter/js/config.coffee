@@ -74,6 +74,6 @@ detect_is_from_lock = ->
 PowerManager = null
 try
     POWER = "com.deepin.daemon.Power"
-    PowerManager = DCore.DBus.sys(POWER)
+    PowerManager = DCore.DBus.session(POWER)
 catch e
     echo "POWER:ERROR:#{e}"

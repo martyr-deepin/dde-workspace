@@ -26,6 +26,7 @@ class Lock extends Widget
         localStorage.setObject("shutdown_from_lock",power)
         try
             PowerManager.StartDim_sync() if PowerManager?
+            echo "StartDim_sync"
         catch e
             echo "#{e}"
     

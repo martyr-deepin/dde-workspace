@@ -615,6 +615,7 @@ DCore.signal_connect("auth-succeed", ->
         else
             try
                 PowerManager.StopDim_sync() if PowerManager?
+                echo "StopDim_sync"
             catch e
                 echo "#{e}"
             DCore.Lock.quit()
