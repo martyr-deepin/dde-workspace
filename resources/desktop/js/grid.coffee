@@ -1045,7 +1045,7 @@ grid_do_itemselected = (id) ->
             if id >= TEMPLATES_FILE_ID_FIRST && id <= templates.length + TEMPLATES_FILE_ID_FIRST
                 menu_create_templates(id)
             else
-                echo "not implemented function #{evt.id},#{evt.title}"
+                echo "not implemented function #{id}"
     return
 
 
