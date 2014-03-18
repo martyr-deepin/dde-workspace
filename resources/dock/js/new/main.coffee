@@ -12,6 +12,9 @@ entryManager = get_dbus('session', EntryManager)
 entryManager.connect("Added", (path)->
     console.log('added', path)
     d = get_dbus("session", itemDBus(path))
+    if apps[entry]
+        return
+
     if d.Status == 0
         console.log("Activator", d.Id)
         apps[entry] = new Activator(entry, d, app_list)
@@ -20,7 +23,10 @@ entryManager.connect("Added", (path)->
         apps[entry] = new ClientGroup(entry, d, app_list)
 )
 entryManager.connect("Removed", (id)->
-    console.log('added', id)
+    console.log('removed', id)
+    a = apps[id]
+    delete apps[id]
+    a?.destroy?()
 )
 
 entries = entryManager.Entries

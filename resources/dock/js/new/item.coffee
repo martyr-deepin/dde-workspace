@@ -49,7 +49,6 @@ class Item extends Widget
     update_scale:->
 
     on_mouseover:(e)=>
-        console.log "mouseover"
         DCore.Dock.require_all_region()
         @imgWarp.style.webkitTransform = 'translateY(-5px)'
         @imgWarp.style.webkitTransition = 'all 100ms'
@@ -86,8 +85,8 @@ class AppItem extends Item
             app_list.append_app_item?(@)
 
         @properties = get_dbus("session", propertiesDBus(@id))
-        @properties.connect("PropertiesChanged", (info)->
-            console.log("properties", info)
+        @properties.connect("PropertiesChanged", (info, d, a)->
+            console.log("properties: #{info}, #{typeof info}, #{d}, #{typeof d}, #{a}, #{Array.isArray a}")
         )
     on_mouseover:(e)=>
         super

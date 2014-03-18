@@ -50,11 +50,11 @@ class PWContainer extends Widget
         @border.style.opacity = 1
         @border.style.display = "block"
 
-    _update: ->
+    _update: (allocation)->
         clearInterval(@_update_id)
         setTimeout(=>
             @_update_once()
-            @_calc_size()
+            @_calc_size(allocation)
             @show()
         , 5)
         @_update_id = setInterval(=>
@@ -166,7 +166,7 @@ class PWContainer extends Widget
 
         ctx.restore()
 
-    _calc_size: ->
+    _calc_size: (allocation)->
         return if @_current_group == null
 
         if PWContainer._need_move_animation
@@ -177,15 +177,27 @@ class PWContainer extends Widget
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
-        n = @_current_group.n_clients.length
-        pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
+        pw_width = 0
+        if allocation
+            echo 'use pw-width'
+            pw_width = allocation.width
+            n = 1
+        else
+            echo 'calculate'
+            n = @_current_group.n_clients.length
+            pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
         new_scale = pw_width / PREVIEW_WINDOW_WIDTH
         echo "pw_width: #{pw_width}, new_scale: #{new_scale}"
         @scale = new_scale
         window_width = pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
         # 6 for shadow blur
         @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + 6 * 2
-        @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
+        extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
+        if allocation
+            @bg.height = allocation.height + extraHeight + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+        else
+            @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
+        console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
         @border.style.width = @bg.width
         @border.style.height = @bg.height
 
@@ -227,14 +239,14 @@ class PWContainer extends Widget
         @is_showing = false
         #DCore.Dock.set_compiz_workaround_preview(false)
 
-    show_group: (group)->
+    show_group: (group, allocation)->
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
         #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
         @hide()
         @_current_group = group
-        @_update()
+        @_update(allocation)
 
     on_mouseover: (e)=>
         __clear_timeout()
@@ -257,10 +269,10 @@ __clear_timeout = ->
     __SHOW_PREVIEW_ID = -1
     __CLOSE_PREVIEW_ID = -1
 
-Preview_show = (group) ->
+Preview_show = (group, allocation) ->
     __clear_timeout()
     __SHOW_PREVIEW_ID = setTimeout(->
-        Preview_container.show_group(group)
+        Preview_container.show_group(group, allocation)
     , 300)
 
 Preview_close_now = ->

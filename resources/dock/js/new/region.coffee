@@ -12,7 +12,7 @@ calc_app_item_size = ->
     client_width = $("#containerWarp").clientWidth
     w = clamp(client_width / item_num, 34, ITEM_WIDTH * MAX_SCALE)
     ICON_SCALE = clamp(w / ITEM_WIDTH, 0, MAX_SCALE)
-    console.log "new ICON_SCALE: #{ICON_SCALE}"
+    # console.log "new ICON_SCALE: #{ICON_SCALE}"
 
     for i in apps
         Widget.look_up(i.id)?.update_scale()

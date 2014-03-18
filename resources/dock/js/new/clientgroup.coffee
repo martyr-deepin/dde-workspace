@@ -12,16 +12,16 @@ class ClientGroup extends AppItem
     destroy: ->
         Preview_close_now()
         @element.style.display = "block"
-        @try_build_launcher()
+        @try_build_activator()
         super
 
-    try_build_launcher: ->
+    try_build_activator: ->
         info = DCore.Dock.get_launcher_info(@app_id)
         if info
-            l = new Launcher(info.Id, info.Icon, info.Core, info.Actions)
+            l = new Activator(info.Id, @dbus, @container)
             swap_element(@element, l.element)
 
-    try_swap_launcher: ->
+    try_swap_activator: ->
         Preview_close_now()
         l = Widget.look_up(@app_id)
         if l?
@@ -75,19 +75,22 @@ class ClientGroup extends AppItem
     on_mouseover: (e)=>
         super
         xy = get_page_xy(@element)
-        console.log("mouseover")
-        console.log(""+ xy.y + ","+xy.x, +"clientWidth"+@element.clientWidth)
-        @dbus.QuickWindow(xy.x + @element.clientWidth/2, xy.y-26)
+        w = @element.clientWidth || 0
+        # console.log("mouseover: "+xy.y + ","+xy.x, +"clientWidth"+w)
         e.stopPropagation()
         __clear_timeout()
         clearTimeout(hide_id)
         clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
-        if @n_clients.length != 0
-            echo 'show preview'
-            Preview_show(@)
-        Preview_show(@, @dbus.Allocation)
+        # if @n_clients.length != 0
+        #     Preview_show(@)
+        console.log(@dbus.Allocation)
+        Preview_show(@, width:@dbus.Allocation[2], height:@dbus.Allocation[3])
+
+        # 3 for border's margin to element
+        extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + 3
+        @dbus.QuickWindow(xy.x + w/2, xy.y - extraHeight)
 
     on_mouseout: (e)=>
         super
@@ -98,11 +101,13 @@ class ClientGroup extends AppItem
                 DCore.Dock.update_hide_mode()
             , 300)
         else
+            echo "Preview_container is showing"
             DCore.Dock.require_all_region()
-            hide_id = setTimeout(->
+            hide_id = setTimeout(=>
                 calc_app_item_size()
                 # update_dock_region()
                 Preview_close_now()
+                @dbus.HideQuickWindow()
                 DCore.Dock.update_hide_mode()
             , 1000)
 
