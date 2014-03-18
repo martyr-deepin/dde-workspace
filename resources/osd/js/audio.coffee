@@ -74,28 +74,28 @@ class Audio extends Widget
    
     getVolume:->
         volume = @DBusDefaultSink.Volume
-        if volume > 100 then volume = 100
+        if volume > 150 then volume = 150
         else if volume < 0 then volume = 0
-        return volume / 10
+        else if volume is null then volume = 0
+        return volume / 15
         
     setVolume:(volume)->
-        if volume > 10 then volume = 10
+        if volume > 15 then volume = 15
         else if volume < 0 then volume = 0
-        @DBusDefaultSink.SetSinkVolume_sync(volume * 10)
+        @DBusDefaultSink.SetSinkVolume_sync(volume * 15)
 
     getMute:->
-        mute = @DBusDefaultSink.Mute
-        if not mute? then mute = 0
-        return mute
+        @DBusDefaultSink.Mute
     
     setMute:(mute)->
         @DBusDefaultSink.SetSinkMute_sync(mute)
 
     changeMute:->
-        muteSet = null
-        if @getMute == 0 then muteSet = 1
-        else muteSetf = 0
-        @setMute(muteSet)
+        muteset = 0
+        if @getMute() then muteset = 0
+        else muteset = 1
+        echo "changeMute to muteset : #{muteset}"
+        @setMute(muteset)
 
     getBgName:(white)->
         bg = "Audio_2"
@@ -146,8 +146,6 @@ AudioUp = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     white = AudioCls.getVolume()
-    #white++
-    #AudioCls.setVolume(white)
     AudioCls.show(white)
 
 AudioDown = (keydown) ->
@@ -157,8 +155,6 @@ AudioDown = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     white = AudioCls.getVolume()
-    #white--
-    #AudioCls.setVolume(white)
     AudioCls.show(white)
 
 AudioMute = (keydown) ->
@@ -167,9 +163,8 @@ AudioMute = (keydown) ->
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
-    AudioCls.changeMute()
+    white = AudioCls.getVolume()
     if AudioCls.getMute() then white = 0
-    else white = AudioCls.getVolume()
     AudioCls.show(white)
 
 DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
