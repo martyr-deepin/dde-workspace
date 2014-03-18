@@ -1036,9 +1036,9 @@ grid_do_itemselected = (id) ->
         when 21 then menu_create_new_file(name_add_before)
         when 3 then DCore.Desktop.run_terminal()
         when 4 then paste_from_clipboard()
-        when 5 then DCore.Desktop.run_deepin_settings("display")
+        when 5 then DSS_DBUS.showModule_sync("display") if DSS?
         when 6 then DCore.Desktop.run_deepin_settings("zone")
-        when 7 then DCore.Desktop.run_deepin_settings("individuation")
+        when 7 then DSS_DBUS.showModule_sync("personalization") if DSS?
         else
             # warning: the templates.length + TEMPLATES_FILE_ID_FIRST must < 30 .
             # if it > 30 ,and when menu 3 has child menu id 31\31\33,and this will be the same id with the templates id
