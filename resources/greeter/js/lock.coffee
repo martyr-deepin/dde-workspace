@@ -19,12 +19,14 @@
 
 class Lock extends Widget
 
+    POWER = "com.deepin.daemon.Power"
+
     constructor:->
         super
         echo "Lock"
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
-
+        
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id) if hide_face_login
 
