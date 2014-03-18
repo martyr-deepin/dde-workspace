@@ -58,7 +58,8 @@ hide_face_login = hideFaceLogin()
 
 is_livecd = false
 try
-    dbus = DCore.DBus.sys_object("com.deepin.dde.lock", "/com/deepin/dde/lock", "com.deepin.dde.lock")
+    LOCK = "com.deepin.dde.lock"
+    dbus = DCore.DBus.sys(LOCK)
     is_livecd = dbus.IsLiveCD_sync(DCore.Lock.get_username())
 catch error
     is_livecd = false
@@ -70,4 +71,9 @@ detect_is_from_lock = ->
     localStorage.setItem("from_lock",false)
     return from_lock
 
-
+PowerManager = null
+try
+    POWER = "com.deepin.daemon.Power"
+    PowerManager = DCore.DBus.sys(POWER)
+catch e
+    echo "POWER:ERROR:#{e}"

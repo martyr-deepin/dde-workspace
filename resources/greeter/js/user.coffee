@@ -612,6 +612,11 @@ DCore.signal_connect("auth-succeed", ->
             confirmdialog.interval(60)
     else
         if is_greeter then return
-        DCore.Lock.quit()
+        else
+            try
+                PowerManager.StopDim_sync() if PowerManager?
+            catch e
+                echo "#{e}"
+            DCore.Lock.quit()
 )
 
