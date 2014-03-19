@@ -24,18 +24,29 @@ class Zone extends Widget
         super
         echo "Zone"
         document.body.appendChild(@element)
-        
-    option_build:->
-        @opt = []
         #set default zone
         @ids = ["LEFTUP","LEFTDOWN","RIGHTUP","RIGHTDOWN"]
-        @currents = ["Launcher","Workspace","Desktop","System Setup","None"]
+        @zoneValue = localStorage.getObject("zoneValue")
+        echo @zoneValue
+        if not @zoneValue?
+            @zoneValue = {
+                "LEFTUP":"Launcher",
+                "LEFTDOWN":"Workspace",
+                "RIGHTUP":"Desktop",
+                "RIGHTDOWN":"System Setup"
+            }
+            localStorage.setObject("zoneValue",@zoneValue)
+         
+    option_build:->
+        echo "option_build"
+        echo @zoneValue
         
+        @opt = []
         #provide zone setting option
         @option = ["Launcher","System Setup","Workspace","Desktop","None"]
         
         for id,i in @ids
-            @opt[i] = new Option(@ids[i],@currents[i])
+            @opt[i] = new Option(@ids[i],@zoneValue[@ids[i]])
             @element.appendChild(@opt[i].element)
             for tmp in @option
                 @opt[i].insert(tmp)
