@@ -65,7 +65,7 @@ $("#div_users").appendChild(user.element)
 #user.is_support_guest()
 user.new_userinfo_for_greeter()
 TOP_SCALE = 0.8
-if user.users_name.length > 1 then TOP_SCALE = 1
+if user.users_name.length > 1 then TOP_SCALE = 1.015
 left = (screen.width  - $("#div_users").clientWidth) / 2
 top = (screen.height  - $("#div_users").clientHeight) / 2 * TOP_SCALE
 $("#div_users").style.left = "#{left}px"
