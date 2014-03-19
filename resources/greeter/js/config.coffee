@@ -5,7 +5,6 @@ PasswordMaxlength = 16 #default 16
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
 ANIMATION_TIME = 2
-# SCANNING_TIP = _("Scanning in 3 seconds")
 APP_NAME = ''
 is_greeter = null
 is_hide_users = null

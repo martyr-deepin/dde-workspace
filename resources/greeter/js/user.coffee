@@ -39,7 +39,6 @@ class User extends Widget
         @user_ul.id = "user_ul"
         
         @userinfo_show_index = 0
-        @time_animation = 1800
 
         @users_dbus = []
         @users_name = []
@@ -74,13 +73,12 @@ class User extends Widget
 
 
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
-        el.addEventListener("mouseover",->
+        jQuery(el).hover((e)->
             el.src = hover
             el.style.opacity = "0.8"
-        ) if hover
-        el.addEventListener("mouseout",->
+        ,(e)->
             el.src = normal
-        ) if normal
+        )
         el.addEventListener("click",=>
             el.style.opacity = "0.8"
             el.src = click
@@ -141,53 +139,56 @@ class User extends Widget
                 userimage = @get_user_icon(user)
                 u = new UserInfo(user, user, userimage)
                 @userinfo_all.push(u)
-                if user is @_default_username
-                    _current_user = u
-                    _current_user.show(false)
-                else
-                    u.show(true)
+                _current_user = u if user is @_default_username
+        
+        user.index = j for user,j in @userinfo_all
+        _current_user = @userinfo_all[0] if not _current_user?
+        if @userinfo_all.length >= 3 then @sort_current_user_info_center()
         for user,j in @userinfo_all
-            user.index = j
-        if @userinfo_all.length >= 3
-            @sort_current_user_info_center()
-        else if @userinfo_all.length == 1
-            _current_user = @userinfo_all[0]
-            _current_user.show(false)
-        for user,j in @userinfo_all
-            user.index = j
             @user_ul.appendChild(user.element)
-            if user is _current_user then _current_user.focus()
+            if user.index is _current_user.index
+                _current_user.focus()
+                _current_user.hide(false)
+            else
+                user.hide(true)
 
-        @userinfo_show_index =_current_user.index
-        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo @users_name
+        echo @users_name.length
+        
+        echo @userinfo_all
+        echo @userinfo_all.length
+        
         return @userinfo_all
 
     sort_current_user_info_center:->
         echo "sort_current_user_info_center"
         tmp_length = (@userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
-        if _current_user.index isnt center_index
+        if _current_user.index != center_index
             center_old = @userinfo_all[center_index]
             @userinfo_all[center_index] = _current_user
             @userinfo_all[_current_user.index] = center_old
+            _current_user.index = center_index
+        @userinfo_show_index =_current_user.index
+        localStorage.setItem("current_user_index",@userinfo_show_index)
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         user = @get_default_username()
         userimage = @get_user_icon(user)
         _current_user = new UserInfo(user, user, userimage)
-        _current_user.show(false)
+        _current_user.index = 0
+        _current_user.hide(false)
         @user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
     is_support_guest:->
-        if is_greeter
-            if DCore.Greeter.is_support_guest()
-                u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-                u.show(true)
-                @user_ul.appendChild(u.element)
-                if DCore.Greeter.is_guest_default()
-                    u.focus()
+        if is_support_guest
+            u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+            u.hide(true)
+            @userinfo_all.push(u)
+            @user_ul.appendChild(u.element)
+            if DCore.Greeter.is_guest_default() then u.focus()
     
     get_current_userinfo:->
         return _current_user
@@ -216,40 +217,22 @@ class User extends Widget
         )
 
     switchtoprev_userinfo:=>
-        echo "switchtoprev_userinfo"
-        for user in @userinfo_all
-            if user.element.style.display is "block"
-                user.show(true)
-                apply_animation(user.userimg,"hide_animation",@time_animation)
-                apply_animation(user.username,"hide_animation",@time_animation)
+        echo "switchtoprev_userinfo from #{@userinfo_show_index}"
+        @userinfo_all[@userinfo_show_index].hide_animation()
         @userinfo_show_index = @check_index(@userinfo_show_index + 1)
         localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo @userinfo_show_index
-        for user in @userinfo_all
-            if user.index == @userinfo_show_index
-                user.show(false)
-                user.animate_prev()
-                apply_animation(user.userimg,"show_animation",@time_animation)
-                apply_animation(user.username,"show_animation",@time_animation)
-
+        echo "@userinfo_show_index: #{@userinfo_show_index}"
+        @userinfo_all[@userinfo_show_index].show_animation()
+        @userinfo_all[@userinfo_show_index].animate_prev()
 
     switchtonext_userinfo:=>
-        echo "switchtonext_userinfo"
-        for user in @userinfo_all
-            if user.element.style.display is "block"
-                user.show(true)
-                apply_animation(user.userimg,"hide_animation",@time_animation)
-                apply_animation(user.username,"hide_animation",@time_animation)
+        echo "switchtonext_userinfo from #{@userinfo_show_index}"
+        @userinfo_all[@userinfo_show_index].hide_animation()
         @userinfo_show_index = @check_index(@userinfo_show_index - 1)
         localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo @userinfo_show_index
-        for user in @userinfo_all
-            if user.index == @userinfo_show_index
-                user.show(false)
-                user.animate_next()
-                apply_animation(user.userimg,"show_animation",@time_animation)
-                apply_animation(user.username,"show_animation",@time_animation)
-
+        echo "@userinfo_show_index: #{@userinfo_show_index}"
+        @userinfo_all[@userinfo_show_index].show_animation()
+        @userinfo_all[@userinfo_show_index].animate_next()
 
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
@@ -368,9 +351,11 @@ class LoginEntry extends Widget
 class UserInfo extends Widget
     constructor: (@id, name, @img_src)->
         super
+        echo "new UserInfo :#{@id}"
+        
         @is_recognizing = false
         @index = null
-        echo "new UserInfo :#{@id}"
+        @time_animation = 1800
         @face_login = @userFaceLogin(name)
         
         @userbase = create_element("div", "UserBase", @element)
@@ -406,11 +391,20 @@ class UserInfo extends Widget
 
         @show_login()
 
-    show:(hide)->
-        if !hide
-            @element.style.display= "block"
-        else
+    hide:(hide)->
+        if hide
             @element.style.display= "none"
+        else
+            @element.style.display= "block"
+
+    hide_animation:->
+        jQuery(@userimg).fadeOut(@time_animation)
+        jQuery(@username).fadeOut(@time_animation)
+
+    show_animation:->
+        jQuery(@userimg).fadeIn(@time_animation)
+        jQuery(@username).fadeIn(@time_animation)
+
 
     userFaceLogin: (name)->
         face = false
@@ -505,6 +499,7 @@ class UserInfo extends Widget
     animate_prev: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
+        
 
         if @is_recognizing
             return
