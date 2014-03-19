@@ -160,7 +160,6 @@ class User extends Widget
 
         @userinfo_show_index =_current_user.index
         localStorage.setItem("current_user_index",@userinfo_show_index)
-        @prev_next_userinfo_create() if @users_name.length > 1
         return @userinfo_all
 
     sort_current_user_info_center:->
