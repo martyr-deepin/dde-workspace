@@ -19,10 +19,8 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 user_ul = null
-message_tip = null
 draw_camera_id = null
 _current_user = null
-_drag_flag = false
 password_error_msg = null
 
 class User extends Widget
@@ -34,27 +32,22 @@ class User extends Widget
     
     GRAPHIC = "com.deepin.api.Graphic"
 
-    img_src_before = null
-
-    username = null
-    userimage = null
-    userinfo = null
-    userinfo_all = []
-    userinfo_show_index = 0
-        
-    time_animation = 1800
+    img_src_before = "images/userswitch/"
     
     constructor:->
         super
-        img_src_before = "images/userswitch/"
         user_ul = create_element("ul","user_ul",@element)
         user_ul.id = "user_ul"
         
+        @userinfo_show_index = 0
+        @time_animation = 1800
+
         @users_dbus = []
         @users_name = []
         @users_id = []
         @users_id_dbus = []
         @users_name_dbus = []
+        @userinfo_all = []
     
         @getDBus()
 
@@ -121,7 +114,7 @@ class User extends Widget
             if is_greeter
                 user_image = DCore.Greeter.get_user_icon(user)
             else
-                user_image = DCore.Lock.get_user_icon(username)
+                user_image = DCore.Lock.get_user_icon(user)
         if not user_image? then user_image = "images/userimg_default.jpg"
         echo "user_image:#{user}-----------#{user_image}------------"
         return user_image
@@ -172,37 +165,37 @@ class User extends Widget
             if not @is_disable_user(user)
                 userimage = @get_user_image(user)
                 u = new UserInfo(user, user, userimage)
-                userinfo_all.push(u)
+                @userinfo_all.push(u)
                 if user is @_default_username
                     _current_user = u
                     _current_user.show(false)
                 else
                     u.show(true)
-        for user,j in userinfo_all
+        for user,j in @userinfo_all
             user.index = j
-        if userinfo_all.length >= 3
+        if @userinfo_all.length >= 3
             @sort_current_user_info_center()
-        else if userinfo_all.length == 1
-            _current_user = userinfo_all[0]
+        else if @userinfo_all.length == 1
+            _current_user = @userinfo_all[0]
             _current_user.show(false)
-        for user,j in userinfo_all
+        for user,j in @userinfo_all
             user.index = j
             user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
-        userinfo_show_index =_current_user.index
-        localStorage.setItem("current_user_index",userinfo_show_index)
+        @userinfo_show_index =_current_user.index
+        localStorage.setItem("current_user_index",@userinfo_show_index)
         @prev_next_userinfo_create() if @users_name.length > 1
-        return userinfo_all
+        return @userinfo_all
 
     sort_current_user_info_center:->
         echo "sort_current_user_info_center"
-        tmp_length = (userinfo_all.length - 1) / 2
+        tmp_length = (@userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
         if _current_user.index isnt center_index
-            center_old = userinfo_all[center_index]
-            userinfo_all[center_index] = _current_user
-            userinfo_all[_current_user.index] = center_old
+            center_old = @userinfo_all[center_index]
+            @userinfo_all[center_index] = _current_user
+            @userinfo_all[_current_user.index] = center_old
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
@@ -227,8 +220,8 @@ class User extends Widget
         return _current_user
 
     check_index:(index)->
-        if index >= userinfo_all.length then index = 0
-        else if index < 0 then index = userinfo_all.length - 1
+        if index >= @userinfo_all.length then index = 0
+        else if index < 0 then index = @userinfo_all.length - 1
         return index
 
     prev_next_userinfo_create:->
@@ -254,38 +247,38 @@ class User extends Widget
 
     switchtoprev_userinfo:=>
         echo "switchtoprev_userinfo"
-        for user in userinfo_all
+        for user in @userinfo_all
             if user.element.style.display is "block"
                 user.show(true)
-                apply_animation(user.userimg,"hide_animation",time_animation)
-                apply_animation(user.username,"hide_animation",time_animation)
-        userinfo_show_index = @check_index(userinfo_show_index + 1)
-        localStorage.setItem("current_user_index",userinfo_show_index)
-        echo userinfo_show_index
-        for user in userinfo_all
-            if user.index == userinfo_show_index
+                apply_animation(user.userimg,"hide_animation",@time_animation)
+                apply_animation(user.username,"hide_animation",@time_animation)
+        @userinfo_show_index = @check_index(@userinfo_show_index + 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo @userinfo_show_index
+        for user in @userinfo_all
+            if user.index == @userinfo_show_index
                 user.show(false)
                 user.animate_prev()
-                apply_animation(user.userimg,"show_animation",time_animation)
-                apply_animation(user.username,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",@time_animation)
+                apply_animation(user.username,"show_animation",@time_animation)
 
 
     switchtonext_userinfo:=>
         echo "switchtonext_userinfo"
-        for user in userinfo_all
+        for user in @userinfo_all
             if user.element.style.display is "block"
                 user.show(true)
-                apply_animation(user.userimg,"hide_animation",time_animation)
-                apply_animation(user.username,"hide_animation",time_animation)
-        userinfo_show_index = @check_index(userinfo_show_index - 1)
-        localStorage.setItem("current_user_index",userinfo_show_index)
-        echo userinfo_show_index
-        for user in userinfo_all
-            if user.index == userinfo_show_index
+                apply_animation(user.userimg,"hide_animation",@time_animation)
+                apply_animation(user.username,"hide_animation",@time_animation)
+        @userinfo_show_index = @check_index(@userinfo_show_index - 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo @userinfo_show_index
+        for user in @userinfo_all
+            if user.index == @userinfo_show_index
                 user.show(false)
                 user.animate_next()
-                apply_animation(user.userimg,"show_animation",time_animation)
-                apply_animation(user.username,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",@time_animation)
+                apply_animation(user.username,"show_animation",@time_animation)
 
 
 class LoginEntry extends Widget
