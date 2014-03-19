@@ -97,3 +97,20 @@ _CFG_SHOW_DSC_ICON_ = "show-dsc-icon"
 # wrapper func to get configs
 _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
+
+
+DSS =
+    obj:"com.deepin.system.settings"
+    path:"/dss"
+    interface:"com.deepin.system.settings"
+DSS_DBUS = null
+try
+    DSS_DBUS = DCore.DBus.session_object(
+        DSS.obj,
+        DSS.path,
+        DSS.interface
+    )
+    echo DSS_DBUS
+catch e
+    echo "#{DSS.obj} ERROR:#{e}"
+

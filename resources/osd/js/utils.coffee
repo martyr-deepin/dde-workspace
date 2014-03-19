@@ -21,6 +21,9 @@
 _b = document.body
 FOCUS = false
 
+setFocus = (focus)->
+    FOCUS = focus
+    DCore.Osd.set_focus(FOCUS)
 
 #MediaKey DBus
 MEDIAKEY =
@@ -29,7 +32,7 @@ MEDIAKEY =
     interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
-TIME_PRESS = 10
+TIME_PRESS = 5 
 timeout_osdHide = null
 DBusMediaKey = null
 try
@@ -42,10 +45,6 @@ catch e
     echo "Error:-----DBusMediaKey:#{e}"
 echo DBusMediaKey
 
-#dconf-tools  
-#org/gonome/settings-daemon/plugins/media-keys/active false
-#com/deepin/dde/key-binding/mediakey
-#dbus-monitor "sender='com.deepin.daemon.MediaKey', type='signal'"   
 allElsHide = ->
     els = _b.children
     for el in els
@@ -68,8 +67,16 @@ osdHide()
 click_time = 0
 _b.addEventListener("click",(e)=>
     e.stopPropagation()
+    echo click_time
     click_time++
-    #DCore.Osd.quit() if click_time % 3 == 0
+    DCore.Osd.quit() if click_time % 3 == 0
 )
 
-
+_b.addEventListener("contextmenu",(e)=>
+    e.preventDefault()
+    e.stopPropagation()
+)
+        
+setBodySize = (width,height)->
+    _b.style.width = width
+    _b.style.height = height

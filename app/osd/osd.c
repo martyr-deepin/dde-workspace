@@ -125,6 +125,19 @@ const char* osd_get_argv()
 }
 
 
+JS_EXPORT_API
+void osd_set_focus(gboolean focus)
+{
+    gtk_window_set_focus_on_map (GTK_WINDOW (container), focus);
+    gtk_window_set_accept_focus (GTK_WINDOW (container), focus);
+    gtk_window_set_focus_visible (GTK_WINDOW (container), focus);
+    
+    GdkWindow* gdkwindow = gtk_widget_get_window (container);
+    gdk_window_set_focus_on_map (gdkwindow, focus);
+    gdk_window_set_accept_focus (gdkwindow, focus);
+    
+    gdk_window_set_override_redirect(gdkwindow, !focus);
+ }
 
 
 int main (int argc, char **argv)
@@ -155,12 +168,7 @@ int main (int argc, char **argv)
     gtk_window_set_position (GTK_WINDOW (container), GTK_WIN_POS_CENTER_ALWAYS);
     gtk_window_resize (GTK_WINDOW (container), width,height);
     
-    gboolean FOCUS = FALSE;
-    gtk_window_set_focus_on_map (GTK_WINDOW (container), FOCUS);
-    gtk_window_set_accept_focus (GTK_WINDOW (container), FOCUS);
-    gtk_window_set_focus (GTK_WINDOW (container), NULL);
-    gtk_window_set_focus_visible (GTK_WINDOW (container), FOCUS);
-    
+   
     gtk_widget_set_events (GTK_WIDGET (container),
                            gtk_widget_get_events (GTK_WIDGET (container))
                            | GDK_POINTER_MOTION_MASK
@@ -197,23 +205,18 @@ int main (int argc, char **argv)
     /*[>cairo_surface_write_to_png(surface,"gtkbackground.png");<]*/
     /*[>cairo_surface_destory(surface);<]*/
     
+    
     GdkWindow* gdkwindow = gtk_widget_get_window (container);
     
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
-    gdk_window_set_opacity (gdkwindow, 0.0);
+    gdk_window_set_opacity (gdkwindow, 0.9);
     gdk_window_set_keep_above (gdkwindow, TRUE);
-    gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
-    gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
-    gdk_window_set_override_redirect(gdkwindow, !FOCUS);
-    gdk_window_set_focus_on_map (gdkwindow, FOCUS);
-    gdk_window_set_accept_focus (gdkwindow, FOCUS);
     
+    osd_set_focus(FALSE);
+   
+    gdk_window_show(gdkwindow);
     gtk_widget_show_all (container);
-    gtk_widget_set_opacity (container,0.9);
-
-    gdk_window_stick (gdkwindow);
-
 
     gtk_main ();
 

@@ -18,39 +18,61 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-user_ul = null
-message_tip = null
 draw_camera_id = null
 _current_user = null
-_default_username = null
-_drag_flag = false
 password_error_msg = null
 
 class User extends Widget
-    Dbus_Account = null
-    img_src_before = null
-
-    username = null
-    userimage = null
-    userinfo = null
-    userinfo_all = []
-    userinfo_show_index = 0
-        
-    users_path = []
-    users_name = []
-    users_realname = []
-    users_id = []
+    ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
+    ACCOUNTS_USER =
+        obj: ACCOUNTS_DAEMON
+        path: "/com/deepin/daemon/Accounts/User1000"
+        interface: "com.deepin.daemon.Accounts.User"
     
-    time_animation = 1800
+    GRAPHIC = "com.deepin.api.Graphic"
+
+    img_src_before = "images/userswitch/"
     
     constructor:->
         super
-        Dbus_Account = DCore.DBus.sys("org.freedesktop.Accounts")
-        img_src_before = "images/userswitch/"
-        user_ul = create_element("ul","user_ul",@element)
-        user_ul.id = "user_ul"
+        @user_ul = create_element("ul","user_ul",@element)
+        @user_ul.id = "user_ul"
+        
+        @userinfo_show_index = 0
+        @time_animation = 1800
+
+        @users_dbus = []
+        @users_name = []
+        @users_id = []
+        @users_id_dbus = []
+        @users_name_dbus = []
+        @userinfo_all = []
     
-   
+        @getDBus()
+
+    getDBus:->
+        try
+            @Dbus_Account = DCore.DBus.sys(ACCOUNTS_DAEMON)
+            for path in @Dbus_Account.UserList
+                ACCOUNTS_USER.path = path
+                user_dbus = DCore.DBus.sys_object(
+                    ACCOUNTS_USER.obj,
+                    ACCOUNTS_USER.path,
+                    ACCOUNTS_USER.interface
+                )
+                @users_dbus.push(user_dbus)
+                @users_id.push(user_dbus.Uid)
+                @users_id_dbus[user_dbus.Uid] = user_dbus
+                @users_name_dbus[user_dbus.UserName] = user_dbus
+        catch e
+            echo "Dbus_Account #{ACCOUNTS_DAEMON} ERROR: #{e}"
+
+        try
+            @Dbus_Graphic = DCore.DBus.session(GRAPHIC)
+        catch e
+            echo "#{GRAPHIC} dbus ERROR: #{e}"
+
+
     normal_hover_click_cb: (el,normal,hover,click,click_cb) ->
         el.addEventListener("mouseover",->
             el.src = hover
@@ -67,149 +89,103 @@ class User extends Widget
     
 
     get_all_users:->
-        if is_greeter
-            users_name = DCore.Greeter.get_users()
-        else
-            users_path = Dbus_Account.ListCachedUsers_sync()
-            for path in users_path
-                user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",path,"org.freedesktop.Accounts.User")
-                name = user_dbus.UserName
-                realname = user_dbus.RealName
-                id = user_dbus.Uid
-                users_realname.push(realname)
-                users_name.push(name)
-                users_id.push(id)
-        #echo users_name
-        return users_name
+#        if is_greeter
+            #@users_name = DCore.Greeter.get_users()
+        #else
+        for dbus in @users_dbus
+            @users_name.push(dbus.UserName)
+        return @users_name
 
     get_default_username:->
         if is_greeter
-            echo "is_greeter"
-            _default_username = DCore.Greeter.get_default_user()
+            @_default_username = DCore.Greeter.get_default_user()
         else
-            echo "is_lock"
-            _default_username = DCore.Lock.get_username()
-        return _default_username
+            @_default_username = DCore.Lock.get_username()
+        return @_default_username
 
-    get_user_image:(user) ->
+    get_user_icon:(user) ->
         try
-            if is_greeter
-                user_image = DCore.Greeter.get_user_icon(user)
-            else
-                user_image = DCore.Lock.get_user_icon(username)
-        catch error
-            echo error
-
-        if not user_image?
-            try
-                user_image = DCore.DBus.sys_object("com.deepin.passwdservice", "/", "com.deepin.passwdservice").get_user_fake_icon_sync(user)
-            catch error
-                echo error
-                user_image = "images/userimg_default.jpg"
-
-        return user_image
+            icon = @users_name_dbus[user].IconFile
+        catch e
+            echo "#{e}"
+        if not icon? then icon = DCore[APP_NAME].get_user_icon(user)
+        if not icon? then icon = "images/userimg_default.jpg"
+        echo "icon:#{user}-----------#{icon}------------"
+        return icon
 
     get_user_id:(user)->
-        if users_id.length == 0 or users_name.length == 0 then @get_all_users()
         id = null
-        for tmp,j in users_name
-            if user is tmp
-                id = users_id[j]
-        if not id?
-            id = users_id[0]
-        if not id?
-            id = "1000"
+        try
+            id = @users_name_dbus[user].Uid
+        catch e
+            echo "get_user_id #{e}"
+        if not id? then id = "1000"
         return id
+
 
     is_disable_user :(user)->
         disable = false
-        users_path = Dbus_Account.ListCachedUsers_sync()
-        for u in users_path
-            user_dbus = DCore.DBus.sys_object("org.freedesktop.Accounts",u,"org.freedesktop.Accounts.User")
-            if user is user_dbus.UserName
-                if user_dbus.Locked is null then disable = false
-                else if user_dbus.Locked is true then disable = true
-                return disable
+        user_dbus = @users_name_dbus[user]
+        if user_dbus.Locked is null then disable = false
+        else if user_dbus.Locked is true then disable = true
+        return disable
 
-    set_blur_background:(user)->
-        Dbus_Account_deepin = DCore.DBus.sys("com.deepin.dde.api.Accounts")
-        userid = new String()
-        userid = @get_user_id(user)
-        echo "current user #{user}'s userid:#{userid}"
-        path = Dbus_Account_deepin.BackgroundBlurPictPath_sync(userid.toString(),"")
-        if path[0]
-            BackgroundBlurPictPath = path[1]
-        else
-            # here should getPath by other methods!
-            BackgroundBlurPictPath = path[1]
-        echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
-        localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
-        try
-            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
-        catch e
-            echo e
-            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
-        _default_username = @get_default_username()
-        users_name = @get_all_users()
-        if _default_username is null then _default_username = users_name[0]
-        echo "_default_username:#{_default_username};"
-        #@set_blur_background(_default_username)
-        
-        for user in users_name
-            echo "user:#{user}"
+        @get_default_username()
+        @get_all_users()
+        if @_default_username is null then @_default_username = @users_name[0]
+        echo "_default_username:#{@_default_username};"
+        for user in @users_name
             if not @is_disable_user(user)
-                userimage = @get_user_image(user)
+                userimage = @get_user_icon(user)
                 u = new UserInfo(user, user, userimage)
-                userinfo_all.push(u)
-                if user is _default_username
+                @userinfo_all.push(u)
+                if user is @_default_username
                     _current_user = u
-                    _current_user.only_show_name(false)
+                    _current_user.show(false)
                 else
-                    u.only_show_name(true)
-        for user,j in userinfo_all
+                    u.show(true)
+        for user,j in @userinfo_all
             user.index = j
-        if userinfo_all.length >= 3
+        if @userinfo_all.length >= 3
             @sort_current_user_info_center()
-        else if userinfo_all.length == 1
-            _current_user = userinfo_all[0]
-            _current_user.only_show_name(false)
-        for user,j in userinfo_all
+        else if @userinfo_all.length == 1
+            _current_user = @userinfo_all[0]
+            _current_user.show(false)
+        for user,j in @userinfo_all
             user.index = j
-            user_ul.appendChild(user.element)
+            @user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
-        userinfo_show_index =_current_user.index
-        localStorage.setItem("current_user_index",userinfo_show_index)
-        @prev_next_userinfo_create()
-        return userinfo_all
+        @userinfo_show_index =_current_user.index
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        return @userinfo_all
 
     sort_current_user_info_center:->
         echo "sort_current_user_info_center"
-        tmp_length = (userinfo_all.length - 1) / 2
+        tmp_length = (@userinfo_all.length - 1) / 2
         center_index = Math.round(tmp_length)
         if _current_user.index isnt center_index
-            center_old = userinfo_all[center_index]
-            userinfo_all[center_index] = _current_user
-            userinfo_all[_current_user.index] = center_old
+            center_old = @userinfo_all[center_index]
+            @userinfo_all[center_index] = _current_user
+            @userinfo_all[_current_user.index] = center_old
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         user = @get_default_username()
-        #@set_blur_background(user)
-        userimage = @get_user_image(user)
+        userimage = @get_user_icon(user)
         _current_user = new UserInfo(user, user, userimage)
-        _current_user.only_show_name(false)
-        user_ul.appendChild(_current_user.element)
+        _current_user.show(false)
+        @user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
     is_support_guest:->
         if is_greeter
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-                u.only_show_name(true)
-                user_ul.appendChild(u.element)
+                u.show(true)
+                @user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
     
@@ -217,8 +193,8 @@ class User extends Widget
         return _current_user
 
     check_index:(index)->
-        if index >= userinfo_all.length then index = 0
-        else if index < 0 then index = userinfo_all.length - 1
+        if index >= @userinfo_all.length then index = 0
+        else if index < 0 then index = @userinfo_all.length - 1
         return index
 
     prev_next_userinfo_create:->
@@ -241,38 +217,38 @@ class User extends Widget
 
     switchtoprev_userinfo:=>
         echo "switchtoprev_userinfo"
-        for user in userinfo_all
+        for user in @userinfo_all
             if user.element.style.display is "block"
-                user.only_show_name(true)
-                apply_animation(user.userimg,"hide_animation",time_animation)
-                apply_animation(user.username,"hide_animation",time_animation)
-        userinfo_show_index = @check_index(userinfo_show_index + 1)
-        localStorage.setItem("current_user_index",userinfo_show_index)
-        echo userinfo_show_index
-        for user in userinfo_all
-            if user.index == userinfo_show_index
-                user.only_show_name(false)
+                user.show(true)
+                apply_animation(user.userimg,"hide_animation",@time_animation)
+                apply_animation(user.username,"hide_animation",@time_animation)
+        @userinfo_show_index = @check_index(@userinfo_show_index + 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo @userinfo_show_index
+        for user in @userinfo_all
+            if user.index == @userinfo_show_index
+                user.show(false)
                 user.animate_prev()
-                apply_animation(user.userimg,"show_animation",time_animation)
-                apply_animation(user.username,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",@time_animation)
+                apply_animation(user.username,"show_animation",@time_animation)
 
 
     switchtonext_userinfo:=>
         echo "switchtonext_userinfo"
-        for user in userinfo_all
+        for user in @userinfo_all
             if user.element.style.display is "block"
-                user.only_show_name(true)
-                apply_animation(user.userimg,"hide_animation",time_animation)
-                apply_animation(user.username,"hide_animation",time_animation)
-        userinfo_show_index = @check_index(userinfo_show_index - 1)
-        localStorage.setItem("current_user_index",userinfo_show_index)
-        echo userinfo_show_index
-        for user in userinfo_all
-            if user.index == userinfo_show_index
-                user.only_show_name(false)
+                user.show(true)
+                apply_animation(user.userimg,"hide_animation",@time_animation)
+                apply_animation(user.username,"hide_animation",@time_animation)
+        @userinfo_show_index = @check_index(@userinfo_show_index - 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo @userinfo_show_index
+        for user in @userinfo_all
+            if user.index == @userinfo_show_index
+                user.show(false)
                 user.animate_next()
-                apply_animation(user.userimg,"show_animation",time_animation)
-                apply_animation(user.username,"show_animation",time_animation)
+                apply_animation(user.userimg,"show_animation",@time_animation)
+                apply_animation(user.username,"show_animation",@time_animation)
 
 
 class LoginEntry extends Widget
@@ -370,14 +346,18 @@ class LoginEntry extends Widget
     input_password_again:->
         @password.style.color = "rgba(255,255,255,0.5)"
         @password.style.fontSize = "2.0em"
+        @password.style.paddingBottom = "0.2em"
+        @password.style.letterSpacing = "5px"
         @password.type = "password"
         @password.focus()
         @loginbutton.disable = false
         @password.value = null
 
     password_error:(msg)->
-        @password.style.color = "#ff8a00"
+        @password.style.color = "#F4AF53"
         @password.style.fontSize = "1.5em"
+        @password.style.paddingBottom = "0.4em"
+        @password.style.letterSpacing = "0px"
         @password.type = "text"
         password_error_msg = msg
         @password.value = password_error_msg
@@ -426,7 +406,7 @@ class UserInfo extends Widget
 
         @show_login()
 
-    only_show_name:(hide)->
+    show:(hide)->
         if !hide
             @element.style.display= "block"
         else
@@ -454,12 +434,13 @@ class UserInfo extends Widget
             enable_detection(true)
 
     stop_avatar:->
-        clearInterval(draw_camera_id)
-        draw_camera_id = null
-        clearInterval(@face_animation_interval) if @face_animation_interval
-        @face_recognize_div.style.display = "none"
-        enable_detection(false) if @face_login
-        #DCore[APP_NAME].cancel_detect()
+        if @face_login
+            clearInterval(draw_camera_id)
+            draw_camera_id = null
+            clearInterval(@face_animation_interval) if @face_animation_interval
+            @face_recognize_div.style.display = "none"
+            enable_detection(false)
+            #DCore[APP_NAME].cancel_detect()
    
     focus:->
         echo "#{@id} focus"
@@ -515,7 +496,7 @@ class UserInfo extends Widget
         else
             DCore.Lock.start_session(username,password,@session)
     
-    auth_failed: (msg) ->
+    auth_failed: (msg) =>
         @stop_avatar()
         @login.password_error(msg)
         document.body.cursor = "default"
@@ -597,6 +578,12 @@ DCore.signal_connect("auth-succeed", ->
             confirmdialog.interval(60)
     else
         if is_greeter then return
-        DCore.Lock.quit()
+        else
+            try
+                PowerManager.StopDim_sync() if PowerManager?
+                echo "StopDim_sync"
+            catch e
+                echo "#{e}"
+            DCore.Lock.quit()
 )
 

@@ -154,7 +154,7 @@
     font-size:2.0em;
     font-weight:normal; 
     color:#fff;
-    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
+    text-shadow:0 1px 1px rgba(0,0,0,0.7);
     
     white-space:nowrap; 
     overflow:hidden;
@@ -173,13 +173,14 @@
     height:3.0em;
     width:24em;
     border-radius:0.4em;
+    border-bottom-right-radius:0.5em;
+    border-bottom-left-radius:0.5em;
     border-top:0.1em solid rgba(0,0,0,0.7);
     border-left:0.1em solid rgba(0,0,0,0.7);
     border-right:0.1em solid rgba(0,0,0,0.7);
-    border-bottom:0.1em solid rgba(255,255,255,0.3);
+    border-bottom:0.1em solid rgba(255,255,255,0.15);
     box-shadow:inset 0 -0.1em rgba(0,0,0,0.5);
     /*background:rgba(0,0,0,0.4);*/
-    
     display: -webkit-box;
     -webkit-box-align:center;
     z-index:3;
@@ -189,9 +190,10 @@
     width: 100%;
     padding-top:0.2em;
     padding-bottom:0.2em;
-    padding-left:0.3em;
+    padding-left:0.5em;
     border-style:none;
     outline-style:none;
+    letter-spacing:5px;
 
     font-size: 2.0em;
     color:rgba(255,255,255,0.5);

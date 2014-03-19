@@ -39,14 +39,22 @@ class Display extends Widget
         @DBusOpenedMonitors = []
         @OpenedMonitorsName = []
         @valueEach = []
+        @ModeChoose = DEFAULT_DISPLAY_MODE
         
         _b.appendChild(@element)
         @getDBus()
-   
+        _b.addEventListener("keyup",(e)=>
+            if e.which == KEYCODE.WIN and @FromSwitchMonitors
+                @switchDisplayMode(@ModeChoose)
+        )
+
     hide:->
         @element.style.display = "none"
     
     set_bg:(imgName)->
+        if @imgName == imgName then return
+        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
+        @imgName = imgName
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
   
     
@@ -97,14 +105,20 @@ class Display extends Widget
         finally
             return value
     
-    switchDisplayMode:->
+    switchDisplayMode:(ModeChoose)->
+        setFocus(false)
+        osdHide()
+        
         if @DBusMonitors.length == 1 then return
         @DisplayMode = @DBusDisplay.DisplayMode
         if not @DisplayMode? then @DisplayMode = 0
         @DisplayMode++
         if @DisplayMode > @DBusMonitors.length then @DisplayMode = -1
-        echo "SwitchMode to (#{@DisplayMode})"
-        @DBusDisplay.SwitchMode_sync(@DisplayMode)
+        
+        ModeChoose = @DisplayMode
+        echo "SwitchMode to (#{ModeChoose})"
+        @DBusDisplay.SwitchMode_sync(ModeChoose)
+        @FromSwitchMonitors = false
 
 
     showValue:(white)->
@@ -122,18 +136,23 @@ class Display extends Widget
 
     showDisplayMode:->
         clearTimeout(@timepress) if @timepress
+        
         @timepress = setTimeout(=>
             clearTimeout(timeout_osdHide) if timeout_osdHide
             
+            @FromSwitchMonitors = true
             @valueDiv.style.display = "none" if @valueDiv
             if @DBusMonitors.length == 1 then return
 
             osdShow()
             @element.style.display = "block"
             # @DisplayMode = @DBusDisplay.DisplayMode
+            #@SwitchMode++
+            #if @SwitchMode > @DBusMonitors.length then @DisplayMode = -1
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
-            @set_bg("#{@id}_#{ImgIndex}")
+            imgName = "#{@id}_#{ImgIndex}"
+            @set_bg(imgName) if @imgName != imgName
 
             timeout_osdHide = setTimeout(=>
                 osdHide()
@@ -162,6 +181,7 @@ BrightCls = null
 
 BrightnessUp = (keydown)->
     if keydown then return
+    setFocus(false)
     echo "BrightnessUp"
     BrightCls  = new Display("Brightness") if not BrightCls?
     BrightCls.id = "BrightnessUp"
@@ -169,17 +189,18 @@ BrightnessUp = (keydown)->
 
 BrightnessDown = (keydown)->
     if keydown then return
+    setFocus(false)
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
-    BrightCls.id = "BrightnessDown"
+    BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
 
 DisplaySwitch = (keydown)->
     if keydown then return
+    setFocus(true)
     echo "SwitchMonitors"
     BrightCls  = new Display("DisplaySwitch") if not BrightCls?
     BrightCls.id = "DisplaySwitch"
-    BrightCls.switchDisplayMode()
     BrightCls.showDisplayMode()
 
 DBusMediaKey.connect("BrightnessDown",BrightnessDown) if DBusMediaKey?
