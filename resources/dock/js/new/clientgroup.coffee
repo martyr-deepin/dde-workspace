@@ -1,3 +1,4 @@
+_lastCliengGroup = null
 pop_id = null
 hide_id = null
 class ClientGroup extends AppItem
@@ -80,6 +81,7 @@ class ClientGroup extends AppItem
         @notify_flag?.style.visibility = "hidden"
 
     on_mouseover: (e)=>
+        _lastCliengGroup?.dbus?.HideQuickWindow?()
         super
         xy = get_page_xy(@element)
         w = @element.clientWidth || 0
@@ -91,7 +93,6 @@ class ClientGroup extends AppItem
         clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
         # console.log @dbus.Type
-        calc_app_item_size()
         if @dbus.Type == "App"
             if @n_clients.length != 0
                 Preview_show(@)
@@ -99,25 +100,26 @@ class ClientGroup extends AppItem
             # console.log(@dbus.Allocation)
             Preview_show(@, width:@dbus.Allocation[2], height:@dbus.Allocation[3])
 
-            # 3 for border's margin to element
-            extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + 3
+            # 6 for container's blur
+            extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH
             @dbus.QuickWindow(xy.x + w/2 + PREVIEW_WINDOW_BORDER_WIDTH, xy.y - extraHeight)
 
     on_mouseout: (e)=>
+        _lastCliengGroup = @
         super
         if not Preview_container.is_showing
             # console.log "Preview_container is not showing"
-            @dbus.HideQuickWindow?()
             # update_dock_region()
             calc_app_item_size()
-            hide_id = setTimeout(->
+            hide_id = setTimeout(=>
                 DCore.Dock.update_hide_mode()
+                @dbus.HideQuickWindow?()
             , 300)
         else
             # console.log "Preview_container is showing"
             DCore.Dock.require_all_region()
-            @dbus.HideQuickWindow?()
             hide_id = setTimeout(=>
+                @dbus.HideQuickWindow?()
                 calc_app_item_size()
                 # update_dock_region()
                 Preview_close_now(@)

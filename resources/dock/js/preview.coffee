@@ -378,10 +378,10 @@ class PreviewWindow extends Widget
     update_size: ->
         console.log("PreviewWindow::update_size: #{Preview_container.scale}")
         if Preview_container.scale == -1
-            @element.style.width = Preview_container.pw_width + 4
-            @element.style.height = Preview_container.pw_height + 4
-            @canvas_width = Preview_container.pw_width + 2
-            @canvas_height = Preview_container.pw_height + 2
+            @element.style.width = Preview_container.pw_width + PREVIEW_WINDOW_BORDER_WIDTH * 2
+            @element.style.height = Preview_container.pw_height + PREVIEW_WINDOW_BORDER_WIDTH * 2
+            @canvas_width = Preview_container.pw_width
+            @canvas_height = Preview_container.pw_height
         else
             @scale = Preview_container.scale
             # console.log("PWWindow scale: #{@scale}")
@@ -393,7 +393,7 @@ class PreviewWindow extends Widget
         @canvas.setAttribute("height", @canvas_height)
         @canvas_container.style.width = @canvas_width
         @canvas_container.style.height = @canvas_height
-        @titleContainer.style.width = @canvas_width
+        @titleContainer.style.width = @canvas_width - PREVIEW_WINDOW_BORDER_WIDTH * 2
 
     to_active: ->
         _current_active_pw_window = @
