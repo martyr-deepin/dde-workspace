@@ -18,7 +18,6 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-user_ul = null
 draw_camera_id = null
 _current_user = null
 password_error_msg = null
@@ -36,8 +35,8 @@ class User extends Widget
     
     constructor:->
         super
-        user_ul = create_element("ul","user_ul",@element)
-        user_ul.id = "user_ul"
+        @user_ul = create_element("ul","user_ul",@element)
+        @user_ul.id = "user_ul"
         
         @userinfo_show_index = 0
         @time_animation = 1800
@@ -104,28 +103,25 @@ class User extends Widget
             @_default_username = DCore.Lock.get_username()
         return @_default_username
 
-    get_user_image:(user) ->
+    get_user_icon:(user) ->
         try
-            user_image = @users_name_dbus[user].IconFile
+            icon = @users_name_dbus[user].IconFile
         catch e
             echo "#{e}"
-            
-        if not user_image?
-            if is_greeter
-                user_image = DCore.Greeter.get_user_icon(user)
-            else
-                user_image = DCore.Lock.get_user_icon(user)
-        if not user_image? then user_image = "images/userimg_default.jpg"
-        echo "user_image:#{user}-----------#{user_image}------------"
-        return user_image
+        if not icon? then icon = DCore[APP_NAME].get_user_icon(user)
+        if not icon? then icon = "images/userimg_default.jpg"
+        echo "icon:#{user}-----------#{icon}------------"
+        return icon
 
     get_user_id:(user)->
+        id = null
         try
-            id = dbus.Uid for dbus in @users_dbus when @users_dbus.UserName is user
+            id = @users_name_dbus[user].Uid
         catch e
-            echo "#{e}"
+            echo "get_user_id #{e}"
         if not id? then id = "1000"
         return id
+
 
     is_disable_user :(user)->
         disable = false
@@ -134,36 +130,15 @@ class User extends Widget
         else if user_dbus.Locked is true then disable = true
         return disable
 
-    set_blur_background:(user)->
-        userid = new String()
-        userid = @get_user_id(user)
-        echo "current user #{user}'s userid:#{userid}"
-        try
-            path = @Dbus_Graphic.BackgroundBlurPictPath_sync(userid.toString(),"")
-        catch e
-            echo "#{GRAPHIC} dbus ERROR:#{e}"
-        if path[0]
-            BackgroundBlurPictPath = path[1]
-        else
-            # here should getPath by other methods!
-            BackgroundBlurPictPath = path[1]
-        echo "BackgroundBlurPictPath:#{BackgroundBlurPictPath}"
-        localStorage.setItem("BackgroundBlurPictPath",BackgroundBlurPictPath)
-        try
-            document.body.style.backgroundImage = "url(#{BackgroundBlurPictPath})"
-        catch e
-            echo "#{e}"
-            document.body.style.backgroundImage = "url(/usr/share/backgrounds/default_background.jpg)"
 
     new_userinfo_for_greeter:->
         @get_default_username()
         @get_all_users()
         if @_default_username is null then @_default_username = @users_name[0]
         echo "_default_username:#{@_default_username};"
-        #@set_blur_background(@_default_username)
         for user in @users_name
             if not @is_disable_user(user)
-                userimage = @get_user_image(user)
+                userimage = @get_user_icon(user)
                 u = new UserInfo(user, user, userimage)
                 @userinfo_all.push(u)
                 if user is @_default_username
@@ -180,7 +155,7 @@ class User extends Widget
             _current_user.show(false)
         for user,j in @userinfo_all
             user.index = j
-            user_ul.appendChild(user.element)
+            @user_ul.appendChild(user.element)
             if user is _current_user then _current_user.focus()
 
         @userinfo_show_index =_current_user.index
@@ -201,10 +176,10 @@ class User extends Widget
         echo "new_userinfo_for_lock"
         user = @get_default_username()
         #@set_blur_background(user)
-        userimage = @get_user_image(user)
+        userimage = @get_user_icon(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.show(false)
-        user_ul.appendChild(_current_user.element)
+        @user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
     is_support_guest:->
@@ -212,7 +187,7 @@ class User extends Widget
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
                 u.show(true)
-                user_ul.appendChild(u.element)
+                @user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
     
