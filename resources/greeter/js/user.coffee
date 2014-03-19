@@ -175,7 +175,6 @@ class User extends Widget
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
         user = @get_default_username()
-        #@set_blur_background(user)
         userimage = @get_user_icon(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.show(false)
@@ -200,9 +199,6 @@ class User extends Widget
         return index
 
     prev_next_userinfo_create:->
-        top = (screen.height  - $("#div_users").clientHeight) / 2 * 1
-        $("#div_users").style.top = "#{top}px"
-        
         prevuserinfo = create_element("div","prevuserinfo",@element)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",prevuserinfo)
         nextuserinfo = create_element("div","nextuserinfo",@element)
