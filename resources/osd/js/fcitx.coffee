@@ -128,6 +128,9 @@ class FcitxOSD extends Widget
     
     
     set_bg:(imgName)->
+        if @imgName == imgName then return
+        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
+        @imgName = imgName
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
   
     imListBackgroundChange: ->
@@ -183,4 +186,4 @@ class FcitxOSD extends Widget
     IMOther: ->
         echo "IMOther"
 
-fcitxOSD = new FcitxOSD("FcitxOSD")
+#fcitxOSD = new FcitxOSD("FcitxOSD")

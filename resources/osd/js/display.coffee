@@ -52,6 +52,9 @@ class Display extends Widget
         @element.style.display = "none"
     
     set_bg:(imgName)->
+        if @imgName == imgName then return
+        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
+        @imgName = imgName
         @element.style.backgroundImage = "url(img/#{imgName}.png)"
   
     
@@ -148,7 +151,8 @@ class Display extends Widget
             #if @SwitchMode > @DBusMonitors.length then @DisplayMode = -1
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
-            @set_bg("#{@id}_#{ImgIndex}")
+            imgName = "#{@id}_#{ImgIndex}"
+            @set_bg(imgName) if @imgName != imgName
 
             timeout_osdHide = setTimeout(=>
                 osdHide()
@@ -188,7 +192,7 @@ BrightnessDown = (keydown)->
     setFocus(false)
     echo "BrightnessDown"
     BrightCls  = new Display("Brightness") if not BrightCls?
-    BrightCls.id = "BrightnessDown"
+    BrightCls.id = "BrightnessUp"#the backgroundImage is same ,so the @id can equal to BrightnessUp
     BrightCls.showBrightness()
 
 DisplaySwitch = (keydown)->
