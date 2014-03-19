@@ -77,3 +77,11 @@ try
     PowerManager = DCore.DBus.session(POWER)
 catch e
     echo "POWER:ERROR:#{e}"
+
+
+is_support_guest = false
+try
+    is_support_guest = DCore.Greeter.is_support_guest() if is_greeter
+catch e
+    echo "#{e}"
+is_support_guest = false
