@@ -175,16 +175,16 @@ class User extends Widget
                 userinfo_all.push(u)
                 if user is @_default_username
                     _current_user = u
-                    _current_user.only_show_name(false)
+                    _current_user.show(false)
                 else
-                    u.only_show_name(true)
+                    u.show(true)
         for user,j in userinfo_all
             user.index = j
         if userinfo_all.length >= 3
             @sort_current_user_info_center()
         else if userinfo_all.length == 1
             _current_user = userinfo_all[0]
-            _current_user.only_show_name(false)
+            _current_user.show(false)
         for user,j in userinfo_all
             user.index = j
             user_ul.appendChild(user.element)
@@ -192,7 +192,7 @@ class User extends Widget
 
         userinfo_show_index =_current_user.index
         localStorage.setItem("current_user_index",userinfo_show_index)
-        @prev_next_userinfo_create()
+        @prev_next_userinfo_create() if @users_name.length > 1
         return userinfo_all
 
     sort_current_user_info_center:->
@@ -210,7 +210,7 @@ class User extends Widget
         #@set_blur_background(user)
         userimage = @get_user_image(user)
         _current_user = new UserInfo(user, user, userimage)
-        _current_user.only_show_name(false)
+        _current_user.show(false)
         user_ul.appendChild(_current_user.element)
         _current_user.focus()
     
@@ -218,7 +218,7 @@ class User extends Widget
         if is_greeter
             if DCore.Greeter.is_support_guest()
                 u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-                u.only_show_name(true)
+                u.show(true)
                 user_ul.appendChild(u.element)
                 if DCore.Greeter.is_guest_default()
                     u.focus()
@@ -232,6 +232,9 @@ class User extends Widget
         return index
 
     prev_next_userinfo_create:->
+        top = (screen.height  - $("#div_users").clientHeight) / 2 * 1
+        $("#div_users").style.top = "#{top}px"
+        
         prevuserinfo = create_element("div","prevuserinfo",@element)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",prevuserinfo)
         nextuserinfo = create_element("div","nextuserinfo",@element)
@@ -253,7 +256,7 @@ class User extends Widget
         echo "switchtoprev_userinfo"
         for user in userinfo_all
             if user.element.style.display is "block"
-                user.only_show_name(true)
+                user.show(true)
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index + 1)
@@ -261,7 +264,7 @@ class User extends Widget
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
-                user.only_show_name(false)
+                user.show(false)
                 user.animate_prev()
                 apply_animation(user.userimg,"show_animation",time_animation)
                 apply_animation(user.username,"show_animation",time_animation)
@@ -271,7 +274,7 @@ class User extends Widget
         echo "switchtonext_userinfo"
         for user in userinfo_all
             if user.element.style.display is "block"
-                user.only_show_name(true)
+                user.show(true)
                 apply_animation(user.userimg,"hide_animation",time_animation)
                 apply_animation(user.username,"hide_animation",time_animation)
         userinfo_show_index = @check_index(userinfo_show_index - 1)
@@ -279,7 +282,7 @@ class User extends Widget
         echo userinfo_show_index
         for user in userinfo_all
             if user.index == userinfo_show_index
-                user.only_show_name(false)
+                user.show(false)
                 user.animate_next()
                 apply_animation(user.userimg,"show_animation",time_animation)
                 apply_animation(user.username,"show_animation",time_animation)
@@ -440,7 +443,7 @@ class UserInfo extends Widget
 
         @show_login()
 
-    only_show_name:(hide)->
+    show:(hide)->
         if !hide
             @element.style.display= "block"
         else
