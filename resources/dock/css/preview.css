@@ -13,8 +13,9 @@
 
 .PWContainer {
   border-radius: 5px;
-  display: -webkit-box;
+  /* display: -webkit-box; */
   pointer-events:auto;
+  /* border:solid green 2px; */
 }
 
 .PreviewWindow {
@@ -26,10 +27,11 @@
   height:90%;
   pointer-events: auto;
   /* box-sizing: border-box; */
-  max-width: 230px;
-  max-height: 200px;
+  /* max-width: 230px; */
+  /* max-height: 200px; */
 
   border: solid 2px rgba(255, 255, 255, 0.0);
+  /* border: solid 2px rgba(255, 255, 255, 1); */
   border-radius: 4px;
   position:relative;
 
@@ -47,8 +49,9 @@
   visibility: visible;
 }
 .PreviewWindowInner {
-  max-width: 230px;
-  max-height: 160px;
+  /* max-width: 230px; */
+  /* max-height: 160px; */
+  /* border: red solid 1px; */
   height:100%;
   position:relative;
 }

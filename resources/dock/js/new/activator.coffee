@@ -26,7 +26,7 @@ class Activator extends AppItem
 
     on_mouseover: (e)=>
         super
-        Preview_close_now()
+        Preview_close_now(Preview_container._current_group)
         DCore.Dock.require_all_region()
         clearTimeout(hide_id)
 

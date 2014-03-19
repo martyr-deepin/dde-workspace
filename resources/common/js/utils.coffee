@@ -232,11 +232,11 @@ get_dbus = (type, opt)->
         type = "sys"
 
     if typeof opt == 'string'
-        console.log "get dbus: #{type}"
+        # console.log "get_dbus: #{type}"
         dbusArg = [opt]
         func = DCore.DBus[type]
     else
-        console.log "get dbus: #{type}_object"
+        # console.log "get_dbus: #{type}_object"
         dbusArg = [opt.name, opt.path, opt.interface]
         func = DCore.DBus["#{type}_object"]
 

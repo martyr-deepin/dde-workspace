@@ -49,6 +49,7 @@ class Item extends Widget
     update_scale:->
 
     on_mouseover:(e)=>
+        console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @imgWarp.style.webkitTransform = 'translateY(-5px)'
         @imgWarp.style.webkitTransition = 'all 100ms'
@@ -85,9 +86,11 @@ class AppItem extends Item
 
         @properties = get_dbus("session", propertiesDBus(@id))
         @properties.connect("PropertiesChanged", (info, d, a)->
-            for own k, v of b
-                console.log("Key: #{k}, Value:#{v}")
+            for own k, v of d
+                console.log("properties updated: Key: #{k}, Value:#{v}")
+                # @dbus[k] = v
         )
+
     on_mouseover:(e)=>
         super
 

@@ -9,16 +9,17 @@ class ClientGroup extends AppItem
             k = parseInt(k, 10)
             @n_clients.push(k)
             @update_client(k, v)
-            console.log "ClientGroup:: Key: #{k}, Value:#{v}"
+            # console.log "ClientGroup:: Key: #{k}, Value:#{v}"
         @leader = null
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
     destroy: ->
-        Preview_close_now()
+        console.log("ClientGroup::destroy")
+        Preview_close_now(@)
         @element.style.display = "block"
-        @try_build_activator()
+        # @try_build_activator()
         super
 
     try_build_activator: ->
@@ -28,7 +29,7 @@ class ClientGroup extends AppItem
             swap_element(@element, l.element)
 
     try_swap_activator: ->
-        Preview_close_now()
+        Preview_close_now(@)
         l = Widget.look_up(@app_id)
         if l?
             swap_element(@element, l.element)
@@ -89,7 +90,8 @@ class ClientGroup extends AppItem
         clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
-        console.log @dbus.Type
+        # console.log @dbus.Type
+        calc_app_item_size()
         if @dbus.Type == "App"
             if @n_clients.length != 0
                 Preview_show(@)
@@ -99,12 +101,12 @@ class ClientGroup extends AppItem
 
             # 3 for border's margin to element
             extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + 3
-            @dbus.QuickWindow(xy.x + w/2, xy.y - extraHeight)
+            @dbus.QuickWindow(xy.x + w/2 + PREVIEW_WINDOW_BORDER_WIDTH, xy.y - extraHeight)
 
     on_mouseout: (e)=>
         super
         if not Preview_container.is_showing
-            console.log "Preview_container is not showing"
+            # console.log "Preview_container is not showing"
             @dbus.HideQuickWindow?()
             # update_dock_region()
             calc_app_item_size()
@@ -112,13 +114,13 @@ class ClientGroup extends AppItem
                 DCore.Dock.update_hide_mode()
             , 300)
         else
-            console.log "Preview_container is showing"
+            # console.log "Preview_container is showing"
             DCore.Dock.require_all_region()
+            @dbus.HideQuickWindow?()
             hide_id = setTimeout(=>
                 calc_app_item_size()
                 # update_dock_region()
-                Preview_close_now()
-                @dbus.HideQuickWindow?()
+                Preview_close_now(@)
                 DCore.Dock.update_hide_mode()
             , 1000)
 

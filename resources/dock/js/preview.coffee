@@ -19,7 +19,7 @@
 
 
 
-#TODO: dynamicly create/destroy PrewviewWindow when Client added/removed and current PreviewContainer is showing.
+#TODO: dynamicly create/destroy PreviewWindow when Client added/removed and current PreviewContainer is showing.
 class PWContainer extends Widget
     _need_move_animation: false
     _cancel_move_animation_id: -1
@@ -61,7 +61,8 @@ class PWContainer extends Widget
             @_update_once()
         , 500)
 
-    _update_once: ->
+    _update_once: =>
+        # console.log("_update_once")
         for k, v of @_current_pws
             @_current_pws[k] = true
 
@@ -168,33 +169,40 @@ class PWContainer extends Widget
 
         ctx.restore()
 
-    _calc_size: (allocation)->
+    _calc_size: (allocation)=>
+        # console.log("_calc_size")
+
         return if @_current_group == null
 
+        # console.log("@_current_group != null")
+
         if PWContainer._need_move_animation
-            echo 'need move animation'
+            # echo 'need move animation'
             @border.classList.add('moveAnimation')
             @border.style.display = "block"
         else
             @border.classList.remove('moveAnimation')
             @border.style.display = "none"
 
-        console.log(allocation)
+        # console.log(allocation)
 
-        pw_width = 0
+        @pw_width = 0
+        @pw_height = 0
+        @scale = -1
         if allocation
-            echo 'use pw-width'
-            pw_width = allocation.width
+            # echo 'use pw-width'
+            @pw_width = allocation.width
+            @pw_height = allocation.height || 0
             n = 1
         else
-            echo 'calculate'
+            # echo 'calculate'
             n = @_current_group.n_clients.length
-            pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
+            @pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
 
-        new_scale = pw_width / PREVIEW_WINDOW_WIDTH
-        echo "pw_width: #{pw_width}, new_scale: #{new_scale}"
-        @scale = new_scale
-        window_width = pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
+            new_scale = @pw_width / PREVIEW_WINDOW_WIDTH
+            # echo "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
+            @scale = new_scale
+        window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
 
         # 6 for shadow blur
         @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + 6 * 2
@@ -215,7 +223,7 @@ class PWContainer extends Widget
         x = get_page_xy(group_element, 0, 0).x + group_element.clientWidth / 2
 
         center_position = x - window_width * n / 2
-        offset = clamp(center_position, 5, screen.width - pw_width)
+        offset = clamp(center_position, 5, screen.width - @pw_width)
 
         if @element.clientWidth == screen.width
             # echo '0'
@@ -233,10 +241,12 @@ class PWContainer extends Widget
     remove: (pw)->
         assert(not Widget.look_up(pw.id))
         delete @_current_pws[pw.w_id]
+        console.log(Object.keys(@_current_pws).length)
         @close() if Object.keys(@_current_pws).length == 0
 
 
     close: ->
+        console.log("PWContainer::close")
         clearInterval(@_update_id)
         @_current_group = null
         Object.keys(@_current_pws).forEach((w_id)->
@@ -248,10 +258,12 @@ class PWContainer extends Widget
         #DCore.Dock.set_compiz_workaround_preview(false)
 
     show_group: (group, allocation)->
+        console.log("show_group")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
         #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
+        console.log("different current_group")
         @hide()
         @_current_group = group
         @_update(allocation)
@@ -263,7 +275,7 @@ class PWContainer extends Widget
         DCore.Dock.require_all_region()
 
     on_mouseout: =>
-        Preview_close()
+        Preview_close(Preview_container._current_group)
 
 
 
@@ -283,10 +295,11 @@ Preview_show = (group, allocation) ->
         Preview_container.show_group(group, allocation)
     , 300)
 
-Preview_close_now = ->
+Preview_close_now = (client)->
     __clear_timeout()
     # calc_app_item_size()
     # return
+    client?.dbus?.HideQuickWindow()
     return if Preview_container.is_showing == false
     Preview_container.hide()
     setTimeout(->
@@ -302,7 +315,7 @@ Preview_close = ->
     __clear_timeout()
     if Preview_container.is_showing
         __CLOSE_PREVIEW_ID = setTimeout(->
-            Preview_close_now()
+            Preview_close_now(Preview_container._current_group)
         , 500)
 
 _current_active_pw_window = null
@@ -363,11 +376,19 @@ class PreviewWindow extends Widget
         Preview_container._calc_size()
 
     update_size: ->
-        @scale = Preview_container.scale
-        @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
-        @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
-        @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
-        @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
+        console.log("PreviewWindow::update_size: #{Preview_container.scale}")
+        if Preview_container.scale == -1
+            @element.style.width = Preview_container.pw_width + 4
+            @element.style.height = Preview_container.pw_height + 4
+            @canvas_width = Preview_container.pw_width + 2
+            @canvas_height = Preview_container.pw_height + 2
+        else
+            @scale = Preview_container.scale
+            # console.log("PWWindow scale: #{@scale}")
+            @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
+            @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
+            @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
+            @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
         @canvas.setAttribute("width", @canvas_width)
         @canvas.setAttribute("height", @canvas_height)
         @canvas_container.style.width = @canvas_width
@@ -383,7 +404,7 @@ class PreviewWindow extends Widget
 
     do_click: (e)=>
         DCore.Dock.active_window(@w_id)
-        Preview_close_now()
+        Preview_close_now(Preview_container._current_group)
 
     do_rightclick: (e)=>
         DCore.Dock.active_window(@w_id)
@@ -395,7 +416,8 @@ class PreviewWindow extends Widget
     update_content: ->
         if @scale != Preview_container.scale
             @update_size()
-        DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
+        if @w_id != 0
+            DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
 
 
 DCore.signal_connect("leave-notify", ->
@@ -404,11 +426,11 @@ DCore.signal_connect("leave-notify", ->
 
 document.body.addEventListener("click", (e)->
     return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
-    Preview_close_now()
+    Preview_close_now(Preview_container._current_group)
 )
 document.body.addEventListener("contextmenu", (e)->
     return if e.target.classList.contains("PWClose") or e.target.classList.contains("PreviewWindow")
-    Preview_close_now()
+    Preview_close_now(Preview_container._current_group)
 )
 
 document.body.addEventListener("mouseover", (e)->
