@@ -99,8 +99,44 @@ class AppItem extends Item
 
     on_rightclick:(e)=>
         super
+        Preview_close_now()
+        @dbus?.HideQuickWindow?()
         console.log("rightclick")
         xy = get_page_xy(@element)
+
+        menu =
+            x: xy.x + @element.clientWidth / 2
+            y: xy.y
+            isDockMenu: true
+            cornerDirection: DEEPIN_MENU_CORNER_DIRECTION.DOWN
+            menuJsonContent:"#{@dbus.Menu}"
+
+        menuJson = JSON.stringify(menu)
+
+        # console.log(menuJson)
+
+        manager = get_dbus(
+            "session",
+            name:DEEPIN_MENU_NAME,
+            path:DEEPIN_MENU_PATH,
+            interface:DEEPIN_MENU_MANAGER_INTERFACE
+        )
+
+        menu_dbus_path = manager.RegisterMenu_sync()
+        # echo "menu path is: #{menu_dbus_path}"
+        dbus = get_dbus(
+            "session",
+            name:DEEPIN_MENU_NAME,
+            path:menu_dbus_path,
+            interface:DEEPIN_MENU_INTERFACE)
+
+        if dbus
+            dbus.connect("ItemInvoked", @on_itemselected)
+            dbus.ShowMenu(menuJson)
+
+    on_itemselected: (id)=>
+        console.log("select id: #{id}")
+        @dbus.HandleMenuItem(parseInt(id))
         # @dbus.ContextMenu(
         #     xy.x + @element.clientWidth / 2,
         #     xy.y + OFFSET_DOWN,
