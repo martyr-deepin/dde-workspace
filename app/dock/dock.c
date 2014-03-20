@@ -47,6 +47,7 @@ static GtkWidget* webview = NULL;
 struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
+GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
@@ -553,6 +554,9 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "enter-notify-event", G_CALLBACK(enter_notify), NULL);
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
+
+    extern gboolean draw_embed_windows(GtkWidget* w, cairo_t *cr);
+    g_signal_connect_after(webview, "draw", G_CALLBACK(draw_embed_windows), NULL);
 
 
     gtk_widget_realize(container);
