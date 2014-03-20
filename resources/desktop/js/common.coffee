@@ -99,17 +99,10 @@ _GET_CFG_BOOL_ = (val) ->
     DCore.Desktop.get_config_boolean(val)
 
 
-DSS =
-    obj:"com.deepin.system.settings"
-    path:"/dss"
-    interface:"com.deepin.system.settings"
+DSS = "com.deepin.Dss"
 DSS_DBUS = null
 try
-    DSS_DBUS = DCore.DBus.session_object(
-        DSS.obj,
-        DSS.path,
-        DSS.interface
-    )
+    DSS_DBUS = DCore.DBus.session(DSS))
     echo DSS_DBUS
 catch e
     echo "#{DSS.obj} ERROR:#{e}"
