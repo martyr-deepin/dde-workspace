@@ -168,6 +168,16 @@ class Option extends Widget
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
+                zoneValue = localStorage.getObject("zoneValue")
+                echo "-----------before set:"
+                echo zoneValue
+                zoneValue[that.id] = that.current
+                echo "-----------after set:"
+                echo zoneValue
+                localStorage.setObject("zoneValue",zoneValue)
+                echo "-----------after setOject:"
+                zoneValue = localStorage.getObject("zoneValue")
+                echo zoneValue
             )
             jQuery(@opt_text_span[i]).hover((e)->
                 echo "span enter"

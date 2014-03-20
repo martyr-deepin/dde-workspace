@@ -5,7 +5,6 @@ PasswordMaxlength = 16 #default 16
 CANVAS_WIDTH = 150
 CANVAS_HEIGHT = 150
 ANIMATION_TIME = 2
-# SCANNING_TIP = _("Scanning in 3 seconds")
 APP_NAME = ''
 is_greeter = null
 is_hide_users = null
@@ -77,3 +76,11 @@ try
     PowerManager = DCore.DBus.session(POWER)
 catch e
     echo "POWER:ERROR:#{e}"
+
+
+is_support_guest = false
+try
+    is_support_guest = DCore.Greeter.is_support_guest() if is_greeter
+catch e
+    echo "#{e}"
+is_support_guest = false
