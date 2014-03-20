@@ -471,8 +471,6 @@ class UserInfo extends Widget
                 @login.password.value = "guest"
 
     on_verify: (username, password)->
-        echo "on_verify:#{username},#{password}"
-
         if is_greeter
             sessions = DCore.Greeter.get_sessions()
             if sessions.length == 1
