@@ -130,6 +130,7 @@ class User extends Widget
 
 
     new_userinfo_for_greeter:->
+        echo "new_userinfo_for_greeter"
         @get_default_username()
         @get_all_users()
         if @_default_username is null then @_default_username = @users_name[0]
@@ -147,16 +148,9 @@ class User extends Widget
         for user,j in @userinfo_all
             @user_ul.appendChild(user.element)
             if user.index is _current_user.index
-                _current_user.focus()
-                _current_user.hide(false)
+                _current_user.show()
             else
-                user.hide(true)
-
-        echo @users_name
-        echo @users_name.length
-        
-        echo @userinfo_all
-        echo @userinfo_all.length
+                user.hide()
         
         return @userinfo_all
 
@@ -178,17 +172,16 @@ class User extends Widget
         userimage = @get_user_icon(user)
         _current_user = new UserInfo(user, user, userimage)
         _current_user.index = 0
-        _current_user.hide(false)
+        _current_user.show()
         @user_ul.appendChild(_current_user.element)
-        _current_user.focus()
     
     is_support_guest:->
         if is_support_guest
             u = new UserInfo("guest", _("guest"), "images/guest.jpg")
-            u.hide(true)
+            u.hide()
             @userinfo_all.push(u)
             @user_ul.appendChild(u.element)
-            if DCore.Greeter.is_guest_default() then u.focus()
+            if DCore.Greeter.is_guest_default() then u.show()
     
     get_current_userinfo:->
         return _current_user
@@ -199,10 +192,11 @@ class User extends Widget
         return index
 
     prev_next_userinfo_create:->
-        prevuserinfo = create_element("div","prevuserinfo",@element)
-        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",prevuserinfo)
-        nextuserinfo = create_element("div","nextuserinfo",@element)
-        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",nextuserinfo)
+        @switchuser_div = create_element("div","switchuser_div",@element)
+        @prevuserinfo = create_element("div","prevuserinfo",@switchuser_div)
+        @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",@prevuserinfo)
+        @nextuserinfo = create_element("div","nextuserinfo",@switchuser_div)
+        @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",@nextuserinfo)
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "left_normal.png",
             img_src_before + "left_hover.png",
@@ -217,20 +211,20 @@ class User extends Widget
         )
 
     switchtoprev_userinfo:=>
-        echo "switchtoprev_userinfo from #{@userinfo_show_index}"
+        echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
         @userinfo_all[@userinfo_show_index].hide_animation()
         @userinfo_show_index = @check_index(@userinfo_show_index + 1)
         localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "@userinfo_show_index: #{@userinfo_show_index}"
+        echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
         @userinfo_all[@userinfo_show_index].show_animation()
         @userinfo_all[@userinfo_show_index].animate_prev()
 
     switchtonext_userinfo:=>
-        echo "switchtonext_userinfo from #{@userinfo_show_index}"
+        echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
         @userinfo_all[@userinfo_show_index].hide_animation()
         @userinfo_show_index = @check_index(@userinfo_show_index - 1)
         localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "@userinfo_show_index: #{@userinfo_show_index}"
+        echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
         @userinfo_all[@userinfo_show_index].show_animation()
         @userinfo_all[@userinfo_show_index].animate_next()
 
@@ -263,6 +257,14 @@ class LoginEntry extends Widget
         )
         @password_eventlistener()
     
+    show:->
+        @element.style.display = "-webkit-box"
+        @password.focus()
+
+    hide:->
+        @element.style.display = "none"
+        @password.blur()
+
 
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
@@ -391,20 +393,31 @@ class UserInfo extends Widget
 
         @show_login()
 
-    hide:(hide)->
-        if hide
-            @element.style.display= "none"
-        else
-            @element.style.display= "block"
+    show_login: ->
+        if _current_user == @
+            @login.show()
+            @login.password.focus()
+
+    hide:=>
+        @element.style.display= "none"
+        @blur()
+
+    show:=>
+        @element.style.display= "-webkit-box"
+        @focus()
 
     hide_animation:->
-        jQuery(@userimg).fadeOut(@time_animation)
-        jQuery(@username).fadeOut(@time_animation)
-
+        jQuery(@userimg).fadeOut(@time_animation,@hide)
+        # jQuery(@username).fadeOut(@time_animation)
+        @username.style.display = "none"
+        @login.hide()
+    
     show_animation:->
+        @show()
         jQuery(@userimg).fadeIn(@time_animation)
-        jQuery(@username).fadeIn(@time_animation)
-
+        # jQuery(@username).fadeIn(@time_animation)
+        @username.style.display = "block"
+        @login.show()
 
     userFaceLogin: (name)->
         face = false
@@ -414,35 +427,42 @@ class UserInfo extends Widget
             echo "face_login #{e}"
         finally
             return face
-
+    
+    draw_camera: ->
+        if !@face_login then return
+        clearInterval(draw_camera_id)
+        draw_camera_id = setInterval(=>
+            DCore[APP_NAME].draw_camera(@userimg, @userimg.width, @userimg.height)
+        , 20)
 
     draw_avatar: ->
-        if @face_login
-            rotate = 0
-            @face_recognize_div.style.display = "block"
-            @face_animation_interval = setInterval(=>
-                @face_recognize_div.style.left = @userimg_div.style.left
-                rotate = (rotate + 5) % 360
-                animation_rotate(@face_recognize_img,rotate)
-            ,50)
-            enable_detection(true)
+        if !@face_login then return
+        rotate = 0
+        @face_recognize_div.style.display = "block"
+        @face_animation_interval = setInterval(=>
+            @face_recognize_div.style.left = @userimg_div.style.left
+            rotate = (rotate + 5) % 360
+            animation_rotate(@face_recognize_img,rotate)
+        ,50)
+        enable_detection(true)
 
     stop_avatar:->
-        if @face_login
-            clearInterval(draw_camera_id)
-            draw_camera_id = null
-            clearInterval(@face_animation_interval) if @face_animation_interval
-            @face_recognize_div.style.display = "none"
-            enable_detection(false)
-            #DCore[APP_NAME].cancel_detect()
+        if !@face_login then return
+        clearInterval(draw_camera_id)
+        draw_camera_id = null
+        clearInterval(@face_animation_interval) if @face_animation_interval
+        @face_recognize_div.style.display = "none"
+        enable_detection(false)
+        DCore[APP_NAME].cancel_detect()
    
     focus:->
         echo "#{@id} focus"
-        DCore[APP_NAME].set_username(@id) if @face_login
-        #@element.focus()
-        @draw_camera()
-        @draw_avatar()
         @login.password.focus()
+
+        if @face_login
+            DCore[APP_NAME].set_username(@id)
+            @draw_camera()
+            @draw_avatar()
         
         if @id != "guest"
             if is_greeter
@@ -462,15 +482,8 @@ class UserInfo extends Widget
         @stop_avatar()
 
 
-    show_login: ->
-        if _current_user == @
-            @login.password.focus()
-
-            if @id == "guest"
-                @login.password.style.display = "none"
-                @login.password.value = "guest"
-
     on_verify: (username, password)->
+        echo "on_verify:#{username}"
         if is_greeter
             sessions = DCore.Greeter.get_sessions()
             if sessions.length == 1
@@ -497,32 +510,22 @@ class UserInfo extends Widget
     animate_prev: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
-        
-
         if @is_recognizing
             return
-
 
     animate_next: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
-
         if @is_recognizing
             return
 
     animate_near: ->
         if @face_login
             DCore[APP_NAME].cancel_detect()
-
         if @is_recognizing
             return
 
-    draw_camera: ->
-        if @face_login
-            clearInterval(draw_camera_id)
-            draw_camera_id = setInterval(=>
-                DCore[APP_NAME].draw_camera(@userimg, @userimg.width, @userimg.height)
-            , 20)
+
 
 
 
