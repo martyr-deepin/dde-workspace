@@ -393,18 +393,25 @@ class UserInfo extends Widget
         @focus()
 
     hide_animation:->
-        # jQuery(@userimg).fadeOut(@time_animation,@hide)
-        # jQuery(@username).fadeOut(@time_animation)
-        @username.style.display = "none"
-        @hide()
         @login.hide()
+        @username.style.display = "none"
+
+        @userimg.style.opacity = "1.0"
+        jQuery(@userimg).animate(
+            {opacity:'0.0'},
+            @time_animation,
+            "linear",=>
+                @hide)
     
     show_animation:->
-        @show()
-        # jQuery(@userimg).fadeIn(@time_animation)
-        # jQuery(@username).fadeIn(@time_animation)
-        @username.style.display = "block"
         @login.show()
+        @show()
+        @username.style.display = "block"
+        
+        @userimg.style.opacity = "0.0"
+        jQuery(@userimg).animate(
+            {opacity:'1.0'},
+            @time_animation)
 
     userFaceLogin: (name)->
         face = false
