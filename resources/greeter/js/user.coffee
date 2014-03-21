@@ -35,8 +35,6 @@ class User extends Widget
     
     constructor:->
         super
-        @user_ul = create_element("ul","user_ul",@element)
-        @user_ul.id = "user_ul"
         
         @userinfo_show_index = 0
 
@@ -146,7 +144,7 @@ class User extends Widget
         _current_user = @userinfo_all[0] if not _current_user?
         if @userinfo_all.length >= 3 then @sort_current_user_info_center()
         for user,j in @userinfo_all
-            @user_ul.appendChild(user.element)
+            @element.appendChild(user.element)
             if user.index is _current_user.index
                 _current_user.show()
             else
@@ -173,14 +171,14 @@ class User extends Widget
         _current_user = new UserInfo(user, user, userimage)
         _current_user.index = 0
         _current_user.show()
-        @user_ul.appendChild(_current_user.element)
+        @element.appendChild(_current_user.element)
     
     is_support_guest:->
         if is_support_guest
             u = new UserInfo("guest", _("guest"), "images/guest.jpg")
             u.hide()
             @userinfo_all.push(u)
-            @user_ul.appendChild(u.element)
+            @element.appendChild(u.element)
             if DCore.Greeter.is_guest_default() then u.show()
     
     get_current_userinfo:->

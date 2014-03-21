@@ -19,7 +19,6 @@ body{
 }
 .div_users{
     position:absolute;
-    
     display:-webkit-box;
     -webkit-box-pack:center;
     -webkit-box-align:center;
