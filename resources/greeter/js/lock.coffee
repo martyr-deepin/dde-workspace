@@ -43,6 +43,14 @@ class Lock extends Widget
         )
 
 
+PowerManager = null
+try
+    POWER = "com.deepin.daemon.Power"
+    PowerManager = DCore.DBus.session(POWER)
+catch e
+    echo "POWER:ERROR:#{e}"
+
+
 document.body.style.height = window.innerHeight
 document.body.style.width = window.innerWidth
 
