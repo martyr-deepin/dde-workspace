@@ -35,7 +35,7 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
 
 	JSObjectRef info = json_create();
 	json_append_number(info, "XID", xid);
-	js_post_message("embed_window_destroy", info);
+	js_post_message("embed_window_destroyed", info);
 
         return GDK_FILTER_CONTINUE;
     } else if (xev->type == ConfigureNotify) {
@@ -67,7 +67,7 @@ GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer
 }
 
 //JS_EXPORT_API
-void exwindow_create(double xid, gboolean enable_resize) 
+void exwindow_create(double xid, gboolean enable_resize)
 {
     enable_resize = enable_resize;
     Window win = (Window)xid;
@@ -84,7 +84,7 @@ void exwindow_create(double xid, gboolean enable_resize)
 }
 
 //JS_EXPORT_API
-void exwindow_move_resize(double xid, double x, double y, double width, double height) 
+void exwindow_move_resize(double xid, double x, double y, double width, double height)
 {
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOW__, (gpointer)(Window)xid);
@@ -151,3 +151,4 @@ gboolean draw_embed_windows(GtkWidget* _w, cairo_t *cr)
 
 // destroy
 // allocation change
+
