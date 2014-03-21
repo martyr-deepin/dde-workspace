@@ -195,36 +195,44 @@ class User extends Widget
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",@prevuserinfo)
         @nextuserinfo = create_element("div","nextuserinfo",@switchuser_div)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",@nextuserinfo)
+
+        showCurrentSession = (user)=>
+            echo "showCurrentSession:#{user}"
+
+
+        switchtoprev_userinfo = =>
+            echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+            @userinfo_all[@userinfo_show_index].hide_animation()
+            @userinfo_show_index = @check_index(@userinfo_show_index + 1)
+            localStorage.setItem("current_user_index",@userinfo_show_index)
+            echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+            @userinfo_all[@userinfo_show_index].show_animation()
+            @userinfo_all[@userinfo_show_index].animate_prev()
+
+        switchtonext_userinfo = =>
+            echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+            @userinfo_all[@userinfo_show_index].hide_animation()
+            @userinfo_show_index = @check_index(@userinfo_show_index - 1)
+            localStorage.setItem("current_user_index",@userinfo_show_index)
+            echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+            @userinfo_all[@userinfo_show_index].show_animation()
+            @userinfo_all[@userinfo_show_index].animate_next()
+
+
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "left_normal.png",
             img_src_before + "left_hover.png",
             img_src_before + "left_press.png",
-            @switchtoprev_userinfo
+            switchtoprev_userinfo
         )
         @normal_hover_click_cb(@nextuserinfo_img,
             img_src_before + "right_normal.png",
             img_src_before + "right_hover.png",
             img_src_before + "right_press.png",
-            @switchtonext_userinfo
+            switchtonext_userinfo
         )
 
-    switchtoprev_userinfo:=>
-        echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-        @userinfo_all[@userinfo_show_index].hide_animation()
-        @userinfo_show_index = @check_index(@userinfo_show_index + 1)
-        localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-        @userinfo_all[@userinfo_show_index].show_animation()
-        @userinfo_all[@userinfo_show_index].animate_prev()
 
-    switchtonext_userinfo:=>
-        echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-        @userinfo_all[@userinfo_show_index].hide_animation()
-        @userinfo_show_index = @check_index(@userinfo_show_index - 1)
-        localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-        @userinfo_all[@userinfo_show_index].show_animation()
-        @userinfo_all[@userinfo_show_index].animate_next()
 
 class LoginEntry extends Widget
     img_src_before = "images/userinfo/"
@@ -288,20 +296,7 @@ class LoginEntry extends Widget
                         @on_active(@loginuser, @password.value)
             #echo "keyup:#{@password.value}"
         )
-#        point = "●"
-        #show_text = ""
-        #@password.addEventListener("keydown",(e)=>
-            #echo e.which
-            ##012...9    abc...xyz ABC...xyz  ,./
-            ##48---57
-            #if e.which == 8
-                #show_text = show_text - point
-            #else if e.which != ENTER_KEY
-                #show_text = show_text + point
-            #echo "show_text:#{show_text}"
-            #@password.value = show_text
 
-        #)
         @loginbutton.addEventListener("click", =>
             power_flag = false
             if (power = localStorage.getObject("shutdown_from_lock"))?
@@ -389,30 +384,24 @@ class UserInfo extends Widget
         @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
         @element.appendChild(@login.element)
 
-        @show_login()
-
-    show_login: ->
-        if _current_user == @
-            @login.show()
-            @login.password.focus()
-
     hide:=>
-        @element.style.display= "none"
+        @element.style.display = "none"
         @blur()
 
     show:=>
-        @element.style.display= "-webkit-box"
+        @element.style.display = "-webkit-box"
         @focus()
 
     hide_animation:->
-        jQuery(@userimg).fadeOut(@time_animation,@hide)
+        # jQuery(@userimg).fadeOut(@time_animation,@hide)
         # jQuery(@username).fadeOut(@time_animation)
         @username.style.display = "none"
+        @hide()
         @login.hide()
     
     show_animation:->
         @show()
-        jQuery(@userimg).fadeIn(@time_animation)
+        # jQuery(@userimg).fadeIn(@time_animation)
         # jQuery(@username).fadeIn(@time_animation)
         @username.style.display = "block"
         @login.show()
