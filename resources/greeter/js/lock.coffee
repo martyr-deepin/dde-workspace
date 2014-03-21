@@ -46,7 +46,7 @@ class Lock extends Widget
 PowerManager = null
 try
     POWER = "com.deepin.daemon.Power"
-    #PowerManager = DCore.DBus.session(POWER)
+    PowerManager = DCore.DBus.session(POWER)
 catch e
     echo "POWER:ERROR:#{e}"
 
