@@ -109,10 +109,6 @@ class MenuChoose extends Widget
             t_userinfo_show_hide,
             'linear',=>
                 $("#div_users").style.display = "none"
-                if is_greeter
-                    $(".prevuserinfo").style.display = "none"
-                    $(".nextuserinfo").style.display = "none"
-                
                 @element.style.display = "-webkit-box"
                 for tmp,i in @opt
                     animation_opt_move_show(i,i * t_delay)
