@@ -102,7 +102,7 @@ _GET_CFG_BOOL_ = (val) ->
 DSS = "com.deepin.Dss"
 DSS_DBUS = null
 try
-    DSS_DBUS = DCore.DBus.session(DSS))
+    DSS_DBUS = DCore.DBus.session(DSS)
     echo DSS_DBUS
 catch e
     echo "#{DSS.obj} ERROR:#{e}"
