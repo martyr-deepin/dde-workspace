@@ -43,7 +43,7 @@ class Zone extends Widget
         
         @opt = []
         #provide zone setting option
-        @option = ["Launcher","System Setup","Workspace","Desktop","None"]
+        @option = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
         
         for id,i in @ids
             @opt[i] = new Option(@ids[i],@zoneValue[@ids[i]])
