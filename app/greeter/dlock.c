@@ -52,6 +52,7 @@
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
+
 static GSGrab* grab = NULL;
 static GtkWidget* lock_container = NULL;
 const gchar *username = NULL;
@@ -161,7 +162,15 @@ prevent_exit (GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
-#ifdef NDEBUG
+static void
+sigterm_cb (int signum)
+{
+    NOUSED(signum);
+    gtk_main_quit ();
+}
+
+
+#ifndef NDEBUG
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
@@ -170,16 +179,7 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
     NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (lock_container), 0);
 }
-#endif
 
-static void
-sigterm_cb (int signum)
-{
-    NOUSED(signum);
-    gtk_main_quit ();
-}
-
-#ifdef NDEBUG
 static void
 lock_show_cb (GtkWindow* lock_container, gpointer data)
 {
@@ -294,7 +294,6 @@ int main (int argc, char **argv)
     gtk_window_set_skip_pager_hint (GTK_WINDOW (lock_container), TRUE);
 
     gtk_window_fullscreen (GTK_WINDOW (lock_container));
-    /*gtk_window_set_keep_above (GTK_WINDOW (lock_container), TRUE);*/
     gtk_widget_set_events (GTK_WIDGET (lock_container),
                            gtk_widget_get_events (GTK_WIDGET (lock_container))
                            | GDK_POINTER_MOTION_MASK
@@ -310,11 +309,12 @@ int main (int argc, char **argv)
     GtkWidget *webview = d_webview_new_with_uri (LOCK_HTML_PATH);
     gtk_container_add (GTK_CONTAINER (lock_container), GTK_WIDGET (webview));
 
-    g_signal_connect (lock_container, "delete-event", G_CALLBACK (prevent_exit), NULL);
-#ifdef NDEBUG
+#ifndef NDEBUG
+    gtk_window_set_keep_above (GTK_WINDOW (lock_container), TRUE);
     g_signal_connect (lock_container, "show", G_CALLBACK (lock_show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
+    g_signal_connect (lock_container, "delete-event", G_CALLBACK (prevent_exit), NULL);
     gtk_widget_realize (lock_container);
     gtk_widget_realize (webview);
 
@@ -324,7 +324,8 @@ int main (int argc, char **argv)
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-#ifdef NDEBUG
+#ifndef NDEBUG
+    gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
