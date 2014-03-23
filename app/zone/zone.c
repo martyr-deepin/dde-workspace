@@ -75,8 +75,15 @@ prevent_exit (GtkWidget* w, GdkEvent* e)
     return TRUE;
 }
 
+static void
+G_GNUC_UNUSED sigterm_cb (int signum)
+{
+    NOUSED(signum);
+    gtk_main_quit ();
+}
 
-#ifdef NDEBUG
+
+#ifndef NDEBUG
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
@@ -85,16 +92,8 @@ focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
     NOUSED(user_data);
     gdk_window_focus (gtk_widget_get_window (container), 0);
 }
-#endif
 
-static void
-G_GNUC_UNUSED sigterm_cb (int signum)
-{
-    NOUSED(signum);
-    gtk_main_quit ();
-}
 
-#ifdef NDEBUG
 static void
 show_cb (GtkWindow* container, gpointer data)
 {
@@ -227,7 +226,6 @@ int main (int argc, char **argv)
     gtk_window_set_decorated (GTK_WINDOW (container), FALSE);
     gtk_window_set_skip_taskbar_hint (GTK_WINDOW (container), TRUE);
     gtk_window_set_skip_pager_hint (GTK_WINDOW (container), TRUE);
-    /*gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);*/
 
     gtk_window_fullscreen (GTK_WINDOW (container));
     gtk_widget_set_events (GTK_WIDGET (container),
@@ -245,7 +243,8 @@ int main (int argc, char **argv)
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
-#ifdef NDEBUG
+#ifndef NDEBUG
+    gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
 #endif
@@ -258,7 +257,8 @@ int main (int argc, char **argv)
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-#ifdef NDEBUG
+#ifndef NDEBUG
+    gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
