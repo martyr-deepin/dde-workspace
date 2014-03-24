@@ -6,6 +6,9 @@ class EmbedWindow
             @xids.push(xid.Xid)
             $EW.create(xid.Xid, resize)
 
+    window_size:(xid)->
+        $EW.window_size(xid)
+
     move:(xid, x, y)->
         $EW.move(xid, x, y)
 

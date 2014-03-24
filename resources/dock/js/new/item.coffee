@@ -79,7 +79,7 @@ class AppItem extends Item
     on_rightclick:(e)=>
         super
         Preview_close_now()
-        _lastCliengGroup?.ew.hide?()
+        _lastCliengGroup?.embedWindows.hide?()
         console.log("rightclick")
         xy = get_page_xy(@element)
 

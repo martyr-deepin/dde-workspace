@@ -299,7 +299,7 @@ Preview_close_now = (client)->
     __clear_timeout()
     # calc_app_item_size()
     # return
-    client?.dbus?.HideQuickWindow()
+    _lastCliengGroup?.embedWindows?.hide?()
     return if Preview_container.is_showing == false
     Preview_container.hide()
     setTimeout(->

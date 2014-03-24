@@ -10,7 +10,7 @@ class ClientGroup extends AppItem
             console.log "#{@id}: #{d.Type}, #{d.Data[ITEM_DATA_FIELD.xids]}"
             xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
             if d.Type == ITEM_TYPE.applet
-                @ew = new EmbedWindow(xids)
+                @embedWindows = new EmbedWindow(xids)
             for xidInfo in xids
                 @n_clients.push(xidInfo.Xid)
                 @update_client(xidInfo.Xid, xidInfo.Title)
@@ -85,7 +85,7 @@ class ClientGroup extends AppItem
         @notify_flag?.style.visibility = "hidden"
 
     on_mouseover: (e)=>
-        _lastCliengGroup?.ew?.hide?()
+        _lastCliengGroup?.embedWindows?.hide?()
         super
         xy = get_page_xy(@element)
         w = @element.clientWidth || 0
@@ -98,14 +98,14 @@ class ClientGroup extends AppItem
         DCore.Dock.require_all_region()
         d = $DBus[@id]
         # console.log d.Type if d
-        # console.log @ew
+        # console.log @embedWindows
         if d && d.Type == ITEM_TYPE.app
             console.log("App show preview")
             if @n_clients.length != 0
                 Preview_show(@)
-        else if @ew
+        else if @embedWindows
             console.log("Applet show preview")
-            size = $EW.window_size(@ew.xids[0])
+            size = @embedWindows.window_size(@embedWindows.xids[0])
             console.log size
             width = size.width
             height = size.height
@@ -114,11 +114,11 @@ class ClientGroup extends AppItem
 
             # 6 for container's blur
             extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
-            @ew.show()
+            @embedWindows.show()
             x = xy.x + w/2 - width/2
             y = xy.y - extraHeight
             console.log("Move Window to #{x}, #{y}")
-            @ew.move(@ew.xids[0], x, y)
+            @embedWindows.move(@embedWindows.xids[0], x, y)
 
     on_mouseout: (e)=>
         _lastCliengGroup = @
@@ -129,13 +129,13 @@ class ClientGroup extends AppItem
             calc_app_item_size()
             hide_id = setTimeout(=>
                 DCore.Dock.update_hide_mode()
-                @ew?.hide()
+                @embedWindows?.hide()
             , 300)
         else
             # console.log "Preview_container is showing"
             DCore.Dock.require_all_region()
             hide_id = setTimeout(=>
-                @ew?.hide()
+                @embedWindows?.hide()
                 calc_app_item_size()
                 # update_dock_region()
                 Preview_close_now(@)
