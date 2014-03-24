@@ -171,7 +171,7 @@ class Option extends Widget
                 zoneValue = localStorage.getObject("zoneValue")
                 echo "-----------before set:"
                 echo zoneValue
-                zoneValue[that.id] = that.current
+                zoneValue["#{that.id}"] = that.current
                 echo "-----------after set:"
                 echo zoneValue
                 localStorage.setObject("zoneValue",zoneValue)

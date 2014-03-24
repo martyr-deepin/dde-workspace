@@ -70,14 +70,6 @@ detect_is_from_lock = ->
     localStorage.setItem("from_lock",false)
     return from_lock
 
-PowerManager = null
-try
-    POWER = "com.deepin.daemon.Power"
-    PowerManager = DCore.DBus.session(POWER)
-catch e
-    echo "POWER:ERROR:#{e}"
-
-
 is_support_guest = false
 try
     is_support_guest = DCore.Greeter.is_support_guest() if is_greeter

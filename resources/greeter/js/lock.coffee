@@ -25,8 +25,8 @@ class Lock extends Widget
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
         try
-            PowerManager.StartDim_sync() if PowerManager?
-            echo "StartDim_sync"
+            PowerManager.StartDim() if PowerManager?
+            echo "StartDim"
         catch e
             echo "#{e}"
     
@@ -41,6 +41,14 @@ class Lock extends Widget
             userinfo.is_recognizing = false
             DCore.Lock.try_unlock("")
         )
+
+
+PowerManager = null
+try
+    POWER = "com.deepin.daemon.Power"
+    #PowerManager = DCore.DBus.session(POWER)
+catch e
+    echo "POWER:ERROR:#{e}"
 
 
 document.body.style.height = window.innerHeight
