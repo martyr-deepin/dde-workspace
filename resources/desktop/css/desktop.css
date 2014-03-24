@@ -118,7 +118,7 @@ body {
     background-color:#FFF;
     outline:#000 solid 1px;
     cursor:text;
-    -ebkit-user-select:text;
+    -webkit-user-select:text;
     -webkit-user-modify:read-write-plaintext-only;
 }
 
