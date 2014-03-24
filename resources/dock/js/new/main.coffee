@@ -11,6 +11,11 @@ DCore.signal_connect("close_window", (info)->)
 DCore.signal_connect("active_window", (info)->)
 DCore.signal_connect("message_notify", (info)->)
 
+DCore.signal_connect("embed_window_configure_changed", (info)->console.log(info))
+DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
+DCore.signal_connect("embed_window_enter", (info)->console.log(info))
+DCore.signal_connect("embed_window_leave", (info)->console.log(info))
+
 show_desktop = new ShowDesktop()
 
 panel = new Panel("panel")
@@ -21,19 +26,14 @@ app_list = new AppList("app_list")
 EntryManager = "dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
 
+$DBus = {}
+
 entryManager.connect("Added", (path)->
     console.log("added #{path}")
     if Widget.look_up(path)
         return
 
-    d = get_dbus("session", itemDBus(path))
-    console.log("Status: #{d.Status}")
-    if d.Status == 2
-        console.log("Activator #{d.Id}")
-        new Activator(entry, d, app_list)
-    else if d.Status == 1
-        console.log("ClientGroup #{d.Id}")
-        new ClientGroup(entry, d, app_list)
+    createItem(path)
     calc_app_item_size()
 )
 
@@ -54,17 +54,7 @@ entryManager.connect("Removed", (id)->
 
 entries = entryManager.Entries
 for entry in entries
-    # console.log(itemDBus(entry))
-    d = get_dbus("session", itemDBus(entry))
-    console.log("Status: #{d.Status}")
-    if d.Status == 2
-        console.log("Activator #{d.Id}:#{entry}")
-        new Activator(entry, d, app_list)
-    else if  d.Status == 1
-        console.log("ClientGroup #{d.Id}:#{entry}")
-        new ClientGroup(entry, d, app_list)
-    # console.log('created end')
-    # console.log(d.Status)
+    createItem(entry)
 
 setTimeout(->
     IN_INIT = false

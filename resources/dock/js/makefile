@@ -4,11 +4,13 @@ com_coffee = ${com_dir}/config.coffee ${com_dir}/utils.coffee ${com_dir}/animati
 all: ${com_coffee} \
 	new/const.coffee\
 	config.coffee \
+	new/utils.coffee\
 	new/region.coffee\
 	panel.coffee\
 	new/app_list.coffee \
 	show_desktop.coffee\
 	preview.coffee\
+	new/embed_window.coffee\
 	new/item.coffee \
 	new/activator.coffee\
 	new/clientgroup.coffee\

@@ -1,22 +1,9 @@
-ENTRY_MANAGER_NAME = "dde.dock.EntryManager"
-
-itemDBus = (path)->
-    name: ENTRY_MANAGER_NAME
-    path: path
-    interface: "dde.dock.EntryProxyer"
-
-propertiesDBus = (path)->
-    name: ENTRY_MANAGER_NAME
-    path: path
-    interface: "org.freedesktop.DBus.Properties"
-
-
 class Item extends Widget
-    constructor:(@id, @icon, @container)->
+    constructor:(@id, icon, title, @container)->
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
         @img = create_img(class:"AppItemImg", @imgWarp)
-        @img.src = @icon || NOT_FOUND_ICON
+        @img.src = icon || NOT_FOUND_ICON
         @img.classList.add("ReflectImg")
         @img.style.pointerEvents = "auto"
         @img.addEventListener("mouseover", @on_mouseover)
@@ -70,25 +57,17 @@ class Item extends Widget
 
 class AppItem extends Item
     is_fixed_pos: false
-    constructor:(@id, @dbus, @container)->
-        if @dbus.Icon.indexOf("data:") != -1 or @dbus.Icon[0] == '/' or @dbus.Icon.indexOf("file://") != -1
-            @icon = @dbus.Icon
-        else
-            @icon = DCore.get_theme_icon(@dbus.Icon, 48)
+    constructor:(@id, @icon, title, @container)->
 
-        super(@id, @icon, @dbus.Tooltip, null)
-        $("#app_list").appendChild(@element)
+        super
 
         if app_list._insert_anchor_item
             app_list.append(@)
         else
             app_list.append_app_item?(@)
 
-        @properties = get_dbus("session", propertiesDBus(@id))
-        @properties.connect("PropertiesChanged", (info, d, a)->
-            for own k, v of d
-                console.log("properties updated: Key: #{k}, Value:#{v}")
-                # @dbus[k] = v
+        $DBus[@id]?.connect("DataChanged", (name, value)->
+            console.log("#{name} is changed to #{value}")
         )
 
     on_mouseover:(e)=>
@@ -100,7 +79,7 @@ class AppItem extends Item
     on_rightclick:(e)=>
         super
         Preview_close_now()
-        @dbus?.HideQuickWindow?()
+        _lastCliengGroup?.ew.hide?()
         console.log("rightclick")
         xy = get_page_xy(@element)
 
@@ -109,7 +88,7 @@ class AppItem extends Item
             y: xy.y
             isDockMenu: true
             cornerDirection: DEEPIN_MENU_CORNER_DIRECTION.DOWN
-            menuJsonContent:"#{@dbus.Menu}"
+            menuJsonContent:"#{$DBus[@id].Data[ITEM_DATA_FIELD.menu]}"
 
         menuJson = JSON.stringify(menu)
 
@@ -131,17 +110,14 @@ class AppItem extends Item
             interface:DEEPIN_MENU_INTERFACE)
 
         if dbus
-            dbus.connect("ItemInvoked", @on_itemselected)
+            dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
             dbus.ShowMenu(menuJson)
 
-    on_itemselected: (id)=>
-        console.log("select id: #{id}")
-        @dbus.HandleMenuItem(parseInt(id))
-        # @dbus.ContextMenu(
-        #     xy.x + @element.clientWidth / 2,
-        #     xy.y + OFFSET_DOWN,
-        # )
+    on_itemselected: (d)->
+        (id)->
+            console.log("select id: #{id}")
+            d.HandleMenuItem(parseInt(id))
 
     on_click:(e)=>
         super
-        # @dbus.Activate(0,0)
+        $DBus[@id].Activate(0,0)

@@ -28,28 +28,9 @@ class ShowDesktop
 
     show: (v)->
         @__show = v
-        # if @__show
-        #     @open_indicator.style.display = "block"
-        # else
-        #     @open_indicator.style.display = "none"
 
     set_status: (status)=>
         @show(status)
 
     toggle: =>
         DCore.Dock.show_desktop(!@__show)
-
-    # do_click: (e)=>
-    #     DCore.Dock.show_desktop(!@__show)
-
-    # do_dragenter: (e) =>
-    #     e.stopPropagation()
-    #     ShowDesktop.set_time_id = setTimeout(=>
-    #         DCore.Dock.show_desktop(true)
-    #     , 1000)
-    # do_dragleave: (e) =>
-    #     e.stopPropagation()
-    #     clearTimeout(ShowDesktop.set_time_id)
-    #     ShowDesktop.set_time_id = null
-
-

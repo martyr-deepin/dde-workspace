@@ -1,13 +1,15 @@
 class Applet extends Item
     is_fixed_pos: false
     constructor: (@id, @icon, title, @container)->
-        super(@id, @icon, @container)
+        super
         @type = ITEM_TYPE_APPLET
 
-        @open_indicator = create_img("OpenIndicator", OPEN_INDICATOR, @element)
-        @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
-        @open_indicator.style.display = "none"
-        @set_tooltip(title)
+        @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
+        @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
+        @openIndicator.style.display = "none"
+        # @open_indicator = create_img("OpenIndicator", OPEN_INDICATOR, @element)
+        # @open_indicator.style.left = INDICATER_IMG_MARGIN_LEFT
+        # @open_indicator.style.display = "none"
 
     on_mouseover: (e) =>
         super
@@ -40,10 +42,10 @@ class FixedItem extends Applet
 
     show: (v)->
         @__show = v
-        # if @__show
-        #     @open_indicator.style.display = "block"
-        # else
-        #     @open_indicator.style.display = "none"
+        if @__show
+            @openIndicator.style.display = "block"
+        else
+            @openIndicator.style.display = "none"
 
     set_status: (status)=>
         @show(status)
@@ -55,10 +57,11 @@ class PrefixedItem extends FixedItem
         # $("#pre_fixed").appendChild(@element)
 
 
-class SystemItem extends FixedItem
+class SystemItem extends ClientGroup
+    is_fixed_pos: true
     constructor:(@id, @icon, title)->
         super(@id, @icon, title, $("#system"))
-        # $("#system").appendChild(@element)
+        $("#system").appendChild(@element)
 
 
 class PostfixedItem extends FixedItem
@@ -83,8 +86,9 @@ class LauncherItem extends PrefixedItem
 
 
 class Trash extends PostfixedItem
-    constructor: ->
+    constructor:(@id, @icon, title)->
         super
+        @set_tooltip(title)
         @entry = DCore.DEntry.get_trash_entry()
         DCore.signal_connect("trash_count_changed", (info)=>
             @update(info.value)

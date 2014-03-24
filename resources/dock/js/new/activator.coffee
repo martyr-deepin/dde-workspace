@@ -1,15 +1,15 @@
 launcher_mouseout_id = null
 class Activator extends AppItem
-    constructor:(@id, @dbus, @container)->
+    constructor:(@id, @icon, title, @container)->
         super
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
         @tooltip = null
-        @set_tooltip(@dbus.Tooltip)
+        @set_tooltip(title)
 
     try_swap_clientgroup: ->
         @destroy_tooltip()
-        group = Widget.look_up("le_"+@id)
+        group = Widget.look_up("cl_"+@id)
         if group?
             swap_element(@element, group.element)
             group.destroy()
@@ -21,7 +21,7 @@ class Activator extends AppItem
     on_click:(e)=>
         super
         console.log "active"
-        @dbus.Activate(0,0)
+        # @dbus.Activate(0,0)
         @notify()
 
     on_mouseover: (e)=>

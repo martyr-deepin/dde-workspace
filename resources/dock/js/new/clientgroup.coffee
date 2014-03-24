@@ -2,15 +2,19 @@ _lastCliengGroup = null
 pop_id = null
 hide_id = null
 class ClientGroup extends AppItem
-    constructor:(@id, @dbus, @container)->
+    constructor:(@id, @icon, title, @container)->
         super
         @n_clients = []
         @client_infos = {}
-        for own k, v of @dbus.Data
-            k = parseInt(k, 10)
-            @n_clients.push(k)
-            @update_client(k, v)
-            # console.log "ClientGroup:: Key: #{k}, Value:#{v}"
+        if (d = $DBus[@id])
+            console.log "#{@id}: #{d.Type}, #{d.Data[ITEM_DATA_FIELD.xids]}"
+            xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
+            if d.Type == ITEM_TYPE.applet
+                @ew = new EmbedWindow(xids)
+            for xidInfo in xids
+                @n_clients.push(xidInfo.Xid)
+                @update_client(xidInfo.Xid, xidInfo.Title)
+                # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
         @leader = null
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
@@ -26,7 +30,7 @@ class ClientGroup extends AppItem
     try_build_activator: ->
         info = DCore.Dock.get_launcher_info(@app_id)
         if info
-            l = new Activator(info.Id, @dbus, @container)
+            l = new Activator(info.Id, @icon, title, @container)
             swap_element(@element, l.element)
 
     try_swap_activator: ->
@@ -81,7 +85,7 @@ class ClientGroup extends AppItem
         @notify_flag?.style.visibility = "hidden"
 
     on_mouseover: (e)=>
-        _lastCliengGroup?.dbus?.HideQuickWindow?()
+        _lastCliengGroup?.ew?.hide?()
         super
         xy = get_page_xy(@element)
         w = @element.clientWidth || 0
@@ -92,17 +96,29 @@ class ClientGroup extends AppItem
         clearTimeout(tooltip_hide_id)
         clearTimeout(launcher_mouseout_id)
         DCore.Dock.require_all_region()
-        # console.log @dbus.Type
-        if @dbus.Type == "App"
+        d = $DBus[@id]
+        # console.log d.Type if d
+        # console.log @ew
+        if d && d.Type == ITEM_TYPE.app
+            console.log("App show preview")
             if @n_clients.length != 0
                 Preview_show(@)
-        else
-            # console.log(@dbus.Allocation)
-            Preview_show(@, width:@dbus.Allocation[2], height:@dbus.Allocation[3])
+        else if @ew
+            console.log("Applet show preview")
+            size = $EW.window_size(@ew.xids[0])
+            console.log size
+            width = size.width
+            height = size.height
+            console.log("size: #{width}x#{height}")
+            Preview_show(@, width:width, height:height)
 
             # 6 for container's blur
-            extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH
-            @dbus.QuickWindow(xy.x + w/2 + PREVIEW_WINDOW_BORDER_WIDTH, xy.y - extraHeight)
+            extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
+            @ew.show()
+            x = xy.x + w/2 - width/2
+            y = xy.y - extraHeight
+            console.log("Move Window to #{x}, #{y}")
+            @ew.move(@ew.xids[0], x, y)
 
     on_mouseout: (e)=>
         _lastCliengGroup = @
@@ -113,13 +129,13 @@ class ClientGroup extends AppItem
             calc_app_item_size()
             hide_id = setTimeout(=>
                 DCore.Dock.update_hide_mode()
-                @dbus.HideQuickWindow?()
+                @ew?.hide()
             , 300)
         else
             # console.log "Preview_container is showing"
             DCore.Dock.require_all_region()
             hide_id = setTimeout(=>
-                @dbus.HideQuickWindow?()
+                @ew?.hide()
                 calc_app_item_size()
                 # update_dock_region()
                 Preview_close_now(@)

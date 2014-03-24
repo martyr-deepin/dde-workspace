@@ -69,9 +69,9 @@ class PWContainer extends Widget
         @_current_group?.n_clients?.forEach((w_id)=>
             pw = Widget.look_up("pw"+w_id)
             if not pw
-                info = @_current_group.dbus
+                id = @_current_group.id
                 infos = @_current_group.client_infos
-                console.log("create PreviewWindow, #{info.Id}##{infos[w_id].id}")
+                console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
                 pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title)
 
             setTimeout(->
@@ -376,7 +376,7 @@ class PreviewWindow extends Widget
         Preview_container._calc_size()
 
     update_size: ->
-        console.log("PreviewWindow::update_size: #{Preview_container.scale}")
+        # console.log("PreviewWindow::update_size: #{Preview_container.scale}")
         if Preview_container.scale == -1
             @element.style.width = Preview_container.pw_width + PREVIEW_WINDOW_BORDER_WIDTH * 2
             @element.style.height = Preview_container.pw_height + PREVIEW_WINDOW_BORDER_WIDTH * 2

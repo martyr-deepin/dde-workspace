@@ -30,7 +30,7 @@
         <key type="b" name="active-mini-mode">
             <default>false</default>
             <summary>the mini icon mode</summary>
-            <description>Enable dock's minimal interface to save workspace.</description> 
+            <description>Enable dock's minimal interface to save workspace.</description>
         </key>
         <key type="u" name="background-color">
             <range min="0" max="0xffffff64" />
@@ -42,6 +42,11 @@
             <default>'digit'</default>
             <summary>change the clock view.</summary>
             <description>The dock clock plugin has two types of view, one is digit, the other is analog.</description>
+        </key>
+        <key type="as" name="docked-apps">
+            <default>['software-center','game-center','dmusic','dtalk','dmovie','google-chrome','nautilus']</default>
+            <summary>The default apps on dock.</summary>
+            <description>The default apps which is docked when dock is started.</description>
         </key>
     </schema>
 </schemalist>

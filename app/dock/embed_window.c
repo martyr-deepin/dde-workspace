@@ -83,6 +83,22 @@ void exwindow_create(double xid, gboolean enable_resize)
     }
 }
 
+JSValueRef exwindow_window_size(double xid)
+{
+    Window win = (Window)xid;
+    GdkDisplay* dpy = gdk_window_get_display(GET_CONTAINER_WINDOW());
+    GdkWindow* w = gdk_x11_window_foreign_new_for_display(dpy, win);
+    gint width = 0, height = 0;
+    if (w != NULL) {
+        gdk_window_get_geometry(w, NULL, NULL, &width, &height);
+    }
+    JSObjectRef o = json_create();
+    json_append_number(o, "width", width);
+    json_append_number(o, "height", height);
+    return o;
+}
+
+
 //JS_EXPORT_API
 void exwindow_move_resize(double xid, double x, double y, double width, double height)
 {
