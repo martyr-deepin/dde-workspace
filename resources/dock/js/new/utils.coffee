@@ -32,3 +32,13 @@ createItem = (path)->
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         $DBus[d.Id] = d
         new SystemItem(d.Id, icon, title)
+
+
+deleteItem = (path)->
+    delete $DBus[path]
+    id = path.substr(path.lastIndexOf('/') + 1)
+    i = Widget.look_up(id)
+    if i
+        i.destroy()
+    else
+        console.log("#{id} not eixst")

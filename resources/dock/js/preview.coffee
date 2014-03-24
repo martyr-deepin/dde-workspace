@@ -241,12 +241,11 @@ class PWContainer extends Widget
     remove: (pw)->
         assert(not Widget.look_up(pw.id))
         delete @_current_pws[pw.w_id]
-        console.log(Object.keys(@_current_pws).length)
         @close() if Object.keys(@_current_pws).length == 0
 
 
     close: ->
-        console.log("PWContainer::close")
+        # console.log("PWContainer::close")
         clearInterval(@_update_id)
         @_current_group = null
         Object.keys(@_current_pws).forEach((w_id)->
@@ -289,10 +288,11 @@ __clear_timeout = ->
     __SHOW_PREVIEW_ID = -1
     __CLOSE_PREVIEW_ID = -1
 
-Preview_show = (group, allocation) ->
+Preview_show = (group, allocation, cb) ->
     __clear_timeout()
     __SHOW_PREVIEW_ID = setTimeout(->
         Preview_container.show_group(group, allocation)
+        cb?()
     , 300)
 
 Preview_close_now = (client)->
@@ -356,10 +356,10 @@ class PreviewWindow extends Widget
         @title.innerText = @title_str
         @update_size()
 
-        # if get_active_window() == @w_id
-        #     @to_active()
-        # else
-        #     @to_normal()
+        if get_active_window() == @w_id
+            @to_active()
+        else
+            @to_normal()
 
         Preview_container.append(@)
         Preview_container._calc_size()

@@ -39,22 +39,15 @@ entryManager.connect("Added", (path)->
 
 entryManager.connect("Removed", (id)->
     # TODO: change id to the real id
-    id = id.split('.')
-    last = id.pop()
-    id.push("v1")
-    id.push(last)
-    id = id.join("/")
-    id = "/" + id
-    console.log("removed #{id}")
-    i = Widget.look_up(id)
-    # console.log i.constructor.name
-    i?.destroy()
+    console.log("Removed #{id}")
+    deleteItem(id)
     calc_app_item_size()
 )
 
 entries = entryManager.Entries
 for entry in entries
-    createItem(entry)
+    if !Widget.look_up(entry)
+        createItem(entry)
 
 setTimeout(->
     IN_INIT = false

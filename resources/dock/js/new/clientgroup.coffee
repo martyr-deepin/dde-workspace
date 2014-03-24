@@ -110,15 +110,15 @@ class ClientGroup extends AppItem
             width = size.width
             height = size.height
             console.log("size: #{width}x#{height}")
-            Preview_show(@, width:width, height:height)
-
-            # 6 for container's blur
-            extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
-            @embedWindows.show()
-            x = xy.x + w/2 - width/2
-            y = xy.y - extraHeight
-            console.log("Move Window to #{x}, #{y}")
-            @embedWindows.move(@embedWindows.xids[0], x, y)
+            Preview_show(@, width:width, height:height, =>
+                # 6 for container's blur
+                extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
+                @embedWindows.show()
+                x = xy.x + w/2 - width/2
+                y = xy.y - extraHeight
+                console.log("Move Window to #{x}, #{y}")
+                @embedWindows.move(@embedWindows.xids[0], x, y)
+            )
 
     on_mouseout: (e)=>
         _lastCliengGroup = @

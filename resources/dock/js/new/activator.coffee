@@ -20,8 +20,6 @@ class Activator extends AppItem
 
     on_click:(e)=>
         super
-        console.log "active"
-        # @dbus.Activate(0,0)
         @notify()
 
     on_mouseover: (e)=>

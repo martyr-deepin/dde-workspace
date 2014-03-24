@@ -9,6 +9,7 @@ all: ${com_coffee} \
 	panel.coffee\
 	new/app_list.coffee \
 	show_desktop.coffee\
+	new/active_window.coffee\
 	preview.coffee\
 	new/embed_window.coffee\
 	new/item.coffee \
