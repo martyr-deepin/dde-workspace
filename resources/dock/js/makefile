@@ -13,8 +13,9 @@ all: ${com_coffee} \
 	preview.coffee\
 	new/embed_window.coffee\
 	new/item.coffee \
-	new/activator.coffee\
-	new/clientgroup.coffee\
 	deepin_item.coffee\
 	new/main.coffee
 	coffee -cj dock.js $^
+
+	# new/activator.coffee\
+	# new/clientgroup.coffee\

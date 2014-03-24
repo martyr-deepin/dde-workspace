@@ -19,15 +19,16 @@ createItem = (path)->
         container = app_list.element
 
         status = d.Data[ITEM_DATA_FIELD.status]
-        if status == ITEM_STATUS.normal
-            console.log("Activator #{d.Id}")
-            $DBus[entry] = d
-            new Activator(entry, icon, title, container)
-        else if status == ITEM_STATUS.active
-            console.log("ClientGroup #{d.Id}")
-            id = "cl_#{entry}"
-            $DBus[id] = d
-            new ClientGroup(id, icon, title, container)
+        $DBus[d.Id] = d
+        new AppItem(d.Id, icon, title, container)
+        # if status == ITEM_STATUS.normal
+        #     console.log("Activator #{d.Id}")
+        #     $DBus[d.Id] = d
+        #     new Activator(d.Id, icon, title, container)
+        # else if status == ITEM_STATUS.active
+        #     console.log("ClientGroup #{d.Id}")
+        #     $DBus[d.Id] = d
+        #     new ClientGroup(d.Id, icon, title, container)
     else
         console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         $DBus[d.Id] = d

@@ -99,6 +99,8 @@ class ClientGroup extends AppItem
         d = $DBus[@id]
         # console.log d.Type if d
         # console.log @embedWindows
+        console.log("ClientGroup mouseover")
+        console.log(d.Type)
         if d && d.Type == ITEM_TYPE.app
             console.log("App show preview")
             if @n_clients.length != 0
