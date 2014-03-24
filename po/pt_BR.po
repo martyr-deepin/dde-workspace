@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 00:40+0800\n"
+"POT-Creation-Date: 2014-03-24 16:10+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -18,10 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:250
-#, python-brace-format
-msgid "Input password to #{powervalue}"
+#: ../resources/greeter/js/menuchoose.coffee:251
+msgid "Input password to %1"
 msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "suspend"
+msgstr "suspender"
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "restart"
+msgstr "reiniciar"
+
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "shutdown"
+msgstr "desligar"
 
 #: ../resources/greeter/js/user.coffee:178
 msgid "guest"
@@ -720,18 +731,9 @@ msgstr "outros"
 #~ msgid "Welcome"
 #~ msgstr "Bem-vindo"
 
-#~ msgid "suspend"
-#~ msgstr "suspender"
-
-#~ msgid "restart"
-#~ msgstr "reiniciar"
-
 #, fuzzy
 #~ msgid "ShutDown"
 #~ msgstr "Desligar"
-
-#~ msgid "shutdown"
-#~ msgstr "desligar"
 
 #~ msgid "Lock"
 #~ msgstr "Travar"

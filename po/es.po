@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 00:39+0800\n"
+"POT-Creation-Date: 2014-03-24 16:10+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -21,10 +21,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:250
-#, python-brace-format
-msgid "Input password to #{powervalue}"
+#: ../resources/greeter/js/menuchoose.coffee:251
+msgid "Input password to %1"
 msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "suspend"
+msgstr "suspender"
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "restart"
+msgstr "reiniciar"
+
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "shutdown"
+msgstr "apagar"
 
 #: ../resources/greeter/js/user.coffee:178
 msgid "guest"
@@ -726,18 +737,9 @@ msgstr "Otros"
 #~ msgid "Welcome"
 #~ msgstr "Bienvenido"
 
-#~ msgid "suspend"
-#~ msgstr "suspender"
-
-#~ msgid "restart"
-#~ msgstr "reiniciar"
-
 #, fuzzy
 #~ msgid "ShutDown"
 #~ msgstr "Apagar"
-
-#~ msgid "shutdown"
-#~ msgstr "apagar"
 
 #~ msgid "Lock"
 #~ msgstr "Bloquear"

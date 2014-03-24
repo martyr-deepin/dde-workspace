@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 00:39+0800\n"
+"POT-Creation-Date: 2014-03-24 16:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:250
-#, python-brace-format
-msgid "Input password to #{powervalue}"
+#: ../resources/greeter/js/menuchoose.coffee:251
+msgid "Input password to %1"
 msgstr ""
+
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "suspend"
+msgstr "待机"
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "restart"
+msgstr "重启"
+
+#: ../resources/greeter/js/powermenu.coffee:50
+#, fuzzy
+msgid "shutdown"
+msgstr "关机"
 
 #: ../resources/greeter/js/user.coffee:178
 msgid "guest"
@@ -714,17 +726,7 @@ msgstr "其他"
 #~ msgid "Welcome"
 #~ msgstr "欢迎"
 
-#~ msgid "suspend"
-#~ msgstr "待机"
-
-#~ msgid "restart"
-#~ msgstr "重启"
-
 #~ msgid "ShutDown"
-#~ msgstr "关机"
-
-#, fuzzy
-#~ msgid "shutdown"
 #~ msgstr "关机"
 
 #~ msgid "Lock"
