@@ -22,6 +22,7 @@ class PowerMenu extends Widget
     upower_obj = null
     consolekit_obj = null
     power_dict = {}
+    power_title = {}
     power_menu = null
     parent = null
     img_before = null
@@ -44,6 +45,10 @@ class PowerMenu extends Widget
         power_dict["suspend"] = @suspend_cb
         power_dict["restart"] = @restart_cb
         power_dict["shutdown"] = @shutdown_cb
+        power_title["suspend"] = _("suspend")
+        power_title["restart"] = _("restart")
+        power_title["shutdown"] = _("shutdown")
+        
         return power_dict
 
     new_power_menu:->
@@ -56,8 +61,7 @@ class PowerMenu extends Widget
         power_menu = new ComboBox("power", power_menu_cb)
 
         for key, value of power_dict
-            title = null
-            title = key
+            title = power_title[key]
             img_normal = img_before + "#{key}_normal.png"
             img_hover = img_before + "#{key}_hover.png"
             img_click = img_before + "#{key}_press.png"
