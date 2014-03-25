@@ -34,9 +34,6 @@ class Item extends Widget
         @tooltip?.destroy()
         @tooltip = null
 
-    showTooltip:->
-        @set_tooltip(@dbus.ToolTip)
-
     update_scale:->
 
     on_mouseover:(e)=>
@@ -61,10 +58,10 @@ class Item extends Widget
 
 class AppItem extends Item
     is_fixed_pos: false
-    constructor:(@id, @icon, title, @container)->
+    constructor:(@id, @icon, @title, @container)->
         super
 
-        @dbus = $DBus[@id]
+        @core = new EntryProxy($DBus[@id])
 
         @indicatorWarp = create_element(tag:'div', class:"indicatorWarp", @element)
         @openingIndicator = create_img(src:OPENING_INDICATOR, class:"indicator OpeningIndicator", @indicatorWarp)
@@ -73,21 +70,9 @@ class AppItem extends Item
         @tooltip = null
 
         if @isNormal()
-            @openIndicator.style.display = 'none'
-            @set_tooltip(title)
+            @init_activator()
         else
-            @n_clients = []
-            @client_infos = {}
-            if @dbus
-                console.log "#{@id}: #{@dbus.Type}, #{@dbus.Data[ITEM_DATA_FIELD.xids]}"
-                xids = JSON.parse(@dbus.Data[ITEM_DATA_FIELD.xids])
-                if @dbus.Type == ITEM_TYPE.applet
-                    @embedWindows = new EmbedWindow(xids)
-                for xidInfo in xids
-                    @n_clients.push(xidInfo.Xid)
-                    @update_client(xidInfo.Xid, xidInfo.Title)
-                    # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
-            @leader = null
+            @init_clientgroup()
 
 
         if app_list._insert_anchor_item
@@ -95,9 +80,44 @@ class AppItem extends Item
         else
             app_list.append_app_item?(@)
 
-        @dbus?.connect("DataChanged", (name, value)->
+        @core?.connect("DataChanged", (name, value)=>
             console.log("#{name} is changed to #{value}")
+
+            if name == ITEM_DATA_FIELD.xids
+                remove
+            if @isActive()
+                @swap_to_clientgroup()
+            else if @isNormal()
+                @swap_to_activator()
         )
+
+    init_clientgroup:->
+        @n_clients = []
+        @client_infos = {}
+        if @core
+            console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
+            xids = JSON.parse(@core.xids())
+            if @isApplet()
+                @embedWindows = new EmbedWindow(xids)
+            for xidInfo in xids
+                @n_clients.push(xidInfo.Xid)
+                @update_client(xidInfo.Xid, xidInfo.Title)
+                # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
+        @leader = null
+
+    init_activator:->
+        @openIndicator.style.display = 'none'
+        @set_tooltip(@title)
+
+    swap_to_clientgroup:->
+        @openingIndicator.style.display = 'none'
+        @openingIndicator.style.webkitAnimationName = ''
+        @openIndicator.style.display = 'inline'
+        @destroy_tooltip()
+        @init_clientgroup()
+
+    swap_to_activator:->
+        @init_activator()
 
     update_client: (id, title)->
         @client_infos[id] =
@@ -115,6 +135,22 @@ class AppItem extends Item
                 @leader = id
 
         @element.style.display = "block"
+
+    # TODO:
+    remove_client: (id, used_internal=false) ->
+        if not used_internal
+            delete @client_infos[id]
+
+        @n_clients.remove(id)
+
+        if @n_clients.length == 0
+            @destroy()
+        else if @leader == id
+            @next_leader()
+
+    next_leader: ->
+        @n_clients.push(@n_clients.shift())
+        @leader = @n_clients[0]
 
     destroy: ->
         if @isNormal()
@@ -135,16 +171,16 @@ class AppItem extends Item
         ,500)
 
     isNormal:->
-        @dbus.Data[ITEM_DATA_FIELD.status] == ITEM_STATUS.normal
+        @core.isNormal()
 
     isActive:->
-        @dbus.Data[ITEM_DATA_FIELD.status] == ITEM_STATUS.active
+        @core.isActive()
 
     isApp:->
-        @dbus.Data[ITEM_DATA_FIELD.type] == ITEM_TYPE.app
+        @core.isApp()
 
     isApplet:->
-        @dbus.Data[ITEM_DATA_FIELD.type] == ITEM_TYPE.applet
+        @core.isApplet()
 
     on_mouseover:(e)=>
         super
@@ -164,8 +200,8 @@ class AppItem extends Item
             clearTimeout(launcher_mouseout_id)
             DCore.Dock.require_all_region()
             console.log("ClientGroup mouseover")
-            console.log(@dbus.Type)
-            if @dbus && @dbus.Type == ITEM_TYPE.app
+            console.log(@core.type())
+            if @core && @isApp()
                 console.log("App show preview")
                 if @n_clients.length != 0
                     Preview_show(@)
@@ -176,14 +212,25 @@ class AppItem extends Item
                 width = size.width
                 height = size.height
                 console.log("size: #{width}x#{height}")
-                Preview_show(@, width:width, height:height, =>
+                Preview_show(@, width:width, height:height, (c)=>
+                    ew = @embedWindows
                     # 6 for container's blur
                     extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
-                    @embedWindows.show()
+                    console.log("Preview_show callback: #{c}")
                     x = xy.x + w/2 - width/2
                     y = xy.y - extraHeight
                     console.log("Move Window to #{x}, #{y}")
-                    @embedWindows.move(@embedWindows.xids[0], x, y)
+                    ew.move(ew.xids[0], x, y)
+                    ew.show()
+                    ew.draw_to_canvas(c)
+                    for i in [1..3]
+                        setTimeout(->
+                            ew.draw_to_canvas(c)
+                        , 100*i)
+                    setTimeout(->
+                        ew.draw_to_canvas(null)
+                        ew.show()
+                    , 500)
                 )
 
     on_mouseout:(e)=>
@@ -229,16 +276,18 @@ class AppItem extends Item
     on_rightclick:(e)=>
         super
         Preview_close_now()
-        _lastCliengGroup?.embedWindows.hide?()
+        _lastCliengGroup?.embedWindows?.hide?()
         console.log("rightclick")
         xy = get_page_xy(@element)
 
+        clientHalfWidth = @element.clientWidth / 2
+        menuContent = @core.menuContent()
         menu =
-            x: xy.x + @element.clientWidth / 2
+            x: xy.x + clientHalfWidth
             y: xy.y
             isDockMenu: true
             cornerDirection: DEEPIN_MENU_CORNER_DIRECTION.DOWN
-            menuJsonContent:"#{$DBus[@id].Data[ITEM_DATA_FIELD.menu]}"
+            menuJsonContent: menuContent
 
         menuJson = JSON.stringify(menu)
 
@@ -257,20 +306,34 @@ class AppItem extends Item
             "session",
             name:DEEPIN_MENU_NAME,
             path:menu_dbus_path,
-            interface:DEEPIN_MENU_INTERFACE)
+            interface:DEEPIN_MENU_INTERFACE
+        )
 
         if dbus
             dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
             dbus.ShowMenu(menuJson)
+        else
+            conosle.log("get menu dbus failed")
 
     on_itemselected: (d)->
         (id)->
             console.log("select id: #{id}")
-            d.HandleMenuItem(parseInt(id))
+            d?.HandleMenuItem(parseInt(id))
 
     on_click:(e)=>
         super
-        @dbus.Activate(0,0)
+        @core.activate(0,0)
+        if @isNormal()
+            @openNotify()
+
+    openNotify:->
+        @openingIndicator.style.display = 'inline'
+        @openingIndicator.style.webkitAnimationName = 'Breath'
+
+    to_active_status : (id)->
+        @leader = id
+        @n_clients.remove(id)
+        @n_clients.unshift(id)
 
     do_dragleave: (e) =>
         super

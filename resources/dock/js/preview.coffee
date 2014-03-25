@@ -50,10 +50,10 @@ class PWContainer extends Widget
         @border.style.opacity = 1
         @border.style.display = "block"
 
-    _update: (allocation)->
+    _update: (allocation, cb)->
         clearInterval(@_update_id)
         setTimeout(=>
-            @_update_once()
+            @_update_once(cb)
             @_calc_size(allocation)
             @show()
         , 5)
@@ -61,7 +61,7 @@ class PWContainer extends Widget
             @_update_once()
         , 500)
 
-    _update_once: =>
+    _update_once: (cb)=>
         # console.log("_update_once")
         for k, v of @_current_pws
             @_current_pws[k] = true
@@ -76,6 +76,7 @@ class PWContainer extends Widget
 
             setTimeout(->
                 pw.update_content()
+                cb?(pw.canvas)
             , 10)
             @_current_pws[w_id] = false
         )
@@ -256,7 +257,7 @@ class PWContainer extends Widget
         @is_showing = false
         #DCore.Dock.set_compiz_workaround_preview(false)
 
-    show_group: (group, allocation)->
+    show_group: (group, allocation, cb)->
         console.log("show_group")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
@@ -265,7 +266,7 @@ class PWContainer extends Widget
         console.log("different current_group")
         @hide()
         @_current_group = group
-        @_update(allocation)
+        @_update(allocation, cb)
 
     on_mouseover: (e)=>
         __clear_timeout()
@@ -291,8 +292,7 @@ __clear_timeout = ->
 Preview_show = (group, allocation, cb) ->
     __clear_timeout()
     __SHOW_PREVIEW_ID = setTimeout(->
-        Preview_container.show_group(group, allocation)
-        cb?()
+        Preview_container.show_group(group, allocation, cb)
     , 300)
 
 Preview_close_now = (client)->

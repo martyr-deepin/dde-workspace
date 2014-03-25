@@ -28,3 +28,11 @@ class EmbedWindow
         else
             for xid in @xids
                 $EW.hide(xid)
+
+    draw_to_canvas: (xid, canvas)->
+        if !canvas
+            canvas = xid
+            for xid in @xids
+                $EW.draw_to_canvas(xid, canvas)
+            return
+        $EW.draw_to_canvas(xid, canvas)

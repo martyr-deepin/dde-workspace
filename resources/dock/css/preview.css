@@ -53,6 +53,7 @@
   /* max-width: 230px; */
   /* max-height: 160px; */
   /* border: red solid 1px; */
+  border-radius: 3px;
   height:100%;
   position:relative;
 }
@@ -67,6 +68,9 @@
   /* border: solid 1px red; */
   border-radius: 2px;
   pointer-events: none;
+}
+.PWCanvas canvas {
+  border-radius: 2px;
 }
 
 .PWTitleContainer {
@@ -100,12 +104,11 @@
   margin-top: 2%;
 }
 .PWClose {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: solid white 1px;
   position: absolute;
-  right: -9px;
+  right: -8px;
   top: -7px;
   font-weight: 20;
   text-align: center;

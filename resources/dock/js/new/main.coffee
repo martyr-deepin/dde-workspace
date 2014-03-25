@@ -29,11 +29,14 @@ entryManager = get_dbus('session', EntryManager)
 $DBus = {}
 
 entryManager.connect("Added", (path)->
-    console.log("added #{path}")
-    if Widget.look_up(path)
+    d = get_dbus("session", itemDBus(path))
+    console.log("try to Added #{d.Id}")
+    if Widget.look_up(d.Id)
         return
 
-    createItem(path)
+    console.log("added #{path}")
+    createItem(d)
+    console.log("added done")
     calc_app_item_size()
 )
 
@@ -46,8 +49,10 @@ entryManager.connect("Removed", (id)->
 
 entries = entryManager.Entries
 for entry in entries
-    if !Widget.look_up(entry)
-        createItem(entry)
+    d = get_dbus("session", itemDBus(entry))
+    console.log("init add: #{d.Id}")
+    if !Widget.look_up(d.Id)
+        createItem(d)
 
 setTimeout(->
     IN_INIT = false
