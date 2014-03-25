@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 16:10+0800\n"
+"POT-Creation-Date: 2014-03-25 14:51+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Input password to %1"
+msgid "Enter password to %1"
 msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:48
@@ -31,7 +31,7 @@ msgstr "重新啟動"
 
 #: ../resources/greeter/js/powermenu.coffee:50
 #, fuzzy
-msgid "shutdown"
+msgid "shut down"
 msgstr "關機"
 
 #: ../resources/greeter/js/user.coffee:178

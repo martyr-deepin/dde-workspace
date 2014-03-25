@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 16:10+0800\n"
+"POT-Creation-Date: 2014-03-25 14:51+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Input password to %1"
+msgid "Enter password to %1"
 msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:48
@@ -30,7 +30,7 @@ msgid "restart"
 msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:50
-msgid "shutdown"
+msgid "shut down"
 msgstr ""
 
 #: ../resources/greeter/js/user.coffee:178

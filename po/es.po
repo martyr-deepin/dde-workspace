@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-24 16:10+0800\n"
+"POT-Creation-Date: 2014-03-25 14:51+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Input password to %1"
+msgid "Enter password to %1"
 msgstr ""
 
 #: ../resources/greeter/js/powermenu.coffee:48
@@ -34,7 +34,8 @@ msgid "restart"
 msgstr "reiniciar"
 
 #: ../resources/greeter/js/powermenu.coffee:50
-msgid "shutdown"
+#, fuzzy
+msgid "shut down"
 msgstr "apagar"
 
 #: ../resources/greeter/js/user.coffee:178
