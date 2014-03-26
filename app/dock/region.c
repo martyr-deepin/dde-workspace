@@ -48,9 +48,11 @@ void init_region(GdkWindow* win, double x, double y, double width, double height
 }
 
 
+static int _do_shape_timer_id = -1;
 PRIVATE
 gboolean _help_do_window_region(cairo_region_t* region)
 {
+    _do_shape_timer_id  = -1;
 #ifndef DEBUG_REGION
     gdk_window_input_shape_combine_region(_win, region, 0, 0);
 #else
@@ -63,10 +65,9 @@ gboolean _help_do_window_region(cairo_region_t* region)
 PRIVATE
 void do_window_shape_combine_region(cairo_region_t* region)
 {
-    static int _id = -1;
-    if (_id != -1)
-        g_source_remove(_id);
-    _id = g_timeout_add(100, (GSourceFunc)_help_do_window_region, region);
+    if (_do_shape_timer_id != -1)
+	g_source_remove(_do_shape_timer_id);
+    _do_shape_timer_id = g_timeout_add(100, (GSourceFunc)_help_do_window_region, region);
 }
 
 
