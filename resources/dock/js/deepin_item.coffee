@@ -95,7 +95,9 @@ class Trash extends PostfixedItem
         )
 
     on_rightclick: (e)=>
+        super
         e.preventDefault()
+        e.stopPropagation()
         menu = new Menu(
             DEEPIN_MENU_TYPE.NORMAL,
             new MenuItem(1, _("_Clean up")).setActive(DCore.DEntry.get_trash_count() != 0)
@@ -103,7 +105,8 @@ class Trash extends PostfixedItem
         if @is_opened
             menu.append(new MenuItem(2, _("_Close")))
         xy = get_page_xy(@element)
-        echo menu
+        # echo menu
+        menu.unregisterHook(=> console.log(@hasContextmenu);@hasContextmenu = false)
         menu.addListener(@on_itemselected).showMenu(
             xy.x + (@element.clientWidth / 2),
             xy.y + OFFSET_DOWN,

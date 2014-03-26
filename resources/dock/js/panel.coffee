@@ -42,7 +42,6 @@ class Panel
     on_rightclick: (e)=>
         e.preventDefault()
         e.stopPropagation()
-        console.log(e.clientX)
         @globalMenu.showMenu(e.clientX, e.clientY)
 
     load_image: (src)->

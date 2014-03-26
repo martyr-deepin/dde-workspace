@@ -61,13 +61,6 @@ for entry in entries
     if !Widget.look_up(d.Id)
         createItem(d)
 
-setTimeout(->
-    IN_INIT = false
-    calc_app_item_size()
-    # apps are moved up, so add 8
-    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
-, 100)
-
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
 
@@ -78,4 +71,11 @@ show_desktop = new ShowDesktop()
 
 DCore.Dock.emit_webview_ok()
 DCore.Dock.test()
+
+setTimeout(->
+    IN_INIT = false
+    calc_app_item_size()
+    # apps are moved up, so add 8
+    DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
+, 100)
 

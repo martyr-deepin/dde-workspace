@@ -204,9 +204,10 @@ class Menu
         @menu.x = x
         @menu.y = y
         if ori != null
+            # console.log("#{ori}")
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
-        echo @menu
+        # echo @menu
         @dbus.ShowMenu("#{@menu}")
 
     toString: ->
