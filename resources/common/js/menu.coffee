@@ -23,8 +23,6 @@ class NormalMenu
         @y = 0
         @isDockMenu = false
         @cornerDirection = DEEPIN_MENU_CORNER_DIRECTION.DOWN
-        @checkableMenu = false
-        @singleCheck = false
         if items.length == 1 and Array.isArray(items[0])
             @menuJsonContent = new MenuContent(items[0])
         else
@@ -35,27 +33,6 @@ class NormalMenu
 
     append: (items...)->
         @apply("append", items)
-
-    addSeparator: ->
-        @menuJsonContent.addSeparator()
-
-    toString: ->
-        "{\"checkableMenu\": #{@checkableMenu}, \"singleCheck\": #{@singleCheck},\"x\": #{@x}, \"y\": #{@y}, \"isDockMenu\": #{@isDockMenu}, \"cornerDirection\": \"#{@cornerDirection}\", \"menuJsonContent\": \"#{@menuJsonContent.toString().addSlashes()}\"}"
-
-
-class MenuContent
-    constructor: (item...)->
-        @x = 0
-        @y = 0
-        @isDockMenu = false
-        @cornerDirection = DEEPIN_MENU_CORNER_DIRECTION.down
-        if item.length == 1
-            @menuJsonContent = new MenuContent(item[0])
-        else
-            @menuJsonContent = new MenuContent(item)
-
-    append: (item...)->
-        MenuContent::append.apply(@menuJsonContent, item)
 
     addSeparator: ->
         @menuJsonContent.addSeparator()
@@ -90,13 +67,13 @@ class MenuContent
 class CheckBoxMenu extends NormalMenu
     constructor:->
         super
-        @checkableMenu = true
+        @menuJsonContent.checkableMenu = true
 
 
 class RadioBoxMenu extends CheckBoxMenu
     constructor:->
         super
-        @singleCheck = true
+        @menuJsonContent.singleCheck = true
 
 
 class MenuItem
@@ -241,7 +218,7 @@ class Menu
         if ori != null
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
-        # echo @menu
+        echo @menu
         @dbus.ShowMenu("#{@menu}")
 
     toString: ->
