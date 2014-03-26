@@ -622,6 +622,7 @@ void update_task_list()
 
 void _update_task_list(Window root)
 {
+    return;
     gulong items;
     void* data = get_window_property(_dsp, root, ATOM_CLIENT_LIST, &items);
     if (data == NULL) {

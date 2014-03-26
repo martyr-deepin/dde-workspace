@@ -30,19 +30,19 @@ $DBus = {}
 
 entryManager.connect("Added", (path)->
     d = get_dbus("session", itemDBus(path))
-    console.log("try to Added #{d.Id}")
+    # console.log("try to Added #{d.Id}")
     if Widget.look_up(d.Id)
         return
 
-    console.log("added #{path}")
+    # console.log("added #{path}")
     createItem(d)
-    console.log("added done")
+    # console.log("added done")
     calc_app_item_size()
 )
 
 entryManager.connect("Removed", (id)->
     # TODO: change id to the real id
-    console.log("Removed #{id}")
+    # console.log("Removed #{id}")
     deleteItem(id)
     calc_app_item_size()
 )
@@ -50,7 +50,7 @@ entryManager.connect("Removed", (id)->
 entries = entryManager.Entries
 for entry in entries
     d = get_dbus("session", itemDBus(entry))
-    console.log("init add: #{d.Id}")
+    # console.log("init add: #{d.Id}")
     if !Widget.look_up(d.Id)
         createItem(d)
 

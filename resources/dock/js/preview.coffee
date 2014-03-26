@@ -71,7 +71,7 @@ class PWContainer extends Widget
             if not pw
                 id = @_current_group.id
                 infos = @_current_group.client_infos
-                console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
+                # console.log("create PreviewWindow, #{id}##{infos[w_id].id}")
                 pw = new PreviewWindow("pw"+w_id, w_id, infos[w_id].title)
 
             setTimeout(->
@@ -214,7 +214,7 @@ class PWContainer extends Widget
         else
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
-        console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
+        # console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
         @border.style.width = @bg.width
         @border.style.height = @bg.height
 
@@ -258,12 +258,12 @@ class PWContainer extends Widget
         #DCore.Dock.set_compiz_workaround_preview(false)
 
     show_group: (group, allocation, cb)->
-        console.log("show_group")
+        # console.log("show_group")
         clearTimeout(PWContainer._cancel_move_animation_id)
         PWContainer._cancel_move_animation_id = -1
         #DCore.Dock.set_compiz_workaround_preview(true)
         return if @_current_group == group
-        console.log("different current_group")
+        # console.log("different current_group")
         @hide()
         @_current_group = group
         @_update(allocation, cb)
@@ -371,7 +371,7 @@ class PreviewWindow extends Widget
 
     destroy: ->
         super
-        console.log("PreviewWindow destroy")
+        # console.log("PreviewWindow destroy")
         Preview_container.remove(@)
         Preview_container._calc_size()
 

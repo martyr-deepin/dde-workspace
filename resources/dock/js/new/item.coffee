@@ -37,7 +37,7 @@ class Item extends Widget
     update_scale:->
 
     on_mouseover:(e)=>
-        console.log("mouseover, require_all_region")
+        # console.log("mouseover, require_all_region")
         DCore.Dock.require_all_region()
         @imgWarp.style.webkitTransform = 'translateY(-5px)'
         @imgWarp.style.webkitTransition = 'all 100ms'
@@ -84,25 +84,41 @@ class AppItem extends Item
             console.log("#{name} is changed to #{value}")
 
             if name == ITEM_DATA_FIELD.xids
-                remove
-            if @isActive()
-                @swap_to_clientgroup()
-            else if @isNormal()
-                @swap_to_activator()
+                # [{Xid:0, Title:""}]
+                xids = JSON.parse(value)
+                for info in xids
+                    @update_client(info.Xid, info.Title)
+
+                ids = @n_clients.slice(0)
+                for id in ids
+                    needDelete = true
+                    for info in xids
+                        if id == info.Xid
+                            needDelete = false
+                            break
+                    if needDelete
+                        @remove_client(id)
+
+                return
+            else if name == ITEM_DATA_FIELD.status
+                if @isActive()
+                    @swap_to_clientgroup()
+                else if @isNormal()
+                    @swap_to_activator()
         )
 
     init_clientgroup:->
         @n_clients = []
         @client_infos = {}
         if @core
-            console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
+            # console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
             xids = JSON.parse(@core.xids())
-            if @isApplet()
-                @embedWindows = new EmbedWindow(xids)
             for xidInfo in xids
                 @n_clients.push(xidInfo.Xid)
                 @update_client(xidInfo.Xid, xidInfo.Title)
                 # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
+            if @isApplet()
+                @embedWindows = new EmbedWindow(xids)
         @leader = null
 
     init_activator:->
@@ -144,6 +160,7 @@ class AppItem extends Item
         @n_clients.remove(id)
 
         if @n_clients.length == 0
+            console.log("n_clients empty")
             @destroy()
         else if @leader == id
             @next_leader()
@@ -199,27 +216,27 @@ class AppItem extends Item
             clearTimeout(tooltip_hide_id)
             clearTimeout(launcher_mouseout_id)
             DCore.Dock.require_all_region()
-            console.log("ClientGroup mouseover")
-            console.log(@core.type())
+            # console.log("ClientGroup mouseover")
+            # console.log(@core.type())
             if @core && @isApp()
-                console.log("App show preview")
+                # console.log("App show preview")
                 if @n_clients.length != 0
                     Preview_show(@)
             else if @embedWindows
-                console.log("Applet show preview")
+                # console.log("Applet show preview")
                 size = @embedWindows.window_size(@embedWindows.xids[0])
-                console.log size
+                # console.log size
                 width = size.width
                 height = size.height
-                console.log("size: #{width}x#{height}")
+                # console.log("size: #{width}x#{height}")
                 Preview_show(@, width:width, height:height, (c)=>
                     ew = @embedWindows
                     # 6 for container's blur
                     extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
-                    console.log("Preview_show callback: #{c}")
+                    # console.log("Preview_show callback: #{c}")
                     x = xy.x + w/2 - width/2
                     y = xy.y - extraHeight
-                    console.log("Move Window to #{x}, #{y}")
+                    # console.log("Move Window to #{x}, #{y}")
                     ew.move(ew.xids[0], x, y)
                     ew.show()
                     ew.draw_to_canvas(c)

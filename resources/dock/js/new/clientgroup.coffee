@@ -21,7 +21,7 @@ class ClientGroup extends AppItem
         @openIndicator = create_img(src:OPEN_INDICATOR, class:"indicator OpenIndicator", @indicatorWarp)
 
     destroy: ->
-        console.log("ClientGroup::destroy")
+        # console.log("ClientGroup::destroy")
         Preview_close_now(@)
         @element.style.display = "block"
         # @try_build_activator()
@@ -99,26 +99,26 @@ class ClientGroup extends AppItem
         d = $DBus[@id]
         # console.log d.Type if d
         # console.log @embedWindows
-        console.log("ClientGroup mouseover")
-        console.log(d.Type)
+        # console.log("ClientGroup mouseover")
+        # console.log(d.Type)
         if d && d.Type == ITEM_TYPE.app
-            console.log("App show preview")
+            # console.log("App show preview")
             if @n_clients.length != 0
                 Preview_show(@)
         else if @embedWindows
-            console.log("Applet show preview")
+            # console.log("Applet show preview")
             size = @embedWindows.window_size(@embedWindows.xids[0])
-            console.log size
+            # console.log size
             width = size.width
             height = size.height
-            console.log("size: #{width}x#{height}")
+            # console.log("size: #{width}x#{height}")
             Preview_show(@, width:width, height:height, =>
                 # 6 for container's blur
                 extraHeight = PREVIEW_TRIANGLE.height + 6 + PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH + PREVIEW_CONTAINER_BORDER_WIDTH + height
                 @embedWindows.show()
                 x = xy.x + w/2 - width/2
                 y = xy.y - extraHeight
-                console.log("Move Window to #{x}, #{y}")
+                # console.log("Move Window to #{x}, #{y}")
                 @embedWindows.move(@embedWindows.xids[0], x, y)
             )
 
