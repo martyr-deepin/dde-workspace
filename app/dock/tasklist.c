@@ -178,7 +178,6 @@ void _update_window_net_state(Client* c);
 void client_free(Client* c);
 PRIVATE void _update_is_overlay_client(Client* c);
 PRIVATE gboolean _is_maximized_window(Window win);
-PRIVATE void _update_task_list(Window root);
 
 
 PRIVATE
@@ -615,29 +614,7 @@ void client_list_changed(Window* cs, size_t n)
 void update_task_list()
 {
     g_hash_table_remove_all(_clients_table);
-    _update_task_list(GDK_ROOT_WINDOW());
     active_window_changed(_dsp, (Window)dock_get_active_window());
-}
-
-
-void _update_task_list(Window root)
-{
-    return;
-    gulong items;
-    void* data = get_window_property(_dsp, root, ATOM_CLIENT_LIST, &items);
-    if (data == NULL) {
-        return;
-    }
-
-    Window *cs = g_slice_alloc(sizeof(Window) * items);
-
-    for (guint i=0; i<items; i++) {
-        cs[i] = X_FETCH_32(data, i);
-    }
-    XFree(data);
-
-    client_list_changed(cs, items);
-    g_slice_free1(sizeof(Window) * items, cs);
 }
 
 
@@ -932,9 +909,7 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
     switch (((XEvent*)xevent)->type) {
     case PropertyNotify: {
         XPropertyEvent* ev = xevent;
-        if (ev->atom == ATOM_CLIENT_LIST) {
-            _update_task_list(ev->window);
-        } else if (ev->atom == ATOM_ACTIVE_WINDOW) {
+        if (ev->atom == ATOM_ACTIVE_WINDOW) {
             active_window_changed(_dsp, (Window)dock_get_active_window());
         } else if (ev->atom == ATOM_SHOW_DESKTOP) {
             js_post_signal("desktop_status_changed");
@@ -1165,16 +1140,16 @@ gboolean dock_window_need_to_be_minimized(double id)
 JS_EXPORT_API
 void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, double dest_height)
 {
+    GdkWindow* win = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), (long)xid);
+    if (win == NULL) {
+	return;
+    }
+
     if (JSValueIsNull(get_global_context(), canvas)) {
         g_debug("draw_window_preview with null canvas!");
         return;
     }
     cairo_t* cr =  fetch_cairo_from_html_canvas(get_global_context(), canvas);
-
-    Client* c = g_hash_table_lookup(_clients_table, GINT_TO_POINTER((Window)xid));
-    if (c == NULL)
-        return;
-    GdkWindow* win = c->gdkwindow;
 
     cairo_save(cr);
     //clear preview content to prevent translucency window problem
