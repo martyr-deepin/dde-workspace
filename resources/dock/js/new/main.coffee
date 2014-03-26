@@ -37,7 +37,9 @@ entryManager.connect("Added", (path)->
     # console.log("added #{path}")
     createItem(d)
     # console.log("added done")
-    calc_app_item_size()
+    setTimeout(->
+        calc_app_item_size()
+    , 100)
 )
 
 entryManager.connect("Removed", (id)->

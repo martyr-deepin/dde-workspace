@@ -45,7 +45,6 @@ class Item extends Widget
     on_mouseout:(e)=>
         @imgWarp.style.webkitTransform = 'translateY(0px)'
         @imgWarp.style.webkitTransition = 'all 400ms'
-        calc_app_item_size()
 
     on_rightclick:(e)=>
         e.preventDefault()
@@ -272,7 +271,7 @@ class AppItem extends Item
             _lastCliengGroup = @
             super
             if not Preview_container.is_showing
-                # console.log "Preview_container is not showing"
+                console.log "Preview_container is not showing"
                 # update_dock_region()
                 calc_app_item_size()
                 hide_id = setTimeout(=>
@@ -280,7 +279,7 @@ class AppItem extends Item
                     @embedWindows?.hide()
                 , 300)
             else
-                # console.log "Preview_container is showing"
+                console.log "Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
                     @embedWindows?.hide()
