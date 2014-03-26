@@ -24,11 +24,6 @@ class Lock extends Widget
         echo "Lock"
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
-        try
-            PowerManager.StartDim() if PowerManager?
-            echo "StartDim"
-        catch e
-            echo "#{e}"
     
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id) if hide_face_login
@@ -43,18 +38,36 @@ class Lock extends Widget
         )
 
 
+    setBodyWallpaper:(wallpaper)->
+        echo "setBodyWallpaper:#{wallpaper}"
+        document.body.style.height = window.innerHeight
+        document.body.style.width = window.innerWidth
+        switch wallpaper
+            when "sky_move"
+                inject_js("js/skyThree/Three.js")
+                inject_js("js/skyThree/sky.js")
+            when "sky_static"
+                document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"
+            when "color"
+                document.body.style.backgroundImage = "url(images/background1.jpg)"
+            else
+                inject_js("js/skyThree/Three.js")
+                inject_js("js/skyThree/sky.js")
+
+    dbusPowerManager:->
+        try
+            POWER = "com.deepin.daemon.Power"
+            PowerManager = DCore.DBus.session(POWER)
+            PowerManager.StartDim() if PowerManager?
+            echo "StartDim"
+        catch e
+            echo "POWER:ERROR:#{e}"
+
+
 PowerManager = null
-try
-    POWER = "com.deepin.daemon.Power"
-    #PowerManager = DCore.DBus.session(POWER)
-catch e
-    echo "POWER:ERROR:#{e}"
-
-
-document.body.style.height = window.innerHeight
-document.body.style.width = window.innerWidth
-
 lock = new Lock()
+lock.setBodyWallpaper("sky_move")
+lock.dbusPowerManager()
 
 user = new User()
 $("#div_users").appendChild(user.element)
