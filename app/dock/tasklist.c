@@ -1175,6 +1175,12 @@ void dock_draw_window_preview(JSValueRef canvas, double xid, double dest_width, 
         return;
     GdkWindow* win = c->gdkwindow;
 
+    cairo_save(cr);
+    //clear preview content to prevent translucency window problem
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    cairo_restore(cr);
+
     int width = gdk_window_get_width(win);
     int height = gdk_window_get_height(win);
 
