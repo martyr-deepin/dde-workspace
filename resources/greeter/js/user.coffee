@@ -350,7 +350,7 @@ class UserInfo extends Widget
         
         @is_recognizing = false
         @index = null
-        @time_animation = 1800
+        @time_animation = 500
         @face_login = @userFaceLogin(name)
         
         @userbase = create_element("div", "UserBase", @element)
@@ -364,7 +364,8 @@ class UserInfo extends Widget
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
-       
+        @userimg_div.style.display = "none"
+        
         if @face_login
             @face_recognize_div.style.width = 137 * scaleFinal
             @face_recognize_div.style.height = 137 * scaleFinal
@@ -380,15 +381,23 @@ class UserInfo extends Widget
 
         @username = create_element("div", "username", @userbase)
         @username.innerText = name
+        @username.style.display = "none"
 
         @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
         @element.appendChild(@login.element)
+        @login.hide()
 
     hide:=>
+        @userimg_div.style.display = "none"
+        @username.style.display = "none"
+        @login.hide()
         @element.style.display = "none"
         @blur()
 
     show:=>
+        @userimg_div.style.display = "-webkit-box"
+        @username.style.display = "block"
+        @login.show()
         @element.style.display = "-webkit-box"
         @focus()
 
