@@ -329,7 +329,7 @@ void _change_workarea_height(int height)
 {
     // update_display_info(&dock);
     int workarea_width = (dock.width - dock_panel_width) / 2;
-    if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
+    if (GD.config.hide_mode == NO_HIDE_MODE ) {
         set_struct_partial(DOCK_GDK_WINDOW(),
                            ORIENTATION_BOTTOM,
                            height,
@@ -347,7 +347,7 @@ void _change_workarea_height(int height)
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
-    if ((int)height == _dock_height)
+    if ((int)height == _dock_height && GD.is_webview_loaded)
         return;
 
     if (height < 30)
