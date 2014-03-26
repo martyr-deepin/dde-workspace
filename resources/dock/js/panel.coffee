@@ -19,31 +19,31 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-passToPanel = ->
-    ev = new Event("click")
-    $("#panel").dispatchEvent(ev)
-
-
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
-        @panel.addEventListener("click", (e)->
-            e.stopPropagation()
-            e.preventDefault()
-            echo 'panel click'
-            show_desktop.toggle()
-        )
 
-        $("#containerWarp").addEventListener("click", (e)->
-            e.stopPropagation()
-            e.preventDefault()
-            echo "containerWarp"
-            passToPanel()
-        )
+        @panel.addEventListener("click", @on_click)
+        $("#containerWarp").addEventListener("click", @on_click)
+
+        @globalMenu = new GlobalMenu()
+        @panel.addEventListener("contextmenu", @on_rightclick)
+        $("#containerWarp").addEventListener("contextmenu", @on_rightclick)
 
         @has_notifications = false
+
+    on_click: (e)=>
+        e.stopPropagation()
+        e.preventDefault()
+        show_desktop.toggle()
+
+    on_rightclick: (e)=>
+        e.preventDefault()
+        e.stopPropagation()
+        console.log(e.clientX)
+        @globalMenu.showMenu(e.clientX, e.clientY)
 
     load_image: (src)->
         img = new Image()

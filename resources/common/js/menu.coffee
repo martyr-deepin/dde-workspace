@@ -23,6 +23,8 @@ class NormalMenu
         @y = 0
         @isDockMenu = false
         @cornerDirection = DEEPIN_MENU_CORNER_DIRECTION.DOWN
+        @checkableMenu = false
+        @singleCheck = false
         if items.length == 1 and Array.isArray(items[0])
             @menuJsonContent = new MenuContent(items[0])
         else
@@ -38,7 +40,7 @@ class NormalMenu
         @menuJsonContent.addSeparator()
 
     toString: ->
-        "{\"x\": #{@x}, \"y\": #{@y}, \"isDockMenu\": #{@isDockMenu}, \"cornerDirection\": \"#{@cornerDirection}\", \"menuJsonContent\": \"#{@menuJsonContent.toString().addSlashes()}\"}"
+        "{\"checkableMenu\": #{@checkableMenu}, \"singleCheck\": #{@singleCheck},\"x\": #{@x}, \"y\": #{@y}, \"isDockMenu\": #{@isDockMenu}, \"cornerDirection\": \"#{@cornerDirection}\", \"menuJsonContent\": \"#{@menuJsonContent.toString().addSlashes()}\"}"
 
 
 class MenuContent
@@ -240,7 +242,7 @@ class Menu
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
         # echo @menu
-        @dbus?.ShowMenu("#{@menu}")
+        @dbus.ShowMenu("#{@menu}")
 
     toString: ->
         "#{@menu}"

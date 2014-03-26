@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
-      <enum id="com.deepin.dde.dock.HiddenMode">
-        <value value="0" nick="default"/>
-        <value value="1" nick="intelligent"/>
-        <value value="2" nick="keephidden"/>
-        <value value="3" nick="autohide"/>
-      </enum>
-      <enum id="com.deepin.dde.dock.PreviewMode">
-        <value value="0" nick="realtime"/>
-        <value value="1" nick="slower"/>
-        <value value="2" nick="no"/>
+      <enum id="com.deepin.dde.dock.HideMode">
+        <value value="0" nick="keep-showing"/>
+        <value value="1" nick="keep-hidden"/>
+        <value value="2" nick="auto-hide"/>
       </enum>
       <enum id="com.deepin.dde.dock.ClockType">
         <value value="0" nick="digit" />
@@ -17,26 +11,10 @@
       </enum>
 
     <schema path="/com/deepin/dde/dock/" id="com.deepin.dde.dock">
-        <key name="preview-mode" enum="com.deepin.dde.dock.PreviewMode">
-            <default>'realtime'</default>
-            <summary>the priview mode</summary>
-            <description>The value will influence dock's preview window update frequency.</description>
-        </key>
-        <key name="hide-mode" enum="com.deepin.dde.dock.HiddenMode">
-            <default>'default'</default>
+        <key name="hide-mode" enum="com.deepin.dde.dock.HideMode">
+            <default>'keep-showing'</default>
             <summary>the hideen mode</summary>
             <description>The value will influence when the dock is shown or hidden.</description>
-        </key>
-        <key type="b" name="active-mini-mode">
-            <default>false</default>
-            <summary>the mini icon mode</summary>
-            <description>Enable dock's minimal interface to save workspace.</description>
-        </key>
-        <key type="u" name="background-color">
-            <range min="0" max="0xffffff64" />
-            <default>0xbcbcbc32</default>
-            <summary>dock color</summary>
-            <description>The dock board color value contain in an guint32 with format RGBA.</description>
         </key>
         <key enum="com.deepin.dde.dock.ClockType" name="clock-type">
             <default>'digit'</default>

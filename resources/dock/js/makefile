@@ -6,6 +6,8 @@ all: ${com_coffee} \
 	config.coffee \
 	new/utils.coffee\
 	new/region.coffee\
+	new/settings.coffee\
+	global_menu.coffee\
 	panel.coffee\
 	new/app_list.coffee \
 	show_desktop.coffee\

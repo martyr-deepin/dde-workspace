@@ -1,7 +1,5 @@
-ENTRY_MANAGER_NAME = "dde.dock.EntryManager"
-
 itemDBus = (path)->
-    name: ENTRY_MANAGER_NAME
+    name: "dde.dock.Daemon"
     path: path
     interface: "dde.dock.EntryProxyer"
 

@@ -16,6 +16,8 @@ DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
 DCore.signal_connect("embed_window_enter", (info)->console.log(info))
 DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 
+settings = new Setting()
+
 show_desktop = new ShowDesktop()
 
 panel = new Panel("panel")
@@ -23,7 +25,10 @@ panel.draw()
 
 app_list = new AppList("app_list")
 
-EntryManager = "dde.dock.EntryManager"
+EntryManager =
+    name:"dde.dock.Daemon"
+    path:"/dde/dock/EntryManager"
+    interface:"dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
 
 $DBus = {}
