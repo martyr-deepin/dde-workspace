@@ -439,7 +439,7 @@ void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 
     dock_change_workarea_height(_dock_height);
 
-    init_region(DOCK_GDK_WINDOW(), x, h - _dock_height, w, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, h - _dock_height, w, _dock_height);
 }
 
 
