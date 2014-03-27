@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-25 14:51+0800\n"
+"POT-Creation-Date: 2014-03-27 19:24+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,8 +30,7 @@ msgid "restart"
 msgstr "重启"
 
 #: ../resources/greeter/js/powermenu.coffee:50
-#, fuzzy
-msgid "shut down"
+msgid "Shut down"
 msgstr "关机"
 
 #: ../resources/greeter/js/user.coffee:178
@@ -179,9 +178,7 @@ msgid "_Delete"
 msgstr "删除(_D)"
 
 #: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
+msgid "The link is invalid. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
 #: ../resources/desktop/js/richdir.coffee:352
@@ -201,6 +198,11 @@ msgstr "剪切(_T)"
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "复制(_C)"
+
+#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "该链接已经失效，是否要删除？"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -263,8 +265,7 @@ msgid "_Display settings"
 msgstr "显示设置(_D)"
 
 #: ../resources/desktop/js/grid.coffee:1022
-#, fuzzy
-msgid "_Zone settings"
+msgid "_Corner settings"
 msgstr "热区设置(_D)"
 
 #: ../resources/desktop/js/grid.coffee:1023
@@ -316,23 +317,23 @@ msgstr "显示数字时钟"
 msgid "_Time settings"
 msgstr "时间设置(_D)"
 
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:46
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "Workspace"
 msgstr "工作区"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "Desktop"
 msgstr "桌面"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "None"
 msgstr "无"
 
@@ -699,6 +700,10 @@ msgstr "实用工具"
 msgid "other"
 msgstr "其他"
 
+#, fuzzy
+#~ msgid "shut down"
+#~ msgstr "关机"
+
 #~ msgid "Show/Hide Desktop"
 #~ msgstr "显示/隐藏桌面"
 
@@ -740,9 +745,6 @@ msgstr "其他"
 
 #~ msgid "Restart"
 #~ msgstr "重启"
-
-#~ msgid "Shut down"
-#~ msgstr "关机"
 
 #, fuzzy
 #~ msgid "Force Log out"

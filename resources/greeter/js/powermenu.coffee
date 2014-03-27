@@ -47,7 +47,7 @@ class PowerMenu extends Widget
         power_dict["shutdown"] = @shutdown_cb
         power_title["suspend"] = _("suspend")
         power_title["restart"] = _("restart")
-        power_title["shutdown"] = _("shut down")
+        power_title["shutdown"] = _("Shut down")
         
         return power_dict
 
