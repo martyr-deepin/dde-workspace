@@ -86,16 +86,17 @@ setBodySize = (width,height)->
 set_bg = (el,imgName,preImgName)->
     if preImgName == imgName then return
     echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
-    el.style.backgroundImage = "url(img/#{imgName}.png)"
-    #apply_linear_show(el,"0.25")
+    #apply_linear_hide_show(el,"0.5","ease-in-out")
+    echo "set_bg Animation"
     el.style.opacity = "1"
     t = 250
     jQuery(el).animate(
         {opacity:'0';},
         t,
-        "linear",=>
+        "swing",=>
+            el.style.backgroundImage = "url(img/#{imgName}.png)"
             jQuery(el).animate(
-                {opacity:'1';},t
+                {opacity:'1';},t,"swing"
             )
     )
  

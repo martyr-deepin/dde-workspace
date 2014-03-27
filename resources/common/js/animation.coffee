@@ -42,16 +42,23 @@ apply_refuse_rotate = (el, time)->
         el.style.webkitAnimation = ""
     , time * 1000)
 
-apply_linear_show = (el, time)->
-    echo "apply_linear_show"
-    apply_animation(el, "linear-show", "#{time}s")
+apply_linear_hide_show = (el, time,timefun)->
+    echo "apply_linear_hide_show"
+    apply_animation(el, "linear-hide-show", "#{time}s", timefunc)
     id = setTimeout(->
         el.style.webkitAnimation = ""
         clearTimeout(id)
     , time * 1000)
 
-apply_linear_hide = (el, time)->
-    apply_animation(el, "linear-hide", "#{time}s")
+apply_linear_show = (el, time, timefunc)->
+    apply_animation(el, "linear-show", "#{time}s", timefunc)
+    id = setTimeout(->
+        el.style.webkitAnimation = ""
+        clearTimeout(id)
+    , time * 1000)
+
+apply_linear_hide = (el, time, timefunc)->
+    apply_animation(el, "linear-hide", "#{time}s", timefunc)
     id = setTimeout(->
         el.style.webkitAnimation = ""
         clearTimeout(id)
