@@ -188,5 +188,5 @@ class Option extends Widget
         echo "setZoneCfg : key: #{id}----text: #{current}-----value: #{value}"
         echo cfgKeyVal
         echo zoneKeyText
-        DCore.Zone.set_config(key,val)
+        DCore.Zone.set_config(key,value)
 
