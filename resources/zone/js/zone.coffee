@@ -20,12 +20,14 @@
 
 # wrapper func to get configs
 
-ZoneValue = [_("None"),_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop")]
-_NONE_ = 0
-_LAUNCHER_ = 1
-_WORKSPACE_ = 2
-_DESKTOP_ = 3
-_SYSTEMSETTINGS_ = 4
+cfgKey = ["left-up","left-down","right-up","right-down"]
+cfgValue = [
+    "/usr/bin/launcher",
+    "/usr/bin/dss",
+    "/usr/bin/desktop-show",
+    "workspace",
+    "none"
+]
 
 
 class Zone extends Widget
@@ -34,13 +36,11 @@ class Zone extends Widget
         super
         echo "Zone"
         document.body.appendChild(@element)
+        @getZoneConfig()
 
     getZoneConfig:->
-        @ids = ["left-up","left-down","right-up","right-down"]
-        for id,i in @ids
+        for id,i in cfgKey
             @zoneValue[id] = DCore.Zone.get_config(id)
-
-
 
     option_build:->
         echo "option_build"
@@ -50,8 +50,8 @@ class Zone extends Widget
         #provide zone setting option
         @option = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
         
-        for id,i in @ids
-            @opt[i] = new Option(@ids[i],@zoneValue[@ids[i]])
+        for id,i in cfgKey
+            @opt[i] = new Option(cfgKey[i],@zoneValue[cfgKey[i]])
             @element.appendChild(@opt[i].element)
             for tmp in @option
                 @opt[i].insert(tmp)
