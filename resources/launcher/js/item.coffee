@@ -208,10 +208,11 @@ class Item extends Widget
             new_height = ITEM_IMG_SIZE * @img.height / @img.width
             offset = (ITEM_IMG_SIZE - Math.floor(new_height)) / 2
             @setCanvas(dt, ITEM_IMG_SIZE, new_height, 0, offset)
-        else if @img.width != 48
-            @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
+        # else if @img.width != 48
+        #     @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
         else
-            dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
+            @setCanvas(dt, ITEM_IMG_SIZE, ITEM_IMG_SIZE)
+            # dt.setDragImage(@img, ITEM_IMG_SIZE/2 + 3, ITEM_IMG_SIZE/2)
 
         dt.setData("text/uri-list", "file://#{@path}")
         if switcher.isFavor()

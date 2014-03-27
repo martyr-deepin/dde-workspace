@@ -11,31 +11,30 @@ class ToolTipBase extends Widget
         @text = text
 
     bind_events: ->
-        @buddy.element.addEventListener('dragstart', @hide)
-        @buddy.element.addEventListener('dragenter', @hide)
-        @buddy.element.addEventListener('dragover', @hide)
-        @buddy.element.addEventListener('dragleave', @hide)
-        @buddy.element.addEventListener('dragend', @hide)
-        @buddy.element.addEventListener('contextmenu', @hide)
-        @buddy.element.addEventListener('mouseout', @hide)
-        @buddy.element.addEventListener('mouseover', @on_mouseover)
-        @buddy.element.addEventListener('click', @hide)
+        @buddy.addEventListener('dragstart', @hide)
+        @buddy.addEventListener('dragenter', @hide)
+        @buddy.addEventListener('dragover', @hide)
+        @buddy.addEventListener('dragleave', @hide)
+        @buddy.addEventListener('dragend', @hide)
+        @buddy.addEventListener('contextmenu', @hide)
+        @buddy.addEventListener('mouseout', @hide)
+        @buddy.addEventListener('mouseover', @on_mouseover)
+        @buddy.addEventListener('click', @hide)
 
     destroy:->
-        @buddy.element.removeEventListener('dragstart', @hide)
-        @buddy.element.removeEventListener('dragenter', @hide)
-        @buddy.element.removeEventListener('dragover', @hide)
-        @buddy.element.removeEventListener('dragleave', @hide)
-        @buddy.element.removeEventListener('dragend', @hide)
-        @buddy.element.removeEventListener('contextmenu', @hide)
-        @buddy.element.removeEventListener('mouseout', @hide)
-        @buddy.element.removeEventListener('mouseover', @on_mouseover)
-        @buddy.element.removeEventListener('click', @hide)
+        @buddy.removeEventListener('dragstart', @hide)
+        @buddy.removeEventListener('dragenter', @hide)
+        @buddy.removeEventListener('dragover', @hide)
+        @buddy.removeEventListener('dragleave', @hide)
+        @buddy.removeEventListener('dragend', @hide)
+        @buddy.removeEventListener('contextmenu', @hide)
+        @buddy.removeEventListener('mouseout', @hide)
+        @buddy.removeEventListener('mouseover', @on_mouseover)
+        @buddy.removeEventListener('click', @hide)
         @buddy = null
 
     on_mouseover:=>
-        console.log(@buddy.hasContextmenu)
-        if @text == '' || @buddy.hasContextmenu
+        if @text == ''
             return
         clearTimeout(tooltip_hide_id)
         tooltip_hide_id = setTimeout(=>
@@ -230,8 +229,8 @@ class ArrowToolTip extends ToolTipBase
         ArrowToolTip.container.style.bottom = "#{y}px"
 
     _move_tooltip: ->
-        page_xy= get_page_xy(@buddy.element, 0, 0)
-        offset = (@buddy.element.clientWidth - ArrowToolTip.container.clientWidth) / 2
+        page_xy= get_page_xy(@element, 0, 0)
+        offset = (@buddy.clientWidth - ArrowToolTip.container.clientWidth) / 2
 
         x = page_xy.x + offset
         x = 0 if x < 0

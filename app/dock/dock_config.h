@@ -26,7 +26,7 @@
 
 #define APP_NAME "dock"
 
-enum {NO_HIDE_MODE=0, INTELLIGENT_HIDE_MODE=1, ALWAYS_HIDE_MODE=2, AUTO_HIDE_MODE=3} HideMode;
+enum {NO_HIDE_MODE=0, INTELLIGENT_HIDE_MODE=3, ALWAYS_HIDE_MODE=1, AUTO_HIDE_MODE=2} HideMode;
 struct _DockConfig {
     int hide_mode;
     gboolean mini_mode;
@@ -51,3 +51,4 @@ void init_config();
 #define DEFAULT_COLOR_B 0.87109375
 
 #endif
+

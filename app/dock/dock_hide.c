@@ -398,6 +398,7 @@ gboolean is_mouse_in_dock()
 JS_EXPORT_API
 void dock_update_hide_mode()
 {
+    g_debug("%s", __func__);
     if (!GD.is_webview_loaded || _IN_TOGGLE_SHOW) return;
     _change_workarea_height(_dock_height);
 
@@ -409,6 +410,7 @@ void dock_update_hide_mode()
 
     switch (GD.config.hide_mode) {
     case ALWAYS_HIDE_MODE: {
+        g_debug("ALWAYS_HIDE_MODE");
         if (!is_mouse_in_dock()) {
             g_debug("mouse not in dock");
             dock_hide_now();
@@ -427,6 +429,7 @@ void dock_update_hide_mode()
         break;
     }
     case AUTO_HIDE_MODE: {
+        g_debug("AUTO_HIDE_MODE");
         if (!is_mouse_in_dock()) {
             g_debug("mouse not in dock");
             if (dock_has_maximize_client()) {
@@ -438,6 +441,7 @@ void dock_update_hide_mode()
         break;
     }
     case NO_HIDE_MODE: {
+        g_debug("NO_HIDE_MODE");
         dock_show_now();
         break;
     }

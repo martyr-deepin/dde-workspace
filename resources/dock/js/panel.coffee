@@ -34,15 +34,23 @@ class Panel
 
         @has_notifications = false
 
+    inPanelWorkarea: (x, y)=>
+        margin = (screen.width - @panel.width) / 2
+        x >= margin && x <= screen.width - margin
+
     on_click: (e)=>
         e.stopPropagation()
         e.preventDefault()
-        show_desktop.toggle()
+        if @inPanelWorkarea(e.clientX, e.clientY)
+            show_desktop.toggle()
+            calc_app_item_size()
+            Preview_close_now(_lastCliengGroup)
 
     on_rightclick: (e)=>
         e.preventDefault()
         e.stopPropagation()
-        @globalMenu.showMenu(e.clientX, e.clientY)
+        if @inPanelWorkarea(e.clientX, e.clientY)
+            @globalMenu.showMenu(e.clientX, e.clientY)
 
     load_image: (src)->
         img = new Image()

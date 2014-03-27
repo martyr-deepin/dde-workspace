@@ -16,6 +16,10 @@ DCore.signal_connect("embed_window_destroyed", (info)->console.log(info))
 DCore.signal_connect("embed_window_enter", (info)->console.log(info))
 DCore.signal_connect("embed_window_leave", (info)->console.log(info))
 
+document.body.addEventListener("contextmenu", (e)->
+    e.preventDefault()
+)
+
 settings = new Setting()
 
 show_desktop = new ShowDesktop()

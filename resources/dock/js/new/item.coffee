@@ -5,7 +5,6 @@ hide_id = null
 class Item extends Widget
     constructor:(@id, icon, title, @container)->
         super()
-        @hasContextmenu = false
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
         @img = create_img(class:"AppItemImg", @imgWarp)
         @img.src = icon || NOT_FOUND_ICON
@@ -25,7 +24,7 @@ class Item extends Widget
     set_tooltip: (text) ->
         if @tooltip == null
             # @tooltip = new ToolTip(@element, text)
-            @tooltip = new ArrowToolTip(@, text)
+            @tooltip = new ArrowToolTip(@element, text)
             @tooltip.set_delay_time(200)  # set delay time to the same as scale time
             return
         @tooltip.set_text(text)
@@ -46,12 +45,12 @@ class Item extends Widget
     on_mouseout:(e)=>
         @imgWarp.style.webkitTransform = 'translateY(0px)'
         @imgWarp.style.webkitTransition = 'all 400ms'
+        calc_app_item_size()
 
     on_rightclick:(e)=>
         e.preventDefault()
         e.stopPropagation()
-        @hasContextmenu = true
-        @tooltip.hide()
+        @tooltip?.hide()
 
     on_click:(e)=>
         e.preventDefault()
@@ -328,10 +327,8 @@ class AppItem extends Item
             interface:DEEPIN_MENU_INTERFACE
         )
 
-        console.log("hasContextmenu: #{@hasContextmenu}")
         if dbus
             dbus.connect("ItemInvoked", @on_itemselected($DBus[@id]))
-            dbus.connect("MenuUnregistered", => console.log("MenuUnregistered"); @hasContextmenu = false)
             dbus.ShowMenu(menuJson)
         else
             conosle.log("get menu dbus failed")
