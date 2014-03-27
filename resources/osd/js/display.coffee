@@ -51,13 +51,6 @@ class Display extends Widget
     hide:->
         @element.style.display = "none"
     
-    set_bg:(imgName)->
-        if @imgName == imgName then return
-        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
-        @imgName = imgName
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
-  
-    
     getDBus:->
         try
             @DBusDisplay = DCore.DBus.session(DISPLAY)
@@ -152,8 +145,9 @@ class Display extends Widget
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
             imgName = "#{@id}_#{ImgIndex}"
-            @set_bg(imgName) if @imgName != imgName
-
+            set_bg(@element,imgName,@preDisplayImg)
+            @preDisplayImg = imgName
+            
             timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
@@ -169,7 +163,9 @@ class Display extends Widget
             @element.style.display = "block"
             white = @getPrimarBrightnessValue()
             echo "showBrightValue:#{white}"
-            @set_bg(@id)
+            set_bg(@element,@id,@preBrightnessImg)
+            @preBrightnessImg = @id
+            
             @showValue(white)
             timeout_osdHide = setTimeout(=>
                 osdHide()

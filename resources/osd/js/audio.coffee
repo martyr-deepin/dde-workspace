@@ -35,19 +35,12 @@ class Audio extends Widget
         @DBusSinks = []
         @OpenedAudiosName = []
         @valueEach = []
-        @imgName = null
         _b.appendChild(@element)
         @getDBus()
         
    
     hide:->
         @element.style.display = "none"
-    
-    set_bg:(imgName)->
-        if @imgName == imgName then return
-        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
-        @imgName = imgName
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
     
     getDBus:->
         try
@@ -128,9 +121,10 @@ class Audio extends Widget
             
             osdShow()
             @element.style.display = "block"
-            bg = @getBgName(white)
-            echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
-            @set_bg(bg)
+            imgName = @getBgName(white)
+            echo "show #{@id} Volume:#{white} BgName:#{imgName}.png"
+            set_bg(@element,imgName,@preImgName)
+            @preImgName = imgName
             @showValue(white)
 
             timeout_osdHide = setTimeout(=>

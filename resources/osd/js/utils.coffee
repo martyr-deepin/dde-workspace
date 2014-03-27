@@ -82,3 +82,9 @@ _b.addEventListener("contextmenu",(e)=>
 setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
+
+set_bg = (el,imgName,preImgName)->
+    if preImgName == imgName then return
+    echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
+    el.style.backgroundImage = "url(img/#{imgName}.png)"
+ 
