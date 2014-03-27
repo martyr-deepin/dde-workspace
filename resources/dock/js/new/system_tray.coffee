@@ -1,6 +1,7 @@
 class SystemTray extends SystemItem
     constructor:(@id, @icon, title)->
         super
+        @imgWarp.firstElementChild.style.display = 'none'
         @openIndicator.style.display = 'none'
         @button = create_element(tag:"div", class:"trayButton", @imgWarp)
         @button.textContent = "X"
@@ -25,17 +26,21 @@ class SystemTray extends SystemItem
             console.log("#{xid} is Added")
             @items.unshift(xid)
             $EW.create(xid, true)
-            @update()
+            # creat will take a while.
+            setTimeout(=>
+                @updateTrayIcon()
+            , 100)
         )
         @core.connect("Changed", (xid)=>
             console.log("#{xid} is Changed")
-            @items.unshift(@items.remve(xid))
-            @update()
-        )
-        @core.connect("Destroyed", (xid)=>
-            console.log("#{xid} is Destroyed")
             @items.remove(xid)
-            @update()
+            @items.unshift(xid)
+            @updateTrayIcon()
+        )
+        @core.connect("Removed", (xid)=>
+            console.log("#{xid} is Removed")
+            @items.remove(xid)
+            @updateTrayIcon()
         )
 
         @items = @core.TrayIcons.slice(0)
@@ -47,11 +52,11 @@ class SystemTray extends SystemItem
             $EW.create(item, false)
             $EW.show(item)
 
-        @update()
+        @updateTrayIcon()
 
-    update:=>
+    updateTrayIcon:=>
         console.log("update the order: #{@items}")
-        @upperItemNumber = @items.length / 2
+        @upperItemNumber = Math.ceil(@items.length / 2)
         if @items.length % 2 == 0
             @upperItemNumber += 1
         xy = get_page_xy(@element)
@@ -65,7 +70,8 @@ class SystemTray extends SystemItem
                 x += (i - @upperItemNumber) * itemSize
                 y += itemSize
             console.log("move tray icon #{item} to #{x}, #{y}")
-            $EW.move_resize(item, x, y, itemSize, itemSize)
+            # $EW.move_resize(item, x, y, itemSize, itemSize)
+            $EW.move(item, x, y)
 
     unfold:->
         console.log("unfold")

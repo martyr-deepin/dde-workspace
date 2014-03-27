@@ -84,4 +84,4 @@ setTimeout(->
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
 
-systemTray = new SystemTray("system-tray", icon_launcher, "")
+systemTray = new SystemTray("system-tray", "img/tray-panel.png", "")
