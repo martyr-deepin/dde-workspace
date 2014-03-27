@@ -35,12 +35,16 @@ class SystemTray extends SystemItem
             console.log("#{xid} is Changed")
             @items.remove(xid)
             @items.unshift(xid)
-            @updateTrayIcon()
+            setTimeout(=>
+                @updateTrayIcon()
+            , 100)
         )
         @core.connect("Removed", (xid)=>
             console.log("#{xid} is Removed")
             @items.remove(xid)
-            @updateTrayIcon()
+            setTimeout(=>
+                @updateTrayIcon()
+            , 100)
         )
 
         @items = @core.TrayIcons.slice(0)
