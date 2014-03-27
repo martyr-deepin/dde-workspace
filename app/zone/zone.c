@@ -50,15 +50,15 @@ void zone_quit()
 }
 
 JS_EXPORT_API
-const char* zone_get_config(const char* key_name)
+const gchar* zone_get_config(const gchar* key_name)
 {
-    const char* retval = g_settings_get_boolean(zone_gsettings, key_name);
+    const gchar* retval = g_settings_get_string(zone_gsettings, key_name);
     return retval;
 }
 JS_EXPORT_API
-gboolean zone_set_config(const char* key_name,const char* value)
+gboolean zone_set_config(const gchar* key_name,const gchar* value)
 {
-    gboolean retval = g_settings_set_boolean(zone_gsettings, key_name,value);
+    gboolean retval = g_settings_set_string(zone_gsettings, key_name,value);
 
     return retval;
 }
