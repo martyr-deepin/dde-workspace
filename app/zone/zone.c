@@ -39,31 +39,28 @@
 #include "dwebview.h"
 #include "i18n.h"
 #include "utils.h"
-/*#include "DBUS_shutdown.h"*/
 
-
-#define SHUTDOWN_ID_NAME "desktop.app.zone"
-
-#define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/zone/zone.html"
-
-#define SHUTDOWN_MAJOR_VERSION 2
-#define SHUTDOWN_MINOR_VERSION 0
-#define SHUTDOWN_SUBMINOR_VERSION 0
-#define SHUTDOWN_VERSION G_STRINGIFY(SHUTDOWN_MAJOR_VERSION)"."G_STRINGIFY(SHUTDOWN_MINOR_VERSION)"."G_STRINGIFY(SHUTDOWN_SUBMINOR_VERSION)
-#define SHUTDOWN_CONF "zone/config.ini"
-static GKeyFile* shutdown_config = NULL;
-
-PRIVATE GtkWidget* container = NULL;
-static GSGrab* grab = NULL;
-
-PRIVATE GSettings* dde_bg_g_settings = NULL;
+#include "zone.h"
 
 JS_EXPORT_API
 void zone_quit()
 {
-    g_key_file_free(shutdown_config);
-    g_object_unref(dde_bg_g_settings);
+    g_key_file_free(zone_config);
     gtk_main_quit();
+}
+
+JS_EXPORT_API
+const gchar* zone_get_config(const gchar* key_name)
+{
+    const gchar* retval = g_settings_get_string(zone_gsettings, key_name);
+    return retval;
+}
+JS_EXPORT_API
+gboolean zone_set_config(const gchar* key_name,const gchar* value)
+{
+    gboolean retval = g_settings_set_string(zone_gsettings, key_name,value);
+
+    return retval;
 }
 
 G_GNUC_UNUSED
@@ -186,16 +183,16 @@ xevent_filter (GdkXEvent *xevent, GdkEvent  *event, GdkWindow *window)
 PRIVATE
 void check_version()
 {
-    if (shutdown_config == NULL)
-        shutdown_config = load_app_config(SHUTDOWN_CONF);
+    if (zone_config == NULL)
+        zone_config = load_app_config(ZONE_CONF);
 
     GError* err = NULL;
-    gchar* version = g_key_file_get_string(shutdown_config, "main", "version", &err);
+    gchar* version = g_key_file_get_string(zone_config, "main", "version", &err);
     if (err != NULL) {
         g_warning("[%s] read version failed from config file: %s", __func__, err->message);
         g_error_free(err);
-        g_key_file_set_string(shutdown_config, "main", "version", SHUTDOWN_VERSION);
-        save_app_config(shutdown_config, SHUTDOWN_CONF);
+        g_key_file_set_string(zone_config, "main", "version", ZONE_VERSION);
+        save_app_config(zone_config, ZONE_CONF);
     }
 
     if (version != NULL)
@@ -206,16 +203,17 @@ int main (int argc, char **argv)
 {
     if (argc == 2 && 0 == g_strcmp0(argv[1], "-d"))
         g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
-    if (is_application_running(SHUTDOWN_ID_NAME)) {
+    if (is_application_running(ZONE_ID_NAME)) {
         g_warning("another instance of application dzone is running...\n");
         return 0;
     }
 
-    singleton(SHUTDOWN_ID_NAME);
+    singleton(ZONE_ID_NAME);
 
 
     check_version();
     init_i18n ();
+    zone_gsettings = g_settings_new (ZONE_SCHEMA_ID);
 
     gtk_init (&argc, &argv);
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));

@@ -18,37 +18,41 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+cfgKeyVal = []
+zoneKeyText = []
+cfgKey = ["left-up","left-down","right-up","right-down"]
+cfgValue = [
+    "/usr/bin/launcher",
+    "/usr/bin/dss",
+    "workspace",
+    "/usr/bin/desktop-show",
+    "none"
+]
+option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
+
 class Zone extends Widget
 
     constructor:->
         super
         echo "Zone"
         document.body.appendChild(@element)
-        #set default zone
-        @ids = ["LEFTUP","LEFTDOWN","RIGHTUP","RIGHTDOWN"]
-        @zoneValue = localStorage.getObject("zoneValue")
-        echo @zoneValue
-        if not @zoneValue?
-            @zoneValue = {
-                "LEFTUP":"Launcher",
-                "LEFTDOWN":"Workspace",
-                "RIGHTUP":"Desktop",
-                "RIGHTDOWN":"System Setup"
-            }
-            localStorage.setObject("zoneValue",@zoneValue)
-         
+        @getZoneConfig()
+
+    getZoneConfig:->
+        for key,i in cfgKey
+            value = DCore.Zone.get_config(key)
+            cfgKeyVal[key] = value
+            zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
+        echo cfgKeyVal
+        echo zoneKeyText
+    
     option_build:->
         echo "option_build"
-        echo @zoneValue
-        
         @opt = []
-        #provide zone setting option
-        @option = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
-        
-        for id,i in @ids
-            @opt[i] = new Option(@ids[i],@zoneValue[@ids[i]])
+        for key,i in cfgKey
+            @opt[i] = new Option(key,zoneKeyText[key])
             @element.appendChild(@opt[i].element)
-            for tmp in @option
+            for tmp in option_text
                 @opt[i].insert(tmp)
             @opt[i].option_build()
 
