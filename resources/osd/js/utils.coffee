@@ -87,4 +87,15 @@ set_bg = (el,imgName,preImgName)->
     if preImgName == imgName then return
     echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
     el.style.backgroundImage = "url(img/#{imgName}.png)"
+    #apply_linear_show(el,"0.25")
+    el.style.opacity = "1"
+    t = 250
+    jQuery(el).animate(
+        {opacity:'0';},
+        t,
+        "linear",=>
+            jQuery(el).animate(
+                {opacity:'1';},t
+            )
+    )
  
