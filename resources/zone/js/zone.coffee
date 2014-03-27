@@ -18,17 +18,17 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-# wrapper func to get configs
-
+cfgKeyVal = []
+zoneKeyText = []
 cfgKey = ["left-up","left-down","right-up","right-down"]
 cfgValue = [
     "/usr/bin/launcher",
     "/usr/bin/dss",
-    "/usr/bin/desktop-show",
     "workspace",
+    "/usr/bin/desktop-show",
     "none"
 ]
-
+option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
 
 class Zone extends Widget
 
@@ -39,21 +39,20 @@ class Zone extends Widget
         @getZoneConfig()
 
     getZoneConfig:->
-        for id,i in cfgKey
-            @zoneValue[id] = DCore.Zone.get_config(id)
-
+        for key,i in cfgKey
+            value = DCore.Zone.get_config(key)
+            cfgKeyVal[key] = value
+            zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
+        echo cfgKeyVal
+        echo zoneKeyText
+    
     option_build:->
         echo "option_build"
-        echo @zoneValue
-        
         @opt = []
-        #provide zone setting option
-        @option = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
-        
-        for id,i in cfgKey
-            @opt[i] = new Option(cfgKey[i],@zoneValue[cfgKey[i]])
+        for key,i in cfgKey
+            @opt[i] = new Option(key,zoneKeyText[key])
             @element.appendChild(@opt[i].element)
-            for tmp in @option
+            for tmp in option_text
                 @opt[i].insert(tmp)
             @opt[i].option_build()
 

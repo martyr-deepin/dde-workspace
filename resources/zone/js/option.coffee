@@ -22,7 +22,7 @@ class Option extends Widget
     constructor:(@id,@current)->
         super
         echo "new Option:#{@id}, current:#{@current}"
-        @opt = []
+        @opt_text = []
         @opt_div = []
         @opt_text_li = []
         @opt_text_span = []
@@ -51,7 +51,7 @@ class Option extends Widget
                 @element.style.bottom = 0
      
     insert:(opt)->
-        @opt.push(opt)
+        @opt_text.push(opt)
 
     option_build:->
         if @current_up
@@ -66,7 +66,7 @@ class Option extends Widget
         echo "mouseenter"
         @current_img.style.backgroundPosition = @bg_pos_hover
         
-        for opt,i in @opt
+        for opt,i in @opt_text
             if opt is @current then @opt_text_span[i].style.color = "#00bbfe"
             else @opt_text_span[i].style.color = "#afafaf"
         @opt_choose.style.display = "block"
@@ -115,7 +115,7 @@ class Option extends Widget
             @current_text = create_element("div","current_text",@current_div)
             @current_img = create_element("div","current_img",@current_div)
             @current_div.style.webkitBoxPack = "end"
-        @current_text.textContent = @opt[@current]
+        @current_text.textContent = @current
         
         Delta=(n)->
             return "#{n * 102}px"
@@ -156,8 +156,8 @@ class Option extends Widget
         else
             @opt_choose.style.right = left
        
-        if !@current_up then @opt.reverse()
-        for opt,i in @opt
+        if !@current_up then @opt_text.reverse()
+        for opt,i in @opt_text
             @opt_text_li[i] = create_element("li","opt_text_li",@opt_choose)
             @opt_text_span[i] = create_element("span","opt_text_span",@opt_text_li[i])
             @opt_text_span[i].textContent = opt
@@ -168,24 +168,25 @@ class Option extends Widget
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
-                zoneValue = localStorage.getObject("zoneValue")
-                echo "-----------before set:"
-                echo zoneValue
-                zoneValue["#{that.id}"] = that.current
-                echo "-----------after set:"
-                echo zoneValue
-                localStorage.setObject("zoneValue",zoneValue)
-                echo "-----------after setOject:"
-                zoneValue = localStorage.getObject("zoneValue")
-                echo zoneValue
+                that.setZoneCfg(that.id,that.current)
             )
             jQuery(@opt_text_span[i]).hover((e)->
-                echo "span enter"
                 if !that.Animation_End then this.style.backgroundColor = null
                 else this.style.backgroundColor = "rgb(0,0,0)"
             ,(e)->
-                echo "span leave"
                 this.style.backgroundColor = null
             )
 
         @opt_choose.style.display = "none"
+
+
+    setZoneCfg:(id,current)->
+        key = id
+        value = cfgValue[i] for text,i in option_text when current is text
+        cfgKeyVal[key] = value
+        zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
+        echo "setZoneCfg : key: #{id}----text: #{current}-----value: #{value}"
+        echo cfgKeyVal
+        echo zoneKeyText
+        DCore.Zone.set_config(key,val)
+
