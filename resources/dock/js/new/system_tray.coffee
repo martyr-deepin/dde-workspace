@@ -60,18 +60,18 @@ class SystemTray extends SystemItem
         if @items.length % 2 == 0
             @upperItemNumber += 1
         xy = get_page_xy(@element)
-        itemSize = 16
+        iconSize = 16
+        itemSize = 19
         for item, i in @items
-            x = xy.x
-            y = xy.y
+            x = xy.x + 9
+            y = xy.y + 6
             if i < @upperItemNumber
                 x += i * itemSize
             else
                 x += (i - @upperItemNumber) * itemSize
                 y += itemSize
             console.log("move tray icon #{item} to #{x}, #{y}")
-            # $EW.move_resize(item, x, y, itemSize, itemSize)
-            $EW.move(item, x, y)
+            $EW.move_resize(item, x, y, iconSize, iconSize)
 
     unfold:->
         console.log("unfold")

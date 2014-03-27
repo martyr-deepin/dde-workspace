@@ -11,9 +11,9 @@
   -webkit-box-pack: center;
 }
 .SystemTray .imgWarp {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   left: 2px;
   top: 2px;
-  -webkit-border-image: url("../img/tray-panel.png") 7 8 9;
+  -webkit-border-image: url("../img/tray-panel.png") 7 8 9/6px;
 }
