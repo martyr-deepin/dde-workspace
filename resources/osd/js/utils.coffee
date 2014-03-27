@@ -32,7 +32,7 @@ MEDIAKEY =
     interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
-TIME_PRESS = 5 
+TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
 try
@@ -69,7 +69,9 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    DCore.Osd.quit() if click_time % 3 == 0
+    if click_time % 1 == 0
+        click_time = 0
+        DCore.Osd.hide()
 )
 
 _b.addEventListener("contextmenu",(e)=>
@@ -80,3 +82,20 @@ _b.addEventListener("contextmenu",(e)=>
 setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
+
+set_bg = (el,imgName,preImgName)->
+    if preImgName == imgName then return
+    echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
+    el.style.backgroundImage = "url(img/#{imgName}.png)"
+    #apply_linear_show(el,"0.25")
+    el.style.opacity = "1"
+    t = 250
+    jQuery(el).animate(
+        {opacity:'0';},
+        t,
+        "linear",=>
+            jQuery(el).animate(
+                {opacity:'1';},t
+            )
+    )
+ 

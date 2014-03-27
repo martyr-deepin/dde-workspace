@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-25 14:51+0800\n"
+"POT-Creation-Date: 2014-03-27 19:24+0800\n"
 "PO-Revision-Date: 2013-12-11 04:44+0000\n"
 "Last-Translator: 648trindade <rafaelgt.mbin@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -31,9 +31,8 @@ msgid "restart"
 msgstr "reiniciar"
 
 #: ../resources/greeter/js/powermenu.coffee:50
-#, fuzzy
-msgid "shut down"
-msgstr "desligar"
+msgid "Shut down"
+msgstr "Desligar"
 
 #: ../resources/greeter/js/user.coffee:178
 msgid "guest"
@@ -180,9 +179,8 @@ msgid "_Delete"
 msgstr "_Excluir"
 
 #: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
+#, fuzzy
+msgid "The link is invalid. Do you want to delete it?"
 msgstr "O link expirou. Deseja excluí-lo?"
 
 #: ../resources/desktop/js/richdir.coffee:352
@@ -202,6 +200,11 @@ msgstr "Recor_tar"
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Copiar"
+
+#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "O link expirou. Deseja excluí-lo?"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -265,7 +268,7 @@ msgstr "Configurações de _Tela"
 
 #: ../resources/desktop/js/grid.coffee:1022
 #, fuzzy
-msgid "_Zone settings"
+msgid "_Corner settings"
 msgstr "Configurações de _Tela"
 
 #: ../resources/desktop/js/grid.coffee:1023
@@ -318,24 +321,24 @@ msgstr ""
 msgid "_Time settings"
 msgstr "Configurações de _Tela"
 
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:46
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
 msgid "Launcher"
 msgstr "Lançador"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 #, fuzzy
 msgid "System Settings"
 msgstr "Configurações de D_esktop"
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "Workspace"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "Desktop"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:46
+#: ../resources/zone/js/zone.coffee:31
 msgid "None"
 msgstr ""
 
@@ -711,6 +714,10 @@ msgstr "utilitários"
 msgid "other"
 msgstr "outros"
 
+#, fuzzy
+#~ msgid "shut down"
+#~ msgstr "desligar"
+
 #~ msgid "Show/Hide Desktop"
 #~ msgstr "Mostrar/Esconder Desktop"
 
@@ -747,9 +754,6 @@ msgstr "outros"
 
 #~ msgid "Restart"
 #~ msgstr "Reiniciar"
-
-#~ msgid "Shut down"
-#~ msgstr "Desligar"
 
 #, fuzzy
 #~ msgid "Force Log out"
