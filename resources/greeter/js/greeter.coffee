@@ -52,16 +52,18 @@ class Greeter extends Widget
 
     setBodyWallpaper:(wallpaper)->
         echo "setBodyWallpaper:#{wallpaper}"
-        document.body.style.height = window.innerHeight
-        document.body.style.width = window.innerWidth
+        _b = document.body
+        _b.style.height = window.innerHeight
+        _b.style.width = window.innerWidth
         switch wallpaper
             when "sky_move"
+                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
                 inject_js("js/skyThree/Three.js")
                 inject_js("js/skyThree/sky.js")
             when "sky_static"
-                document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"
+                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
             when "color"
-                document.body.style.backgroundImage = "url(images/background1.jpg)"
+                _b.style.backgroundImage = "url(images/background1.jpg)"
             else
                 inject_js("js/skyThree/Three.js")
                 inject_js("js/skyThree/sky.js")
