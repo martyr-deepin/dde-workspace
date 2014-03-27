@@ -5,8 +5,9 @@ var ParticleSpeed = 100//defalut = 50
 
 //定义应用所需的组件:相机,场景,渲染器
 var camera, scene, renderer;
+var _b = document.body;
 //跟踪鼠标的位置
-var mouseX = 0, mouseY = 0;
+var mouseX = _b.offsetWidth / 2, mouseY = _b.offsetHeight / 2;
 //定义存储粒子的数组
 var particles = [];
 
