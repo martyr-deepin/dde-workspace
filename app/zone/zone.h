@@ -28,8 +28,8 @@ static char* KEY_RIGHTDOWN = "right-down";//right-down
 static char* VAL_LAUNCHER = "/usr/bin/launcher";
 static char* VAL_DSS = "/usr/bin/dss";
 static char* VAL_DESKTOP = "/usr/bin/desktop-show";
-static char* VAL_WORKSPACE = "";
-static char* VAL_NONE = "";
+static char* VAL_WORKSPACE = "workspace";
+static char* VAL_NONE = "none";
 
 
 #endif
