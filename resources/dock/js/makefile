@@ -17,6 +17,7 @@ all: ${com_coffee} \
 	new/embed_window.coffee\
 	new/item.coffee \
 	deepin_item.coffee\
+	new/system_tray.coffee\
 	new/main.coffee
 	coffee -cj dock.js $^
 

@@ -15,6 +15,7 @@
 }
 
 .imgWarp{
+  position:relative;
 }
 .indicatorWarp{
   top: 10px;

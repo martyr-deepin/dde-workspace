@@ -82,7 +82,7 @@ class AppItem extends Item
             app_list.append_app_item?(@)
 
         @core?.connect("DataChanged", (name, value)=>
-            console.log("#{name} is changed to #{value}")
+            # console.log("#{name} is changed to #{value}")
 
             if name == ITEM_DATA_FIELD.xids
                 # [{Xid:0, Title:""}]
@@ -109,20 +109,22 @@ class AppItem extends Item
         )
 
     init_clientgroup:->
+        console.log("init_clientgroup #{@core.id()}")
         @n_clients = []
         @client_infos = {}
         if @core
             # console.log "#{@id}: #{@core.type()}, #{@core.xids()}"
-            xids = JSON.parse(@core.xids())
-            for xidInfo in xids
-                @n_clients.push(xidInfo.Xid)
-                @update_client(xidInfo.Xid, xidInfo.Title)
-                # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
-            if @isApplet()
-                @embedWindows = new EmbedWindow(xids)
+            if (xids = JSON.parse(@core.xids()))
+                for xidInfo in xids
+                    @n_clients.push(xidInfo.Xid)
+                    @update_client(xidInfo.Xid, xidInfo.Title)
+                    # console.log "ClientGroup:: Key: #{xidInfo.Xid}, Valvue:#{xidInfo.Title}"
+                if @isApplet()
+                    @embedWindows = new EmbedWindow(xids)
         @leader = null
 
     init_activator:->
+        console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
         @set_tooltip(@title)
 
@@ -161,7 +163,6 @@ class AppItem extends Item
         @n_clients.remove(id)
 
         if @n_clients.length == 0
-            console.log("n_clients empty")
             @destroy()
         else if @leader == id
             @next_leader()
@@ -189,16 +190,16 @@ class AppItem extends Item
         ,500)
 
     isNormal:->
-        @core.isNormal()
+        @core.isNormal?()
 
     isActive:->
-        @core.isActive()
+        @core.isActive?()
 
     isApp:->
-        @core.isApp()
+        @core.isApp?()
 
     isApplet:->
-        @core.isApplet()
+        @core.isApplet?()
 
     on_mouseover:(e)=>
         super
@@ -220,11 +221,11 @@ class AppItem extends Item
             # console.log("ClientGroup mouseover")
             # console.log(@core.type())
             if @core && @isApp()
-                # console.log("App show preview")
+                console.log("App show preview")
                 if @n_clients.length != 0
                     Preview_show(@)
             else if @embedWindows
-                # console.log("Applet show preview")
+                console.log("Applet show preview")
                 size = @embedWindows.window_size(@embedWindows.xids[0])
                 # console.log size
                 width = size.width
@@ -299,7 +300,7 @@ class AppItem extends Item
         xy = get_page_xy(@element)
 
         clientHalfWidth = @element.clientWidth / 2
-        menuContent = @core.menuContent()
+        menuContent = @core.menuContent?()
         menu =
             x: xy.x + clientHalfWidth
             y: xy.y
@@ -340,7 +341,8 @@ class AppItem extends Item
 
     on_click:(e)=>
         super
-        @core.activate(0,0)
+        @core.activate?(0,0)
+        console.log("on_click")
         if @isNormal()
             @openNotify()
 

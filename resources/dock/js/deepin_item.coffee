@@ -70,9 +70,9 @@ class PostfixedItem extends FixedItem
 
 
 class LauncherItem extends PrefixedItem
-    constructor: (@id, @icon, title)->
+    constructor: (@id, @icon, @title)->
         super
-        @set_tooltip("#{title}")
+        @set_tooltip(@title)
         DCore.signal_connect("launcher_running", =>
             @show(true)
         )
@@ -106,7 +106,6 @@ class Trash extends PostfixedItem
             menu.append(new MenuItem(2, _("_Close")))
         xy = get_page_xy(@element)
         # echo menu
-        menu.unregisterHook(=> console.log(@hasContextmenu);@hasContextmenu = false)
         menu.addListener(@on_itemselected).showMenu(
             xy.x + (@element.clientWidth / 2),
             xy.y + OFFSET_DOWN,

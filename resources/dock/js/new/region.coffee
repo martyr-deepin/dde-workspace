@@ -1,4 +1,5 @@
 calc_app_item_size = ->
+    systemTray?.update()
     return if IN_INIT
     apps = $s(".AppItem")
     return if apps.length = 0

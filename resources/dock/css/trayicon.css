@@ -1,0 +1,7 @@
+.trayButton {
+  visibility:hidden;
+  position: absolute;
+  bottom: 2px;
+  right: 10px;
+  pointer-events: auto;
+}
