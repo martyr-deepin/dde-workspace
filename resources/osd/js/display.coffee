@@ -91,7 +91,7 @@ class Display extends Widget
         value = null
         try
             echo "#{name}:#{bright[name]}"
-            value = bright[name] * 10
+            value = Math.ceil(bright[name] * 10)
         catch e
             echo "getPrimarBrightnessValue: ERROR: #{e}"
             value = null

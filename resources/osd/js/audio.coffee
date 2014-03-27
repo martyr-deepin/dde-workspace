@@ -143,7 +143,7 @@ AudioUp = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     white = AudioCls.getVolume()
-    AudioCls.show(white)
+    AudioCls.show(Math.ceil(white))
 
 AudioDown = (keydown) ->
     if keydown then return
@@ -152,7 +152,7 @@ AudioDown = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     white = AudioCls.getVolume()
-    AudioCls.show(white)
+    AudioCls.show(Math.ceil(white))
 
 AudioMute = (keydown) ->
     if keydown then return
@@ -162,7 +162,7 @@ AudioMute = (keydown) ->
     AudioCls.id = "AudioMute"
     white = AudioCls.getVolume()
     if AudioCls.getMute() then white = 0
-    AudioCls.show(white)
+    AudioCls.show(Math.ceil(white))
 
 DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
 DBusMediaKey.connect("AudioDown",AudioDown) if DBusMediaKey?
