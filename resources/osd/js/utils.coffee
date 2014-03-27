@@ -32,7 +32,7 @@ MEDIAKEY =
     interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
-TIME_PRESS = 5 
+TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
 try
@@ -69,7 +69,9 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    DCore.Osd.quit() if click_time % 3 == 0
+    if click_time % 1 == 0
+        click_time = 0
+        DCore.Osd.hide()
 )
 
 _b.addEventListener("contextmenu",(e)=>

@@ -215,8 +215,8 @@ int main (int argc, char **argv)
     
     osd_set_focus(FALSE);
    
-    gdk_window_show(gdkwindow);
-    gtk_widget_show_all (container);
+    /*gdk_window_show(gdkwindow);*/
+    /*gtk_widget_show_all (container);*/
 
     gtk_main ();
 
