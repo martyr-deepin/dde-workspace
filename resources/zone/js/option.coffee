@@ -29,22 +29,22 @@ class Option extends Widget
         @Animation_End = false
         @element.style.position = "absolute"
         switch @id
-            when "LEFTUP"
+            when "left-up"
                 @current_up = true
                 @current_left = true
                 @element.style.left = 0
                 @element.style.top = 0
-            when "LEFTDOWN"
+            when "left-down"
                 @current_up = false
                 @current_left = true
                 @element.style.left = 0
                 @element.style.bottom= 0
-            when "RIGHTUP"
+            when "right-up"
                 @current_up = true
                 @current_left = false
                 @element.style.right = 0
                 @element.style.top = 0
-            when "RIGHTDOWN"
+            when "right-down"
                 @current_up = false
                 @current_left = false
                 @element.style.right = 0
@@ -115,7 +115,7 @@ class Option extends Widget
             @current_text = create_element("div","current_text",@current_div)
             @current_img = create_element("div","current_img",@current_div)
             @current_div.style.webkitBoxPack = "end"
-        @current_text.textContent = @current
+        @current_text.textContent = @opt[@current]
         
         Delta=(n)->
             return "#{n * 102}px"
@@ -126,22 +126,22 @@ class Option extends Widget
         bottom = top + 5
         
         switch @id
-            when "LEFTUP"
+            when "left-up"
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(-1)}"
                 @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(-1 + Hover_Y)}"
                 @current_text.style.left = left
                 @current_text.style.top = top
-            when "LEFTDOWN"
+            when "left-down"
                 @bg_pos_normal = "#{Delta(-1)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(-1 + Hover_X)} #{Delta(0 + Hover_Y)}"
                 @current_text.style.left = left
                 @current_text.style.bottom = bottom
-            when "RIGHTUP"
+            when "right-up"
                 @bg_pos_normal = "#{Delta(0)} #{Delta(-1)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(-1 + Hover_Y)}"
                 @current_text.style.right = left
                 @current_text.style.top = top
-            when "RIGHTDOWN"
+            when "right-down"
                 @bg_pos_normal = "#{Delta(0)} #{Delta(0)}"
                 @bg_pos_hover = "#{Delta(0 + Hover_X)} #{Delta(0 + Hover_Y)}"
                 @current_text.style.right = left

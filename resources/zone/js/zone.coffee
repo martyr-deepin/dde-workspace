@@ -18,25 +18,30 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+# wrapper func to get configs
+
+ZoneValue = [_("None"),_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop")]
+_NONE_ = 0
+_LAUNCHER_ = 1
+_WORKSPACE_ = 2
+_DESKTOP_ = 3
+_SYSTEMSETTINGS_ = 4
+
+
 class Zone extends Widget
 
     constructor:->
         super
         echo "Zone"
         document.body.appendChild(@element)
-        #set default zone
-        @ids = ["LEFTUP","LEFTDOWN","RIGHTUP","RIGHTDOWN"]
-        @zoneValue = localStorage.getObject("zoneValue")
-        echo @zoneValue
-        if not @zoneValue?
-            @zoneValue = {
-                "LEFTUP":"Launcher",
-                "LEFTDOWN":"Workspace",
-                "RIGHTUP":"Desktop",
-                "RIGHTDOWN":"System Setup"
-            }
-            localStorage.setObject("zoneValue",@zoneValue)
-         
+
+    getZoneConfig:->
+        @ids = ["left-up","left-down","right-up","right-down"]
+        for id,i in @ids
+            @zoneValue[id] = DCore.Zone.get_config(id)
+
+
+
     option_build:->
         echo "option_build"
         echo @zoneValue
