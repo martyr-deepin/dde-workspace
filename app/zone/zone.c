@@ -41,7 +41,7 @@
 #include "utils.h"
 /*#include "DBUS_shutdown.h"*/
 
-
+#define ZONE_SCHEMA_ID "com.deepin.dde.zone"
 #define SHUTDOWN_ID_NAME "desktop.app.zone"
 
 #define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/zone/zone.html"
@@ -56,14 +56,33 @@ static GKeyFile* shutdown_config = NULL;
 PRIVATE GtkWidget* container = NULL;
 static GSGrab* grab = NULL;
 
-PRIVATE GSettings* dde_bg_g_settings = NULL;
+PRIVATE
+GSettings* zone_gsettings = NULL;
+
+static gint _NONE_ = 0;
+static gint _LAUNCHER_ = 1;//left-up
+static gint _WORKSPACE_ = 2;//right-up
+static gint _DESKTOP_ = 3;//left-down
+static gint _SYSTEMSETTINGS_ = 4;//right-down
 
 JS_EXPORT_API
 void zone_quit()
 {
     g_key_file_free(shutdown_config);
-    g_object_unref(dde_bg_g_settings);
     gtk_main_quit();
+}
+
+JS_EXPORT_API
+gint zone_get_config(const char* key_name)
+{
+    gint retval = g_settings_get_boolean(zone_gsettings, key_name);
+    return retval;
+}
+JS_EXPORT_API
+gboolean zone_set_config(const char* key_name,gint value)
+{
+    gboolean retval = g_settings_set_boolean(zone_gsettings, key_name,value);
+    return retval;
 }
 
 G_GNUC_UNUSED
@@ -216,6 +235,7 @@ int main (int argc, char **argv)
 
     check_version();
     init_i18n ();
+    zone_gsettings = g_settings_new (ZONE_SCHEMA_ID);
 
     gtk_init (&argc, &argv);
     gdk_window_set_cursor (gdk_get_default_root_window (), gdk_cursor_new (GDK_LEFT_PTR));

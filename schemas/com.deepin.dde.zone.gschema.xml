@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="DDE">
+    <schema path="/com/deepin/dde/zone/" id="com.deepin.dde.zone">
+        <key type="i" name="left-up">
+            <default>1</default>
+            <summary>left up corner</summary>
+            <description>move to left-up corner to show</description>
+        </key>
+        <key type="i" name="right-up">
+            <default>2</default>
+            <summary>right up corner</summary>
+            <description>move to right-up corner to show</description>
+        </key>
+        <key type="i" name="right-down">
+            <default>4</default>
+            <summary>right down corner</summary>
+            <description>move to right-down corner to show</description>
+        </key>
+        <key type="i" name="left-down">
+            <default>3</default>
+            <summary>left down corner</summary>
+            <description>move to left-down corner to show</description>
+        </key>
+    </schema>
+</schemalist>
