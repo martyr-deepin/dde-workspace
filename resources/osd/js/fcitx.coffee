@@ -186,4 +186,4 @@ class FcitxOSD extends Widget
     IMOther: ->
         echo "IMOther"
 
-fcitxOSD = new FcitxOSD("FcitxOSD")
+# fcitxOSD = new FcitxOSD("FcitxOSD")

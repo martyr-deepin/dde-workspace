@@ -96,15 +96,6 @@ class Display extends Widget
             echo "getPrimarBrightnessValue: ERROR: #{e}"
         finally
             return value
-    
-    setBrightness:(name,n)->
-        bright = n
-        if((Math.floor(n * 10) - n * 10) != 0)
-            bright = Math.floor(n * 10 + 1) / 10.0
-            @getDBusMonitor(name).ChangeBrightness_sync(name,bright)
-        else
-            echo "Brightness is zhengshu, not need to changed to zhengshu: #{n}"
-        return bright
      
     switchDisplayMode:(ModeChoose)->
         setFocus(false)
@@ -121,19 +112,6 @@ class Display extends Widget
         @DBusDisplay.SwitchMode_sync(ModeChoose)
         @FromSwitchMonitors = false
 
-
-    showValue:(white)->
-        if white is null then return
-        else if white > 10 then white = 10
-        else if white < 0 then white = 0
-        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
-        @valueDiv.style.display = "-webkit-box"
-        for i in [0...10]
-            @valueEach[i] = create_img("valueEach","",@valueDiv) if @valueEach[i] is undefined
-            if i < white then valueBg = "white"
-            else valueBg = "black"
-            @valueEach[i].src = "img/#{valueBg}.png"
-            @valueEach[i].style.display = "block"
 
     showDisplayMode:->
         clearTimeout(@timepress) if @timepress
@@ -171,13 +149,12 @@ class Display extends Widget
             osdShow()
             @element.style.display = "block"
             
-            val = @setBrightness(@PrimarMonitorName,@getPrimarBrightnessValue())
-            white = val * 10
-            echo "showBrightValue:#{white}"
-            set_bg(@element,@id,@preBrightnessImg)
-            @preBrightnessImg = @id
+            value = @getPrimarBrightnessValue()
+            echo "showBrightValue:#{value}"
+            set_bg(@element,@id,@prebgImg)
+            @prebgImg = @id
             
-            @showValue(white)
+            showValue(value,0,1,@,"Brightness_bar")
             timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)

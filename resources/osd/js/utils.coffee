@@ -100,3 +100,17 @@ set_bg = (el,imgName,preImgName)->
             )
     )
  
+showValue = (value,min,max,cls,id)->
+    if value > max then value = max
+    else if value < min then value = min
+    else if value is null then value = min
+
+    if not cls.bar?
+        cls.bar = new Bar(id)
+        cls.bar.setPosition(cls.element,"31px","20px","absolute")
+        cls.bar.setSize("98px","10px")
+        cls.bar.setColor("#FFF")
+        cls.bar.showProgressNum(false)
+        cls.bar.progressCreate()
+    echo "showValue: setProgress-----#{value / max}---"
+    cls.bar.setProgress(value / max) if cls.bar

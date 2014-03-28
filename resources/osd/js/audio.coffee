@@ -67,15 +67,9 @@ class Audio extends Widget
 
     getVolume:->
         volume = @DBusDefaultSink.Volume
-        if volume > 150 then volume = 150
-        else if volume < 0 then volume = 0
-        else if volume is null then volume = 0
-        return volume / 15
-        
+       
     setVolume:(volume)->
-        if volume > 15 then volume = 15
-        else if volume < 0 then volume = 0
-        @DBusDefaultSink.SetSinkVolume_sync(volume * 15)
+        @DBusDefaultSink.SetSinkVolume_sync(volume)
 
     getMute:->
         @DBusDefaultSink.Mute
@@ -90,39 +84,26 @@ class Audio extends Widget
         echo "changeMute to muteset : #{muteset}"
         @setMute(muteset)
 
-    getBgName:(white)->
+    getBgName:(volume)->
         bg = "Audio_2"
-        if white <= 0 then bg = "Audio_0"
-        else if white <= 4 then bg = "Audio_1"
-        else if white <= 7 then bg = "Audio_2"
+        if volume <= 0 then bg = "Audio_0"
+        else if volume <= 40 then bg = "Audio_1"
+        else if volume <= 70 then bg = "Audio_2"
         else bg = "Audio_3"
         return bg
     
-    showValue:(white)->
-        if white is null then return
-        else if white > 10 then white = 10
-        else if white < 0 then white = 0
-        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
-        @valueDiv.style.display = "-webkit-box"
-        for i in [0...10]
-            @valueEach[i] = create_img("valueEach","",@valueDiv) if @valueEach[i] is undefined
-            if i < white then valueBg = "white"
-            else valueBg = "black"
-            @valueEach[i].src = "img/#{valueBg}.png"
-            @valueEach[i].style.display = "block"
-
-    show:(white)->
+    show:(value)->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
             clearTimeout(timeout_osdHide) if timeout_osdHide
             
             osdShow()
             @element.style.display = "block"
-            imgName = @getBgName(white)
-            echo "show #{@id} Volume:#{white} BgName:#{imgName}.png"
-            set_bg(@element,imgName,@preImgName)
-            @preImgName = imgName
-            @showValue(white)
+            bgImg = @getBgName(value)
+            echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"
+            set_bg(@element,bgImg,@prebgImg)
+            @prebgImg = bgImg
+            showValue(value,0,150,@,"Audio_bar")
 
             timeout_osdHide = setTimeout(=>
                 osdHide()
@@ -140,8 +121,8 @@ AudioUp = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
     AudioCls.updateDBusDefaultSink()
-    white = AudioCls.getVolume()
-    AudioCls.show(Math.ceil(white))
+    volume = AudioCls.getVolume()
+    AudioCls.show(volume)
 
 AudioDown = (keydown) ->
     if keydown then return
@@ -150,8 +131,8 @@ AudioDown = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
     AudioCls.updateDBusDefaultSink()
-    white = AudioCls.getVolume()
-    AudioCls.show(Math.ceil(white))
+    volume = AudioCls.getVolume()
+    AudioCls.show(volume)
 
 AudioMute = (keydown) ->
     if keydown then return
@@ -160,9 +141,9 @@ AudioMute = (keydown) ->
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
     AudioCls.updateDBusDefaultSink()
-    white = AudioCls.getVolume()
-    if AudioCls.getMute() then white = 0
-    AudioCls.show(Math.ceil(white))
+    volume = AudioCls.getVolume()
+    if AudioCls.getMute() then volume = 0
+    AudioCls.show(volume)
 
 DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
 DBusMediaKey.connect("AudioDown",AudioDown) if DBusMediaKey?
