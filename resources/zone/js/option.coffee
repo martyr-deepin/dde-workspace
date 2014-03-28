@@ -186,7 +186,5 @@ class Option extends Widget
         cfgKeyVal[key] = value
         zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
         echo "setZoneCfg : key: #{id}----text: #{current}-----value: #{value}"
-        echo cfgKeyVal
-        echo zoneKeyText
         DCore.Zone.set_config(key,value)
 
