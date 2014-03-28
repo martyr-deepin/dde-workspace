@@ -25,49 +25,46 @@ class Audio extends Widget
         obj: AUDIO
         path: "/com/deepin/daemon/Audio/Sink0"
         interface: "com.deepin.daemon.Audio.Sink"
-    DEFAULT_SINK = 0
+    DEFAULT_SINK = "/com/deepin/daemon/Audio/Sink0"
 
     constructor:(@id)->
         super
-        @Cards = []
-        @Sinks = []
-        @Sources = []
-        @DBusSinks = []
-        @OpenedAudiosName = []
         @valueEach = []
         _b.appendChild(@element)
-        @getDBus()
+        @getDBusAudio()
+        @getDBusDefaultSink(@DefaultSink)
         
    
     hide:->
         @element.style.display = "none"
     
-    getDBus:->
+    getDBusAudio:->
         try
             @DBusAudio = DCore.DBus.session(AUDIO)
-            @Cards = @DBusAudio.Cards
-            @Sinks = @DBusAudio.Sinks
-            @Sources = @DBusAudio.Sources
-            @DefaultSink = @DBusAudio.DefaultSink
-            if not @DefaultSink? then @DefaultSink = 0
-            @DefaultSource = @DBusAudio.DefaultSource
-            if not @DefaultSource? then @DefaultSource = 0
+            @DefaultSink = @DBusAudio.GetDefaultSink_sync()
+            if not @DefaultSink? then @DefaultSink = DEFAULT_SINK
         catch e
             echo " DBusAudio :#{AUDIO} ---#{e}---"
-        
+  
+    getDBusDefaultSink:(DefaultSink)->
+        echo "GetDefaultSink:#{DefaultSink}"
         try
-            for path in @Sinks
-                AUDIO_SINKS.path = path
-                DBusSink = DCore.DBus.session_object(
-                    AUDIO_SINKS.obj,
-                    AUDIO_SINKS.path,
-                    AUDIO_SINKS.interface
-                )
-                @DBusSinks.push(DBusSink)
-                @DBusDefaultSink = @DBusSinks[@DefaultSink]
+            AUDIO_SINKS.path = DefaultSink
+            @DBusDefaultSink = DCore.DBus.session_object(
+                AUDIO_SINKS.obj,
+                AUDIO_SINKS.path,
+                AUDIO_SINKS.interface
+            )
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
-   
+
+    updateDBusDefaultSink:->
+        DefaultSink = @DBusAudio.GetDefaultSink_sync()
+        if @DefaultSink is DefaultSink then return
+        echo "DefaultSink Changed!!!From #{@DefaultSink} to #{DefaultSink}"
+        @DefaultSink = DefaultSink
+        @getDBusDefaultSink(@DefaultSink)
+
     getVolume:->
         volume = @DBusDefaultSink.Volume
         if volume > 150 then volume = 150
@@ -142,6 +139,7 @@ AudioUp = (keydown) ->
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
+    AudioCls.updateDBusDefaultSink()
     white = AudioCls.getVolume()
     AudioCls.show(Math.ceil(white))
 
@@ -151,6 +149,7 @@ AudioDown = (keydown) ->
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
+    AudioCls.updateDBusDefaultSink()
     white = AudioCls.getVolume()
     AudioCls.show(Math.ceil(white))
 
@@ -160,6 +159,7 @@ AudioMute = (keydown) ->
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
+    AudioCls.updateDBusDefaultSink()
     white = AudioCls.getVolume()
     if AudioCls.getMute() then white = 0
     AudioCls.show(Math.ceil(white))
