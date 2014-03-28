@@ -386,7 +386,7 @@ class UserInfo extends Widget
         @element.appendChild(@login.element)
         @login.hide()
 
-        @loginAnimation()
+        #@loginAnimation()
     
     
     hide:=>
