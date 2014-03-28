@@ -20,16 +20,17 @@ static GSGrab* grab = NULL;
 PRIVATE
 GSettings* zone_gsettings = NULL;
 
-static char* KEY_LEFTUP = "left-up";//left-up
-static char* KEY_RIGHUP = "right-up";//right-up
-static char* KEY_LEFTDOWN = "left-down";//left-down
-static char* KEY_RIGHTDOWN = "right-down";//right-down
+#define KEY_LEFTUP "left-up"//left-up
+#define KEY_RIGHTUP "right-up"//right-up
+#define KEY_LEFTDOWN "left-down"//left-down
+#define KEY_RIGHTDOWN "right-down"//right-down
 
-static char* VAL_LAUNCHER = "/usr/bin/launcher";
-static char* VAL_DSS = "/usr/bin/dss";
-static char* VAL_DESKTOP = "/usr/bin/desktop-show";
-static char* VAL_WORKSPACE = "workspace";
-static char* VAL_NONE = "none";
+#define VAL_LAUNCHER "/usr/bin/launcher"
+#define VAL_DSS "/usr/bin/dss"
+#define VAL_DESKTOP "/usr/bin/desktop-show"
+#define VAL_WORKSPACE "workspace"
+#define VAL_NONE "none"
 
+gboolean compiz_set(const char *key, const char *value);
 
 #endif
