@@ -91,13 +91,21 @@ class Display extends Widget
         value = null
         try
             echo "#{name}:#{bright[name]}"
-            value = Math.ceil(bright[name] * 10)
+            value = bright[name]
         catch e
             echo "getPrimarBrightnessValue: ERROR: #{e}"
-            value = null
         finally
             return value
     
+    setBrightness:(name,n)->
+        bright = n
+        if((Math.floor(n * 10) - n * 10) != 0)
+            bright = Math.floor(n * 10 + 1) / 10.0
+            @getDBusMonitor(name).ChangeBrightness_sync(name,bright)
+        else
+            echo "Brightness is zhengshu, not need to changed to zhengshu: #{n}"
+        return bright
+     
     switchDisplayMode:(ModeChoose)->
         setFocus(false)
         osdHide()
@@ -153,6 +161,7 @@ class Display extends Widget
             ,TIME_HIDE)
         ,TIME_PRESS)
     
+
     showBrightness:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
@@ -161,7 +170,9 @@ class Display extends Widget
             echo "#{@id} Class  show"
             osdShow()
             @element.style.display = "block"
-            white = @getPrimarBrightnessValue()
+            
+            val = @setBrightness(@PrimarMonitorName,@getPrimarBrightnessValue())
+            white = val * 10
             echo "showBrightValue:#{white}"
             set_bg(@element,@id,@preBrightnessImg)
             @preBrightnessImg = @id
