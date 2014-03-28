@@ -1,20 +1,7 @@
 class SystemTray extends SystemItem
     constructor:(@id, @icon, title)->
         super
-        @imgWarp.firstElementChild.style.display = 'none'
         @openIndicator.style.display = 'none'
-        @button = create_element(tag:"div", class:"trayButton", @imgWarp)
-        @button.textContent = "X"
-        @button.style.pointerEvents = "auto"
-        @button.addEventListener("click", (e)=>
-            console.log("click")
-            e.preventDefault()
-            e.stopPropagation()
-        )
-        # FIXME:
-        # why
-        @button.addEventListener("mouseover", @on_mouseover)
-        @button.addEventListener("mouseout", @on_mouseout)
         @core = get_dbus(
             'session',
             name:"com.deepin.dde.TrayManager",
@@ -23,49 +10,65 @@ class SystemTray extends SystemItem
         )
 
         @core.connect("Added", (xid)=>
-            console.log("#{xid} is Added")
+            # console.log("#{xid} is Added")
             @items.unshift(xid)
             $EW.create(xid, true)
+            if @isShowing
+                # console.log("added show")
+                $EW.show(xid)
+            else
+                $EW.hide(xid)
             # creat will take a while.
             setTimeout(=>
                 @updateTrayIcon()
-            , 100)
+                calc_app_item_size()
+            , 400)
         )
         @core.connect("Changed", (xid)=>
-            console.log("#{xid} is Changed")
+            # console.log("#{xid} is Changed")
             @items.remove(xid)
             @items.unshift(xid)
-            setTimeout(=>
-                @updateTrayIcon()
-            , 100)
+            @updateTrayIcon()
         )
         @core.connect("Removed", (xid)=>
-            console.log("#{xid} is Removed")
+            # console.log("#{xid} is Removed")
             @items.remove(xid)
-            setTimeout(=>
-                @updateTrayIcon()
-            , 100)
+            @updateTrayIcon()
+            calc_app_item_size()
         )
 
         @items = @core.TrayIcons.slice(0)
         # @ews = new EmbedWindow(@items, false)
         # @ews.show()
-        console.log("TrayIcons: #{@items}")
+        # console.log("TrayIcons: #{@items}")
         for item, i in @items
-            console.log("#{item} add to SystemTray")
+            # console.log("#{item} add to SystemTray")
             $EW.create(item, false)
-            $EW.show(item)
+            $EW.hide(item)
 
         @updateTrayIcon()
 
     updateTrayIcon:=>
-        console.log("update the order: #{@items}")
-        @upperItemNumber = Math.ceil(@items.length / 2)
-        if @items.length % 2 == 0
-            @upperItemNumber += 1
-        xy = get_page_xy(@element)
+        #console.log("update the order: #{@items}")
+        @upperItemNumber = Math.max(Math.ceil(@items.length / 2), 2)
+        # if @items.length % 2 == 0
+        #     @upperItemNumber += 1
+
         iconSize = 16
-        itemSize = 19
+        itemSize = 18
+
+        if @isShowing && @upperItemNumber >= 2
+            newWidth = @upperItemNumber * itemSize
+            # console.log("set width to #{newWidth}")
+            @img.style.width = "#{newWidth}px"
+            # @imgWarp.style.width = "#{newWidth + 16}px"
+            @element.style.width = "#{newWidth + 16}px"
+        else if not @isShowing && @upperItemNumber > 2
+            newWidth = 2 * itemSize
+            @img.style.width = "#{newWidth}px"
+            # @imgWarp.style.width = "#{newWidth + 16}px"
+            @element.style.width = "#{newWidth + 16}px"
+        xy = get_page_xy(@element)
         for item, i in @items
             x = xy.x + 9
             y = xy.y + 6
@@ -74,22 +77,47 @@ class SystemTray extends SystemItem
             else
                 x += (i - @upperItemNumber) * itemSize
                 y += itemSize
-            console.log("move tray icon #{item} to #{x}, #{y}")
+            # console.log("move tray icon #{item} to #{x}, #{y}")
             $EW.move_resize(item, x, y, iconSize, iconSize)
 
-    unfold:->
-        console.log("unfold")
-
-    fold:->
-        console.log("fold")
+    updatePanel:=>
+        calc_app_item_size()
+        DCore.Dock.require_all_region()
+        @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     on_mouseover: (e)=>
+        clearTimeout(@hideTimer)
+        webkitCancelAnimationFrame(@calcTimer || null)
+        @updatePanel()
+        # console.log("mouseover")
+        @isShowing = true
+        @updateTrayIcon()
+        Preview_close_now(_lastCliengGroup)
+        if @upperItemNumber > 2
+            @showTimer = setTimeout(=>
+                webkitCancelAnimationFrame(@calcTimer)
+                @updateTrayIcon()
+                for item in @items
+                    $EW.show(item)
+            , 300)
+        else
+            for item in @items
+                $EW.show(item)
         super
-        @button.style.visibility = 'visible'
 
     on_mouseout: (e)=>
-        super
-        @button.style.visibility = 'hidden'
+        # console.log("mouseout")
+        clearTimeout(@showTimer)
+        webkitCancelAnimationFrame(@calcTimer)
+        @updatePanel()
+        @isShowing = false
+        for item in @items
+            $EW.hide(item)
+        @updateTrayIcon()
+        @hideTimer = setTimeout(=>
+            webkitCancelAnimationFrame(@calcTimer)
+            super
+        , 400)
 
     on_rightclick: (e)=>
         e.preventDefault()

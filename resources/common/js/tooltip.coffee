@@ -72,9 +72,9 @@ class ToolTip extends ToolTipBase
         page_xy= get_page_xy(@buddy, 0, 0)
         offset = (@buddy.clientWidth - ToolTip.tooltip.clientWidth) / 2
 
-        x = page_xy.x + offset
+        x = parseInt((page_xy.x + offset).toFixed())
         x = 0 if x < 0
-        ToolTip.move_to(@, x.toFixed(), document.body.clientHeight - page_xy.y)
+        ToolTip.move_to(@, x, document.body.clientHeight - page_xy.y)
 
 
 class ArrowToolTip extends ToolTipBase
@@ -232,7 +232,7 @@ class ArrowToolTip extends ToolTipBase
         page_xy= get_page_xy(@buddy, 0, 0)
         offset = (@buddy.clientWidth - ArrowToolTip.container.clientWidth) / 2
 
-        x = page_xy.x + offset
+        x = parseInt((page_xy.x + offset).toFixed())
         x = 0 if x < 0
         y = document.body.clientHeight - page_xy.y - 2 # 7 for subtle
-        ArrowToolTip.move_to(@, x.toFixed(), y)
+        ArrowToolTip.move_to(@, x, y)

@@ -2,7 +2,7 @@ calc_app_item_size = ->
     return if IN_INIT
     # TODO:
     # calc when added/removed
-    systemTray?.updateTrayIcon()
+    #systemTray?.updateTrayIcon()
     apps = $s(".AppItem")
     return if apps.length = 0
 
@@ -25,19 +25,24 @@ calc_app_item_size = ->
         height = h * (ITEM_HEIGHT - BOARD_IMG_MARGIN_BOTTOM) / ITEM_HEIGHT + BOARD_IMG_MARGIN_BOTTOM * ICON_SCALE + 8
         DCore.Dock.change_workarea_height(height)
 
-    update_dock_region(w * item_num)
+    update_dock_region($("#container").clientWidth)
 
-update_dock_region = (w)->
-    if panel
-        panel.set_width(w)
-        panel.redraw()
-    apps = $s(".AppItem")
-    last = apps[apps.length-1]
-    if last and last.clientWidth != 0
-        app_len = ICON_SCALE * ITEM_WIDTH * apps.length
-        left_offset = (screen.width - app_len) / 2
-        panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
-        DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
+update_dock_region = do->
+    lastWidth = null
+    (w)->
+        if w
+            lastWidth = w
+        else if lastWidth
+            w = lastWidth
+        if panel
+            panel.set_width(w)
+        apps = $s(".AppItem")
+        last = apps[apps.length-1]
+        if last and last.clientWidth != 0
+            app_len = ICON_SCALE * ITEM_WIDTH * apps.length
+            left_offset = (screen.width - app_len) / 2
+            panel_width = ICON_SCALE * ITEM_WIDTH * apps.length + PANEL_MARGIN * 2
+            DCore.Dock.force_set_region(left_offset, 0, ICON_SCALE * ITEM_WIDTH * apps.length, panel_width, DOCK_HEIGHT)
 
 document.body.onresize = ->
     calc_app_item_size()

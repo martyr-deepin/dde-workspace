@@ -39,6 +39,7 @@ class FixedItem extends Applet
     __show: false
     constructor:(@id, @icon, title, @container)->
         super
+        @element.draggable = false
 
     show: (v)->
         @__show = v

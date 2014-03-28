@@ -6,8 +6,9 @@ class Item extends Widget
     constructor:(@id, icon, title, @container)->
         super()
         @imgWarp = create_element(tag:'div', class:"imgWarp", @element)
-        @img = create_img(class:"AppItemImg", @imgWarp)
-        @img.src = icon || NOT_FOUND_ICON
+        @img = create_element(tag:'div',class:"AppItemImg", @imgWarp)
+        # @img.src = icon || NOT_FOUND_ICON
+        @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
         @img.classList.add("ReflectImg")
         @img.style.pointerEvents = "auto"
         @img.addEventListener("mouseover", @on_mouseover)
@@ -45,7 +46,8 @@ class Item extends Widget
     on_mouseout:(e)=>
         @imgWarp.style.webkitTransform = 'translateY(0px)'
         @imgWarp.style.webkitTransition = 'all 400ms'
-        calc_app_item_size()
+        #calc_app_item_size()
+        update_dock_region()
 
     on_rightclick:(e)=>
         e.preventDefault()

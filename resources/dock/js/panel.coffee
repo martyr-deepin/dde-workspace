@@ -106,3 +106,12 @@ class Panel
                 w.notify()
             else
                 Widget.look_up("le_#{appid}")?.notify()
+
+# does not work fine.
+#     updateWithAnimation:=>
+#         calc_app_item_size()
+#         DCore.Dock.require_all_region()
+#         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
+#
+#     cancelAnimation:->
+#         webkitCancelAnimationFrame(@calcTimer)

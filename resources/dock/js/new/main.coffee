@@ -49,6 +49,8 @@ entryManager.connect("Added", (path)->
     # console.log("added done")
     setTimeout(->
         calc_app_item_size()
+        if systemTray.isShowing
+            systemTray.updateTrayIcon()
     , 100)
 )
 

@@ -1,19 +1,18 @@
-.trayButton {
-  visibility:hidden;
-  position: absolute;
-  bottom: 2px;
-  right: 10px;
+.SystemTray {
+  -webkit-transition : width 400ms;
+}
+.SystemTray .imgWarp {
+  -webkit-transform: none !important;
+  -webkit-transition: none !important;
   pointer-events: auto;
 }
 
-.SystemTray {
-  display: -webkit-box;
-  -webkit-box-pack: center;
-}
-.SystemTray .imgWarp {
+.SystemTray .imgWarp .AppItemImg {
+  background: none !important;
   width: 36px;
   height: 36px;
-  left: 2px;
-  top: 2px;
-  -webkit-border-image: url("../img/tray-panel.png") 7 8 9/6px;
+  border-width: 5px 6px 7px;
+  -webkit-border-image: url("../img/tray-panel.png") 5 6 7;
+  max-width: none;
+  -webkit-transition : width 400ms;
 }

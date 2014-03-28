@@ -16,6 +16,8 @@
 
 .imgWarp{
   /* position:relative; */
+  display: -webkit-box;
+  -webkit-box-pack:center;
 }
 .indicatorWarp{
   top: 10px;
@@ -32,6 +34,8 @@
     border-radius: 5px;
     max-width: 48px;
     max-height: 48px;
+    width: 48px;
+    height: 48px;
 }
 
 .indicator{
