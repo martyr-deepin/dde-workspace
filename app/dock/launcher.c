@@ -76,7 +76,6 @@ JSValueRef build_app_info(const char* app_id)
         g_warning("cannot get app info");
         g_key_file_remove_group(k_apps, app_id, NULL);
         save_app_config(k_apps, APPS_INI);
-        update_task_list();
         return jsvalue_null();
     }
     JSObjectRef json = json_create();

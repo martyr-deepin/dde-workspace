@@ -10,7 +10,7 @@ include_directories(${DWEBVIEW_INCLUDE_DIRS})
 include_directories(${DTEST_INCLUDE_DIRS})
 include_directories(${DBUS_INCLUDE_DIRS})
 
-SET(SRC_LIST embed_window.c dock.c dock_hide.c dock_config.c handle_icon.c
+SET(SRC_LIST embed_window.c dock.c dock_hide.c dock_config.c handle_icon.c migration.c
     dominant_color.c tasklist.c draw.c launcher.c region.c
     special_window.c monitor.c ${JSC_GEN} ${DBUS_GEN})
 

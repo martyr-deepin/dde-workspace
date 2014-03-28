@@ -314,8 +314,6 @@ void dock_emit_webview_ok()
         update_dock_size_mode();
         init_dock_guard_window();
     } else {
-        update_dock_apps();
-        update_task_list();
         update_dock_size_mode();
     }
     GD.is_webview_loaded = TRUE;
