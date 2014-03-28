@@ -101,6 +101,7 @@ class SystemTray extends SystemItem
                     $EW.show(item)
             , 300)
         else
+            webkitCancelAnimationFrame(@calcTimer)
             for item in @items
                 $EW.show(item)
         super
