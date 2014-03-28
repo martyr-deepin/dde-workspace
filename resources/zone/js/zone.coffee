@@ -23,7 +23,7 @@ zoneKeyText = []
 cfgKey = ["left-up","left-down","right-up","right-down"]
 cfgValue = [
     "/usr/bin/launcher",
-    "/usr/bin/dss",
+    "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Show int32:0",
     "workspace",
     "/usr/bin/desktop-show",
     "none"

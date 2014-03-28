@@ -84,7 +84,7 @@ get_command_key(const char *str, const char **list)
 static gboolean 
 set_commands(const char *key, const char *value, gboolean scale)
 {
-    /*g_print("Set commands key: %s, value: %s\n", key, value);*/
+    g_debug("Set commands key: %s, value: %s\n", key, value);
 
     gchar *ret = get_command_key(key, edge_command_map);
 
@@ -92,7 +92,7 @@ set_commands(const char *key, const char *value, gboolean scale)
         return FALSE;
     }
 
-    /*g_print("Commands Real Key: %s\n", ret);*/
+    g_debug("Commands Real Key: %s\n", ret);
 
     GSettings *cmdSettings = g_settings_new_with_path(COMMANDS_SCHEMA_ID, COMMANDS_SCHEMA_PATH);
     gboolean ok = g_settings_set_string(cmdSettings, ret, value);
@@ -130,7 +130,7 @@ set_commands(const char *key, const char *value, gboolean scale)
 static gboolean 
 set_scale (const char *key, const char *value)
 {
-    /*g_print("Set scale key: %s, value: %s\n", key, value);*/
+    g_debug("Set scale key: %s, value: %s\n", key, value);
 
     gchar *ret = get_command_key(key, edge_map);
 
@@ -138,14 +138,14 @@ set_scale (const char *key, const char *value)
         return FALSE;
     }
 
-    /*g_print("Scale Real Value: %s\n", ret);*/
+    g_debug("Scale Real Value: %s\n", ret);
 
     GSettings *scaleSettings = g_settings_new_with_path(SCALE_SCHEMA_ID, SCALE_SCHEMA_PATH);
     gboolean ok = g_settings_set_string(scaleSettings, SCALE_EDGE_KEY, ret);
     g_free(ret);
 
     if (ok) {
-        /*g_print("Clear Commands Key: %s\n", key);*/
+        g_debug("Clear Commands Key: %s\n", key);
         set_commands(key, "", TRUE);
     }
 

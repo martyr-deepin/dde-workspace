@@ -42,6 +42,25 @@
 
 #include "zone.h"
 
+#define ZONE_SCHEMA_ID "com.deepin.dde.zone"
+#define ZONE_ID_NAME "desktop.app.zone"
+
+#define CHOICE_HTML_PATH "file://"RESOURCE_DIR"/zone/zone.html"
+
+#define ZONE_MAJOR_VERSION 2
+#define ZONE_MINOR_VERSION 0
+#define ZONE_SUBMINOR_VERSION 0
+#define ZONE_VERSION G_STRINGIFY(ZONE_MAJOR_VERSION)"."G_STRINGIFY(ZONE_MINOR_VERSION)"."G_STRINGIFY(ZONE_SUBMINOR_VERSION)
+#define ZONE_CONF "zone/config.ini"
+static GKeyFile* zone_config = NULL;
+
+PRIVATE GtkWidget* container = NULL;
+static GSGrab* grab = NULL;
+
+PRIVATE
+GSettings* zone_gsettings = NULL;
+
+
 JS_EXPORT_API
 void zone_quit()
 {
