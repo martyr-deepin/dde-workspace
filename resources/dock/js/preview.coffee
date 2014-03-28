@@ -304,9 +304,7 @@ Preview_close_now = (client)->
     Preview_container.hide()
     setTimeout(->
         Preview_container.close()
-        PWContainer._cancel_move_animation_id = setTimeout(->
-            PWContainer._need_move_animation = false
-        , 3000)
+        PWContainer._need_move_animation = false
     , 300)
     setTimeout(->
         DCore.Dock.update_hide_mode()
