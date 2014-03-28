@@ -9,7 +9,7 @@
 
 #define VAL_LAUNCHER "/usr/bin/launcher"
 #define VAL_DSS "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Show int32:0"
-#define VAL_DESKTOP "/usr/bin/desktop-show"
+#define VAL_DESKTOP "dbus-send --type=method_call --dest=com.deepin.dde.dock /com/deepin/dde/dock com.deepin.dde.dock.CornerDesktop"
 #define VAL_WORKSPACE "workspace"
 #define VAL_NONE "none"
 

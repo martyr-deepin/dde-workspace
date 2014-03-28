@@ -25,7 +25,7 @@ cfgValue = [
     "/usr/bin/launcher",
     "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Show int32:0",
     "workspace",
-    "/usr/bin/desktop-show",
+    "dbus-send --type=method_call --dest=com.deepin.dde.dock /com/deepin/dde/dock com.deepin.dde.dock.CornerDesktop",
     "none"
 ]
 option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
