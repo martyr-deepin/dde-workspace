@@ -356,7 +356,7 @@ class UserInfo extends Widget
         @userbase = create_element("div", "UserBase", @element)
         
         @face_recognize_div = create_element("div","face_recognize_div",@userbase)
-        @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
+        #@face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
         @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
         
         @userimg_div = create_element("div","userimg_div",@userbase)
@@ -365,9 +365,10 @@ class UserInfo extends Widget
         @userimg = create_img("userimg", @img_src, @userimg_background)
         @userimg_div.style.display = "none"
         
-        @face_recognize_div.style.width = 137 * scaleFinal
-        @face_recognize_div.style.height = 137 * scaleFinal
-        @face_recognize_div.style.left = @userimg_div.style.left
+        echo "-------scaleFinal =  #{scaleFinal}-----------------"
+        @face_recognize_div.style.width = 135 * scaleFinal
+        @face_recognize_div.style.height = 135 * scaleFinal
+        @face_recognize_div.style.left = @userimg_div.style.left + 25
         @face_recognize_div.style.display = "none"
         
         @userimg.style.width = 110 * scaleFinal
@@ -385,6 +386,9 @@ class UserInfo extends Widget
         @element.appendChild(@login.element)
         @login.hide()
 
+        @loginAnimation()
+    
+    
     hide:=>
         @userimg_div.style.display = "none"
         @username.style.display = "none"
@@ -443,7 +447,7 @@ class UserInfo extends Widget
             @face_recognize_div.style.left = @userimg_div.style.left
             rotate = (rotate + 5) % 360
             animation_rotate(@face_recognize_img,rotate)
-        ,50)
+        ,20)
     
     loginAnimationClear: ->
         @face_recognize_div.style.display = "none"
