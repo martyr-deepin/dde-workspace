@@ -9,11 +9,12 @@
 .bg{
   position:absolute;
   border-radius: 4px;
+  left:-6px;
 }
 
 .PWContainer {
   border-radius: 5px;
-  /* display: -webkit-box; */
+  display: -webkit-box;
   pointer-events:auto;
   /* border:solid green 2px; */
 }

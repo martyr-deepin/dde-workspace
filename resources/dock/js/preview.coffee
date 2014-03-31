@@ -90,20 +90,20 @@ class PWContainer extends Widget
         ctx.clearRect(0, 0, @bg.width, @bg.height)
         ctx.save()
 
-        ctx.shadowBlur = 6
+        ctx.shadowBlur = PREVIEW_SHADOW_BLUR
         ctx.shadowColor = 'black'
-        ctx.shadowOffsetY = 2
+        ctx.shadowOffsetY = PREVIEW_CONTAINER_BORDER_WIDTH
 
         ctx.strokeStyle = 'rgba(255,255,255,0.4)'
         ctx.lineWidth = PREVIEW_CONTAINER_BORDER_WIDTH
 
         ctx.fillStyle = "rgba(0,0,0,0.4)"
 
-        radius = 4
-        contentWidth = @bg.width - radius * 2 - ctx.lineWidth*2 - ctx.shadowBlur * 2
-        topY = radius
+        radius = PREVIEW_CORNER_RADIUS
+        contentWidth = @bg.width - radius * 2 - ctx.lineWidth * 2 - ctx.shadowBlur * 2
+        topY = radius + ctx.lineWidth
         bottomY = @bg.height - PREVIEW_TRIANGLE.height - ctx.lineWidth * 2 - ctx.shadowBlur
-        leftX = radius
+        leftX = radius + ctx.shadowBlur
         rightX = leftX + contentWidth
 
         arch =
@@ -132,11 +132,11 @@ class PWContainer extends Widget
                 startAngle: Math.PI * 0.5
                 endAngle: Math.PI
         ctx.beginPath()
-        ctx.moveTo(0, topY)
+        ctx.moveTo(ctx.shadowBlur, topY)
         ctx.arc(arch['TopLeft'].ox, arch['TopLeft'].oy, arch['TopLeft'].radius,
                 arch['TopLeft'].startAngle, arch['TopLeft'].endAngle)
 
-        ctx.lineTo(rightX, 0)
+        ctx.lineTo(rightX, topY - radius)
 
         ctx.arc(arch['TopRight'].ox, arch['TopRight'].oy, arch['TopRight'].radius,
                 arch['TopRight'].startAngle, arch['TopRight'].endAngle)
@@ -163,7 +163,7 @@ class PWContainer extends Widget
         ctx.arc(arch['BottomLeft'].ox, arch['BottomLeft'].oy, arch['BottomLeft'].radius,
                 arch['BottomLeft'].startAngle, arch['BottomLeft'].endAngle)
 
-        ctx.closePath()
+        ctx.lineTo(ctx.shadowBlur, topY)
 
         ctx.stroke()
         ctx.fill()
@@ -205,8 +205,7 @@ class PWContainer extends Widget
             @scale = new_scale
         window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
 
-        # 6 for shadow blur
-        @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + 6 * 2
+        @bg.width = window_width * n + PREVIEW_CONTAINER_BORDER_WIDTH * 2 + PREVIEW_SHADOW_BLUR * 2
 
         extraHeight = PREVIEW_TRIANGLE.height + PREVIEW_CONTAINER_BORDER_WIDTH * 3
         if allocation
@@ -215,7 +214,8 @@ class PWContainer extends Widget
             @bg.height = PREVIEW_CONTAINER_HEIGHT * @scale + extraHeight
 
         # console.log("canvas width: #{@bg.width}, height: #{@bg.height}")
-        @border.style.width = @bg.width
+        # the container must not contain the shadow and the border
+        @border.style.width = @bg.width - PREVIEW_SHADOW_BLUR * 2 - 2 * PREVIEW_CONTAINER_BORDER_WIDTH
         @border.style.height = @bg.height
 
         @drawPanel()
