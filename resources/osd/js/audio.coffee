@@ -103,7 +103,7 @@ class Audio extends Widget
             echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"
             set_bg(@,bgImg,@prebgImg)
             @prebgImg = bgImg
-            showValue(value,0,150,@,"Audio_bar")
+            showValue(value,0,100,@,"Audio_bar")
 
             timeout_osdHide = setTimeout(=>
                 osdHide()
