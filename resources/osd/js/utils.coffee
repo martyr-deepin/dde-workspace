@@ -22,7 +22,8 @@ _b = document.body
 FOCUS = false
 
 setFocus = (focus)->
-    FOCUS = focus
+    #FOCUS = focus
+    FOCUS = true
     DCore.Osd.set_focus(FOCUS)
 
 #MediaKey DBus
@@ -69,7 +70,7 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    if click_time % 1 == 0
+    if click_time % 3 == 0
         click_time = 0
         DCore.Osd.hide()
 )
@@ -83,12 +84,22 @@ setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
 
-set_bg = (el,imgName,preImgName)->
-    if preImgName == imgName then return
-    echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
-    if true
+set_bg = (cls,imgName,prevImgName)->
+    if prevImgName == imgName then return
+    echo "set_bg: bgChanged from #{prevImgName} to #{imgName}"
+    
+    cb = =>
+        echo "cb"
+    
+    if false
+        el = cls.element
+        cls.element.style.backgroundImage = "url(img/#{imgName}.png)"
+        apply_animation(cls.element,2000,"linear-show","ease-in",cb)
+        return
+
+    if false
         apply_linear_hide_show(el,"0.1","ease-in-out")
-    else
+    #else
         el.style.opacity = "1"
         t = 50
         jQuery(el).animate(
@@ -100,7 +111,31 @@ set_bg = (el,imgName,preImgName)->
                     {opacity:'1';},t,"swing"
                 )
         )
- 
+    
+    cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
+    cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
+    cls.bg1.style.position = "absolute"
+    cls.bg2.style.position = "absolute"
+    cls.bg1.style.width = "100%"
+    cls.bg2.style.width = "100%"
+    cls.bg1.style.height = "100%"
+    cls.bg2.style.height = "100%"
+
+    cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
+    cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+    cls.bg1.style.display = "block"
+    cls.bg2.style.display = "block"
+    
+    t = 0.5
+    cls.bg1.style.opacity = "1.0"
+    #apply_linear_hide(cls.bg1,t,"ease-in")
+    jQuery(cls.bg1).animate({opacity:'0';},t,"swing")
+    cls.bg2.style.opacity = "0.0"
+    jQuery(cls.bg2).animate({opacity:'1';},t,"swing")
+    #apply_linear_show(cls.bg2,t,"ease-out")
+
+
+
 showValue = (value,min,max,cls,id)->
     if value > max then value = max
     else if value < min then value = min
