@@ -21,14 +21,15 @@
 cfgKeyVal = []
 zoneKeyText = []
 cfgKey = ["left-up","left-down","right-up","right-down"]
+
+option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
 cfgValue = [
     "/usr/bin/launcher",
     "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Show int32:0",
     "workspace",
-    "dbus-send --type=method_call --dest=com.deepin.dde.dock /com/deepin/dde/dock com.deepin.dde.dock.CornerDesktop",
+    "/usr/lib/deepin-daemon/desktop-toggle",
     "none"
 ]
-option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
 
 class Zone extends Widget
 
