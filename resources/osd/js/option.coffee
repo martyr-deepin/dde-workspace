@@ -35,7 +35,7 @@ class Option extends Widget
             echo "Option #{@id} show"
             osdShow()
             @element.style.display = "block"
-            set_bg(@element,@id,@preImgName)
+            set_bg(@,@id,@preImgName)
             @preImgName = @id
 
             timeout_osdHide = setTimeout(=>

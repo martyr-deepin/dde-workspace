@@ -101,7 +101,7 @@ class Audio extends Widget
             @element.style.display = "block"
             bgImg = @getBgName(value)
             echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"
-            set_bg(@element,bgImg,@prebgImg)
+            set_bg(@,bgImg,@prebgImg)
             @prebgImg = bgImg
             showValue(value,0,150,@,"Audio_bar")
 

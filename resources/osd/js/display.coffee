@@ -131,7 +131,7 @@ class Display extends Widget
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
             imgName = "#{@id}_#{ImgIndex}"
-            set_bg(@element,imgName,@preDisplayImg)
+            set_bg(@,imgName,@preDisplayImg)
             @preDisplayImg = imgName
             
             timeout_osdHide = setTimeout(=>
@@ -151,7 +151,7 @@ class Display extends Widget
             
             value = @getPrimarBrightnessValue()
             echo "showBrightValue:#{value}"
-            set_bg(@element,@id,@prebgImg)
+            set_bg(@,@id,@prebgImg)
             @prebgImg = @id
             
             showValue(value,0,1,@,"Brightness_bar")
