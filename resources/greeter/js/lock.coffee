@@ -61,14 +61,13 @@ class Lock extends Widget
             POWER = "com.deepin.daemon.Power"
             PowerManager = DCore.DBus.session(POWER)
             PowerManager.StartDim() if PowerManager?
-            echo "StartDim"
+            echo "PowerManager.StartDim()" if PowerManager?
         catch e
             echo "POWER:ERROR:#{e}"
 
 
-PowerManager = null
 lock = new Lock()
-lock.setBodyWallpaper("sky_move")
+lock.setBodyWallpaper("sky_static")
 lock.dbusPowerManager()
 
 user = new User()
