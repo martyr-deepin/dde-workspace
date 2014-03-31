@@ -146,7 +146,7 @@ showValue = (value,min,max,cls,id)->
     if not cls.bar?
         cls.bar = new Bar(id)
         cls.bar.setPosition(cls.element,"31px","20px","absolute")
-        cls.bar.setSize("98px","10px")
+        cls.bar.setSize("98px","6px")
         cls.bar.setColor("#FFF")
         cls.bar.showProgressNum(false)
         cls.bar.progressCreate()
