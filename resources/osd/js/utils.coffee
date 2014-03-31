@@ -19,11 +19,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
+
+DEBUG = false
 FOCUS = false
 
 setFocus = (focus)->
-    #FOCUS = focus
-    FOCUS = true
+    FOCUS = focus
+    FOCUS = true if DEBUG
     DCore.Osd.set_focus(FOCUS)
 
 #MediaKey DBus
