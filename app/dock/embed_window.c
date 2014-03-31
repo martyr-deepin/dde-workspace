@@ -34,7 +34,7 @@ void __init__embed__()
 
 
 GdkWindow* get_wrapper(GdkWindow* win) { return g_object_get_data(G_OBJECT(win), "deepin_embed_window_wrapper"); }
-void destroy_window(GdkWindow* win) 
+void destroy_window(GdkWindow* win)
 {
 
     GdkFilterReturn __monitor_embed_window(GdkXEvent *xevent, GdkEvent* ev, gpointer data);
@@ -203,7 +203,6 @@ void exwindow_move(double xid, double x, double y)
 //JS_EXPORT_API
 void exwindow_hide(double xid)
 {
-    return;
     SKIP_UNINIT(xid);
     GdkWindow* win = (GdkWindow*)g_hash_table_lookup(__EMBEDED_WINDOWS__, (gpointer)(Window)xid);
     if (win != NULL) {

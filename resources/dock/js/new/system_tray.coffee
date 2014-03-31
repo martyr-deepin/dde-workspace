@@ -33,8 +33,10 @@ class SystemTray extends SystemItem
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
             @items.remove(xid)
-            @updateTrayIcon()
-            calc_app_item_size()
+            setTimeout(=>
+                @updateTrayIcon()
+                calc_app_item_size()
+            , 400)
         )
 
         @items = @core.TrayIcons.slice(0)
@@ -99,7 +101,7 @@ class SystemTray extends SystemItem
                 @updateTrayIcon()
                 for item in @items
                     $EW.show(item)
-            , 300)
+            , 400)
         else
             webkitCancelAnimationFrame(@calcTimer)
             for item in @items
