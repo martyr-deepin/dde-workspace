@@ -64,15 +64,15 @@ class SystemTray extends SystemItem
             # console.log("set width to #{newWidth}")
             @img.style.width = "#{newWidth}px"
             # @imgWarp.style.width = "#{newWidth + 16}px"
-            @element.style.width = "#{newWidth + 16}px"
+            @element.style.width = "#{newWidth + 18}px"
         else if not @isShowing && @upperItemNumber > 2
             newWidth = 2 * itemSize
             @img.style.width = "#{newWidth}px"
             # @imgWarp.style.width = "#{newWidth + 16}px"
-            @element.style.width = "#{newWidth + 16}px"
+            @element.style.width = "#{newWidth + 18}px"
         xy = get_page_xy(@element)
         for item, i in @items
-            x = xy.x + 9
+            x = xy.x + 10
             y = xy.y + 6
             if i < @upperItemNumber
                 x += i * itemSize

@@ -157,7 +157,6 @@ class AppItem extends Item
 
         @element.style.display = "block"
 
-    # TODO:
     remove_client: (id, used_internal=false) ->
         if not used_internal
             delete @client_infos[id]

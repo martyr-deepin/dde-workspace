@@ -12,7 +12,10 @@ class Setting
         console.log(@dbus)
 
     hideMode:->
-        @dbus.GetHideMode_sync()
+        mode = @dbus.GetHideMode_sync()
+        if mode == "default" || mode == "intelligent"
+            return 'keep-showing'
+        mode
 
     setHideMode:(id)->
         console.log(id)

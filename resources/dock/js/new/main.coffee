@@ -40,13 +40,17 @@ $DBus = {}
 
 entryManager.connect("Added", (path)->
     d = get_dbus("session", itemDBus(path))
-    # console.log("try to Added #{d.Id}")
+    console.log("try to Added #{d.Id}")
     if Widget.look_up(d.Id)
         return
 
-    # console.log("added #{path}")
+    console.log("added #{path}")
     createItem(d)
     # console.log("added done")
+    calc_app_item_size()
+    if systemTray.isShowing
+        systemTray.updateTrayIcon()
+
     setTimeout(->
         calc_app_item_size()
         if systemTray.isShowing
@@ -56,9 +60,11 @@ entryManager.connect("Added", (path)->
 
 entryManager.connect("Removed", (id)->
     # TODO: change id to the real id
-    # console.log("Removed #{id}")
-    deleteItem(id)
+    console.log("Removed #{id}")
+    if id != "trash"
+        deleteItem(id)
     calc_app_item_size()
+    systemTray.updateTrayIcon()
 )
 
 entries = entryManager.Entries
