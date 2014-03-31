@@ -60,6 +60,12 @@ class MenuChoose extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
     
+    setPos:->
+        left = (screen.width  - @element.clientWidth) / 2
+        top = (screen.height  - @element.clientHeight) / 2 * 0.8
+        @element.style.left = "#{left}px"
+        @element.style.top = "#{top}px"
+
  
     show:->
         @animation_end = false
@@ -110,6 +116,7 @@ class MenuChoose extends Widget
             'linear',=>
                 $("#div_users").style.display = "none"
                 @element.style.display = "-webkit-box"
+                @setPos()
                 for tmp,i in @opt
                     animation_opt_move_show(i,i * t_delay)
         )
