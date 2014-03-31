@@ -86,19 +86,20 @@ setBodySize = (width,height)->
 set_bg = (el,imgName,preImgName)->
     if preImgName == imgName then return
     echo "set_bg: bgChanged from #{preImgName} to #{imgName}"
-    #apply_linear_hide_show(el,"0.5","ease-in-out")
-    echo "set_bg Animation"
-    el.style.opacity = "1"
-    t = 250
-    jQuery(el).animate(
-        {opacity:'0';},
-        t,
-        "swing",=>
-            el.style.backgroundImage = "url(img/#{imgName}.png)"
-            jQuery(el).animate(
-                {opacity:'1';},t,"swing"
-            )
-    )
+    if true
+        apply_linear_hide_show(el,"0.1","ease-in-out")
+    else
+        el.style.opacity = "1"
+        t = 50
+        jQuery(el).animate(
+            {opacity:'0';},
+            t,
+            "swing",=>
+                el.style.backgroundImage = "url(img/#{imgName}.png)"
+                jQuery(el).animate(
+                    {opacity:'1';},t,"swing"
+                )
+        )
  
 showValue = (value,min,max,cls,id)->
     if value > max then value = max

@@ -42,8 +42,9 @@ apply_refuse_rotate = (el, time)->
         el.style.webkitAnimation = ""
     , time * 1000)
 
-apply_linear_hide_show = (el, time,timefun)->
+apply_linear_hide_show = (el, time,timefunc)->
     echo "apply_linear_hide_show"
+    el.style.opacity = "1"
     apply_animation(el, "linear-hide-show", "#{time}s", timefunc)
     id = setTimeout(->
         el.style.webkitAnimation = ""

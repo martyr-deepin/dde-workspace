@@ -19,9 +19,9 @@
 }
 
 @-webkit-keyframes linear-hide-show {
-    0% { opacity: 0;}
-    50% { opacity: 0.5; }
-    100% { opacity: 0.5; }
+    0% { opacity: 1;}
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @-webkit-keyframes linear-show {
