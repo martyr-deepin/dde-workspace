@@ -90,6 +90,29 @@ set_bg = (cls,imgName,prevImgName)->
     
     cb = =>
         echo "cb"
+   
+    cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
+    cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
+    cls.bg1.style.position = "absolute"
+    cls.bg2.style.position = "absolute"
+    cls.bg1.style.width = "100%"
+    cls.bg2.style.width = "100%"
+    cls.bg1.style.height = "100%"
+    cls.bg2.style.height = "100%"
+
+    cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
+    cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+    cls.bg1.style.display = "block"
+    cls.bg2.style.display = "block"
+    
+    t = 500
+    cls.bg1.style.opacity = "1.0"
+    #apply_linear_hide(cls.bg1,t,"ease-in")
+    jQuery(cls.bg1).animate({opacity:'0';},t,"swing")
+    cls.bg2.style.opacity = "0.0"
+    jQuery(cls.bg2).animate({opacity:'1';},t,"swing")
+    #apply_linear_show(cls.bg2,t,"ease-out")
+
     
     if false
         el = cls.element
@@ -111,30 +134,7 @@ set_bg = (cls,imgName,prevImgName)->
                     {opacity:'1';},t,"swing"
                 )
         )
-    
-    cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
-    cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
-    cls.bg1.style.position = "absolute"
-    cls.bg2.style.position = "absolute"
-    cls.bg1.style.width = "100%"
-    cls.bg2.style.width = "100%"
-    cls.bg1.style.height = "100%"
-    cls.bg2.style.height = "100%"
-
-    cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
-    cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
-    cls.bg1.style.display = "block"
-    cls.bg2.style.display = "block"
-    
-    t = 0.5
-    cls.bg1.style.opacity = "1.0"
-    #apply_linear_hide(cls.bg1,t,"ease-in")
-    jQuery(cls.bg1).animate({opacity:'0';},t,"swing")
-    cls.bg2.style.opacity = "0.0"
-    jQuery(cls.bg2).animate({opacity:'1';},t,"swing")
-    #apply_linear_show(cls.bg2,t,"ease-out")
-
-
+ 
 
 showValue = (value,min,max,cls,id)->
     if value > max then value = max
