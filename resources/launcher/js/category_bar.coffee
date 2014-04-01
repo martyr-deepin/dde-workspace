@@ -29,8 +29,8 @@ class CategoryItem
         )
         create_element(
             tag:'div',
-            class:"category_item_base category_item_board",
-            parent: @element
+            class:"category_item_base category_item_board category-mask",
+            @element
         )
         @element.style.backgroundImage = "url(img/category/#{name}100.png)"
         @isFocus = false
@@ -71,7 +71,7 @@ class CategoryBar
         @category = $("#categoryBar")
         @category.addEventListener("click", (e) =>
             e.stopPropagation()
-            target = e.target
+            target = e.target.parentNode
             id = parseInt(target.getAttribute("catId"))
             if !isNaN(id)
                 categoryList.cancelScroll()

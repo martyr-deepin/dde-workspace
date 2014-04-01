@@ -21,10 +21,14 @@ class Switcher
     constructor:->
         @isShowCategory = false
         @switcher = create_element(tag:'div', id:'switcher', document.body)
-        @switcherHover = create_element(tag:'div', id:"switcher_hover", document.body)
-        @img = create_img(src: 'img/favor_normal.png', id:'notify',class:"switcher_hover", document.body)
+        @switcherHover = create_element(tag:'div', id:"switcher_hover", class:"notify", document.body)
+        @img = create_img(src: 'img/favor_normal.png', id:'notify',class:"switcher_hover notify", document.body)
         @img.addEventListener("webkitAnimationEnd", =>
             @img.style.webkitAnimationName = ''
+        )
+        @switcherHover.addEventListener("webkitAnimationEnd", =>
+            @switcherHover.style.webkitAnimationName = ''
+            @switcherHover.style.webkitBoxShadow = ""
         )
         @showCategory()
         @page = 'Favor'
@@ -154,3 +158,5 @@ class Switcher
 
     notify:->
         @img.style.webkitAnimationName = 'Separate'
+        @switcherHover.style.webkitAnimationName = 'Separate'
+        @switcherHover.style.webkitBoxShadow = "0 0 2px rgba(255,255,255,0.6)"
