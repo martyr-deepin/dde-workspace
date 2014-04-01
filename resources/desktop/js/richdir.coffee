@@ -360,12 +360,9 @@ class RichDir extends DesktopEntry
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
                 @contextMenu = build_menu(w.build_block_item_menu())
-            )
-
-            ele.addEventListener("itemselected", (evt) ->
-                evt.stopPropagation()
-                w = Widget.look_up(this.parentElement.id)
-                w.block_do_itemselected(evt, this)
+                        ?.addListener(w.block_do_itemselected)
+                        .showMenu(evt.clientX, evt.clientY)
+                evt.preventDefault()
             )
 
             ele_ul.appendChild(ele)
@@ -456,6 +453,7 @@ class RichDir extends DesktopEntry
 
     build_block_item_menu : =>
         menu = []
+        menu.unshift(DEEPIN_MENU_TYPE.NORMAL)
         menu.push([1, _("_Open")])
         menu.push([])
         menu.push([3, _("Cu_t")])
@@ -467,8 +465,9 @@ class RichDir extends DesktopEntry
         menu
 
 
-    block_do_itemselected : (evt, self) ->
-        switch evt.id
+    block_do_itemselected : (id) ->
+        self = this
+        switch id
             when 1
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
@@ -507,5 +506,5 @@ class RichDir extends DesktopEntry
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
                 show_entries_properties([e]) if e?
-            else echo "menu clicked:id=#{env.id} title=#{env.title}"
+            else echo "menu clicked:id=#{id}"
         return
