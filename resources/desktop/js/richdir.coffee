@@ -30,7 +30,7 @@ class RichDir extends DesktopEntry
         super(entry, true, true)
         @div_pop = null
         @show_pop = false
-
+        @pop_div_item_contextmenu_flag = false
 
     destroy : ->
         if @div_pop != null then @hide_pop_block()
@@ -79,6 +79,7 @@ class RichDir extends DesktopEntry
 
 
     do_rightclick : (evt) ->
+        echo "do_rightclick"
         if @show_pop == true then @hide_pop_block()
         super
 
@@ -157,7 +158,9 @@ class RichDir extends DesktopEntry
 
 
     item_blur : =>
-        if @div_pop != null then @hide_pop_block()
+        echo "item_blur"
+        echo @pop_div_item_contextmenu_flag
+        if @div_pop != null && !@pop_div_item_contextmenu_flag then @hide_pop_block()
         super
 
 
@@ -316,7 +319,8 @@ class RichDir extends DesktopEntry
             s.className = "item_name"
             s.innerText = DCore.DEntry.get_name(e)
             ele.appendChild(s)
-
+            
+            that = @
             ele.addEventListener('dragstart', (evt) ->
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
@@ -360,14 +364,18 @@ class RichDir extends DesktopEntry
 
             ele.addEventListener('contextmenu', (evt) ->
                 evt.stopPropagation()
+                evt.preventDefault()
+                that.pop_div_item_contextmenu_flag = true
+                
                 w = Widget.look_up(this.parentElement.id)
-                @contextMenu = build_menu(w.build_block_item_menu())
-                        ?.addListener((evt)->
-                            evt.preventDefault()
-                            evt.stopPropagation()
-                            w.block_do_itemselected.bind(this)
-                        )
-                        .showMenu(evt.clientX, evt.clientY)
+                echo "w.id" + w.id
+                echo "this.id" + this.id
+                if w? then e = w.sub_items[this.id]
+                echo e
+                build_menu(w.build_block_item_menu())
+                    .addListener(w.block_do_itemselected.bind(this))
+                    .unregisterHook(that.hide_pop_block)
+                    .showMenu(evt.clientX, evt.clientY)
             )
 
             ele_ul.appendChild(ele)
@@ -440,6 +448,9 @@ class RichDir extends DesktopEntry
 
 
     hide_pop_block : =>
+        echo "hide_pop_block"
+        @pop_div_item_contextmenu_flag = false
+        
         if @div_pop?
             @sub_items = {}
             @div_pop.parentElement?.removeChild(@div_pop)
@@ -472,13 +483,17 @@ class RichDir extends DesktopEntry
 
     block_do_itemselected : (id) ->
         self = this
+        echo "self.id" + self.id
+        echo "self.parentElement.id" + self.parentElement.id
+        
+        id = parseInt(id)
         switch id
             when 1
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
                 if e?
                     if !DCore.DEntry.launch(e, [])
-                        if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
+                        if confirm(_("The link is invalid. Do you want to delete it?"), _("Warning"))
                             list = []
                             list.push(e)
                             DCore.DEntry.trash(list)
@@ -500,13 +515,17 @@ class RichDir extends DesktopEntry
                     DCore.DEntry.clipboard_copy(list)
                 if w? then w.hide_pop_block()
             when 6
+                echo "6 delete"
                 list = []
                 w = Widget.look_up(self.parentElement.id)
+                echo "w.id" + w.id
                 if w? then e = w.sub_items[self.id]
+                echo e
                 if e?
                     list.push(e)
                     DCore.DEntry.trash(list)
             when 8
+                echo "6 properties"
                 list = []
                 w = Widget.look_up(self.parentElement.id)
                 if w? then e = w.sub_items[self.id]
