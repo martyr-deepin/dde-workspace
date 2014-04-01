@@ -67,7 +67,7 @@ class Lock extends Widget
 
 
 lock = new Lock()
-lock.setBodyWallpaper("sky_static")
+lock.setBodyWallpaper("sky_move")
 lock.dbusPowerManager()
 
 user = new User()
