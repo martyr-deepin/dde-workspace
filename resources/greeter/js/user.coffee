@@ -443,11 +443,13 @@ class UserInfo extends Widget
     loginAnimation: ->
         rotate = 0
         @face_recognize_div.style.display = "block"
-        @face_animation_interval = setInterval(=>
-            @face_recognize_div.style.left = @userimg_div.style.left
-            rotate = (rotate + 5) % 360
-            animation_rotate(@face_recognize_img,rotate)
-        ,20)
+        timeout = setTimeout(=>
+            @face_animation_interval = setInterval(=>
+                @face_recognize_div.style.left = @userimg_div.style.left
+                rotate = (rotate + 5) % 360
+                animation_rotate(@face_recognize_img,rotate)
+            ,20)
+        ,200)
     
     loginAnimationClear: ->
         @face_recognize_div.style.display = "none"
