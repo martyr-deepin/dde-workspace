@@ -236,7 +236,10 @@ class RichDir extends DesktopEntry
         document.body.appendChild(@div_pop)
         @div_pop.addEventListener("mousedown", @on_event_stoppropagation)
         @div_pop.addEventListener("click", @on_event_stoppropagation)
-        @div_pop.addEventListener("contextmenu", @on_event_stoppropagation)
+        @div_pop.addEventListener("contextmenu",(e)=>
+            e.preventDefault()
+            e.stopPropagation()
+        )
         @div_pop.addEventListener("keyup", @on_event_stoppropagation)
         @div_pop.addEventListener("dragenter", @on_drag_event_none)
         @div_pop.addEventListener("dragover", @on_drag_event_none)
@@ -246,6 +249,8 @@ class RichDir extends DesktopEntry
         @display_not_selected()
         @display_not_focus()
         @display_short_name()
+        
+
 
         @fill_pop_block()
         return
@@ -265,9 +270,6 @@ class RichDir extends DesktopEntry
         ele_ul = document.createElement("ul")
         ele_ul.setAttribute("id", @id)
         @div_pop.appendChild(ele_ul)
-
-        menus_div_pop = []
-        @div_pop.parentElement.contextMenu = build_menu(menus_div_pop)
 
         # how many we can hold per line due to workarea width
         # 20px for ul padding, 2px for border, 8px for scrollbar
@@ -360,9 +362,12 @@ class RichDir extends DesktopEntry
                 evt.stopPropagation()
                 w = Widget.look_up(this.parentElement.id)
                 @contextMenu = build_menu(w.build_block_item_menu())
-                        ?.addListener(w.block_do_itemselected)
+                        ?.addListener((evt)->
+                            evt.preventDefault()
+                            evt.stopPropagation()
+                            w.block_do_itemselected.bind(this)
+                        )
                         .showMenu(evt.clientX, evt.clientY)
-                evt.preventDefault()
             )
 
             ele_ul.appendChild(ele)
