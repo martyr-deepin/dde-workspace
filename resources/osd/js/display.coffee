@@ -51,13 +51,6 @@ class Display extends Widget
     hide:->
         @element.style.display = "none"
     
-    set_bg:(imgName)->
-        if @imgName == imgName then return
-        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
-        @imgName = imgName
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
-  
-    
     getDBus:->
         try
             @DBusDisplay = DCore.DBus.session(DISPLAY)
@@ -98,13 +91,12 @@ class Display extends Widget
         value = null
         try
             echo "#{name}:#{bright[name]}"
-            value = bright[name] * 10
+            value = bright[name]
         catch e
             echo "getPrimarBrightnessValue: ERROR: #{e}"
-            value = null
         finally
             return value
-    
+     
     switchDisplayMode:(ModeChoose)->
         setFocus(false)
         osdHide()
@@ -120,19 +112,6 @@ class Display extends Widget
         @DBusDisplay.SwitchMode_sync(ModeChoose)
         @FromSwitchMonitors = false
 
-
-    showValue:(white)->
-        if white is null then return
-        else if white > 10 then white = 10
-        else if white < 0 then white = 0
-        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
-        @valueDiv.style.display = "-webkit-box"
-        for i in [0...10]
-            @valueEach[i] = create_img("valueEach","",@valueDiv) if @valueEach[i] is undefined
-            if i < white then valueBg = "white"
-            else valueBg = "black"
-            @valueEach[i].src = "img/#{valueBg}.png"
-            @valueEach[i].style.display = "block"
 
     showDisplayMode:->
         clearTimeout(@timepress) if @timepress
@@ -152,13 +131,15 @@ class Display extends Widget
             ImgIndex = @DisplayMode
             if ImgIndex >= 2 then ImgIndex = 2
             imgName = "#{@id}_#{ImgIndex}"
-            @set_bg(imgName) if @imgName != imgName
-
+            set_bg(@,imgName,@preDisplayImg)
+            @preDisplayImg = imgName
+            
             timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)
         ,TIME_PRESS)
     
+
     showBrightness:->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
@@ -167,10 +148,13 @@ class Display extends Widget
             echo "#{@id} Class  show"
             osdShow()
             @element.style.display = "block"
-            white = @getPrimarBrightnessValue()
-            echo "showBrightValue:#{white}"
-            @set_bg(@id)
-            @showValue(white)
+            
+            value = @getPrimarBrightnessValue()
+            echo "showBrightValue:#{value}"
+            set_bg(@,@id,@prebgImg)
+            @prebgImg = @id
+            
+            showValue(value,0,1,@,"Brightness_bar")
             timeout_osdHide = setTimeout(=>
                 osdHide()
             ,TIME_HIDE)

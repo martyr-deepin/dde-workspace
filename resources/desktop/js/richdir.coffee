@@ -349,7 +349,7 @@ class RichDir extends DesktopEntry
                 if w? then e = w.sub_items[this.id]
                 if e?
                     if !DCore.DEntry.launch(e, [])
-                        if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
+                        if confirm(_("The link is invalid. Do you want to delete it?"), _("Warning"))
                             list = []
                             list.push(e)
                             DCore.DEntry.trash(list)

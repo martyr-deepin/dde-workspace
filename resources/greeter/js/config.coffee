@@ -76,3 +76,7 @@ try
 catch e
     echo "#{e}"
 is_support_guest = false
+
+
+PowerManager = null
+

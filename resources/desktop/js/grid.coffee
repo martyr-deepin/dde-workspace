@@ -1019,7 +1019,7 @@ grid_right_click = (evt) ->
         new MenuItem(4, _("_Paste")).setActive(DCore.DEntry.can_paste()),
         new MenuSeparator(),
         new MenuItem(5, _("_Display settings")),
-        new MenuItem(6, _("_Zone settings")),
+        new MenuItem(6, _("_Corner settings")),
         new MenuItem(7, _("Pe_rsonalize"))
     )
     menu.addListener(grid_do_itemselected).showMenu(evt.clientX, evt.clientY)
@@ -1350,12 +1350,15 @@ item_rename_div.parentElement.addEventListener("keyup", (evt) ->
 
 move_widget_to_rename_div = (w) ->
     if rename_div_process_events == true then return
+    #w.element.style.left = "#{jQuery(w.element).offset().left}px"
+    #w.element.style.top = "#{jQuery(w.element).offset().top}px"
     w.element.style.left = "#{w.element.offsetLeft + s_offset_x - 1}px"
-    w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1}px"
+    w.element.style.top = "#{w.element.offsetTop + s_offset_y - 1 + 10}px"
     div_grid.removeChild(w.element)
     item_rename_div.appendChild(w.element)
     item_rename_div.setAttribute("id", w.get_id())
     item_rename_div.style.zIndex = 50
+    #w.style.zIndex = 60
     item_rename_div.focus()
     item_rename_div.style.display = "block"
     rename_div_process_events = true
@@ -1364,11 +1367,14 @@ move_widget_to_rename_div = (w) ->
 
 move_widget_to_grid_after_rename = (w) ->
     if rename_div_process_events == false then return
+    #w.element.style.left = "#{jQuery(w.element).offset().left}px"
+    #w.element.style.top = "#{jQuery(w.element).offset().top}px"
     w.element.style.left = "#{w.element.offsetLeft - s_offset_x - 1}px"
-    w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1}px"
+    w.element.style.top = "#{w.element.offsetTop - s_offset_y - 1 - 10}px"
     item_rename_div.removeChild(w.element)
     div_grid.appendChild(w.element)
     item_rename_div.style.zIndex = 0
+    #w.style.zIndex = 0
     item_rename_div.blur()
     item_rename_div.style.display = "none"
     rename_div_process_events = false

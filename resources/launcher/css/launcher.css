@@ -67,12 +67,13 @@ body {
   visibility: hidden;
   z-index: 4;
 }
-#notify {
-  -webkit-animation-duration: 400ms;
+.notify {
+  -webkit-animation-duration: 600ms;
+  -webkit-animation-iteration-count: 3;
 }
 #switcher_hover {
-  top: 39px;
-  left: 39px;
+  top: 40px;
+  left: 40px;
   position: fixed;
   width:34px;
   height:34px;
@@ -177,6 +178,7 @@ body {
   width: 100%;
   overflow-y: scroll;
   margin: 20px auto;
+  -webkit-mask: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0));
 }
 #blank{
   /* background:red; */

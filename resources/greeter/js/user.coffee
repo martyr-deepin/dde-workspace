@@ -350,26 +350,26 @@ class UserInfo extends Widget
         
         @is_recognizing = false
         @index = null
-        @time_animation = 1800
+        @time_animation = 500
         @face_login = @userFaceLogin(name)
         
         @userbase = create_element("div", "UserBase", @element)
         
-        if @face_login
-            @face_recognize_div = create_element("div","face_recognize_div",@userbase)
-            @face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
-            @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
+        @face_recognize_div = create_element("div","face_recognize_div",@userbase)
+        #@face_recognize_border = create_img("face_recognize_div","images/userinfo/facelogin_boder.png",@face_recognize_div)
+        @face_recognize_img = create_img("face_recognize_img","images/userinfo/facelogin_animation.png",@face_recognize_div)
         
         @userimg_div = create_element("div","userimg_div",@userbase)
         @userimg_border = create_element("div","userimg_border",@userimg_div)
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
-       
-        if @face_login
-            @face_recognize_div.style.width = 137 * scaleFinal
-            @face_recognize_div.style.height = 137 * scaleFinal
-            @face_recognize_div.style.left = @userimg_div.style.left
-            @face_recognize_div.style.display = "none"
+        @userimg_div.style.display = "none"
+        
+        echo "-------scaleFinal =  #{scaleFinal}-----------------"
+        @face_recognize_div.style.width = 135 * scaleFinal
+        @face_recognize_div.style.height = 135 * scaleFinal
+        @face_recognize_div.style.left = @userimg_div.style.left + 25
+        @face_recognize_div.style.display = "none"
         
         @userimg.style.width = 110 * scaleFinal
         @userimg.style.height = 110 * scaleFinal
@@ -380,15 +380,26 @@ class UserInfo extends Widget
 
         @username = create_element("div", "username", @userbase)
         @username.innerText = name
+        @username.style.display = "none"
 
         @login = new LoginEntry("login", @id, (u, p)=>@on_verify(u, p))
         @element.appendChild(@login.element)
+        @login.hide()
 
+        #@loginAnimation()
+    
+    
     hide:=>
+        @userimg_div.style.display = "none"
+        @username.style.display = "none"
+        @login.hide()
         @element.style.display = "none"
         @blur()
 
     show:=>
+        @userimg_div.style.display = "-webkit-box"
+        @username.style.display = "block"
+        @login.show()
         @element.style.display = "-webkit-box"
         @focus()
 
@@ -429,23 +440,29 @@ class UserInfo extends Widget
             DCore[APP_NAME].draw_camera(@userimg, @userimg.width, @userimg.height)
         , 20)
 
-    draw_avatar: ->
-        if !@face_login then return
+    loginAnimation: ->
         rotate = 0
         @face_recognize_div.style.display = "block"
         @face_animation_interval = setInterval(=>
             @face_recognize_div.style.left = @userimg_div.style.left
             rotate = (rotate + 5) % 360
             animation_rotate(@face_recognize_img,rotate)
-        ,50)
+        ,20)
+    
+    loginAnimationClear: ->
+        @face_recognize_div.style.display = "none"
+        clearInterval(@face_animation_interval) if @face_animation_interval
+
+    draw_avatar: ->
+        if !@face_login then return
+        @loginAnimation()
         enable_detection(true)
 
     stop_avatar:->
         if !@face_login then return
         clearInterval(draw_camera_id)
         draw_camera_id = null
-        clearInterval(@face_animation_interval) if @face_animation_interval
-        @face_recognize_div.style.display = "none"
+        @loginAnimationClear()
         enable_detection(false)
         DCore[APP_NAME].cancel_detect()
    
@@ -473,6 +490,7 @@ class UserInfo extends Widget
    
     
     blur: ->
+        @loginAnimationClear()
         @stop_avatar()
 
 
@@ -489,17 +507,18 @@ class UserInfo extends Widget
                 session = "deepin"
             @session = session
             echo 'start session'
+            @loginAnimation()
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"
             echo 'start session end'
         else
+            @loginAnimation()
             DCore.Lock.start_session(username,password,@session)
     
     auth_failed: (msg) =>
+        @loginAnimationClear()
         @stop_avatar()
         @login.password_error(msg)
-        document.body.cursor = "default"
-
 
     animate_prev: ->
         if @face_login
@@ -567,13 +586,15 @@ DCore.signal_connect("auth-succeed", ->
             document.body.appendChild(confirmdialog.element)
             confirmdialog.interval(60)
     else
-        if is_greeter then return
+        if is_greeter
+            echo "greeter exit"
         else
             try
                 PowerManager.StopDim() if PowerManager?
-                echo "StopDim"
+                echo "PowerManager.StopDim()" if PowerManager?
             catch e
                 echo "#{e}"
             DCore.Lock.quit()
+            echo "dlock exit"
 )
 

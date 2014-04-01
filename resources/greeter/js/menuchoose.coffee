@@ -60,6 +60,12 @@ class MenuChoose extends Widget
         document.body.appendChild(@element)
         @element.style.display = "none"
     
+    setPos:->
+        left = (screen.width  - @element.clientWidth) / 2
+        top = (screen.height  - @element.clientHeight) / 2 * 0.8
+        @element.style.left = "#{left}px"
+        @element.style.top = "#{top}px"
+
  
     show:->
         @animation_end = false
@@ -110,6 +116,7 @@ class MenuChoose extends Widget
             'linear',=>
                 $("#div_users").style.display = "none"
                 @element.style.display = "-webkit-box"
+                @setPos()
                 for tmp,i in @opt
                     animation_opt_move_show(i,i * t_delay)
         )
@@ -247,17 +254,26 @@ class MenuChoose extends Widget
         power = {"lock":true,"value":powervalue}
         localStorage.setObject("shutdown_from_lock",power)
 
-        value = _("Input password to #{powervalue}")
+        option_text = @option_text[j] for option,j in @option when option is powervalue
+        value = _("Enter password to %1").args(option_text)
         localStorage.setItem("password_value_shutdown",value)
+        
         @password = $(".password")
         @loginbutton = $(".loginbutton")
 
-        @password.style.color = "#ff8a00"
-        @password.style.fontSize = "1.5em"
-        @password.type = "text"
-        @password.value = value
+        password_error = (msg) =>
+            @password.style.color = "#F4AF53"
+            @password.style.fontSize = "1.2em"
+            @password.style.paddingBottom = "0.4em"
+            @password.style.letterSpacing = "0px"
+            @password.type = "text"
+            password_error_msg = msg
+            @password.value = password_error_msg
+            @password.blur()
+            @loginbutton.disable = true
+        
+        password_error(value)
         @loginbutton.src = "images/userinfo/#{powervalue}_normal.png"
-        @loginbutton.disable = true
         
 
     confirm_shutdown_hide:=>
@@ -268,13 +284,18 @@ class MenuChoose extends Widget
 
         @password = $(".password")
         @loginbutton = $(".loginbutton")
-        @password.style.color = "rgba(255,255,255,0.5)"
-        @password.style.fontSize = "2.0em"
-        @password.type = "password"
-        @password.focus()
-        @loginbutton.disable = false
-        @password.value = null
         
+        input_password_again = =>
+            @password.style.color = "rgba(255,255,255,0.5)"
+            @password.style.fontSize = "2.0em"
+            @password.style.paddingBottom = "0.2em"
+            @password.style.letterSpacing = "5px"
+            @password.type = "password"
+            @password.focus()
+            @loginbutton.disable = false
+            @password.value = null
+
+        input_password_again()
         jQuery(@loginbutton).animate(
             {opacity:'0.0';},
             t_userinfo_show_hide,

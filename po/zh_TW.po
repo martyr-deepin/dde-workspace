@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-21 11:42+0800\n"
+"POT-Creation-Date: 2014-03-27 19:24+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:254
-msgid "Input password to #{powervalue}"
+#: ../resources/greeter/js/menuchoose.coffee:251
+msgid "Enter password to %1"
 msgstr ""
 
-#: ../resources/greeter/js/user.coffee:210
+#: ../resources/greeter/js/powermenu.coffee:48
+msgid "suspend"
+msgstr "暫停"
+
+#: ../resources/greeter/js/powermenu.coffee:49
+msgid "restart"
+msgstr "重新啟動"
+
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "Shut down"
+msgstr "關機"
+
+#: ../resources/greeter/js/user.coffee:178
 msgid "guest"
 msgstr "訪客"
 
@@ -112,7 +124,7 @@ msgstr "電腦"
 #: ../resources/desktop/js/richdir.coffee:130
 #: ../resources/desktop/js/richdir.coffee:459
 #: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/launcher/js/item.coffee:109
+#: ../resources/launcher/js/item.coffee:263
 msgid "_Open"
 msgstr "開啟(_O)"
 
@@ -128,7 +140,7 @@ msgid "Home"
 msgstr "家目錄"
 
 #: ../resources/desktop/js/specialitem.coffee:175
-#: ../resources/dock/js/deepin_item.coffee:327
+#: ../resources/dock/js/main.coffee:131
 msgid "Trash"
 msgstr "回收筒"
 
@@ -141,7 +153,7 @@ msgid "_Clean up 1 item"
 msgstr "清理1個項目(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:243
-#: ../resources/dock/js/deepin_item.coffee:103
+#: ../resources/dock/js/deepin_item.coffee:76
 msgid "_Clean up"
 msgstr "清理(_C)"
 
@@ -166,16 +178,15 @@ msgid "_Delete"
 msgstr "删除(_D)"
 
 #: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
+#, fuzzy
+msgid "The link is invalid. Do you want to delete it?"
 msgstr "該連結已經失效，是否要刪除？"
 
 #: ../resources/desktop/js/richdir.coffee:352
 #: ../resources/desktop/js/richdir.coffee:477
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
-#: ../resources/dock/js/deepin_item.coffee:132
+#: ../resources/dock/js/deepin_item.coffee:105
 msgid "Warning"
 msgstr "警告"
 
@@ -188,6 +199,11 @@ msgstr "剪下(_T)"
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "複製(_C)"
+
+#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/application.coffee:177
+msgid "The link has expired. Do you want to delete it?"
+msgstr "該連結已經失效，是否要刪除？"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -205,56 +221,56 @@ msgid "Extract _Here"
 msgstr "在此解壓縮(_H)"
 
 #: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/deepin_item.coffee:132
+#: ../resources/dock/js/deepin_item.coffee:105
 msgid "Can not open this file."
 msgstr "無法打開此檔案。"
 
-#: ../resources/desktop/js/grid.coffee:70 ../lib/dentry/fileops.c:403
+#: ../resources/desktop/js/grid.coffee:71 ../lib/dentry/fileops.c:403
 msgid "Untitled"
 msgstr "無標題"
 
-#: ../resources/desktop/js/grid.coffee:994
+#: ../resources/desktop/js/grid.coffee:995
 msgid "_Name"
 msgstr "名稱(_N)"
 
-#: ../resources/desktop/js/grid.coffee:995
+#: ../resources/desktop/js/grid.coffee:996
 msgid "Last modified _time"
 msgstr "最近修改時間(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1000
+#: ../resources/desktop/js/grid.coffee:1001
 msgid "_Folder"
 msgstr "資料夾(_F)"
 
-#: ../resources/desktop/js/grid.coffee:1001
+#: ../resources/desktop/js/grid.coffee:1002
 msgid "_Text document"
 msgstr "文字文件(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1015
+#: ../resources/desktop/js/grid.coffee:1016
 msgid "_Sort by"
 msgstr "排序方式(_S)"
 
-#: ../resources/desktop/js/grid.coffee:1016
+#: ../resources/desktop/js/grid.coffee:1017
 msgid "_New"
 msgstr "新增(_N)"
 
-#: ../resources/desktop/js/grid.coffee:1017
+#: ../resources/desktop/js/grid.coffee:1018
 msgid "Open in _terminal"
 msgstr "在終端機中打開(_T)"
 
-#: ../resources/desktop/js/grid.coffee:1018
+#: ../resources/desktop/js/grid.coffee:1019
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: ../resources/desktop/js/grid.coffee:1020
+#: ../resources/desktop/js/grid.coffee:1021
 msgid "_Display settings"
 msgstr "顯示設定(_D)"
 
-#: ../resources/desktop/js/grid.coffee:1021
+#: ../resources/desktop/js/grid.coffee:1022
 #, fuzzy
-msgid "_Zone settings"
+msgid "_Corner settings"
 msgstr "熱區設定(_D)"
 
-#: ../resources/desktop/js/grid.coffee:1022
+#: ../resources/desktop/js/grid.coffee:1023
 msgid "Pe_rsonalize"
 msgstr "個人化(_R)"
 
@@ -263,19 +279,14 @@ msgid "_New Window"
 msgstr "新建视窗(_N)"
 
 #: ../resources/dock/js/clientgroup.coffee:124
-#: ../resources/dock/js/deepin_item.coffee:106
-msgid "_Close"
-msgstr "關閉(_C)"
-
-#: ../resources/dock/js/clientgroup.coffee:127
 msgid "Close _All"
 msgstr "關閉全部(_A)"
 
-#: ../resources/dock/js/clientgroup.coffee:131
+#: ../resources/dock/js/clientgroup.coffee:128
 msgid "_Dock me"
 msgstr "停駐(_D)"
 
-#: ../resources/dock/js/item.coffee:308
+#: ../resources/dock/js/item.coffee:307
 msgid "The item is invalid. Do you want to remove it from the dock panel?"
 msgstr "該項目無效。您要把它從 Dock 刪除嗎？"
 
@@ -287,78 +298,108 @@ msgstr "執行(_R)"
 msgid "_Undock"
 msgstr "移除停駐(_U)"
 
-#: ../resources/dock/js/deepin_item.coffee:241
+#: ../resources/dock/js/deepin_item.coffee:79
+msgid "_Close"
+msgstr "關閉(_C)"
+
+#: ../resources/dock/js/deepin_item.coffee:219
 msgid "_View as analog"
 msgstr "顯示模擬時鍾"
 
-#: ../resources/dock/js/deepin_item.coffee:242
+#: ../resources/dock/js/deepin_item.coffee:220
 #, fuzzy
 msgid "_Time as settings"
 msgstr "时间設定(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:288
+#: ../resources/dock/js/deepin_item.coffee:266
 msgid "_View as digit"
 msgstr "顯示數字時鍾"
 
-#: ../resources/dock/js/deepin_item.coffee:289
+#: ../resources/dock/js/deepin_item.coffee:267
 msgid "_Time settings"
 msgstr "时间設定(_D)"
 
-#: ../resources/dock/js/deepin_item.coffee:325
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
 msgid "Launcher"
 msgstr "啟動器"
 
-#: ../resources/dock/js/deepin_item.coffee:326
-msgid "Show/Hide Desktop"
-msgstr "顯示/隱藏桌面"
+#: ../resources/zone/js/zone.coffee:31
+#, fuzzy
+msgid "System Settings"
+msgstr "桌面設定(_E)"
 
-#: ../resources/launcher/js/search.coffee:29
-msgid "Type to search..."
-msgstr "鍵入要搜尋的關鍵字..."
-
-#: ../resources/launcher/js/item.coffee:115
-msgid "Send to d_esktop"
-msgstr "發送到桌面(_E)"
-
-#: ../resources/launcher/js/item.coffee:118
-msgid "Send to do_ck"
-msgstr "添加到 Dock(_C)"
-
-#: ../resources/launcher/js/item.coffee:126
-msgid "_Uninstall"
+#: ../resources/zone/js/zone.coffee:31
+msgid "Workspace"
 msgstr ""
 
-#: ../resources/launcher/js/config.coffee:31
+#: ../resources/zone/js/zone.coffee:31
+msgid "Desktop"
+msgstr ""
+
+#: ../resources/zone/js/zone.coffee:31
+msgid "None"
+msgstr ""
+
+#: ../resources/launcher/js/softwaremanager.coffee:77
+msgid "Uninstall failed"
+msgstr ""
+
+#: ../resources/launcher/js/softwaremanager.coffee:77
+#, fuzzy
+msgid "Deepin Software Center is Not Found"
+msgstr "軟體中心"
+
+#: ../resources/launcher/js/const.coffee:64
 msgid "_Hide hidden icons"
 msgstr "隱藏已隱藏圖示(_H)"
 
-#: ../resources/launcher/js/config.coffee:32
+#: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
 msgstr "顯示已隱藏圖示(_D)"
 
-#: ../resources/launcher/js/config.coffee:35
+#: ../resources/launcher/js/const.coffee:68
 msgid "_Hide this icon"
 msgstr "隱藏該圖示(_H)"
 
-#: ../resources/launcher/js/config.coffee:36
+#: ../resources/launcher/js/const.coffee:69
 msgid "_Display this icon"
 msgstr "顯示該圖示(_D)"
 
-#: ../resources/launcher/js/config.coffee:41
+#: ../resources/launcher/js/const.coffee:72
 msgid "_Add to autostart"
 msgstr "加入到「自動啟動」(_A)"
 
-#: ../resources/launcher/js/config.coffee:42
+#: ../resources/launcher/js/const.coffee:73
 msgid "_Remove from autostart"
 msgstr "從「自動啟動」中移除(_R)"
 
-#: ../resources/launcher/js/config.coffee:48
-msgid "Sort By _Frequency"
-msgstr "依使用頻率排序(_F)"
+#: ../resources/launcher/js/const.coffee:80
+#, fuzzy
+msgid "Add to _favor"
+msgstr "加入到「自動啟動」(_A)"
 
-#: ../resources/launcher/js/config.coffee:49
-msgid "Sort By _Name"
-msgstr "依名稱排序(_N)"
+#: ../resources/launcher/js/const.coffee:81
+#, fuzzy
+msgid "Remove from _favor"
+msgstr "從「自動啟動」中移除(_R)"
+
+#: ../resources/launcher/js/item.coffee:266
+msgid "Send to d_esktop"
+msgstr "發送到桌面(_E)"
+
+#: ../resources/launcher/js/item.coffee:269
+msgid "Send to do_ck"
+msgstr "添加到 Dock(_C)"
+
+#: ../resources/launcher/js/item.coffee:272
+msgid "_Uninstall"
+msgstr ""
+
+#: ../resources/launcher/js/item.coffee:315
+msgid ""
+"This operation may lead to uninstalling other corresponding softwares. Are "
+"you sure to uninstall this Item?"
+msgstr ""
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -373,11 +414,11 @@ msgstr "請使用密碼登入或點擊頭像重試"
 msgid "%sRetry automatically in %ds"
 msgstr "%s%d秒後自動重試"
 
-#: ../app/greeter/mutils.c:83
+#: ../app/greeter/mutils.c:84
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:125 ../app/greeter/greeter.c:153
+#: ../app/greeter/dlock.c:127 ../app/greeter/greeter.c:154
 msgid "Invalid Password"
 msgstr "密碼錯誤"
 
@@ -401,32 +442,33 @@ msgstr "無法啟用Dock，因為Compiz附加元件尚未啟用"
 msgid "another instance of dock is running...\n"
 msgstr "已有一個應用程式Dock例程正在運行...\n"
 
-#: ../app/launcher/launcher.c:445 ../app/launcher/launcher.c:456
-msgid "another instance of launcher is running...\n"
+#: ../app/launcher/launcher.c:491
+#, fuzzy
+msgid "another instance of launcher is running..."
 msgstr "已有一個應用程式啟動器例程正在運行...\n"
 
-#: ../lib/dentry/entry.c:746
+#: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
 "This *.desktop file cannot be changed to the name \"%s\".You may not have "
 "such permission"
 msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
 
-#: ../lib/dentry/entry.c:752
+#: ../lib/dentry/entry.c:753
 #, c-format
 msgid ""
 "The name \"%s\" is already used in this folder. Please use a different name."
 msgstr "名稱「%s」已存在於該資料夾。請使用其他名稱。"
 
-#: ../lib/dentry/entry.c:758
+#: ../lib/dentry/entry.c:759
 msgid "The Item could not be renamed"
 msgstr "該項目無法重命名"
 
-#: ../lib/dentry/entry.c:828 ../lib/dentry/fileops.c:809
+#: ../lib/dentry/entry.c:829 ../lib/dentry/fileops.c:809
 msgid "copy"
 msgstr "複製"
 
-#: ../lib/dentry/entry.c:1411
+#: ../lib/dentry/entry.c:1412
 msgid "App Group"
 msgstr "程式啟動組"
 
@@ -661,6 +703,22 @@ msgstr "公用程式"
 msgid "other"
 msgstr "其他"
 
+#, fuzzy
+#~ msgid "shut down"
+#~ msgstr "關機"
+
+#~ msgid "Show/Hide Desktop"
+#~ msgstr "顯示/隱藏桌面"
+
+#~ msgid "Type to search..."
+#~ msgstr "鍵入要搜尋的關鍵字..."
+
+#~ msgid "Sort By _Frequency"
+#~ msgstr "依使用頻率排序(_F)"
+
+#~ msgid "Sort By _Name"
+#~ msgstr "依名稱排序(_N)"
+
 #~ msgid "Administrator"
 #~ msgstr "管理員"
 
@@ -676,20 +734,7 @@ msgstr "其他"
 #~ msgid "Welcome"
 #~ msgstr "歡迎"
 
-#~ msgid "suspend"
-#~ msgstr "暫停"
-
-#~ msgid "restart"
-#~ msgstr "重新啟動"
-
-#~ msgid "D_esktop settings"
-#~ msgstr "桌面設定(_E)"
-
 #~ msgid "ShutDown"
-#~ msgstr "關機"
-
-#, fuzzy
-#~ msgid "shutdown"
 #~ msgstr "關機"
 
 #~ msgid "Lock"
@@ -703,9 +748,6 @@ msgstr "其他"
 
 #~ msgid "Restart"
 #~ msgstr "重新啟動"
-
-#~ msgid "Shut down"
-#~ msgstr "關機"
 
 #, fuzzy
 #~ msgid "Force Log out"

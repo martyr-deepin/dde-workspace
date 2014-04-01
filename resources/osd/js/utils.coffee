@@ -19,10 +19,13 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 _b = document.body
+
+DEBUG = false
 FOCUS = false
 
 setFocus = (focus)->
     FOCUS = focus
+    FOCUS = true if DEBUG
     DCore.Osd.set_focus(FOCUS)
 
 #MediaKey DBus
@@ -32,7 +35,7 @@ MEDIAKEY =
     interface: "com.deepin.daemon.MediaKey"
 
 TIME_HIDE = 1500
-TIME_PRESS = 5 
+TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
 try
@@ -69,7 +72,9 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    DCore.Osd.quit() if click_time % 3 == 0
+    if click_time % 3 == 0
+        click_time = 0
+        DCore.Osd.hide()
 )
 
 _b.addEventListener("contextmenu",(e)=>
@@ -80,3 +85,70 @@ _b.addEventListener("contextmenu",(e)=>
 setBodySize = (width,height)->
     _b.style.width = width
     _b.style.height = height
+
+set_bg = (cls,imgName,prevImgName)->
+    if prevImgName == imgName then return
+    echo "set_bg: bgChanged from #{prevImgName} to #{imgName}"
+    
+    cb = =>
+        echo "cb"
+   
+    cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
+    cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
+    cls.bg1.style.position = "absolute"
+    cls.bg2.style.position = "absolute"
+    cls.bg1.style.width = "100%"
+    cls.bg2.style.width = "100%"
+    cls.bg1.style.height = "100%"
+    cls.bg2.style.height = "100%"
+
+    cls.bg1.style.backgroundImage = "url(img/#{prevImgName}.png)"
+    cls.bg2.style.backgroundImage = "url(img/#{imgName}.png)"
+    cls.bg1.style.display = "block"
+    cls.bg2.style.display = "block"
+    
+    t = 500
+    cls.bg1.style.opacity = "1.0"
+    #apply_linear_hide(cls.bg1,t,"ease-in")
+    jQuery(cls.bg1).animate({opacity:'0';},t,"swing")
+    cls.bg2.style.opacity = "0.0"
+    jQuery(cls.bg2).animate({opacity:'1';},t,"swing")
+    #apply_linear_show(cls.bg2,t,"ease-out")
+
+    
+    if false
+        el = cls.element
+        cls.element.style.backgroundImage = "url(img/#{imgName}.png)"
+        apply_animation(cls.element,2000,"linear-show","ease-in",cb)
+        return
+
+    if false
+        apply_linear_hide_show(el,"0.1","ease-in-out")
+    #else
+        el.style.opacity = "1"
+        t = 50
+        jQuery(el).animate(
+            {opacity:'0';},
+            t,
+            "swing",=>
+                el.style.backgroundImage = "url(img/#{imgName}.png)"
+                jQuery(el).animate(
+                    {opacity:'1';},t,"swing"
+                )
+        )
+ 
+
+showValue = (value,min,max,cls,id)->
+    if value > max then value = max
+    else if value < min then value = min
+    else if value is null then value = min
+
+    if not cls.bar?
+        cls.bar = new Bar(id)
+        cls.bar.setPosition(cls.element,"31px","20px","absolute")
+        cls.bar.setSize("98px","6px")
+        cls.bar.setColor("#FFF")
+        cls.bar.showProgressNum(false)
+        cls.bar.progressCreate()
+    echo "showValue: setProgress-----#{value / max}---"
+    cls.bar.setProgress(value / max) if cls.bar

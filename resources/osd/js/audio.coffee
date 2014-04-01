@@ -25,67 +25,51 @@ class Audio extends Widget
         obj: AUDIO
         path: "/com/deepin/daemon/Audio/Sink0"
         interface: "com.deepin.daemon.Audio.Sink"
-    DEFAULT_SINK = 0
+    DEFAULT_SINK = "/com/deepin/daemon/Audio/Sink0"
 
     constructor:(@id)->
         super
-        @Cards = []
-        @Sinks = []
-        @Sources = []
-        @DBusSinks = []
-        @OpenedAudiosName = []
         @valueEach = []
-        @imgName = null
         _b.appendChild(@element)
-        @getDBus()
+        @getDBusAudio()
+        @getDBusDefaultSink(@DefaultSink)
         
    
     hide:->
         @element.style.display = "none"
     
-    set_bg:(imgName)->
-        if @imgName == imgName then return
-        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
-        @imgName = imgName
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
-    
-    getDBus:->
+    getDBusAudio:->
         try
             @DBusAudio = DCore.DBus.session(AUDIO)
-            @Cards = @DBusAudio.Cards
-            @Sinks = @DBusAudio.Sinks
-            @Sources = @DBusAudio.Sources
-            @DefaultSink = @DBusAudio.DefaultSink
-            if not @DefaultSink? then @DefaultSink = 0
-            @DefaultSource = @DBusAudio.DefaultSource
-            if not @DefaultSource? then @DefaultSource = 0
+            @DefaultSink = @DBusAudio.GetDefaultSink_sync()
+            if not @DefaultSink? then @DefaultSink = DEFAULT_SINK
         catch e
             echo " DBusAudio :#{AUDIO} ---#{e}---"
-        
+  
+    getDBusDefaultSink:(DefaultSink)->
+        echo "GetDefaultSink:#{DefaultSink}"
         try
-            for path in @Sinks
-                AUDIO_SINKS.path = path
-                DBusSink = DCore.DBus.session_object(
-                    AUDIO_SINKS.obj,
-                    AUDIO_SINKS.path,
-                    AUDIO_SINKS.interface
-                )
-                @DBusSinks.push(DBusSink)
-                @DBusDefaultSink = @DBusSinks[@DefaultSink]
+            AUDIO_SINKS.path = DefaultSink
+            @DBusDefaultSink = DCore.DBus.session_object(
+                AUDIO_SINKS.obj,
+                AUDIO_SINKS.path,
+                AUDIO_SINKS.interface
+            )
         catch e
             echo "getDBusSinks ERROR: ---#{e}---"
-   
+
+    updateDBusDefaultSink:->
+        DefaultSink = @DBusAudio.GetDefaultSink_sync()
+        if @DefaultSink is DefaultSink then return
+        echo "DefaultSink Changed!!!From #{@DefaultSink} to #{DefaultSink}"
+        @DefaultSink = DefaultSink
+        @getDBusDefaultSink(@DefaultSink)
+
     getVolume:->
         volume = @DBusDefaultSink.Volume
-        if volume > 150 then volume = 150
-        else if volume < 0 then volume = 0
-        else if volume is null then volume = 0
-        return volume / 15
-        
+       
     setVolume:(volume)->
-        if volume > 15 then volume = 15
-        else if volume < 0 then volume = 0
-        @DBusDefaultSink.SetSinkVolume_sync(volume * 15)
+        @DBusDefaultSink.SetSinkVolume_sync(volume)
 
     getMute:->
         @DBusDefaultSink.Mute
@@ -100,38 +84,26 @@ class Audio extends Widget
         echo "changeMute to muteset : #{muteset}"
         @setMute(muteset)
 
-    getBgName:(white)->
+    getBgName:(volume)->
         bg = "Audio_2"
-        if white <= 0 then bg = "Audio_0"
-        else if white <= 4 then bg = "Audio_1"
-        else if white <= 7 then bg = "Audio_2"
+        if volume <= 0 then bg = "Audio_0"
+        else if volume <= 40 then bg = "Audio_1"
+        else if volume <= 70 then bg = "Audio_2"
         else bg = "Audio_3"
         return bg
     
-    showValue:(white)->
-        if white is null then return
-        else if white > 10 then white = 10
-        else if white < 0 then white = 0
-        @valueDiv = create_element("div","valueDiv",@element) if not @valueDiv?
-        @valueDiv.style.display = "-webkit-box"
-        for i in [0...10]
-            @valueEach[i] = create_img("valueEach","",@valueDiv) if @valueEach[i] is undefined
-            if i < white then valueBg = "white"
-            else valueBg = "black"
-            @valueEach[i].src = "img/#{valueBg}.png"
-            @valueEach[i].style.display = "block"
-
-    show:(white)->
+    show:(value)->
         clearTimeout(@timepress) if @timepress
         @timepress = setTimeout(=>
             clearTimeout(timeout_osdHide) if timeout_osdHide
             
             osdShow()
             @element.style.display = "block"
-            bg = @getBgName(white)
-            echo "show #{@id} Volume:#{white} BgName:#{bg}.png"
-            @set_bg(bg)
-            @showValue(white)
+            bgImg = @getBgName(value)
+            echo "show #{@id} Volume:#{value} BgName:#{bgImg}.png"
+            set_bg(@,bgImg,@prebgImg)
+            @prebgImg = bgImg
+            showValue(value,0,100,@,"Audio_bar")
 
             timeout_osdHide = setTimeout(=>
                 osdHide()
@@ -148,8 +120,9 @@ AudioUp = (keydown) ->
     echo "AudioUp"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioUp"
-    white = AudioCls.getVolume()
-    AudioCls.show(white)
+    AudioCls.updateDBusDefaultSink()
+    volume = AudioCls.getVolume()
+    AudioCls.show(volume)
 
 AudioDown = (keydown) ->
     if keydown then return
@@ -157,8 +130,9 @@ AudioDown = (keydown) ->
     echo "AudioDown"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioDown"
-    white = AudioCls.getVolume()
-    AudioCls.show(white)
+    AudioCls.updateDBusDefaultSink()
+    volume = AudioCls.getVolume()
+    AudioCls.show(volume)
 
 AudioMute = (keydown) ->
     if keydown then return
@@ -166,9 +140,10 @@ AudioMute = (keydown) ->
     echo "AudioMute"
     AudioCls = new Audio("Audio") if not AudioCls?
     AudioCls.id = "AudioMute"
-    white = AudioCls.getVolume()
-    if AudioCls.getMute() then white = 0
-    AudioCls.show(white)
+    AudioCls.updateDBusDefaultSink()
+    volume = AudioCls.getVolume()
+    if AudioCls.getMute() then volume = 0
+    AudioCls.show(volume)
 
 DBusMediaKey.connect("AudioUp",AudioUp) if DBusMediaKey?
 DBusMediaKey.connect("AudioDown",AudioDown) if DBusMediaKey?

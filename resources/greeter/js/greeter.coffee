@@ -50,11 +50,27 @@ class Greeter extends Widget
         else if e.which == RIGHT_ARROW
             User?.switchtoprev_userinfo()
 
+    setBodyWallpaper:(wallpaper)->
+        echo "setBodyWallpaper:#{wallpaper}"
+        _b = document.body
+        _b.style.height = window.innerHeight
+        _b.style.width = window.innerWidth
+        switch wallpaper
+            when "sky_move"
+                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
+                inject_js("js/skyThree/Three.js")
+                inject_js("js/skyThree/sky.js")
+            when "sky_static"
+                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
+            when "color"
+                _b.style.backgroundImage = "url(images/background1.jpg)"
+            else
+                inject_js("js/skyThree/Three.js")
+                inject_js("js/skyThree/sky.js")
 
-document.body.style.height = window.innerHeight
-document.body.style.width = window.innerWidth
 
 greeter = new Greeter()
+greeter.setBodyWallpaper("sky_move")
 
 desktopmenu = new DesktopMenu($("#div_desktop"))
 desktopmenu.new_desktop_menu()

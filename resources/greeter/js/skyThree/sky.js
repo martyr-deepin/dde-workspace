@@ -5,14 +5,15 @@ var ParticleSpeed = 100//defalut = 50
 
 //定义应用所需的组件:相机,场景,渲染器
 var camera, scene, renderer;
+var _b = document.body;
 //跟踪鼠标的位置
-var mouseX = 0, mouseY = 0;
+var mouseX = _b.offsetWidth / 2, mouseY = _b.offsetHeight / 2;
 //定义存储粒子的数组
 var particles = [];
 
 //数据初始化
 function init(){
-    document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"; 
+    //document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"; 
     //相机参数：
     //四个参数值分别代表:视野角：fov  纵横比：aspect 相机离视体最近的距离：near 相机离视体最远的距离：far
     camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 4000 );
@@ -104,4 +105,4 @@ function onMouseMove(event){
     mouseY = event.clientY;
 }
 
-document.body.onload = init();
+//document.body.onload = init();

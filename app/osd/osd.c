@@ -210,13 +210,13 @@ int main (int argc, char **argv)
     
     GdkRGBA rgba = { 0, 0, 0, 0.0 };
     gdk_window_set_background_rgba (gdkwindow, &rgba);
-    gdk_window_set_opacity (gdkwindow, 0.9);
+    gdk_window_set_opacity (gdkwindow, 0.7);
     gdk_window_set_keep_above (gdkwindow, TRUE);
     
     osd_set_focus(FALSE);
    
-    gdk_window_show(gdkwindow);
-    gtk_widget_show_all (container);
+    /*gdk_window_show(gdkwindow);*/
+    /*gtk_widget_show_all (container);*/
 
     gtk_main ();
 
