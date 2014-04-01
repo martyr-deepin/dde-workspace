@@ -79,4 +79,4 @@ is_support_guest = false
 
 
 PowerManager = null
-
+ANIMATION = false

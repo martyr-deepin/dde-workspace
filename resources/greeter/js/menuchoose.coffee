@@ -33,10 +33,10 @@ class MenuChoose extends Widget
     t_min = 100
     t_delay = 30
     
-    XMove = "-5em"
-    XBack = "0"
-    XStartShow = "80em"
-    XEndHide = "80em"
+    XMove = -50
+    XBack = 0
+    XStartShow = 300
+    XEndHide = 300
     
     init_width = 80 * 0.8
     final_width = 80
@@ -65,11 +65,13 @@ class MenuChoose extends Widget
         top = (screen.height  - @element.clientHeight) / 2 * 0.8
         @element.style.left = "#{left}px"
         @element.style.top = "#{top}px"
-
- 
+        XStartShow = (screen.width - left) - @element.clientWidth
+        XEndHide = XStartShow
+    
     show:->
-        @animation_end = false
         echo "show"
+        
+        @animation_end = false
         animation_opt_text_show = (i)=>
             if i != @opt.length - 1 then return
             #echo "opt_text[#{i}] show"
@@ -125,17 +127,18 @@ class MenuChoose extends Widget
    
     hide:->
         echo "hide"
+        
         @animation_end = false
         
         animation_user_show = (i)=>
             if i != 0 then return
             echo "animation_user_show(#{i})"
+            @element.style.display = "none"
             $("#div_users").style.display = "-webkit-box"
             jQuery('.div_users').delay(t_userinfo_show_delay).animate(
                 {opacity:'1.0';},
                 t_userinfo_show_hide,
                 "linear",=>
-                    @element.style.display = "none"
                     @animation_end = true
             )
 
