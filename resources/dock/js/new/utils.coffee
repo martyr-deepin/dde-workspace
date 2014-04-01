@@ -1,5 +1,5 @@
 itemDBus = (path)->
-    name: "dde.dock.Daemon"
+    name: "com.deepin.daemon.Dock"
     path: path
     interface: "dde.dock.EntryProxyer"
 

@@ -2,7 +2,7 @@ class Setting
     constructor:->
         @dbus = get_dbus(
             'session',
-            name: "dde.dock.Daemon",
+            name: "com.deepin.daemon.Dock",
             path: "/dde/dock/DockSetting",
             interface:"dde.dock.DockSetting"
         )

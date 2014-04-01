@@ -201,7 +201,7 @@ class PWContainer extends Widget
             @pw_width = clamp(screen.width / n, 0, PREVIEW_WINDOW_WIDTH)
 
             new_scale = @pw_width / PREVIEW_WINDOW_WIDTH
-            # echo "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
+            echo "@pw_width: #{@pw_width}, new_scale: #{new_scale}"
             @scale = new_scale
         window_width = @pw_width + (PREVIEW_WINDOW_MARGIN + PREVIEW_WINDOW_BORDER_WIDTH) * 2
 
@@ -382,10 +382,11 @@ class PreviewWindow extends Widget
             @canvas_height = Preview_container.pw_height
         else
             @scale = Preview_container.scale
-            # console.log("PWWindow scale: #{@scale}")
+            console.log("PWWindow scale: #{@scale}")
             @element.style.width = PREVIEW_WINDOW_WIDTH * @scale
             @element.style.height = PREVIEW_WINDOW_HEIGHT * @scale
             @canvas_width = PREVIEW_CANVAS_WIDTH * @scale
+            console.log("canvas width: #{@canvas_width}")
             @canvas_height = PREVIEW_CANVAS_HEIGHT * @scale
         @canvas.setAttribute("width", @canvas_width)
         @canvas.setAttribute("height", @canvas_height)
@@ -415,6 +416,7 @@ class PreviewWindow extends Widget
         if @scale != Preview_container.scale
             @update_size()
         if @w_id != 0
+            # console.log("draw_window_preview: #{@canvas_width}, #{@canvas_height}")
             DCore.Dock.draw_window_preview(@canvas, @w_id, @canvas_width, @canvas_height)
 
 

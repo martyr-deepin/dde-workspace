@@ -31,7 +31,7 @@ app_list = new AppList("app_list")
 
 
 EntryManager =
-    name:"dde.dock.Daemon"
+    name:"com.deepin.daemon.Dock"
     path:"/dde/dock/EntryManager"
     interface:"dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
