@@ -134,6 +134,8 @@ class SystemTray extends SystemItem
         else
             @img.style.display = 'none'
             @hood.style.display = 'block'
+            webkitCancelAnimationFrame(@calcTimer)
+            super
 
     on_rightclick: (e)=>
         e.preventDefault()
