@@ -1,6 +1,12 @@
 class SystemTray extends SystemItem
     constructor:(@id, @icon, title)->
         super
+        @hood = create_element(tag:"div", class:"ReflectImg", @imgWarp)
+        @hood.style.backgroundImage = "url(\"#{@icon}\")"
+        @hood.style.width = '48px'
+        @hood.style.height = '48px'
+        @hood.addEventListener("mouseover", @on_mouseover)
+        @img.style.display = 'none'
         @openIndicator.style.display = 'none'
         @core = get_dbus(
             'session',
@@ -22,7 +28,7 @@ class SystemTray extends SystemItem
             setTimeout(=>
                 @updateTrayIcon()
                 calc_app_item_size()
-            , 400)
+            , ANIMATION_TIME)
         )
         @core.connect("Changed", (xid)=>
             # console.log("#{xid} is Changed")
@@ -36,10 +42,10 @@ class SystemTray extends SystemItem
             setTimeout(=>
                 @updateTrayIcon()
                 calc_app_item_size()
-            , 400)
+            , ANIMATION_TIME)
         )
 
-        @items = @core.TrayIcons.slice(0)
+        @items = @core.TrayIcons.slice(0) || []
         # @ews = new EmbedWindow(@items, false)
         # @ews.show()
         # console.log("TrayIcons: #{@items}")
@@ -63,12 +69,10 @@ class SystemTray extends SystemItem
             newWidth = @upperItemNumber * itemSize
             # console.log("set width to #{newWidth}")
             @img.style.width = "#{newWidth}px"
-            # @imgWarp.style.width = "#{newWidth + 16}px"
             @element.style.width = "#{newWidth + 18}px"
         else if not @isShowing && @upperItemNumber > 2
             newWidth = 2 * itemSize
             @img.style.width = "#{newWidth}px"
-            # @imgWarp.style.width = "#{newWidth + 16}px"
             @element.style.width = "#{newWidth + 18}px"
         xy = get_page_xy(@element)
         for item, i in @items
@@ -88,6 +92,8 @@ class SystemTray extends SystemItem
         @calcTimer = webkitRequestAnimationFrame(@updatePanel)
 
     on_mouseover: (e)=>
+        @img.style.display = 'block'
+        @hood.style.display = 'none'
         clearTimeout(@hideTimer)
         webkitCancelAnimationFrame(@calcTimer || null)
         @updatePanel()
@@ -101,7 +107,7 @@ class SystemTray extends SystemItem
                 @updateTrayIcon()
                 for item in @items
                     $EW.show(item)
-            , 400)
+            , ANIMATION_TIME)
         else
             webkitCancelAnimationFrame(@calcTimer)
             for item in @items
@@ -114,13 +120,16 @@ class SystemTray extends SystemItem
         webkitCancelAnimationFrame(@calcTimer)
         @updatePanel()
         @isShowing = false
-        for item in @items
-            $EW.hide(item)
+        if @items
+            for item in @items
+                $EW.hide(item)
         @updateTrayIcon()
         @hideTimer = setTimeout(=>
+            @img.style.display = 'none'
+            @hood.style.display = 'block'
             webkitCancelAnimationFrame(@calcTimer)
             super
-        , 400)
+        , ANIMATION_TIME)
 
     on_rightclick: (e)=>
         e.preventDefault()

@@ -16,3 +16,5 @@ ITEM_DATA_FIELD =
     xids: "app-xids"
     status: "app-status"
     menu: "menu"
+
+ANIMATION_TIME = 400

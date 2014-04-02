@@ -111,7 +111,7 @@ class AppItem extends Item
         )
 
     init_clientgroup:->
-        console.log("init_clientgroup #{@core.id()}")
+        # console.log("init_clientgroup #{@core.id()}")
         @n_clients = []
         @client_infos = {}
         if @core
@@ -126,7 +126,7 @@ class AppItem extends Item
         @leader = null
 
     init_activator:->
-        console.log("init_activator #{@core.id()}")
+        # console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
         @set_tooltip(@title)
 
@@ -222,11 +222,11 @@ class AppItem extends Item
             # console.log("ClientGroup mouseover")
             # console.log(@core.type())
             if @core && @isApp()
-                console.log("App show preview")
+                # console.log("App show preview")
                 if @n_clients.length != 0
                     Preview_show(@)
             else if @embedWindows
-                console.log("Applet show preview")
+                # console.log("Applet show preview")
                 size = @embedWindows.window_size(@embedWindows.xids[0])
                 # console.log size
                 width = size.width
@@ -275,7 +275,7 @@ class AppItem extends Item
             _lastCliengGroup = @
             super
             if not Preview_container.is_showing
-                console.log "Preview_container is not showing"
+                # console.log "Preview_container is not showing"
                 # update_dock_region()
                 calc_app_item_size()
                 hide_id = setTimeout(=>
@@ -283,7 +283,7 @@ class AppItem extends Item
                     @embedWindows?.hide()
                 , 300)
             else
-                console.log "Preview_container is showing"
+                # console.log "Preview_container is showing"
                 DCore.Dock.require_all_region()
                 hide_id = setTimeout(=>
                     @embedWindows?.hide()
@@ -297,7 +297,7 @@ class AppItem extends Item
         super
         Preview_close_now()
         _lastCliengGroup?.embedWindows?.hide?()
-        console.log("rightclick")
+        # console.log("rightclick")
         xy = get_page_xy(@element)
 
         clientHalfWidth = @element.clientWidth / 2
@@ -337,13 +337,13 @@ class AppItem extends Item
 
     on_itemselected: (d)->
         (id)->
-            console.log("select id: #{id}")
+            # console.log("select id: #{id}")
             d?.HandleMenuItem(parseInt(id))
 
     on_click:(e)=>
         super
         @core.activate?(0,0)
-        console.log("on_click")
+        # console.log("on_click")
         if @isNormal()
             @openNotify()
 

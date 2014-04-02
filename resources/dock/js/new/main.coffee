@@ -29,6 +29,7 @@ panel.draw()
 
 app_list = new AppList("app_list")
 
+$DBus = {}
 
 EntryManager =
     name:"com.deepin.daemon.Dock"
@@ -36,24 +37,29 @@ EntryManager =
     interface:"dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
 
-$DBus = {}
+systemTray = null
+entryManager.connect("TrayInited",->
+    if not systemTray
+        trayIcon = DCore.get_theme_icon("deepin-systray", 48)
+        systemTray = new SystemTray("system-tray", trayIcon, "")
+)
 
 entryManager.connect("Added", (path)->
     d = get_dbus("session", itemDBus(path))
-    console.log("try to Added #{d.Id}")
+    console.log("try to Add #{d.Id}")
     if Widget.look_up(d.Id)
         return
 
-    console.log("added #{path}")
+    console.log("Added #{path}")
     createItem(d)
     # console.log("added done")
     calc_app_item_size()
-    if systemTray.isShowing
+    if systemTray?.isShowing
         systemTray.updateTrayIcon()
 
     setTimeout(->
         calc_app_item_size()
-        if systemTray.isShowing
+        if systemTray?.isShowing
             systemTray.updateTrayIcon()
     , 100)
 )
@@ -64,15 +70,15 @@ entryManager.connect("Removed", (id)->
     if id != "trash"
         deleteItem(id)
     calc_app_item_size()
-    systemTray.updateTrayIcon()
+    systemTray?.updateTrayIcon()
 )
 
-entries = entryManager.Entries
-for entry in entries
-    d = get_dbus("session", itemDBus(entry))
-    # console.log("init add: #{d.Id}")
-    if !Widget.look_up(d.Id)
-        createItem(d)
+# entries = entryManager.Entries
+# for entry in entries
+#     d = get_dbus("session", itemDBus(entry))
+#     # console.log("init add: #{d.Id}")
+#     if !Widget.look_up(d.Id)
+#         createItem(d)
 
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
@@ -91,5 +97,3 @@ setTimeout(->
     # apps are moved up, so add 8
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
-
-systemTray = new SystemTray("system-tray", "img/tray-panel.png", "")

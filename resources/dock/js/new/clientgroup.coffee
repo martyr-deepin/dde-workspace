@@ -7,7 +7,7 @@ class ClientGroup extends AppItem
         @n_clients = []
         @client_infos = {}
         if (d = $DBus[@id])
-            console.log "#{@id}: #{d.Type}, #{d.Data[ITEM_DATA_FIELD.xids]}"
+            # console.log "#{@id}: #{d.Type}, #{d.Data[ITEM_DATA_FIELD.xids]}"
             xids = JSON.parse(d.Data[ITEM_DATA_FIELD.xids])
             if d.Type == ITEM_TYPE.applet
                 @embedWindows = new EmbedWindow(xids)
