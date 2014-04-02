@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Deepin Application Tray
-Comment[zh_CN]=深度托盘
-Exec=dapptray
-NoDisplay=true
-OnlyShowIn=Deepin
-
