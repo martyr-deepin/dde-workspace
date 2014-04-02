@@ -93,11 +93,11 @@ static void
 start_authentication (struct AuthHandler *handler)
 {
     gchar *username = g_strdup (handler->username);
-    g_debug ("start authentication:%s\n", username);
+    g_warning ("start authentication:%s\n", username);
 
     if (g_strcmp0 (username, "guest") == 0) {
         lightdm_greeter_authenticate_as_guest (greeter);
-        g_debug ("start authentication for guest\n");
+        g_warning ("start authentication for guest\n");
 
     } else {
         lightdm_greeter_authenticate (greeter, username);
@@ -109,7 +109,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
-    g_debug("respond_authentication");
+    g_warning("respond_authentication");
     NOUSED(text);
     gchar *respond = NULL;
 
@@ -148,7 +148,7 @@ set_last_user (const gchar* username)
 static void
 start_session (LightDMGreeter *greeter)
 {
-    g_debug ("start session\n");
+    g_warning ("start session\n");
 
     gchar *session = g_strdup (handler->session);
     set_last_user (handler->username);
@@ -162,7 +162,7 @@ start_session (LightDMGreeter *greeter)
         free_auth_handler (handler);
 
     } else {
-        g_debug ("start session %s succeed\n", session);
+        g_warning ("start session %s succeed\n", session);
 
         g_key_file_free (greeter_keyfile);
         g_free (greeter_file);
@@ -174,15 +174,15 @@ start_session (LightDMGreeter *greeter)
 static void
 authenticated_complete(LightDMGreeter *greeter)
 {
-    g_debug ("authenticated_complete");
+    g_warning ("authenticated_complete:%ld\n",g_get_real_time());
     if (!lightdm_greeter_get_is_authenticated (greeter)) {
-        g_warning ("authenticated auth-failed\n");
+        g_warning("authenticated auth-failed\n");
         JSObjectRef error_message = json_create();
         json_append_string(error_message, "error", _("Invalid Password"));
         js_post_message("auth-failed", error_message);
         return;
     }
-    g_warning ("authenticated auth-succeed\n");
+    g_warning("authenticated auth-succeed\n");
     js_post_signal("auth-succeed");
     start_session(greeter);
 }
@@ -227,7 +227,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
     } else {
 
-        g_debug ("greeter start session:start authenticated\n");
+        g_warning ("greeter start session:start authenticated\n");
         start_authentication (handler);
 
         ret = TRUE;
@@ -241,6 +241,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
 int main (int argc, char **argv)
 {
+    g_message("greeter main");
     /* if (argc == 2 && 0 == g_strcmp0(argv[1], "-d")) */
     g_setenv("G_MESSAGES_DEBUG", "all", FALSE);
 
