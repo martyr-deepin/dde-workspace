@@ -78,7 +78,7 @@ desktopmenu.new_desktop_menu()
 
 user = new User()
 $("#div_users").appendChild(user.element)
-user.is_support_guest()
+user.isSupportGuest()
 user.new_userinfo_for_greeter()
 user.prev_next_userinfo_create() if user.userinfo_all.length > 1
 

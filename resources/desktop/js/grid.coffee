@@ -805,7 +805,7 @@ update_selected_stats = (w, evt) ->
             cancel_all_selected_stats()
             selected_item.push(last_one_id)
 
-        if selected_item.length == 1
+        else if selected_item.length == 1
             end_pos = pixel_to_pos(evt.clientX, evt.clientY, 1*_PART_, 1*_PART_)
             start_pos = Widget.look_up(selected_item[0]).get_pos()
 

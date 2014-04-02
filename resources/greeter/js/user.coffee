@@ -173,9 +173,11 @@ class User extends Widget
         _current_user.show()
         @element.appendChild(_current_user.element)
     
-    is_support_guest:->
-        if is_support_guest
-            u = new UserInfo("guest", _("guest"), "images/guest.jpg")
+    isSupportGuest:->
+        @AllowGuest = @Dbus_Account.AllowGuest
+        if is_support_guest and @AllowGuest
+            guest_image = "/var/lib/AccountsService/icons/guest.jpg"
+            u = new UserInfo("guest", _("guest"), guest_image)
             u.hide()
             @userinfo_all.push(u)
             @element.appendChild(u.element)
@@ -289,8 +291,9 @@ class LoginEntry extends Widget
                 @password.focus()
         )
 
-        document.body.addEventListener("keyup",(e)=>
-            if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
+        @element.addEventListener("keyup",(e)=>
+            #if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
+            if e.which == ENTER_KEY
                 if _current_user.id is @loginuser
                     if @check_completeness()
                         @on_active(@loginuser, @password.value)
