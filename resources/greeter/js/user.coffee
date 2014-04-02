@@ -446,6 +446,8 @@ class UserInfo extends Widget
         , 20)
 
     loginAnimation: ->
+        echo "loginAnimation"
+        return
         rotate = 0
         @face_recognize_div.style.display = "block"
         @timeout = setTimeout(=>
@@ -457,7 +459,9 @@ class UserInfo extends Widget
         ,800)
     
     loginAnimationClear: ->
+        echo "loginAnimationClear"
         @face_recognize_div.style.display = "none"
+        clearTimeout(@timeout) if @timeout
         clearInterval(@face_animation_interval) if @face_animation_interval
 
     draw_avatar: ->
