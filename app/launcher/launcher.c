@@ -193,6 +193,29 @@ void launcher_show()
 {
     gtk_widget_show_all(container);
     is_launcher_shown = TRUE;
+    GError* err = NULL;
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      NULL,
+                                                      "com.deepin.dde.dock",
+                                                      "/com/deepin/dde/dock",
+                                                      "com.deepin.dde.dock",
+                                                      NULL,
+                                                      &err
+                                                      );
+    if (err != NULL) {
+        g_warning("[%s:%d] get dock dbus failed: %s", __FILE__, __LINE__, err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_proxy_call_sync(proxy,
+                           "Hide",
+                           NULL,
+                           G_DBUS_CALL_FLAGS_NONE,
+                           -1,
+                           NULL,
+                           NULL
+                          );
 }
 
 
@@ -204,6 +227,29 @@ void launcher_hide()
     is_launcher_shown = FALSE;
     gtk_widget_hide(container);
     js_post_signal("exit_launcher");
+    GError* err = NULL;
+    GDBusProxy* proxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION,
+                                                      G_DBUS_PROXY_FLAGS_NONE,
+                                                      NULL,
+                                                      "com.deepin.dde.dock",
+                                                      "/com/deepin/dde/dock",
+                                                      "com.deepin.dde.dock",
+                                                      NULL,
+                                                      &err
+                                                      );
+    if (err != NULL) {
+        g_warning("[%s:%d] get dock dbus failed: %s", __FILE__, __LINE__, err->message);
+        g_error_free(err);
+        return;
+    }
+    g_dbus_proxy_call_sync(proxy,
+                           "Show",
+                           NULL,
+                           G_DBUS_CALL_FLAGS_NONE,
+                           -1,
+                           NULL,
+                           NULL
+                          );
 }
 
 
