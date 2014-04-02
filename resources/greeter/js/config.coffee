@@ -70,12 +70,13 @@ detect_is_from_lock = ->
     localStorage.setItem("from_lock",false)
     return from_lock
 
+
 is_support_guest = false
 try
     is_support_guest = DCore.Greeter.is_support_guest() if is_greeter
 catch e
     echo "#{e}"
-is_support_guest = false
+#is_support_guest = false
 
 
 PowerManager = null
