@@ -368,10 +368,7 @@ class RichDir extends DesktopEntry
                 that.pop_div_item_contextmenu_flag = true
                 
                 w = Widget.look_up(this.parentElement.id)
-                echo "w.id" + w.id
-                echo "this.id" + this.id
                 if w? then e = w.sub_items[this.id]
-                echo e
                 menu = build_menu(w.build_block_item_menu())
                 menu.unregisterHook(->
                     that.hide_pop_block()
@@ -485,9 +482,6 @@ class RichDir extends DesktopEntry
 
     block_do_itemselected : (id) ->
         self = this
-        echo "self.id" + self.id
-        echo "self.parentElement.id" + self.parentElement.id
-        
         id = parseInt(id)
         switch id
             when 1
