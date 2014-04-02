@@ -106,6 +106,9 @@ body {
     outline:none;
     overflow:hidden;
     padding: 0 1px; /*fix the truncation when the word's length is to long*/
+    word-wrap:normal;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .DesktopEntry .item_renaming {
@@ -211,7 +214,7 @@ body {
     max-width:90px;
     color:#FFF;
     word-wrap:break-word;
-    word-break:break-all;
+    /*word-break:break-all;*/
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
