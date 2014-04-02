@@ -55,7 +55,7 @@ class Bar extends Widget
         @progress.style.float = "left"
         @progress.style.background = @color
         @progress.style.textAlign = "center"
-        @progress.style.borderRadius = "4px"
+        @progress.style.borderRadius = "3px"
     
     setProgress:(@val)->
         if @val > 1 then @val = 1

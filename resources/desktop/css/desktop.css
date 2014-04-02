@@ -102,8 +102,6 @@ body {
     display:inline-block;
 }
 .DesktopEntry .item_name {
-    /*position:relative;*/
-    /*z-index:0;*/
     border-radius:2px;
     outline:none;
     overflow:hidden;
@@ -111,8 +109,6 @@ body {
 }
 
 .DesktopEntry .item_renaming {
-    /*position:relative;*/
-    /*z-index:60;*/
     width:100%;
     color:black;
     text-shadow:none;
