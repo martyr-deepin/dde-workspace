@@ -93,11 +93,11 @@ static void
 start_authentication (struct AuthHandler *handler)
 {
     gchar *username = g_strdup (handler->username);
-    //g_warning ("start authentication:%s\n", username);
+    g_debug ("start authentication:%s\n", username);
 
     if (g_strcmp0 (username, "guest") == 0) {
         lightdm_greeter_authenticate_as_guest (greeter);
-        g_warning ("start authentication for guest\n");
+        g_debug ("start authentication for guest\n");
 
     } else {
         lightdm_greeter_authenticate (greeter, username);
@@ -109,6 +109,7 @@ start_authentication (struct AuthHandler *handler)
 static void
 respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromptType type)
 {
+    g_debug("respond_authentication");
     NOUSED(text);
     gchar *respond = NULL;
 
@@ -142,22 +143,14 @@ set_last_user (const gchar* username)
     g_free (data);
 }
 
+
+
 static void
 start_session (LightDMGreeter *greeter)
 {
+    g_debug ("start session\n");
+
     gchar *session = g_strdup (handler->session);
-    //g_warning ("start session:%s\n", session);
-
-    if (!lightdm_greeter_get_is_authenticated (greeter)) {
-        g_warning ("start session:not authenticated\n");
-        JSObjectRef error_message = json_create();
-        json_append_string(error_message, "error", _("Invalid Password"));
-        js_post_message("auth-failed", error_message);
-
-        g_free (session);
-        return ;
-    }
-
     set_last_user (handler->username);
     /*keep_user_background (handler->username);*/
     kill_user_lock (handler->username, handler->password);
@@ -176,6 +169,22 @@ start_session (LightDMGreeter *greeter)
         g_free (session);
         free_auth_handler (handler);
     }
+}
+
+static void
+authenticated_complete(LightDMGreeter *greeter)
+{
+    g_debug ("authenticated_complete");
+    if (!lightdm_greeter_get_is_authenticated (greeter)) {
+        g_warning ("authenticated auth-failed\n");
+        JSObjectRef error_message = json_create();
+        json_append_string(error_message, "error", _("Invalid Password"));
+        js_post_message("auth-failed", error_message);
+        return;
+    }
+    g_warning ("authenticated auth-succeed\n");
+    js_post_signal("auth-succeed");
+    start_session(greeter);
 }
 
 JS_EXPORT_API
@@ -200,7 +209,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
     if (lightdm_greeter_get_is_authenticated (greeter)) {
 
         g_warning ("greeter start session:already authenticated\n");
-        //start_session (handler);
+        /*start_session (handler);*/
         ret = TRUE;
 
     } else if (lightdm_greeter_get_in_authentication (greeter)) {
@@ -218,7 +227,7 @@ gboolean greeter_start_session (const gchar *username, const gchar *password, co
 
     } else {
 
-        // g_warning ("greeter start session:start authenticated\n");
+        g_debug ("greeter start session:start authenticated\n");
         start_authentication (handler);
 
         ret = TRUE;
@@ -247,7 +256,7 @@ int main (int argc, char **argv)
 
     g_signal_connect (greeter, "show-prompt", G_CALLBACK (respond_authentication), NULL);
     //g_signal_connect(greeter, "show-message", G_CALLBACK(show_message_cb), NULL);
-    g_signal_connect (greeter, "authentication-complete", G_CALLBACK (start_session), NULL);
+    g_signal_connect (greeter, "authentication-complete", G_CALLBACK (authenticated_complete), NULL);
     //g_signal_connect(greeter, "autologin-timer-expired", G_CALLBACK(autologin_timer_expired_cb), NULL);
 
     if(!lightdm_greeter_connect_sync (greeter, NULL)){
