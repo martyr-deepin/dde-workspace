@@ -19,26 +19,38 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 
-passToPanel = ->
-    ev = new Event("click")
-    $("#panel").dispatchEvent(ev)
-
-
 class Panel
     constructor: (@id)->
         @panel = $("##{@id}")
         @panel.width = screen.width
         @panel.height = PANEL_HEIGHT
-        @panel.addEventListener("click", ->
-            show_desktop.toggle()
-        )
 
-        $("#containerWarp").addEventListener("click", (e)->
-            passToPanel()
-        )
+        @panel.addEventListener("click", @on_click)
+        $("#containerWarp").addEventListener("click", @on_click)
 
+        @globalMenu = new GlobalMenu()
+        @panel.addEventListener("contextmenu", @on_rightclick)
+        $("#containerWarp").addEventListener("contextmenu", @on_rightclick)
 
         @has_notifications = false
+
+    inPanelWorkarea: (x, y)=>
+        margin = (screen.width - @panel.width) / 2
+        x >= margin && x <= screen.width - margin
+
+    on_click: (e)=>
+        e.stopPropagation()
+        e.preventDefault()
+        if @inPanelWorkarea(e.clientX, e.clientY)
+            show_desktop.toggle()
+            calc_app_item_size()
+            Preview_close_now(_lastCliengGroup)
+
+    on_rightclick: (e)=>
+        e.preventDefault()
+        e.stopPropagation()
+        if @inPanelWorkarea(e.clientX, e.clientY)
+            @globalMenu.showMenu(e.clientX, e.clientY)
 
     load_image: (src)->
         img = new Image()
@@ -94,3 +106,12 @@ class Panel
                 w.notify()
             else
                 Widget.look_up("le_#{appid}")?.notify()
+
+# does not work fine.
+#     updateWithAnimation:=>
+#         calc_app_item_size()
+#         DCore.Dock.require_all_region()
+#         @calcTimer = webkitRequestAnimationFrame(@updateWithAnimation)
+#
+#     cancelAnimation:->
+#         webkitCancelAnimationFrame(@calcTimer)

@@ -100,6 +100,7 @@ void dock_draw_panel(JSValueRef canvas,
 
     gdk_cairo_set_source_pixbuf(cr, right, panel_width - margin_width + 1, 0);
     cairo_paint(cr);
+    cairo_restore(cr);
 
     canvas_custom_draw_did(cr, NULL);
 

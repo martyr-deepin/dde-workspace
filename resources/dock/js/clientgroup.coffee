@@ -156,13 +156,13 @@ class ClientGroup extends AppItem
             when 40 then @record_launcher_position() if DCore.Dock.request_dock_by_client_id(@leader)
 
     close_all_windows: ->
-            Preview_close_now()
-            for i in [0...@n_clients.length]
-                leader = @leader
-                @next_leader()
-                error = DCore.Dock.close_window(leader)
-                if not error
-                    @remove_client(leader)
+        Preview_close_now()
+        for i in [0...@n_clients.length]
+            leader = @leader
+            @next_leader()
+            error = DCore.Dock.close_window(leader)
+            if not error
+                @remove_client(leader)
 
     record_launcher_position: ->
         DCore.Dock.insert_apps_position(@app_id, @next()?.app_id)
@@ -175,10 +175,9 @@ class ClientGroup extends AppItem
         @notify_flag?.style.visibility = "hidden"
         if @n_clients.length == 1 and DCore.Dock.window_need_to_be_minimized(@leader)
             DCore.Dock.iconify_window(@leader)
-        else if @n_clients.length > 1 and DCore.Dock.get_active_window() == @leader
-            @next_leader()
-            @to_active_status(@leader)
         else
+            if @n_clients.length > 1 and DCore.Dock.get_active_window() == @leader
+                @next_leader()
             @to_active_status(@leader)
 
     do_mouseout: (e)=>

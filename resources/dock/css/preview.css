@@ -9,15 +9,18 @@
 .bg{
   position:absolute;
   border-radius: 4px;
+  left:-6px;
 }
 
 .PWContainer {
   border-radius: 5px;
   display: -webkit-box;
   pointer-events:auto;
+  /* border:solid green 2px; */
 }
 
 .PreviewWindow {
+  float: left;
   display: -webkit-box;
   -webkit-box-pack:center;
   -webkit-box-align:center;
@@ -26,10 +29,11 @@
   height:90%;
   pointer-events: auto;
   /* box-sizing: border-box; */
-  max-width: 230px;
-  max-height: 200px;
+  /* max-width: 230px; */
+  /* max-height: 200px; */
 
-  border: solid 2px rgba(255, 255, 255, 0.0);
+  border: solid 1px rgba(255, 255, 255, 0.0);
+  /* border: solid 1px rgba(255, 255, 255, 1); */
   border-radius: 4px;
   position:relative;
 
@@ -37,18 +41,20 @@
 }
 
 .PreviewWindowActived {
-  border: solid 2px rgba(255, 255, 255, 0.3);
+  border: solid 1px rgba(255, 255, 255, 0.3);
 }
 .PreviewWindowActived .PWCanvas {
-  border: solid 1px rgba(0, 0, 0, 0);
+  border: solid 1px rgba(255, 255, 255, 0.3);
 }
 
 .PreviewWindow:hover .PWClose{
   visibility: visible;
 }
 .PreviewWindowInner {
-  max-width: 230px;
-  max-height: 160px;
+  /* max-width: 230px; */
+  /* max-height: 160px; */
+  /* border: red solid 1px; */
+  border-radius: 3px;
   height:100%;
   position:relative;
 }
@@ -64,17 +70,21 @@
   border-radius: 2px;
   pointer-events: none;
 }
+.PWCanvas canvas {
+  border-radius: 2px;
+}
 
 .PWTitleContainer {
-  top: -32px;
+  top: -33px;
+  left: 1px;
   display: -webkit-box;
   position: relative;
   -webkit-box-pack:center;
   -webkit-box-align:center;
-  width: 100%;
+  width: 98%;
   height: 30px;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  /* border-bottom-left-radius: 1px; */
+  /* border-bottom-right-radius: 1px; */
   background: rgba(0,0,0,0.6);
   z-index:10;
   border: solid transparent 1px;
@@ -95,14 +105,12 @@
   margin-top: 2%;
 }
 .PWClose {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  border: solid white 1px;
   position: absolute;
-  right: -9px;
+  right: -8px;
   top: -7px;
-  background: -webkit-linear-gradient(top, #c68f3d, #b35323);
   font-weight: 20;
   text-align: center;
   color:white;

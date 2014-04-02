@@ -43,27 +43,6 @@ class NormalMenu
 
 class MenuContent
     constructor: (item...)->
-        @x = 0
-        @y = 0
-        @isDockMenu = false
-        @cornerDirection = DEEPIN_MENU_CORNER_DIRECTION.down
-        if item.length == 1
-            @menuJsonContent = new MenuContent(item[0])
-        else
-            @menuJsonContent = new MenuContent(item)
-
-    append: (item...)->
-        MenuContent::append.apply(@menuJsonContent, item)
-
-    addSeparator: ->
-        @menuJsonContent.addSeparator()
-
-    toString: ->
-        "{\"x\": #{@x}, \"y\": #{@y}, \"isDockMenu\": #{@isDockMenu}, \"cornerDirection\": \"#{@cornerDirection}\", \"menuJsonContent\": \"#{@menuJsonContent.toString().addSlashes()}\"}"
-
-
-class MenuContent
-    constructor: (item...)->
         @checkableMenu = false
         @singleCheck = false
         @items = []
@@ -88,13 +67,13 @@ class MenuContent
 class CheckBoxMenu extends NormalMenu
     constructor:->
         super
-        @checkableMenu = true
+        @menuJsonContent.checkableMenu = true
 
 
 class RadioBoxMenu extends CheckBoxMenu
     constructor:->
         super
-        @singleCheck = true
+        @menuJsonContent.singleCheck = true
 
 
 class MenuItem
@@ -156,18 +135,6 @@ class RadioBoxMenuItem extends CheckBoxMenuItem
 class MenuSeparator extends MenuItem
     constructor: ->
         super('', '')
-
-
-# get_dbus = (type, dbus_name, dbus_path, dbus_interface)->
-#     # echo "#{dbus_name}, #{dbus_path}, #{dbus_interface}"
-#     for dump in [0...10]
-#         try
-#             dbus = DCore.DBus["#{type.toLowerCase()}_object"](
-#                 dbus_name, dbus_path, dbus_interface
-#             )
-#             return dbus
-#
-#     throw "Get DBus \"#{dbus_name} #{dbus_path} #{dbus_interface}\" failed"
 
 
 class Menu
@@ -237,10 +204,11 @@ class Menu
         @menu.x = x
         @menu.y = y
         if ori != null
+            # console.log("#{ori}")
             @menu.isDockMenu = true
             @menu.cornerDirection = ori
         # echo @menu
-        @dbus?.ShowMenu("#{@menu}")
+        @dbus.ShowMenu("#{@menu}")
 
     toString: ->
         "#{@menu}"

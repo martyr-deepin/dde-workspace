@@ -44,9 +44,12 @@
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
 
+void start_daemon(const char* path);
+
 struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
+GdkWindow* GET_CONTAINER_WINDOW() { return DOCK_GDK_WINDOW(); }
 
 JS_EXPORT_API void dock_change_workarea_height(double height);
 
@@ -312,9 +315,12 @@ void dock_emit_webview_ok()
         /* tray_init(webview); */
         update_dock_size_mode();
         init_dock_guard_window();
+
+        start_daemon("/usr/lib/deepin-daemon/dock-apps-builder");
+        // FIXME:
+        // use sleep can get all entry.
+        sleep(1);
     } else {
-        update_dock_apps();
-        update_task_list();
         update_dock_size_mode();
     }
     GD.is_webview_loaded = TRUE;
@@ -328,7 +334,7 @@ void _change_workarea_height(int height)
 {
     // update_display_info(&dock);
     int workarea_width = (dock.width - dock_panel_width) / 2;
-    if (GD.is_webview_loaded && GD.config.hide_mode == NO_HIDE_MODE ) {
+    if (GD.config.hide_mode == NO_HIDE_MODE ) {
         set_struct_partial(DOCK_GDK_WINDOW(),
                            ORIENTATION_BOTTOM,
                            height,
@@ -346,7 +352,7 @@ void _change_workarea_height(int height)
 JS_EXPORT_API
 void dock_change_workarea_height(double height)
 {
-    if ((int)height == _dock_height)
+    if ((int)height == _dock_height && GD.is_webview_loaded)
         return;
 
     if (height < 30)
@@ -438,7 +444,7 @@ void update_dock_size(gint16 x, gint16 y, guint16 w, guint16 h)
 
     dock_change_workarea_height(_dock_height);
 
-    init_region(DOCK_GDK_WINDOW(), x, h - _dock_height, w, _dock_height);
+    init_region(DOCK_GDK_WINDOW(), 0, h - _dock_height, w, _dock_height);
 }
 
 
@@ -509,12 +515,26 @@ gboolean primary_changed_handler(gpointer data)
 }
 
 
+void start_daemon(const char* path)
+{
+    pid_t pid;
+    if ((pid = fork()) == 0) {
+        execlp(path, path, NULL);
+    } else if (pid == -1) {
+        g_warning("[%s] fork failed: start \"%s\" failed", __FILE__, path);
+        exit(0);
+    }
+}
+
+
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
         g_warning(_("another instance of dock is running...\n"));
         return 1;
     }
+
+    start_daemon("/usr/lib/deepin-daemon/dock-daemon");
 
     singleton(DOCK_ID_NAME);
 
@@ -554,6 +574,9 @@ int main(int argc, char* argv[])
     g_signal_connect(container, "leave-notify-event", G_CALLBACK(leave_notify), NULL);
     g_signal_connect(container, "size-allocate", G_CALLBACK(size_workaround), NULL);
 
+    extern gboolean draw_embed_windows(GtkWidget* w, cairo_t *cr);
+    g_signal_connect_after(webview, "draw", G_CALLBACK(draw_embed_windows), NULL);
+
 
     gtk_widget_realize(container);
     gtk_widget_realize(webview);
@@ -579,6 +602,7 @@ int main(int argc, char* argv[])
     setup_dock_dbus_service();
     GFileMonitor* m = monitor_trash();
     NOUSED(m);
+
     gtk_main();
     return 0;
 }
