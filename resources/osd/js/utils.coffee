@@ -58,12 +58,16 @@ osdHide = ->
     return if FOCUS
     #echo "osdHide"
     allElsHide()
-    DCore.Osd.hide()
+    jQuery(document.body).fadeOut(200,->
+        DCore.Osd.hide()
+    )
 
 osdShow = ->
     #echo "osdShow"
     allElsHide()
     DCore.Osd.show()
+    document.body.style.display = "none"
+    jQuery(document.body).fadeIn(200)
 
 osdHide()
 
