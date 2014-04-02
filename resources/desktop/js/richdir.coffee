@@ -372,9 +372,11 @@ class RichDir extends DesktopEntry
                 echo "this.id" + this.id
                 if w? then e = w.sub_items[this.id]
                 echo e
-                build_menu(w.build_block_item_menu())
-                    .addListener(w.block_do_itemselected.bind(this))
-                    .unregisterHook(that.hide_pop_block)
+                menu = build_menu(w.build_block_item_menu())
+                menu.unregisterHook(->
+                    that.hide_pop_block()
+                )
+                menu.addListener(w.block_do_itemselected.bind(this))
                     .showMenu(evt.clientX, evt.clientY)
             )
 
