@@ -77,9 +77,9 @@ class Option extends Widget
         @Animation_End = false
         t_show = 80
         YStartTop = 20
-        YEndTop = 60
-        YStartBottom = YStartTop + 7
-        YEndTopBottom = YEndTop + 7
+        YEndTop = 50
+        YStartBottom = YStartTop
+        YEndTopBottom = YEndTop
         
         el.style.opacity = "0.0"
         if current_up
