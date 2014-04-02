@@ -286,14 +286,10 @@ class LoginEntry extends Widget
                 @input_password_again()
         )
         
-        document.body.addEventListener("keydown",(e)=>
-            if $(".MenuChoose").style.display is "none"
-                @password.focus()
-        )
-
-        @element.addEventListener("keyup",(e)=>
-            #if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
+        @password.addEventListener("keyup",(e)=>
             if e.which == ENTER_KEY
+        #document.body.addEventListener("keyup",(e)=>
+            #if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
                 if _current_user.id is @loginuser
                     if @check_completeness()
                         @on_active(@loginuser, @password.value)
@@ -312,6 +308,12 @@ class LoginEntry extends Widget
             if @check_completeness
                 @on_active(@loginuser, @password.value)
         )
+        
+        document.body.addEventListener("keydown",(e)=>
+            if $(".MenuChoose").style.display is "none"
+                @password.focus()
+        )
+
  
 
     check_completeness: ->
@@ -501,6 +503,7 @@ class UserInfo extends Widget
 
     on_verify: (username, password)->
         echo "on_verify:#{username}"
+        echo  "--------#{new Date().getTime()}-----------"
         if is_greeter
             sessions = DCore.Greeter.get_sessions()
             if sessions.length == 1
@@ -563,6 +566,7 @@ DCore.signal_connect("start-animation", ->
 
 DCore.signal_connect("auth-failed", (msg)->
     echo "#{_current_user.id}:[auth-failed]"
+    echo  "--------#{new Date().getTime()}-----------"
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
 )
@@ -576,6 +580,7 @@ DCore.signal_connect("failed-too-much", (msg)->
 
 DCore.signal_connect("auth-succeed", ->
     echo "password_succeed!"
+    echo  "--------#{new Date().getTime()}-----------"
     power_flag = false
     if (power = localStorage.getObject("shutdown_from_lock"))?
         if power.lock is true
