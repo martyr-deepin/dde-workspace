@@ -46,7 +46,6 @@ class Lock extends Widget
         switch wallpaper
             when "sky_move"
                 _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
-                inject_js("js/skyThree/Three.js")
                 inject_js("js/skyThree/sky.js")
             when "sky_static"
                 _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"

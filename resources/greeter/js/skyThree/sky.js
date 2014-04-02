@@ -105,4 +105,5 @@ function onMouseMove(event){
     mouseY = event.clientY;
 }
 
-//document.body.onload = init();
+document.body.onload = init();
+//init();

@@ -81,3 +81,4 @@ catch e
 
 PowerManager = null
 ANIMATION = false
+
