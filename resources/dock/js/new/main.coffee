@@ -38,6 +38,12 @@ EntryManager =
 entryManager = get_dbus('session', EntryManager)
 
 systemTray = null
+# freedesktop = get_dbus("session", "org.freedesktop.DBus")
+# freedesktop.connect("NameOwnerChanged", (name, oldName, newName)->
+#     if newName != "" && name == "com.deepin.dde.TrayManager" && not systemTray
+#         trayIcon = DCore.get_theme_icon("deepin-systray", 48)
+#         systemTray = new SystemTray("system-tray", trayIcon, "")
+# )
 entryManager.connect("TrayInited",->
     if not systemTray
         trayIcon = DCore.get_theme_icon("deepin-systray", 48)

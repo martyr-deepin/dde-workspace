@@ -124,12 +124,16 @@ class SystemTray extends SystemItem
             for item in @items
                 $EW.hide(item)
         @updateTrayIcon()
-        @hideTimer = setTimeout(=>
+        if @upperItemNumber > 2
+            @hideTimer = setTimeout(=>
+                @img.style.display = 'none'
+                @hood.style.display = 'block'
+                webkitCancelAnimationFrame(@calcTimer)
+                super
+            , ANIMATION_TIME)
+        else
             @img.style.display = 'none'
             @hood.style.display = 'block'
-            webkitCancelAnimationFrame(@calcTimer)
-            super
-        , ANIMATION_TIME)
 
     on_rightclick: (e)=>
         e.preventDefault()
