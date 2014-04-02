@@ -28,6 +28,7 @@ class Option extends Widget
         @opt_text_span = []
         @Animation_End = false
         @element.style.position = "absolute"
+        
         switch @id
             when "left-up"
                 @current_up = true
@@ -122,8 +123,8 @@ class Option extends Widget
         Hover_X = 0
         Hover_Y = 2
         left = 60
-        top = 13
-        bottom = top + 5
+        top = 0
+        bottom = 0
         
         switch @id
             when "left-up"
@@ -147,6 +148,11 @@ class Option extends Widget
                 @current_text.style.right = left
                 @current_text.style.bottom = bottom
         @current_img.style.backgroundPosition = @bg_pos_normal
+        if !@current_left
+            @current_text.style.textAlign = "right"
+        else
+            @current_text.style.textAlign = "left"
+
     
     opt_choose_div_build :->
         @opt_choose = create_element("ul","opt_choose",@element)
@@ -161,7 +167,13 @@ class Option extends Widget
             @opt_text_li[i] = create_element("li","opt_text_li",@opt_choose)
             @opt_text_span[i] = create_element("span","opt_text_span",@opt_text_li[i])
             @opt_text_span[i].textContent = opt
-            if !@current_left then @opt_text_span[i].style.float = "right"
+            if !@current_left
+                @opt_text_span[i].style.float = "right"
+                @opt_text_span[i].style.textAlign = "right"
+            else
+                @opt_text_span[i].style.float = "left"
+                @opt_text_span[i].style.textAlign = "left"
+
             that = @
             @opt_text_span[i].addEventListener("click",(e)->
                 e.stopPropagation()

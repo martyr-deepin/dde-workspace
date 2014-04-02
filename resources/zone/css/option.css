@@ -3,12 +3,11 @@ body{
 }
 
 .Option{
-    /*background-color:rgba(0,0,100,0.2);*/
-    width:200px;
+    background-color:rgba(0,0,100,0.2);
 }
 
 .current_div{
-    /*background-color:rgba(200,200,200,0.2);*/
+    background-color:rgba(200,200,200,0.2);
     display:-webkit-box;
     overflow:hidden;
 }
@@ -21,11 +20,12 @@ body{
 }
 
 .current_text{
-    /*background-color:rgba(0,200,200,0.2);*/
+    background-color:rgba(0,200,200,0.2);
     position:absolute;
+    width:9em;
     /*margin-top:0;*/
-    /*height:60px;*/
-    /*line-height:40px;*/
+    height:3em;
+    line-height:3em;
     font-size:1.8em;
     font-weight:normal; 
     color:#fff;
@@ -34,11 +34,12 @@ body{
 
 
 .opt_choose{
-    /*background-color:rgba(50,0,50,0.2);*/
+    background-color:rgba(50,0,50,0.2);
     position:absolute;
     margin:0;
     padding:0;
-    height:15.2em;
+    /*height:13.2em;*/
+    width:9em;
 }
 
 .opt_text_li{
@@ -54,6 +55,7 @@ body{
     font-weight:normal; 
     color:#afafaf;
     border-radius:4px; 
+    white-space:nowrap;
 }
 
 /*.opt_text_li span:hover{*/

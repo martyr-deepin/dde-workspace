@@ -1,4 +1,7 @@
-
+@font-face {
+    font-family:'MavenProLight';
+    src:url('../font/MavenProLight-200.otf') format('opentype');
+}
 body{
     cursor:default;
     overflow:hidden;
