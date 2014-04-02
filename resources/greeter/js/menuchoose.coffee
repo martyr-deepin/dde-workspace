@@ -410,6 +410,30 @@ class ComboBox extends Widget
         @menu.current = de_current_id
         return @menu.current
 
+    currentTextShow: ->
+        @current_text = create_element("div","current_text",@element) if not @current_text?
+        
+        de_current_id = localStorage.getItem("de_current_id")
+        @current_text.textContent = de_current_id
+        @current_text.style.display = "block"
+        
+        XInit = -30
+        XMove = 5
+        echo XMove
+        @current_text.style.opacity = "0.0"
+        @current_text.style.right = XInit
+        t = 100
+        mouseenter = =>
+            jQuery(@current_text).animate(
+                {opacity:'1.0';right:XMove;},t
+            )
+        mouseleave = =>
+            jQuery(@current_text).animate(
+                {opacity:'0.0';right:XInit;},t
+            )
+        jQuery(@element).hover(mouseenter,mouseleave)
+
+
     set_current: (id)->
         id = id.toLowerCase()
         try

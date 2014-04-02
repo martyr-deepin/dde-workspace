@@ -50,6 +50,8 @@ class DesktopMenu extends Widget
             icon_path_press = img_before + "#{icon}_press.png"
             de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
         de_menu.frame_build()
+        de_menu.currentTextShow()
+        
         if not parent? then parent = document.body
         parent.appendChild(de_menu.element)
         
