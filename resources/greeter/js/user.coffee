@@ -604,6 +604,7 @@ DCore.signal_connect("auth-succeed", ->
         if is_greeter
             echo "greeter exit"
         else
+            enableZoneDetect(true)
             DCore.Lock.quit()
             echo "dlock exit"
 )

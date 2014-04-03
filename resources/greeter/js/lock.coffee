@@ -17,6 +17,18 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
+
+
+zoneDBus = null
+enableZoneDetect = (enable) ->
+    ZONE = "com.deepin.daemon.Zone"
+    try
+        zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
+        zoneDBus?.enableZoneDetect_sync(enable)
+    catch e
+        echo "zoneDBus #{ZONE} error : #{e}"
+ #-------------------------------------------
+
 class Lock extends Widget
 
     constructor:->
@@ -24,7 +36,8 @@ class Lock extends Widget
         echo "Lock"
         power = {"lock":false,"value":null}
         localStorage.setObject("shutdown_from_lock",power)
-    
+        enableZoneDetect(false)
+
     webview_ok:(_current_user)->
         DCore.Lock.webview_ok(_current_user.id) if hide_face_login
 
