@@ -55,19 +55,9 @@ class Lock extends Widget
                 inject_js("js/skyThree/Three.js")
                 inject_js("js/skyThree/sky.js")
 
-    dbusPowerManager:->
-        try
-            POWER = "com.deepin.daemon.Power"
-            PowerManager = DCore.DBus.session(POWER)
-            PowerManager.StartDim() if PowerManager?
-            echo "PowerManager.StartDim()" if PowerManager?
-        catch e
-            echo "POWER:ERROR:#{e}"
-
 
 lock = new Lock()
 lock.setBodyWallpaper("sky_move")
-lock.dbusPowerManager()
 
 user = new User()
 $("#div_users").appendChild(user.element)

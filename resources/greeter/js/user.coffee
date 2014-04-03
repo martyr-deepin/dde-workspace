@@ -604,11 +604,6 @@ DCore.signal_connect("auth-succeed", ->
         if is_greeter
             echo "greeter exit"
         else
-            try
-                PowerManager.StopDim() if PowerManager?
-                echo "PowerManager.StopDim()" if PowerManager?
-            catch e
-                echo "#{e}"
             DCore.Lock.quit()
             echo "dlock exit"
 )
