@@ -101,6 +101,9 @@ GdkWindow* wrapper(Window xid)
 {
     GdkDisplay* dpy = gdk_window_get_display(GET_CONTAINER_WINDOW());
     GdkWindow* child = gdk_x11_window_foreign_new_for_display(dpy, xid);
+    if (child == NULL) {
+        return NULL;
+    }
     int mask = GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_VISIBILITY_NOTIFY_MASK;
     gdk_window_set_events(child, mask);
     GdkWindow* parent = NULL;
