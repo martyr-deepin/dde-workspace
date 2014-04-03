@@ -1,7 +1,12 @@
 
-//定义粒子大小
+//personal
 var ParticleScale = 0.7//default = 0.7
-var ParticleSpeed = 100//defalut = 50
+var ParticleSpeed = 200//defalut = 100
+var ZStart = 3000;//default = 3000
+var ZEnd = 70;//default = 70
+var UpdateTimes = 15;//每秒渲染次，及星星个数  default = 15
+var ZCamera = 1000;//相机的位置default = 1000
+
 
 //定义应用所需的组件:相机,场景,渲染器
 var camera, scene, renderer;
@@ -16,9 +21,9 @@ function init(){
     //document.body.style.backgroundImage = "url(js/skyThree/sky.jpg)"; 
     //相机参数：
     //四个参数值分别代表:视野角：fov  纵横比：aspect 相机离视体最近的距离：near 相机离视体最远的距离：far
-    camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 70, 3000 );
+    camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, ZEnd, ZStart );
     //设置相机位置,默认位置为:0,0,0.
-    camera.position.z = 1000;
+    camera.position.z = ZCamera;
 
     //声明场景
     scene = new THREE.Scene();
@@ -36,7 +41,7 @@ function init(){
     //添加鼠标移动监听
     document.addEventListener('mousemove',onMouseMove,false);
     //设置间隔调用update函数,间隔次数为每秒30次
-    setInterval(update,1000/15);
+    setInterval(update,1000/UpdateTimes);
 }
  
 function update() {
