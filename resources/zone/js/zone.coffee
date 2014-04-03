@@ -17,34 +17,26 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-
-cfgKeyVal = []
-zoneKeyText = []
-cfgKey = ["left-down","right-up","right-down"]
-
-option_text = [_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
-cfgValue = [
-    "dbus-send --type=method_call --dest=com.deepin.Dss /com/deepin/Dss com.deepin.Dss.Show int32:0",
-    "workspace",
-    "/usr/lib/deepin-daemon/desktop-toggle",
-    "none"
-]
-
 class Zone extends Widget
 
     constructor:->
         super
         echo "Zone"
+        document.body.style.height = window.innerHeight
+        document.body.style.width = window.innerWidth
         document.body.appendChild(@element)
-        @getZoneConfig()
+        @setZoneConfigAll()
+        @setZoneLauncher()
+        enableZoneDetect(false)
 
-    getZoneConfig:->
-        for key,i in cfgKey
-            value = DCore.Zone.get_config(key)
-            cfgKeyVal[key] = value
-            zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
-        echo cfgKeyVal
-        echo zoneKeyText
+    setZoneConfigAll: ->
+        getZoneConfig()
+        for value,key in cfgKeyVal
+            setZoneConfig(key,value)
+
+    setZoneLauncher: ->
+        getZoneDBus()
+        setZoneDBusSettings("left-up","/usr/bin/launcher")
     
     option_build:->
         echo "option_build"
@@ -56,15 +48,12 @@ class Zone extends Widget
                 @opt[i].insert(tmp)
             @opt[i].option_build()
 
-
-document.body.style.height = window.innerHeight
-document.body.style.width = window.innerWidth
-
 zone = new Zone()
 zone.option_build()
 
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
+    enableZoneDetect(true)
     DCore.Zone.quit()
 )
  
@@ -73,23 +62,3 @@ document.body.addEventListener("contextmenu",(e)=>
     e.stopPropagation()
 )
 
-bgRadial = ->
-    wWidth = window.innerWidth
-    wHeight = window.innerHeight
-    canvas = create_element("canvas","canvas",document.body)
-    context = canvas.getContext("2d")
-    x = wWidth / 2
-    y = wHeight / 2
-    r = wWidth / 2
-    echo wWidth + "------" + wHeight + ";" + x + "-----" + y + "r:#{r}"
-    
-    rg = context.createRadialGradient(x,y,0,x,y,r)
-    rg.addColorStop(0,'#FFFFFF')
-    rg.addColorStop(1,'#000000')
-    
-    context.fillStyle = rg
-    context.beginPath()
-    context.arc(x,y,r,0,2 * Math.PI)
-    context.fill()
-
-#bgRadial()

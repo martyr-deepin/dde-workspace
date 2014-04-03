@@ -180,7 +180,7 @@ class Option extends Widget
                 that.current = this.textContent
                 that.opt_choose.style.display = "none"
                 that.current_text.textContent = that.current
-                that.setZoneCfg(that.id,that.current)
+                that.setZone(that.id,that.current)
             )
             jQuery(@opt_text_span[i]).hover((e)->
                 if !that.Animation_End then this.style.backgroundColor = null
@@ -192,11 +192,8 @@ class Option extends Widget
         @opt_choose.style.display = "none"
 
 
-    setZoneCfg:(id,current)->
+    setZone:(id,current)->
         key = id
         value = cfgValue[i] for text,i in option_text when current is text
-        cfgKeyVal[key] = value
-        zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
-        echo "setZoneCfg : key: #{id}----text: #{current}-----value: #{value}"
-        DCore.Zone.set_config(key,value)
-
+        setZoneConfig(key,value)
+        setZoneDBusSettings(key,value)

@@ -78,8 +78,6 @@ JS_EXPORT_API
 gboolean zone_set_config(const gchar* key_name,const gchar* value)
 {
     gboolean retval = g_settings_set_string(zone_gsettings, key_name,value);
-    compiz_set(key_name, value);
-
     return retval;
 }
 
