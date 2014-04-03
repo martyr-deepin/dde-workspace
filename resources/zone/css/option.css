@@ -3,11 +3,11 @@ body{
 }
 
 .Option{
-    background-color:rgba(0,0,100,0.2);
+    /*background-color:rgba(0,0,100,0.2);*/
 }
 
 .current_div{
-    background-color:rgba(200,200,200,0.2);
+    /*background-color:rgba(200,200,200,0.2);*/
     display:-webkit-box;
     overflow:hidden;
 }
@@ -20,7 +20,7 @@ body{
 }
 
 .current_text{
-    background-color:rgba(0,200,200,0.2);
+    /*background-color:rgba(0,200,200,0.2);*/
     position:absolute;
     width:9em;
     /*margin-top:0;*/
@@ -34,7 +34,7 @@ body{
 
 
 .opt_choose{
-    background-color:rgba(50,0,50,0.2);
+    /*background-color:rgba(50,0,50,0.2);*/
     position:absolute;
     margin:0;
     padding:0;
