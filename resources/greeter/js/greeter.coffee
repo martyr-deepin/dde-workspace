@@ -45,8 +45,6 @@ class Greeter extends Widget
 
 
     keydown_listener:(e,user)->
-        echo "keydown_listener"
-        echo user
         if e.which == LEFT_ARROW
             user?.switchtonext_userinfo()
         else if e.which == RIGHT_ARROW
