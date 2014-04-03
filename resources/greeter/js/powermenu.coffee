@@ -45,8 +45,8 @@ class PowerMenu extends Widget
         power_dict["suspend"] = @suspend_cb
         power_dict["restart"] = @restart_cb
         power_dict["shutdown"] = @shutdown_cb
-        power_title["suspend"] = _("suspend")
-        power_title["restart"] = _("restart")
+        power_title["suspend"] = _("Suspend")
+        power_title["restart"] = _("Restart")
         power_title["shutdown"] = _("Shut down")
         
         return power_dict
@@ -55,6 +55,7 @@ class PowerMenu extends Widget
         echo "new_power_menu"
         power_dict = @get_power_dict()
         power_menu_cb = (id, title)->
+            #enableZoneDetect(true)
             power_dict[id]()
                 
 
