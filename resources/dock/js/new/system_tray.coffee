@@ -25,6 +25,7 @@ class SystemTray extends SystemItem
             else
                 $EW.hide(xid)
             # creat will take a while.
+            @updateTrayIcon()
             setTimeout(=>
                 @updateTrayIcon()
                 calc_app_item_size()
@@ -35,10 +36,14 @@ class SystemTray extends SystemItem
             @items.remove(xid)
             @items.unshift(xid)
             @updateTrayIcon()
+            setTimeout(=>
+                @updateTrayIcon()
+            , 100)
         )
         @core.connect("Removed", (xid)=>
             # console.log("#{xid} is Removed")
             @items.remove(xid)
+            @updateTrayIcon()
             setTimeout(=>
                 @updateTrayIcon()
                 calc_app_item_size()
