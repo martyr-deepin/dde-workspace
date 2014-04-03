@@ -264,7 +264,10 @@ class LoginEntry extends Widget
                 @loginbutton.src = "#{img_src_before}#{@id}_normal.png"
         )
         @password_eventlistener()
-    
+        
+        if @loginuser is "guest"
+            @password_error(_("click login button to log in"))
+
     show:->
         @element.style.display = "-webkit-box"
         @password.focus()
@@ -277,16 +280,19 @@ class LoginEntry extends Widget
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
             e.stopPropagation()
+            if @loginuser is "guest" then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("focus",=>
+            if @loginuser is "guest" then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("keyup",(e)=>
+            if @loginuser is "guest" then return
             if e.which == ENTER_KEY
         #document.body.addEventListener("keyup",(e)=>
             #if e.which == ENTER_KEY and $(".MenuChoose").style.display is "none"
@@ -487,7 +493,8 @@ class UserInfo extends Widget
             @draw_camera()
             @draw_avatar()
         
-        if @id != "guest"
+        if true
+        #if @id != "guest"
             if is_greeter
                 @session = DCore.Greeter.get_user_session(@id)
                 echo "----------Greeter.get_user_session(#{@id}):---#{@session}---------------------"
