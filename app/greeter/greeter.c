@@ -188,6 +188,13 @@ authenticated_complete(LightDMGreeter *greeter)
 }
 
 JS_EXPORT_API
+gboolean greeter_get_is_authenticated(const gchar *username)
+{
+    gboolean result = lightdm_greeter_get_is_authenticated (greeter);
+    return result;
+}
+
+JS_EXPORT_API
 gboolean greeter_start_session (const gchar *username, const gchar *password, const gchar *session)
 {
 /*    gboolean use_face_login = greeter_use_face_recognition_login(username);*/
