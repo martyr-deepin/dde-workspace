@@ -1,0 +1,41 @@
+.ListChoose{
+    position:absolute;
+    width:160px;
+    height:160px;
+    
+    display:-webkit-box;
+    -webkit-box-pack:center;
+    -webkit-box-align:center;
+
+}
+
+.Listul{
+    margin:0;
+    padding:0;
+    width:150px;
+    height:80px;
+}
+
+.li{
+    height:50%;
+    width:100%;
+    list-style:none;
+    overflow:hidden;
+    text-align:center;
+
+    border-radius:6px; 
+
+}
+.li span{
+    height:100%;
+    width:100%;
+    line-height:40px;
+    /*display:table-cell;*/
+    /*padding:7px 10px;*/
+    text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
+    font-size:1.6em;
+    font-weight:normal; 
+    color:#afafaf;
+
+    overflow:hidden;
+}
