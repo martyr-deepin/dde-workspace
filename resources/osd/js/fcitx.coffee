@@ -126,13 +126,6 @@ class FcitxOSD extends Widget
     show:->
         @element.style.display = "-webkit-box"
     
-    
-    set_bg:(imgName)->
-        if @imgName == imgName then return
-        echo "set_bg: bgChanged from #{@imgName} to #{imgName}"
-        @imgName = imgName
-        @element.style.backgroundImage = "url(img/#{imgName}.png)"
-  
     imListBackgroundChange: ->
         if not @IMListul?
             @IMli = []
