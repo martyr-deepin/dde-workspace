@@ -191,6 +191,29 @@ class User extends Widget
         else if index < 0 then index = @userinfo_all.length - 1
         return index
 
+    showCurrentSession : (user)=>
+        echo "showCurrentSession:#{user}"
+
+
+    switchtoprev_userinfo : =>
+        echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+        @userinfo_all[@userinfo_show_index].hide_animation()
+        @userinfo_show_index = @check_index(@userinfo_show_index + 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+        @userinfo_all[@userinfo_show_index].show_animation()
+        @userinfo_all[@userinfo_show_index].animate_prev()
+
+    switchtonext_userinfo : =>
+        echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+        @userinfo_all[@userinfo_show_index].hide_animation()
+        @userinfo_show_index = @check_index(@userinfo_show_index - 1)
+        localStorage.setItem("current_user_index",@userinfo_show_index)
+        echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
+        @userinfo_all[@userinfo_show_index].show_animation()
+        @userinfo_all[@userinfo_show_index].animate_next()
+
+
     prev_next_userinfo_create:->
         @switchuser_div = create_element("div","switchuser_div",@element)
         @prevuserinfo = create_element("div","prevuserinfo",@switchuser_div)
@@ -198,40 +221,17 @@ class User extends Widget
         @nextuserinfo = create_element("div","nextuserinfo",@switchuser_div)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",@nextuserinfo)
 
-        showCurrentSession = (user)=>
-            echo "showCurrentSession:#{user}"
-
-
-        switchtoprev_userinfo = =>
-            echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-            @userinfo_all[@userinfo_show_index].hide_animation()
-            @userinfo_show_index = @check_index(@userinfo_show_index + 1)
-            localStorage.setItem("current_user_index",@userinfo_show_index)
-            echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-            @userinfo_all[@userinfo_show_index].show_animation()
-            @userinfo_all[@userinfo_show_index].animate_prev()
-
-        switchtonext_userinfo = =>
-            echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-            @userinfo_all[@userinfo_show_index].hide_animation()
-            @userinfo_show_index = @check_index(@userinfo_show_index - 1)
-            localStorage.setItem("current_user_index",@userinfo_show_index)
-            echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].id}"
-            @userinfo_all[@userinfo_show_index].show_animation()
-            @userinfo_all[@userinfo_show_index].animate_next()
-
-
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "left_normal.png",
             img_src_before + "left_hover.png",
             img_src_before + "left_press.png",
-            switchtoprev_userinfo
+            @switchtoprev_userinfo
         )
         @normal_hover_click_cb(@nextuserinfo_img,
             img_src_before + "right_normal.png",
             img_src_before + "right_hover.png",
             img_src_before + "right_press.png",
-            switchtonext_userinfo
+            @switchtonext_userinfo
         )
 
 

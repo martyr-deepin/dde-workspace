@@ -36,19 +36,21 @@ class Greeter extends Widget
             DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
         )
 
-    mousewheel_listener:(User)->
+    mousewheel_listener:(user)->
         document.body.addEventListener("mousewheel", (e) =>
             if not is_volume_control
-                if e.wheelDelta >= 120 then User?.switchtonext_userinfo()
-                else if e.wheelDelta <= -120 then User?.switchtoprev_userinfo()
+                if e.wheelDelta >= 120 then user?.switchtonext_userinfo()
+                else if e.wheelDelta <= -120 then user?.switchtoprev_userinfo()
         )
 
 
-    keydown_listener:(e,User)->
+    keydown_listener:(e,user)->
+        echo "keydown_listener"
+        echo user
         if e.which == LEFT_ARROW
-            User?.switchtonext_userinfo()
+            user?.switchtonext_userinfo()
         else if e.which == RIGHT_ARROW
-            User?.switchtoprev_userinfo()
+            user?.switchtoprev_userinfo()
 
     setBodyWallpaper:(wallpaper)->
         echo "setBodyWallpaper:#{wallpaper}"
