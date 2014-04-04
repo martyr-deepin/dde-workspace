@@ -32,7 +32,7 @@ class CategoryItem
             class:"category_item_base category_item_board category-mask",
             @element
         )
-        @element.style.backgroundImage = "url(img/category/#{name}100.png)"
+        @element.style.backgroundImage = "url(img/category/#{@name}100.png)"
         @isFocus = false
 
     categoryId: ->

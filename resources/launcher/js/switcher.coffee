@@ -102,6 +102,7 @@ class Switcher
         searchBar.hide().clean()
         selector.container($("#grid"))
         $("#grid").style.display = 'block'
+        $("#grid").style.webkitMaskImage = ''
         favor.hide()
         @isShowCategory = true
         if @isHovered
