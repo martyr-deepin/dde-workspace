@@ -3,6 +3,7 @@ cfgKeyVal = []
 zoneKeyText = []
 cfgKey = ["left-up","left-down","right-up","right-down"]
 
+# option_text must be one-to-one with cfgValue
 option_text = [_("Launcher"),_("System Settings"),_("Workspace"),_("Desktop"),_("None")]
 cfgValue = [
     "/usr/bin/launcher"
