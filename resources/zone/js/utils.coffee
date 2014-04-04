@@ -24,7 +24,7 @@ getZoneDBus = ->
 
 enableZoneDetect = (enable) ->
     try
-        zoneDBus?.enableZoneDetect_sync(enable)
+        zoneDBus?.EnableZoneDetected_sync(enable)
     catch e
         echo "setZoneDBusSettings error : #{e}"
 
@@ -34,10 +34,10 @@ setZoneDBusSettings = (key,value)->
     echo "zoneDBus not null" if zoneDBus?
     try
         switch key
-            when "left-up" then zoneDBus?.setTopLeft(value)
-            when "left-down" then zoneDBus?.setBottomLeft(value)
-            when "right-up" then zoneDBus?.setTopRight(value)
-            when "right-down" then zoneDBus?.setBottomRight(value)
+            when "left-up" then zoneDBus?.SetTopLeft_sync(value)
+            when "left-down" then zoneDBus?.SetBottomLeft_sync(value)
+            when "right-up" then zoneDBus?.SetTopRight_sync(value)
+            when "right-down" then zoneDBus?.SetBottomRight_sync(value)
     catch e
         echo "setZoneDBusSettings error : #{e}"
 
