@@ -34,7 +34,7 @@ MEDIAKEY =
     path: "/com/deepin/daemon/MediaKey"
     interface: "com.deepin.daemon.MediaKey"
 
-TIME_HIDE = 1500
+TIME_HIDE = 1000
 TIME_PRESS = 5
 timeout_osdHide = null
 DBusMediaKey = null
@@ -57,17 +57,25 @@ allElsHide = ->
 osdHide = ->
     return if FOCUS
     #echo "osdHide"
-    allElsHide()
-    jQuery(document.body).fadeOut(200,->
-        DCore.Osd.hide()
+    #allElsHide()
+    #DCore.Osd.hide()
+    document.body.opacity = "1"
+    jQuery(document.body).animate(
+        {opacity:'0';},200,"linear",->
+            allElsHide()
+            document.body.opacity = "0"
+            DCore.Osd.hide()
     )
 
 osdShow = ->
     #echo "osdShow"
     allElsHide()
     DCore.Osd.show()
-    document.body.style.display = "none"
-    jQuery(document.body).fadeIn(200)
+    document.body.opacity = "0"
+    jQuery(document.body).animate(
+        {opacity:'1';},500,"linear",->
+            document.body.opacity = "1"
+    )
 
 osdHide()
 
