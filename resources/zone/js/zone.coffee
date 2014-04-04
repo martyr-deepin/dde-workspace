@@ -31,8 +31,8 @@ class Zone extends Widget
 
     setZoneConfigAll: ->
         getZoneConfig()
-        for value,key in cfgKeyVal
-            setZoneConfig(key,value)
+        #for value,key in cfgKeyVal
+        #    setZoneConfig(key,value)
 
     setZoneLauncher: ->
         getZoneDBus()
