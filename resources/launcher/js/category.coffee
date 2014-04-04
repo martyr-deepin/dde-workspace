@@ -25,7 +25,7 @@ class Category
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
         @nameNode = create_element(tag:"h4", id:"cat#{@id}", class:"categoryName", @header)
-        @nameNode.appendChild(document.createTextNode(@name))
+        @nameNode.appendChild(document.createTextNode(_(@name)))
         @decoration = create_element(tag:"div", class:"categoryNameDecoration", @header)
         create_element(tag:"div", class:"blackLine", @decoration)
         create_element(tag:"div", class:"whiteLine", @decoration)
