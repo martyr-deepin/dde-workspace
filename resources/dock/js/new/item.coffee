@@ -84,30 +84,35 @@ class AppItem extends Item
             app_list.append_app_item?(@)
 
         @core?.connect("DataChanged", (name, value)=>
-            # console.log("#{name} is changed to #{value}")
+            console.log("#{name} is changed to #{value}")
 
-            if name == ITEM_DATA_FIELD.xids
-                # [{Xid:0, Title:""}]
-                xids = JSON.parse(value)
-                for info in xids
-                    @update_client(info.Xid, info.Title)
-
-                ids = @n_clients.slice(0)
-                for id in ids
-                    needDelete = true
+            switch name
+                when ITEM_DATA_FIELD.xids
+                    # [{Xid:0, Title:""}]
+                    xids = JSON.parse(value)
                     for info in xids
-                        if id == info.Xid
-                            needDelete = false
-                            break
-                    if needDelete
-                        @remove_client(id)
+                        @update_client(info.Xid, info.Title)
 
-                return
-            else if name == ITEM_DATA_FIELD.status
-                if @isActive()
-                    @swap_to_clientgroup()
-                else if @isNormal()
-                    @swap_to_activator()
+                    ids = @n_clients.slice(0)
+                    for id in ids
+                        needDelete = true
+                        for info in xids
+                            if id == info.Xid
+                                needDelete = false
+                                break
+                        if needDelete
+                            @remove_client(id)
+
+                    return
+                when ITEM_DATA_FIELD.status
+                    if @isActive()
+                        @swap_to_clientgroup()
+                    else if @isNormal()
+                        @swap_to_activator()
+                when ITEM_DATA_FIELD.icon
+                    # TODO:
+                    # use a big images, and change the position.
+                    @img.style.backgroundImage = value
         )
 
     init_clientgroup:->
