@@ -16,7 +16,6 @@
 #
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
-_ANIMATE_TIMEOUT_ID = -1
 
 class Greeter extends Widget
 
@@ -50,26 +49,8 @@ class Greeter extends Widget
         else if e.which == RIGHT_ARROW
             user?.switchtoprev_userinfo()
 
-    setBodyWallpaper:(wallpaper)->
-        echo "setBodyWallpaper:#{wallpaper}"
-        _b = document.body
-        
-        _b.style.height = window.innerHeight
-        _b.style.width = window.innerWidth
-        switch wallpaper
-            when "sky_move"
-                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
-                inject_js("js/skyThree/sky.js")
-            when "sky_static"
-                _b.style.backgroundImage = "url(js/skyThree/sky3.jpg)"
-            when "color"
-                _b.style.backgroundImage = "url(images/background1.jpg)"
-            else
-                inject_js("js/skyThree/Three.js")
-                inject_js("js/skyThree/sky.js")
-
 greeter = new Greeter()
-greeter.setBodyWallpaper("sky_move")
+setBodyWallpaper("sky_move")
 
 desktopmenu = new DesktopMenu($("#div_desktop"))
 desktopmenu.new_desktop_menu()

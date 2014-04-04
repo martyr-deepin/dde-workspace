@@ -24,7 +24,7 @@ enableZoneDetect = (enable) ->
     ZONE = "com.deepin.daemon.Zone"
     try
         zoneDBus = DCore.DBus.session(ZONE) if not zoneDBus?
-        zoneDBus?.enableZoneDetect_sync(enable)
+        zoneDBus?.EnableZoneDetected_sync(enable)
     catch e
         echo "zoneDBus #{ZONE} error : #{e}"
  #-------------------------------------------
@@ -70,7 +70,7 @@ class Lock extends Widget
 
 
 lock = new Lock()
-lock.setBodyWallpaper("sky_move")
+setBodyWallpaper("sky_move")
 
 user = new User()
 $("#div_users").appendChild(user.element)

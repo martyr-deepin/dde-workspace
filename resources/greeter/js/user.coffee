@@ -176,7 +176,8 @@ class User extends Widget
     isSupportGuest:->
         @AllowGuest = @Dbus_Account.AllowGuest
         if is_support_guest and @AllowGuest is true
-            guest_image = "/var/lib/AccountsService/icons/guest.jpg"
+            guest_image = "images/guest.jpg"
+            #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
             u = new UserInfo("guest", _("guest"), guest_image)
             u.hide()
             @userinfo_all.push(u)
