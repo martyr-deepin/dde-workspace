@@ -248,7 +248,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
-        @password.setAttribute("autofocus", true)
+        @password.setAttribute("autofocus", true) if @loginuser isnt "guest"
        
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.type = "button"
@@ -267,6 +267,8 @@ class LoginEntry extends Widget
         
         if @loginuser is "guest"
             @password_error(_("click login button to log in"))
+            @loginbutton.disable = false
+            @loginbutton.style.pointer = "cursor"
 
     show:->
         @element.style.display = "-webkit-box"
@@ -303,6 +305,7 @@ class LoginEntry extends Widget
         )
 
         @loginbutton.addEventListener("click", =>
+            echo "loginbutton click"
             power_flag = false
             if (power = localStorage.getObject("shutdown_from_lock"))?
                 if power.lock is true
@@ -486,26 +489,24 @@ class UserInfo extends Widget
    
     focus:->
         echo "#{@id} focus"
-        @login.password.focus()
+        @login.password.focus() if @id isnt "guest"
 
         if @face_login
             DCore[APP_NAME].set_username(@id)
             @draw_camera()
             @draw_avatar()
         
-        if true
-        #if @id != "guest"
-            if is_greeter
-                @session = DCore.Greeter.get_user_session(@id)
-                echo "----------Greeter.get_user_session(#{@id}):---#{@session}---------------------"
-                sessions = DCore.Greeter.get_sessions()
-                if @session? and @session in sessions
-                    de_menu.set_current(@session)
-                else
-                    echo "----------Greeter.get_user_sessiobn(#{@id}) failed! set_current(deepin)---------"
-                    @session = "deepin"
-                    de_menu.set_current(@session)
-                    echo "#{@id} in focus invalid user session,will not set_current session"
+        if is_greeter
+            @session = DCore.Greeter.get_user_session(@id)
+            echo "----------Greeter.get_user_session(#{@id}):---#{@session}---------------------"
+            sessions = DCore.Greeter.get_sessions()
+            if @session? and @session in sessions
+                de_menu.set_current(@session)
+            else
+                echo "----------Greeter.get_user_sessiobn(#{@id}) failed! set_current(deepin)---------"
+                @session = "deepin"
+                de_menu.set_current(@session)
+                echo "#{@id} in focus invalid user session,will not set_current session"
    
     
     blur: ->
