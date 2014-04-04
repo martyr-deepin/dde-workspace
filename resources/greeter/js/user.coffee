@@ -175,7 +175,8 @@ class User extends Widget
     
     isSupportGuest:->
         @AllowGuest = @Dbus_Account.AllowGuest
-        if is_support_guest and @AllowGuest
+        @AllowGuest = false
+        if is_support_guest and @AllowGuest is true
             guest_image = "/var/lib/AccountsService/icons/guest.jpg"
             u = new UserInfo("guest", _("guest"), guest_image)
             u.hide()
@@ -404,9 +405,10 @@ class UserInfo extends Widget
     
     
     hide:=>
-        @userimg_div.style.display = "none"
         @username.style.display = "none"
         @login.hide()
+        
+        @userimg_div.style.display = "none"
         @element.style.display = "none"
         @blur()
 
@@ -418,25 +420,21 @@ class UserInfo extends Widget
         @focus()
 
     hide_animation:->
-        @login.hide()
         @username.style.display = "none"
-
+        @login.hide()
+        
         @userimg.style.opacity = "1.0"
-        jQuery(@userimg).animate(
-            {opacity:'0.0'},
-            @time_animation,
+        jQuery(@userimg).animate({opacity:'0.0'},@time_animation,
             "linear",=>
-                @hide)
+                @userimg_div.style.display = "none"
+                @element.style.display = "none"
+                @blur()
+        )
     
     show_animation:->
-        @login.show()
         @show()
-        @username.style.display = "block"
-        
         @userimg.style.opacity = "0.0"
-        jQuery(@userimg).animate(
-            {opacity:'1.0'},
-            @time_animation)
+        jQuery(@userimg).animate({opacity:'1.0'},@time_animation)
 
     userFaceLogin: (name)->
         face = false
@@ -456,7 +454,6 @@ class UserInfo extends Widget
 
     loginAnimation: ->
         echo "loginAnimation"
-        #return
         rotate = 0
         rotate_animation = =>
             @face_recognize_div.style.display = "block"
@@ -552,13 +549,6 @@ class UserInfo extends Widget
             DCore[APP_NAME].cancel_detect()
         if @is_recognizing
             return
-
-    animate_near: ->
-        if @face_login
-            DCore[APP_NAME].cancel_detect()
-        if @is_recognizing
-            return
-
 
 
 
