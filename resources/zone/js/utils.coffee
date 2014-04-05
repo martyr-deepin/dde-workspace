@@ -1,3 +1,6 @@
+DEBUG = false
+
+ #-------------------------------------------
 
 cfgKeyVal = []
 zoneKeyText = []
@@ -32,7 +35,6 @@ enableZoneDetect = (enable) ->
 
 setZoneDBusSettings = (key,value)->
     echo "setZoneDBusSettings : key: #{key}------value: #{value}"
-    echo "zoneDBus not null" if zoneDBus?
     try
         switch key
             when "left-up" then zoneDBus?.SetTopLeft_sync(value)
@@ -49,10 +51,6 @@ getZoneConfig = ->
         value = DCore.Zone.get_config(key)
         cfgKeyVal[key] = value
         zoneKeyText[key] = option_text[j] for val ,j in cfgValue when val is value
-    echo "cfgKeyVal:"
-    echo cfgKeyVal
-    echo "zoneKeyText:"
-    echo zoneKeyText
  
 setZoneConfig = (key,value)->
     cfgKeyVal[key] = value

@@ -53,6 +53,7 @@ zone.option_build()
 
 document.body.addEventListener("click",(e)=>
     e.stopPropagation()
+    return if DEBUG
     enableZoneDetect(true)
     DCore.Zone.quit()
 )

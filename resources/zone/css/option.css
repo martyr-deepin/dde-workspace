@@ -7,7 +7,7 @@ body{
 }
 
 .current_div{
-    /*background-color:rgba(200,200,200,0.2);*/
+    background-color:rgba(200,200,200,0.2);
     display:-webkit-box;
     overflow:hidden;
 }
@@ -20,7 +20,7 @@ body{
 }
 
 .current_text{
-    /*background-color:rgba(0,200,200,0.2);*/
+    background-color:rgba(0,200,200,0.2);
     position:absolute;
     width:9em;
     /*margin-top:0;*/
@@ -34,7 +34,7 @@ body{
 
 
 .opt_choose{
-    /*background-color:rgba(50,0,50,0.2);*/
+    background-color:rgba(50,0,50,0.2);
     position:absolute;
     margin:0;
     padding:0;
@@ -43,10 +43,11 @@ body{
 }
 
 .opt_text_li{
-    /*position:relative;*/
+    background-color:rgba(125,0,0,0.2);
     list-style:none;
 }
 .opt_text_li span{
+    background-color:rgba(50,0,0,0.2);
     display:table-cell;
     padding:7px 10px;
     text-shadow:0 0.2em 0.2em rgba(0,0,0,0.4);
@@ -56,6 +57,7 @@ body{
     color:#afafaf;
     border-radius:4px; 
     white-space:nowrap;
+    width:9em;
 }
 
 /*.opt_text_li span:hover{*/
