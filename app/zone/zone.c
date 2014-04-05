@@ -42,6 +42,8 @@
 
 #include "zone.h"
 
+/*#define DEBUG*/
+
 #define ZONE_SCHEMA_ID "com.deepin.dde.zone"
 #define ZONE_ID_NAME "desktop.app.zone"
 
@@ -98,7 +100,7 @@ G_GNUC_UNUSED sigterm_cb (int signum)
 }
 
 
-#ifndef NDEBUG
+#ifndef DEBUG
 static void
 focus_out_cb (GtkWidget* w, GdkEvent*e, gpointer user_data)
 {
@@ -259,7 +261,8 @@ int main (int argc, char **argv)
     GtkWidget *webview = d_webview_new_with_uri (CHOICE_HTML_PATH);
     gtk_container_add (GTK_CONTAINER(container), GTK_WIDGET (webview));
 
-#ifndef NDEBUG
+#ifndef DEBUG
+    g_message(" Zone Not DEBUG");
     gtk_window_set_keep_above (GTK_WINDOW (container), TRUE);
     g_signal_connect (container, "show", G_CALLBACK (show_cb), NULL);
     g_signal_connect (webview, "focus-out-event", G_CALLBACK( focus_out_cb), NULL);
@@ -273,7 +276,7 @@ int main (int argc, char **argv)
     gdk_window_set_skip_taskbar_hint (gdkwindow, TRUE);
     gdk_window_set_cursor (gdkwindow, gdk_cursor_new(GDK_LEFT_PTR));
 
-#ifndef NDEBUG
+#ifndef DEBUG
     gdk_window_set_keep_above (gdkwindow, TRUE);
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
