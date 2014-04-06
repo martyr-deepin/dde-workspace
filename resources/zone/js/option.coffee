@@ -160,6 +160,7 @@ class Option extends Widget
         if @current_left
             @opt_choose.style.left = left
         else
+            echo "right"
             @opt_choose.style.right = left
        
         if !@current_up then @opt_text.reverse()
@@ -168,8 +169,10 @@ class Option extends Widget
             @opt_text_span[i] = create_element("span","opt_text_span",@opt_text_li[i])
             @opt_text_span[i].textContent = opt
             if !@current_left
+                @opt_text_span[i].style.float = "right"
                 @opt_text_span[i].style.textAlign = "right"
             else
+                @opt_text_span[i].style.float = "left"
                 @opt_text_span[i].style.textAlign = "left"
 
             that = @
