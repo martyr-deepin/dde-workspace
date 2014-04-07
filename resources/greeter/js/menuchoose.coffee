@@ -394,6 +394,13 @@ class ComboBox extends Widget
         else
             @menu.show()
     
+    hide:->
+        @element.style.display = "none"
+
+    show:->
+        @element.style.display = "block"
+
+
     get_current: ->
         menu_current_id = localStorage.getItem("menu_current_id")
         @menu.current = menu_current_id
@@ -407,7 +414,7 @@ class ComboBox extends Widget
         @current_text.style.display = "block"
         
         XInit = -30
-        XMove = 5
+        XMove = 15
         echo XMove
         @current_text.style.opacity = "0.0"
         @current_text.style.right = XInit
@@ -425,7 +432,9 @@ class ComboBox extends Widget
 
     set_current: (current)->
         current = current.toLowerCase()
-        localStorage.setItem("menu_current_id",current)
         @menu.current = current
+        @current_text?.textContent = current
+        if @id is "desktop"
+            localStorage.setItem("menu_current_id",current)
         return current
 
