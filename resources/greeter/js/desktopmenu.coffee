@@ -19,51 +19,70 @@
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class DesktopMenu extends Widget
-    parent = null
-    img_before = null
-    
     constructor: (parent_el) ->
         super
-        parent = parent_el
-        img_before = "images/desktopmenu/"
+        @parent = parent_el
+        @img_before = "images/desktopmenu/"
+        @user_session = []
+        @current_img_src = null
    
+    set_currentuser_session:(@current)->
+        # @username = _current_user.username
+        # @session = DCore.Greeter.get_user_session(@username)
+        # echo "----Greeter.get_user_session(#{@username}):---#{@session}--------"
+        # sessions = DCore.Greeter.get_sessions()
+        # if @session? and @session in sessions
+        #     echo "#{@username} session  is #{@session} "
+        # else
+        #     @session = @user_session[@username]
+        #     echo "-session get from @user_session[#{@username}] = #{@session}---------"
+
+        @user_session = localStorage.getObject("user_session")
+        @user_session[_current_user.username] = @current
+        localStorage.setObject("user_session",@user_session)
+
+    update_current_icon:(@current)->
+        try
+            echo "set_current(@current) :----#{@current}----"
+            icon = DCore.Greeter.get_session_icon(@current)
+            @current_img_src = "images/desktopmenu/current/#{icon}.png"
+        catch error
+            echo "set_current(#{@current}) error:#{error}"
+            @current_img_src = "images/desktopmenu/current/unkown.png"
+        finally
+            echo @current_img_src
+            @de_menu.current_img.src = @current_img_src
+            @set_currentuser_session(@current)
+
+    menuChoose_click_cb : (current, title)=>
+        @current = @de_menu.set_current(current)
+        @update_current_icon(@current)
+        @set_currentuser_session(@current)
+
     new_desktop_menu: ->
         echo "new_desktop_menu"
-        de_menu_cb = (id, title)->
-            id = de_menu.set_current(id)
         
-        de_menu = new ComboBox("desktop", de_menu_cb)
-        
-        sessions = DCore.Greeter.get_sessions()
-        if sessions.length <= 1 then return
+        @sessions = DCore.Greeter.get_sessions()
+        if @sessions.length <= 1 then return
        
-        for session in sessions
+        @de_menu = new ComboBox("desktop", @menuChoose_click_cb)
+       
+        for session in @sessions
             id = session.toLowerCase()
             name = id
-
             #name = DCore.Greeter.get_session_name(id)
             icon = DCore.Greeter.get_session_icon(session)
-            icon_path_normal = img_before + "#{icon}_normal.png"
-            icon_path_hover = img_before + "#{icon}_hover.png"
-            icon_path_press = img_before + "#{icon}_press.png"
-            de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
-        de_menu.frame_build()
-        de_menu.currentTextShow()
+            icon_path_normal = @img_before + "#{icon}_normal.png"
+            icon_path_hover = @img_before + "#{icon}_hover.png"
+            icon_path_press = @img_before + "#{icon}_press.png"
+            @de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
+        @de_menu.frame_build()
+        @de_menu.currentTextShow()
         
-        if not parent? then parent = document.body
-        parent.appendChild(de_menu.element)
+        if not @parent? then @parent = document.body
+        @parent.appendChild(@de_menu.element)
         
-        
-        current_session_icon_name = DCore.Greeter.get_session_icon(localStorage.getItem("de_current_id"))
-        echo "current_session_icon_name:#{current_session_icon_name}"
-        #de_menu.current_img.title = current_session_icon_name
-        
-        try
-            de_menu.current_img.src = img_before + "current/#{current_session_icon_name}.png"
-        catch e
-            echo "de_menu.current_img.src:#{e}"
-            de_menu.current_img.src = img_before + "current/unkown.png"
 
     keydown_listener:(e)->
-        echo "de_menu keydown_listener"
-        de_menu.menu.keydown(e)
+        echo "@de_menu keydown_listener"
+        @de_menu.menu.keydown(e)
