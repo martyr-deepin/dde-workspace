@@ -72,6 +72,7 @@ class User extends Widget
                 usericon = @bg.users_id_dbus[uid].IconFile
                 u = new UserInfo(username, username, usericon)
                 @userinfo_all.push(u)
+                u.is_logined = @bg.is_user_logined(uid)
                 _current_user = u if uid is @_default_userid
         
         user.index = j for user,j in @userinfo_all
@@ -185,11 +186,16 @@ class UserInfo extends Widget
         super
         echo "new UserInfo :#{@username}"
         
+        @is_logined = false
         @is_recognizing = false
         @index = null
         @time_animation = 500
         @face_login = @userFaceLogin(@username)
         
+        @userinfo_build()
+
+
+    userinfo_build:->
         @userbase = create_element("div", "UserBase", @element)
         
         @face_recognize_div = create_element("div","face_recognize_div",@userbase)
@@ -312,6 +318,7 @@ class UserInfo extends Widget
         _current_user = @
         @user_session = []
         @user_session = localStorage.getObject("user_session")
+        echo @user_session
         echo @user_session[@username]
         @session = @user_session[@username]
         desktopmenu?.update_current_icon(@session)
@@ -326,8 +333,7 @@ class UserInfo extends Widget
             @draw_avatar()
         
         _current_user = @
-        echo _current_user
-        #localStorage.setObject("_current_user",_current_user)
+        localStorage.setItem("_current_user",_current_user)
         @update_session_icon() if is_greeter
  
     

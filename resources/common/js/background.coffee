@@ -61,6 +61,15 @@ class Background
         catch e
             echo "#{GRAPHIC} dbus ERROR: #{e}"
 
+
+    is_user_logined:(uid)->
+        is_logined = false
+        LoginTime = @users_id_dbus[uid].LoginTime
+        echo "LoginTime:#{LoginTime}"
+        if LoginTime is null or LoginTime == 0 or LoginTime is undefined then is_logined = false
+        else is_logined = true
+        return is_logined
+
     get_user_id:(user)->
         id = null
         try
