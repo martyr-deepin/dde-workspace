@@ -22,8 +22,11 @@ draw_camera_id = null
 _current_user = null
 password_error_msg = null
 
+DEBUG = false
+
 class User extends Widget
     img_src_before = "images/userswitch/"
+    
     constructor:->
         super
         
@@ -33,28 +36,41 @@ class User extends Widget
         @userinfo_all = []
         @accounts = new Accounts(APP_NAME)
         @get_default_userid()
-        @set_default_session() if is_greeter
     
     set_default_session:->
-        @user_session = localStorage.getObject("user_session")
+        echo "set_default_session"
+        return if DEBUG
+        user_session = localStorage.getObject("user_session")
+        if user_session isnt undefined then return
+
+        default_session = "deepin"
+        u_s =
+            user:"deepin",
+            session:"deepin"
+        
         try
-            if @user_session[@_default_username] isnt undefined
-                echo @user_session[@_default_username]
+            if @user_session[0].user isnt undefined
                 echo "user_session already has"
             else
-                echo "user_session is null and set_default"
-                default_session = "deepin"
+                echo "user_session is undefined and set_default"
                 for name in @accounts.users_name
-                    echo name
-                    @user_session[name] = default_session
+                    u_s.user = name
+                    u_s.session = default_session
+                    @user_session.push(u_s)
                 echo @user_session
                 localStorage.setObject("user_session",@user_session)
+                @user_session = localStorage.getObject("user_session")
+                echo @user_session
         catch e
-            echo "user_session is null and set_default:#{e}"
-            default_session = "deepin"
+            echo "user_session is undefined and set_default : #{e}"
             for name in @accounts.users_name
-                @user_session[name] = default_session
+                u_s.user = name
+                u_s.session = default_session
+                @user_session.push(u_s)
+            echo @user_session
             localStorage.setObject("user_session",@user_session)
+            @user_session = localStorage.getObject("user_session")
+            echo @user_session
     
     get_default_userid:->
         @_default_username = @accounts.get_default_username()
@@ -315,13 +331,27 @@ class UserInfo extends Widget
    
     update_session_icon: ->
         echo "update_session_icon"
-        _current_user = @
-        @user_session = []
-        @user_session = localStorage.getObject("user_session")
-        echo @user_session
-        echo @user_session[@username]
-        @session = @user_session[@username]
-        desktopmenu?.update_current_icon(@session)
+        return if DEBUG
+        @session = "deepin"
+        try
+            @user_session = []
+            @user_session = localStorage.getObject("user_session")
+            echo @user_session
+            echo @user_session[@username]
+            @session = @user_session[@username]
+            echo @user_session["ycl"] + "--------------"
+        catch e
+            echo "#{e}"
+            @session = DCore.Greeter.get_user_session(@username)
+            echo "----Greeter.get_user_session(#{@username}):---#{@session}--------"
+            sessions = DCore.Greeter.get_sessions()
+            if @session? and @session in sessions
+                echo "#{@username} session  is #{@session} "
+            else
+                @session = "deepin"
+                echo "session default_session deepin------"
+        finally
+            desktopmenu?.update_current_icon(@session)
 
     focus:->
         echo "#{@username} focus"

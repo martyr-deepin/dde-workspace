@@ -29,19 +29,12 @@ class DesktopMenu extends Widget
         @parent.appendChild(@element)
    
     set_currentuser_session:(@current)->
-        # @username = _current_user.username
-        # @session = DCore.Greeter.get_user_session(@username)
-        # echo "----Greeter.get_user_session(#{@username}):---#{@session}--------"
-        # sessions = DCore.Greeter.get_sessions()
-        # if @session? and @session in sessions
-        #     echo "#{@username} session  is #{@session} "
-        # else
-        #     @session = @user_session[@username]
-        #     echo "-session get from @user_session[#{@username}] = #{@session}---------"
-
-        @user_session = localStorage.getObject("user_session")
-        @user_session[_current_user.username] = @current
-        localStorage.setObject("user_session",@user_session)
+        try
+            @user_session = localStorage.getObject("user_session")
+            @user_session[_current_user.username] = @current
+            localStorage.setObject("user_session",@user_session)
+        catch e
+            echo "#{e}"
 
 
     update_current_icon:(@current)->
@@ -59,7 +52,6 @@ class DesktopMenu extends Widget
         finally
             echo @current_img_src
             @de_menu.current_img.src = @current_img_src
-            @set_currentuser_session(@current)
 
     menuChoose_click_cb : (current, title)=>
         @current = @de_menu.set_current(current)
