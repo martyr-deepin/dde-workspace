@@ -49,12 +49,14 @@
 #include "gs-grab.h"
 #include "lock_util.h"
 
-/*#define DEBUG*/
+#define DEBUG
 
 #define LOCK_HTML_PATH "file://"RESOURCE_DIR"/greeter/lock.html"
 
 
+#ifndef DEBUG
 static GSGrab* grab = NULL;
+#endif
 static GtkWidget* lock_container = NULL;
 const gchar *username = NULL;
 
@@ -331,9 +333,9 @@ int main (int argc, char **argv)
     gdk_window_set_override_redirect (gdkwindow, TRUE);
     select_popup_events ();
     gdk_window_add_filter (NULL, (GdkFilterFunc)xevent_filter, gdkwindow);
+    grab = gs_grab_new ();
 #endif
 
-    grab = gs_grab_new ();
     gtk_widget_show_all (lock_container);
 
     gdk_window_focus (gtk_widget_get_window (lock_container), 0);

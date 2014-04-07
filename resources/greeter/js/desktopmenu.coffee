@@ -35,8 +35,6 @@ class DesktopMenu extends Widget
         de_menu = new ComboBox("desktop", de_menu_cb)
         
         sessions = DCore.Greeter.get_sessions()
-        echo "-------sessions-------------"
-        echo sessions
         if sessions.length <= 1 then return
        
         for session in sessions

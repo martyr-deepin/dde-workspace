@@ -31,6 +31,8 @@ class Background
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
 
+
+        @users_id = []
         @users_name = []
         @users_id_dbus = []
         @users_name_dbus = []
@@ -47,6 +49,7 @@ class Background
                     ACCOUNTS_USER.path,
                     ACCOUNTS_USER.interface
                 )
+                @users_id.push(user_dbus.Uid)
                 @users_name.push(user_dbus.UserName)
                 @users_id_dbus[user_dbus.Uid] = user_dbus
                 @users_name_dbus[user_dbus.UserName] = user_dbus
@@ -66,6 +69,15 @@ class Background
             echo "get_user_id #{e}"
         if not id? then id = "1000"
         return id
+    
+    get_user_icon:(uid)->
+        icon = null
+        try
+            icon = @users_id_dbus[uid].IconFile
+        catch e
+            echo "get_user_bg #{e}"
+        return icon
+
 
     get_user_bg:(uid)->
         bg = null
@@ -114,3 +126,14 @@ class Background
         @_current_username = @get_default_username()
         @_current_userid = @get_user_id(@_current_username)
         return @get_blur_background(@_current_userid)
+
+    is_disable_user :(uid)->
+        disable = false
+        user_dbus = @users_id_dbus[uid]
+        if user_dbus.Locked is null then disable = false
+        else if user_dbus.Locked is true then disable = true
+        return disable
+
+    isAllowGuest:->
+        @AllowGuest = @Dbus_Account.AllowGuest
+

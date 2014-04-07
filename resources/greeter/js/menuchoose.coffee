@@ -434,25 +434,25 @@ class ComboBox extends Widget
         jQuery(@element).hover(mouseenter,mouseleave)
 
 
-    set_current: (id)->
-        id = id.toLowerCase()
+    set_current: (current)->
+        current = current.toLowerCase()
         try
-            echo "set_current(id) :---------#{id}----------------"
+            echo "set_current(current) :---------#{current}----------------"
             if @id is "desktop"
-                icon = DCore.Greeter.get_session_icon(id)
+                icon = DCore.Greeter.get_session_icon(current)
                 current_img_src = "images/desktopmenu/current/#{icon}.png"
                 echo current_img_src
             else if @id is "power"
-                current_img_src = "images/powermenu/#{id}.png"
+                current_img_src = "images/powermenu/#{current}.png"
             @current_img.src = current_img_src
         catch error
-            echo "set_current(#{id}) error:#{error}"
+            echo "set_current(#{current}) error:#{error}"
             if @id is "desktop"
                 current_img_error = "images/desktopmenu/current/unkown.png"
             else if @id is "power"
                 current_img_error = "images/powermenu/powermenu.png"
             @current_img.src = current_img_error
-        localStorage.setItem("de_current_id",id)
-        @menu.current = id
-        return id
+        localStorage.setItem("de_current_id",current)
+        @menu.current = current
+        return current
 
