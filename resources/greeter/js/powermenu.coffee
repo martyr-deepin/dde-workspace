@@ -51,15 +51,16 @@ class PowerMenu extends Widget
         
         return power_dict
 
+    menuChoose_click_cb : (id, title)=>
+        id = de_menu.set_current(id)
+        #enableZoneDetect(true)
+        power_dict[id]()
+
     new_power_menu:->
         echo "new_power_menu"
         power_dict = @get_power_dict()
-        power_menu_cb = (id, title)->
-            #enableZoneDetect(true)
-            power_dict[id]()
-                
 
-        power_menu = new ComboBox("power", power_menu_cb)
+        power_menu = new ComboBox("power", @menuChoose_click_cb)
 
         for key, value of power_dict
             title = power_title[key]
