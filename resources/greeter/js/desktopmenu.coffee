@@ -41,7 +41,12 @@ class DesktopMenu extends Widget
         @user_session[_current_user.username] = @current
         localStorage.setObject("user_session",@user_session)
 
+
     update_current_icon:(@current)->
+        if _current_user.is_logined
+            @de_menu.hide()
+            return
+        @de_menu.show()
         try
             echo "set_current(@current) :----#{@current}----"
             icon = DCore.Greeter.get_session_icon(@current)
