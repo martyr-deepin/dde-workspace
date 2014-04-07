@@ -27,13 +27,13 @@ class User extends Widget
     constructor:->
         super
         
-        @userinfo_show_index = 0
+        @current_user_index = 0
         
         @user_session = []
         @userinfo_all = []
         @bg = new Background(APP_NAME)
         @get_default_userid()
-        @set_default_session()
+        @set_default_session() if is_greeter
     
     set_default_session:->
         @user_session = localStorage.getObject("user_session")
@@ -95,8 +95,7 @@ class User extends Widget
             @userinfo_all[center_index] = _current_user
             @userinfo_all[_current_user.index] = center_old
             _current_user.index = center_index
-        @userinfo_show_index =_current_user.index
-        localStorage.setItem("current_user_index",@userinfo_show_index)
+        @current_user_index =_current_user.index
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
@@ -125,27 +124,24 @@ class User extends Widget
         else if index < 0 then index = @userinfo_all.length - 1
         return index
 
-    showCurrentSession : (user)=>
-        echo "showCurrentSession:#{user}"
-
 
     switchtoprev_userinfo : =>
-        echo "switchtoprev_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].username}"
-        @userinfo_all[@userinfo_show_index].hide_animation()
-        @userinfo_show_index = @check_index(@userinfo_show_index + 1)
-        localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "switchtoprev_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].username}"
-        @userinfo_all[@userinfo_show_index].show_animation()
-        @userinfo_all[@userinfo_show_index].animate_prev()
+        echo "switchtoprev_userinfo from #{@current_user_index}: #{_current_user.username}"
+        _current_user.hide_animation()
+        @current_user_index = @check_index(@current_user_index + 1)
+        _current_user = @userinfo_all[@current_user_index]
+        echo "to #{@current_user_index}: #{_current_user.username}"
+        _current_user.show_animation()
+        _current_user.animate_prev()
 
     switchtonext_userinfo : =>
-        echo "switchtonext_userinfo from #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].username}"
-        @userinfo_all[@userinfo_show_index].hide_animation()
-        @userinfo_show_index = @check_index(@userinfo_show_index - 1)
-        localStorage.setItem("current_user_index",@userinfo_show_index)
-        echo "switchtonext_userinfo to #{@userinfo_show_index}: #{@userinfo_all[@userinfo_show_index].username}"
-        @userinfo_all[@userinfo_show_index].show_animation()
-        @userinfo_all[@userinfo_show_index].animate_next()
+        echo "switchtonext_userinfo from #{@current_user_index}: #{_current_user.username}"
+        _current_user.hide_animation()
+        @current_user_index = @check_index(@current_user_index - 1)
+        _current_user = @userinfo_all[@current_user_index]
+        echo "to #{@current_user_index}: #{_current_user.username}"
+        _current_user.show_animation()
+        _current_user.animate_next()
 
 
     prev_next_userinfo_create:->
@@ -313,19 +309,12 @@ class UserInfo extends Widget
    
     update_session_icon: ->
         echo "update_session_icon"
-        if is_greeter
-            @user_session = localStorage.getObject("user_session")
-            echo @user_session
-            
-            @session = DCore.Greeter.get_user_session(@username)
-            echo "----Greeter.get_user_session(#{@username}):---#{@session}--------"
-            sessions = DCore.Greeter.get_sessions()
-            if @session? and @session in sessions
-                echo "#{@username} session  is #{@session} "
-            else
-                @session = @user_session[@username]
-                echo "-session get from @user_session[#{@username}] = #{@session}---------"
-            de_menu?.set_current(@session)
+        _current_user = @
+        @user_session = []
+        @user_session = localStorage.getObject("user_session")
+        echo @user_session[@username]
+        @session = @user_session[@username]
+        desktopmenu?.update_current_icon(@session)
 
     focus:->
         echo "#{@username} focus"
@@ -337,6 +326,8 @@ class UserInfo extends Widget
             @draw_avatar()
         
         _current_user = @
+        echo _current_user
+        #localStorage.setObject("_current_user",_current_user)
         @update_session_icon() if is_greeter
  
     
@@ -351,8 +342,6 @@ class UserInfo extends Widget
         if is_greeter
             echo "#{username} start session #{@session}"
             @loginAnimation()
-            @user_session[username] = @session
-            localStorage.setObject("user_session",@user_session)
             DCore.Greeter.start_session(username, password, @session)
             document.body.cursor = "wait"
             echo "start session end"
@@ -439,7 +428,6 @@ class LoginEntry extends Widget
         @password.addEventListener("keyup",(e)=>
             if @username is "guest" then return
             if e.which == ENTER_KEY
-                # if _current_user.username is @username
                 @on_active(@username, @password.value) if @check_completeness()
         )
 
@@ -523,7 +511,6 @@ DCore.signal_connect("failed-too-much", (msg)->
     echo '[failed-too-much]'
     _current_user.is_recognizing = false
     _current_user.auth_failed(msg.error)
-    message_tip.adjust_show_login()
 )
 
 DCore.signal_connect("auth-succeed", ->
