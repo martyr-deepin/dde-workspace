@@ -367,17 +367,6 @@ class ComboBox extends Widget
         super
         @current_img = create_img("current_img", "", @element)
         
-        if is_greeter
-           
-            de_current_id = localStorage.getItem("de_current_id")
-            echo "-------------de_current_id:#{de_current_id}"
-            if not de_current_id?
-                echo "not de_current_id"
-                de_current_id = DCore.Greeter.get_default_session() if is_greeter
-                if de_current_id is null then de_current_id = "deepin"
-                localStorage.setItem("de_current_id",de_current_id)
-        else
-            de_current_id = "shutdown"
         @menu = new MenuChoose("#{@id}_menuchoose")
         @menu.set_callback(@on_click_cb)
 
@@ -406,15 +395,15 @@ class ComboBox extends Widget
             @menu.show()
     
     get_current: ->
-        de_current_id = localStorage.getItem("de_current_id")
-        @menu.current = de_current_id
+        menu_current_id = localStorage.getItem("menu_current_id")
+        @menu.current = menu_current_id
         return @menu.current
 
     currentTextShow: ->
         @current_text = create_element("div","current_text",@element) if not @current_text?
         
-        de_current_id = localStorage.getItem("de_current_id")
-        @current_text.textContent = de_current_id
+        menu_current_id = localStorage.getItem("menu_current_id")
+        @current_text.textContent = menu_current_id
         @current_text.style.display = "block"
         
         XInit = -30
@@ -436,23 +425,7 @@ class ComboBox extends Widget
 
     set_current: (current)->
         current = current.toLowerCase()
-        try
-            echo "set_current(current) :---------#{current}----------------"
-            if @id is "desktop"
-                icon = DCore.Greeter.get_session_icon(current)
-                current_img_src = "images/desktopmenu/current/#{icon}.png"
-                echo current_img_src
-            else if @id is "power"
-                current_img_src = "images/powermenu/#{current}.png"
-            @current_img.src = current_img_src
-        catch error
-            echo "set_current(#{current}) error:#{error}"
-            if @id is "desktop"
-                current_img_error = "images/desktopmenu/current/unkown.png"
-            else if @id is "power"
-                current_img_error = "images/powermenu/powermenu.png"
-            @current_img.src = current_img_error
-        localStorage.setItem("de_current_id",current)
+        localStorage.setItem("menu_current_id",current)
         @menu.current = current
         return current
 
