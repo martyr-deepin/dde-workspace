@@ -52,7 +52,7 @@ class PowerMenu extends Widget
         return power_dict
 
     menuChoose_click_cb : (id, title)=>
-        id = de_menu.set_current(id)
+        id = power_menu.set_current(id)
         #enableZoneDetect(true)
         power_dict[id]()
 
