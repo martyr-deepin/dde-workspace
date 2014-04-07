@@ -29,8 +29,10 @@ class PowerMenu extends Widget
     
     constructor: (parent_el) ->
         super
-        parent = parent_el
+        @parent = parent_el
         img_before = "images/powermenu/"
+        if not @parent? then @parent = document.body
+        @parent.appendChild(@element)
 
     suspend_cb : ->
         power_force("suspend")
@@ -70,9 +72,8 @@ class PowerMenu extends Widget
             power_menu.insert(key, title, img_normal,img_hover,img_click)
         
         power_menu.frame_build()
-        if not parent? then parent = document.body
-        parent.appendChild(power_menu.element)
-
+        @element.appendChild(power_menu.element)
+        
         power_menu.current_img.src = img_before + "powermenu.png"
     
     keydown_listener:(e)->

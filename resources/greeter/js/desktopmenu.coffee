@@ -25,6 +25,8 @@ class DesktopMenu extends Widget
         @img_before = "images/desktopmenu/"
         @user_session = []
         @current_img_src = null
+        if not @parent? then @parent = document.body
+        @parent.appendChild(@element)
    
     set_currentuser_session:(@current)->
         # @username = _current_user.username
@@ -83,9 +85,7 @@ class DesktopMenu extends Widget
             @de_menu.insert(id, name, icon_path_normal,icon_path_hover,icon_path_press)
         @de_menu.frame_build()
         @de_menu.currentTextShow()
-        
-        if not @parent? then @parent = document.body
-        @parent.appendChild(@de_menu.element)
+        @element.appendChild(@de_menu.element)
         
 
     keydown_listener:(e)->
