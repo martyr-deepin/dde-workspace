@@ -415,7 +415,6 @@ class ComboBox extends Widget
         
         XInit = -30
         XMove = 15
-        echo XMove
         @current_text.style.opacity = "0.0"
         @current_text.style.right = XInit
         t = 100

@@ -31,7 +31,7 @@ class User extends Widget
         
         @user_session = []
         @userinfo_all = []
-        @bg = new Background(APP_NAME)
+        @accounts = new Accounts(APP_NAME)
         @get_default_userid()
         @set_default_session() if is_greeter
     
@@ -44,7 +44,7 @@ class User extends Widget
             else
                 echo "user_session is null and set_default"
                 default_session = "deepin"
-                for name in @bg.users_name
+                for name in @accounts.users_name
                     echo name
                     @user_session[name] = default_session
                 echo @user_session
@@ -52,27 +52,27 @@ class User extends Widget
         catch e
             echo "user_session is null and set_default:#{e}"
             default_session = "deepin"
-            for name in @bg.users_name
+            for name in @accounts.users_name
                 @user_session[name] = default_session
             localStorage.setObject("user_session",@user_session)
     
     get_default_userid:->
-        @_default_username = @bg.get_default_username()
-        if @_default_username is null then @_default_username = @bg.users_name[0]
-        @_default_userid = @bg.get_user_id(@_default_username)
+        @_default_username = @accounts.get_default_username()
+        if @_default_username is null then @_default_username = @accounts.users_name[0]
+        @_default_userid = @accounts.get_user_id(@_default_username)
         echo "_default_username:#{@_default_username};uid:#{@_default_userid}"
         return @_default_userid
     
 
     new_userinfo_for_greeter:->
         echo "new_userinfo_for_greeter"
-        for uid in @bg.users_id
-            if not @bg.is_disable_user(uid)
-                username = @bg.users_id_dbus[uid].UserName
-                usericon = @bg.users_id_dbus[uid].IconFile
+        for uid in @accounts.users_id
+            if not @accounts.is_disable_user(uid)
+                username = @accounts.users_id_dbus[uid].UserName
+                usericon = @accounts.users_id_dbus[uid].IconFile
                 u = new UserInfo(username, username, usericon)
                 @userinfo_all.push(u)
-                u.is_logined = @bg.is_user_logined(uid)
+                u.is_logined = @accounts.is_user_logined(uid)
                 _current_user = u if uid is @_default_userid
         
         user.index = j for user,j in @userinfo_all
@@ -100,15 +100,15 @@ class User extends Widget
     
     new_userinfo_for_lock:->
         echo "new_userinfo_for_lock"
-        username = @bg.users_id_dbus[@_default_userid].UserName
-        usericon = @bg.users_id_dbus[@_default_userid].IconFile
+        username = @accounts.users_id_dbus[@_default_userid].UserName
+        usericon = @accounts.users_id_dbus[@_default_userid].IconFile
         _current_user = new UserInfo(username, username, usericon)
         _current_user.index = 0
         _current_user.show()
         @element.appendChild(_current_user.element)
     
     isSupportGuest:->
-        if is_support_guest and @bg.isAllowGuest() is true
+        if is_support_guest and @accounts.isAllowGuest() is true
             guest_image = "images/guest.jpg"
             #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
             u = new UserInfo("guest", _("guest"), guest_image)

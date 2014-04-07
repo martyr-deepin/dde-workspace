@@ -18,7 +18,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, see <http://www.gnu.org/licenses/>.
 
-class Background
+class Accounts
     ACCOUNTS_DAEMON = "com.deepin.daemon.Accounts"
     ACCOUNTS_USER =
         obj: ACCOUNTS_DAEMON
@@ -30,8 +30,7 @@ class Background
 
     constructor:(@id)->
         APP = @id#APP_NAME for DCore[APP]
-
-
+        
         @users_id = []
         @users_name = []
         @users_id_dbus = []
