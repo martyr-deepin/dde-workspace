@@ -28,7 +28,12 @@ class DesktopMenu extends Widget
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
    
+        @is_one_session = false
+        @sessions = DCore.Greeter.get_sessions()
+        if @sessions.length < 2 then @is_one_session = true
+       
     update_current_icon:(@current)->
+        return if @is_one_session
         if _current_user.is_logined
             @de_menu.hide()
             return
@@ -46,15 +51,14 @@ class DesktopMenu extends Widget
             @de_menu.current_img.src = @current_img_src
 
     menuChoose_click_cb : (current, title)=>
+        return if @is_one_session
         @current = @de_menu.set_current(current)
         @update_current_icon(@current)
 
     new_desktop_menu: ->
         echo "new_desktop_menu"
+        return if @is_one_session
         
-        @sessions = DCore.Greeter.get_sessions()
-        if @sessions.length <= 1 then return
-       
         @de_menu = new ComboBox("desktop", @menuChoose_click_cb)
        
         for session in @sessions
@@ -72,5 +76,6 @@ class DesktopMenu extends Widget
         
 
     keydown_listener:(e)->
+        return if @is_one_session
         echo "@de_menu keydown_listener"
         @de_menu.menu.keydown(e)

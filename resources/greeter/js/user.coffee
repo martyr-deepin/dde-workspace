@@ -454,8 +454,14 @@ class LoginEntry extends Widget
         )
         
         document.body.addEventListener("keydown",(e)=>
-            if $(".MenuChoose").style.display is "none"
-                @password.focus()
+            try
+                els = $(".MenuChoose")
+                focus = true
+                for el in els
+                    if el.style.display isnt "none" then focus = false
+                @password.focus() if focus
+            catch e
+                echo "#{e}"
         )
 
  
