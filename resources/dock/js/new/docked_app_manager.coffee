@@ -3,6 +3,7 @@ dockedAppManager = get_dbus("session", name:"com.deepin.daemon.Dock", path:"/dde
 dockedAppManager?.connect("Docked", (id)->
     console.log("Docked #{id}")
     items = []
+    app_list = $("#app_list")
     for i in [0...app_list.children.length]
         child = app_list.children[i]
         items.push(child.id)
@@ -12,10 +13,13 @@ dockedAppManager?.connect("Docked", (id)->
         # dock-apps-builder will listen Docked signal, and emit Added signal if
         # necessary.
         items.push(id)
+    console.log("docked items: #{items}")
     dockedAppManager.Sort(items)
 )
 dockedAppManager?.connect("Undocked", (id)->
     console.log("Undocked #{id}")
+    $("#app_list").removeChild($("##{id}"))
+    calc_app_item_size()
 )
 
 initDockedAppPosition = ->
