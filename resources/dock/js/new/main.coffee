@@ -79,12 +79,15 @@ entryManager.connect("Removed", (id)->
     systemTray?.updateTrayIcon()
 )
 
-# entries = entryManager.Entries
-# for entry in entries
-#     d = get_dbus("session", itemDBus(entry))
-#     # console.log("init add: #{d.Id}")
-#     if !Widget.look_up(d.Id)
-#         createItem(d)
+entries = entryManager.Entries
+for entry in entries
+    console.log(entry)
+    d = get_dbus("session", itemDBus(entry))
+    console.log("init add: #{d.Id}")
+    if !Widget.look_up(d.Id)
+        createItem(d)
+
+initDockedAppPosition()
 
 try
     icon_launcher = DCore.get_theme_icon("start-here", 48)
@@ -103,3 +106,9 @@ setTimeout(->
     # apps are moved up, so add 8
     DCore.Dock.change_workarea_height(ITEM_HEIGHT * ICON_SCALE + 8)
 , 100)
+
+try
+    trayIcon = DCore.get_theme_icon("deepin-systray", 48)
+    systemTray = new SystemTray("system-tray", trayIcon, "")
+catch
+    systemTray = null
