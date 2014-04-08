@@ -169,11 +169,20 @@ class User extends Widget
 
 
     prev_next_userinfo_create:->
+        opacity = "0.8"
         @switchuser_div = create_element("div","switchuser_div",@element)
         @prevuserinfo = create_element("div","prevuserinfo",@switchuser_div)
         @prevuserinfo_img = create_img("prevuserinfo_img",img_src_before + "left_normal.png",@prevuserinfo)
         @nextuserinfo = create_element("div","nextuserinfo",@switchuser_div)
         @nextuserinfo_img = create_img("nextuserinfo_img",img_src_before + "right_normal.png",@nextuserinfo)
+
+        jQuery(@switchuser_div).hover((e)=>
+           @prevuserinfo.style.opacity = "0.8"
+           @nextuserinfo.style.opacity = "0.8"
+        ,(e)=>
+           @prevuserinfo.style.opacity = "0.0"
+           @nextuserinfo.style.opacity = "0.0"
+        )
 
         @normal_hover_click_cb(@prevuserinfo_img,
             img_src_before + "left_normal.png",
