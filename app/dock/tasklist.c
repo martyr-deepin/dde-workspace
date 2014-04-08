@@ -59,11 +59,13 @@ PRIVATE Atom ATOM_SHOW_DESKTOP;
 PRIVATE Display* _dsp = NULL;
 PRIVATE Atom ATOM_DEEPIN_WINDOW_VIEWPORTS;
 PRIVATE Atom ATOM_DEEPIN_SCREEN_VIEWPORT;
+PRIVATE Atom ATOM_CLIENT_LIST;
 
 
 PRIVATE
 void _init_atoms()
 {
+    ATOM_CLIENT_LIST = gdk_x11_get_xatom_by_name("_NET_CLIENT_LIST");
     ATOM_ACTIVE_WINDOW = gdk_x11_get_xatom_by_name("_NET_ACTIVE_WINDOW");
     ATOM_WINDOW_ICON = gdk_x11_get_xatom_by_name("_NET_WM_ICON");
     ATOM_WINDOW_TYPE = gdk_x11_get_xatom_by_name("_NET_WM_WINDOW_TYPE");
@@ -142,10 +144,10 @@ GdkFilterReturn monitor_root_change(GdkXEvent* xevent, GdkEvent *event, gpointer
         break;
     }
     }
+
+    dock_update_hide_mode();
     return GDK_FILTER_CONTINUE;
 }
-
-
 
 
 void init_task_list()
@@ -311,3 +313,4 @@ void dock_set_compiz_workaround_preview(gboolean v)
         _v = v;
     }
 }
+
