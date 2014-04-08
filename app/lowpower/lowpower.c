@@ -41,7 +41,7 @@
 #include "utils.h"
 
 
-#define DEBUG
+/*#define DEBUG*/
 
 #define ID_NAME "desktop.app.lowpower"
 
