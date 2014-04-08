@@ -28,16 +28,6 @@ class DesktopMenu extends Widget
         if not @parent? then @parent = document.body
         @parent.appendChild(@element)
    
-    set_currentuser_session:(@current)->
-        echo "set_currentuser_session"
-        try
-            @user_session = localStorage.getObject("user_session")
-            @user_session[_current_user.username] = @current
-            localStorage.setObject("user_session",@user_session)
-        catch e
-            echo "#{e}"
-
-
     update_current_icon:(@current)->
         if _current_user.is_logined
             @de_menu.hide()
@@ -52,12 +42,12 @@ class DesktopMenu extends Widget
             @current_img_src = "images/desktopmenu/current/unkown.png"
         finally
             echo @current_img_src
+            localStorage.setItem("menu_current_id",@current)
             @de_menu.current_img.src = @current_img_src
 
     menuChoose_click_cb : (current, title)=>
         @current = @de_menu.set_current(current)
         @update_current_icon(@current)
-        @set_currentuser_session(@current)
 
     new_desktop_menu: ->
         echo "new_desktop_menu"
