@@ -60,7 +60,6 @@ class DesktopMenu extends Widget
         return if @is_one_session
         
         @de_menu = new ComboBox("desktop", @menuChoose_click_cb)
-       
         for session in @sessions
             id = session.toLowerCase()
             name = id
