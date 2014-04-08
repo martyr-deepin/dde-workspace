@@ -62,6 +62,7 @@ class SystemItem extends AppItem#ClientGroup
     is_fixed_pos: true
     constructor:(@id, @icon, title)->
         super(@id, @icon, title, $("#system"))
+        @element.draggable = false
         $("#system").appendChild(@element)
 
 
@@ -184,6 +185,43 @@ class Trash extends PostfixedItem
         n = DCore.DEntry.get_trash_count() if n == null
         @img.src = Trash.get_icon(n)
 
+
+class Time extends SystemItem
+    constructor:->
+        super
+        @time = create_element('div', 'DigitClockTime', @img)
+        @update_time()
+        @update_id = setInterval(@update_time, 1000)
+        @type = DIGIT_CLOCK['type']
+        @indicatorWarp.style.display = 'none'
+
+    isNormal:->
+        true
+
+    on_mouseover:=>
+        super
+        @set_tooltip((new Date()).toLocaleDateString())
+
+    on_mouseout:=>
+        super
+
+    update_time: =>
+        @time.textContent = "#{@hour()}:#{@min()}"
+
+    force2bit: (n)->
+        if n < 10 then "0#{n}" else "#{n}"
+
+    hour: (max_hour=24, twobit=false)->
+        hour = new Date().getHours()
+        switch max_hour
+            when 12
+                if twobit then @force2bit(hour % 12) else hour % 12
+            when 24
+                if twobit then @force2bit(hour) else hour
+
+    min: (twobit=true) ->
+        min = new Date().getMinutes()
+        if twobit then @force2bit(min) else "#{min}"
 
 
 class ClockBase extends SystemItem

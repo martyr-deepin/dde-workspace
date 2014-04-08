@@ -44,8 +44,6 @@
 static GtkWidget* container = NULL;
 static GtkWidget* webview = NULL;
 
-void start_daemon(const char* path);
-
 struct DisplayInfo dock;
 int _dock_height = 68;
 GdkWindow* DOCK_GDK_WINDOW() { return gtk_widget_get_window(container); }
@@ -315,11 +313,6 @@ void dock_emit_webview_ok()
         /* tray_init(webview); */
         update_dock_size_mode();
         init_dock_guard_window();
-
-        start_daemon("/usr/lib/deepin-daemon/dock-apps-builder");
-        // FIXME:
-        // use sleep can get all entry.
-        sleep(1);
     } else {
         update_dock_size_mode();
     }
@@ -515,26 +508,12 @@ gboolean primary_changed_handler(gpointer data)
 }
 
 
-void start_daemon(const char* path)
-{
-    pid_t pid;
-    if ((pid = fork()) == 0) {
-        execlp(path, path, NULL);
-    } else if (pid == -1) {
-        g_warning("[%s] fork failed: start \"%s\" failed", __FILE__, path);
-        exit(0);
-    }
-}
-
-
 int main(int argc, char* argv[])
 {
     if (is_application_running(DOCK_ID_NAME)) {
         g_warning(_("another instance of dock is running...\n"));
         return 1;
     }
-
-    start_daemon("/usr/lib/deepin-daemon/dock-daemon");
 
     singleton(DOCK_ID_NAME);
 
