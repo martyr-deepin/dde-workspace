@@ -419,6 +419,8 @@ class ComboBox extends Widget
         @current_text.style.right = XInit
         t = 100
         mouseenter = =>
+            menu_current_id = localStorage.getItem("menu_current_id")
+            @current_text.textContent = menu_current_id
             jQuery(@current_text).animate(
                 {opacity:'1.0';right:XMove;},t
             )
@@ -433,6 +435,7 @@ class ComboBox extends Widget
         current = current.toLowerCase()
         @menu.current = current
         @current_text?.textContent = current
+
         if @id is "desktop"
             localStorage.setItem("menu_current_id",current)
         return current
