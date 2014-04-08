@@ -9,6 +9,8 @@ class Item extends Widget
         @img = create_element(tag:'div',class:"AppItemImg", @imgWarp)
         # @img.src = icon || NOT_FOUND_ICON
         @img.style.backgroundImage = "url(#{icon || NOT_FOUND_ICON})"
+        @img.style.backgroundRepeat = 'no-repeat'
+        @img.style.backgroundSize = '48px 48px'
         @img.classList.add("ReflectImg")
         @img.style.pointerEvents = "auto"
         @img.addEventListener("mouseover", @on_mouseover)

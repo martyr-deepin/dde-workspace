@@ -112,3 +112,5 @@ try
     systemTray = new SystemTray("system-tray", trayIcon, "")
 catch
     systemTray = null
+
+new Time("time", "img/time.png", "")
