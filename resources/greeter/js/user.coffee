@@ -21,6 +21,7 @@
 draw_camera_id = null
 _current_user = null
 password_error_msg = null
+guest_id = "guest"
 guest_name = _("guest")
 DEBUG = false
 
@@ -133,7 +134,7 @@ class User extends Widget
         if is_support_guest and @accounts.isAllowGuest() is true
             guest_image = "images/guest.jpg"
             #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
-            u = new UserInfo("guest", guest_name, guest_image)
+            u = new UserInfo(guest_id, guest_name, guest_image)
             u.hide()
             @userinfo_all.push(u)
             @element.appendChild(u.element)
@@ -361,7 +362,7 @@ class UserInfo extends Widget
 
     focus:->
         echo "#{@username} focus"
-        @login.password.focus() if @username isnt guest_name 
+        @login.password.focus() if @username isnt guest_name
 
         if @face_login
             DCore[APP_NAME].set_username(@username)
@@ -381,6 +382,7 @@ class UserInfo extends Widget
     on_verify: (username, password)->
         echo "on_verify:#{username}"
         echo  "--------#{new Date().getTime()}-----------"
+        if username is guest_name then username = guest_id
         if is_greeter
             echo "#{username} start session #{@session}"
             @loginAnimation()
@@ -422,7 +424,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
-        @password.setAttribute("autofocus", true) if @username isnt guest_name 
+        @password.setAttribute("autofocus", true) if @username isnt guest_name
        
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.type = "button"
