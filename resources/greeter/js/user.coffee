@@ -346,17 +346,18 @@ class UserInfo extends Widget
     on_verify: (username, password)->
         echo "on_verify:#{username}"
         echo  "--------#{new Date().getTime()}-----------"
-        if username is guest_name then username = guest_id
+        if username is guest_name then @username = guest_id
+        @password = password
         if is_greeter
             echo "#{username} start session #{@session}"
             @loginAnimation()
-            DCore.Greeter.start_session(username, password, @session)
+            DCore.Greeter.start_session(@username, @password, @session)
             document.body.cursor = "wait"
             echo "start session end"
         else
             echo "#{username} try_unlock "
             @loginAnimation()
-            DCore.Lock.try_unlock(username,password)
+            DCore.Lock.try_unlock(@username,@password)
     
     auth_failed: (msg) =>
         @loginAnimationClear()
@@ -508,7 +509,7 @@ DCore.signal_connect("draw", ->
 )
 
 DCore.signal_connect("start-animation", ->
-    echo "receive start animation"
+    echo "receive ,start animation"
     _current_user.is_recognizing = true
     _remove_click_event?()
     _current_user.draw_avatar()

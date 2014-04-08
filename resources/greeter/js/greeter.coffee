@@ -32,7 +32,7 @@ class Greeter extends Widget
             # echo "receive start login"
             # TODO: maybe some animation or some reflection.
             _current_user.is_recognizing = false
-            DCore.Greeter.start_session(_current_user.id, "", de_menu.get_current())
+            DCore.Greeter.start_session(_current_user.id, _current_user.password, _current_user.session)
         )
 
     mousewheel_listener:(user)->

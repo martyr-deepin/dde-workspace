@@ -46,8 +46,6 @@ else
     is_hide_users = false
 is_hide_users = false
 
-de_menu = null
-
 
 audioplay = new AudioPlay()
 audio_play_status = audioplay.get_launched_status()
