@@ -18,6 +18,7 @@ all: ${com_coffee} \
 	new/item.coffee \
 	deepin_item.coffee\
 	new/system_tray.coffee\
+	new/docked_app_manager.coffee\
 	new/main.coffee
 	coffee -cj dock.js $^
 
