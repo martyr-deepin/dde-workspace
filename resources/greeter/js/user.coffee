@@ -21,7 +21,7 @@
 draw_camera_id = null
 _current_user = null
 password_error_msg = null
-
+guest_name = _("guest")
 DEBUG = false
 
 class User extends Widget
@@ -133,7 +133,7 @@ class User extends Widget
         if is_support_guest and @accounts.isAllowGuest() is true
             guest_image = "images/guest.jpg"
             #guest_image = "/var/lib/AccountsService/icons/guest.jpg"
-            u = new UserInfo("guest", _("guest"), guest_image)
+            u = new UserInfo("guest", guest_name, guest_image)
             u.hide()
             @userinfo_all.push(u)
             @element.appendChild(u.element)
@@ -361,7 +361,7 @@ class UserInfo extends Widget
 
     focus:->
         echo "#{@username} focus"
-        @login.password.focus() if @username isnt "guest"
+        @login.password.focus() if @username isnt guest_name 
 
         if @face_login
             DCore[APP_NAME].set_username(@username)
@@ -422,7 +422,7 @@ class LoginEntry extends Widget
         @password = create_element("input", "password", @password_div)
         @password.type = "password"
         @password.setAttribute("maxlength", PasswordMaxlength) if PasswordMaxlength?
-        @password.setAttribute("autofocus", true) if @username isnt "guest"
+        @password.setAttribute("autofocus", true) if @username isnt guest_name 
        
         @loginbutton = create_img("loginbutton", "", @password_div)
         @loginbutton.type = "button"
@@ -439,7 +439,7 @@ class LoginEntry extends Widget
         )
         @password_eventlistener()
         
-        if @username is "guest"
+        if @username is guest_name
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
             @loginbutton.style.pointer = "cursor"
@@ -456,19 +456,19 @@ class LoginEntry extends Widget
     password_eventlistener:->
         @password.addEventListener("click", (e)=>
             e.stopPropagation()
-            if @username is "guest" then return
+            if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("focus",=>
-            if @username is "guest" then return
+            if @username is guest_name then return
             if @password.value is password_error_msg or @password.value is localStorage.getItem("password_value_shutdown")
                 @input_password_again()
         )
         
         @password.addEventListener("keyup",(e)=>
-            if @username is "guest" then return
+            if @username is guest_name then return
             if e.which == ENTER_KEY
                 @on_active(@username, @password.value) if @check_completeness()
         )
