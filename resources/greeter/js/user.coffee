@@ -40,8 +40,14 @@ class User extends Widget
     set_default_session:->
         echo "set_default_session"
         return if DEBUG
-        user_session = localStorage.getObject("user_session")
+        
+        user_session = localStorage.getItem("user_session")
+        type = typeof(user_session)
+        type = type.toLowerCase()
+        echo user_session
+        echo type
         if user_session isnt undefined then return
+        if type != "array" then return
 
         default_session = "deepin"
         u_s =
@@ -49,7 +55,7 @@ class User extends Widget
             session:"deepin"
         
         try
-            if @user_session[0].user isnt undefined
+            if user_session[0].user isnt undefined
                 echo "user_session already has"
             else
                 echo "user_session is undefined and set_default"

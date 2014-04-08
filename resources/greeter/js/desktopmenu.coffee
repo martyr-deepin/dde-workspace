@@ -29,6 +29,7 @@ class DesktopMenu extends Widget
         @parent.appendChild(@element)
    
     set_currentuser_session:(@current)->
+        echo "set_currentuser_session"
         try
             @user_session = localStorage.getObject("user_session")
             @user_session[_current_user.username] = @current
