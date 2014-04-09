@@ -24,7 +24,7 @@ class Category
         @element = create_element(tag:"div", class:"category", id:"#{Category.PREFIX}#{@id}", catId:"#{@id}")
 
         @header = create_element(tag:"header", class:"categoryHeader", @element)
-        @nameNode = create_element(tag:"h4", id:"cat#{@id}", class:"categoryName", @header)
+        @nameNode = create_element(tag:"div", id:"cat#{@id}", class:"categoryName", @header)
         @nameNode.appendChild(document.createTextNode(_(@name)))
         @decoration = create_element(tag:"div", class:"categoryNameDecoration", @header)
         create_element(tag:"div", class:"blackLine", @decoration)
@@ -82,10 +82,10 @@ class Category
 
     addItem: (id)->
         item = Widget.look_up(id)
-        # echo item
-        # echo @items.indexOf(id)
+        # console.log item
+        # console.log @items.indexOf(id)
         if item? && @items.indexOf(id) == -1
-            echo "add to category##{@id}"
+            console.log "add to category##{@id}"
             @items.push(id)
             el = item.add(@id, @grid)
             @sort()
@@ -94,7 +94,7 @@ class Category
 
     removeItem:(id)->
         if (item = Widget.look_up(id))?
-            echo "remove from category##{@id}"
+            console.log "remove from category##{@id}"
             item.remove(@id)
 
         @items.remove(id)

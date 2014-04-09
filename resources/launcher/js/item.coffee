@@ -53,11 +53,11 @@ class Item extends Widget
         containerWidth = $("#container").clientWidth - GRID_PADDING * 2
         if switcher.isShowCategory
             containerWidth -= GRID_EXTRA_LEFT_PADDING
-        # echo "containerWidth:#{containerWidth}"
+        # console.log "containerWidth:#{containerWidth}"
         Item.itemNumPerLine = Math.floor(containerWidth / ITEM_WIDTH)
-        # echo "itemNumPerLine: #{Item.itemNumPerLine}"
+        # console.log "itemNumPerLine: #{Item.itemNumPerLine}"
         Item.horizontalMargin =  (containerWidth - Item.itemNumPerLine * ITEM_WIDTH) / 2 / Item.itemNumPerLine
-        # echo "horizontalMargin: #{Item.horizontalMargin}"
+        # console.log "horizontalMargin: #{Item.horizontalMargin}"
         for own id, info of applications
             info.updateProperty((k, v)->
                 v.style.marginLeft = "#{Item.horizontalMargin}px"
@@ -82,7 +82,7 @@ class Item extends Widget
 
     add:(pid, parent)->
         if @elements[pid]
-            echo 'exist'
+            console.log 'exist'
             return @elements[pid]
         if pid == CATEGORY_ID.FAVOR
             pid = 'favor'
@@ -156,7 +156,7 @@ class Item extends Widget
 
     setImageSize: (img)=>
         if img.width == img.height
-            # echo 'set class name to square img'
+            # console.log 'set class name to square img'
             img.classList.add('square_img')
         else if img.width > img.height
             img.classList.add('hbar_img')
@@ -219,11 +219,11 @@ class Item extends Widget
         if switcher.isFavor()
             return
         # TODO: drag between favor items
-        # echo 'drag start'
+        # console.log 'drag start'
         # grid = target.parentNode.parentNode
-        # echo grid.parentNode.getAttribute("catId")
+        # console.log grid.parentNode.getAttribute("catId")
         # if grid.parentNode.getAttribute("catId") == "#{CATEGORY_ID.FAVOR}"
-        #     echo 'drag favor'
+        #     console.log 'drag favor'
         #     target = target.parentNode
         #     dt.effectAllowed = "move"
         #     dragSrcEl = target
@@ -288,7 +288,7 @@ class Item extends Widget
 
         @createMenu()
 
-        # echo @menu
+        # console.log @menu
         # return
         @menu.unregisterHook(->
             setTimeout(->
@@ -305,21 +305,33 @@ class Item extends Widget
                 # exit_launcher()
             when 2
                 if @isFavor
-                    echo 'remove from favor'
+                    console.log 'remove from favor'
                     favor.remove(@id)
                 else
-                    echo 'add to favor'
+                    console.log 'add to favor'
                     if favor.add(@id)
                         switcher.notify()
             when 3 then daemon.SendToDesktop(@path)
-            when 4 then s_dock?.RequestDock_sync(escape(@path))
+            when 4
+                try
+                    dock = get_dbus(
+                        "session",
+                        name:"com.deepin.daemon.Dock"
+                        path:"/dde/dock/DockedAppManager"
+                        interface:"dde.dock.DockedAppManager"
+                    )
+                    console.log(get_path_name(@path))
+                    dock.Dock(get_path_name(@path), "", "", "")
+                catch e
+                    console.log(e)
+
             when 5 then @toggle_autostart()
             when 6
                 if confirm(_("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher"))
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
                     uninstalling_apps[@id] = @
-                    echo 'start uninstall'
+                    console.log 'start uninstall'
                     uninstall(item:@, purge:true)
             # when 100 then DCore.DEntry.report_bad_icon(@path)  # internal
         DCore.Launcher.force_show(false)
@@ -350,9 +362,9 @@ class Item extends Widget
         )
 
     add_to_autostart: ->
-        # echo @basename
+        # console.log @basename
         if startManager.AddAutostart_sync(@path)
-            # echo 'add success'
+            # console.log 'add success'
             @isAutostart = true
             @showAutostartFlag()
 

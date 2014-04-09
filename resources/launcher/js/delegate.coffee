@@ -23,7 +23,7 @@ DEvent = (e)->
     parent = target.parentNode
     element = null
     id = null
-    # echo target.tagName
+    # console.log target.tagName
     # target is hoverBoxOutter
     if target.tagName == "IMG"
         p = parent.parentNode

@@ -30,7 +30,7 @@ searchResult = null
 class SearchResult
     inited: false
     constructor: ->
-        echo 'create search result'
+        console.log 'create search result'
         clearTimeout(searchTimer)
         searchTimer = null
         @element = $("#searchResult")
@@ -42,7 +42,7 @@ class SearchResult
             el.style.display = 'none'
         @element.appendChild(frag)
         SearchResult.inited = true
-        echo 'create search result done'
+        console.log 'create search result done'
 
     hide:->
         @element.style.display = "none"

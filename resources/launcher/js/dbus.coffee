@@ -22,7 +22,7 @@ LAUNCHER_DAEMON="com.deepin.dde.daemon.Launcher"
 try
     daemon = get_dbus("session", LAUNCHER_DAEMON)
 catch e
-    echo e
+    console.log e
     DCore.Launcher.quit()
 
 
@@ -34,20 +34,20 @@ START_MANAGER =
 try
     startManager = get_dbus("session", START_MANAGER)
 catch e
-    echo e
+    console.log e
     DCore.Launcher.quit()
 
 startManager.connect("AutostartChanged", (status, path)->
-    echo "autostart changed: #{status}"
+    console.log "autostart changed: #{status}"
     for own k, v of applications
         if v.basename == "#{get_path_name(path)}.desktop"
             item = v
             break
 
     if status == "deleted"
-        echo "deleted"
+        console.log "deleted"
         item.remove_from_autostart()
     else
-        echo "add"
+        console.log "add"
         item.add_to_autostart()
 )

@@ -156,6 +156,7 @@ body {
   -webkit-box-align:center;
 }
 .categoryName {
+  font-size: 18px;
   text-transform: capitalize;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
   margin:0;

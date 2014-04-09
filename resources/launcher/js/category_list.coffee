@@ -85,7 +85,7 @@ class CategoryList
 
     removeItem:(id, categories)->
         if typeof categories == 'undefined'
-            echo 'remove from all categories'
+            console.log 'remove from all categories'
             for own cid, item of @categories
                 item.removeItem(id)
             return
@@ -96,7 +96,7 @@ class CategoryList
             try
                 @categories[cat_id].removeItem(id)
             catch e
-                echo "CategoryList.removeItem: #{e}"
+                console.log "CategoryList.removeItem: #{e}"
 
     category:(id)->
         return @categories[id] if @categories[id]?
@@ -170,7 +170,7 @@ class CategoryList
         @scrollId = webkitRequestAnimationFrame(@doListScroll)
 
     fixOffset:(id)->
-        echo "fixOffset"
+        console.log "fixOffset"
         children = $("#grid").childNodes
         offset = 0
         for i in [0...children.length]

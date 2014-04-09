@@ -45,33 +45,33 @@ init_all_applications = ->
 
 
 init_all_applications()
-echo "load all applications done"
+console.log "load all applications done"
 
 switcher = new Switcher()
-echo "load switcher done"
+console.log "load switcher done"
 
 favor = new FavorPage()
-echo 'load favor done'
+console.log 'load favor done'
 
 searchBar = new SearchBar()
-echo "create search bar done"
+console.log "create search bar done"
 
 categoryInfos = daemon.CategoryInfos_sync()
-echo "get category infos done"
+console.log "get category infos done"
 
 categoryBar = new CategoryBar(categoryInfos)
-echo "load category bar done"
+console.log "load category bar done"
 
 categoryList = new CategoryList(categoryInfos)
-echo "load category list done"
+console.log "load category list done"
 
 bind_events()
-echo "bind event done"
+console.log "bind event done"
 
 selector = new Selector()
 selector.container($("#favor"))
-echo "create selector done"
+console.log "create selector done"
 
 DCore.Launcher.webview_ok()
-echo "webview ok"
+console.log "webview ok"
 DCore.Launcher.test()
