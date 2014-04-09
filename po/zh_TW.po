@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-27 19:24+0800\n"
+"POT-Creation-Date: 2014-04-09 17:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,25 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Enter password to %1"
+#: ../resources/greeter/js/menuchoose.coffee:261
+msgid "Enter your password to %1"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:48
-msgid "suspend"
+#: ../resources/greeter/js/powermenu.coffee:50
+msgid "Suspend"
 msgstr "暫停"
 
-#: ../resources/greeter/js/powermenu.coffee:49
-msgid "restart"
+#: ../resources/greeter/js/powermenu.coffee:51
+msgid "Restart"
 msgstr "重新啟動"
 
-#: ../resources/greeter/js/powermenu.coffee:50
+#: ../resources/greeter/js/powermenu.coffee:52
 msgid "Shut down"
 msgstr "關機"
 
-#: ../resources/greeter/js/user.coffee:178
-msgid "guest"
+#: ../resources/greeter/js/user.coffee:25
+#, fuzzy
+msgid "Guest"
 msgstr "訪客"
+
+#: ../resources/greeter/js/user.coffee:420
+msgid "click login button to log in"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -121,16 +126,16 @@ msgstr "電腦"
 #: ../resources/desktop/js/specialitem.coffee:139
 #: ../resources/desktop/js/specialitem.coffee:234
 #: ../resources/desktop/js/specialitem.coffee:288
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:459
+#: ../resources/desktop/js/richdir.coffee:131
+#: ../resources/desktop/js/richdir.coffee:470
 #: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/launcher/js/item.coffee:263
+#: ../resources/launcher/js/item.coffee:266
 msgid "_Open"
 msgstr "開啟(_O)"
 
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:466
+#: ../resources/desktop/js/richdir.coffee:477
 #: ../resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "屬性(_P)"
@@ -153,7 +158,7 @@ msgid "_Clean up 1 item"
 msgstr "清理1個項目(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:243
-#: ../resources/dock/js/deepin_item.coffee:76
+#: ../resources/dock/js/deepin_item.coffee:105
 msgid "_Clean up"
 msgstr "清理(_C)"
 
@@ -161,49 +166,46 @@ msgstr "清理(_C)"
 msgid "Software Center"
 msgstr "軟體中心"
 
-#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
 msgstr "重新命名(_R)"
 
-#: ../resources/desktop/js/richdir.coffee:134
+#: ../resources/desktop/js/richdir.coffee:135
 msgid "_Ungroup"
 msgstr "取消群組(_U)"
 
-#: ../resources/desktop/js/richdir.coffee:136
-#: ../resources/desktop/js/richdir.coffee:464
+#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:475
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/invalidlink.coffee:34
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/richdir.coffee:352
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/application.coffee:177
 #, fuzzy
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "該連結已經失效，是否要刪除？"
 
-#: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/richdir.coffee:472
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
-#: ../resources/desktop/js/richdir.coffee:462
+#: ../resources/desktop/js/richdir.coffee:473
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "複製(_C)"
-
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
-msgstr "該連結已經失效，是否要刪除？"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -221,7 +223,7 @@ msgid "Extract _Here"
 msgstr "在此解壓縮(_H)"
 
 #: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Can not open this file."
 msgstr "無法打開此檔案。"
 
@@ -267,12 +269,24 @@ msgstr "顯示設定(_D)"
 
 #: ../resources/desktop/js/grid.coffee:1022
 #, fuzzy
-msgid "_Corner settings"
+msgid "_Corner navigation"
 msgstr "熱區設定(_D)"
 
 #: ../resources/desktop/js/grid.coffee:1023
 msgid "Pe_rsonalize"
 msgstr "個人化(_R)"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:13
+msgid "keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:14
+msgid "_auto hide"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:111
 msgid "_New Window"
@@ -286,8 +300,9 @@ msgstr "關閉全部(_A)"
 msgid "_Dock me"
 msgstr "停駐(_D)"
 
-#: ../resources/dock/js/item.coffee:307
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
+#: ../resources/dock/js/item.coffee:308
+#, fuzzy
+msgid "The item is invalid. Do you want to remove it from Dock?"
 msgstr "該項目無效。您要把它從 Dock 刪除嗎？"
 
 #: ../resources/dock/js/launcher.coffee:29 ../lib/dentry/mime_actions.c:213
@@ -298,55 +313,51 @@ msgstr "執行(_R)"
 msgid "_Undock"
 msgstr "移除停駐(_U)"
 
-#: ../resources/dock/js/deepin_item.coffee:79
+#: ../resources/dock/js/deepin_item.coffee:108
 msgid "_Close"
 msgstr "關閉(_C)"
 
-#: ../resources/dock/js/deepin_item.coffee:219
+#: ../resources/dock/js/deepin_item.coffee:291
 msgid "_View as analog"
 msgstr "顯示模擬時鍾"
 
-#: ../resources/dock/js/deepin_item.coffee:220
-#, fuzzy
-msgid "_Time as settings"
-msgstr "时间設定(_D)"
-
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_View as digit"
-msgstr "顯示數字時鍾"
-
-#: ../resources/dock/js/deepin_item.coffee:267
+#: ../resources/dock/js/deepin_item.coffee:292
+#: ../resources/dock/js/deepin_item.coffee:340
 msgid "_Time settings"
 msgstr "时间設定(_D)"
 
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
+#: ../resources/dock/js/deepin_item.coffee:339
+msgid "_View as digit"
+msgstr "顯示數字時鍾"
+
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr "啟動器"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 #, fuzzy
 msgid "System Settings"
 msgstr "桌面設定(_E)"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Workspace"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "None"
 msgstr ""
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
+#: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Uninstall failed"
 msgstr ""
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
+#: ../resources/launcher/js/softwaremanager.coffee:78
 #, fuzzy
-msgid "Deepin Software Center is Not Found"
+msgid "Cannot find Deepin Software Center."
 msgstr "軟體中心"
 
 #: ../resources/launcher/js/const.coffee:64
@@ -375,30 +386,30 @@ msgstr "從「自動啟動」中移除(_R)"
 
 #: ../resources/launcher/js/const.coffee:80
 #, fuzzy
-msgid "Add to _favor"
+msgid "Add to _favorites"
 msgstr "加入到「自動啟動」(_A)"
 
 #: ../resources/launcher/js/const.coffee:81
 #, fuzzy
-msgid "Remove from _favor"
+msgid "Remove from _favorites"
 msgstr "從「自動啟動」中移除(_R)"
 
-#: ../resources/launcher/js/item.coffee:266
+#: ../resources/launcher/js/item.coffee:269
 msgid "Send to d_esktop"
 msgstr "發送到桌面(_E)"
 
-#: ../resources/launcher/js/item.coffee:269
+#: ../resources/launcher/js/item.coffee:272
 msgid "Send to do_ck"
 msgstr "添加到 Dock(_C)"
 
-#: ../resources/launcher/js/item.coffee:272
+#: ../resources/launcher/js/item.coffee:275
 msgid "_Uninstall"
 msgstr ""
 
-#: ../resources/launcher/js/item.coffee:315
+#: ../resources/launcher/js/item.coffee:330
 msgid ""
-"This operation may lead to uninstalling other corresponding softwares. Are "
-"you sure to uninstall this Item?"
+"The operation may also remove other applications that depends on the item. "
+"Are you sure you want to uninstall the item?"
 msgstr ""
 
 #: ../app/greeter/camera.c:47
@@ -418,13 +429,9 @@ msgstr "%s%d秒後自動重試"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:127 ../app/greeter/greeter.c:154
+#: ../app/greeter/dlock.c:130 ../app/greeter/greeter.c:181
 msgid "Invalid Password"
 msgstr "密碼錯誤"
-
-#: ../app/app_tray/tray.c:322
-msgid "another systray is already running..."
-msgstr "另一個託盤程式正在運行..."
 
 #: ../app/desktop/desktop.c:214
 msgid "New file"
@@ -434,34 +441,27 @@ msgstr "新增檔案"
 msgid "New directory"
 msgstr "新增資料夾"
 
-#: ../app/dock/dock.c:299
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "無法啟用Dock，因為Compiz附加元件尚未啟用"
-
-#: ../app/dock/dock.c:515
-msgid "another instance of dock is running...\n"
-msgstr "已有一個應用程式Dock例程正在運行...\n"
-
-#: ../app/launcher/launcher.c:491
+#: ../app/dock/dock.c:300
 #, fuzzy
-msgid "another instance of launcher is running..."
-msgstr "已有一個應用程式啟動器例程正在運行...\n"
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "無法啟用Dock，因為Compiz附加元件尚未啟用"
 
 #: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
-"This *.desktop file cannot be changed to the name \"%s\".You may not have "
-"such permission"
-msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
+"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
+msgstr ""
 
 #: ../lib/dentry/entry.c:753
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"The name \"%s\" is already used in this folder. Please use a different name."
+"There is already a file with name \"%s\" in this folder. Please consider a "
+"different name."
 msgstr "名稱「%s」已存在於該資料夾。請使用其他名稱。"
 
 #: ../lib/dentry/entry.c:759
-msgid "The Item could not be renamed"
+#, fuzzy
+msgid "The item could not be renamed"
 msgstr "該項目無法重命名"
 
 #: ../lib/dentry/entry.c:829 ../lib/dentry/fileops.c:809
@@ -473,15 +473,16 @@ msgid "App Group"
 msgstr "程式啟動組"
 
 #: ../lib/dentry/fileops.c:568
-msgid "move"
-msgstr "移動"
+msgid "Move"
+msgstr ""
 
 #: ../lib/dentry/fileops.c:776
 msgid "Copy"
 msgstr "複製"
 
 #: ../lib/dentry/fileops_delete.c:29
-msgid "Delete File"
+#, fuzzy
+msgid "Delete Files"
 msgstr "刪除檔案"
 
 #: ../lib/dentry/fileops_delete.c:32
@@ -489,7 +490,8 @@ msgid "Are you sure you want to permanently delete the files?"
 msgstr "您確定要永久刪除檔案嗎？"
 
 #: ../lib/dentry/fileops_delete.c:33
-msgid "If you delete an item, it will be permanently lost"
+#, fuzzy
+msgid "If you delete the files, they will be permanently lost."
 msgstr "如果您要刪除某項目，它將永久消失"
 
 #: ../lib/dentry/fileops_delete.c:36
@@ -525,14 +527,15 @@ msgid "Replace"
 msgstr "取代"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
-#, c-format
-msgid "Merge folder \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to merge with folder \"%s\"?"
 msgstr "合併資料夾「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
+#, fuzzy
 msgid ""
-"Merging will ask for confirmation before replacing any files in the folder "
-"that conflict with the files being copied."
+"You will be asked before replacing any files in the folder that conflict "
+"with the files being copied."
 msgstr "合併將會在替換衝突檔案時請求確認。"
 
 #: ../lib/dentry/fileops_error_dialog.c:226
@@ -555,9 +558,9 @@ msgid "Replacing it will remove all files in the folder."
 msgstr "替換將移除資料夾中的所有檔案。"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
-#, c-format
-msgid "Replace folder \"%s\"?"
-msgstr "替換資料夾「%s」？"
+#, fuzzy, c-format
+msgid "Do you want to replace folder \"%s\"?"
+msgstr "替換檔案「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:244
 #, c-format
@@ -565,8 +568,8 @@ msgid "A folder with the same name already exists in \"%s\"."
 msgstr "在「%s」中已存在相同檔案名的資料夾。"
 
 #: ../lib/dentry/fileops_error_dialog.c:250
-#, c-format
-msgid "Replace file \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to replace file \"%s\"?"
 msgstr "替換檔案「%s」？"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
@@ -704,6 +707,40 @@ msgid "other"
 msgstr "其他"
 
 #, fuzzy
+#~ msgid "_Time as settings"
+#~ msgstr "时间設定(_D)"
+
+#~ msgid "suspend"
+#~ msgstr "暫停"
+
+#~ msgid "restart"
+#~ msgstr "重新啟動"
+
+#~ msgid "The link has expired. Do you want to delete it?"
+#~ msgstr "該連結已經失效，是否要刪除？"
+
+#~ msgid "another systray is already running..."
+#~ msgstr "另一個託盤程式正在運行..."
+
+#~ msgid "another instance of dock is running...\n"
+#~ msgstr "已有一個應用程式Dock例程正在運行...\n"
+
+#, fuzzy
+#~ msgid "another instance of launcher is running..."
+#~ msgstr "已有一個應用程式啟動器例程正在運行...\n"
+
+#~ msgid ""
+#~ "This *.desktop file cannot be changed to the name \"%s\".You may not have "
+#~ "such permission"
+#~ msgstr "無法將該桌面檔案重新命名為「%s」。您可能沒有權限"
+
+#~ msgid "move"
+#~ msgstr "移動"
+
+#~ msgid "Replace folder \"%s\"?"
+#~ msgstr "替換資料夾「%s」？"
+
+#, fuzzy
 #~ msgid "shut down"
 #~ msgstr "關機"
 
@@ -740,14 +777,8 @@ msgstr "其他"
 #~ msgid "Lock"
 #~ msgstr "鎖定"
 
-#~ msgid "Suspend"
-#~ msgstr "暫停"
-
 #~ msgid "Log out"
 #~ msgstr "登出"
-
-#~ msgid "Restart"
-#~ msgstr "重新啟動"
 
 #, fuzzy
 #~ msgid "Force Log out"

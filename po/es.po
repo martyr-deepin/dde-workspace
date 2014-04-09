@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Deepin Destkop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-27 19:24+0800\n"
+"POT-Creation-Date: 2014-04-09 17:11+0800\n"
 "PO-Revision-Date: 2013-12-13 06:57+0000\n"
 "Last-Translator: lihongwu <lihongwu1987@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/deepin-destkop-"
@@ -21,25 +21,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Enter password to %1"
+#: ../resources/greeter/js/menuchoose.coffee:261
+msgid "Enter your password to %1"
 msgstr ""
 
-#: ../resources/greeter/js/powermenu.coffee:48
-msgid "suspend"
-msgstr "suspender"
-
-#: ../resources/greeter/js/powermenu.coffee:49
-msgid "restart"
-msgstr "reiniciar"
-
 #: ../resources/greeter/js/powermenu.coffee:50
+msgid "Suspend"
+msgstr "Suspender"
+
+#: ../resources/greeter/js/powermenu.coffee:51
+msgid "Restart"
+msgstr "Reiniciar"
+
+#: ../resources/greeter/js/powermenu.coffee:52
 msgid "Shut down"
 msgstr "Apagar"
 
-#: ../resources/greeter/js/user.coffee:178
-msgid "guest"
+#: ../resources/greeter/js/user.coffee:25
+#, fuzzy
+msgid "Guest"
 msgstr "invitado"
+
+#: ../resources/greeter/js/user.coffee:420
+msgid "click login button to log in"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -125,16 +130,16 @@ msgstr "Equipo"
 #: ../resources/desktop/js/specialitem.coffee:139
 #: ../resources/desktop/js/specialitem.coffee:234
 #: ../resources/desktop/js/specialitem.coffee:288
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:459
+#: ../resources/desktop/js/richdir.coffee:131
+#: ../resources/desktop/js/richdir.coffee:470
 #: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/launcher/js/item.coffee:263
+#: ../resources/launcher/js/item.coffee:266
 msgid "_Open"
 msgstr "_Abrir"
 
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:466
+#: ../resources/desktop/js/richdir.coffee:477
 #: ../resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "_Propiedades"
@@ -157,7 +162,7 @@ msgid "_Clean up 1 item"
 msgstr "_Eliminar 1 elemento"
 
 #: ../resources/desktop/js/specialitem.coffee:243
-#: ../resources/dock/js/deepin_item.coffee:76
+#: ../resources/dock/js/deepin_item.coffee:105
 msgid "_Clean up"
 msgstr "_Eliminar"
 
@@ -165,49 +170,46 @@ msgstr "_Eliminar"
 msgid "Software Center"
 msgstr "Centro de Software"
 
-#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
 msgstr "_Renombrar"
 
-#: ../resources/desktop/js/richdir.coffee:134
+#: ../resources/desktop/js/richdir.coffee:135
 msgid "_Ungroup"
 msgstr "_Desagrupar"
 
-#: ../resources/desktop/js/richdir.coffee:136
-#: ../resources/desktop/js/richdir.coffee:464
+#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:475
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/invalidlink.coffee:34
 msgid "_Delete"
 msgstr "_Eliminar"
 
-#: ../resources/desktop/js/richdir.coffee:352
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/application.coffee:177
 #, fuzzy
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "El enlace ha expirado. ¿Deseas eliminarlo?"
 
-#: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Warning"
 msgstr "Advertencia"
 
-#: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/richdir.coffee:472
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "Cor_tar"
 
-#: ../resources/desktop/js/richdir.coffee:462
+#: ../resources/desktop/js/richdir.coffee:473
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "_Copiar"
-
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
-msgstr "El enlace ha expirado. ¿Deseas eliminarlo?"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -225,7 +227,7 @@ msgid "Extract _Here"
 msgstr "Extraer _Aquí"
 
 #: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Can not open this file."
 msgstr "No se puede abrir este archivo."
 
@@ -271,12 +273,24 @@ msgstr "Ajustes de _Pantalla"
 
 #: ../resources/desktop/js/grid.coffee:1022
 #, fuzzy
-msgid "_Corner settings"
+msgid "_Corner navigation"
 msgstr "Ajustes de _Pantalla"
 
 #: ../resources/desktop/js/grid.coffee:1023
 msgid "Pe_rsonalize"
 msgstr "Pe_rsonalizar"
+
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:13
+msgid "keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:14
+msgid "_auto hide"
+msgstr ""
 
 #: ../resources/dock/js/clientgroup.coffee:111
 msgid "_New Window"
@@ -290,8 +304,9 @@ msgstr "Cerrar _Todo"
 msgid "_Dock me"
 msgstr "_Acoplar"
 
-#: ../resources/dock/js/item.coffee:307
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
+#: ../resources/dock/js/item.coffee:308
+#, fuzzy
+msgid "The item is invalid. Do you want to remove it from Dock?"
 msgstr ""
 "El elemento es inválido. ¿Quieres eliminarlo del panel de acoplamiento?"
 
@@ -303,56 +318,52 @@ msgstr "_Ejecutar"
 msgid "_Undock"
 msgstr "_Desacoplar"
 
-#: ../resources/dock/js/deepin_item.coffee:79
+#: ../resources/dock/js/deepin_item.coffee:108
 msgid "_Close"
 msgstr "_Cerrar"
 
-#: ../resources/dock/js/deepin_item.coffee:219
+#: ../resources/dock/js/deepin_item.coffee:291
 msgid "_View as analog"
 msgstr ""
 
-#: ../resources/dock/js/deepin_item.coffee:220
-#, fuzzy
-msgid "_Time as settings"
-msgstr "Ajustes de _Pantalla"
-
-#: ../resources/dock/js/deepin_item.coffee:266
-msgid "_View as digit"
-msgstr ""
-
-#: ../resources/dock/js/deepin_item.coffee:267
+#: ../resources/dock/js/deepin_item.coffee:292
+#: ../resources/dock/js/deepin_item.coffee:340
 #, fuzzy
 msgid "_Time settings"
 msgstr "Ajustes de _Pantalla"
 
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
+#: ../resources/dock/js/deepin_item.coffee:339
+msgid "_View as digit"
+msgstr ""
+
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr "Lanzador"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 #, fuzzy
 msgid "System Settings"
 msgstr "Ajustes de _Escritorio"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Workspace"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
 msgstr ""
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "None"
 msgstr ""
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
+#: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Uninstall failed"
 msgstr ""
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
+#: ../resources/launcher/js/softwaremanager.coffee:78
 #, fuzzy
-msgid "Deepin Software Center is Not Found"
+msgid "Cannot find Deepin Software Center."
 msgstr "Centro de Software"
 
 #: ../resources/launcher/js/const.coffee:64
@@ -381,30 +392,30 @@ msgstr "_Eliminar del autoarranque"
 
 #: ../resources/launcher/js/const.coffee:80
 #, fuzzy
-msgid "Add to _favor"
+msgid "Add to _favorites"
 msgstr "_Añadir al autoarranque"
 
 #: ../resources/launcher/js/const.coffee:81
 #, fuzzy
-msgid "Remove from _favor"
+msgid "Remove from _favorites"
 msgstr "_Eliminar del autoarranque"
 
-#: ../resources/launcher/js/item.coffee:266
+#: ../resources/launcher/js/item.coffee:269
 msgid "Send to d_esktop"
 msgstr "Enviar al _escritorio"
 
-#: ../resources/launcher/js/item.coffee:269
+#: ../resources/launcher/js/item.coffee:272
 msgid "Send to do_ck"
 msgstr "Enviar a la barra de _acoplamiento"
 
-#: ../resources/launcher/js/item.coffee:272
+#: ../resources/launcher/js/item.coffee:275
 msgid "_Uninstall"
 msgstr ""
 
-#: ../resources/launcher/js/item.coffee:315
+#: ../resources/launcher/js/item.coffee:330
 msgid ""
-"This operation may lead to uninstalling other corresponding softwares. Are "
-"you sure to uninstall this Item?"
+"The operation may also remove other applications that depends on the item. "
+"Are you sure you want to uninstall the item?"
 msgstr ""
 
 #: ../app/greeter/camera.c:47
@@ -426,14 +437,9 @@ msgstr "%sIntentar automáticamente en %ds"
 msgid "%a, %b %d, %Y"
 msgstr "%a, %b %d, %Y"
 
-#: ../app/greeter/dlock.c:127 ../app/greeter/greeter.c:154
+#: ../app/greeter/dlock.c:130 ../app/greeter/greeter.c:181
 msgid "Invalid Password"
 msgstr "Contraseña incorrecta"
-
-#: ../app/app_tray/tray.c:322
-#, fuzzy
-msgid "another systray is already running..."
-msgstr "otra instancia de la barra de anclaje está ejecutándose...\n"
 
 #: ../app/desktop/desktop.c:214
 msgid "New file"
@@ -443,40 +449,31 @@ msgstr "Nuevo archivo"
 msgid "New directory"
 msgstr "Nuevo directorio"
 
-#: ../app/dock/dock.c:299
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
+#: ../app/dock/dock.c:300
+#, fuzzy
+msgid "Dock failed to start, because Compiz is not enabled."
 msgstr ""
 "La barra de acoplamiento falló al iniciar porque el plugin de compiz no está "
 "habilitado."
 
-#: ../app/dock/dock.c:515
-msgid "another instance of dock is running...\n"
-msgstr "otra instancia de la barra de anclaje está ejecutándose...\n"
-
-#: ../app/launcher/launcher.c:491
-#, fuzzy
-msgid "another instance of launcher is running..."
-msgstr "otra instancia del lanzador está ejecutándose...\n"
-
 #: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
-"This *.desktop file cannot be changed to the name \"%s\".You may not have "
-"such permission"
+"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
 msgstr ""
-"El archivo *.desktop no puede cambiar su nombre a \"%s\". Probablemente no "
-"tengas los suficientes permisos."
 
 #: ../lib/dentry/entry.c:753
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"The name \"%s\" is already used in this folder. Please use a different name."
+"There is already a file with name \"%s\" in this folder. Please consider a "
+"different name."
 msgstr ""
 "El nombre \"%s\" ya está utilizado en esta carpeta. Por favor use un nombre "
 "diferente."
 
 #: ../lib/dentry/entry.c:759
-msgid "The Item could not be renamed"
+#, fuzzy
+msgid "The item could not be renamed"
 msgstr "El elemento no puede renombrarse"
 
 #: ../lib/dentry/entry.c:829 ../lib/dentry/fileops.c:809
@@ -488,15 +485,16 @@ msgid "App Group"
 msgstr "Grupo de Aplicaciones"
 
 #: ../lib/dentry/fileops.c:568
-msgid "move"
-msgstr "Mover"
+msgid "Move"
+msgstr ""
 
 #: ../lib/dentry/fileops.c:776
 msgid "Copy"
 msgstr "Copiar"
 
 #: ../lib/dentry/fileops_delete.c:29
-msgid "Delete File"
+#, fuzzy
+msgid "Delete Files"
 msgstr "Eliminar Archivo"
 
 #: ../lib/dentry/fileops_delete.c:32
@@ -504,7 +502,8 @@ msgid "Are you sure you want to permanently delete the files?"
 msgstr "¿Estás seguro que deseas eliminar permanentemente los archivos?"
 
 #: ../lib/dentry/fileops_delete.c:33
-msgid "If you delete an item, it will be permanently lost"
+#, fuzzy
+msgid "If you delete the files, they will be permanently lost."
 msgstr "Si eliminas un elemento, se perderá para siempre"
 
 #: ../lib/dentry/fileops_delete.c:36
@@ -540,14 +539,15 @@ msgid "Replace"
 msgstr "Reemplazar"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
-#, c-format
-msgid "Merge folder \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to merge with folder \"%s\"?"
 msgstr "¿Fusionar la carpeta \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
+#, fuzzy
 msgid ""
-"Merging will ask for confirmation before replacing any files in the folder "
-"that conflict with the files being copied."
+"You will be asked before replacing any files in the folder that conflict "
+"with the files being copied."
 msgstr ""
 "La fusión le pedirá confirmación antes de reemplazar los archivos que "
 "presenten conflictos durante la copia."
@@ -572,9 +572,9 @@ msgid "Replacing it will remove all files in the folder."
 msgstr "Reemplazar esto eliminará todos los archivos en la carpeta."
 
 #: ../lib/dentry/fileops_error_dialog.c:242
-#, c-format
-msgid "Replace folder \"%s\"?"
-msgstr "¿Reemplazar la carpeta \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to replace folder \"%s\"?"
+msgstr "¿Reemplazar el archivo \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:244
 #, c-format
@@ -582,8 +582,8 @@ msgid "A folder with the same name already exists in \"%s\"."
 msgstr "Una carpeta con el mismo nombre ya existe en \"%s\"."
 
 #: ../lib/dentry/fileops_error_dialog.c:250
-#, c-format
-msgid "Replace file \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to replace file \"%s\"?"
 msgstr "¿Reemplazar el archivo \"%s\"?"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
@@ -721,6 +721,43 @@ msgid "other"
 msgstr "Otros"
 
 #, fuzzy
+#~ msgid "_Time as settings"
+#~ msgstr "Ajustes de _Pantalla"
+
+#~ msgid "suspend"
+#~ msgstr "suspender"
+
+#~ msgid "restart"
+#~ msgstr "reiniciar"
+
+#~ msgid "The link has expired. Do you want to delete it?"
+#~ msgstr "El enlace ha expirado. ¿Deseas eliminarlo?"
+
+#, fuzzy
+#~ msgid "another systray is already running..."
+#~ msgstr "otra instancia de la barra de anclaje está ejecutándose...\n"
+
+#~ msgid "another instance of dock is running...\n"
+#~ msgstr "otra instancia de la barra de anclaje está ejecutándose...\n"
+
+#, fuzzy
+#~ msgid "another instance of launcher is running..."
+#~ msgstr "otra instancia del lanzador está ejecutándose...\n"
+
+#~ msgid ""
+#~ "This *.desktop file cannot be changed to the name \"%s\".You may not have "
+#~ "such permission"
+#~ msgstr ""
+#~ "El archivo *.desktop no puede cambiar su nombre a \"%s\". Probablemente "
+#~ "no tengas los suficientes permisos."
+
+#~ msgid "move"
+#~ msgstr "Mover"
+
+#~ msgid "Replace folder \"%s\"?"
+#~ msgstr "¿Reemplazar la carpeta \"%s\"?"
+
+#, fuzzy
 #~ msgid "shut down"
 #~ msgstr "apagar"
 
@@ -752,14 +789,8 @@ msgstr "Otros"
 #~ msgid "Lock"
 #~ msgstr "Bloquear"
 
-#~ msgid "Suspend"
-#~ msgstr "Suspender"
-
 #~ msgid "Log out"
 #~ msgstr "Cerrar sesión"
-
-#~ msgid "Restart"
-#~ msgstr "Reiniciar"
 
 #, fuzzy
 #~ msgid "Force Log out"
