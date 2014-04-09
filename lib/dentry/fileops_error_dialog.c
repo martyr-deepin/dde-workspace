@@ -217,9 +217,9 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
     {
 	if (source_is_dir)
 	{
-	    primary_text = g_strdup_printf (_("Merge folder \"%s\"?"),
+	    primary_text = g_strdup_printf (_("Do you want to merge with folder \"%s\"?"),
 		                            dest_name);
-	    message_extra = _("Merging will ask for confirmation before "
+	    message_extra = _("You will be asked before "
 		              "replacing any files in the folder that "
 			      "conflict with the files being copied.");
 	    if (src_mtime > dest_mtime)
@@ -239,7 +239,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 	{
 	    message_extra = _("Replacing it will remove all files in the "
 		              "folder.");
-	    primary_text = g_strdup_printf (_("Replace folder \"%s\"?"),
+	    primary_text = g_strdup_printf (_("Do you want to repace file \"%s\"?"),
 		                            dest_name);
 	    message = g_strdup_printf (_("A folder with the same name already "
 			               "exists in \"%s\"."), actual_dest_dir_name);
@@ -247,7 +247,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
     }
     else
     {
-	primary_text = g_strdup_printf (_("Replace file \"%s\"?"), dest_name);
+	primary_text = g_strdup_printf (_("Do you want to repace file \"%s\"?"), dest_name);
 	message_extra = _("Replacing it will overwrite its content.");
 	if (src_mtime > dest_mtime)
 	    message = g_strdup_printf (_("An older file with the same name "

@@ -258,7 +258,7 @@ class MenuChoose extends Widget
         localStorage.setObject("shutdown_from_lock",power)
 
         option_text = @option_text[j] for option,j in @option when option is powervalue
-        value = _("Enter password to %1").args(option_text)
+        value = _("Enter your password to %1").args(option_text)
         localStorage.setItem("password_value_shutdown",value)
         
         @password = $(".password")

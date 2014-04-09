@@ -305,7 +305,7 @@ class AppItem extends Widget
     _do_launch: (list) =>
         run_successful = DCore.DEntry.launch(@core, list)
         if not run_successful
-            is_delete = confirm(_("The item is invalid. Do you want to remove it from the dock panel?"))
+            is_delete = confirm(_("The item is invalid. Do you want to remove it from Dock?"))
             if is_delete
                 DCore.Dock.request_undock(@id)
     do_drop: (e) =>

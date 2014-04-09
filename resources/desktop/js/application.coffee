@@ -174,7 +174,7 @@ class Application extends DesktopEntry
 
     item_exec : =>
         if !DCore.DEntry.launch(@_entry, [])
-            if confirm(_("The link has expired. Do you want to delete it?"), _("Warning"))
+            if confirm(_("The link is invalid. Do you want to delete it?"), _("Warning"))
                 list = []
                 list.push(@_entry)
                 DCore.DEntry.trash(list)

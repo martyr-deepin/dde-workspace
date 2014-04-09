@@ -744,19 +744,19 @@ static void show_rename_error_dialog (const char* name, gboolean is_app)
     char* secondary_text;
     if (is_app)
     {
-       secondary_text = g_strdup_printf(_("This *.desktop file cannot be changed to the name \"%s\"."
-                                       "You may not have such permission"),
+       secondary_text = g_strdup_printf(_("Cannot rename the item to \"%s\". "
+                                       "This may be caused by lack of  permissions."),
                                        name);
     }
     else
     {
-       secondary_text = g_strdup_printf(_("The name \"%s\" is already used in this "
-                                        "folder. Please use a different name."),
+       secondary_text = g_strdup_printf(_("There is already a file with name \"%s\" in this folder. "
+                                        "Please consider a different name."),
                                         name);
     }
 
     g_object_set (dialog,
-                  "text", _("The Item could not be renamed"),
+                  "text", _("The item could not be renamed"),
                   "secondary-text", secondary_text,
                   NULL);
     gtk_dialog_run (GTK_DIALOG (dialog));

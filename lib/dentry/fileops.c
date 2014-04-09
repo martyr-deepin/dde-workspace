@@ -565,7 +565,7 @@ _move_files_async (GFile* src, gpointer data)
             }
             else
             {
-                response = fileops_move_copy_error_show_dialog (_("move"), error, src, dest, NULL);
+                response = fileops_move_copy_error_show_dialog (_("Move"), error, src, dest, NULL);
                 if (response != NULL && response->apply_to_all)
                     g_move_response = fileops_response_dup (response);
             }

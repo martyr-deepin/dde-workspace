@@ -77,8 +77,8 @@ AUTOSTART_ICON =
     SIZE: 16
 
 FAVOR_MESSAGE =
-    false: _("Add to _favor")
-    true: _("Remove from _favor")
+    false: _("Add to _favorites")
+    true: _("Remove from _favorites")
 
 SOFTWARE_STATE =
     IDLE: 0

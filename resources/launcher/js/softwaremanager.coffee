@@ -75,7 +75,7 @@ uninstall = (opt) ->
             console.log e
             try
                 notification = get_dbus("session", NOTIFICATIONS)
-                notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Deepin Software Center is Not Found"), [], {}, 0)
+                notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Cannot find Deepin Software Center."), [], {}, 0)
             catch e
                 console.log e
             item.status = SOFTWARE_STATE.IDLE
