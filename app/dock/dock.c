@@ -300,7 +300,7 @@ void dock_emit_webview_ok()
                                                        _("Dock failed to start"
                                                          ", because "
                                                          "Compiz is not "
-                                                         "enabled"));
+                                                         "enabled."));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
             exit(2);

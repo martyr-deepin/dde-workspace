@@ -239,7 +239,7 @@ _setup_dialog_labels (GFile* src, GFile* dest, GtkWidget* dialog)
 	{
 	    message_extra = _("Replacing it will remove all files in the "
 		              "folder.");
-	    primary_text = g_strdup_printf (_("Do you want to replace floder \"%s\"?"),
+	    primary_text = g_strdup_printf (_("Do you want to replace folder \"%s\"?"),
 		                            dest_name);
 	    message = g_strdup_printf (_("A folder with the same name already "
 			               "exists in \"%s\"."), actual_dest_dir_name);
