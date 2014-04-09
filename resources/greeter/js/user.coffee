@@ -22,7 +22,7 @@ draw_camera_id = null
 _current_user = null
 password_error_msg = null
 guest_id = "guest"
-guest_name = _("guest")
+guest_name = _("Guest")
 
 class User extends Widget
     img_src_before = "images/userswitch/"
