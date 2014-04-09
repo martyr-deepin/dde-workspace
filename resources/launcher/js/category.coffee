@@ -78,7 +78,13 @@ class Category
         @items.every(fn)
 
     number: ->
-        @items.length
+        count = 0
+        c = @grid.children
+        for i in [0...c.length]
+            if c[i].style.display != "none"
+                count += 1
+
+        count
 
     addItem: (id)->
         item = Widget.look_up(id)
@@ -108,6 +114,7 @@ class Category
 
     firstItem:->
         el = @grid.firstElementChild
+        return null if not el
         if el.style.display != 'none'
             return el
             # return Widget.look_up(el.getAttribute("appid"))
