@@ -93,8 +93,8 @@ class Audio extends Widget
         return bg
     
     show:(value)->
-        clearTimeout(@timepress) if @timepress
-        clearTimeout(timeout_osdHide) if timeout_osdHide?
+        clearTimeout(@timepress)
+        clearTimeout(timeout_osdHide)
         @timepress = setTimeout(=>
             osdShow()
             @element.style.display = "block"
@@ -104,9 +104,7 @@ class Audio extends Widget
             @prebgImg = bgImg
             showValue(value,0,100,@,"Audio_bar")
 
-            timeout_osdHide = setTimeout(=>
-                osdHide()
-            ,TIME_HIDE)
+            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
 
 

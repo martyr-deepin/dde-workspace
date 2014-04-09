@@ -114,8 +114,8 @@ class Display extends Widget
 
 
     showDisplayMode:->
-        clearTimeout(@timepress) if @timepress
-        clearTimeout(timeout_osdHide) if timeout_osdHide?
+        clearTimeout(@timepress)
+        clearTimeout(timeout_osdHide)
         
         @timepress = setTimeout(=>
             @FromSwitchMonitors = true
@@ -133,9 +133,7 @@ class Display extends Widget
             set_bg(@,imgName,@preDisplayImg)
             @preDisplayImg = imgName
             
-            timeout_osdHide = setTimeout(=>
-                osdHide()
-            ,TIME_HIDE)
+            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
     
 

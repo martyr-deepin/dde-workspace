@@ -28,8 +28,8 @@ class Option extends Widget
         @element.style.Option = "none"
     
     show:->
-        clearTimeout(@timepress) if @timepress
-        clearTimeout(timeout_osdHide) if timeout_osdHide?
+        clearTimeout(@timepress)
+        clearTimeout(timeout_osdHide)
         @timepress = setTimeout(=>
             echo "Option #{@id} show"
             osdShow()
@@ -37,9 +37,7 @@ class Option extends Widget
             set_bg(@,@id,@preImgName)
             @preImgName = @id
 
-            timeout_osdHide = setTimeout(=>
-                osdHide()
-            ,TIME_HIDE)
+            timeout_osdHide = setTimeout(osdHide,TIME_HIDE)
         ,TIME_PRESS)
 
 
