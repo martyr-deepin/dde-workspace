@@ -84,7 +84,7 @@ _b.addEventListener("click",(e)=>
     e.stopPropagation()
     echo click_time
     click_time++
-    if click_time % 3 == 0
+    if click_time % 1 == 0
         click_time = 0
         DCore.Osd.hide()
 )
