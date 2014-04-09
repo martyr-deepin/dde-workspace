@@ -745,7 +745,7 @@ static void show_rename_error_dialog (const char* name, gboolean is_app)
     if (is_app)
     {
        secondary_text = g_strdup_printf(_("Cannot rename the item to \"%s\". "
-                                       "This may be caused by lack of  permissions."),
+                                       "This may be caused by lack of permissions."),
                                        name);
     }
     else
