@@ -10,23 +10,23 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-27 19:24+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Wang Dianjin <wangdianjin@linuxdeepin.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
+"Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../resources/greeter/js/menuchoose.coffee:251
-msgid "Enter password to %1"
-msgstr ""
+msgid "Enter your password to %1"
+msgstr "请输入密码以完成%1"
 
 #: ../resources/greeter/js/powermenu.coffee:48
-msgid "suspend"
+msgid "Suspend"
 msgstr "待机"
 
 #: ../resources/greeter/js/powermenu.coffee:49
-msgid "restart"
+msgid "Restart"
 msgstr "重启"
 
 #: ../resources/greeter/js/powermenu.coffee:50
@@ -34,8 +34,8 @@ msgid "Shut down"
 msgstr "关机"
 
 #: ../resources/greeter/js/user.coffee:178
-msgid "guest"
-msgstr "访客"
+msgid "Guest"
+msgstr "来宾"
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -201,7 +201,7 @@ msgstr "复制(_C)"
 
 #: ../resources/desktop/js/richdir.coffee:477
 #: ../resources/desktop/js/application.coffee:177
-msgid "The link has expired. Do you want to delete it?"
+msgid "The link is invalid. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
@@ -265,8 +265,8 @@ msgid "_Display settings"
 msgstr "显示设置(_D)"
 
 #: ../resources/desktop/js/grid.coffee:1022
-msgid "_Corner settings"
-msgstr "热区设置(_D)"
+msgid "_Corner navigation"
+msgstr "热区设置(_C)"
 
 #: ../resources/desktop/js/grid.coffee:1023
 msgid "Pe_rsonalize"
@@ -285,8 +285,8 @@ msgid "_Dock me"
 msgstr "驻留(_D)"
 
 #: ../resources/dock/js/item.coffee:307
-msgid "The item is invalid. Do you want to remove it from the dock panel?"
-msgstr "该项无效。您要把它从Dock删除吗？"
+msgid "The item is invalid. Do you want to remove it from Dock?"
+msgstr "该项无效。要把它从Dock上删除吗？"
 
 #: ../resources/dock/js/launcher.coffee:29 ../lib/dentry/mime_actions.c:213
 msgid "_Run"
@@ -302,20 +302,19 @@ msgstr "关闭(_C)"
 
 #: ../resources/dock/js/deepin_item.coffee:219
 msgid "_View as analog"
-msgstr "显示模拟时钟"
+msgstr "显示模拟时钟(_V)"
 
 #: ../resources/dock/js/deepin_item.coffee:220
-#, fuzzy
-msgid "_Time as settings"
-msgstr "时间设置(_D)"
+msgid "_Time settings"
+msgstr "时间设置(_T)"
 
 #: ../resources/dock/js/deepin_item.coffee:266
 msgid "_View as digit"
-msgstr "显示数字时钟"
+msgstr "显示数字时钟(_V)"
 
 #: ../resources/dock/js/deepin_item.coffee:267
 msgid "_Time settings"
-msgstr "时间设置(_D)"
+msgstr "时间设置(_T)"
 
 #: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
 msgid "Launcher"
@@ -339,16 +338,12 @@ msgstr "无"
 
 #: ../resources/launcher/js/softwaremanager.coffee:77
 msgid "Uninstall failed"
-msgstr ""
+msgstr "卸载失败"
 
 #: ../resources/launcher/js/softwaremanager.coffee:77
-#, fuzzy
-msgid "Deepin Software Center is Not Found"
-msgstr "软件中心"
 
-#: ../resources/launcher/js/const.coffee:64
-msgid "_Hide hidden icons"
-msgstr "隐藏已隐藏图标(_H)"
+msgid "Cannot find Deepin Software Center."
+msgstr "无法找到软件中心"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -371,14 +366,12 @@ msgid "_Remove from autostart"
 msgstr "从开机启动项删除(_R)"
 
 #: ../resources/launcher/js/const.coffee:80
-#, fuzzy
-msgid "Add to _favor"
-msgstr "添加至开机启动项(_A)"
+msgid "Add to _favorites"
+msgstr "添加至常用项(_F)"
 
 #: ../resources/launcher/js/const.coffee:81
-#, fuzzy
-msgid "Remove from _favor"
-msgstr "从开机启动项删除(_R)"
+msgid "Remove from _favorites"
+msgstr "从常用项中删除(_F)"
 
 #: ../resources/launcher/js/item.coffee:266
 msgid "Send to d_esktop"
@@ -390,13 +383,13 @@ msgstr "添加到 Dock(_C)"
 
 #: ../resources/launcher/js/item.coffee:272
 msgid "_Uninstall"
-msgstr ""
+msgstr "卸载"
 
 #: ../resources/launcher/js/item.coffee:315
 msgid ""
-"This operation may lead to uninstalling other corresponding softwares. Are "
-"you sure to uninstall this Item?"
-msgstr ""
+"The operation may also remove other applications that depends on the item. "
+"Are you sure you want to uninstall the item?"
+msgstr "该操作可能会同时卸载其他相关软件，您确定要卸载该项吗？"
 
 #: ../app/greeter/camera.c:47
 msgid "Oops...I can't recognize your face. "
@@ -420,7 +413,7 @@ msgid "Invalid Password"
 msgstr "密码错误"
 
 #: ../app/app_tray/tray.c:322
-msgid "another systray is already running..."
+msgid "Another instance of Tray is already running."
 msgstr "另一个托盘程序正在运行..."
 
 #: ../app/desktop/desktop.c:214
@@ -432,34 +425,27 @@ msgid "New directory"
 msgstr "新建目录"
 
 #: ../app/dock/dock.c:299
-msgid "Dock failed to start, because the plugin of compiz is not enabled"
-msgstr "因Compiz插件未启用，Dock未能启动"
+msgid "Dock failed to start, because Compiz is not enabled."
+msgstr "因Compiz未启用，Dock未能启动。"
 
-#: ../app/dock/dock.c:515
-msgid "another instance of dock is running...\n"
-msgstr "已有一个Dock实例正在运行...\n"
-
-#: ../app/launcher/launcher.c:491
-#, fuzzy
-msgid "another instance of launcher is running..."
-msgstr "已有一个程序启动器实例正在运行...\n"
 
 #: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
-"This *.desktop file cannot be changed to the name \"%s\".You may not have "
-"such permission"
-msgstr "无法将该桌面文件重命名为“%s”。您可能没有权限"
+"Cannot rename the item to \"%s\". This may be caused by lack of "
+"permissons."
+msgstr "无法将该项重命名为“%s”。您可能没有权限。"
 
 #: ../lib/dentry/entry.c:753
 #, c-format
 msgid ""
-"The name \"%s\" is already used in this folder. Please use a different name."
-msgstr "名称“%s”已存在于该文件夹。请使用其他名称。"
+"There is already a file with name \"%s\" in this folder. Please consider a "
+"different name."
+msgstr "该文件夹中已存在名为“%s”的文件，请考虑使用其他名称。"
 
 #: ../lib/dentry/entry.c:759
-msgid "The Item could not be renamed"
-msgstr "该项无法重命名"
+msgid "The item could not be renamed"
+msgstr "无法重命名该项"
 
 #: ../lib/dentry/entry.c:829 ../lib/dentry/fileops.c:809
 msgid "copy"
@@ -470,7 +456,7 @@ msgid "App Group"
 msgstr "程序启动组"
 
 #: ../lib/dentry/fileops.c:568
-msgid "move"
+msgid "Move"
 msgstr "移动"
 
 #: ../lib/dentry/fileops.c:776
@@ -478,16 +464,16 @@ msgid "Copy"
 msgstr "复制"
 
 #: ../lib/dentry/fileops_delete.c:29
-msgid "Delete File"
+msgid "Delete Files"
 msgstr "删除文件"
 
 #: ../lib/dentry/fileops_delete.c:32
 msgid "Are you sure you want to permanently delete the files?"
-msgstr "您确定要永久删除文件吗？"
+msgstr "您确定要永久删除这些文件吗？"
 
 #: ../lib/dentry/fileops_delete.c:33
-msgid "If you delete an item, it will be permanently lost"
-msgstr "如果您要删除某项，它将永久丢失"
+msgid "If you delete the files, they will be permanently lost."
+msgstr "如果您删除了这些文件，它们将永久丢失。"
 
 #: ../lib/dentry/fileops_delete.c:36
 msgid "Delete"
@@ -523,14 +509,14 @@ msgstr "替换"
 
 #: ../lib/dentry/fileops_error_dialog.c:220
 #, c-format
-msgid "Merge folder \"%s\"?"
-msgstr "合并文件夹“%s”？"
+msgid "Do you want to merge with folder \"%s\"?"
+msgstr "你确定要与文件夹“%s”合并吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:222
 msgid ""
-"Merging will ask for confirmation before replacing any files in the folder "
-"that conflict with the files being copied."
-msgstr "合并将会在替换冲突文件时请求确认。"
+"You will be asked before replacing any files in the folder that conflict "
+"with the files being copied."
+msgstr "合并操作将会在替换冲突文件时请求确认。"
 
 #: ../lib/dentry/fileops_error_dialog.c:226
 #, c-format
@@ -553,8 +539,8 @@ msgstr "替换将移除文件夹中的所有文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
 #, c-format
-msgid "Replace folder \"%s\"?"
-msgstr "替换文件夹“%s”？"
+msgid "Do you want to replace folder \"%s\"?"
+msgstr "您确定要替换文件“%s”吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:244
 #, c-format
@@ -563,8 +549,8 @@ msgstr "在“%s”中已存在相同文件名的文件夹。"
 
 #: ../lib/dentry/fileops_error_dialog.c:250
 #, c-format
-msgid "Replace file \"%s\"?"
-msgstr "替换文件“%s”？"
+msgid "Do you want to repace file \"%s\"?"
+msgstr "您确定要替换文件“%s”吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
 msgid "Replacing it will overwrite its content."
