@@ -25,7 +25,7 @@ setBodyWallpaper = (wallpaper)->
     _b.style.width = window.innerWidth
     switch wallpaper
         when "sky_move"
-            _b.style.backgroundImage = "url(js/skyThree/sky1.jpg)"
+            _b.style.backgroundImage = "url(js/skyThree/sky.png)"
             inject_js("js/skyThree/sky.js")
         when "sky_static"
             _b.style.backgroundImage = "url(js/skyThree/sky.png)"
