@@ -304,8 +304,8 @@ class UserInfo extends Widget
         enable_detection(false)
         DCore[APP_NAME].cancel_detect()
    
-    update_session_icon: ->
-        echo "update_session_icon"
+
+    get_session_by_lightdm:->
         @session = "deepin"
         try
             @session = DCore.Greeter.get_user_session(@username)
@@ -323,6 +323,15 @@ class UserInfo extends Widget
         catch e
             echo "#{e}"
         finally
+            return @session
+
+    update_session_icon: ->
+        echo "update_session_icon"
+        if @is_logined
+            desktopmenu?.hide()
+        else
+            desktopmenu?.show()
+            @get_session_by_lightdm()
             desktopmenu?.update_current_icon(@session)
 
     focus:->
@@ -350,6 +359,7 @@ class UserInfo extends Widget
         if username is guest_name then @username = guest_id
         @password = password
         if is_greeter
+            @session = localStorage.getItem("menu_current_id")
             echo "#{username} start session #{@session}"
             @loginAnimation()
             DCore.Greeter.start_session(@username, @password, @session)
