@@ -110,9 +110,9 @@ class Switcher
         else
             @showFavor()
         categoryBar.show()
-        categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         categoryBar.focusCategory(categoryList.firstCategory()?.id)
         Item.updateHorizontalMargin()
+        categoryList.showNonemptyCategories().updateBlankHeight().showBlank()
         searchResult?.hide()
         @page = "Category"
 
