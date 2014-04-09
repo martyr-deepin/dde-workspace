@@ -52,6 +52,7 @@ uninstallSignalHandler = (info)->
             if item.packages.indexOf(package_name) != -1
                 item.status = SOFTWARE_STATE.IDLE
                 item.show()
+                categoryList.showNonemptyCategories()
                 delete uninstalling_apps[item.id]
                 break
     else if status == UNINSTALL_STATUS.SUCCESS
@@ -119,9 +120,9 @@ update = (status, info, categories)->
             console.log 'deleted'
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
-            # item.destroy()
+            categoryList.hideEmptyCategories()
+            item.destroy()
             delete applications[id]
-            # categoryList.hideEmptyCategories()
     else if status.match(/^created$/i)
         console.log 'added'
         autostartList = startManager.AutostartList_sync()

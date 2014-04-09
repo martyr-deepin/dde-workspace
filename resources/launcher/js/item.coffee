@@ -330,6 +330,7 @@ class Item extends Widget
                 if confirm(_("This operation may lead to uninstalling other corresponding softwares. Are you sure to uninstall this Item?", "Launcher"))
                     @status = SOFTWARE_STATE.UNINSTALLING
                     @hide()
+                    categoryList.hideEmptyCategories()
                     uninstalling_apps[@id] = @
                     console.log 'start uninstall'
                     uninstall(item:@, purge:true)

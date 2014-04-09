@@ -59,7 +59,7 @@ class CategoryList
 
     hideEmptyCategories:->
         for own id, category of @categories
-            if category.number() != 0
+            if category.number() == 0
                 category.hide()
                 $("##{CategoryItem.PREFIX}#{id}").style.display = "none"
         @
