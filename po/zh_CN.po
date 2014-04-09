@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.1 \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-27 19:24+0800\n"
+"POT-Creation-Date: 2014-04-09 17:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Deepin Translation Team <support@linuxdeepin.com>\n"
 "Language-Team: Deepin Translation Team <support@linuxdeepin.com>\n"
@@ -17,25 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../resources/greeter/js/menuchoose.coffee:251
+#: ../resources/greeter/js/menuchoose.coffee:261
 msgid "Enter your password to %1"
 msgstr "请输入密码以完成%1"
 
-#: ../resources/greeter/js/powermenu.coffee:48
+#: ../resources/greeter/js/powermenu.coffee:50
 msgid "Suspend"
 msgstr "待机"
 
-#: ../resources/greeter/js/powermenu.coffee:49
+#: ../resources/greeter/js/powermenu.coffee:51
 msgid "Restart"
 msgstr "重启"
 
-#: ../resources/greeter/js/powermenu.coffee:50
+#: ../resources/greeter/js/powermenu.coffee:52
 msgid "Shut down"
 msgstr "关机"
 
-#: ../resources/greeter/js/user.coffee:178
+#: ../resources/greeter/js/user.coffee:25
 msgid "Guest"
 msgstr "来宾"
+
+#: ../resources/greeter/js/user.coffee:420
+msgid "click login button to log in"
+msgstr ""
 
 #: ../resources/greeter/js/time.coffee:42
 msgid "Jan"
@@ -121,16 +125,16 @@ msgstr "计算机"
 #: ../resources/desktop/js/specialitem.coffee:139
 #: ../resources/desktop/js/specialitem.coffee:234
 #: ../resources/desktop/js/specialitem.coffee:288
-#: ../resources/desktop/js/richdir.coffee:130
-#: ../resources/desktop/js/richdir.coffee:459
+#: ../resources/desktop/js/richdir.coffee:131
+#: ../resources/desktop/js/richdir.coffee:470
 #: ../resources/desktop/js/desktopentry.coffee:101
-#: ../resources/launcher/js/item.coffee:263
+#: ../resources/launcher/js/item.coffee:266
 msgid "_Open"
 msgstr "打开(_O)"
 
 #: ../resources/desktop/js/specialitem.coffee:53
 #: ../resources/desktop/js/specialitem.coffee:141
-#: ../resources/desktop/js/richdir.coffee:466
+#: ../resources/desktop/js/richdir.coffee:477
 #: ../resources/desktop/js/desktopentry.coffee:109
 msgid "_Properties"
 msgstr "属性(_P)"
@@ -153,7 +157,7 @@ msgid "_Clean up 1 item"
 msgstr "清空1项(_C)"
 
 #: ../resources/desktop/js/specialitem.coffee:243
-#: ../resources/dock/js/deepin_item.coffee:76
+#: ../resources/dock/js/deepin_item.coffee:105
 msgid "_Clean up"
 msgstr "清空(_C)"
 
@@ -161,48 +165,45 @@ msgstr "清空(_C)"
 msgid "Software Center"
 msgstr "软件中心"
 
-#: ../resources/desktop/js/richdir.coffee:132
+#: ../resources/desktop/js/richdir.coffee:133
 #: ../resources/desktop/js/desktopentry.coffee:106
 msgid "_Rename"
 msgstr "重命名(_R)"
 
-#: ../resources/desktop/js/richdir.coffee:134
+#: ../resources/desktop/js/richdir.coffee:135
 msgid "_Ungroup"
 msgstr "解散(_U)"
 
-#: ../resources/desktop/js/richdir.coffee:136
-#: ../resources/desktop/js/richdir.coffee:464
+#: ../resources/desktop/js/richdir.coffee:137
+#: ../resources/desktop/js/richdir.coffee:475
 #: ../resources/desktop/js/desktopentry.coffee:107
 #: ../resources/desktop/js/invalidlink.coffee:34
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: ../resources/desktop/js/richdir.coffee:352
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
+#: ../resources/desktop/js/application.coffee:177
 msgid "The link is invalid. Do you want to delete it?"
 msgstr "该链接已经失效，是否要删除？"
 
-#: ../resources/desktop/js/richdir.coffee:352
-#: ../resources/desktop/js/richdir.coffee:477
+#: ../resources/desktop/js/richdir.coffee:356
+#: ../resources/desktop/js/richdir.coffee:490
 #: ../resources/desktop/js/desktopentry.coffee:151
 #: ../resources/desktop/js/application.coffee:177
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Warning"
 msgstr "警告"
 
-#: ../resources/desktop/js/richdir.coffee:461
+#: ../resources/desktop/js/richdir.coffee:472
 #: ../resources/desktop/js/desktopentry.coffee:103
 msgid "Cu_t"
 msgstr "剪切(_T)"
 
-#: ../resources/desktop/js/richdir.coffee:462
+#: ../resources/desktop/js/richdir.coffee:473
 #: ../resources/desktop/js/desktopentry.coffee:104
 msgid "_Copy"
 msgstr "复制(_C)"
-
-#: ../resources/desktop/js/richdir.coffee:477
-#: ../resources/desktop/js/application.coffee:177
-msgid "The link is invalid. Do you want to delete it?"
-msgstr "该链接已经失效，是否要删除？"
 
 #: ../resources/desktop/js/desktopentry.coffee:115
 #: ../resources/desktop/js/desktopentry.coffee:122
@@ -220,7 +221,7 @@ msgid "Extract _Here"
 msgstr "解压到此处(_H)"
 
 #: ../resources/desktop/js/desktopentry.coffee:151
-#: ../resources/dock/js/deepin_item.coffee:105
+#: ../resources/dock/js/deepin_item.coffee:137
 msgid "Can not open this file."
 msgstr "无法打开此文件"
 
@@ -272,6 +273,18 @@ msgstr "热区设置(_C)"
 msgid "Pe_rsonalize"
 msgstr "个性化(_R)"
 
+#: ../resources/dock/js/global_menu.coffee:12
+msgid "keep _showing"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:13
+msgid "keep _hidden"
+msgstr ""
+
+#: ../resources/dock/js/global_menu.coffee:14
+msgid "_auto hide"
+msgstr ""
+
 #: ../resources/dock/js/clientgroup.coffee:111
 msgid "_New Window"
 msgstr "新建窗口(_N)"
@@ -284,7 +297,7 @@ msgstr "关闭所有(_A)"
 msgid "_Dock me"
 msgstr "驻留(_D)"
 
-#: ../resources/dock/js/item.coffee:307
+#: ../resources/dock/js/item.coffee:308
 msgid "The item is invalid. Do you want to remove it from Dock?"
 msgstr "该项无效。要把它从Dock上删除吗？"
 
@@ -296,54 +309,55 @@ msgstr "运行(_R)"
 msgid "_Undock"
 msgstr "移除驻留(_U)"
 
-#: ../resources/dock/js/deepin_item.coffee:79
+#: ../resources/dock/js/deepin_item.coffee:108
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: ../resources/dock/js/deepin_item.coffee:219
+#: ../resources/dock/js/deepin_item.coffee:291
 msgid "_View as analog"
 msgstr "显示模拟时钟(_V)"
 
-#: ../resources/dock/js/deepin_item.coffee:220
+#: ../resources/dock/js/deepin_item.coffee:292
+#: ../resources/dock/js/deepin_item.coffee:340
 msgid "_Time settings"
 msgstr "时间设置(_T)"
 
-#: ../resources/dock/js/deepin_item.coffee:266
+#: ../resources/dock/js/deepin_item.coffee:339
 msgid "_View as digit"
 msgstr "显示数字时钟(_V)"
 
-#: ../resources/dock/js/deepin_item.coffee:267
-msgid "_Time settings"
-msgstr "时间设置(_T)"
-
-#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/zone.coffee:31
+#: ../resources/dock/js/main.coffee:129 ../resources/zone/js/utils.coffee:10
 msgid "Launcher"
 msgstr "启动器"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Workspace"
 msgstr "工作区"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "Desktop"
 msgstr "桌面"
 
-#: ../resources/zone/js/zone.coffee:31
+#: ../resources/zone/js/utils.coffee:10
 msgid "None"
 msgstr "无"
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
+#: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Uninstall failed"
 msgstr "卸载失败"
 
-#: ../resources/launcher/js/softwaremanager.coffee:77
-
+#: ../resources/launcher/js/softwaremanager.coffee:78
 msgid "Cannot find Deepin Software Center."
 msgstr "无法找到软件中心"
+
+#: ../resources/launcher/js/const.coffee:64
+#, fuzzy
+msgid "_Hide hidden icons"
+msgstr "隐藏已隐藏图标(_H)"
 
 #: ../resources/launcher/js/const.coffee:65
 msgid "_Display hidden icons"
@@ -373,19 +387,19 @@ msgstr "添加至常用项(_F)"
 msgid "Remove from _favorites"
 msgstr "从常用项中删除(_F)"
 
-#: ../resources/launcher/js/item.coffee:266
+#: ../resources/launcher/js/item.coffee:269
 msgid "Send to d_esktop"
 msgstr "发送到桌面(_E)"
 
-#: ../resources/launcher/js/item.coffee:269
+#: ../resources/launcher/js/item.coffee:272
 msgid "Send to do_ck"
 msgstr "添加到 Dock(_C)"
 
-#: ../resources/launcher/js/item.coffee:272
+#: ../resources/launcher/js/item.coffee:275
 msgid "_Uninstall"
 msgstr "卸载"
 
-#: ../resources/launcher/js/item.coffee:315
+#: ../resources/launcher/js/item.coffee:330
 msgid ""
 "The operation may also remove other applications that depends on the item. "
 "Are you sure you want to uninstall the item?"
@@ -408,13 +422,9 @@ msgstr "%s%d秒后自动重试"
 msgid "%a, %b %d, %Y"
 msgstr "%Y年%b%d日 %A"
 
-#: ../app/greeter/dlock.c:127 ../app/greeter/greeter.c:154
+#: ../app/greeter/dlock.c:130 ../app/greeter/greeter.c:181
 msgid "Invalid Password"
 msgstr "密码错误"
-
-#: ../app/app_tray/tray.c:322
-msgid "Another instance of Tray is already running."
-msgstr "另一个托盘程序正在运行..."
 
 #: ../app/desktop/desktop.c:214
 msgid "New file"
@@ -424,16 +434,15 @@ msgstr "新建文件"
 msgid "New directory"
 msgstr "新建目录"
 
-#: ../app/dock/dock.c:299
+#: ../app/dock/dock.c:300
+#, fuzzy
 msgid "Dock failed to start, because Compiz is not enabled."
 msgstr "因Compiz未启用，Dock未能启动。"
-
 
 #: ../lib/dentry/entry.c:747
 #, c-format
 msgid ""
-"Cannot rename the item to \"%s\". This may be caused by lack of "
-"permissons."
+"Cannot rename the item to \"%s\". This may be caused by lack of permissions."
 msgstr "无法将该项重命名为“%s”。您可能没有权限。"
 
 #: ../lib/dentry/entry.c:753
@@ -538,7 +547,7 @@ msgid "Replacing it will remove all files in the folder."
 msgstr "替换将移除文件夹中的所有文件。"
 
 #: ../lib/dentry/fileops_error_dialog.c:242
-#, c-format
+#, fuzzy, c-format
 msgid "Do you want to replace folder \"%s\"?"
 msgstr "您确定要替换文件“%s”吗？"
 
@@ -548,8 +557,8 @@ msgid "A folder with the same name already exists in \"%s\"."
 msgstr "在“%s”中已存在相同文件名的文件夹。"
 
 #: ../lib/dentry/fileops_error_dialog.c:250
-#, c-format
-msgid "Do you want to repace file \"%s\"?"
+#, fuzzy, c-format
+msgid "Do you want to replace file \"%s\"?"
 msgstr "您确定要替换文件“%s”吗？"
 
 #: ../lib/dentry/fileops_error_dialog.c:251
@@ -686,7 +695,6 @@ msgstr "实用工具"
 msgid "other"
 msgstr "其他"
 
-#, fuzzy
 #~ msgid "shut down"
 #~ msgstr "关机"
 
@@ -723,24 +731,15 @@ msgstr "其他"
 #~ msgid "Lock"
 #~ msgstr "锁定"
 
-#~ msgid "Suspend"
-#~ msgstr "待机"
-
 #~ msgid "Log out"
 #~ msgstr "注销"
 
-#~ msgid "Restart"
-#~ msgstr "重启"
-
-#, fuzzy
 #~ msgid "Force Log out"
 #~ msgstr "强制注销"
 
-#, fuzzy
 #~ msgid "Force Restart"
 #~ msgstr "强制重启"
 
-#, fuzzy
 #~ msgid "Force Shut down"
 #~ msgstr "强制关机"
 
