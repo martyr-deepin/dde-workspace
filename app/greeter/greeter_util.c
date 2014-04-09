@@ -199,13 +199,13 @@ gboolean greeter_get_user_session_on(const gchar *username)
 
     user_lock_path = g_strdup_printf("%s%s", username, ".dlock.app.deepin");
     if (app_is_running (user_lock_path)) {
-        result = TRUE;
+        /*result = TRUE;*/
         g_warning("user_lock_path is_running,and login_on is TRUE;\n");
     }
 
     username_authentication = lightdm_greeter_get_authentication_user(greeter);
     if (g_strcmp0 (username, username_authentication) == 0) {
-        result = TRUE;
+        /*result = TRUE;*/
         g_warning("username_authentication is %s,and login_on is TRUE;\n",username);
     }
 

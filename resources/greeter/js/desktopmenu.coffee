@@ -32,12 +32,18 @@ class DesktopMenu extends Widget
         @sessions = DCore.Greeter.get_sessions()
         if @sessions.length < 2 then @is_one_session = true
        
+
+    hide:->
+        @element.style.display = "none"
+        @de_menu?.hide()
+
+    show:->
+        @element.style.display = "block"
+        @de_menu?.show()
+
     update_current_icon:(@current)->
         return if @is_one_session
-        if _current_user.is_logined
-            @de_menu.hide()
-            return
-        @de_menu.show()
+        @show()
         try
             echo "set_current(@current) :----#{@current}----"
             icon = DCore.Greeter.get_session_icon(@current)
