@@ -54,28 +54,29 @@ allElsHide = ->
         if el.tagName = "DIV"
             el.style.display = "none"
 
+tmp_i = 0
 osdHide = ->
     return if FOCUS
-    #echo "osdHide"
-    #allElsHide()
-    #DCore.Osd.hide()
-    document.body.opacity = "1"
-    jQuery(document.body).animate(
-        {opacity:'0';},200,"linear",->
-            allElsHide()
-            document.body.opacity = "0"
-            DCore.Osd.hide()
-    )
+    echo "osdHide : #{timeout_osdHide}"
+    
+    allElsHide()
+    DCore.Osd.hide()
+    clearTimeout(timeout_osdHide)
+    return
+    
+    #document.body.opacity = "1"
+    #jQuery(document.body).animate(
+    #    {opacity:'0';},200,"linear",->
+    #        echo tmp_i++
+    #        allElsHide()
+    #        DCore.Osd.hide()
+    #)
 
 osdShow = ->
-    #echo "osdShow"
     allElsHide()
     DCore.Osd.show()
     document.body.opacity = "0"
-    jQuery(document.body).animate(
-        {opacity:'1';},500,"linear",->
-            document.body.opacity = "1"
-    )
+    jQuery(document.body).animate({opacity:'1';},500)
 
 osdHide()
 
