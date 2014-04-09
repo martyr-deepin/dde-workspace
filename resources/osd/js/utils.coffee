@@ -54,7 +54,6 @@ allElsHide = ->
         if el.tagName = "DIV"
             el.style.display = "none"
 
-tmp_i = 0
 osdHide = ->
     return if FOCUS
     echo "osdHide : #{timeout_osdHide}"
@@ -67,7 +66,6 @@ osdHide = ->
     #document.body.opacity = "1"
     #jQuery(document.body).animate(
     #    {opacity:'0';},200,"linear",->
-    #        echo tmp_i++
     #        allElsHide()
     #        DCore.Osd.hide()
     #)
@@ -103,9 +101,6 @@ set_bg = (cls,imgName,prevImgName)->
     if prevImgName == imgName then return
     echo "set_bg: bgChanged from #{prevImgName} to #{imgName}"
     
-    cb = =>
-        echo "cb"
-   
     cls.bg1 = create_element("div","#{cls.id}_bg1",cls.element) if not cls.bg1?
     cls.bg2 = create_element("div","#{cls.id}_bg2",cls.element) if not cls.bg2?
     cls.bg1.style.position = "absolute"
@@ -122,34 +117,9 @@ set_bg = (cls,imgName,prevImgName)->
     
     t = 500
     cls.bg1.style.opacity = "1.0"
-    #apply_linear_hide(cls.bg1,t,"ease-in")
     jQuery(cls.bg1).animate({opacity:'0';},t,"swing")
     cls.bg2.style.opacity = "0.0"
     jQuery(cls.bg2).animate({opacity:'1';},t,"swing")
-    #apply_linear_show(cls.bg2,t,"ease-out")
-
-    
-    if false
-        el = cls.element
-        cls.element.style.backgroundImage = "url(img/#{imgName}.png)"
-        apply_animation(cls.element,2000,"linear-show","ease-in",cb)
-        return
-
-    if false
-        apply_linear_hide_show(el,"0.1","ease-in-out")
-    #else
-        el.style.opacity = "1"
-        t = 50
-        jQuery(el).animate(
-            {opacity:'0';},
-            t,
-            "swing",=>
-                el.style.backgroundImage = "url(img/#{imgName}.png)"
-                jQuery(el).animate(
-                    {opacity:'1';},t,"swing"
-                )
-        )
- 
 
 showValue = (value,min,max,cls,id)->
     if value > max then value = max
