@@ -20,3 +20,4 @@ class Setting
     setHideMode:(id)->
         console.log(id)
         @dbus.SetHideMode(id)
+        DCore.Dock.update_hide_mode()

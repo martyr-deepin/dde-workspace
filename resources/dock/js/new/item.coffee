@@ -75,8 +75,10 @@ class AppItem extends Item
         @tooltip = null
 
         if @isNormal()
+            console.log("is normal")
             @init_activator()
         else
+            console.log("is runtime")
             @init_clientgroup()
 
 
@@ -114,7 +116,7 @@ class AppItem extends Item
                 when ITEM_DATA_FIELD.icon
                     # TODO:
                     # use a big images, and change the position.
-                    @img.style.backgroundImage = value
+                    @img.style.backgroundImage = value || NOT_FOUND_ICON
         )
 
     init_clientgroup:->
@@ -135,6 +137,7 @@ class AppItem extends Item
     init_activator:->
         # console.log("init_activator #{@core.id()}")
         @openIndicator.style.display = 'none'
+        @title = @core.title() || "Unknow"
         @set_tooltip(@title)
 
     swap_to_clientgroup:->
@@ -188,6 +191,8 @@ class AppItem extends Item
             Preview_close_now(@)
             @element.style.display = "block"
             super
+
+        delete $DBus[@id]
 
     destroyWidthAnimation:->
         @img.classList.remove("ReflectImg")

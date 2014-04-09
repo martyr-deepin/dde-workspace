@@ -16,10 +16,10 @@ createItem = (d)->
         container = app_list.element
 
         $DBus[d.Id] = d
-        # console.log("AppItem #{d.Id}")
+        console.log("AppItem #{d.Id}")
         new AppItem(d.Id, icon, title, container)
     else
-        # console.log("SystemItem #{d.Id}, #{icon}, #{title}")
+        console.log("SystemItem #{d.Id}, #{icon}, #{title}")
         $DBus[d.Id] = d
         new SystemItem(d.Id, icon, title)
 
