@@ -94,9 +94,8 @@ class Audio extends Widget
     
     show:(value)->
         clearTimeout(@timepress) if @timepress
+        clearTimeout(timeout_osdHide) if timeout_osdHide?
         @timepress = setTimeout(=>
-            clearTimeout(timeout_osdHide) if timeout_osdHide
-            
             osdShow()
             @element.style.display = "block"
             bgImg = @getBgName(value)
