@@ -420,6 +420,7 @@ class LoginEntry extends Widget
             @password_error(_("click login button to log in"))
             @loginbutton.disable = false
             @loginbutton.style.pointer = "cursor"
+            @password.setAttribute("readonly","readonly")
 
     show:->
         @element.style.display = "-webkit-box"
