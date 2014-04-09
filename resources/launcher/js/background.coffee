@@ -20,7 +20,7 @@
 
 setBackground = (uid, path)->
     callback = (path)->
-        echo "set background to #{path}"
+        console.log "set background to #{path}"
         localStorage.setItem("bg", path)
         _b.style.backgroundImage = "url(#{path})"
 

@@ -24,7 +24,7 @@ class SearchBar
         @key = $("#searchKey")
         DCore.signal_connect("im_commit", (info)=>
             if @value(@value() + info.Content)
-                echo 'search from im'
+                console.log 'search from im'
                 switcher.switchToSearch()
                 @search()
         )
@@ -65,7 +65,7 @@ class SearchBar
             selector.clean()
             if !SearchResult.inited
                 searchResult = new SearchResult()
-            echo "searchKey is : #{@value()}"
+            console.log "searchKey is : #{@value()}"
             searchResult.result = daemon.Search_sync(@value())
             res = $("#searchResult")
             for i in [0...res.children.length]
@@ -73,19 +73,19 @@ class SearchBar
                     res.children[i].style.display = 'none'
 
             if searchResult.result.length == 0
-                echo 'search: get nothing'
+                console.log 'search: get nothing'
                 return
 
             for i in [searchResult.result.length-1..0]
                 if (item = Widget.look_up("#{searchResult.result[i]}"))?
-                    # echo "search Item id: #{searchResult.result[i]}"
+                    # console.log "search Item id: #{searchResult.result[i]}"
                     target = item.elements.search
                     res.removeChild(target)
                     res.insertBefore(target, res.firstChild)
                     item.show()
 
             if !searchResult.isShow()
-                echo 'show result'
+                console.log 'show result'
                 searchResult.show()
                 Item.updateHorizontalMargin()
         , 100)

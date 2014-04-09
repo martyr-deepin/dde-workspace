@@ -59,11 +59,11 @@ class FavorPage
         container = @element
         for i in [0...container.children.length]
             el = container.children[i]
-            # echo "save favor: "
-            # echo el
+            # console.log "save favor: "
+            # console.log el
             apps.push([el.getAttribute('appid'), i, false])
-        echo 'save favor list'
-        # echo apps
+        console.log 'save favor list'
+        # console.log apps
         daemon.SaveFavors_sync(apps)
 
     reset: ->
@@ -72,11 +72,11 @@ class FavorPage
     doAdd: (id, index, fixed=false)->
         index = @element.childElementCount if not index?
         item = Widget.look_up(id)
-        # echo "add #{item.name} to favor"
+        # console.log "add #{item.name} to favor"
         el = item.add('favor', @element)
         el.setAttribute("index", index)
         el.setAttribute("fixed", fixed)
-        # echo el
+        # console.log el
         @favors[id] = item
         @updateCache = true
         Item.updateHorizontalMargin()

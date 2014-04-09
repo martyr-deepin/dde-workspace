@@ -28,13 +28,13 @@ gridScrollCallback = (e)->
             continue
         candidateId = this.childNodes[i].id
         if scrollTop - offset < 0
-            # echo "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            # console.log "less #{id} #{$("##{id}").firstChild.firstChild.textContent}"
             $("#grid").style.webkitMaskImage = "-webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,1) 5%, rgba(0,0,0,1) 90%, rgba(0,0,0,0.3), rgba(0,0,0,0))"
             categoryBar.focusCategory(cid.substr(Category.PREFIX.length))
             break
         else if scrollTop - offset == 0
             cid = this.childNodes[i].id
-            # echo "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
+            # console.log "equal #{id} #{$("##{id}").firstChild.firstChild.textContent}"
             if cid == "c-2"
                 this.style.webkitMask = "none"
             else

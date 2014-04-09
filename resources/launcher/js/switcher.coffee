@@ -55,7 +55,7 @@ class Switcher
             e.preventDefault()
         )
         @switcherHover.addEventListener("drop", (e)=>
-            echo 'drop'
+            console.log 'drop'
             e.preventDefault()
             e.stopPropagation()
             if @isFavor()

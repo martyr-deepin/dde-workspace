@@ -29,23 +29,23 @@ uninstallReport = (status, msg)->
     else if status == UNINSTALL_STATUS.SUCCESS
         message = "SUCCESSFUL"
 
-    echo "uninstall #{message}, #{msg}"
+    console.log "uninstall #{message}, #{msg}"
     icon_launcher = DCore.get_theme_icon("start-here", 48)
     try
         notification = get_dbus("session", NOTIFICATIONS)
         notification.Notify("Deepin Launcher", -1, icon_launcher, "Uninstall #{message}", "#{msg}", [], {}, 0)
     catch e
-        echo e
+        console.log e
     if Object.keys(uninstalling_apps).length == 0
-        echo 'uninstall: disconnect signal'
+        console.log 'uninstall: disconnect signal'
         softwareManager.dis_connect("update_signal", uninstallSignalHandler)
 
 
 uninstallSignalHandler = (info)->
-    # echo info
+    # console.log info
     status = info[0][0]
     package_name = info[0][1][0]
-    # echo status
+    # console.log status
     if status == UNINSTALL_STATUS.FAILED
         message = info[0][1][3]
         for own id, item of uninstalling_apps
@@ -64,26 +64,26 @@ uninstallSignalHandler = (info)->
 
 
 uninstall = (opt) ->
-    echo "#{opt.item.path}, #{opt.purge}"
+    console.log "#{opt.item.path}, #{opt.purge}"
     item = opt.item
 
     if not softwareManager?
         try
             softwareManager = get_dbus("system", SOFTWARE_MANAGER)
         catch e
-            echo e
+            console.log e
             try
                 notification = get_dbus("session", NOTIFICATIONS)
                 notification.Notify("Deepin Launcher", -1, icon_launcher, _("Uninstall failed"), _("Deepin Software Center is Not Found"), [], {}, 0)
             catch e
-                echo e
+                console.log e
             item.status = SOFTWARE_STATE.IDLE
             item.show()
             delete uninstalling_apps[item.id]
             return
 
     if Object.keys(uninstalling_apps).length == 1
-        echo 'uninstall: connect signal'
+        console.log 'uninstall: connect signal'
         softwareManager.connect("update_signal", uninstallSignalHandler)
 
     packages = daemon.GetPackageNames_sync(item.path)
@@ -92,9 +92,10 @@ uninstall = (opt) ->
         item.show()
         delete uninstalling_apps[item.id]
         uninstallReport(UNINSTALL_STATUS.FAILED, "get packages failed")
+        console.log("get packages failed")
         return
     opt.item.packages = packages
-    # echo packages.join()
+    console.log "packages: #{packages.join(",")}"
     softwareManager.uninstall_pkg(packages.join(" "), opt.purge)
 
 
@@ -103,26 +104,26 @@ update = (status, info, categories)->
     name = info[1]
     id = info[2]
     icon = info[3]
-    # echo "status: #{status}"
-    # echo "path: #{path}"
-    # echo "name: #{name}"
-    # echo "id: #{id}"
-    # echo "icon: #{icon}"
-    # echo "categories: #{categories}"
+    # console.log "status: #{status}"
+    # console.log "path: #{path}"
+    # console.log "name: #{name}"
+    # console.log "id: #{id}"
+    # console.log "icon: #{icon}"
+    # console.log "categories: #{categories}"
 
     if status.match(/^deleted$/i)
         if uninstalling_apps[id]
             delete uninstalling_apps[id]
 
         if (item = Widget.look_up(id))?
-            echo 'deleted'
+            console.log 'deleted'
             item.status = SOFTWARE_STATE.UNINSTALLING
             item.hide()
-            item.destroy()
+            # item.destroy()
             delete applications[id]
-            categoryList.hideEmptyCategories()
+            # categoryList.hideEmptyCategories()
     else if status.match(/^created$/i)
-        echo 'added'
+        console.log 'added'
         autostartList = startManager.AutostartList_sync()
         item = createItem(info, autostartList)
         item.add('search')
@@ -136,13 +137,13 @@ update = (status, info, categories)->
             else
                 switcher.switchToFavor()
     else
-        echo 'updated'
+        console.log 'updated'
         applications[id].update(name:name, path:path, basename:"#{get_path_name(path)}.desktop", icon:icon)
 
     # FIXME:
     # load what should be shown, not forbidden reloading on searching.
     if !searchBar.empty()
-        # echo 'search'
+        # console.log 'search'
         searchBar.search()
 
 

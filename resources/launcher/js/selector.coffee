@@ -27,7 +27,7 @@ class Selector
         if el? && (not @box? || not @box.isSameNode(el))
             @box = el
             @clean()
-            echo "set container to #{el.id}"
+            console.log "set container to #{el.id}"
         @box
 
     clean:->
@@ -139,14 +139,14 @@ class Selector
     select: (fn)->
         if @selectedItem == null
             selectedItem = @firstShown()
-            # echo "selector: #{selectedItem}"
+            # console.log "selector: #{selectedItem}"
             @update(selectedItem)
             @scroll_to_view(selectedItem)
             return
         fn(@)
 
     right:->
-        # echo "right"
+        # console.log "right"
         @select((o)->
             item = o.selectedItem
             if not (n = o.nextShown(item))? && switcher.isShowCategory
@@ -159,7 +159,7 @@ class Selector
         )
 
     left:->
-        # echo "left"
+        # console.log "left"
         @select((o)->
             item = o.selectedItem
             if not (n = o.previousShown(item))? && switcher.isShowCategory
@@ -172,14 +172,14 @@ class Selector
         )
 
     down:->
-        # echo "down"
+        # console.log "down"
         @select((o)->
             item = o.selectedItem
             n = item
             count = o.rowNumber()
 
             if switcher.isShowCategory && o.isLastLine(item)
-                echo 'get next category'
+                console.log 'get next category'
                 if (c = categoryList.nextCategory(o.focusedCategory(item).id))?
                     n = c.firstItem()
                     count = o.indexOnLine(item)
@@ -195,7 +195,7 @@ class Selector
         )
 
     up:->
-        # echo "up"
+        # console.log "up"
         @select((o)->
             item = o.selectedItem
             n = item

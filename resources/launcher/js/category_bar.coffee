@@ -117,7 +117,7 @@ class CategoryBar
         @
 
     focusCategory: (id) =>
-        # echo "selectedId: #{@selectedId}, id: #{id}"
+        # console.log "selectedId: #{@selectedId}, id: #{id}"
         if @selectedId != id
             @category_items[@selectedId]?.blur()
             @category_items[id]?.focus()
