@@ -51,4 +51,6 @@ JS_EXPORT_API gchar* greeter_get_date ();
 
 JS_EXPORT_API gboolean greeter_detect_capslock ();
 
+JS_EXPORT_API gboolean greeter_get_user_session_on (const gchar *username);
+
 #endif

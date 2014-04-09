@@ -69,6 +69,18 @@ class Accounts
         else is_logined = true
         return is_logined
 
+    is_user_sessioned_on:(uid)->
+        if APP isnt "Greeter" then return true
+        
+        username = @users_id_dbus[uid].UserName
+        try
+            is_sessioned_on = DCore.Greeter.get_user_session_on(username)
+        catch e
+            echo "#{e}"
+            is_sessioned_on = false
+        return is_sessioned_on
+        
+
     get_user_id:(user)->
         id = null
         try

@@ -123,7 +123,7 @@ respond_authentication (LightDMGreeter *greeter, const gchar *text, LightDMPromp
         g_warning ("respond authentication failed:invalid prompt type\n");
         return ;
     }
-    //g_warning ("respond authentication:%s\n", respond);
+    g_warning ("respond authentication:%s\n", respond);
 
     lightdm_greeter_respond (greeter, respond);
 
@@ -187,12 +187,6 @@ authenticated_complete(LightDMGreeter *greeter)
     start_session(greeter);
 }
 
-JS_EXPORT_API
-gboolean greeter_get_is_authenticated(const gchar *username)
-{
-    gboolean result = lightdm_greeter_get_is_authenticated (greeter);
-    return result;
-}
 
 JS_EXPORT_API
 gboolean greeter_start_session (const gchar *username, const gchar *password, const gchar *session)

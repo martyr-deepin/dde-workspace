@@ -53,7 +53,8 @@ class User extends Widget
                 usericon = @accounts.users_id_dbus[uid].IconFile
                 u = new UserInfo(username, username, usericon)
                 @userinfo_all.push(u)
-                u.is_logined = @accounts.is_user_logined(uid)
+                #u.is_logined = @accounts.is_user_logined(uid)
+                u.is_logined = @accounts.is_user_sessioned_on(uid)
                 _current_user = u if uid is @_default_userid
         
         user.index = j for user,j in @userinfo_all
@@ -353,7 +354,6 @@ class UserInfo extends Widget
             @loginAnimation()
             DCore.Greeter.start_session(@username, @password, @session)
             document.body.cursor = "wait"
-            echo "start session end"
         else
             echo "#{username} try_unlock "
             @loginAnimation()
@@ -529,7 +529,7 @@ DCore.signal_connect("failed-too-much", (msg)->
 )
 
 DCore.signal_connect("auth-succeed", ->
-    echo "password_succeed!"
+    echo "auth-succeed!"
     echo  "--------#{new Date().getTime()}-----------"
     power_flag = false
     if (power = localStorage.getObject("shutdown_from_lock"))?
