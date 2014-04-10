@@ -70,3 +70,6 @@ class EntryProxy
 
     handleMenuItem:(itemId)->
         @dbus?.HandleMenuItem(itemId)
+
+    onDrop: (data)->
+        @dbus?.OnDragDrop(0,0,data)

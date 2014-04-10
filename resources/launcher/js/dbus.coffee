@@ -37,7 +37,7 @@ catch e
     console.log e
     DCore.Launcher.quit()
 
-startManager.connect("AutostartChanged", (status, path)->
+startManager?.connect("AutostartChanged", (status, path)->
     console.log "autostart changed: #{status}"
     for own k, v of applications
         if v.basename == "#{get_path_name(path)}.desktop"

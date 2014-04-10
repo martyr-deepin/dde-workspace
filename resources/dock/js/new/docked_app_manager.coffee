@@ -14,6 +14,7 @@ dockedAppManager?.connect("Docked", (id)->
         # necessary.
         console.log("Send to Dock")
         items.push(id)
+
     console.log("docked items: #{items}")
     dockedAppManager.Sort(items)
 )
