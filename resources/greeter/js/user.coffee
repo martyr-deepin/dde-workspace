@@ -198,11 +198,17 @@ class UserInfo extends Widget
         @userimg_background = create_element("div","userimg_background",@userimg_border)
         @userimg = create_img("userimg", @img_src, @userimg_background)
         @userimg_div.style.display = "none"
+
+        @username_div = create_element("div", "username_div", @userbase)
+        @username_div.innerText = @username
+        @username_div.style.display = "none"
         
         @login = new LoginEntry("login", @username, (u, p)=>@on_verify(u, p))
         @element.appendChild(@login.element)
-        @login.show()
-        
+        @login.hide()
+
+
+        ###------set width height left top--------####
         @face_recognize_div.style.display = "block"
         div_users_width = $("#div_users").clientWidth
         face_recognize_width = 135 * scaleFinal
@@ -215,7 +221,6 @@ class UserInfo extends Widget
         @face_recognize_div.style.left = face_recognize_left
         @face_recognize_div.style.top = face_recognize_top
         @face_recognize_div.style.display = "none"
-
         
         @userimg.style.width = 110 * scaleFinal
         @userimg.style.height = 110 * scaleFinal
@@ -224,11 +229,6 @@ class UserInfo extends Widget
         @userimg_background.style.width = @userimg_border.style.width - 3
         @userimg_background.style.height = @userimg_border.style.height - 3
 
-        @username_div = create_element("div", "username_div", @userbase)
-        @username_div.innerText = @username
-        @username_div.style.display = "none"
-
-        @login.hide()
         @loginAnimation()
     
     
