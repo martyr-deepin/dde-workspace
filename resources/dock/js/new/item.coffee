@@ -17,11 +17,17 @@ class Item extends Widget
         @img.addEventListener("mouseout", @on_mouseout)
         @img.addEventListener("click", @on_click)
         @img.addEventListener("contextmenu", @on_rightclick)
+        @img.addEventListener("dragstart", @on_dragstart)
+        @img.addEventListener("dragenter", @on_dragenter)
+        @img.addEventListener("dragover", @on_dragover)
+        @img.addEventListener("dragleave", @on_dragleave)
+        @img.addEventListener("drop", @on_drop)
 
         calc_app_item_size()
         @tooltip = null
         @element.classList.add("AppItem")
-        @element.draggable=true
+        # @element.draggable=true
+        @img.draggable=true
         @container?.appendChild?(@element)
 
     set_tooltip: (text) ->
@@ -59,6 +65,86 @@ class Item extends Widget
     on_click:(e)=>
         e.preventDefault()
         e.stopPropagation()
+
+    show_swap_indicator: ->
+        @add_css_class("ItemSwapIndicator", @img)
+
+    hide_swap_indicator: ->
+        @remove_css_class("ItemSwapIndicator", @img)
+
+    on_dragstart: (e)=>
+        e.stopPropagation()
+        DCore.Dock.require_all_region()
+        # app_list.record_last_over_item(@)
+        Preview_close_now()
+        return if @is_fixed_pos
+        e.dataTransfer.setDragImage(@img, 24, 24)
+        e.dataTransfer.setData(DEEPIN_ITEM_ID, @id)
+        console.log("DEEPIN_ITEM_ID: #{@id}")
+
+        # flag for doing swap between items
+        e.dataTransfer.setData("text/plain", "swap")
+        e.dataTransfer.effectAllowed = "copyMove"
+
+    on_dragenter: (e)=>
+        console.log("dragenter image #{@id}")
+        cancelInsertTimer = setTimeout(->
+            app_list.hide_indicator()
+            calc_app_item_size()
+        , 100)
+        e.preventDefault()
+        e.stopPropagation()
+        return if @is_fixed_pos
+        app_list.hide_indicator()
+        # panel.set_width(panel.width() + ITEM_WIDTH)
+
+        @_try_swaping_id = e.dataTransfer.getData(DEEPIN_ITEM_ID)
+        if @_try_swaping_id == @id
+            e.dataTransfer.dropEffect = "none"
+            return
+        else if dnd_is_deepin_item(e)
+            e.dataTransfer.dropEffect="copy"
+            @show_swap_indicator()
+        else
+            e.dataTransfer.dropEffect="move"
+
+    on_dragleave: (e)=>
+        console.log("dragleave")
+        cancelInsertTimer = setTimeout(->
+            app_list.hide_indicator()
+            calc_app_item_size()
+        , 100)
+        @_try_swaping_id = null
+        @hide_swap_indicator()
+        e.preventDefault()
+        e.stopPropagation()
+
+    on_dragover:(e)=>
+        e.stopPropagation()
+        e.preventDefault()
+        app_list.hide_indicator()
+        calc_app_item_size()
+
+    on_drop: (e) =>
+        e.preventDefault()
+        e.stopPropagation()
+        @hide_swap_indicator()
+        console.log("do drop, #{@id}")
+        console.log(e.dataTransfer.getData(DEEPIN_ITEM_ID))
+        if dnd_is_deepin_item(e)
+            console.log("id deepin item")
+            if @_try_swaping_id != @id
+                console.log("swap")
+                w_s = Widget.look_up(@_try_swaping_id) or Widget.look_up("le_" + @_try_swaping_id)
+                app_list.swap_item(w_s, @)
+        else
+            tmp_list = []
+            for file in e.dataTransfer.files
+                console.log(file)
+                path = decodeURI(file.path)
+                tmp_list.push(path)
+            if tmp_list.length > 0
+                @core?.onDrop(tmp_list.join())
 
 
 class AppItem extends Item
@@ -368,20 +454,22 @@ class AppItem extends Item
         @n_clients.remove(id)
         @n_clients.unshift(id)
 
-    do_dragleave: (e) =>
+    on_dragleave: (e) =>
         super
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"
 
-    do_dragenter: (e) =>
+    on_dragenter: (e) =>
+        clearTimeout(showIndicatorTimer)
         e.preventDefault()
         flag = e.dataTransfer.getData("text/plain")
-        if flag != "swap" and @n_clients.length == 1
+        if flag != "swap" and !@isNormal() and @n_clients.length == 1
             pop_id = setTimeout(=>
                 @to_active_status(@leader)
                 pop_id = null
             , 1000)
         super
 
-    do_drop: (e) =>
+    on_drop: (e) =>
         super
+        console.log("drop")
         clearTimeout(pop_id) if e.dataTransfer.getData('text/plain') != "swap"

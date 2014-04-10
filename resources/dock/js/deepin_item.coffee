@@ -39,7 +39,7 @@ class FixedItem extends Applet
     __show: false
     constructor:(@id, @icon, title, @container)->
         super
-        @element.draggable = false
+        @img.draggable = false
 
     show: (v)->
         @__show = v
@@ -62,7 +62,7 @@ class SystemItem extends AppItem#ClientGroup
     is_fixed_pos: true
     constructor:(@id, @icon, title)->
         super(@id, @icon, title, $("#system"))
-        @element.draggable = false
+        @img.draggable = false
         $("#system").appendChild(@element)
 
 
