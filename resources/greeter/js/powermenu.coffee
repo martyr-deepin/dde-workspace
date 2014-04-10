@@ -44,12 +44,12 @@ class PowerMenu extends Widget
         power_force("shutdown")
 
     get_power_dict : ->
-        power_dict["suspend"] = @suspend_cb
-        power_dict["restart"] = @restart_cb
         power_dict["shutdown"] = @shutdown_cb
-        power_title["suspend"] = _("Suspend")
-        power_title["restart"] = _("Restart")
+        power_dict["restart"] = @restart_cb
+        power_dict["suspend"] = @suspend_cb
         power_title["shutdown"] = _("Shut down")
+        power_title["restart"] = _("Restart")
+        power_title["suspend"] = _("Suspend")
         
         return power_dict
 
@@ -64,8 +64,7 @@ class PowerMenu extends Widget
 
         power_menu = new ComboBox("power", @menuChoose_click_cb)
 
-        for key, value of power_dict
-            title = power_title[key]
+        for key, title of power_title
             img_normal = img_before + "#{key}_normal.png"
             img_hover = img_before + "#{key}_hover.png"
             img_click = img_before + "#{key}_press.png"
