@@ -37,16 +37,15 @@ EntryManager =
     interface:"dde.dock.EntryManager"
 entryManager = get_dbus('session', EntryManager)
 
+trayIcon = DCore.get_theme_icon("deepin-systray", 48) || NOT_FOUND_ICON
 systemTray = null
 # freedesktop = get_dbus("session", "org.freedesktop.DBus")
 # freedesktop.connect("NameOwnerChanged", (name, oldName, newName)->
 #     if newName != "" && name == "com.deepin.dde.TrayManager" && not systemTray
-#         trayIcon = DCore.get_theme_icon("deepin-systray", 48)
 #         systemTray = new SystemTray("system-tray", trayIcon, "")
 # )
 entryManager.connect("TrayInited",->
     if not systemTray
-        trayIcon = DCore.get_theme_icon("deepin-systray", 48)
         systemTray = new SystemTray("system-tray", trayIcon, "")
 )
 
@@ -108,9 +107,9 @@ setTimeout(->
 , 100)
 
 try
-    trayIcon = DCore.get_theme_icon("deepin-systray", 48)
     systemTray = new SystemTray("system-tray", trayIcon, "")
 catch
+    systemTray.destroy()
     systemTray = null
 
 new Time("time", "img/time.png", "")
